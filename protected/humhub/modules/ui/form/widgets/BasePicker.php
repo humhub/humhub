@@ -2,10 +2,10 @@
 
 namespace humhub\modules\ui\form\widgets;
 
+use humhub\helpers\Html;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
-use yii\helpers\Html;
 use yii\helpers\Url;
 
 /**
@@ -131,7 +131,7 @@ abstract class BasePicker extends JsInputWidget
      * If the ActiveForm is set, it will be used to create the picker field,
      * otherwise it's created by Html::activeDropDownList
      *
-     * @var \yii\widgets\ActiveForm
+     * @var \humhub\widgets\form\ActiveForm
      */
     public $form;
 
@@ -451,6 +451,6 @@ abstract class BasePicker extends JsInputWidget
      */
     protected function getUrl()
     {
-        return ($this->url) ? $this->url : Url::to([$this->defaultRoute]);
+        return $this->url ?: Url::to([$this->defaultRoute]);
     }
 }

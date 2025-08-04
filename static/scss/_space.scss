@@ -1,0 +1,100 @@
+// Space > Admin
+.space-owner {
+    text-align: center;
+    margin: 14px 0;
+    font-size: 13px;
+    color: #999;
+}
+
+// Member sign for directory list
+.space-member-sign {
+    color: var(--bs-success);
+    position: absolute;
+    top: 42px;
+    left: 42px;
+    font-size: 16px;
+    background: #fff;
+    width: 24px;
+    height: 24px;
+    padding: 2px 3px 1px 4px;
+    border-radius: 50px;
+    border: 2px solid var(--bs-success);
+}
+
+#space-menu-dropdown i.type {
+    font-size: 16px;
+    color: #BFBFBF;
+}
+
+#space-menu-spaces [data-space-chooser-item] {
+    cursor: pointer;
+}
+
+#space-menu-dropdown .input-group-text {
+    border-radius: 0 4px 4px 0;
+}
+
+#space-menu-dropdown .input-group-text.focus {
+    border-radius: 0 4px 4px 0;
+    border: 2px solid var(--bs-info);
+    border-left: 0;
+}
+
+.input-group #space-menu-search {
+    border-right: 0;
+
+}
+
+#space-menu-dropdown div:not(.input-group) > .search-reset {
+    top: 10px !important;
+    right: 15px !important;
+}
+
+#space-directory-link i {
+    margin-right: 0;
+}
+
+.space-acronym {
+    color: #fff;
+    text-align: center;
+    display: inline-block;
+}
+
+.d-none-space-image {
+    display: none !important;
+}
+
+.card-space {
+    .card-header {
+        .card-space-link {
+            position: absolute;
+            display: block;
+            width: 100%;
+            top: 0;
+            left: 0;
+            padding: 16px;
+        }
+        .card-icons {
+            position: absolute;
+            right: 16px;
+            top: 85px;
+        }
+    }
+    .card-body {
+        .card-space-link {
+            display: block;
+            margin: -16px;
+            padding: 16px;
+        }
+    }
+}
+
+@include media-breakpoint-down(md) {
+    #space-menu > .title {
+        display: none;
+    }
+
+    #space-menu-dropdown {
+        width: 300px !important;
+    }
+}

@@ -163,9 +163,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
             [['username'], 'unique'],
             [['username'], 'string', 'max' => $userModule->maximumUsernameLength, 'min' => $userModule->minimumUsernameLength],
             // Client validation is disable due to invalid client pattern validation
-            [['username'], 'match', 'pattern' => $userModule->validUsernameRegexp, 'message' => Yii::t('UserModule.base', 'Username contains invalid characters.'), 'enableClientValidation' => false, 'when' => function ($model, $attribute) {
-                return $model->getAttribute($attribute) !== $model->getOldAttribute($attribute);
-            }],
+            [['username'], 'match', 'pattern' => $userModule->validUsernameRegexp, 'message' => Yii::t('UserModule.base', 'Username contains invalid characters.'), 'enableClientValidation' => false, 'when' => fn($model, $attribute) => $model->getAttribute($attribute) !== $model->getOldAttribute($attribute)],
             [['created_by', 'updated_by'], 'integer'],
             [['status'], 'in', 'range' => array_keys(self::getStatusOptions()), 'on' => self::SCENARIO_EDIT_ADMIN],
             [['visibility'], 'in', 'range' => array_keys(self::getVisibilityOptions()), 'on' => self::SCENARIO_EDIT_ADMIN],
@@ -220,7 +218,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
 
-        if (in_array(strtolower($this->$attribute), $module->forbiddenUsernames)) {
+        if (in_array(strtolower((string) $this->$attribute), $module->forbiddenUsernames)) {
             $this->addError($attribute, Yii::t('UserModule.account', 'You cannot use this username.'));
         }
     }
@@ -341,9 +339,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
 
     public static function findIdentity($id)
     {
-        return Yii::$app->runtimeCache->getOrSet(User::class . '#' . $id, function () use ($id) {
-            return static::findOne(['id' => $id]);
-        });
+        return Yii::$app->runtimeCache->getOrSet(User::class . '#' . $id, fn() => static::findOne(['id' => $id]));
     }
 
     public static function findIdentityByAccessToken($token, $type = null)
@@ -358,7 +354,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
      */
     public static function find()
     {
-        return Yii::createObject(ActiveQueryUser::class, [get_called_class()]);
+        return Yii::createObject(ActiveQueryUser::class, [static::class]);
     }
 
     public function getId()
@@ -434,7 +430,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     public function getManagerGroups()
     {
         return $this->hasMany(Group::class, ['id' => 'group_id'])
-            ->via('groupUsers', function ($query) {
+            ->via('groupUsers', function ($query): void {
                 $query->andWhere(['is_group_manager' => '1']);
             });
     }
@@ -722,7 +718,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
-    public function canAccessPrivateContent(User $user = null)
+    public function canAccessPrivateContent(?User $user = null)
     {
         $user = !$user && !Yii::$app->user->isGuest ? Yii::$app->user->getIdentity() : $user;
 
@@ -903,7 +899,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
      * TODO: deprecated
      * @inheritdoc
      */
-    public function getUserGroup(User $user = null)
+    public function getUserGroup(?User $user = null)
     {
         $user = !$user && !Yii::$app->user->isGuest ? Yii::$app->user->getIdentity() : $user;
 

@@ -142,7 +142,7 @@ class OnlineModuleManager extends Component
 
         // Download
         $downloadUrl = $moduleInfo['latestCompatibleVersion']['downloadUrl'];
-        $downloadTargetFileName = $moduleDownloadFolder . DIRECTORY_SEPARATOR . basename($downloadUrl);
+        $downloadTargetFileName = $moduleDownloadFolder . DIRECTORY_SEPARATOR . basename((string) $downloadUrl);
         try {
             $hashSha256 = $moduleInfo['latestCompatibleVersion']['downloadFileSha256'];
             $this->downloadFile($moduleId, $downloadTargetFileName, $downloadUrl, $hashSha256);
@@ -442,7 +442,7 @@ class OnlineModuleManager extends Component
     /**
      * @throws ServerErrorHttpException
      */
-    private function throwError(string $moduleId, string $errorMsg, string $displayedErrorMsg = null): void
+    private function throwError(string $moduleId, string $errorMsg, ?string $displayedErrorMsg = null): void
     {
         Yii::error('Error installing or updating the "' . $moduleId . '" module: ' . $errorMsg, 'marketplace');
         throw new ServerErrorHttpException($displayedErrorMsg ?? $errorMsg);

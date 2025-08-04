@@ -5,9 +5,9 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\helpers\Html;
 use humhub\modules\ui\mail\DefaultMailStyle;
 use humhub\modules\user\models\User;
-use yii\helpers\Html;
 
 /* @var string $registrationUrl */
 /* @var User $originator */

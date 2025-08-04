@@ -13,7 +13,7 @@ use yii\base\Model;
  */
 class AccountRecoverPassword extends Model
 {
-    public $verifyCode;
+    public $captcha;
     public $email;
 
     /**
@@ -24,7 +24,7 @@ class AccountRecoverPassword extends Model
         return [
             ['email', 'required'],
             ['email', 'email'],
-            ['verifyCode', 'captcha', 'captchaAction' => '/user/auth/captcha'],
+            ['captcha', Yii::$app->captcha->getValidatorClass()],
             ['email', 'verifyEmail'],
         ];
     }
@@ -46,7 +46,7 @@ class AccountRecoverPassword extends Model
      */
     public function verifyEmail($attribute)
     {
-        if ($this->getErrors('verifyCode')) {
+        if ($this->getErrors('captcha')) {
             // Don't start to check email while captcha code is wrong
             return;
         }

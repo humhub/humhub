@@ -3,12 +3,12 @@
 namespace humhub\modules\like\widgets;
 
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\helpers\Html;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\like\models\Like as LikeModel;
 use humhub\modules\like\Module;
 use Yii;
 use yii\base\Widget;
-use yii\helpers\Html;
 use yii\helpers\Url;
 
 /**

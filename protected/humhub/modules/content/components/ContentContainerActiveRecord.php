@@ -157,7 +157,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      */
     public function createUrl($route = null, $params = [], $scheme = false)
     {
-        array_unshift($params, ($route !== null) ? $route : $this->defaultRoute);
+        array_unshift($params, $route ?? $this->defaultRoute);
         $params['contentContainer'] = $this;
 
         return Url::to($params, $scheme);
@@ -169,7 +169,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * @param User $user
      * @return bool can access private content
      */
-    public function canAccessPrivateContent(User $user = null)
+    public function canAccessPrivateContent(?User $user = null)
     {
         return false;
     }
@@ -182,7 +182,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      */
     public function getWallOut()
     {
-        return "Default Wall Output for Class " . get_class($this);
+        return "Default Wall Output for Class " . static::class;
     }
 
     /**
@@ -203,7 +203,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * @return bool
      * @since 1.7
      */
-    public function is(ContentContainerActiveRecord $container = null)
+    public function is(?ContentContainerActiveRecord $container = null)
     {
         if (!$container || !($container instanceof self)) {
             return false;
@@ -277,7 +277,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         }
 
         return $this->hasOne(ContentContainer::class, ['pk' => 'id'])
-            ->andOnCondition(['class' => get_class($this)]);
+            ->andOnCondition(['class' => static::class]);
     }
 
     /**
@@ -309,7 +309,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * @param User|IdentityInterface $user
      * @return ContentContainerPermissionManager
      */
-    public function getPermissionManager(User $user = null)
+    public function getPermissionManager(?User $user = null)
     {
         if ($user && !$user->is(Yii::$app->user->getIdentity())) {
             return new ContentContainerPermissionManager([
@@ -350,7 +350,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * @param User|null $user
      * @return string
      */
-    public function getUserGroup(User $user = null)
+    public function getUserGroup(?User $user = null)
     {
         return "";
     }
@@ -438,7 +438,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         }
 
         $blockedUsers = $this->getSettings()->get(ContentContainerBlockedUsers::BLOCKED_USERS_SETTING);
-        return empty($blockedUsers) ? [] : explode(',', $blockedUsers);
+        return empty($blockedUsers) ? [] : explode(',', (string) $blockedUsers);
     }
 
     /**

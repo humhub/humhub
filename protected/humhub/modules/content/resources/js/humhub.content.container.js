@@ -55,10 +55,10 @@ humhub.module('content.container', function (module, require, $) {
 
             // Show/Hide current buttons if they depend on status of new button
             if (newButton.data('show-buttons')) {
-                newButton.parent().find(newButton.data('show-buttons')).show();
+                newButton.parent().find(newButton.data('show-buttons')).removeClass('d-none');
             }
             if (newButton.data('hide-buttons')) {
-                newButton.parent().find(newButton.data('hide-buttons')).hide();
+                newButton.parent().find(newButton.data('hide-buttons')).addClass('d-none');
             }
         }).catch(function (e) {
             module.log.error(e, true);
@@ -102,8 +102,8 @@ humhub.module('content.container', function (module, require, $) {
             if (response.success) {
                 const contentId = event.$trigger.data('content-id');
 
-                $('#notification_on_' + contentId).hide();
-                $('#notification_off_' + contentId).show();
+                $('#notification_on_' + contentId).addClass('d-none');
+                $('#notification_off_' + contentId).removeClass('d-none');
             }
         });
     }
@@ -113,8 +113,8 @@ humhub.module('content.container', function (module, require, $) {
             if (response.success) {
                 const contentId = event.$trigger.data('content-id');
 
-                $('#notification_off_' + contentId).hide();
-                $('#notification_on_' + contentId).show();
+                $('#notification_off_' + contentId).addClass('d-none');
+                $('#notification_on_' + contentId).removeClass('d-none');
             }
         });
     };

@@ -26,7 +26,7 @@ class OEmbedProviderForm extends Model
             [['name', 'pattern', 'endpoint'], 'required'],
             ['endpoint', 'url'],
             ['access_token', 'required', 'when' => function ($model) {
-                parse_str($model->endpoint, $query);
+                parse_str((string) $model->endpoint, $query);
                 return isset($query['access_token']);
             }],
         ];

@@ -192,7 +192,7 @@ class ContentTagTest extends HumHubDbTestCase
         try {
             (new ContentTagService($content))->addTag($tag);
             $this->assertTrue(false);
-        } catch (InvalidArgumentException $e) {
+        } catch (InvalidArgumentException) {
             $this->assertTrue(true);
         }
 
@@ -202,7 +202,7 @@ class ContentTagTest extends HumHubDbTestCase
         try {
             (new ContentTagService($content))->addTag($tag);
             $this->assertTrue(false);
-        } catch (InvalidArgumentException $e) {
+        } catch (InvalidArgumentException) {
             $this->assertTrue(true);
         }
 

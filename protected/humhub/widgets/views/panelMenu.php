@@ -1,23 +1,43 @@
 <?php
-use yii\helpers\Html;
-use humhub\widgets\Link;
-use humhub\modules\ui\icon\widgets\Icon;
 
-/* @var $id string */
+use humhub\components\View;
+use humhub\helpers\Html;
+use humhub\widgets\bootstrap\Link;
+
+/**
+ * @var $this View
+ * @var $enableCollapseOption bool
+ * @var $collapseId string
+ */
 
 ?>
 
 <ul data-ui-widget="ui.panel.PanelMenu" data-ui-init class="nav nav-pills preferences">
-    <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#"
-           aria-label="<?= Yii::t('base', 'Toggle panel menu'); ?>" aria-haspopup="true">
-            <?= Icon::get('dropdownToggle') ?>
-        </a>
-        <ul class="dropdown-menu pull-right">
-            <li>
-                <?= Link::instance()->action('toggle')->cssClass('panel-collapse')?>
-            </li>
-            <?= $this->context->extraMenus; ?>
+    <li class="nav-item dropdown">
+        <?= Html::a('', '#', [
+            'class' => 'nav-link dropdown-toggle',
+            'data-bs-toggle' => 'dropdown',
+            'aria-label' => Yii::t('base', 'Toggle panel menu'),
+            'aria-haspopup' => 'true',
+            'aria-expanded' => 'false',
+            'role' => 'button',
+        ]) ?>
+
+        <ul class="dropdown-menu dropdown-menu-end">
+            <?php if ($enableCollapseOption): ?>
+                <li>
+                    <?= Link::instance()
+                        ->link('#' . $collapseId)
+                        ->cssClass(['btn', 'dropdown-item', 'panel-collapse'])
+                        ->options([
+                            'data-bs-toggle' => 'collapse',
+                            'aria-controls' => $collapseId,
+                            'aria-expanded' => 'false',
+                            'role' => 'button',
+                        ]) ?>
+                </li>
+            <?php endif; ?>
+            <?= $this->context->extraMenus ?>
         </ul>
     </li>
 </ul>

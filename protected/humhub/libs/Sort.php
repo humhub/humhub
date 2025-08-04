@@ -59,11 +59,11 @@ class Sort
     private static function getSortValue($obj, $field, $default)
     {
         if (is_array($obj) && isset($obj[$field])) {
-            return $obj[$field] === null ? $default : $obj[$field];
+            return $obj[$field] ?? $default;
         }
 
         if (property_exists($obj, $field)) {
-            return $obj->$field === null ? $default : $obj->$field;
+            return $obj->$field ?? $default;
         }
 
         return PHP_INT_MAX;

@@ -1,6 +1,6 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use yii\helpers\Url;
 
 $this->registerJsVar('fileuploader_error_modal_title', Yii::t('FileModule.base', '<strong>Upload</strong> error'));
@@ -29,8 +29,8 @@ $this->registerJsVar('fileuploader_error_modal_errormsg', Yii::t('FileModule.bas
         cursor: pointer;
     }
 </style>
-<span class="btn btn-default fileinput-button tt" data-toggle="tooltip" data-placement="bottom" title=""
-      data-original-title="<?php echo Yii::t('FileModule.base', 'Upload files'); ?>">
+<span class="btn btn-light fileinput-button tt" data-bs-toggle="tooltip" data-placement="bottom" title=""
+      data-bs-title="<?php echo Yii::t('FileModule.base', 'Upload files'); ?>">
     <i class="fa fa-cloud-upload"></i>
 
     <input id="fileUploaderButton_<?php echo $uploaderId; ?>" type="file" name="files[]"

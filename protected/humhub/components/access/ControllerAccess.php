@@ -386,11 +386,7 @@ class ControllerAccess extends BaseObject
 
     protected function findValidator($ruleName)
     {
-        if (isset($this->validators[$ruleName])) {
-            return $this->validators[$ruleName];
-        }
-
-        return $this->getCustomValidator($ruleName);
+        return $this->validators[$ruleName] ?? $this->getCustomValidator($ruleName);
     }
 
     protected function getCustomValidator($ruleName)

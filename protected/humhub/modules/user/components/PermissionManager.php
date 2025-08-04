@@ -109,16 +109,7 @@ class PermissionManager extends Component
      */
     private function isVerifyAll($params = [])
     {
-        if (isset($params['strict'])) {
-            return $params['strict'];
-        }
-
-        //deprecated
-        if (isset($params['all'])) {
-            return $params['all'];
-        }
-
-        return false;
+        return $params['strict'] ?? $params['all'] ?? false;
     }
 
     /**
@@ -191,7 +182,7 @@ class PermissionManager extends Component
 
         $record->permission_id = $permission->getId();
         $record->module_id = $permission->getModuleId();
-        $record->class = get_class($permission);
+        $record->class = $permission::class;
         $record->group_id = (string)$groupId; // content container permissions require a text value here
         $record->state = $state;
 
@@ -247,9 +238,7 @@ class PermissionManager extends Component
 
         $query = $this->getQuery()->andWhere(['group_id' => $ids]);
         $cacheKey = __METHOD__ . sha1($query->createCommand()->getRawSql());
-        $result = Yii::$app->runtimeCache->getOrSet($cacheKey, function () use ($query) {
-            return $query->all();
-        });
+        $result = Yii::$app->runtimeCache->getOrSet($cacheKey, fn() => $query->all());
 
         foreach ($result as $group) {
             /** @var GroupPermission | ActiveRecord $group */

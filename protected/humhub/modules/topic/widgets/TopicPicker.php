@@ -73,7 +73,7 @@ class TopicPicker extends ContentTagPicker
      * @param ContentContainerActiveRecord|null $container
      * @return bool
      */
-    public static function showTopicPicker(ContentContainerActiveRecord $container = null)
+    public static function showTopicPicker(?ContentContainerActiveRecord $container = null)
     {
         return static::canAddTopic($container) || static::hasTopics($container);
     }
@@ -84,7 +84,7 @@ class TopicPicker extends ContentTagPicker
      * @return bool
      * @since 1.6
      */
-    private static function canAddTopic(ContentContainerActiveRecord $container = null)
+    private static function canAddTopic(?ContentContainerActiveRecord $container = null)
     {
         return $container && Topic::isAllowedToCreate($container);
     }
@@ -94,7 +94,7 @@ class TopicPicker extends ContentTagPicker
      *
      * @return bool
      */
-    private static function hasTopics(ContentContainerActiveRecord $container = null)
+    private static function hasTopics(?ContentContainerActiveRecord $container = null)
     {
         return (($container ? Topic::findByContainer($container)->count() : 0) + Topic::find()->count()) > 0;
     }

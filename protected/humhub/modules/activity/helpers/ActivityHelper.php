@@ -42,7 +42,7 @@ class ActivityHelper
             $activity->hardDelete();
         }
 
-        Yii::debug('Deleted activities for ' . get_class($record) . ' with PK ' . $record->getPrimaryKey(), 'activity');
+        Yii::debug('Deleted activities for ' . ($record !== null ? $record::class : self::class) . ' with PK ' . $record->getPrimaryKey(), 'activity');
     }
 
 }

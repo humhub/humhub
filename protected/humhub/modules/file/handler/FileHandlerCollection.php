@@ -119,9 +119,7 @@ class FileHandlerCollection extends Component
      */
     protected function sortHandler()
     {
-        usort($this->handlers, function (BaseFileHandler $a, BaseFileHandler $b) {
-            return strcmp($a->position, $b->position);
-        });
+        usort($this->handlers, fn(BaseFileHandler $a, BaseFileHandler $b) => strcmp($a->position, $b->position));
     }
 
 }

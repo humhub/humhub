@@ -17,4 +17,4 @@ use humhub\modules\user\models\User;
 <?= Yii::t('UserModule.auth', "If you don't use this link within 24 hours, it will expire.") ?>
 
 
-<?= Yii::t('UserModule.auth', 'Reset Password') ?>: <?= urldecode($linkPasswordReset) ?>
+<?= Yii::t('UserModule.auth', 'Reset Password') ?>: <?= urldecode((string) $linkPasswordReset) ?>

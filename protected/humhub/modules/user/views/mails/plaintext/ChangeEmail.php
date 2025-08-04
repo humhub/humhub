@@ -22,4 +22,4 @@ $text = str_replace("<br>", "\n", $text);
 <?= $text ?>
 
 
-<?= Yii::t('UserModule.account', 'Confirm') ?>: <?= urldecode($approveUrl) ?>
+<?= Yii::t('UserModule.account', 'Confirm') ?>: <?= urldecode((string) $approveUrl) ?>

@@ -8,16 +8,16 @@
 
 namespace humhub\modules\file\libs;
 
+use humhub\helpers\Html;
+use humhub\libs\MimeHelper;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\file\converter\PreviewImage;
+use humhub\modules\file\handler\DownloadFileHandler;
+use humhub\modules\file\handler\FileHandlerCollection;
+use humhub\modules\file\models\File;
 use humhub\modules\file\Module;
 use humhub\modules\file\widgets\FileDownload;
-use humhub\libs\Html;
-use humhub\libs\MimeHelper;
-use humhub\modules\file\models\File;
-use humhub\modules\file\handler\FileHandlerCollection;
-use humhub\modules\file\handler\DownloadFileHandler;
-use humhub\modules\file\converter\PreviewImage;
-use humhub\modules\content\components\ContentActiveRecord;
 use Yii;
 use yii\helpers\Url;
 
@@ -47,7 +47,7 @@ class FileHelper extends \yii\helpers\FileHelper
          * `
          * @see \humhub\tests\codeception\unit\libs\FileHelperTest::testHasExtensionFalsePositives()
          */
-        return (strpos($fileName, '.') !== false);
+        return (str_contains($fileName, '.'));
     }
 
     /**
@@ -67,11 +67,8 @@ class FileHelper extends \yii\helpers\FileHelper
         }
 
         $fileParts = pathinfo($fileName);
-        if (isset($fileParts['extension'])) {
-            return $fileParts['extension'];
-        }
 
-        return '';
+        return $fileParts['extension'] ?? '';
     }
 
     /**
@@ -83,7 +80,7 @@ class FileHelper extends \yii\helpers\FileHelper
      */
     public static function createLink(File $file, $options = [], $htmlOptions = [])
     {
-        $label = (isset($htmlOptions['label'])) ? $htmlOptions['label'] : Html::encode($file->fileName);
+        $label = $htmlOptions['label'] ?? Html::encode($file->fileName);
 
         $fileHandlers = FileHandlerCollection::getByType([FileHandlerCollection::TYPE_VIEW, FileHandlerCollection::TYPE_EXPORT, FileHandlerCollection::TYPE_EDIT, FileHandlerCollection::TYPE_IMPORT], $file);
         if (count($fileHandlers) === 1 && $fileHandlers[0] instanceof DownloadFileHandler) {
@@ -92,7 +89,7 @@ class FileHelper extends \yii\helpers\FileHelper
             return Html::a($label, $file->getUrl(), $htmlOptions);
         }
 
-        $htmlOptions = array_merge($htmlOptions, ['data-target' => '#globalModal']);
+        $htmlOptions = array_merge($htmlOptions, ['data-bs-target' => '#globalModal']);
 
         $urlOptions = ['/file/view', 'guid' => $file->guid];
 

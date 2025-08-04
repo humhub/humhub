@@ -4,11 +4,11 @@ humhub.module('ui.imageset', function (module, require, $) {
             $button = $('.ui-imageset-show-more');
         if ($hiddenItems.css('display') === 'none') {
             $('.ui-imageset-hidden-items').show(100, function () {
-                $button.attr('data-original-title', 'Hide');
+                $button.attr('data-bs-title', 'Hide');
             });
         } else {
             $('.ui-imageset-hidden-items').hide(100, function () {
-                $button.attr('data-original-title', 'Show more');
+                $button.attr('data-bs-title', 'Show more');
             });
         }
     })

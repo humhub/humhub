@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.18.0 (Unreleased - Develop)
 ----------------------------
+- Enh #7029: Add Altcha captcha provider for an alternative to the default Yii captcha
 - Enh #7412: Confusing message after creating an account
 - Enh #7328: `Mailer`, `User` and `Cache` configs removed from `dynamic.php`
 - Enh #7332: Optimized `DynamicConfig` to store and read database information only
@@ -26,14 +27,20 @@ HumHub Changelog
 - Fix #7518: Fix Incorrect German Translation
 - Fix #7522: Fix mailer config
 - Fix #7526: Fix `installationState` issues
+- Enh #7535: Tour module: replace unmaintained [bootstrap-tour](https://github.com/sorich87/bootstrap-tour/) with [driver.js](https://driverjs.com/)
 - Fix #7508: Fix missed messages on search spaces in top space chooser
 - Fix #7538: Mail layout: button not centered because of table width not 100%
 - Fix #7542: HTTP Session Cleanup Issue
 - Fix #7550: Don't show opener if logout triggered by mobile app
+- Enh #7547: Change title when disabling a module
+- Fix #7562: Device system bottom bar on top of HumHub: Add bottom padding for mobile (safe area)
 - Fix #7438: Allow admins to manage profile topics, permission fixes
 - Fix #7565: Fix stream filter placeholder text
 - Fix #7566: Throw an exception during registration if email sending fails
 - Fix #7575: Add safeguard to deletion of content when deleting a user/space with an empty `contentcontainer_id`
+- Fix #7588: Fix depreciation warnings on PHP 8.4
+- Fix #7604: Fix registration by auth clients
+- Fix #7545: Collapsed panels are briefly shown on page load
 
 1.17.3 (Unreleased)
 ----------------------
@@ -52,6 +59,7 @@ HumHub Changelog
 - Fix #7570: Fix `CodeMirrorInputWidget` in collapsible fields
 - Fix #7573: Update test user passwords
 - Fix #7543: Remove duplicate UserInvites Cleanup job
+- Fix #7563: Top padding on medium screen size for some themes such as Entreprise theme
 
 1.17.2 (April 7, 2025)
 ----------------------
@@ -100,7 +108,7 @@ Info: The minimum PHP version is now `PHP 8.1`!
 - Fix #7308: Fix Hungarian symbol error in `Open Sans` font
 - Fix #7309: Fix style of the "Notification Settings" button on small screen
 - Fix #7312: Auto refresh a page with violated script-src because of obsolete nonce
-- Fix #7308: Fix Hungarian symbol error in `Open Sans` font
+- Fix #7308: Fix Hungarian symbol error in `Open Sans` font 
 - Fix #454: Profile about page missing left and right margin on mobile screen
 - Fix #7316: Fix formatter default time zone
 - Enh #7317: Space browser: Make the whole space card header and body clickable
@@ -127,7 +135,7 @@ Info: The minimum PHP version is now `PHP 8.1`!
 - Fix #7287: Fix `Profile::getFormDefinition` to skip virtual fields
 - Fix #7295: iOS mobile app detection for iPad devices
 - Fix #7299: Fix public content from spaces on the profile in guest access mode
-- Fix #7301: Profile header: on small screens, the space at the left and the right of the image must be equal
+- Fix #7301: Profile header: on small screens, the space at the left and the right of the image must be equal   
 - Fix #7298: Don't check email for existing on password recovery (CVE-2024-52043)
 - Enh #7038: Optimize notification overview
 - Enh #7346: Change cache settings keys to meet dot env naming

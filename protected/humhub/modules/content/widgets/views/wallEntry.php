@@ -1,11 +1,11 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\WallEntryAddons;
+use humhub\modules\content\widgets\WallEntryBadges;
 use humhub\modules\content\widgets\WallEntryControls;
-use humhub\modules\content\widgets\WallEntryLabels;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\user\widgets\Image as UserImage;
@@ -24,7 +24,7 @@ use yii\helpers\Url;
 <div class="panel panel-default wall_<?= $object->getUniqueId(); ?>">
     <div class="panel-body">
 
-        <div class="media">
+        <div class="d-flex">
             <!-- since v1.2 -->
             <div class="stream-entry-loader"></div>
 
@@ -34,28 +34,26 @@ use yii\helpers\Url;
             <?php endif; ?>
             <!-- end: show wall entry options -->
 
-            <?=
-            UserImage::widget([
-                'user' => $user,
-                'width' => 40,
-                'htmlOptions' => ['class' => 'pull-left', 'data-contentcontainer-id' => $user->contentcontainer_id]
-            ]);
-            ?>
+            <div class="flex-shrink-0 me-3 img-profile-space">
+                <?= UserImage::widget([
+                    'user' => $user,
+                    'width' => 32,
+                    'htmlOptions' => ['data-contentcontainer-id' => $user->contentcontainer_id],
+                ]) ?>
 
-            <?php if ($showContentContainer && $container instanceof Space): ?>
-                <?=
-                SpaceImage::widget([
-                    'space' => $container,
-                    'width' => 20,
-                    'htmlOptions' => ['class' => 'img-space'],
-                    'link' => 'true',
-                    'linkOptions' => ['class' => 'pull-left', 'data-contentcontainer-id' => $container->contentcontainer_id],
-                ]);
-                ?>
-            <?php endif; ?>
+                <?php if ($showContentContainer && $container instanceof Space): ?>
+                        <?= SpaceImage::widget([
+                            'space' => $container,
+                            'width' => 20,
+                            'htmlOptions' => ['class' => 'img-space'],
+                            'link' => 'true',
+                            'linkOptions' => ['data-contentcontainer-id' => $container->contentcontainer_id],
+                        ]) ?>
+                <?php endif; ?>
+            </div>
 
-            <div class="media-body">
-                <div class="media-heading">
+            <div class="flex-grow-1">
+                <h4 class="mt-0">
                     <?= Html::containerLink($user); ?>
                     <?php if ($container && $showContentContainer): ?>
                         <span class="viaLink">
@@ -64,11 +62,12 @@ use yii\helpers\Url;
                         </span>
                     <?php endif; ?>
 
-                    <div class="pull-right <?= ($renderControls) ? 'labels' : '' ?>">
-                        <?= WallEntryLabels::widget(['object' => $object]); ?>
+                    <div class="float-end <?= ($renderControls) ? 'labels' : '' ?>">
+                        <?= WallEntryBadges::widget(['object' => $object]); ?>
                     </div>
-                </div>
-                <div class="media-subheading">
+                </h4>
+
+                <h5>
                     <a href="<?= Url::to(['/content/perma', 'id' => $object->content->id], true) ?>">
                         <?= TimeAgo::widget(['timestamp' => $createdAt]); ?>
                     </a>
@@ -77,7 +76,7 @@ use yii\helpers\Url;
                         <span class="tt"
                               title="<?= Yii::$app->formatter->asDateTime($updatedAt); ?>"><?= Yii::t('ContentModule.base', 'Updated'); ?></span>
                     <?php endif; ?>
-                </div>
+                </h5>
             </div>
             <hr/>
 

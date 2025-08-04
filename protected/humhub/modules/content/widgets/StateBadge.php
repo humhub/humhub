@@ -12,9 +12,9 @@ use DateTime;
 use DateTimeZone;
 use Exception;
 use humhub\components\Widget;
-use humhub\libs\Html;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
+use humhub\widgets\bootstrap\Badge;
 use Yii;
 use yii\base\InvalidConfigException;
 
@@ -25,7 +25,7 @@ use yii\base\InvalidConfigException;
  */
 class StateBadge extends Widget
 {
-    public ?ContentActiveRecord $model;
+    public ?ContentActiveRecord $model = null;
 
     /**
      * @throws InvalidConfigException
@@ -35,26 +35,14 @@ class StateBadge extends Widget
     {
         switch ($this->getState()) {
             case Content::STATE_DRAFT:
-                return Html::tag(
-                    'span',
-                    Yii::t('ContentModule.base', 'Draft'),
-                    ['class' => 'label label-danger label-state-draft'],
-                );
+                return Badge::danger(Yii::t('ContentModule.base', 'Draft'))->cssClass('badge-state-draft');
             case Content::STATE_SCHEDULED:
                 $scheduledDateTime = new DateTime($this->model->content->scheduled_at, new DateTimeZone('UTC'));
-                return Html::tag(
-                    'span',
-                    Yii::t('ContentModule.base', 'Scheduled for {dateTime}', [
-                        'dateTime' => Yii::$app->formatter->asDatetime($scheduledDateTime, 'short'),
-                    ]),
-                    ['class' => 'label label-warning label-state-scheduled'],
-                );
+                return Badge::warning(Yii::t('ContentModule.base', 'Scheduled for {dateTime}', [
+                    'dateTime' => Yii::$app->formatter->asDatetime($scheduledDateTime, 'short'),
+                ]))->cssClass('badge-state-scheduled');
             case Content::STATE_DELETED:
-                return Html::tag(
-                    'span',
-                    Yii::t('ContentModule.base', 'Deleted'),
-                    ['class' => 'label label-danger label-state-deleted'],
-                );
+                return Badge::danger(Yii::t('ContentModule.base', 'Deleted'))->cssClass('badge-state-deleted');
         }
 
         return '';

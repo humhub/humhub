@@ -8,7 +8,7 @@
 
 namespace humhub\modules\user\widgets;
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\admin\models\forms\PeopleSettingsForm;
 use humhub\modules\ui\widgets\DirectoryFilters;
 use humhub\modules\user\components\PeopleQuery;
@@ -56,7 +56,7 @@ class PeopleFilters extends DirectoryFilters
             'placeholder' => Yii::t('UserModule.base', 'Search...'),
             'type' => 'text',
             'inputOptions' => ['autocomplete' => 'off'],
-            'wrapperClass' => 'col-md-6 form-search-filter-keyword',
+            'wrapperClass' => 'col-lg-6 form-search-filter-keyword',
             'afterInput' => Html::submitButton('<span class="fa fa-search"></span>', ['class' => 'form-button-search']),
             'sortOrder' => 100,
         ]);
@@ -121,7 +121,7 @@ class PeopleFilters extends DirectoryFilters
         }
 
         $definition = $profileFieldType->getFieldFormDefinition();
-        $fieldType = isset($definition[$profileField->internal_name]['type']) ? $definition[$profileField->internal_name]['type'] : null;
+        $fieldType = $definition[$profileField->internal_name]['type'] ?? null;
 
         $filterData = [
             'title' => Html::encode(Yii::t($profileField->getTranslationCategory(), $profileField->title)),

@@ -72,7 +72,7 @@ class ModuleAutoLoaderTest extends Unit
         try {
             ModuleAutoLoader::locateModules();
             $this->fail('no expection when invalid path for moduleAutoloadPaths');
-        } catch (\ErrorException $e) {
+        } catch (\ErrorException) {
         }
 
         array_pop(Yii::$app->params['moduleAutoloadPaths']);

@@ -47,7 +47,7 @@ class FunctionalTester extends BaseTester
             'permission_id' => $permission->id,
             'group_id' => $groupId,
             'module_id' => $permission->moduleId,
-            'class' => get_class($permission),
+            'class' => $permission::class,
             'state' => $state,
         ]))->save();
 
@@ -155,7 +155,7 @@ class FunctionalTester extends BaseTester
         if ($user == null) {
             $this->amUser1();
         } else {
-            if (strtolower($user) == 'admin') {
+            if (strtolower((string) $user) == 'admin') {
                 $password = 'admin&humhub@PASS%worD!';
             }
             LoginPage::openBy($this)->login($user, $password);

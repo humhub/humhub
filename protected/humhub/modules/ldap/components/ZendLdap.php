@@ -54,7 +54,7 @@ class ZendLdap extends Ldap
                     case 'basedn':
                     case 'scope':
                     case 'sort':
-                        $$key = $value;
+                        ${$key} = $value;
                         break;
                     case 'attributes':
                         if (is_array($value)) {
@@ -66,7 +66,7 @@ class ZendLdap extends Ldap
                         break;
                     case 'sizelimit':
                     case 'timelimit':
-                        $$key = (int)$value;
+                        ${$key} = (int)$value;
                         break;
                 }
             }

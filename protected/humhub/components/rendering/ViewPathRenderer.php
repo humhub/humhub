@@ -136,7 +136,7 @@ class ViewPathRenderer extends \yii\base\BaseObject implements Renderer
 
         $class = new \ReflectionClass($viewable);
 
-        $dir = ($this->parent) ? dirname(dirname($class->getFileName())) . '/' . 'views' : dirname($class->getFileName()) . '/' . 'views';
+        $dir = ($this->parent) ? dirname($class->getFileName(), 2) . '/' . 'views' : dirname($class->getFileName()) . '/' . 'views';
 
         if (!empty($this->subPath) && $useSubPath) {
             $dir .= DIRECTORY_SEPARATOR . $this->subPath;

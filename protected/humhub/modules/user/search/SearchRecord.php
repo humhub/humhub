@@ -21,11 +21,8 @@ use humhub\modules\user\widgets\Image;
  */
 class SearchRecord implements MetaSearchResultInterface
 {
-    public ?User $user = null;
-
-    public function __construct(User $user)
+    public function __construct(public ?User $user)
     {
-        $this->user = $user;
     }
 
     /**

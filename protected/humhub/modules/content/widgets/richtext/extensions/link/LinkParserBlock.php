@@ -2,7 +2,7 @@
 
 namespace humhub\modules\content\widgets\richtext\extensions\link;
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use yii\base\Model;
 use yii\helpers\Url;
 
@@ -65,19 +65,19 @@ class LinkParserBlock extends Model
         if ($this->hasOption(static::BLOCK_KEY_TEXT)) {
             // Extract image alignment from image alt text
             $text = trim((string)$this->block[static::BLOCK_KEY_TEXT]);
-            if (substr($text, -2) === '><') {
-                $this->setClass('center-block');
+            if (str_ends_with($text, '><')) {
+                $this->setClass('d-block mx-auto');
                 $this->setText(substr($text, 0, -2));
-            } elseif (substr($text, -1) === '<') {
-                $this->setClass('pull-left');
+            } elseif (str_ends_with($text, '<')) {
+                $this->setClass('float-start');
                 $this->setText(substr($text, 0, -1));
-            } elseif (substr($text, -1) === '>') {
-                $this->setClass('pull-right');
+            } elseif (str_ends_with($text, '>')) {
+                $this->setClass('float-end');
                 $this->setText(substr($text, 0, -1));
             }
         }
 
-        if ($this->hasOption(static::BLOCK_KEY_MD) && preg_match('/=(\d+)?x(\d+)?\)$/', $this->block[static::BLOCK_KEY_MD], $size)) {
+        if ($this->hasOption(static::BLOCK_KEY_MD) && preg_match('/=(\d+)?x(\d+)?\)$/', (string) $this->block[static::BLOCK_KEY_MD], $size)) {
             $this->setWidth($size[1] ?? null);
             $this->setHeight($size[2] ?? null);
         }
@@ -124,7 +124,7 @@ class LinkParserBlock extends Model
         return $this->block[static::BLOCK_KEY_TITLE] ?? null;
     }
 
-    public function setTitle(string $title = null)
+    public function setTitle(?string $title = null)
     {
         $this->block[static::BLOCK_KEY_TITLE] = $title;
     }
@@ -134,7 +134,7 @@ class LinkParserBlock extends Model
         return $this->block[static::BLOCK_KEY_FILE_ID] ?? null;
     }
 
-    public function setFileId(string $fileId = null)
+    public function setFileId(?string $fileId = null)
     {
         $this->block[static::BLOCK_KEY_FILE_ID] = $fileId;
     }
@@ -193,7 +193,7 @@ class LinkParserBlock extends Model
         $this->block[static::BLOCK_KEY_STYLE] = array_merge($this->block[static::BLOCK_KEY_STYLE], $style);
     }
 
-    public function setBlock(string $text, string $url, string $title = null, $fileId = null)
+    public function setBlock(string $text, string $url, ?string $title = null, $fileId = null)
     {
         $this->setUrl($url);
         $this->setText($text);

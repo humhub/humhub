@@ -13,7 +13,8 @@ use humhub\modules\admin\widgets\AdminMenu;
 use humhub\modules\ui\menu\DropdownDivider;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\Menu;
-use humhub\widgets\ModalButton;
+use humhub\modules\user\models\User;
+use humhub\widgets\modal\ModalButton;
 use Yii;
 use yii\helpers\Url;
 

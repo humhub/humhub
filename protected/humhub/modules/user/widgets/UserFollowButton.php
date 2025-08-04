@@ -8,10 +8,10 @@
 
 namespace humhub\modules\user\widgets;
 
+use humhub\helpers\Html;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Widget;
-use yii\bootstrap\Html;
 
 /**
  * UserFollowButton
@@ -90,9 +90,9 @@ class UserFollowButton extends Widget
 
         // Hide inactive button
         if ($this->user->isFollowedByUser()) {
-            $this->followOptions['style'] .= ' display:none;';
+            $this->followOptions['class'] .= ' d-none';
         } else {
-            $this->unfollowOptions['style'] .= ' display:none;';
+            $this->unfollowOptions['class'] .= ' d-none';
         }
 
         // Add UserId Buttons

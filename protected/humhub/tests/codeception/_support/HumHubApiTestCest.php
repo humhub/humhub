@@ -42,7 +42,7 @@ class HumHubApiTestCest
         return isset($enabledModules['rest']);
     }
 
-    protected function getRecordDefinition(int $id, string $recordModelClass = null): array
+    protected function getRecordDefinition(int $id, ?string $recordModelClass = null): array
     {
         if ($recordModelClass === null) {
             $recordModelClass = $this->recordModelClass;
@@ -53,7 +53,7 @@ class HumHubApiTestCest
         return ($record ? call_user_func($this->recordDefinitionFunction, $record) : []);
     }
 
-    protected function getRecordDefinitions(array $ids, string $recordModelClass = null, array $recordDefinitionFunction = null): array
+    protected function getRecordDefinitions(array $ids, ?string $recordModelClass = null, ?array $recordDefinitionFunction = null): array
     {
         if ($recordModelClass === null) {
             $recordModelClass = $this->recordModelClass;
@@ -72,7 +72,7 @@ class HumHubApiTestCest
 
         $recordDefinitions = [];
         foreach ($ids as $id) {
-            $recordDefinitions[] = isset($records[$id]) ? $records[$id] : null;
+            $recordDefinitions[] = $records[$id] ?? null;
         }
 
         return $recordDefinitions;

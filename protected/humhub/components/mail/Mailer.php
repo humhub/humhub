@@ -137,10 +137,10 @@ class Mailer extends \yii\symfonymailer\Mailer implements MailerInterface
 
     private function isRecipientSurpressed($email): bool
     {
-        $email = strtolower($email);
+        $email = strtolower((string) $email);
 
         foreach ($this->surpressedRecipients as $surpressed) {
-            if (strpos($email, $surpressed) !== false) {
+            if (str_contains($email, (string) $surpressed)) {
                 return true;
             }
         }

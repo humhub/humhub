@@ -1,7 +1,8 @@
 <?php
 
 
-use yii\bootstrap\Html;
+use humhub\helpers\Html;
+use humhub\widgets\modal\ModalButton;
 
 /* @var array $modules */
 ?>
@@ -19,23 +20,24 @@ use yii\bootstrap\Html;
         <?= Html::beginForm(); ?>
 
         <?php foreach ($modules as $module): ?>
-            <div class="form-group">
+            <div class="mb-3">
                 <div class="checkbox">
                     <label>
                         <?= Html::checkbox('enableModules[' . $module['id'] . ']', true) ?>
                         <?= $module['name'] ?>
                     </label>
-                    <p class="help-block"><?= $module['description'] ?></p>
+                    <p class="text-body-secondary"><?= $module['description'] ?></p>
                 </div>
             </div>
             <hr>
         <?php endforeach; ?>
 
-        <?php echo Html::submitButton(Yii::t('base', 'Next'), ['class' => 'btn btn-primary', 'data-loader' => "modal", 'data-message' => Yii::t('InstallerModule.base', 'Downloading & Installing Modules...')]); ?>
+        <?= ModalButton::primary(Yii::t('InstallerModule.base', 'Next'))
+            ->sm()
+            ->submit()
+            ->options(['data-message' => Yii::t('InstallerModule.base', 'Downloading & Installing Modules...')]) ?>
 
         <?= Html::endForm(); ?>
 
     </div>
 </div>
-
-

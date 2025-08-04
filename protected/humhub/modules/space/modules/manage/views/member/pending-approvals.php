@@ -1,13 +1,13 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\models\MembershipSearch;
+use humhub\modules\space\modules\manage\widgets\MemberMenu;
 use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
 use humhub\widgets\GridView;
-use humhub\modules\space\modules\manage\widgets\MemberMenu;
 use yii\data\ActiveDataProvider;
-use yii\helpers\Html;
 
 /* @var $dataProvider ActiveDataProvider */
 /* @var $searchModel MembershipSearch */
@@ -31,21 +31,15 @@ use yii\helpers\Html;
                     'header' => Yii::t('SpaceModule.manage', 'Actions'),
                     'class' => 'yii\grid\ActionColumn',
                     'buttons' => [
-                        'view' => function () {
-                            return '';
-                        },
-                        'delete' => function ($url, $model) use ($space) {
-                            return Html::a(Yii::t('SpaceModule.base', 'Decline'), $space->createUrl(
-                                'reject-applicant',
-                                ['userGuid' => $model->user->guid]
-                            ), ['class' => 'btn btn-danger btn-sm', 'data-method' => 'POST']);
-                        },
-                        'update' => function ($url, $model) use ($space) {
-                            return Html::a(Yii::t('SpaceModule.base', 'Accept'), $space->createUrl(
-                                'approve-applicant',
-                                ['userGuid' => $model->user->guid]
-                            ), ['class' => 'btn btn-primary btn-sm', 'data-method' => 'POST']);
-                        },
+                        'view' => fn() => '',
+                        'delete' => fn($url, $model) => Html::a(Yii::t('SpaceModule.base', 'Decline'), $space->createUrl(
+                            'reject-applicant',
+                            ['userGuid' => $model->user->guid]
+                        ), ['class' => 'btn btn-danger btn-sm', 'data-method' => 'POST']),
+                        'update' => fn($url, $model) => Html::a(Yii::t('SpaceModule.base', 'Accept'), $space->createUrl(
+                            'approve-applicant',
+                            ['userGuid' => $model->user->guid]
+                        ), ['class' => 'btn btn-primary btn-sm', 'data-method' => 'POST']),
                     ],
                 ],
             ],

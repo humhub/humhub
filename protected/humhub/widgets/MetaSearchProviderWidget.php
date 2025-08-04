@@ -78,8 +78,8 @@ class MetaSearchProviderWidget extends Widget
     protected function getOptions(): array
     {
         return [
-            'class' => 'search-provider' . ($this->provider->getService()->isSearched() ? ' provider-searched' : ''),
-            'data-provider' => get_class($this->provider),
+            'class' => 'search-provider clearfix' . ($this->provider->getService()->isSearched() ? ' provider-searched' : ''),
+            'data-provider' => $this->provider::class,
             'data-provider-route' => $this->provider->getRoute(),
             'data-hide-on-empty' => $this->provider->getIsHiddenWhenEmpty(),
         ];

@@ -9,10 +9,10 @@
 namespace humhub\modules\like\notifications;
 
 use humhub\components\ActiveRecord;
+use humhub\helpers\Html;
 use humhub\modules\content\interfaces\ContentOwner;
-use Yii;
-use yii\bootstrap\Html;
 use humhub\modules\notification\components\BaseNotification;
+use Yii;
 
 /**
  * Notifies a user about likes of his objects (posts, comments, tasks & co)
@@ -45,7 +45,7 @@ class NewLike extends BaseNotification
     public function getGroupKey()
     {
         $model = $this->getLikedRecord();
-        return get_class($model) . '-' . $model->getPrimaryKey();
+        return $model::class . '-' . $model->getPrimaryKey();
     }
 
     /**

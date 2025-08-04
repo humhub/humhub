@@ -8,10 +8,10 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
+use humhub\helpers\Html;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\helpers\Html;
 
 /**
  * ProfileFieldTypeText handles text profile fields.
@@ -103,7 +103,7 @@ class Text extends BaseType
     public function getFormDefinition($definition = [])
     {
         return parent::getFormDefinition([
-            get_class($this) => [
+            static::class => [
                 'type' => 'form',
                 'title' => Yii::t('UserModule.profile', 'Text Field Options'),
                 'elements' => [

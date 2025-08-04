@@ -44,8 +44,8 @@ abstract class BaseConverter extends BaseObject
         /** @var Module $module */
         $module = Yii::$app->getModule('file');
 
-        if (!empty($module->converterOptions[get_class($this)])) {
-            Yii::configure($this, $module->converterOptions[get_class($this)]);
+        if (!empty($module->converterOptions[static::class])) {
+            Yii::configure($this, $module->converterOptions[static::class]);
         }
     }
 
@@ -79,7 +79,7 @@ abstract class BaseConverter extends BaseObject
      */
     public function getId()
     {
-        return 'v' . sprintf('%x', crc32(get_class($this) . http_build_query($this->options)));
+        return 'v' . sprintf('%x', crc32(static::class . http_build_query($this->options)));
     }
 
     /**

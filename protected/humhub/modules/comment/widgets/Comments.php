@@ -109,13 +109,11 @@ class Comments extends Widget
 
         $currentCommentId = (int) $streamQuery['commentId'];
 
-        $currentComment = Yii::$app->runtimeCache->getOrSet('getCurrentComment' . $currentCommentId, function () use ($currentCommentId) {
-            return CommentModel::findOne(['id' => $currentCommentId]);
-        });
+        $currentComment = Yii::$app->runtimeCache->getOrSet('getCurrentComment' . $currentCommentId, fn() => CommentModel::findOne(['id' => $currentCommentId]));
 
         if (!$currentComment ||
             $currentComment->object_id !== $this->object?->id ||
-            $currentComment->object_model !== get_class($this->object)) {
+            $currentComment->object_model !== $this->object::class) {
             // The current comment is from another parent object
             return null;
         }

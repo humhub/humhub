@@ -84,13 +84,13 @@ function showFileUploadError(file) {
     });
 
     $('#fileModal').remove();
-    var alertMessage = '<div class="modal" id="fileModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"' +
+    var alertMessage = '<div class="modal fade" id="fileModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"' +
         'aria-hidden="true">' +
-        '<div class="modal-dialog modal-dialog-extra-small animated pulse">' +
+        '<div class="modal-dialog">' +
         '<div class="modal-content">' +
         '<div class="modal-header">' +
+        '<h5 class="modal-title" id="myModalLabel">' + fileuploader_error_modal_title + '</h5> ' +
         '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
-        '<h4 class="modal-title" id="myModalLabel">' + fileuploader_error_modal_title + '</h4> ' +
         '</div>' +
         '<div class="modal-body text-center">' + fileuploader_error_modal_errormsg + ' ' + htmlEncode(file.name) + '<br>' + htmlEncode(errorMessage) + '</div>' +
         '<div class="modal-footer">' +
@@ -104,5 +104,3 @@ function showFileUploadError(file) {
     $('#fileModal').modal('show');
 
 }
-
-

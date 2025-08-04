@@ -223,12 +223,12 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
         var $loader = this.$.find('.stream-entry-loader');
         if ($show === false) {
             loader.reset($loader);
-            this.$.find('.wallentry-labels').show();
+            this.$.find('.wallentry-badges').show();
             this.$.find('.preferences').show();
             return;
         }
 
-        this.$.find('.wallentry-labels').hide();
+        this.$.find('.wallentry-badges').hide();
         this.$.find('.preferences').hide();
         loader.set($loader, {
             'position': 'left',
@@ -425,7 +425,7 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
         const that = this;
         modal.post(evt).then(function () {
             modal.global.$.one('submitted', function () {
-                if ($(this).find('.has-error').length) {
+                if ($(this).find('.is-invalid').length) {
                     return;
                 }
                 modal.global.close(true);

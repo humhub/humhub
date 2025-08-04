@@ -9,11 +9,9 @@
 namespace humhub\modules\ui\form\widgets;
 
 use DateTime;
-use Yii;
-use humhub\libs\Html;
-use yii\helpers\Json;
 use humhub\assets\JqueryTimeEntryAsset;
-use humhub\modules\ui\form\widgets\JsInputWidget;
+use humhub\helpers\Html;
+use yii\helpers\Json;
 
 /**
  * DurationPicker renders an UI form widget to select time durations.

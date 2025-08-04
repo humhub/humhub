@@ -54,13 +54,13 @@ abstract class BaseSettingsManager extends Component
             }
         } catch (InvalidConfigException $t) {
             throw $t;
-        } catch (\Throwable $t) {
+        } catch (\Throwable) {
             throw new InvalidConfigException('Module id not set!', 2);
         }
 
         try {
             $this->loadValues();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
         }
 
         parent::init();
@@ -188,9 +188,7 @@ abstract class BaseSettingsManager extends Component
         if ($record !== null) {
             try {
                 $record->delete();
-            } catch (StaleObjectException $e) {
-                Yii::error('Could not delete setting "' . $name . '".  Error: ' . $e->getMessage(), 'base');
-            } catch (\Throwable $e) {
+            } catch (StaleObjectException|\Throwable $e) {
                 Yii::error('Could not delete setting "' . $name . '".  Error: ' . $e->getMessage(), 'base');
             }
         }
@@ -212,7 +210,7 @@ abstract class BaseSettingsManager extends Component
             $this->_loaded = [];
             $settings = &$this->_loaded;
 
-            array_map(static function ($record) use (&$settings) {
+            array_map(static function ($record) use (&$settings): void {
                 $settings[$record->name] = $record->value;
             }, $this->find()->all());
 
@@ -287,7 +285,7 @@ abstract class BaseSettingsManager extends Component
 
         if ($prefix !== null) {
             if (StringHelper::isStringable($prefix)) {
-                if (false === strpos($prefix, "%")) {
+                if (!str_contains((string) $prefix, "%")) {
                     $prefix .= "%";
                 }
             } elseif (!is_array($prefix)) {

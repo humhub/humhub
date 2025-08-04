@@ -10,7 +10,6 @@
 namespace tests\codeception\unit\modules\content\widgets;
 
 use humhub\libs\EmojiMap;
-use humhub\libs\Html;
 use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use humhub\modules\content\widgets\richtext\extensions\mentioning\MentioningExtension;
@@ -363,7 +362,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
 
         try {
             $file->save();
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             // Need to catch since hash saving will fail
         }
 
@@ -396,7 +395,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
 
         try {
             $file->save();
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             // Need to catch since hash saving will fail
         }
 
@@ -421,7 +420,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
 
         try {
             $file->save();
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             // Need to catch since hash saving will fail
         }
 
@@ -446,7 +445,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
 
         try {
             $file->save();
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             // Need to catch since hash saving will fail
         }
 
@@ -471,7 +470,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
 
         try {
             $file->save();
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             // Need to catch since hash saving will fail
         }
         $this->assertConversionResult(

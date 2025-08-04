@@ -28,5 +28,5 @@ use yii\web\View;
 <?php endif; ?>
 
 <?php if ($url != '') : ?>
-    <?= Yii::t('ActivityModule.base', 'See online:') ?> <?= urldecode($url) ?>
+    <?= Yii::t('ActivityModule.base', 'See online:') ?> <?= urldecode((string) $url) ?>
 <?php endif; ?>

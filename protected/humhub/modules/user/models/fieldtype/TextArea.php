@@ -33,7 +33,7 @@ class TextArea extends BaseType
     public function getFormDefinition($definition = [])
     {
         return parent::getFormDefinition([
-            get_class($this) => [
+            static::class => [
                 'type' => 'form',
                 'title' => Yii::t('UserModule.profile', 'Text area field options'),
                 'elements' => [
@@ -68,7 +68,7 @@ class TextArea extends BaseType
     /**
      * @inheritdoc
      */
-    public function getFieldFormDefinition(User $user = null, array $options = []): array
+    public function getFieldFormDefinition(?User $user = null, array $options = []): array
     {
         return parent::getFieldFormDefinition($user, array_merge([
             'rows' => '3',

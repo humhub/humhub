@@ -9,10 +9,10 @@
 
 namespace humhub\modules\content\widgets;
 
-use Yii;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\content\models\ContentTag;
 use humhub\modules\ui\form\widgets\JsInputWidget;
+use Yii;
 
 class ContentTagDropDown extends JsInputWidget
 {

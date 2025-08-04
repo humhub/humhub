@@ -64,7 +64,7 @@ final class DynamicConfig
 
         try {
             file_put_contents($this->fileName, $content);
-        } catch (\Exception $ex) {
+        } catch (\Exception) {
             throw new InvalidConfigException(
                 Yii::t('InstallerModule.base', 'Make sure that the following file is writable: ' . $this->fileName),
             );

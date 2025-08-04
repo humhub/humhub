@@ -61,7 +61,7 @@ class MarketplaceService
         return $result;
     }
 
-    public function refreshPendingModuleUpdateCount(int $count = null)
+    public function refreshPendingModuleUpdateCount(?int $count = null)
     {
         if (MarketplaceModule::isMarketplaceEnabled()) {
             if ($count === null) {

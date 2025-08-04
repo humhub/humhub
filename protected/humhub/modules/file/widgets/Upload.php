@@ -11,12 +11,12 @@ namespace humhub\modules\file\widgets;
 use Exception;
 use humhub\components\ActiveRecord;
 use humhub\components\Widget;
+use humhub\helpers\Html;
 use humhub\modules\content\Module;
 use humhub\modules\file\models\File;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
-use yii\helpers\Html;
 
 /**
  * Base upload utility component which combines upload input/button, preview and progress components.
@@ -308,7 +308,7 @@ class Upload extends Widget
      */
     public function progress($cfg = [])
     {
-        $options = (isset($cfg['options'])) ? $cfg['options'] : [];
+        $options = $cfg['options'] ?? [];
         $options['id'] = $this->id . '_progress';
         $cfg['options'] = $options;
 
@@ -329,12 +329,12 @@ class Upload extends Widget
      */
     public function preview($cfg = [])
     {
-        $options = (isset($cfg['options'])) ? $cfg['options'] : [];
+        $options = $cfg['options'] ?? [];
         $options['id'] = $this->id . '_preview';
         $cfg['options'] = $options;
 
         $cfg = array_merge([
-            'items' => $this->getPreviewFiles(isset($cfg['showInStream']) ? $cfg['showInStream'] : null),
+            'items' => $this->getPreviewFiles($cfg['showInStream'] ?? null),
             'model' => $this->model,
             'attribute' => $this->attribute,
             'edit' => true,

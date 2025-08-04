@@ -5,7 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\file\handler\BaseFileHandler;
@@ -16,8 +16,9 @@ use humhub\modules\file\widgets\UploadProgress;
 use humhub\modules\topic\widgets\TopicPicker;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\widgets\UserPickerField;
-use humhub\widgets\Button;
-use humhub\widgets\Link;
+use humhub\widgets\bootstrap\Badge;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
 
 /* @var $submitUrl string */
 /* @var $submitButtonText string */
@@ -30,7 +31,7 @@ use humhub\widgets\Link;
 /* @var $scheduleUrl string */
 ?>
 
-<div class="notifyUserContainer form-group" style="margin-top:15px;display:none">
+<div class="notifyUserContainer my-3 d-none">
     <?= UserPickerField::widget([
         'id' => 'notifyUserInput' . ($isModal ? 'Modal' : ''),
         'url' => $pickerUrl,
@@ -41,7 +42,7 @@ use humhub\widgets\Link;
     ]) ?>
 </div>
 
-<div id="postTopicContainer<?= $isModal ? 'Modal' : '' ?>" class="form-group" style="margin-top:15px;display:none">
+<div id="postTopicContainer<?= $isModal ? 'Modal' : '' ?>" class="my-3 d-none">
     <?= TopicPicker::widget([
         'id' => 'postTopicInput' . ($isModal ? 'Modal' : ''),
         'name' => 'postTopicInput',
@@ -50,7 +51,7 @@ use humhub\widgets\Link;
 </div>
 
 <?= Html::hiddenInput('containerGuid', $contentContainer->guid) ?>
-<?= Html::hiddenInput('containerClass', get_class($contentContainer)) ?>
+<?= Html::hiddenInput('containerClass', $contentContainer::class) ?>
 
 <div class="contentForm_options">
     <hr>
@@ -66,43 +67,46 @@ use humhub\widgets\Link;
             'max' => Yii::$app->getModule('content')->maxAttachedFiles,
             'fileList' => $fileList,
         ]); ?>
-        <?= FileHandlerButtonDropdown::widget(['primaryButton' => $uploadButton, 'handlers' => $fileHandlers, 'cssButtonClass' => 'btn-default']); ?>
+        <?= FileHandlerButtonDropdown::widget(['primaryButton' => $uploadButton, 'handlers' => $fileHandlers, 'cssButtonClass' => 'btn-light']); ?>
 
         <!-- public checkbox -->
-        <?= Html::checkbox('visibility', '', ['class' => 'contentForm_visibility contentForm hidden', 'aria-hidden' => 'true']); ?>
+        <?= Html::checkbox('visibility', '', ['class' => 'contentForm_visibility contentForm d-none', 'aria-hidden' => 'true']); ?>
 
         <!-- state data -->
         <?= Html::hiddenInput('state', Content::STATE_PUBLISHED) ?>
 
         <!-- content sharing -->
-        <div class="pull-right">
-            <span class="label-container">
-                <span class="label label-info label-public hidden"><?= Yii::t('ContentModule.base', 'Public'); ?></span>
+        <div class="float-end">
+            <span class="badge-container">
+                <?= Badge::info(Yii::t('ContentModule.base', 'Public'))
+                    ->cssClass(['badge-public', 'd-none']) ?>
             </span>
 
-            <ul class="nav nav-pills preferences" style="right:0;top:5px">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" style="padding:5px 10px" data-toggle="dropdown" href="#"
-                       aria-label="<?= Yii::t('base', 'Toggle post menu'); ?>" aria-haspopup="true">
+            <ul class="nav nav-pills" style="right:0;top:5px">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" style="padding:5px 10px" data-bs-toggle="dropdown" href="#"
+                       aria-label="<?= Yii::t('base', 'Toggle post menu') ?>" aria-haspopup="true">
                         <?= Icon::get('cogs') ?>
                     </a>
-                    <ul class="dropdown-menu pull-right">
+                    <ul class="dropdown-menu dropdown-menu-end">
                         <li>
-                            <?= Link::withAction(Yii::t('ContentModule.base', 'Notify members'), 'notifyUser')->icon('bell') ?>
+                            <?= Link::withAction(Yii::t('ContentModule.base', 'Notify members'), 'notifyUser')->icon('bell')->cssClass('dropdown-item') ?>
                         </li>
                         <?php if (TopicPicker::showTopicPicker($contentContainer)) : ?>
                             <li>
-                                <?= Link::withAction(Yii::t('ContentModule.base', 'Topics'), 'setTopics')->icon(Yii::$app->getModule('topic')->icon) ?>
+                                <?= Link::withAction(Yii::t('ContentModule.base', 'Topics'), 'setTopics')->icon(Yii::$app->getModule('topic')->icon)->cssClass('dropdown-item') ?>
                             </li>
                         <?php endif; ?>
                         <?php if ($canSwitchVisibility): ?>
                             <li>
                                 <?= Link::withAction(Yii::t('ContentModule.base', 'Change to "Public"'), 'changeVisibility')
-                                    ->cssClass('contentForm_visibility_entry')->icon('unlock') ?>
+                                    ->cssClass('contentForm_visibility_entry dropdown-item')
+                                    ->icon('unlock') ?>
                             </li>
                         <?php endif; ?>
                         <li>
                             <?= Link::withAction(Yii::t('ContentModule.base', 'Create as draft'), 'changeState')
+                                ->cssClass('dropdown-item')
                                 ->icon('edit')
                                 ->options([
                                     'data-state' => Content::STATE_DRAFT,
@@ -113,6 +117,7 @@ use humhub\widgets\Link;
                         <?php if (!$isModal): ?>
                             <li>
                                 <?= Link::withAction(Yii::t('ContentModule.base', 'Schedule publication'), 'scheduleOptions', $scheduleUrl)
+                                    ->cssClass('dropdown-item')
                                     ->icon('clock-o') ?>
                             </li>
                         <?php endif; ?>

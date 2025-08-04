@@ -1,0 +1,424 @@
+//
+// Topbar
+// --------------------------------------------------
+
+.navbar.topbar {
+    --bs-navbar-padding-x: 0;
+    --bs-navbar-padding-y: 0;
+}
+
+.topbar {
+    position: fixed;
+    display: block;
+    height: 50px;
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+
+    ul.nav {
+        float: left;
+    }
+
+    ul.nav > li {
+        float: left;
+    }
+
+    ul.nav > li > a {
+        padding-top: 15px;
+        padding-bottom: 15px;
+        line-height: 20px;
+    }
+
+    .dropdown-footer {
+        margin: 10px;
+    }
+
+    .dropdown-header {
+        font-size: 18px;
+        padding: 6px 16px;
+        margin-bottom: 10px;
+        font-weight: 600;
+        color: #000;
+
+        .dropdown-header-actions {
+            float: right;
+
+            a, button {
+                &:hover {
+                    background: var(--bs-light);
+                }
+
+                i {
+                    margin: 0;
+                }
+            }
+        }
+    }
+}
+
+#topbar-first {
+    background-color: var(--bs-primary);
+    top: 0;
+    z-index: 1030;
+    color: white;
+
+
+    a.navbar-brand {
+        height: 50px;
+        padding: 5px;
+
+        img#img-logo {
+            max-height: 40px;
+        }
+
+    }
+
+    a.navbar-brand-text {
+        padding-top: 15px;
+    }
+
+    .nav > li > a:hover,
+    .nav > .open > a {
+        background-color: tint-color($primary, 10%);
+    }
+
+    .nav > .account {
+        height: 50px;
+        margin-left: 20px;
+
+        img {
+            margin-left: 10px;
+        }
+
+        .dropdown-toggle {
+            display: block;
+            padding: 8px 5px;
+            line-height: 1.1em;
+            text-align: left;
+
+            span {
+                font-size: 12px;
+            }
+
+            #user-account-image {
+                margin-bottom: 0;
+
+                + .caret { // Temp fix for Mac Safari browser
+                    float: right;
+                    margin: 12px 0 0 6px;
+                }
+            }
+        }
+    }
+
+    .dropdown-menu {
+        border: none;
+        border-radius: 8px;
+        box-shadow: 0 0 8px #CCC;
+        top: 105%;
+
+        .arrow {
+            position: absolute;
+            display: block;
+            width: 0;
+            height: 0;
+            border-color: transparent;
+            border-style: solid;
+            border-width: 8px;
+            left: 50%;
+            margin-left: -18px;
+            border-top-width: 0;
+            border-bottom-color: #fff;
+            top: -16px;
+            z-index: 1035;
+        }
+    }
+
+    .notifications {
+        text-align: center;
+
+        .btn-group {
+            position: relative;
+            text-align: left;
+        }
+
+        .btn-group > a {
+            padding: 5px 10px;
+            margin: 10px 2px;
+            display: inline-block;
+            border-radius: 2px;
+            text-decoration: none;
+            text-align: left;
+        }
+
+        .btn-group > .badge {
+            position: absolute;
+            top: 4px;
+            right: -2px;
+        }
+
+        .dropdown-toggle::after {
+            display: none; // Remove Bootstrap dropdown arrow
+        }
+
+        .dropdown-menu {
+            width: 400px;
+            margin-left: -173px;
+
+            .hh-list {
+                max-height: 400px;
+                overflow: auto;
+
+                > div.d-flex, > a.d-flex {
+                    position: relative;
+
+                    i.approval {
+                        position: absolute;
+                        left: 2px;
+                        top: 36px;
+                        font-size: 14px;
+                    }
+
+                    i.accepted {
+                        color: #5cb85c;
+                    }
+
+                    i.declined {
+                        color: #d9534f;
+                    }
+
+                    &.new {
+                        background-color: transparent;
+                        border-left: none;
+                    }
+
+                    &:not(.new) {
+                        > a {
+                            * &, strong {
+                                color: var(--hh-text-color-secondary);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .dropdown-footer {
+        margin: 24px 16px 19px;
+
+        .btn {
+            width: 100%;
+        }
+    }
+
+    a:not(.btn) {
+        color: var(--hh-text-color-contrast);
+    }
+
+    .caret {
+        border-top-color: var(--hh-text-color-contrast);
+    }
+
+    .btn-group > a {
+        background-color: lighten($primary, 5%);
+    }
+
+    .btn-enter {
+        background-color: lighten($primary, 5%);
+        margin: 6px 0;
+    }
+
+    .btn-enter:hover {
+        background-color: lighten($primary, 8%);
+    }
+
+    .hh-list {
+        > div, > a {
+            color: var(--hh-text-color-highlight);
+            padding: 8px 16px;
+            border-bottom: none;
+
+            &.new {
+                border: none;
+                background: none;
+
+                &:hover {
+                    background-color: var(--hh-background-color-secondary) !important;
+                }
+
+                time {
+                    color: var(--bs-info);
+                }
+            }
+
+            &:hover {
+                border-left: 3px solid transparent;
+            }
+
+            &.placeholder {
+                border-bottom: none;
+            }
+
+            time {
+                font-size: 10px;
+            }
+
+            i.accepted {
+                color: var(--bs-success) !important;
+            }
+
+            i.declined {
+                color: var(--bs-danger) !important;
+            }
+        }
+    }
+
+    .account .user-title {
+        text-align: right;
+
+        span {
+            color: var(--hh-background3);
+        }
+    }
+
+    .dropdown.account > a,
+    .dropdown.account.open > a,
+    .dropdown.account > a:hover,
+    .dropdown.account.open > a:hover {
+        background-color: var(--bs-primary);
+    }
+}
+
+#topbar-second {
+    top: 50px;
+    background-color: #fff;
+    z-index: 1029;
+    background-image: none;
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid #d4d4d4;
+
+    .dropdown-menu {
+        padding-top: 0;
+        padding-bottom: 0;
+
+        .dropdown-divider {
+            margin: 0;
+        }
+    }
+
+    // Space dropdown menu
+    #space-menu-dropdown,
+    #search-menu-dropdown {
+        width: 400px;
+
+        .hh-list {
+            max-height: 200px;
+            overflow: auto;
+        }
+
+        @include media-breakpoint-up(md) {
+            .hh-list {
+                max-height: 400px;
+            }
+        }
+
+        form.dropdown-header {
+            margin: 0;
+            padding: 10px;
+        }
+
+        .search-reset {
+            position: absolute;
+            color: #BFBFBF;
+            margin: 4px;
+            top: 0px;
+            right: 40px;
+            z-index: 10;
+            display: none;
+            cursor: pointer;
+        }
+    }
+
+    .nav {
+        > li.nav-item {
+
+            > a.nav-link {
+                color: var(--hh-text-color-highlight);
+                display: block;
+                padding: 7px 13px 0;
+                text-decoration: none;
+                text-shadow: none;
+                font-weight: 600;
+                font-size: 10px;
+                min-height: 50px;
+                text-transform: uppercase;
+                text-align: center;
+
+                &.active,
+                &:hover,
+                &:active,
+                &:focus {
+                    border-bottom: 3px solid var(--bs-info);
+                    background-color: var(--hh-background-color-secondary);
+                    color: var(--hh-text-color-highlight);
+                    text-decoration: none;
+                }
+
+                &#space-menu {
+                    padding-right: 13px;
+                    border-right: 1px solid #ededed;
+
+                    .no-space {
+                        display: inline;
+                    }
+                }
+
+                &#search-menu {
+                    padding-top: 15px;
+
+                    &::after {
+                        display: none; // Remove Bootstrap dropdown arrow
+                    }
+                }
+
+                .caret {
+                    border-top-color: var(--hh-text-color-secondary);
+                }
+
+                i {
+                    font-size: 14px;
+                }
+            }
+
+            > ul > li > a {
+                & {
+                    border-left: 3px solid #fff;
+                    background-color: #fff;
+                    color: var(--hh-text-color-highlight);
+                }
+
+                &:hover,
+                &.active {
+                    border-left: 3px solid var(--bs-info);
+                    background-color: var(--hh-background-color-secondary);
+                    color: var(--hh-text-color-highlight);
+                }
+            }
+        }
+    }
+
+    #space-menu-dropdown p.space-description {
+        color: var(--hh-text-color-soft);
+        font-size: 11px;
+        margin: 0;
+        font-weight: 400;
+    }
+}
+
+@include media-breakpoint-up(md) {
+    .topbar {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}

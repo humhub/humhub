@@ -20,7 +20,7 @@ use humhub\modules\space\permissions\InviteUsers;
 use humhub\modules\space\widgets\MembershipButton;
 use humhub\modules\user\models\UserPicker;
 use humhub\modules\user\widgets\UserListBox;
-use humhub\widgets\ModalClose;
+use humhub\widgets\modal\ModalClose;
 use Throwable;
 use Yii;
 use yii\base\InvalidConfigException;

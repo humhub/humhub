@@ -1,0 +1,39 @@
+//
+// Badges
+// --------------------------------------------------
+.badge-space {
+    margin-top: 6px;
+}
+
+.badge-space-chooser {
+    padding: 3px 5px;
+    margin-left: 1px;
+}
+
+.badge {
+    font-family: Arial, sans-serif;
+    text-transform: uppercase;
+    vertical-align: baseline;
+    white-space: nowrap;
+    text-shadow: none;
+    background-color: var(--hh-background3);
+    line-height: 1;
+
+    &.text-bg-info,
+    &.text-bg-secondary,
+    &.text-bg-success,
+    &.text-bg-danger {
+        color: var(--hh-text-color-contrast) !important;
+    }
+
+    &.badge-new {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: var(--bs-info);
+
+        &:empty {
+            display: inline-block; // Overwrites BS5 `&:empty {display: none;}`
+        }
+    }
+}

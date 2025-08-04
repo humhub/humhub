@@ -32,7 +32,7 @@ class UrlValidator extends Validator
      */
     public function validateAttribute($model, $attribute)
     {
-        $value = mb_strtolower($model->$attribute);
+        $value = mb_strtolower((string) $model->$attribute);
 
         /** @var Module $module */
         $module = Yii::$app->getModule('space');

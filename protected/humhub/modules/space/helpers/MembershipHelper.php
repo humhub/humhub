@@ -28,7 +28,7 @@ class MembershipHelper
      * @param bool $useCache use cached result if available
      * @return Space[] the list of spaces
      */
-    public static function getOwnSpaces(User $user = null, $useCache = true)
+    public static function getOwnSpaces(?User $user = null, $useCache = true)
     {
         if ($user === null) {
             $user = Yii::$app->user->getIdentity();

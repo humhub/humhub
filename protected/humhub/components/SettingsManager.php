@@ -56,7 +56,7 @@ class SettingsManager extends BaseSettingsManager
      *
      * @noinspection PhpUnused
      */
-    public function flushContentContainer(ContentContainerActiveRecord $container = null)
+    public function flushContentContainer(?ContentContainerActiveRecord $container = null)
     {
         if ($container === null) {
             $containers = $this->contentContainers;

@@ -25,8 +25,8 @@ class m201217_081828_fix_oembed_setting extends Migration
         $providers = UrlOembed::getProviders();
         foreach ($providers as $providerPrefix => $providerUrl) {
             if (in_array($providerPrefix, $sampleProviderPrefixes) &&
-                stripos($providerUrl, 'http://') === 0) {
-                $providers[$providerPrefix] = 'https' . substr($providerUrl, 4);
+                stripos((string) $providerUrl, 'http://') === 0) {
+                $providers[$providerPrefix] = 'https' . substr((string) $providerUrl, 4);
                 $updateProviders = true;
             }
         }

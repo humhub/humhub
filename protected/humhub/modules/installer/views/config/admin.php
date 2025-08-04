@@ -1,8 +1,8 @@
 <?php
 
 use humhub\compat\HForm;
-use humhub\libs\Html;
-use yii\widgets\ActiveForm;
+use humhub\helpers\Html;
+use humhub\widgets\form\ActiveForm;
 
 /**
  * @var $hForm HForm
@@ -41,4 +41,3 @@ use yii\widgets\ActiveForm;
     <?php endforeach; ?>
 
 </script>
-

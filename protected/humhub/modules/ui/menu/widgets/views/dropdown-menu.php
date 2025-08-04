@@ -1,9 +1,9 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\components\View;
+use humhub\helpers\Html;
 use humhub\modules\ui\menu\MenuEntry;
 use humhub\modules\ui\menu\widgets\DropdownMenu;
-use humhub\modules\ui\view\components\View;
 
 /* @var $this View */
 /* @var $menu DropdownMenu */
@@ -12,15 +12,14 @@ use humhub\modules\ui\view\components\View;
 ?>
 
 <?= Html::beginTag('div', $options) ?>
-<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
+<button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true">
     <?= $menu->label ?>
-    <span class="caret"></span>
 </button>
 
-<ul class="dropdown-menu pull-right">
+<ul class="dropdown-menu dropdown-menu-end">
     <?php foreach ($entries as $entry) : ?>
         <li>
-            <?= $entry->render() ?>
+            <?= $entry->render(['class' => 'dropdown-item']) ?>
         </li>
     <?php endforeach; ?>
 </ul>

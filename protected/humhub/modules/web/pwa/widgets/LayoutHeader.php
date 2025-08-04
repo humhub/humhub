@@ -8,12 +8,11 @@
 
 namespace humhub\modules\web\pwa\widgets;
 
-use Yii;
-use yii\base\WidgetEvent;
-use yii\helpers\Url;
+use humhub\components\View;
 use humhub\components\Widget;
 use humhub\modules\web\Module;
-use humhub\modules\ui\view\components\View;
+use Yii;
+use yii\helpers\Url;
 
 /**
  * Class LayoutHeader
@@ -50,9 +49,7 @@ class LayoutHeader extends Widget
 
     private static function registerServiceWorker(View $view)
     {
-        $cacheId = Yii::$app->cache->getOrSet('service-worker-cache-id', function () {
-            return time();
-        });
+        $cacheId = Yii::$app->cache->getOrSet('service-worker-cache-id', fn() => time());
         $serviceWorkUrl = Url::to(['/web/pwa-service-worker/index', 'v' => $cacheId]);
         $rootPath = Yii::getAlias('@web') . '/';
 

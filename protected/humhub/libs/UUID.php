@@ -125,19 +125,12 @@ class UUID
             return $match[0];
         }
 
-        switch (true) {
-            case $withDash === true:
-                $dash = '-';
-                break;
-
-            case $withDash === false:
-                $dash = '';
-                break;
-
-            default:
-                // use as in string
-                $dash = $match[3];
-        }
+        $dash = match (true) {
+            $withDash === true => '-',
+            $withDash === false => '',
+            // use as in string
+            default => $match[3],
+        };
 
         // remove delimiter from the matches
         unset($match[3]);
@@ -170,6 +163,6 @@ class UUID
      */
     public static function is_valid($uuid)
     {
-        return preg_match('/^\{?[0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?' . '[0-9a-f]{4}-?[0-9a-f]{12}}?$/i', $uuid) === 1;
+        return preg_match('/^\{?[0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?' . '[0-9a-f]{4}-?[0-9a-f]{12}}?$/i', (string) $uuid) === 1;
     }
 }

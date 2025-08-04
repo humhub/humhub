@@ -25,7 +25,7 @@ class LdapHelper
      */
     public static function isLdapAvailable()
     {
-        if (!class_exists('Laminas\Ldap\Ldap')) {
+        if (!class_exists(\Laminas\Ldap\Ldap::class)) {
             return false;
         }
 

@@ -29,7 +29,7 @@ class MentionTest extends HumHubDbTestCase
         RichText::postProcess($post->message, $post);
 
         $this->assertHasNotification(Mentioned::class, $post);
-        $this->assertMailSent(1, 'Mentioned Notification');
+        $this->assertMailSent(1);
     }
 
     public function testMentionAuthor()
@@ -48,7 +48,7 @@ class MentionTest extends HumHubDbTestCase
         $this->assertHasNotification(Mentioned::class, $comment);
 
         // We expect only the Mentioned mail
-        $this->assertMailSent(1, 'Comment Notification Mail sent');
+        $this->assertMailSent(1);
     }
 
     public function testMentionNonAuthor()
@@ -67,6 +67,6 @@ class MentionTest extends HumHubDbTestCase
         $this->assertHasNotification(Mentioned::class, $comment);
 
         // Commented mail for Admin and Mentioned mail for User1
-        $this->assertMailSent(2, 'Comment Notification Mail sent');
+        $this->assertMailSent(2);
     }
 }

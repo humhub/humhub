@@ -8,6 +8,7 @@
 
 namespace humhub\libs;
 
+use humhub\helpers\Html;
 use Yii;
 use yii\grid\DataColumn;
 use yii\web\JsExpression;

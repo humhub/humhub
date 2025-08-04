@@ -8,7 +8,7 @@
 
 namespace humhub\modules\space\widgets;
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\ui\widgets\DirectoryFilters;
 use Yii;
 
@@ -32,7 +32,7 @@ class SpaceDirectoryFilters extends DirectoryFilters
             'placeholder' => Yii::t('SpaceModule.base', 'Search...'),
             'type' => 'input',
             'inputOptions' => ['autocomplete' => 'off'],
-            'wrapperClass' => 'col-md-6 form-search-filter-keyword',
+            'wrapperClass' => 'col-lg-6 form-search-filter-keyword',
             'afterInput' => Html::submitButton('<span class="fa fa-search"></span>', ['class' => 'form-button-search']),
             'sortOrder' => 100,
         ]);
@@ -66,11 +66,9 @@ class SpaceDirectoryFilters extends DirectoryFilters
 
     public static function getDefaultValue(string $filter): string
     {
-        switch ($filter) {
-            case 'sort':
-                return 'sortOrder';
-        }
-
-        return parent::getDefaultValue($filter);
+        return match ($filter) {
+            'sort' => 'sortOrder',
+            default => parent::getDefaultValue($filter),
+        };
     }
 }

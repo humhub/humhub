@@ -1,10 +1,10 @@
 <?php
 
 use humhub\assets\AppAsset;
+use humhub\components\View;
 use humhub\helpers\DeviceDetectorHelper;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\space\widgets\Chooser;
-use humhub\modules\ui\view\components\View;
 use humhub\modules\user\widgets\AccountTopMenu;
 use humhub\widgets\NotificationArea;
 use humhub\widgets\SiteLogo;
@@ -20,7 +20,7 @@ AppAsset::register($this);
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
     <head>
-        <title><?= strip_tags($this->pageTitle) ?></title>
+        <title><?= strip_tags((string) $this->pageTitle) ?></title>
         <meta charset="<?= Yii::$app->charset ?>">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
         <?php $this->head() ?>
@@ -31,25 +31,25 @@ AppAsset::register($this);
         <?php $this->beginBody() ?>
 
         <!-- start: first top navigation bar -->
-        <div id="topbar-first" class="topbar">
-            <div class="container">
-                <div class="topbar-brand hidden-xs">
+        <div id="topbar-first" class="topbar navbar">
+            <div class="container d-flex justify-content-between">
+                <div class="topbar-brand d-none d-sm-block">
                     <?= SiteLogo::widget() ?>
                 </div>
 
-                <div class="topbar-actions pull-right">
-                    <?= AccountTopMenu::widget() ?>
+                <div class="notifications">
+                    <?= NotificationArea::widget() ?>
                 </div>
 
-                <div class="notifications pull-right">
-                    <?= NotificationArea::widget() ?>
+                <div class="topbar-actions">
+                    <?= AccountTopMenu::widget() ?>
                 </div>
             </div>
         </div>
         <!-- end: first top navigation bar -->
 
         <!-- start: second top navigation bar -->
-        <div id="topbar-second" class="topbar">
+        <div id="topbar-second" class="topbar navbar">
             <div class="container">
                 <ul class="nav" id="top-menu-nav">
                     <!-- load space chooser widget -->
@@ -59,7 +59,7 @@ AppAsset::register($this);
                     <?= TopMenu::widget() ?>
                 </ul>
 
-                <ul class="nav pull-right" id="search-menu-nav">
+                <ul class="nav float-end" id="search-menu-nav">
                     <?= TopMenuRightStack::widget() ?>
                 </ul>
             </div>

@@ -3,8 +3,6 @@
 namespace humhub\modules\admin\models\forms;
 
 use humhub\libs\Helpers;
-use humhub\services\WellKnownService;
-use humhub\widgets\Link;
 use Yii;
 use yii\base\Model;
 

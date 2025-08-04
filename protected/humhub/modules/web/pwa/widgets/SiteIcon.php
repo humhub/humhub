@@ -8,11 +8,11 @@
 
 namespace humhub\modules\web\pwa\widgets;
 
+use humhub\components\View;
+use humhub\components\Widget;
 use humhub\modules\file\libs\FileHelper;
-use humhub\modules\ui\view\components\View;
 use Imagine\Image\Box;
 use Yii;
-use humhub\components\Widget;
 use yii\base\ErrorException;
 use yii\base\Exception;
 use yii\imagine\Image;
@@ -32,14 +32,14 @@ class SiteIcon extends Widget
      *
      * @param UploadedFile|null $file
      */
-    public static function set(UploadedFile $file = null)
+    public static function set(?UploadedFile $file = null)
     {
         static::deleteFiles();
 
         if ($file !== null) {
             try {
                 FileHelper::createDirectory(Yii::getAlias('@webroot/uploads/icon/'));
-            } catch (Exception $e) {
+            } catch (Exception) {
             }
             Image::getImagine()->open($file->tempName)->save(Yii::getAlias('@webroot/uploads/icon/icon.png'));
         }
@@ -69,7 +69,7 @@ class SiteIcon extends Widget
             }
             try {
                 FileHelper::createDirectory(Yii::getAlias(Yii::$app->assetManager->basePath . DIRECTORY_SEPARATOR . 'siteicons'));
-            } catch (Exception $e) {
+            } catch (Exception) {
                 // Directory already exists
             }
 
