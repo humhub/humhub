@@ -1,9 +1,9 @@
 <?php
 
 use humhub\modules\admin\models\forms\CacheSettingsForm;
-use yii\helpers\ArrayHelper;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
+use yii\helpers\ArrayHelper;
 
 /* @var $cacheTypes [] */
 /* @var $model CacheSettingsForm */
@@ -20,7 +20,7 @@ use humhub\widgets\form\ActiveForm;
     <?= $form->field($model, 'type')->textInput([
         'value' => ArrayHelper::getValue($cacheTypes, $model->fixedTypeValue, $model->fixedTypeValue),
         'readonly' => true,
-        'title' => Yii::t('base', 'Specified in the configuration file'),
+        'title' => Yii::t('AdminModule.settings', 'Specified in the configuration file'),
         'class' => 'form-control tt',
     ]) ?>
 <?php endif; ?>
