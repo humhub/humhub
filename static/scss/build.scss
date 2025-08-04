@@ -1,0 +1,221 @@
+// Variables are imported separately by the ThemeHelper class
+@import "mixins";
+@import "root";
+
+// Import base components. Components can be deactivated by $prev-* variables.
+$prev-base: false !default;
+@if not $prev-base {
+    @import "base";
+}
+
+$prev-topbar: false !default;
+@if not $prev-topbar {
+    @import "topbar";
+}
+
+$prev-login: false !default;
+@if not $prev-login {
+    @import "login";
+}
+
+$prev-dropdown: false !default;
+@if not $prev-dropdown {
+    @import "dropdown";
+}
+
+$prev-media: false !default;
+@if not $prev-media {
+    @import "media";
+}
+
+$prev-installer: false !default;
+@if not $prev-installer {
+    @import "installer";
+}
+
+$prev-pagination: false !default;
+@if not $prev-pagination {
+    @import "pagination";
+}
+
+$prev-nav: false !default;
+@if not $prev-nav {
+    @import "nav";
+}
+
+$prev-button: false !default;
+@if not $prev-button {
+    @import "button";
+}
+
+$prev-form: false !default;
+@if not $prev-form {
+    @import "form";
+}
+
+$prev-notification: false !default;
+@if not $prev-notification {
+    @import "notification";
+}
+
+$prev-badge: false !default;
+@if not $prev-badge {
+    @import "badge";
+}
+
+$prev-popover: false !default;
+@if not $prev-popover {
+    @import "popover";
+}
+
+$prev-profile: false !default;
+@if not $prev-profile {
+    @import "profile";
+}
+
+$prev-list: false !default;
+@if not $prev-list {
+    @import "list";
+}
+
+$prev-list-group: false !default;
+@if not $prev-list-group {
+    @import "list-group";
+}
+
+$prev-modal: false !default;
+@if not $prev-modal {
+    @import "modal";
+}
+
+$prev-tooltip: false !default;
+@if not $prev-tooltip {
+    @import "tooltip";
+}
+
+$prev-progress: false !default;
+@if not $prev-progress {
+    @import "progress";
+}
+
+$prev-table: false !default;
+@if not $prev-table {
+    @import "table";
+}
+
+$prev-comment: false !default;
+@if not $prev-comment {
+    @import "comment";
+}
+
+$prev-gridview: false !default;
+@if not $prev-gridview {
+    @import "gridview";
+}
+
+$prev-oembed: false !default;
+@if not $prev-oembed {
+    @import "oembed";
+}
+
+$prev-activities: false !default;
+@if not $prev-activities {
+    @import "activities";
+}
+
+$prev-stream: false !default;
+@if not $prev-stream {
+    @import "stream";
+}
+
+$prev-space: false !default;
+@if not $prev-space {
+    @import "space";
+}
+
+$prev-file: false !default;
+@if not $prev-file {
+    @import "file";
+}
+
+$prev-tour: false !default;
+@if not $prev-tour {
+    @import "tour";
+}
+
+$prev-mentioning: false !default;
+@if not $prev-mentioning {
+    @import "mentioning";
+}
+
+$prev-markdown: false !default;
+@if not $prev-markdown {
+    @import "markdown";
+}
+
+$prev-sidebar: false !default;
+@if not $prev-sidebar {
+    @import "sidebar";
+}
+
+$prev-datepicker: false !default;
+@if not $prev-datepicker {
+    @import "datepicker";
+}
+
+$prev-user-feedback: false !default;
+@if not $prev-user-feedback {
+    @import "user-feedback";
+}
+
+$prev-tags: false !default;
+@if not $prev-tags {
+    @import "tags";
+}
+
+$prev-richtext: false !default;
+@if not $prev-richtext {
+    @import "richtext";
+}
+
+$prev-mobile: false !default;
+@if not $prev-mobile {
+    @import "mobile";
+}
+
+$prev-icon: false !default;
+@if not $prev-icon {
+    @import "icon";
+}
+
+$prev-print: false !default;
+@if not $prev-print {
+    @import "print";
+}
+
+$prev-cards: false !default;
+@if not $prev-cards {
+    @import "cards";
+}
+
+$prev-modules: false !default;
+@if not $prev-modules {
+    @import "modules";
+}
+
+$prev-search: false !default;
+@if not $prev-search {
+    @import "search";
+}
+
+$prev-select2: false !default;
+@if not $prev-select2 {
+    @import "select2";
+}
+
+// TODO: Remove this when Bootstrap 3 is no longer supported
+// TODO: When converted to SCSS, move it to `mixins/deprecate` and wrap it in `$include deprecate("The `old-mixin()` mixin") { ... }`
+$prev-bootstrap3: false !default;
+@if not $prev-bootstrap3 {
+    @import "bootstrap3";
+}

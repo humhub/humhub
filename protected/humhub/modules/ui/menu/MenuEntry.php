@@ -8,11 +8,11 @@
 
 namespace humhub\modules\ui\menu;
 
+use humhub\helpers\Html;
 use humhub\helpers\ControllerHelper;
 use humhub\modules\ui\menu\widgets\Menu;
 use Yii;
 use yii\base\BaseObject;
-use yii\bootstrap\Html;
 
 /**
  * Class MenuEntry
@@ -245,6 +245,6 @@ abstract class MenuEntry extends BaseObject
      */
     public function getEntryClass()
     {
-        return get_class($this);
+        return static::class;
     }
 }

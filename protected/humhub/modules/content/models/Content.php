@@ -315,7 +315,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
 
         $record = $this->getModel();
 
-        Yii::debug('Process new content: ' . get_class($record) . ' ID: ' . $record->getPrimaryKey(), 'content');
+        Yii::debug('Process new content: ' . ($record !== null ? $record::class : self::class) . ' ID: ' . $record->getPrimaryKey(), 'content');
 
         foreach ($this->notifyUsersOfNewContent as $user) {
             $record->follow($user->id);
@@ -365,9 +365,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         if (count($this->notifyUsersOfNewContent) != 0) {
             // Add manually notified users
             $userQuery->union(
-                User::find()->active()->where(['IN', 'user.id', array_map(function (User $user) {
-                    return $user->id;
-                }, $this->notifyUsersOfNewContent)]),
+                User::find()->active()->where(['IN', 'user.id', array_map(fn(User $user) => $user->id, $this->notifyUsersOfNewContent)]),
             );
         }
 
@@ -635,12 +633,12 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      * {@inheritdoc}
      * @throws Throwable
      */
-    public function move(ContentContainerActiveRecord $container = null, $force = false)
+    public function move(?ContentContainerActiveRecord $container = null, $force = false)
     {
         $move = ($force) ? true : $this->canMove($container);
 
         if ($move === true) {
-            static::getDb()->transaction(function ($db) use ($container) {
+            static::getDb()->transaction(function ($db) use ($container): void {
                 $this->setContainer($container);
                 if ($this->updateAttributes(['contentcontainer_id', 'visibility'])) {
                     ContentTag::deleteContentRelations($this, false);
@@ -657,7 +655,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     /**
      * {@inheritdoc}
      */
-    public function canMove(ContentContainerActiveRecord $container = null)
+    public function canMove(?ContentContainerActiveRecord $container = null)
     {
         $model = $this->getModel();
 
@@ -705,7 +703,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         return true;
     }
 
-    public function isModelMovable(ContentContainerActiveRecord $container = null)
+    public function isModelMovable(?ContentContainerActiveRecord $container = null)
     {
         $model = $this->getModel();
         $canModelBeMoved = $model->canMove($container);
@@ -735,7 +733,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      * @throws Throwable
      * @throws InvalidConfigException
      */
-    public function checkMovePermission(ContentContainerActiveRecord $container = null)
+    public function checkMovePermission(?ContentContainerActiveRecord $container = null)
     {
         if (!$container) {
             $container = $this->container;
@@ -750,7 +748,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     /**
      * {@inheritdoc}
      */
-    public function afterMove(ContentContainerActiveRecord $container = null)
+    public function afterMove(?ContentContainerActiveRecord $container = null)
     {
         // Nothing to do
     }

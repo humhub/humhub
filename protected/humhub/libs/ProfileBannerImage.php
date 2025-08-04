@@ -8,6 +8,7 @@
 
 namespace humhub\libs;
 
+use humhub\helpers\Html;
 use humhub\modules\file\libs\ImageHelper;
 use Imagine\Image\Box;
 use Imagine\Image\ManipulatorInterface;

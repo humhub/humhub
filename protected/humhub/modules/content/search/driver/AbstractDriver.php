@@ -55,9 +55,7 @@ abstract class AbstractDriver extends Component
 
         /* @var ResultSet $resultSet */
         // Load results from cache or Search & Cache
-        $resultSet = Yii::$app->cache->getOrSet($this->getSearchCacheKey($request), function () use ($request) {
-            return $this->search($request);
-        });
+        $resultSet = Yii::$app->cache->getOrSet($this->getSearchCacheKey($request), fn() => $this->search($request));
 
         // Extract part of results only for the current(original requested) page
         $slicePageStart = ($origPage - ($cachePageSize * ($cachePage - 1)) / $origPageSize) * $origPageSize;
@@ -72,9 +70,7 @@ abstract class AbstractDriver extends Component
 
     protected function getSearchCacheKey(SearchRequest $request): string
     {
-        $requestFilters = array_filter($request->getAttributes(), function ($value) {
-            return is_scalar($value) || is_array($value);
-        });
+        $requestFilters = array_filter($request->getAttributes(), fn($value) => is_scalar($value) || is_array($value));
 
         return static::class . Yii::$app->user->id . sha1(json_encode($requestFilters));
     }

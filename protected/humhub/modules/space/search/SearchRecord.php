@@ -20,11 +20,8 @@ use humhub\modules\space\widgets\Image;
  */
 class SearchRecord implements MetaSearchResultInterface
 {
-    public ?Space $space = null;
-
-    public function __construct(Space $space)
+    public function __construct(public ?Space $space)
     {
-        $this->space = $space;
     }
 
     /**

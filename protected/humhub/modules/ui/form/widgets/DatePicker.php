@@ -9,11 +9,11 @@
 namespace humhub\modules\ui\form\widgets;
 
 use humhub\assets\DatePickerRussianLanguageAsset;
+use humhub\helpers\Html;
 use Yii;
 use yii\helpers\FormatConverter;
 use yii\helpers\Json;
 use yii\jui\DatePicker as BaseDatePicker;
-use humhub\libs\Html;
 use yii\jui\DatePickerLanguageAsset;
 use yii\jui\JuiAsset;
 
@@ -51,7 +51,14 @@ class DatePicker extends BaseDatePicker
 
         parent::init();
 
-        $this->pickerLanguage = $this->language ? $this->language : Yii::$app->language;
+        if ($this->attribute && $this->hasModel()) {
+            $attributeName = Html::getAttributeName($this->attribute);
+            if ($attributeName && $this->model->hasErrors($attributeName)) {
+                Html::addCssClass($this->options, 'is-invalid');
+            }
+        }
+
+        $this->pickerLanguage = $this->language ?: Yii::$app->language;
         $this->pickerLanguage = (array_key_exists($this->pickerLanguage, static::LANGUAGEMAPPING))
             ? static::LANGUAGEMAPPING[$this->pickerLanguage]
             : $this->pickerLanguage;
@@ -75,13 +82,13 @@ class DatePicker extends BaseDatePicker
 
         $this->options['autocomplete'] = 'off';
 
-        $language = $this->language ? $this->language : Yii::$app->language;
+        $language = $this->language ?: Yii::$app->language;
 
         echo $this->renderWidget() . "\n";
 
         $containerID = $this->inline ? $this->containerOptions['id'] : $this->options['id'];
 
-        if (strncmp($this->dateFormat, 'php:', 4) === 0) {
+        if (str_starts_with($this->dateFormat, 'php:')) {
             $this->clientOptions['dateFormat'] = FormatConverter::convertDatePhpToJui(substr($this->dateFormat, 4));
         } else {
             $this->clientOptions['dateFormat'] = FormatConverter::convertDateIcuToJui($this->dateFormat, 'date', $language);
@@ -110,7 +117,7 @@ class DatePicker extends BaseDatePicker
         }
 
         $assetBundle = DatePickerLanguageAsset::register($this->getView());
-        if (substr($this->pickerLanguage, 0, 2) === 'en') {
+        if (str_starts_with((string) $this->pickerLanguage, 'en')) {
             $assetBundle->autoGenerate = false;
             $assetBundle->js[] = "ui/i18n/datepicker-{$this->pickerLanguage}.js";
         } else {

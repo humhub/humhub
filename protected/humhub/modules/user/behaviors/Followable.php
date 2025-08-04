@@ -43,14 +43,12 @@ class Followable extends Behavior
     public function getFollowRecord($userId)
     {
         $userId = ($userId instanceof User) ? $userId->id : $userId;
-        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->owner->getPrimaryKey() . '-' . $userId, function () use ($userId) {
-            return Follow::find()
-                ->where([
-                    'object_model' => get_class($this->owner),
-                    'object_id' => $this->owner->getPrimaryKey(),
-                    'user_id' => $userId,
-                ])->one();
-        });
+        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->owner->getPrimaryKey() . '-' . $userId, fn() => Follow::find()
+            ->where([
+                'object_model' => $this->owner::class,
+                'object_id' => $this->owner->getPrimaryKey(),
+                'user_id' => $userId,
+            ])->one());
     }
 
     /**
@@ -161,7 +159,7 @@ class Followable extends Behavior
     {
         return User::find()
             ->leftJoin('user_follow', 'user.id = user_follow.user_id AND user_follow.object_id=:object_id AND user_follow.object_model = :object_model', [
-                ':object_model' => get_class($this->owner),
+                ':object_model' => $this->owner::class,
                 ':object_id' => $this->owner->getPrimaryKey(),
             ])
             ->where('user_follow.user_id IS NOT null')
@@ -195,7 +193,7 @@ class Followable extends Behavior
             ->leftJoin(
                 'user_follow',
                 'user.id=user_follow.object_id AND user_follow.object_model=:object_model',
-                ['object_model' => get_class($this->owner)],
+                ['object_model' => $this->owner::class],
             )
             ->andWhere(['user_follow.user_id' => $this->owner->id])
             ->active();

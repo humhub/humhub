@@ -111,7 +111,7 @@ abstract class AbstractActiveQueryContentContainer extends ActiveQuery
         foreach ($fieldTitles as $field => $titles) {
             $valueKeys = [];
             foreach ($titles as $key => $title) {
-                if (stripos($title, $keyword) === 0) {
+                if (stripos((string) $title, $keyword) === 0) {
                     $valueKeys[] = $key;
                 }
             }
@@ -137,7 +137,7 @@ abstract class AbstractActiveQueryContentContainer extends ActiveQuery
 
         foreach ($this->multiCharacterSearchVariants as $set) {
             foreach ($set as $character) {
-                if (strpos($keyword, $character) === false) {
+                if (!str_contains((string) $keyword, (string) $character)) {
                     continue;
                 }
 

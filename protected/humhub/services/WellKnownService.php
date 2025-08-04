@@ -28,7 +28,7 @@ class WellKnownService
         'fileAppleAssociation' => 'apple-app-site-association',
     ];
 
-    private ?string $file;
+    private readonly ?string $file;
 
     public function __construct(string $path)
     {

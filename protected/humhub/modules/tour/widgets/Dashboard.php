@@ -35,13 +35,9 @@ class Dashboard extends Widget
     {
         /* @var Module $module */
         $module = Yii::$app->getModule('tour');
-        $settingsManager = $module->settings->user();
 
-        return $this->render('tourPanel', [
-            'interface' => $settingsManager->get("interface"),
-            'spaces' => $settingsManager->get("spaces"),
-            'profile' => $settingsManager->get("profile"),
-            'administration' => $settingsManager->get("administration"),
+        return $this->render('dashboard', [
+            'settingsManager' => $module->settings->user(),
             'showWelcome' => $module->showWelcomeWindow(),
         ]);
     }
@@ -51,7 +47,8 @@ class Dashboard extends Widget
         /* @var SettingsManager $settings */
         $settings = Yii::$app->getModule('tour')->settings;
 
-        return $settings->get('enable') == 1 &&
-            $settings->user($user)->get('hideTourPanel') != 1;
+        return
+            $settings->get('enable') &&
+            !$settings->user($user)->get('hideTourPanel');
     }
 }

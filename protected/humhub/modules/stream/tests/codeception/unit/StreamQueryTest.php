@@ -63,7 +63,7 @@ class StreamQueryTest extends HumHubDbTestCase
     {
         foreach ($array as $i => $item) {
             if (is_object($item)) {
-                $array[$i] = get_class($item);
+                $array[$i] = $item::class;
             }
         }
 

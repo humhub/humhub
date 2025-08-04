@@ -36,9 +36,7 @@ class Template extends BaseType
         $variables = ArrayHelper::map(
             $user->profile->getProfileFields(null, [static::class]),
             'internal_name',
-            function (ProfileField $profileField) use ($user, $raw, $encode) {
-                return $profileField->getUserValue($user, $raw, $encode);
-            },
+            fn(ProfileField $profileField) => $profileField->getUserValue($user, $raw, $encode),
         );
 
         $twig = new Environment(new ArrayLoader([]));
@@ -50,7 +48,7 @@ class Template extends BaseType
     public function getFormDefinition($definition = [])
     {
         return parent::getFormDefinition([
-            get_class($this) => [
+            static::class => [
                 'type' => 'form',
                 'title' => Yii::t('UserModule.profile', 'Select field options'),
                 'elements' => [

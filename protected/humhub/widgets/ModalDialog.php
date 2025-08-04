@@ -5,6 +5,7 @@ namespace humhub\widgets;
 /**
  * Used for rendering a modal header
  *
+ * @deprecated since 1.18.0 use [[humhub\widgets\modal\Modal]] instead
  * @author buddha
  */
 class ModalDialog extends Modal
@@ -78,5 +79,4 @@ class ModalDialog extends Modal
             'keyboard' => (!$this->closable || !$this->keyboard) ? 'false' : 'true',
         ];
     }
-
 }

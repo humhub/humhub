@@ -10,11 +10,8 @@ use yii\base\InvalidArgumentException;
 
 class ContentTagService
 {
-    private Content $content;
-
-    public function __construct(Content $content)
+    public function __construct(private readonly Content $content)
     {
-        $this->content = $content;
     }
 
     /**

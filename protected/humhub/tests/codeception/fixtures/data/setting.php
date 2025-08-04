@@ -31,11 +31,11 @@ return [
     ['name' => 'installationId', 'value' => '99846c45e9b9b0962238986a6fed519a', 'module_id' => 'admin'],
     ['name' => 'theme', 'value' => 'HumHub', 'module_id' => 'base'],
     ['name' => 'tour', 'value' => '1', 'module_id' => 'base'],
-    ['name' => 'colorDefault', 'value' => '#ededed', 'module_id' => 'base'],
-    ['name' => 'colorPrimary', 'value' => '#708fa0', 'module_id' => 'base'],
-    ['name' => 'colorInfo', 'value' => '#6fdbe8', 'module_id' => 'base'],
-    ['name' => 'colorSuccess', 'value' => '#97d271', 'module_id' => 'base'],
-    ['name' => 'colorDanger', 'value' => '#ff8989', 'module_id' => 'base'],
+    ['name' => 'text-light', 'value' => '#ededed', 'module_id' => 'base'],
+    ['name' => 'text-primary', 'value' => '#708fa0', 'module_id' => 'base'],
+    ['name' => 'text-info', 'value' => '#6fdbe8', 'module_id' => 'base'],
+    ['name' => 'text-success', 'value' => '#97d271', 'module_id' => 'base'],
+    ['name' => 'text-danger', 'value' => '#ff8989', 'module_id' => 'base'],
     ['name' => 'oembedProviders', 'value' => json_encode([
         'Facebook Video' => [
             'pattern' => '/facebook\.com\/(.*)(video)/',

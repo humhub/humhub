@@ -25,7 +25,7 @@ final class CreateContentPermissionHelper
         ?string $keyword = null,
         ?IdentityInterface $user = null,
     ): array {
-        $user = $user ?? Yii::$app->user->identity;
+        $user ??= Yii::$app->user->identity;
 
         $spaces = Space::find()
             ->visible($user)

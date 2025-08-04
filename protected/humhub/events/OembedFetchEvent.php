@@ -32,17 +32,17 @@ class OembedFetchEvent extends Event
         }
         $urlOembed = UrlOembed::findOne(['url' => $this->url]);
         if ($urlOembed !== null) {
-            $this->result =  trim(preg_replace('/\s+/', ' ', $urlOembed->preview));
+            $this->result =  trim((string) preg_replace('/\s+/', ' ', $urlOembed->preview));
         } elseif ($this->providers) {
-            $this->result =  trim(preg_replace('/\s+/', ' ', UrlOembed::loadUrl($this->url, $this->getProviderUrl())));
+            $this->result =  trim((string) preg_replace('/\s+/', ' ', (string) UrlOembed::loadUrl($this->url, $this->getProviderUrl())));
         }
     }
 
     private function getProviderUrl()
     {
-        foreach ($this->providers as $providerName => $provider) {
-            if (preg_match($provider['pattern'], $this->url)) {
-                return str_replace("%url%", urlencode($this->url), $provider['endpoint']);
+        foreach ($this->providers as $provider) {
+            if (preg_match($provider['pattern'], (string) $this->url)) {
+                return str_replace("%url%", urlencode((string) $this->url), $provider['endpoint']);
             }
         }
         return '';

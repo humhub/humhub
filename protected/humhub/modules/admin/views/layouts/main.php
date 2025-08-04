@@ -7,10 +7,10 @@ use humhub\widgets\FooterMenu;
 ?>
 <div class="container">
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-lg-3">
             <?= AdminMenu::widget(); ?>
         </div>
-        <div class="col-md-9">
+        <div class="col-lg-9">
             <?= $content; ?>
             <?= FooterMenu::widget(); ?>
         </div>

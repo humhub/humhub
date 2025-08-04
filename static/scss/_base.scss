@@ -1,0 +1,171 @@
+//
+// General
+// --------------------------------------------------
+
+html {
+    scroll-padding-top: var(--hh-fixed-header-height);
+}
+
+body {
+    @include text-break();
+    padding-top: var(--hh-fixed-header-height);
+    padding-bottom: var(--hh-mobile-app-safe-area-inset-bottom, env(safe-area-inset-bottom)); // for the web view space (safe area) on mobile devices
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    font-family: var(--bs-body-font-family);
+    font-size: var(--bs-body-font-size);
+    font-weight: var(--bs-body-font-weight);
+    line-height: var(--bs-body-line-height);
+
+    a,
+    a:hover,
+    a:focus,
+    a:active,
+    a.active {
+        text-decoration: none;
+    }
+}
+
+b, strong {
+    font-weight: 700;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    opacity: 0.1;
+}
+
+.d-revert {
+    display: revert !important;
+}
+
+// Cols (change position property to prevent the cutting of tooltips or menus)
+.col-lg-1,
+.col-lg-2,
+.col-lg-3,
+.col-lg-4,
+.col-lg-5,
+.col-lg-6,
+.col-lg-7,
+.col-lg-8,
+.col-lg-9,
+.col-lg-10,
+.col-lg-11,
+.col-lg-12 {
+    position: inherit;
+}
+
+.layout-nav-container {
+    padding: 0 15px;
+
+    .left-navigation {
+        margin-bottom: 0;
+    }
+}
+
+@include media-breakpoint-up(md) {
+    .layout-nav-container {
+        padding: 0 0 0 15px;
+
+        .left-navigation {
+            margin-bottom: 15px;
+        }
+    }
+}
+
+.layout-sidebar-container {
+    padding: 0 15px 0 0;
+}
+
+h4 {
+    font-size: 150%;
+}
+
+h5, .h5 {
+    font-size: 1rem;
+}
+
+input[type=text],
+input[type=password],
+input[type=select] {
+    /* Remove First */
+    appearance: none;
+}
+
+.powered,
+.powered a {
+    color: #b8c7d3 !important;
+}
+
+[data-ui-show-more] {
+    overflow: hidden;
+}
+
+@include media-breakpoint-only(md) {
+    .layout-nav-container {
+        padding: 0 15px;
+    }
+
+    :root {
+        --hh-fixed-header-height: 120px;
+    }
+}
+
+@media print {
+    #topbar-first, #topbar-second {
+        display: none;
+    }
+}
+
+// Fix Safari issues
+:focus-visible {
+    outline: none; // User account menu blue outline when active
+}
+
+button.ProseMirror-icon {
+    color: inherit; // Prosemirror editor button blue color (-apple-system-blue)
+}
+
+// Todo find better place for this selector
+span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
+    pointer-events: none;
+    cursor: default;
+    text-decoration: none;
+    color: lightgrey;
+}
+
+.showMore {
+    font-size: 13px;
+}
+
+.filter-toggle-link {
+    color: var(--hh-text-color-highlight);
+    font-size: 12px;
+    // Right caret
+    &::after {
+        display: inline-block;
+        margin-left: 0.4em;
+        vertical-align: 0.1em;
+        content: "";
+        border-top: 0.4em solid;
+        border-right: 0.4em solid transparent;
+        border-bottom: 0;
+        border-left: 0.4em solid transparent;
+    }
+}
+
+.table-responsive {
+    word-wrap: normal;
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
+}
+
+.bg-light {
+    background-color: var(--hh-background-color-secondary) !important;
+}

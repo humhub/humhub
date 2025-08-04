@@ -99,7 +99,7 @@ abstract class ContentContainerUrlRule extends BaseObject implements UrlRuleInte
                 return $result;
             }
             if ($result = $this->createUrlByRule($rule, $route, $params)) {
-                list($route, $params) = $result;
+                [$route, $params] = $result;
             }
         }
 
@@ -154,7 +154,7 @@ abstract class ContentContainerUrlRule extends BaseObject implements UrlRuleInte
         }
 
         $ruleRoute = [];
-        foreach ($ruleParts as $r => $rulePart) {
+        foreach ($ruleParts as $rulePart) {
             if (preg_match('/^<([a-zA-Z0-9_-]+)>$/', $rulePart, $ruleParamMatch)) {
                 if (!isset($params[$ruleParamMatch[1]])) {
                     return false;
@@ -175,7 +175,7 @@ abstract class ContentContainerUrlRule extends BaseObject implements UrlRuleInte
     public function parseRequest($manager, $request)
     {
         $pathInfo = $request->getPathInfo();
-        if (strpos($pathInfo, $this->urlPrefix . '/') !== 0) {
+        if (!str_starts_with($pathInfo, $this->urlPrefix . '/')) {
             return false;
         }
 
@@ -299,8 +299,8 @@ abstract class ContentContainerUrlRule extends BaseObject implements UrlRuleInte
     private function getRuleParts($rule)
     {
         foreach ($this->routePrefixes as $routePrefix) {
-            if (strpos($rule->name, $routePrefix . '/') === 0) {
-                return explode('/', substr($rule->name, strlen($routePrefix . '/')));
+            if (str_starts_with((string) $rule->name, $routePrefix . '/')) {
+                return explode('/', substr((string) $rule->name, strlen($routePrefix . '/')));
             }
         }
 

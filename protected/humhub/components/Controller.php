@@ -188,7 +188,7 @@ class Controller extends \yii\web\Controller
      * @throws ForbiddenHttpException
      * @since 1.2
      */
-    protected function forbidden()
+    protected function forbidden(): never
     {
         throw new ForbiddenHttpException(Yii::t('error', 'You are not allowed to perform this action.'));
     }
@@ -317,7 +317,7 @@ class Controller extends \yii\web\Controller
      * @return bool
      * @since 1.9
      */
-    public function isNotInterceptedAction(string $actionId = null): bool
+    public function isNotInterceptedAction(?string $actionId = null): bool
     {
         if ($actionId === null) {
             if (isset($this->action->id)) {

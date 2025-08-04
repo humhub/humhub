@@ -4,12 +4,12 @@ namespace humhub\modules\file\widgets;
 
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\helpers\Html;
 use humhub\modules\file\models\File;
+use humhub\widgets\form\ActiveForm;
 use humhub\widgets\JsWidget;
 use Yii;
 use yii\base\Model;
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
 
 /**
  * The file input will upload files either to the given $url or to the default
@@ -214,7 +214,7 @@ class UploadInput extends JsWidget
             $postSubmit = $submitName;
 
             if (static::endsWith('[]', $postSubmit)) {
-                $postSubmit = substr($postSubmit, 0, -2);
+                $postSubmit = substr((string) $postSubmit, 0, -2);
             }
 
             $files = Yii::$app->request->post($postSubmit);
@@ -238,7 +238,7 @@ class UploadInput extends JsWidget
 
     private static function endsWith($needle, $haystack)
     {
-        return substr($haystack, -strlen($needle)) === $needle;
+        return str_ends_with((string) $haystack, (string) $needle);
     }
 
     public function getAttributes()

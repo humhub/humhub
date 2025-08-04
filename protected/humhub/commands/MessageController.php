@@ -115,16 +115,16 @@ class MessageController extends \yii\console\controllers\MessageController
     protected function getModuleByCategory($category)
     {
         if (preg_match('/(.*?)Module\./', $category, $result)) {
-            if (strpos($result[1], '-') !== false || strpos($result[1], '_') !== false) {
+            if (str_contains($result[1], '-') || str_contains($result[1], '_')) {
                 // module id already in correct format (-,_)
                 return Yii::$app->moduleManager->getModule($result[1], true);
             } else {
-                $moduleId = strtolower(preg_replace("/([A-Z])/", '_\1', lcfirst($result[1])));
+                $moduleId = strtolower((string) preg_replace("/([A-Z])/", '_\1', lcfirst($result[1])));
                 try {
                     return Yii::$app->moduleManager->getModule($moduleId, true);
-                } catch (Exception $ex) {
+                } catch (Exception) {
                     // Module not found, try again with dash syntax
-                    $moduleId = strtolower(preg_replace("/([A-Z])/", '-\1', lcfirst($result[1])));
+                    $moduleId = strtolower((string) preg_replace("/([A-Z])/", '-\1', lcfirst($result[1])));
                     return Yii::$app->moduleManager->getModule($moduleId, true);
                 }
             }
@@ -167,9 +167,9 @@ class MessageController extends \yii\console\controllers\MessageController
                         foreach ($messages as $original => $translated) {
 
                             // Removed unused marking
-                            if (substr($translated, 0, 2) == '@@' && substr($translated, -2, 2) == '@@') {
-                                $translated = preg_replace('/^@@/', '', $translated);
-                                $translated = preg_replace('/@@$/', '', $translated);
+                            if (str_starts_with((string) $translated, '@@') && str_ends_with((string) $translated, '@@')) {
+                                $translated = preg_replace('/^@@/', '', (string) $translated);
+                                $translated = preg_replace('/@@$/', '', (string) $translated);
                             }
 
                             if ($translated != '') {

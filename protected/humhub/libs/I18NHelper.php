@@ -23,7 +23,7 @@ class I18NHelper
      */
     public static function getModuleTranslationCategory($moduleId)
     {
-        return implode('', array_map("ucfirst", preg_split("/(_|\-)/", $moduleId))) . 'Module.';
+        return implode('', array_map("ucfirst", preg_split("/(_|\-)/", (string) $moduleId))) . 'Module.';
 
     }
 }

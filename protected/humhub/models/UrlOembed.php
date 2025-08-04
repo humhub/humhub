@@ -8,18 +8,18 @@
 
 namespace humhub\models;
 
-use humhub\modules\admin\models\forms\OEmbedSettingsForm;
-use humhub\modules\ui\icon\widgets\Icon;
-use humhub\modules\user\models\User;
-use humhub\widgets\Button;
 use humhub\events\OembedFetchEvent;
+use humhub\helpers\Html;
 use humhub\libs\RestrictedCallException;
 use humhub\libs\UrlOembedClient;
 use humhub\libs\UrlOembedHttpClient;
-use yii\helpers\Html;
-use yii\helpers\Json;
-use yii\db\ActiveRecord;
+use humhub\modules\admin\models\forms\OEmbedSettingsForm;
+use humhub\modules\ui\icon\widgets\Icon;
+use humhub\modules\user\models\User;
+use humhub\widgets\bootstrap\Button;
 use Yii;
+use yii\db\ActiveRecord;
+use yii\helpers\Json;
 
 /**
  * UrlOembed records hold already loaded oembed previews.
@@ -167,7 +167,7 @@ class UrlOembed extends ActiveRecord
 
                 if (!empty($result)) {
 
-                    return trim(preg_replace('/\s+/', ' ', $result));
+                    return trim((string) preg_replace('/\s+/', ' ', $result));
                 }
             }
         } catch (RestrictedCallException $re) {
@@ -190,9 +190,9 @@ class UrlOembed extends ActiveRecord
      */
     public static function preload($text)
     {
-        preg_replace_callback('/http(.*?)(\s|$)/i', function ($match) {
+        preg_replace_callback('/http(.*?)(\s|$)/i', function ($match): void {
 
-            $url = trim($match[0]);
+            $url = trim((string) $match[0]);
 
             if (!static::hasOEmbedSupport($url)) {
                 return;
@@ -501,7 +501,7 @@ class UrlOembed extends ActiveRecord
 
         $allowedUrls = $user->settings->get('allowedOembedUrls');
 
-        return empty($allowedUrls) ? [] : explode(',', $allowedUrls);
+        return empty($allowedUrls) ? [] : explode(',', (string) $allowedUrls);
     }
 
     /**

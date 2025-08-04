@@ -76,7 +76,7 @@ class ContentActiveRecordTest extends HumHubDbTestCase
         $groupPermission->group_id = $groupId;
         $groupPermission->contentcontainer_id = $contentContianer->contentContainerRecord->id;
         $groupPermission->module_id = $permission->moduleId;
-        $groupPermission->class = get_class($permission);
+        $groupPermission->class = $permission::class;
         $groupPermission->state = $state;
         $groupPermission->save();
         $contentContianer->getPermissionManager()->clear();

@@ -52,14 +52,14 @@ class RichTextLinkExtension extends RichTextContentExtension
             return $text;
         }
 
-        return trim($text) . '(' . $url . ')';
+        return trim((string) $text) . '(' . $url . ')';
     }
 
     public static function validateNonExtensionUrl($url)
     {
         $protocols = ['http', 'https', 'mailto', '#', 'ftp', 'ftps', '/'];
         foreach ($protocols as $protocol) {
-            if (strpos($url, $protocol . ':') === 0) {
+            if (str_starts_with((string) $url, $protocol . ':')) {
                 return true;
             }
         }
@@ -78,10 +78,10 @@ class RichTextLinkExtension extends RichTextContentExtension
 
     public function validateExtensionUrl(string $url): bool
     {
-        return strpos($url, $this->key . ':') === 0;
+        return str_starts_with($url, $this->key . ':');
     }
 
-    public static function buildLink(string $text, string $url, string $title = null): string
+    public static function buildLink(string $text, string $url, ?string $title = null): string
     {
         if (!$title) {
             return '[' . $text . '](' . $url . ')';
@@ -90,7 +90,7 @@ class RichTextLinkExtension extends RichTextContentExtension
         return '[' . $text . '](' . $url . ' "' . $title . '")';
     }
 
-    public static function buildExtensionLink(string $text, string $extensionId, string $title = null, string $addition = ''): string
+    public static function buildExtensionLink(string $text, string $extensionId, ?string $title = null, string $addition = ''): string
     {
         if (!empty($addition)) {
             $addition = ' ' . $addition;

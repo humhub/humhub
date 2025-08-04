@@ -13,8 +13,8 @@
  * @deprecated since 1.2 use UserPickerField instead.
  */
 
+use humhub\helpers\Html;
 use humhub\modules\user\models\User;
-use yii\helpers\Html;
 
 $this->registerJsFile("@web-static/resources/user/userpicker.js");
 ?>
@@ -23,17 +23,17 @@ $this->registerJsFile("@web-static/resources/user/userpicker.js");
 // Resolve guids to user tags
 $newValue = "";
 
-foreach (explode(",", $currentValue) as $guid) {
+foreach (explode(",", (string) $currentValue) as $guid) {
     $user = User::findOne(['guid' => trim($guid)]);
     if ($user != null) {
         $imageUrl = $user->getProfileImage()->getUrl();
         $name = Html::encode($user->displayName);
-        $newValue .= '<li class="userInput" id="' . $user->guid . '"><img class="img-rounded" alt="24x24" data-src="holder.js/24x24" style="width: 24px; height: 24px;" src="' . $imageUrl . '" alt="' . $name . 'r" width="24" height="24">' . $name . '<i class="fa fa-times-circle"></i></li>';
+        $newValue .= '<li class="userInput" id="' . $user->guid . '"><img class="rounded" alt="24x24" data-src="holder.js/24x24" style="width: 24px; height: 24px;" src="' . $imageUrl . '" alt="' . $name . 'r" width="24" height="24">' . $name . '<i class="fa fa-times-circle"></i></li>';
     }
 }
 ?>
 
-<script <?= \humhub\libs\Html::nonce() ?>>
+<script <?= \humhub\helpers\Html::nonce() ?>>
     $(document).ready(function () {
         $('#<?php echo $inputId; ?>').userpicker({
             inputId: '#<?php echo $inputId; ?>',

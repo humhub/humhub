@@ -39,7 +39,7 @@ class PermissionManagerMock extends PermissionManager
         $subject = $this->getSubject();
         if ($subject) {
             $permissions = $this->permissions[$subject->id];
-            return in_array(get_class($permission), $permissions);
+            return in_array($permission::class, $permissions);
         }
         return false;
     }

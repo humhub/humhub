@@ -50,8 +50,8 @@ class m240423_170311_profile_checkbox_list_field extends Migration
         $fixedOptions = [];
         $index = 0;
         $fixed = false;
-        foreach (preg_split('/[\r\n]+/', $config['options']) as $option) {
-            if (strpos($option, '=>') === false) {
+        foreach (preg_split('/[\r\n]+/', (string) $config['options']) as $option) {
+            if (!str_contains($option, '=>')) {
                 // Fix an option without a Key
                 $fixed = true;
                 $fixedOptions[] = ($keyType === 'index' ? $index++ : trim($option)) . '=>' . $option;

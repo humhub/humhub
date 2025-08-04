@@ -3,6 +3,7 @@
 namespace humhub\modules\content\widgets\richtext\extensions;
 
 use humhub\components\ActiveRecord;
+use humhub\helpers\Html;
 use humhub\models\UrlOembed;
 use humhub\modules\content\Module;
 use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
@@ -10,7 +11,6 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Model;
-use yii\helpers\Html;
 
 /**
  * This extension is used to support legacy richtext format (HumHub <1.3).

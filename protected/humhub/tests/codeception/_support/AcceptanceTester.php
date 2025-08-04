@@ -1,8 +1,8 @@
 <?php
 
+use Facebook\WebDriver\WebDriverKeys;
 use tests\codeception\_pages\LoginPage;
 use yii\helpers\Url;
-use Facebook\WebDriver\WebDriverKeys;
 
 /**
  * Inherited Methods
@@ -27,7 +27,7 @@ class AcceptanceTester extends BaseTester
 
     public function amAdmin($logout = false)
     {
-        $this->amUser('Admin', 'test', $logout);
+        $this->amUser('Admin', 'admin&humhub@PASS%worD!', $logout);
     }
 
     public function amSpaceAdmin($logout = false, $spaceId = 2)
@@ -48,17 +48,17 @@ class AcceptanceTester extends BaseTester
 
     public function amUser1($logout = false)
     {
-        $this->amUser('User1', '123qwe', $logout);
+        $this->amUser('User1', 'user^humhub@PASS%worD!', $logout);
     }
 
     public function amUser2($logout = false)
     {
-        $this->amUser('User2', '123qwe', $logout);
+        $this->amUser('User2', 'user^humhub@PASS%worD!', $logout);
     }
 
     public function amUser3($logout = false)
     {
-        $this->amUser('User3', '123qwe', $logout);
+        $this->amUser('User3', 'user^humhub@PASS%worD!', $logout);
     }
 
     public function amOnSpace1($path = '/space/space', $params = [])
@@ -117,6 +117,8 @@ class AcceptanceTester extends BaseTester
     {
         $this->amOnRoute(['/admin/authentication']);
         $this->jsClick('#authenticationsettingsform-allowguestaccess');
+        $this->scrollToBottom();
+        $this->wait(1);
         $this->click('button.btn-primary', '#authentication-settings-form');
         $this->wait(1);
         $this->guestAccessAllowed = true;
@@ -138,7 +140,7 @@ class AcceptanceTester extends BaseTester
 
         foreach ($topics as $topic) {
             $this->fillField('#topic-name', $topic);
-            $this->click('.input-group-btn .btn-default');
+            $this->click('.input-group .btn-light');
             $this->waitForText($topic, null, '.layout-content-container .table-hover');
         }
     }
@@ -152,7 +154,7 @@ class AcceptanceTester extends BaseTester
         $this->wait(1);
 
         if ($topics) {
-            $this->click('.dropdown-toggle', '.contentForm_options .preferences');
+            $this->click('.dropdown-toggle', '.contentForm_options .nav-pills');
             $this->wait(1);
             $this->click('Topics', '.contentForm_options');
             $this->waitForElementVisible('#postTopicContainer');
@@ -232,7 +234,7 @@ class AcceptanceTester extends BaseTester
         }
 
         $user = ($user != null) ? $user : 'User1';
-        $password = ($password != null) ? $password : '123qwe';
+        $password = ($password != null) ? $password : 'user^humhub@PASS%worD!';
         $this->login($user, $password);
         $this->waitForElementVisible('#wallStream', 30);
     }
@@ -267,7 +269,7 @@ class AcceptanceTester extends BaseTester
     public function clickAccountDropDown()
     {
         $this->jsClick('#account-dropdown-link');
-        $this->waitForElementVisible('.account.open');
+        $this->waitForElementVisible('.account > .dropdown-menu.show');
     }
 
     public function amOnDirectory()

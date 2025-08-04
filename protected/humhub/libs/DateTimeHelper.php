@@ -24,7 +24,7 @@ class DateTimeHelper
      * @param DateTime $dateTime
      * @return DateTime
      */
-    public static function roundToNextFullHour(DateTime $dateTime = null)
+    public static function roundToNextFullHour(?DateTime $dateTime = null)
     {
         if ($dateTime === null) {
             $dateTime = new DateTime();
@@ -53,7 +53,7 @@ class DateTimeHelper
      * @param DateTime $endDateTime the end date time
      * @return \DateInterval
      */
-    public static function getDateInterval($startDateTime = null, $endDateTime)
+    public static function getDateInterval($endDateTime, $startDateTime = null)
     {
         if ($startDateTime === null) {
             $startDateTime = new DateTime();

@@ -96,10 +96,10 @@ humhub.module('file', function (module, require, $) {
         var $trigger = this.getTrigger();
         if ($trigger.length) {
             $trigger.addClass('disabled');
-            this.originalTriggerTitle = $trigger.data('original-title');
+            this.originalTriggerTitle = $trigger.data('bs-title');
             message = message || 'disabled';
             if (message && $trigger.data('bs.tooltip')) {
-                $trigger.attr('data-original-title', message)
+                $trigger.attr('data-bs-title', message)
                     .tooltip('fixTitle');
             }
         }
@@ -114,7 +114,7 @@ humhub.module('file', function (module, require, $) {
         }
 
         if ($trigger.data('bs.tooltip')) {
-            $trigger.attr('data-original-title', this.originalTriggerTitle)
+            $trigger.attr('data-bs-title', this.originalTriggerTitle)
                 .tooltip('fixTitle');
         }
 
@@ -357,7 +357,7 @@ humhub.module('file', function (module, require, $) {
 
         var that = this;
         $.each(files, function (i, file) {
-            that.add(file)
+            that.add(file);
         });
 
         // Note we are not using :visible since the preview itself may not visible on init
@@ -396,7 +396,7 @@ humhub.module('file', function (module, require, $) {
                 $file.find('.file-preview-content').popover({
                     html: true,
                     trigger: 'hover',
-                    animation: 'fade',
+                    animation: true,
                     delay: 100,
                     placement: this.options.popoverPosition || 'right',
                     container: 'body',

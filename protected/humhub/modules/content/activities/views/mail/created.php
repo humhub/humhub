@@ -1,9 +1,9 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\content\interfaces\ContentOwner;
-use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
-use yii\helpers\Html;
+use humhub\modules\content\widgets\richtext\RichText;
 
 /* @var $originator \humhub\modules\user\models\User */
 /* @var $source ContentOwner */

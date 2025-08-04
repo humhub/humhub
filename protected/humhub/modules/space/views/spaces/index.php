@@ -6,7 +6,7 @@
  */
 
 use humhub\assets\CardsAsset;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\space\components\SpaceDirectoryQuery;
 use humhub\modules\space\widgets\SpaceDirectoryCard;
 use humhub\modules\space\widgets\SpaceDirectoryFilters;
@@ -31,7 +31,7 @@ CardsAsset::register($this);
 
 <div class="row cards">
     <?php if (!$spaces->exists()): ?>
-        <div class="col-md-12">
+        <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <strong><?= Yii::t('SpaceModule.base', 'No results found!'); ?></strong><br/>

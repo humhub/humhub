@@ -1,11 +1,11 @@
 <?php
-return array (
-  '<strong>My</strong> friends' => 'マイフレンズ',
+return [
+  '<strong>My</strong> friends' => 'マイフレンド',
   '<strong>Pending</strong> friend requests' => '<strong>保留中の</strong>友達リクエスト',
   '<strong>Sent</strong> friend requests' => '<strong>送信済みの</strong>友達リクエスト',
   'Accept Friend Request' => '友達リクエストを承認',
   'Deny friend request' => '友達リクエストを却下',
-  'Friends' => 'フレンズ',
+  'Friends' => 'フレンド',
   'Friendship' => 'フレンドシップ',
   'Pending' => '保留中',
   'Requests' => 'リクエスト',
@@ -17,4 +17,4 @@ return array (
   'Would you like to send a friendship request to {userName}?' => '{userName}さんに友達リクエストを送りますか？',
   'Would you like to withdraw the friendship request?' => 'その友達リクエストをとりやめますか？',
   'Would you like to withdraw your friendship request?' => 'あなたの友達リクエストをとりやめますか？',
-);
+];

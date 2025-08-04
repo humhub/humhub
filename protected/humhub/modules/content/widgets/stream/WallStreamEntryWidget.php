@@ -3,12 +3,12 @@
 namespace humhub\modules\content\widgets\stream;
 
 use Exception;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\widgets\ArchiveLink;
 use humhub\modules\content\widgets\DeleteLink;
-use humhub\modules\content\widgets\LockCommentsLink;
 use humhub\modules\content\widgets\EditLink;
+use humhub\modules\content\widgets\LockCommentsLink;
 use humhub\modules\content\widgets\MoveContentLink;
 use humhub\modules\content\widgets\NotificationSwitchLink;
 use humhub\modules\content\widgets\PermaLink;
@@ -279,7 +279,6 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
         return UserImage::widget([
             'user' => $this->model->content->createdBy,
             'width' => 40,
-            'htmlOptions' => ['class' => 'pull-left'],
         ]);
     }
 

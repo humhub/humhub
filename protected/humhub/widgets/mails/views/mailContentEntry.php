@@ -5,13 +5,13 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\components\View;
+use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\mail\DefaultMailStyle;
-use humhub\modules\ui\view\components\View;
 use humhub\modules\user\models\User;
 use humhub\widgets\mails\MailContentContainerImage;
 use humhub\widgets\TimeAgo;
-use yii\helpers\Html;
 
 /* @var $this View */
 /* @var $space Space */

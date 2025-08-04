@@ -2,7 +2,7 @@
 
 namespace tests\codeception\unit\modules\web\security;
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\web\security\helpers\Security;
 use humhub\modules\web\security\models\SecuritySettings;
 use web\WebSecurityTest;
@@ -68,7 +68,7 @@ class SecuritySettingsTest extends WebSecurityTest
         $this->assertNull($settings->getHeader('Content-Security-Policy'));
         $this->assertFalse($settings->isNonceSupportActive());
 
-        $this->assertNull($settings->getCSPHeader(true));
+        $this->assertNull($settings->getCSPHeader());
 
         $this->assertEmpty(Html::nonce());
         $this->assertEmpty(Security::getNonce());

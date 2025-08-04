@@ -1,11 +1,10 @@
 <?php
 
 use humhub\modules\content\models\forms\MoveContentForm;
-use humhub\widgets\ModalDialog;
-use yii\bootstrap\ActiveForm;
 use humhub\modules\space\widgets\SpacePickerField;
-use humhub\widgets\ModalButton;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\modal\Modal;
+use humhub\widgets\modal\ModalButton;
 
 /* @var $model MoveContentForm */
 
@@ -14,24 +13,22 @@ $canMove = $model->isMovable() === true;
 
 ?>
 
-<?php ModalDialog::begin(['header' => Yii::t('ContentModule.base', '<strong>Move</strong> content')]) ?>
-<?php $form = ActiveForm::begin(['enableClientValidation' => false]) ?>
-<div class="modal-body">
+<?php $form = Modal::beginFormDialog([
+    'title' => Yii::t('ContentModule.base', '<strong>Move</strong> content'),
+    'footer' => ModalButton::cancel() . ' ' . Button::primary(Yii::t('base', 'Save'))->action('content.submitMove')->submit()->loader(true)->visible($canMove),
+    'form' => ['enableClientValidation' => false],
+]) ?>
+
     <?php if ($canMove): ?>
         <?= $form->field($model, 'target')->widget(SpacePickerField::class, [
             'maxSelection' => 1,
             'focus' => true,
-            'url' => $model->getSearchUrl()
+            'url' => $model->getSearchUrl(),
         ]) ?>
     <?php else: ?>
         <div class="alert alert-warning">
             <?= Yii::t('ContentModule.base', $movableResult); ?>
         </div>
     <?php endif; ?>
-</div>
-<div class="modal-footer">
-    <?= ModalButton::cancel() ?>
-    <?= Button::primary(Yii::t('base', 'Save'))->action('content.submitMove')->submit()->loader(true)->visible($canMove) ?>
-</div>
-<?php ActiveForm::end() ?>
-<?php ModalDialog::end() ?>
+
+<?php Modal::endFormDialog(); ?>

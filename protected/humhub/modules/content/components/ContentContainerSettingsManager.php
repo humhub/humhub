@@ -42,8 +42,7 @@ class ContentContainerSettingsManager extends BaseSettingsManager
     public function getInherit($name, $default = null)
     {
         $result = $this->get($name);
-        return ($result !== null) ? $result
-            : Yii::$app->getModule($this->moduleId)->settings->get($name, $default);
+        return $result ?? Yii::$app->getModule($this->moduleId)->settings->get($name, $default);
     }
 
     /**
@@ -59,8 +58,7 @@ class ContentContainerSettingsManager extends BaseSettingsManager
     public function getSerializedInherit($name, $default = null)
     {
         $result = $this->getSerialized($name);
-        return ($result !== null) ? $result
-            : Yii::$app->getModule($this->moduleId)->settings->getSerialized($name, $default);
+        return $result ?? Yii::$app->getModule($this->moduleId)->settings->getSerialized($name, $default);
     }
 
     /**

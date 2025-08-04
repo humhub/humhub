@@ -208,7 +208,7 @@ Admin Tester", $form->message);
             $form = new ApproveUserForm(2);
             $form->approve();
             $this->assertFalse(true);
-        } catch (NotFoundHttpException $e) {
+        } catch (NotFoundHttpException) {
             $this->assertTrue(true);
         }
     }
@@ -220,7 +220,7 @@ Admin Tester", $form->message);
             $form = new ApproveUserForm(2);
             $form->decline();
             $this->assertFalse(true);
-        } catch (NotFoundHttpException $e) {
+        } catch (NotFoundHttpException) {
             $this->assertTrue(true);
         }
     }
@@ -252,7 +252,7 @@ Admin Tester", $form->message);
             $form = new ApproveUserForm($this->unapprovedUser->id);
             $form->approve();
             $this->assertFalse(true);
-        } catch (NotFoundHttpException $e) {
+        } catch (NotFoundHttpException) {
             $this->assertTrue(true);
         }
 
@@ -268,7 +268,7 @@ Admin Tester", $form->message);
             $form = new ApproveUserForm($this->unapprovedUser->id);
             $form->sendMessage();
             $this->assertFalse(true);
-        } catch (NotFoundHttpException $e) {
+        } catch (NotFoundHttpException) {
             $this->assertTrue(true);
         }
     }
@@ -282,14 +282,14 @@ Admin Tester", $form->message);
             $form = new ApproveUserForm($this->unapprovedUser->id);
             $form->decline();
             $this->assertFalse(true);
-        } catch (NotFoundHttpException $e) {
+        } catch (NotFoundHttpException) {
             $this->assertTrue(true);
         }
 
         $this->assertUnapproved();
     }
 
-    private function assertSendMessage(User $user = null)
+    private function assertSendMessage(?User $user = null)
     {
         if (!$user) {
             $user = $this->unapprovedUser;
@@ -300,7 +300,7 @@ Admin Tester", $form->message);
         $this->assertEqualsLastEmailTo($user->email);
     }
 
-    private function assertDeclined(User $user = null)
+    private function assertDeclined(?User $user = null)
     {
         if (!$user) {
             $user = $this->unapprovedUser;
@@ -312,7 +312,7 @@ Admin Tester", $form->message);
         $this->assertNull(User::findOne(['id' => $this->unapprovedUser->id]));
     }
 
-    private function assertUnapproved(User $user = null)
+    private function assertUnapproved(?User $user = null)
     {
         if (!$user) {
             $user = $this->unapprovedUser;
@@ -322,7 +322,7 @@ Admin Tester", $form->message);
         $this->assertEquals(User::STATUS_NEED_APPROVAL, $user->status);
     }
 
-    private function assertApproved(User $user = null)
+    private function assertApproved(?User $user = null)
     {
         if (!$user) {
             $user = $this->unapprovedUser;

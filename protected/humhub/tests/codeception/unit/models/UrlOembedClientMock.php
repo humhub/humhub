@@ -10,7 +10,7 @@ class UrlOembedClientMock implements UrlOembedClient
     public function fetchUrl($url)
     {
         $result = null;
-        if (strpos($url, UrlOembedMock::TEST_PROVIDER_URL_PREFIX) !== false) {
+        if (str_contains($url, UrlOembedMock::TEST_PROVIDER_URL_PREFIX)) {
             $result = [
                 'html' => UrlOembedMock::TEST_VIDEO_A_PREVIEW,
                 'type' => 'video',

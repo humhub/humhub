@@ -6,7 +6,7 @@
  */
 
 use humhub\modules\notification\models\forms\FilterForm;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\form\ActiveForm;
 
 /* @var FilterForm $filterForm */
 /* @var array $seenFilters */

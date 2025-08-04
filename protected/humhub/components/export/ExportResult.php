@@ -137,7 +137,7 @@ class ExportResult extends BaseObject
         $this->saveAs($this->getTempFileName());
 
         $response = Yii::$app->getResponse();
-        $response->on(Response::EVENT_AFTER_SEND, [$this, 'delete']);
+        $response->on(Response::EVENT_AFTER_SEND, $this->delete(...));
 
         return $response->sendFile($this->getTempFileName(), $this->getResultFileName(), $options);
     }

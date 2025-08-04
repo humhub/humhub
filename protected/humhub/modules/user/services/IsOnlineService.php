@@ -21,11 +21,8 @@ class IsOnlineService
 {
     protected const CACHE_IS_ONLINE_PREFIX = 'is_online_user_id_';
 
-    public ?User $user;
-
-    public function __construct(?User $user)
+    public function __construct(public ?User $user)
     {
-        $this->user = $user;
     }
 
     public function updateStatus(): void

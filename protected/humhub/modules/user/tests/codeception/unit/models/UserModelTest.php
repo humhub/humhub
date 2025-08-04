@@ -29,10 +29,10 @@ class UserModelTest extends HumHubDbTestCase
     {
         $model = new User();
         $this->assertTrue(is_array($model->scenarios()));
-        $this->assertTrue(key_exists('login', $model->scenarios()));
-        $this->assertTrue(key_exists('editAdmin', $model->scenarios()));
-        $this->assertTrue(key_exists('registration_email', $model->scenarios()));
-        $this->assertTrue(key_exists('registration', $model->scenarios()));
+        $this->assertTrue(array_key_exists('login', $model->scenarios()));
+        $this->assertTrue(array_key_exists('editAdmin', $model->scenarios()));
+        $this->assertTrue(array_key_exists('registration_email', $model->scenarios()));
+        $this->assertTrue(array_key_exists('registration', $model->scenarios()));
     }
 
     public function testFindIdentityByAccessToken()
@@ -112,9 +112,7 @@ class UserModelTest extends HumHubDbTestCase
         $this->assertEquals('Admin', $user->getDisplayName());
 
         $userModule = Yii::$app->getModule('user');
-        $userModule->displayNameCallback = function () {
-            return 'Callback display name';
-        };
+        $userModule->displayNameCallback = (fn() => 'Callback display name');
 
         Yii::$app->runtimeCache->flush();
         $this->assertEquals('Callback display name', $user->getDisplayName());

@@ -245,17 +245,13 @@ class LogFilterForm extends Model
      */
     public static function getLevelLabel($level)
     {
-        switch ($level) {
-            case Logger::LEVEL_INFO:
-                return Yii::t('AdminModule.information', 'Info');
-            case Logger::LEVEL_WARNING:
-                return Yii::t('AdminModule.information', 'Warning');
-            case Logger::LEVEL_ERROR:
-                return Yii::t('AdminModule.information', 'Error');
-            case Logger::LEVEL_TRACE:
-                return Yii::t('AdminModule.information', 'Trace');
-        }
-        return null;
+        return match ($level) {
+            Logger::LEVEL_INFO => Yii::t('AdminModule.information', 'Info'),
+            Logger::LEVEL_WARNING => Yii::t('AdminModule.information', 'Warning'),
+            Logger::LEVEL_ERROR => Yii::t('AdminModule.information', 'Error'),
+            Logger::LEVEL_TRACE => Yii::t('AdminModule.information', 'Trace'),
+            default => null,
+        };
     }
 
 
@@ -268,7 +264,7 @@ class LogFilterForm extends Model
 
         $result = [static::FILTER_CATEGORY_NONE => Yii::t('AdminModule.information', 'Select category..')];
         foreach ($categoryArr as $logArr) {
-            if (!isset($logArr['category']) || strpos($logArr['category'], 'yii\\') === 0) {
+            if (!isset($logArr['category']) || str_starts_with($logArr['category'], 'yii\\')) {
                 continue;
             }
 

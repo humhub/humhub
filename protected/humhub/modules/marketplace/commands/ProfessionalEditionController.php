@@ -74,7 +74,7 @@ class ProfessionalEditionController extends Controller
             return;
         } else {
             $this->stdout(Yii::t('MarketplaceModule.base', "\nThe license could not be activated:\n"), Console::FG_RED, Console::BOLD);
-            foreach ($model->getErrors() as $attribute => $errors) {
+            foreach ($model->getErrors() as $errors) {
                 print "- " . implode(', ', $errors);
             }
         }

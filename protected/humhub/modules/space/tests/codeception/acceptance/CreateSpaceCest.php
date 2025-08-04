@@ -47,7 +47,7 @@ class CreateSpaceCest
         try {
             $I->waitForText('Add Modules', 5, '#globalModal');
             $I->click('Next', '#globalModal');
-        } catch (Exception $e) {
+        } catch (Exception) {
             // Do this if it's not present.
         }
 

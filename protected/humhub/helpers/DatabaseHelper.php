@@ -40,22 +40,12 @@ class DatabaseHelper
             return null;
         }
 
-        switch ($ex->getCode()) {
-            case 2002:
-                $error = 'Hostname not found.';
-                break;
-
-            case 1044:
-                $error = 'Database not found or not accessible.';
-                break;
-
-            case 1049:
-                $error = 'Database not found.';
-                break;
-
-            default:
-                $error = $ex->getMessage();
-        }
+        $error = match ($ex->getCode()) {
+            2002 => 'Hostname not found.',
+            1044 => 'Database not found or not accessible.',
+            1049 => 'Database not found.',
+            default => $ex->getMessage(),
+        };
 
         /**
          * @see https://www.php.net/manual/en/ref.pdo-odbc.connection.php
@@ -69,7 +59,7 @@ class DatabaseHelper
         );
 
         try {
-            $additionalInfo = [get_class($ex)];
+            $additionalInfo = [$ex::class];
             if (isset($ex->errorInfo)) {
                 if (is_array($ex->errorInfo)) {
                     $additionalInfo = array_merge($additionalInfo, $ex->errorInfo);
@@ -78,7 +68,7 @@ class DatabaseHelper
                 }
             }
             $additionalInfo = json_encode($additionalInfo, JSON_THROW_ON_ERROR);
-        } catch (\JsonException $e) {
+        } catch (\JsonException) {
             $additionalInfo = 'N/A';
         }
 

@@ -13,7 +13,6 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\content\widgets\ContentTagPicker;
 use humhub\modules\topic\models\Topic;
-use humhub\modules\topic\permissions\AddTopic;
 use Yii;
 use yii\helpers\Url;
 
@@ -74,7 +73,7 @@ class TopicPicker extends ContentTagPicker
      * @param ContentContainerActiveRecord|null $container
      * @return bool
      */
-    public static function showTopicPicker(ContentContainerActiveRecord $container = null)
+    public static function showTopicPicker(?ContentContainerActiveRecord $container = null)
     {
         return static::canAddTopic($container) || static::hasTopics($container);
     }
@@ -85,9 +84,9 @@ class TopicPicker extends ContentTagPicker
      * @return bool
      * @since 1.6
      */
-    private static function canAddTopic(ContentContainerActiveRecord $container = null)
+    private static function canAddTopic(?ContentContainerActiveRecord $container = null)
     {
-        return $container && $container->can(AddTopic::class);
+        return $container && Topic::isAllowedToCreate($container);
     }
 
     /**
@@ -95,13 +94,9 @@ class TopicPicker extends ContentTagPicker
      *
      * @return bool
      */
-    private static function hasTopics(ContentContainerActiveRecord $container = null)
+    private static function hasTopics(?ContentContainerActiveRecord $container = null)
     {
-        if (!$container) {
-            return (bool)Topic::find()->count();
-        }
-
-        return (bool)Topic::findByContainer($container)->count();
+        return (($container ? Topic::findByContainer($container)->count() : 0) + Topic::find()->count()) > 0;
     }
 
     /**

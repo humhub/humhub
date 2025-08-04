@@ -1,7 +1,20 @@
-<div <?= $id ? 'id="'.$id.'"' : ''?> class="loader humhub-ui-loader <?= $cssClass; ?>" <?php if(isset($show) && !$show) : ?> style="display:none;" <?php endif; ?>>
-    <div class="sk-spinner sk-spinner-three-bounce">
-        <div class="sk-bounce1"></div>
-        <div class="sk-bounce2"></div>
-        <div class="sk-bounce3"></div>
+<?php
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
+/**
+ * @var $id string
+ * @var $show bool
+ * @var $cssClass string
+ */
+?>
+
+<div<?= $id ? ' id="' . $id . '"' : ''?>
+    class="hh-loader humhub-ui-loader text-center<?= $cssClass ? ' ' . $cssClass : '' ?><?= isset($show) && !$show ? ' d-none' : '' ?>">
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden"><?= Yii::t('base', 'Loading...') ?></span>
     </div>
 </div>

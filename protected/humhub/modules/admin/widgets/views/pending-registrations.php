@@ -1,11 +1,11 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\admin\assets\AdminPendingRegistrationsAsset;
 use humhub\modules\admin\models\PendingRegistrationSearch;
 use humhub\modules\admin\widgets\ExportButton;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\GridView;
-use yii\helpers\Html;
 use yii\helpers\Url;
 
 /** @var $searchModel PendingRegistrationSearch */
@@ -16,21 +16,21 @@ AdminPendingRegistrationsAsset::register($this);
 ?>
 <?= Html::beginTag('div', $options); ?>
     <h4>
-        <?= humhub\libs\Html::backButton(
+        <?= Html::backButton(
             ['/admin/user/index'],
             [
                 'label' => Yii::t('AdminModule.base', 'Back to user overview'),
-                'class' => 'btn-sm pull-right',
+                'class' => 'btn-sm float-end',
             ],
         ) ?>
         <?= Yii::t('AdminModule.base', 'Pending user registrations') ?>
     </h4>
 
-    <div class="help-block">
+    <div class="text-body-secondary">
         <?= Yii::t('AdminModule.user', 'The following list contains all pending sign-ups and invites.') ?>
     </div>
 
-    <div class="pull-right">
+    <div class="float-end">
         <?php if ($dataProvider->totalCount > 0): ?>
             <?= Button::primary(Yii::t('AdminModule.user', 'Re-send to all'))
                 ->icon('paper-plane')
@@ -54,9 +54,7 @@ AdminPendingRegistrationsAsset::register($this);
         [
             'class' => 'yii\grid\CheckboxColumn',
             'cssClass' => 'select-on-check-one',
-            'checkboxOptions' => function ($data) {
-                return ['id' => $data->id];
-            },
+            'checkboxOptions' => fn($data) => ['id' => $data->id],
             'contentOptions' => ['style' => 'width:auto; white-space: normal;'],
         ],
         [
@@ -75,30 +73,23 @@ AdminPendingRegistrationsAsset::register($this);
             'filter' => Html::activeDropDownList($searchModel, 'source', $types),
             'options' => ['width' => '40px'],
             'format' => 'raw',
-            'value' => function ($data) use ($types) {
-                return $types[$data->source] ?? Html::encode($data->source);
-            },
+            'value' => fn($data) => $types[$data->source] ?? Html::encode($data->source),
         ],
         [
             'header' => Yii::t('AdminModule.user', 'Actions'),
             'class' => 'yii\grid\ActionColumn',
             'template' => '{resend} {delete}',
             'buttons' => [
-                'resend' => function ($url, $model, $key) {
-                    return Button::primary()
-                        ->action('client.post', Url::to(['resend', 'id' => $model->id]))
-                        ->icon('paper-plane')
-                        ->confirm(Yii::t('AdminModule.user', 'Resend invitation?'))
-                        ->xs();
-                },
-                'delete' => function ($url, $model, $key) {
-                    return
-                        Button::danger()
-                            ->action('client.post', Url::to(['delete', 'id' => $model->id]))
-                            ->icon('trash')
-                            ->confirm(Yii::t('AdminModule.user', 'Delete pending registrations?'))
-                            ->xs();
-                },
+                'resend' => fn($url, $model, $key) => Button::primary()
+                    ->action('client.post', Url::to(['resend', 'id' => $model->id]))
+                    ->icon('paper-plane')
+                    ->confirm(Yii::t('AdminModule.user', 'Resend invitation?'))
+                    ->sm(),
+                'delete' => fn($url, $model, $key) => Button::danger()
+                    ->action('client.post', Url::to(['delete', 'id' => $model->id]))
+                    ->icon('trash')
+                    ->confirm(Yii::t('AdminModule.user', 'Delete pending registrations?'))
+                    ->sm(),
             ],
         ],
 

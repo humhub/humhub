@@ -12,7 +12,7 @@ use humhub\components\Widget;
 use humhub\modules\marketplace\Module;
 use humhub\modules\marketplace\services\MarketplaceService;
 use humhub\modules\ui\icon\widgets\Icon;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -50,11 +50,11 @@ class ModuleGroups extends Widget
             $updateAllButton = Button::primary(Yii::t('MarketplaceModule.base', 'Update all'))
                 ->options([
                     'data-stop-title' => Icon::get('pause') . ' &nbsp; ' . Yii::t('MarketplaceModule.base', 'Stop updating'),
-                    'data-stop-class' => 'btn btn-warning pull-right',
+                    'data-stop-class' => 'btn btn-warning float-end',
                 ])
                 ->action('marketplace.updateAll')
                 ->loader(false)
-                ->cssClass('active pull-right');
+                ->cssClass('active float-end');
 
             $this->addGroup('availableUpdates', [
                 'title' => Yii::t('MarketplaceModule.base', 'Available Updates'),
@@ -62,7 +62,7 @@ class ModuleGroups extends Widget
                 'count' => $updateModulesCount,
                 'view' => 'module-update-card',
                 'groupTemplate' => '<div class="container-module-updates">' . $updateAllButton . '{group}</div>',
-                'moduleTemplate' => '<div class="card card-module col-lg-2 col-md-3 col-sm-4 col-xs-6">{card}</div>',
+                'moduleTemplate' => '<div class="card card-module col-xl-2 col-lg-3 col-md-4 col-6">{card}</div>',
                 'sortOrder' => 10,
             ]);
         }

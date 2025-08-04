@@ -5,12 +5,11 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\components\View;
 use humhub\modules\content\models\forms\ShareIntendTargetForm;
 use humhub\modules\content\widgets\ContentContainerPickerField;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\modules\ui\view\components\View;
-use humhub\widgets\ModalButton;
-use humhub\widgets\ModalDialog;
+use humhub\widgets\modal\Modal;
+use humhub\widgets\modal\ModalButton;
 
 /**
  * @var $this View
@@ -19,13 +18,12 @@ use humhub\widgets\ModalDialog;
  */
 ?>
 
-<?php ModalDialog::begin([
-    'header' => Yii::t('ContentModule.base', 'Share'),
+<?php $form = Modal::beginFormDialog([
+    'title' => Yii::t('ContentModule.base', 'Share'),
+    'footer' => ModalButton::light(Yii::t('base', 'Back'))
+        ->load(['/file/share-intend', 'fileList' => $fileList]),
 ]) ?>
 
-<?php $form = ActiveForm::begin() ?>
-
-<div class="modal-body">
     <?= $form->field($model, 'targetContainerGuid')->widget(ContentContainerPickerField::class, [
         'maxSelection' => 1,
         'minInput' => 0,
@@ -33,12 +31,5 @@ use humhub\widgets\ModalDialog;
         'url' => $model->getContainerSearchUrl(),
         'options' => ['data-action-change' => 'ui.modal.submit'],
     ])->label(false) ?>
-</div>
 
-<div class="modal-footer">
-    <?= ModalButton::defaultType(Yii::t('base', 'Back'))
-        ->load(['/file/share-intend', 'fileList' => $fileList]) ?>
-</div>
-
-<?php ActiveForm::end() ?>
-<?php ModalDialog::end() ?>
+<?php Modal::endFormDialog() ?>

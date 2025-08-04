@@ -25,13 +25,8 @@ use yii\helpers\Url;
  */
 class SearchRecord implements MetaSearchResultInterface
 {
-    public ?Content $content = null;
-    public ?string $keyword = null;
-
-    public function __construct(Content $content, ?string $keyword = null)
+    public function __construct(public ?Content $content, public ?string $keyword = null)
     {
-        $this->content = $content;
-        $this->keyword = $keyword;
     }
 
     /**
@@ -61,7 +56,7 @@ class SearchRecord implements MetaSearchResultInterface
      */
     private function cutStringToKeyword(string $string, int $maxWordNumberBeforeKeyword = 1): string
     {
-        $index = stripos($string, $this->keyword);
+        $index = stripos($string, (string) $this->keyword);
 
         if ($index === false || $index < 40) {
             // Don't cut if the keyword is almost at the beginning

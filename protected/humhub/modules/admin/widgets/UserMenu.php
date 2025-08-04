@@ -15,6 +15,7 @@ use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\TabMenu;
+use humhub\widgets\bootstrap\Badge;
 use Yii;
 
 /**
@@ -53,7 +54,7 @@ class UserMenu extends TabMenu
 
         if ($approvalCount > 0) {
             $this->addEntry(new MenuLink([
-                'label' => Yii::t('AdminModule.user', 'Pending approvals') . ' <span class="label label-danger">' . $approvalCount . '</span>',
+                'label' => Yii::t('AdminModule.user', 'Pending approvals') . ' ' . Badge::danger((string)$approvalCount),
                 'url' => ['/admin/approval'],
                 'sortOrder' => 300,
                 'isActive' => ControllerHelper::isActivePath('admin', 'approval'),

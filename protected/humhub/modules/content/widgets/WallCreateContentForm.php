@@ -16,8 +16,8 @@ use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\space\models\Space;
 use humhub\modules\stream\actions\StreamEntryResponse;
 use humhub\modules\topic\models\Topic;
-use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\user\models\User;
+use humhub\widgets\form\ActiveForm;
 use Yii;
 use yii\web\HttpException;
 
@@ -112,7 +112,7 @@ abstract class WallCreateContentForm extends Widget
      * @param ContentActiveRecord $record
      * @return array json
      */
-    public static function create(ContentActiveRecord $record, ContentContainerActiveRecord $contentContainer = null)
+    public static function create(ContentActiveRecord $record, ?ContentContainerActiveRecord $contentContainer = null)
     {
         Yii::$app->response->format = 'json';
 
@@ -132,7 +132,7 @@ abstract class WallCreateContentForm extends Widget
         $userGuids = Yii::$app->request->post('notifyUserInput');
         if (!empty($userGuids)) {
             foreach ($userGuids as $guid) {
-                $user = User::findOne(['guid' => trim($guid)]);
+                $user = User::findOne(['guid' => trim((string) $guid)]);
                 if ($user) {
                     $record->content->notifyUsersOfNewContent[] = $user;
                 }

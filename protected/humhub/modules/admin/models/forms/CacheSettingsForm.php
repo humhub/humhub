@@ -58,12 +58,8 @@ class CacheSettingsForm extends Model
             ['reloadableScripts', 'string'],
             ['type', 'checkCacheType'],
             ['expireTime', 'integer'],
-            ['type', 'required', 'when' => function () {
-                return !$this->isTypeFixed;
-            }],
-            ['type', 'in', 'range' => array_keys($this->getTypes()), 'when' => function () {
-                return !$this->isTypeFixed;
-            }],
+            ['type', 'required', 'when' => fn() => !$this->isTypeFixed],
+            ['type', 'in', 'range' => array_keys($this->getTypes()), 'when' => fn() => !$this->isTypeFixed,
         ];
     }
 

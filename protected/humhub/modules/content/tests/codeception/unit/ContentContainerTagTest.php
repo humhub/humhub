@@ -122,7 +122,7 @@ class ContentContainerTagTest extends HumHubDbTestCase
     protected function createTestTag($name, $containerClass = null, $container = null)
     {
         if ($container instanceof ContentContainerActiveRecord) {
-            $containerClass = get_class($container);
+            $containerClass = $container::class;
         }
 
         $tag = new ContentContainerTag();

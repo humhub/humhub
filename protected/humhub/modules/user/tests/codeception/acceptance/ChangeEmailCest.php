@@ -34,7 +34,7 @@ class ChangeEmailCest
 
         $I->amGoingTo('fill password and not valid new email');
         $I->fillField('#accountchangeemail-newemail', 'newemail.com');
-        $I->fillField('#accountchangeemail-currentpassword', '123qwe');
+        $I->fillField('#accountchangeemail-currentpassword', 'user^humhub@PASS%worD!');
 
         $I->scrollToBottom();
         $I->click('save');
@@ -44,7 +44,7 @@ class ChangeEmailCest
 
         $I->amGoingTo('fill all required fields with valid data');
         $I->fillField('#accountchangeemail-newemail', 'new@email.com');
-        $I->fillField('#accountchangeemail-currentpassword', '123qwe');
+        $I->fillField('#accountchangeemail-currentpassword', 'user^humhub@PASS%worD!');
 
         $I->scrollToBottom();
         $I->click('save');

@@ -1,0 +1,5 @@
+@include media-breakpoint-down(lg) {
+    .layout-sidebar-container {
+        display: none;
+    }
+}

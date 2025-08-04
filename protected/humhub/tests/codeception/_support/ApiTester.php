@@ -27,22 +27,22 @@ class ApiTester extends BaseTester
 
     public function amAdmin()
     {
-        $this->amUser('Admin', 'test');
+        $this->amUser('Admin', 'admin&humhub@PASS%worD!');
     }
 
     public function amUser1()
     {
-        $this->amUser('User1', '123qwe');
+        $this->amUser('User1', 'user^humhub@PASS%worD!');
     }
 
     public function amUser2()
     {
-        $this->amUser('User2', '123qwe');
+        $this->amUser('User2', 'user^humhub@PASS%worD!');
     }
 
     public function amUser3()
     {
-        $this->amUser('User3', '123qwe');
+        $this->amUser('User3', 'user^humhub@PASS%worD!');
     }
 
     public function amUser($user = null, $password = null)
@@ -119,11 +119,11 @@ class ApiTester extends BaseTester
     {
         $encodedUrlParams = [];
         foreach ($urlParams as $paramKey => $paramValue) {
-            $encodedUrlParams[] = $paramKey . '=' . urlencode($paramValue);
+            $encodedUrlParams[] = $paramKey . '=' . urlencode((string) $paramValue);
         }
 
         if (!empty($encodedUrlParams)) {
-            $url .= (strpos($url, '?') === false ? '?' : '&') . implode('&', $encodedUrlParams);
+            $url .= (!str_contains($url, '?') ? '?' : '&') . implode('&', $encodedUrlParams);
         }
 
         $this->sendGet($url);
@@ -229,7 +229,7 @@ class ApiTester extends BaseTester
      */
     protected function getPaginationUrl($url, $page = 1, $perPage = 100)
     {
-        return '/api/v1/' . trim($url, '/') . (strpos($url, '?') === false ? '?' : '&') . 'page=' . (empty($page) ? 1 : $page) . '&per-page=' . $perPage;
+        return '/api/v1/' . trim($url, '/') . (!str_contains($url, '?') ? '?' : '&') . 'page=' . (empty($page) ? 1 : $page) . '&per-page=' . $perPage;
     }
 
     /**

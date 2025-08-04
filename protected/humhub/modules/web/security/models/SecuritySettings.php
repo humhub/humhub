@@ -229,7 +229,7 @@ class SecuritySettings extends Model
 
     private function applyMaskNonce(string $value): string
     {
-        if (strpos($value, '{{ nonce }}') === false) {
+        if (!str_contains($value, '{{ nonce }}')) {
             return $value;
         }
 

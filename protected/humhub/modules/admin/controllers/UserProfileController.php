@@ -136,7 +136,7 @@ class UserProfileController extends Controller
             $definition['buttons']['delete'] = [
                 'type' => 'submit',
                 'label' => Yii::t('AdminModule.user', 'Delete'),
-                'class' => 'btn btn-danger pull-right',
+                'class' => 'btn btn-danger float-end',
                 'options' => ['data-action-confirm' => ''],
             ];
         }
@@ -147,7 +147,7 @@ class UserProfileController extends Controller
         // Add used models to the CForm, so we can validate it
         $form->models['ProfileField'] = $field;
         foreach ($fieldTypes as $fieldType) {
-            $form->models[get_class($fieldType)] = $fieldType;
+            $form->models[$fieldType::class] = $fieldType;
         }
 
         // Form Submitted?

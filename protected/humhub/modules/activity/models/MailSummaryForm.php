@@ -135,7 +135,7 @@ class MailSummaryForm extends Model
         $contents = [];
 
         foreach (Module::getConfigurableActivities() as $activity) {
-            $contents[get_class($activity)] = $activity->getTitle() . ' - ' . $activity->getDescription();
+            $contents[$activity::class] = $activity->getTitle() . ' - ' . $activity->getDescription();
         }
 
         return $contents;
@@ -162,11 +162,11 @@ class MailSummaryForm extends Model
         $this->interval = $settingsManager->get('mailSummaryInterval');
         $this->limitSpacesMode = $settingsManager->get('mailSummaryLimitSpacesMode');
         $mailSummaryLimitSpaces = $settingsManager->get('mailSummaryLimitSpaces');
-        $this->limitSpaces = (!empty($mailSummaryLimitSpaces)) ? explode(',', $mailSummaryLimitSpaces) : [];
+        $this->limitSpaces = (!empty($mailSummaryLimitSpaces)) ? explode(',', (string) $mailSummaryLimitSpaces) : [];
 
         // Since we store only disabled activities, we need to enable the difference
         $mailSummaryActivitySuppress = $settingsManager->get('mailSummaryActivitySuppress');
-        $suppressedActivities = (!empty($mailSummaryActivitySuppress)) ? explode(',', $mailSummaryActivitySuppress) : [];
+        $suppressedActivities = (!empty($mailSummaryActivitySuppress)) ? explode(',', (string) $mailSummaryActivitySuppress) : [];
         $this->activities = array_diff(array_keys($this->getActivitiesArray()), $suppressedActivities);
 
         return true;

@@ -32,7 +32,7 @@ class Events extends Component
         /** @var Comment|ContentActiveRecord $sender */
         $sender = $event->sender;
 
-        foreach (Comment::find()->where(['object_model' => get_class($sender), 'object_id' => $sender->getPrimaryKey()])->all() as $comment) {
+        foreach (Comment::find()->where(['object_model' => $sender::class, 'object_id' => $sender->getPrimaryKey()])->all() as $comment) {
             $comment->delete();
         }
     }

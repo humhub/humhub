@@ -3,6 +3,7 @@
 namespace humhub\modules\file\widgets;
 
 use humhub\components\ActiveRecord;
+use humhub\helpers\Html;
 use humhub\modules\content\controllers\SearchController;
 use humhub\modules\content\helpers\SearchHelper;
 use humhub\modules\file\converter\TextConverter;
@@ -12,7 +13,6 @@ use humhub\widgets\JsWidget;
 use Yii;
 use yii\base\Model;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
 
 /**
  *

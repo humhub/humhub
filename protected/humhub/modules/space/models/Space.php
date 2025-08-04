@@ -136,9 +136,7 @@ class Space extends ContentContainerActiveRecord
         $module = Yii::$app->getModule('space');
 
         if ($module->useUniqueSpaceNames) {
-            $rules[] = [['name'], 'unique', 'targetClass' => static::class, 'when' => function ($model) {
-                return $model->isAttributeChanged('name');
-            }];
+            $rules[] = [['name'], 'unique', 'targetClass' => static::class, 'when' => fn($model) => $model->isAttributeChanged('name')];
         }
 
         return $rules;
@@ -335,7 +333,7 @@ class Space extends ContentContainerActiveRecord
      */
     public static function find()
     {
-        return new ActiveQuerySpace(get_called_class());
+        return new ActiveQuerySpace(static::class);
     }
 
 
@@ -362,9 +360,7 @@ class Space extends ContentContainerActiveRecord
             return false;
         }
 
-        $user = Yii::$app->runtimeCache->getOrSet(User::class . '#' . $userId, function () use ($userId) {
-            return User::findOne($userId);
-        });
+        $user = Yii::$app->runtimeCache->getOrSet(User::class . '#' . $userId, fn() => User::findOne($userId));
 
         if ($this->isBlockedForUser($user)) {
             return false;
@@ -482,7 +478,7 @@ class Space extends ContentContainerActiveRecord
     /**
      * @inheritdoc
      */
-    public function canAccessPrivateContent(User $user = null)
+    public function canAccessPrivateContent(?User $user = null)
     {
         $user = !$user && !Yii::$app->user->isGuest ? Yii::$app->user->getIdentity() : $user;
 
@@ -584,7 +580,7 @@ class Space extends ContentContainerActiveRecord
     /**
      * @inheritdoc
      */
-    public function getUserGroup(User $user = null)
+    public function getUserGroup(?User $user = null)
     {
         $user = !$user && !Yii::$app->user->isGuest ? Yii::$app->user->getIdentity() : $user;
 

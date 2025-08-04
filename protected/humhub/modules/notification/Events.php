@@ -95,7 +95,7 @@ class Events extends BaseObject
                         $notification->delete();
                     }
                 }
-            } catch (Exception $e) {
+            } catch (Exception) {
                 // Handles errors for getSourceObject() calls
                 if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " source class set but seems to no longer exist!")) {
                     $notification->delete();

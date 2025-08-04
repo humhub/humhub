@@ -66,7 +66,7 @@ class ModuleCleanupsJob extends LongRunningActiveJob
                 if ($backupDate + $this->backupKeepTime < time()) {
                     try {
                         FileHelper::removeDirectory($moduleBackupFolder . DIRECTORY_SEPARATOR . $backup);
-                    } catch (ErrorException $e) {
+                    } catch (ErrorException) {
                         Yii::error("Could not delete outdated backup: " . $moduleBackupFolder, 'marketplace');
                     }
                 }

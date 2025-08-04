@@ -67,7 +67,7 @@ class ContentType extends Model
      * @param ContentContainerActiveRecord|null $container
      * @return static[] existing content types of the given container
      */
-    public static function getContentTypes(ContentContainerActiveRecord $container = null)
+    public static function getContentTypes(?ContentContainerActiveRecord $container = null)
     {
         $containerId = ($container) ? $container->id : '';
 
@@ -96,7 +96,7 @@ class ContentType extends Model
      * @param ContentContainerActiveRecord|null $container
      * @return array content type selection array in form of [contentTypeClass => contentName]
      */
-    public static function getContentTypeSelection(ContentContainerActiveRecord $container = null)
+    public static function getContentTypeSelection(?ContentContainerActiveRecord $container = null)
     {
         $result = [];
         foreach (static::getContentTypes($container) as $contentType) {

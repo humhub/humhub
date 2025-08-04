@@ -24,7 +24,7 @@ class PhpMessageSource extends PhpMessageSourceYii
         $messageFile = Yii::getAlias($this->basePath) . '/' . $language . '/';
 
         // Try old language code syntax (e.g. pt_br instead pt-BR)
-        if (!is_dir($messageFile) && strpos($language, '-') !== false) {
+        if (!is_dir($messageFile) && str_contains($language, '-')) {
             $language = strtolower(str_replace('-', '_', $language));
             if (is_dir(Yii::getAlias($this->basePath) . '/' . $language . '/')) {
                 $messageFile = Yii::getAlias($this->basePath) . '/' . $language . '/';

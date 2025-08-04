@@ -5,9 +5,9 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\modules\ui\view\components\View;
-use humhub\widgets\ModalButton;
-use humhub\widgets\ModalDialog;
+use humhub\components\View;
+use humhub\widgets\modal\Modal;
+use humhub\widgets\modal\ModalButton;
 use yii\helpers\Url;
 
 /**
@@ -16,17 +16,16 @@ use yii\helpers\Url;
  */
 ?>
 
-<?php ModalDialog::begin(['header' => Yii::t('FileModule.base', 'Share')]) ?>
-    <div class="modal-body">
-        <?php foreach ($shareTargets as $target): ?>
-            <a class="btn btn-primary btn-block" data-action-click="ui.modal.load"
-               data-action-url="<?= Url::to([$target['route']]) ?>">
-                <?= $target['title'] ?>
-            </a>
-        <?php endforeach; ?>
-    </div>
+<?php Modal::beginDialog([
+    'title' => Yii::t('FileModule.base', 'Share'),
+    'footer' => ModalButton::cancel(),
+]) ?>
 
-    <div class="modal-footer">
-        <?= ModalButton::cancel() ?>
-    </div>
-<?php ModalDialog::end() ?>
+    <?php foreach ($shareTargets as $target): ?>
+        <a class="btn btn-primary btn-block" data-action-click="ui.modal.load"
+           data-action-url="<?= Url::to([$target['route']]) ?>">
+            <?= $target['title'] ?>
+        </a>
+    <?php endforeach; ?>
+
+<?php Modal::endDialog() ?>

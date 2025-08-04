@@ -23,7 +23,7 @@ class InviteTest extends HumHubDbTestCase
         $space = Space::findOne(['id' => 1]);
         $space->inviteMember(2, Yii::$app->user->id);
 
-        $this->assertMailSent(1, 'Approval notification admin mail');
+        $this->assertMailSent(1);
         $this->assertHasNotification(Invite::class, $space, Yii::$app->user->id, 'Invite Request Notification');
 
         // check cached version
@@ -39,7 +39,7 @@ class InviteTest extends HumHubDbTestCase
         $this->becomeUser('User1');
 
         $space->addMember(2);
-        $this->assertMailSent(2, 'Approval notification admin mail');
+        $this->assertMailSent(2);
         $this->assertHasNotification(InviteAccepted::class, $space, 2, 'Approval Accepted Invite Notificatoin');
     }
 
@@ -51,7 +51,7 @@ class InviteTest extends HumHubDbTestCase
         $space = Space::findOne(['id' => 1]);
         $space->inviteMember(2, Yii::$app->user->id);
 
-        $this->assertMailSent(1, 'Approval notification admin mail');
+        $this->assertMailSent(1);
         $this->assertHasNotification(Invite::class, $space, Yii::$app->user->id, 'Invite Request Notification');
 
         // check cached version
@@ -67,7 +67,7 @@ class InviteTest extends HumHubDbTestCase
         $this->becomeUser('User1');
 
         $space->removeMember();
-        $this->assertMailSent(2, 'Approval notification admin mail');
+        $this->assertMailSent(2);
         $this->assertHasNotification(InviteDeclined::class, $space, 2, 'Declined Invite Notificatoin');
     }
 

@@ -724,7 +724,7 @@ class Migration extends \yii\db\Migration
         // make sure the class is set
         $params['class'] ??= static::class;
 
-        if (false === strpos('{class}', $message)) {
+        if (!str_contains('{class}', $message)) {
             $message = "Migration {class}: $message";
         }
 

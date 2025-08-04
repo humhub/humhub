@@ -3,7 +3,7 @@
 namespace humhub\modules\content\widgets\richtext\converter;
 
 use HTMLPurifier_Config;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
 use yii\helpers\HtmlPurifier;
 
@@ -71,7 +71,7 @@ class RichTextToHtmlConverter extends BaseRichTextConverter
             return $text;
         }
 
-        return HtmlPurifier::process($text, function ($config) {
+        return HtmlPurifier::process($text, function ($config): void {
             /* @var HTMLPurifier_Config $config */
             // Make sure we use non xhtml tags, unfortunately HTML5 is not supported by html purifier
             $config->set('HTML.Doctype', $this->doctype);

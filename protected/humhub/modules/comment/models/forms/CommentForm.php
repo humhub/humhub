@@ -27,13 +27,14 @@ class CommentForm extends yii\base\Model
     public $comment;
 
     /**
+     * @param Comment|ContentActiveRecord $target
+     */
+    public function __construct(/**
      * @var Comment|ContentActiveRecord The model to comment or other active content
      */
-    public $target;
-
-    public function __construct($target, $comment = null)
-    {
-        $this->target = $target;
+        public $target,
+        $comment = null,
+    ) {
         $this->comment = $comment ?? new Comment();
         parent::__construct();
     }

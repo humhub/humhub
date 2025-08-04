@@ -13,7 +13,7 @@ use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\forms\Invite as InviteForm;
-use humhub\widgets\ModalClose;
+use humhub\widgets\modal\ModalClose;
 use Throwable;
 use Yii;
 use yii\base\Exception;

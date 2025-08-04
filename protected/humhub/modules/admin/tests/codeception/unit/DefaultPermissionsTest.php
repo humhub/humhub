@@ -25,14 +25,14 @@ class DefaultPermissionsTest extends HumHubDbTestCase
         $testPermission = new CanLike();
 
         $defaultPermissionManager = new ContentContainerDefaultPermissionManager([
-            'contentContainerClass' => get_class($space),
+            'contentContainerClass' => $space::class,
         ]);
-        $defaultPermission = $defaultPermissionManager->getById(get_class($testPermission), $testPermission->getModuleId());
+        $defaultPermission = $defaultPermissionManager->getById($testPermission::class, $testPermission->getModuleId());
         $this->assertNotNull($defaultPermission);
         $defaultPermissionManager->setGroupState($testGroupId, $defaultPermission, $testState);
 
         $spacePermissionManager = $space->getPermissionManager();
-        $spacePermission = $spacePermissionManager->getById(get_class($testPermission), $testPermission->getModuleId());
+        $spacePermission = $spacePermissionManager->getById($testPermission::class, $testPermission->getModuleId());
         $this->assertNotNull($spacePermission);
 
         $this->assertEquals($spacePermissionManager->getSingleGroupDefaultState($testGroupId, $spacePermission), $testState);
@@ -53,14 +53,14 @@ class DefaultPermissionsTest extends HumHubDbTestCase
         $testPermission = new CanLike();
 
         $defaultPermissionManager = new ContentContainerDefaultPermissionManager([
-            'contentContainerClass' => get_class($user),
+            'contentContainerClass' => $user::class,
         ]);
-        $defaultPermission = $defaultPermissionManager->getById(get_class($testPermission), $testPermission->getModuleId());
+        $defaultPermission = $defaultPermissionManager->getById($testPermission::class, $testPermission->getModuleId());
         $this->assertNotNull($defaultPermission);
         $defaultPermissionManager->setGroupState($testGroupId, $defaultPermission, $testState);
 
         $userPermissionManager = $user->getPermissionManager();
-        $userPermission = $userPermissionManager->getById(get_class($testPermission), $testPermission->getModuleId());
+        $userPermission = $userPermissionManager->getById($testPermission::class, $testPermission->getModuleId());
         $this->assertNotNull($userPermission);
 
         $this->assertEquals($userPermissionManager->getSingleGroupDefaultState($testGroupId, $userPermission), $testState);

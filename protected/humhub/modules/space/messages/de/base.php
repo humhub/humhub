@@ -42,7 +42,7 @@ return [
   'Decline' => 'Ablehnen',
   'Decline Invite' => 'Einladung ablehnen',
   'Default' => 'Standard',
-  'Default Stream Sort' => 'Standard Stream Sortierung',
+  'Default Stream Sort' => 'Standardsortierung des Streams',
   'Default content visibility' => 'Standard-Sichtbarkeit der Inhalte',
   'Delete' => 'Löschen',
   'Description' => 'Beschreibung',

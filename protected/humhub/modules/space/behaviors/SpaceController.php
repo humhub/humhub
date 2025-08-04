@@ -8,17 +8,17 @@
 
 namespace humhub\modules\space\behaviors;
 
+use humhub\components\Controller;
+use humhub\helpers\Html;
 use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\space\models\Space;
+use humhub\modules\space\widgets\Image;
 use humhub\modules\user\helpers\AuthHelper;
 use Yii;
 use yii\base\Behavior;
 use yii\base\InvalidValueException;
 use yii\helpers\Json;
 use yii\web\HttpException;
-use humhub\libs\Html;
-use humhub\modules\space\widgets\Image;
-use humhub\modules\space\models\Space;
-use humhub\components\Controller;
 
 /**
  * SpaceController Behavior
@@ -96,8 +96,9 @@ class SpaceController extends Behavior
                 ]),
             ];
 
-            $this->owner->view->registerJs('humhub.modules.space.setSpace(' . Json::encode($options) . ', ' .
-                Json::encode(Yii::$app->request->isPjax) . ')');
+            if (Yii::$app->request->isPjax) {
+                $this->owner->view->registerJs('humhub.modules.space.setSpace(' . Json::encode($options) . ', true)');
+            }
         }
     }
 

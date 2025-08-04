@@ -19,11 +19,8 @@ use Yii;
  */
 final class InviteRegistrationService
 {
-    private ?string $token;
-
-    public function __construct(?string $token)
+    public function __construct(private readonly ?string $token)
     {
-        $this->token = $token;
     }
 
     public static function createFromRequestOrEmail(?string $email): InviteRegistrationService

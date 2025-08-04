@@ -5,7 +5,7 @@ namespace humhub\modules\content\widgets\richtext;
 use Exception;
 use humhub\components\ActiveRecord;
 use humhub\components\Event;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\content\widgets\richtext\extensions\RichTextExtension;
 use humhub\widgets\JsWidget;
 use Yii;
@@ -326,18 +326,13 @@ abstract class AbstractRichText extends JsWidget
             $content = '';
         }
 
-        switch ($format) {
-            case static::FORMAT_HTML:
-                return $converter->convertToHtml($content, $options);
-            case static::FORMAT_MARKDOWN:
-                return $converter->convertToMarkdown($content, $options);
-            case static::FORMAT_PLAINTEXT:
-                return $converter->convertToPlaintext($content, $options);
-            case static::FORMAT_SHORTTEXT:
-                return $converter->convertToShortText($content, $options);
-            default:
-                return Html::encode($converter->convertToPlaintext($content, $options));
-        }
+        return match ($format) {
+            static::FORMAT_HTML => $converter->convertToHtml($content, $options),
+            static::FORMAT_MARKDOWN => $converter->convertToMarkdown($content, $options),
+            static::FORMAT_PLAINTEXT => $converter->convertToPlaintext($content, $options),
+            static::FORMAT_SHORTTEXT => $converter->convertToShortText($content, $options),
+            default => Html::encode($converter->convertToPlaintext($content, $options)),
+        };
     }
 
     /**

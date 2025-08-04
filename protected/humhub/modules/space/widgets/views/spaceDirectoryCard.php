@@ -5,7 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image;
 use humhub\modules\space\widgets\SpaceDirectoryActionButtons;
@@ -36,7 +36,7 @@ use yii\web\View;
     <div class="card-body">
         <a href="<?= $space->getUrl() ?>" class="card-space-link">
             <strong class="card-title"><?= Html::encode($space->name) ?></strong>
-            <?php if (trim($space->description) !== '') : ?>
+            <?php if (trim((string) $space->description) !== '') : ?>
                 <div class="card-details"><?= Html::encode($space->description) ?></div>
             <?php endif; ?>
         </a>
