@@ -3,6 +3,7 @@ Module Migration Guide
 
 Version 1.18 (Unreleased)
 ------------
+Updated minimum required PHP version to 8.2.
 
 ### New
 - `\humhub\components\captcha\CaptchaInterface`

@@ -81,7 +81,7 @@ class RichTextPostProcessTest extends HumHubDbTestCase
         $post = Post::findOne(['id' => 1]);
         $guid = User::findOne(['id' => 1])->guid;
 
-        $text = "[](mention:${guid})";
+        $text = "[](mention:{$guid})";
 
         $result = RichText::postProcess($text, $post);
         static::assertNotEmpty($result['mention']);
@@ -94,7 +94,7 @@ class RichTextPostProcessTest extends HumHubDbTestCase
         $guid = User::findOne(['id' => 1])->guid;
         $guid2 = User::findOne(['id' => 2])->guid;
 
-        $text = "[](mention:${guid}) and [](mention:${guid2})";
+        $text = "[](mention:{$guid}) and [](mention:{$guid2})";
 
         $result = RichText::postProcess($text, $post);
 
@@ -232,7 +232,7 @@ class RichTextPostProcessTest extends HumHubDbTestCase
         $guid = $files[0]->guid;
         $filename = $files[0]->file_name;
         static::assertEquals($guid, $result['file-guid'][0]);
-        static::assertEquals("[${filename}](file-guid:${guid} \"${filename}\")", $result['text']);
+        static::assertEquals("[{$filename}](file-guid:{$guid} \"{$filename}\")", $result['text']);
     }
 
     public function testProcessDataImageWithSize()
@@ -251,6 +251,6 @@ class RichTextPostProcessTest extends HumHubDbTestCase
         $guid = $files[0]->guid;
         $filename = $files[0]->file_name;
         static::assertEquals($guid, $result['file-guid'][0]);
-        static::assertEquals("[${filename}](file-guid:${guid} \"${filename}\" x150)", $result['text']);
+        static::assertEquals("[{$filename}](file-guid:{$guid} \"{$filename}\" x150)", $result['text']);
     }
 }

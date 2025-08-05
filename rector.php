@@ -16,7 +16,7 @@ return RectorConfig::configure()
         __DIR__ . '/protected/humhub/modules/*/messages/*',
         __DIR__ . '/protected/humhub/modules/*/config.php',
     ])
-    ->withPhpSets(php82:true)
+    ->withPhpSets()
     ->withTypeCoverageLevel(0)
     ->withDeadCodeLevel(0)
     ->withCodeQualityLevel(0);
