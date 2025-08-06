@@ -3,10 +3,10 @@
 namespace tests\codeception\_support;
 
 use Codeception\Module;
+use Codeception\TestInterface;
 use humhub\modules\activity\tests\codeception\fixtures\ActivityFixture;
 use humhub\modules\content\tests\codeception\fixtures\ContentContainerSettingFixture;
 use humhub\modules\content\tests\codeception\fixtures\ContentFixture;
-use humhub\modules\file\models\FileHistory;
 use humhub\modules\file\tests\codeception\fixtures\FileFixture;
 use humhub\modules\file\tests\codeception\fixtures\FileHistoryFixture;
 use humhub\modules\friendship\tests\codeception\fixtures\FriendshipFixture;
@@ -68,7 +68,7 @@ class DynamicFixtureHelper extends Module
      * to use in acceptance and functional tests.
      * @param array $settings
      */
-    public function _before(\Codeception\TestCase $test)
+    public function _before(TestInterface $test)
     {
         $this->unloadFixtures();
 
@@ -80,7 +80,7 @@ class DynamicFixtureHelper extends Module
     /**
      * Method is called after all suite tests run
      */
-    public function _after(\Codeception\TestCase $test)
+    public function _after(TestInterface $test)
     {
         if ($this->beforeTest) {
             //$this->unloadFixtures();

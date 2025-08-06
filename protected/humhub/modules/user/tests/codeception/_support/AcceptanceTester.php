@@ -64,7 +64,7 @@ class AcceptanceTester extends \AcceptanceTester
         $this->waitForText('Manage profile attributes');
         $this->waitForText($options['categoryTitle']);
         $this->click($options['categoryTitle']);
-        $this->waitForText('Add new field', null, '.tab-pane.active');
+        $this->waitForText('Add new field', 10, '.tab-pane.active');
         $this->click('Add new field', '.tab-pane.active');
         $this->waitForText('Create new profile field');
         $this->fillField('#profilefield-internal_name', $options['internalName']);

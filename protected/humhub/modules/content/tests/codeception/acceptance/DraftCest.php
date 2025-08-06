@@ -23,8 +23,8 @@ class DraftCest
         $I->waitForText('DRAFT', '5', '//div[@class="wall-entry"][1]');
         $I->wantTo('ensure author can see the draft content on dashboard.');
         $I->amOnDashboard();
-        $I->waitForText('Schabernack', null, '[data-stream-entry="1"]');
-        $I->waitForText('DRAFT', null, '[data-stream-entry="1"]');
+        $I->waitForText('Schabernack', 10, '[data-stream-entry="1"]');
+        $I->waitForText('DRAFT', 10, '[data-stream-entry="1"]');
 
         $I->wantTo('ensure draft is not visible for other users.');
         $I->amUser2(true);

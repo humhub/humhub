@@ -26,7 +26,7 @@ class RequestMembershipCest
         $I->seeElement('[data-space-request-membership]');
         $I->click('[data-space-request-membership]');
 
-        $I->waitForText('Request Membership', null, '#globalModal');
+        $I->waitForText('Request Membership', 10, '#globalModal');
         $I->fillField('#request-message', 'Hi, I want to join this space.');
         $I->click('Send', '#globalModal');
         $I->waitForText('Your request was successfully submitted to the space administrators.');
@@ -37,7 +37,7 @@ class RequestMembershipCest
         $I->amAdmin(true);
         $I->seeInNotifications('Peter Tester requests membership for the space Space 1', true);
 
-        $I->waitForText('Pending Approvals', null, '.tab-menu .active');
+        $I->waitForText('Pending Approvals', 10, '.tab-menu .active');
         $I->see('Hi, I want to join this space.', '.grid-view');
         $I->click('Accept', '.grid-view');
 
@@ -46,7 +46,7 @@ class RequestMembershipCest
         $I->amUser1(true);
 
         $I->seeInNotifications('Admin Tester approved your membership for the space Space 1', true);
-        $I->waitForText('User 1 Space 1 Post Private', null, '#wallStream');
+        $I->waitForText('User 1 Space 1 Post Private', 10, '#wallStream');
     }
 
     /**
@@ -62,7 +62,7 @@ class RequestMembershipCest
         $I->seeElement('[data-space-request-membership]');
         $I->click('[data-space-request-membership]');
 
-        $I->waitForText('Request Membership', null, '#globalModal');
+        $I->waitForText('Request Membership', 10, '#globalModal');
         $I->fillField('#request-message', 'Hi, I want to join this space.');
         $I->click('Send', '#globalModal');
         $I->waitForText('Your request was successfully submitted to the space administrators.');
@@ -73,10 +73,10 @@ class RequestMembershipCest
         $I->amAdmin(true);
         $I->seeInNotifications('Peter Tester requests membership for the space Space 1', true);
 
-        $I->waitForText('Pending Approvals', null, '.tab-menu .active');
+        $I->waitForText('Pending Approvals', 10, '.tab-menu .active');
 
         $I->click('.dropdown', '.controls-header');
-        $I->waitForText('Members', null, '.controls-header');
+        $I->waitForText('Members', 10, '.controls-header');
         $I->click('Members', '.controls-header');
 
         $I->waitForText('Member since');
@@ -108,7 +108,7 @@ class RequestMembershipCest
         $I->seeElement('[data-space-request-membership]');
         $I->click('[data-space-request-membership]');
 
-        $I->waitForText('Request Membership', null, '#globalModal');
+        $I->waitForText('Request Membership', 10, '#globalModal');
         $I->fillField('#request-message', 'Hi, I want to join this space.');
         $I->click('Send', '#globalModal');
         $I->waitForText('Your request was successfully submitted to the space administrators.');
@@ -120,7 +120,7 @@ class RequestMembershipCest
         $I->click('Confirm');
         $I->waitForText('Join'); // Back to dashboard
         $I->amOnSpace1();
-        $I->waitForText('Join', null, '[data-space-request-membership]');
+        $I->waitForText('Join', 10, '[data-space-request-membership]');
 
         $I->amAdmin(true);
         $I->dontSeeInNotifications('Peter Tester requests membership for the space Space 1');
@@ -128,7 +128,7 @@ class RequestMembershipCest
         $I->dontSeeElement('.panel-danger');
 
         $I->click('.dropdown', '.controls-header');
-        $I->waitForText('Members', null, '.controls-header');
+        $I->waitForText('Members', 10, '.controls-header');
         $I->click('Members', '.controls-header');
 
         $I->waitForText('Manage members');

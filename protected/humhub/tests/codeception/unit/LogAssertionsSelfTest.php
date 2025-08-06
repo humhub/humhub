@@ -46,7 +46,7 @@ class LogAssertionsSelfTest extends HumHubDbTestCase
         self::$output = new class ($config = ['interactive' => false, 'colors' => false]) extends Output {
             public bool $forward = false;
 
-            public function doWrite(string $message, bool $newline)
+            public function doWrite(string $message, bool $newline): void
             {
                 if ($this->forward) {
                     parent::doWrite($message, $newline);
@@ -68,7 +68,7 @@ class LogAssertionsSelfTest extends HumHubDbTestCase
             self::$output->forward = true;
         } else {
             self::$originalOutput = new class ($config = ['interactive' => false, 'colors' => false]) extends Output {
-                public function debug($message)
+                public function debug($message): void
                 {
                     // don't do anything
                 }
