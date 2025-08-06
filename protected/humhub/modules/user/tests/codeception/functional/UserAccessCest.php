@@ -25,7 +25,7 @@ class UserAccessCest
         $user->status = User::STATUS_DISABLED;
         $user->save();
 
-        $I->amOnPage(['/dashboard/dashboard']);
+        $I->amOnPage('/dashboard/dashboard');
         $I->see('Please sign in');
     }
 
@@ -40,7 +40,7 @@ class UserAccessCest
         $user->status = User::STATUS_NEED_APPROVAL;
         $user->save();
 
-        $I->amOnPage(['/dashboard/dashboard']);
+        $I->amOnPage('/dashboard/dashboard');
         $I->see('Please sign in');
     }
 }
