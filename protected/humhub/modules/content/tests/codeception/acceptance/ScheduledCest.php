@@ -22,12 +22,12 @@ class ScheduledCest
         $I->click('#post_submit_button', '#contentFormBody');
 
         $I->wantTo('ensure the scheduled content has a proper badge.');
-        $I->waitForText($postContent, null, '.wall-entry');
+        $I->waitForText($postContent, 10, '.wall-entry');
         $I->see($this->getLabelText($datetime), '//div[@class="wall-entry"][1]');
         $I->wantTo('ensure author can see the scheduled content on dashboard.');
         $I->amOnDashboard();
-        $I->waitForText($postContent, null, '[data-stream-entry="1"]');
-        $I->waitForText($this->getLabelText($datetime), null, '[data-stream-entry="1"]');
+        $I->waitForText($postContent, 10, '[data-stream-entry="1"]');
+        $I->waitForText($this->getLabelText($datetime), 10, '[data-stream-entry="1"]');
 
         $I->wantTo('ensure the scheduled content is not visible for other users.');
         $I->amUser2(true);
@@ -60,7 +60,7 @@ class ScheduledCest
     {
         $I->waitForText('Schedule publication');
         $I->jsClick('.dropdown-menu.show [data-action-click=scheduleOptions]');
-        $I->waitForText('Scheduling Options', null, '#globalModal');
+        $I->waitForText('Scheduling Options', 10, '#globalModal');
         if ($datetime instanceof DateTime) {
             $I->checkOption('#scheduleoptionsform-enabled');
             $I->fillField('ScheduleOptionsForm[date]', Yii::$app->formatter->asDate($datetime, self::DATE_FORMAT));

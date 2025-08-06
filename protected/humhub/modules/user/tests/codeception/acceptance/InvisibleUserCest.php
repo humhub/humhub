@@ -21,7 +21,7 @@ class InvisibleUserCest
         $I->amOnSpace1();
         $I->waitForText('Space members');
         $I->click('Members', '.statistics');
-        $I->waitForText($userName, null, '#globalModal');
+        $I->waitForText($userName, 10, '#globalModal');
 
         $I->amGoingTo('make Sara Tester invisible');
         $I->amOnRoute(['/admin/user/edit', 'id' => 3]);
@@ -45,7 +45,7 @@ class InvisibleUserCest
         $I->amOnSpace1();
         $I->waitForText('Space members');
         $I->click('Members', '.statistics');
-        $I->waitForText('Members', null, '#globalModal');
+        $I->waitForText('Members', 10, '#globalModal');
         $I->see($userName, '#globalModal');
 
         $I->amGoingTo('be sure Sara Tester is invisible for other users without permissions');
@@ -58,7 +58,7 @@ class InvisibleUserCest
         $I->amOnSpace1();
         $I->waitForText('Space members');
         $I->click('Members', '.statistics');
-        $I->waitForText('Members', null, '#globalModal');
+        $I->waitForText('Members', 10, '#globalModal');
         $I->dontSee($userName, '#globalModal');
     }
 

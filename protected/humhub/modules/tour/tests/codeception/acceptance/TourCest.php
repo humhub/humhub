@@ -28,7 +28,7 @@ class TourCest
         $I->checkOptionShowTour();
 
         $I->amOnDashboard();
-        $I->waitForText('You are the first user here', null, '#globalModal');
+        $I->waitForText('You are the first user here', 10, '#globalModal');
         $I->click('Save and close', '#globalModal');
 
         $I->waitForElementVisible('#getting-started-panel');
@@ -41,33 +41,33 @@ class TourCest
         $I->see('Dashboard', '.popover.tour');
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Notifications', null, '.popover.tour');
+        $I->waitForText('Notifications', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Account Menu', null, '.popover.tour');
+        $I->waitForText('Account Menu', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Space Menu', null, '.popover.tour');
+        $I->waitForText('Space Menu', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Start space guide', '.popover.tour');
 
         $I->wait(2);
 
-        $I->waitForText('Once you have joined or created a new space', null, '.popover.tour');
+        $I->waitForText('Once you have joined or created a new space', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Space navigation menu', null, '.popover.tour');
+        $I->waitForText('Space navigation menu', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Space preferences', null, '.popover.tour');
+        $I->waitForText('Space preferences', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Writing posts', null, '.popover.tour');
+        $I->waitForText('Writing posts', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
@@ -79,47 +79,47 @@ class TourCest
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Space members', null, '.popover.tour');
+        $I->waitForText('Space members', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Yay! You\'re done.', null, '.popover.tour');
+        $I->waitForText('Yay! You\'re done.', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Profile Guide', '.popover.tour');
 
-        $I->waitForText('User profile', null, '.popover.tour');
+        $I->waitForText('User profile', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Profile photo', null, '.popover.tour');
+        $I->waitForText('Profile photo', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Edit account', null, '.popover.tour');
+        $I->waitForText('Edit account', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Profile menu', null, '.popover.tour');
+        $I->waitForText('Profile menu', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Profile stream', null, '.popover.tour');
+        $I->waitForText('Profile stream', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Hurray! You\'re done!', null, '.popover.tour');
+        $I->waitForText('Hurray! You\'re done!', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Administration (Modules)', '.popover.tour');
 
-        $I->waitForText('As an admin, you can manage the whole platform from here', null, '.popover.tour');
+        $I->waitForText('As an admin, you can manage the whole platform from here', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Modules', null, '.popover.tour');
+        $I->waitForText('Modules', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Hurray! That\'s all for now.', null, '.popover.tour');
+        $I->waitForText('Hurray! That\'s all for now.', 10, '.popover.tour');
         $I->wait(1);
         $I->click('End guide', '.popover.tour');
 

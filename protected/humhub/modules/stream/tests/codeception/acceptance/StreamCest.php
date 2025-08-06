@@ -82,7 +82,7 @@ class StreamCest
 
         $I->waitForElementVisible($newEntrySelector, 20);
         $I->expectTo('see my archived post');
-        $I->waitForText('This is my stream test post', null, '.wall-entry');
+        $I->waitForText('This is my stream test post', 10, '.wall-entry');
 
         $I->amGoingTo('unarchive this post again');
 
@@ -135,20 +135,20 @@ class StreamCest
         $newEntrySelector2 = '[data-stream-entry]:nth-of-type(3)';
         $I->waitForElementVisible($newEntrySelector2);
         $I->expectTo('my new post beeing the latest entry');
-        $I->waitForText('This is my second stream test post', null, '.s2_streamContent div:nth-child(1)');
+        $I->waitForText('This is my second stream test post', 10, '.s2_streamContent div:nth-child(1)');
 
         $I->amGoingTo('pin my first entry');
         $I->click('.preferences .dropdown-toggle', $newEntrySelector);
         $I->waitForText('Pin', 10);
         $I->click('Pin', $newEntrySelector);
 
-        $I->waitForText('This is my first stream test post!', null, '.s2_streamContent div:nth-child(1)');
+        $I->waitForText('This is my first stream test post!', 10, '.s2_streamContent div:nth-child(1)');
 
         $I->amGoingTo('unpin my first entry');
         $I->click('.preferences .dropdown-toggle', $newEntrySelector);
         $I->waitForText('Unpin', 10);
         $I->click('Unpin', $newEntrySelector);
-        $I->waitForText('This is my second stream test post!', null, '.s2_streamContent div:nth-child(1)');
+        $I->waitForText('This is my second stream test post!', 10, '.s2_streamContent div:nth-child(1)');
     }
 
     /**
@@ -272,7 +272,7 @@ class StreamCest
         $I->waitForElementVisible($postSelector . ' .comment-container', null);
         $I->fillField($postSelector . ' .comment_create .humhub-ui-richtext', 'My Comment');
         $I->click('[data-action-click=submit]', $postSelector . ' .comment_create');
-        $I->waitForText('My Comment', null, $postSelector . ' .comment');
+        $I->waitForText('My Comment', 10, $postSelector . ' .comment');
 
 
         $I->amGoingTo('reactivate the involved filter.');
@@ -352,7 +352,7 @@ class StreamCest
         $yesterday = Yii::$app->formatter->asDate((new DateTime())->modify('-1 day'), 'short');
 
         $I->createPost($postTitle);
-        $I->waitForText($postTitle, null, '.s2_streamContent');
+        $I->waitForText($postTitle, 10, '.s2_streamContent');
 
         $I->amGoingTo('filter stream by date from today');
         /*
