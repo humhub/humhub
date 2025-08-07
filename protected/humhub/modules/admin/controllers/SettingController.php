@@ -13,9 +13,9 @@ use humhub\helpers\ThemeHelper;
 use humhub\libs\LogoImage;
 use humhub\models\UrlOembed;
 use humhub\modules\admin\components\Controller;
+use humhub\modules\admin\libs\CacheHelper;
 use humhub\modules\admin\models\forms\AddTopicForm;
 use humhub\modules\admin\models\forms\BasicSettingsForm;
-use humhub\modules\admin\models\forms\CacheSettingsForm;
 use humhub\modules\admin\models\forms\DesignSettingsForm;
 use humhub\modules\admin\models\forms\FileSettingsForm;
 use humhub\modules\admin\models\forms\LogsSettingsForm;
@@ -143,16 +143,14 @@ class SettingController extends Controller
      */
     public function actionCaching()
     {
-        $form = new CacheSettingsForm();
-        if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-            $this->view->success(Yii::t('AdminModule.settings', 'Saved and flushed cache'));
-            return $this->redirect(['/admin/setting/caching']);
+        if (!empty(Yii::$app->request->post('flush'))) {
+            CacheHelper::flushCache();
+            $this->view->success(Yii::t('AdminModule.settings', 'Caches flushed successfully'));
+
+            return $this->refresh();
         }
 
-        return $this->render('caching', [
-            'model' => $form,
-            'cacheTypes' => $form->getTypes(),
-        ]);
+        return $this->render('caching');
     }
 
     /**

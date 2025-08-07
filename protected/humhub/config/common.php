@@ -136,7 +136,7 @@ $config = [
             'class' => \humhub\components\i18n\Formatter::class,
         ],
         'cache' => [
-            'class' => \humhub\components\cache\InitialCache::class,
+            'class' => \yii\caching\FileCache::class,
         ],
         'runtimeCache' => [
             'class' => \yii\caching\ArrayCache::class,

@@ -2,11 +2,9 @@
 
 namespace humhub\components\bootstrap;
 
-use humhub\components\cache\InitialCache;
 use humhub\components\InstallationState;
 use humhub\components\mail\Mailer;
 use humhub\modules\admin\models\forms\MailingSettingsForm;
-use Yii;
 use yii\base\BootstrapInterface;
 use yii\helpers\ArrayHelper;
 use yii\log\Logger;
@@ -24,7 +22,6 @@ class ComponentLoader implements BootstrapInterface
 
         $this->setMailerConfig($app);
         $this->setUserConfig($app);
-        $this->setCacheConfig($app);
         $this->setParams($app);
     }
 
@@ -123,37 +120,6 @@ class ComponentLoader implements BootstrapInterface
                 $definition['authTimeout'] = $authTimeout;
             }
             $this->updateComponentDefinition($app, 'user', $definition);
-        }
-    }
-
-    private function setCacheConfig($app): void
-    {
-        if ($app->has('cache', true) && !Yii::$app->cache instanceof InitialCache) {
-            return;
-        }
-
-        $cacheClass = $app->settings->get('cacheClass');
-        $cacheComponent = [];
-
-        if (in_array($cacheClass, [\yii\caching\DummyCache::class, \yii\caching\FileCache::class])) {
-            $cacheComponent = [
-                'class' => $cacheClass,
-            ];
-        } elseif ($cacheClass == \yii\caching\ApcCache::class && (function_exists('apcu_add') || function_exists('apc_add'))) {
-            $cacheComponent = [
-                'class' => $cacheClass,
-                'useApcu' => (function_exists('apcu_add')),
-            ];
-        } elseif ($cacheClass === \yii\redis\Cache::class && Yii::$app->has('redis')) {
-            $cacheComponent = [
-                'class' => \yii\redis\Cache::class,
-            ];
-        }
-
-        if (!empty($cacheComponent)) {
-            $this->updateComponentDefinition($app, 'cache', ArrayHelper::merge($cacheComponent, [
-                'keyPrefix' => $app->id,
-            ]));
         }
     }
 
