@@ -4,7 +4,6 @@
 # RUN `build` COMMAND AFTER ADDING/REMOVING MODULES.
 
 actor: ApiTester
-class_name: ApiTester
 modules:
     enabled:
         - REST

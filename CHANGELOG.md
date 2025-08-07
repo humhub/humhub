@@ -2,7 +2,9 @@ HumHub Changelog
 ================
 
 1.18.0 (Unreleased - Develop)
-----------------------------
+-----------------------------
+Updated minimum required PHP version to 8.2.
+
 - Enh #7029: Add Altcha captcha provider for an alternative to the default Yii captcha
 - Enh #7412: Confusing message after creating an account
 - Enh #7328: `Mailer`, `User` and `Cache` configs removed from `dynamic.php`

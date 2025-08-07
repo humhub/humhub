@@ -26,7 +26,7 @@ class InviteCest
         DirectoryMemberPage::openBy($I);
 
         $I->click('Invite new people');
-        $I->waitForText('Invite new people', null, '#globalModal');
+        $I->waitForText('Invite new people', 10, '#globalModal');
 
         $I->amGoingTo('invite an already existing user email');
         $I->fillField('#emails', 'user1@example.com');

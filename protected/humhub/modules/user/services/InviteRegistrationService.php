@@ -17,9 +17,9 @@ use Yii;
  *
  * @since 1.15
  */
-final class InviteRegistrationService
+final readonly class InviteRegistrationService
 {
-    public function __construct(private readonly ?string $token)
+    public function __construct(private ?string $token)
     {
     }
 

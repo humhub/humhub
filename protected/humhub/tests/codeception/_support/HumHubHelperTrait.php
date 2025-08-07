@@ -689,7 +689,7 @@ trait HumHubHelperTrait
         ]);
 
         // create a new proxy logger that forwards log entries both to the current logger as well as to the above target
-        Yii::setLogger(new Logger(['proxy' => Yii::getLogger()]));
+        Yii::setLogger(new Logger(5, ['proxy' => Yii::getLogger()]));
 
         /**
          * will automagically connect to the logger set above

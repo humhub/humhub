@@ -29,7 +29,7 @@ class ActivityStreamCest
 
         $I->createPost('Activity test post!');
 
-        $I->waitForText('Activity test post!', null, '.wall-entry');
+        $I->waitForText('Activity test post!', 10, '.wall-entry');
 
 
         $I->wantToTest('that i don\'t see my own activity in the activity stream');
@@ -48,14 +48,14 @@ class ActivityStreamCest
         $I->see('Peter Tester created a new post "Activity test post!"', '#activityStream');
         $I->click('.activity-entry');
 
-        $I->waitForText('Activity test post!', null, '.wall-entry');
+        $I->waitForText('Activity test post!', 10, '.wall-entry');
 
         $I->wantToTest('deleting my post will remove the activity');
         $I->amUser1(true);
 
         $I->amOnSpace3();
 
-        $I->waitForText('Activity test post!', null, '.wall-entry');
+        $I->waitForText('Activity test post!', 10, '.wall-entry');
 
         $I->click('.preferences .dropdown-toggle', $newEntrySelector);
         $I->wait(1);
@@ -68,6 +68,6 @@ class ActivityStreamCest
         $I->waitForElementNotVisible($newEntrySelector);
 
         $I->amUser2(true);
-        $I->waitForText('There are no activities yet.', null, '#activityStream');
+        $I->waitForText('There are no activities yet.', 10, '#activityStream');
     }
 }

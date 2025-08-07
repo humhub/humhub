@@ -40,7 +40,7 @@ class ProfileImageCest
         $I->wantToTest('the deletion of the space banner');
         $I->amGoingTo('press the delete button');
         $I->click('.profile-banner-image-container .image-upload-buttons .btn-danger');
-        $I->waitForText('Confirm image deletion', null, '#globalModalConfirm');
+        $I->waitForText('Confirm image deletion', 10, '#globalModalConfirm');
         $I->click('Delete', '#globalModalConfirm');
         $I->waitForElementVisible('.profile-banner-image-container .img-profile-header-background[src="/static/img/default_banner.jpg"]');
         $I->executeJS("$('.profile-banner-image-container .image-upload-buttons').removeClass('d-none');");
@@ -81,7 +81,7 @@ class ProfileImageCest
         $I->amGoingTo('press the delete button');
 
         $I->click('.profile-user-photo-container .image-upload-buttons .btn-danger');
-        $I->waitForText('Confirm image deletion', null, '#globalModalConfirm');
+        $I->waitForText('Confirm image deletion', 10, '#globalModalConfirm');
         $I->click('Delete', '#globalModalConfirm');
 
         $I->waitForElementVisible('.profile-user-photo-container .space-acronym');
@@ -121,7 +121,7 @@ class ProfileImageCest
         $I->waitForElementVisible('.profile-banner-image-container .profile-image-crop');
         $I->click('.profile-banner-image-container .profile-image-crop');
 
-        $I->waitForText('Modify image', null, '#globalModal');
+        $I->waitForText('Modify image', 10, '#globalModal');
         $I->click('Save', '#globalModal');
         $I->seeSuccess();
     }
@@ -143,7 +143,7 @@ class ProfileImageCest
         $I->waitForElementVisible('.profile-user-photo-container .profile-image-crop');
         $I->click('.profile-user-photo-container .profile-image-crop');
 
-        $I->waitForText('Modify image', null, '#globalModal');
+        $I->waitForText('Modify image', 10, '#globalModal');
         $I->click('Save', '#globalModal');
         $I->seeSuccess();
     }
