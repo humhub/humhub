@@ -141,16 +141,12 @@ class SettingController extends Controller
     /**
      * Caching Options
      */
-    public function actionCaching()
+    public function actionClearCache()
     {
-        if (!empty(Yii::$app->request->post('flush'))) {
-            CacheHelper::flushCache();
-            $this->view->success(Yii::t('AdminModule.settings', 'Caches flushed successfully'));
+        CacheHelper::flushCache();
+        $this->view->success(Yii::t('AdminModule.settings', 'Caches flushed successfully'));
 
-            return $this->refresh();
-        }
-
-        return $this->render('caching');
+        return $this->redirect(['basic']);
     }
 
     /**
