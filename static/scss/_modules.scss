@@ -2,7 +2,7 @@
     .modules-type {
         font-size: 16px;
         font-weight: bold;
-        color: #000;
+        color: var(--hh-text-color-highlight);
         margin: 70px 0 40px;
     }
 
@@ -28,7 +28,7 @@
         .card-body {
             padding-top: 8px;
             font-size: 13px;
-            color: #6C787E;
+            color: var(--hh-text-color-secondary);
 
             > div {
                 padding-bottom: 8px;
@@ -40,7 +40,7 @@
         }
 
         .card-title {
-            color: #000;
+            color: var(--hh-text-color-highlight);
         }
 
         .card-footer {
