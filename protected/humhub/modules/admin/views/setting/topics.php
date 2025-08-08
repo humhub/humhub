@@ -71,18 +71,16 @@ echo GridView::widget([
             'options' => ['width' => '80px'],
             'template' => '{update} {delete}',
             'buttons' => [
-                'update' => function ($url, $model) {
+                'update' => fn($url, $model) =>
                     /* @var $model Topic */
-                    return ModalButton::primary()->load(['edit-topic', 'id' => $model->id])->icon('edit')->sm()->loader(false);
-                },
-                'delete' => function ($url, $model) {
+                    ModalButton::primary()->load(['edit-topic', 'id' => $model->id])->icon('edit')->sm()->loader(false),
+                'delete' => fn($url, $model) =>
                     /* @var $model Topic */
-                    return Button::danger()->icon('delete')->action('admin.topic.removeTopic', ['delete-topic', 'id' => $model->id])->confirm(
-                        Yii::t('AdminModule.settings', '<strong>Confirm</strong> topic deletion'),
-                        Yii::t('AdminModule.settings', 'Do you really want to delete this topic?'),
-                        Yii::t('base', 'Delete'),
-                    )->sm()->loader(false);
-                },
+                    Button::danger()->icon('delete')->action('admin.topic.removeTopic', ['delete-topic', 'id' => $model->id])->confirm(
+                    Yii::t('AdminModule.settings', '<strong>Confirm</strong> topic deletion'),
+                    Yii::t('AdminModule.settings', 'Do you really want to delete this topic?'),
+                    Yii::t('base', 'Delete'),
+                )->sm()->loader(false),
             ],
         ],
     ]]);

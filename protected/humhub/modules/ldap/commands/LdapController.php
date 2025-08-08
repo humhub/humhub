@@ -137,9 +137,9 @@ class LdapController extends Controller
                 $authClient = $ldapAuthClient->getAuthClientInstance($user);
                 $attributes = $authClient->getUserAttributes();
 
-                $username = (isset($attributes['username']) ? $attributes['username'] : '---');
-                $id = (isset($attributes['id']) ? $attributes['id'] : '---');
-                $email = (isset($attributes['email']) ? $attributes['email'] : '---');
+                $username = ($attributes['username'] ?? '---');
+                $id = ($attributes['id'] ?? '---');
+                $email = ($attributes['email'] ?? '---');
 
                 $users[] = [$id, $username, $email];
             }
@@ -264,7 +264,7 @@ class LdapController extends Controller
 
             $rows = [];
             foreach ($x->getUserAttributes() as $name => $value) {
-                if (!is_array($value) && empty(mb_detect_encoding($value))) {
+                if (!is_array($value) && empty(mb_detect_encoding((string) $value))) {
                     $value = '-Binary-';
                 }
                 $rows[] = [$name, $value];

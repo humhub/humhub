@@ -56,7 +56,7 @@ class NewComment extends BaseNotification
         if (Notification::find()->where([
             'class' => Mentioned::class,
             'user_id' => $user->id,
-            'source_class' => get_class($this->source),
+            'source_class' => $this->source::class,
             'source_pk' => $this->source->getPrimaryKey()])->count() > 0) {
             return;
         }
@@ -75,7 +75,7 @@ class NewComment extends BaseNotification
             return null;
         }
 
-        return get_class($model) . '-' . $model->getPrimaryKey();
+        return $model::class . '-' . $model->getPrimaryKey();
     }
 
     /**

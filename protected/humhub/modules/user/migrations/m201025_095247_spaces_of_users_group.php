@@ -41,7 +41,7 @@ class m201025_095247_spaces_of_users_group extends Migration
 
         try {
             $this->dropForeignKey('fk_group-space_id', 'group');
-        } catch (Exception $e) {
+        } catch (Exception) {
         }
 
         $this->safeDropColumn('group', 'space_id');

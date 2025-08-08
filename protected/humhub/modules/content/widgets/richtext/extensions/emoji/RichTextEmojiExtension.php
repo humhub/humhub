@@ -29,9 +29,7 @@ class RichTextEmojiExtension extends RichTextContentExtension
     public static function convertEmojiToUtf8($text): string
     {
         // Note the ; was used in the legacy editor
-        return static::replace($text, function (RichTextEmojiExtensionMatch $match) {
-            return EmojiMap::getUnicode($match->getEmojiName()) ?? $match->getFull();
-        });
+        return static::replace($text, fn(RichTextEmojiExtensionMatch $match) => EmojiMap::getUnicode($match->getEmojiName()) ?? $match->getFull());
     }
 
     /**

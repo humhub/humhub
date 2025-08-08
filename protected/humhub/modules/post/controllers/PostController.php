@@ -83,9 +83,7 @@ class PostController extends ContentContainerController
             $post->scenario = Post::SCENARIO_HAS_FILES;
         }
 
-        return Post::getDb()->transaction(function ($db) use ($post) {
-            return WallCreateContentForm::create($post, $this->contentContainer);
-        });
+        return Post::getDb()->transaction(fn($db) => WallCreateContentForm::create($post, $this->contentContainer));
     }
 
     public function actionEdit($id)

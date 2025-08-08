@@ -257,7 +257,7 @@ class InviteForm extends Model
             $invites = $this->$attribute;
 
             foreach ($invites as $userGuid) {
-                $userGuid = preg_replace("/[^A-Za-z0-9\-]/", '', $userGuid);
+                $userGuid = preg_replace("/[^A-Za-z0-9\-]/", '', (string) $userGuid);
 
                 if ($userGuid == '') {
                     continue;
@@ -296,7 +296,7 @@ class InviteForm extends Model
 
         // Check if email field is not empty
         if ($this->$attribute != '') {
-            $emails = explode(",", $this->$attribute);
+            $emails = explode(",", (string) $this->$attribute);
 
             // Loop over each given e-mail
             foreach ($emails as $email) {

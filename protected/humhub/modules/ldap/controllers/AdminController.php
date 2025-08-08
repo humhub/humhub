@@ -68,9 +68,7 @@ class AdminController extends Controller
                 $ldapAuthClient = Yii::createObject($settings->getLdapAuthDefinition());
                 $ldap = $ldapAuthClient->getLdap();
                 $userCount = $ldap->count($settings->userFilter, $settings->baseDn, Ldap::SEARCH_SCOPE_SUB);
-            } catch (LdapException $ex) {
-                $errorMessage = $ex->getMessage();
-            } catch (Exception $ex) {
+            } catch (LdapException|Exception $ex) {
                 $errorMessage = $ex->getMessage();
             }
         }

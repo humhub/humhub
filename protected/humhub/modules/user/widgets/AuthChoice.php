@@ -184,7 +184,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
         }
 
         if (isset($viewOptions['buttonBackgroundColor'])) {
-            $textColor = (isset($viewOptions['buttonColor'])) ? $viewOptions['buttonColor'] : '#FFF';
+            $textColor = $viewOptions['buttonColor'] ?? '#FFF';
             $btnStyle = Html::cssStyleFromArray(['color' => $textColor . '!important', 'background-color' => $viewOptions['buttonBackgroundColor'] . '!important']);
             $btnClasses = '.btn-ac-' . $client->getName() . ', .btn-ac-' . $client->getName() . ':hover, .btn-ac-' . $client->getName() . ':active, .btn-ac-' . $client->getName() . ':visited';
 

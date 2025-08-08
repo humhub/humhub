@@ -126,7 +126,7 @@ class m131023_164513_initial extends Migration
                 'data' => 'longblob DEFAULT NULL',
             ], '');
             $this->addPrimaryKey('pk_user_http_session', 'user_http_session', 'id');
-        } catch (Exception $ex) {
+        } catch (Exception) {
 
         }
 

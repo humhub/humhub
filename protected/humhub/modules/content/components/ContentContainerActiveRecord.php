@@ -157,7 +157,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      */
     public function createUrl($route = null, $params = [], $scheme = false)
     {
-        array_unshift($params, ($route !== null) ? $route : $this->defaultRoute);
+        array_unshift($params, $route ?? $this->defaultRoute);
         $params['contentContainer'] = $this;
 
         return Url::to($params, $scheme);
@@ -182,7 +182,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      */
     public function getWallOut()
     {
-        return "Default Wall Output for Class " . get_class($this);
+        return "Default Wall Output for Class " . static::class;
     }
 
     /**
@@ -277,7 +277,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         }
 
         return $this->hasOne(ContentContainer::class, ['pk' => 'id'])
-            ->andOnCondition(['class' => get_class($this)]);
+            ->andOnCondition(['class' => static::class]);
     }
 
     /**
@@ -438,7 +438,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         }
 
         $blockedUsers = $this->getSettings()->get(ContentContainerBlockedUsers::BLOCKED_USERS_SETTING);
-        return empty($blockedUsers) ? [] : explode(',', $blockedUsers);
+        return empty($blockedUsers) ? [] : explode(',', (string) $blockedUsers);
     }
 
     /**

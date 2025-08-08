@@ -11,11 +11,8 @@ use Yii;
 
 class ContentSearchService
 {
-    public Content $content;
-
-    public function __construct(Content $content)
+    public function __construct(public Content $content)
     {
-        $this->content = $content;
     }
 
     public function update(bool $asActiveJob = true): void

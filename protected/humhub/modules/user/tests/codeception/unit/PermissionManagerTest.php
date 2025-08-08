@@ -41,7 +41,7 @@ class PermissionManagerTest extends HumHubDbTestCase
             [true, [ManageUsers::class, ManageGroups::class], ['all' => true]],
         ];
 
-        foreach ($tests as $index => $test) {
+        foreach ($tests as $test) {
             if (isset($test[2])) {
                 $this->assertEquals($test[0], $permissionManager->can($test[1], $test[2]));
             } else {

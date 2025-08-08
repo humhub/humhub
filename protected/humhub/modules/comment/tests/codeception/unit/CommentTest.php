@@ -26,7 +26,7 @@ class CommentTest extends HumHubDbTestCase
 
         $comment->save();
 
-        $this->assertMailSent(1, 'Comment Notification Mail sent');
+        $this->assertMailSent(1);
         $this->assertEqualsLastEmailSubject('Sara Tester commented post "User 2 Space 2 Post Private" in space Space 2');
         $this->assertNotEmpty($comment->id);
         $this->assertNotEmpty($comment->content->getPolymorphicRelation()->getFollowersWithNotificationQuery());

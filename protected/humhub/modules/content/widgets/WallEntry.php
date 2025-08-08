@@ -217,7 +217,7 @@ class WallEntry extends Widget
     {
         $entryClass = null;
         if ($entry instanceof MenuEntry) {
-            $entryClass = get_class($entry);
+            $entryClass = $entry::class;
         } elseif (is_array($entry) && isset($entry[0])) {
             $entryClass = $entry[0];
         }

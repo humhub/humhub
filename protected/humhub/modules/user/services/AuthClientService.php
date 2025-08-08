@@ -31,11 +31,8 @@ use yii\web\UserEvent;
  */
 class AuthClientService
 {
-    public ClientInterface $authClient;
-
-    public function __construct(ClientInterface $authClient)
+    public function __construct(public ClientInterface $authClient)
     {
-        $this->authClient = $authClient;
     }
 
     /**

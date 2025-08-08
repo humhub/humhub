@@ -8,5 +8,5 @@
 <?= $text ?>
 
 
-<?= Yii::t('NotificationModule.base', 'View online:') ?> <?= urldecode($url) ?>
+<?= Yii::t('NotificationModule.base', 'View online:') ?> <?= urldecode((string) $url) ?>
 <?php $this->endContent();

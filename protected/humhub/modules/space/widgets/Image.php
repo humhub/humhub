@@ -97,7 +97,7 @@ class Image extends BaseImage
 
         $spaceName = preg_replace('/[^\p{L}\d\s]+/u', '', $this->space->name);
 
-        foreach (explode(' ', $spaceName) as $word) {
+        foreach (explode(' ', (string) $spaceName) as $word) {
             if (mb_strlen($word) >= 1) {
                 $acronym .= mb_substr($word, 0, 1);
             }

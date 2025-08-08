@@ -116,7 +116,7 @@ class RichTextToShortTextConverter extends RichTextToPlainTextConverter
         $result = (string)$text;
 
         if (!$this->getOption(static::OPTION_PRESERVE_SPACES, false)) {
-            $result = trim(preg_replace('/\s+/', ' ', $result));
+            $result = trim((string) preg_replace('/\s+/', ' ', $result));
         }
 
         $result = parent::onAfterParse($result);

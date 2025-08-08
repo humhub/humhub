@@ -44,11 +44,6 @@ class CSPBuilder
     public const FORMAT_NGINX = 'nginx';
 
     /**
-     * @var array
-     */
-    private $policies = [];
-
-    /**
      * @var array<int, string>
      */
     private $requireSRIFor = [];
@@ -101,11 +96,10 @@ class CSPBuilder
     ];
 
     /**
-     * @param array $policy
+     * @param array $policies
      */
-    public function __construct(array $policy = [])
+    public function __construct(private array $policies = [])
     {
-        $this->policies = $policy;
     }
 
     /**
@@ -422,7 +416,7 @@ class CSPBuilder
             $this->compile();
         }
         foreach ($this->getRequireHeaders() as $header) {
-            list($key, $value) = $header;
+            [$key, $value] = $header;
             $message = $message->withAddedHeader($key, $value);
         }
         foreach ($this->getHeaderKeys($legacy) as $key) {
@@ -508,31 +502,26 @@ class CSPBuilder
             ? 'Content-Security-Policy-Report-Only'
             : 'Content-Security-Policy';
 
-        switch ($format) {
-            case self::FORMAT_NGINX:
-                // In PHP < 7, implode() is faster than concatenation
-                $output = implode('', [
-                    'add_header ',
-                    $which,
-                    ' "',
-                    rtrim($this->compiled, ' '),
-                    '" always;',
-                    "\n",
-                ]);
-                break;
-            case self::FORMAT_APACHE:
-                $output = implode('', [
-                    'Header add ',
-                    $which,
-                    ' "',
-                    rtrim($this->compiled, ' '),
-                    '"',
-                    "\n",
-                ]);
-                break;
-            default:
-                throw new Exception('Unknown format: ' . $format);
-        }
+        $output = match ($format) {
+            // In PHP < 7, implode() is faster than concatenation
+            self::FORMAT_NGINX => implode('', [
+                'add_header ',
+                $which,
+                ' "',
+                rtrim($this->compiled, ' '),
+                '" always;',
+                "\n",
+            ]),
+            self::FORMAT_APACHE => implode('', [
+                'Header add ',
+                $which,
+                ' "',
+                rtrim($this->compiled, ' '),
+                '"',
+                "\n",
+            ]),
+            default => throw new Exception('Unknown format: ' . $format),
+        };
         return file_put_contents($outputFile, $output) !== false;
     }
 
@@ -553,7 +542,7 @@ class CSPBuilder
             $this->compile();
         }
         foreach ($this->getRequireHeaders() as $header) {
-            list($key, $value) = $header;
+            [$key, $value] = $header;
             header($key . ': ' . $value);
         }
         foreach ($this->getHeaderKeys($legacy) as $key) {
@@ -785,7 +774,7 @@ class CSPBuilder
                 $url = filter_var($url, FILTER_SANITIZE_URL);
                 if ($url !== false) {
                     if ($this->supportOldBrowsers) {
-                        if (strpos($url, '://') === false) {
+                        if (!str_contains($url, '://')) {
                             if ((Yii::$app->request->isSecureConnection && $this->httpsTransformOnHttpsConnections)
                                 || !empty($this->policies['upgrade-insecure-requests'])) {
                                 // We only want HTTPS connections here.
@@ -810,9 +799,9 @@ class CSPBuilder
                 foreach ($hash as $algo => $hashval) {
                     $ret .= implode('', [
                         "'",
-                        preg_replace('/[^A-Za-z0-9]/', '', $algo),
+                        preg_replace('/[^A-Za-z0-9]/', '', (string) $algo),
                         '-',
-                        preg_replace('/[^A-Za-z0-9\+\/=]/', '', $hashval),
+                        preg_replace('/[^A-Za-z0-9\+\/=]/', '', (string) $hashval),
                         "' ",
                     ]);
                 }
@@ -823,7 +812,7 @@ class CSPBuilder
             foreach ($policies['nonces'] as $nonce) {
                 $ret .= implode('', [
                     "'nonce-",
-                    preg_replace('/[^A-Za-z0-9\+\/=]/', '', $nonce),
+                    preg_replace('/[^A-Za-z0-9\+\/=]/', '', (string) $nonce),
                     "' ",
                 ]);
             }

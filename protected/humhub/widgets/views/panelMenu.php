@@ -1,9 +1,14 @@
 <?php
 
+use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\widgets\bootstrap\Link;
 
-/* @var $id string */
+/**
+ * @var $this View
+ * @var $enableCollapseOption bool
+ * @var $collapseId string
+ */
 
 ?>
 
@@ -19,9 +24,19 @@ use humhub\widgets\bootstrap\Link;
         ]) ?>
 
         <ul class="dropdown-menu dropdown-menu-end">
-            <li>
-                <?= Link::instance()->action('toggle')->cssClass(['dropdown-item', 'panel-collapse'])?>
-            </li>
+            <?php if ($enableCollapseOption): ?>
+                <li>
+                    <?= Link::instance()
+                        ->link('#' . $collapseId)
+                        ->cssClass(['btn', 'dropdown-item', 'panel-collapse'])
+                        ->options([
+                            'data-bs-toggle' => 'collapse',
+                            'aria-controls' => $collapseId,
+                            'aria-expanded' => 'false',
+                            'role' => 'button',
+                        ]) ?>
+                </li>
+            <?php endif; ?>
             <?= $this->context->extraMenus ?>
         </ul>
     </li>

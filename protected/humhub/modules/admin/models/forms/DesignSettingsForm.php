@@ -125,7 +125,7 @@ class DesignSettingsForm extends Model
                 $replacements = ['', '', ''];
                 return preg_replace($patterns, $replacements, $value);
             }],
-            ['themeCustomScss', function ($attribute, $params, $validator) {
+            ['themeCustomScss', function ($attribute, $params, $validator): void {
                 $compiler = new Compiler();
                 try {
                     $compiler->compileString($this->$attribute)->getCss();

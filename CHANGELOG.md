@@ -2,7 +2,9 @@ HumHub Changelog
 ================
 
 1.18.0 (Unreleased - Develop)
-----------------------------
+-----------------------------
+Updated minimum required PHP version to 8.2.
+
 - Enh #7029: Add Altcha captcha provider for an alternative to the default Yii captcha
 - Enh #7412: Confusing message after creating an account
 - Enh #7328: `Mailer`, `User` and `Cache` configs removed from `dynamic.php`
@@ -41,6 +43,7 @@ HumHub Changelog
 - Fix #7588: Fix depreciation warnings on PHP 8.4
 - Fix #7604: Fix registration by auth clients
 - Enh #7584: Mobile App: allow configuring whitelisted domains
+- Fix #7545: Collapsed panels are briefly shown on page load
 
 1.17.3 (Unreleased)
 ----------------------

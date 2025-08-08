@@ -34,21 +34,6 @@ class Registration extends HForm
     public const EVENT_AFTER_REGISTRATION = 'afterRegistration';
 
     /**
-     * @var bool show password creation form
-     */
-    private $enablePasswordForm;
-
-    /**
-     * @var bool show checkbox to force to change password on first log in
-     */
-    private $enableMustChangePassword;
-
-    /**
-     * @var bool show e-mail field
-     */
-    private $enableEmailField;
-
-    /**
      * @var bool|null require user approval by admin after registration.
      */
     public $enableUserApproval = false;
@@ -77,14 +62,19 @@ class Registration extends HForm
         $definition = [],
         $primaryModel = null,
         array $config = [],
-        bool $enableEmailField = false,
-        bool $enablePasswordForm = true,
-        bool $enableMustChangePassword = false,
+        /**
+         * @var bool show e-mail field
+         */
+        private readonly bool $enableEmailField = false,
+        /**
+         * @var bool show password creation form
+         */
+        private readonly bool $enablePasswordForm = true,
+        /**
+         * @var bool show checkbox to force to change password on first log in
+         */
+        private readonly bool $enableMustChangePassword = false,
     ) {
-        $this->enableEmailField = $enableEmailField;
-        $this->enablePasswordForm = $enablePasswordForm;
-        $this->enableMustChangePassword = $enableMustChangePassword;
-
         parent::__construct($definition, $primaryModel, $config);
     }
 

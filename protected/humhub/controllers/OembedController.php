@@ -58,7 +58,7 @@ class OembedController extends Controller
             throw new HttpException(400, 'URL is not provided!');
         }
 
-        $urlData = parse_url($url);
+        $urlData = parse_url((string) $url);
         if (!isset($urlData['host'])) {
             throw new HttpException(400, 'Wrong URL!');
         }

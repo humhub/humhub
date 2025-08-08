@@ -25,7 +25,7 @@ use yii\base\InvalidConfigException;
  */
 class StateBadge extends Widget
 {
-    public ?ContentActiveRecord $model;
+    public ?ContentActiveRecord $model = null;
 
     /**
      * @throws InvalidConfigException

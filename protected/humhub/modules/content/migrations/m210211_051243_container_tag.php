@@ -78,7 +78,7 @@ class m210211_051243_container_tag extends Migration
                 ->scalar();
 
 
-            $containerTags = preg_split('/[;,#]\s?+/', $containerTags);
+            $containerTags = preg_split('/[;,#]\s?+/', (string) $containerTags);
             foreach ($containerTags as $tagName) {
                 if (!isset($tags[$tagName])) {
                     $contentContainerTag = new ContentContainerTag();

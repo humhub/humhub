@@ -35,10 +35,7 @@ class QueueHelper extends BaseObject
             if (Yii::$app->queue->isDone($queueExclusive->job_message_id)) {
                 $jobInQueue = false;
             }
-        } catch (InvalidArgumentException $ex) {
-            // not exists
-            $jobInQueue = false;
-        } catch (InvalidParamException $ex) {
+        } catch (InvalidArgumentException|InvalidParamException) {
             // not exists
             $jobInQueue = false;
         }

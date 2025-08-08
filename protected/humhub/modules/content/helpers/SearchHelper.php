@@ -32,7 +32,7 @@ class SearchHelper extends BaseObject
         }
 
         foreach (explode(' ', $query) as $keyword) {
-            if ($keyword !== '' && strpos($text, $keyword) !== false) {
+            if ($keyword !== '' && str_contains($text, $keyword)) {
                 return true;
             }
         }

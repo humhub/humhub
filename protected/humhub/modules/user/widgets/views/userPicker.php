@@ -23,7 +23,7 @@ $this->registerJsFile("@web-static/resources/user/userpicker.js");
 // Resolve guids to user tags
 $newValue = "";
 
-foreach (explode(",", $currentValue) as $guid) {
+foreach (explode(",", (string) $currentValue) as $guid) {
     $user = User::findOne(['guid' => trim($guid)]);
     if ($user != null) {
         $imageUrl = $user->getProfileImage()->getUrl();

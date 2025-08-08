@@ -234,7 +234,7 @@ class Follow extends ActiveRecord
     public static function getFollowersQuery(ActiveRecord $target, $withNotifications = null)
     {
         $subQuery = self::find()
-            ->where(['user_follow.object_model' => get_class($target), 'user_follow.object_id' => $target->getPrimaryKey()])
+            ->where(['user_follow.object_model' => $target::class, 'user_follow.object_id' => $target->getPrimaryKey()])
             ->andWhere('user_follow.user_id=user.id');
 
         if ($withNotifications === true) {

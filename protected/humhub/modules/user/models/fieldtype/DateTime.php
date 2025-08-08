@@ -55,7 +55,7 @@ class DateTime extends BaseType
     public function getFormDefinition($definition = [])
     {
         return parent::getFormDefinition([
-            get_class($this) => [
+            static::class => [
                 'type' => 'form',
                 'title' => Yii::t('UserModule.profile', 'Date(-time) field options'),
                 'elements' => [

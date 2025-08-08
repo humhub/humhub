@@ -33,7 +33,7 @@ $footer =
     Button::primary(Yii::t('SpaceModule.base', 'Send the link via email'))
         ->link('mailto:' .
             '?subject=' . rawurlencode(Yii::t('UserModule.base', 'You\'ve been invited to join {space} on {appName}', ['space' => $model->space->name, 'appName' => Yii::$app->name])) .
-            '&body=' . rawurlencode($this->renderFile($this->findViewFile('@humhub/modules/user/views/mails/plaintext/UserInviteSpace'), [
+            '&body=' . rawurlencode((string) $this->renderFile($this->findViewFile('@humhub/modules/user/views/mails/plaintext/UserInviteSpace'), [
                 'originator' => Yii::$app->user->identity,
                 'space' => $model->space,
                 'registrationUrl' => $model->getInviteLink(),

@@ -14,7 +14,7 @@ use yii\helpers\Url;
         <tr>
             <td width='10'>
                 <?php $viewOptions = $client->getViewOptions(); ?>
-                <?php $iconClass = (isset($viewOptions['cssIcon'])) ? $viewOptions['cssIcon'] : ''; ?>
+                <?php $iconClass = $viewOptions['cssIcon'] ?? ''; ?>
 
                 <div class='<?= $iconClass; ?> float-start' style='font-size:200%'></div>
             </td>

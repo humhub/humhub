@@ -33,7 +33,7 @@ class MailLayoutRendererTest extends HumHubDbTestCase
             $renderer = new MailLayoutRenderer(['textLayout' => '@tests/codeception/unit/components/rendering/views/layouts/nonExsting.php']);
             $renderer->renderText($viewable);
             $this->assertTrue(false);
-        } catch (\yii\base\ViewNotFoundException $ex) {
+        } catch (\yii\base\ViewNotFoundException) {
             $this->assertTrue(true);
         }
     }

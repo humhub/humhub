@@ -46,7 +46,7 @@ class PeopleCard extends Widget
     {
         $peopleSettingsForm = new PeopleSettingsForm();
 
-        return isset($peopleSettingsForm->$name) ? $peopleSettingsForm->$name : '';
+        return $peopleSettingsForm->$name ?? '';
     }
 
 }

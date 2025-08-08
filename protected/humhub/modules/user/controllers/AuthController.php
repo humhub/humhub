@@ -76,7 +76,7 @@ class AuthController extends Controller
         return [
             'external' => [
                 'class' => AuthAction::class,
-                'successCallback' => [$this, 'onAuthSuccess'],
+                'successCallback' => $this->onAuthSuccess(...),
             ],
         ];
     }
@@ -193,14 +193,14 @@ class AuthController extends Controller
 
         // Check if E-Mail is given by the AuthClient
         if (!isset($attributes['email']) && $this->module->emailRequired) {
-            Yii::warning('Could not register user automatically: AuthClient ' . get_class($authClient) . ' provided no E-Mail attribute.', 'user');
+            Yii::warning('Could not register user automatically: AuthClient ' . $authClient::class . ' provided no E-Mail attribute.', 'user');
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Missing E-Mail Attribute from AuthClient.'));
             return $this->redirect(['/user/auth/login']);
         }
 
         // Check that AuthClient provides an ID for the user (mandatory)
         if (!isset($attributes['id'])) {
-            Yii::warning('Could not register user automatically: AuthClient ' . get_class($authClient) . ' provided no ID attribute.', 'user');
+            Yii::warning('Could not register user automatically: AuthClient ' . $authClient::class . ' provided no ID attribute.', 'user');
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Missing ID AuthClient Attribute from AuthClient.'));
             return $this->redirect(['/user/auth/login']);
         }
@@ -213,7 +213,7 @@ class AuthController extends Controller
             !$linkRegistrationService->isValid() &&
             (!$authClientService->allowSelfRegistration() && !in_array($authClient->id, $this->module->allowUserRegistrationFromAuthClientIds))
         ) {
-            Yii::warning('Could not register user automatically: Anonymous registration disabled. AuthClient: ' . get_class($authClient), 'user');
+            Yii::warning('Could not register user automatically: Anonymous registration disabled. AuthClient: ' . $authClient::class, 'user');
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'You\'re not registered.'));
             return $this->redirect(['/user/auth/login']);
         }
@@ -348,7 +348,7 @@ class AuthController extends Controller
             Yii::$app->getResponse()->getCookies()->add($cookie);
         }
 
-        return $this->redirect(($this->module->logoutUrl) ? $this->module->logoutUrl : Yii::$app->homeUrl);
+        return $this->redirect($this->module->logoutUrl ?: Yii::$app->homeUrl);
     }
 
     /**

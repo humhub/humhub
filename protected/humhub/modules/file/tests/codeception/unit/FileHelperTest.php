@@ -237,7 +237,7 @@ class FileHelperTest extends HumHubDbTestCase
         $expected['relUrl'] = '/index-test.php?r=file%2Ffile%2Fdownload&guid=' . $guid . '&hash_sha1=' . $hash;
         $expected['openLink'] = '<a href="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;guid=' . $guid . '&amp;hash_sha1=' . $hash . '" target="_blank" data-pjax-prevent data-file-download data-file-url="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;download=1&amp;guid=' . $guid . '&amp;hash_sha1=' . $hash . '" data-file-name="' . $path . '" data-file-mime="' . $mimeType . '">' . $path . '</a>';
 
-        static::assertEquals($expected, FileHelper::getFileInfos($file, $variant));
+        static::assertEquals($expected, FileHelper::getFileInfos($file));
     }
 
     public static function hasExtension1(string $file): bool

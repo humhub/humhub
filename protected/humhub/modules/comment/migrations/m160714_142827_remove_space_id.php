@@ -8,7 +8,7 @@ class m160714_142827_remove_space_id extends Migration
     {
         try {
             $this->dropColumn('comment', 'space_id');
-        } catch (Exception $ex) {
+        } catch (Exception) {
 
         }
     }

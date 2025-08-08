@@ -29,9 +29,7 @@ use yii\helpers\Url;
     'columns' => [
         [
             'attribute' => 'title',
-            'content' => function (ProfileField $model, $key, $index, $that) {
-                return Html::encode(Yii::t($model->getTranslationCategory(), $that->getDataCellValue($model, $key, $index)));
-            }
+            'content' => fn(ProfileField $model, $key, $index, $that) => Html::encode(Yii::t($model->getTranslationCategory(), $that->getDataCellValue($model, $key, $index)))
         ],
         [
             'class' => CheckboxColumn::class,
@@ -89,16 +87,15 @@ use yii\helpers\Url;
             'contentOptions' => ['style' => 'text-align:center'],
             'headerOptions' => ['style' => 'text-align:center'],
             'buttons' => [
-                'view' => function () {
+                'view' => function (): void {
                     return;
                 },
-                'delete' => function ($url, $model) {
+                'delete' => function ($url, $model): void {
                     return;
                 },
-                'update' => function ($url, $category) {
+                'update' => fn($url, $category) =>
                     /* @var $model ProfileField */
-                    return Button::primary()->icon('edit')->link(Url::to(['edit-field', 'id' => $category->id]))->sm();
-                },
+                    Button::primary()->icon('edit')->link(Url::to(['edit-field', 'id' => $category->id]))->sm(),
             ],
         ],
     ]

@@ -40,7 +40,7 @@ class CountrySelect extends Select
     public function getFormDefinition($definition = [])
     {
         return parent::getFormDefinition([
-            get_class($this) => [
+            static::class => [
                 'type' => 'form',
                 'title' => Yii::t('UserModule.profile', 'Supported ISO3166 country codes'),
                 'elements' => [
@@ -74,7 +74,7 @@ class CountrySelect extends Select
                 $key = trim($code);
                 $value = Iso3166Codes::country($key, true);
                 if (!empty($key) && $key !== $value) {
-                    $items[$key] = trim($value);
+                    $items[$key] = trim((string) $value);
                 }
             }
         }

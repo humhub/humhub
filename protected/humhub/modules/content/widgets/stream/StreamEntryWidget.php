@@ -111,7 +111,7 @@ abstract class StreamEntryWidget extends JsWidget
         }
 
         if ($jsWidget === null) {
-            Yii::error('Model ' . get_class($record) . ' must define $wallEntryClass or set $streamChannel to null!', 'content');
+            Yii::error('Model ' . $record::class . ' must define $wallEntryClass or set $streamChannel to null!', 'content');
             return '';
         }
 

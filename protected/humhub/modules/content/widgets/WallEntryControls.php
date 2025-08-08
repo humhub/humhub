@@ -133,7 +133,7 @@ class WallEntryControls extends Menu
      */
     public function addWidget($className, $params = [], $options = [])
     {
-        $sortOrder = isset($options['sortOrder']) ? $options['sortOrder'] : PHP_INT_MAX;
+        $sortOrder = $options['sortOrder'] ?? PHP_INT_MAX;
         $cfg = array_merge($options, ['widgetClass' => $className, 'widgetOptions' => $params, 'sortOrder' => $sortOrder]);
         $this->addEntry(new WidgetMenuEntry($cfg));
     }
@@ -160,14 +160,14 @@ class WallEntryControls extends Menu
         if (ArrayHelper::isAssociative($menuItem)) { // ['label' => 'xy', 'icon' => ...] -> WallEntryControlLink
             $widgetClass = WallEntryControlLink::class;
             $widgetOptions = ['options' => $menuItem];
-            $options = ['sortOrder' => isset($menuItem['sortOrder']) ? $menuItem['sortOrder'] : PHP_INT_MAX];
+            $options = ['sortOrder' => $menuItem['sortOrder'] ?? PHP_INT_MAX];
         } else { // [MyWidget::class, [..WidgetOptions..], [sortOrder..]] -> Widget type definition
             $widgetClass = $menuItem[0];
-            $widgetOptions = isset($menuItem[1]) ? $menuItem[1] : null;
-            $options = isset($menuItem[2]) ? $menuItem[2] : [];
+            $widgetOptions = $menuItem[1] ?? null;
+            $options = $menuItem[2] ?? [];
         }
 
-        $sortOrder = isset($options['sortOrder']) ? $options['sortOrder'] : PHP_INT_MAX;
+        $sortOrder = $options['sortOrder'] ?? PHP_INT_MAX;
         $cfg = array_merge($options, ['widgetClass' => $widgetClass, 'widgetOptions' => $widgetOptions, 'sortOrder' => $sortOrder]);
 
         return new WidgetMenuEntry($cfg);

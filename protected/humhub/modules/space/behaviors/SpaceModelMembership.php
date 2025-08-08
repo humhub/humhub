@@ -504,7 +504,7 @@ class SpaceModelMembership extends Behavior
             return false;
         }
 
-        Membership::getDb()->transaction(function ($db) use ($membership, $user) {
+        Membership::getDb()->transaction(function ($db) use ($membership, $user): void {
             foreach (Membership::findAll(['user_id' => $user->id, 'space_id' => $this->owner->id]) as $obsoleteMembership) {
                 $obsoleteMembership->delete();
             }

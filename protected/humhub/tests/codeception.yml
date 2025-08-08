@@ -22,7 +22,7 @@ paths:
   data: codeception/_data
   envs: config/env
   helpers: codeception/_support
-  log: codeception/_output
+  output: codeception/_output
   tests: codeception
 settings:
   colors: true

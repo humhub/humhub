@@ -18,8 +18,8 @@ use Yii;
  */
 class MailLinkService
 {
-    private ?string $appUrl;
-    private ?string $sitePattern;
+    private readonly ?string $appUrl;
+    private readonly ?string $sitePattern;
     private ?string $hid = null;
     private bool $isEnabled = false;
 
@@ -66,7 +66,7 @@ class MailLinkService
     public function processLinks($text): ?string
     {
         return $this->isConfigured()
-            ? preg_replace_callback('#(<a.+?href=")(' . $this->sitePattern . '[^"\r\n]*)#is', [$this, 'callbackReplaceLink'], $text)
+            ? preg_replace_callback('#(<a.+?href=")(' . $this->sitePattern . '[^"\r\n]*)#is', [$this, 'callbackReplaceLink'], (string) $text)
             : $text;
     }
 

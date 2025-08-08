@@ -47,7 +47,7 @@ class FileHelper extends \yii\helpers\FileHelper
          * `
          * @see \humhub\tests\codeception\unit\libs\FileHelperTest::testHasExtensionFalsePositives()
          */
-        return (strpos($fileName, '.') !== false);
+        return (str_contains($fileName, '.'));
     }
 
     /**
@@ -67,11 +67,8 @@ class FileHelper extends \yii\helpers\FileHelper
         }
 
         $fileParts = pathinfo($fileName);
-        if (isset($fileParts['extension'])) {
-            return $fileParts['extension'];
-        }
 
-        return '';
+        return $fileParts['extension'] ?? '';
     }
 
     /**
@@ -83,7 +80,7 @@ class FileHelper extends \yii\helpers\FileHelper
      */
     public static function createLink(File $file, $options = [], $htmlOptions = [])
     {
-        $label = (isset($htmlOptions['label'])) ? $htmlOptions['label'] : Html::encode($file->fileName);
+        $label = $htmlOptions['label'] ?? Html::encode($file->fileName);
 
         $fileHandlers = FileHandlerCollection::getByType([FileHandlerCollection::TYPE_VIEW, FileHandlerCollection::TYPE_EXPORT, FileHandlerCollection::TYPE_EDIT, FileHandlerCollection::TYPE_IMPORT], $file);
         if (count($fileHandlers) === 1 && $fileHandlers[0] instanceof DownloadFileHandler) {

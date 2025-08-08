@@ -42,7 +42,7 @@ class AssetManager extends \yii\web\AssetManager
         }
 
         foreach (scandir(realpath($this->basePath)) as $file) {
-            if (substr($file, 0, 1) === '.') {
+            if (str_starts_with($file, '.')) {
                 continue;
             }
             FileHelper::removeDirectory($this->basePath . DIRECTORY_SEPARATOR . $file);
@@ -64,7 +64,7 @@ class AssetManager extends \yii\web\AssetManager
     protected function loadBundle($name, $config = [], $publish = true)
     {
         $bundle = parent::loadBundle($name, $config, $publish);
-        $bundleClass = get_class($bundle);
+        $bundleClass = $bundle::class;
 
         if ($bundleClass !== AppAsset::class
            && !in_array($bundleClass, AppAsset::STATIC_DEPENDS)

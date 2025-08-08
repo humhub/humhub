@@ -147,10 +147,7 @@ abstract class ItemDrop extends Model
             }
 
             $transaction->commit();
-        } catch (Exception $e) {
-            $transaction->rollBack();
-            throw $e;
-        } catch (Throwable $e) {
+        } catch (Exception|Throwable $e) {
             $transaction->rollBack();
             throw $e;
         }
@@ -273,7 +270,7 @@ abstract class ItemDrop extends Model
     protected function updateTarget()
     {
         if ($this->targetIdField) {
-            $targetId = $this->targetId ? $this->targetId : new Expression('NULL');
+            $targetId = $this->targetId ?: new Expression('NULL');
             $this->getModel()->updateAttributes([$this->targetIdField => $targetId]);
         }
     }

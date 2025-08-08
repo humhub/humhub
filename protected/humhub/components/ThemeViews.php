@@ -71,7 +71,7 @@ class ThemeViews extends Component
      */
     protected function genericTranslate($path)
     {
-        if (strpos($path, Yii::getAlias('@humhub/modules')) === false) {
+        if (!str_contains((string) $path, Yii::getAlias('@humhub/modules'))) {
             $path = str_replace(Yii::getAlias('@humhub'), '/humhub', $path);
         }
 
@@ -124,7 +124,7 @@ class ThemeViews extends Component
     protected function legacyTranslateResource($path)
     {
         // Web Resource e.g. image
-        if (substr($path, 0, 5) === '@web/' || substr($path, 0, 12) === '@web-static/') {
+        if (str_starts_with((string) $path, '@web/') || str_starts_with((string) $path, '@web-static/')) {
 
             $themedFile = str_replace(['@web/', '@web-static/'], [$this->theme->getBasePath(), $this->theme->getBasePath() . DIRECTORY_SEPARATOR . '/'], $path);
 

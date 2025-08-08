@@ -42,7 +42,7 @@ use yii\log\Logger;
                             $levelName = Yii::t('AdminModule.information', 'Warning');
                             break;
                         case Logger::LEVEL_TRACE:
-                            $labelClass = 'label-default';
+                            $bsColor = 'light';
                             $levelName = Yii::t('AdminModule.information', 'Trace');
                             break;
                         case Logger::LEVEL_ERROR:

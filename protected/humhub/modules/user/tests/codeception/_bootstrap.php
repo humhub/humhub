@@ -8,7 +8,7 @@
 use Codeception\Configuration;
 use Codeception\Util\Autoload;
 
-$env = isset($GLOBALS['env']) ? $GLOBALS['env'] : [];
+$env = $GLOBALS['env'] ?? [];
 
 // If environment was set try loading special environment config else load default
 if (count($env) > 0) {
@@ -28,7 +28,7 @@ if (!isset($cfg)) {
 }
 
 // If no humhub_root is given we assume our module is in the a root to be in /protected/humhub/modules/<module>/tests/codeception directory
-$cfg['humhub_root'] = isset($cfg['humhub_root']) ? $cfg['humhub_root'] : dirname(__DIR__) . '/../../../../..';
+$cfg['humhub_root'] ??= dirname(__DIR__) . '/../../../../..';
 
 
 // Load default test bootstrap

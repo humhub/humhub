@@ -245,6 +245,6 @@ abstract class MenuEntry extends BaseObject
      */
     public function getEntryClass()
     {
-        return get_class($this);
+        return static::class;
     }
 }

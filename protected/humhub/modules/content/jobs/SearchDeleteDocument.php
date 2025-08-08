@@ -31,7 +31,7 @@ class SearchDeleteDocument extends LongRunningActiveJob implements ExclusiveJobI
      */
     public function run()
     {
-        return $this->getService()->run(function () {
+        return $this->getService()->run(function (): void {
             (new SearchDriverService())->delete($this->contentId, false);
         });
     }

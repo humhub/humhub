@@ -55,7 +55,7 @@ class m160220_013525_contentcontainer_id extends Migration
 
         try {
             $this->dropForeignKey('fk_content-user_id', 'content');
-        } catch (Exception $ex) {
+        } catch (Exception) {
 
         }
         $this->dropColumn('content', 'user_id');

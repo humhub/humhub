@@ -21,7 +21,7 @@ class UrlManager extends \humhub\components\UrlManager
      */
     public function init()
     {
-        $urlParts = parse_url($this->getConfiguredBaseUrl());
+        $urlParts = parse_url((string) $this->getConfiguredBaseUrl());
 
         $this->setBaseUrl($urlParts['path'] ?? '');
 

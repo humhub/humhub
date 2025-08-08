@@ -83,7 +83,7 @@ class MoveContentForm extends Model
     public function getTargetContainer()
     {
         if (!$this->targetContainer) {
-            $target = isset($this->target[0]) ? $this->target[0] : null;
+            $target = $this->target[0] ?? null;
 
             if ($target) {
                 $this->targetContainer = Space::findOne(['guid' => $target]);

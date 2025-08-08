@@ -12,7 +12,7 @@ class SearchCest
 
         $I->amGoingTo('test meta search');
         $I->click('#search-menu');
-        $I->waitForText('Search', null, '#dropdown-search');
+        $I->waitForText('Search', 10, '#dropdown-search');
 
         $contentProviderSelector = '.search-provider[data-provider$=ContentSearchProvider]';
         $userProviderSelector = '.search-provider[data-provider$=UserSearchProvider]';
@@ -44,7 +44,7 @@ class SearchCest
         $I->amGoingTo('search with no results for all providers');
         $I->metaSearch('SomeUnknownWord', false);
         $I->waitForElementVisible($contentProviderSelector);
-        $I->waitForText('No results', null, $contentProviderSelector);
+        $I->waitForText('No results', 10, $contentProviderSelector);
         $I->see('Advanced Content Search', $contentProviderSelector);
         $I->waitForElementNotVisible($userProviderSelector);
         $I->waitForElementNotVisible($spaceProviderSelector);
@@ -61,11 +61,11 @@ class SearchCest
 
         $I->fillField('.form-search [name=keyword]', 'Post');
         $I->click('.form-button-search');
-        $I->waitForText('Results', null, '.search-results-header');
+        $I->waitForText('Results', 10, '.search-results-header');
         $I->see('Post', '.highlight');
 
         $I->fillField('.form-search [name=keyword]', 'UnknownWord');
         $I->click('.form-button-search');
-        $I->waitForText('No results found!', null, '[data-stream-content]');
+        $I->waitForText('No results found!', 10, '[data-stream-content]');
     }
 }

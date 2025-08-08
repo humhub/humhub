@@ -219,7 +219,7 @@ class BaseType extends Model
      */
     public function getFormDefinition($definition = [])
     {
-        $className = get_class($this);
+        $className = static::class;
         $definition[$className]['class'] = 'fieldTypeSettings ' . str_replace('\\', '_', $className);
 
         return $definition;
@@ -241,7 +241,7 @@ class BaseType extends Model
         // Bound to a profile field?
         if ($this->profileField != null) {
             // Current Profile Field matches the selected profile field
-            if ($this->profileField->field_type_class == get_class($this)) {
+            if ($this->profileField->field_type_class == static::class) {
                 return parent::validate($attributes, $clearErrors);
             }
         }
@@ -423,7 +423,7 @@ class BaseType extends Model
         }
 
         foreach (preg_split('/[\r\n]+/', $this->$attribute) as $option) {
-            if (strpos($option, '=>') === false) {
+            if (!str_contains($option, '=>')) {
                 $this->addError($attribute, Yii::t('UserModule.profile', 'Each line must be formatted as Key=>Value!'));
                 return;
             }
@@ -444,8 +444,8 @@ class BaseType extends Model
         }
 
         foreach (preg_split('/[\r\n]+/', $this->options) as $option) {
-            if (strpos($option, '=>') !== false) {
-                list($key, $value) = explode('=>', $option, 2);
+            if (str_contains($option, '=>')) {
+                [$key, $value] = explode('=>', $option, 2);
                 $items[trim($key)] = Yii::t($this->profileField->getTranslationCategory(), trim($value));
             } else {
                 $items[trim($option)] = Yii::t($this->profileField->getTranslationCategory(), trim($option));

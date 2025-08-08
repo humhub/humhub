@@ -256,7 +256,7 @@ class Group extends ActiveRecord
     public function getManager()
     {
         return $this->hasMany(User::class, ['id' => 'user_id'])
-            ->via('groupUsers', function ($query) {
+            ->via('groupUsers', function ($query): void {
                 $query->where(['is_group_manager' => '1']);
             });
     }

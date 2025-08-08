@@ -80,12 +80,10 @@ class ModuleFilters extends DirectoryFilters
 
     public static function getDefaultValue(string $filter): string
     {
-        switch ($filter) {
-            case 'tags':
-                return self::isFilteredById() ? '' : 'uninstalled';
-        }
-
-        return parent::getDefaultValue($filter);
+        return match ($filter) {
+            'tags' => self::isFilteredById() ? '' : 'uninstalled',
+            default => parent::getDefaultValue($filter),
+        };
     }
 
     /**

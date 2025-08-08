@@ -51,7 +51,7 @@ use humhub\widgets\bootstrap\Link;
 </div>
 
 <?= Html::hiddenInput('containerGuid', $contentContainer->guid) ?>
-<?= Html::hiddenInput('containerClass', get_class($contentContainer)) ?>
+<?= Html::hiddenInput('containerClass', $contentContainer::class) ?>
 
 <div class="contentForm_options">
     <hr>

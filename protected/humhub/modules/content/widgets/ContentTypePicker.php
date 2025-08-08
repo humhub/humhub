@@ -39,7 +39,7 @@ class ContentTypePicker extends MultiSelect
     {
         $this->placeholderMore = Yii::t('ContentModule.base', 'Select type...');
 
-        $this->contentContainer = $this->contentContainer ? $this->contentContainer : ContentContainerHelper::getCurrent();
+        $this->contentContainer = $this->contentContainer ?: ContentContainerHelper::getCurrent();
 
         parent::init();
         $this->items = ContentType::getContentTypeSelection($this->contentContainer);

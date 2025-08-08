@@ -73,7 +73,7 @@ $config = [
     ],
     'container' => [
         'definitions' => [
-            \yii\web\Cookie::class => [\humhub\libs\CookieBuilder::class, 'build'],
+            \yii\web\Cookie::class => \humhub\libs\CookieBuilder::build(...),
             \yii\widgets\LinkPager::class => \humhub\widgets\bootstrap\LinkPager::class,
         ],
     ],

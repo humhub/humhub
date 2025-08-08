@@ -61,7 +61,7 @@ class StdClassConfigurable extends StdClass
     {
         try {
             StdClassConfig::destroyConfig();
-        } catch (Throwable $e) {
+        } catch (Throwable) {
         }
     }
 

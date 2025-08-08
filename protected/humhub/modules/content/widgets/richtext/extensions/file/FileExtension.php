@@ -117,7 +117,7 @@ class FileExtension extends RichTextLinkExtension
     private function parseBase64Data($dataStr, ActiveRecord $record)
     {
         try {
-            preg_match('/^([-\w.]+\/[-\w.+]+);([^,]+),([a-zA-Z0-9\/\r\n+]*={0,2})$/s', $dataStr, $matches);
+            preg_match('/^([-\w.]+\/[-\w.+]+);([^,]+),([a-zA-Z0-9\/\r\n+]*={0,2})$/s', (string) $dataStr, $matches);
 
             if (!isset($matches[1]) || !isset($matches[3])) {
                 return false;
@@ -173,7 +173,7 @@ class FileExtension extends RichTextLinkExtension
     private function decode_base64($s)
     {
         // Decode the string in strict mode and check the results
-        $decoded = base64_decode($s, true);
+        $decoded = base64_decode((string) $s, true);
 
         if ($decoded === false) {
             return false;
@@ -197,7 +197,7 @@ class FileExtension extends RichTextLinkExtension
     {
         $temp = tempnam(sys_get_temp_dir(), 'tmp');
         $hanlde = fopen($temp, 'wb');
-        fwrite($hanlde, $data);
+        fwrite($hanlde, (string) $data);
         fclose($hanlde);
         return $temp;
     }

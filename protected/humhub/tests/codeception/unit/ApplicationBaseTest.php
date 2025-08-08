@@ -18,7 +18,7 @@ class ApplicationBaseTest extends HumHubDbTestCase
         try {
             Yii::$app->db->open();
             $databaseInstalled = true;
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $databaseInstalled = false;
         }
 

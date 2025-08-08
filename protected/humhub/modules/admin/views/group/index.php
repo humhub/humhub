@@ -35,28 +35,24 @@ use yii\helpers\Url;
             [
                 'attribute' => 'name',
                 'format' => 'html',
-                'value' => function (Group $group) {
+                'value' => fn(Group $group) =>
                     // Yii::t is available for default texts
-                    return Yii::t('AdminModule.base', $group->name) .
-                        ($group->is_default_group ? ' ' . Badge::light(Yii::t('AdminModule.user', 'Default')) : '') .
-                        ($group->is_protected ? ' ' . Badge::light(Yii::t('AdminModule.user', 'Protected')) : '');
-                }
+                    Yii::t('AdminModule.base', $group->name) .
+                    ($group->is_default_group ? ' ' . Badge::light(Yii::t('AdminModule.user', 'Default')) : '') .
+                    ($group->is_protected ? ' ' . Badge::light(Yii::t('AdminModule.user', 'Protected')) : '')
             ],
             [
                 'attribute' => 'description',
-                'value' => function (Group $group) {
+                'value' => fn(Group $group) =>
                     // Yii::t is available for default texts
-                    return Yii::t('AdminModule.base', $group->description);
-                }
+                    Yii::t('AdminModule.base', $group->description)
             ],
             [
                 'attribute' => 'members',
                 'label' => Yii::t('AdminModule.user', 'Members'),
                 'format' => 'raw',
                 'options' => ['style' => 'text-align:center;'],
-                'value' => function (Group $data) {
-                    return $data->getGroupUsers()->count();
-                }
+                'value' => fn(Group $data) => $data->getGroupUsers()->count()
             ],
             [
                 'class' => ActionColumn::class,

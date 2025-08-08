@@ -3,6 +3,7 @@ Module Migration Guide
 
 Version 1.18 (Unreleased)
 ------------
+Updated minimum required PHP version to 8.2.
 
 ### New
 - `\humhub\components\captcha\CaptchaInterface`
@@ -49,6 +50,17 @@ Version 1.18 (Unreleased)
 
 ### Removed deprecations
 - Widget class `\humhub\widgets\DataSaved`, the related code `Yii::$app->getSession()->setFlash('data-saved', Yii::t('base', 'Saved'));` must be replaced with `$this->view->saved();` on controllers
+
+### Module tests for Codeception v5
+- Update the file `tests/codeception.yml`: `log: codeception/_output` => `output: codeception/_output`
+- Update files `tests/codeception/*.suite.yml`: `class_name: *Tester` => `actor: *Tester`
+- `$I->waitFor*('Text', null)` => `$I->waitFor*('Text', 10)`, the second param can be only integer for the methods:
+  - `waitForText()`
+  - `waitForElement()`
+  - `waitForElementVisible()`
+  - `waitForElementNotVisible()`
+  - `waitForElementClickable()`
+- Functional tests: `$I->amOnPage(['/some/page/url', 'id' => 1])` => `$I->amOnRoute('/some/page/url', ['id' => 1])`
 
 Version 1.17.3
 ------------

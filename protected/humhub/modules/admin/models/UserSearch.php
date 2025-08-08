@@ -137,7 +137,7 @@ class UserSearch extends User
                     new Expression("DATE(last_login)"),
                     new Expression("DATE(:last_login)", [':last_login' => $last_login]),
                 ]);
-            } catch (InvalidArgumentException $e) {
+            } catch (InvalidArgumentException) {
                 // do not change the query if the date is wrong formatted
             }
         }

@@ -81,7 +81,7 @@ class ContentAddonController extends Controller
         }
 
 
-        if ($modelClass == "" || $pk == "") {
+        if ($modelClass == "" || $pk == 0) {
             throw new HttpException(500, 'Model & ID parameter required!');
         }
 

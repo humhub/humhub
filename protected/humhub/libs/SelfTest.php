@@ -495,7 +495,7 @@ class SelfTest
         // Check Runtime Directory
         $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Runtime');
         $path = realpath(Yii::getAlias('@runtime'));
-        if (is_writeable($path)) {
+        if (is_writable($path)) {
             $checks[] = [
                 'title' => $title,
                 'state' => 'OK',
@@ -511,7 +511,7 @@ class SelfTest
         // Check Assets Directory
         $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Assets');
         $path = realpath(Yii::getAlias('@webroot/assets'));
-        if (is_writeable($path)) {
+        if (is_writable($path)) {
             $checks[] = [
                 'title' => $title,
                 'state' => 'OK',
@@ -527,7 +527,7 @@ class SelfTest
         // Check Uploads Directory
         $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Uploads');
         $path = realpath(Yii::getAlias('@webroot/uploads'));
-        if (is_writeable($path)) {
+        if (is_writable($path)) {
             $checks[] = [
                 'title' => $title,
                 'state' => 'OK',
@@ -543,7 +543,7 @@ class SelfTest
         // Check Profile Image Directory
         $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Profile Image');
         $path = realpath(Yii::getAlias('@webroot/uploads/profile_image'));
-        if (is_writeable($path)) {
+        if (is_writable($path)) {
             $checks[] = [
                 'title' => $title,
                 'state' => 'OK',
@@ -561,7 +561,7 @@ class SelfTest
         /** @var Module $marketplaceModule */
         $marketplaceModule = Yii::$app->getModule('marketplace');
         $path = realpath(Yii::getAlias($marketplaceModule->modulesPath));
-        if (is_writeable($path)) {
+        if (is_writable($path)) {
             $checks[] = [
                 'title' => $title,
                 'state' => 'OK',
@@ -794,7 +794,7 @@ class SelfTest
         $driver['isAllowedVersion'] = version_compare($driver['version'], $driver['minVersion'], '>=');
         // Otherwise try to compare complex version like 5.5.5-10.3.27-MariaDB-0+deb10u1
         if (!$driver['isAllowedVersion'] &&
-            preg_match_all('/((\d+\.?)+)-/', $driver['version'], $verMatches)) {
+            preg_match_all('/((\d+\.?)+)-/', (string) $driver['version'], $verMatches)) {
             foreach ($verMatches[1] as $verMatch) {
                 if (version_compare($verMatch, $driver['minVersion'], '>=')) {
                     // If at least one version is allowed

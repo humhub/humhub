@@ -132,7 +132,7 @@ abstract class WallCreateContentForm extends Widget
         $userGuids = Yii::$app->request->post('notifyUserInput');
         if (!empty($userGuids)) {
             foreach ($userGuids as $guid) {
-                $user = User::findOne(['guid' => trim($guid)]);
+                $user = User::findOne(['guid' => trim((string) $guid)]);
                 if ($user) {
                     $record->content->notifyUsersOfNewContent[] = $user;
                 }

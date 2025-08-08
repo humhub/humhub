@@ -338,7 +338,7 @@ class View extends \yii\web\View
             if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
                 SiteIcon::registerMetaTags($this);
                 LayoutHeader::registerHeadTags($this);
-                $this->meta->registerMetaTags($this);
+                $this->meta->registerMetaTags();
             }
             parent::registerCsrfMetaTags();
         }
@@ -361,7 +361,7 @@ class View extends \yii\web\View
     {
         $cacheBustedUrl = $this->addCacheBustQuery($url);
         foreach (static::$preload as $fileName) {
-            if (strpos($url, $fileName)) {
+            if (strpos($url, (string) $fileName)) {
                 $this->registerPreload($cacheBustedUrl, 'script');
             }
         }
@@ -377,7 +377,7 @@ class View extends \yii\web\View
     {
         $cacheBustedUrl = $this->addCacheBustQuery($url);
         foreach (static::$preload as $fileName) {
-            if (strpos($url, $fileName)) {
+            if (strpos($url, (string) $fileName)) {
                 $this->registerPreload($cacheBustedUrl, 'style');
             }
         }
@@ -401,9 +401,9 @@ class View extends \yii\web\View
      */
     protected function addCacheBustQuery($url)
     {
-        if (strpos($url, '?') === false) {
+        if (!str_contains($url, '?')) {
             $file = str_replace('@web', '@webroot', $url);
-            if (substr($file, 0, 1) === '/') {
+            if (str_starts_with($file, '/')) {
                 $file = '@webroot' . $file;
             }
 
@@ -464,7 +464,7 @@ class View extends \yii\web\View
         if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
             if (Yii::$app->getSession()->hasFlash('view-status')) {
                 $viewStatus = Yii::$app->getSession()->getFlash('view-status');
-                $type = strtolower(key($viewStatus));
+                $type = strtolower((string) key($viewStatus));
                 $value = Html::encode(array_values($viewStatus)[0]);
                 $value = str_replace('&quot;', '', $value);
                 $value = trim($value);

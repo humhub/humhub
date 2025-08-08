@@ -128,7 +128,7 @@ class Notification extends ActiveRecord
         if (class_exists($this->class)) {
             try {
                 $params['source'] = $this->getPolymorphicRelation();
-            } catch (IntegrityException $e) {
+            } catch (IntegrityException) {
                 $params['source'] = null;
             }
             $params['originator'] = $this->originator;
@@ -245,7 +245,7 @@ class Notification extends ActiveRecord
      */
     public static function findGrouped(?User $user = null, $sendWebNotifications = 1)
     {
-        $user = ($user) ? $user : Yii::$app->user->getIdentity();
+        $user = $user ?: Yii::$app->user->getIdentity();
 
         $query = self::find();
         $query->addSelect([

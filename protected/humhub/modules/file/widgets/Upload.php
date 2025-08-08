@@ -308,7 +308,7 @@ class Upload extends Widget
      */
     public function progress($cfg = [])
     {
-        $options = (isset($cfg['options'])) ? $cfg['options'] : [];
+        $options = $cfg['options'] ?? [];
         $options['id'] = $this->id . '_progress';
         $cfg['options'] = $options;
 
@@ -329,12 +329,12 @@ class Upload extends Widget
      */
     public function preview($cfg = [])
     {
-        $options = (isset($cfg['options'])) ? $cfg['options'] : [];
+        $options = $cfg['options'] ?? [];
         $options['id'] = $this->id . '_preview';
         $cfg['options'] = $options;
 
         $cfg = array_merge([
-            'items' => $this->getPreviewFiles(isset($cfg['showInStream']) ? $cfg['showInStream'] : null),
+            'items' => $this->getPreviewFiles($cfg['showInStream'] ?? null),
             'model' => $this->model,
             'attribute' => $this->attribute,
             'edit' => true,

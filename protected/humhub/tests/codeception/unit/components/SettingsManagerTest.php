@@ -230,7 +230,7 @@ class SettingsManagerTest extends HumHubDbTestCase
             '{"x":null,"y":"simple text"}' => (object)['x' => null, 'y' => 'simple text'],
         ];
 
-        array_walk($tests, function ($value, $json) use ($setting, $sm, $table, $module) {
+        array_walk($tests, function ($value, $json) use ($setting, $sm, $table, $module): void {
             $sm->setSerialized($setting, $value);
             $this->assertRecordExists($table, ['name' => $setting, 'module_id' => $module]);
             $this->assertRecordValue($json, 'value', $table, ['name' => $setting, 'module_id' => $module]);

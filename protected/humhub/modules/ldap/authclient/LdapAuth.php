@@ -173,7 +173,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
         if (empty($this->idAttribute)) {
             $this->idAttribute = null;
         }
-        $this->idAttribute = strtolower($this->idAttribute);
+        $this->idAttribute = strtolower((string) $this->idAttribute);
 
         if (empty($this->usernameAttribute)) {
             $this->usernameAttribute = 'samaccountname';
@@ -394,7 +394,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
         $userName = $this->login->username;
 
         // Translate given e-mail to username
-        if (strpos($userName, '@') !== false) {
+        if (str_contains($userName, '@')) {
             $user = User::findOne(['email' => $userName]);
             if ($user !== null) {
                 $userName = $user->username;
@@ -410,7 +410,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
             $dn = $this->getLdap()->getCanonicalAccountName($userName, Ldap::ACCTNAME_FORM_DN);
 
             return $dn;
-        } catch (LdapException $ex) {
+        } catch (LdapException) {
             // User not found in LDAP
         }
         return '';
@@ -486,7 +486,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
             $authClient = null;
             $ids = [];
             foreach ($this->getUserCollection() as $ldapEntry) {
-                $dn = strtolower($ldapEntry['dn']);
+                $dn = strtolower((string) $ldapEntry['dn']);
                 foreach ($this->ignoredDNs as $ignoredDN) {
                     if (!empty($ignoredDN) && str_starts_with($dn, strtolower($ignoredDN))) {
                         continue 2;
