@@ -8,7 +8,7 @@ $testConfig = [
     'timeZone' => 'UTC',
     'components' => [
         'cache' => [
-            'class' => \yii\caching\FileCache::class,
+            'class' => \yii\caching\DummyCache::class,
         ],
         'session' => [
             'class' => \yii\web\CacheSession::class,
