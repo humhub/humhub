@@ -3,7 +3,12 @@ HumHub Changelog
 
 1.18.0 (Unreleased - Develop)
 -----------------------------
-Updated minimum required PHP version to 8.2.
+
+> Updated minimum required PHP version to 8.2.
+
+> Bootstrap 5 is the default CSS framework, which may require migration of custom modules or themes.
+
+> Caching must now be configured via the [configuration file](https://docs.humhub.org/docs/admin/performance), with `FileCache` as the default.
 
 - Enh #7029: Add Altcha captcha provider for an alternative to the default Yii captcha
 - Enh #7412: Confusing message after creating an account
