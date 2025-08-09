@@ -38,7 +38,7 @@
         padding: 6px 16px;
         margin-bottom: 10px;
         font-weight: 600;
-        color: #000;
+        color: var(--hh-text-color-highlight);
 
         .dropdown-header-actions {
             float: right;
@@ -60,7 +60,7 @@
     background-color: var(--bs-primary);
     top: 0;
     z-index: 1030;
-    color: white;
+    color: var(--hh-text-color-contrast);
 
 
     a.navbar-brand {
@@ -114,7 +114,7 @@
     .dropdown-menu {
         border: none;
         border-radius: 8px;
-        box-shadow: 0 0 8px #CCC;
+        box-shadow: 0 0 8px var(--hh-background3);
         top: 105%;
 
         .arrow {
@@ -128,7 +128,7 @@
             left: 50%;
             margin-left: -18px;
             border-top-width: 0;
-            border-bottom-color: #fff;
+            border-bottom-color: var(--hh-text-color-contrast);
             top: -16px;
             z-index: 1035;
         }
@@ -278,7 +278,7 @@
         text-align: right;
 
         span {
-            color: var(--hh-background3);
+            color: var(--bs-light);
         }
     }
 
@@ -292,11 +292,11 @@
 
 #topbar-second {
     top: 50px;
-    background-color: #fff;
+    background-color: var(--hh-background-color-main);
     z-index: 1029;
     background-image: none;
     box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid #d4d4d4;
+    border-bottom: 1px solid var(--hh-background3);
 
     .dropdown-menu {
         padding-top: 0;
@@ -330,7 +330,7 @@
 
         .search-reset {
             position: absolute;
-            color: #BFBFBF;
+            color: var(--hh-background4);
             margin: 4px;
             top: 0px;
             right: 40px;
@@ -367,7 +367,7 @@
 
                 &#space-menu {
                     padding-right: 13px;
-                    border-right: 1px solid #ededed;
+                    border-right: 1px solid var(--hh-background-color-page);
 
                     .no-space {
                         display: inline;
@@ -393,8 +393,8 @@
 
             > ul > li > a {
                 & {
-                    border-left: 3px solid #fff;
-                    background-color: #fff;
+                    border-left: 3px solid var(--hh-background-color-main);
+                    background-color: var(--hh-background-color-main);
                     color: var(--hh-text-color-highlight);
                 }
 

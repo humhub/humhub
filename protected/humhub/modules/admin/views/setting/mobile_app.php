@@ -24,6 +24,8 @@ use yii\web\View;
 
 <?= $form->field($model, 'enableLinkService')->checkbox() ?>
 
+<?= $form->field($model, 'whiteListedDomains')->textInput() ?>
+
 <?= $form->beginCollapsibleFields(Yii::t('AdminModule.settings', 'Well-known files')) ?>
 <div class="form-text"><?= Yii::t('AdminModule.settings', 'Allow establishing verified connections with the mobile app to enable Android app links and iOS universal links and redirect web content to the mobile app.') ?></div>
 <?php if (!Yii::$app->urlManager->enablePrettyUrl) : ?>

@@ -21,7 +21,7 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
     padding: 3px 5px 4px;
     font-weight: 600;
     font-size: 10px;
-    color: white;
+    color: var(--hh-text-color-contrast);
     vertical-align: baseline;
     white-space: nowrap;
     text-shadow: none;
@@ -110,9 +110,9 @@ a.label-warning:hover {
 .media-list {
     li {
         padding: 10px;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid var(--hh-background-color-page);
         position: relative;
-        border-left: 3px solid white;
+        border-left: 3px solid var(--hh-background-color-main);
 
         &:hover,
         &.selected {
@@ -142,7 +142,7 @@ a.label-warning:hover {
 
 .media-list li.placeholder:hover {
     background: none !important;
-    border-left: 3px solid white;
+    border-left: 3px solid var(--hh-background-color-main);
 }
 
 .media-left,
@@ -291,7 +291,7 @@ a.label-warning:hover {
     @include text-break();
     border: none;
     background-color: var(--hh-background-color-main);
-    box-shadow: 0 0 3px #dadada;
+    box-shadow: 0 0 3px var(--hh-background3);
     border-radius: 4px;
     position: relative;
     margin-bottom: 15px;
@@ -307,7 +307,7 @@ a.label-warning:hover {
         font-size: 16px;
         font-weight: 300;
         color: var(--hh-text-color-highlight);
-        background-color: white;
+        background-color: var(--hh-background-color-main);
         border: none;
         padding: 10px;
         border-radius: 4px;
@@ -414,7 +414,7 @@ a.label-warning:hover {
 .panel-profile {
     .panel-profile-header {
         position: relative;
-        border: 3px solid #fff;
+        border: 3px solid var(--hh-background-color-main);
         border-top-right-radius: 3px;
         border-top-left-radius: 3px;
 
@@ -433,7 +433,7 @@ a.label-warning:hover {
             padding-top: 30px;
             border-bottom-right-radius: 3px;
             border-bottom-left-radius: 3px;
-            color: #fff;
+            color: var(--hh-text-color-contrast);
             background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.38) 100%);
 
             h1 {
@@ -445,7 +445,7 @@ a.label-warning:hover {
                 a {
                     font-size: 30px;
                     font-weight: 100;
-                    color: #fff;
+                    color: var(--hh-text-color-contrast);
                 }
             }
 
@@ -477,7 +477,7 @@ a.label-warning:hover {
             left: 15px;
 
             .profile-user-photo {
-                border: 3px solid #fff;
+                border: 3px solid var(--hh-background-color-main);
                 border-radius: 5px;
 
                 // Force position of the online status because of the 3px border on the photo

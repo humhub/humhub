@@ -160,7 +160,7 @@ class User extends \yii\web\User
      */
     protected function afterLogout($identity)
     {
-        if (!DeviceDetectorHelper::isAppRequest()) {
+        if (DeviceDetectorHelper::isAppRequest()) {
             Yii::$app->session->set(MobileAppHelper::SESSION_VAR_SHOW_OPENER, 1);
         }
 
