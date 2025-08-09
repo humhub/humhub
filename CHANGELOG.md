@@ -44,6 +44,7 @@ Updated minimum required PHP version to 8.2.
 - Fix #7604: Fix registration by auth clients
 - Enh #7584: Mobile App: allow configuring whitelisted domains
 - Fix #7545: Collapsed panels are briefly shown on page load
+- Fix #7617: Add validation for user profile field translation category
 
 1.17.3 (Unreleased)
 ----------------------
