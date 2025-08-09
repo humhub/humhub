@@ -8,14 +8,14 @@
 
 namespace humhub\modules\admin\controllers;
 
-use humhub\modules\admin\permissions\ManageUsers;
-use Yii;
-use yii\web\HttpException;
 use humhub\compat\HForm;
 use humhub\modules\admin\components\Controller;
-use humhub\modules\user\models\ProfileFieldCategory;
-use humhub\modules\user\models\ProfileField;
+use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\user\models\fieldtype\BaseType;
+use humhub\modules\user\models\ProfileField;
+use humhub\modules\user\models\ProfileFieldCategory;
+use Yii;
+use yii\web\HttpException;
 
 /**
  * UserprofileController provides manipulation of the user's profile fields & categories.
