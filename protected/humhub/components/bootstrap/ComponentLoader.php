@@ -5,15 +5,15 @@ namespace humhub\components\bootstrap;
 use humhub\components\InstallationState;
 use humhub\components\mail\Mailer;
 use humhub\modules\admin\models\forms\MailingSettingsForm;
-use Yii;
 use yii\base\BootstrapInterface;
-use yii\caching\DummyCache;
 use yii\helpers\ArrayHelper;
 use yii\log\Logger;
 use yii\web\Application;
 
-class SettingsLoader implements BootstrapInterface
+class ComponentLoader implements BootstrapInterface
 {
+    private static $loadedComponents = [];
+
     public function bootstrap($app)
     {
         if (!$app) {
@@ -22,12 +22,18 @@ class SettingsLoader implements BootstrapInterface
 
         $this->setMailerConfig($app);
         $this->setUserConfig($app);
-        $this->setCacheConfig($app);
         $this->setParams($app);
+    }
+
+    public static function isFixed($component)
+    {
+        return !ArrayHelper::keyExists($component, self::$loadedComponents);
     }
 
     private function updateComponentDefinition($app, $component, $definition)
     {
+        self::$loadedComponents[$component] = true;
+
         $app->set(
             $component,
             ArrayHelper::merge($this->getComponentDefinition($app, $component), $definition),
@@ -114,37 +120,6 @@ class SettingsLoader implements BootstrapInterface
                 $definition['authTimeout'] = $authTimeout;
             }
             $this->updateComponentDefinition($app, 'user', $definition);
-        }
-    }
-
-    private function setCacheConfig($app): void
-    {
-        if ($app->has('cache', true) && !Yii::$app->cache instanceof DummyCache) {
-            $app->log->logger->log('`cache` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
-        }
-
-        $cacheClass = $app->settings->get('cacheClass');
-        $cacheComponent = [];
-
-        if (in_array($cacheClass, [\yii\caching\DummyCache::class, \yii\caching\FileCache::class])) {
-            $cacheComponent = [
-                'class' => $cacheClass,
-            ];
-        } elseif ($cacheClass == \yii\caching\ApcCache::class && (function_exists('apcu_add') || function_exists('apc_add'))) {
-            $cacheComponent = [
-                'class' => $cacheClass,
-                'useApcu' => (function_exists('apcu_add')),
-            ];
-        } elseif ($cacheClass === \yii\redis\Cache::class && Yii::$app->has('redis')) {
-            $cacheComponent = [
-                'class' => \yii\redis\Cache::class,
-            ];
-        }
-
-        if (!empty($cacheComponent)) {
-            $this->updateComponentDefinition($app, 'cache', ArrayHelper::merge($cacheComponent, [
-                'keyPrefix' => $app->id,
-            ]));
         }
     }
 
