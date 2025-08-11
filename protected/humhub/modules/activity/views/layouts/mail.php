@@ -81,10 +81,12 @@ use humhub\modules\user\models\User;
                                                                 <td style="font-size: 13px; line-height: 22px; font-family: <?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= $this->theme->variable('text-color-main', '#555') ?>; font-weight:300; text-align:left; ">
                                                                     <!-- prevent content overflow -->
                                                                     <div
-                                                                        style="width:480px;overflow:hidden;text-overflow:ellipsis;font-size: 13px; line-height: 22px; font-family: <?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= $this->theme->variable('text-color-main', '#555') ?>; font-weight:300; text-align:left">
+                                                                        style="width:480px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size: 13px; line-height: 22px; font-family: <?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= $this->theme->variable('text-color-main', '#555') ?>; font-weight:300; text-align:left">
                                                                         <!-- content output-->
                                                                         <?= $content ?>
-
+                                                                    </div>
+                                                                    <div
+                                                                        style="width:480px;overflow:hidden;text-overflow:ellipsis;font-size: 13px; line-height: 22px; font-family: <?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= $this->theme->variable('text-color-main', '#555') ?>; font-weight:300; text-align:left">
                                                                         <!-- check if activity object has a space -->
                                                                         <?php if ($space !== null): ?>
                                                                             <?= Html::a(
