@@ -22,7 +22,6 @@ return [
     'Displaying {count} entries per page.' => '{count} sarrera orrialde bakoitzeko erakusten',
     'Done' => 'Eginda',
     'Driver' => 'Kontrolatzailea',
-    'Dynamic Config' => 'Konfigurazio dinamikoa',
     'Error' => 'Akatsa',
     'Flush entries' => 'Flush sarrerak',
     'HumHub' => 'HumHub',

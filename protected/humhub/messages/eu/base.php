@@ -95,5 +95,9 @@ return [
     '{nFormatted}B' => '{nFormatted}B',
     '{nFormatted}K' => '{nFormatted}K',
     '{nFormatted}M' => '{nFormatted}M',
+    'Enter security code above' => '',
+    'I\'m not a robot' => '',
     'Switch network' => '',
+    'Verified' => '',
+    'We couldn\'t verify that you\'re human. Please check the box again.' => '',
 ];

@@ -18,6 +18,7 @@ return [
     'Define basic settings for your profile. You can add tags that fit you, choose the language and your time zone and block impolite users.' => '',
     'Delete account' => '',
     'Do you really want to delete your icon image?' => '',
+    'Do you really want to delete your login background image?' => '',
     'Do you really want to delete your logo image?' => '',
     'E-Mail' => '',
     'E-Mail change' => '',

@@ -2,7 +2,6 @@
 
 return [
     'Accept' => 'Aksepte',
-    'Close' => 'Fèmen',
     'Default' => 'Defo',
     'Login' => 'Idantifye\'w',
     'Settings' => 'Anviwònman',

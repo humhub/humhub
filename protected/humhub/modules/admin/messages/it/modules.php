@@ -3,9 +3,6 @@
 return [
     '%moduleName% - Set as default module' => '%moduleName% - Imposta come modulo predefinito',
     'Always activated' => 'Sempre attivato',
-    'Are you sure? *ALL* module data will be lost!' => 'Sei sicuro? *TUTTI* i dati dei moduli saranno perduti!',
-    'Are you sure? *ALL* module related data and files will be lost!' => 'Sei sicuro? *TUTTI* i dati e i file relativi ai moduli saranno perduti!',
-    'Close' => 'Chiudi',
     'Could not find requested module!' => 'Non posso trovare il modulo richiesto!',
     'Deactivated' => 'Disattivato',
     'Deactivation of this module has not been completed yet. Please retry in a few minutes.' => 'La disattivazione di questo modulo non è ancora stata completata. Riprovare tra qualche minuto.',
@@ -20,7 +17,11 @@ return [
     'Spaces' => 'Space',
     'User default state' => 'Stato predefinito dell\'utente',
     'Users' => 'Persone',
+    'Disable Module' => '',
+    'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content.' => '',
     'Module uninstall in progress. This process may take a moment.' => '',
     'The module is currently being used by {nbContainers} users or spaces. If you change its availability, all content created with the module will be lost. Proceed?' => '',
+    'Uninstall Module' => '',
     'Uninstallation of this module has not been completed yet. It will be removed in a few minutes.' => '',
+    'Uninstalling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content.' => '',
 ];

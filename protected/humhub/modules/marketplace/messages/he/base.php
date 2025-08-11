@@ -5,7 +5,6 @@ return [
     'Enable' => 'פעיל',
     'Enabled' => 'הופעל',
     'Search' => 'חיפוש',
-    'Settings' => 'הגדרות',
     '
 Module successfully disabled!
 ' => '',

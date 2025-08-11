@@ -15,11 +15,9 @@ return [
     'Cancel' => 'Hủy',
     'Don\'t lose track of things!<br /><br />This icon will keep you informed of activities and posts that concern you directly.' => 'Đừng để mất dấu mọi thứ!<br /><br />Biểu tượng này sẽ giúp bạn được thông báo về những hoạt động &amp; post mà bạn quan tâm.',
     'Drag a photo here or click to browse your files' => 'Kéo một ảnh vào đây hoặc click để duyệt files',
-    'End guide' => 'Kết thúc hướng dẫn',
     'Get to know your way around the site\'s most important features with the following guides:' => 'Theo hướng dẫn sau để tìm hiểu các tính năng quan trọng nhất của hệ thống:',
     'Hide my year of birth' => 'Ẩn năm sinh',
     'Howdy <strong>%firstname%</strong>, thank you for using %community%.' => 'WOW <strong>%firstname%</strong>, cảm ơn bạn đã sử dụng %community%.',
-    'Next »' => 'Sau »',
     'Ok' => 'OK',
     'Save and close' => 'Lưu &amp; đóng',
     'The account menu gives you access to your private settings and allows you to manage your public profile.' => 'Tài menu account giúp bạn truy cập vào khu vực thiết lập cá nhân &amp; quản lý hồ sơ công cộng của bạn.',
@@ -31,6 +29,5 @@ return [
     'Your mobile phone number' => 'Số mobile',
     'Your phone number at work' => 'Số điện thoại nơi làm việc',
     'Your title or position' => 'Chức danh hoặc vị trí',
-    '« Prev' => '« Trước',
     'Your skills, knowledge and experience' => '',
 ];

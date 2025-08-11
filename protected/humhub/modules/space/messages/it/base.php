@@ -31,7 +31,6 @@ return [
     'By Name' => 'Per nome',
     'Cancel' => 'Annulla',
     'Change visibility' => 'Cambiamento di visibilità',
-    'Close' => 'Chiudi',
     'Color' => 'Colore',
     'Could not request membership!' => 'Non puoi richiedere la membership!',
     'Create new link' => 'Crea nuovo collegamento',

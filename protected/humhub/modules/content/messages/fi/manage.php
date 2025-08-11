@@ -1,5 +1,6 @@
 <?php
-return array (
-  'Are you really sure? *ALL* module data for your profile will be deleted!' => 'Oletko varma että haluat poistaa kaikkien laajennusten teidot käyttäjältäsi?',
-  'Are you sure? *ALL* module data for this space will be deleted!' => 'Oletko varma? *KAIKKI* tämän laajenuksen tiedot poistetaan!',
-);
+
+return [
+    'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content from the Space.' => '',
+    'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content from your Profile.' => '',
+];

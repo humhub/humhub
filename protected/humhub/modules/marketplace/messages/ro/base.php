@@ -7,7 +7,6 @@ return [
     'Enabled' => '활성화됨',
     'New' => 'Noi',
     'Search' => 'Căutare',
-    'Settings' => 'Setări',
     '
 Module successfully disabled!
 ' => '',

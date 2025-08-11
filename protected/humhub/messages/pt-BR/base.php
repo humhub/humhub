@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Confirm</strong> Action' => '<strong>Confirmar</strong> Ação',
   '<strong>Latest</strong> updates' => '<strong>Últimas</strong> atualizações',
   '<strong>Mail</strong> summary' => 'Resumo de <strong>E-mail</strong>',
@@ -32,11 +32,13 @@ return array (
   'Do you really want to perform this action?' => 'Você realmente deseja executar esta ação ?',
   'Do you want to enable content from \'{urlPrefix}\'?' => 'Deseja habilitar o conteúdo de \'{urlPrefix}\'?',
   'Edit' => 'Editar',
+  'Enter security code above' => 'Digite o código de segurança acima',
   'Error' => 'Erro',
   'Error while running your last action (Invalid request method).' => 'Erro ao executar sua última ação (método de solicitação inválido).',
   'Error:' => 'Erro:',
   'Expand' => 'Expandir',
   'Export' => 'Exportar',
+  'I\'m not a robot' => '',
   'Info:' => 'Info:',
   'Invalid request method!' => 'Método de requisição inválido!',
   'It looks like you may have taken the wrong turn.' => 'Parece que você pegou o caminho errado.',
@@ -70,6 +72,7 @@ return array (
   'Show more' => 'Mostrar mais',
   'Some files could not be uploaded:' => 'Alguns arquivos não puderam ser carregados:',
   'Stop impersonation' => 'Parar representação',
+  'Switch network' => 'Trocar rede',
   'Text could not be copied to clipboard' => 'O texto não pôde ser copiado para a área de transferência',
   'Text has been copied to clipboard' => 'O texto foi copiado para a área de transferência',
   'The date has to be in the past.' => 'A data tem de ser no passado.',
@@ -86,6 +89,8 @@ return array (
   'Unsubscribe' => 'Cancelar inscrição',
   'Upload' => 'Enviar',
   'Upload file' => 'Enviar arquivo',
+  'Verified' => '',
+  'We couldn\'t verify that you\'re human. Please check the box again.' => '',
   'You are not allowed to run this action.' => 'Você não tem permissão para executar esta ação.',
   'verify your upload_max_filesize and post_max_size php settings.' => 'verifique suas configurações de upload_max_filesize e post_max_size do PHP.',
   '{attribute} has been empty. The system-configured function to fill empty values has returned an invalid value. Please try again or contact your administrator.' => '{attribute} está vazio. A função configurada pelo sistema para preencher valores vazios retornou um valor inválido. Tente novamente ou entre em contato com seu administrador.',
@@ -94,5 +99,4 @@ return array (
   '{nFormatted}B' => '{nFormatted}B',
   '{nFormatted}K' => '{nFormatted}K',
   '{nFormatted}M' => '{nFormatted}M',
-  'Switch network' => 'Trocar rede',
-);
+];

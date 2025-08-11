@@ -23,7 +23,6 @@ return [
     'Archived' => 'بایگانی شده',
     'As owner you cannot revoke your membership!' => 'به عنوان دارنده نمی‌توانید عضویت خود را فسخ کنید!',
     'Cancel' => 'انصراف',
-    'Close' => 'بستن',
     'Color' => 'رنگ',
     'Could not request membership!' => 'درخواست عضویت انجام نشد!',
     'Created At' => 'ایجادشده در',

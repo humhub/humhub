@@ -50,6 +50,7 @@ return [
     'Changing the username can make some links unusable, for example old links to the profile.' => '',
     'Define basic settings for your profile. You can add tags that fit you, choose the language and your time zone and block impolite users.' => '',
     'Do you really want to delete your icon image?' => '',
+    'Do you really want to delete your login background image?' => '',
     'Hide my online status' => '',
     'Markdown Editor Mode' => '',
     'New User name' => '',

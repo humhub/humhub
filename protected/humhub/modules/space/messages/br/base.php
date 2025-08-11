@@ -4,7 +4,6 @@ return [
     '<strong>Space</strong> followers' => '<strong>Lec\'h</strong> heulierien',
     'Administrator:' => 'Merour :',
     'Archived' => 'Diellaouet',
-    'Close' => 'Serriñ',
     'Default' => 'Dre ziouer',
     'Delete' => 'Dilemel',
     'Everyone can enter' => 'Digor d\'an holl',

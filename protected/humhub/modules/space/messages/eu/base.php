@@ -33,7 +33,6 @@ return [
     'By Name' => 'Izenaren araberako',
     'Cancel' => 'Deuseztatu',
     'Change visibility' => 'Ikusgarritasuna aldatu',
-    'Close' => 'Itxi',
     'Color' => 'Kolorea',
     'Could not request membership!' => 'Ezin nuen bazkide izateko eskatu!',
     'Create new link' => 'Sortu esteka berria',

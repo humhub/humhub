@@ -23,7 +23,6 @@ return [
     'Archived' => 'Arkivert',
     'As owner you cannot revoke your membership!' => 'Som eier kan du ikke avslutte ditt medlemskap!',
     'Cancel' => 'Avbryt',
-    'Close' => 'Lukk',
     'Color' => 'Farge',
     'Could not request membership!' => 'Du kan ikke be om medlemskap!',
     'Created At' => 'Laget',

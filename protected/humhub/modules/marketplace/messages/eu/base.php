@@ -117,7 +117,6 @@ The license was successfully removed!
     'Save and update' => 'Gorde eta eguneratu',
     'Search' => 'Bilatu',
     'Search...' => 'Bilatu...',
-    'Settings' => 'Ezarpenak',
     'Stop updating' => 'Ez eguneratu gehiago',
     'Tags' => 'Etiketak',
     'The HumHub project does not guarantee the functionality, quality or the continuous development of this Module.' => 'HumHub proiektuak ez du bermatzen modulu honen funtzionaltasuna, kalitatea edo etengabeko garapena.',

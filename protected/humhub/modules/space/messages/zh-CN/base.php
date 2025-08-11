@@ -21,7 +21,6 @@ return [
     'Archived' => '已存档',
     'As owner you cannot revoke your membership!' => '作为拥有者，你不能撤消你的会员资格',
     'Cancel' => '取 消',
-    'Close' => '关 闭',
     'Color' => '颜色',
     'Could not request membership!' => '无法请求成为成员',
     'Created At' => '创建于',

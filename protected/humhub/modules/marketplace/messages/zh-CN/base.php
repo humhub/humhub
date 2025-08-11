@@ -26,7 +26,6 @@ return [
     'Ok' => 'Ok',
     'Register' => '注册',
     'Search' => '搜 索',
-    'Settings' => '设置',
     'Tags' => '标签',
     'Third-party' => '第三方',
     'Third-party disclaimer' => '第三方申明',

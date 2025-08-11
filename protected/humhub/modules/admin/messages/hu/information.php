@@ -22,7 +22,6 @@ return [
     'Displaying {count} entries per page.' => 'Oldalanként {count} bejegyzés megjelenítése',
     'Done' => 'Kész',
     'Driver' => 'Vezető',
-    'Dynamic Config' => 'Dinamikus konfiguráció',
     'Error' => 'Hiba',
     'Flush entries' => 'Bejegyzések ürítése',
     'HumHub' => 'HumHub',

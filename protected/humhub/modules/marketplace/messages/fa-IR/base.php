@@ -33,7 +33,6 @@ return [
     'Register' => 'ثبت‌نام',
     'Save and update' => 'ذخیره و به‌روزرسانی',
     'Search' => 'جستجو',
-    'Settings' => 'تنظیمات',
     'Tags' => 'تگ‌ها',
     'Third-party' => 'نفر سوم',
     'Third-party disclaimer' => 'سلب مسئولیت در قبال توسعه‌دهندگان دیگر',

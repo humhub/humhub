@@ -61,6 +61,7 @@ return [
     'Your username has been changed' => 'El teu nom d\'usuari ha estat canviat',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'El teu nom d\'usuari s\'ha canviat correctament. <br> T\'acabem d\'enviar un e-mail amb la nova informació.',
     '<strong>Your</strong> Account' => '',
+    'Do you really want to delete your login background image?' => '',
     'Hide my online status' => '',
     'Markdown Editor Mode' => '',
     'Password recovery can only be initiated once every 10 minutes.' => '',

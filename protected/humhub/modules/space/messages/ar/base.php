@@ -33,7 +33,6 @@ return [
     'By Name' => 'بالاسم',
     'Cancel' => 'إلغاء',
     'Change visibility' => 'تغيير الرؤية',
-    'Close' => 'إغلاق',
     'Color' => 'اللون',
     'Could not request membership!' => 'تعذر طلب العضوية!',
     'Create new link' => 'إنشاء رابط جديد',

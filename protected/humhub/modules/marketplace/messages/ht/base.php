@@ -3,7 +3,6 @@
 return [
     'Ok' => 'Ok',
     'Search' => 'Chèche',
-    'Settings' => 'Anviwònman',
     '
 Module successfully disabled!
 ' => '',

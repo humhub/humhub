@@ -10,7 +10,6 @@ return [
     'Administrators' => 'Administrator',
     'Archived' => 'Arsip',
     'Cancel' => 'Batal',
-    'Close' => 'Tutup',
     'Color' => 'Warna',
     'Created At' => 'Dibuat di',
     'Created By' => 'Dibuat oleh',

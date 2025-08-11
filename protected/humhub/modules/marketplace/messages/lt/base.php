@@ -37,7 +37,6 @@ Module successfully enabled!
     'Register' => 'Registruotis',
     'Search' => 'Ieškoti',
     'Search...' => 'Ieškoti...',
-    'Settings' => 'Nustatymai',
     'Tags' => 'Žymos',
     'Try other keywords or remove filters.' => 'Išbandykite kitus raktažodžius arba pašalinkite filtrus.',
     'Update' => 'Atnaujinimai',

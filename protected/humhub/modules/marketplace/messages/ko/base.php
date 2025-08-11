@@ -12,7 +12,6 @@ return [
     'No modules installed yet. Install some to enhance the functionality!' => '아직 설치된 모듈이 없습니다. 기능을 향상하려면 해당 모듈을 설치하세요!',
     'Search' => '검색',
     'Search...' => '검색...',
-    'Settings' => '설정',
     'Tags' => 'ㅡㅡ',
     'Try other keywords or remove filters.' => '다른 키워드를 사용하거나 필터를 초기화하세요',
     '

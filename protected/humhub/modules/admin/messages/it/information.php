@@ -22,7 +22,6 @@ return [
     'Displaying {count} entries per page.' => 'Mostra {count} elementi per pagina.',
     'Done' => 'Fatto',
     'Driver' => 'Driver',
-    'Dynamic Config' => 'Configurazione dinamica',
     'Error' => 'Errore',
     'Flush entries' => 'Pulisci log',
     'HumHub' => 'HumHub',

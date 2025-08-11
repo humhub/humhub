@@ -17,7 +17,6 @@ return [
     'Displaying {count} entries per page.' => 'A mostrar {count,plural,=0{nenhuma entrada} =1{uma entrada} other{# entradas}} por página.',
     'Done' => 'Concluído',
     'Driver' => 'Controlador',
-    'Dynamic Config' => 'Configuração Dinâmica',
     'Error' => 'Erro',
     'Flush entries' => 'Limpar entradas',
     'HumHub is currently in debug mode. Disable it when running on production!' => 'O HumHub está em modo de debug. Desativa o modo debug quando em produção!',

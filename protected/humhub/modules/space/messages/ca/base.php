@@ -30,7 +30,6 @@ return [
     'Blocked users' => 'Usuaris bloquejats',
     'By Name' => 'Per Nom',
     'Cancel' => 'Cancel·la',
-    'Close' => 'Tanca',
     'Color' => 'Color',
     'Could not request membership!' => 'No s\'ha pogut crear la sol·licitud de pertinença!',
     'Created At' => 'Creat el',
