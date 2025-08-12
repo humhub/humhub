@@ -501,10 +501,6 @@ class SettingController extends Controller
 
     public function actionAdvanced()
     {
-        return $this->redirect(
-            [
-                'caching',
-            ],
-        );
+        return $this->redirect(['file']);
     }
 }
