@@ -50,6 +50,7 @@ HumHub Changelog
 - Enh #7584: Mobile App: allow configuring whitelisted domains
 - Fix #7545: Collapsed panels are briefly shown on page load
 - Fix #7617: Add validation for user profile field translation category
+- Enh: Add box shadow to cards (such as cards in the People and Spaces pages)
 
 1.17.3 (Unreleased)
 ----------------------
