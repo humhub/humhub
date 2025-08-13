@@ -12,6 +12,11 @@ class LoginPage extends BasePage
 {
     public $route = 'user/auth/login';
 
+    public function getUrl($params = [])
+    {
+        return '/user/auth/login';
+    }
+
     /**
      * @param string $username
      * @param string $password
