@@ -13,7 +13,6 @@ return [
     'Ok' => 'Ok',
     'Search' => 'Cari',
     'Search...' => 'Cari...',
-    'Settings' => 'Pengaturan',
     '
 Module successfully disabled!
 ' => '',

@@ -3,7 +3,6 @@
 return [
     'Accept' => 'קבל',
     'Cancel' => 'ביטול',
-    'Close' => 'סגור',
     'Decline' => 'דחה',
     'Default' => 'ברירת מחדל',
     'Delete' => 'מחק',

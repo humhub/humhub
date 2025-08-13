@@ -15,10 +15,8 @@ return [
     'Cancel' => 'Avbryt',
     'Don\'t lose track of things!<br /><br />This icon will keep you informed of activities and posts that concern you directly.' => 'Ding ding.<br /><br />Bjelle-ikonet holder deg informert om hendelser og innlegg som er viktig for deg.',
     'Drag a photo here or click to browse your files' => 'Dra et bilde hit eller klikk for å bla gjennom filer',
-    'End guide' => 'Avslutt veileder',
     'Get to know your way around the site\'s most important features with the following guides:' => 'Ta en rundtur gjennom plattformen med disse veiledningene:',
     'Hide my year of birth' => 'Skjul fødselsår',
-    'Next »' => 'Neste »',
     'Ok' => 'Ok',
     'Save and close' => 'Lagre og lukk',
     'The account menu gives you access to your private settings and allows you to manage your public profile.' => 'Brukermenyen gir deg tilgang til dine brukerinnstillinger og lar deg gjøre endringer til din profil.',
@@ -30,7 +28,6 @@ return [
     'Your mobile phone number' => 'Mobilnummer',
     'Your phone number at work' => 'Jobbtelefonnummer',
     'Your title or position' => 'Her kan du skrive din tittel eller aller helst noe gøy',
-    '« Prev' => '« Forrige',
     'Howdy <strong>%firstname%</strong>, thank you for using %community%.' => '',
     'Your skills, knowledge and experience' => '',
 ];

@@ -21,7 +21,6 @@ return [
     'Archived' => 'Arşivlenen',
     'As owner you cannot revoke your membership!' => 'Sayfa sahibi olarak siz üyeliğinizi iptal edemezsiniz!',
     'Cancel' => 'İptal',
-    'Close' => 'Kapat',
     'Color' => 'Renk',
     'Could not request membership!' => 'Üyelik isteği gerçekleşmedi!',
     'Created At' => 'Oluşturma zamanı',

@@ -17,7 +17,6 @@ return [
     'Displaying {count} entries per page.' => 'Sayfabaşına görüntülenen girdiler {count}',
     'Done' => 'Tamam',
     'Driver' => 'Sürücü',
-    'Dynamic Config' => 'Dinamik Yapılandırma',
     'Error' => 'Hata',
     'Flush entries' => 'Tüm girdileri sil',
     'HumHub is currently in debug mode. Disable it when running on production!' => 'HumHub şu anda hata ayıklama modunda. İşlem yaparken devre dışı bırakın!',

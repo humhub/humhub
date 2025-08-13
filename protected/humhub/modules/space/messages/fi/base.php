@@ -23,7 +23,6 @@ return [
     'Archived' => 'Arkistoitu',
     'As owner you cannot revoke your membership!' => 'Sivun omistajana et voi lähteä sivulta!',
     'Cancel' => 'Peruuta',
-    'Close' => 'Sulje',
     'Color' => 'Väri',
     'Could not request membership!' => 'Et voi pyytää jäsenyyttä!',
     'Created At' => 'Luotu',

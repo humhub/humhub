@@ -32,7 +32,6 @@ return [
     'By Name' => 'Pagal Vardą',
     'Cancel' => 'Atšaukti',
     'Change visibility' => 'Keisti matomumą',
-    'Close' => 'Uždaryti',
     'Color' => 'Spalva',
     'Could not request membership!' => 'Negalima prašyti narystės!',
     'Create new link' => 'Sukurti naują nuorodą',

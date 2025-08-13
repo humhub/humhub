@@ -24,7 +24,6 @@ return [
     'Displaying {count} entries per page.' => 'يتم عرض {count} في كل صفحة',
     'Done' => 'منجز',
     'Driver' => 'مشغل',
-    'Dynamic Config' => 'التكوين الديناميكي',
     'Error' => 'خطأ',
     'Flush entries' => '@Flush entries@',
     'HumHub' => 'Humhub',

@@ -24,7 +24,6 @@ return [
     'Displaying {count} entries per page.' => 'Zeige {count} Einträge pro Seite.',
     'Done' => 'Abgeschlossen',
     'Driver' => 'Treiber',
-    'Dynamic Config' => 'Dynamische Konfiguration',
     'Error' => 'Fehler',
     'Flush entries' => 'Lösche Einträge',
     'HumHub' => 'HumHub',

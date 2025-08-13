@@ -41,7 +41,6 @@ return [
     'Different table collations in the tables: {tables}' => '',
     'Disabled Functions' => '',
     'Driver' => '',
-    'Dynamic Config' => '',
     'Enable <a href="{url}">Link Redirection Service</a>' => '',
     'HumHub' => '',
     'HumHub Documentation' => '',

@@ -33,7 +33,6 @@ return [
     'By Name' => 'Név szerint',
     'Cancel' => 'Mégsem',
     'Change visibility' => 'A láthatóság módosítása',
-    'Close' => 'Bezár',
     'Color' => 'Szín',
     'Could not request membership!' => 'Nem lehetett tagságot igényelni.',
     'Create new link' => 'Új link létrehozása',

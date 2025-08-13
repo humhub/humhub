@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'Are you really sure? *ALL* module data for your profile will be deleted!' => '',
-    'Are you sure? *ALL* module data for this space will be deleted!' => '',
+    'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content from the Space.' => '',
+    'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content from your Profile.' => '',
 ];

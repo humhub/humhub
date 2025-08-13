@@ -8,7 +8,6 @@ return [
     'Admin' => 'Administrācija',
     'Archived' => 'Arhivēts',
     'Cancel' => 'Atcelt',
-    'Close' => 'Aizvērt',
     'Created At' => 'Izveidota',
     'Created By' => 'Izveidoja',
     'Decline' => 'Noraidīt',

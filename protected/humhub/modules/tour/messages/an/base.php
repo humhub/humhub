@@ -3,9 +3,7 @@
 return [
     'Cancel' => 'Cancelar',
     'Drag a photo here or click to browse your files' => 'Arrociega aquí una foto u preta per seleccionar d\'os tuyos fichers',
-    'End guide' => 'Rematar guía',
     'Hide my year of birth' => 'No amostrar a mía calendata de naiximiento',
-    'Next »' => 'Siguient »',
     'Ok' => 'Ok',
     'Save and close' => 'Alzar y zarrar',
     'Your firstname' => 'Nombre',
@@ -13,7 +11,6 @@ return [
     'Your mobile phone number' => 'Numero de mobil',
     'Your phone number at work' => 'Numero de mobil de treballo',
     'Your title or position' => 'Títol u posición',
-    '« Prev' => '« Anterior',
     ' Remove panel' => '',
     '<strong>Account</strong> Menu' => '',
     '<strong>Getting</strong> Started' => '',

@@ -34,7 +34,6 @@ return [
     'By Name' => '',
     'Cancel' => '',
     'Change visibility' => '',
-    'Close' => '',
     'Color' => '',
     'Could not request membership!' => '',
     'Create new link' => '',

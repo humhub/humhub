@@ -141,7 +141,7 @@ class AcceptanceTester extends BaseTester
         foreach ($topics as $topic) {
             $this->fillField('#topic-name', $topic);
             $this->click('.input-group .btn-light');
-            $this->waitForText($topic, null, '.layout-content-container .table-hover');
+            $this->waitForText($topic, 10, '.layout-content-container .table-hover');
         }
     }
 
@@ -335,7 +335,7 @@ class AcceptanceTester extends BaseTester
         } else {
             $select2Input = $selector . ' ~ span input';
             $this->fillField($select2Input, $search);
-            $this->waitForText($search, null, '.select2-results__option.select2-results__option--highlighted .picker-text');
+            $this->waitForText($search, 10, '.select2-results__option.select2-results__option--highlighted .picker-text');
             $this->pressKey($select2Input, WebDriverKeys::ENTER);
         }
     }

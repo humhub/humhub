@@ -2,9 +2,6 @@
 
 return [
     'Cancel' => 'Ακύρωση',
-    'End guide' => 'Τέλος οδηγού',
-    'Next »' => 'Επόμενο »',
-    '« Prev' => '« Προηγούμενο',
     ' Remove panel' => '',
     '<strong>Account</strong> Menu' => '',
     '<strong>Getting</strong> Started' => '',

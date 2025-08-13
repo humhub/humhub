@@ -30,7 +30,6 @@ return [
     'Blocked users' => 'Utilizadores bloqueados',
     'By Name' => 'Por Nome',
     'Cancel' => 'Cancelar',
-    'Close' => 'Fechar',
     'Color' => 'Cor',
     'Could not request membership!' => 'Não foi possível pedir para aderir!',
     'Created At' => 'Criado Em',

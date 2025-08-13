@@ -81,7 +81,6 @@ The license was successfully removed!
     'Save and update' => 'บันทึกและอัปเดต',
     'Search' => 'ค้นหา',
     'Search...' => 'ค้นหา...',
-    'Settings' => 'การตั้งค่า',
     'Tags' => 'แท็ก',
     'The HumHub project does not guarantee the functionality, quality or the continuous development of this Module.' => 'โปรเจ็กต์ HumHub ไม่รับประกันการทำงาน คุณภาพ หรือการพัฒนาอย่างต่อเนื่องของโมดูลนี้',
     'Third-party' => 'บุคคลที่สาม',

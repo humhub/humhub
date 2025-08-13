@@ -15,10 +15,8 @@ return [
     'Cancel' => '取消',
     'Don\'t lose track of things!<br /><br />This icon will keep you informed of activities and posts that concern you directly.' => '你不该错过！<br /> <br />这个图标会让你了解你所关心的动态。',
     'Drag a photo here or click to browse your files' => '拖拽照片到这或者点击浏览文件',
-    'End guide' => '结束向导',
     'Get to know your way around the site\'s most important features with the following guides:' => '以下指南带你了解网站的主要功能。',
     'Hide my year of birth' => '隐藏的生日中的年份',
-    'Next »' => '下一步',
     'Ok' => '确认',
     'Save and close' => '保存并关闭',
     'The account menu gives you access to your private settings and allows you to manage your public profile.' => '帐户菜单可让您使用您的个人设置，并允许你管理你的公众形象。',
@@ -30,7 +28,6 @@ return [
     'Your mobile phone number' => '你的手机号',
     'Your phone number at work' => '你的工作电话',
     'Your title or position' => '你的标题位置',
-    '« Prev' => '上一步',
     'Howdy <strong>%firstname%</strong>, thank you for using %community%.' => '',
     'Your skills, knowledge and experience' => '',
 ];

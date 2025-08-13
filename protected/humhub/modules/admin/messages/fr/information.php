@@ -24,7 +24,7 @@ return [
     'Displaying {count} entries per page.' => '{count} entrées par page.',
     'Done' => 'Terminé',
     'Driver' => 'Pilote',
-    'Dynamic Config' => 'Fichier /protected/config/dynamic.php',
+    'Enable <a href="{url}">Link Redirection Service</a>' => 'Activer le <a href="{url}">Service de Redirection de Lien</a>',
     'Error' => 'Erreur',
     'Flush entries' => 'Vider le journal',
     'HumHub' => 'HumHub',
@@ -103,5 +103,4 @@ return [
     '{imageExtension} Support' => 'Gestion de {imageExtension}',
     '{phpExtension} Extension' => 'Extension {phpExtension}',
     '{phpExtension} Support' => 'Gestion de {phpExtension}',
-    'Enable <a href="{url}">Link Redirection Service</a>' => '',
 ];

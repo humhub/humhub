@@ -25,7 +25,6 @@ return [
     'Archived' => 'Arhivirano',
     'As owner you cannot revoke your membership!' => 'Kao vlasnik ne možete opozvati vaše članstvo!',
     'Cancel' => 'Poništi',
-    'Close' => 'Zatvori',
     'Color' => 'Boja',
     'Could not request membership!' => 'Nije bilo moguće tražiti članstvo!',
     'Created At' => 'Kreirano u',

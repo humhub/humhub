@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Confirm</strong> Action' => '<strong>Potwierdź</strong> Akcje',
   '<strong>Latest</strong> updates' => '<strong>Najnowsze</strong> aktualizacje',
   '<strong>Mail</strong> summary' => '<strong>Mail</strong> podsumowanie',
@@ -32,11 +32,13 @@ return array (
   'Do you really want to perform this action?' => 'Czy na pewno chcesz wykonać tę czynność?',
   'Do you want to enable content from \'{urlPrefix}\'?' => 'Czy chcesz zezwolić na treści od \'{urlPrefix}\'?',
   'Edit' => 'Edytuj',
+  'Enter security code above' => 'wprowadź powyższy kod bezpieczeństwa',
   'Error' => 'Błąd',
   'Error while running your last action (Invalid request method).' => 'Wystapił błąd podczasy wykonania ostatniej czynności (Nieprawidłowa metoda żądania).',
   'Error:' => 'Błąd:',
   'Expand' => 'Rozwiń',
   'Export' => 'Eksportuj',
+  'I\'m not a robot' => '',
   'Info:' => 'Info:',
   'Invalid request method!' => 'Błędna metoda żądania!',
   'It looks like you may have taken the wrong turn.' => 'Chyba zabłądziłeś.',
@@ -70,6 +72,7 @@ return array (
   'Show more' => 'Pokaż więcej',
   'Some files could not be uploaded:' => 'Niektóre pliki nie mogą zostać przesłane:',
   'Stop impersonation' => 'Zatrzymaj podszywanie się',
+  'Switch network' => 'Przełącz sieć',
   'Text could not be copied to clipboard' => 'Tekst nie mógł zostać skopiowany do schowka',
   'Text has been copied to clipboard' => 'Tekst został skopiowany do schowka',
   'The date has to be in the past.' => 'Wpisana data musi być wcześniejsza.',
@@ -86,6 +89,8 @@ return array (
   'Unsubscribe' => 'Anuluj subskrybcję',
   'Upload' => 'Prześlij',
   'Upload file' => 'Prześlij plik',
+  'Verified' => '',
+  'We couldn\'t verify that you\'re human. Please check the box again.' => '',
   'You are not allowed to run this action.' => 'Nie posiadasz uprawnień do wykonania tej czynności.',
   'verify your upload_max_filesize and post_max_size php settings.' => 'sprawdź ustawienia php - upload_max_filesize i post_max_size.',
   '{attribute} has been empty. The system-configured function to fill empty values has returned an invalid value. Please try again or contact your administrator.' => '{attribute} był pusty. Ustawienie globalne aby fukcje pozostawiać puste zwróciło błędną wartość. Spróbuj ponownie lub skontaktuj się z administratorem.',
@@ -94,5 +99,4 @@ return array (
   '{nFormatted}B' => '{nFormatted}B',
   '{nFormatted}K' => '{nFormatted}K',
   '{nFormatted}M' => '{nFormatted}M',
-  'Switch network' => 'Przełącz sieć',
-);
+];

@@ -41,7 +41,6 @@ Module successfully enabled!
     'Register' => 'Registrovat',
     'Search' => 'Hledat',
     'Search...' => 'Hledat...',
-    'Settings' => 'Nastavení',
     'Tags' => 'Štítky',
     'Third-party' => 'Třetích stran',
     'Third-party disclaimer' => 'Odmítnutí odpovědnosti třetích stran',

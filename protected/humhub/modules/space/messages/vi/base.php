@@ -23,7 +23,6 @@ return [
     'Archived' => 'Lưu trữ',
     'As owner you cannot revoke your membership!' => 'Là chủ sở hữu, bạn không thể thu hồi quyền thành viên của mình!',
     'Cancel' => 'Hủy',
-    'Close' => 'Đóng',
     'Color' => 'Màu',
     'Could not request membership!' => 'Không thể yêu cầu quyền thành viên!',
     'Created At' => 'Tạo lúc',

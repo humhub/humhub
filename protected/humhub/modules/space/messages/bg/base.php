@@ -25,7 +25,6 @@ return [
     'Archived' => 'Архиварано',
     'As owner you cannot revoke your membership!' => 'Като собственик не можете да оттеглите членството си!',
     'Cancel' => 'Отказ',
-    'Close' => 'Затвори',
     'Color' => 'Цвят',
     'Could not request membership!' => 'Не може да бъде поискано членство!',
     'Created At' => 'Създадено на',

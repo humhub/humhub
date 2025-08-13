@@ -15,11 +15,9 @@ return [
     'Cancel' => 'Zrušit',
     'Don\'t lose track of things!<br /><br />This icon will keep you informed of activities and posts that concern you directly.' => 'Neztratíte přehled.<br /><br />Tato ikona vás bude informovat o nových aktivitách a příspěvcích, které se vás týkají.',
     'Drag a photo here or click to browse your files' => 'Přetáhněte sem fotografii nebo procházejte soubory',
-    'End guide' => 'Ukončit průvodce',
     'Get to know your way around the site\'s most important features with the following guides:' => 'Následující průvodce vám může pomoci se lépe zorientovat v této síti a tak vám usnadní začátky práce s ní. Vyberte si, co vás zajímá:',
     'Hide my year of birth' => 'Skrýt můj rok narození',
     'Howdy <strong>%firstname%</strong>, thank you for using %community%.' => 'Ahoj <strong>%firstname%</strong>, děkujeme, že používáš %community%.',
-    'Next »' => 'Další »',
     'Ok' => 'Ok',
     'Save and close' => 'Uložit a zavřít',
     'The account menu gives you access to your private settings and allows you to manage your public profile.' => 'Skrze možnosti účtu se dostanete k vašemu soukromému nastavení a ke správě vašeho veřejného profilu.',
@@ -31,6 +29,5 @@ return [
     'Your mobile phone number' => 'Mobilní telefon',
     'Your phone number at work' => 'Telefon do zaměstnání',
     'Your title or position' => 'Název Vaší pozice',
-    '« Prev' => '« Předchozí',
     'Your skills, knowledge and experience' => '',
 ];

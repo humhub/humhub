@@ -71,7 +71,6 @@ The license was successfully removed!
     'Remove license key' => 'Премахнете лицензионния ключ',
     'Save and update' => 'Запазване и актуализиране',
     'Search' => 'Търсене',
-    'Settings' => 'Настройки',
     'Tags' => 'Етикети',
     'The HumHub project does not guarantee the functionality, quality or the continuous development of this Module.' => 'Проектът HumHub не гарантира функционалността, качеството или непрекъснатото развитие на този модул.',
     'Third-party' => 'Трета страна',

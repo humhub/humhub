@@ -20,7 +20,6 @@ return [
     'Displaying {count} entries per page.' => 'Zobrazeno {count} záznamů na stránku.',
     'Done' => 'Hotovo',
     'Driver' => 'Ovladač',
-    'Dynamic Config' => 'Dynamická konfigurace',
     'Error' => 'Chyba',
     'Flush entries' => 'Smazat položky',
     'HumHub' => 'HumHub',

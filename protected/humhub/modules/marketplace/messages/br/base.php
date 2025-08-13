@@ -118,7 +118,6 @@ The license was successfully removed!
     'Save and update' => '',
     'Search' => '',
     'Search...' => '',
-    'Settings' => '',
     'Stop updating' => '',
     'Tags' => '',
     'The HumHub project does not guarantee the functionality, quality or the continuous development of this Module.' => '',

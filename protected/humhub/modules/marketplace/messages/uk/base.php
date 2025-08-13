@@ -6,7 +6,6 @@ return [
     'Register' => 'Реєстрація',
     'Search' => 'Пошук',
     'Search...' => 'Пошук...',
-    'Settings' => 'Налаштування',
     'Tags' => 'Теги',
     'Try other keywords or remove filters.' => 'Спробуйте інші ключові слова або змініть фільтри.',
     '

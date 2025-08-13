@@ -24,7 +24,6 @@ return [
     'Blocked users' => '封鎖的用戶',
     'By Name' => '依名稱',
     'Cancel' => '取消',
-    'Close' => '關閉',
     'Color' => '顏色',
     'Create new link' => '建立新連結',
     'Decline' => '拒絕',

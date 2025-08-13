@@ -28,7 +28,6 @@ Module successfully enabled!
     'New' => 'Νέα',
     'No modules installed yet. Install some to enhance the functionality!' => 'Δεν έχουν εγκατασταθεί ακόμα μονάδες. Εγκαταστήστε μερικές για να βελτιώσετε τη λειτουργικότητα!',
     'Search' => 'Αναζήτηση',
-    'Settings' => 'Ρυθμίσεις',
     'Tags' => 'Λέξεις κλειδιά',
     'Update' => 'Ενημέρωση',
     'Version:' => 'Εκδοση:',

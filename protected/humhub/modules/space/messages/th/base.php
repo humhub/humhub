@@ -29,7 +29,6 @@ return [
     'As owner you cannot revoke your membership!' => 'ในฐานะเจ้าของ คุณไม่สามารถเพิกถอนการเป็นสมาชิกของคุณได้!',
     'By Name' => 'โดยชื่อ',
     'Cancel' => 'ยกเลิก',
-    'Close' => 'ปิด',
     'Color' => 'สี',
     'Could not request membership!' => 'ไม่สามารถสมัครสมาชิกได้!',
     'Created At' => 'สร้าง At',

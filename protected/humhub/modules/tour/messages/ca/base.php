@@ -3,9 +3,7 @@
 return [
     'Cancel' => 'Cancel·la',
     'Drag a photo here or click to browse your files' => 'Arrossegar una foto aquí o feu clic per navegar pels arxius',
-    'End guide' => 'Finalitza la guia',
     'Hide my year of birth' => 'Ocultar el meu any de naixement',
-    'Next »' => 'Següent »',
     'Ok' => 'D\'acord',
     'Save and close' => 'Desar i eliminar',
     'You are the first user here... Yehaaa! Be a shining example and complete your profile,<br>so that future users know who is the top dog here and to whom they can turn to if they have questions.' => 'Vostè és el primer usuari aquí ... Yehaaa! Sigui un exemple brillant i completi el seu perfil, per a que els futurs usuaris sàpiguen qui és vosté i així podran acudir a vosté si tenen preguntes.',
@@ -14,7 +12,6 @@ return [
     'Your mobile phone number' => 'El seu número de telèfon',
     'Your phone number at work' => 'El seu número de telèfon al treball',
     'Your title or position' => 'El teu títol o posició',
-    '« Prev' => '« Anterior',
     ' Remove panel' => '',
     '<strong>Account</strong> Menu' => '',
     '<strong>Getting</strong> Started' => '',

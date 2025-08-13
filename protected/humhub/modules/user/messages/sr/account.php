@@ -66,6 +66,7 @@ return [
     'Your password has been successfully changed!' => 'Vaša lozinka je uspešno promenjena!',
     'Your username has been changed' => 'Vaše korisničko ime je promenjeno',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'Vaše korisničko ime je uspešno promenjeno.<br>Upravo smo vam poslali e-mail s novim informacijama.',
+    'Do you really want to delete your login background image?' => '',
     'Password recovery can only be initiated once every 10 minutes.' => '',
     'Password recovery disabled. Please contact your system administrator.' => '',
 ];

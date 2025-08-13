@@ -32,7 +32,7 @@ class HumHubHelper extends Module
 {
     use HumHubHelperTrait;
 
-    protected $config = [];
+    protected array $config = [];
 
     /* @codingStandardsIgnoreLine PSR2.Methods.MethodDeclaration.Underscore */
     public function _before(\Codeception\TestInterface $test)

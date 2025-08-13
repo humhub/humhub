@@ -3,9 +3,6 @@
 return [
     '%moduleName% - Set as default module' => '%moduleName% - Nustatyti kaip numatytąjį modulį',
     'Always activated' => 'Visada aktyvuota',
-    'Are you sure? *ALL* module data will be lost!' => 'Ar Jūs tikras? *ALL* visa modulio informacija bus prarasta!',
-    'Are you sure? *ALL* module related data and files will be lost!' => 'Ar Jūs tikras? *ALL* visa su moduliu susijusi informacija ir failai bus prarasti!',
-    'Close' => 'Uždaryti',
     'Could not find requested module!' => 'Prašomas modulis nerastas!',
     'Deactivated' => 'Išjungta',
     'Deactivation of this module has not been completed yet. Please retry in a few minutes.' => 'Šio modulio išjungimas nebaigtas. Prašome pakartoti po kelių minučių.',
@@ -21,6 +18,10 @@ return [
     'The module is currently being used by {nbContainers} users or spaces. If you change its availability, all content created with the module will be lost. Proceed?' => 'Šiuo metu modulį naudoja {nbContainers} naudotojai arba erdvės. Jei pakeisite jo prieinamumą, visas su šiuo moduliu sukurtas turinys bus prarastas. Ar norite tęsti?',
     'User default state' => 'Vartotojo numatytoji būsena',
     'Users' => 'Vartotojai',
+    'Disable Module' => '',
+    'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content.' => '',
     'Module uninstall in progress. This process may take a moment.' => '',
+    'Uninstall Module' => '',
     'Uninstallation of this module has not been completed yet. It will be removed in a few minutes.' => '',
+    'Uninstalling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content.' => '',
 ];

@@ -31,7 +31,6 @@ Module successfully enabled!
     'Ok' => 'Ok',
     'Register' => 'Rekisteröidy',
     'Search' => 'Hae',
-    'Settings' => 'asetukset',
     'Tags' => 'Tägit',
     'Third-party' => 'Kolmanen osapuolen',
     'Update successful' => 'Päivitys onnistui',
