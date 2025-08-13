@@ -19,8 +19,6 @@ class ActivityStreamCest
      */
     public function testSimpleStream(AcceptanceTester $I)
     {
-        \Yii::$app->cache->flush();
-
         $I->amUser1();
         $I->amOnSpace3();
         $I->wantToTest('test post creation activity');
