@@ -130,7 +130,7 @@ class Post extends ContentActiveRecord
      */
     public function getContentDescription()
     {
-        return substr($this->message, 0, 100) . '...';
+        return $this->message;
     }
 
     /**
