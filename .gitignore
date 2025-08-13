@@ -5,7 +5,6 @@ protected/runtime/*
 .env
 .test-env
 !protected/runtime/.gitignore
-!protected/runtime/cache/.gitignore
 
 node_modules
 
