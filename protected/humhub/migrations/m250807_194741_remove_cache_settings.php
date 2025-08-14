@@ -15,7 +15,7 @@ class m250807_194741_remove_cache_settings extends Migration
                 ['=', 'name', 'cacheExpireTime'],
                 ['=', 'name', 'cacheReloadableScript'],
             ],
-            ['=', 'module_id', 'base']
+            ['=', 'module_id', 'base'],
         ]);
     }
 
