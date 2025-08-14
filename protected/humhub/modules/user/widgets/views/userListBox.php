@@ -30,6 +30,7 @@ use yii\data\Pagination;
                         'user' => $user,
                         'link' => false,
                         'hideOnlineStatus' => $hideOnlineStatus,
+                        'htmlOptions' => ['class' => 'm-0'], // Remove the bottom margin for the online status icon
                     ]) ?>
                 </div>
 
