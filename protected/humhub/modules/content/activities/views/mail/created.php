@@ -7,6 +7,7 @@ use humhub\modules\content\widgets\richtext\RichText;
 
 /* @var $originator \humhub\modules\user\models\User */
 /* @var $source ContentOwner */
+/* @var $viewable \humhub\modules\content\activities\ContentCreated */
 
 echo Yii::t('ContentModule.activities', '{displayName} created a new {contentTitle}.', [
     '{displayName}' => '<strong>' . Html::encode($originator->displayName) . '</strong>',
@@ -14,6 +15,7 @@ echo Yii::t('ContentModule.activities', '{displayName} created a new {contentTit
 ]);
 ?>
 <br>
-"<?= RichText::preview($source->getContentDescription(), 0, [
+
+"<?= RichText::preview($source->getContentDescription(), $viewable->mailPreviewLength, [
     RichTextToShortTextConverter::OPTION_CACHE_KEY => RichTextToShortTextConverter::buildCacheKeyForContent($source)
 ]) ?>"
