@@ -29,8 +29,8 @@ class CookieBuilder
     {
         $cookie = new Cookie($config);
 
-        if (Yii::$app->request->autoEnsureSecureConnection &&
-            Yii::$app->request->isSecureConnection) {
+        if (Yii::$app->request->autoEnsureSecureConnection
+            && Yii::$app->request->isSecureConnection) {
             $cookie->secure = true;
         }
 
