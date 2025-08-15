@@ -24,10 +24,12 @@ $commentLeftMargin: 35px;
             right: 0;
         }
 
+        &.single-comment {
+            margin: -0.5rem;
+        }
+
         &.comment-current {
             background: var(--hh-background-color-highlight);
-            padding: 0 5px 5px 5px;
-            margin: 0 -5px -5px -5px;
             border-radius: 3px;
 
             hr {
@@ -50,9 +52,6 @@ $commentLeftMargin: 35px;
 
             .nested-comments-root {
                 .comment-container {
-                    margin-top: 5px;
-                    padding-bottom: 10px;
-
                     .showMore {
                         margin-top: 0;
                         padding-top: 5px;
@@ -110,7 +109,7 @@ $commentLeftMargin: 35px;
         border-top: 1px solid var(--hh-background-color-secondary);
 
         &.comment-separator:first-of-type {
-            display: none;
+            display: none !important;
         }
     }
 
@@ -162,13 +161,11 @@ div.comment {
 }
 
 div.nested-comments-root {
-    margin-left: -0.5rem !important;
-
     .ProseMirror-menubar-wrapper {
         z-index: 210;
     }
 
-    hr.comment-separator {
+    hr.comment-separator:not(:first-of-type) {
         display: inherit !important;
     }
 
