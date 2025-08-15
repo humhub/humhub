@@ -129,9 +129,9 @@ class ContentController extends Controller
 
         $content = Content::findOne(Yii::$app->request->get('id'));
 
-        $result = $content instanceof Content &&
-            $content->canArchive() &&
-            $content->archive();
+        $result = $content instanceof Content
+            && $content->canArchive()
+            && $content->archive();
 
         return $this->asJson(['success' => $result]);
     }
@@ -147,9 +147,9 @@ class ContentController extends Controller
 
         $content = Content::findOne(Yii::$app->request->get('id'));
 
-        $result = $content instanceof Content &&
-            $content->canArchive() &&
-            $content->unarchive();
+        $result = $content instanceof Content
+            && $content->canArchive()
+            && $content->unarchive();
 
         return $this->asJson(['success' => $result]);
     }
@@ -228,9 +228,9 @@ class ContentController extends Controller
             throw new ForbiddenHttpException();
         }
 
-        $content->visibility = $content->isPrivate() ?
-            Content::VISIBILITY_PUBLIC :
-            Content::VISIBILITY_PRIVATE;
+        $content->visibility = $content->isPrivate()
+            ? Content::VISIBILITY_PUBLIC
+            : Content::VISIBILITY_PRIVATE;
 
         return $this->asJson([
             'success' => $content->save(),

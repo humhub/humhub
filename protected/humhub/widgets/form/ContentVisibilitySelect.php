@@ -75,20 +75,20 @@ class ContentVisibilitySelect extends InputWidget
         $this->options['label'] = Yii::t('ContentModule.base', 'Public');
 
         if ($this->getContentContainer() instanceof Space) {
-            $this->options['label'] .= ' ' .
-                Yii::t('ContentModule.base', '(Also visible to non-members of this space)');
+            $this->options['label'] .= ' '
+                . Yii::t('ContentModule.base', '(Also visible to non-members of this space)');
         }
 
         if (
             $this->getContentContainer() === null
             && AuthHelper::isGuestAccessEnabled()
         ) {
-            $this->options['label'] .= ' ' .
-                Yii::t('ContentModule.base', '(Also visible to people who are not logged in)');
+            $this->options['label'] .= ' '
+                . Yii::t('ContentModule.base', '(Also visible to people who are not logged in)');
         }
 
-        $this->options['title'] =
-            Yii::t('ContentModule.base', 'Specify who can see this content.');
+        $this->options['title']
+            = Yii::t('ContentModule.base', 'Specify who can see this content.');
 
         if ($this->readonly) {
             $this->options['disabled'] = true;
@@ -97,9 +97,9 @@ class ContentVisibilitySelect extends InputWidget
         $this->setDefaultValue();
 
         return
-            '<div class="checkbox">' .
-            Html::activeCheckbox($this->model, $this->attribute, $this->options) .
-            '</div>';
+            '<div class="checkbox">'
+            . Html::activeCheckbox($this->model, $this->attribute, $this->options)
+            . '</div>';
     }
 
 
@@ -128,8 +128,8 @@ class ContentVisibilitySelect extends InputWidget
         // or if user has no permission to create public content
         if ($contentContainer instanceof Space && $contentContainer->visibility !== Space::VISIBILITY_ALL) {
             /** @var Space $contentContainer */
-            if ($contentContainer->visibility === Space::VISIBILITY_NONE ||
-                !$contentContainer->can(CreatePublicContent::class)) {
+            if ($contentContainer->visibility === Space::VISIBILITY_NONE
+                || !$contentContainer->can(CreatePublicContent::class)) {
                 return true;
             }
         }

@@ -25,9 +25,9 @@ class ShareIntendTargetForm extends Model
     public function attributeHints(): array
     {
         return [
-            'targetContainerGuid' => static::canPostInOwnProfile() ?
-                Yii::t('ContentModule.base', 'Select target Space/Profile.') :
-                Yii::t('ContentModule.base', 'Select target Space.'),
+            'targetContainerGuid' => static::canPostInOwnProfile()
+                ? Yii::t('ContentModule.base', 'Select target Space/Profile.')
+                : Yii::t('ContentModule.base', 'Select target Space.'),
         ];
     }
 

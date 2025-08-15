@@ -43,11 +43,11 @@ return [
                 'element' => "#space-menu",
                 'popover' => [
                     'title' => Yii::t('TourModule.base', '<strong>Space</strong> Menu'),
-                    'description' =>
-                        Yii::t('TourModule.base', 'This is the most important menu and will probably be the one you use most often!<br><br>Access all the spaces you have joined and create new spaces here.<br><br>The next guide will show you how:') .
-                        '<br><br>' .
-                        Button::asLink(Yii::t("TourModule.base", "<strong>Start</strong> space guide"))->action('tour.next') .
-                        '<br><br>',
+                    'description'
+                        => Yii::t('TourModule.base', 'This is the most important menu and will probably be the one you use most often!<br><br>Access all the spaces you have joined and create new spaces here.<br><br>The next guide will show you how:')
+                        . '<br><br>'
+                        . Button::asLink(Yii::t("TourModule.base", "<strong>Start</strong> space guide"))->action('tour.next')
+                        . '<br><br>',
                 ],
             ],
         ],

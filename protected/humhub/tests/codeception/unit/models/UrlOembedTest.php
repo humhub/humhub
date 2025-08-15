@@ -82,12 +82,12 @@ class UrlOembedTest extends HumHubDbTestCase
     {
         UrlOembedMock::$maxUrlFetchLimit = 3;
 
-        $text = UrlOembedMock::TEST_VIDEO_URL_A . '&a=1 ' .
-            UrlOembedMock::TEST_VIDEO_URL_A . '&a=2 ' .
-            UrlOembedMock::TEST_VIDEO_URL_A . '&a=3 ' .
-            UrlOembedMock::TEST_VIDEO_URL_A . '&a=4 ' .
-            UrlOembedMock::TEST_VIDEO_URL_A . '&a=5 ' .
-            UrlOembedMock::TEST_VIDEO_URL_A . '&a=6 ';
+        $text = UrlOembedMock::TEST_VIDEO_URL_A . '&a=1 '
+            . UrlOembedMock::TEST_VIDEO_URL_A . '&a=2 '
+            . UrlOembedMock::TEST_VIDEO_URL_A . '&a=3 '
+            . UrlOembedMock::TEST_VIDEO_URL_A . '&a=4 '
+            . UrlOembedMock::TEST_VIDEO_URL_A . '&a=5 '
+            . UrlOembedMock::TEST_VIDEO_URL_A . '&a=6 ';
 
         UrlOembedMock::preload($text);
         $this->assertEquals(3, UrlOembedMock::getFetchUrlCount());
@@ -97,12 +97,12 @@ class UrlOembedTest extends HumHubDbTestCase
     {
         UrlOembedMock::$maxUrlFetchLimit = 6;
 
-        $text = UrlOembedMock::TEST_VIDEO_URL_A . '&a=1 ' .
-            UrlOembedMock::TEST_VIDEO_URL_A . '&a=2 ' .
-            UrlOembedMock::TEST_VIDEO_URL_A . '&a=3 ' .
-            UrlOembedMock::TEST_VIDEO_URL_A . '&a=4 ' .
-            UrlOembedMock::TEST_VIDEO_URL_A . '&a=5 ' .
-            UrlOembedMock::TEST_VIDEO_URL_A . '&a=6 ';
+        $text = UrlOembedMock::TEST_VIDEO_URL_A . '&a=1 '
+            . UrlOembedMock::TEST_VIDEO_URL_A . '&a=2 '
+            . UrlOembedMock::TEST_VIDEO_URL_A . '&a=3 '
+            . UrlOembedMock::TEST_VIDEO_URL_A . '&a=4 '
+            . UrlOembedMock::TEST_VIDEO_URL_A . '&a=5 '
+            . UrlOembedMock::TEST_VIDEO_URL_A . '&a=6 ';
 
         UrlOembedMock::preload($text);
 

@@ -45,10 +45,10 @@ class MailLinkService
 
     public function isConfigured(): bool
     {
-        return $this->isEnabled &&
-            is_string($this->appUrl) &&
-            is_string($this->hid) &&
-            is_string($this->sitePattern);
+        return $this->isEnabled
+            && is_string($this->appUrl)
+            && is_string($this->hid)
+            && is_string($this->sitePattern);
     }
 
     public function processUrls(string $text): ?string

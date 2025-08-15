@@ -148,9 +148,9 @@ class ProfileCest
         $I->createProfileField('Test textarea field', TextArea::class, ['visible' => true, 'editable' => true]);
         $I->createProfileField('Test checkboxlist field', CheckboxList::class, [
             'visible' => true,
-            'checkboxlist-options' => 'First option => First option' . "\r\n" .
-                'Second option => Second option' . "\r\n" .
-                'Third option => Third option',
+            'checkboxlist-options' => 'First option => First option' . "\r\n"
+                . 'Second option => Second option' . "\r\n"
+                . 'Third option => Third option',
         ]);
 
         $I->amGoingTo('test profile fields visibility by user');

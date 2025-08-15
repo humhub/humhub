@@ -51,9 +51,9 @@ class MetaSearchService
             return;
         }
 
-        $cacheKey = ($this->provider !== null ? $this->provider::class : self::class) .
-            Yii::$app->user->id .
-            sha1($this->provider->getKeyword() . json_encode($this->provider->getRoute()));
+        $cacheKey = ($this->provider !== null ? $this->provider::class : self::class)
+            . Yii::$app->user->id
+            . sha1($this->provider->getKeyword() . json_encode($this->provider->getRoute()));
 
         $data = Yii::$app->cache->getOrSet($cacheKey, fn() => $this->provider->getResults($this->pageSize), $this->cacheTimeout);
 

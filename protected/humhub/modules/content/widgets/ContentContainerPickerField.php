@@ -47,9 +47,9 @@ class ContentContainerPickerField extends BasePicker
      */
     protected function getItemText($item)
     {
-        return $this->itemClass === ContentContainer::class ?
-            $item->getPolymorphicRelation()->displayName :
-            $item->displayName;
+        return $this->itemClass === ContentContainer::class
+            ? $item->getPolymorphicRelation()->displayName
+            : $item->displayName;
     }
 
     /**
@@ -57,8 +57,8 @@ class ContentContainerPickerField extends BasePicker
      */
     protected function getItemImage($item)
     {
-        return $this->itemClass === ContentContainer::class ?
-            $item->getPolymorphicRelation()->getProfileImage()->getUrl() :
-            $item->getProfileImage()->getUrl();
+        return $this->itemClass === ContentContainer::class
+            ? $item->getPolymorphicRelation()->getProfileImage()->getUrl()
+            : $item->getProfileImage()->getUrl();
     }
 }

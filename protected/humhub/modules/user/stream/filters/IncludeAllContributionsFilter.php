@@ -101,8 +101,8 @@ class IncludeAllContributionsFilter extends ContentContainerStreamFilter
      */
     public function isActive()
     {
-        return $this->container instanceof User &&
-            ($this->streamQuery->user !== null && $this->scope === static::SCOPE_ALL) ||
-            (Yii::$app->user->isGuest && AuthHelper::isGuestAccessEnabled() && $this->scope === static::SCOPE_PROFILE);
+        return $this->container instanceof User
+            && ($this->streamQuery->user !== null && $this->scope === static::SCOPE_ALL)
+            || (Yii::$app->user->isGuest && AuthHelper::isGuestAccessEnabled() && $this->scope === static::SCOPE_PROFILE);
     }
 }

@@ -45,8 +45,8 @@ class DisplayNameColumn extends BaseColumn
         if ($user->auth_mode !== 'local' && Yii::$app->user->isAdmin()) {
             $badge = '&nbsp;<span class="badge">' . $user->auth_mode . '</span>';
         }
-        return '<div>' . Html::encode($user->displayName) . $badge . '<br> ' .
-            '<small>' . Html::encode($user->displayNameSub) . '</small></div>';
+        return '<div>' . Html::encode($user->displayName) . $badge . '<br> '
+            . '<small>' . Html::encode($user->displayNameSub) . '</small></div>';
     }
 
 }

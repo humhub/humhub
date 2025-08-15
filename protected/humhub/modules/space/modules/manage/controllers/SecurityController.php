@@ -50,17 +50,17 @@ class SecurityController extends Controller
         }
 
         $visibilities = [];
-        if ($space->visibility === Space::VISIBILITY_NONE ||
-            Yii::$app->user->permissionManager->can(new CreatePrivateSpace())) {
+        if ($space->visibility === Space::VISIBILITY_NONE
+            || Yii::$app->user->permissionManager->can(new CreatePrivateSpace())) {
             $visibilities[Space::VISIBILITY_NONE] = Yii::t('SpaceModule.base', 'Private (Invisible)');
         }
         $canCreatePublicSpace = Yii::$app->user->permissionManager->can(new CreatePublicSpace());
-        if ($space->visibility === Space::VISIBILITY_REGISTERED_ONLY ||
-            $canCreatePublicSpace) {
+        if ($space->visibility === Space::VISIBILITY_REGISTERED_ONLY
+            || $canCreatePublicSpace) {
             $visibilities[Space::VISIBILITY_REGISTERED_ONLY] = Yii::t('SpaceModule.base', 'Public (Registered users only)');
         }
-        if ($space->visibility === Space::VISIBILITY_ALL ||
-            ($canCreatePublicSpace && AuthHelper::isGuestAccessEnabled())) {
+        if ($space->visibility === Space::VISIBILITY_ALL
+            || ($canCreatePublicSpace && AuthHelper::isGuestAccessEnabled())) {
             $visibilities[Space::VISIBILITY_ALL] = Yii::t('SpaceModule.base', 'Visible for all (members and guests)');
         }
 

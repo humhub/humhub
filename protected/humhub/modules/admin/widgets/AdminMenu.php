@@ -70,8 +70,8 @@ class AdminMenu extends LeftNavigation
             'url' => ['/admin/user'],
             'icon' => 'user',
             'sortOrder' => 200,
-            'isActive' => ControllerHelper::isActivePath('admin', ['user', 'group', 'approval', 'authentication', 'user-profile', 'pending-registrations', 'user-permissions', 'user-people']) ||
-                ControllerHelper::isActivePath('ldap', 'admin'),
+            'isActive' => ControllerHelper::isActivePath('admin', ['user', 'group', 'approval', 'authentication', 'user-profile', 'pending-registrations', 'user-permissions', 'user-people'])
+                || ControllerHelper::isActivePath('ldap', 'admin'),
             'isVisible' => Yii::$app->user->can([
                 ManageUsers::class,
                 ManageSettings::class,
@@ -139,9 +139,9 @@ class AdminMenu extends LeftNavigation
 
         $canSeeAdminSection = Yii::$app->session->get(static::SESSION_CAN_SEE_ADMIN_SECTION);
         if ($canSeeAdminSection == null) {
-            $canSeeAdminSection = Yii::$app->user->isAdmin() ?
-                true :
-                !empty((new self())->getEntries(null, true));
+            $canSeeAdminSection = Yii::$app->user->isAdmin()
+                ? true
+                : !empty((new self())->getEntries(null, true));
             Yii::$app->session->set(static::SESSION_CAN_SEE_ADMIN_SECTION, $canSeeAdminSection);
         }
 

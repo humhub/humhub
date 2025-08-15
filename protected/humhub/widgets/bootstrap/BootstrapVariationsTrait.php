@@ -24,7 +24,7 @@ trait BootstrapVariationsTrait
     /**
      * @var Icon|null the icon to be displayed before the label.
      */
-    public Icon|null $icon = null;
+    public ?Icon $icon = null;
 
     public ?string $size = null;
 

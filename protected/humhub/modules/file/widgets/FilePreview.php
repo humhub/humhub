@@ -162,8 +162,8 @@ class FilePreview extends JsWidget
             if (!empty($searchController->searchRequest->keyword)) {
                 $converter = new TextConverter();
                 if (
-                    $converter->applyFile($file) &&
-                    SearchHelper::matchQuery($searchController->searchRequest->keyword, $converter->getContentAsText())
+                    $converter->applyFile($file)
+                    && SearchHelper::matchQuery($searchController->searchRequest->keyword, $converter->getContentAsText())
                 ) {
                     return true;
                 }

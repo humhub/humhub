@@ -156,8 +156,8 @@ class MentioningController extends Controller
         /* @var CommentModule $commentModule */
         $commentModule = Yii::$app->getModule('comment');
 
-        if (!($object = $content->getModel()) ||
-            !$commentModule->canComment($object)) {
+        if (!($object = $content->getModel())
+            || !$commentModule->canComment($object)) {
             throw new HttpException(403, 'Access denied!');
         }
 

@@ -54,9 +54,9 @@ class Badge extends Widget
      */
     public function run(): string
     {
-        $text =
-            ($this->icon ? $this->icon . ' ' : '') .
-            ($this->encodeLabel ? Html::encode($this->label) : $this->label);
+        $text
+            = ($this->icon ? $this->icon . ' ' : '')
+            . ($this->encodeLabel ? Html::encode($this->label) : $this->label);
 
         $result = Html::tag('span', $text, $this->options);
 

@@ -190,8 +190,8 @@ class Module extends Model
         /* @var MarketplaceModule */
         $marketplaceModule = Yii::$app->getModule('marketplace');
 
-        return $this->latestCompatibleVersion &&
-            !($this->isDeprecated && $marketplaceModule->hideLegacyModules);
+        return $this->latestCompatibleVersion
+            && !($this->isDeprecated && $marketplaceModule->hideLegacyModules);
     }
 
     /**

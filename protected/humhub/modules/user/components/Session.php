@@ -53,8 +53,8 @@ class Session extends DbSession
     public function getCookieParams()
     {
         $params = parent::getCookieParams();
-        if (Yii::$app->request->autoEnsureSecureConnection &&
-            Yii::$app->request->isSecureConnection) {
+        if (Yii::$app->request->autoEnsureSecureConnection
+            && Yii::$app->request->isSecureConnection) {
             $params['secure'] = true;
         }
         return $params;

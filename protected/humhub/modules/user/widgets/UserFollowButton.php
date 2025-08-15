@@ -123,8 +123,8 @@ class UserFollowButton extends Widget
             return Html::a($this->unfollowLabel, '#', $this->unfollowOptions);
         }
 
-        return Html::a($this->unfollowLabel, '#', $this->unfollowOptions) .
-            Html::a($this->followLabel, '#', $this->followOptions);
+        return Html::a($this->unfollowLabel, '#', $this->unfollowOptions)
+            . Html::a($this->followLabel, '#', $this->followOptions);
     }
 
 }

@@ -53,15 +53,15 @@ return [
                 ],
             ],
             [
-                'popover' => Yii::$app->user->isAdmin() ?
-                    [
+                'popover' => Yii::$app->user->isAdmin()
+                    ? [
                         'title' => Yii::t('TourModule.profile', '<strong>Hurray!</strong> You\'re done!'),
-                        'description' =>
-                            Yii::t('TourModule.profile', 'You\'ve completed the user profile guide!<br><br>To carry on with the administration guide, click here:<br /><br />') .
-                            Button::asLink(Yii::t("TourModule.profile", "<strong>Administration (Modules)</strong>"))->action('tour.next') .
-                            '<br><br>',
-                    ] :
-                    [
+                        'description'
+                            => Yii::t('TourModule.profile', 'You\'ve completed the user profile guide!<br><br>To carry on with the administration guide, click here:<br /><br />')
+                            . Button::asLink(Yii::t("TourModule.profile", "<strong>Administration (Modules)</strong>"))->action('tour.next')
+                            . '<br><br>',
+                    ]
+                    : [
                         'title' => Yii::t('TourModule.profile', '<strong>Hurray!</strong> The End.'),
                         'description' => Yii::t('TourModule.profile', "You've completed the user profile guide!"),
                     ],

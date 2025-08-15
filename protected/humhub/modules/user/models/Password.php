@@ -224,9 +224,9 @@ class Password extends ActiveRecord
         $additionalRules = $userModule->getPasswordStrength();
         if (is_array($additionalRules) && !empty($additionalRules)) {
             foreach ($additionalRules as $pattern => $message) {
-                $errorMessage = $userModule->isCustomPasswordStrength() ?
-                    Yii::t('UserModule.custom', $message) :
-                    $message;
+                $errorMessage = $userModule->isCustomPasswordStrength()
+                    ? Yii::t('UserModule.custom', $message)
+                    : $message;
                 try {
                     preg_match($pattern, (string) $this->$attribute, $matches);
                     if (!count($matches)) {

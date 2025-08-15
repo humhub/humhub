@@ -81,10 +81,10 @@ class RichTextToEmailHtmlConverterCest
         $commentForm->load([
             'objectModel' => PolymorphicRelation::getObjectModel($post),
             'objectId' => $post->id,
-            'Comment' => ['message' =>
-                'Test comment with image ![' . $file->file_name . '](file-guid:' . $file->guid . ' "' . $file->title . '") ' .
-                'and with link [' . $link['text'] . '](' . $link['url'] . ')' .
-                'and with linked image [![' . $file->file_name . '](file-guid:' . $file->guid . ' "' . $file->title . '")](' . $link['url'] . ')',
+            'Comment' => ['message'
+                => 'Test comment with image ![' . $file->file_name . '](file-guid:' . $file->guid . ' "' . $file->title . '") '
+                . 'and with link [' . $link['text'] . '](' . $link['url'] . ')'
+                . 'and with linked image [![' . $file->file_name . '](file-guid:' . $file->guid . ' "' . $file->title . '")](' . $link['url'] . ')',
             ],
             'fileList' => [$file->guid],
         ]);

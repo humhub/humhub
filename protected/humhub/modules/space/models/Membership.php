@@ -122,8 +122,8 @@ class Membership extends ActiveRecord
      */
     public function isPrivileged(): bool
     {
-        return ($this->isMember() &&
-            in_array($this->group_id, [
+        return ($this->isMember()
+            && in_array($this->group_id, [
                 Space::USERGROUP_OWNER,
                 Space::USERGROUP_ADMIN,
                 Space::USERGROUP_MODERATOR,

@@ -65,9 +65,9 @@ class Events extends BaseObject
 
     public static function onAccountTopMenuInit($event)
     {
-        if (!Module::isMarketplaceEnabled() ||
-            !Yii::$app->user->isAdmin() ||
-            !Yii::$app->user->can(ManageModules::class)) {
+        if (!Module::isMarketplaceEnabled()
+            || !Yii::$app->user->isAdmin()
+            || !Yii::$app->user->can(ManageModules::class)) {
             return;
         }
 
@@ -87,9 +87,9 @@ class Events extends BaseObject
 
     public static function onMetaSearchInit($event)
     {
-        if (!Module::isMarketplaceEnabled() ||
-            !Yii::$app->user->isAdmin() ||
-            !Yii::$app->user->can(ManageModules::class)) {
+        if (!Module::isMarketplaceEnabled()
+            || !Yii::$app->user->isAdmin()
+            || !Yii::$app->user->can(ManageModules::class)) {
             return;
         }
 
