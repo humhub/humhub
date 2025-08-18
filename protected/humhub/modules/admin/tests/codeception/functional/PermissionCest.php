@@ -209,7 +209,7 @@ class PermissionCest
         $I->dontSee('You are not permitted to access this section.');
         $I->see('E-Mail Summaries');
 
-        $I->amOnRoute('/admin/setting/caching');
+        $I->amOnRoute('/admin/setting/file');
         $I->dontSee('You are not permitted to access this section.');
         $I->see('Advanced Settings');
 

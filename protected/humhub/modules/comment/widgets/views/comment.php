@@ -34,12 +34,12 @@ $module = Yii::$app->getModule('comment');
 
     <?= CommentControls::widget(['comment' => $comment]) ?>
 
-    <div class="flex-shrink-0 me-2 comment-header-image">
+    <div class="flex-shrink-0 comment-header-image">
         <?= UserImage::widget(['user' => $user, 'width' => 25, 'htmlOptions' => ['data-contentcontainer-id' => $user->contentcontainer_id]]) ?>
     </div>
 
     <div class="flex-grow-1 overflow-hidden">
-        <h4 class="comment-heading">
+        <h4 class="comment-heading ms-2">
             <?= Html::containerLink($user) ?>
             <small>&middot <?= TimeAgo::widget(['timestamp' => $createdAt]) ?>
                 <?php if ($comment->isUpdated()): ?>
@@ -49,7 +49,7 @@ $module = Yii::$app->getModule('comment');
         </h4>
 
         <!-- class comment_edit_content required since v1.2 -->
-        <div class="content comment_edit_content" id="comment_editarea_<?= $comment->id; ?>">
+        <div class="content comment_edit_content ms-2" id="comment_editarea_<?= $comment->id; ?>">
             <div id="comment-message-<?= $comment->id; ?>" class="comment-message" data-ui-markdown data-ui-show-more
                  data-read-more-text="<?= Yii::t('CommentModule.base', 'Read full comment...') ?>">
                 <?= RichText::output($comment->message, ['record' => $comment]) ?>
@@ -57,12 +57,12 @@ $module = Yii::$app->getModule('comment');
             <?= ShowFiles::widget(['object' => $comment]); ?>
         </div>
 
-        <div class="wall-entry-controls">
-            <?= CommentEntryLinks::widget(['object' => $comment]); ?>
+        <div class="wall-entry-controls ms-2">
+            <?= CommentEntryLinks::widget(['object' => $comment]) ?>
         </div>
 
         <div class="nested-comments-root">
-            <?= Comments::widget(['object' => $comment]); ?>
+            <?= Comments::widget(['object' => $comment]) ?>
         </div>
     </div>
 </div>

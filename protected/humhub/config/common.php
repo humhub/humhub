@@ -59,7 +59,7 @@ $config = [
     'bootstrap' => [
         'log',
         'humhub\components\bootstrap\ModuleAutoLoader',
-        'humhub\components\bootstrap\SettingsLoader',
+        'humhub\components\bootstrap\ComponentLoader',
         'queue',
         'humhub\components\bootstrap\ThemeLoader',
     ],
@@ -136,7 +136,7 @@ $config = [
             'class' => \humhub\components\i18n\Formatter::class,
         ],
         'cache' => [
-            'class' => \yii\caching\DummyCache::class,
+            'class' => \yii\caching\FileCache::class,
         ],
         'runtimeCache' => [
             'class' => \yii\caching\ArrayCache::class,

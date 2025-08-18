@@ -8,7 +8,7 @@
 
 namespace humhub\widgets;
 
-use humhub\modules\admin\models\forms\CacheSettingsForm;
+use humhub\modules\admin\libs\CacheHelper;
 use humhub\modules\file\validators\FileValidator;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\models\User;
@@ -46,7 +46,7 @@ class CoreJsConfig extends Widget
                 ],
                 'client' => [
                     'baseUrl' => Yii::$app->settings->get('baseUrl'),
-                    'reloadableScripts' => CacheSettingsForm::getReloadableScriptUrls(),
+                    'reloadableScripts' => CacheHelper::getReloadableScriptUrls(),
                     'cspViolationReloadInterval' => Security::CSP_VIOLATION_RELOAD_INTERVAL,
                     'text' => [
                         'warn.onBeforeLoad' => Yii::t('base', 'Unsaved changes will be lost. Do you want to proceed?'),

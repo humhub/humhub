@@ -3,12 +3,17 @@
 use humhub\helpers\Html;
 use humhub\libs\TimezoneHelper;
 use humhub\modules\admin\models\forms\BasicSettingsForm;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 
 /* @var BasicSettingsForm $model */
 ?>
 
 <div class="panel-body">
+    <?= Html::beginForm(['clear-cache']) ?>
+        <?= Button::primary(Yii::t('AdminModule.settings', 'Flush Caches'))->submit()->options(['class' => 'pull-right']) ?>
+    <?= Html::endForm() ?>
+
     <h4><?= Yii::t('AdminModule.settings', 'General Settings') ?></h4>
     <div class="text-body-secondary">
         <?= Yii::t('AdminModule.settings', 'Here you can configure basic settings of your social network.') ?>
