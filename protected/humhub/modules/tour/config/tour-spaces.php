@@ -88,10 +88,10 @@ return [
             [
                 'popover' => [
                     'title' => Yii::t('TourModule.spaces', '<strong>Yay! You\'re done.</strong>'),
-                    'description' =>
-                        Yii::t('TourModule.spaces', "That's it for the space guide.<br><br>To carry on with the user profile guide, click here: ") .
-                        Button::asLink(Yii::t("TourModule.spaces", "<strong>Profile Guide</strong>"))->action('tour.next') .
-                        '<br><br>',
+                    'description'
+                        => Yii::t('TourModule.spaces', "That's it for the space guide.<br><br>To carry on with the user profile guide, click here: ")
+                        . Button::asLink(Yii::t("TourModule.spaces", "<strong>Profile Guide</strong>"))->action('tour.next')
+                        . '<br><br>',
                 ],
             ],
         ],
