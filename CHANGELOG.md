@@ -51,6 +51,7 @@ HumHub Changelog
 - Fix #7545: Collapsed panels are briefly shown on page load
 - Fix #7561: Added ability to check if a component is explicitly defined in the config file in `ComponentLoader`
 - Fix #7617: Add validation for user profile field translation category
+- Fix #7631: Hide date picker on press Enter on phone browser
 
 1.17.3 (Unreleased)
 ----------------------
