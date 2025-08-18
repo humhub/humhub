@@ -283,8 +283,8 @@ abstract class BaseNotification extends SocialActivity
         if ($this->isSpaceContent()) {
             /* @var Space $space */
             $space = $this->source->content->container;
-            return $space->visibility === Space::VISIBILITY_NONE &&
-                !$space->isMember($user);
+            return $space->visibility === Space::VISIBILITY_NONE
+                && !$space->isMember($user);
         }
 
         return false;
@@ -298,9 +298,9 @@ abstract class BaseNotification extends SocialActivity
      */
     private function isSpaceContent(): bool
     {
-        return ($this->source instanceof ContentActiveRecord ||
-                $this->source instanceof ContentAddonActiveRecord) &&
-            $this->source->content->container instanceof Space;
+        return ($this->source instanceof ContentActiveRecord
+                || $this->source instanceof ContentAddonActiveRecord)
+            && $this->source->content->container instanceof Space;
     }
 
     /**
@@ -338,9 +338,9 @@ abstract class BaseNotification extends SocialActivity
 
         if (!$notification->save()) {
             Yii::error(
-                'Could not save Notification Record for' .
-                static::class . ' ' .
-                print_r($notification->getErrors(), true),
+                'Could not save Notification Record for'
+                . static::class . ' '
+                . print_r($notification->getErrors(), true),
             );
             return false;
         }

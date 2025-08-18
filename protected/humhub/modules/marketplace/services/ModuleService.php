@@ -65,8 +65,8 @@ class ModuleService
 
     public function isInstalled(): bool
     {
-        return $this->module instanceof CoreModule &&
-            Yii::$app->moduleManager->hasModule($this->module->id);
+        return $this->module instanceof CoreModule
+            && Yii::$app->moduleManager->hasModule($this->module->id);
     }
 
     public function install(): bool

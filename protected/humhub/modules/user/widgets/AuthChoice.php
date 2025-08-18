@@ -122,9 +122,9 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
      */
     public function beforeRun()
     {
-        return parent::beforeRun() &&
-            count($this->getClients()) > 0 &&
-            !(DeviceDetectorHelper::isIosApp() && Yii::$app->params['humhub']['disableAuthChoicesIos']);
+        return parent::beforeRun()
+            && count($this->getClients()) > 0
+            && !(DeviceDetectorHelper::isIosApp() && Yii::$app->params['humhub']['disableAuthChoicesIos']);
     }
 
     /**
