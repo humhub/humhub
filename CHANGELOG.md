@@ -51,7 +51,8 @@ HumHub Changelog
 - Fix #7545: Collapsed panels are briefly shown on page load
 - Fix #7561: Added ability to check if a component is explicitly defined in the config file in `ComponentLoader`
 - Fix #7617: Add validation for user profile field translation category
-- Enh #7619: Mail Summary - Text length of the `ContentCreated` activity configurable 
+- Enh #7619: Mail Summary - Text length of the `ContentCreated` activity configurable
+- Fix #7631: Hide date picker on press Enter on phone browser
 
 1.17.3 (Unreleased)
 ----------------------
