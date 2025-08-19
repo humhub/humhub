@@ -557,7 +557,7 @@ humhub.module('file', function (module, require, $) {
 
         // Bootstrap 3 drop-down menu auto dropup according to screen position
         // Must be removed when Humhub uses Bootstrap 4+
-        var dropdownButtonSelector = '.upload-buttons > .btn-group';
+        var dropdownButtonSelector = '.richtext-create-buttons > .btn-group';
         $(document).on("shown.bs.dropdown", dropdownButtonSelector, function () {
             var $ul = $(this).children(".dropdown-menu");
             var $button = $(this).children(".dropdown-toggle");
