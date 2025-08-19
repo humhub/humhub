@@ -153,12 +153,12 @@ class ImageHelper
         $module = Yii::$app->getModule('file');
 
         // Don't allow to process an image more X megapixels
-        if (!empty($module->imageMaxProcessingMP) &&
-            !empty($filePath) &&
-            is_file($filePath) &&
-            ($imageSize = @getimagesize($filePath)) &&
-            isset($imageSize[0], $imageSize[1]) &&
-            $imageSize[0] * $imageSize[1] > $module->imageMaxProcessingMP * 1024 * 1024) {
+        if (!empty($module->imageMaxProcessingMP)
+            && !empty($filePath)
+            && is_file($filePath)
+            && ($imageSize = @getimagesize($filePath))
+            && isset($imageSize[0], $imageSize[1])
+            && $imageSize[0] * $imageSize[1] > $module->imageMaxProcessingMP * 1024 * 1024) {
             throw new Exception('Image more ' . $module->imageMaxProcessingMP . ' megapixels cannot be processed!');
         }
 

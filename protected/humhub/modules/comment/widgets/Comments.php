@@ -86,8 +86,8 @@ class Comments extends Widget
 
     private function isFullViewMode(): bool
     {
-        return $this->viewMode === self::VIEW_MODE_FULL ||
-            (($this->renderOptions instanceof StreamEntryOptions) && $this->renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTEXT_DETAIL));
+        return $this->viewMode === self::VIEW_MODE_FULL
+            || (($this->renderOptions instanceof StreamEntryOptions) && $this->renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTEXT_DETAIL));
     }
 
     public function getLimit(): int
@@ -111,9 +111,9 @@ class Comments extends Widget
 
         $currentComment = Yii::$app->runtimeCache->getOrSet('getCurrentComment' . $currentCommentId, fn() => CommentModel::findOne(['id' => $currentCommentId]));
 
-        if (!$currentComment ||
-            $currentComment->object_id !== $this->object?->id ||
-            $currentComment->object_model !== $this->object::class) {
+        if (!$currentComment
+            || $currentComment->object_id !== $this->object?->id
+            || $currentComment->object_model !== $this->object::class) {
             // The current comment is from another parent object
             return null;
         }

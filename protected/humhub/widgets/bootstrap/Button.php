@@ -241,17 +241,17 @@ class Button extends \yii\bootstrap5\Button
             $this->cssClass('btn-icon-only');
         }
 
-        $text =
-            ($this->icon ? $this->icon . ' ' : '') .
-            ($this->encodeLabel ? Html::encode($this->label) : $this->label);
+        $text
+            = ($this->icon ? $this->icon . ' ' : '')
+            . ($this->encodeLabel ? Html::encode($this->label) : $this->label);
 
         if ($this->size) {
             Html::addCssClass($this->options, ['class' => 'btn-' . $this->size]);
         }
 
-        return $this->asLink ?
-            Html::a($text, $this->getHref(), $this->options) :
-            Html::button($text, $this->options);
+        return $this->asLink
+            ? Html::a($text, $this->getHref(), $this->options)
+            : Html::button($text, $this->options);
     }
 
     public static function instance(?string $text = null, ?string $color = null): static
