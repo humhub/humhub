@@ -48,7 +48,7 @@ class Dashboard extends Widget
         $settings = Yii::$app->getModule('tour')->settings;
 
         return
-            $settings->get('enable') &&
-            !$settings->user($user)->get('hideTourPanel');
+            $settings->get('enable')
+            && !$settings->user($user)->get('hideTourPanel');
     }
 }

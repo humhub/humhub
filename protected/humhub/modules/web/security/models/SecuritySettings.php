@@ -72,8 +72,8 @@ class SecuritySettings extends Model
     public static function isReportingEnabled()
     {
         $instance = new static();
-        return $instance->isCspReportEnabled() ||
-            $instance->hasSection(static::CSP_SECTION_REPORT_ONLY);
+        return $instance->isCspReportEnabled()
+            || $instance->hasSection(static::CSP_SECTION_REPORT_ONLY);
     }
 
     /**

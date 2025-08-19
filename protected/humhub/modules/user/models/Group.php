@@ -415,8 +415,8 @@ class Group extends ActiveRecord
     public static function notifyAdminsForUserApproval($user)
     {
         // No admin approval required
-        if ($user->status != User::STATUS_NEED_APPROVAL ||
-            !Yii::$app->getModule('user')->settings->get('auth.needApproval', 'user')) {
+        if ($user->status != User::STATUS_NEED_APPROVAL
+            || !Yii::$app->getModule('user')->settings->get('auth.needApproval', 'user')) {
             return;
         }
 
@@ -435,15 +435,15 @@ class Group extends ActiveRecord
                 'UserModule.auth',
                 'Hello {displayName},',
                 ['displayName' => $manager->displayName],
-            ) . "<br><br>\n\n" .
-                Yii::t(
+            ) . "<br><br>\n\n"
+                . Yii::t(
                     'UserModule.auth',
                     'a new user {displayName} needs approval.',
                     ['displayName' => $user->displayName],
-                ) . "<br><br>\n\n" .
-                Yii::t('UserModule.auth', 'Please click on the link below to view request:') .
-                "<br>\n\n" .
-                Html::a($approvalUrl, $approvalUrl) . "<br/> <br/>\n";
+                ) . "<br><br>\n\n"
+                . Yii::t('UserModule.auth', 'Please click on the link below to view request:')
+                . "<br>\n\n"
+                . Html::a($approvalUrl, $approvalUrl) . "<br/> <br/>\n";
 
             $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], [
                 'message' => $html,
@@ -521,10 +521,10 @@ class Group extends ActiveRecord
     public function canDelete()
     {
         return Yii::$app->user->can(ManageGroups::class) && !(
-            $this->isNewRecord ||
-                $this->is_admin_group ||
-                $this->is_default_group ||
-                $this->is_protected
+            $this->isNewRecord
+                || $this->is_admin_group
+                || $this->is_default_group
+                || $this->is_protected
         );
     }
 }

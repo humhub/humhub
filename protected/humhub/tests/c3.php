@@ -30,9 +30,9 @@ if (isset($_COOKIE['CODECEPTION_CODECOVERAGE'])) {
 if (!function_exists('__c3_error')) {
     function __c3_error($message)
     {
-        $errorLogFile = defined('C3_CODECOVERAGE_ERROR_LOG_FILE') ?
-            C3_CODECOVERAGE_ERROR_LOG_FILE :
-            C3_CODECOVERAGE_MEDIATE_STORAGE . DIRECTORY_SEPARATOR . 'error.txt';
+        $errorLogFile = defined('C3_CODECOVERAGE_ERROR_LOG_FILE')
+            ? C3_CODECOVERAGE_ERROR_LOG_FILE
+            : C3_CODECOVERAGE_MEDIATE_STORAGE . DIRECTORY_SEPARATOR . 'error.txt';
         if (is_writable($errorLogFile)) {
             file_put_contents($errorLogFile, $message);
         } else {
