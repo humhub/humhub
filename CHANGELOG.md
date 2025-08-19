@@ -54,7 +54,7 @@ HumHub Changelog
 - Enh #7619: Mail Summary - Text length of the `ContentCreated` activity configurable
 - Fix #7631: Hide date picker on press Enter on phone browser
 - Fix #7628: Fix space membership modal
-- Fix: Send button inside upload-buttons class
+- Fix #7636: Send button inside upload-buttons class
 
 1.17.3 (Unreleased)
 ----------------------
