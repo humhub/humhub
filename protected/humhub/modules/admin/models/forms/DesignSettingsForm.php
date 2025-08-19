@@ -8,6 +8,7 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use humhub\components\InstallationState;
 use humhub\components\Theme;
 use humhub\helpers\ThemeHelper;
 use humhub\libs\LogoImage;
@@ -63,6 +64,11 @@ class DesignSettingsForm extends Model
     public function init()
     {
         parent::init();
+
+        // Do not try to load settings if the installation is not completed yet
+        if (!Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
+            return;
+        }
 
         $settingsManager = Yii::$app->settings;
         $themeVariables = Yii::$app->view->theme->variables;
