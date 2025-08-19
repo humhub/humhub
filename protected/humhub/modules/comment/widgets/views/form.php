@@ -45,7 +45,7 @@ $placeholder = ($isNestedComment)
     <?= Html::hiddenInput('objectModel', $objectModel) ?>
     <?= Html::hiddenInput('objectId', $objectId) ?>
 
-    <div class="content-create-input-group input-group">
+    <div class="richtext-create-input-group input-group">
         <?= $form->field($model, 'message')->widget(RichTextField::class, [
             'id' => 'newCommentForm_' . $id,
             'form' => $form,
@@ -59,7 +59,7 @@ $placeholder = ($isNestedComment)
             ],
         ])->label(false) ?>
 
-        <div class="upload-buttons">
+        <div class="richtext-create-buttons">
             <?php $uploadButton = UploadButton::widget([
                 'id' => 'comment_create_upload_' . $id,
                 'tooltip' => Yii::t('ContentModule.base', 'Attach Files'),

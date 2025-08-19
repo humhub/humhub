@@ -448,7 +448,7 @@ altcha-widget.form-control {
 // editor
 .content_create,
 .content_edit {
-    .content-create-input-group {
+    .richtext-create-input-group {
         display: flex;
         align-items: flex-end;
         flex-direction: column;
@@ -473,7 +473,7 @@ altcha-widget.form-control {
     }
 
     // fileupload button
-    .upload-buttons {
+    .richtext-create-buttons {
         white-space: nowrap;
         padding-top: 6px;
 
