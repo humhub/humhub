@@ -19,7 +19,7 @@ class ContentContainerPermissionAccess extends PermissionAccessValidator
 
     protected function verifyPermission($permission, $rule)
     {
-        return parent::verifyPermission($permission, $rule) ||
-            (($this->contentContainer instanceof ContentContainerActiveRecord) && $this->contentContainer->can($permission, $rule));
+        return parent::verifyPermission($permission, $rule)
+            || (($this->contentContainer instanceof ContentContainerActiveRecord) && $this->contentContainer->can($permission, $rule));
     }
 }
