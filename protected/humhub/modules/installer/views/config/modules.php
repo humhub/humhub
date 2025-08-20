@@ -33,7 +33,6 @@ use humhub\widgets\modal\ModalButton;
         <?php endforeach; ?>
 
         <?= ModalButton::primary(Yii::t('InstallerModule.base', 'Next'))
-            ->sm()
             ->submit()
             ->options(['data-message' => Yii::t('InstallerModule.base', 'Downloading & Installing Modules...')]) ?>
 

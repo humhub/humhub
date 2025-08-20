@@ -39,7 +39,6 @@ use humhub\widgets\modal\ModalButton;
         <hr/>
 
         <?= ModalButton::primary(Yii::t('InstallerModule.base', 'Next'))
-            ->sm()
             ->submit()
             ->options(['data-message' => Yii::t('InstallerModule.base', 'Initializing database...')]) ?>
 
