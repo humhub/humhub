@@ -55,6 +55,7 @@ HumHub Changelog
 - Fix #7631: Hide date picker on press Enter on phone browser
 - Fix #7628: Fix space membership modal
 - Fix #7636: Send button inside upload-buttons class
+- Fix: Installer - Small buttons
 
 1.17.3 (Unreleased)
 ----------------------
