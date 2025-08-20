@@ -309,9 +309,9 @@ class ThemeHelper
         if ($designSettingsForm->themeDarkColor) {
             $scssSource .= '$dark: ' . $designSettingsForm->themeDarkColor . ';' . PHP_EOL;
         }
-        $scssSource .=
-            '@import "' . implode('", "', $imports) . '";' . PHP_EOL .
-            $designSettingsForm->themeCustomScss;
+        $scssSource
+            .= '@import "' . implode('", "', $imports) . '";' . PHP_EOL
+            . $designSettingsForm->themeCustomScss;
 
         // Compile to CSS
         try {

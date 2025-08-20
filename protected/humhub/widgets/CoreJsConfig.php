@@ -65,8 +65,8 @@ class CoreJsConfig extends Widget
                     ],
                     'text' => [
                         'error.upload' => Yii::t('base', 'Some files could not be uploaded:'),
-                        'error.unknown' => Yii::t('base', 'An unexpected error occurred. Please check whether your file exceeds the allowed upload limit of {maxUploadSize}.', ['maxUploadSize' => Yii::$app->formatter->asShortSize((new FileValidator())->getSizeLimit())]) . (Yii::$app->user->isAdmin() ?
-                                '(' . Yii::t('base', 'verify your upload_max_filesize and post_max_size php settings.') . ')' : ''),
+                        'error.unknown' => Yii::t('base', 'An unexpected error occurred. Please check whether your file exceeds the allowed upload limit of {maxUploadSize}.', ['maxUploadSize' => Yii::$app->formatter->asShortSize((new FileValidator())->getSizeLimit())]) . (Yii::$app->user->isAdmin()
+                                ? '(' . Yii::t('base', 'verify your upload_max_filesize and post_max_size php settings.') . ')' : ''),
                         'success.delete' => Yii::t('base', 'The file has been deleted.'),
                     ],
                 ],
