@@ -161,13 +161,13 @@ class Topic extends ContentTag
     public static function isAllowedToCreate(ContentContainerActiveRecord $contentContainer)
     {
         return (
-            $contentContainer instanceof Space &&
-            Yii::$app->getModule('space')->settings->get('allowSpaceTopics', true) &&
-            $contentContainer->can(AddTopic::class)
-        ) ||
-        (
-            $contentContainer instanceof User &&
-            Yii::$app->getModule('user')->settings->get('auth.allowUserTopics', true)
+            $contentContainer instanceof Space
+            && Yii::$app->getModule('space')->settings->get('allowSpaceTopics', true)
+            && $contentContainer->can(AddTopic::class)
+        )
+        || (
+            $contentContainer instanceof User
+            && Yii::$app->getModule('user')->settings->get('auth.allowUserTopics', true)
         );
     }
 }

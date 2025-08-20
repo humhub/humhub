@@ -86,8 +86,8 @@ class UserController extends Controller
         $searchModel = Yii::createObject(UserSearch::class);
         $searchModel->status = User::STATUS_ENABLED;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $showPendingRegistrations = Invite::find()->where(Invite::filterSource())->exists() &&
-            Yii::$app->user->can([ManageUsers::class, ManageGroups::class]);
+        $showPendingRegistrations = Invite::find()->where(Invite::filterSource())->exists()
+            && Yii::$app->user->can([ManageUsers::class, ManageGroups::class]);
 
         return $this->render('list', [
             'dataProvider' => $dataProvider,

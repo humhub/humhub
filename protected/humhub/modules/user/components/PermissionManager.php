@@ -458,10 +458,10 @@ class PermissionManager extends Component
         foreach ($this->getPermissions() as $permission) {
             /** @var $permission BasePermission */
             if (
-                $returnOnlyChangeable && !$permission->canChangeState($groupId) ||
-                (
-                    $permission->contentContainer &&
-                    array_key_exists($permission->moduleId, $permission->contentContainer->moduleManager->getInstallable())
+                $returnOnlyChangeable && !$permission->canChangeState($groupId)
+                || (
+                    $permission->contentContainer
+                    && array_key_exists($permission->moduleId, $permission->contentContainer->moduleManager->getInstallable())
                     && !$permission->contentContainer->moduleManager->isEnabled($permission->moduleId)
                 )
             ) {
