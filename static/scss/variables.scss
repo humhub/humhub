@@ -1,8 +1,8 @@
 //
 // Sass variables
 // For CSS variables, see _root.scss
-// Bootstrap variables and functions such as tint-color() and shade-color() are not available for this file
-// All variables mus have the !default flag to allow child-themes to overwrite them
+// Bootstrap variables and functions, such as tint-color() and shade-color(), are not available for this file
+// All variables must have the !default flag to allow child-themes to overwrite them
 // --------------------------------------------------
 
 $isFluid: false;
@@ -13,7 +13,7 @@ $isFluid: false;
 
 $primary: #1b8291 !default;
 $secondary: #7a7a7a !default;
-$info: #21A1B3 !default;
+$info: #0582FF !default;
 $success: #97d271 !default;
 $warning: #FFC107 !default;
 $danger: #FC4A64 !default;
@@ -142,6 +142,7 @@ $grid-gutter-width: 30px !default;
 $line-height-base: 1.5 !default;
 $form-check-padding-start: 2em !default; // Fix checkbox with multiple lines label
 $focus-ring-box-shadow: none !default;
+
 
 //
 // @deprecated since 1.18
