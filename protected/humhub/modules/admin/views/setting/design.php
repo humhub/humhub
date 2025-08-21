@@ -135,7 +135,7 @@ $themeVariables = Yii::$app->view->theme->variables;
     <?php $checkBoxOptions = ['options' => ['class' => 'pt-2']]; ?>
 
     <div class="row">
-        <div class="col-lg-6 mb-3">
+        <div class="col-lg-4 mb-3">
             <?= Html::activeLabel($model, 'themePrimaryColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themePrimaryColor')->colorInput(['disabled' => $model->useDefaultThemePrimaryColor]) ?>
@@ -143,7 +143,15 @@ $themeVariables = Yii::$app->view->theme->variables;
             </div>
         </div>
 
-        <div class="col-lg-6 mb-3">
+        <div class="col-lg-4 mb-3">
+            <?= Html::activeLabel($model, 'themeAccentColor') ?>
+            <div class="input-group input-color-group bg-light p-3 pb-0">
+                <?= $form->field($model, 'themeAccentColor')->colorInput(['disabled' => $model->useDefaultThemeAccentColor]) ?>
+                <?= $form->field($model, 'useDefaultThemeAccentColor', $checkBoxOptions)->checkbox() ?>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-3">
             <?= Html::activeLabel($model, 'themeSecondaryColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themeSecondaryColor')->colorInput(['disabled' => $model->useDefaultThemeSecondaryColor]) ?>
@@ -153,7 +161,7 @@ $themeVariables = Yii::$app->view->theme->variables;
     </div>
 
     <div class="row">
-        <div class="col-lg-6 mb-3">
+        <div class="col-lg-4 mb-3">
             <?= Html::activeLabel($model, 'themeSuccessColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themeSuccessColor')->colorInput(['disabled' => $model->useDefaultThemeSuccessColor]) ?>
@@ -161,35 +169,33 @@ $themeVariables = Yii::$app->view->theme->variables;
             </div>
         </div>
 
-        <div class="col-lg-6 mb-3">
+        <div class="col-lg-4 mb-3">
             <?= Html::activeLabel($model, 'themeDangerColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themeDangerColor')->colorInput(['disabled' => $model->useDefaultThemeDangerColor]) ?>
                 <?= $form->field($model, 'useDefaultThemeDangerColor', $checkBoxOptions)->checkbox() ?>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-lg-6 mb-3">
+        <div class="col-lg-4 mb-3">
             <?= Html::activeLabel($model, 'themeWarningColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themeWarningColor')->colorInput(['disabled' => $model->useDefaultThemeWarningColor]) ?>
                 <?= $form->field($model, 'useDefaultThemeWarningColor', $checkBoxOptions)->checkbox() ?>
             </div>
         </div>
+    </div>
 
-        <div class="col-lg-6 mb-3">
+    <div class="row">
+        <div class="col-lg-4 mb-3">
             <?= Html::activeLabel($model, 'themeInfoColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themeInfoColor')->colorInput(['disabled' => $model->useDefaultThemeInfoColor]) ?>
                 <?= $form->field($model, 'useDefaultThemeInfoColor', $checkBoxOptions)->checkbox() ?>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-lg-6 mb-3">
+        <div class="col-lg-4 mb-3">
             <?= Html::activeLabel($model, 'themeLightColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themeLightColor')->colorInput(['disabled' => $model->useDefaultThemeLightColor]) ?>
@@ -197,7 +203,7 @@ $themeVariables = Yii::$app->view->theme->variables;
             </div>
         </div>
 
-        <div class="col-lg-6 mb-3">
+        <div class="col-lg-4 mb-3">
             <?= Html::activeLabel($model, 'themeDarkColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themeDarkColor')->colorInput(['disabled' => $model->useDefaultThemeDarkColor]) ?>

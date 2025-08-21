@@ -288,6 +288,9 @@ class ThemeHelper
         if ($designSettingsForm->themePrimaryColor) {
             $scssSource .= '$primary: ' . $designSettingsForm->themePrimaryColor . ';' . PHP_EOL;
         }
+        if ($designSettingsForm->themeAccentColor) {
+            $scssSource .= '$accent: ' . $designSettingsForm->themeAccentColor . ';' . PHP_EOL;
+        }
         if ($designSettingsForm->themeSecondaryColor) {
             $scssSource .= '$secondary: ' . $designSettingsForm->themeSecondaryColor . ';' . PHP_EOL;
         }
