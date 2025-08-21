@@ -343,6 +343,11 @@ class DesignSettingsForm extends Model
         );
         $settingsManager->set('useDefaultThemePrimaryColor', $this->useDefaultThemePrimaryColor);
         $settingsManager->set(
+            'themeAccentColor',
+            $this->useDefaultThemeAccentColor ? null : $this->themeAccentColor
+        );
+        $settingsManager->set('useDefaultThemeAccentColor', $this->useDefaultThemeAccentColor);
+        $settingsManager->set(
             'themeSecondaryColor',
             $this->useDefaultThemeSecondaryColor ? null : $this->themeSecondaryColor
         );

@@ -237,7 +237,7 @@ $themeVariables = Yii::$app->view->theme->variables;
             });
         }
 
-        <?php foreach (['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'] as $color) : ?>
+        <?php foreach (['primary', 'accent', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'] as $color) : ?>
             setupColorFieldToggleDisabled('<?= $color ?>', '<?= $themeVariables->get($color) ?>');
         <?php endforeach; ?>
     })
