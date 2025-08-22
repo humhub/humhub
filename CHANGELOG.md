@@ -56,6 +56,7 @@ HumHub Changelog
 - Fix #7628: Fix space membership modal
 - Fix #7636: Send button inside upload-buttons class
 - Fix #7640: Installer - Small buttons
+- Fix #7644: Fix account password recovery captcha exception
 
 1.17.3 (Unreleased)
 ----------------------
