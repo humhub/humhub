@@ -20,6 +20,7 @@ HumHub Changelog
 - Enh #7577: Increase Group Name max length to 120chars
 - Enh #7576: Do not invite existing space members when selected `all registered members`
 - Enh #7579: Mail headers to restrict auto-reply
+- Fix #7646: Fix account password recovery captcha exception
 
 1.17.2 (April 7, 2025)
 ----------------------
