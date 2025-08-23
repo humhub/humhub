@@ -248,7 +248,7 @@
                 }
 
                 time {
-                    color: var(--bs-info);
+                    color: var(--hh-accent);
                 }
             }
 
@@ -359,7 +359,7 @@
                 &:hover,
                 &:active,
                 &:focus {
-                    border-bottom: 3px solid var(--bs-info);
+                    border-bottom: 3px solid var(--hh-accent);
                     background-color: var(--hh-background-color-secondary);
                     color: var(--hh-text-color-highlight);
                     text-decoration: none;
@@ -400,7 +400,7 @@
 
                 &:hover,
                 &.active {
-                    border-left: 3px solid var(--bs-info);
+                    border-left: 3px solid var(--hh-accent);
                     background-color: var(--hh-background-color-secondary);
                     color: var(--hh-text-color-highlight);
                 }

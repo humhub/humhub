@@ -25,12 +25,12 @@ if (!isset($confirmBody)) {
 <div class="image-upload-buttons d-none">
 
     <?= $upload->button([
-        'cssButtonClass' => 'btn btn-info btn-sm profile-image-upload',
+        'cssButtonClass' => 'btn btn-accent btn-sm profile-image-upload',
         'tooltip' => false,
         'dropZone' => $dropZone,
         'options' => ['class' => 'profile-upload-input']]) ?>
 
-    <?= ModalButton::info()
+    <?= ModalButton::accent()
         ->sm()
         ->load($cropUrl)->icon('edit')
         ->cssClass('profile-image-edit profile-image-crop' . ($hasImage ? '' : ' d-none')) ?>

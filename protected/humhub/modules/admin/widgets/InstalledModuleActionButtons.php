@@ -33,14 +33,14 @@ class InstalledModuleActionButtons extends Widget
     public function run()
     {
         if (!$this->module->getIsEnabled() && Yii::$app->user->can(ManageModules::class)) {
-            return ModalButton::info(Yii::t('AdminModule.base', 'Enable'))
+            return ModalButton::accent(Yii::t('AdminModule.base', 'Enable'))
                 ->sm()
                 ->post(['/admin/module/enable', 'moduleId' => $this->module->id])
                 ->options(['data-message' => Yii::t('AdminModule.base', 'Enable module...')]);
         }
 
         if ($this->module->getConfigUrl() !== '' && Yii::$app->user->can(ManageSettings::class)) {
-            return Button::info(Yii::t('AdminModule.base', 'Configure'))
+            return Button::accent(Yii::t('AdminModule.base', 'Configure'))
                 ->link($this->module->getConfigUrl())
                 ->sm()
                 ->outline();

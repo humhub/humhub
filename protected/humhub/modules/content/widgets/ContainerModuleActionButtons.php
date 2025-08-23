@@ -37,12 +37,12 @@ class ContainerModuleActionButtons extends Widget
         if ($this->module->getContentContainerConfigUrl($this->contentContainer)
             && $this->contentContainer->moduleManager->isEnabled($this->module->id)) {
             $this->buttons[] = Button::asLink(Yii::t('ContentModule.base', 'Configure'), $this->module->getContentContainerConfigUrl($this->contentContainer))
-                ->cssClass('btn btn-sm btn-info configure-module-' . $this->module->id);
+                ->cssClass('btn btn-sm btn-accent configure-module-' . $this->module->id);
         }
 
         if ($this->contentContainer->moduleManager->canDisable($this->module->id)) {
             $this->buttons[] = Button::asLink('<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t('ContentModule.base', 'Enabled'), '#')
-                ->cssClass('btn btn-sm btn-info active disable disable-module-' . $this->module->id)
+                ->cssClass('btn btn-sm btn-accent active disable disable-module-' . $this->module->id)
                 ->style($this->contentContainer->moduleManager->isEnabled($this->module->id) ? '' : 'display:none')
                 ->options([
                     'data-action-click' => 'content.container.disableModule',
@@ -56,7 +56,7 @@ class ContainerModuleActionButtons extends Widget
         }
 
         $this->buttons[] = Button::asLink(Yii::t('ContentModule.base', 'Enable'), '#')
-            ->cssClass('btn btn-sm btn-info enable enable-module-' . $this->module->id)
+            ->cssClass('btn btn-sm btn-accent enable enable-module-' . $this->module->id)
             ->style($this->contentContainer->moduleManager->isEnabled($this->module->id) ? 'display:none' : '')
             ->options([
                 'data-action-click' => 'content.container.enableModule',

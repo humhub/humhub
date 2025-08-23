@@ -156,7 +156,7 @@
 
                     > i.fa {
                         font-size: 25px;
-                        color: var(--bs-info);
+                        color: var(--hh-accent);
                         background: var(--hh-background-color-secondary);
                         border-radius: 4px;
                         display: flex;
@@ -227,7 +227,7 @@
 
     #search-menu.show {
         background: var(--hh-background-color-main);
-        border-bottom: 3px solid var(--bs-info);
+        border-bottom: 3px solid var(--hh-accent);
         z-index: 1000;
         position: relative;
     }

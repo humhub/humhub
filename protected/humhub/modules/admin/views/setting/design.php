@@ -86,7 +86,7 @@ $themeVariables = Yii::$app->view->theme->variables;
                  style="max-height: 40px;<?= LogoImage::hasImage() ? '' : 'display:none' ?>">
 
             <div class="image-upload-buttons" id="logo-upload-buttons" style="display: block;">
-                <?= Button::info()->icon('cloud-upload')->id('admin-logo-upload-button')->sm()->loader(false) ?>
+                <?= Button::accent()->icon('cloud-upload')->id('admin-logo-upload-button')->sm()->loader(false) ?>
 
                 <?= Button::danger()->id('admin-delete-logo-image')
                     ->action('admin.deletePageLogo', Url::to(['/admin/setting/delete-logo-image']))
@@ -103,7 +103,7 @@ $themeVariables = Yii::$app->view->theme->variables;
                  style="max-height: 40px;">
 
             <div class="image-upload-buttons" id="icon-upload-buttons" style="display: block;">
-                <?= Button::info()->icon('cloud-upload')->id('admin-icon-upload-button')->sm()->loader(false) ?>
+                <?= Button::accent()->icon('cloud-upload')->id('admin-icon-upload-button')->sm()->loader(false) ?>
 
                 <?= Button::danger()->id('admin-delete-icon-image')
                     ->action('admin.deletePageIcon', Url::to(['/admin/setting/delete-icon-image']))
@@ -119,7 +119,7 @@ $themeVariables = Yii::$app->view->theme->variables;
             <img class="rounded" id="loginBg-image" src="<?= $loginBgUrl ?>" style="max-height: 40px;">
 
             <div class="image-upload-buttons" id="loginBg-upload-buttons" style="display: block;">
-                <?= Button::info()->icon('cloud-upload')->id('admin-loginBg-upload-button')->sm()->loader(false) ?>
+                <?= Button::accent()->icon('cloud-upload')->id('admin-loginBg-upload-button')->sm()->loader(false) ?>
 
                 <?= Button::danger()->id('admin-delete-loginBg-image')
                     ->action('admin.deleteLoginBg', Url::to(['/admin/setting/delete-login-background-image']))

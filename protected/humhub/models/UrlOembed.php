@@ -318,7 +318,7 @@ class UrlOembed extends ActiveRecord
             . Html::tag('br')
             . Html::tag('label', '<input type="checkbox"> ' . Yii::t('base', 'Always allow content from this provider!'))
             . Html::tag('br')
-            . Button::info(Yii::t('base', 'Confirm'))->action('oembed.display')->sm();
+            . Button::accent(Yii::t('base', 'Confirm'))->action('oembed.display')->sm();
 
         $html = Icon::get('info-circle')
             . Html::tag('div', $html)

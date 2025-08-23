@@ -50,7 +50,7 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
 
                 <div style="position:absolute;right:5px;bottom:5px">
                     <?= $profileImageUpload->button([
-                        'cssButtonClass' => 'btn btn-info btn-sm profile-image-upload',
+                        'cssButtonClass' => 'btn btn-accent btn-sm profile-image-upload',
                         'tooltip' => false,
                         'dropZone' => '#welcome-modal-profile-image',
                         'options' => ['class' => 'profile-upload-input']]) ?>

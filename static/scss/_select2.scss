@@ -163,7 +163,7 @@ $select2-caret-width: 1rem; // we cannot use $caret-width because it's a em valu
 
         &--highlighted[aria-selected] {
             background-color: var(--bs-secondary);
-            border-left: 3px solid var(--bs-info);
+            border-left: 3px solid var(--hh-accent);
             color: var(--hh-text-color-highlight);
         }
 
@@ -213,7 +213,7 @@ $select2-caret-width: 1rem; // we cannot use $caret-width because it's a em valu
     &.select2-container--focus,
     &.select2-container--open {
         .select2-selection {
-            border: 2px solid var(--bs-info);
+            border: 2px solid var(--hh-accent);
             outline: 0;
             box-shadow: none;
         }
@@ -414,7 +414,7 @@ $select2-caret-width: 1rem; // we cannot use $caret-width because it's a em valu
             float: left;
             padding: 0 $input-btn-padding-y;
 
-            background-color: var(--bs-info);
+            background-color: var(--hh-accent);
             color: var(--hh-text-color-contrast);
             border-radius: 3px;
             font-size: 12px !important;

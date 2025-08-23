@@ -57,7 +57,7 @@ $contentModule = Yii::$app->getModule('content');
                 'cssButtonClass' => 'btn-light btn-sm',
                 'pullRight' => true,
             ]);
-            echo Button::info()
+            echo Button::accent()
                 ->icon('send')
                 ->cssClass('btn-comment-submit')->sm()
                 ->action('editSubmit', $submitUrl)->submit();

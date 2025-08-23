@@ -44,7 +44,7 @@ class FriendshipButton extends Widget
                     'data-action-confirm' => Yii::t('FriendshipModule.base', 'Would you like to end your friendship with {userName}?', ['{userName}' => '<strong>' . $this->user->getDisplayName() . '</strong>']),
                     'data-button-options' => Json::encode($this->options),
                     'data-ui-loader' => '',
-                    'class' => 'btn btn-info active',
+                    'class' => 'btn btn-accent active',
                 ],
             ],
             'addFriend' => [
@@ -55,7 +55,7 @@ class FriendshipButton extends Widget
                     'data-action-confirm' => Yii::t('FriendshipModule.base', 'Would you like to send a friendship request to {userName}?', ['{userName}' => '<strong>' . $this->user->getDisplayName() . '</strong>']),
                     'data-button-options' => Json::encode($this->options),
                     'data-ui-loader' => '',
-                    'class' => 'btn btn-info',
+                    'class' => 'btn btn-accent',
                 ],
             ],
             'acceptFriendRequest' => [
@@ -66,10 +66,10 @@ class FriendshipButton extends Widget
                     'data-action-confirm' => Yii::t('FriendshipModule.base', 'Would you like to accept the friendship request?'),
                     'data-button-options' => Json::encode($this->options),
                     'data-ui-loader' => '',
-                    'class' => 'btn btn-info active',
+                    'class' => 'btn btn-accent active',
                 ],
                 'groupClass' => 'btn-group',
-                'togglerClass' => 'btn btn-info active',
+                'togglerClass' => 'btn btn-accent active',
             ],
             'denyFriendRequest' => [
                 'title' => '<span class="fa fa-times"></span>&nbsp;&nbsp;' . Yii::t('FriendshipModule.base', 'Deny friend request'),
@@ -88,7 +88,7 @@ class FriendshipButton extends Widget
                     'data-action-confirm' => Yii::t('FriendshipModule.base', 'Would you like to withdraw your friendship request?'),
                     'data-button-options' => Json::encode($this->options),
                     'data-ui-loader' => '',
-                    'class' => 'btn btn-info active',
+                    'class' => 'btn btn-accent active',
                 ],
             ],
         ];

@@ -76,7 +76,7 @@ $placeholder = ($isNestedComment)
                 'cssButtonClass' => 'btn-sm btn-light',
                 'pullRight' => true,
             ]) ?>
-            <?= Button::info()
+            <?= Button::accent()
                 ->icon('send')
                 ->cssClass('btn-comment-submit')->sm()
                 ->action('submit', $submitUrl)->submit() ?>

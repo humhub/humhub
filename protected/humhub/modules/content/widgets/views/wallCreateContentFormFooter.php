@@ -56,7 +56,7 @@ use humhub\widgets\bootstrap\Link;
 <div class="contentForm_options">
     <hr>
     <div class="btn_container">
-        <?= Button::info($submitButtonText)->action('submit', $submitUrl)->id('post_submit_button' . ($isModal ? '_modal' : ''))->submit() ?>
+        <?= Button::accent($submitButtonText)->action('submit', $submitUrl)->id('post_submit_button' . ($isModal ? '_modal' : ''))->submit() ?>
 
         <?php $uploadButton = UploadButton::widget([
             'id' => 'contentFormFiles' . ($isModal ? 'Modal' : ''),

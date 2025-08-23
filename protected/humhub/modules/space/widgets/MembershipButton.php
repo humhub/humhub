@@ -40,7 +40,7 @@ class MembershipButton extends Widget
                 'title' => Yii::t('SpaceModule.base', 'Join'),
                 'url' => $this->space->createUrl('/space/membership/request-membership-form', empty($this->options) ? [] : ['options' => Json::encode($this->options)]),
                 'attrs' => [
-                    'class' => 'btn btn-info',
+                    'class' => 'btn btn-accent',
                     'data-space-request-membership' => $this->space->id,
                     'data-bs-target' => '#globalModal',
                 ],
@@ -53,7 +53,7 @@ class MembershipButton extends Widget
                     'data-action-url' => $this->space->createUrl('/space/membership/request-membership'),
                     'data-button-options' => Json::encode($this->options),
                     'data-ui-loader' => '',
-                    'class' => 'btn btn-info',
+                    'class' => 'btn btn-accent',
                     'data-space-request-membership' => $this->space->id,
                 ],
             ],
@@ -65,10 +65,10 @@ class MembershipButton extends Widget
                     'data-action-url' => $this->space->createUrl('/space/membership/invite-accept'),
                     'data-button-options' => Json::encode($this->options),
                     'data-ui-loader' => '',
-                    'class' => 'btn btn-info',
+                    'class' => 'btn btn-accent',
                 ],
                 'groupClass' => 'btn-group',
-                'togglerClass' => 'btn btn-info',
+                'togglerClass' => 'btn btn-accent',
             ],
             'declineInvite' => [
                 'title' => Yii::t('SpaceModule.base', 'Decline Invite'),
@@ -89,7 +89,7 @@ class MembershipButton extends Widget
                     'data-action-confirm' => Yii::t('SpaceModule.base', 'Would you like to withdraw your request to join Space {spaceName}?', ['{spaceName}' => '<strong>' . Html::encode($this->space->getDisplayName()) . '</strong>']),
                     'data-button-options' => Json::encode($this->options),
                     'data-ui-loader' => '',
-                    'class' => 'btn btn-info active',
+                    'class' => 'btn btn-accent active',
                 ],
             ],
             'cancelMembership' => [
@@ -104,14 +104,14 @@ class MembershipButton extends Widget
                     'data-action-confirm-text' => Yii::t('SpaceModule.base', 'Leave'),
                     'data-button-options' => Json::encode($this->options),
                     'data-ui-loader' => '',
-                    'class' => 'btn btn-info active',
+                    'class' => 'btn btn-accent active',
                 ],
             ],
             'cannotCancelMembership' => [
                 'visible' => false,
                 'memberTitle' => '<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t('SpaceModule.base', 'Member'),
                 'ownerTitle' => '<span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;' . Yii::t('SpaceModule.base', 'Owner'),
-                'attrs' => ['class' => 'btn btn-info active'],
+                'attrs' => ['class' => 'btn btn-accent active'],
             ],
         ];
     }

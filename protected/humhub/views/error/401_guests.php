@@ -16,7 +16,7 @@ use yii\helpers\Url;
 
             <br>
             <hr>
-            <button class="btn btn-info" data-action-click="ui.modal.load"
+            <button class="btn btn-accent" data-action-click="ui.modal.load"
                     data-action-url="<?= Url::to(Yii::$app->user->loginUrl) ?>" data-ui-loader>
                 <?= Yii::t('base', 'Login') ?>
             </button>
