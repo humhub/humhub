@@ -133,9 +133,9 @@ class DesignSettingsForm extends Model
                     'themeInfoColor',
                     'themeLightColor',
                     'themeDarkColor',
-                    'themeCustomScss'
+                    'themeCustomScss',
                 ],
-                'string'
+                'string',
             ],
             [
                 [
@@ -147,9 +147,9 @@ class DesignSettingsForm extends Model
                     'useDefaultThemeWarningColor',
                     'useDefaultThemeInfoColor',
                     'useDefaultThemeLightColor',
-                    'useDefaultThemeDarkColor'
+                    'useDefaultThemeDarkColor',
                 ],
-                'boolean'
+                'boolean',
             ],
             [
                 [
@@ -162,9 +162,9 @@ class DesignSettingsForm extends Model
                     'themeInfoColor',
                     'themeLightColor',
                     'themeDarkColor',
-                    'themeCustomScss'
+                    'themeCustomScss',
                 ],
-                'trim'
+                'trim',
             ],
             [
                 [
@@ -176,10 +176,10 @@ class DesignSettingsForm extends Model
                     'themeWarningColor',
                     'themeInfoColor',
                     'themeLightColor',
-                    'themeDarkColor'
+                    'themeDarkColor',
                 ],
                 'match',
-                'pattern' => '/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'
+                'pattern' => '/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/',
             ],
             [
                 'themeCustomScss',
@@ -192,7 +192,7 @@ class DesignSettingsForm extends Model
                     ];
                     $replacements = ['', '', ''];
                     return preg_replace($patterns, $replacements, $value);
-                }
+                },
             ],
             [
                 'themeCustomScss',
@@ -203,10 +203,10 @@ class DesignSettingsForm extends Model
                     } catch (SassException $e) {
                         $this->addError(
                             $attribute,
-                            Yii::t('AdminModule.settings', 'Cannot compile SCSS to CSS:') . ' ' . $e->getMessage()
+                            Yii::t('AdminModule.settings', 'Cannot compile SCSS to CSS:') . ' ' . $e->getMessage(),
                         );
                     }
-                }
+                },
             ],
         ];
     }
@@ -256,7 +256,7 @@ class DesignSettingsForm extends Model
         return [
             'spaceOrder' => Yii::t(
                 'AdminModule.settings',
-                'Custom sort order can be defined in the Space advanced settings.'
+                'Custom sort order can be defined in the Space advanced settings.',
             ),
             'themeCustomScss' => Yii::t('AdminModule.settings', 'Use Sassy CSS syntax (SCSS)'),
         ];
@@ -339,29 +339,29 @@ class DesignSettingsForm extends Model
 
         $settingsManager->set(
             'themePrimaryColor',
-            $this->useDefaultThemePrimaryColor ? null : $this->themePrimaryColor
+            $this->useDefaultThemePrimaryColor ? null : $this->themePrimaryColor,
         );
         $settingsManager->set('useDefaultThemePrimaryColor', $this->useDefaultThemePrimaryColor);
         $settingsManager->set(
             'themeAccentColor',
-            $this->useDefaultThemeAccentColor ? null : $this->themeAccentColor
+            $this->useDefaultThemeAccentColor ? null : $this->themeAccentColor,
         );
         $settingsManager->set('useDefaultThemeAccentColor', $this->useDefaultThemeAccentColor);
         $settingsManager->set(
             'themeSecondaryColor',
-            $this->useDefaultThemeSecondaryColor ? null : $this->themeSecondaryColor
+            $this->useDefaultThemeSecondaryColor ? null : $this->themeSecondaryColor,
         );
         $settingsManager->set('useDefaultThemeSecondaryColor', $this->useDefaultThemeSecondaryColor);
         $settingsManager->set(
             'themeSuccessColor',
-            $this->useDefaultThemeSuccessColor ? null : $this->themeSuccessColor
+            $this->useDefaultThemeSuccessColor ? null : $this->themeSuccessColor,
         );
         $settingsManager->set('useDefaultThemeSuccessColor', $this->useDefaultThemeSuccessColor);
         $settingsManager->set('themeDangerColor', $this->useDefaultThemeDangerColor ? null : $this->themeDangerColor);
         $settingsManager->set('useDefaultThemeDangerColor', $this->useDefaultThemeDangerColor);
         $settingsManager->set(
             'themeWarningColor',
-            $this->useDefaultThemeWarningColor ? null : $this->themeWarningColor
+            $this->useDefaultThemeWarningColor ? null : $this->themeWarningColor,
         );
         $settingsManager->set('useDefaultThemeWarningColor', $this->useDefaultThemeWarningColor);
         $settingsManager->set('themeInfoColor', $this->useDefaultThemeInfoColor ? null : $this->themeInfoColor);
