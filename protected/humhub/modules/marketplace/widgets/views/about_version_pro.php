@@ -11,7 +11,7 @@ use humhub\widgets\bootstrap\Button;
 ?>
 <div style="padding:20px">
     <div class="float-start" style="padding-right:24px">
-        <?= Html::img(Yii::getAlias('@web-static/img/humhub_pro.jpg'), ['style' => 'height:124px']) ?>
+        <?= Html::img(Yii::getAlias('@web-static/img/hh_professional.png'), ['style' => 'height:124px']) ?>
     </div>
     <div class="float-end">
         <?= Button::primary(Yii::t('MarketplaceModule.base', 'Edit license'))

@@ -6,7 +6,7 @@ use humhub\components\View;
 ?>
 <div style="padding:20px;min-height:164px">
     <div class="float-start" style="padding-right:24px;">
-        <img src="<?= Yii::getAlias('@web-static/img/humhub_pro.jpg'); ?>" style="height:124px;">
+        <img src="<?= Yii::getAlias('@web-static/img/hh_professional.png'); ?>" style="height:124px;">
     </div>
     <span style="font-size:36px">HumHub&nbsp;&nbsp;</span><span
         style="font-size:24px">Professional Edition - SaaS</span><br/>
