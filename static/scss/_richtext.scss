@@ -138,7 +138,7 @@
 
         .ProseMirror-menu-active {
             background: var(--hh-background-color-secondary);
-            border-left: 2px solid var(--bs-info);
+            border-left: 2px solid var(--bs-accent);
             opacity: 1 !important;
             padding: 4px 7px 4px 5px;
         }
@@ -248,7 +248,7 @@
     }
 
     .ProseMirror-editor-source:focus {
-        border: 2px solid var(--bs-info);
+        border: 2px solid var(--bs-accent);
     }
 }
 
@@ -269,7 +269,7 @@
     }
 
     .ProseMirror-menubar ~ .ProseMirror-focused {
-        border-color: var(--bs-info) !important;
+        border-color: var(--bs-accent) !important;
     }
 
     .ProseMirror-textblock-dropdown {
@@ -468,7 +468,7 @@
     }
 
     .ProseMirror [data-mention] {
-        color: var(--bs-info);
+        color: var(--bs-accent);
     }
 
     .ProseMirror {
@@ -627,7 +627,7 @@
 
     .emoji-nav-item.cur {
         border-left: 0;
-        border-top: 2px solid var(--bs-info);
+        border-top: 2px solid var(--bs-accent);
     }
 }
 

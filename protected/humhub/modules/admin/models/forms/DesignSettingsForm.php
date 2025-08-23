@@ -42,6 +42,8 @@ class DesignSettingsForm extends Model
     public $defaultStreamSort;
     public $themePrimaryColor;
     public $useDefaultThemePrimaryColor;
+    public $themeAccentColor;
+    public $useDefaultThemeAccentColor;
     public $themeSecondaryColor;
     public $useDefaultThemeSecondaryColor;
     public $themeSuccessColor;
@@ -84,6 +86,8 @@ class DesignSettingsForm extends Model
 
         $this->themePrimaryColor = $settingsManager->get('themePrimaryColor', $themeVariables->get('primary'));
         $this->useDefaultThemePrimaryColor = (bool)$settingsManager->get('useDefaultThemePrimaryColor', true);
+        $this->themeAccentColor = $settingsManager->get('themeAccentColor', $themeVariables->get('accent'));
+        $this->useDefaultThemeAccentColor = (bool)$settingsManager->get('useDefaultThemeAccentColor', true);
         $this->themeSecondaryColor = $settingsManager->get('themeSecondaryColor', $themeVariables->get('secondary'));
         $this->useDefaultThemeSecondaryColor = (bool)$settingsManager->get('useDefaultThemeSecondaryColor', true);
         $this->themeSuccessColor = $settingsManager->get('themeSuccessColor', $themeVariables->get('success'));
@@ -118,27 +122,92 @@ class DesignSettingsForm extends Model
             ['icon', ImageSquareValidator::class],
             ['loginBackgroundImage', 'image', 'extensions' => 'png, jpg, jpeg', 'minWidth' => 800, 'minHeight' => 600],
             ['dateInputDisplayFormat', 'in', 'range' => ['', 'php:d/m/Y']],
-            [['themePrimaryColor', 'themeSecondaryColor', 'themeSuccessColor', 'themeDangerColor', 'themeWarningColor', 'themeInfoColor', 'themeLightColor', 'themeDarkColor', 'themeCustomScss'], 'string'],
-            [['useDefaultThemePrimaryColor', 'useDefaultThemeSecondaryColor', 'useDefaultThemeSuccessColor', 'useDefaultThemeDangerColor', 'useDefaultThemeWarningColor', 'useDefaultThemeInfoColor', 'useDefaultThemeLightColor', 'useDefaultThemeDarkColor'], 'boolean'],
-            [['themePrimaryColor', 'themeSecondaryColor', 'themeSuccessColor', 'themeDangerColor', 'themeWarningColor', 'themeInfoColor', 'themeLightColor', 'themeDarkColor', 'themeCustomScss'], 'trim'],
-            [['themePrimaryColor', 'themeSecondaryColor', 'themeSuccessColor', 'themeDangerColor', 'themeWarningColor', 'themeInfoColor', 'themeLightColor', 'themeDarkColor'], 'match', 'pattern' => '/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
-            ['themeCustomScss', 'filter', 'filter' => function ($value) {
-                $patterns = [
-                    '/<style>/',
-                    '/<style type="text\/css">/',
-                    '/<\/style>/',
-                ];
-                $replacements = ['', '', ''];
-                return preg_replace($patterns, $replacements, $value);
-            }],
-            ['themeCustomScss', function ($attribute, $params, $validator): void {
-                $compiler = new Compiler();
-                try {
-                    $compiler->compileString($this->$attribute)->getCss();
-                } catch (SassException $e) {
-                    $this->addError($attribute, Yii::t('AdminModule.settings', 'Cannot compile SCSS to CSS:') . ' ' . $e->getMessage());
+            [
+                [
+                    'themePrimaryColor',
+                    'themeAccentColor',
+                    'themeSecondaryColor',
+                    'themeSuccessColor',
+                    'themeDangerColor',
+                    'themeWarningColor',
+                    'themeInfoColor',
+                    'themeLightColor',
+                    'themeDarkColor',
+                    'themeCustomScss'
+                ],
+                'string'
+            ],
+            [
+                [
+                    'useDefaultThemePrimaryColor',
+                    'useDefaultThemeAccentColor',
+                    'useDefaultThemeSecondaryColor',
+                    'useDefaultThemeSuccessColor',
+                    'useDefaultThemeDangerColor',
+                    'useDefaultThemeWarningColor',
+                    'useDefaultThemeInfoColor',
+                    'useDefaultThemeLightColor',
+                    'useDefaultThemeDarkColor'
+                ],
+                'boolean'
+            ],
+            [
+                [
+                    'themePrimaryColor',
+                    'themeAccentColor',
+                    'themeSecondaryColor',
+                    'themeSuccessColor',
+                    'themeDangerColor',
+                    'themeWarningColor',
+                    'themeInfoColor',
+                    'themeLightColor',
+                    'themeDarkColor',
+                    'themeCustomScss'
+                ],
+                'trim'
+            ],
+            [
+                [
+                    'themePrimaryColor',
+                    'themeAccentColor',
+                    'themeSecondaryColor',
+                    'themeSuccessColor',
+                    'themeDangerColor',
+                    'themeWarningColor',
+                    'themeInfoColor',
+                    'themeLightColor',
+                    'themeDarkColor'
+                ],
+                'match',
+                'pattern' => '/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'
+            ],
+            [
+                'themeCustomScss',
+                'filter',
+                'filter' => function ($value) {
+                    $patterns = [
+                        '/<style>/',
+                        '/<style type="text\/css">/',
+                        '/<\/style>/',
+                    ];
+                    $replacements = ['', '', ''];
+                    return preg_replace($patterns, $replacements, $value);
                 }
-            }],
+            ],
+            [
+                'themeCustomScss',
+                function ($attribute, $params, $validator): void {
+                    $compiler = new Compiler();
+                    try {
+                        $compiler->compileString($this->$attribute)->getCss();
+                    } catch (SassException $e) {
+                        $this->addError(
+                            $attribute,
+                            Yii::t('AdminModule.settings', 'Cannot compile SCSS to CSS:') . ' ' . $e->getMessage()
+                        );
+                    }
+                }
+            ],
         ];
     }
 
@@ -159,6 +228,8 @@ class DesignSettingsForm extends Model
             'dateInputDisplayFormat' => Yii::t('AdminModule.settings', 'Date input format'),
             'themePrimaryColor' => Yii::t('AdminModule.settings', 'Primary color'),
             'useDefaultThemePrimaryColor' => Yii::t('AdminModule.settings', 'Default'),
+            'themeAccentColor' => Yii::t('AdminModule.settings', 'Accent color'),
+            'useDefaultThemeAccentColor' => Yii::t('AdminModule.settings', 'Default'),
             'themeSecondaryColor' => Yii::t('AdminModule.settings', 'Secondary color'),
             'useDefaultThemeSecondaryColor' => Yii::t('AdminModule.settings', 'Default'),
             'themeSuccessColor' => Yii::t('AdminModule.settings', 'Success color'),
@@ -183,7 +254,10 @@ class DesignSettingsForm extends Model
     public function attributeHints()
     {
         return [
-            'spaceOrder' => Yii::t('AdminModule.settings', 'Custom sort order can be defined in the Space advanced settings.'),
+            'spaceOrder' => Yii::t(
+                'AdminModule.settings',
+                'Custom sort order can be defined in the Space advanced settings.'
+            ),
             'themeCustomScss' => Yii::t('AdminModule.settings', 'Use Sassy CSS syntax (SCSS)'),
         ];
     }
@@ -263,15 +337,32 @@ class DesignSettingsForm extends Model
             LoginBackgroundImageHelper::set($this->loginBackgroundImage->tempName);
         }
 
-        $settingsManager->set('themePrimaryColor', $this->useDefaultThemePrimaryColor ? null : $this->themePrimaryColor);
+        $settingsManager->set(
+            'themePrimaryColor',
+            $this->useDefaultThemePrimaryColor ? null : $this->themePrimaryColor
+        );
         $settingsManager->set('useDefaultThemePrimaryColor', $this->useDefaultThemePrimaryColor);
-        $settingsManager->set('themeSecondaryColor', $this->useDefaultThemeSecondaryColor ? null : $this->themeSecondaryColor);
+        $settingsManager->set(
+            'themeAccentColor',
+            $this->useDefaultThemeAccentColor ? null : $this->themeAccentColor
+        );
+        $settingsManager->set('useDefaultThemeAccentColor', $this->useDefaultThemeAccentColor);
+        $settingsManager->set(
+            'themeSecondaryColor',
+            $this->useDefaultThemeSecondaryColor ? null : $this->themeSecondaryColor
+        );
         $settingsManager->set('useDefaultThemeSecondaryColor', $this->useDefaultThemeSecondaryColor);
-        $settingsManager->set('themeSuccessColor', $this->useDefaultThemeSuccessColor ? null : $this->themeSuccessColor);
+        $settingsManager->set(
+            'themeSuccessColor',
+            $this->useDefaultThemeSuccessColor ? null : $this->themeSuccessColor
+        );
         $settingsManager->set('useDefaultThemeSuccessColor', $this->useDefaultThemeSuccessColor);
         $settingsManager->set('themeDangerColor', $this->useDefaultThemeDangerColor ? null : $this->themeDangerColor);
         $settingsManager->set('useDefaultThemeDangerColor', $this->useDefaultThemeDangerColor);
-        $settingsManager->set('themeWarningColor', $this->useDefaultThemeWarningColor ? null : $this->themeWarningColor);
+        $settingsManager->set(
+            'themeWarningColor',
+            $this->useDefaultThemeWarningColor ? null : $this->themeWarningColor
+        );
         $settingsManager->set('useDefaultThemeWarningColor', $this->useDefaultThemeWarningColor);
         $settingsManager->set('themeInfoColor', $this->useDefaultThemeInfoColor ? null : $this->themeInfoColor);
         $settingsManager->set('useDefaultThemeInfoColor', $this->useDefaultThemeInfoColor);

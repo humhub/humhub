@@ -65,6 +65,11 @@ trait BootstrapVariationsTrait
         return static::instance($label, 'info');
     }
 
+    public static function accent(string $label = null): static
+    {
+        return static::instance($label, 'accent');
+    }
+
     public static function success(string $label = null): static
     {
         return static::instance($label, 'success');

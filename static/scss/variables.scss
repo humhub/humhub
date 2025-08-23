@@ -1,8 +1,7 @@
 //
 // Sass variables
 // For CSS variables, see _root.scss
-// Bootstrap variables and functions such as tint-color() and shade-color() are not available for this file
-// All variables mus have the !default flag to allow child-themes to overwrite them
+// All variables must have the !default flag to allow child-themes to overwrite them
 // --------------------------------------------------
 
 $isFluid: false;
@@ -12,14 +11,21 @@ $isFluid: false;
 // --------------------------------------------------
 
 $primary: #1b8291 !default;
+$accent: #21A1B3 !default;
 $secondary: #7a7a7a !default;
-$info: #21A1B3 !default;
+$info: #0582FF !default;
 $success: #97d271 !default;
 $warning: #FFC107 !default;
 $danger: #FC4A64 !default;
 $light: #e7e7e7 !default;
 $dark: #333 !default;
 
+$accent-text-emphasis: shade-color($accent, 60%) !default;
+$accent-bg-subtle: tint-color($accent, 80%) !default;
+$accent-border-subtle: tint-color($accent, 60%) !default;
+$accent-text-emphasis-dark: tint-color($accent, 60%) !default;
+$accent-bg-subtle-dark: shade-color($accent, 80%) !default;
+$accent-border-subtle-dark: shade-color($accent, 60%) !default;
 
 //
 // Color Bootstrap overwritten variables
@@ -160,7 +166,6 @@ $focus-ring-box-shadow: none !default;
 
 $default: #e7e7e7 !default;
 $link: $primary !default;
-
 
 
 // Dark color mode variables

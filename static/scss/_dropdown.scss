@@ -65,7 +65,7 @@
 
             &:hover,
             &.selected {
-                border-left: 3px solid var(--bs-info);
+                border-left: 3px solid var(--bs-accent);
                 background-color: var(--hh-background-color-secondary) !important;
             }
 
@@ -101,7 +101,7 @@ ul.contextMenu {
 
         &:hover,
         &.selected {
-            border-left: 3px solid var(--bs-info);
+            border-left: 3px solid var(--bs-accent);
             background-color: var(--hh-background-color-secondary) !important;
         }
 

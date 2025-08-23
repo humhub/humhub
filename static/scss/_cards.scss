@@ -169,7 +169,7 @@
         }
 
         .card-icons .fa {
-            color: var(--bs-info);
+            color: var(--bs-accent);
 
             span {
                 font: 12px 'Open Sans', sans-serif;
@@ -248,7 +248,7 @@
                 font-size: 16px;
 
                 .fa {
-                    color: var(--bs-info);
+                    color: var(--bs-accent);
 
                     &.fa-mobile-phone {
                         font-size: 22px;
@@ -280,7 +280,7 @@
                 color: #57646c;
 
                 a {
-                    color: var(--bs-info);
+                    color: var(--bs-accent);
                     text-decoration: underline;
 
                     &:hover {

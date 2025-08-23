@@ -41,12 +41,12 @@ class SpaceDirectoryActionButtons extends Widget
         $html .= MembershipButton::widget([
             'space' => $this->space,
             'options' => [
-                'requestMembership' => ['attrs' => ['class' => 'btn btn-info btn-sm']],
-                'becomeMember' => ['attrs' => ['class' => 'btn btn-info btn-sm']],
-                'acceptInvite' => ['attrs' => ['class' => 'btn btn-info btn-sm'], 'togglerClass' => 'btn btn-info btn-sm'],
-                'cancelPendingMembership' => ['attrs' => ['class' => 'btn btn-info btn-sm active']],
-                'cancelMembership' => ['visible' => true, 'attrs' => ['class' => 'btn btn-info btn-sm active']],
-                'cannotCancelMembership' => ['visible' => true, 'attrs' => ['class' => 'btn btn-info btn-sm active']],
+                'requestMembership' => ['attrs' => ['class' => 'btn btn-accent btn-sm']],
+                'becomeMember' => ['attrs' => ['class' => 'btn btn-accent btn-sm']],
+                'acceptInvite' => ['attrs' => ['class' => 'btn btn-accent btn-sm'], 'togglerClass' => 'btn btn-accent btn-sm'],
+                'cancelPendingMembership' => ['attrs' => ['class' => 'btn btn-accent btn-sm active']],
+                'cancelMembership' => ['visible' => true, 'attrs' => ['class' => 'btn btn-accent btn-sm active']],
+                'cannotCancelMembership' => ['visible' => true, 'attrs' => ['class' => 'btn btn-accent btn-sm active']],
             ],
         ]);
 

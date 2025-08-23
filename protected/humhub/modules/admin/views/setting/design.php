@@ -86,7 +86,7 @@ $themeVariables = Yii::$app->view->theme->variables;
                  style="max-height: 40px;<?= LogoImage::hasImage() ? '' : 'display:none' ?>">
 
             <div class="image-upload-buttons" id="logo-upload-buttons" style="display: block;">
-                <?= Button::info()->icon('cloud-upload')->id('admin-logo-upload-button')->sm()->loader(false) ?>
+                <?= Button::accent()->icon('cloud-upload')->id('admin-logo-upload-button')->sm()->loader(false) ?>
 
                 <?= Button::danger()->id('admin-delete-logo-image')
                     ->action('admin.deletePageLogo', Url::to(['/admin/setting/delete-logo-image']))
@@ -103,7 +103,7 @@ $themeVariables = Yii::$app->view->theme->variables;
                  style="max-height: 40px;">
 
             <div class="image-upload-buttons" id="icon-upload-buttons" style="display: block;">
-                <?= Button::info()->icon('cloud-upload')->id('admin-icon-upload-button')->sm()->loader(false) ?>
+                <?= Button::accent()->icon('cloud-upload')->id('admin-icon-upload-button')->sm()->loader(false) ?>
 
                 <?= Button::danger()->id('admin-delete-icon-image')
                     ->action('admin.deletePageIcon', Url::to(['/admin/setting/delete-icon-image']))
@@ -119,7 +119,7 @@ $themeVariables = Yii::$app->view->theme->variables;
             <img class="rounded" id="loginBg-image" src="<?= $loginBgUrl ?>" style="max-height: 40px;">
 
             <div class="image-upload-buttons" id="loginBg-upload-buttons" style="display: block;">
-                <?= Button::info()->icon('cloud-upload')->id('admin-loginBg-upload-button')->sm()->loader(false) ?>
+                <?= Button::accent()->icon('cloud-upload')->id('admin-loginBg-upload-button')->sm()->loader(false) ?>
 
                 <?= Button::danger()->id('admin-delete-loginBg-image')
                     ->action('admin.deleteLoginBg', Url::to(['/admin/setting/delete-login-background-image']))
@@ -135,7 +135,7 @@ $themeVariables = Yii::$app->view->theme->variables;
     <?php $checkBoxOptions = ['options' => ['class' => 'pt-2']]; ?>
 
     <div class="row">
-        <div class="col-lg-6 mb-3">
+        <div class="col-lg-4 mb-3">
             <?= Html::activeLabel($model, 'themePrimaryColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themePrimaryColor')->colorInput(['disabled' => $model->useDefaultThemePrimaryColor]) ?>
@@ -143,7 +143,15 @@ $themeVariables = Yii::$app->view->theme->variables;
             </div>
         </div>
 
-        <div class="col-lg-6 mb-3">
+        <div class="col-lg-4 mb-3">
+            <?= Html::activeLabel($model, 'themeAccentColor') ?>
+            <div class="input-group input-color-group bg-light p-3 pb-0">
+                <?= $form->field($model, 'themeAccentColor')->colorInput(['disabled' => $model->useDefaultThemeAccentColor]) ?>
+                <?= $form->field($model, 'useDefaultThemeAccentColor', $checkBoxOptions)->checkbox() ?>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-3">
             <?= Html::activeLabel($model, 'themeSecondaryColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themeSecondaryColor')->colorInput(['disabled' => $model->useDefaultThemeSecondaryColor]) ?>
@@ -153,7 +161,7 @@ $themeVariables = Yii::$app->view->theme->variables;
     </div>
 
     <div class="row">
-        <div class="col-lg-6 mb-3">
+        <div class="col-lg-4 mb-3">
             <?= Html::activeLabel($model, 'themeSuccessColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themeSuccessColor')->colorInput(['disabled' => $model->useDefaultThemeSuccessColor]) ?>
@@ -161,35 +169,33 @@ $themeVariables = Yii::$app->view->theme->variables;
             </div>
         </div>
 
-        <div class="col-lg-6 mb-3">
+        <div class="col-lg-4 mb-3">
             <?= Html::activeLabel($model, 'themeDangerColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themeDangerColor')->colorInput(['disabled' => $model->useDefaultThemeDangerColor]) ?>
                 <?= $form->field($model, 'useDefaultThemeDangerColor', $checkBoxOptions)->checkbox() ?>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-lg-6 mb-3">
+        <div class="col-lg-4 mb-3">
             <?= Html::activeLabel($model, 'themeWarningColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themeWarningColor')->colorInput(['disabled' => $model->useDefaultThemeWarningColor]) ?>
                 <?= $form->field($model, 'useDefaultThemeWarningColor', $checkBoxOptions)->checkbox() ?>
             </div>
         </div>
+    </div>
 
-        <div class="col-lg-6 mb-3">
+    <div class="row">
+        <div class="col-lg-4 mb-3">
             <?= Html::activeLabel($model, 'themeInfoColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themeInfoColor')->colorInput(['disabled' => $model->useDefaultThemeInfoColor]) ?>
                 <?= $form->field($model, 'useDefaultThemeInfoColor', $checkBoxOptions)->checkbox() ?>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-lg-6 mb-3">
+        <div class="col-lg-4 mb-3">
             <?= Html::activeLabel($model, 'themeLightColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themeLightColor')->colorInput(['disabled' => $model->useDefaultThemeLightColor]) ?>
@@ -197,7 +203,7 @@ $themeVariables = Yii::$app->view->theme->variables;
             </div>
         </div>
 
-        <div class="col-lg-6 mb-3">
+        <div class="col-lg-4 mb-3">
             <?= Html::activeLabel($model, 'themeDarkColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themeDarkColor')->colorInput(['disabled' => $model->useDefaultThemeDarkColor]) ?>
@@ -231,7 +237,7 @@ $themeVariables = Yii::$app->view->theme->variables;
             });
         }
 
-        <?php foreach (['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'] as $color) : ?>
+        <?php foreach (['primary', 'accent', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'] as $color) : ?>
             setupColorFieldToggleDisabled('<?= $color ?>', '<?= $themeVariables->get($color) ?>');
         <?php endforeach; ?>
     })

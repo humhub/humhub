@@ -26,10 +26,10 @@ class m250405_072758_1_18_switch_to_humhub_theme_and_disable_themes extends Migr
         // Copy Theme colors vars to the Settings manager
         $themeVariables = Yii::$app->view->theme->variables;
         $settingsManager->set('themePrimaryColor', $themeVariables->get('primary'));
+        $settingsManager->set('themeAccentColor', $themeVariables->get('info'));
         $settingsManager->set('themeSuccessColor', $themeVariables->get('success'));
         $settingsManager->set('themeDangerColor', $themeVariables->get('danger'));
         $settingsManager->set('themeWarningColor', $themeVariables->get('warning'));
-        $settingsManager->set('themeInfoColor', $themeVariables->get('info'));
         $settingsManager->set('themeLightColor', $themeVariables->get('default')); // Default becomes Light
 
         // Switch to HumHub theme

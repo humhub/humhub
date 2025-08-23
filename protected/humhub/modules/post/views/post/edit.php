@@ -44,7 +44,7 @@ use humhub\widgets\form\ActiveForm;
                 'cssButtonClass' => 'btn-sm btn-light',
                 'pullRight' => true,
             ]) ?>
-            <?= Button::info()
+            <?= Button::accent()
                 ->icon('send')
                 ->action('editSubmit', $submitUrl)
                 ->cssClass(' btn-comment-submit')->sm()

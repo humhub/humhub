@@ -44,7 +44,7 @@ class ProfileImageCest
         $I->click('Delete', '#globalModalConfirm');
         $I->waitForElementVisible('.profile-banner-image-container .img-profile-header-background[src="/static/img/default_banner.jpg"]');
         $I->executeJS("$('.profile-banner-image-container .image-upload-buttons').removeClass('d-none');");
-        $I->waitForElementVisible('.profile-banner-image-container .image-upload-buttons .btn-info');
+        $I->waitForElementVisible('.profile-banner-image-container .image-upload-buttons .btn-accent');
         $I->dontSeeElement('.profile-banner-image-container .image-upload-buttons .profile-image-edit');
     }
 
@@ -66,7 +66,7 @@ class ProfileImageCest
         $I->wait(2); // wait for animation
         $I->see('S2', '.profile-user-photo-container .space-acronym');
         $I->executeJS("$('.profile-user-photo-container .image-upload-buttons').removeClass('d-none');");
-        $I->waitForElementVisible('.profile-user-photo-container .image-upload-buttons .btn-info');
+        $I->waitForElementVisible('.profile-user-photo-container .image-upload-buttons .btn-accent');
         $I->dontSeeElement('.profile-user-photo-container .image-upload-buttons .profile-image-edit');
 
         $I->attachFile('.profile-user-photo-container .profile-upload-input', 'test.jpg');
@@ -74,7 +74,7 @@ class ProfileImageCest
         $I->dontSeeElement('.profile-user-photo-container .space-profile-acronym-2 space-acronym');
         $I->executeJS("$('.profile-user-photo-container .image-upload-buttons').removeClass('d-none');");
         $I->waitForElementVisible('.profile-user-photo-container .image-upload-buttons .profile-image-delete');
-        $I->seeElement('.profile-user-photo-container .image-upload-buttons .btn-info');
+        $I->seeElement('.profile-user-photo-container .image-upload-buttons .btn-accent');
         $I->seeElement('.profile-user-photo-container .image-upload-buttons .profile-image-edit');
 
         $I->wantToTest('the deletion of the space profile image');
@@ -88,7 +88,7 @@ class ProfileImageCest
         $I->wait(2); // wait for animation
         $I->see('S2', '.profile-user-photo-container .space-acronym');
         $I->executeJS("$('.profile-user-photo-container .image-upload-buttons').removeClass('d-none');");
-        $I->waitForElementVisible('.profile-user-photo-container .image-upload-buttons .btn-info');
+        $I->waitForElementVisible('.profile-user-photo-container .image-upload-buttons .btn-accent');
         $I->dontSeeElement('.profile-user-photo-container .image-upload-buttons .profile-image-edit');
     }
 

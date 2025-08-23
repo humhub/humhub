@@ -29,6 +29,7 @@ Widgets in these new folders:
 And especially:
 - `humhub\widgets\bootstrap\Badge` (see https://getbootstrap.com/docs/5.3/components/badge/)
 - `humhub\widgets\bootstrap\Alert` (see https://getbootstrap.com/docs/5.3/components/alerts/)
+- `humhub\widgets\bootstrap\Button::accent()` (same for Badge and Label)
 - `humhub\widgets\bootstrap\Button::secondary()` (same for Badge and Label)
 - `humhub\widgets\bootstrap\Button::light()` (same for Badge and Label)
 - `humhub\widgets\bootstrap\Button::dark()` (same for Badge and Label)
@@ -37,7 +38,9 @@ And especially:
 - `humhub\widgets\bootstrap\Button::outline()`
 - `humhub\widgets\bootstrap\Button::asBadge()`
 
-Colors: `secondary`, `light` and `dark` are the new Bootstrap colors (`default` is deprecated).
+Colors: `accent`, `secondary`, `light` and `dark` are the new Bootstrap theme colors (`default` is deprecated).
+
+The new `accent` color replaces the old `info` usage.  
 
 CSS Class: `.filter-toggle-link` for "Filter" toggle link
 
@@ -514,7 +517,7 @@ Replacements:
 - `badge-primary` -> `text-bg-primary`
 - `badge-danger` -> `text-bg-danger`
 - `badge-warning` -> `text-bg-warning`
-- `badge-info` -> `text-bg-info`
+- `badge-info` -> `text-bg-accent`
 - `badge-success` -> `text-bg-success`
 
 Doc: https://getbootstrap.com/docs/5.3/components/badge/
@@ -612,9 +615,11 @@ Take the Wiki module as an example: https://github.com/humhub/wiki/tree/bs5
 
 Deprecated SCSS variables:
 - `$default`: use `$light` instead
-- `$link`: use `$info` instead (or `$link-color` if it's about a link but not a `a` HTML tag)
+- `$info`: use `$accent` instead
+- `$link`: use `$primary` instead (or `$link-color` if it's about a link but not a `a` HTML tag)
 
 New SCSS variables:
+- `$accent`
 - `$secondary`
 - `$light`
 - `$dark`
