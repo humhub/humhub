@@ -48,8 +48,8 @@ class ColorPicker extends JsInputWidget
             $this->attribute = $this->field;
         }
 
-        if (($this->hasModel() && !$this->getValue() && $this->randomDefault) ||
-            !$this->isCorrectColorValue()) {
+        if (($this->hasModel() && !$this->getValue() && $this->randomDefault)
+            || !$this->isCorrectColorValue()) {
             $attr = $this->attribute;
             $this->model->$attr = RandomColor::one(['luminosity' => 'dark']);
         }

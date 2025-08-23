@@ -92,8 +92,8 @@ class Menu extends LeftNavigation
     public static function getDefaultPageUrl($space)
     {
         $indexUrl = $space->getAdvancedSettings()->indexUrl;
-        return (!empty($indexUrl) && isset(static::getAvailablePages()[$indexUrl])) ?
-            $indexUrl : null;
+        return (!empty($indexUrl) && isset(static::getAvailablePages()[$indexUrl]))
+            ? $indexUrl : null;
     }
 
     /**
@@ -105,7 +105,7 @@ class Menu extends LeftNavigation
     public static function getGuestsDefaultPageUrl($space)
     {
         $indexUrl = $space->getAdvancedSettings()->indexGuestUrl;
-        return (!empty($indexUrl) && isset(static::getAvailablePages()[$indexUrl])) ?
-            $indexUrl : null;
+        return (!empty($indexUrl) && isset(static::getAvailablePages()[$indexUrl]))
+            ? $indexUrl : null;
     }
 }

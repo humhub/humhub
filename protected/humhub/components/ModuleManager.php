@@ -485,9 +485,9 @@ class ModuleManager extends Component
      */
     public function hasModule($id)
     {
-        return array_key_exists($id, $this->modules) ||
+        return array_key_exists($id, $this->modules)
             // Fallback to old module ID
-            array_key_exists(str_replace('-', '_', $id), $this->modules);
+            || array_key_exists(str_replace('-', '_', $id), $this->modules);
     }
 
     /**

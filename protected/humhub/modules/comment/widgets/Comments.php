@@ -86,8 +86,8 @@ class Comments extends Widget
 
     private function isFullViewMode(): bool
     {
-        return $this->viewMode === self::VIEW_MODE_FULL ||
-            (($this->renderOptions instanceof StreamEntryOptions) && $this->renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTEXT_DETAIL));
+        return $this->viewMode === self::VIEW_MODE_FULL
+            || (($this->renderOptions instanceof StreamEntryOptions) && $this->renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTEXT_DETAIL));
     }
 
     public function getLimit(): int
@@ -113,9 +113,9 @@ class Comments extends Widget
             return CommentModel::findOne(['id' => $currentCommentId]);
         });
 
-        if (!$currentComment ||
-            $currentComment->object_id !== $this->object?->id ||
-            $currentComment->object_model !== get_class($this->object)) {
+        if (!$currentComment
+            || $currentComment->object_id !== $this->object?->id
+            || $currentComment->object_model !== get_class($this->object)) {
             // The current comment is from another parent object
             return null;
         }

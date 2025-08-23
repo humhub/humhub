@@ -30,9 +30,9 @@ class m201228_064513_default_group extends Migration
         if (Yii::$app->isInstalled()) {
             // Move value from setting:auth.defaultUserGroup into new column group:is_default_group
             if (
-                empty($defaultUserGroupId) ||
-                !($group = Group::findOne(['id' => $defaultUserGroupId])) ||
-                $group->is_admin_group
+                empty($defaultUserGroupId)
+                || !($group = Group::findOne(['id' => $defaultUserGroupId]))
+                || $group->is_admin_group
             ) {
                 // Create one default Group if setting:auth.defaultUserGroup was not selected to any group:
                 $group = new Group();

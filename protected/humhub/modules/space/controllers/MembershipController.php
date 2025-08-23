@@ -71,8 +71,8 @@ class MembershipController extends ContentContainerController
 
         $space = $this->getSpace();
         $visibility = (int)$space->visibility;
-        if ($visibility === Space::VISIBILITY_NONE && !$space->isMember() ||
-            ($visibility === Space::VISIBILITY_REGISTERED_ONLY && Yii::$app->user->isGuest)
+        if ($visibility === Space::VISIBILITY_NONE && !$space->isMember()
+            || ($visibility === Space::VISIBILITY_REGISTERED_ONLY && Yii::$app->user->isGuest)
         ) {
             throw new HttpException(404, Yii::t(
                 'SpaceModule.base',

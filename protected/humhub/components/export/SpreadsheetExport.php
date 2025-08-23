@@ -369,8 +369,8 @@ class SpreadsheetExport extends Component
     private function sanitizeValue(?string $value): ?string
     {
         if (
-            empty($value) ||
-            !in_array(
+            empty($value)
+            || !in_array(
                 ucfirst(ArrayHelper::getValue($this->resultConfig, 'writerType', (new ExportResult())->writerType)),
                 [IOFactory::WRITER_CSV, IOFactory::WRITER_XLSX, IOFactory::WRITER_XLS],
             )

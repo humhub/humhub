@@ -198,8 +198,8 @@ class ContentContainerModuleManager extends Component
 
         $availableModules = $this->getAvailable();
         foreach ($availableModules as $moduleId => $module) {
-            if (($this->isEnabled($moduleId) && !$this->canDisable($moduleId)) ||
-                (!$this->isEnabled($moduleId) && !$this->canEnable($moduleId))
+            if (($this->isEnabled($moduleId) && !$this->canDisable($moduleId))
+                || (!$this->isEnabled($moduleId) && !$this->canEnable($moduleId))
             ) {
                 unset($availableModules[$moduleId]);
             }
