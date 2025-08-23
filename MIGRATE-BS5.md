@@ -36,6 +36,7 @@ And especially:
 - `humhub\widgets\bootstrap\Button::cssTextColor()` (same for Badge and Label)
 - `humhub\widgets\bootstrap\Button::outline()`
 - `humhub\widgets\bootstrap\Button::asBadge()`
+- `humhub\widgets\bootstrap\Button::loading('Custom loading message')`
 
 Colors: `secondary`, `light` and `dark` are the new Bootstrap colors (`default` is deprecated).
 

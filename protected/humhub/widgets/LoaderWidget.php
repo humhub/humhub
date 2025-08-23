@@ -49,6 +49,12 @@ class LoaderWidget extends \yii\base\Widget
     public $show = true;
 
     /**
+     * Custom loading text
+     * @since 1.18
+     */
+    public ?string $text = null;
+
+    /**
      * Displays / Run the Widgets
      */
     public function run()
@@ -57,6 +63,7 @@ class LoaderWidget extends \yii\base\Widget
             'id' => $this->id,
             'cssClass' => $this->cssClass,
             'show' => $this->show,
+            'text' => $this->text,
         ]);
     }
 

@@ -56,6 +56,7 @@ HumHub Changelog
 - Fix #7628: Fix space membership modal
 - Fix #7636: Send button inside upload-buttons class
 - Fix #7640: Installer - Small buttons
+- Enh: Allow displaying a custom loading message using `Button::loader('Custom Loading Message')` or `LoaderWidget::widget(['text' => 'Custom Loading Message'])`
 
 1.17.3 (Unreleased)
 ----------------------

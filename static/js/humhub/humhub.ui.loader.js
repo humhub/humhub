@@ -87,7 +87,7 @@ humhub.module('ui.loader', function (module, require, $) {
         cfg = cfg || {};
 
         // TODO use div template instead of clone
-        var $result = (cfg.span) ? $(module.template) : $(DEFAULT_LOADER_SELECTOR).clone().removeAttr('id').show();
+        var $result = (cfg.span) ? getTemplate() : $(DEFAULT_LOADER_SELECTOR).clone().removeAttr('id').show();
 
         if (cfg.cssClass) {
             $result.addClass(cfg.cssClass);
@@ -162,9 +162,8 @@ humhub.module('ui.loader', function (module, require, $) {
             return;
         }
 
-        // Adopt current color for the loader animation
-        var color = $node.css('color') || '#ffffff';
-        var $loader = $(module.template);
+        // Get loader template
+        var $loader = getTemplate($node.data('ui-loader'));
 
         // The loader does have some margin we have to hide
         $node.css('overflow', 'hidden');
@@ -185,7 +184,15 @@ humhub.module('ui.loader', function (module, require, $) {
         }
     };
 
-    var template = '<span class="hh-loader text-center"><span class="spinner-border spinner-border-sm"></span></span>';
+    var getTemplate = function (loadingMessage = '') {
+        return '<span class="hh-loader text-center">'
+            + '<span class="spinner-border spinner-border-sm" aria-hidden="true"></span>'
+            + ' '
+            + '<span role="status"' + (loadingMessage ? '' : ' class="visually-hidden"') + '>'
+                + (loadingMessage || module.text('loading'))
+            + '</span>'
+        + '</span>';
+    }
 
     module.export({
         set: set,
@@ -195,7 +202,7 @@ humhub.module('ui.loader', function (module, require, $) {
         prepend: prepend,
         reset: reset,
         getInstance: getInstance,
-        template: template,
+        getTemplate: getTemplate,
         initLoaderButton: initLoaderButton,
         init: init,
         sortOrder: 100,

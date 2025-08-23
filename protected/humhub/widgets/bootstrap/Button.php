@@ -26,7 +26,11 @@ class Button extends \yii\bootstrap5\Button
 {
     use BootstrapVariationsTrait;
 
-    public bool $loader = true;
+    /**
+     * If string, the loader is active and a custom loader text is displayed
+     */
+    public bool|string $loader = true;
+
     /**
      * @inerhitdoc
      */
@@ -104,7 +108,6 @@ class Button extends \yii\bootstrap5\Button
             ->link($url)
             ->icon('back')
             ->right()
-            ->loader(true)
             ->sm();
     }
 
@@ -117,9 +120,9 @@ class Button extends \yii\bootstrap5\Button
             ->cssClass('input-field-addon');
     }
 
-    public function loader($active = true): static
+    public function loader(bool|string $loader = true): static
     {
-        $this->loader = $active;
+        $this->loader = $loader;
         return $this;
     }
 
@@ -227,7 +230,7 @@ class Button extends \yii\bootstrap5\Button
         ); // For compatibility with old bootstrap buttons
 
         if ($this->loader) {
-            $this->options['data-ui-loader'] = '';
+            $this->options['data-ui-loader'] = $this->loader;
         }
 
         // Workaround since data-method handler prevents confirm or other action handlers from being executed.
