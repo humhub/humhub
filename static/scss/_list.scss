@@ -19,7 +19,7 @@
         &:hover,
         &.selected {
             background-color: var(--hh-background-color-secondary);
-            border-left: 3px solid var(--hh-accent);
+            border-left: 3px solid var(--bs-accent);
         }
 
         &, a {
@@ -27,7 +27,7 @@
         }
 
         &.new {
-            border-left: 3px solid var(--hh-accent);
+            border-left: 3px solid var(--bs-accent);
             background-color: var(--hh-background-color-highlight);
 
             &:hover {

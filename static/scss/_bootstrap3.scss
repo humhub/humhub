@@ -37,7 +37,7 @@ a.label-default:hover {
 }
 
 .label-info {
-    background-color: var(--hh-accent);
+    background-color: var(--bs-accent);
 }
 
 a.label-info:hover {
@@ -117,11 +117,11 @@ a.label-warning:hover {
         &:hover,
         &.selected {
             background-color: var(--hh-background-color-secondary);
-            border-left: 3px solid var(--hh-accent);
+            border-left: 3px solid var(--bs-accent);
         }
 
         &.new {
-            border-left: 3px solid var(--hh-accent);
+            border-left: 3px solid var(--bs-accent);
             background-color: var(--hh-background-color-highlight);
 
             &:hover {
@@ -379,10 +379,10 @@ a.label-warning:hover {
 }
 
 .panel-info {
-    border: 2px solid var(--hh-accent);
+    border: 2px solid var(--bs-accent);
 
     .panel-heading {
-        color: var(--hh-accent);
+        color: var(--bs-accent);
     }
 }
 
@@ -588,7 +588,7 @@ a.label-warning:hover {
     .sk-adjust-huener-three-bounce div, .sk-adjust-huener-three-bounce span {
         width: 12px;
         height: 12px;
-        background-color: var(--hh-accent);
+        background-color: var(--bs-accent);
         border-radius: 100%;
         display: inline-block;
         animation: sk-threeBounceDelay 1.4s infinite ease-in-out;
@@ -681,9 +681,9 @@ a.label-warning:hover {
     --bs-btn-active-border-color: var(--bs-primary);
 }
 .btn-info {
-    --bs-btn-active-color: var(--hh-accent);
+    --bs-btn-active-color: var(--bs-accent);
     --bs-btn-active-bg: var(--hh-background-color-main);
-    --bs-btn-active-border-color: var(--hh-accent);
+    --bs-btn-active-border-color: var(--bs-accent);
 }
 
 //
@@ -718,15 +718,15 @@ a.label-warning:hover {
 
 /* Info */
 .colorInfo {
-    color: var(--hh-accent) !important;
+    color: var(--bs-accent) !important;
 }
 
 .backgroundInfo {
-    background: var(--hh-accent) !important;
+    background: var(--bs-accent) !important;
 }
 
 .borderInfo {
-    border-color: var(--hh-accent) !important;
+    border-color: var(--bs-accent) !important;
 }
 
 /* Link */

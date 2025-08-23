@@ -26,7 +26,7 @@ a.list-group-item {
         z-index: 2;
         color: var(--hh-text-color-highlight);
         background-color: var(--hh-background-color-secondary);
-        border-left: 3px solid var(--hh-accent) !important;
+        border-left: 3px solid var(--bs-accent) !important;
     }
 
     &.active {

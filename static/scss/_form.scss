@@ -23,7 +23,7 @@ label {
     font-weight: 700;
     margin-bottom: 5px;
     &[required]:after{
-        content:" *";color:var(--hh-accent);
+        content:" *";color:var(--bs-accent);
     }
 }
 
@@ -40,7 +40,7 @@ label {
 
 div.required > label:after {
     content: " *";
-    color: var(--hh-accent);
+    color: var(--bs-accent);
 }
 
 .radio label,
@@ -63,7 +63,7 @@ div.required > label:after {
     font-size: 14px;
 
     &:focus {
-        border: 2px solid var(--hh-accent);
+        border: 2px solid var(--bs-accent);
         outline: 0;
         box-shadow: none;
         background-color: var(--hh-background-color-main);
@@ -254,8 +254,8 @@ input[type=checkbox] {
         outline: none;
     }
     &:checked {
-        border: 2px solid var(--hh-accent);
-        background: var(--hh-accent);
+        border: 2px solid var(--bs-accent);
+        background: var(--bs-accent);
         color: var(--hh-text-color-contrast);
 
         &::after {
@@ -284,7 +284,7 @@ input[type=radio] {
             border-radius: 50%;
             position: absolute;
             top: 3px;
-            background: var(--hh-accent);
+            background: var(--bs-accent);
             text-shadow: none;
             left: 3px;
             font-size: 32px;

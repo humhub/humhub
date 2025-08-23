@@ -52,7 +52,7 @@
 
             &.active {
                 padding-top: 10px;
-                border-top: 3px solid var(--hh-accent);
+                border-top: 3px solid var(--bs-accent);
                 background-color: var(--hh-background-color-main);
                 border-bottom-color: transparent;
             }
@@ -88,7 +88,7 @@ ul.tab-menu-settings {
 
         &.active {
             padding-top: 10px;
-            border-top: 3px solid var(--hh-accent) !important;
+            border-top: 3px solid var(--bs-accent) !important;
             background-color: var(--hh-background-color-main);
             border-bottom-color: transparent !important;
         }
@@ -107,7 +107,7 @@ ul.tab-menu-settings {
 
             &:hover,
             &.selected {
-                border-left: 3px solid var(--hh-accent);
+                border-left: 3px solid var(--bs-accent);
                 color: var(--hh-text-color-contrast) !important;
                 background-color: darken($primary, 5%) !important;
             }
@@ -356,7 +356,7 @@ ul.tab-menu-settings {
 
                 &:hover, &.selected {
                     color: var(--hh-text-color-highlight);
-                    border-left-color: var(--hh-accent);
+                    border-left-color: var(--bs-accent);
                     background-color: var(--hh-background-color-secondary) !important;
                 }
             }

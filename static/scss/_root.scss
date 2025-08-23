@@ -4,8 +4,6 @@
 // --------------------------------------------------
 
 :root {
-    --hh-accent: #{$accent};
-
     // Text colors
     --hh-text-color-main: #{$text-color-main};
     --hh-text-color-default: #{$text-color-default};
@@ -50,7 +48,7 @@
     // @deprecated since 1.18, use the above variable instead
     --default: #{$default};
     --primary: var(--bs-primary);
-    --accent: var(--hh-accent);
+    --accent: var(--bs-accent);
     --info: var(--bs-info);
     --success: var(--bs-success);
     --warning: var(--bs-warning);

@@ -44,7 +44,7 @@
                         border-color: var(--hh-background3) !important;
 
                         &:checked {
-                            border-color: var(--hh-accent) !important;
+                            border-color: var(--bs-accent) !important;
                         }
                     }
                 }
@@ -130,7 +130,7 @@ $wallEntryContentLeftPaddingMobile: 0;
 
             .fa {
                 font-size: 2.39em;
-                color: var(--hh-accent);
+                color: var(--bs-accent);
                 margin-top: 5px;
             }
         }

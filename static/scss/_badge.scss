@@ -30,7 +30,7 @@
         width: 14px;
         height: 14px;
         border-radius: 50%;
-        background: var(--hh-accent);
+        background: var(--bs-accent);
 
         &:empty {
             display: inline-block; // Overwrites BS5 `&:empty {display: none;}`
