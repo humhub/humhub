@@ -232,6 +232,11 @@ class CoreJsConfig extends Widget
                         'addOption' => Yii::t('base', 'Add:'),
                     ],
                 ],
+                'ui.loader' => [
+                    'text' => [
+                        'loading' => Yii::t('base', 'Loading...'),
+                    ],
+                ],
                 'ui.showMore' => [
                     'text' => [
                         'readMore' => Yii::t('UiModule.base', 'Read more'),
