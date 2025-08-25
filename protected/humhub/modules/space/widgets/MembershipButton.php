@@ -11,6 +11,7 @@ namespace humhub\modules\space\widgets;
 use humhub\components\Widget;
 use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
+use humhub\modules\ui\icon\widgets\Icon;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
@@ -81,7 +82,7 @@ class MembershipButton extends Widget
                 ],
             ],
             'cancelPendingMembership' => [
-                'title' => '<span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;' . Yii::t('SpaceModule.base', 'Pending'),
+                'title' => Icon::get('clock-o') . Yii::t('SpaceModule.base', 'Pending'),
                 'url' => '#',
                 'attrs' => [
                     'data-action-click' => 'content.container.relationship',
@@ -94,7 +95,7 @@ class MembershipButton extends Widget
             ],
             'cancelMembership' => [
                 'visible' => false,
-                'title' => '<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t('SpaceModule.base', 'Member'),
+                'title' => Icon::get('check') . Yii::t('SpaceModule.base', 'Member'),
                 'url' => '#',
                 'attrs' => [
                     'data-action-click' => 'content.container.relationship',
@@ -109,8 +110,8 @@ class MembershipButton extends Widget
             ],
             'cannotCancelMembership' => [
                 'visible' => false,
-                'memberTitle' => '<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t('SpaceModule.base', 'Member'),
-                'ownerTitle' => '<span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;' . Yii::t('SpaceModule.base', 'Owner'),
+                'memberTitle' => Icon::get('check') . Yii::t('SpaceModule.base', 'Member'),
+                'ownerTitle' => Icon::get('user') . Yii::t('SpaceModule.base', 'Owner'),
                 'attrs' => ['class' => 'btn btn-accent active'],
             ],
         ];

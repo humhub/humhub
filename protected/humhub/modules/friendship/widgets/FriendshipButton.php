@@ -9,6 +9,7 @@
 namespace humhub\modules\friendship\widgets;
 
 use humhub\modules\friendship\models\Friendship;
+use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Widget;
@@ -37,7 +38,7 @@ class FriendshipButton extends Widget
     {
         return [
             'friends' => [
-                'title' => '<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t('FriendshipModule.base', 'Friends'),
+                'title' => Icon::get('check') . Yii::t('FriendshipModule.base', 'Friends'),
                 'attrs' => [
                     'data-action-click' => 'content.container.relationship',
                     'data-action-url' => Url::to(['/friendship/request/delete', 'userId' => $this->user->id]),
@@ -48,7 +49,7 @@ class FriendshipButton extends Widget
                 ],
             ],
             'addFriend' => [
-                'title' => '<span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;' . Yii::t('FriendshipModule.base', 'Friends'),
+                'title' => Icon::get('plus') . Yii::t('FriendshipModule.base', 'Friends'),
                 'attrs' => [
                     'data-action-click' => 'content.container.relationship',
                     'data-action-url' => Url::to(['/friendship/request/add', 'userId' => $this->user->id]),
@@ -59,7 +60,7 @@ class FriendshipButton extends Widget
                 ],
             ],
             'acceptFriendRequest' => [
-                'title' => '<span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;' . Yii::t('FriendshipModule.base', 'Accept Friend Request'),
+                'title' => Icon::get('clock-o') . Yii::t('FriendshipModule.base', 'Accept Friend Request'),
                 'attrs' => [
                     'data-action-click' => 'content.container.relationship',
                     'data-action-url' => Url::to(['/friendship/request/add', 'userId' => $this->user->id]),
@@ -81,7 +82,7 @@ class FriendshipButton extends Widget
                 ],
             ],
             'cancelFriendRequest' => [
-                'title' => '<span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;' . Yii::t('FriendshipModule.base', 'Pending'),
+                'title' => Icon::get('clock-o') . Yii::t('FriendshipModule.base', 'Pending'),
                 'attrs' => [
                     'data-action-click' => 'content.container.relationship',
                     'data-action-url' => Url::to(['/friendship/request/delete', 'userId' => $this->user->id]),

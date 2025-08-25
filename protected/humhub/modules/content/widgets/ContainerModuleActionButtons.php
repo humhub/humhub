@@ -41,7 +41,8 @@ class ContainerModuleActionButtons extends Widget
         }
 
         if ($this->contentContainer->moduleManager->canDisable($this->module->id)) {
-            $this->buttons[] = Button::asLink('<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t('ContentModule.base', 'Enabled'), '#')
+            $this->buttons[] = Button::asLink(Yii::t('ContentModule.base', 'Enabled'))
+                ->icon('check')
                 ->cssClass('btn btn-sm btn-accent active disable disable-module-' . $this->module->id)
                 ->style($this->contentContainer->moduleManager->isEnabled($this->module->id) ? '' : 'display:none')
                 ->options([
