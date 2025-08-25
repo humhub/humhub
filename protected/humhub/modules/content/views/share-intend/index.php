@@ -19,6 +19,7 @@ use humhub\widgets\modal\ModalButton;
 ?>
 
 <?php $form = Modal::beginFormDialog([
+    'id' => 'share-intend-modal',
     'title' => Yii::t('ContentModule.base', 'Share'),
     'footer' => ModalButton::light(Yii::t('base', 'Back'))
         ->load(['/file/share-intend', 'fileList' => $fileList]),
