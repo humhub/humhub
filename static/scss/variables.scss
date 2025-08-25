@@ -32,7 +32,7 @@ $accent-border-subtle-dark: shade-color($accent, 60%) !default;
 // --------------------------------------------------
 
 $link-hover-color: mix(black, $primary, 10%) !default;
-$code-color: mix(black, $info, 10%) !default;
+$code-color: mix(black, $accent, 10%) !default;
 $body-color: #555 !default;
 $body-bg: #ededed !default;
 $input-border-color: #e9ecef !default;
@@ -84,11 +84,11 @@ $background-color-page: $body-bg !default;
 
 // Informative highlighting color
 // (e.g. Comment Permalink, Shared Item, Calendar CurDay, Wiki Active Page Nav, Mail Module Speech Bubble)
-$background-color-highlight: rgba($info, 0.2) !default;
+$background-color-highlight: rgba($accent, 0.2) !default;
 
 // Informative highlighting soft color
 // (e.g. Wiki Active Category)
-$background-color-highlight-soft: lighten(desaturate(adjust-hue($info, 6), 16), 55) !default;
+$background-color-highlight-soft: lighten(desaturate(adjust-hue($accent, 6), 16), 55) !default;
 
 // Additional background colors
 $background3: #d7d7d7 !default;
@@ -177,7 +177,7 @@ $link: $primary !default;
 // --------------------------------------------------
 
 $link-hover-color-dark: mix(white, $primary, 10%) !default;
-$code-color-dark: mix(white, $info, 10%) !default;
+$code-color-dark: mix(white, $accent, 10%) !default;
 $body-color-dark: #ddd !default;
 $body-bg-dark: #000 !default;
 $input-border-color-dark: #1f2225 !default;
@@ -227,11 +227,11 @@ $background-color-page-dark: $body-bg-dark !default;
 
 // Informative highlighting color
 // (e.g. Comment Permalink, Shared Item, Calendar CurDay, Wiki Active Page Nav, Mail Module Speech Bubble)
-$background-color-highlight-dark: rgba($info, 0.2) !default;
+$background-color-highlight-dark: rgba($accent, 0.2) !default;
 
 // Informative highlighting soft color
 // (e.g. Wiki Active Category)
-$background-color-highlight-soft-dark: darken(desaturate(adjust-hue($info, 6), 16), 55) !default;
+$background-color-highlight-soft-dark: darken(desaturate(adjust-hue($accent, 6), 16), 55) !default;
 
 // Additional background colors
 $background3-dark: #393939 !default;
