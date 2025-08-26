@@ -9,6 +9,7 @@
 namespace humhub\widgets\modal;
 
 use humhub\widgets\form\ActiveForm;
+use Yii;
 use yii\bootstrap5\Html;
 
 /**
@@ -171,8 +172,11 @@ class Modal extends \yii\bootstrap5\Modal
         if ($this->isHumHubDialog) {
             $this->trigger(self::EVENT_INIT);
             if (!isset($this->options['id'])) {
-                $this->options['id'] = $this->getId();
+                // The ID is required by \yii\bootstrap5\Modal but overwritten later, e.g. by humhub\widgets\modal\GlobalModal
+                $this->options['id'] = Yii::$app->security->generateRandomString(8);
             }
+            // Set the ID for the dialog container (.modal-dialog)
+            $this->dialogOptions['id'] = $this->getId();
             $this->initOptions();
         } else {
             parent::init();

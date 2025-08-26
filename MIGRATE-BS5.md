@@ -376,6 +376,7 @@ These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 - `pull-left` (or `style="float:left"`) -> `float-start`
 - `pull-right` (or `style="float:right"`) -> `float-end`
 - `center-block` -> `mx-auto` (image, inline or inline-block elements:  `d-block mx-auto`)
+- `btn-block` -> `d-grid gap-2`
 - `text-left` -> `text-start`
 - `text-right` -> `text-end`
 - `btn-group-xs` -> `btn-group-sm`
