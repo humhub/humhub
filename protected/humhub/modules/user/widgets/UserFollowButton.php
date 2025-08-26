@@ -9,6 +9,7 @@
 namespace humhub\modules\user\widgets;
 
 use humhub\helpers\Html;
+use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Widget;
@@ -55,7 +56,7 @@ class UserFollowButton extends Widget
             $this->followLabel = Yii::t('UserModule.base', 'Follow');
         }
         if ($this->unfollowLabel === null) {
-            $this->unfollowLabel = '<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t('UserModule.base', 'Following');
+            $this->unfollowLabel = Icon::get('check') . Yii::t('UserModule.base', 'Following');
         }
 
         if (!isset($this->followOptions['class'])) {
