@@ -58,6 +58,7 @@ HumHub Changelog
 - Fix #7640: Installer - Small buttons
 - Enh #7645: Allow displaying a custom loading message using `Button::loader('Custom Loading Message')` or `LoaderWidget::widget(['text' => 'Custom Loading Message'])`
 - Fix #7652: Installer - Replace loading modal box with button loading custom messages
+- Fix #7656: Fix logo on registration last step page
 
 1.17.3 (Unreleased)
 ----------------------
