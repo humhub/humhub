@@ -1,13 +1,12 @@
 <?php
 
-use humhub\helpers\Html;
 use yii\helpers\Url;
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
 ?>
 
 <div class="container" style="text-align: center;">
-    <h1 id="app-title" class="animated fadeIn"><?php echo Html::encode(Yii::$app->name); ?></h1>
+    <?= humhub\widgets\SiteLogo::widget(['place' => 'login']) ?>
     <br/>
     <div class="row">
         <div class="panel panel-default animated fadeIn"
