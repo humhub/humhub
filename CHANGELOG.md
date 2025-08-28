@@ -60,6 +60,7 @@ HumHub Changelog
 - Fix #7652: Installer - Replace loading modal box with button loading custom messages
 - Fix #7654: Share intent modal dialog not closing since BS5 (1.18)
 - Fix #7656: Fix logo on registration last step page
+- Fix #7658: Fix loader on attach image to RichText field
 
 1.17.3 (Unreleased)
 ----------------------
