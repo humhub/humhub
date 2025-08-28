@@ -116,7 +116,7 @@ class DatePicker extends BaseDatePicker
             if (jQuery(".ui-datepicker").data("isClicked") === false) {
                 jQuery(this).datepicker("hide");
             }
-        })');
+        });');
 
         JuiAsset::register($this->getView());
     }
