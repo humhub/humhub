@@ -34,23 +34,19 @@ class ContainerModuleActionButtons extends Widget
      */
     public function init()
     {
-        if ($this->module->getContentContainerConfigUrl($this->contentContainer)
-            && $this->contentContainer->moduleManager->isEnabled($this->module->id)) {
+        $isEnabled = $this->contentContainer->moduleManager->isEnabled($this->module->id);
+
+        if ($this->module->getContentContainerConfigUrl($this->contentContainer) && $isEnabled) {
             $this->buttons[] = Button::asLink(Yii::t('ContentModule.base', 'Configure'), $this->module->getContentContainerConfigUrl($this->contentContainer))
                 ->cssClass('btn btn-sm btn-accent configure-module-' . $this->module->id);
         }
 
         if ($this->contentContainer->moduleManager->canDisable($this->module->id)) {
             $this->buttons[] = Button::accent(Yii::t('ContentModule.base', 'Enabled'))
-                ->link('#')
                 ->sm()
                 ->icon('check')
-                ->cssClass('active disable disable-module-' . $this->module->id)
-                ->style($this->contentContainer->moduleManager->isEnabled($this->module->id) ? '' : 'display:none')
-                ->action(
-                    'content.container.disableModule',
-                    $this->getDisableUrl(),
-                )
+                ->cssClass('active disable disable-module-' . $this->module->id . ($isEnabled ? '' : ' d-none'))
+                ->action('content.container.disableModule', $this->getDisableUrl())
                 ->options(['data-reload' => '1'])
                 ->confirm(
                     Yii::t('AdminModule.modules', 'Disable Module'),
@@ -59,15 +55,10 @@ class ContainerModuleActionButtons extends Widget
                 );
         }
 
-        $this->buttons[] = Button::accent(Yii::t('ContentModule.base', 'Enabled'))
-            ->link('#')
+        $this->buttons[] = Button::accent(Yii::t('ContentModule.base', 'Enable'))
             ->sm()
-            ->cssClass('enable enable-module-' . $this->module->id)
-            ->style($this->contentContainer->moduleManager->isEnabled($this->module->id) ? 'display:none' : '')
-            ->action(
-                'content.container.enableModule',
-                $this->getEnableUrl(),
-            )
+            ->cssClass('enable enable-module-' . $this->module->id . ($isEnabled ? ' d-none' : ''))
+            ->action('content.container.enableModule', $this->getEnableUrl())
             ->options(['data-reload' => '1']);
 
         parent::init();
