@@ -61,6 +61,7 @@ HumHub Changelog
 - Fix #7654: Share intent modal dialog not closing since BS5 (1.18)
 - Fix #7656: Fix logo on registration last step page
 - Fix #7658: Fix loader on attach image to RichText field
+- Enh #7661: Parent groups
 
 1.17.3 (Unreleased)
 ----------------------

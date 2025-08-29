@@ -32,6 +32,7 @@ use yii\helpers\Url;
  * @property int $space_id
  * @property string $name
  * @property string $description
+ * @property int $parent_group_id
  * @property string $created_at
  * @property int $created_by
  * @property int $sort_order

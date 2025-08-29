@@ -2,11 +2,12 @@
 
 use humhub\helpers\Html;
 use humhub\modules\space\widgets\SpacePickerField;
-use humhub\modules\ui\form\widgets\SortOrderField;
 use humhub\modules\user\models\forms\EditGroupForm;
+use humhub\modules\user\widgets\GroupPicker;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
+use humhub\widgets\form\SortOrderField;
 use yii\helpers\Url;
 
 /* @var $isManagerApprovalSetting bool */
@@ -20,6 +21,10 @@ use yii\helpers\Url;
     <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
     <?= $form->field($group, 'name'); ?>
     <?= $form->field($group, 'description')->textarea(['rows' => 5]); ?>
+
+    <?= $form->field($group, 'type')->dropDownList($group->getTypeOptions()) ?>
+    <?= $form->field($group, 'subgroups')->widget(GroupPicker::class) ?>
+    <?= $form->field($group, 'parent')->widget(GroupPicker::class) ?>
 
     <?php if (!$group->is_admin_group): ?>
         <?= SpacePickerField::widget([
@@ -63,3 +68,11 @@ use yii\helpers\Url;
     <?php ActiveForm::end(); ?>
 </div>
 <?php $this->endContent(); ?>
+
+<script <?= Html::nonce() ?>>
+$(document).on('select2:select', '#editgroupform-type', function () {
+    const isParentGroup = this.value === '<?= EditGroupForm::TYPE_NORMAL?>';
+    document.querySelector('.field-editgroupform-parent').classList.toggle('d-none', isParentGroup);
+    document.querySelector('.field-editgroupform-subgroups').classList.toggle('d-none', !isParentGroup);
+});
+</script>
