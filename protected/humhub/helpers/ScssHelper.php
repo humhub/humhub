@@ -58,23 +58,13 @@ class ScssHelper
 
             // Second pass: Resolve variables to their final values
             foreach ($variables as $name => $value) {
-
-                // Remove $ and trim
-                $value = ltrim($value, '$');
-
-                // Track to prevent infinite recursion
-                $visited = [];
+                $value = static::parseValue($value, $removeFlag);
 
                 // Resolve variable references
+                $visited = []; // Track to prevent infinite recursion
                 while (isset($variables[$value]) && !isset($visited[$value])) {
                     $visited[$value] = true;
-                    $value = $variables[$value];
-                    $value = trim(ltrim($value, '$'), '"');
-                }
-
-                if ($removeFlag) {
-                    // Match CSS/SCSS flags at the end of the string such as !important, !default, !optional, !global, etc.
-                    $value = preg_replace('/\s*![a-zA-Z]+\s*$/', '', $value);
+                    $value = static::parseValue($variables[$value], $removeFlag);
                 }
 
                 $resolvedVariables[$name] = $value;
@@ -84,6 +74,23 @@ class ScssHelper
         } catch (Exception $e) {
             throw new RuntimeException("Error resolving SCSS variables: " . $e->getMessage());
         }
+    }
+
+    private static function parseValue(?string $value, bool $removeFlag = true): string
+    {
+        if (!$value) {
+            return '';
+        }
+
+        // Remove $ and trim
+        $value = trim(trim(ltrim($value, '$'), '"'));
+
+        if ($removeFlag) {
+            // Match CSS/SCSS flags at the end of the string such as !important, !default, !optional, !global, etc.
+            $value = preg_replace('/\s*![a-zA-Z]+\s*$/', '', $value);
+        }
+
+        return $value;
     }
 
     public static function getVariable(string $scssFilePath, string $variableName): ?string
@@ -110,10 +117,10 @@ class ScssHelper
         }
 
         foreach ($variables as $name => $value) {
-            if (!str_starts_with((string) $value, '$')) {
+            if (!str_starts_with((string)$value, '$')) {
                 continue;
             }
-            $linkedVarName = substr((string) $value, 1);
+            $linkedVarName = substr((string)$value, 1);
             if (isset($variables[$linkedVarName])) {
                 $variables[$name] = $variables[$linkedVarName];
             }
