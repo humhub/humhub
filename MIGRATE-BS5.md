@@ -748,14 +748,23 @@ It is also possible to use `max-width` (should be occasionally used) using `medi
 // etc...
 ```
 
-In modules, you will have to import the Boostrap breakpoints SCSS functions:
+Doc: https://getbootstrap.com/docs/5.3/layout/breakpoints
+
+### Bootstrap Imports in modules
+
+Depending on your needs, you might have to import the Boostrap SCSS functions, variables, mixins or breakpoints:
 ```scss
-@import "../../../../vendor/bower-asset/bootstrap/scss/functions";
-@import "../../../../vendor/bower-asset/bootstrap/scss/variables";
-@import "../../../../vendor/bower-asset/bootstrap/scss/mixins/breakpoints";
+@import "/opt/humhub/protected/vendor/bower-asset/bootstrap/scss/functions";
+@import "/opt/humhub/protected/vendor/bower-asset/bootstrap/scss/variables";
+@import "/opt/humhub/protected/vendor/bower-asset/bootstrap/scss/mixins";
+@import "/opt/humhub/protected/vendor/bower-asset/bootstrap/scss/mixins/breakpoints";
 ```
 
-Doc: https://getbootstrap.com/docs/5.3/layout/breakpoints
+Make sure you have a symbolic link of HumHub root directory in `/opt/humhub`:
+
+```
+sudo ln -s /path/to/humhub /opt/humhub
+```
 
 ### Deprecated CSS classes
 
