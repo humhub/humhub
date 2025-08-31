@@ -19,7 +19,7 @@ $warning: #FFC107 !default;
 $danger: #FC4A64 !default;
 $light: #e7e7e7 !default;
 $dark: #333 !default;
-$link-color: $info;
+$link-color: $info !default; // Already in Bootstrap, but required to get the value via PHP
 
 $accent-text-emphasis: shade-color($accent, 60%) !default;
 $accent-bg-subtle: tint-color($accent, 80%) !default;
