@@ -351,6 +351,22 @@ Example:
 </ul>
 ```
 
+## Buttons
+
+If you cannot use the `humhub\widgets\bootstrap\Button` widget, remove space between the icon and the label, because a right margin has been added to the icon.
+
+Before:
+
+```html
+<button type="button" class="btn-primary btn"><?= Icon::get('circle') ?> Label</button>
+```
+
+Now:
+
+```html
+<button type="button" class="btn-primary btn"><?= Icon::get('circle') ?>Label</button>
+```
+
 ## Breadcrumb
 
 Search for the class `breadcrumb`.
