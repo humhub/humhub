@@ -92,7 +92,7 @@ humhub.module('ui.panel', function (module, require, $) {
             ? module.text('collapse')
             : module.text('expand');
 
-        this.$collapseLink.html(icon + ' ' + text).removeClass('disabled').removeAttr('disabled');
+        this.$collapseLink.html(icon + text).removeClass('disabled').removeAttr('disabled');
     };
 
     module.export({
