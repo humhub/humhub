@@ -58,6 +58,7 @@ HumHub Changelog
 - Fix #7640: Installer - Small buttons
 - Enh #7645: Allow displaying a custom loading message using `Button::loader('Custom Loading Message')` or `LoaderWidget::widget(['text' => 'Custom Loading Message'])`
 - Fix #7652: Installer - Replace loading modal box with button loading custom messages
+- Enh #7666: Enable dashboard filters when filter query parameters are present
 - Fix #7654: Share intent modal dialog not closing since BS5 (1.18)
 - Fix #7656: Fix logo on registration last step page
 - Fix #7658: Fix loader on attach image to RichText field
