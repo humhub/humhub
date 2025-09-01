@@ -17,12 +17,13 @@ use yii\helpers\Url;
 ?>
 
 <?php Modal::beginDialog([
+    'id' => 'share-intend-modal',
     'title' => Yii::t('FileModule.base', 'Share'),
     'footer' => ModalButton::cancel(),
 ]) ?>
 
     <?php foreach ($shareTargets as $target): ?>
-        <a class="btn btn-primary btn-block" data-action-click="ui.modal.load"
+        <a class="btn btn-primary d-grid gap-2" data-action-click="ui.modal.load"
            data-action-url="<?= Url::to([$target['route']]) ?>">
             <?= $target['title'] ?>
         </a>

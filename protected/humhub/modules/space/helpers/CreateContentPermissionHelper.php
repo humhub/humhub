@@ -36,27 +36,25 @@ final class CreateContentPermissionHelper
             $spaces->search($keyword);
         }
 
-        if (!$user->isSystemAdmin()) {
-            // Check the User can create a Post in the searched Spaces
-            $spaces->leftJoin('space_membership', 'space_membership.space_id = space.id')
-                ->leftJoin(
-                    'contentcontainer_permission',
-                    'contentcontainer_permission.contentcontainer_id = space.contentcontainer_id
-                    AND contentcontainer_permission.group_id = space_membership.group_id
-                    AND contentcontainer_permission.permission_id = :permission_id',
-                )
-                ->andWhere(['space_membership.user_id' => $user->id])
-                ->andWhere(['OR',
-                    // Allowed by default
-                    ['AND',
-                        ['IN', 'space_membership.group_id', self::getDefaultAllowedGroups($permissionClass)],
-                        ['IS', 'contentcontainer_permission.permission_id', new Expression('NULL')],
-                    ],
-                    // Set to allow
-                    ['contentcontainer_permission.state' => $permissionClass::STATE_ALLOW],
-                ])
-                ->addParams(['permission_id' => $permissionClass]);
-        }
+        // Check the User can create a Post in the searched Spaces
+        $spaces->leftJoin('space_membership', 'space_membership.space_id = space.id')
+            ->leftJoin(
+                'contentcontainer_permission',
+                'contentcontainer_permission.contentcontainer_id = space.contentcontainer_id
+                AND contentcontainer_permission.group_id = space_membership.group_id
+                AND contentcontainer_permission.permission_id = :permission_id',
+            )
+            ->andWhere(['space_membership.user_id' => $user->id])
+            ->andWhere(['OR',
+                // Allowed by default
+                ['AND',
+                    ['IN', 'space_membership.group_id', self::getDefaultAllowedGroups($permissionClass)],
+                    ['IS', 'contentcontainer_permission.permission_id', new Expression('NULL')],
+                ],
+                // Set to allow
+                ['contentcontainer_permission.state' => $permissionClass::STATE_ALLOW],
+            ])
+            ->addParams(['permission_id' => $permissionClass]);
 
         $result = [];
         foreach ($spaces->all() as $space) {

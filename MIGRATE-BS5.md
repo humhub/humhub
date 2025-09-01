@@ -351,6 +351,22 @@ Example:
 </ul>
 ```
 
+## Buttons
+
+If you cannot use the `humhub\widgets\bootstrap\Button` widget, remove space between the icon and the label, because a right margin has been added to the icon.
+
+Before:
+
+```html
+<button type="button" class="btn-primary btn"><?= Icon::get('circle') ?> Label</button>
+```
+
+Now:
+
+```html
+<button type="button" class="btn-primary btn"><?= Icon::get('circle') ?>Label</button>
+```
+
 ## Breadcrumb
 
 Search for the class `breadcrumb`.
@@ -376,6 +392,7 @@ These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 - `pull-left` (or `style="float:left"`) -> `float-start`
 - `pull-right` (or `style="float:right"`) -> `float-end`
 - `center-block` -> `mx-auto` (image, inline or inline-block elements:  `d-block mx-auto`)
+- `btn-block` -> `d-grid gap-2`
 - `text-left` -> `text-start`
 - `text-right` -> `text-end`
 - `btn-group-xs` -> `btn-group-sm`
@@ -747,14 +764,23 @@ It is also possible to use `max-width` (should be occasionally used) using `medi
 // etc...
 ```
 
-In modules, you will have to import the Boostrap breakpoints SCSS functions:
+Doc: https://getbootstrap.com/docs/5.3/layout/breakpoints
+
+### Bootstrap Imports in modules
+
+Depending on your needs, you might have to import the Boostrap SCSS functions, variables, mixins or breakpoints:
 ```scss
-@import "../../../../vendor/bower-asset/bootstrap/scss/functions";
-@import "../../../../vendor/bower-asset/bootstrap/scss/variables";
-@import "../../../../vendor/bower-asset/bootstrap/scss/mixins/breakpoints";
+@import "/opt/humhub/protected/vendor/bower-asset/bootstrap/scss/functions";
+@import "/opt/humhub/protected/vendor/bower-asset/bootstrap/scss/variables";
+@import "/opt/humhub/protected/vendor/bower-asset/bootstrap/scss/mixins";
+@import "/opt/humhub/protected/vendor/bower-asset/bootstrap/scss/mixins/breakpoints";
 ```
 
-Doc: https://getbootstrap.com/docs/5.3/layout/breakpoints
+Make sure you have a symbolic link of HumHub root directory in `/opt/humhub`:
+
+```
+sudo ln -s /path/to/humhub /opt/humhub
+```
 
 ### Deprecated CSS classes
 

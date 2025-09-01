@@ -10,7 +10,6 @@
 namespace humhub\widgets\modal;
 
 use humhub\widgets\JsWidget;
-use yii\bootstrap5\Modal;
 
 /**
  * Usage examples:
