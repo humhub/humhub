@@ -51,7 +51,8 @@ use yii\helpers\Url;
                 'attribute' => 'members',
                 'label' => Yii::t('AdminModule.user', 'Members'),
                 'format' => 'raw',
-                'options' => ['style' => 'text-align:center;'],
+                'headerOptions' => ['class' => 'text-nowrap'],
+                'contentOptions' => ['class' => 'text-center'],
                 'value' => fn(Group $data) => $data->getGroupUsers()->count()
             ],
             [

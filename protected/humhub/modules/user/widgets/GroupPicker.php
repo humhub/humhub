@@ -5,10 +5,13 @@ namespace humhub\modules\user\widgets;
 use humhub\modules\admin\models\forms\UserEditForm;
 use humhub\modules\ui\form\widgets\MultiSelect;
 use humhub\modules\user\models\forms\EditGroupForm;
+use humhub\modules\user\models\Group;
 use Yii;
 
 class GroupPicker extends MultiSelect
 {
+    public string $groupType = EditGroupForm::TYPE_NORMAL;
+
     /**
      * @inheritdoc
      */
@@ -25,10 +28,14 @@ class GroupPicker extends MultiSelect
         }
 
         if (empty($this->items)) {
-            $this->items = UserEditForm::getGroupItems();
-            if (!$this->model->isNewRecord && isset($this->items[$this->model->id])) {
-                unset($this->items[$this->model->id]);
+            $groups = Group::find();
+            if (!$this->model->isNewRecord) {
+                $groups->andWhere(['!=', 'id', $this->model->id]);
             }
+            if ($this->groupType === EditGroupForm::TYPE_SUBGROUP) {
+                $groups->andWhere(['parent_group_id' => null]);
+            }
+            $this->items = UserEditForm::getGroupItems($groups->all());
         }
 
         if (!isset($this->options['data-tags'])) {

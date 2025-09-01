@@ -8,6 +8,7 @@ use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\GroupUser;
 use Yii;
+use yii\db\Expression;
 
 /**
  * Description of EditGroupForm
@@ -18,7 +19,7 @@ class EditGroupForm extends Group
 {
     public const TYPE_NORMAL = 'normal';
     public const TYPE_SUBGROUP = 'subgroup';
-    public string $type;
+    public string $type = self::TYPE_NORMAL;
     public $subgroups;
     public $parent;
 
@@ -33,9 +34,7 @@ class EditGroupForm extends Group
     {
         parent::afterFind();
 
-        if (!isset($this->type)) {
-            $this->type = $this->parent_group_id === null ? self::TYPE_NORMAL : self::TYPE_SUBGROUP;
-        }
+        $this->type = $this->parent_group_id === null ? self::TYPE_NORMAL : self::TYPE_SUBGROUP;
 
         switch ($this->type) {
             case self::TYPE_NORMAL:
@@ -63,8 +62,18 @@ class EditGroupForm extends Group
 
     public function validateTypeGroups()
     {
-        if ($this->type === self::TYPE_SUBGROUP && empty($this->parent[0])) {
-            $this->addError('parent', Yii::t('AdminModule.user', 'Parent group is required!'));
+        if ($this->type === self::TYPE_SUBGROUP) {
+            if (empty($this->parent[0])) {
+                $this->addError('parent', Yii::t('AdminModule.user', 'Parent group is required!'));
+                return;
+            }
+            $parentIsSubGroup = Group::find()
+                ->where(['id' => $this->parent[0]])
+                ->andWhere(['IS NOT', 'parent_group_id', new Expression('NULL') ]);
+            if ($parentIsSubGroup->exists()) {
+                $this->addError('parent', 'Parent group cannot be a subgroup!');
+                return;
+            }
         }
 
         if ($this->isNewRecord) {
@@ -134,7 +143,7 @@ class EditGroupForm extends Group
                 }
                 break;
             case self::TYPE_SUBGROUP:
-                $this->updateAttributes(['parent_group_id' => $this->parent]);
+                $this->updateAttributes(['parent_group_id' => $this->parent[0] ?? null]);
                 break;
         }
 
