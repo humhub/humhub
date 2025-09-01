@@ -178,7 +178,7 @@ class EditGroupForm extends Group
         }
     }
 
-    public function getTypeOptions(): array
+    public static function getTypeOptions(): array
     {
         return [
             self::TYPE_NORMAL => Yii::t('AdminModule.user', 'Normal'),

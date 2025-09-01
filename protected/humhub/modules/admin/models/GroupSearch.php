@@ -8,9 +8,11 @@
 
 namespace humhub\modules\admin\models;
 
+use humhub\modules\user\models\forms\EditGroupForm;
+use humhub\modules\user\models\Group;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use humhub\modules\user\models\Group;
+use yii\db\Expression;
 
 /**
  * Description of GroupSearch
@@ -19,10 +21,12 @@ use humhub\modules\user\models\Group;
  */
 class GroupSearch extends Group
 {
+    public $type;
+
     public function rules()
     {
         return [
-            [['name', 'description'], 'safe'],
+            [['name', 'description', 'type'], 'safe'],
         ];
     }
 
@@ -55,6 +59,7 @@ class GroupSearch extends Group
             'attributes' => [
                 'name',
                 'descriptions',
+                'type',
             ],
         ]);
 
@@ -67,6 +72,11 @@ class GroupSearch extends Group
 
         $query->andFilterWhere(['like', 'name', $this->name]);
         $query->andFilterWhere(['like', 'description', $this->description]);
+
+        if (!empty($this->type)) {
+            $operator = $this->type === EditGroupForm::TYPE_NORMAL ? 'IS' : 'IS NOT';
+            $query->andFilterWhere([$operator, 'parent_group_id', new Expression('NULL')]);
+        }
 
         return $dataProvider;
     }

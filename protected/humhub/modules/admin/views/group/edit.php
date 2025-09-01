@@ -22,7 +22,7 @@ use yii\helpers\Url;
     <?= $form->field($group, 'name'); ?>
     <?= $form->field($group, 'description')->textarea(['rows' => 5]); ?>
 
-    <?= $form->field($group, 'type')->dropDownList($group->getTypeOptions()) ?>
+    <?= $form->field($group, 'type')->dropDownList($group::getTypeOptions()) ?>
     <?= $form->field($group, 'subgroups')->widget(GroupPicker::class, ['groupType' => $group::TYPE_NORMAL]) ?>
     <?= $form->field($group, 'parent')->widget(GroupPicker::class, ['groupType' => $group::TYPE_SUBGROUP]) ?>
 

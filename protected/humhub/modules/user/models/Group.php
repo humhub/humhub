@@ -16,6 +16,7 @@ use humhub\modules\admin\notifications\IncludeGroupNotification;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
+use humhub\modules\user\models\forms\EditGroupForm;
 use humhub\modules\user\Module;
 use Throwable;
 use Yii;
@@ -527,5 +528,14 @@ class Group extends ActiveRecord
                 || $this->is_default_group
                 || $this->is_protected
         );
+    }
+
+    public function getTypeTitle(): string
+    {
+        $titles = EditGroupForm::getTypeOptions();
+
+        return $this->parent_group_id === null
+            ? $titles[EditGroupForm::TYPE_NORMAL]
+            : $titles[EditGroupForm::TYPE_SUBGROUP];
     }
 }
