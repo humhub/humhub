@@ -128,8 +128,7 @@ ul.tab-menu-settings {
                     margin-right: 0;
                     font-size: 14px;
                     display: inline-block;
-                    width: 19px;
-                    text-align: center;
+                    width: 20px;
                 }
 
                 &:hover,
@@ -227,6 +226,10 @@ ul.tab-menu-settings {
                 border-bottom-color: transparent;
                 color: var(--hh-text-color-highlight);
             }
+
+            i {
+                width: 20px;
+            }
         }
     }
 }
@@ -235,7 +238,7 @@ ul.tab-menu-settings {
     a [class^="fa-"],
     a [class*=" fa-"] {
         display: inline-block;
-        width: 18px;
+        width: 20px;
     }
 }
 
