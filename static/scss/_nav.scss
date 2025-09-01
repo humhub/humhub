@@ -193,6 +193,12 @@ ul.tab-menu-settings {
     }
 }
 
+.dropdown-toggle.dropdown-toggle-no-caret {
+    &::after {
+        display: none;
+    }
+}
+
 // Nav-Tabs
 .nav-tabs {
     margin-bottom: 10px;
