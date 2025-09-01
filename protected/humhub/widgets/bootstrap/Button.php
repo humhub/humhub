@@ -244,9 +244,7 @@ class Button extends \yii\bootstrap5\Button
             $this->cssClass('btn-icon-only');
         }
 
-        $text
-            = ($this->icon ? $this->icon . ' ' : '')
-            . ($this->encodeLabel ? Html::encode($this->label) : $this->label);
+        $text = $this->icon . ($this->encodeLabel ? Html::encode($this->label) : $this->label);
 
         if ($this->size) {
             Html::addCssClass($this->options, ['class' => 'btn-' . $this->size]);
