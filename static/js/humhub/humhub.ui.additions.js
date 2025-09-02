@@ -207,16 +207,11 @@ humhub.module('ui.additions', function (module, require, $) {
             });
         });
 
-        // Show tooltips on elements
-        module.register('tooltip', '.tt', function ($match) {
-            $match.tooltip({
-                container: 'body'
-            });
-
-            $match.on('click.tooltip', function () {
-                $('.tooltip').remove();
-            });
-        });
+        // Show tooltips on elements (except for touch devices)
+        if (!('ontouchstart' in window || navigator.maxTouchPoints > 0)) {
+            [...document.querySelectorAll('[data-bs-toggle=tooltip]')]
+                .map(el => new bootstrap.Tooltip(el));
+        }
 
         $(document).on('click.humhub-ui-additions', function () {
             $('.tooltip').remove();

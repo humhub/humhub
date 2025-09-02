@@ -176,11 +176,18 @@ trait BootstrapVariationsTrait
     }
 
     /**
-     * Adds a title + tooltip behaviour class
+     * Adds a title + tooltip behaviour data
      */
     public function tooltip(?string $title): static
     {
-        return $title ? $this->options(['data-bs-title' => $title])->cssClass('tt') : $this;
+        if ($title !== null && $title !== '') {
+            $this->options([
+                'data-bs-title' => $title,
+                'data-bs-toggle' => 'tooltip',
+            ]);
+        }
+
+        return $this;
     }
 
     public function cssClass(array|string $cssClass): static
