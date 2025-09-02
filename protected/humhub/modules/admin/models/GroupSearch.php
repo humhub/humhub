@@ -48,7 +48,7 @@ class GroupSearch extends Group
      */
     public function search($params)
     {
-        $query = Group::find()->orderBy(['sort_order' => SORT_ASC, 'name' => SORT_ASC]);
+        $query = Group::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -59,7 +59,13 @@ class GroupSearch extends Group
             'attributes' => [
                 'name',
                 'descriptions',
-                'type',
+                'type' => [
+                    'asc' => ['`parent_group_id` IS NULL' => SORT_ASC, 'name' => SORT_ASC],
+                    'desc' => ['`parent_group_id` IS NULL' => SORT_DESC, 'name' => SORT_ASC],
+                ],
+            ],
+            'defaultOrder' => [
+                'type' => SORT_DESC,
             ],
         ]);
 

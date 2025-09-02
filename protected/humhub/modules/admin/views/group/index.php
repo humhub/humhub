@@ -70,8 +70,14 @@ use yii\helpers\Url;
                 'label' => Yii::t('AdminModule.user', 'Members'),
                 'format' => 'raw',
                 'headerOptions' => ['class' => 'text-nowrap'],
-                'contentOptions' => ['class' => 'text-center'],
-                'value' => fn(Group $group) => $group->getGroupUsers()->count()
+                'contentOptions' => ['class' => 'text-nowrap text-center'],
+                'value' => function (Group $group) {
+                    $usersCount = $group->getGroupUsers()->count();
+                    if ($subGroupUsersCount = $group->getSubGroupUsersCount()) {
+                        $usersCount .= ' (+' . $subGroupUsersCount . ')';
+                    }
+                    return $usersCount;
+                }
             ],
             [
                 'class' => ActionColumn::class,

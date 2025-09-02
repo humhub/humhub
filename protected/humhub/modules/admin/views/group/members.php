@@ -8,6 +8,7 @@ use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\widgets\UserPickerField;
+use humhub\widgets\bootstrap\Alert;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\GridView;
@@ -24,6 +25,12 @@ AdminGroupAsset::register($this);
 
 <?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group]) ?>
 <div class="panel-body">
+    <?php if ($subGroupUsersCount = $group->getSubGroupUsersCount()) : ?>
+        <?= Alert::accent(Yii::t('AdminModule.user', 'This user group includes {count} additional members from the subgroup(s). To view the subgroups, check the Settings section.', [
+                '{count}' => '<strong>' . $subGroupUsersCount . '</strong>',
+            ]))->closeButton(false) ?>
+    <?php endif ?>
+
     <div class="row">
         <div class="col-lg-6">
             <?php $form = ActiveForm::begin(['action' => ['/admin/group/add-members']]); ?>

@@ -293,6 +293,23 @@ class Group extends ActiveRecord
         return $this->hasMany(GroupUser::class, ['group_id' => 'id']);
     }
 
+    public function getSubGroups(): ActiveQuery
+    {
+        return $this->hasMany(Group::class, ['parent_group_id' => 'id']);
+    }
+
+    public function getSubGroupUsers(): ActiveQuery
+    {
+        return $this->hasMany(GroupUser::class, ['group_id' => 'id'])
+            ->via('subGroups')
+            ->groupBy('user_id');
+    }
+
+    public function getSubGroupUsersCount(): int
+    {
+        return $this->parent_group_id === null ? $this->getSubGroupUsers()->count() : 0;
+    }
+
     /**
      * Returns all member user of this group as ActiveQuery
      *
