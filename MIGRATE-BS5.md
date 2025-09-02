@@ -299,6 +299,8 @@ Now:
 </li>
 ```
 
+To remove the right caret, add the `dropdown-toggle-no-caret` class to the button: `dropdown-toggle dropdown-toggle-no-caret`.
+
 #### Javascript
 
 The jQuery `.dropdown()` method is removed. Use BS5 vanilla JS API instead. Example for a close button:
