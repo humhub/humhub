@@ -25,7 +25,7 @@ class Link extends Button
      */
     public bool $asLink = true;
 
-    public static function to($text, $url = '#', $pjax = true)
+    public static function to(?string $text = null, $url = '#', $pjax = true)
     {
         return self::asLink($text, $url)->pjax($pjax);
     }
