@@ -8,6 +8,14 @@
     --bs-nav-tabs-link-active-bg: var(--hh-background-color-main);
 }
 
+.nav, .list-group {
+    --hh-nav-icon-width: 20px;
+}
+
+.nav .nav-item > .nav-link > i {
+    width: var(--hh-nav-icon-width);
+}
+
 .tab-sub-menu {
     padding-left: 10px;
 
@@ -128,7 +136,7 @@ ul.tab-menu-settings {
                     margin-right: 0;
                     font-size: 14px;
                     display: inline-block;
-                    width: 20px;
+                    width: var(--hh-nav-icon-width);
                 }
 
                 &:hover,
@@ -232,10 +240,6 @@ ul.tab-menu-settings {
                 border-bottom-color: transparent;
                 color: var(--hh-text-color-highlight);
             }
-
-            i {
-                width: 20px;
-            }
         }
     }
 }
@@ -244,7 +248,7 @@ ul.tab-menu-settings {
     a [class^="fa-"],
     a [class*=" fa-"] {
         display: inline-block;
-        width: 20px;
+        width: var(--hh-nav-icon-width);
     }
 }
 
