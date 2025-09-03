@@ -70,7 +70,7 @@ class Group extends ActiveRecord
         return [
             [['sort_order', 'notify_users', 'is_default_group', 'is_protected'], 'integer'],
             [['description'], 'string'],
-            [['name'], 'string', 'max' => 45],
+            [['name'], 'string', 'max' => 120],
             ['show_at_registration', 'validateShowAtRegistration'],
             ['is_default_group', 'validateIsDefaultGroup'],
         ];
