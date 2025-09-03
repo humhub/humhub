@@ -42,7 +42,7 @@ class ProsemirrorRichTextEditor extends AbstractRichTextEditor
             $this->menuClass = static::MENU_CLASS_FOCUS;
         }
 
-        Html::addCssClass($this->options, ['ProsemirrorEditor', $this->menuClass, 'is-invalid']);
+        Html::addCssClass($this->options, ['ProsemirrorEditor', $this->menuClass]);
 
         parent::init();
     }
