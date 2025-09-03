@@ -79,7 +79,7 @@ class Button extends \yii\bootstrap5\Button
     /**
      * @deprecated since 1.18 use [[\humhub\widgets\bootstrap\Link::to()]] instead
      */
-    public static function asLink(?string $label = null, $href = '#'): static
+    public static function asLink(string $label = null, $href = '#'): static
     {
         $button = self::instance($label)
             ->loader(false)
@@ -245,7 +245,7 @@ class Button extends \yii\bootstrap5\Button
         }
 
         if ($this->label === null && $this->icon !== null) {
-            $this->cssClass(($this->asLink ? 'link' : 'btn') . '-icon-only');
+            $this->cssClass('btn-icon-only');
         }
 
         $text = $this->icon . ($this->encodeLabel ? Html::encode($this->label) : $this->label);
