@@ -209,7 +209,7 @@ humhub.module('ui.additions', function (module, require, $) {
 
         // Show tooltips on elements (except for touch devices)
         if (!('ontouchstart' in window || navigator.maxTouchPoints > 0)) {
-            [...document.querySelectorAll('[data-bs-toggle=tooltip]')]
+            [...document.querySelectorAll('[data-bs-toggle=tooltip], .tt')]
                 .map(el => new bootstrap.Tooltip(el));
         }
 
