@@ -48,6 +48,11 @@ $prev-button: false !default;
     @import "button";
 }
 
+$prev-link: false !default;
+@if not $prev-link {
+    @import "link";
+}
+
 $prev-form: false !default;
 @if not $prev-form {
     @import "form";
