@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.18.0 (Unreleased - Develop)
------------------------------
+1.18.0-beta.1 (September 3, 2025)
+---------------------------------
 
 > Updated minimum required PHP version to 8.2.
 
