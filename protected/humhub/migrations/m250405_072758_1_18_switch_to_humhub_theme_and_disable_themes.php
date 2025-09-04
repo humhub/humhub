@@ -84,6 +84,10 @@ class m250405_072758_1_18_switch_to_humhub_theme_and_disable_themes extends Migr
         );
 
         $hhTheme = ThemeHelper::getThemeByName($themeAfterMigration);
+        if ($hhTheme === null) {
+            // Fallback to Humhub theme
+            $hhTheme = ThemeHelper::getThemeByName("HumHub");
+        }
         $hhTheme->activate();
 
         // Uninstall the Theme Builder module1
