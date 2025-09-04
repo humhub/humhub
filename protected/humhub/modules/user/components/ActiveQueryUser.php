@@ -182,16 +182,19 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
      */
     public function administrableBy(UserModel $user)
     {
-
         if (!(new PermissionManager(['subject' => $user]))->can([ManageUsers::class])) {
-            $this->joinWith('groups');
+            $managerGroupQuery = GroupUser::find()
+                ->select('group_id')
+                ->where(['user_id' => $user->id])
+                ->andWhere(['is_group_manager' => 1]);
 
-            $groupIds = [];
-            foreach (GroupUser::find()->where(['user_id' => $user->id, 'is_group_manager' => 1])->all() as $gu) {
-                $groupIds[] = $gu->group_id;
-            }
-
-            $this->andWhere(['IN', 'group.id', $groupIds]);
+            $this->innerJoin(GroupUser::tableName(), User::tableName() . '.id = ' . GroupUser::tableName() . '.user_id')
+                ->innerJoin(Group::tableName(), Group::tableName() . '.id = ' . GroupUser::tableName() . '.group_id')
+                ->andWhere([
+                    'OR',
+                    [GroupUser::tableName() . '.group_id' => $managerGroupQuery],
+                    [Group::tableName() . '.parent_group_id' => $managerGroupQuery],
+                ]);
         }
 
         return $this;
