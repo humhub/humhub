@@ -644,9 +644,6 @@ New SCSS variables:
 - `$light`
 - `$dark`
 
-Changed values:
-- `$primary: #435f6f` -> `$primary: #1b8291`
-
 #### CSS variable prefixes
 
 Use the new variables starting with `--bs-` for Bootstrap variables, and `--hh-` for HumHub variables.
