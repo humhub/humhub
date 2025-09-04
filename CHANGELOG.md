@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.18.0 (Unreleased - Develop)
------------------------------
+1.18.0-beta.2 (September 4, 2025)
+---------------------------------
 
 > Updated minimum required PHP version to 8.2.
 
@@ -65,7 +65,7 @@ HumHub Changelog
 - Enh #7661: Parent groups
 - Enh #7662: In buttons, add right margin to the icon, so that the space char between the icon and the label is no longer needed (see MIGRATE-BS5.md -> ## Buttons)
 
-1.17.3 (Unreleased)
+1.17.3 (July 17, 2025)
 ----------------------
 - Fix #7484: Use password type on the installation DB config form
 - Fix #7486: Catch errors in external file handlers
@@ -81,6 +81,10 @@ HumHub Changelog
 - Fix #7563: Top padding on medium screen size for some themes such as Entreprise theme
 - Fix #7570: Fix `CodeMirrorInputWidget` in collapsible fields
 - Fix #7573: Update test user passwords
+- Enh #7577: Increase Group Name max length to 120chars
+- Enh #7576: Do not invite existing space members when selected `all registered members`
+- Enh #7579: Mail headers to restrict auto-reply
+- Fix #7646: Fix account password recovery captcha exception
 - Fix #7543: Remove duplicate UserInvites Cleanup job
 - Fix #7563: Top padding on medium screen size for some themes such as Entreprise theme
 

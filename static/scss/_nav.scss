@@ -8,6 +8,14 @@
     --bs-nav-tabs-link-active-bg: var(--hh-background-color-main);
 }
 
+.nav, .list-group {
+    --hh-nav-icon-width: 20px;
+}
+
+.nav .nav-item > .nav-link > i {
+    width: var(--hh-nav-icon-width);
+}
+
 .tab-sub-menu {
     padding-left: 10px;
 
@@ -128,8 +136,7 @@ ul.tab-menu-settings {
                     margin-right: 0;
                     font-size: 14px;
                     display: inline-block;
-                    width: 19px;
-                    text-align: center;
+                    width: var(--hh-nav-icon-width);
                 }
 
                 &:hover,
@@ -193,6 +200,12 @@ ul.tab-menu-settings {
     }
 }
 
+.dropdown-toggle.dropdown-toggle-no-caret {
+    &::after {
+        display: none;
+    }
+}
+
 // Nav-Tabs
 .nav-tabs {
     margin-bottom: 10px;
@@ -235,7 +248,7 @@ ul.tab-menu-settings {
     a [class^="fa-"],
     a [class*=" fa-"] {
         display: inline-block;
-        width: 18px;
+        width: var(--hh-nav-icon-width);
     }
 }
 

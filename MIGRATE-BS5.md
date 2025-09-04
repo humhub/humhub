@@ -299,6 +299,8 @@ Now:
 </li>
 ```
 
+To remove the right caret, add the `dropdown-toggle-no-caret` class to the button: `dropdown-toggle dropdown-toggle-no-caret`.
+
 #### Javascript
 
 The jQuery `.dropdown()` method is removed. Use BS5 vanilla JS API instead. Example for a close button:
@@ -516,6 +518,14 @@ If wrapped in an HTML element having `loader` (search for the `<\w+\s+[^>]*class
 
 [See documentation](https://getbootstrap.com/docs/5.3/components/spinners) for more options and examples.
 
+### Tooltip
+
+The `tt` class is deprecated.
+Use the `data-bs-toggle="tooltip" data-bs-title="My tooltip text"` instead.
+Doc: https://getbootstrap.com/docs/5.3/components/tooltips/
+
+When using `Button`, `Link`, `Badge` or `Icon` widgets, use the `->tooltip('My tooltip text')` method.
+
 ### Panel
 
 In a future HumHub version, panels will be replaced with cards.
@@ -641,9 +651,6 @@ New SCSS variables:
 - `$secondary`
 - `$light`
 - `$dark`
-
-Changed values:
-- `$primary: #435f6f` -> `$primary: #1b8291`
 
 #### CSS variable prefixes
 

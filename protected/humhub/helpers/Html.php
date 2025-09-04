@@ -197,8 +197,8 @@ class Html extends \yii\bootstrap5\Html
      */
     public static function addTooltip(&$options, $tooltip)
     {
-        static::addCssClass($options, 'tt');
-        $options['title'] = $tooltip;
+        $options['data-bs-title'] = $tooltip;
+        $options['data-bs-toggle'] = 'tooltip';
     }
 
     /**

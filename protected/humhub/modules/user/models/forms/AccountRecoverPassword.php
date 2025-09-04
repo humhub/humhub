@@ -13,7 +13,7 @@ use yii\base\Model;
  */
 class AccountRecoverPassword extends Model
 {
-    public $captcha;
+    public $captcha = '';
     public $email;
 
     /**

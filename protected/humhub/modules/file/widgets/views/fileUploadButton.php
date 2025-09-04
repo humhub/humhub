@@ -42,11 +42,5 @@ $this->registerJsVar('fileuploader_error_modal_errormsg', Yii::t('FileModule.bas
     $(function () {
         'use strict';
         installUploader("<?php echo $uploaderId; ?>");
-
-        // fixing staying tooltip while opening file browser window
-        $('.fileinput-button').click(function () {
-            $('.tt').tooltip('hide');
-        })
     })
-
 </script>

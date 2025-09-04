@@ -133,10 +133,9 @@ class HeaderControlsMenu extends DropdownMenu
                     'sortOrder' => 800,
                     'htmlOptions' => [
                         'data-method' => 'POST',
-                        'class' => 'tt',
                         'data-bs-toggle' => 'tooltip',
-                        'data-placement' => 'left',
-                        'title' => Yii::t('SpaceModule.manage', 'This option will hide new content from this space at your dashboard'),
+                        'data-bs-placement' => 'left',
+                        'data-bs-title' => Yii::t('SpaceModule.manage', 'This option will hide new content from this space at your dashboard'),
                     ],
                 ]));
             } else {
@@ -146,10 +145,9 @@ class HeaderControlsMenu extends DropdownMenu
                     'icon' => 'fa-eye',
                     'sortOrder' => 800,
                     'htmlOptions' => ['data-method' => 'POST',
-                        'class' => 'tt',
                         'data-bs-toggle' => 'tooltip',
-                        'data-placement' => 'left',
-                        'title' => Yii::t('SpaceModule.manage', 'This option will show new content from this space at your dashboard'),
+                        'data-bs-placement' => 'left',
+                        'data-bs-title' => Yii::t('SpaceModule.manage', 'This option will show new content from this space at your dashboard'),
                     ],
                 ]));
             }

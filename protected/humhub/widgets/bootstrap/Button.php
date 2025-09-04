@@ -76,12 +76,16 @@ class Button extends \yii\bootstrap5\Button
         return static::primary($label ?? Yii::t('base', 'Save'));
     }
 
+    /**
+     * @deprecated since 1.18 use [[\humhub\widgets\bootstrap\Link::to()]] instead
+     */
     public static function asLink(string $label = null, $href = '#'): static
     {
         $button = self::instance($label)
             ->loader(false)
             ->link($href);
         Html::removeCssClass($button->options, ['class' => 'btn']);
+        Html::addCssClass($button->options, ['class' => 'link']);
         return $button;
     }
 

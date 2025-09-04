@@ -123,8 +123,6 @@
     .dropdown-menu {
         max-width: 320px;
         > li:not(.dropdown-header) a {
-            padding-top: 10px;
-            padding-bottom: 10px;
             text-overflow: ellipsis;
             overflow: hidden;
             white-space: nowrap;

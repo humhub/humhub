@@ -33,7 +33,7 @@ class ThemeHelperTest extends HumHubDbTestCase
         $this->assertInstanceOf(Theme::class, $theme);
         $this->assertTrue(ThemeHelper::buildCss($theme));
         $this->assertFileExists($this->getThemeCssPath($theme));
-        $this->assertEquals('#1b8291', $theme->variable('primary'));
+        $this->assertEquals('#435f6f', $theme->variable('primary'));
     }
 
     private function createTheme(string $newThemeName): ?Theme
