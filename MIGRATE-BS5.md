@@ -518,6 +518,14 @@ If wrapped in an HTML element having `loader` (search for the `<\w+\s+[^>]*class
 
 [See documentation](https://getbootstrap.com/docs/5.3/components/spinners) for more options and examples.
 
+### Tooltip
+
+The `tt` class is deprecated.
+Use the `data-bs-toggle="tooltip" data-bs-title="My tooltip text"` instead.
+Doc: https://getbootstrap.com/docs/5.3/components/tooltips/
+
+When using `Button`, `Link`, `Badge` or `Icon` widgets, use the `->tooltip('My tooltip text')` method.
+
 ### Panel
 
 In a future HumHub version, panels will be replaced with cards.
