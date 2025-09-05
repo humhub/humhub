@@ -14,7 +14,6 @@ use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\admin\permissions\SeeAdminInformation;
-use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\GroupUser;
 use tests\codeception\_support\HumHubDbTestCase;

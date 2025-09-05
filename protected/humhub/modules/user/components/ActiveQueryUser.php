@@ -18,7 +18,6 @@ use humhub\modules\user\models\Group;
 use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
-use humhub\modules\user\models\User as UserModel;
 use humhub\modules\user\Module;
 use Throwable;
 use Yii;
@@ -50,7 +49,7 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
     public function active()
     {
         $this->trigger(self::EVENT_CHECK_ACTIVE, new ActiveQueryEvent(['query' => $this]));
-        return $this->andWhere(['user.status' => UserModel::STATUS_ENABLED]);
+        return $this->andWhere(['user.status' => User::STATUS_ENABLED]);
     }
 
     /**
@@ -75,7 +74,7 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
             }
         }
 
-        $allowedVisibilities = [UserModel::VISIBILITY_ALL];
+        $allowedVisibilities = [User::VISIBILITY_ALL];
         if ($user === null) {
             // Guest can view only public users
             return $this->andWhere(['IN', 'user.visibility', $allowedVisibilities]);
@@ -86,7 +85,7 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
             return $this;
         }
 
-        $allowedVisibilities[] = UserModel::VISIBILITY_REGISTERED_ONLY;
+        $allowedVisibilities[] = User::VISIBILITY_REGISTERED_ONLY;
 
         return $this->andWhere(['OR',
             ['user.id' => $user->id], // User also can view own profile
@@ -162,25 +161,31 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
      * Limits the query to a specified user group
      *
      * @param Group $group
+     * @param bool $includeSubGroups
      * @return ActiveQueryUser the query
      */
-    public function isGroupMember(Group $group)
+    public function isGroupMember(Group $group, bool $includeSubGroups = false): self
     {
-        $this->leftJoin('group_user', 'user.id=group_user.user_id');
-        $this->andWhere(['group_user.group_id' => $group->id]);
+        $groupIds = $includeSubGroups
+            ? Group::find()
+                ->select('id')
+                ->where(['parent_group_id' => $group->id])
+                ->orWhere(['id' => $group->id])
+            : $group->id;
 
-        return $this;
+        return $this->leftJoin(GroupUser::tableName(), User::tableName() . '.id = ' . GroupUser::tableName() . '.user_id')
+            ->andWhere([GroupUser::tableName() . '.group_id' => $groupIds]);
     }
 
     /**
      * Returns only users which are administrable by the given user.
      *
-     * @param UserModel $user
+     * @param User $user
      * @return ActiveQueryUser the query
      * @throws Throwable
      * @throws InvalidConfigException
      */
-    public function administrableBy(UserModel $user)
+    public function administrableBy(User $user)
     {
         if (!(new PermissionManager(['subject' => $user]))->can([ManageUsers::class])) {
             $managerGroupQuery = GroupUser::find()
@@ -203,16 +208,16 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
     /**
      * Exclude blocked users for the given $user or for the current User
      *
-     * @param UserModel $user
+     * @param User $user
      * @return ActiveQueryUser the query
      */
-    public function filterBlockedUsers(?UserModel $user = null): ActiveQueryUser
+    public function filterBlockedUsers(?User $user = null): ActiveQueryUser
     {
         if ($user === null && !Yii::$app->user->isGuest) {
             $user = Yii::$app->user->getIdentity();
         }
 
-        if (!($user instanceof UserModel)) {
+        if (!($user instanceof User)) {
             return $this;
         }
 
@@ -231,11 +236,11 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
     /**
      * Filter users which are available for the given $user or for the current User
      *
-     * @param UserModel|null $user
+     * @param User|null $user
      * @return ActiveQueryUser
      * @since 1.13
      */
-    public function available(?UserModel $user = null): ActiveQueryUser
+    public function available(?User $user = null): ActiveQueryUser
     {
         return $this->visible($user)->filterBlockedUsers($user);
     }

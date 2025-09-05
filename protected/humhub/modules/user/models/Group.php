@@ -255,7 +255,7 @@ class Group extends ActiveRecord
      * Returns all user which are defined as manager in this group as ActiveQuery.
      * @return ActiveQuery
      */
-    public function getManager()
+    public function getManager(): ActiveQuery
     {
         return $this->hasMany(User::class, ['id' => 'user_id'])
             ->via('groupUsers', function ($query): void {
@@ -264,12 +264,30 @@ class Group extends ActiveRecord
     }
 
     /**
-     * Checks if this group has at least one Manager assigned.
+     * Get query of all managers of this group and parent group
+     * @return ActiveQuery
+     * @since 1.18
+     */
+    public function getAllManagers(): ActiveQuery
+    {
+        if ($this->parent_group_id === null) {
+            return $this->getManager();
+        }
+
+        return User::find()
+            ->joinWith('groupUsers')
+            ->where([GroupUser::tableName() . '.is_group_manager' => 1])
+            ->andWhere([GroupUser::tableName() . '.group_id' => [$this->id, $this->parent_group_id]])
+            ->distinct();
+    }
+
+    /**
+     * Checks if this group has at least one Manager(even from parent group) assigned.
      * @return bool
      */
-    public function hasManager()
+    public function hasManager(): bool
     {
-        return $this->getManager()->count() > 0;
+        return $this->getAllManagers()->exists();
     }
 
     /**
@@ -444,10 +462,9 @@ class Group extends ActiveRecord
         }
 
         $group = self::findOne($user->registrationGroupId);
-        $approvalUrl = Url::to(["/admin/approval"], true);
+        $approvalUrl = Url::to(['/admin/approval'], true);
 
-        foreach ($group->manager as $manager) {
-
+        foreach ($group->getAllManagers()->each() as $manager) {
             Yii::$app->i18n->setUserLocale($manager);
 
             $html = Yii::t(
@@ -525,11 +542,25 @@ class Group extends ActiveRecord
      * @return ActiveQuery
      * @since 1.8
      */
-    public function getGroupSpaces()
+    public function getGroupSpaces(): ActiveQuery
     {
         return $this->hasMany(GroupSpace::class, ['group_id' => 'id']);
     }
 
+    /**
+     * Get query of all GroupSpace relations of this group and parent group
+     * @return ActiveQuery
+     * @since 1.18
+     */
+    public function getAllGroupSpaces(): ActiveQuery
+    {
+        if ($this->parent_group_id === null) {
+            return $this->getGroupUsers();
+        }
+
+        return GroupSpace::find()
+            ->where(['group_id' => [$this->id, $this->parent_group_id]]);
+    }
 
     /**
      * Check if this Group can be deleted by current User
