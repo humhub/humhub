@@ -154,6 +154,10 @@
         display: flex;
         flex-direction: row;
 
+        a {
+            color: var(--hh-text-color-highlight);
+        }
+
         .card-panel {
             position: relative;
             width: 100%;

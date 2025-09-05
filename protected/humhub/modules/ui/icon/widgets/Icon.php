@@ -798,24 +798,27 @@ class Icon extends Widget implements \Stringable
         if ($this->color) {
             switch ($this->color) {
                 case 'default':
-                    $this->color = 'var(--default)';
+                    $this->color = 'var(--bs-default)';
                     break;
                 case 'primary':
-                    $this->color = 'var(--primary)';
+                    $this->color = 'var(--bs-primary)';
                     break;
                 case 'info':
-                    $this->color = 'var(--info)';
+                    $this->color = 'var(--bs-info)';
                     break;
                 case 'success':
-                    $this->color = 'var(--success)';
+                    $this->color = 'var(--bs-success)';
                     break;
                 case 'warning':
                 case 'warn':
-                    $this->color = 'var(--warning)';
+                    $this->color = 'var(--bs-warning)';
                     break;
                 case 'error':
                 case 'danger':
-                    $this->color = 'var(--danger)';
+                    $this->color = 'var(--bs-danger)';
+                    break;
+                case 'accent':
+                    $this->color = 'var(--bs-accent)';
                     break;
             }
         }

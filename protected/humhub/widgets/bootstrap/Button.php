@@ -275,7 +275,7 @@ class Button extends \yii\bootstrap5\Button
         // btn-primary → btn-outline-primary
         // btn-danger → btn-outline-danger
         // And so on for all Bootstrap 5 colors
-        $pattern = '/\bbtn-(primary|secondary|success|danger|warning|info|light|dark)\b/';
+        $pattern = '/\bbtn-(primary|secondary|success|danger|warning|info|accent|light|dark)\b/';
         $replacement = 'btn-outline-$1';
 
         if ($this->options['class'] !== null) {
