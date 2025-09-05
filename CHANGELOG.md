@@ -1,6 +1,17 @@
 HumHub Changelog
 ================
 
+1.18.0-beta.3 (TBD)
+-------------------
+
+> Updated minimum required PHP version to 8.2.
+
+> Bootstrap 5 is the default CSS framework, which may require migration of custom modules or themes.
+
+> Caching must now be configured via the [configuration file](https://docs.humhub.org/docs/admin/performance), with `FileCache` as the default.
+
+- Fix #7680: Migration of Theme Colors broken
+
 1.18.0-beta.2 (September 4, 2025)
 ---------------------------------
 

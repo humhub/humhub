@@ -23,20 +23,74 @@ class m250405_072758_1_18_switch_to_humhub_theme_and_disable_themes extends Migr
             }
         }
 
+        // Switch to HumHub theme
+        $themeAfterMigration = 'HumHub';
+        if ($this->currentThemeIsVariantOf('enterprise-white')) {
+            $themeAfterMigration = 'enterprise-white';
+            $primaryDefault = '#12a1b3';
+            $accentDefault = '#21A1B3';
+        } elseif ($this->currentThemeIsVariantOf('enterprise')) {
+            $themeAfterMigration = 'enterprise';
+            $primaryDefault = '#2d3340';
+            $accentDefault = '#21A1B3';
+        } else {
+            $primaryDefault = '#435f6f';
+            $accentDefault = '#21A1B3';
+        }
+
         // Copy Theme colors vars to the Settings manager
         $themeVariables = Yii::$app->view->theme->variables;
-        $settingsManager->set('themePrimaryColor', $themeVariables->get('primary'));
-        $settingsManager->set('themeAccentColor', $themeVariables->get('info'));
-        $settingsManager->set('themeSuccessColor', $themeVariables->get('success'));
-        $settingsManager->set('themeDangerColor', $themeVariables->get('danger'));
-        $settingsManager->set('themeWarningColor', $themeVariables->get('warning'));
-        $settingsManager->set('themeLightColor', $themeVariables->get('default')); // Default becomes Light
 
-        // Switch to HumHub theme
-        $hhTheme = ThemeHelper::getThemeByName('HumHub');
+        $currentPrimary = $themeVariables->get('primary');
+        $settingsManager->set('themePrimaryColor', $currentPrimary);
+        $settingsManager->set(
+            'useDefaultThemePrimaryColor',
+            (strcasecmp($currentPrimary, $primaryDefault) == 0) ? 1 : 0,
+        );
+
+        $currentInfo = $themeVariables->get('info');
+        $settingsManager->set('themeAccentColor', $currentInfo);
+        $settingsManager->set(
+            'useDefaultThemeAccentColor',
+            (strcasecmp($currentInfo, $accentDefault) == 0) ? 1 : 0,
+        );
+
+        $currentSuccess = $themeVariables->get('success');
+        $settingsManager->set('themeSuccessColor', $currentSuccess);
+        $settingsManager->set(
+            'useDefaultThemeSuccessColor',
+            (strcasecmp($currentSuccess, '#97d271') == 0) ? 1 : 0,
+        );
+
+        $currentDanger = $themeVariables->get('danger');
+        $settingsManager->set('themeDangerColor', $currentDanger);
+        $settingsManager->set(
+            'useDefaultThemeDangerColor',
+            (strcasecmp($currentDanger, '#FC4A64') == 0) ? 1 : 0,
+        );
+
+        $currentWarning = $themeVariables->get('warning');
+        $settingsManager->set('themeWarningColor', $currentWarning);
+        $settingsManager->set(
+            'useDefaultThemeWarningColor',
+            (strcasecmp($currentWarning, '#FFC107') == 0) ? 1 : 0,
+        );
+
+        $currentLight = $themeVariables->get('default');
+        $settingsManager->set('themeLightColor', $currentLight);
+        $settingsManager->set(
+            'useDefaultThemeLightColor',
+            (strcasecmp($currentLight, '#e7e7e7') == 0) ? 1 : 0,
+        );
+
+        $hhTheme = ThemeHelper::getThemeByName($themeAfterMigration);
+        if ($hhTheme === null) {
+            // Fallback to Humhub theme
+            $hhTheme = ThemeHelper::getThemeByName("HumHub");
+        }
         $hhTheme->activate();
 
-        // Uninstall the Theme Builder module
+        // Uninstall the Theme Builder module1
         $moduleManager = Yii::$app->moduleManager;
         $themeBuilderModuleId = 'theme-builder';
         if ($moduleManager->getModule($themeBuilderModuleId, false)) {
@@ -63,6 +117,27 @@ class m250405_072758_1_18_switch_to_humhub_theme_and_disable_themes extends Migr
     public function safeDown()
     {
         echo "m250405_072758_1_18_switch_to_humhub_theme_and_disable_themes cannot be reverted.\n";
+
+        return false;
+    }
+
+    private function currentThemeIsVariantOf(string $theme): bool
+    {
+        $currentThemePath = Yii::$app->settings->get('theme');
+        if (str_ends_with($currentThemePath, $theme)) {
+            return true;
+        }
+
+        $parentPaths = Yii::$app->settings->getSerialized('themeParents');
+        if (!is_array($parentPaths)) {
+            return false;
+        }
+
+        foreach ($parentPaths as $parentPath) {
+            if (str_ends_with($parentPath, $theme)) {
+                return true;
+            }
+        }
 
         return false;
     }
