@@ -21,4 +21,5 @@ return [
     ['id' => '1', 'name' => 'Administrator', 'description' => 'Administrator Group', 'created_at' => '2014-08-30 14:03:49', 'created_by' => null, 'updated_at' => null, 'updated_by' => null, 'ldap_dn' => null, 'show_at_registration' => 0, 'is_admin_group' => 1],
     ['id' => '2', 'name' => 'Users', 'description' => 'Default group for all newly registered users of the network', 'created_at' => '2014-08-30 14:03:49', 'created_by' => null, 'updated_at' => null, 'updated_by' => null, 'ldap_dn' => null, 'show_at_registration' => 1, 'is_default_group' => 1],
     ['id' => '3', 'name' => 'Moderators', 'description' => 'Example Moderator group', 'created_at' => '2014-08-30 14:03:49', 'created_by' => null, 'updated_at' => null, 'updated_by' => null, 'ldap_dn' => null, 'show_at_registration' => 0],
+    ['id' => '4', 'name' => 'Editors', 'description' => 'Example subgroup of the moderators group', 'created_at' => '2025-09-05 8:09:49', 'created_by' => null, 'updated_at' => null, 'updated_by' => null, 'ldap_dn' => null, 'show_at_registration' => 0, 'parent_group_id' => 3],
 ];
