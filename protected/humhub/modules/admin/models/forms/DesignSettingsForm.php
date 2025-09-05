@@ -291,12 +291,14 @@ class DesignSettingsForm extends Model
     /**
      * @return array a list of available themes
      */
-    public function getThemes()
+    public function getThemes(): array
     {
         $themes = [];
 
         foreach (ThemeHelper::getThemes() as $theme) {
-            $themes[$theme->name] = $theme->name;
+            if ($this->theme === $theme->name || !str_ends_with($theme->name, '.bs3.old')) {
+                $themes[$theme->name] = $theme->name;
+            }
         }
 
         return $themes;
