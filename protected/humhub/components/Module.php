@@ -327,7 +327,7 @@ class Module extends \yii\base\Module
             $this->getMigrationService()->migrateUp();
 
             // Check if current theme is located in this module
-            if (str_starts_with(Yii::$app->view->theme->getBasePath(), $this->getBasePath() )) {
+            if (str_starts_with(Yii::$app->view->theme->getBasePath(), $this->getBasePath())) {
                 try {
                     ThemeHelper::buildCss();
                 } catch (\Exception $e) {
