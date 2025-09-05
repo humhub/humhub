@@ -12,6 +12,7 @@ HumHub Changelog
 
 - Fix #7680: Migration of Theme Colors broken
 - Fix #7681: Add missing 'DatabaseForm' to 'InstallController
+- Fix #7685: In custom themes, the default colors in the Appearance Settings are overwritten by the base theme colors
 
 1.18.0-beta.2 (September 4, 2025)
 ---------------------------------

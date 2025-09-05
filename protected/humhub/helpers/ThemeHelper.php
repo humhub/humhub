@@ -293,31 +293,31 @@ class ThemeHelper
 
         // Create SCSS source from Design Settings form and imports
         $scssSource = '';
-        if ($designSettingsForm->themePrimaryColor) {
+        if (!$designSettingsForm->useDefaultThemePrimaryColor && $designSettingsForm->themePrimaryColor) {
             $scssSource .= '$primary: ' . $designSettingsForm->themePrimaryColor . ';' . PHP_EOL;
         }
-        if ($designSettingsForm->themeAccentColor) {
+        if (!$designSettingsForm->useDefaultThemeAccentColor && $designSettingsForm->themeAccentColor) {
             $scssSource .= '$accent: ' . $designSettingsForm->themeAccentColor . ';' . PHP_EOL;
         }
-        if ($designSettingsForm->themeSecondaryColor) {
+        if (!$designSettingsForm->useDefaultThemeSecondaryColor && $designSettingsForm->themeSecondaryColor) {
             $scssSource .= '$secondary: ' . $designSettingsForm->themeSecondaryColor . ';' . PHP_EOL;
         }
-        if ($designSettingsForm->themeSuccessColor) {
+        if (!$designSettingsForm->useDefaultThemeSuccessColor && $designSettingsForm->themeSuccessColor) {
             $scssSource .= '$success: ' . $designSettingsForm->themeSuccessColor . ';' . PHP_EOL;
         }
-        if ($designSettingsForm->themeDangerColor) {
+        if (!$designSettingsForm->useDefaultThemeDangerColor && $designSettingsForm->themeDangerColor) {
             $scssSource .= '$danger: ' . $designSettingsForm->themeDangerColor . ';' . PHP_EOL;
         }
-        if ($designSettingsForm->themeWarningColor) {
+        if (!$designSettingsForm->useDefaultThemeWarningColor && $designSettingsForm->themeWarningColor) {
             $scssSource .= '$warning: ' . $designSettingsForm->themeWarningColor . ';' . PHP_EOL;
         }
-        if ($designSettingsForm->themeInfoColor) {
+        if (!$designSettingsForm->useDefaultThemeInfoColor && $designSettingsForm->themeInfoColor) {
             $scssSource .= '$info: ' . $designSettingsForm->themeInfoColor . ';' . PHP_EOL;
         }
-        if ($designSettingsForm->themeLightColor) {
+        if (!$designSettingsForm->useDefaultThemeLightColor && $designSettingsForm->themeLightColor) {
             $scssSource .= '$light: ' . $designSettingsForm->themeLightColor . ';' . PHP_EOL;
         }
-        if ($designSettingsForm->themeDarkColor) {
+        if (!$designSettingsForm->useDefaultThemeDarkColor && $designSettingsForm->themeDarkColor) {
             $scssSource .= '$dark: ' . $designSettingsForm->themeDarkColor . ';' . PHP_EOL;
         }
         $scssSource
