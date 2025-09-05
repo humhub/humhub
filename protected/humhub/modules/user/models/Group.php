@@ -555,7 +555,7 @@ class Group extends ActiveRecord
     public function getAllGroupSpaces(): ActiveQuery
     {
         if ($this->parent_group_id === null) {
-            return $this->getGroupUsers();
+            return $this->getGroupSpaces();
         }
 
         return GroupSpace::find()
