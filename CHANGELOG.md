@@ -11,6 +11,7 @@ HumHub Changelog
 > Caching must now be configured via the [configuration file](https://docs.humhub.org/docs/admin/performance), with `FileCache` as the default.
 
 - Fix #7680: Migration of Theme Colors broken
+- Fix #7681: Add missing 'DatabaseForm' to 'InstallController
 
 1.18.0-beta.2 (September 4, 2025)
 ---------------------------------
