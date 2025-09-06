@@ -51,6 +51,7 @@ class ModuleUpdateActionButtons extends Widget
             ->link($this->module->marketplaceUrl . '/changelog')
             ->sm()
             ->outline()
+            ->loader(false)
             ->options(['target' => '_blank']);
 
         return str_replace('{buttons}', $html, $this->template);
