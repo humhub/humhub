@@ -143,19 +143,24 @@ class UserEditForm extends User
     }
 
     /**
-     * Returns an id => groupname array representation of the given $groups array.
-     * @param array $groups array of Group models
-     * @return array in form of id => groupname
+     * Returns an id => groupName array representation of the given $groups array.
+     * @param Group[]|null $groups array of Group models
+     * @return array in form of id => groupName
      */
     public static function getGroupItems($groups = null)
     {
-        if (!$groups) {
-            $groups = (Yii::$app->user->isAdmin()) ? Group::find()->all() : Group::findAll(['is_admin_group' => '0']);
+        if ($groups === null) {
+            $groups = Yii::$app->user->isAdmin()
+                ? Group::find()->all()
+                : Group::findAll(['is_admin_group' => false]);
         }
 
         $result = [];
         foreach ($groups as $group) {
-            $result[$group->id] = $group->name . ($group->is_default_group ? ' (' . Yii::t('AdminModule.base', 'Default') . ')' : '');
+            $result[$group->id] = $group->name;
+            if ($group->is_default_group) {
+                $result[$group->id] .= ' (' . Yii::t('AdminModule.base', 'Default') . ')';
+            }
         }
 
         return $result;
