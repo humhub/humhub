@@ -27,7 +27,7 @@ use humhub\modules\ui\icon\widgets\Icon;
     </div>
     <div class="card-body">
         <div
-            class="card-title"><?= $module->marketplaceLink($module->name) . ($module->featured ? ' ' . Icon::get('star')->color('info') : '') ?></div>
+            class="card-title"><?= $module->marketplaceLink($module->name) . ($module->featured ? ' ' . Icon::get('star')->color('accent') : '') ?></div>
         <div><?= $module->getInstalledVersion() ?></div>
         <div><?= $module->marketplaceLink($module->description) ?></div>
     </div>

@@ -46,7 +46,7 @@ class ModuleInstalledActionButtons extends Widget
             $html .= Button::accent(Yii::t('MarketplaceModule.base', 'Enabled'))
                 ->link(['/admin/module/list'])
                 ->icon('check')
-                ->cssClass('active')
+                ->outline()
                 ->sm();
         } else {
             $html .= Button::accent(Yii::t('MarketplaceModule.base', 'Enable'))
