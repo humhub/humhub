@@ -85,7 +85,7 @@ class ThemeHelper
             }
 
             $theme = static::getThemeByPath($path . DIRECTORY_SEPARATOR . $file, $additionalOptions);
-            if ($theme !== null) {
+            if ($theme !== null && ($theme->isActive() || !str_ends_with($theme->name, '.bs3.old'))) {
                 $themes[$theme->name] = $theme;
             }
         }

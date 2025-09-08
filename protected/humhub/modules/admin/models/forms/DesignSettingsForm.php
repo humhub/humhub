@@ -296,9 +296,7 @@ class DesignSettingsForm extends Model
         $themes = [];
 
         foreach (ThemeHelper::getThemes() as $theme) {
-            if ($this->theme === $theme->name || !str_ends_with($theme->name, '.bs3.old')) {
-                $themes[$theme->name] = $theme->name;
-            }
+            $themes[$theme->name] = $theme->name;
         }
 
         return $themes;
