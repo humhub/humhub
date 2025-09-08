@@ -12,6 +12,8 @@ class GroupPicker extends MultiSelect
 {
     public string $groupType = EditGroupForm::TYPE_NORMAL;
 
+    public bool $hideAdminGroup = true;
+
     /**
      * @inheritdoc
      */
@@ -34,6 +36,9 @@ class GroupPicker extends MultiSelect
             }
             if ($this->groupType === EditGroupForm::TYPE_SUBGROUP) {
                 $groups->andWhere(['parent_group_id' => null]);
+            }
+            if ($this->hideAdminGroup) {
+                $groups->andWhere(['!=', 'is_admin_group', '1']);
             }
             $this->items = UserEditForm::getGroupItems($groups->all());
         }
