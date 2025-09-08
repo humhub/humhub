@@ -18,17 +18,17 @@ use humhub\modules\ui\widgets\CounterSetItem;
     <?php foreach ($counters as $counter): ?>
 
         <?php if ($counter->hasLink()): ?>
-            <?= Html::beginTag('a', array_merge(['href' => $counter->url], $counter->linkOptions)); ?>
+            <?= Html::beginTag('a', array_merge(['href' => $counter->url], $counter->linkOptions)) ?>
         <?php endif; ?>
 
         <div class="float-start entry">
-            <span class="count"><?= $counter->getShortValue(); ?></span>
+            <span class="count link-accent"><?= $counter->getShortValue() ?></span>
             <br>
-            <span class="title"><?= $counter->label; ?></span>
+            <span class="title"><?= $counter->label ?></span>
         </div>
 
         <?php if ($counter->hasLink()): ?>
-            <?= Html::endTag('a'); ?>
+            <?= Html::endTag('a') ?>
         <?php endif; ?>
 
     <?php endforeach; ?>

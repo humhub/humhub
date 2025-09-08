@@ -635,6 +635,10 @@
 [data-ui-richtext] {
     overflow-x: auto;
     overflow-wrap: break-word;
+
+    a {
+        color: var(--bs-accent);
+    }
 }
 
 #wallStream {

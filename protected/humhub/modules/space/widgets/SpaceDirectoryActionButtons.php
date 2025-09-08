@@ -44,9 +44,9 @@ class SpaceDirectoryActionButtons extends Widget
                 'requestMembership' => ['attrs' => ['class' => 'btn btn-accent btn-sm']],
                 'becomeMember' => ['attrs' => ['class' => 'btn btn-accent btn-sm']],
                 'acceptInvite' => ['attrs' => ['class' => 'btn btn-accent btn-sm'], 'togglerClass' => 'btn btn-accent btn-sm'],
-                'cancelPendingMembership' => ['attrs' => ['class' => 'btn btn-accent btn-sm active']],
-                'cancelMembership' => ['visible' => true, 'attrs' => ['class' => 'btn btn-accent btn-sm active']],
-                'cannotCancelMembership' => ['visible' => true, 'attrs' => ['class' => 'btn btn-accent btn-sm active']],
+                'cancelPendingMembership' => ['attrs' => ['class' => 'btn btn-sm btn-outline-accent']],
+                'cancelMembership' => ['visible' => true, 'attrs' => ['class' => 'btn btn-sm btn-outline-accent']],
+                'cannotCancelMembership' => ['visible' => true, 'attrs' => ['class' => 'btn btn-sm btn-outline-accent']],
             ],
         ]);
 

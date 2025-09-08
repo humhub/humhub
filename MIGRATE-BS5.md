@@ -369,6 +369,11 @@ Now:
 <button type="button" class="btn-primary btn"><?= Icon::get('circle') ?>Label</button>
 ```
 
+## Links
+
+By default, links are black.
+To emphasize a link, use the `link-accent` class.
+
 ## Breadcrumb
 
 Search for the class `breadcrumb`.

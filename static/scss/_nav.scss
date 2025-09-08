@@ -4,6 +4,11 @@
 
 // Bootstrap overwrite
 // See all available Bootstrap CSS variables: @humhub/protected/vendor/bower-asset/bootstrap/dist/css/bootstrap.css
+
+.nav {
+    --bs-nav-link-hover-color: var(--bs-link-color);
+}
+
 .nav-tabs {
     --bs-nav-tabs-link-active-bg: var(--hh-background-color-main);
 }
@@ -283,11 +288,6 @@ ul.tab-menu-settings {
 .nav .open > a:hover,
 .nav .open > a:focus {
     border-color: #ededed;
-    color: var(--hh-text-color-highlight);
-
-    .caret {
-        color: var(--hh-text-color-highlight);
-    }
 }
 
 .footer-nav {
@@ -361,14 +361,9 @@ ul.tab-menu-settings {
             border-radius: 4px;
 
             li {
-                a {
-                    color: var(--hh-text-color-highlight);
-                }
-
                 border-left-color: var(--hh-background-color-main);
 
                 &:hover, &.selected {
-                    color: var(--hh-text-color-highlight);
                     border-left-color: var(--bs-accent);
                     background-color: var(--hh-background-color-secondary) !important;
                 }

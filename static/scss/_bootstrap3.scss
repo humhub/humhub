@@ -180,10 +180,6 @@ a.label-warning:hover {
             font-weight: 500;
             color: var(--hh-text-color-highlight);
 
-            a {
-                color: var(--hh-text-color-highlight);
-            }
-
             small,
             small a {
                 font-size: 11px;
@@ -214,10 +210,6 @@ a.label-warning:hover {
         .module-controls {
             font-size: 85%;
         }
-    }
-
-    .content .files a {
-        color: var(--hh-text-color-highlight);
     }
 
     .align-center {
@@ -345,7 +337,6 @@ a.label-warning:hover {
             color: var(--hh-text-color-highlight);
 
             .count {
-                color: var(--bs-primary);
                 font-weight: 600;
                 font-size: 20px;
                 line-height: 0.8em;

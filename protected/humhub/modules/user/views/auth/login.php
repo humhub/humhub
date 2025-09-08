@@ -69,6 +69,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
                                         $passwordRecoveryRoute,
                                         [
                                             'id' => 'password-recovery-link',
+                                            'class' => 'link-accent',
                                             'target' => is_array($passwordRecoveryRoute) ? '_self' : '_blank',
                                             'data' => [
                                                 'pjax-prevent' => true,
