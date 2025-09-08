@@ -80,11 +80,10 @@ class GroupUser extends ActiveRecord
      */
     public function afterSave($insert, $changedAttributes)
     {
-        if ($insert) {
-            if ($this->group !== null && $this->group->groupSpaces !== null) {
-                foreach ($this->group->groupSpaces as $groupSpace) {
-                    $groupSpace->space->addMember($this->user->id);
-                }
+        if ($insert && $this->group instanceof Group) {
+            foreach ($this->group->getAllGroupSpaces()->each() as $groupSpace) {
+                /* @var GroupSpace $groupSpace */
+                $groupSpace->space->addMember($this->user->id);
             }
         }
 

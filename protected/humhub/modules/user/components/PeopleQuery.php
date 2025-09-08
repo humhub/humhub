@@ -138,7 +138,7 @@ class PeopleQuery extends ActiveQueryUser
             if ($group) {
                 $this->setActiveFilter('group', $group->id);
                 $this->filteredGroup = $group;
-                $this->isGroupMember($group);
+                $this->isGroupMember($group, true);
             }
         }
 

@@ -75,6 +75,7 @@ HumHub Changelog
 - Fix #7654: Share intent modal dialog not closing since BS5 (1.18)
 - Fix #7656: Fix logo on registration last step page
 - Fix #7658: Fix loader on attach image to RichText field
+- Enh #7661: Parent groups
 - Enh #7662: In buttons, add right margin to the icon, so that the space char between the icon and the label is no longer needed (see MIGRATE-BS5.md -> ## Buttons)
 
 1.17.3 (July 17, 2025)
