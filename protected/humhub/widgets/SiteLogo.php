@@ -24,7 +24,7 @@ class SiteLogo extends \yii\base\Widget
             $this->maxHeight = $this->maxHeight ?? 250;
         }
         if ($this->place === static::PLACE_EMAIL) {
-            $this->maxWidth = $this->maxWidth ?? 200;
+            $this->maxWidth = $this->maxWidth ?? 600;
             $this->maxHeight = $this->maxHeight ?? 50;
         }
     }
