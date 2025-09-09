@@ -7,11 +7,10 @@
 $isFluid: false;
 
 //
-// Default base colors (can be overwritten in Administration -> Settings -> Appearance)
+// Default Bootstrap base colors (can be overwritten in Administration -> Settings -> Appearance)
 // --------------------------------------------------
 
 $primary: #435f6f !default;
-$accent: #21A1B3 !default;
 $secondary: #7a7a7a !default;
 $info: #0582FF !default;
 $success: #97d271 !default;
@@ -19,8 +18,12 @@ $warning: #FFC107 !default;
 $danger: #FC4A64 !default;
 $light: #e7e7e7 !default;
 $dark: #333 !default;
-$link-color: $primary !default; // Already in Bootstrap, but required to get the value via PHP
 
+//
+// HumHub Accent color (can be overwritten in Administration -> Settings -> Appearance)
+// --------------------------------------------------
+
+$accent: #21A1B3 !default;
 $accent-text-emphasis: shade-color($accent, 60%) !default;
 $accent-bg-subtle: tint-color($accent, 80%) !default;
 $accent-border-subtle: tint-color($accent, 60%) !default;
@@ -32,7 +35,8 @@ $accent-border-subtle-dark: shade-color($accent, 60%) !default;
 // Color Bootstrap overwritten variables
 // --------------------------------------------------
 
-$link-hover-color: mix(black, $primary, 10%) !default;
+$link-color: #000000 !default;
+$link-hover-color: $link-color;
 $code-color: mix(black, $accent, 10%) !default;
 $body-color: #555 !default;
 $body-bg: #ededed !default;

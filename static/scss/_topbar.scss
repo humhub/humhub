@@ -235,9 +235,9 @@
 
     .hh-list {
         > div, > a {
-            color: var(--hh-text-color-highlight);
             padding: 8px 16px;
             border-bottom: none;
+            color: var(--hh-text-color-highlight);
 
             &.new {
                 border: none;
@@ -344,7 +344,6 @@
         > li.nav-item {
 
             > a.nav-link {
-                color: var(--hh-text-color-highlight);
                 display: block;
                 padding: 7px 13px 0;
                 text-decoration: none;
@@ -361,7 +360,6 @@
                 &:focus {
                     border-bottom: 3px solid var(--bs-accent);
                     background-color: var(--hh-background-color-secondary);
-                    color: var(--hh-text-color-highlight);
                     text-decoration: none;
                 }
 
@@ -395,14 +393,12 @@
                 & {
                     border-left: 3px solid var(--hh-background-color-main);
                     background-color: var(--hh-background-color-main);
-                    color: var(--hh-text-color-highlight);
                 }
 
                 &:hover,
                 &.active {
                     border-left: 3px solid var(--bs-accent);
                     background-color: var(--hh-background-color-secondary);
-                    color: var(--hh-text-color-highlight);
                 }
             }
         }

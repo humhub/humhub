@@ -8,6 +8,10 @@ $theme-colors: map-merge($theme-colors, (
     "accent": $accent
 ));
 
+$theme-colors-rgb: map-merge($theme-colors-rgb, (
+    "accent": to-rgb($accent)
+));
+
 $theme-colors-text: map-merge($theme-colors-text, (
     "accent": $accent-text-emphasis,
 ));

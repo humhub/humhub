@@ -62,15 +62,16 @@ $container = $model->content->container;
     </h4>
 
     <h5>
+        <?php $containerLinkOptions = ['class' => 'wall-entry-container-link link-accent']; ?>
         <?php if ($renderOptions->isShowAuthorInformationInSubHeadLine($model)) : ?>
-            <?= Html::containerLink($model->content->createdBy, ['class' => 'wall-entry-container-link']) ?>
+            <?= Html::containerLink($model->content->createdBy, $containerLinkOptions) ?>
         <?php endif ?>
         <?php if ($renderOptions->isShowContainerInformationInSubTitle($model)) : ?>
             <?php if ($renderOptions->isShowAuthorInformationInSubHeadLine($model)) : ?>
                 <?= Icon::get('caret-right') ?>
-                <?= Html::containerLink($model->content->container, ['class' => 'wall-entry-container-link']) ?>
+                <?= Html::containerLink($model->content->container, $containerLinkOptions) ?>
             <?php elseif ($model->content->container instanceof Space) : ?>
-                <?= Html::containerLink($model->content->container, ['class' => 'wall-entry-container-link']) ?>
+                <?= Html::containerLink($model->content->container, $containerLinkOptions) ?>
             <?php endif; ?>
         <?php endif; ?>
 

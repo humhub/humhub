@@ -63,12 +63,6 @@
         }
     }
 
-    .marketplace-settings-dropdown {
-        .btn-sm, i {
-            font-size: 18px;
-        }
-    }
-
     @include media-breakpoint-down(sm) {
         .card {
             width: 100%;

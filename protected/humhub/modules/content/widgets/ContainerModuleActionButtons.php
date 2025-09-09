@@ -44,8 +44,9 @@ class ContainerModuleActionButtons extends Widget
         if ($this->contentContainer->moduleManager->canDisable($this->module->id)) {
             $this->buttons[] = Button::accent(Yii::t('ContentModule.base', 'Enabled'))
                 ->sm()
+                ->outline()
                 ->icon('check')
-                ->cssClass('active disable disable-module-' . $this->module->id . ($isEnabled ? '' : ' d-none'))
+                ->cssClass('disable disable-module-' . $this->module->id . ($isEnabled ? '' : ' d-none'))
                 ->action('content.container.disableModule', $this->getDisableUrl())
                 ->options(['data-reload' => '1'])
                 ->confirm(

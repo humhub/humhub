@@ -97,6 +97,10 @@ ul.files {
     padding: 10px;
     padding-bottom: 1px;
     margin-bottom: 10px !important;
+
+    a, a:active, a:focus, a:hover {
+        color: var(--bs-accent);
+    }
 }
 
 

@@ -10,6 +10,7 @@
     --bs-btn-padding-y: 0.5rem;
     --bs-btn-font-weight: 600;
     --bs-btn-border-radius: 3px;
+
     white-space: nowrap;
 
     &:not(.btn-icon-only) {
@@ -86,5 +87,8 @@ $white-button-variant-colors: (
         // Force white text color
         --bs-btn-active-color: var(--hh-text-color-contrast);
         --bs-btn-hover-color: var(--hh-text-color-contrast);
+    }
+    .btn-#{$variant}:disabled, .btn-#{$variant}.disabled, fieldset:disabled .btn-#{$variant} {
+        --bs-btn-disabled-color: var(--hh-text-color-contrast);
     }
 }

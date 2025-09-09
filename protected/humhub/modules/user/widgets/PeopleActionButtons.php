@@ -60,10 +60,10 @@ class PeopleActionButtons extends Widget
         return FriendshipButton::widget([
             'user' => $this->user,
             'options' => [
-                'friends' => ['attrs' => ['class' => 'btn btn-accent btn-sm active']],
+                'friends' => ['attrs' => ['class' => 'btn btn-sm btn-outline-accent']],
                 'addFriend' => ['attrs' => ['class' => 'btn btn-accent btn-sm']],
-                'acceptFriendRequest' => ['attrs' => ['class' => 'btn btn-accent btn-sm active'], 'togglerClass' => 'btn btn-accent btn-sm active'],
-                'cancelFriendRequest' => ['attrs' => ['class' => 'btn btn-accent btn-sm active']],
+                'acceptFriendRequest' => ['attrs' => ['class' => 'btn btn-sm btn-outline-accent'], 'togglerClass' => 'btn btn-sm btn-outline-accent'],
+                'cancelFriendRequest' => ['attrs' => ['class' => 'btn btn-sm btn-outline-accent']],
             ],
         ]);
     }
