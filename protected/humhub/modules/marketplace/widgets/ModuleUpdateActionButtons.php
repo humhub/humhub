@@ -44,7 +44,7 @@ class ModuleUpdateActionButtons extends Widget
 
         $html .= Button::light(Yii::t('MarketplaceModule.base', 'Update'))
             ->link(['/marketplace/update/install', 'moduleId' => $this->module->id])
-            ->cssClass('link-accent')
+            ->cssClass('link-primary')
             ->sm()
             ->action('marketplace.update');
 
