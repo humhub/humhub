@@ -1,6 +1,11 @@
 HumHub Changelog
 ================
 
+1.18.0-beta.4 (Unreleased)
+---------------------------------
+- Enh #7690: Refactor SiteLogo widget and add Logo to email
+- Fix #7690: Remove "Mobile appearance" from Appearance form
+
 1.18.0-beta.3 (September 9, 2025)
 ---------------------------------
 
