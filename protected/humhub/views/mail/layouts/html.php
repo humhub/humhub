@@ -544,78 +544,7 @@ $soft2Color = $this->theme->variable('text-color-soft2', '#aeaeae');
                     <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container" style="background-color: <?= $colorPrimary ?>">
                         <tr>
                             <td>
-                                <?= SiteLogo::widget(['place' => SiteLogo::PLACE_EMAIL, 'style' => 'margin:10px auto 0 auto;']) ?>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td valign="top">
-
-                                <table width="560" align="center" border="0" cellspacing="0" cellpadding="0" class="full-width" style="background-color: <?= $colorPrimary ?>">
-                                    <tr>
-                                        <td valign="top" height="10"></td>
-                                    </tr>
-                                    <tr>
-                                        <td valign="top">
-
-                                            <!-- start container -->
-                                            <table width="100%" align="center" border="0" cellspacing="0" cellpadding="0">
-
-                                                <tr>
-                                                    <td valign="top">
-
-                                                        <!-- start view online -->
-                                                        <table align="left" border="0" cellspacing="0" cellpadding="0"
-                                                               class="container2">
-                                                            <tr>
-                                                                <td>
-<!-- Header app name begin-->
-                                                                    <table align="center" border="0" cellspacing="0" cellpadding="0">
-                                                                        <tr>
-                                                                            <td style="text-align:center;">
-                                                                                <span style="text-decoration: none; color:<?= $this->theme->variable('text-color-contrast', '#ffffff') ?>">
-                                                                                    <a href="<?= Url::to(['/'], true) ?>"
-                                                                                        style="text-decoration: none; font-size: 18px; line-height: 27px; font-family: <?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color: <?= $this->theme->variable('text-color-contrast', '#ffffff') ?>; font-weight: 700; text-align: left;">
-                                                                                            <?= Html::encode(Yii::$app->name) ?>
-                                                                                    </a>
-                                                                                </span>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </table>
-<!-- Header app name end-->
-                                                                </td>
-                                                            </tr>
-                                                            <!-- start space -->
-                                                            <tr>
-                                                                <td valign="top" class="increase-Height">
-                                                                </td>
-                                                            </tr>
-                                                            <!-- end space -->
-                                                        </table>
-                                                        <!-- end view online -->
-
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                            <!-- end container  -->
-                                        </td>
-                                    </tr>
-
-                                    <!-- start space -->
-                                    <tr>
-                                        <td valign="top" height="10">
-                                        </td>
-                                    </tr>
-                                    <!-- end space -->
-
-                                    <!-- start space -->
-                                    <tr>
-                                        <td valign="top" class="increase-Height">
-                                        </td>
-                                    </tr>
-                                    <!-- end space -->
-
-                                </table>
-                                <!-- end container 600-->
+                                <?= SiteLogo::widget(['place' => SiteLogo::PLACE_EMAIL, 'style' => 'margin:10px auto;']) ?>
                             </td>
                         </tr>
                     </table>

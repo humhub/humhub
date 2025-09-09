@@ -2,6 +2,7 @@
 
 use humhub\helpers\Html;
 use humhub\libs\LogoImage;
+use humhub\modules\ui\mail\DefaultMailStyle;
 use humhub\widgets\SiteLogo;
 use yii\helpers\Url;
 
@@ -55,9 +56,14 @@ if ($hasLogoImage) {
 <?php endif; ?>
 
 <?php if ($place === SiteLogo::PLACE_EMAIL) : ?>
-    <?php if ($hasLogoImage) : ?>
-        <a href="<?= Url::to(['/'], true) ?>">
+    <a href="<?= Url::to(['/'], true) ?>"
+       style="text-decoration: none; font-size: 18px; font-family: <?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color: <?= $this->theme->variable('text-color-contrast', '#ffffff') ?>; font-weight: 700;">
+        <?php if ($hasLogoImage) : ?>
             <?= $img ?>
-        </a>
-    <?php endif; ?>
+        <?php else: ?>
+            <span style="display: inline-block; line-height: 27px; text-align: left; margin: 10px 0;">
+                <?= Html::encode(Yii::$app->name) ?>
+            </span>
+        <?php endif; ?>
+    </a>
 <?php endif; ?>
