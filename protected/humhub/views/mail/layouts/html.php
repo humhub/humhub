@@ -10,6 +10,7 @@ use humhub\helpers\Html;
 use humhub\modules\ui\mail\DefaultMailStyle;
 use humhub\widgets\FooterMenu;
 use humhub\widgets\PoweredBy;
+use humhub\widgets\SiteLogo;
 use yii\helpers\Url;
 
 /* @var View $this */
@@ -541,6 +542,11 @@ $soft2Color = $this->theme->variable('text-color-soft2', '#aeaeae');
 
                     <!-- start container 600 -->
                     <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container" style="background-color: <?= $colorPrimary ?>">
+                        <tr>
+                            <td>
+                                <?= SiteLogo::widget(['place' => SiteLogo::PLACE_EMAIL, 'style' => 'margin:10px auto 0 auto;']) ?>
+                            </td>
+                        </tr>
                         <tr>
                             <td valign="top">
 

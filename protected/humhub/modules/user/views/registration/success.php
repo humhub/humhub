@@ -1,12 +1,13 @@
 <?php
 
+use humhub\widgets\SiteLogo;
 use yii\helpers\Url;
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
 ?>
 
 <div class="container" style="text-align: center;">
-    <?= humhub\widgets\SiteLogo::widget(['place' => 'login']) ?>
+    <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br/>
     <div class="row">
         <div class="panel panel-default animated fadeIn"
