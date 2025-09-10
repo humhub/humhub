@@ -3,7 +3,7 @@ HumHub Changelog
 
 1.18.0-beta.4 (Unreleased)
 ---------------------------------
-- Enh #7690: Refactor SiteLogo widget and add Logo to email
+- Enh #7690: Allow uploading a custom Email Header image, or using the Logo image
 - Fix #7690: Remove "Mobile appearance" from Appearance form
 
 1.18.0-beta.3 (September 9, 2025)
@@ -20,7 +20,6 @@ HumHub Changelog
 - Fix #7685: In custom themes, the default colors in the Appearance Settings are overwritten by the base theme colors
 - Chg #7687: Link color is now black. Use the `link-accent` class to emphasize a link.
 - Fix #7688: Fix notifications filter toggler
-- Enh: Allow uploading a custom Email Header image, or using the Logo image
 
 1.18.0-beta.2 (September 4, 2025)
 ---------------------------------
