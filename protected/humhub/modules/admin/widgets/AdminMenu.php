@@ -119,7 +119,7 @@ class AdminMenu extends LeftNavigation
             'url' => ['/admin/information'],
             'icon' => 'info-circle',
             'sortOrder' => 1000,
-            'isActive' => ControllerHelper::isActivePath('admin', 'information'),
+            'isActive' => ControllerHelper::isActivePath('admin', ['information', 'logging']),
             'isVisible' => Yii::$app->user->can(SeeAdminInformation::class),
         ]));
 
