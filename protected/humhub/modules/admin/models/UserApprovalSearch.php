@@ -93,9 +93,12 @@ class UserApprovalSearch extends User
         return $dataProvider;
     }
 
-    public static function getUserApprovalCount()
+    public static function getUserApprovalCount(): int
     {
-        return User::find()->where(['user.status' => User::STATUS_NEED_APPROVAL])->count();
+        return User::find()
+            ->where(['user.status' => User::STATUS_NEED_APPROVAL])
+            ->administrableBy(Yii::$app->user->getIdentity())
+            ->count();
     }
 
 }

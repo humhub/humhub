@@ -8,8 +8,7 @@
 
 namespace humhub\modules\admin\controllers;
 
-use humhub\components\access\ControllerAccess;
-use humhub\modules\admin\components\Controller;
+use humhub\modules\admin\components\GroupManagerController;
 use humhub\modules\admin\models\forms\ApproveUserForm;
 use humhub\modules\admin\models\UserApprovalSearch;
 use humhub\modules\admin\Module;
@@ -22,9 +21,9 @@ use yii\web\HttpException;
 use yii\web\Response;
 
 /**
- * ApprovalController handels new user approvals
+ * ApprovalController handles new user approvals
  */
-class ApprovalController extends Controller
+class ApprovalController extends GroupManagerController
 {
     /**
      * @inheritdoc
@@ -45,45 +44,6 @@ class ApprovalController extends Controller
         $this->subLayout = '@admin/views/layouts/user';
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Approval'));
         parent::init();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function getAccessRules()
-    {
-        return [
-            [ControllerAccess::RULE_LOGGED_IN_ONLY],
-            ['checkCanApproveUsers'],
-        ];
-    }
-
-    /**
-     * @param $rule
-     * @param $access
-     * @return bool
-     * @throws Throwable
-     */
-    public function checkCanApproveUsers($rule, $access)
-    {
-        if (!Yii::$app->user->getIdentity()->canApproveUsers()) {
-            $access->code = 403;
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function beforeAction($action)
-    {
-        if (!Yii::$app->user->isAdmin()) {
-            $this->subLayout = "@humhub/modules/admin/views/approval/_layoutNoAdmin";
-        }
-
-        return parent::beforeAction($action);
     }
 
     /**

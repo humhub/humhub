@@ -13,14 +13,14 @@ use yii\helpers\Url;
 /* @var $isManagerApprovalSetting bool */
 /* @var $showDeleteButton bool */
 /* @var $group EditGroupForm */
-
+/* @var $canManage bool */
 ?>
 
 <?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group]) ?>
 <div class="panel-body">
-    <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
-    <?= $form->field($group, 'name'); ?>
-    <?= $form->field($group, 'description')->textarea(['rows' => 5]); ?>
+    <?php $form = ActiveForm::begin(['acknowledge' => true]) ?>
+    <?= $form->field($group, 'name')->textInput(['readonly' => !$canManage]) ?>
+    <?= $form->field($group, 'description')->textarea(['rows' => 5, 'readonly' => !$canManage]) ?>
 
     <?= $form->field($group, 'type')->dropDownList($group::getTypeOptions()) ?>
     <?= $form->field($group, 'subgroups')->widget(GroupPicker::class, ['groupType' => $group::TYPE_NORMAL]) ?>

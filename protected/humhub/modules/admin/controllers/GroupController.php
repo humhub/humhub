@@ -8,8 +8,8 @@
 
 namespace humhub\modules\admin\controllers;
 
+use humhub\modules\admin\components\GroupManagerController;
 use humhub\modules\admin\jobs\ReassignGroupDefaultSpaces;
-use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\models\forms\AddGroupMemberForm;
 use humhub\modules\admin\models\GroupSearch;
 use humhub\modules\admin\models\UserSearch;
@@ -29,13 +29,8 @@ use yii\web\HttpException;
  *
  * @since 0.5
  */
-class GroupController extends Controller
+class GroupController extends GroupManagerController
 {
-    /**
-     * @inheritdoc
-     */
-    public $adminOnly = false;
-
     public function init()
     {
         $this->subLayout = '@admin/views/layouts/user';
@@ -49,9 +44,9 @@ class GroupController extends Controller
      */
     protected function getAccessRules()
     {
-        return [
-            ['permissions' => ManageGroups::class],
-        ];
+        return array_merge(parent::getAccessRules(), [
+            ['permissions' => ManageGroups::class, 'actions' => ['manage-permissions']],
+        ]);
     }
 
     /**
@@ -110,6 +105,7 @@ class GroupController extends Controller
             'group' => $group,
             'isCreateForm' => $group->isNewRecord,
             'isManagerApprovalSetting' => Yii::$app->getModule('user')->settings->get('auth.needApproval'),
+            'canManage' => Yii::$app->user->can(ManageGroups::class),
         ]);
     }
 
