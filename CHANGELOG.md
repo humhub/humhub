@@ -15,7 +15,7 @@ HumHub Changelog
 - Fix #7685: In custom themes, the default colors in the Appearance Settings are overwritten by the base theme colors
 - Chg #7687: Link color is now black. Use the `link-accent` class to emphasize a link.
 - Fix #7688: Fix notifications filter toggler
-- Fix: Admin menu active "Information" item for the Logging page
+- Fix #7694: Admin menu active "Information" item for the Logging page
 
 1.18.0-beta.2 (September 4, 2025)
 ---------------------------------
