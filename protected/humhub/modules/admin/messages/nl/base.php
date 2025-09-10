@@ -42,7 +42,7 @@ return [
   'Invite by email' => 'Uitnodigen per e-mail',
   'Invite by link' => 'Uitnodigen per link',
   'Invited by' => 'Uitgenodigd door',
-  'Keep your system up-to-date and benefit from the latest improvements.' => 'Houd uw systeem bij de tijd en profiteer van de nieuwste verbeteringen.',
+  'Keep your system up-to-date and benefit from the latest improvements.' => 'Houd uw systeem actueel en profiteer van de nieuwste verbeteringen.',
   'Logging' => 'Logging',
   'Logs' => 'Logs',
   'Mailing' => 'Mailen',
