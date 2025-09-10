@@ -1,9 +1,8 @@
 <?php
-
 return [
-    'Collapse' => '',
-    'Read more' => '',
-    'Reset filters' => '',
-    'Select' => '',
-    'User Interface' => '',
+  'Collapse' => 'Strni',
+  'Read more' => '',
+  'Reset filters' => '',
+  'Select' => '',
+  'User Interface' => '',
 ];

@@ -13,6 +13,7 @@ return [
   'Administrators' => 'Administratzaileak',
   'Advanced' => 'Aurreratuak',
   'Advanced settings' => 'Ezarpen aurreratuak',
+  'All' => 'Denak',
   'Appearance' => 'Itxura',
   'Approval' => 'Onespena',
   'Authentication' => 'Egiaztapena',

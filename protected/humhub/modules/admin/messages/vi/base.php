@@ -13,6 +13,7 @@ return [
   'Administrators' => 'Administrators',
   'Advanced' => 'Nâng cao',
   'Advanced settings' => '',
+  'All' => 'Tất cả',
   'Appearance' => 'Xuất hiện',
   'Approval' => 'Xét duyệt',
   'Authentication' => 'Xác thực',

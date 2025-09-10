@@ -13,6 +13,7 @@ return [
   'Administrators' => 'Ylläpitäjä',
   'Advanced' => 'Edistyneet',
   'Advanced settings' => '',
+  'All' => 'Kaikki',
   'Appearance' => 'Ulkomuoto',
   'Approval' => 'Hyväksyminen',
   'Authentication' => 'Todennus',

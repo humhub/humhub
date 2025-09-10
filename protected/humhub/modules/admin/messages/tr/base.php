@@ -13,6 +13,7 @@ return [
   'Administrators' => 'Yöneticiler',
   'Advanced' => 'Gelişmiş',
   'Advanced settings' => 'Gelişmiş ayarlar',
+  'All' => 'Hepsi',
   'Appearance' => 'Görünüm',
   'Approval' => 'Onay',
   'Authentication' => 'Kimlik doğrulama',

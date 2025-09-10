@@ -13,6 +13,7 @@ return [
   'Administrators' => 'Администратори',
   'Advanced' => 'Разширен',
   'Advanced settings' => '',
+  'All' => 'Всички',
   'Appearance' => 'Показване',
   'Approval' => 'Одобрение',
   'Authentication' => 'Удостоверяване',

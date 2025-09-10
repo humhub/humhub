@@ -13,6 +13,7 @@ return [
   'Administrators' => 'Administratorer',
   'Advanced' => 'Avansert',
   'Advanced settings' => '',
+  'All' => 'Alt',
   'Appearance' => 'Utseende',
   'Approval' => 'Godkjenning',
   'Authentication' => 'Autentisering',

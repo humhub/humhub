@@ -6,7 +6,7 @@ return [
   'No Spaces found.' => '',
   'No spaces found for the given query' => '',
   'Please enter at least {count} characters to search Spaces.' => '',
-  'Search' => '',
+  'Search' => 'Išči',
   'Search for spaces' => '',
   'Select {n,plural,=1{space} other{spaces}}' => '',
   'This field only allows a maximum of {n,plural,=1{# space} other{# spaces}}' => '',

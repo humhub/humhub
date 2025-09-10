@@ -13,6 +13,7 @@ return [
   'Administrators' => '',
   'Advanced' => '',
   'Advanced settings' => '',
+  'All' => 'Всі',
   'Appearance' => '',
   'Approval' => '',
   'Authentication' => '',
