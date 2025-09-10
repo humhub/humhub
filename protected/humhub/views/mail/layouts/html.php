@@ -9,8 +9,8 @@ use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\ui\mail\DefaultMailStyle;
 use humhub\widgets\FooterMenu;
+use humhub\widgets\mails\MailHeaderImage;
 use humhub\widgets\PoweredBy;
-use humhub\widgets\SiteLogo;
 use yii\helpers\Url;
 
 /* @var View $this */
@@ -19,7 +19,9 @@ use yii\helpers\Url;
 $defaultBackground = $this->theme->variable('background-color-main', '#fff');
 $colorPrimary = $this->theme->variable('primary', '#708fa0');
 $soft2Color = $this->theme->variable('text-color-soft2', '#aeaeae');
+$hasMailHeaderImage = MailHeaderImage::hasImage();
 ?>
+
 <?php $this->beginPage() ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -538,13 +540,13 @@ $soft2Color = $this->theme->variable('text-color-soft2', '#aeaeae');
 
             <!-- START VIEW HEADER -->
             <tr>
-                <td align="center" valign="top" style="background-color: <?= $colorPrimary ?>">
+                <td align="center" valign="top"<?= $hasMailHeaderImage ? '' : ' style="background-color: '. $colorPrimary . '"' ?>>
 
                     <!-- start container 600 -->
-                    <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container" style="background-color: <?= $colorPrimary ?>">
+                    <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container"<?= $hasMailHeaderImage ? '' : ' style="background-color: '. $colorPrimary . '"' ?>>
                         <tr>
                             <td>
-                                <?= SiteLogo::widget(['place' => SiteLogo::PLACE_EMAIL, 'style' => 'margin:10px auto;']) ?>
+                                <?= MailHeaderImage::widget() ?>
                             </td>
                         </tr>
                     </table>

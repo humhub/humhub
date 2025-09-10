@@ -33,6 +33,7 @@ use humhub\modules\topic\models\Topic;
 use humhub\modules\user\helpers\LoginBackgroundImageHelper;
 use humhub\modules\user\models\User;
 use humhub\modules\web\pwa\widgets\SiteIcon;
+use humhub\widgets\mails\MailHeaderImage;
 use humhub\widgets\modal\ModalClose;
 use Yii;
 use yii\data\ActiveDataProvider;
@@ -123,6 +124,15 @@ class SettingController extends Controller
     {
         $this->forcePostRequest();
         LoginBackgroundImageHelper::set(null);
+
+        Yii::$app->response->format = 'json';
+        return [];
+    }
+
+    public function actionDeleteMailHeaderImage()
+    {
+        $this->forcePostRequest();
+        MailHeaderImage::set(null);
 
         Yii::$app->response->format = 'json';
         return [];

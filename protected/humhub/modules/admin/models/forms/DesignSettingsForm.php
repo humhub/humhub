@@ -17,6 +17,7 @@ use humhub\modules\stream\actions\Stream;
 use humhub\modules\user\helpers\LoginBackgroundImageHelper;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\web\pwa\widgets\SiteIcon;
+use humhub\widgets\mails\MailHeaderImage;
 use ScssPhp\ScssPhp\Compiler;
 use ScssPhp\ScssPhp\Exception\SassException;
 use Yii;
@@ -38,6 +39,7 @@ class DesignSettingsForm extends Model
     public $logo;
     public $icon;
     public $loginBackgroundImage;
+    public $mailHeaderImage;
     public $dateInputDisplayFormat;
     public $defaultStreamSort;
     public $themePrimaryColor;
@@ -121,6 +123,7 @@ class DesignSettingsForm extends Model
             ['icon', 'image', 'extensions' => 'png, jpg, jpeg', 'minWidth' => 256, 'minHeight' => 256],
             ['icon', ImageSquareValidator::class],
             ['loginBackgroundImage', 'image', 'extensions' => 'png, jpg, jpeg', 'minWidth' => 800, 'minHeight' => 600],
+            ['mailHeaderImage', 'image', 'extensions' => 'png, jpg, jpeg', 'minWidth' => MailHeaderImage::MIN_WIDTH, 'minHeight' => MailHeaderImage::MIN_HEIGHT],
             ['dateInputDisplayFormat', 'in', 'range' => ['', 'php:d/m/Y']],
             [
                 [
@@ -225,6 +228,7 @@ class DesignSettingsForm extends Model
             'logo' => Yii::t('AdminModule.settings', 'Logo upload'),
             'icon' => Yii::t('AdminModule.settings', 'Icon upload'),
             'loginBackgroundImage' => Yii::t('AdminModule.settings', 'Login Background'),
+            'mailHeaderImage' => Yii::t('AdminModule.settings', 'Email Header Image'),
             'dateInputDisplayFormat' => Yii::t('AdminModule.settings', 'Date input format'),
             'themePrimaryColor' => Yii::t('AdminModule.settings', 'Primary color'),
             'useDefaultThemePrimaryColor' => Yii::t('AdminModule.settings', 'Default'),
@@ -259,6 +263,11 @@ class DesignSettingsForm extends Model
                 'Custom sort order can be defined in the Space advanced settings.',
             ),
             'themeCustomScss' => Yii::t('AdminModule.settings', 'Use Sassy CSS syntax (SCSS)'),
+            'mailHeaderImage' => Yii::t('AdminModule.settings', 'The height should be between {minHeight} and {maxHeight} pixels, and the width should be {maxWidth} pixels for full width, or less for a centered image.', [
+                'minHeight' => MailHeaderImage::MIN_HEIGHT,
+                'maxHeight' => MailHeaderImage::MAX_HEIGHT,
+                'maxWidth' => MailHeaderImage::MAX_WIDTH,
+            ]),
         ];
     }
 
@@ -283,6 +292,12 @@ class DesignSettingsForm extends Model
         if (count($files) != 0) {
             $file = $files[0];
             $this->loginBackgroundImage = $file;
+        }
+
+        $files = UploadedFile::getInstancesByName('mailHeaderImage');
+        if (count($files) != 0) {
+            $file = $files[0];
+            $this->mailHeaderImage = $file;
         }
 
         return parent::load($data, $formName);
@@ -333,8 +348,12 @@ class DesignSettingsForm extends Model
             SiteIcon::set($this->icon);
         }
 
-        if ($this->loginBackgroundImage && $this->loginBackgroundImage instanceof UploadedFile) {
+        if ($this->loginBackgroundImage instanceof UploadedFile) {
             LoginBackgroundImageHelper::set($this->loginBackgroundImage->tempName);
+        }
+
+        if ($this->mailHeaderImage instanceof UploadedFile) {
+            MailHeaderImage::set($this->mailHeaderImage->tempName);
         }
 
         $settingsManager->set(
