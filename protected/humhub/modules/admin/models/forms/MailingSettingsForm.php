@@ -70,7 +70,7 @@ class MailingSettingsForm extends Model
             ['port', 'integer', 'min' => 1, 'max' => 65535],
             [['hostname', 'port'], 'required', 'when' => fn($model) => $model->transportType === self::TRANSPORT_SMTP],
             ['dsn', 'required', 'when' => fn($model) => $model->transportType === self::TRANSPORT_DSN],
-            [['transportType', 'hostname', 'username', 'password', 'useSmtps', 'allowSelfSignedCerts', 'systemEmailAddress', 'systemEmailName', 'systemEmailReplyTo'], 'string', 'max' => 255],
+            [['transportType', 'hostname', 'username', 'password', 'systemEmailAddress', 'systemEmailName', 'systemEmailReplyTo'], 'string', 'max' => 255],
         ];
     }
 
