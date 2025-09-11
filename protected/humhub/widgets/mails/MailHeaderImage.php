@@ -31,6 +31,8 @@ class MailHeaderImage extends Widget
     public const MAX_HEIGHT = 300; // For image resizing after upload
     public const LOGO_MAX_HEIGHT = 60; // For image resizing after upload
 
+    public int $verticalMargin = 10; // In pixels
+
     public static function set(?string $fileName): void
     {
         foreach ([static::getAssetsFile(), static::getStoreFile()] as $file) {
@@ -118,6 +120,7 @@ class MailHeaderImage extends Widget
         return $this->render('mailHeaderImage', [
             'imgUrl' => $imgUrl,
             'appName' => Yii::$app->name,
+            'verticalMargin' => $this->verticalMargin,
         ]);
     }
 }
