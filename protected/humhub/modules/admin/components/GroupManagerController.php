@@ -17,7 +17,7 @@ use Yii;
  *
  * @author luke
  */
-class GroupManagerController extends Controller
+abstract class GroupManagerController extends Controller
 {
     /**
      * @inheritdoc

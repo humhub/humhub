@@ -55,6 +55,7 @@ class Group extends ActiveRecord
 {
     public const EVENT_GET_REGISTRATION_GROUPS = 'getRegistrationGroups';
     public const SCENARIO_EDIT = 'edit';
+    public const SCENARIO_MANAGER = 'manager';
 
     /**
      * @inheritdoc
@@ -70,11 +71,11 @@ class Group extends ActiveRecord
     public function rules()
     {
         return [
-            [['sort_order', 'notify_users', 'is_default_group', 'is_protected'], 'integer'],
-            [['description'], 'string'],
-            [['name'], 'string', 'max' => 120],
-            ['show_at_registration', 'validateShowAtRegistration'],
-            ['is_default_group', 'validateIsDefaultGroup'],
+            [['sort_order', 'notify_users', 'is_default_group', 'is_protected'], 'integer', 'except' => self::SCENARIO_MANAGER],
+            [['description'], 'string', 'except' => self::SCENARIO_MANAGER],
+            [['name'], 'string', 'max' => 120, 'except' => self::SCENARIO_MANAGER],
+            ['show_at_registration', 'validateShowAtRegistration', 'except' => self::SCENARIO_MANAGER],
+            ['is_default_group', 'validateIsDefaultGroup', 'except' => self::SCENARIO_MANAGER],
         ];
     }
 
@@ -358,10 +359,10 @@ class Group extends ActiveRecord
      * @param $user
      * @return bool
      */
-    public function isManager($user)
+    public function isManager($user): bool
     {
         $userId = ($user instanceof User) ? $user->id : $user;
-        return $this->getGroupUsers()->where(['user_id' => $userId, 'is_group_manager' => true])->count() > 0;
+        return $this->getGroupUsers()->where(['user_id' => $userId, 'is_group_manager' => true])->exists();
     }
 
     /**

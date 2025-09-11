@@ -25,11 +25,6 @@ use yii\web\Response;
  */
 class ApprovalController extends GroupManagerController
 {
-    /**
-     * @inheritdoc
-     */
-    public $adminOnly = false;
-
     public const ACTION_SEND_MESSAGE = 'send_message';
     public const ACTION_APPROVE = 'approve';
     public const ACTION_DECLINE = 'decline';

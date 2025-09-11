@@ -137,7 +137,7 @@ class AdminMenu extends LeftNavigation
             return false;
         }
 
-        $canSeeAdminSection = null;//Yii::$app->session->get(static::SESSION_CAN_SEE_ADMIN_SECTION);
+        $canSeeAdminSection = Yii::$app->session->get(static::SESSION_CAN_SEE_ADMIN_SECTION);
         if ($canSeeAdminSection === null) {
             $canSeeAdminSection = Yii::$app->user->isAdmin() || !empty((new self())->getEntries(null, true));
             Yii::$app->session->set(static::SESSION_CAN_SEE_ADMIN_SECTION, $canSeeAdminSection);
