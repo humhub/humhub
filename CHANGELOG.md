@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.18.0-beta.4 (Unreleased)
+---------------------------------
+- Fix #7697: Fix submitting a form with file upload from a modal window
+
 1.18.0-beta.3 (September 9, 2025)
 ---------------------------------
 

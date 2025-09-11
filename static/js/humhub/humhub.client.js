@@ -127,8 +127,9 @@ humhub.module('client', function (module, require, $) {
         }
 
         cfg.type = $form.attr('method') || 'post';
-        cfg.data = $form.serialize();
-
+        cfg.data = new FormData($form[0]);
+        cfg.processData = false;
+        cfg.contentType = false;
 
         var url = cfg.url;
         if (!url && (originalEvent && originalEvent.url)) {
