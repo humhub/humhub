@@ -7,6 +7,7 @@ use humhub\modules\admin\models\UserSearch;
 use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
 use humhub\modules\user\models\Group;
+use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\bootstrap\Alert;
 use humhub\widgets\bootstrap\Button;
@@ -19,6 +20,7 @@ use yii\helpers\Url;
 /* @var $searchModel UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $isManagerApprovalSetting bool */
+/* @var $canManage bool */
 
 AdminGroupAsset::register($this);
 ?>
@@ -77,22 +79,24 @@ AdminGroupAsset::register($this);
                         'visible' => $isManagerApprovalSetting,
                         'label' => Yii::t('AdminModule.user', 'Group Manager'),
                         'format' => 'raw',
-                        'value' => function ($data) use ($group) {
-                            $isManager = $group->isManager($data);
-                            $yesSelected = ($isManager) ? 'selected' : '';
-                            $noSelected = ($isManager) ? '' : 'selected';
-                            $result = '<select class="editableCell form-control" data-action-change="admin.group.setManagerRole" data-action-url="' . Url::to(['edit-manager-role']) . '" data-userid="' . $data->id . '"  data-groupid="' . $group->id . '">';
-                            $result .= '<option value="0" ' . $noSelected . '>' . Yii::t('AdminModule.user', 'No') . '</option>';
-                            $result .= '<option value="1" ' . $yesSelected . '>' . Yii::t('AdminModule.user', 'Yes') . '</option>';
-                            return $result;
+                        'value' => function (User $user) use ($group, $canManage) {
+                            return Html::dropDownList('role', $group->isManager($user), [
+                                Yii::t('AdminModule.user', 'No'),
+                                Yii::t('AdminModule.user', 'Yes'),
+                            ], [
+                                'data-action-change' => 'admin.group.setManagerRole',
+                                'data-action-url' => Url::to(['edit-manager-role']),
+                                'data-userid' => $user->id,
+                                'data-groupid' => $group->id,
+                                'disabled' => !$canManage,
+                            ]);
                         },
                     ],
                     [
                         'class' => 'yii\grid\ActionColumn',
                         'options' => ['style' => 'width:40px; min-width:40px;'],
+                        'template' => '{delete}',
                         'buttons' => [
-                            'view' => fn($url, $model) => false,
-                            'update' => fn($url, $model) => false,
                             'delete' => fn($url, $model) => $model->getGroups()->count() > 1
                                 ? Button::danger()
                                     ->tooltip(Yii::t('AdminModule.user', 'Remove from group'))

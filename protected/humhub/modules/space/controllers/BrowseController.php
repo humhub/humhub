@@ -49,8 +49,14 @@ class BrowseController extends Controller
     {
         Yii::$app->response->format = 'json';
 
-        $query = Space::find()->visible()->filterBlockedSpaces();
-        $query->search(Yii::$app->request->get('keyword'));
+        $query = Space::find()
+            ->visible()
+            ->filterBlockedSpaces()
+            ->search(Yii::$app->request->get('keyword'));
+
+        if (Yii::$app->request->get('user') === 'admin-owner') {
+            $query->filterAdminOwner();
+        }
 
         $countQuery = clone $query;
         $pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSizeParam' => 'limit']);

@@ -141,6 +141,12 @@ class EditGroupForm extends Group
         }
 
         foreach (array_diff($newSpaceIds, $existingSpaceIds) as $spaceId) {
+            if ($this->getScenario() === self::SCENARIO_MANAGER
+                && !Space::findOne($spaceId)?->isAdmin(Yii::$app->user->id)) {
+                // Restrict adding new default space if current user is not admin/owner of the space
+                continue;
+            }
+
             $groupSpaces = new GroupSpace();
             $groupSpaces->group_id = $this->id;
             $groupSpaces->space_id = $spaceId;

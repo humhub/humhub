@@ -45,7 +45,7 @@ class GroupController extends GroupManagerController
     protected function getAccessRules()
     {
         return array_merge(parent::getAccessRules(), [
-            ['permissions' => ManageGroups::class, 'actions' => ['manage-permissions']],
+            ['permissions' => ManageGroups::class, 'actions' => ['manage-permissions', 'edit-manager-role']],
         ]);
     }
 
@@ -137,6 +137,7 @@ class GroupController extends GroupManagerController
             'group' => $group,
             'addGroupMemberForm' => new AddGroupMemberForm(),
             'isManagerApprovalSetting' => Yii::$app->getModule('user')->settings->get('auth.needApproval'),
+            'canManage' => Yii::$app->user->can(ManageGroups::class),
         ]);
     }
 

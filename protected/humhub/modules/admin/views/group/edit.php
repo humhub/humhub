@@ -35,6 +35,8 @@ use yii\helpers\Url;
             'attribute' => 'defaultSpaceGuid',
             'selection' => $group->defaultSpaces,
             'maxSelection' => 1000,
+            // Group managers should see spaces only where they are admins or owners
+            'url' => $canManage ? null : Url::to(['/space/browse/search-json', 'user' => 'admin-owner']),
         ])
         ?>
     <?php endif ?>
