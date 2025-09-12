@@ -10,6 +10,7 @@ use humhub\modules\user\helpers\LoginBackgroundImageHelper;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
+use humhub\widgets\mails\MailHeaderImage;
 use yii\helpers\Url;
 
 /**
@@ -30,11 +31,15 @@ $this->registerJsConfig('admin', [
         'confirm.deleteLoginBg.header' => Yii::t('AdminModule.settings', '<strong>Confirm</strong> image deletion'),
         'confirm.deleteLoginBg.body' => Yii::t('UserModule.account', 'Do you really want to delete your login background image?'),
         'confirm.deleteLoginBg.confirm' => Yii::t('AdminModule.settings', 'Delete'),
+        'confirm.deleteMailHeader.header' => Yii::t('AdminModule.settings', '<strong>Confirm</strong> image deletion'),
+        'confirm.deleteMailHeader.body' => Yii::t('UserModule.account', 'Do you really want to delete your mail header image?'),
+        'confirm.deleteMailHeader.confirm' => Yii::t('AdminModule.settings', 'Delete'),
     ],
 ]);
 
 $iconUrl = SiteIcon::getUrl(140);
 $loginBgUrl = LoginBackgroundImageHelper::getUrl();
+$mailHeaderUrl = MailHeaderImage::getUrl();
 $themeVariables = Yii::$app->view->theme->variables;
 ?>
 
@@ -73,8 +78,6 @@ $themeVariables = Yii::$app->view->theme->variables;
         '' => Yii::t('AdminModule.settings', 'Auto format based on user language - Example: {example}', ['{example}' => Yii::$app->formatter->asDate(time(), 'short')]),
         'php:d/m/Y' => Yii::t('AdminModule.settings', 'Fixed format (dd/mm/yyyy) - Example: {example}', ['{example}' => Yii::$app->formatter->asDate(time(), 'php:d/m/Y')]),
     ]) ?>
-
-    <strong><?= Yii::t('AdminModule.settings', 'Mobile appearance') ?></strong>
 
     <div class="bg-light p-3 mt-2">
         <?= $form->field($model, 'logo')->fileInput(['id' => 'admin-logo-file-upload', 'data-action-change' => 'admin.changeLogo', 'style' => 'display: none', 'name' => 'logo[]']); ?>
@@ -124,6 +127,22 @@ $themeVariables = Yii::$app->view->theme->variables;
                 <?= Button::danger()->id('admin-delete-loginBg-image')
                     ->action('admin.deleteLoginBg', Url::to(['/admin/setting/delete-login-background-image']))
                     ->style(LoginBackgroundImageHelper::hasImage() ? '' : 'display:none')->icon('remove')->sm()->loader(false) ?>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="bg-light p-3 mt-2">
+        <?= $form->field($model, 'mailHeaderImage')->fileInput(['id' => 'admin-mailHeader-file-upload', 'data-action-change' => 'admin.changeMailHeader', 'class' => 'd-none', 'name' => 'mailHeaderImage[]']) ?>
+        <div class="image-upload-container" id="mailHeader-upload">
+            <img class="rounded" id="mailHeader-image" src="<?= $mailHeaderUrl ?>" style="max-height: 40px;">
+
+            <div class="image-upload-buttons" id="mailHeader-upload-buttons" style="display: block;">
+                <?= Button::accent()->icon('cloud-upload')->id('admin-mailHeader-upload-button')->sm()->loader(false) ?>
+
+                <?= Button::danger()->id('admin-delete-mailHeader-image')
+                    ->action('admin.deleteMailHeader', Url::to(['/admin/setting/delete-mail-header-image']))
+                    ->style(MailHeaderImage::hasImage() ? '' : 'display:none')->icon('remove')->sm()->loader(false) ?>
             </div>
         </div>
     </div>

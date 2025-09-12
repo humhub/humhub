@@ -2,6 +2,7 @@
 
 use humhub\components\View;
 use humhub\modules\user\models\Invite;
+use humhub\widgets\SiteLogo;
 use yii\helpers\Url;
 
 /* @var $this View */
@@ -11,7 +12,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Almost there!');
 ?>
 
 <div class="container" style="text-align: center;">
-    <?= humhub\widgets\SiteLogo::widget(['place' => 'login']) ?>
+    <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br>
     <div class="row">
         <div class="panel panel-default" style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
