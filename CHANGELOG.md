@@ -7,8 +7,10 @@ HumHub Changelog
 - Fix #7690: Remove "Mobile appearance" from Appearance form
 - Fix #7697: Fix submitting a form with file upload from a modal window
 - Fix #7699: Fixed old Mailer Vars usage
+- Fix #7700: `<code>` styling
 - Fix #7701: Activity Box Bottom Padding
 - Fix #7702: Selectors/Pickers BG color
+- Fix #7554: Delete `logging` DB table (keep `log` only)
 
 1.18.0-beta.3 (September 9, 2025)
 ---------------------------------
