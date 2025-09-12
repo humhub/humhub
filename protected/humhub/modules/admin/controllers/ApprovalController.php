@@ -8,7 +8,9 @@
 
 namespace humhub\modules\admin\controllers;
 
-use humhub\modules\admin\components\GroupManagerController;
+use humhub\components\access\ControllerAccess;
+use humhub\components\access\DelegateAccessValidator;
+use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\models\forms\ApproveUserForm;
 use humhub\modules\admin\models\UserApprovalSearch;
 use humhub\modules\admin\Module;
@@ -23,8 +25,13 @@ use yii\web\Response;
 /**
  * ApprovalController handles new user approvals
  */
-class ApprovalController extends GroupManagerController
+class ApprovalController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
+    public $adminOnly = false;
+
     public const ACTION_SEND_MESSAGE = 'send_message';
     public const ACTION_APPROVE = 'approve';
     public const ACTION_DECLINE = 'decline';
@@ -39,6 +46,34 @@ class ApprovalController extends GroupManagerController
         $this->subLayout = '@admin/views/layouts/user';
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Approval'));
         parent::init();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getAccessRules()
+    {
+        return [
+            [ControllerAccess::RULE_LOGGED_IN_ONLY],
+            ['checkCanManageUsers'],
+        ];
+    }
+
+    /**
+     * Check the current user can manage other users
+     *
+     * @param array $rule
+     * @param DelegateAccessValidator $access
+     * @return bool
+     */
+    public function checkCanManageUsers($rule, $access): bool
+    {
+        if (Yii::$app->user->getIdentity()->canManageUsers()) {
+            return true;
+        }
+
+        $access->code = 403;
+        return false;
     }
 
     /**

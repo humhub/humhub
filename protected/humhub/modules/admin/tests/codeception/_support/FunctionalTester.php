@@ -3,7 +3,8 @@
 namespace admin;
 
 use Codeception\Lib\Friend;
-use humhub\modules\user\models\GroupPermission;
+use humhub\modules\user\models\GroupUser;
+use humhub\modules\user\models\User;
 
 /**
  * Inherited Methods
@@ -27,4 +28,14 @@ class FunctionalTester extends \FunctionalTester
     /**
      * Define custom actions here
      */
+
+    public function loginUserWithoutGroupManagerPermission(): User
+    {
+        $this->amUser2();
+
+        $user = User::findOne(['username' => 'User2']);
+        GroupUser::updateAll(['is_group_manager' => 0], ['user_id' => $user->id]);
+
+        return $user;
+    }
 }
