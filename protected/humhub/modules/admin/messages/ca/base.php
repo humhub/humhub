@@ -13,6 +13,7 @@ return [
   'Administrators' => 'Administradors',
   'Advanced' => 'Avançat',
   'Advanced settings' => '',
+  'All' => 'Totes',
   'Appearance' => '',
   'Approval' => 'Aprovació',
   'Authentication' => 'Autentificació',

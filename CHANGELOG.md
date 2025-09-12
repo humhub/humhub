@@ -5,6 +5,8 @@ HumHub Changelog
 ---------------------------------
 - Enh #7690: Allow uploading a custom Email Header image, or using the Logo image
 - Fix #7690: Remove "Mobile appearance" from Appearance form
+- Fix #7697: Fix submitting a form with file upload from a modal window
+- Fix #7699: Fixed old Mailer Vars usage
 
 1.18.0-beta.3 (September 9, 2025)
 ---------------------------------
@@ -20,6 +22,7 @@ HumHub Changelog
 - Fix #7685: In custom themes, the default colors in the Appearance Settings are overwritten by the base theme colors
 - Chg #7687: Link color is now black. Use the `link-accent` class to emphasize a link.
 - Fix #7688: Fix notifications filter toggler
+- Fix #7694: Admin menu active "Information" item for the Logging page
 
 1.18.0-beta.2 (September 4, 2025)
 ---------------------------------
