@@ -68,7 +68,7 @@ humhub.module('file', function (module, require, $) {
             dataType: 'json',
             formData: data,
             autoUpload: false,
-            singleFileUploads: this.$.prop('multiple'),
+            singleFileUploads: !this.$.prop('multiple'),
             add: function (e, data) {
                 if (that.options.maxNumberOfFiles && (that.getFileCount() + data.files.length > that.options.maxNumberOfFiles)) {
                     that.handleMaxFileReached(that.options.maxNumberOfFilesMessage);
