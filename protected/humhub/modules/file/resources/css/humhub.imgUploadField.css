@@ -1,0 +1,14 @@
+.btn.img-uploader-remove, .btn.img-uploader-upload {
+    height: 30px;
+    width: 30px;
+}
+
+.img-uploader-preview img {
+    height: 150px;
+    max-width: 100%;
+    border-radius: 4px;
+}
+
+.img-uploader-field .file-preview-item {
+    padding: 0 !important;
+}

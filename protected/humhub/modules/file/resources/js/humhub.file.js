@@ -68,7 +68,7 @@ humhub.module('file', function (module, require, $) {
             dataType: 'json',
             formData: data,
             autoUpload: false,
-            singleFileUploads: false,
+            singleFileUploads: this.$.prop('multiple'),
             add: function (e, data) {
                 if (that.options.maxNumberOfFiles && (that.getFileCount() + data.files.length > that.options.maxNumberOfFiles)) {
                     that.handleMaxFileReached(that.options.maxNumberOfFilesMessage);
@@ -160,7 +160,7 @@ humhub.module('file', function (module, require, $) {
         }
 
         if ($preview.length) {
-            this.preview = Preview.instance($preview);
+            this.preview = Widget.instance($preview);
             if (this.preview.setSource) {
                 this.preview.setSource(this);
             } else {
