@@ -10,7 +10,7 @@ HumHub Changelog
 - Fix #7700: `<code>` styling
 - Fix #7701: Activity Box Bottom Padding
 - Fix #7702: Selectors/Pickers BG color
-- Fix: Maintenance mode alert box
+- Fix #7704: Maintenance mode alert box
 
 1.18.0-beta.3 (September 9, 2025)
 ---------------------------------
