@@ -11,6 +11,7 @@ namespace humhub\modules\space\widgets;
 use humhub\components\Widget;
 use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
+use humhub\modules\ui\icon\widgets\Icon;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
@@ -40,7 +41,7 @@ class MembershipButton extends Widget
                 'title' => Yii::t('SpaceModule.base', 'Join'),
                 'url' => $this->space->createUrl('/space/membership/request-membership-form', empty($this->options) ? [] : ['options' => Json::encode($this->options)]),
                 'attrs' => [
-                    'class' => 'btn btn-info',
+                    'class' => 'btn btn-accent',
                     'data-space-request-membership' => $this->space->id,
                     'data-bs-target' => '#globalModal',
                 ],
@@ -53,7 +54,7 @@ class MembershipButton extends Widget
                     'data-action-url' => $this->space->createUrl('/space/membership/request-membership'),
                     'data-button-options' => Json::encode($this->options),
                     'data-ui-loader' => '',
-                    'class' => 'btn btn-info',
+                    'class' => 'btn btn-accent',
                     'data-space-request-membership' => $this->space->id,
                 ],
             ],
@@ -65,10 +66,10 @@ class MembershipButton extends Widget
                     'data-action-url' => $this->space->createUrl('/space/membership/invite-accept'),
                     'data-button-options' => Json::encode($this->options),
                     'data-ui-loader' => '',
-                    'class' => 'btn btn-info',
+                    'class' => 'btn btn-accent',
                 ],
                 'groupClass' => 'btn-group',
-                'togglerClass' => 'btn btn-info',
+                'togglerClass' => 'btn btn-accent',
             ],
             'declineInvite' => [
                 'title' => Yii::t('SpaceModule.base', 'Decline Invite'),
@@ -81,7 +82,7 @@ class MembershipButton extends Widget
                 ],
             ],
             'cancelPendingMembership' => [
-                'title' => '<span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;' . Yii::t('SpaceModule.base', 'Pending'),
+                'title' => Icon::get('clock-o') . Yii::t('SpaceModule.base', 'Pending'),
                 'url' => '#',
                 'attrs' => [
                     'data-action-click' => 'content.container.relationship',
@@ -89,12 +90,12 @@ class MembershipButton extends Widget
                     'data-action-confirm' => Yii::t('SpaceModule.base', 'Would you like to withdraw your request to join Space {spaceName}?', ['{spaceName}' => '<strong>' . Html::encode($this->space->getDisplayName()) . '</strong>']),
                     'data-button-options' => Json::encode($this->options),
                     'data-ui-loader' => '',
-                    'class' => 'btn btn-info active',
+                    'class' => 'btn btn-accent active',
                 ],
             ],
             'cancelMembership' => [
                 'visible' => false,
-                'title' => '<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t('SpaceModule.base', 'Member'),
+                'title' => Icon::get('check') . Yii::t('SpaceModule.base', 'Member'),
                 'url' => '#',
                 'attrs' => [
                     'data-action-click' => 'content.container.relationship',
@@ -104,14 +105,14 @@ class MembershipButton extends Widget
                     'data-action-confirm-text' => Yii::t('SpaceModule.base', 'Leave'),
                     'data-button-options' => Json::encode($this->options),
                     'data-ui-loader' => '',
-                    'class' => 'btn btn-info active',
+                    'class' => 'btn btn-accent active',
                 ],
             ],
             'cannotCancelMembership' => [
                 'visible' => false,
-                'memberTitle' => '<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t('SpaceModule.base', 'Member'),
-                'ownerTitle' => '<span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;' . Yii::t('SpaceModule.base', 'Owner'),
-                'attrs' => ['class' => 'btn btn-info active'],
+                'memberTitle' => Icon::get('check') . Yii::t('SpaceModule.base', 'Member'),
+                'ownerTitle' => Icon::get('user') . Yii::t('SpaceModule.base', 'Owner'),
+                'attrs' => ['class' => 'btn btn-accent active'],
             ],
         ];
     }

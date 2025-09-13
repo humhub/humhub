@@ -65,7 +65,7 @@
 
             &:hover,
             &.selected {
-                border-left: 3px solid var(--bs-info);
+                border-left: 3px solid var(--bs-accent);
                 background-color: var(--hh-background-color-secondary) !important;
             }
 
@@ -76,7 +76,6 @@
             }
 
             a {
-                color: var(--hh-text-color-highlight);
                 font-size: 13px;
                 font-weight: 600;
                 padding: 4px 15px;
@@ -101,7 +100,7 @@ ul.contextMenu {
 
         &:hover,
         &.selected {
-            border-left: 3px solid var(--bs-info);
+            border-left: 3px solid var(--bs-accent);
             background-color: var(--hh-background-color-secondary) !important;
         }
 
@@ -112,7 +111,6 @@ ul.contextMenu {
         }
 
         a {
-            color: var(--hh-text-color-highlight);
             font-size: 14px;
             font-weight: 400;
             padding: 4px 15px;

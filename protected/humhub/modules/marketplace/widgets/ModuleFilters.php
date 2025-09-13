@@ -120,7 +120,7 @@ class ModuleFilters extends DirectoryFilters
                 'icon' => 'check-circle',
                 'info' => Yii::t('MarketplaceModule.base', 'Your HumHub installation is up to date!'),
                 'link' => Button::asLink('https://www.humhub.com', 'https://www.humhub.com')
-                    ->cssClass('btn btn-info'),
+                    ->cssClass('btn btn-accent'),
             ];
         }
 

@@ -35,7 +35,8 @@ class DashboardContent extends Widget
         echo StreamViewer::widget([
             'options' => ['class' => 'dashboard-wall-stream'],
             'streamAction' => '//dashboard/dashboard/stream',
-            'showFilters' => (bool)Yii::$app->getModule('dashboard')->settings->get('showProfilePostForm'),
+            'showFilters' => (bool) Yii::$app->getModule('dashboard')->settings->get('showProfilePostForm')
+                || (!is_null(Yii::$app->request->getQueryParam('filters_visible')) && !empty(Yii::$app->request->getQueryParam('includes'))),
             'messageStreamEmpty' => $messageStreamEmpty,
         ]);
     }

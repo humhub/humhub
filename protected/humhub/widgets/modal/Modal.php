@@ -9,6 +9,7 @@
 namespace humhub\widgets\modal;
 
 use humhub\widgets\form\ActiveForm;
+use Yii;
 use yii\bootstrap5\Html;
 
 /**
@@ -144,13 +145,13 @@ class Modal extends \yii\bootstrap5\Modal
     public function run()
     {
         if ($this->isHumHubDialog === true) {
-            echo $this->renderDialogBegin() . "\n" .
-                $this->renderHeader() . "\n" .
-                $this->renderBodyBegin() . "\n" .
-                $this->body . "\n" .
-                $this->renderBodyEnd() . "\n" .
-                $this->renderFooter() . "\n" .
-                $this->renderDialogEnd();
+            echo $this->renderDialogBegin() . "\n"
+                . $this->renderHeader() . "\n"
+                . $this->renderBodyBegin() . "\n"
+                . $this->body . "\n"
+                . $this->renderBodyEnd() . "\n"
+                . $this->renderFooter() . "\n"
+                . $this->renderDialogEnd();
             $this->registerPlugin('modal');
         } else {
             parent::run();
@@ -171,8 +172,11 @@ class Modal extends \yii\bootstrap5\Modal
         if ($this->isHumHubDialog) {
             $this->trigger(self::EVENT_INIT);
             if (!isset($this->options['id'])) {
-                $this->options['id'] = $this->getId();
+                // The ID is required by \yii\bootstrap5\Modal but overwritten later, e.g. by humhub\widgets\modal\GlobalModal
+                $this->options['id'] = Yii::$app->security->generateRandomString(8);
             }
+            // Set the ID for the dialog container (.modal-dialog)
+            $this->dialogOptions['id'] = $this->getId();
             $this->initOptions();
         } else {
             parent::init();
@@ -186,15 +190,15 @@ class Modal extends \yii\bootstrap5\Modal
         $this->dialogOptions['data-hh-keyboard'] = ($this->closable && $this->keyboard) ? 'true' : 'false';
 
         return
-            Html::beginTag('div', $this->dialogOptions) . "\n" .
-            Html::beginTag('div', ['class' => 'modal-content']) . "\n";
+            Html::beginTag('div', $this->dialogOptions) . "\n"
+            . Html::beginTag('div', ['class' => 'modal-content']) . "\n";
     }
 
     public function renderDialogEnd(): string
     {
         return
-            "\n" . Html::endTag('div') . // modal-content
-            "\n" . Html::endTag('div'); // modal-dialog
+            "\n" . Html::endTag('div') // modal-content
+            . "\n" . Html::endTag('div'); // modal-dialog
     }
 
     /**
@@ -221,8 +225,8 @@ class Modal extends \yii\bootstrap5\Modal
         echo $widget->renderDialogBegin();
         if ($renderElements) {
             echo
-                $widget->renderHeader() . "\n" .
-                $widget->renderBodyBegin() . "\n";
+                $widget->renderHeader() . "\n"
+                . $widget->renderBodyBegin() . "\n";
         }
     }
 
@@ -235,8 +239,8 @@ class Modal extends \yii\bootstrap5\Modal
         if ($widget) {
             if ($renderElements) {
                 echo
-                    "\n" . $widget->renderBodyEnd() .
-                    "\n" . $widget->renderFooter();
+                    "\n" . $widget->renderBodyEnd()
+                    . "\n" . $widget->renderFooter();
             }
             echo $widget->renderDialogEnd();
         }
@@ -254,8 +258,8 @@ class Modal extends \yii\bootstrap5\Modal
         self::beginDialog($config, false);
         $form = ActiveForm::begin($formConfig);
         echo
-            self::$stackForDialog->renderHeader() . "\n" .
-            self::$stackForDialog->renderBodyBegin() . "\n";
+            self::$stackForDialog->renderHeader() . "\n"
+            . self::$stackForDialog->renderBodyBegin() . "\n";
 
         return $form;
     }
@@ -263,8 +267,8 @@ class Modal extends \yii\bootstrap5\Modal
     public static function endFormDialog(): void
     {
         echo
-            "\n" . self::$stackForDialog->renderBodyEnd() .
-            "\n" . self::$stackForDialog->renderFooter();
+            "\n" . self::$stackForDialog->renderBodyEnd()
+            . "\n" . self::$stackForDialog->renderFooter();
         ActiveForm::end();
         self::endDialog(false);
     }

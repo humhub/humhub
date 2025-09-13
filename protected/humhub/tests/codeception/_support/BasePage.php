@@ -37,6 +37,7 @@ abstract class BasePage extends Component
      */
     public function __construct(protected $actor)
     {
+        Yii::$app->cache->flush();
     }
 
     /**

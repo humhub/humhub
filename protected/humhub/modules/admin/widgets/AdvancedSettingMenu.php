@@ -25,15 +25,6 @@ class AdvancedSettingMenu extends SubTabMenu
     public function init()
     {
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.base', 'Caching'),
-            'url' => Url::toRoute(['/admin/setting/caching']),
-            'icon' => 'dashboard',
-            'sortOrder' => 100,
-            'isActive' => ControllerHelper::isActivePath('admin', 'setting', 'caching'),
-            'isVisible' => Yii::$app->user->isAdmin(),
-        ]));
-
-        $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.base', 'Files'),
             'url' => Url::toRoute('/admin/setting/file'),
             'icon' => 'file',

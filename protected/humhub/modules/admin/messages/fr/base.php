@@ -13,6 +13,7 @@ return [
   'Administrators' => 'Administrateurs',
   'Advanced' => 'Avancé',
   'Advanced settings' => 'Paramètres avancés',
+  'All' => 'Tous',
   'Appearance' => 'Apparence',
   'Approval' => 'Approbation',
   'Authentication' => 'Authentification',

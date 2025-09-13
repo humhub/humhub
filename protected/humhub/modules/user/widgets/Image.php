@@ -58,10 +58,9 @@ class Image extends BaseImage
 
         if ($this->tooltipText || $this->showTooltip) {
             $this->imageOptions['data-bs-toggle'] = 'tooltip';
-            $this->imageOptions['data-placement'] = 'top';
-            $this->imageOptions['data-html'] = 'true';
+            $this->imageOptions['data-bs-placement'] = 'top';
+            $this->imageOptions['data-bs-html'] = 'true';
             $this->imageOptions['data-bs-title'] = $this->tooltipText ?: Html::encode($this->user->displayName);
-            Html::addCssClass($this->imageOptions, 'tt');
         }
 
         $this->imageOptions['data-contentcontainer-id'] = $this->user->contentcontainer_id;
@@ -89,9 +88,9 @@ class Image extends BaseImage
             $userIsOnline = $isOnlineService->getStatus();
             $html .= Html::tag('span', '', [
                 'class' => ['tt user-online-status', $userIsOnline ? 'user-is-online' : 'user-is-offline'],
-                'title' => $userIsOnline ?
-                    Yii::t('UserModule.base', 'Online') :
-                    Yii::t('UserModule.base', 'Offline'),
+                'title' => $userIsOnline
+                    ? Yii::t('UserModule.base', 'Online')
+                    : Yii::t('UserModule.base', 'Offline'),
             ]);
         }
 

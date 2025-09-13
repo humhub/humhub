@@ -11,6 +11,7 @@ namespace humhub\modules\admin\jobs;
 use humhub\modules\queue\ActiveJob;
 use humhub\modules\queue\interfaces\ExclusiveJobInterface;
 use humhub\modules\user\models\Group;
+use humhub\modules\user\models\GroupSpace;
 
 /**
  * Reassign default spaces to all users
@@ -32,11 +33,11 @@ class ReassignGroupDefaultSpaces extends ActiveJob implements ExclusiveJobInterf
         $group = Group::findOne(['id' => $this->groupId]);
 
         if ($group !== null) {
-            foreach ($group->groupUsers as $user) {
-                foreach ($group->groupSpaces as $space) {
-                    if ($space !== null) {
-                        $space->space->addMember($user->user_id);
-                    }
+            /* @var GroupSpace[] $groupSpaces */
+            $groupSpaces = $group->getAllGroupSpaces()->all();
+            foreach ($group->groupUsers as $groupUser) {
+                foreach ($groupSpaces as $groupSpace) {
+                    $groupSpace->space->addMember($groupUser->user_id);
                 }
             }
         }

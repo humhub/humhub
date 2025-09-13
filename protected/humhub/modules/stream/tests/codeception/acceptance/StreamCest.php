@@ -319,7 +319,7 @@ class StreamCest
         $I->click('Comment', $post4Selector);
         $I->wait(1);
         $I->fillField($post4Selector . ' [contenteditable]', 'My Comment!');
-        $I->click('[data-action-click=submit]', $post4Selector . ' .upload-buttons');
+        $I->click('[data-action-click=submit]', $post4Selector . ' .richtext-create-buttons');
 
         $I->scrollTop();
 

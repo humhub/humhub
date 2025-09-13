@@ -27,7 +27,7 @@ $contentModule = Yii::$app->getModule('content');
     <?= Html::hiddenInput('objectModel', $objectModel); ?>
     <?= Html::hiddenInput('objectId', $objectId); ?>
 
-    <div class="content-create-input-group">
+    <div class="richtext-create-input-group">
         <?= $form->field($comment, 'message')->widget(RichTextField::class, [
             'id' => 'comment_input_' . $comment->id,
             'layout' => RichTextField::LAYOUT_INLINE,
@@ -40,7 +40,7 @@ $contentModule = Yii::$app->getModule('content');
             ],
         ])->label(false) ?>
 
-        <div class="upload-buttons"><?php
+        <div class="richtext-create-buttons"><?php
             $uploadButton = UploadButton::widget([
                 'id' => 'comment_upload_' . $comment->id,
                 'model' => $comment,
@@ -57,7 +57,7 @@ $contentModule = Yii::$app->getModule('content');
                 'cssButtonClass' => 'btn-light btn-sm',
                 'pullRight' => true,
             ]);
-            echo Button::info()
+            echo Button::accent()
                 ->icon('send')
                 ->cssClass('btn-comment-submit')->sm()
                 ->action('editSubmit', $submitUrl)->submit();

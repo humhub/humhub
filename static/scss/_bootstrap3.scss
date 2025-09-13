@@ -37,11 +37,11 @@ a.label-default:hover {
 }
 
 .label-info {
-    background-color: var(--bs-info);
+    background-color: var(--bs-accent);
 }
 
 a.label-info:hover {
-    background: darken($info, 5%) !important;
+    background: darken($accent, 5%) !important;
 }
 
 .label-danger {
@@ -117,11 +117,11 @@ a.label-warning:hover {
         &:hover,
         &.selected {
             background-color: var(--hh-background-color-secondary);
-            border-left: 3px solid var(--bs-info);
+            border-left: 3px solid var(--bs-accent);
         }
 
         &.new {
-            border-left: 3px solid var(--bs-info);
+            border-left: 3px solid var(--bs-accent);
             background-color: var(--hh-background-color-highlight);
 
             &:hover {
@@ -180,10 +180,6 @@ a.label-warning:hover {
             font-weight: 500;
             color: var(--hh-text-color-highlight);
 
-            a {
-                color: var(--hh-text-color-highlight);
-            }
-
             small,
             small a {
                 font-size: 11px;
@@ -214,10 +210,6 @@ a.label-warning:hover {
         .module-controls {
             font-size: 85%;
         }
-    }
-
-    .content .files a {
-        color: var(--hh-text-color-highlight);
     }
 
     .align-center {
@@ -345,7 +337,6 @@ a.label-warning:hover {
             color: var(--hh-text-color-highlight);
 
             .count {
-                color: var(--bs-primary);
                 font-weight: 600;
                 font-size: 20px;
                 line-height: 0.8em;
@@ -379,10 +370,10 @@ a.label-warning:hover {
 }
 
 .panel-info {
-    border: 2px solid var(--bs-info);
+    border: 2px solid var(--bs-accent);
 
     .panel-heading {
-        color: var(--bs-info);
+        color: var(--bs-accent);
     }
 }
 
@@ -588,7 +579,7 @@ a.label-warning:hover {
     .sk-adjust-huener-three-bounce div, .sk-adjust-huener-three-bounce span {
         width: 12px;
         height: 12px;
-        background-color: var(--bs-info);
+        background-color: var(--bs-accent);
         border-radius: 100%;
         display: inline-block;
         animation: sk-threeBounceDelay 1.4s infinite ease-in-out;
@@ -681,9 +672,9 @@ a.label-warning:hover {
     --bs-btn-active-border-color: var(--bs-primary);
 }
 .btn-info {
-    --bs-btn-active-color: var(--bs-info);
+    --bs-btn-active-color: var(--bs-accent);
     --bs-btn-active-bg: var(--hh-background-color-main);
-    --bs-btn-active-border-color: var(--bs-info);
+    --bs-btn-active-border-color: var(--bs-accent);
 }
 
 //
@@ -718,15 +709,15 @@ a.label-warning:hover {
 
 /* Info */
 .colorInfo {
-    color: var(--bs-info) !important;
+    color: var(--bs-accent) !important;
 }
 
 .backgroundInfo {
-    background: var(--bs-info) !important;
+    background: var(--bs-accent) !important;
 }
 
 .borderInfo {
-    border-color: var(--bs-info) !important;
+    border-color: var(--bs-accent) !important;
 }
 
 /* Link */

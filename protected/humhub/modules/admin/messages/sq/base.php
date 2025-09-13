@@ -63,6 +63,7 @@ return [
     '<strong>Module</strong> administration' => '',
     'Active Modules' => '',
     'Add more modules' => '',
+    'All' => '',
     'Enable module...' => '',
     'Inactive Modules' => '',
     'Install Updates' => '',

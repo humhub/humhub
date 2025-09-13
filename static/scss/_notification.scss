@@ -6,8 +6,8 @@
     input[type=checkbox] {
         border-color: #ccc;
         &:checked {
-            border-color: var(--bs-secondary);
-            background: var(--bs-secondary);
+            border-color: var(--bs-light);
+            background: var(--bs-light);
             &::after {
                 color: var(--text-color-main);
             }
@@ -30,7 +30,7 @@
 
         &.new {
             time {
-                color: var(--bs-info);
+                color: var(--bs-accent);
             }
         }
 

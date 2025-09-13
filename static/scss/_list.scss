@@ -19,7 +19,7 @@
         &:hover,
         &.selected {
             background-color: var(--hh-background-color-secondary);
-            border-left: 3px solid var(--bs-info);
+            border-left: 3px solid var(--bs-accent);
         }
 
         &, a {
@@ -27,7 +27,7 @@
         }
 
         &.new {
-            border-left: 3px solid var(--bs-info);
+            border-left: 3px solid var(--bs-accent);
             background-color: var(--hh-background-color-highlight);
 
             &:hover {
@@ -63,10 +63,6 @@
             font-size: 14px;
             font-weight: 500;
             color: var(--hh-text-color-highlight);
-
-            a {
-                color: var(--hh-text-color-highlight);
-            }
 
             small,
             small a {

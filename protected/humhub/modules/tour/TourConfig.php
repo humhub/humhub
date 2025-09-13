@@ -84,8 +84,8 @@ class TourConfig
 
     public static function isValidConfig($config): bool
     {
-        $isValid =
-            is_array($config)
+        $isValid
+            = is_array($config)
             && !empty($config[self::KEY_TOUR_ID])
             && !empty($config[self::KEY_TITLE])
             && !empty($config[self::KEY_START_URL])

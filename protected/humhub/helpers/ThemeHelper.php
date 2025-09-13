@@ -85,7 +85,7 @@ class ThemeHelper
             }
 
             $theme = static::getThemeByPath($path . DIRECTORY_SEPARATOR . $file, $additionalOptions);
-            if ($theme !== null) {
+            if ($theme !== null && ($theme->isActive() || !str_ends_with($theme->name, '.bs3.old'))) {
                 $themes[$theme->name] = $theme;
             }
         }
@@ -240,14 +240,22 @@ class ThemeHelper
             $compiler->addImportPath($treeTheme->getBasePath() . '/scss');
         }
 
+        // Import Bootstrap functions
+        $imports[] = Yii::getAlias('@bower/bootstrap/scss/functions');
+
         // Import variables child theme first, because they have the !default flag
         foreach ($treeThemes as $treeTheme) {
             $imports[] = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'variables';
         }
         $imports[] = Yii::getAlias('@webroot-static/scss/variables');
+        $imports[] = Yii::getAlias('@bower/bootstrap/scss/variables');
+
+        // Import maps
+        $imports[] = Yii::getAlias('@bower/bootstrap/scss/maps');
+        $imports[] = Yii::getAlias('@webroot-static/scss/maps');
 
         // Import Bootstrap files
-        $imports[] = Yii::getAlias('@bower/bootstrap/scss/bootstrap'); // includes the variables.scss file
+        $imports[] = Yii::getAlias('@bower/bootstrap/scss/bootstrap');
 
         // Import all other files, in reverse order (parent theme first)
         $imports[] = Yii::getAlias('@webroot-static/scss/build');
@@ -285,33 +293,36 @@ class ThemeHelper
 
         // Create SCSS source from Design Settings form and imports
         $scssSource = '';
-        if ($designSettingsForm->themePrimaryColor) {
+        if (!$designSettingsForm->useDefaultThemePrimaryColor && $designSettingsForm->themePrimaryColor) {
             $scssSource .= '$primary: ' . $designSettingsForm->themePrimaryColor . ';' . PHP_EOL;
         }
-        if ($designSettingsForm->themeSecondaryColor) {
+        if (!$designSettingsForm->useDefaultThemeAccentColor && $designSettingsForm->themeAccentColor) {
+            $scssSource .= '$accent: ' . $designSettingsForm->themeAccentColor . ';' . PHP_EOL;
+        }
+        if (!$designSettingsForm->useDefaultThemeSecondaryColor && $designSettingsForm->themeSecondaryColor) {
             $scssSource .= '$secondary: ' . $designSettingsForm->themeSecondaryColor . ';' . PHP_EOL;
         }
-        if ($designSettingsForm->themeSuccessColor) {
+        if (!$designSettingsForm->useDefaultThemeSuccessColor && $designSettingsForm->themeSuccessColor) {
             $scssSource .= '$success: ' . $designSettingsForm->themeSuccessColor . ';' . PHP_EOL;
         }
-        if ($designSettingsForm->themeDangerColor) {
+        if (!$designSettingsForm->useDefaultThemeDangerColor && $designSettingsForm->themeDangerColor) {
             $scssSource .= '$danger: ' . $designSettingsForm->themeDangerColor . ';' . PHP_EOL;
         }
-        if ($designSettingsForm->themeWarningColor) {
+        if (!$designSettingsForm->useDefaultThemeWarningColor && $designSettingsForm->themeWarningColor) {
             $scssSource .= '$warning: ' . $designSettingsForm->themeWarningColor . ';' . PHP_EOL;
         }
-        if ($designSettingsForm->themeInfoColor) {
+        if (!$designSettingsForm->useDefaultThemeInfoColor && $designSettingsForm->themeInfoColor) {
             $scssSource .= '$info: ' . $designSettingsForm->themeInfoColor . ';' . PHP_EOL;
         }
-        if ($designSettingsForm->themeLightColor) {
+        if (!$designSettingsForm->useDefaultThemeLightColor && $designSettingsForm->themeLightColor) {
             $scssSource .= '$light: ' . $designSettingsForm->themeLightColor . ';' . PHP_EOL;
         }
-        if ($designSettingsForm->themeDarkColor) {
+        if (!$designSettingsForm->useDefaultThemeDarkColor && $designSettingsForm->themeDarkColor) {
             $scssSource .= '$dark: ' . $designSettingsForm->themeDarkColor . ';' . PHP_EOL;
         }
-        $scssSource .=
-            '@import "' . implode('", "', $imports) . '";' . PHP_EOL .
-            $designSettingsForm->themeCustomScss;
+        $scssSource
+            .= '@import "' . implode('", "', $imports) . '";' . PHP_EOL
+            . $designSettingsForm->themeCustomScss;
 
         // Compile to CSS
         try {

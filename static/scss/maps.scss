@@ -1,0 +1,52 @@
+// Re-assigned maps
+//
+// Placed here so that others can override the default Sass maps and see automatic updates to utilities and more.
+
+// Merge accent color into theme color maps (no !default since we're overriding existing maps)
+
+$theme-colors: map-merge($theme-colors, (
+    "accent": $accent
+));
+
+$theme-colors-rgb: map-merge($theme-colors-rgb, (
+    "accent": to-rgb($accent)
+));
+
+$theme-colors-text: map-merge($theme-colors-text, (
+    "accent": $accent-text-emphasis,
+));
+
+$theme-colors-bg-subtle: map-merge($theme-colors-bg-subtle, (
+    "accent": $accent-bg-subtle,
+));
+
+$theme-colors-border-subtle: map-merge($theme-colors-border-subtle, (
+    "accent": $accent-border-subtle,
+));
+
+@if $enable-dark-mode {
+    $theme-colors-text-dark: map-merge($theme-colors-text-dark, (
+        "accent": $accent-text-emphasis-dark,
+    ));
+
+    $theme-colors-bg-subtle-dark: map-merge($theme-colors-bg-subtle-dark, (
+        "accent": $accent-bg-subtle-dark,
+    ));
+
+    $theme-colors-border-subtle-dark: map-merge($theme-colors-border-subtle-dark, (
+        "accent": $accent-border-subtle-dark,
+    ));
+}
+
+// Merge accent into utilities maps (no !default since we're overriding existing maps)
+$utilities-text-emphasis-colors: map-merge($utilities-text-emphasis-colors, (
+    "accent-emphasis": var(--#{$prefix}accent-text-emphasis),
+));
+
+$utilities-bg-subtle: map-merge($utilities-bg-subtle, (
+    "accent-subtle": var(--#{$prefix}accent-bg-subtle),
+));
+
+$utilities-border-subtle: map-merge($utilities-border-subtle, (
+    "accent-subtle": var(--#{$prefix}accent-border-subtle),
+));

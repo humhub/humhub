@@ -29,6 +29,7 @@ Widgets in these new folders:
 And especially:
 - `humhub\widgets\bootstrap\Badge` (see https://getbootstrap.com/docs/5.3/components/badge/)
 - `humhub\widgets\bootstrap\Alert` (see https://getbootstrap.com/docs/5.3/components/alerts/)
+- `humhub\widgets\bootstrap\Button::accent()` (same for Badge and Label)
 - `humhub\widgets\bootstrap\Button::secondary()` (same for Badge and Label)
 - `humhub\widgets\bootstrap\Button::light()` (same for Badge and Label)
 - `humhub\widgets\bootstrap\Button::dark()` (same for Badge and Label)
@@ -36,8 +37,11 @@ And especially:
 - `humhub\widgets\bootstrap\Button::cssTextColor()` (same for Badge and Label)
 - `humhub\widgets\bootstrap\Button::outline()`
 - `humhub\widgets\bootstrap\Button::asBadge()`
+- `humhub\widgets\bootstrap\Button::loading('Custom loading message')`
 
-Colors: `secondary`, `light` and `dark` are the new Bootstrap colors (`default` is deprecated).
+Colors: `accent`, `secondary`, `light` and `dark` are the new Bootstrap theme colors (`default` is deprecated).
+
+The new `accent` color replaces the old `info` usage.  
 
 CSS Class: `.filter-toggle-link` for "Filter" toggle link
 
@@ -295,6 +299,8 @@ Now:
 </li>
 ```
 
+To remove the right caret, add the `dropdown-toggle-no-caret` class to the button: `dropdown-toggle dropdown-toggle-no-caret`.
+
 #### Javascript
 
 The jQuery `.dropdown()` method is removed. Use BS5 vanilla JS API instead. Example for a close button:
@@ -347,6 +353,27 @@ Example:
 </ul>
 ```
 
+## Buttons
+
+If you cannot use the `humhub\widgets\bootstrap\Button` widget, remove space between the icon and the label, because a right margin has been added to the icon.
+
+Before:
+
+```html
+<button type="button" class="btn-primary btn"><?= Icon::get('circle') ?> Label</button>
+```
+
+Now:
+
+```html
+<button type="button" class="btn-primary btn"><?= Icon::get('circle') ?>Label</button>
+```
+
+## Links
+
+By default, links are black.
+To emphasize a link, use the `link-accent` class.
+
 ## Breadcrumb
 
 Search for the class `breadcrumb`.
@@ -372,6 +399,7 @@ These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 - `pull-left` (or `style="float:left"`) -> `float-start`
 - `pull-right` (or `style="float:right"`) -> `float-end`
 - `center-block` -> `mx-auto` (image, inline or inline-block elements:  `d-block mx-auto`)
+- `btn-block` -> `d-grid gap-2`
 - `text-left` -> `text-start`
 - `text-right` -> `text-end`
 - `btn-group-xs` -> `btn-group-sm`
@@ -495,6 +523,14 @@ If wrapped in an HTML element having `loader` (search for the `<\w+\s+[^>]*class
 
 [See documentation](https://getbootstrap.com/docs/5.3/components/spinners) for more options and examples.
 
+### Tooltip
+
+The `tt` class is deprecated.
+Use the `data-bs-toggle="tooltip" data-bs-title="My tooltip text"` instead.
+Doc: https://getbootstrap.com/docs/5.3/components/tooltips/
+
+When using `Button`, `Link`, `Badge` or `Icon` widgets, use the `->tooltip('My tooltip text')` method.
+
 ### Panel
 
 In a future HumHub version, panels will be replaced with cards.
@@ -514,7 +550,7 @@ Replacements:
 - `badge-primary` -> `text-bg-primary`
 - `badge-danger` -> `text-bg-danger`
 - `badge-warning` -> `text-bg-warning`
-- `badge-info` -> `text-bg-info`
+- `badge-info` -> `text-bg-accent`
 - `badge-success` -> `text-bg-success`
 
 Doc: https://getbootstrap.com/docs/5.3/components/badge/
@@ -612,15 +648,14 @@ Take the Wiki module as an example: https://github.com/humhub/wiki/tree/bs5
 
 Deprecated SCSS variables:
 - `$default`: use `$light` instead
-- `$link`: use `$info` instead (or `$link-color` if it's about a link but not a `a` HTML tag)
+- `$info`: use `$accent` instead
+- `$link`: use `$primary` instead (or `$link-color` if it's about a link but not a `a` HTML tag)
 
 New SCSS variables:
+- `$accent`
 - `$secondary`
 - `$light`
 - `$dark`
-
-Changed values:
-- `$primary: #435f6f` -> `$primary: #1b8291`
 
 #### CSS variable prefixes
 
@@ -741,14 +776,23 @@ It is also possible to use `max-width` (should be occasionally used) using `medi
 // etc...
 ```
 
-In modules, you will have to import the Boostrap breakpoints SCSS functions:
+Doc: https://getbootstrap.com/docs/5.3/layout/breakpoints
+
+### Bootstrap Imports in modules
+
+Depending on your needs, you might have to import the Boostrap SCSS functions, variables, mixins or breakpoints:
 ```scss
-@import "../../../../vendor/bower-asset/bootstrap/scss/functions";
-@import "../../../../vendor/bower-asset/bootstrap/scss/variables";
-@import "../../../../vendor/bower-asset/bootstrap/scss/mixins/breakpoints";
+@import "/opt/humhub/protected/vendor/bower-asset/bootstrap/scss/functions";
+@import "/opt/humhub/protected/vendor/bower-asset/bootstrap/scss/variables";
+@import "/opt/humhub/protected/vendor/bower-asset/bootstrap/scss/mixins";
+@import "/opt/humhub/protected/vendor/bower-asset/bootstrap/scss/mixins/breakpoints";
 ```
 
-Doc: https://getbootstrap.com/docs/5.3/layout/breakpoints
+Make sure you have a symbolic link of HumHub root directory in `/opt/humhub`:
+
+```
+sudo ln -s /path/to/humhub /opt/humhub
+```
 
 ### Deprecated CSS classes
 

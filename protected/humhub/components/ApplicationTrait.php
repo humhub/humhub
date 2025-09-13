@@ -71,7 +71,10 @@ trait ApplicationTrait
                     $this->formatter->defaultTimeZone = $this->timeZone;
                 }
             }
-            $this->db->pdo->exec('SET time_zone = ' . $this->db->quoteValue(TimezoneHelper::convertToTime($this->timeZone)));
+
+            $this->db
+                ->createCommand('SET time_zone = :tz', ['tz' => TimezoneHelper::convertToTime($this->timeZone)])
+                ->execute();
         }
     }
 

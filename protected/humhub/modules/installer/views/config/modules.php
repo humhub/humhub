@@ -2,7 +2,7 @@
 
 
 use humhub\helpers\Html;
-use humhub\widgets\modal\ModalButton;
+use humhub\widgets\bootstrap\Button;
 
 /* @var array $modules */
 ?>
@@ -32,10 +32,9 @@ use humhub\widgets\modal\ModalButton;
             <hr>
         <?php endforeach; ?>
 
-        <?= ModalButton::primary(Yii::t('InstallerModule.base', 'Next'))
-            ->sm()
-            ->submit()
-            ->options(['data-message' => Yii::t('InstallerModule.base', 'Downloading & Installing Modules...')]) ?>
+        <?= Button::primary(Yii::t('InstallerModule.base', 'Next'))
+            ->loader(Yii::t('InstallerModule.base', 'Downloading & Installing Modules...'))
+            ->submit() ?>
 
         <?= Html::endForm(); ?>
 

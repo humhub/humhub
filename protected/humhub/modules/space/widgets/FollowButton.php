@@ -10,6 +10,7 @@ namespace humhub\modules\space\widgets;
 
 use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
+use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Widget;
@@ -57,7 +58,7 @@ class FollowButton extends Widget
         }
 
         if ($this->unfollowLabel === null) {
-            $this->unfollowLabel = '<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t('SpaceModule.base', 'Following');
+            $this->unfollowLabel = Icon::get('check') . Yii::t('SpaceModule.base', 'Following');
         }
 
         if (!isset($this->followOptions['class'])) {
@@ -128,8 +129,8 @@ class FollowButton extends Widget
             return Html::a($this->unfollowLabel, '#', $this->unfollowOptions);
         }
 
-        return Html::a($this->unfollowLabel, '#', $this->unfollowOptions) .
-            Html::a($this->followLabel, '#', $this->followOptions);
+        return Html::a($this->unfollowLabel, '#', $this->unfollowOptions)
+            . Html::a($this->followLabel, '#', $this->followOptions);
     }
 
 }

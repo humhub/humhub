@@ -97,6 +97,10 @@ ul.files {
     padding: 10px;
     padding-bottom: 1px;
     margin-bottom: 10px !important;
+
+    a, a:active, a:focus, a:hover {
+        color: var(--bs-accent);
+    }
 }
 
 
@@ -244,9 +248,9 @@ body.device-mobile #wallStream {
 }
 
 .jp-details, .jp-playlist {
-    border-top: 1px solid var(--bs-info);
+    border-top: 1px solid var(--bs-accent);
 }
 
 .jp-audio, .jp-audio-stream, .jp-video {
-    border: 1px solid var(--bs-info);
+    border: 1px solid var(--bs-accent);
 }

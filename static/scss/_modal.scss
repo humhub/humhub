@@ -62,18 +62,6 @@ body.modal-open {
     .modal-header {
         border-bottom: none;
         text-align: center;
-
-        .close {
-            margin-top: 2px;
-            margin-right: 5px;
-            opacity: 1;
-            color: var(--bs-primary);
-            font-size: 28px;
-
-            &:hover {
-                opacity: 0.9;
-            }
-        }
     }
 
     .modal-body {

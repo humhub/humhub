@@ -16,6 +16,7 @@ use humhub\modules\admin\notifications\IncludeGroupNotification;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
+use humhub\modules\user\models\forms\EditGroupForm;
 use humhub\modules\user\Module;
 use Throwable;
 use Yii;
@@ -32,6 +33,7 @@ use yii\helpers\Url;
  * @property int $space_id
  * @property string $name
  * @property string $description
+ * @property int $parent_group_id
  * @property string $created_at
  * @property int $created_by
  * @property int $sort_order
@@ -70,7 +72,7 @@ class Group extends ActiveRecord
         return [
             [['sort_order', 'notify_users', 'is_default_group', 'is_protected'], 'integer'],
             [['description'], 'string'],
-            [['name'], 'string', 'max' => 45],
+            [['name'], 'string', 'max' => 120],
             ['show_at_registration', 'validateShowAtRegistration'],
             ['is_default_group', 'validateIsDefaultGroup'],
         ];
@@ -253,7 +255,7 @@ class Group extends ActiveRecord
      * Returns all user which are defined as manager in this group as ActiveQuery.
      * @return ActiveQuery
      */
-    public function getManager()
+    public function getManager(): ActiveQuery
     {
         return $this->hasMany(User::class, ['id' => 'user_id'])
             ->via('groupUsers', function ($query): void {
@@ -262,12 +264,30 @@ class Group extends ActiveRecord
     }
 
     /**
-     * Checks if this group has at least one Manager assigned.
+     * Get query of all managers of this group and parent group
+     * @return ActiveQuery
+     * @since 1.18
+     */
+    public function getAllManagers(): ActiveQuery
+    {
+        if ($this->parent_group_id === null) {
+            return $this->getManager();
+        }
+
+        return User::find()
+            ->joinWith('groupUsers')
+            ->where([GroupUser::tableName() . '.is_group_manager' => 1])
+            ->andWhere([GroupUser::tableName() . '.group_id' => [$this->id, $this->parent_group_id]])
+            ->distinct();
+    }
+
+    /**
+     * Checks if this group has at least one Manager(even from parent group) assigned.
      * @return bool
      */
-    public function hasManager()
+    public function hasManager(): bool
     {
-        return $this->getManager()->count() > 0;
+        return $this->getAllManagers()->exists();
     }
 
     /**
@@ -289,6 +309,23 @@ class Group extends ActiveRecord
     public function getGroupUsers()
     {
         return $this->hasMany(GroupUser::class, ['group_id' => 'id']);
+    }
+
+    public function getSubGroups(): ActiveQuery
+    {
+        return $this->hasMany(Group::class, ['parent_group_id' => 'id']);
+    }
+
+    public function getSubGroupUsers(): ActiveQuery
+    {
+        return $this->hasMany(GroupUser::class, ['group_id' => 'id'])
+            ->via('subGroups')
+            ->groupBy('user_id');
+    }
+
+    public function getSubGroupUsersCount(): int
+    {
+        return $this->parent_group_id === null ? $this->getSubGroupUsers()->count() : 0;
     }
 
     /**
@@ -415,8 +452,8 @@ class Group extends ActiveRecord
     public static function notifyAdminsForUserApproval($user)
     {
         // No admin approval required
-        if ($user->status != User::STATUS_NEED_APPROVAL ||
-            !Yii::$app->getModule('user')->settings->get('auth.needApproval', 'user')) {
+        if ($user->status != User::STATUS_NEED_APPROVAL
+            || !Yii::$app->getModule('user')->settings->get('auth.needApproval', 'user')) {
             return;
         }
 
@@ -425,25 +462,24 @@ class Group extends ActiveRecord
         }
 
         $group = self::findOne($user->registrationGroupId);
-        $approvalUrl = Url::to(["/admin/approval"], true);
+        $approvalUrl = Url::to(['/admin/approval'], true);
 
-        foreach ($group->manager as $manager) {
-
+        foreach ($group->getAllManagers()->each() as $manager) {
             Yii::$app->i18n->setUserLocale($manager);
 
             $html = Yii::t(
                 'UserModule.auth',
                 'Hello {displayName},',
                 ['displayName' => $manager->displayName],
-            ) . "<br><br>\n\n" .
-                Yii::t(
+            ) . "<br><br>\n\n"
+                . Yii::t(
                     'UserModule.auth',
                     'a new user {displayName} needs approval.',
                     ['displayName' => $user->displayName],
-                ) . "<br><br>\n\n" .
-                Yii::t('UserModule.auth', 'Please click on the link below to view request:') .
-                "<br>\n\n" .
-                Html::a($approvalUrl, $approvalUrl) . "<br/> <br/>\n";
+                ) . "<br><br>\n\n"
+                . Yii::t('UserModule.auth', 'Please click on the link below to view request:')
+                . "<br>\n\n"
+                . Html::a($approvalUrl, $approvalUrl) . "<br/> <br/>\n";
 
             $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], [
                 'message' => $html,
@@ -506,11 +542,25 @@ class Group extends ActiveRecord
      * @return ActiveQuery
      * @since 1.8
      */
-    public function getGroupSpaces()
+    public function getGroupSpaces(): ActiveQuery
     {
         return $this->hasMany(GroupSpace::class, ['group_id' => 'id']);
     }
 
+    /**
+     * Get query of all GroupSpace relations of this group and parent group
+     * @return ActiveQuery
+     * @since 1.18
+     */
+    public function getAllGroupSpaces(): ActiveQuery
+    {
+        if ($this->parent_group_id === null) {
+            return $this->getGroupSpaces();
+        }
+
+        return GroupSpace::find()
+            ->where(['group_id' => [$this->id, $this->parent_group_id]]);
+    }
 
     /**
      * Check if this Group can be deleted by current User
@@ -521,10 +571,19 @@ class Group extends ActiveRecord
     public function canDelete()
     {
         return Yii::$app->user->can(ManageGroups::class) && !(
-            $this->isNewRecord ||
-                $this->is_admin_group ||
-                $this->is_default_group ||
-                $this->is_protected
+            $this->isNewRecord
+                || $this->is_admin_group
+                || $this->is_default_group
+                || $this->is_protected
         );
+    }
+
+    public function getTypeTitle(): string
+    {
+        $titles = EditGroupForm::getTypeOptions();
+
+        return $this->parent_group_id === null
+            ? $titles[EditGroupForm::TYPE_NORMAL]
+            : $titles[EditGroupForm::TYPE_SUBGROUP];
     }
 }

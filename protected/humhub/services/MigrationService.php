@@ -16,7 +16,7 @@ use humhub\components\Module;
 use humhub\events\MigrationEvent;
 use humhub\helpers\DataTypeHelper;
 use humhub\interfaces\ApplicationInterface;
-use humhub\modules\admin\models\forms\CacheSettingsForm;
+use humhub\modules\admin\libs\CacheHelper;
 use Throwable;
 use uninstall;
 use Yii;
@@ -142,8 +142,8 @@ class MigrationService extends Component
 
     public function getPendingMigrations(): array
     {
-        return $this->runAction() === self::DB_ACTION_PENDING &&
-        preg_match_all('/(^|[\s\t]+)(m\d+.+)(\n|$)/', (string) $this->getLastMigrationOutput(), $matches)
+        return $this->runAction() === self::DB_ACTION_PENDING
+        && preg_match_all('/(^|[\s\t]+)(m\d+.+)(\n|$)/', (string) $this->getLastMigrationOutput(), $matches)
             ? $matches[2]
             : [];
     }
@@ -390,7 +390,7 @@ class MigrationService extends Component
     {
         if ($action === self::DB_ACTION_RUN) {
             $this->migrateUp();
-            $this->lastMigrationOutput .= "\n" . CacheSettingsForm::flushCache();
+            $this->lastMigrationOutput .= "\n" . CacheHelper::flushCache();
             $this->storeLastMigrationOutput();
             return self::DB_ACTION_SESSION;
         }

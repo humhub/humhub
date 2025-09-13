@@ -24,7 +24,7 @@ trait BootstrapVariationsTrait
     /**
      * @var Icon|null the icon to be displayed before the label.
      */
-    public Icon|null $icon = null;
+    public ?Icon $icon = null;
 
     public ?string $size = null;
 
@@ -63,6 +63,11 @@ trait BootstrapVariationsTrait
     public static function info(string $label = null): static
     {
         return static::instance($label, 'info');
+    }
+
+    public static function accent(string $label = null): static
+    {
+        return static::instance($label, 'accent');
     }
 
     public static function success(string $label = null): static
@@ -171,11 +176,18 @@ trait BootstrapVariationsTrait
     }
 
     /**
-     * Adds a title + tooltip behaviour class
+     * Adds a title + tooltip behaviour data
      */
     public function tooltip(?string $title): static
     {
-        return $title ? $this->options(['data-bs-title' => $title])->cssClass('tt') : $this;
+        if ($title !== null && $title !== '') {
+            $this->options([
+                'data-bs-title' => $title,
+                'data-bs-toggle' => 'tooltip',
+            ]);
+        }
+
+        return $this;
     }
 
     public function cssClass(array|string $cssClass): static

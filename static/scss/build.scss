@@ -1,4 +1,4 @@
-// Variables are imported separately by the ThemeHelper class
+// variables.scss and maps.scss are imported separately by the \humhub\helpers\ThemeHelper class
 @import "mixins";
 @import "root";
 
@@ -46,6 +46,11 @@ $prev-nav: false !default;
 $prev-button: false !default;
 @if not $prev-button {
     @import "button";
+}
+
+$prev-link: false !default;
+@if not $prev-link {
+    @import "link";
 }
 
 $prev-form: false !default;

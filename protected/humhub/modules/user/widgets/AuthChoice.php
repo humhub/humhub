@@ -8,8 +8,8 @@
 
 namespace humhub\modules\user\widgets;
 
-use humhub\helpers\Html;
 use humhub\helpers\DeviceDetectorHelper;
+use humhub\helpers\Html;
 use humhub\modules\user\authclient\BaseFormAuth;
 use Yii;
 use yii\authclient\ClientInterface;
@@ -122,9 +122,9 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
      */
     public function beforeRun()
     {
-        return parent::beforeRun() &&
-            count($this->getClients()) > 0 &&
-            !(DeviceDetectorHelper::isIosApp() && Yii::$app->params['humhub']['disableAuthChoicesIos']);
+        return parent::beforeRun()
+            && count($this->getClients()) > 0
+            && !(DeviceDetectorHelper::isIosApp() && Yii::$app->params['humhub']['disableAuthChoicesIos']);
     }
 
     /**
@@ -145,13 +145,13 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
         echo Html::beginTag('div', ['class' => 'authChoice']);
 
         $i = 0;
-        $extraCssClass = 'btn-sxm';
+        $extraCssClass = '';
 
         foreach ($clients as $client) {
             $i++;
             if ($i == $this->maxShowClients + 1) {
                 // Add more button
-                echo Html::a('<i class="fa fa-angle-double-down" aria-hidden="true"></i>', '#', ['class' => 'btn btn-light float-end btn-sxm btn-auth-choice-more']);
+                echo Html::a('<i class="fa fa-angle-double-down" aria-hidden="true"></i>', '#', ['class' => 'btn btn-light float-end btn-auth-choice-more']);
 
                 // Div contains more auth clients
                 echo Html::beginTag('div', ['class' => 'auth-choice-more-buttons']);

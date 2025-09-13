@@ -44,6 +44,6 @@
 .ui-state-active,
 .ui-widget-content .ui-state-active,
 .ui-widget-header .ui-state-active {
-    border: 1px solid var(--bs-info) !important;
-    background: lighten($info, 25%) !important;
+    border: 1px solid var(--bs-accent) !important;
+    background: lighten($accent, 25%) !important;
 }

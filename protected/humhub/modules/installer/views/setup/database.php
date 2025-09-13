@@ -2,8 +2,8 @@
 
 use humhub\helpers\Html;
 use humhub\modules\installer\forms\DatabaseForm;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
-use humhub\widgets\modal\ModalButton;
 
 /* @var DatabaseForm $model */
 /* @var string $errorMessage */
@@ -38,10 +38,9 @@ use humhub\widgets\modal\ModalButton;
         <?php endif; ?>
         <hr/>
 
-        <?= ModalButton::primary(Yii::t('InstallerModule.base', 'Next'))
-            ->sm()
-            ->submit()
-            ->options(['data-message' => Yii::t('InstallerModule.base', 'Initializing database...')]) ?>
+        <?= Button::primary(Yii::t('InstallerModule.base', 'Next'))
+            ->loader(Yii::t('InstallerModule.base', 'Initializing database...'))
+            ->submit() ?>
 
         <?php ActiveForm::end(); ?>
     </div>

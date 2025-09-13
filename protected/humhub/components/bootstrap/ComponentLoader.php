@@ -5,15 +5,15 @@ namespace humhub\components\bootstrap;
 use humhub\components\InstallationState;
 use humhub\components\mail\Mailer;
 use humhub\modules\admin\models\forms\MailingSettingsForm;
-use Yii;
 use yii\base\BootstrapInterface;
-use yii\caching\DummyCache;
 use yii\helpers\ArrayHelper;
 use yii\log\Logger;
 use yii\web\Application;
 
-class SettingsLoader implements BootstrapInterface
+class ComponentLoader implements BootstrapInterface
 {
+    private static $loadedComponents = [];
+
     public function bootstrap($app)
     {
         if (!$app) {
@@ -22,12 +22,18 @@ class SettingsLoader implements BootstrapInterface
 
         $this->setMailerConfig($app);
         $this->setUserConfig($app);
-        $this->setCacheConfig($app);
         $this->setParams($app);
+    }
+
+    public static function isFixed($component)
+    {
+        return !ArrayHelper::keyExists($component, self::$loadedComponents);
     }
 
     private function updateComponentDefinition($app, $component, $definition)
     {
+        self::$loadedComponents[$component] = true;
+
         $app->set(
             $component,
             ArrayHelper::merge($this->getComponentDefinition($app, $component), $definition),
@@ -49,12 +55,11 @@ class SettingsLoader implements BootstrapInterface
             $app->log->logger->log('`mailer` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
         }
 
-        $transportType = $app->settings->get('mailer.transportType', MailingSettingsForm::TRANSPORT_PHP);
+        $transportType = $app->settings->get('mailerTransportType', MailingSettingsForm::TRANSPORT_PHP);
 
-        //Check if Test environment
+        // Check if Test environment
         if ($this->getComponentDefinition($app, 'mailer', 'class') !== Mailer::class) {
             $app->mailer->useFileTransport = true;
-
             return;
         }
 
@@ -71,26 +76,34 @@ class SettingsLoader implements BootstrapInterface
             $definition = [];
 
             if ($transportType === MailingSettingsForm::TRANSPORT_SMTP) {
-                if ($app->settings->get('mailer.hostname')) {
-                    $definition['transport']['host'] = $app->settings->get('mailer.hostname');
+                if ($app->settings->get('mailerHostname')) {
+                    $definition['transport']['host'] = $app->settings->get('mailerHostname');
                 }
-                if ($app->settings->get('mailer.port')) {
-                    $definition['transport']['port'] = (int)$app->settings->get('mailer.port');
+                if ($app->settings->get('mailerPort')) {
+                    $definition['transport']['port'] = (int)$app->settings->get('mailerPort');
                 } else {
                     $definition['transport']['port'] = 25;
                 }
-                if ($app->settings->get('mailer.username')) {
-                    $definition['transport']['username'] = $app->settings->get('mailer.username');
+                if ($app->settings->get('mailerUsername')) {
+                    $definition['transport']['username'] = $app->settings->get('mailerUsername');
                 }
-                if ($app->settings->get('mailer.password')) {
-                    $definition['transport']['password'] = $app->settings->get('mailer.password');
+                if ($app->settings->get('mailerPassword')) {
+                    $definition['transport']['password'] = $app->settings->get('mailerPassword');
                 }
-                $definition['transport']['scheme'] = (empty($app->settings->get('mailer.useSmtps'))) ? 'smtp' : 'smtps';
+
+                if ((empty($app->settings->get('mailerUseSmtps')))) {
+                    $definition['transport']['scheme'] = 'smtp';
+                } else {
+                    $definition['transport']['scheme'] = 'smtps';
+                    if (!empty($app->settings->get('mailerAllowSelfSignedCerts'))) {
+                        $definition['transport']['options'] = ['verify_peer' => false];
+                    }
+                }
 
             } elseif ($transportType === MailingSettingsForm::TRANSPORT_PHP) {
                 $definition['transport']['dsn'] = 'native://default';
             } elseif ($transportType === MailingSettingsForm::TRANSPORT_DSN) {
-                $definition['transport']['dsn'] = $app->settings->get('mailer.dsn');
+                $definition['transport']['dsn'] = $app->settings->get('mailerDsn');
             }
 
             $this->updateComponentDefinition($app, 'mailer', $definition);
@@ -114,37 +127,6 @@ class SettingsLoader implements BootstrapInterface
                 $definition['authTimeout'] = $authTimeout;
             }
             $this->updateComponentDefinition($app, 'user', $definition);
-        }
-    }
-
-    private function setCacheConfig($app): void
-    {
-        if ($app->has('cache', true) && !Yii::$app->cache instanceof DummyCache) {
-            $app->log->logger->log('`cache` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
-        }
-
-        $cacheClass = $app->settings->get('cacheClass');
-        $cacheComponent = [];
-
-        if (in_array($cacheClass, [\yii\caching\DummyCache::class, \yii\caching\FileCache::class])) {
-            $cacheComponent = [
-                'class' => $cacheClass,
-            ];
-        } elseif ($cacheClass == \yii\caching\ApcCache::class && (function_exists('apcu_add') || function_exists('apc_add'))) {
-            $cacheComponent = [
-                'class' => $cacheClass,
-                'useApcu' => (function_exists('apcu_add')),
-            ];
-        } elseif ($cacheClass === \yii\redis\Cache::class && Yii::$app->has('redis')) {
-            $cacheComponent = [
-                'class' => \yii\redis\Cache::class,
-            ];
-        }
-
-        if (!empty($cacheComponent)) {
-            $this->updateComponentDefinition($app, 'cache', ArrayHelper::merge($cacheComponent, [
-                'keyPrefix' => $app->id,
-            ]));
         }
     }
 

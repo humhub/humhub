@@ -13,9 +13,9 @@ use humhub\helpers\ThemeHelper;
 use humhub\libs\LogoImage;
 use humhub\models\UrlOembed;
 use humhub\modules\admin\components\Controller;
+use humhub\modules\admin\libs\CacheHelper;
 use humhub\modules\admin\models\forms\AddTopicForm;
 use humhub\modules\admin\models\forms\BasicSettingsForm;
-use humhub\modules\admin\models\forms\CacheSettingsForm;
 use humhub\modules\admin\models\forms\DesignSettingsForm;
 use humhub\modules\admin\models\forms\FileSettingsForm;
 use humhub\modules\admin\models\forms\LogsSettingsForm;
@@ -33,6 +33,7 @@ use humhub\modules\topic\models\Topic;
 use humhub\modules\user\helpers\LoginBackgroundImageHelper;
 use humhub\modules\user\models\User;
 use humhub\modules\web\pwa\widgets\SiteIcon;
+use humhub\widgets\mails\MailHeaderImage;
 use humhub\widgets\modal\ModalClose;
 use Yii;
 use yii\data\ActiveDataProvider;
@@ -128,6 +129,15 @@ class SettingController extends Controller
         return [];
     }
 
+    public function actionDeleteMailHeaderImage()
+    {
+        $this->forcePostRequest();
+        MailHeaderImage::set(null);
+
+        Yii::$app->response->format = 'json';
+        return [];
+    }
+
     /**
      * Delete Icon Image
      */
@@ -141,18 +151,12 @@ class SettingController extends Controller
     /**
      * Caching Options
      */
-    public function actionCaching()
+    public function actionClearCache()
     {
-        $form = new CacheSettingsForm();
-        if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-            $this->view->success(Yii::t('AdminModule.settings', 'Saved and flushed cache'));
-            return $this->redirect(['/admin/setting/caching']);
-        }
+        CacheHelper::flushCache();
+        $this->view->success(Yii::t('AdminModule.settings', 'Caches flushed successfully'));
 
-        return $this->render('caching', [
-            'model' => $form,
-            'cacheTypes' => $form->getTypes(),
-        ]);
+        return $this->redirect(['basic']);
     }
 
     /**
@@ -507,10 +511,6 @@ class SettingController extends Controller
 
     public function actionAdvanced()
     {
-        return $this->redirect(
-            [
-                'caching',
-            ],
-        );
+        return $this->redirect(['file']);
     }
 }

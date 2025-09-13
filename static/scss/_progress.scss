@@ -10,7 +10,7 @@
 }
 
 .progress-bar-info {
-    background-color: var(--bs-info);
+    background-color: var(--bs-accent);
     box-shadow: none;
 }
 
@@ -19,5 +19,5 @@
 //
 #nprogress .bar {
     height: 2px;
-    background: lighten($info, 8%);
+    background: lighten($accent, 8%);
 }

@@ -208,14 +208,12 @@ humhub.module('ui.additions', function (module, require, $) {
         });
 
         // Show tooltips on elements
-        module.register('tooltip', '.tt', function ($match) {
-            $match.tooltip({
-                container: 'body'
-            });
-
-            $match.on('click.tooltip', function () {
-                $('.tooltip').remove();
-            });
+        // Init on mouseover to make it working for new dynamically adding elements
+        document.addEventListener('mouseover', (e) => {
+            const el = e.target.closest('[data-bs-toggle=tooltip], .tt');
+            if (el && !bootstrap.Tooltip.getInstance(el)) {
+                (new bootstrap.Tooltip(el)).show();
+            }
         });
 
         $(document).on('click.humhub-ui-additions', function () {

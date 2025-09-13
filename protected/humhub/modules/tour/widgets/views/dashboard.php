@@ -50,8 +50,9 @@ $removeOptionHtml = Html::tag(
 
         <ul class="tour-list">
             <?php foreach (TourConfig::get() as $config): ?>
-                <li id="tour-panel-<?= TourConfig::getTourId($config) ?>"<?= $settingsManager->get(TourConfig::getTourId($config)) ? ' class="completed"' : '' ?>>
-                    <a href="<?= TourConfig::getStartUrl($config) ?>" data-pjax-prevent>
+                <?php $isCompleted = $settingsManager->get(TourConfig::getTourId($config)); ?>
+                <li id="tour-panel-<?= TourConfig::getTourId($config) ?>"<?= $isCompleted ? ' class="completed"' : '' ?>>
+                    <a href="<?= TourConfig::getStartUrl($config) ?>" class="<?= $isCompleted ? 'link-secondary' : 'link-accent' ?>" data-pjax-prevent>
                         <?= Icon::get('play-circle-o') ?> <?= TourConfig::getTitle($config) ?>
                     </a>
                 </li>

@@ -138,7 +138,7 @@
 
         .ProseMirror-menu-active {
             background: var(--hh-background-color-secondary);
-            border-left: 2px solid var(--bs-info);
+            border-left: 2px solid var(--bs-accent);
             opacity: 1 !important;
             padding: 4px 7px 4px 5px;
         }
@@ -248,7 +248,7 @@
     }
 
     .ProseMirror-editor-source:focus {
-        border: 2px solid var(--bs-info);
+        border: 2px solid var(--bs-accent);
     }
 }
 
@@ -269,7 +269,7 @@
     }
 
     .ProseMirror-menubar ~ .ProseMirror-focused {
-        border-color: var(--bs-info) !important;
+        border-color: var(--bs-accent) !important;
     }
 
     .ProseMirror-textblock-dropdown {
@@ -351,7 +351,7 @@
     }
 
     .ProseMirror-selectednode {
-        outline: 2px dashed lighten($info, 30%);
+        outline: 2px dashed lighten($accent, 30%);
     }
 
     /* Make sure li selections wrap around markers */
@@ -367,7 +367,7 @@
         right: -2px;
         top: -2px;
         bottom: -2px;
-        border: 2px solid lighten($info, 30%);
+        border: 2px solid lighten($accent, 30%);
         pointer-events: none;
     }
 
@@ -468,7 +468,7 @@
     }
 
     .ProseMirror [data-mention] {
-        color: var(--bs-info);
+        color: var(--bs-accent);
     }
 
     .ProseMirror {
@@ -509,7 +509,7 @@
     }
 
     .ProseMirror .column-resize-handle {
-        background-color: lighten($info, 40%);
+        background-color: lighten($accent, 40%);
         pointer-events: none;
         position: absolute;
         right: -2px;
@@ -627,7 +627,7 @@
 
     .emoji-nav-item.cur {
         border-left: 0;
-        border-top: 2px solid var(--bs-info);
+        border-top: 2px solid var(--bs-accent);
     }
 }
 
@@ -635,6 +635,10 @@
 [data-ui-richtext] {
     overflow-x: auto;
     overflow-wrap: break-word;
+
+    a {
+        color: var(--bs-accent);
+    }
 }
 
 #wallStream {

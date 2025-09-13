@@ -8,6 +8,7 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use humhub\components\InstallationState;
 use humhub\components\Theme;
 use humhub\helpers\ThemeHelper;
 use humhub\libs\LogoImage;
@@ -16,6 +17,7 @@ use humhub\modules\stream\actions\Stream;
 use humhub\modules\user\helpers\LoginBackgroundImageHelper;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\web\pwa\widgets\SiteIcon;
+use humhub\widgets\mails\MailHeaderImage;
 use ScssPhp\ScssPhp\Compiler;
 use ScssPhp\ScssPhp\Exception\SassException;
 use Yii;
@@ -37,10 +39,13 @@ class DesignSettingsForm extends Model
     public $logo;
     public $icon;
     public $loginBackgroundImage;
+    public $mailHeaderImage;
     public $dateInputDisplayFormat;
     public $defaultStreamSort;
     public $themePrimaryColor;
     public $useDefaultThemePrimaryColor;
+    public $themeAccentColor;
+    public $useDefaultThemeAccentColor;
     public $themeSecondaryColor;
     public $useDefaultThemeSecondaryColor;
     public $themeSuccessColor;
@@ -64,6 +69,11 @@ class DesignSettingsForm extends Model
     {
         parent::init();
 
+        // Do not try to load settings if the installation is not completed yet
+        if (!Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
+            return;
+        }
+
         $settingsManager = Yii::$app->settings;
         $themeVariables = Yii::$app->view->theme->variables;
         $themeVariables->flushCache();
@@ -78,6 +88,8 @@ class DesignSettingsForm extends Model
 
         $this->themePrimaryColor = $settingsManager->get('themePrimaryColor', $themeVariables->get('primary'));
         $this->useDefaultThemePrimaryColor = (bool)$settingsManager->get('useDefaultThemePrimaryColor', true);
+        $this->themeAccentColor = $settingsManager->get('themeAccentColor', $themeVariables->get('accent'));
+        $this->useDefaultThemeAccentColor = (bool)$settingsManager->get('useDefaultThemeAccentColor', true);
         $this->themeSecondaryColor = $settingsManager->get('themeSecondaryColor', $themeVariables->get('secondary'));
         $this->useDefaultThemeSecondaryColor = (bool)$settingsManager->get('useDefaultThemeSecondaryColor', true);
         $this->themeSuccessColor = $settingsManager->get('themeSuccessColor', $themeVariables->get('success'));
@@ -111,28 +123,94 @@ class DesignSettingsForm extends Model
             ['icon', 'image', 'extensions' => 'png, jpg, jpeg', 'minWidth' => 256, 'minHeight' => 256],
             ['icon', ImageSquareValidator::class],
             ['loginBackgroundImage', 'image', 'extensions' => 'png, jpg, jpeg', 'minWidth' => 800, 'minHeight' => 600],
+            ['mailHeaderImage', 'image', 'extensions' => 'png, jpg, jpeg', 'minWidth' => MailHeaderImage::MIN_WIDTH, 'minHeight' => MailHeaderImage::MIN_HEIGHT],
             ['dateInputDisplayFormat', 'in', 'range' => ['', 'php:d/m/Y']],
-            [['themePrimaryColor', 'themeSecondaryColor', 'themeSuccessColor', 'themeDangerColor', 'themeWarningColor', 'themeInfoColor', 'themeLightColor', 'themeDarkColor', 'themeCustomScss'], 'string'],
-            [['useDefaultThemePrimaryColor', 'useDefaultThemeSecondaryColor', 'useDefaultThemeSuccessColor', 'useDefaultThemeDangerColor', 'useDefaultThemeWarningColor', 'useDefaultThemeInfoColor', 'useDefaultThemeLightColor', 'useDefaultThemeDarkColor'], 'boolean'],
-            [['themePrimaryColor', 'themeSecondaryColor', 'themeSuccessColor', 'themeDangerColor', 'themeWarningColor', 'themeInfoColor', 'themeLightColor', 'themeDarkColor', 'themeCustomScss'], 'trim'],
-            [['themePrimaryColor', 'themeSecondaryColor', 'themeSuccessColor', 'themeDangerColor', 'themeWarningColor', 'themeInfoColor', 'themeLightColor', 'themeDarkColor'], 'match', 'pattern' => '/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
-            ['themeCustomScss', 'filter', 'filter' => function ($value) {
-                $patterns = [
-                    '/<style>/',
-                    '/<style type="text\/css">/',
-                    '/<\/style>/',
-                ];
-                $replacements = ['', '', ''];
-                return preg_replace($patterns, $replacements, $value);
-            }],
-            ['themeCustomScss', function ($attribute, $params, $validator): void {
-                $compiler = new Compiler();
-                try {
-                    $compiler->compileString($this->$attribute)->getCss();
-                } catch (SassException $e) {
-                    $this->addError($attribute, Yii::t('AdminModule.settings', 'Cannot compile SCSS to CSS:') . ' ' . $e->getMessage());
-                }
-            }],
+            [
+                [
+                    'themePrimaryColor',
+                    'themeAccentColor',
+                    'themeSecondaryColor',
+                    'themeSuccessColor',
+                    'themeDangerColor',
+                    'themeWarningColor',
+                    'themeInfoColor',
+                    'themeLightColor',
+                    'themeDarkColor',
+                    'themeCustomScss',
+                ],
+                'string',
+            ],
+            [
+                [
+                    'useDefaultThemePrimaryColor',
+                    'useDefaultThemeAccentColor',
+                    'useDefaultThemeSecondaryColor',
+                    'useDefaultThemeSuccessColor',
+                    'useDefaultThemeDangerColor',
+                    'useDefaultThemeWarningColor',
+                    'useDefaultThemeInfoColor',
+                    'useDefaultThemeLightColor',
+                    'useDefaultThemeDarkColor',
+                ],
+                'boolean',
+            ],
+            [
+                [
+                    'themePrimaryColor',
+                    'themeAccentColor',
+                    'themeSecondaryColor',
+                    'themeSuccessColor',
+                    'themeDangerColor',
+                    'themeWarningColor',
+                    'themeInfoColor',
+                    'themeLightColor',
+                    'themeDarkColor',
+                    'themeCustomScss',
+                ],
+                'trim',
+            ],
+            [
+                [
+                    'themePrimaryColor',
+                    'themeAccentColor',
+                    'themeSecondaryColor',
+                    'themeSuccessColor',
+                    'themeDangerColor',
+                    'themeWarningColor',
+                    'themeInfoColor',
+                    'themeLightColor',
+                    'themeDarkColor',
+                ],
+                'match',
+                'pattern' => '/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/',
+            ],
+            [
+                'themeCustomScss',
+                'filter',
+                'filter' => function ($value) {
+                    $patterns = [
+                        '/<style>/',
+                        '/<style type="text\/css">/',
+                        '/<\/style>/',
+                    ];
+                    $replacements = ['', '', ''];
+                    return preg_replace($patterns, $replacements, $value);
+                },
+            ],
+            [
+                'themeCustomScss',
+                function ($attribute, $params, $validator): void {
+                    $compiler = new Compiler();
+                    try {
+                        $compiler->compileString($this->$attribute)->getCss();
+                    } catch (SassException $e) {
+                        $this->addError(
+                            $attribute,
+                            Yii::t('AdminModule.settings', 'Cannot compile SCSS to CSS:') . ' ' . $e->getMessage(),
+                        );
+                    }
+                },
+            ],
         ];
     }
 
@@ -150,9 +228,12 @@ class DesignSettingsForm extends Model
             'logo' => Yii::t('AdminModule.settings', 'Logo upload'),
             'icon' => Yii::t('AdminModule.settings', 'Icon upload'),
             'loginBackgroundImage' => Yii::t('AdminModule.settings', 'Login Background'),
+            'mailHeaderImage' => Yii::t('AdminModule.settings', 'Email Header Image'),
             'dateInputDisplayFormat' => Yii::t('AdminModule.settings', 'Date input format'),
             'themePrimaryColor' => Yii::t('AdminModule.settings', 'Primary color'),
             'useDefaultThemePrimaryColor' => Yii::t('AdminModule.settings', 'Default'),
+            'themeAccentColor' => Yii::t('AdminModule.settings', 'Accent color'),
+            'useDefaultThemeAccentColor' => Yii::t('AdminModule.settings', 'Default'),
             'themeSecondaryColor' => Yii::t('AdminModule.settings', 'Secondary color'),
             'useDefaultThemeSecondaryColor' => Yii::t('AdminModule.settings', 'Default'),
             'themeSuccessColor' => Yii::t('AdminModule.settings', 'Success color'),
@@ -177,8 +258,16 @@ class DesignSettingsForm extends Model
     public function attributeHints()
     {
         return [
-            'spaceOrder' => Yii::t('AdminModule.settings', 'Custom sort order can be defined in the Space advanced settings.'),
+            'spaceOrder' => Yii::t(
+                'AdminModule.settings',
+                'Custom sort order can be defined in the Space advanced settings.',
+            ),
             'themeCustomScss' => Yii::t('AdminModule.settings', 'Use Sassy CSS syntax (SCSS)'),
+            'mailHeaderImage' => Yii::t('AdminModule.settings', 'The height should be between {minHeight} and {maxHeight} pixels, and the width should be {maxWidth} pixels for full width, or less for a centered image.', [
+                'minHeight' => MailHeaderImage::MIN_HEIGHT,
+                'maxHeight' => MailHeaderImage::MAX_HEIGHT,
+                'maxWidth' => MailHeaderImage::MAX_WIDTH,
+            ]),
         ];
     }
 
@@ -205,13 +294,19 @@ class DesignSettingsForm extends Model
             $this->loginBackgroundImage = $file;
         }
 
+        $files = UploadedFile::getInstancesByName('mailHeaderImage');
+        if (count($files) != 0) {
+            $file = $files[0];
+            $this->mailHeaderImage = $file;
+        }
+
         return parent::load($data, $formName);
     }
 
     /**
      * @return array a list of available themes
      */
-    public function getThemes()
+    public function getThemes(): array
     {
         $themes = [];
 
@@ -253,19 +348,40 @@ class DesignSettingsForm extends Model
             SiteIcon::set($this->icon);
         }
 
-        if ($this->loginBackgroundImage && $this->loginBackgroundImage instanceof UploadedFile) {
+        if ($this->loginBackgroundImage instanceof UploadedFile) {
             LoginBackgroundImageHelper::set($this->loginBackgroundImage->tempName);
         }
 
-        $settingsManager->set('themePrimaryColor', $this->useDefaultThemePrimaryColor ? null : $this->themePrimaryColor);
+        if ($this->mailHeaderImage instanceof UploadedFile) {
+            MailHeaderImage::set($this->mailHeaderImage->tempName);
+        }
+
+        $settingsManager->set(
+            'themePrimaryColor',
+            $this->useDefaultThemePrimaryColor ? null : $this->themePrimaryColor,
+        );
         $settingsManager->set('useDefaultThemePrimaryColor', $this->useDefaultThemePrimaryColor);
-        $settingsManager->set('themeSecondaryColor', $this->useDefaultThemeSecondaryColor ? null : $this->themeSecondaryColor);
+        $settingsManager->set(
+            'themeAccentColor',
+            $this->useDefaultThemeAccentColor ? null : $this->themeAccentColor,
+        );
+        $settingsManager->set('useDefaultThemeAccentColor', $this->useDefaultThemeAccentColor);
+        $settingsManager->set(
+            'themeSecondaryColor',
+            $this->useDefaultThemeSecondaryColor ? null : $this->themeSecondaryColor,
+        );
         $settingsManager->set('useDefaultThemeSecondaryColor', $this->useDefaultThemeSecondaryColor);
-        $settingsManager->set('themeSuccessColor', $this->useDefaultThemeSuccessColor ? null : $this->themeSuccessColor);
+        $settingsManager->set(
+            'themeSuccessColor',
+            $this->useDefaultThemeSuccessColor ? null : $this->themeSuccessColor,
+        );
         $settingsManager->set('useDefaultThemeSuccessColor', $this->useDefaultThemeSuccessColor);
         $settingsManager->set('themeDangerColor', $this->useDefaultThemeDangerColor ? null : $this->themeDangerColor);
         $settingsManager->set('useDefaultThemeDangerColor', $this->useDefaultThemeDangerColor);
-        $settingsManager->set('themeWarningColor', $this->useDefaultThemeWarningColor ? null : $this->themeWarningColor);
+        $settingsManager->set(
+            'themeWarningColor',
+            $this->useDefaultThemeWarningColor ? null : $this->themeWarningColor,
+        );
         $settingsManager->set('useDefaultThemeWarningColor', $this->useDefaultThemeWarningColor);
         $settingsManager->set('themeInfoColor', $this->useDefaultThemeInfoColor ? null : $this->themeInfoColor);
         $settingsManager->set('useDefaultThemeInfoColor', $this->useDefaultThemeInfoColor);

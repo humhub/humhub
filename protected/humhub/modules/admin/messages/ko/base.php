@@ -13,6 +13,7 @@ return [
   'Administrators' => '관리자',
   'Advanced' => '고급',
   'Advanced settings' => '고급 설정',
+  'All' => '모두',
   'Appearance' => '모양',
   'Approval' => '승인',
   'Authentication' => '인증',

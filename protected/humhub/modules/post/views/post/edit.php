@@ -19,7 +19,7 @@ use humhub\widgets\form\ActiveForm;
 <div class="content content_edit" id="post_edit_<?= $model->post->id; ?>">
     <?php $form = ActiveForm::begin(['id' => 'post-edit-form_' . $model->post->id]); ?>
 
-    <div class="content-create-input-group">
+    <div class="richtext-create-input-group">
         <?= $form->field($model->post, 'message')->widget(RichTextField::class, [
             'id' => 'post_input_' . $model->post->id,
             'layout' => RichTextField::LAYOUT_INLINE,
@@ -28,7 +28,7 @@ use humhub\widgets\form\ActiveForm;
             'placeholder' => Yii::t('PostModule.base', 'Edit your post...'),
         ])->label(false) ?>
 
-        <div class="upload-buttons">
+        <div class="richtext-create-buttons">
             <?= FileHandlerButtonDropdown::widget([
                 'primaryButton' => UploadButton::widget([
                     'id' => 'post_upload_' . $model->post->id,
@@ -44,7 +44,7 @@ use humhub\widgets\form\ActiveForm;
                 'cssButtonClass' => 'btn-sm btn-light',
                 'pullRight' => true,
             ]) ?>
-            <?= Button::info()
+            <?= Button::accent()
                 ->icon('send')
                 ->action('editSubmit', $submitUrl)
                 ->cssClass(' btn-comment-submit')->sm()

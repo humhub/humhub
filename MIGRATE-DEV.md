@@ -19,6 +19,7 @@ Updated minimum required PHP version to 8.2.
 - `\humhub\assets\DriverJsAsset` (driver.js)
 - `\humhub\modules\tour\Module::tourConfigFiles` (allows customizing the introduction tour)
 - `\humhub\modules\tour\Module::driverJsOptions`
+- `\humhub\widgets\mails\MailHeaderImage` widget for displaying a header image in emails
 
 ### Deprecated
 - `\humhub\components\Application::isInstalled()` use `\humhub\components\Application::hasState()` instead

@@ -1,6 +1,6 @@
 //
 // CSS Variables
-// $since 1.14.0
+// @since 1.14.0
 // --------------------------------------------------
 
 :root {
@@ -48,6 +48,7 @@
     // @deprecated since 1.18, use the above variable instead
     --default: #{$default};
     --primary: var(--bs-primary);
+    --accent: var(--bs-accent);
     --info: var(--bs-info);
     --success: var(--bs-success);
     --warning: var(--bs-warning);

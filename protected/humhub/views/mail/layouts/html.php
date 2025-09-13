@@ -9,6 +9,7 @@ use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\ui\mail\DefaultMailStyle;
 use humhub\widgets\FooterMenu;
+use humhub\widgets\mails\MailHeaderImage;
 use humhub\widgets\PoweredBy;
 use yii\helpers\Url;
 
@@ -18,7 +19,9 @@ use yii\helpers\Url;
 $defaultBackground = $this->theme->variable('background-color-main', '#fff');
 $colorPrimary = $this->theme->variable('primary', '#708fa0');
 $soft2Color = $this->theme->variable('text-color-soft2', '#aeaeae');
+$hasMailHeaderImage = MailHeaderImage::hasImage();
 ?>
+
 <?php $this->beginPage() ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -537,79 +540,13 @@ $soft2Color = $this->theme->variable('text-color-soft2', '#aeaeae');
 
             <!-- START VIEW HEADER -->
             <tr>
-                <td align="center" valign="top" style="background-color: <?= $colorPrimary ?>">
+                <td align="center" valign="top"<?= $hasMailHeaderImage ? '' : ' style="background-color: '. $colorPrimary . '"' ?>>
 
                     <!-- start container 600 -->
-                    <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container" style="background-color: <?= $colorPrimary ?>">
+                    <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container"<?= $hasMailHeaderImage ? '' : ' style="background-color: '. $colorPrimary . '"' ?>>
                         <tr>
-                            <td valign="top">
-
-                                <table width="560" align="center" border="0" cellspacing="0" cellpadding="0" class="full-width" style="background-color: <?= $colorPrimary ?>">
-                                    <tr>
-                                        <td valign="top" height="10"></td>
-                                    </tr>
-                                    <tr>
-                                        <td valign="top">
-
-                                            <!-- start container -->
-                                            <table width="100%" align="center" border="0" cellspacing="0" cellpadding="0">
-
-                                                <tr>
-                                                    <td valign="top">
-
-                                                        <!-- start view online -->
-                                                        <table align="left" border="0" cellspacing="0" cellpadding="0"
-                                                               class="container2">
-                                                            <tr>
-                                                                <td>
-<!-- Header app name begin-->
-                                                                    <table align="center" border="0" cellspacing="0" cellpadding="0">
-                                                                        <tr>
-                                                                            <td style="text-align:center;">
-                                                                                <span style="text-decoration: none; color:<?= $this->theme->variable('text-color-contrast', '#ffffff') ?>">
-                                                                                    <a href="<?= Url::to(['/'], true) ?>"
-                                                                                        style="text-decoration: none; font-size: 18px; line-height: 27px; font-family: <?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color: <?= $this->theme->variable('text-color-contrast', '#ffffff') ?>; font-weight: 700; text-align: left;">
-                                                                                            <?= Html::encode(Yii::$app->name) ?>
-                                                                                    </a>
-                                                                                </span>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </table>
-<!-- Header app name end-->
-                                                                </td>
-                                                            </tr>
-                                                            <!-- start space -->
-                                                            <tr>
-                                                                <td valign="top" class="increase-Height">
-                                                                </td>
-                                                            </tr>
-                                                            <!-- end space -->
-                                                        </table>
-                                                        <!-- end view online -->
-
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                            <!-- end container  -->
-                                        </td>
-                                    </tr>
-
-                                    <!-- start space -->
-                                    <tr>
-                                        <td valign="top" height="10">
-                                        </td>
-                                    </tr>
-                                    <!-- end space -->
-
-                                    <!-- start space -->
-                                    <tr>
-                                        <td valign="top" class="increase-Height">
-                                        </td>
-                                    </tr>
-                                    <!-- end space -->
-
-                                </table>
-                                <!-- end container 600-->
+                            <td>
+                                <?= MailHeaderImage::widget() ?>
                             </td>
                         </tr>
                     </table>

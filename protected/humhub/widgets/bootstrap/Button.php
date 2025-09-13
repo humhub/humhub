@@ -26,7 +26,11 @@ class Button extends \yii\bootstrap5\Button
 {
     use BootstrapVariationsTrait;
 
-    public bool $loader = true;
+    /**
+     * If string, the loader is active and a custom loader text is displayed
+     */
+    public bool|string $loader = true;
+
     /**
      * @inerhitdoc
      */
@@ -72,12 +76,16 @@ class Button extends \yii\bootstrap5\Button
         return static::primary($label ?? Yii::t('base', 'Save'));
     }
 
+    /**
+     * @deprecated since 1.18 use [[\humhub\widgets\bootstrap\Link::to()]] instead
+     */
     public static function asLink(string $label = null, $href = '#'): static
     {
         $button = self::instance($label)
             ->loader(false)
             ->link($href);
         Html::removeCssClass($button->options, ['class' => 'btn']);
+        Html::addCssClass($button->options, ['class' => 'link']);
         return $button;
     }
 
@@ -104,7 +112,6 @@ class Button extends \yii\bootstrap5\Button
             ->link($url)
             ->icon('back')
             ->right()
-            ->loader(true)
             ->sm();
     }
 
@@ -117,9 +124,9 @@ class Button extends \yii\bootstrap5\Button
             ->cssClass('input-field-addon');
     }
 
-    public function loader($active = true): static
+    public function loader(bool|string $loader = true): static
     {
-        $this->loader = $active;
+        $this->loader = $loader;
         return $this;
     }
 
@@ -227,7 +234,7 @@ class Button extends \yii\bootstrap5\Button
         ); // For compatibility with old bootstrap buttons
 
         if ($this->loader) {
-            $this->options['data-ui-loader'] = '';
+            $this->options['data-ui-loader'] = $this->loader;
         }
 
         // Workaround since data-method handler prevents confirm or other action handlers from being executed.
@@ -241,17 +248,15 @@ class Button extends \yii\bootstrap5\Button
             $this->cssClass('btn-icon-only');
         }
 
-        $text =
-            ($this->icon ? $this->icon . ' ' : '') .
-            ($this->encodeLabel ? Html::encode($this->label) : $this->label);
+        $text = $this->icon . ($this->encodeLabel ? Html::encode($this->label) : $this->label);
 
         if ($this->size) {
             Html::addCssClass($this->options, ['class' => 'btn-' . $this->size]);
         }
 
-        return $this->asLink ?
-            Html::a($text, $this->getHref(), $this->options) :
-            Html::button($text, $this->options);
+        return $this->asLink
+            ? Html::a($text, $this->getHref(), $this->options)
+            : Html::button($text, $this->options);
     }
 
     public static function instance(?string $text = null, ?string $color = null): static
@@ -270,7 +275,7 @@ class Button extends \yii\bootstrap5\Button
         // btn-primary → btn-outline-primary
         // btn-danger → btn-outline-danger
         // And so on for all Bootstrap 5 colors
-        $pattern = '/\bbtn-(primary|secondary|success|danger|warning|info|light|dark)\b/';
+        $pattern = '/\bbtn-(primary|secondary|success|danger|warning|info|accent|light|dark)\b/';
         $replacement = 'btn-outline-$1';
 
         if ($this->options['class'] !== null) {

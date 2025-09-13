@@ -10,11 +10,12 @@
     --bs-btn-padding-y: 0.5rem;
     --bs-btn-font-weight: 600;
     --bs-btn-border-radius: 3px;
+
     white-space: nowrap;
 
     &:not(.btn-icon-only) {
         i.fa {
-            margin-right: 0.3rem;
+            margin-right: 0.6rem;
         }
     }
 
@@ -26,12 +27,24 @@
 .btn-sm, .btn-group-sm > .btn {
     --bs-btn-padding-x: 0.5rem;
     --bs-btn-padding-y: 0.2rem;
+
+    &:not(.btn-icon-only) {
+        i.fa {
+            margin-right: 0.4rem;
+        }
+    }
 }
 
 .btn-lg, .btn-group-lg > .btn {
     --bs-btn-padding-x: 1.75rem;
     --bs-btn-padding-y: 0.9rem;
     --bs-btn-font-size: 1.1rem;
+
+    &:not(.btn-icon-only) {
+        i.fa {
+            margin-right: 0.8rem;
+        }
+    }
 }
 
 .btn-group > .btn {
@@ -48,6 +61,7 @@
 
 $white-button-variant-colors: (
     primary: $primary,
+    accent: $accent,
     secondary: $secondary,
     success: $success,
     danger: $danger,
@@ -73,5 +87,8 @@ $white-button-variant-colors: (
         // Force white text color
         --bs-btn-active-color: var(--hh-text-color-contrast);
         --bs-btn-hover-color: var(--hh-text-color-contrast);
+    }
+    .btn-#{$variant}:disabled, .btn-#{$variant}.disabled, fieldset:disabled .btn-#{$variant} {
+        --bs-btn-disabled-color: var(--hh-text-color-contrast);
     }
 }

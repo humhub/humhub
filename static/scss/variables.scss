@@ -1,32 +1,43 @@
 //
 // Sass variables
 // For CSS variables, see _root.scss
-// Bootstrap variables and functions such as tint-color() and shade-color() are not available for this file
-// All variables mus have the !default flag to allow child-themes to overwrite them
+// All variables must have the !default flag to allow child-themes to overwrite them
 // --------------------------------------------------
 
 $isFluid: false;
 
 //
-// Default base colors (can be overwritten in Administration -> Settings -> Appearance)
+// Default Bootstrap base colors (can be overwritten in Administration -> Settings -> Appearance)
 // --------------------------------------------------
 
-$primary: #1b8291 !default;
+$primary: #435f6f !default;
 $secondary: #7a7a7a !default;
-$info: #21A1B3 !default;
+$info: #0582FF !default;
 $success: #97d271 !default;
 $warning: #FFC107 !default;
 $danger: #FC4A64 !default;
 $light: #e7e7e7 !default;
 $dark: #333 !default;
 
+//
+// HumHub Accent color (can be overwritten in Administration -> Settings -> Appearance)
+// --------------------------------------------------
+
+$accent: #21A1B3 !default;
+$accent-text-emphasis: shade-color($accent, 60%) !default;
+$accent-bg-subtle: tint-color($accent, 80%) !default;
+$accent-border-subtle: tint-color($accent, 60%) !default;
+$accent-text-emphasis-dark: tint-color($accent, 60%) !default;
+$accent-bg-subtle-dark: shade-color($accent, 80%) !default;
+$accent-border-subtle-dark: shade-color($accent, 60%) !default;
 
 //
 // Color Bootstrap overwritten variables
 // --------------------------------------------------
 
-$link-hover-color: mix(black, $primary, 10%) !default;
-$code-color: mix(black, $info, 10%) !default;
+$link-color: #000000 !default;
+$link-hover-color: $link-color;
+$code-color: mix(black, $accent, 10%) !default;
 $body-color: #555 !default;
 $body-bg: #ededed !default;
 $input-border-color: #e9ecef !default;
@@ -78,11 +89,11 @@ $background-color-page: $body-bg !default;
 
 // Informative highlighting color
 // (e.g. Comment Permalink, Shared Item, Calendar CurDay, Wiki Active Page Nav, Mail Module Speech Bubble)
-$background-color-highlight: rgba($info, 0.2) !default;
+$background-color-highlight: rgba($accent, 0.2) !default;
 
 // Informative highlighting soft color
 // (e.g. Wiki Active Category)
-$background-color-highlight-soft: lighten(desaturate(adjust-hue($info, 6), 16), 55) !default;
+$background-color-highlight-soft: lighten(desaturate(adjust-hue($accent, 6), 16), 55) !default;
 
 // Additional background colors
 $background3: #d7d7d7 !default;
@@ -162,7 +173,6 @@ $default: #e7e7e7 !default;
 $link: $primary !default;
 
 
-
 // Dark color mode variables
 //
 // Custom variables for the `[data-bs-theme="dark"]` theme.
@@ -172,7 +182,7 @@ $link: $primary !default;
 // --------------------------------------------------
 
 $link-hover-color-dark: mix(white, $primary, 10%) !default;
-$code-color-dark: mix(white, $info, 10%) !default;
+$code-color-dark: mix(white, $accent, 10%) !default;
 $body-color-dark: #ddd !default;
 $body-bg-dark: #000 !default;
 $input-border-color-dark: #1f2225 !default;
@@ -222,11 +232,11 @@ $background-color-page-dark: $body-bg-dark !default;
 
 // Informative highlighting color
 // (e.g. Comment Permalink, Shared Item, Calendar CurDay, Wiki Active Page Nav, Mail Module Speech Bubble)
-$background-color-highlight-dark: rgba($info, 0.2) !default;
+$background-color-highlight-dark: rgba($accent, 0.2) !default;
 
 // Informative highlighting soft color
 // (e.g. Wiki Active Category)
-$background-color-highlight-soft-dark: darken(desaturate(adjust-hue($info, 6), 16), 55) !default;
+$background-color-highlight-soft-dark: darken(desaturate(adjust-hue($accent, 6), 16), 55) !default;
 
 // Additional background colors
 $background3-dark: #393939 !default;

@@ -97,9 +97,9 @@ class Alert extends \yii\bootstrap5\Alert implements \Stringable
         }
 
         echo
-            Html::beginTag('div', $this->options) . "\n" .
-            $this->renderBodyEnd() . "\n" .
-            Html::endTag('div');
+            Html::beginTag('div', $this->options) . "\n"
+            . $this->renderBodyEnd() . "\n"
+            . Html::endTag('div');
 
         $this->registerPlugin('alert');
     }

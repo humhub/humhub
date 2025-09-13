@@ -10,6 +10,7 @@ use humhub\modules\user\helpers\LoginBackgroundImageHelper;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
+use humhub\widgets\mails\MailHeaderImage;
 use yii\helpers\Url;
 
 /**
@@ -30,11 +31,15 @@ $this->registerJsConfig('admin', [
         'confirm.deleteLoginBg.header' => Yii::t('AdminModule.settings', '<strong>Confirm</strong> image deletion'),
         'confirm.deleteLoginBg.body' => Yii::t('UserModule.account', 'Do you really want to delete your login background image?'),
         'confirm.deleteLoginBg.confirm' => Yii::t('AdminModule.settings', 'Delete'),
+        'confirm.deleteMailHeader.header' => Yii::t('AdminModule.settings', '<strong>Confirm</strong> image deletion'),
+        'confirm.deleteMailHeader.body' => Yii::t('UserModule.account', 'Do you really want to delete your mail header image?'),
+        'confirm.deleteMailHeader.confirm' => Yii::t('AdminModule.settings', 'Delete'),
     ],
 ]);
 
 $iconUrl = SiteIcon::getUrl(140);
 $loginBgUrl = LoginBackgroundImageHelper::getUrl();
+$mailHeaderUrl = MailHeaderImage::getUrl();
 $themeVariables = Yii::$app->view->theme->variables;
 ?>
 
@@ -74,8 +79,6 @@ $themeVariables = Yii::$app->view->theme->variables;
         'php:d/m/Y' => Yii::t('AdminModule.settings', 'Fixed format (dd/mm/yyyy) - Example: {example}', ['{example}' => Yii::$app->formatter->asDate(time(), 'php:d/m/Y')]),
     ]) ?>
 
-    <strong><?= Yii::t('AdminModule.settings', 'Mobile appearance') ?></strong>
-
     <div class="bg-light p-3 mt-2">
         <?= $form->field($model, 'logo')->fileInput(['id' => 'admin-logo-file-upload', 'data-action-change' => 'admin.changeLogo', 'style' => 'display: none', 'name' => 'logo[]']); ?>
         <div class="image-upload-container" id="logo-upload">
@@ -86,7 +89,7 @@ $themeVariables = Yii::$app->view->theme->variables;
                  style="max-height: 40px;<?= LogoImage::hasImage() ? '' : 'display:none' ?>">
 
             <div class="image-upload-buttons" id="logo-upload-buttons" style="display: block;">
-                <?= Button::info()->icon('cloud-upload')->id('admin-logo-upload-button')->sm()->loader(false) ?>
+                <?= Button::accent()->icon('cloud-upload')->id('admin-logo-upload-button')->sm()->loader(false) ?>
 
                 <?= Button::danger()->id('admin-delete-logo-image')
                     ->action('admin.deletePageLogo', Url::to(['/admin/setting/delete-logo-image']))
@@ -103,7 +106,7 @@ $themeVariables = Yii::$app->view->theme->variables;
                  style="max-height: 40px;">
 
             <div class="image-upload-buttons" id="icon-upload-buttons" style="display: block;">
-                <?= Button::info()->icon('cloud-upload')->id('admin-icon-upload-button')->sm()->loader(false) ?>
+                <?= Button::accent()->icon('cloud-upload')->id('admin-icon-upload-button')->sm()->loader(false) ?>
 
                 <?= Button::danger()->id('admin-delete-icon-image')
                     ->action('admin.deletePageIcon', Url::to(['/admin/setting/delete-icon-image']))
@@ -119,11 +122,27 @@ $themeVariables = Yii::$app->view->theme->variables;
             <img class="rounded" id="loginBg-image" src="<?= $loginBgUrl ?>" style="max-height: 40px;">
 
             <div class="image-upload-buttons" id="loginBg-upload-buttons" style="display: block;">
-                <?= Button::info()->icon('cloud-upload')->id('admin-loginBg-upload-button')->sm()->loader(false) ?>
+                <?= Button::accent()->icon('cloud-upload')->id('admin-loginBg-upload-button')->sm()->loader(false) ?>
 
                 <?= Button::danger()->id('admin-delete-loginBg-image')
                     ->action('admin.deleteLoginBg', Url::to(['/admin/setting/delete-login-background-image']))
                     ->style(LoginBackgroundImageHelper::hasImage() ? '' : 'display:none')->icon('remove')->sm()->loader(false) ?>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="bg-light p-3 mt-2">
+        <?= $form->field($model, 'mailHeaderImage')->fileInput(['id' => 'admin-mailHeader-file-upload', 'data-action-change' => 'admin.changeMailHeader', 'class' => 'd-none', 'name' => 'mailHeaderImage[]']) ?>
+        <div class="image-upload-container" id="mailHeader-upload">
+            <img class="rounded" id="mailHeader-image" src="<?= $mailHeaderUrl ?>" style="max-height: 40px;">
+
+            <div class="image-upload-buttons" id="mailHeader-upload-buttons" style="display: block;">
+                <?= Button::accent()->icon('cloud-upload')->id('admin-mailHeader-upload-button')->sm()->loader(false) ?>
+
+                <?= Button::danger()->id('admin-delete-mailHeader-image')
+                    ->action('admin.deleteMailHeader', Url::to(['/admin/setting/delete-mail-header-image']))
+                    ->style(MailHeaderImage::hasImage() ? '' : 'display:none')->icon('remove')->sm()->loader(false) ?>
             </div>
         </div>
     </div>
@@ -135,7 +154,7 @@ $themeVariables = Yii::$app->view->theme->variables;
     <?php $checkBoxOptions = ['options' => ['class' => 'pt-2']]; ?>
 
     <div class="row">
-        <div class="col-lg-6 mb-3">
+        <div class="col-lg-4 mb-3">
             <?= Html::activeLabel($model, 'themePrimaryColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themePrimaryColor')->colorInput(['disabled' => $model->useDefaultThemePrimaryColor]) ?>
@@ -143,7 +162,15 @@ $themeVariables = Yii::$app->view->theme->variables;
             </div>
         </div>
 
-        <div class="col-lg-6 mb-3">
+        <div class="col-lg-4 mb-3">
+            <?= Html::activeLabel($model, 'themeAccentColor') ?>
+            <div class="input-group input-color-group bg-light p-3 pb-0">
+                <?= $form->field($model, 'themeAccentColor')->colorInput(['disabled' => $model->useDefaultThemeAccentColor]) ?>
+                <?= $form->field($model, 'useDefaultThemeAccentColor', $checkBoxOptions)->checkbox() ?>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-3">
             <?= Html::activeLabel($model, 'themeSecondaryColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themeSecondaryColor')->colorInput(['disabled' => $model->useDefaultThemeSecondaryColor]) ?>
@@ -153,7 +180,7 @@ $themeVariables = Yii::$app->view->theme->variables;
     </div>
 
     <div class="row">
-        <div class="col-lg-6 mb-3">
+        <div class="col-lg-4 mb-3">
             <?= Html::activeLabel($model, 'themeSuccessColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themeSuccessColor')->colorInput(['disabled' => $model->useDefaultThemeSuccessColor]) ?>
@@ -161,35 +188,33 @@ $themeVariables = Yii::$app->view->theme->variables;
             </div>
         </div>
 
-        <div class="col-lg-6 mb-3">
+        <div class="col-lg-4 mb-3">
             <?= Html::activeLabel($model, 'themeDangerColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themeDangerColor')->colorInput(['disabled' => $model->useDefaultThemeDangerColor]) ?>
                 <?= $form->field($model, 'useDefaultThemeDangerColor', $checkBoxOptions)->checkbox() ?>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-lg-6 mb-3">
+        <div class="col-lg-4 mb-3">
             <?= Html::activeLabel($model, 'themeWarningColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themeWarningColor')->colorInput(['disabled' => $model->useDefaultThemeWarningColor]) ?>
                 <?= $form->field($model, 'useDefaultThemeWarningColor', $checkBoxOptions)->checkbox() ?>
             </div>
         </div>
+    </div>
 
-        <div class="col-lg-6 mb-3">
+    <div class="row">
+        <div class="col-lg-4 mb-3">
             <?= Html::activeLabel($model, 'themeInfoColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themeInfoColor')->colorInput(['disabled' => $model->useDefaultThemeInfoColor]) ?>
                 <?= $form->field($model, 'useDefaultThemeInfoColor', $checkBoxOptions)->checkbox() ?>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-lg-6 mb-3">
+        <div class="col-lg-4 mb-3">
             <?= Html::activeLabel($model, 'themeLightColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themeLightColor')->colorInput(['disabled' => $model->useDefaultThemeLightColor]) ?>
@@ -197,7 +222,7 @@ $themeVariables = Yii::$app->view->theme->variables;
             </div>
         </div>
 
-        <div class="col-lg-6 mb-3">
+        <div class="col-lg-4 mb-3">
             <?= Html::activeLabel($model, 'themeDarkColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themeDarkColor')->colorInput(['disabled' => $model->useDefaultThemeDarkColor]) ?>
@@ -231,7 +256,7 @@ $themeVariables = Yii::$app->view->theme->variables;
             });
         }
 
-        <?php foreach (['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'] as $color) : ?>
+        <?php foreach (['primary', 'accent', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'] as $color) : ?>
             setupColorFieldToggleDisabled('<?= $color ?>', '<?= $themeVariables->get($color) ?>');
         <?php endforeach; ?>
     })

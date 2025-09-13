@@ -13,6 +13,7 @@ return [
   'Administrators' => 'Διαχειριστές',
   'Advanced' => 'Προηγμένη',
   'Advanced settings' => 'Προηγμένες ρυθμίσεις',
+  'All' => 'Όλα',
   'Appearance' => 'Εμφάνιση',
   'Approval' => 'Έγκριση',
   'Authentication' => 'Αυθεντικοποίηση',

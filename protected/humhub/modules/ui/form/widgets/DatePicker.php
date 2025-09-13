@@ -105,6 +105,19 @@ class DatePicker extends BaseDatePicker
         }
 
         $this->registerClientEvents('datepicker', $containerID);
+
+        // Hide date picker on press Enter on phone browser
+        $this->getView()->registerJs('jQuery("#' . $containerID . '").on("blur", function() {
+            jQuery(document).on("mousedown", ".ui-datepicker", function() {
+              jQuery(this).data("isClicked", true);
+            }).on("mouseup", function() {
+                setTimeout(() => jQuery(".ui-datepicker").data("isClicked", false), 0);
+            });
+            if (jQuery(".ui-datepicker").data("isClicked") === false) {
+                jQuery(this).datepicker("hide");
+            }
+        });');
+
         JuiAsset::register($this->getView());
     }
 

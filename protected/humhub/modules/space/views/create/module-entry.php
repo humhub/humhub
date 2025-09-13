@@ -29,7 +29,7 @@ use humhub\widgets\bootstrap\Button;
     <div class="col-6 col-md-5 col-lg-6"><?= $module->getDescription() ?></div>
     <div class="col-5 col-md-3 module-actions">
         <?= Button::asLink(Yii::t('SpaceModule.manage', 'Enable'))
-            ->cssClass('btn btn-sm btn-info enable')
+            ->cssClass('btn btn-sm btn-accent enable')
             ->style($space->moduleManager->isEnabled($module->id) ? 'display:none' : '')
             ->loader()
             ->options([
@@ -38,7 +38,7 @@ use humhub\widgets\bootstrap\Button;
             ]) ?>
         <?= Button::asLink(Yii::t('ContentModule.base', 'Enabled'))
             ->icon('check')
-            ->cssClass('btn btn-sm btn-info active disable')
+            ->cssClass('btn btn-sm btn-accent active disable')
             ->style(!$space->moduleManager->isEnabled($module->id) ? 'display:none' : '')
             ->loader()
             ->options([

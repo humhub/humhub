@@ -34,36 +34,33 @@ class ContainerModuleActionButtons extends Widget
      */
     public function init()
     {
-        if ($this->module->getContentContainerConfigUrl($this->contentContainer) &&
-            $this->contentContainer->moduleManager->isEnabled($this->module->id)) {
+        $isEnabled = $this->contentContainer->moduleManager->isEnabled($this->module->id);
+
+        if ($this->module->getContentContainerConfigUrl($this->contentContainer) && $isEnabled) {
             $this->buttons[] = Button::asLink(Yii::t('ContentModule.base', 'Configure'), $this->module->getContentContainerConfigUrl($this->contentContainer))
-                ->cssClass('btn btn-sm btn-info configure-module-' . $this->module->id);
+                ->cssClass('btn btn-sm btn-accent configure-module-' . $this->module->id);
         }
 
         if ($this->contentContainer->moduleManager->canDisable($this->module->id)) {
-            $this->buttons[] = Button::asLink('<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t('ContentModule.base', 'Enabled'), '#')
-                ->cssClass('btn btn-sm btn-info active disable disable-module-' . $this->module->id)
-                ->style($this->contentContainer->moduleManager->isEnabled($this->module->id) ? '' : 'display:none')
-                ->options([
-                    'data-action-click' => 'content.container.disableModule',
-                    'data-action-url' => $this->getDisableUrl(),
-                    'data-reload' => '1',
-                    'data-action-confirm-header' => Yii::t('AdminModule.modules', 'Disable Module'),
-                    'data-action-confirm' => $this->getDisableConfirmationText(),
-                    'data-action-confirm-text' => Yii::t('AdminModule.base', 'Disable'),
-                    'data-ui-loader' => 1,
-                ]);
+            $this->buttons[] = Button::accent(Yii::t('ContentModule.base', 'Enabled'))
+                ->sm()
+                ->outline()
+                ->icon('check')
+                ->cssClass('disable disable-module-' . $this->module->id . ($isEnabled ? '' : ' d-none'))
+                ->action('content.container.disableModule', $this->getDisableUrl())
+                ->options(['data-reload' => '1'])
+                ->confirm(
+                    Yii::t('AdminModule.modules', 'Disable Module'),
+                    $this->getDisableConfirmationText(),
+                    Yii::t('AdminModule.base', 'Disable'),
+                );
         }
 
-        $this->buttons[] = Button::asLink(Yii::t('ContentModule.base', 'Enable'), '#')
-            ->cssClass('btn btn-sm btn-info enable enable-module-' . $this->module->id)
-            ->style($this->contentContainer->moduleManager->isEnabled($this->module->id) ? 'display:none' : '')
-            ->options([
-                'data-action-click' => 'content.container.enableModule',
-                'data-action-url' => $this->getEnableUrl(),
-                'data-reload' => '1',
-                'data-ui-loader' => 1,
-            ]);
+        $this->buttons[] = Button::accent(Yii::t('ContentModule.base', 'Enable'))
+            ->sm()
+            ->cssClass('enable enable-module-' . $this->module->id . ($isEnabled ? ' d-none' : ''))
+            ->action('content.container.enableModule', $this->getEnableUrl())
+            ->options(['data-reload' => '1']);
 
         parent::init();
     }

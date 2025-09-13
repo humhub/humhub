@@ -1,8 +1,35 @@
 HumHub Changelog
 ================
 
-1.18.0 (Unreleased - Develop)
------------------------------
+1.18.0-beta.4 (Unreleased)
+---------------------------------
+- Enh #7690: Allow uploading a custom Email Header image, or using the Logo image
+- Fix #7690: Remove "Mobile appearance" from Appearance form
+- Fix #7697: Fix submitting a form with file upload from a modal window
+- Fix #7699: Fixed old Mailer Vars usage
+- Fix #7700: `<code>` styling
+- Fix #7701: Activity Box Bottom Padding
+- Fix #7702: Selectors/Pickers BG color
+- Enh #7620: Add box shadow to cards (such as cards in the People and Spaces pages)
+
+1.18.0-beta.3 (September 9, 2025)
+---------------------------------
+
+> Updated minimum required PHP version to 8.2.
+
+> Bootstrap 5 is the default CSS framework, which may require migration of custom modules or themes.
+
+> Caching must now be configured via the [configuration file](https://docs.humhub.org/docs/admin/performance), with `FileCache` as the default.
+
+- Fix #7680: Migration of Theme Colors broken
+- Fix #7681: Add missing 'DatabaseForm' to 'InstallController
+- Fix #7685: In custom themes, the default colors in the Appearance Settings are overwritten by the base theme colors
+- Chg #7687: Link color is now black. Use the `link-accent` class to emphasize a link.
+- Fix #7688: Fix notifications filter toggler
+- Fix #7694: Admin menu active "Information" item for the Logging page
+
+1.18.0-beta.2 (September 4, 2025)
+---------------------------------
 
 > Updated minimum required PHP version to 8.2.
 
@@ -49,10 +76,23 @@ HumHub Changelog
 - Fix #7604: Fix registration by auth clients
 - Enh #7584: Mobile App: allow configuring whitelisted domains
 - Fix #7545: Collapsed panels are briefly shown on page load
+- Fix #7561: Added ability to check if a component is explicitly defined in the config file in `ComponentLoader`
 - Fix #7617: Add validation for user profile field translation category
-- Enh #7620: Add box shadow to cards (such as cards in the People and Spaces pages)
+- Enh #7619: Mail Summary - Text length of the `ContentCreated` activity configurable
+- Fix #7631: Hide date picker on press Enter on phone browser
+- Fix #7628: Fix space membership modal
+- Fix #7636: Send button inside upload-buttons class
+- Fix #7640: Installer - Small buttons
+- Enh #7645: Allow displaying a custom loading message using `Button::loader('Custom Loading Message')` or `LoaderWidget::widget(['text' => 'Custom Loading Message'])`
+- Fix #7652: Installer - Replace loading modal box with button loading custom messages
+- Enh #7666: Enable dashboard filters when filter query parameters are present
+- Fix #7654: Share intent modal dialog not closing since BS5 (1.18)
+- Fix #7656: Fix logo on registration last step page
+- Fix #7658: Fix loader on attach image to RichText field
+- Enh #7661: Parent groups
+- Enh #7662: In buttons, add right margin to the icon, so that the space char between the icon and the label is no longer needed (see MIGRATE-BS5.md -> ## Buttons)
 
-1.17.3 (Unreleased)
+1.17.3 (July 17, 2025)
 ----------------------
 - Fix #7484: Use password type on the installation DB config form
 - Fix #7486: Catch errors in external file handlers
@@ -68,6 +108,10 @@ HumHub Changelog
 - Fix #7563: Top padding on medium screen size for some themes such as Entreprise theme
 - Fix #7570: Fix `CodeMirrorInputWidget` in collapsible fields
 - Fix #7573: Update test user passwords
+- Enh #7577: Increase Group Name max length to 120chars
+- Enh #7576: Do not invite existing space members when selected `all registered members`
+- Enh #7579: Mail headers to restrict auto-reply
+- Fix #7646: Fix account password recovery captcha exception
 - Fix #7543: Remove duplicate UserInvites Cleanup job
 - Fix #7563: Top padding on medium screen size for some themes such as Entreprise theme
 

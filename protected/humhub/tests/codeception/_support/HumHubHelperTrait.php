@@ -62,6 +62,7 @@ trait HumHubHelperTrait
         $cachePath = Yii::getAlias('@runtime/cache');
         if ($cachePath && is_dir($cachePath)) {
             FileHelper::removeDirectory($cachePath);
+            FileHelper::createDirectory($cachePath);
         }
         Yii::$app->cache->flush();
         Yii::$app->runtimeCache->flush();

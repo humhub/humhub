@@ -8,6 +8,7 @@
 
 namespace humhub\components;
 
+use humhub\helpers\ThemeHelper;
 use humhub\models\Setting;
 use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\admin\jobs\DisableModuleJob;
@@ -324,6 +325,18 @@ class Module extends \yii\base\Module
     {
         if ($this->isEnabled) {
             $this->getMigrationService()->migrateUp();
+
+            // Check if current theme (parent) is located in this module
+            foreach (array_merge([Yii::$app->view->theme], Yii::$app->view->theme->getParents()) as $theme) {
+                if (str_starts_with($theme->getBasePath(), $this->getBasePath())) {
+                    try {
+                        ThemeHelper::buildCss();
+                        break;
+                    } catch (\Exception $e) {
+                        Yii::error('Could not build Theme CSS after Module Update: ' . $e->getMessage());
+                    }
+                }
+            }
         }
     }
 

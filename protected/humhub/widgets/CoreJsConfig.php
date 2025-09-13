@@ -8,7 +8,7 @@
 
 namespace humhub\widgets;
 
-use humhub\modules\admin\models\forms\CacheSettingsForm;
+use humhub\modules\admin\libs\CacheHelper;
 use humhub\modules\file\validators\FileValidator;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\models\User;
@@ -46,7 +46,7 @@ class CoreJsConfig extends Widget
                 ],
                 'client' => [
                     'baseUrl' => Yii::$app->settings->get('baseUrl'),
-                    'reloadableScripts' => CacheSettingsForm::getReloadableScriptUrls(),
+                    'reloadableScripts' => CacheHelper::getReloadableScriptUrls(),
                     'cspViolationReloadInterval' => Security::CSP_VIOLATION_RELOAD_INTERVAL,
                     'text' => [
                         'warn.onBeforeLoad' => Yii::t('base', 'Unsaved changes will be lost. Do you want to proceed?'),
@@ -65,8 +65,8 @@ class CoreJsConfig extends Widget
                     ],
                     'text' => [
                         'error.upload' => Yii::t('base', 'Some files could not be uploaded:'),
-                        'error.unknown' => Yii::t('base', 'An unexpected error occurred. Please check whether your file exceeds the allowed upload limit of {maxUploadSize}.', ['maxUploadSize' => Yii::$app->formatter->asShortSize((new FileValidator())->getSizeLimit())]) . (Yii::$app->user->isAdmin() ?
-                                '(' . Yii::t('base', 'verify your upload_max_filesize and post_max_size php settings.') . ')' : ''),
+                        'error.unknown' => Yii::t('base', 'An unexpected error occurred. Please check whether your file exceeds the allowed upload limit of {maxUploadSize}.', ['maxUploadSize' => Yii::$app->formatter->asShortSize((new FileValidator())->getSizeLimit())]) . (Yii::$app->user->isAdmin()
+                                ? '(' . Yii::t('base', 'verify your upload_max_filesize and post_max_size php settings.') . ')' : ''),
                         'success.delete' => Yii::t('base', 'The file has been deleted.'),
                     ],
                 ],
@@ -230,6 +230,11 @@ class CoreJsConfig extends Widget
                         'error.loadingResult' => Yii::t('base', 'An unexpected error occurred while loading the search result.'),
                         'showMore' => Yii::t('base', 'Show more'),
                         'addOption' => Yii::t('base', 'Add:'),
+                    ],
+                ],
+                'ui.loader' => [
+                    'text' => [
+                        'loading' => Yii::t('base', 'Loading...'),
                     ],
                 ],
                 'ui.showMore' => [

@@ -1,14 +1,18 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\libs\ActionColumn;
 use humhub\modules\admin\models\GroupSearch;
 use humhub\modules\admin\widgets\GroupMenu;
+use humhub\modules\user\models\forms\EditGroupForm;
 use humhub\modules\user\models\Group;
 use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Link;
 use humhub\widgets\GridView;
+use yii\data\ActiveDataProvider;
 use yii\helpers\Url;
 
+/* @var $dataProvider ActiveDataProvider */
 /* @var $searchModel GroupSearch */
 ?>
 <div class="panel-body">
@@ -35,6 +39,7 @@ use yii\helpers\Url;
             [
                 'attribute' => 'name',
                 'format' => 'html',
+                'headerOptions' => ['style' => 'min-width:100px'],
                 'value' => fn(Group $group) =>
                     // Yii::t is available for default texts
                     Yii::t('AdminModule.base', $group->name) .
@@ -43,16 +48,36 @@ use yii\helpers\Url;
             ],
             [
                 'attribute' => 'description',
+                'headerOptions' => ['class' => 'text-nowrap'],
                 'value' => fn(Group $group) =>
                     // Yii::t is available for default texts
                     Yii::t('AdminModule.base', $group->description)
             ],
             [
+                'attribute' => 'type',
+                'label' => Yii::t('AdminModule.user', 'Type'),
+                'format' => 'raw',
+                'headerOptions' => ['class' => 'text-nowrap'],
+                'filterOptions' => ['class' => 'text-nowrap'],
+                'contentOptions' => ['class' => 'text-center'],
+                'value' => fn(Group $group) => Badge::light($group->getTypeTitle()),
+                'filter' => Html::activeDropDownList($searchModel, 'type', [
+                    '' => Yii::t('AdminModule.base', 'All')
+                ] + EditGroupForm::getTypeOptions()),
+            ],
+            [
                 'attribute' => 'members',
                 'label' => Yii::t('AdminModule.user', 'Members'),
                 'format' => 'raw',
-                'options' => ['style' => 'text-align:center;'],
-                'value' => fn(Group $data) => $data->getGroupUsers()->count()
+                'headerOptions' => ['class' => 'text-nowrap'],
+                'contentOptions' => ['class' => 'text-nowrap text-center'],
+                'value' => function (Group $group) {
+                    $usersCount = $group->getGroupUsers()->count();
+                    if ($subGroupUsersCount = $group->getSubGroupUsersCount()) {
+                        $usersCount .= ' (+' . $subGroupUsersCount . ')';
+                    }
+                    return $usersCount;
+                }
             ],
             [
                 'class' => ActionColumn::class,

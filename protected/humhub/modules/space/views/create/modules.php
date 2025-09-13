@@ -17,7 +17,7 @@ SpaceAsset::register($this);
     'closeButton' => false,
     'title' => Yii::t('SpaceModule.manage', 'Add <strong>Modules</strong>'),
     'size' => Modal::SIZE_LARGE,
-    'footer' => ModalButton::info(Yii::t('SpaceModule.manage', 'Next'))->post(['/space/create/invite', 'spaceId' => $space->id]),
+    'footer' => ModalButton::accent(Yii::t('SpaceModule.manage', 'Next'))->post(['/space/create/invite', 'spaceId' => $space->id]),
 ]) ?>
     <div class="text-body-secondary">
         <?= Yii::t('SpaceModule.manage', 'Choose the modules you want to use for this Space. If you are undecided, you can also activate them later on via the Space settings.') ?>

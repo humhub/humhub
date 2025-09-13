@@ -13,6 +13,7 @@ return [
   'Administrators' => 'Administrátory',
   'Advanced' => 'Rozšírené',
   'Advanced settings' => 'Rozšírené nastavenia',
+  'All' => 'Všetko',
   'Appearance' => 'Vzhľad',
   'Approval' => 'Schválenie',
   'Authentication' => 'Overenie',

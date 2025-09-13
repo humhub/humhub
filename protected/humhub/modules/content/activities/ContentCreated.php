@@ -31,6 +31,11 @@ class ContentCreated extends BaseActivity implements ConfigurableActivityInterfa
     public $viewName = 'created';
 
     /**
+     * @var int length of the activity preview (in characters)
+     */
+    public $mailPreviewLength = 0;
+
+    /**
      * @inheritdoc
      */
     public function getTitle()

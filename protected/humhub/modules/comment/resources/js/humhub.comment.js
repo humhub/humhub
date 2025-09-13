@@ -333,11 +333,11 @@ humhub.module('comment', function (module, require, $) {
     };
 
     var scrollActive = function (evt) {
-        evt.$trigger.closest('.content-create-input-group').addClass('scrollActive');
+        evt.$trigger.closest('.richtext-create-input-group').addClass('scrollActive');
     };
 
     var scrollInactive = function (evt) {
-        evt.$trigger.closest('.content-create-input-group').removeClass('scrollActive');
+        evt.$trigger.closest('.richtext-create-input-group').removeClass('scrollActive');
     };
 
     module.export({

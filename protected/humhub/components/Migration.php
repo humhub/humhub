@@ -275,8 +275,8 @@ class Migration extends \yii\db\Migration
      */
     protected function indexExists(string $index, string $table): bool
     {
-        return (bool) $this->db->createCommand('SHOW KEYS FROM ' . $this->db->quoteTableName($table) .
-            ' WHERE Key_name = ' . $this->db->quoteValue($index))
+        return (bool) $this->db->createCommand('SHOW KEYS FROM ' . $this->db->quoteTableName($table)
+            . ' WHERE Key_name = ' . $this->db->quoteValue($index))
             ->queryOne();
     }
 
