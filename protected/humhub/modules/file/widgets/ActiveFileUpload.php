@@ -3,7 +3,7 @@
 namespace humhub\modules\file\widgets;
 
 use humhub\helpers\Html;
-use humhub\modules\file\assets\ImgUploadFieldAsset;
+use humhub\modules\file\assets\ActiveFileUploadAsset;
 use humhub\modules\file\models\File;
 use yii\bootstrap5\InputWidget;
 use yii\helpers\Url;
@@ -12,11 +12,12 @@ use yii\helpers\Url;
  * Example of usage
  *
  * ```php
- * <?= $form->field($model, 'attribute')->widget(ImageUpload::class. ['hideInStream' => true]) ?>
+ * <?= $form->field($model, 'attribute')->widget(ActiveFileUpload::class. ['hideInStream' => true]) ?>
  * ```
  */
-class ImageUpload extends InputWidget
+class ActiveFileUpload extends InputWidget
 {
+    public string $accept = '*';
     public bool $hideInStream = true;
 
 
@@ -24,11 +25,11 @@ class ImageUpload extends InputWidget
     {
         parent::init();
 
-        ImgUploadFieldAsset::register($this->view);
+        ActiveFileUploadAsset::register($this->view);
 
         $this->field->options['id'] = $this->id;
         $this->field->options['data'] = [
-            'ui-widget' => 'imgUploadField.ImgUpload',
+            'ui-widget' => 'ActiveFileUpload.Upload',
             'ui-init' => true,
         ];
         $this->field->template = '{label}{hint}{input}{error}';
@@ -53,12 +54,12 @@ class ImageUpload extends InputWidget
             'hideInStream' => $this->hideInStream,
             'options' => [
                 'uploadSingle' => 1,
-                'accept' => 'image/*'
+                'accept' => $this->accept,
             ],
         ]);
 
         $uploadPreview = FilePreview::widget([
-            'jsWidget' => 'imgUploadField.Preview',
+            'jsWidget' => 'ActiveFileUpload.Preview',
             'id' => "$this->id-preview",
             'items' => [File::findOne(['guid' => $this->model->{$this->attribute}])],
             'options' => ['class' => 'img-uploader-preview float-start mt-3'],
