@@ -12,7 +12,7 @@ use yii\helpers\Url;
  * Example of usage
  *
  * ```php
- * <?= $form->field($model, 'attribute')->widget(ActiveFileUpload::class. ['hideInStream' => true]) ?>
+ * <?= $form->field($model, 'attribute')->widget(ActiveFileUpload::class. ['accept' = 'image/*', 'hideInStream' => true]) ?>
  * ```
  */
 class ActiveFileUpload extends InputWidget
@@ -69,7 +69,7 @@ class ActiveFileUpload extends InputWidget
 
         $uploadProgress = UploadProgress::widget(['id' => "$this->id-progress"]);
 
-        return $this->render('imageUpload', [
+        return $this->render('activeFileUpload', [
             'uploadInput' => $uploadInput,
             'uploadPreview' => $uploadPreview,
             'uploadProgress' => $uploadProgress,
