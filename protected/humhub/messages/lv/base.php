@@ -17,7 +17,7 @@ return [
     'Close' => 'Aizvērt',
     'Collapse' => 'Sakļaut',
     'Confirm' => 'Apstiprināt',
-    'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Content Addon avotam jābū HActiveRecordContent vai HActiveRecordContentAddon instancei!
+    'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'Content Addon avotam jābū ContentActiveRecord vai ContentAddonActiveRecord instancei!
 ',
     'Copy to clipboard' => 'Kopēt uz starpliktuvi',
     'Could not find content of addon!' => 'Nevarēja atrast spraudņa saturu!',

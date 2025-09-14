@@ -22,7 +22,7 @@ return [
   'Close' => 'Tanca',
   'Collapse' => 'Redueix',
   'Confirm' => 'Confirma',
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'La font del complement de contingut ha de ser una instància de HActiveRecordContent o HActiveRecordContentAddon!',
+  'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'La font del complement de contingut ha de ser una instància de ContentActiveRecord o ContentAddonActiveRecord!',
   'Copy to clipboard' => 'Copia al porta-retalls',
   'Could not find content of addon!' => 'No s’ha pogut trobar el contingut del connector.',
   'Could not find requested page.' => 'No s’ha pogut trobar la pàgina sol·licitada.',

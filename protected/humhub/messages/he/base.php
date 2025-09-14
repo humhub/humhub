@@ -20,7 +20,7 @@ return [
     'Close' => 'סגור',
     'Collapse' => 'סגור',
     'Confirm' => 'אשר',
-    'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'שגיאה שלא ניתן לתרגם',
+    'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'שגיאה שלא ניתן לתרגם',
     'Copy to clipboard' => 'העתק ללוח',
     'Could not find content of addon!' => 'לא יכול למצוא תוכן של התוסף',
     'Could not find requested page.' => 'הדף המבוקש לא נמצא',

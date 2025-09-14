@@ -22,7 +22,7 @@ return [
   'Close' => 'Cerrar',
   'Collapse' => 'Cerrar',
   'Confirm' => 'Confirmar',
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => '¡La fuente de Contenido del Complemento debe ser una instancia de HActiveRecordContent o HActiveRecordContentAddon!',
+  'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => '¡La fuente de Contenido del Complemento debe ser una instancia de ContentActiveRecord o ContentAddonActiveRecord!',
   'Copy to clipboard' => 'Copiar al portapapeles',
   'Could not find content of addon!' => '¡No se pudo encontrar el contenido del complemento!',
   'Could not find requested page.' => 'No se ha encontrado la página solicitada',

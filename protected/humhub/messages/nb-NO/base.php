@@ -22,7 +22,7 @@ return [
   'Close' => 'Lukk',
   'Collapse' => 'Trekk sammen',
   'Confirm' => 'Bekreft',
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Innholdspåbyggets kilde må være forekomst av HActiveRecordContent eller HActiveRecordContentAddon!',
+  'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'Innholdspåbyggets kilde må være forekomst av ContentActiveRecord eller ContentAddonActiveRecord!',
   'Copy to clipboard' => 'Kopier til utklippstavle',
   'Could not find content of addon!' => 'Kunne ikke finne innhold fra påbygget!',
   'Could not find requested page.' => 'Fant ikke forespurt side.',
