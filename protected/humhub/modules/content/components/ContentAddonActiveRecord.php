@@ -41,8 +41,11 @@ use yii\base\InvalidConfigException;
  * @package humhub.components
  * @since 0.5
  */
-class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, ViewableInterface, EditableInterface,
-                                                               DeletableInterface
+class ContentAddonActiveRecord extends ActiveRecord implements
+    ContentOwner,
+    ViewableInterface,
+    EditableInterface,
+    DeletableInterface
 {
     /**
      * @var bool also update underlying contents last update stream sorting
@@ -240,8 +243,8 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, Vie
                     'object_model',
                     Yii::t(
                         'base',
-                        'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!'
-                    )
+                        'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!',
+                    ),
                 );
             }
         }
