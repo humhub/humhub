@@ -14,6 +14,7 @@ use humhub\interfaces\EditableInterface;
 use humhub\interfaces\ViewableInterface;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\models\Content;
+use humhub\modules\user\helpers\UserHelper;
 use humhub\modules\user\models\User;
 use Throwable;
 use Yii;
@@ -40,7 +41,8 @@ use yii\base\InvalidConfigException;
  * @package humhub.components
  * @since 0.5
  */
-class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, ViewableInterface, EditableInterface, DeletableInterface
+class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, ViewableInterface, EditableInterface,
+                                                               DeletableInterface
 {
     /**
      * @var bool also update underlying contents last update stream sorting
@@ -74,7 +76,6 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, Vie
      */
     public function getContent()
     {
-
         if ($this->_content != null) {
             return $this->_content;
         }
@@ -139,11 +140,13 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, Vie
      * Checks if the given / or current user can delete this content.
      * Currently only the creator can remove.
      *
-     * @inheritdoc
+     * @param User|int|null $user the User (see UserHelper::getUserByParam())
+     * @return bool
      */
-    public function canDelete($userId = null): bool
+    public function canDelete($user = null): bool
     {
-        if ($this->created_by == Yii::$app->user->id) {
+        $user = UserHelper::getUserByParam($user);
+        if ($user !== null && $this->created_by == $user->id) {
             return true;
         }
 
@@ -181,28 +184,16 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, Vie
     /**
      * Checks if this record can be edited
      *
-     * @param User|int|null $user the user
+     * @param User|int|null $user the User (see UserHelper::getUserByParam())
      * @return bool
      * @throws InvalidConfigException
      * @since 1.4
      */
     public function canEdit($user = null): bool
     {
-        if ($user === null && Yii::$app->user->isGuest) {
-            return false;
-        }
+        $user = UserHelper::getUserByParam($user);
 
         if ($user === null) {
-            /** @var User $user */
-            try {
-                $user = Yii::$app->user->getIdentity();
-            } catch (Throwable $e) {
-                Yii::error($e->getMessage());
-                return false;
-            }
-        }
-
-        if (!$user instanceof User && !($user = User::findOne(['id' => $user]))) {
             return false;
         }
 
@@ -243,10 +234,15 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, Vie
      */
     public function validate($attributes = null, $clearErrors = true)
     {
-
         if ($this->source != null) {
             if (!$this->source instanceof ContentAddonActiveRecord && !$this->source instanceof ContentActiveRecord) {
-                $this->addError('object_model', Yii::t('base', 'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!'));
+                $this->addError(
+                    'object_model',
+                    Yii::t(
+                        'base',
+                        'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!'
+                    )
+                );
             }
         }
 

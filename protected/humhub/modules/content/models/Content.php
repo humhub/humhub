@@ -36,6 +36,7 @@ use humhub\modules\notification\models\Notification;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\helpers\AuthHelper;
+use humhub\modules\user\helpers\UserHelper;
 use humhub\modules\user\models\User;
 use Throwable;
 use Yii;
@@ -583,20 +584,15 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      * Checks if the current user can archive this content.
      * The content owner and the workspace admin can archive contents.
      *
-     * @inheritdoc
+     * @param User|int|null $user the User (see UserHelper::getUserByParam())
+     * @return bool
      */
     public function canArchive($user = null): bool
     {
-        $appUser = Yii::$app->user;
-
-        if ($appUser->isGuest) {
-            return false;
-        }
+        $user = UserHelper::getUserByParam($user);
 
         if ($user === null) {
-            $user = $appUser->getIdentity();
-        } elseif (!($user instanceof User)) {
-            $user = User::findOne(['id' => $user]);
+            return false;
         }
 
         // Currently global content can not be archived
@@ -891,7 +887,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      *  - The user is granted the managePermission set by the model record class
      *  - The user meets the additional condition implemented by the model records class own `canEdit()` function.
      *
-     * @param User|int $user user instance or user id
+     * @param User|int|null $user the User (see UserHelper::getUserByParam())
      * @return bool can edit/create this content
      * @throws Exception
      * @throws IntegrityException
@@ -901,20 +897,14 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      */
     public function canEdit($user = null): bool
     {
-        $appUser = Yii::$app->user;
+        $user = UserHelper::getUserByParam($user);
 
-        if ($appUser->isGuest) {
+        if ($user === null) {
             return false;
         }
 
-        if ($user === null) {
-            $user = $appUser->getIdentity();
-        } elseif (!($user instanceof User)) {
-            $user = User::findOne(['id' => $user]);
-        }
-
         // Owner can edit his content
-        if ($user !== null && $this->created_by === $user->id) {
+        if ($this->created_by === $user->id) {
             return true;
         }
 
@@ -955,24 +945,25 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     /**
      * Checks if the user can lock comments for this content.
      *
+     * @param User|int|null $user the User (see UserHelper::getUserByParam())
      * @return bool
      * @throws Exception
      */
-    public function canLockComments(): bool
+    public function canLockComments($user = null): bool
     {
-        if (Yii::$app->user->isGuest) {
+        $user = UserHelper::getUserByParam($user);
+
+        if ($user === null) {
             return false;
         }
 
-        $user = Yii::$app->user->getIdentity();
-
-        if ($user?->canManageAllContent()) {
+        if ($user->canManageAllContent()) {
             return true;
         }
 
         return $this->container
             ? $this->container->permissionManager->can(ManageContent::class)
-            : $this->canEdit();
+            : $this->canEdit($user);
     }
 
     /**
@@ -994,32 +985,28 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     }
 
     /**
-     * @inheritdoc
+     * @param User|int|null $user the User (see UserHelper::getUserByParam())
      * @throws InvalidConfigException
      * @throws Exception
      * @throws Throwable
      */
     public function canView($user = null): bool
     {
-        if (!$user && !Yii::$app->user->isGuest) {
-            $user = Yii::$app->user->getIdentity();
-        } elseif (!$user instanceof User) {
-            $user = User::findOne(['id' => $user]);
+        $user = UserHelper::getUserByParam($user);
+
+        // Check Guest Visibility
+        if ($user === null) {
+            return $this->checkGuestAccess();
         }
 
-        // Check global content visibility, private global content is visible for all users
-        if (empty($this->contentcontainer_id) && !Yii::$app->user->isGuest) {
+        // Check global content visibility, private global content is visible for logged in all users
+        if (empty($this->contentcontainer_id)) {
             return true;
         }
 
         // User can access own content
-        if ($user !== null && $this->created_by === $user->id) {
+        if ($this->created_by === $user->id) {
             return true;
-        }
-
-        // Check Guest Visibility
-        if (!$user) {
-            return $this->checkGuestAccess();
         }
 
         // If content is not published(draft, in trash, unapproved) - restrict view access to editors
