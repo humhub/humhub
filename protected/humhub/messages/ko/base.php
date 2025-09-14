@@ -23,7 +23,7 @@ return [
     'Close' => '닫기',
     'Collapse' => '접기',
     'Confirm' => '확인',
-    'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Content Addon 소스는 반드시 HActiveRecordContent 또는  HActiveRecordContentAddon의 인스턴스여야 합니다!',
+    'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'Content Addon 소스는 반드시 ContentActiveRecord 또는  ContentAddonActiveRecord의 인스턴스여야 합니다!',
     'Copy to clipboard' => '클립보드에 복사',
     'Could not find content of addon!' => '애드온 컨텐츠를 찾을 수 없습니다!',
     'Could not find requested page.' => '요청한 페이지를 찾을 수 없습니다.',

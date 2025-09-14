@@ -22,7 +22,7 @@ return [
     'Close' => '關閉',
     'Collapse' => '摺疊',
     'Confirm' => '確認',
-    'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => '內容插件來源必須包含 HActiveRecordContent 或 HActiveRecordContentAddon !',
+    'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => '內容插件來源必須包含 ContentActiveRecord 或 ContentAddonActiveRecord !',
     'Copy to clipboard' => '複製到剪貼板',
     'Could not find content of addon!' => '無法找到插件的內容!',
     'Could not find requested page.' => '無法找到要求的頁面。',

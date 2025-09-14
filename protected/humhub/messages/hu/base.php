@@ -22,7 +22,7 @@ return [
   'Close' => 'Bezár',
   'Collapse' => 'Összecsukás',
   'Confirm' => 'Rendben',
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'A tartalom bővítmény forrásának HActiveRecordContent vagy  HActiveRecordContentAddon példánynak kell lennie!',
+  'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'A tartalom bővítmény forrásának ContentActiveRecord vagy  ContentAddonActiveRecord példánynak kell lennie!',
   'Copy to clipboard' => 'Másolás vágólapra',
   'Could not find content of addon!' => 'Nem található a bővítmény tartalma!',
   'Could not find requested page.' => 'Nem található a kért oldal!',

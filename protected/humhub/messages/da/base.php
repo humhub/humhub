@@ -22,7 +22,7 @@ return [
   'Close' => 'Luk',
   'Collapse' => 'Kollaps',
   'Confirm' => 'Bekræft',
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Indholdskilde addon skal være del en af HActiveRecordContent eller HActiveRecordContentAddon!',
+  'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'Indholdskilde addon skal være del en af ContentActiveRecord eller ContentAddonActiveRecord!',
   'Copy to clipboard' => 'Kopier til udklipsholder',
   'Could not find content of addon!' => 'Kunne ikke finde addonindhold!',
   'Could not find requested page.' => 'Kunne ikke finde den ønskede side.',

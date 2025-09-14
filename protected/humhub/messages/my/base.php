@@ -19,7 +19,7 @@ return array (
   'Close' => 'Tutup',
   'Collapse' => 'Tutup',
   'Confirm' => 'Confirmar',
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Sumber kandungan addon mestilah daripada HActiveRecordContent atau HActiveRecordContentAddon!',
+  'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'Sumber kandungan addon mestilah daripada ContentActiveRecord atau ContentAddonActiveRecord!',
   'Copy to clipboard' => '',
   'Could not determine content container!' => 'Tidak dapat mengesahkan bekas kandungan!',
   'Could not find content of addon!' => 'Kandungan addon tidak ditemui!',

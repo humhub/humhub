@@ -22,7 +22,7 @@ return [
   'Close' => 'Đóng',
   'Collapse' => 'Thu hẹp',
   'Confirm' => 'Xác nhận',
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!',
+  'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!',
   'Copy to clipboard' => 'Sao chép vào clipboard',
   'Could not find content of addon!' => 'Không thể tìm thấy nội dung của addon!',
   'Could not find requested page.' => 'Không tìm thấy trang yêu cầu.',

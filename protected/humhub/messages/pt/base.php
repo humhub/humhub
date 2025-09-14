@@ -22,7 +22,7 @@ return [
   'Close' => 'Fechar',
   'Collapse' => 'Recolher',
   'Confirm' => 'Confirmar',
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Fonte de conteúdo de addon deve ser exemplo de HActiveRecordContent ou HActiveRecordContentAddon!',
+  'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'Fonte de conteúdo de addon deve ser exemplo de ContentActiveRecord ou ContentAddonActiveRecord!',
   'Copy to clipboard' => 'Copiar para Área de Transferência',
   'Could not find content of addon!' => 'Não é possivel encontrar o conteúdo do addon!',
   'Could not find requested page.' => 'Não foi possível encontrar a página pedida.',
