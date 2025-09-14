@@ -32,7 +32,7 @@ return [
     'Close' => '',
     'Collapse' => '',
     'Confirm' => '',
-    'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => '',
+    'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => '',
     'Copy to clipboard' => '',
     'Could not find content of addon!' => '',
     'Could not find requested page.' => '',

@@ -31,7 +31,7 @@ class WallEntryControlLink extends Widget
     public $actionUrl;
 
     /**
-     * Object derived from HActiveRecordContent
+     * Object derived from ContentActiveRecord
      *
      * @var string
      */

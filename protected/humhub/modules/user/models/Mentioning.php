@@ -116,7 +116,7 @@ class Mentioning extends ActiveRecord
                 $result = array_merge($result, static::mention($hit[1], $record));
             }, $text);
         } else {
-            throw new Exception("Mentioning can only used in HActiveRecordContent or HActiveRecordContentAddon objects!");
+            throw new Exception("Mentioning can only used in ContentActiveRecord or ContentAddonActiveRecord objects!");
         }
         return $result;
     }
@@ -134,7 +134,7 @@ class Mentioning extends ActiveRecord
     public static function mention($guids, $record)
     {
         if (!($record instanceof ContentActiveRecord || $record instanceof ContentAddonActiveRecord)) {
-            throw new InvalidArgumentException("Mentioning can only used in HActiveRecordContent or HActiveRecordContentAddon objects!");
+            throw new InvalidArgumentException("Mentioning can only used in ContentActiveRecord or ContentAddonActiveRecord objects!");
         }
 
         // Mention only for published content

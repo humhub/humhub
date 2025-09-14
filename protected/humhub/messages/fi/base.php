@@ -22,7 +22,7 @@ return [
   'Close' => 'Sulje',
   'Collapse' => 'Sulje',
   'Confirm' => 'Vahvista',
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Sisällön Addon-lähdekoodin on oltava HActiveRecordContent- tai HActiveRecordContentAddon!',
+  'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'Sisällön Addon-lähdekoodin on oltava ContentActiveRecord- tai ContentAddonActiveRecord!',
   'Copy to clipboard' => 'Kopio leikepöydälle',
   'Could not find content of addon!' => 'Laajennuksen sisältöä ei löytynyt!',
   'Could not find requested page.' => 'Pyydettyä sivua ei löytynyt.',

@@ -23,7 +23,7 @@ return [
     'Close' => 'Itxi',
     'Collapse' => 'Jaso',
     'Confirm' => 'Berretsi',
-    'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Edukiaren osagarriaren iturriak HActiveRecordContent edo HActiveRecordContentAddon instantzia izan behar du!',
+    'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'Edukiaren osagarriaren iturriak ContentActiveRecord edo ContentAddonActiveRecord instantzia izan behar du!',
     'Copy to clipboard' => 'Paper-euskarrian kopiatu',
     'Could not find content of addon!' => 'Ezin izan da osagarriaren edukia aurkitu!',
     'Could not find requested page.' => 'Ezin izan da eskatutako orria aurkitu.',
