@@ -22,7 +22,7 @@ return [
     'Close' => 'Закрити',
     'Collapse' => 'Згорнути',
     'Confirm' => 'Підтвердити',
-    'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Джерело Content Addon має бути сутністю HActiveRecordContent або HActiveRecordContentAddon!',
+    'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'Джерело Content Addon має бути сутністю ContentActiveRecord або ContentAddonActiveRecord!',
     'Copy to clipboard' => 'Скопіювати до буферу пам\'яті',
     'Could not find content of addon!' => 'Зміст аддона не знайдено!',
     'Could not find requested page.' => 'Запитана сторінка не знайдена.',

@@ -19,6 +19,8 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\file\components\StorageManager;
 use humhub\modules\file\components\StorageManagerInterface;
 use humhub\modules\file\libs\Metadata;
+use humhub\modules\user\helpers\UserHelper;
+use humhub\modules\user\models\User;
 use Throwable;
 use Yii;
 use yii\base\InvalidArgumentException;
@@ -315,16 +317,18 @@ class File extends FileCompat implements ViewableInterface
      * If the file is not an instance of ContentActiveRecord or ContentAddonActiveRecord
      * the file is readable for all unless there is method canEdit or canDelete implemented.
      *
-     * @param null $userId
-     *
+     * @param User|int|null $user the User (see UserHelper::getUserByParam())
+ *
      * @return bool
      * @throws IntegrityException
      * @throws InvalidConfigException
      * @throws Throwable
      * @throws \yii\base\Exception
      */
-    public function canDelete($userId = null): bool
+    public function canDelete($user = null): bool
     {
+        $user = UserHelper::getUserByParam($user);
+
         $object = $this->getPolymorphicRelation();
 
         // File is not bound to an object
@@ -334,17 +338,17 @@ class File extends FileCompat implements ViewableInterface
 
         if ($object instanceof ContentAddonActiveRecord) {
             /** @var ContentAddonActiveRecord $object */
-            return $object->canEdit($userId) || $object->content->canEdit($userId);
+            return $object->canEdit($user) || $object->content->canEdit($user);
         }
 
         if ($object instanceof ContentActiveRecord) {
             /** @var ContentActiveRecord $object */
-            return $object->content->canEdit($userId);
+            return $object->content->canEdit($user);
         }
 
         if ($object instanceof ActiveRecord && method_exists($object, 'canEdit')) {
             /** @var ActiveRecord $object */
-            return $object->canEdit($userId);
+            return $object->canEdit($user);
         }
 
         return false;

@@ -22,7 +22,7 @@ return [
   'Close' => 'Zatvori',
   'Collapse' => 'Spusti',
   'Confirm' => 'Potvrdi',
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Izvor sadržaja Addon mora biti primjerak HActiveRecordContent ili HActiveRecordContentAddon!',
+  'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'Izvor sadržaja Addon mora biti primjerak ContentActiveRecord ili ContentAddonActiveRecord!',
   'Copy to clipboard' => 'Kopirati u međuspremnik',
   'Could not find content of addon!' => 'Nije moguće pronaći sadržaj addona!',
   'Could not find requested page.' => 'Nike moguće pronaći traženu stranicu.',

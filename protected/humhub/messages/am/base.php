@@ -18,7 +18,7 @@ return [
     'Close' => 'Schließen',
     'Collapse' => 'አጥፋ',
     'Confirm' => 'አረጋግጥ',
-    'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'የይዘት ታካዮች ምንጭ እንደHActiveRecoredContet ወይም HActiveRecordContentAddon ሆኖ ምሳሌ ሆኖ መቀመጥ ይኖርበታል!',
+    'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'የይዘት ታካዮች ምንጭ እንደHActiveRecoredContet ወይም ContentAddonActiveRecord ሆኖ ምሳሌ ሆኖ መቀመጥ ይኖርበታል!',
     'Copy to clipboard' => 'ወደማስፈሪያሰሌዳው ገልብጥ።',
     'Could not find content of addon!' => 'የታካዩ ይዘት ሊገኝ አልቻለም!',
     'Could not find requested page.' => 'የተጠየቀው ገፅ ሊገኝ አልቻለም።',

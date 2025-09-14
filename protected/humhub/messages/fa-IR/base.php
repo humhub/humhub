@@ -22,7 +22,7 @@ return [
   'Close' => 'بستن',
   'Collapse' => 'جمع شدن',
   'Confirm' => 'تایید',
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!',
+  'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!',
   'Copy to clipboard' => 'رونوشت به کلیپ‌برد',
   'Could not find content of addon!' => 'محتوای افزونه پیدا‌ نشد!',
   'Could not find requested page.' => 'صفحه‌ی درخواست شده پیدا نشد.',
