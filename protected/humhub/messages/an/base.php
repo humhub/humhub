@@ -22,7 +22,7 @@ return [
   'Close' => 'Zarrar',
   'Collapse' => 'Zarrar',
   'Confirm' => 'Confirmar',
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => '',
+  'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => '',
   'Copy to clipboard' => 'Copiar a o puertafuellas.',
   'Could not find content of addon!' => '',
   'Could not find requested page.' => '',

@@ -764,7 +764,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      * By default is returns the url of the wall entry.
      *
      * Optionally it's possible to create an own getUrl method in the underlying
-     * HActiveRecordContent (e.g. Post) to overwrite this behavior.
+     * ContentActiveRecord (e.g. Post) to overwrite this behavior.
      * e.g. in case there is no wall entry available for this content.
      *
      * @param bool $scheme

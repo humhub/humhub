@@ -22,7 +22,7 @@ return [
   'Close' => 'Stäng',
   'Collapse' => 'Minimera',
   'Confirm' => 'Bekräfta',
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Innehållet för tilläggskällan måste vara instansen av HActiveRecordContent eller HActiveRecordContentAddon!',
+  'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'Innehållet för tilläggskällan måste vara instansen av ContentActiveRecord eller ContentAddonActiveRecord!',
   'Copy to clipboard' => 'Kopiera urklipp',
   'Could not find content of addon!' => 'Kunde inte hitta innehållet i tillägget!',
   'Could not find requested page.' => 'Det gick inte att hitta önskad sida.',

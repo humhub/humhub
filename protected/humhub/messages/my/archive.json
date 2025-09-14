@@ -44,8 +44,8 @@
 	"Collapse": [
 		"Tutup"
 	],
-	"Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!": [
-		"Sumber kandungan addon mestilah daripada HActiveRecordContent atau HActiveRecordContentAddon!"
+	"Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!": [
+		"Sumber kandungan addon mestilah daripada ContentActiveRecord atau ContentAddonActiveRecord!"
 	],
 	"Could not determine content container!": [
 		"Tidak dapat mengesahkan bekas kandungan!"

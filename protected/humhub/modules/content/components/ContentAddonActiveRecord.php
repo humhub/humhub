@@ -22,7 +22,7 @@ use yii\base\Exception;
 use yii\base\InvalidConfigException;
 
 /**
- * HActiveRecordContentAddon is the base active record for content addons.
+ * ContentAddonActiveRecord is the base active record for content addons.
  *
  * Content addons are content types like Comments, Files or Likes.
  * These are always belongs to a Content object.
@@ -63,7 +63,7 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, Vie
 
     /**
      * Source object which this ContentAddon belongs to.
-     * HActiveRecordContentAddon or HActiveRecordContent Object.
+     * ContentAddonActiveRecord or ContentActiveRecord Object.
      *
      * @var Mixed
      */
@@ -240,7 +240,7 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, Vie
                     'object_model',
                     Yii::t(
                         'base',
-                        'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!'
+                        'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!'
                     )
                 );
             }

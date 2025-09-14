@@ -22,7 +22,7 @@ return [
   'Close' => '閉じる',
   'Collapse' => '折りたたむ',
   'Confirm' => 'はい',
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'コンテンツアドオンソースは HActiveRecordContent または HActiveRecordContentAddon のインスタンスでなければなりません！',
+  'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'コンテンツアドオンソースは ContentActiveRecord または ContentAddonActiveRecord のインスタンスでなければなりません！',
   'Copy to clipboard' => 'クリップボードにコピー',
   'Could not find content of addon!' => 'アドオンのコンテンツを見つけることができませんでした！',
   'Could not find requested page.' => '要求されたページが見つかりませんでした。',
