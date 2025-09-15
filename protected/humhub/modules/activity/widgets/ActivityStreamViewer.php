@@ -36,7 +36,7 @@ class ActivityStreamViewer extends StreamViewer
             'view' => 'activityStream',
             'streamAction' => '/activity/stream/stream',
             'jsWidget' => 'activity.ActivityStream',
-            'options' => ['class' => 'panel-body p-0 pb-3' ],
+            'options' => ['class' => 'panel-body', 'style' => 'padding:0px'],
         ];
 
         parent::__construct(array_merge($defaults, $config));
