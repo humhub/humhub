@@ -4,9 +4,27 @@
 }
 
 .img-uploader-preview img {
-    height: 150px;
+    max-height: 150px;
     max-width: 100%;
     border-radius: 4px;
+}
+
+.img-uploader-field {
+    position: relative;
+}
+
+.img-uploader-field .files {
+    margin: 0 !important;
+}
+
+.img-uploader-field .form-text, .img-uploader-field .invalid-feedback {
+    padding-right: 3rem;
+}
+
+.img-uploader-field .img-uploader-field-buttons {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
 }
 
 .img-uploader-field .file-preview-item {
