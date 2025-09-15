@@ -14,6 +14,7 @@ use yii\helpers\Url;
  *
  * ```php
  * <?= $form->field($model->news, 'attribute')->widget(ActiveFileUpload::class, [
+ *      'accept' => 'image/*',
  *      'inputOptions' => [
  *          'class' => 'class-1',
  *          //other options
