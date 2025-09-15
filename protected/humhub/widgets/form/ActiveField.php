@@ -30,6 +30,16 @@ class ActiveField extends \yii\bootstrap5\ActiveField
      */
     public $preventRendering = false;
 
+
+    public function init() {
+        if ($this->form->renderOnlySafeFields && !$this->model->isAttributeSafe($this->attribute)) {
+            $this->preventRendering = true;
+        }
+            parent::init();
+
+    }
+
+
     /**
      * @inheritdoc
      */
@@ -68,7 +78,7 @@ class ActiveField extends \yii\bootstrap5\ActiveField
      */
     public function render($content = null): string
     {
-        if ($this->preventRendering) {
+        if ($this->preventRendering && !($this->form->renderOnlySafeFields && !empty($this->inputOptions['readOnly']))) {
             return '';
         }
 

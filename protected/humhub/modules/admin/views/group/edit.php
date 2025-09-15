@@ -18,59 +18,49 @@ use yii\helpers\Url;
 
 <?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group]) ?>
 <div class="panel-body">
-    <?php $form = ActiveForm::begin(['acknowledge' => true]) ?>
-    <?= $form->field($group, 'name')->textInput(['readonly' => !$canManage]) ?>
+    <?php $form = ActiveForm::begin(['acknowledge' => true, 'renderOnlySafeFields' => true]) ?>
+
+    <?= $form->field($group, 'name', ['inputOptions' => ['readOnly' => !$canManage]])->textInput() ?>
     <?= $form->field($group, 'description')->textarea(['rows' => 5, 'readonly' => !$canManage]) ?>
+    <?= $form->field($group, 'type')->dropDownList($group::getTypeOptions()) ?>
+    <?= $form->field($group, 'subgroups')->widget(GroupPicker::class, ['groupType' => $group::TYPE_NORMAL]) ?>
+    <?= $form->field($group, 'parent')->widget(GroupPicker::class, ['groupType' => $group::TYPE_SUBGROUP]) ?>
 
-    <?php if ($canManage) : ?>
-        <?= $form->field($group, 'type')->dropDownList($group::getTypeOptions()) ?>
-        <?= $form->field($group, 'subgroups')->widget(GroupPicker::class, ['groupType' => $group::TYPE_NORMAL]) ?>
-        <?= $form->field($group, 'parent')->widget(GroupPicker::class, ['groupType' => $group::TYPE_SUBGROUP]) ?>
-    <?php endif ?>
+    <?= SpacePickerField::widget([
+        'form' => $form,
+        'model' => $group,
+        'attribute' => 'defaultSpaceGuid',
+        'selection' => $group->defaultSpaces,
+        'maxSelection' => 1000,
+        // Group managers should see spaces only where they are admins or owners
+        'url' => $canManage ? null : Url::to(['/space/browse/search-json', 'user' => 'admin-owner']),
+    ])
+    ?>
+    <?= $form->field($group, 'updateSpaceMemberships')->checkbox() ?>
+    <?php $url = ($group->isNewRecord) ? null : Url::to(['/admin/group/admin-user-search', 'id' => $group->id]) ?>
+    <?= $form->field($group, 'managerGuids')->widget(UserPickerField::class, [
+        'selection' => $group->manager,
+        'url' => $url,
+        'disabled' => !$canManage,
+    ]) ?>
 
-    <?php if (!$group->is_admin_group): ?>
-        <?= SpacePickerField::widget([
-            'form' => $form,
-            'model' => $group,
-            'attribute' => 'defaultSpaceGuid',
-            'selection' => $group->defaultSpaces,
-            'maxSelection' => 1000,
-            // Group managers should see spaces only where they are admins or owners
-            'url' => $canManage ? null : Url::to(['/space/browse/search-json', 'user' => 'admin-owner']),
-        ])
-        ?>
-    <?php endif ?>
-    <?php if (!$group->isNewRecord): ?>
-        <?= $form->field($group, 'updateSpaceMemberships')->checkbox() ?>
-    <?php endif ?>
-    <?php if (!$group->is_admin_group): ?>
-        <?php $url = ($group->isNewRecord) ? null : Url::to(['/admin/group/admin-user-search', 'id' => $group->id]) ?>
-        <?= $form->field($group, 'managerGuids')->widget(UserPickerField::class, [
-            'selection' => $group->manager,
-            'url' => $url,
-            'disabled' => !$canManage,
-        ]) ?>
-    <?php endif ?>
-
-    <?php if ($canManage) : ?>
-        <?= $form->field($group, 'notify_users')->checkbox() ?>
-
-        <?php if (!$group->is_admin_group): ?>
-            <?= $form->field($group, 'show_at_registration')->checkbox() ?>
-        <?php endif ?>
-        <?= $form->field($group, 'show_at_directory')->checkbox() ?>
-        <?= $form->field($group, 'sort_order')->widget(SortOrderField::class) ?>
-        <?php if (!$group->is_admin_group): ?>
-            <?= $form->field($group, 'is_default_group')->checkbox(['disabled' => (bool)$group->is_default_group]) ?>
-        <?php endif ?>
-    <?php endif ?>
+    <?= $form->field($group, 'notify_users')->checkbox() ?>
+    <?= $form->field($group, 'show_at_registration')->checkbox() ?>
+    <?= $form->field($group, 'show_at_directory')->checkbox() ?>
+    <?= $form->field($group, 'sort_order')->widget(SortOrderField::class) ?>
+    <?= $form->field($group, 'is_default_group')->checkbox(['disabled' => (bool)$group->is_default_group]) ?>
 
     <?= Button::save()->submit() ?>
     <?php if ($group->canDelete()) : ?>
         <?= Button::danger(Yii::t('AdminModule.user', 'Delete'))
             ->link(['/admin/group/delete', 'id' => $group->id])
             ->options(['data-method' => 'POST'])
-            ->confirm(Yii::t('AdminModule.user', 'Are you really sure? Users who are not assigned to another group are automatically assigned to the default group.')) ?>
+            ->confirm(
+                Yii::t(
+                    'AdminModule.user',
+                    'Are you really sure? Users who are not assigned to another group are automatically assigned to the default group.'
+                )
+            ) ?>
     <?php endif ?>
 
     <?php ActiveForm::end() ?>
@@ -78,11 +68,11 @@ use yii\helpers\Url;
 <?php $this->endContent() ?>
 
 <?php if ($canManage) : ?>
-<script <?= Html::nonce() ?>>
-$(document).on('select2:select', '#editgroupform-type', function () {
-    const isParentGroup = this.value === '<?= EditGroupForm::TYPE_NORMAL?>';
-    document.querySelector('.field-editgroupform-parent').classList.toggle('d-none', isParentGroup);
-    document.querySelector('.field-editgroupform-subgroups').classList.toggle('d-none', !isParentGroup);
-});
-</script>
+    <script <?= Html::nonce() ?>>
+        $(document).on('select2:select', '#editgroupform-type', function () {
+            const isParentGroup = this.value === '<?= EditGroupForm::TYPE_NORMAL?>';
+            document.querySelector('.field-editgroupform-parent').classList.toggle('d-none', isParentGroup);
+            document.querySelector('.field-editgroupform-subgroups').classList.toggle('d-none', !isParentGroup);
+        });
+    </script>
 <?php endif ?>

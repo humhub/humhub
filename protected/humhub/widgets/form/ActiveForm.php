@@ -24,6 +24,9 @@ class ActiveForm extends \yii\bootstrap5\ActiveForm
      */
     public $enableClientValidation = false;
 
+
+    public $renderOnlySafeFields = false;
+
     /**
      * @inheritdoc
      */
