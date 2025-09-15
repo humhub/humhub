@@ -5,6 +5,7 @@ namespace admin;
 use Codeception\Lib\Friend;
 use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\User;
+use Yii;
 
 /**
  * Inherited Methods
@@ -35,6 +36,7 @@ class FunctionalTester extends \FunctionalTester
 
         $user = User::findOne(['username' => 'User2']);
         GroupUser::updateAll(['is_group_manager' => 0], ['user_id' => $user->id]);
+        Yii::$app->runtimeCache->flush();
 
         return $user;
     }
