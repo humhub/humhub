@@ -22,7 +22,7 @@ return [
   'Close' => 'Sluiten',
   'Collapse' => 'Inklappen',
   'Confirm' => 'Bevestig',
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Content Addon bron moet een instantie van HActiveRecordContent of HActiveRecordContentAddon zijn!',
+  'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'Content Addon bron moet een instantie van ContentActiveRecord of ContentAddonActiveRecord zijn!',
   'Copy to clipboard' => 'Kopieer naar klembord',
   'Could not find content of addon!' => 'Kan de inhoud van deze addon niet vinden!',
   'Could not find requested page.' => 'Kan de opgevraagde pagina niet vinden.',

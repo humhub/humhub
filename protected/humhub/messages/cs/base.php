@@ -22,7 +22,7 @@ return [
   'Close' => 'Zavřít',
   'Collapse' => 'Sbalit',
   'Confirm' => 'Potvrdit',
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Content Addon musí být buď instancí objektu HActiveRecordContent nebo HActiveRecordContentAddon!',
+  'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'Content Addon musí být buď instancí objektu ContentActiveRecord nebo ContentAddonActiveRecord!',
   'Copy to clipboard' => 'Kopírovat do schránky',
   'Could not find content of addon!' => 'Nebylo možné nalézt obsah dolpňku!',
   'Could not find requested page.' => 'Nepodařilo se najít požadovanou stránku.',

@@ -160,6 +160,7 @@
             flex-direction: column;
             margin: 15px 0;
             border-radius: 4px;
+            box-shadow: 0 0 3px var(--hh-background3);
             background-color: var(--hh-background-color-main);
 
             &.card-archived {

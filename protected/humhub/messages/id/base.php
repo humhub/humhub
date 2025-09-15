@@ -22,7 +22,7 @@ return [
     'Close' => 'Tutup',
     'Collapse' => 'Lipat',
     'Confirm' => 'Konfirmasi',
-    'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => '@@',
+    'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => '@@',
     'Copy to clipboard' => 'Salin ke papan klip',
     'Could not find content of addon!' => 'Tidak dapat menemukan konten addon!',
     'Could not find requested page.' => 'Tidak dapat menemukan halaman yang diminta.',

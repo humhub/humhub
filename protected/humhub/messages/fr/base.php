@@ -22,7 +22,7 @@ return [
   'Close' => 'Fermer',
   'Collapse' => 'Réduire',
   'Confirm' => 'Confirmer',
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Le contenu d\'un add-on doit être une instance de HActiveRecordContent ou HActiveRecordContentAddon.',
+  'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'Le contenu d\'un add-on doit être une instance de ContentActiveRecord ou ContentAddonActiveRecord.',
   'Copy to clipboard' => 'Copier vers le presse-papier',
   'Could not find content of addon!' => 'Le contenu de l\'add-on n\'a pu être trouvé.',
   'Could not find requested page.' => 'Impossible de trouver la page recherchée.',

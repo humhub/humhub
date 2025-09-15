@@ -3,6 +3,8 @@
 use humhub\helpers\Html;
 use humhub\libs\TimezoneHelper;
 use humhub\modules\admin\models\forms\BasicSettingsForm;
+use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\bootstrap\Alert;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 
@@ -11,7 +13,7 @@ use humhub\widgets\form\ActiveForm;
 
 <div class="panel-body">
     <?= Html::beginForm(['clear-cache']) ?>
-        <?= Button::primary(Yii::t('AdminModule.settings', 'Flush Caches'))->submit()->options(['class' => 'pull-right']) ?>
+    <?= Button::primary(Yii::t('AdminModule.settings', 'Flush Caches'))->submit()->options(['class' => 'pull-right']) ?>
     <?= Html::endForm() ?>
 
     <h4><?= Yii::t('AdminModule.settings', 'General Settings') ?></h4>
@@ -42,6 +44,9 @@ use humhub\widgets\form\ActiveForm;
     <?= $form->endCollapsibleFields() ?>
 
     <?= $form->beginCollapsibleFields(Yii::t('AdminModule.settings', 'Maintenance mode'), !$model->maintenanceMode) ?>
+    <?= Alert::warning(Yii::t('AdminModule.settings', 'Maintenance mode restricts access to the platform and immediately logs out all users except Admins.'))
+        ->closeButton(false)
+        ->icon(Icon::get('exclamation-triangle')) ?>
     <?= $form->field($model, 'maintenanceMode')->checkbox() ?>
     <?= $form->field($model, 'maintenanceModeInfo')->textInput(['placeholder' => Yii::t('AdminModule.settings', 'Add individual info text...')]) ?>
     <?= $form->endCollapsibleFields() ?>
