@@ -13,6 +13,7 @@ return [
   'Administrators' => 'Administratoriai',
   'Advanced' => 'Išplėstinis',
   'Advanced settings' => 'Išplėstiniai nustatymai',
+  'All' => 'Visi',
   'Appearance' => 'Išvaizda',
   'Approval' => 'Patvirtinimas',
   'Authentication' => 'Atpažinimas',

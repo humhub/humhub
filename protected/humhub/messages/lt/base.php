@@ -22,7 +22,7 @@ return [
   'Close' => 'Uždaryti',
   'Collapse' => 'Sutraukti',
   'Confirm' => 'Patvirtinti',
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Turinio Addon šaltinis turi būti HActiveRecordContent arba HActiveRecordContentAddon!',
+  'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'Turinio Addon šaltinis turi būti ContentActiveRecord arba ContentAddonActiveRecord!',
   'Copy to clipboard' => 'Kopijuoti į iškarpinę',
   'Could not find content of addon!' => 'Nepavyko rasti papildinio turinio!',
   'Could not find requested page.' => 'Nepavyko rasti prašomo puslapio.',

@@ -2,10 +2,8 @@
 
 namespace humhub\modules\admin\models\forms;
 
-use humhub\modules\ui\icon\widgets\Icon;
 use Yii;
 use yii\base\Model;
-use yii\bootstrap5\Alert;
 
 /**
  * BasicSettingsForm
@@ -85,12 +83,6 @@ class BasicSettingsForm extends Model
     {
         return [
             'baseUrl' => Yii::t('AdminModule.settings', 'E.g. http://example.com/humhub'),
-            'maintenanceMode' => Alert::widget([
-                'options' => ['class' => 'alert-danger'],
-                'body'
-                    => Icon::get('exclamation-triangle') . ' '
-                    . Yii::t('AdminModule.settings', 'Maintenance mode restricts access to the platform and immediately logs out all users except Admins.'),
-            ]),
         ];
     }
 

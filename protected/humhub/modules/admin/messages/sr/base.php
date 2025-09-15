@@ -13,6 +13,7 @@ return [
   'Administrators' => 'Administratori',
   'Advanced' => 'Napredno',
   'Advanced settings' => 'Napredna podešavanja',
+  'All' => 'Sve',
   'Appearance' => 'Izgled',
   'Approval' => 'Odobrenje',
   'Authentication' => 'Provera autentičnosti',

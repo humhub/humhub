@@ -22,7 +22,7 @@ return [
     'Close' => 'Κλείσιμο',
     'Collapse' => 'Χαμήλωσε',
     'Confirm' => 'Επιβεβαίωση',
-    'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Η πηγή πρόσθετου περιεχομένου πρέπει να είναι υπόδειξη του HActiveRecordContent ή του HActiveRecordContentAddon!',
+    'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'Η πηγή πρόσθετου περιεχομένου πρέπει να είναι υπόδειξη του ContentActiveRecord ή του ContentAddonActiveRecord!',
     'Copy to clipboard' => 'Αντιγραφή στο πρόχειρο',
     'Could not find content of addon!' => 'Δεν βρέθηκε περιεχόμενο στο πρόσθετο!',
     'Could not find requested page.' => 'Δεν ήταν δυνατή η εύρεση της σελίδας που ζητήθηκε.',

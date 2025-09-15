@@ -20,7 +20,7 @@ return [
     'Close' => 'Închide',
     'Collapse' => 'Strânge',
     'Confirm' => 'Confirmă',
-    'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Sursa Conținutului de Adaos trebuie să fie instanță a HActiveRecordContent sau a HActiveRecordContentAddon!',
+    'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'Sursa Conținutului de Adaos trebuie să fie instanță a ContentActiveRecord sau a ContentAddonActiveRecord!',
     'Copy to clipboard' => 'Copiează în clipbord',
     'Could not find content of addon!' => 'Nu s-a putut găsi conținutul adaosului!',
     'Could not find requested page.' => 'Nu s-a putut găsi pagina cerută.',

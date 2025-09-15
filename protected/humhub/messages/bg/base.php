@@ -22,7 +22,7 @@ return [
   'Close' => 'Затваряне',
   'Collapse' => 'Свий',
   'Confirm' => 'Потвърждение',
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Съдържанието на Content Addon трябва да бъде инстанция на HActiveRecordContent или HActiveRecordContentAddon!',
+  'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'Съдържанието на Content Addon трябва да бъде инстанция на ContentActiveRecord или ContentAddonActiveRecord!',
   'Copy to clipboard' => 'Копиране в клипборда',
   'Could not find content of addon!' => 'Не може да се намери съдържанието на addon!',
   'Could not find requested page.' => 'Търсената страница не можа да бъде намерена.',

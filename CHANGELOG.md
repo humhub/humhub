@@ -1,6 +1,20 @@
 HumHub Changelog
 ================
 
+1.18.0-beta.4 (Unreleased)
+---------------------------------
+- Enh #7690: Allow uploading a custom Email Header image, or using the Logo image
+- Fix #7690: Remove "Mobile appearance" from Appearance form
+- Fix #7697: Fix submitting a form with file upload from a modal window
+- Fix #7699: Fixed old Mailer Vars usage
+- Fix #7700: `<code>` styling
+- Fix #7701: Activity Box Bottom Padding
+- Fix #7702: Selectors/Pickers BG color
+- Fix #7554: Delete `logging` DB table (keep `log` only)
+- Fix #7704: Maintenance mode alert box
+- Enh #7620: Add box shadow to cards (such as cards in the People and Spaces pages)
+- Enh #6969: Added `UserHelper` for better `user` param method handling
+
 1.18.0-beta.3 (September 9, 2025)
 ---------------------------------
 
@@ -13,8 +27,9 @@ HumHub Changelog
 - Fix #7680: Migration of Theme Colors broken
 - Fix #7681: Add missing 'DatabaseForm' to 'InstallController
 - Fix #7685: In custom themes, the default colors in the Appearance Settings are overwritten by the base theme colors
-- Chg: Link color is now black. Use the `link-accent` class to emphasize a link.
+- Chg #7687: Link color is now black. Use the `link-accent` class to emphasize a link.
 - Fix #7688: Fix notifications filter toggler
+- Fix #7694: Admin menu active "Information" item for the Logging page
 
 1.18.0-beta.2 (September 4, 2025)
 ---------------------------------

@@ -9,7 +9,7 @@ return [
     'Choose language:' => 'Chwazi yon lang:',
     'Close' => 'Fèmen',
     'Collapse' => 'Fèmen',
-    'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Content Addon sous dwe egzanp nan HActiveRecordContent oubyen HActiveRecordContentAddon!',
+    'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'Content Addon sous dwe egzanp nan ContentActiveRecord oubyen ContentAddonActiveRecord!',
     'Could not find content of addon!' => 'Pa\'t kapab jwenn kontni addon nan!',
     'Default' => 'Defo',
     'Deny' => 'Refize',

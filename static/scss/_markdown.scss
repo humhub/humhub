@@ -79,6 +79,8 @@ $md-block-spacing: 1.2em;
     code {
         background-color: lighten($accent, 50%);
         color: var(--bs-code-color);
+        padding: 4px 8px;
+        border-radius: 4px;
     }
 
     blockquote {

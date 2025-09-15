@@ -22,7 +22,7 @@ return [
   'Close' => 'إغلاق',
   'Collapse' => 'طي',
   'Confirm' => 'أكد',
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'محتوى الإضافة لابد أن يكون موجود في HActiveRecordContent أو HActiveRecordContentAddon',
+  'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'محتوى الإضافة لابد أن يكون موجود في ContentActiveRecord أو ContentAddonActiveRecord',
   'Copy to clipboard' => 'نسخ إلى الحافظة',
   'Could not find content of addon!' => 'لم يمكن إيجاد محتويات الإضافة',
   'Could not find requested page.' => 'لم يتم العثور على الصفحة المطلوبة.',

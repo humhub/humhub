@@ -1,13 +1,13 @@
 <?php
 
-use yii\helpers\Url;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\SiteLogo;
+use yii\helpers\Url;
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
 ?>
 <div class="container" style="text-align: center;">
-    <?= SiteLogo::widget(['place' => 'login']); ?>
+    <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br>
     <div class="row">
         <div class="panel panel-default animated fadeIn"

@@ -37,7 +37,7 @@ class PermaController extends Controller
     }
 
     /**
-     * Redirects to given HActiveRecordContent or HActiveRecordContentAddon
+     * Redirects to given ContentActiveRecord or ContentAddonActiveRecord
      */
     public function actionIndex()
     {

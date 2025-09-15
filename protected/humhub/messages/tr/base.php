@@ -22,7 +22,7 @@ return [
   'Close' => 'Kapat',
   'Collapse' => 'Gizle',
   'Confirm' => 'Doğrula',
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'İçerik eklenti kaynağı HActiveRecordContent ya da HActiveRecordAddon şeklinde olmalı!',
+  'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'İçerik eklenti kaynağı ContentActiveRecord ya da HActiveRecordAddon şeklinde olmalı!',
   'Copy to clipboard' => 'Panoya kopyala',
   'Could not find content of addon!' => 'Eklenti içeriği bulunamadı!',
   'Could not find requested page.' => 'İstenen sayfa bulunamadı.',

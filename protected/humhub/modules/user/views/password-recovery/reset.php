@@ -8,7 +8,7 @@ use yii\helpers\Url;
 $this->pageTitle = Yii::t('UserModule.auth', 'Password reset');
 ?>
 <div class="container" style="text-align: center;">
-    <?= SiteLogo::widget(['place' => 'login']); ?>
+    <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br>
 
     <div class="row">

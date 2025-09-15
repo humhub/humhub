@@ -22,7 +22,7 @@ return [
   'Close' => 'ปิด',
   'Collapse' => 'ย่อ',
   'Confirm' => 'ยืนยัน',
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'แหล่งที่มาของเพิ่มเข้าไปของเนื้อหาต้องเป็นอินสแตนซ์ของ HActiveRecordContent หรือ HActiveRecordContentAddon!',
+  'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'แหล่งที่มาของเพิ่มเข้าไปของเนื้อหาต้องเป็นอินสแตนซ์ของ ContentActiveRecord หรือ ContentAddonActiveRecord!',
   'Copy to clipboard' => 'คัดลอกไปที่คลิปบอร์ด',
   'Could not find content of addon!' => 'ไม่พบเนื้อหาของพิ่มเข้าไป!',
   'Could not find requested page.' => 'ไม่พบหน้าที่ร้องขอ',

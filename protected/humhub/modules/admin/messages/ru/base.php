@@ -1,4 +1,4 @@
-<?php /* Translated by Paul (https://paul.bid) www.paul.bid@gmail.com */
+<?php
 return [
   '<strong>Administration</strong> menu' => '<strong>Панель Управления</strong>',
   '<strong>Maintenance</strong> Mode' => '<strong>Режим</strong> Технического обслуживания',
@@ -13,6 +13,7 @@ return [
   'Administrators' => 'Администраторы',
   'Advanced' => 'Дополнительно',
   'Advanced settings' => 'Дополнительные настройки',
+  'All' => 'Все',
   'Appearance' => 'Внешний вид',
   'Approval' => 'Подтверждение',
   'Authentication' => 'Авторизация',

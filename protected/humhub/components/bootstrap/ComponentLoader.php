@@ -55,12 +55,11 @@ class ComponentLoader implements BootstrapInterface
             $app->log->logger->log('`mailer` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
         }
 
-        $transportType = $app->settings->get('mailer.transportType', MailingSettingsForm::TRANSPORT_PHP);
+        $transportType = $app->settings->get('mailerTransportType', MailingSettingsForm::TRANSPORT_PHP);
 
-        //Check if Test environment
+        // Check if Test environment
         if ($this->getComponentDefinition($app, 'mailer', 'class') !== Mailer::class) {
             $app->mailer->useFileTransport = true;
-
             return;
         }
 
@@ -77,26 +76,34 @@ class ComponentLoader implements BootstrapInterface
             $definition = [];
 
             if ($transportType === MailingSettingsForm::TRANSPORT_SMTP) {
-                if ($app->settings->get('mailer.hostname')) {
-                    $definition['transport']['host'] = $app->settings->get('mailer.hostname');
+                if ($app->settings->get('mailerHostname')) {
+                    $definition['transport']['host'] = $app->settings->get('mailerHostname');
                 }
-                if ($app->settings->get('mailer.port')) {
-                    $definition['transport']['port'] = (int)$app->settings->get('mailer.port');
+                if ($app->settings->get('mailerPort')) {
+                    $definition['transport']['port'] = (int)$app->settings->get('mailerPort');
                 } else {
                     $definition['transport']['port'] = 25;
                 }
-                if ($app->settings->get('mailer.username')) {
-                    $definition['transport']['username'] = $app->settings->get('mailer.username');
+                if ($app->settings->get('mailerUsername')) {
+                    $definition['transport']['username'] = $app->settings->get('mailerUsername');
                 }
-                if ($app->settings->get('mailer.password')) {
-                    $definition['transport']['password'] = $app->settings->get('mailer.password');
+                if ($app->settings->get('mailerPassword')) {
+                    $definition['transport']['password'] = $app->settings->get('mailerPassword');
                 }
-                $definition['transport']['scheme'] = (empty($app->settings->get('mailer.useSmtps'))) ? 'smtp' : 'smtps';
+
+                if ((empty($app->settings->get('mailerUseSmtps')))) {
+                    $definition['transport']['scheme'] = 'smtp';
+                } else {
+                    $definition['transport']['scheme'] = 'smtps';
+                    if (!empty($app->settings->get('mailerAllowSelfSignedCerts'))) {
+                        $definition['transport']['options'] = ['verify_peer' => false];
+                    }
+                }
 
             } elseif ($transportType === MailingSettingsForm::TRANSPORT_PHP) {
                 $definition['transport']['dsn'] = 'native://default';
             } elseif ($transportType === MailingSettingsForm::TRANSPORT_DSN) {
-                $definition['transport']['dsn'] = $app->settings->get('mailer.dsn');
+                $definition['transport']['dsn'] = $app->settings->get('mailerDsn');
             }
 
             $this->updateComponentDefinition($app, 'mailer', $definition);

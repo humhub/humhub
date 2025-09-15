@@ -13,6 +13,7 @@ return [
   'Administrators' => 'مدیران',
   'Advanced' => 'پیشرفته',
   'Advanced settings' => '',
+  'All' => 'همه',
   'Appearance' => 'ظاهر',
   'Approval' => 'تصویب',
   'Authentication' => 'احراز هویت',
