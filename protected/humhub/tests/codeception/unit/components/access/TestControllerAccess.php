@@ -148,7 +148,7 @@ class TestControllerAccess extends HumHubDbTestCase
         $this->assertEquals(401, $controllerAccess->code);
         $this->assertEquals('Your user account is inactive, please login with an active account or contact a network administrator.', $controllerAccess->reason);
 
-        // UnnapprovedUser
+        // UnapprovedUser
         $this->becomeUser('UnapprovedUser');
 
         $controllerAccess = new ControllerAccess(['action' => 'testAction', 'rules' => [
@@ -356,7 +356,7 @@ class TestControllerAccess extends HumHubDbTestCase
         $this->assertEquals(401, $controllerAccess->code);
         $this->assertEquals('Your user account is inactive, please login with an active account or contact a network administrator.', $controllerAccess->reason);
 
-        // UnnapprovedUser
+        // UnapprovedUser
         $this->becomeUser('UnapprovedUser');
 
         $controllerAccess = new ControllerAccess(['action' => 'testAction', 'rules' => []]);
