@@ -36,7 +36,7 @@ class FunctionalTester extends \FunctionalTester
 
         $user = User::findOne(['username' => 'User2']);
         GroupUser::updateAll(['is_group_manager' => 0], ['user_id' => $user->id]);
-        Yii::$app->runtimeCache->flush();
+        Yii::$app->user->getPermissionManager()->clear();
 
         return $user;
     }
