@@ -12,6 +12,7 @@
 
 .img-uploader-field {
     position: relative;
+    min-height: 80px;
 }
 
 .img-uploader-field .files {
