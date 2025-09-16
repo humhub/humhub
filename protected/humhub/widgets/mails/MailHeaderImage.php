@@ -25,9 +25,11 @@ class MailHeaderImage extends Widget
 
     private const STORE_PATH = '@webroot/uploads/' . self::ASSETS_PATH;
 
-    public const MIN_WIDTH = 50; // For the DesignSettingsForm rules check
+    public const MIN_WIDTH = 50;
+    public const MIN_HEIGHT = 50;
+    public const RECOMMENDED_WIDTH = 600;
+    public const RECOMMENDED_HEIGHT = 150;
     public const MAX_WIDTH = 600; // For image resizing after upload
-    public const MIN_HEIGHT = 50; // For the DesignSettingsForm rules check
     public const MAX_HEIGHT = 300; // For image resizing after upload
     public const LOGO_MAX_HEIGHT = 60; // For image resizing after upload
 

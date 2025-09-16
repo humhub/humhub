@@ -3,6 +3,7 @@ modules:
     WebDriver:
       browser: chrome
       port: 4444
+      window_size: 1920x1200
       capabilities:
-        chromeOptions:
-          args: ['--headless', '--disable-gpu', '--no-sandbox',  '--window-size=1920,1200']
+          goog:chromeOptions:
+              args: ["--headless"]
