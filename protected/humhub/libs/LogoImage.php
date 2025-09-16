@@ -11,16 +11,19 @@ namespace humhub\libs;
 use Yii;
 use yii\base\ErrorException;
 use yii\base\Exception;
+use yii\helpers\FileHelper;
 use yii\imagine\Image;
 use yii\web\UploadedFile;
-use yii\helpers\Url;
-use yii\helpers\FileHelper;
 
 /**
  * LogoImage
  */
 class LogoImage
 {
+    public const MIN_WIDTH = 100;
+    public const MIN_HEIGHT = 120;
+    public const RECOMMENDED_MIN_HEIGHT = 248;
+
     /**
      * Sets a new icon for the installation.
      * @param UploadedFile|null $file
