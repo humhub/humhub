@@ -18,24 +18,20 @@ use yii\helpers\Url;
 
 <?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group]) ?>
 <div class="panel-body">
-    <?php $form = ActiveForm::begin(['acknowledge' => true, 'renderOnlySafeFields' => true]) ?>
+    <?php $form = ActiveForm::begin(['acknowledge' => true, 'renderOnlyActiveAttributes' => true]) ?>
 
-    <?= $form->field($group, 'name', ['inputOptions' => ['readOnly' => !$canManage]])->textInput() ?>
+    <?= $form->field($group, 'name')->textInput(['readonly' => !$canManage]) ?>
     <?= $form->field($group, 'description')->textarea(['rows' => 5, 'readonly' => !$canManage]) ?>
     <?= $form->field($group, 'type')->dropDownList($group::getTypeOptions()) ?>
     <?= $form->field($group, 'subgroups')->widget(GroupPicker::class, ['groupType' => $group::TYPE_NORMAL]) ?>
     <?= $form->field($group, 'parent')->widget(GroupPicker::class, ['groupType' => $group::TYPE_SUBGROUP]) ?>
 
-    <?= SpacePickerField::widget([
-        'form' => $form,
-        'model' => $group,
-        'attribute' => 'defaultSpaceGuid',
+    <?= $form->field($group, 'defaultSpaceGuid')->widget(SpacePickerField::class, [
         'selection' => $group->defaultSpaces,
         'maxSelection' => 1000,
         // Group managers should see spaces only where they are admins or owners
         'url' => $canManage ? null : Url::to(['/space/browse/search-json', 'user' => 'admin-owner']),
-    ])
-    ?>
+    ]) ?>
     <?= $form->field($group, 'updateSpaceMemberships')->checkbox() ?>
     <?php $url = ($group->isNewRecord) ? null : Url::to(['/admin/group/admin-user-search', 'id' => $group->id]) ?>
     <?= $form->field($group, 'managerGuids')->widget(UserPickerField::class, [

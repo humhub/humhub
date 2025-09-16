@@ -23,6 +23,12 @@ use yii\helpers\ArrayHelper;
 class ActiveField extends \yii\bootstrap5\ActiveField
 {
     /**
+     * @inheritdoc
+     * @var ActiveForm
+     */
+    public $form;
+
+    /**
      * @var bool Can be set to true in order to prevent this field from being rendered. This may be used by InputWidgets
      * or other fields responsible for custom visibility management.
      *
@@ -30,15 +36,15 @@ class ActiveField extends \yii\bootstrap5\ActiveField
      */
     public $preventRendering = false;
 
-
-    public function init() {
-        if ($this->form->renderOnlySafeFields && !$this->model->isAttributeSafe($this->attribute)) {
-            $this->preventRendering = true;
-        }
-            parent::init();
-
+    public function isPreventRendering(): bool
+    {
+        return $this->preventRendering
+            || (
+                $this->form->renderOnlyActiveAttributes
+                && !$this->model->isAttributeActive($this->attribute)
+                && empty($this->inputOptions['readonly'])
+            );
     }
-
 
     /**
      * @inheritdoc
@@ -58,6 +64,8 @@ class ActiveField extends \yii\bootstrap5\ActiveField
             $config['field'] = $this;
         }
 
+        $this->setReadOnlyFromOptions($config);
+
         return parent::widget($class, $config);
     }
 
@@ -66,11 +74,7 @@ class ActiveField extends \yii\bootstrap5\ActiveField
      */
     public function begin()
     {
-        if ($this->preventRendering) {
-            return '';
-        }
-
-        return parent::begin();
+        return $this->isPreventRendering() ? '' : parent::begin();
     }
 
     /**
@@ -78,11 +82,7 @@ class ActiveField extends \yii\bootstrap5\ActiveField
      */
     public function render($content = null): string
     {
-        if ($this->preventRendering && !($this->form->renderOnlySafeFields && !empty($this->inputOptions['readOnly']))) {
-            return '';
-        }
-
-        return parent::render($content);
+        return $this->isPreventRendering() ? '' : parent::render($content);
     }
 
     /**
@@ -90,11 +90,7 @@ class ActiveField extends \yii\bootstrap5\ActiveField
      */
     public function end()
     {
-        if ($this->preventRendering) {
-            return '';
-        }
-
-        return parent::end();
+        return $this->isPreventRendering() ? '' : parent::end();
     }
 
     /**
@@ -164,5 +160,21 @@ class ActiveField extends \yii\bootstrap5\ActiveField
         }
 
         return parent::radioList($items, $options);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function addAriaAttributes(&$options)
+    {
+        $this->setReadOnlyFromOptions($options);
+        parent::addAriaAttributes($options);
+    }
+
+    protected function setReadOnlyFromOptions(array $options): void
+    {
+        if (isset($options['readonly']) || isset($options['disabled'])) {
+            $this->inputOptions['readonly'] = $options['readonly'] ?? $options['disabled'];
+        }
     }
 }
