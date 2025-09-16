@@ -45,6 +45,7 @@ class ActivityStreamCest
         $I->amOnSpace3();
 
         $I->waitForElementVisible('.activity-entry');
+        $I->wait(1);
         $I->see('Peter Tester created a new post "Activity test post!"', '#activityStream');
         $I->click('.activity-entry');
 

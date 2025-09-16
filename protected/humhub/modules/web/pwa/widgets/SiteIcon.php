@@ -27,6 +27,10 @@ use yii\web\UploadedFile;
  */
 class SiteIcon extends Widget
 {
+    public const MIN_WIDTH = 256;
+    public const MIN_HEIGHT = 256;
+    public const RECOMMENDED_WIDTH = 512;
+    public const RECOMMENDED_HEIGHT = 512;
     /**
      * Sets a new icon for the installation.
      *

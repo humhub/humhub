@@ -9,14 +9,18 @@
 namespace humhub\modules\user\helpers;
 
 use Yii;
-use yii\imagine\Image;
 use yii\helpers\FileHelper;
+use yii\imagine\Image;
 
 final class LoginBackgroundImageHelper
 {
+    public const MIN_WIDTH = 800;
+    public const MIN_HEIGHT = 600;
+    public const RECOMMENDED_WIDTH = 1920;
+    public const RECOMMENDED_HEIGHT = 1080;
     private const ASSETS_PATH = 'login-bg';
-    private const ASSETS_FILE = 'background.png';
 
+    private const ASSETS_FILE = 'background.png';
     private const STORE_PATH = '@webroot/uploads/login-bg';
 
     public static function set(?string $fileName): void
