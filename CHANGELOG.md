@@ -14,6 +14,7 @@ HumHub Changelog
 - Fix #7704: Maintenance mode alert box
 - Enh #7620: Add box shadow to cards (such as cards in the People and Spaces pages)
 - Enh #6969: Added `UserHelper` for better `user` param method handling
+- Enh #7703: New `ActiveFileUpload` field widget
 
 1.18.0-beta.3 (September 9, 2025)
 ---------------------------------

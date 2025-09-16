@@ -244,7 +244,7 @@ class UploadInput extends JsWidget
     public function getAttributes()
     {
         return [
-            'multiple' => ($this->multiple) ? 'multiple' : null,
+            'multiple' => !! $this->multiple,
             'title' => Yii::t('base', 'Upload file'),
         ];
     }
