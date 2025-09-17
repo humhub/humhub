@@ -50,7 +50,7 @@ class GroupManagerCest
 
     public function testCanManageGroups(FunctionalTester $I)
     {
-        $I->wantTo('ensure that the group manager can manage only groups where he is a manager');
+        $I->wantTo('ensure that the group manager can manage only groups(and subgroups) where he is a manager');
 
         $I->amUser2();
         $group = Group::findOne(['name' => 'Moderators']);
@@ -58,9 +58,9 @@ class GroupManagerCest
         $I->amOnRoute('/admin/group');
         $I->see('Manage groups');
         $I->see('Moderators', '.table');
+        $I->see('Editors', '.table'); // Subgroup can be managed too
         $I->dontSee('Administrator', '.table');
         $I->dontSee('Users', '.table');
-        $I->dontSee('Editors', '.table');
 
         $I->amOnRoute('/admin/group/edit', ['id' => $group->id]);
         $I->see('Manage group: ' . $group->name);
