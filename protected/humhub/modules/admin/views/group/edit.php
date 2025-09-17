@@ -18,7 +18,7 @@ use yii\helpers\Url;
 
 <?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group]) ?>
 <div class="panel-body">
-    <?php $form = ActiveForm::begin(['acknowledge' => true, 'renderOnlyActiveAttributes' => true]) ?>
+    <?php $form = ActiveForm::begin(['acknowledge' => true, 'renderOnlySafeAttributes' => true]) ?>
 
     <?= $form->field($group, 'name')->textInput(['readonly' => !$canManage]) ?>
     <?= $form->field($group, 'description')->textarea(['rows' => 5, 'readonly' => !$canManage]) ?>

@@ -40,8 +40,8 @@ class ActiveField extends \yii\bootstrap5\ActiveField
     {
         return $this->preventRendering
             || (
-                $this->form->renderOnlyActiveAttributes
-                && !$this->model->isAttributeActive($this->attribute)
+                $this->form->renderOnlySafeAttributes
+                && !$this->model->isAttributeSafe($this->attribute)
                 && empty($this->inputOptions['readonly'])
             );
     }

@@ -28,7 +28,7 @@ class ActiveForm extends \yii\bootstrap5\ActiveForm
      * @var bool True to render only fields which are active by current scenario and it is not readonly
      * @since 1.18
      */
-    public $renderOnlyActiveAttributes = false;
+    public $renderOnlySafeAttributes = false;
 
     /**
      * @inheritdoc
