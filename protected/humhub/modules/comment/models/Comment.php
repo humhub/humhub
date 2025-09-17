@@ -329,7 +329,8 @@ class Comment extends ContentAddonActiveRecord
      */
     public function getContentDescription()
     {
-        return $this->message;
+        $filesSummary = $this->fileManager->getSummary();
+        return $this->message . ($this->message && $filesSummary ? "\n\n" : "") . $filesSummary;
     }
 
     public function canDelete($userId = ''): bool

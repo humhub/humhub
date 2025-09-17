@@ -18,6 +18,7 @@ use Yii;
 use yii\base\Component;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
+use yii\helpers\StringHelper;
 
 /**
  * FileManager
@@ -131,5 +132,29 @@ class FileManager extends Component
                 return $this->find()->andWhere(['show_in_stream' => 0])->all();
             }
         }
+    }
+
+    /**
+     * Returns a summary of attached files
+     * @since 1.18
+     */
+    public function getSummary(int $fileNameMaxLength = 30, int $maxFiles = 3): string
+    {
+        $fileNames = [];
+        $files = $this->findAll();
+        foreach ($files as $file) {
+            $fileNames[] = StringHelper::truncate($file->file_name, $fileNameMaxLength);
+            if (count($fileNames) === $maxFiles) {
+                $fileNames[] = Yii::t('FileModule.base', 'and {nbFiles} more.', ['nbFiles' => count($files) - $maxFiles]);
+                break;
+            }
+        }
+        if (!$fileNames) {
+            return '';
+        }
+        if (count($fileNames) === 1) {
+            return Yii::t('FileModule.base', 'Attachment: {file}', ['file' => $fileNames[0]]);
+        }
+        return Yii::t('FileModule.base', 'Attachments: {files}', ['files' => implode(', ', $fileNames)]);
     }
 }
