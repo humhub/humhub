@@ -171,7 +171,15 @@ class ActiveField extends \yii\bootstrap5\ActiveField
         parent::addAriaAttributes($options);
     }
 
-    protected function setReadOnlyFromOptions(array $options): void
+    /**
+     * Set this active field as read only when this flag is set after the field has been already initialized.
+     * Directly calling, e.g., `textInput($inputOptions)` does not merge the options into `ActiveField::$inputOptions`.
+     * Since the `readonly` option is needed later for `$preventRendering`, the option is intercepted here.
+     *
+     * @param array $options
+     * @return void
+     */
+    private function setReadOnlyFromOptions(array $options): void
     {
         if (isset($options['readonly']) || isset($options['disabled'])) {
             $this->inputOptions['readonly'] = $options['readonly'] ?? $options['disabled'];
