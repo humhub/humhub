@@ -55,16 +55,35 @@ class EditGroupForm extends Group
         }
     }
 
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         $rules = parent::rules();
         $rules[] = [['defaultSpaceGuid'], 'safe'];
         $rules[] = [['updateSpaceMemberships'], 'boolean'];
-        $rules[] = [['name', 'type'], 'required', 'except' => self::SCENARIO_MANAGER];
-        $rules[] = [['managerGuids', 'show_at_registration', 'show_at_directory'], 'safe', 'except' => self::SCENARIO_MANAGER];
-        $rules[] = [['subgroups', 'parent'], 'safe', 'except' => self::SCENARIO_MANAGER];
-        $rules[] = [['type'], 'validateTypeGroups', 'except' => self::SCENARIO_MANAGER];
+        $rules[] = [['name', 'type'], 'required'];
+        $rules[] = [['managerGuids', 'show_at_registration', 'show_at_directory'], 'safe'];
+        $rules[] = [['subgroups', 'parent'], 'safe'];
+        $rules[] = [['type'], 'validateTypeGroups'];
         return $rules;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+
+        $scenarios[self::SCENARIO_MANAGER][] = 'updateSpaceMemberships';
+
+        if ($this->isNewRecord) {
+            $this->removeScenarioAttributes($scenarios, 'updateSpaceMemberships');
+        }
+
+        return $scenarios;
     }
 
     public function validateTypeGroups()

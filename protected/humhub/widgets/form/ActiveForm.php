@@ -25,6 +25,12 @@ class ActiveForm extends \yii\bootstrap5\ActiveForm
     public $enableClientValidation = false;
 
     /**
+     * @var bool True to render only fields which are active by current scenario and it is not readonly
+     * @since 1.18
+     */
+    public $renderOnlyActiveAttributes = false;
+
+    /**
      * @inheritdoc
      */
     public $fieldClass = ActiveField::class;

@@ -71,12 +71,33 @@ class Group extends ActiveRecord
     public function rules()
     {
         return [
-            [['sort_order', 'notify_users', 'is_default_group', 'is_protected'], 'integer', 'except' => self::SCENARIO_MANAGER],
-            [['description'], 'string', 'except' => self::SCENARIO_MANAGER],
-            [['name'], 'string', 'max' => 120, 'except' => self::SCENARIO_MANAGER],
-            ['show_at_registration', 'validateShowAtRegistration', 'except' => self::SCENARIO_MANAGER],
-            ['is_default_group', 'validateIsDefaultGroup', 'except' => self::SCENARIO_MANAGER],
+            [['sort_order', 'notify_users', 'is_default_group', 'is_protected'], 'integer'],
+            [['description'], 'string'],
+            [['name'], 'string', 'max' => 120],
+            ['show_at_registration', 'validateShowAtRegistration'],
+            ['is_default_group', 'validateIsDefaultGroup'],
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+
+        $scenarios[self::SCENARIO_MANAGER] = ['defaultSpaceGuid'];
+
+        if ($this->is_admin_group) {
+            $this->removeScenarioAttributes($scenarios, [
+                'defaultSpaceGuid',
+                'managerGuids',
+                'show_at_registration',
+                'is_default_group',
+            ]);
+        }
+
+        return $scenarios;
     }
 
     /**
