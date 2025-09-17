@@ -89,9 +89,18 @@ class GroupSearch extends Group
 
         if (!Yii::$app->user->can(ManageGroups::class)) {
             // Restrict to groups where current user is a manager
+            $managerGroupQuery = GroupUser::find()
+                ->select('group_id')
+                ->where(['user_id' => Yii::$app->user->id])
+                ->andWhere(['is_group_manager' => true]);
+
             $query->leftJoin(GroupUser::tableName(), GroupUser::tableName() . '.group_id = ' . Group::tableName() . '.id')
-                ->andWhere([GroupUser::tableName() . '.user_id' => Yii::$app->user->id])
-                ->andWhere([GroupUser::tableName() . '.is_group_manager' => true]);
+                ->andWhere([
+                    'OR',
+                    [GroupUser::tableName() . '.group_id' => $managerGroupQuery],
+                    // Subgroups where current user is a manager of the parent group
+                    [Group::tableName() . '.parent_group_id' => $managerGroupQuery],
+                ]);
         }
 
         return $dataProvider;

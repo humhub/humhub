@@ -600,6 +600,26 @@ class Group extends ActiveRecord
         );
     }
 
+    /**
+     * Check if this Group can be managed by current User
+     *
+     * @return bool
+     * @since 1.18
+     */
+    public function canManage(): bool
+    {
+        if (Yii::$app->user->isGuest) {
+            return false;
+        }
+
+        if ($this->is_admin_group && !Yii::$app->user->isAdmin()) {
+            return false;
+        }
+
+        return Yii::$app->user->can(ManageGroups::class)
+            || $this->getAllManagers()->andWhere([User::tableName() . '.id' => Yii::$app->user->id])->exists();
+    }
+
     public function getTypeTitle(): string
     {
         $titles = EditGroupForm::getTypeOptions();

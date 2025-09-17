@@ -329,8 +329,8 @@ class GroupController extends Controller
             throw new HttpException(404, Yii::t('AdminModule.user', 'Group not found!'));
         }
 
-        if ($group->is_admin_group && !Yii::$app->user->isAdmin()) {
-            throw new HttpException(403);
+        if (!$group->canManage()) {
+            throw new HttpException(403, 'No permission to manage this group.');
         }
     }
 

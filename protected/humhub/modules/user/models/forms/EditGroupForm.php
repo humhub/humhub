@@ -36,7 +36,7 @@ class EditGroupForm extends Group
         parent::afterFind();
 
         if (!Yii::$app->user->can(ManageGroups::class)
-            && $this->isManager(Yii::$app->user->id)) {
+            && $this->canManage()) {
             $this->setScenario(self::SCENARIO_MANAGER);
         }
 
