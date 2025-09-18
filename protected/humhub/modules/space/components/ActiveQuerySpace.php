@@ -115,6 +115,33 @@ class ActiveQuerySpace extends AbstractActiveQueryContentContainer
     }
 
     /**
+     * Filter to where the user is admin or owner of spaces
+     *
+     * @param User|null $user
+     * @return self
+     */
+    public function filterAdminOwner(?User $user = null): self
+    {
+        if ($user === null && !Yii::$app->user->isGuest) {
+            $user = Yii::$app->user->getIdentity();
+        }
+
+        if (!$user instanceof User) {
+            return $this->andWhere(false);
+        }
+
+        return $this->andWhere([
+            'OR',
+            [Space::tableName() . '.created_by' => $user->id],
+            [Space::tableName() . '.id' => Membership::find()
+                ->select(Membership::tableName() . '.space_id')
+                ->where([Membership::tableName() . '.user_id' => $user->id])
+                ->andWhere([Membership::tableName() . '.group_id' => Space::USERGROUP_ADMIN])
+                ->andWhere([Membership::tableName() . '.status' => Membership::STATUS_MEMBER])],
+        ]);
+    }
+
+    /**
      * @return ActiveQuerySpace
      */
     public function defaultOrderBy(): ActiveQuerySpace

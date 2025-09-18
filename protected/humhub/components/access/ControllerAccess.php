@@ -145,7 +145,7 @@ class ControllerAccess extends BaseObject
     public const RULE_DISABLED_USER = 'disabledUser';
 
     /**
-     * Check guest if user is unnapproved
+     * Check guest if user is unapproved
      */
     public const RULE_UNAPPROVED_USER = 'unapprovedUser';
 

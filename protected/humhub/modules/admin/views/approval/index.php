@@ -39,7 +39,6 @@ foreach ($profileFieldsColumns as $profileField) {
 $columns[] = 'created_at';
 $columns[] = [
     'class' => ApprovalActionColumn::class,
-    'options' => ['style' => 'width:160px'],
     'buttons' => [
         'view' => fn($url, $model) => Yii::$app->user->can(ManageUsers::class)
             ? Button::light()

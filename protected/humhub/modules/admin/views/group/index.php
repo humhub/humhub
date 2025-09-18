@@ -3,6 +3,7 @@
 use humhub\helpers\Html;
 use humhub\libs\ActionColumn;
 use humhub\modules\admin\models\GroupSearch;
+use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\widgets\GroupMenu;
 use humhub\modules\user\models\forms\EditGroupForm;
 use humhub\modules\user\models\Group;
@@ -10,15 +11,17 @@ use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Link;
 use humhub\widgets\GridView;
 use yii\data\ActiveDataProvider;
-use yii\helpers\Url;
 
 /* @var $dataProvider ActiveDataProvider */
 /* @var $searchModel GroupSearch */
 ?>
 <div class="panel-body">
-    <div class="float-end">
-        <?= Link::success(Yii::t('AdminModule.user', 'Create new group'))->href(Url::to(['edit']))->sm()->icon('add') ?>
-    </div>
+    <?php if (Yii::$app->user->can(ManageGroups::class)): ?>
+        <?= Link::success(Yii::t('AdminModule.user', 'Create new group'))
+            ->link(['edit'])
+            ->icon('add')
+            ->sm()->right() ?>
+    <?php endif ?>
 
     <h4><?= Yii::t('AdminModule.user', 'Manage groups'); ?></h4>
 
@@ -87,12 +90,18 @@ use yii\helpers\Url;
                         return [];
                     }
 
-                    return [
+                    $items = [
                         Yii::t('AdminModule.user', 'Settings') => ['edit'],
                         '---',
-                        Yii::t('AdminModule.user', 'Permissions') => ['manage-permissions'],
-                        Yii::t('AdminModule.user', 'Members') => ['manage-group-users'],
                     ];
+
+                    if (Yii::$app->user->can(ManageGroups::class)) {
+                        $items[Yii::t('AdminModule.user', 'Permissions')] = ['manage-permissions'];
+                    }
+
+                    $items[Yii::t('AdminModule.user', 'Members')] = ['manage-group-users'];
+
+                    return $items;
                 }
             ],
         ],

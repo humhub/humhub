@@ -2,6 +2,7 @@
 
 namespace humhub\modules\user\models\forms;
 
+use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\GroupSpace;
 use humhub\modules\user\models\User;
@@ -34,6 +35,11 @@ class EditGroupForm extends Group
     {
         parent::afterFind();
 
+        if (!Yii::$app->user->can(ManageGroups::class)
+            && $this->canManage()) {
+            $this->setScenario(self::SCENARIO_MANAGER);
+        }
+
         $this->type = $this->parent_group_id === null ? self::TYPE_NORMAL : self::TYPE_SUBGROUP;
 
         switch ($this->type) {
@@ -49,15 +55,35 @@ class EditGroupForm extends Group
         }
     }
 
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         $rules = parent::rules();
-        $rules[] = [['name', 'type'], 'required'];
+        $rules[] = [['defaultSpaceGuid'], 'safe'];
         $rules[] = [['updateSpaceMemberships'], 'boolean'];
-        $rules[] = [['managerGuids', 'show_at_registration', 'show_at_directory', 'defaultSpaceGuid'], 'safe'];
+        $rules[] = [['name', 'type'], 'required'];
+        $rules[] = [['managerGuids', 'show_at_registration', 'show_at_directory'], 'safe'];
         $rules[] = [['subgroups', 'parent'], 'safe'];
         $rules[] = [['type'], 'validateTypeGroups'];
         return $rules;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+
+        $scenarios[self::SCENARIO_MANAGER][] = 'updateSpaceMemberships';
+
+        if ($this->isNewRecord) {
+            $this->removeScenarioAttributes($scenarios, 'updateSpaceMemberships');
+        }
+
+        return $scenarios;
     }
 
     public function validateTypeGroups()
@@ -105,36 +131,52 @@ class EditGroupForm extends Group
      */
     public function afterSave($insert, $changedAttributes)
     {
-        if (!$this->managerGuids) {
-            $this->managerGuids = [];
+        if (Yii::$app->user->can(ManageGroups::class)) {
+            $this->updateManagers();
+            $this->updateTypeFields();
         }
 
-        $this->addNewManagers();
-        $this->removeOldManagers();
+        $this->updateDefaultSpaces();
 
-        $existingSpaceIds = GroupSpace::find()->where(['group_id' => $this->id])->select('space_id')->column();
-        $newSpaceIds = [];
-        if (is_array($this->defaultSpaceGuid)) {
-            foreach ($this->defaultSpaceGuid as $spaceGuid) {
-                $space = Space::findOne(['guid' => $spaceGuid]);
-                if ($space !== null) {
-                    $newSpaceIds[] = $space->id;
-                }
-            }
-        }
+        parent::afterSave($insert, $changedAttributes);
+    }
+
+    protected function updateDefaultSpaces(): void
+    {
+        $existingSpaceIds = GroupSpace::find()
+            ->select('space_id')
+            ->where(['group_id' => $this->id])
+            ->column();
+
+        $newSpaceIds = is_array($this->defaultSpaceGuid)
+            ? Space::find()
+                ->select('id')
+                ->where(['guid' => $this->defaultSpaceGuid])
+                ->column()
+            : [];
 
         foreach (array_diff($existingSpaceIds, $newSpaceIds) as $spaceId) {
             GroupSpace::deleteAll(['space_id' => $spaceId, 'group_id' => $this->id]);
         }
 
         foreach (array_diff($newSpaceIds, $existingSpaceIds) as $spaceId) {
+            if ($this->getScenario() === self::SCENARIO_MANAGER
+                && !Space::findOne($spaceId)?->isAdmin(Yii::$app->user->id)) {
+                // Restrict adding new default space if current user is not admin/owner of the space
+                continue;
+            }
+
             $groupSpaces = new GroupSpace();
             $groupSpaces->group_id = $this->id;
             $groupSpaces->space_id = $spaceId;
             $groupSpaces->save();
         }
+    }
 
+    protected function updateTypeFields(): void
+    {
         Group::updateAll(['parent_group_id' => null], ['parent_group_id' => $this->id]);
+
         switch ($this->type) {
             case self::TYPE_NORMAL:
                 $this->updateAttributes(['parent_group_id' => null]);
@@ -146,16 +188,24 @@ class EditGroupForm extends Group
                 $this->updateAttributes(['parent_group_id' => $this->parent[0] ?? null]);
                 break;
         }
-
-        parent::afterSave($insert, $changedAttributes);
     }
 
-    protected function addNewManagers()
+    protected function updateManagers(): void
     {
-        $managers = User::find()->where(['guid' => $this->managerGuids])->all();
+        if (!is_array($this->managerGuids)) {
+            $this->managerGuids = [];
+        }
+
+        $this->addNewManagers();
+        $this->removeOldManagers();
+    }
+
+    protected function addNewManagers(): void
+    {
+        $managers = User::findAll(['guid' => $this->managerGuids]);
         foreach ($managers as $manager) {
             $groupUser = GroupUser::findOne(['group_id' => $this->id, 'user_id' => $manager->id]);
-            if ($groupUser != null && !$groupUser->is_group_manager) {
+            if ($groupUser instanceof GroupUser && !$groupUser->is_group_manager) {
                 $groupUser->is_group_manager = true;
                 $groupUser->save();
             } else {
@@ -164,17 +214,18 @@ class EditGroupForm extends Group
         }
     }
 
-    protected function removeOldManagers()
+    protected function removeOldManagers(): void
     {
-        //Remove admins not contained in the selection
-        foreach ($this->getManager()->all() as $manager) {
-            if (!in_array($manager->guid, $this->managerGuids)) {
-                $groupUser = GroupUser::findOne(['group_id' => $this->id, 'user_id' => $manager->id]);
-                if ($groupUser != null) {
-                    $groupUser->is_group_manager = false;
-                    $groupUser->save();
-                }
-            }
+        // Remove managers which are not contained in the current selection
+        $groupUsers = GroupUser::findAll([
+            'group_id' => $this->id,
+            'user_id' => $this->getManager()
+                ->select(User::tableName() . '.id')
+                ->andWhere(['NOT IN', User::tableName() . '.guid', $this->managerGuids]),
+        ]);
+        foreach ($groupUsers as $groupUser) {
+            $groupUser->is_group_manager = false;
+            $groupUser->save();
         }
     }
 

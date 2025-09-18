@@ -19,7 +19,9 @@ class GroupTest extends HumHubDbTestCase
         $adminGroup = Group::getAdminGroup();
         $this->assertEquals(1, $adminGroup->is_admin_group);
         $adminGroup->show_at_registration = 1;
-        $this->assertFalse($adminGroup->save());
+        $this->assertTrue($adminGroup->save());
+        // Must be ignored on save by scenario rule
+        $this->assertEquals($adminGroup->show_at_registration, 0);
 
         $groups = Group::getRegistrationGroups();
         $this->assertCount(1, $groups);

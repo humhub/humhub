@@ -8,8 +8,10 @@
 
 namespace humhub\modules\admin\controllers;
 
-use humhub\modules\admin\jobs\ReassignGroupDefaultSpaces;
+use humhub\components\access\ControllerAccess;
+use humhub\components\access\DelegateAccessValidator;
 use humhub\modules\admin\components\Controller;
+use humhub\modules\admin\jobs\ReassignGroupDefaultSpaces;
 use humhub\modules\admin\models\forms\AddGroupMemberForm;
 use humhub\modules\admin\models\GroupSearch;
 use humhub\modules\admin\models\UserSearch;
@@ -50,8 +52,29 @@ class GroupController extends Controller
     protected function getAccessRules()
     {
         return [
-            ['permissions' => ManageGroups::class],
+            [ControllerAccess::RULE_LOGGED_IN_ONLY],
+            ['checkCanManageGroups'],
+            ['permissions' => ManageGroups::class, 'actions' => ['manage-permissions', 'edit-manager-role']],
         ];
+    }
+
+    /**
+     * Check the current user can manage groups
+     *
+     * @param array $rule
+     * @param DelegateAccessValidator $access
+     * @return bool
+     */
+    public function checkCanManageGroups($rule, $access): bool
+    {
+        if (Yii::$app->user->isAdmin()
+            || Yii::$app->user->can(ManageGroups::class)
+            || Yii::$app->user->isGroupManager()) {
+            return true;
+        }
+
+        $access->code = 403;
+        return false;
     }
 
     /**
@@ -110,6 +133,7 @@ class GroupController extends Controller
             'group' => $group,
             'isCreateForm' => $group->isNewRecord,
             'isManagerApprovalSetting' => Yii::$app->getModule('user')->settings->get('auth.needApproval'),
+            'canManage' => Yii::$app->user->can(ManageGroups::class),
         ]);
     }
 
@@ -141,6 +165,7 @@ class GroupController extends Controller
             'group' => $group,
             'addGroupMemberForm' => new AddGroupMemberForm(),
             'isManagerApprovalSetting' => Yii::$app->getModule('user')->settings->get('auth.needApproval'),
+            'canManage' => Yii::$app->user->can(ManageGroups::class),
         ]);
     }
 
@@ -304,8 +329,8 @@ class GroupController extends Controller
             throw new HttpException(404, Yii::t('AdminModule.user', 'Group not found!'));
         }
 
-        if ($group->is_admin_group && !Yii::$app->user->isAdmin()) {
-            throw new HttpException(403);
+        if (!$group->canManage()) {
+            throw new HttpException(403, 'No permission to manage this group.');
         }
     }
 

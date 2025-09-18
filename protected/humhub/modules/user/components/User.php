@@ -55,13 +55,16 @@ class User extends \yii\web\User
         ];
     }
 
-    public function isAdmin()
+    public function isAdmin(): bool
     {
-        if ($this->isGuest) {
-            return false;
-        }
+        return !$this->isGuest
+            && $this->getIdentity()->isSystemAdmin();
+    }
 
-        return $this->getIdentity()->isSystemAdmin();
+    public function isGroupManager(): bool
+    {
+        return !$this->isGuest
+            && $this->getIdentity()->isGroupManager();
     }
 
     public function getLanguage()

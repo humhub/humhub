@@ -55,6 +55,7 @@ class Group extends ActiveRecord
 {
     public const EVENT_GET_REGISTRATION_GROUPS = 'getRegistrationGroups';
     public const SCENARIO_EDIT = 'edit';
+    public const SCENARIO_MANAGER = 'manager';
 
     /**
      * @inheritdoc
@@ -76,6 +77,27 @@ class Group extends ActiveRecord
             ['show_at_registration', 'validateShowAtRegistration'],
             ['is_default_group', 'validateIsDefaultGroup'],
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+
+        $scenarios[self::SCENARIO_MANAGER] = ['defaultSpaceGuid'];
+
+        if ($this->is_admin_group) {
+            $this->removeScenarioAttributes($scenarios, [
+                'defaultSpaceGuid',
+                'managerGuids',
+                'show_at_registration',
+                'is_default_group',
+            ]);
+        }
+
+        return $scenarios;
     }
 
     /**
@@ -358,10 +380,10 @@ class Group extends ActiveRecord
      * @param $user
      * @return bool
      */
-    public function isManager($user)
+    public function isManager($user): bool
     {
         $userId = ($user instanceof User) ? $user->id : $user;
-        return $this->getGroupUsers()->where(['user_id' => $userId, 'is_group_manager' => true])->count() > 0;
+        return $this->getGroupUsers()->where(['user_id' => $userId, 'is_group_manager' => true])->exists();
     }
 
     /**
@@ -576,6 +598,26 @@ class Group extends ActiveRecord
                 || $this->is_default_group
                 || $this->is_protected
         );
+    }
+
+    /**
+     * Check if this Group can be managed by current User
+     *
+     * @return bool
+     * @since 1.18
+     */
+    public function canManage(): bool
+    {
+        if (Yii::$app->user->isGuest) {
+            return false;
+        }
+
+        if ($this->is_admin_group && !Yii::$app->user->isAdmin()) {
+            return false;
+        }
+
+        return Yii::$app->user->can(ManageGroups::class)
+            || $this->getAllManagers()->andWhere([User::tableName() . '.id' => Yii::$app->user->id])->exists();
     }
 
     public function getTypeTitle(): string

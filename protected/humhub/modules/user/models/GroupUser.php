@@ -17,6 +17,7 @@ use yii\db\ActiveQuery;
  * @property int $id
  * @property int $user_id
  * @property int $group_id
+ * @property bool $is_group_manager
  * @property string $created_at
  * @property int $created_by
  * @property string $updated_at

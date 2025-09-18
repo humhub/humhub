@@ -126,9 +126,14 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     public $registrationGroupId = null;
 
     /**
-     * @var bool is system admin (cached)
+     * @var bool|null is system admin (cached)
      */
     private $_isSystemAdmin = null;
+
+    /**
+     * @var bool|null is a manager of at least one group (cached)
+     */
+    private $_isGroupManager = null;
 
     /**
      * @inheritdoc
@@ -242,13 +247,28 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
      * @param bool $cached Used cached result if available
      * @return bool user is system admin
      */
-    public function isSystemAdmin($cached = true)
+    public function isSystemAdmin(bool $cached = true): bool
     {
-        if ($this->_isSystemAdmin === null || !$cached) {
-            $this->_isSystemAdmin = ($this->getGroups()->where(['is_admin_group' => '1'])->count() > 0);
+        if ($this->_isSystemAdmin === null || $cached === false) {
+            $this->_isSystemAdmin = $this->getGroups()->where(['is_admin_group' => true])->exists();
         }
 
         return $this->_isSystemAdmin;
+    }
+
+    /**
+     * Checks if user is a manager of at least one group
+     *
+     * @param bool $cached True to get a result from cache if available
+     * @return bool
+     */
+    public function isGroupManager(bool $cached = true): bool
+    {
+        if ($this->_isGroupManager === null || $cached === false) {
+            $this->_isGroupManager = $this->getManagerGroups()->exists();
+        }
+
+        return $this->_isGroupManager;
     }
 
     /**
@@ -803,18 +823,25 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
      *
      * @return bool
      * @throws InvalidConfigException
+     * @deprecated since 1.18
      */
-    public function canApproveUsers()
+    public function canApproveUsers(): bool
     {
-        if ($this->isSystemAdmin()) {
-            return true;
-        }
+        return $this->canManageUsers();
+    }
 
-        if ((new PermissionManager(['subject' => $this]))->can([ManageUsers::class, ManageGroups::class])) {
-            return true;
-        }
-
-        return $this->getManagerGroups()->count() > 0;
+    /**
+     * User can manage other users
+     *
+     * @return bool
+     * @throws InvalidConfigException
+     * @since 1.18
+     */
+    public function canManageUsers(): bool
+    {
+        return $this->isSystemAdmin()
+            || (new PermissionManager(['subject' => $this]))->can([ManageUsers::class, ManageGroups::class])
+            || $this->isGroupManager();
     }
 
     /**

@@ -59,7 +59,7 @@ class ApprovalCest
         $I->dontSee('approvalTest@test.de');
 
         // This user was created by fixtures
-        $I->see('unnapproved@example.com');
+        $I->see('unapproved@example.com');
 
         // Try to approve the user of another group
         $I->amOnRoute('/admin/approval/approve', ['id' => 8]);

@@ -280,4 +280,27 @@ class ActiveRecord extends \yii\db\ActiveRecord
     {
         return static::class;
     }
+
+    /**
+     * Remove attributes from all scenarios
+     *
+     * @param array $scenarios
+     * @param string|array $attributes
+     * @since 1.18
+     */
+    public function removeScenarioAttributes(array &$scenarios, string|array $attributes): void
+    {
+        if (is_string($attributes)) {
+            $attributes = [$attributes];
+        }
+
+        foreach ($scenarios as $scenario => $scenarioAttributes) {
+            foreach ($attributes as $attribute) {
+                $attrIndex = array_search($attribute, $scenarioAttributes);
+                if ($attrIndex !== false) {
+                    unset($scenarios[$scenario][$attrIndex]);
+                }
+            }
+        }
+    }
 }

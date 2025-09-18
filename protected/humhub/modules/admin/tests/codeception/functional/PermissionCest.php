@@ -17,7 +17,7 @@ class PermissionCest
     {
         $I->wantTo('ensure that see admin information permission works');
 
-        $I->amUser2();
+        $I->loginUserWithoutGroupManagerPermission();
         $I->amGoingTo('try to access admin page without any permissions');
 
         AdminPage::openBy($I);
@@ -49,7 +49,7 @@ class PermissionCest
     {
         $I->wantTo('ensure that the manage users permission works as expected');
 
-        $I->amUser2();
+        $I->loginUserWithoutGroupManagerPermission();
 
         $I->amOnRoute('/admin/user');
         $I->expectTo('see permission denied message');
@@ -100,7 +100,7 @@ class PermissionCest
     {
         $I->wantTo('ensure that see manage groups permission works');
 
-        $I->amUser2();
+        $I->loginUserWithoutGroupManagerPermission();
 
         $I->amOnRoute('/admin/user');
         $I->expectTo('see permission denied message');
@@ -151,7 +151,7 @@ class PermissionCest
     {
         $I->wantTo('ensure that see manage settings permission works');
 
-        $I->amUser2();
+        $I->loginUserWithoutGroupManagerPermission();
 
         $I->amOnRoute('/admin/setting');
         $I->expectTo('see permission denied message');
@@ -221,7 +221,7 @@ class PermissionCest
     {
         $I->wantTo('ensure that see manage modules permission works');
 
-        $I->amUser2();
+        $I->loginUserWithoutGroupManagerPermission();
 
         $I->amOnRoute('/admin/module');
         $I->expectTo('see permission denied message');
@@ -267,7 +267,7 @@ class PermissionCest
     {
         $I->wantTo('ensure that see manage spaces permission works');
 
-        $I->amUser2();
+        $I->loginUserWithoutGroupManagerPermission();
 
         $I->amOnRoute('/admin/space');
         $I->expectTo('see permission denied message');

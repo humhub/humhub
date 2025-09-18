@@ -129,7 +129,9 @@ class GroupTest extends HumHubDbTestCase
     {
         $adminGroup = Group::findOne(['is_admin_group' => 1]);
         $adminGroup->show_at_registration = 1;
-        static::assertFalse($adminGroup->save());
+        static::assertTrue($adminGroup->save());
+        // Must be ignored on save by scenario rule
+        $this->assertEquals($adminGroup->show_at_registration, 0);
 
         // Force show at registration for admin group
         $adminGroup->updateAttributes(['show_at_registration' => 1]);

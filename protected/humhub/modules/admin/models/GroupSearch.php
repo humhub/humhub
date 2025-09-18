@@ -8,8 +8,11 @@
 
 namespace humhub\modules\admin\models;
 
+use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\user\models\forms\EditGroupForm;
 use humhub\modules\user\models\Group;
+use humhub\modules\user\models\GroupUser;
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\db\Expression;
@@ -82,6 +85,22 @@ class GroupSearch extends Group
         if (!empty($this->type)) {
             $operator = $this->type === EditGroupForm::TYPE_NORMAL ? 'IS' : 'IS NOT';
             $query->andFilterWhere([$operator, 'parent_group_id', new Expression('NULL')]);
+        }
+
+        if (!Yii::$app->user->can(ManageGroups::class)) {
+            // Restrict to groups where current user is a manager
+            $managerGroupQuery = GroupUser::find()
+                ->select('group_id')
+                ->where(['user_id' => Yii::$app->user->id])
+                ->andWhere(['is_group_manager' => true]);
+
+            $query->leftJoin(GroupUser::tableName(), GroupUser::tableName() . '.group_id = ' . Group::tableName() . '.id')
+                ->andWhere([
+                    'OR',
+                    [GroupUser::tableName() . '.group_id' => $managerGroupQuery],
+                    // Subgroups where current user is a manager of the parent group
+                    [Group::tableName() . '.parent_group_id' => $managerGroupQuery],
+                ]);
         }
 
         return $dataProvider;

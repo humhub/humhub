@@ -9,6 +9,7 @@
 namespace humhub\modules\admin\widgets;
 
 use humhub\helpers\ControllerHelper;
+use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\user\models\Group;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\SubTabMenu;
@@ -36,18 +37,19 @@ class GroupManagerMenu extends SubTabMenu
             'isActive' => ControllerHelper::isActivePath('admin', 'group', 'edit'),
         ]));
 
-        $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.user', "Permissions"),
-            'url' => ['/admin/group/manage-permissions', 'id' => $this->group->id],
-            'sortOrder' => 200,
-            'isActive' => ControllerHelper::isActivePath('admin', 'group', 'manage-permissions'),
-        ]));
+        if (Yii::$app->user->can(ManageGroups::class)) {
+            $this->addEntry(new MenuLink([
+                'label' => Yii::t('AdminModule.user', 'Permissions'),
+                'url' => ['/admin/group/manage-permissions', 'id' => $this->group->id],
+                'sortOrder' => 200,
+                'isActive' => ControllerHelper::isActivePath('admin', 'group', 'manage-permissions'),
+            ]));
+        }
 
-
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.user', "Members"),
+            'label' => Yii::t('AdminModule.user', 'Members'),
             'url' => ['/admin/group/manage-group-users', 'id' => $this->group->id],
-            'sortOrder' => 200,
+            'sortOrder' => 300,
             'isActive' => ControllerHelper::isActivePath('admin', 'group', 'manage-group-users'),
         ]));
 

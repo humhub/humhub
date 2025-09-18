@@ -52,16 +52,14 @@ class UserMenu extends TabMenu
 
         $approvalCount = UserApprovalSearch::getUserApprovalCount();
 
-        if ($approvalCount > 0) {
+        if ($approvalCount > 0 || Yii::$app->user->isGroupManager()) {
             $this->addEntry(new MenuLink([
                 'label' => Yii::t('AdminModule.user', 'Pending approvals') . ' ' . Badge::danger((string)$approvalCount),
                 'url' => ['/admin/approval'],
                 'sortOrder' => 300,
                 'isActive' => ControllerHelper::isActivePath('admin', 'approval'),
-                'isVisible' => Yii::$app->user->can([
-                    ManageUsers::class,
-                    ManageGroups::class,
-                ]),
+                'isVisible' => Yii::$app->user->can([ManageUsers::class, ManageGroups::class])
+                    || Yii::$app->user->isGroupManager(),
             ]));
         }
 
@@ -78,7 +76,8 @@ class UserMenu extends TabMenu
             'url' => ['/admin/group'],
             'sortOrder' => 500,
             'isActive' => ControllerHelper::isActivePath('admin', 'group'),
-            'isVisible' => Yii::$app->user->can(ManageGroups::class),
+            'isVisible' => Yii::$app->user->can(ManageGroups::class)
+                || Yii::$app->user->isGroupManager(),
         ]));
 
         $this->addEntry(new MenuLink([

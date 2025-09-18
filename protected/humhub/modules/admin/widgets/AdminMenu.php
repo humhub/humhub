@@ -76,7 +76,7 @@ class AdminMenu extends LeftNavigation
                 ManageUsers::class,
                 ManageSettings::class,
                 ManageGroups::class,
-            ]),
+            ]) || Yii::$app->user->isGroupManager(),
         ]));
 
         $this->addEntry(new MenuLink([
@@ -131,17 +131,15 @@ class AdminMenu extends LeftNavigation
      *
      * @return bool
      */
-    public static function canAccess()
+    public static function canAccess(): bool
     {
         if (!(Yii::$app instanceof Application)) {
             return false;
         }
 
         $canSeeAdminSection = Yii::$app->session->get(static::SESSION_CAN_SEE_ADMIN_SECTION);
-        if ($canSeeAdminSection == null) {
-            $canSeeAdminSection = Yii::$app->user->isAdmin()
-                ? true
-                : !empty((new self())->getEntries(null, true));
+        if ($canSeeAdminSection === null) {
+            $canSeeAdminSection = Yii::$app->user->isAdmin() || !empty((new self())->getEntries(null, true));
             Yii::$app->session->set(static::SESSION_CAN_SEE_ADMIN_SECTION, $canSeeAdminSection);
         }
 

@@ -9,6 +9,7 @@
 namespace humhub\modules\admin\controllers;
 
 use humhub\components\access\ControllerAccess;
+use humhub\components\access\DelegateAccessValidator;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\models\forms\ApproveUserForm;
 use humhub\modules\admin\models\UserApprovalSearch;
@@ -22,7 +23,7 @@ use yii\web\HttpException;
 use yii\web\Response;
 
 /**
- * ApprovalController handels new user approvals
+ * ApprovalController handles new user approvals
  */
 class ApprovalController extends Controller
 {
@@ -54,36 +55,25 @@ class ApprovalController extends Controller
     {
         return [
             [ControllerAccess::RULE_LOGGED_IN_ONLY],
-            ['checkCanApproveUsers'],
+            ['checkCanManageUsers'],
         ];
     }
 
     /**
-     * @param $rule
-     * @param $access
+     * Check the current user can manage other users
+     *
+     * @param array $rule
+     * @param DelegateAccessValidator $access
      * @return bool
-     * @throws Throwable
      */
-    public function checkCanApproveUsers($rule, $access)
+    public function checkCanManageUsers($rule, $access): bool
     {
-        if (!Yii::$app->user->getIdentity()->canApproveUsers()) {
-            $access->code = 403;
-            return false;
+        if (Yii::$app->user->getIdentity()->canManageUsers()) {
+            return true;
         }
 
-        return true;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function beforeAction($action)
-    {
-        if (!Yii::$app->user->isAdmin()) {
-            $this->subLayout = "@humhub/modules/admin/views/approval/_layoutNoAdmin";
-        }
-
-        return parent::beforeAction($action);
+        $access->code = 403;
+        return false;
     }
 
     /**
