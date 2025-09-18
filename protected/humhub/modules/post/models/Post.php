@@ -130,7 +130,8 @@ class Post extends ContentActiveRecord
      */
     public function getContentDescription()
     {
-        return $this->message;
+        $filesSummary = $this->fileManager->getSummary();
+        return $this->message . ($this->message && $filesSummary ? "\n\n" : "") . $filesSummary;
     }
 
     /**
