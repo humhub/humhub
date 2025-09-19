@@ -16,6 +16,7 @@ HumHub Changelog
 - Enh #6969: Added `UserHelper` for better `user` param method handling
 - Enh #7695: Extend permissions for group manager
 - Enh #7703: New `ActiveFileUpload` field widget
+- Fix #7715: Enable Bootstrap box-shadows, mainly for dropdown menus
 
 1.18.0-beta.3 (September 9, 2025)
 ---------------------------------

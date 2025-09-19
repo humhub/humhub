@@ -155,10 +155,12 @@ $badge-padding-y: 3px !default;
 $badge-padding-x: 5px !default;
 $badge-border-radius: 2px !default;
 
+
 //
 // Other Bootstrap overwritten variables
 // --------------------------------------------------
 
+$enable-shadows: true !default;
 $grid-gutter-width: 30px !default;
 $line-height-base: 1.5 !default;
 $form-check-padding-start: 2em !default; // Fix checkbox with multiple lines label
