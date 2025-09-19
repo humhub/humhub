@@ -27,6 +27,8 @@ use yii\web\JsExpression;
  */
 class IconPicker extends Select2
 {
+    public $bsVersion = 5;
+
     /**
      * @var string optional icon provider id
      */
@@ -50,7 +52,7 @@ class IconPicker extends Select2
      */
     public function run()
     {
-        $this->value = (strpos((string)$this->value, 'fa-') === 0)
+        $this->value = (str_starts_with((string)$this->value, 'fa-'))
             ? substr($this->value, 3, strlen($this->value))
             : $this->value;
 
@@ -73,8 +75,8 @@ class IconPicker extends Select2
     {
         foreach ($this->getIconNames() as $icon) {
             $title = $icon;
-            if (substr($title, 0, 3) === 'fa-') {
-                $title = substr($title, 3);
+            if (str_starts_with((string) $title, 'fa-')) {
+                $title = substr((string) $title, 3);
             }
 
             $this->data[$icon] = Icon::get(['name' => $icon, 'lib' => $this->lib]) . '&nbsp;&nbsp;' . $title;

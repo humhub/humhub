@@ -1,5 +1,5 @@
 <?php
-return array (
-  'Are you really sure? *ALL* module data for your profile will be deleted!' => 'Êtes-vous vraiment sûr ? *TOUTES* les données du module pour votre profil seront supprimées !',
-  'Are you sure? *ALL* module data for this space will be deleted!' => 'Êtes-vous sûr ? *TOUTES* les données du module pour cet espace seront supprimées !',
-);
+return [
+  'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content from the Space.' => 'La désactivation du module <strong>{moduleName}</strong> supprimera définitivement <strong>tout</strong> le contenu lié au module de l\'Espace.',
+  'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content from your Profile.' => 'La désactivation du module <strong>{moduleName}</strong> supprimera définitivement <strong>tout</strong> le contenu lié au module de votre Profil.',
+];

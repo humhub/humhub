@@ -46,20 +46,16 @@ class SpaceCreatedNotificationCategory extends NotificationCategory
      */
     public function getDefaultSetting(BaseTarget $target)
     {
-        switch ($target->id) {
-            case MailTarget::getId():
-            case WebTarget::getId():
-            case MobileTarget::getId():
-                return true;
-            default:
-                return $target->defaultSetting;
-        }
+        return match ($target->id) {
+            MailTarget::getId(), WebTarget::getId(), MobileTarget::getId() => true,
+            default => $target->defaultSetting,
+        };
     }
 
     /**
      * @inerhitdoc
      */
-    public function isVisible(User $user = null)
+    public function isVisible(?User $user = null)
     {
         return $user && (new PermissionManager(['subject' => $user]))->can(ManageSpaces::class);
     }

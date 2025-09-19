@@ -5,8 +5,8 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\libs\Html;
-use humhub\modules\ui\view\components\View;
+use humhub\components\View;
+use humhub\helpers\Html;
 use humhub\modules\ui\widgets\CounterSetItem;
 
 /* @var $this View */
@@ -14,21 +14,21 @@ use humhub\modules\ui\widgets\CounterSetItem;
 
 ?>
 
-<div class="statistics pull-left">
+<div class="statistics float-start">
     <?php foreach ($counters as $counter): ?>
 
         <?php if ($counter->hasLink()): ?>
-            <?= Html::beginTag('a', array_merge(['href' => $counter->url], $counter->linkOptions)); ?>
+            <?= Html::beginTag('a', array_merge(['href' => $counter->url], $counter->linkOptions)) ?>
         <?php endif; ?>
 
-        <div class="pull-left entry">
-            <span class="count"><?= $counter->getShortValue(); ?></span>
+        <div class="float-start entry">
+            <span class="count link-accent"><?= $counter->getShortValue() ?></span>
             <br>
-            <span class="title"><?= $counter->label; ?></span>
+            <span class="title"><?= $counter->label ?></span>
         </div>
 
         <?php if ($counter->hasLink()): ?>
-            <?= Html::endTag('a'); ?>
+            <?= Html::endTag('a') ?>
         <?php endif; ?>
 
     <?php endforeach; ?>

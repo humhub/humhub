@@ -24,7 +24,7 @@ return [
     'Displaying {count} entries per page.' => 'Pokazano {count} wpisów na stronę.',
     'Done' => 'Zakończone',
     'Driver' => 'Sterownik',
-    'Dynamic Config' => 'Ustawienia dynamiczne',
+    'Enable <a href="{url}">Link Redirection Service</a>' => 'Włącz <a href="{url}">usługę przekierowania odnośników</a>',
     'Error' => 'Błąd',
     'Flush entries' => 'Wyczyść wpisy',
     'HumHub' => 'HumHub',
@@ -103,5 +103,4 @@ return [
     '{imageExtension} Support' => 'Wsparcie dla {imageExtension}',
     '{phpExtension} Extension' => 'Rozszerzenie {phpExtension}',
     '{phpExtension} Support' => 'Wsparcie dla {phpExtension}',
-    'Enable <a href="{url}">Link Redirection Service</a>' => '',
 ];

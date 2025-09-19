@@ -84,10 +84,10 @@ abstract class StreamQueryFilter extends QueryFilter
             return false;
         }
 
-        if ($this->streamQuery instanceof ContentContainerStreamQuery &&
-            $this->streamQuery->container instanceof User &&
-            $this->streamQuery->user instanceof User &&
-            !$this->streamQuery->container->is($this->streamQuery->user)) {
+        if ($this->streamQuery instanceof ContentContainerStreamQuery
+            && $this->streamQuery->container instanceof User
+            && $this->streamQuery->user instanceof User
+            && !$this->streamQuery->container->is($this->streamQuery->user)) {
             // Don't display from another user
             return false;
         }

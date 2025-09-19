@@ -44,7 +44,7 @@ class FriendshipNotificationCategory extends NotificationCategory
     /**
      * @inheritdoc
      */
-    public function isVisible(User $user = null)
+    public function isVisible(?User $user = null)
     {
         return Yii::$app->getModule('friendship')->isFriendshipEnabled();
     }

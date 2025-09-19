@@ -1,0 +1,102 @@
+//
+//Mentioning (uses old atwho style)
+//
+.atwho-view {
+    background: var(--hh-background-color-main);
+    color: var(--hh-text-color-soft);
+    border: 1px solid var(--hh-background3);
+    border-radius: 4px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    display: none;
+    font-size: 14px;
+    font-weight: 400;
+    margin-top: 18px;
+    min-width: 120px;
+    max-width: 265px;
+    padding: 5px 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 11110 !important;
+}
+
+.atwho-view ul {
+    list-style: none;
+    margin: auto;
+    padding: 0;
+    //width: 100px;
+}
+
+.atwho-view ul li {
+    //border-top: 1px solid #C8C8C8;
+    //padding: 5px 10px;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+    display: block;
+    padding: 4px 15px 4px 8px;
+}
+
+.atwho-view ul li.hint {
+    background: var(--hh-background-color-main) !important;
+    border-left: 3px solid transparent !important;
+    color: var(--hh-text-color-soft2);
+    font-size: 12px;
+}
+
+.atwho-input.form-control {
+    height: auto;
+    min-height: 36px;
+    padding-right: 95px;
+    word-wrap: break-word;
+}
+
+.atwho-input p {
+    padding: 0;
+    margin: 0;
+}
+
+.atwho-emoji-entry {
+    float: left;
+    padding: 4px !important;
+    margin: 0 !important;
+    border: none !important;
+}
+
+.atwho-emoji-entry:hover, .atwho-emoji-entry:active, .atwho-emoji-entry:focus {
+    padding: 4px !important;
+    margin: 0 !important;
+    border: none !important;
+    background-color: var(--hh-background-color-secondary) !important;
+    border-radius: 3px;
+}
+
+.atwho-view .cur {
+    border-left: 3px solid lighten($accent, 30%);
+    background-color: var(--hh-background-color-secondary) !important;
+}
+
+.atwho-view strong {
+    background-color: lighten($warning, 40%);
+}
+
+.atwho-view .cur strong {
+    background-color: lighten($warning, 40%);
+}
+
+.atwho-view small {
+    font-size: smaller;
+    color: var(--hh-text-color-secondary);
+    font-weight: normal;
+}
+
+.atwho-view .cur small {
+    color: var(--bs-danger);
+}
+
+.atwho-view strong, .atwho-view b {
+    font-weight: normal;
+}
+
+.atwho-view span {
+    padding: 5px;
+}

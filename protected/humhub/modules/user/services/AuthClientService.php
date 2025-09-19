@@ -31,11 +31,8 @@ use yii\web\UserEvent;
  */
 class AuthClientService
 {
-    public ClientInterface $authClient;
-
-    public function __construct(ClientInterface $authClient)
+    public function __construct(public ClientInterface $authClient)
     {
-        $this->authClient = $authClient;
     }
 
     /**
@@ -69,7 +66,7 @@ class AuthClientService
      * @param User|null $user
      * @return bool succeed
      */
-    public function updateUser(User $user = null): bool
+    public function updateUser(?User $user = null): bool
     {
         if ($user === null) {
             $user = $this->getUser();
@@ -144,6 +141,8 @@ class AuthClientService
         $registration->getProfile()->setAttributes($attributes, false);
         $registration->getGroupUser()->setAttributes($attributes, false);
 
+        $registration->setModels();
+
         return $registration;
     }
 
@@ -154,8 +153,8 @@ class AuthClientService
      */
     public function createUser(): ?User
     {
-        $registration = static::createRegistration();
-        if ($registration !== null && $registration->validate() && $registration->register($this->authClient)) {
+        $registration = $this->createRegistration();
+        if ($registration !== null && $registration->register($this->authClient)) {
             return $registration->getUser();
         }
 

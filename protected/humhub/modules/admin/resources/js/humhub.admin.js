@@ -105,6 +105,80 @@ humhub.module('admin', function (module, require, $) {
         }
     };
 
+    var deleteLoginBg = function (evt) {
+        evt.finish();
+
+        var options = {
+            'header': module.text('confirm.deleteLoginBg.header'),
+            'body': module.text('confirm.deleteLoginBg.body'),
+            'confirmText': module.text('confirm.deleteLoginBg.confirm')
+        };
+
+        modal.confirm(options).then(function ($confirmed) {
+            if ($confirmed) {
+                _confirmDeleteLoginBg(evt);
+            }
+        });
+    };
+
+    var _confirmDeleteLoginBg = function (evt) {
+        client.post(evt).then(function () {
+            $('#deleteLoginBg').fadeOut();
+            $('#loginBg-image').attr('src', '').hide();
+            additions.switchButtons($('#img-loginBg'), ('#text-loginBg'));
+        });
+    };
+
+    var deleteMailHeader = function (evt) {
+        evt.finish();
+
+        var options = {
+            'header': module.text('confirm.deleteMailHeader.header'),
+            'body': module.text('confirm.deleteMailHeader.body'),
+            'confirmText': module.text('confirm.deleteMailHeader.confirm')
+        };
+
+        modal.confirm(options).then(function ($confirmed) {
+            if ($confirmed) {
+                _confirmDeleteMailHeader(evt);
+            }
+        });
+    };
+
+    var _confirmDeleteMailHeader = function (evt) {
+        client.post(evt).then(function () {
+            $('#deleteMailHeader').fadeOut();
+            $('#mailHeader-image').attr('src', '').hide();
+            additions.switchButtons($('#img-mailHeader'), ('#text-mailHeader'));
+        });
+    };
+
+    var changeLoginBg = function (evt) {
+        var input = evt.$trigger[0];
+        if (input.files && input.files.length) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#loginBg-image').attr('src', e.target.result).show();
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    };
+
+    var changeMailHeader = function (evt) {
+        var input = evt.$trigger[0];
+        if (input.files && input.files.length) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#mailHeader-image').attr('src', e.target.result).show();
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    };
+
     var init = function () {
         if ($('#admin-logo-file-upload').length) {
             // Forward file to chooser.
@@ -119,6 +193,22 @@ humhub.module('admin', function (module, require, $) {
             $('#admin-icon-upload-button').on('click', function (evt) {
                 evt.preventDefault();
                 $('#admin-icon-file-upload').trigger('click');
+            });
+        }
+
+        if ($('#admin-loginBg-file-upload').length) {
+            // Forward file to chooser.
+            $('#admin-loginBg-upload-button').on('click', function (evt) {
+                evt.preventDefault();
+                $('#admin-loginBg-file-upload').trigger('click');
+            });
+        }
+
+        if ($('#admin-mailHeader-file-upload').length) {
+            // Forward file to chooser.
+            $('#admin-mailHeader-upload-button').on('click', function (evt) {
+                evt.preventDefault();
+                $('#admin-mailHeader-file-upload').trigger('click');
             });
         }
     };
@@ -140,7 +230,7 @@ humhub.module('admin', function (module, require, $) {
     var moduleSetAsDefault = function (event) {
         modal.footerLoader(event);
         client.submit(event).then(function (response) {
-            modal.setContent(response.data);
+            modal.global.setDialog(response.data);
             status.success(module.require('log').config.text['success.saved']);
         });
     };
@@ -152,6 +242,10 @@ humhub.module('admin', function (module, require, $) {
         changeLogo: changeLogo,
         deletePageIcon: deletePageIcon,
         changeIcon: changeIcon,
+        deleteLoginBg: deleteLoginBg,
+        deleteMailHeader: deleteMailHeader,
+        changeLoginBg: changeLoginBg,
+        changeMailHeader: changeMailHeader,
         changeIndividualProfilePermissions: changeIndividualProfilePermissions,
         moduleSetAsDefault: moduleSetAsDefault,
     });

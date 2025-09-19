@@ -1,13 +1,12 @@
 <?php
-return array (
+return [
   '%moduleName% - Set as default module' => '%moduleName% est défini comme module par défaut',
   'Always activated' => 'Toujours activé',
-  'Are you sure? *ALL* module data will be lost!' => 'Êtes-vous sûr·e ? <strong>*TOUTES*</strong> les données du module seront définitivement perdues !',
-  'Are you sure? *ALL* module related data and files will be lost!' => 'Êtes-vous sûr·e ? <strong>*TOUTES*</strong> les données et <strong>*TOUS*</strong> les fichiers du module seront définitivement perdus !',
-  'Close' => 'Fermer',
   'Could not find requested module!' => 'Impossible de trouver le module demandé.',
   'Deactivated' => 'Désactivé',
   'Deactivation of this module has not been completed yet. Please retry in a few minutes.' => 'La désactivation de ce module n’est pas encore achevée. Veuillez ré-essayer dans quelques minutes.',
+  'Disable Module' => 'Désactiver le module',
+  'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content.' => 'La désactivation du module <strong>{moduleName}</strong> supprimera définitivement <strong>tout</strong> le contenu lié au module.',
   'Enable module...' => 'Activer le module…',
   'Enabled' => 'Activé',
   'Here you can choose whether or not a module should be automatically activated on a space or user profile. If the module should be activated, choose "always activated".' => 'Ici, vous pouvez choisir d’activer par défaut le module dans les espaces et/ou les profils d’utilisation. Si le module doit rester obligatoirement activé, choisissez « Toujours activé ».',
@@ -19,7 +18,9 @@ return array (
   'Space default state' => 'État par défaut de l’espace',
   'Spaces' => 'Espaces',
   'The module is currently being used by {nbContainers} users or spaces. If you change its availability, all content created with the module will be lost. Proceed?' => 'Le module est actuellement utilisé par {nbContainers} personnes ou espaces. Si vous modifiez sa disponibilité, tous les contenus créés avec le module seront perdus. Voulez-vous continuer ?',
+  'Uninstall Module' => 'Désinstaller le module',
   'Uninstallation of this module has not been completed yet. It will be removed in a few minutes.' => 'La désinstallation de ce module n’est pas terminée. Il sera retiré dans quelques minutes.',
+  'Uninstalling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content.' => 'La désinstallation du module <strong>{moduleName}</strong> supprimera définitivement <strong>tout</strong> le contenu lié au module.',
   'User default state' => 'État par défaut de l’utilisateur ou de l’utilisatrice',
   'Users' => 'Utilisateurs et utilisatrices',
-);
+];

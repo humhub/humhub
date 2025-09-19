@@ -12,7 +12,7 @@ use humhub\components\Module;
 use humhub\components\Widget;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use Yii;
 
 /**
@@ -34,34 +34,33 @@ class ContainerModuleActionButtons extends Widget
      */
     public function init()
     {
-        if ($this->module->getContentContainerConfigUrl($this->contentContainer) &&
-            $this->contentContainer->moduleManager->isEnabled($this->module->id)) {
+        $isEnabled = $this->contentContainer->moduleManager->isEnabled($this->module->id);
+
+        if ($this->module->getContentContainerConfigUrl($this->contentContainer) && $isEnabled) {
             $this->buttons[] = Button::asLink(Yii::t('ContentModule.base', 'Configure'), $this->module->getContentContainerConfigUrl($this->contentContainer))
-                ->cssClass('btn btn-sm btn-info configure-module-' . $this->module->id);
+                ->cssClass('btn btn-sm btn-accent configure-module-' . $this->module->id);
         }
 
         if ($this->contentContainer->moduleManager->canDisable($this->module->id)) {
-            $this->buttons[] = Button::asLink('<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t('ContentModule.base', 'Enabled'), '#')
-                ->cssClass('btn btn-sm btn-info active disable disable-module-' . $this->module->id)
-                ->style($this->contentContainer->moduleManager->isEnabled($this->module->id) ? '' : 'display:none')
-                ->options([
-                    'data-action-click' => 'content.container.disableModule',
-                    'data-action-url' => $this->getDisableUrl(),
-                    'data-reload' => '1',
-                    'data-action-confirm' => $this->getDisableConfirmationText(),
-                    'data-ui-loader' => 1,
-                ]);
+            $this->buttons[] = Button::accent(Yii::t('ContentModule.base', 'Enabled'))
+                ->sm()
+                ->outline()
+                ->icon('check')
+                ->cssClass('disable disable-module-' . $this->module->id . ($isEnabled ? '' : ' d-none'))
+                ->action('content.container.disableModule', $this->getDisableUrl())
+                ->options(['data-reload' => '1'])
+                ->confirm(
+                    Yii::t('AdminModule.modules', 'Disable Module'),
+                    $this->getDisableConfirmationText(),
+                    Yii::t('AdminModule.base', 'Disable'),
+                );
         }
 
-        $this->buttons[] = Button::asLink(Yii::t('ContentModule.base', 'Enable'), '#')
-            ->cssClass('btn btn-sm btn-info enable enable-module-' . $this->module->id)
-            ->style($this->contentContainer->moduleManager->isEnabled($this->module->id) ? 'display:none' : '')
-            ->options([
-                'data-action-click' => 'content.container.enableModule',
-                'data-action-url' => $this->getEnableUrl(),
-                'data-reload' => '1',
-                'data-ui-loader' => 1,
-            ]);
+        $this->buttons[] = Button::accent(Yii::t('ContentModule.base', 'Enable'))
+            ->sm()
+            ->cssClass('enable enable-module-' . $this->module->id . ($isEnabled ? ' d-none' : ''))
+            ->action('content.container.enableModule', $this->getEnableUrl())
+            ->options(['data-reload' => '1']);
 
         parent::init();
     }
@@ -88,8 +87,8 @@ class ContainerModuleActionButtons extends Widget
     private function getDisableConfirmationText(): string
     {
         return $this->isSpace()
-            ? Yii::t('ContentModule.manage', 'Are you sure? *ALL* module data for this space will be deleted!')
-            : Yii::t('ContentModule.manage', 'Are you really sure? *ALL* module data for your profile will be deleted!');
+            ? Yii::t('ContentModule.manage', 'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content from the Space.', ['moduleName' => $this->module->getName()])
+            : Yii::t('ContentModule.manage', 'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content from your Profile.', ['moduleName' => $this->module->getName()]);
     }
 
     private function getEnableUrl(): string

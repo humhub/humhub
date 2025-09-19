@@ -8,7 +8,7 @@
 
 namespace humhub\modules\comment\widgets;
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\menu\WidgetMenuEntry;
@@ -45,12 +45,12 @@ class EditLink extends WidgetMenuEntry
         ]);
 
         return Html::a(
-            Icon::get('edit') . ' ' . Yii::t('CommentModule.base', 'Edit'),
+            Icon::get('edit') . Yii::t('CommentModule.base', 'Edit'),
             '#',
             ['class' => 'comment-edit-link', 'data-action-click' => 'edit', 'data-action-url' => $editUrl],
-        ) .
-            Html::a(
-                Icon::get('edit') . ' ' . Yii::t('CommentModule.base', 'Cancel Edit'),
+        )
+            . Html::a(
+                Icon::get('edit') . Yii::t('CommentModule.base', 'Cancel Edit'),
                 '#',
                 ['class' => 'comment-cancel-edit-link', 'data-action-click' => 'cancelEdit', 'data-action-url' => $loadUrl, 'style' => 'display:none'],
             );

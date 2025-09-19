@@ -27,8 +27,8 @@ class ApproveUserFormTest extends HumHubDbTestCase
         $this->becomeUser('Admin');
         $form = new ApproveUserForm($this->unapprovedUser->id);
         $form->setSendMessageDefaults();
-        $this->assertEquals("Hello UnApproved User,\n\nYour account creation is under review.\nCould you tell us the motivation behind your registration?\n\n" .
-            "Kind Regards\nAdmin Tester\n\n", $form->message);
+        $this->assertEquals("Hello UnApproved User,\n\nYour account creation is under review.\nCould you tell us the motivation behind your registration?\n\n"
+            . "Kind Regards\nAdmin Tester\n\n", $form->message);
 
         $settings = new AuthenticationSettingsForm();
         $this->assertEquals(ApproveUserForm::getDefaultSendMessageMailContent(), $settings->registrationSendMessageMailContent);
@@ -69,9 +69,9 @@ class ApproveUserFormTest extends HumHubDbTestCase
         $this->becomeUser('Admin');
         $form = new ApproveUserForm($this->unapprovedUser->id);
         $form->setApprovalDefaults();
-        $this->assertEquals("Hello UnApproved User,\n\nYour account has been activated.\n\n" .
-            "Click here to login:\nhttp://localhost/index-test.php?r=user%2Fauth%2Flogin\n\n" .
-            "Kind Regards\nAdmin Tester\n\n", $form->message);
+        $this->assertEquals("Hello UnApproved User,\n\nYour account has been activated.\n\n"
+            . "Click here to login:\nhttp://localhost/index-test.php?r=user%2Fauth%2Flogin\n\n"
+            . "Kind Regards\nAdmin Tester\n\n", $form->message);
 
         $settings = new AuthenticationSettingsForm();
         $this->assertEquals(ApproveUserForm::getDefaultApprovalMessage(), $settings->registrationApprovalMailContent);
@@ -157,10 +157,10 @@ Admin Tester", $form->message);
         $this->becomeUser('Admin');
         $form = new ApproveUserForm($this->unapprovedUser->id);
         $form->setDeclineDefaults();
-        $this->assertEquals("Hello UnApproved User,\n\n" .
-            "Your account request has been declined.\n\n" .
-            "Kind Regards\n" .
-            "Admin Tester\n\n", $form->message);
+        $this->assertEquals("Hello UnApproved User,\n\n"
+            . "Your account request has been declined.\n\n"
+            . "Kind Regards\n"
+            . "Admin Tester\n\n", $form->message);
 
         $settings = new AuthenticationSettingsForm();
         $this->assertEquals(ApproveUserForm::getDefaultDeclineMessage(), $settings->registrationDenialMailContent);
@@ -208,7 +208,7 @@ Admin Tester", $form->message);
             $form = new ApproveUserForm(2);
             $form->approve();
             $this->assertFalse(true);
-        } catch (NotFoundHttpException $e) {
+        } catch (NotFoundHttpException) {
             $this->assertTrue(true);
         }
     }
@@ -220,7 +220,7 @@ Admin Tester", $form->message);
             $form = new ApproveUserForm(2);
             $form->decline();
             $this->assertFalse(true);
-        } catch (NotFoundHttpException $e) {
+        } catch (NotFoundHttpException) {
             $this->assertTrue(true);
         }
     }
@@ -252,7 +252,7 @@ Admin Tester", $form->message);
             $form = new ApproveUserForm($this->unapprovedUser->id);
             $form->approve();
             $this->assertFalse(true);
-        } catch (NotFoundHttpException $e) {
+        } catch (NotFoundHttpException) {
             $this->assertTrue(true);
         }
 
@@ -268,7 +268,7 @@ Admin Tester", $form->message);
             $form = new ApproveUserForm($this->unapprovedUser->id);
             $form->sendMessage();
             $this->assertFalse(true);
-        } catch (NotFoundHttpException $e) {
+        } catch (NotFoundHttpException) {
             $this->assertTrue(true);
         }
     }
@@ -282,14 +282,14 @@ Admin Tester", $form->message);
             $form = new ApproveUserForm($this->unapprovedUser->id);
             $form->decline();
             $this->assertFalse(true);
-        } catch (NotFoundHttpException $e) {
+        } catch (NotFoundHttpException) {
             $this->assertTrue(true);
         }
 
         $this->assertUnapproved();
     }
 
-    private function assertSendMessage(User $user = null)
+    private function assertSendMessage(?User $user = null)
     {
         if (!$user) {
             $user = $this->unapprovedUser;
@@ -300,7 +300,7 @@ Admin Tester", $form->message);
         $this->assertEqualsLastEmailTo($user->email);
     }
 
-    private function assertDeclined(User $user = null)
+    private function assertDeclined(?User $user = null)
     {
         if (!$user) {
             $user = $this->unapprovedUser;
@@ -312,7 +312,7 @@ Admin Tester", $form->message);
         $this->assertNull(User::findOne(['id' => $this->unapprovedUser->id]));
     }
 
-    private function assertUnapproved(User $user = null)
+    private function assertUnapproved(?User $user = null)
     {
         if (!$user) {
             $user = $this->unapprovedUser;
@@ -322,7 +322,7 @@ Admin Tester", $form->message);
         $this->assertEquals(User::STATUS_NEED_APPROVAL, $user->status);
     }
 
-    private function assertApproved(User $user = null)
+    private function assertApproved(?User $user = null)
     {
         if (!$user) {
             $user = $this->unapprovedUser;

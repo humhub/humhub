@@ -11,9 +11,19 @@ use humhub\components\i18n\PhpMessageSource;
 Yii::setAlias('@humhub', $_ENV['HUMHUB_ALIASES__HUMHUB'] ?? realpath(__DIR__ . '/../'));
 
 // Workaround: PHP 7.3 compatible ZF2 ArrayObject class
-Yii::$classMap['Zend\Stdlib\ArrayObject'] = '@humhub/compat/ArrayObject.php';
+Yii::$classMap[\Zend\Stdlib\ArrayObject::class] = '@humhub/compat/ArrayObject.php';
 Yii::$classMap['humhub\modules\search\interfaces\Searchable'] = '@humhub/compat/search/Searchable.php';
 Yii::$classMap['humhub\modules\search\events\SearchAddEvent'] = '@humhub/compat/search/SearchAddEvent.php';
+
+// Bootstrap 5 Migration
+Yii::$classMap['yii\bootstrap\BootstrapAsset'] = '@humhub/compat/bootstrap/BootstrapAsset.php';
+Yii::$classMap['yii\bootstrap\ActiveForm'] = '@humhub/compat/bootstrap/ActiveForm.php';
+Yii::$classMap['yii\bootstrap\Alert'] = '@humhub/compat/bootstrap/Alert.php';
+Yii::$classMap['yii\bootstrap\Button'] = '@humhub/compat/bootstrap/Button.php';
+Yii::$classMap['yii\bootstrap\Modal'] = '@humhub/compat/bootstrap/Modal.php';
+Yii::$classMap['yii\bootstrap\Html'] = '@humhub/compat/bootstrap/Html.php';
+Yii::$classMap['yii\bootstrap\Nav'] = '@humhub/compat/bootstrap/Nav.php';
+Yii::$classMap['yii\bootstrap\Widget'] = '@humhub/compat/bootstrap/Widget.php';
 
 // Workaround: If OpenSSL extension is not available (#3852)
 if (!defined('PKCS7_DETACHED')) {
@@ -42,16 +52,16 @@ $logTargetConfig = [
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.18.0-dev',
-    'minRecommendedPhpVersion' => '8.1',
-    'minSupportedPhpVersion' => '8.1',
+    'version' => '1.18.0-beta.4',
+    'minRecommendedPhpVersion' => '8.2',
+    'minSupportedPhpVersion' => '8.2',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
     'bootstrap' => [
         'log',
         'humhub\components\bootstrap\ModuleAutoLoader',
-        'humhub\components\bootstrap\SettingsLoader',
+        'humhub\components\bootstrap\ComponentLoader',
         'queue',
-        'humhub\modules\ui\view\bootstrap\ThemeLoader',
+        'humhub\components\bootstrap\ThemeLoader',
     ],
     'runtimePath' => '@app/runtime',
     'sourceLanguage' => 'en',
@@ -126,7 +136,7 @@ $config = [
             'class' => \humhub\components\i18n\Formatter::class,
         ],
         'cache' => [
-            'class' => \yii\caching\DummyCache::class,
+            'class' => \yii\caching\FileCache::class,
         ],
         'runtimeCache' => [
             'class' => \yii\caching\ArrayCache::class,
@@ -138,7 +148,7 @@ $config = [
             'view' => [
                 'class' => \yii\web\View::class,
                 'theme' => [
-                    'class' => \humhub\modules\ui\view\components\Theme::class,
+                    'class' => \humhub\components\Theme::class,
                     'name' => 'HumHub',
                 ],
             ],
@@ -149,9 +159,9 @@ $config = [
             'bundles' => require(__DIR__ . '/' . (YII_ENV_PROD || YII_ENV_TEST ? 'assets-prod.php' : 'assets-dev.php')),
         ],
         'view' => [
-            'class' => \humhub\modules\ui\view\components\View::class,
+            'class' => \humhub\components\View::class,
             'theme' => [
-                'class' => \humhub\modules\ui\view\components\Theme::class,
+                'class' => \humhub\components\Theme::class,
                 'name' => 'HumHub',
             ],
         ],

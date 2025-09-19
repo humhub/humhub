@@ -5,13 +5,13 @@
  * @license https://www.humhub.com/licences
  */
 
-/* @var $this View */
+/* @var $this \humhub\components\View */
 /* @var $viewable humhub\modules\user\notifications\Followed */
 /* @var $url string */
 /* @var $_params_ array */
 
+use humhub\components\View;
 use humhub\modules\ui\mail\DefaultMailStyle;
-use humhub\modules\ui\view\components\View;
 use humhub\widgets\mails\MailButton;
 use humhub\widgets\mails\MailButtonList;
 

@@ -38,6 +38,7 @@ return [
     'Add tags to your profile describing you and highlighting your skills and interests. Your tags will be displayed in your profile and in the \'People\' directory.' => '',
     'Changing the username can make some links unusable, for example old links to the profile.' => '',
     'Do you really want to delete your icon image?' => '',
+    'Do you really want to delete your login background image?' => '',
     'Do you really want to delete your logo image?' => '',
     'E-Mail change' => '',
     'Hello' => '',

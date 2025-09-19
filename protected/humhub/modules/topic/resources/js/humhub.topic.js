@@ -113,7 +113,7 @@ humhub.module('topic', function (module, require, $) {
     };
 
     module.template = {
-        'removeLabel': '<a href="#" class="topic-remove-label" data-action-click="topic.removeTopic" data-topic-id="{id}"><span class="label label-default animated bounceIn">{icon} {name}</span></a>'
+        'removeLabel': '<a href="#" class="topic-remove-label" data-action-click="topic.removeTopic" data-topic-id="{id}"><span class="badge text-bg-secondary animated bounceIn">{icon} {name}</span></a>'
     };
 
 

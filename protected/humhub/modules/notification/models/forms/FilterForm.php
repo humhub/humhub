@@ -25,7 +25,7 @@ class FilterForm extends Model
     /**
      * @var string|null Contains the seen filter: 'all'|null, 'seen', 'unseen'
      */
-    public string|null $seenFilter = null;
+    public ?string $seenFilter = null;
 
     /**
      * @var bool It is used only to select and unselect all filters on client side by JS
@@ -106,7 +106,7 @@ class FilterForm extends Model
                 ? $notification->getCategory()->id
                 : self::NO_CATEGORY_ID;
             if (in_array($categoryId, $this->categoryFilter)) {
-                $result[] = get_class($notification);
+                $result[] = $notification::class;
             }
         }
 

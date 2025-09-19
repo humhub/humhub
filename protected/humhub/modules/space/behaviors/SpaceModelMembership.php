@@ -423,9 +423,9 @@ class SpaceModelMembership extends Behavior
 
             $userInvite = Invite::findOne(['email' => $user->email]);
 
-            if ($userInvite !== null &&
-                !empty($userInvite->user_originator_id) &&
-                $userInvite->source == Invite::SOURCE_INVITE && !$silent) {
+            if ($userInvite !== null
+                && !empty($userInvite->user_originator_id)
+                && $userInvite->source == Invite::SOURCE_INVITE && !$silent) {
                 $originator = User::findOne(['id' => $userInvite->user_originator_id]);
                 if ($originator !== null) {
                     InviteAccepted::instance()->from($user)->about($this->owner)->send($originator);
@@ -504,7 +504,7 @@ class SpaceModelMembership extends Behavior
             return false;
         }
 
-        Membership::getDb()->transaction(function ($db) use ($membership, $user) {
+        Membership::getDb()->transaction(function ($db) use ($membership, $user): void {
             foreach (Membership::findAll(['user_id' => $user->id, 'space_id' => $this->owner->id]) as $obsoleteMembership) {
                 $obsoleteMembership->delete();
             }

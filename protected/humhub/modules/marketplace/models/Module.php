@@ -10,7 +10,7 @@ namespace humhub\modules\marketplace\models;
 
 use humhub\modules\marketplace\Module as MarketplaceModule;
 use humhub\modules\marketplace\services\FilterService;
-use humhub\widgets\Link;
+use humhub\widgets\bootstrap\Link;
 use Yii;
 use yii\base\Model;
 use yii\helpers\Url;
@@ -190,8 +190,8 @@ class Module extends Model
         /* @var MarketplaceModule */
         $marketplaceModule = Yii::$app->getModule('marketplace');
 
-        return $this->latestCompatibleVersion &&
-            !($this->isDeprecated && $marketplaceModule->hideLegacyModules);
+        return $this->latestCompatibleVersion
+            && !($this->isDeprecated && $marketplaceModule->hideLegacyModules);
     }
 
     /**

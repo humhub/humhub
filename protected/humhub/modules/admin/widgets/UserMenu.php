@@ -15,6 +15,7 @@ use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\TabMenu;
+use humhub\widgets\bootstrap\Badge;
 use Yii;
 
 /**
@@ -44,23 +45,21 @@ class UserMenu extends TabMenu
             'label' => Yii::t('AdminModule.user', 'Settings'),
             'url' => ['/admin/authentication'],
             'sortOrder' => 200,
-            'isActive' => ControllerHelper::isActivePath('admin', ['authentication', 'user-permissions']) ||
-                ControllerHelper::isActivePath('ldap', 'admin'),
+            'isActive' => ControllerHelper::isActivePath('admin', ['authentication', 'user-permissions'])
+                || ControllerHelper::isActivePath('ldap', 'admin'),
             'isVisible' => Yii::$app->user->can(ManageSettings::class),
         ]));
 
         $approvalCount = UserApprovalSearch::getUserApprovalCount();
 
-        if ($approvalCount > 0) {
+        if ($approvalCount > 0 || Yii::$app->user->isGroupManager()) {
             $this->addEntry(new MenuLink([
-                'label' => Yii::t('AdminModule.user', 'Pending approvals') . ' <span class="label label-danger">' . $approvalCount . '</span>',
+                'label' => Yii::t('AdminModule.user', 'Pending approvals') . ' ' . Badge::danger((string)$approvalCount),
                 'url' => ['/admin/approval'],
                 'sortOrder' => 300,
                 'isActive' => ControllerHelper::isActivePath('admin', 'approval'),
-                'isVisible' => Yii::$app->user->can([
-                    ManageUsers::class,
-                    ManageGroups::class,
-                ]),
+                'isVisible' => Yii::$app->user->can([ManageUsers::class, ManageGroups::class])
+                    || Yii::$app->user->isGroupManager(),
             ]));
         }
 
@@ -77,7 +76,8 @@ class UserMenu extends TabMenu
             'url' => ['/admin/group'],
             'sortOrder' => 500,
             'isActive' => ControllerHelper::isActivePath('admin', 'group'),
-            'isVisible' => Yii::$app->user->can(ManageGroups::class),
+            'isVisible' => Yii::$app->user->can(ManageGroups::class)
+                || Yii::$app->user->isGroupManager(),
         ]));
 
         $this->addEntry(new MenuLink([

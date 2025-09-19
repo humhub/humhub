@@ -31,7 +31,7 @@ class CommentCest
 
         $I->click('.btn-comment-submit', $commentSection);
 
-        $I->waitForText('The comment must not be empty!', null, $commentSection);
+        $I->waitForText('The comment must not be empty!', 10, $commentSection);
 
         $I->fillField($commentSection . ' .humhub-ui-richtext[contenteditable]', 'Test comment');
 

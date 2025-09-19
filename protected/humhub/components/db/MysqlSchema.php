@@ -65,7 +65,7 @@ SQL;
             }
         } catch (\Exception $e) {
             $previous = $e->getPrevious();
-            if (!$previous instanceof PDOException || strpos($previous->getMessage(), 'SQLSTATE[42S02') === false) {
+            if (!$previous instanceof PDOException || !str_contains($previous->getMessage(), 'SQLSTATE[42S02')) {
                 throw $e;
             }
 

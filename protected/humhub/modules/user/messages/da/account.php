@@ -15,6 +15,7 @@ return [
   'Define basic settings for your profile. You can add tags that fit you, choose the language and your time zone and block impolite users.' => 'Definer grundlæggende indstillinger for din profil. Du kan tilføje tags, der passer til dig, vælge sprog og tidszone og blokere uhøflige brugere.',
   'Delete account' => 'Slet konto',
   'Do you really want to delete your icon image?' => 'Vil du virkelig slette dit ikonbillede?',
+  'Do you really want to delete your login background image?' => 'Vil du virkelig slette dit login-baggrundsbillede?',
   'Do you really want to delete your logo image?' => 'Vil du virkelig slette dit logobillede?',
   'E-Mail' => 'E-mail',
   'E-Mail change' => 'Ændring af e-mail',

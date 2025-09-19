@@ -66,6 +66,7 @@ return [
     'Your password has been successfully changed!' => 'كلمة السر الخاصة بك تم تغييرها بنجاح!',
     'Your username has been changed' => 'تم تغيير اسم المستخدم الخاص بك',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'تم تغيير اسم المستخدم الخاص بك بنجاح. <br> لقد أرسلنا لك للتو رسالة بريد إلكتروني تحتوي على معلومات جديدة.',
+    'Do you really want to delete your login background image?' => '',
     'Password recovery can only be initiated once every 10 minutes.' => '',
     'Password recovery disabled. Please contact your system administrator.' => '',
 ];

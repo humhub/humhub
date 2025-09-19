@@ -1,7 +1,7 @@
 <?php
 
-use yii\helpers\Html;
 use humhub\assets\AppAsset;
+use humhub\helpers\Html;
 use humhub\widgets\PoweredBy;
 use yii\web\View;
 
@@ -32,7 +32,7 @@ AppAsset::register($this);
 <div class="container installer" style="margin: 0 auto; max-width: 770px;">
     <div class="logo">
         <a class="animated fadeIn" href="http://www.humhub.org" target="_blank" class="">
-            <img src="<?php echo Yii::getAlias("@web-static/resources/installer"); ?>/humhub-logo.png" alt="Logo">
+            <img src="<?php echo Yii::getAlias("@web-static/resources/installer"); ?>/humhub_logo.png" alt="HumHub Logo" style="max-width: 296px; height: auto;">
         </a>
     </div>
 

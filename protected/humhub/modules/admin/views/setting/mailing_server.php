@@ -1,10 +1,10 @@
 <?php
 
 use humhub\components\SettingsManager;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\admin\models\forms\MailingSettingsForm;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
 use yii\web\View;
 
 /* @var $this View */
@@ -16,55 +16,57 @@ use yii\web\View;
 
 <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
 
-<?= $form->errorSummary($model); ?>
+<?= $form->errorSummary($model) ?>
 
-<?= $form->field($model, 'systemEmailName')->textInput(['readonly' => $settings->isFixed('mailerSystemEmailName')]); ?>
+<?= $form->field($model, 'systemEmailName')->textInput(['readonly' => $settings->isFixed('mailerSystemEmailName')]) ?>
 
 <div class="row">
-    <div class="col-md-6">
-        <?= $form->field($model, 'systemEmailAddress')->textInput(['readonly' => $settings->isFixed('mailerSystemEmailAddress')]); ?>
+    <div class="col-lg-6">
+        <?= $form->field($model, 'systemEmailAddress')->textInput(['readonly' => $settings->isFixed('mailerSystemEmailAddress')]) ?>
     </div>
-    <div class="col-md-6">
-        <?= $form->field($model, 'systemEmailReplyTo')->textInput(['readonly' => $settings->isFixed('mailerSystemEmailReplyTo')]); ?>
+    <div class="col-lg-6">
+        <?= $form->field($model, 'systemEmailReplyTo')->textInput(['readonly' => $settings->isFixed('mailerSystemEmailReplyTo')]) ?>
     </div>
 
 </div>
 
-<?= $form->field($model, 'transportType')->dropDownList($model->getTransportTypes(), ['readonly' => $settings->isFixed('mailerTransportType')]); ?>
+<?= $form->field($model, 'showNameInsteadOfLogo')->checkbox() ?>
+
+<?= $form->field($model, 'transportType')->dropDownList($model->getTransportTypes(), ['readonly' => $settings->isFixed('mailerTransportType')]) ?>
 
 <div id="smtpOptions">
 
     <div class="row">
-        <div class="col-md-8">
-            <?= $form->field($model, 'hostname')->textInput(['readonly' => $settings->isFixed('mailerHostname')]); ?>
+        <div class="col-lg-8">
+            <?= $form->field($model, 'hostname')->textInput(['readonly' => $settings->isFixed('mailerHostname')]) ?>
         </div>
-        <div class="col-md-4">
-            <?= $form->field($model, 'port')->textInput(['readonly' => $settings->isFixed('mailerPort')]); ?>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-6">
-            <?= $form->field($model, 'useSmtps')->checkbox(); ?>
-        </div>
-        <div class="col-md-6" id="encryptionOptions">
-            <?= $form->field($model, 'allowSelfSignedCerts')->checkbox(); ?>
+        <div class="col-lg-4">
+            <?= $form->field($model, 'port')->textInput(['readonly' => $settings->isFixed('mailerPort')]) ?>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-md-6">
-            <?= $form->field($model, 'username')->textInput(['readonly' => $settings->isFixed('mailerUsername')]); ?>
+        <div class="col-lg-6">
+            <?= $form->field($model, 'useSmtps')->checkbox() ?>
         </div>
-        <div class="col-md-6">
-            <?= $form->field($model, 'password')->textInput(['readonly' => $settings->isFixed('mailerPassword')])->passwordInput(); ?>
+        <div class="col-lg-6" id="encryptionOptions">
+            <?= $form->field($model, 'allowSelfSignedCerts')->checkbox() ?>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <?= $form->field($model, 'username')->textInput(['readonly' => $settings->isFixed('mailerUsername')]) ?>
+        </div>
+        <div class="col-lg-6">
+            <?= $form->field($model, 'password')->textInput(['readonly' => $settings->isFixed('mailerPassword')])->passwordInput() ?>
         </div>
     </div>
 </div>
 <div id="dsnOptions">
-    <?= $form->field($model, 'dsn')->textInput(['readonly' => $settings->isFixed('mailerDsn')]); ?>
+    <?= $form->field($model, 'dsn')->textInput(['readonly' => $settings->isFixed('mailerDsn')]) ?>
 
-    <strong><?= Yii::t('AdminModule.settings', 'DSN Examples:'); ?></strong>
+    <strong><?= Yii::t('AdminModule.settings', 'DSN Examples:') ?></strong>
     <ul>
         <li>SMTP <code>smtp://user:pass@smtp.example.com:25</code></li>
         <li>Sendmail <code>sendmail://default</code></li>
@@ -86,7 +88,7 @@ use yii\web\View;
         <li>OhMySMTP <code>ohmysmtp+smtp://API_TOKEN@default</code></li>
     </ul>
 
-    <?= Yii::t('AdminModule.settings', 'You can find more configuration options here:'); ?> <a
+    <?= Yii::t('AdminModule.settings', 'You can find more configuration options here:') ?> <a
         href="https://symfony.com/doc/5.4/mailer.html#transport-setup" target="_blank">Symfony Mailer - Transport
         Setup</a>
 

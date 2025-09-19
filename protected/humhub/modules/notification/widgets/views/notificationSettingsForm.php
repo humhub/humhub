@@ -1,14 +1,14 @@
 <?php
 
 /* @var $model NotificationSettings */
-/* @var $form yii\widgets\ActiveForm */
+/* @var $form humhub\widgets\form\ActiveForm */
 /* @var $showSpaces bool */
 
 /* @var $defaultSpaces Space[] */
 
+use humhub\helpers\Html;
 use humhub\modules\notification\models\forms\NotificationSettings;
 use humhub\modules\space\models\Space;
-use yii\bootstrap\Html;
 
 ?>
 

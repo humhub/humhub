@@ -59,7 +59,7 @@ class Birthday extends BaseType
     public function getFormDefinition($definition = [])
     {
         return parent::getFormDefinition([
-            get_class($this) => [
+            static::class => [
                 'type' => 'form',
                 'title' => Yii::t('UserModule.profile', 'Birthday field options'),
                 'elements' => [
@@ -139,7 +139,7 @@ class Birthday extends BaseType
     /**
      * @inheritdoc
      */
-    public function getFieldFormDefinition(User $user = null, array $options = []): array
+    public function getFieldFormDefinition(?User $user = null, array $options = []): array
     {
         $result = parent::getFieldFormDefinition($user, array_merge([
             'format' => 'medium',

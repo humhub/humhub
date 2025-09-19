@@ -72,8 +72,8 @@ class SecuritySettings extends Model
     public static function isReportingEnabled()
     {
         $instance = new static();
-        return $instance->isCspReportEnabled() ||
-            $instance->hasSection(static::CSP_SECTION_REPORT_ONLY);
+        return $instance->isCspReportEnabled()
+            || $instance->hasSection(static::CSP_SECTION_REPORT_ONLY);
     }
 
     /**
@@ -229,7 +229,7 @@ class SecuritySettings extends Model
 
     private function applyMaskNonce(string $value): string
     {
-        if (strpos($value, '{{ nonce }}') === false) {
+        if (!str_contains($value, '{{ nonce }}')) {
             return $value;
         }
 

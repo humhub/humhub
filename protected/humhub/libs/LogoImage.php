@@ -11,28 +11,31 @@ namespace humhub\libs;
 use Yii;
 use yii\base\ErrorException;
 use yii\base\Exception;
+use yii\helpers\FileHelper;
 use yii\imagine\Image;
 use yii\web\UploadedFile;
-use yii\helpers\Url;
-use yii\helpers\FileHelper;
 
 /**
  * LogoImage
  */
 class LogoImage
 {
+    public const MIN_WIDTH = 100;
+    public const MIN_HEIGHT = 120;
+    public const RECOMMENDED_MIN_HEIGHT = 248;
+
     /**
      * Sets a new icon for the installation.
      * @param UploadedFile|null $file
      */
-    public static function set(UploadedFile $file = null)
+    public static function set(?UploadedFile $file = null)
     {
         static::deleteFiles();
 
         if ($file !== null) {
             try {
                 FileHelper::createDirectory(Yii::getAlias('@webroot/uploads/logo_image/'));
-            } catch (Exception $e) {
+            } catch (Exception) {
             }
             Image::getImagine()->open($file->tempName)->save(Yii::getAlias('@webroot/uploads/logo_image/logo.png'));
         }
@@ -64,7 +67,7 @@ class LogoImage
         } elseif (static::hasImage() && $autoResize) {
             try {
                 FileHelper::createDirectory(Yii::getAlias(Yii::$app->assetManager->basePath . DIRECTORY_SEPARATOR . 'logo'));
-            } catch (Exception $e) {
+            } catch (Exception) {
             }
 
             $image = Image::getImagine()->open(static::getOriginalFile());

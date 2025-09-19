@@ -36,9 +36,9 @@ class AcceptanceTester extends \AcceptanceTester
 
         $user = User::findOne(['username' => $userName]);
         $this->waitForText('User administration');
-        $this->jsClick('tr[data-key=' . $user->id . '] div.dropdown-navigation button');
+        $this->jsClick('tr[data-key=' . $user->id . '] div.dropdown button');
         $this->waitForText('Impersonate');
-        $this->click('Impersonate', '.dropdown-navigation.open');
+        $this->click('Impersonate', '.dropdown-menu.show');
         $this->acceptPopup();
     }
 
@@ -64,12 +64,15 @@ class AcceptanceTester extends \AcceptanceTester
         $this->waitForText('Manage profile attributes');
         $this->waitForText($options['categoryTitle']);
         $this->click($options['categoryTitle']);
-        $this->waitForText('Add new field', null, '.tab-pane.active');
+        $this->waitForText('Add new field', 10, '.tab-pane.active');
         $this->click('Add new field', '.tab-pane.active');
         $this->waitForText('Create new profile field');
         $this->fillField('#profilefield-internal_name', $options['internalName']);
         $this->fillField('#profilefield-title', $title);
         $this->selectOption('#profilefield-field_type_class', $type);
+
+        $this->scrollToBottom();
+        $this->wait(1);
 
         if ($options['required']) {
             $this->checkOption('#profilefield-required');
@@ -95,6 +98,8 @@ class AcceptanceTester extends \AcceptanceTester
             $this->fillField('#checkboxlist-options', $options['checkboxlist-options']);
         }
 
+        $this->scrollToBottom();
+        $this->wait(1);
         $this->click('Save');
         $this->seeSuccess();
     }

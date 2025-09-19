@@ -118,9 +118,7 @@ class GlobalContentStreamTest extends HumHubDbTestCase
 
         $wallEntries = $action->getStreamQuery()->all();
 
-        return array_map(static function ($entry) {
-            return $entry->id;
-        }, $wallEntries);
+        return array_map(static fn($entry) => $entry->id, $wallEntries);
     }
 
     private function createPrivateTestContent(): int

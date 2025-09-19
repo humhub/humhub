@@ -10,6 +10,7 @@ namespace humhub\modules\notification\components;
 
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\SocialActivity;
+use humhub\helpers\Html;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\notification\jobs\SendBulkNotification;
@@ -22,7 +23,6 @@ use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\InvalidConfigException;
-use yii\bootstrap\Html;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
@@ -188,7 +188,7 @@ abstract class BaseNotification extends SocialActivity
     public function sendBulk($query)
     {
         if (empty($this->moduleId)) {
-            throw new InvalidConfigException('No moduleId given for "' . get_class($this) . '"');
+            throw new InvalidConfigException('No moduleId given for "' . static::class . '"');
         }
 
         if (!$query instanceof ActiveQueryUser) {
@@ -218,7 +218,7 @@ abstract class BaseNotification extends SocialActivity
     public function send(User $user)
     {
         if (empty($this->moduleId)) {
-            throw new InvalidConfigException('No moduleId given for "' . get_class($this) . '"');
+            throw new InvalidConfigException('No moduleId given for "' . static::class . '"');
         }
 
         if ($this->suppressSendToOriginator && $this->isOriginator($user)) {
@@ -283,8 +283,8 @@ abstract class BaseNotification extends SocialActivity
         if ($this->isSpaceContent()) {
             /* @var Space $space */
             $space = $this->source->content->container;
-            return $space->visibility === Space::VISIBILITY_NONE &&
-                !$space->isMember($user);
+            return $space->visibility === Space::VISIBILITY_NONE
+                && !$space->isMember($user);
         }
 
         return false;
@@ -298,9 +298,9 @@ abstract class BaseNotification extends SocialActivity
      */
     private function isSpaceContent(): bool
     {
-        return ($this->source instanceof ContentActiveRecord ||
-                $this->source instanceof ContentAddonActiveRecord) &&
-            $this->source->content->container instanceof Space;
+        return ($this->source instanceof ContentActiveRecord
+                || $this->source instanceof ContentAddonActiveRecord)
+            && $this->source->content->container instanceof Space;
     }
 
     /**
@@ -338,9 +338,9 @@ abstract class BaseNotification extends SocialActivity
 
         if (!$notification->save()) {
             Yii::error(
-                'Could not save Notification Record for' .
-                static::class . ' ' .
-                print_r($notification->getErrors(), true),
+                'Could not save Notification Record for'
+                . static::class . ' '
+                . print_r($notification->getErrors(), true),
             );
             return false;
         }
@@ -399,7 +399,7 @@ abstract class BaseNotification extends SocialActivity
     /**
      * Deletes this notification
      */
-    public function delete(User $user = null)
+    public function delete(?User $user = null)
     {
         $condition = [];
 
@@ -470,7 +470,7 @@ abstract class BaseNotification extends SocialActivity
      * @param BaseTarget $target
      * @return string render result
      */
-    public function render(BaseTarget $target = null)
+    public function render(?BaseTarget $target = null)
     {
         if (!$target) {
             $target = Yii::$app->notification->getTarget(WebTarget::class);
@@ -492,7 +492,7 @@ abstract class BaseNotification extends SocialActivity
     public function getGroupUserDisplayNames($html = true)
     {
         if ($this->groupCount > 2) {
-            list($user) = $this->getGroupLastUsers(1);
+            [$user] = $this->getGroupLastUsers(1);
             $displayName = $html ? Html::tag('strong', Html::encode($user->displayName)) : $user->displayName;
             return Yii::t('NotificationModule.base', '{displayName} and {number} others', [
                 'displayName' => $displayName,

@@ -1,0 +1,107 @@
+//
+// List
+// --------------------------------------------------
+
+.hh-list {
+    padding: 0;
+
+    &.dropdown-item:hover {
+        background-color: inherit;
+        color: inherit;
+    }
+
+    > div:not(.stream-end), > a:not(.stream-end) {
+        padding: 10px;
+        border-bottom: 1px solid var(--hh-background-color-page);
+        position: relative;
+        border-left: 3px solid var(--hh-background-color-main);
+
+        &:hover,
+        &.selected {
+            background-color: var(--hh-background-color-secondary);
+            border-left: 3px solid var(--bs-accent);
+        }
+
+        &, a {
+            color: var(--hh-text-color-main);
+        }
+
+        &.new {
+            border-left: 3px solid var(--bs-accent);
+            background-color: var(--hh-background-color-highlight);
+
+            &:hover {
+                background-color: var(--hh-background-color-highlight-soft);
+            }
+        }
+
+        &.placeholder {
+            font-size: 14px !important;
+            border-bottom: none;
+        }
+
+        &.placeholder:hover {
+            background: none !important;
+            border-left: 3px solid var(--hh-background-color-main);
+        }
+
+        // TODO: move to Enterprise Theme module
+        .badge-space-type {
+            background-color: var(--hh-background-color-secondary);
+            border: 1px solid var(--hh-background3);
+            color: var(--hh-background4);
+            padding: 3px 3px 2px 3px;
+        }
+
+        .flex-grow-1 {
+            font-size: 13px;
+            white-space: normal;
+            @include text-break();
+        }
+
+        h4 {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--hh-text-color-highlight);
+
+            small,
+            small a {
+                font-size: 11px;
+                color: var(--hh-text-color-soft);
+            }
+
+            .content {
+                margin-right: 35px;
+            }
+        }
+
+        h5 {
+            color: var(--hh-text-color-soft2);
+            font-weight: 300;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            min-height: 15px;
+        }
+
+        .content a {
+            word-break: break-all;
+        }
+
+        strong {
+            color: var(--hh-text-color-highlight);
+        }
+
+        .time {
+            font-size: 11px;
+            color: var(--hh-text-color-soft);
+        }
+
+        .module-controls {
+            font-size: 85%;
+        }
+
+        .content .files a {
+            color: var(--hh-text-color-highlight);
+        }
+    }
+}

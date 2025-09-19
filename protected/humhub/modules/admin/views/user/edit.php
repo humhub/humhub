@@ -1,8 +1,8 @@
 <?php
 
 use humhub\compat\HForm;
-use humhub\libs\Html;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\helpers\Html;
+use humhub\widgets\form\ActiveForm;
 
 /* @var $hForm HForm */
 /* @var $user \humhub\modules\user\models\User */
@@ -10,8 +10,8 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 
 <div class="clearfix">
     <div class="panel-body">
-        <?= Html::backButton(['index'], ['label' => Yii::t('AdminModule.base', 'Back to overview'), 'class' => 'pull-right']); ?>
-        <h4 class="pull-left"><?= Yii::t('AdminModule.user', 'Edit user: {name}', ['name' => Html::encode($user->displayName)]); ?></h4>
+        <?= Html::backButton(['index'], ['label' => Yii::t('AdminModule.base', 'Back to overview'), 'class' => 'float-end']); ?>
+        <h4 class="float-start"><?= Yii::t('AdminModule.user', 'Edit user: {name}', ['name' => Html::encode($user->displayName)]); ?></h4>
     </div>
 </div>
 <div class="panel-body">

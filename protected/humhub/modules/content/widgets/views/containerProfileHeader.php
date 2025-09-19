@@ -1,6 +1,6 @@
 <?php
 
-/* @var $this View */
+/* @var $this \humhub\components\View */
 /* @var $options array */
 /* @var $title string */
 /* @var $subTitle string */
@@ -22,12 +22,11 @@
  * Note: Inline styles have been retained for legacy theme compatibility (prior to v1.4)
  */
 
+use humhub\helpers\Html;
 use humhub\modules\content\assets\ContainerHeaderAsset;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\file\widgets\Upload;
-use humhub\modules\ui\view\components\View;
-use humhub\widgets\Button;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Button;
 
 ContainerHeaderAsset::register($this);
 
@@ -58,7 +57,7 @@ $profileImageHeight = $container->getProfileImage()->height();
 
 
         <?php if ($canEdit) : ?>
-            <div class="image-upload-loader" style="padding:<?= $bannerProgressBarPadding ?>">
+            <div class="image-upload-loader d-none" style="padding:<?= $bannerProgressBarPadding ?>">
                 <?= $bannerUpload->progress() ?>
             </div>
         <?php endif; ?>
@@ -87,7 +86,7 @@ $profileImageHeight = $container->getProfileImage()->height();
         <?php endif; ?>
 
         <?php if ($canEdit) : ?>
-            <div class="image-upload-loader" style="padding-top: 60px;">
+            <div class="image-upload-loader d-none" style="padding-top: 60px;">
                 <?= $profileImageUpload->progress() ?>
             </div>
 

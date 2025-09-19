@@ -7,7 +7,6 @@ return [
     'Admin' => 'Admin',
     'Archived' => 'Arhivat',
     'Cancel' => 'Anulează',
-    'Close' => 'Închide',
     'Decline' => 'Respinge',
     'Default' => 'Implicit',
     'Delete' => 'Șterge',

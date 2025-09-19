@@ -34,6 +34,7 @@ return [
   'Installation Example:' => 'Eksempel på installation:',
   'Language and timezone are automatically set according to the user\'s browser settings. If that is not possible, the default settings are used.' => 'Sprog og tidszone indstilles automatisk i henhold til brugerens browserindstillinger. Hvis det ikke er muligt, bruges standardindstillingerne.',
   'Localisation' => 'Beliggenhed',
+  'Make sure that the following file is writable: thi' => 'Sørg for, at følgende fil er skrivbar: thi',
   'My club' => 'Min klub',
   'My community' => 'Mit fællesskab',
   'My company (Social Intranet / Project management)' => 'Min virksomhed (socialt intranet / projektledelse)',

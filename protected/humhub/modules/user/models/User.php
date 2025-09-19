@@ -126,9 +126,14 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     public $registrationGroupId = null;
 
     /**
-     * @var bool is system admin (cached)
+     * @var bool|null is system admin (cached)
      */
     private $_isSystemAdmin = null;
+
+    /**
+     * @var bool|null is a manager of at least one group (cached)
+     */
+    private $_isGroupManager = null;
 
     /**
      * @inheritdoc
@@ -163,9 +168,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
             [['username'], 'unique'],
             [['username'], 'string', 'max' => $userModule->maximumUsernameLength, 'min' => $userModule->minimumUsernameLength],
             // Client validation is disable due to invalid client pattern validation
-            [['username'], 'match', 'pattern' => $userModule->validUsernameRegexp, 'message' => Yii::t('UserModule.base', 'Username contains invalid characters.'), 'enableClientValidation' => false, 'when' => function ($model, $attribute) {
-                return $model->getAttribute($attribute) !== $model->getOldAttribute($attribute);
-            }],
+            [['username'], 'match', 'pattern' => $userModule->validUsernameRegexp, 'message' => Yii::t('UserModule.base', 'Username contains invalid characters.'), 'enableClientValidation' => false, 'when' => fn($model, $attribute) => $model->getAttribute($attribute) !== $model->getOldAttribute($attribute)],
             [['created_by', 'updated_by'], 'integer'],
             [['status'], 'in', 'range' => array_keys(self::getStatusOptions()), 'on' => self::SCENARIO_EDIT_ADMIN],
             [['visibility'], 'in', 'range' => array_keys(self::getVisibilityOptions()), 'on' => self::SCENARIO_EDIT_ADMIN],
@@ -220,7 +223,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
 
-        if (in_array(strtolower($this->$attribute), $module->forbiddenUsernames)) {
+        if (in_array(strtolower((string) $this->$attribute), $module->forbiddenUsernames)) {
             $this->addError($attribute, Yii::t('UserModule.account', 'You cannot use this username.'));
         }
     }
@@ -244,13 +247,28 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
      * @param bool $cached Used cached result if available
      * @return bool user is system admin
      */
-    public function isSystemAdmin($cached = true)
+    public function isSystemAdmin(bool $cached = true): bool
     {
-        if ($this->_isSystemAdmin === null || !$cached) {
-            $this->_isSystemAdmin = ($this->getGroups()->where(['is_admin_group' => '1'])->count() > 0);
+        if ($this->_isSystemAdmin === null || $cached === false) {
+            $this->_isSystemAdmin = $this->getGroups()->where(['is_admin_group' => true])->exists();
         }
 
         return $this->_isSystemAdmin;
+    }
+
+    /**
+     * Checks if user is a manager of at least one group
+     *
+     * @param bool $cached True to get a result from cache if available
+     * @return bool
+     */
+    public function isGroupManager(bool $cached = true): bool
+    {
+        if ($this->_isGroupManager === null || $cached === false) {
+            $this->_isGroupManager = $this->getManagerGroups()->exists();
+        }
+
+        return $this->_isGroupManager;
     }
 
     /**
@@ -341,9 +359,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
 
     public static function findIdentity($id)
     {
-        return Yii::$app->runtimeCache->getOrSet(User::class . '#' . $id, function () use ($id) {
-            return static::findOne(['id' => $id]);
-        });
+        return Yii::$app->runtimeCache->getOrSet(User::class . '#' . $id, fn() => static::findOne(['id' => $id]));
     }
 
     public static function findIdentityByAccessToken($token, $type = null)
@@ -358,7 +374,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
      */
     public static function find()
     {
-        return Yii::createObject(ActiveQueryUser::class, [get_called_class()]);
+        return Yii::createObject(ActiveQueryUser::class, [static::class]);
     }
 
     public function getId()
@@ -434,7 +450,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     public function getManagerGroups()
     {
         return $this->hasMany(Group::class, ['id' => 'group_id'])
-            ->via('groupUsers', function ($query) {
+            ->via('groupUsers', function ($query): void {
                 $query->andWhere(['is_group_manager' => '1']);
             });
     }
@@ -593,8 +609,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
         }
 
         // Reindex user content when status is changed to/from Enabled
-        if (!$insert && isset($changedAttributes['status']) &&
-            ($this->status === User::STATUS_ENABLED || $changedAttributes['status'] === User::STATUS_ENABLED)) {
+        if (!$insert && isset($changedAttributes['status'])
+            && ($this->status === User::STATUS_ENABLED || $changedAttributes['status'] === User::STATUS_ENABLED)) {
             Yii::$app->queue->push(new ReindexUserContent(['userId' => $this->id]));
         }
 
@@ -603,10 +619,10 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
 
         // When insert an "::STATUS_ENABLED" user or update a user from status "::STATUS_NEED_APPROVAL" to "::STATUS_ENABLED"
         if (
-            $this->status == User::STATUS_ENABLED &&
-            (
-                $insert ||
-                (isset($changedAttributes['status']) && $changedAttributes['status'] == User::STATUS_NEED_APPROVAL)
+            $this->status == User::STATUS_ENABLED
+            && (
+                $insert
+                || (isset($changedAttributes['status']) && $changedAttributes['status'] == User::STATUS_NEED_APPROVAL)
             )
         ) {
             $this->setUpApproved();
@@ -722,7 +738,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
-    public function canAccessPrivateContent(User $user = null)
+    public function canAccessPrivateContent(?User $user = null)
     {
         $user = !$user && !Yii::$app->user->isGuest ? Yii::$app->user->getIdentity() : $user;
 
@@ -807,18 +823,25 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
      *
      * @return bool
      * @throws InvalidConfigException
+     * @deprecated since 1.18
      */
-    public function canApproveUsers()
+    public function canApproveUsers(): bool
     {
-        if ($this->isSystemAdmin()) {
-            return true;
-        }
+        return $this->canManageUsers();
+    }
 
-        if ((new PermissionManager(['subject' => $this]))->can([ManageUsers::class, ManageGroups::class])) {
-            return true;
-        }
-
-        return $this->getManagerGroups()->count() > 0;
+    /**
+     * User can manage other users
+     *
+     * @return bool
+     * @throws InvalidConfigException
+     * @since 1.18
+     */
+    public function canManageUsers(): bool
+    {
+        return $this->isSystemAdmin()
+            || (new PermissionManager(['subject' => $this]))->can([ManageUsers::class, ManageGroups::class])
+            || $this->isGroupManager();
     }
 
     /**
@@ -903,7 +926,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
      * TODO: deprecated
      * @inheritdoc
      */
-    public function getUserGroup(User $user = null)
+    public function getUserGroup(?User $user = null)
     {
         $user = !$user && !Yii::$app->user->isGuest ? Yii::$app->user->getIdentity() : $user;
 

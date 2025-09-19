@@ -5,7 +5,7 @@ namespace humhub\modules\content\widgets\richtext\converter;
 use cebe\markdown\GithubMarkdown;
 use humhub\components\ActiveRecord;
 use humhub\components\Event;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\widgets\richtext\extensions\link\LinkParserBlock;
@@ -185,7 +185,7 @@ abstract class BaseRichTextConverter extends GithubMarkdown
      */
     public static function buildCacheKeyForRecord(ActiveRecord $record, $prefix = null)
     {
-        $result = get_class($record) . '_' . $record->getUniqueId();
+        $result = $record::class . '_' . $record->getUniqueId();
         return $prefix ? $prefix . '_' . $result : $result;
     }
 
@@ -279,9 +279,7 @@ abstract class BaseRichTextConverter extends GithubMarkdown
     protected function renderAbsy($blocks)
     {
         if (!empty($this->getExcludes())) {
-            $blocks = array_filter($blocks, function ($block) {
-                return !in_array($block[0], $this->getExcludes(), true);
-            });
+            $blocks = array_filter($blocks, fn($block) => !in_array($block[0], $this->getExcludes(), true));
         }
 
         return parent::renderAbsy($blocks);
@@ -348,10 +346,10 @@ abstract class BaseRichTextConverter extends GithubMarkdown
      */
     protected function parseLinkOrImage($markdown)
     {
-        if (strpos($markdown, ']') !== false && preg_match('/\[((?>[^\]\[]+|(?R))*)\]/', $markdown, $textMatches)) {
+        if (str_contains((string) $markdown, ']') && preg_match('/\[((?>[^\]\[]+|(?R))*)\]/', (string) $markdown, $textMatches)) {
             $text = $textMatches[1];
             $offset = strlen($textMatches[0]);
-            $markdown = substr($markdown, $offset);
+            $markdown = substr((string) $markdown, $offset);
 
             $pattern = <<<REGEXP
 				/(?(R) # in case of recursion match parentheses
@@ -364,7 +362,7 @@ REGEXP;
                 // inline link
                 return [
                     $text,
-                    isset($refMatches[2]) ? $refMatches[2] : '', // url
+                    $refMatches[2] ?? '', // url
                     empty($refMatches[5]) ? null : $refMatches[5], // title
                     $offset + strlen($refMatches[0]), // offset
                     null, // reference key
@@ -441,7 +439,7 @@ REGEXP;
 
     public function getOption(string $key, $default = null)
     {
-        return isset($this->options[$key]) ? $this->options[$key] : $default;
+        return $this->options[$key] ?? $default;
     }
 
     protected function renderImage($block)
@@ -506,8 +504,8 @@ REGEXP;
         $target = Html::encode($this->getOption(static::OPTION_LINK_TARGET, '_blank'));
         $targetAttr = !$this->getOption(static::OPTION_PREV_LINK_TARGET, false) ? " target=\"$target\"" : '';
 
-        return '<a href="' . htmlspecialchars($block['url'], ENT_COMPAT | ENT_HTML401, 'UTF-8') . '"' . $targetAttr
-            . (empty($block['title']) ? '' : ' title="' . htmlspecialchars($block['title'], ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8') . '"')
+        return '<a href="' . htmlspecialchars((string) $block['url'], ENT_COMPAT | ENT_HTML401, 'UTF-8') . '"' . $targetAttr
+            . (empty($block['title']) ? '' : ' title="' . htmlspecialchars((string) $block['title'], ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8') . '"')
             . '>' . $this->renderAbsy($block['text']) . '</a>';
     }
 
@@ -523,8 +521,8 @@ REGEXP;
             if (($ref = $this->lookupReference($block['refkey'])) !== false) {
                 $linkBlock->block = array_merge($block, $ref);
             } else {
-                if (strncmp($block['orig'], '![', 2) === 0) {
-                    return '![' . $this->renderAbsy($this->parseInline(substr($block['orig'], 2)));
+                if (str_starts_with((string) $block['orig'], '![')) {
+                    return '![' . $this->renderAbsy($this->parseInline(substr((string) $block['orig'], 2)));
                 }
                 return $block['orig'];
             }
@@ -554,7 +552,7 @@ REGEXP;
             $result[0]['origNums'] = [];
             $i = array_keys($result[0]['items'])[0];
             foreach ($lines as $line) {
-                if (preg_match('/^(\d+)\./', $line, $num)) {
+                if (preg_match('/^(\d+)\./', (string) $line, $num)) {
                     $result[0]['origNums'][$i++] = $num[1];
                 }
             }

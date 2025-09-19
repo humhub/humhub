@@ -15,11 +15,9 @@ return [
     'Cancel' => 'Poništi',
     'Don\'t lose track of things!<br /><br />This icon will keep you informed of activities and posts that concern you directly.' => 'Nemojte gubiti tragove!<br><br>Ova ikona će vas informirati o aktivnostima i objavama koje se na vas izravno odnose.',
     'Drag a photo here or click to browse your files' => 'Ovdje povucite fotografiju ili kliknite da biste pregledavali svoje datoteke',
-    'End guide' => 'Kraj vodiča',
     'Get to know your way around the site\'s most important features with the following guides:' => 'Upoznajte kretanje po najvažnijim značajkama web mjesta pomoću sljedećih vodiča:',
     'Hide my year of birth' => 'Sakrij godinu rođenja',
     'Howdy <strong>%firstname%</strong>, thank you for using %community%.' => 'Zdravo <strong>%firstname%</strong>, hvala vam što koristite %community%.',
-    'Next »' => 'Iduće',
     'Ok' => 'Ok',
     'Save and close' => 'Spremi i zatvori',
     'The account menu gives you access to your private settings and allows you to manage your public profile.' => 'Izbornik računa omogućuje vam pristup privatnim postavkama i omogućuje vam upravljanje vašim javnim profilom.',
@@ -31,6 +29,5 @@ return [
     'Your mobile phone number' => 'Vaš broj mobitela',
     'Your phone number at work' => 'Vaš broj telefona na poslu',
     'Your title or position' => 'Vaša titula ili pozicija',
-    '« Prev' => 'Prethodno',
     'Your skills, knowledge and experience' => '',
 ];

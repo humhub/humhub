@@ -12,7 +12,6 @@ return [
     'Register' => 'Registre',
     'Search' => 'Cerca',
     'Search...' => 'Cercar...',
-    'Settings' => 'Configuració',
     'Tags' => 'Etiquetes',
     'Try other keywords or remove filters.' => 'Prova altres paraules o elimina els filtres',
     '

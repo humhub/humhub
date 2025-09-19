@@ -65,6 +65,7 @@ return [
     'Your password has been successfully changed!' => 'A jelszavad sikeresen megváltoztatva!',
     'Your username has been changed' => 'A felhasználóneved megváltozott',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'A felhasználónevedet sikeresen megváltoztattad.<br>Küldtünk neked egy e-mailt az új információkkal.',
+    'Do you really want to delete your login background image?' => '',
     'Password recovery can only be initiated once every 10 minutes.' => '',
     'Password recovery disabled. Please contact your system administrator.' => '',
 ];

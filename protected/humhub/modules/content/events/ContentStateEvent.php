@@ -16,5 +16,5 @@ class ContentStateEvent extends ContentEvent
     public Content $content;
 
     public int $newState;
-    public ?int $previousState;
+    public ?int $previousState = null;
 }

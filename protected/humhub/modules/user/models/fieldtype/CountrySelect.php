@@ -9,9 +9,9 @@
 namespace humhub\modules\user\models\fieldtype;
 
 use Collator;
+use humhub\helpers\Html;
 use humhub\libs\Iso3166Codes;
 use humhub\modules\user\models\User;
-use humhub\libs\Html;
 use Yii;
 
 /**
@@ -40,7 +40,7 @@ class CountrySelect extends Select
     public function getFormDefinition($definition = [])
     {
         return parent::getFormDefinition([
-            get_class($this) => [
+            static::class => [
                 'type' => 'form',
                 'title' => Yii::t('UserModule.profile', 'Supported ISO3166 country codes'),
                 'elements' => [
@@ -74,7 +74,7 @@ class CountrySelect extends Select
                 $key = trim($code);
                 $value = Iso3166Codes::country($key, true);
                 if (!empty($key) && $key !== $value) {
-                    $items[$key] = trim($value);
+                    $items[$key] = trim((string) $value);
                 }
             }
         }
@@ -108,7 +108,7 @@ class CountrySelect extends Select
     /**
      * @inheritdoc
      */
-    public function getFieldFormDefinition(User $user = null, array $options = []): array
+    public function getFieldFormDefinition(?User $user = null, array $options = []): array
     {
         return parent::getFieldFormDefinition($user, array_merge([
             'htmlOptions' => ['data-ui-select2' => true, 'style' => 'width:100%'],

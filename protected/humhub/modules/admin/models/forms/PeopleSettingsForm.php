@@ -57,9 +57,7 @@ class PeopleSettingsForm extends Model
             ['detail2', 'in', 'range' => $this->getDetailKeys()],
             ['detail3', 'in', 'range' => $this->getDetailKeys()],
             ['defaultSorting', 'in', 'range' => array_keys(self::getSortingOptions())],
-            ['defaultSortingGroup', 'required', 'when' => function ($model) {
-                return $model->defaultSorting == '';
-            }],
+            ['defaultSortingGroup', 'required', 'when' => fn($model) => $model->defaultSorting == ''],
         ];
     }
 

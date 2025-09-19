@@ -11,9 +11,9 @@ humhub.module('content.container.Header', function (module, require, $) {
 
     Header.prototype.init = function () {
         this.$.find('.image-upload-container').on('mouseover', function () {
-            $(this).find('.image-upload-buttons').show();
+            $(this).find('.image-upload-buttons').removeClass('d-none');
         }).on('mouseout', function () {
-            $(this).find('.image-upload-buttons').hide();
+            $(this).find('.image-upload-buttons').addClass('d-none');
         });
 
         this.$.find('.fileinput-button').each(function () {
@@ -21,9 +21,9 @@ humhub.module('content.container.Header', function (module, require, $) {
             var upload = Widget.instance($this.find('input[type="file"]'));
             var profileImage = new ProfileImage($this.closest('.image-upload-container'));
             upload.on('uploadStart', function () {
-                profileImage.getLoader().show();
+                profileImage.getLoader().removeClass('d-none');
             }).on('uploadEnd', function (evt, response) {
-                profileImage.getLoader().hide();
+                profileImage.getLoader().addClass('d-none');
                 var file = response.result.files[0];
                 if (!file.error) {
                     profileImage.replaceImage(file);
@@ -50,7 +50,7 @@ humhub.module('content.container.Header', function (module, require, $) {
     };
 
     ProfileImage.prototype.replaceImage = function (file) {
-        this.getAcronym().addClass('hidden'); //only for spaces
+        this.getAcronym().addClass('d-none-space-image'); //only for spaces
 
         var $image = this.getImage();
 
@@ -60,14 +60,15 @@ humhub.module('content.container.Header', function (module, require, $) {
         var random = Math.random();
 
         $image.attr('src', file.url + '&c=' + random)
-            .addClass('animated bounceIn').removeClass('hidden');
+            .addClass('animated bounceIn')
+            .removeClass('d-none-space-image');
 
-        this.getEditButtons().show();
+        this.getEditButtons().removeClass('d-none');
 
         if (file.type === 'image') { // Only replace profile images
             var containerId = this.getContainerId();
-            $('div[data-contentcontainer-id="' + containerId + '"].space-acronym').addClass('hidden');
-            $('img[data-contentcontainer-id="' + containerId + '"]').attr('src', file.url + '&c=' + random).removeClass('hidden');
+            $('div[data-contentcontainer-id="' + containerId + '"].space-acronym').addClass('d-none-space-image');
+            $('img[data-contentcontainer-id="' + containerId + '"]').attr('src', file.url + '&c=' + random).removeClass('d-none-space-image');
         }
 
     };
@@ -77,21 +78,21 @@ humhub.module('content.container.Header', function (module, require, $) {
         var $acronym = this.getAcronym();
         var containerId = this.getContainerId();
 
-        $image.addClass('hidden').attr('src', defaultUrl);
+        $image.addClass('d-none-space-image').attr('src', defaultUrl);
 
 
         if ($acronym.length) { // Space only
             // required for retriggering the animation
             $acronym.removeClass('animated bounceIn')[0].offsetWidth;
-            $acronym.addClass('animated bounceIn').removeClass('hidden');
-            $('div[data-contentcontainer-id="' + containerId + '"].space-acronym').removeClass('hidden');
-            $('img[data-contentcontainer-id="' + containerId + '"]').attr('src', defaultUrl).addClass('hidden');
+            $acronym.addClass('animated bounceIn').removeClass('d-none-space-image');
+            $('div[data-contentcontainer-id="' + containerId + '"].space-acronym').removeClass('d-none-space-image');
+            $('img[data-contentcontainer-id="' + containerId + '"]').attr('src', defaultUrl).addClass('d-none-space-image');
         } else {
-            $image.removeClass('hidden');
-            $('img[data-contentcontainer-id="' + containerId + '"]').attr('src', defaultUrl).removeClass('hidden');
+            $image.removeClass('d-none-space-image');
+            $('img[data-contentcontainer-id="' + containerId + '"]').attr('src', defaultUrl).removeClass('d-none-space-image');
         }
 
-        this.getEditButtons().hide();
+        this.getEditButtons().addClass('d-none');
     };
 
     ProfileImage.prototype.getContainerId = function () {

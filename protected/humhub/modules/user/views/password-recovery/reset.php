@@ -1,14 +1,14 @@
 <?php
 
-use yii\helpers\Url;
-use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
+use humhub\helpers\Html;
+use humhub\widgets\form\ActiveForm;
 use humhub\widgets\SiteLogo;
+use yii\helpers\Url;
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Password reset');
 ?>
 <div class="container" style="text-align: center;">
-    <?= SiteLogo::widget(['place' => 'login']); ?>
+    <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br>
 
     <div class="row">
@@ -35,7 +35,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password reset');
     </div>
 </div>
 
-<script <?= \humhub\libs\Html::nonce() ?>>
+<script <?= \humhub\helpers\Html::nonce() ?>>
 
     $(function () {
         // set cursor to email field

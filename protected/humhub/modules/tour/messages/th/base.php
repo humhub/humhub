@@ -15,11 +15,9 @@ return [
     'Cancel' => 'ยกเลิก',
     'Don\'t lose track of things!<br /><br />This icon will keep you informed of activities and posts that concern you directly.' => 'อย่าพลาดการติดตาม!<br><br>ไอคอนนี้จะแจ้งให้คุณทราบถึงกิจกรรมและโพสต์ที่เกี่ยวข้องกับคุณโดยตรง',
     'Drag a photo here or click to browse your files' => 'ลากรูปภาพมาที่นี่หรือคลิกเพื่อเรียกดูไฟล์ของคุณ',
-    'End guide' => 'คู่มือสิ้นสุด',
     'Get to know your way around the site\'s most important features with the following guides:' => 'ทำความรู้จักกับคุณลักษณะที่สำคัญที่สุดของไซต์ด้วยคำแนะนำต่อไปนี้:',
     'Hide my year of birth' => 'ซ่อนปีเกิดของฉัน',
     'Howdy <strong>%firstname%</strong>, thank you for using %community%.' => 'สวัสดี <strong>%firstname%</strong> ขอบคุณที่ใช้ %community%',
-    'Next »' => 'ต่อไป "',
     'Ok' => 'ตกลง',
     'Save and close' => 'บันทึกและปิด',
     'The account menu gives you access to your private settings and allows you to manage your public profile.' => 'เมนูบัญชีช่วยให้คุณเข้าถึงการตั้งค่าส่วนตัวและช่วยให้คุณจัดการโปรไฟล์สาธารณะของคุณได้',
@@ -31,6 +29,5 @@ return [
     'Your mobile phone number' => 'หมายเลขโทรศัพท์มือถือของคุณ',
     'Your phone number at work' => 'เบอร์โทรที่ทำงานที่',
     'Your title or position' => 'ตำแหน่งหรือตำแหน่งของคุณ',
-    '« Prev' => '« ก่อนหน้า',
     'Your skills, knowledge and experience' => '',
 ];

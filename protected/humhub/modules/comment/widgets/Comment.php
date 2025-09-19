@@ -36,7 +36,7 @@ class Comment extends Widget
     /**
      * @var string Default style class of div wrapper around Comment block
      */
-    public $defaultClass = 'media';
+    public $defaultClass = 'single-comment d-flex p-2';
 
     /**
      * @var string Additional style class of div wrapper around Comment block

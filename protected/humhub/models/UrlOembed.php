@@ -8,18 +8,18 @@
 
 namespace humhub\models;
 
-use humhub\modules\admin\models\forms\OEmbedSettingsForm;
-use humhub\modules\ui\icon\widgets\Icon;
-use humhub\modules\user\models\User;
-use humhub\widgets\Button;
 use humhub\events\OembedFetchEvent;
+use humhub\helpers\Html;
 use humhub\libs\RestrictedCallException;
 use humhub\libs\UrlOembedClient;
 use humhub\libs\UrlOembedHttpClient;
-use yii\helpers\Html;
-use yii\helpers\Json;
-use yii\db\ActiveRecord;
+use humhub\modules\admin\models\forms\OEmbedSettingsForm;
+use humhub\modules\ui\icon\widgets\Icon;
+use humhub\modules\user\models\User;
+use humhub\widgets\bootstrap\Button;
 use Yii;
+use yii\db\ActiveRecord;
+use yii\helpers\Json;
 
 /**
  * UrlOembed records hold already loaded oembed previews.
@@ -167,7 +167,7 @@ class UrlOembed extends ActiveRecord
 
                 if (!empty($result)) {
 
-                    return trim(preg_replace('/\s+/', ' ', $result));
+                    return trim((string) preg_replace('/\s+/', ' ', $result));
                 }
             }
         } catch (RestrictedCallException $re) {
@@ -190,9 +190,9 @@ class UrlOembed extends ActiveRecord
      */
     public static function preload($text)
     {
-        preg_replace_callback('/http(.*?)(\s|$)/i', function ($match) {
+        preg_replace_callback('/http(.*?)(\s|$)/i', function ($match): void {
 
-            $url = trim($match[0]);
+            $url = trim((string) $match[0]);
 
             if (!static::hasOEmbedSupport($url)) {
                 return;
@@ -312,17 +312,17 @@ class UrlOembed extends ActiveRecord
         $urlData = parse_url($url);
         $urlPrefix = $urlData['host'] ?? $url;
 
-        $html = Html::tag('strong', Yii::t('base', 'Allow content from external source')) .
-            Html::tag('br') .
-            Yii::t('base', 'Do you want to enable content from \'{urlPrefix}\'?', ['urlPrefix' => Html::tag('strong', $urlPrefix)]) .
-            Html::tag('br') .
-            Html::tag('label', '<input type="checkbox"> ' . Yii::t('base', 'Always allow content from this provider!')) .
-            Html::tag('br') .
-            Button::info(Yii::t('base', 'Confirm'))->action('oembed.display')->sm();
+        $html = Html::tag('strong', Yii::t('base', 'Allow content from external source'))
+            . Html::tag('br')
+            . Yii::t('base', 'Do you want to enable content from \'{urlPrefix}\'?', ['urlPrefix' => Html::tag('strong', $urlPrefix)])
+            . Html::tag('br')
+            . Html::tag('label', '<input type="checkbox"> ' . Yii::t('base', 'Always allow content from this provider!'))
+            . Html::tag('br')
+            . Button::accent(Yii::t('base', 'Confirm'))->action('oembed.display')->sm();
 
-        $html = Icon::get('info-circle') .
-            Html::tag('div', $html) .
-            Html::tag('div', '', ['class' => 'clearfix']);
+        $html = Icon::get('info-circle')
+            . Html::tag('div', $html)
+            . Html::tag('div', '', ['class' => 'clearfix']);
 
         return Html::tag('div', $html, [
             'data-url' => $url,
@@ -338,8 +338,8 @@ class UrlOembed extends ActiveRecord
      */
     protected static function validateOembedResponse($data = null)
     {
-        return !empty($data) &&
-            isset($data['html'], $data['type'])
+        return !empty($data)
+            && isset($data['html'], $data['type'])
             && in_array($data['type'], static::$allowed_types, true);
     }
 
@@ -501,7 +501,7 @@ class UrlOembed extends ActiveRecord
 
         $allowedUrls = $user->settings->get('allowedOembedUrls');
 
-        return empty($allowedUrls) ? [] : explode(',', $allowedUrls);
+        return empty($allowedUrls) ? [] : explode(',', (string) $allowedUrls);
     }
 
     /**

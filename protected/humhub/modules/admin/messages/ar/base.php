@@ -13,6 +13,7 @@ return [
   'Administrators' => 'المسؤولون',
   'Advanced' => 'متقدم',
   'Advanced settings' => 'إعدادات متقدمة',
+  'All' => 'الكل',
   'Appearance' => 'مظهر',
   'Approval' => 'موافقة',
   'Authentication' => 'المصادقة',

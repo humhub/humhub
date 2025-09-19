@@ -1,9 +1,9 @@
 <?php
 
-use humhub\libs\Html;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\helpers\Html;
 use humhub\modules\user\models\forms\Registration;
 use humhub\modules\user\widgets\AuthChoice;
+use humhub\widgets\form\ActiveForm;
 use humhub\widgets\LanguageChooser;
 use humhub\widgets\SiteLogo;
 
@@ -17,7 +17,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
 ?>
 
 <div class="container" style="text-align: center;">
-    <?= SiteLogo::widget(['place' => 'login']) ?>
+    <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br/>
     <div class="row">
         <div id="create-account-form" class="panel panel-default animated bounceIn"

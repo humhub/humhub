@@ -75,7 +75,7 @@ abstract class StreamEntryWidget extends JsWidget
      * @return string
      * @throws Exception
      */
-    public static function renderStreamEntry(ContentActiveRecord $model, StreamEntryOptions $renderOptions = null, $widgetParams = [])
+    public static function renderStreamEntry(ContentActiveRecord $model, ?StreamEntryOptions $renderOptions = null, $widgetParams = [])
     {
         if (!is_a($model->wallEntryClass, static::class, true)) {
             return static::renderLegacyWallEntry($model, $widgetParams);
@@ -111,7 +111,7 @@ abstract class StreamEntryWidget extends JsWidget
         }
 
         if ($jsWidget === null) {
-            Yii::error('Model ' . get_class($record) . ' must define $wallEntryClass or set $streamChannel to null!', 'content');
+            Yii::error('Model ' . $record::class . ' must define $wallEntryClass or set $streamChannel to null!', 'content');
             return '';
         }
 

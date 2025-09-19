@@ -8,7 +8,7 @@ $testConfig = [
     'timeZone' => 'UTC',
     'components' => [
         'cache' => [
-            'class' => \yii\caching\DummyCache::class,
+            'class' => \yii\caching\FileCache::class,
         ],
         'session' => [
             'class' => \yii\web\CacheSession::class,
@@ -32,7 +32,7 @@ $testConfig = [
     ],
 ];
 
-defined('YII_APP_BASE_PATH') or define('YII_APP_BASE_PATH', dirname(dirname(dirname(dirname(__DIR__)))));
+defined('YII_APP_BASE_PATH') or define('YII_APP_BASE_PATH', dirname(__DIR__, 4));
 return yii\helpers\ArrayHelper::merge(
     // Common Config
     require(YII_APP_BASE_PATH . '/humhub/config/common.php'),

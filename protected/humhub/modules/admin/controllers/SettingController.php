@@ -9,12 +9,13 @@
 namespace humhub\modules\admin\controllers;
 
 use Exception;
+use humhub\helpers\ThemeHelper;
 use humhub\libs\LogoImage;
 use humhub\models\UrlOembed;
 use humhub\modules\admin\components\Controller;
+use humhub\modules\admin\libs\CacheHelper;
 use humhub\modules\admin\models\forms\AddTopicForm;
 use humhub\modules\admin\models\forms\BasicSettingsForm;
-use humhub\modules\admin\models\forms\CacheSettingsForm;
 use humhub\modules\admin\models\forms\DesignSettingsForm;
 use humhub\modules\admin\models\forms\FileSettingsForm;
 use humhub\modules\admin\models\forms\LogsSettingsForm;
@@ -29,9 +30,11 @@ use humhub\modules\admin\notifications\NewVersionAvailable;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\notification\models\forms\NotificationSettings;
 use humhub\modules\topic\models\Topic;
+use humhub\modules\user\helpers\LoginBackgroundImageHelper;
 use humhub\modules\user\models\User;
 use humhub\modules\web\pwa\widgets\SiteIcon;
-use humhub\widgets\ModalClose;
+use humhub\widgets\mails\MailHeaderImage;
+use humhub\widgets\modal\ModalClose;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\Expression;
@@ -117,6 +120,24 @@ class SettingController extends Controller
         return [];
     }
 
+    public function actionDeleteLoginBackgroundImage()
+    {
+        $this->forcePostRequest();
+        LoginBackgroundImageHelper::set(null);
+
+        Yii::$app->response->format = 'json';
+        return [];
+    }
+
+    public function actionDeleteMailHeaderImage()
+    {
+        $this->forcePostRequest();
+        MailHeaderImage::set(null);
+
+        Yii::$app->response->format = 'json';
+        return [];
+    }
+
     /**
      * Delete Icon Image
      */
@@ -130,18 +151,12 @@ class SettingController extends Controller
     /**
      * Caching Options
      */
-    public function actionCaching()
+    public function actionClearCache()
     {
-        $form = new CacheSettingsForm();
-        if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-            $this->view->success(Yii::t('AdminModule.settings', 'Saved and flushed cache'));
-            return $this->redirect(['/admin/setting/caching']);
-        }
+        CacheHelper::flushCache();
+        $this->view->success(Yii::t('AdminModule.settings', 'Caches flushed successfully'));
 
-        return $this->render('caching', [
-            'model' => $form,
-            'cacheTypes' => $form->getTypes(),
-        ]);
+        return $this->redirect(['basic']);
     }
 
     /**
@@ -258,11 +273,17 @@ class SettingController extends Controller
     public function actionDesign()
     {
         $form = new DesignSettingsForm();
-        if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-            $this->view->saved();
-            return $this->redirect([
-                '/admin/setting/design',
-            ]);
+        $post = Yii::$app->request->post();
+
+        if ($form->load($post) && $form->validate() && $form->save()) {
+            $newTheme = ThemeHelper::getThemeByName($form->theme);
+            $buildResult = ThemeHelper::buildCss($newTheme);
+            if ($buildResult === true) {
+                $this->view->saved();
+            } else {
+                $this->view->error($buildResult);
+            }
+            return $this->refresh(); // Reload the page without ajax to refresh the theme
         }
 
         return $this->render('design', [
@@ -323,7 +344,7 @@ class SettingController extends Controller
     {
         $logsCount = Log::find()->count();
         $dating = Log::find()
-            ->orderBy('log_time', 'asc')
+            ->orderBy('log_time')
             ->limit(1)
             ->one();
 
@@ -338,7 +359,7 @@ class SettingController extends Controller
         $limitAgeOptions = $form->options;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
 
-            $timeAgo = strtotime($form->logsDateLimit);
+            $timeAgo = strtotime((string) $form->logsDateLimit);
             Log::deleteAll(['<', 'log_time', $timeAgo]);
             $this->view->saved();
             return $this->redirect([
@@ -360,7 +381,7 @@ class SettingController extends Controller
         $suggestGlobalConversion = false;
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->on($model::EVENT_GLOBAL_CONVERSION_SUGGESTION, function () use (&$suggestGlobalConversion) {
+            $model->on($model::EVENT_GLOBAL_CONVERSION_SUGGESTION, function () use (&$suggestGlobalConversion): void {
                 $suggestGlobalConversion = true;
             });
 
@@ -490,10 +511,6 @@ class SettingController extends Controller
 
     public function actionAdvanced()
     {
-        return $this->redirect(
-            [
-                'caching',
-            ],
-        );
+        return $this->redirect(['file']);
     }
 }

@@ -131,7 +131,7 @@ class FileCompat extends ActiveRecord
     public function getMimeBaseType()
     {
         if ($this->mime_type != "") {
-            list($baseType, $subType) = explode('/', $this->mime_type);
+            [$baseType, $subType] = explode('/', $this->mime_type);
             return $baseType;
         }
 
@@ -145,7 +145,7 @@ class FileCompat extends ActiveRecord
     public function getMimeSubType()
     {
         if ($this->mime_type != "") {
-            list($baseType, $subType) = explode('/', $this->mime_type);
+            [$baseType, $subType] = explode('/', $this->mime_type);
             return $subType;
         }
 

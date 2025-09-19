@@ -127,8 +127,9 @@ humhub.module('client', function (module, require, $) {
         }
 
         cfg.type = $form.attr('method') || 'post';
-        cfg.data = $form.serialize();
-
+        cfg.data = new FormData($form[0]);
+        cfg.processData = false;
+        cfg.contentType = false;
 
         var url = cfg.url;
         if (!url && (originalEvent && originalEvent.url)) {
@@ -414,7 +415,16 @@ humhub.module('client', function (module, require, $) {
     };
 
     var serializeFormState = function ($form) {
-        return $form.find('input, select, textarea').not('[data-prevent-statechange]').serialize();
+        const allElements = $form.find('input, select, textarea').not('[data-prevent-statechange]');
+
+        // Enable all disabled elements only for serialization time
+        const disabledElements = allElements.filter(':disabled');
+        disabledElements.prop('disabled', false);
+
+        const serialized = allElements.serialize();
+        disabledElements.prop('disabled', true);
+
+        return serialized;
     };
 
     var unloadForm = function ($form, msg) {

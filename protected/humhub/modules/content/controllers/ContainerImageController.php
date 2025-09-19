@@ -74,7 +74,7 @@ abstract class ContainerImageController extends ContentContainerController
     {
         $files = UploadedFile::getInstancesByName($uploadName);
 
-        $model = new UploadProfileImage(['image' => isset($files[0]) ? $files[0] : null]);
+        $model = new UploadProfileImage(['image' => $files[0] ?? null]);
 
         if ($model->validate()) {
             try {

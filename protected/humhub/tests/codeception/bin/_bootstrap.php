@@ -7,9 +7,9 @@ defined('YII_ENV') or define('YII_ENV', 'test');
 defined('STDIN') or define('STDIN', fopen('php://stdin', 'r'));
 defined('STDOUT') or define('STDOUT', fopen('php://stdout', 'w'));
 
-defined('YII_APP_BASE_PATH') or define('YII_APP_BASE_PATH', dirname(dirname(dirname(dirname(__DIR__)))));
+defined('YII_APP_BASE_PATH') or define('YII_APP_BASE_PATH', dirname(__DIR__, 4));
 
 require(YII_APP_BASE_PATH . '/vendor/autoload.php');
 require(YII_APP_BASE_PATH . '/vendor/yiisoft/yii2/Yii.php');
 
-Yii::setAlias('@tests', dirname(dirname(__DIR__)));
+Yii::setAlias('@tests', dirname(__DIR__, 2));

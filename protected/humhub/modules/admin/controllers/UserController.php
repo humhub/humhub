@@ -9,6 +9,7 @@
 namespace humhub\modules\admin\controllers;
 
 use humhub\compat\HForm;
+use humhub\components\access\ControllerAccess;
 use humhub\components\export\ArrayColumn;
 use humhub\components\export\DateTimeColumn;
 use humhub\components\export\SpreadsheetExport;
@@ -62,20 +63,52 @@ class UserController extends Controller
     protected function getAccessRules()
     {
         return [
-            ['permissions' => [ManageUsers::class, ManageGroups::class]],
-            ['permissions' => [ManageSettings::class], 'actions' => ['index']],
+            [ControllerAccess::RULE_LOGGED_IN_ONLY],
+            ['checkCanManageUsers'],
         ];
+    }
+
+    public function checkCanManageUsers($rule, $access): bool
+    {
+        if ($this->getPermissionRedirectUrl($this->action->id) === null) {
+            $access->code = 403;
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Get a redirect URL depending on the requested action and current user permissions
+     *
+     * @return string|null
+     */
+    private function getPermissionRedirectUrl(string $actionId = 'index'): ?string
+    {
+        if (Yii::$app->user->can([ManageUsers::class, ManageGroups::class])) {
+            return 'list';
+        }
+
+        if ($actionId === 'index') {
+            if (Yii::$app->user->can(ManageSettings::class)) {
+                return '/admin/authentication';
+            }
+
+            if (Yii::$app->user->isGroupManager()) {
+                return '/admin/approval';
+            }
+        }
+
+        return null;
     }
 
     public function actionIndex()
     {
-        if (Yii::$app->user->can([new ManageUsers(), new ManageGroups()])) {
-            return $this->redirect(['list']);
-        } elseif (Yii::$app->user->can(ManageSettings::class)) {
-            return $this->redirect(['/admin/authentication']);
-        } else {
-            return $this->forbidden();
+        if ($redirectUrl = $this->getPermissionRedirectUrl()) {
+            return $this->redirect([$redirectUrl]);
         }
+
+        $this->forbidden();
     }
 
     /**
@@ -86,8 +119,8 @@ class UserController extends Controller
         $searchModel = Yii::createObject(UserSearch::class);
         $searchModel->status = User::STATUS_ENABLED;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $showPendingRegistrations = Invite::find()->where(Invite::filterSource())->exists() &&
-            Yii::$app->user->can([ManageUsers::class, ManageGroups::class]);
+        $showPendingRegistrations = Invite::find()->where(Invite::filterSource())->exists()
+            && Yii::$app->user->can([ManageUsers::class, ManageGroups::class]);
 
         return $this->render('list', [
             'dataProvider' => $dataProvider,
@@ -299,7 +332,7 @@ class UserController extends Controller
         return $this->render('delete', ['model' => $model]);
     }
 
-    public function checkUserAccess(User $user = null)
+    public function checkUserAccess(?User $user = null)
     {
         if (!$user) {
             throw new HttpException(404, Yii::t('AdminModule.user', 'User not found!'));

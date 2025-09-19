@@ -180,7 +180,7 @@ class RichTextToMarkdownConverter extends BaseRichTextConverter
             unset($line);
 
             $output .= $level !== 0 ? "\n" . str_repeat(' ', $level * 3) : '';
-            $output .= $block['list'] === 'ol' ? (isset($block['origNums'][$item]) ? $block['origNums'][$item] : ++$count) . '. ' : '- ';
+            $output .= $block['list'] === 'ol' ? ($block['origNums'][$item] ?? ++$count) . '. ' : '- ';
             $output .= $this->renderAbsy($itemLines) . ($level === 0 ? "\n" : '');
         }
 

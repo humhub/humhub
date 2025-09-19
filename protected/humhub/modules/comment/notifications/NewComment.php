@@ -8,6 +8,7 @@
 
 namespace humhub\modules\comment\notifications;
 
+use humhub\helpers\Html;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\notification\components\BaseNotification;
@@ -15,7 +16,6 @@ use humhub\modules\notification\models\Notification;
 use humhub\modules\user\models\User;
 use humhub\modules\user\notifications\Mentioned;
 use Yii;
-use yii\bootstrap\Html;
 
 /**
  * Notification for new comments
@@ -56,7 +56,7 @@ class NewComment extends BaseNotification
         if (Notification::find()->where([
             'class' => Mentioned::class,
             'user_id' => $user->id,
-            'source_class' => get_class($this->source),
+            'source_class' => $this->source::class,
             'source_pk' => $this->source->getPrimaryKey()])->count() > 0) {
             return;
         }
@@ -75,7 +75,7 @@ class NewComment extends BaseNotification
             return null;
         }
 
-        return get_class($model) . '-' . $model->getPrimaryKey();
+        return $model::class . '-' . $model->getPrimaryKey();
     }
 
     /**

@@ -7,7 +7,6 @@ return [
     'Ok' => 'Ok',
     'Register' => 'Rechistrar-se',
     'Search' => 'Buscar',
-    'Settings' => 'Achustes',
     'Tags' => 'Etiquetas',
     '
 Module successfully disabled!

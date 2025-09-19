@@ -4,9 +4,6 @@ namespace humhub\modules\user\models;
 
 use humhub\libs\BasePermission;
 use Throwable;
-use Yii;
-use yii\helpers\Html;
-use humhub\modules\user\models\UserFilter;
 
 /**
  * This class can be used to filter results for a user picker search query by calling the static
@@ -70,13 +67,13 @@ class UserPicker
         if (count($user) < $cfg['maxResult'] && (isset($cfg['fillQuery']) || $cfg['fillUser'])) {
 
             //Filter out users by means of the fillQuery or default the fillQuery
-            $fillQuery = (isset($cfg['fillQuery'])) ? $cfg['fillQuery'] : UserFilter::find()->active();
-            UserFilter::addKeywordFilter($fillQuery, $cfg['keyword'], ($cfg['maxResult'] - count($user)));
+            $fillQuery = $cfg['fillQuery'] ?? UserFilter::find()->active();
+            UserFilter::addKeywordFilter($fillQuery, $cfg['keyword']);
             $fillQuery->andFilterWhere(['not in', 'user.id', self::getUserIdArray($user)]);
             $fillUser = $fillQuery->all();
 
             //Either the additional users are disabled (by default) or we disable them by permission
-            $disableCondition = (isset($cfg['permission'])) ? $cfg['permission'] : $cfg['disableFillUser'];
+            $disableCondition = $cfg['permission'] ?? $cfg['disableFillUser'];
             $jsonResult = array_merge($jsonResult, self::asJSON($fillUser, $disableCondition, 1, $cfg['disabledText']));
         }
 

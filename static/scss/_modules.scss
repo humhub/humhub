@@ -1,0 +1,303 @@
+.container-modules {
+    .modules-type {
+        font-size: 16px;
+        font-weight: bold;
+        color: var(--hh-text-color-highlight);
+        margin: 70px 0 40px;
+    }
+
+    .row.cards {
+        margin-top: 40px;
+    }
+
+    .card-module {
+        .card-panel {
+            background: none;
+            overflow: hidden;
+
+            > div:not(.card-status) {
+                background-color: var(--hh-background-color-main);
+            }
+        }
+
+        .card-header {
+            position: relative;
+            border-bottom: none;
+        }
+
+        .card-body {
+            padding-top: 8px;
+            font-size: 13px;
+            color: var(--hh-text-color-secondary);
+
+            > div {
+                padding-bottom: 8px;
+
+                &:last-child {
+                    padding-bottom: 0;
+                }
+            }
+        }
+
+        .card-title {
+            color: var(--hh-text-color-highlight);
+        }
+
+        .card-footer {
+            padding-bottom: 14px;
+
+            a.btn {
+                float: none;
+            }
+
+            &.text-end {
+                a.btn {
+                    margin-left: 8px;
+                    margin-right: 0;
+
+                    &:first-child {
+                        margin-left: 0;
+                    }
+                }
+            }
+        }
+    }
+
+    @include media-breakpoint-down(sm) {
+        .card {
+            width: 100%;
+        }
+    }
+}
+
+.container-content-modules {
+    width: 100%;
+    padding: 0 18px 5px 5px;
+
+    @include media-breakpoint-up(md) {
+        padding: 0 12px 5px 0;
+    }
+
+    h4 {
+        font-size: 16px;
+        color: var(--hh-text-color-highlight);
+    }
+
+    .card {
+        width: 100%;
+        padding-right: 3px;
+
+        .card-panel {
+            margin-top: 3px;
+        }
+    }
+
+    @media (min-width: 460px) {
+        .card {
+            width: 50%;
+        }
+    }
+    @media (min-width: 656px) {
+        .card {
+            width: 33.33333333%;
+        }
+    }
+    @media (min-width: 1200px) {
+        .card {
+            width: 25%;
+        }
+    }
+
+    &.container-content-modules-col-3 {
+        @media (min-width: 460px) {
+            .card {
+                width: 50%;
+            }
+        }
+        @media (min-width: 656px) {
+            .card {
+                width: 33.33333333%;
+            }
+        }
+    }
+}
+
+.container-create-space-modules.container-cards {
+    width: 100%;
+    padding: 0;
+
+    .row.cards {
+        margin-top: 0;
+    }
+
+    .card {
+        .card-panel > div {
+            background: #F5F5F5;
+        }
+    }
+}
+
+// Available Updates container:
+.container-modules.container-fluid {
+    .container-module-updates {
+
+        @media (min-width: 500px) {
+            .card {
+                width: 33.33333333%;
+            }
+        }
+        @media (min-width: 1000px) {
+            .card {
+                width: 25%;
+            }
+        }
+        @media (min-width: 1300px) {
+            .card {
+                width: 20%;
+            }
+        }
+        @media (min-width: 1600px) {
+            .card {
+                width: 16.66666667%;
+            }
+        }
+        @media (min-width: 1900px) {
+            .card {
+                width: 12.5%;
+            }
+        }
+    }
+}
+
+$moduleUpdateLayoutBg: var(--bs-primary);
+$moduleUpdateCardBg: darken($primary, 10);
+.container-module-updates {
+    background: $moduleUpdateLayoutBg;
+    margin-top: 30px;
+    padding: 16px 10px 2px;
+    border-radius: 4px;
+
+    .row.cards {
+        margin-right: -1px;
+        margin-top: 0;
+    }
+
+    .modules-type {
+        color: var(--hh-text-color-contrast);
+        margin: 10px 0 30px;
+    }
+
+    .card {
+        padding-right: 1px;
+        background-color: transparent;
+
+        .card-panel {
+            color: var(--hh-text-color-contrast);
+            margin-top: 0;
+
+            > div:not(.card-status) {
+                background: $moduleUpdateCardBg;
+            }
+
+            .card-header {
+                padding: 12px;
+            }
+
+            .card-body {
+                padding: 4px 12px 20px;
+                color: var(--hh-text-color-contrast);
+
+                .card-title {
+                    color: var(--hh-text-color-contrast);
+                    font-size: 14px;
+                }
+            }
+
+            .card-footer {
+                padding: 0 12px 12px;
+
+                .btn-info {
+                    border-radius: 4px;
+                    color: $moduleUpdateLayoutBg !important;
+
+                    &.active {
+                        border-color: #FFF;
+                    }
+
+                    &:not(.active) {
+                        padding: 0 4px;
+                        border: 1px solid #FFF;
+                        background: $moduleUpdateCardBg;
+                        color: var(--hh-text-color-contrast) !important;
+
+                        &:hover, &:active {
+                            background: $moduleUpdateLayoutBg !important;
+                        }
+                    }
+
+                    &[data-update-status=failed] {
+                        border-color: #fc314f;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Module row style in Administration
+.modules-group {
+    margin-bottom: 25px;
+    padding: 6px;
+
+    > strong {
+        display: block;
+        margin-bottom: 13px;
+    }
+
+    .module-row {
+        border-top: 1px solid #ddd;
+        margin: 0 0 16px 0;
+
+        > div {
+            padding-top: 16px;
+
+            small {
+                color: var(--hh-text-color-soft2);
+            }
+        }
+
+        .module-icon {
+            text-align: center;
+            padding-left: 6px;
+        }
+
+        .module-actions {
+            white-space: nowrap;
+            text-align: right;
+            padding-right: 0;
+
+            .btn:not(:first-child) {
+                margin-left: 14px;
+            }
+        }
+    }
+}
+
+.modules-updates-info {
+    border-radius: 3px;
+    border: 1px solid var(--hh-border-color-warning);
+    background: var(--hh-background-color-warning);
+    color: var(--hh-text-color-warning);
+    padding: 14px 20px 14px 25px;
+    margin: 20px 10px 10px;
+    font-size: 11px;
+    line-height: 20px;
+
+    strong {
+        font-size: 13px;
+    }
+
+    .btn {
+        margin-top: 8px;
+    }
+}

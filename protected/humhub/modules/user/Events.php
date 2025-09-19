@@ -119,7 +119,7 @@ class Events extends BaseObject
                         $follow->delete();
                     }
                 }
-            } catch (Exception $e) {
+            } catch (Exception) {
                 if ($integrityController->showFix('Deleting follow ' . $follow->id . ' of non target ' . $follow->object_model . ' #' . $follow->object_id . '!')) {
                     $follow->delete();
                 }

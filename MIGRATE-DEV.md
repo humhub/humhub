@@ -1,15 +1,32 @@
 Module Migration Guide
 ======================
 
-Version 1.18
+Version 1.18 (Unreleased)
 ------------
+Updated minimum required PHP version to 8.2.
+
+### New
+- `\humhub\components\captcha\CaptchaInterface`
+- `\humhub\components\captcha\AltchaCaptcha`
+- `\humhub\components\captcha\AltchaCaptchaInput`
+- `\humhub\components\captcha\AltchaCaptchaValidator`
+- `\humhub\components\captcha\AltchaCaptchaAction`
+- `\humhub\components\captcha\AltchaCaptchaAsset`
+- `\humhub\components\captcha\YiiCaptcha`
+- `\humhub\components\captcha\YiiCaptchaInput`
+- `\humhub\components\captcha\YiiCaptchaValidator`
+- `Yii::$app->captcha` component
+- `\humhub\assets\DriverJsAsset` (driver.js)
+- `\humhub\modules\tour\Module::tourConfigFiles` (allows customizing the introduction tour)
+- `\humhub\modules\tour\Module::driverJsOptions`
+- `\humhub\widgets\mails\MailHeaderImage` widget for displaying a header image in emails
 
 ### Deprecated
 - `\humhub\components\Application::isInstalled()` use `\humhub\components\Application::hasState()` instead
 - `\humhub\components\Application::isDatabaseInstalled()` use `\humhub\components\Application::hasState()` instead
 - `\humhub\components\Application::setInstalled()` use `\humhub\components\Application::setState()` instead
 
-### Behaviour change
+### Changed
 
 - The following Mailer settings keys have been renamed to work with `.env`:
 
@@ -28,8 +45,23 @@ Version 1.18
 | `mailer.systemEmailName`         | `mailerSystemEmailName`        |
 | `mailer.systemEmailReplyTo`      | `mailerSystemEmailReplyTo`     |
 
+- `tour` module:
+  - Library [bootstrap-tour](https://github.com/sorich87/bootstrap-tour/) replaced Wwith [driver.js](https://driverjs.com/)
+  - Widget view files rewritten
+
 ### Removed deprecations
 - Widget class `\humhub\widgets\DataSaved`, the related code `Yii::$app->getSession()->setFlash('data-saved', Yii::t('base', 'Saved'));` must be replaced with `$this->view->saved();` on controllers
+
+### Module tests for Codeception v5
+- Update the file `tests/codeception.yml`: `log: codeception/_output` => `output: codeception/_output`
+- Update files `tests/codeception/*.suite.yml`: `class_name: *Tester` => `actor: *Tester`
+- `$I->waitFor*('Text', null)` => `$I->waitFor*('Text', 10)`, the second param can be only integer for the methods:
+  - `waitForText()`
+  - `waitForElement()`
+  - `waitForElementVisible()`
+  - `waitForElementNotVisible()`
+  - `waitForElementClickable()`
+- Functional tests: `$I->amOnPage(['/some/page/url', 'id' => 1])` => `$I->amOnRoute('/some/page/url', ['id' => 1])`
 
 Version 1.17.3
 ------------
@@ -47,7 +79,7 @@ Version 1.17.2
 - Constructor changed - `humhub\modules\user\models\forms\Registration` and properties (`$enablePasswordForm`, `$enableMustChangePassword`, `$enableEmailField`) are now private
 
 
-Version 1.17
+Version 1.17 (January 2024)
 -------------------------
 
 ### Behaviour change

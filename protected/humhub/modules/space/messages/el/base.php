@@ -9,7 +9,6 @@ return [
     'Administrators' => 'Διαχειριστές',
     'Archived' => 'Αρχειοθετημένα',
     'Cancel' => 'Ακύρωση',
-    'Close' => 'Κλείσιμο',
     'Color' => 'Χρώμα',
     'Decline' => 'Άρνηση',
     'Default' => 'Προκαθορισμένο',

@@ -32,7 +32,7 @@ class HumHubHelper extends Module
 {
     use HumHubHelperTrait;
 
-    protected $config = [];
+    protected array $config = [];
 
     /* @codingStandardsIgnoreLine PSR2.Methods.MethodDeclaration.Underscore */
     public function _before(\Codeception\TestInterface $test)
@@ -48,7 +48,7 @@ class HumHubHelper extends Module
         }
 
         $re = [];
-        preg_match('/token=([A-Za-z0-9_-]{12})\"/', $mail, $re);
+        preg_match('/token=([A-Za-z0-9_-]{12})\"/', (string) $mail, $re);
 
         if (!isset($re[1])) {
             $this->assertTrue(false, 'Invite token not found');
@@ -89,9 +89,7 @@ class HumHubHelper extends Module
 
     public function initModules()
     {
-        $modules = array_map(function (Module $module) {
-            return $module->id;
-        }, Yii::$app->moduleManager->getModules());
+        $modules = array_map(fn(Module $module) => $module->id, Yii::$app->moduleManager->getModules());
 
         Yii::$app->moduleManager->disableModules($modules);
 

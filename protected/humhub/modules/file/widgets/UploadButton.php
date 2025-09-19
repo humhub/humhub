@@ -32,15 +32,21 @@ class UploadButton extends UploadInput
     public $tooltipPosition = 'bottom';
 
     /**
-     * Defines the button color class like btn-default, btn-primary
-     * @var type
+     * Defines the button color class like btn-light, btn-primary
+     * @var string
      */
-    public $cssButtonClass = 'btn-default';
+    public $cssButtonClass = 'btn-light';
+
+    /**
+     * Render as link instead of a button
+     * @var bool
+     */
+    public $asLink = false;
 
     /**
      * Either defines a label string or true to use the default label.
      * If set to false, no button label is printed.
-     * @var type
+     * @var bool
      */
     public $label = false;
 
@@ -57,8 +63,16 @@ class UploadButton extends UploadInput
             $this->label = '&nbsp;' . $this->label;
         }
 
+        $classPrefix = 'btn';
+        if ($this->asLink) {
+            $classPrefix = '';
+            if ($this->cssButtonClass === 'btn-light') {
+                $this->cssButtonClass = '';
+            }
+        }
+
         $defaultButtonOptions = [
-            'class' => ($this->tooltip) ? 'btn ' . $this->cssButtonClass . ' fileinput-button tt' : 'btn ' . $this->cssButtonClass . '  fileinput-button',
+            'class' => trim($classPrefix . ' ' . $this->cssButtonClass . ' fileinput-button'),
             'title' => ($this->tooltip === true) ? Yii::t('FileModule.base', 'Upload files') : $this->tooltip,
             'data' => [
                 'placement' => $this->tooltipPosition,
@@ -66,6 +80,10 @@ class UploadButton extends UploadInput
                 'action-target' => '#' . $this->getId(true),
             ],
         ];
+
+        if ($this->tooltip) {
+            $defaultButtonOptions['data-bs-toggle'] = 'tooltip';
+        }
 
         $options = ArrayHelper::merge($defaultButtonOptions, $this->buttonOptions);
 

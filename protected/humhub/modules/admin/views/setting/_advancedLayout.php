@@ -3,7 +3,7 @@ humhub\modules\admin\widgets\SettingsMenu::markAsActive(['/admin/setting/advance
 ?>
 <div class="panel-body">
     <h4><?= Yii::t('AdminModule.settings', 'Advanced Settings'); ?></h4>
-    <div class="help-block">
+    <div class="text-body-secondary">
         <?= Yii::t('AdminModule.settings', 'These settings refer to advanced topics of your social network.'); ?>
     </div>
 </div>

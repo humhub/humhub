@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Confirm</strong> Action' => '<strong>Zeker</strong> weten?',
   '<strong>Latest</strong> updates' => '<strong>Laatste</strong> updates',
   '<strong>Mail</strong> summary' => '<strong>E-mail</strong> samenvatting',
@@ -22,7 +22,7 @@ return array (
   'Close' => 'Sluiten',
   'Collapse' => 'Inklappen',
   'Confirm' => 'Bevestig',
-  'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Content Addon bron moet een instantie van HActiveRecordContent of HActiveRecordContentAddon zijn!',
+  'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'Content Addon bron moet een instantie van ContentActiveRecord of ContentAddonActiveRecord zijn!',
   'Copy to clipboard' => 'Kopieer naar klembord',
   'Could not find content of addon!' => 'Kan de inhoud van deze addon niet vinden!',
   'Could not find requested page.' => 'Kan de opgevraagde pagina niet vinden.',
@@ -32,11 +32,13 @@ return array (
   'Do you really want to perform this action?' => 'Weet u dit zeker?',
   'Do you want to enable content from \'{urlPrefix}\'?' => 'Wilt u inhoud van \'{urlPrefix}\' inschakelen?',
   'Edit' => 'Bewerk',
+  'Enter security code above' => 'Voer beveiligingscode in',
   'Error' => 'Fout',
   'Error while running your last action (Invalid request method).' => 'Fout bij het uitvoeren van uw laatste actie (Ongeldige request method).',
   'Error:' => 'Fout:',
   'Expand' => 'Uitklappen',
   'Export' => 'Exporteer',
+  'I\'m not a robot' => 'Ik ben geen robot',
   'Info:' => 'Informatie:',
   'Invalid request method!' => 'Ongeldige aanvraagmethode!',
   'It looks like you may have taken the wrong turn.' => 'U hebt misschien de verkeerde keuze gemaakt.',
@@ -70,6 +72,7 @@ return array (
   'Show more' => 'Toon meer',
   'Some files could not be uploaded:' => 'Enkele bestanden zijn niet geüpload.',
   'Stop impersonation' => 'Nabootsing van identiteit stoppen',
+  'Switch network' => 'Kies een ander netwerk',
   'Text could not be copied to clipboard' => 'De tekst kon niet worden gekopieerd naar het klembord.',
   'Text has been copied to clipboard' => 'De tekst is naar het klembord gekopieerd.',
   'The date has to be in the past.' => 'De datum moet in het verleden liggen.',
@@ -86,6 +89,8 @@ return array (
   'Unsubscribe' => 'Afmelden',
   'Upload' => 'Upload',
   'Upload file' => 'Upload bestand',
+  'Verified' => 'Geverifieerd',
+  'We couldn\'t verify that you\'re human. Please check the box again.' => 'We konden niet verifiëren dat u een mens bent. Vink het vakje opnieuw aan.',
   'You are not allowed to run this action.' => 'U mag deze actie niet uitvoeren.',
   'verify your upload_max_filesize and post_max_size php settings.' => 'Verifieer je upload_max_filesize en post_max_size php instellingen.',
   '{attribute} has been empty. The system-configured function to fill empty values has returned an invalid value. Please try again or contact your administrator.' => '{attribute} is leeg. De softwarecode om lege waarden te vullen geeft een ongeldige waarde terug. Probeer het opnieuw of neem contact op met uw beheerder.',
@@ -94,5 +99,4 @@ return array (
   '{nFormatted}B' => '{nFormatted}B',
   '{nFormatted}K' => '{nFormatted}K',
   '{nFormatted}M' => '{nFormatted}M',
-  'Switch network' => 'Kies een ander netwerk',
-);
+];

@@ -32,6 +32,11 @@ class Events extends BaseObject
      */
     public static function onUserSoftDelete(UserEvent $event)
     {
+        // Prevent accidental removal of unrelated or global content
+        if (!$event->user->contentcontainer_id) {
+            return;
+        }
+
         // Delete user profile content on soft delete
         foreach (Content::findAll(['contentcontainer_id' => $event->user->contentcontainer_id]) as $content) {
             $content->hardDelete();
@@ -52,14 +57,18 @@ class Events extends BaseObject
     }
 
     /**
-     * Callback when a user is completely deleted.
+     * Callback when a space is completely deleted.
      *
      * @param \yii\base\Event $event
      */
     public static function onSpaceDelete($event)
     {
-        $space = $event->sender;
-        foreach (Content::findAll(['contentcontainer_id' => $space->contentContainerRecord->id]) as $content) {
+        // Prevent accidental removal of unrelated or global content
+        if (!$event->sender->contentContainerRecord->id) {
+            return;
+        }
+
+        foreach (Content::findAll(['contentcontainer_id' => $event->sender->contentContainerRecord->id]) as $content) {
             $content->delete();
         }
     }
@@ -144,8 +153,8 @@ class Events extends BaseObject
     private static function canPublishScheduledContent(): bool
     {
         $lastPublishTime = self::getModule()->settings->get('lastPublishScheduledTS');
-        return $lastPublishTime === null ||
-            time() >= $lastPublishTime + self::getModule()->publishScheduledInterval * 60;
+        return $lastPublishTime === null
+            || time() >= $lastPublishTime + self::getModule()->publishScheduledInterval * 60;
     }
 
     private static function publishScheduledContent()

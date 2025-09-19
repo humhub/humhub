@@ -3,9 +3,6 @@
 return [
     '%moduleName% - Set as default module' => '%moduleName% – Nastavit jako výchozí modul',
     'Always activated' => 'Vždy aktivováno',
-    'Are you sure? *ALL* module data will be lost!' => 'Opravdu chcete smazat tento modul? Veškerá data modulu budou smazána!',
-    'Are you sure? *ALL* module related data and files will be lost!' => 'Opravdu chcete smazat tento modul? Veškerá data a soubory modulu budou smazány.',
-    'Close' => 'Zavřít',
     'Could not find requested module!' => 'Požadovaný modul nebyl nalezen!',
     'Deactivated' => 'Deaktivováno',
     'Deactivation of this module has not been completed yet. Please retry in a few minutes.' => 'Deaktivace tohoto modulu ještě nebyla dokončena. Zkuste to prosím znovu za několik minut.',
@@ -19,8 +16,12 @@ return [
     'Spaces' => 'Prostory',
     'User default state' => 'Výchozí stav uživatele',
     'Users' => 'Uživatelé',
+    'Disable Module' => '',
+    'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content.' => '',
     'Module uninstall in progress. This process may take a moment.' => '',
     'Not available' => '',
     'The module is currently being used by {nbContainers} users or spaces. If you change its availability, all content created with the module will be lost. Proceed?' => '',
+    'Uninstall Module' => '',
     'Uninstallation of this module has not been completed yet. It will be removed in a few minutes.' => '',
+    'Uninstalling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content.' => '',
 ];

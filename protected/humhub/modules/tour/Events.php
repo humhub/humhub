@@ -36,15 +36,18 @@ class Events
 
     public static function onUserBeforeLogin($event)
     {
-        if ($event->identity instanceof User && self::shouldStartWelcomeTour($event->identity)) {
-            Tour::enableAutoStart('dashboard', $event->identity);
+        $user = $event->identity;
+
+        if ($user instanceof User && self::shouldStartWelcomeTour($user)) {
+            Tour::enableAutoStart(TourConfig::TOUR_ID_DASHBOARD, $user);
         }
     }
 
-    private static function shouldStartWelcomeTour(?User $user = null): bool
+    private static function shouldStartWelcomeTour(User $user): bool
     {
-        return $user->last_login === null && // Force auto start only for new created user who is logged in first time after registration
-            DashboardWidget::isVisible($user) && // Start it only when the dashboard sidebar widget is visible for the user
-            !Yii::$app->getModule('tour')->showWelcomeWindow($user); // No need auto start because it will be done by dashboard widget
+        return
+            $user->last_login === null // Force auto start only for new created user who is logged in first time after registration
+            && DashboardWidget::isVisible($user) // Start it only when the dashboard sidebar widget is visible for the user
+            && !Yii::$app->getModule('tour')->showWelcomeWindow($user); // No need auto start because it will be done by dashboard widget
     }
 }

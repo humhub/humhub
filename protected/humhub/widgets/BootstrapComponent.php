@@ -10,7 +10,7 @@
 namespace humhub\widgets;
 
 use humhub\components\Widget;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\ui\icon\widgets\Icon;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -24,7 +24,7 @@ use yii\helpers\ArrayHelper;
  *
  *  - none
  *  - primary
- *  - defaultType
+ *  - secondary
  *  - info
  *  - warn
  *  - danger
@@ -39,18 +39,24 @@ use yii\helpers\ArrayHelper;
  * BootstrapComponent::primary('My Label');
  * ```
  *
- *
+ * @deprecated since 1.18
  *
  * @package humhub\widgets
  */
-abstract class BootstrapComponent extends Widget
+abstract class BootstrapComponent extends Widget implements \Stringable
 {
     public const TYPE_PRIMARY = 'primary';
-    public const TYPE_DEFAULT = 'default';
+    /**
+     * @deprecated since 1.18
+     */
+    public const TYPE_DEFAULT = self::TYPE_SECONDARY;
+    public const TYPE_SECONDARY = 'secondary';
     public const TYPE_INFO = 'info';
     public const TYPE_WARNING = 'warning';
     public const TYPE_DANGER = 'danger';
     public const TYPE_SUCCESS = 'success';
+    public const TYPE_LIGHT = 'light';
+    public const TYPE_DARK = 'dark';
     public const TYPE_NONE = 'none';
 
     public $type;
@@ -90,12 +96,22 @@ abstract class BootstrapComponent extends Widget
     }
 
     /**
+     * @deprecated since 1.18
      * @param string $text Button text
      * @return static
      */
     public static function defaultType($text = null)
     {
-        return new static(['type' => self::TYPE_DEFAULT, 'text' => $text]);
+        return self::light($text);
+    }
+
+    /**
+     * @param string $text Button text
+     * @return static
+     */
+    public static function secondary($text = null)
+    {
+        return new static(['type' => self::TYPE_SECONDARY, 'text' => $text]);
     }
 
     /**
@@ -135,6 +151,24 @@ abstract class BootstrapComponent extends Widget
     }
 
     /**
+     * @param string $text Button text
+     * @return static
+     */
+    public static function light($text = null)
+    {
+        return new static(['type' => self::TYPE_LIGHT, 'text' => $text]);
+    }
+
+    /**
+     * @param string $text Button text
+     * @return static
+     */
+    public static function dark($text = null)
+    {
+        return new static(['type' => self::TYPE_DARK, 'text' => $text]);
+    }
+
+    /**
      * @param $color
      * @param null $text
      * @return $this
@@ -169,10 +203,10 @@ abstract class BootstrapComponent extends Widget
     public function right($right = true)
     {
         if ($right) {
-            Html::removeCssClass($this->htmlOptions, 'pull-left');
-            Html::addCssClass($this->htmlOptions, 'pull-right');
+            Html::removeCssClass($this->htmlOptions, 'float-start');
+            Html::addCssClass($this->htmlOptions, 'float-end');
         } else {
-            Html::removeCssClass($this->htmlOptions, 'pull-right');
+            Html::removeCssClass($this->htmlOptions, 'float-end');
         }
 
         return $this;
@@ -185,10 +219,10 @@ abstract class BootstrapComponent extends Widget
     public function left($left = true)
     {
         if ($left) {
-            Html::removeCssClass($this->htmlOptions, 'pull-right');
-            Html::addCssClass($this->htmlOptions, 'pull-left');
+            Html::removeCssClass($this->htmlOptions, 'float-end');
+            Html::addCssClass($this->htmlOptions, 'float-start');
         } else {
-            Html::removeCssClass($this->htmlOptions, 'pull-left');
+            Html::removeCssClass($this->htmlOptions, 'float-start');
         }
 
         return $this;
@@ -215,13 +249,12 @@ abstract class BootstrapComponent extends Widget
     }
 
     /**
+     * @deprecated since 1.18
      * @return $this
      */
     public function xs()
     {
-        Html::addCssClass($this->htmlOptions, 'btn-xs');
-
-        return $this;
+        return $this->sm();
     }
 
     /**
@@ -402,7 +435,7 @@ abstract class BootstrapComponent extends Widget
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         try {
             $result = $this::widget($this->getWidgetOptions());

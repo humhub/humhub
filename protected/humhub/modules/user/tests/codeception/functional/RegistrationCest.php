@@ -53,7 +53,7 @@ class RegistrationCest
         $I->assertEqualsLastEmailSubject('Welcome to HumHub Test');
 
         $matches = [];
-        preg_match('/(index-test.php.*)/', $I->grapLastEmailText(), $matches);
+        preg_match('/(index-test.php.*)/', (string) $I->grapLastEmailText(), $matches);
 
         $I->amOnPage(trim($matches[0]));
         $I->see('Account registration');

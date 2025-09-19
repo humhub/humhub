@@ -1,5 +1,6 @@
 <?php
-return array (
-  'Are you really sure? *ALL* module data for your profile will be deleted!' => 'Profilindeki *TÜM* modül verileri silinmiş olacak! Emin misin?',
-  'Are you sure? *ALL* module data for this space will be deleted!' => 'Emin misiniz? Bu alan için *TÜM * modül verileri silinecek!',
-);
+
+return [
+    'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content from the Space.' => '',
+    'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content from your Profile.' => '',
+];

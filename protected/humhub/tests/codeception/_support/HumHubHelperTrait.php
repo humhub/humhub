@@ -62,6 +62,7 @@ trait HumHubHelperTrait
         $cachePath = Yii::getAlias('@runtime/cache');
         if ($cachePath && is_dir($cachePath)) {
             FileHelper::removeDirectory($cachePath);
+            FileHelper::createDirectory($cachePath);
         }
         Yii::$app->cache->flush();
         Yii::$app->runtimeCache->flush();
@@ -310,11 +311,11 @@ trait HumHubHelperTrait
         if (count($messages)) {
             try {
                 preg_match($regex, '');
-            } catch (ErrorException $e) {
+            } catch (ErrorException) {
                 throw new Exception("Invalid regex given: '{$regex}'");
             }
 
-            $messages = array_filter($messages, static fn($text) => preg_match($regex, $text));
+            $messages = array_filter($messages, static fn($text) => preg_match($regex, (string) $text));
         }
 
         static::assertCount($expectedCount, $messages, $errorMessage ?? print_r(static::logFilterMessageTexts(), true));
@@ -623,7 +624,7 @@ trait HumHubHelperTrait
     public function handleEvent(Event $event, array $eventData = [])
     {
         $eventData = ArrayHelper::merge([
-            'class' => get_class($event),
+            'class' => $event::class,
             'event' => $event->name,
             'sender' => $event->sender,
             'data' => $event->data,
@@ -689,7 +690,7 @@ trait HumHubHelperTrait
         ]);
 
         // create a new proxy logger that forwards log entries both to the current logger as well as to the above target
-        Yii::setLogger(new Logger(['proxy' => Yii::getLogger()]));
+        Yii::setLogger(new Logger(5, ['proxy' => Yii::getLogger()]));
 
         /**
          * will automagically connect to the logger set above

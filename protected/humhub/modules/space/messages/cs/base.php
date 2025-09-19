@@ -31,7 +31,6 @@ return [
     'By Name' => 'Podle jména',
     'Cancel' => 'Zrušit',
     'Change visibility' => 'Změnit viditelnost',
-    'Close' => 'Zavřít',
     'Color' => 'Barva',
     'Could not request membership!' => 'Není možné požádat o členství!',
     'Create new link' => 'Vytvořit nový odkaz',

@@ -50,7 +50,7 @@ class UserFilter extends User
         if (!Yii::$app->getModule('friendship')->isFriendshipEnabled()) {
             //We don't use the permission here for filtering since we include user with no permission as disabled in the result.
             //The problem here is we do not prefer users with permission in the query.
-            $users = $this->getUserByFilter($keywords, $maxResults);
+            $users = static::getUserByFilter($keywords, $maxResults);
             return UserPicker::asJSON($users, $permission);
         }
 
@@ -63,7 +63,7 @@ class UserFilter extends User
         if (!$friendsOnly && count($friends) < $maxResults) {
             $additionalUser = [];
             //Here we filter with permission since we don't want to have non friend user without the permission in the result
-            foreach ($this->getUserByFilter($keywords, ($maxResults - count($friends)), $permission) as $user) {
+            foreach (static::getUserByFilter($keywords, ($maxResults - count($friends)), $permission) as $user) {
                 if (!$this->containsUser($friends, $user)) {
                     $additionalUser[] = $user;
                 }

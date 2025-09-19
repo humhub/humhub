@@ -1,3 +1,3 @@
-<script <?= \humhub\libs\Html::nonce() ?>>
+<script <?= \humhub\helpers\Html::nonce() ?>>
     $('#globalModal').modal('hide');
 </script>

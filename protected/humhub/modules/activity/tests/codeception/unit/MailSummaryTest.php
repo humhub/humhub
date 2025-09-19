@@ -458,7 +458,7 @@ class MailSummaryTest extends HumHubDbTestCase
     public function assertContainsActivity($activityClass, $activities, $message = null)
     {
         foreach ($activities as $activity) {
-            if (get_class($activity) == $activityClass) {
+            if ($activity::class == $activityClass) {
                 $this->assertTrue(true, $message);
                 return;
             }

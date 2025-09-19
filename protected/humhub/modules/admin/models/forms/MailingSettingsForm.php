@@ -30,6 +30,7 @@ class MailingSettingsForm extends Model
     public $port;
     public $useSmtps;
     public $allowSelfSignedCerts;
+    public $showNameInsteadOfLogo;
 
     /**
      * @inheritdoc
@@ -47,12 +48,13 @@ class MailingSettingsForm extends Model
             $this->password = '---invisible---';
         }
 
-        $this->useSmtps = $settingsManager->get('mailerUseSmtps');
+        $this->useSmtps = (bool)$settingsManager->get('mailerUseSmtps');
         $this->port = $settingsManager->get('mailerPort');
-        $this->allowSelfSignedCerts = $settingsManager->get('mailerAllowSelfSignedCerts');
+        $this->allowSelfSignedCerts = (bool)$settingsManager->get('mailerAllowSelfSignedCerts');
         $this->systemEmailAddress = $settingsManager->get('mailerSystemEmailAddress');
         $this->systemEmailName = $settingsManager->get('mailerSystemEmailName');
         $this->systemEmailReplyTo = $settingsManager->get('mailerSystemEmailReplyTo');
+        $this->showNameInsteadOfLogo = (bool)$settingsManager->get('showNameInsteadOfLogo');
     }
 
     /**
@@ -63,16 +65,12 @@ class MailingSettingsForm extends Model
         return [
             [['transportType', 'systemEmailAddress', 'systemEmailName'], 'required'],
             ['transportType', 'in', 'range' => (array_keys($this->getTransportTypes()))],
-            [['allowSelfSignedCerts', 'useSmtps'], 'boolean'],
+            [['allowSelfSignedCerts', 'useSmtps', 'showNameInsteadOfLogo'], 'boolean'],
             ['systemEmailAddress', 'email'],
             ['port', 'integer', 'min' => 1, 'max' => 65535],
-            [['hostname', 'port'], 'required', 'when' => function ($model) {
-                return $model->transportType === self::TRANSPORT_SMTP;
-            }],
-            ['dsn', 'required', 'when' => function ($model) {
-                return $model->transportType === self::TRANSPORT_DSN;
-            }],
-            [['transportType', 'hostname', 'username', 'password', 'useSmtps', 'allowSelfSignedCerts', 'systemEmailAddress', 'systemEmailName', 'systemEmailReplyTo'], 'string', 'max' => 255],
+            [['hostname', 'port'], 'required', 'when' => fn($model) => $model->transportType === self::TRANSPORT_SMTP],
+            ['dsn', 'required', 'when' => fn($model) => $model->transportType === self::TRANSPORT_DSN],
+            [['transportType', 'hostname', 'username', 'password', 'systemEmailAddress', 'systemEmailName', 'systemEmailReplyTo'], 'string', 'max' => 255],
         ];
     }
 
@@ -92,6 +90,7 @@ class MailingSettingsForm extends Model
             'port' => Yii::t('AdminModule.settings', 'Port number'),
             'useSmtps' => Yii::t('AdminModule.settings', 'Use SMTPS'),
             'allowSelfSignedCerts' => Yii::t('AdminModule.settings', 'Allow Self-Signed Certificates?'),
+            'showNameInsteadOfLogo' => Yii::t('AdminModule.settings', 'Show network name instead of logo in email header'),
         ];
     }
 
@@ -105,6 +104,7 @@ class MailingSettingsForm extends Model
             'dsn' => Yii::t('AdminModule.settings', 'e.g. smtps://user:pass@smtp.example.com:port'),
             'port' => Yii::t('AdminModule.settings', 'e.g. 25 (for SMTP) or 465 (for SMTPS)'),
             'hostname' => Yii::t('AdminModule.settings', 'e.g. localhost'),
+            'showNameInsteadOfLogo' => Yii::t('AdminModule.settings', 'A dedicated image can be uploaded in the Appearance admin page.'),
         ];
     }
 
@@ -139,6 +139,7 @@ class MailingSettingsForm extends Model
         }
         $settingsManager->set('mailerSystemEmailName', $this->systemEmailName);
         $settingsManager->set('mailerSystemEmailReplyTo', $this->systemEmailReplyTo);
+        $settingsManager->set('showNameInsteadOfLogo', $this->showNameInsteadOfLogo);
 
         return true;
     }

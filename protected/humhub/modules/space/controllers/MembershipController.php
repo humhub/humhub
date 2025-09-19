@@ -20,7 +20,7 @@ use humhub\modules\space\permissions\InviteUsers;
 use humhub\modules\space\widgets\MembershipButton;
 use humhub\modules\user\models\UserPicker;
 use humhub\modules\user\widgets\UserListBox;
-use humhub\widgets\ModalClose;
+use humhub\widgets\modal\ModalClose;
 use Throwable;
 use Yii;
 use yii\base\InvalidConfigException;
@@ -71,8 +71,8 @@ class MembershipController extends ContentContainerController
 
         $space = $this->getSpace();
         $visibility = (int)$space->visibility;
-        if ($visibility === Space::VISIBILITY_NONE && !$space->isMember() ||
-            ($visibility === Space::VISIBILITY_REGISTERED_ONLY && Yii::$app->user->isGuest)
+        if ($visibility === Space::VISIBILITY_NONE && !$space->isMember()
+            || ($visibility === Space::VISIBILITY_REGISTERED_ONLY && Yii::$app->user->isGuest)
         ) {
             throw new HttpException(404, Yii::t(
                 'SpaceModule.base',

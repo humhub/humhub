@@ -36,11 +36,6 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Countable
     public const ARRAY_AS_PROPS = 2;
 
     /**
-     * @var array
-     */
-    protected $storage;
-
-    /**
      * @var int
      */
     protected $flag;
@@ -58,14 +53,13 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Countable
     /**
      * Constructor
      *
-     * @param array $input
+     * @param array $storage
      * @param int $flags
      * @param string $iteratorClass
      */
-    public function __construct($input = [], $flags = self::STD_PROP_LIST, $iteratorClass = 'ArrayIterator')
+    public function __construct(protected $storage = [], $flags = self::STD_PROP_LIST, $iteratorClass = 'ArrayIterator')
     {
         $this->setFlags($flags);
-        $this->storage = $input;
         $this->setIteratorClass($iteratorClass);
         $this->protectedProperties = array_keys(get_object_vars($this));
     }
@@ -361,7 +355,7 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Countable
             return;
         }
 
-        if (strpos($class, '\\') === 0) {
+        if (str_starts_with($class, '\\')) {
             $class = '\\' . $class;
             if (class_exists($class)) {
                 $this->iteratorClass = $class;

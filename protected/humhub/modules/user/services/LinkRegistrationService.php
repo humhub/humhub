@@ -32,9 +32,6 @@ final class LinkRegistrationService
 
     public const TARGET_ADMIN = 'admin';
     public const TARGET_PEOPLE = 'people';
-
-    private ?Space $space;
-    private ?string $token;
     public ?string $target = null;
 
     public static function createFromRequest(): LinkRegistrationService
@@ -50,10 +47,8 @@ final class LinkRegistrationService
         return new LinkRegistrationService($token, Space::findOne(['id' => $spaceId]));
     }
 
-    public function __construct(?string $token = null, ?Space $space = null)
+    public function __construct(private readonly ?string $token = null, private readonly ?Space $space = null)
     {
-        $this->token = $token;
-        $this->space = $space;
         $this->initTarget();
     }
 
@@ -152,8 +147,8 @@ final class LinkRegistrationService
 
     public function storeInSession()
     {
-        Yii::$app->session->set(get_class($this) . '::token', $this->token);
-        Yii::$app->session->set(get_class($this) . '::spaceId', $this->space->id ?? null);
+        Yii::$app->session->set(self::class . '::token', $this->token);
+        Yii::$app->session->set(self::class . '::spaceId', $this->space->id ?? null);
     }
 
     /**

@@ -94,7 +94,6 @@ The license was successfully removed!
     'Register' => 'Kayıt Ol',
     'Search' => 'Arama',
     'Search...' => 'Arama...',
-    'Settings' => 'Ayarlar',
     'Tags' => 'Etiketler',
     'Third-party' => 'Üçüncü taraf',
     'Third-party disclaimer' => 'Üçüncü taraf reddi',

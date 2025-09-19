@@ -8,16 +8,16 @@
 
 namespace humhub\compat;
 
+use humhub\helpers\Html;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\file\components\FileManager;
-use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\form\widgets\DatePicker;
 use humhub\modules\ui\form\widgets\MultiSelect;
-use humhub\modules\ui\form\widgets\SortOrderField;
+use humhub\widgets\form\ActiveField;
+use humhub\widgets\form\ActiveForm;
+use humhub\widgets\form\SortOrderField;
 use Yii;
-use yii\helpers\Html;
-use yii\widgets\ActiveField;
 
 /**
  * HForm - Yii1 compatible form generator
@@ -46,21 +46,15 @@ class HForm extends \yii\base\Component
      * @var ActiveForm
      */
     protected $form;
-
-    public $primaryModel = null;
     public $models = [];
-    public $definition = [];
 
     /**
      * @var bool manually mark form as submitted
      */
     public $markedAsSubmitted = false;
 
-    public function __construct($definition = [], $primaryModel = null, array $config = [])
+    public function __construct(public $definition = [], public $primaryModel = null, array $config = [])
     {
-        $this->definition = $definition;
-        $this->primaryModel = $primaryModel;
-
         if (!empty($config)) {
             Yii::configure($this, $config);
         }
@@ -94,7 +88,7 @@ class HForm extends \yii\base\Component
         $post = Yii::$app->request->post();
 
         foreach ($this->models as $modelName => $model) {
-            $className = substr(strrchr(get_class($model), '\\'), 1);
+            $className = substr(strrchr($model::class, '\\'), 1);
             if (!isset($post[$className])) {
                 continue;
             }
@@ -228,7 +222,7 @@ class HForm extends \yii\base\Component
         foreach ($buttons as $buttonName => $definition) {
             $isVisible = $definition['isVisible'] ?? true;
             if ($definition['type'] == 'submit' && $isVisible) {
-                $output .= \yii\helpers\Html::submitButton($definition['label'], array_merge(['name' => $buttonName, 'class' => $definition['class'], 'data-ui-loader' => ''], $definition['options'] ?? []));
+                $output .= Html::submitButton($definition['label'], array_merge(['name' => $buttonName, 'class' => $definition['class'], 'data-ui-loader' => ''], $definition['options'] ?? []));
                 $output .= "&nbsp;";
             }
         }
@@ -291,8 +285,8 @@ class HForm extends \yii\base\Component
                         $value = $model->$name;
 
                         if (is_string($value)) {
-                            $delimiter = isset($definition['delimiter']) ? $definition['delimiter'] : ',';
-                            $model->$name = explode($delimiter, $model->$name);
+                            $delimiter = $definition['delimiter'] ?? ',';
+                            $model->$name = explode($delimiter, (string) $model->$name);
                         }
 
                         $field = $this->form->field($model, $name)->checkboxList($definition['items'], $options);
@@ -317,7 +311,7 @@ class HForm extends \yii\base\Component
                             $format = $definition['format'];
                         }
 
-                        $yearRange = isset($definition['yearRange']) ? $definition['yearRange'] : (date('Y') - 100) . ":" . (date('Y') + 100);
+                        $yearRange = $definition['yearRange'] ?? date('Y') - 100 . ":" . (date('Y') + 100);
 
                         $field = $this->form->field($model, $name)->widget(DatePicker::class, [
                             'dateFormat' => $format,

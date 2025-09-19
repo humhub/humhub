@@ -46,7 +46,7 @@ class ModuleSetAsDefaultForm extends Model
         return [
             [['userDefaultState', 'spaceDefaultState'], 'in', 'range' => ContentContainerModuleState::getStates()],
             [['moduleDeactivationConfirmed'], 'boolean'],
-            [['moduleDeactivationConfirmed'], function ($attribute, $params, $validator) {
+            [['moduleDeactivationConfirmed'], function ($attribute, $params, $validator): void {
                 if ($this->mustConfirmModuleDeactivation()) {
                     $this->addError($attribute, '');
                 }

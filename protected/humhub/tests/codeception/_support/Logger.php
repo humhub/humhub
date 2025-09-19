@@ -18,7 +18,7 @@ class Logger extends \Codeception\Lib\Connector\Yii2\Logger
 {
     public ?YiiLogger $proxy = null;
 
-    public function log($message, $level, $category = 'application')
+    public function log($message, $level, $category = 'application'): void
     {
         YiiLogger::log($message, $level, $category);
 

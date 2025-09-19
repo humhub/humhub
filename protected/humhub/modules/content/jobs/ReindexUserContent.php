@@ -32,7 +32,7 @@ class ReindexUserContent extends LongRunningActiveJob implements ExclusiveJobInt
      */
     public function run()
     {
-        return $this->getService()->run(function () {
+        return $this->getService()->run(function (): void {
             $user = User::findOne(['id' => $this->userId]);
             if (!$user) {
                 return;

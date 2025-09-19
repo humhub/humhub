@@ -59,25 +59,25 @@ humhub.module('content.form', function (module, require, $) {
             firstMenuWithForm.addClass('active')
                 .parent().addClass('active');
         }
-        this.menu.fadeIn();
+        this.menu.show();
     }
 
     CreateForm.prototype.submit = function (evt) {
-        this.$.find('.preferences, .fileinput-button').hide();
-        this.$.find('.help-block-error').html('');
-        this.$.find('.has-error').removeClass('has-error');
+        this.$.find('.nav-pills, .fileinput-button').hide();
+        this.$.find('.invalid-feedback').html('');
+        this.$.find('.is-invalid').removeClass('is-invalid');
 
         var that = this;
         evt.block = 'manual';
         event.trigger('humhub:content:beforeSubmit', this);
         client.submit(evt).then(function (response) {
-            that.$.find(".preferences, .fileinput-button").show();
-            that.$.find('.contentForm_options .preferences, .fileinput-button').show();
+            that.$.find(".nav-pills, .fileinput-button").show();
+            that.$.find('.contentForm_options .nav-pills, .fileinput-button').show();
             if (!response.errors) {
                 event.trigger('humhub:content:newEntry', response.output, this);
                 event.trigger('humhub:content:afterSubmit', response.output, this);
                 if ($('#share-intend-modal').length) {
-                    $("#globalModal").modal("hide");
+                    modal.global.close();
                     // If the dashboard stream is not displayed on the current page, redirect to the content container, to make sure the user sees the new content
                     if (response.url && !$('.dashboard-wall-stream').length) {
                         client.pjax.redirect(module.config.redirectToContentContainerUrl.replace('the-content-id', response.data.id));
@@ -146,15 +146,15 @@ humhub.module('content.form', function (module, require, $) {
 
     CreateForm.prototype.handleError = function (response) {
         var that = this;
-        var model = that.$.find('.form-group:first').attr('class').replace(/^.+field-([^-]+).+$/, '$1');
+        var model = that.$.find('.mb-3:first').attr('class').replace(/^.+field-([^-]+).+$/, '$1');
         $.each(response.errors, function (fieldName, errorMessages) {
             var fieldSelector = '.field-' + model + '-' + fieldName;
             var inputSelector = '.field-contentForm_' + fieldName;
             var multiInputSelector = '[name="' + fieldName + '[]"]';
-            that.$.find(fieldSelector).addClass('has-error');
+            that.$.find(fieldSelector + ' .form-control').addClass('is-invalid');
             that.$.find(fieldSelector + ', ' + inputSelector + ', ' + inputSelector + '_input')
-                .find('.help-block-error:first').html(errorMessages.join('<br>'));
-            that.$.find(multiInputSelector).closest('.form-group').addClass('has-error');
+                .find('.invalid-feedback:first').html(errorMessages.join('<br>'));
+            that.$.find(inputSelector + '_input').addClass('is-invalid');
         });
     };
 
@@ -181,13 +181,13 @@ humhub.module('content.form', function (module, require, $) {
     CreateForm.prototype.setPublicVisibility = function () {
         this.$.find('.contentForm_visibility').prop("checked", true);
         this.$.find('.contentForm_visibility_entry').html('<i class="fa fa-lock"></i>' + module.text(['makePrivate']));
-        this.$.find('.label-public').removeClass('hidden');
+        this.$.find('.badge-public').removeClass('d-none');
     };
 
     CreateForm.prototype.setPrivateVisibility = function () {
         this.$.find('.contentForm_visibility').prop("checked", false);
         this.$.find('.contentForm_visibility_entry').html('<i class="fa fa-unlock"></i>' + module.text(['makePublic']));
-        this.$.find('.label-public').addClass('hidden');
+        this.$.find('.badge-public').addClass('d-none');
     };
 
     CreateForm.prototype.notifyUser = function () {
@@ -206,12 +206,12 @@ humhub.module('content.form', function (module, require, $) {
 
     CreateForm.prototype.changeState = function (state, title, buttonTitle) {
         const stateInput = this.$.find('input[name=state]');
-        let stateLabel = this.$.find('.label-content-state');
+        let stateLabel = this.$.find('.badge-content-state');
         const button = $('#post_submit_button' + (this.isModal ? '_modal' : ''));
 
         if (!stateLabel.length) {
-            stateLabel = $('<span>').addClass('label label-warning label-content-state');
-            this.$.find('.label-container').append(stateLabel);
+            stateLabel = $('<span>').addClass('badge text-bg-warning badge-content-state');
+            this.$.find('.badge-container').append(stateLabel);
         }
 
         if (stateInput.data('initial') === undefined) {
@@ -233,7 +233,7 @@ humhub.module('content.form', function (module, require, $) {
         stateInput.val(state);
         stateLabel.show().html(title);
         button.html(buttonTitle);
-        this.$.find('.preferences [data-action-click=notifyUser]').parent().hide();
+        this.$.find('.nav-pills [data-action-click=notifyUser]').parent().hide();
         this.$.find('.notifyUserContainer').hide();
     }
 
@@ -251,8 +251,8 @@ humhub.module('content.form', function (module, require, $) {
             }
         }
         this.$.find('input[name^=scheduled]').remove();
-        this.$.find('.label-content-state').hide();
-        this.$.find('.preferences [data-action-click=notifyUser]').parent().show();
+        this.$.find('.badge-content-state').hide();
+        this.$.find('.nav-pills [data-action-click=notifyUser]').parent().show();
         const notifyUserContainer = this.$.find('.notifyUserContainer');
         if (notifyUserContainer.find('ul .select2-selection__clear').length) {
             notifyUserContainer.show();
@@ -277,7 +277,7 @@ humhub.module('content.form', function (module, require, $) {
 
         modal.post(evt, {data}).then(function () {
             modalGlobal.one('submitted', function () {
-                if (modalGlobal.find('.has-error').length) {
+                if (modalGlobal.find('.is-invalid').length) {
                     return;
                 }
 

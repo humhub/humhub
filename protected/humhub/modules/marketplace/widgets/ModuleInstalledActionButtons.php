@@ -10,7 +10,7 @@ namespace humhub\modules\marketplace\widgets;
 
 use humhub\components\Widget;
 use humhub\modules\marketplace\models\Module;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use Yii;
 
 /**
@@ -29,7 +29,7 @@ class ModuleInstalledActionButtons extends Widget
     /**
      * @var string Template for buttons
      */
-    public $template = '<div class="card-footer text-right">{buttons}</div>';
+    public $template = '<div class="card-footer text-end">{buttons}</div>';
 
     /**
      * @inheritdoc
@@ -41,15 +41,15 @@ class ModuleInstalledActionButtons extends Widget
         if ($this->module->getIsEnabled()) {
             if ($this->module->getConfigUrl() != '') {
                 $html .= Button::asLink(Yii::t('MarketplaceModule.base', 'Configure'), $this->module->getConfigUrl())
-                    ->cssClass('btn btn-sm btn-info');
+                    ->cssClass('btn btn-sm btn-accent');
             }
-            $html .= Button::info(Yii::t('MarketplaceModule.base', 'Enabled'))
+            $html .= Button::accent(Yii::t('MarketplaceModule.base', 'Enabled'))
                 ->link(['/admin/module/list'])
                 ->icon('check')
-                ->cssClass('active')
+                ->outline()
                 ->sm();
         } else {
-            $html .= Button::info(Yii::t('MarketplaceModule.base', 'Enable'))
+            $html .= Button::accent(Yii::t('MarketplaceModule.base', 'Enable'))
                 ->link(['/admin/module/list'])
                 ->sm();
         }

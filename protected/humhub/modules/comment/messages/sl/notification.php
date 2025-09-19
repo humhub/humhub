@@ -1,6 +1,6 @@
 <?php
-return array (
-  'Comments' => '',
+return [
+  'Comments' => 'Komentar',
   'Receive Notifications when someone comments on my own or a following post.' => '',
   'View Online' => '',
   '[Deleted]' => '',
@@ -14,4 +14,4 @@ return array (
   '{displayName} commented {contentTitle}.' => '',
   '{displayName} just commented your {contentTitle}' => '',
   '{displayName} just commented your {contentTitle} in space {space}' => '',
-);
+];

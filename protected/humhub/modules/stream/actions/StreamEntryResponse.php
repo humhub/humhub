@@ -55,7 +55,7 @@ class StreamEntryResponse extends Model
      * @throws Exception
      * @throws IntegrityException
      */
-    public static function getAsJson(Content $content, StreamEntryOptions $renderOptions = null, $widgetOptions = null)
+    public static function getAsJson(Content $content, ?StreamEntryOptions $renderOptions = null, $widgetOptions = null)
     {
         return Yii::$app->controller->asJson(static::getAsArray($content, $renderOptions, $widgetOptions));
     }
@@ -69,7 +69,7 @@ class StreamEntryResponse extends Model
      * @throws IntegrityException
      * @throws \Exception
      */
-    public static function getAsArray(Content $content, StreamEntryOptions $renderOptions = null, $widgetOptions = null)
+    public static function getAsArray(Content $content, ?StreamEntryOptions $renderOptions = null, $widgetOptions = null)
     {
         $model = $content->getModel();
 

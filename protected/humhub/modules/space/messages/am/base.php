@@ -7,7 +7,6 @@ return [
     'Admin' => 'አስተዳዳሪ',
     'Archived' => 'ማህደር',
     'Cancel' => 'ይቅር',
-    'Close' => 'ዝጋ',
     'Default' => 'ነባሪ',
     'Delete' => 'አስወግድ',
     'Done' => 'ተከናውኗል',

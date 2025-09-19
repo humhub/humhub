@@ -91,8 +91,8 @@ class Password extends ActiveRecord
     {
         return [
             [['newPassword', 'newPasswordConfirm'], 'required', 'on' => 'registration'],
-            [['newPassword', 'newPasswordConfirm'], function ($attribute, $params) {
-                $this->validateAdvancedPasswordRules($attribute, $params);
+            [['newPassword', 'newPasswordConfirm'], function ($attribute, $params): void {
+                $this->validateAdvancedPasswordRules($attribute);
             }],
             [['user_id'], 'integer'],
             [['password', 'salt'], 'string'],
@@ -191,19 +191,13 @@ class Password extends ActiveRecord
     private function hashPassword(string $password): string
     {
         $password .= $this->salt;
-
-        switch ($this->algorithm) {
-            case 'bcrypt':
-                return password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
-            case 'sha512whirlpool':
-                return hash('sha512', hash('whirlpool', $password));
-            case 'sha1md5':
-                return sha1(md5($password));
-            case 'sha512':
-                return hash('sha512', $password);
-        }
-
-        throw new Exception('Invalid Hashing Algorithm!');
+        return match ($this->algorithm) {
+            'bcrypt' => password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]),
+            'sha512whirlpool' => hash('sha512', hash('whirlpool', $password)),
+            'sha1md5' => sha1(md5($password)),
+            'sha512' => hash('sha512', $password),
+            default => throw new Exception('Invalid Hashing Algorithm!'),
+        };
     }
 
     /**
@@ -230,15 +224,15 @@ class Password extends ActiveRecord
         $additionalRules = $userModule->getPasswordStrength();
         if (is_array($additionalRules) && !empty($additionalRules)) {
             foreach ($additionalRules as $pattern => $message) {
-                $errorMessage = $userModule->isCustomPasswordStrength() ?
-                    Yii::t('UserModule.custom', $message) :
-                    $message;
+                $errorMessage = $userModule->isCustomPasswordStrength()
+                    ? Yii::t('UserModule.custom', $message)
+                    : $message;
                 try {
-                    preg_match($pattern, $this->$attribute, $matches);
+                    preg_match($pattern, (string) $this->$attribute, $matches);
                     if (!count($matches)) {
                         $this->addError($attribute, $errorMessage);
                     }
-                } catch (\Exception $exception) {
+                } catch (\Exception) {
                     throw new ErrorException("Wrong regexp in additional password rules. Target: '{$pattern}'");
                 }
             }

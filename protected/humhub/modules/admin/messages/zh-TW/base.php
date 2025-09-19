@@ -13,6 +13,7 @@ return [
   'Administrators' => '管理者',
   'Advanced' => '',
   'Advanced settings' => '進階設定',
+  'All' => '所有結果',
   'Appearance' => '',
   'Approval' => '',
   'Authentication' => '',

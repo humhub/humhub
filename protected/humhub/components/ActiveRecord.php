@@ -90,7 +90,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
      */
     public function getUniqueId()
     {
-        return str_replace('\\', '', get_class($this)) . "_" . $this->primaryKey;
+        return str_replace('\\', '', static::class) . "_" . $this->primaryKey;
     }
 
     /**
@@ -279,5 +279,28 @@ class ActiveRecord extends \yii\db\ActiveRecord
     public static function getObjectModel(): string
     {
         return static::class;
+    }
+
+    /**
+     * Remove attributes from all scenarios
+     *
+     * @param array $scenarios
+     * @param string|array $attributes
+     * @since 1.18
+     */
+    public function removeScenarioAttributes(array &$scenarios, string|array $attributes): void
+    {
+        if (is_string($attributes)) {
+            $attributes = [$attributes];
+        }
+
+        foreach ($scenarios as $scenario => $scenarioAttributes) {
+            foreach ($attributes as $attribute) {
+                $attrIndex = array_search($attribute, $scenarioAttributes);
+                if ($attrIndex !== false) {
+                    unset($scenarios[$scenario][$attrIndex]);
+                }
+            }
+        }
     }
 }

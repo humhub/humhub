@@ -136,8 +136,8 @@ class I18N extends BaseI18N
         }
 
         if (is_callable($this->beforeTranslateCallback)) {
-            list($category, $message, $params, $language) =
-                $this->beforeTranslateCallback->call($this, $category, $message, $params, $language);
+            [$category, $message, $params, $language]
+                = $this->beforeTranslateCallback->call($this, $category, $message, $params, $language);
         }
 
         return parent::translate($category, $message, $params, $language);
@@ -156,7 +156,7 @@ class I18N extends BaseI18N
         // Try to automatically assign Module->MessageSource
         foreach (Yii::$app->moduleManager->getModules(['includeCoreModules' => true, 'returnClass' => true]) as $moduleId => $className) {
             $moduleCategory = I18NHelper::getModuleTranslationCategory($moduleId);
-            if (substr($category, 0, strlen($moduleCategory)) === $moduleCategory) {
+            if (str_starts_with($category, $moduleCategory)) {
                 $this->translations[$moduleCategory . '*'] = [
                     'class' => 'humhub\components\i18n\ModuleMessageSource',
                     'moduleId' => $moduleId,
@@ -216,21 +216,21 @@ class I18N extends BaseI18N
             $fixedParams = [];
             // Try to fix old placeholder formats
             foreach ($params as $param => $value) {
-                if (substr($param, 0, 1) === "%" && substr($param, -1, 1) === "%" && strlen($param) > 2) {
+                if (str_starts_with($param, "%") && str_ends_with($param, "%") && strlen($param) > 2) {
                     // Fix: %param% style params
                     $fixedParam = str_replace("%", "", $param);
                     $fixedParams[$fixedParam] = $value;
                     $message = str_replace('%' . $fixedParam . '%', '{' . $fixedParam . '}', $message);
-                } elseif (substr($param, 0, 1) == "%") {
+                } elseif (str_starts_with($param, "%")) {
                     // Fix: %param style params
                     $fixedParam = str_replace("%", "", $param);
                     $fixedParams[$fixedParam] = $value;
                     $message = str_replace('%' . $fixedParam, '{' . $fixedParam . '}', $message);
-                } elseif (substr($param, 0, 1) === "{" && substr($param, -1, 1) === "}") {
+                } elseif (str_starts_with($param, "{") && str_ends_with($param, "}")) {
                     // Fix: {param} style params
                     $fixedParam = str_replace(['{', '}'], "", $param);
                     $fixedParams[$fixedParam] = $value;
-                } elseif (substr($param, 0, 1) === ":") {
+                } elseif (str_starts_with($param, ":")) {
                     // Fix: :param style params
                     $fixedParam = str_replace(':', "", $param);
                     $fixedParams[$fixedParam] = $value;

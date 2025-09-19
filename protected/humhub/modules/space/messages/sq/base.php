@@ -45,7 +45,6 @@ return [
     'Blocked users' => '',
     'By Name' => '',
     'Change visibility' => '',
-    'Close' => '',
     'Color' => '',
     'Could not request membership!' => '',
     'Create new link' => '',

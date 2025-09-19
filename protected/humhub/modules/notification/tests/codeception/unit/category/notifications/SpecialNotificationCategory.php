@@ -33,7 +33,7 @@ class SpecialNotificationCategory extends NotificationCategory
         return [MailTarget::getId()];
     }
 
-    public function isVisible(User $user = null)
+    public function isVisible(?User $user = null)
     {
         return !$user || $user->id != 2;
     }

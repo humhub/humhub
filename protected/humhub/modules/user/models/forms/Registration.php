@@ -34,21 +34,6 @@ class Registration extends HForm
     public const EVENT_AFTER_REGISTRATION = 'afterRegistration';
 
     /**
-     * @var bool show password creation form
-     */
-    private $enablePasswordForm;
-
-    /**
-     * @var bool show checkbox to force to change password on first log in
-     */
-    private $enableMustChangePassword;
-
-    /**
-     * @var bool show e-mail field
-     */
-    private $enableEmailField;
-
-    /**
      * @var bool|null require user approval by admin after registration.
      */
     public $enableUserApproval = false;
@@ -77,14 +62,19 @@ class Registration extends HForm
         $definition = [],
         $primaryModel = null,
         array $config = [],
-        bool $enableEmailField = false,
-        bool $enablePasswordForm = true,
-        bool $enableMustChangePassword = false,
+        /**
+         * @var bool show e-mail field
+         */
+        private readonly bool $enableEmailField = false,
+        /**
+         * @var bool show password creation form
+         */
+        private readonly bool $enablePasswordForm = true,
+        /**
+         * @var bool show checkbox to force to change password on first log in
+         */
+        private readonly bool $enableMustChangePassword = false,
     ) {
-        $this->enableEmailField = $enableEmailField;
-        $this->enablePasswordForm = $enablePasswordForm;
-        $this->enableMustChangePassword = $enableMustChangePassword;
-
         parent::__construct($definition, $primaryModel, $config);
     }
 
@@ -218,11 +208,10 @@ class Registration extends HForm
     }
 
     /**
-     * Set models User, Profile and Password to Form
+     * Set models User, Profile, GroupUser and Password to Form
      */
-    protected function setModels()
+    public function setModels(): void
     {
-        // Set Models
         $this->models['User'] = $this->getUser();
         $this->models['Profile'] = $this->getProfile();
         $this->models['GroupUser'] = $this->getGroupUser();
@@ -233,8 +222,6 @@ class Registration extends HForm
                 $this->models['Password']->mustChangePassword = true;
             }
         }
-
-        return true;
     }
 
     /**
@@ -268,7 +255,7 @@ class Registration extends HForm
      *
      * @return bool state
      */
-    public function register(ClientInterface $authClient = null)
+    public function register(?ClientInterface $authClient = null)
     {
         if (!$this->validate()) {
             return false;
@@ -296,8 +283,8 @@ class Registration extends HForm
                 // Save User Password
                 $this->models['Password']->user_id = $this->models['User']->id;
                 $this->models['Password']->setPassword($this->models['Password']->newPassword);
-                if ($this->models['Password']->save() &&
-                    $this->enableMustChangePassword) {
+                if ($this->models['Password']->save()
+                    && $this->enableMustChangePassword) {
                     $this->models['User']->setMustChangePassword($this->models['Password']->mustChangePassword);
                 }
             }

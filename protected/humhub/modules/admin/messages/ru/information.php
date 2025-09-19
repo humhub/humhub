@@ -24,7 +24,6 @@ return [
     'Displaying {count} entries per page.' => 'Отображать {count} записей на странице.',
     'Done' => 'Выполнено',
     'Driver' => 'Драйвер',
-    'Dynamic Config' => 'Динамическая конфигурация',
     'Error' => 'Ошибка',
     'Flush entries' => 'Очистить журнал',
     'HumHub' => 'HumHub',

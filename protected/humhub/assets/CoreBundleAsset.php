@@ -68,9 +68,5 @@ class CoreBundleAsset extends WebStaticAssetBundle
         SpaceChooserAsset::class,
     ];
 
-    public $js = [
-        'js/humhub/legacy/jquery.loader.js',
-    ];
-
     public $depends = self::STATIC_DEPENDS;
 }

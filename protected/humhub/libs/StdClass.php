@@ -159,7 +159,7 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
         return $this;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return serialize($this);
     }
@@ -387,7 +387,7 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
 
         try {
             $property = new ReflectionProperty($this, $field);
-        } catch (ReflectionException $e) {
+        } catch (ReflectionException) {
             // Not an actual property. It may be the result of a getField() getter. So assume, it has been set.
             return true;
         }
@@ -589,20 +589,14 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
      */
     protected function validatePropertyName($name, string $method, string $parameter = '$name'): ?string
     {
-        switch (true) {
-            case is_string($name):
-            case is_int($name):
-            case $name instanceof Stringable:
-                return $name;
-
-            case is_bool($name):
-                return (int)$name;
-        }
-
-        throw InvalidArgumentTypeException::newInstance(
-            $parameter,
-            ['string', 'int', 'bool', Stringable::class],
-        )->setMethodName($method);
+        return match (true) {
+            is_string($name), is_int($name), $name instanceof Stringable => $name,
+            is_bool($name) => (int)$name,
+            default => throw InvalidArgumentTypeException::newInstance(
+                $parameter,
+                ['string', 'int', 'bool', Stringable::class],
+            )->setMethodName($method),
+        };
     }
 
     /**
@@ -622,7 +616,7 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
 
         if (is_array($serialized)) {
             $isObject = false;
-        } elseif (!is_object($serialized) || get_class($serialized) !== \stdClass::class) {
+        } elseif (!is_object($serialized) || $serialized::class !== \stdClass::class) {
             if (!$throw) {
                 return null;
             }
@@ -821,7 +815,7 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
                             // create a reflection class to later instantiate the new object
                             try {
                                 $class = new ReflectionClass($value);
-                            } catch (ReflectionException $e) {
+                            } catch (ReflectionException) {
                                 $found[$value] = true;
 
                                 Yii::warning(
@@ -900,7 +894,7 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
             };
         }
 
-        $class = get_class(self::$validatedObject);
+        $class = self::$validatedObject::class;
 
         return new $class();
     }

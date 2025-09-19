@@ -33,7 +33,6 @@ Module successfully enabled!
     'Ok' => 'እሺ',
     'Register' => 'ይመዝገቡ',
     'Search' => 'ፈልግ',
-    'Settings' => 'ቅንብሮች',
     'Third-party' => 'ሶስተኛ ወገን',
     'Third-party disclaimer' => 'የሶስተኛ ወገን ማስተባበያ',
     'Update' => 'አዘምን',

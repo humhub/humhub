@@ -12,6 +12,8 @@ use humhub\components\InstallationState;
 use humhub\helpers\MobileAppHelper;
 use humhub\modules\admin\widgets\TrackingWidget;
 use humhub\modules\tour\widgets\Tour;
+use humhub\widgets\modal\GlobalConfirmModal;
+use humhub\widgets\modal\GlobalModal;
 use Yii;
 
 /**
@@ -56,6 +58,7 @@ class LayoutAddons extends BaseStack
             }
 
             // Get info for the Share intend feature (uploading files from the mobile app)
+            // @deprecated Remove in 1.19
             MobileAppHelper::getFileUploadSettings();
         }
 

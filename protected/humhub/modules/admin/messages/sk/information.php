@@ -24,7 +24,6 @@ return [
     'Displaying {count} entries per page.' => 'Zobrazuje sa {count} záznamov na stránku.',
     'Done' => 'Hotovo',
     'Driver' => 'Ovládač',
-    'Dynamic Config' => 'Dynamické Nastavenie',
     'Error' => 'Chyba',
     'Flush entries' => 'Vyprázdniť položky',
     'HumHub' => 'HumHub',

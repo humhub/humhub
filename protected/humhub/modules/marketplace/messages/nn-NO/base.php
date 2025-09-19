@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'Settings' => 'Innstillinger',
     '
 Module successfully disabled!
 ' => '',

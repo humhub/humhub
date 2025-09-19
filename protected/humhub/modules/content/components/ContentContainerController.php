@@ -75,7 +75,7 @@ class ContentContainerController extends Controller
 
 
         if ($this->validContentContainerClasses !== null) {
-            if ($this->contentContainer === null || !in_array(get_class($this->contentContainer), $this->validContentContainerClasses)) {
+            if ($this->contentContainer === null || !in_array($this->contentContainer::class, $this->validContentContainerClasses)) {
                 throw new HttpException(400);
             }
         }
@@ -139,8 +139,8 @@ class ContentContainerController extends Controller
      */
     protected function checkModuleIsEnabled()
     {
-        if ($this->module instanceof ContentContainerModule && $this->contentContainer !== null &&
-            !$this->contentContainer->moduleManager->isEnabled($this->module->id)) {
+        if ($this->module instanceof ContentContainerModule && $this->contentContainer !== null
+            && !$this->contentContainer->moduleManager->isEnabled($this->module->id)) {
             throw new HttpException(405, Yii::t('base', 'Module is not enabled on this content container!'));
         }
     }

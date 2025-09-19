@@ -45,7 +45,6 @@ return [
     'Detected URL: {currentBaseUrl}' => '',
     'Different table collations in the tables: {tables}' => '',
     'Disabled Functions' => '',
-    'Dynamic Config' => '',
     'Enable <a href="{url}">Link Redirection Service</a>' => '',
     'HumHub' => '',
     'HumHub Documentation' => '',

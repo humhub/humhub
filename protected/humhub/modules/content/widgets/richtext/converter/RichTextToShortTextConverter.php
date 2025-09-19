@@ -2,7 +2,7 @@
 
 namespace humhub\modules\content\widgets\richtext\converter;
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\content\widgets\richtext\extensions\link\LinkParserBlock;
 use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;
 use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
@@ -116,7 +116,7 @@ class RichTextToShortTextConverter extends RichTextToPlainTextConverter
         $result = (string)$text;
 
         if (!$this->getOption(static::OPTION_PRESERVE_SPACES, false)) {
-            $result = trim(preg_replace('/\s+/', ' ', $result));
+            $result = trim((string) preg_replace('/\s+/', ' ', $result));
         }
 
         $result = parent::onAfterParse($result);

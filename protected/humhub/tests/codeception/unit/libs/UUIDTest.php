@@ -55,7 +55,7 @@ class UUIDTest extends HumHubDbTestCase
             }
         };
 
-        class_alias(get_class(static::$toString), __NAMESPACE__ . '\ToString');
+        class_alias(static::$toString::class, __NAMESPACE__ . '\ToString');
 
         static::$stringable = new class extends ToString implements Stringable {
         };
@@ -174,11 +174,11 @@ class UUIDTest extends HumHubDbTestCase
         static::assertInstanceOf(UUIDValidator::class, new UUIDValidator(['autofillWith' => 0]));
         static::assertInstanceOf(UUIDValidator::class, new UUIDValidator(['autofillWith' => 'true']));
         static::assertInstanceOf(UUIDValidator::class, new UUIDValidator(['autofillWith' => 'false']));
-        static::assertInstanceOf(UUIDValidator::class, new UUIDValidator(['autofillWith' => static function () {
+        static::assertInstanceOf(UUIDValidator::class, new UUIDValidator(['autofillWith' => static function (): void {
         }]));
-        static::assertInstanceOf(UUIDValidator::class, new UUIDValidator(['autofillWith' => [static::class, 'closureUUID']]));
-        static::assertInstanceOf(UUIDValidator::class, new UUIDValidator(['autofillWith' => [static::class, 'closureNull']]));
-        static::assertInstanceOf(UUIDValidator::class, new UUIDValidator(['autofillWith' => [static::class, 'closureInvalid']]));
+        static::assertInstanceOf(UUIDValidator::class, new UUIDValidator(['autofillWith' => static::closureUUID(...)]));
+        static::assertInstanceOf(UUIDValidator::class, new UUIDValidator(['autofillWith' => static::closureNull(...)]));
+        static::assertInstanceOf(UUIDValidator::class, new UUIDValidator(['autofillWith' => static::closureInvalid(...)]));
         static::assertInstanceOf(UUIDValidator::class, new UUIDValidator(['autofillWith' => UUID::v4()]));
 
         $validator = new UUIDValidator();

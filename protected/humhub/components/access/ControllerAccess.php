@@ -145,7 +145,7 @@ class ControllerAccess extends BaseObject
     public const RULE_DISABLED_USER = 'disabledUser';
 
     /**
-     * Check guest if user is unnapproved
+     * Check guest if user is unapproved
      */
     public const RULE_UNAPPROVED_USER = 'unapprovedUser';
 
@@ -386,11 +386,7 @@ class ControllerAccess extends BaseObject
 
     protected function findValidator($ruleName)
     {
-        if (isset($this->validators[$ruleName])) {
-            return $this->validators[$ruleName];
-        }
-
-        return $this->getCustomValidator($ruleName);
+        return $this->validators[$ruleName] ?? $this->getCustomValidator($ruleName);
     }
 
     protected function getCustomValidator($ruleName)
@@ -497,9 +493,9 @@ class ControllerAccess extends BaseObject
      */
     public function validateDisabledUser()
     {
-        return $this->isGuest() ||
-            ($this->user->status !== User::STATUS_DISABLED &&
-                $this->user->status !== User::STATUS_SOFT_DELETED);
+        return $this->isGuest()
+            || ($this->user->status !== User::STATUS_DISABLED
+                && $this->user->status !== User::STATUS_SOFT_DELETED);
     }
 
     /**
@@ -529,8 +525,8 @@ class ControllerAccess extends BaseObject
      */
     public function validateMustChangePassword()
     {
-        return $this->isGuest() || Yii::$app->user->isMustChangePasswordUrl() || !$this->user->mustChangePassword() ||
-            ($this->owner->module->id == 'user' && $this->owner->id == 'auth' && $this->owner->action->id == 'logout');
+        return $this->isGuest() || Yii::$app->user->isMustChangePasswordUrl() || !$this->user->mustChangePassword()
+            || ($this->owner->module->id == 'user' && $this->owner->id == 'auth' && $this->owner->action->id == 'logout');
     }
 
     /**
@@ -539,9 +535,9 @@ class ControllerAccess extends BaseObject
      */
     public function validateMaintenanceMode()
     {
-        return !Yii::$app->settings->get('maintenanceMode') ||
-            $this->isAdmin() ||
-            ($this->owner->module->id == 'user' && $this->owner->id == 'auth' && in_array($this->owner->action->id, ['login', 'external']));
+        return !Yii::$app->settings->get('maintenanceMode')
+            || $this->isAdmin()
+            || ($this->owner->module->id == 'user' && $this->owner->id == 'auth' && in_array($this->owner->action->id, ['login', 'external']));
     }
 
     /**
@@ -553,8 +549,8 @@ class ControllerAccess extends BaseObject
     {
         $customInfo = Yii::$app->settings->get('maintenanceModeInfo', '');
 
-        return Yii::t('error', 'Maintenance mode is active. Only Administrators can access the platform.') .
-            ($customInfo === '' ? '' : $beforeCustomInfo . $customInfo);
+        return Yii::t('error', 'Maintenance mode is active. Only Administrators can access the platform.')
+            . ($customInfo === '' ? '' : $beforeCustomInfo . $customInfo);
     }
 
 }

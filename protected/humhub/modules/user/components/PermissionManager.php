@@ -109,16 +109,7 @@ class PermissionManager extends Component
      */
     private function isVerifyAll($params = [])
     {
-        if (isset($params['strict'])) {
-            return $params['strict'];
-        }
-
-        //deprecated
-        if (isset($params['all'])) {
-            return $params['all'];
-        }
-
-        return false;
+        return $params['strict'] ?? $params['all'] ?? false;
     }
 
     /**
@@ -130,9 +121,9 @@ class PermissionManager extends Component
      */
     protected function verify(BasePermission $permission)
     {
-        $subject = $this->getSubject();
-        if ($subject) {
-            return $this->getGroupState($subject->groups, $permission) == BasePermission::STATE_ALLOW;
+        $subjectGroups = $this->getSubjectGroups();
+        if ($subjectGroups !== []) {
+            return $this->getGroupState($subjectGroups, $permission) == BasePermission::STATE_ALLOW;
         }
 
         return false;
@@ -147,7 +138,31 @@ class PermissionManager extends Component
      */
     protected function getSubject()
     {
-        return ($this->subject != null) ? $this->subject : Yii::$app->user->getIdentity();
+        return $this->subject ?? Yii::$app->user->getIdentity();
+    }
+
+    /**
+     * Get groups + parent groups if the user is linked to subgroups
+     *
+     * @return Group[]
+     */
+    protected function getSubjectGroups(): array
+    {
+        $subject = $this->getSubject();
+        if (!$subject) {
+            return [];
+        }
+
+        return Yii::$app->runtimeCache->getOrSet('PermissionManagerSubjectGroups' . $subject->id, function () use ($subject) {
+            $groups = $subject->groups;
+
+            $parentGroupIds = array_filter(array_map(fn($group) => $group->parent_group_id, $groups));
+            if ($parentGroupIds !== []) {
+                $groups = array_merge($groups, Group::findAll(['id' => $parentGroupIds]));
+            }
+
+            return $groups;
+        });
     }
 
     /**
@@ -191,7 +206,7 @@ class PermissionManager extends Component
 
         $record->permission_id = $permission->getId();
         $record->module_id = $permission->getModuleId();
-        $record->class = get_class($permission);
+        $record->class = $permission::class;
         $record->group_id = (string)$groupId; // content container permissions require a text value here
         $record->state = $state;
 
@@ -207,7 +222,7 @@ class PermissionManager extends Component
      * If the provided $group is an array we check if one of the group states
      * is a BasePermission::STATE_ALLOW and return this state.
      *
-     * @param mixed $groups either an array of groups or group ids or an single group or goup id
+     * @param mixed $groups either an array of groups or group ids or an single group or group id
      * @param BasePermission $permission
      * @param int $returnDefaultState
      * @return int
@@ -247,9 +262,7 @@ class PermissionManager extends Component
 
         $query = $this->getQuery()->andWhere(['group_id' => $ids]);
         $cacheKey = __METHOD__ . sha1($query->createCommand()->getRawSql());
-        $result = Yii::$app->runtimeCache->getOrSet($cacheKey, function () use ($query) {
-            return $query->all();
-        });
+        $result = Yii::$app->runtimeCache->getOrSet($cacheKey, fn() => $query->all());
 
         foreach ($result as $group) {
             /** @var GroupPermission | ActiveRecord $group */
@@ -469,10 +482,10 @@ class PermissionManager extends Component
         foreach ($this->getPermissions() as $permission) {
             /** @var $permission BasePermission */
             if (
-                $returnOnlyChangeable && !$permission->canChangeState($groupId) ||
-                (
-                    $permission->contentContainer &&
-                    array_key_exists($permission->moduleId, $permission->contentContainer->moduleManager->getInstallable())
+                $returnOnlyChangeable && !$permission->canChangeState($groupId)
+                || (
+                    $permission->contentContainer
+                    && array_key_exists($permission->moduleId, $permission->contentContainer->moduleManager->getInstallable())
                     && !$permission->contentContainer->moduleManager->isEnabled($permission->moduleId)
                 )
             ) {

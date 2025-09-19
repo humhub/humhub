@@ -8,6 +8,7 @@
 
 namespace humhub\components;
 
+use humhub\helpers\ThemeHelper;
 use humhub\models\Setting;
 use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\admin\jobs\DisableModuleJob;
@@ -324,6 +325,18 @@ class Module extends \yii\base\Module
     {
         if ($this->isEnabled) {
             $this->getMigrationService()->migrateUp();
+
+            // Check if current theme (parent) is located in this module
+            foreach (array_merge([Yii::$app->view->theme], Yii::$app->view->theme->getParents()) as $theme) {
+                if (str_starts_with($theme->getBasePath(), $this->getBasePath())) {
+                    try {
+                        ThemeHelper::buildCss();
+                        break;
+                    } catch (\Exception $e) {
+                        Yii::error('Could not build Theme CSS after Module Update: ' . $e->getMessage());
+                    }
+                }
+            }
         }
     }
 
@@ -384,7 +397,7 @@ class Module extends \yii\base\Module
      */
     public function getNotifications()
     {
-        $class = get_class($this);
+        $class = static::class;
         if (($pos = strrpos($class, '\\')) !== false) {
             $notificationNamespace = substr($class, 0, $pos) . '\\notifications';
         } else {
@@ -395,7 +408,7 @@ class Module extends \yii\base\Module
         $notificationDirectory = $this->getBasePath() . DIRECTORY_SEPARATOR . 'notifications';
         if (is_dir($notificationDirectory)) {
             foreach (FileHelper::findFiles($notificationDirectory, ['recursive' => false,]) as $file) {
-                $notificationClass = $notificationNamespace . '\\' . basename($file, '.php');
+                $notificationClass = $notificationNamespace . '\\' . basename((string) $file, '.php');
                 if (is_subclass_of($notificationClass, BaseNotification::class)) {
                     $notifications[] = $notificationClass;
                 }
@@ -424,7 +437,7 @@ class Module extends \yii\base\Module
      */
     public function getActivityClasses()
     {
-        $class = get_class($this);
+        $class = static::class;
         if (($pos = strrpos($class, '\\')) !== false) {
             $activityNamespace = substr($class, 0, $pos) . '\\activities';
         } else {
@@ -435,7 +448,7 @@ class Module extends \yii\base\Module
         $activityDirectory = $this->getBasePath() . DIRECTORY_SEPARATOR . 'activities';
         if (is_dir($activityDirectory)) {
             foreach (FileHelper::findFiles($activityDirectory, ['recursive' => false,]) as $file) {
-                $activityClass = $activityNamespace . '\\' . basename($file, '.php');
+                $activityClass = $activityNamespace . '\\' . basename((string) $file, '.php');
                 if (is_subclass_of($activityClass, BaseActivity::class)) {
                     $activities[] = $activityClass;
                 }
@@ -453,7 +466,7 @@ class Module extends \yii\base\Module
      */
     public function getAssetClasses()
     {
-        $class = get_class($this);
+        $class = static::class;
         if (($pos = strrpos($class, '\\')) !== false) {
             $assetNamespace = substr($class, 0, $pos) . '\\assets';
         } else {
@@ -464,7 +477,7 @@ class Module extends \yii\base\Module
         $assetDirectory = $this->getBasePath() . DIRECTORY_SEPARATOR . 'assets';
         if (is_dir($assetDirectory)) {
             foreach (FileHelper::findFiles($assetDirectory, ['recursive' => false,]) as $file) {
-                $assetClass = $assetNamespace . '\\' . basename($file, '.php');
+                $assetClass = $assetNamespace . '\\' . basename((string) $file, '.php');
                 if (is_subclass_of($assetClass, AssetBundle::class)) {
                     $assets[] = $assetClass;
                 }

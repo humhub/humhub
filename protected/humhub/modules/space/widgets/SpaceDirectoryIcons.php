@@ -37,9 +37,7 @@ class SpaceDirectoryIcons extends Widget
         $membership = $this->space->getMembership();
 
         $membersCountQuery = $this->space->getMemberListService()->getReadableQuery();
-        $membersCount = Yii::$app->runtimeCache->getOrSet(__METHOD__ . Yii::$app->user->id . '-' . $this->space->id, function () use ($membersCountQuery) {
-            return $membersCountQuery->count();
-        });
+        $membersCount = Yii::$app->runtimeCache->getOrSet(__METHOD__ . Yii::$app->user->id . '-' . $this->space->id, fn() => $membersCountQuery->count());
 
         return $this->render('spaceDirectoryIcons', [
             'space' => $this->space,

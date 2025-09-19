@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Html;
+use humhub\helpers\Html;
 use humhub\modules\friendship\models\Friendship;
 
 /* @var $user \humhub\modules\user\models\User */
@@ -15,13 +15,12 @@ use humhub\modules\friendship\models\Friendship;
     <div class="<?= $options['acceptFriendRequest']['groupClass'] ?>">
         <?= Html::a($options['acceptFriendRequest']['title'], '#', $options['acceptFriendRequest']['attrs']); ?>
         <button type="button" class="<?= $options['acceptFriendRequest']['togglerClass'] ?> dropdown-toggle"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="caret"></span>
+                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="sr-only">Toggle Dropdown</span>
         </button>
         <ul class="dropdown-menu">
             <li>
-                <?= Html::a($options['denyFriendRequest']['title'], '#', $options['denyFriendRequest']['attrs']); ?>
+                <?= Html::a($options['denyFriendRequest']['title'], '#', array_merge(['class' => 'dropdown-item'], $options['denyFriendRequest']['attrs'])) ?>
             </li>
         </ul>
     </div>

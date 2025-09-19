@@ -178,9 +178,7 @@ class MarketplaceController extends Controller
         foreach ($onlineModuleManager->getModuleUpdates() as $moduleId => $info) {
             try {
                 $this->actionUpdate($moduleId);
-            } catch (InvalidArgumentException $ex) {
-                print "Module " . $moduleId . " - Error: " . $ex->getMessage() . "\n";
-            } catch (\Exception $ex) {
+            } catch (InvalidArgumentException|\Exception $ex) {
                 print "Module " . $moduleId . " - Error: " . $ex->getMessage() . "\n";
             }
             $i++;
@@ -202,7 +200,7 @@ class MarketplaceController extends Controller
                 try {
                     $onlineModuleManager->install($moduleId);
                     print "Reinstalled: " . $moduleId . "\n";
-                } catch (\Exception $ex) {
+                } catch (\Exception) {
                 }
             }
         }

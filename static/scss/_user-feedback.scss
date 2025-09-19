@@ -1,0 +1,126 @@
+//
+// Statusbar
+// --------------------------------------------------
+.status-bar-body {
+    color: var(--hh-text-color-contrast);
+    position: fixed;
+    margin-bottom: var(--hh-mobile-app-safe-area-inset-bottom, env(safe-area-inset-bottom)); // for the web view space (safe area) on mobile devices
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    text-align: center;
+    padding: 20px;
+    z-index: 9999999;
+    bottom: 0px;
+    display: block;
+    line-height: 20px;
+}
+
+.status-bar-close {
+    color: var(--hh-text-color-contrast);
+    font-weight: bold;
+    font-size: 21px;
+    cursor: pointer;
+}
+
+.status-bar-close:hover {
+    color: var(--hh-text-color-contrast);
+}
+
+.status-bar-close i {
+    vertical-align: top !important;
+    padding-top: 3px;
+}
+
+.status-bar-content i {
+    margin-right: 10px;
+    font-size: 21px;
+    vertical-align: middle;
+}
+
+.status-bar-content .showMore {
+    float: right;
+    margin-left: 10px;
+    font-size: 0.7em;
+    cursor: pointer;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.status-bar-content .status-bar-details {
+    text-align: left;
+    font-size: 0.7em;
+    margin-top: 20px;
+    max-height: 200px;
+    overflow: auto;
+}
+
+.status-bar-content span {
+    vertical-align: middle;
+}
+
+.status-bar-content i.error, .status-bar-content i.fatal {
+    color: var(--bs-danger);
+}
+
+.status-bar-content i.warning {
+    color: var(--bs-warning);
+}
+
+.status-bar-content i.info, .status-bar-content i.debug {
+    color: var(--bs-accent);
+}
+
+.status-bar-content i.success {
+    color: #85CA2B;
+}
+
+//
+// Third Party Tools
+// --------------------------------------------------
+// Highlight
+.highlight {
+    background-color: var(--hh-background-color-highlight);
+}
+
+//
+// Bootstrap Alert panels
+// --------------------------------------------------
+.alert-default {
+    color: var(--hh-text-color-highlight);
+    background-color: var(--hh-background-color-secondary);
+    border-color: var(--hh-background-color-page);
+    font-size: 13px;
+
+    .info {
+        margin: 10px 0;
+    }
+}
+
+.alert-success {
+    color: var(--hh-text-color-success);
+    background-color: var(--hh-background-color-success);
+    border-color: var(--hh-border-color-success);
+}
+
+.alert-warning {
+    color: var(--hh-text-color-warning);
+    background-color: var(--hh-background-color-warning);
+    border-color: var(--hh-border-color-warning);
+}
+
+.alert-danger {
+    color: var(--hh-text-color-danger);
+    background-color: var(--hh-background-color-danger);
+    border-color: var(--hh-border-color-danger);
+}
+
+//
+// data-saved feedback Deprecated since 1.2
+// --------------------------------------------------
+.data-saved {
+    padding-left: 10px;
+}
+
+img.bounceIn {
+    animation-duration: 800ms;
+}

@@ -266,7 +266,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
 
         try {
             $file->save();
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             // Need to catch since hash saving will fail
         }
 
@@ -300,7 +300,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
 
         try {
             $file->save();
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             // Need to catch since hash saving will fail
         }
         $this->assertConversionResult(
@@ -325,7 +325,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
 
         try {
             $file->save();
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             // Need to catch since hash saving will fail
         }
         $this->assertConversionResult(
@@ -350,7 +350,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
 
         try {
             $file->save();
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             // Need to catch since hash saving will fail
         }
         $this->assertConversionResult(
@@ -375,7 +375,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
 
         try {
             $file->save();
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             // Need to catch since hash saving will fail
         }
         $this->assertConversionResult(

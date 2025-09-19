@@ -61,6 +61,7 @@ return [
     'Your username has been changed' => 'Ваше ім\'я користувача було змінено',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'Ваше ім\'я користувача успішно змінено. <br> Ми щойно надіслали вам електронний лист із новою інформацією.',
     '<strong>Your</strong> Account' => '',
+    'Do you really want to delete your login background image?' => '',
     'Hide my online status' => '',
     'Markdown Editor Mode' => '',
     'Password recovery can only be initiated once every 10 minutes.' => '',

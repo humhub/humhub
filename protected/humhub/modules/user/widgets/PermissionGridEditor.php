@@ -8,15 +8,15 @@
 
 namespace humhub\modules\user\widgets;
 
+use humhub\helpers\Html;
+use humhub\libs\DropDownGridColumn;
 use humhub\modules\user\components\PermissionManager;
+use humhub\widgets\GridView;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\data\ArrayDataProvider;
-use humhub\widgets\GridView;
-use humhub\libs\Html;
 use yii\data\DataProviderInterface;
-use humhub\libs\DropDownGridColumn;
 
 /**
  * PermissionGridView
@@ -69,20 +69,18 @@ class PermissionGridEditor extends GridView
                     'attribute' => 'title',
                     'content' => function ($data) {
                         $module = Yii::$app->getModule($data['moduleId']);
-                        return Html::tag('strong', $data['title']) .
-                            '&nbsp;&nbsp;' .
-                            Html::tag('span', $module->getName(), ['class' => 'badge', 'data-module-id' => $data['moduleId']]) .
-                            Html::tag('br') .
-                            $data['description'];
+                        return Html::tag('strong', $data['title'])
+                            . '&nbsp;&nbsp;'
+                            . Html::tag('span', $module->getName(), ['class' => 'badge', 'data-module-id' => $data['moduleId']])
+                            . Html::tag('br')
+                            . $data['description'];
                     },
                 ],
                 [
                     'label' => '',
                     'class' => DropDownGridColumn::class,
                     'attribute' => 'state',
-                    'readonly' => function ($data) {
-                        return !($data['changeable']);
-                    },
+                    'readonly' => fn($data) => !($data['changeable']),
                     'submitAttributes' => ['permissionId', 'moduleId'],
                     'dropDownOptions' => 'states',
                 ],

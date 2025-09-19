@@ -9,11 +9,11 @@
 namespace humhub\modules\user\widgets;
 
 use humhub\helpers\DeviceDetectorHelper;
+use humhub\helpers\Html;
 use humhub\modules\user\authclient\BaseFormAuth;
 use Yii;
 use yii\authclient\ClientInterface;
 use yii\base\InvalidConfigException;
-use yii\bootstrap\Html;
 
 class AuthChoice extends \yii\authclient\widgets\AuthChoice
 {
@@ -122,9 +122,9 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
      */
     public function beforeRun()
     {
-        return parent::beforeRun() &&
-            count($this->getClients()) > 0 &&
-            !(DeviceDetectorHelper::isIosApp() && Yii::$app->params['humhub']['disableAuthChoicesIos']);
+        return parent::beforeRun()
+            && count($this->getClients()) > 0
+            && !(DeviceDetectorHelper::isIosApp() && Yii::$app->params['humhub']['disableAuthChoicesIos']);
     }
 
     /**
@@ -145,13 +145,13 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
         echo Html::beginTag('div', ['class' => 'authChoice']);
 
         $i = 0;
-        $extraCssClass = 'btn-sxm';
+        $extraCssClass = '';
 
         foreach ($clients as $client) {
             $i++;
             if ($i == $this->maxShowClients + 1) {
                 // Add more button
-                echo Html::a('<i class="fa fa-angle-double-down" aria-hidden="true"></i>', '#', ['class' => 'btn btn-default pull-right btn-sxm btn-auth-choice-more']);
+                echo Html::a('<i class="fa fa-angle-double-down" aria-hidden="true"></i>', '#', ['class' => 'btn btn-light float-end btn-auth-choice-more']);
 
                 // Div contains more auth clients
                 echo Html::beginTag('div', ['class' => 'auth-choice-more-buttons']);
@@ -184,7 +184,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
         }
 
         if (isset($viewOptions['buttonBackgroundColor'])) {
-            $textColor = (isset($viewOptions['buttonColor'])) ? $viewOptions['buttonColor'] : '#FFF';
+            $textColor = $viewOptions['buttonColor'] ?? '#FFF';
             $btnStyle = Html::cssStyleFromArray(['color' => $textColor . '!important', 'background-color' => $viewOptions['buttonBackgroundColor'] . '!important']);
             $btnClasses = '.btn-ac-' . $client->getName() . ', .btn-ac-' . $client->getName() . ':hover, .btn-ac-' . $client->getName() . ':active, .btn-ac-' . $client->getName() . ':visited';
 
@@ -196,7 +196,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
         if (!isset($htmlOptions['class'])) {
             $htmlOption['class'] = '';
         }
-        $htmlOptions['class'] .= ' ' . 'btn btn-default btn-ac-' . $client->getName();
+        $htmlOptions['class'] .= ' ' . 'btn btn-light btn-ac-' . $client->getName();
         $htmlOptions['data-pjax-prevent'] = '';
 
         $icon = (isset($viewOptions['cssIcon'])) ? '<i class="' . $viewOptions['cssIcon'] . '" aria-hidden="true"></i>' : '';

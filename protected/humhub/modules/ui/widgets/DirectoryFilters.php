@@ -9,9 +9,9 @@
 namespace humhub\modules\ui\widgets;
 
 use humhub\components\Widget;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\ui\form\widgets\DatePicker;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -55,7 +55,7 @@ abstract class DirectoryFilters extends Widget
 
         $this->addFilter('reset', [
             'type' => 'info',
-            'wrapperClass' => 'col-md-2 form-search-without-info',
+            'wrapperClass' => 'col-lg-2 form-search-without-info',
             'info' => Html::a(Yii::t('UiModule.base', 'Reset filters'), [$this->pageUrl], ['class' => 'form-search-reset']),
             'sortOrder' => 10000,
         ]);
@@ -109,7 +109,7 @@ abstract class DirectoryFilters extends Widget
     public static function getDefaultFilterData(): array
     {
         return [
-            'wrapperClass' => 'col-md-2',
+            'wrapperClass' => 'col-lg-2',
             'titleClass' => 'form-search-field-info',
             'inputClass' => 'form-control',
             'beforeInput' => '',
@@ -147,7 +147,7 @@ abstract class DirectoryFilters extends Widget
                 $activeTags = self::getValue($filter);
                 $filterOptions = empty($data['multiple']) ? [] : ['data-multiple' => 1];
                 $inputHtml .= Html::hiddenInput($filter, $activeTags, $filterOptions);
-                $activeTags = empty($activeTags) ? [] : explode(',', $activeTags);
+                $activeTags = empty($activeTags) ? [] : explode(',', (string) $activeTags);
 
                 foreach ($data['tags'] as $tagKey => $tagLabel) {
                     $isActiveTag = (empty($tagKey) && empty($activeTags))
@@ -219,7 +219,7 @@ abstract class DirectoryFilters extends Widget
 
         if (preg_match('/^(.+?)\[(.+?)\]$/', $filter, $arrayMatch)) {
             $array = Yii::$app->request->get($arrayMatch[1]);
-            return isset($array[$arrayMatch[2]]) ? $array[$arrayMatch[2]] : $defaultValue;
+            return $array[$arrayMatch[2]] ?? $defaultValue;
         }
 
         return Yii::$app->request->get($filter, $defaultValue);

@@ -59,6 +59,7 @@ return [
     'Add tags to your profile describing you and highlighting your skills and interests. Your tags will be displayed in your profile and in the \'People\' directory.' => '',
     'Blocked users' => '',
     'Define basic settings for your profile. You can add tags that fit you, choose the language and your time zone and block impolite users.' => '',
+    'Do you really want to delete your login background image?' => '',
     'Hide my online status' => '',
     'Markdown Editor Mode' => '',
     'Password recovery can only be initiated once every 10 minutes.' => '',

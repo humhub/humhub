@@ -37,7 +37,7 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
      */
     public const STATE_INSTALLED = 3;
 
-    private ?int $state;
+    private ?int $state = null;
 
     public function init()
     {
@@ -99,7 +99,7 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
     {
         try {
             Yii::$app->db->open();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return false;
         }
 

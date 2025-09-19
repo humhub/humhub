@@ -22,7 +22,6 @@ return [
     'Displaying {count} entries per page.' => 'Rodoma {count} prisijungimų viename puslapyje.',
     'Done' => 'Atlikta',
     'Driver' => 'Tvarkyklė',
-    'Dynamic Config' => 'Dinaminė konfigūracija',
     'Error' => 'Klaida',
     'Flush entries' => 'Prisijungimų antplūdis',
     'HumHub' => 'HumHub',

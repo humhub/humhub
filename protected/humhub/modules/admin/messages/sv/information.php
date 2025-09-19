@@ -24,7 +24,6 @@ return [
     'Displaying {count} entries per page.' => 'Visar {count} poster per sida.',
     'Done' => 'Klart',
     'Driver' => 'Driver',
-    'Dynamic Config' => 'Dynamisk konfiguration',
     'Error' => 'Error',
     'Flush entries' => 'Flush entries',
     'HumHub' => 'HumHub',

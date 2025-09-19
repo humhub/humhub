@@ -9,6 +9,7 @@
 namespace humhub\modules\ui\menu\widgets;
 
 use humhub\components\Event;
+use humhub\components\View;
 use humhub\libs\Sort;
 use humhub\modules\ui\menu\MenuEntry;
 use humhub\modules\ui\menu\MenuLink;
@@ -16,7 +17,6 @@ use humhub\widgets\BaseStack;
 use humhub\widgets\JsWidget;
 use Yii;
 use yii\helpers\Url;
-use yii\web\View;
 
 /**
  * Base class for menus and navigations.
@@ -265,7 +265,7 @@ abstract class Menu extends JsWidget
     {
         $result = [];
         foreach ($this->getSortedEntries() as $entry) {
-            if ((!$filterVisible || $entry->isVisible()) && (!$type || get_class($entry) === $type || is_subclass_of($entry, $type))) {
+            if ((!$filterVisible || $entry->isVisible()) && (!$type || $entry::class === $type || is_subclass_of($entry, $type))) {
                 $result[] = $entry;
             }
         }
@@ -338,7 +338,7 @@ abstract class Menu extends JsWidget
      */
     public static function markAsActive($searchStr)
     {
-        Event::on(static::class, static::EVENT_RUN, function ($event) use ($searchStr) {
+        Event::on(static::class, static::EVENT_RUN, function ($event) use ($searchStr): void {
             $event->sender->setActive($searchStr);
         });
     }
@@ -348,7 +348,7 @@ abstract class Menu extends JsWidget
      */
     public static function markAsInactive($url)
     {
-        Event::on(static::class, static::EVENT_RUN, function ($event) use ($url) {
+        Event::on(static::class, static::EVENT_RUN, function ($event) use ($url): void {
             $event->sender->setInactive($url);
         });
     }

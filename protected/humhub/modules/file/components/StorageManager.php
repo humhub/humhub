@@ -71,9 +71,7 @@ class StorageManager extends Component implements StorageManagerInterface
     public function getVariants($except = [])
     {
         return array_map(
-            function (string $s): string {
-                return basename($s);
-            },
+            fn(string $s): string => basename($s),
             FileHelper::findFiles($this->getPath(), ['except' => ArrayHelper::merge(['file'], $except)]),
         );
     }
@@ -155,10 +153,10 @@ class StorageManager extends Component implements StorageManagerInterface
             return $basePath . DIRECTORY_SEPARATOR . $this->file->guid;
         }
 
-        $path = $basePath . DIRECTORY_SEPARATOR .
-            substr($this->file->guid, 0, 1) . DIRECTORY_SEPARATOR .
-            substr($this->file->guid, 1, 1) . DIRECTORY_SEPARATOR .
-            $this->file->guid;
+        $path = $basePath . DIRECTORY_SEPARATOR
+            . substr($this->file->guid, 0, 1) . DIRECTORY_SEPARATOR
+            . substr($this->file->guid, 1, 1) . DIRECTORY_SEPARATOR
+            . $this->file->guid;
 
         FileHelper::createDirectory($path, $this->fileMode, true);
 

@@ -236,10 +236,10 @@ class ConfigController extends Controller
 
         $modules = $marketplaceModule->onlineModuleManager->getModules(false);
         foreach ($modules as $i => $module) {
-            if (!isset($module['useCases']) || strpos(
+            if (!isset($module['useCases']) || !str_contains(
                 $module['useCases'],
-                Yii::$app->settings->get('useCase'),
-            ) === false) {
+                (string) Yii::$app->settings->get('useCase'),
+            )) {
                 unset($modules[$i]);
             }
         }
@@ -276,7 +276,7 @@ class ConfigController extends Controller
      */
     public function actionSampleData()
     {
-        if (Yii::$app->getModule('installer')->settings->get('sampleData') == 1) {
+        if (Yii::$app->getModule('installer')->settings->get('sampleData')) {
             // Sample Data already created
             return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
         }
@@ -287,7 +287,7 @@ class ConfigController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             Yii::$app->getModule('installer')->settings->set('sampleData', $form->sampleData);
 
-            if (Yii::$app->getModule('installer')->settings->get('sampleData') == 1) {
+            if (Yii::$app->getModule('installer')->settings->get('sampleData')) {
                 // Add sample image to admin
                 $admin = User::find()->where(['id' => 1])->one();
                 $adminImage = new ProfileImage($admin->guid);
@@ -581,7 +581,7 @@ class ConfigController extends Controller
 
         try {
             Yii::$app->user->logout();
-        } catch (Exception $e) {
+        } catch (Exception) {
         }
         return $this->render('finished');
     }

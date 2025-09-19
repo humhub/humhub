@@ -17,8 +17,8 @@ humhub.module('comment', function (module, require, $) {
                 that.getInput().val('').trigger('autosize.resize');
                 richText.$.trigger('clear');
                 that.getUpload().reset();
-                that.$.find('.form-group').removeClass('has-error');
-                that.$.find('.help-block-error').html('');
+                that.$.find('.is-invalid').removeClass('is-invalid');
+                that.$.find('.invalid-feedback').html('');
             },
             400: function (response) {
                 that.replace(response.html);
@@ -52,7 +52,7 @@ humhub.module('comment', function (module, require, $) {
 
         $elements.hide().css('opacity', 1).fadeIn('fast');
 
-        this.$.find('hr').show();
+        this.$.find('hr').css('display', 'inherit');
     };
 
     Form.prototype.incrementCommentCount = function (count) {
@@ -123,14 +123,14 @@ humhub.module('comment', function (module, require, $) {
 
     Comment.prototype.delete = function (evt) {
         var form = Widget.instance(this.$.parent().siblings('.comment_create'));
-        var hideHr = !this.isNestedComment() && form.$.length && !this.$.siblings('.media').length;
+        var hideHr = !this.isNestedComment() && form.$.length && !this.$.siblings('.single-comment').length;
 
         this.$.data('content-delete-url', evt.$trigger.data('content-delete-url'));
 
         this.super('delete', {modal: module.config.modal.delteConfirm}).then(function ($confirm) {
             if ($confirm) {
                 module.log.success('success.delete');
-                hideHr && form.$.find('hr').hide();
+                hideHr && form.$.find('hr').css('display', 'none');
                 form.incrementCommentCount(-1);
             }
         }).catch(function (err) {
@@ -140,7 +140,7 @@ humhub.module('comment', function (module, require, $) {
 
     Comment.prototype.adminDelete = function (evt) {
         var $form = this.$.parent().siblings('.comment_create');
-        var hideHr = !this.isNestedComment() && $form.length && !this.$.siblings('.media').length;
+        var hideHr = !this.isNestedComment() && $form.length && !this.$.siblings('.single-comment').length;
 
         this.$.data('content-delete-url', evt.$trigger.data('content-delete-url'));
         this.$.data('admin-delete-modal-url', evt.$trigger.data('admin-delete-modal-url'));
@@ -149,7 +149,7 @@ humhub.module('comment', function (module, require, $) {
             if ($confirm) {
                 module.log.success('success.delete');
                 if (hideHr) {
-                    $form.find('hr').hide();
+                    $form.find('hr').css('display', 'none');
                 }
             }
         }).catch(function (err) {
@@ -263,14 +263,14 @@ humhub.module('comment', function (module, require, $) {
     };
 
     var init = function () {
-        $(document).on('mouseover', '.comment .media', function () {
+        $(document).on('mouseover', '.comment .single-comment', function () {
             var $this = $(this);
             var element = $this.find('.preferences:first');
             if (!loader.is($this.find('.comment-entry-loader'))) {
                 element.show();
             }
         });
-        $(document).on('mouseout', '.comment .media', function () {
+        $(document).on('mouseout', '.comment .single-comment', function () {
             // find dropdown menu
             var element = $(this).find('.preferences:first');
 
@@ -294,8 +294,8 @@ humhub.module('comment', function (module, require, $) {
 
         var $form = target.children('.comment_create');
 
-        if (!target.find('.comment .media').length && !target.closest('[data-action-component="comment.Comment"]').length) {
-            $form.find('hr').hide();
+        if (!target.find('.comment .single-comment').length && !target.closest('[data-action-component="comment.Comment"]').length) {
+            $form.find('hr').css('display', 'none');
         }
 
         $form.show();
@@ -308,7 +308,7 @@ humhub.module('comment', function (module, require, $) {
             target.find('.humhub-ui-richtext').trigger('focus');
         }
 
-        if (!visible && window.comments_collapsed && !target.find('.comment>.media').length) {
+        if (!visible && window.comments_collapsed && !target.find('.comment > .single-comment').length) {
             target.find('[data-action-click="comment.showMore"]').trigger('click');
         }
     }
@@ -325,19 +325,19 @@ humhub.module('comment', function (module, require, $) {
             //toggle parent comment
             target = evt.$target.closest('.comment').closest('.comment-container');
             toggleComment(target, false);
-            var richtext = Widget.instance(target.find('.ProsemirrorEditor:last'));
-            var mentioning = require('ui.richtext.prosemirror').buildMentioning(evt.$target.closest('.media').find('.media-heading a'));
+            var richtext = Widget.instance(target.find('.comment_create:last .ProsemirrorEditor:first'));
+            var mentioning = require('ui.richtext.prosemirror').buildMentioning(evt.$target.closest('.single-comment').find('.comment-heading a'));
             richtext.editor.init(mentioning);
             richtext.$.trigger('focus');
         }
     };
 
     var scrollActive = function (evt) {
-        evt.$trigger.closest('.content-create-input-group').addClass('scrollActive');
+        evt.$trigger.closest('.richtext-create-input-group').addClass('scrollActive');
     };
 
     var scrollInactive = function (evt) {
-        evt.$trigger.closest('.content-create-input-group').removeClass('scrollActive');
+        evt.$trigger.closest('.richtext-create-input-group').removeClass('scrollActive');
     };
 
     module.export({

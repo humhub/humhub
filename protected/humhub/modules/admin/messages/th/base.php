@@ -13,6 +13,7 @@ return [
   'Administrators' => 'ผู้ดูแลระบบ',
   'Advanced' => 'ขั้นสูง',
   'Advanced settings' => 'ตั้งค่าขั้นสูง',
+  'All' => 'ทั้งหมด',
   'Appearance' => 'ลักษณะที่ปรากฏ',
   'Approval' => 'อนุมัติ',
   'Authentication' => 'การตรวจสอบสิทธิ์',

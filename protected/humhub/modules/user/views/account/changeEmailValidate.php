@@ -1,6 +1,6 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 
 /**
  * @var string $newEmail

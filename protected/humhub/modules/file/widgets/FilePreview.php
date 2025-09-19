@@ -3,6 +3,7 @@
 namespace humhub\modules\file\widgets;
 
 use humhub\components\ActiveRecord;
+use humhub\helpers\Html;
 use humhub\modules\content\controllers\SearchController;
 use humhub\modules\content\helpers\SearchHelper;
 use humhub\modules\file\converter\TextConverter;
@@ -12,7 +13,6 @@ use humhub\widgets\JsWidget;
 use Yii;
 use yii\base\Model;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
 
 /**
  *
@@ -162,8 +162,8 @@ class FilePreview extends JsWidget
             if (!empty($searchController->searchRequest->keyword)) {
                 $converter = new TextConverter();
                 if (
-                    $converter->applyFile($file) &&
-                    SearchHelper::matchQuery($searchController->searchRequest->keyword, $converter->getContentAsText())
+                    $converter->applyFile($file)
+                    && SearchHelper::matchQuery($searchController->searchRequest->keyword, $converter->getContentAsText())
                 ) {
                     return true;
                 }

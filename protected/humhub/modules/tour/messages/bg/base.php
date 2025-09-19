@@ -15,11 +15,9 @@ return [
     'Cancel' => 'Отказ',
     'Don\'t lose track of things!<br /><br />This icon will keep you informed of activities and posts that concern you directly.' => 'Не губете следата на нещата!<br><br>Тази икона ще ви информира за дейности и публикации, които ви касаят директно.',
     'Drag a photo here or click to browse your files' => 'Плъзнете снимка тук или щракнете, за да прегледате вашите файлове',
-    'End guide' => 'Край на урока',
     'Get to know your way around the site\'s most important features with the following guides:' => 'Запознайте се с най-важните функции на сайта със следните ръководства:',
     'Hide my year of birth' => 'Скрий годината ми на раждане',
     'Howdy <strong>%firstname%</strong>, thank you for using %community%.' => 'Привет <strong>%firstname%</strong>, благодаря ви, че използвате %community%.',
-    'Next »' => 'Следващ »',
     'Ok' => 'ОК',
     'Save and close' => 'Запази и затвори',
     'The account menu gives you access to your private settings and allows you to manage your public profile.' => 'Менюто за акаунт ви дава достъп до личните ви настройки и ви позволява да управлявате публичният ви профил.',
@@ -31,6 +29,5 @@ return [
     'Your mobile phone number' => 'Вашият мобилен телефон',
     'Your phone number at work' => 'Вашият служебен телефон',
     'Your title or position' => 'Вашето звание или позиция',
-    '« Prev' => '« Предишен',
     'Your skills, knowledge and experience' => '',
 ];

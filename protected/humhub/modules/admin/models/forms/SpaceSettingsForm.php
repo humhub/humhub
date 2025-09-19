@@ -85,7 +85,7 @@ class SpaceSettingsForm extends Model
     /**
      * @var SettingsManager|null
      */
-    public ?SettingsManager $settingsManager;
+    public ?SettingsManager $settingsManager = null;
 
     /**
      * @inerhitdoc

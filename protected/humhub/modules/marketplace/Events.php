@@ -15,7 +15,7 @@ use humhub\modules\marketplace\search\MarketplaceSearchProvider;
 use humhub\modules\marketplace\services\MarketplaceService;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\user\widgets\AccountTopMenu;
-use humhub\widgets\Label;
+use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\MetaSearchWidget;
 use Yii;
 use yii\base\BaseObject;
@@ -65,9 +65,9 @@ class Events extends BaseObject
 
     public static function onAccountTopMenuInit($event)
     {
-        if (!Module::isMarketplaceEnabled() ||
-            !Yii::$app->user->isAdmin() ||
-            !Yii::$app->user->can(ManageModules::class)) {
+        if (!Module::isMarketplaceEnabled()
+            || !Yii::$app->user->isAdmin()
+            || !Yii::$app->user->can(ManageModules::class)) {
             return;
         }
 
@@ -75,7 +75,7 @@ class Events extends BaseObject
         $menu = $event->sender;
 
         $updatesCount = (new MarketplaceService())->getPendingModuleUpdateCount();
-        $updatesCountInfo = $updatesCount > 0 ? ' ' . Label::defaultType($updatesCount) : '';
+        $updatesCountInfo = $updatesCount > 0 ? ' ' . Badge::light($updatesCount) : '';
 
         $menu->addEntry(new MenuLink([
             'label' => Yii::t('MarketplaceModule.base', 'Marketplace') . $updatesCountInfo,
@@ -87,9 +87,9 @@ class Events extends BaseObject
 
     public static function onMetaSearchInit($event)
     {
-        if (!Module::isMarketplaceEnabled() ||
-            !Yii::$app->user->isAdmin() ||
-            !Yii::$app->user->can(ManageModules::class)) {
+        if (!Module::isMarketplaceEnabled()
+            || !Yii::$app->user->isAdmin()
+            || !Yii::$app->user->can(ManageModules::class)) {
             return;
         }
 

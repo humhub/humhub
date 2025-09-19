@@ -31,7 +31,7 @@ class SearchUpdateDocument extends LongRunningActiveJob implements ExclusiveJobI
      */
     public function run()
     {
-        return $this->getService()->run(function () {
+        return $this->getService()->run(function (): void {
             $content = Content::findOne(['id' => $this->contentId]);
             if ($content) {
                 (new ContentSearchService($content))->update(false);

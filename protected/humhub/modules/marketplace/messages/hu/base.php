@@ -117,7 +117,6 @@ The license was successfully removed!
     'Save and update' => 'Mentés és frissítés',
     'Search' => 'Keresés',
     'Search...' => 'Keresés...',
-    'Settings' => 'Beállítások',
     'Stop updating' => 'Frissítés leállítása',
     'Tags' => 'Címkék',
     'The HumHub project does not guarantee the functionality, quality or the continuous development of this Module.' => 'A HumHub projekt nem garantálja ennek a modulnak a funkcionalitását, minőségét vagy folyamatos fejlesztését.',

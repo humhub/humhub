@@ -10,17 +10,17 @@ namespace humhub\components;
 
 use Exception;
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\helpers\Html;
+use humhub\modules\comment\models\Comment;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
-use humhub\modules\comment\models\Comment;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
-use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\base\BaseObject;
-use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\Url;
 
@@ -98,7 +98,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
 
         if ($this->recordClass) {
             $this->record = Yii::createObject($this->recordClass);
-            $this->record->class = get_class($this);
+            $this->record->class = static::class;
             $this->record->module = $this->moduleId;
         }
     }
@@ -260,7 +260,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
         }
 
         // Create absolute URL, for E-Mails
-        if (substr($url, 0, 4) !== 'http') {
+        if (!str_starts_with($url, 'http')) {
             $url = Url::to($url, true);
         }
 
@@ -299,7 +299,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
     public function asArray(User $user)
     {
         $result = [
-            'class' => get_class($this),
+            'class' => static::class,
             'text' => $this->text(),
             'html' => $this->html(),
         ];
@@ -329,7 +329,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
      * @return string|null
      * @throws Exception
      */
-    public function getContentInfo(ContentOwner $content = null, $withContentName = true)
+    public function getContentInfo(?ContentOwner $content = null, $withContentName = true)
     {
         if (!$this->hasContent() && !$content) {
             return null;
@@ -359,7 +359,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
      * @return string|null
      * @throws Exception
      */
-    public function getContentPreview(ContentOwner $content = null, $maxLength = 60)
+    public function getContentPreview(?ContentOwner $content = null, $maxLength = 60)
     {
         if (!$this->hasContent() && !$content) {
             return null;
@@ -390,7 +390,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
      * @throws Exception
      * @since 1.4
      */
-    public function getContentPlainTextInfo(ContentOwner $content = null, $withContentName = true)
+    public function getContentPlainTextInfo(?ContentOwner $content = null, $withContentName = true)
     {
         if (!$this->hasContent() && !$content) {
             return null;
@@ -419,7 +419,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
      * @throws Exception
      * @since 1.4
      */
-    public function getContentPlainTextPreview(ContentOwner $content = null, $maxLength = 60)
+    public function getContentPlainTextPreview(?ContentOwner $content = null, $maxLength = 60)
     {
         if (!$this->hasContent() && !$content) {
             return null;
@@ -449,7 +449,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
      * @param ContentOwner $content
      * @return string|null
      */
-    public function getContentName(ContentOwner $content = null)
+    public function getContentName(?ContentOwner $content = null)
     {
         if (!$this->hasContent() && !$content) {
             return null;
@@ -494,7 +494,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
         $sourcePk = null;
 
         if ($this->source) {
-            $sourceClass = get_class($this->source);
+            $sourceClass = $this->source::class;
             $sourcePk = $this->source->getPrimaryKey();
         }
 

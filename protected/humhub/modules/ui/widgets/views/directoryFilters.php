@@ -5,7 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\ui\widgets\DirectoryFilters;
 use yii\helpers\Url;
 

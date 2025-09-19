@@ -13,6 +13,7 @@ use humhub\helpers\DataTypeHelper;
 use humhub\modules\user\models\fieldtype\BaseType;
 use Yii;
 use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
 
@@ -72,12 +73,22 @@ class ProfileField extends ActiveRecord
             [['module_id', 'field_type_class', 'title'], 'string', 'max' => 255],
             ['internal_name', 'string', 'max' => 100],
             [['ldap_attribute', 'translation_category'], 'string', 'max' => 255],
+            [['translation_category'], 'validateTranslationCategory'],
             ['internal_name', 'checkInternalName'],
             ['internal_name', 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9_]/', 'message' => Yii::t('UserModule.profile', 'Only alphanumeric characters allowed!')],
             ['internal_name', 'match', 'pattern' => '/[a-zA-Z]/', 'message' => Yii::t('UserModule.profile', 'Must contain at least one character.')],
             ['field_type_class', 'checkType'],
             [['description'], 'safe'],
         ];
+    }
+
+    public function validateTranslationCategory($attribute)
+    {
+        try {
+            Yii::$app->i18n->getMessageSource($this->translation_category);
+        } catch (InvalidConfigException $e) {
+            $this->addError($attribute, $e->getMessage());
+        }
     }
 
     /**
@@ -298,7 +309,7 @@ class ProfileField extends ActiveRecord
             }
         } else {
             $profileFieldTypes = new fieldtype\BaseType();
-            if (!key_exists($this->field_type_class, $profileFieldTypes->getFieldTypes())) {
+            if (!array_key_exists($this->field_type_class, $profileFieldTypes->getFieldTypes())) {
                 $this->addError('field_type_class', Yii::t('UserModule.profile', 'Invalid field type!'));
             }
         }

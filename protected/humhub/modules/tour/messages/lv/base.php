@@ -16,11 +16,9 @@ return [
     '<strong>Start</strong> space guide' => '',
     'Don\'t lose track of things!<br /><br />This icon will keep you informed of activities and posts that concern you directly.' => '',
     'Drag a photo here or click to browse your files' => '',
-    'End guide' => '',
     'Get to know your way around the site\'s most important features with the following guides:' => '',
     'Hide my year of birth' => '',
     'Howdy <strong>%firstname%</strong>, thank you for using %community%.' => '',
-    'Next »' => '',
     'Save and close' => '',
     'The account menu gives you access to your private settings and allows you to manage your public profile.' => '',
     'This action will remove the tour panel from your dashboard. You can reactivate it at<br>Account settings <i class="fa fa-caret-right"></i> Settings.' => '',
@@ -32,5 +30,4 @@ return [
     'Your phone number at work' => '',
     'Your skills, knowledge and experience' => '',
     'Your title or position' => '',
-    '« Prev' => '',
 ];

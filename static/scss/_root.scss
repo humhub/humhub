@@ -1,0 +1,148 @@
+//
+// CSS Variables
+// @since 1.14.0
+// --------------------------------------------------
+
+:root {
+    // Text colors
+    --hh-text-color-main: #{$text-color-main};
+    --hh-text-color-default: #{$text-color-default};
+    --hh-text-color-secondary: #{$text-color-secondary};
+    --hh-text-color-highlight: #{$text-color-highlight};
+    --hh-text-color-soft: #{$text-color-soft};
+    --hh-text-color-soft2: #{$text-color-soft2};
+    --hh-text-color-soft3: #{$text-color-soft3};
+    --hh-text-color-contrast: #{$text-color-contrast};
+
+    // Background colors
+    --hh-background-color-main: #{$background-color-main};
+    --hh-background-color-secondary: #{$background-color-secondary};
+    --hh-background-color-page: #{$background-color-page};
+    --hh-background-color-highlight: #{$background-color-highlight};
+    --hh-background-color-highlight-soft: #{$background-color-highlight-soft};
+    --hh-background3: #{$background3};
+    --hh-background4: #{$background4};
+
+    // Bootstrap Alert boxes
+    // Success
+    --hh-background-color-success: #{$background-color-success};
+    --hh-text-color-success: #{$text-color-success};
+    --hh-border-color-success: #{$border-color-success};
+    // Warning
+    --hh-background-color-warning: #{$background-color-warning};
+    --hh-text-color-warning: #{$text-color-warning};
+    --hh-border-color-warning: #{$border-color-warning};
+    // Danger
+    --hh-background-color-danger: #{$background-color-danger};
+    --hh-text-color-danger: #{$text-color-danger};
+    --hh-border-color-danger: #{$border-color-danger};
+
+    // Fonts
+    --hh-mail-font-family: #{$mail-font-family};
+
+    // Dimensions
+    --hh-fixed-header-height: 130px;
+    --hh-fixed-footer-height: 0px; // Force keeping `px` after CSS compilation (required for `calc()` function)
+
+
+    // @deprecated since 1.18, use the above variable instead
+    --default: #{$default};
+    --primary: var(--bs-primary);
+    --accent: var(--bs-accent);
+    --info: var(--bs-info);
+    --success: var(--bs-success);
+    --warning: var(--bs-warning);
+    --danger: var(--bs-danger);
+    --link: var(--bs-link-color);
+    --text-color-main: #{$text-color-main};
+    --text-color-default: #{$text-color-default};
+    --text-color-secondary: #{$text-color-secondary};
+    --text-color-highlight: #{$text-color-highlight};
+    --text-color-soft: #{$text-color-soft};
+    --text-color-soft2: #{$text-color-soft2};
+    --text-color-soft3: #{$text-color-soft3};
+    --text-color-contrast: #{$text-color-contrast};
+    --background-color-main: #{$background-color-main};
+    --background-color-secondary: #{$background-color-secondary};
+    --background-color-page: #{$background-color-page};
+    --background-color-highlight: #{$background-color-highlight};
+    --background-color-highlight-soft: #{$background-color-highlight-soft};
+    --background3: #{$background3};
+    --background4: #{$background4};
+    --background-color-success: #{$background-color-success};
+    --text-color-success: #{$text-color-success};
+    --border-color-success: #{$border-color-success};
+    --background-color-warning: #{$background-color-warning};
+    --text-color-warning: #{$text-color-warning};
+    --border-color-warning: #{$border-color-warning};
+    --background-color-danger: #{$background-color-danger};
+    --text-color-danger: #{$text-color-danger};
+    --border-color-danger: #{$border-color-danger};
+    --mail-font-family: #{$mail-font-family};
+}
+
+// Dark Mode CSS Variables
+@if $enable-dark-mode {
+    @include color-mode(dark, true) {
+        color-scheme: dark;
+        // Text colors
+        --hh-text-color-main: #{$text-color-main-dark};
+        --hh-text-color-default: #{$text-color-default-dark};
+        --hh-text-color-secondary: #{$text-color-secondary-dark};
+        --hh-text-color-highlight: #{$text-color-highlight-dark};
+        --hh-text-color-soft: #{$text-color-soft-dark};
+        --hh-text-color-soft2: #{$text-color-soft2-dark};
+        --hh-text-color-soft3: #{$text-color-soft3-dark};
+        --hh-text-color-contrast: #{$text-color-contrast-dark};
+
+        // Background colors
+        --hh-background-color-main: #{$background-color-main-dark};
+        --hh-background-color-secondary: #{$background-color-secondary-dark};
+        --hh-background-color-page: #{$background-color-page-dark};
+        --hh-background-color-highlight: #{$background-color-highlight-dark};
+        --hh-background-color-highlight-soft: #{$background-color-highlight-soft-dark};
+        --hh-background3: #{$background3-dark};
+        --hh-background4: #{$background4-dark};
+
+        // Bootstrap Alert boxes
+        // Success
+        --hh-background-color-success: #{$background-color-success-dark};
+        --hh-text-color-success: #{$text-color-success-dark};
+        --hh-border-color-success: #{$border-color-success-dark};
+        // Warning
+        --hh-background-color-warning: #{$background-color-warning-dark};
+        --hh-text-color-warning: #{$text-color-warning-dark};
+        --hh-border-color-warning: #{$border-color-warning-dark};
+        // Danger
+        --hh-background-color-danger: #{$background-color-danger-dark};
+        --hh-text-color-danger: #{$text-color-danger-dark};
+        --hh-border-color-danger: #{$border-color-danger-dark};
+
+        // @deprecated since 1.18, use the above variable instead
+        --default: #2a2a2a;
+        --text-color-main: #{$text-color-main-dark};
+        --text-color-default: #{$text-color-default-dark};
+        --text-color-secondary: #{$text-color-secondary-dark};
+        --text-color-highlight: #{$text-color-highlight-dark};
+        --text-color-soft: #{$text-color-soft-dark};
+        --text-color-soft2: #{$text-color-soft2-dark};
+        --text-color-soft3: #{$text-color-soft3-dark};
+        --text-color-contrast: #{$text-color-contrast-dark};
+        --background-color-main: #{$background-color-main-dark};
+        --background-color-secondary: #{$background-color-secondary-dark};
+        --background-color-page: #{$background-color-page-dark};
+        --background-color-highlight: #{$background-color-highlight-dark};
+        --background-color-highlight-soft: #{$background-color-highlight-soft-dark};
+        --background3: #{$background3-dark};
+        --background4: #{$background4-dark};
+        --background-color-success: #{$background-color-success-dark};
+        --text-color-success: #{$text-color-success-dark};
+        --border-color-success: #{$border-color-success-dark};
+        --background-color-warning: #{$background-color-warning-dark};
+        --text-color-warning: #{$text-color-warning-dark};
+        --border-color-warning: #{$border-color-warning-dark};
+        --background-color-danger: #{$background-color-danger-dark};
+        --text-color-danger: #{$text-color-danger-dark};
+        --border-color-danger: #{$border-color-danger-dark};
+    }
+}

@@ -44,6 +44,7 @@ class BlockUsersCest
     {
         $I->amOnPage('/admin/authentication');
         $I->click('[for="authenticationsettingsform-blockusers"]');
+        $I->scrollToBottom();
         $I->wait(1);
         $I->click('Save');
     }

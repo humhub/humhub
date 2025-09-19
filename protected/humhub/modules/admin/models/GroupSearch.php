@@ -8,9 +8,14 @@
 
 namespace humhub\modules\admin\models;
 
+use humhub\modules\admin\permissions\ManageGroups;
+use humhub\modules\user\models\forms\EditGroupForm;
+use humhub\modules\user\models\Group;
+use humhub\modules\user\models\GroupUser;
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use humhub\modules\user\models\Group;
+use yii\db\Expression;
 
 /**
  * Description of GroupSearch
@@ -19,10 +24,12 @@ use humhub\modules\user\models\Group;
  */
 class GroupSearch extends Group
 {
+    public $type;
+
     public function rules()
     {
         return [
-            [['name', 'description'], 'safe'],
+            [['name', 'description', 'type'], 'safe'],
         ];
     }
 
@@ -44,7 +51,7 @@ class GroupSearch extends Group
      */
     public function search($params)
     {
-        $query = Group::find()->orderBy(['sort_order' => SORT_ASC, 'name' => SORT_ASC]);
+        $query = Group::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -55,6 +62,13 @@ class GroupSearch extends Group
             'attributes' => [
                 'name',
                 'descriptions',
+                'type' => [
+                    'asc' => ['`parent_group_id` IS NULL' => SORT_ASC, 'name' => SORT_ASC],
+                    'desc' => ['`parent_group_id` IS NULL' => SORT_DESC, 'name' => SORT_ASC],
+                ],
+            ],
+            'defaultOrder' => [
+                'type' => SORT_DESC,
             ],
         ]);
 
@@ -67,6 +81,27 @@ class GroupSearch extends Group
 
         $query->andFilterWhere(['like', 'name', $this->name]);
         $query->andFilterWhere(['like', 'description', $this->description]);
+
+        if (!empty($this->type)) {
+            $operator = $this->type === EditGroupForm::TYPE_NORMAL ? 'IS' : 'IS NOT';
+            $query->andFilterWhere([$operator, 'parent_group_id', new Expression('NULL')]);
+        }
+
+        if (!Yii::$app->user->can(ManageGroups::class)) {
+            // Restrict to groups where current user is a manager
+            $managerGroupQuery = GroupUser::find()
+                ->select('group_id')
+                ->where(['user_id' => Yii::$app->user->id])
+                ->andWhere(['is_group_manager' => true]);
+
+            $query->leftJoin(GroupUser::tableName(), GroupUser::tableName() . '.group_id = ' . Group::tableName() . '.id')
+                ->andWhere([
+                    'OR',
+                    [GroupUser::tableName() . '.group_id' => $managerGroupQuery],
+                    // Subgroups where current user is a manager of the parent group
+                    [Group::tableName() . '.parent_group_id' => $managerGroupQuery],
+                ]);
+        }
 
         return $dataProvider;
     }

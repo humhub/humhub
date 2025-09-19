@@ -31,7 +31,6 @@ return [
     'By Name' => 'By 이름',
     'Cancel' => '취소',
     'Change visibility' => '설정 변경',
-    'Close' => '닫기',
     'Color' => '색깔',
     'Could not request membership!' => '멤버십을 요청할 수 없습니다!',
     'Create new link' => '새 링크 만들기',

@@ -29,20 +29,15 @@ abstract class BasePage extends Component
      */
     public $route;
 
-    /**
-     * @var \Codeception\Actor the testing guy object
-     */
-    protected $actor;
-
 
     /**
      * Constructor.
      *
-     * @param \Codeception\Actor $I the testing guy object
+     * @param \Codeception\Actor $actor the testing guy object
      */
-    public function __construct($I)
+    public function __construct(protected $actor)
     {
-        $this->actor = $I;
+        Yii::$app->cache->flush();
     }
 
     /**

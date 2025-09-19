@@ -17,15 +17,12 @@ use Yii;
  */
 class FilterService
 {
-    private Module $module;
-    private string $moduleId;
-    private int $categoryId;
+    private readonly string $moduleId;
+    private readonly int $categoryId;
     private array $tags;
 
-    public function __construct(Module $module, ?int $categoryId = null, ?array $tags = null)
+    public function __construct(private readonly Module $module, ?int $categoryId = null, ?array $tags = null)
     {
-        $this->module = $module;
-
         $this->moduleId = $moduleId ?? Yii::$app->request->get('id', '');
 
         $this->categoryId = $categoryId ?? Yii::$app->request->get('categoryId', 0);
@@ -34,15 +31,15 @@ class FilterService
             $this->tags = $tags;
         } else {
             $tags = Yii::$app->request->get('tags', ModuleFilters::getDefaultValue('tags'));
-            $this->tags = empty($tags) ? [] : explode(',', $tags);
+            $this->tags = empty($tags) ? [] : explode(',', (string) $tags);
         }
     }
 
     public function isFiltered(): bool
     {
-        return $this->isFilteredById() &&
-            $this->isFilteredByCategory() &&
-            $this->isFilteredByTags();
+        return $this->isFilteredById()
+            && $this->isFilteredByCategory()
+            && $this->isFilteredByTags();
     }
 
     public function isFilteredById(): bool

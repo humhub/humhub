@@ -1,8 +1,9 @@
 <?php
-/* @var $this View */
+/* @var $this \humhub\components\View */
 
 /* @var $container Space */
 
+use humhub\components\View;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\FollowButton;
 use humhub\modules\space\widgets\HeaderControls;
@@ -10,17 +11,16 @@ use humhub\modules\space\widgets\HeaderControlsMenu;
 use humhub\modules\space\widgets\HeaderCounterSet;
 use humhub\modules\space\widgets\InviteButton;
 use humhub\modules\space\widgets\MembershipButton;
-use humhub\modules\ui\view\components\View;
 
 ?>
 
 <div class="panel-body">
     <div class="panel-profile-controls">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-lg-12">
                 <?= HeaderCounterSet::widget(['space' => $container]); ?>
 
-                <div class="controls controls-header pull-right">
+                <div class="controls controls-header float-end">
                     <?= HeaderControls::widget(['widgets' => [
                         [InviteButton::class, ['space' => $container], ['sortOrder' => 10]],
                         [MembershipButton::class, [

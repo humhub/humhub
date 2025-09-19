@@ -635,17 +635,19 @@ humhub.module('stream.Stream', function (module, require, $) {
         for (var filter in errors) {
             var filterInput = this.filter.$.find('[data-filter-category="' + filter + '"]');
             if (filterInput.length) {
-                filterInput.parent()
-                    .addClass('has-error')
-                    .append('<div class="help-block help-block-error">' + errors[filter] + '</div>');
+                filterInput
+                    .addClass('is-invalid')
+                    .parent()
+                    .append('<div class="invalid-feedback">' + errors[filter] + '</div>');
             }
         }
     };
 
     Stream.prototype.clearFilterErrors = function () {
-        this.filter.$.find('[data-filter-category]').parent()
-            .removeClass('has-error')
-            .find('div.help-block.help-block-error').remove();
+        this.filter.$.find('[data-filter-category]')
+            .removeClass('is-invalid')
+            .parent()
+            .find('.invalid-feedback').remove();
     };
 
     Stream.prototype.onSingleEntryStream = function () {

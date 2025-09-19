@@ -17,7 +17,6 @@ return [
     'Ok' => 'Labi',
     'Register' => 'Reģistrēties',
     'Search' => 'Meklēt',
-    'Settings' => 'Iestatījumi',
     'Third-party' => 'Trešās-puses',
     'Third-party disclaimer' => 'Trešās puses atruna',
     'Version:' => 'Versija:',

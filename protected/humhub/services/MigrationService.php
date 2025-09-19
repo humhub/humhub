@@ -16,7 +16,7 @@ use humhub\components\Module;
 use humhub\events\MigrationEvent;
 use humhub\helpers\DataTypeHelper;
 use humhub\interfaces\ApplicationInterface;
-use humhub\modules\admin\models\forms\CacheSettingsForm;
+use humhub\modules\admin\libs\CacheHelper;
 use Throwable;
 use uninstall;
 use Yii;
@@ -40,7 +40,7 @@ class MigrationService extends Component
     protected const MIGRATION_UP = 'up';
 
     protected BaseModule $module;
-    private ?string $path;
+    private ?string $path = null;
     private ?int $lastMigrationResult = null;
     private ?string $lastMigrationOutput = null;
 
@@ -137,13 +137,13 @@ class MigrationService extends Component
 
         $migrationOutput = $this->getLastMigrationOutput();
 
-        return !str_contains($migrationOutput, 'No new migrations found.');
+        return !str_contains((string) $migrationOutput, 'No new migrations found.');
     }
 
     public function getPendingMigrations(): array
     {
-        return $this->runAction() === self::DB_ACTION_PENDING &&
-        preg_match_all('/(^|[\s\t]+)(m\d+.+)(\n|$)/', $this->getLastMigrationOutput(), $matches)
+        return $this->runAction() === self::DB_ACTION_PENDING
+        && preg_match_all('/(^|[\s\t]+)(m\d+.+)(\n|$)/', (string) $this->getLastMigrationOutput(), $matches)
             ? $matches[2]
             : [];
     }
@@ -182,10 +182,7 @@ class MigrationService extends Component
         Event::on(
             MigrateController::class,
             Controller::EVENT_AFTER_ACTION,
-            [
-                $this,
-                'onMigrationControllerAfterAction',
-            ],
+            $this->onMigrationControllerAfterAction(...),
             $result,
         );
 
@@ -212,10 +209,7 @@ class MigrationService extends Component
         Event::off(
             MigrateController::class,
             Controller::EVENT_AFTER_ACTION,
-            [
-                $this,
-                'onMigrationControllerAfterAction',
-            ],
+            $this->onMigrationControllerAfterAction(...),
         );
 
         return $this->checkMigrationStatus($result, $controller->getLastMigration());
@@ -396,7 +390,7 @@ class MigrationService extends Component
     {
         if ($action === self::DB_ACTION_RUN) {
             $this->migrateUp();
-            $this->lastMigrationOutput .= "\n" . CacheSettingsForm::flushCache();
+            $this->lastMigrationOutput .= "\n" . CacheHelper::flushCache();
             $this->storeLastMigrationOutput();
             return self::DB_ACTION_SESSION;
         }

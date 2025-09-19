@@ -1,0 +1,767 @@
+//
+// Variables
+// --------------------------------------------------
+
+// humhub defaults not available as pre-defined variables
+// These should not be overridden.
+
+$form-control-default-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+
+$form-control-focus-box-shadow: $input-focus-box-shadow, 0 0 8px rgba(color-mix(in srgb, $input-focus-border-color, transparent 40%), 0.6);
+
+$form-control-transition: border-color ease-in-out .15s, box-shadow ease-in-out 15s;
+
+// Custom variables
+// -------------------------
+
+$dropdown-arrow-color: $input-color;
+$dropdown-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+$clear-selection-color: $dropdown-arrow-color;
+$select2-caret-width: 1rem; // we cannot use $caret-width because it's a em value instead of rem
+
+//
+// Mixins
+// --------------------------------------------------
+
+@mixin humhub-input-defaults() {
+    background-color: var(--hh-background-color-main);
+    border: 2px solid var(--hh-background3);
+    border-radius: $input-border-radius;
+    color: $input-color;
+    font-family: $font-family-base;
+    font-size: $font-size-base;
+}
+
+// $see http://gethumhub.com/css/#forms-control-validation
+@mixin validation-state-focus($color) {
+    $shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px lighten($color, 20%);
+
+    &.select2-dropdown,
+    &.select2-selection {
+        border-color: $color;
+    }
+
+    &.select2-container--focus .select2-selection,
+    &.select2-container--open .select2-selection {
+        @include box-shadow($shadow);
+        border-color: darken($color, 10%);
+    }
+
+    &.select2-drop.select2-drop-above {
+        border-top-color: darken($color, 10%);
+    }
+}
+
+// dropdown arrow when dropdown is open
+@mixin dropdown-arrow() {
+    .select2-selection--single {
+        /**
+         * Make the dropdown arrow point up while the dropdown is visible.
+         */
+
+        .select2-selection__arrow b {
+            border-color: transparent transparent $dropdown-border-color transparent;
+            border-width: 0 $caret-width $caret-width $caret-width;
+        }
+    }
+}
+
+.select2-container--humhub {
+    display: block;
+
+    /*------------------------------------*\
+            #COMMON STYLES
+    \*------------------------------------*/
+
+    .picker-color {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border-radius: 4px;
+        position: relative;
+        top: 3px;
+    }
+
+    .select2-selection {
+        @include humhub-input-defaults;
+        outline: 0;
+        min-height: 35px;
+        font-size: 14px;
+        background-color: var(--hh-background-color-main);
+    }
+
+    /**
+     * Search field in the Select2 dropdown.
+     */
+
+    .select2-search--dropdown {
+        .select2-search__field {
+            @include humhub-input-defaults;
+        }
+    }
+
+    /**
+     * No outline for all search fields - in the dropdown
+     * and inline in multi Select2s.
+     */
+
+    .select2-search__field {
+        outline: 0;
+
+        &::placeholder {
+            color: $input-placeholder-color;
+            font-weight: normal;
+        }
+
+    }
+
+    .select2-results__option--highlighted[aria-selected] {
+        background-color: var(--hh-background-color-secondary) !important;
+    }
+
+    /**
+     * Adjust Select2's choices hover and selected styles to match
+     * humhub 3's default dropdown styles.
+     *
+     * $see http://gethumhub.com/components/#dropdowns
+     */
+
+    .select2-results__option {
+
+        &[role=group] {
+            padding: 0;
+        }
+
+        /**
+         * Disabled results.
+         *
+         * $see https://select2.github.io/examples.html#disabled-results
+         */
+
+        &[aria-disabled=true] {
+            color: $dropdown-link-disabled-color;
+            cursor: not-allowed;
+        }
+
+        /**
+         * Hover state.
+         */
+
+        &[aria-selected=true] {
+            background-color: $dropdown-link-hover-bg;
+            color: $dropdown-link-hover-color;
+            border-left: 3px solid transparent;
+        }
+
+        &[aria-selected=false] {
+            border-left: 3px solid transparent;
+        }
+
+        /**
+         * Selected state.
+         */
+
+        &--highlighted[aria-selected] {
+            background-color: var(--bs-secondary);
+            border-left: 3px solid var(--bs-accent);
+            color: var(--hh-text-color-highlight);
+        }
+
+        .select2-results__option {
+            padding: $input-btn-padding-y $input-btn-padding-x;
+
+            .select2-results__group {
+                padding-left: 0;
+            }
+
+            .select2-results__option {
+                margin-left: -$input-btn-padding-x;
+                padding-left: $input-btn-padding-x*2;
+
+                .select2-results__option {
+                    margin-left: -$input-btn-padding-x*2;
+                    padding-left: $input-btn-padding-x*3;
+
+                    .select2-results__option {
+                        margin-left: -$input-btn-padding-x*3;
+                        padding-left: $input-btn-padding-x*4;
+
+                        .select2-results__option {
+                            margin-left: -$input-btn-padding-x*4;
+                            padding-left: $input-btn-padding-x*5;
+
+                            .select2-results__option {
+                                margin-left: -$input-btn-padding-x*5;
+                                padding-left: $input-btn-padding-x*6;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .select2-results__group {
+        color: $dropdown-header-color;
+        display: block;
+        padding: $input-btn-padding-y $input-btn-padding-x;
+        font-size: $font-size-sm;
+        line-height: $line-height-base;
+        white-space: nowrap;
+    }
+
+    &.select2-container--focus,
+    &.select2-container--open {
+        .select2-selection {
+            border: 2px solid var(--bs-accent);
+            outline: 0;
+            box-shadow: none;
+        }
+    }
+
+    &.select2-container--open {
+        /**
+         * Make the dropdown arrow point up while the dropdown is visible.
+         */
+
+        .select2-selection .select2-selection__arrow b {
+            border-color: transparent transparent $dropdown-arrow-color transparent;
+            border-width: 0 $caret-width $caret-width $caret-width;
+        }
+
+        /**
+         * Handle border radii of the container when the dropdown is showing.
+         */
+
+        &.select2-container--below {
+            .select2-selection {
+                //@include border-bottom-radius(0);
+                //border-bottom-color: transparent;
+            }
+        }
+
+        &.select2-container--above {
+            .select2-selection {
+                //@include border-top-radius(0);
+                //border-top-color: transparent;
+            }
+        }
+    }
+
+    /**
+     * Clear the selection.
+     */
+
+    .select2-selection__clear {
+        color: $clear-selection-color;
+        cursor: pointer;
+        float: right;
+        font-weight: bold;
+        margin-right: 10px;
+
+        &:hover {
+            color: #333;
+        }
+    }
+
+    /**
+     * Address disabled Select2 styles.
+     *
+     * $see https://select2.github.io/examples.html#disabled
+     * $see http://gethumhub.com/css/#forms-control-disabled
+     */
+
+    &.select2-container--disabled {
+
+        .select2-selection {
+            border-color: $input-border-color;
+            @include box-shadow(none);
+        }
+
+        .select2-selection,
+        .select2-search__field {
+            cursor: not-allowed;
+        }
+
+        .select2-selection {
+            background-color: var(--bs-secondary-bg);
+        }
+
+        .select2-selection--multiple .select2-selection__choice {
+            background-color: $btn-link-disabled-color;
+        }
+
+        .select2-selection__clear,
+        .select2-selection--multiple .select2-selection__choice__remove {
+            display: none;
+        }
+    }
+
+    /*------------------------------------*\
+            #DROPDOWN
+    \*------------------------------------*/
+
+    /**
+     * Dropdown border color and box-shadow.
+     */
+
+    .select2-dropdown {
+        @include box-shadow($dropdown-box-shadow);
+        border-color: var(--hh-background3);
+        overflow-x: hidden;
+        margin-top: -1px;
+
+        &--above {
+            margin-top: 1px;
+        }
+    }
+
+    /**
+     * Limit the dropdown height.
+     */
+
+    .select2-results > .select2-results__options {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    /*------------------------------------*\
+            #SINGLE SELECT2
+    \*------------------------------------*/
+
+    .select2-selection--single {
+        height: $input-height;
+        line-height: $line-height-base;
+        padding: $input-btn-padding-y $input-btn-padding-x + $select2-caret-width $input-btn-padding-y $input-btn-padding-x;
+        background-color: var(--hh-background-color-main);
+
+        /**
+         * Adjust the single Select2's dropdown arrow button appearance.
+         */
+
+        .select2-selection__arrow {
+            position: absolute;
+            bottom: 0;
+            right: $input-btn-padding-x;
+            top: 0;
+            width: $caret-width;
+
+            b {
+                border-color: $dropdown-arrow-color transparent transparent transparent;
+                border-style: solid;
+                border-width: $caret-width $caret-width 0 $caret-width;
+                height: 0;
+                left: 0;
+                margin-left: -$caret-width;
+                margin-top: -$caret-width/2;
+                position: absolute;
+                top: 50%;
+                width: 0;
+            }
+        }
+
+        .select2-selection__rendered {
+            color: $input-color;
+            padding: 0;
+        }
+
+        .select2-selection__placeholder {
+            color: $input-placeholder-color;
+        }
+    }
+
+    /*------------------------------------*\
+        #MULTIPLE SELECT2
+    \*------------------------------------*/
+
+    .select2-selection--multiple {
+        min-height: $input-height;
+        padding: 0.1rem 0.2rem;
+
+        .picker-color {
+            top: 4px;
+            margin-left: 3px;
+        }
+
+
+        .select2-selection__rendered {
+            box-sizing: border-box;
+            display: block;
+            line-height: $line-height-base;
+            list-style: none;
+            margin: 0;
+            overflow: hidden;
+            padding: 0;
+            width: 100%;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .select2-selection__placeholder {
+            color: $input-placeholder-color;
+            float: left;
+            margin-top: 5px;
+        }
+
+        /**
+         * Make Multi Select2's choices match humhub 3's default button styles.
+         */
+
+        .select2-selection__choice {
+            color: $input-color;
+            border-radius: 4px;
+            cursor: default;
+            float: left;
+            padding: 0 $input-btn-padding-y;
+
+            background-color: var(--bs-accent);
+            color: var(--hh-text-color-contrast);
+            border-radius: 3px;
+            font-size: 12px !important;
+            padding: 0 5px 2px 2px;
+            float: left;
+            margin: 2px;
+            height: 28px;
+
+
+            img, div {
+                margin-right: 5px;
+            }
+
+            span.no-image {
+                line-height: 27px;
+                padding-left: 5px;
+            }
+
+            i {
+                margin: 0px 2px;
+                line-height: 27px;
+            }
+
+            .picker-close {
+                cursor: pointer;
+            }
+        }
+
+        /**
+         * Minus 2px borders.
+         */
+
+        .select2-search--inline {
+            .select2-search__field {
+                background: transparent;
+                padding: 0 5px;
+                width: auto !important;
+                height: $input-height - 2;
+                line-height: 30px;
+                margin-top: 0;
+                min-width: 5em;
+            }
+        }
+
+        .select2-selection__choice__remove {
+            color: #999;
+            cursor: pointer;
+            display: none;
+            font-weight: bold;
+            margin-right: $input-btn-padding-x / 2;
+
+            &:hover {
+                color: #333;
+            }
+        }
+
+        /**
+         * Clear the selection.
+         */
+
+        .select2-selection__clear {
+            margin-top: $input-btn-padding-y;
+        }
+    }
+
+    /**
+     * Address humhub control sizing classes
+     *
+     * 1. Reset humhub defaults.
+     * 2. Adjust the dropdown arrow button icon position.
+     *
+     * $see http://gethumhub.com/css/#forms-control-sizes
+     */
+
+    /* 1 */
+    &.input-sm,
+    &.input-lg {
+        border-radius: 0;
+        font-size: 12px;
+        height: auto;
+        line-height: 1;
+        padding: 0;
+    }
+
+    &.input-sm,
+    .input-group-sm &,
+    .form-group-sm & {
+        .select2-selection--single {
+            border-radius: $border-radius-sm;
+            font-size: $font-size-sm;
+            height: $input-height-sm;
+            line-height: $line-height-sm;
+            padding: $input-btn-padding-y-sm $input-btn-padding-x-sm + $select2-caret-width + $input-btn-padding-y-sm $input-btn-padding-x-sm;
+
+            /* 2 */
+            .select2-selection__arrow b {
+                margin-left: -$input-btn-padding-y-sm;
+            }
+        }
+
+        .select2-selection--multiple {
+            min-height: $input-height-sm;
+
+            .select2-selection__choice {
+                font-size: $font-size-sm;
+                line-height: $line-height-sm;
+                margin: ($input-btn-padding-y-sm - 1) 0 0 $input-btn-padding-x-sm/2;
+                padding: 0 $input-btn-padding-y-sm;
+
+            }
+
+            .select2-search--inline .select2-search__field {
+                padding: 0 $input-btn-padding-x-sm;
+                font-size: $font-size-sm;
+                height: $input-height-sm - 2;
+                line-height: $line-height-sm;
+            }
+
+            .select2-selection__clear {
+                margin-top: $input-btn-padding-y-sm;
+            }
+        }
+    }
+
+    &.input-lg,
+    .input-group-lg &,
+    .form-group-lg & {
+        .select2-selection--single {
+            border-radius: $border-radius-lg;
+            font-size: $font-size-lg;
+            height: $input-height-lg;
+            line-height: $line-height-lg;
+            padding: $input-btn-padding-y-lg $input-btn-padding-x-lg + $select2-caret-width $input-btn-padding-y-lg $input-btn-padding-x-lg;
+
+            /* 1 */
+            .select2-selection__arrow {
+                width: $caret-width;
+
+                b {
+                    border-width: $caret-width $caret-width 0 $caret-width;
+                    margin-left: -$caret-width;
+                    margin-left: -$input-btn-padding-y-lg;
+                    margin-top: -$caret-width/2;
+                }
+            }
+        }
+
+        .select2-selection--multiple {
+            min-height: $input-height-lg;
+
+            .select2-selection__choice {
+                font-size: $font-size-lg;
+                line-height: $line-height-lg;
+                border-radius: 4px;
+                margin: ($input-btn-padding-y-lg - 1) 0 0 $input-btn-padding-x-lg/2;
+                padding: 0 $input-btn-padding-y-lg;
+            }
+
+            .select2-search--inline .select2-search__field {
+                padding: 0 $input-btn-padding-x-lg;
+                font-size: $font-size-lg;
+                height: $input-height-lg - 2;
+                line-height: $line-height-lg;
+            }
+
+            .select2-selection__clear {
+                margin-top: $input-btn-padding-y-lg;
+            }
+        }
+    }
+
+    &.input-lg.select2-container--open {
+        @include dropdown-arrow;
+    }
+
+    .input-group-lg & {
+        &.select2-container--open {
+            @include dropdown-arrow;
+        }
+    }
+
+    /*------------------------------------*\
+        #RTL SUPPORT
+    \*------------------------------------*/
+
+    &[dir="rtl"] {
+
+        /**
+         * Single Select2
+         *
+         * 1. Makes sure that .select2-selection__placeholder is positioned
+         *    correctly.
+         */
+
+        .select2-selection--single {
+            padding-left: $input-btn-padding-x + $select2-caret-width;
+            padding-right: $input-btn-padding-x;
+
+            .select2-selection__rendered {
+                padding-right: 0;
+                padding-left: 0;
+                text-align: right; /* 1 */
+            }
+
+            .select2-selection__clear {
+                float: left;
+            }
+
+            .select2-selection__arrow {
+                left: $input-btn-padding-x;
+                right: auto;
+
+                b {
+                    margin-left: 0;
+                }
+            }
+        }
+
+        /**
+         * Multiple Select2
+         */
+
+        .select2-selection--multiple {
+            .select2-selection__choice,
+            .select2-selection__placeholder {
+                float: right;
+            }
+
+            .select2-selection__choice {
+                margin-left: 0;
+                margin-right: $input-btn-padding-x/2;
+            }
+
+            .select2-selection__choice__remove {
+                margin-left: 2px;
+                margin-right: auto;
+            }
+        }
+    }
+}
+
+/*------------------------------------*\
+    #ADDITIONAL GOODIES
+\*------------------------------------*/
+
+/**
+ * Address humhub's validation states
+ *
+ * If a Select2 widget parent has one of humhub's validation state modifier
+ * classes, adjust Select2's border colors and focus states accordingly.
+ * You may apply said classes to the Select2 dropdown (body > .select2-container)
+ * via JavaScript match humhubs' to make its styles match.
+ *
+ * $see http://gethumhub.com/css/#forms-control-validation
+ */
+
+.has-warning {
+    @include validation-state-focus($warning);
+}
+
+.is-invalid {
+    @include validation-state-focus($danger);
+}
+
+.has-success {
+    @include validation-state-focus($success);
+}
+
+/**
+ * Select2 widgets in humhub Input Groups
+ *
+ * When Select2 widgets are combined with other elements using humhubs
+ * "Input Group" component, we don't want specific edges of the Select2
+ * container to have a border-radius.
+ *
+ * Use .select2-humhub-prepend and .select2-humhub-append on
+ * a humhub 3 .input-group to let the contained Select2 widget know which
+ * edges should not be rounded as they are directly followed by another element.
+ *
+ * $see http://gethumhub.com/components/#input-groups
+ */
+
+/**
+ * Mimick humhubs .input-group .form-control styles.
+ */
+
+.input-group .select2-container--humhub {
+    display: table;
+    table-layout: fixed;
+    position: relative;
+    z-index: 2;
+    float: left;
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.input-group.select2-humhub-prepend .select2-container--humhub {
+    .select2-selection {
+        @include border-radius(0);
+    }
+}
+
+.input-group.select2-humhub-append .select2-container--humhub {
+    .select2-selection {
+        @include border-radius(0);
+    }
+}
+
+/**
+ * Adjust alignment of humhub buttons in humhub Input Groups to address
+ * Multi Select2's height which - depending on how many elements have been selected -
+ * may grow taller than its initial size.
+ *
+ * $see http://gethumhub.com/components/#input-groups
+ */
+
+.select2-humhub-append,
+.select2-humhub-prepend {
+    .select2-container--humhub,
+    .input-group,
+    .input-group .btn {
+        vertical-align: top;
+    }
+}
+
+/**
+ * Temporary fix for https://github.com/select2/select2-humhub-theme/issues/9
+ *
+ * Provides `!important` for certain properties of the class applied to the
+ * original `<select>` element to hide it.
+ *
+ * $see https://github.com/select2/select2/pull/3301
+ * $see https://github.com/fk/select2/commit/31830c7b32cb3d8e1b12d5b434dee40a6e753ada
+ */
+
+.form-control.select2-hidden-accessible {
+    position: absolute !important;
+    width: 1px !important;
+}
+
+/**
+ * Dark Mode styles
+ */
+@if $enable-dark-mode {
+    @include color-mode(dark, true) {
+        .select2-dropdown {
+            background: var(--hh-background-color-main);
+        }
+    }
+}

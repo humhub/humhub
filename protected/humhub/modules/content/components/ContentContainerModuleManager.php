@@ -127,7 +127,7 @@ class ContentContainerModuleManager extends Component
      */
     public function canDisable($id)
     {
-        if (!$this->isEnabled($id) || self::getDefaultState(get_class($this->contentContainer), $id) === ContentContainerModuleState::STATE_FORCE_ENABLED) {
+        if (!$this->isEnabled($id) || self::getDefaultState($this->contentContainer::class, $id) === ContentContainerModuleState::STATE_FORCE_ENABLED) {
             return false;
         }
 
@@ -181,8 +181,8 @@ class ContentContainerModuleManager extends Component
         return
             $module instanceof ContentContainerModule
             && $module->getIsEnabled()
-            && $module->hasContentContainerType(get_class($this->contentContainer))
-            && self::getDefaultState(get_class($this->contentContainer), $module->id) !== ContentContainerModuleState::STATE_NOT_AVAILABLE;
+            && $module->hasContentContainerType($this->contentContainer::class)
+            && self::getDefaultState($this->contentContainer::class, $module->id) !== ContentContainerModuleState::STATE_NOT_AVAILABLE;
     }
 
     /**
@@ -198,8 +198,8 @@ class ContentContainerModuleManager extends Component
 
         $availableModules = $this->getAvailable();
         foreach ($availableModules as $moduleId => $module) {
-            if (($this->isEnabled($moduleId) && !$this->canDisable($moduleId)) ||
-                (!$this->isEnabled($moduleId) && !$this->canEnable($moduleId))
+            if (($this->isEnabled($moduleId) && !$this->canDisable($moduleId))
+                || (!$this->isEnabled($moduleId) && !$this->canEnable($moduleId))
             ) {
                 unset($availableModules[$moduleId]);
             }
@@ -240,7 +240,7 @@ class ContentContainerModuleManager extends Component
         // Get default states, when no state is stored
         foreach ($this->getAvailable() as $module) {
             if (!isset($this->_states[$module->id])) {
-                $this->_states[$module->id] = self::getDefaultState(get_class($this->contentContainer), $module->id);
+                $this->_states[$module->id] = self::getDefaultState($this->contentContainer::class, $module->id);
             }
         }
 

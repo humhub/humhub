@@ -42,9 +42,7 @@ class AccountSettings extends Model
             [['timeZone'], 'in', 'range' => DateTimeZone::listIdentifiers()],
             ['language', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages())],
             ['visibility', 'in', 'range' => array_keys($this->getVisibilityOptions()),
-                'when' => function (self $model) {
-                    return $model->isVisibilityViewable() && $model->isVisibilityEditable();
-                }],
+                'when' => fn(self $model) => $model->isVisibilityViewable() && $model->isVisibilityEditable()],
         ];
     }
 
@@ -89,8 +87,8 @@ class AccountSettings extends Model
 
     public function isVisibilityEditable(): bool
     {
-        return Yii::$app->user->isAdmin() ||
-            ($this->isVisibilityViewable() && !$this->isHiddenUser());
+        return Yii::$app->user->isAdmin()
+            || ($this->isVisibilityViewable() && !$this->isHiddenUser());
     }
 
     public function getVisibilityOptions(): array

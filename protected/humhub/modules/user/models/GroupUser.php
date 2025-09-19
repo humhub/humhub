@@ -17,6 +17,7 @@ use yii\db\ActiveQuery;
  * @property int $id
  * @property int $user_id
  * @property int $group_id
+ * @property bool $is_group_manager
  * @property string $created_at
  * @property int $created_by
  * @property string $updated_at
@@ -80,11 +81,10 @@ class GroupUser extends ActiveRecord
      */
     public function afterSave($insert, $changedAttributes)
     {
-        if ($insert) {
-            if ($this->group !== null && $this->group->groupSpaces !== null) {
-                foreach ($this->group->groupSpaces as $groupSpace) {
-                    $groupSpace->space->addMember($this->user->id);
-                }
+        if ($insert && $this->group instanceof Group) {
+            foreach ($this->group->getAllGroupSpaces()->each() as $groupSpace) {
+                /* @var GroupSpace $groupSpace */
+                $groupSpace->space->addMember($this->user->id);
             }
         }
 

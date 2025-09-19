@@ -67,9 +67,9 @@ class CommentLink extends Widget
         return $this->render('link', [
             'id' => $this->object->getUniqueId(),
             'mode' => $this->mode,
-            'objectModel' => get_class($this->object),
+            'objectModel' => $this->object::class,
             'objectId' => $this->object->getPrimaryKey(),
-            'commentCount' => CommentModel::GetCommentCount(get_class($this->object), $this->object->getPrimaryKey()),
+            'commentCount' => CommentModel::GetCommentCount($this->object::class, $this->object->getPrimaryKey()),
             'isNestedComment' => ($this->object instanceof CommentModel),
             'comment' => $this->object,
             'module' => $module,

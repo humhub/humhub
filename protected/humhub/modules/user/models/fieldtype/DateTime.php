@@ -9,11 +9,11 @@
 namespace humhub\modules\user\models\fieldtype;
 
 use DateTimeZone;
+use humhub\helpers\Html;
 use humhub\libs\DbDateValidator;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\helpers\Html;
 
 /**
  * ProfileFieldTypeDateTime
@@ -55,7 +55,7 @@ class DateTime extends BaseType
     public function getFormDefinition($definition = [])
     {
         return parent::getFormDefinition([
-            get_class($this) => [
+            static::class => [
                 'type' => 'form',
                 'title' => Yii::t('UserModule.profile', 'Date(-time) field options'),
                 'elements' => [
@@ -97,7 +97,7 @@ class DateTime extends BaseType
     /**
      * @inheritdoc
      */
-    public function getFieldFormDefinition(User $user = null, array $options = []): array
+    public function getFieldFormDefinition(?User $user = null, array $options = []): array
     {
         return parent::getFieldFormDefinition($user, array_merge([
             'format' => Yii::$app->formatter->dateInputFormat,

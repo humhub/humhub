@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'Settings' => 'Sozlamalar',
     '
 Module successfully disabled!
 ' => '',

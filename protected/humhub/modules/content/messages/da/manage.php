@@ -1,5 +1,5 @@
 <?php
-return array (
-  'Are you really sure? *ALL* module data for your profile will be deleted!' => 'Er du helt sikker? *ALLE* modul data vedrørende din profil vil blive slettet!',
-  'Are you sure? *ALL* module data for this space will be deleted!' => 'Er du sikker? *ALLE* modul data for denne side vil blive slettet!',
-);
+return [
+  'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content from the Space.' => 'Deaktivering af <strong>{moduleName}</strong> modulet vil permanent slette <strong>alt</strong> modulrelateret indhold fra rummet.',
+  'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content from your Profile.' => 'Deaktivering af <strong>{moduleName}</strong> modulet vil permanent slette <strong>alt</strong> modulrelateret indhold fra din profil.',
+];

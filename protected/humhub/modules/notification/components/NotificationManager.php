@@ -108,7 +108,7 @@ class NotificationManager
                     $target->send($notification, $user);
                 }
             } else {
-                Yii::debug('Could not store notification ' . get_class($notification) . ' for user ' . $user->id);
+                Yii::debug('Could not store notification ' . $notification::class . ' for user ' . $user->id);
             }
 
             $processed[] = $user->id;
@@ -135,7 +135,7 @@ class NotificationManager
      * @return BaseTarget[] the target
      * @throws InvalidConfigException
      */
-    public function getTargets(User $user = null)
+    public function getTargets(?User $user = null)
     {
         // Initialize targets
         if ($this->_targets === null) {
@@ -169,7 +169,7 @@ class NotificationManager
     public function getTarget($class)
     {
         foreach ($this->getTargets() as $target) {
-            if (get_class($target) == $class) {
+            if ($target::class == $class) {
                 return $target;
             }
         }
@@ -314,7 +314,7 @@ class NotificationManager
      * @param User $user
      * @return Space[]
      */
-    public function getNonNotificationSpaces(User $user = null, $limit = 25)
+    public function getNonNotificationSpaces(?User $user = null, $limit = 25)
     {
         if ($user) {
             $memberSpaces = Membership::getUserSpaceQuery($user, true, false)->limit($limit)->all();
@@ -336,7 +336,7 @@ class NotificationManager
      * @param string[] $spaceGuids array of space guids
      * @param User $user
      */
-    public function setSpaces($spaceGuids, User $user = null)
+    public function setSpaces($spaceGuids, ?User $user = null)
     {
         if (!$user) { // Note: global notification space settings are currently not active!
             return Yii::$app->getModule('notification')->settings->setSerialized('sendNotificationSpaces', $spaceGuids);
@@ -349,9 +349,7 @@ class NotificationManager
             $this->setSpaceSetting($user, $space);
         }
 
-        $spaceIds = array_map(function ($space) {
-            return $space->id;
-        }, $spaces);
+        $spaceIds = array_map(fn($space) => $space->id, $spaces);
 
         // Update non selected membership spaces
         Membership::updateAll(['send_notifications' => 0], [
@@ -388,7 +386,7 @@ class NotificationManager
      * @param Space $space which notifications will be followed / unfollowed
      * @param bool $follow the setting value (true by default)
      */
-    public function setSpaceSetting(User $user = null, Space $space, $follow = true)
+    public function setSpaceSetting(User $user, Space $space, $follow = true)
     {
         /* @var $membership Membership */
         $membership = $space->getMembership($user->id);
@@ -443,9 +441,7 @@ class NotificationManager
 
         $this->_categories = array_values($result);
 
-        usort($this->_categories, function ($a, $b) {
-            return $a->sortOrder - $b->sortOrder;
-        });
+        usort($this->_categories, fn($a, $b) => $a->sortOrder - $b->sortOrder);
 
         return $this->_categories;
     }
@@ -487,7 +483,7 @@ class NotificationManager
      * @return bool
      * @since 1.15.6
      */
-    public function hasSpace(Space $space, User $user = null): bool
+    public function hasSpace(Space $space, ?User $user = null): bool
     {
         if ($user === null) {
             if (Yii::$app->user->isGuest) {

@@ -30,7 +30,6 @@ return [
     'Disabled Functions' => '',
     'Displaying {count} entries per page.' => '',
     'Driver' => '',
-    'Dynamic Config' => '',
     'Enable <a href="{url}">Link Redirection Service</a>' => '',
     'Flush entries' => '',
     'HumHub' => '',

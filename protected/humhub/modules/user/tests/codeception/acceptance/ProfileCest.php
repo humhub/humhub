@@ -6,8 +6,8 @@ use humhub\modules\user\models\fieldtype\Checkbox;
 use humhub\modules\user\models\fieldtype\CheckboxList;
 use humhub\modules\user\models\fieldtype\Text;
 use humhub\modules\user\models\fieldtype\TextArea;
-use user\AcceptanceTester;
 use tests\codeception\_pages\AccountSettingsPage;
+use user\AcceptanceTester;
 
 class ProfileCest
 {
@@ -56,7 +56,7 @@ class ProfileCest
 
         $I->expectTo('see no errors after saving');
 
-        $I->dontSeeElement('.has-error');
+        $I->dontSeeElement('.is-invalid');
 
         $I->amGoingTo('access my profiles about page');
         $profile = $I->amOnProfile();
@@ -148,9 +148,9 @@ class ProfileCest
         $I->createProfileField('Test textarea field', TextArea::class, ['visible' => true, 'editable' => true]);
         $I->createProfileField('Test checkboxlist field', CheckboxList::class, [
             'visible' => true,
-            'checkboxlist-options' => 'First option => First option' . "\r\n" .
-                'Second option => Second option' . "\r\n" .
-                'Third option => Third option',
+            'checkboxlist-options' => 'First option => First option' . "\r\n"
+                . 'Second option => Second option' . "\r\n"
+                . 'Third option => Third option',
         ]);
 
         $I->amGoingTo('test profile fields visibility by user');
@@ -201,6 +201,8 @@ class ProfileCest
             $I->wait(1);
             $I->jsClick('.tab-pane.active tr[data-key=0] td:last-child a');
             $I->waitForText('Edit profile field');
+            $I->scrollToBottom();
+            $I->wait(1);
             $I->click('Delete');
             $I->waitForText('Confirm');
             $I->click('Confirm');

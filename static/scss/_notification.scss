@@ -1,0 +1,59 @@
+#notification_overview_filter label {
+    display: block;
+}
+
+.field-filterform-allfilter {
+    input[type=checkbox] {
+        border-color: #ccc;
+        &:checked {
+            border-color: var(--bs-light);
+            background: var(--bs-light);
+            &::after {
+                color: var(--text-color-main);
+            }
+        }
+        &:focus {
+            border-color: #ccc !important;
+        }
+    }
+}
+
+#notification_overview_list {
+    .d-flex {
+        border-left: none;
+        background: none;
+
+        &:hover {
+            border-left: none;
+            background-color: var(--hh-background-color-secondary);
+        }
+
+        &.new {
+            time {
+                color: var(--bs-accent);
+            }
+        }
+
+        &:not(.new) {
+            * &, strong {
+                color: var(--hh-text-color-secondary);
+            }
+        }
+    }
+}
+
+@include media-breakpoint-down(md) {
+    .notifications {
+        position: inherit !important;
+        float: left !important;
+    }
+
+    .notifications .dropdown-menu {
+        width: 300px !important;
+        margin-left: 0 !important;
+
+        .arrow {
+            margin-left: -142px !important;
+        }
+    }
+}

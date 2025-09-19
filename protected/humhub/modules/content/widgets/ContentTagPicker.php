@@ -55,9 +55,7 @@ class ContentTagPicker extends BasePicker
         $query = call_user_func([$this->itemClass, 'findByContainer'], $this->contentContainer, true);
         $query->readable()->limit($this->limit);
 
-        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->id, function () use ($query) {
-            return $query->all();
-        });
+        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->id, fn() => $query->all());
     }
 
     public static function search($term, $contentContainer = null, $includeGlobal = false)

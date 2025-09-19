@@ -31,7 +31,6 @@ return [
     'By Name' => 'Po imenu',
     'Cancel' => 'Poništi',
     'Change visibility' => 'Izmeni vidljivost',
-    'Close' => 'Zatvori',
     'Color' => 'Boja',
     'Could not request membership!' => 'Nije bilo moguće tražiti članstvo!',
     'Create new link' => 'Napravi novi Link',

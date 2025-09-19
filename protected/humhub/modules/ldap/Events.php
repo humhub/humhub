@@ -47,7 +47,7 @@ class Events extends BaseObject
             $settings = new LdapSettings();
             $settings->loadSaved();
 
-            $configParams = (isset($event->parameters['clients']['ldap'])) ? $event->parameters['clients']['ldap'] : [];
+            $configParams = $event->parameters['clients']['ldap'] ?? [];
             $collection->setClient('ldap', array_merge($settings->getLdapAuthDefinition(), $configParams));
         }
     }

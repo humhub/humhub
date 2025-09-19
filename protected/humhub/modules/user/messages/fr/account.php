@@ -15,6 +15,7 @@ return [
   'Define basic settings for your profile. You can add tags that fit you, choose the language and your time zone and block impolite users.' => 'Définissez les réglages de base de votre profil. Vous pouvez ajouter des mots-clés vous décrivant, choisir votre langue et votre fuseau horaire, et bloquer les utilisateurs et utilisatrices impoli·es.',
   'Delete account' => 'Supprimer le compte',
   'Do you really want to delete your icon image?' => 'Souhaitez-vous vraiment supprimer votre icône ?',
+  'Do you really want to delete your login background image?' => 'Voulez-vous vraiment supprimer votre image d’arrière-plan de connexion ?',
   'Do you really want to delete your logo image?' => 'Souhaitez-vous vraiment supprimer votre logo ?',
   'E-Mail' => 'e-mail',
   'E-Mail change' => 'Changement d\'adresse e-mail',

@@ -3,12 +3,12 @@
 namespace humhub\modules\ui\icon\widgets;
 
 use humhub\components\Widget;
+use humhub\helpers\Html;
+use humhub\modules\ui\icon\components\IconFactory;
+use humhub\modules\ui\icon\components\IconProvider;
 use humhub\modules\ui\Module;
 use Throwable;
 use Yii;
-use humhub\libs\Html;
-use humhub\modules\ui\icon\components\IconProvider;
-use humhub\modules\ui\icon\components\IconFactory;
 use yii\base\InvalidConfigException;
 
 /**
@@ -36,7 +36,7 @@ use yii\base\InvalidConfigException;
  * @see IconProvider
  * @since 1.4
  */
-class Icon extends Widget
+class Icon extends Widget implements \Stringable
 {
     public const SIZE_XS = 'xs';
     public const SIZE_SM = 'sm';
@@ -791,31 +791,34 @@ class Icon extends Widget
         /**
          * Catch for legacy icon usage
          */
-        $this->name = (strpos($this->name, 'fa-') === 0)
+        $this->name = (str_starts_with($this->name, 'fa-'))
             ? substr($this->name, 3, strlen($this->name))
             : $this->name;
 
         if ($this->color) {
             switch ($this->color) {
                 case 'default':
-                    $this->color = 'var(--default)';
+                    $this->color = 'var(--bs-default)';
                     break;
                 case 'primary':
-                    $this->color = 'var(--primary)';
+                    $this->color = 'var(--bs-primary)';
                     break;
                 case 'info':
-                    $this->color = 'var(--info)';
+                    $this->color = 'var(--bs-info)';
                     break;
                 case 'success':
-                    $this->color = 'var(--success)';
+                    $this->color = 'var(--bs-success)';
                     break;
                 case 'warning':
                 case 'warn':
-                    $this->color = 'var(--warning)';
+                    $this->color = 'var(--bs-warning)';
                     break;
                 case 'error':
                 case 'danger':
-                    $this->color = 'var(--danger)';
+                    $this->color = 'var(--bs-danger)';
+                    break;
+                case 'accent':
+                    $this->color = 'var(--bs-accent)';
                     break;
             }
         }
@@ -1015,7 +1018,7 @@ class Icon extends Widget
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         try {
             $result = $this::widget($this->asArray());

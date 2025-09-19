@@ -1,9 +1,9 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\components\View;
+use humhub\helpers\Html;
 use humhub\modules\ui\menu\MenuEntry;
 use humhub\modules\ui\menu\widgets\DropdownMenu;
-use humhub\modules\ui\view\components\View;
 
 /* @var $this View */
 /* @var $menu DropdownMenu */
@@ -13,8 +13,8 @@ use humhub\modules\ui\view\components\View;
 
 <?= Html::beginTag('ul', $options) ?>
 <?php foreach ($entries as $entry): ?>
-    <li <?php if ($entry->getIsActive()): ?>class="active"<?php endif; ?>>
-        <?= $entry->render() ?>
+    <li class="nav-item">
+        <?= $entry->render(['class' => 'nav-link' . ($entry->getIsActive() ? ' active' : '')]) ?>
     </li>
 <?php endforeach; ?>
 <?= Html::endTag('ul') ?>

@@ -15,6 +15,7 @@ return [
   'Define basic settings for your profile. You can add tags that fit you, choose the language and your time zone and block impolite users.' => 'Definieer basisinstellingen voor uw profiel. U kunt labels toevoegen die bij u passen, uw taal,  uw tijdzone en onbeleefde gebruikers blokkeren.',
   'Delete account' => 'Account verwijderen',
   'Do you really want to delete your icon image?' => 'Wilt u uw pictogramafbeelding echt verwijderen?',
+  'Do you really want to delete your login background image?' => 'Wilt u uw inlogachtergrondafbeelding echt verwijderen?',
   'Do you really want to delete your logo image?' => 'Wilt u uw logoafbeelding echt verwijderen?',
   'E-Mail' => 'E-mail',
   'E-Mail change' => 'E-mail aanpassen',

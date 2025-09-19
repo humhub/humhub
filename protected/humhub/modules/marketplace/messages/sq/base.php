@@ -8,7 +8,6 @@ return [
     'No modules installed yet. Install some to enhance the functionality!' => 'Nuk është instaluar ende asnjë modul.  Instaloni disa për të përmirësuar funksionalitetin!',
     'Search' => 'Kërko',
     'Search...' => 'Kërko...',
-    'Settings' => 'Cilësimet',
     '
 Module successfully disabled!
 ' => '',

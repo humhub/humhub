@@ -55,13 +55,16 @@ class User extends \yii\web\User
         ];
     }
 
-    public function isAdmin()
+    public function isAdmin(): bool
     {
-        if ($this->isGuest) {
-            return false;
-        }
+        return !$this->isGuest
+            && $this->getIdentity()->isSystemAdmin();
+    }
 
-        return $this->getIdentity()->isSystemAdmin();
+    public function isGroupManager(): bool
+    {
+        return !$this->isGuest
+            && $this->getIdentity()->isGroupManager();
     }
 
     public function getLanguage()
@@ -160,7 +163,7 @@ class User extends \yii\web\User
      */
     protected function afterLogout($identity)
     {
-        if (!DeviceDetectorHelper::isAppRequest()) {
+        if (DeviceDetectorHelper::isAppRequest()) {
             Yii::$app->session->set(MobileAppHelper::SESSION_VAR_SHOW_OPENER, 1);
         }
 

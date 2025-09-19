@@ -9,10 +9,10 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
+use humhub\helpers\Html;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\helpers\Html;
 
 /**
  * CheckboxList profile field for selecting multiple options.
@@ -66,7 +66,7 @@ class CheckboxList extends BaseType
     public function getFormDefinition($definition = [])
     {
         return parent::getFormDefinition([
-            get_class($this) => [
+            static::class => [
                 'type' => 'form',
                 'title' => Yii::t('UserModule.profile', 'Select field options'),
                 'elements' => [
@@ -120,7 +120,7 @@ class CheckboxList extends BaseType
     /**
      * @inheritdoc
      */
-    public function getFieldFormDefinition(User $user = null, array $options = []): array
+    public function getFieldFormDefinition(?User $user = null, array $options = []): array
     {
         $result = parent::getFieldFormDefinition($user, array_merge([
             'delimiter' => "\n",

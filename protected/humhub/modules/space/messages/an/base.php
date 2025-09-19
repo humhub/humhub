@@ -10,7 +10,6 @@ return [
     'Accept' => 'Akzeptieren',
     'Archived' => 'Archivau',
     'Cancel' => 'Cancelar',
-    'Close' => 'Zavřít',
     'Created At' => 'Creyau o',
     'Created By' => 'Creyau per',
     'Default' => 'Defecto',

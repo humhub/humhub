@@ -32,11 +32,6 @@ class StreamResponse
     private $result = [];
 
     /**
-     * @var StreamQuery the StreamQuery used to fetch the entries
-     */
-    private $streamQuery;
-
-    /**
      * @var int
      */
     private $lastContentId;
@@ -55,9 +50,8 @@ class StreamResponse
      * StreamResponse constructor.
      * @param StreamQuery $streamQuery
      */
-    public function __construct(StreamQuery $streamQuery)
+    public function __construct(private readonly StreamQuery $streamQuery)
     {
-        $this->streamQuery = $streamQuery;
     }
 
     /**

@@ -3,8 +3,9 @@
 namespace humhub\modules\content\widgets;
 
 use humhub\components\Widget;
+use humhub\helpers\Html;
+use humhub\modules\ui\icon\widgets\Icon;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
 
 /**
  * Generic WallEntryControlLink.
@@ -30,7 +31,7 @@ class WallEntryControlLink extends Widget
     public $actionUrl;
 
     /**
-     * Object derived from HActiveRecordContent
+     * Object derived from ContentActiveRecord
      *
      * @var string
      */
@@ -58,6 +59,8 @@ class WallEntryControlLink extends Widget
         if (!empty($this->getActionUrl())) {
             $this->options['data-action-url'] = $this->getActionUrl();
         }
+
+        $this->options['class'] = 'dropdown-item';
 
         ArrayHelper::remove($this->options, 'sortOrder');
         parent::init();
@@ -98,7 +101,8 @@ class WallEntryControlLink extends Widget
      */
     protected function renderLinkText()
     {
-        return ($this->icon) ? '<i class="fa ' . $this->getIcon() . '"></i> ' . $this->getLabel() : $this->getLabel();
+        $label = trim($this->getLabel());
+        return $this->icon ? Icon::get($this->getIcon()) . ' ' . $label : $label;
     }
 
     /**

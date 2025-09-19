@@ -17,7 +17,7 @@ return [
     'Close' => 'Aizvērt',
     'Collapse' => 'Sakļaut',
     'Confirm' => 'Apstiprināt',
-    'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Content Addon avotam jābū HActiveRecordContent vai HActiveRecordContentAddon instancei!
+    'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!' => 'Content Addon avotam jābū ContentActiveRecord vai ContentAddonActiveRecord instancei!
 ',
     'Copy to clipboard' => 'Kopēt uz starpliktuvi',
     'Could not find content of addon!' => 'Nevarēja atrast spraudņa saturu!',
@@ -76,7 +76,9 @@ return [
     'An unexpected error occurred. Please check whether your file exceeds the allowed upload limit of {maxUploadSize}.' => '',
     'Could not find requested page.' => '',
     'Do you want to enable content from \'{urlPrefix}\'?' => '',
+    'Enter security code above' => '',
     'Export' => '',
+    'I\'m not a robot' => '',
     'My Profile' => '',
     'No results' => '',
     'Please type at least {count} characters' => '',
@@ -90,6 +92,8 @@ return [
     'Text has been copied to clipboard' => '',
     'Time Zone' => '',
     'Unsaved changes will be lost. Do you want to proceed?' => '',
+    'Verified' => '',
+    'We couldn\'t verify that you\'re human. Please check the box again.' => '',
     'verify your upload_max_filesize and post_max_size php settings.' => '',
     '{attribute} has been empty. The system-configured function to fill empty values has returned an invalid value. Please try again or contact your administrator.' => '',
     '{attribute} must be a string (UUID) or null; {type} given.' => '',

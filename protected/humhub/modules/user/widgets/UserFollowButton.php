@@ -8,10 +8,11 @@
 
 namespace humhub\modules\user\widgets;
 
+use humhub\helpers\Html;
+use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Widget;
-use yii\bootstrap\Html;
 
 /**
  * UserFollowButton
@@ -55,7 +56,7 @@ class UserFollowButton extends Widget
             $this->followLabel = Yii::t('UserModule.base', 'Follow');
         }
         if ($this->unfollowLabel === null) {
-            $this->unfollowLabel = '<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;' . Yii::t('UserModule.base', 'Following');
+            $this->unfollowLabel = Icon::get('check') . Yii::t('UserModule.base', 'Following');
         }
 
         if (!isset($this->followOptions['class'])) {
@@ -90,9 +91,9 @@ class UserFollowButton extends Widget
 
         // Hide inactive button
         if ($this->user->isFollowedByUser()) {
-            $this->followOptions['style'] .= ' display:none;';
+            $this->followOptions['class'] .= ' d-none';
         } else {
-            $this->unfollowOptions['style'] .= ' display:none;';
+            $this->unfollowOptions['class'] .= ' d-none';
         }
 
         // Add UserId Buttons
@@ -123,8 +124,8 @@ class UserFollowButton extends Widget
             return Html::a($this->unfollowLabel, '#', $this->unfollowOptions);
         }
 
-        return Html::a($this->unfollowLabel, '#', $this->unfollowOptions) .
-            Html::a($this->followLabel, '#', $this->followOptions);
+        return Html::a($this->unfollowLabel, '#', $this->unfollowOptions)
+            . Html::a($this->followLabel, '#', $this->followOptions);
     }
 
 }

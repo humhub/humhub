@@ -29,7 +29,7 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
 
         /* @var Module $module */
         $module = Yii::$app->getModule('content');
-        $module->set('search', ['class' => get_class($this->searchDriver)]);
+        $module->set('search', ['class' => $this->searchDriver::class]);
 
         // Link it to object from Module because it is used in other methods as global,
         // it fixes issue on deleting item from indexing after unpublish a Content
@@ -437,7 +437,7 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
 
     private function getObjectIds(array $results): array
     {
-        $results = array_map(function (Content $content) {return $content->object_id;}, $results);
+        $results = array_map(fn(Content $content) => $content->object_id, $results);
         sort($results);
         return $results;
     }

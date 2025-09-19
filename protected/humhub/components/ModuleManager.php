@@ -255,7 +255,7 @@ class ModuleManager extends Component
             return;
         }
 
-        $error = static function (string $message, bool $throw = false) use (&$config, $basePath) {
+        $error = static function (string $message, bool $throw = false) use (&$config, $basePath): void {
             $message = sprintf("Configuration at %s has an invalid event configuration: %s", $basePath, $message);
 
             if ($throw) {
@@ -318,7 +318,7 @@ class ModuleManager extends Component
                 $error(
                     sprintf(
                         "class '%s' does not have a method called '%s",
-                        is_object($eventHandler[0]) ? get_class($eventHandler[0]) : $eventHandler[0],
+                        is_object($eventHandler[0]) ? $eventHandler[0]::class : $eventHandler[0],
                         $eventHandler[1],
                     ),
                     $strict,
@@ -446,7 +446,7 @@ class ModuleManager extends Component
 
             $keywordFound = false;
             foreach ($searchFields as $searchField) {
-                if (stripos($searchField, $keyword) !== false) {
+                if (stripos((string) $searchField, (string) $keyword) !== false) {
                     $keywordFound = true;
                     break;
                 }
@@ -484,9 +484,9 @@ class ModuleManager extends Component
      */
     public function hasModule($id)
     {
-        return array_key_exists($id, $this->modules) ||
+        return array_key_exists($id, $this->modules)
             // Fallback to old module ID
-            array_key_exists(str_replace('-', '_', $id), $this->modules);
+            || array_key_exists(str_replace('-', '_', $id), $this->modules);
     }
 
     /**
@@ -502,7 +502,7 @@ class ModuleManager extends Component
             return false;
         }
 
-        return (in_array(get_class($this->getModule($id)), $this->coreModules));
+        return (in_array($this->getModule($id)::class, $this->coreModules));
     }
 
     /**
@@ -583,7 +583,7 @@ class ModuleManager extends Component
             // Realpath is required when the modules path is a symlinked
             $modulePath = FileHelper::normalizePath($module->getBasePath());
             $aliasPath = FileHelper::normalizePath(realpath(Yii::getAlias($marketplaceModule->modulesPath)));
-            if (strpos($modulePath, $aliasPath) !== false) {
+            if (str_contains($modulePath, $aliasPath)) {
                 return true;
             }
         }

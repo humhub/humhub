@@ -29,7 +29,6 @@ Module successfully enabled!
     'Ok' => 'Ok',
     'Register' => 'Đăng ký',
     'Search' => 'Tìm kiếm',
-    'Settings' => 'Cài đặt',
     'Tags' => 'Thẻ',
     'Update' => 'Update',
     'Version:' => 'Phiên bản:',

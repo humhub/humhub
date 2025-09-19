@@ -53,12 +53,12 @@ class RichTextToEmailHtmlConverterCest
 
     protected function linkIsDetectedInEmail(string $emailMessage, array $link): bool
     {
-        return (bool)preg_match('/with link <a href="' . preg_quote($link['url'], '/') . '".+?> ' . preg_quote($link['text'], '/') . ' <\/a>/is', $emailMessage);
+        return (bool)preg_match('/with link <a href="' . preg_quote((string) $link['url'], '/') . '".+?> ' . preg_quote((string) $link['text'], '/') . ' <\/a>/is', $emailMessage);
     }
 
     protected function linkedImageIsDetectedInEmail(string $emailMessage, array $link): bool
     {
-        return (bool)preg_match('/with linked image <a href="' . preg_quote($link['url'], '/') . '".+?> <img.+?src=".+?&amp;token=.+?".+?> <\/a>/is', $emailMessage);
+        return (bool)preg_match('/with linked image <a href="' . preg_quote((string) $link['url'], '/') . '".+?> <img.+?src=".+?&amp;token=.+?".+?> <\/a>/is', $emailMessage);
     }
 
     protected function createFile(): File
@@ -81,10 +81,10 @@ class RichTextToEmailHtmlConverterCest
         $commentForm->load([
             'objectModel' => PolymorphicRelation::getObjectModel($post),
             'objectId' => $post->id,
-            'Comment' => ['message' =>
-                'Test comment with image ![' . $file->file_name . '](file-guid:' . $file->guid . ' "' . $file->title . '") ' .
-                'and with link [' . $link['text'] . '](' . $link['url'] . ')' .
-                'and with linked image [![' . $file->file_name . '](file-guid:' . $file->guid . ' "' . $file->title . '")](' . $link['url'] . ')',
+            'Comment' => ['message'
+                => 'Test comment with image ![' . $file->file_name . '](file-guid:' . $file->guid . ' "' . $file->title . '") '
+                . 'and with link [' . $link['text'] . '](' . $link['url'] . ')'
+                . 'and with linked image [![' . $file->file_name . '](file-guid:' . $file->guid . ' "' . $file->title . '")](' . $link['url'] . ')',
             ],
             'fileList' => [$file->guid],
         ]);

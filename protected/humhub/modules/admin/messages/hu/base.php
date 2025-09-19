@@ -13,6 +13,7 @@ return [
   'Administrators' => 'Adminisztrátorok',
   'Advanced' => 'Haladó',
   'Advanced settings' => 'Speciális beállítások',
+  'All' => 'Minden',
   'Appearance' => 'Megjelenés',
   'Approval' => 'Elfogadás',
   'Authentication' => 'Hitelesítés',
