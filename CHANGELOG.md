@@ -18,7 +18,7 @@ HumHub Changelog
 - Enh #7703: New `ActiveFileUpload` field widget
 - Enh #7716: Use Altcha captcha provider by default instead of Yii captcha, and upgrade Altcha library to v1.1
 - Fix #7715: Enable Bootstrap box-shadows, mainly for dropdown menus
-- Fix: Saving the new Mobile App admin form when no whitelisted domain
+- Fix #7720: Saving the new Mobile App admin form when no whitelisted domain
 
 1.18.0-beta.3 (September 9, 2025)
 ---------------------------------
