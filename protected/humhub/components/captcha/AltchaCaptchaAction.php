@@ -9,8 +9,9 @@
 namespace humhub\components\captcha;
 
 use AltchaOrg\Altcha\Altcha;
+use AltchaOrg\Altcha\BaseChallengeOptions;
 use AltchaOrg\Altcha\ChallengeOptions;
-use DateTime;
+use AltchaOrg\Altcha\Hasher\Algorithm;
 use yii\base\Action;
 
 /**
@@ -20,14 +21,16 @@ class AltchaCaptchaAction extends Action
 {
     public function run()
     {
-        $options = new ChallengeOptions([
-            'hmacKey' => AltchaCaptchaValidator::getHmacKey(),
-            'maxNumber' => 50000,
-            'algorithm' => 'SHA-256',
-            'saltLength' => 12,
-            'expires' => new DateTime('+5 minutes'),
-        ]);
+        $options = new ChallengeOptions(
+            algorithm: Algorithm::SHA256,
+            maxNumber: BaseChallengeOptions::DEFAULT_MAX_NUMBER,
+            expires: (new \DateTimeImmutable())->add(new \DateInterval('PT5M')), // challenge expiration time (5 minutes from now
+            saltLength: 12,
+        );
 
-        return $this->controller->asJson(Altcha::createChallenge($options));
+        $altcha = new Altcha(AltchaCaptchaValidator::getHmacKey());
+        $chalenge = $altcha->createChallenge($options);
+
+        return $this->controller->asJson($chalenge);
     }
 }
