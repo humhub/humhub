@@ -68,7 +68,7 @@ return [
   'Schedule publication' => '発行予定',
   'Scheduled for {dateTime}' => '{dateTime} に予定されています',
   'Select target Space.' => 'ターゲット・スペースを選択する。',
-  'Select target Space/Profile.' => 'ターゲットスペース/プロファイルを選択します。',
+  'Select target Space/Profile.' => '対象のスペース/プロフィールを選択します。',
   'Select type...' => 'タイプを選択...',
   'Share' => '共有',
   'Specify who can see this content.' => 'このコンテンツを閲覧できるユーザーを指定します',

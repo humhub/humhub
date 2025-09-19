@@ -1,6 +1,6 @@
 <?php
 return [
-  '<strong>Administration</strong> menu' => '<strong>管理</strong>メニュー',
+  '<strong>Administration</strong> menu' => '<strong>サイト管理</strong> メニュー',
   '<strong>Maintenance</strong> Mode' => '<strong>メンテナンス </strong>モード',
   '<strong>Module</strong> administration' => '<strong>モジュール</strong>の管理',
   '<strong>Warning</strong> incomplete setup!' => '<strong>警告</strong> 設定が不完全です。',

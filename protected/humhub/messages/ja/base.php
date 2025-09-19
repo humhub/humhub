@@ -5,7 +5,7 @@ return [
   '<strong>Mail</strong> summary' => '<strong>メール</strong>サマリー',
   'Actions' => 'アクション',
   'Add:' => '追加：',
-  'Administration' => '管理',
+  'Administration' => 'サイト管理',
   'All' => 'すべて',
   'Allow' => '許可',
   'Allow content from external source' => '外部ソースからのコンテンツを許可する',
