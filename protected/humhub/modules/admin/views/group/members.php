@@ -19,8 +19,8 @@ use yii\helpers\Url;
 /* @var $addGroupMemberForm AddGroupMemberForm */
 /* @var $searchModel UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-/* @var $isManagerApprovalSetting bool */
 /* @var $canManage bool */
+/* @var $canModifyMembers bool */
 
 AdminGroupAsset::register($this);
 ?>
@@ -34,6 +34,7 @@ AdminGroupAsset::register($this);
     <?php endif ?>
 
     <div class="row">
+        <?php if ($canModifyMembers) : ?>
         <div class="col-lg-6">
             <?php $form = ActiveForm::begin(['action' => ['/admin/group/add-members']]); ?>
             <div class="select2-humhub-append input-group flex-nowrap">
@@ -49,7 +50,8 @@ AdminGroupAsset::register($this);
             </div>
             <?php ActiveForm::end(); ?>
         </div>
-        <div class="col-lg-6">
+        <?php endif; ?>
+        <div class="<?= $canModifyMembers ? 'col-lg-6' : 'col-lg-12' ?>">
             <?php $form = ActiveForm::begin(['method' => 'get']); ?>
             <div class="input-group">
                 <?= Html::activeTextInput($searchModel, 'freeText', ['class' => 'form-control', 'placeholder' => Yii::t('AdminModule.user', 'Search by name, email or id.')]); ?>
@@ -76,7 +78,6 @@ AdminGroupAsset::register($this);
                     ],
                     [
                         'attribute' => 'is_manager',
-                        'visible' => $isManagerApprovalSetting,
                         'label' => Yii::t('AdminModule.user', 'Group Manager'),
                         'format' => 'raw',
                         'value' => function (User $user) use ($group, $canManage) {
@@ -94,6 +95,7 @@ AdminGroupAsset::register($this);
                     ],
                     [
                         'class' => 'yii\grid\ActionColumn',
+                        'visible' => $canModifyMembers,
                         'options' => ['style' => 'width:40px; min-width:40px;'],
                         'template' => '{delete}',
                         'buttons' => [

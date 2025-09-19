@@ -10,7 +10,6 @@ use humhub\widgets\form\ActiveForm;
 use humhub\widgets\form\SortOrderField;
 use yii\helpers\Url;
 
-/* @var $isManagerApprovalSetting bool */
 /* @var $showDeleteButton bool */
 /* @var $group EditGroupForm */
 /* @var $canManage bool */

@@ -74,6 +74,12 @@ class Module extends \humhub\components\Module
     public $enableManageAllContentPermission = false;
 
     /**
+     * @var bool Restrict add/delete member to/from group by group manager
+     * @since 1.18
+     */
+    public bool $groupManagerCannotModifyMembers = false;
+
+    /**
      * @inheritdoc
      */
     public function getName()

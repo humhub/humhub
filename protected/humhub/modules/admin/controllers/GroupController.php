@@ -24,6 +24,7 @@ use humhub\modules\user\models\User;
 use humhub\modules\user\models\UserPicker;
 use Yii;
 use yii\db\Query;
+use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
 
 /**
@@ -75,6 +76,15 @@ class GroupController extends Controller
 
         $access->code = 403;
         return false;
+    }
+
+    private function canModifyMembers(): bool
+    {
+        if (Yii::$app->user->isAdmin() || Yii::$app->user->can(ManageGroups::class)) {
+            return true;
+        }
+
+        return Yii::$app->user->isGroupManager() && !$this->module->groupManagerCannotModifyMembers;
     }
 
     /**
@@ -132,7 +142,6 @@ class GroupController extends Controller
         return $this->render('edit', [
             'group' => $group,
             'isCreateForm' => $group->isNewRecord,
-            'isManagerApprovalSetting' => Yii::$app->getModule('user')->settings->get('auth.needApproval'),
             'canManage' => Yii::$app->user->can(ManageGroups::class),
         ]);
     }
@@ -164,14 +173,19 @@ class GroupController extends Controller
             'searchModel' => $searchModel,
             'group' => $group,
             'addGroupMemberForm' => new AddGroupMemberForm(),
-            'isManagerApprovalSetting' => Yii::$app->getModule('user')->settings->get('auth.needApproval'),
             'canManage' => Yii::$app->user->can(ManageGroups::class),
+            'canModifyMembers' => $this->canModifyMembers(),
         ]);
     }
 
     public function actionRemoveGroupUser()
     {
         $this->forcePostRequest();
+
+        if (!$this->canModifyMembers()) {
+            throw new ForbiddenHttpException('Cannot delete members from the group!');
+        }
+
         $request = Yii::$app->request;
         $group = Group::findOne(['id' => $request->get('id')]);
         $this->checkGroupAccess($group);
@@ -262,6 +276,11 @@ class GroupController extends Controller
     public function actionAddMembers()
     {
         $this->forcePostRequest();
+
+        if (!$this->canModifyMembers()) {
+            throw new ForbiddenHttpException('Cannot add members to the group!');
+        }
+
         $form = new AddGroupMemberForm();
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
