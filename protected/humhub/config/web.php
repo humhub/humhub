@@ -29,7 +29,7 @@ $config = [
             'class' => \humhub\components\Response::class,
         ],
         'captcha' => [
-            'class' => \humhub\components\captcha\AltchaCaptcha::class
+            'class' => \humhub\components\captcha\AltchaCaptcha::class,
             // 'class' => \humhub\components\captcha\YiiCaptcha::class,
         ],
         'user' => [
