@@ -1,6 +1,11 @@
 HumHub Changelog
 ================
 
+1.18.0-beta.5 (Unreleased)
+--------------------------
+- Fix #7720: Saving the new Mobile App admin form when no whitelisted domain
+
+
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------
 - Enh #7690: Allow uploading a custom Email Header image, or using the Logo image

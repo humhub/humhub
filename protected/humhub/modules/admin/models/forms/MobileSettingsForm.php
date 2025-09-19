@@ -73,7 +73,7 @@ class MobileSettingsForm extends Model
         return array_filter(
             array_map(
                 'trim',
-                explode(',', $this->whiteListedDomains),
+                explode(',', (string)$this->whiteListedDomains),
             ),
             'strlen', // Remove empty values
         );
