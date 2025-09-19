@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "84e5f1af98b5defb570309396680fb5a",
+    "content-hash": "60e33b496f8d28fdfd6086fedf291e47",
     "packages": [
         {
             "name": "altcha-org/altcha",
@@ -3960,10 +3960,10 @@
         },
         {
             "name": "npm-asset/altcha",
-            "version": "2.0.1",
+            "version": "2.2.3",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/altcha/-/altcha-2.0.1.tgz"
+                "url": "https://registry.npmjs.org/altcha/-/altcha-2.2.3.tgz"
             },
             "require": {
                 "npm-asset/altcha--crypto": ">=0.0.1,<0.0.2"
@@ -15398,8 +15398,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "yiisoft/yii2": 20,
-        "roave/security-advisories": 20
+        "roave/security-advisories": 20,
+        "yiisoft/yii2": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
@@ -15411,7 +15411,7 @@
         "ext-pdo": "*",
         "ext-zip": "*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "platform-overrides": {
         "php": "8.2"
     },
