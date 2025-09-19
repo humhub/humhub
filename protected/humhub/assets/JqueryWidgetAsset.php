@@ -20,7 +20,7 @@ class JqueryWidgetAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@bower/jquery-ui';
+    public $sourcePath = '@npm/jquery-ui';
 
     /**
      * @inheritdoc

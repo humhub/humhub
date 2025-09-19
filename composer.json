@@ -98,7 +98,10 @@
         "yiisoft/yii2-redis": "^2.0.0",
         "yiisoft/yii2-symfonymailer": "^2.0"
     },
-    "replace": {},
+    "replace": {
+        "bower-asset/jquery": "*",
+        "bower-asset/jquery-ui": "*"
+    },
     "require-dev": {
         "codeception/codeception": "^5.0",
         "codeception/module-asserts": "^3.0",
