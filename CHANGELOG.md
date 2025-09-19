@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.18.0-beta.4 (Unreleased)
----------------------------------
+1.18.0-beta.4 (September 19, 2025)
+----------------------------------
 - Enh #7690: Allow uploading a custom Email Header image, or using the Logo image
 - Fix #7690: Remove "Mobile appearance" from Appearance form
 - Fix #7697: Fix submitting a form with file upload from a modal window
@@ -16,6 +16,7 @@ HumHub Changelog
 - Enh #6969: Added `UserHelper` for better `user` param method handling
 - Enh #7695: Extend permissions for group manager
 - Enh #7703: New `ActiveFileUpload` field widget
+- Enh #7716: Use Altcha captcha provider by default instead of Yii captcha, and upgrade Altcha library to v1.1
 - Fix #7715: Enable Bootstrap box-shadows, mainly for dropdown menus
 
 1.18.0-beta.3 (September 9, 2025)
