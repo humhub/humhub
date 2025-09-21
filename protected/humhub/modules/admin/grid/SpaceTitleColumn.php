@@ -34,9 +34,9 @@ class SpaceTitleColumn extends SpaceBaseColumn
         }
 
         if ($this->label === null) {
-            $this->label = Space::find()->where(['not', ['sort_order' => 100]])->count() ?
-                Yii::t('SpaceModule.base', 'Name / Sort order') :
-                Yii::t('SpaceModule.base', 'Name');
+            $this->label = Space::find()->where(['not', ['sort_order' => 100]])->count()
+                ? Yii::t('SpaceModule.base', 'Name / Sort order')
+                : Yii::t('SpaceModule.base', 'Name');
         }
     }
 
@@ -54,9 +54,9 @@ class SpaceTitleColumn extends SpaceBaseColumn
 
         return Html::tag(
             'div',
-            Html::encode($space->name) . $badge .
-            ($space->sort_order === 100 ? '' : ' ' . Label::defaultType($space->sort_order)) .
-            '<br> ' . '<small>' . Html::encode(Helpers::trimText($space->description, 100)) . '</small>',
+            Html::encode($space->name) . $badge
+            . ($space->sort_order === 100 ? '' : ' ' . Label::defaultType($space->sort_order))
+            . '<br> ' . '<small>' . Html::encode(Helpers::trimText($space->description, 100)) . '</small>',
         );
     }
 

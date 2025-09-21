@@ -62,19 +62,19 @@ class ActiveForm extends \yii\bootstrap\ActiveForm
         $cssClass = ($isClosed) ? 'closed' : 'opened';
 
         return
-            Html::beginTag('div', ['class' => 'form-collapsible-fields ' . $cssClass, 'data-ui-widget' => 'ui.form.elements.FormFieldsCollapsible', 'data-ui-init' => 1]) .
-            Html::tag(
+            Html::beginTag('div', ['class' => 'form-collapsible-fields ' . $cssClass, 'data-ui-widget' => 'ui.form.elements.FormFieldsCollapsible', 'data-ui-init' => 1])
+            . Html::tag(
                 'div',
                 Html::tag(
                     'div',
-                    Icon::get('plus', ['htmlOptions' => ['class' => 'iconOpen']]) .
-                    Icon::get('minus', ['htmlOptions' => ['class' => 'iconClose']]) . '&nbsp;&nbsp;',
+                    Icon::get('plus', ['htmlOptions' => ['class' => 'iconOpen']])
+                    . Icon::get('minus', ['htmlOptions' => ['class' => 'iconClose']]) . '&nbsp;&nbsp;',
                     ['class' => 'pull-left'],
-                ) .
-                Html::label($title, null, ['class' => 'control-label']),
+                )
+                . Html::label($title, null, ['class' => 'control-label']),
                 ['class' => 'form-collapsible-fields-label', 'data-action-click' => 'clickCollab', 'data-toggle' => 'tab'],
-            ) .
-            Html::beginTag('fieldset');
+            )
+            . Html::beginTag('fieldset');
     }
 
     /**
@@ -85,8 +85,8 @@ class ActiveForm extends \yii\bootstrap\ActiveForm
      */
     public function endCollapsibleFields()
     {
-        return Html::endTag('fieldset') .
-            Html::endTag('div');
+        return Html::endTag('fieldset')
+            . Html::endTag('div');
     }
 
     /**

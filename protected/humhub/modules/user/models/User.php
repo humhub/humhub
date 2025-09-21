@@ -593,8 +593,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
         }
 
         // Reindex user content when status is changed to/from Enabled
-        if (!$insert && isset($changedAttributes['status']) &&
-            ($this->status === User::STATUS_ENABLED || $changedAttributes['status'] === User::STATUS_ENABLED)) {
+        if (!$insert && isset($changedAttributes['status'])
+            && ($this->status === User::STATUS_ENABLED || $changedAttributes['status'] === User::STATUS_ENABLED)) {
             Yii::$app->queue->push(new ReindexUserContent(['userId' => $this->id]));
         }
 
@@ -603,10 +603,10 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
 
         // When insert an "::STATUS_ENABLED" user or update a user from status "::STATUS_NEED_APPROVAL" to "::STATUS_ENABLED"
         if (
-            $this->status == User::STATUS_ENABLED &&
-            (
-                $insert ||
-                (isset($changedAttributes['status']) && $changedAttributes['status'] == User::STATUS_NEED_APPROVAL)
+            $this->status == User::STATUS_ENABLED
+            && (
+                $insert
+                || (isset($changedAttributes['status']) && $changedAttributes['status'] == User::STATUS_NEED_APPROVAL)
             )
         ) {
             $this->setUpApproved();

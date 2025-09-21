@@ -135,8 +135,8 @@ class I18N extends BaseI18N
         }
 
         if (is_callable($this->beforeTranslateCallback)) {
-            list($category, $message, $params, $language) =
-                $this->beforeTranslateCallback->call($this, $category, $message, $params, $language);
+            list($category, $message, $params, $language)
+                = $this->beforeTranslateCallback->call($this, $category, $message, $params, $language);
         }
 
         return parent::translate($category, $message, $params, $language);

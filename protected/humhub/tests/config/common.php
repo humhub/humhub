@@ -12,8 +12,8 @@ return [
             ],
         ],
         'view' => [
-            'theme' =>
-            [
+            'theme'
+            => [
                 'name' => 'HumHub',
                 'basePath' => '@webroot/themes/HumHub',
             ],

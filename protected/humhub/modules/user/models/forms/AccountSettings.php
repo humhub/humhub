@@ -89,8 +89,8 @@ class AccountSettings extends Model
 
     public function isVisibilityEditable(): bool
     {
-        return Yii::$app->user->isAdmin() ||
-            ($this->isVisibilityViewable() && !$this->isHiddenUser());
+        return Yii::$app->user->isAdmin()
+            || ($this->isVisibilityViewable() && !$this->isHiddenUser());
     }
 
     public function getVisibilityOptions(): array

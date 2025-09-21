@@ -44,8 +44,8 @@ class UserMenu extends TabMenu
             'label' => Yii::t('AdminModule.user', 'Settings'),
             'url' => ['/admin/authentication'],
             'sortOrder' => 200,
-            'isActive' => ControllerHelper::isActivePath('admin', ['authentication', 'user-permissions']) ||
-                ControllerHelper::isActivePath('ldap', 'admin'),
+            'isActive' => ControllerHelper::isActivePath('admin', ['authentication', 'user-permissions'])
+                || ControllerHelper::isActivePath('ldap', 'admin'),
             'isVisible' => Yii::$app->user->can(ManageSettings::class),
         ]));
 

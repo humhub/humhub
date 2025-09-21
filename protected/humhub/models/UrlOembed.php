@@ -312,17 +312,17 @@ class UrlOembed extends ActiveRecord
         $urlData = parse_url($url);
         $urlPrefix = $urlData['host'] ?? $url;
 
-        $html = Html::tag('strong', Yii::t('base', 'Allow content from external source')) .
-            Html::tag('br') .
-            Yii::t('base', 'Do you want to enable content from \'{urlPrefix}\'?', ['urlPrefix' => Html::tag('strong', $urlPrefix)]) .
-            Html::tag('br') .
-            Html::tag('label', '<input type="checkbox"> ' . Yii::t('base', 'Always allow content from this provider!')) .
-            Html::tag('br') .
-            Button::info(Yii::t('base', 'Confirm'))->action('oembed.display')->sm();
+        $html = Html::tag('strong', Yii::t('base', 'Allow content from external source'))
+            . Html::tag('br')
+            . Yii::t('base', 'Do you want to enable content from \'{urlPrefix}\'?', ['urlPrefix' => Html::tag('strong', $urlPrefix)])
+            . Html::tag('br')
+            . Html::tag('label', '<input type="checkbox"> ' . Yii::t('base', 'Always allow content from this provider!'))
+            . Html::tag('br')
+            . Button::info(Yii::t('base', 'Confirm'))->action('oembed.display')->sm();
 
-        $html = Icon::get('info-circle') .
-            Html::tag('div', $html) .
-            Html::tag('div', '', ['class' => 'clearfix']);
+        $html = Icon::get('info-circle')
+            . Html::tag('div', $html)
+            . Html::tag('div', '', ['class' => 'clearfix']);
 
         return Html::tag('div', $html, [
             'data-url' => $url,
@@ -338,8 +338,8 @@ class UrlOembed extends ActiveRecord
      */
     protected static function validateOembedResponse($data = null)
     {
-        return !empty($data) &&
-            isset($data['html'], $data['type'])
+        return !empty($data)
+            && isset($data['html'], $data['type'])
             && in_array($data['type'], static::$allowed_types, true);
     }
 
