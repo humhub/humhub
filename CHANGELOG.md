@@ -5,7 +5,7 @@ HumHub Changelog
 ----------------------------------
 - Enh #7719: Make Add/Remove Group Member optional for group managers
 - Fix #7720: Saving the new Mobile App admin form when no whitelisted domain
-- Fix: Acceptance tests for Altcha captcha in password recovery
+- Fix #7728: Acceptance tests for Altcha captcha in password recovery
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------
