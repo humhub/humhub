@@ -70,9 +70,7 @@ class ComponentLoader implements BootstrapInterface
             ];
 
             $this->updateComponentDefinition($app, 'mailer', $definition);
-        } elseif ($transportType === MailingSettingsForm::TRANSPORT_CONFIG) {
-            $app->set('mailer', false);
-        } else {
+        } elseif (in_array($transportType, [MailingSettingsForm::TRANSPORT_SMTP, MailingSettingsForm::TRANSPORT_PHP, MailingSettingsForm::TRANSPORT_DSN])) {
             $definition = [];
 
             if ($transportType === MailingSettingsForm::TRANSPORT_SMTP) {
