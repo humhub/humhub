@@ -1,5 +1,6 @@
 <?php
 
+use humhub\models\Setting;
 use yii\db\Migration;
 
 class m250226_125226_rename_mailer_vars extends Migration
@@ -25,18 +26,23 @@ class m250226_125226_rename_mailer_vars extends Migration
     public function safeUp()
     {
         foreach ($this->keyMap() as $oldKey => $newKey) {
-            $value = Yii::$app->settings->get($oldKey);
-            Yii::$app->settings->set($newKey, $value);
-            Yii::$app->settings->delete($oldKey);
+            $oldSetting = Setting::find()->where([
+                'module_id' => 'base',
+                'name' => $oldKey,
+            ])->one();
+
+            if ($oldSetting) {
+                Yii::$app->settings->set($newKey, $oldSetting->value);
+                $oldSetting->delete();
+            }
         }
+
+        Yii::$app->settings->reload();
     }
 
     public function safeDown()
     {
-        foreach ($this->keyMap() as $newKey => $oldKey) {
-            $value = Yii::$app->settings->get($oldKey);
-            Yii::$app->settings->set($newKey, $value);
-            Yii::$app->settings->delete($oldKey);
-        }
+        echo "m250226_125226_rename_mailer_vars does not support migration down.\n";
+        return false;
     }
 }
