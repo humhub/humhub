@@ -5,6 +5,7 @@ HumHub Changelog
 ----------------------------------
 - Enh #7719: Make Add/Remove Group Member optional for group managers
 - Fix #7720: Saving the new Mobile App admin form when no whitelisted domain
+- Fix #7733: Ignore mailer `TRANSPORT_CONFIG` option in `ComponentLoader`
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------
