@@ -18,15 +18,15 @@ class PasswordRecoveryCest
         $I->jsClick('#password-recovery-link');
         $I->waitForText('Password recovery');
         $I->fillField('#email_txt', 'wrong@mail.de');
+        $I->executeJS('$(\'[class*="captcha"]\').remove();'); // Remove any existing captcha to simulate not checking it or hacking
         $I->click('Reset password');
         $I->wait(3);
         $I->expectTo('see error messages');
-        $I->seeElement('#accountrecoverpassword-captcha .altcha[data-state="unverified"]');
+        $I->see('We couldn\'t verify that you\'re human. Please check the box again.', '#accountrecoverpassword-captcha + .invalid-feedback');
 
         $I->amGoingTo('request a recovery mail for an invalid user email');
         $I->jsClick('#accountrecoverpassword-captcha .altcha-checkbox input');
-        $I->wait(3); // Give Altcha time to process
-        $I->waitForElement('#accountrecoverpassword-captcha .altcha[data-state="verified"]');
+        $I->wait(8); // Give Altcha time to process
         $I->click('Reset password');
         $I->wait(3);
         $I->expectTo('see confirm messages even with wrong email for safe reason');
@@ -41,8 +41,7 @@ class PasswordRecoveryCest
         $I->waitForText('Password recovery');
         $I->fillField('#email_txt', 'user1@example.com');
         $I->jsClick('#accountrecoverpassword-captcha .altcha-checkbox input');
-        $I->wait(3); // Give Altcha time to process
-        $I->waitForElement('#accountrecoverpassword-captcha .altcha[data-state="verified"]');
+        $I->wait(8); // Give Altcha time to process
         $I->click('Reset password');
         $I->wait(3);
         $I->expectTo('see confirm messages');

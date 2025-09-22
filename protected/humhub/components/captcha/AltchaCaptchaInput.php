@@ -32,6 +32,7 @@ class AltchaCaptchaInput extends InputWidget
         AltchaCaptchaAsset::register($view);
         $view->registerJs("$('altcha-widget').on('verified', (evt) => $(evt.target).removeClass('is-invalid'));");
 
+        // Options list: https://altcha.org/docs/v2/widget-integration/#configuration
         return Html::tag('altcha-widget', '', array_merge([
             'challengeurl' => Url::to([$this->captchaAction]),
             'name' => Html::getInputName($this->model, $this->attribute),

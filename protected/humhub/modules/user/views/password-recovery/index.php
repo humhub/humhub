@@ -25,7 +25,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
             <div class="panel-heading"><?= Yii::t('UserModule.auth', '<strong>Password</strong> recovery'); ?></div>
             <div class="panel-body">
 
-                <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
+                <?php $form = ActiveForm::begin(); ?>
 
                 <p><?= Yii::t('UserModule.auth', 'Just enter your e-mail address. We\'ll send you recovery instructions!'); ?></p>
 
@@ -36,8 +36,8 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
                 </div>
 
                 <hr>
+                <?= Button::light(Yii::t('UserModule.auth', 'Back'))->link(Url::home())->pjax(false) ?>
                 <?= Html::submitButton(Yii::t('UserModule.auth', 'Reset password'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
-                <?= Button::primary(Yii::t('UserModule.auth', 'Back'))->link(Url::home())->pjax(false) ?>
 
                 <?php ActiveForm::end(); ?>
 
@@ -46,8 +46,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
     </div>
 </div>
 
-<script <?= \humhub\helpers\Html::nonce() ?>>
-
+<script <?= Html::nonce() ?>>
     $(function () {
         // set cursor to email field
         $('#email_txt').focus();
