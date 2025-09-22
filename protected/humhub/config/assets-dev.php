@@ -8,9 +8,11 @@
 
 return [
     'yii\bootstrap5\BootstrapAsset' => [
+        'sourcePath' => '@npm/bootstrap/dist',
         'css' => [],
     ],
     'yii\bootstrap5\BootstrapPluginAsset' => [
+        'sourcePath' => '@npm/bootstrap/dist',
         'depends' => [
             'yii\web\JqueryAsset',
             'yii\bootstrap5\BootstrapAsset',
@@ -22,5 +24,11 @@ return [
     ],
     'yii\jui\JuiAsset' => [
         'sourcePath' => '@npm/jquery-ui/dist',
+    ],
+    'yii\jui\DatePickerLanguageAsset' => [
+        'sourcePath' => '@npm/jquery-ui',
+    ],
+    'yii\bootstrap\BootstrapAsset' => [
+        'sourcePath' => '@npm/bootstrap/dist',
     ],
 ];
