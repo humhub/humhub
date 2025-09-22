@@ -2,6 +2,12 @@
 @import "mixins";
 @import "root";
 
+// TODO: Remove this when Bootstrap 3 is no longer supported
+$prev-bootstrap3: false !default;
+@if not $prev-bootstrap3 {
+    @import "bootstrap3";
+}
+
 // Import base components. Components can be deactivated by $prev-* variables.
 $prev-base: false !default;
 @if not $prev-base {
@@ -216,11 +222,4 @@ $prev-search: false !default;
 $prev-select2: false !default;
 @if not $prev-select2 {
     @import "select2";
-}
-
-// TODO: Remove this when Bootstrap 3 is no longer supported
-// TODO: When converted to SCSS, move it to `mixins/deprecate` and wrap it in `$include deprecate("The `old-mixin()` mixin") { ... }`
-$prev-bootstrap3: false !default;
-@if not $prev-bootstrap3 {
-    @import "bootstrap3";
 }
