@@ -26,9 +26,9 @@ class PasswordRecoveryCest
 
         $I->amGoingTo('request a recovery mail for an invalid user email');
         $I->jsClick('#accountrecoverpassword-captcha .altcha-checkbox input');
-        $I->wait(8); // Give Altcha time to process
+        $I->wait(10); // Give Altcha time to process
         $I->click('Reset password');
-        $I->wait(3);
+        $I->wait(5);
         $I->expectTo('see confirm messages even with wrong email for safe reason');
         $I->see('Password recovery!');
         $I->see('If a user account associated with this email address exists, further instructions will be sent to you by email shortly.');
@@ -41,9 +41,9 @@ class PasswordRecoveryCest
         $I->waitForText('Password recovery');
         $I->fillField('#email_txt', 'user1@example.com');
         $I->jsClick('#accountrecoverpassword-captcha .altcha-checkbox input');
-        $I->wait(8); // Give Altcha time to process
+        $I->wait(10); // Give Altcha time to process
         $I->click('Reset password');
-        $I->wait(3);
+        $I->wait(5);
         $I->expectTo('see confirm messages');
         $I->see('Password recovery!');
         $I->see('If a user account associated with this email address exists, further instructions will be sent to you by email shortly.');
