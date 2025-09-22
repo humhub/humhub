@@ -25,4 +25,10 @@ return [
     'yii\jui\JuiAsset' => [
         'sourcePath' => '@npm/jquery-ui/dist',
     ],
+    'yii\jui\DatePickerLanguageAsset' => [
+        'sourcePath' => '@npm/jquery-ui',
+    ],
+    'yii\bootstrap\BootstrapAsset' => [
+        'sourcePath' => '@npm/bootstrap/dist',
+    ],
 ];
