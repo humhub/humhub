@@ -96,8 +96,8 @@ class ContentContainerPermissionManager extends PermissionManager
      */
     private function getDefaultStoredState($groupId, BasePermission $permission)
     {
-        if ($this->contentContainer === null ||
-            !is_object($this->contentContainer)) {
+        if ($this->contentContainer === null
+            || !is_object($this->contentContainer)) {
             // Content Container must be defined to get default permission per column `contentcontainer_class`
             return null;
         }

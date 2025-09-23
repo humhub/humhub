@@ -40,9 +40,9 @@ class FilterService
 
     public function isFiltered(): bool
     {
-        return $this->isFilteredById() &&
-            $this->isFilteredByCategory() &&
-            $this->isFilteredByTags();
+        return $this->isFilteredById()
+            && $this->isFilteredByCategory()
+            && $this->isFilteredByTags();
     }
 
     public function isFilteredById(): bool

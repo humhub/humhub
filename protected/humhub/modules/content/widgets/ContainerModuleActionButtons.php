@@ -34,8 +34,8 @@ class ContainerModuleActionButtons extends Widget
      */
     public function init()
     {
-        if ($this->module->getContentContainerConfigUrl($this->contentContainer) &&
-            $this->contentContainer->moduleManager->isEnabled($this->module->id)) {
+        if ($this->module->getContentContainerConfigUrl($this->contentContainer)
+            && $this->contentContainer->moduleManager->isEnabled($this->module->id)) {
             $this->buttons[] = Button::asLink(Yii::t('ContentModule.base', 'Configure'), $this->module->getContentContainerConfigUrl($this->contentContainer))
                 ->cssClass('btn btn-sm btn-info configure-module-' . $this->module->id);
         }

@@ -115,8 +115,8 @@ class Events extends BaseObject
             return;
         }
 
-        if (!Yii::$app->user->isGuest &&
-            !Yii::$app->user->can(SpaceDirectoryAccess::class)) {
+        if (!Yii::$app->user->isGuest
+            && !Yii::$app->user->can(SpaceDirectoryAccess::class)) {
             return;
         }
 
