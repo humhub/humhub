@@ -14,6 +14,7 @@ use humhub\components\View;
 use yii\bootstrap5\BootstrapAsset;
 use yii\bootstrap5\BootstrapPluginAsset;
 use yii\helpers\ArrayHelper;
+use yii\jui\DatePickerLanguageAsset;
 use yii\jui\JuiAsset;
 use yii\web\JqueryAsset;
 
@@ -82,15 +83,23 @@ return [
                 'sourcePath' => '@npm/jquery-ui/dist',
             ],
             BootstrapAsset::class => [
+                'sourcePath' => '@npm/bootstrap/dist',
                 'css' => [],
             ],
             BootstrapPluginAsset::class => [
+                'sourcePath' => '@npm/bootstrap/dist',
                 'js' => ['js/bootstrap.bundle.min.js'],
                 'depends' => [
                     JqueryAsset::class,
                     BootstrapAsset::class,
                     JuiBootstrapBridgeAsset::class,
                 ],
+            ],
+            DatePickerLanguageAsset::class => [
+                'sourcePath' => '@npm/jquery-ui',
+            ],
+            \yii\bootstrap\BootstrapAsset::class => [
+                'sourcePath' => '@npm/bootstrap/dist',
             ],
         ],
     ],
