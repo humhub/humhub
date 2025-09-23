@@ -16,17 +16,22 @@ class AccountRecoverPassword extends Model
     public $captcha = '';
     public $email;
 
+    public const TESTING_BYPASS_CAPTCHA_EMAIL = 'test-captcha@mail.de';
+
     /**
      * Declares the validation rules.
      */
     public function rules()
     {
-        return [
+        $rules = [
             ['email', 'required'],
             ['email', 'email'],
-            ['captcha', Yii::$app->captcha->getValidatorClass()],
             ['email', 'verifyEmail'],
         ];
+        if (!$this->skipCaptchaInTestEnv()) {
+            $rules[] = ['captcha', Yii::$app->captcha->getValidatorClass()];
+        }
+        return $rules;
     }
 
     /**
@@ -84,4 +89,9 @@ class AccountRecoverPassword extends Model
         return $user->getPasswordRecoveryService()->sendRecoveryInfo();
     }
 
+    private function skipCaptchaInTestEnv(): bool
+    {
+        return YII_ENV_TEST
+            && (Yii::$app->request->post('AccountRecoverPassword')['email'] ?? null) !== static::TESTING_BYPASS_CAPTCHA_EMAIL;
+    }
 }

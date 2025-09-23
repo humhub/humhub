@@ -2,6 +2,7 @@
 
 namespace user\acceptance;
 
+use humhub\modules\user\models\forms\AccountRecoverPassword;
 use tests\codeception\_pages\LoginPage;
 use user\AcceptanceTester;
 
@@ -17,7 +18,7 @@ class PasswordRecoveryCest
         $I->waitForText('Forgot your password?');
         $I->jsClick('#password-recovery-link');
         $I->waitForText('Password recovery');
-        $I->fillField('#email_txt', 'wrong@mail.de');
+        $I->fillField('#email_txt', AccountRecoverPassword::TESTING_BYPASS_CAPTCHA_EMAIL);
         $I->executeJS('$(\'[class*="captcha"]\').remove();'); // Remove any existing captcha to simulate not checking it or hacking
         $I->click('Reset password');
         $I->wait(3);
@@ -25,9 +26,9 @@ class PasswordRecoveryCest
         $I->see('We couldn\'t verify that you\'re human. Please check the box again.', '#accountrecoverpassword-captcha + .invalid-feedback');
 
         $I->amGoingTo('request a recovery mail for an invalid user email');
-        $I->jsClick('#accountrecoverpassword-captcha .altcha-checkbox input');
-        $I->wait(6); // Give Altcha time to process
-        $I->submitForm('form[action="/user/password-recovery"]', []);
+        $I->fillField('#email_txt', 'wrong@mail.de');
+        $I->executeJS('$(\'[class*="captcha"]\').remove();');
+        $I->click('Reset password');
         $I->wait(3);
         $I->expectTo('see confirm messages even with wrong email for safe reason');
         $I->see('Password recovery!');
@@ -40,9 +41,8 @@ class PasswordRecoveryCest
         $I->jsClick('#password-recovery-link');
         $I->waitForText('Password recovery');
         $I->fillField('#email_txt', 'user1@example.com');
-        $I->jsClick('#accountrecoverpassword-captcha .altcha-checkbox input');
-        $I->wait(6); // Give Altcha time to process
-        $I->submitForm('form[action="/user/password-recovery"]', []);
+        $I->executeJS('$(\'[class*="captcha"]\').remove();');
+        $I->click('Reset password');
         $I->wait(3);
         $I->expectTo('see confirm messages');
         $I->see('Password recovery!');
