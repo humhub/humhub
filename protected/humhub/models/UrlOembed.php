@@ -8,6 +8,7 @@
 
 namespace humhub\models;
 
+use humhub\libs\Html;
 use humhub\modules\admin\models\forms\OEmbedSettingsForm;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\models\User;
@@ -16,7 +17,6 @@ use humhub\events\OembedFetchEvent;
 use humhub\libs\RestrictedCallException;
 use humhub\libs\UrlOembedClient;
 use humhub\libs\UrlOembedHttpClient;
-use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\db\ActiveRecord;
 use Yii;
@@ -166,7 +166,7 @@ class UrlOembed extends ActiveRecord
                 }
 
                 if (!empty($result)) {
-
+                    $result = preg_replace('/(<script)(?![^>]*\bnonce=)([^>]*)>/i', '$1$2 ' . Html::nonce() . '>', $result);
                     return trim(preg_replace('/\s+/', ' ', $result));
                 }
             }
