@@ -71,6 +71,7 @@ humhub.module('ui.search', function(module, require, $) {
         });
 
         that.$.on('shown.bs.dropdown', function () {
+            that.refreshPositionSize();
             if (that.getBackdrop().length === 0) {
                 // Add the backdrop
                 that.$.append('<div class="' + that.selectors.backdrop.replace('.', '') + '">').promise().done(function() {
@@ -233,6 +234,7 @@ humhub.module('ui.search', function(module, require, $) {
             that.getList().hide();
             that.getInput().val('');
             that.previousKeyword = '';
+            that.refreshPositionSize();
             if (!that.hasInput()) {
                 that.hidePanel();
             }
@@ -245,6 +247,7 @@ humhub.module('ui.search', function(module, require, $) {
                 provider.removeClass('provider-searching');
                 loader.reset(provider.find(that.selectors.providerContent));
             });
+            that.refreshPositionSize();
             return;
         }
 
@@ -264,6 +267,8 @@ humhub.module('ui.search', function(module, require, $) {
             provider.addClass('provider-searching').show()
                 .find(that.selectors.providerCounter).hide();
             loader.set(provider.find(that.selectors.providerContent), {size: '8px', css: {padding: '0px'}});
+
+            that.refreshPositionSize();
 
             if (typeof that.currentSearchTimeout !== 'undefined') {
                 // Don't run the search process while time is not expired,
@@ -289,10 +294,12 @@ humhub.module('ui.search', function(module, require, $) {
                     newProviderContent.hide();
                 }
 
+                that.refreshPositionSize();
             }).catch(function (e) {
                 module.log.error(e, true);
                 loader.reset(provider.find(that.selectors.providerContent));
                 provider.hide();
+                that.refreshPositionSize();
             });
 
             that.previousKeyword = data.keyword;
@@ -303,6 +310,17 @@ humhub.module('ui.search', function(module, require, $) {
         this.getCurrentInput().val('');
         this.getProviders().hide();
         this.hidePanel();
+    }
+
+    Search.prototype.refreshPositionSize = function () {
+        // Set proper panel height
+        const panel = this.$.find(this.selectors.panel);
+        const panelTop = panel.position().top + this.$.offset().top - $(window).scrollTop();
+        const maxHeight = $(window).height() - panelTop - ($(window).width() > 440 ? 80 : 0);
+        panel.css('height', 'auto');
+        if (panel.height() > maxHeight) {
+            panel.css('height', maxHeight);
+        }
     }
 
     Search.prototype.switchFocus = function (tag, key) {
