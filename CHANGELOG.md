@@ -9,7 +9,7 @@ HumHub Changelog
 - Fix: Bootstrap 3 compatible SCSS overwrites unwanted values such as Markdown h1 font size
 - Fix #7722: Fix mailer settings loss after upgrade
 - Enh #7737: Disable `ComponentLoader`s initialization warning for `mailer`
-- Fix: Wall Stream entry header misalignment with the content
+- Fix #7739: Wall Stream entry header misalignment with the content
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------
