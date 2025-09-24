@@ -36,8 +36,8 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
                 </div>
 
                 <hr>
+                <?= Button::light(Yii::t('UserModule.auth', 'Back'))->link(Url::home())->pjax(false) ?>
                 <?= Html::submitButton(Yii::t('UserModule.auth', 'Reset password'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
-                <?= Button::primary(Yii::t('UserModule.auth', 'Back'))->link(Url::home())->pjax(false) ?>
 
                 <?php ActiveForm::end(); ?>
 
