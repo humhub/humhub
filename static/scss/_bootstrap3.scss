@@ -784,3 +784,11 @@ a.label-warning:hover {
 .colorFont5 {
     color: var(--hh-text-color-soft2) !important;
 }
+
+//
+// Fix for TinyMCE which doesn't use BS5 .img-fluid class
+// --------------------------------------------------
+
+.img-responsive {
+    @include img-fluid();
+}
