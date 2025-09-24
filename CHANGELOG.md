@@ -11,6 +11,7 @@ HumHub Changelog
 - Fix #7736: Fix scroll of meta search modal window
 - Enh #7737: Disable `ComponentLoader`s initialization warning for `mailer`
 - Fix #7739: Wall Stream entry header misalignment with the content
+- Fix #7741: Form input border color inconsistency
 - Fix #7742: Images in HTML created by TinyMCE are not responsive
 - Fix #7740: Acceptance tests for captcha in password recovery, and buttons order and color in the form
 
