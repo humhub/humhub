@@ -10,7 +10,6 @@
     top: 115%;
 
     &.show {
-        overflow: hidden;
         display: flex;
         flex-direction: column;
         max-height: calc(100vh - 160px);
