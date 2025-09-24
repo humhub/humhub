@@ -10,8 +10,16 @@
     top: 115%;
 
     &.show {
+        overflow: hidden;
         display: flex;
         flex-direction: column;
+        max-height: calc(100vh - 160px);
+        @media (max-height: 500px) {
+            max-height: calc(100vh - 120px);
+        }
+        @media (max-height: 300px) {
+            max-height: calc(100vh - 110px);
+        }
     }
 
     .dropdown-header {
