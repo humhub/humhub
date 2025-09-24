@@ -12,13 +12,7 @@
     &.show {
         display: flex;
         flex-direction: column;
-        max-height: calc(100vh - 160px);
-        @media (max-height: 500px) {
-            max-height: calc(100vh - 120px);
-        }
-        @media (max-height: 300px) {
-            max-height: calc(100vh - 110px);
-        }
+        max-height: calc(100vh + 15px - var(--hh-fixed-header-height) - var(--hh-mobile-app-safe-area-inset-bottom, env(safe-area-inset-bottom)));
     }
 
     .dropdown-header {
