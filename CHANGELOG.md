@@ -11,7 +11,7 @@ HumHub Changelog
 - Fix #7736: Fix scroll of meta search modal window
 - Enh #7737: Disable `ComponentLoader`s initialization warning for `mailer`
 - Fix #7739: Wall Stream entry header misalignment with the content
-- Fix: Form input border color inconsistency
+- Fix #7741: Form input border color inconsistency
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------
