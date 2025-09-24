@@ -24,6 +24,9 @@ return [
         'urlManager' => [
             'class' => \humhub\components\console\UrlManager::class,
         ],
+        'captcha' => [
+            'class' => \humhub\components\captcha\YiiCaptcha::class,
+        ],
     ],
     'params' => [
         'installed' => true,
@@ -34,7 +37,7 @@ return [
             'enableRegistrationFormCaptcha' => false,
         ],
         'web' => [
-            'security' =>  [
+            'security' => [
                 "headers" => [
                     "Strict-Transport-Security" => "max-age=31536000",
                     "X-Content-Type-Options" => "nosniff",
