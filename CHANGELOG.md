@@ -8,6 +8,7 @@ HumHub Changelog
 - Fix #7733: Ignore mailer `TRANSPORT_CONFIG` option in `ComponentLoader`
 - Fix: Bootstrap 3 compatible SCSS overwrites unwanted values such as Markdown h1 font size
 - Fix #7722: Fix mailer settings loss after upgrade
+- Fix #7736: Fix scroll of meta search modal window
 - Enh #7737: Disable `ComponentLoader`s initialization warning for `mailer`
 
 1.18.0-beta.4 (September 19, 2025)

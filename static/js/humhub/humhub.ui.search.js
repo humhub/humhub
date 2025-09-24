@@ -288,7 +288,6 @@ humhub.module('ui.search', function(module, require, $) {
                 } else if (newProviderContent.data('hide-on-empty') !== undefined) {
                     newProviderContent.hide();
                 }
-
             }).catch(function (e) {
                 module.log.error(e, true);
                 loader.reset(provider.find(that.selectors.providerContent));
