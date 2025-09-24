@@ -23,15 +23,6 @@ $select2-caret-width: 1rem; // we cannot use $caret-width because it's a em valu
 // Mixins
 // --------------------------------------------------
 
-@mixin humhub-input-defaults() {
-    background-color: var(--hh-background-color-main);
-    border: 2px solid var(--hh-background3);
-    border-radius: $input-border-radius;
-    color: $input-color;
-    font-family: $font-family-base;
-    font-size: $font-size-base;
-}
-
 // $see http://gethumhub.com/css/#forms-control-validation
 @mixin validation-state-focus($color) {
     $shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px lighten($color, 20%);
@@ -83,7 +74,7 @@ $select2-caret-width: 1rem; // we cannot use $caret-width because it's a em valu
     }
 
     .select2-selection {
-        @include humhub-input-defaults;
+        @extend %form-control-base;
         outline: 0;
         min-height: 35px;
         font-size: 14px;
@@ -96,7 +87,7 @@ $select2-caret-width: 1rem; // we cannot use $caret-width because it's a em valu
 
     .select2-search--dropdown {
         .select2-search__field {
-            @include humhub-input-defaults;
+            @extend %form-control-base;
         }
     }
 
