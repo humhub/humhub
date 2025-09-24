@@ -51,10 +51,6 @@ class ComponentLoader implements BootstrapInterface
 
     private function setMailerConfig($app): void
     {
-        if ($app->has('mailer', true)) {
-            $app->log->logger->log('`mailer` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
-        }
-
         $transportType = $app->settings->get('mailerTransportType', MailingSettingsForm::TRANSPORT_PHP);
 
         // Check if Test environment
@@ -70,9 +66,7 @@ class ComponentLoader implements BootstrapInterface
             ];
 
             $this->updateComponentDefinition($app, 'mailer', $definition);
-        } elseif ($transportType === MailingSettingsForm::TRANSPORT_CONFIG) {
-            $app->set('mailer', false);
-        } else {
+        } elseif (in_array($transportType, [MailingSettingsForm::TRANSPORT_SMTP, MailingSettingsForm::TRANSPORT_PHP, MailingSettingsForm::TRANSPORT_DSN])) {
             $definition = [];
 
             if ($transportType === MailingSettingsForm::TRANSPORT_SMTP) {

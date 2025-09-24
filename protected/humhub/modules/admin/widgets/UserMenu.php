@@ -54,7 +54,10 @@ class UserMenu extends TabMenu
 
         if ($approvalCount > 0 || Yii::$app->user->isGroupManager()) {
             $this->addEntry(new MenuLink([
-                'label' => Yii::t('AdminModule.user', 'Pending approvals') . ' ' . Badge::danger((string)$approvalCount),
+                'label' => Yii::t('AdminModule.user', 'Pending approvals') . ' '
+                    . ($approvalCount > 0
+                        ? Badge::danger((string)$approvalCount)
+                        : Badge::light((string)$approvalCount)),
                 'url' => ['/admin/approval'],
                 'sortOrder' => 300,
                 'isActive' => ControllerHelper::isActivePath('admin', 'approval'),
