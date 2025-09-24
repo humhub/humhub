@@ -44,7 +44,7 @@ $container = $model->content->container;
 <!-- end: show wall entry options -->
 
 
-<div class="wall-entry-header-image flex-shrink-0 me-2">
+<div class="wall-entry-header-image flex-shrink-0">
     <?= $headImage ?>
 </div>
 
