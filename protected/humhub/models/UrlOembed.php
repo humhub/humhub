@@ -166,7 +166,22 @@ class UrlOembed extends ActiveRecord
                 }
 
                 if (!empty($result)) {
-                    $result = preg_replace('/(<script)(?![^>]*\bnonce=)([^>]*)>/i', '$1$2 ' . Html::nonce() . '>', $result);
+                    if (preg_match('/<script\b[^>]*>.*?<\/script>/is', $result)) {
+                        // Add nonce for scripts
+                        $result = preg_replace('/(<script)(?![^>]*\bnonce=)([^>]*)>/i', '$1$2 ' . Html::nonce() . '>', $result);
+                        // Force to run the appended scripts after ajax/pjax loading
+                        $result .= Html::script(<<<JS
+                            document.querySelectorAll('.oembed_snippet script').forEach(oldScript => {
+                                const newScript = document.createElement('script');
+                                for (const {name, value} of oldScript.attributes) {
+                                    newScript.setAttribute(name, value);
+                                }
+                                newScript.text = oldScript.text;
+                                oldScript.replaceWith(newScript);
+                            });
+                        JS);
+                    }
+
                     return trim(preg_replace('/\s+/', ' ', $result));
                 }
             }
