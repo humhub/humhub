@@ -12,7 +12,11 @@
     &.show {
         display: flex;
         flex-direction: column;
-        max-height: calc(100vh + 15px - var(--hh-fixed-header-height) - var(--hh-mobile-app-safe-area-inset-bottom, env(safe-area-inset-bottom)));
+        max-height: calc(100vh - var(--hh-fixed-header-height) - var(--hh-mobile-app-safe-area-inset-bottom, env(safe-area-inset-bottom)));
+
+        @include media-breakpoint-down(md) {
+            max-height: calc(100vh - 15px - var(--hh-fixed-header-height) - var(--hh-mobile-app-safe-area-inset-bottom, env(safe-area-inset-bottom)));
+        }
     }
 
     .dropdown-header {
