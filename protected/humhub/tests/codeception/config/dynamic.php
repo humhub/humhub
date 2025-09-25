@@ -4,27 +4,27 @@ return  [
     'name' => 'HumHub',
     'language' => 'en-US',
     'timeZone' => 'Europe/Berlin',
-    'components' =>
-     [
-         'formatter' =>
-          [
+    'components'
+     => [
+         'formatter'
+          => [
               'defaultTimeZone' => 'Europe/Berlin',
           ],
-         'user' =>
-          [
+         'user'
+          => [
           ],
-         'mailer' =>
-          [
+         'mailer'
+          => [
               'useFileTransport' => true,
           ],
-         'cache' =>
-          [
+         'cache'
+          => [
               'class' => 'yii\\caching\\DummyCache',
               'keyPrefix' => 'humhub',
           ],
      ],
-    'params' =>
-     [
+    'params'
+     => [
          'config_created_at' => 1509135303,
          'horImageScrollOnMobile' => null,
      ],

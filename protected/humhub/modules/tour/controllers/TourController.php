@@ -100,12 +100,12 @@ class TourController extends Controller
         /* @var User $user */
         $user = Yii::$app->user->getIdentity();
 
-        if ($user->id == 1 &&
-            $user->load(Yii::$app->request->post()) &&
-            $user->save(true, ['tagsField']) &&
-            ($profile = $user->profile) &&
-            $profile->load(Yii::$app->request->post()) &&
-            $profile->save(true, ['firstname', 'lastname', 'title', 'birthday', 'birthday_hide_year', 'phone_work', 'mobile'])
+        if ($user->id == 1
+            && $user->load(Yii::$app->request->post())
+            && $user->save(true, ['tagsField'])
+            && ($profile = $user->profile)
+            && $profile->load(Yii::$app->request->post())
+            && $profile->save(true, ['firstname', 'lastname', 'title', 'birthday', 'birthday_hide_year', 'phone_work', 'mobile'])
         ) {
             Yii::$app->getModule('tour')->settings->contentContainer($user)->set('welcome', 1);
             return $this->redirect(['/dashboard/dashboard']);

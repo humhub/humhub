@@ -213,9 +213,9 @@ class AuthController extends Controller
         $inviteRegistrationService = InviteRegistrationService::createFromRequestOrEmail($attributes['email'] ?? null);
         $linkRegistrationService = LinkRegistrationService::createFromRequest();
 
-        if (!$inviteRegistrationService->isValid() &&
-            !$linkRegistrationService->isValid() &&
-            (!$authClientService->allowSelfRegistration() && !in_array($authClient->id, $this->module->allowUserRegistrationFromAuthClientIds))
+        if (!$inviteRegistrationService->isValid()
+            && !$linkRegistrationService->isValid()
+            && (!$authClientService->allowSelfRegistration() && !in_array($authClient->id, $this->module->allowUserRegistrationFromAuthClientIds))
         ) {
             Yii::warning('Could not register user automatically: Anonymous registration disabled. AuthClient: ' . get_class($authClient), 'user');
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'You\'re not registered.'));
@@ -264,8 +264,8 @@ class AuthController extends Controller
         $duration = 0;
 
         if (
-            ($authClient instanceof BaseFormAuth && $authClient->login->rememberMe) ||
-            !empty(Yii::$app->session->get('loginRememberMe'))
+            ($authClient instanceof BaseFormAuth && $authClient->login->rememberMe)
+            || !empty(Yii::$app->session->get('loginRememberMe'))
         ) {
             $duration = Yii::$app->getModule('user')->loginRememberMeDuration;
         }

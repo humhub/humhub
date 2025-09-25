@@ -88,9 +88,9 @@ class BasicSettingsForm extends Model
             'baseUrl' => Yii::t('AdminModule.settings', 'E.g. http://example.com/humhub'),
             'maintenanceMode' => Alert::widget([
                 'options' => ['class' => 'alert-danger'],
-                'body' =>
-                    Icon::get('exclamation-triangle') . ' ' .
-                    Yii::t('AdminModule.settings', 'Maintenance mode restricts access to the platform and immediately logs out all users except Admins.'),
+                'body'
+                    => Icon::get('exclamation-triangle') . ' '
+                    . Yii::t('AdminModule.settings', 'Maintenance mode restricts access to the platform and immediately logs out all users except Admins.'),
             ]),
         ];
     }

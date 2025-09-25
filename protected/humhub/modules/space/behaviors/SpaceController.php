@@ -96,8 +96,8 @@ class SpaceController extends Behavior
                 ]),
             ];
 
-            $this->owner->view->registerJs('humhub.modules.space.setSpace(' . Json::encode($options) . ', ' .
-                Json::encode(Yii::$app->request->isPjax) . ')');
+            $this->owner->view->registerJs('humhub.modules.space.setSpace(' . Json::encode($options) . ', '
+                . Json::encode(Yii::$app->request->isPjax) . ')');
         }
     }
 

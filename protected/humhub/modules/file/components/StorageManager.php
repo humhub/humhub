@@ -155,10 +155,10 @@ class StorageManager extends Component implements StorageManagerInterface
             return $basePath . DIRECTORY_SEPARATOR . $this->file->guid;
         }
 
-        $path = $basePath . DIRECTORY_SEPARATOR .
-            substr($this->file->guid, 0, 1) . DIRECTORY_SEPARATOR .
-            substr($this->file->guid, 1, 1) . DIRECTORY_SEPARATOR .
-            $this->file->guid;
+        $path = $basePath . DIRECTORY_SEPARATOR
+            . substr($this->file->guid, 0, 1) . DIRECTORY_SEPARATOR
+            . substr($this->file->guid, 1, 1) . DIRECTORY_SEPARATOR
+            . $this->file->guid;
 
         FileHelper::createDirectory($path, $this->fileMode, true);
 

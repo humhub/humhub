@@ -144,8 +144,8 @@ class Events extends BaseObject
     private static function canPublishScheduledContent(): bool
     {
         $lastPublishTime = self::getModule()->settings->get('lastPublishScheduledTS');
-        return $lastPublishTime === null ||
-            time() >= $lastPublishTime + self::getModule()->publishScheduledInterval * 60;
+        return $lastPublishTime === null
+            || time() >= $lastPublishTime + self::getModule()->publishScheduledInterval * 60;
     }
 
     private static function publishScheduledContent()
