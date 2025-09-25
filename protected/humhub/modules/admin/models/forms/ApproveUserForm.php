@@ -392,11 +392,11 @@ class ApproveUserForm extends Model
     {
         return Yii::t(
             'AdminModule.user',
-            "Hello {displayName},\n\n" .
-            "Your account creation is under review.\n" .
-            "Could you tell us the motivation behind your registration?\n\n" .
-            "Kind Regards\n" .
-            "{AdminName}\n\n",
+            "Hello {displayName},\n\n"
+            . "Your account creation is under review.\n"
+            . "Could you tell us the motivation behind your registration?\n\n"
+            . "Kind Regards\n"
+            . "{AdminName}\n\n",
             [
                 '{displayName}' => $userDisplayName,
                 '{AdminName}' => $adminDisplayName,
@@ -416,11 +416,11 @@ class ApproveUserForm extends Model
     {
         return Yii::t(
             'AdminModule.user',
-            "Hello {displayName},\n\n" .
-            "Your account has been activated.\n\n" .
-            "Click here to login:\n{loginUrl}\n\n" .
-            "Kind Regards\n" .
-            "{AdminName}\n\n",
+            "Hello {displayName},\n\n"
+            . "Your account has been activated.\n\n"
+            . "Click here to login:\n{loginUrl}\n\n"
+            . "Kind Regards\n"
+            . "{AdminName}\n\n",
             [
                 '{displayName}' => $userDisplayName,
                 '{AdminName}' => $adminDisplayName,
@@ -440,10 +440,10 @@ class ApproveUserForm extends Model
     {
         return Yii::t(
             'AdminModule.user',
-            "Hello {displayName},\n\n" .
-            "Your account request has been declined.\n\n" .
-            "Kind Regards\n" .
-            "{AdminName}\n\n",
+            "Hello {displayName},\n\n"
+            . "Your account request has been declined.\n\n"
+            . "Kind Regards\n"
+            . "{AdminName}\n\n",
             [
                 '{displayName}' => $userDisplayName,
                 '{AdminName}' => $adminDisplayName,
@@ -459,9 +459,9 @@ class ApproveUserForm extends Model
     public static function getNumberMessageSent(int $userId): int
     {
         $user = User::findOne($userId);
-        return $user !== null ?
-            (int)Yii::$app->settings->user($user)->get(self::USER_SETTINGS_NB_MSG_SENT, 0) :
-            0;
+        return $user !== null
+            ? (int)Yii::$app->settings->user($user)->get(self::USER_SETTINGS_NB_MSG_SENT, 0)
+            : 0;
     }
 
 }

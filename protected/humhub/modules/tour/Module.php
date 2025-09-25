@@ -35,9 +35,9 @@ class Module extends \humhub\components\Module
             $user = Yii::$app->user->identity;
         }
 
-        return $user instanceof User &&
-            $user->id === 1 &&
-            Yii::$app->getModule('installer')->settings->get('sampleData') != 1 &&
-            $this->settings->user($user)->get('welcome') != 1;
+        return $user instanceof User
+            && $user->id === 1
+            && Yii::$app->getModule('installer')->settings->get('sampleData') != 1
+            && $this->settings->user($user)->get('welcome') != 1;
     }
 }

@@ -813,8 +813,8 @@ class SelfTest
         // Check min allowed version
         $driver['isAllowedVersion'] = version_compare($driver['version'], $driver['minVersion'], '>=');
         // Otherwise try to compare complex version like 5.5.5-10.3.27-MariaDB-0+deb10u1
-        if (!$driver['isAllowedVersion'] &&
-            preg_match_all('/((\d+\.?)+)-/', $driver['version'], $verMatches)) {
+        if (!$driver['isAllowedVersion']
+            && preg_match_all('/((\d+\.?)+)-/', $driver['version'], $verMatches)) {
             foreach ($verMatches[1] as $verMatch) {
                 if (version_compare($verMatch, $driver['minVersion'], '>=')) {
                     // If at least one version is allowed
@@ -944,9 +944,9 @@ class SelfTest
         /* @var \humhub\modules\fcmPush\Module|null $pushModule */
         $pushModule = Yii::$app->getModule('fcm-push');
         return
-            $pushModule instanceof \humhub\modules\fcmPush\Module &&
-            $pushModule->getIsEnabled() &&
-            $pushModule->getGoService()->isConfigured();
+            $pushModule instanceof \humhub\modules\fcmPush\Module
+            && $pushModule->getIsEnabled()
+            && $pushModule->getGoService()->isConfigured();
     }
 
     /**

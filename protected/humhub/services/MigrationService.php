@@ -142,8 +142,8 @@ class MigrationService extends Component
 
     public function getPendingMigrations(): array
     {
-        return $this->runAction() === self::DB_ACTION_PENDING &&
-        preg_match_all('/(^|[\s\t]+)(m\d+.+)(\n|$)/', $this->getLastMigrationOutput(), $matches)
+        return $this->runAction() === self::DB_ACTION_PENDING
+        && preg_match_all('/(^|[\s\t]+)(m\d+.+)(\n|$)/', $this->getLastMigrationOutput(), $matches)
             ? $matches[2]
             : [];
     }

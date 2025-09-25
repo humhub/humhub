@@ -27,8 +27,8 @@ class ApproveUserFormTest extends HumHubDbTestCase
         $this->becomeUser('Admin');
         $form = new ApproveUserForm($this->unapprovedUser->id);
         $form->setSendMessageDefaults();
-        $this->assertEquals("Hello UnApproved User,\n\nYour account creation is under review.\nCould you tell us the motivation behind your registration?\n\n" .
-            "Kind Regards\nAdmin Tester\n\n", $form->message);
+        $this->assertEquals("Hello UnApproved User,\n\nYour account creation is under review.\nCould you tell us the motivation behind your registration?\n\n"
+            . "Kind Regards\nAdmin Tester\n\n", $form->message);
 
         $settings = new AuthenticationSettingsForm();
         $this->assertEquals(ApproveUserForm::getDefaultSendMessageMailContent(), $settings->registrationSendMessageMailContent);
@@ -69,9 +69,9 @@ class ApproveUserFormTest extends HumHubDbTestCase
         $this->becomeUser('Admin');
         $form = new ApproveUserForm($this->unapprovedUser->id);
         $form->setApprovalDefaults();
-        $this->assertEquals("Hello UnApproved User,\n\nYour account has been activated.\n\n" .
-            "Click here to login:\nhttp://localhost/index-test.php?r=user%2Fauth%2Flogin\n\n" .
-            "Kind Regards\nAdmin Tester\n\n", $form->message);
+        $this->assertEquals("Hello UnApproved User,\n\nYour account has been activated.\n\n"
+            . "Click here to login:\nhttp://localhost/index-test.php?r=user%2Fauth%2Flogin\n\n"
+            . "Kind Regards\nAdmin Tester\n\n", $form->message);
 
         $settings = new AuthenticationSettingsForm();
         $this->assertEquals(ApproveUserForm::getDefaultApprovalMessage(), $settings->registrationApprovalMailContent);
@@ -157,10 +157,10 @@ Admin Tester", $form->message);
         $this->becomeUser('Admin');
         $form = new ApproveUserForm($this->unapprovedUser->id);
         $form->setDeclineDefaults();
-        $this->assertEquals("Hello UnApproved User,\n\n" .
-            "Your account request has been declined.\n\n" .
-            "Kind Regards\n" .
-            "Admin Tester\n\n", $form->message);
+        $this->assertEquals("Hello UnApproved User,\n\n"
+            . "Your account request has been declined.\n\n"
+            . "Kind Regards\n"
+            . "Admin Tester\n\n", $form->message);
 
         $settings = new AuthenticationSettingsForm();
         $this->assertEquals(ApproveUserForm::getDefaultDeclineMessage(), $settings->registrationDenialMailContent);
