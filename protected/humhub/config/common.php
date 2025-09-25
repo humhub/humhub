@@ -204,6 +204,7 @@ $config = [
         'databaseDefaultStorageEngine' => 'InnoDB',
         'dynamicConfigFile' => '@config/dynamic.php',
         'moduleAutoloadPaths' => ['@app/modules', '@humhub/modules'],
+        'bsDependencyEnabled' => false, // Disable kartik plugin to register BS5 assets
         'availableLanguages' => [
             'en-US' => 'English (US)',
             'en-GB' => 'English (UK)',
