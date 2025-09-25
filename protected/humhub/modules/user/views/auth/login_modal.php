@@ -70,7 +70,7 @@ use yii\helpers\Url;
                 <?= $form->field($model, 'password')->passwordInput(['id' => 'login_password', 'placeholder' => $model->getAttributeLabel('password')]) ?>
                 <?= $model->hideRememberMe ? '' : $form->field($model, 'rememberMe')->checkbox() ?>
                 <div class="modal-body-footer">
-                    <div class="d-flex flex-column align-items-end w-100">
+                    <div class="d-flex flex-column align-center-end w-100">
                         <?= ModalButton::save(Yii::t('UserModule.auth', 'Sign in'))->submit(['/user/auth/login'])
                             ->id('login-button')
                             ->cssClass('w-100') ?>

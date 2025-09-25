@@ -24,9 +24,9 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
     private static $authclientCollection = 'authClientCollection';
 
     /**
-     * @var int number of clients to show without folding
+     * @var int maximum number of characters for a button to be considered "short" (to display 2 buttons per row)
      */
-    public $maxShowClients = 2;
+    public $maxCharForShortButton = 22;
 
     /**
      * @var bool show auth button colors
@@ -140,30 +140,35 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
         }
 
         $this->view->registerCssFile('@web-static/resources/user/authChoice.css');
-        $this->view->registerJsFile('@web-static/resources/user/authChoice.js');
 
-        echo Html::beginTag('div', ['class' => 'authChoice']);
+        echo Html::beginTag('div', ['class' => 'authChoice row g-3']);
 
-        $i = 0;
-        $extraCssClass = '';
-
-        foreach ($clients as $client) {
-            $i++;
-            if ($i == $this->maxShowClients + 1) {
-                // Add more button
-                echo Html::a('<i class="fa fa-angle-double-down" aria-hidden="true"></i>', '#', ['class' => 'btn btn-light float-end btn-auth-choice-more']);
-
-                // Div contains more auth clients
-                echo Html::beginTag('div', ['class' => 'auth-choice-more-buttons']);
-                $extraCssClass = 'btn-sm'; // further buttons small
+        $clients = array_values($clients); // Reindex array keys
+        foreach ($clients as $i => $client) {
+            $isLastOddButton = ($i === $clientCount - 1) && ($clientCount % 2 === 1);
+            if ($isLastOddButton) {
+                $colClass = 'col-12';
+            } else {
+                // For pairs, check both current and next button
+                $currentIsLong = strlen($client->getTitle()) > $this->maxCharForShortButton;
+                $pairedIsLong = false;
+                if ($i % 2 === 0 && $i + 1 < $clientCount) {
+                    // This is the first button of a pair, check the next one
+                    $pairedIsLong = strlen($clients[$i + 1]->getTitle()) > $this->maxCharForShortButton;
+                } elseif ($i % 2 === 1) {
+                    // This is the second button of a pair, check the previous one
+                    $pairedIsLong = strlen($clients[$i - 1]->getTitle()) > $this->maxCharForShortButton;
+                }
+                // If either button in the pair is long, both get col-12
+                $colClass = ($currentIsLong || $pairedIsLong) ? 'col-12' : 'col-6';
             }
-            $this->clientLink($client, null, ['class' => $extraCssClass]);
-            echo "&nbsp;";
+            echo Html::tag(
+                'div',
+                $this->clientLink($client),
+                ['class' => $colClass],
+            );
         }
 
-        if ($i > $this->maxShowClients) {
-            echo Html::endTag('div');
-        }
         echo Html::endTag('div');
 
         if ($this->showOrDivider) {
@@ -180,30 +185,23 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
 
         if (isset($viewOptions['widget'])) {
             parent::clientLink($client, $text, $htmlOptions);
-            return;
+            return '';
         }
 
-        if (isset($viewOptions['buttonBackgroundColor'])) {
+        $style = '';
+        if (isset($viewOptions['buttonBackgroundColor']) && $this->showButtonColors) {
             $textColor = $viewOptions['buttonColor'] ?? '#FFF';
             $btnStyle = Html::cssStyleFromArray(['color' => $textColor . '!important', 'background-color' => $viewOptions['buttonBackgroundColor'] . '!important']);
             $btnClasses = '.btn-ac-' . $client->getName() . ', .btn-ac-' . $client->getName() . ':hover, .btn-ac-' . $client->getName() . ':active, .btn-ac-' . $client->getName() . ':visited';
-
-            if ($this->showButtonColors) {
-                echo Html::style($btnClasses . ' {' . $btnStyle . '}');
-            }
+            $style = Html::style($btnClasses . ' {' . $btnStyle . '}');
         }
 
-        if (!isset($htmlOptions['class'])) {
-            $htmlOption['class'] = '';
-        }
-        $htmlOptions['class'] .= ' ' . 'btn btn-light btn-ac-' . $client->getName();
+        Html::addCssClass($htmlOptions, ['w-100', 'btn', 'btn-light', 'btn-ac-' . $client->getName()]);
         $htmlOptions['data-pjax-prevent'] = '';
 
         $icon = (isset($viewOptions['cssIcon'])) ? '<i class="' . $viewOptions['cssIcon'] . '" aria-hidden="true"></i>' : '';
-        echo parent::clientLink($client, $icon . $client->getTitle(), $htmlOptions);
 
-        return;
-        parent::clientLink($client, $text, $htmlOptions);
+        return $style . parent::clientLink($client, $icon . $client->getTitle(), $htmlOptions);
     }
 
 }

@@ -14,6 +14,7 @@ HumHub Changelog
 - Fix #7741: Form input border color inconsistency
 - Fix #7742: Images in HTML created by TinyMCE are not responsive
 - Fix #7740: Acceptance tests for captcha in password recovery, and buttons order and color in the form
+- Enh #7744: Review SSO auth buttons layout in login form
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------
