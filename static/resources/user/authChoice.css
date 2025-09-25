@@ -6,7 +6,7 @@
     clear: both;
     color: #6a737c;
     font-variant: small-caps;
-}                    
+}
 
 .or-container hr {
     margin-bottom: 0;
@@ -25,30 +25,6 @@
     background-color: #FFF;
 }
 
-.auth-choice-more-buttons {
-    display:none;
-    padding-top:6px;
-}
-
-.auth-choice-more-buttons a {
-    margin-top:6px !important;
-} 
-
-.authChoice i {
-    padding-right:7px;
-}
-
-.btn-auth-choice-more i {
-    padding-right:0px;
-}
-
-.auth-clients {
-    padding:0px !important;
-    margin:0px !important;
-}
-
-
-
 .btn-fb, .btn-fb:hover, .btn-fb:active, .btn-fb:visited {
     color:white !important;
     background-color: #395697 !important;
@@ -56,7 +32,7 @@
 .btn-steam, .btn-steam:hover, .btn-steam:active, .btn-steam:visited {
     color:white !important;
     background-color: #000 !important;
-}   
+}
 .btn-github, .btn-github:hover, .btn-github:active, .btn-github:visited {
     color:white !important;
     background-color: #4078C0 !important;
