@@ -166,21 +166,33 @@ class UrlOembed extends ActiveRecord
                 }
 
                 if (!empty($result)) {
-                    if (preg_match('/<script\b[^>]*>.*?<\/script>/is', $result)) {
-                        // Add nonce for scripts
-                        $result = preg_replace('/(<script)(?![^>]*\bnonce=)([^>]*)>/i', '$1$2 ' . Html::nonce() . '>', $result);
-                        // Force to run the appended scripts after ajax/pjax loading
-                        $result .= Html::script(<<<JS
-                            document.querySelectorAll('.oembed_snippet script').forEach(oldScript => {
-                                const newScript = document.createElement('script');
-                                for (const {name, value} of oldScript.attributes) {
-                                    newScript.setAttribute(name, value);
+                    // Fix to run the appended scripts after ajax/pjax loading
+                    $result = preg_replace_callback('/<script\b([^>]*)>(.*?)<\/script>/is', function ($matches) {
+                        $placeholderId = 'oembed_script_' . uniqid();
+                        // Add nonce for script
+                        $attrs = json_encode(html_entity_decode(trim($matches[1] . ' ' . Html::nonce()), ENT_QUOTES));
+                        $content = json_encode(trim($matches[2]));
+
+                        Yii::$app->view->registerJs(<<<JS
+                            setTimeout(() => {
+                                const placeholder = document.getElementById('$placeholderId');
+                                if (!placeholder) {
+                                    return;
                                 }
-                                newScript.text = oldScript.text;
-                                oldScript.replaceWith(newScript);
-                            });
+                                const script = document.createElement('script');
+                                var attrs = {$attrs}.match(/([\w-]+)(?:="([^"]*)")?/g) || [];
+                                attrs.forEach(function(attr) {
+                                    const parts = attr.split('=');
+                                    script.setAttribute(parts[0], parts[1] ? parts[1].replace(/^"|"$/g, '') : '');
+                                });
+                                script.text = {$content};
+                                placeholder.replaceWith(script);
+                            }, 1);
                         JS);
-                    }
+
+                        // Placeholder which is replaced with real JS after page loading
+                        return Html::tag('div', '', ['id' => $placeholderId]);
+                    }, $result);
 
                     return trim(preg_replace('/\s+/', ' ', $result));
                 }
