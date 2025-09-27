@@ -782,10 +782,10 @@ Doc: https://getbootstrap.com/docs/5.3/layout/breakpoints
 
 Depending on your needs, you might have to import the Boostrap SCSS functions, variables, mixins or breakpoints:
 ```scss
-@import "/opt/humhub/protected/vendor/bower-asset/bootstrap/scss/functions";
-@import "/opt/humhub/protected/vendor/bower-asset/bootstrap/scss/variables";
-@import "/opt/humhub/protected/vendor/bower-asset/bootstrap/scss/mixins";
-@import "/opt/humhub/protected/vendor/bower-asset/bootstrap/scss/mixins/breakpoints";
+@import "/opt/humhub/protected/vendor/npm-asset/bootstrap/scss/functions";
+@import "/opt/humhub/protected/vendor/npm-asset/bootstrap/scss/variables";
+@import "/opt/humhub/protected/vendor/npm-asset/bootstrap/scss/mixins";
+@import "/opt/humhub/protected/vendor/npm-asset/bootstrap/scss/mixins/breakpoints";
 ```
 
 Make sure you have a symbolic link of HumHub root directory in `/opt/humhub`:
