@@ -86,7 +86,6 @@ humhub.module('content.form', function (module, require, $) {
                     that.resetForm();
                 }
             } else {
-                console.log('errors', response)
                 that.handleError(response);
             }
         }).catch(function (e) {
