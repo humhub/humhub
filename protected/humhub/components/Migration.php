@@ -641,7 +641,7 @@ class Migration extends \yii\db\Migration
      */
     protected function isInitialInstallation(): bool
     {
-        return Yii::$app->runtimeCache->getOrSet(__METHOD__, function() {
+        return Yii::$app->runtimeCache->getOrSet(__METHOD__, function () {
             Yii::$app->settings->reload();
             return (!Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED));
         });
