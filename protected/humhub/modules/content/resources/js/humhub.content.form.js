@@ -86,6 +86,7 @@ humhub.module('content.form', function (module, require, $) {
                     that.resetForm();
                 }
             } else {
+                console.log('errors', response)
                 that.handleError(response);
             }
         }).catch(function (e) {
@@ -145,17 +146,23 @@ humhub.module('content.form', function (module, require, $) {
     };
 
     CreateForm.prototype.handleError = function (response) {
-        var that = this;
-        var model = that.$.find('.mb-3:first').attr('class').replace(/^.+field-([^-]+).+$/, '$1');
-        $.each(response.errors, function (fieldName, errorMessages) {
-            var fieldSelector = '.field-' + model + '-' + fieldName;
-            var inputSelector = '.field-contentForm_' + fieldName;
-            var multiInputSelector = '[name="' + fieldName + '[]"]';
-            that.$.find(fieldSelector + ' .form-control').addClass('is-invalid');
-            that.$.find(fieldSelector + ', ' + inputSelector + ', ' + inputSelector + '_input')
-                .find('.invalid-feedback:first').html(errorMessages.join('<br>'));
-            that.$.find(inputSelector + '_input').addClass('is-invalid');
-        });
+        const that = this;
+        const modelField = that.$.find('[class]').filter(function() {
+            return this.className.split(/\s+/).some(c => c.startsWith('field-'));
+        }).first();
+
+        const model = modelField.length ? modelField.attr('class').replace(/^.+field-([^-]+).+$/, '$1') : null;
+        if (model) {
+            $.each(response.errors, function (fieldName, errorMessages) {
+                var fieldSelector = '.field-' + model + '-' + fieldName;
+                var inputSelector = '.field-contentForm_' + fieldName;
+                var multiInputSelector = '[name="' + fieldName + '[]"]';
+                that.$.find(fieldSelector + ' .form-control').addClass('is-invalid');
+                that.$.find(fieldSelector + ', ' + inputSelector + ', ' + inputSelector + '_input')
+                    .find('.invalid-feedback:first').html(errorMessages.join('<br>'));
+                that.$.find(inputSelector + '_input').addClass('is-invalid');
+            });
+        }
     };
 
     CreateForm.prototype.getForm = function () {
