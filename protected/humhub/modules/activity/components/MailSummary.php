@@ -260,7 +260,7 @@ class MailSummary extends Component
         $defaultActivitySuppress = $activityModule->settings->get('mailSummaryActivitySuppress', '');
         $activitySuppress = $activityModule->settings->user($this->user)->get(
             'mailSummaryActivitySuppress',
-            $defaultActivitySuppress
+            $defaultActivitySuppress,
         );
         if (empty($activitySuppress)) {
             return [];
