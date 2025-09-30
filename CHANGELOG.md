@@ -16,6 +16,7 @@ HumHub Changelog
 - Fix #7740: Acceptance tests for captcha in password recovery, and buttons order and color in the form
 - Enh #7744: Review SSO auth buttons layout in login form
 - Enh #7746: Fix is initial installation state
+- Fix #7749: Fix post ui form model name identification
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------
