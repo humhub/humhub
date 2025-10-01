@@ -17,6 +17,7 @@ HumHub Changelog
 - Enh #7744: Review SSO auth buttons layout in login form
 - Enh #7746: Fix is initial installation state
 - Fix #7749: Fix post ui form model name identification
+- Fix: Tour module - the bottom part of the Profile image is hidden
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------

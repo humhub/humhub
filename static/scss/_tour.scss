@@ -19,3 +19,8 @@ ul.tour-list {
         }
     }
 }
+
+// Fix for .profile-user-photo-container for not having the bottom part hidden
+.driver-active .panel-profile-header:has(>.driver-active-element) {
+    overflow: visible !important;
+}
