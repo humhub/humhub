@@ -104,6 +104,8 @@ class MigrateController extends \yii\console\controllers\MigrateController
         if (in_array($db->getDriverName(), ['mysql', 'mysqli'], true)) {
             $db->pdo->exec('SET default_storage_engine=' . Yii::$app->params['databaseDefaultStorageEngine']);
         }
+
+        Yii::$app->cache->flush();
         return parent::beforeAction($action);
     }
 
