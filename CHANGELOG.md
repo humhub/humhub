@@ -17,6 +17,7 @@ HumHub Changelog
 - Enh #7744: Review SSO auth buttons layout in login form
 - Enh #7746: Fix is initial installation state
 - Fix #7749: Fix post ui form model name identification
+- Enh #7753: New modal full screen size
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------
