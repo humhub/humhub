@@ -6,7 +6,7 @@ HumHub Changelog
 - Enh #7719: Make Add/Remove Group Member optional for group managers
 - Fix #7720: Saving the new Mobile App admin form when no whitelisted domain
 - Fix #7733: Ignore mailer `TRANSPORT_CONFIG` option in `ComponentLoader`
-- Fix: Bootstrap 3 compatible SCSS overwrites unwanted values such as Markdown h1 font size
+- Fix #7724: Bootstrap 3 compatible SCSS overwrites unwanted values such as Markdown h1 font size
 - Fix #7722: Fix mailer settings loss after upgrade
 - Fix #7736: Fix scroll of meta search modal window
 - Enh #7737: Disable `ComponentLoader`s initialization warning for `mailer`
@@ -17,7 +17,7 @@ HumHub Changelog
 - Enh #7744: Review SSO auth buttons layout in login form
 - Enh #7746: Fix is initial installation state
 - Fix #7749: Fix post ui form model name identification
-- Fix: Tour module - the bottom part of the Profile image is hidden
+- Fix #7754: Tour module - the bottom part of the Profile image is hidden
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------
