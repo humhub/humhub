@@ -52,7 +52,7 @@ class Modal extends \yii\bootstrap5\Modal
     /**
      * The additional css class for full screen size
      */
-    const SIZE_FULL_SCREEN = 'modal-hh-fullscreen';
+    public const SIZE_FULL_SCREEN = 'modal-hh-fullscreen';
 
     /**
      * Defines if a click on the modal background should close the modal
