@@ -9,7 +9,6 @@
 namespace humhub\components;
 
 use humhub\helpers\ThemeHelper;
-use humhub\components\InstallationState;
 use humhub\modules\ui\Module;
 use Yii;
 use yii\base\Component;
@@ -63,12 +62,29 @@ class ThemeVariables extends Component
             return null;
         }
 
+        if ($custom = $this->getCustom($key)) {
+            return $custom;
+        }
+
         $this->ensureLoaded();
 
         return $this->module->settings->get(
             $this->getSettingKey($key),
             $default,
         );
+    }
+
+    /**
+     * Get theme variable value from customization settings form
+     *
+     * @param string $key
+     * @return string|null
+     */
+    public function getCustom(string $key): ?string
+    {
+        return in_array($key, ['primary', 'accent', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'])
+            ? Yii::$app->settings->get('theme' . ucfirst($key) . 'Color')
+            : null;
     }
 
     /**

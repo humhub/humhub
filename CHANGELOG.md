@@ -17,6 +17,7 @@ HumHub Changelog
 - Enh #7744: Review SSO auth buttons layout in login form
 - Enh #7746: Fix is initial installation state
 - Fix #7749: Fix post ui form model name identification
+- Fix #7757: Use theme variable values from customization settings
 - Enh #7753: New modal full screen size
 - Fix #7754: Tour module - the bottom part of the Profile image is hidden
 - Fix #7752: Fix content resetForm after form submit
