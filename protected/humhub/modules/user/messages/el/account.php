@@ -31,6 +31,7 @@ return [
     'Do you really want to delete your icon image?' => '',
     'Do you really want to delete your login background image?' => '',
     'Do you really want to delete your logo image?' => '',
+    'Do you really want to delete your mail header image?' => '',
     'Enter your password to continue' => '',
     'Hello' => '',
     'Here you can edit your general profile data, which is visible in the about page of your profile.' => '',

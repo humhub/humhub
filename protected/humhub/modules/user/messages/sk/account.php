@@ -68,4 +68,5 @@ return [
     'Your username has been changed' => 'Vaše užívateľské meno bolo zmenené',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'Vaše užívateľské meno bolo úspešne zmenené. <br> Práve sme vám poslali e-mail s novými informáciami.',
     'Do you really want to delete your login background image?' => '',
+    'Do you really want to delete your mail header image?' => '',
 ];

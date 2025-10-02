@@ -68,4 +68,5 @@ return [
     'Your username has been changed' => 'ユーザー名を変更しました。',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'ユーザー名は正常に変更されました。 <br>新しい情報が記載されたメールをお送りしました。',
     'Do you really want to delete your login background image?' => '',
+    'Do you really want to delete your mail header image?' => '',
 ];

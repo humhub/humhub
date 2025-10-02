@@ -66,6 +66,7 @@ return [
     'Your username has been changed' => 'O seu nome de utilizador foi alterado',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'O seu nome de utilizador foi alterado com êxito. <br> Acabámos de enviar-lhe um email com a nova informação.',
     'Do you really want to delete your login background image?' => '',
+    'Do you really want to delete your mail header image?' => '',
     'Password recovery can only be initiated once every 10 minutes.' => '',
     'Password recovery disabled. Please contact your system administrator.' => '',
 ];

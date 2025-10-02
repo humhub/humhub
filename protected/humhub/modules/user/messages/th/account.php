@@ -62,6 +62,7 @@ return [
     'Blocked users' => '',
     'Define basic settings for your profile. You can add tags that fit you, choose the language and your time zone and block impolite users.' => '',
     'Do you really want to delete your login background image?' => '',
+    'Do you really want to delete your mail header image?' => '',
     'Hide my online status' => '',
     'Markdown Editor Mode' => '',
     'Password recovery can only be initiated once every 10 minutes.' => '',

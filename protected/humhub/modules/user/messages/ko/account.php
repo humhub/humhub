@@ -26,6 +26,7 @@ return [
     'Do you really want to delete your icon image?' => '',
     'Do you really want to delete your login background image?' => '',
     'Do you really want to delete your logo image?' => '',
+    'Do you really want to delete your mail header image?' => '',
     'E-Mail change' => '',
     'Enter your password to continue' => '',
     'Hello' => '',
