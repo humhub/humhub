@@ -30,7 +30,8 @@ class AltchaCaptchaInput extends InputWidget
         // Register assets and a JS event to remove the Bootstrap is-invalid class when the captcha is verified
         $view = $this->getView();
         AltchaCaptchaAsset::register($view);
-        $view->registerJs("$('altcha-widget').on('verified', (evt) => $(evt.target).removeClass('is-invalid'));");
+        $view->registerJs("$('altcha-widget').on('verified', (evt) => $(evt.target).removeClass('is-invalid'))
+            .find('input[type=\"checkbox\"]').prop('required', false);"); // prevent HTML5 validation as we do server-side validation with the selected language
 
         return Html::tag('altcha-widget', '', array_merge([
             'challengeurl' => Url::to([$this->captchaAction]),
