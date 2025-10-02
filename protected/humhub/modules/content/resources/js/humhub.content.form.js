@@ -116,6 +116,7 @@ humhub.module('content.form', function (module, require, $) {
         this.resetFileUpload();
         this.resetState();
 
+        this.$.find('form').trigger('reset');
         this.$.find('.humhub-ui-richtext').trigger('clear');
     };
 
