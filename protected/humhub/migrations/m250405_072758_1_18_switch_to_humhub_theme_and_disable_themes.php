@@ -124,7 +124,7 @@ class m250405_072758_1_18_switch_to_humhub_theme_and_disable_themes extends Migr
     private function currentThemeIsVariantOf(string $theme): bool
     {
         $currentThemePath = Yii::$app->settings->get('theme');
-        if (str_ends_with($currentThemePath, $theme)) {
+        if ($currentThemePath && str_ends_with($currentThemePath, $theme)) {
             return true;
         }
 
