@@ -50,6 +50,11 @@ use yii\bootstrap5\Html;
 class Modal extends \yii\bootstrap5\Modal
 {
     /**
+     * The additional css class for full screen size
+     */
+    public const SIZE_FULL_SCREEN = 'modal-hh-fullscreen';
+
+    /**
      * Defines if a click on the modal background should close the modal
      * It's false because it's often used for serious work, for example html forms,
      * accidental closing of which can lead to loss of user data.
