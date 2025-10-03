@@ -367,6 +367,10 @@ ul.tab-menu-settings {
                     border-left-color: var(--bs-accent);
                     background-color: var(--hh-background-color-secondary) !important;
                 }
+
+                a {
+                    color: var(--hh-text-color-highlight);
+                }
             }
         }
     }
