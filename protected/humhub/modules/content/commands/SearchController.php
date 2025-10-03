@@ -11,13 +11,11 @@ namespace humhub\modules\content\commands;
 use humhub\modules\content\jobs\SearchRebuildIndex;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\Module;
-use humhub\modules\content\search\driver\AbstractDriver;
 use humhub\modules\content\search\SearchRequest;
 use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\content\services\SearchDriverService;
 use humhub\modules\queue\helpers\QueueHelper;
 use humhub\modules\user\models\User;
-use LdapRecord\Query\Events\Search;
 use Yii;
 use yii\console\Controller;
 
@@ -45,6 +43,7 @@ class SearchController extends Controller
             (new ContentSearchService($content))->update(false);
             print ".";
         }
+        Yii::$app->cache->flush();
         print "OK!\n\n";
     }
 
