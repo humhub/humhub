@@ -36,9 +36,14 @@ class StorageManager extends Component implements StorageManagerInterface
     protected $storagePath = '@filestore';
 
     /**
-     * @var int file mode
+     * @var int
      */
-    public $fileMode = 0744;
+    public $fileMode = 0644;
+
+    /**
+     * @var int
+     */
+    public $dirMode = 0755;
 
     /**
      * @var File
@@ -83,9 +88,13 @@ class StorageManager extends Component implements StorageManagerInterface
      */
     public function set(UploadedFile $file, $variant = null)
     {
+        $target = $this->get($variant);
+
+        FileHelper::createDirectory(dirname($target), $this->dirMode, true);
+
         if (is_uploaded_file($file->tempName)) {
-            move_uploaded_file($file->tempName, $this->get($variant));
-            @chmod($this->get($variant), $this->fileMode);
+            move_uploaded_file($file->tempName, $target);
+            @chmod($target, $this->fileMode);
         }
     }
 
@@ -94,8 +103,12 @@ class StorageManager extends Component implements StorageManagerInterface
      */
     public function setContent($content, $variant = null)
     {
-        file_put_contents($this->get($variant), $content);
-        @chmod($this->get($variant), $this->fileMode);
+        $target = $this->get($variant);
+
+        FileHelper::createDirectory(dirname($target), $this->dirMode, true);
+
+        file_put_contents($target, $content);
+        @chmod($target, $this->fileMode);
     }
 
     /**
@@ -103,11 +116,14 @@ class StorageManager extends Component implements StorageManagerInterface
      */
     public function setByPath(string $path, $variant = null)
     {
-        copy($path, $this->get($variant));
-        @chmod($this->get($variant), $this->fileMode);
+        $target = $this->get($variant);
+
+        FileHelper::createDirectory(dirname($target), $this->dirMode, true);
+
+        copy($path, $target);
+        @chmod($target, $this->fileMode);
     }
-
-
+    
     /**
      * @inheritdoc
      */
@@ -160,7 +176,7 @@ class StorageManager extends Component implements StorageManagerInterface
             . substr($this->file->guid, 1, 1) . DIRECTORY_SEPARATOR
             . $this->file->guid;
 
-        FileHelper::createDirectory($path, $this->fileMode, true);
+        FileHelper::createDirectory($path, $this->dirMode, true);
 
         return $path;
     }
