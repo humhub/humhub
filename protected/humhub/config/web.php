@@ -14,8 +14,21 @@ $config = [
     'components' => [
         'assetManager' => [
             'bundles' => [
+                // Override obsolete @bower packages to @npm
                 'yii\web\JqueryAsset' => [
                     'sourcePath' => '@npm/jquery/dist',
+                ],
+                'yii\jui\JuiAsset' => [
+                    'sourcePath' => '@npm/jquery-ui/dist',
+                ],
+                'yii\bootstrap5\BootstrapAsset' => [
+                    'sourcePath' => '@npm/bootstrap/dist',
+                ],
+                'yii\bootstrap5\BootstrapPluginAsset' => [
+                    'sourcePath' => '@npm/bootstrap/dist',
+                ],
+                'yii\jui\DatePickerLanguageAsset' => [
+                    'sourcePath' => '@npm/jquery-ui',
                 ],
             ],
         ],
