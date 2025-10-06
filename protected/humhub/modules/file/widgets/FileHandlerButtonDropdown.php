@@ -54,7 +54,7 @@ class FileHandlerButtonDropdown extends Widget
     {
 
         if (!$this->primaryButton && count($this->handlers) === 0) {
-            return;
+            return '';
         }
 
         $output = Html::beginTag('div', ['class' => $this->cssClass]);
@@ -74,7 +74,7 @@ class FileHandlerButtonDropdown extends Widget
 
             $output .= Html::beginTag('ul', ['class' => $cssClass]);
             foreach ($this->handlers as $handler) {
-                $output .= Html::beginTag('li', ['class' => 'dropdown-item']);
+                $output .= Html::beginTag('li');
                 $output .= $this->renderLink($handler->getLinkAttributes());
                 $output .= Html::endTag('li');
             }
@@ -95,6 +95,7 @@ class FileHandlerButtonDropdown extends Widget
     {
 
         $options['data-action-process'] = 'file-handler';
+        Html::addCssClass($options, 'dropdown-item');
 
         $label = ArrayHelper::remove($options, 'label', 'Label');
 

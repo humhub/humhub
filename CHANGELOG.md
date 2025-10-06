@@ -23,6 +23,7 @@ HumHub Changelog
 - Fix #7754: Tour module - the bottom part of the Profile image is hidden
 - Fix #7752: Fix content resetForm after form submit
 - Fix #7760: Content form menu text color same as background
+- Fix #7764: File Handler Dropdown menu items styling
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------
