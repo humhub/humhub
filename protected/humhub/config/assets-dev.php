@@ -8,24 +8,13 @@
 
 return [
     'yii\bootstrap5\BootstrapAsset' => [
-        'sourcePath' => '@npm/bootstrap/dist',
         'css' => [],
     ],
     'yii\bootstrap5\BootstrapPluginAsset' => [
-        'sourcePath' => '@npm/bootstrap/dist',
         'depends' => [
             'yii\web\JqueryAsset',
             'yii\bootstrap5\BootstrapAsset',
             'humhub\assets\JuiBootstrapBridgeAsset',
         ],
-    ],
-    'yii\web\JqueryAsset' => [
-        'sourcePath' => '@npm/jquery/dist',
-    ],
-    'yii\jui\JuiAsset' => [
-        'sourcePath' => '@npm/jquery-ui/dist',
-    ],
-    'yii\jui\DatePickerLanguageAsset' => [
-        'sourcePath' => '@npm/jquery-ui',
     ],
 ];
