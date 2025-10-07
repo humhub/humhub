@@ -13,7 +13,6 @@ use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\content\services\SearchJobService;
 use humhub\modules\queue\interfaces\ExclusiveJobInterface;
 use humhub\modules\queue\LongRunningActiveJob;
-use Yii;
 
 class SearchRebuildIndex extends LongRunningActiveJob implements ExclusiveJobInterface
 {
@@ -35,7 +34,7 @@ class SearchRebuildIndex extends LongRunningActiveJob implements ExclusiveJobInt
                 (new ContentSearchService($content))->update(false);
             }
 
-            Yii::$app->cache->flush();
+            ContentSearchService::flushCache();
         });
     }
 

@@ -43,7 +43,7 @@ class SearchController extends Controller
             (new ContentSearchService($content))->update(false);
             print ".";
         }
-        Yii::$app->cache->flush();
+        ContentSearchService::flushCache();
         print "OK!\n\n";
     }
 

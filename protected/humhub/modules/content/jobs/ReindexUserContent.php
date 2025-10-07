@@ -14,7 +14,6 @@ use humhub\modules\content\services\SearchJobService;
 use humhub\modules\queue\interfaces\ExclusiveJobInterface;
 use humhub\modules\queue\LongRunningActiveJob;
 use humhub\modules\user\models\User;
-use Yii;
 
 class ReindexUserContent extends LongRunningActiveJob implements ExclusiveJobInterface
 {
@@ -50,7 +49,7 @@ class ReindexUserContent extends LongRunningActiveJob implements ExclusiveJobInt
                 }
             }
 
-            Yii::$app->cache->flush();
+            ContentSearchService::flushCache();
         });
     }
 
