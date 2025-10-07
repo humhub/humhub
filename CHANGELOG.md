@@ -24,6 +24,7 @@ HumHub Changelog
 - Fix #7752: Fix content resetForm after form submit
 - Fix #7760: Content form menu text color same as background
 - Fix #7764: File Handler Dropdown menu items styling
+- Enh: Implements Button `disabled()`
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------
@@ -42,7 +43,6 @@ HumHub Changelog
 - Enh #7703: New `ActiveFileUpload` field widget
 - Enh #7716: Use Altcha captcha provider by default instead of Yii captcha, and upgrade Altcha library to v1.1
 - Fix #7715: Enable Bootstrap box-shadows, mainly for dropdown menus
-- Enh: Implements Button `disabled()`
 
 1.18.0-beta.3 (September 9, 2025)
 ---------------------------------
