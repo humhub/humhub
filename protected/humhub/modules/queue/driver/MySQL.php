@@ -25,7 +25,7 @@ class MySQL extends Queue implements QueueInfoInterface
     /**
      * @inheritdoc
      */
-    public $mutex = 'yii\mutex\MysqlMutex';
+    public $mutex = 'yii\mutex\FileMutex';
 
     /**
      * @return int the number of waiting jobs in the queue
