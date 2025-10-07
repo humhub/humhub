@@ -196,7 +196,7 @@ $config = [
             ],
         ],
         'mutex' => [
-            'class' => \yii\mutex\FileMutex::class,
+            'class' => \yii\mutex\MysqlMutex::class,
         ],
     ],
     'params' => [
