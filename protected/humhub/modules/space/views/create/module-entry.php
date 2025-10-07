@@ -28,19 +28,18 @@ use humhub\widgets\bootstrap\Button;
     </div>
     <div class="col-6 col-md-5 col-lg-6"><?= $module->getDescription() ?></div>
     <div class="col-5 col-md-3 module-actions">
-        <?= Button::asLink(Yii::t('SpaceModule.manage', 'Enable'))
-            ->cssClass('btn btn-sm btn-accent enable')
-            ->style($space->moduleManager->isEnabled($module->id) ? 'display:none' : '')
-            ->loader()
+        <?= Button::accent(Yii::t('SpaceModule.manage', 'Enable'))
+            ->cssClass('enable' . (($isEnabled = $space->moduleManager->isEnabled($module->id)) ? ' d-none' : ''))
+            ->sm()
             ->options([
                 'data-action-click' => 'content.container.enableModule',
                 'data-action-url' => $space->createUrl('/space/manage/module/enable', ['moduleId' => $module->id]),
             ]) ?>
-        <?= Button::asLink(Yii::t('ContentModule.base', 'Enabled'))
+        <?= Button::accent(Yii::t('ContentModule.base', 'Enabled'))
             ->icon('check')
-            ->cssClass('btn btn-sm btn-accent active disable')
-            ->style(!$space->moduleManager->isEnabled($module->id) ? 'display:none' : '')
-            ->loader()
+            ->cssClass('disable' . (!$isEnabled ? ' d-none' : ''))
+            ->sm()
+            ->outline()
             ->options([
                 'data-action-click' => 'content.container.disableModule',
                 'data-action-url' => $space->createUrl('/space/manage/module/disable', ['moduleId' => $module->id]),
