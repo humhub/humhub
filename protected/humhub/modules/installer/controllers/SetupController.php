@@ -145,7 +145,7 @@ class SetupController extends Controller
             $info[] = Yii::t('InstallerModule.base','<strong>Apache</strong> web server detected.');
             if (function_exists('apache_get_modules')) {
                 $mods = apache_get_modules();
-                if (!!in_array('mod_rewrite', $mods)) {
+                if (in_array('mod_rewrite', $mods)) {
                     $info[] =  Yii::t('InstallerModule.base', 'The <strong>mod_rewrite</strong> module is active.');
                 } else {
                     $errors[] = Yii::t('InstallerModule.base', 'The <strong>mod_rewrite</strong> module is not enabled.');
