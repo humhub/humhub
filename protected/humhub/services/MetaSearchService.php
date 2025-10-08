@@ -11,6 +11,7 @@ namespace humhub\services;
 use humhub\interfaces\MetaSearchProviderInterface;
 use humhub\interfaces\MetaSearchResultInterface;
 use Yii;
+use yii\caching\TagDependency;
 use yii\helpers\Url;
 
 /**
@@ -47,15 +48,23 @@ class MetaSearchService
      */
     public function search(): void
     {
-        if ($this->provider->getKeyword() === null) {
+        if ($this->provider === null || $this->provider->getKeyword() === null) {
             return;
         }
 
-        $cacheKey = ($this->provider !== null ? $this->provider::class : self::class)
+        $cacheKey = get_class($this->provider)
             . Yii::$app->user->id
             . sha1($this->provider->getKeyword() . json_encode($this->provider->getRoute()));
 
-        $data = Yii::$app->cache->getOrSet($cacheKey, fn() => $this->provider->getResults($this->pageSize), $this->cacheTimeout);
+        // Possible tags: 'search-content', 'search-user', 'search-space', 'search-marketplace', 'search-mail', 'search-advanced_search' and others.
+        $cacheTag = 'search-' . preg_replace('#^.+?\\\\modules\\\\(.+?)\\\\.+$#i', '$1', get_class($this->provider));
+
+        $data = Yii::$app->cache->getOrSet(
+            $cacheKey,
+            fn() => $this->provider->getResults($this->pageSize),
+            $this->cacheTimeout,
+            new TagDependency(['tags' => $cacheTag]),
+        );
 
         $this->totalCount = $data['totalCount'] ?? 0;
         $this->results = $data['results'] ?? [];
