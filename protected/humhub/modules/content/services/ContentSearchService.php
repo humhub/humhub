@@ -8,9 +8,12 @@ use humhub\modules\file\converter\TextConverter;
 use humhub\modules\file\models\File;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\caching\TagDependency;
 
 class ContentSearchService
 {
+    public const CACHE_TAG = 'search-content';
+
     public function __construct(public Content $content)
     {
     }
@@ -76,5 +79,10 @@ class ContentSearchService
         }
 
         return true;
+    }
+
+    public static function flushCache(): void
+    {
+        TagDependency::invalidate(Yii::$app->cache, self::CACHE_TAG);
     }
 }
