@@ -42,6 +42,7 @@ class SearchDriverService extends Component
 
         $this->trigger(self::EVENT_BEFORE_UPDATE, new ContentEvent(['content' => $content]));
         $this->driver->update($content);
+        ContentSearchService::flushCache();
     }
 
     public function delete(int $contentId, bool $async = false): void
@@ -53,6 +54,7 @@ class SearchDriverService extends Component
 
         $this->trigger(self::EVENT_BEFORE_DELETE, new Event(['data' => ['contentId' => $contentId]]));
         $this->driver->delete($contentId);
+        ContentSearchService::flushCache();
     }
 
 }

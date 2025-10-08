@@ -48,6 +48,8 @@ class ReindexUserContent extends LongRunningActiveJob implements ExclusiveJobInt
                     (new ContentSearchService($content))->delete(false);
                 }
             }
+
+            ContentSearchService::flushCache();
         });
     }
 

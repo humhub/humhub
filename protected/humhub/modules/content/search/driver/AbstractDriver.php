@@ -5,9 +5,10 @@ namespace humhub\modules\content\search\driver;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\search\ResultSet;
 use humhub\modules\content\search\SearchRequest;
+use humhub\modules\content\services\ContentSearchService;
 use Yii;
 use yii\base\Component;
-use yii\base\Model;
+use yii\caching\TagDependency;
 
 abstract class AbstractDriver extends Component
 {
@@ -55,7 +56,12 @@ abstract class AbstractDriver extends Component
 
         /* @var ResultSet $resultSet */
         // Load results from cache or Search & Cache
-        $resultSet = Yii::$app->cache->getOrSet($this->getSearchCacheKey($request), fn() => $this->search($request));
+        $resultSet = Yii::$app->cache->getOrSet(
+            $this->getSearchCacheKey($request),
+            fn() => $this->search($request),
+            null,
+            new TagDependency(['tags' => ContentSearchService::CACHE_TAG]),
+        );
 
         // Extract part of results only for the current(original requested) page
         $slicePageStart = ($origPage - ($cachePageSize * ($cachePage - 1)) / $origPageSize) * $origPageSize;

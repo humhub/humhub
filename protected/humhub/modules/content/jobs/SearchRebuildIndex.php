@@ -33,6 +33,8 @@ class SearchRebuildIndex extends LongRunningActiveJob implements ExclusiveJobInt
             foreach (Content::find()->each() as $content) {
                 (new ContentSearchService($content))->update(false);
             }
+
+            ContentSearchService::flushCache();
         });
     }
 
