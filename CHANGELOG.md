@@ -22,7 +22,7 @@ HumHub Changelog
 - Enh #7753: New modal full screen size
 - Fix #7754: Tour module - the bottom part of the Profile image is hidden
 - Fix #7752: Fix content resetForm after form submit
-- Fix #7759: Flush cache after rebuild content search results
+- Fix #7759: Flush content search cache after update a record
 - Fix #7760: Content form menu text color same as background
 - Fix #7764: File Handler Dropdown menu items styling
 
