@@ -26,6 +26,7 @@ HumHub Changelog
 - Fix #7760: Content form menu text color same as background
 - Fix #7764: File Handler Dropdown menu items styling
 - Fix #7767: Added PK in `content_fulltext` for Percona-XtraDB-Cluster installations
+- Fix #7771: Disable make private space as default for new users
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------
