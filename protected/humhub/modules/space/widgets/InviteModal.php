@@ -2,6 +2,7 @@
 
 namespace humhub\modules\space\widgets;
 
+use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\space\models\forms\InviteForm;
 use Yii;
@@ -25,6 +26,8 @@ class InviteModal extends Widget
     public $attribute;
     public $searchUrl;
 
+    public bool $allowAddAsDefaultSpace = true;
+
     public function run()
     {
         if (!$this->attribute) {
@@ -41,7 +44,7 @@ class InviteModal extends Widget
             'searchUrl' => $this->searchUrl,
             'canSelectAllRegisteredUsers' => Yii::$app->user->can(ManageUsers::class),
             'canAddWithoutInvite' => Yii::$app->user->can(ManageUsers::class) || Yii::$app->getModule('space')->membersCanAddWithoutInvite === true,
-            'canAddAsDefaultSpace' => $this->model->canAddAsDefaultSpace(),
+            'canAddAsDefaultSpace' => $this->allowAddAsDefaultSpace && Yii::$app->user->can(ManageSpaces::class),
         ]);
     }
 }

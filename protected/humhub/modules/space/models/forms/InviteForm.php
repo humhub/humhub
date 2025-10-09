@@ -128,7 +128,7 @@ class InviteForm extends Model
 
         $this->inviteExternalByEmail();
 
-        if ($this->canAddAsDefaultSpace()) {
+        if (Yii::$app->user->can(ManageSpaces::class)) {
             $this->space->auto_add_new_members = $this->addDefaultSpace ? 1 : null;
             $this->space->save();
         }
@@ -221,18 +221,6 @@ class InviteForm extends Model
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
         return !Yii::$app->user->isGuest && $module->settings->get('auth.internalUsersCanInviteByLink');
-    }
-
-    /**
-     * Check if current user can make the Space as default for new users
-     *
-     * @return bool
-     * @since 1.18
-     */
-    public function canAddAsDefaultSpace(): bool
-    {
-        return Yii::$app->user->can(ManageSpaces::class)
-            && !$this->space->isVisibleFor(Space::VISIBILITY_NONE);
     }
 
     /**
