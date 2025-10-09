@@ -74,7 +74,7 @@ class FileHandlerButtonDropdown extends Widget
             $output .= Html::beginTag('ul', ['class' => $cssClass]);
             foreach ($this->handlers as $handler) {
                 $output .= Html::beginTag('li');
-                $output .= $this->renderLink($handler->getLinkAttributes());
+                $output .= $this->renderLink($handler->getLinkAttributes(), true);
                 $output .= Html::endTag('li');
             }
             $output .= Html::endTag('ul');
@@ -90,12 +90,12 @@ class FileHandlerButtonDropdown extends Widget
      * @param array $options the HTML options
      * @return string the rendered HTML tag
      */
-    protected function renderLink($options)
+    protected function renderLink($options, bool $asDropdownItem = false)
     {
 
         $options['data-action-process'] = 'file-handler';
 
-        if ($this->isDropdown()) {
+        if ($asDropdownItem) {
             Html::addCssClass($options, 'dropdown-item');
         }
 
