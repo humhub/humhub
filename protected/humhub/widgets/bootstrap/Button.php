@@ -224,6 +224,30 @@ class Button extends \yii\bootstrap5\Button
     }
 
     /**
+     * Sets the button as disabled
+     */
+    public function disabled(bool $disabled = true): static
+    {
+        if ($disabled) {
+            if ($this->asLink) {
+                Html::addCssClass($this->options, 'disabled');
+                $this->options['aria-disabled'] = 'true';
+            } else {
+                $this->options['disabled'] = true;
+            }
+        } else {
+            if ($this->asLink) {
+                Html::removeCssClass($this->options, 'disabled');
+                unset($this->options['aria-disabled']);
+            } else {
+                unset($this->options['disabled']);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
      * @inerhitdoc
      */
     public function run(): string
