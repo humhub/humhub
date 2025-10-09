@@ -52,8 +52,7 @@ class FileHandlerButtonDropdown extends Widget
      */
     public function run()
     {
-
-        if (!$this->primaryButton && count($this->handlers) === 0) {
+        if (!$this->primaryButton && !$this->isDropdown()) {
             return '';
         }
 
@@ -67,7 +66,7 @@ class FileHandlerButtonDropdown extends Widget
             $output .= $this->primaryButton;
         }
 
-        if (count($this->handlers) !== 0) {
+        if ($this->isDropdown()) {
             $output .= '<button type="button" class="btn ' . $this->cssButtonClass . ' dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>';
 
             $cssClass = ($this->pullRight) ? 'dropdown-menu dropdown-menu-end' : 'dropdown-menu';
@@ -95,7 +94,10 @@ class FileHandlerButtonDropdown extends Widget
     {
 
         $options['data-action-process'] = 'file-handler';
-        Html::addCssClass($options, 'dropdown-item');
+
+        if ($this->isDropdown()) {
+            Html::addCssClass($options, 'dropdown-item');
+        }
 
         $label = ArrayHelper::remove($options, 'label', 'Label');
 
@@ -107,4 +109,8 @@ class FileHandlerButtonDropdown extends Widget
         return Html::tag('a', $label, $options);
     }
 
+    protected function isDropdown(): bool
+    {
+        return count($this->handlers) !== 0;
+    }
 }

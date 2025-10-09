@@ -27,6 +27,8 @@ HumHub Changelog
 - Fix #7764: File Handler Dropdown menu items styling
 - Fix #7767: Added PK in `content_fulltext` for Percona-XtraDB-Cluster installations
 - Fix #7771: Disable make private space as default for new users on space creating
+- Enh #7770: Implements Button `disabled()`
+- Fix #7772: File handler buttons in non-dropdown context
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------
