@@ -10,9 +10,9 @@
 namespace humhub\modules\ui\filter\widgets;
 
 use humhub\components\ActiveRecord;
+use humhub\helpers\ArrayHelper;
 use humhub\modules\ui\form\widgets\BasePicker;
 use Yii;
-use yii\helpers\ArrayHelper;
 
 class PickerFilterInput extends FilterInput
 {
@@ -74,7 +74,7 @@ class PickerFilterInput extends FilterInput
     protected function getPickerItems()
     {
         $picker = $this->getPicker();
-        return empty($picker->items) || !is_array($picker->items) ? null : $picker->items;
+        return (empty($picker->items) || !is_array($picker->items) ? null : $picker->items) ?: ArrayHelper::getValue($this->pickerOptions, 'items', []);
     }
 
     /**
