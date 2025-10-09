@@ -14,5 +14,6 @@ use yii\helpers\Url;
 <?= InviteModal::widget([
     'model' => $model,
     'submitText' => Yii::t('SpaceModule.base', 'Done'),
-    'submitAction' => Url::to(['/space/create/invite', 'spaceId' => $space->id])
+    'submitAction' => Url::to(['/space/create/invite', 'spaceId' => $space->id]),
+    'allowAddAsDefaultSpace' => !$space->isVisibleFor(Space::VISIBILITY_NONE),
 ]); ?>
