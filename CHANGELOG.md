@@ -29,6 +29,7 @@ HumHub Changelog
 - Fix #7771: Disable make private space as default for new users on space creating
 - Enh #7770: Implements Button `disabled()`
 - Fix #7772: File handler buttons in non-dropdown context
+- Fix: Show more padding button in the comments section
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------
