@@ -30,7 +30,7 @@ HumHub Changelog
 - Enh #7770: Implements Button `disabled()`
 - Fix #7772: File handler buttons in non-dropdown context
 - Fix #7775: Show more padding button in the comments section
-- Fix: Profile image background width
+- Fix #7776: Profile image background width
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------
