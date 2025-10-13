@@ -46,7 +46,7 @@ $profileImageHeight = $container->getProfileImage()->height();
 
     <div class="image-upload-container profile-banner-image-container">
         <!-- profile image output-->
-        <?= $container->getProfileBannerImage()->render('width:100%', ['class' => 'img-profile-header-background']) ?>
+        <?= $container->getProfileBannerImage()->render('100%', ['class' => 'img-profile-header-background']) ?>
 
         <!-- show user name and title -->
 
