@@ -31,6 +31,7 @@ HumHub Changelog
 - Fix #7772: File handler buttons in non-dropdown context
 - Fix #7775: Show more padding button in the comments section
 - Fix #7776: Profile image background width
+- Fix #7779: Improved value formatting in `SpreadsheetExport``
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------
