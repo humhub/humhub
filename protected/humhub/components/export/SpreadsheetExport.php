@@ -229,7 +229,7 @@ class SpreadsheetExport extends Component
             'class' => DataColumn::class,
             'grid' => $this,
             'attribute' => $matches[1],
-            'format' => $matches[3] ?? 'text',
+            'format' => $matches[3] ?? fn($value) => $this->sanitizeValue($value),
             'label' => $matches[5] ?? null,
         ]);
 
@@ -349,7 +349,6 @@ class SpreadsheetExport extends Component
         foreach ($this->columns as $columnIndex => $column) {
             $coordinate = $this->getColumnLetter($columnIndex + 1) . $row;
             $value = $column->renderDataCellContent($model, $key, $index);
-            $value = $this->sanitizeValue($value);
 
             if ($column->dataType !== null) {
                 $worksheet->getCell($coordinate)->setValueExplicit($value, $column->dataType);
