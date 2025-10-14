@@ -23,7 +23,7 @@ final class UserHelper
             return (Yii::$app->user->isGuest) ? null : Yii::$app->getUser()->getIdentity();
         }
 
-        if (is_int($idOrUser) || ctype_digit($idOrUser)) {
+        if (is_int($idOrUser) || ctype_digit((string) $idOrUser)) {
             return User::findOne(['id' => (int)$idOrUser]);
         }
 

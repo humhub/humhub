@@ -50,52 +50,52 @@ trait BootstrapVariationsTrait
         return self::light($text);
     }
 
-    public static function primary(string $label = null): static
+    public static function primary(?string $label = null): static
     {
         return static::instance($label, 'primary');
     }
 
-    public static function secondary(string $label = null): static
+    public static function secondary(?string $label = null): static
     {
         return static::instance($label, 'secondary');
     }
 
-    public static function info(string $label = null): static
+    public static function info(?string $label = null): static
     {
         return static::instance($label, 'info');
     }
 
-    public static function accent(string $label = null): static
+    public static function accent(?string $label = null): static
     {
         return static::instance($label, 'accent');
     }
 
-    public static function success(string $label = null): static
+    public static function success(?string $label = null): static
     {
         return static::instance($label, 'success');
     }
 
-    public static function warning(string $label = null): static
+    public static function warning(?string $label = null): static
     {
         return static::instance($label, 'warning');
     }
 
-    public static function danger(string $label = null): static
+    public static function danger(?string $label = null): static
     {
         return static::instance($label, 'danger');
     }
 
-    public static function light(string $label = null): static
+    public static function light(?string $label = null): static
     {
         return static::instance($label, 'light');
     }
 
-    public static function dark(string $label = null): static
+    public static function dark(?string $label = null): static
     {
         return static::instance($label, 'dark');
     }
 
-    public static function none(string $label = null): static
+    public static function none(?string $label = null): static
     {
         return static::instance($label);
     }
