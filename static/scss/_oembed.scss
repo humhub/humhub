@@ -40,6 +40,10 @@
     > div:not(.clearfix) {
         float: left;
     }
+
+    input[type="checkbox"] {
+        line-height: var(--bs-body-line-height);
+    }
 }
 
 #oembed-providers {
