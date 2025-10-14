@@ -18,8 +18,8 @@ class SiteLogo extends \yii\base\Widget
         parent::init();
 
         if ($this->place === static::PLACE_LOGIN) {
-            $this->maxWidth = $this->maxWidth ?? 500;
-            $this->maxHeight = $this->maxHeight ?? 250;
+            $this->maxWidth ??= 500;
+            $this->maxHeight ??= 250;
         }
     }
 

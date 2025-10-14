@@ -45,42 +45,42 @@ class m250405_072758_1_18_switch_to_humhub_theme_and_disable_themes extends Migr
         $settingsManager->set('themePrimaryColor', $currentPrimary);
         $settingsManager->set(
             'useDefaultThemePrimaryColor',
-            ($currentPrimary && strcasecmp($currentPrimary, $primaryDefault) == 0) ? 1 : 0,
+            ($currentPrimary && strcasecmp((string) $currentPrimary, $primaryDefault) == 0) ? 1 : 0,
         );
 
         $currentInfo = $themeVariables->get('info');
         $settingsManager->set('themeAccentColor', $currentInfo);
         $settingsManager->set(
             'useDefaultThemeAccentColor',
-            ($currentInfo && strcasecmp($currentInfo, $accentDefault) == 0) ? 1 : 0,
+            ($currentInfo && strcasecmp((string) $currentInfo, $accentDefault) == 0) ? 1 : 0,
         );
 
         $currentSuccess = $themeVariables->get('success');
         $settingsManager->set('themeSuccessColor', $currentSuccess);
         $settingsManager->set(
             'useDefaultThemeSuccessColor',
-            ($currentSuccess && strcasecmp($currentSuccess, '#97d271') == 0) ? 1 : 0,
+            ($currentSuccess && strcasecmp((string) $currentSuccess, '#97d271') == 0) ? 1 : 0,
         );
 
         $currentDanger = $themeVariables->get('danger');
         $settingsManager->set('themeDangerColor', $currentDanger);
         $settingsManager->set(
             'useDefaultThemeDangerColor',
-            ($currentDanger && strcasecmp($currentDanger, '#FC4A64') == 0) ? 1 : 0,
+            ($currentDanger && strcasecmp((string) $currentDanger, '#FC4A64') == 0) ? 1 : 0,
         );
 
         $currentWarning = $themeVariables->get('warning');
         $settingsManager->set('themeWarningColor', $currentWarning);
         $settingsManager->set(
             'useDefaultThemeWarningColor',
-            ($currentWarning && strcasecmp($currentWarning, '#FFC107') == 0) ? 1 : 0,
+            ($currentWarning && strcasecmp((string) $currentWarning, '#FFC107') == 0) ? 1 : 0,
         );
 
         $currentLight = $themeVariables->get('default');
         $settingsManager->set('themeLightColor', $currentLight);
         $settingsManager->set(
             'useDefaultThemeLightColor',
-            ($currentLight && strcasecmp($currentLight, '#e7e7e7') == 0) ? 1 : 0,
+            ($currentLight && strcasecmp((string) $currentLight, '#e7e7e7') == 0) ? 1 : 0,
         );
 
         $hhTheme = ThemeHelper::getThemeByName($themeAfterMigration);
@@ -124,7 +124,7 @@ class m250405_072758_1_18_switch_to_humhub_theme_and_disable_themes extends Migr
     private function currentThemeIsVariantOf(string $theme): bool
     {
         $currentThemePath = Yii::$app->settings->get('theme');
-        if ($currentThemePath && str_ends_with($currentThemePath, $theme)) {
+        if ($currentThemePath && str_ends_with((string) $currentThemePath, $theme)) {
             return true;
         }
 
@@ -134,7 +134,7 @@ class m250405_072758_1_18_switch_to_humhub_theme_and_disable_themes extends Migr
         }
 
         foreach ($parentPaths as $parentPath) {
-            if (str_ends_with($parentPath, $theme)) {
+            if (str_ends_with((string) $parentPath, $theme)) {
                 return true;
             }
         }

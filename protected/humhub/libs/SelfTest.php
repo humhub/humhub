@@ -902,7 +902,7 @@ class SelfTest
             $legacyConfigKeys = array_keys(ArrayHelper::flatten(self::getLegacyConfigSettings()));
             foreach (array_keys(ArrayHelper::flatten(Yii::$app->loadedAppConfig)) as $config) {
                 foreach ($legacyConfigKeys as $legacyConfig) {
-                    if (str_starts_with($config, $legacyConfig)) {
+                    if (str_starts_with((string) $config, (string) $legacyConfig)) {
                         $foundLegacyConfigKeys[] = $config;
                     }
                 }

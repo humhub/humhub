@@ -328,7 +328,7 @@ class Module extends \yii\base\Module
 
             // Check if current theme (parent) is located in this module
             foreach (array_merge([Yii::$app->view->theme], Yii::$app->view->theme->getParents()) as $theme) {
-                if (str_starts_with($theme->getBasePath(), $this->getBasePath())) {
+                if (str_starts_with((string) $theme->getBasePath(), $this->getBasePath())) {
                     try {
                         ThemeHelper::buildCss();
                         break;
