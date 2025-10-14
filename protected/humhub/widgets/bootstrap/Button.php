@@ -79,7 +79,7 @@ class Button extends \yii\bootstrap5\Button
     /**
      * @deprecated since 1.18 use [[\humhub\widgets\bootstrap\Link::to()]] instead
      */
-    public static function asLink(string $label = null, $href = '#'): static
+    public static function asLink(?string $label = null, $href = '#'): static
     {
         $button = self::instance($label)
             ->loader(false)
@@ -89,7 +89,7 @@ class Button extends \yii\bootstrap5\Button
         return $button;
     }
 
-    public static function none(string $label = null): static
+    public static function none(?string $label = null): static
     {
         $button = self::instance($label)
             ->loader(false);
@@ -100,7 +100,7 @@ class Button extends \yii\bootstrap5\Button
     /**
      * @since 1.18
      */
-    public static function asBadge(string $label = null, ?string $color = null): static
+    public static function asBadge(?string $label = null, ?string $color = null): static
     {
         return self::none($label)
             ->cssClass(['badge', 'text-bg-' . $color]);
