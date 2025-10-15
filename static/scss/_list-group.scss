@@ -2,141 +2,131 @@
 // List-Group
 // --------------------------------------------------
 
-
-// Bootstrap overwrite
-.list-group {
-    --bs-list-group-bg: var(--hh-background-color-main);
-    --bs-list-group-border-width: 0;
-    --bs-list-group-active-bg: var(--hh-background-color-secondary);
-    --bs-list-group-active-color: var(--hh-text-color-highlight);
-}
-
-.list-group-item {
-    padding: 6px 15px;
-    border-left: 3px solid var(--hh-background-color-main) !important;
-    font-size: 12px;
-    font-weight: 600;
-
-    i {
-        font-size: 14px;
-    }
-}
-
-a.list-group-item {
-
-    @mixin listGroupItemActiveOrFocus {
-        z-index: 2;
-        border-left: 3px solid var(--bs-accent) !important;
-    }
-
-    &.active {
-        @include listGroupItemActiveOrFocus();
-    }
-
-    // Hover effect only on desktop
-    &:hover, &.active:hover, &.active:focus {
-        background: inherit;
-        color: inherit;
-        border-left: none !important;
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-        &:hover, &.active:hover, &.active:focus {
-            @include listGroupItemActiveOrFocus();
-        }
-    }
-}
-
-.panel a.list-group-item {
-    &:first-child {
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-    }
-
-    &:last-child {
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
-    }
-}
-
-.list-group-horizontal > .list-group-item.active {
-    margin-top: auto; // Overwrite Bootstrap 5 `0` value
-}
-
-// Introduce a new class for vertical list groups
-@include media-breakpoint-up(sm) {
-    .list-group-vertical-sm {
-        flex-direction: column;
-    }
-}
-@include media-breakpoint-up(md) {
-    .list-group-vertical-md {
-        flex-direction: column;
-    }
-}
-@include media-breakpoint-up(lg) {
-    .list-group-vertical-lg {
-        flex-direction: column;
-    }
-}
-@include media-breakpoint-up(xl) {
-    .list-group-vertical-xl {
-        flex-direction: column;
-    }
-}
-@include media-breakpoint-up(xxl) {
-    .list-group-vertical-xxl {
-        flex-direction: column;
-    }
-}
-
-@include media-breakpoint-down(lg) {
-    // Left navigation on mobile, when becoming horizontal, should be scrollable
-    .left-navigation {
-        .list-group-horizontal.list-group-vertical-lg {
-            -webkit-overflow-scrolling: auto;
-            white-space: nowrap;
-            overflow-x: auto;
-        }
-    }
-
+@if not $prev-list-group {
+    // Bootstrap overwrite
     .list-group {
-        margin-left: 4px;
-        gap: 4px;
+        --bs-list-group-bg: var(--hh-background-color-main);
+        --bs-list-group-border-width: 0;
+        --bs-list-group-active-bg: var(--hh-background-color-secondary);
+        --bs-list-group-active-color: var(--hh-text-color-highlight);
     }
 
     .list-group-item {
-        display: inline-block !important;
-        border-radius: 3px !important;
-        border-left: none !important;
-        margin: 4px 0;
-        margin-bottom: 4px !important;
+        padding: 6px 15px;
+        border-left: 3px solid var(--hh-background-color-main) !important;
+        font-size: 12px;
+        font-weight: 600;
+
+        i {
+            font-size: 14px;
+        }
     }
 
     a.list-group-item {
-        @mixin mobileListGroupItemActiveOrFocus {
-            background: var(--bs-primary) !important;
-            color: var(--hh-text-color-contrast) !important;
-            border-left: none !important;
-        }
 
         &.active {
-            @include mobileListGroupItemActiveOrFocus();
+            @include listGroupItemActiveOrFocus();
         }
 
         // Hover effect only on desktop
+        &:hover, &.active:hover, &.active:focus {
+            background: inherit;
+            color: inherit;
+            border-left: none !important;
+        }
+
         @media (hover: hover) and (pointer: fine) {
             &:hover, &.active:hover, &.active:focus {
-                @include mobileListGroupItemActiveOrFocus();
+                @include listGroupItemActiveOrFocus();
             }
         }
     }
-}
 
-@include media-breakpoint-up(lg) {
-    .list-group-vertical-lg {
-        > .list-group-item:first-child:not(:last-child) {
+    .panel a.list-group-item {
+        &:first-child {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+        &:last-child {
             border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+    }
+
+    .list-group-horizontal > .list-group-item.active {
+        margin-top: auto; // Overwrite Bootstrap 5 `0` value
+    }
+
+    // Introduce a new class for vertical list groups
+    @include media-breakpoint-up(sm) {
+        .list-group-vertical-sm {
+            flex-direction: column;
+        }
+    }
+    @include media-breakpoint-up(md) {
+        .list-group-vertical-md {
+            flex-direction: column;
+        }
+    }
+    @include media-breakpoint-up(lg) {
+        .list-group-vertical-lg {
+            flex-direction: column;
+        }
+    }
+    @include media-breakpoint-up(xl) {
+        .list-group-vertical-xl {
+            flex-direction: column;
+        }
+    }
+    @include media-breakpoint-up(xxl) {
+        .list-group-vertical-xxl {
+            flex-direction: column;
+        }
+    }
+
+    @include media-breakpoint-down(lg) {
+        // Left navigation on mobile, when becoming horizontal, should be scrollable
+        .left-navigation {
+            .list-group-horizontal.list-group-vertical-lg {
+                -webkit-overflow-scrolling: auto;
+                white-space: nowrap;
+                overflow-x: auto;
+            }
+        }
+
+        .list-group {
+            margin-left: 4px;
+            gap: 4px;
+        }
+
+        .list-group-item {
+            display: inline-block !important;
+            border-radius: 3px !important;
+            border-left: none !important;
+            margin: 4px 0;
+            margin-bottom: 4px !important;
+        }
+
+        a.list-group-item {
+            &.active {
+                @include mobileListGroupItemActiveOrFocus();
+            }
+
+            // Hover effect only on desktop
+            @media (hover: hover) and (pointer: fine) {
+                &:hover, &.active:hover, &.active:focus {
+                    @include mobileListGroupItemActiveOrFocus();
+                }
+            }
+        }
+    }
+
+    @include media-breakpoint-up(lg) {
+        .list-group-vertical-lg {
+            > .list-group-item:first-child:not(:last-child) {
+                border-bottom-left-radius: 0;
+            }
         }
     }
 }

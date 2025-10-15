@@ -1,20 +1,26 @@
-@media print {
-    a[href]:after {
-        content: none;
-    }
+//
+// Print
+// --------------------------------------------------
 
-    body {
-        padding-top: 0;
-    }
+@if not $prev-print {
+    @media print {
+        a[href]:after {
+            content: none;
+        }
 
-    pre, blockquote {
-        page-break-inside: avoid;
-    }
+        body {
+            padding-top: 0;
+        }
 
-    .preferences,
-    .layout-sidebar-container,
-    .layout-nav-container,
-    button {
-        display: none !important;
+        pre, blockquote {
+            page-break-inside: avoid;
+        }
+
+        .preferences,
+        .layout-sidebar-container,
+        .layout-nav-container,
+        button {
+            display: none !important;
+        }
     }
 }

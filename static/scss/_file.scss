@@ -1,256 +1,262 @@
-.files,
-#postFormFiles_list {
-    padding-left: 0;
-}
+//
+// File
+// --------------------------------------------------
 
-ul.files {
-    list-style: none;
-    margin: 0 0 5px;
-    padding: 0;
-
-    li.file-preview-item {
-        padding-left: 24px;
-
-        .file-fileInfo {
-            padding-right: 20px;
-        }
-    }
-}
-
-// File upload list for posts
-.contentForm-upload-list {
-    padding-left: 0;
-
-    li:first-child {
-        margin-top: 10px;
-    }
-}
-
-.file_upload_remove_link,
-.file_upload_remove_link:hover {
-    color: var(--bs-danger);
-    cursor: pointer;
-}
-
-.file-preview-item {
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-
-.post-files {
-    margin-top: 10px;
-    margin-bottom: 10px;
-
-    video {
-        border-radius: 4px;
+@if not $prev-file {
+    .files,
+    #postFormFiles_list {
+        padding-left: 0;
     }
 
-    .jp-audio {
-        margin-bottom: 10px;
-    }
+    ul.files {
+        list-style: none;
+        margin: 0 0 5px;
+        padding: 0;
 
-    .col-media {
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-    }
+        li.file-preview-item {
+            padding-left: 24px;
 
-    img {
-        vertical-align: top;
-        padding: 2px;
-        height: 150px;
-        width: 100%;
-        object-fit: cover;
-        border-radius: 4px;
-    }
-
-    .col-12 img { // One image
-        height: 300px;
-    }
-
-    // Medium (see protected/humhub/modules/file/widgets/views/showFiles.php template)
-    @include media-breakpoint-only(md) {
-        img,
-        .col-12 img {
-            height: 150px;
-        }
-
-        .col-lg-12 img { // One image
-            height: 300px;
+            .file-fileInfo {
+                padding-right: 20px;
+            }
         }
     }
 
-    // Large and over (see protected/humhub/modules/file/widgets/views/showFiles.php template)
-    @include media-breakpoint-up(lg) {
-        img,
-        .col-12 img {
-            height: 200px;
-        }
+    // File upload list for posts
+    .contentForm-upload-list {
+        padding-left: 0;
 
-        .col-xl-6 img { // One or two images
-            height: 300px;
+        li:first-child {
+            margin-top: 10px;
         }
     }
 
-}
-
-.post-file-list {
-    padding: 10px;
-    padding-bottom: 1px;
-    margin-bottom: 10px !important;
-
-    a, a:active, a:focus, a:hover {
-        color: var(--bs-accent);
+    .file_upload_remove_link,
+    .file_upload_remove_link:hover {
+        color: var(--bs-danger);
+        cursor: pointer;
     }
-}
 
+    .file-preview-item {
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
 
-body.device-mobile #wallStream {
     .post-files {
         margin-top: 10px;
-        display: flex;
-        overflow-x: auto;
+        margin-bottom: 10px;
+
+        video {
+            border-radius: 4px;
+        }
+
+        .jp-audio {
+            margin-bottom: 10px;
+        }
+
+        .col-media {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
 
         img {
-            max-width: 190px;
-            height: 100px;
-            width: auto;
+            vertical-align: top;
+            padding: 2px;
+            height: 150px;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .col-12 img { // One image
+            height: 300px;
+        }
+
+        // Medium (see protected/humhub/modules/file/widgets/views/showFiles.php template)
+        @include media-breakpoint-only(md) {
+            img,
+            .col-12 img {
+                height: 150px;
+            }
+
+            .col-lg-12 img { // One image
+                height: 300px;
+            }
+        }
+
+        // Large and over (see protected/humhub/modules/file/widgets/views/showFiles.php template)
+        @include media-breakpoint-up(lg) {
+            img,
+            .col-12 img {
+                height: 200px;
+            }
+
+            .col-xl-6 img { // One or two images
+                height: 300px;
+            }
+        }
+
+    }
+
+    .post-file-list {
+        padding: 10px;
+        padding-bottom: 1px;
+        margin-bottom: 10px !important;
+
+        a, a:active, a:focus, a:hover {
+            color: var(--bs-accent);
         }
     }
-}
 
-.file-preview-content {
-    cursor: pointer;
-}
 
-//
-// Profile image upload
-//
-.image-upload-container {
-    position: relative;
+    body.device-mobile #wallStream {
+        .post-files {
+            margin-top: 10px;
+            display: flex;
+            overflow-x: auto;
 
-    .image-upload-buttons {
-        position: absolute;
-        right: 5px;
-        bottom: 5px;
+            img {
+                max-width: 190px;
+                height: 100px;
+                width: auto;
+            }
+        }
     }
 
-    input[type="file"] {
-        position: absolute;
-
-        //background-color: red;
-        opacity: 0;
+    .file-preview-content {
+        cursor: pointer;
     }
 
-    .image-upload-loader {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        padding: 20px;
-        background: #f8f8f8;
-    }
-}
+    //
+    // Profile image upload
+    //
+    .image-upload-container {
+        position: relative;
 
+        .image-upload-buttons {
+            position: absolute;
+            right: 5px;
+            bottom: 5px;
+        }
 
-// Mime-Types
-.mime {
-    background-repeat: no-repeat;
-    background-position: 0 0;
-    padding: 1px 0 4px 26px;
-}
+        input[type="file"] {
+            position: absolute;
 
-.mime-word {
-    background-image: url("../img/mime/word.png");
-}
+            //background-color: red;
+            opacity: 0;
+        }
 
-.mime-excel {
-    background-image: url("../img/mime/excel.png");
-}
-
-.mime-powerpoint {
-    background-image: url("../img/mime/powerpoint.png");
-}
-
-.mime-pdf {
-    background-image: url("../img/mime/pdf.png");
-}
-
-.mime-zip {
-    background-image: url("../img/mime/zip.png");
-}
-
-.mime-image {
-    background-image: url("../img/mime/image.png");
-}
-
-.mime-file {
-    background-image: url("../img/mime/file.png");
-}
-
-.mime-photoshop {
-    background-image: url("../img/mime/photoshop.png");
-}
-
-.mime-illustrator {
-    background-image: url("../img/mime/illustrator.png");
-}
-
-.mime-video {
-    background-image: url("../img/mime/video.png");
-}
-
-.mime-audio {
-    background-image: url("../img/mime/audio.png");
-}
-
-@include media-breakpoint-down(sm) {
-    .jp-current-time {
-        margin-left: 0 !important;
+        .image-upload-loader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            background: #f8f8f8;
+        }
     }
 
-    .jp-audio {
-        width: auto !important;
-        margin-left: 0 !important;
+
+    // Mime-Types
+    .mime {
+        background-repeat: no-repeat;
+        background-position: 0 0;
+        padding: 1px 0 4px 26px;
     }
 
-    .jp-audio .jp-controls {
-        padding: 2px 12px 0 !important;
+    .mime-word {
+        background-image: url("../img/mime/word.png");
     }
 
-    .jp-audio .jp-progress {
-        left: 3px !important;
-        top: 45px !important;
-        width: 200px !important;
+    .mime-excel {
+        background-image: url("../img/mime/excel.png");
     }
 
-    .jp-audio .jp-volume-controls {
-        position: absolute !important;
-        top: 15px !important;
-        left: 170px !important;
+    .mime-powerpoint {
+        background-image: url("../img/mime/powerpoint.png");
     }
 
-    .jp-audio .jp-time-holder {
-        left: 3px !important;
-        top: 60px !important;
-        width: 200px !important;
+    .mime-pdf {
+        background-image: url("../img/mime/pdf.png");
     }
 
-    .jp-audio .jp-toggles {
-        left: 210px !important;
-        top: 45px !important;
-        width: auto !important;
+    .mime-zip {
+        background-image: url("../img/mime/zip.png");
     }
 
-    .jp-playlist ul {
-        padding: 0 0 0 0 !important;
+    .mime-image {
+        background-image: url("../img/mime/image.png");
     }
-}
 
-.jp-details, .jp-playlist {
-    border-top: 1px solid var(--bs-accent);
-}
+    .mime-file {
+        background-image: url("../img/mime/file.png");
+    }
 
-.jp-audio, .jp-audio-stream, .jp-video {
-    border: 1px solid var(--bs-accent);
+    .mime-photoshop {
+        background-image: url("../img/mime/photoshop.png");
+    }
+
+    .mime-illustrator {
+        background-image: url("../img/mime/illustrator.png");
+    }
+
+    .mime-video {
+        background-image: url("../img/mime/video.png");
+    }
+
+    .mime-audio {
+        background-image: url("../img/mime/audio.png");
+    }
+
+    @include media-breakpoint-down(sm) {
+        .jp-current-time {
+            margin-left: 0 !important;
+        }
+
+        .jp-audio {
+            width: auto !important;
+            margin-left: 0 !important;
+        }
+
+        .jp-audio .jp-controls {
+            padding: 2px 12px 0 !important;
+        }
+
+        .jp-audio .jp-progress {
+            left: 3px !important;
+            top: 45px !important;
+            width: 200px !important;
+        }
+
+        .jp-audio .jp-volume-controls {
+            position: absolute !important;
+            top: 15px !important;
+            left: 170px !important;
+        }
+
+        .jp-audio .jp-time-holder {
+            left: 3px !important;
+            top: 60px !important;
+            width: 200px !important;
+        }
+
+        .jp-audio .jp-toggles {
+            left: 210px !important;
+            top: 45px !important;
+            width: auto !important;
+        }
+
+        .jp-playlist ul {
+            padding: 0 0 0 0 !important;
+        }
+    }
+
+    .jp-details, .jp-playlist {
+        border-top: 1px solid var(--bs-accent);
+    }
+
+    .jp-audio, .jp-audio-stream, .jp-video {
+        border: 1px solid var(--bs-accent);
+    }
 }

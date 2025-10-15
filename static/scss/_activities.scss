@@ -1,13 +1,18 @@
+//
 // Activities
-.activities {
-    max-height: 400px;
-    overflow: auto;
+// --------------------------------------------------
 
-    div.activity-entry {
-        padding: 0;
-    }
+@if not $prev-activities {
+    .activities {
+        max-height: 400px;
+        overflow: auto;
 
-    .d-flex {
-        padding: 10px;
+        div.activity-entry {
+            padding: 0;
+        }
+
+        .d-flex {
+            padding: 10px;
+        }
     }
 }

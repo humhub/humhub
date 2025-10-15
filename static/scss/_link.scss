@@ -2,8 +2,10 @@
 // Links
 // --------------------------------------------------
 
-a.link:not(.link-icon-only) {
-    i.fa {
-        margin-right: 0.4rem;
+@if not $prev-link {
+    a.link:not(.link-icon-only) {
+        i.fa {
+            margin-right: 0.4rem;
+        }
     }
 }

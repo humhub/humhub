@@ -1,51 +1,56 @@
-// Panels - Installer
-.installer {
-    .logo {
-        text-align: center;
-    }
+//
+// Installer
+// --------------------------------------------------
 
-    h2 {
-        font-weight: 100;
-    }
-
-    .panel {
-        margin-top: 50px;
-
-        h3 {
-            margin-top: 0;
+@if not $prev-installer {
+    .installer {
+        .logo {
+            text-align: center;
         }
-    }
 
-    .powered,
-    .powered a {
-        color: var(--hh-text-color-soft3) !important;
-        margin-top: 10px;
-        font-size: 12px;
-    }
+        h2 {
+            font-weight: 100;
+        }
 
-    .fa {
-        width: 18px;
-    }
+        .panel {
+            margin-top: 50px;
 
-    .check-ok {
-        color: var(--bs-success);
-    }
+            h3 {
+                margin-top: 0;
+            }
+        }
 
-    .check-warning {
-        color: var(--bs-warning);
-    }
+        .powered,
+        .powered a {
+            color: var(--hh-text-color-soft3) !important;
+            margin-top: 10px;
+            font-size: 12px;
+        }
 
-    .check-error {
-        color: var(--bs-danger);
-    }
+        .fa {
+            width: 18px;
+        }
 
-    .prerequisites-list {
-        ul {
-            list-style: none;
-            padding-left: 15px;
+        .check-ok {
+            color: var(--bs-success);
+        }
 
-            li {
-                padding-bottom: 5px;
+        .check-warning {
+            color: var(--bs-warning);
+        }
+
+        .check-error {
+            color: var(--bs-danger);
+        }
+
+        .prerequisites-list {
+            ul {
+                list-style: none;
+                padding-left: 15px;
+
+                li {
+                    padding-bottom: 5px;
+                }
             }
         }
     }
