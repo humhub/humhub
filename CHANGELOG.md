@@ -32,7 +32,7 @@ HumHub Changelog
 - Fix #7775: Show more padding button in the comments section
 - Fix #7776: Profile image background width
 - Fix #7773: Improve detection of selected items of `PickerFilterInput`
-- Fix: PHP 8.4 compatibility when compiling SCSS, move all Sass mixins to the `_mixins.scss` file and move the `@if not $prev-filename` condition from `build.scss` to the related file
+- Fix #7784: PHP 8.4 compatibility when compiling SCSS, move all Sass mixins to the `_mixins.scss` file and move the `@if not $prev-filename` condition from `build.scss` to the related file
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------
