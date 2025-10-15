@@ -377,20 +377,11 @@ class SpreadsheetExport extends Component
             return $value;
         }
 
-        // Decode HTML entities like &amp; → &
-        $value = html_entity_decode($value, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-
-        // Normalize line breaks
-        $value = str_replace(["\r\n", "\r"], "\n", $value);
-
-        // Remove control characters
-        $value = preg_replace('/[\x00-\x1F\x7F]/u', '', $value);
-
         // Check for risky starting characters or formula-like values and prepend single quote
         if (strpbrk($value[0], '=+-@,;' . "\t" . "\r") !== false || preg_match('/^\d+[+\-*\/].+/', $value)) {
             $value = "'" . $value;
         }
-        
+
         return $value;
     }
 
