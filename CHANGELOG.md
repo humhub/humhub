@@ -32,6 +32,7 @@ HumHub Changelog
 - Fix #7775: Show more padding button in the comments section
 - Fix #7776: Profile image background width
 - Fix #7773: Improve detection of selected items of `PickerFilterInput`
+- Enh: Auto text color (black or white) for buttons based on the background color, darkening the success color to match WCAG minimum contrast while keeping white text color
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------
