@@ -6,11 +6,8 @@
  * @license   https://www.humhub.com/licences
  */
 
-use humhub\components\InstallationState;
-
 return [
     ['name' => 'name', 'value' => 'HumHub Test', 'module_id' => 'base'],
-    ['name' => InstallationState::class, 'value' => InstallationState::STATE_INSTALLED , 'module_id' => 'base'],
     ['name' => 'baseUrl', 'value' => 'http://localhost:8080', 'module_id' => 'base'],
     ['name' => 'paginationSize', 'value' => '10', 'module_id' => 'base'],
     ['name' => 'displayNameFormat', 'value' => '{profile.firstname} {profile.lastname}', 'module_id' => 'base'],
