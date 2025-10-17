@@ -34,6 +34,7 @@ HumHub Changelog
 - Fix #7773: Improve detection of selected items of `PickerFilterInput`
 - Fix #7784: PHP 8.4 compatibility when compiling SCSS, move all Sass mixins to the `_mixins.scss` file and move the `@if not $prev-filename` condition from `build.scss` to the related file
 - Fix #7779: Improved value formatting in `SpreadsheetExport``
+- Fix #7698: Use 0644 for files and 0755 for dirs in StorageManager
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------
