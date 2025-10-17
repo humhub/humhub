@@ -1,26 +1,31 @@
-// TourModule
-ul.tour-list {
-    list-style: none;
-    margin-bottom: 0;
-    padding-left: 10px;
+//
+// Tour module
+// --------------------------------------------------
 
-    li {
-        padding-top: 5px;
+@if not $prev-tour {
+    ul.tour-list {
+        list-style: none;
+        margin-bottom: 0;
+        padding-left: 10px;
 
-        a .fa {
-            width: 16px;
+        li {
+            padding-top: 5px;
+
+            a .fa {
+                width: 16px;
+            }
+        }
+
+        li.completed {
+            a {
+                text-decoration: line-through;
+                color: var(--hh-text-color-soft);
+            }
         }
     }
 
-    li.completed {
-        a {
-            text-decoration: line-through;
-            color: var(--hh-text-color-soft);
-        }
+    // Fix for .profile-user-photo-container for not having the bottom part hidden
+    .driver-active .panel-profile-header:has(>.driver-active-element) {
+        overflow: visible !important;
     }
-}
-
-// Fix for .profile-user-photo-container for not having the bottom part hidden
-.driver-active .panel-profile-header:has(>.driver-active-element) {
-    overflow: visible !important;
 }

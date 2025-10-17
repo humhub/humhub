@@ -1,80 +1,84 @@
+//
 // CGridView
+// --------------------------------------------------
 
-.grid-view {
-    img {
-        width: 24px;
-        height: 24px;
-    }
-}
-
-.grid-view .filters input,
-.grid-view .filters select {
-    @extend %form-control-base;
-    border-radius: 4px;
-    font-size: 12px;
-    padding: 4px;
-}
-
-.grid-view {
-    padding: 15px 0 0;
-
-    img {
-        border-radius: 3px;
-    }
-
-    table {
-        th {
-            font-size: 13px !important;
-            font-weight: bold !important;
-        }
-
-        td {
-            vertical-align: middle !important;
-        }
-
-        tr {
-            font-size: 13px !important;
-        }
-
-        thead {
-            tr {
-                th:first-of-type {
-                    padding-left: 5px;
-                }
-            }
-        }
-
-        tbody {
-            tr {
-                height: 50px;
-
-                td:first-of-type {
-                    padding-left: 5px;
-                }
-
-                &:last-of-type td {
-                    border-bottom: none;
-                }
-            }
+@if not $prev-gridview {
+    .grid-view {
+        img {
+            width: 24px;
+            height: 24px;
         }
     }
 
-    .summary {
+    .grid-view .filters input,
+    .grid-view .filters select {
+        @extend %form-control-base;
+        border-radius: 4px;
         font-size: 12px;
-        color: var(--hh-text-color-soft3);
+        padding: 4px;
     }
-}
 
-.permission-grid-editor {
-    padding-top: 0px;
-}
+    .grid-view {
+        padding: 15px 0 0;
+
+        img {
+            border-radius: 3px;
+        }
+
+        table {
+            th {
+                font-size: 13px !important;
+                font-weight: bold !important;
+            }
+
+            td {
+                vertical-align: middle !important;
+            }
+
+            tr {
+                font-size: 13px !important;
+            }
+
+            thead {
+                tr {
+                    th:first-of-type {
+                        padding-left: 5px;
+                    }
+                }
+            }
+
+            tbody {
+                tr {
+                    height: 50px;
+
+                    td:first-of-type {
+                        padding-left: 5px;
+                    }
+
+                    &:last-of-type td {
+                        border-bottom: none;
+                    }
+                }
+            }
+        }
+
+        .summary {
+            font-size: 12px;
+            color: var(--hh-text-color-soft3);
+        }
+    }
+
+    .permission-grid-editor {
+        padding-top: 0px;
+    }
 
 
-// Detail View
-.detail-view td, .detail-view th {
-    padding: 8px !important;
-}
+    // Detail View
+    .detail-view td, .detail-view th {
+        padding: 8px !important;
+    }
 
-.detail-view th {
-    font-size: 13px;
+    .detail-view th {
+        font-size: 13px;
+    }
 }

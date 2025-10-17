@@ -1,40 +1,46 @@
 //
 // Tooltips
 // --------------------------------------------------
-.tooltip-inner {
-    background-color: var(--bs-primary);
-    max-width: 400px;
-    text-align: left;
-    padding: 2px 8px 4px;
-    font-size: 12px;
-    font-weight: bold;
-    white-space: pre-wrap;
-    color: var(--hh-text-color-contrast);
-}
 
-.tooltip {
-    &[data-popper-placement^="top"] {
-        .tooltip-arrow::before {
-            border-top-color: var(--bs-primary);
-        }
+@if not $prev-tooltip {
+    .tooltip-inner {
+        background-color: var(--bs-primary);
+        max-width: 400px;
+        text-align: left;
+        padding: 2px 8px 4px;
+        font-size: 12px;
+        font-weight: bold;
+        white-space: pre-wrap;
+        color: var(--hh-text-color-contrast);
     }
-    &[data-popper-placement^="right"] {
-        .tooltip-arrow::before {
-            border-right-color: var(--bs-primary);
-        }
-    }
-    &[data-popper-placement^="bottom"] {
-        .tooltip-arrow::before {
-            border-bottom-color: var(--bs-primary);
-        }
-    }
-    &[data-popper-placement^="left"] {
-        .tooltip-arrow::before {
-            border-left-color: var(--bs-primary);
-        }
-    }
-}
 
-.tooltip.in {
-    opacity: 1;
+    .tooltip {
+        &[data-popper-placement^="top"] {
+            .tooltip-arrow::before {
+                border-top-color: var(--bs-primary);
+            }
+        }
+
+        &[data-popper-placement^="right"] {
+            .tooltip-arrow::before {
+                border-right-color: var(--bs-primary);
+            }
+        }
+
+        &[data-popper-placement^="bottom"] {
+            .tooltip-arrow::before {
+                border-bottom-color: var(--bs-primary);
+            }
+        }
+
+        &[data-popper-placement^="left"] {
+            .tooltip-arrow::before {
+                border-left-color: var(--bs-primary);
+            }
+        }
+    }
+
+    .tooltip.in {
+        opacity: 1;
+    }
 }
