@@ -76,6 +76,8 @@ class HumHubDbTestCase extends Unit
         static::flushCache(__METHOD__);
         static::deleteMails(__METHOD__);
 
+        Yii::$app->installationState->setInstalled();
+
         parent::setUp();
     }
 

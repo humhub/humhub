@@ -117,9 +117,6 @@ class ModuleManagerTest extends HumHubDbTestCase
         $this->moduleClass = null;
         $this->moduleNS = null;
 
-
-        Yii::$app->installationState->setInstalled();
-
         parent::setUp();
     }
 
