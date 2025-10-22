@@ -165,6 +165,11 @@ humhub.module('marketplace', function (module, require, $) {
                     $(this).remove()
                 });
             }
+
+            modal.global.$.one('hidden.bs.modal', function () {
+                // Reload window to apply all theme/style changes after module enabling
+                location.reload();
+            });
         }).catch(function (e) {
             module.log.error(e, true);
         });

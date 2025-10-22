@@ -29,7 +29,8 @@ use humhub\widgets\ModalDialog;
     <?php if ($moduleConfigUrl) : ?>
         <?= ModalButton::cancel(Yii::t('MarketplaceModule.base', 'No, thank you!')) ?>
         <?= Button::primary(Yii::t('MarketplaceModule.base', 'Module configuration'))
-            ->link($moduleConfigUrl) ?>
+            ->link($moduleConfigUrl)
+            ->pjax(false) ?>
     <?php else : ?>
         <?= ModalButton::primary(Yii::t('MarketplaceModule.base', 'Great!'))
             ->close() ?>
