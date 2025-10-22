@@ -34,9 +34,10 @@ humhub.module('topic', function (module, require, $) {
     };
 
     var getTopicFromTrigger = function ($trigger) {
-        var id = $trigger.data('topic-id');
-        var name = $trigger.find('.label').text();
-        var $linked = getRemoveLabel({id: id, name: name});
+        const id = $trigger.data('topic-id');
+        const name = $trigger.text().trim();
+        const $linked = getRemoveLabel({id: id, name: name});
+
         return {
             id: $trigger.data('topic-id'),
             name: name,

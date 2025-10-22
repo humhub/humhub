@@ -32,6 +32,9 @@ HumHub Changelog
 - Fix #7775: Show more padding button in the comments section
 - Fix #7776: Profile image background width
 - Fix #7773: Improve detection of selected items of `PickerFilterInput`
+- Fix #7784: PHP 8.4 compatibility when compiling SCSS, move all Sass mixins to the `_mixins.scss` file and move the `@if not $prev-filename` condition from `build.scss` to the related file
+- Fix #7779: Improved value formatting in `SpreadsheetExport``
+- Fix #7789: On the profile page, the "Followers" and "Following" widgets cannot be minimized
 - Enh #7785: Auto text color (black or white) for buttons based on the background color, darkening the success color to match WCAG minimum contrast while keeping white text color
 
 1.18.0-beta.4 (September 19, 2025)

@@ -229,7 +229,7 @@ class SpreadsheetExport extends Component
             'class' => DataColumn::class,
             'grid' => $this,
             'attribute' => $matches[1],
-            'format' => $matches[3] ?? 'text',
+            'format' => $matches[3] ?? fn($value) => $this->sanitizeValue($value),
             'label' => $matches[5] ?? null,
         ]);
 
@@ -349,7 +349,6 @@ class SpreadsheetExport extends Component
         foreach ($this->columns as $columnIndex => $column) {
             $coordinate = $this->getColumnLetter($columnIndex + 1) . $row;
             $value = $column->renderDataCellContent($model, $key, $index);
-            $value = $this->sanitizeValue($value);
 
             if ($column->dataType !== null) {
                 $worksheet->getCell($coordinate)->setValueExplicit($value, $column->dataType);
@@ -381,11 +380,6 @@ class SpreadsheetExport extends Component
         // Check for risky starting characters or formula-like values and prepend single quote
         if (strpbrk($value[0], '=+-@,;' . "\t" . "\r") !== false || preg_match('/^\d+[+\-*\/].+/', $value)) {
             $value = "'" . $value;
-        }
-
-        // Sanitize escaping quotes, wrapping in double quotes if needed
-        if (strpbrk($value, "\"\n,") !== false) {
-            $value = '"' . str_replace('"', '""', $value) . '"';
         }
 
         return $value;

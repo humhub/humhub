@@ -1,35 +1,41 @@
-.panel-profile {
-    .panel-profile-header {
-        .image-upload-container {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
+//
+// Profile
+// --------------------------------------------------
 
-            #bannerfileupload {
-                position: absolute;
-                top: 0;
-                left: 0;
-                opacity: 0;
+@if not $prev-profile {
+    .panel-profile {
+        .panel-profile-header {
+            .image-upload-container {
                 width: 100%;
                 height: 100%;
+                overflow: hidden;
+
+                #bannerfileupload {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    opacity: 0;
+                    width: 100%;
+                    height: 100%;
+                }
             }
+
+            .img-profile-header-background {
+                width: 100%;
+                max-height: 192px;
+            }
+
+
         }
+    }
 
-        .img-profile-header-background {
-            width: 100%;
-            max-height: 192px;
+    @media print {
+        .panel-profile {
+            display: none;
         }
-
-
     }
-}
 
-@media print {
-    .panel-profile {
-        display: none;
+    .profile-item {
+        margin-top: 15px;
     }
-}
-
-.profile-item {
-    margin-top: 15px;
 }

@@ -1,23 +1,26 @@
 //
-// Progressbar
+// Progress bar
 // --------------------------------------------------
-.progress {
-    height: 10px;
-    margin-bottom: 15px;
-    box-shadow: none;
-    background: var(--hh-background-color-page);
-    border-radius: 10px;
-}
 
-.progress-bar-info {
-    background-color: var(--bs-accent);
-    box-shadow: none;
-}
+@if not $prev-progress {
+    .progress {
+        height: 10px;
+        margin-bottom: 15px;
+        box-shadow: none;
+        background: var(--hh-background-color-page);
+        border-radius: 10px;
+    }
 
-//
-// Pjax page loader bar since 1.2
-//
-#nprogress .bar {
-    height: 2px;
-    background: lighten($accent, 8%);
+    .progress-bar-info {
+        background-color: var(--bs-accent);
+        box-shadow: none;
+    }
+
+    //
+    // Pjax page loader bar since 1.2
+    //
+    #nprogress .bar {
+        height: 2px;
+        background: lighten($accent, 8%);
+    }
 }
