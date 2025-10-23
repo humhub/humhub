@@ -13,7 +13,7 @@ $isFluid: false;
 $primary: #435f6f !default;
 $secondary: #7a7a7a !default;
 $info: #0582FF !default;
-$success: #97d271 !default;
+$success: #52a11c !default;
 $warning: #FFC107 !default;
 $danger: #FC4A64 !default;
 $light: #e7e7e7 !default;
@@ -155,6 +155,15 @@ $badge-padding-y: 3px !default;
 $badge-padding-x: 5px !default;
 $badge-border-radius: 2px !default;
 
+//
+// Contrast ratio to reach against white
+// Determines if color changes from "light" to "dark".
+// Acceptable values for WCAG 2.2 are 3, 4.5 and 7.
+// See https://www.w3.org/TR/WCAG/#contrast-minimum
+//
+
+$min-contrast-ratio: 3 !default;
+
 
 //
 // Other Bootstrap overwritten variables
@@ -165,7 +174,6 @@ $grid-gutter-width: 30px !default;
 $line-height-base: 1.5 !default;
 $form-check-padding-start: 2em !default; // Fix checkbox with multiple lines label
 $focus-ring-box-shadow: none !default;
-
 
 //
 // @deprecated since 1.18
