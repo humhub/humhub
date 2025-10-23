@@ -140,7 +140,8 @@ class GroupController extends Controller
             'searchModel' => $searchModel,
             'group' => $group,
             'addGroupMemberForm' => new AddGroupMemberForm(),
-            'isManagerApprovalSetting' => Yii::$app->getModule('user')->settings->get('auth.needApproval'),
+            'isManagerApprovalSetting' => !$group->is_admin_group
+                && Yii::$app->getModule('user')->settings->get('auth.needApproval'),
         ]);
     }
 
@@ -211,6 +212,10 @@ class GroupController extends Controller
 
         $group = Group::findOne(Yii::$app->request->post('id'));
         $this->checkGroupAccess($group);
+
+        if ($group->is_admin_group) {
+            throw new HttpException(400, 'Cannot edit manager role for admin group');
+        }
 
         $value = Yii::$app->request->post('value');
 
