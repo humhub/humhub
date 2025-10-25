@@ -16,6 +16,7 @@ final class DynamicConfig
     private string $fileName;
 
     public array $content = [];
+    private array $config = [];
 
     public function __construct($fileName = null)
     {
@@ -40,11 +41,8 @@ final class DynamicConfig
             file_get_contents($this->fileName),
         );
 
-        $this->config = eval($configContent);
-
-        if (!is_array($this->config)) {
-            $this->config = [];
-        }
+        $config = eval($configContent);
+        $this->config = (is_array($config)) ? $config : [];
     }
 
     public function autoSetDatabase()
