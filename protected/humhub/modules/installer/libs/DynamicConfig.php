@@ -52,7 +52,9 @@ final class DynamicConfig
 
     public function save()
     {
-        if (!is_writable($this->fileName)) {
+        if (!file_exists($this->fileName) && !is_writable(dirname($this->fileName))) {
+            throw new InvalidConfigException('Could not create file: ' . $this->fileName);
+        } elseif (file_exists($this->fileName) && !is_writable($this->fileName)) {
             throw new InvalidConfigException('File is not writable: ' . $this->fileName);
         }
 
