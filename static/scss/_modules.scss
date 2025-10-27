@@ -188,7 +188,7 @@
         }
 
         .modules-type {
-            color: var(--hh-text-color-contrast);
+            color: var(--hh-primary-contrast);
             margin: 10px 0 30px;
         }
 
@@ -197,7 +197,7 @@
             background-color: transparent;
 
             .card-panel {
-                color: var(--hh-text-color-contrast);
+                color: var(--hh-primary-contrast);
                 margin-top: 0;
 
                 > div:not(.card-status) {
@@ -210,10 +210,10 @@
 
                 .card-body {
                     padding: 4px 12px 20px;
-                    color: var(--hh-text-color-contrast);
+                    color: var(--hh-primary-contrast);
 
                     .card-title {
-                        color: var(--hh-text-color-contrast);
+                        color: var(--hh-primary-contrast);
                         font-size: 14px;
                     }
                 }
