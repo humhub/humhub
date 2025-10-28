@@ -668,12 +668,12 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
     // See https://github.com/humhub/humhub-internal/issues/661#issuecomment-2968279827
     .btn-primary {
         --bs-btn-active-color: var(--bs-primary);
-        --bs-btn-active-bg: var(--hh-background-color-main);
+        --bs-btn-active-bg: var(--hh-primary-contrast);
         --bs-btn-active-border-color: var(--bs-primary);
     }
     .btn-info {
         --bs-btn-active-color: var(--bs-accent);
-        --bs-btn-active-bg: var(--hh-background-color-main);
+        --bs-btn-active-bg: var(--hh-primary-contrast);
         --bs-btn-active-border-color: var(--bs-accent);
     }
 

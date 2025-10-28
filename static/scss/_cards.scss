@@ -98,11 +98,11 @@
 
                     &.active, &:not(.active):hover {
                         background: var(--bs-primary) !important;
-                        color: #FFF !important;
+                        color: var(--hh-primary-contrast) !important;
                     }
 
                     &:not(.active) {
-                        background: #FFF;
+                        background: var(--hh-primary-contrast);
                         color: var(--bs-primary) !important;
                     }
                 }

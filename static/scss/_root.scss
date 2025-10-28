@@ -23,6 +23,17 @@
     --hh-background3: #{$background3};
     --hh-background4: #{$background4};
 
+    // Color contrast
+    --hh-accent-contrast: #{color-contrast($accent)};
+    --hh-primary-contrast: #{color-contrast($primary)};
+    --hh-secondary-contrast: #{color-contrast($secondary)};
+    --hh-info-contrast: #{color-contrast($info)};
+    --hh-success-contrast: #{color-contrast($success)};
+    --hh-warning-contrast: #{color-contrast($warning)};
+    --hh-danger-contrast: #{color-contrast($danger)};
+    --hh-light-contrast: #{color-contrast($light)};
+    --hh-dark-contrast: #{color-contrast($dark)};
+
     // Bootstrap Alert boxes
     // Success
     --hh-background-color-success: #{$background-color-success};
