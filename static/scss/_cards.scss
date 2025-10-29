@@ -315,8 +315,11 @@
                     }
                 }
 
-                .btn-group a.btn {
-                    margin-right: 0;
+                .btn-group {
+                    margin: 0 8px 4px 0;
+                    a.btn {
+                        margin: 0;
+                    }
                 }
             }
         }
