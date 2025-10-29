@@ -1,5 +1,6 @@
 humhub.module('live', function (module, require, $) {
     var object = require('util').object;
+    var event = require('event');
     var liveClient;
 
     var init = function () {
@@ -18,6 +19,11 @@ humhub.module('live', function (module, require, $) {
             module.log.warn("Invalid live client configuration detected, live client could not be initialized.", module.config);
             module.log.error(e);
         }
+
+        event.on('humhub:modules:live:live:ThemeChanged', function (evt, liveEvents) {
+            module.log.debug('Theme changed', liveEvents);
+            location.reload();
+        });
     };
 
     var setDelay = function (value) {

@@ -9,6 +9,7 @@
 namespace humhub\modules\ui\view\components;
 
 use humhub\assets\CoreBundleAsset;
+use humhub\modules\live\live\ThemeChanged;
 use humhub\modules\ui\view\helpers\ThemeHelper;
 use Yii;
 use yii\base\Theme as BaseTheme;
@@ -129,8 +130,18 @@ class Theme extends BaseTheme
     {
         $this->publishResources(true);
         $this->variables->flushCache();
+
+        $oldTheme = Yii::$app->settings->get('theme');
         Yii::$app->settings->set('theme', $this->getBasePath());
         Yii::$app->settings->delete('themeParents');
+        $newTheme = Yii::$app->settings->get('theme');
+
+        if ($oldTheme !== $newTheme) {
+            Yii::$app->live->send(new ThemeChanged([
+                'oldTheme' => $oldTheme,
+                'newTheme' => $newTheme,
+            ]));
+        }
     }
 
     /**
