@@ -37,7 +37,7 @@ HumHub Changelog
 - Fix #7789: On the profile page, the "Followers" and "Following" widgets cannot be minimized
 - Enh #7785: Auto text color (black or white) for buttons based on the background color, darkening the success color to match WCAG minimum contrast while keeping white text color
 - Enh #7801: Auto contrast text color for other components, and add `--hh-{bs-color}-contrast` CSS variables (see MIGRATE-BS5.md)
-- Fix: Select fields are missing border radius
+- Fix #7808: Select fields are missing border radius
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------
