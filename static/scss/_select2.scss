@@ -288,6 +288,7 @@
             line-height: $line-height-base;
             padding: $input-btn-padding-y $input-btn-padding-x + $select2-caret-width $input-btn-padding-y $input-btn-padding-x;
             background-color: var(--hh-background-color-main);
+            border-radius: var(--bs-border-radius);
 
             /**
              * Adjust the single Select2's dropdown arrow button appearance.
