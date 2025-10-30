@@ -22,7 +22,7 @@ humhub.module('live', function (module, require, $) {
 
         event.on('humhub:modules:live:live:ThemeChanged', function (evt, liveEvents) {
             module.log.debug('Theme changed', liveEvents);
-            location.reload();
+            $('a').attr('data-pjax-prevent', '1');
         });
     };
 
