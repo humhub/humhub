@@ -20,8 +20,8 @@ humhub.module('live', function (module, require, $) {
             module.log.error(e);
         }
 
-        event.on('humhub:modules:live:live:ThemeChanged', function (evt, liveEvents) {
-            module.log.debug('Theme changed', liveEvents);
+        event.on('humhub:modules:live:live:PreventPjaxOnNextClick', function (evt, liveEvents) {
+            module.log.debug('Prevent PJAX on next click by reason: ' + liveEvents.map(item => item.data.reason).join(', '));
             $('a').attr('data-pjax-prevent', '1');
         });
     };

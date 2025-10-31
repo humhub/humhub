@@ -15,8 +15,7 @@ use humhub\modules\live\components\LiveEvent;
  *
  * @since 1.17.4
  */
-class ThemeChanged extends LiveEvent
+class PreventPjaxOnNextClick extends LiveEvent
 {
-    public ?string $oldTheme = null;
-    public ?string $newTheme = null;
+    public ?string $reason = null;
 }

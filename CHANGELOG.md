@@ -7,7 +7,7 @@ HumHub Changelog
 - Fix #7750: Mail summary may not sent for new users on higher intervals
 - Fix #7796: Administrator group cannot have group managers
 - Fix #7803: Fix number of pending space members
-- Enh #7806: New live event for theme changing to reload the current page
+- Enh #7806: New live event to prevent PJAX on the next click after theme changing
 
 1.17.3 (July 17, 2025)
 ----------------------
