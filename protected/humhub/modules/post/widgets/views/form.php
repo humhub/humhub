@@ -12,7 +12,7 @@ use humhub\widgets\form\ActiveForm;
 /* @var Post $post */
 ?>
 
-<?= $form->field($post, 'message', ['options' => ['class' => ['widget' => '']]])->widget(RichTextField::class, [
+<?= $form->field($post, 'message')->widget(RichTextField::class, [
     'id' => 'contentForm_message' . ($wallCreateContentForm->isModal ? 'Modal' : ''),
     'form' => $form,
     'layout' => $wallCreateContentForm->isModal ? RichTextField::LAYOUT_BLOCK : RichTextField::LAYOUT_INLINE,

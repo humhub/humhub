@@ -98,11 +98,11 @@
 
                     &.active, &:not(.active):hover {
                         background: var(--bs-primary) !important;
-                        color: #FFF !important;
+                        color: var(--hh-primary-contrast) !important;
                     }
 
                     &:not(.active) {
-                        background: #FFF;
+                        background: var(--hh-primary-contrast);
                         color: var(--bs-primary) !important;
                     }
                 }
@@ -315,8 +315,11 @@
                     }
                 }
 
-                .btn-group a.btn {
-                    margin-right: 0;
+                .btn-group {
+                    margin: 0 8px 4px 0;
+                    a.btn {
+                        margin: 0;
+                    }
                 }
             }
         }

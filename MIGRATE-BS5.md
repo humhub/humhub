@@ -718,6 +718,32 @@ In components:
 - there are no color SCSS variables
 - but CSS variable values are usually defined from global SCSS variables
 
+#### Contrast colors
+
+CSS classes:
+- `.link-{$color}`: https://getbootstrap.com/docs/5.3/helpers/colored-links
+- `.text-bg-{$color}`: https://getbootstrap.com/docs/5.3/helpers/color-background/
+
+CSS variables for contrast colors:
+- `--hh-accent-contrast`
+- `--hh-primary-contrast`
+- `--hh-secondary-contrast`
+- `--hh-info-contrast`
+- `--hh-success-contrast`
+- `--hh-warning-contrast`
+- `--hh-danger-contrast`
+- `--hh-light-contrast`
+- `--hh-dark-contrast`
+
+Example of CSS if it's not possible tu use the `.text-bg-{$color}` class:
+
+```css
+#target {
+    background-color: var(--bs-primary);
+    color: var(--hh-primary-contrast);
+}
+```
+
 #### Available CSS variables
 
 - Bootstrap root (prefix `--bs`) : https://getbootstrap.com/docs/5.3/customize/css-variables/

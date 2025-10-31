@@ -16,6 +16,7 @@ final class DynamicConfig
     private string $fileName;
 
     public array $content = [];
+    private array $config = [];
 
     public function __construct($fileName = null)
     {
@@ -40,11 +41,8 @@ final class DynamicConfig
             file_get_contents($this->fileName),
         );
 
-        $this->config = eval($configContent);
-
-        if (!is_array($this->config)) {
-            $this->config = [];
-        }
+        $config = eval($configContent);
+        $this->config = (is_array($config)) ? $config : [];
     }
 
     public function autoSetDatabase()
@@ -54,7 +52,9 @@ final class DynamicConfig
 
     public function save()
     {
-        if (is_writable($this->fileName)) {
+        if (!file_exists($this->fileName) && !is_writable(dirname($this->fileName))) {
+            throw new InvalidConfigException('Could not create file: ' . $this->fileName);
+        } elseif (file_exists($this->fileName) && !is_writable($this->fileName)) {
             throw new InvalidConfigException('File is not writable: ' . $this->fileName);
         }
 
