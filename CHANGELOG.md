@@ -35,6 +35,7 @@ HumHub Changelog
 - Fix #7784: PHP 8.4 compatibility when compiling SCSS, move all Sass mixins to the `_mixins.scss` file and move the `@if not $prev-filename` condition from `build.scss` to the related file
 - Fix #7779: Improved value formatting in `SpreadsheetExport``
 - Fix #7789: On the profile page, the "Followers" and "Following" widgets cannot be minimized
+- Enh #7793: Improve access rules for create space controller
 - Enh #7785: Auto text color (black or white) for buttons based on the background color, darkening the success color to match WCAG minimum contrast while keeping white text color
 - Enh #7801: Auto contrast text color for other components, and add `--hh-{bs-color}-contrast` CSS variables (see MIGRATE-BS5.md)
 - Fix #7808: Select fields are missing border radius
