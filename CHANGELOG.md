@@ -35,6 +35,7 @@ HumHub Changelog
 - Fix #7784: PHP 8.4 compatibility when compiling SCSS, move all Sass mixins to the `_mixins.scss` file and move the `@if not $prev-filename` condition from `build.scss` to the related file
 - Fix #7779: Improved value formatting in `SpreadsheetExport``
 - Fix #7789: On the profile page, the "Followers" and "Following" widgets cannot be minimized
+- Enh #7793: Improve access rules for create space controller
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------
