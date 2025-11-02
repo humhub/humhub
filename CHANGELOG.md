@@ -38,6 +38,7 @@ HumHub Changelog
 - Enh #7785: Auto text color (black or white) for buttons based on the background color, darkening the success color to match WCAG minimum contrast while keeping white text color
 - Enh #7801: Auto contrast text color for other components, and add `--hh-{bs-color}-contrast` CSS variables (see MIGRATE-BS5.md)
 - Fix #7808: Select fields are missing border radius
+- Enh #7811: Installer enhancements
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------
