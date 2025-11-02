@@ -25,14 +25,21 @@ defined('STDOUT') or define('STDOUT', fopen('php://stdout', 'w'));
 
 require(__DIR__ . '/vendor/yiisoft/yii2/Yii.php');
 
-$config = yii\helpers\ArrayHelper::merge(
+$humhubConfig = [
     require(__DIR__ . '/humhub/config/common.php'),
     require(__DIR__ . '/humhub/config/console.php'),
-    $dynamicConfig,
+];
+
+$commonConfig = [
     require(__DIR__ . '/config/common.php'),
     require(__DIR__ . '/config/console.php'),
-    humhub\helpers\EnvHelper::toConfig($_ENV, \humhub\components\console\Application::class),
-);
+];
+
+$config = humhub\helpers\ConfigHelper::instance()
+    ->setHumhub(...$humhubConfig)
+    ->setDynamic($dynamicConfig)->setCommon(...$commonConfig)
+    ->setEnv(humhub\helpers\EnvHelper::toConfig($_ENV, \humhub\components\console\Application::class))
+    ->toArray();
 
 try {
     $exitCode = (new humhub\components\console\Application($config))->run();
