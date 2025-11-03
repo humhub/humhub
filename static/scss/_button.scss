@@ -59,4 +59,14 @@
     .btn-group-lg > .btn {
         --bs-btn-padding-x: 1.2rem;
     }
+
+    // Outline buttons: use black color for texts if insufficient contrast relatively to background color main, as the background color is transparent
+    @each $color, $value in $theme-colors {
+        .btn-outline-#{$color} {
+            $contrast-ratio: contrast-ratio($background-color-main, $value);
+            @if $contrast-ratio < $min-contrast-ratio {
+                color: var(--text-color-highlight);
+            }
+        }
+    }
 }

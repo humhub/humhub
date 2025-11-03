@@ -41,6 +41,7 @@ HumHub Changelog
 - Enh #7809: New virtual profile field "Group memberships"
 - Fix #7808: Select fields are missing border radius
 - Enh #7810: Apply AutoContrast to Checkbox and Select Choice
+- Enh: Add more auto text colors for Primary and Accent light color
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------

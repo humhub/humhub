@@ -84,29 +84,6 @@
             button {
                 margin: 10px 10px 0 0;
             }
-
-            .btn {
-                padding-left: 16px;
-                padding-right: 16px;
-
-                &:not(.active) {
-                    padding: 3px 14px;
-                }
-
-                &.btn-primary {
-                    border: 1px solid var(--bs-primary) !important;
-
-                    &.active, &:not(.active):hover {
-                        background: var(--bs-primary) !important;
-                        color: var(--hh-primary-contrast) !important;
-                    }
-
-                    &:not(.active) {
-                        background: var(--hh-primary-contrast);
-                        color: var(--bs-primary) !important;
-                    }
-                }
-            }
         }
 
         .directory-filters-footer {
@@ -213,6 +190,7 @@
 
                 &.card-status-featured {
                     background: var(--bs-primary);
+                    color: var(--hh-primary-contrast);
                 }
 
                 &.card-status-new {
