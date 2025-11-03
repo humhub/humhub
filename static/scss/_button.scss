@@ -13,6 +13,7 @@
         --bs-btn-border-radius: 3px;
 
         white-space: nowrap;
+        transition: color 0.3s, background-color 0.3s, border-color 0.3s;
 
         &:not(.btn-icon-only) {
             i.fa {
