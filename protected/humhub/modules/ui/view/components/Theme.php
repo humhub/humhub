@@ -9,6 +9,7 @@
 namespace humhub\modules\ui\view\components;
 
 use humhub\assets\CoreBundleAsset;
+use humhub\modules\live\live\PreventPjaxOnNextClick;
 use humhub\modules\ui\view\helpers\ThemeHelper;
 use Yii;
 use yii\base\Theme as BaseTheme;
@@ -129,8 +130,16 @@ class Theme extends BaseTheme
     {
         $this->publishResources(true);
         $this->variables->flushCache();
+
+        $oldTheme = Yii::$app->view->theme;
         Yii::$app->settings->set('theme', $this->getBasePath());
         Yii::$app->settings->delete('themeParents');
+
+        if ($oldTheme->getBasePath() !== $this->getBasePath()) {
+            Yii::$app->live->send(new PreventPjaxOnNextClick([
+                'reason' => sprintf('Theme changed from "%s" to "%s"', $oldTheme->name, $this->name),
+            ]));
+        }
     }
 
     /**
