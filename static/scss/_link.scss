@@ -8,4 +8,12 @@
             margin-right: 0.4rem;
         }
     }
+
+    @each $color, $value in $theme-colors {
+        .link-#{$color} {
+            @if contrast-ratio($background-color-main, $value) < $min-contrast-ratio {
+                color: var(--text-color-highlight) !important;
+            }
+        }
+    }
 }
