@@ -64,8 +64,7 @@
     // Outline buttons: use black color for texts if insufficient contrast relatively to background color main, as the background color is transparent
     @each $color, $value in $theme-colors {
         .btn-outline-#{$color} {
-            $contrast-ratio: contrast-ratio($background-color-main, $value);
-            @if $contrast-ratio < $min-contrast-ratio {
+            @if contrast-ratio($background-color-main, $value) < $min-contrast-ratio {
                 color: var(--text-color-highlight);
             }
         }

@@ -231,7 +231,11 @@
                     font-size: 16px;
 
                     .fa {
-                        color: var(--bs-accent);
+                        @if contrast-ratio($background-color-main, $accent) < $min-contrast-ratio {
+                            color: var(--hh-text-color-main);
+                        } @else {
+                            color: var(--bs-accent);
+                        }
 
                         &.fa-mobile-phone {
                             font-size: 22px;
