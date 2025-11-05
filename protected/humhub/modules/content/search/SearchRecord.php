@@ -9,6 +9,7 @@
 namespace humhub\modules\content\search;
 
 use humhub\interfaces\MetaSearchResultInterface;
+use humhub\libs\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
@@ -89,12 +90,12 @@ class SearchRecord implements MetaSearchResultInterface
 
         $author = $this->content->createdBy;
         if ($author instanceof User) {
-            $description[] = $author->getDisplayName();
+            $description[] = Html::encode($author->getDisplayName());
         }
 
         $container = $this->content->container;
         if ($container instanceof ContentContainerActiveRecord && !$container->is($author)) {
-            $description[] = $container->getDisplayName();
+            $description[] = Html::encode($container->getDisplayName());
         }
 
         if ($this->content->created_at !== null) {
