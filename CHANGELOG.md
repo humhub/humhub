@@ -8,6 +8,7 @@ HumHub Changelog
 - Fix #7796: Administrator group cannot have group managers
 - Fix #7803: Fix number of pending space members
 - Enh #7806: New live event to prevent PJAX on the next click after theme changing
+- Fix #7814: Fix meta searching
 
 1.17.3 (July 17, 2025)
 ----------------------

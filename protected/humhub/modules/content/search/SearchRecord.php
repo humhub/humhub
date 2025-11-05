@@ -101,7 +101,7 @@ class SearchRecord implements MetaSearchResultInterface
             $description[] = Yii::$app->formatter->asDate($this->content->created_at, 'short');
         }
 
-        return implode(' &middot; ', $description);
+        return implode(' · ', $description);
     }
 
     /**
