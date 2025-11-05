@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.17.4 (Unreleased)
-----------------------
+1.17.4 (November 11, 2025)
+--------------------------
 - Fix #7734: Add nonce for script from OEmbed content
 - Fix #7750: Mail summary may not sent for new users on higher intervals
 - Fix #7796: Administrator group cannot have group managers
