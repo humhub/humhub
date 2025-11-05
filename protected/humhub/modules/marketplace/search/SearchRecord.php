@@ -45,7 +45,7 @@ class SearchRecord implements MetaSearchResultInterface
      */
     public function getTitle(): string
     {
-        return $this->module->name;
+        return Html::encode($this->module->name);
     }
 
     /**
@@ -53,7 +53,7 @@ class SearchRecord implements MetaSearchResultInterface
      */
     public function getDescription(): string
     {
-        return $this->module->description;
+        return Html::encode($this->module->description);
     }
 
     /**
