@@ -153,8 +153,10 @@ abstract class DirectoryFilters extends Widget
                     $isActiveTag = (empty($tagKey) && empty($activeTags))
                         || in_array($tagKey, $activeTags);
 
-                    $inputHtml .= Button::none($tagLabel)
-                        ->options(['class' => 'btn btn-sm btn-primary' . ($isActiveTag ? ' active' : '')])
+                    $inputHtml .= Button::primary($tagLabel)
+                        ->cssClass($isActiveTag ? 'active' : '')
+                        ->sm()
+                        ->outline()
                         ->action('cards.selectTag')
                         ->options([
                             'data-filter' => $filter,

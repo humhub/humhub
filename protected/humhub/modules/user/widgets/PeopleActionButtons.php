@@ -51,7 +51,7 @@ class PeopleActionButtons extends Widget
         return UserFollowButton::widget([
             'user' => $this->user,
             'followOptions' => ['class' => 'btn btn-primary btn-sm'],
-            'unfollowOptions' => ['class' => 'btn btn-primary btn-sm active'],
+            'unfollowOptions' => ['class' => 'btn btn-outline-primary btn-sm'],
         ]);
     }
 

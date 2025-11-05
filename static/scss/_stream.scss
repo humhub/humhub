@@ -135,8 +135,13 @@
 
                 .fa {
                     font-size: 2.39em;
-                    color: var(--bs-accent);
                     margin-top: 5px;
+
+                    @if contrast-ratio($background-color-main, $accent) < $min-contrast-ratio {
+                        color: var(--hh-text-color-main);
+                    } @else {
+                        color: var(--bs-accent);
+                    }
                 }
             }
 
