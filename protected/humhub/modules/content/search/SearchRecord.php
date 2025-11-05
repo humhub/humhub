@@ -9,7 +9,6 @@
 namespace humhub\modules\content\search;
 
 use humhub\interfaces\MetaSearchResultInterface;
-use humhub\libs\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
