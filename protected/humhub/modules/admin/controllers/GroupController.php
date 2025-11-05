@@ -251,6 +251,10 @@ class GroupController extends Controller
         $group = Group::findOne(Yii::$app->request->post('id'));
         $this->checkGroupAccess($group);
 
+        if ($group->is_admin_group) {
+            throw new HttpException(400, 'Cannot edit manager role for admin group');
+        }
+
         $value = Yii::$app->request->post('value');
 
         if ($value === null) {

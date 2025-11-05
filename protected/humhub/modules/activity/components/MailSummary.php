@@ -195,7 +195,15 @@ class MailSummary extends Component
     {
         $lastSent = (int)static::getModule()->settings->user($this->user)->get('mailSummaryLast');
         if (empty($lastSent)) {
-            $lastSent = new Expression('NOW() - INTERVAL 24 HOUR');
+            $hours = match ($this->interval) {
+                static::INTERVAL_DAILY => 24,
+                static::INTERVAL_WEEKLY => 7 * 24,
+                static::INTERVAL_MONTHLY => 30 * 24,
+                static::INTERVAL_HOURLY => 1,
+                default => 1,
+            };
+
+            $lastSent = new Expression('NOW() - INTERVAL ' . $hours . ' HOUR');
         } else {
             $lastSent = date('Y-m-d G:i:s', $lastSent);
         }
@@ -246,7 +254,10 @@ class MailSummary extends Component
     {
         $activityModule = static::getModule();
         $defaultActivitySuppress = $activityModule->settings->get('mailSummaryActivitySuppress', '');
-        $activitySuppress = $activityModule->settings->user($this->user)->get('mailSummaryActivitySuppress', $defaultActivitySuppress);
+        $activitySuppress = $activityModule->settings->user($this->user)->get(
+            'mailSummaryActivitySuppress',
+            $defaultActivitySuppress
+        );
         if (empty($activitySuppress)) {
             return [];
         }
