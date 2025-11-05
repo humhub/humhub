@@ -301,7 +301,7 @@ humhub.module('ui.search', function(module, require, $) {
                 }
 
                 // Prepare and set new content
-                const newProviderContent = $(response.html).find('script').remove().end();
+                const newProviderContent = $(response.html);
                 provider.replaceWith(newProviderContent);
                 const records = newProviderContent.find(that.selectors.providerRecord);
                 if (records.length) {
