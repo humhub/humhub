@@ -9,7 +9,6 @@
 namespace humhub\modules\user\search;
 
 use humhub\interfaces\MetaSearchResultInterface;
-use humhub\libs\Html;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\Image;
@@ -47,7 +46,7 @@ class SearchRecord implements MetaSearchResultInterface
      */
     public function getTitle(): string
     {
-        return Html::encode($this->user->displayName);
+        return $this->user->displayName;
     }
 
     /**
@@ -57,7 +56,7 @@ class SearchRecord implements MetaSearchResultInterface
     {
         $profile = $this->user->profile;
 
-        return $profile instanceof Profile && isset($profile->title) ? Html::encode($profile->title) : '';
+        return $profile instanceof Profile && isset($profile->title) ? $profile->title : '';
     }
 
     /**

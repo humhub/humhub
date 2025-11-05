@@ -23,7 +23,6 @@ interface MetaSearchResultInterface
 
     /**
      * Get title of the Search Record
-     * NOTE: Be sure to encode the result
      *
      * @return string
      */
@@ -31,7 +30,6 @@ interface MetaSearchResultInterface
 
     /**
      * Get description of the Search Record
-     * NOTE: Be sure to encode the result
      *
      * @return string
      */

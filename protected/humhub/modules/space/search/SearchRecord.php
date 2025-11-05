@@ -9,7 +9,6 @@
 namespace humhub\modules\space\search;
 
 use humhub\interfaces\MetaSearchResultInterface;
-use humhub\libs\Html;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image;
 
@@ -44,7 +43,7 @@ class SearchRecord implements MetaSearchResultInterface
      */
     public function getTitle(): string
     {
-        return Html::encode($this->space->getDisplayName());
+        return $this->space->getDisplayName();
     }
 
     /**
@@ -52,7 +51,7 @@ class SearchRecord implements MetaSearchResultInterface
      */
     public function getDescription(): string
     {
-        return Html::encode($this->space->getDisplayNameSub());
+        return $this->space->getDisplayNameSub();
     }
 
     /**

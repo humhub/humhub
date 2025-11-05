@@ -90,19 +90,19 @@ class SearchRecord implements MetaSearchResultInterface
 
         $author = $this->content->createdBy;
         if ($author instanceof User) {
-            $description[] = Html::encode($author->getDisplayName());
+            $description[] = $author->getDisplayName();
         }
 
         $container = $this->content->container;
         if ($container instanceof ContentContainerActiveRecord && !$container->is($author)) {
-            $description[] = Html::encode($container->getDisplayName());
+            $description[] = $container->getDisplayName();
         }
 
         if ($this->content->created_at !== null) {
             $description[] = Yii::$app->formatter->asDate($this->content->created_at, 'short');
         }
 
-        return implode(' &middot; ', $description);
+        return implode(' · ', $description);
     }
 
     /**
