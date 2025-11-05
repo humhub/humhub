@@ -141,6 +141,15 @@ HumHub Changelog
 - Enh #7661: Parent groups
 - Enh #7662: In buttons, add right margin to the icon, so that the space char between the icon and the label is no longer needed (see MIGRATE-BS5.md -> ## Buttons)
 
+1.17.4 (November 11, 2025)
+--------------------------
+- Fix #7734: Add nonce for script from OEmbed content
+- Fix #7750: Mail summary may not sent for new users on higher intervals
+- Fix #7796: Administrator group cannot have group managers
+- Fix #7803: Fix number of pending space members
+- Enh #7806: New live event to prevent PJAX on the next click after theme changing
+- Fix #7814: Fix meta searching
+
 1.17.3 (July 17, 2025)
 ----------------------
 - Fix #7484: Use password type on the installation DB config form

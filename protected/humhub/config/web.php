@@ -76,7 +76,7 @@ $config = [
                     "Referrer-Policy" => "no-referrer-when-downgrade",
                     "X-Permitted-Cross-Domain-Policies" => "master-only",
                     "X-Frame-Options" => "sameorigin",
-                    "Content-Security-Policy" => "default-src *; connect-src  *; font-src 'self'; frame-src https://* http://* *; img-src https://* http://* * data:; object-src 'self'; script-src {{ nonce }} 'self' https://* http://* * 'unsafe-inline' 'report-sample'; style-src * https://* http://* * 'unsafe-inline'; block-all-mixed-content;",
+                    "Content-Security-Policy" => "default-src *; connect-src  *; font-src 'self' https://* http://* *; frame-src https://* http://* *; img-src https://* http://* * data:; object-src 'self'; script-src {{ nonce }} 'self' https://* http://* * 'unsafe-inline' 'report-sample'; style-src * https://* http://* * 'unsafe-inline'; block-all-mixed-content;",
                 ],
                 'csp' => [
                     'nonce' => true,
