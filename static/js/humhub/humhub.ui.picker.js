@@ -353,19 +353,21 @@ humhub.module('ui.picker', function (module, require, $) {
 
         if (!image) {
             return '';
+        } else if (image.indexOf('<') >= 0) {
+            return image;
+        } else if (!image.startsWith('/') && !image.startsWith('http') && !image.startsWith('fa-') && !image.startsWith('#')) {
+            // If image isn't a path (/), URL (http), color (#), or already prefixed, assume it's an icon name and prepend "fa-"
+            image = 'fa-' + image;
+            item.image = image;
         }
 
-        if (image.indexOf('<') >= 0) {
-            return image;
-        }
         if (image.indexOf('fa-') === 0) {
             return string.template(Picker.template.imageIcon, item);
-        }
-        if (image.indexOf('#') === 0) {
+        } else if (image.indexOf('#') === 0) {
             return string.template(Picker.template.imageColor, item);
+        } else {
+            return string.template(Picker.template.imageNode, item);
         }
-
-        return string.template(Picker.template.imageNode, item);
     };
 
 
