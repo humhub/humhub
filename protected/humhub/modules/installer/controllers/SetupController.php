@@ -133,7 +133,7 @@ class SetupController extends Controller
      */
     public function actionCron()
     {
-        if ($this->module->enableAutoSetup && filter_var($_ENV['HUMHUB_DOCKER'] ?? false, FILTER_VALIDATE_BOOLEAN)) {
+        if ($this->module->enableAutoSetup || filter_var($_ENV['HUMHUB_DOCKER'] ?? false, FILTER_VALIDATE_BOOLEAN)) {
             return $this->redirect(['finalize']);
         }
 
