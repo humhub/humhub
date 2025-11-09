@@ -42,7 +42,7 @@ HumHub Changelog
 - Fix #7808: Select fields are missing border radius
 - Enh #7810: Apply AutoContrast to Checkbox and Select Choice
 - Enh #7813: Add more auto text colors for Primary and Accent light color
-- Enh: When saving a URL profile field type, append the Link Prefix (e.g. `https://`)
+- Enh #7822: When saving a URL profile field type, append the Link Prefix (e.g. `https://`)
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------
