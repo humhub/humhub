@@ -232,13 +232,14 @@ class Text extends BaseType
     {
         $internalName = $this->profileField->internal_name;
         $value = $user->profile->$internalName ?? '';
+        $valueFormatted = $encode ? Html::encode($value) : $value;
 
         if (!$raw && (in_array($this->validator, [self::VALIDATOR_EMAIL, self::VALIDATOR_URL]) || !empty($this->linkPrefix))) {
             $url = ($this->validator === self::VALIDATOR_EMAIL) ? 'mailto:' . $value : $value;
-            return Html::a($encode ? Html::encode($value) : $value, $url);
+            return Html::a($valueFormatted, $url);
         }
 
-        return $encode ? Html::encode($value) : $value;
+        return $valueFormatted;
     }
 
 }
