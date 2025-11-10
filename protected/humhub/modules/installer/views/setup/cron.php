@@ -27,9 +27,9 @@ use humhub\helpers\Html;
             <br>
             <kbd style="display: block;line-height:22px">
                 <span>
-                * * * * * <?= Yii::getAlias('@app') ?>/yii queue/run >/dev/null 2>&1
+                * * * * * <?= PHP_BINDIR ?>/php <?= Yii::getAlias('@app') ?>/yii queue/run >/dev/null 2>&1
                 <br>
-                * * * * * <?= Yii::getAlias('@app') ?>/yii cron/run >/dev/null 2>&1
+                * * * * * <?= PHP_BINDIR ?>/php <?= Yii::getAlias('@app') ?>/yii cron/run >/dev/null 2>&1
                 </span>
             </kbd>
         </p>
