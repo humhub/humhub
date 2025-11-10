@@ -165,27 +165,6 @@ class Text extends BaseType
         return parent::save();
     }
 
-    public function beforeProfileSave($value)
-    {
-        return $this->getWithLinkPrefix($value);
-    }
-
-    /**
-     * Prepend Link prefix if not already done
-     */
-    protected function getWithLinkPrefix(?string $value): ?string
-    {
-        if (
-            $this->validator === self::VALIDATOR_URL
-            && $this->linkPrefix
-            && $value
-            && !str_starts_with($value, $this->linkPrefix)
-        ) {
-            return $this->linkPrefix . $value;
-        }
-        return $value;
-    }
-
     /**
      * Returns the Field Rules, to validate users input
      *
@@ -194,10 +173,16 @@ class Text extends BaseType
      */
     public function getFieldRules($rules = [])
     {
+
         if ($this->validator == self::VALIDATOR_EMAIL) {
             $rules[] = [$this->profileField->internal_name, 'email'];
         } elseif ($this->validator == self::VALIDATOR_URL) {
-            $this->profileField->internal_name = $this->getWithLinkPrefix($this->profileField->internal_name);
+            $linkPrefix = $this->linkPrefix;
+            $rules[] = [$this->profileField->internal_name, function($attribute) use ($linkPrefix) {
+                if ($linkPrefix && $this->$attribute && !str_starts_with($this->$attribute, $linkPrefix)) {
+                    $this->$attribute = $linkPrefix . $this->$attribute;
+                }
+            }];
             $rules[] = [$this->profileField->internal_name, 'url'];
         }
 
