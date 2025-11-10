@@ -177,6 +177,13 @@ class Text extends BaseType
         if ($this->validator == self::VALIDATOR_EMAIL) {
             $rules[] = [$this->profileField->internal_name, 'email'];
         } elseif ($this->validator == self::VALIDATOR_URL) {
+            $linkPrefix = $this->linkPrefix;
+            $rules[] = [$this->profileField->internal_name, function($attribute) use ($linkPrefix) {
+                // Prepend the value with the Link Prefix (e.g. https://)
+                if ($linkPrefix && $this->$attribute && !str_starts_with($this->$attribute, $linkPrefix)) {
+                    $this->$attribute = $linkPrefix . $this->$attribute;
+                }
+            }];
             $rules[] = [$this->profileField->internal_name, 'url'];
         }
 
@@ -211,13 +218,14 @@ class Text extends BaseType
     {
         $internalName = $this->profileField->internal_name;
         $value = $user->profile->$internalName ?? '';
+        $valueFormatted = $encode ? Html::encode($value) : $value;
 
         if (!$raw && (in_array($this->validator, [self::VALIDATOR_EMAIL, self::VALIDATOR_URL]) || !empty($this->linkPrefix))) {
-            $linkPrefix = ($this->validator === self::VALIDATOR_EMAIL) ? 'mailto:' : $this->linkPrefix;
-            return Html::a($encode ? Html::encode($value) : $value, $linkPrefix . $value);
+            $url = ($this->validator === self::VALIDATOR_EMAIL) ? 'mailto:' . $value : $value;
+            return Html::a($valueFormatted, $url);
         }
 
-        return $encode ? Html::encode($value) : $value;
+        return $valueFormatted;
     }
 
 }
