@@ -179,6 +179,7 @@ class Text extends BaseType
         } elseif ($this->validator == self::VALIDATOR_URL) {
             $linkPrefix = $this->linkPrefix;
             $rules[] = [$this->profileField->internal_name, function($attribute) use ($linkPrefix) {
+                // Prepend the value with the Link Prefix (e.g. https://)
                 if ($linkPrefix && $this->$attribute && !str_starts_with($this->$attribute, $linkPrefix)) {
                     $this->$attribute = $linkPrefix . $this->$attribute;
                 }
