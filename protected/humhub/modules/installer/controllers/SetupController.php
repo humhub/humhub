@@ -133,7 +133,6 @@ class SetupController extends Controller
 
         return $this->render('cron', [
             'systemUser' => $systemUser,
-
         ]);
     }
 
