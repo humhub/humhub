@@ -98,25 +98,27 @@
         .list-group {
             margin-left: 4px;
             gap: 4px;
-        }
+            flex-direction: row;
+            overflow-x: auto;
 
-        .list-group-item {
-            display: inline-block !important;
-            border-radius: 3px !important;
-            border-left: none !important;
-            margin: 4px 0;
-            margin-bottom: 4px !important;
-        }
-
-        a.list-group-item {
-            &.active {
-                @include mobileListGroupItemActiveOrFocus();
+            .list-group-item {
+                white-space: nowrap;
+                border-radius: 3px !important;
+                border-left: none !important;
+                margin: 4px 0;
+                margin-bottom: 4px !important;
             }
 
-            // Hover effect only on desktop
-            @media (hover: hover) and (pointer: fine) {
-                &:hover, &.active:hover, &.active:focus {
+            a.list-group-item {
+                &.active {
                     @include mobileListGroupItemActiveOrFocus();
+                }
+
+                // Hover effect only on desktop
+                @media (hover: hover) and (pointer: fine) {
+                    &:hover, &.active:hover, &.active:focus {
+                        @include mobileListGroupItemActiveOrFocus();
+                    }
                 }
             }
         }
