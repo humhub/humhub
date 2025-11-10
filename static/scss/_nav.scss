@@ -122,7 +122,7 @@
                 &:hover,
                 &.selected {
                     border-left: 3px solid var(--bs-accent);
-                    color: var(--hh-text-color-contrast) !important;
+                    color: var(--hh-primary-contrast) !important;
                     background-color: darken($primary, 5%) !important;
                 }
 
@@ -191,7 +191,7 @@
             }
 
             &.show {
-                color: var(--hh-text-color-contrast);
+                color: var(--hh-primary-contrast);
                 background-color: var(--bs-primary);
 
                 &::after {

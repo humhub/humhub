@@ -30,7 +30,7 @@
 
 @mixin mobileListGroupItemActiveOrFocus {
     background: var(--bs-primary) !important;
-    color: var(--hh-text-color-contrast) !important;
+    color: var(--hh-primary-contrast) !important;
     border-left: none !important;
 }
 
