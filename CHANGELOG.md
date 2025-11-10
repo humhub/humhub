@@ -42,6 +42,11 @@ HumHub Changelog
 - Fix #7808: Select fields are missing border radius
 - Enh #7810: Apply AutoContrast to Checkbox and Select Choice
 - Enh #7813: Add more auto text colors for Primary and Accent light color
+- Enh #7822: When saving a URL profile field type, append the Link Prefix (e.g. `https://`)
+- Fix #7824: On mobile, display list group items side by side
+- Enh #7828: Improve Installer Cron Page & Selftest
+- Enh #7827: Text Area Profile field type: display line breaks
+- Fix #7826: Comments context menu button is missing margin
 - Fix #7821: Fix FilterPicker UI Issues
 
 1.18.0-beta.4 (September 19, 2025)

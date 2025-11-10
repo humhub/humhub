@@ -1,8 +1,8 @@
 <?php
 return [
-  '<strong>Confirm</strong> Action' => '<strong>Potrdi</strong> Action',
-  '<strong>Latest</strong> updates' => '<strong>Zadnji</strong> updates',
-  '<strong>Mail</strong> summary' => '<strong>Mail</strong> summary',
+  '<strong>Confirm</strong> Action' => '<strong>Potrdi</strong> postopek',
+  '<strong>Latest</strong> updates' => '<strong>Zadnja</strong> posodobitev',
+  '<strong>Mail</strong> summary' => '<strong>E-Mail</strong> povzetek',
   'Actions' => 'Dejanja',
   'Add:' => 'Dodaj:',
   'Administration' => 'Administracija',
