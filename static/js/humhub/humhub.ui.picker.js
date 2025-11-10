@@ -353,7 +353,9 @@ humhub.module('ui.picker', function (module, require, $) {
 
         if (!image) {
             return '';
-        } else if (image.indexOf('<') >= 0) {
+        }
+
+        if (image.indexOf('<') >= 0) {
             return image;
         } else if (!image.startsWith('/') && !image.startsWith('http') && !image.startsWith('fa-') && !image.startsWith('#')) {
             // If image isn't a path (/), URL (http), color (#), or already prefixed, assume it's an icon name and prepend "fa-"
