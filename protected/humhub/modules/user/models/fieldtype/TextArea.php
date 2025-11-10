@@ -75,4 +75,10 @@ class TextArea extends BaseType
         ], $options));
     }
 
+    public function getUserValue(User $user, bool $raw = true, bool $encode = true): ?string
+    {
+        $value = parent::getUserValue($user, $raw, $encode);
+        return $encode ? nl2br($value) : $value;
+    }
+
 }

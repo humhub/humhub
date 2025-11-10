@@ -45,6 +45,8 @@ HumHub Changelog
 - Enh #7822: When saving a URL profile field type, append the Link Prefix (e.g. `https://`)
 - Fix #7824: On mobile, display list group items side by side
 - Enh #7828: Improve Installer Cron Page & Selftest
+- Enh #7827: Text Area Profile field type: display line breaks
+- Fix #7826: Comments context menu button is missing margin
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------

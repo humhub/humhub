@@ -22,7 +22,7 @@
 
             .nav-pills.preferences {
                 display: none;
-                right: 0;
+                right: 6px;
             }
 
             &.single-comment {
@@ -160,7 +160,7 @@
     div.comment {
         > div.d-flex:first-of-type .nav-pills.preferences {
             display: none;
-            top: 0;
+            top: 6px;
         }
     }
 
