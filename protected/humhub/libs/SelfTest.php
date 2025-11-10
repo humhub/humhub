@@ -660,72 +660,75 @@ class SelfTest
         $tablesWithNotRecommendedCollations = [];
         $tableEngines = [];
         $tablesWithNotRecommendedEngines = [];
-        foreach ($dbTables as $dbTable) {
-            if (!in_array($dbTable['Collation'], $tableCollations)) {
-                $tableCollations[ArrayHelper::getValue($dbTable, 'Name')] = ArrayHelper::getValue($dbTable, 'Collation');
-            }
-            if (!is_string($dbTable['Collation']) || stripos($dbTable['Collation'], $recommendedCollation) !== 0) {
-                $tablesWithNotRecommendedCollations[] = $dbTable['Name'];
-            }
-            if (!in_array($dbTable['Engine'], $tableEngines)) {
-                $tableEngines[] = $dbTable['Engine'];
-            }
-            if (!is_string($dbTable['Engine']) || stripos($dbTable['Engine'], $recommendedEngine) !== 0) {
-                $tablesWithNotRecommendedEngines[] = $dbTable['Name'];
-            }
-        }
 
-        // Checks Table Collations
-        $title = $driver['title'] . ' - ' . Yii::t('AdminModule.information', 'Table collations') . ' - ' . implode(', ', $tableCollations);
-
-        if (empty($tablesWithNotRecommendedCollations) && count($tableCollations) == 1) {
-            $checks[] = [
-                'title' => $title,
-                'state' => 'OK',
-            ];
-        } else {
-            $hint = [];
-
-            if (count($tableCollations) > 1) {
-                $hint[] = Yii::t('AdminModule.information', 'Different table collations in the tables: {tables}', [
-                    'tables' => http_build_query($tableCollations, '', ', '),
-                ]);
+        if (Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
+            foreach ($dbTables as $dbTable) {
+                if (!in_array($dbTable['Collation'], $tableCollations)) {
+                    $tableCollations[ArrayHelper::getValue($dbTable, 'Name')] = ArrayHelper::getValue($dbTable, 'Collation');
+                }
+                if (!is_string($dbTable['Collation']) || stripos($dbTable['Collation'], $recommendedCollation) !== 0) {
+                    $tablesWithNotRecommendedCollations[] = $dbTable['Name'];
+                }
+                if (!in_array($dbTable['Engine'], $tableEngines)) {
+                    $tableEngines[] = $dbTable['Engine'];
+                }
+                if (!is_string($dbTable['Engine']) || stripos($dbTable['Engine'], $recommendedEngine) !== 0) {
+                    $tablesWithNotRecommendedEngines[] = $dbTable['Name'];
+                }
             }
 
-            if (!empty($tablesWithNotRecommendedCollations)) {
-                $hint[] = Yii::t('AdminModule.information', 'Recommended collation is {collation} for the tables: {tables}', [
-                    'collation' => $recommendedCollation,
-                    'tables' => implode(', ', $tablesWithNotRecommendedCollations),
-                ]);
+            // Checks Table Collations
+            $title = $driver['title'] . ' - ' . Yii::t('AdminModule.information', 'Table collations') . ' - ' . implode(', ', $tableCollations);
+
+            if (empty($tablesWithNotRecommendedCollations) && count($tableCollations) == 1) {
+                $checks[] = [
+                    'title' => $title,
+                    'state' => 'OK',
+                ];
+            } else {
+                $hint = [];
+
+                if (count($tableCollations) > 1) {
+                    $hint[] = Yii::t('AdminModule.information', 'Different table collations in the tables: {tables}', [
+                        'tables' => http_build_query($tableCollations, '', ', '),
+                    ]);
+                }
+
+                if (!empty($tablesWithNotRecommendedCollations)) {
+                    $hint[] = Yii::t('AdminModule.information', 'Recommended collation is {collation} for the tables: {tables}', [
+                        'collation' => $recommendedCollation,
+                        'tables' => implode(', ', $tablesWithNotRecommendedCollations),
+                    ]);
+                }
+
+                $checks[] = [
+                    'title' => $title,
+                    'state' => 'WARNING',
+                    'hint' => implode('. ', $hint),
+                ];
             }
 
-            $checks[] = [
-                'title' => $title,
-                'state' => 'WARNING',
-                'hint' => implode('. ', $hint),
-            ];
-        }
+            // Checks Table Engines
+            $title = $driver['title'] . ' - ' . Yii::t('AdminModule.information', 'Table engines') . ' - ' . implode(', ', $tableEngines);
 
-        // Checks Table Engines
-        $title = $driver['title'] . ' - ' . Yii::t('AdminModule.information', 'Table engines') . ' - ' . implode(', ', $tableEngines);
-
-        if (empty($tablesWithNotRecommendedEngines)) {
-            $checks[] = [
-                'title' => $title,
-                'state' => 'OK',
-            ];
-        } else {
-            if (count($tableEngines) > 1) {
-                $title .= ' - ' . Yii::t('AdminModule.information', 'Varying table engines are not supported.');
+            if (empty($tablesWithNotRecommendedEngines)) {
+                $checks[] = [
+                    'title' => $title,
+                    'state' => 'OK',
+                ];
+            } else {
+                if (count($tableEngines) > 1) {
+                    $title .= ' - ' . Yii::t('AdminModule.information', 'Varying table engines are not supported.');
+                }
+                $checks[] = [
+                    'title' => $title,
+                    'state' => count($tableEngines) > 1 ? 'ERROR' : 'WARNING',
+                    'hint' => Yii::t('AdminModule.information', 'Recommended engine is {engine} for the tables: {tables}', [
+                        'engine' => $recommendedEngine,
+                        'tables' => implode(', ', $tablesWithNotRecommendedEngines),
+                    ]),
+                ];
             }
-            $checks[] = [
-                'title' => $title,
-                'state' => count($tableEngines) > 1 ? 'ERROR' : 'WARNING',
-                'hint' => Yii::t('AdminModule.information', 'Recommended engine is {engine} for the tables: {tables}', [
-                    'engine' => $recommendedEngine,
-                    'tables' => implode(', ', $tablesWithNotRecommendedEngines),
-                ]),
-            ];
         }
 
         if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
