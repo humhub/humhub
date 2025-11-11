@@ -47,6 +47,7 @@ HumHub Changelog
 - Enh #7828: Improve Installer Cron Page & Selftest
 - Enh #7827: Text Area Profile field type: display line breaks
 - Fix #7826: Comments context menu button is missing margin
+- Fix #7821: Fix FilterPicker UI Issues
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------
