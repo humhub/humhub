@@ -8,7 +8,8 @@
 
 namespace humhub\modules\installer\forms;
 
-use humhub\modules\installer\Module;
+use humhub\helpers\ArrayHelper;
+use humhub\helpers\ConfigHelper;
 use Yii;
 use yii\base\Model;
 
@@ -48,6 +49,8 @@ class DatabaseForm extends Model
      * @var string Create database if it doesn't exist
      */
     public $create;
+
+    private $fixedAttributes = [];
 
     /**
      * @inheritdoc
@@ -97,32 +100,37 @@ class DatabaseForm extends Model
         ];
     }
 
-    public function autoLoad(): bool
+    public function autoLoad(): void
     {
-        /** @var Module $module */
-        $module = Yii::$app->getModule('installer');
+        $dbConfig = ConfigHelper::instance()->get('components.db', ConfigHelper::SET_COMMON | ConfigHelper::SET_ENV);
 
-        if (!$module->enableAutoSetup) {
-            return false;
+        if (!empty($username = ArrayHelper::getValue($dbConfig, 'username'))) {
+            $this->username = $username;
+            $this->fixedAttributes[] = 'username';
         }
 
-        $this->username = Yii::$app->db->username;
-        $this->password = Yii::$app->db->password;
-        $this->create = 1;
+        if (!empty($password = ArrayHelper::getValue($dbConfig, 'password'))) {
+            $this->password = $password;
+            $this->fixedAttributes[] = 'password';
+        }
 
-        $connectionString = Yii::$app->db->dsn;
+        $dsn = ArrayHelper::getValue($dbConfig, 'dsn', '');
 
-        if (preg_match('/host=([^;]+)/', $connectionString ?: '', $matches)) {
+        if (preg_match('/host=([^;]+)/', $dsn ?: '', $matches)) {
             $this->hostname = $matches[1];
-        }
-        if (preg_match('/port=([^;]+)/', $connectionString ?: '', $matches)) {
-            $this->port = $matches[1];
-        }
-        if (preg_match('/dbname=([^;]+)/', $connectionString ?: '', $matches)) {
-            $this->database = $matches[1];
+            $this->fixedAttributes[] = 'hostname';
         }
 
-        return true;
+        if (preg_match('/port=([^;]+)/', $dsn ?: '', $matches)) {
+            $this->port = $matches[1];
+            $this->fixedAttributes[] = 'port';
+        }
+
+        if (preg_match('/dbname=([^;]+)/', $dsn ?: '', $matches)) {
+            $this->database = $matches[1];
+            $this->create = true;
+            $this->fixedAttributes[] = 'database';
+        }
     }
 
     private function getDsn(bool $includeDatabaseName = true): string
@@ -147,6 +155,36 @@ class DatabaseForm extends Model
             'password' => $this->password,
             'charset' => 'utf8',
         ];
+    }
+
+    public function isFixed($attribute): bool
+    {
+        return in_array($attribute, $this->fixedAttributes);
+    }
+
+    public function getIncompleteFixedConfig(): array
+    {
+        $requiredAttributes = array_values(array_diff([
+            'hostname',
+            'database',
+            'username',
+        ], $this->fixedAttributes));
+
+        $optionalAttributes = array_filter(array_values(array_diff([
+            'port',
+            'password',
+        ], $this->fixedAttributes)), fn($attribute) => !empty($this->{$attribute}));
+
+        return ArrayHelper::merge(
+            $this->getAttributes(array_intersect(
+                    ['username', 'password'],
+                    ArrayHelper::merge($requiredAttributes, $optionalAttributes))
+            ),
+            !empty(array_intersect(
+                ['hostname', 'port', 'database'],
+                ArrayHelper::merge($requiredAttributes, $optionalAttributes))
+            ) ? ['dsn' => $this->getDsn()] : []
+        );
     }
 
 }

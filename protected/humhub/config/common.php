@@ -8,6 +8,7 @@
 
 use humhub\components\i18n\PhpMessageSource;
 
+// TODO: Remove this line, should be already handled by BootstrapService
 Yii::setAlias('@humhub', $_ENV['HUMHUB_ALIASES__HUMHUB'] ?? realpath(__DIR__ . '/../'));
 
 // Workaround: PHP 7.3 compatible ZF2 ArrayObject class

@@ -19,15 +19,15 @@ use humhub\widgets\form\ActiveForm;
 
         <?php $form = ActiveForm::begin(); ?>
 
-        <?= $form->field($model, 'hostname') ?>
+        <?= $form->field($model, 'hostname')->textInput(['readonly' => $model->isFixed('hostname')]) ?>
         <hr/>
-        <?= $form->field($model, 'port') ?>
+        <?= $form->field($model, 'port')->textInput(['readonly' => $model->isFixed('port')]) ?>
         <hr/>
-        <?= $form->field($model, 'username') ?>
+        <?= $form->field($model, 'username')->textInput(['readonly' => $model->isFixed('username')]) ?>
         <hr/>
-        <?= $form->field($model, 'password')->passwordInput() ?>
+        <?= $form->field($model, 'password')->passwordInput(['readonly' => $model->isFixed('password')]) ?>
         <hr/>
-        <?= $form->field($model, 'database') ?>
+        <?= $form->field($model, 'database')->textInput(['readonly' => $model->isFixed('database')]) ?>
         <?= $form->field($model, 'create')->checkbox() ?>
 
         <?php if ($errorMessage): ?>

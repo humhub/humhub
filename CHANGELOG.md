@@ -40,6 +40,7 @@ HumHub Changelog
 - Enh #7801: Auto contrast text color for other components, and add `--hh-{bs-color}-contrast` CSS variables (see MIGRATE-BS5.md)
 - Enh #7809: New virtual profile field "Group memberships"
 - Fix #7808: Select fields are missing border radius
+- Enh #7811: Installer enhancements
 - Enh #7810: Apply AutoContrast to Checkbox and Select Choice
 - Enh #7813: Add more auto text colors for Primary and Accent light color
 - Enh #7822: When saving a URL profile field type, append the Link Prefix (e.g. `https://`)
