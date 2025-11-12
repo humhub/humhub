@@ -92,7 +92,7 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
 
     private function isDatabaseConfigured(): bool
     {
-        return (!empty(Yii::$app->db->dsn) && !empty(Yii::$app->db->username));
+        return !empty(Yii::$app->db->dsn) && !empty(Yii::$app->db->username);
     }
 
     private function isDatabaseInstalled(): bool

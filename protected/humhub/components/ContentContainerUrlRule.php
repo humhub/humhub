@@ -9,9 +9,10 @@
 namespace humhub\components;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use Yii;
+use yii\base\BaseObject;
 use yii\web\UrlRule;
 use yii\web\UrlRuleInterface;
-use yii\base\BaseObject;
 
 /**
  * Content Container URL Rule
@@ -184,7 +185,11 @@ abstract class ContentContainerUrlRule extends BaseObject implements UrlRuleInte
             return false;
         }
 
-        $contentContainer = static::getContentContainerByUrl($parts[1]);
+        if (!Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
+            return false;
+        }
+
+            $contentContainer = static::getContentContainerByUrl($parts[1]);
         if (!$contentContainer) {
             return false;
         }
