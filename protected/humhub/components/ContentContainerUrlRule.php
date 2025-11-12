@@ -189,7 +189,7 @@ abstract class ContentContainerUrlRule extends BaseObject implements UrlRuleInte
             return false;
         }
 
-            $contentContainer = static::getContentContainerByUrl($parts[1]);
+        $contentContainer = static::getContentContainerByUrl($parts[1]);
         if (!$contentContainer) {
             return false;
         }

@@ -24,7 +24,7 @@ final class BootstrapService
         }
     }
 
-    public function setPaths(?string $config = null, ?string $vendor = null, ?string $humhub = null) : void
+    public function setPaths(?string $config = null, ?string $vendor = null, ?string $humhub = null): void
     {
         $this->configPath = $config ?: $this->configPath;
         $this->vendorPath = $vendor ?: $this->vendorPath;
