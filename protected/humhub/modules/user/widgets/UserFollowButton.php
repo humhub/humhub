@@ -45,7 +45,7 @@ class UserFollowButton extends Widget
     /**
      * @var array options for unfollow button
      */
-    public $unfollowOptions = ['class' => 'btn btn-primary active'];
+    public $unfollowOptions = ['class' => 'btn btn-outline-primary'];
 
     /**
      * @inheritdoc

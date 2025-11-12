@@ -137,7 +137,17 @@ class SetupController extends Controller
             return $this->redirect(['finalize']);
         }
 
-        return $this->render('cron', []);
+        $systemUser = get_current_user();
+        if (function_exists('posix_getpwuid') && function_exists('posix_geteuid')) {
+            $userInfo = posix_getpwuid(posix_geteuid());
+            if (!empty($userInfo['name'])) {
+                $systemUser = $userInfo['name'];
+            }
+        }
+
+        return $this->render('cron', [
+            'systemUser' => $systemUser,
+        ]);
     }
 
     /**

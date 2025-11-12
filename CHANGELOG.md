@@ -35,10 +35,20 @@ HumHub Changelog
 - Fix #7784: PHP 8.4 compatibility when compiling SCSS, move all Sass mixins to the `_mixins.scss` file and move the `@if not $prev-filename` condition from `build.scss` to the related file
 - Fix #7779: Improved value formatting in `SpreadsheetExport``
 - Fix #7789: On the profile page, the "Followers" and "Following" widgets cannot be minimized
+- Enh #7793: Improve access rules for create space controller
 - Enh #7785: Auto text color (black or white) for buttons based on the background color, darkening the success color to match WCAG minimum contrast while keeping white text color
 - Enh #7801: Auto contrast text color for other components, and add `--hh-{bs-color}-contrast` CSS variables (see MIGRATE-BS5.md)
+- Enh #7809: New virtual profile field "Group memberships"
 - Fix #7808: Select fields are missing border radius
 - Enh #7811: Installer enhancements
+- Enh #7810: Apply AutoContrast to Checkbox and Select Choice
+- Enh #7813: Add more auto text colors for Primary and Accent light color
+- Enh #7822: When saving a URL profile field type, append the Link Prefix (e.g. `https://`)
+- Fix #7824: On mobile, display list group items side by side
+- Enh #7828: Improve Installer Cron Page & Selftest
+- Enh #7827: Text Area Profile field type: display line breaks
+- Fix #7826: Comments context menu button is missing margin
+- Fix #7821: Fix FilterPicker UI Issues
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------
@@ -137,6 +147,15 @@ HumHub Changelog
 - Fix #7658: Fix loader on attach image to RichText field
 - Enh #7661: Parent groups
 - Enh #7662: In buttons, add right margin to the icon, so that the space char between the icon and the label is no longer needed (see MIGRATE-BS5.md -> ## Buttons)
+
+1.17.4 (November 11, 2025)
+--------------------------
+- Fix #7734: Add nonce for script from OEmbed content
+- Fix #7750: Mail summary may not sent for new users on higher intervals
+- Fix #7796: Administrator group cannot have group managers
+- Fix #7803: Fix number of pending space members
+- Enh #7806: New live event to prevent PJAX on the next click after theme changing
+- Fix #7814: Fix meta searching
 
 1.17.3 (July 17, 2025)
 ----------------------

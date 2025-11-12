@@ -540,6 +540,22 @@ class SelfTest
             ];
         }
 
+        // Check Uploads - File Directory
+        $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Uploads - File');
+        $path = realpath(Yii::getAlias('@webroot/uploads/file'));
+        if (is_writable($path)) {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'OK',
+            ];
+        } else {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'ERROR',
+                'hint' => Yii::t('AdminModule.information', 'Make {filePath} writable for the Webserver/PHP!', ['filePath' => $path]),
+            ];
+        }
+
         // Check Profile Image Directory
         $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Profile Image');
         $path = realpath(Yii::getAlias('@webroot/uploads/profile_image'));
