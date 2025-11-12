@@ -185,33 +185,32 @@ abstract class ContentContainerUrlRule extends BaseObject implements UrlRuleInte
             return false;
         }
 
-
-        if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
-            $contentContainer = static::getContentContainerByUrl($parts[1]);
-            if (!$contentContainer) {
-                return false;
-            }
-
-            if (!isset($parts[2]) || $parts[2] == '') {
-                $parts[2] = $this->defaultRoute;
-            }
-
-            $params = $request->get();
-            $params['cguid'] = $contentContainer->guid;
-
-            foreach ($manager->rules as $rule) {
-                if ($result = $this->parseRequestByClass($rule, $contentContainer, $manager, $parts[2], $params)) {
-                    return $result;
-                }
-                if ($result = $this->parseRequestByRule($rule, $parts[2], $params)) {
-                    return $result;
-                }
-            }
-
-            return [$parts[2], $params];
-        } else {
+        if (!Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
             return false;
         }
+
+            $contentContainer = static::getContentContainerByUrl($parts[1]);
+        if (!$contentContainer) {
+            return false;
+        }
+
+        if (!isset($parts[2]) || $parts[2] == '') {
+            $parts[2] = $this->defaultRoute;
+        }
+
+        $params = $request->get();
+        $params['cguid'] = $contentContainer->guid;
+
+        foreach ($manager->rules as $rule) {
+            if ($result = $this->parseRequestByClass($rule, $contentContainer, $manager, $parts[2], $params)) {
+                return $result;
+            }
+            if ($result = $this->parseRequestByRule($rule, $parts[2], $params)) {
+                return $result;
+            }
+        }
+
+        return [$parts[2], $params];
     }
 
     /**
