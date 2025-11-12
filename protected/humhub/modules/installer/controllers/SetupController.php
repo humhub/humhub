@@ -113,7 +113,7 @@ class SetupController extends Controller
 
         return $this->render('database', [
             'model' => $model,
-            'errorMessage' => $errorMessage
+            'errorMessage' => $errorMessage,
         ]);
     }
 
@@ -156,10 +156,10 @@ class SetupController extends Controller
     public function actionPrettyUrls()
     {
         if (
-            $this->module->enableAutoSetup ||
-            ConfigHelper::instance()->get(
+            $this->module->enableAutoSetup
+            || ConfigHelper::instance()->get(
                 'components.urlManager.enablePrettyUrl',
-                ConfigHelper::SET_COMMON | ConfigHelper::SET_ENV
+                ConfigHelper::SET_COMMON | ConfigHelper::SET_ENV,
             )
         ) {
             return $this->redirect(['finalize']);

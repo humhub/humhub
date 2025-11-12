@@ -9,10 +9,10 @@ class ConfigHelper implements StaticInstanceInterface
 {
     use StaticInstanceTrait;
 
-    const SET_HUMHUB  = 1 << 0; // 1
-    const SET_DYNAMIC = 1 << 1; // 2
-    const SET_COMMON  = 1 << 2; // 4
-    const SET_ENV     = 1 << 3; // 8
+    public const SET_HUMHUB  = 1 << 0; // 1
+    public const SET_DYNAMIC = 1 << 1; // 2
+    public const SET_COMMON  = 1 << 2; // 4
+    public const SET_ENV     = 1 << 3; // 8
 
     private $humhub = [];
     private $dynamic = [];

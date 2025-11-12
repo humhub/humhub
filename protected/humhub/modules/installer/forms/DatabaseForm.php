@@ -176,14 +176,17 @@ class DatabaseForm extends Model
         ], $this->fixedAttributes)), fn($attribute) => !empty($this->{$attribute}));
 
         return ArrayHelper::merge(
-            $this->getAttributes(array_intersect(
+            $this->getAttributes(
+                array_intersect(
                     ['username', 'password'],
-                    ArrayHelper::merge($requiredAttributes, $optionalAttributes))
+                    ArrayHelper::merge($requiredAttributes, $optionalAttributes),
+                ),
             ),
             !empty(array_intersect(
                 ['hostname', 'port', 'database'],
-                ArrayHelper::merge($requiredAttributes, $optionalAttributes))
-            ) ? ['dsn' => $this->getDsn()] : []
+                ArrayHelper::merge($requiredAttributes, $optionalAttributes),
+            )
+            ) ? ['dsn' => $this->getDsn()] : [],
         );
     }
 
