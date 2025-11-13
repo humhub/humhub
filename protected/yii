@@ -21,7 +21,7 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../', '.env');
 $dotenv->safeLoad();
 
 // Load Bootstrap Helper
-$loader->addClassMap(['humhub\\services\\BootstrapService' => $protectedPath . '/services/BootstrapService.php']);
+$loader->addClassMap(['humhub\\services\\BootstrapService' => $protectedPath . '/humhub/services/BootstrapService.php']);
 
 $bootstrap = new BootstrapService();
 $bootstrap->runConsole();
