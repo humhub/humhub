@@ -49,6 +49,7 @@ HumHub Changelog
 - Enh #7827: Text Area Profile field type: display line breaks
 - Fix #7826: Comments context menu button is missing margin
 - Fix #7821: Fix FilterPicker UI Issues
+- Enh #7831: Mercure push driver
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------
