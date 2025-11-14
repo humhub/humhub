@@ -32,7 +32,7 @@ class MercurePushDriver extends BaseDriver
 {
     public string $hubUrl = 'https://localhost/.well-known/mercure';
     public string $jwtKey = '';
-    public string $topicPrefix = '/humhub/live/';
+    public string $topic = '/humhub/live/';
     public bool $verifySsl = true;
 
     protected ?Hub $hub = null;
@@ -56,29 +56,14 @@ class MercurePushDriver extends BaseDriver
 
         $jwFactory = new LcobucciFactory($this->jwtKey);
         $provider = new FactoryTokenProvider($jwFactory, publish: ['*']);
-        $client = new CurlHttpClient([
-            'verify_peer' => $this->verifySsl,
-            'verify_host' => $this->verifySsl,
-        ]);
+        $client = $this->verifySsl
+            ? null
+            : new CurlHttpClient([
+                'verify_peer' => false,
+                'verify_host' => false,
+            ]);
 
         $this->hub = new Hub($this->hubUrl, $provider, null, null, $client);
-    }
-
-    protected function getTopics(): array
-    {
-        if (Yii::$app->user->isGuest) {
-            return [];
-        }
-
-        $topics = [];
-        $legitimation = Yii::$app->getModule('live')->getLegitimateContentContainerIds(Yii::$app->user->getIdentity());
-        foreach ($legitimation as $ids) {
-            foreach ($ids as $id) {
-                $topics[] = $this->topicPrefix . $id;
-            }
-        }
-
-        return $topics;
     }
 
     /**
@@ -86,10 +71,8 @@ class MercurePushDriver extends BaseDriver
      */
     public function send(LiveEvent $liveEvent)
     {
-        foreach ($this->getTopics() as $topic) {
-            $update = new Update($topic, json_encode($liveEvent->getData()));
-            $this->hub->publish($update);
-        }
+        $update = new Update($this->topic, json_encode($liveEvent->getData()));
+        $this->hub->publish($update);
     }
 
     /**
@@ -102,8 +85,7 @@ class MercurePushDriver extends BaseDriver
             'options' => [
                 'url' => $this->hubUrl,
                 'jwt' => $this->generateJwtAuthorization(),
-                'topicPrefix' => $this->topicPrefix,
-                'topics' => $this->getTopics(),
+                'topic' => $this->topic,
             ],
         ];
     }
@@ -124,7 +106,7 @@ class MercurePushDriver extends BaseDriver
 
         $payload = [
             'mercure' => [
-                'subscribe' => $this->getTopics(),
+                'subscribe' => $this->topic,
             ],
             'sub' => $user->id,
             'iss' => Url::to('', true),
