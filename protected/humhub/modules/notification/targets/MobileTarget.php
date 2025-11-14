@@ -72,4 +72,9 @@ class MobileTarget extends BaseTarget
 
         return $this->provider->isActive($user);
     }
+
+    public function updateUnseenNotificationCount(User $user, int $count): void
+    {
+        // ...
+    }
 }

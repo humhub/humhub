@@ -25,4 +25,7 @@ interface MobileTargetProvider
      * @return bool
      */
     public function isActive(?User $user = null);
+
+
+    public function updateUnseenNotificationCount(User $user, int $count);
 }
