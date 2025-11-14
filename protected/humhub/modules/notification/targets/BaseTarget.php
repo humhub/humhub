@@ -271,4 +271,7 @@ abstract class BaseTarget extends BaseObject
 
         return ($enabled === null) ? $this->defaultSetting : boolval($enabled);
     }
+
+    public function updateUnseenNotificationCount(User $user, int $count): void {
+    }
 }

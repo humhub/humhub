@@ -88,6 +88,12 @@ class Notification extends ActiveRecord
         return 'notification';
     }
 
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        Yii::$app->notification->updateUnseenNotificationCount($this->user);
+    }
+
     /**
      * @inheritdoc
      */
