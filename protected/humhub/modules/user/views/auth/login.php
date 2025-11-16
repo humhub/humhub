@@ -22,7 +22,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 
 ?>
 
-<div id="user-auth-login" class="container">
+<div id="user-auth-login" class="container<?= AuthChoice::getClientsCount() > 1 ? ' has-multiple-auth-buttons' : '' ?>">
     <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br>
 
@@ -120,7 +120,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 
     <?php endif; ?>
 
-    <?= LanguageChooser::widget(['vertical' => true]) ?>
+    <?= LanguageChooser::widget(['vertical' => true, 'hideLabel' => true]) ?>
 </div>
 
 <script <?= Html::nonce() ?>>
