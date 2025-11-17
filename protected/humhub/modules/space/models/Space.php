@@ -9,6 +9,7 @@
 namespace humhub\modules\space\models;
 
 use humhub\components\behaviors\GUID;
+use humhub\libs\Utf8Trim\Utf8Trim;
 use humhub\libs\UUIDValidator;
 use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -119,6 +120,7 @@ class Space extends ContentContainerActiveRecord
     {
         $rules = [
             [['join_policy', 'visibility', 'status', 'sort_order', 'auto_add_new_members', 'default_content_visibility'], 'integer'],
+            [['name'], Utf8Trim::class],
             [['name'], 'required'],
             [['name'], 'string', 'max' => 45, 'min' => 2],
             [['description', 'about', 'color'], 'string'],
