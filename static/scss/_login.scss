@@ -50,8 +50,12 @@
         }
 
         #user-auth-login {
-            max-width: 500px;
             text-align: center;
+            max-width: 330px;
+
+            &.has-multiple-auth-buttons {
+                max-width: 500px;
+            }
 
             .panel {
                 text-align: left;

@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.18.0-beta.6 (Unreleased)
+---------------------------------
+- Enh #7834: Login Screen: revert container width to 300px when less than 2 SSO buttons and remove Language Chooser label
+
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------
 - Enh #7719: Make Add/Remove Group Member optional for group managers
