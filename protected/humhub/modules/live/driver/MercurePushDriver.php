@@ -18,6 +18,7 @@ use Symfony\Component\Mercure\Hub;
 use Symfony\Component\Mercure\Jwt\FactoryTokenProvider;
 use Symfony\Component\Mercure\Jwt\LcobucciFactory;
 use Symfony\Component\Mercure\Update;
+use Throwable;
 use yii\base\InvalidConfigException;
 use yii\helpers\Url;
 use Yii;
@@ -95,6 +96,7 @@ class MercurePushDriver extends BaseDriver
      * the contentContainer id legitmation.
      *
      * @return string the JWT string
+     * @throws Throwable
      */
     protected function generateJwtAuthorization()
     {
@@ -103,16 +105,13 @@ class MercurePushDriver extends BaseDriver
         }
 
         $user = Yii::$app->user->getIdentity();
-
-        $payload = [
-            'mercure' => [
-                'subscribe' => $this->topic,
-            ],
-            'sub' => $user->id,
-            'iss' => Url::to('', true),
+        $token = [
+            'iss' => Url::to(['/'], true),
+            'sub' => Yii::$app->user->id,
+            'legitmation' => Yii::$app->getModule('live')->getLegitimateContentContainerIds($user),
+            'mercure' => $this->topic,
         ];
-
-        return JWT::encode($payload, $this->jwtKey, 'HS256');
+        return JWT::encode($token, $this->jwtKey, 'HS256');
     }
 
     /**
