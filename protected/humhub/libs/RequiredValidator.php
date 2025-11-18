@@ -2,6 +2,9 @@
 
 namespace humhub\libs;
 
+use yii\helpers\Json;
+use yii\validators\ValidationAsset;
+
 class RequiredValidator extends \yii\validators\RequiredValidator
 {
     public function isEmpty($value)
@@ -11,5 +14,13 @@ class RequiredValidator extends \yii\validators\RequiredValidator
         }
 
         return parent::isEmpty($value);
+    }
+
+    public function clientValidateAttribute($model, $attribute, $view)
+    {
+        ValidationAsset::register($view);
+        $options = $this->getClientOptions($model, $attribute);
+
+        return 'humhub.require(\'ui.form.elements\').required(value, messages, ' . Json::htmlEncode($options) . ');';
     }
 }

@@ -3,6 +3,7 @@
 namespace humhub\libs;
 
 use yii\helpers\Json;
+use yii\validators\ValidationAsset;
 
 class TrimValidator extends \yii\validators\TrimValidator
 {
@@ -25,6 +26,7 @@ class TrimValidator extends \yii\validators\TrimValidator
             return null;
         }
 
+        ValidationAsset::register($view);
         $options = $this->getClientOptions($model, $attribute);
 
         return 'value = humhub.require(\'ui.form.elements\').trim($form, attribute, ' . Json::htmlEncode($options) . ', value);';

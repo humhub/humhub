@@ -138,8 +138,12 @@ humhub.module('ui.form.elements', function (module, require, $) {
 
             return value;
         },
-        required: function() {
+        required: function(value, messages, options) {
+            if (!value.replace(/[\p{Z}\s]+/gu, '').length) {
+                value = '';
+            }
 
+            return yii.validation.required(value, messages, options)
         }
     }
 
