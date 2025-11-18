@@ -1,14 +1,12 @@
 <?php
 
-namespace humhub\components\validators;
+namespace humhub\libs;
 
 class RequiredValidator extends \yii\validators\RequiredValidator
 {
-    public $emptyPattern = '/[\s\p{Cc}\p{Cf}\p{Cs}\p{Cn}]+/u';
-
     public function isEmpty($value)
     {
-        if (empty(preg_replace($this->emptyPattern, '', $value))) {
+        if (empty(preg_replace('/[\p{Z}\s]+/u', '', $value))) {
             return true;
         }
 

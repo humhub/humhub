@@ -306,7 +306,8 @@ $config = [
     ],
     'container' => [
         'definitions' => [
-            \yii\validators\RequiredValidator::class => \humhub\components\validators\RequiredValidator::class,
+            \yii\validators\RequiredValidator::class => \humhub\libs\RequiredValidator::class,
+            \yii\validators\TrimValidator::class => \humhub\libs\TrimValidator::class,
         ],
     ],
 ];

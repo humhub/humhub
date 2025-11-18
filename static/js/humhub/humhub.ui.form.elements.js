@@ -123,6 +123,26 @@ humhub.module('ui.form.elements', function (module, require, $) {
         this.$.removeClass('closed');
     };
 
+    const validate = {
+        trim: function($form, attribute, options, value) {
+            var $input = $form.find(attribute.input);
+            if ($input.is(':checkbox, :radio')) {
+                return value;
+            }
+
+            value = $input.val();
+            if (!options.skipOnEmpty || !yii.validation.isEmpty(value)) {
+                value = value.replace(/^[\p{Z}\s]+|[\p{Z}\s]+$/gu, ' ').trim();
+                $input.val(value);
+            }
+
+            return value;
+        },
+        required: function() {
+
+        }
+    }
+
     module.export({
         init: init,
         sortOrder: 100,
