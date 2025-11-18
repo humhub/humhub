@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.17.5 (Unreleased)
+--------------------------
+- Fix #7835: Truncate application name in the theme header
+
 1.17.4 (November 11, 2025)
 --------------------------
 - Fix #7734: Add nonce for script from OEmbed content
