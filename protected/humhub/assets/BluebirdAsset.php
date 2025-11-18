@@ -12,7 +12,7 @@ use humhub\components\assets\AssetBundle;
 use humhub\modules\ui\view\components\View;
 
 /**
- * bluebird promis library
+ * bluebird promise library
  *
  * @author luke
  */
