@@ -32,6 +32,7 @@ class Overview extends JsWidget
             'text' => [
                 'info' => Yii::t('NotificationModule.base', 'There are no notifications yet.'),
             ],
+            'currentUserId' => Yii::$app->user->id,
         ]);
 
         parent::init();
