@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.18.0-beta.6 (Unreleased)
+---------------------------------
+- Enh #7834: Login Screen: revert container width to 300px when less than 2 SSO buttons and remove Language Chooser label
+
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------
 - Enh #7719: Make Add/Remove Group Member optional for group managers
@@ -147,6 +151,10 @@ HumHub Changelog
 - Fix #7658: Fix loader on attach image to RichText field
 - Enh #7661: Parent groups
 - Enh #7662: In buttons, add right margin to the icon, so that the space char between the icon and the label is no longer needed (see MIGRATE-BS5.md -> ## Buttons)
+
+1.17.5 (Unreleased)
+--------------------------
+- Fix #7835: Truncate application name in the theme header
 
 1.17.4 (November 11, 2025)
 --------------------------
