@@ -427,7 +427,10 @@ class Group extends ActiveRecord
         $group = self::findOne($user->registrationGroupId);
         $approvalUrl = Url::to(["/admin/approval"], true);
 
-        foreach ($group->manager as $manager) {
+        $managers = $group->getManager()
+            ->andWhere([User::tableName() . '.status' => User::STATUS_ENABLED]);
+
+        foreach ($managers->each() as $manager) {
 
             Yii::$app->i18n->setUserLocale($manager);
 
