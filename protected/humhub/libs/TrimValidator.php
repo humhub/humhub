@@ -29,6 +29,6 @@ class TrimValidator extends \yii\validators\TrimValidator
         ValidationAsset::register($view);
         $options = $this->getClientOptions($model, $attribute);
 
-        return 'value = humhub.require(\'ui.form.elements\').trim($form, attribute, ' . Json::htmlEncode($options) . ', value);';
+        return 'value = humhub.require(\'ui.form.elements\').validate.trim($form, attribute, ' . Json::htmlEncode($options) . ', value);';
     }
 }

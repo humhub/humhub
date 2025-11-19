@@ -149,6 +149,7 @@ humhub.module('ui.form.elements', function (module, require, $) {
 
     module.export({
         init: init,
+        validate: validate,
         sortOrder: 100,
         toggleTimeZoneInput: toggleTimeZoneInput,
         timeZoneSelected: timeZoneSelected,

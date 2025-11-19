@@ -21,6 +21,6 @@ class RequiredValidator extends \yii\validators\RequiredValidator
         ValidationAsset::register($view);
         $options = $this->getClientOptions($model, $attribute);
 
-        return 'humhub.require(\'ui.form.elements\').required(value, messages, ' . Json::htmlEncode($options) . ');';
+        return 'humhub.require(\'ui.form.elements\').validate.required(value, messages, ' . Json::htmlEncode($options) . ');';
     }
 }
