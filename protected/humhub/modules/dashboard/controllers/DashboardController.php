@@ -13,6 +13,7 @@ use humhub\components\Controller;
 use humhub\components\View;
 use humhub\modules\dashboard\components\actions\DashboardStreamAction;
 use Yii;
+use yii\base\DynamicModel;
 
 class DashboardController extends Controller
 {
@@ -27,6 +28,18 @@ class DashboardController extends Controller
      */
     public function init()
     {
+        $model = new DynamicModel();
+        $model->addRule('attr', 'trim');
+
+
+        $model->setAttributes([
+//            'attr' => " test ",
+            'attr' => "    test ",
+        ]);
+        var_dump('test', $model->getAttributes());
+
+        die;
+
         $this->appendPageTitle(Yii::t('DashboardModule.base', 'Dashboard'));
         $this->view->setViewContext(static::VIEW_CONTEXT);
         return parent::init();

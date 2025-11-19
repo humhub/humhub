@@ -1,14 +1,12 @@
 <?php
 
-namespace humhub\libs;
+namespace humhub\components\validators;
 
 use yii\helpers\Json;
 use yii\validators\ValidationAsset;
 
 class TrimValidator extends \yii\validators\TrimValidator
 {
-    public $skipOnEmpty = false;
-
     /**
      * @inerhitdoc
      */
