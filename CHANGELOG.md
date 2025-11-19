@@ -4,6 +4,7 @@ HumHub Changelog
 1.17.5 (Unreleased)
 --------------------------
 - Fix #7835: Truncate application name in the theme header
+- Fix #7841: Send user approval notification only to active group managers
 
 1.17.4 (November 11, 2025)
 --------------------------
