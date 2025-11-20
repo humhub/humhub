@@ -11,14 +11,18 @@ humhub.module('live.mercure', function (module, require, $) {
     };
 
     MercureClient.prototype.init = function () {
-        if (!this.options.url || !this.options.jwt || !this.options.topic) {
+        if (!this.options.url || !this.options.jwt) {
             module.log.error('Could not initialize Mercure Push Client. Some options are not configured!');
             return;
         }
 
-        const source = new EventSource(this.options.url
-            + '?jwt=' + encodeURIComponent(this.options.jwt)
-            + '&topic=' + encodeURIComponent(this.options.topic));
+        const url = new URL(this.options.url);
+        url.searchParams.set('jwt', this.options.jwt);
+        (this.options.topics || []).forEach(topic => {
+            url.searchParams.append('topic', topic);
+        });
+
+        const source = new EventSource(url.toString());
 
         source.onerror = function (err) {
             module.log.error('Mercure error', err);

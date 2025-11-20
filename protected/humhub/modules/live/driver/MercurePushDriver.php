@@ -33,7 +33,7 @@ class MercurePushDriver extends BaseDriver
 {
     public string $hubUrl = 'https://localhost/.well-known/mercure';
     public string $jwtKey = '';
-    public string $topic = '/humhub/live/';
+    public string $topicPrefix = '/humhub/live/';
     public bool $verifySsl = true;
 
     protected ?Hub $hub = null;
@@ -72,7 +72,7 @@ class MercurePushDriver extends BaseDriver
      */
     public function send(LiveEvent $liveEvent)
     {
-        $update = new Update($this->topic, json_encode($liveEvent->getData()));
+        $update = new Update($this->topicPrefix . $liveEvent->contentContainerId, json_encode($liveEvent->getData()));
         $this->hub->publish($update);
     }
 
@@ -86,7 +86,7 @@ class MercurePushDriver extends BaseDriver
             'options' => [
                 'url' => $this->hubUrl,
                 'jwt' => $this->generateJwtAuthorization(),
-                'topic' => $this->topic,
+                'topics' => $this->getTopics(),
             ],
         ];
     }
@@ -104,12 +104,10 @@ class MercurePushDriver extends BaseDriver
             return '';
         }
 
-        $user = Yii::$app->user->getIdentity();
         $token = [
             'iss' => Url::to(['/'], true),
             'sub' => Yii::$app->user->id,
-            'legitmation' => Yii::$app->getModule('live')->getLegitimateContentContainerIds($user),
-            'mercure' => $this->topic,
+            'mercure' => $this->getTopics(),
         ];
         return JWT::encode($token, $this->jwtKey, 'HS256');
     }
@@ -124,5 +122,22 @@ class MercurePushDriver extends BaseDriver
             'userId' => $user->id,
             'legitimation' => $legitimation,
         ]));
+    }
+
+    protected function getTopics(): array
+    {
+        if (Yii::$app->user->isGuest) {
+            return [];
+        }
+
+        $topics = [];
+        $legitimation = Yii::$app->getModule('live')->getLegitimateContentContainerIds(Yii::$app->user->getIdentity());
+        foreach ($legitimation as $ids) {
+            foreach ($ids as $id) {
+                $topics[] = $this->topicPrefix . $id;
+            }
+        }
+
+        return $topics;
     }
 }
