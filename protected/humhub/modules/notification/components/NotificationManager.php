@@ -500,4 +500,13 @@ class NotificationManager
 
         return false;
     }
+
+    public function updateUnseenNotificationCount(User $user): void
+    {
+        $count = 0;
+
+        foreach ($this->getTargets($user) as $target) {
+            $target->updateUnseenNotificationCount($user, $count);
+        }
+    }
 }
