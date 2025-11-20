@@ -8,11 +8,11 @@ use yii\validators\ValidationAsset;
 class RequiredValidator extends \yii\validators\RequiredValidator
 {
     /**
-     * @inerhitdoc
+     * @inheritdoc
      */
     public function isEmpty($value)
     {
-        if (empty(preg_replace('/[\p{Z}\s]+/u', '', $value))) {
+        if (is_string($value) && empty(preg_replace('/[\p{Z}\s]+/u', '', $value))) {
             return true;
         }
 
@@ -20,7 +20,7 @@ class RequiredValidator extends \yii\validators\RequiredValidator
     }
 
     /**
-     * @inerhitdoc
+     * @inheritdoc
      */
     public function clientValidateAttribute($model, $attribute, $view)
     {

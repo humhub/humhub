@@ -8,7 +8,7 @@ use yii\validators\ValidationAsset;
 class TrimValidator extends \yii\validators\TrimValidator
 {
     /**
-     * @inerhitdoc
+     * @inheritdoc
      */
     protected function trimValue($value)
     {
@@ -16,7 +16,7 @@ class TrimValidator extends \yii\validators\TrimValidator
     }
 
     /**
-     * @inerhitdoc
+     * @inheritdoc
      */
     public function clientValidateAttribute($model, $attribute, $view)
     {
