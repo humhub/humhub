@@ -119,7 +119,6 @@ class Space extends ContentContainerActiveRecord
     {
         $rules = [
             [['join_policy', 'visibility', 'status', 'sort_order', 'auto_add_new_members', 'default_content_visibility'], 'integer'],
-            [['name'], 'trim'],
             [['name'], 'required'],
             [['name'], 'string', 'max' => 45, 'min' => 2],
             [['description', 'about', 'color'], 'string'],
