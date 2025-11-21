@@ -5,6 +5,7 @@ HumHub Changelog
 --------------------------
 - Fix #7835: Truncate application name in the theme header
 - Fix #7841: Send user approval notification only to active group managers
+- Fix #7846: Use a stored mime type on download a file
 
 1.17.4 (November 11, 2025)
 --------------------------
