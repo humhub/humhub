@@ -123,8 +123,33 @@ humhub.module('ui.form.elements', function (module, require, $) {
         this.$.removeClass('closed');
     };
 
+    const validate = {
+        trim: function($form, attribute, options, value) {
+            var $input = $form.find(attribute.input);
+            if ($input.is(':checkbox, :radio')) {
+                return value;
+            }
+
+            value = $input.val();
+            if (!options.skipOnEmpty || !yii.validation.isEmpty(value)) {
+                value = value.replace(/^[\p{Z}\s]+|[\p{Z}\s]+$/gu, ' ').trim();
+                $input.val(value);
+            }
+
+            return value;
+        },
+        required: function(value, messages, options) {
+            if ((typeof value == 'string' || value instanceof String) && !value.replace(/[\p{Z}\s]+/gu, '').length) {
+                value = '';
+            }
+
+            return yii.validation.required(value, messages, options)
+        }
+    }
+
     module.export({
         init: init,
+        validate: validate,
         sortOrder: 100,
         toggleTimeZoneInput: toggleTimeZoneInput,
         timeZoneSelected: timeZoneSelected,

@@ -6,6 +6,7 @@ HumHub Changelog
 - Enh #7834: Login Screen: revert container width to 300px when less than 2 SSO buttons and remove Language Chooser label
 - Fix #7843: Allow child theme not to have a build.scss file (only variables.scss is mandatory)
 - Fix #7842: Fixed php deprecation warning in `ConfigHelper`
+- Enh #7836: Improved `required` and `trim` validators
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------

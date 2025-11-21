@@ -304,6 +304,12 @@ $config = [
         'enablePjax' => true,
         'dailyCronExecutionTime' => '18:00',
     ],
+    'container' => [
+        'definitions' => [
+            \yii\validators\RequiredValidator::class => \humhub\components\validators\RequiredValidator::class,
+            \yii\validators\TrimValidator::class => \humhub\components\validators\TrimValidator::class,
+        ],
+    ],
 ];
 
 return $config;
