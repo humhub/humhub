@@ -1,4 +1,4 @@
-x<?php
+<?php
 
 /**
  * @link https://www.humhub.org/
