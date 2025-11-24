@@ -67,7 +67,7 @@ class ConfigHelper implements StaticInstanceInterface
         return $this->humhub;
     }
 
-    public function toArray(?int $flags = null)
+    public function toArray(?int $flags = null): array
     {
         if ($flags === null) {
             $flags = self::SET_HUMHUB | self::SET_DYNAMIC | self::SET_COMMON | self::SET_ENV;
@@ -81,7 +81,7 @@ class ConfigHelper implements StaticInstanceInterface
         );
     }
 
-    public function get($key, ?int $flags = null)
+    public function get($key, ?int $flags = null): ?array
     {
         return ArrayHelper::getValue($this->toArray($flags), $key);
     }

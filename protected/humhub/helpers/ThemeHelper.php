@@ -260,7 +260,10 @@ class ThemeHelper
         // Import all other files, in reverse order (parent theme first)
         $imports[] = Yii::getAlias('@webroot-static/scss/build');
         foreach (array_reverse($treeThemes) as $treeTheme) {
-            $imports[] = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'build';
+            $buildFile = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'build';
+            if (file_exists($buildFile . '.scss')) {
+                $imports[] = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'build';
+            }
         }
 
         // Set source map

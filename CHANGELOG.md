@@ -1,8 +1,16 @@
 HumHub Changelog
 ================
 
-1.18.0-beta.5 (Unreleased)
-----------------------------------
+1.18.0-beta.6 (Unreleased)
+---------------------------------
+- Enh #7834: Login Screen: revert container width to 300px when less than 2 SSO buttons and remove Language Chooser label
+- Fix #7843: Allow child theme not to have a build.scss file (only variables.scss is mandatory)
+- Fix #7842: Fixed php deprecation warning in `ConfigHelper`
+- Enh #7836: Improved `required` and `trim` validators
+- Fix #7847: Fixed missing translations in `Admin/People` page
+
+1.18.0-beta.5 (November 13, 2025)
+---------------------------------
 - Enh #7719: Make Add/Remove Group Member optional for group managers
 - Fix #7720: Saving the new Mobile App admin form when no whitelisted domain
 - Fix #7733: Ignore mailer `TRANSPORT_CONFIG` option in `ComponentLoader`
@@ -148,6 +156,11 @@ HumHub Changelog
 - Fix #7658: Fix loader on attach image to RichText field
 - Enh #7661: Parent groups
 - Enh #7662: In buttons, add right margin to the icon, so that the space char between the icon and the label is no longer needed (see MIGRATE-BS5.md -> ## Buttons)
+
+1.17.5 (Unreleased)
+--------------------------
+- Fix #7835: Truncate application name in the theme header
+- Fix #7841: Send user approval notification only to active group managers
 
 1.17.4 (November 11, 2025)
 --------------------------

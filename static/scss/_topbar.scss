@@ -63,6 +63,12 @@
         z-index: 1030;
         color: var(--hh-text-color-contrast);
 
+        .topbar-brand {
+            max-width: 40%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
         a.navbar-brand {
             height: 50px;

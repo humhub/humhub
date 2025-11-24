@@ -9,19 +9,19 @@
 
 use humhub\services\BootstrapService;
 
+$protectedPath = __DIR__;
+
 /**
  * @var $loader \Composer\Autoload\ClassLoader
  */
-$loader = require(__DIR__ . '/vendor/autoload.php');
+$loader = require($protectedPath . '/vendor/autoload.php');
 
 // Load Environment
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../', '.env');
 $dotenv->safeLoad();
 
-$humhubSrcPath = $_ENV['HUMHUB_ALIASES__HUMHUB'] ?? realpath(__DIR__ . '/../protected/humhub/');
-
 // Load Bootstrap Helper
-$loader->addClassMap(['humhub\\services\\BootstrapService' => $humhubSrcPath . '/services/BootstrapService.php']);
+$loader->addClassMap(['humhub\\services\\BootstrapService' => $protectedPath . '/humhub/services/BootstrapService.php']);
 
 $bootstrap = new BootstrapService();
 $bootstrap->runConsole();
