@@ -33,6 +33,7 @@ humhub.module('live.mercure', function (module, require, $) {
                 const message = JSON.parse(messageEvent.data);
                 const eventType = message.type ? message.type.replace(/\./g, ':') : 'mercure:update';
                 event.trigger(eventType, [[message]]);
+                module.log.debug('Mercure: Received message', message);
             } catch (e) {
                 module.log.error('Mercure: Failed to parse message', e);
             }

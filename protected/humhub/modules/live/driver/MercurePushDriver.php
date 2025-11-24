@@ -107,7 +107,9 @@ class MercurePushDriver extends BaseDriver
         $token = [
             'iss' => Url::to(['/'], true),
             'sub' => Yii::$app->user->id,
-            'mercure' => $this->getTopics(),
+            'mercure' => [
+                'subscribe' => $this->getTopics(),
+            ],
         ];
         return JWT::encode($token, $this->jwtKey, 'HS256');
     }
