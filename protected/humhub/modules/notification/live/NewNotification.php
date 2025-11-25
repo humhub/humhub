@@ -24,11 +24,6 @@ class NewNotification extends LiveEvent
     public $notificationId;
 
     /**
-     * @var int Notification's originator ID
-     */
-    public $notificationOriginatorId;
-
-    /**
      * @var string related notification group
      */
     public $notificationGroup;

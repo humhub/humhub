@@ -76,7 +76,7 @@ class MercurePushDriver extends BaseDriver
         $update = new Update(
             $this->topicPrefix . $liveEvent->visibility . '-' . $liveEvent->contentContainerId,
             json_encode($liveEvent->getData()),
-            true
+            true,
         );
         $this->hub->publish($update);
     }
@@ -91,7 +91,6 @@ class MercurePushDriver extends BaseDriver
             'options' => [
                 'url' => $this->hubUrl,
                 'jwt' => $this->generateJwtAuthorizationSubscriber(),
-                'topics' => $this->getTopics(),
             ],
         ];
     }
@@ -106,7 +105,7 @@ class MercurePushDriver extends BaseDriver
         $token = [
             'mercure' => [
                 'subscribe' => $this->getTopics(),
-                'publish' => []
+                'publish' => [],
             ],
             'exp' => time() + 60 * 60 * 6,
         ];
@@ -142,7 +141,7 @@ class MercurePushDriver extends BaseDriver
             Content::VISIBILITY_OWNER => [
                 Content::VISIBILITY_OWNER,
                 Content::VISIBILITY_PUBLIC,
-                Content::VISIBILITY_PRIVATE
+                Content::VISIBILITY_PRIVATE,
             ],
             Content::VISIBILITY_PRIVATE => [Content::VISIBILITY_PUBLIC, Content::VISIBILITY_PRIVATE],
             Content::VISIBILITY_PUBLIC => [Content::VISIBILITY_PUBLIC],
