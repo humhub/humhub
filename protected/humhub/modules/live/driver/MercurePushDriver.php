@@ -22,6 +22,7 @@ use Symfony\Component\Mercure\Jwt\LcobucciFactory;
 use Symfony\Component\Mercure\Update;
 use yii\base\InvalidConfigException;
 use Yii;
+use yii\helpers\Url;
 
 /**
  * Mercure Push driver for live events
@@ -31,7 +32,7 @@ use Yii;
  */
 class MercurePushDriver extends BaseDriver
 {
-    public string $hubUrl = 'https://localhost/.well-known/mercure';
+    public string $hubUrl = '';
     public string $jwtKeySubscriber = '';
     public string $jwtKeyPublisher = '';
     public string $topicPrefix = '/humhub/live/';
@@ -47,7 +48,7 @@ class MercurePushDriver extends BaseDriver
         parent::init();
 
         if (empty($this->hubUrl)) {
-            throw new InvalidConfigException('Mercure driver hub URL is not specified.');
+            $this->hubUrl = Url::to('/.well-known/mercure', true);
         }
 
         if (empty($this->jwtKeyPublisher) || empty($this->jwtKeySubscriber)) {
