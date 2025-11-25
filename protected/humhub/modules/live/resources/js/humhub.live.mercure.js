@@ -17,10 +17,8 @@ humhub.module('live.mercure', function (module, require, $) {
         }
 
         const url = new URL(this.options.url);
-        url.searchParams.set('jwt', this.options.jwt);
-        (this.options.topics || []).forEach(topic => {
-            url.searchParams.append('topic', topic);
-        });
+        url.searchParams.set('authorization', this.options.jwt);
+        url.searchParams.set('topic', '*');
 
         const source = new EventSource(url.toString());
 

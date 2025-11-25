@@ -20,9 +20,7 @@ use Symfony\Component\Mercure\Hub;
 use Symfony\Component\Mercure\Jwt\FactoryTokenProvider;
 use Symfony\Component\Mercure\Jwt\LcobucciFactory;
 use Symfony\Component\Mercure\Update;
-use Throwable;
 use yii\base\InvalidConfigException;
-use yii\helpers\Url;
 use Yii;
 
 /**
@@ -34,7 +32,8 @@ use Yii;
 class MercurePushDriver extends BaseDriver
 {
     public string $hubUrl = 'https://localhost/.well-known/mercure';
-    public string $jwtKey = '';
+    public string $jwtKeySubscriber = '';
+    public string $jwtKeyPublisher = '';
     public string $topicPrefix = '/humhub/live/';
     public bool $verifySsl = true;
 
@@ -51,13 +50,13 @@ class MercurePushDriver extends BaseDriver
             throw new InvalidConfigException('Mercure driver hub URL is not specified.');
         }
 
-        if (empty($this->jwtKey)) {
-            throw new InvalidConfigException('Mercure driver JWT key is not specified.');
+        if (empty($this->jwtKeyPublisher) || empty($this->jwtKeySubscriber)) {
+            throw new InvalidConfigException('Mercure driver JWT keys are not specified.');
         }
 
         Yii::$app->view->registerAssetBundle(LiveMercureAsset::class);
 
-        $jwFactory = new LcobucciFactory($this->jwtKey);
+        $jwFactory = new LcobucciFactory($this->jwtKeyPublisher);
         $provider = new FactoryTokenProvider($jwFactory, publish: ['*']);
         $client = $this->verifySsl
             ? null
@@ -76,7 +75,8 @@ class MercurePushDriver extends BaseDriver
     {
         $update = new Update(
             $this->topicPrefix . $liveEvent->visibility . '-' . $liveEvent->contentContainerId,
-            json_encode($liveEvent->getData())
+            json_encode($liveEvent->getData()),
+            true
         );
         $this->hub->publish($update);
     }
@@ -90,33 +90,28 @@ class MercurePushDriver extends BaseDriver
             'type' => 'humhub.modules.live.mercure.MercureClient',
             'options' => [
                 'url' => $this->hubUrl,
-                'jwt' => $this->generateJwtAuthorization(),
+                'jwt' => $this->generateJwtAuthorizationSubscriber(),
                 'topics' => $this->getTopics(),
             ],
         ];
     }
 
-    /**
-     * Generates an JWT authorization of the current user including
-     * the contentContainer id legitmation.
-     *
-     * @return string the JWT string
-     * @throws Throwable
-     */
-    protected function generateJwtAuthorization()
+
+    protected function generateJwtAuthorizationSubscriber()
     {
         if (Yii::$app->user->isGuest) {
             return '';
         }
 
         $token = [
-            'iss' => Url::to(['/'], true),
-            'sub' => Yii::$app->user->id,
             'mercure' => [
                 'subscribe' => $this->getTopics(),
+                'publish' => []
             ],
+            'exp' => time() + 60 * 60 * 6,
         ];
-        return JWT::encode($token, $this->jwtKey, 'HS256');
+
+        return JWT::encode($token, $this->jwtKeySubscriber, 'HS256');
     }
 
     /**

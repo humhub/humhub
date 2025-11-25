@@ -69,12 +69,6 @@ humhub.module('notification', function (module, require, $) {
 
         var result = [];
         events.forEach(function (event) {
-            if (module.config.currentUserId && event.data.notificationOriginatorId
-                && module.config.currentUserId === event.data.notificationOriginatorId) {
-                // Ignore own notifications
-                return;
-            }
-
             if (notificationIds.indexOf(event.data.notificationId) < 0) {
                 var groupId = event.data.notificationGroup;
 
