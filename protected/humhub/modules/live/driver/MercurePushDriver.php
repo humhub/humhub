@@ -9,8 +9,10 @@
 namespace humhub\modules\live\driver;
 
 use Firebase\JWT\JWT;
+use humhub\modules\content\models\Content;
 use humhub\modules\live\assets\LiveMercureAsset;
 use humhub\modules\live\live\LegitimationChanged;
+use humhub\modules\live\Module;
 use humhub\modules\user\models\User;
 use humhub\modules\live\components\LiveEvent;
 use Symfony\Component\HttpClient\CurlHttpClient;
@@ -72,7 +74,10 @@ class MercurePushDriver extends BaseDriver
      */
     public function send(LiveEvent $liveEvent)
     {
-        $update = new Update($this->topicPrefix . $liveEvent->contentContainerId, json_encode($liveEvent->getData()));
+        $update = new Update(
+            $this->topicPrefix . $liveEvent->visibility . '-' . $liveEvent->contentContainerId,
+            json_encode($liveEvent->getData())
+        );
         $this->hub->publish($update);
     }
 
@@ -132,11 +137,28 @@ class MercurePushDriver extends BaseDriver
             return [];
         }
 
+        /** @var Module $liveModule */
+        $liveModule = Yii::$app->getModule('live');
+        $legitimation = $liveModule->getLegitimateContentContainerIds(Yii::$app->user->getIdentity());
+
         $topics = [];
-        $legitimation = Yii::$app->getModule('live')->getLegitimateContentContainerIds(Yii::$app->user->getIdentity());
-        foreach ($legitimation as $ids) {
-            foreach ($ids as $id) {
-                $topics[] = $this->topicPrefix . $id;
+
+        $topicSuffixes = [
+            Content::VISIBILITY_OWNER => [
+                Content::VISIBILITY_OWNER,
+                Content::VISIBILITY_PUBLIC,
+                Content::VISIBILITY_PRIVATE
+            ],
+            Content::VISIBILITY_PRIVATE => [Content::VISIBILITY_PUBLIC, Content::VISIBILITY_PRIVATE],
+            Content::VISIBILITY_PUBLIC => [Content::VISIBILITY_PUBLIC],
+        ];
+
+        foreach ($legitimation as $visibility => $containerIds) {
+            $visibilitiesToAdd = $topicSuffixes[$visibility];
+            foreach ($containerIds as $containerId) {
+                foreach ($visibilitiesToAdd as $topicVisibility) {
+                    $topics[] = $this->topicPrefix . $topicVisibility . '-' . $containerId;
+                }
             }
         }
 
