@@ -286,13 +286,13 @@ class Group extends ActiveRecord
     }
 
     /**
-     * Get query of all active managers of this group and parent group
+     * Get query of all active managers of this group and parent group(if it is allowed by the module setting $groupManagerInheritance)
      * @return ActiveQuery
      * @since 1.18
      */
     public function getAllManagers(): ActiveQuery
     {
-        if ($this->parent_group_id === null) {
+        if ($this->parent_group_id === null || !Yii::$app->getModule('admin')->groupManagerInheritance) {
             $query = $this->getManager();
         } else {
             $query = User::find()

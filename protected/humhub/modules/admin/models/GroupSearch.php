@@ -12,6 +12,7 @@ use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\user\models\forms\EditGroupForm;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\GroupUser;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -89,21 +90,33 @@ class GroupSearch extends Group
 
         if (!Yii::$app->user->can(ManageGroups::class)) {
             // Restrict to groups where current user is a manager
-            $managerGroupQuery = GroupUser::find()
-                ->select('group_id')
-                ->where(['user_id' => Yii::$app->user->id])
-                ->andWhere(['is_group_manager' => true]);
-
             $query->leftJoin(GroupUser::tableName(), GroupUser::tableName() . '.group_id = ' . Group::tableName() . '.id')
-                ->andWhere([
-                    'OR',
-                    [GroupUser::tableName() . '.group_id' => $managerGroupQuery],
-                    // Subgroups where current user is a manager of the parent group
-                    [Group::tableName() . '.parent_group_id' => $managerGroupQuery],
-                ]);
+                ->andWhere(self::getGroupManagerQueryCondition());
         }
 
         return $dataProvider;
+    }
+
+    public static function getGroupManagerQueryCondition(?User $user = null): array
+    {
+        $managerGroupQuery = GroupUser::find()
+            ->select('group_id')
+            ->where(['user_id' => $user ? $user->id : Yii::$app->user->id])
+            ->andWhere(['is_group_manager' => true]);
+
+        $parentGroupCondition = [GroupUser::tableName() . '.group_id' => $managerGroupQuery];
+
+        if (Yii::$app->getModule('admin')->groupManagerInheritance) {
+            // Include also subgroups where the user is a manager of its parent group
+            return [
+                'OR',
+                $parentGroupCondition,
+                [Group::tableName() . '.parent_group_id' => $managerGroupQuery],
+            ];
+        }
+
+        // Include only parent groups
+        return $parentGroupCondition;
     }
 
 }

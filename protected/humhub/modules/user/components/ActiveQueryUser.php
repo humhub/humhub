@@ -9,6 +9,7 @@
 namespace humhub\modules\user\components;
 
 use humhub\events\ActiveQueryEvent;
+use humhub\modules\admin\models\GroupSearch;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\AbstractActiveQueryContentContainer;
 use humhub\modules\user\models\fieldtype\BaseTypeVirtual;
@@ -188,18 +189,9 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
     public function administrableBy(User $user)
     {
         if (!(new PermissionManager(['subject' => $user]))->can([ManageUsers::class])) {
-            $managerGroupQuery = GroupUser::find()
-                ->select('group_id')
-                ->where(['user_id' => $user->id])
-                ->andWhere(['is_group_manager' => 1]);
-
             $this->innerJoin(GroupUser::tableName(), User::tableName() . '.id = ' . GroupUser::tableName() . '.user_id')
                 ->innerJoin(Group::tableName(), Group::tableName() . '.id = ' . GroupUser::tableName() . '.group_id')
-                ->andWhere([
-                    'OR',
-                    [GroupUser::tableName() . '.group_id' => $managerGroupQuery],
-                    [Group::tableName() . '.parent_group_id' => $managerGroupQuery],
-                ]);
+                ->andWhere(GroupSearch::getGroupManagerQueryCondition($user));
         }
 
         return $this;
