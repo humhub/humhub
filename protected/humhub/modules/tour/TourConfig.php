@@ -46,8 +46,9 @@ class TourConfig
      */
     public const KEY_TOUR_ON_CONTROLLER_CLASS = 'tour_on_controller_class';
     /**
-     * string
+     * string|null
      * Starting URL of the Tour
+     * If null, the Tour is skipped
      */
     public const KEY_START_URL = 'start_url';
     /**
@@ -74,7 +75,11 @@ class TourConfig
         $tourConfigs = [];
         foreach ($module->tourConfigFiles as $file) {
             $config = require Yii::getAlias($file);
-            if (static::isValidConfig($config) && static::getIsVisible($config)) {
+            if (
+                static::isValidConfig($config)
+                && static::getIsVisible($config)
+                && static::getStartUrl($config)
+            ) {
                 $tourConfigs[$config[self::KEY_TOUR_ID]] = $config;
             }
         }
@@ -88,7 +93,7 @@ class TourConfig
             = is_array($config)
             && !empty($config[self::KEY_TOUR_ID])
             && !empty($config[self::KEY_TITLE])
-            && !empty($config[self::KEY_START_URL])
+            && array_key_exists(self::KEY_START_URL, $config)
             && array_key_exists(self::KEY_NEXT_TOUR_ID, $config)
             && !empty($config[self::KEY_DRIVER_JS]);
 
@@ -151,9 +156,13 @@ class TourConfig
         return static::getConfigValue($config, self::KEY_TOUR_ON_CONTROLLER_CLASS);
     }
 
-    public static function getStartUrl(array $config): string
+    public static function getStartUrl(array $config): ?string
     {
-        return static::getConfigValue($config, self::KEY_START_URL);
+        if (!$config[self::KEY_START_URL]) {
+            return null;
+        }
+
+        return static::getConfigValue($config, self::KEY_START_URL) ?: null;
     }
 
     public static function getNextUrl(array $config): ?string

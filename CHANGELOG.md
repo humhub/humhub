@@ -8,6 +8,7 @@ HumHub Changelog
 - Fix #7842: Fixed php deprecation warning in `ConfigHelper`
 - Enh #7836: Improved `required` and `trim` validators
 - Fix #7847: Fixed missing translations in `Admin/People` page
+- Fix #7854: Tour for Spaces if no visible and active Space
 - Enh #7852: New `humhub\helpers\ScssHelper::getColorContrast()` for text color in emails, to contrast with the button background when customized
 - Enh #7852: Allow overwriting Sass variables and maps via the "Custom SCSS" field of the Appearance form and this custom value via `humhub\components\Theme::variable()`
 - Chg #7852: Font family set for emails
