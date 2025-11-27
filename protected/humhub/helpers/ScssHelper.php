@@ -122,9 +122,9 @@ class ScssHelper
      * @throws SassException if syntax error in SCSS
      * @throws RuntimeException if SCSS is malformed
      */
-    public static function extractVariablesAndMaps(string $scss): array
+    public static function extractVariablesAndMaps(?string $scss): array
     {
-        $scss = trim($scss);
+        $scss = trim((string)$scss);
         if (!$scss) {
             return ['', '', ''];
         }
