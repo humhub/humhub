@@ -8,6 +8,7 @@ HumHub Changelog
 - Fix #7842: Fixed php deprecation warning in `ConfigHelper`
 - Enh #7836: Improved `required` and `trim` validators
 - Fix #7847: Fixed missing translations in `Admin/People` page
+- Enh #7851: New admin module option for group manager inheritance
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------
