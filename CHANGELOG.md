@@ -8,6 +8,10 @@ HumHub Changelog
 - Fix #7842: Fixed php deprecation warning in `ConfigHelper`
 - Enh #7836: Improved `required` and `trim` validators
 - Fix #7847: Fixed missing translations in `Admin/People` page
+- Enh: New `humhub\helpers\ScssHelper::getColorContrast()` for text color in emails, to contrast with the button background when customized
+- Enh: Allow overwriting Sass variables and maps via the "Custom SCSS" field of the Appearance form and this custom value via `humhub\components\Theme::variable()`
+- Chg: Font family set for emails
+- Enh: Unit tests for `humhub\helpers\ScssHelper` class
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------
