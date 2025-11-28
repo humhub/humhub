@@ -7,18 +7,14 @@ use yii\validators\ValidationAsset;
 
 class RequiredValidator extends \yii\validators\RequiredValidator
 {
+    private const REGEX = '/[\p{Z}\s]+/u';
     /**
      * @inheritdoc
      */
     public function isEmpty($value)
     {
-        if (
-            is_string($value) && !( // check if string and not contains binary data
-            str_contains($value, "\0") && // check if contains NUL
-            !mb_check_encoding($value, 'UTF-8') && // check if invalid UTF-8 encoding
-            !!preg_match('/[^\x09\x0A\x0D\x20-\x7E]/', $value)) // check for binary control chars
-        ) {
-            $value = preg_replace('/[\p{Z}\s]+/u', '', $value);
+        if (is_string($value) && preg_match(self::REGEX, $value)) {
+            $value = preg_replace(self::REGEX, '', $value);
         }
 
         return parent::isEmpty($value);

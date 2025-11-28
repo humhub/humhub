@@ -9,6 +9,7 @@ HumHub Changelog
 - Enh #7836: Improved `required` and `trim` validators
 - Fix #7847: Fixed missing translations in `Admin/People` page
 - Fix #7854: Tour for Spaces if no visible and active Space
+- Fix #7850: Fix required validator to not remove binary content
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------
