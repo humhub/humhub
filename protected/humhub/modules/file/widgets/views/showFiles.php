@@ -51,10 +51,10 @@ $galleryColumnClass = 'col-media col-' . $bsColumns . ' col-lg-' . $bsColumnsMd 
 
 <?php if ($nbFiles > 0): ?>
     <!-- hideOnEdit mandatory since 1.2 -->
-    <div class="container hideOnEdit">
+    <div class="hideOnEdit">
         <!-- Show Images as Thumbnails -->
         <?php if ($showPreview): ?>
-            <div class="post-files row" id="post-files-<?= $object->getUniqueId() ?>">
+            <div class="post-files d-flex flex-wrap" id="post-files-<?= $object->getUniqueId() ?>">
                 <?php if (!empty($audios)): ?>
                     <div class="<?= $fullWidthColumnClass ?>">
                         <?= JPlayerPlaylistWidget::widget(['playlist' => $audios]) ?>
