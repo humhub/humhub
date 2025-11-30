@@ -11,6 +11,7 @@ namespace humhub\helpers;
 use Exception;
 use humhub\components\Theme;
 use humhub\modules\admin\models\forms\DesignSettingsForm;
+use RuntimeException;
 use ScssPhp\ScssPhp\Compiler;
 use ScssPhp\ScssPhp\Exception\SassException;
 use ScssPhp\ScssPhp\OutputStyle;
@@ -139,14 +140,21 @@ class ThemeHelper
     /**
      * @param Theme $theme
      * @return array
-     * @throws Exception
+     * @throws SassException if syntax error in the custom SCSS
+     * @throws RuntimeException if the custom SCSS is malformed
      */
     public static function getAllVariables(Theme $theme): array
     {
+        // Get variables from theme files
         $variables = ScssHelper::getVariables(Yii::getAlias('@webroot-static/scss/variables.scss'));
         foreach (array_reverse(static::getThemeTree($theme)) as $treeTheme) {
             $variables = ArrayHelper::merge($variables, ScssHelper::getVariables(ScssHelper::getVariableFile($treeTheme)));
         }
+
+        // Overwrite with custom variables from DesignSettingsForm
+        $settingsManager = Yii::$app->settings; // Don't use `new DesignSettingsForm()` as it would make an infinite loop
+        [$customVariables, $customMaps, $otherCustomScss] = ScssHelper::extractVariablesAndMaps($settingsManager->get('themeCustomScss'));
+        $variables = ArrayHelper::merge($variables, ScssHelper::parseVariables($customVariables));
 
         return ScssHelper::updateLinkedScssVariables($variables);
     }
@@ -229,6 +237,12 @@ class ThemeHelper
         $treeThemes = static::getThemeTree($theme);
         $compiler = new Compiler();
         $designSettingsForm = new DesignSettingsForm();
+
+        try {
+            [$customVariables, $customMaps, $otherCustomScss] = ScssHelper::extractVariablesAndMaps($designSettingsForm->themeCustomScss);
+        } catch (SassException|RuntimeException $e) {
+            return static::logAndGetError('Error while compiling the custom SCSS code: ' . $e->getMessage());
+        }
 
         // Compress CSS
         $compiler->setOutputStyle(OutputStyle::COMPRESSED);
@@ -324,8 +338,10 @@ class ThemeHelper
             $scssSource .= '$dark: ' . $designSettingsForm->themeDarkColor . ';' . PHP_EOL;
         }
         $scssSource
-            .= '@import "' . implode('", "', $imports) . '";' . PHP_EOL
-            . $designSettingsForm->themeCustomScss;
+            .= $customVariables
+            . $customMaps
+            . '@import "' . implode('", "', $imports) . '";' . PHP_EOL
+            . $otherCustomScss;
 
         // Compile to CSS
         try {
@@ -342,7 +358,7 @@ class ThemeHelper
                 return static::logAndGetError('Could not write to file ' . $mapFilePath);
             }
         } catch (SassException $e) {
-            return static::logAndGetError($e->getMessage());
+            return static::logAndGetError('Saas compiler error: ' . $e->getMessage());
         }
 
         return true;
