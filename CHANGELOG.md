@@ -13,6 +13,7 @@ HumHub Changelog
 - Enh #7852: Allow overwriting Sass variables and maps via the "Custom SCSS" field of the Appearance form and this custom value via `humhub\components\Theme::variable()`
 - Chg #7852: Font family set for emails
 - Enh #7852: Unit tests for `humhub\helpers\ScssHelper` class
+- Fix #7861: Post attachments container width
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------
