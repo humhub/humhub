@@ -356,9 +356,9 @@ SCSS;
 
         // Reconstruct
         $reconstructed = trim(
-            $customVariables . "\n" .
-            $customMaps . "\n" .
-            $otherCustomScss
+            $customVariables . "\n"
+            . $customMaps . "\n"
+            . $otherCustomScss,
         );
 
         // Normalize both
@@ -372,8 +372,11 @@ SCSS;
         $originalLines = count(array_filter(explode("\n", $scssNormalized)));
         $reconstructedLines = count(array_filter(explode("\n", $reconstructedNormalized)));
 
-        $this->assertEquals($originalLines, $reconstructedLines,
-            'Reconstructed SCSS should have the same number of lines as original');
+        $this->assertEquals(
+            $originalLines,
+            $reconstructedLines,
+            'Reconstructed SCSS should have the same number of lines as original',
+        );
 
         // Check that all content is preserved (order may differ)
         $this->assertStringContainsString('$var1: red;', $reconstructed);
