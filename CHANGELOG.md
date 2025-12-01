@@ -15,7 +15,7 @@ HumHub Changelog
 - Enh #7852: Unit tests for `humhub\helpers\ScssHelper` class
 - Fix #7861: Post attachments container width
 - Ehn #7864: Rename proxy settings
-- Fix: ScssHelper variable extractors for code with parentheses, and add more tests
+- Fix #7867: ScssHelper variable extractors for code with parentheses, and add more tests
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------
