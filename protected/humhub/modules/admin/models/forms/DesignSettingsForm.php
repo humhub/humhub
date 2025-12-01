@@ -10,6 +10,7 @@ namespace humhub\modules\admin\models\forms;
 
 use humhub\components\InstallationState;
 use humhub\components\Theme;
+use humhub\helpers\ScssHelper;
 use humhub\helpers\ThemeHelper;
 use humhub\libs\LogoImage;
 use humhub\modules\file\validators\ImageSquareValidator;
@@ -18,6 +19,7 @@ use humhub\modules\user\helpers\LoginBackgroundImageHelper;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\widgets\mails\MailHeaderImage;
+use RuntimeException;
 use ScssPhp\ScssPhp\Compiler;
 use ScssPhp\ScssPhp\Exception\SassException;
 use Yii;
@@ -197,21 +199,52 @@ class DesignSettingsForm extends Model
                     return preg_replace($patterns, $replacements, $value);
                 },
             ],
-            [
-                'themeCustomScss',
-                function ($attribute, $params, $validator): void {
-                    $compiler = new Compiler();
-                    try {
-                        $compiler->compileString($this->$attribute)->getCss();
-                    } catch (SassException $e) {
-                        $this->addError(
-                            $attribute,
-                            Yii::t('AdminModule.settings', 'Cannot compile SCSS to CSS:') . ' ' . $e->getMessage(),
-                        );
-                    }
-                },
-            ],
+            ['themeCustomScss', 'validateThemeCustomScss'],
         ];
+    }
+
+    public function validateThemeCustomScss($attribute, $params, $validator): void
+    {
+        // Test Sass Variables and Maps extractor
+        try {
+            [$customVariables, $customMaps, $otherCustomScss] = ScssHelper::extractVariablesAndMaps($this->themeCustomScss);
+        } catch (SassException|RuntimeException $e) {
+            $this->addError(
+                $attribute,
+                Yii::t('AdminModule.settings', 'Cannot compile SCSS to CSS:') . ' ' . $e->getMessage(),
+            );
+            return;
+        }
+
+        // Simulate how it will be compiled when building the CSS
+        $scssSource = $customVariables . PHP_EOL . $customMaps . PHP_EOL . $otherCustomScss;
+
+        // Block any @import or @use that doesn't start with https://
+        // Captures the actual URL/path inside the quotes: ["\']([^"\']+)["\']
+        // Handles @import "..." and @import url("...")
+        if (preg_match_all('/@(?:import|use)\s+(?:url\()?\s*["\']([^"\']+)["\']/i', $scssSource, $matches)) {
+            foreach ($matches[1] as $importPath) {
+                if (!preg_match('#^https://#i', $importPath)) {
+                    $this->addError(
+                        $attribute,
+                        Yii::t('AdminModule.settings', 'Imports are limited to URLs starting with https://'),
+                    );
+                    return;
+                }
+            }
+        }
+
+        try {
+            // Test compiling the CSS
+            $compiler = new Compiler();
+            $compiler->compileString($scssSource)->getCss();
+        } catch (SassException $e) {
+            $this->addError(
+                $attribute,
+                Yii::t('AdminModule.settings', 'Cannot compile SCSS to CSS:') . ' ' . $e->getMessage(),
+            );
+            return;
+        }
     }
 
     /**
