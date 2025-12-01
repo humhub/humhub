@@ -15,6 +15,7 @@ HumHub Changelog
 - Enh #7852: Unit tests for `humhub\helpers\ScssHelper` class
 - Fix #7861: Post attachments container width
 - Ehn #7864: Rename proxy settings
+- Fix #7865: In mail notifications, use auto-contrast color in header, and increase font weight in buttons if light background
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------
