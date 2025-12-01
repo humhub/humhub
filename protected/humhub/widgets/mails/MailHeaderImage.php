@@ -34,6 +34,7 @@ class MailHeaderImage extends Widget
     public const LOGO_MAX_HEIGHT = 60; // For image resizing after upload
 
     public int $verticalMargin = 10; // In pixels
+    public ?string $backgroundColor = null;
 
     public static function set(?string $fileName): void
     {
@@ -123,6 +124,7 @@ class MailHeaderImage extends Widget
             'imgUrl' => $imgUrl,
             'appName' => Yii::$app->name,
             'verticalMargin' => $this->verticalMargin,
+            'backgroundColor' => $this->backgroundColor,
         ]);
     }
 }

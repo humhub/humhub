@@ -10,6 +10,13 @@ HumHub Changelog
 - Fix #7847: Fixed missing translations in `Admin/People` page
 - Fix #7854: Tour for Spaces if no visible and active Space
 - Fix #7860: Fix type error in installer
+- Enh #7852: New `humhub\helpers\ScssHelper::getColorContrast()` for text color in emails, to contrast with the button background when customized
+- Enh #7852: Allow overwriting Sass variables and maps via the "Custom SCSS" field of the Appearance form and this custom value via `humhub\components\Theme::variable()`
+- Chg #7852: Font family set for emails
+- Enh #7852: Unit tests for `humhub\helpers\ScssHelper` class
+- Fix #7861: Post attachments container width
+- Ehn #7864: Rename proxy settings
+- Fix #7865: In mail notifications, use auto-contrast color in header, and increase font weight in buttons if light background
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------
