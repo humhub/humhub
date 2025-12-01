@@ -163,7 +163,7 @@ $config = [
             'class' => \humhub\components\View::class,
             'theme' => [
                 'class' => \humhub\components\Theme::class,
-                'name' => 'HumHub',
+                'name' => \humhub\components\Theme::CORE_THEME_NAME,
             ],
         ],
         'db' => [

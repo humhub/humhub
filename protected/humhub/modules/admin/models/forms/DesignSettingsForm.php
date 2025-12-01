@@ -10,6 +10,7 @@ namespace humhub\modules\admin\models\forms;
 
 use humhub\components\InstallationState;
 use humhub\components\Theme;
+use humhub\helpers\ScssHelper;
 use humhub\helpers\ThemeHelper;
 use humhub\libs\LogoImage;
 use humhub\modules\file\validators\ImageSquareValidator;
@@ -18,6 +19,7 @@ use humhub\modules\user\helpers\LoginBackgroundImageHelper;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\widgets\mails\MailHeaderImage;
+use RuntimeException;
 use ScssPhp\ScssPhp\Compiler;
 use ScssPhp\ScssPhp\Exception\SassException;
 use Yii;
@@ -200,14 +202,28 @@ class DesignSettingsForm extends Model
             [
                 'themeCustomScss',
                 function ($attribute, $params, $validator): void {
-                    $compiler = new Compiler();
+                    // Test Sass Variables and Maps extractor
                     try {
-                        $compiler->compileString($this->$attribute)->getCss();
+                        [$customVariables, $customMaps, $otherCustomScss] = ScssHelper::extractVariablesAndMaps($this->themeCustomScss);
+                    } catch (SassException|RuntimeException $e) {
+                        $this->addError(
+                            $attribute,
+                            Yii::t('AdminModule.settings', 'Cannot compile SCSS to CSS:') . ' ' . $e->getMessage(),
+                        );
+                        return;
+                    }
+
+                    // Test compiling the CSS
+                    $compiler = new Compiler();
+                    $scssSource = $customVariables . PHP_EOL . $customMaps . PHP_EOL . $otherCustomScss;
+                    try {
+                        $compiler->compileString($scssSource)->getCss();
                     } catch (SassException $e) {
                         $this->addError(
                             $attribute,
                             Yii::t('AdminModule.settings', 'Cannot compile SCSS to CSS:') . ' ' . $e->getMessage(),
                         );
+                        return;
                     }
                 },
             ],
