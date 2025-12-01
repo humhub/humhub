@@ -133,10 +133,6 @@ class ScssHelper
         $compiler = new Compiler();
         $compiler->compileString($scss);
 
-        // Remove comments
-        $scss = preg_replace('/\/\*.*?\*\//s', '', $scss);
-        $scss = preg_replace('/\/\/.*$/m', '', $scss);
-
         $lines = explode("\n", $scss);
         $variables = [];
         $maps = [];
@@ -186,6 +182,11 @@ class ScssHelper
      */
     private static function isMap(string $content): bool
     {
+        // Maps are always multi-line in SCSS
+        if (strpos($content, "\n") === false) {
+            return false;
+        }
+
         $inString = false;
         $stringDelimiter = null;
 
