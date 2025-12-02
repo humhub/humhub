@@ -172,7 +172,7 @@ class SetupController extends Controller
         $info = [];
         $errors = [];
         if (StringHelper::startsWith($serverSoftware, 'apache')) {
-            $info[] = Yii::t('InstallerModule.base','<strong>Apache</strong> web server detected.');
+            $info[] = Yii::t('InstallerModule.base', '<strong>Apache</strong> web server detected.');
             if (function_exists('apache_get_modules')) {
                 $mods = apache_get_modules();
                 if (in_array('mod_rewrite', $mods)) {
