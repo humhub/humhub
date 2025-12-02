@@ -12,7 +12,7 @@ class ThemeHelperTest extends HumHubDbTestCase
 {
     public function testBuildCssForDefaultTheme()
     {
-        $theme = ThemeHelper::getThemeByName('HumHub');
+        $theme = ThemeHelper::getThemeByName(Theme::CORE_THEME_NAME);
         $this->testTheme($theme);
 
         // Clear the assets folder
@@ -38,7 +38,7 @@ class ThemeHelperTest extends HumHubDbTestCase
 
     private function createTheme(string $newThemeName): ?Theme
     {
-        $sourceThemeDir = ThemeHelper::getThemeByName('HumHub')->getBasePath();
+        $sourceThemeDir = ThemeHelper::getThemeByName(Theme::CORE_THEME_NAME)->getBasePath();
         $newThemeDir = Yii::getAlias('@webroot/themes') . '/' . $newThemeName;
 
         FileHelper::removeDirectory($newThemeDir);

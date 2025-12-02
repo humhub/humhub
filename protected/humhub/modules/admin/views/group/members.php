@@ -80,18 +80,16 @@ AdminGroupAsset::register($this);
                         'attribute' => 'is_manager',
                         'label' => Yii::t('AdminModule.user', 'Group Manager'),
                         'format' => 'raw',
-                        'value' => function (User $user) use ($group, $canManage) {
-                            return Html::dropDownList('role', $group->isManager($user), [
-                                Yii::t('AdminModule.user', 'No'),
-                                Yii::t('AdminModule.user', 'Yes'),
-                            ], [
-                                'data-action-change' => 'admin.group.setManagerRole',
-                                'data-action-url' => Url::to(['edit-manager-role']),
-                                'data-userid' => $user->id,
-                                'data-groupid' => $group->id,
-                                'disabled' => !$canManage,
-                            ]);
-                        },
+                        'value' => fn(User $user) => Html::dropDownList('role', $group->isManager($user), [
+                            Yii::t('AdminModule.user', 'No'),
+                            Yii::t('AdminModule.user', 'Yes'),
+                        ], [
+                            'data-action-change' => 'admin.group.setManagerRole',
+                            'data-action-url' => Url::to(['edit-manager-role']),
+                            'data-userid' => $user->id,
+                            'data-groupid' => $group->id,
+                            'disabled' => !$canManage,
+                        ]),
                     ],
                     [
                         'class' => 'yii\grid\ActionColumn',

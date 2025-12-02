@@ -61,14 +61,14 @@ class m220121_193617_oembed_setting_update extends Migration
             $providerExists = false;
 
             foreach ($oembedProviders as $provider) {
-                if (preg_match($provider['pattern'], $providerUrl)) {
+                if (preg_match($provider['pattern'], (string) $providerUrl)) {
                     $providerExists = true;
                 }
             }
 
             if (!$providerExists) {
                 $oembedProviders[$providerUrl] = [
-                    'pattern' => '/' . preg_quote($providerUrl, '/') . '/',
+                    'pattern' => '/' . preg_quote((string) $providerUrl, '/') . '/',
                     'endpoint' => $providerEndpoint,
                 ];
             }

@@ -12,6 +12,7 @@ use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\helpers\ArrayHelper;
 use humhub\libs\StringHelper;
+use humhub\helpers\ConfigHelper;
 use humhub\modules\admin\widgets\PrerequisitesList;
 use humhub\modules\installer\forms\DatabaseForm;
 use humhub\modules\installer\libs\DynamicConfig;
@@ -68,8 +69,11 @@ class SetupController extends Controller
 
         $dynamicConfig = new DynamicConfig();
         $model = new DatabaseForm();
+        $model->autoLoad();
 
-        if (($model->autoLoad() || $model->load(Yii::$app->request->post())) && $model->validate()) {
+        $postLoaded = $model->load(Yii::$app->request->post());
+
+        if (($this->module->enableAutoSetup || $postLoaded) && $model->validate()) {
             try {
                 if ($model->create) {
                     /** @var yii\db\Connection $temporaryConnection */
@@ -85,14 +89,18 @@ class SetupController extends Controller
                     }
                 }
 
-                $dbConfig = $model->getDbConfigAsArray(true);
-
+                $dbConfig = $model->getDbConfigAsArray();
                 /** @var yii\db\Connection $temporaryConnection */
                 $temporaryConnection = Yii::createObject($dbConfig);
                 // Try access to the given database
                 $temporaryConnection->open();
 
-                $dynamicConfig->content['components']['db'] = $dbConfig;
+                if ($postLoaded) {
+                    $dynamicConfig->content['components']['db'] = $model->getIncompleteFixedConfig();
+                } else {
+                    $dynamicConfig->content = [];
+                }
+
                 $dynamicConfig->save();
 
                 return $this->redirect(['migrate']);
@@ -101,8 +109,14 @@ class SetupController extends Controller
             }
         }
 
-        $model->password = '';
-        return $this->render('database', ['model' => $model, 'errorMessage' => $errorMessage]);
+        if (!$model->isFixed('password')) {
+            $model->password = '';
+        }
+
+        return $this->render('database', [
+            'model' => $model,
+            'errorMessage' => $errorMessage,
+        ]);
     }
 
 
@@ -121,11 +135,21 @@ class SetupController extends Controller
      */
     public function actionCron()
     {
-        if ($this->module->enableAutoSetup) {
+        if ($this->module->enableAutoSetup || filter_var($_ENV['HUMHUB_DOCKER'] ?? false, FILTER_VALIDATE_BOOLEAN)) {
             return $this->redirect(['finalize']);
         }
 
-        return $this->render('cron', []);
+        $systemUser = get_current_user();
+        if (function_exists('posix_getpwuid') && function_exists('posix_geteuid')) {
+            $userInfo = posix_getpwuid(posix_geteuid());
+            if (!empty($userInfo['name'])) {
+                $systemUser = $userInfo['name'];
+            }
+        }
+
+        return $this->render('cron', [
+            'systemUser' => $systemUser,
+        ]);
     }
 
     /**
@@ -133,7 +157,13 @@ class SetupController extends Controller
      */
     public function actionPrettyUrls()
     {
-        if ($this->module->enableAutoSetup) {
+        if (
+            $this->module->enableAutoSetup
+            || ConfigHelper::instance()->get(
+                'components.urlManager.enablePrettyUrl',
+                ConfigHelper::SET_COMMON | ConfigHelper::SET_ENV,
+            )
+        ) {
             return $this->redirect(['finalize']);
         }
 

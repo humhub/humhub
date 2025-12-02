@@ -1,6 +1,69 @@
+//
+// Mixins
+// --------------------------------------------------
+
 @mixin text-break {
     word-wrap: break-word;
     overflow-wrap: break-word;
     word-break: break-word;
     hyphens: auto;
+}
+
+// Community Navbar horizontal scrolling
+@mixin scroll-navbar() {
+    width: 100%;
+    display: inline !important;
+    white-space: nowrap;
+    float: left;
+    position: relative;
+    overflow-x: scroll !important;
+}
+
+@mixin button-variant-dark-active($color, $darken-amount: 10%) {
+    --bs-btn-active-bg: #{darken($color, $darken-amount)};
+}
+
+@mixin listGroupItemActiveOrFocus {
+    z-index: 2;
+    border-left: 3px solid var(--bs-accent) !important;
+}
+
+@mixin mobileListGroupItemActiveOrFocus {
+    background: var(--bs-primary) !important;
+    color: var(--hh-primary-contrast) !important;
+    border-left: none !important;
+}
+
+// $see http://gethumhub.com/css/#forms-control-validation
+@mixin select2-validation-state-focus($color) {
+    $shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px lighten($color, 20%);
+
+    &.select2-dropdown,
+    &.select2-selection {
+        border-color: $color;
+    }
+
+    &.select2-container--focus .select2-selection,
+    &.select2-container--open .select2-selection {
+        @include box-shadow($shadow);
+        border-color: darken($color, 10%);
+    }
+
+    &.select2-drop.select2-drop-above {
+        border-top-color: darken($color, 10%);
+    }
+}
+
+// dropdown arrow when dropdown is open
+@mixin select2-dropdown-arrow() {
+    .select2-selection--single {
+        /**
+         * Make the dropdown arrow point up while the dropdown is visible.
+         */
+
+        .select2-selection__arrow b {
+            border-color: transparent transparent $dropdown-border-color transparent;
+            border-width: 0 $caret-width $caret-width $caret-width;
+        }
+    }
 }

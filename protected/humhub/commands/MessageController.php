@@ -87,7 +87,7 @@ class MessageController extends \yii\console\controllers\MessageController
             if ($module !== null) {
                 // Use Module Directory
                 $dirName = str_replace(Yii::getAlias("@humhub/messages"), $module->getBasePath() . '/messages', $dirNameBase);
-                preg_match('/.*?Module\.(.*)/', $category, $result);
+                preg_match('/.*?Module\.(.*)/', (string) $category, $result);
                 $category = $result[1];
             } else {
                 // Use Standard HumHub Directory

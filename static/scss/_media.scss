@@ -2,80 +2,82 @@
 // Media
 // --------------------------------------------------
 
-.content span {
-    @include text-break;
-}
-
-#blueimp-gallery {
-    .slide {
-        img {
-            max-height: 80%;
-        }
+@if not $prev-media {
+    .content span {
+        @include text-break;
     }
-}
 
-
-audio, canvas, progress, video {
-    display: inline-block;
-    vertical-align: baseline;
-    max-width: 100%;
-    height: auto;
-}
-
-img {
-    image-orientation: from-image;
-}
-
-.img-profile-space {
-    position: relative;
-
-    .img-space {
-        position: absolute;
-        top: 15px;
-        left: 15px;
-    }
-}
-
-.rounded {
-    border-radius: 3px;
-}
-
-.has-online-status {
-    position: relative;
-    display: inline-block;
-    margin-bottom: 10px;
-
-    .user-online-status {
-        aspect-ratio: 1 / 1;
-        width: 30%;
-        border-radius: 100%;
-        position: absolute;
-        right: -10%;
-        bottom: -10%;
-        border: 1px solid transparent;
-
-        &.user-is-online {
-            border-color: var(--hh-background-color-main);
-            background-color: var(--bs-success);
-        }
-
-        &.user-is-offline {
-            // Invisible but a color can be added in a custom theme
+    #blueimp-gallery {
+        .slide {
+            img {
+                max-height: 80%;
+            }
         }
     }
 
-    &.img-size-small {
-        margin-bottom: 5px;
+
+    audio, canvas, progress, video {
+        display: inline-block;
+        vertical-align: baseline;
+        max-width: 100%;
+        height: auto;
+    }
+
+    img {
+        image-orientation: from-image;
+    }
+
+    .img-profile-space {
+        position: relative;
+
+        .img-space {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+        }
+    }
+
+    .rounded {
+        border-radius: 3px;
+    }
+
+    .has-online-status {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 10px;
 
         .user-online-status {
-            width: 10px;
-            right: -3px;
-            bottom: -3px;
-        }
-    }
+            aspect-ratio: 1 / 1;
+            width: 30%;
+            border-radius: 100%;
+            position: absolute;
+            right: -10%;
+            bottom: -10%;
+            border: 1px solid transparent;
 
-    &.img-size-large .user-online-status {
-        width: 20px;
-        border-width: 2px;
+            &.user-is-online {
+                border-color: var(--hh-background-color-main);
+                background-color: var(--bs-success);
+            }
+
+            &.user-is-offline {
+                // Invisible but a color can be added in a custom theme
+            }
+        }
+
+        &.img-size-small {
+            margin-bottom: 5px;
+
+            .user-online-status {
+                width: 10px;
+                right: -3px;
+                bottom: -3px;
+            }
+        }
+
+        &.img-size-large .user-online-status {
+            width: 20px;
+            border-width: 2px;
+        }
     }
 }

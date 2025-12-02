@@ -52,12 +52,12 @@ class MetaSearchService
             return;
         }
 
-        $cacheKey = get_class($this->provider)
+        $cacheKey = $this->provider::class
             . Yii::$app->user->id
             . sha1($this->provider->getKeyword() . json_encode($this->provider->getRoute()));
 
         // Possible tags: 'search-content', 'search-user', 'search-space', 'search-marketplace', 'search-mail', 'search-advanced_search' and others.
-        $cacheTag = 'search-' . preg_replace('#^.+?\\\\modules\\\\(.+?)\\\\.+$#i', '$1', get_class($this->provider));
+        $cacheTag = 'search-' . preg_replace('#^.+?\\\\modules\\\\(.+?)\\\\.+$#i', '$1', $this->provider::class);
 
         $data = Yii::$app->cache->getOrSet(
             $cacheKey,

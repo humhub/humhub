@@ -1,75 +1,82 @@
 //
 // Login
 // --------------------------------------------------
-.login-container {
-    background-color: var(--bs-primary);
-    background-image: linear-gradient(to right, $primary 0%, lighten($primary, 10%) 50%, lighten($primary, 10%) 100%), linear-gradient(to right, lighten($primary, 5%) 0%, lighten($primary, 25%) 51%, lighten($primary, 20%) 100%);
-    background-size: 100% 100%;
-    position: relative;
-    padding-top: 40px;
 
-    #img-logo {
-        max-width: 100%;
-        padding: 0 16px;
-    }
+@if not $prev-login {
+    .login-container {
+        background-color: var(--bs-primary);
+        background-image: linear-gradient(to right, $primary 0%, lighten($primary, 10%) 50%, lighten($primary, 10%) 100%), linear-gradient(to right, lighten($primary, 5%) 0%, lighten($primary, 25%) 51%, lighten($primary, 20%) 100%);
+        background-size: 100% 100%;
+        position: relative;
+        padding-top: 40px;
 
-    .text {
-        color: var(--hh-text-color-contrast);
-        font-size: 12px;
-        margin-bottom: 15px;
-
-        a {
-            color: var(--hh-text-color-contrast);
-            text-decoration: underline;
+        #img-logo {
+            max-width: 100%;
+            padding: 0 16px;
         }
-    }
 
-    h1,
-    h2 {
-        color: var(--hh-text-color-contrast) !important;
-    }
+        .text {
+            color: var(--hh-text-color-contrast);
+            font-size: 12px;
+            margin-bottom: 15px;
 
-    .panel {
-        box-shadow: 0 0 15px #627d92;
-
-        .panel-heading,
-        .panel-body {
-            padding: 15px;
+            a {
+                color: var(--hh-text-color-contrast);
+                text-decoration: underline;
+            }
         }
 
         h1,
         h2 {
-            color: var(--hh-text-color-main) !important;
+            color: var(--hh-text-color-contrast) !important;
         }
-    }
-
-    select {
-        color: var(--hh-text-color-highlight);
-    }
-
-    #user-auth-login {
-        max-width: 500px;
-        text-align: center;
 
         .panel {
-            text-align: left;
+            box-shadow: 0 0 15px #627d92;
+
+            .panel-heading,
+            .panel-body {
+                padding: 15px;
+            }
+
+            h1,
+            h2 {
+                color: var(--hh-text-color-main) !important;
+            }
+        }
+
+        select {
+            color: var(--hh-text-color-highlight);
+        }
+
+        #user-auth-login {
+            text-align: center;
+            max-width: 330px;
+
+            &.has-multiple-auth-buttons {
+                max-width: 500px;
+            }
+
+            .panel {
+                text-align: left;
+            }
         }
     }
-}
 
-html.login-layout-background {
-    height: 100%;
-    margin: 0;
+    html.login-layout-background {
+        height: 100%;
+        margin: 0;
 
-    body.login-container {
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
+        body.login-container {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
     }
-}
 
-#account-login-form {
-    .mb-3 {
-        margin-bottom: 10px;
+    #account-login-form {
+        .mb-3 {
+            margin-bottom: 10px;
+        }
     }
 }

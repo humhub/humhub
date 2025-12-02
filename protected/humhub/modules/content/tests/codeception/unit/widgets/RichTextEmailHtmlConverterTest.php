@@ -210,7 +210,7 @@ class RichTextEmailHtmlConverterTest extends HumHubDbTestCase
         $allEmojis = EmojiMap::getData();
         foreach ($allEmojis as $emoji => $unicode) {
             $this->assertConversionResult(
-                addcslashes($emoji, '*') . ' = :' . $emoji . ':',
+                addcslashes((string) $emoji, '*') . ' = :' . $emoji . ':',
                 '<p>' . str_replace('&', '&amp;', $emoji) . ' = ' . $unicode . '</p>',
             );
         }

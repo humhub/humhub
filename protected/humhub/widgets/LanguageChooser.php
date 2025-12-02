@@ -33,6 +33,7 @@ use yii\base\Widget;
 class LanguageChooser extends Widget
 {
     public bool $vertical = false;
+    public bool $hideLabel = false;
 
     /**
      * @inheritdoc
@@ -54,7 +55,7 @@ class LanguageChooser extends Widget
             'model' => $model,
             'languages' => Yii::$app->i18n->getAllowedLanguages(),
             'vertical' => $this->vertical,
+            'hideLabel' => $this->hideLabel,
         ]);
     }
-
 }

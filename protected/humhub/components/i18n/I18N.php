@@ -216,21 +216,21 @@ class I18N extends BaseI18N
             $fixedParams = [];
             // Try to fix old placeholder formats
             foreach ($params as $param => $value) {
-                if (str_starts_with($param, "%") && str_ends_with($param, "%") && strlen($param) > 2) {
+                if (str_starts_with((string) $param, "%") && str_ends_with((string) $param, "%") && strlen((string) $param) > 2) {
                     // Fix: %param% style params
                     $fixedParam = str_replace("%", "", $param);
                     $fixedParams[$fixedParam] = $value;
                     $message = str_replace('%' . $fixedParam . '%', '{' . $fixedParam . '}', $message);
-                } elseif (str_starts_with($param, "%")) {
+                } elseif (str_starts_with((string) $param, "%")) {
                     // Fix: %param style params
                     $fixedParam = str_replace("%", "", $param);
                     $fixedParams[$fixedParam] = $value;
                     $message = str_replace('%' . $fixedParam, '{' . $fixedParam . '}', $message);
-                } elseif (str_starts_with($param, "{") && str_ends_with($param, "}")) {
+                } elseif (str_starts_with((string) $param, "{") && str_ends_with((string) $param, "}")) {
                     // Fix: {param} style params
                     $fixedParam = str_replace(['{', '}'], "", $param);
                     $fixedParams[$fixedParam] = $value;
-                } elseif (str_starts_with($param, ":")) {
+                } elseif (str_starts_with((string) $param, ":")) {
                     // Fix: :param style params
                     $fixedParam = str_replace(':', "", $param);
                     $fixedParams[$fixedParam] = $value;

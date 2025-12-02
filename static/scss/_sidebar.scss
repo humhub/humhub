@@ -1,5 +1,11 @@
-@include media-breakpoint-down(lg) {
-    .layout-sidebar-container {
-        display: none;
+//
+// Sidebar
+// --------------------------------------------------
+
+@if not $prev-sidebar {
+    @include media-breakpoint-down(lg) {
+        .layout-sidebar-container {
+            display: none;
+        }
     }
 }

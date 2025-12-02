@@ -65,7 +65,7 @@ class MultiSelect extends BasePicker
                 continue;
             }
 
-            $result[$key] = $this->buildItemOption([$key => $value], in_array($key, $this->selection, true));
+            $result[$key] = $this->buildItemOption([$key => $value], in_array($key, $this->selection));
         }
         return $result;
     }
