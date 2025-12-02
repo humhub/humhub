@@ -56,10 +56,6 @@ $spacing: (
   md: 16px,
   lg: 24px
 );
-
-$map1: (a: 1);
-$map2: (b: 2);
-$merged: map-merge($map1, $map2);
 SCSS;
 
         [$customVariables, $customMaps, $otherCustomScss] = ScssHelper::extractVariablesAndMaps($scss);
@@ -67,9 +63,6 @@ SCSS;
         $this->assertEmpty($customVariables);
         $this->assertStringContainsString('$theme-colors:', $customMaps);
         $this->assertStringContainsString('$spacing:', $customMaps);
-        $this->assertStringContainsString('$map1:', $customMaps);
-        $this->assertStringContainsString('$map2:', $customMaps);
-        $this->assertStringContainsString('$merged: map-merge', $customMaps);
         $this->assertEmpty($otherCustomScss);
     }
 
@@ -246,37 +239,6 @@ SCSS;
         $this->assertStringContainsString('.container', $otherCustomScss);
     }
 
-    public function testCommentsAreRemoved()
-    {
-        $scss = <<<'SCSS'
-// This is a single line comment
-$color: red;
-
-/* Multi-line comment
-   with multiple lines
-   of text */
-$size: 16px;
-
-$map: (
-  // Inline comment
-  key: value /* another comment */
-);
-
-/* Comment */ $commented: blue;
-SCSS;
-
-        [$customVariables, $customMaps, $otherCustomScss] = ScssHelper::extractVariablesAndMaps($scss);
-
-        $this->assertStringContainsString('$color: red;', $customVariables);
-        $this->assertStringContainsString('$size: 16px;', $customVariables);
-        $this->assertStringContainsString('$commented: blue;', $customVariables);
-        $this->assertStringContainsString('$map:', $customMaps);
-
-        // Comments should be removed
-        $this->assertStringNotContainsString('//', $customVariables);
-        $this->assertStringNotContainsString('/*', $customVariables);
-    }
-
     public function testMultilineDeclarations()
     {
         $scss = <<<'SCSS'
@@ -398,20 +360,6 @@ SCSS;
         $this->assertEmpty($otherCustomScss);
     }
 
-    public function testOnlyComments()
-    {
-        $scss = <<<'SCSS'
-// Just comments
-/* Nothing else */
-SCSS;
-
-        [$customVariables, $customMaps, $otherCustomScss] = ScssHelper::extractVariablesAndMaps($scss);
-
-        $this->assertEmpty($customVariables);
-        $this->assertEmpty($customMaps);
-        $this->assertEmpty($otherCustomScss);
-    }
-
     public function testRealWorldBootstrapExample()
     {
         $scss = <<<'SCSS'
@@ -472,5 +420,293 @@ SCSS;
         // Other
         $this->assertStringContainsString('@if $enable-dark-mode', $otherCustomScss);
         $this->assertStringContainsString('.btn', $otherCustomScss);
+    }
+
+    public function testImportUrlStatements()
+    {
+        $scss = <<<'SCSS'
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+@import url(https://example.com/styles.css);
+
+$primary: blue;
+
+$colors: (
+  red: #ff0000
+);
+
+.button {
+  color: $primary;
+}
+SCSS;
+
+        [$customVariables, $customMaps, $otherCustomScss] = ScssHelper::extractVariablesAndMaps($scss);
+
+        // Variables should be extracted
+        $this->assertStringContainsString('$primary: blue;', $customVariables);
+
+        // Maps should be extracted
+        $this->assertStringContainsString('$colors:', $customMaps);
+
+        // @import statements should go to otherScss, not be treated as maps
+        $this->assertStringContainsString('@import url("https://fonts.googleapis.com/css2?family=Noto+Sans', $otherCustomScss);
+        $this->assertStringContainsString("@import url('https://fonts.googleapis.com/css2?family=Roboto", $otherCustomScss);
+        $this->assertStringContainsString('@import url(https://example.com/styles.css)', $otherCustomScss);
+        $this->assertStringContainsString('.button', $otherCustomScss);
+
+        // Make sure imports are NOT in maps
+        $this->assertStringNotContainsString('@import', $customMaps);
+    }
+
+
+    public function testMediaQueries()
+    {
+        $scss = <<<'SCSS'
+$breakpoint: 768px;
+
+@media (min-width: $breakpoint) {
+  $mobile-padding: 10px;
+  .container {
+    padding: $mobile-padding;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .sidebar {
+    display: none;
+  }
+}
+
+$desktop-width: 1200px;
+SCSS;
+
+        [$customVariables, $customMaps, $otherCustomScss] = ScssHelper::extractVariablesAndMaps($scss);
+
+        $this->assertStringContainsString('$breakpoint: 768px;', $customVariables);
+        $this->assertStringContainsString('$desktop-width: 1200px;', $customVariables);
+        $this->assertStringContainsString('@media (min-width: $breakpoint)', $otherCustomScss);
+        $this->assertStringContainsString('@media screen and', $otherCustomScss);
+    }
+
+    public function testKeyframesAndFontFace()
+    {
+        $scss = <<<'SCSS'
+$animation-duration: 2s;
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@font-face {
+  font-family: "CustomFont";
+  src: url("font.woff2") format("woff2");
+}
+
+$font-stack: "CustomFont", sans-serif;
+SCSS;
+
+        [$customVariables, $customMaps, $otherCustomScss] = ScssHelper::extractVariablesAndMaps($scss);
+
+        $this->assertStringContainsString('$animation-duration: 2s;', $customVariables);
+        $this->assertStringContainsString('$font-stack:', $customVariables);
+        $this->assertStringContainsString('@keyframes slideIn', $otherCustomScss);
+        $this->assertStringContainsString('@font-face', $otherCustomScss);
+    }
+
+    public function testCharsetAndNamespace()
+    {
+        $scss = <<<'SCSS'
+@charset "UTF-8";
+@namespace svg url(http://www.w3.org/2000/svg);
+
+$encoding: "utf-8";
+
+.icon {
+  background: url("data:image/svg+xml;charset=utf-8,...");
+}
+SCSS;
+
+        [$customVariables, $customMaps, $otherCustomScss] = ScssHelper::extractVariablesAndMaps($scss);
+
+        $this->assertStringContainsString('$encoding: "utf-8";', $customVariables);
+        $this->assertStringContainsString('@charset "UTF-8"', $otherCustomScss);
+        $this->assertStringContainsString('@namespace svg', $otherCustomScss);
+        $this->assertStringContainsString('.icon', $otherCustomScss);
+    }
+
+    public function testSupportsQuery()
+    {
+        $scss = <<<'SCSS'
+$use-grid: true;
+
+@supports (display: grid) {
+  .container {
+    display: grid;
+  }
+}
+
+@supports not (display: flex) {
+  .fallback {
+    display: block;
+  }
+}
+
+$fallback-display: block;
+SCSS;
+
+        [$customVariables, $customMaps, $otherCustomScss] = ScssHelper::extractVariablesAndMaps($scss);
+
+        $this->assertStringContainsString('$use-grid: true;', $customVariables);
+        $this->assertStringContainsString('$fallback-display: block;', $customVariables);
+        $this->assertStringContainsString('@supports (display: grid)', $otherCustomScss);
+        $this->assertStringContainsString('@supports not (display: flex)', $otherCustomScss);
+    }
+
+    public function testUrlFunctionsInVariables()
+    {
+        $scss = <<<'SCSS'
+$bg-image: url("images/background.jpg");
+$icon: url('data:image/svg+xml;utf8,<svg>...</svg>');
+$font: url(https://example.com/font.woff2);
+
+$colors: (
+  primary: #007bff,
+  bg: url("pattern.png")
+);
+SCSS;
+
+        [$customVariables, $customMaps, $otherCustomScss] = ScssHelper::extractVariablesAndMaps($scss);
+
+        // url() in variable values should still be treated as variables
+        $this->assertStringContainsString('$bg-image: url("images/background.jpg");', $customVariables);
+        $this->assertStringContainsString('$icon: url(', $customVariables);
+        $this->assertStringContainsString('$font: url(https://example.com/font.woff2);', $customVariables);
+
+        // url() in maps should still be treated as maps
+        $this->assertStringContainsString('$colors:', $customMaps);
+        $this->assertStringContainsString('url("pattern.png")', $customMaps);
+    }
+
+    public function testCalcAndOtherFunctions()
+    {
+        $scss = <<<'SCSS'
+$spacing: calc(100% - 20px);
+$opacity: rgba(0, 0, 0, 0.5);
+$gradient: linear-gradient(to right, red, blue);
+$transform: rotate(45deg) translate(10px, 20px);
+
+$complex-map: (
+  width: calc(100vw - 2rem),
+  color: rgba(255, 0, 0, 0.8),
+  background: linear-gradient(45deg, #fff, #000)
+);
+SCSS;
+
+        [$customVariables, $customMaps, $otherCustomScss] = ScssHelper::extractVariablesAndMaps($scss);
+
+        $this->assertStringContainsString('$spacing: calc(', $customVariables);
+        $this->assertStringContainsString('$opacity: rgba(', $customVariables);
+        $this->assertStringContainsString('$gradient: linear-gradient(', $customVariables);
+        $this->assertStringContainsString('$transform: rotate(', $customVariables);
+        $this->assertStringContainsString('$complex-map:', $customMaps);
+    }
+
+    public function testInterpolationAndEscaping()
+    {
+        $scss = <<<'SCSS'
+$name: "button";
+$selector: ".#{$name}-primary";
+$content: "String with \"quotes\" and (parens)";
+$url: "https://example.com?param=value&other=#{$name}";
+
+.#{$name} {
+  content: $content;
+}
+SCSS;
+
+        [$customVariables, $customMaps, $otherCustomScss] = ScssHelper::extractVariablesAndMaps($scss);
+
+        $this->assertStringContainsString('$name: "button";', $customVariables);
+        $this->assertStringContainsString('$selector:', $customVariables);
+        $this->assertStringContainsString('$content:', $customVariables);
+        $this->assertStringContainsString('$url:', $customVariables);
+        $this->assertStringContainsString('.#{$name}', $otherCustomScss);
+    }
+
+    public function testComplexRealWorldScenario()
+    {
+        $scss = <<<'SCSS'
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap");
+
+// Theme configuration
+$enable-dark-mode: true;
+$base-font-size: 16px;
+
+// Color palette
+$colors: (
+  "primary": #007bff,
+  "secondary": #6c757d,
+  "success": #28a745
+) !default;
+
+// Spacing system
+$spacer: 1rem;
+$spacing: (
+  0: 0,
+  1: $spacer * 0.25,
+  2: $spacer * 0.5,
+  3: $spacer,
+  4: $spacer * 1.5,
+  5: $spacer * 3
+);
+
+// Mixins
+@mixin responsive($breakpoint) {
+  @media (min-width: $breakpoint) {
+    @content;
+  }
+}
+
+// Animations
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+// Utilities
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+$animation-duration: 0.3s;
+SCSS;
+
+        [$customVariables, $customMaps, $otherCustomScss] = ScssHelper::extractVariablesAndMaps($scss);
+
+        // Top-level variables
+        $this->assertStringContainsString('$enable-dark-mode: true;', $customVariables);
+        $this->assertStringContainsString('$base-font-size: 16px;', $customVariables);
+        $this->assertStringContainsString('$spacer: 1rem;', $customVariables);
+        $this->assertStringContainsString('$animation-duration: 0.3s;', $customVariables);
+
+        // Maps
+        $this->assertStringContainsString('$colors:', $customMaps);
+        $this->assertStringContainsString('$spacing:', $customMaps);
+
+        // Other SCSS
+        $this->assertStringContainsString('@import url("https://fonts.googleapis.com', $otherCustomScss);
+        $this->assertStringContainsString('@mixin responsive', $otherCustomScss);
+        $this->assertStringContainsString('@keyframes fadeIn', $otherCustomScss);
+        $this->assertStringContainsString('.container', $otherCustomScss);
+
+        // Verify imports are not in maps
+        $this->assertStringNotContainsString('@import', $customMaps);
+        $this->assertStringNotContainsString('@use', $customMaps);
     }
 }

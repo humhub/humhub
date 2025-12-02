@@ -16,6 +16,7 @@ HumHub Changelog
 - Enh #7852: Unit tests for `humhub\helpers\ScssHelper` class
 - Fix #7861: Post attachments container width
 - Ehn #7864: Rename proxy settings
+- Fix #7867: ScssHelper variable extractors for code with parentheses, and add more tests
 - Fix #7865: In mail notifications, use auto-contrast color in header, and increase font weight in buttons if light background
 - Fix #7868: Add a minimal fallback CSS in case of CSS compilation issue
 
