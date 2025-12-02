@@ -16,9 +16,12 @@ use yii\helpers\Url;
 /* @var View $this */
 /* @var string $content */
 
-$defaultBackground = $this->theme->variable('background-color-main', '#fff');
-$colorPrimary = $this->theme->variable('primary', '#708fa0');
-$soft2Color = $this->theme->variable('text-color-soft2', '#aeaeae');
+$defaultBackground = $this->theme->variable('background-color-main', DefaultMailStyle::DEFAULT_BACKGROUND_COLOR_MAIN);
+$backgroundColorPage = $this->theme->variable('background-color-page', DefaultMailStyle::DEFAULT_BACKGROUND_COLOR_PAGE);
+$colorPrimary = $this->theme->variable('primary', DefaultMailStyle::DEFAULT_COLOR_PRIMARY);
+$colorInfo = $this->theme->variable('info', DefaultMailStyle::DEFAULT_COLOR_INFO);
+$soft2Color = $this->theme->variable('text-color-soft2', DefaultMailStyle::DEFAULT_TEXT_COLOR_SOFT2);
+$fontFamily = $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY);
 $hasMailHeaderImage = MailHeaderImage::hasImage();
 ?>
 
@@ -79,7 +82,7 @@ $hasMailHeaderImage = MailHeaderImage::hasImage();
                 }
 
                 html, body {
-                    background-color: <?= $this->theme->variable('background-color-page', '#ededed') ?>;
+                    background-color: <?= $backgroundColorPage ?>;
                     margin: 0;
                     padding: 0;
                 }
@@ -102,15 +105,15 @@ $hasMailHeaderImage = MailHeaderImage::hasImage();
                 }
 
                 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
-                    color: <?= $this->theme->variable('info', '#6fdbe8') ?> !important;
+                    color: <?= $colorInfo ?> !important;
                 }
 
                 h1 a:active, h2 a:active, h3 a:active, h4 a:active, h5 a:active, h6 a:active {
-                    color: <?= $this->theme->variable('info', '#6fdbe8') ?> !important;
+                    color: <?= $colorInfo ?> !important;
                 }
 
                 h1 a:visited, h2 a:visited, h3 a:visited, h4 a:visited, h5 a:visited, h6 a:visited {
-                    color: <?= $this->theme->variable('info', '#6fdbe8') ?> !important;
+                    color: <?= $colorInfo ?> !important;
                 }
 
                 table td, table tr {
@@ -437,19 +440,19 @@ $hasMailHeaderImage = MailHeaderImage::hasImage();
                     table[id="col-underline"] {
                         float: none !important;
                         width: 100% !important;
-                        border-bottom: 1px solid <?= $this->theme->variable('background-color-page', '#ededed') ?>;
+                        border-bottom: 1px solid <?= $backgroundColorPage ?>;
                     }
 
                     td[id="col-underline"] {
                         float: none !important;
                         width: 100% !important;
-                        border-bottom: 1px solid <?= $this->theme->variable('background-color-page', '#ededed') ?>;
+                        border-bottom: 1px solid <?= $backgroundColorPage ?>;
                     }
 
                     td[class="col-underline"] {
                         float: none !important;
                         width: 100% !important;
-                        border-bottom: 1px solid <?= $this->theme->variable('background-color-page', '#ededed') ?>;
+                        border-bottom: 1px solid <?= $backgroundColorPage ?>;
                     }
 
                     td[class="text-center"] {
@@ -531,11 +534,11 @@ $hasMailHeaderImage = MailHeaderImage::hasImage();
             <?php $this->head() ?>
     </head>
 
-    <body style="font-size:12px; font-family: <?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; background-color: <?= $this->theme->variable('background-color-page', '#ededed') ?>">
+    <body style="font-size:12px; font-family: <?= $fontFamily ?>; background-color: <?= $backgroundColorPage ?>">
         <?php $this->beginBody() ?>
 
         <!--start 100% wrapper (white background) -->
-        <table width="100%" id="mainStructure" border="0" cellspacing="0" cellpadding="0" style="background-color:<?= $this->theme->variable('background-color-page', '#ededed') ?>">
+        <table width="100%" id="mainStructure" border="0" cellspacing="0" cellpadding="0" style="background-color:<?= $backgroundColorPage ?>">
 
 
             <!-- START VIEW HEADER -->
@@ -546,7 +549,7 @@ $hasMailHeaderImage = MailHeaderImage::hasImage();
                     <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container"<?= $hasMailHeaderImage ? '' : ' style="background-color: '. $colorPrimary . '"' ?>>
                         <tr>
                             <td>
-                                <?= MailHeaderImage::widget() ?>
+                                <?= MailHeaderImage::widget(['backgroundColor' => $colorPrimary]) // The background color of the container ?>
                             </td>
                         </tr>
                     </table>
@@ -629,7 +632,7 @@ $hasMailHeaderImage = MailHeaderImage::hasImage();
                                                         <table align="center" border="0" cellspacing="0" cellpadding="0" class="container2">
 
                                                             <tr>
-                                                                <td align="center" valign="top" style="font-size: 11px; line-height: 18px; font-weight:300; text-align: center; font-family: <?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>">
+                                                                <td align="center" valign="top" style="font-size: 11px; line-height: 18px; font-weight:300; text-align: center; font-family: <?= $fontFamily ?>">
 
                                                                     <?php if (isset(Yii::$app->view->params['showUnsubscribe']) && Yii::$app->view->params['showUnsubscribe'] === true) : ?>
                                                                         <span style="text-decoration: none; color: <?= $soft2Color ?>">

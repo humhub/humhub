@@ -31,19 +31,19 @@ class UrlOembedHttpClient implements UrlOembedClient
             curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
         }
 
-        if (Yii::$app->settings->get('proxy.enabled')) {
-            curl_setopt($curl, CURLOPT_PROXY, Yii::$app->settings->get('proxy.server'));
-            curl_setopt($curl, CURLOPT_PROXYPORT, Yii::$app->settings->get('proxy.port'));
+        if (Yii::$app->settings->get('proxyEnabled')) {
+            curl_setopt($curl, CURLOPT_PROXY, Yii::$app->settings->get('proxyServer'));
+            curl_setopt($curl, CURLOPT_PROXYPORT, Yii::$app->settings->get('proxyPort'));
             curl_setopt($curl, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
             curl_setopt($curl, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
             if (defined('CURLOPT_PROXYUSERNAME')) {
-                curl_setopt($curl, CURLOPT_PROXYUSERNAME, Yii::$app->settings->get('proxy.user'));
+                curl_setopt($curl, CURLOPT_PROXYUSERNAME, Yii::$app->settings->get('proxyUser'));
             }
             if (defined('CURLOPT_PROXYPASSWORD')) {
-                curl_setopt($curl, CURLOPT_PROXYPASSWORD, Yii::$app->settings->get('proxy.password'));
+                curl_setopt($curl, CURLOPT_PROXYPASSWORD, Yii::$app->settings->get('proxyPassword'));
             }
             if (defined('CURLOPT_NOPROXY')) {
-                curl_setopt($curl, CURLOPT_NOPROXY, Yii::$app->settings->get('proxy.noproxy'));
+                curl_setopt($curl, CURLOPT_NOPROXY, Yii::$app->settings->get('proxyNoproxy'));
             }
         }
         $return = curl_exec($curl);

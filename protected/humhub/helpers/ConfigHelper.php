@@ -81,7 +81,7 @@ class ConfigHelper implements StaticInstanceInterface
         );
     }
 
-    public function get($key, ?int $flags = null): ?array
+    public function get($key, ?int $flags = null): mixed
     {
         return ArrayHelper::getValue($this->toArray($flags), $key);
     }
