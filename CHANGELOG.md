@@ -46,6 +46,7 @@ HumHub Changelog
 - Fix #7759: Flush content search cache after update a record
 - Fix #7760: Content form menu text color same as background
 - Fix #7764: File Handler Dropdown menu items styling
+- Enh #7768: Improved `Pretty URL`s detection and guidance during installation
 - Fix #7767: Added PK in `content_fulltext` for Percona-XtraDB-Cluster installations
 - Fix #7771: Disable make private space as default for new users on space creating
 - Enh #7770: Implements Button `disabled()`
