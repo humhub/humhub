@@ -9,6 +9,7 @@ HumHub Changelog
 - Enh #7836: Improved `required` and `trim` validators
 - Fix #7847: Fixed missing translations in `Admin/People` page
 - Fix #7854: Tour for Spaces if no visible and active Space
+- Fix #7850: Fix required validator to not remove binary content
 - Fix #7862: Fix redirect loop on `ErrorAction`
 - Fix #7860: Fix type error in installer
 - Enh #7852: New `humhub\helpers\ScssHelper::getColorContrast()` for text color in emails, to contrast with the button background when customized
