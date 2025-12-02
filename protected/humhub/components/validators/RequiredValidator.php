@@ -13,7 +13,7 @@ class RequiredValidator extends \yii\validators\RequiredValidator
      */
     public function isEmpty($value)
     {
-        if (is_string($value) && empty(preg_replace(self::REGEX, '', $value))) {
+        if (is_string($value) && !is_numeric($value) && empty(preg_replace(self::REGEX, '', $value))) {
             return true;
         }
 
