@@ -21,6 +21,8 @@ Module and Theme Migration Guide to Bootstrap 5
 
 ## New
 
+- `humhub\helpers\ScssHelper`
+
 Widgets in these new folders:
 - `humhub\widgets\bootstrap`
 - `humhub\widgets\form`

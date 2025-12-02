@@ -41,6 +41,11 @@ use yii\base\Theme as BaseTheme;
 class Theme extends BaseTheme
 {
     /**
+     * @since 1.18
+     */
+    public const CORE_THEME_NAME = 'HumHub';
+
+    /**
      * @var string the name of the theme
      */
     public $name;
@@ -114,7 +119,15 @@ class Theme extends BaseTheme
         // Build CSS if not already done
         $cssFile = $this->publishedResourcesPath . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'theme.css';
         if (!file_exists($cssFile)) {
-            ThemeHelper::buildCss();
+            $buildResult = ThemeHelper::buildCss();
+            // If SCSS error in a Child Theme or Custom SCSS
+            if ($buildResult !== true) {
+                // Fallback to HumHub theme with no Custom SCSS for a minimal working styling
+                $coreTheme = ThemeHelper::getThemeByName(self::CORE_THEME_NAME);
+                ThemeHelper::buildCss($coreTheme, false);
+                $coreTheme->activate();
+                Yii::$app->response->refresh();
+            }
         }
 
         $mtime = file_exists($cssFile) ? filemtime($cssFile) : '';
