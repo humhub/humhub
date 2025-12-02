@@ -10,6 +10,8 @@ namespace humhub\modules\installer\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
+use humhub\helpers\ArrayHelper;
+use humhub\libs\StringHelper;
 use humhub\helpers\ConfigHelper;
 use humhub\modules\admin\widgets\PrerequisitesList;
 use humhub\modules\installer\forms\DatabaseForm;
@@ -165,7 +167,42 @@ class SetupController extends Controller
             return $this->redirect(['finalize']);
         }
 
-        return $this->render('pretty-urls');
+        $serverSoftware = strtolower($_SERVER['SERVER_SOFTWARE'] ?? '');
+
+        $info = [];
+        $errors = [];
+        if (StringHelper::startsWith($serverSoftware, 'apache')) {
+            $info[] = Yii::t('InstallerModule.base','<strong>Apache</strong> web server detected.');
+            if (function_exists('apache_get_modules')) {
+                $mods = apache_get_modules();
+                if (in_array('mod_rewrite', $mods)) {
+                    $info[] =  Yii::t('InstallerModule.base', 'The <strong>mod_rewrite</strong> module is active.');
+                } else {
+                    $errors[] = Yii::t('InstallerModule.base', 'The <strong>mod_rewrite</strong> module is not enabled.');
+                }
+            }
+            if (file_exists(Yii::getAlias('@webroot/.htaccess'))) {
+                $info[] = Yii::t('InstallerModule.base', 'The <strong>.htaccess</strong> file is in place.');
+            } else {
+                $errors[] = Yii::t('InstallerModule.base', 'The <strong>.htaccess</strong> file is not in place. In the installation folder, locate the <strong>.htaccess.dist</strong> file and rename it to <strong>.htaccess</strong>.');
+            }
+        } elseif (StringHelper::startsWith($serverSoftware, 'nginx')) {
+            $info[] = Yii::t('InstallerModule.base', '<strong>Nginx</strong> web server detected.');
+            $info[] = Yii::t('InstallerModule.base', 'Ensure the following rule is present in your configuration: <strong>try_files \$uri \$uri/ /index.php?\$args;</strong>.');
+        } else {
+            $errors[] = Yii::t('InstallerModule.base', 'Unable to automatically detect your web server type. Please ensure URL rewriting is configured.');
+        }
+
+        if ($problem = !empty($errors)) {
+            $info[] = Yii::t('InstallerModule.base', 'Pretty URLs may not work correctly.');
+        } else {
+            $info[] = Yii::t('InstallerModule.base', 'Pretty URLs should work correctly.');
+        }
+
+        return $this->render('pretty-urls', [
+            'info' => implode(' ', ArrayHelper::merge($info, $errors)),
+            'problem' => $problem,
+        ]);
     }
 
     public function actionFinalize()

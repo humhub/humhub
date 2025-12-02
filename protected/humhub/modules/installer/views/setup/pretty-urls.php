@@ -1,6 +1,12 @@
 <?php
 
 use humhub\helpers\Html;
+use humhub\widgets\bootstrap\Alert;
+
+/**
+ * @var string $info
+ * @var bool $problem
+ */
 
 ?>
 <div id="pretty-urls" class="panel panel-default animated fadeIn">
@@ -10,6 +16,7 @@ use humhub\helpers\Html;
     </div>
 
     <div class="panel-body">
+        <?= $problem ? Alert::danger($info)->closeButton(false) : Alert::success($info)->closeButton(false) ?>
         <p><?= Yii::t('InstallerModule.base', 'In the installation folder, locate the <strong>.env.example</strong> file and copy its contents into the <strong>.env</strong> file. Next, find the <strong>Pretty URLs</strong> block and uncomment it by removing the <strong>#</strong> symbol.'); ?></p>
 
         <kbd style="display: block; padding: 0.75rem 1rem;">
