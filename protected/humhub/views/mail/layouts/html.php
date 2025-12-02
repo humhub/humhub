@@ -549,7 +549,7 @@ $hasMailHeaderImage = MailHeaderImage::hasImage();
                     <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container"<?= $hasMailHeaderImage ? '' : ' style="background-color: '. $colorPrimary . '"' ?>>
                         <tr>
                             <td>
-                                <?= MailHeaderImage::widget() ?>
+                                <?= MailHeaderImage::widget(['backgroundColor' => $colorPrimary]) // The background color of the container ?>
                             </td>
                         </tr>
                     </table>

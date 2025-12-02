@@ -108,7 +108,7 @@ class ThemeHelper
             $theme = Yii::createObject(ArrayHelper::merge([
                 'class' => Theme::class,
                 'basePath' => $path,
-                'name' => basename((string) $path),
+                'name' => basename((string)$path),
             ], $options));
         } catch (InvalidConfigException $e) {
             Yii::error('Could not get theme by path "' . $path . '" - Error: ' . $e->getMessage());
@@ -231,7 +231,7 @@ class ThemeHelper
      * @return true|string true if successfully compiled, string if error occurred
      * @throws \yii\base\Exception
      */
-    public static function buildCss(?Theme $theme = null): bool|string
+    public static function buildCss(?Theme $theme = null, bool $includeCustomScss = true): bool|string
     {
         $theme ??= Yii::$app->view->theme;
         $treeThemes = static::getThemeTree($theme);
@@ -239,7 +239,9 @@ class ThemeHelper
         $designSettingsForm = new DesignSettingsForm();
 
         try {
-            [$customVariables, $customMaps, $otherCustomScss] = ScssHelper::extractVariablesAndMaps($designSettingsForm->themeCustomScss);
+            [$customVariables, $customMaps, $otherCustomScss] = $includeCustomScss
+                ? ScssHelper::extractVariablesAndMaps($designSettingsForm->themeCustomScss)
+                : ['', '', ''];
         } catch (SassException|RuntimeException $e) {
             return static::logAndGetError('Error while compiling the custom SCSS code: ' . $e->getMessage());
         }
@@ -286,8 +288,8 @@ class ThemeHelper
         $compiler->setSourceMapOptions([
             'sourceMapURL' => './theme.map',
             'sourceMapFilename' => 'theme.css',
-            'sourceRoot' => $theme->name === 'HumHub' ? '../../../static/scss/' : '../',
-            'sourceMapBasepath' => $theme->name === 'HumHub' ? Yii::getAlias('@webroot-static/scss') : $theme->getBasePath(),
+            'sourceRoot' => $theme->name === Theme::CORE_THEME_NAME ? '../../../static/scss/' : '../',
+            'sourceMapBasepath' => $theme->name === Theme::CORE_THEME_NAME ? Yii::getAlias('@webroot-static/scss') : $theme->getBasePath(),
         ]);
 
         // Define the output files
@@ -338,8 +340,8 @@ class ThemeHelper
             $scssSource .= '$dark: ' . $designSettingsForm->themeDarkColor . ';' . PHP_EOL;
         }
         $scssSource
-            .= $customVariables
-            . $customMaps
+            .= $customVariables . PHP_EOL
+            . $customMaps . PHP_EOL
             . '@import "' . implode('", "', $imports) . '";' . PHP_EOL
             . $otherCustomScss;
 
