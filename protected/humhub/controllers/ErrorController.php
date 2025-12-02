@@ -11,7 +11,7 @@ namespace humhub\controllers;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\modules\user\helpers\AuthHelper;
-use \Throwable;
+use Throwable;
 use Yii;
 use yii\base\UserException;
 use yii\helpers\Url;
@@ -19,7 +19,6 @@ use yii\web\HttpException;
 
 class ErrorController extends Controller
 {
-
     public $access = ControllerAccess::class;
 
     private ?Throwable $exception;
@@ -59,8 +58,8 @@ class ErrorController extends Controller
         }
 
         // Render special "login required" view for guests
-        if (Yii::$app->user->isGuest && $this->exception instanceof HttpException &&
-            $this->exception->statusCode == '401' && AuthHelper::isGuestAccessEnabled()) {
+        if (Yii::$app->user->isGuest && $this->exception instanceof HttpException
+            && $this->exception->statusCode == '401' && AuthHelper::isGuestAccessEnabled()) {
             Yii::$app->user->setReturnUrl(Yii::$app->request->getAbsoluteUrl());
 
             return $this->render('@humhub/views/error/401_guests', [
