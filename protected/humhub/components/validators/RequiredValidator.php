@@ -13,8 +13,8 @@ class RequiredValidator extends \yii\validators\RequiredValidator
      */
     public function isEmpty($value)
     {
-        if (is_string($value) && preg_match(self::REGEX, $value)) {
-            $value = preg_replace(self::REGEX, '', $value);
+        if (is_string($value) && empty(preg_replace(self::REGEX, '', $value))) {
+            return true;
         }
 
         return parent::isEmpty($value);
