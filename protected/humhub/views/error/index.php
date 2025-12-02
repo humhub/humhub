@@ -1,10 +1,16 @@
 <?php
 
 use humhub\helpers\Html;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\FooterMenu;
-use yii\helpers\Url;
+
+/* @var \humhub\components\View $this */
+/* @var string $message */
+/* @var string $buttonHref */
+/* @var string $buttonLabel */
 
 $this->pageTitle = Yii::t('base', 'Error');
+
 ?>
 <div class="container">
     <div class="panel panel-default">
@@ -18,7 +24,7 @@ $this->pageTitle = Yii::t('base', 'Error');
             </div>
 
             <hr>
-            <a href="<?= Url::home() ?>" class="btn btn-primary"><?= Yii::t('base', 'Back to dashboard'); ?></a>
+            <?= Button::primary($buttonLabel)->link($buttonHref); ?>
         </div>
     </div>
 
