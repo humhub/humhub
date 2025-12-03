@@ -8,7 +8,7 @@
 use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
-use humhub\modules\ui\mail\DefaultMailStyle;
+use humhub\modules\ui\mail\MailStyle;
 use humhub\modules\user\models\User;
 use humhub\widgets\mails\MailContentContainerImage;
 use humhub\widgets\TimeAgo;
@@ -38,20 +38,20 @@ use humhub\widgets\TimeAgo;
                 <table width="100%" style="table-layout:fixed;" border="0" cellspacing="0" cellpadding="0" align="left">
                     <tr>
                         <td>
-                            <a href="<?= $originator->createUrl('/user/profile', [], true) ?>" style="font-size: 15px; line-height: 22px; font-family:<?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= $this->theme->variable('text-color-highlight', '#555') ?>; font-weight:300; text-align:left">
+                            <a href="<?= $originator->createUrl('/user/profile', [], true) ?>" style="font-size: 15px; line-height: 22px; font-family:<?= MailStyle::getFontFamily() ?>; color:<?= MailStyle::getTextColorHighlight() ?>; font-weight:300; text-align:left">
                                 <?= Html::encode($originator->displayName) ?>
                             </a>
                             <?php if ($date) : ?>
-                                <span style="font-size: 11px; line-height: 22px; font-family:<?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= $this->theme->variable('text-color-soft', '#bebebe') ?>; font-weight:300; text-align:left">
+                                <span style="font-size: 11px; line-height: 22px; font-family:<?= MailStyle::getFontFamily() ?>; color:<?= MailStyle::getTextColorSoft() ?>; font-weight:300; text-align:left">
                                     <?= TimeAgo::widget(['timestamp' => $date]) ?>
                                 </span>
                             <?php endif ?>
                              <?php if ($space && !$isComment) : ?>
-                                <span style="font-size: 11px; line-height: 22px; font-family:<?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= $this->theme->variable('text-color-soft', '#bebebe') ?>; font-weight:300; text-align:left">
+                                <span style="font-size: 11px; line-height: 22px; font-family:<?= MailStyle::getFontFamily() ?>; color:<?= MailStyle::getTextColorSoft() ?>; font-weight:300; text-align:left">
                                     <?= Yii::t('ContentModule.base', 'in') ?>
                                 </span>
-                                <span style="font-size: 11px; line-height: 22px; font-family:<?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= $this->theme->variable('text-color-soft', '#bebebe') ?>; font-weight:bold; text-align:left">
-                                     <a style="font-size: 11px; line-height: 22px; font-family:<?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= $this->theme->variable('text-color-soft', '#bebebe') ?>; font-weight:bold; text-align:left; " href="<?= $space->createUrl(null, [], true) ?>">
+                                <span style="font-size: 11px; line-height: 22px; font-family:<?= MailStyle::getFontFamily() ?>; color:<?= MailStyle::getTextColorSoft() ?>; font-weight:bold; text-align:left">
+                                     <a style="font-size: 11px; line-height: 22px; font-family:<?= MailStyle::getFontFamily() ?>; color:<?= MailStyle::getTextColorSoft() ?>; font-weight:bold; text-align:left; " href="<?= $space->createUrl(null, [], true) ?>">
                                         <?= Html::encode($space->displayName) ?>
                                     </a>
                                 </span>
@@ -60,11 +60,11 @@ use humhub\widgets\TimeAgo;
                     </tr>
                     <tr>
                         <?php if($isComment) : ?>
-                            <td height="15" style="word-wrap:break-word;font-size: 14px; line-height: 22px; font-family:<?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= $this->theme->variable('text-color-main', '#777') ?>; font-weight:300; text-align:left">
+                            <td height="15" style="word-wrap:break-word;font-size: 14px; line-height: 22px; font-family:<?= MailStyle::getFontFamily() ?>; color:<?= MailStyle::getTextColorMain() ?>; font-weight:300; text-align:left">
                                 <?= $content ?>
                             </td>
                         <?php else : ?>
-                            <td height="15" style="font-size: 15px; line-height: 22px; font-family:<?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= $this->theme->variable('text-color-soft2', '#aeaeae') ?>; font-weight:300; text-align:left">
+                            <td height="15" style="font-size: 15px; line-height: 22px; font-family:<?= MailStyle::getFontFamily() ?>; color:<?= MailStyle::getTextColorSoft2() ?>; font-weight:300; text-align:left">
                                 <?= Html::encode($originator->displayNameSub) ?>
                             </td>
                         <?php endif ?>
@@ -79,7 +79,7 @@ use humhub\widgets\TimeAgo;
             <td colspan="2" height="10"></td>
         </tr>
         <tr>
-            <td colspan="2" style="word-wrap:break-word;padding-top:5px; padding-bottom:5px; font-size: 14px; line-height: 22px; font-family:<?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= $this->theme->variable('text-color-main', '#777') ?>; font-weight:300; text-align:left; border-top: 1px solid <?= $this->theme->variable('background-color-page', '#ededed') ?>">
+            <td colspan="2" style="word-wrap:break-word;padding-top:5px; padding-bottom:5px; font-size: 14px; line-height: 22px; font-family:<?= MailStyle::getFontFamily() ?>; color:<?= MailStyle::getTextColorMain() ?>; font-weight:300; text-align:left; border-top: 1px solid <?= MailStyle::getBackgroundColorPage() ?>">
 
                 <?= $content ?>
 

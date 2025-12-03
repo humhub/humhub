@@ -8,7 +8,7 @@
 
 namespace humhub\widgets\mails;
 
-use Yii;
+use humhub\modules\ui\mail\MailStyle;
 
 /**
  * MailButton renders a button for email layouts/views.
@@ -44,11 +44,11 @@ class MailButton extends \yii\base\Widget
     public function run()
     {
         if ($this->type) {
-            $this->color = Yii::$app->view->theme->variable($this->type);
+            $this->color = MailStyle::getVariable($this->text);
         }
 
         if (!$this->color) {
-            $this->color = Yii::$app->view->theme->variable('primary');
+            $this->color = MailStyle::getColorPrimary();
         }
 
         return $this->render('mailButton', [

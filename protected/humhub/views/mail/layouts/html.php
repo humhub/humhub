@@ -7,7 +7,7 @@
 
 use humhub\components\View;
 use humhub\helpers\Html;
-use humhub\modules\ui\mail\DefaultMailStyle;
+use humhub\modules\ui\mail\MailStyle;
 use humhub\widgets\FooterMenu;
 use humhub\widgets\mails\MailHeaderImage;
 use humhub\widgets\PoweredBy;
@@ -16,13 +16,14 @@ use yii\helpers\Url;
 /* @var View $this */
 /* @var string $content */
 
-$defaultBackground = $this->theme->variable('background-color-main', DefaultMailStyle::DEFAULT_BACKGROUND_COLOR_MAIN);
-$backgroundColorPage = $this->theme->variable('background-color-page', DefaultMailStyle::DEFAULT_BACKGROUND_COLOR_PAGE);
-$colorPrimary = $this->theme->variable('primary', DefaultMailStyle::DEFAULT_COLOR_PRIMARY);
-$colorInfo = $this->theme->variable('info', DefaultMailStyle::DEFAULT_COLOR_INFO);
-$soft2Color = $this->theme->variable('text-color-soft2', DefaultMailStyle::DEFAULT_TEXT_COLOR_SOFT2);
-$fontFamily = $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY);
 $hasMailHeaderImage = MailHeaderImage::hasImage();
+
+$backgroundColorMain = MailStyle::getBackgroundColorMain();
+$backgroundColorPage = MailStyle::getBackgroundColorPage();
+$colorPrimary = MailStyle::getColorPrimary();
+$colorInfo = MailStyle::getColorInfo();
+$colorSoft2 = MailStyle::getTextColorSoft2();
+$fontFamily = MailStyle::getFontFamily();
 ?>
 
 <?php $this->beginPage() ?>
@@ -38,12 +39,12 @@ $hasMailHeaderImage = MailHeaderImage::hasImage();
             <style type="text/css">
                 .ReadMsgBody {
                     width: 100%;
-                    background-color: <?= $defaultBackground ?>;
+                    background-color: <?= $backgroundColorMain ?>;
                 }
 
                 .ExternalClass {
                     width: 100%;
-                    background-color: <?= $defaultBackground ?>;
+                    background-color: <?= $backgroundColorMain ?>;
                 }
 
                 .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {
@@ -230,14 +231,14 @@ $hasMailHeaderImage = MailHeaderImage::hasImage();
 
                     table[class="full-width-text"] {
                         width: 100% !important;
-                        background-color: <?= $defaultBackground ?>;
+                        background-color: <?= $backgroundColorMain ?>;
                         padding-left: 20px !important;
                         padding-right: 20px !important;
                     }
 
                     table[class="full-width-text2"] {
                         width: 100% !important;
-                        background-color: <?= $defaultBackground ?>;
+                        background-color: <?= $backgroundColorMain ?>;
                         padding-left: 20px !important;
                         padding-right: 20px !important;
                     }
@@ -392,14 +393,14 @@ $hasMailHeaderImage = MailHeaderImage::hasImage();
 
                     table[class="full-width-text"] {
                         width: 100% !important;
-                        background-color: <?= $defaultBackground ?>;
+                        background-color: <?= $backgroundColorMain ?>;
                         padding-left: 20px !important;
                         padding-right: 20px !important;
                     }
 
                     table[class="full-width-text2"] {
                         width: 100% !important;
-                        background-color: <?= $defaultBackground ?>;
+                        background-color: <?= $backgroundColorMain ?>;
                         padding-left: 20px !important;
                         padding-right: 20px !important;
                     }
@@ -585,7 +586,7 @@ $hasMailHeaderImage = MailHeaderImage::hasImage();
             <tr>
                 <td valign="top" align="center" class="fix-box">
                     <table width="600" height="20" align="center" border="0" cellspacing="0" cellpadding="0"
-                           style="background-color: <?= $defaultBackground ?>; border-top-left-radius: 4px; border-top-right-radius: 4px;" class="full-width">
+                           style="background-color: <?= $backgroundColorMain ?>; border-top-left-radius: 4px; border-top-right-radius: 4px;" class="full-width">
                         <tr>
                             <td valign="top" height="20">
                         </tr>
@@ -635,15 +636,15 @@ $hasMailHeaderImage = MailHeaderImage::hasImage();
                                                                 <td align="center" valign="top" style="font-size: 11px; line-height: 18px; font-weight:300; text-align: center; font-family: <?= $fontFamily ?>">
 
                                                                     <?php if (isset(Yii::$app->view->params['showUnsubscribe']) && Yii::$app->view->params['showUnsubscribe'] === true) : ?>
-                                                                        <span style="text-decoration: none; color: <?= $soft2Color ?>">
-                                                                            <a href="<?= Yii::$app->view->params['unsubscribeUrl'] ?? Url::to(['/notification/user'], true) ?>" style="text-decoration: none; color: <?= $soft2Color ?>"><?= Yii::t('base', 'Unsubscribe') ?></a>
+                                                                        <span style="text-decoration: none; color: <?= $colorSoft2 ?>">
+                                                                            <a href="<?= Yii::$app->view->params['unsubscribeUrl'] ?? Url::to(['/notification/user'], true) ?>" style="text-decoration: none; color: <?= $colorSoft2 ?>"><?= Yii::t('base', 'Unsubscribe') ?></a>
                                                                             •
                                                                         </span>
                                                                     <?php endif; ?>
 
-                                                                    <span style="text-decoration: none; color:<?= $soft2Color ?>">
+                                                                    <span style="text-decoration: none; color:<?= $colorSoft2 ?>">
                                                                         <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_EMAIL]) ?>
-                                                                        <?= PoweredBy::widget(['linkOptions' => ['style' => 'text-decoration:none;color:' . $soft2Color]]) ?>
+                                                                        <?= PoweredBy::widget(['linkOptions' => ['style' => 'text-decoration:none;color:' . $colorSoft2]]) ?>
                                                                     </span>
 
                                                                 </td>

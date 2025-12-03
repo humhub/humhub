@@ -67,9 +67,7 @@ class ScssHelper
 
             // First pass: Collect all variable declarations
             foreach ($matches as $match) {
-                $variableName = $match[1];
-                $variableValue = trim($match[2]);
-                $variables[$variableName] = trim($variableValue, '"');
+                $variables[$match[1]] = $match[2];
             }
 
             // Second pass: Resolve variables to their final values
@@ -99,7 +97,12 @@ class ScssHelper
         }
 
         // Remove $ and trim
-        $value = trim(trim(ltrim($value, '$'), '"'));
+        $value = trim(ltrim($value, '$'));
+
+        // Remove quotes (but not for values such as `"Noto Sans", sans-serif`)
+        if (str_starts_with($value, '"') && str_ends_with($value, '"')) {
+            $value = trim($value, '"');
+        }
 
         if ($removeFlag) {
             // Match CSS/SCSS flags at the end of the string such as !important, !default, !optional, !global, etc.
