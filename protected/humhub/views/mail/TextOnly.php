@@ -1,14 +1,13 @@
 <?php
 
-
-use humhub\modules\ui\mail\DefaultMailStyle; ?>
+use humhub\helpers\MailStyleHelper; ?>
 
 <tr>
     <td align="center" valign="top" class="fix-box">
 
         <!-- start  container width 600px -->
         <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container"
-               style="background-color: <?= Yii::$app->view->theme->variable('background-color-main', '#fff') ?>; border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;">
+               style="background-color: <?= MailStyleHelper::getBackgroundColorMain() ?>; border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;">
 
 
             <tr>
@@ -16,7 +15,7 @@ use humhub\modules\ui\mail\DefaultMailStyle; ?>
 
                     <!-- start container width 560px -->
                     <table width="540" align="center" border="0" cellspacing="0" cellpadding="0" class="full-width"
-                           style="background-color:<?= Yii::$app->view->theme->variable('background-color-main', '#fff') ?>;">
+                           style="background-color:<?= MailStyleHelper::getBackgroundColorMain() ?>;">
 
 
                         <!-- start text content -->
@@ -31,7 +30,7 @@ use humhub\modules\ui\mail\DefaultMailStyle; ?>
                                             <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
 
                                                 <tr>
-                                                    <td style="font-size: 14px; line-height: 22px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= Yii::$app->view->theme->variable('text-color-main', '#777') ?>; font-weight:300; text-align:left; ">
+                                                    <td style="font-size: 14px; line-height: 22px; font-family: <?= MailStyleHelper::getFontFamily() ?>; color:<?= MailStyleHelper::getTextColorMain() ?>; font-weight:300; text-align:left; ">
 
                                                         <?php echo $message; ?>
 

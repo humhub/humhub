@@ -10,7 +10,7 @@ use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
-use humhub\modules\ui\mail\DefaultMailStyle;
+use humhub\helpers\MailStyleHelper;
 use humhub\modules\user\models\User;
 
 /* @var $this View */
@@ -29,13 +29,13 @@ use humhub\modules\user\models\User;
 
         <!-- start  container width 600px -->
         <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container"
-               style="background-color: <?= $this->theme->variable('background-color-main', '#fff') ?>; border-bottom-left-radius: 4px">
+               style="background-color: <?= MailStyleHelper::getBackgroundColorMain() ?>; border-bottom-left-radius: 4px">
             <tr>
                 <td valign="top">
 
                     <!-- start container width 560px -->
                     <table width="560" align="center" border="0" cellspacing="0" cellpadding="0" class="full-width"
-                           style="background-color:<?= $this->theme->variable('background-color-main', '#fff') ?>">
+                           style="background-color:<?= MailStyleHelper::getBackgroundColorMain() ?>">
 
                         <!-- start image and content -->
                         <tr>
@@ -78,10 +78,10 @@ use humhub\modules\user\models\User;
                                                                align="left">
 
                                                             <tr>
-                                                                <td style="font-size: 13px; line-height: 22px; font-family: <?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= $this->theme->variable('text-color-main', '#555') ?>; font-weight:300; text-align:left; ">
+                                                                <td style="font-size: 13px; line-height: 22px; font-family: <?= MailStyleHelper::getFontFamily() ?>; color:<?= MailStyleHelper::getTextColorMain() ?>; font-weight:300; text-align:left; ">
                                                                     <!-- prevent content overflow -->
                                                                     <div
-                                                                        style="width:480px;overflow:hidden;text-overflow:ellipsis;font-size: 13px; line-height: 22px; font-family: <?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= $this->theme->variable('text-color-main', '#555') ?>; font-weight:300; text-align:left">
+                                                                        style="width:480px;overflow:hidden;text-overflow:ellipsis;font-size: 13px; line-height: 22px; font-family: <?= MailStyleHelper::getFontFamily() ?>; color:<?= MailStyleHelper::getTextColorMain() ?>; font-weight:300; text-align:left">
                                                                         <!-- content output-->
                                                                         <?= $content ?>
 
@@ -91,7 +91,7 @@ use humhub\modules\user\models\User;
                                                                                 $space->displayName,
                                                                                 $space->createUrl(null, [], true),
                                                                                 [
-                                                                                    'style' => 'text-decoration: none; color: ' . $this->theme->variable('text-color-main', '#555'),
+                                                                                    'style' => 'text-decoration: none; color: ' . MailStyleHelper::getTextColorMain(),
                                                                                 ],
                                                                             ) ?>
                                                                         <?php endif ?>
@@ -99,9 +99,9 @@ use humhub\modules\user\models\User;
                                                                         <?php if ($url != '') : ?>
                                                                             <!-- START: CONTENT LINK -->
                                                                             <span
-                                                                                style="text-decoration: none; color: <?= $this->theme->variable('primary') ?>"> - <a
+                                                                                style="text-decoration: none; color: <?= MailStyleHelper::getColorPrimary() ?>"> - <a
                                                                                     href="<?= $url ?>"
-                                                                                    style="text-decoration: none; color: <?= $this->theme->variable('primary') ?>; font-weight: bold"><?= Yii::t('ActivityModule.base', 'see online') ?></a></span>
+                                                                                    style="text-decoration: none; color: <?= MailStyleHelper::getColorPrimary() ?>; font-weight: bold"><?= Yii::t('ActivityModule.base', 'see online') ?></a></span>
                                                                             <!-- END: CONTENT LINK -->
                                                                         <?php endif ?>
                                                                     </div>

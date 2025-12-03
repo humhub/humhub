@@ -234,7 +234,7 @@ class Theme extends BaseTheme
      *
      * @param string $key the variable name
      *
-     * @return string the variable value
+     * @return string|null the variable value
      * @since 1.2
      *
      */

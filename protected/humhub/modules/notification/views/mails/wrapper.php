@@ -1,15 +1,17 @@
-<?php if (!empty($headline)): ?>
+<?php use humhub\helpers\MailStyleHelper;
+
+if (!empty($headline)): ?>
     <tr>
         <td align="center" valign="top" class="fix-box">
             <!-- start container width 600px -->
             <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container"
-                   style="background-color: <?= Yii::$app->view->theme->variable('background-color-main', '#fff') ?>; border-top-left-radius: 4px; border-top-right-radius: 4px;">
+                   style="background-color: <?= MailStyleHelper::getBackgroundColorMain() ?>; border-top-left-radius: 4px; border-top-right-radius: 4px;">
                 <tr>
                     <td valign="top">
 
                         <!-- start container width 560px -->
                         <table width="560" align="center" border="0" cellspacing="0" cellpadding="0" class="full-width"
-                               style="background-color: <?= Yii::$app->view->theme->variable('background-color-main', '#fff') ?>">
+                               style="background-color: <?= MailStyleHelper::getBackgroundColorMain() ?>">
 
                             <!-- start image content -->
                             <tr>
