@@ -8,6 +8,7 @@ HumHub Changelog
 - Fix #7842: Fixed php deprecation warning in `ConfigHelper`
 - Enh #7836: Improved `required` and `trim` validators
 - Fix #7847: Fixed missing translations in `Admin/People` page
+- Enh #7851: New admin module option for group manager inheritance
 - Fix #7854: Tour for Spaces if no visible and active Space
 - Fix #7850: Fix required validator to not remove binary content
 - Fix #7862: Fix redirect loop on `ErrorAction`
