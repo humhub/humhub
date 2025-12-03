@@ -22,6 +22,7 @@ HumHub Changelog
 - Fix #7867: ScssHelper variable extractors for code with parentheses, and add more tests
 - Fix #7865: In mail notifications, use auto-contrast color in header, and increase font weight in buttons if light background
 - Fix #7868: Add a minimal fallback CSS in case of CSS compilation issue
+- Fix #7873: Fix `required` validator
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------
