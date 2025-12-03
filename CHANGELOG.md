@@ -8,6 +8,7 @@ HumHub Changelog
 - Fix #7842: Fixed php deprecation warning in `ConfigHelper`
 - Enh #7836: Improved `required` and `trim` validators
 - Fix #7847: Fixed missing translations in `Admin/People` page
+- Enh #7851: New admin module option for group manager inheritance
 - Fix #7854: Tour for Spaces if no visible and active Space
 - Fix #7850: Fix required validator to not remove binary content
 - Fix #7862: Fix redirect loop on `ErrorAction`
@@ -22,6 +23,7 @@ HumHub Changelog
 - Fix #7865: In mail notifications, use auto-contrast color in header, and increase font weight in buttons if light background
 - Fix #7868: Add a minimal fallback CSS in case of CSS compilation issue
 - Fix #7872: Email inline style from Sass variables, e.g. when overwriting `$mail-font-family` in the Custom SCSS field
+- Fix #7873: Fix `required` validator
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------

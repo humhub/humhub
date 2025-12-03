@@ -80,6 +80,12 @@ class Module extends \humhub\components\Module
     public bool $groupManagerCannotModifyMembers = false;
 
     /**
+     * @var bool Inherit group manager permissions to sub groups
+     * @since 1.18
+     */
+    public bool $groupManagerInheritance = true;
+
+    /**
      * @inheritdoc
      */
     public function getName()

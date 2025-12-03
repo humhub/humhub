@@ -8,13 +8,14 @@ use yii\validators\ValidationAsset;
 class RequiredValidator extends \yii\validators\RequiredValidator
 {
     private const REGEX = '/[\p{Z}\s]+/u';
+
     /**
      * @inheritdoc
      */
     public function isEmpty($value)
     {
-        if (is_string($value) && !is_numeric($value) && empty(preg_replace(self::REGEX, '', $value))) {
-            return true;
+        if (is_string($value) && preg_match(self::REGEX, $value)) {
+            $value = preg_replace(self::REGEX, '', $value);
         }
 
         return parent::isEmpty($value);
