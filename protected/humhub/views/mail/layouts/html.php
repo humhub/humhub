@@ -7,7 +7,7 @@
 
 use humhub\components\View;
 use humhub\helpers\Html;
-use humhub\modules\ui\mail\MailStyle;
+use humhub\helpers\MailStyleHelper;
 use humhub\widgets\FooterMenu;
 use humhub\widgets\mails\MailHeaderImage;
 use humhub\widgets\PoweredBy;
@@ -18,12 +18,12 @@ use yii\helpers\Url;
 
 $hasMailHeaderImage = MailHeaderImage::hasImage();
 
-$backgroundColorMain = MailStyle::getBackgroundColorMain();
-$backgroundColorPage = MailStyle::getBackgroundColorPage();
-$colorPrimary = MailStyle::getColorPrimary();
-$colorInfo = MailStyle::getColorInfo();
-$colorSoft2 = MailStyle::getTextColorSoft2();
-$fontFamily = MailStyle::getFontFamily();
+$backgroundColorMain = MailStyleHelper::getBackgroundColorMain();
+$backgroundColorPage = MailStyleHelper::getBackgroundColorPage();
+$colorPrimary = MailStyleHelper::getColorPrimary();
+$colorInfo = MailStyleHelper::getColorInfo();
+$colorSoft2 = MailStyleHelper::getTextColorSoft2();
+$fontFamily = MailStyleHelper::getFontFamily();
 ?>
 
 <?php $this->beginPage() ?>

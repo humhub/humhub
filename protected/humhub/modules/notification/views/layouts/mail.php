@@ -6,7 +6,7 @@
  */
 
 use humhub\components\View;
-use humhub\modules\ui\mail\MailStyle;
+use humhub\helpers\MailStyleHelper;
 
 /* @var View $this */
 /* @var string $content */
@@ -17,13 +17,13 @@ use humhub\modules\ui\mail\MailStyle;
 
         <!-- start  container width 600px -->
         <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container"
-               style="background-color: <?= MailStyle::getBackgroundColorMain() ?>; border-radius: 0 0 4px 4px">
+               style="background-color: <?= MailStyleHelper::getBackgroundColorMain() ?>; border-radius: 0 0 4px 4px">
             <tr>
                 <td valign="top">
 
                     <!-- start container width 560px -->
                     <table width="560" align="center" border="0" cellspacing="0" cellpadding="0" class="full-width"
-                           style="background-color:<?= MailStyle::getBackgroundColorMain() ?>">
+                           style="background-color:<?= MailStyleHelper::getBackgroundColorMain() ?>">
 
                         <!-- start image and content -->
                         <tr>

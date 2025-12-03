@@ -20,14 +20,14 @@ Updated minimum required PHP version to 8.2.
 - `\humhub\modules\tour\Module::tourConfigFiles` (allows customizing the introduction tour)
 - `\humhub\modules\tour\Module::driverJsOptions`
 - `\humhub\widgets\mails\MailHeaderImage` widget for displaying a header image in emails
-- `humhub\modules\ui\mail\MailStyle` to get Sass variable values in email templates
+- `humhub\helpers\MailStyleHelper` to get Sass variable values in email templates
 - `\humhub\components\Theme::CORE_THEME_NAME`
 
 ### Deprecated
 - `\humhub\components\Application::isInstalled()` use `\humhub\components\Application::hasState()` instead
 - `\humhub\components\Application::isDatabaseInstalled()` use `\humhub\components\Application::hasState()` instead
 - `\humhub\components\Application::setInstalled()` use `\humhub\components\Application::setState()` instead
-- `humhub\modules\ui\mail\DefaultMailStyle` use `humhub\modules\ui\mail\MailStyle` instead
+- `humhub\modules\ui\mail\DefaultMailStyle` use `humhub\helpers\MailStyleHelper` instead
 
 ### Changed
 

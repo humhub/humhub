@@ -5,10 +5,10 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\modules\ui\mail\MailStyle;
+use humhub\helpers\MailStyleHelper;
 
 ?>
-<table width="100%" style="background-color:<?= MailStyle::getBackgroundColorSecondary() ?>;border-radius:4px" border="0" cellspacing="0" cellpadding="0" align="left">
+<table width="100%" style="background-color:<?= MailStyleHelper::getBackgroundColorSecondary() ?>;border-radius:4px" border="0" cellspacing="0" cellpadding="0" align="left">
     <tr>
         <td height="10"></td>
     </tr>

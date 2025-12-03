@@ -8,7 +8,7 @@
 
 use humhub\components\View;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\ui\mail\MailStyle;
+use humhub\helpers\MailStyleHelper;
 use humhub\modules\user\models\User;
 use humhub\widgets\mails\MailButton;
 use humhub\widgets\mails\MailButtonList;
@@ -23,7 +23,7 @@ use humhub\widgets\mails\MailButtonList;
 <?php $this->beginContent('@notification/views/layouts/mail.php', $_params_) ?>
     <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
         <tr>
-            <td style="font-size: 14px; line-height: 22px; font-family:<?= MailStyle::getFontFamily() ?>; color:<?= MailStyle::getTextColorMain() ?>; font-weight:300; text-align:center">
+            <td style="font-size: 14px; line-height: 22px; font-family:<?= MailStyleHelper::getFontFamily() ?>; color:<?= MailStyleHelper::getTextColorMain() ?>; font-weight:300; text-align:center">
                 <?= $viewable->html() ?>
             </td>
         </tr>

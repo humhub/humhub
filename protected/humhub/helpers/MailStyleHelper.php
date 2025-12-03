@@ -1,16 +1,22 @@
 <?php
 
-namespace humhub\modules\ui\mail;
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
+namespace humhub\helpers;
 
 use Yii;
 
 /**
  * Prepare Sass variable values for email templates with inline usage, inside quotation marks
- * Usage: `style="<?= MailStyle::getFontFamily() ?>"`
+ * Usage: `style="<?= MailStyleHelper::getFontFamily() ?>"`
  *
  * @since 1.18
  */
-class MailStyle
+class MailStyleHelper
 {
     public const DEFAULT_FONT_FAMILY = "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif";
     public const DEFAULT_COLOR_PRIMARY = '#435f6f';
@@ -87,7 +93,7 @@ class MailStyle
     }
 
     /**
-     * Insure the code can be inserted inline, e.g., `style="<?= MailStyle::getFontFamily() ?>"`
+     * Insure the code can be inserted inline, e.g., `style="<?= MailStyleHelper::getFontFamily() ?>"`
      */
     protected static function sanitizeForInlineUsage(string $style): string
     {

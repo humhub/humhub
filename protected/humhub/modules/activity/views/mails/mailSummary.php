@@ -8,7 +8,7 @@
 
 /* @var $activities string */
 
-use humhub\modules\ui\mail\MailStyle;
+use humhub\helpers\MailStyleHelper;
 
 ?>
 
@@ -17,13 +17,13 @@ use humhub\modules\ui\mail\MailStyle;
 
         <!-- start container width 600px -->
         <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container"
-               style="background-color:<?= MailStyle::getBackgroundColorMain() ?>; border-top-left-radius: 4px; border-top-right-radius: 4px;">
+               style="background-color:<?= MailStyleHelper::getBackgroundColorMain() ?>; border-top-left-radius: 4px; border-top-right-radius: 4px;">
             <tr>
                 <td valign="top">
 
                     <!-- start container width 560px -->
                     <table width="560" align="center" border="0" cellspacing="0" cellpadding="0" class="full-width"
-                           style="background-color:<?= MailStyle::getBackgroundColorMain() ?>;">
+                           style="background-color:<?= MailStyleHelper::getBackgroundColorMain() ?>;">
 
                         <!-- start image content -->
                         <tr>
@@ -38,11 +38,11 @@ use humhub\modules\ui\mail\MailStyle;
                                         <td valign="top">
                                             <table border="0" cellspacing="0" cellpadding="0" align="left">
                                                 <tr>
-                                                    <td style="font-size: 18px; line-height: 22px; font-family: <?= MailStyle::getFontFamily() ?>; font-weight:300; text-align:left;">
+                                                    <td style="font-size: 18px; line-height: 22px; font-family: <?= MailStyleHelper::getFontFamily() ?>; font-weight:300; text-align:left;">
                                                         <span
-                                                            style="color:<?= MailStyle::getTextColorHighlight() ?>; font-weight: 300;">
+                                                            style="color:<?= MailStyleHelper::getTextColorHighlight() ?>; font-weight: 300;">
                                                             <a href="#"
-                                                               style="text-decoration: none; color:<?= MailStyle::getTextColorHighlight() ?>; font-weight: 300;">
+                                                               style="text-decoration: none; color:<?= MailStyleHelper::getTextColorHighlight() ?>; font-weight: 300;">
                                                                 <?= Yii::t('base', '<strong>Mail</strong> summary') ?>
                                                             </a>
                                                         </span>

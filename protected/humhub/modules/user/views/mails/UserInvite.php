@@ -6,7 +6,7 @@
  */
 
 use humhub\helpers\Html;
-use humhub\modules\ui\mail\MailStyle;
+use humhub\helpers\MailStyleHelper;
 use humhub\modules\user\models\User;
 
 /* @var string $registrationUrl */
@@ -17,7 +17,7 @@ use humhub\modules\user\models\User;
 
         <!-- start  container width 600px -->
         <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container"
-               style="background-color: <?= MailStyle::getBackgroundColorMain() ?>">
+               style="background-color: <?= MailStyleHelper::getBackgroundColorMain() ?>">
 
 
             <tr>
@@ -25,7 +25,7 @@ use humhub\modules\user\models\User;
 
                     <!-- start container width 560px -->
                     <table width="540" align="center" border="0" cellspacing="0" cellpadding="0" class="full-width"
-                           style="background-color:<?= MailStyle::getBackgroundColorMain() ?>">
+                           style="background-color:<?= MailStyleHelper::getBackgroundColorMain() ?>">
 
 
                         <!-- start text content -->
@@ -38,9 +38,9 @@ use humhub\modules\user\models\User;
                                             <table border="0" align="center" cellpadding="0" cellspacing="0">
                                                 <tr>
                                                     <td width="auto" align="center" valign="middle" height="28"
-                                                        style=" background-color:<?= MailStyle::getBackgroundColorMain() ?>; background-clip: padding-box; font-size:26px; font-family: <?= MailStyle::getFontFamily() ?>; text-align:center; font-weight: 300; padding:0 18px">
+                                                        style=" background-color:<?= MailStyleHelper::getBackgroundColorMain() ?>; background-clip: padding-box; font-size:26px; font-family: <?= MailStyleHelper::getFontFamily() ?>; text-align:center; font-weight: 300; padding:0 18px">
                                                         <span
-                                                            style="color: <?= MailStyle::getTextColorHighlight() ?>; font-weight: 300">
+                                                            style="color: <?= MailStyleHelper::getTextColorHighlight() ?>; font-weight: 300">
                                                             <?= Yii::t('UserModule.base', 'You got an invite') ?>
                                                         </span>
                                                     </td>
@@ -71,13 +71,13 @@ use humhub\modules\user\models\User;
 
         <!-- start  container width 600px -->
         <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container"
-               style="background-color: <?= MailStyle::getBackgroundColorMain() ?>; border-bottom-left-radius: 4px; border-bottom-left-radius: 4px">
+               style="background-color: <?= MailStyleHelper::getBackgroundColorMain() ?>; border-bottom-left-radius: 4px; border-bottom-left-radius: 4px">
             <tr>
                 <td valign="top">
 
                     <!-- start container width 560px -->
                     <table width="560" align="center" border="0" cellspacing="0" cellpadding="0" class="full-width"
-                           style="background-color: <?= MailStyle::getBackgroundColorMain() ?>">
+                           style="background-color: <?= MailStyleHelper::getBackgroundColorMain() ?>">
 
                         <!-- start image and content -->
                         <tr>
@@ -124,11 +124,11 @@ use humhub\modules\user\models\User;
                                     <table width="100%" border="0" cellspacing="0" cellpadding="0"
                                            align="center">
                                         <tr>
-                                            <td style="font-size: 18px; line-height: 22px; font-family: <?= MailStyle::getFontFamily() ?>; font-weight:300; text-align:center">
+                                            <td style="font-size: 18px; line-height: 22px; font-family: <?= MailStyleHelper::getFontFamily() ?>; font-weight:300; text-align:center">
                                                 <span
-                                                    style="color: <?= MailStyle::getTextColorHighlight() ?>; font-weight: 300">
+                                                    style="color: <?= MailStyleHelper::getTextColorHighlight() ?>; font-weight: 300">
                                                     <a href="<?php echo $originator->createUrl('/user/profile', [], true) ?>"
-                                                       style="text-decoration: none; color: <?= MailStyle::getTextColorHighlight() ?>; font-weight: 300">
+                                                       style="text-decoration: none; color: <?= MailStyleHelper::getTextColorHighlight() ?>; font-weight: 300">
                                                         <!-- START: USER NAME -->
                                                         <?= Html::encode($originator->displayName) ?>
                                                         <!-- END: USER NAME -->
@@ -171,7 +171,7 @@ use humhub\modules\user\models\User;
 
         <!-- start  container width 600px -->
         <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container"
-               style="background-color: <?= MailStyle::getBackgroundColorMain() ?>">
+               style="background-color: <?= MailStyleHelper::getBackgroundColorMain() ?>">
 
 
             <tr>
@@ -179,7 +179,7 @@ use humhub\modules\user\models\User;
 
                     <!-- start container width 560px -->
                     <table width="540" align="center" border="0" cellspacing="0" cellpadding="0" class="full-width"
-                           style="background-color:<?= MailStyle::getBackgroundColorMain() ?>">
+                           style="background-color:<?= MailStyleHelper::getBackgroundColorMain() ?>">
 
 
                         <!-- start text content -->
@@ -201,7 +201,7 @@ use humhub\modules\user\models\User;
                                                 <!--end space height -->
 
                                                 <tr>
-                                                    <td style="font-size: 14px; line-height: 22px; padding-left: 50px; padding-right: 50px; font-family: <?= MailStyle::getFontFamily() ?>; color:<?= MailStyle::getTextColorMain() ?>; font-weight:300; text-align:center">
+                                                    <td style="font-size: 14px; line-height: 22px; padding-left: 50px; padding-right: 50px; font-family: <?= MailStyleHelper::getFontFamily() ?>; color:<?= MailStyleHelper::getTextColorMain() ?>; font-weight:300; text-align:center">
 
                                                         <!-- START: CONTENT -->
                                                         <?= Yii::t('UserModule.base', 'invited you to join {name}.', ['name' => '<strong>' . Html::encode(Yii::$app->name) . '</strong>']) ?>
@@ -224,12 +224,12 @@ use humhub\modules\user\models\User;
                                             <table border="0" align="center" cellpadding="0" cellspacing="0">
                                                 <tr>
                                                     <td width="auto" align="center" valign="middle" height="32"
-                                                        style=" background-color:<?= MailStyle::getColorPrimary() ?>; border-radius:5px; background-clip: padding-box;font-size:14px; font-family: <?= MailStyle::getFontFamily() ?>; text-align:center; font-weight: 600; padding: 5px 30px">
+                                                        style=" background-color:<?= MailStyleHelper::getColorPrimary() ?>; border-radius:5px; background-clip: padding-box;font-size:14px; font-family: <?= MailStyleHelper::getFontFamily() ?>; text-align:center; font-weight: 600; padding: 5px 30px">
 
                                                         <span
-                                                            style="color: <?= MailStyle::getTextColorContrast() ?>; font-weight: 300">
+                                                            style="color: <?= MailStyleHelper::getTextColorContrast() ?>; font-weight: 300">
                                                             <a href="<?= $registrationUrl ?>"
-                                                               style="text-decoration: none; color: <?= MailStyle::getTextColorContrast() ?>; font-weight: 300">
+                                                               style="text-decoration: none; color: <?= MailStyleHelper::getTextColorContrast() ?>; font-weight: 300">
                                                                 <strong><?= Yii::t('UserModule.base', 'Sign up now') ?></strong>
                                                             </a>
                                                         </span>

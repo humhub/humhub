@@ -3,7 +3,7 @@
 use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\helpers\ScssHelper;
-use humhub\modules\ui\mail\MailStyle;
+use humhub\helpers\MailStyleHelper;
 use yii\helpers\Url;
 
 /**
@@ -16,11 +16,11 @@ use yii\helpers\Url;
 
 $contrastColor = $backgroundColor
     ? ScssHelper::getColorContrast($backgroundColor)
-    : MailStyle::getTextColorContrast();
+    : MailStyleHelper::getTextColorContrast();
 ?>
 
 <a href="<?= Url::to(['/'], true) ?>"
-   style="text-decoration: none; font-size: 18px; font-family: <?= MailStyle::getFontFamily() ?>; color: <?= $contrastColor ?>; font-weight: 700;">
+   style="text-decoration: none; font-size: 18px; font-family: <?= MailStyleHelper::getFontFamily() ?>; color: <?= $contrastColor ?>; font-weight: 700;">
     <?php if ($imgUrl) : ?>
         <?= Html::img($imgUrl, ['alt' => $appName, 'style' => 'margin:' . $verticalMargin . 'px auto;']) ?>
     <?php else: ?>

@@ -1,13 +1,13 @@
 <?php
 
-use humhub\modules\ui\mail\MailStyle; ?>
+use humhub\helpers\MailStyleHelper; ?>
 
 <tr>
     <td align="center" valign="top" class="fix-box">
 
         <!-- start  container width 600px -->
         <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container"
-               style="background-color: <?= MailStyle::getBackgroundColorMain() ?>; border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;">
+               style="background-color: <?= MailStyleHelper::getBackgroundColorMain() ?>; border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;">
 
 
             <tr>
@@ -15,7 +15,7 @@ use humhub\modules\ui\mail\MailStyle; ?>
 
                     <!-- start container width 560px -->
                     <table width="540" align="center" border="0" cellspacing="0" cellpadding="0" class="full-width"
-                           style="background-color:<?= MailStyle::getBackgroundColorMain() ?>;">
+                           style="background-color:<?= MailStyleHelper::getBackgroundColorMain() ?>;">
 
 
                         <!-- start text content -->
@@ -30,7 +30,7 @@ use humhub\modules\ui\mail\MailStyle; ?>
                                             <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
 
                                                 <tr>
-                                                    <td style="font-size: 14px; line-height: 22px; font-family: <?= MailStyle::getFontFamily() ?>; color:<?= MailStyle::getTextColorMain() ?>; font-weight:300; text-align:left; ">
+                                                    <td style="font-size: 14px; line-height: 22px; font-family: <?= MailStyleHelper::getFontFamily() ?>; color:<?= MailStyleHelper::getTextColorMain() ?>; font-weight:300; text-align:left; ">
 
                                                         <?php echo $message; ?>
 

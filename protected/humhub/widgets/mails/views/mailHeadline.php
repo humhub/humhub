@@ -6,7 +6,7 @@
  */
 
 use humhub\components\View;
-use humhub\modules\ui\mail\MailStyle;
+use humhub\helpers\MailStyleHelper;
 
 /* @var View $this */
 /* @var int $level */
@@ -33,9 +33,9 @@ switch ($level) {
 ?>
 <table border="0" cellspacing="0" cellpadding="0" align="left" >
     <tr>
-        <td  style="font-size: <?= $fontSize ?>; line-height: 22px; font-family:<?= MailStyle::getFontFamily() ?>; color:<?= MailStyle::getTextColorHighlight() ?> font-weight:<?= $weight ?>; text-align:left">
+        <td  style="font-size: <?= $fontSize ?>; line-height: 22px; font-family:<?= MailStyleHelper::getFontFamily() ?>; color:<?= MailStyleHelper::getTextColorHighlight() ?> font-weight:<?= $weight ?>; text-align:left">
             <span>
-                <a href="#" style="text-decoration: none; color:<?= MailStyle::getTextColorHighlight() ?>; font-weight:<?= $weight ?>; <?= $style ?>"><?= $text ?></a>
+                <a href="#" style="text-decoration: none; color:<?= MailStyleHelper::getTextColorHighlight() ?>; font-weight:<?= $weight ?>; <?= $style ?>"><?= $text ?></a>
             </span>
         </td>
     </tr>

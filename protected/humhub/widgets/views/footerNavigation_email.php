@@ -6,7 +6,7 @@
  */
 
 use humhub\helpers\Html;
-use humhub\modules\ui\mail\MailStyle;
+use humhub\helpers\MailStyleHelper;
 use humhub\modules\ui\menu\MenuLink;
 
 /* @var $this \humhub\components\View */
@@ -23,7 +23,7 @@ $i = 0;
             <?php foreach ($entries as $k => $entry): ?>
                 <?php if ($entry instanceof MenuLink): ?>
                     <?= Html::a($entry->getLabel(), $entry->getUrl(), $entry->getHtmlOptions([
-                        'style' => 'text-decoration: none; color: ' . MailStyle::getTextColorSoft2(),
+                        'style' => 'text-decoration: none; color: ' . MailStyleHelper::getTextColorSoft2(),
                     ])) ?>
 
                     <?php if (array_key_last($entries) !== $k): ?>
