@@ -67,3 +67,6 @@
   AddOutputFilterByType DEFLATE text/plain
   AddOutputFilterByType DEFLATE text/xml
 </IfModule>
+
+# Support for .mjs (ES modules)
+AddType text/javascript .mjs
