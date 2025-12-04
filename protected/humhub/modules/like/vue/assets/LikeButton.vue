@@ -17,7 +17,6 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
 
-// Props
 const props = defineProps({
     objectId: { type: String, required: true },
     contentModel: { type: String, required: true },
@@ -26,15 +25,12 @@ const props = defineProps({
     initialLikes: { type: Array, default: () => [] },
 })
 
-// Emits
 const emit = defineEmits(['like-toggled'])
 
-// Reactive state
 const isLiked = ref(props.initialLiked)
 const likesCount = ref(props.initialLikes.length)
 const isLoading = ref(false)
 
-// Computed
 const showCount = computed(() => likesCount.value > 0)
 
 const likeTitle = computed(() => {
@@ -44,7 +40,6 @@ const likeTitle = computed(() => {
     return `${likesCount.value} people like this`
 })
 
-// Methods
 const toggleLike = async () => {
     if (!props.canLike || isLoading.value) return
 
@@ -67,7 +62,6 @@ const toggleLike = async () => {
         })
     } catch (err) {
         console.error('Like action failed:', err)
-        // Optional: toast notification here
     } finally {
         isLoading.value = false
     }
