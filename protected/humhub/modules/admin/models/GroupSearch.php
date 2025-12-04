@@ -91,6 +91,7 @@ class GroupSearch extends Group
         if (!Yii::$app->user->can(ManageGroups::class)) {
             // Restrict to groups where current user is a manager
             $query->leftJoin(GroupUser::tableName(), GroupUser::tableName() . '.group_id = ' . Group::tableName() . '.id')
+                ->distinct(Group::tableName() . '.id')
                 ->andWhere(self::getGroupManagerQueryCondition());
         }
 
