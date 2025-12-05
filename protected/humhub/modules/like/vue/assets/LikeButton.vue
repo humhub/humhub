@@ -1,77 +1,74 @@
-<template>
-    <div class="like-button-wrapper">
-        <button
-            @click="toggleLike"
-            :class="['like-btn', { liked: isLiked }]"
-            :title="likeTitle"
-            :disabled="!canLike || isLoading"
-            :aria-pressed="isLiked"
-            aria-label="Like button"
-        >
-            Like
-            <span v-if="showCount" class="like-count">{{ likesCount }}</span>
-        </button>
-    </div>
-</template>
-
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref } from 'vue'
+import axios from 'axios'
+
+const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || ''
+const csrfParam = document.querySelector('meta[name="csrf-param"]')?.content || '_csrf'
+
+axios.defaults.withCredentials = true
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
+axios.defaults.headers.common['X-CSRF-Token'] = csrfToken
 
 const props = defineProps({
-    objectId: { type: String, required: true },
-    contentModel: { type: String, required: true },
-    canLike: { type: Boolean, default: true },
-    initialLiked: { type: Boolean, default: false },
-    initialLikes: { type: Array, default: () => [] },
+    isGuest: { type: Boolean, required: true },
+    canLike: { type: Boolean, required: true },
+    currentUserLiked: { type: Boolean, required: true },
+    likeCount: { type: Number, required: true },
+    title: { type: String, required: true },
+    urls: {
+        type: Object,
+        required: true,
+        validator: (v) => v && 'loginUrl' in v && 'likeUrl' in v && 'unlikeUrl' in v
+    }
 })
 
-const emit = defineEmits(['like-toggled'])
-
-const isLiked = ref(props.initialLiked)
-const likesCount = ref(props.initialLikes.length)
+const isLiked = ref(props.currentUserLiked)
+const count = ref(props.likeCount)
 const isLoading = ref(false)
 
-const showCount = computed(() => likesCount.value > 0)
-
-const likeTitle = computed(() => {
-    if (likesCount.value === 0) return 'No likes yet'
-    if (likesCount.value === 1 && isLiked.value) return 'You like this'
-    if (likesCount.value === 1) return '1 person likes this'
-    return `${likesCount.value} people like this`
-})
-
 const toggleLike = async () => {
-    if (!props.canLike || isLoading.value) return
+    if (isLoading.value || !props.canLike) return
+
+    if (props.isGuest) {
+        window.location.href = props.urls.loginUrl
+        return
+    }
 
     isLoading.value = true
 
-    const action = isLiked.value ? 'unlike' : 'like'
-    const url = `/like/like/${action}?contentModel=${props.contentModel}&contentId=${props.objectId}`
+    const url = isLiked.value ? props.urls.unlikeUrl : props.urls.likeUrl
 
     try {
-        const res = await fetch(url, { method: 'POST' })
-        const data = await res.json()
-
-        // Only update if backend confirms
-        isLiked.value = !isLiked.value
-        likesCount.value = data.likesCount ?? likesCount.value
-
-        emit('like-toggled', {
-            isLiked: isLiked.value,
-            count: likesCount.value,
+        const response = await axios.post(url, {
+            [csrfParam]: csrfToken
         })
-    } catch (err) {
-        console.error('Like action failed:', err)
+
+        isLiked.value = response.data.currentUserLiked ?? !isLiked.value
+        count.value = response.data.likeCounter ?? count.value + (isLiked.value ? 1 : -1)
+    } catch (error) {
+        console.error('Like/Unike failed:', error)
     } finally {
         isLoading.value = false
     }
 }
-
-watch(() => [props.initialLiked, props.initialLikes], ([liked, likes]) => {
-    isLiked.value = liked
-    likesCount.value = likes?.length ?? 0
-})
-
-onMounted(() => {
-})
 </script>
+
+<template>
+    <a
+        href="#"
+        @click="toggleLike"
+        :disabled="isLoading || !canLike"
+        class="like-button"
+    >
+        {{ isLiked ? 'Unlike' : 'Like' }}
+        <span
+            v-if="count > 0"
+            :title="title"
+        >
+            ({{ count }})
+        </span>
+    </a>
+</template>
+
+<style scoped>
+</style>

@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import LikeButton from "./LikeButton.vue";
 
-window.renderLikeButton = (id) => {
-    createApp(LikeButton).mount(`#${id}`)
+window.renderLikeButton = (id, props) => {
+    createApp(LikeButton, props).mount(`#${id}`)
 }

@@ -10,6 +10,7 @@ use humhub\modules\like\Module;
 use humhub\modules\like\vue\LikeWidget;
 use Yii;
 use yii\base\Widget;
+use yii\helpers\Json;
 use yii\helpers\Url;
 
 /**
@@ -59,7 +60,20 @@ class LikeLink extends Widget
             }
         }
 
-        return LikeWidget::widget();
+        return LikeWidget::widget([
+            'props' => [
+                'isGuest' => Yii::$app->user->isGuest,
+                'canLike' => $canLike,
+                'currentUserLiked' => $currentUserLiked,
+                'likeCount' => count($likes),
+                'title' => $this->generateLikeTitleText($currentUserLiked, $likes),
+                'urls' => [
+                    'loginUrl' => Url::to(Yii::$app->user->loginUrl),
+                    'likeUrl' => Url::to(['/like/like/like', 'contentModel' => PolymorphicRelation::getObjectModel($this->object), 'contentId' => $this->object->id]),
+                    'unlikeUrl' => Url::to(['/like/like/unlike', 'contentModel' => PolymorphicRelation::getObjectModel($this->object), 'contentId' => $this->object->id]),
+                ]
+            ]
+        ]);
 
         return $this->render('likeLink', [
             'canLike' => $canLike,
