@@ -1,6 +1,8 @@
 <script setup>
-import { ref } from 'vue'
+import {onBeforeMount, ref} from 'vue'
 import axios from 'axios'
+import i18next from 'i18next'
+
 
 const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || ''
 const csrfParam = document.querySelector('meta[name="csrf-param"]')?.content || '_csrf'
@@ -10,6 +12,8 @@ axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 axios.defaults.headers.common['X-CSRF-Token'] = csrfToken
 
 const props = defineProps({
+    language: { type: String, required: true },
+    translations: { type: Array, required: true },
     isGuest: { type: Boolean, required: true },
     canLike: { type: Boolean, required: true },
     currentUserLiked: { type: Boolean, required: true },
@@ -25,6 +29,14 @@ const props = defineProps({
 const isLiked = ref(props.currentUserLiked)
 const count = ref(props.likeCount)
 const isLoading = ref(false)
+
+onBeforeMount(async () => {
+    await i18next.init({
+        lng: props.language,
+        debug: true,
+        resources: props.translations
+    });
+})
 
 const toggleLike = async () => {
     if (isLoading.value || !props.canLike) return
@@ -57,10 +69,8 @@ const toggleLike = async () => {
     <a
         href="#"
         @click="toggleLike"
-        :disabled="isLoading || !canLike"
-        class="like-button"
     >
-        {{ isLiked ? 'Unlike' : 'Like' }}
+        {{ i18next.t(isLiked ? 'unlike' : 'like') }}
         <span
             v-if="count > 0"
             :title="title"

@@ -13,6 +13,6 @@ class LikeAsset extends AssetBundle
     ];
 
     public $publishOptions = [
-//        'forceCopy' => YII_DEBUG
+        'forceCopy' => YII_DEBUG
     ];
 }
