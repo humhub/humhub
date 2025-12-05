@@ -99,6 +99,8 @@ class RegistrationController extends Controller
             return $this->redirect(['/user/auth/login']);
         }
 
+        $registration->setForm();
+
         if ($registration->submitted('save') && $registration->register($authClient)) {
             Yii::$app->session->remove('authClient');
 

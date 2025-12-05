@@ -25,6 +25,7 @@ HumHub Changelog
 - Fix #7872: Email inline style from Sass variables, e.g. when overwriting `$mail-font-family` in the Custom SCSS field
 - Fix #7873: Fix `required` validator
 - Fix #7876: Support for .mjs (ES modules)
+- Chg: Registration form definitions now requires to use the `EVENT_AFTER_SET_FORM` instead of `EVENT_AFTER_INIT` 
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------
