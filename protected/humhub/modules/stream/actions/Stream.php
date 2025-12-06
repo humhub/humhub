@@ -201,7 +201,7 @@ abstract class Stream extends Action
             $this->streamQuery->load(Yii::$app->request->get());
 
             if (!$this->viewContext) {
-                $this->viewContext = Yii::$app->request->get('viewContext');
+                $this->viewContext = Yii::$app->view->getRequestViewContext();
             }
         }
 

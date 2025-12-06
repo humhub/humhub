@@ -41,31 +41,4 @@ require_once './protected/vendor/codeception/codeception/autoload.php';
 
 include './protected/humhub/tests/c3.php';
 
-class indexTextResponseCode
-{
-    public static ?Response $response = null;
-}
-
 (new humhub\components\Application($config))->run();
-
-if (indexTextResponseCode::$response) {
-    $code = indexTextResponseCode::$response->getStatusCode();
-    switch (floor($code / 100)) {
-        case 2:
-            $color = 34;
-            break;
-
-        case 1:
-        case 3:
-            $color = 36;
-            break;
-
-        case 4:
-            $color = 33;
-            break;
-
-        default:
-            $color = 31;
-    }
-    file_put_contents("php://stdout", sprintf("[%s] \e[%dm%s:%d [%03d]: %s %s\033[0m\n", date('D M d H:i:s Y'), $color, $_SERVER['REMOTE_ADDR'], $_SERVER['REMOTE_PORT'], $code, $_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']));
-}

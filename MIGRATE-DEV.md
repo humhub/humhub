@@ -1,6 +1,15 @@
 Module Migration Guide
 ======================
 
+Version 1.19 (Unreleased)
+-------------------------
+
+- Deleted `humhub\components\Requests` and `humhub\components\Response`, switched to Yii2 classes
+- Use `humhub\helpers\ResponseHelper::sendFile`
+- `Yii::$app->view->getRequestViewContext()` instead of `Yii::$app->request->get('viewContext')`
+- Removed `Request::autoEnsureSecureConnection` option
+
+
 Version 1.18 (Unreleased)
 ------------
 Updated minimum required PHP version to 8.2.

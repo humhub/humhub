@@ -33,13 +33,9 @@ $config = [
             ],
         ],
         'request' => [
-            'class' => \humhub\components\Request::class,
             'csrfCookie' => [
                 'sameSite' => yii\web\Cookie::SAME_SITE_LAX,
             ],
-        ],
-        'response' => [
-            'class' => \humhub\components\Response::class,
         ],
         'captcha' => [
             'class' => \humhub\components\captcha\AltchaCaptcha::class,
