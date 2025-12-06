@@ -2,7 +2,7 @@
 
 namespace humhub\components\rendering\templating;
 
-class ReactWidget extends TemplateWidget
+abstract class ReactWidget extends TemplateWidget
 {
 
 }

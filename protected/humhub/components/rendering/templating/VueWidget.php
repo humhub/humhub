@@ -2,9 +2,7 @@
 
 namespace humhub\components\rendering\templating;
 
-use yii\base\Widget;
-
-class VueWidget extends TemplateWidget
+abstract class VueWidget extends TemplateWidget
 {
 
 }
