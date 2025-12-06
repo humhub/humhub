@@ -38,7 +38,9 @@ onBeforeMount(async () => {
     });
 })
 
-const toggleLike = async () => {
+const toggleLike = async (event) => {
+    event.preventDefault();
+
     if (isLoading.value || !props.canLike) return
 
     if (props.isGuest) {
