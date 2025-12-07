@@ -132,15 +132,17 @@ class ComponentLoader implements BootstrapInterface
 
     private function setRequestConfig(\yii\base\Application $app)
     {
-        if ($app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
-            $secret = $app->settings->get('secret');
-            if ($secret != "") {
-                $app->request->cookieValidationKey = $secret;
+        if (!$app->request->isConsoleRequest) {
+            if ($app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
+                $secret = $app->settings->get('secret');
+                if ($secret != "") {
+                    $app->request->cookieValidationKey = $secret;
+                }
             }
-        }
 
-        if ($app->request->cookieValidationKey == '') {
-            $app->requestcookieValidationKey = 'installer';
+            if ($app->request->cookieValidationKey == '') {
+                $app->requestcookieValidationKey = 'installer';
+            }
         }
 
         if (
