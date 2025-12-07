@@ -13,8 +13,8 @@ class ViteAssetConverter extends AssetConverter
 
         $this->commands = ArrayHelper::merge(
             $this->commands, [
-                'vue.js' => ['js', 'npm run build-vue entry {from} dist {to}'],
-                'jsx' => ['js', 'npm run build-react entry {from} dist {to}'],
+                'vue.js' => ['js', 'npm run build-vite entry {from} dist {to}'],
+                'jsx' => ['js', 'npm run build-vite entry {from} dist {to}'],
             ]
         );
     }

@@ -2,36 +2,31 @@ import React from 'react';
 
 const SpaceChooserItem = ({
                               space,
-                              visible = true,
                               updateCount = 0,
+                              isFollowing,
+                              isArchived,
                           }) => {
-    const hasUpdates = updateCount > 0;
-
     return (
         <a
             href={space.url}
-            className={`dropdown-item d-flex${visible ? '' : ' d-none'}`}
+            className={`dropdown-item d-flex`}
         >
-            {/* Space Image */}
-            <div className="flex-shrink-0 me-2">
-                <img
-                    src={space.imageUrl || `/img/default_space.jpg`}
-                    width="24"
-                    height="24"
-                    alt={space.name}
-                    className="img-rounded"
-                    style={{ borderRadius: '4px' }}
-                />
-            </div>
+            <div className="flex-shrink-0 me-2" dangerouslySetInnerHTML={{__html: space.image}} />
 
             <div className="flex-grow-1">
                 <strong className="space-name">
                     {space.name}
                 </strong>
 
-                {space.badge}
+                {isFollowing && (
+                    <i className="fa fa-star badge-space float-end type tt" title='You are following this space'/>
+                )}
 
-                {hasUpdates && (
+                {isArchived && (
+                    <i className="fa fa-history badge-space float-end type tt" title='This space is archived'/>
+                )}
+
+                {updateCount > 0 && (
                     <div
                         data-message-count={updateCount}
                         className={`badge badge-space messageCount float-end tt`}
@@ -44,11 +39,7 @@ const SpaceChooserItem = ({
                 <br />
 
                 <p className="space-description">
-                    {space.description
-                        ? space.description.length > 60
-                            ? `${space.description.substring(0, 60)}…`
-                            : space.description
-                        : ''}
+                    {space.description}
                 </p>
 
                 {space.tags && space.tags.length > 0 && (

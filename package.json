@@ -26,7 +26,6 @@
     "vue": "^3.5.25"
   },
   "scripts": {
-    "build-vue": "vite build --config vite-vue.config.js",
-    "build-react": "vite build --config vite-react.config.js"
+    "build-vite": "vite build --config vite.config.js"
   }
 }

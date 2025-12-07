@@ -9,7 +9,7 @@ class SpaceChooserAsset extends AssetBundle
     public $sourcePath = __DIR__ . '/assets';
 
     public $js = [
-        'entry.vue.js'
+        'entry.jsx'
     ];
 
     public $publishOptions = [

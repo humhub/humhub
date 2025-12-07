@@ -4,7 +4,9 @@ namespace humhub\modules\space\widgets;
 
 use Exception;
 use humhub\components\Widget;
+use humhub\helpers\ArrayHelper;
 use humhub\helpers\Html;
+use humhub\libs\Helpers;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\assets\SpaceChooserAsset;
 use humhub\modules\space\models\Membership;
@@ -12,6 +14,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\space\permissions\SpaceDirectoryAccess;
+use humhub\modules\space\widgets\react\SpaceChooserWidget;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\models\Follow;
@@ -58,6 +61,43 @@ class Chooser extends Widget
      */
     public function run()
     {
+//        var_dump($this->getViewParams());die;
+
+        $spaces = [];
+        // render membership items
+        foreach ($this->getMemberships() as $membership) {
+            $spaces[] = $membership->space;
+//            $result = SpaceChooserItem::widget([
+//                'space' => $membership->space, 'updateCount' => $membership->countNewItems(), 'isMember' => true,
+//            ]);
+//
+//            $output = $this->attachItem($output, $result);
+        }
+
+        // render follow spaces
+        foreach ($this->getFollowSpaces() as $space) {
+            $spaces[] = $space;
+//            $result = SpaceChooserItem::widget(['space' => $space, 'isFollowing' => true]);
+//            $output = $this->attachItem($output, $result);
+        }
+
+        return SpaceChooserWidget::widget([
+            'props' => [
+                'canCreateSpace' => $this->canCreateSpace(),
+                'canAccessDirectory' => Yii::$app->user->can(SpaceDirectoryAccess::class),
+                'directoryUrl' => Url::to(['/space/spaces']),
+                'createSpaceUrl' => Url::to(['/space/create/create']),
+                'spaces' => ArrayHelper::getColumn($spaces, function(Space $space) {
+                    return ArrayHelper::merge($space->toArray(), [
+                        'url' => $space->getUrl(),
+                        'tags' => $space->getTags(),
+                        'description' => Helpers::truncateText($space->description, 60),
+                        'image' => Image::widget(['space' => $space, 'width' => 24])
+                    ]);
+                }),
+            ]
+        ]);
+
         return $this->render($this->viewName, $this->getViewParams());
     }
 

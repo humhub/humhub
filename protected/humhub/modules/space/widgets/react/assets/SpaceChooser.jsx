@@ -3,17 +3,17 @@ import SpaceChooserItem from './SpaceChooserItem';
 
 const SpaceChooser = ({
                           currentSpaceImage,
-                          noSpaceHtml,
                           canCreateSpace,
                           canAccessDirectory,
                           directoryUrl,
                           createSpaceUrl,
+                          spaces
                       }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
 
     return (
-        <li className="nav-item dropdown">
+        <>
             <a
                 href="#"
                 id="space-menu"
@@ -24,7 +24,13 @@ const SpaceChooser = ({
                 }}
                 aria-expanded={isOpen}
             >
-                {currentSpaceImage || noSpaceHtml}
+                {currentSpaceImage || (
+                    <div className='no-space'>
+                        <i className='fa fa-dot-circle-o'/>
+                        <br/>
+                        My spaces
+                    </div>
+                )}
             </a>
             <ul
                 className="dropdown-menu"
@@ -74,7 +80,7 @@ const SpaceChooser = ({
                 </li>
                 <li>
                     <div id="space-menu-spaces" className="notLoaded hh-list">
-                        <SpaceChooserItem />
+                        {spaces.map((space) => <SpaceChooserItem key={space.guid} space={space} />)}
                     </div>
                 </li>
                 <li className="remoteSearch">
@@ -94,7 +100,7 @@ const SpaceChooser = ({
                     </li>
                 )}
             </ul>
-        </li>
+        </>
     );
 };
 
