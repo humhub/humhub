@@ -24,6 +24,7 @@ HumHub Changelog
 - Fix #7868: Add a minimal fallback CSS in case of CSS compilation issue
 - Fix #7872: Email inline style from Sass variables, e.g. when overwriting `$mail-font-family` in the Custom SCSS field
 - Fix #7873: Fix `required` validator
+- Fix #7875: Fix theme color default settings after initial installation
 - Fix #7876: Support for .mjs (ES modules)
 - Enh #7883: Allow CheckboxList Profile Field Type to be used "as Directory filter"
 
