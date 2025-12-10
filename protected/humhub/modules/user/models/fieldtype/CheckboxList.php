@@ -36,6 +36,11 @@ class CheckboxList extends BaseType
     public $options;
 
     /**
+     * @inerhitdoc
+     */
+    public $canBeDirectoryFilter = true;
+
+    /**
      * Allow other selection
      * @var bool
      */
