@@ -26,7 +26,7 @@ HumHub Changelog
 - Fix #7873: Fix `required` validator
 - Fix #7876: Support for .mjs (ES modules)
 - Enh #7883: Allow CheckboxList Profile Field Type to be used "as Directory filter"
-- Fix: On small screen, the modal box is not centered
+- Fix #7884: On small screen, the modal box is not centered
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------
