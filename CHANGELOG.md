@@ -26,6 +26,7 @@ HumHub Changelog
 - Fix #7873: Fix `required` validator
 - Fix #7875: Fix theme color default settings after initial installation
 - Fix #7876: Support for .mjs (ES modules)
+- Chg: Registration form definitions now requires to use the `EVENT_AFTER_SET_FORM` instead of `EVENT_AFTER_INIT` 
 - Enh #7883: Allow CheckboxList Profile Field Type to be used "as Directory filter"
 
 1.18.0-beta.5 (November 13, 2025)
