@@ -150,5 +150,4 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
         $('#registration-form-captcha').fadeIn(500);
     });
     <?php } ?>
-
 </script>

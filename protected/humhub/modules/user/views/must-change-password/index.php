@@ -11,37 +11,34 @@ use yii\helpers\Url;
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Change password');
 ?>
-<div class="container" style="text-align: center;">
+<div id="user-must-change-password" class="container">
     <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br>
 
-    <div class="row">
-        <div id="must-change-password-form" class="panel panel-default animated bounceIn"
-             style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
-            <div class="panel-heading"><?= Yii::t('UserModule.auth', '<strong>Change</strong> Password'); ?></div>
-            <div class="panel-body">
+    <div id="must-change-password-form" class="panel panel-default animated bounceIn">
+        <div class="panel-heading"><?= Yii::t('UserModule.auth', '<strong>Change</strong> Password'); ?></div>
+        <div class="panel-body">
 
-                <?php $form = ActiveForm::begin(); ?>
+            <?php $form = ActiveForm::begin(); ?>
 
-                <p><?= Yii::t('UserModule.auth', 'Due to security reasons you are required to change your password in order to access the platform.'); ?></p>
+            <p><?= Yii::t('UserModule.auth', 'Due to security reasons you are required to change your password in order to access the platform.'); ?></p>
 
 
-                <?php if ($model->isAttributeSafe('currentPassword')): ?>
-                    <?= $form->field($model, 'currentPassword')->passwordInput(['maxlength' => 45]); ?>
-                    <hr>
-                <?php endif; ?>
-
-                <?= $form->field($model, 'newPassword')->passwordInput(['maxlength' => 45]); ?>
-                <?= $form->field($model, 'newPasswordConfirm')->passwordInput(['maxlength' => 45]); ?>
-
+            <?php if ($model->isAttributeSafe('currentPassword')): ?>
+                <?= $form->field($model, 'currentPassword')->passwordInput(['maxlength' => 45]); ?>
                 <hr>
-                <?= Button::primary(Yii::t('UserModule.auth', 'Confirm'))->submit()->left() ?>
+            <?php endif; ?>
 
-                <?php ActiveForm::end(); ?>
+            <?= $form->field($model, 'newPassword')->passwordInput(['maxlength' => 45]); ?>
+            <?= $form->field($model, 'newPasswordConfirm')->passwordInput(['maxlength' => 45]); ?>
 
-                <?= Button::light(Yii::t('UserModule.auth', 'Log out'))->link(Url::toRoute('/user/auth/logout'), false)->options(['data-method' => 'POST'])->right() ?>
+            <hr>
+            <?= Button::primary(Yii::t('UserModule.auth', 'Confirm'))->submit()->left() ?>
 
-            </div>
+            <?php ActiveForm::end(); ?>
+
+            <?= Button::light(Yii::t('UserModule.auth', 'Log out'))->link(Url::toRoute('/user/auth/logout'), false)->options(['data-method' => 'POST'])->right() ?>
+
         </div>
     </div>
 </div>

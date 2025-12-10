@@ -26,6 +26,7 @@ HumHub Changelog
 - Fix #7873: Fix `required` validator
 - Fix #7876: Support for .mjs (ES modules)
 - Enh #7883: Allow CheckboxList Profile Field Type to be used "as Directory filter"
+- Fix: View using the Login layout (auth, registration, must-change-password and password-recovery): Styling, Back button, remove inline CSS, add unique ID
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------
