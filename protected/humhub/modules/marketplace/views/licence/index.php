@@ -1,9 +1,9 @@
 <?php
 
 use humhub\components\View;
-use humhub\helpers\Html;
 use humhub\modules\marketplace\models\Licence;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
 use humhub\widgets\form\ActiveForm;
 use yii\helpers\Url;
 
@@ -12,9 +12,8 @@ use yii\helpers\Url;
 ?>
 
 <div class="panel">
-
     <div class="panel-heading">
-        <?= Yii::t('MarketplaceModule.base', '<strong>Activate</strong> your Professional Edition'); ?>
+        <?= Yii::t('MarketplaceModule.base', '<strong>Activate</strong> your Professional Edition') ?>
     </div>
 
     <div class="panel-body">
@@ -23,13 +22,13 @@ use yii\helpers\Url;
             <div class="alert alert-success">
                 <p>
                     <strong>
-                        <?= Yii::t('MarketplaceModule.base', 'Professional Edition is activated!'); ?>
+                        <?= Yii::t('MarketplaceModule.base', 'Professional Edition is activated!') ?>
                     </strong><br/>
                     <?= Yii::t(
                         'MarketplaceModule.base',
                         'Licensed for max. {number} users.',
-                        ['number' => $model->maxUsers]
-                    ); ?>
+                        ['number' => $model->maxUsers],
+                    ) ?>
                 </p>
             </div>
         <?php endif; ?>
@@ -38,12 +37,8 @@ use yii\helpers\Url;
             <?= Yii::t(
                 'MarketplaceModule.base',
                 'No license key? Find out more about the {pro} or contact us.',
-                ['pro' => Html::a(
-                    'Professional Edition',
-                    'https://www.humhub.com',
-                    ['target' => '_blank', 'style' => 'text-decoration:underline']
-                )]
-            ); ?></p>
+                ['pro' => Link::to('Professional Edition', 'https://www.humhub.com')->blank()->cssClass('link-accent')],
+            ) ?></p>
         <hr>
 
         <?php $form = ActiveForm::begin([
@@ -52,10 +47,10 @@ use yii\helpers\Url;
             'enableClientValidation' => false]); ?>
 
         <?= $form->errorSummary($model); ?>
-        <?= $form->field($model, 'licenceKey')->textInput(); ?>
+        <?= $form->field($model, 'licenceKey')->textInput() ?>
         <hr>
 
-        <?= Button::save(Yii::t('MarketplaceModule.base', 'Save and update'))->submit(); ?>
+        <?= Button::save(Yii::t('MarketplaceModule.base', 'Save and update'))->submit() ?>
 
         <?php ActiveForm::end(); ?>
 
@@ -64,7 +59,5 @@ use yii\helpers\Url;
                 <small><?= Yii::t('MarketplaceModule.base', 'Remove license key'); ?></small>
             </a>
         <?php endif; ?>
-
     </div>
-
 </div>
