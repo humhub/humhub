@@ -28,7 +28,7 @@ HumHub Changelog
 - Fix #7876: Support for .mjs (ES modules)
 - Chg #7878: Registration form definitions now requires to use the `EVENT_AFTER_SET_FORM` instead of `EVENT_AFTER_INIT` 
 - Enh #7883: Allow CheckboxList Profile Field Type to be used "as Directory filter"
-- Fix: Remove btn class from sub-menu dropdowns and fix extra space after the icon
+- Fix #7889: Remove btn class from sub-menu dropdowns and fix extra space after the icon
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------
