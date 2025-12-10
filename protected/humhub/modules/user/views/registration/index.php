@@ -41,7 +41,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
         </div>
     </div>
 
-    <?= LanguageChooser::widget() ?>
+    <?= LanguageChooser::widget(['vertical' => true, 'hideLabel' => true]) ?>
 </div>
 
 <script <?= Html::nonce() ?>>
