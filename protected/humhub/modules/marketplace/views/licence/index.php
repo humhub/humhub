@@ -50,14 +50,14 @@ use yii\helpers\Url;
         <?= $form->field($model, 'licenceKey')->textInput() ?>
         <hr>
 
-        <?= Button::save(Yii::t('MarketplaceModule.base', 'Save and update'))->submit() ?>
-
-        <?php ActiveForm::end(); ?>
-
         <?php if ($model->type === Licence::LICENCE_TYPE_PRO): ?>
-            <a href="<?= Url::to(['/marketplace/licence/remove']); ?>" class="float-end">
+            <a href="<?= Url::to(['/marketplace/licence/remove']); ?>" class="float-end mt-4">
                 <small><?= Yii::t('MarketplaceModule.base', 'Remove license key'); ?></small>
             </a>
         <?php endif; ?>
+
+        <?= Button::save(Yii::t('MarketplaceModule.base', 'Save and update'))->submit() ?>
+
+        <?php ActiveForm::end(); ?>
     </div>
 </div>
