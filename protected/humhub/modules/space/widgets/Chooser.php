@@ -81,15 +81,20 @@ class Chooser extends Widget
 //            $output = $this->attachItem($output, $result);
         }
 
+
+//        return $this->render($this->viewName, $this->getViewParams());
+
         return SpaceChooserWidget::widget([
             'props' => [
                 'canCreateSpace' => $this->canCreateSpace(),
                 'canAccessDirectory' => Yii::$app->user->can(SpaceDirectoryAccess::class),
                 'directoryUrl' => Url::to(['/space/spaces']),
                 'createSpaceUrl' => Url::to(['/space/create/create']),
+                'remoteSearchUrl' => Url::to(['/space/browse/search-json']),
                 'spaces' => ArrayHelper::getColumn($spaces, function(Space $space) {
                     return ArrayHelper::merge($space->toArray(), [
-                        'url' => $space->getUrl(),
+                        'title' => $space->name,
+                        'link' => $space->getUrl(),
                         'tags' => $space->getTags(),
                         'description' => Helpers::truncateText($space->description, 60),
                         'image' => Image::widget(['space' => $space, 'width' => 24])
@@ -97,8 +102,6 @@ class Chooser extends Widget
                 }),
             ]
         ]);
-
-        return $this->render($this->viewName, $this->getViewParams());
     }
 
     /**

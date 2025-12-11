@@ -17,9 +17,11 @@
   },
   "dependencies": {
     "@rollup/rollup-linux-arm64-gnu": "^4.53.3",
+    "@vitejs/plugin-react": "^4.7.0",
     "@vitejs/plugin-vue": "^5.2.4",
     "axios": "^1.13.2",
     "i18next": "^25.7.1",
+    "lodash": "^4.17.21",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
     "vite": "^6.4.1",

@@ -8,14 +8,14 @@ const SpaceChooserItem = ({
                           }) => {
     return (
         <a
-            href={space.url}
+            href={space.link}
             className={`dropdown-item d-flex`}
         >
             <div className="flex-shrink-0 me-2" dangerouslySetInnerHTML={{__html: space.image}} />
 
             <div className="flex-grow-1">
                 <strong className="space-name">
-                    {space.name}
+                    {space.title}
                 </strong>
 
                 {isFollowing && (

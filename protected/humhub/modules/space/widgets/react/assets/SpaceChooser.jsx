@@ -1,5 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import axios from 'axios';
+import _ from 'lodash';
 import SpaceChooserItem from './SpaceChooserItem';
+import CreateSpace from './CreateSpace';
+
+const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
+
+axios.defaults.withCredentials = true;
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+axios.defaults.headers.common['X-CSRF-Token'] = csrfToken;
 
 const SpaceChooser = ({
                           currentSpaceImage,
@@ -7,14 +16,69 @@ const SpaceChooser = ({
                           canAccessDirectory,
                           directoryUrl,
                           createSpaceUrl,
-                          spaces
+                          remoteSearchUrl,
+                          spaces: initialSpaces,
+                          visibilityOptions,
+                          joinPolicyOptions
                       }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+    const [spaces, setSpaces] = useState(initialSpaces);
+    const [showCreateForm, setShowCreateForm] = useState(false);
+    const dropdownRef = useRef(null);
+    const dropdownToggleRef = useRef(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target) &&
+                dropdownToggleRef.current && !dropdownToggleRef.current.contains(event.target)) {
+                setIsOpen(false);
+                setShowCreateForm(false);
+            }
+        };
+
+        if (isOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isOpen]);
+
+    const debouncedSearch = useCallback(
+        _.debounce(async (query) => {
+            try {
+                const response = await axios.get(remoteSearchUrl, {
+                    params: {
+                        keyword: query,
+                        target: 'chooser'
+                    }
+                });
+
+                if (response.data) {
+                    setSpaces(response.data);
+                }
+            } catch (error) {
+                console.error('Error fetching spaces:', error);
+            }
+        }, 300),
+        [remoteSearchUrl]
+    );
+
+    useEffect(() => {
+        if (!searchQuery) {
+            setSpaces(initialSpaces);
+            return;
+        }
+
+        debouncedSearch(searchQuery);
+    }, [searchQuery, initialSpaces, debouncedSearch]);
 
     return (
         <>
             <a
+                ref={dropdownToggleRef}
                 href="#"
                 id="space-menu"
                 className="nav-link dropdown-toggle"
@@ -34,6 +98,7 @@ const SpaceChooser = ({
             </a>
             {isOpen && (
                 <ul
+                    ref={dropdownRef}
                     className="dropdown-menu"
                     id="space-menu-dropdown"
                     style={{ display: 'block' }}
@@ -91,16 +156,35 @@ const SpaceChooser = ({
                     {canCreateSpace && (
                         <li>
                             <div className="dropdown-footer">
-                                <a
-                                    href={createSpaceUrl}
+                                <button
+                                    type="button"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setShowCreateForm(true);
+                                    }}
                                     className="btn btn-accent col-lg-12"
                                 >
                                     Create Space
-                                </a>
+                                </button>
                             </div>
                         </li>
                     )}
                 </ul>
+            )}
+            {showCreateForm && (
+                <div
+                    ref={dropdownRef}
+                    className="dropdown-menu"
+                    style={{ display: 'block', width: '500px', maxWidth: '90vw' }}
+                >
+                    <CreateSpace
+                        onCancel={() => {
+                            setShowCreateForm(false);
+                            setIsOpen(true);
+                        }}
+                        createSpaceUrl={createSpaceUrl}
+                    />
+                </div>
             )}
         </>
     );
