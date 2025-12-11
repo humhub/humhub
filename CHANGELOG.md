@@ -178,10 +178,11 @@ HumHub Changelog
 - Enh #7661: Parent groups
 - Enh #7662: In buttons, add right margin to the icon, so that the space char between the icon and the label is no longer needed (see MIGRATE-BS5.md -> ## Buttons)
 
-1.17.5 (Unreleased)
+1.17.5 (December 11, 2025)
 --------------------------
 - Fix #7835: Truncate application name in the theme header
 - Fix #7841: Send user approval notification only to active group managers
+- Fix #7891: Edge shows blank home page
 
 1.17.4 (November 11, 2025)
 --------------------------
