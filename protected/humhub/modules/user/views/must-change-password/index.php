@@ -23,7 +23,6 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Change password');
 
             <p><?= Yii::t('UserModule.auth', 'Due to security reasons you are required to change your password in order to access the platform.'); ?></p>
 
-
             <?php if ($model->isAttributeSafe('currentPassword')): ?>
                 <?= $form->field($model, 'currentPassword')->passwordInput(['maxlength' => 45]); ?>
                 <hr>
@@ -32,12 +31,10 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Change password');
             <?= $form->field($model, 'newPassword')->passwordInput(['maxlength' => 45]); ?>
             <?= $form->field($model, 'newPasswordConfirm')->passwordInput(['maxlength' => 45]); ?>
 
-            <hr>
-            <?= Button::primary(Yii::t('UserModule.auth', 'Confirm'))->submit()->left() ?>
+            <?= Button::light(Yii::t('UserModule.auth', 'Log out'))->link(Url::toRoute('/user/auth/logout'), false)->options(['data-method' => 'POST']) ?>
+            <?= Button::primary(Yii::t('UserModule.auth', 'Confirm'))->submit() ?>
 
             <?php ActiveForm::end(); ?>
-
-            <?= Button::light(Yii::t('UserModule.auth', 'Log out'))->link(Url::toRoute('/user/auth/logout'), false)->options(['data-method' => 'POST'])->right() ?>
 
         </div>
     </div>

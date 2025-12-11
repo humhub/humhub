@@ -43,7 +43,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
                         <?= $form->field($invite, 'captcha')->widget(CaptchaField::class)->label(false) ?>
                     </div>
                 <?php endif; ?>
-                <hr>
+
                 <?= Html::submitButton(Yii::t('UserModule.auth', 'Register'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
                 <?php ActiveForm::end(); ?>
