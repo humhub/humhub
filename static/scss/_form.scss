@@ -170,42 +170,6 @@
         font-size: 12px;
     }
 
-    .input-color-group {
-        flex-wrap: nowrap;
-
-        > div > label {
-            display: none;
-        }
-
-        input {
-            height: 36px;
-        }
-
-        div:first-child input {
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-        }
-
-        div:last-child {
-            flex-grow: 1;
-
-            input {
-                margin-left: calc(-1 * var(--bs-border-width));
-                border-top-left-radius: 0;
-                border-bottom-left-radius: 0;
-            }
-        }
-
-        input:focus {
-            position: relative;
-            z-index: 1;
-        }
-    }
-
-    .input-group-text {
-        border: none;
-    }
-
     a.input-field-addon {
         font-size: 12px;
         float: right;
