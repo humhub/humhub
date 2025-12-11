@@ -1,9 +1,5 @@
 HumHub - Putting People and Pieces together
-===========================
-
-[![Test Status](https://github.com/humhub/humhub/workflows/PHP%20Codeception%20Tests/badge.svg)](https://github.com/humhub/humhub/actions)
-[![Yii2](https://img.shields.io/badge/Powered_by-Yii_Framework-green.svg?style=flat)](http://www.yiiframework.com/)
-[![CLA assistant](https://cla-assistant.io/readme/badge/humhub/humhub)](https://cla-assistant.io/humhub/humhub)
+===========================================
 
 #### **HumHub is an intuitive to use and modular designed open-source software**, used primarily as social network, knowledge database, intranet or information and communication platform.
 
