@@ -42,7 +42,7 @@ use yii\helpers\Url;
             </div>
         </div>
         <div class="col-lg-4 usersearch-statuses">
-            <?= Html::activeDropDownList($searchModel, 'status', UserSearch::getStatusAttributes(), ['class' => 'form-control', 'data-action-change' => 'ui.form.submit']); ?>
+            <?= Html::activeDropDownList($searchModel, 'status', $searchModel->getStatusAttributes(), ['class' => 'form-control', 'data-action-change' => 'ui.form.submit']); ?>
         </div>
     </div>
     <?php ActiveForm::end(); ?>
