@@ -41,6 +41,7 @@ HumHub Changelog
 - Fix #7897: Admin Advanced OEmbeded styling
 - Fix #7900: About HumHub Information page styling
 - Fix #7901: Database Information page styling
+- Fix: Admin User Export button group spacing and missing line in the table header
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------

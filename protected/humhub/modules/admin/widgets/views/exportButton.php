@@ -8,7 +8,7 @@
 use humhub\widgets\bootstrap\Button;
 
 ?>
-<div class="btn-group">
+<div class="btn-group btn-group-sm">
     <button type="button" class="btn btn-sm btn-accent">
         <i class="fa fa-download"></i> <?= Yii::t('base', 'Export') ?>
     </button>
