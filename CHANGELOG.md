@@ -35,6 +35,7 @@ HumHub Changelog
 - Fix #7888: Activate License link styling
 - Fix #7888: User/Space List Modals
 - Fix #7889: Remove btn class from sub-menu dropdowns and fix extra space after the icon
+- Fix #7890: Modal moves the topbar to the right when it opens
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------
