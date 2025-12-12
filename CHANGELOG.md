@@ -30,6 +30,7 @@ HumHub Changelog
 - Enh #7883: Allow CheckboxList Profile Field Type to be used "as Directory filter"
 - Fix #7884: On small screen, the modal box is not centered
 - Fix #7885: Layout padding on small screens
+- Fix #7886: View using the Login layout (auth, registration, must-change-password and password-recovery): Styling, Back button, remove inline CSS, add unique ID
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------
