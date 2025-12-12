@@ -32,6 +32,8 @@ HumHub Changelog
 - Fix #7885: Layout padding on small screens
 - Fix #7886: View using the Login layout (auth, registration, must-change-password and password-recovery): Styling, Back button, remove inline CSS, add unique ID
 - Fix #7887: Delete Account Spaces List
+- Fix #7888: Activate License link styling
+- Fix #7888: User/Space List Modals
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------
