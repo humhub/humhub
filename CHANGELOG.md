@@ -37,6 +37,7 @@ HumHub Changelog
 - Fix #7889: Remove btn class from sub-menu dropdowns and fix extra space after the icon
 - Fix #7890: Modal moves the topbar to the right when it opens
 - Fix #7895: Button styling when in Input form field
+- Fix #7896: Top bar notification block not centered
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------
