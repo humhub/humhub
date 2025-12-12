@@ -13,6 +13,8 @@
     }
 
     .badge {
+        --bs-badge-font-size: 0.75rem;
+
         font-family: Arial, sans-serif;
         text-transform: uppercase;
         vertical-align: baseline;
@@ -21,11 +23,32 @@
         background-color: var(--hh-background3);
         line-height: 1;
 
-        &.text-bg-info,
-        &.text-bg-secondary,
-        &.text-bg-success,
+        &.text-bg-accent {
+            color: var(--hh-accent-contrast) !important;
+        }
+        &.text-bg-primary {
+            color: var(--hh-primary-contrast) !important;
+        }
+        &.text-bg-secondary {
+            color: var(--hh-secondary-contrast) !important;
+        }
+        &.text-bg-info {
+            color: var(--hh-info-contrast) !important;
+        }
+        &.text-bg-success {
+            color: var(--hh-success-contrast) !important;
+        }
+        &.text-bg-warning {
+            color: var(--hh-warning-contrast) !important;
+        }
         &.text-bg-danger {
-            color: var(--hh-text-color-contrast) !important;
+            color: var(--hh-danger-contrast) !important;
+        }
+        &.text-bg-light {
+            color: var(--hh-light-contrast) !important;
+        }
+        &.text-bg-dark {
+            color: var(--hh-dark-contrast) !important;
         }
 
         &.badge-new {

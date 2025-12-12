@@ -176,6 +176,7 @@
 
     $moduleUpdateLayoutBg: var(--bs-primary);
     $moduleUpdateCardBg: darken($primary, 10);
+    $moduleUpdateCardText: color-contrast($moduleUpdateCardBg);
     .container-module-updates {
         background: $moduleUpdateLayoutBg;
         margin-top: 30px;
@@ -188,7 +189,7 @@
         }
 
         .modules-type {
-            color: var(--hh-primary-contrast);
+            color: $moduleUpdateCardText;
             margin: 10px 0 30px;
         }
 
@@ -197,7 +198,7 @@
             background-color: transparent;
 
             .card-panel {
-                color: var(--hh-primary-contrast);
+                color: $moduleUpdateCardText;
                 margin-top: 0;
 
                 > div:not(.card-status) {
@@ -210,10 +211,10 @@
 
                 .card-body {
                     padding: 4px 12px 20px;
-                    color: var(--hh-primary-contrast);
+                    color: $moduleUpdateCardText;
 
                     .card-title {
-                        color: var(--hh-primary-contrast);
+                        color: $moduleUpdateCardText;
                         font-size: 14px;
                     }
                 }
@@ -233,7 +234,7 @@
                             padding: 0 4px;
                             border: 1px solid #FFF;
                             background: $moduleUpdateCardBg;
-                            color: var(--hh-text-color-contrast) !important;
+                            color: $moduleUpdateCardText !important;
 
                             &:hover, &:active {
                                 background: $moduleUpdateLayoutBg !important;
