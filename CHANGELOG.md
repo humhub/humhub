@@ -40,6 +40,7 @@ HumHub Changelog
 - Fix #7896: Top bar notification block not centered
 - Fix #7897: Admin Advanced OEmbeded styling
 - Fix #7900: About HumHub Information page styling
+- Fix #7901: Database Information page styling
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------
