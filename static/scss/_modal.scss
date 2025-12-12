@@ -9,10 +9,6 @@
         backdrop-filter: blur(2px);
         overflow-y: visible;
 
-        .modal-backdrop {
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-
         //
         // Animate.css modifications
         // --------------------------------------------------
@@ -137,5 +133,9 @@
                 }
             }
         }
+    }
+
+    .modal-backdrop {
+        background-color: rgba(0, 0, 0, 0.5);
     }
 }
