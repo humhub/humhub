@@ -41,7 +41,9 @@ HumHub Changelog
 - Fix #7897: Admin Advanced OEmbeded styling
 - Fix #7900: About HumHub Information page styling
 - Fix #7901: Database Information page styling
-- Fix: Admin User Export button group spacing and missing line in the table header
+- Fix #7903: Admin User Export button group spacing and missing line in the table header
+- Fix: Logging admin page styling
+- Enh: New Sass text color contrast variables, `$text-color-contrast` is now deprecated
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------

@@ -12,7 +12,6 @@
     --hh-text-color-soft: #{$text-color-soft};
     --hh-text-color-soft2: #{$text-color-soft2};
     --hh-text-color-soft3: #{$text-color-soft3};
-    --hh-text-color-contrast: #{$text-color-contrast};
 
     // Background colors
     --hh-background-color-main: #{$background-color-main};
@@ -24,15 +23,15 @@
     --hh-background4: #{$background4};
 
     // Color contrast
-    --hh-accent-contrast: #{color-contrast($accent)};
-    --hh-primary-contrast: #{color-contrast($primary)};
-    --hh-secondary-contrast: #{color-contrast($secondary)};
-    --hh-info-contrast: #{color-contrast($info)};
-    --hh-success-contrast: #{color-contrast($success)};
-    --hh-warning-contrast: #{color-contrast($warning)};
-    --hh-danger-contrast: #{color-contrast($danger)};
-    --hh-light-contrast: #{color-contrast($light)};
-    --hh-dark-contrast: #{color-contrast($dark)};
+    --hh-accent-contrast: #{$text-color-accent-contrast};
+    --hh-primary-contrast: #{$text-color-primary-contrast};
+    --hh-secondary-contrast: #{$text-color-secondary-contrast};
+    --hh-info-contrast: #{$text-color-info-contrast};
+    --hh-success-contrast: #{$text-color-success-contrast};
+    --hh-warning-contrast: #{$text-color-warning-contrast};
+    --hh-danger-contrast: #{$text-color-danger-contrast};
+    --hh-light-contrast: #{$text-color-light-contrast};
+    --hh-dark-contrast: #{$text-color-dark-contrast};
 
     // Bootstrap Alert boxes
     // Success
@@ -73,6 +72,7 @@
     --text-color-soft2: #{$text-color-soft2};
     --text-color-soft3: #{$text-color-soft3};
     --text-color-contrast: #{$text-color-contrast};
+    --hh-text-color-contrast: #{$text-color-contrast};
     --background-color-main: #{$background-color-main};
     --background-color-secondary: #{$background-color-secondary};
     --background-color-page: #{$background-color-page};
@@ -104,7 +104,6 @@
         --hh-text-color-soft: #{$text-color-soft-dark};
         --hh-text-color-soft2: #{$text-color-soft2-dark};
         --hh-text-color-soft3: #{$text-color-soft3-dark};
-        --hh-text-color-contrast: #{$text-color-contrast-dark};
 
         // Background colors
         --hh-background-color-main: #{$background-color-main-dark};
@@ -139,6 +138,7 @@
         --text-color-soft2: #{$text-color-soft2-dark};
         --text-color-soft3: #{$text-color-soft3-dark};
         --text-color-contrast: #{$text-color-contrast-dark};
+        --hh-text-color-contrast: #{$text-color-contrast-dark};
         --background-color-main: #{$background-color-main-dark};
         --background-color-secondary: #{$background-color-secondary-dark};
         --background-color-page: #{$background-color-page-dark};

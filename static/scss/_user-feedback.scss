@@ -4,7 +4,7 @@
 
 @if not $prev-user-feedback {
     .status-bar-body {
-        color: var(--hh-text-color-contrast);
+        color: #fff;
         position: fixed;
         margin-bottom: var(--hh-mobile-app-safe-area-inset-bottom, env(safe-area-inset-bottom)); // for the web view space (safe area) on mobile devices
         width: 100%;
@@ -18,14 +18,14 @@
     }
 
     .status-bar-close {
-        color: var(--hh-text-color-contrast);
+        color: #fff;
         font-weight: bold;
         font-size: 21px;
         cursor: pointer;
     }
 
     .status-bar-close:hover {
-        color: var(--hh-text-color-contrast);
+        color: #fff;
     }
 
     .status-bar-close i {

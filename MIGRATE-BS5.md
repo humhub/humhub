@@ -652,12 +652,14 @@ Deprecated SCSS variables:
 - `$default`: use `$light` instead
 - `$info`: use `$accent` instead
 - `$link`: use `$primary` instead (or `$link-color` if it's about a link but not a `a` HTML tag)
+- `$text-color-contrast` use `$text-color-accent-contrast`, `$text-color-primary-contrast`, etc. instead
 
 New SCSS variables:
 - `$accent`
 - `$secondary`
 - `$light`
 - `$dark`
+- `$text-color-accent-contrast`, `$text-color-primary-contrast`, etc. (one for each Bootstrap color)
 
 #### CSS variable prefixes
 
