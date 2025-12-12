@@ -29,6 +29,7 @@ HumHub Changelog
 - Chg: Registration form definitions now requires to use the `EVENT_AFTER_SET_FORM` instead of `EVENT_AFTER_INIT` 
 - Enh #7883: Allow CheckboxList Profile Field Type to be used "as Directory filter"
 - Fix #7884: On small screen, the modal box is not centered
+- Fix #7885: Layout padding on small screens
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------
@@ -179,11 +180,10 @@ HumHub Changelog
 - Enh #7661: Parent groups
 - Enh #7662: In buttons, add right margin to the icon, so that the space char between the icon and the label is no longer needed (see MIGRATE-BS5.md -> ## Buttons)
 
-1.17.5 (December 11, 2025)
+1.17.5 (Unreleased)
 --------------------------
 - Fix #7835: Truncate application name in the theme header
 - Fix #7841: Send user approval notification only to active group managers
-- Fix #7891: Edge shows blank home page
 
 1.17.4 (November 11, 2025)
 --------------------------
