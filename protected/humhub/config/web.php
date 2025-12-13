@@ -38,7 +38,7 @@ $config = [
             ],
         ],
         'response' => [
-//            'class' => \yii2\extensions\psrbridge\http\Response::class,
+            'class' => \yii2\extensions\psrbridge\http\Response::class,
         ],
         'captcha' => [
             'class' => \humhub\components\captcha\AltchaCaptcha::class,
@@ -56,7 +56,7 @@ $config = [
             ],
         ],
         'errorHandler' => [
-//            'class' => \yii2\extensions\psrbridge\http\ErrorHandler::class,
+            'class' => \yii2\extensions\psrbridge\http\ErrorHandler::class,
             'errorAction' => '/error/index',
         ],
         'session' => [
