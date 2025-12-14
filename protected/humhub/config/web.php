@@ -33,6 +33,7 @@ $config = [
             ],
         ],
         'request' => [
+            'class' => \yii2\extensions\psrbridge\http\Request::class,
             'csrfCookie' => [
                 'sameSite' => yii\web\Cookie::SAME_SITE_LAX,
             ],
