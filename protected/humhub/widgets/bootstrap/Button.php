@@ -215,7 +215,7 @@ class Button extends \yii\bootstrap5\Button
         }
 
         return $this->asLink
-            ? Html::a($text, $this->getHref(), $this->options)
+            ? (string)Html::a($text, $this->getHref(), $this->options)
             : Html::button($text, $this->options);
     }
 

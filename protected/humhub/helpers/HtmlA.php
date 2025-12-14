@@ -6,7 +6,7 @@ use yii\helpers\Url;
 
 class HtmlA implements \Stringable
 {
-    use HtmlClickableElementTrait;
+
 
     private string $text;
     private array $options;
@@ -25,7 +25,7 @@ class HtmlA implements \Stringable
 
     public function __toString()
     {
-        $text = $this->icon . ($this->encodeLabel ? Html::encode($this->text) : $this->text);
+        $text = $this->encodeLabel ? Html::encode($this->text) : $this->text;
         return Html::tag('a', $text, $this->options);
     }
 
