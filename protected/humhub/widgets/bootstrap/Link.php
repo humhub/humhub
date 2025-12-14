@@ -17,6 +17,8 @@ namespace humhub\widgets\bootstrap;
  * ```
  * Link::primary()->link(['/index'])->icon('info')
  * ```
+ *
+ * @deprecated since v1.19
  */
 class Link extends Button
 {

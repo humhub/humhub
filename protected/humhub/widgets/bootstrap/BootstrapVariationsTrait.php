@@ -21,10 +21,6 @@ use yii\helpers\ArrayHelper;
  */
 trait BootstrapVariationsTrait
 {
-    /**
-     * @var Icon|null the icon to be displayed before the label.
-     */
-    public ?Icon $icon = null;
 
     public ?string $size = null;
 
@@ -100,24 +96,6 @@ trait BootstrapVariationsTrait
         return static::instance($label);
     }
 
-    public function icon(string|Icon $icon, bool $right = false, $options = []): static
-    {
-        // Extract icon from FontAwesome 4 HTML element
-        // TODO: remove later ($icon should be the name of the Icon or an instance of Icon)
-        $matches = [];
-        if (is_string($icon) && preg_match('/fa-([a-z0-9-]+)/', $icon, $matches)) {
-            $icon = $matches[1] ?? null;
-        }
-
-        $this->icon = ($icon instanceof Icon) ? $icon : Icon::get($icon, $options);
-
-        if ($right) {
-            $this->icon->right();
-        }
-
-        return $this;
-    }
-
     /**
      * @deprecated since 1.18 use [[sm]] instead
      */
@@ -175,25 +153,11 @@ trait BootstrapVariationsTrait
         return $title ? $this->options(['title' => $title]) : $this;
     }
 
-    /**
-     * Adds a title + tooltip behaviour data
-     */
-    public function tooltip(?string $title): static
-    {
-        if ($title !== null && $title !== '') {
-            $this->options([
-                'data-bs-title' => $title,
-                'data-bs-toggle' => 'tooltip',
-            ]);
-        }
 
-        return $this;
-    }
 
     public function cssClass(array|string $cssClass): static
     {
         Html::addCssClass($this->options, $cssClass);
-
         return $this;
     }
 

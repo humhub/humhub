@@ -10,6 +10,7 @@
 namespace humhub\widgets\bootstrap;
 
 use humhub\helpers\Html;
+use humhub\helpers\HtmlClickableElementTrait;
 use Yii;
 use yii\helpers\Url;
 
@@ -25,6 +26,7 @@ use yii\helpers\Url;
 class Button extends \yii\bootstrap5\Button
 {
     use BootstrapVariationsTrait;
+    use HtmlClickableElementTrait;
 
     /**
      * If string, the loader is active and a custom loader text is displayed
@@ -144,18 +146,6 @@ class Button extends \yii\bootstrap5\Button
         return $this->options['href'] ?? null;
     }
 
-    /**
-     * If set to false the [data-pjax-prevent] flag is attached to the link.
-     */
-    public function pjax(bool $pjax = true): static
-    {
-        if (!$pjax) {
-            Html::addPjaxPrevention($this->options);
-        }
-
-        return $this;
-    }
-
     public function isPjaxEnabled(): bool
     {
         return Html::isPjaxEnabled($this->options);
@@ -167,61 +157,6 @@ class Button extends \yii\bootstrap5\Button
         return $this;
     }
 
-    /**
-     * Adds a data-action-click handler to the button.
-     */
-    public function action(string $handler, $url = null, ?string $target = null): static
-    {
-        return $this->onAction('click', $handler, $url, $target);
-    }
-
-    /**
-     * Adds a data-action-* handler to the button.
-     */
-    public function onAction(string $event, string $handler, $url = null, ?string $target = null): static
-    {
-        $this->options['data-action-' . $event] = $handler;
-
-        if ($url) {
-            $this->options['data-action-' . $event . '-url'] = Url::to($url);
-        }
-
-        if ($target) {
-            $this->options['data-action-' . $event . '-target'] = $target;
-        }
-
-        return $this;
-    }
-
-    /**
-     * Adds a confirmation behaviour to the button.
-     */
-    public function confirm(
-        ?string $title = null,
-        ?string $body = null,
-        ?string $confirmButtonText = null,
-        ?string $cancelButtonText = null,
-    ): static {
-        if ($title) {
-            $this->options['data-action-confirm-header'] = $title;
-        }
-
-        if ($body) {
-            $this->options['data-action-confirm'] = $body;
-        } else {
-            $this->options['data-action-confirm'] = '';
-        }
-
-        if ($confirmButtonText) {
-            $this->options['data-action-confirm-text'] = $confirmButtonText;
-        }
-
-        if ($cancelButtonText) {
-            $this->options['data-action-cancel-text'] = $cancelButtonText;
-        }
-
-        return $this;
-    }
 
     /**
      * Sets the button as disabled
@@ -328,4 +263,6 @@ class Button extends \yii\bootstrap5\Button
         $this->label = $text;
         return $this;
     }
+
+
 }
