@@ -16,6 +16,8 @@ trait HtmlClickableElementTrait
      */
     public ?Icon $icon = null;
 
+    abstract protected function &getOptionsRef(): array;
+
     /**
      * Adds a data-action-click handler to the button.
      */
@@ -29,14 +31,14 @@ trait HtmlClickableElementTrait
      */
     private function onAction(string $event, string $handler, $url = null, ?string $target = null): static
     {
-        $this->options['data-action-' . $event] = $handler;
+        $this->getOptionsRef()['data-action-' . $event] = $handler;
 
         if ($url) {
-            $this->options['data-action-' . $event . '-url'] = Url::to($url);
+            $this->getOptionsRef()['data-action-' . $event . '-url'] = Url::to($url);
         }
 
         if ($target) {
-            $this->options['data-action-' . $event . '-target'] = $target;
+            $this->getOptionsRef()['data-action-' . $event . '-target'] = $target;
         }
 
         return $this;
@@ -48,7 +50,7 @@ trait HtmlClickableElementTrait
     public function pjax(bool $pjax = true): static
     {
         if (!$pjax) {
-            Html::addPjaxPrevention($this->options);
+            Html::addPjaxPrevention($this->getOptionsRef());
         }
 
         return $this;
@@ -60,10 +62,8 @@ trait HtmlClickableElementTrait
     public function tooltip(?string $title): static
     {
         if ($title !== null && $title !== '') {
-            $this->options([
-                'data-bs-title' => $title,
-                'data-bs-toggle' => 'tooltip',
-            ]);
+            $this->getOptionsRef()['data-bs-title'] = $title;
+            $this->getOptionsRef()['data-bs-toggle'] = 'tooltip';
         }
 
         return $this;
@@ -71,8 +71,13 @@ trait HtmlClickableElementTrait
 
     public function disablePjax(): self
     {
-        $this->options['data-pjax-prevent'] = 1;
+        $this->getOptionsRef()['data-pjax-prevent'] = 1;
         return $this;
+    }
+
+    public function isPjaxEnabled(): bool
+    {
+        return Html::isPjaxEnabled($this->options);
     }
 
     /**
@@ -85,21 +90,21 @@ trait HtmlClickableElementTrait
         ?string $cancelButtonText = null,
     ): static {
         if ($title) {
-            $this->options['data-action-confirm-header'] = $title;
+            $this->getOptionsRef()['data-action-confirm-header'] = $title;
         }
 
         if ($body) {
-            $this->options['data-action-confirm'] = $body;
+            $this->getOptionsRef()['data-action-confirm'] = $body;
         } else {
-            $this->options['data-action-confirm'] = '';
+            $this->getOptionsRef()['data-action-confirm'] = '';
         }
 
         if ($confirmButtonText) {
-            $this->options['data-action-confirm-text'] = $confirmButtonText;
+            $this->getOptionsRef()['data-action-confirm-text'] = $confirmButtonText;
         }
 
         if ($cancelButtonText) {
-            $this->options['data-action-cancel-text'] = $cancelButtonText;
+            $this->getOptionsRef()['data-action-cancel-text'] = $cancelButtonText;
         }
 
         return $this;

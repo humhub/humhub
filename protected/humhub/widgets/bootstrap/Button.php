@@ -11,6 +11,7 @@ namespace humhub\widgets\bootstrap;
 
 use humhub\helpers\Html;
 use humhub\helpers\HtmlClickableElementTrait;
+use humhub\helpers\HtmlGenericElementTrait;
 use Yii;
 use yii\helpers\Url;
 
@@ -27,6 +28,7 @@ class Button extends \yii\bootstrap5\Button
 {
     use BootstrapVariationsTrait;
     use HtmlClickableElementTrait;
+    use HtmlGenericElementTrait;
 
     /**
      * If string, the loader is active and a custom loader text is displayed
@@ -72,6 +74,11 @@ class Button extends \yii\bootstrap5\Button
      * @deprecated since 1.18
      */
     public const TYPE_NONE = 'none';
+
+    protected function &getOptionsRef(): array
+    {
+        return $this->options;
+    }
 
     public static function save($label = null): static
     {
@@ -146,17 +153,11 @@ class Button extends \yii\bootstrap5\Button
         return $this->options['href'] ?? null;
     }
 
-    public function isPjaxEnabled(): bool
-    {
-        return Html::isPjaxEnabled($this->options);
-    }
-
     public function submit(): static
     {
         $this->options['type'] = 'submit';
         return $this;
     }
-
 
     /**
      * Sets the button as disabled

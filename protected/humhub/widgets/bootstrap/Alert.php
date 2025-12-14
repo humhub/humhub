@@ -9,6 +9,7 @@
 
 namespace humhub\widgets\bootstrap;
 
+use humhub\helpers\HtmlGenericElementTrait;
 use ReflectionMethod;
 use yii\bootstrap5\Html;
 use yii\bootstrap5\Widget;
@@ -39,11 +40,16 @@ class Alert extends \yii\bootstrap5\Alert implements \Stringable
         lg as private;
         left as private;
         right as private;
-        tooltip as private;
         setLabel as private;
     }
+    use HtmlGenericElementTrait;
 
     public bool $useBeginEndMethod = false;
+
+    protected function &getOptionsRef(): array
+    {
+        return $this->options;
+    }
 
     public static function instance(?string $text = null, ?string $color = null): static
     {

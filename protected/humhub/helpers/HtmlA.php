@@ -12,7 +12,7 @@ class HtmlA implements \Stringable
     private array $options;
     private bool $encodeLabel = false;
 
-    public function __construct(string $text, ?string $url, array $options)
+    public function __construct(string $text, mixed $url, array $options)
     {
         if ($url !== null) {
             $this->options['href'] = Url::to($url);
@@ -27,6 +27,11 @@ class HtmlA implements \Stringable
     {
         $text = $this->icon . ($this->encodeLabel ? Html::encode($this->text) : $this->text);
         return Html::tag('a', $text, $this->options);
+    }
+
+    protected function &getOptionsRef(): array
+    {
+        return $this->options;
     }
 
     public function post(): self

@@ -116,74 +116,7 @@ trait BootstrapVariationsTrait
         return $this;
     }
 
-    public function right(bool $right = true): static
-    {
-        if ($right) {
-            Html::removeCssClass($this->options, 'float-start');
-            Html::addCssClass($this->options, 'float-end');
-        } else {
-            Html::removeCssClass($this->options, 'float-end');
-        }
 
-        return $this;
-    }
-
-    public function left(bool $left = true): static
-    {
-        if ($left) {
-            Html::removeCssClass($this->options, 'float-end');
-            Html::addCssClass($this->options, 'float-start');
-        } else {
-            Html::removeCssClass($this->options, 'float-start');
-        }
-
-        return $this;
-    }
-
-    public function id(?string $id): static
-    {
-        return $this->options(['id' => $id]);
-    }
-
-    /**
-     * Adds an HTML title attribute
-     */
-    public function title(?string $title): static
-    {
-        return $title ? $this->options(['title' => $title]) : $this;
-    }
-
-
-
-    public function cssClass(array|string $cssClass): static
-    {
-        Html::addCssClass($this->options, $cssClass);
-        return $this;
-    }
-
-    public function style(string|array $style): static
-    {
-        Html::addCssStyle($this->options, $style);
-
-        return $this;
-    }
-
-    public function options(array $options): static
-    {
-        if (isset($options['class'])) {
-            $this->cssClass($options['class']);
-            unset($options['class']);
-        }
-
-        if (isset($options['style'])) {
-            $this->style($options['style']);
-            unset($options['style']);
-        }
-
-        $this->options = ArrayHelper::merge($this->options, $options);
-
-        return $this;
-    }
 
     public function asString(): string
     {
@@ -223,25 +156,5 @@ trait BootstrapVariationsTrait
         return $this;
     }
 
-    /**
-     * @param string $color Hexadecimal, RGB, RGBA, HSL, HSLA
-     */
-    public function cssBgColor(?string $color): static
-    {
-        if ($color) {
-            $this->style('background-color:' . $color . ' !important');
-        }
-        return $this;
-    }
 
-    /**
-     * @param string $color Hexadecimal, RGB, RGBA, HSL, HSLA
-     */
-    public function cssTextColor(?string $color): static
-    {
-        if ($color) {
-            $this->style('color:' . $color . ' !important');
-        }
-        return $this;
-    }
 }
