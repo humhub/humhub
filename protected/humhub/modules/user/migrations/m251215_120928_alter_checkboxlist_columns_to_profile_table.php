@@ -1,9 +1,9 @@
 <?php
 
+use humhub\components\Migration;
 use humhub\modules\user\models\fieldtype\CheckboxList;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\ProfileField;
-use yii\db\Migration;
 
 class m251215_120928_alter_checkboxlist_columns_to_profile_table extends Migration
 {
@@ -27,19 +27,4 @@ class m251215_120928_alter_checkboxlist_columns_to_profile_table extends Migrati
 
         return false;
     }
-
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m251215_120928_alter_checkboxlist_columns_to_profile_table cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }
