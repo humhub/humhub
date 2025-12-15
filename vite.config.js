@@ -40,6 +40,8 @@ export default defineConfig({
         alias: {
             '@': resolve(entryDir, '.'),
             '~': entryDir,
+            // Absolute project root for shared imports across entries
+            'humhub': resolve(process.cwd(), './protected/humhub/assets/js'),
         },
     },
 

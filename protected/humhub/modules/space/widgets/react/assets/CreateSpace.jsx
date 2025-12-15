@@ -39,7 +39,6 @@ const CreateSpace = ({ onCancel, createSpaceUrl }) => {
             });
 
             if (response.data.success) {
-                // Redirect to the new space or refresh
                 window.location.href = response.data.redirect || '/';
             } else if (response.data.errors) {
                 setErrors(response.data.errors);
