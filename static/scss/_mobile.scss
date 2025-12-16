@@ -18,7 +18,9 @@
         }
 
         #layout-content > .container {
-            --bs-gutter-x: 2px;
+            &, & .row {
+                --bs-gutter-x: 2px;
+            }
         }
 
         // Layout Contents: Adjusting the contents to fit perfectly on mobile devices
