@@ -45,6 +45,7 @@ HumHub Changelog
 - Fix #7904: Logging admin page styling
 - Enh #7904: New Sass text color contrast variables, `$text-color-contrast` is now deprecated
 - Fix #7902: Community Theme - Container Paddings in different Breakpoints
+- Fix #7902: Marketplace update colors
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------
