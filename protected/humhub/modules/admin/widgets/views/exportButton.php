@@ -9,10 +9,10 @@ use humhub\widgets\bootstrap\Button;
 
 ?>
 <div class="btn-group btn-group-sm">
-    <button type="button" class="btn btn-sm btn-accent">
+    <button type="button" class="btn btn-accent">
         <i class="fa fa-download"></i> <?= Yii::t('base', 'Export') ?>
     </button>
-    <button type="button" class="btn btn-sm btn-accent dropdown-toggle" data-bs-toggle="dropdown">
+    <button type="button" class="btn btn-accent btn-icon-only dropdown-toggle" data-bs-toggle="dropdown">
         <span class="sr-only">Toggle Dropdown</span>
     </button>
     <ul class="dropdown-menu">
