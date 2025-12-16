@@ -40,7 +40,7 @@ JS, View::POS_READY);
                         <?php if (isset($query['access_token']) && empty($query['access_token'])): ?>
                             <?= Badge::danger()
                                 ->icon('fa-exclamation-circle')
-                                ->right()
+                                ->cssClass('ms-2')
                                 ->tooltip(Yii::t('AdminModule.settings', 'Access token is not provided yet.')) ?>
                         <?php endif; ?>
                     </div>
