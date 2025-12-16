@@ -1,7 +1,3 @@
-
-//   import {translate} from 'humhub/translate'
-//   const text = await translate('LikeModule.base', 'Like', {count: 1})
-
 import axios from 'axios'
 import IntlMessageFormat from 'intl-messageformat'
 
@@ -21,7 +17,7 @@ const detectLocale = () => {
 let locale = detectLocale()
 let globalMessages = {}
 const loadedCategories = new Set()
-const pendingLoads = new Map() // category -> Promise<void>
+const pendingLoads = new Map()
 const compiledCache = new Map()
 
 function compileMessage(template) {
@@ -42,7 +38,7 @@ function updateIntlMessages(newMessages) {
   globalMessages = {...globalMessages, ...newMessages}
 }
 
-async function loadCategory(category) {
+export async function loadTranslations(category) {
   if (loadedCategories.has(category)) {
       return
   }
@@ -53,15 +49,11 @@ async function loadCategory(category) {
   const promise = (async () => {
     try {
       const {data} = await axios.get('/translation', {params: {category}})
-      if (data && typeof data === 'object') {
-        if (data.locale && typeof data.locale === 'string') {
+      if (data) {
           locale = data.locale
-        }
+          updateIntlMessages(data.messages)
+          loadedCategories.add(category)
       }
-      if (data && data.messages && typeof data.messages === 'object') {
-        updateIntlMessages(data.messages)
-      }
-      loadedCategories.add(category)
     } finally {
       pendingLoads.delete(category)
     }
@@ -71,14 +63,8 @@ async function loadCategory(category) {
   return promise
 }
 
-export async function translate(category, message, params = []) {
-  if (!loadedCategories.has(category)) {
-    await loadCategory(category)
-  }
-
+export function translate(category, message, params = {}) {
     const key = String(message)
     const template = (globalMessages && key in globalMessages) ? globalMessages[key] : key
     return compileMessage(template).format(params)
 }
-
-export default translate

@@ -1,10 +1,7 @@
 <script setup>
-import {onBeforeMount, ref} from 'vue'
+import {onMounted, ref} from 'vue'
 import axios from 'axios'
-// import {translate} from 'humhub/translate'
-
-// const like = await translate('LikeModule.base', 'Like');
-
+import {loadTranslations, translate} from 'humhub/translate'
 
 const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || ''
 const csrfParam = document.querySelector('meta[name="csrf-param"]')?.content || '_csrf'
@@ -29,16 +26,11 @@ const props = defineProps({
 const isLiked = ref(props.currentUserLiked)
 const count = ref(props.likeCount)
 const isLoading = ref(false)
+const isReady = ref(false)
 
-// const translations = {
-//     like: await translate('LikeModule.base', 'Like'),
-//     unlike: await translate('LikeModule.base', 'Unlike'),
-// }
-//
-// console.log(translations)
-
-onBeforeMount(async () => {
-
+onMounted(async () => {
+    await loadTranslations('LikeModule.base')
+    isReady.value = true
 })
 
 const toggleLike = async (event) => {
@@ -71,18 +63,44 @@ const toggleLike = async (event) => {
 </script>
 
 <template>
-    <a
-        href="#"
-        @click="toggleLike"
-    >
-        Like
-        <span
-            v-if="count > 0"
-            :title="title"
+    <template v-if="isReady">
+        <a
+            href="#"
+            @click="toggleLike"
         >
+            {{ translate('LikeModule.base', isLiked ? 'Unlike' :'Like') }}
+            <span
+                v-if="count > 0"
+                :title="title"
+            >
             ({{ count }})
         </span>
-    </a>
+        <div>
+            <strong>Yii::t examples</strong>
+            <div class="code-example">
+                <hr/>
+                <code>translate('LikeModule.base', 'and {count} more like this.', {count: 5}) </code>
+                <div>{{ translate('LikeModule.base', 'and {count} more like this.', {count: 5}) }}</div>
+                <hr/>
+            </div>
+            <div class="code-example">
+                <hr/>
+                <code>translate('LikeModule.base', 'There {n,plural,=0{are no cats} =1{is one cat} other{are # cats}}!', {n: 0}) </code>
+                <div>{{ translate('LikeModule.base', 'There {n,plural,=0{are no cats} =1{is one cat} other{are # cats\}\}!', {n: 0}) }}</div>
+            </div>
+            <div class="code-example">
+                <hr/>
+                <code>translate('LikeModule.base', 'There {n,plural,=0{are no cats} =1{is one cat} other{are # cats}}!', {n: 1}) </code>
+                <div>{{ translate('LikeModule.base', 'There {n,plural,=0{are no cats} =1{is one cat} other{are # cats\}\}!', {n: 1}) }}</div>
+            </div>
+            <div class="code-example">
+                <hr/>
+                <code>translate('LikeModule.base', 'There {n,plural,=0{are no cats} =1{is one cat} other{are # cats}}!', {n: 42}) </code>
+                <div>{{ translate('LikeModule.base', 'There {n,plural,=0{are no cats} =1{is one cat} other{are # cats\}\}!', {n: 42}) }}</div>
+            </div>
+        </div>
+        </a>
+    </template>
 </template>
 
 <style scoped>

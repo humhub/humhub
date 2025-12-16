@@ -82,7 +82,7 @@ class Chooser extends Widget
         }
 
 
-//        return $this->render($this->viewName, $this->getViewParams());
+        return $this->render($this->viewName, $this->getViewParams());
 
         return SpaceChooserWidget::widget([
             'props' => [
