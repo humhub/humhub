@@ -20,16 +20,14 @@ use yii\helpers\Url;
 
         <?php if ($model->type === Licence::LICENCE_TYPE_PRO): ?>
             <div class="alert alert-success">
-                <p>
-                    <strong>
-                        <?= Yii::t('MarketplaceModule.base', 'Professional Edition is activated!') ?>
-                    </strong><br/>
-                    <?= Yii::t(
-                        'MarketplaceModule.base',
-                        'Licensed for max. {number} users.',
-                        ['number' => $model->maxUsers],
-                    ) ?>
-                </p>
+                <strong>
+                    <?= Yii::t('MarketplaceModule.base', 'Professional Edition is activated!') ?>
+                </strong><br/>
+                <?= Yii::t(
+                    'MarketplaceModule.base',
+                    'Licensed for max. {number} users.',
+                    ['number' => $model->maxUsers],
+                ) ?>
             </div>
         <?php endif; ?>
 
