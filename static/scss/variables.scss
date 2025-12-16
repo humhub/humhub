@@ -166,11 +166,11 @@ $mail-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', ’Helvetica N
 // --------------------------------------------------
 
 $container-max-widths: (
-    sm: 540px,
-    md: 720px,
-    lg: 960px,
-    xl: 1140px,
-    xxl: 1170px // instead of the Bootstrap default 1320px
+    sm: 768px, // fullwidth
+    md: 750px,
+    lg: 970px,
+    xl: 1170px,
+    xxl: 1170px
 ) !default;
 
 

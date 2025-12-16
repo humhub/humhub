@@ -44,6 +44,7 @@ HumHub Changelog
 - Fix #7903: Admin User Export button group spacing and missing line in the table header
 - Fix #7904: Logging admin page styling
 - Enh #7904: New Sass text color contrast variables, `$text-color-contrast` is now deprecated
+- Fix #7902: Community Theme - Container Paddings in different Breakpoints
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------
