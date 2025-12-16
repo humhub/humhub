@@ -232,7 +232,7 @@ humhub.module('stream.wall', function (module, require, $) {
     };
 
     WallStream.template = {
-        loadSuppressedButton: '<div class="load-suppressed" style="display:none;"><a href="#" data-action-click="loadSuppressed" data-entry-key="{key}" data-entry-keys="{keys}" data-action-block="manual" data-ui-loader><i class="fa fa-chevron-down"></i>&nbsp;&nbsp;{message}&nbsp;&nbsp;<span class="badge">{contentName}</span></a></div>',
+        loadSuppressedButton: '<div class="load-suppressed" style="display:none;"><a href="#" data-action-click="loadSuppressed" data-entry-key="{key}" data-entry-keys="{keys}" data-action-block="manual" data-ui-loader><i class="fa fa-chevron-down"></i>&nbsp;&nbsp;{message}&nbsp;&nbsp;<span class="badge text-bg-light">{contentName}</span></a></div>',
         updateBadge: '<div id="streamUpdateBadge" class="animated bounceIn"><span class="badge text-bg-info" style="cursor:pointer"><i class="fa fa-arrow-circle-up"></i> {text}</span></div>'
     };
 
