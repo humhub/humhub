@@ -5,105 +5,151 @@
 @if not $prev-comment {
     $commentLeftMargin: 35px;
 
-    @include media-breakpoint-down(md) {
+    .comment-container {
+        border-radius: 3px;
+
         .comment {
-            .post-files {
-                img {
-                    height: 100px;
-                }
-            }
-        }
-    }
-
-    .comment {
-        .d-flex {
-            position: relative !important;
-            margin-top: 0;
-
-            .nav-pills.preferences {
-                display: none;
-                right: 6px;
-            }
-
-            &.single-comment {
+            .single-comment {
+                position: relative !important;
                 margin: -0.5rem;
-            }
 
-            &.comment-current {
-                background: var(--hh-background-color-highlight);
-                border-radius: 3px;
+                > .nav-pills.preferences {
+                    right: 6px;
 
-                hr {
-                    position: relative;
-                    top: -6px;
-                }
-
-                &:first-of-type {
-                    padding-top: 5px;
-                    margin-top: -5px;
-
-                    > .nav.preferences {
-                        margin-top: 10px;
+                    > .dropdown > .dropdown-toggle:not(.show) {
+                        visibility: hidden; // Visible on hovering .comment, see bellow
                     }
                 }
 
-                > .nav.preferences {
+                &:hover > .nav-pills.preferences  > .dropdown > .dropdown-toggle {
+                    visibility: visible;
+                }
+
+                &:first-of-type > .nav-pills.preferences {
+                    top: 6px;
+                }
+
+                .comment-message {
+                    overflow: hidden;
+                    @include text-break();
+                }
+
+                .comment-header-image {
                     margin-right: 10px;
                 }
 
+                .content_edit {
+                    margin-left: $commentLeftMargin;
+                }
+
+                .richtext-create-input-group {
+
+                    .mb-3 {
+                        margin-bottom: 0 !important;
+                    }
+
+                    &.scrollActive .richtext-create-buttons {
+                        right: 22px;
+                    }
+                }
+
+                h4.comment-heading {
+                    a {
+                        font-size: 13px;
+                        margin-bottom: 3px;
+                        font-weight: 500;
+                    }
+
+                    small {
+                        font-weight: 400;
+                        font-size: 11px;
+                    }
+                }
+
+                [data-ui-richtext] pre, [data-ui-richtext] pre code.hljs {
+                    background-color: darken($background-color-secondary, 5%);
+                }
+
                 .nested-comments-root {
-                    .comment-container {
-                        .showMore {
-                            margin-top: 0;
-                            padding-top: 5px;
+                    .ProseMirror-menubar-wrapper {
+                        z-index: 210;
+                    }
+
+                    hr.comment-separator:not(:first-of-type) {
+                        display: inherit !important;
+                    }
+
+                    .showMore {
+                        margin-top: 10px;
+                    }
+
+                    div.comment {
+                        .single-comment {
+                            position: relative !important;
+                        }
+                    }
+                }
+
+                &.comment-current {
+                    background: var(--hh-background-color-highlight);
+                    border-radius: 3px;
+
+                    hr {
+                        position: relative;
+                        top: -6px;
+                    }
+
+                    &:first-of-type {
+                        padding-top: 5px;
+                        margin-top: -5px;
+                    }
+
+                    .nested-comments-root {
+                        .comment-container {
+                            .showMore {
+                                margin-top: 0;
+                                padding-top: 5px;
+                            }
                         }
                     }
                 }
             }
 
-            .comment-header-image {
-                margin-right: 10px;
-            }
-        }
+            &.guest-mode {
+                .single-comment:last-child {
+                    .wall-entry-controls {
+                        margin-bottom: 0;
+                        margin-left: $commentLeftMargin;
+                    }
 
-        .comment-blocked-user {
-            img[data-contentcontainer-id] {
-                filter: grayscale(100%);
-            }
-        }
-
-        .showMore {
-            padding-bottom: 1rem;
-        }
-
-        .jp-progress {
-            background-color: #dbdcdd !important;
-        }
-
-        .jp-play-bar {
-            background: #cacaca;
-        }
-
-        .post-file-list {
-            background-color: darken($background-color-secondary, 2%);
-        }
-    }
-
-    .comment.guest-mode {
-        .d-flex:last-child {
-            .wall-entry-controls {
-                margin-bottom: 0;
-                margin-left: $commentLeftMargin;
+                    hr {
+                        display: none;
+                    }
+                }
             }
 
-            hr {
-                display: none;
+            .comment-blocked-user {
+                img[data-contentcontainer-id] {
+                    filter: grayscale(100%);
+                }
+            }
+
+            .showMore {
+                padding-bottom: 1rem;
+            }
+
+            .jp-progress {
+                background-color: #dbdcdd !important;
+            }
+
+            .jp-play-bar {
+                background: #cacaca;
+            }
+
+            .post-file-list {
+                background-color: darken($background-color-secondary, 2%);
             }
         }
-    }
-
-    .comment-container {
-        border-radius: 3px;
 
         .d-flex {
             overflow: visible;
@@ -118,73 +164,9 @@
             }
         }
 
-        .content_edit {
-            margin-left: $commentLeftMargin;
-        }
-
-        [data-ui-richtext] pre, [data-ui-richtext] pre code.hljs {
-            background-color: darken($background-color-secondary, 5%);
-        }
-    }
-
-    .comment-message {
-        overflow: hidden;
-        @include text-break();
-    }
-
-    .richtext-create-input-group {
-
-        .mb-3 {
-            margin-bottom: 0 !important;
-        }
-
-        &.scrollActive .richtext-create-buttons {
-            right: 22px;
-        }
-    }
-
-    .comment h4.comment-heading {
-        a {
-            font-size: 13px;
-            margin-bottom: 3px;
-            font-weight: 500;
-        }
-
-        small {
-            font-weight: 400;
-            font-size: 11px;
-        }
-    }
-
-    // Hide seperator of last comment. Seperator is included in optional comment form
-    div.comment {
-        > div.d-flex:first-of-type .nav-pills.preferences {
-            display: none;
-            top: 6px;
-        }
-    }
-
-    div.nested-comments-root {
-        .ProseMirror-menubar-wrapper {
-            z-index: 210;
-        }
-
-        hr.comment-separator:not(:first-of-type) {
-            display: inherit !important;
-        }
-
-        .showMore {
-            margin-top: 10px;
-        }
-
-        div.comment {
-            .d-flex {
-                position: relative !important;
-                margin-top: 0;
-
-                .nav-pills.preferences {
-                    display: none;
-                }
+        @include media-breakpoint-down(md) {
+            .comment .post-files img {
+                height: 100px;
             }
         }
     }
