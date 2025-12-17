@@ -248,7 +248,6 @@
     // Module row style in Administration
     .modules-group {
         margin-bottom: 25px;
-        padding: 6px;
 
         > strong {
             display: block;
@@ -267,15 +266,9 @@
                 }
             }
 
-            .module-icon {
-                text-align: center;
-                padding-left: 6px;
-            }
-
             .module-actions {
                 white-space: nowrap;
                 text-align: right;
-                padding-right: 0;
 
                 .btn:not(:first-child) {
                     margin-left: 14px;

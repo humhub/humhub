@@ -17,7 +17,9 @@ use yii\helpers\Url;
 <?php if ($directoryFilters->paginationUsed) : ?>
     <?= Html::hiddenInput('page', '1'); ?>
 <?php endif; ?>
-<div class="row">
-    <?= $directoryFilters->renderFilters() ?>
+<div class="container g-0 overflow-x-hidden">
+    <div class="row gy-2">
+        <?= $directoryFilters->renderFilters() ?>
+    </div>
 </div>
 <?= Html::endForm(); ?>

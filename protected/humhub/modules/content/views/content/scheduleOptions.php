@@ -33,7 +33,7 @@ use humhub\widgets\modal\ModalButton;
                 ->widget(DatePicker::class, ['options' => ['disabled' => $disableInputs]])
                 ->label(false) ?>
         </div>
-        <div class="col-md-3 col-6" style="padding-left:0">
+        <div class="col-md-3 col-6 ps-0">
             <?= $form->field($scheduleOptions, 'time')
                 ->widget(TimePicker::class, ['disabled' => $disableInputs])
                 ->label(false) ?>
