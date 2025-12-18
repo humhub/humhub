@@ -78,7 +78,7 @@ class ActiveForm extends \yii\bootstrap5\ActiveForm
                     ['class' => 'float-start'],
                 )
                 . Html::label($title, null, ['class' => 'control-label']),
-                ['class' => 'form-collapsible-fields-label', 'data-action-click' => 'clickCollab', 'data-bs-toggle' => 'tab'],
+                ['class' => 'form-collapsible-fields-label', 'data-action-click' => 'clickCollab'],
             )
             . Html::beginTag('fieldset');
     }
