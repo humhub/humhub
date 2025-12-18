@@ -46,6 +46,7 @@ HumHub Changelog
 - Enh #7904: New Sass text color contrast variables, `$text-color-contrast` is now deprecated
 - Fix #7902: Community Theme - Container Paddings in different Breakpoints
 - Fix #7902: Marketplace update colors
+- Fix #7910: `.row` HTML elements without `.container` overflow
 - Fix #7907: In the Profile, allow unlimited selections for Checkbox Lists
 - Fix #7906: Comment menu disappear when the cursor moves out the comment & refactor _comment.scss
 

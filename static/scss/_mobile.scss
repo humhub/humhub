@@ -18,7 +18,7 @@
         }
 
         #layout-content > .container {
-            &, & .row {
+            &, & > .row {
                 --bs-gutter-x: 2px;
             }
         }
@@ -63,8 +63,13 @@
                 }
             }
 
-            .layout-nav-container .panel-heading {
-                display: none;
+            .layout-nav-container {
+                padding-left: 0;
+                padding-right: 0;
+
+                .panel-heading {
+                    display: none;
+                }
             }
 
             .panel-profile-header {
