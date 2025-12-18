@@ -22,7 +22,6 @@
 
     label {
         font-weight: 700;
-        margin-bottom: 5px;
 
         &[required]:after {
             content: " *";
@@ -35,22 +34,11 @@
         background-color: transparent;
     }
 
-    .radio,
-    .checkbox {
-        margin-top: 5px !important;
-        margin-bottom: 0;
-    }
-
     div.required > label:after {
         content: " *";
         color: var(--bs-accent);
     }
 
-    .radio label,
-    .checkbox label {
-        font-weight: bold;
-        padding-left: 0;
-    }
     .form-checkboxes-normal {
         .radio label,
         .checkbox label {
