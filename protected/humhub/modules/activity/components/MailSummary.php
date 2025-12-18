@@ -88,6 +88,7 @@ class MailSummary extends Component
         }
 
         try {
+            Yii::$app->i18n->setUserLocale($this->user);
             Yii::$app->view->params['showUnsubscribe'] = true;
             Yii::$app->view->params['unsubscribeUrl'] = Url::to(['/activity/user'], true);
             $mail = Yii::$app->mailer->compose([
