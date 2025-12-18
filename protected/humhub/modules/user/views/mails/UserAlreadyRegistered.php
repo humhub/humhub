@@ -7,7 +7,7 @@
 
 use humhub\components\View;
 use humhub\helpers\Html;
-use humhub\modules\ui\mail\DefaultMailStyle;
+use humhub\helpers\MailStyleHelper;
 
 /* @var View $this */
 /* @var string $passwordRecoveryUrl */
@@ -17,7 +17,7 @@ use humhub\modules\ui\mail\DefaultMailStyle;
 
         <!-- start  container width 600px -->
         <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container"
-               style="background-color: <?= $this->theme->variable('background-color-main', '#fff') ?>">
+               style="background-color: <?= MailStyleHelper::getBackgroundColorMain() ?>">
 
 
             <tr>
@@ -25,7 +25,7 @@ use humhub\modules\ui\mail\DefaultMailStyle;
 
                     <!-- start container width 560px -->
                     <table width="540" align="center" border="0" cellspacing="0" cellpadding="0" class="full-width"
-                           style="background-color:<?= $this->theme->variable('background-color-main', '#fff') ?>">
+                           style="background-color:<?= MailStyleHelper::getBackgroundColorMain() ?>">
 
 
                         <!-- start text content -->
@@ -38,10 +38,10 @@ use humhub\modules\ui\mail\DefaultMailStyle;
                                             <table border="0" align="center" cellpadding="0" cellspacing="0">
                                                 <tr>
                                                     <td width="auto" align="center" valign="middle" height="28"
-                                                        style=" background-color:<?= $this->theme->variable('background-color-main', '#fff') ?>; background-clip: padding-box; font-size:26px; font-family: <?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; text-align:center; font-weight: 300; padding: 0 18px">
+                                                        style=" background-color:<?= MailStyleHelper::getBackgroundColorMain() ?>; background-clip: padding-box; font-size:26px; font-family: <?= MailStyleHelper::getFontFamily() ?>; text-align:center; font-weight: 300; padding: 0 18px">
 
                                                         <span
-                                                            style="color: <?= $this->theme->variable('text-color-highlight', '#555') ?>; font-weight: 300">
+                                                            style="color: <?= MailStyleHelper::getTextColorHighlight() ?>; font-weight: 300">
                                                             <?= Yii::t('UserModule.base', 'Welcome to %appName%', ['%appName%' => '<strong>' . Html::encode(Yii::$app->name) . '</strong>']) ?>
                                                         </span>
                                                     </td>
@@ -73,7 +73,7 @@ use humhub\modules\ui\mail\DefaultMailStyle;
 
         <!-- start  container width 600px -->
         <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container"
-               style="background-color: <?= $this->theme->variable('background-color-main', '#fff') ?>">
+               style="background-color: <?= MailStyleHelper::getBackgroundColorMain() ?>">
 
 
             <tr>
@@ -81,7 +81,7 @@ use humhub\modules\ui\mail\DefaultMailStyle;
 
                     <!-- start container width 560px -->
                     <table width="540" align="center" border="0" cellspacing="0" cellpadding="0" class="full-width"
-                           style="background-color:<?= $this->theme->variable('background-color-main', '#fff') ?>">
+                           style="background-color:<?= MailStyleHelper::getBackgroundColorMain() ?>">
 
 
                         <!-- start text content -->
@@ -103,7 +103,7 @@ use humhub\modules\ui\mail\DefaultMailStyle;
                                                 <!--end space height -->
 
                                                 <tr>
-                                                    <td style="font-size: 14px; line-height: 22px; font-family: <?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= $this->theme->variable('text-color-main', '#777') ?>; font-weight:300; text-align:center">
+                                                    <td style="font-size: 14px; line-height: 22px; font-family: <?= MailStyleHelper::getFontFamily() ?>; color:<?= MailStyleHelper::getTextColorMain() ?>; font-weight:300; text-align:center">
 
                                                         <?= Yii::t(
                                                             'UserModule.base',
@@ -136,12 +136,12 @@ use humhub\modules\ui\mail\DefaultMailStyle;
                                             <table border="0" align="center" cellpadding="0" cellspacing="0">
                                                 <tr>
                                                     <td width="auto" align="center" valign="middle" height="32"
-                                                        style=" background-color:<?= $this->theme->variable('primary') ?>;  border-radius:5px; background-clip: padding-box;font-size:14px; font-family: <?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; text-align:center;  color:<?= $this->theme->variable('text-color-contrast', '#fff') ?>; font-weight: 600; padding:5px 30px">
+                                                        style=" background-color:<?= MailStyleHelper::getColorPrimary() ?>;  border-radius:5px; background-clip: padding-box;font-size:14px; font-family: <?= MailStyleHelper::getFontFamily() ?>; text-align:center;  color:<?= MailStyleHelper::getTextColorContrast() ?>; font-weight: 600; padding:5px 30px">
 
                                                         <span
-                                                            style="color: <?= $this->theme->variable('text-color-contrast', '#fff') ?>; font-weight: 300">
+                                                            style="color: <?= MailStyleHelper::getTextColorContrast() ?>; font-weight: 300">
                                                             <a href="<?= $passwordRecoveryUrl ?>"
-                                                               style="text-decoration: none; color: <?= $this->theme->variable('text-color-contrast', '#fff') ?>; font-weight: 300">
+                                                               style="text-decoration: none; color: <?= MailStyleHelper::getTextColorContrast() ?>; font-weight: 300">
                                                                 <strong><?= Yii::t('UserModule.base', 'Password recovery') ?></strong>
                                                             </a>
                                                         </span>

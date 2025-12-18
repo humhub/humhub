@@ -211,7 +211,9 @@
             cursor: pointer;
             float: right;
             font-weight: bold;
-            margin-right: 10px;
+            position: absolute;
+            right: 0.2rem;
+            top: 0;
 
             &:hover {
                 color: #333;
@@ -331,7 +333,7 @@
 
         .select2-selection--multiple {
             min-height: $input-height;
-            padding: 0.1rem 0.2rem;
+            padding: 0.2rem 0.2rem;
 
             .picker-color {
                 top: 4px;

@@ -4,6 +4,8 @@ use humhub\helpers\Html;
 use humhub\widgets\FooterMenu;
 use yii\helpers\Url;
 
+/* @var \humhub\components\View $this */
+/* @var string $message */
 ?>
 <div class="container">
     <div class="panel panel-danger">

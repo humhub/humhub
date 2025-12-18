@@ -9,7 +9,7 @@ use humhub\components\View;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\space\models\Space;
-use humhub\modules\ui\mail\DefaultMailStyle;
+use humhub\helpers\MailStyleHelper;
 use humhub\modules\user\models\User;
 use humhub\widgets\mails\MailButton;
 use humhub\widgets\mails\MailButtonList;
@@ -29,7 +29,7 @@ use humhub\widgets\mails\MailContentEntry;
 
     <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
         <tr>
-            <td style="font-size: 14px; line-height: 22px; font-family:<?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= $this->theme->variable('text-color-highlight', '#555555') ?>; font-weight:300; text-align:left">
+            <td style="font-size: 14px; line-height: 22px; font-family:<?= MailStyleHelper::getFontFamily() ?>; color:<?= MailStyleHelper::getTextColorHighlight() ?>; font-weight:300; text-align:left">
                 <?= $viewable->html() ?>
             </td>
         </tr>

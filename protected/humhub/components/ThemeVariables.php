@@ -10,6 +10,8 @@ namespace humhub\components;
 
 use humhub\helpers\ThemeHelper;
 use humhub\modules\ui\Module;
+use RuntimeException;
+use ScssPhp\ScssPhp\Exception\SassException;
 use Yii;
 use yii\base\Component;
 
@@ -124,8 +126,11 @@ class ThemeVariables extends Component
      *
      * Do not run this method during 'init' to avoid storing variables
      * of all available themes!
+     *
+     * @throws SassException if syntax error in the custom SCSS
+     * @throws RuntimeException if the custom SCSS is malformed
      */
-    protected function ensureLoaded()
+    protected function ensureLoaded(): void
     {
         if (!$this->settingsLoaded) {
             if (empty($this->module->settings->get($this->getSettingKey('primary')))) {
@@ -137,8 +142,10 @@ class ThemeVariables extends Component
 
     /**
      * Rewrites theme variables to settings (cache)
+     * @throws SassException if syntax error in the custom SCSS
+     * @throws RuntimeException if the custom SCSS is malformed
      */
-    protected function storeVariables()
+    protected function storeVariables(): void
     {
         $this->flushCache();
 

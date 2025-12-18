@@ -1,8 +1,38 @@
 HumHub Changelog
 ================
 
-1.18.0-beta.5 (Unreleased)
-----------------------------------
+1.18.0-beta.6 (Unreleased)
+---------------------------------
+- Enh #7834: Login Screen: revert container width to 300px when less than 2 SSO buttons and remove Language Chooser label
+- Fix #7843: Allow child theme not to have a build.scss file (only variables.scss is mandatory)
+- Fix #7842: Fixed php deprecation warning in `ConfigHelper`
+- Enh #7836: Improved `required` and `trim` validators
+- Fix #7847: Fixed missing translations in `Admin/People` page
+- Enh #7851: New admin module option for group manager inheritance
+- Fix #7854: Tour for Spaces if no visible and active Space
+- Fix #7850: Fix required validator to not remove binary content
+- Fix #7862: Fix redirect loop on `ErrorAction`
+- Fix #7860: Fix type error in installer
+- Enh #7852: New `humhub\helpers\ScssHelper::getColorContrast()` for text color in emails, to contrast with the button background when customized
+- Enh #7852: Allow overwriting Sass variables and maps via the "Custom SCSS" field of the Appearance form and this custom value via `humhub\components\Theme::variable()`
+- Chg #7852: Font family set for emails
+- Enh #7852: Unit tests for `humhub\helpers\ScssHelper` class
+- Fix #7861: Post attachments container width
+- Ehn #7864: Rename proxy settings
+- Fix #7867: ScssHelper variable extractors for code with parentheses, and add more tests
+- Fix #7865: In mail notifications, use auto-contrast color in header, and increase font weight in buttons if light background
+- Fix #7868: Add a minimal fallback CSS in case of CSS compilation issue
+- Fix #7872: Email inline style from Sass variables, e.g. when overwriting `$mail-font-family` in the Custom SCSS field
+- Fix #7873: Fix `required` validator
+- Fix #7875: Fix theme color default settings after initial installation
+- Fix #7876: Support for .mjs (ES modules)
+- Chg: Registration form definitions now requires to use the `EVENT_AFTER_SET_FORM` instead of `EVENT_AFTER_INIT` 
+- Enh #7883: Allow CheckboxList Profile Field Type to be used "as Directory filter"
+- Fix #7907: In the Profile, allow unlimited selections for Checkbox Lists
+- Fix #7906: Comment menu disappear when the cursor moves out the comment & refactor _comment.scss
+
+1.18.0-beta.5 (November 13, 2025)
+---------------------------------
 - Enh #7719: Make Add/Remove Group Member optional for group managers
 - Fix #7720: Saving the new Mobile App admin form when no whitelisted domain
 - Fix #7733: Ignore mailer `TRANSPORT_CONFIG` option in `ComponentLoader`
@@ -25,6 +55,7 @@ HumHub Changelog
 - Fix #7759: Flush content search cache after update a record
 - Fix #7760: Content form menu text color same as background
 - Fix #7764: File Handler Dropdown menu items styling
+- Enh #7768: Improved `Pretty URL`s detection and guidance during installation
 - Fix #7767: Added PK in `content_fulltext` for Percona-XtraDB-Cluster installations
 - Fix #7771: Disable make private space as default for new users on space creating
 - Enh #7770: Implements Button `disabled()`
@@ -40,8 +71,16 @@ HumHub Changelog
 - Enh #7801: Auto contrast text color for other components, and add `--hh-{bs-color}-contrast` CSS variables (see MIGRATE-BS5.md)
 - Enh #7809: New virtual profile field "Group memberships"
 - Fix #7808: Select fields are missing border radius
+- Enh #7811: Installer enhancements
 - Enh #7810: Apply AutoContrast to Checkbox and Select Choice
 - Enh #7813: Add more auto text colors for Primary and Accent light color
+- Enh #7822: When saving a URL profile field type, append the Link Prefix (e.g. `https://`)
+- Fix #7824: On mobile, display list group items side by side
+- Enh #7828: Improve Installer Cron Page & Selftest
+- Enh #7827: Text Area Profile field type: display line breaks
+- Fix #7826: Comments context menu button is missing margin
+- Fix #7821: Fix FilterPicker UI Issues
+- Enh #7831: Mercure push driver
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------
@@ -140,6 +179,12 @@ HumHub Changelog
 - Fix #7658: Fix loader on attach image to RichText field
 - Enh #7661: Parent groups
 - Enh #7662: In buttons, add right margin to the icon, so that the space char between the icon and the label is no longer needed (see MIGRATE-BS5.md -> ## Buttons)
+
+1.17.5 (December 11, 2025)
+--------------------------
+- Fix #7835: Truncate application name in the theme header
+- Fix #7841: Send user approval notification only to active group managers
+- Fix #7891: Edge shows blank home page
 
 1.17.4 (November 11, 2025)
 --------------------------

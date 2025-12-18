@@ -7,7 +7,7 @@
  */
 
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\ui\mail\DefaultMailStyle;
+use humhub\helpers\MailStyleHelper;
 use humhub\modules\user\models\User;
 use humhub\widgets\mails\MailButton;
 use humhub\widgets\mails\MailButtonList;
@@ -25,7 +25,7 @@ use humhub\widgets\mails\MailContentContainerInfoBox;
 <?php $this->beginContent('@notification/views/layouts/mail.php', $_params_) ?>
     <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
         <tr>
-            <td style="font-size: 14px; line-height: 22px; font-family:<?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= $this->theme->variable('text-color-highlight', '#555555') ?>; font-weight:300; text-align:left">
+            <td style="font-size: 14px; line-height: 22px; font-family:<?= MailStyleHelper::getFontFamily() ?>; color:<?= MailStyleHelper::getTextColorHighlight() ?>; font-weight:300; text-align:left">
                 <?= $viewable->html() ?>
             </td>
         </tr>
@@ -34,7 +34,7 @@ use humhub\widgets\mails\MailContentContainerInfoBox;
         </tr>
         <tr>
             <td height="10"
-                style="border-top: 1px solid <?= $this->theme->variable('background-color-page', '#ededed') ?>"></td>
+                style="border-top: 1px solid <?= MailStyleHelper::getBackgroundColorPage() ?>"></td>
         </tr>
         <tr>
             <td>

@@ -33,7 +33,7 @@ AppAsset::register($this);
         <!-- start: first top navigation bar -->
         <div id="topbar-first" class="topbar navbar">
             <div class="container d-flex justify-content-between">
-                <div class="topbar-brand d-none d-sm-block">
+                <div class="topbar-brand d-none d-md-block">
                     <?= SiteLogo::widget() ?>
                 </div>
 
