@@ -27,8 +27,6 @@ $module = Yii::$app->getModule('comment');
 
 ?>
 
-<hr class="comment-separator">
-
 <div class="<?= $class ?>" id="comment_<?= $comment->id ?>"
      data-action-component="comment.Comment">
 
