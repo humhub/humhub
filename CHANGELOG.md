@@ -30,6 +30,7 @@ HumHub Changelog
 - Enh #7883: Allow CheckboxList Profile Field Type to be used "as Directory filter"
 - Fix #7907: In the Profile, allow unlimited selections for Checkbox Lists
 - Fix #7906: Comment menu disappear when the cursor moves out the comment & refactor _comment.scss
+- Fix #7912: Fixed locale issues in Mail Summary
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------
