@@ -9,6 +9,7 @@ humhub.module('space', function (module, require, $) {
     var additions = require('ui.additions');
     var event = require('event');
     var modal = require('ui.modal');
+    var i18n = require('i18n');
 
     // Current space options (guid, image)
     var options;
@@ -75,6 +76,8 @@ humhub.module('space', function (module, require, $) {
         if (!module.isSpacePage()) {
             module.options = undefined;
         }
+
+        console.log('test', i18n.t('SpaceModule.base', 'Owner'))
     };
 
     var requestMembershipSend = function (event) {
