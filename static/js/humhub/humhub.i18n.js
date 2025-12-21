@@ -1,24 +1,11 @@
 humhub.module('i18n', function(module, require, $) {
     var IntlMessageFormat = require('intl-messageformat');
 
-    var locale = detectLocale();
+    var locale = module.config.language;
     var globalMessages = {};
     var loadedCategories = new Set();
     var pendingLoads = new Map();
     var compiledCache = new Map();
-
-    function detectLocale() {
-        if (typeof document !== 'undefined') {
-            var lang = document.documentElement.getAttribute('lang');
-            if (lang && lang.trim()) {
-                return lang;
-            }
-        }
-        if (typeof navigator !== 'undefined' && navigator.language) {
-            return navigator.language;
-        }
-        return 'en';
-    }
 
     function compileMessage(template) {
         var perLocale = compiledCache.get(locale);
@@ -47,7 +34,7 @@ humhub.module('i18n', function(module, require, $) {
         }
 
         var promise = $.ajax({
-            url: '/translation',
+            url: module.config.translationUrl,
             data: { category: category },
             method: 'GET'
         }).then(function(data) {

@@ -53,6 +53,10 @@ class CoreJsConfig extends Widget
                         'warn.onBeforeCloseModal' => Yii::t('base', 'Unsaved changes will be lost. Do you want to proceed?'),
                     ],
                 ],
+                'i18n' => [
+                    'language' => Yii::$app->language,
+                    'translationUrl' => Url::to(['/i18n/translations']),
+                ],
                 'file' => [
                     'upload' => [
                         'url' => Url::to(['/file/file/upload']),
