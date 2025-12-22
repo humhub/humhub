@@ -77,7 +77,7 @@ humhub.module('space', function (module, require, $) {
             module.options = undefined;
         }
 
-        console.log('test', i18n.t('SpaceModule.base', 'Owner'))
+        console.log('test', i18n.t('SpaceModule.base', 'Hello {name}', {name: 'World'}))
     };
 
     var requestMembershipSend = function (event) {

@@ -15,6 +15,11 @@ use humhub\libs\I18NHelper;
 use Yii;
 use yii\web\Response;
 
+/**
+ * Used to fetch translation messages from UI.
+ *
+ * @since 1.18
+ */
 class I18nController extends Controller
 {
     public $access = ControllerAccess::class;
