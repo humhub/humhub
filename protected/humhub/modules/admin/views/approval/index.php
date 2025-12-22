@@ -10,6 +10,7 @@ use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
+use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\GridView;
 use yii\data\ActiveDataProvider;
@@ -23,20 +24,40 @@ $columns = [
     [
         'header' => Html::checkbox('select-all'),
         'format' => 'raw',
-        'value' => static fn(User $model) => Html::checkbox('ids[]', false, ['id' => 'user-select-' . $model->id, 'value' => $model->id])
+        'value' => fn(User $model) => Html::checkbox('ids[]', false, ['id' => 'user-select-' . $model->id, 'value' => $model->id]),
     ],
     ['class' => ImageColumn::class],
     ['class' => DisplayNameColumn::class],
     'email',
-    'originator.username',
 ];
+
+if (Yii::$app->getModule('user')->settings->get('auth.showRegistrationUserGroup')) {
+    $columns[] = [
+        'label' => Yii::t('UserModule.base', 'Group'),
+        'format' => 'raw',
+        'value' => fn(User $model) => Badge::accent($model->getGroups()->one()?->name)
+            ->tooltip($model->originator
+                ? Yii::t('UserModule.base', 'Invited by {userName}', ['userName' => $model->originator->username])
+                : null),
+    ];
+} else {
+    $columns[] = 'originator.username';
+}
 foreach ($profileFieldsColumns as $profileField) {
     $columns[] = [
         'attribute' => 'profile.' . $profileField->internal_name,
-        'value' => static fn(User $model) => $profileField->getUserValue($model)
+        'value' => fn(User $model) => $profileField->getUserValue($model),
     ];
 }
-$columns[] = 'created_at';
+$columns[] = [
+    'label' => Yii::t('UserModule.base', 'Created at'),
+    'attribute' => 'created_at',
+    'format' => 'raw',
+    'value' => fn(User $model) => Html::tag('span', Yii::$app->formatter->asDate($model->created_at, 'short'), [
+        'data-bs-title' => Yii::$app->formatter->asDatetime($model->created_at),
+        'data-bs-toggle' => 'tooltip',
+    ]),
+];
 $columns[] = [
     'class' => ApprovalActionColumn::class,
     'buttons' => [
@@ -110,12 +131,10 @@ $columns[] = [
 
     <?= Html::beginForm(['bulk-actions'], 'post', ['id' => 'admin-approval-form']) ?>
 
-    <?=
-    GridView::widget([
+    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => $columns,
-    ]);
-    ?>
+    ]) ?>
 
     <br>
     <?= Html::button(Yii::t('AdminModule.user', 'Email all selected'), [
