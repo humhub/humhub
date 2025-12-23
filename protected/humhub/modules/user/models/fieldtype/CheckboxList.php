@@ -36,6 +36,11 @@ class CheckboxList extends BaseType
     public $options;
 
     /**
+     * @inerhitdoc
+     */
+    public $canBeDirectoryFilter = true;
+
+    /**
      * Allow other selection
      * @var bool
      */
@@ -96,7 +101,7 @@ class CheckboxList extends BaseType
             $query = Yii::$app->db->getQueryBuilder()->addColumn(Profile::tableName(), $columnName . '_other_selection', 'VARCHAR(255)');
             Yii::$app->db->createCommand($query)->execute();
 
-            $query = Yii::$app->db->getQueryBuilder()->addColumn(Profile::tableName(), $columnName, 'VARCHAR(255)');
+            $query = Yii::$app->db->getQueryBuilder()->addColumn(Profile::tableName(), $columnName, 'TEXT');
             Yii::$app->db->createCommand($query)->execute();
         }
 

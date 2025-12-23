@@ -22,6 +22,7 @@ Updated minimum required PHP version to 8.2.
 - `\humhub\widgets\mails\MailHeaderImage` widget for displaying a header image in emails
 - `humhub\helpers\MailStyleHelper` to get Sass variable values in email templates
 - `\humhub\components\Theme::CORE_THEME_NAME`
+- `humhub\modules\user\models\forms\EVENT_AFTER_SET_FORM`
 
 ### Deprecated
 - `\humhub\components\Application::isInstalled()` use `\humhub\components\Application::hasState()` instead

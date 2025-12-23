@@ -24,7 +24,14 @@ HumHub Changelog
 - Fix #7868: Add a minimal fallback CSS in case of CSS compilation issue
 - Fix #7872: Email inline style from Sass variables, e.g. when overwriting `$mail-font-family` in the Custom SCSS field
 - Fix #7873: Fix `required` validator
+- Fix #7875: Fix theme color default settings after initial installation
 - Fix #7876: Support for .mjs (ES modules)
+- Chg: Registration form definitions now requires to use the `EVENT_AFTER_SET_FORM` instead of `EVENT_AFTER_INIT` 
+- Enh #7883: Allow CheckboxList Profile Field Type to be used "as Directory filter"
+- Fix #7907: In the Profile, allow unlimited selections for Checkbox Lists
+- Fix #7906: Comment menu disappear when the cursor moves out the comment & refactor _comment.scss
+- Enh #7911: Use BS5 for form fieldset
+- Enh #7914: Show "Group" column on the pending user approvals list
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------
@@ -175,10 +182,11 @@ HumHub Changelog
 - Enh #7661: Parent groups
 - Enh #7662: In buttons, add right margin to the icon, so that the space char between the icon and the label is no longer needed (see MIGRATE-BS5.md -> ## Buttons)
 
-1.17.5 (Unreleased)
+1.17.5 (December 11, 2025)
 --------------------------
 - Fix #7835: Truncate application name in the theme header
 - Fix #7841: Send user approval notification only to active group managers
+- Fix #7891: Edge shows blank home page
 
 1.17.4 (November 11, 2025)
 --------------------------
