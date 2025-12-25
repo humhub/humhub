@@ -49,7 +49,8 @@ HumHub Changelog
 - Fix #7910: `.row` HTML elements without `.container` overflow
 - Fix #7907: In the Profile, allow unlimited selections for Checkbox Lists
 - Fix #7906: Comment menu disappear when the cursor moves out the comment & refactor _comment.scss
-- Fix #7902: Fix Comment edition
+- Fix #7902: Comment edition
+- Fix #7902: Profile filter column sizing on medium screens
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------
