@@ -7,6 +7,11 @@ humhub.module('i18n', function(module, require, $) {
     var pendingLoads = new Map();
     var compiledCache = new Map();
 
+    var getStorageKey = function(category) {
+        var version = module.config.version || '';
+        return 'humhub.i18n.' + version + '.' + locale + '.' + category;
+    };
+
     function compileMessage(template) {
         var perLocale = compiledCache.get(locale);
         if (!perLocale) {
@@ -29,9 +34,20 @@ humhub.module('i18n', function(module, require, $) {
         if (loadedCategories.has(category)) {
             return Promise.resolve();
         }
+
         if (pendingLoads.has(category)) {
             return pendingLoads.get(category);
         }
+
+        try {
+            var cached = localStorage.getItem(getStorageKey(category));
+            if (cached) {
+                var data = JSON.parse(cached);
+                updateIntlMessages(data);
+                loadedCategories.add(category);
+                return Promise.resolve();
+            }
+        } catch (e) {}
 
         var promise = $.ajax({
             url: module.config.translationUrl,
@@ -42,6 +58,10 @@ humhub.module('i18n', function(module, require, $) {
                 locale = data.locale;
                 updateIntlMessages(data.messages);
                 loadedCategories.add(category);
+
+                try {
+                    localStorage.setItem(getStorageKey(category), JSON.stringify(data.messages));
+                } catch (e) {}
             }
         }).always(function() {
             pendingLoads.delete(category);
