@@ -56,6 +56,7 @@ class CoreJsConfig extends Widget
                 'i18n' => [
                     'language' => Yii::$app->language,
                     'translationUrl' => Url::to(['/i18n/translations']),
+                    'version' => Yii::$app->version,
                 ],
                 'file' => [
                     'upload' => [
