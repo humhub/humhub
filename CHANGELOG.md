@@ -49,6 +49,8 @@ HumHub Changelog
 - Fix #7910: `.row` HTML elements without `.container` overflow
 - Fix #7907: In the Profile, allow unlimited selections for Checkbox Lists
 - Fix #7906: Comment menu disappear when the cursor moves out the comment & refactor _comment.scss
+- Enh #7911: Use BS5 for form fieldset
+- Enh #7914: Show "Group" column on the pending user approvals list
 - Fix #7902: Comment edition
 - Fix #7902: Profile filter column sizing on medium screens
 
