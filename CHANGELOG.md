@@ -32,7 +32,7 @@ HumHub Changelog
 - Fix #7906: Comment menu disappear when the cursor moves out the comment & refactor _comment.scss
 - Enh #7911: Use BS5 for form fieldset
 - Enh #7914: Show "Group" column on the pending user approvals list
-- Fix: Invalid multiple inputs in Content form
+- Fix #7915: Invalid multiple inputs in Content form
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------
