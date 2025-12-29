@@ -34,7 +34,7 @@ $categories = $user->profile->getProfileFieldCategories();
         <div class="tab-content">
             <?php $isFirst = true; ?>
             <?php foreach ($categories as $category): ?>
-                <div class="tab-pane <?= $isFirst ? ' active' : '' ?>" id="profile-category-<?= $category->id ?>">
+                <div class="tab-pane <?= $isFirst ? ' active' : '' ?> container gx-0 overflow-x-hidden" id="profile-category-<?= $category->id ?>">
                     <?php foreach ($user->profile->getProfileFields($category) as $field) : ?>
                         <div class="profile-item row mt-3" data-profile-field-internal-name="<?= $field->internal_name ?>">
                             <label class="col-md-3 field-title text-lg-end">

@@ -25,46 +25,47 @@ use humhub\modules\user\widgets\Image;
             <br>
         <?php endif; ?>
 
-        <div class="row">
-
-            <div class="col-lg-4">
-                <?php if (!empty($userGroups[Space::USERGROUP_OWNER])): ?>
-                    <div class="d-flex">
-                        <h5 class="mt-0"><p><strong><?= Yii::t('SpaceModule.base', 'Owner'); ?></strong>
-                            </p></h5>
-                        <div class="flex-grow-1">
-                            <?php foreach ($userGroups[Space::USERGROUP_OWNER] as $user) : ?>
-                                <?= Image::widget([
-                                    'showTooltip' => true,
-                                    'user' => $user, 'width' => 40,
-                                    'htmlOptions' => ['style' => 'padding: 3px'],
-                                    'imageOptions' => ['style' => 'border:1px solid var(--success)'],
-                                ]) ?>
-                            <?php endforeach; ?>
+        <div class="container gx-0 overflow-x-hidden">
+            <div class="row">
+                <div class="col-lg-4">
+                    <?php if (!empty($userGroups[Space::USERGROUP_OWNER])): ?>
+                        <div class="d-flex">
+                            <h5 class="mt-0"><p><strong><?= Yii::t('SpaceModule.base', 'Owner'); ?></strong>
+                                </p></h5>
+                            <div class="flex-grow-1">
+                                <?php foreach ($userGroups[Space::USERGROUP_OWNER] as $user) : ?>
+                                    <?= Image::widget([
+                                        'showTooltip' => true,
+                                        'user' => $user, 'width' => 40,
+                                        'htmlOptions' => ['style' => 'padding: 3px'],
+                                        'imageOptions' => ['style' => 'border:1px solid var(--success)'],
+                                    ]) ?>
+                                <?php endforeach; ?>
+                            </div>
                         </div>
-                    </div>
 
-                    <br/>
-                <?php endif; ?>
-            </div>
+                        <br/>
+                    <?php endif; ?>
+                </div>
 
-            <div class="col-lg-8">
-                <?php if (!empty($userGroups[Space::USERGROUP_ADMIN])): ?>
-                    <div class="d-flex">
-                        <h4 class="mt-0"><p><strong><?= Yii::t('SpaceModule.base', 'Admin'); ?></strong></p></h4>
-                        <div class="flex-grow-1">
-                            <?php foreach ($userGroups[Space::USERGROUP_ADMIN] as $user) : ?>
-                                <?= Image::widget([
-                                    'showTooltip' => true,
-                                    'user' => $user, 'width' => 40,
-                                    'htmlOptions' => ['style' => 'padding: 3px'],
-                                    'imageOptions' => ['style' => 'border:1px solid var(--success)'],
-                                ]) ?>
-                            <?php endforeach; ?>
+                <div class="col-lg-8">
+                    <?php if (!empty($userGroups[Space::USERGROUP_ADMIN])): ?>
+                        <div class="d-flex">
+                            <h4 class="mt-0"><p><strong><?= Yii::t('SpaceModule.base', 'Admin'); ?></strong></p></h4>
+                            <div class="flex-grow-1">
+                                <?php foreach ($userGroups[Space::USERGROUP_ADMIN] as $user) : ?>
+                                    <?= Image::widget([
+                                        'showTooltip' => true,
+                                        'user' => $user, 'width' => 40,
+                                        'htmlOptions' => ['style' => 'padding: 3px'],
+                                        'imageOptions' => ['style' => 'border:1px solid var(--success)'],
+                                    ]) ?>
+                                <?php endforeach; ?>
+                            </div>
                         </div>
-                    </div>
-                <?php endif; ?>
+                    <?php endif; ?>
 
+                </div>
             </div>
         </div>
 
@@ -87,18 +88,19 @@ use humhub\modules\user\widgets\Image;
 
         <br/>
 
-        <div class="row">
-            <div class="col-lg-4">
-                <p><strong><?= Yii::t('SpaceModule.base', 'Join Policy') ?></strong></p>
-                <p><i class="fa fa-users text-info"></i> <?= Space::joinPolicyOptions()[$space->join_policy] ?></p>
-                <br/>
-            </div>
-            <div class="col-lg-8">
-                <p><strong><?= Yii::t('SpaceModule.base', 'Space Visibility') ?></strong></p>
-                <p><i class="fa fa-globe text-info"></i> <?= Space::visibilityOptions()[$space->visibility] ?></p>
+        <div class="container gx-0 overflow-x-hidden">
+            <div class="row">
+                <div class="col-lg-4">
+                    <p><strong><?= Yii::t('SpaceModule.base', 'Join Policy') ?></strong></p>
+                    <p><i class="fa fa-users text-info"></i> <?= Space::joinPolicyOptions()[$space->join_policy] ?></p>
+                    <br/>
+                </div>
+                <div class="col-lg-8">
+                    <p><strong><?= Yii::t('SpaceModule.base', 'Space Visibility') ?></strong></p>
+                    <p><i class="fa fa-globe text-info"></i> <?= Space::visibilityOptions()[$space->visibility] ?></p>
+                </div>
             </div>
         </div>
-
 
     </div>
 </div>

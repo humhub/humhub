@@ -6,6 +6,7 @@
 
 $isFluid: false;
 
+
 //
 // Default Bootstrap base colors (can be overwritten in Administration -> Settings -> Appearance)
 // --------------------------------------------------
@@ -19,6 +20,7 @@ $danger: #FC4A64 !default;
 $light: #e7e7e7 !default;
 $dark: #333 !default;
 
+
 //
 // HumHub Accent color (can be overwritten in Administration -> Settings -> Appearance)
 // --------------------------------------------------
@@ -30,6 +32,7 @@ $accent-border-subtle: tint-color($accent, 60%) !default;
 $accent-text-emphasis-dark: tint-color($accent, 60%) !default;
 $accent-bg-subtle-dark: shade-color($accent, 80%) !default;
 $accent-border-subtle-dark: shade-color($accent, 60%) !default;
+
 
 //
 // Color Bootstrap overwritten variables
@@ -69,10 +72,6 @@ $text-color-soft2: #aeaeae !default;
 // used in gridview summary and installer - former $font1
 $text-color-soft3: #bac2c7 !default;
 
-// used as contrast color for $primary, $info, $success, $warning, $danger backgrounds for buttons etc.
-// Note that $default does not use a contrast color $default is normally combined with $text-color-secondary
-$text-color-contrast: #fff !default;
-
 
 //
 // Background colors
@@ -98,6 +97,36 @@ $background-color-highlight-soft: lighten(desaturate(adjust-hue($accent, 6), 16)
 // Additional background colors
 $background3: #d7d7d7 !default;
 $background4: #b2b2b2 !default;
+
+
+//
+// HumHub Text contrast colors
+// --------------------------------------------------
+
+//
+// Contrast ratio to reach against white
+// Determines if color changes from "light" to "dark".
+// Acceptable values for WCAG 2.2 are 3, 4.5 and 7.
+// See https://www.w3.org/TR/WCAG/#contrast-minimum
+//
+$min-contrast-ratio: 3 !default;
+
+// Required for color-contrast():
+$white: #fff !default;
+$black: #000 !default;
+$color-contrast-dark: $black !default;
+$color-contrast-light: $white !default;
+
+// Text contrast colors for each Bootstrap background color:
+$text-color-accent-contrast: color-contrast($accent);
+$text-color-primary-contrast: color-contrast($primary);
+$text-color-secondary-contrast: color-contrast($secondary);
+$text-color-info-contrast: color-contrast($info);
+$text-color-success-contrast: color-contrast($success);
+$text-color-warning-contrast: color-contrast($warning);
+$text-color-danger-contrast: color-contrast($danger);
+$text-color-light-contrast: color-contrast($light);
+$text-color-dark-contrast: color-contrast($dark);
 
 
 //
@@ -137,11 +166,11 @@ $mail-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', ’Helvetica N
 // --------------------------------------------------
 
 $container-max-widths: (
-    sm: 540px,
-    md: 720px,
-    lg: 960px,
-    xl: 1140px,
-    xxl: 1170px // instead of the Bootstrap default 1320px
+    sm: 768px, // fullwidth
+    md: 750px,
+    lg: 970px,
+    xl: 1170px,
+    xxl: 1170px
 ) !default;
 
 
@@ -155,15 +184,6 @@ $badge-padding-y: 3px !default;
 $badge-padding-x: 5px !default;
 $badge-border-radius: 2px !default;
 
-//
-// Contrast ratio to reach against white
-// Determines if color changes from "light" to "dark".
-// Acceptable values for WCAG 2.2 are 3, 4.5 and 7.
-// See https://www.w3.org/TR/WCAG/#contrast-minimum
-//
-
-$min-contrast-ratio: 3 !default;
-
 
 //
 // Other Bootstrap overwritten variables
@@ -174,6 +194,7 @@ $grid-gutter-width: 30px !default;
 $line-height-base: 1.5 !default;
 $form-check-padding-start: 2em !default; // Fix checkbox with multiple lines label
 $focus-ring-box-shadow: none !default;
+$component-active-color: $text-color-primary-contrast !default; // Because $component-active-bg has Primary color
 
 //
 // @deprecated since 1.18
@@ -181,7 +202,8 @@ $focus-ring-box-shadow: none !default;
 
 $default: #e7e7e7 !default;
 $link: $primary !default;
-
+$text-color-contrast: #fff !default;
+$text-color-contrast-dark: #fff !default;
 
 // Dark color mode variables
 //
@@ -222,10 +244,6 @@ $text-color-soft2-dark: #ccc !default;
 
 // used in gridview summary and installer - former $font1
 $text-color-soft3-dark: #7b7773 !default;
-
-// used as contrast color for $primary, $info, $success, $warning, $danger backgrounds for buttons etc.
-// Note that $default does not use a contrast color $default is normally combined with $text-color-secondary
-$text-color-contrast-dark: #fff !default;
 
 //
 // Background colors
