@@ -33,31 +33,33 @@ AdminGroupAsset::register($this);
             ]))->closeButton(false) ?>
     <?php endif ?>
 
-    <div class="row">
-        <?php if ($canModifyMembers) : ?>
-        <div class="col-lg-6">
-            <?php $form = ActiveForm::begin(['action' => ['/admin/group/add-members']]); ?>
-            <div class="select2-humhub-append input-group flex-nowrap">
-                <?= UserPickerField::widget([
-                    'model' => $addGroupMemberForm,
-                    'attribute' => 'userGuids',
-                    'url' => Url::to(['/admin/group/new-member-search', 'id' => $group->id]),
-                    'placeholder' => Yii::t('AdminModule.user', 'Add new members...'),
-                    'focus' => true,
-                ]) ?>
-                <?= Html::activeHiddenInput($addGroupMemberForm, 'groupId', ['value' => $group->id]) ?>
-                <?= Button::primary()->submit()->icon('add') ?>
+    <div class="container gx-0 overflow-x-hidden">
+        <div class="row gy-2">
+            <?php if ($canModifyMembers) : ?>
+            <div class="col-lg-6">
+                <?php $form = ActiveForm::begin(['action' => ['/admin/group/add-members']]); ?>
+                <div class="select2-humhub-append input-group flex-nowrap">
+                    <?= UserPickerField::widget([
+                        'model' => $addGroupMemberForm,
+                        'attribute' => 'userGuids',
+                        'url' => Url::to(['/admin/group/new-member-search', 'id' => $group->id]),
+                        'placeholder' => Yii::t('AdminModule.user', 'Add new members...'),
+                        'focus' => true,
+                    ]) ?>
+                    <?= Html::activeHiddenInput($addGroupMemberForm, 'groupId', ['value' => $group->id]) ?>
+                    <?= Button::primary()->submit()->icon('add') ?>
+                </div>
+                <?php ActiveForm::end(); ?>
             </div>
-            <?php ActiveForm::end(); ?>
-        </div>
-        <?php endif; ?>
-        <div class="<?= $canModifyMembers ? 'col-lg-6' : 'col-lg-12' ?>">
-            <?php $form = ActiveForm::begin(['method' => 'get']); ?>
-            <div class="input-group">
-                <?= Html::activeTextInput($searchModel, 'freeText', ['class' => 'form-control', 'placeholder' => Yii::t('AdminModule.user', 'Search by name, email or id.')]); ?>
-                <button class="btn btn-light" type="submit"><i class="fa fa-search"></i></button>
+            <?php endif; ?>
+            <div class="<?= $canModifyMembers ? 'col-lg-6' : 'col-lg-12' ?>">
+                <?php $form = ActiveForm::begin(['method' => 'get']); ?>
+                <div class="input-group">
+                    <?= Html::activeTextInput($searchModel, 'freeText', ['class' => 'form-control', 'placeholder' => Yii::t('AdminModule.user', 'Search by name, email or id.')]); ?>
+                    <button class="btn btn-light" type="submit"><i class="fa fa-search"></i></button>
+                </div>
+                <?php ActiveForm::end(); ?>
             </div>
-            <?php ActiveForm::end(); ?>
         </div>
     </div>
 

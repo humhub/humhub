@@ -339,10 +339,6 @@
             border: 0 !important;
         }
 
-        .filter-panel {
-            padding: 0 10px;
-        }
-
         .wall-stream-filter-head {
             padding: 5px 5px 10px 5px;
             border-bottom: 1px solid var(--hh-background3);
@@ -369,7 +365,6 @@
         }
 
         .select2 {
-            width: 260px !important;
             margin-bottom: 5px;
             margin-top: 2px;
 
@@ -423,16 +418,10 @@
     }
 
     .filter-root {
-        margin: 15px;
-
-        .row {
-            display: table !important;
-        }
-
         .filter-panel {
-            padding: 0 5px;
-            display: table-cell !important;
-            float: none;
+            // Same vertical padding as the .container horizontal one
+            padding-top: calc(var(--bs-gutter-x)*.5);
+            padding-bottom: calc(var(--bs-gutter-x)*.5);
 
             .filter-block {
                 strong {

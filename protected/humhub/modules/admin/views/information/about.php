@@ -5,23 +5,20 @@ use humhub\modules\marketplace\widgets\AboutVersion;
 
 ?>
 
-
-<?= AboutVersion::widget(); ?>
+<div class="alert alert-secondary">
+    <?= AboutVersion::widget() ?>
+</div>
 <br/>
 
 <?php if ($isNewVersionAvailable) : ?>
     <div class="alert alert-danger">
-        <p>
-            <strong><?= Yii::t('AdminModule.information', 'There is a new update available! (Latest version: %version%)', ['%version%' => $latestVersion]); ?></strong><br>
-            <?= Html::a("https://www.humhub.org", "https://www.humhub.org"); ?>
-        </p>
+        <strong><?= Yii::t('AdminModule.information', 'There is a new update available! (Latest version: %version%)', ['%version%' => $latestVersion]); ?></strong><br>
+        <?= Html::a("https://www.humhub.org", "https://www.humhub.org"); ?>
     </div>
 <?php elseif ($isUpToDate): ?>
     <div class="alert alert-info">
-        <p>
-            <strong><?= Yii::t('AdminModule.information', 'This HumHub installation is up to date!'); ?></strong><br/>
-            <?= Html::a("https://www.humhub.org", "https://www.humhub.org"); ?>
-        </p>
+        <strong><?= Yii::t('AdminModule.information', 'This HumHub installation is up to date!'); ?></strong><br/>
+        <?= Html::a("https://www.humhub.org", "https://www.humhub.org"); ?>
     </div>
 <?php endif; ?>
 

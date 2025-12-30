@@ -16,46 +16,42 @@ use humhub\widgets\SiteLogo;
 $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
 ?>
 
-<div class="container" style="text-align: center;">
+<div id="user-registration-by-link" class="container">
     <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br/>
-    <div class="row">
-        <div id="create-account-form" class="panel panel-default animated bounceIn"
-             data-has-auth-client="0"
-             style="max-width: 500px; margin: 0 auto 20px; text-align: left;">
-            <div class="panel-heading">
-                <?= Yii::t('UserModule.auth', '<strong>Account</strong> registration') ?>
-            </div>
-            <div class="panel-body">
-                <?php if ($showAuthClients && AuthChoice::hasClients()): ?>
-                    <?= AuthChoice::widget(['showOrDivider' => $showRegistrationForm]) ?>
-                <?php endif; ?>
+    <div id="create-account-form" class="panel panel-default animated bounceIn"
+         data-has-auth-client="0">
+        <div class="panel-heading">
+            <?= Yii::t('UserModule.auth', '<strong>Account</strong> registration') ?>
+        </div>
+        <div class="panel-body">
+            <?php if ($showAuthClients && AuthChoice::hasClients()): ?>
+                <?= AuthChoice::widget(['showOrDivider' => $showRegistrationForm]) ?>
+            <?php endif; ?>
 
-                <?php if (Yii::$app->session->hasFlash('error')): ?>
-                    <div class="alert alert-danger" role="alert">
-                        <?= Yii::$app->session->getFlash('error') ?>
+            <?php if (Yii::$app->session->hasFlash('error')): ?>
+                <div class="alert alert-danger" role="alert">
+                    <?= Yii::$app->session->getFlash('error') ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if ($showRegistrationForm): ?>
+                <?php $form = ActiveForm::begin(['id' => 'registration-form']); ?>
+                <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email'), 'aria-label' => $invite->getAttributeLabel('email')])->label(false); ?>
+                <?php if ($invite->showCaptureInRegisterForm()) : ?>
+                    <div id="registration-form-captcha" style="display: none;">
+                        <?= $form->field($invite, 'captcha')->widget(CaptchaField::class)->label(false) ?>
                     </div>
                 <?php endif; ?>
 
+                <?= Html::submitButton(Yii::t('UserModule.auth', 'Register'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
-                <?php if ($showRegistrationForm): ?>
-                    <?php $form = ActiveForm::begin(['id' => 'registration-form']); ?>
-                    <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email'), 'aria-label' => $invite->getAttributeLabel('email')])->label(false); ?>
-                    <?php if ($invite->showCaptureInRegisterForm()) : ?>
-                        <div id="registration-form-captcha" style="display: none;">
-                            <?= $form->field($invite, 'captcha')->widget(CaptchaField::class)->label(false) ?>
-                        </div>
-                    <?php endif; ?>
-                    <hr>
-                    <?= Html::submitButton(Yii::t('UserModule.auth', 'Register'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
-
-                    <?php ActiveForm::end(); ?>
-                <?php endif; ?>
-            </div>
+                <?php ActiveForm::end(); ?>
+            <?php endif; ?>
         </div>
-
-        <?= humhub\widgets\LanguageChooser::widget(); ?>
     </div>
+
+    <?= humhub\widgets\LanguageChooser::widget(['vertical' => true, 'hideLabel' => true]); ?>
 </div>
 
 <script <?= Html::nonce() ?>>

@@ -174,10 +174,9 @@
         }
     }
 
-    $moduleUpdateLayoutBg: var(--bs-primary);
-    $moduleUpdateCardBg: darken($primary, 10);
     .container-module-updates {
-        background: $moduleUpdateLayoutBg;
+        background: var(--bs-primary);
+        color: var(--hh-primary-contrast);
         margin-top: 30px;
         padding: 16px 10px 2px;
         border-radius: 4px;
@@ -188,8 +187,8 @@
         }
 
         .modules-type {
-            color: var(--hh-primary-contrast);
             margin: 10px 0 30px;
+            color: var(--hh-primary-contrast); // Overwrite default value
         }
 
         .card {
@@ -197,11 +196,10 @@
             background-color: transparent;
 
             .card-panel {
-                color: var(--hh-primary-contrast);
                 margin-top: 0;
 
                 > div:not(.card-status) {
-                    background: $moduleUpdateCardBg;
+                    background: var(--hh-background-color-main);
                 }
 
                 .card-header {
@@ -210,10 +208,8 @@
 
                 .card-body {
                     padding: 4px 12px 20px;
-                    color: var(--hh-primary-contrast);
 
                     .card-title {
-                        color: var(--hh-primary-contrast);
                         font-size: 14px;
                     }
                 }
@@ -223,7 +219,7 @@
 
                     .btn-info {
                         border-radius: 4px;
-                        color: $moduleUpdateLayoutBg !important;
+                        color: var(--bs-primary) !important;
 
                         &.active {
                             border-color: #FFF;
@@ -232,11 +228,11 @@
                         &:not(.active) {
                             padding: 0 4px;
                             border: 1px solid #FFF;
-                            background: $moduleUpdateCardBg;
-                            color: var(--hh-text-color-contrast) !important;
+                            background: var(--bs-primary);
+                            color: var(--hh-primary-contrast) !important;
 
                             &:hover, &:active {
-                                background: $moduleUpdateLayoutBg !important;
+                                background: darken($primary, 10) !important;
                             }
                         }
 
@@ -252,7 +248,6 @@
     // Module row style in Administration
     .modules-group {
         margin-bottom: 25px;
-        padding: 6px;
 
         > strong {
             display: block;
@@ -271,15 +266,9 @@
                 }
             }
 
-            .module-icon {
-                text-align: center;
-                padding-left: 6px;
-            }
-
             .module-actions {
                 white-space: nowrap;
                 text-align: right;
-                padding-right: 0;
 
                 .btn:not(:first-child) {
                     margin-left: 14px;
