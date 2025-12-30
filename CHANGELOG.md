@@ -26,12 +26,32 @@ HumHub Changelog
 - Fix #7873: Fix `required` validator
 - Fix #7875: Fix theme color default settings after initial installation
 - Fix #7876: Support for .mjs (ES modules)
-- Chg: Registration form definitions now requires to use the `EVENT_AFTER_SET_FORM` instead of `EVENT_AFTER_INIT` 
+- Chg #7878: Registration form definitions now requires to use the `EVENT_AFTER_SET_FORM` instead of `EVENT_AFTER_INIT` 
 - Enh #7883: Allow CheckboxList Profile Field Type to be used "as Directory filter"
+- Fix #7884: On small screen, the modal box is not centered
+- Fix #7885: Layout padding on small screens
+- Fix #7886: View using the Login layout (auth, registration, must-change-password and password-recovery): Styling, Back button, remove inline CSS, add unique ID
+- Fix #7887: Delete Account Spaces List
+- Fix #7888: Activate License link styling
+- Fix #7888: User/Space List Modals
+- Fix #7889: Remove btn class from sub-menu dropdowns and fix extra space after the icon
+- Fix #7890: Modal moves the topbar to the right when it opens
+- Fix #7895: Button styling when in Input form field
+- Fix #7896: Top bar notification block not centered
+- Fix #7897: Admin Advanced OEmbeded styling
+- Fix #7900: About HumHub Information page styling
+- Fix #7901: Database Information page styling
+- Fix #7903: Admin User Export button group spacing and missing line in the table header
+- Fix #7904: Logging admin page styling
+- Enh #7904: New Sass text color contrast variables, `$text-color-contrast` is now deprecated
+- Fix #7902: Community Theme - Container Paddings in different Breakpoints
+- Fix #7902: Marketplace update colors
+- Fix #7910: `.row` HTML elements without `.container` overflow
 - Fix #7907: In the Profile, allow unlimited selections for Checkbox Lists
 - Fix #7906: Comment menu disappear when the cursor moves out the comment & refactor _comment.scss
 - Enh #7911: Use BS5 for form fieldset
 - Enh #7914: Show "Group" column on the pending user approvals list
+- Fix #7915: Invalid multiple inputs in Content form
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------

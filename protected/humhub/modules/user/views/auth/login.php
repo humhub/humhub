@@ -56,7 +56,6 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
                         ->label(false) ?>
                 <?= $model->hideRememberMe ? '' : $form->field($model, 'rememberMe')->checkbox() ?>
 
-                    <hr>
                     <div class="row">
                         <div class="col-lg-4">
                             <?= Html::submitButton(Yii::t('UserModule.auth', 'Sign in'), ['id' => 'login-button', 'data-ui-loader' => "", 'class' => 'btn btn-large btn-primary']); ?>
@@ -111,7 +110,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
                         <?= $form->field($invite, 'captcha')->widget(CaptchaField::class)->label(false) ?>
                     </div>
                 <?php endif; ?>
-                <hr>
+
                 <?= Html::submitButton(Yii::t('UserModule.auth', 'Register'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']) ?>
 
                 <?php ActiveForm::end(); ?>
@@ -150,5 +149,4 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
         $('#registration-form-captcha').fadeIn(500);
     });
     <?php } ?>
-
 </script>

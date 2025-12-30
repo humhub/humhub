@@ -3,6 +3,14 @@
 // --------------------------------------------------
 
 @if not $prev-sidebar {
+    .layout-sidebar-container {
+        padding: 0 15px 0 0;
+
+        > .panel > .panel-heading {
+            padding-right: 30px; // Space for the PanelMenu widget dropdown menu
+        }
+    }
+
     @include media-breakpoint-down(lg) {
         .layout-sidebar-container {
             display: none;

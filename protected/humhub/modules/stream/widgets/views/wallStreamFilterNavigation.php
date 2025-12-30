@@ -35,11 +35,11 @@ $panelColumn4Blocks = $panels[WallStreamFilterNavigation::PANEL_COLUMN_4] ?? nul
             ->sm() ?>
     </div>
     <div class="wall-stream-filter-body<?= $isCollapsed ? ' d-none' : '' ?>">
-        <div class="filter-root">
+        <div class="filter-root container">
             <div class="row">
-                <?= FilterPanel::widget(['blocks' => $panelColumn1Blocks, 'span' => count($panels)]) ?>
-                <?= FilterPanel::widget(['blocks' => $panelColumn2Blocks, 'span' => count($panels)]) ?>
-                <?= FilterPanel::widget(['blocks' => $panelColumn3Blocks, 'span' => count($panels)]) ?>
+                <?= FilterPanel::widget(['blocks' => $panelColumn1Blocks]) ?>
+                <?= FilterPanel::widget(['blocks' => $panelColumn2Blocks]) ?>
+                <?= FilterPanel::widget(['blocks' => $panelColumn3Blocks]) ?>
             </div>
         </div>
     </div>

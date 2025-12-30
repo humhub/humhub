@@ -13,8 +13,6 @@
         display: block;
         height: 50px;
         width: 100%;
-        padding-left: 0;
-        padding-right: 0;
 
         ul.nav {
             float: left;
@@ -61,7 +59,7 @@
         background-color: var(--bs-primary);
         top: 0;
         z-index: 1030;
-        color: var(--hh-text-color-contrast);
+        color: var(--hh-primary-contrast);
 
         .topbar-brand {
             max-width: 40%;
@@ -134,7 +132,7 @@
                 left: 50%;
                 margin-left: -18px;
                 border-top-width: 0;
-                border-bottom-color: var(--hh-text-color-contrast);
+                border-bottom-color: var(--hh-primary-contrast);
                 top: -8px;
                 z-index: 1035;
             }
@@ -223,7 +221,7 @@
         }
 
         .caret {
-            border-top-color: var(--hh-text-color-contrast);
+            border-top-color: var(--hh-primary-contrast);
         }
 
         .btn-group > a {
@@ -415,9 +413,8 @@
     }
 
     @include media-breakpoint-up(md) {
-        .topbar {
-            padding-left: 15px;
-            padding-right: 15px;
+        .navbar.topbar {
+            --bs-navbar-padding-x: 15px;
         }
     }
 }
