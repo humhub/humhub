@@ -81,7 +81,7 @@ class WallStreamEntryOptions extends StreamEntryOptions
 
     public static function getInstanceFromRequest(): ?self
     {
-        $viewContext = Yii::$app->request->get('viewContext');
+        $viewContext = Yii::$app->view->getRequestViewContext();
         if (empty($viewContext)) {
             $viewContext = Yii::$app->request->post('viewContext');
         }

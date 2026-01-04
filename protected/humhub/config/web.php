@@ -33,13 +33,13 @@ $config = [
             ],
         ],
         'request' => [
-            'class' => \humhub\components\Request::class,
+            'class' => \yii2\extensions\psrbridge\http\Request::class,
             'csrfCookie' => [
                 'sameSite' => yii\web\Cookie::SAME_SITE_LAX,
             ],
         ],
         'response' => [
-            'class' => \humhub\components\Response::class,
+            'class' => \yii2\extensions\psrbridge\http\Response::class,
         ],
         'captcha' => [
             'class' => \humhub\components\captcha\AltchaCaptcha::class,
@@ -57,6 +57,7 @@ $config = [
             ],
         ],
         'errorHandler' => [
+            // 'class' => \yii2\extensions\psrbridge\http\ErrorHandler::class,
             'errorAction' => '/error/index',
         ],
         'session' => [

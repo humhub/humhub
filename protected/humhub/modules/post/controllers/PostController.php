@@ -113,7 +113,7 @@ class PostController extends ContentContainerController
             'model' => $model,
             'fileHandlers' => FileHandlerCollection::getByType([FileHandlerCollection::TYPE_IMPORT, FileHandlerCollection::TYPE_CREATE]),
             'submitUrl' => $post->content->container->createUrl('/post/post/edit', ['id' => $post->id]),
-            'viewContext' => Yii::$app->request->get('viewContext'),
+            'viewContext' => $this->view->getRequestViewContext(),
         ]);
     }
 

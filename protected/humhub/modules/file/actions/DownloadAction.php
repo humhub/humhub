@@ -10,6 +10,7 @@ namespace humhub\modules\file\actions;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use humhub\helpers\ResponseHelper;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
 use humhub\modules\file\Module;
@@ -109,11 +110,7 @@ class DownloadAction extends Action
             'mimeType' => $mimeType,
         ];
 
-        if ($this->useXSendFile()) {
-            Yii::$app->response->xSendFile($this->getStoredFilePath(), $fileName, $options);
-        } else {
-            Yii::$app->response->sendFile($this->getStoredFilePath(), $fileName, $options);
-        }
+        ResponseHelper::sendFile($this->getStoredFilePath(), $fileName, $options);
     }
 
     /**
@@ -218,16 +215,6 @@ class DownloadAction extends Action
         }
 
         return $this->file->file_name . '_' . $this->variant;
-    }
-
-    /**
-     * Checks if XSendFile downloads are enabled
-     *
-     * @return bool
-     */
-    protected function useXSendFile()
-    {
-        return ($this->getModule()->settings->get('useXSendfile'));
     }
 
     /**

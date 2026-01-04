@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0f76f1f6c81058cd857a4e6d8ed586d6",
+    "content-hash": "fb7f434be7ab32ca91e82b52e07d9c69",
     "packages": [
         {
             "name": "altcha-org/altcha",
@@ -1296,6 +1296,69 @@
                 }
             ],
             "time": "2024-07-20T21:45:45+00:00"
+        },
+        {
+            "name": "httpsoft/http-message",
+            "version": "1.1.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/httpsoft/http-message.git",
+                "reference": "f6c88e2189b9f75f10dfaeb0a85c56ea04a53c19"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/httpsoft/http-message/zipball/f6c88e2189b9f75f10dfaeb0a85c56ea04a53c19",
+                "reference": "f6c88e2189b9f75f10dfaeb0a85c56ea04a53c19",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4|^8.0",
+                "psr/http-factory": "^1.0",
+                "psr/http-message": "^1.1|^2.0"
+            },
+            "provide": {
+                "psr/http-factory-implementation": "1.0",
+                "psr/http-message-implementation": "1.0"
+            },
+            "require-dev": {
+                "php-http/psr7-integration-tests": "^1.3",
+                "phpunit/phpunit": "^9.5",
+                "squizlabs/php_codesniffer": "^3.7",
+                "vimeo/psalm": "^4.9|^5.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "HttpSoft\\Message\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Evgeniy Zyubin",
+                    "email": "mail@devanych.ru",
+                    "homepage": "https://devanych.ru/",
+                    "role": "Founder and lead developer"
+                }
+            ],
+            "description": "Strict and fast implementation of PSR-7 and PSR-17",
+            "homepage": "https://httpsoft.org/",
+            "keywords": [
+                "http",
+                "http-message",
+                "php",
+                "psr-17",
+                "psr-7"
+            ],
+            "support": {
+                "docs": "https://httpsoft.org/docs/message",
+                "issues": "https://github.com/httpsoft/http-message/issues",
+                "source": "https://github.com/httpsoft/http-message"
+            },
+            "time": "2024-08-09T07:13:21+00:00"
         },
         {
             "name": "imagine/imagine",
@@ -6006,6 +6069,62 @@
                 "source": "https://github.com/php-fig/http-message/tree/2.0"
             },
             "time": "2023-04-04T09:54:51+00:00"
+        },
+        {
+            "name": "psr/http-server-handler",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/http-server-handler.git",
+                "reference": "84c4fb66179be4caaf8e97bd239203245302e7d4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/http-server-handler/zipball/84c4fb66179be4caaf8e97bd239203245302e7d4",
+                "reference": "84c4fb66179be4caaf8e97bd239203245302e7d4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0",
+                "psr/http-message": "^1.0 || ^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Http\\Server\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "https://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for HTTP server-side request handler",
+            "keywords": [
+                "handler",
+                "http",
+                "http-interop",
+                "psr",
+                "psr-15",
+                "psr-7",
+                "request",
+                "response",
+                "server"
+            ],
+            "support": {
+                "source": "https://github.com/php-fig/http-server-handler/tree/1.0.2"
+            },
+            "time": "2023-04-10T20:06:20+00:00"
         },
         {
             "name": "psr/link",
@@ -11226,6 +11345,143 @@
             "time": "2015-07-01T04:15:08+00:00"
         },
         {
+            "name": "yii2-extensions/franken-php",
+            "version": "0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yii2-extensions/franken-php.git",
+                "reference": "5257288a27b9e223f412a542191e57ab0d9c7404"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yii2-extensions/franken-php/zipball/5257288a27b9e223f412a542191e57ab0d9c7404",
+                "reference": "5257288a27b9e223f412a542191e57ab0d9c7404",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1",
+                "yii2-extensions/psr-bridge": "^0.1"
+            },
+            "require-dev": {
+                "httpsoft/http-message": "^1.1",
+                "infection/infection": "^0.27|^0.31",
+                "maglnet/composer-require-checker": "^4.1",
+                "phpstan/extension-installer": "^1.4",
+                "phpstan/phpstan-strict-rules": "^2.0.3",
+                "phpunit/phpunit": "^10.5",
+                "rector/rector": "^2.1",
+                "symplify/easy-coding-standard": "^12.5",
+                "xepozz/internal-mocker": "^1.4",
+                "yii2-extensions/phpstan": "^0.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "0.2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "yii2\\extensions\\frankenphp\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Yii2 FrankenPHP runtime.",
+            "keywords": [
+                "frankenphp",
+                "runtime",
+                "yii2-extension"
+            ],
+            "support": {
+                "issues": "https://github.com/yii2-extensions/franken-php/issues",
+                "source": "https://github.com/yii2-extensions/franken-php/tree/0.1.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/terabytesoftw",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-10-08T09:19:05+00:00"
+        },
+        {
+            "name": "yii2-extensions/psr-bridge",
+            "version": "0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yii2-extensions/psr-bridge.git",
+                "reference": "a3f201b334aa838a6dcb5735d2e058e1862767d7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yii2-extensions/psr-bridge/zipball/a3f201b334aa838a6dcb5735d2e058e1862767d7",
+                "reference": "a3f201b334aa838a6dcb5735d2e058e1862767d7",
+                "shasum": ""
+            },
+            "require": {
+                "ext-filter": "*",
+                "ext-mbstring": "*",
+                "php": ">=8.1",
+                "psr/http-factory": "^1.1",
+                "psr/http-message": "^2.0",
+                "psr/http-server-handler": "^1.0",
+                "yiisoft/yii2": "^2.0.53|^22"
+            },
+            "require-dev": {
+                "httpsoft/http-message": "^1.1",
+                "infection/infection": "^0.27|^0.31",
+                "maglnet/composer-require-checker": "^4.1",
+                "php-forge/support": "^0.2",
+                "phpstan/extension-installer": "^1.4",
+                "phpstan/phpstan-strict-rules": "^2.0.3",
+                "phpunit/phpunit": "^10.5",
+                "rector/rector": "^2.1",
+                "symplify/easy-coding-standard": "^12.5",
+                "xepozz/internal-mocker": "^1.4",
+                "yii2-extensions/phpstan": "^0.3"
+            },
+            "suggest": {
+                "yii2-extensions/worker-debug": "Provides Yii debug integration for PSR requests"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "0.2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "yii2\\extensions\\psrbridge\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "PSR bridge for Yii2",
+            "keywords": [
+                "psr-bridge",
+                "psr-http-factory",
+                "psr-http-message",
+                "psr-http-server-handler",
+                "yii2-extension"
+            ],
+            "support": {
+                "issues": "https://github.com/yii2-extensions/psr-bridge/issues",
+                "source": "https://github.com/yii2-extensions/psr-bridge/tree/0.1.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/terabytesoftw",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-10-06T21:23:26+00:00"
+        },
+        {
             "name": "yiisoft/yii2",
             "version": "dev-master",
             "source": {
@@ -16142,9 +16398,10 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "roave/security-advisories": 20,
+        "yii2-extensions/franken-php": 20,
         "yiisoft/yii2": 20,
-        "yiisoft/yii2-queue": 20,
-        "roave/security-advisories": 20
+        "yiisoft/yii2-queue": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
@@ -16156,9 +16413,9 @@
         "ext-pdo": "*",
         "ext-zip": "*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "platform-overrides": {
         "php": "8.2"
     },
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.9.0"
 }

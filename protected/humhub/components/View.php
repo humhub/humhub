@@ -91,6 +91,11 @@ class View extends \yii\web\View
 
     private $_viewMeta;
 
+    /**
+     * HTTP header name for view context information
+     */
+    private const HEADER_VIEW_CONTEXT = 'HUMHUB-VIEW-CONTEXT';
+
 
     /**
      * @return ViewMeta
@@ -361,7 +366,7 @@ class View extends \yii\web\View
     {
         $cacheBustedUrl = $this->addCacheBustQuery($url);
         foreach (static::$preload as $fileName) {
-            if (strpos($url, (string) $fileName)) {
+            if (strpos($url, (string)$fileName)) {
                 $this->registerPreload($cacheBustedUrl, 'script');
             }
         }
@@ -377,7 +382,7 @@ class View extends \yii\web\View
     {
         $cacheBustedUrl = $this->addCacheBustQuery($url);
         foreach (static::$preload as $fileName) {
-            if (strpos($url, (string) $fileName)) {
+            if (strpos($url, (string)$fileName)) {
                 $this->registerPreload($cacheBustedUrl, 'style');
             }
         }
@@ -464,11 +469,15 @@ class View extends \yii\web\View
         if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
             if (Yii::$app->getSession()->hasFlash('view-status')) {
                 $viewStatus = Yii::$app->getSession()->getFlash('view-status');
-                $type = strtolower((string) key($viewStatus));
+                $type = strtolower((string)key($viewStatus));
                 $value = Html::encode(array_values($viewStatus)[0]);
                 $value = str_replace('&quot;', '', $value);
                 $value = trim($value);
-                $this->registerJs('humhub.modules.ui.status.' . $type . '("' . $value . '")', View::POS_END, 'viewStatusMessage');
+                $this->registerJs(
+                    'humhub.modules.ui.status.' . $type . '("' . $value . '")',
+                    View::POS_END,
+                    'viewStatusMessage'
+                );
             }
 
             if (Yii::$app->session->hasFlash('executeJavascript')) {
@@ -509,7 +518,11 @@ class View extends \yii\web\View
     private function registerViewContext()
     {
         if (!empty(static::$viewContext)) {
-            $this->registerJs('humhub.modules.ui.view.setViewContext("' . static::$viewContext . '")', View::POS_END, 'viewContext');
+            $this->registerJs(
+                'humhub.modules.ui.view.setViewContext("' . static::$viewContext . '")',
+                View::POS_END,
+                'viewContext'
+            );
         }
     }
 
@@ -567,5 +580,11 @@ class View extends \yii\web\View
     {
         static::$viewContext = $vctx;
     }
+
+    public function getRequestViewContext()
+    {
+        return Yii::$app->request->getHeaders()->get(static::HEADER_VIEW_CONTEXT);
+    }
+
 
 }

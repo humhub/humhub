@@ -20,6 +20,7 @@ class ComponentLoader implements BootstrapInterface
             return;
         }
 
+        $this->setRequestConfig($app);
         $this->setMailerConfig($app);
         $this->setUserConfig($app);
         $this->setParams($app);
@@ -127,5 +128,31 @@ class ComponentLoader implements BootstrapInterface
     protected function setParams($app)
     {
         $app->name = $app->settings->get('name');
+    }
+
+    private function setRequestConfig(\yii\base\Application $app)
+    {
+        if (!$app->request->isConsoleRequest) {
+            if ($app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
+                $secret = $app->settings->get('secret');
+                if ($secret != "") {
+                    $app->request->cookieValidationKey = $secret;
+                }
+            }
+
+            if ($app->request->cookieValidationKey == '') {
+                $app->requestcookieValidationKey = 'installer';
+            }
+        }
+
+        if (
+            defined('YII_ENV_TEST') && YII_ENV_TEST && $_SERVER['SCRIPT_FILENAME'] === 'index-test.php' && in_array(
+                $_SERVER['SCRIPT_NAME'],
+                ['/sw.js', '/offline.pwa.html', '/manifest.json'],
+                true,
+            )
+        ) {
+            $app->request->setScriptUrl('/index.php');
+        }
     }
 }

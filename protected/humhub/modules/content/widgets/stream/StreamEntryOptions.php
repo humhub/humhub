@@ -88,7 +88,7 @@ class StreamEntryOptions extends Model
             if (Yii::$app->request->isConsoleRequest) {
                 $this->viewContext = static::VIEW_CONTEXT_DEFAULT;
             } else {
-                $this->viewContext = Yii::$app->request->getViewContext() ?? static::VIEW_CONTEXT_DEFAULT;
+                $this->viewContext = Yii::$app->view->getRequestViewContext() ?? static::VIEW_CONTEXT_DEFAULT;
             }
         }
     }
