@@ -73,13 +73,6 @@ class Comment extends Widget
 
     private function renderComment(): string
     {
-        $deleteUrl = Url::to(['/comment/comment/delete',
-            'objectModel' => $this->comment->object_model, 'objectId' => $this->comment->object_id, 'id' => $this->comment->id]);
-        $editUrl = Url::to(['/comment/comment/edit',
-            'objectModel' => $this->comment->object_model, 'objectId' => $this->comment->object_id, 'id' => $this->comment->id]);
-        $loadUrl = Url::to(['/comment/comment/load',
-            'objectModel' => $this->comment->object_model, 'objectId' => $this->comment->object_id, 'id' => $this->comment->id]);
-
         return $this->render('comment', [
             'comment' => $this->comment,
             'user' => $this->comment->user,
@@ -88,11 +81,6 @@ class Comment extends Widget
         ]);
     }
 
-    /**
-     * Check if author of the Comment is blocked for the current User
-     *
-     * @return bool
-     */
     private function isBlockedAuthor(): bool
     {
         if ($this->showBlocked) {

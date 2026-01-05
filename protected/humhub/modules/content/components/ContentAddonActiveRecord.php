@@ -16,10 +16,7 @@ use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\models\Content;
 use humhub\modules\user\helpers\UserHelper;
 use humhub\modules\user\models\User;
-use Throwable;
-use Yii;
-use yii\base\Exception;
-use yii\base\InvalidConfigException;
+use yii\base\InvalidCallException;
 
 /**
  * ContentAddonActiveRecord is the base active record for content addons.
@@ -28,8 +25,7 @@ use yii\base\InvalidConfigException;
  * These are always belongs to a Content object.
  *
  * Mandatory fields:
- * - object_model
- * - object_id
+ * - content_id
  * - created_by
  * - created_at
  * - updated_by
@@ -37,11 +33,8 @@ use yii\base\InvalidConfigException;
  *
  * @property-read Content $content
  * @property-read User $user
- * @author Lucas Bartholemy <lucas@bartholemy.com>
- * @package humhub.components
- * @since 0.5
  */
-class ContentAddonActiveRecord extends ActiveRecord implements
+abstract class ContentAddonActiveRecord extends ActiveRecord implements
     ContentOwner,
     ViewableInterface,
     EditableInterface,
@@ -57,95 +50,34 @@ class ContentAddonActiveRecord extends ActiveRecord implements
      */
     protected $automaticContentFollowing = true;
 
-    /**
-     * Content object which this addon belongs to
-     *
-     * @var Content
-     */
-    private $_content;
 
-    /**
-     * Source object which this ContentAddon belongs to.
-     * ContentAddonActiveRecord or ContentActiveRecord Object.
-     *
-     * @var Mixed
-     */
-    private $_source;
-
-    /**
-     * Returns the content object to which this addon belongs to.
-     *
-     * @return Content Content AR which this Addon belongs to
-     */
-    public function getContent()
-    {
-        if ($this->_content != null) {
-            return $this->_content;
-        }
-
-        if ($this->source instanceof ContentActiveRecord) {
-            $this->_content = $this->source->content;
-        } elseif ($this->source instanceof ContentAddonActiveRecord) {
-            if ($this->source->source instanceof ContentActiveRecord) {
-                $this->_content = $this->source->source->content;
-            } elseif ($this->source->source->source) {
-                $this->_content = $this->source->source->source->content;
-            }
-        }
-
-        if ($this->_content == null) {
-            throw new Exception(Yii::t('base', 'Could not find content of addon!'));
-        }
-
-        return $this->_content;
-    }
-
-    /**
-     * Returns the source of this content addon.
-     *
-     * @return ContentAddonActiveRecord|ContentActiveRecord the model which this addon belongs to
-     */
-    public function getSource()
-    {
-        if ($this->_source != null) {
-            return $this->_source;
-        }
-
-        $className = $this->object_model;
-        $pk = $this->object_id;
-
-        if ($className == "") {
-            return null;
-        }
-
-        if (!class_exists($className)) {
-            Yii::error("Source class of content addon not found (" . $className . ") not found!");
-            return null;
-        }
-
-        $this->_source = $className::findOne(['id' => $pk]);
-        return $this->_source;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function beforeSave($insert)
     {
-        if ($insert && !$this->getContent()->getStateService()->isPublished()) {
+        if (!$this->content) {
+            throw new InvalidCallException('Could not save ContentAddonActiveRecord without content.');
+        }
+
+
+        if ($insert && !$this->content->getStateService()->isPublished()) {
             return false;
         }
 
         return parent::beforeSave($insert);
     }
 
-    /**
-     * Checks if the given / or current user can delete this content.
-     * Currently only the creator can remove.
-     *
-     * @param User|int|null $user the User (see UserHelper::getUserByParam())
-     * @return bool
-     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($this->automaticContentFollowing) {
+            $this->content->getPolymorphicRelation()->follow($this->created_by);
+        }
+
+        if ($this->updateContentStreamSort) {
+            $this->content->updateStreamSortTime();
+        }
+
+        parent::afterSave($insert, $changedAttributes);
+    }
+
     public function canDelete($user = null): bool
     {
         $user = UserHelper::getUserByParam($user);
@@ -156,42 +88,11 @@ class ContentAddonActiveRecord extends ActiveRecord implements
         return false;
     }
 
-    /**
-     * @deprecated Use canView() instead. It will be deleted since v1.17
-     */
-    public function canRead($user = null): bool
-    {
-        return $this->canView($user);
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function canView($user = null): bool
     {
         return $this->content->canView($user);
     }
 
-    /**
-     * Checks if this content addon can be changed
-     *
-     * @return bool
-     * @deprecated since 1.4
-     * @see static::canEdit()
-     */
-    public function canWrite($userId = "")
-    {
-        return $this->canEdit($userId);
-    }
-
-    /**
-     * Checks if this record can be edited
-     *
-     * @param User|int|null $user the User (see UserHelper::getUserByParam())
-     * @return bool
-     * @throws InvalidConfigException
-     * @since 1.4
-     */
     public function canEdit($user = null): bool
     {
         $user = UserHelper::getUserByParam($user);
@@ -207,71 +108,13 @@ class ContentAddonActiveRecord extends ActiveRecord implements
         return $user->canManageAllContent();
     }
 
-    /**
-     * Returns a title for this type of content.
-     * This method should be overwritten in the content implementation.
-     *
-     * @return string
-     */
-    public function getContentName()
-    {
-        return static::getObjectModel();
-    }
-
-    /**
-     * Returns a text preview of this content.
-     * This method should be overwritten in the content implementation.
-     *
-     * @return string
-     */
-    public function getContentDescription()
-    {
-        return "";
-    }
-
-    /**
-     * Validates
-     * @param type $attributes
-     * @param type $clearErrors
-     * @return type
-     */
-    public function validate($attributes = null, $clearErrors = true)
-    {
-        if ($this->source != null) {
-            if (!$this->source instanceof ContentAddonActiveRecord && !$this->source instanceof ContentActiveRecord) {
-                $this->addError(
-                    'object_model',
-                    Yii::t(
-                        'base',
-                        'Content Addon source must be instance of ContentActiveRecord or ContentAddonActiveRecord!',
-                    ),
-                );
-            }
-        }
-
-        return parent::validate($attributes, $clearErrors);
-    }
-
-    /**
-     * After saving content addon, mark underlying content as updated.
-     *
-     * @return bool
-     */
-    public function afterSave($insert, $changedAttributes)
-    {
-        if ($this->automaticContentFollowing) {
-            $this->content->getPolymorphicRelation()->follow($this->created_by);
-        }
-
-        if ($this->updateContentStreamSort) {
-            $this->getSource()->content->updateStreamSortTime();
-        }
-
-        parent::afterSave($insert, $changedAttributes);
-    }
-
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'created_by']);
+    }
+
+    public function getContent()
+    {
+        return $this->hasOne(Content::class, ['id' => 'content_id']);
     }
 }

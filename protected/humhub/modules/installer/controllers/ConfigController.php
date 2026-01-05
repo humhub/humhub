@@ -23,6 +23,7 @@ use humhub\modules\installer\forms\SecurityForm;
 use humhub\modules\installer\forms\UseCaseForm;
 use humhub\modules\installer\libs\InitialData;
 use humhub\modules\like\models\Like;
+use humhub\modules\like\services\LikeService;
 use humhub\modules\marketplace\Module;
 use humhub\modules\post\models\Post;
 use humhub\modules\queue\driver\Sync;
@@ -385,8 +386,7 @@ class ConfigController extends Controller
 
                 $comment = new Comment();
                 $comment->message = Yii::t("InstallerModule.base", "Nike – Just buy it. :wink:");
-                $comment->object_model = Post::class;
-                $comment->object_id = $post->getPrimaryKey();
+                $comment->content_id = $post->content->id;
                 $comment->save();
 
                 // Switch Identity
@@ -397,20 +397,12 @@ class ConfigController extends Controller
                     "InstallerModule.base",
                     "Calvin Klein – Between love and madness lies obsession.",
                 );
-                $comment2->object_model = Post::class;
-                $comment2->object_id = $post->getPrimaryKey();
+                $comment2->content_id = $post->content->id;
                 $comment2->save();
 
-                // Create Like Object
-                $like = new Like();
-                $like->object_model = Comment::class;
-                $like->object_id = $comment->getPrimaryKey();
-                $like->save();
 
-                $like = new Like();
-                $like->object_model = Post::class;
-                $like->object_id = $post->getPrimaryKey();
-                $like->save();
+                (new LikeService($comment))->like();
+                (new LikeService($post))->like();
 
                 // trigger install sample data event
                 $this->trigger(self::EVENT_INSTALL_SAMPLE_DATA);

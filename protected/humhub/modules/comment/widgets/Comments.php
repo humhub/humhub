@@ -2,11 +2,12 @@
 
 namespace humhub\modules\comment\widgets;
 
-use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Widget;
+use humhub\modules\comment\helpers\IdHelper;
 use humhub\modules\comment\models\Comment as CommentModel;
 use humhub\modules\comment\Module;
-use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\comment\services\CommentListService;
+use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use Yii;
@@ -28,10 +29,9 @@ class Comments extends Widget
     public const VIEW_MODE_COMPACT = 'compact';
     public const VIEW_MODE_FULL = 'full';
 
-    /**
-     * @var Comment|ContentActiveRecord
-     */
-    public $object;
+    public ?Content $content = null;
+
+    public ?CommentModel $parentComment = null;
 
     /**
      * @var StreamEntryOptions|null
@@ -55,6 +55,10 @@ class Comments extends Widget
     {
         parent::init();
 
+        if ($this->parentComment !== null) {
+            $this->content = $this->parentComment->content;
+        }
+
         $this->module = Yii::$app->getModule('comment');
     }
 
@@ -63,31 +67,33 @@ class Comments extends Widget
      */
     public function run()
     {
-        $objectModel = PolymorphicRelation::getObjectModel($this->object);
-        $objectId = $this->object->getPrimaryKey();
-        $currentCommentId = $this->getCurrentCommentId();
 
-        // Count all Comments
-        $commentCount = CommentModel::GetCommentCount($objectModel, $objectId);
+        $commentListService = new CommentListService($this->content, $this->parentComment);
+        $highlightCommentId = $this->getHighlightCommentId();
+
         $comments = [];
+        $commentCount = $commentListService->getCount();
         if ($commentCount !== 0) {
-            $comments = CommentModel::GetCommentsLimited($objectModel, $objectId, $this->limit, $currentCommentId);
+            $comments = $commentListService->getLimited($this->limit, $highlightCommentId);
         }
 
         $this->view->registerJsVar('comments_collapsed', $this->limit == 0);
 
         return $this->render('comments', [
-            'object' => $this->object,
+            'content' => $this->content,
+            'parentComment' => $this->parentComment,
             'comments' => $comments,
-            'currentCommentId' => $currentCommentId,
-            'id' => $this->object->getUniqueId(),
+            'highlightCommentId' => $highlightCommentId,
+            'id' => IdHelper::getId($this->content, $this->parentComment),
         ]);
     }
 
     private function isFullViewMode(): bool
     {
         return $this->viewMode === self::VIEW_MODE_FULL
-            || (($this->renderOptions instanceof StreamEntryOptions) && $this->renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTEXT_DETAIL));
+            || (($this->renderOptions instanceof StreamEntryOptions) && $this->renderOptions->isViewContext(
+                    WallStreamEntryOptions::VIEW_CONTEXT_DETAIL
+                ));
     }
 
     public function getLimit(): int
@@ -97,23 +103,25 @@ class Comments extends Widget
 
     public function getPageSize(): int
     {
-        return $this->isFullViewMode() ? $this->module->commentsBlockLoadSizeViewMode : $this->module->commentsBlockLoadSize;
+        return $this->isFullViewMode(
+        ) ? $this->module->commentsBlockLoadSizeViewMode : $this->module->commentsBlockLoadSize;
     }
 
-    protected function getCurrentCommentId(): ?int
+    protected function getHighlightCommentId(): ?int
     {
         $streamQuery = Yii::$app->request->getQueryParam('StreamQuery');
         if (empty($streamQuery['commentId'])) {
             return null;
         }
 
-        $currentCommentId = (int) $streamQuery['commentId'];
+        $currentCommentId = (int)$streamQuery['commentId'];
 
-        $currentComment = Yii::$app->runtimeCache->getOrSet('getCurrentComment' . $currentCommentId, fn() => CommentModel::findOne(['id' => $currentCommentId]));
+        $currentComment = Yii::$app->runtimeCache->getOrSet(
+            'getCurrentComment' . $currentCommentId,
+            fn() => CommentModel::findOne(['id' => $currentCommentId])
+        );
 
-        if (!$currentComment
-            || $currentComment->object_id !== $this->object?->id
-            || $currentComment->object_model !== $this->object::class) {
+        if (!$currentComment || $currentComment->parent_comment_id !== $this->parentComment?->id) {
             // The current comment is from another parent object
             return null;
         }

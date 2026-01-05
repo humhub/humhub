@@ -8,9 +8,9 @@
 
 namespace humhub\modules\like\notifications;
 
-use humhub\components\ActiveRecord;
 use humhub\helpers\Html;
 use humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\like\models\Like;
 use humhub\modules\notification\components\BaseNotification;
 use Yii;
 
@@ -100,13 +100,10 @@ class NewLike extends BaseNotification
         ]);
     }
 
-    /**
-     * The liked record
-     *
-     * @return ActiveRecord
-     */
     public function getLikedRecord()
     {
-        return $this->source->getSource();
+        /** @var Like $like */
+        $like = $this->source;
+        return (!empty($like->object_model)) ? $like->getPolymorphicRelation() : $like->content->getPolymorphicRelation();
     }
 }

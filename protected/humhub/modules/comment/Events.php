@@ -22,17 +22,12 @@ use yii\base\Event;
  */
 class Events extends Component
 {
-    /**
-     * On content deletion make sure to delete all its comments
-     *
-     * @param Event $event
-     */
-    public static function onContentDelete($event)
+    public static function onContentDelete(Event $event)
     {
-        /** @var Comment|ContentActiveRecord $sender */
+        /** @var ContentActiveRecord $sender */
         $sender = $event->sender;
 
-        foreach (Comment::find()->where(['object_model' => $sender::class, 'object_id' => $sender->getPrimaryKey()])->all() as $comment) {
+        foreach (Comment::find()->where(['content_id' => $sender->content->id])->all() as $comment) {
             $comment->delete();
         }
     }
@@ -91,11 +86,13 @@ class Events extends Component
             return;
         }
 
+        $content = $event->sender->object->content;
+
         /** @var Module $module */
         $module = Yii::$app->getModule('comment');
 
-        if ($module->canComment($event->sender->object)) {
-            $event->sender->addWidget(widgets\CommentLink::class, ['object' => $event->sender->object], ['sortOrder' => 10]);
+        if ($module->canComment($content)) {
+            $event->sender->addWidget(widgets\CommentLink::class, ['content' => $content], ['sortOrder' => 10]);
         }
     }
 
@@ -110,7 +107,7 @@ class Events extends Component
         $wallEntryAddons = $event->sender;
 
         $wallEntryAddons->addWidget(widgets\Comments::class, [
-            'object' => $wallEntryAddons->object,
+            'content' => $wallEntryAddons->object->content,
             'renderOptions' => $wallEntryAddons->renderOptions,
         ], ['sortOrder' => 30]);
     }

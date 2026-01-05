@@ -1119,4 +1119,5 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     {
         $this->getStateService()->set($state, $options);
     }
+
 }

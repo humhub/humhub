@@ -1,8 +1,7 @@
 <?php
 
-namespace humhub\modules\comment\models\forms;
+namespace humhub\modules\comment\models;
 
-use humhub\modules\comment\models\Comment;
 use Yii;
 
 /**
