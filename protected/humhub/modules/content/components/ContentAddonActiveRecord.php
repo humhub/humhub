@@ -19,15 +19,13 @@ use humhub\modules\user\models\User;
 use yii\base\InvalidCallException;
 
 /**
- * ContentAddonActiveRecord is the base active record for content addons.
+ * ContentAddonActiveRecord
  *
- * Content addons are content types like Comments, Files or Likes.
- * These are always belongs to a Content object.
+ * Content addons are content types like Comments or Likes.
+ * These are always belongs to a Content object and uses the permissions and states of the assigned Content object.
  *
- * Mandatory fields:
+ * Mandatory model attributes:
  * - content_id
- * - created_by
- * - created_at
  * - updated_by
  * - updated_at
  *
@@ -51,24 +49,23 @@ abstract class ContentAddonActiveRecord extends ActiveRecord implements
     protected $automaticContentFollowing = true;
 
 
-    public function beforeSave($insert)
+    public function beforeSave($insert): bool
     {
         if (!$this->content) {
             throw new InvalidCallException('Could not save ContentAddonActiveRecord without content.');
         }
 
-
         if ($insert && !$this->content->getStateService()->isPublished()) {
-            return false;
+            throw new InvalidCallException('Could not save ContentAddonActiveRecord for unpublished state.');
         }
 
         return parent::beforeSave($insert);
     }
 
-    public function afterSave($insert, $changedAttributes)
+    public function afterSave($insert, $changedAttributes): void
     {
         if ($this->automaticContentFollowing) {
-            $this->content->getPolymorphicRelation()->follow($this->created_by);
+            $this->content->model->follow($this->created_by);
         }
 
         if ($this->updateContentStreamSort) {
@@ -106,11 +103,6 @@ abstract class ContentAddonActiveRecord extends ActiveRecord implements
         }
 
         return $user->canManageAllContent();
-    }
-
-    public function getUser()
-    {
-        return $this->hasOne(User::class, ['id' => 'created_by']);
     }
 
     public function getContent()

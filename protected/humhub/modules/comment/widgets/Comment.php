@@ -75,7 +75,7 @@ class Comment extends Widget
     {
         return $this->render('comment', [
             'comment' => $this->comment,
-            'user' => $this->comment->user,
+            'user' => $this->comment->createdBy,
             'createdAt' => $this->comment->created_at,
             'class' => trim($this->defaultClass . ' ' . $this->additionalClass),
         ]);

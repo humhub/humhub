@@ -62,7 +62,7 @@ class Comment extends ContentAddonActiveRecord
         parent::afterDelete();
     }
 
-    public function afterSave($insert, $changedAttributes)
+    public function afterSave($insert, $changedAttributes): void
     {
         // Update updated_at etc..
         $this->refresh();
@@ -82,7 +82,7 @@ class Comment extends ContentAddonActiveRecord
                 }, $mentionedUsers)]);
             }
 
-            NewCommentNotification::instance()->from($this->user)->about($this)->sendBulk($followerQuery);
+            NewCommentNotification::instance()->from($this->createdBy)->about($this)->sendBulk($followerQuery);
             NewCommentActivity::instance()->about($this)->create();
 
             if ($this->content->container) {
