@@ -23,6 +23,8 @@ class m260105_094333_like_contentid extends Migration
         $this->safeAddForeignKey('fk_like_content', 'like', 'content_id', 'content', 'id', 'RESTRICT', 'CASCADE');
         $this->safeDropForeignKey('fk_like-target_user_id', 'like');
         $this->safeDropColumn('like', 'target_user_id');
+        $this->safeDropColumn('like', 'updated_by');
+        $this->safeDropColumn('like', 'updated_at');
     }
 
     /**

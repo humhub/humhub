@@ -6,10 +6,10 @@ use humhub\modules\comment\activities\NewComment as NewCommentActivity;
 use humhub\modules\comment\live\NewComment as NewCommentLive;
 use humhub\modules\comment\notifications\NewComment as NewCommentNotification;
 use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\space\models\Space;
-use humhub\modules\user\helpers\UserHelper;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\helpers\Url;
@@ -30,7 +30,7 @@ use yii\helpers\Url;
  *
  * @since 0.5
  */
-class Comment extends ContentAddonActiveRecord
+class Comment extends ContentAddonActiveRecord implements ContentOwner
 {
     public $fileList;
 
@@ -77,9 +77,13 @@ class Comment extends ContentAddonActiveRecord
 
             // Remove mentioned users from followers query to avoid double notification
             if (count($mentionedUsers) !== 0) {
-                $followerQuery->andWhere(['NOT IN', 'user.id', array_map(function (User $user) {
-                    return $user->id;
-                }, $mentionedUsers)]);
+                $followerQuery->andWhere([
+                    'NOT IN',
+                    'user.id',
+                    array_map(function (User $user) {
+                        return $user->id;
+                    }, $mentionedUsers)
+                ]);
             }
 
             NewCommentNotification::instance()->from($this->createdBy)->about($this)->sendBulk($followerQuery);
@@ -160,5 +164,14 @@ class Comment extends ContentAddonActiveRecord
     public function getParentComment(): \yii\db\ActiveQuery
     {
         return $this->hasOne(Comment::class, ['id' => 'parent_comment_id']);
+    }
+
+    public function getContentOwnerObject(): ContentOwner
+    {
+        if ($this->parentComment) {
+            return $this->parentComment;
+        }
+
+        return $this->content;
     }
 }

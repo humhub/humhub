@@ -4,7 +4,7 @@ namespace humhub\modules\like\models;
 
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\components\ContentAddonActiveRecord;
-use humhub\modules\user\behaviors\Followable;
+use humhub\modules\content\interfaces\ContentOwner;
 use Yii;
 use yii\db\ActiveRecord;
 
@@ -12,14 +12,13 @@ use yii\db\ActiveRecord;
  * This is the model class for table "like".
  *
  * The followings are the available columns in table 'like':
+ *
  * @property int $id
  * @property int $content_id
  * @property string $object_model
  * @property int $object_id
  * @property string $created_at
  * @property int $created_by
- * @property string $updated_at
- * @property int $updated_by
  *
  * @mixin PolymorphicRelation
  * @since 0.5
@@ -51,18 +50,15 @@ class Like extends ContentAddonActiveRecord
         parent::afterSave($insert, $changedAttributes);
     }
 
-    public function getContentName()
+    public function getContentOwnerObject(): ContentOwner
     {
-        // TODO: Implement getContentName() method.
+        // If the relation of this "Like" is e.g. bound to a "Comment" which implements the ContentOwner interface
+        // return this. Otherwise, return "Content" as fallback.
+        if ($this->polymorphicRelation instanceof ContentOwner) {
+            return $this->polymorphicRelation;
+        }
+
+        return $this->content;
     }
 
-    public function getContentDescription()
-    {
-        // TODO: Implement getContentDescription() method.
-    }
-
-    public function getSource()
-    {
-        return null;
-    }
 }

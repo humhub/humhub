@@ -1,22 +1,15 @@
 <?php
 
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
-
 namespace humhub\modules\content\components;
 
 use humhub\components\ActiveRecord;
 use humhub\interfaces\DeletableInterface;
 use humhub\interfaces\EditableInterface;
 use humhub\interfaces\ViewableInterface;
-use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\models\Content;
 use humhub\modules\user\helpers\UserHelper;
-use humhub\modules\user\models\User;
 use yii\base\InvalidCallException;
+use yii\db\ActiveQuery;
 
 /**
  * ContentAddonActiveRecord
@@ -30,10 +23,8 @@ use yii\base\InvalidCallException;
  * - updated_at
  *
  * @property-read Content $content
- * @property-read User $user
  */
 abstract class ContentAddonActiveRecord extends ActiveRecord implements
-    ContentOwner,
     ViewableInterface,
     EditableInterface,
     DeletableInterface
@@ -105,7 +96,7 @@ abstract class ContentAddonActiveRecord extends ActiveRecord implements
         return $user->canManageAllContent();
     }
 
-    public function getContent()
+    public function getContent(): ActiveQuery
     {
         return $this->hasOne(Content::class, ['id' => 'content_id']);
     }

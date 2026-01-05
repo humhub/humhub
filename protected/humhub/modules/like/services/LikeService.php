@@ -19,7 +19,7 @@ class LikeService
 {
     private Content $content;
     private ?ContentAddonActiveRecord $contentAddon = null;
-    private User $user;
+    private ?User $user;
     private ?int $_count = null;
     private ?bool $_hasLiked = null;
     private ?string $_titleText = null;
@@ -33,13 +33,13 @@ class LikeService
         }
 
         if ($user === null) {
-            $this->user = Yii::$app->getUser()->getIdentity();
+            $this->user = Yii::$app->getUser()->identity ?? null;
         }
     }
 
     public function canLike(): bool
     {
-        if (!(Yii::$app->getModule('like'))->isEnabled) {
+        if (!(Yii::$app->getModule('like'))->isEnabled || !$this->user) {
             return false;
         }
 
@@ -56,6 +56,10 @@ class LikeService
 
     public function hasLiked(): bool
     {
+        if (!$this->user) {
+            return false;
+        }
+
         if ($this->_hasLiked === null) {
             $query = Like::find();
             $this->addScopeQueryCondition($query);
@@ -69,6 +73,10 @@ class LikeService
 
     public function like(): bool
     {
+        if (!$this->user) {
+            return false;
+        }
+
         $like = $this->getCurrentLikeRecord();
 
         if (!$like) {
@@ -100,6 +108,10 @@ class LikeService
 
     public function unlike(): bool
     {
+        if (!$this->user) {
+            return false;
+        }
+
         $like = $this->getCurrentLikeRecord();
         if ($like) {
             $like->delete();
@@ -112,6 +124,10 @@ class LikeService
 
     private function getCurrentLikeRecord(): ?Like
     {
+        if (!$this->user) {
+            return null;
+        }
+
         $query = Like::find();
         $query->andWhere(['created_by' => $this->user->id]);
         $this->addScopeQueryCondition($query);
@@ -139,11 +155,10 @@ class LikeService
         return $query;
     }
 
-
     public function generateLikeTitleText(int $maxUser = 5): string
     {
         if ($this->_titleText === null) {
-            $otherUsers = $this->getUserQuery()->andWhere(['!=', 'like.created_by', $this->user->id])
+            $otherUsers = $this->getUserQuery()->andWhere(['!=', 'like.created_by', $this->user->id ?? 0])
                 ->limit($maxUser)
                 ->all();
 
@@ -186,7 +201,7 @@ class LikeService
 
     private function getCacheKey(): string
     {
-        return sprintf('like.%d.%d.%d', $this->content->id, $this->contentAddon->id, $this->user->id);
+        return sprintf('like.%d.%d.%d', $this->content->id, $this->contentAddon->id, $this->user->id ?? 0);
     }
 
     private function reset(): void
