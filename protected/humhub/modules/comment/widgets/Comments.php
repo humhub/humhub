@@ -20,9 +20,6 @@ use Yii;
  *
  * @property-read int $limit
  * @property-read int $pageSize
- *
- * @package humhub.modules_core.comment
- * @since 0.5
  */
 class Comments extends Widget
 {
@@ -33,24 +30,12 @@ class Comments extends Widget
 
     public ?CommentModel $parentComment = null;
 
-    /**
-     * @var StreamEntryOptions|null
-     */
-    public $renderOptions;
+    public ?StreamEntryOptions $renderOptions = null;
 
-    /**
-     * @var Module
-     */
-    public $module;
+    public Module $module;
 
-    /**
-     * @var string
-     */
-    public $viewMode = self::VIEW_MODE_COMPACT;
+    public string $viewMode = self::VIEW_MODE_COMPACT;
 
-    /**
-     * @inheritdoc
-     */
     public function init()
     {
         parent::init();
@@ -62,20 +47,10 @@ class Comments extends Widget
         $this->module = Yii::$app->getModule('comment');
     }
 
-    /**
-     * Executes the widget.
-     */
     public function run()
     {
-
         $commentListService = new CommentListService($this->content, $this->parentComment);
-        $highlightCommentId = $this->getHighlightCommentId();
-
-        $comments = [];
-        $commentCount = $commentListService->getCount();
-        if ($commentCount !== 0) {
-            $comments = $commentListService->getLimited($this->limit, $highlightCommentId);
-        }
+        $comments = $commentListService->getLimited($this->limit, $this->getHighlightCommentId(true));
 
         $this->view->registerJsVar('comments_collapsed', $this->limit == 0);
 
@@ -83,7 +58,7 @@ class Comments extends Widget
             'content' => $this->content,
             'parentComment' => $this->parentComment,
             'comments' => $comments,
-            'highlightCommentId' => $highlightCommentId,
+            'highlightCommentId' => $this->getHighlightCommentId(false),
             'id' => IdHelper::getId($this->content, $this->parentComment),
         ]);
     }
@@ -107,7 +82,7 @@ class Comments extends Widget
         ) ? $this->module->commentsBlockLoadSizeViewMode : $this->module->commentsBlockLoadSize;
     }
 
-    protected function getHighlightCommentId(): ?int
+    protected function getHighlightCommentId($returnParentId = false): ?int
     {
         $streamQuery = Yii::$app->request->getQueryParam('StreamQuery');
         if (empty($streamQuery['commentId'])) {
@@ -116,13 +91,19 @@ class Comments extends Widget
 
         $currentCommentId = (int)$streamQuery['commentId'];
 
-        $currentComment = Yii::$app->runtimeCache->getOrSet(
+        $highlightedComment = Yii::$app->runtimeCache->getOrSet(
             'getCurrentComment' . $currentCommentId,
-            fn() => CommentModel::findOne(['id' => $currentCommentId])
+            fn() => CommentModel::findOne(['id' => $currentCommentId, 'content_id' => $this->content->id])
         );
 
-        if (!$currentComment || $currentComment->parent_comment_id !== $this->parentComment?->id) {
-            // The current comment is from another parent object
+        if (!$highlightedComment) {
+            Yii::warning('Could not load highlight comment id: ' . $currentCommentId, 'comment');
+            return null;
+        } elseif ($returnParentId && !empty($highlightedComment->parent_comment_id) && empty($this->parentComment)) {
+            // Highlighted comment has parent, but we're in root context. So return 'parentId' as highlighted instead.
+            return $highlightedComment->parent_comment_id;
+        } elseif ($highlightedComment->parent_comment_id !== $this->parentComment?->id) {
+            // Skip highlight, highlighted comment doesn't belong to this level.
             return null;
         }
 
