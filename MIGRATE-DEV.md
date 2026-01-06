@@ -1,6 +1,16 @@
 Module Migration Guide
 ======================
 
+Version 1.19 (Unreleased)
+-------------------------
+
+- Refactored `humhub\modules\content\components\ContentAddonActiveRecord`
+- Removed `humhub\modules\content\components\ContentAddonController`
+- Refactored `comment` module: Now `comment.content_id` anD `comment.parent_comment_id` is used for relations
+- Refactored 'like' module: Introduced `LikeService` and added `like.content_id`
+- 
+
+
 Version 1.18 (Unreleased)
 ------------
 Updated minimum required PHP version to 8.2.
