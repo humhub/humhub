@@ -88,8 +88,25 @@ humhub.module('i18n', function(module, require, $) {
         return compileMessage(template).format(params);
     };
 
+    /**
+     * Preloads translations for given categories and returns a promise.
+     * This should be called in module init() to ensure translations are loaded.
+     *
+     * @param {string|string[]} categories - Single category or array of categories to preload
+     * @returns {Promise} Promise that resolves when all categories are loaded
+     */
+    var preload = function(categories) {
+        if (typeof categories === 'string') {
+            categories = [categories];
+        }
+        return Promise.all(categories.map(function(cat) {
+            return loadTranslations(cat);
+        }));
+    };
+
     module.export({
         t: translate,
-        loadTranslations: loadTranslations
+        loadTranslations: loadTranslations,
+        preload: preload
     });
 });
