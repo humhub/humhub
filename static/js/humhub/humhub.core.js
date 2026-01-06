@@ -629,8 +629,6 @@ var humhub = humhub || (function ($) {
                 if (result && typeof result.then === 'function') {
                     return result.then(function() {
                         event.trigger(module.id.replace(/\./g, ':') + ':afterInit', module);
-                        // compatibility with beta 1.2 beta release
-                        event.trigger(module.id.replace('.', ':') + ':afterInit', module);
                         event.trigger('humhub:afterInitModule', module);
                         log.debug('Module initialized: ' + module.id);
                     }).catch(function(err) {
@@ -639,9 +637,6 @@ var humhub = humhub || (function ($) {
                 }
 
                 event.trigger(module.id.replace(/\./g, ':') + ':afterInit', module);
-
-                // compatibility with beta 1.2 beta release
-                event.trigger(module.id.replace('.', ':') + ':afterInit', module);
             } catch (err) {
                 log.error('Could not initialize module: ' + module.id, err);
             }
