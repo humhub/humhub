@@ -33,7 +33,7 @@ use yii\web\View;
 
 <?= $form->field($model, 'showNameInsteadOfLogo')->checkbox() ?>
 
-<?= $form->field($model, 'transportType')->dropDownList($model->getTransportTypes(), ['readonly' => $settings->isFixed('mailerTransportType')]) ?>
+<?= $form->field($model, 'transportType')->dropDownList($model->getTransportTypes(), ['disabled' => $settings->isFixed('mailerTransportType')]) ?>
 
 <div id="smtpOptions">
 
