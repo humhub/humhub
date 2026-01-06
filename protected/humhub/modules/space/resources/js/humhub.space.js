@@ -77,7 +77,10 @@ humhub.module('space', function (module, require, $) {
             module.options = undefined;
         }
 
-        console.log('test', i18n.t('SpaceModule.base', 'Hello {name}', {name: 'World'}))
+        // Preload translations before using them
+        return i18n.preload('SpaceModule.base').then(function() {
+            console.log('test', i18n.t('SpaceModule.base', 'Hello {name}', {name: 'World'}))
+        });
     };
 
     var requestMembershipSend = function (event) {
