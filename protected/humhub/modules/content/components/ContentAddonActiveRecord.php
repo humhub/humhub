@@ -6,6 +6,7 @@ use humhub\components\ActiveRecord;
 use humhub\interfaces\DeletableInterface;
 use humhub\interfaces\EditableInterface;
 use humhub\interfaces\ViewableInterface;
+use humhub\modules\content\interfaces\ContentProvider;
 use humhub\modules\content\models\Content;
 use humhub\modules\user\helpers\UserHelper;
 use yii\base\InvalidCallException;
@@ -27,7 +28,8 @@ use yii\db\ActiveQuery;
 abstract class ContentAddonActiveRecord extends ActiveRecord implements
     ViewableInterface,
     EditableInterface,
-    DeletableInterface
+    DeletableInterface,
+    ContentProvider
 {
     /**
      * @var bool also update underlying contents last update stream sorting

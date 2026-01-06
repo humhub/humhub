@@ -2,7 +2,7 @@
 
 namespace humhub\modules\like\widgets;
 
-use humhub\components\behaviors\PolymorphicRelation;
+use humhub\models\RecordMap;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\like\services\LikeService;
@@ -31,27 +31,10 @@ class LikeLink extends Widget
         return $this->render('likeLink', [
             'likeCount' => $this->likeService->getCount(),
             'currentUserLiked' => $this->likeService->hasLiked(),
-            'id' => $this->object->getUniqueId(),
-            'likeUrl' => Url::to(
-                [
-                    '/like/like/like',
-                    'contentModel' => PolymorphicRelation::getObjectModel($this->object),
-                    'contentId' => $this->object->id
-                ]
-            ),
-            'unlikeUrl' => Url::to(
-                [
-                    '/like/like/unlike',
-                    'contentModel' => PolymorphicRelation::getObjectModel($this->object),
-                    'contentId' => $this->object->id
-                ]
-            ),
-            'userListUrl' => Url::to(
-                [
-                    '/like/like/user-list',
-                    'contentModel' => PolymorphicRelation::getObjectModel($this->object),
-                    'contentId' => $this->object->getPrimaryKey()
-                ]
+            'id' => 'like_' . RecordMap::getId($this->object),
+            'likeUrl' => Url::to(['/like/like/like', 'recordId' => RecordMap::getId($this->object)]),
+            'unlikeUrl' => Url::to(['/like/like/unlike', 'recordId' => RecordMap::getId($this->object)]),
+            'userListUrl' => Url::to(['/like/like/user-list', 'recordId' => RecordMap::getId($this->object)]
             ),
             'title' => $this->likeService->generateLikeTitleText(),
         ]);

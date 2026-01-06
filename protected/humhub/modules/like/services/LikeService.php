@@ -2,8 +2,9 @@
 
 namespace humhub\modules\like\services;
 
-use humhub\modules\content\components\ContentActiveRecord;
+use humhub\models\RecordMap;
 use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\content\interfaces\ContentProvider;
 use humhub\modules\content\models\Content;
 use humhub\modules\like\activities\Liked as LikedActivity;
 use humhub\modules\like\models\Like;
@@ -25,9 +26,10 @@ class LikeService
     private ?string $_titleText = null;
 
 
-    public function __construct(ContentActiveRecord|ContentAddonActiveRecord $object, ?User $user = null)
+    public function __construct(ContentProvider $object, ?User $user = null)
     {
         $this->content = $object->content;
+
         if ($object instanceof ContentAddonActiveRecord) {
             $this->contentAddon = $object;
         }
@@ -83,11 +85,9 @@ class LikeService
             $record = new Like();
             $record->content_id = $this->content->id;
             if ($this->contentAddon) {
-                $record->object_model = $this->contentAddon::class;
-                $record->object_id = $this->contentAddon->id;
+                $record->content_addon_record_id = RecordMap::getId($this->contentAddon);
             } else {
-                $record->object_model = new Expression('NULL');
-                $record->object_id = new Expression('NULL');
+                $record->content_addon_record_id = new Expression('NULL');
             }
 
             if ($record->save()) {
@@ -191,11 +191,9 @@ class LikeService
         $query->andWhere(['like.content_id' => $this->content->id]);
 
         if ($this->contentAddon) {
-            $query->andWhere(
-                ['like.object_model' => $this->contentAddon::class, 'like.object_id' => $this->contentAddon->id]
-            );
+            $query->andWhere(['like.content_addon_record_id' => RecordMap::getId($this->contentAddon)]);
         } else {
-            $query->andWhere('like.object_model IS NULL and like.object_id IS NULL');
+            $query->andWhere('like.content_addon_record_id IS NULL');
         }
     }
 

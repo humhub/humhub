@@ -1,27 +1,16 @@
 <?php
 
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
-
 namespace humhub\modules\like;
 
 use humhub\components\ActiveRecord;
-use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Event;
+use humhub\models\RecordMap;
 use humhub\modules\like\models\Like;
 use Throwable;
 use Yii;
 use yii\base\BaseObject;
 use yii\db\StaleObjectException;
 
-/**
- * Events provides callbacks to handle events.
- *
- * @author luke
- */
 class Events extends BaseObject
 {
     /**
@@ -55,7 +44,7 @@ class Events extends BaseObject
         /** @var ActiveRecord $record */
         $record = $event->sender;
         if ($record->hasAttribute('id')) {
-            foreach (Like::findAll(['object_id' => $record->id, 'object_model' => PolymorphicRelation::getObjectModel($record)]) as $like) {
+            foreach (Like::findAll(['content_addon_record_id' => RecordMap::getId($record)]) as $like) {
                 $like->delete();
             }
         }

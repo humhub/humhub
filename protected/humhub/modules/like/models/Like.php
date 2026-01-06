@@ -2,11 +2,10 @@
 
 namespace humhub\modules\like\models;
 
-use humhub\components\behaviors\PolymorphicRelation;
+use humhub\models\RecordMap;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "like".
@@ -15,13 +14,9 @@ use yii\db\ActiveRecord;
  *
  * @property int $id
  * @property int $content_id
- * @property string $object_model
- * @property int $object_id
+ * @property int $content_addon_record_id
  * @property string $created_at
  * @property int $created_by
- *
- * @mixin PolymorphicRelation
- * @since 0.5
  */
 class Like extends ContentAddonActiveRecord
 {
@@ -32,18 +27,6 @@ class Like extends ContentAddonActiveRecord
         return 'like';
     }
 
-    public function behaviors()
-    {
-        return [
-            [
-                'class' => PolymorphicRelation::class,
-                'mustBeInstanceOf' => [
-                    ActiveRecord::class,
-                ],
-            ],
-        ];
-    }
-
     public function afterSave($insert, $changedAttributes): void
     {
         $this->automaticContentFollowing = Yii::$app->getModule('like')->autoFollowLikedContent;
@@ -52,13 +35,12 @@ class Like extends ContentAddonActiveRecord
 
     public function getContentOwnerObject(): ContentOwner
     {
-        // If the relation of this "Like" is e.g. bound to a "Comment" which implements the ContentOwner interface
-        // return this. Otherwise, return "Content" as fallback.
-        if ($this->polymorphicRelation instanceof ContentOwner) {
-            return $this->polymorphicRelation;
+        $contentAddon = null;
+        if (!empty($this->content_addon_record_id)) {
+            $contentAddon = RecordMap::getById($this->content_addon_record_id, ContentOwner::class);
         }
 
-        return $this->content;
+        return $contentAddon ?? $this->content;
     }
 
 }

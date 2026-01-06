@@ -4,12 +4,11 @@ namespace humhub\modules\like\controllers;
 
 use humhub\components\behaviors\AccessControl;
 use humhub\components\Controller;
-use humhub\helpers\DataTypeHelper;
-use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\models\RecordMap;
+use humhub\modules\content\interfaces\ContentProvider;
 use humhub\modules\like\services\LikeService;
-use Yii;
 use humhub\modules\user\widgets\UserListBox;
+use Yii;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 
@@ -17,18 +16,10 @@ class LikeController extends Controller
 {
     private LikeService $likeService;
 
-    public function beforeAction($action)
+    public function beforeAction($action): bool
     {
-        $modelClass = Yii::$app->request->get('contentModel');
-
-        /** @var ContentAddonActiveRecord|ContentActiveRecord $modelClass */
-        $modelClass = DataTypeHelper::matchClassType(
-            $modelClass,
-            [ContentAddonActiveRecord::class, ContentActiveRecord::class],
-            true,
-        );
-
-        $target = $modelClass::findOne(['id' => (int)Yii::$app->request->get('contentId')]);
+        $recordId = (int)Yii::$app->request->get('recordId');
+        $target = RecordMap::getById($recordId, ContentProvider::class);
 
         if (!$target) {
             throw new NotFoundHttpException();
@@ -39,7 +30,6 @@ class LikeController extends Controller
         }
 
         $this->likeService = new LikeService($target);
-
         return parent::beforeAction($action);
     }
 
