@@ -28,18 +28,22 @@ class RecordMap extends ActiveRecord
             throw new Exception('Could  not getID for new Record!');
         }
 
-        // ToDo: Check Primary Key is 'int', otherwise throw error
-        $record = static::findOne(['model' => $ar::class, 'pk' => (int)$ar->getPrimaryKey()]);
-        if ($record) {
+        return Yii::$app->runtimeCache->getOrSet(
+            'rm_' . $ar::class . $ar->getPrimaryKey(), function () use ($ar) {
+
+            // ToDo: Check Primary Key is 'int', otherwise throw error
+            $record = static::findOne(['model' => $ar::class, 'pk' => (int)$ar->getPrimaryKey()]);
+            if ($record) {
+                return $record->id;
+            }
+
+            $record = new static;
+            $record->model = $ar::class;
+            $record->pk = (int)$ar->getPrimaryKey();
+            $record->save();
+
             return $record->id;
-        }
-
-        $record = new static;
-        $record->model = $ar::class;
-        $record->pk = (int)$ar->getPrimaryKey();
-        $record->save();
-
-        return $record->id;
+        });
     }
 
     /**
@@ -49,20 +53,33 @@ class RecordMap extends ActiveRecord
      */
     public static function getById(int $recordId, string $classType)
     {
-        return Yii::$app->runtimeCache->getOrSet('rm_'.$recordId.$classType, function () use ($recordId, $classType) {
-            $record = static::findOne(['id' => $recordId]);
+        return Yii::$app->runtimeCache->getOrSet(
+            'rm_' . $recordId . $classType,
+            function () use ($recordId, $classType) {
+                $record = static::findOne(['id' => $recordId]);
 
-            if (!DataTypeHelper::isClassType($record->model, $classType)) {
-                Yii::warning(
-                    'Invalid class type for record id ' . $recordId . ' Got: ' . $record->model . ' . Expected: ' . $classType
-                );
-                return null;
+                if (!DataTypeHelper::isClassType($record->model, $classType)) {
+                    Yii::warning(
+                        'Invalid class type for record id ' . $recordId . ' Got: ' . $record->model . ' . Expected: ' . $classType
+                    );
+                    return null;
+                }
+
+                /** @var ActiveRecord $model */
+                $model = $record->model;
+
+                return $model::findOne(['id' => $record->pk]);
             }
+        );
+    }
 
-            /** @var ActiveRecord $model */
-            $model = $record->model;
+    public static function hasId(ActiveRecord $record): bool
+    {
+        $record = static::findOne(['model' => $record::class, 'pk' => (int)$record->getPrimaryKey()]);
+        if ($record) {
+            return true;
+        }
 
-            return $model::findOne(['id' => $record->pk]);
-        });
+        return false;
     }
 }

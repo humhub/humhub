@@ -32,6 +32,8 @@ use yii\helpers\Url;
  */
 class Comment extends ContentAddonActiveRecord implements ContentOwner
 {
+    public ?int $child_count = null;
+
     public $fileList;
 
     public static function tableName()
@@ -173,5 +175,12 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         }
 
         return $this->content;
+    }
+
+    public function getChildCount() : int {
+        if ($this->child_count === null) {
+            $this->child_count = Comment::find()->andWhere(['parent_comment_id' => $this->id])->count();
+        }
+        return $this->child_count;
     }
 }

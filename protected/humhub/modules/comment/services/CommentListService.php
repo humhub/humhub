@@ -44,10 +44,7 @@ class CommentListService
             $highlightCommentId = null;
         }
 
-        $query = Comment::find();
-        $query->limit($limit);
-        $query->orderBy('created_at DESC, id DESC');
-        $this->addScopeQueryCondition($query);
+        $query = $this->getQuery()->limit($limit);
 
         // Force a specific comment in the results
         if ($highlightCommentId !== null) {
@@ -68,8 +65,20 @@ class CommentListService
         return array_reverse($query->all());
     }
 
+    /**
+     * @return ActiveQuery<Comment>
+     */
+    public function getQuery() : ActiveQuery {
+        $query = Comment::find();
+        $this->addScopeQueryCondition($query);
+        return $query;
+    }
+
     private function addScopeQueryCondition(ActiveQuery $query): void
     {
+        $query->addSelect('*, (select count(*) from comment sc where sc.parent_comment_id=comment.id) as child_count');
+        $query->orderBy('created_at DESC, id DESC');
+
         $query->andWhere(['content_id' => $this->content->id]);
 
         if ($this->parentComment) {
@@ -81,9 +90,10 @@ class CommentListService
 
     private function getComment($id): ?Comment
     {
-        $query = Comment::find()->where(['id' => $id]);
+        $query = Comment::find();
         $this->addScopeQueryCondition($query);
-        return $query->one();
+
+        return $query->andWhere(['id' => $id])->one();
     }
 
     public function getSiblings(int $commentId, int $limit = 5, string $sortOrder = self::LIST_DIR_PREV): array

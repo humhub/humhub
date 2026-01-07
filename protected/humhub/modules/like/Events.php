@@ -43,7 +43,8 @@ class Events extends BaseObject
     {
         /** @var ActiveRecord $record */
         $record = $event->sender;
-        if ($record->hasAttribute('id')) {
+
+        if (RecordMap::hasId($record)) {
             foreach (Like::findAll(['content_addon_record_id' => RecordMap::getId($record)]) as $like) {
                 $like->delete();
             }
