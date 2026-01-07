@@ -68,7 +68,7 @@ class Alert extends \yii\bootstrap5\Alert implements \Stringable
     /**
      * {@inheritdoc}
      */
-    public function init()
+    public function init(): void
     {
         if ($this->useBeginEndMethod) {
             parent::init();
@@ -85,23 +85,21 @@ class Alert extends \yii\bootstrap5\Alert implements \Stringable
     /**
      * {@inheritdoc}
      */
-    public function run()
+    public function run(): string
     {
         if ($this->useBeginEndMethod) {
-            parent::run();
-            return;
+            return parent::run();
         }
 
         if ($this->icon) {
             $this->body = $this->icon . ' ' . $this->body;
         }
 
-        echo
-            Html::beginTag('div', $this->options) . "\n"
+        $this->registerPlugin('alert');
+
+        return  Html::beginTag('div', $this->options) . "\n"
             . $this->renderBodyEnd() . "\n"
             . Html::endTag('div');
-
-        $this->registerPlugin('alert');
     }
 
     /**

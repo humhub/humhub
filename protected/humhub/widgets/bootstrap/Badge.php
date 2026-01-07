@@ -42,7 +42,7 @@ class Badge extends Widget
      * If you override this method, make sure you call the parent implementation first.
      * @throws InvalidConfigException
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
         $this->clientOptions = [];
