@@ -11,6 +11,8 @@ use yii\web\View;
 /* @var $model MailingSettingsForm */
 /* @var SettingsManager $settings */
 
+$mailerTransportTypeIsFixed = $settings->isFixed('mailerTransportType');
+
 ?>
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
 
@@ -33,7 +35,7 @@ use yii\web\View;
 
 <?= $form->field($model, 'showNameInsteadOfLogo')->checkbox() ?>
 
-<?= $form->field($model, 'transportType')->dropDownList($model->getTransportTypes(), ['disabled' => $settings->isFixed('mailerTransportType')]) ?>
+<?= $form->field($model, 'transportType')->dropDownList($model->getTransportTypes(), ['disabled' => $mailerTransportTypeIsFixed, 'readonly' => $mailerTransportTypeIsFixed]) ?>
 
 <div id="smtpOptions">
 
