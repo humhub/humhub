@@ -96,8 +96,8 @@ class Tabs extends \yii\bootstrap5\Tabs
     /**
      * Checks if the current route contains the given route parts $modelId, $controllerId, §actionId
      * @param null $moduleId
-     * @param null $controller
-     * @param null $action
+     * @param null $controllerId
+     * @param null $actionId
      * @return bool
      */
     public function isCurrentRoute($moduleId = null, $controllerId = null, $actionId = null)
