@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0f76f1f6c81058cd857a4e6d8ed586d6",
+    "content-hash": "beec44e7f346d9b46c6afae7319d21f6",
     "packages": [
         {
             "name": "altcha-org/altcha",
@@ -4315,18 +4315,6 @@
             "dist": {
                 "type": "tar",
                 "url": "https://registry.npmjs.org/blueimp-tmpl/-/blueimp-tmpl-3.6.0.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/bootstrap",
-            "version": "5.3.8",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/bootstrap/-/bootstrap-5.3.8.tgz"
             },
             "type": "npm-asset",
             "license": [
