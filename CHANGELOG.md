@@ -3,7 +3,7 @@ HumHub Changelog
 
 1.18.0-beta.7 (Unreleased)
 -------------------------------
-- Fix: Alert widget broken since beta.6
+- Fix #7921: Alert widget broken since beta.6
 
 1.18.0-beta.6 (January 8, 2026)
 -------------------------------
