@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.18.0-beta.7 (Unreleased)
+-------------------------------
+- Fix: Alert widget broken since beta.6
+
 1.18.0-beta.6 (January 8, 2026)
 -------------------------------
 - Enh #7834: Login Screen: revert container width to 300px when less than 2 SSO buttons and remove Language Chooser label
