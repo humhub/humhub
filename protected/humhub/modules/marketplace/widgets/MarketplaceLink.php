@@ -18,7 +18,7 @@ class MarketplaceLink extends Button
     /**
      * @inheritdoc
      */
-    public function init()
+    public function init(): void
     {
         $this->link(['/marketplace/browse'])->loader(false);
 

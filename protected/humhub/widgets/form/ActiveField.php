@@ -100,7 +100,7 @@ class ActiveField extends \yii\bootstrap5\ActiveField
      *      0 - always display the search box.
      * @inheritdoc
      */
-    public function dropDownList($items, $options = [])
+    public function dropDownList($items, $options = []): self
     {
         return parent::dropDownList($items, Html::getDropDownListOptions($options));
     }
@@ -113,7 +113,7 @@ class ActiveField extends \yii\bootstrap5\ActiveField
      *
      * @inheritdoc
      */
-    public function radioList($items, $options = [])
+    public function radioList($items, $options = []): self
     {
         if (isset($options['template']) && $options['template'] === 'pills') {
             unset($options['template']);
