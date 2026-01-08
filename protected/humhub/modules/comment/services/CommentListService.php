@@ -11,8 +11,8 @@ use yii\db\ActiveQuery;
 
 class CommentListService
 {
-    const LIST_DIR_PREV = 'previous';
-    const LIST_DIR_NEXT = 'next';
+    public const LIST_DIR_PREV = 'previous';
+    public const LIST_DIR_NEXT = 'next';
 
 
     public function __construct(private readonly Content $content, private readonly ?Comment $parentComment)
@@ -23,7 +23,7 @@ class CommentListService
     {
         return new static(
             $object->content,
-            ($object instanceof Comment) ? $object : null
+            ($object instanceof Comment) ? $object : null,
         );
     }
 
@@ -68,7 +68,8 @@ class CommentListService
     /**
      * @return ActiveQuery<Comment>
      */
-    public function getQuery() : ActiveQuery {
+    public function getQuery(): ActiveQuery
+    {
         $query = Comment::find();
         $this->addScopeQueryCondition($query);
         return $query;
@@ -116,7 +117,7 @@ class CommentListService
     {
         return array_map(
             fn($record) => $record->id,
-            $this->getSiblings($commentId, $limit, $sortOrder)
+            $this->getSiblings($commentId, $limit, $sortOrder),
         );
     }
 

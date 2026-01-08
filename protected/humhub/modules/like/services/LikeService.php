@@ -176,7 +176,7 @@ class LikeService
                     $title .= Yii::t(
                         'LikeModule.base',
                         'and {count} more like this.',
-                        ['{count}' => $this->getCount() - $shownLikeCount]
+                        ['{count}' => $this->getCount() - $shownLikeCount],
                     );
                 }
                 $this->_titleText = $title;
