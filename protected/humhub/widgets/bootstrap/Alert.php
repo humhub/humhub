@@ -59,12 +59,6 @@ class Alert extends \yii\bootstrap5\Alert implements \Stringable
         ]);
     }
 
-    public function __toString(): string
-    {
-        $this->run();
-        return '';
-    }
-
     /**
      * {@inheritdoc}
      */
