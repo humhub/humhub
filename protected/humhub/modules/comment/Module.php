@@ -2,14 +2,10 @@
 
 namespace humhub\modules\comment;
 
-use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\permissions\CreateComment;
 use humhub\modules\comment\notifications\NewComment;
-use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use Yii;
-use yii\base\Exception;
-use yii\base\InvalidConfigException;
 
 /**
  * CommentModule adds the comment content addon functionalities.
@@ -34,12 +30,12 @@ class Module extends \humhub\components\Module
     /**
      * @var int Maximum comments to load at once on VIEW mode
      */
-    public $commentsBlockLoadSizeViewMode = 5;
+    public $commentsBlockLoadSizeViewMode = 25;
 
     /**
      * @var int Maximum comments to show initially on VIEW mode
      */
-    public $commentsPreviewMaxViewMode = 5;
+    public $commentsPreviewMaxViewMode = 25;
 
     /**
      * @inheritdoc
