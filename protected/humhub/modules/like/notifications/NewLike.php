@@ -1,65 +1,34 @@
 <?php
 
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
-
 namespace humhub\modules\like\notifications;
 
-use humhub\components\ActiveRecord;
 use humhub\helpers\Html;
-use humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\like\models\Like;
 use humhub\modules\notification\components\BaseNotification;
 use Yii;
 
 /**
- * Notifies a user about likes of his objects (posts, comments, tasks & co)
- *
- * @since 0.5
+ * @property Like $source
  */
 class NewLike extends BaseNotification
 {
-    /**
-     * @inheritdoc
-     */
     public $moduleId = 'like';
-
-    /**
-     * @inheritdoc
-     */
     public $viewName = 'newLike';
 
-    /**
-     * @inheritdoc
-     */
     public function category()
     {
         return new LikeNotificationCategory();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getGroupKey()
     {
-        $model = $this->getLikedRecord();
+        $model = $this->source->getContentOwnerObject();
         return $model::class . '-' . $model->getPrimaryKey();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getMailSubject()
     {
-        $model = $this->getLikedRecord();
-
-        if (!$model instanceof ContentOwner) {
-            return '';
-        }
-
-        $contentInfo = $this->getContentPlainTextInfo($model);
+        $contentInfo = $this->getContentPlainTextInfo($this->source->getContentOwnerObject());
 
         if ($this->groupCount > 1) {
             return Yii::t('LikeModule.notifications', "{displayNames} likes your {contentTitle}.", [
@@ -79,13 +48,7 @@ class NewLike extends BaseNotification
      */
     public function html()
     {
-        $model = $this->getLikedRecord();
-
-        if (!$model instanceof ContentOwner) {
-            return '';
-        }
-
-        $contentInfo = $this->getContentInfo($model);
+        $contentInfo = $this->getContentInfo($this->source->getContentOwnerObject());
 
         if ($this->groupCount > 1) {
             return Yii::t('LikeModule.notifications', "{displayNames} likes {contentTitle}.", [
@@ -98,15 +61,5 @@ class NewLike extends BaseNotification
             'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
             'contentTitle' => $contentInfo,
         ]);
-    }
-
-    /**
-     * The liked record
-     *
-     * @return ActiveRecord
-     */
-    public function getLikedRecord()
-    {
-        return $this->source->getSource();
     }
 }

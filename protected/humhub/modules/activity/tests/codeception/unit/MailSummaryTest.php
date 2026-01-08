@@ -286,8 +286,7 @@ class MailSummaryTest extends HumHubDbTestCase
         $this->becomeUser('User1');
         $comment = new Comment([
             'message' => 'Summary test comment!',
-            'object_model' => Post::class,
-            'object_id' => $post->id,
+            'content_id' => $post->content->id,
         ]);
         $this->assertTrue($comment->save());
 
@@ -347,8 +346,7 @@ class MailSummaryTest extends HumHubDbTestCase
         $this->becomeUser('User1');
         $comment = new Comment([
             'message' => 'Summary test comment!',
-            'object_model' => Post::class,
-            'object_id' => $post->id,
+            'content_id' => $post->content->id,
         ]);
         $this->assertTrue($comment->save());
 
@@ -382,8 +380,7 @@ class MailSummaryTest extends HumHubDbTestCase
         $this->becomeUser('User1');
         $comment = new Comment([
             'message' => 'Summary test comment!',
-            'object_model' => Post::class,
-            'object_id' => $post->id,
+            'content_id' => $post->content->id,
         ]);
         $this->assertTrue($comment->save());
 
@@ -429,8 +426,7 @@ class MailSummaryTest extends HumHubDbTestCase
         $this->becomeUser('User1');
         $comment = new Comment([
             'message' => 'Summary test comment!',
-            'object_model' => Post::class,
-            'object_id' => $post->id,
+            'content_id' => $post->content->id,
         ]);
         $this->assertTrue($comment->save());
 
