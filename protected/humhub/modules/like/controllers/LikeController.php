@@ -18,6 +18,7 @@ class LikeController extends Controller
 
     public function beforeAction($action): bool
     {
+
         $recordId = (int)Yii::$app->request->get('recordId');
         $target = RecordMap::getById($recordId, ContentProvider::class);
 
@@ -45,6 +46,7 @@ class LikeController extends Controller
     public function actionLike()
     {
         $this->forcePostRequest();
+
 
         if (!$this->likeService->canLike()) {
             throw new ForbiddenHttpException();

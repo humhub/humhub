@@ -31,23 +31,13 @@ class Events extends BaseObject
         return true;
     }
 
-    /**
-     * On any ActiveRecord deletion check for assigned likes
-     *
-     * @param $event
-     * @return bool
-     * @throws Throwable
-     * @throws StaleObjectException
-     */
-    public static function onActiveRecordDelete($event)
+    public static function onRecordMapDelete($event)
     {
-        /** @var ActiveRecord $record */
-        $record = $event->sender;
+        /** @var RecordMap $recordMap */
+        $recordMap = $event->sender;
 
-        if (RecordMap::hasId($record)) {
-            foreach (Like::findAll(['content_addon_record_id' => RecordMap::getId($record)]) as $like) {
-                $like->delete();
-            }
+        foreach (Like::findAll(['content_addon_record_id' => $recordMap->id]) as $like) {
+            $like->delete();
         }
 
         return true;

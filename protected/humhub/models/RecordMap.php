@@ -5,6 +5,7 @@ namespace humhub\models;
 use humhub\components\ActiveRecord;
 use humhub\helpers\DataTypeHelper;
 use Yii;
+use yii\base\Event;
 use yii\db\Exception;
 
 /**
@@ -29,21 +30,22 @@ class RecordMap extends ActiveRecord
         }
 
         return Yii::$app->runtimeCache->getOrSet(
-            'rm_' . $ar::class . $ar->getPrimaryKey(), function () use ($ar) {
+            'rm_' . $ar::class . $ar->getPrimaryKey(),
+            function () use ($ar) {
+                // ToDo: Check Primary Key is 'int', otherwise throw error
+                $record = static::findOne(['model' => $ar::class, 'pk' => (int)$ar->getPrimaryKey()]);
+                if ($record) {
+                    return $record->id;
+                }
 
-            // ToDo: Check Primary Key is 'int', otherwise throw error
-            $record = static::findOne(['model' => $ar::class, 'pk' => (int)$ar->getPrimaryKey()]);
-            if ($record) {
+                $record = new static;
+                $record->model = $ar::class;
+                $record->pk = (int)$ar->getPrimaryKey();
+                $record->save();
+
                 return $record->id;
             }
-
-            $record = new static;
-            $record->model = $ar::class;
-            $record->pk = (int)$ar->getPrimaryKey();
-            $record->save();
-
-            return $record->id;
-        });
+        );
     }
 
     /**
@@ -57,20 +59,40 @@ class RecordMap extends ActiveRecord
             'rm_' . $recordId . $classType,
             function () use ($recordId, $classType) {
                 $record = static::findOne(['id' => $recordId]);
-
-                if (!DataTypeHelper::isClassType($record->model, $classType)) {
-                    Yii::warning(
-                        'Invalid class type for record id ' . $recordId . ' Got: ' . $record->model . ' . Expected: ' . $classType
-                    );
-                    return null;
+                if ($record !== null) {
+                    return static::getByModelAndPk($record->model, $record->pk, $classType);
                 }
-
-                /** @var ActiveRecord $model */
-                $model = $record->model;
-
-                return $model::findOne(['id' => $record->pk]);
+                return null;
             }
         );
+    }
+
+    /**
+     * @template T
+     * @param class-string<T> $classType
+     * @return T
+     */
+    public static function getByModelAndPk(string $model, string $pk, string $classType)
+    {
+        if (!DataTypeHelper::isClassType($model, $classType)) {
+            Yii::warning(
+                'Invalid class type. Got: ' . $model . ' With ID ' . $pk . ' . Expected: ' . $classType
+            );
+            return null;
+        }
+
+        /** @var ActiveRecord $model */
+        return $model::findOne(['id' => $pk]);
+    }
+
+    public static function onActiveRecordDelete(Event $event) {
+        /** @var ActiveRecord $activeRecord */
+        $activeRecord = $event->sender;
+
+        $record = static::findOne(['model' => $activeRecord::class, 'pk' => (int)$activeRecord->getPrimaryKey()]);
+        if ($record !== null) {
+            $record->delete();
+        }
     }
 
     public static function hasId(ActiveRecord $record): bool

@@ -186,7 +186,7 @@ class LikeService
         return $this->_titleText;
     }
 
-    private function addScopeQueryCondition(ActiveQuery $query): void
+    public function addScopeQueryCondition(ActiveQuery $query): void
     {
         $query->andWhere(['like.content_id' => $this->content->id]);
 

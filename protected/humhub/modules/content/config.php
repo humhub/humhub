@@ -2,6 +2,8 @@
 
 use humhub\commands\CronController;
 use humhub\commands\IntegrityController;
+use humhub\components\ActiveRecord;
+use humhub\models\RecordMap;
 use humhub\modules\content\Events;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\Module;
@@ -22,6 +24,7 @@ return [
         ['class' => Content::class, 'event' => Content::EVENT_AFTER_DELETE, 'callback' => [Events::class, 'onContentAfterDelete']],
         ['class' => CronController::class, 'event' => CronController::EVENT_ON_DAILY_RUN, 'callback' => [Events::class, 'onCronDailyRun']],
         ['class' => CronController::class, 'event' => CronController::EVENT_BEFORE_ACTION, 'callback' => [Events::class, 'onCronBeforeAction']],
+        ['class' => ActiveRecord::class, 'event' => ActiveRecord::EVENT_AFTER_DELETE, 'callback' => [RecordMap::class, 'onActiveRecordDelete']],
     ],
     'consoleControllerMap' => [
         'content-search' => '\humhub\modules\content\commands\SearchController',
