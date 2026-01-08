@@ -1,142 +1,81 @@
 <?php
 
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
-
 namespace humhub\modules\like\controllers;
 
 use humhub\components\behaviors\AccessControl;
-use humhub\modules\like\Module;
-use humhub\modules\user\models\User;
-use Yii;
-use humhub\modules\like\models\Like;
+use humhub\components\Controller;
+use humhub\models\RecordMap;
+use humhub\modules\content\interfaces\ContentProvider;
+use humhub\modules\like\services\LikeService;
 use humhub\modules\user\widgets\UserListBox;
-use humhub\modules\content\components\ContentAddonController;
+use Yii;
 use yii\web\ForbiddenHttpException;
-use yii\web\HttpException;
+use yii\web\NotFoundHttpException;
 
-/**
- * Like Controller
- *
- * Handles requests by the like widgets. (e.g. like, unlike, show likes)
- *
- * @property Module $module
- * @since 0.5
- */
-class LikeController extends ContentAddonController
+class LikeController extends Controller
 {
-    /**
-     * @param $action
-     * @return bool
-     * @throws HttpException
-     */
-    public function beforeAction($action)
+    private LikeService $likeService;
+
+    public function beforeAction($action): bool
     {
-        if (!$this->module->isEnabled) {
-            throw new HttpException(404, 'The like module not enabled!');
+
+        $recordId = (int)Yii::$app->request->get('recordId');
+        $target = RecordMap::getById($recordId, ContentProvider::class);
+
+        if (!$target) {
+            throw new NotFoundHttpException();
         }
+
+        if (!$target->content->canView()) {
+            throw new ForbiddenHttpException();
+        }
+
+        $this->likeService = new LikeService($target);
         return parent::beforeAction($action);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function behaviors()
     {
         return [
             'acl' => [
                 'class' => AccessControl::class,
-                'guestAllowedActions' => ['show-likes'],
             ],
         ];
     }
 
-    /**
-     * Creates a new like
-     */
     public function actionLike()
     {
-        if (!$this->module->canLike($this->parentContent)) {
+        $this->forcePostRequest();
+
+
+        if (!$this->likeService->canLike()) {
             throw new ForbiddenHttpException();
         }
 
-        $this->forcePostRequest();
+        $this->likeService->like();
 
-        $like = Like::findOne(['object_model' => $this->contentModel, 'object_id' => $this->contentId, 'created_by' => Yii::$app->user->id]);
-        if ($like === null) {
-
-            // Create Like Object
-            $like = new Like([
-                'object_model' => $this->contentModel,
-                'object_id' => $this->contentId,
-            ]);
-            $like->save();
-        }
-
-        return $this->actionShowLikes();
+        return $this->asJson([
+            'currentUserLiked' => $this->likeService->hasLiked(),
+            'likeCounter' => $this->likeService->getCount(),
+        ]);
     }
 
-    /**
-     * Unlikes an item
-     */
     public function actionUnlike()
     {
         $this->forcePostRequest();
+        $this->likeService->unlike();
 
-        if (!Yii::$app->user->isGuest) {
-            $like = Like::findOne(['object_model' => $this->contentModel, 'object_id' => $this->contentId, 'created_by' => Yii::$app->user->id]);
-            if ($like !== null) {
-                $like->delete();
-            }
-        }
-
-        return $this->actionShowLikes();
+        return $this->asJson([
+            'currentUserLiked' => $this->likeService->hasLiked(),
+            'likeCounter' => $this->likeService->getCount()
+        ]);
     }
 
-    /**
-     * Returns an JSON with current like informations about a target
-     */
-    public function actionShowLikes()
-    {
-        Yii::$app->response->format = 'json';
-
-        // Some Meta Infos
-        $currentUserLiked = false;
-
-        $likes = Like::GetLikes($this->contentModel, $this->contentId);
-
-        foreach ($likes as $like) {
-            if ($like->user->id == Yii::$app->user->id) {
-                $currentUserLiked = true;
-            }
-        }
-
-        return [
-            'currentUserLiked' => $currentUserLiked,
-            'likeCounter' => count($likes),
-        ];
-    }
-
-    /**
-     * Returns a user list which contains all users who likes it
-     */
     public function actionUserList()
     {
-
-        $query = User::find();
-        $query->leftJoin('like', 'like.created_by=user.id');
-        $query->where([
-            'like.object_id' => $this->contentId,
-            'like.object_model' => $this->contentModel,
-        ]);
-        $query->orderBy('like.created_at DESC');
-
         $title = Yii::t('LikeModule.base', "<strong>Users</strong> who like this");
-
-        return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
+        return $this->renderAjaxContent(
+            UserListBox::widget(['query' => $this->likeService->getUserQuery(), 'title' => $title])
+        );
     }
-
 }

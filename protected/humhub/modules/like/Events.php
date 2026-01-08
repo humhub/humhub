@@ -1,27 +1,16 @@
 <?php
 
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
-
 namespace humhub\modules\like;
 
 use humhub\components\ActiveRecord;
-use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Event;
+use humhub\models\RecordMap;
 use humhub\modules\like\models\Like;
 use Throwable;
 use Yii;
 use yii\base\BaseObject;
 use yii\db\StaleObjectException;
 
-/**
- * Events provides callbacks to handle events.
- *
- * @author luke
- */
 class Events extends BaseObject
 {
     /**
@@ -42,22 +31,13 @@ class Events extends BaseObject
         return true;
     }
 
-    /**
-     * On any ActiveRecord deletion check for assigned likes
-     *
-     * @param $event
-     * @return bool
-     * @throws Throwable
-     * @throws StaleObjectException
-     */
-    public static function onActiveRecordDelete($event)
+    public static function onRecordMapDelete($event)
     {
-        /** @var ActiveRecord $record */
-        $record = $event->sender;
-        if ($record->hasAttribute('id')) {
-            foreach (Like::findAll(['object_id' => $record->id, 'object_model' => PolymorphicRelation::getObjectModel($record)]) as $like) {
-                $like->delete();
-            }
+        /** @var RecordMap $recordMap */
+        $recordMap = $event->sender;
+
+        foreach (Like::findAll(['content_addon_record_id' => $recordMap->id]) as $like) {
+            $like->delete();
         }
 
         return true;
@@ -95,12 +75,7 @@ class Events extends BaseObject
      */
     public static function onWallEntryLinksInit($event)
     {
-        /** @var Module $module */
-        $module = Yii::$app->getModule('like');
-
-        if ($module->canLike($event->sender->object)) {
-            $event->sender->addWidget(widgets\LikeLink::class, ['object' => $event->sender->object], ['sortOrder' => 20]);
-        }
+        $event->sender->addWidget(widgets\LikeLink::class, ['object' => $event->sender->object], ['sortOrder' => 20]);
     }
 
 

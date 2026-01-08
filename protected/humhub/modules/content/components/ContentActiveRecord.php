@@ -13,6 +13,7 @@ use humhub\libs\BasePermission;
 use humhub\modules\activity\helpers\ActivityHelper;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\content\interfaces\ContentProvider;
 use humhub\modules\content\interfaces\SoftDeletable;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\Movable;
@@ -72,7 +73,7 @@ use yii\db\StaleObjectException;
  * @property-read File[] $files
  * @author Luke
  */
-class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable, SoftDeletable
+class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable, SoftDeletable, ContentProvider
 {
     /**
      * @see StreamEntryWidget
@@ -591,12 +592,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
 
     }
 
-    /**
-     * Related Content model
-     *
-     * @return ActiveQuery|ActiveQueryContent
-     */
-    public function getContent()
+    public function getContent(): ActiveQuery
     {
         return $this->hasOne(Content::class, ['object_id' => 'id'])
             ->andWhere(['content.object_model' => static::getObjectModel()]);

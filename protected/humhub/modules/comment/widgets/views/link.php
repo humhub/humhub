@@ -9,13 +9,12 @@ use humhub\widgets\bootstrap\Button;
 use yii\helpers\Url;
 
 /* @var $this View */
-/* @var $objectModel string */
-/* @var $objectId int */
+/* @var $content \humhub\modules\content\models\Content */
+/* @var $parentComment Comment */
 /* @var $id string unique object id */
 /* @var $commentCount int */
 /* @var $mode string */
 /* @var $isNestedComment bool */
-/* @var $comment Comment */
 /* @var $module Module */
 
 $hasComments = ($commentCount > 0);
@@ -29,7 +28,7 @@ $label = ($isNestedComment) ? Yii::t('CommentModule.base', "Reply") : Yii::t('Co
 
 ?>
 <?php if ($mode == CommentLink::MODE_POPUP): ?>
-    <?php $url = Url::to(['/comment/comment/show', 'objectModel' => $objectModel, 'objectId' => $objectId, 'mode' => 'popup']); ?>
+    <?php $url = Url::to(['/comment/comment/show', 'contentId' => $content->id, 'parentCommentId' => $parentComment?->id, 'mode' => 'popup']); ?>
     <a href="#" data-action-click="ui.modal.load" data-action-url="<?= $url ?>">
         <?= $label . ' (' . $commentCount . ')' ?>
     </a>

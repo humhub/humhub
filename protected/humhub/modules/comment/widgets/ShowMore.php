@@ -2,9 +2,10 @@
 
 namespace humhub\modules\comment\widgets;
 
-use humhub\components\behaviors\PolymorphicRelation;
-use humhub\modules\comment\models\Comment;
+use humhub\modules\comment\models\Comment as CommentModel;
+use humhub\modules\comment\services\CommentListService;
 use humhub\modules\content\controllers\SearchController;
+use humhub\modules\content\models\Content;
 use Yii;
 use yii\base\Widget;
 use yii\helpers\Url;
@@ -19,60 +20,38 @@ use yii\helpers\Url;
  */
 class ShowMore extends Widget
 {
-    public const TYPE_PREVIOUS = 'previous';
-    public const TYPE_NEXT = 'next';
+    public ?Content $content;
+    public ?CommentModel $parentComment;
 
-    /**
-     * Content Object
-     */
-    public $object;
+    public int $pageSize = 5;
+    public string $direction;
+    public ?int $commentId;
+    private ?int $_count = null;
 
-    /**
-     * @var int
-     */
-    public $pageSize;
-
-    /**
-     * @var string Type of loaded comments: 'previous', 'next'
-     */
-    public $type = self::TYPE_PREVIOUS;
-
-    /**
-     * @var int|null ID of the latest comment from previous query
-     */
-    public $commentId;
-
-    /**
-     * @var int Cached count of the next/previous comments
-     */
-    private $_count;
-
-    /**
-     * Executes the widget.
-     */
     public function run()
     {
-        if (!$this->count) {
+        if (empty($this->commentId) || !$this->count) {
             return '';
         }
 
         return $this->render('showMore', [
             'text' => $this->getText(),
-            'showMoreUrl' => Url::to(['/comment/comment/show',
-                'objectModel' => PolymorphicRelation::getObjectModel($this->object),
-                'objectId' => $this->object->getPrimaryKey(),
+            'showMoreUrl' => Url::to([
+                '/comment/comment/show',
+                'contentId' => $this->content->id,
+                'parentCommentId' => $this->parentComment->id ?? '',
                 'pageSize' => $this->pageSize,
                 'commentId' => $this->commentId,
-                'type' => $this->type,
+                'direction' => $this->direction,
             ]),
-            'type' => $this->type,
+            'direction' => $this->direction,
             'linkStyleClass' => $this->getLinkStyleClass(),
         ]);
     }
 
     private function getText(): string
     {
-        return $this->type === self::TYPE_PREVIOUS
+        return $this->direction === CommentListService::LIST_DIR_PREV
             ? Yii::t('CommentModule.base', "Show previous {count} comments", ['{count}' => $this->count])
             : Yii::t('CommentModule.base', "Show next {count} comments", ['{count}' => $this->count]);
     }
@@ -80,8 +59,16 @@ class ShowMore extends Widget
     public function getCount(): int
     {
         if ($this->_count === null) {
-            $this->_count = count(Comment::getMoreComments($this->object, $this->commentId, $this->type, $this->pageSize));
+            $this->_count = count(
+                (new CommentListService($this->content, $this->parentComment))->getSiblings(
+                    $this->commentId,
+                    $this->pageSize,
+                    $this->direction,
+
+                )
+            );
         }
+
 
         return $this->_count;
     }
@@ -93,5 +80,4 @@ class ShowMore extends Widget
             ? 'highlight'
             : null;
     }
-
 }

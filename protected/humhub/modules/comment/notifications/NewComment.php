@@ -197,14 +197,7 @@ class NewComment extends BaseNotification
      */
     public function getCommentedRecord()
     {
-        $source = $this->source;
-
-        if (is_null($source)) {
-            //This prevents the error, but we need to clean the database
-            return null;
-        }
-
-        return $source->getCommentedRecord();
+        return $this->source->content->getPolymorphicRelation();
     }
 
 
