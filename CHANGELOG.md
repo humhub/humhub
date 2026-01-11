@@ -4,6 +4,7 @@ HumHub Changelog
 1.18.0-beta.7 (Unreleased)
 -------------------------------
 - Fix #7921: Alert widget broken since beta.6
+- Fix: Admin Pending Approvals buttons layout
 
 1.18.0-beta.6 (January 8, 2026)
 -------------------------------

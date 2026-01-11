@@ -2,7 +2,6 @@
 
 use humhub\helpers\Html;
 use humhub\modules\admin\controllers\ApprovalController;
-use humhub\modules\admin\grid\ApprovalActionColumn;
 use humhub\modules\admin\models\forms\ApproveUserForm;
 use humhub\modules\admin\models\UserApprovalSearch;
 use humhub\modules\admin\permissions\ManageUsers;
@@ -14,6 +13,7 @@ use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\GridView;
 use yii\data\ActiveDataProvider;
+use yii\grid\ActionColumn;
 
 /** @var $searchModel UserApprovalSearch */
 /** @var $dataProvider ActiveDataProvider */
@@ -59,7 +59,11 @@ $columns[] = [
     ]),
 ];
 $columns[] = [
-    'class' => ApprovalActionColumn::class,
+    'class' => ActionColumn::class,
+    'template' => '
+        <div class="d-grid d-md-flex justify-content-end gap-1" style="grid-template-columns: repeat(2, 1fr);">
+            {view} {sendMessage} {update} {delete}
+        </div>', // On mobile, display buttons as a grid (2 buttons on each line)
     'buttons' => [
         'view' => fn($url, $model) => Yii::$app->user->can(ManageUsers::class)
             ? Button::light()
