@@ -17,7 +17,6 @@ use yii\db\Exception;
  */
 class RecordMap extends ActiveRecord
 {
-
     public static function tableName()
     {
         return 'record_map';
@@ -38,13 +37,13 @@ class RecordMap extends ActiveRecord
                     return $record->id;
                 }
 
-                $record = new static;
+                $record = new static();
                 $record->model = $ar::class;
                 $record->pk = (int)$ar->getPrimaryKey();
                 $record->save();
 
                 return $record->id;
-            }
+            },
         );
     }
 
@@ -63,7 +62,7 @@ class RecordMap extends ActiveRecord
                     return static::getByModelAndPk($record->model, $record->pk, $classType);
                 }
                 return null;
-            }
+            },
         );
     }
 
@@ -76,7 +75,7 @@ class RecordMap extends ActiveRecord
     {
         if (!DataTypeHelper::isClassType($model, $classType)) {
             Yii::warning(
-                'Invalid class type. Got: ' . $model . ' With ID ' . $pk . ' . Expected: ' . $classType
+                'Invalid class type. Got: ' . $model . ' With ID ' . $pk . ' . Expected: ' . $classType,
             );
             return null;
         }
@@ -85,7 +84,8 @@ class RecordMap extends ActiveRecord
         return $model::findOne(['id' => $pk]);
     }
 
-    public static function onActiveRecordDelete(Event $event) {
+    public static function onActiveRecordDelete(Event $event)
+    {
         /** @var ActiveRecord $activeRecord */
         $activeRecord = $event->sender;
 

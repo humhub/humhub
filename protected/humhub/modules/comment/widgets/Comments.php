@@ -67,8 +67,8 @@ class Comments extends Widget
     {
         return $this->viewMode === self::VIEW_MODE_FULL
             || (($this->renderOptions instanceof StreamEntryOptions) && $this->renderOptions->isViewContext(
-                    WallStreamEntryOptions::VIEW_CONTEXT_DETAIL
-                ));
+                WallStreamEntryOptions::VIEW_CONTEXT_DETAIL,
+            ));
     }
 
     public function getLimit(): int
@@ -93,7 +93,7 @@ class Comments extends Widget
 
         $highlightedComment = Yii::$app->runtimeCache->getOrSet(
             'getCurrentComment' . $currentCommentId,
-            fn() => CommentModel::findOne(['id' => $currentCommentId, 'content_id' => $this->content->id])
+            fn() => CommentModel::findOne(['id' => $currentCommentId, 'content_id' => $this->content->id]),
         );
 
         if (!$highlightedComment) {

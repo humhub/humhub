@@ -45,7 +45,7 @@ class CommentController extends Controller
         $commentId = (int)Yii::$app->request->get('id', Yii::$app->request->post('id'));
         $parentCommentId = (int)Yii::$app->request->get(
             'parentCommentId',
-            Yii::$app->request->post('parentCommentId')
+            Yii::$app->request->post('parentCommentId'),
         );
         $contentId = (int)Yii::$app->request->get('contentId', Yii::$app->request->post('contentId'));
 
@@ -115,8 +115,8 @@ class CommentController extends Controller
                 [
                     'content' => $this->content,
                     'output' => $output,
-                    'id' => IdHelper::getId($this->content, $this->parentComment)
-                ]
+                    'id' => IdHelper::getId($this->content, $this->parentComment),
+                ],
             );
         } else {
             return $this->renderAjaxContent($output);
@@ -173,7 +173,7 @@ class CommentController extends Controller
             'comment' => $this->comment,
             'submitUrl' => Url::to(['/comment/comment/edit', 'id' => $this->comment->id]),
             'fileHandlers' => FileHandlerCollection::getByType(
-                [FileHandlerCollection::TYPE_IMPORT, FileHandlerCollection::TYPE_CREATE]
+                [FileHandlerCollection::TYPE_IMPORT, FileHandlerCollection::TYPE_CREATE],
             ),
         ]);
     }
@@ -220,8 +220,8 @@ class CommentController extends Controller
                     ->payload(
                         [
                             'commentText' => (new CommentDeleted())->getContentPreview($this->comment, 30),
-                            'reason' => $form->message
-                        ]
+                            'reason' => $form->message,
+                        ],
                     );
                 $commentDeleted->saveRecord($this->comment->createdBy);
 

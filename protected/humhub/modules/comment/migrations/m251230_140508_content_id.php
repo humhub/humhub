@@ -20,14 +20,14 @@ class m251230_140508_content_id extends Migration
             'UPDATE `comment`
          LEFT JOIN `content` ON comment.object_id = content.object_id AND content.object_model=comment.object_model
          SET comment.content_id=content.id, comment.object_model=NULL, comment.object_id=NULL
-         WHERE content.object_model IS NOT NULL'
+         WHERE content.object_model IS NOT NULL',
         );
 
         $this->execute(
             'UPDATE `comment`
          SET comment.parent_comment_id=comment.object_id, comment.object_model=NULL, comment.object_id=NULL
          WHERE comment.object_model=:object_model',
-            [':object_model' => Comment::class]
+            [':object_model' => Comment::class],
         );
 
         $this->safeAddForeignKey('fk_comment_content', 'comment', 'content_id', 'content', 'id', 'RESTRICT', 'CASCADE');
@@ -38,7 +38,7 @@ class m251230_140508_content_id extends Migration
             'comment',
             'id',
             'RESTRICT',
-            'CASCADE'
+            'CASCADE',
         );
 
         $this->safeDropColumn('comment', 'object_model');
