@@ -5,6 +5,7 @@ HumHub Changelog
 -------------------------------
 - Fix #7921: Alert widget broken since beta.6
 - Fix #7925: Space Members dropdown menu
+- Fix #7924: Admin Pending Approvals buttons layout
 
 1.18.0-beta.6 (January 8, 2026)
 -------------------------------
