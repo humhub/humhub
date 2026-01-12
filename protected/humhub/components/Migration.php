@@ -590,23 +590,25 @@ class Migration extends \yii\db\Migration
 
         //$this->updateSilent('wall', ['object_model' => $newClass], ['object_model' => $oldClass]);
 
-        /**
-         * Looking up "NewLike" activities with this className
-         * Since 0.20 the className changed to Like (is not longer the target object, e.g. post)
-         *
-         * Use a raw query for better performance.
-         */
-        $updateSql = "
-            UPDATE activity
-            LEFT JOIN `like` ON like.object_model=activity.object_model AND like.object_id=activity.object_id
-            SET activity.object_model=:likeModelClass, activity.object_id=like.id
-            WHERE activity.class=:likedActivityClass AND like.id IS NOT NULL and activity.object_model != :likeModelClass
-        ";
+        if ($this->db->getTableSchema('like')->getColumn('object_model') !== null) {
+            /**
+             * Looking up "NewLike" activities with this className
+             * Since 0.20 the className changed to Like (is not longer the target object, e.g. post)
+             *
+             * Use a raw query for better performance.
+             */
+            $updateSql = "
+                UPDATE activity
+                LEFT JOIN `like` ON like.object_model=activity.object_model AND like.object_id=activity.object_id
+                SET activity.object_model=:likeModelClass, activity.object_id=like.id
+                WHERE activity.class=:likedActivityClass AND like.id IS NOT NULL and activity.object_model != :likeModelClass
+            ";
 
-        Yii::$app->db->createCommand($updateSql, [
-            ':likeModelClass' => Like::class,
-            ':likedActivityClass' => Liked::class,
-        ])->execute();
+            Yii::$app->db->createCommand($updateSql, [
+                ':likeModelClass' => Like::class,
+                ':likedActivityClass' => Liked::class,
+            ])->execute();
+        }
     }
 
     /**
