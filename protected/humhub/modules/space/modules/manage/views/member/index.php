@@ -24,24 +24,22 @@ use humhub\widgets\TimeAgo;
     <div class="panel-body">
 
         <?php $form = ActiveForm::begin(['method' => 'get']); ?>
-        <div class="container gx-0 overflow-x-hidden">
-            <div class="row gy-2">
-                <div class="col-lg-6">
-                    <div class="input-group">
-                        <?= Html::activeTextInput($searchModel, 'freeText', ['class' => 'form-control', 'placeholder' => Yii::t('AdminModule.user', 'Search by name, email or id.')]); ?>
-                        <button class="btn btn-light" type="submit"><i class="fa fa-search"></i></button>
-                    </div>
+        <div class="d-flex justify-content-between column-gap-4 row-gap-2 flex-column flex-sm-row">
+            <div class="flex-fill">
+                <div class="input-group">
+                    <?= Html::activeTextInput($searchModel, 'freeText', ['class' => 'form-control', 'placeholder' => Yii::t('AdminModule.user', 'Search by name, email or id.')]); ?>
+                    <button class="btn btn-light" type="submit"><i class="fa fa-search"></i></button>
                 </div>
-                <div class="col-lg-4">
-                    <?= Html::activeDropDownList($searchModel, 'group_id', MembershipSearch::getRoles($space), ['class' => 'form-control', 'data-action-change' => 'ui.form.submit']); ?>
-                </div>
-                <div class="col-lg-2">
-                    <div class="float-end">
-                        <?= MemberHeaderControlsMenu::widget([
-                            'space' => $space,
-                            'label' => Icon::get('cog'),
-                        ]) ?>
-                    </div>
+            </div>
+            <div class="flex-fill">
+                <?= Html::activeDropDownList($searchModel, 'group_id', MembershipSearch::getRoles($space), ['class' => 'form-control', 'data-action-change' => 'ui.form.submit']); ?>
+            </div>
+            <div class="flex-fill float-end">
+                <div class="float-end">
+                    <?= MemberHeaderControlsMenu::widget([
+                        'space' => $space,
+                        'label' => Icon::get('cog'),
+                    ]) ?>
                 </div>
             </div>
         </div>
