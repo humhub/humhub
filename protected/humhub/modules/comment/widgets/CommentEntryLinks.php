@@ -23,7 +23,7 @@ class CommentEntryLinks extends BaseStack
         $this->addWidget(
             CommentLink::class,
             ['content' => $this->comment->content, 'parentComment' => $this->comment],
-            ['sortOrder' => 100]
+            ['sortOrder' => 100],
         );
 
         $this->addWidget(LikeLink::class, ['object' => $this->comment], ['sortOrder' => 200]);
