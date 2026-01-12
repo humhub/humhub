@@ -17,7 +17,6 @@ use humhub\widgets\form\ActiveForm;
 
 <?php echo $form->field($model, 'newEmail')->textInput(['maxlength' => 150]); ?>
 
-<hr>
 <?php echo Html::submitButton(Yii::t('UserModule.account', 'Save'), ['name' => 'save', 'class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
 <?php ActiveForm::end(); ?>

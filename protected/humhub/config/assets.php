@@ -83,11 +83,11 @@ return [
                 'sourcePath' => '@npm/jquery-ui/dist',
             ],
             BootstrapAsset::class => [
-                'sourcePath' => '@npm/bootstrap/dist',
+                'sourcePath' => '@vendor/twbs/bootstrap/dist',
                 'css' => [],
             ],
             BootstrapPluginAsset::class => [
-                'sourcePath' => '@npm/bootstrap/dist',
+                'sourcePath' => '@vendor/twbs/bootstrap/dist',
                 'js' => ['js/bootstrap.bundle.min.js'],
                 'depends' => [
                     JqueryAsset::class,
@@ -99,7 +99,7 @@ return [
                 'sourcePath' => '@npm/jquery-ui',
             ],
             \yii\bootstrap\BootstrapAsset::class => [
-                'sourcePath' => '@npm/bootstrap/dist',
+                'sourcePath' => '@vendor/twbs/bootstrap/dist',
             ],
         ],
     ],

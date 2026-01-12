@@ -25,6 +25,9 @@ $prev-media: false !default;
 $prev-installer: false !default;
 @import "installer";
 
+$prev-input-group: false !default;
+@import "input-group";
+
 $prev-pagination: false !default;
 @import "pagination";
 

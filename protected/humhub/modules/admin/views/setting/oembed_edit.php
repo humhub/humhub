@@ -101,7 +101,7 @@ JS, View::POS_LOAD);
     <?= $form->field($model, 'access_token')->textInput(['class' => 'form-control endpoint-param', 'data-param-name' => 'access_token', 'value' => $query['access_token']]) ?>
 <?php endif; ?>
 
-    <div id="endpoint-parameters"></div>
+    <div id="endpoint-parameters" class="row"></div>
 
 <?= Button::primary(Yii::t('AdminModule.settings', 'Save'))->submit(); ?>
 

@@ -4,6 +4,7 @@ use humhub\helpers\Html;
 use humhub\modules\admin\models\forms\OEmbedSettingsForm;
 use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
 use humhub\widgets\form\ActiveForm;
 use yii\helpers\Url;
 use yii\web\View;
@@ -39,13 +40,12 @@ JS, View::POS_READY);
                         <?php if (isset($query['access_token']) && empty($query['access_token'])): ?>
                             <?= Badge::danger()
                                 ->icon('fa-exclamation-circle')
-                                ->right()
+                                ->cssClass('ms-2')
                                 ->tooltip(Yii::t('AdminModule.settings', 'Access token is not provided yet.')) ?>
                         <?php endif; ?>
                     </div>
 
-                    <?= Html::a(Yii::t('base', 'Edit'), Url::to(['oembed-edit', 'name' => $providerName]), ['data-method' => 'POST', 'class' => 'btn btn-sm btn-link']); ?>
-
+                    <?= Link::to(Yii::t('base', 'Edit'))->post(['oembed-edit', 'name' => $providerName])->cssClass('link-accent') ?>
                 </div>
             </div>
         <?php endforeach; ?>

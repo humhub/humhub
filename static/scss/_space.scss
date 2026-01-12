@@ -59,7 +59,7 @@
     }
 
     .space-acronym {
-        color: var(--hh-text-color-contrast);
+        color: #fff; // TODO auto-contrast via PHP from the background color
         text-align: center;
         display: inline-block;
     }

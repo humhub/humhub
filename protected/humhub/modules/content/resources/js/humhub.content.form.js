@@ -157,10 +157,10 @@ humhub.module('content.form', function (module, require, $) {
                 var fieldSelector = '.field-' + model + '-' + fieldName;
                 var inputSelector = '.field-contentForm_' + fieldName;
                 var multiInputSelector = '[name="' + fieldName + '[]"]';
-                that.$.find(fieldSelector + ' .form-control').addClass('is-invalid');
-                that.$.find(fieldSelector + ', ' + inputSelector + ', ' + inputSelector + '_input')
+                that.$.find(fieldSelector + ' .form-control,' + inputSelector + '_input, ' + multiInputSelector)
+                    .addClass('is-invalid');
+                that.$.find(fieldSelector + ', ' + inputSelector + ', ' + inputSelector + '_input, ' + multiInputSelector)
                     .find('.invalid-feedback:first').html(errorMessages.join('<br>'));
-                that.$.find(inputSelector + '_input').addClass('is-invalid');
             });
         }
     };

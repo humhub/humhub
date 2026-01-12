@@ -57,14 +57,16 @@ $themeVariables = Yii::$app->view->theme->variables;
 
     <?= $form->field($model, 'paginationSize') ?>
 
-    <div class="row">
-        <div class="col-lg-6">
-            <?= $form->field($model, 'displayNameFormat')->dropDownList(['{username}' => Yii::t('AdminModule.settings', 'Username (e.g. john)'), '{profile.firstname} {profile.lastname}' => Yii::t('AdminModule.settings', 'Firstname Lastname (e.g. John Doe)')]) ?>
-        </div>
-        <div class="col-lg-6">
-            <?= $form->field($model, 'displayNameSubFormat')->dropDownList($model->getDisplayNameSubAttributes()) ?>
-        </div>
+    <div class="container gx-0 overflow-x-hidden">
+        <div class="row">
+            <div class="col-lg-6">
+                <?= $form->field($model, 'displayNameFormat')->dropDownList(['{username}' => Yii::t('AdminModule.settings', 'Username (e.g. john)'), '{profile.firstname} {profile.lastname}' => Yii::t('AdminModule.settings', 'Firstname Lastname (e.g. John Doe)')]) ?>
+            </div>
+            <div class="col-lg-6">
+                <?= $form->field($model, 'displayNameSubFormat')->dropDownList($model->getDisplayNameSubAttributes()) ?>
+            </div>
 
+        </div>
     </div>
 
     <?= $form->field($model, 'spaceOrder')->dropDownList([
@@ -153,80 +155,82 @@ $themeVariables = Yii::$app->view->theme->variables;
 
     <?php $checkBoxOptions = ['options' => ['class' => 'pt-2']]; ?>
 
-    <div class="row">
-        <div class="col-lg-4 mb-3">
-            <?= Html::activeLabel($model, 'themePrimaryColor') ?>
-            <div class="input-group input-color-group bg-light p-3 pb-0">
-                <?= $form->field($model, 'themePrimaryColor')->colorInput(['disabled' => $model->useDefaultThemePrimaryColor]) ?>
-                <?= $form->field($model, 'useDefaultThemePrimaryColor', $checkBoxOptions)->checkbox() ?>
+    <div class="container gx-0 overflow-x-hidden">
+        <div class="row">
+            <div class="col-lg-4 mb-3">
+                <?= Html::activeLabel($model, 'themePrimaryColor') ?>
+                <div class="input-group input-color-group bg-light p-3 pb-0">
+                    <?= $form->field($model, 'themePrimaryColor')->colorInput(['disabled' => $model->useDefaultThemePrimaryColor]) ?>
+                    <?= $form->field($model, 'useDefaultThemePrimaryColor', $checkBoxOptions)->checkbox() ?>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mb-3">
+                <?= Html::activeLabel($model, 'themeAccentColor') ?>
+                <div class="input-group input-color-group bg-light p-3 pb-0">
+                    <?= $form->field($model, 'themeAccentColor')->colorInput(['disabled' => $model->useDefaultThemeAccentColor]) ?>
+                    <?= $form->field($model, 'useDefaultThemeAccentColor', $checkBoxOptions)->checkbox() ?>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mb-3">
+                <?= Html::activeLabel($model, 'themeSecondaryColor') ?>
+                <div class="input-group input-color-group bg-light p-3 pb-0">
+                    <?= $form->field($model, 'themeSecondaryColor')->colorInput(['disabled' => $model->useDefaultThemeSecondaryColor]) ?>
+                    <?= $form->field($model, 'useDefaultThemeSecondaryColor', $checkBoxOptions)->checkbox() ?>
+                </div>
             </div>
         </div>
 
-        <div class="col-lg-4 mb-3">
-            <?= Html::activeLabel($model, 'themeAccentColor') ?>
-            <div class="input-group input-color-group bg-light p-3 pb-0">
-                <?= $form->field($model, 'themeAccentColor')->colorInput(['disabled' => $model->useDefaultThemeAccentColor]) ?>
-                <?= $form->field($model, 'useDefaultThemeAccentColor', $checkBoxOptions)->checkbox() ?>
+        <div class="row">
+            <div class="col-lg-4 mb-3">
+                <?= Html::activeLabel($model, 'themeSuccessColor') ?>
+                <div class="input-group input-color-group bg-light p-3 pb-0">
+                    <?= $form->field($model, 'themeSuccessColor')->colorInput(['disabled' => $model->useDefaultThemeSuccessColor]) ?>
+                    <?= $form->field($model, 'useDefaultThemeSuccessColor', $checkBoxOptions)->checkbox() ?>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mb-3">
+                <?= Html::activeLabel($model, 'themeDangerColor') ?>
+                <div class="input-group input-color-group bg-light p-3 pb-0">
+                    <?= $form->field($model, 'themeDangerColor')->colorInput(['disabled' => $model->useDefaultThemeDangerColor]) ?>
+                    <?= $form->field($model, 'useDefaultThemeDangerColor', $checkBoxOptions)->checkbox() ?>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mb-3">
+                <?= Html::activeLabel($model, 'themeWarningColor') ?>
+                <div class="input-group input-color-group bg-light p-3 pb-0">
+                    <?= $form->field($model, 'themeWarningColor')->colorInput(['disabled' => $model->useDefaultThemeWarningColor]) ?>
+                    <?= $form->field($model, 'useDefaultThemeWarningColor', $checkBoxOptions)->checkbox() ?>
+                </div>
             </div>
         </div>
 
-        <div class="col-lg-4 mb-3">
-            <?= Html::activeLabel($model, 'themeSecondaryColor') ?>
-            <div class="input-group input-color-group bg-light p-3 pb-0">
-                <?= $form->field($model, 'themeSecondaryColor')->colorInput(['disabled' => $model->useDefaultThemeSecondaryColor]) ?>
-                <?= $form->field($model, 'useDefaultThemeSecondaryColor', $checkBoxOptions)->checkbox() ?>
+        <div class="row">
+            <div class="col-lg-4 mb-3">
+                <?= Html::activeLabel($model, 'themeInfoColor') ?>
+                <div class="input-group input-color-group bg-light p-3 pb-0">
+                    <?= $form->field($model, 'themeInfoColor')->colorInput(['disabled' => $model->useDefaultThemeInfoColor]) ?>
+                    <?= $form->field($model, 'useDefaultThemeInfoColor', $checkBoxOptions)->checkbox() ?>
+                </div>
             </div>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-lg-4 mb-3">
-            <?= Html::activeLabel($model, 'themeSuccessColor') ?>
-            <div class="input-group input-color-group bg-light p-3 pb-0">
-                <?= $form->field($model, 'themeSuccessColor')->colorInput(['disabled' => $model->useDefaultThemeSuccessColor]) ?>
-                <?= $form->field($model, 'useDefaultThemeSuccessColor', $checkBoxOptions)->checkbox() ?>
+            <div class="col-lg-4 mb-3">
+                <?= Html::activeLabel($model, 'themeLightColor') ?>
+                <div class="input-group input-color-group bg-light p-3 pb-0">
+                    <?= $form->field($model, 'themeLightColor')->colorInput(['disabled' => $model->useDefaultThemeLightColor]) ?>
+                    <?= $form->field($model, 'useDefaultThemeLightColor', $checkBoxOptions)->checkbox() ?>
+                </div>
             </div>
-        </div>
 
-        <div class="col-lg-4 mb-3">
-            <?= Html::activeLabel($model, 'themeDangerColor') ?>
-            <div class="input-group input-color-group bg-light p-3 pb-0">
-                <?= $form->field($model, 'themeDangerColor')->colorInput(['disabled' => $model->useDefaultThemeDangerColor]) ?>
-                <?= $form->field($model, 'useDefaultThemeDangerColor', $checkBoxOptions)->checkbox() ?>
-            </div>
-        </div>
-
-        <div class="col-lg-4 mb-3">
-            <?= Html::activeLabel($model, 'themeWarningColor') ?>
-            <div class="input-group input-color-group bg-light p-3 pb-0">
-                <?= $form->field($model, 'themeWarningColor')->colorInput(['disabled' => $model->useDefaultThemeWarningColor]) ?>
-                <?= $form->field($model, 'useDefaultThemeWarningColor', $checkBoxOptions)->checkbox() ?>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-4 mb-3">
-            <?= Html::activeLabel($model, 'themeInfoColor') ?>
-            <div class="input-group input-color-group bg-light p-3 pb-0">
-                <?= $form->field($model, 'themeInfoColor')->colorInput(['disabled' => $model->useDefaultThemeInfoColor]) ?>
-                <?= $form->field($model, 'useDefaultThemeInfoColor', $checkBoxOptions)->checkbox() ?>
-            </div>
-        </div>
-
-        <div class="col-lg-4 mb-3">
-            <?= Html::activeLabel($model, 'themeLightColor') ?>
-            <div class="input-group input-color-group bg-light p-3 pb-0">
-                <?= $form->field($model, 'themeLightColor')->colorInput(['disabled' => $model->useDefaultThemeLightColor]) ?>
-                <?= $form->field($model, 'useDefaultThemeLightColor', $checkBoxOptions)->checkbox() ?>
-            </div>
-        </div>
-
-        <div class="col-lg-4 mb-3">
-            <?= Html::activeLabel($model, 'themeDarkColor') ?>
-            <div class="input-group input-color-group bg-light p-3 pb-0">
-                <?= $form->field($model, 'themeDarkColor')->colorInput(['disabled' => $model->useDefaultThemeDarkColor]) ?>
-                <?= $form->field($model, 'useDefaultThemeDarkColor', $checkBoxOptions)->checkbox() ?>
+            <div class="col-lg-4 mb-3">
+                <?= Html::activeLabel($model, 'themeDarkColor') ?>
+                <div class="input-group input-color-group bg-light p-3 pb-0">
+                    <?= $form->field($model, 'themeDarkColor')->colorInput(['disabled' => $model->useDefaultThemeDarkColor]) ?>
+                    <?= $form->field($model, 'useDefaultThemeDarkColor', $checkBoxOptions)->checkbox() ?>
+                </div>
             </div>
         </div>
     </div>

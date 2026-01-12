@@ -250,28 +250,28 @@ class ThemeHelper
         $compiler->setOutputStyle(OutputStyle::COMPRESSED);
 
         // Set import paths
-        $compiler->setImportPaths(Yii::getAlias('@npm/bootstrap/scss'));
+        $compiler->setImportPaths(Yii::getAlias('@vendor/twbs/bootstrap/scss'));
         $compiler->addImportPath(Yii::getAlias('@webroot-static/scss'));
         foreach ($treeThemes as $treeTheme) {
             $compiler->addImportPath($treeTheme->getBasePath() . '/scss');
         }
 
         // Import Bootstrap functions
-        $imports[] = Yii::getAlias('@npm/bootstrap/scss/functions');
+        $imports[] = Yii::getAlias('@vendor/twbs/bootstrap/scss/functions');
 
         // Import variables child theme first, because they have the !default flag
         foreach ($treeThemes as $treeTheme) {
             $imports[] = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'variables';
         }
         $imports[] = Yii::getAlias('@webroot-static/scss/variables');
-        $imports[] = Yii::getAlias('@npm/bootstrap/scss/variables');
+        $imports[] = Yii::getAlias('@vendor/twbs/bootstrap/scss/variables');
 
         // Import maps
-        $imports[] = Yii::getAlias('@npm/bootstrap/scss/maps');
+        $imports[] = Yii::getAlias('@vendor/twbs/bootstrap/scss/maps');
         $imports[] = Yii::getAlias('@webroot-static/scss/maps');
 
         // Import Bootstrap files
-        $imports[] = Yii::getAlias('@npm/bootstrap/scss/bootstrap');
+        $imports[] = Yii::getAlias('@vendor/twbs/bootstrap/scss/bootstrap');
 
         // Import all other files, in reverse order (parent theme first)
         $imports[] = Yii::getAlias('@webroot-static/scss/build');
