@@ -17,7 +17,7 @@ class m260105_094333_like_contentid extends Migration
             'UPDATE `like`
          LEFT JOIN `content` ON like.object_id = like.object_id AND content.object_model=like.object_model
          SET like.content_id=content.id, like.object_model=NULL, like.object_id=NULL
-         WHERE content.object_model IS NOT NULL'
+         WHERE content.object_model IS NOT NULL',
         );
 
         $this->safeAddForeignKey('fk_like_content', 'like', 'content_id', 'content', 'id', 'RESTRICT', 'CASCADE');

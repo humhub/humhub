@@ -34,7 +34,8 @@ class LikeLink extends Widget
             'id' => 'like_' . RecordMap::getId($this->object),
             'likeUrl' => Url::to(['/like/like/like', 'recordId' => RecordMap::getId($this->object)]),
             'unlikeUrl' => Url::to(['/like/like/unlike', 'recordId' => RecordMap::getId($this->object)]),
-            'userListUrl' => Url::to(['/like/like/user-list', 'recordId' => RecordMap::getId($this->object)]
+            'userListUrl' => Url::to(
+                ['/like/like/user-list', 'recordId' => RecordMap::getId($this->object)],
             ),
             'title' => $this->likeService->generateLikeTitleText(),
         ]);
