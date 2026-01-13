@@ -13,7 +13,7 @@ use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\space\models\Space;
-use humhub\modules\user\activities\UserFollow;
+use humhub\modules\user\activities\FollowActivity;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\events\FollowEvent;
 use humhub\modules\user\notifications\Followed;
@@ -102,11 +102,7 @@ class Follow extends ActiveRecord
                 ->about($this)
                 ->send($this->getTarget());
 
-            UserFollow::instance()
-                ->from($this->user)
-                ->container($this->user)
-                ->about($this)
-                ->save();
+            FollowActivity::create($this->getTarget(), $this->user);
         }
 
         $this->trigger(Follow::EVENT_FOLLOWING_CREATED, new FollowEvent(['user' => $this->user, 'target' => $this->getTarget()]));

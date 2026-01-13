@@ -8,7 +8,7 @@
 
 namespace humhub\components;
 
-use humhub\modules\like\activities\Liked;
+use humhub\modules\like\activities\LikeActivity;
 use humhub\modules\like\models\Like;
 use Throwable;
 use Traversable;
@@ -598,7 +598,7 @@ class Migration extends \yii\db\Migration
 
         Yii::$app->db->createCommand($updateSql, [
             ':likeModelClass' => Like::class,
-            ':likedActivityClass' => Liked::class,
+            ':likedActivityClass' => LikeActivity::class,
         ])->execute();
     }
 

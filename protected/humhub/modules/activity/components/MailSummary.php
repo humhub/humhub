@@ -1,11 +1,5 @@
 <?php
 
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
-
 namespace humhub\modules\activity\components;
 
 use humhub\modules\activity\models\Activity;
@@ -21,12 +15,6 @@ use yii\base\Exception;
 use yii\db\Expression;
 use yii\helpers\Url;
 
-/**
- * MailSummary is send to the user with a list of new activities
- *
- * @since 1.2
- * @author Luke
- */
 class MailSummary extends Component
 {
     /**
@@ -137,39 +125,29 @@ class MailSummary extends Component
      */
     public function getActivities()
     {
-        $stream = new DashboardStreamAction('stream', Yii::$app->controller, [
-            'activity' => true,
-            'limit' => $this->maxActivityCount,
-            'user' => $this->user,
-        ]);
+        $query = Activity::find();
+        $query->addGlobalScope();
 
-        $stream->init();
-
-        $query = $stream->getStreamQuery()->query();
-        $query->andWhere(['>', 'content.created_at', $this->getLastSummaryDate()]);
+        $query->andWhere(['>', 'activity.created_at', $this->getLastSummaryDate()]);
 
         // Handle suppressed activities
         $suppressedActivities = $this->getSuppressedActivities();
         if (!empty($suppressedActivities)) {
-            $query->leftJoin('activity ax', 'ax.id=content.object_id');
-            $query->andWhere(['NOT IN', 'ax.class', $suppressedActivities]);
+            $query->andWhere(['NOT IN', 'activity.class', $suppressedActivities]);
         }
 
         // Handle defined content container mode
         $limitContainer = $this->getLimitContentContainers();
         if (!empty($limitContainer)) {
             $mode = ($this->getLimitContentContainerMode() == MailSummaryForm::LIMIT_MODE_INCLUDE) ? 'IN' : 'NOT IN';
-            $query->andWhere([$mode, 'content.contentcontainer_id', $limitContainer]);
+            $query->andWhere([$mode, 'activity.contentcontainer_id', $limitContainer]);
         }
 
         $activities = [];
-        foreach ($stream->getStreamQuery()->all() as $content) {
+        foreach ($query->all() as $record) {
             try {
-                $activity = $content->getPolymorphicRelation();
-                if ($activity instanceof Activity) {
-                    $activities[] = $activity->getActivityBaseClass();
-                }
-            } catch (Exception $ex) {
+                $activities[] = BaseActivity::factor($record);
+            } catch (\Exception $ex) {
                 Yii::error($ex->getMessage());
                 return [];
             }
@@ -235,7 +213,7 @@ class MailSummary extends Component
         $activityModule = static::getModule();
         $defaultLimitSpaces = $activityModule->settings->get('mailSummaryLimitSpaces', '');
         $limitSpaces = $activityModule->settings->user($this->user)->get('mailSummaryLimitSpaces', $defaultLimitSpaces);
-        foreach (explode(',', (string) $limitSpaces) as $guid) {
+        foreach (explode(',', (string)$limitSpaces) as $guid) {
             $contentContainer = ContentContainer::findOne(['guid' => $guid]);
             if ($contentContainer !== null) {
                 $spaces[] = $contentContainer->id;
@@ -262,7 +240,7 @@ class MailSummary extends Component
             return [];
         }
 
-        return explode(',', trim((string) $activitySuppress));
+        return explode(',', trim((string)$activitySuppress));
     }
 
     /**

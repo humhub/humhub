@@ -1,193 +1,82 @@
 <?php
 
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
-
 namespace humhub\modules\activity\components;
 
-use humhub\modules\content\components\ContentContainerActiveRecord;
-use yii\base\InvalidConfigException;
-use yii\base\Exception;
-use yii\db\ActiveRecord;
-use humhub\components\SocialActivity;
+use humhub\models\RecordMap;
 use humhub\modules\activity\models\Activity;
-use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
-use humhub\modules\content\models\Content;
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\interfaces\ContentProvider;
+use humhub\modules\content\models\ContentContainer;
+use humhub\modules\user\models\User;
+use Yii;
+use yii\base\BaseObject;
+use yii\base\InvalidArgumentException;
 
-/**
- * BaseActivity is the base class for all activities.
- *
- * @property Activity $record
- * @author luke
- */
-abstract class BaseActivity extends SocialActivity
+abstract class BaseActivity extends BaseObject
 {
-    /**
-     * Default content visibility of this Activity.
-     * @var int
-     */
-    public $visibility = Content::VISIBILITY_PRIVATE;
+    protected ContentContainer $contentContainer;
 
-    /**
-     * @inheritdoc
-     */
-    public $recordClass = Activity::class;
+    protected User $user;
 
-    /**
-     * @var bool
-     */
-    public $clickable = true;
+    protected string $createdAt;
 
-    /**
-     * @inheritdoc
-     */
-    public function init()
+    public function __construct(Activity $record, $config = [])
     {
-        if ($this->viewName == '') {
-            throw new InvalidConfigException('Missing viewName!');
-        }
+        parent::__construct($config);
 
-        parent::init();
+        $this->contentContainer = $record->contentContainer;
+        $this->user = $record->createdBy;
+        $this->createdAt = $record->created_at;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getViewParams($params = [])
-    {
-        $params['clickable'] = $this->clickable;
 
-        return parent::getViewParams($params);
-    }
-
-    /**
-     * Creates an activity model and determines the contentContainer/visibility
-     *
-     * @return static
-     * @throws Exception
-     */
-    public function create()
+    public static function create(ContentProvider|ContentContainerActiveRecord $target, ?User $user = null): bool
     {
-        if (empty($this->moduleId)) {
-            throw new InvalidConfigException('No moduleId given!');
+        $model = new Activity();
+        $model->class = static::class;
+        if ($target instanceof ContentProvider) {
+            $model->contentcontainer_id = $target->content->contentcontainer_id;
+            $model->content_id = $target->content->id;
+        } else {
+            $model->contentcontainer_id = $target->contentcontainer_id;
         }
 
-        if (!$this->source instanceof ActiveRecord) {
-            throw new InvalidConfigException('Invalid source object given!');
+        if ($target instanceof ContentAddonActiveRecord) {
+            $model->content_addon_record_id = RecordMap::getId($target);
         }
 
-        $this->saveModelInstance();
 
-        return $this;
+        if ($user === null && Yii::$app->user->isGuest) {
+            throw new InvalidArgumentException('Could not automatically determine if the user is guest.');
+        }
+
+        $model->created_by = $user ? $user->id : Yii::$app->user->identity->id;
+
+        return $model->save();
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function from($originator)
+    public static function factor(mixed $record): BaseActivity
     {
-        parent::from($originator);
-        $this->record->content->created_by = $originator->id;
-
-        return $this;
+        return new $record->class($record);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function about($source)
+    public function renderWeb()
     {
-        parent::about($source);
-        $this->record->content->visibility = $this->getContentVisibility();
-        if (!$this->record->content->container && $this->getContentContainer()) {
-            $this->container($this->getContentContainer());
-        }
-
-        return $this;
+        return Yii::$app->getView()->renderFile('@activity/views/layouts/web.php', array_merge(
+            $this->getViewParams(), ['message' => $this->getAsText()]
+        ));
     }
 
-    /**
-     * Builder function for setting ContentContainerActiveRecord
-     *
-     * @param ContentContainerActiveRecord $container
-     * @return BaseActivity
-     */
-    public function container($container)
+    protected function getViewParams()
     {
-        $this->record->content->container = $container;
-        return $this;
+        return [
+            'url' => '',
+            'contentContainer' => $this->contentContainer,
+            'createdAt' => $this->createdAt,
+            'user' => $this->user
+        ];
     }
 
-    /**
-     * Saves the underlying Activity model record.
-     *
-     * @throws InvalidConfigException
-     * @throws Exception
-     */
-    private function saveModelInstance()
-    {
-        $this->record->setPolymorphicRelation($this->source);
-        $this->record->content->visibility = $this->getContentVisibility();
-
-        if (!$this->record->content->container && $this->getContentContainer()) {
-            $this->record->content->container = $this->getContentContainer();
-        }
-
-        $this->record->content->created_by = $this->getOriginatorId();
-
-        if ($this->record->content->created_by == null) {
-            throw new InvalidConfigException('Could not determine originator for activity!');
-        }
-
-        if (!$this->record->save()) {
-            throw new Exception('Could not save activity!' . $this->record->getErrors());
-        }
-    }
-
-    /**
-     * Stores the activity in database
-     *
-     * @return bool
-     */
-    public function save()
-    {
-        return $this->record->save();
-    }
-
-    /**
-     * Returns the visibility of the content
-     *
-     * @return int the visibility
-     */
-    protected function getContentVisibility()
-    {
-        return $this->hasContent() ? $this->getContent()->visibility : $this->visibility;
-    }
-
-    /**
-     * Returns the user id of the originator of this activity
-     *
-     * @return int user id
-     */
-    protected function getOriginatorId()
-    {
-        if ($this->originator !== null) {
-            return $this->originator->id;
-        }
-
-        if ($this->source instanceof ContentActiveRecord) {
-            return $this->source->content->created_by;
-        }
-
-        if ($this->source instanceof ContentAddonActiveRecord) {
-            return $this->source->created_by;
-        }
-
-        return null;
-    }
 
 }

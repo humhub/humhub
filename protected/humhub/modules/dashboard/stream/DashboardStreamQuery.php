@@ -2,7 +2,6 @@
 
 namespace humhub\modules\dashboard\stream;
 
-use humhub\modules\activity\stream\ActivityStreamQuery;
 use humhub\modules\dashboard\Module;
 use Yii;
 

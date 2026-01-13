@@ -6,7 +6,7 @@
  */
 
 use humhub\helpers\Html;
-use humhub\modules\activity\widgets\ActivityStreamViewer;
+use humhub\modules\activity\widgets\ActivityBox;
 use humhub\modules\dashboard\widgets\DashboardContent;
 use humhub\modules\dashboard\widgets\Sidebar;
 use humhub\widgets\FooterMenu;
@@ -26,8 +26,7 @@ use humhub\widgets\FooterMenu;
         <?= Sidebar::widget([
             'widgets' => [
                 [
-                    ActivityStreamViewer::class,
-                    ['streamAction' => '/dashboard/dashboard/activity-stream'],
+                    ActivityBox::class, [],
                     ['sortOrder' => 150]
                 ]
             ]

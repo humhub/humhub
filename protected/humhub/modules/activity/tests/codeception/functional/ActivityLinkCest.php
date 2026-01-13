@@ -12,7 +12,7 @@ namespace activity\functional;
 use humhub\modules\activity\components\MailSummary;
 use humhub\modules\activity\models\MailSummaryForm;
 use humhub\modules\activity\tests\codeception\activities\TestActivity;
-use humhub\modules\content\activities\ContentCreated;
+use humhub\modules\content\activities\ContentCreatedActivity;
 use humhub\modules\post\models\Post;
 use humhub\modules\user\models\User;
 use activity\FunctionalTester;
@@ -28,7 +28,7 @@ class ActivityLinkCest
         (new MailSummaryForm([
             'user' => User::findOne(['id' => 2]),
             'interval' => MailSummary::INTERVAL_DAILY,
-            'activities' => [ContentCreated::class],
+            'activities' => [ContentCreatedActivity::class],
         ]))->save();
 
         $activity = TestActivity::instance()->about(Post::findOne(1))->create();
@@ -46,7 +46,7 @@ class ActivityLinkCest
         (new MailSummaryForm([
             'user' => User::findOne(['id' => 2]),
             'interval' => MailSummary::INTERVAL_DAILY,
-            'activities' => [ContentCreated::class],
+            'activities' => [ContentCreatedActivity::class],
         ]))->save();
 
         $activity = TestActivity::instance()->about(Post::findOne(1))->create();

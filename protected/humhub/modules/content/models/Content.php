@@ -16,7 +16,7 @@ use humhub\interfaces\ArchiveableInterface;
 use humhub\interfaces\EditableInterface;
 use humhub\interfaces\ViewableInterface;
 use humhub\libs\UUIDValidator;
-use humhub\modules\content\activities\ContentCreated as ActivitiesContentCreated;
+use humhub\modules\content\activities\ContentCreatedActivity as ActivitiesContentCreated;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerModule;
@@ -375,9 +375,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
             ->about($contentSource)
             ->sendBulk($userQuery);
 
-        ActivitiesContentCreated::instance()
-            ->from($this->createdBy)
-            ->about($contentSource)->save();
+        ActivitiesContentCreated::create($contentSource, $this->createdBy);
     }
 
     /**
@@ -1119,5 +1117,6 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     {
         $this->getStateService()->set($state, $options);
     }
+
 
 }

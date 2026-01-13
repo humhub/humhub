@@ -484,13 +484,14 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     public function afterStateChange(?int $newState, ?int $previousState): void
     {
         // Activities should be updated to same state as parent Record
+        /*
         $activitiesQuery = ActivityHelper::getActivitiesQuery($this);
         if ($activitiesQuery instanceof ActiveQuery) {
             foreach ($activitiesQuery->each() as $activity) {
-                /* @var Activity $activity */
                 $activity->content->getStateService()->update($newState);
             }
         }
+        */
     }
 
     /**

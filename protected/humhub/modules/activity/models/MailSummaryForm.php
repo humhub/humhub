@@ -134,8 +134,8 @@ class MailSummaryForm extends Model
     {
         $contents = [];
 
-        foreach (Module::getConfigurableActivities() as $activity) {
-            $contents[$activity::class] = $activity->getTitle() . ' - ' . $activity->getDescription();
+        foreach (Module::getConfigurableActivities() as $activityClass) {
+            $contents[$activityClass] = $activityClass::getTitle() . ' - ' . $activityClass::getDescription();
         }
 
         return $contents;
