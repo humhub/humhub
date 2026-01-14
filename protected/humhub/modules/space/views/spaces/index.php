@@ -7,6 +7,7 @@
 
 use humhub\assets\CardsAsset;
 use humhub\helpers\Html;
+use humhub\helpers\ThemeHelper;
 use humhub\modules\space\components\SpaceDirectoryQuery;
 use humhub\modules\space\widgets\SpaceDirectoryCard;
 use humhub\modules\space\widgets\SpaceDirectoryFilters;
@@ -29,7 +30,7 @@ CardsAsset::register($this);
 
 </div>
 
-<div class="container gx-0 overflow-x-hidden">
+<div class="container<?= ThemeHelper::isFluid() ? '-fluid' : '' ?> gx-0 overflow-x-hidden">
     <div class="row cards">
         <?php if (!$spaces->exists()): ?>
             <div class="col-lg-12">

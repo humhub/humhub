@@ -6,6 +6,7 @@
  */
 
 use humhub\helpers\Html;
+use humhub\helpers\ThemeHelper;
 use humhub\modules\ui\widgets\DirectoryFilters;
 use yii\helpers\Url;
 
@@ -17,7 +18,7 @@ use yii\helpers\Url;
 <?php if ($directoryFilters->paginationUsed) : ?>
     <?= Html::hiddenInput('page', '1'); ?>
 <?php endif; ?>
-<div class="container g-0 overflow-x-hidden">
+<div class="container<?= ThemeHelper::isFluid() ? '-fluid' : '' ?> g-0 overflow-x-hidden">
     <div class="row gy-2">
         <?= $directoryFilters->renderFilters() ?>
     </div>
