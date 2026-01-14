@@ -20,16 +20,14 @@ use humhub\widgets\bootstrap\Button;
  */
 
 ?>
-<div>
+<div class="clearfix">
     <?php if ($rebuildSearchRunning): ?>
-        <div class="alert alert-info"><?= Yii::t('AdminModule.information', 'Search index rebuild in progress.'); ?></div>
+        <div class="alert alert-info"><?= Yii::t('AdminModule.information', 'Search index rebuild in progress.') ?></div>
     <?php else: ?>
-        <div class="clearfix">
-            <?= Button::primary(Yii::t('AdminModule.information', 'Rebuild search index'))
-            ->link(['/admin/information/database', 'rebuildSearch' => 1])
-            ->options(['data-method' => 'post'])
-            ->right() ?>
-        </div>
+        <?= Button::primary(Yii::t('AdminModule.information', 'Rebuild search index'))
+        ->link(['/admin/information/database', 'rebuildSearch' => 1])
+        ->options(['data-method' => 'post'])
+        ->right() ?>
     <?php endif; ?>
 
     <?= Yii::t('AdminModule.information', 'The current main HumHub database name is ') ?>

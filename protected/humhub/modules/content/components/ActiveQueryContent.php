@@ -214,7 +214,7 @@ class ActiveQueryContent extends ActiveQuery
         $params = [];
 
         if (in_array(self::USER_RELATED_SCOPE_OWN_PROFILE, $scopes)) {
-            $conditions[] = 'contentcontainer.pk=:userId AND class=:userClass';
+            $conditions[] = 'contentcontainer.pk=:userId AND contentcontainer.class=:userClass';
             $params[':userId'] = $user->id;
             $params[':userClass'] = User::class;
         }

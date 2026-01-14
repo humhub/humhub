@@ -557,7 +557,10 @@ class ConfigController extends Controller
 
     public function actionFinish()
     {
-        if (Yii::$app->settings->get('secret') == "") {
+        Yii::$app->settings->reload();
+        $secret = Yii::$app->settings->get('secret');
+
+        if (empty($secret)) {
             Yii::$app->settings->set('secret', UUID::v4());
         }
 
@@ -569,9 +572,11 @@ class ConfigController extends Controller
      */
     public function actionFinished()
     {
-        // Should not happen
-        if (Yii::$app->settings->get('secret') == "") {
-            throw new HttpException("Finished without secret setting!");
+        Yii::$app->settings->reload();
+        $secret = Yii::$app->settings->get('secret');
+
+        if (empty($secret)) { // Should not happen
+            throw new HttpException('Finished without secret setting!');
         }
 
         Yii::$app->settings->set('defaultTimeZone', Yii::$app->timeZone);

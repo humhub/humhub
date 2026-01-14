@@ -11,6 +11,7 @@ namespace humhub\helpers;
 use Exception;
 use humhub\components\Theme;
 use humhub\modules\admin\models\forms\DesignSettingsForm;
+use RuntimeException;
 use ScssPhp\ScssPhp\Compiler;
 use ScssPhp\ScssPhp\Exception\SassException;
 use ScssPhp\ScssPhp\OutputStyle;
@@ -107,7 +108,7 @@ class ThemeHelper
             $theme = Yii::createObject(ArrayHelper::merge([
                 'class' => Theme::class,
                 'basePath' => $path,
-                'name' => basename((string) $path),
+                'name' => basename((string)$path),
             ], $options));
         } catch (InvalidConfigException $e) {
             Yii::error('Could not get theme by path "' . $path . '" - Error: ' . $e->getMessage());
@@ -139,14 +140,21 @@ class ThemeHelper
     /**
      * @param Theme $theme
      * @return array
-     * @throws Exception
+     * @throws SassException if syntax error in the custom SCSS
+     * @throws RuntimeException if the custom SCSS is malformed
      */
     public static function getAllVariables(Theme $theme): array
     {
+        // Get variables from theme files
         $variables = ScssHelper::getVariables(Yii::getAlias('@webroot-static/scss/variables.scss'));
         foreach (array_reverse(static::getThemeTree($theme)) as $treeTheme) {
             $variables = ArrayHelper::merge($variables, ScssHelper::getVariables(ScssHelper::getVariableFile($treeTheme)));
         }
+
+        // Overwrite with custom variables from DesignSettingsForm
+        $settingsManager = Yii::$app->settings; // Don't use `new DesignSettingsForm()` as it would make an infinite loop
+        [$customVariables, $customMaps, $otherCustomScss] = ScssHelper::extractVariablesAndMaps($settingsManager->get('themeCustomScss'));
+        $variables = ArrayHelper::merge($variables, ScssHelper::parseVariables($customVariables));
 
         return ScssHelper::updateLinkedScssVariables($variables);
     }
@@ -223,44 +231,55 @@ class ThemeHelper
      * @return true|string true if successfully compiled, string if error occurred
      * @throws \yii\base\Exception
      */
-    public static function buildCss(?Theme $theme = null): bool|string
+    public static function buildCss(?Theme $theme = null, bool $includeCustomScss = true): bool|string
     {
         $theme ??= Yii::$app->view->theme;
         $treeThemes = static::getThemeTree($theme);
         $compiler = new Compiler();
         $designSettingsForm = new DesignSettingsForm();
 
+        try {
+            [$customVariables, $customMaps, $otherCustomScss] = $includeCustomScss
+                ? ScssHelper::extractVariablesAndMaps($designSettingsForm->themeCustomScss)
+                : ['', '', ''];
+        } catch (SassException|RuntimeException $e) {
+            return static::logAndGetError('Error while compiling the custom SCSS code: ' . $e->getMessage());
+        }
+
         // Compress CSS
         $compiler->setOutputStyle(OutputStyle::COMPRESSED);
 
         // Set import paths
-        $compiler->setImportPaths(Yii::getAlias('@npm/bootstrap/scss'));
+        $compiler->setImportPaths(Yii::getAlias('@vendor/twbs/bootstrap/scss'));
         $compiler->addImportPath(Yii::getAlias('@webroot-static/scss'));
         foreach ($treeThemes as $treeTheme) {
             $compiler->addImportPath($treeTheme->getBasePath() . '/scss');
         }
 
         // Import Bootstrap functions
-        $imports[] = Yii::getAlias('@npm/bootstrap/scss/functions');
+        $imports[] = Yii::getAlias('@vendor/twbs/bootstrap/scss/functions');
 
         // Import variables child theme first, because they have the !default flag
         foreach ($treeThemes as $treeTheme) {
             $imports[] = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'variables';
         }
         $imports[] = Yii::getAlias('@webroot-static/scss/variables');
-        $imports[] = Yii::getAlias('@npm/bootstrap/scss/variables');
+        $imports[] = Yii::getAlias('@vendor/twbs/bootstrap/scss/variables');
 
         // Import maps
-        $imports[] = Yii::getAlias('@npm/bootstrap/scss/maps');
+        $imports[] = Yii::getAlias('@vendor/twbs/bootstrap/scss/maps');
         $imports[] = Yii::getAlias('@webroot-static/scss/maps');
 
         // Import Bootstrap files
-        $imports[] = Yii::getAlias('@npm/bootstrap/scss/bootstrap');
+        $imports[] = Yii::getAlias('@vendor/twbs/bootstrap/scss/bootstrap');
 
         // Import all other files, in reverse order (parent theme first)
         $imports[] = Yii::getAlias('@webroot-static/scss/build');
         foreach (array_reverse($treeThemes) as $treeTheme) {
-            $imports[] = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'build';
+            $buildFile = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'build';
+            if (file_exists($buildFile . '.scss')) {
+                $imports[] = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'build';
+            }
         }
 
         // Set source map
@@ -269,8 +288,8 @@ class ThemeHelper
         $compiler->setSourceMapOptions([
             'sourceMapURL' => './theme.map',
             'sourceMapFilename' => 'theme.css',
-            'sourceRoot' => $theme->name === 'HumHub' ? '../../../static/scss/' : '../',
-            'sourceMapBasepath' => $theme->name === 'HumHub' ? Yii::getAlias('@webroot-static/scss') : $theme->getBasePath(),
+            'sourceRoot' => $theme->name === Theme::CORE_THEME_NAME ? '../../../static/scss/' : '../',
+            'sourceMapBasepath' => $theme->name === Theme::CORE_THEME_NAME ? Yii::getAlias('@webroot-static/scss') : $theme->getBasePath(),
         ]);
 
         // Define the output files
@@ -321,8 +340,10 @@ class ThemeHelper
             $scssSource .= '$dark: ' . $designSettingsForm->themeDarkColor . ';' . PHP_EOL;
         }
         $scssSource
-            .= '@import "' . implode('", "', $imports) . '";' . PHP_EOL
-            . $designSettingsForm->themeCustomScss;
+            .= $customVariables . PHP_EOL
+            . $customMaps . PHP_EOL
+            . '@import "' . implode('", "', $imports) . '";' . PHP_EOL
+            . $otherCustomScss;
 
         // Compile to CSS
         try {
@@ -339,7 +360,7 @@ class ThemeHelper
                 return static::logAndGetError('Could not write to file ' . $mapFilePath);
             }
         } catch (SassException $e) {
-            return static::logAndGetError($e->getMessage());
+            return static::logAndGetError('Saas compiler error: ' . $e->getMessage());
         }
 
         return true;

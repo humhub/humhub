@@ -128,8 +128,9 @@ class ArchivedCest
 
         // Enable filter panel on Dashboard
         $I->amOnRoute(['/admin/setting/basic']);
-        $I->wait(2);
-        $I->click('[data-action-click=clickCollab]');
+        $I->waitForText('Dashboard');
+        $I->click('[data-bs-toggle=collapse]');
+        $I->waitForText('Show user profile post form on dashboard');
         $I->click('#basicsettingsform-dashboardshowprofilepostform');
         $I->scrollToBottom();
         $I->wait(1);

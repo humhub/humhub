@@ -28,7 +28,7 @@ use yii\data\Pagination;
         <?php endif; ?>
     </div>
 <?php if (!empty($notifications)): ?>
-    <div style="text-align: center;">
+    <div class="pagination-container">
         <?= ($pagination != null) ? LinkPager::widget(['pagination' => $pagination]) : ''; ?>
     </div>
 <?php endif; ?>

@@ -14,8 +14,8 @@ return [
         'view' => [
             'theme'
             => [
-                'name' => 'HumHub',
-                'basePath' => '@webroot/themes/HumHub',
+                'name' => \humhub\components\Theme::CORE_THEME_NAME,
+                'basePath' => '@webroot/themes/' . \humhub\components\Theme::CORE_THEME_NAME,
             ],
         ],
         'queue' => [

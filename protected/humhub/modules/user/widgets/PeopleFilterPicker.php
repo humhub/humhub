@@ -4,9 +4,9 @@ namespace humhub\modules\user\widgets;
 
 use humhub\modules\ui\form\widgets\BasePicker;
 use humhub\modules\user\components\PeopleQuery;
-use humhub\modules\user\models\User;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\ProfileField;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\db\Expression;
@@ -47,7 +47,8 @@ class PeopleFilterPicker extends BasePicker
         }
         if (empty($this->defaultResults) && $profileField->internal_name != 'country') {
             $definition = $profileField->fieldType->getFieldFormDefinition();
-            if (isset($definition[$profileField->internal_name]['type']) && $definition[$profileField->internal_name]['type'] === 'dropdownlist') {
+            $type = $definition[$profileField->internal_name]['type'] ?? null;
+            if (in_array($type, ['dropdownlist', 'checkboxlist'], true)) {
                 $this->defaultResults = $definition[$profileField->internal_name]['items'];
             }
         }

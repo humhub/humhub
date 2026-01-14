@@ -2,12 +2,11 @@
 
 namespace humhub\modules\ui\mail;
 
+use humhub\helpers\MailStyleHelper;
+
 /**
- * Some default style definition
- * @package modules\ui\mail
- * @since 1.4
+ * @deprecated since 1.18, use MailStyle instead
  */
-class DefaultMailStyle
+class DefaultMailStyle extends MailStyleHelper
 {
-    public const DEFAULT_FONT_FAMILY = "'Open Sans',Arial,Tahoma,Helvetica,sans-serif";
 }

@@ -1,8 +1,68 @@
 HumHub Changelog
 ================
 
-1.18.0-beta.5 (Unreleased)
-----------------------------------
+1.18.0-beta.7 (Unreleased)
+-------------------------------
+- Fix #7921: Alert widget broken since beta.6
+- Fix #7925: Space Members dropdown menu
+- Fix #7924: Admin Pending Approvals buttons layout
+- Fix #7928: Top menu: long usernames overlap notification buttons for md screen sizes
+
+1.18.0-beta.6 (January 8, 2026)
+-------------------------------
+- Enh #7834: Login Screen: revert container width to 300px when less than 2 SSO buttons and remove Language Chooser label
+- Fix #7843: Allow child theme not to have a build.scss file (only variables.scss is mandatory)
+- Fix #7842: Fixed php deprecation warning in `ConfigHelper`
+- Enh #7836: Improved `required` and `trim` validators
+- Fix #7847: Fixed missing translations in `Admin/People` page
+- Enh #7851: New admin module option for group manager inheritance
+- Fix #7854: Tour for Spaces if no visible and active Space
+- Fix #7850: Fix required validator to not remove binary content
+- Fix #7862: Fix redirect loop on `ErrorAction`
+- Fix #7860: Fix type error in installer
+- Enh #7852: New `humhub\helpers\ScssHelper::getColorContrast()` for text color in emails, to contrast with the button background when customized
+- Enh #7852: Allow overwriting Sass variables and maps via the "Custom SCSS" field of the Appearance form and this custom value via `humhub\components\Theme::variable()`
+- Chg #7852: Font family set for emails
+- Enh #7852: Unit tests for `humhub\helpers\ScssHelper` class
+- Fix #7861: Post attachments container width
+- Ehn #7864: Rename proxy settings
+- Fix #7867: ScssHelper variable extractors for code with parentheses, and add more tests
+- Fix #7865: In mail notifications, use auto-contrast color in header, and increase font weight in buttons if light background
+- Fix #7868: Add a minimal fallback CSS in case of CSS compilation issue
+- Fix #7872: Email inline style from Sass variables, e.g. when overwriting `$mail-font-family` in the Custom SCSS field
+- Fix #7873: Fix `required` validator
+- Fix #7875: Fix theme color default settings after initial installation
+- Fix #7876: Support for .mjs (ES modules)
+- Chg #7878: Registration form definitions now requires to use the `EVENT_AFTER_SET_FORM` instead of `EVENT_AFTER_INIT` 
+- Enh #7883: Allow CheckboxList Profile Field Type to be used "as Directory filter"
+- Fix #7884: On small screen, the modal box is not centered
+- Fix #7885: Layout padding on small screens
+- Fix #7886: View using the Login layout (auth, registration, must-change-password and password-recovery): Styling, Back button, remove inline CSS, add unique ID
+- Fix #7887: Delete Account Spaces List
+- Fix #7888: Activate License link styling
+- Fix #7888: User/Space List Modals
+- Fix #7889: Remove btn class from sub-menu dropdowns and fix extra space after the icon
+- Fix #7890: Modal moves the topbar to the right when it opens
+- Fix #7895: Button styling when in Input form field
+- Fix #7896: Top bar notification block not centered
+- Fix #7897: Admin Advanced OEmbeded styling
+- Fix #7900: About HumHub Information page styling
+- Fix #7901: Database Information page styling
+- Fix #7903: Admin User Export button group spacing and missing line in the table header
+- Fix #7904: Logging admin page styling
+- Enh #7904: New Sass text color contrast variables, `$text-color-contrast` is now deprecated
+- Fix #7902: Community Theme - Container Paddings in different Breakpoints
+- Fix #7902: Marketplace update colors
+- Fix #7910: `.row` HTML elements without `.container` overflow
+- Fix #7907: In the Profile, allow unlimited selections for Checkbox Lists
+- Fix #7906: Comment menu disappear when the cursor moves out the comment & refactor _comment.scss
+- Enh #7911: Use BS5 for form fieldset
+- Enh #7914: Show "Group" column on the pending user approvals list
+- Fix #7915: Invalid multiple inputs in Content form
+- Fix #7918: Fix `transport type` to be readonly/disabled when fixed in mailer settings
+
+1.18.0-beta.5 (November 13, 2025)
+---------------------------------
 - Enh #7719: Make Add/Remove Group Member optional for group managers
 - Fix #7720: Saving the new Mobile App admin form when no whitelisted domain
 - Fix #7733: Ignore mailer `TRANSPORT_CONFIG` option in `ComponentLoader`
@@ -25,6 +85,7 @@ HumHub Changelog
 - Fix #7759: Flush content search cache after update a record
 - Fix #7760: Content form menu text color same as background
 - Fix #7764: File Handler Dropdown menu items styling
+- Enh #7768: Improved `Pretty URL`s detection and guidance during installation
 - Fix #7767: Added PK in `content_fulltext` for Percona-XtraDB-Cluster installations
 - Fix #7771: Disable make private space as default for new users on space creating
 - Enh #7770: Implements Button `disabled()`
@@ -35,9 +96,21 @@ HumHub Changelog
 - Fix #7784: PHP 8.4 compatibility when compiling SCSS, move all Sass mixins to the `_mixins.scss` file and move the `@if not $prev-filename` condition from `build.scss` to the related file
 - Fix #7779: Improved value formatting in `SpreadsheetExport``
 - Fix #7789: On the profile page, the "Followers" and "Following" widgets cannot be minimized
+- Enh #7793: Improve access rules for create space controller
 - Enh #7785: Auto text color (black or white) for buttons based on the background color, darkening the success color to match WCAG minimum contrast while keeping white text color
 - Enh #7801: Auto contrast text color for other components, and add `--hh-{bs-color}-contrast` CSS variables (see MIGRATE-BS5.md)
+- Enh #7809: New virtual profile field "Group memberships"
 - Fix #7808: Select fields are missing border radius
+- Enh #7811: Installer enhancements
+- Enh #7810: Apply AutoContrast to Checkbox and Select Choice
+- Enh #7813: Add more auto text colors for Primary and Accent light color
+- Enh #7822: When saving a URL profile field type, append the Link Prefix (e.g. `https://`)
+- Fix #7824: On mobile, display list group items side by side
+- Enh #7828: Improve Installer Cron Page & Selftest
+- Enh #7827: Text Area Profile field type: display line breaks
+- Fix #7826: Comments context menu button is missing margin
+- Fix #7821: Fix FilterPicker UI Issues
+- Enh #7831: Mercure push driver
 
 1.18.0-beta.4 (September 19, 2025)
 ----------------------------------
@@ -136,6 +209,21 @@ HumHub Changelog
 - Fix #7658: Fix loader on attach image to RichText field
 - Enh #7661: Parent groups
 - Enh #7662: In buttons, add right margin to the icon, so that the space char between the icon and the label is no longer needed (see MIGRATE-BS5.md -> ## Buttons)
+
+1.17.5 (December 11, 2025)
+--------------------------
+- Fix #7835: Truncate application name in the theme header
+- Fix #7841: Send user approval notification only to active group managers
+- Fix #7891: Edge shows blank home page
+
+1.17.4 (November 11, 2025)
+--------------------------
+- Fix #7734: Add nonce for script from OEmbed content
+- Fix #7750: Mail summary may not sent for new users on higher intervals
+- Fix #7796: Administrator group cannot have group managers
+- Fix #7803: Fix number of pending space members
+- Enh #7806: New live event to prevent PJAX on the next click after theme changing
+- Fix #7814: Fix meta searching
 
 1.17.3 (July 17, 2025)
 ----------------------

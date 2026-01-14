@@ -114,7 +114,7 @@ class Modal extends \yii\bootstrap5\Modal
      */
     public static self $stackForDialog;
 
-    protected function initOptions()
+    protected function initOptions(): void
     {
         $this->options['data-bs-backdrop'] = ($this->closable && $this->backdrop) ? 'true' : 'static';
         $this->options['data-bs-keyboard'] = ($this->closable && $this->keyboard) ? 'true' : 'false';
@@ -147,19 +147,19 @@ class Modal extends \yii\bootstrap5\Modal
         parent::initOptions();
     }
 
-    public function run()
+    public function run(): string
     {
         if ($this->isHumHubDialog === true) {
-            echo $this->renderDialogBegin() . "\n"
+            $this->registerPlugin('modal');
+            return $this->renderDialogBegin() . "\n"
                 . $this->renderHeader() . "\n"
                 . $this->renderBodyBegin() . "\n"
                 . $this->body . "\n"
                 . $this->renderBodyEnd() . "\n"
                 . $this->renderFooter() . "\n"
                 . $this->renderDialogEnd();
-            $this->registerPlugin('modal');
         } else {
-            parent::run();
+            return parent::run();
         }
     }
 
@@ -172,7 +172,7 @@ class Modal extends \yii\bootstrap5\Modal
     /**
      * {@inheritDoc}
      */
-    public function init()
+    public function init(): void
     {
         if ($this->isHumHubDialog) {
             $this->trigger(self::EVENT_INIT);

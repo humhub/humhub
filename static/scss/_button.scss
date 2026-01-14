@@ -13,6 +13,7 @@
         --bs-btn-border-radius: 3px;
 
         white-space: nowrap;
+        transition: color 0.3s, background-color 0.3s, border-color 0.3s;
 
         &:not(.btn-icon-only) {
             i.fa {
@@ -50,13 +51,34 @@
 
     .btn-group > .btn {
         --bs-btn-padding-x: 0.8rem;
+
+        &.btn-icon-only {
+            --bs-btn-padding-x: 0.4rem;
+        }
     }
 
     .btn-group-sm > .btn {
         --bs-btn-padding-x: 0.4rem;
+
+        &.btn-icon-only {
+            --bs-btn-padding-x: 0.3rem;
+        }
     }
 
     .btn-group-lg > .btn {
         --bs-btn-padding-x: 1.2rem;
+
+        &.btn-icon-only {
+            --bs-btn-padding-x: 0.8rem;
+        }
+    }
+
+    // Outline buttons: use black color for texts if insufficient contrast relatively to background color main, as the background color is transparent
+    @each $color, $value in $theme-colors {
+        .btn-outline-#{$color} {
+            @if contrast-ratio($background-color-main, $value) < $min-contrast-ratio {
+                color: var(--text-color-highlight);
+            }
+        }
     }
 }

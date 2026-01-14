@@ -32,6 +32,7 @@ class Registration extends HForm
      * @event \yii\web\UserEvent triggered after successful registration.
      */
     public const EVENT_AFTER_REGISTRATION = 'afterRegistration';
+    public const EVENT_AFTER_SET_FORM = 'afterSetForm';
 
     /**
      * @var bool|null require user approval by admin after registration.
@@ -239,15 +240,11 @@ class Registration extends HForm
         return $status;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function submitted($buttonName = "")
+    public function setForm(): void
     {
         $this->setFormDefinition();
         $this->setModels();
-
-        return parent::submitted($buttonName);
+        $this->trigger(static::EVENT_AFTER_SET_FORM);
     }
 
     /**

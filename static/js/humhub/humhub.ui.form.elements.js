@@ -77,54 +77,40 @@ humhub.module('ui.form.elements', function (module, require, $) {
 
     object.inherits(FormFieldsCollapsible, Widget);
 
-    FormFieldsCollapsible.component = 'humhub-form-field-collapsible';
-    FormFieldsCollapsible.prototype.validate = function () {
-        return this.$.is('div');
-    };
-
-    FormFieldsCollapsible.prototype.clickCollab = function (evt) {
-        if (this.$.find('fieldset').is(":visible")) {
-            this.hide();
-        } else {
-            this.show();
-        }
-    };
-
     FormFieldsCollapsible.prototype.init = function () {
-        if (!this.$.attr('tabindex')) {
-            this.$.attr('tabindex', 0);
+        if (this.$.find('.error, .is-invalid').length > 0) {
+            this.$.find('.form-collapsible-fields-label').removeClass('collapsed');
+            this.$.find('fieldset').addClass('show');
         }
+    };
 
-        var that = this;
-        this.$.on('keyup', function (e) {
-            if(e.which === 9 || !that.$.is(":focus")){
-                return;
+    const validate = {
+        trim: function($form, attribute, options, value) {
+            var $input = $form.find(attribute.input);
+            if ($input.is(':checkbox, :radio')) {
+                return value;
             }
 
-            that.clickCollab();
-        });
+            value = $input.val();
+            if (!options.skipOnEmpty || !yii.validation.isEmpty(value)) {
+                value = value.replace(/^[\p{Z}\s]+|[\p{Z}\s]+$/gu, ' ').trim();
+                $input.val(value);
+            }
 
-        if (this.$.find('.error, .is-invalid').length > 0) {
-            this.show();
+            return value;
+        },
+        required: function(value, messages, options) {
+            if ((typeof value == 'string' || value instanceof String) && !value.replace(/[\p{Z}\s]+/gu, '').length) {
+                value = '';
+            }
+
+            return yii.validation.required(value, messages, options)
         }
-    };
-
-    FormFieldsCollapsible.prototype.hide = function () {
-        this.$.find('fieldset').attr("aria-hidden","true");
-        this.$.find('fieldset').attr("aria-expanded","false");
-        this.$.addClass('closed');
-        this.$.removeClass('opened');
-    };
-
-    FormFieldsCollapsible.prototype.show = function () {
-        this.$.find('fieldset').attr("aria-hidden","false");
-        this.$.find('fieldset').attr("aria-expanded","true");
-        this.$.addClass('opened');
-        this.$.removeClass('closed');
-    };
+    }
 
     module.export({
         init: init,
+        validate: validate,
         sortOrder: 100,
         toggleTimeZoneInput: toggleTimeZoneInput,
         timeZoneSelected: timeZoneSelected,

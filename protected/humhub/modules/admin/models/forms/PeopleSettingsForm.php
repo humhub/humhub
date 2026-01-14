@@ -121,7 +121,7 @@ class PeopleSettingsForm extends Model
                 $this->detailOptions[$profileFieldCategory->title] = [];
             }
 
-            $this->detailOptions[$profileFieldCategory->title][$profileField->internal_name] = $profileField->title . ($profileField->visible ? '' : ' (' . Yii::t('AdminModule.user', 'Not visible') . ')');
+            $this->detailOptions[$profileFieldCategory->title][$profileField->internal_name] = Yii::t('UserModule.profile', $profileField->title) . ($profileField->visible ? '' : ' (' . Yii::t('AdminModule.user', 'Not visible') . ')');
         }
 
         return $this->detailOptions;

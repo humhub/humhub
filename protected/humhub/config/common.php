@@ -8,6 +8,7 @@
 
 use humhub\components\i18n\PhpMessageSource;
 
+// TODO: Remove this line, should be already handled by BootstrapService
 Yii::setAlias('@humhub', $_ENV['HUMHUB_ALIASES__HUMHUB'] ?? realpath(__DIR__ . '/../'));
 
 // Workaround: PHP 7.3 compatible ZF2 ArrayObject class
@@ -52,7 +53,7 @@ $logTargetConfig = [
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.18.0-beta.4',
+    'version' => '1.18.0-beta.7',
     'minRecommendedPhpVersion' => '8.2',
     'minSupportedPhpVersion' => '8.2',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
@@ -162,7 +163,7 @@ $config = [
             'class' => \humhub\components\View::class,
             'theme' => [
                 'class' => \humhub\components\Theme::class,
-                'name' => 'HumHub',
+                'name' => \humhub\components\Theme::CORE_THEME_NAME,
             ],
         ],
         'db' => [
@@ -302,6 +303,12 @@ $config = [
         ],
         'enablePjax' => true,
         'dailyCronExecutionTime' => '18:00',
+    ],
+    'container' => [
+        'definitions' => [
+            \yii\validators\RequiredValidator::class => \humhub\components\validators\RequiredValidator::class,
+            \yii\validators\TrimValidator::class => \humhub\components\validators\TrimValidator::class,
+        ],
     ],
 ];
 

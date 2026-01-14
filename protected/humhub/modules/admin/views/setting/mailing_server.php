@@ -11,6 +11,8 @@ use yii\web\View;
 /* @var $model MailingSettingsForm */
 /* @var SettingsManager $settings */
 
+$mailerTransportTypeIsFixed = $settings->isFixed('mailerTransportType');
+
 ?>
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
 
@@ -20,46 +22,49 @@ use yii\web\View;
 
 <?= $form->field($model, 'systemEmailName')->textInput(['readonly' => $settings->isFixed('mailerSystemEmailName')]) ?>
 
-<div class="row">
-    <div class="col-lg-6">
-        <?= $form->field($model, 'systemEmailAddress')->textInput(['readonly' => $settings->isFixed('mailerSystemEmailAddress')]) ?>
+<div class="container gx-0 overflow-x-hidden">
+    <div class="row">
+        <div class="col-lg-6">
+            <?= $form->field($model, 'systemEmailAddress')->textInput(['readonly' => $settings->isFixed('mailerSystemEmailAddress')]) ?>
+        </div>
+        <div class="col-lg-6">
+            <?= $form->field($model, 'systemEmailReplyTo')->textInput(['readonly' => $settings->isFixed('mailerSystemEmailReplyTo')]) ?>
+        </div>
     </div>
-    <div class="col-lg-6">
-        <?= $form->field($model, 'systemEmailReplyTo')->textInput(['readonly' => $settings->isFixed('mailerSystemEmailReplyTo')]) ?>
-    </div>
-
 </div>
 
 <?= $form->field($model, 'showNameInsteadOfLogo')->checkbox() ?>
 
-<?= $form->field($model, 'transportType')->dropDownList($model->getTransportTypes(), ['readonly' => $settings->isFixed('mailerTransportType')]) ?>
+<?= $form->field($model, 'transportType')->dropDownList($model->getTransportTypes(), ['disabled' => $mailerTransportTypeIsFixed, 'readonly' => $mailerTransportTypeIsFixed]) ?>
 
 <div id="smtpOptions">
 
-    <div class="row">
-        <div class="col-lg-8">
-            <?= $form->field($model, 'hostname')->textInput(['readonly' => $settings->isFixed('mailerHostname')]) ?>
+    <div class="container gx-0 overflow-x-hidden">
+        <div class="row">
+            <div class="col-lg-8">
+                <?= $form->field($model, 'hostname')->textInput(['readonly' => $settings->isFixed('mailerHostname')]) ?>
+            </div>
+            <div class="col-lg-4">
+                <?= $form->field($model, 'port')->textInput(['readonly' => $settings->isFixed('mailerPort')]) ?>
+            </div>
         </div>
-        <div class="col-lg-4">
-            <?= $form->field($model, 'port')->textInput(['readonly' => $settings->isFixed('mailerPort')]) ?>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-lg-6">
-            <?= $form->field($model, 'useSmtps')->checkbox() ?>
+        <div class="row">
+            <div class="col-lg-6">
+                <?= $form->field($model, 'useSmtps')->checkbox() ?>
+            </div>
+            <div class="col-lg-6" id="encryptionOptions">
+                <?= $form->field($model, 'allowSelfSignedCerts')->checkbox() ?>
+            </div>
         </div>
-        <div class="col-lg-6" id="encryptionOptions">
-            <?= $form->field($model, 'allowSelfSignedCerts')->checkbox() ?>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-lg-6">
-            <?= $form->field($model, 'username')->textInput(['readonly' => $settings->isFixed('mailerUsername')]) ?>
-        </div>
-        <div class="col-lg-6">
-            <?= $form->field($model, 'password')->textInput(['readonly' => $settings->isFixed('mailerPassword')])->passwordInput() ?>
+        <div class="row">
+            <div class="col-lg-6">
+                <?= $form->field($model, 'username')->textInput(['readonly' => $settings->isFixed('mailerUsername')]) ?>
+            </div>
+            <div class="col-lg-6">
+                <?= $form->field($model, 'password')->textInput(['readonly' => $settings->isFixed('mailerPassword')])->passwordInput() ?>
+            </div>
         </div>
     </div>
 </div>

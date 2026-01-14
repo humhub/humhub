@@ -22,6 +22,7 @@ use humhub\modules\content\components\ContentActiveRecord;
         ]) ?>
 
         <?php foreach ($comments as $comment) : ?>
+            <hr class="comment-separator">
             <?= Comment::widget([
                 'comment' => $comment,
                 'additionalClass' => ($currentCommentId == $comment->id ? 'comment-current' : ''),

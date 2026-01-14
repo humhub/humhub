@@ -2,7 +2,6 @@
 
 use humhub\helpers\Html;
 use humhub\modules\admin\controllers\ApprovalController;
-use humhub\modules\admin\grid\ApprovalActionColumn;
 use humhub\modules\admin\models\forms\ApproveUserForm;
 use humhub\modules\admin\models\UserApprovalSearch;
 use humhub\modules\admin\permissions\ManageUsers;
@@ -10,9 +9,11 @@ use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
+use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\GridView;
 use yii\data\ActiveDataProvider;
+use yii\grid\ActionColumn;
 
 /** @var $searchModel UserApprovalSearch */
 /** @var $dataProvider ActiveDataProvider */
@@ -23,22 +24,46 @@ $columns = [
     [
         'header' => Html::checkbox('select-all'),
         'format' => 'raw',
-        'value' => static fn(User $model) => Html::checkbox('ids[]', false, ['id' => 'user-select-' . $model->id, 'value' => $model->id])
+        'value' => fn(User $model) => Html::checkbox('ids[]', false, ['id' => 'user-select-' . $model->id, 'value' => $model->id]),
     ],
     ['class' => ImageColumn::class],
     ['class' => DisplayNameColumn::class],
     'email',
-    'originator.username',
 ];
+
+if (Yii::$app->getModule('user')->settings->get('auth.showRegistrationUserGroup')) {
+    $columns[] = [
+        'label' => Yii::t('UserModule.base', 'Group'),
+        'format' => 'raw',
+        'value' => fn(User $model) => Badge::accent($model->getGroups()->one()?->name)
+            ->tooltip($model->originator
+                ? Yii::t('UserModule.base', 'Invited by {userName}', ['userName' => $model->originator->username])
+                : null),
+    ];
+} else {
+    $columns[] = 'originator.username';
+}
 foreach ($profileFieldsColumns as $profileField) {
     $columns[] = [
         'attribute' => 'profile.' . $profileField->internal_name,
-        'value' => static fn(User $model) => $profileField->getUserValue($model)
+        'value' => fn(User $model) => $profileField->getUserValue($model),
     ];
 }
-$columns[] = 'created_at';
 $columns[] = [
-    'class' => ApprovalActionColumn::class,
+    'label' => Yii::t('UserModule.base', 'Created at'),
+    'attribute' => 'created_at',
+    'format' => 'raw',
+    'value' => fn(User $model) => Html::tag('span', Yii::$app->formatter->asDate($model->created_at, 'short'), [
+        'data-bs-title' => Yii::$app->formatter->asDatetime($model->created_at),
+        'data-bs-toggle' => 'tooltip',
+    ]),
+];
+$columns[] = [
+    'class' => ActionColumn::class,
+    'template' => '
+        <div class="d-grid d-md-flex justify-content-end gap-1" style="grid-template-columns: repeat(2, 1fr);">
+            {view} {sendMessage} {update} {delete}
+        </div>', // On mobile, display buttons as a grid (2 buttons on each line)
     'buttons' => [
         'view' => fn($url, $model) => Yii::$app->user->can(ManageUsers::class)
             ? Button::light()
@@ -110,12 +135,10 @@ $columns[] = [
 
     <?= Html::beginForm(['bulk-actions'], 'post', ['id' => 'admin-approval-form']) ?>
 
-    <?=
-    GridView::widget([
+    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => $columns,
-    ]);
-    ?>
+    ]) ?>
 
     <br>
     <?= Html::button(Yii::t('AdminModule.user', 'Email all selected'), [

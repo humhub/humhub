@@ -1,7 +1,6 @@
 humhub.module('comment', function (module, require, $) {
     var Content = require('content').Content;
     var Widget = require('ui.widget').Widget;
-    var object = require('util').object;
     var client = require('client');
     var loader = require('ui.loader');
     var additions = require('ui.additions');
@@ -206,7 +205,6 @@ humhub.module('comment', function (module, require, $) {
     Comment.prototype.loader = function ($show) {
         var $loader = this.$.find('.comment-entry-loader:first');
         if ($show === false) {
-            this.$.find('.preferences:first').show();
             loader.reset($loader);
             return;
         }
@@ -218,8 +216,6 @@ humhub.module('comment', function (module, require, $) {
                 width: '60px'
             }
         });
-
-        this.$.find('.preferences:first').hide();
     };
 
     Comment.prototype.showBlocked = function (evt) {
@@ -259,25 +255,6 @@ humhub.module('comment', function (module, require, $) {
         }).catch(function (err) {
             module.log.error(err, true);
             loader.unset(evt.$trigger);
-        });
-    };
-
-    var init = function () {
-        $(document).on('mouseover', '.comment .single-comment', function () {
-            var $this = $(this);
-            var element = $this.find('.preferences:first');
-            if (!loader.is($this.find('.comment-entry-loader'))) {
-                element.show();
-            }
-        });
-        $(document).on('mouseout', '.comment .single-comment', function () {
-            // find dropdown menu
-            var element = $(this).find('.preferences:first');
-
-            // hide dropdown if it's not open
-            if (!element.find('li').hasClass('open')) {
-                element.hide();
-            }
         });
     };
 
@@ -341,7 +318,6 @@ humhub.module('comment', function (module, require, $) {
     };
 
     module.export({
-        init: init,
         Comment: Comment,
         Form: Form,
         scrollActive: scrollActive,

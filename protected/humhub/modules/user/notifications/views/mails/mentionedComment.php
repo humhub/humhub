@@ -6,6 +6,7 @@
 /* @var $record Notification */
 
 use humhub\modules\notification\models\Notification;
+use humhub\helpers\MailStyleHelper;
 use humhub\widgets\mails\MailButtonList;
 
 ?>
@@ -35,7 +36,7 @@ use humhub\widgets\mails\MailButtonList;
             </td>
         </tr>
         <tr>
-            <td style="padding:10px;border:1px solid <?= Yii::$app->view->theme->variable('background-color-secondary') ?>;border-radius:4px;">
+            <td style="padding:10px;border:1px solid <?= MailStyleHelper::getBackgroundColorSecondary() ?>;border-radius:4px;">
                 <?=
                 humhub\widgets\mails\MailContentEntry::widget([
                     'originator' => $contentRecord->owner,

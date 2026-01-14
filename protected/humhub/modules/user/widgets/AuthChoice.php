@@ -13,7 +13,6 @@ use humhub\helpers\Html;
 use humhub\modules\user\authclient\BaseFormAuth;
 use Yii;
 use yii\authclient\ClientInterface;
-use yii\base\InvalidConfigException;
 
 class AuthChoice extends \yii\authclient\widgets\AuthChoice
 {
@@ -66,15 +65,18 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
     }
 
     /**
-     * Returns default auth clients list.
-     * @return bool
-     * @throws InvalidConfigException
+     * Returns the number of clients which doesn't need login form
      */
-    public static function hasClients()
+    public static function getClientsCount(): int
     {
-        $authClients = self::filterClients(Yii::$app->get(self::$authclientCollection)->getClients());
+        $clients = Yii::$app->get(self::$authclientCollection)->getClients();
+        $filteredClients = self::filterClients($clients);
+        return (int)count($filteredClients);
+    }
 
-        return count($authClients) > 0;
+    public static function hasClients(): bool
+    {
+        return static::getClientsCount() > 0;
     }
 
     /**

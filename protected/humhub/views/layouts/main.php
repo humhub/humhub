@@ -32,12 +32,12 @@ AppAsset::register($this);
 
         <!-- start: first top navigation bar -->
         <div id="topbar-first" class="topbar navbar">
-            <div class="container d-flex justify-content-between">
-                <div class="topbar-brand d-none d-sm-block">
+            <div class="container">
+                <div class="topbar-brand d-none d-md-block">
                     <?= SiteLogo::widget() ?>
                 </div>
 
-                <div class="notifications">
+                <div class="notifications position-absolute start-50 translate-middle-x">
                     <?= NotificationArea::widget() ?>
                 </div>
 

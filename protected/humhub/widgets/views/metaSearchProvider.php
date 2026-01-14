@@ -30,8 +30,8 @@ use humhub\widgets\bootstrap\Button;
                     ]) ?>
                         <span class="search-provider-record-image"><?= $record->getImage() ?></span>
                         <span class="search-provider-record-text">
-                            <span><?= $record->getTitle() ?></span>
-                            <span><?= $record->getDescription() ?></span>
+                            <span><?= Html::encode($record->getTitle()) ?></span>
+                            <span><?= Html::encode($record->getDescription()) ?></span>
                         </span>
                     <?= Html::endTag('a') ?>
                 <?php endforeach; ?>

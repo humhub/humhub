@@ -21,12 +21,6 @@ $config = [
                 'yii\jui\JuiAsset' => [
                     'sourcePath' => '@npm/jquery-ui/dist',
                 ],
-                'yii\bootstrap5\BootstrapAsset' => [
-                    'sourcePath' => '@npm/bootstrap/dist',
-                ],
-                'yii\bootstrap5\BootstrapPluginAsset' => [
-                    'sourcePath' => '@npm/bootstrap/dist',
-                ],
                 'yii\jui\DatePickerLanguageAsset' => [
                     'sourcePath' => '@npm/jquery-ui',
                 ],
@@ -76,7 +70,7 @@ $config = [
                     "Referrer-Policy" => "no-referrer-when-downgrade",
                     "X-Permitted-Cross-Domain-Policies" => "master-only",
                     "X-Frame-Options" => "sameorigin",
-                    "Content-Security-Policy" => "default-src *; connect-src  *; font-src 'self'; frame-src https://* http://* *; img-src https://* http://* * data:; object-src 'self'; script-src {{ nonce }} 'self' https://* http://* * 'unsafe-inline' 'report-sample'; style-src * https://* http://* * 'unsafe-inline'; block-all-mixed-content;",
+                    "Content-Security-Policy" => "default-src *; connect-src  *; font-src 'self' https://* http://* *; frame-src https://* http://* *; img-src https://* http://* * data:; object-src 'self'; script-src {{ nonce }} 'self' https://* http://* * 'unsafe-inline' 'report-sample'; style-src * https://* http://* * 'unsafe-inline'; block-all-mixed-content;",
                 ],
                 'csp' => [
                     'nonce' => true,

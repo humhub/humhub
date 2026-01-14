@@ -286,21 +286,23 @@ class Group extends ActiveRecord
     }
 
     /**
-     * Get query of all managers of this group and parent group
+     * Get query of all active managers of this group and parent group(if it is allowed by the module setting $groupManagerInheritance)
      * @return ActiveQuery
      * @since 1.18
      */
     public function getAllManagers(): ActiveQuery
     {
-        if ($this->parent_group_id === null) {
-            return $this->getManager();
+        if ($this->parent_group_id === null || !Yii::$app->getModule('admin')->groupManagerInheritance) {
+            $query = $this->getManager();
+        } else {
+            $query = User::find()
+                ->joinWith('groupUsers')
+                ->where([GroupUser::tableName() . '.is_group_manager' => 1])
+                ->andWhere([GroupUser::tableName() . '.group_id' => [$this->id, $this->parent_group_id]])
+                ->distinct();
         }
 
-        return User::find()
-            ->joinWith('groupUsers')
-            ->where([GroupUser::tableName() . '.is_group_manager' => 1])
-            ->andWhere([GroupUser::tableName() . '.group_id' => [$this->id, $this->parent_group_id]])
-            ->distinct();
+        return $query->andWhere([User::tableName() . '.status' => User::STATUS_ENABLED]);
     }
 
     /**
