@@ -103,6 +103,8 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
 
         $this->updateContentSearch();
 
+        $this->fileManager->attach($this->fileList);
+
         parent::afterSave($insert, $changedAttributes);
     }
 
