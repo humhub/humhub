@@ -50,14 +50,6 @@ class View extends \yii\web\View
     private $jsConfig = [];
 
     /**
-     * @var array Contains CSS configurations, which will be appended to the view.
-     * @see View::endBody
-     *
-     * @since 1.19
-     */
-    private $cssConfig = [];
-
-    /**
      * @var array contains static core style and script assets which should be pre-loaded as `<link rel="preload">` element.
      */
     protected static $preload = [
@@ -170,46 +162,6 @@ class View extends \yii\web\View
             $this->jsConfig[$module] = ArrayHelper::merge($this->jsConfig[$module], $params);
         } else {
             $this->jsConfig[$module] = $params;
-        }
-    }
-
-    /**
-     * Registers the CSS module configuration for one or multiple modules.
-     *
-     * ```php
-     * $this->registerCssConfig('moduleId', [
-     *     'someKey' => 'someValue'
-     * ]);
-     *
-     * // or
-     *
-     * $this->registerCssConfig([
-     *      'module1' => [
-     *         'someKey' => 'someValue'
-     *      ],
-     *      'module2' => [
-     *          'someKey' => 'anotherValue'
-     *      ]
-     * ]);
-     * ```
-     * @param string|array $module Module ID or array of module configurations
-     * @param array|null $params Configuration parameters
-     *
-     * @since 1.19
-     */
-    public function registerCssConfig($module, $params = null)
-    {
-        if (is_array($module)) {
-            foreach ($module as $moduleId => $value) {
-                $this->registerCssConfig($moduleId, $value);
-            }
-            return;
-        }
-
-        if (isset($this->cssConfig[$module])) {
-            $this->cssConfig[$module] = ArrayHelper::merge($this->cssConfig[$module], $params);
-        } else {
-            $this->cssConfig[$module] = $params;
         }
     }
 
@@ -501,9 +453,10 @@ class View extends \yii\web\View
      */
     public function endBody()
     {
+        // Flush jsConfig needed for all types of requests (including pjax/ajax)
         $this->flushJsConfig();
-        $this->flushCssConfig();
 
+        // In case of pjax we have to add the title manually, pjax will remove this node
         if (Yii::$app->request->isPjax) {
             echo '<title>' . $this->getPageTitle() . '</title>';
         }
@@ -531,21 +484,21 @@ class View extends \yii\web\View
             $this->registerViewContext();
             echo LayoutAddons::widget();
             $this->flushJsConfig();
-            $this->flushCssConfig();
         }
 
         if (Yii::$app->request->isAjax) {
             return parent::endBody();
         }
 
+        // Since the JsConfig accesses user queries it fails before installation.
         if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
             CoreJsConfig::widget();
         }
 
+        // Add LayoutAddons and jsConfig registered by addons
         echo LayoutAddons::widget();
         $this->registerViewContext();
         $this->flushJsConfig();
-        $this->flushCssConfig();
 
         return parent::endBody();
     }
@@ -583,38 +536,13 @@ class View extends \yii\web\View
     }
 
     /**
-     * Writes the currently registered cssConfig entries and flushes the config array.
-     *
-     * @param string $key unique identifier for the CSS config
-     *
-     * @since 1.19
-     */
-    protected function flushCssConfig($key = null)
-    {
-        if (!empty($this->cssConfig)) {
-            $cssVars = '';
-            foreach ($this->cssConfig as $module => $config) {
-                foreach ($config as $property => $value) {
-                    $cssVars .= "--{$module}-{$property}: {$value}; ";
-                }
-            }
-
-            if (!empty($cssVars)) {
-                $style = ":root { {$cssVars}}";
-                $this->registerCss($key ?: md5($style), $style);
-            }
-
-            $this->cssConfig = [];
-        }
-    }
-
-    /**
      * @return bool checks if a sidebar exists
      */
     public function hasSidebar()
     {
         return (isset($this->blocks[static::BLOCK_SIDEBAR]) && !ctype_space($this->blocks[static::BLOCK_SIDEBAR]));
     }
+
 
     /**
      * Returns the sidebar which is stored in the block called 'sidebar'
@@ -639,4 +567,5 @@ class View extends \yii\web\View
     {
         static::$viewContext = $vctx;
     }
+
 }
