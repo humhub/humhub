@@ -8,7 +8,7 @@ HumHub Changelog
 - Fix #7924: Admin Pending Approvals buttons layout
 - Fix #7928: Top menu: long usernames overlap notification buttons for md screen sizes
 - Fix #7930: Remove bottom margin to RichText Create Input fields
-- Fix: Spaces and Marketplace layouts are missing fluid container
+- Fix #7937: Spaces and Marketplace layouts are missing fluid container
 
 1.18.0-beta.6 (January 8, 2026)
 -------------------------------
