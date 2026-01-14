@@ -7,6 +7,7 @@ HumHub Changelog
 - Fix #7925: Space Members dropdown menu
 - Fix #7924: Admin Pending Approvals buttons layout
 - Fix #7928: Top menu: long usernames overlap notification buttons for md screen sizes
+- Enh: SelfTest PHP 8.2+
 
 1.18.0-beta.6 (January 8, 2026)
 -------------------------------
