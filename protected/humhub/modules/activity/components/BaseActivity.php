@@ -61,9 +61,23 @@ abstract class BaseActivity extends BaseObject
         return new $record->class($record);
     }
 
-    public function renderWeb()
+    public function renderWeb(): string
     {
         return Yii::$app->getView()->renderFile('@activity/views/layouts/web.php', array_merge(
+            $this->getViewParams(), ['message' => $this->getAsText()]
+        ));
+    }
+
+    public function renderPlaintext(): string
+    {
+        return Yii::$app->getView()->renderFile('@activity/views/layouts/mail_plaintext.php', array_merge(
+            $this->getViewParams(), ['message' => $this->getAsText()]
+        ));
+    }
+
+    public function renderMail(): string
+    {
+        return Yii::$app->getView()->renderFile('@activity/views/layouts/mail.php', array_merge(
             $this->getViewParams(), ['message' => $this->getAsText()]
         ));
     }

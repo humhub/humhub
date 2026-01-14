@@ -29,4 +29,7 @@ return [
         ['class' => SettingsMenu::class, 'event' => SettingsMenu::EVENT_INIT, 'callback' => [Events::class, 'onSettingsMenuInit']],
         ['class' => Content::class, 'event' => Content::EVENT_AFTER_UPDATE, 'callback' => [Events::class, 'onContentAfterUpdate']],
     ],
+    'consoleControllerMap' => [
+        'activity' => 'humhub\modules\activity\commands\TestController',
+    ],
 ];

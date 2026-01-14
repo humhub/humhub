@@ -3,15 +3,12 @@
 namespace humhub\modules\activity\components;
 
 use humhub\modules\activity\models\Activity;
-use humhub\modules\activity\models\MailSummaryForm;
 use humhub\modules\activity\Module;
-use humhub\modules\content\models\ContentContainer;
-use humhub\modules\dashboard\components\actions\DashboardStreamAction;
+use humhub\modules\activity\services\RenderService;
 use humhub\modules\user\models\User;
 use Throwable;
 use Yii;
 use yii\base\Component;
-use yii\base\Exception;
 use yii\db\Expression;
 use yii\helpers\Url;
 
@@ -51,6 +48,8 @@ class MailSummary extends Component
      */
     public $layoutPlaintext = '@activity/views/mails/plaintext/mailSummary';
 
+    public ?string $lastSummaryDate = null;
+
     /**
      * Sends the summary mail to the user
      */
@@ -65,10 +64,11 @@ class MailSummary extends Component
         $outputHtml = '';
         $outputPlaintext = '';
 
-        $mailRenderer = new ActivityMailRenderer();
-        foreach ($this->getActivities() as $activity) {
-            $outputHtml .= $mailRenderer->render($activity);
-            $outputPlaintext .= $mailRenderer->renderText($activity);
+        foreach ($this->getActivities() as $record) {
+            $renderService = new RenderService($record);
+
+            $outputHtml .= $renderService->getMail();
+            $outputPlaintext .= $renderService->getPlaintext();
         }
 
         if (empty($outputHtml)) {
@@ -102,75 +102,44 @@ class MailSummary extends Component
         return false;
     }
 
-    /**
-     * Returns the subject of the MailSummary
-     *
-     * @return string the subject of mail summary
-     */
-    protected function getSubject()
+    private function getSubject()
     {
         return match ($this->interval) {
-            self::INTERVAL_HOURLY => Yii::t('ActivityModule.base', 'Latest news'),
             self::INTERVAL_DAILY => Yii::t('ActivityModule.base', 'Your daily summary'),
             self::INTERVAL_WEEKLY => Yii::t('ActivityModule.base', 'Your weekly summary'),
             self::INTERVAL_MONTHLY => Yii::t('ActivityModule.base', 'Your monthly summary'),
-            default => '',
+            default => Yii::t('ActivityModule.base', 'Latest news'),
         };
     }
 
     /**
-     * Returns the list of activities for the e-mail summary
-     *
-     * @return BaseActivity[] the activities
+     * @return Activity[]
      */
     public function getActivities()
     {
         $query = Activity::find();
-        $query->addGlobalScope();
-
+        $query->defaultScopes($this->user);
         $query->andWhere(['>', 'activity.created_at', $this->getLastSummaryDate()]);
+        $query->mailLimitContentContainer($this->user);
+        $query->mailLimitTypes($this->user);
 
-        // Handle suppressed activities
-        $suppressedActivities = $this->getSuppressedActivities();
-        if (!empty($suppressedActivities)) {
-            $query->andWhere(['NOT IN', 'activity.class', $suppressedActivities]);
-        }
-
-        // Handle defined content container mode
-        $limitContainer = $this->getLimitContentContainers();
-        if (!empty($limitContainer)) {
-            $mode = ($this->getLimitContentContainerMode() == MailSummaryForm::LIMIT_MODE_INCLUDE) ? 'IN' : 'NOT IN';
-            $query->andWhere([$mode, 'activity.contentcontainer_id', $limitContainer]);
-        }
-
-        $activities = [];
-        foreach ($query->all() as $record) {
-            try {
-                $activities[] = BaseActivity::factor($record);
-            } catch (\Exception $ex) {
-                Yii::error($ex->getMessage());
-                return [];
-            }
-        }
-
-        return $activities;
+        return $query->all();
     }
 
-    /**
-     * Stores the date of the last summary mail
-     */
-    protected function setLastSummaryDate()
+    private function setLastSummaryDate(): void
     {
         static::getModule()->settings->user($this->user)->set('mailSummaryLast', time());
     }
 
     /**
-     * Returns the last summary date
-     *
      * @return string|Expression of the last summary mail
      */
-    protected function getLastSummaryDate()
+    private function getLastSummaryDate()
     {
+        if ($this->lastSummaryDate !== null) {
+            return $this->lastSummaryDate;
+        }
+
         $lastSent = (int)static::getModule()->settings->user($this->user)->get('mailSummaryLast');
         if (empty($lastSent)) {
             $hours = match ($this->interval) {
@@ -189,64 +158,7 @@ class MailSummary extends Component
         return $lastSent;
     }
 
-    /**
-     * Returns the mode (exclude, include) of given content containers
-     *
-     * @return int mode
-     * @see MailSummaryForm
-     */
-    protected function getLimitContentContainerMode()
-    {
-        $activityModule = static::getModule();
-        $default = $activityModule->settings->get('mailSummaryLimitSpacesMode', '');
-        return $activityModule->settings->user($this->user)->get('mailSummaryLimitSpacesMode', $default);
-    }
-
-    /**
-     * Returns a list of content containers which should be included or excluded.
-     *
-     * @return array list of contentcontainer ids
-     */
-    protected function getLimitContentContainers()
-    {
-        $spaces = [];
-        $activityModule = static::getModule();
-        $defaultLimitSpaces = $activityModule->settings->get('mailSummaryLimitSpaces', '');
-        $limitSpaces = $activityModule->settings->user($this->user)->get('mailSummaryLimitSpaces', $defaultLimitSpaces);
-        foreach (explode(',', (string)$limitSpaces) as $guid) {
-            $contentContainer = ContentContainer::findOne(['guid' => $guid]);
-            if ($contentContainer !== null) {
-                $spaces[] = $contentContainer->id;
-            }
-        }
-
-        return $spaces;
-    }
-
-    /**
-     * Returns a list of suppressed activity classes
-     *
-     * @return array suppressed activity class names
-     */
-    protected function getSuppressedActivities()
-    {
-        $activityModule = static::getModule();
-        $defaultActivitySuppress = $activityModule->settings->get('mailSummaryActivitySuppress', '');
-        $activitySuppress = $activityModule->settings->user($this->user)->get(
-            'mailSummaryActivitySuppress',
-            $defaultActivitySuppress,
-        );
-        if (empty($activitySuppress)) {
-            return [];
-        }
-
-        return explode(',', trim((string)$activitySuppress));
-    }
-
-    /**
-     * @return Module
-     */
-    private static function getModule()
+    private static function getModule(): Module
     {
         return Yii::$app->getModule('activity');
     }

@@ -1,6 +1,7 @@
 <?php
 
 use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image;
 use humhub\widgets\TimeAgo;
 use yii\helpers\Url;

@@ -1,9 +1,10 @@
 <?php
 
+use humhub\modules\activity\services\RenderService;
 use humhub\widgets\PanelMenu;
 
 /* @var $this \humhub\components\View */
-/* @var $activities string[] */
+/* @var $activities \humhub\modules\activity\models\Activity[] */
 
 ?>
 <div class="panel panel-default panel-activities" id="panel-activities">
@@ -14,7 +15,7 @@ use humhub\widgets\PanelMenu;
     <div>
         <div id="activityContents" class="hh-list activities">
             <?php foreach ($activities as $activity): ?>
-                <?= $activity; ?>
+                <?= (new RenderService($activity))->getWeb(); ?>
             <?php endforeach; ?>
         </div>
     </div>
