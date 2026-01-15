@@ -9,6 +9,7 @@ HumHub Changelog
 - Fix #7928: Top menu: long usernames overlap notification buttons for md screen sizes
 - Fix #7930: Remove bottom margin to RichText Create Input fields
 - Fix #7937: Spaces and Marketplace layouts are missing fluid container
+- Enh #7941: Display http exception name when message is not provided
 - Fix #7940: Fix space acronym on the picker for saved items
 - Fix #7943: Fix MailButton widget color when the type is specified
 
