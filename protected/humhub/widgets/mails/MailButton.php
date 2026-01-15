@@ -44,7 +44,7 @@ class MailButton extends \yii\base\Widget
     public function run()
     {
         if ($this->type) {
-            $this->color = MailStyleHelper::getVariable($this->text);
+            $this->color = MailStyleHelper::getVariable($this->type);
         }
 
         if (!$this->color) {
