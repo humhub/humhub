@@ -5,6 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\helpers\ThemeHelper;
 use humhub\modules\marketplace\models\Module;
 use humhub\modules\marketplace\widgets\ModuleCard;
 
@@ -20,7 +21,7 @@ use humhub\modules\marketplace\widgets\ModuleCard;
     <h4 class="modules-type"><?= $title ?> (<span class="group-modules-count-<?= $type ?>"><?= $count ?></span>):</h4>
 <?php endif; ?>
 
-<div class="container gx-0 overflow-x-hidden">
+<div class="container<?= ThemeHelper::isFluid() ? '-fluid' : '' ?> gx-0 overflow-x-hidden">
     <div class="row cards">
         <?php if (empty($modules)) : ?>
             <div class="col-lg-12 cards-no-results">
