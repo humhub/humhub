@@ -9,6 +9,7 @@ HumHub Changelog
 - Fix #7928: Top menu: long usernames overlap notification buttons for md screen sizes
 - Fix #7930: Remove bottom margin to RichText Create Input fields
 - Fix #7937: Spaces and Marketplace layouts are missing fluid container
+- Fix #7943: Fix MailButton widget color when the type is specified
 
 1.18.0-beta.6 (January 8, 2026)
 -------------------------------
