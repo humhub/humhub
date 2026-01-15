@@ -44,4 +44,15 @@ class SpacePickerField extends ContentContainerPickerField
 
         return $result;
     }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getItemImage($item)
+    {
+        return Image::widget([
+            'space' => $item,
+            'width' => 24,
+        ]);
+    }
 }
