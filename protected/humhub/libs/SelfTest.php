@@ -35,7 +35,7 @@ class SelfTest
     private const STATE_WARNING = 'WARNING';
     private const STATE_ERROR = 'ERROR';
 
-    private const MIN_MEMORY_LIMIT = 64 * 1024 * 1024; // 64MB
+    private const MIN_MEMORY_LIMIT = 64 * 1024 * 1024;
     private const RECOMMENDED_COLLATION = 'utf8mb4';
     private const RECOMMENDED_ENGINE = 'InnoDB';
 
@@ -149,7 +149,6 @@ class SelfTest
         ];
 
         $checks = [];
-
         foreach ($optional as $name => $config) {
             $title = 'PHP - ' . Yii::t('AdminModule.information', '{phpExtension} ' . 
                 (str_contains($name, '(') ? 'Support' : 'Extension'), ['phpExtension' => $name]);
@@ -235,7 +234,6 @@ class SelfTest
         }
 
         $disabledImportant = [];
-
         foreach ($importantFunctions as $func => $hint) {
             if (in_array($func, $disabledFunctions, true) || !function_exists($func)) {
                 $disabledImportant[$func] = $hint;
@@ -266,7 +264,6 @@ class SelfTest
         $disabled = [];
 
         $disableFunctionsIni = ini_get('disable_functions');
-
         if ($disableFunctionsIni) {
             $disabled = array_map('trim', explode(',', strtolower($disableFunctionsIni)));
         }
@@ -280,7 +277,6 @@ class SelfTest
         }
 
         $functionsToVerify = ['set_time_limit', 'ini_set', 'ini_alter'];
-
         foreach ($functionsToVerify as $func) {
             if (!in_array($func, $disabled, true)) {
                 if (function_exists($func) && !is_callable($func)) {
@@ -311,14 +307,7 @@ class SelfTest
     private static function getCronChecks(): array
     {
         if (!Yii::$app->cache->exists(self::PHP_INFO_CACHE_KEY)) {
-            return [
-                self::createCheck(
-                    Yii::t('AdminModule.information', 'Settings') . ' - ' . 
-                    Yii::t('AdminModule.information', 'Cron Job Status'),
-                    self::STATE_WARNING,
-                    Yii::t('AdminModule.information', 'Waiting for cron job to run. This check will appear after the first cron execution.')
-                )
-            ];
+            return [];
         }
 
         $cronInfo = Yii::$app->cache->get(self::PHP_INFO_CACHE_KEY);
@@ -326,12 +315,12 @@ class SelfTest
 
         if ($version = ArrayHelper::getValue($cronInfo, 'version')) {
             $title = Yii::t('AdminModule.information', 'Settings') . ' - ' . 
-                Yii::t('AdminModule.information', 'Cron PHP Version');
+                Yii::t('AdminModule.information', 'Web Application and Cron uses the same PHP version');
 
             $webVersion = phpversion();
 
             if ($version === $webVersion) {
-                $checks[] = self::createCheck($title . ' - ' . $version, self::STATE_OK);
+                $checks[] = self::createCheck($title, self::STATE_OK);
             } else {
                 $cronMeetsMin = version_compare($version, Yii::$app->minSupportedPhpVersion, '>=');
                 $cronMeetsRecommended = version_compare($version, Yii::$app->minRecommendedPhpVersion, '>=');
@@ -352,30 +341,29 @@ class SelfTest
                     ]);
                 } else {
                     $state = self::STATE_WARNING;
-                    $hint = Yii::t('AdminModule.information', 'Cron uses PHP {cronPhpVersion}, Web uses PHP {webPhpVersion}. Different versions may cause compatibility issues. Update cron job path: /path/to/php{webMajorMinor} /path/to/protected/yii', [
-                        'cronPhpVersion' => $version,
+                    $hint = Yii::t('AdminModule.information', 'Web Application PHP version: `{webPhpVersion}`, Cron PHP Version: `{cronPhpVersion}`', [
                         'webPhpVersion' => $webVersion,
-                        'webMajorMinor' => substr($webVersion, 0, 3) // e.g., "8.2" from "8.2.10"
+                        'cronPhpVersion' => $version
                     ]);
                 }
 
-                $checks[] = self::createCheck($title . ' - ' . $version, $state, $hint);
+                $checks[] = self::createCheck($title, $state, $hint);
             }
         }
 
         if ($user = ArrayHelper::getValue($cronInfo, 'user')) {
             $title = Yii::t('AdminModule.information', 'Settings') . ' - ' . 
-                Yii::t('AdminModule.information', 'Cron User');
+                Yii::t('AdminModule.information', 'Web Application and Cron uses the same user');
 
             $webUser = get_current_user();
 
             if ($user === $webUser) {
-                $checks[] = self::createCheck($title . ' - ' . $user, self::STATE_OK);
+                $checks[] = self::createCheck($title, self::STATE_OK);
             } else {
                 $checks[] = self::createCheck(
-                    $title . ' - ' . $user,
+                    $title,
                     self::STATE_WARNING,
-                    Yii::t('AdminModule.information', 'Cron runs as `{cronUser}`, Web runs as `{webUser}`. This may cause file permission issues. Ensure both use the same user (typically www-data or apache).', [
+                    Yii::t('AdminModule.information', 'Web Application user: `{webUser}`, Cron user: `{cronUser}`', [
                         'webUser' => $webUser,
                         'cronUser' => $user
                     ])
@@ -440,7 +428,6 @@ class SelfTest
         $prefix = Yii::t('AdminModule.information', 'HumHub') . ' - ';
 
         $title = $prefix . Yii::t('AdminModule.information', 'Marketplace API Connection');
-
         $checks[] = empty(HumHubAPI::getLatestHumHubVersion(false))
             ? self::createCheck($title, self::STATE_WARNING)
             : self::createCheck($title, self::STATE_OK);
@@ -485,7 +472,7 @@ class SelfTest
     private static function checkIcuVersion(): array
     {
         $version = defined('INTL_ICU_VERSION') ? INTL_ICU_VERSION : '0';
-        $minVersion = '4.8.1';
+        $minVersion = '49.0';
         $title = 'PHP - INTL - ' . Yii::t('AdminModule.information', 'ICU Version ({version})', ['version' => $version]);
 
         return version_compare($version, $minVersion, '>=')
