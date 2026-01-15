@@ -12,8 +12,8 @@ use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
-use humhub\modules\content\models\Content;
 use humhub\modules\user\notifications\Mentioned;
+use Yii;
 use yii\base\Exception;
 use yii\base\InvalidArgumentException;
 use yii\db\ActiveQuery;
@@ -87,11 +87,11 @@ class Mentioning extends ActiveRecord
      */
     private function getOriginatorBySource($source)
     {
-        if ($source instanceof ContentActiveRecord) {
-            /** @var ContentActiveRecord $source */
+        if (!Yii::$app->user->isGuest) {
+            return Yii::$app->user->getIdentity();
+        } elseif ($source instanceof ContentActiveRecord) {
             return $source->content->createdBy;
         } elseif ($source instanceof ContentAddonActiveRecord) {
-            /** @var ContentAddonActiveRecord $source */
             return $source->user;
         }
 
