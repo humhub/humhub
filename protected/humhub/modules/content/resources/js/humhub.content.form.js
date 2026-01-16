@@ -110,13 +110,14 @@ humhub.module('content.form', function (module, require, $) {
         $contentForm.filter('textarea').val('').trigger('autosize.resize');
         $contentForm.attr('checked', false);
 
+        this.$.find('form').trigger('reset');
+
         this.resetSettingInputs();
         this.setDefaultVisibility();
         this.resetFilePreview();
         this.resetFileUpload();
         this.resetState();
 
-        this.$.find('form').trigger('reset');
         this.$.find('.humhub-ui-richtext').trigger('clear');
     };
 
