@@ -1,8 +1,21 @@
 HumHub Changelog
 ================
 
-1.18.0-beta.6 (January 7 , 2025)
---------------------------------
+1.18.0-beta.7 (Unreleased)
+-------------------------------
+- Fix #7921: Alert widget broken since beta.6
+- Fix #7925: Space Members dropdown menu
+- Fix #7924: Admin Pending Approvals buttons layout
+- Fix #7928: Top menu: long usernames overlap notification buttons for md screen sizes
+- Fix #7930: Remove bottom margin to RichText Create Input fields
+- Fix #7937: Spaces and Marketplace layouts are missing fluid container
+- Fix #7932: Fix content default visibility after form submit
+- Enh #7941: Display http exception name when message is not provided
+- Fix #7940: Fix space acronym on the picker for saved items
+- Fix #7943: Fix MailButton widget color when the type is specified
+
+1.18.0-beta.6 (January 8, 2026)
+-------------------------------
 - Enh #7834: Login Screen: revert container width to 300px when less than 2 SSO buttons and remove Language Chooser label
 - Fix #7843: Allow child theme not to have a build.scss file (only variables.scss is mandatory)
 - Fix #7842: Fixed php deprecation warning in `ConfigHelper`
@@ -52,6 +65,7 @@ HumHub Changelog
 - Enh #7911: Use BS5 for form fieldset
 - Enh #7914: Show "Group" column on the pending user approvals list
 - Fix #7915: Invalid multiple inputs in Content form
+- Fix #7918: Fix `transport type` to be readonly/disabled when fixed in mailer settings
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------

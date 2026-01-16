@@ -195,6 +195,7 @@ humhub.module('ui.additions', function (module, require, $) {
                     },
                     templateResult: templateItem,
                     templateSelection: templateItem,
+                    width: 'element',
                 });
             });
         });
