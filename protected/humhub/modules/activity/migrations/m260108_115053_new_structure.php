@@ -11,17 +11,52 @@ class m260108_115053_new_structure extends Migration
 {
     public function up()
     {
+
+        $renameClasses = [
+            'humhub\modules\comment\activities\NewComment' => \humhub\modules\comment\activities\NewCommentActivity::class,
+            'humhub\modules\like\activities\Liked' => \humhub\modules\like\activities\LikeActivity::class,
+            'humhub\modules\content\activities\ContentCreated' => \humhub\modules\content\activities\ContentCreatedActivity::class,
+            'humhub\modules\space\activities\Created' => \humhub\modules\space\activities\SpaceCreatedActivity::class,
+            'humhub\modules\space\activities\MemberAdded' => \humhub\modules\space\activities\MemberAddedActivity::class,
+            'humhub\modules\space\activities\MemberRemoved' => \humhub\modules\space\activities\MemberRemovedActivity::class,
+            'humhub\modules\space\activities\SpaceArchived' => humhub\modules\space\activities\SpaceArchivedActivity::class,
+            'humhub\modules\space\activities\SpaceUnArchived' => \humhub\modules\space\activities\SpaceUnArchivedActivity::class,
+            'humhub\modules\user\activities\UserFollow' => \humhub\modules\user\activities\FollowActivity::class,
+        ];
+        foreach ($renameClasses as $oldClass => $newClass) {
+            $this->updateSilent('activity', ['class' => $newClass], ['class' => $oldClass]);
+        }
+
+
         $this->safeAddColumn('activity', 'contentcontainer_id', $this->integer()->null()->after('module'));
         $this->safeAddColumn('activity', 'content_id', $this->integer()->null()->after('contentcontainer_id'));
         $this->safeAddColumn('activity', 'content_addon_record_id', $this->integer()->null()->after('content_id'));
         $this->safeAddColumn('activity', 'created_by', $this->integer());
         $this->safeAddColumn('activity', 'created_at', $this->dateTime());
-
         $this->alterColumn('activity', 'object_id', $this->integer()->null());
+
+
+        $this->execute(
+            'UPDATE activity
+         LEFT JOIN `user_follow` ON activity.object_id = user_follow.id AND activity.object_model=:followType
+         LEFT JOIN `user` ON user_follow.object_id = user.id AND user_follow.object_model=:userType
+         SET activity.contentcontainer_id=user.contentcontainer_id, activity.object_model=NULL, activity.object_id=NULL
+         WHERE activity.object_model=:followType AND user_follow.object_model=:userType',
+            ['followType' => \humhub\modules\user\models\Follow::class, 'userType' => \humhub\modules\user\models\User::class]
+        );
+
 
         $this->safeDropColumn('activity', 'module');
         $this->safeAddForeignKey('activity_content', 'activity', 'content_id', 'content', 'id', 'RESTRICT', 'CASCADE');
-        $this->safeAddForeignKey('activity_contentcontainer', 'activity', 'contentcontainer_id', 'contentcontainer', 'id', 'RESTRICT', 'CASCADE');
+        $this->safeAddForeignKey(
+            'activity_contentcontainer',
+            'activity',
+            'contentcontainer_id',
+            'contentcontainer',
+            'id',
+            'RESTRICT',
+            'CASCADE'
+        );
         $this->safeAddForeignKey('activity_user', 'activity', 'created_by', 'user', 'id', 'RESTRICT', 'CASCADE');
 
         /**
@@ -77,38 +112,58 @@ class m260108_115053_new_structure extends Migration
             'UPDATE `activity` al JOIN record_map rm ON rm.`model` = al.object_model AND rm.`pk` = al.object_id SET al.content_addon_record_id = rm.id WHERE al.content_addon_record_id IS NULL AND al.object_model IS NOT NULL AND al.object_model != "";'
         );
 
-        $this->safeAddForeignKey('fk_activity_content_addon', 'activity', 'content_addon_record_id', 'record_map', 'id', 'CASCADE', 'CASCADE');
+        $this->safeAddForeignKey(
+            'fk_activity_content_addon',
+            'activity',
+            'content_addon_record_id',
+            'record_map',
+            'id',
+            'CASCADE',
+            'CASCADE'
+        );
 
-        $this->dropColumn('activity', 'object_model');
-        $this->dropColumn('activity', 'object_id');
-
-        foreach ((new Query())->select('content_addon_record_id')->distinct()->from(Activity::tableName())->where('content_id IS NULL and content_addon_record_id IS NOT NULL')->all() as $row) {
-            $contentProvider = RecordMap::getById($row['content_addon_record_id'], ContentProvider::class);
+        foreach (
+            (new Query())->select('content_addon_record_id')->distinct()->from(Activity::tableName())->where(
+                'content_id IS NULL and content_addon_record_id IS NOT NULL'
+            )->all() as $row
+        ) {
+            $contentProvider = RecordMap::getById($row['content_addon_record_id'], ContentProvider::class, false);
             if ($contentProvider !== null) {
-                $this->updateSilent(
-                    'activity',
-                    ['content_id' => $contentProvider->content->id, 'contentcontainer_id' => $contentProvider->content->contentcontainer_id],
-                    ['content_addon_record_id' => $row['content_addon_record_id']]
-                );
+                if ($contentProvider->content !== null) {
+                    $this->updateSilent(
+                        'activity',
+                        [
+                            'content_id' => $contentProvider->content->id,
+                            'contentcontainer_id' => $contentProvider->content->contentcontainer_id
+                        ],
+                        ['content_addon_record_id' => $row['content_addon_record_id']]
+                    );
+                } else {
+                    Yii::warning(
+                        'Content Provider ' . get_class(
+                            $contentProvider
+                        ) . ' with id ' . $contentProvider->id . ' has no content!',
+                        'activity'
+                    );
+                }
             } else {
-                Yii::warning('Delete Activity with content_addon_record_id ' . $row['content_addon_record_id'], 'activity');
+                $orphan = (new Query())->select('*')->distinct()->from(Activity::tableName())->where(['content_addon_record_id' => $row['content_addon_record_id']])->one();
+                if (!empty($orphan['class']) && $orphan['class'] === \humhub\modules\user\activities\FollowActivity::class) {
+                    // We have sometimes wrong records here.
+                    $this->delete('activity', ['content_addon_record_id' => $row['content_addon_record_id']]);
+                    $this->delete('record_map', ['id' => $row['content_addon_record_id']]);
+                } else {
+                    Yii::warning(
+                        'Delete Activity with content_addon_record_id ' . $row['content_addon_record_id'],
+                        'activity'
+                    );
+                }
+
             }
         }
 
-        $renameClasses = [
-            'humhub\modules\comment\activities\NewComment' => \humhub\modules\comment\activities\NewCommentActivity::class,
-            'humhub\modules\like\activities\Liked' => \humhub\modules\like\activities\LikeActivity::class,
-            'humhub\modules\content\activities\ContentCreated' => \humhub\modules\content\activities\ContentCreatedActivity::class,
-            'humhub\modules\space\activities\Created' => \humhub\modules\space\activities\SpaceCreatedActivity::class,
-            'humhub\modules\space\activities\MemberAdded' => \humhub\modules\space\activities\MemberAddedActivity::class,
-            'humhub\modules\space\activities\MemberRemoved' => \humhub\modules\space\activities\MemberRemovedActivity::class,
-            'humhub\modules\space\activities\SpaceArchived' => humhub\modules\space\activities\SpaceArchivedActivity::class,
-            'humhub\modules\space\activities\SpaceUnArchived' => \humhub\modules\space\activities\SpaceUnArchivedActivity::class,
-        ];
-        foreach ($renameClasses as $oldClass => $newClass) {
-            $this->updateSilent('activity', ['class' => $newClass], ['class' => $oldClass]);
-        }
-
+        $this->safeDropColumn('activity', 'object_model');
+        $this->safeDropColumn('activity', 'object_id');
 
     }
 
