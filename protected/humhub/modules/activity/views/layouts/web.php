@@ -20,7 +20,7 @@ use yii\helpers\Url;
 <a href="<?= Url::to($url) ?>">
     <?php endif; ?>
 
-    <div class="d-flex">
+    <div class="d-flex activity-box-entry">
         <div class="flex-shrink-0 me-3 pt-1 img-profile-space">
             <?= $user->getProfileImage()->render(32, ['link' => false]) ?>
 

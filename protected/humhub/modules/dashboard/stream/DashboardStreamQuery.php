@@ -3,6 +3,7 @@
 namespace humhub\modules\dashboard\stream;
 
 use humhub\modules\dashboard\Module;
+use humhub\modules\stream\models\ContentContainerStreamQuery;
 use Yii;
 
 /**
@@ -10,11 +11,8 @@ use Yii;
  *
  * @since 1.8
  */
-class DashboardStreamQuery extends ActivityStreamQuery
+class DashboardStreamQuery extends ContentContainerStreamQuery
 {
-    /**
-     * @inheritDoc
-     */
     public $pinnedContentSupport = false;
 
     /**

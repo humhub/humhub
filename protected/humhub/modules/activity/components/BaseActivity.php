@@ -46,7 +46,6 @@ abstract class BaseActivity extends BaseObject
             $model->content_addon_record_id = RecordMap::getId($target);
         }
 
-
         if ($user === null && Yii::$app->user->isGuest) {
             throw new InvalidArgumentException('Could not automatically determine if the user is guest.');
         }
@@ -56,9 +55,9 @@ abstract class BaseActivity extends BaseObject
         return $model->save();
     }
 
-    public static function factor(mixed $record): BaseActivity
+    public static function factory(Activity $record): BaseActivity
     {
-        return new $record->class($record);
+        return Yii::createObject($record->class, ['record' => $record]);
     }
 
     public function renderWeb(): string
@@ -67,6 +66,7 @@ abstract class BaseActivity extends BaseObject
             $this->getViewParams(), ['message' => $this->getAsText()]
         ));
     }
+
 
     public function renderPlaintext(): string
     {
@@ -92,5 +92,6 @@ abstract class BaseActivity extends BaseObject
         ];
     }
 
+    public abstract function getAsText(): string;
 
 }

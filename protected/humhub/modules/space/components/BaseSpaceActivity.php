@@ -7,7 +7,7 @@ use humhub\modules\activity\models\Activity;
 use humhub\modules\space\models\Space;
 use yii\base\InvalidValueException;
 
-class BaseSpaceActivity extends BaseActivity
+abstract class BaseSpaceActivity extends BaseActivity
 {
 
     protected Space $space;

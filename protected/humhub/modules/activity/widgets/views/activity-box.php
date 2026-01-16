@@ -13,10 +13,14 @@ use humhub\widgets\PanelMenu;
         <?= Yii::t('ActivityModule.base', '<strong>Latest</strong> activities') ?>
     </div>
     <div>
-        <div id="activityContents" class="hh-list activities">
-            <?php foreach ($activities as $activity): ?>
-                <?= (new RenderService($activity))->getWeb(); ?>
-            <?php endforeach; ?>
+        <div id="activity-box-content" class="hh-list activities">
+            <?php if (empty($activities)): ?>
+                <?= Yii::t('ActivityModule.base', 'There are no activities yet.'); ?>
+            <?php else: ?>
+                <?php foreach ($activities as $activity): ?>
+                    <?= (new RenderService($activity))->getWeb(); ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
     </div>
 </div>

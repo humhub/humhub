@@ -1,19 +1,16 @@
 <?php
 
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
-
 use humhub\commands\CronController;
+use humhub\models\RecordMap;
 use humhub\modules\activity\Events;
-use humhub\components\ActiveRecord;
 use humhub\commands\IntegrityController;
 use humhub\modules\activity\Module;
 use humhub\modules\admin\widgets\SettingsMenu;
-use humhub\modules\user\widgets\AccountMenu;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
+use humhub\modules\user\widgets\AccountMenu;
+use yii\db\BaseActiveRecord;
 
 /** @noinspection MissedFieldInspection */
 return [
@@ -21,13 +18,51 @@ return [
     'class' => Module::class,
     'isCoreModule' => true,
     'events' => [
-        ['class' => ActiveRecord::class, 'event' => ActiveRecord::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onActiveRecordDelete']],
-        ['class' => IntegrityController::class, 'event' => IntegrityController::EVENT_ON_RUN, 'callback' => [Events::class, 'onIntegrityCheck']],
-        ['class' => CronController::class, 'event' => CronController::EVENT_ON_HOURLY_RUN, 'callback' => [Events::class, 'onCronHourlyRun']],
-        ['class' => CronController::class, 'event' => CronController::EVENT_ON_DAILY_RUN, 'callback' => [Events::class, 'onCronDailyRun']],
-        ['class' => AccountMenu::class, 'event' => AccountMenu::EVENT_INIT, 'callback' => [Events::class, 'onAccountMenuInit']],
-        ['class' => SettingsMenu::class, 'event' => SettingsMenu::EVENT_INIT, 'callback' => [Events::class, 'onSettingsMenuInit']],
-        ['class' => Content::class, 'event' => Content::EVENT_AFTER_UPDATE, 'callback' => [Events::class, 'onContentAfterUpdate']],
+        [
+            'class' => IntegrityController::class,
+            'event' => IntegrityController::EVENT_ON_RUN,
+            'callback' => [Events::class, 'onIntegrityCheck']
+        ],
+        [
+            'class' => CronController::class,
+            'event' => CronController::EVENT_ON_HOURLY_RUN,
+            'callback' => [Events::class, 'onCronHourlyRun']
+        ],
+        [
+            'class' => CronController::class,
+            'event' => CronController::EVENT_ON_DAILY_RUN,
+            'callback' => [Events::class, 'onCronDailyRun']
+        ],
+        [
+            'class' => AccountMenu::class,
+            'event' => AccountMenu::EVENT_INIT,
+            'callback' => [Events::class, 'onAccountMenuInit']
+        ],
+        [
+            'class' => SettingsMenu::class,
+            'event' => SettingsMenu::EVENT_INIT,
+            'callback' => [Events::class, 'onSettingsMenuInit']
+        ],
+        [
+            'class' => RecordMap::class,
+            'event' => RecordMap::EVENT_BEFORE_DELETE,
+            'callback' => [Events::class, 'onBeforeRecordMapDelete']
+        ],
+        [
+            'class' => ContentContainerActiveRecord::class,
+            'event' => ContentContainerActiveRecord::EVENT_BEFORE_DELETE,
+            'callback' => [Events::class, 'onBeforeContentContainerDelete']
+        ],
+        [
+            'class' => Content::class,
+            'event' => BaseActiveRecord::EVENT_BEFORE_DELETE,
+            'callback' => [Events::class, 'onBeforeContentDelete']
+        ],
+        [
+            'class' => \humhub\modules\user\models\User::class,
+            'event' => BaseActiveRecord::EVENT_BEFORE_DELETE,
+            'callback' => [Events::class, 'onBeforeUserDelete']
+        ],
     ],
     'consoleControllerMap' => [
         'activity' => 'humhub\modules\activity\commands\TestController',

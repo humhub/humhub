@@ -10,6 +10,7 @@ namespace humhub\modules\dashboard\components\actions;
 
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\dashboard\stream\DashboardStreamQuery;
+use humhub\modules\stream\actions\ContentContainerStream;
 
 /**
  * DashboardStreamAction
@@ -19,12 +20,8 @@ use humhub\modules\dashboard\stream\DashboardStreamQuery;
  * @since 0.11
  * @author luke
  */
-class DashboardStreamAction extends ActivityStreamAction
+class DashboardStreamAction extends ContentContainerStream
 {
-    /**
-     * @inheritDoc
-     */
-    public $activity = false;
 
     /**
      * @inheritDoc

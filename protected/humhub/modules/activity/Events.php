@@ -8,33 +8,26 @@
 
 namespace humhub\modules\activity;
 
-use humhub\components\ActiveRecord;
 use humhub\helpers\ControllerHelper;
+use humhub\models\RecordMap;
 use humhub\modules\activity\components\MailSummary;
-use humhub\modules\activity\helpers\ActivityHelper;
 use humhub\modules\activity\jobs\SendMailSummary;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\widgets\SettingsMenu;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\AccountMenu;
 use Throwable;
 use Yii;
 use yii\base\ActionEvent;
 use yii\base\BaseObject;
 use yii\base\Event;
-use yii\base\InvalidArgumentException;
-use yii\db\ActiveQuery;
-use yii\db\AfterSaveEvent;
-use yii\db\IntegrityException;
 use yii\db\StaleObjectException;
 
-/**
- * Events provides callbacks to handle events.
- *
- * @author luke
- */
 class Events extends BaseObject
 {
     /**
@@ -66,20 +59,6 @@ class Events extends BaseObject
                 Yii::$app->queue->push(new SendMailSummary(['interval' => MailSummary::INTERVAL_MONTHLY]));
             }
         }
-    }
-
-    /**
-     * On delete of some active record, check if there are related activities and delete them.
-     *
-     * @param Event $event
-     */
-    public static function onActiveRecordDelete(Event $event)
-    {
-        if (!($event->sender instanceof ActiveRecord)) {
-            throw new InvalidArgumentException('The handler can be applied only to the \humhub\components\ActiveRecord.');
-        }
-
-        ActivityHelper::deleteActivitiesForRecord($event->sender);
     }
 
     public static function onAccountMenuInit($event)
@@ -132,52 +111,11 @@ class Events extends BaseObject
         foreach (Activity::find()->each() as $a) {
             /** @var Activity $a */
 
-            // Check for object_model / object_id
-            if ($a->object_model != '' && $a->object_id != '') {
-                try {
-                    $source = $a->getSource();
-                } catch (IntegrityException) {
-                    if ($integrityController->showFix('Deleting activity id ' . $a->id . ' without existing target! (' . $a->object_model . ')')) {
-                        $a->hardDelete();
-                    }
-                }
-            }
-
-            // Check for moduleId is set
-            if (empty($a->module) && $integrityController->showFix('Deleting activity id ' . $a->id . ' without module_id!')) {
-                $a->hardDelete();
-            }
+            // ToDo: Class has all dependencies
 
             // Check Activity class exists
             if (!class_exists($a->class) && $integrityController->showFix('Deleting activity id ' . $a->id . ' class not exists! (' . $a->class . ')')) {
                 $a->hardDelete();
-            }
-        }
-    }
-
-    /**
-     * @param AfterSaveEvent $event
-     */
-    public static function onContentAfterUpdate($event)
-    {
-        if (!array_key_exists('visibility', $event->changedAttributes)) {
-            return;
-        }
-
-        /* @var Content $content */
-        $content = $event->sender;
-
-        if ($content->object_model === Activity::class) {
-            return;
-        }
-
-        // Activities should be updated to same visibility as parent Record
-        $activitiesQuery = ActivityHelper::getActivitiesQuery($content->getModel());
-        if ($activitiesQuery instanceof ActiveQuery) {
-            foreach ($activitiesQuery->each() as $activity) {
-                /* @var Activity $activity */
-                $activity->content->visibility = $content->visibility;
-                $activity->content->save();
             }
         }
     }
@@ -189,5 +127,53 @@ class Events extends BaseObject
     {
         return Yii::$app->getModule('activity');
     }
+
+    public static function onBeforeRecordMapDelete($event)
+    {
+        /** @var RecordMap $recordMap */
+        $recordMap = $event->sender;
+
+        foreach (Activity::findAll(['content_addon_record_id' => $recordMap->id]) as $activity) {
+            $activity->delete();
+        }
+
+        return true;
+    }
+
+    public static function onBeforeContentContainerDelete($event)
+    {
+        /** @var ContentContainerActiveRecord $record */
+        $record = $event->sender;
+
+        foreach (Activity::findAll(['activity.contentcontainer_id' => $record->contentcontainer_id]) as $activity) {
+            $activity->delete();
+        }
+
+        return true;
+    }
+    public static function onBeforeContentDelete($event)
+    {
+        /** @var Content $record */
+        $record = $event->sender;
+
+        foreach (Activity::findAll(['content_id' => $record->id]) as $activity) {
+            $activity->delete();
+        }
+
+        return true;
+    }
+
+    public static function onBeforeUserDelete($event)
+    {
+        /** @var User $record */
+        $record = $event->sender;
+
+        foreach (Activity::findAll(['activity.created_by' => $record->id]) as $activity) {
+            $activity->delete();
+        }
+
+        return true;
+    }
+
 
 }

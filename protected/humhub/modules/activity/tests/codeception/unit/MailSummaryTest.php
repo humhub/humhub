@@ -1,16 +1,10 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: kingb
- * Date: 26.09.2018
- * Time: 18:59
- */
-
 namespace humhub\modules\activity\tests\codeception\unit;
 
 use Codeception\Module\Yii2;
 use humhub\components\mail\Message;
+use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\components\MailSummary;
 use humhub\modules\activity\components\MailSummaryProcessor;
 use humhub\modules\activity\jobs\SendMailSummary;
@@ -296,6 +290,7 @@ class MailSummaryTest extends HumHubDbTestCase
 
         $summaryUser2 = $this->createSummary(User::findOne(['id' => 3]), MailSummary::INTERVAL_DAILY);
         $user2Activities = $summaryUser2->getActivities();
+
         $this->assertCount(3, $user2Activities);
         $this->assertContainsActivity(ContentCreatedActivity::class, $user2Activities, 'User2 must contain ' . ContentCreatedActivity::class);
         $this->assertContainsActivity(NewCommentActivity::class, $user2Activities, 'User2 must contain ' . NewCommentActivity::class);
@@ -447,14 +442,17 @@ class MailSummaryTest extends HumHubDbTestCase
         $this->assertContainsActivity(NewCommentActivity::class, $user2Activities, 'User2 must contain ' . NewCommentActivity::class);
 
         $user3Activities = $summaryUser3->getActivities();
+        codecept_debug($user3Activities);
         $this->assertEmpty($user3Activities);
     }
 
 
-    public function assertContainsActivity($activityClass, $activities, $message = null)
+    private function assertContainsActivity($activityClass, $activities, $message = null)
     {
-        foreach ($activities as $activity) {
-            if ($activity::class == $activityClass) {
+        foreach ($activities as $record) {
+            $activity = BaseActivity::factory($record);
+
+            if ($activity::class === $activityClass) {
                 $this->assertTrue(true, $message);
                 return;
             }
@@ -469,7 +467,7 @@ class MailSummaryTest extends HumHubDbTestCase
      * @return MailSummary
      * @throws InvalidConfigException
      */
-    public function createSummary($user, $interval)
+    private function createSummary($user, $interval)
     {
         return Yii::createObject([
             'class' => MailSummary::class,

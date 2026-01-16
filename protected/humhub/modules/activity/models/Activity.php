@@ -3,7 +3,6 @@
 namespace humhub\modules\activity\models;
 
 use humhub\modules\activity\components\ActiveQueryActivity;
-use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
 use yii\db\ActiveQuery;

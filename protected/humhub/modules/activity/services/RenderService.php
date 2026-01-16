@@ -44,7 +44,8 @@ class RenderService
 
     private function getActivity(): BaseActivity
     {
-        return Yii::createObject($this->record->class, ['record' => $this->record]);
+        // ToDo: Add cache
+        return BaseActivity::factory($this->record);
     }
 
     private function getCacheKey(int $type): string

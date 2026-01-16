@@ -33,6 +33,15 @@ class ActiveQueryActivity extends ActiveQuery
             ]
         ]);
 
+        $this->andWhere([
+            'OR',
+            'content.id IS NULL',
+            [
+                'AND',
+                ['=', 'content.state', Content::STATE_PUBLISHED],
+            ]
+        ]);
+
         return $this;
     }
 
@@ -119,7 +128,10 @@ class ActiveQueryActivity extends ActiveQuery
                     $user
                 ) == MailSummaryForm::LIMIT_MODE_INCLUDE) ? 'IN' : 'NOT IN';
             $this->andWhere([$mode, 'activity.contentcontainer_id', $limitContainer]);
+
+            codecept_debug($limitContainer);
         }
+
 
         return $this;
     }

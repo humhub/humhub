@@ -115,11 +115,12 @@ class MailSummary extends Component
     /**
      * @return Activity[]
      */
-    public function getActivities()
+    public function getActivities(): array
     {
         $query = Activity::find();
         $query->defaultScopes($this->user);
         $query->andWhere(['>', 'activity.created_at', $this->getLastSummaryDate()]);
+        $query->subscribedContentContainers($this->user);
         $query->mailLimitContentContainer($this->user);
         $query->mailLimitTypes($this->user);
 
