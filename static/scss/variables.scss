@@ -92,7 +92,7 @@ $background-color-highlight: rgba($accent, 0.2) !default;
 
 // Informative highlighting soft color
 // (e.g. Wiki Active Category)
-$background-color-highlight-soft: lighten(desaturate(adjust-hue($accent, 6), 16), 55) !default;
+$background-color-highlight-soft: lighten(desaturate(adjust-hue($accent, 6), 16%), 55%) !default;
 
 // Additional background colors
 $background3: #d7d7d7 !default;
@@ -264,7 +264,7 @@ $background-color-highlight-dark: rgba($accent, 0.2) !default;
 
 // Informative highlighting soft color
 // (e.g. Wiki Active Category)
-$background-color-highlight-soft-dark: darken(desaturate(adjust-hue($accent, 6), 16), 55) !default;
+$background-color-highlight-soft-dark: darken(desaturate(adjust-hue($accent, 6), 16%), 55%) !default;
 
 // Additional background colors
 $background3-dark: #393939 !default;
