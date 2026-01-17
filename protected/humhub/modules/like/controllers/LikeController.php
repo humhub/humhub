@@ -67,7 +67,7 @@ class LikeController extends Controller
 
         return $this->asJson([
             'currentUserLiked' => $this->likeService->hasLiked(),
-            'likeCounter' => $this->likeService->getCount()
+            'likeCounter' => $this->likeService->getCount(),
         ]);
     }
 
@@ -75,7 +75,7 @@ class LikeController extends Controller
     {
         $title = Yii::t('LikeModule.base', "<strong>Users</strong> who like this");
         return $this->renderAjaxContent(
-            UserListBox::widget(['query' => $this->likeService->getUserQuery(), 'title' => $title])
+            UserListBox::widget(['query' => $this->likeService->getUserQuery(), 'title' => $title]),
         );
     }
 }

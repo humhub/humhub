@@ -38,13 +38,13 @@ class RecordMap extends ActiveRecord
                     return $record->id;
                 }
 
-                $record = new static;
+                $record = new static();
                 $record->model = $ar::class;
                 $record->pk = (int)$ar->getPrimaryKey();
                 $record->save();
 
                 return $record->id;
-            }
+            },
         );
     }
 
@@ -63,7 +63,7 @@ class RecordMap extends ActiveRecord
                     return static::getByModelAndPk($record->model, $record->pk, $classType, $logError);
                 }
                 return null;
-            }
+            },
         );
     }
 

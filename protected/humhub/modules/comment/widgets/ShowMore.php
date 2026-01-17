@@ -64,8 +64,7 @@ class ShowMore extends Widget
                     $this->commentId,
                     $this->pageSize,
                     $this->direction,
-
-                )
+                ),
             );
         }
 

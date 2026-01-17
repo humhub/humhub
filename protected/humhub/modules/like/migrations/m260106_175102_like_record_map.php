@@ -13,13 +13,13 @@ class m260106_175102_like_record_map extends Migration
     public function safeUp()
     {
         $this->execute(
-            'INSERT IGNORE INTO record_map (`model`, `pk`) SELECT DISTINCT l.object_model, l.object_id FROM `like` l WHERE l.object_model IS NOT NULL AND l.object_model != "";'
+            'INSERT IGNORE INTO record_map (`model`, `pk`) SELECT DISTINCT l.object_model, l.object_id FROM `like` l WHERE l.object_model IS NOT NULL AND l.object_model != "";',
         );
 
         $this->safeAddColumn('like', 'content_addon_record_id', $this->integer()->null()->after('content_id'));
 
         $this->execute(
-            'UPDATE `like` l JOIN record_map rm ON rm.`model` = l.object_model AND rm.`pk` = l.object_id SET l.content_addon_record_id = rm.id WHERE l.content_addon_record_id IS NULL AND l.object_model IS NOT NULL AND l.object_model != "";'
+            'UPDATE `like` l JOIN record_map rm ON rm.`model` = l.object_model AND rm.`pk` = l.object_id SET l.content_addon_record_id = rm.id WHERE l.content_addon_record_id IS NULL AND l.object_model IS NOT NULL AND l.object_model != "";',
         );
 
 

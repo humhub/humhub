@@ -84,7 +84,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
                     'user.id',
                     array_map(function (User $user) {
                         return $user->id;
-                    }, $mentionedUsers)
+                    }, $mentionedUsers),
                 ]);
             }
 
@@ -102,6 +102,8 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         }
 
         $this->updateContentSearch();
+
+        $this->fileManager->attach($this->fileList);
 
         parent::afterSave($insert, $changedAttributes);
     }
@@ -177,7 +179,8 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         return $this->content;
     }
 
-    public function getChildCount() : int {
+    public function getChildCount(): int
+    {
         if ($this->child_count === null) {
             $this->child_count = Comment::find()->andWhere(['parent_comment_id' => $this->id])->count();
         }
