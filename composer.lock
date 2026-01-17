@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0f76f1f6c81058cd857a4e6d8ed586d6",
+    "content-hash": "8553b0b81afb2ecbde838f130eabe944",
     "packages": [
         {
             "name": "altcha-org/altcha",
@@ -295,7 +295,7 @@
             "version": "5.0.9",
             "source": {
                 "type": "git",
-                "url": "git@github.com:RobinHerbots/Inputmask.git",
+                "url": "https://github.com/RobinHerbots/Inputmask.git",
                 "reference": "310a33557e2944daf86d5946a5e8c82b9118f8f7"
             },
             "dist": {
@@ -1299,16 +1299,16 @@
         },
         {
             "name": "imagine/imagine",
-            "version": "1.5.1",
+            "version": "1.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-imagine/Imagine.git",
-                "reference": "8b130cd281efdea67e52d5f0f998572eb62d2f04"
+                "reference": "f9ed796eefb77c2f0f2167e1d4e36bc2b5ed6b0c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-imagine/Imagine/zipball/8b130cd281efdea67e52d5f0f998572eb62d2f04",
-                "reference": "8b130cd281efdea67e52d5f0f998572eb62d2f04",
+                "url": "https://api.github.com/repos/php-imagine/Imagine/zipball/f9ed796eefb77c2f0f2167e1d4e36bc2b5ed6b0c",
+                "reference": "f9ed796eefb77c2f0f2167e1d4e36bc2b5ed6b0c",
                 "shasum": ""
             },
             "require": {
@@ -1355,9 +1355,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-imagine/Imagine/issues",
-                "source": "https://github.com/php-imagine/Imagine/tree/1.5.1"
+                "source": "https://github.com/php-imagine/Imagine/tree/1.5.2"
             },
-            "time": "2025-12-09T15:27:47+00:00"
+            "time": "2026-01-09T10:45:12+00:00"
         },
         {
             "name": "jbroadway/urlify",
@@ -4315,18 +4315,6 @@
             "dist": {
                 "type": "tar",
                 "url": "https://registry.npmjs.org/blueimp-tmpl/-/blueimp-tmpl-3.6.0.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/bootstrap",
-            "version": "5.3.8",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/bootstrap/-/bootstrap-5.3.8.tgz"
             },
             "type": "npm-asset",
             "license": [
@@ -10461,6 +10449,56 @@
             "time": "2025-11-17T20:03:58+00:00"
         },
         {
+            "name": "twbs/bootstrap",
+            "version": "v5.3.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/twbs/bootstrap.git",
+                "reference": "25aa8cc0b32f0d1a54be575347e6d84b70b1acd7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/25aa8cc0b32f0d1a54be575347e6d84b70b1acd7",
+                "reference": "25aa8cc0b32f0d1a54be575347e6d84b70b1acd7",
+                "shasum": ""
+            },
+            "replace": {
+                "twitter/bootstrap": "self.version"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mark Otto",
+                    "email": "markdotto@gmail.com"
+                },
+                {
+                    "name": "Jacob Thornton",
+                    "email": "jacobthornton@gmail.com"
+                }
+            ],
+            "description": "The most popular front-end framework for developing responsive, mobile first projects on the web.",
+            "homepage": "https://getbootstrap.com/",
+            "keywords": [
+                "JS",
+                "css",
+                "framework",
+                "front-end",
+                "mobile-first",
+                "responsive",
+                "sass",
+                "web"
+            ],
+            "support": {
+                "issues": "https://github.com/twbs/bootstrap/issues",
+                "source": "https://github.com/twbs/bootstrap/tree/v5.3.8"
+            },
+            "time": "2025-08-26T02:01:02+00:00"
+        },
+        {
             "name": "twig/string-extra",
             "version": "v3.22.1",
             "source": {
@@ -11290,16 +11328,16 @@
         },
         {
             "name": "yiisoft/yii2",
-            "version": "dev-master",
+            "version": "2.0.54",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "a351d47eb64af7d2061e135141d4d06c1bb33cf6"
+                "reference": "99daebf2de0b031d129706a5db6ce0802c70bac9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/a351d47eb64af7d2061e135141d4d06c1bb33cf6",
-                "reference": "a351d47eb64af7d2061e135141d4d06c1bb33cf6",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/99daebf2de0b031d129706a5db6ce0802c70bac9",
+                "reference": "99daebf2de0b031d129706a5db6ce0802c70bac9",
                 "shasum": ""
             },
             "require": {
@@ -11315,7 +11353,6 @@
                 "php": ">=7.4.0",
                 "yiisoft/yii2-composer": "~2.0.4"
             },
-            "default-branch": true,
             "bin": [
                 "yii"
             ],
@@ -11408,7 +11445,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-12-09T16:34:01+00:00"
+            "time": "2026-01-09T22:24:11+00:00"
         },
         {
             "name": "yiisoft/yii2-authclient",
@@ -11505,26 +11542,27 @@
         },
         {
             "name": "yiisoft/yii2-bootstrap5",
-            "version": "2.0.50",
+            "version": "2.0.51",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-bootstrap5.git",
-                "reference": "ad080a7ea063074888c2d801f6b05162064f8ae0"
+                "reference": "23675f617ee3c86cf3e65a31a6afbc75e13028cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-bootstrap5/zipball/ad080a7ea063074888c2d801f6b05162064f8ae0",
-                "reference": "ad080a7ea063074888c2d801f6b05162064f8ae0",
+                "url": "https://api.github.com/repos/yiisoft/yii2-bootstrap5/zipball/23675f617ee3c86cf3e65a31a6afbc75e13028cb",
+                "reference": "23675f617ee3c86cf3e65a31a6afbc75e13028cb",
                 "shasum": ""
             },
             "require": {
-                "bower-asset/bootstrap": "^5.2.3",
                 "ext-json": "*",
                 "php": ">=7.3",
+                "twbs/bootstrap": "^5.2.3",
                 "yiisoft/yii2": "^2.0.42"
             },
             "require-dev": {
                 "phpunit/phpunit": "^9.6",
+                "symplify/easy-coding-standard": "^12.1",
                 "twbs/bootstrap-icons": "^1.7.2",
                 "yiisoft/yii2-coding-standards": "~2.0"
             },
@@ -11582,7 +11620,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-04-10T08:03:20+00:00"
+            "time": "2025-12-03T13:29:11+00:00"
         },
         {
             "name": "yiisoft/yii2-composer",
@@ -11885,12 +11923,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-queue.git",
-                "reference": "76060132ef4f7f70b509bf53ed76619f76adc5b1"
+                "reference": "95631f57150155fd612579e8c0bfb3a8c238b3fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-queue/zipball/76060132ef4f7f70b509bf53ed76619f76adc5b1",
-                "reference": "76060132ef4f7f70b509bf53ed76619f76adc5b1",
+                "url": "https://api.github.com/repos/yiisoft/yii2-queue/zipball/95631f57150155fd612579e8c0bfb3a8c238b3fb",
+                "reference": "95631f57150155fd612579e8c0bfb3a8c238b3fb",
                 "shasum": ""
             },
             "require": {
@@ -11995,7 +12033,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-08-26T14:10:47+00:00"
+            "time": "2026-01-08T07:52:16+00:00"
         },
         {
             "name": "yiisoft/yii2-redis",
@@ -13078,16 +13116,16 @@
         },
         {
             "name": "friendsofphp/php-cs-fixer",
-            "version": "v3.92.4",
+            "version": "v3.92.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer.git",
-                "reference": "9e7488b19403423e02e8403cc1eb596baf4673b0"
+                "reference": "260cc8c4a1d2f6d2f22cd4f9c70aa72e55ebac58"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/9e7488b19403423e02e8403cc1eb596baf4673b0",
-                "reference": "9e7488b19403423e02e8403cc1eb596baf4673b0",
+                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/260cc8c4a1d2f6d2f22cd4f9c70aa72e55ebac58",
+                "reference": "260cc8c4a1d2f6d2f22cd4f9c70aa72e55ebac58",
                 "shasum": ""
             },
             "require": {
@@ -13170,7 +13208,7 @@
             ],
             "support": {
                 "issues": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues",
-                "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.92.4"
+                "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.92.5"
             },
             "funding": [
                 {
@@ -13178,7 +13216,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-01-04T00:38:52+00:00"
+            "time": "2026-01-08T21:57:37+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -14369,12 +14407,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "9a341b84b3ebb8ad254193ce440b44c7d4375a4f"
+                "reference": "ccfd723dc03e9864008d011603c412910180d7a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/9a341b84b3ebb8ad254193ce440b44c7d4375a4f",
-                "reference": "9a341b84b3ebb8ad254193ce440b44c7d4375a4f",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/ccfd723dc03e9864008d011603c412910180d7a6",
+                "reference": "ccfd723dc03e9864008d011603c412910180d7a6",
                 "shasum": ""
             },
             "conflict": {
@@ -14507,6 +14545,7 @@
                 "contao/core-bundle": "<4.13.57|>=5,<5.3.42|>=5.4,<5.6.5",
                 "contao/listing-bundle": ">=3,<=3.5.30|>=4,<4.4.8",
                 "contao/managed-edition": "<=1.5",
+                "coreshop/core-shop": "<=4.1.7",
                 "corveda/phpsandbox": "<1.3.5",
                 "cosenary/instagram": "<=2.3",
                 "couleurcitron/tarteaucitron-wp": "<0.3",
@@ -14558,7 +14597,7 @@
                 "drupal/commerce_alphabank_redirect": "<1.0.3",
                 "drupal/commerce_eurobank_redirect": "<2.1.1",
                 "drupal/config_split": "<1.10|>=2,<2.0.2",
-                "drupal/core": ">=6,<6.38|>=7,<7.102|>=8,<10.4.9|>=10.5,<10.5.6|>=11,<11.1.9|>=11.2,<11.2.8",
+                "drupal/core": ">=6,<6.38|>=7,<7.103|>=8,<10.4.9|>=10.5,<10.5.6|>=11,<11.1.9|>=11.2,<11.2.8",
                 "drupal/core-recommended": ">=7,<7.102|>=8,<10.2.11|>=10.3,<10.3.9|>=11,<11.0.8",
                 "drupal/currency": "<3.5",
                 "drupal/drupal": ">=5,<5.11|>=6,<6.38|>=7,<7.102|>=8,<10.2.11|>=10.3,<10.3.9|>=11,<11.0.8",
@@ -14673,7 +14712,7 @@
                 "geshi/geshi": "<=1.0.9.1",
                 "getformwork/formwork": "<2.2",
                 "getgrav/grav": "<1.11.0.0-beta1",
-                "getkirby/cms": "<3.9.8.3-dev|>=3.10,<3.10.1.2-dev|>=4,<4.7.1|>=5,<5.1.4",
+                "getkirby/cms": "<3.9.8.3-dev|>=3.10,<3.10.1.2-dev|>=4,<4.7.1|>=5,<=5.2.1",
                 "getkirby/kirby": "<3.9.8.3-dev|>=3.10,<3.10.1.2-dev|>=4,<4.7.1",
                 "getkirby/panel": "<2.5.14",
                 "getkirby/starterkit": "<=3.7.0.2",
@@ -14902,7 +14941,7 @@
                 "october/cms": "<1.0.469|==1.0.469|==1.0.471|==1.1.1",
                 "october/october": "<3.7.5",
                 "october/rain": "<1.0.472|>=1.1,<1.1.2",
-                "october/system": "<3.7.5",
+                "october/system": "<=3.7.12|>=4,<=4.0.11",
                 "oliverklee/phpunit": "<3.5.15",
                 "omeka/omeka-s": "<4.0.3",
                 "onelogin/php-saml": "<2.21.1|>=3,<3.8.1|>=4,<4.3.1",
@@ -15368,7 +15407,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-01-05T20:06:42+00:00"
+            "time": "2026-01-09T19:06:26+00:00"
         },
         {
             "name": "softcreatr/jsonpath",
@@ -16224,7 +16263,6 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "roave/security-advisories": 20,
-        "yiisoft/yii2": 20,
         "yiisoft/yii2-queue": 20
     },
     "prefer-stable": false,

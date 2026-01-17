@@ -46,7 +46,7 @@ class ActiveForm extends \yii\bootstrap5\ActiveForm
     /**
      * @inheritdoc
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
 

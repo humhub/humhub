@@ -105,6 +105,13 @@
                     font-size: 12px;
                 }
 
+                .user-title {
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    max-width: 200px;
+                }
+
                 #user-account-image {
                     margin-bottom: 0;
 

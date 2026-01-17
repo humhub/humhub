@@ -58,7 +58,7 @@ class Tabs extends \yii\bootstrap5\Tabs
      */
     public $navType = 'nav-tabs tab-menu';
 
-    public function init()
+    public function init(): void
     {
         parent::init();
 
@@ -96,8 +96,8 @@ class Tabs extends \yii\bootstrap5\Tabs
     /**
      * Checks if the current route contains the given route parts $modelId, $controllerId, §actionId
      * @param null $moduleId
-     * @param null $controller
-     * @param null $action
+     * @param null $controllerId
+     * @param null $actionId
      * @return bool
      */
     public function isCurrentRoute($moduleId = null, $controllerId = null, $actionId = null)
@@ -160,7 +160,7 @@ class Tabs extends \yii\bootstrap5\Tabs
             if ($a['sortOrder'] == $b['sortOrder']) {
                 return 0;
             } elseif ($a['sortOrder'] < $b['sortOrder']) {
-                return - 1;
+                return -1;
             } else {
                 return 1;
             }

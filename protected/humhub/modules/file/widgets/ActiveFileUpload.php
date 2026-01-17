@@ -41,7 +41,7 @@ class ActiveFileUpload extends InputWidget
     public array $progressOptions = [];
 
 
-    public function init()
+    public function init(): void
     {
         parent::init();
 
