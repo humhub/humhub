@@ -44,7 +44,7 @@ abstract class BaseActivity extends BaseObject
             '@activity/views/layouts/mail_plaintext.php',
             array_merge(
                 $this->getViewParams(),
-                ['message' => $this->getAsText()],
+                ['message' => $this->getAsText(), 'url' => $this->getUrl(true)],
             ),
         );
     }
@@ -55,7 +55,7 @@ abstract class BaseActivity extends BaseObject
             '@activity/views/layouts/mail.php',
             array_merge(
                 $this->getViewParams(),
-                ['message' => $this->getAsText()],
+                ['message' => $this->getAsText(), 'url' => $this->getUrl(true)],
             ),
         );
     }
@@ -63,10 +63,15 @@ abstract class BaseActivity extends BaseObject
     protected function getViewParams(): array
     {
         return [
-            'url' => '',
+            'url' => $this->getUrl(),
             'contentContainer' => $this->contentContainer,
             'createdAt' => $this->createdAt,
             'user' => $this->user,
         ];
+    }
+
+    public function getUrl(): ?string
+    {
+        return $this->contentContainer->polymorphicRelation->getUrl(true);
     }
 }

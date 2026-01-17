@@ -157,13 +157,13 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         return $this->created_at !== $this->updated_at && !empty($this->updated_at) && is_string($this->updated_at);
     }
 
-    public function getUrl($scheme = true): string
+    public function getUrl(bool $scheme = false): string
     {
-        if ($this->isNewRecord) {
-            return $this->content->getUrl();
+        if (!$this->isNewRecord) {
+            return Url::to(['/comment/perma', 'id' => $this->id], $scheme);
         }
 
-        return Url::to(['/comment/perma', 'id' => $this->id], $scheme);
+        return parent::getUrl($scheme);
     }
 
     public function getParentComment(): \yii\db\ActiveQuery
