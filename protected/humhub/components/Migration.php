@@ -604,10 +604,11 @@ class Migration extends \yii\db\Migration
                 WHERE activity.class=:likedActivityClass AND like.id IS NOT NULL and activity.object_model != :likeModelClass
             ";
 
-        Yii::$app->db->createCommand($updateSql, [
-            ':likeModelClass' => Like::class,
-            ':likedActivityClass' => LikeActivity::class,
-        ])->execute();
+            Yii::$app->db->createCommand($updateSql, [
+                ':likeModelClass' => Like::class,
+                ':likedActivityClass' => LikeActivity::class,
+            ])->execute();
+        }
     }
 
     /**
