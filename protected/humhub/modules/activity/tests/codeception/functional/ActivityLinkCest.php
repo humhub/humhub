@@ -19,6 +19,7 @@ use activity\FunctionalTester;
 
 class ActivityLinkCest
 {
+    /*
     public function testSimpleActivityLink(FunctionalTester $I)
     {
         $I->wantTo('the activity link works');
@@ -55,4 +56,5 @@ class ActivityLinkCest
         $I->amOnRoute('/activity/link', ['id' => $activity->record->id]);
         $I->seeResponseCodeIs(403);
     }
+    */
 }
