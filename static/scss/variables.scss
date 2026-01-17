@@ -165,12 +165,13 @@ $mail-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', ’Helvetica N
 // Define the maximum width of `.container` for different screen sizes.
 // --------------------------------------------------
 
+// Must be in ascending order
 $container-max-widths: (
     sm: 768px, // fullwidth
-    md: 750px,
+    md: 770px,
     lg: 970px,
     xl: 1170px,
-    xxl: 1170px
+    xxl: 1200px
 ) !default;
 
 

@@ -258,7 +258,6 @@ class ThemeHelper
 
         // Import Bootstrap functions
         $imports[] = Yii::getAlias('@vendor/twbs/bootstrap/scss/functions');
-        $imports[] = Yii::getAlias('@webroot-static/scss/functions');
 
         // Import variables child theme first, because they have the !default flag
         foreach ($treeThemes as $treeTheme) {
