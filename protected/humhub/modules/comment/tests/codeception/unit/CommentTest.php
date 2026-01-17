@@ -2,6 +2,7 @@
 
 namespace tests\codeception\unit\modules\comment\components;
 
+use humhub\models\RecordMap;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\comment\services\CommentListService;
 use humhub\modules\notification\models\Notification;
@@ -31,7 +32,7 @@ class CommentTest extends HumHubDbTestCase
         $this->assertNotEmpty($comment->id);
         $this->assertNotEmpty($comment->content->getPolymorphicRelation()->getFollowersWithNotificationQuery());
 
-        $this->assertNotNull(Activity::findOne(['object_model' => Comment::class, 'object_id' => $comment->id]));
+        $this->assertNotNull(Activity::findOne(['content_addon_record_id' => RecordMap::getId($comment)]));
         $this->assertNotNull(Notification::findOne(['source_class' => Comment::class, 'source_pk' => $comment->id]));
     }
 

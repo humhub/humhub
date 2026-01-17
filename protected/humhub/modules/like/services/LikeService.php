@@ -3,6 +3,7 @@
 namespace humhub\modules\like\services;
 
 use humhub\models\RecordMap;
+use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\interfaces\ContentProvider;
 use humhub\modules\content\models\Content;
@@ -96,7 +97,7 @@ class LikeService
                 $author = $this->contentAddon->createdBy ?? $this->content->createdBy;
 
                 NewLikeNotification::instance()->from($this->user)->about($record)->send($author);
-                LikedActivity::create($record, $author);
+                ActivityManager::dispatch(LikedActivity::class, $record, $author);
 
                 return true;
             }

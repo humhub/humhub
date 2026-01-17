@@ -26,10 +26,18 @@ class MemberRemovedActivity extends BaseSpaceActivity implements ConfigurableAct
             'spaceName' => $this->space->name,
         ];
 
+        if ($this->inSpaceContext()) {
+            return Yii::t(
+                'ActivityModule.base',
+                '{displayName} left this Space.',
+                array_merge($defaultParams, $params),
+            );
+        }
+
         return Yii::t(
             'ActivityModule.base',
             '{displayName} left the Space {spaceName}.',
-            array_merge($defaultParams, $params)
+            array_merge($defaultParams, $params),
         );
     }
 

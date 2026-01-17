@@ -10,6 +10,7 @@ namespace humhub\modules\space\models;
 
 use humhub\components\behaviors\GUID;
 use humhub\libs\UUIDValidator;
+use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;
@@ -263,7 +264,7 @@ class Space extends ContentContainerActiveRecord
             // Auto add creator as admin
             $this->addMember($user->id, 1, true, self::USERGROUP_ADMIN);
 
-            SpaceCreatedActivity::create($this, $user);
+            ActivityManager::dispatch(SpaceCreatedActivity::class, $this, $user);
 
             // If the space creator is not allowed to manage spaces, notify space managers
             if (!(new PermissionManager(['subject' => $user]))->can(ManageSpaces::class)) {

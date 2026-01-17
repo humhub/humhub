@@ -4,11 +4,11 @@ namespace humhub\modules\activity\tests\codeception\unit;
 
 use Codeception\Module\Yii2;
 use humhub\components\mail\Message;
-use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\components\MailSummary;
 use humhub\modules\activity\components\MailSummaryProcessor;
 use humhub\modules\activity\jobs\SendMailSummary;
 use humhub\modules\activity\models\MailSummaryForm;
+use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\comment\activities\NewCommentActivity;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\activities\ContentCreatedActivity;
@@ -450,7 +450,7 @@ class MailSummaryTest extends HumHubDbTestCase
     private function assertContainsActivity($activityClass, $activities, $message = null)
     {
         foreach ($activities as $record) {
-            $activity = BaseActivity::factory($record);
+            $activity = ActivityManager::load($record);
 
             if ($activity::class === $activityClass) {
                 $this->assertTrue(true, $message);

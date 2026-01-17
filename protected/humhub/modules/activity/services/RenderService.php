@@ -14,7 +14,9 @@ class RenderService
     private const OUTPUT_PLAINTEXT = 2;
     private const OUTPUT_MAIL = 3;
     private Cache $cache;
-    const CACHE_DURATION = 120;
+    private ?BaseActivity $_baseActivity = null;
+
+    public const CACHE_DURATION = 120;
 
     public function __construct(private Activity $record, private bool $enableCaching = false)
     {
@@ -44,8 +46,11 @@ class RenderService
 
     private function getActivity(): BaseActivity
     {
-        // ToDo: Add cache
-        return BaseActivity::factory($this->record);
+        if ($this->_baseActivity === null) {
+            $this->_baseActivity = ActivityManager::load($this->record);
+        }
+
+        return $this->_baseActivity;
     }
 
     private function getCacheKey(int $type): string

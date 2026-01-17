@@ -7,7 +7,6 @@ use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use humhub\modules\space\components\BaseSpaceActivity;
 use Yii;
 
-
 class MemberAddedActivity extends BaseSpaceActivity implements ConfigurableActivityInterface
 {
     public static function getTitle(): string
@@ -27,10 +26,18 @@ class MemberAddedActivity extends BaseSpaceActivity implements ConfigurableActiv
             'spaceName' => $this->space->name,
         ];
 
+        if ($this->inSpaceContext()) {
+            return Yii::t(
+                'ActivityModule.base',
+                '{displayName} joined this Space.',
+                array_merge($defaultParams, $params),
+            );
+        }
+
         return Yii::t(
             'ActivityModule.base',
             '{displayName} joined the Space {spaceName}.',
-            array_merge($defaultParams, $params)
+            array_merge($defaultParams, $params),
         );
     }
 

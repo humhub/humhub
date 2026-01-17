@@ -24,13 +24,13 @@ final class ContentCreatedActivity extends BaseContentActivity implements Config
     {
         $defaultParams = [
             'displayName' => $this->user->displayName,
-            'contentTitle' => ContentHelper::getContentInfo($this->content)
+            'contentTitle' => ContentHelper::getContentInfo($this->content),
         ];
 
         return Yii::t(
             'ContentModule.activities',
             '{displayName} created a new {contentTitle}.',
-            array_merge($defaultParams, $params)
+            array_merge($defaultParams, $params),
         );
     }
 
@@ -38,7 +38,7 @@ final class ContentCreatedActivity extends BaseContentActivity implements Config
     {
         return $this->getAsText([
             'displayName' => Html::strong(Html::encode($this->user->displayName)),
-            'contentTitle' => ContentHelper::getContentInfo($this->content)
+            'contentTitle' => ContentHelper::getContentInfo($this->content),
         ]);
     }
 
@@ -46,7 +46,7 @@ final class ContentCreatedActivity extends BaseContentActivity implements Config
     {
         return $this->getAsText([
             'displayName' => Html::strong(Html::encode($this->user->displayName)),
-            'contentTitle' => Html::strong(ContentHelper::getContentInfo($this->content))
+            'contentTitle' => Html::strong(ContentHelper::getContentInfo($this->content)),
         ]);
     }
 }

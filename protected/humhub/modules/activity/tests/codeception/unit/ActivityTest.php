@@ -3,8 +3,8 @@
 namespace humhub\modules\activity\tests\codeception\unit;
 
 use Codeception\Specify;
-use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\models\Activity;
+use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\activity\tests\codeception\activities\TestActivity;
 use humhub\modules\post\models\Post;
 use tests\codeception\_support\HumHubDbTestCase;
@@ -19,12 +19,12 @@ class ActivityTest extends HumHubDbTestCase
         $this->becomeUser('User2');
         $post = Post::findOne(['id' => 1]);
 
-        TestActivity::create($post, Yii::$app->user->identity);
+        ActivityManager::dispatch(TestActivity::class, $post);
 
         $record = Activity::findOne(['class' => TestActivity::class]);
         $this->assertNotNull($record, 'Activity record persisted');
 
-        $testActivity = BaseActivity::factory($record);
+        $testActivity = ActivityManager::load($record);
         $this->assertNotNull($testActivity, 'Get BaseActivity from Activity Record');
 
         $this->assertEquals(TestActivity::class, $testActivity::class);
@@ -37,7 +37,7 @@ class ActivityTest extends HumHubDbTestCase
         $this->becomeUser('User2');
         $post = Post::findOne(1);
 
-        TestActivity::create($post);
+        ActivityManager::dispatch(TestActivity::class, $post);
 
         // Record exists
         $this->assertNotNull(Activity::findOne(['class' => TestActivity::class]));
@@ -64,7 +64,7 @@ class ActivityTest extends HumHubDbTestCase
         // Post (User 2 Space 2 Post Public)
         $post = Post::findOne(10);
 
-        TestActivity::create($post, Yii::$app->user->identity);
+        ActivityManager::dispatch(TestActivity::class, $post);
         $activityRecord = Activity::findOne(['class' => TestActivity::class]);
 
 
