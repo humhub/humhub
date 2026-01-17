@@ -3,9 +3,9 @@
 namespace humhub\modules\activity\widgets;
 
 use humhub\components\Widget;
-use humhub\modules\activity\models\Activity;
+use humhub\modules\activity\controllers\ActivityBoxController;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use Yii;
+use yii\helpers\Url;
 
 class ActivityBox extends Widget
 {
@@ -13,19 +13,10 @@ class ActivityBox extends Widget
 
     public function run()
     {
-        $query = Activity::find()
-            ->limit(50)
-            ->defaultScopes(Yii::$app->user->identity);
-
-        if ($this->contentContainer !== null) {
-            $query->contentContainer($this->contentContainer->contentContainerRecord, Yii::$app->user->identity);
-        } else {
-            $query->subscribedContentContainers(Yii::$app->user->identity);
-        }
-
         return $this->render('activity-box', [
-            'activities' => $query->all()
+            'activities' => ActivityBoxController::getQuery($this->contentContainer?->contentContainerRecord)
+                ->limit(5)->all(),
+            'loadUrl' => Url::to(['/activity/activity-box/load', 'contentContainer' => $this->contentContainer]),
         ]);
     }
-
 }

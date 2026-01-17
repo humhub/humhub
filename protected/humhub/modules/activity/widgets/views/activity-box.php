@@ -5,6 +5,7 @@ use humhub\widgets\PanelMenu;
 
 /* @var $this \humhub\components\View */
 /* @var $activities \humhub\modules\activity\models\Activity[] */
+/* @var $loadUrl string */
 
 ?>
 <div class="panel panel-default panel-activities" id="panel-activities">
@@ -14,6 +15,8 @@ use humhub\widgets\PanelMenu;
     </div>
     <div>
         <div id="activity-box-content" class="hh-list activities">
+            <?= \humhub\helpers\Html::a($loadUrl, $loadUrl); ?>
+
             <?php if (empty($activities)): ?>
                 <?= Yii::t('ActivityModule.base', 'There are no activities yet.'); ?>
             <?php else: ?>
