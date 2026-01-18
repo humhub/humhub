@@ -14,5 +14,8 @@
     "grunt-contrib-less": "^2.0.0",
     "grunt-contrib-uglify": "^5.0",
     "grunt-shell": "^2.1.0"
+  },
+  "dependencies": {
+    "intl-messageformat": "^11.1.0"
   }
 }
