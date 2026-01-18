@@ -222,7 +222,7 @@ class MailSummaryForm extends Model
      *
      * @throws Exception
      */
-    public function resetUserSettings()
+    public function resetUserSettings(): void
     {
         if ($this->user === null) {
             throw new Exception('Could not reset settings when no user is set!');

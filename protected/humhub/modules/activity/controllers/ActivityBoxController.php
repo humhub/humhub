@@ -4,7 +4,8 @@ namespace humhub\modules\activity\controllers;
 
 use humhub\modules\activity\components\ActiveQueryActivity;
 use humhub\modules\activity\models\Activity;
-use humhub\modules\activity\services\RenderService;use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\activity\services\RenderService;
+use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\content\models\ContentContainer;
 use Yii;
 
@@ -18,8 +19,14 @@ class ActivityBoxController extends ContentContainerController
     {
         $query = static::getQuery($this->contentContainer?->contentContainerRecord);
 
+        $lastActivityId = (int)Yii::$app->request->getQueryParam('lastActivityId');
+        if (!empty($lastActivityId)) {
+            $query->andWhere(['>', 'id', $lastActivityId]);
+        }
+
         $result = ['activities' => []];
         foreach ($query->limit($this->activityLoadLimit)->all() as $activity) {
+            /** @var Activity $activity */
             $result['activities'][$activity->id] = (new RenderService($activity))->getWeb();
         }
 

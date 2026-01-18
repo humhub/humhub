@@ -1,11 +1,5 @@
 <?php
 
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
-
 namespace humhub\modules\activity;
 
 use Exception;
@@ -13,17 +7,8 @@ use humhub\helpers\DataTypeHelper;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use Yii;
 
-/**
- * Activity BaseModule
- *
- * @author Lucas Bartholemy <lucas@bartholemy.com>
- * @since 0.5
- */
 class Module extends \humhub\components\Module
 {
-    /**
-     * @inheritdocs
-     */
     public $resourcesPath = 'resources';
 
     /**
@@ -49,7 +34,11 @@ class Module extends \humhub\components\Module
             try {
                 $module = Yii::$app->getModule($moduleId);
             } catch (Exception $ex) {
-                Yii::error('Could not load module to determine activites! Module: ' . $moduleId . ' Error: ' . $ex->getMessage(), 'activity');
+                Yii::error(
+                    'Could not load module to determine activites! Module: ' . $moduleId . ' Error: ' . $ex->getMessage(
+                    ),
+                    'activity',
+                );
                 continue;
             }
 

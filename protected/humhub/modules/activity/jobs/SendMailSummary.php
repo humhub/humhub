@@ -47,7 +47,6 @@ class SendMailSummary extends LongRunningActiveJob implements ExclusiveJobInterf
             MailSummaryProcessor::process($this->interval);
         } else {
             Yii::error('Invalid summary interval given' . $this->interval, 'activity.job');
-            return;
         }
     }
 }
