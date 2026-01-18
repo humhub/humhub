@@ -48,10 +48,6 @@ class CoreJsConfig extends Widget
                     'baseUrl' => Yii::$app->settings->get('baseUrl'),
                     'reloadableScripts' => CacheHelper::getReloadableScriptUrls(),
                     'cspViolationReloadInterval' => Security::CSP_VIOLATION_RELOAD_INTERVAL,
-                    'text' => [
-                        'warn.onBeforeLoad' => Yii::t('base', 'Unsaved changes will be lost. Do you want to proceed?'),
-                        'warn.onBeforeCloseModal' => Yii::t('base', 'Unsaved changes will be lost. Do you want to proceed?'),
-                    ],
                 ],
                 'i18n' => [
                     'language' => Yii::$app->language,
