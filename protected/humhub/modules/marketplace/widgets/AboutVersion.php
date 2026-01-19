@@ -25,15 +25,15 @@ class AboutVersion extends Widget
 
         $licence = $module->getLicence();
 
+        $this->view->registerCss('.hh-about-logo { width: 96px }'
+            . '@media (max-width: 576px) { .hh-about-logo { width: 64px } }');
+
         if ($licence->type === Licence::LICENCE_TYPE_PRO) {
-            if (isset(Yii::$app->params['hosting'])) {
-                return $this->render('about_version_pro_cloud', ['licence' => $licence]);
-            } else {
-                return $this->render('about_version_pro', ['licence' => $licence]);
-            }
-        } else {
-            return $this->render('about_version');
+            $view = isset(Yii::$app->params['hosting']) ? 'about_version_pro_cloud' : 'about_version_pro';
+            return $this->render($view, ['licence' => $licence]);
         }
+
+        return $this->render('about_version');
     }
 
 }
