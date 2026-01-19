@@ -14,5 +14,20 @@
     "grunt-contrib-less": "^2.0.0",
     "grunt-contrib-uglify": "^5.0",
     "grunt-shell": "^2.1.0"
+  },
+  "dependencies": {
+    "@rollup/rollup-linux-arm64-gnu": "^4.53.3",
+    "@vitejs/plugin-react": "^4.7.0",
+    "@vitejs/plugin-vue": "^5.2.4",
+    "axios": "^1.13.2",
+    "lodash": "^4.17.21",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
+    "intl-messageformat": "^10.7.10",
+    "vite": "^6.4.1",
+    "vue": "^3.5.25"
+  },
+  "scripts": {
+    "build-vite": "vite build --config vite.config.js"
   }
 }
