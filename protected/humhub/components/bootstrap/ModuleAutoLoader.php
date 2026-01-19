@@ -9,6 +9,8 @@
 namespace humhub\components\bootstrap;
 
 use humhub\components\Application;
+use humhub\components\InstallationState;
+use humhub\modules\installer\libs\EnvironmentChecker;
 use Yii;
 use yii\base\BootstrapInterface;
 use yii\base\ErrorException;
@@ -36,6 +38,10 @@ class ModuleAutoLoader implements BootstrapInterface
      */
     public function bootstrap($app)
     {
+        if (!$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
+            EnvironmentChecker::preInstallChecks();
+        }
+
         $modules = self::locateModules();
         Yii::$app->moduleManager->registerBulk($modules);
     }
@@ -86,7 +92,9 @@ class ModuleAutoLoader implements BootstrapInterface
             try {
                 $moduleConfig = static::getModuleConfigByPath($folder);
                 if ($preventDuplicatedModules && isset($moduleIdFolders[$moduleConfig['id']])) {
-                    Yii::error('Duplicated module "' . $moduleConfig['id'] . '"(' . $folder . ') is already loaded from the folder "' . $moduleIdFolders[$moduleConfig['id']] . '"');
+                    Yii::error(
+                        'Duplicated module "' . $moduleConfig['id'] . '"(' . $folder . ') is already loaded from the folder "' . $moduleIdFolders[$moduleConfig['id']] . '"'
+                    );
                 } else {
                     $modules[$folder] = $moduleConfig;
                     $moduleIdFolders[$moduleConfig['id']] = $folder;
@@ -103,7 +111,9 @@ class ModuleAutoLoader implements BootstrapInterface
                     try {
                         $moduleConfig = static::getModuleConfigByPath($overwriteModulePath);
 
-                        Yii::info('Overwrite path of the module "' . $overwriteModuleId . '" to the folder "' . $overwriteModulePath . '"');
+                        Yii::info(
+                            'Overwrite path of the module "' . $overwriteModuleId . '" to the folder "' . $overwriteModulePath . '"'
+                        );
                         // Remove original config
                         unset($modules[$moduleIdFolders[$overwriteModuleId]]);
                         // Use config from the overwritten path
