@@ -13,6 +13,7 @@ HumHub Changelog
 - Enh #7941: Display http exception name when message is not provided
 - Fix #7940: Fix space acronym on the picker for saved items
 - Fix #7943: Fix MailButton widget color when the type is specified
+- Fix #7946: Warnings when compiling CSS
 - Enh #7948: Update styles of the "About Humhub" page
 
 1.18.0-beta.6 (January 8, 2026)
