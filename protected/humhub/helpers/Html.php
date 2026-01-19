@@ -25,6 +25,12 @@ use yii\helpers\ArrayHelper;
  */
 class Html extends \yii\bootstrap5\Html
 {
+
+    public static function a($text, $url = null, $options = []): HtmlA
+    {
+        return new HtmlA($text, $url, $options);
+    }
+
     /**
      * @param string $content
      * @param array $options

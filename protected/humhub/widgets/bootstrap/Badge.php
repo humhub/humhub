@@ -9,6 +9,8 @@
 namespace humhub\widgets\bootstrap;
 
 use humhub\helpers\Html;
+use humhub\helpers\HtmlClickableElementTrait;
+use humhub\helpers\HtmlGenericElementTrait;
 use yii\base\InvalidConfigException;
 use yii\bootstrap5\Widget;
 
@@ -23,6 +25,8 @@ use yii\bootstrap5\Widget;
 class Badge extends Widget
 {
     use BootstrapVariationsTrait;
+    use HtmlGenericElementTrait;
+    use HtmlClickableElementTrait;
 
     /**
      * @var string|null the label of the badge.
@@ -47,6 +51,11 @@ class Badge extends Widget
         parent::init();
         $this->clientOptions = [];
         Html::addCssClass($this->options, ['widget' => 'badge']);
+    }
+
+    protected function &getOptionsRef(): array
+    {
+        return $this->options;
     }
 
     /**
