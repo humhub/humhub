@@ -93,7 +93,7 @@ class ModuleAutoLoader implements BootstrapInterface
                 $moduleConfig = static::getModuleConfigByPath($folder);
                 if ($preventDuplicatedModules && isset($moduleIdFolders[$moduleConfig['id']])) {
                     Yii::error(
-                        'Duplicated module "' . $moduleConfig['id'] . '"(' . $folder . ') is already loaded from the folder "' . $moduleIdFolders[$moduleConfig['id']] . '"'
+                        'Duplicated module "' . $moduleConfig['id'] . '"(' . $folder . ') is already loaded from the folder "' . $moduleIdFolders[$moduleConfig['id']] . '"',
                     );
                 } else {
                     $modules[$folder] = $moduleConfig;
@@ -112,7 +112,7 @@ class ModuleAutoLoader implements BootstrapInterface
                         $moduleConfig = static::getModuleConfigByPath($overwriteModulePath);
 
                         Yii::info(
-                            'Overwrite path of the module "' . $overwriteModuleId . '" to the folder "' . $overwriteModulePath . '"'
+                            'Overwrite path of the module "' . $overwriteModuleId . '" to the folder "' . $overwriteModulePath . '"',
                         );
                         // Remove original config
                         unset($modules[$moduleIdFolders[$overwriteModuleId]]);
