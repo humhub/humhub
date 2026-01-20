@@ -9,7 +9,8 @@ humhub.module('i18n', function(module, require, $) {
 
     var getStorageKey = function(category) {
         var version = module.config.version || '';
-        return 'humhub.i18n.' + version + '.' + locale + '.' + category;
+        var language = module.config.language || 'en';
+        return 'humhub.i18n.' + version + '.' + language + '.' + category;
     };
 
     function compileMessage(template) {
@@ -55,7 +56,6 @@ humhub.module('i18n', function(module, require, $) {
             method: 'GET'
         }).then(function(data) {
             if (data) {
-                locale = data.locale;
                 updateIntlMessages(data.messages);
                 loadedCategories.add(category);
 
@@ -76,12 +76,8 @@ humhub.module('i18n', function(module, require, $) {
         var key = String(message);
 
         if (!loadedCategories.has(category)) {
-            return loadTranslations(category).then(function() {
-                var template = (globalMessages && key in globalMessages) ? globalMessages[key] : key;
-                return compileMessage(template).format(params);
-            }).catch(function(err) {
-                return compileMessage(key).format(params);
-            });
+            module.log.warn(`Category '${category}' was not correctly preloaded for translation '${key}'`);
+            loadTranslations(category);
         }
 
         var template = (globalMessages && key in globalMessages) ? globalMessages[key] : key;
