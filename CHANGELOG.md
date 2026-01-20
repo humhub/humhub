@@ -15,6 +15,7 @@ HumHub Changelog
 - Fix #7943: Fix MailButton widget color when the type is specified
 - Fix #7946: Warnings when compiling CSS
 - Enh #7948: Update styles of the "About Humhub" page
+- Enh: Add `safeAlterColumn()` method to `humhub\components\Migration` class
 
 1.18.0-beta.6 (January 8, 2026)
 -------------------------------
