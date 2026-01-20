@@ -444,7 +444,7 @@ humhub.module('client', function (module, require, $) {
             module.confirmedMessages = {};
         }
 
-        msg = msg || module.text('warn.onBeforeLoad');
+        msg = msg || i18n.t('base', 'Unsaved changes will be lost. Do you want to proceed?');
 
         if (module.confirmedMessages[msg] && (Date.now() - module.confirmedMessages[msg].time < 100)) {
             // Don't ask the same confirmation message twice if it was answered recently
