@@ -1,12 +1,12 @@
 <?php
 
-use yii\db\Migration;
+use humhub\components\Migration;
 
 class m160309_141222_longerUserName extends Migration
 {
     public function up()
     {
-        $this->alterColumn('user', 'username', 'VARCHAR(50)');
+        $this->safeAlterColumn('user', 'username', 'VARCHAR(50)');
     }
 
     public function down()

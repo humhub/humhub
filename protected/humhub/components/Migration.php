@@ -285,7 +285,7 @@ class Migration extends \yii\db\Migration
             return false;
         }
 
-        $this->alterColumn($table, $column, $type);
+        $this->safeAlterColumn($table, $column, $type);
         return true;
     }
 
