@@ -104,11 +104,7 @@ use yii\helpers\Url;
                  id="register">
 
                 <?php if (AuthChoice::hasClients()): ?>
-                    <?= AuthChoice::widget() ?>
-                    <div class="or-container">
-                        <hr>
-                        <div>or</div>
-                    </div>
+                    <?= AuthChoice::widget(['showOrDivider' => true]) ?>
                 <?php else: ?>
                     <p><?= Yii::t('UserModule.auth', "Don't have an account? Join the network by entering your e-mail address.") ?></p>
                 <?php endif; ?>
