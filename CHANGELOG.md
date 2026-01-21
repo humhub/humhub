@@ -16,6 +16,7 @@ HumHub Changelog
 - Fix #7946: Warnings when compiling CSS
 - Enh #7948: Update styles of the "About Humhub" page
 - Enh #7955: Add `safeAlterColumn()` method to `humhub\components\Migration` class
+- Fix #7956: In "New User" form, "or" divider is not translated
 
 1.18.0-beta.6 (January 8, 2026)
 -------------------------------
