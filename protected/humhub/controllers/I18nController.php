@@ -26,16 +26,22 @@ class I18nController extends Controller
 
     public function actionTranslations(string $category): Response
     {
-        $messageSource = Yii::$app->i18n->getMessageSource($category);
+        $categories = explode(',', $category);
+        $messages = [];
 
-        if ($messageSource !== null) {
-            if ($messageSource instanceof ModuleMessageSource) {
-                $category = str_replace(I18NHelper::getModuleTranslationCategory($messageSource->module->id), '', $category);
-            }
+        foreach ($categories as $cat) {
+            try {
+                $messageSource = Yii::$app->i18n->getMessageSource($cat);
 
-            $messages = $messageSource->loadMessages($category, Yii::$app->language);
-        } else {
-            $messages = [];
+                if ($messageSource !== null) {
+                    $originalCat = $cat;
+                    if ($messageSource instanceof ModuleMessageSource) {
+                        $cat = str_replace(I18NHelper::getModuleTranslationCategory($messageSource->module->id), '', $cat);
+                    }
+
+                    $messages[$originalCat] = $messageSource->loadMessages($cat, Yii::$app->language);
+                }
+            } catch (\Exception) {}
         }
 
         return $this->asJson([

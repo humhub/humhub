@@ -27,47 +27,65 @@ humhub.module('i18n', function(module, require, $) {
         return formatter;
     }
 
-    function updateIntlMessages(newMessages) {
-        globalMessages = $.extend({}, globalMessages, newMessages);
+    function updateIntlMessages(category, messages) {
+        if (!globalMessages[category]) {
+            globalMessages[category] = {};
+        }
+        $.extend(globalMessages[category], messages);
     }
 
-    var loadTranslations = function(category) {
-        if (loadedCategories.has(category)) {
+    var loadTranslations = function(categories) {
+        if (typeof categories === 'string') {
+            categories = [categories];
+        }
+
+        var categoriesToLoad = categories.filter(function(category) {
+            if (loadedCategories.has(category)) {
+                return false;
+            }
+
+            try {
+                var cached = localStorage.getItem(getStorageKey(category));
+                if (cached) {
+                    var messages = JSON.parse(cached);
+                    updateIntlMessages(category, messages);
+                    loadedCategories.add(category);
+                    return false;
+                }
+            } catch (e) {}
+
+            return true;
+        });
+
+        if (categoriesToLoad.length === 0) {
             return Promise.resolve();
         }
 
-        if (pendingLoads.has(category)) {
-            return pendingLoads.get(category);
+        var categoriesLoadingKey = categoriesToLoad.sort().join(',');
+        if (pendingLoads.has(categoriesLoadingKey)) {
+            return pendingLoads.get(categoriesLoadingKey);
         }
-
-        try {
-            var cached = localStorage.getItem(getStorageKey(category));
-            if (cached) {
-                var data = JSON.parse(cached);
-                updateIntlMessages(data);
-                loadedCategories.add(category);
-                return Promise.resolve();
-            }
-        } catch (e) {}
 
         var promise = $.ajax({
             url: module.config.translationUrl,
-            data: { category: category },
+            data: {category: categoriesLoadingKey},
             method: 'GET'
         }).then(function(data) {
-            if (data) {
-                updateIntlMessages(data.messages);
-                loadedCategories.add(category);
+            if (data && data.messages) {
+                $.each(data.messages, function(category, messages) {
+                    updateIntlMessages(category, messages);
+                    loadedCategories.add(category);
 
-                try {
-                    localStorage.setItem(getStorageKey(category), JSON.stringify(data.messages));
-                } catch (e) {}
+                    try {
+                        localStorage.setItem(getStorageKey(category), JSON.stringify(messages));
+                    } catch (e) {}
+                });
             }
         }).always(function() {
-            pendingLoads.delete(category);
+            pendingLoads.delete(categoriesLoadingKey);
         });
 
-        pendingLoads.set(category, promise);
+        pendingLoads.set(categoriesLoadingKey, promise);
         return promise;
     };
 
@@ -80,7 +98,7 @@ humhub.module('i18n', function(module, require, $) {
             loadTranslations(category);
         }
 
-        var template = (globalMessages && key in globalMessages) ? globalMessages[key] : key;
+        var template = (globalMessages[category] && key in globalMessages[category]) ? globalMessages[category][key] : key;
         return compileMessage(template).format(params);
     };
 
@@ -92,12 +110,7 @@ humhub.module('i18n', function(module, require, $) {
      * @returns {Promise} Promise that resolves when all categories are loaded
      */
     var preload = function(categories) {
-        if (typeof categories === 'string') {
-            categories = [categories];
-        }
-        return Promise.all(categories.map(function(cat) {
-            return loadTranslations(cat);
-        }));
+        return loadTranslations(categories);
     };
 
     module.export({
