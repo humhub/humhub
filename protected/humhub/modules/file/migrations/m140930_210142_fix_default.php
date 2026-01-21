@@ -1,14 +1,14 @@
 <?php
 
 
-use yii\db\Migration;
+use humhub\components\Migration;
 
 class m140930_210142_fix_default extends Migration
 {
     public function up()
     {
-        $this->alterColumn('file', 'object_model', "varchar(100) DEFAULT ''");
-        $this->alterColumn('file', 'object_id', "varchar(100) DEFAULT ''");
+        $this->safeAlterColumn('file', 'object_model', "varchar(100) DEFAULT ''");
+        $this->safeAlterColumn('file', 'object_id', "varchar(100) DEFAULT ''");
     }
 
     public function down()

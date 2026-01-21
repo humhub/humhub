@@ -1,20 +1,20 @@
 <?php
 
+use humhub\components\Migration;
 use yii\db\Expression;
-use yii\db\Migration;
 
 class m160508_005740_settings_cleanup extends Migration
 {
     public function up()
     {
-        $this->dropColumn('setting', 'created_at');
-        $this->dropColumn('setting', 'created_by');
-        $this->dropColumn('setting', 'updated_at');
-        $this->dropColumn('setting', 'updated_by');
-        $this->alterColumn('setting', 'value', \yii\db\Schema::TYPE_TEXT);
+        $this->safeDropColumn('setting', 'created_at');
+        $this->safeDropColumn('setting', 'created_by');
+        $this->safeDropColumn('setting', 'updated_at');
+        $this->safeDropColumn('setting', 'updated_by');
+        $this->safeAlterColumn('setting', 'value', \yii\db\Schema::TYPE_TEXT);
 
         $this->update('setting', ['value' => new Expression('value_text')], 'value IS NULL and value_text IS NOT NULL');
-        $this->dropColumn('setting', 'value_text');
+        $this->safeDropColumn('setting', 'value_text');
         $this->createIndex('unique-setting', 'setting', ['name', 'module_id']);
 
         // Ensure default module_id is base
