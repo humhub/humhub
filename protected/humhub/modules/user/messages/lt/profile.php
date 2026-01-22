@@ -117,6 +117,7 @@ return [
     'Zip' => 'Indeksas',
     '{attribute} is required!' => 'Reikalingas {attribute}',
     'Each line must be formatted as Key=>Value!' => '',
+    'Group memberships' => '',
     'Mastodon URL' => '',
     'Template' => '',
     'This profile is disabled!' => '',

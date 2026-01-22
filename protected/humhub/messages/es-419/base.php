@@ -18,6 +18,7 @@ return [
     'An unexpected server error occurred. If this keeps happening, please contact a site administrator.' => '',
     'Back' => '',
     'Back to dashboard' => '',
+    'Back to login' => '',
     'Cancel' => '',
     'Choose language:' => '',
     'Close' => '',
