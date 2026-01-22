@@ -86,6 +86,7 @@ return [
     'Upload file' => '파일 업로드',
     'You are not allowed to run this action.' => '이 작업을 실행할 권한이 없습니다.',
     'verify your upload_max_filesize and post_max_size php settings.' => 'upload_max_filesize 및 post_max_size PHP 설정을 확인합니다.',
+    'Back to login' => '',
     'Enter security code above' => '',
     'I\'m not a robot' => '',
     'No results' => '',

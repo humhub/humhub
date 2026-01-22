@@ -95,6 +95,7 @@ return [
     '{nFormatted}B' => '{nFormatted}B',
     '{nFormatted}K' => '{nFormatted}K',
     '{nFormatted}M' => '{nFormatted}M',
+    'Back to login' => '',
     'Enter security code above' => '',
     'I\'m not a robot' => '',
     'Switch network' => '',

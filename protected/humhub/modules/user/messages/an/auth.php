@@ -56,5 +56,4 @@ return [
     'To log in with your new account, click the button below.' => '',
     'User or Password incorrect.' => '',
     'a new user {displayName} needs approval.' => '',
-    'back to home' => '',
 ];

@@ -51,6 +51,7 @@ return [
     'Field Type could not be changed!' => '',
     'Fieldtype' => '',
     'Gender' => '',
+    'Group memberships' => '',
     'Hide age per default' => '',
     'Hide year in profile' => '',
     'ID' => '',

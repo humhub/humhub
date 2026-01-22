@@ -264,6 +264,32 @@ class Migration extends \yii\db\Migration
     }
 
     /**
+     * Alter column
+     *
+     * @param string $table the table whose column is to be changed. The table name will be properly quoted by the method.
+     * @param string $column the name of the column to be changed. The name will be properly quoted by the method.
+     * @param string $type the new column type. The [[QueryBuilder::getColumnType()]] method will be invoked to convert abstract column type (if any)
+     *
+     * @return bool indicates if column has been altered
+     * @see static::alterColumn()
+     * @noinspection PhpMissingReturnTypeInspection
+     * @since 1.18
+     */
+    protected function safeAlterColumn(string $table, string $column, string $type): bool
+    {
+        if (!$this->columnExists($column, $table)) {
+            if (!$this->compact) {
+                echo "    > skipped alter column $column to type $type in table $table, column $column doesn't exist ...\n";
+            }
+            $this->logWarning("Tried to alter a not existing column '$column' to type '$type' in table '$table'");
+            return false;
+        }
+
+        $this->alterColumn($table, $column, $type);
+        return true;
+    }
+
+    /**
      * Check if the index already exists in the table
      *
      * @param string $index
