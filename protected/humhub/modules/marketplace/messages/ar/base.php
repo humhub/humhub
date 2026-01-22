@@ -56,7 +56,6 @@ The license was successfully removed!
     'Could not update license. Error: ' => 'تعذر تحديث الترخيص. خطأ:',
     'Deprecated' => 'مهملة',
     'Download of module failed!' => 'حصل خطأ أثناء تحميل الموديول',
-    'Edit license' => 'تحرير الترخيص',
     'Enable' => 'تفعيل',
     'Enable now' => 'تفعيل الآن',
     'Enabled' => 'تم التفعيل',
@@ -129,7 +128,6 @@ The license was successfully removed!
     'Update' => 'تحديث',
     'Update all' => 'تحديث الكل',
     'Update successful' => 'نجح التحديث',
-    'Upgrade to Professional Edition' => 'الترقية إلى الإصدار الاحترافي',
     'Version:' => 'الإصدار:',
     'We are almost there! As a final step, we recommend that you take a look at the module configuration, where you will find numerous configuration options, some of which are required.' => 'نحن تقريبا هناك! كخطوة أخيرة، نوصي بإلقاء نظرة على إعداد الموديول ، حيث ستجد العديد من خيارات الإعداد، وبعضها مطلوب.',
     'Well done! To make the module available within your network, you will also need to enable it. Do you want to enable it now?' => 'أحسنت! لإتاحة الموديول داخل شبكتك، ستحتاج أيضًا إلى تفعيلها. هل تريد تفعيلها الآن؟',
@@ -137,4 +135,6 @@ The license was successfully removed!
     'Without category' => 'بدون فئة',
     'Would you like to jump straight to it?' => 'هل ترغب في القفز مباشرة إليها؟',
     'Your HumHub installation is up to date!' => 'تثبيت HumHub الخاص بك محدث!',
+    'Add License' => '',
+    'Edit License' => '',
 ];

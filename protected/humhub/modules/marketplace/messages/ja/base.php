@@ -56,7 +56,6 @@ The license was successfully removed!
     'Could not update license. Error: ' => 'ライセンスを更新できませんでした。エラー：',
     'Deprecated' => '非推奨',
     'Download of module failed!' => 'モジュールのダウンロードに失敗しました！',
-    'Edit license' => 'ライセンスの編集',
     'Enable' => '作動させる',
     'Enable now' => '今すぐアクティブ化する',
     'Enabled' => '作動中',
@@ -129,7 +128,6 @@ The license was successfully removed!
     'Update' => 'アップデート',
     'Update all' => 'すべて更新',
     'Update successful' => 'アップデート成功',
-    'Upgrade to Professional Edition' => 'プロフェッショナル版にアップグレード',
     'Version:' => 'バージョン：',
     'We are almost there! As a final step, we recommend that you take a look at the module configuration, where you will find numerous configuration options, some of which are required.' => '私たちは、ほぼ、そこにいる！最後のステップとしてモジュール構成を確認することをお勧めします。モジュール構成には多数の構成オプションがあり、そのうちのいくつかは必須です。',
     'Well done! To make the module available within your network, you will also need to enable it. Do you want to enable it now?' => '素晴らしい！ネットワーク内でモジュールを使用できるようにするには、モジュールをアクティブ化する必要もあります。今すぐアクティブ化しますか？',
@@ -137,4 +135,6 @@ The license was successfully removed!
     'Without category' => 'カテゴリなし',
     'Would you like to jump straight to it?' => 'すぐにジャンプしますか？',
     'Your HumHub installation is up to date!' => 'HumHub のインストールは最新です。',
+    'Add License' => '',
+    'Edit License' => '',
 ];

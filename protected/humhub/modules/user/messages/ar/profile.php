@@ -119,6 +119,7 @@ return [
     'YouTube URL' => 'رابط يوتيوب',
     'Zip' => 'الرمز البريدي',
     '{attribute} is required!' => '{attribute} مطلوبة',
+    'Group memberships' => '',
     'Template' => '',
     'Twig template that will be used to render this field. You can use the internal names as variables, e.g. `{{ firstname }} {{ lastname }}`' => '',
 ];

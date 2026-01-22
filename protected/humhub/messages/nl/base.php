@@ -17,6 +17,7 @@ return [
   'An unexpected server error occurred. If this keeps happening, please contact a site administrator.' => 'Een onbekende serverfout deed zich voor; neem bij herhaling contact op met een beheerder van deze site.',
   'Back' => 'Terug',
   'Back to dashboard' => 'Terug naar het dashboard',
+  'Back to login' => 'Terug naar het login-scherm',
   'Cancel' => 'Annuleren',
   'Choose language:' => 'Kies een taal:',
   'Close' => 'Sluiten',

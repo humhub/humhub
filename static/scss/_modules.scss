@@ -232,7 +232,7 @@
                             color: var(--hh-primary-contrast) !important;
 
                             &:hover, &:active {
-                                background: darken($primary, 10) !important;
+                                background: darken($primary, 10%) !important;
                             }
                         }
 

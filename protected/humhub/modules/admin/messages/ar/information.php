@@ -101,6 +101,8 @@ return [
     '{phpExtension} Extension' => 'الإضافة {phpExtension}',
     '{phpExtension} Support' => 'دعم {phpExtension}',
     'Enable <a href="{url}">Link Redirection Service</a>' => '',
+    'Install {phpExtension} Extension for Mercure push live driver' => '',
     'New migrations should be applied: {migrations}' => '',
     'No pending migrations' => '',
+    'Uploads - File' => '',
 ];

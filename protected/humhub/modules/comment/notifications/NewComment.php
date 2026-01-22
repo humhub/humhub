@@ -95,32 +95,34 @@ class NewComment extends BaseNotification
             return '';
         }
 
+        $contentInfo = $this->getContentInfo($contentRecord);
+
         if ($user->is($contentRecord->owner)) {
             if ($space) {
                 return Yii::t('CommentModule.notification', "{displayName} just commented your {contentTitle} in space {space}", [
                     'displayName' => $this->originator->displayName,
-                    'contentTitle' => $this->getContentPlainTextInfo($contentRecord, true),
+                    'contentTitle' => $contentInfo,
                     'space' => $space->displayName,
                 ]);
             }
 
             return Yii::t('CommentModule.notification', "{displayName} just commented your {contentTitle}", [
                 'displayName' => $this->originator->displayName,
-                'contentTitle' => $this->getContentPlainTextInfo($contentRecord, true),
+                'contentTitle' => $contentInfo,
             ]);
         }
 
         if ($space) {
             return Yii::t('CommentModule.notification', "{displayName} commented {contentTitle} in space {space}", [
                 'displayName' => $this->originator->displayName,
-                'contentTitle' => $this->getContentPlainTextInfo($contentRecord, true),
+                'contentTitle' => $contentInfo,
                 'space' => $space->displayName,
             ]);
         }
 
         return Yii::t('CommentModule.notification', "{displayName} commented {contentTitle}", [
             'displayName' => $this->originator->displayName,
-            'contentTitle' => $this->getContentPlainTextInfo($contentRecord, true),
+            'contentTitle' => $contentInfo,
         ]);
     }
 
@@ -134,32 +136,34 @@ class NewComment extends BaseNotification
             return '';
         }
 
+        $contentInfo = $this->getContentInfo($contentRecord);
+
         if ($user->is($contentRecord->owner)) {
             if ($space) {
                 return Yii::t('CommentModule.notification', "{displayNames} just commented your {contentTitle} in space {space}", [
                     'displayNames' => $this->getGroupUserDisplayNames(false),
-                    'contentTitle' => $this->getContentPlainTextInfo($this->getCommentedRecord()),
+                    'contentTitle' => $contentInfo,
                     'space' => $space->displayName,
                 ]);
             }
 
             return Yii::t('CommentModule.notification', "{displayNames} just commented your {contentTitle}", [
                 'displayNames' => $this->getGroupUserDisplayNames(false),
-                'contentTitle' => $this->getContentPlainTextInfo($this->getCommentedRecord()),
+                'contentTitle' => $contentInfo,
             ]);
         }
 
         if ($space) {
             return Yii::t('CommentModule.notification', "{displayNames} commented {contentTitle} in space {space}", [
                 'displayNames' => $this->getGroupUserDisplayNames(false),
-                'contentTitle' => $this->getContentPlainTextInfo($this->getCommentedRecord()),
+                'contentTitle' => $contentInfo,
                 'space' => $space->displayName,
             ]);
         }
 
         return Yii::t('CommentModule.notification', "{displayNames} commented {contentTitle}", [
             'displayNames' => $this->getGroupUserDisplayNames(false),
-            'contentTitle' => $this->getContentPlainTextInfo($this->getCommentedRecord()),
+            'contentTitle' => $contentInfo,
         ]);
     }
 
