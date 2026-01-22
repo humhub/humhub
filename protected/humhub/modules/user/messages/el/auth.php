@@ -56,5 +56,4 @@ return [
     'Your email' => '',
     'Your password has been successfully changed!' => '',
     'a new user {displayName} needs approval.' => '',
-    'back to home' => '',
 ];

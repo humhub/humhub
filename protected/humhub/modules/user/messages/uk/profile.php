@@ -114,6 +114,7 @@ return [
     '{attribute} is required!' => '{attribute} потрібен!',
     'Diverse' => '',
     'Each line must be formatted as Key=>Value!' => '',
+    'Group memberships' => '',
     'Instagram URL' => '',
     'Mastodon URL' => '',
     'Template' => '',

@@ -13,7 +13,7 @@ class m251215_120928_alter_checkboxlist_columns_to_profile_table extends Migrati
     public function safeUp()
     {
         foreach (ProfileField::findAll(['field_type_class' => CheckboxList::class]) as $profileField) {
-            $this->alterColumn('profile', $profileField->internal_name, $this->text());
+            $this->safeAlterColumn('profile', $profileField->internal_name, $this->text());
         }
         Yii::$app->getDb()->getSchema()->refreshTableSchema(Profile::tableName());
     }

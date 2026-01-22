@@ -92,7 +92,7 @@ $background-color-highlight: rgba($accent, 0.2) !default;
 
 // Informative highlighting soft color
 // (e.g. Wiki Active Category)
-$background-color-highlight-soft: lighten(desaturate(adjust-hue($accent, 6), 16), 55) !default;
+$background-color-highlight-soft: lighten(desaturate(adjust-hue($accent, 6), 16%), 55%) !default;
 
 // Additional background colors
 $background3: #d7d7d7 !default;
@@ -165,12 +165,13 @@ $mail-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', ’Helvetica N
 // Define the maximum width of `.container` for different screen sizes.
 // --------------------------------------------------
 
+// Must be in ascending order
 $container-max-widths: (
     sm: 768px, // fullwidth
-    md: 750px,
+    md: 770px,
     lg: 970px,
     xl: 1170px,
-    xxl: 1170px
+    xxl: 1200px
 ) !default;
 
 
@@ -264,7 +265,7 @@ $background-color-highlight-dark: rgba($accent, 0.2) !default;
 
 // Informative highlighting soft color
 // (e.g. Wiki Active Category)
-$background-color-highlight-soft-dark: darken(desaturate(adjust-hue($accent, 6), 16), 55) !default;
+$background-color-highlight-soft-dark: darken(desaturate(adjust-hue($accent, 6), 16%), 55%) !default;
 
 // Additional background colors
 $background3-dark: #393939 !default;

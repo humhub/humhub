@@ -68,6 +68,7 @@ return [
     'Each line must be formatted as Key=>Value!' => '',
     'Field Type could not be changed!' => '',
     'Fieldtype' => '',
+    'Group memberships' => '',
     'Hide age per default' => '',
     'ID' => '',
     'Internal Name' => '',

@@ -42,6 +42,7 @@ return [
   'Friends' => 'Vrienden',
   'Gender' => 'Geslacht',
   'General' => 'Algemeen',
+  'Group memberships' => 'Groepslidmaatschappen',
   'Hide age per default' => 'Verberg leeftijd standaard',
   'Hide year in profile' => 'Verberg jaar in profiel',
   'ID' => 'ID',
