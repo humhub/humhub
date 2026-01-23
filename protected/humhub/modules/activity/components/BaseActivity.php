@@ -3,64 +3,38 @@
 namespace humhub\modules\activity\components;
 
 use humhub\modules\activity\models\Activity;
+use humhub\modules\activity\models\Activity as ActivityRecord;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\user\models\User;
-use Yii;
 use yii\base\BaseObject;
 
 abstract class BaseActivity extends BaseObject
 {
-    protected ContentContainer $contentContainer;
+    public readonly ActivityRecord $record;
 
-    protected User $user;
+    protected readonly ContentContainer $contentContainer;
 
-    protected string $createdAt;
+    protected readonly User $user;
 
-    public function __construct(Activity $record, $config = [])
+    protected readonly string $createdAt;
+    public ?int $groupingThreshold = null;
+    public int $groupingTimeBucketSeconds = 900;
+    public int $groupCount;
+
+    public function __construct(ActivityRecord $record, $config = [])
     {
         parent::__construct($config);
 
         $this->contentContainer = $record->contentContainer;
         $this->user = $record->createdBy;
         $this->createdAt = $record->created_at;
+        $this->record = $record;
+        $this->groupCount = $this->record->groupCount;
     }
 
-    abstract public function getAsText(): string;
+    abstract public function asText(): string;
 
-    public function renderWeb(): string
-    {
-        return Yii::$app->getView()->renderFile(
-            '@activity/views/layouts/web.php',
-            array_merge(
-                $this->getViewParams(),
-                ['message' => $this->getAsText()],
-            ),
-        );
-    }
-
-    public function renderPlaintext(): string
-    {
-        return Yii::$app->getView()->renderFile(
-            '@activity/views/layouts/mail_plaintext.php',
-            array_merge(
-                $this->getViewParams(),
-                ['message' => $this->getAsText(), 'url' => $this->getUrl(true)],
-            ),
-        );
-    }
-
-    public function renderMail(): string
-    {
-        return Yii::$app->getView()->renderFile(
-            '@activity/views/layouts/mail.php',
-            array_merge(
-                $this->getViewParams(),
-                ['message' => $this->getAsText(), 'url' => $this->getUrl(true)],
-            ),
-        );
-    }
-
-    protected function getViewParams(): array
+    public function getViewParams(): array
     {
         return [
             'url' => $this->getUrl(),
@@ -70,8 +44,17 @@ abstract class BaseActivity extends BaseObject
         ];
     }
 
-    public function getUrl(): ?string
+    public function getUrl(bool $scheme = true): ?string
     {
-        return $this->contentContainer->polymorphicRelation->getUrl(true);
+        return $this->contentContainer->polymorphicRelation->getUrl($scheme);
+    }
+
+    public function findGroupedQuery(): ActiveQueryActivity
+    {
+        return Activity::find()
+            ->timeBucket($this->groupingTimeBucketSeconds, $this->createdAt)
+            ->andWhere(['activity.class' => static::class])
+            ->andWhere(['activity.contentcontainer_id' => $this->contentContainer->id])
+            ->andWhere(['activity.created_by' => $this->user->id]);
     }
 }

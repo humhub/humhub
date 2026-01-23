@@ -2,6 +2,7 @@
 
 namespace humhub\modules\activity\services;
 
+use humhub\helpers\DataTypeHelper;
 use humhub\models\RecordMap;
 use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\models\Activity;
@@ -18,7 +19,11 @@ class ActivityManager
         string $class,
         ContentProvider|ContentContainerActiveRecord $target,
         ?User $user = null,
-    ): bool {
+    ): BaseActivity {
+        if (!DataTypeHelper::isClassType($class, BaseActivity::class)) {
+            throw new InvalidArgumentException("Class {$class} does not implement " . BaseActivity::class);
+        }
+
         $model = new Activity();
         $model->class = $class;
         if ($target instanceof ContentProvider) {
@@ -37,12 +42,18 @@ class ActivityManager
         }
 
         $model->created_by = $user ? $user->id : Yii::$app->user->identity->id;
+        $model->save();
 
-        return $model->save();
+        $activity = static::load($model);
+        GroupingManager::handleInsert($activity);
+
+        return $activity;
     }
 
     public static function load(Activity $record): BaseActivity
     {
         return Yii::createObject($record->class, ['record' => $record]);
     }
+
+
 }

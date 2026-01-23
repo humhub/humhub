@@ -12,7 +12,6 @@ use yii\db\ActiveQuery;
 
 class ActiveQueryActivity extends ActiveQuery
 {
-
     public function init()
     {
         parent::init();
@@ -29,8 +28,8 @@ class ActiveQueryActivity extends ActiveQuery
             [
                 'AND',
                 ['!=', 'user.status', User::STATUS_NEED_APPROVAL],
-                ['!=', 'user.visibility', User::VISIBILITY_HIDDEN]
-            ]
+                ['!=', 'user.visibility', User::VISIBILITY_HIDDEN],
+            ],
         ]);
 
         $this->andWhere([
@@ -39,14 +38,14 @@ class ActiveQueryActivity extends ActiveQuery
             [
                 'AND',
                 ['=', 'content.state', Content::STATE_PUBLISHED],
-            ]
+            ],
         ]);
 
         return $this;
     }
 
-    public function defaultScopes(User $user): static {
-
+    public function defaultScopes(User $user): static
+    {
         $this->excludeUser($user);
         $this->visible();
         $this->orderBy(['activity.id' => SORT_DESC]);
@@ -69,9 +68,9 @@ class ActiveQueryActivity extends ActiveQuery
         $this->andWhere(['activity.contentcontainer_id' => $contentContainer->id]);
 
         if (in_array($contentContainer->id, $legitimation[Content::VISIBILITY_PRIVATE]) || in_array(
-                $contentContainer->id,
-                $legitimation[Content::VISIBILITY_OWNER]
-            )) {
+            $contentContainer->id,
+            $legitimation[Content::VISIBILITY_OWNER],
+        )) {
             // Allow all visibilities, for members
         } else {
             // Restrict to Public Content only
@@ -96,14 +95,14 @@ class ActiveQueryActivity extends ActiveQuery
             [
                 'IN',
                 'activity.contentcontainer_id',
-                array_merge($legitimation[Content::VISIBILITY_PRIVATE], $legitimation[Content::VISIBILITY_OWNER])
+                array_merge($legitimation[Content::VISIBILITY_PRIVATE], $legitimation[Content::VISIBILITY_OWNER]),
             ],
             // Content of Public, in Public Only
             [
                 'AND',
                 ['IN', 'activity.contentcontainer_id', $legitimation[Content::VISIBILITY_PUBLIC]],
                 ['content.visibility' => Content::VISIBILITY_PUBLIC],
-            ]
+            ],
         ]);
 
         return $this;
@@ -125,8 +124,8 @@ class ActiveQueryActivity extends ActiveQuery
         $limitContainer = $this->getLimitContentContainers($user);
         if (!empty($limitContainer)) {
             $mode = ($this->getLimitContentContainerMode(
-                    $user
-                ) == MailSummaryForm::LIMIT_MODE_INCLUDE) ? 'IN' : 'NOT IN';
+                $user,
+            ) == MailSummaryForm::LIMIT_MODE_INCLUDE) ? 'IN' : 'NOT IN';
             $this->andWhere([$mode, 'activity.contentcontainer_id', $limitContainer]);
 
             codecept_debug($limitContainer);
@@ -185,7 +184,7 @@ class ActiveQueryActivity extends ActiveQuery
         return $this;
     }
 
-   private function getSuppressedActivities(User $user): array
+    private function getSuppressedActivities(User $user): array
     {
         /** @var \humhub\modules\activity\Module $activityModule */
         $activityModule = Yii::$app->getModule('activity');
@@ -200,5 +199,42 @@ class ActiveQueryActivity extends ActiveQuery
         }
 
         return explode(',', trim((string)$activitySuppress));
+    }
+
+    public function enableGrouping(): static
+    {
+        $this->addGroupBy('activity.grouping_key');
+        $this->addSelect(['activity.*', 'count(*) as _group_count']);
+        return $this;
+    }
+
+    public function timeBucket(int $bucketIntervalSeconds, string|\DateTimeInterface $dateTime): static
+    {
+        if ($bucketIntervalSeconds <= 0) {
+            throw new \InvalidArgumentException('BucketIntervalSeconds must be greater than 0.');
+        }
+
+        if ($dateTime instanceof \DateTimeInterface) {
+            $dt = ($dateTime instanceof \DateTime)
+                ? \DateTimeImmutable::createFromMutable($dateTime)
+                : $dateTime;
+        } else {
+            try {
+                $dt = new \DateTimeImmutable($dateTime);
+            } catch (\Exception $e) {
+                throw new \InvalidArgumentException("Invalid date time given: '{$dateTime}'");
+            }
+        }
+
+        $startTs = (int)(floor($dt->getTimestamp() / $bucketIntervalSeconds) * $bucketIntervalSeconds);
+        $startDateTime = $dt->setTimestamp($startTs);
+
+        $endDateTime = $startDateTime->modify("+{$bucketIntervalSeconds} seconds");
+
+        return $this->andWhere([
+            'AND',
+            ['>=', 'activity.created_at', $startDateTime->format('Y-m-d H:i:s')],
+            ['<', 'activity.created_at', $endDateTime->format('Y-m-d H:i:s')],
+        ]);
     }
 }

@@ -8,7 +8,6 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\interfaces\ContentProvider;
 use humhub\modules\content\models\Content;
 use yii\base\InvalidValueException;
-use yii\helpers\Url;
 
 abstract class BaseContentActivity extends BaseActivity
 {

@@ -26,21 +26,41 @@ class RenderService
     public function getWeb(): ?string
     {
         return $this->cache->getOrSet($this->getCacheKey(self::OUTPUT_WEB), function () {
-            return $this->getActivity()->renderWeb();
+            return Yii::$app->getView()->renderFile(
+                '@activity/views/layouts/web.php',
+                array_merge(
+                    $this->getActivity()->getViewParams(),
+                    ['message' => $this->getActivity()->asText()],
+                ),
+            );
+
         }, self::CACHE_DURATION);
     }
 
     public function getPlaintext()
     {
         return $this->cache->getOrSet($this->getCacheKey(self::OUTPUT_PLAINTEXT), function () {
-            return $this->getActivity()->renderPlaintext();
+            return Yii::$app->getView()->renderFile(
+                '@activity/views/layouts/mail_plaintext.php',
+                array_merge(
+                    $this->getActivity()->getViewParams(),
+                    ['message' => $this->getActivity()->asText(), 'url' => $this->getActivity()->getUrl(true)],
+                ),
+            );
+
         }, self::CACHE_DURATION);
     }
 
     public function getMail()
     {
         return $this->cache->getOrSet($this->getCacheKey(self::OUTPUT_MAIL), function () {
-            return $this->getActivity()->renderMail();
+            return Yii::$app->getView()->renderFile(
+                '@activity/views/layouts/mail.php',
+                array_merge(
+                    $this->getActivity()->getViewParams(),
+                    ['message' => $this->getActivity()->asText(), 'url' => $this->getActivity()->getUrl(true)],
+                ),
+            );
         }, self::CACHE_DURATION);
     }
 
