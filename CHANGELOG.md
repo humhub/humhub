@@ -17,6 +17,7 @@ HumHub Changelog
 - Enh #7948: Update styles of the "About Humhub" page
 - Enh #7955: Add `safeAlterColumn()` method to `humhub\components\Migration` class
 - Fix #7956: In "New User" form, "or" divider is not translated
+- Fix #7957: Clean up markdown syntax from email notification subject
 - Enh #7958: Improve topic url for hidden content on stream
 
 1.18.0-beta.6 (January 8, 2026)
