@@ -18,7 +18,7 @@ HumHub Changelog
 - Enh #7955: Add `safeAlterColumn()` method to `humhub\components\Migration` class
 - Fix #7956: In "New User" form, "or" divider is not translated
 - Fix #7957: Clean up markdown syntax from email notification subject
-- Fix: In menu dropdowns, hide divider if it's the first or the last element
+- Fix #7961: In menu dropdowns, hide divider if it's the first or the last element
 
 1.18.0-beta.6 (January 8, 2026)
 -------------------------------
