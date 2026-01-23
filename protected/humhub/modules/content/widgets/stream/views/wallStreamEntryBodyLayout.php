@@ -23,7 +23,7 @@ use humhub\modules\topic\widgets\TopicBadge;
         <div class="wall-entry-body">
             <div class="topic-label-list">
                 <?php foreach ($topics as $topic) : ?>
-                    <?= TopicBadge::topic($topic, $model->content) ?>
+                    <?= TopicBadge::forTopic($topic, $model->content) ?>
                 <?php endforeach; ?>
             </div>
 

@@ -280,7 +280,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
 
         foreach (Topic::findByContent($this->content)->all() as $topic) {
             /** @var $topic Topic */
-            $labels[] = TopicBadge::topic($topic, $this->content);
+            $labels[] = TopicBadge::forTopic($topic, $this->content);
         }
 
         return Badge::sort($labels);
