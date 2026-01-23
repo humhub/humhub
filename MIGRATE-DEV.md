@@ -17,6 +17,8 @@ Version 1.19 (Unreleased)
 - Refactored `like` module
   - Introduced `LikeService` and added `like.content_id`
   - Used `RecordMap` for ContentAddon relations
+- Removed methods `getContentPlainTextInfo()` and `getContentPlainTextPreview()` from the class `SocialActivity`(`BaseNotification`)
+  - Replace them with `getContentInfo()` and `getContentPreview()` in all extended classes, especially inside the method `getMailSubject()`
 
 
 Version 1.18 (Unreleased)
