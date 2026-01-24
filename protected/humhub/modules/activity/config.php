@@ -8,6 +8,7 @@ use humhub\modules\activity\Module;
 use humhub\modules\admin\widgets\SettingsMenu;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
+use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\AccountMenu;
 use yii\db\BaseActiveRecord;
 
@@ -17,51 +18,19 @@ return [
     'class' => Module::class,
     'isCoreModule' => true,
     'events' => [
+        [IntegrityController::class, IntegrityController::EVENT_ON_RUN, [Events::class, 'onIntegrityCheck']],
+        [CronController::class, CronController::EVENT_ON_HOURLY_RUN, [Events::class, 'onCronHourlyRun']],
+        [CronController::class, CronController::EVENT_ON_DAILY_RUN, [Events::class, 'onCronDailyRun']],
+        [AccountMenu::class, AccountMenu::EVENT_INIT, [Events::class, 'onAccountMenuInit']],
+        [SettingsMenu::class, BaseActiveRecord::EVENT_INIT, [Events::class, 'onSettingsMenuInit']],
+        [RecordMap::class, BaseActiveRecord::EVENT_BEFORE_DELETE, [Events::class, 'onBeforeRecordMapDelete']],
+        [User::class, BaseActiveRecord::EVENT_BEFORE_DELETE, [Events::class, 'onBeforeUserDelete']],
         [
-            'class' => IntegrityController::class,
-            'event' => IntegrityController::EVENT_ON_RUN,
-            'callback' => [Events::class, 'onIntegrityCheck'],
+            ContentContainerActiveRecord::class,
+            BaseActiveRecord::EVENT_BEFORE_DELETE,
+            [Events::class, 'onBeforeContentContainerDelete'],
         ],
-        [
-            'class' => CronController::class,
-            'event' => CronController::EVENT_ON_HOURLY_RUN,
-            'callback' => [Events::class, 'onCronHourlyRun'],
-        ],
-        [
-            'class' => CronController::class,
-            'event' => CronController::EVENT_ON_DAILY_RUN,
-            'callback' => [Events::class, 'onCronDailyRun'],
-        ],
-        [
-            'class' => AccountMenu::class,
-            'event' => AccountMenu::EVENT_INIT,
-            'callback' => [Events::class, 'onAccountMenuInit'],
-        ],
-        [
-            'class' => SettingsMenu::class,
-            'event' => SettingsMenu::EVENT_INIT,
-            'callback' => [Events::class, 'onSettingsMenuInit'],
-        ],
-        [
-            'class' => RecordMap::class,
-            'event' => RecordMap::EVENT_BEFORE_DELETE,
-            'callback' => [Events::class, 'onBeforeRecordMapDelete'],
-        ],
-        [
-            'class' => ContentContainerActiveRecord::class,
-            'event' => ContentContainerActiveRecord::EVENT_BEFORE_DELETE,
-            'callback' => [Events::class, 'onBeforeContentContainerDelete'],
-        ],
-        [
-            'class' => Content::class,
-            'event' => BaseActiveRecord::EVENT_BEFORE_DELETE,
-            'callback' => [Events::class, 'onBeforeContentDelete'],
-        ],
-        [
-            'class' => \humhub\modules\user\models\User::class,
-            'event' => BaseActiveRecord::EVENT_BEFORE_DELETE,
-            'callback' => [Events::class, 'onBeforeUserDelete'],
-        ],
+        [Content::class, BaseActiveRecord::EVENT_BEFORE_DELETE, [Events::class, 'onBeforeContentDelete']],
     ],
     'consoleControllerMap' => [
         'activity' => 'humhub\modules\activity\commands\TestController',

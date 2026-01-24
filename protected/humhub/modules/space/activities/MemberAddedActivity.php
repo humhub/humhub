@@ -19,7 +19,7 @@ class MemberAddedActivity extends BaseSpaceActivity implements ConfigurableActiv
         return Yii::t('SpaceModule.activities', 'Whenever a new member joined one of your spaces.');
     }
 
-    public function getAsText(array $params = []): string
+    public function asText(array $params = []): string
     {
         $defaultParams = [
             'displayName' => $this->user->displayName,
@@ -41,9 +41,9 @@ class MemberAddedActivity extends BaseSpaceActivity implements ConfigurableActiv
         );
     }
 
-    public function getAsHtml()
+    public function asHtml(): string
     {
-        return $this->getAsText([
+        return $this->asText([
             'displayName' => Html::strong(Html::encode($this->user->displayName)),
             'spaceName' => Html::strong(Html::encode($this->space->name)),
         ]);

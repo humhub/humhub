@@ -9,6 +9,7 @@ use humhub\modules\activity\models\Activity;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\interfaces\ContentProvider;
+use humhub\modules\content\models\Content;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\InvalidArgumentException;
@@ -45,7 +46,7 @@ class ActivityManager
         $model->save();
 
         $activity = static::load($model);
-        GroupingManager::handleInsert($activity);
+        (new GroupingService($activity))->afterInsert();
 
         return $activity;
     }
@@ -55,5 +56,15 @@ class ActivityManager
         return Yii::createObject($record->class, ['record' => $record]);
     }
 
-
+    /**
+     * Should be triggered on all possible Activity related Content changes.
+     * e.g. Visibility, Move Content
+     */
+    public static function afterContentChange(Content $content): void
+    {
+        Activity::updateAll(['contentcontainer_id' => $content->contentcontainer_id], ['content_id' => $content->id]);
+        foreach (Activity::find()->andWhere(['content_id' => $content->id])->all() as $activity) {
+            (new GroupingService($activity))->afterUpdate();
+        }
+    }
 }

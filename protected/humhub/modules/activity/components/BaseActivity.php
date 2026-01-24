@@ -17,9 +17,9 @@ abstract class BaseActivity extends BaseObject
     protected readonly User $user;
 
     protected readonly string $createdAt;
+    public readonly int $groupCount;
     public ?int $groupingThreshold = null;
     public int $groupingTimeBucketSeconds = 900;
-    public int $groupCount;
 
     public function __construct(ActivityRecord $record, $config = [])
     {
@@ -33,6 +33,16 @@ abstract class BaseActivity extends BaseObject
     }
 
     abstract public function asText(): string;
+
+    public function asHtml(): string
+    {
+        return $this->asText();
+    }
+
+    public function asHtmlMail(): string
+    {
+        return $this->asHtml();
+    }
 
     public function getViewParams(): array
     {

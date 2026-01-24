@@ -4,11 +4,10 @@ namespace humhub\modules\activity\models;
 
 use humhub\modules\activity\components\ActiveQueryActivity;
 use humhub\modules\activity\services\ActivityManager;
-use humhub\modules\activity\services\GroupingManager;
+use humhub\modules\activity\services\GroupingService;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
 use yii\db\ActiveQuery;
-use yii\db\Exception;
 
 /**
  * This is the model class for table "activity".
@@ -45,7 +44,7 @@ class Activity extends \humhub\components\ActiveRecord
 
     public function afterDelete()
     {
-        GroupingManager::handleDelete(ActivityManager::load($this));
+        (new GroupingService(ActivityManager::load($this)))->afterDelete();
         parent::afterDelete();
     }
 
@@ -64,13 +63,12 @@ class Activity extends \humhub\components\ActiveRecord
         return new ActiveQueryActivity(static::class);
     }
 
-    public function getGroupCount() : int {
+    public function getGroupCount(): int
+    {
         if ($this->_group_count === null) {
             $this->_group_count = Activity::find()->where(['grouping_key' => $this->grouping_key])->count();
         }
 
         return $this->_group_count;
     }
-
-
 }

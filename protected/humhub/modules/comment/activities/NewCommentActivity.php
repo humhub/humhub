@@ -41,7 +41,7 @@ final class NewCommentActivity extends BaseContentActivity implements Configurab
         return Yii::t('CommentModule.base', 'Whenever a new comment was written.');
     }
 
-    public function getAsText(array $params = []): string
+    public function asText(array $params = []): string
     {
         $defaultParams = [
             'displayName' => $this->user->displayName,
@@ -55,17 +55,17 @@ final class NewCommentActivity extends BaseContentActivity implements Configurab
         );
     }
 
-    public function getAsHtml(): string
+    public function asHtml(): string
     {
-        return $this->getAsText([
+        return $this->asText([
             'displayName' => Html::strong(Html::encode($this->user->displayName)),
             'comment' => '"' . RichText::preview($this->comment->message, 100) . '"'
         ]);
     }
 
-    public function getAsMailHtml(): string
+    public function asHtmlMail(): string
     {
-        return $this->getAsText([
+        return $this->asText([
             'displayName' => Html::strong(Html::encode($this->user->displayName)),
             'comment' => '<br>' . '"' . RichText::preview($this->comment->message, 0) . '"'
         ]);

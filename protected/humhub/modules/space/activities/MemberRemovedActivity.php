@@ -19,7 +19,7 @@ class MemberRemovedActivity extends BaseSpaceActivity implements ConfigurableAct
         return Yii::t('SpaceModule.activities', 'Whenever a member leaves one of your spaces.');
     }
 
-    public function getAsText(array $params = []): string
+    public function asText(array $params = []): string
     {
         $defaultParams = [
             'displayName' => $this->user->displayName,
@@ -41,9 +41,9 @@ class MemberRemovedActivity extends BaseSpaceActivity implements ConfigurableAct
         );
     }
 
-    public function getAsHtml()
+    public function asHtml(): string
     {
-        return $this->getAsText([
+        return $this->asText([
             'displayName' => Html::strong(Html::encode($this->user->displayName)),
             'spaceName' => Html::strong(Html::encode($this->space->name)),
         ]);

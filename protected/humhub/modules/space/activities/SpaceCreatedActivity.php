@@ -8,7 +8,7 @@ use Yii;
 
 class SpaceCreatedActivity extends BaseSpaceActivity
 {
-    public function getAsText(array $params = []): string
+    public function asText(array $params = []): string
     {
         $defaultParams = [
             'displayName' => $this->user->displayName,
@@ -22,9 +22,9 @@ class SpaceCreatedActivity extends BaseSpaceActivity
         );
     }
 
-    public function getAsHtml()
+    public function asHtml(): string
     {
-        return $this->getAsText([
+        return $this->asText([
             'displayName' => Html::strong(Html::encode($this->user->displayName)),
             'spaceName' => Html::strong(Html::encode($this->space->name)),
         ]);

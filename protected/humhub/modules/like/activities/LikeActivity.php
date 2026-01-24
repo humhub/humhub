@@ -39,7 +39,7 @@ class LikeActivity extends BaseContentActivity implements ConfigurableActivityIn
         return Yii::t('LikeModule.activities', 'Whenever someone likes something (e.g. a post or comment).');
     }
 
-    public function getAsText(array $params = []): string
+    public function asText(array $params = []): string
     {
         $defaultParams = [
             'displayName' => $this->user->displayName,
@@ -53,15 +53,15 @@ class LikeActivity extends BaseContentActivity implements ConfigurableActivityIn
         );
     }
 
-    public function getAsHtml(): string
+    public function asHtml(): string
     {
-        return $this->getAsText([
+        return $this->asText([
             'displayName' => Html::strong(Html::encode($this->user->displayName)),
         ]);
     }
 
-    public function getAsMailHtml(): string
+    public function asHtmlMail(): string
     {
-        return $this->getAsHtml();
+        return $this->asHtml();
     }
 }

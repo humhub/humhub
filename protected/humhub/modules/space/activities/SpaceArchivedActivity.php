@@ -19,7 +19,7 @@ class SpaceArchivedActivity extends BaseSpaceActivity implements ConfigurableAct
         return Yii::t('SpaceModule.activities', 'Whenever a space is archived.');
     }
 
-    public function getAsText(array $params = []): string
+    public function asText(array $params = []): string
     {
         $defaultParams = [
             'displayName' => $this->user->displayName,
@@ -33,9 +33,9 @@ class SpaceArchivedActivity extends BaseSpaceActivity implements ConfigurableAct
         );
     }
 
-    public function getAsHtml()
+    public function asHtml(): string
     {
-        return $this->getAsText([
+        return $this->asText([
             'displayName' => Html::strong(Html::encode($this->user->displayName)),
             'spaceName' => Html::strong(Html::encode($this->space->name)),
         ]);

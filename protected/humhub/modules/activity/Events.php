@@ -134,7 +134,7 @@ class Events extends BaseObject
         return true;
     }
 
-    public static function onBeforeContentContainerDelete($event)
+    public static function onBeforeContentContainerDelete($event): bool
     {
         /** @var ContentContainerActiveRecord $record */
         $record = $event->sender;

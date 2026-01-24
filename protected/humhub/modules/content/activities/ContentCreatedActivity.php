@@ -20,7 +20,7 @@ final class ContentCreatedActivity extends BaseContentActivity implements Config
         return Yii::t('ContentModule.activities', 'Whenever a new content (e.g. post) has been created.');
     }
 
-    public function getAsText(array $params = []): string
+    public function asText(array $params = []): string
     {
         $defaultParams = [
             'displayName' => $this->user->displayName,
@@ -34,17 +34,17 @@ final class ContentCreatedActivity extends BaseContentActivity implements Config
         );
     }
 
-    public function getAsHtml()
+    public function asHtml(): string
     {
-        return $this->getAsText([
+        return $this->asText([
             'displayName' => Html::strong(Html::encode($this->user->displayName)),
             'contentTitle' => ContentHelper::getContentInfo($this->content),
         ]);
     }
 
-    public function getAsMailHtml()
+    public function asHtmlMail(): string
     {
-        return $this->getAsText([
+        return $this->asText([
             'displayName' => Html::strong(Html::encode($this->user->displayName)),
             'contentTitle' => Html::strong(ContentHelper::getContentInfo($this->content)),
         ]);

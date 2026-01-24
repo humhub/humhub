@@ -30,7 +30,7 @@ class RenderService
                 '@activity/views/layouts/web.php',
                 array_merge(
                     $this->getActivity()->getViewParams(),
-                    ['message' => $this->getActivity()->asText()],
+                    ['message' => $this->getActivity()->asHtml()],
                 ),
             );
 
@@ -58,7 +58,7 @@ class RenderService
                 '@activity/views/layouts/mail.php',
                 array_merge(
                     $this->getActivity()->getViewParams(),
-                    ['message' => $this->getActivity()->asText(), 'url' => $this->getActivity()->getUrl(true)],
+                    ['message' => $this->getActivity()->asHtmlMail(), 'url' => $this->getActivity()->getUrl(true)],
                 ),
             );
         }, self::CACHE_DURATION);

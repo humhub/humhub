@@ -15,32 +15,6 @@ class GroupingTest extends HumHubDbTestCase
 {
     use Specify;
 
-
-    public function testTimebucket()
-    {
-        $this->becomeUser('User2');
-        $post = Post::findOne(['id' => 1]);
-
-        ActivityManager::dispatch(TestGroupActivity::class, $post);
-        $lastActivity = Activity::find()->where(['activity.class' => TestGroupActivity::class])->orderBy(
-            'created_at DESC',
-        )->one();
-        $lastActivity->updateAttributes(
-            [
-                'created_at' => (new \DateTimeImmutable($lastActivity->created_at))->modify('-1 month')->format(
-                    'Y-m-d H:i:s',
-                ),
-            ],
-        );
-
-        ActivityManager::dispatch(TestGroupActivity::class, $post);
-        ActivityManager::dispatch(TestGroupActivity::class, $post);
-        ActivityManager::dispatch(TestGroupActivity::class, $post);
-        ActivityManager::dispatch(TestGroupActivity::class, $post);
-        // Except a group of 4 not 5 TestGroupActivities
-    }
-
-
     public function testAddToGroup()
     {
         $this->becomeUser('User2');
@@ -147,13 +121,14 @@ class GroupingTest extends HumHubDbTestCase
     }
 
 
-    public function testRemoveFromGroup()
+    public function testChangeContentContainer()
     {
+        // TODO: Create a group of Activities, Move one into another Content Container, make sure Group is changed
     }
 
-    // Grouped Activity was updated
-
-    // Grouped Activity was deleted
-
+    public function testChangeVisibility()
+    {
+        // TODO: Create a group of Activities, Move one into another Content Container, make sure Group is changed
+    }
 
 }

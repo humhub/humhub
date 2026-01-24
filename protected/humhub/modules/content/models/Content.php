@@ -16,6 +16,7 @@ use humhub\interfaces\ArchiveableInterface;
 use humhub\interfaces\EditableInterface;
 use humhub\interfaces\ViewableInterface;
 use humhub\libs\UUIDValidator;
+use humhub\modules\activity\models\Activity;
 use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\content\activities\ContentCreatedActivity;
 use humhub\modules\content\components\ContentActiveRecord;
@@ -292,6 +293,10 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
             if (!$this->getStateService()->wasPublished() && (int)$previousState === self::STATE_PUBLISHED) {
                 $this->updateAttributes(['was_published' => 1]);
             }
+        }
+
+        if (in_array('visibility', $changedAttributes)) {
+            ActivityManager::afterContentChange($this);
         }
 
         (new ContentSearchService($this))->update();
@@ -644,6 +649,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
                     $model->afterMove($container);
                 }
             });
+            ActivityManager::afterContentChange($this);
         }
 
         return $move;

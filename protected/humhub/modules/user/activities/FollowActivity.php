@@ -36,7 +36,7 @@ class FollowActivity extends BaseActivity implements ConfigurableActivityInterfa
     }
 
 
-    public function getAsText(array $params = []): string
+    public function asText(array $params = []): string
     {
         $defaultParams = [
             'user1' => $this->user->displayName,
@@ -50,9 +50,9 @@ class FollowActivity extends BaseActivity implements ConfigurableActivityInterfa
         );
     }
 
-    public function getAsHtml()
+    public function asHtml(): string
     {
-        return $this->getAsText([
+        return $this->asText([
             'user1' => Html::strong(Html::encode($this->user->displayName)),
             'user2' => Html::strong(Html::encode($this->followedUser->displayName)),
         ]);
