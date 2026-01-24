@@ -671,7 +671,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      */
     public function afterMove(?ContentContainerActiveRecord $container = null)
     {
-        ActivityManager::handleContentMove($this->content);
+        ActivityManager::afterContentChange($this->content);
     }
 
     /**
