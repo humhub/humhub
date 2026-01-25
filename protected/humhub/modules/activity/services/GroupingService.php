@@ -21,7 +21,8 @@ final class GroupingService
             $subSelect = $this->activity->findGroupedQuery()->select('activity.id')->createCommand()->getRawSql();
             Activity::updateAll(
                 ['grouping_key' => $this->generateGroupingKey()],
-                new Expression('activity.id IN (' . $subSelect . ')'),
+                // We need a "double" SubSelect to avoid MySQL Err: 1093
+                new Expression('activity.id IN (SELECT id FROM (' . $subSelect . ') AS temp_tbl)'),
             );
 
             // Refresh for current activity

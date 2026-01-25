@@ -75,6 +75,6 @@ class RenderService
 
     private function getCacheKey(int $type): string
     {
-        return sprintf('activity.%d-%d', $type, $this->record->id);
+        return sprintf('activity.%d-%d', $type, $this->record->grouping_key);
     }
 }

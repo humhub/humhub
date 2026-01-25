@@ -64,7 +64,7 @@ class ActivityManager
     {
         Activity::updateAll(['contentcontainer_id' => $content->contentcontainer_id], ['content_id' => $content->id]);
         foreach (Activity::find()->andWhere(['content_id' => $content->id])->all() as $activity) {
-            (new GroupingService($activity))->afterUpdate();
+            (new GroupingService(static::load($activity)))->afterUpdate();
         }
     }
 }
