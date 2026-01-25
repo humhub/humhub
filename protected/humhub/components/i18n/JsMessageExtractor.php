@@ -58,7 +58,7 @@ class JsMessageExtractor extends Component
         $messages = [];
         $translator = preg_quote($translator, '/');
 
-        $pattern = '/' . $translator . '\s*\(\s*([\'"])(.+?)\1\s*,\s*([\'"])(.+?)\3/s';
+        $pattern = '/' . $translator . '\s*\(\s*([\'"])((?:\\\\.|(?!\1).)*?)\1\s*,\s*([\'"])((?:\\\\.|(?!\3).)*?)\3/s';
 
         if (preg_match_all($pattern, $content, $matches, PREG_SET_ORDER)) {
             foreach ($matches as $match) {
