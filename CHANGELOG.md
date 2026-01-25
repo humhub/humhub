@@ -18,6 +18,7 @@ HumHub Changelog
 - Enh #7955: Add `safeAlterColumn()` method to `humhub\components\Migration` class
 - Fix #7956: In "New User" form, "or" divider is not translated
 - Fix #7957: Clean up markdown syntax from email notification subject
+- Fix: If the Registration form has multiple Auth clients, make the container wider
 
 1.18.0-beta.6 (January 8, 2026)
 -------------------------------

@@ -16,7 +16,7 @@ use humhub\widgets\SiteLogo;
 $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
 ?>
 
-<div id="user-registration" class="container">
+<div id="user-registration" class="container<?= AuthChoice::getClientsCount() > 1 ? ' has-multiple-auth-buttons' : '' ?>">
     <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br/>
     <div id="create-account-form" class="panel panel-default animated bounceIn"
