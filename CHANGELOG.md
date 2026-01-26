@@ -1,7 +1,7 @@
 HumHub Changelog
 ================
 
-1.18.0-beta.7 (Unreleased)
+1.18.0 (Unreleased)
 -------------------------------
 - Fix #7921: Alert widget broken since beta.6
 - Fix #7925: Space Members dropdown menu
@@ -18,6 +18,7 @@ HumHub Changelog
 - Enh #7955: Add `safeAlterColumn()` method to `humhub\components\Migration` class
 - Fix #7956: In "New User" form, "or" divider is not translated
 - Fix #7957: Clean up markdown syntax from email notification subject
+- Fix #7961: In menu dropdowns, hide divider if it's the first or the last element
 - Fix #7963: If the Registration form has multiple Auth clients, make the container wider
 
 1.18.0-beta.6 (January 8, 2026)

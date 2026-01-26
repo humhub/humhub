@@ -202,8 +202,11 @@
             }
         }
 
-        li.nav-item:has(> .dropdown-divider):last-of-type {
-            display: none;
+        li:first-of-type,
+        li:last-of-type {
+            &:has(> .dropdown-divider) {
+                display: none;
+            }
         }
     }
 
