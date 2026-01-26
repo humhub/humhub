@@ -2,14 +2,18 @@
 
 namespace humhub\modules\content\activities;
 
-use humhub\helpers\Html;
-use humhub\modules\content\helpers\ContentHelper;
+use humhub\modules\activity\components\ActiveQueryActivity;
+use humhub\modules\activity\models\Activity;
 use Yii;
 use humhub\modules\activity\components\BaseContentActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 
+
 final class ContentCreatedActivity extends BaseContentActivity implements ConfigurableActivityInterface
 {
+    public int $groupingTimeBucketSeconds = 900;
+    public ?int $groupingThreshold = 4;
+
     public static function getTitle(): string
     {
         return Yii::t('ContentModule.activities', 'Contents');
@@ -20,33 +24,29 @@ final class ContentCreatedActivity extends BaseContentActivity implements Config
         return Yii::t('ContentModule.activities', 'Whenever a new content (e.g. post) has been created.');
     }
 
-    public function asText(array $params = []): string
+    protected function getMessage(array $params): string
     {
-        $defaultParams = [
-            'displayName' => $this->user->displayName,
-            'contentTitle' => ContentHelper::getContentInfo($this->content),
-        ];
-
-        return Yii::t(
-            'ContentModule.activities',
-            '{displayName} created a new {contentTitle}.',
-            array_merge($defaultParams, $params),
-        );
+        if ($this->groupCount > 1) {
+            return Yii::t(
+                'ContentModule.activities',
+                '{displayName} created a new {contentTitle} and {groupCount} others.',
+                $params,
+            );
+        } else {
+            return Yii::t(
+                'ContentModule.activities',
+                '{displayName} created a new {contentTitle}.',
+                $params,
+            );
+        }
     }
 
-    public function asHtml(): string
+    public function findGroupedQuery(): ActiveQueryActivity
     {
-        return $this->asText([
-            'displayName' => Html::strong(Html::encode($this->user->displayName)),
-            'contentTitle' => ContentHelper::getContentInfo($this->content),
-        ]);
-    }
-
-    public function asHtmlMail(): string
-    {
-        return $this->asText([
-            'displayName' => Html::strong(Html::encode($this->user->displayName)),
-            'contentTitle' => Html::strong(ContentHelper::getContentInfo($this->content)),
-        ]);
+        return Activity::find()
+            ->timeBucket($this->groupingTimeBucketSeconds, $this->createdAt)
+            ->andWhere(['activity.class' => static::class])
+            ->andWhere(['activity.contentcontainer_id' => $this->contentContainer->id])
+            ->andWhere(['activity.created_by' => $this->user->id]);
     }
 }

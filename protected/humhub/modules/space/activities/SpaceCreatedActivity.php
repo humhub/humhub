@@ -2,31 +2,17 @@
 
 namespace humhub\modules\space\activities;
 
-use humhub\helpers\Html;
 use humhub\modules\space\components\BaseSpaceActivity;
 use Yii;
 
 class SpaceCreatedActivity extends BaseSpaceActivity
 {
-    public function asText(array $params = []): string
+    protected function getMessage(array $params): string
     {
-        $defaultParams = [
-            'displayName' => $this->user->displayName,
-            'spaceName' => $this->space->name,
-        ];
+        if ($this->inSpaceContext()) {
+            return Yii::t('SpaceModule.base', '{displayName} created this Space.', $params);
+        }
 
-        return Yii::t(
-            'ActivityModule.base',
-            '{displayName} created the new space {spaceName}.',
-            array_merge($defaultParams, $params)
-        );
-    }
-
-    public function asHtml(): string
-    {
-        return $this->asText([
-            'displayName' => Html::strong(Html::encode($this->user->displayName)),
-            'spaceName' => Html::strong(Html::encode($this->space->name)),
-        ]);
+        return Yii::t('SpaceModule.base', '{displayName} created the new Space {spaceName}.', $params);
     }
 }

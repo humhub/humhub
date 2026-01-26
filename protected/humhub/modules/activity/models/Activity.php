@@ -21,13 +21,13 @@ use yii\db\ActiveQuery;
  * @property int $created_by
  * @property string $created_at
  *
- * @property-read int $groupCount
+ * @property-read int $group_count
  * @property-read Content $content
  * @property-read ContentContainer $contentContainer
  */
 class Activity extends \humhub\components\ActiveRecord
 {
-    public ?int $_group_count = null;
+    public ?int $group_count = null;
 
     public static function tableName()
     {
@@ -61,14 +61,5 @@ class Activity extends \humhub\components\ActiveRecord
     public static function find(): ActiveQueryActivity
     {
         return new ActiveQueryActivity(static::class);
-    }
-
-    public function getGroupCount(): int
-    {
-        if ($this->_group_count === null) {
-            $this->_group_count = Activity::find()->where(['grouping_key' => $this->grouping_key])->count();
-        }
-
-        return $this->_group_count;
     }
 }

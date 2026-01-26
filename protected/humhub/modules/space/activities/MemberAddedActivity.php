@@ -2,13 +2,18 @@
 
 namespace humhub\modules\space\activities;
 
-use humhub\helpers\Html;
+use humhub\modules\activity\components\ActiveQueryActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
+use humhub\modules\activity\models\Activity;
 use humhub\modules\space\components\BaseSpaceActivity;
 use Yii;
 
 class MemberAddedActivity extends BaseSpaceActivity implements ConfigurableActivityInterface
 {
+    public int $groupingTimeBucketSeconds = 900;
+
+    public ?int $groupingThreshold = 3;
+
     public static function getTitle(): string
     {
         return Yii::t('SpaceModule.activities', 'Space member joined');
@@ -19,33 +24,40 @@ class MemberAddedActivity extends BaseSpaceActivity implements ConfigurableActiv
         return Yii::t('SpaceModule.activities', 'Whenever a new member joined one of your spaces.');
     }
 
-    public function asText(array $params = []): string
+    protected function getMessage(array $params): string
     {
-        $defaultParams = [
-            'displayName' => $this->user->displayName,
-            'spaceName' => $this->space->name,
-        ];
+        $isGrouped = $this->groupCount > 1;
+        $isInSpace = $this->inSpaceContext();
 
-        if ($this->inSpaceContext()) {
-            return Yii::t(
-                'ActivityModule.base',
+        return match (true) {
+            $isGrouped && $isInSpace => Yii::t(
+                'SpaceModule.base',
+                '{displayNames} joined this Space.',
+                $params
+            ),
+            $isGrouped && !$isInSpace => Yii::t(
+                'SpaceModule.base',
+                '{displayNames} joined the Space {spaceName}.',
+                $params
+            ),
+            !$isGrouped && $isInSpace => Yii::t(
+                'SpaceModule.base',
                 '{displayName} joined this Space.',
-                array_merge($defaultParams, $params),
-            );
-        }
-
-        return Yii::t(
-            'ActivityModule.base',
-            '{displayName} joined the Space {spaceName}.',
-            array_merge($defaultParams, $params),
-        );
+                $params
+            ),
+            !$isGrouped && !$isInSpace => Yii::t(
+                'SpaceModule.base',
+                '{displayName} joined the Space {spaceName}.',
+                $params
+            ),
+        };
     }
 
-    public function asHtml(): string
+    public function findGroupedQuery(): ActiveQueryActivity
     {
-        return $this->asText([
-            'displayName' => Html::strong(Html::encode($this->user->displayName)),
-            'spaceName' => Html::strong(Html::encode($this->space->name)),
-        ]);
+        return Activity::find()
+            ->timeBucket($this->groupingTimeBucketSeconds, $this->createdAt)
+            ->andWhere(['activity.class' => static::class])
+            ->andWhere(['activity.contentcontainer_id' => $this->contentContainer->id]);
     }
 }

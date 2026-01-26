@@ -2,7 +2,6 @@
 
 namespace humhub\modules\comment\activities;
 
-use humhub\helpers\Html;
 use humhub\modules\activity\components\BaseContentActivity;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\comment\models\Comment;
@@ -41,33 +40,28 @@ final class NewCommentActivity extends BaseContentActivity implements Configurab
         return Yii::t('CommentModule.base', 'Whenever a new comment was written.');
     }
 
-    public function asText(array $params = []): string
+    protected function getMessage(array $params): string
     {
-        $defaultParams = [
-            'displayName' => $this->user->displayName,
-            'comment' => "\n" . '"' . RichTextToPlainTextConverter::process($this->comment->message) . '"'
-        ];
+        return Yii::t('CommentModule.base', '{displayName} wrote a new comment {comment}.', $params);
+    }
 
-        return Yii::t(
-            'CommentModule.base',
-            '{displayName} wrote a new comment {comment}.',
-            array_merge($defaultParams, $params)
+    protected function getMessageParamsText(): array
+    {
+        return array_merge(
+            parent::getMessageParamsText(),
+            [
+                'comment' => "\n" . '"' . RichTextToPlainTextConverter::process($this->comment->message) . '"',
+            ],
         );
     }
 
-    public function asHtml(): string
+    protected function getMessageParamsHtml(): array
     {
-        return $this->asText([
-            'displayName' => Html::strong(Html::encode($this->user->displayName)),
-            'comment' => '"' . RichText::preview($this->comment->message, 100) . '"'
-        ]);
-    }
-
-    public function asHtmlMail(): string
-    {
-        return $this->asText([
-            'displayName' => Html::strong(Html::encode($this->user->displayName)),
-            'comment' => '<br>' . '"' . RichText::preview($this->comment->message, 0) . '"'
-        ]);
+        return array_merge(
+            parent::getMessageParamsHtml(),
+            [
+                'comment' => '"' . RichText::preview($this->comment->message, 100) . '"',
+            ],
+        );
     }
 }

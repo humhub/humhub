@@ -36,6 +36,7 @@ class ActivityBoxController extends ContentContainerController
     public static function getQuery(?ContentContainer $contentContainer): ActiveQueryActivity
     {
         $query = Activity::find()
+            ->enableGrouping()
             ->defaultScopes(Yii::$app->user->identity);
 
         if ($contentContainer !== null) {

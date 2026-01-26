@@ -4,12 +4,34 @@ namespace humhub\modules\activity\services;
 
 use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\models\Activity;
+use humhub\modules\user\models\User;
 use yii\db\Expression;
 
 final class GroupingService
 {
+    private ?array $_groupedUsers = null;
+
     public function __construct(private BaseActivity $activity)
     {
+    }
+
+
+    public function getGroupedUsers(): array
+    {
+        if (!$this->_groupedUsers) {
+            $this->_groupedUsers = [];
+
+            $query = $this->activity->findGroupedQuery()
+                ->select(['activity.created_by'])->distinct()
+                ->defaultScopes($this->activity->user)
+                ->andWhere(['!=', 'activity.id', $this->activity->record->id])
+                ->limit(3);
+            foreach ($query->column() as $userId) {
+                $this->_groupedUsers[] = User::findOne($userId);
+            }
+        }
+
+        return $this->_groupedUsers;
     }
 
     /**
