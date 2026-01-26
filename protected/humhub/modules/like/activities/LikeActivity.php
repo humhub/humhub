@@ -4,11 +4,11 @@ namespace humhub\modules\like\activities;
 
 use humhub\helpers\Html;
 use humhub\modules\activity\components\BaseContentActivity;
+use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\content\helpers\ContentHelper;
 use humhub\modules\like\models\Like;
 use Yii;
-use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use yii\base\InvalidValueException;
 
 class LikeActivity extends BaseContentActivity implements ConfigurableActivityInterface
@@ -56,7 +56,7 @@ class LikeActivity extends BaseContentActivity implements ConfigurableActivityIn
     public function asHtml(): string
     {
         return $this->asText([
-            'displayName' => Html::strong(Html::encode($this->user->displayName)),
+            'userDisplayName' => Html::strong(Html::encode($this->user->displayName)),
         ]);
     }
 

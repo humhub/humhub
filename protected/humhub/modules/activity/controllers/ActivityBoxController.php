@@ -4,7 +4,7 @@ namespace humhub\modules\activity\controllers;
 
 use humhub\modules\activity\components\ActiveQueryActivity;
 use humhub\modules\activity\models\Activity;
-use humhub\modules\activity\services\RenderService;
+use humhub\modules\activity\widgets\ActivityBox;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\content\models\ContentContainer;
 use Yii;
@@ -17,20 +17,20 @@ class ActivityBoxController extends ContentContainerController
 
     public function actionLoad()
     {
-        $query = static::getQuery($this->contentContainer?->contentContainerRecord);
+        $query = static::getQuery($this->contentContainer?->contentContainerRecord)
+            ->limit($this->activityLoadLimit);
 
         $lastActivityId = (int)Yii::$app->request->getQueryParam('lastActivityId');
         if (!empty($lastActivityId)) {
-            $query->andWhere(['>', 'id', $lastActivityId]);
+            $query->andWhere(['<', Activity::tableName() . '.id', $lastActivityId]);
         }
 
-        $result = ['activities' => []];
-        foreach ($query->limit($this->activityLoadLimit)->all() as $activity) {
-            /** @var Activity $activity */
-            $result['activities'][$activity->id] = (new RenderService($activity))->getWeb();
-        }
+        $activities = array_map(fn($activity) => ActivityBox::renderActivity($activity), $query->all());
 
-        return $this->asJson($result);
+        return $this->asJson([
+            'activities' => $activities,
+            'isLast' => count($activities) < $this->activityLoadLimit,
+        ]);
     }
 
     public static function getQuery(?ContentContainer $contentContainer): ActiveQueryActivity
