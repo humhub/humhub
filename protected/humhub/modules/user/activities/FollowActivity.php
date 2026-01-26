@@ -10,7 +10,7 @@ use humhub\modules\user\models\User;
 use Yii;
 use yii\base\InvalidValueException;
 
-class FollowActivity extends BaseActivity implements ConfigurableActivityInterface
+final class FollowActivity extends BaseActivity implements ConfigurableActivityInterface
 {
     private User $followedUser;
 
@@ -25,36 +25,38 @@ class FollowActivity extends BaseActivity implements ConfigurableActivityInterfa
         $this->followedUser = $this->contentContainer->polymorphicRelation;
     }
 
-    public static function getTitle() : string
+    public static function getTitle(): string
     {
         return Yii::t('UserModule.base', 'Following (User)');
     }
 
-    public static function getDescription() : string
+    public static function getDescription(): string
     {
         return Yii::t('UserModule.base', 'Whenever a user follows another user.');
     }
 
-
-    public function asText(array $params = []): string
+    protected function getMessage(array $params): string
     {
-        $defaultParams = [
-            'user1' => $this->user->displayName,
-            'user2' => $this->space->name,
-        ];
+        return Yii::t('ActivityModule.base', '{displayName} ow follows {followedDisplayName}.', $params);
+    }
 
-        return Yii::t(
-            'ActivityModule.base',
-            '{user1} now follows {user2}.',
-            array_merge($defaultParams, $params)
+    protected function getMessageParamsText(): array
+    {
+        return array_merge(
+            parent::getMessageParamsText(),
+            [
+                'followedDisplayName' => $this->followedUser->displayName,
+            ],
         );
     }
 
-    public function asHtml(): string
+    protected function getMessageParamsHtml(): array
     {
-        return $this->asText([
-            'user1' => Html::strong(Html::encode($this->user->displayName)),
-            'user2' => Html::strong(Html::encode($this->followedUser->displayName)),
-        ]);
+        return array_merge(
+            parent::getMessageParamsHtml(),
+            [
+                'followedDisplayName' => Html::strong(Html::encode($this->followedUser->displayName)),
+            ],
+        );
     }
 }

@@ -2,7 +2,6 @@
 
 namespace humhub\modules\like\activities;
 
-use humhub\helpers\Html;
 use humhub\modules\activity\components\BaseContentActivity;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\content\helpers\ContentHelper;
@@ -29,6 +28,7 @@ class LikeActivity extends BaseContentActivity implements ConfigurableActivityIn
 
         $this->like = $this->contentAddon;
     }
+
     public static function getTitle(): string
     {
         return Yii::t('LikeModule.activities', 'Likes');
@@ -39,29 +39,18 @@ class LikeActivity extends BaseContentActivity implements ConfigurableActivityIn
         return Yii::t('LikeModule.activities', 'Whenever someone likes something (e.g. a post or comment).');
     }
 
-    public function asText(array $params = []): string
+    protected function getMessage(array $params): string
     {
-        $defaultParams = [
-            'displayName' => $this->user->displayName,
-            'contentTitle' => ContentHelper::getContentInfo($this->like->getContentOwnerObject())
-        ];
+        return Yii::t('LikeModule.base', '{displayName} likes {contentTitle}.', $params);
+    }
 
-        return Yii::t(
-            'CommentModule.base',
-            '{userDisplayName} likes {contentTitle}.',
-            array_merge($defaultParams, $params)
+    protected function getMessageParamsText(): array
+    {
+        return array_merge(
+            parent::getMessageParamsText(),
+            [
+                'contentTitle' => ContentHelper::getContentInfo($this->like->getContentOwnerObject()),
+            ],
         );
-    }
-
-    public function asHtml(): string
-    {
-        return $this->asText([
-            'displayName' => Html::strong(Html::encode($this->user->displayName)),
-        ]);
-    }
-
-    public function asHtmlMail(): string
-    {
-        return $this->asHtml();
     }
 }

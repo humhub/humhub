@@ -2,9 +2,11 @@
 
 namespace humhub\modules\space\components;
 
+use humhub\helpers\Html;
 use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\content\helpers\ContentHelper;
 use humhub\modules\space\models\Space;
 use Yii;
 use yii\base\InvalidValueException;
@@ -28,5 +30,19 @@ abstract class BaseSpaceActivity extends BaseActivity
     protected function inSpaceContext(): bool
     {
         return Yii::$app->controller instanceof ContentContainerController;
+    }
+
+    protected function getMessageParamsText(): array
+    {
+        return array_merge(parent::getMessageParamsText(), [
+            'spaceName' => $this->space->name,
+        ]);
+    }
+
+    protected function getMessageParamsHtml(): array
+    {
+        return array_merge(parent::getMessageParamsHtml(), [
+            'spaceName' => Html::strong(Html::encode($this->space->name)),
+        ]);
     }
 }

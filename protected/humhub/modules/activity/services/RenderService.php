@@ -29,7 +29,7 @@ class RenderService
             return Yii::$app->getView()->renderFile(
                 '@activity/views/layouts/web.php',
                 array_merge(
-                    $this->getActivity()->getViewParams(),
+                    $this->getViewParams(),
                     ['message' => $this->getActivity()->asHtml()],
                 ),
             );
@@ -43,7 +43,7 @@ class RenderService
             return Yii::$app->getView()->renderFile(
                 '@activity/views/layouts/mail_plaintext.php',
                 array_merge(
-                    $this->getActivity()->getViewParams(),
+                    $this->getViewParams(),
                     ['message' => $this->getActivity()->asText(), 'url' => $this->getActivity()->getUrl(true)],
                 ),
             );
@@ -57,7 +57,7 @@ class RenderService
             return Yii::$app->getView()->renderFile(
                 '@activity/views/layouts/mail.php',
                 array_merge(
-                    $this->getActivity()->getViewParams(),
+                    $this->getViewParams(),
                     ['message' => $this->getActivity()->asHtmlMail(), 'url' => $this->getActivity()->getUrl(true)],
                 ),
             );
@@ -76,5 +76,15 @@ class RenderService
     private function getCacheKey(int $type): string
     {
         return sprintf('activity.%d-%d', $type, $this->record->grouping_key);
+    }
+
+    private function getViewParams(): array
+    {
+        return [
+            'url' => $this->getActivity()->getUrl(),
+            'contentContainer' => $this->getActivity()->contentContainer,
+            'createdAt' => $this->getActivity()->createdAt,
+            'user' => $this->getActivity()->user,
+        ];
     }
 }

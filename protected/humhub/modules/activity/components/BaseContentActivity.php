@@ -2,9 +2,11 @@
 
 namespace humhub\modules\activity\components;
 
+use humhub\helpers\Html;
 use humhub\models\RecordMap;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\content\helpers\ContentHelper;
 use humhub\modules\content\interfaces\ContentProvider;
 use humhub\modules\content\models\Content;
 use yii\base\InvalidValueException;
@@ -35,5 +37,19 @@ abstract class BaseContentActivity extends BaseActivity
         }
 
         return $this->content->getUrl($scheme);
+    }
+
+    protected function getMessageParamsText(): array
+    {
+        return array_merge(parent::getMessageParamsText(), [
+            'contentTitle' => ContentHelper::getContentInfo($this->content),
+        ]);
+    }
+
+    protected function getMessageParamsHtmlMail(): array
+    {
+        return array_merge(parent::getMessageParamsHtmlMail(), [
+            'contentTitle' => Html::strong(ContentHelper::getContentInfo($this->content)),
+        ]);
     }
 }
