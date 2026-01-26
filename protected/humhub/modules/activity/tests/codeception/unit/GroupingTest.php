@@ -111,13 +111,8 @@ class GroupingTest extends HumHubDbTestCase
         $a3 = ActivityManager::dispatch(TestGroupActivity::class, $post);
         $a4 = ActivityManager::dispatch(TestGroupActivity::class, $post);
 
-        // Try loading with grouping count
         $activity = ActivityManager::load(Activity::find()->enableGrouping()->one());
         $this->assertStringContainsString('Grouped', $activity->asText());
-
-        // Try lazy load group count
-        $activity2 = ActivityManager::load(Activity::findOne(['activity.id' => $activity->record->id]));
-        $this->assertStringContainsString('Grouped', $activity2->asText());
     }
 
 

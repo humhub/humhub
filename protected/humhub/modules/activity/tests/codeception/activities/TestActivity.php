@@ -6,8 +6,7 @@ use humhub\modules\activity\components\BaseActivity;
 
 class TestActivity extends BaseActivity
 {
-
-    public function asText(array $params = []): string
+    protected function getMessage(array $params): string
     {
         return 'Content of no view activity';
     }

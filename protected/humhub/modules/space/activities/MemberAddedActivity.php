@@ -33,22 +33,22 @@ class MemberAddedActivity extends BaseSpaceActivity implements ConfigurableActiv
             $isGrouped && $isInSpace => Yii::t(
                 'SpaceModule.base',
                 '{displayNames} joined this Space.',
-                $params
+                $params,
             ),
             $isGrouped && !$isInSpace => Yii::t(
                 'SpaceModule.base',
                 '{displayNames} joined the Space {spaceName}.',
-                $params
+                $params,
             ),
             !$isGrouped && $isInSpace => Yii::t(
                 'SpaceModule.base',
                 '{displayName} joined this Space.',
-                $params
+                $params,
             ),
             !$isGrouped && !$isInSpace => Yii::t(
                 'SpaceModule.base',
                 '{displayName} joined the Space {spaceName}.',
-                $params
+                $params,
             ),
         };
     }

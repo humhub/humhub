@@ -8,7 +8,7 @@ class TestGroupActivity extends BaseActivity
 {
     public ?int $groupingThreshold = 3;
 
-    public function asText(array $params = []): string
+    protected function getMessage(array $params): string
     {
         if ($this->groupCount > 1) {
             return 'Grouped Activity (Total: 5)';
