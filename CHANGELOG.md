@@ -21,6 +21,7 @@ HumHub Changelog
 - Fix #7960: Opening Modals indents Topbar
 - Fix #7961: In menu dropdowns, hide divider if it's the first or the last element
 - Fix #7963: If the Registration form has multiple Auth clients, make the container wider
+- Fix #7967: Don't store fixed settings to DB
 
 1.18.0-beta.6 (January 8, 2026)
 -------------------------------
