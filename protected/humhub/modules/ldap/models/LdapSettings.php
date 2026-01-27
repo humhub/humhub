@@ -127,7 +127,7 @@ class LdapSettings extends Model
     public function rules()
     {
         return [
-            [['enabled', 'refreshUsers', 'usernameAttribute', 'emailAttribute', 'username', 'passwordField', 'hostname', 'port', 'idAttribute'], 'string', 'max' => 255],
+            [['enabled', 'refreshUsers', 'usernameAttribute', 'emailAttribute', 'username', 'passwordField', 'hostname', 'port', 'idAttribute', 'disableCertificateChecking'], 'string', 'max' => 255],
             [['baseDn', 'loginFilter', 'userFilter', 'ignoredDNs'], 'string'],
             [['usernameAttribute', 'username', 'passwordField', 'hostname', 'port', 'baseDn', 'loginFilter', 'userFilter', 'idAttribute'], 'required'],
             ['encryption', 'in', 'range' => ['', 'ssl', 'tls']],
