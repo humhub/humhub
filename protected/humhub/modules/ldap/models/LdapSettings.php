@@ -64,6 +64,11 @@ class LdapSettings extends Model
     public $encryption;
 
     /**
+     * @var bool
+     */
+    public $disableCertificateChecking;
+
+    /**
      * @var string
      */
     public $baseDn;
@@ -122,7 +127,7 @@ class LdapSettings extends Model
     public function rules()
     {
         return [
-            [['enabled', 'refreshUsers', 'usernameAttribute', 'emailAttribute', 'username', 'passwordField', 'hostname', 'port', 'idAttribute'], 'string', 'max' => 255],
+            [['enabled', 'refreshUsers', 'usernameAttribute', 'emailAttribute', 'username', 'passwordField', 'hostname', 'port', 'idAttribute', 'disableCertificateChecking'], 'string', 'max' => 255],
             [['baseDn', 'loginFilter', 'userFilter', 'ignoredDNs'], 'string'],
             [['usernameAttribute', 'username', 'passwordField', 'hostname', 'port', 'baseDn', 'loginFilter', 'userFilter', 'idAttribute'], 'required'],
             ['encryption', 'in', 'range' => ['', 'ssl', 'tls']],
@@ -140,6 +145,7 @@ class LdapSettings extends Model
             'username' => Yii::t('LdapModule.base', 'Username'),
             'passwordField' => Yii::t('LdapModule.base', 'Password'),
             'encryption' => Yii::t('LdapModule.base', 'Encryption'),
+            'disableCertificateChecking' => Yii::t('LdapModule.base', 'Disable Certificate Checking'),
             'hostname' => Yii::t('LdapModule.base', 'Hostname'),
             'port' => Yii::t('LdapModule.base', 'Port'),
             'baseDn' => Yii::t('LdapModule.base', 'Base DN'),
@@ -193,6 +199,7 @@ class LdapSettings extends Model
         $this->hostname = $settings->get('hostname');
         $this->port = $settings->get('port');
         $this->encryption = $settings->get('encryption');
+        $this->disableCertificateChecking = $settings->get('disableCertificateChecking');
         $this->baseDn = $settings->get('baseDn');
 
         $this->loginFilter = $settings->get('loginFilter');
@@ -221,6 +228,7 @@ class LdapSettings extends Model
         $settings->set('hostname', $this->hostname);
         $settings->set('port', $this->port);
         $settings->set('encryption', $this->encryption);
+        $settings->set('disableCertificateChecking', $this->disableCertificateChecking);
         $settings->set('username', $this->username);
         if ($this->passwordField !== static::PASSWORD_FIELD_DUMMY) {
             $settings->set('password', $this->passwordField);
@@ -255,6 +263,7 @@ class LdapSettings extends Model
             'bindPassword' => $this->password,
             'useSsl' => ($this->encryption === 'ssl'),
             'useStartTls' => ($this->encryption === 'tls'),
+            'disableCertificateChecking' => $this->disableCertificateChecking,
             'baseDn' => $this->baseDn,
             'loginFilter' => $this->loginFilter,
             'userFilter' => $this->userFilter,

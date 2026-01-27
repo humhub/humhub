@@ -22,6 +22,7 @@ HumHub Changelog
 - Fix #7960: Opening Modals indents Topbar
 - Fix #7961: In menu dropdowns, hide divider if it's the first or the last element
 - Fix #7963: If the Registration form has multiple Auth clients, make the container wider
+- Enh #7964: Add option for disabling certificate checking for ldap connections.
 - Fix #7967: Don't store fixed settings to DB
 - Fix #7966: ENV loading for Queue workers
 
