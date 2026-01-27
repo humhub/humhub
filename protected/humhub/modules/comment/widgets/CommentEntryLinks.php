@@ -26,7 +26,7 @@ class CommentEntryLinks extends BaseStack
     /**
      * @inheritdoc
      */
-    public $seperator = '&nbsp;&middot;&nbsp;';
+    public $seperator = ' &middot; ';
 
     /**
      * @inheritdoc

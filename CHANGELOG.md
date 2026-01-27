@@ -25,6 +25,7 @@ HumHub Changelog
 - Enh #7964: Add option for disabling certificate checking for ldap connections.
 - Fix #7967: Don't store fixed settings to DB
 - Fix #7966: ENV loading for Queue workers
+- Fix: Content footer comment/like links separator spacings
 
 1.18.0-beta.6 (January 8, 2026)
 -------------------------------
