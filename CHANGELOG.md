@@ -18,10 +18,13 @@ HumHub Changelog
 - Enh #7955: Add `safeAlterColumn()` method to `humhub\components\Migration` class
 - Fix #7956: In "New User" form, "or" divider is not translated
 - Fix #7957: Clean up markdown syntax from email notification subject
+- Enh #7958: Improve topic url for hidden content on stream
 - Fix #7960: Opening Modals indents Topbar
 - Fix #7961: In menu dropdowns, hide divider if it's the first or the last element
 - Fix #7963: If the Registration form has multiple Auth clients, make the container wider
 - Enh #7964: Add option for disabling certificate checking for ldap connections.
+- Fix #7967: Don't store fixed settings to DB
+- Fix #7966: ENV loading for Queue workers
 
 1.18.0-beta.6 (January 8, 2026)
 -------------------------------
