@@ -147,13 +147,17 @@ class SettingsManager extends BaseSettingsManager
         return $value;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function get(string $name, $default = null)
     {
         $fixedValue = $this->getFixed($name);
 
         return $fixedValue ?? parent::get($name, $default);
+    }
+
+    public function set(string $name, $value)
+    {
+        if (!$this->isFixed($name)) {
+            parent::set($name, $value);
+        }
     }
 }

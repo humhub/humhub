@@ -16,7 +16,7 @@ $protectedPath = __DIR__ . '/protected';
 $loader = require($protectedPath . '/vendor/autoload.php');
 
 // Load Environment
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__, '.env');
+$dotenv = Dotenv\Dotenv::createMutable(__DIR__, '.env');
 $dotenv->safeLoad();
 
 // Load Bootstrap Helper
