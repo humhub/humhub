@@ -449,9 +449,9 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
             ];
 
             ldap_set_option(
-                NULL,
+                null,
                 LDAP_OPT_X_TLS_REQUIRE_CERT,
-                ($this->disableCertificateChecking) ? LDAP_OPT_X_TLS_NEVER : LDAP_OPT_X_TLS_DEMAND
+                ($this->disableCertificateChecking) ? LDAP_OPT_X_TLS_NEVER : LDAP_OPT_X_TLS_DEMAND,
             );
 
             $this->_ldap = new ZendLdap($options);
