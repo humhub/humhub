@@ -2,15 +2,15 @@
 
 namespace humhub\modules\space\activities;
 
-use humhub\modules\activity\components\ActiveQueryActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
-use humhub\modules\activity\models\Activity;
 use humhub\modules\space\components\BaseSpaceActivity;
 use Yii;
 
 class MemberRemovedActivity extends BaseSpaceActivity implements ConfigurableActivityInterface
 {
+    /*
     public ?int $groupingThreshold = 3;
+    */
 
     public static function getTitle(): string
     {
@@ -51,6 +51,7 @@ class MemberRemovedActivity extends BaseSpaceActivity implements ConfigurableAct
         };
     }
 
+    /*
     public function findGroupedQuery(): ActiveQueryActivity
     {
         return Activity::find()
@@ -58,4 +59,5 @@ class MemberRemovedActivity extends BaseSpaceActivity implements ConfigurableAct
             ->andWhere(['activity.class' => static::class])
             ->andWhere(['activity.contentcontainer_id' => $this->contentContainer->id]);
     }
+    */
 }

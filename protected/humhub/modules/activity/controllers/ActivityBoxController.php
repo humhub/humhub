@@ -44,7 +44,6 @@ class ActivityBoxController extends ContentContainerController
         } else {
             $query->subscribedContentContainers(Yii::$app->user->identity);
         }
-
         return $query;
     }
 

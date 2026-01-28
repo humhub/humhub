@@ -12,7 +12,9 @@ class MemberAddedActivity extends BaseSpaceActivity implements ConfigurableActiv
 {
     public int $groupingTimeBucketSeconds = 900;
 
+    /*
     public ?int $groupingThreshold = 3;
+    */
 
     public static function getTitle(): string
     {
@@ -53,6 +55,7 @@ class MemberAddedActivity extends BaseSpaceActivity implements ConfigurableActiv
         };
     }
 
+    /*
     public function findGroupedQuery(): ActiveQueryActivity
     {
         return Activity::find()
@@ -60,4 +63,5 @@ class MemberAddedActivity extends BaseSpaceActivity implements ConfigurableActiv
             ->andWhere(['activity.class' => static::class])
             ->andWhere(['activity.contentcontainer_id' => $this->contentContainer->id]);
     }
+    */
 }

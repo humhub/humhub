@@ -88,7 +88,8 @@ abstract class BaseActivity extends BaseObject
         ]);
     }
 
-    protected function formatDisplayNames(callable $formatter): string {
+    protected function formatDisplayNames(callable $formatter): string
+    {
         $groupedUsers = $this->groupingService->getGroupedUsers();
 
         if (count($groupedUsers) === 2) {
@@ -97,18 +98,18 @@ abstract class BaseActivity extends BaseObject
                 '{displayName1} and {displayName2}',
                 [
                     'displayName1' => $formatter($groupedUsers[0]->displayName),
-                    'displayName2' => $formatter($groupedUsers[1]->displayName)
-                ]
+                    'displayName2' => $formatter($groupedUsers[1]->displayName),
+                ],
             );
         } elseif (count($groupedUsers) > 2) {
-          return Yii::t(
+            return Yii::t(
                 'ActivityModule.base',
                 '{displayName1}, {displayName2} and {count} more',
                 [
                     'displayName1' => $formatter($groupedUsers[0]->displayName),
                     'displayName2' => $formatter($groupedUsers[2]->displayName),
-                    count($groupedUsers) - 2
-                ]
+                    'count' => count($groupedUsers) - 2,
+                ],
             );
         }
 

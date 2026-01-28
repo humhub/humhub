@@ -48,7 +48,7 @@ class ActiveQueryActivity extends ActiveQuery
     {
         $this->excludeUser($user);
         $this->visible();
-        $this->orderBy(['activity.id' => SORT_DESC]);
+        $this->orderBy(['activity.grouping_key' => SORT_DESC]);
 
         return $this;
     }

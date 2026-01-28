@@ -2,8 +2,6 @@
 
 namespace humhub\modules\content\activities;
 
-use humhub\modules\activity\components\ActiveQueryActivity;
-use humhub\modules\activity\models\Activity;
 use Yii;
 use humhub\modules\activity\components\BaseContentActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
@@ -12,7 +10,10 @@ use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 final class ContentCreatedActivity extends BaseContentActivity implements ConfigurableActivityInterface
 {
     public int $groupingTimeBucketSeconds = 900;
+
+    /*
     public ?int $groupingThreshold = 4;
+    */
 
     public static function getTitle(): string
     {
@@ -41,6 +42,7 @@ final class ContentCreatedActivity extends BaseContentActivity implements Config
         }
     }
 
+    /*
     public function findGroupedQuery(): ActiveQueryActivity
     {
         return Activity::find()
@@ -49,4 +51,5 @@ final class ContentCreatedActivity extends BaseContentActivity implements Config
             ->andWhere(['activity.contentcontainer_id' => $this->contentContainer->id])
             ->andWhere(['activity.created_by' => $this->user->id]);
     }
+    */
 }

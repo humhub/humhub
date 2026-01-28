@@ -15,7 +15,6 @@ final class GroupingService
     {
     }
 
-
     public function getGroupedUsers(): array
     {
         if (!$this->_groupedUsers) {
@@ -42,7 +41,7 @@ final class GroupingService
         if ($this->needsGrouping()) {
             $subSelect = $this->activity->findGroupedQuery()->select('activity.id')->createCommand()->getRawSql();
             Activity::updateAll(
-                ['grouping_key' => $this->generateGroupingKey()],
+                ['grouping_key' => $this->activity->record->id],
                 // We need a "double" SubSelect to avoid MySQL Err: 1093
                 new Expression('activity.id IN (SELECT id FROM (' . $subSelect . ') AS temp_tbl)'),
             );
@@ -99,11 +98,6 @@ final class GroupingService
         if (!$stillInSameGroup) {
             $this->afterInsert();
         }
-    }
-
-    private function generateGroupingKey(): string
-    {
-        return $this->activity->record->id . '-' . time();
     }
 
     private function getGroupCount(): int

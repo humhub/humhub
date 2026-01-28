@@ -10,9 +10,11 @@ class m260122_075627_activity_grouping extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn('activity', 'grouping_key', $this->string()->after('content_addon_record_id'));
-        $this->createIndex('idx_activity_grouping_key', 'activity', ['grouping_key']);
+        $this->addColumn('activity', 'grouping_key', $this->integer()->after('content_addon_record_id'));
         $this->update('activity', ['grouping_key' => new Expression('id')]);
+
+        $this->safeCreateIndex('idx_activity_query', 'activity', ['grouping_key', 'contentcontainer_id', 'created_by', 'content_id']);
+
     }
 
     /**
