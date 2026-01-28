@@ -286,7 +286,8 @@
         \*------------------------------------*/
 
         .select2-selection--single {
-            height: $input-height;
+            height: calc(#{$input-height} + 2px);
+            min-height: calc(#{$input-height} + 2px);
             line-height: $line-height-base;
             padding: $input-btn-padding-y $input-btn-padding-x + $select2-caret-width $input-btn-padding-y $input-btn-padding-x;
             background-color: var(--hh-background-color-main);

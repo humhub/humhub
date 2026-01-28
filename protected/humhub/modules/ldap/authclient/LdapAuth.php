@@ -84,6 +84,16 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
     public $useStartTls = false;
 
     /**
+     * Disables Certificate Checking
+     * A value of FALSE is strongly favored in production environments.
+     *
+     * The default value is FALSE, as production servers should use a valid certificate chain.
+     *
+     * @var bool
+     */
+    public $disableCertificateChecking = false;
+
+    /**
      * The DN of the account used to perform account DN lookups.
      * LDAP servers that require the username to be in DN form when performing the “bind” require this option.
      *
@@ -437,6 +447,12 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
                 'accountFilterFormat' => $this->loginFilter,
                 'networkTimeout' => $this->networkTimeout,
             ];
+
+            ldap_set_option(
+                null,
+                LDAP_OPT_X_TLS_REQUIRE_CERT,
+                ($this->disableCertificateChecking) ? LDAP_OPT_X_TLS_NEVER : LDAP_OPT_X_TLS_DEMAND,
+            );
 
             $this->_ldap = new ZendLdap($options);
             $this->_ldap->bind();
