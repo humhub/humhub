@@ -6,14 +6,12 @@ use humhub\helpers\Html;
 use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\content\components\ContentContainerController;
-use humhub\modules\content\helpers\ContentHelper;
 use humhub\modules\space\models\Space;
 use Yii;
 use yii\base\InvalidValueException;
 
 abstract class BaseSpaceActivity extends BaseActivity
 {
-
     protected Space $space;
 
     public function __construct(Activity $record, $config = [])
@@ -29,7 +27,8 @@ abstract class BaseSpaceActivity extends BaseActivity
 
     protected function inSpaceContext(): bool
     {
-        return Yii::$app->controller instanceof ContentContainerController;
+        return Yii::$app->controller instanceof ContentContainerController &&
+            Yii::$app->controller->contentContainer !== null;
     }
 
     protected function getMessageParamsText(): array

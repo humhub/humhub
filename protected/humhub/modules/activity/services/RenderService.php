@@ -5,86 +5,56 @@ namespace humhub\modules\activity\services;
 use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\models\Activity;
 use Yii;
-use yii\caching\Cache;
-use yii\caching\DummyCache;
 
 class RenderService
 {
-    private const OUTPUT_WEB = 1;
-    private const OUTPUT_PLAINTEXT = 2;
-    private const OUTPUT_MAIL = 3;
-    private Cache $cache;
-    private ?BaseActivity $_baseActivity = null;
+    private BaseActivity $activity;
 
-    public const CACHE_DURATION = 120;
-
-    public function __construct(private Activity $record, private bool $enableCaching = false)
+    public function __construct(Activity $record)
     {
-        $this->cache = $this->enableCaching ? Yii::$app->getCache() : new DummyCache();
+        $this->activity = ActivityManager::load($record);
     }
 
     public function getWeb(): ?string
     {
-        return $this->cache->getOrSet($this->getCacheKey(self::OUTPUT_WEB), function () {
-            return Yii::$app->getView()->renderFile(
-                '@activity/views/layouts/web.php',
-                array_merge(
-                    $this->getViewParams(),
-                    ['message' => $this->getActivity()->asHtml()],
-                ),
-            );
-
-        }, self::CACHE_DURATION);
+        return Yii::$app->getView()->renderFile(
+            '@activity/views/layouts/web.php',
+            array_merge(
+                $this->getViewParams(),
+                ['message' => $this->activity->asHtml()],
+            ),
+        );
     }
 
     public function getPlaintext()
     {
-        return $this->cache->getOrSet($this->getCacheKey(self::OUTPUT_PLAINTEXT), function () {
-            return Yii::$app->getView()->renderFile(
-                '@activity/views/layouts/mail_plaintext.php',
-                array_merge(
-                    $this->getViewParams(),
-                    ['message' => $this->getActivity()->asText(), 'url' => $this->getActivity()->getUrl(true)],
-                ),
-            );
-
-        }, self::CACHE_DURATION);
+        return Yii::$app->getView()->renderFile(
+            '@activity/views/layouts/mail_plaintext.php',
+            array_merge(
+                $this->getViewParams(),
+                ['message' => $this->activity->asText(), 'url' => $this->activity->getUrl(true)],
+            ),
+        );
     }
 
     public function getMail()
     {
-        return $this->cache->getOrSet($this->getCacheKey(self::OUTPUT_MAIL), function () {
-            return Yii::$app->getView()->renderFile(
-                '@activity/views/layouts/mail.php',
-                array_merge(
-                    $this->getViewParams(),
-                    ['message' => $this->getActivity()->asHtmlMail(), 'url' => $this->getActivity()->getUrl(true)],
-                ),
-            );
-        }, self::CACHE_DURATION);
-    }
-
-    private function getActivity(): BaseActivity
-    {
-        if ($this->_baseActivity === null) {
-            $this->_baseActivity = ActivityManager::load($this->record);
-        }
-
-        return $this->_baseActivity;
-    }
-
-    private function getCacheKey(int $type): string
-    {
-        return sprintf('activity.%d-%d', $type, $this->record->grouping_key);
+        return Yii::$app->getView()->renderFile(
+            '@activity/views/layouts/mail.php',
+            array_merge(
+                $this->getViewParams(),
+                ['message' => $this->activity->asHtmlMail(), 'url' => $this->activity->getUrl(true)],
+            ),
+        );
     }
 
     private function getViewParams(): array
     {
         return [
-            'url' => $this->getActivity()->getUrl(),
-            'contentContainer' => $this->getActivity()->contentContainer,
-            'createdAt' => $this->getActivity()->createdAt,
-            'user' => $this->getActivity()->user,
+            'url' => $this->activity->getUrl(),
+            'contentContainer' => $this->activity->contentContainer,
+            'createdAt' => $this->activity->createdAt,
+            'user' => $this->activity->user,
         ];
     }
 }
