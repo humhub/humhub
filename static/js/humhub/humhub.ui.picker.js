@@ -243,6 +243,7 @@ humhub.module('ui.picker', function (module, require, $) {
             // Compatibility with old picker implementation and data attributes
             item.id = item.id || item.guid || item['data-id'];
             item.text = item.text || item.title || item.displayName || item['data-text'];
+            item.subText = item.subText || item.displayNameSub || item['data-subtext'];
             item.image = item.image || item['data-image'];
             item.new = false;
         });
@@ -292,7 +293,12 @@ humhub.module('ui.picker', function (module, require, $) {
                 evt.preventDefault();
             });
 
-        $result.find('.picker-text').text(item.text);
+        var text = item.text;
+        if (item.subText) {
+            text = `${text} - ${item.subText}`;
+        }
+
+        $result.find('.picker-text').text(text);
 
         if (item.term) {
             $result.highlight(item.term);
@@ -337,6 +343,7 @@ humhub.module('ui.picker', function (module, require, $) {
             item.id = item[itemKey];
         }
         item.text = item.textValue || item.text || $(item.element).data('text');
+        item.subText = item.subText || item.displayNameSub || $(item.element).data('subtext');
         item.image = item.image || $(item.element).data('image');
         item.imageNode = this.getImageNode(item);
         item.disabledText = item.disabledText || '';
