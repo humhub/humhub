@@ -136,6 +136,11 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     private $_isGroupManager = null;
 
     /**
+     * @var bool|null can a default group be assigned to the user (cached)
+     */
+    private $_allowAssignDefaultGroup = null;
+
+    /**
      * @inheritdoc
      */
     public $controllerBehavior = ProfileController::class;
@@ -429,9 +434,9 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
      * Checks if the user has at least one group assigned.
      * @return bool
      */
-    public function hasGroup()
+    public function hasGroup(): bool
     {
-        return $this->getGroups()->count() > 0;
+        return $this->getGroups()->exists();
     }
 
     /**
@@ -661,11 +666,29 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
         $userModule = Yii::$app->getModule('user');
 
         // Add User to the default group if no yet
-        if (!$this->hasGroup() && ($defaultGroup = $userModule->getDefaultGroup())) {
+        if ($this->allowAssignDefaultGroup() && ($defaultGroup = $userModule->getDefaultGroup())) {
             $defaultGroup->addUser($this);
         }
     }
 
+    /**
+     * Check if a default group can be assigned to the user.
+     *
+     * @param bool|null $forceResult Override the result
+     * @return bool
+     */
+    public function allowAssignDefaultGroup(?bool $forceResult = null): bool
+    {
+        if ($forceResult !== null) {
+            $this->_allowAssignDefaultGroup = $forceResult;
+        }
+
+        if ($this->_allowAssignDefaultGroup === null) {
+            $this->_allowAssignDefaultGroup = !$this->hasGroup();
+        }
+
+        return $this->_allowAssignDefaultGroup;
+    }
 
     /**
      * Returns users display name
