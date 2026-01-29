@@ -127,9 +127,9 @@ class UserPicker
      * as disabled, if the given $permission check fails on this user. If the second argument
      * is of type boolean, the it will define the disabled field of the result directly.
      *
-     * @param type $user
+     * @param User $user
      * @param BasePermission|bool|null if boolean is given
-     * @return type
+     * @return array
      */
     private static function createJSONUserInfo($user, $permission = null, $priority = null, $disabledText = null)
     {
@@ -147,6 +147,7 @@ class UserPicker
             'disabled' => $disabled,
             'disabledText' => ($disabled) ? $disabledText : null,
             'text' => $user->displayName,
+            'subText' => $user->getDisplayNameSub(),
             'image' => $user->getProfileImage()->getUrl(),
             'priority' => ($priority == null) ? 0 : $priority,
             'link' => $user->getUrl(),
