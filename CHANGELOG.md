@@ -28,7 +28,7 @@ HumHub Changelog
 - Fix #7972: Content footer comment/like links separator spacings
 - Enh #7975: More details in the log message in case of error with AltchaCaptcha
 - Fix #7977: Skip adding of a default group when another is selected on the registration form
-- Fix: Error on sending mail
+- Fix #7981: Error on sending mail
 
 1.18.0-beta.6 (January 8, 2026)
 -------------------------------
