@@ -44,6 +44,16 @@
             background-color: var(--hh-background-color-main);
         }
 
+        .picker-content {
+            display:flex;
+            flex-direction:column;
+            margin-left:5px;
+        }
+
+        .picker-subtext {
+            color: var(--hh-text-color-soft2);
+        }
+
         /**
          * Search field in the Select2 dropdown.
          */
