@@ -55,7 +55,11 @@ use humhub\widgets\TimeAgo;
                 'dataProvider' => $dataProvider,
                 'summary' => '',
                 'columns' => [
-                    ['class' => ImageColumn::class, 'userAttribute' => 'user'],
+                    [
+                        'class' => ImageColumn::class,
+                        'userAttribute' => 'user',
+                        'linkOptions' => ['class' => 'mb-0']
+                    ],
                     ['class' => DisplayNameColumn::class, 'userAttribute' => 'user'],
                     [
                         'label' => 'Member since',

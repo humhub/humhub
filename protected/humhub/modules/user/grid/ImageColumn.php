@@ -19,6 +19,11 @@ use humhub\modules\user\widgets\Image as UserImage;
 class ImageColumn extends BaseColumn
 {
     /**
+     * @var array options for link tag
+     */
+    public $linkOptions = [];
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -32,7 +37,11 @@ class ImageColumn extends BaseColumn
      */
     protected function renderDataCellContent($model, $key, $index)
     {
-        return UserImage::widget(['user' => $this->getUser($model), 'width' => 34]);
+        return UserImage::widget([
+            'user' => $this->getUser($model),
+            'width' => 34,
+            'linkOptions' => $this->linkOptions,
+        ]);
     }
 
 }

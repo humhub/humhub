@@ -54,7 +54,10 @@ use yii\helpers\Url;
             'dataProvider' => $dataProvider,
             'summary' => '',
             'columns' => [
-                ['class' => ImageColumn::class],
+                [
+                    'class' => ImageColumn::class,
+                    'linkOptions' => ['class' => 'mb-0'],
+                ],
                 ['class' => DisplayNameColumn::class],
                 [
                     'attribute' => 'email',
@@ -77,3 +80,4 @@ use yii\helpers\Url;
         </div>
     <?php endif; ?>
 </div>
+

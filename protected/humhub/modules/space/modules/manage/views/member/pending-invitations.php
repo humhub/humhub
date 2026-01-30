@@ -25,7 +25,11 @@ use yii\data\ActiveDataProvider;
             'dataProvider' => $dataProvider,
             'tableOptions' => ['class' => 'table table-hover table-responsive'],
             'columns' => [
-                ['class' => ImageColumn::class, 'userAttribute' => 'user'],
+                [
+                    'class' => ImageColumn::class,
+                    'userAttribute' => 'user',
+                    'linkOptions' => ['class' => 'mb-0']
+                ],
                 ['class' => DisplayNameColumn::class, 'userAttribute' => 'user'],
                 [
                     'attribute' => 'last_visit',
