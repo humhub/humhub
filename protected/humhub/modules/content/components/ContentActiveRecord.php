@@ -20,7 +20,6 @@ use humhub\modules\content\models\Movable;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
-use humhub\modules\content\widgets\WallEntry;
 use humhub\modules\file\models\File;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicBadge;
@@ -407,7 +406,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      * Returns an instance of the assigned wall entry widget instance. This can be used to check matadata fields
      * of the related widget.
      *
-     * @return null|WallEntry|WallStreamEntryWidget for this class by wallEntryClass property , null will be
+     * @return null|WallStreamEntryWidget for this class by wallEntryClass property , null will be
      * returned if this wallEntryClass is empty
      * @deprecated since 1.7
      */
@@ -417,7 +416,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
             return null;
         }
 
-        if (is_subclass_of($this->wallEntryClass, WallEntry::class)) {
+        if (is_subclass_of($this->wallEntryClass, WallStreamEntryWidget::class)) {
             $class = $this->wallEntryClass;
             $widget = new $class();
             $widget->contentObject = $this;
