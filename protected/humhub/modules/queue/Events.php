@@ -9,14 +9,13 @@
 namespace humhub\modules\queue;
 
 use Expection;
-use humhub\modules\queue\helpers\QueueHelper;
-use humhub\modules\queue\interfaces\ExclusiveJobInterface;
-use humhub\modules\queue\jobs\CleanupExclusiveJobs;
 use Yii;
 use yii\base\BaseObject;
 use yii\base\Event;
 use yii\queue\ExecEvent;
 use yii\queue\PushEvent;
+use humhub\modules\queue\interfaces\ExclusiveJobInterface;
+use humhub\modules\queue\helpers\QueueHelper;
 use yii\queue\RetryableJobInterface;
 
 /**
