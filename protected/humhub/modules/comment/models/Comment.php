@@ -2,7 +2,8 @@
 
 namespace humhub\modules\comment\models;
 
-use humhub\modules\comment\activities\NewComment as NewCommentActivity;
+use humhub\modules\activity\services\ActivityManager;
+use humhub\modules\comment\activities\NewCommentActivity as NewCommentActivity;
 use humhub\modules\comment\live\NewComment as NewCommentLive;
 use humhub\modules\comment\notifications\NewComment as NewCommentNotification;
 use humhub\modules\content\components\ContentAddonActiveRecord;
@@ -89,7 +90,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
             }
 
             NewCommentNotification::instance()->from($this->createdBy)->about($this)->sendBulk($followerQuery);
-            NewCommentActivity::instance()->about($this)->create();
+            ActivityManager::dispatch(NewCommentActivity::class, $this, $this->createdBy);
 
             if ($this->content->container) {
                 Yii::$app->live->send(new NewCommentLive([
@@ -156,13 +157,13 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         return $this->created_at !== $this->updated_at && !empty($this->updated_at) && is_string($this->updated_at);
     }
 
-    public function getUrl($scheme = true): string
+    public function getUrl(bool $scheme = false): string
     {
-        if ($this->isNewRecord) {
-            return $this->content->getUrl();
+        if (!$this->isNewRecord) {
+            return Url::to(['/comment/perma', 'id' => $this->id], $scheme);
         }
 
-        return Url::to(['/comment/perma', 'id' => $this->id], $scheme);
+        return parent::getUrl($scheme);
     }
 
     public function getParentComment(): \yii\db\ActiveQuery

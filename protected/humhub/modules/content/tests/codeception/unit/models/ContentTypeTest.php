@@ -23,9 +23,11 @@ class ContentTypeTest extends ContentModelTest
     {
         parent::_before();
         ContentType::flush();
+
         // Make sure there is no content
-        Content::deleteAll();
-        Post::deleteAll();
+        foreach (Content::find()->all() as $content) {
+            $content->hardDelete();
+        };
     }
 
     public function testContainerContentTypes()

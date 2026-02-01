@@ -2,7 +2,7 @@
 
 namespace tests\codeception\unit\modules\like;
 
-use humhub\modules\like\activities\Liked;
+use humhub\modules\like\activities\LikeActivity;
 use humhub\modules\like\notifications\NewLike;
 use humhub\modules\like\services\LikeService;
 use humhub\modules\post\models\Post;
@@ -29,7 +29,7 @@ class LikeTest extends HumHubDbTestCase
 
         $this->assertMailSent(1);
         $this->assertHasNotification(NewLike::class, Like::findOne(['content_id' => 1, 'created_by' => 3]));
-        $this->assertHasActivity(Liked::class, Like::findOne(['content_id' => 1, 'created_by' => 3]));
+        $this->assertHasActivity(LikeActivity::class, Like::findOne(['content_id' => 1, 'created_by' => 3]));
     }
 
 }
