@@ -45,16 +45,14 @@ humhub.module('urlManager', function (module, require, $) {
     };
 
     const joinUrl = function (baseUrl, path) {
-        if (!baseUrl) {
-            return path || '';
+        if (!baseUrl || !baseUrl.length) {
+            baseUrl = '/';
         }
         if (!path) {
-            return baseUrl;
+            path = '';
         }
-        if (path.indexOf('?') === 0 || path.indexOf('#') === 0) {
-            return baseUrl + path;
-        }
-        return baseUrl.replace(/\/+$/g, '') + '/' + path.replace(/^\/+/, '');
+
+        return baseUrl + path;
     };
 
     const getBaseUrl = function () {
@@ -62,7 +60,7 @@ humhub.module('urlManager', function (module, require, $) {
         if (config.showScriptName || !config.enablePrettyUrl) {
             return config.scriptUrl || '';
         }
-        return config.baseUrl || '';
+        return config.baseUrl || '/';
     };
 
     const extractAnchor = function (params) {
@@ -285,11 +283,10 @@ humhub.module('urlManager', function (module, require, $) {
         return urlPath;
     };
 
-    const create = function (route, params, options) {
+    const create = function (route, params) {
         var config = getConfig();
         route = normalizeRoute(route);
         params = normalizeParams(params || {});
-        options = options || {};
 
         if (params.container && params.container.guid) {
             setContainer(params.container.guid, params.container);

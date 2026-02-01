@@ -9,6 +9,7 @@ humhub.module('space.chooser', function (module, require, $) {
     var space = require('space');
     var client = require('client');
     var ui = require('ui');
+    var urlManager = require('urlManager');
     var Widget = ui.widget.Widget;
     var object = require('util').object;
     var pjax = require('client.pjax');
@@ -295,13 +296,17 @@ humhub.module('space.chooser', function (module, require, $) {
                 that.currentXhr.abort();
             }
 
+            // TODO: do not forget to remove
+            console.log(
+                'urls',
+                urlManager.create('/file/file/upload', {objectModel: 'aaa', objectId: 'bbb'}),
+                urlManager.create('/web/pwa-service-worker/index'),
+                urlManager.create('web/pwa-service-worker/index'),
+            )
+
             // Clear all current remote results not matching the current search
             that.clearRemoteSearch(input);
-
-            var url = module.config.remoteSearchUrl;
-            if (that.lazyLoad && module.config.lazySearchUrl) {
-                url = module.config.lazySearchUrl;
-            }
+            const url = urlManager.create(that.lazyLoad ? '/space/browse/search-lazy' : '/space/browse/search-json');
 
             if (!url) {
                 reject('Could not execute space remote search, set data-space-search-url in your space search input');
