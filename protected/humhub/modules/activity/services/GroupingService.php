@@ -110,7 +110,7 @@ final class GroupingService
     private function needsGrouping(): bool
     {
         return ($this->activity->groupingThreshold && $this->activity->findGroupedQuery()->count(
-            ) > $this->activity->groupingThreshold);
+        ) > $this->activity->groupingThreshold);
     }
 
     /**

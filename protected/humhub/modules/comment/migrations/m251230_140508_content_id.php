@@ -34,7 +34,7 @@ class m251230_140508_content_id extends Migration
             'UPDATE `comment`
          LEFT JOIN `comment` parent ON comment.parent_comment_id = parent.id
          SET comment.content_id=parent.content_id
-         WHERE comment.parent_comment_id IS NOT NULL AND comment.content_id IS NULL AND parent.id IS NOT NULL'
+         WHERE comment.parent_comment_id IS NOT NULL AND comment.content_id IS NULL AND parent.id IS NOT NULL',
         );
 
 

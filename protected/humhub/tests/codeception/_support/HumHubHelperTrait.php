@@ -150,7 +150,7 @@ trait HumHubHelperTrait
     {
         $activity = Activity::findOne([
             'class' => $class,
-            'content_addon_record_id' => RecordMap::getId($source)
+            'content_addon_record_id' => RecordMap::getId($source),
         ]);
 
         static::assertNotNull($activity, $msg);

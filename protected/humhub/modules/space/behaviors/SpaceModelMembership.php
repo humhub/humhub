@@ -291,7 +291,7 @@ class SpaceModelMembership extends Behavior
         $membership->save();
 
         ApprovalRequest::instance()->from($user)->about($this->owner)->withMessage($message)->sendBulk(
-            $this->getAdminsQuery()
+            $this->getAdminsQuery(),
         );
     }
 
@@ -337,7 +337,7 @@ class SpaceModelMembership extends Behavior
                 case Membership::STATUS_APPLICANT:
                     // If user is an applicant of this space add user and return.
                     $this->addMember($userId);
-                // no break
+                    // no break
                 case Membership::STATUS_MEMBER:
                     // If user is already a member just ignore the invitation.
                     return;
@@ -577,7 +577,7 @@ class SpaceModelMembership extends Behavior
     {
         if ($membership->originator && $membership->isCurrentUser()) {
             InviteDeclined::instance()->from(Yii::$app->user->identity)->about($this->owner)->send(
-                $membership->originator
+                $membership->originator,
             );
         } elseif (Yii::$app->user->identity) {
             InviteRevoked::instance()->from(Yii::$app->user->identity)->about($this->owner)->send($user);
