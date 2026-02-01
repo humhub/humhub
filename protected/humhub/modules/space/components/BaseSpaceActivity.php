@@ -27,8 +27,8 @@ abstract class BaseSpaceActivity extends BaseActivity
 
     protected function inSpaceContext(): bool
     {
-        return Yii::$app->controller instanceof ContentContainerController &&
-            Yii::$app->controller->contentContainer !== null;
+        return Yii::$app->controller instanceof ContentContainerController
+            && Yii::$app->controller->contentContainer !== null;
     }
 
     protected function getMessageParamsText(): array
