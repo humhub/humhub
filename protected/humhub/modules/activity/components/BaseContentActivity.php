@@ -63,14 +63,15 @@ abstract class BaseContentActivity extends BaseActivity
     protected function getMessageParamsText(): array
     {
         return array_merge(parent::getMessageParamsText(), [
-            'contentTitle' => ContentHelper::getContentInfo($this->content),
+            'content' => ContentHelper::getContentInfo($this->content),
+            'contentTitle' => ContentHelper::getContentInfo($this->content, false),
         ]);
     }
 
     protected function getMessageParamsHtmlMail(): array
     {
         return array_merge(parent::getMessageParamsHtmlMail(), [
-            'contentTitle' => Html::strong(ContentHelper::getContentInfo($this->content)),
+            'content' => Html::strong(ContentHelper::getContentInfo($this->content)),
         ]);
     }
 }

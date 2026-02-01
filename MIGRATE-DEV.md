@@ -19,7 +19,11 @@ Version 1.19 (Unreleased)
   - Used `RecordMap` for ContentAddon relations
 - Removed methods `getContentPlainTextInfo()` and `getContentPlainTextPreview()` from the class `SocialActivity`(`BaseNotification`)
   - Replace them with `getContentInfo()` and `getContentPreview()` in all extended classes, especially inside the method `getMailSubject()`
-
+- Refactored `Activities`
+  - Make sure Content related Activities are now extended from `BaseContentActivity`
+  - `getTitle` and `getDescription` are now `static`.
+  - Instead of View files you need to implement a `getMessage()` method which returns the Activity text.
+  - Use following code to create a Activity `ActivityManager::dispatch(TaskCompletedActivity::class, $this->task, $user)`
 
 Version 1.18 (Unreleased)
 ------------

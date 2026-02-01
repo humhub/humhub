@@ -30,13 +30,13 @@ final class ContentCreatedActivity extends BaseContentActivity implements Config
         if ($this->groupCount > 1) {
             return Yii::t(
                 'ContentModule.activities',
-                '{displayName} created a new {contentTitle} and {groupCount} others.',
+                '{displayName} created a new {content} and {groupCount} others.',
                 $params,
             );
         } else {
             return Yii::t(
                 'ContentModule.activities',
-                '{displayName} created a new {contentTitle}.',
+                '{displayName} created a new {content}.',
                 $params,
             );
         }

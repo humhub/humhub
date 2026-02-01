@@ -36,7 +36,7 @@ class ActivityStreamCest
 
         $I->amOnSpace2();
 
-        $I->waitForText('There are no activities yet.', 10, '#activity-box-content');
+        $I->waitForText('There are no activities yet.', 10, '.panel-activities');
 
 
         $I->wantToTest('that another user see my activity in the activity stream');
@@ -46,7 +46,7 @@ class ActivityStreamCest
 
         $I->waitForElementVisible('.activity-box-entry');
         $I->wait(1);
-        $I->see('Peter Tester created a new post "Activity test post!"', '#activity-box-content');
+        $I->see('Peter Tester created a new post "Activity test post!"', '.panel-activities');
 
         // ToDo: Reimplement click on Activity
         /*
@@ -72,6 +72,6 @@ class ActivityStreamCest
         $I->waitForElementNotVisible($newEntrySelector);
 
         $I->amUser2(true);
-        $I->waitForText('There are no activities yet.', 10, '#activity-box-content');
+        $I->waitForText('There are no activities yet.', 10, '.panel-activities');
     }
 }

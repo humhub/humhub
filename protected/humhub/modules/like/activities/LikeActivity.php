@@ -19,7 +19,7 @@ class LikeActivity extends BaseContentActivity implements ConfigurableActivityIn
         parent::__construct($record, $config);
 
         if ($this->contentAddon === null) {
-            throw new InvalidValueException('No content addon has been set.');
+            throw new InvalidValueException('No content addon has been set.' . $this->record->id);
         }
 
         if (!$this->contentAddon instanceof Like) {
@@ -41,7 +41,7 @@ class LikeActivity extends BaseContentActivity implements ConfigurableActivityIn
 
     protected function getMessage(array $params): string
     {
-        return Yii::t('LikeModule.base', '{displayName} likes {contentTitle}.', $params);
+        return Yii::t('LikeModule.base', '{displayName} likes {content}.', $params);
     }
 
     protected function getMessageParamsText(): array

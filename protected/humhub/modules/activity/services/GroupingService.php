@@ -54,12 +54,12 @@ final class GroupingService
     /**
      * After an Activity was deleted
      */
-    public function afterDelete(): void
+    public function beforeDelete(): void
     {
         // Since we are not afterDelete, the record itself is not counted!
         $currentGroupCount = $this->getGroupCount();
 
-        if ($currentGroupCount === 0) {
+        if ($currentGroupCount <= 1) {
             // Record was not grouped
             return;
         }

@@ -95,9 +95,9 @@ class LikeService
                 $this->reset();
 
                 $author = $this->contentAddon->createdBy ?? $this->content->createdBy;
-
                 NewLikeNotification::instance()->from($this->user)->about($record)->send($author);
-                ActivityManager::dispatch(LikedActivity::class, $record, $author);
+
+                ActivityManager::dispatch(LikedActivity::class, $record, $record->createdBy);
 
                 return true;
             }

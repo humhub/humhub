@@ -42,10 +42,10 @@ class Activity extends \humhub\components\ActiveRecord
         parent::afterSave($insert, $changedAttributes);
     }
 
-    public function afterDelete()
+    public function beforeDelete()
     {
-        (new GroupingService(ActivityManager::load($this)))->afterDelete();
-        parent::afterDelete();
+        (new GroupingService(ActivityManager::load($this)))->beforeDelete();
+        return parent::beforeDelete();
     }
 
     public function getContent(): ActiveQuery
