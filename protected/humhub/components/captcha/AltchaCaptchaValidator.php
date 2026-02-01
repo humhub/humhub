@@ -27,16 +27,34 @@ class AltchaCaptchaValidator extends Validator
     /**
      * @inheritdoc
      */
-    public function validateAttribute($model, $attribute)
+    public function validateAttribute($model, $attribute): void
     {
+        $errorMessage = null;
         try {
-            $payload = json_decode(base64_decode((string) $model->$attribute), true, 512, JSON_THROW_ON_ERROR);
-            $altcha = new Altcha(static::getHmacKey());
-            if ($altcha->verifySolution($payload, true)) {
-                return;
+            $decodedValue = base64_decode((string)$model->$attribute, true);
+            if ($decodedValue === false) {
+                $errorMessage = 'Invalid base64 encoding';
+            } else {
+                $payload = json_decode($decodedValue, true, 512, JSON_THROW_ON_ERROR);
+                $altcha = new Altcha(static::getHmacKey());
+                if ($altcha->verifySolution($payload, true)) {
+                    return;
+                }
             }
-        } catch (Exception|JsonException $e) {
-            Yii::error('AltchaCaptcha verification error: ' . $e->getMessage());
+        } catch (JsonException $e) {
+            $errorMessage = 'JSON decode error: ' . $e->getMessage();
+        } catch (Exception $e) {
+            $errorMessage = 'Undefined error: ' . $e->getMessage();
+        }
+
+        if ($errorMessage) {
+            Yii::error(sprintf(
+                'AltchaCaptcha verification error: %s (Model: %s, Attribute: %s, Value length: %d)',
+                $errorMessage,
+                get_class($model),
+                $attribute,
+                strlen((string)$model->$attribute),
+            ));
         }
 
         $this->addError(
