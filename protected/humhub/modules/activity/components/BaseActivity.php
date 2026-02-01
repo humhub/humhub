@@ -3,7 +3,6 @@
 namespace humhub\modules\activity\components;
 
 use humhub\helpers\Html;
-use humhub\modules\activity\models\Activity;
 use humhub\modules\activity\models\Activity as ActivityRecord;
 use humhub\modules\activity\services\GroupingService;
 use humhub\modules\content\models\ContentContainer;
@@ -24,7 +23,7 @@ abstract class BaseActivity extends BaseObject
 
     public readonly string $createdAt;
     public readonly int $groupCount;
-    public ?int $groupingThreshold = null;
+    public int $groupingThreshold = 4;
     public int $groupingTimeBucketSeconds = 900;
 
     protected GroupingService $groupingService;
@@ -116,12 +115,8 @@ abstract class BaseActivity extends BaseObject
         return '';
     }
 
-    public function findGroupedQuery(): ActiveQueryActivity
+    public function findGroupedQuery(): ?ActiveQueryActivity
     {
-        return Activity::find()
-            ->timeBucket($this->groupingTimeBucketSeconds, $this->createdAt)
-            ->andWhere(['activity.class' => static::class])
-            ->andWhere(['activity.contentcontainer_id' => $this->contentContainer->id])
-            ->andWhere(['activity.created_by' => $this->user->id]);
+        return null;
     }
 }

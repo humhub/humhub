@@ -2,6 +2,7 @@
 
 namespace humhub\modules\activity\services;
 
+use humhub\modules\activity\components\ActiveQueryActivity;
 use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\user\models\User;
@@ -11,12 +12,24 @@ final class GroupingService
 {
     private ?array $_groupedUsers = null;
 
+    private bool $groupingEnabled = false;
+
+    private ?ActiveQueryActivity $groupQuery;
+
     public function __construct(private BaseActivity $activity)
     {
+        $this->groupQuery = $this->activity->findGroupedQuery();
+        if ($this->groupQuery) {
+            $this->groupQuery->timeBucket($this->activity->groupingTimeBucketSeconds, $this->activity->createdAt);
+        }
     }
 
     public function getGroupedUsers(): array
     {
+        if (!$this->groupQuery) {
+            return [];
+        }
+
         if (!$this->_groupedUsers) {
             $this->_groupedUsers = [];
 
@@ -80,7 +93,12 @@ final class GroupingService
      */
     public function afterUpdate(): void
     {
+        if (!$this->groupingEnabled) {
+            return;
+        }
+
         // Are we currently in a Group?
+        /*
         $stillInSameGroup = false;
         if ($this->getGroupCount() > 1) {
             // Check we're still in the group
@@ -98,19 +116,23 @@ final class GroupingService
         if (!$stillInSameGroup) {
             $this->afterInsert();
         }
+        */
     }
+
 
     private function getGroupCount(): int
     {
-        return Activity::find()->andWhere(
-            ['grouping_key' => $this->activity->record->grouping_key],
-        )->count();
+        return Activity::find()
+            ->andWhere(['grouping_key' => $this->activity->record->grouping_key])
+            ->count();
     }
 
     private function needsGrouping(): bool
     {
-        return ($this->activity->groupingThreshold && $this->activity->findGroupedQuery()->count(
-            ) > $this->activity->groupingThreshold);
+        return (
+            $this->groupQuery
+            && $this->activity->findGroupedQuery()->count() > $this->activity->groupingThreshold
+        );
     }
 
     /**
@@ -124,7 +146,6 @@ final class GroupingService
             ->orderBy(['created_at DESC', 'id DESC'])->one();
         return ActivityManager::load($secondActivityRecord);
     }
-
 
     private function destroyGroup(): void
     {
