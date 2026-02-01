@@ -6,7 +6,6 @@ use Yii;
 use humhub\modules\activity\components\BaseContentActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 
-
 final class ContentCreatedActivity extends BaseContentActivity implements ConfigurableActivityInterface
 {
     public int $groupingTimeBucketSeconds = 900;

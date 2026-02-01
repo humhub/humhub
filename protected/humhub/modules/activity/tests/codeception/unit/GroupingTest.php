@@ -102,7 +102,8 @@ class GroupingTest extends HumHubDbTestCase
     }
 
 
-    public function testGrouping() {
+    public function testGrouping()
+    {
         /*
         $this->becomeUser('User2');
 

@@ -17,7 +17,6 @@ use yii\db\Exception;
  */
 class RecordMap extends ActiveRecord
 {
-
     public static function tableName()
     {
         return 'record_map';
@@ -77,7 +76,7 @@ class RecordMap extends ActiveRecord
         if (!DataTypeHelper::isClassType($model, $classType)) {
             if ($logError) {
                 Yii::warning(
-                    'Invalid class type. Got: ' . $model . ' With ID ' . $pk . ' . Expected: ' . $classType
+                    'Invalid class type. Got: ' . $model . ' With ID ' . $pk . ' . Expected: ' . $classType,
                 );
             }
             return null;
