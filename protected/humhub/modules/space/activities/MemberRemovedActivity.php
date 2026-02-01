@@ -31,22 +31,22 @@ class MemberRemovedActivity extends BaseSpaceActivity implements ConfigurableAct
             $isGrouped && $isInSpace => Yii::t(
                 'SpaceModule.base',
                 '{displayNames} left this Space.',
-                $params
+                $params,
             ),
             $isGrouped && !$isInSpace => Yii::t(
                 'SpaceModule.base',
                 '{displayNames} left the Space {spaceName}.',
-                $params
+                $params,
             ),
             !$isGrouped && $isInSpace => Yii::t(
                 'SpaceModule.base',
                 '{displayName} left this Space.',
-                $params
+                $params,
             ),
             !$isGrouped && !$isInSpace => Yii::t(
                 'SpaceModule.base',
                 '{displayName} left the Space {spaceName}.',
-                $params
+                $params,
             ),
         };
     }
