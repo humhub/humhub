@@ -25,7 +25,7 @@ class m260106_175102_like_record_map extends Migration
 
         foreach (
             (new Query())->distinct('content_addon_record_id')->from(\humhub\modules\like\models\Like::tableName())->where(
-                'content_id IS NULL and content_addon_record_id IS NOT NULL'
+                'content_id IS NULL and content_addon_record_id IS NOT NULL',
             )->all() as $row
         ) {
             $contentProvider = RecordMap::getById($row['content_addon_record_id'], ContentProvider::class);
@@ -36,20 +36,20 @@ class m260106_175102_like_record_map extends Migration
                         [
                             'content_id' => $contentProvider->content->id,
                         ],
-                        ['content_addon_record_id' => $row['content_addon_record_id']]
+                        ['content_addon_record_id' => $row['content_addon_record_id']],
                     );
                 } else {
                     Yii::warning(
                         'Content Provider ' . get_class(
-                            $contentProvider
+                            $contentProvider,
                         ) . ' with id ' . $contentProvider->id . ' has no content!',
-                        'like'
+                        'like',
                     );
                 }
             } else {
                 Yii::warning(
                     'Delete Like with content_addon_record_id ' . $row['content_addon_record_id'],
-                    'like'
+                    'like',
                 );
             }
         }

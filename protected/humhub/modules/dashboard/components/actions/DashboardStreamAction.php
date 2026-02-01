@@ -22,7 +22,6 @@ use humhub\modules\stream\actions\ContentContainerStream;
  */
 class DashboardStreamAction extends ContentContainerStream
 {
-
     /**
      * @inheritDoc
      */

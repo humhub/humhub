@@ -42,7 +42,7 @@ class m260108_115053_new_structure extends Migration
          LEFT JOIN `user` ON user_follow.object_id = user.id AND user_follow.object_model=:userType
          SET activity.contentcontainer_id=user.contentcontainer_id, activity.object_model=NULL, activity.object_id=NULL
          WHERE activity.object_model=:followType AND user_follow.object_model=:userType',
-            ['followType' => \humhub\modules\user\models\Follow::class, 'userType' => \humhub\modules\user\models\User::class]
+            ['followType' => \humhub\modules\user\models\Follow::class, 'userType' => \humhub\modules\user\models\User::class],
         );
 
 
@@ -55,7 +55,7 @@ class m260108_115053_new_structure extends Migration
             'contentcontainer',
             'id',
             'RESTRICT',
-            'CASCADE'
+            'CASCADE',
         );
         $this->safeAddForeignKey('activity_user', 'activity', 'created_by', 'user', 'id', 'RESTRICT', 'CASCADE');
 
@@ -67,7 +67,7 @@ class m260108_115053_new_structure extends Migration
          LEFT JOIN `content` ON activity.id=content.object_id AND content.object_model=:activityType
          SET activity.created_by=content.created_by, activity.created_at=content.created_at
          WHERE content.id IS NOT NULL',
-            ['activityType' => \humhub\modules\activity\models\Activity::class]
+            ['activityType' => \humhub\modules\activity\models\Activity::class],
         );
 
         /**
@@ -78,14 +78,14 @@ class m260108_115053_new_structure extends Migration
          LEFT JOIN `space` ON activity.object_id = space.id AND activity.object_model=:spaceType
          SET activity.contentcontainer_id=space.contentcontainer_id, activity.object_model=NULL, activity.object_id=NULL
          WHERE activity.object_model=:spaceType',
-            ['spaceType' => Space::class]
+            ['spaceType' => Space::class],
         );
         $this->execute(
             'UPDATE activity
          LEFT JOIN `user` ON activity.object_id = user.id AND activity.object_model=:userType
          SET activity.contentcontainer_id=user.contentcontainer_id, activity.object_model=NULL, activity.object_id=NULL
          WHERE activity.object_model=:userType',
-            ['userType' => \humhub\modules\user\models\User::class]
+            ['userType' => \humhub\modules\user\models\User::class],
         );
 
         /**
@@ -95,7 +95,7 @@ class m260108_115053_new_structure extends Migration
             'UPDATE activity
          LEFT JOIN `content` ON activity.object_id = content.object_id AND content.object_model=activity.object_model
          SET activity.content_id=content.id, activity.contentcontainer_id=content.contentcontainer_id, activity.object_model=NULL, activity.object_id=NULL
-         WHERE content.id IS NOT NULL'
+         WHERE content.id IS NOT NULL',
         );
 
         $this->delete('content', ['object_model' => \humhub\modules\activity\models\Activity::class]);
@@ -105,11 +105,11 @@ class m260108_115053_new_structure extends Migration
          * Add Content Content Addon
          */
         $this->execute(
-            'INSERT IGNORE INTO record_map (`model`, `pk`) SELECT DISTINCT a.object_model, a.object_id FROM `activity` a WHERE a.object_model IS NOT NULL AND a.object_model != "";'
+            'INSERT IGNORE INTO record_map (`model`, `pk`) SELECT DISTINCT a.object_model, a.object_id FROM `activity` a WHERE a.object_model IS NOT NULL AND a.object_model != "";',
         );
 
         $this->execute(
-            'UPDATE `activity` al JOIN record_map rm ON rm.`model` = al.object_model AND rm.`pk` = al.object_id SET al.content_addon_record_id = rm.id WHERE al.content_addon_record_id IS NULL AND al.object_model IS NOT NULL AND al.object_model != "";'
+            'UPDATE `activity` al JOIN record_map rm ON rm.`model` = al.object_model AND rm.`pk` = al.object_id SET al.content_addon_record_id = rm.id WHERE al.content_addon_record_id IS NULL AND al.object_model IS NOT NULL AND al.object_model != "";',
         );
 
         $this->safeAddForeignKey(
@@ -119,12 +119,12 @@ class m260108_115053_new_structure extends Migration
             'record_map',
             'id',
             'CASCADE',
-            'CASCADE'
+            'CASCADE',
         );
 
         foreach (
             (new Query())->select('content_addon_record_id')->distinct()->from(Activity::tableName())->where(
-                'content_id IS NULL and content_addon_record_id IS NOT NULL'
+                'content_id IS NULL and content_addon_record_id IS NOT NULL',
             )->all() as $row
         ) {
             $contentProvider = RecordMap::getById($row['content_addon_record_id'], ContentProvider::class, false);
@@ -134,16 +134,16 @@ class m260108_115053_new_structure extends Migration
                         'activity',
                         [
                             'content_id' => $contentProvider->content->id,
-                            'contentcontainer_id' => $contentProvider->content->contentcontainer_id
+                            'contentcontainer_id' => $contentProvider->content->contentcontainer_id,
                         ],
-                        ['content_addon_record_id' => $row['content_addon_record_id']]
+                        ['content_addon_record_id' => $row['content_addon_record_id']],
                     );
                 } else {
                     Yii::warning(
                         'Content Provider ' . get_class(
-                            $contentProvider
+                            $contentProvider,
                         ) . ' with id ' . $contentProvider->id . ' has no content!',
-                        'activity'
+                        'activity',
                     );
                 }
             } else {
@@ -155,7 +155,7 @@ class m260108_115053_new_structure extends Migration
                 } else {
                     Yii::warning(
                         'Delete Activity with content_addon_record_id ' . $row['content_addon_record_id'],
-                        'activity'
+                        'activity',
                     );
                 }
 

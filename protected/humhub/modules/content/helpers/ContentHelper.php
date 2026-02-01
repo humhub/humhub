@@ -10,7 +10,6 @@ use Yii;
 
 final class ContentHelper
 {
-
     /**
      * Build info text about a content
      *
