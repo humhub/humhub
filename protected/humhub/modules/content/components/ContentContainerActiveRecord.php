@@ -256,10 +256,8 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      */
     public function afterDelete()
     {
-        ContentContainer::deleteAll([
-            'pk' => $this->getPrimaryKey(),
-            'class' => static::class,
-        ]);
+        $contentContainer = ContentContainer::findOne(['id' => $this->contentcontainer_id]);
+        $contentContainer->delete();
 
         parent::afterDelete();
     }

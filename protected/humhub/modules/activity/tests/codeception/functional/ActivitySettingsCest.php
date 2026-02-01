@@ -9,9 +9,9 @@
 
 namespace activity\functional;
 
-use humhub\modules\comment\activities\NewComment;
-use humhub\modules\content\activities\ContentCreated;
-use humhub\modules\like\activities\Liked;
+use humhub\modules\comment\activities\NewCommentActivity;
+use humhub\modules\content\activities\ContentCreatedActivity;
+use humhub\modules\like\activities\LikeActivity;
 use humhub\modules\space\models\Space;
 use activity\FunctionalTester;
 use yii\helpers\Url;
@@ -29,32 +29,32 @@ class ActivitySettingsCest
             'MailSummaryForm[limitSpacesMode]' => '1',
             'MailSummaryForm[limitSpaces][]' => Space::findOne(1)->guid,
             'MailSummaryForm[activities]' => '',
-            'MailSummaryForm[activities][]' => ContentCreated::class,
+            'MailSummaryForm[activities][]' => ContentCreatedActivity::class,
         ]);
 
         $I->amOnRoute('/activity/user');
         $I->seeInField('#mailsummaryform-interval', '1');
         $I->seeCheckboxIsChecked('[name="MailSummaryForm[limitSpacesMode]"]', '1');
         $I->seeOptionIsSelected('#mailsummaryform-limitspaces', 'Space 1');
-        $I->dontSeeCheckboxIsChecked($this->getActivityCheckboxSelector(NewComment::class));
-        $I->seeCheckboxIsChecked($this->getActivityCheckboxSelector(ContentCreated::class));
-        $I->dontSeeCheckboxIsChecked($this->getActivityCheckboxSelector(Liked::class));
+        $I->dontSeeCheckboxIsChecked($this->getActivityCheckboxSelector(NewCommentActivity::class));
+        $I->seeCheckboxIsChecked($this->getActivityCheckboxSelector(ContentCreatedActivity::class));
+        $I->dontSeeCheckboxIsChecked($this->getActivityCheckboxSelector(LikeActivity::class));
 
         $I->submitForm('.panel-body form', [
             'MailSummaryForm[interval]' => '2',
             'MailSummaryForm[limitSpacesMode]' => '',
             'MailSummaryForm[limitSpaces][]' => '',
             'MailSummaryForm[activities]' => '',
-            'MailSummaryForm[activities][]' => NewComment::class,
+            'MailSummaryForm[activities][]' => NewCommentActivity::class,
         ]);
 
         $I->seeInField('#mailsummaryform-interval', '2');
         $I->dontSeeCheckboxIsChecked('[name="MailSummaryForm[limitSpacesMode]"]', '0');
         $I->dontSeeCheckboxIsChecked('[name="MailSummaryForm[limitSpacesMode]"]', '1');
         $I->dontSeeOptionIsSelected('#mailsummaryform-limitspaces', 'Space 1');
-        $I->seeCheckboxIsChecked($this->getActivityCheckboxSelector(NewComment::class));
-        $I->dontSeeCheckboxIsChecked($this->getActivityCheckboxSelector(ContentCreated::class));
-        $I->dontSeeCheckboxIsChecked($this->getActivityCheckboxSelector(Liked::class));
+        $I->seeCheckboxIsChecked($this->getActivityCheckboxSelector(NewCommentActivity::class));
+        $I->dontSeeCheckboxIsChecked($this->getActivityCheckboxSelector(ContentCreatedActivity::class));
+        $I->dontSeeCheckboxIsChecked($this->getActivityCheckboxSelector(LikeActivity::class));
 
         $I->see('Reset to defaults');
         $I->sendAjaxPostRequest(Url::toRoute('/activity/user/reset'));
@@ -63,9 +63,9 @@ class ActivitySettingsCest
         $I->seeInField('#mailsummaryform-interval', '1');
         $I->seeCheckboxIsChecked('[name="MailSummaryForm[limitSpacesMode]"]', '1');
         $I->seeOptionIsSelected('#mailsummaryform-limitspaces', 'Space 1');
-        $I->dontSeeCheckboxIsChecked($this->getActivityCheckboxSelector(NewComment::class));
-        $I->seeCheckboxIsChecked($this->getActivityCheckboxSelector(ContentCreated::class));
-        $I->dontSeeCheckboxIsChecked($this->getActivityCheckboxSelector(Liked::class));
+        $I->dontSeeCheckboxIsChecked($this->getActivityCheckboxSelector(NewCommentActivity::class));
+        $I->seeCheckboxIsChecked($this->getActivityCheckboxSelector(ContentCreatedActivity::class));
+        $I->dontSeeCheckboxIsChecked($this->getActivityCheckboxSelector(LikeActivity::class));
     }
 
     private function getActivityCheckboxSelector(string $className): string

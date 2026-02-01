@@ -9,7 +9,6 @@
 
 namespace humhub\modules\stream\models\filters;
 
-use humhub\modules\activity\stream\ActivityStreamQuery;
 use humhub\modules\content\models\Content;
 use humhub\modules\stream\models\ContentContainerStreamQuery;
 use humhub\modules\stream\models\StreamQuery;
@@ -79,11 +78,6 @@ abstract class StreamQueryFilter extends QueryFilter
      */
     public function allowStateContent(): bool
     {
-        if ($this->streamQuery instanceof ActivityStreamQuery && $this->streamQuery->activity) {
-            // Don't display for activity stream
-            return false;
-        }
-
         if ($this->streamQuery instanceof ContentContainerStreamQuery
             && $this->streamQuery->container instanceof User
             && $this->streamQuery->user instanceof User

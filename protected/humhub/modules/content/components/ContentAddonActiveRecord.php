@@ -102,4 +102,9 @@ abstract class ContentAddonActiveRecord extends ActiveRecord implements
     {
         return $this->hasOne(Content::class, ['id' => 'content_id']);
     }
+
+    public function getUrl(bool $scheme = false): string
+    {
+        return $this->content->getUrl($scheme);
+    }
 }

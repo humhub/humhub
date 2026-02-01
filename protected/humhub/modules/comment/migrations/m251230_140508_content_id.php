@@ -30,6 +30,14 @@ class m251230_140508_content_id extends Migration
             [':object_model' => Comment::class],
         );
 
+        $this->execute(
+            'UPDATE `comment`
+         LEFT JOIN `comment` parent ON comment.parent_comment_id = parent.id
+         SET comment.content_id=parent.content_id
+         WHERE comment.parent_comment_id IS NOT NULL AND comment.content_id IS NULL AND parent.id IS NOT NULL'
+        );
+
+
         $this->safeAddForeignKey('fk_comment_content', 'comment', 'content_id', 'content', 'id', 'RESTRICT', 'CASCADE');
         $this->safeAddForeignKey(
             'fk_comment_comment',

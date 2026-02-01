@@ -24,7 +24,7 @@ return [
         ['class' => Content::class, 'event' => Content::EVENT_AFTER_DELETE, 'callback' => [Events::class, 'onContentAfterDelete']],
         ['class' => CronController::class, 'event' => CronController::EVENT_ON_DAILY_RUN, 'callback' => [Events::class, 'onCronDailyRun']],
         ['class' => CronController::class, 'event' => CronController::EVENT_BEFORE_ACTION, 'callback' => [Events::class, 'onCronBeforeAction']],
-        ['class' => ActiveRecord::class, 'event' => ActiveRecord::EVENT_AFTER_DELETE, 'callback' => [RecordMap::class, 'onActiveRecordDelete']],
+        ['class' => ActiveRecord::class, 'event' => ActiveRecord::EVENT_BEFORE_DELETE, 'callback' => [RecordMap::class, 'onActiveRecordDelete']],
     ],
     'consoleControllerMap' => [
         'content-search' => '\humhub\modules\content\commands\SearchController',
