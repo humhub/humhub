@@ -75,6 +75,11 @@ Version 1.19 (Unreleased)
   - `humhub\modules\user\authclient\Live`
   - `humhub\modules\user\authclient\Twitter`
   - `humhub\modules\user\authclient\ZendLdapClient`
+- Refactored `Activities`
+  - Make sure Content related Activities are now extended from `BaseContentActivity`
+  - `getTitle` and `getDescription` are now `static`.
+  - Instead of View files you need to implement a `getMessage()` method which returns the Activity text.
+  - Use following code to create a Activity `ActivityManager::dispatch(TaskCompletedActivity::class, $this->task, $user)`
 
 
 Version 1.18 (Unreleased)

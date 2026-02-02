@@ -8,7 +8,7 @@
 
 namespace humhub\components;
 
-use humhub\modules\like\activities\Liked;
+use humhub\modules\like\activities\LikeActivity;
 use humhub\modules\like\models\Like;
 use Throwable;
 use Traversable;
@@ -596,7 +596,10 @@ class Migration extends \yii\db\Migration
      */
     protected function renameClass(string $oldClass, string $newClass): void
     {
-        $this->updateSilent('activity', ['object_model' => $newClass], ['object_model' => $oldClass]);
+        if ($this->db->getTableSchema('activity', true)->getColumn('object_model') !== null) {
+            $this->updateSilent('activity', ['object_model' => $newClass], ['object_model' => $oldClass]);
+        }
+
         $this->updateSilent('activity', ['class' => $newClass], ['class' => $oldClass]);
 
         if ($this->db->getTableSchema('comment', true)->getColumn('object_model') !== null) {
@@ -632,7 +635,7 @@ class Migration extends \yii\db\Migration
 
             Yii::$app->db->createCommand($updateSql, [
                 ':likeModelClass' => Like::class,
-                ':likedActivityClass' => Liked::class,
+                ':likedActivityClass' => LikeActivity::class,
             ])->execute();
         }
     }

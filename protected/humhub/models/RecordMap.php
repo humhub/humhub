@@ -52,14 +52,14 @@ class RecordMap extends ActiveRecord
      * @param class-string<T> $classType
      * @return T
      */
-    public static function getById(int $recordId, string $classType)
+    public static function getById(int $recordId, string $classType, bool $logError = true)
     {
         return Yii::$app->runtimeCache->getOrSet(
             'rm_' . $recordId . $classType,
-            function () use ($recordId, $classType) {
+            function () use ($recordId, $classType, $logError) {
                 $record = static::findOne(['id' => $recordId]);
                 if ($record !== null) {
-                    return static::getByModelAndPk($record->model, $record->pk, $classType);
+                    return static::getByModelAndPk($record->model, $record->pk, $classType, $logError);
                 }
                 return null;
             },
@@ -71,12 +71,14 @@ class RecordMap extends ActiveRecord
      * @param class-string<T> $classType
      * @return T
      */
-    public static function getByModelAndPk(string $model, string $pk, string $classType)
+    public static function getByModelAndPk(string $model, string $pk, string $classType, bool $logError = true)
     {
         if (!DataTypeHelper::isClassType($model, $classType)) {
-            Yii::warning(
-                'Invalid class type. Got: ' . $model . ' With ID ' . $pk . ' . Expected: ' . $classType,
-            );
+            if ($logError) {
+                Yii::warning(
+                    'Invalid class type. Got: ' . $model . ' With ID ' . $pk . ' . Expected: ' . $classType,
+                );
+            }
             return null;
         }
 

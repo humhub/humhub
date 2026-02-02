@@ -10,7 +10,10 @@ class CommentEntryLinks extends BaseStack
 {
     public Comment $comment;
 
-    public $seperator = '&nbsp;&middot;&nbsp;';
+    /**
+     * @inheritdoc
+     */
+    public $seperator = ' &middot; ';
 
     public function init()
     {

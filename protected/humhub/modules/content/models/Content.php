@@ -16,13 +16,16 @@ use humhub\interfaces\ArchiveableInterface;
 use humhub\interfaces\EditableInterface;
 use humhub\interfaces\ViewableInterface;
 use humhub\libs\UUIDValidator;
-use humhub\modules\content\activities\ContentCreated as ActivitiesContentCreated;
+use humhub\modules\activity\models\Activity;
+use humhub\modules\activity\services\ActivityManager;
+use humhub\modules\content\activities\ContentCreatedActivity;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\content\events\ContentEvent;
 use humhub\modules\content\events\ContentStateEvent;
 use humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\content\interfaces\ContentProvider;
 use humhub\modules\content\interfaces\SoftDeletable;
 use humhub\modules\content\live\NewContent;
 use humhub\modules\content\notifications\ContentCreated as NotificationsContentCreated;
@@ -292,6 +295,10 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
             }
         }
 
+        if (in_array('visibility', $changedAttributes)) {
+            ActivityManager::afterContentChange($this);
+        }
+
         (new ContentSearchService($this))->update();
 
         parent::afterSave($insert, $changedAttributes);
@@ -360,6 +367,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      */
     private function notifyContentCreated()
     {
+        /** @var ContentProvider $contentSource */
         $contentSource = $this->getPolymorphicRelation();
 
         $userQuery = Yii::$app->notification->getFollowers($this);
@@ -375,9 +383,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
             ->about($contentSource)
             ->sendBulk($userQuery);
 
-        ActivitiesContentCreated::instance()
-            ->from($this->createdBy)
-            ->about($contentSource)->save();
+        ActivityManager::dispatch(ContentCreatedActivity::class, $contentSource, $this->createdBy);
     }
 
     /**
@@ -643,6 +649,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
                     $model->afterMove($container);
                 }
             });
+            ActivityManager::afterContentChange($this);
         }
 
         return $move;
@@ -1119,5 +1126,6 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     {
         $this->getStateService()->set($state, $options);
     }
+
 
 }

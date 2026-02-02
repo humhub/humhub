@@ -5,7 +5,7 @@
  */
 
 use humhub\components\View;
-use humhub\modules\activity\widgets\ActivityStreamViewer;
+use humhub\modules\activity\widgets\ActivityBox;
 use humhub\modules\content\widgets\WallCreateContentFormContainer;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\Module;
@@ -49,7 +49,7 @@ $this->beginBlock('sidebar');
 $widgets = [];
 
 if (!$space->getAdvancedSettings()->hideActivities) {
-    $widgets[] = [ActivityStreamViewer::class, ['contentContainer' => $space], ['sortOrder' => 10]];
+    $widgets[] = [ActivityBox::class, ['contentContainer' => $space], ['sortOrder' => 10]];
 }
 
 $widgets[] = [PendingApprovals::class, ['space' => $space], ['sortOrder' => 20]];

@@ -12,6 +12,7 @@ use humhub\components\ActiveRecord;
 use humhub\libs\BasePermission;
 use humhub\modules\activity\helpers\ActivityHelper;
 use humhub\modules\activity\models\Activity;
+use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\interfaces\ContentProvider;
 use humhub\modules\content\interfaces\SoftDeletable;
@@ -467,14 +468,6 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      */
     public function afterStateChange(?int $newState, ?int $previousState): void
     {
-        // Activities should be updated to same state as parent Record
-        $activitiesQuery = ActivityHelper::getActivitiesQuery($this);
-        if ($activitiesQuery instanceof ActiveQuery) {
-            foreach ($activitiesQuery->each() as $activity) {
-                /* @var Activity $activity */
-                $activity->content->getStateService()->update($newState);
-            }
-        }
     }
 
     /**
@@ -662,6 +655,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      */
     public function afterMove(?ContentContainerActiveRecord $container = null)
     {
+        ActivityManager::afterContentChange($this->content);
     }
 
     /**
