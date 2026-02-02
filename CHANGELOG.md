@@ -29,6 +29,7 @@ HumHub Changelog
 - Enh #7975: More details in the log message in case of error with AltchaCaptcha
 - Fix #7977: Skip adding of a default group when another is selected on the registration form
 - Fix: Topics and Online profile images margins
+- Fix #7987: Fix registration by link with existing email
 
 1.18.0-beta.6 (January 8, 2026)
 -------------------------------
