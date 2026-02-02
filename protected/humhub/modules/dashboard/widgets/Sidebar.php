@@ -30,7 +30,7 @@ class Sidebar extends BaseSidebar
 
         if ($module->hideActivitySidebarWidget) {
             foreach ($this->widgets as $k => $widget) {
-                if (isset($widget[0]) && ($widget[0] === ActivityStreamViewer::class || $widget[0] === 'humhub\modules\activity\widgets\ActivityStreamViewer')) {
+                if (isset($widget[0]) && $widget[0] === ActivityStreamViewer::class) {
                     unset($this->widgets[$k]);
                 }
             }

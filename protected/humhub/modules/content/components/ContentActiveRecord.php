@@ -412,24 +412,9 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      */
     public function getWallEntryWidget()
     {
-        if (empty($this->wallEntryClass)) {
-            return null;
-        }
-
-        if (is_subclass_of($this->wallEntryClass, WallStreamEntryWidget::class)) {
-            $class = $this->wallEntryClass;
-            $widget = new $class();
-            $widget->contentObject = $this;
-            return $widget;
-        }
-
-        if ($this->wallEntryClass) {
-            $class = $this->wallEntryClass;
-            $widget = new $class(['model' => $this]);
-            return $widget;
-        }
-
-        return null;
+        return $this->wallEntryClass
+            ? new $this->wallEntryClass(['model' => $this])
+            : null;
     }
 
     /**
