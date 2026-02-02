@@ -48,10 +48,16 @@
             display:flex;
             flex-direction:column;
             margin-left:5px;
+            overflow: hidden;
         }
 
         .picker-subtext {
-            color: var(--hh-text-color-soft2);
+            color: var(--hh-text-color-soft);
+            display: block;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         /**
