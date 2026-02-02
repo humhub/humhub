@@ -6,6 +6,7 @@ use humhub\modules\activity\Events;
 use humhub\commands\IntegrityController;
 use humhub\modules\activity\Module;
 use humhub\modules\admin\widgets\SettingsMenu;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\user\models\User;
@@ -30,7 +31,7 @@ return [
             BaseActiveRecord::EVENT_BEFORE_DELETE,
             [Events::class, 'onBeforeContentContainerDelete'],
         ],
-        [Content::class, BaseActiveRecord::EVENT_BEFORE_DELETE, [Events::class, 'onBeforeContentDelete']],
+        [ContentActiveRecord::class, BaseActiveRecord::EVENT_BEFORE_DELETE, [Events::class, 'onBeforeContentRecordDelete']],
     ],
     'consoleControllerMap' => [
         'activity' => 'humhub\modules\activity\commands\TestController',

@@ -145,12 +145,12 @@ class Events extends BaseObject
 
         return true;
     }
-    public static function onBeforeContentDelete($event)
+    public static function onBeforeContentRecordDelete($event)
     {
         /** @var Content $record */
         $record = $event->sender;
 
-        foreach (Activity::findAll(['content_id' => $record->id]) as $activity) {
+        foreach (Activity::findAll(['content_id' => $record->content->id]) as $activity) {
             $activity->delete();
         }
 
