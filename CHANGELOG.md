@@ -32,6 +32,7 @@ HumHub Changelog
 - Fix #7987: Fix registration by link with existing email
 - Fix #7979: Topics and Online profile images margins
 - Enh #7988: When the Altcha Captcha box is not checked, don't log any error
+- Fix #7989: Fix site icon on installer pages
 
 1.18.0-beta.6 (January 8, 2026)
 -------------------------------
