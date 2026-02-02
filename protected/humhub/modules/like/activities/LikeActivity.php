@@ -2,6 +2,7 @@
 
 namespace humhub\modules\like\activities;
 
+use humhub\modules\activity\components\ActiveQueryActivity;
 use humhub\modules\activity\components\BaseContentActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use humhub\modules\activity\models\Activity;
@@ -41,7 +42,12 @@ class LikeActivity extends BaseContentActivity implements ConfigurableActivityIn
 
     protected function getMessage(array $params): string
     {
-        return Yii::t('LikeModule.base', '{displayName} likes {content}.', $params);
+        if ($this->groupCount > 1) {
+            $params['groupCount'] = $this->groupCount - 1;
+            return Yii::t('LikeModule.base', '{displayNames} like {content}.', $params);
+        } else {
+            return Yii::t('LikeModule.base', '{displayName} likes {content}.', $params);
+        }
     }
 
     protected function getMessageParamsText(): array
@@ -53,4 +59,13 @@ class LikeActivity extends BaseContentActivity implements ConfigurableActivityIn
             ],
         );
     }
+
+    public function findGroupedQuery(): ?ActiveQueryActivity
+    {
+        return Activity::find()
+            ->andWhere(['activity.class' => static::class])
+            ->andWhere(['activity.content_id' => $this->content->id])
+            ->andWhere(['activity.content_addon_record_id' => $this->record->content_addon_record_id]);
+    }
+
 }

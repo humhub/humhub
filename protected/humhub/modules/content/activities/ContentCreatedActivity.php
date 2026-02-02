@@ -10,6 +10,8 @@ use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 
 final class ContentCreatedActivity extends BaseContentActivity implements ConfigurableActivityInterface
 {
+    public int $groupingThreshold = 4;
+
     /**
      * @var array Content type classes which should be not grouped
      */
@@ -56,6 +58,7 @@ final class ContentCreatedActivity extends BaseContentActivity implements Config
             ->andWhere(['activity.contentcontainer_id' => $this->contentContainer->id])
             ->andWhere(['activity.created_by' => $this->user->id])
             ->andWhere(['content.object_model' => $this->record->content->object_model])
+            ->andWhere(['content.visibility' => $this->record->content->visibility])
             ->andWhere(['NOT IN', 'content.object_model', $this->contentTypeNoGrouping]);
     }
 }

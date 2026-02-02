@@ -466,7 +466,7 @@ class SpaceModelMembership extends Behavior
             'user' => $user,
         ]));
 
-        if (!$silent && !$this->owner->settings->get('hideMembers')) {
+        if (!$this->owner->settings->get('hideMembers')) {
             // Create Activity
             ActivityManager::dispatch(MemberAddedActivity::class, $this->owner, $user);
         }

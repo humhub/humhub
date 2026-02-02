@@ -204,7 +204,7 @@ class ActiveQueryActivity extends ActiveQuery
     public function enableGrouping(): static
     {
         $this->addGroupBy('activity.grouping_key');
-        $this->addSelect(['activity.*', 'count(*) as group_count']);
+        $this->addSelect(['activity.*', 'count(*) as group_count', 'max(activity.id) as group_max_id']);
         return $this;
     }
 

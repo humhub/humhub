@@ -16,16 +16,15 @@ use yii\base\BaseObject;
 abstract class BaseActivity extends BaseObject
 {
     public readonly ActivityRecord $record;
-
     public readonly ContentContainer $contentContainer;
-
     public readonly User $user;
-
     public readonly string $createdAt;
     public readonly int $groupCount;
-    public int $groupingThreshold = 4;
+    /**
+     * @var int minimum members in a group
+     */
+    public int $groupingThreshold = 2;
     public int $groupingTimeBucketSeconds = 900;
-
     protected GroupingService $groupingService;
 
     public function __construct(ActivityRecord $record, $config = [])
@@ -89,6 +88,10 @@ abstract class BaseActivity extends BaseObject
 
     protected function formatDisplayNames(callable $formatter): string
     {
+        if ($this->groupCount < 2) {
+            return '';
+        }
+
         $groupedUsers = $this->groupingService->getGroupedUsers();
 
         if (count($groupedUsers) === 2) {
@@ -106,8 +109,8 @@ abstract class BaseActivity extends BaseObject
                 '{displayName1}, {displayName2} and {count} more',
                 [
                     'displayName1' => $formatter($groupedUsers[0]->displayName),
-                    'displayName2' => $formatter($groupedUsers[2]->displayName),
-                    'count' => count($groupedUsers) - 2,
+                    'displayName2' => $formatter($groupedUsers[1]->displayName),
+                    'count' => $this->groupCount - 2,
                 ],
             );
         }

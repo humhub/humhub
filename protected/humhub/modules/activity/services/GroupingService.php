@@ -31,16 +31,13 @@ final class GroupingService
         }
 
         if (!$this->_groupedUsers) {
-            $this->_groupedUsers = [];
-
-            $query = $this->activity->findGroupedQuery()
-                ->select(['activity.created_by'])->distinct()
-                ->defaultScopes($this->activity->user)
-                ->andWhere(['!=', 'activity.id', $this->activity->record->id])
-                ->limit(3);
-            foreach ($query->column() as $userId) {
-                $this->_groupedUsers[] = User::findOne($userId);
-            }
+            $this->_groupedUsers = User::find()->visible()
+                ->leftJoin('activity', 'user.id=activity.created_by')
+                ->andWhere(['activity.grouping_key' => $this->activity->record->grouping_key])
+                //->andWhere(['!=', 'activity.id', $this->activity->record->id])
+                ->orderBy('activity.id DESC')
+                ->limit(5)
+                ->all();
         }
 
         return $this->_groupedUsers;
@@ -52,7 +49,7 @@ final class GroupingService
     public function afterInsert(): void
     {
         if ($this->needsGrouping()) {
-            $subSelect = $this->activity->findGroupedQuery()->select('activity.id')->createCommand()->getRawSql();
+            $subSelect = $this->groupQuery->select('activity.id')->createCommand()->getRawSql();
             Activity::updateAll(
                 ['grouping_key' => $this->activity->record->id],
                 // We need a "double" SubSelect to avoid MySQL Err: 1093
@@ -131,7 +128,7 @@ final class GroupingService
     {
         return (
             $this->groupQuery
-            && $this->activity->findGroupedQuery()->count() > $this->activity->groupingThreshold
+            && $this->groupQuery->count() >= $this->activity->groupingThreshold
         );
     }
 

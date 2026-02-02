@@ -10,12 +10,6 @@ use Yii;
 
 class MemberAddedActivity extends BaseSpaceActivity implements ConfigurableActivityInterface
 {
-    public int $groupingTimeBucketSeconds = 900;
-
-    /*
-    public ?int $groupingThreshold = 3;
-    */
-
     public static function getTitle(): string
     {
         return Yii::t('SpaceModule.activities', 'Space member joined');
@@ -55,13 +49,10 @@ class MemberAddedActivity extends BaseSpaceActivity implements ConfigurableActiv
         };
     }
 
-    /*
     public function findGroupedQuery(): ActiveQueryActivity
     {
         return Activity::find()
-            ->timeBucket($this->groupingTimeBucketSeconds, $this->createdAt)
             ->andWhere(['activity.class' => static::class])
             ->andWhere(['activity.contentcontainer_id' => $this->contentContainer->id]);
     }
-    */
 }
