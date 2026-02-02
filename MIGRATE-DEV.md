@@ -55,7 +55,7 @@ Version 1.19 (Unreleased)
   - `humhub\modules\ui\view\components\View` => `humhub\components\View`
   - `humhub\modules\ui\view\helpers` => `humhub\helpers\ThemeHelper`
   - `humhub\modules\user\components\ProfileStream` => `humhub\modules\user\actions\ProfileStreamAction`
-  - `humhub\modules\user\widgets\UserPicker` => `humhub\modules\user\widgets\UserPickerField`
+  - `humhub\modules\user\widgets\UserPicker` => `humhub\modules\user\widgets\UserPickerField` for rendering, `humhub\modules\user\models\UserPicker` for searching
 - Removed classes:
   - `humhub\widgets\BootstrapComponent`
   - `humhub\assets\Select2BootstrapAsset`
