@@ -14,7 +14,7 @@ final class GroupingService
 
     private ?BaseActivity $_sibling = null;
 
-    private ?ActiveQueryActivity $groupQuery;
+    public ?ActiveQueryActivity $groupQuery;
 
     public function __construct(private BaseActivity $activity)
     {
@@ -50,7 +50,7 @@ final class GroupingService
     public function afterInsert(): void
     {
         if ($this->needsGrouping()) {
-            $subSelect = $this->groupQuery->select('activity.id')->createCommand()->getRawSql();
+            $subSelect = (clone $this->groupQuery)->select('activity.id')->createCommand()->getRawSql();
             Activity::updateAll(
                 ['grouping_key' => $this->activity->record->id],
                 // We need a "double" SubSelect to avoid MySQL Err: 1093
@@ -129,7 +129,8 @@ final class GroupingService
 
     public function hasSibling(int $id): bool
     {
-        return $this->groupQuery->andWhere(['activity.id' => $id])->exists();
+        $query = clone $this->groupQuery;
+        return $query->andWhere(['activity.id' => $id])->exists();
     }
 
     private function getGroupCount(): int
