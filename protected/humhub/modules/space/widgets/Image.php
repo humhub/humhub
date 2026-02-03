@@ -107,8 +107,6 @@ class Image extends BaseImage
 
     protected function getDynamicStyles($elementWidth)
     {
-
-        $fontSize = 44 * $elementWidth / 100;
         $borderRadius = 4;
 
         if ($elementWidth < 140 && $elementWidth > 40) {
@@ -119,7 +117,7 @@ class Image extends BaseImage
             $borderRadius = 2;
         }
 
-        return "font-size: " . $fontSize . "px; border-radius: " . $borderRadius . "px;";
+        return "border-radius: " . $borderRadius . "px;";
     }
 
 }
