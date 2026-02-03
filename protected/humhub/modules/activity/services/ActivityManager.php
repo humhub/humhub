@@ -65,6 +65,12 @@ class ActivityManager extends Component
 
     public static function load(Activity $record): BaseActivity
     {
+        if (!empty($record->group_max_id) && $record->group_max_id !== $record->id) {
+            $groupCount = $record->group_count;
+            $record = Activity::findOne(['activity.id' => $record->group_max_id]);
+            $record->group_count = $groupCount;
+        }
+
         return Yii::createObject($record->class, ['record' => $record]);
     }
 
