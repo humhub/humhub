@@ -36,7 +36,6 @@ abstract class BaseActivity extends BaseObject
         $this->createdAt = $record->created_at;
         $this->record = $record;
         $this->groupCount = $this->record->group_count ?? 1;
-
     }
 
     abstract protected function getMessage(array $params): string;
@@ -118,12 +117,13 @@ abstract class BaseActivity extends BaseObject
         return '';
     }
 
-    public function findGroupedQuery(): ?ActiveQueryActivity
+    public function getGroupingQuery(): ?ActiveQueryActivity
     {
         return null;
     }
 
-    public function getGroupingService(): GroupingService {
+    public function getGroupingService(): GroupingService
+    {
         if ($this->_groupingService === null) {
             $this->_groupingService = new GroupingService($this);
         }

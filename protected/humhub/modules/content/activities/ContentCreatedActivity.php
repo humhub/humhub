@@ -51,7 +51,7 @@ final class ContentCreatedActivity extends BaseContentActivity implements Config
         return parent::getUrl($scheme);
     }
 
-    public function findGroupedQuery(): ?ActiveQueryActivity
+    public function getGroupingQuery(): ?ActiveQueryActivity
     {
         return Activity::find()
             ->andWhere(['activity.class' => static::class])

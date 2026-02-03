@@ -31,8 +31,5 @@ return [
             [Events::class, 'onBeforeContentContainerDelete'],
         ],
         [Content::class, BaseActiveRecord::EVENT_BEFORE_DELETE, [Events::class, 'onBeforeContentDelete']],
-    ],
-    'consoleControllerMap' => [
-        'activity' => 'humhub\modules\activity\commands\TestController',
-    ],
+    ]
 ];

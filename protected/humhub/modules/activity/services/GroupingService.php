@@ -6,18 +6,19 @@ use humhub\modules\activity\components\ActiveQueryActivity;
 use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\user\models\User;
-use Yii;
 use yii\db\Expression;
 
 final class GroupingService
 {
     private ?array $_groupedUsers = null;
 
+    private ?BaseActivity $_sibling = null;
+
     private ?ActiveQueryActivity $groupQuery;
 
     public function __construct(private BaseActivity $activity)
     {
-        $this->groupQuery = $this->activity->findGroupedQuery();
+        $this->groupQuery = $this->activity->getGroupingQuery();
         if ($this->groupQuery) {
             $this->groupQuery->timeBucket($this->activity->groupingTimeBucketSeconds, $this->activity->createdAt);
         }
@@ -102,7 +103,7 @@ final class GroupingService
 
         // No longer in assigned group
         if (!$this->checkStillInCurrentGroup()) {
-            $sibling = $this->getNextGroupedActivity();
+            $sibling = $this->getSiblingActivity();
 
             $this->activity->record->updateAttributes(['grouping_key' => $this->activity->record->id]);
 
@@ -123,7 +124,7 @@ final class GroupingService
      */
     private function checkStillInCurrentGroup(): bool
     {
-        return $this->getNextGroupedActivity()->getGroupingService()->hasSibling($this->activity->record->id) ?? false;
+        return $this->getSiblingActivity()->getGroupingService()->hasSibling($this->activity->record->id) ?? false;
     }
 
     public function hasSibling(int $id): bool
@@ -146,18 +147,20 @@ final class GroupingService
         );
     }
 
-    /**
-     * Returns the first next activity in the current Activity group
-     */
-    private function getNextGroupedActivity(): ?BaseActivity
+    private function getSiblingActivity(): ?BaseActivity
     {
-        // TODO: Cache me
+        if (!$this->_sibling) {
+            // Returns the first next activity in the current Activity group
+            $record = Activity::find()
+                ->andWhere(['grouping_key' => $this->activity->record->grouping_key])
+                ->andWhere(['!=', 'activity.id', $this->activity->record->id])
+                ->orderBy(['created_at' => SORT_DESC, 'id' => SORT_DESC])->one();
+            if ($record) {
+                $this->_sibling = ActivityManager::load($record);
+            }
+        }
 
-        $secondActivityRecord = Activity::find()
-            ->andWhere(['grouping_key' => $this->activity->record->grouping_key])
-            ->andWhere(['!=', 'activity.id', $this->activity->record->id])
-            ->orderBy(['created_at' => SORT_DESC, 'id' => SORT_DESC])->one();
-        return ActivityManager::load($secondActivityRecord);
+        return $this->_sibling;
     }
 
     private function destroyGroup(): void

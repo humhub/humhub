@@ -49,7 +49,7 @@ class MemberRemovedActivity extends BaseSpaceActivity implements ConfigurableAct
         };
     }
 
-    public function findGroupedQuery(): ActiveQueryActivity
+    public function getGroupingQuery(): ActiveQueryActivity
     {
         return Activity::find()
             ->andWhere(['activity.class' => static::class])
