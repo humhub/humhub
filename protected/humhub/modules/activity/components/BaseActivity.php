@@ -25,7 +25,7 @@ abstract class BaseActivity extends BaseObject
      */
     public int $groupingThreshold = 2;
     public int $groupingTimeBucketSeconds = 900;
-    protected GroupingService $groupingService;
+    private ?GroupingService $_groupingService = null;
 
     public function __construct(ActivityRecord $record, $config = [])
     {
@@ -36,7 +36,7 @@ abstract class BaseActivity extends BaseObject
         $this->createdAt = $record->created_at;
         $this->record = $record;
         $this->groupCount = $this->record->group_count ?? 1;
-        $this->groupingService = new GroupingService($this);
+
     }
 
     abstract protected function getMessage(array $params): string;
@@ -92,25 +92,25 @@ abstract class BaseActivity extends BaseObject
             return '';
         }
 
-        $groupedUsers = $this->groupingService->getGroupedUsers();
+        $otherUsers = $this->getGroupingService()->getOtherGroupedUsers(Yii::$app->user?->getIdentity());
 
-        if (count($groupedUsers) === 2) {
+        if (count($otherUsers) === 1) {
             return Yii::t(
                 'ActivityModule.base',
                 '{displayName1} and {displayName2}',
                 [
-                    'displayName1' => $formatter($groupedUsers[0]->displayName),
-                    'displayName2' => $formatter($groupedUsers[1]->displayName),
+                    'displayName1' => $formatter($this->user->displayName),
+                    'displayName2' => $formatter($otherUsers[0]->displayName),
                 ],
             );
-        } elseif (count($groupedUsers) > 2) {
+        } elseif (count($otherUsers) > 1) {
             return Yii::t(
                 'ActivityModule.base',
                 '{displayName1}, {displayName2} and {count} more',
                 [
-                    'displayName1' => $formatter($groupedUsers[0]->displayName),
-                    'displayName2' => $formatter($groupedUsers[1]->displayName),
-                    'count' => $this->groupCount - 2,
+                    'displayName1' => $formatter($this->user->displayName),
+                    'displayName2' => $formatter($otherUsers[0]->displayName),
+                    'count' => count($otherUsers) - 1,
                 ],
             );
         }
@@ -121,5 +121,13 @@ abstract class BaseActivity extends BaseObject
     public function findGroupedQuery(): ?ActiveQueryActivity
     {
         return null;
+    }
+
+    public function getGroupingService(): GroupingService {
+        if ($this->_groupingService === null) {
+            $this->_groupingService = new GroupingService($this);
+        }
+
+        return $this->_groupingService;
     }
 }

@@ -43,7 +43,6 @@ class LikeActivity extends BaseContentActivity implements ConfigurableActivityIn
     protected function getMessage(array $params): string
     {
         if ($this->groupCount > 1) {
-            $params['groupCount'] = $this->groupCount - 1;
             return Yii::t('LikeModule.base', '{displayNames} like {content}.', $params);
         } else {
             return Yii::t('LikeModule.base', '{displayName} likes {content}.', $params);
@@ -55,7 +54,7 @@ class LikeActivity extends BaseContentActivity implements ConfigurableActivityIn
         return array_merge(
             parent::getMessageParamsText(),
             [
-                'contentTitle' => ContentHelper::getContentInfo($this->like->getContentOwnerObject()),
+                'content' => ContentHelper::getContentInfo($this->like->getContentOwnerObject()),
             ],
         );
     }
@@ -64,8 +63,13 @@ class LikeActivity extends BaseContentActivity implements ConfigurableActivityIn
     {
         return Activity::find()
             ->andWhere(['activity.class' => static::class])
-            ->andWhere(['activity.content_id' => $this->content->id])
-            ->andWhere(['activity.content_addon_record_id' => $this->record->content_addon_record_id]);
+            ->leftJoin('record_map', 'activity.content_addon_record_id=record_map.id')
+            ->leftJoin('like', 'record_map.pk=like.id')
+            ->andWhere(['activity.content_id' => $this->record->content->id])
+            ->andWhere([
+                'like.content_addon_record_id' => $this->contentAddon->content_addon_record_id,
+                'like.content_id' => $this->contentAddon->content_id,
+            ]);
     }
 
 }

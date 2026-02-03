@@ -6,13 +6,12 @@ use humhub\modules\activity\components\ActiveQueryActivity;
 use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\user\models\User;
+use Yii;
 use yii\db\Expression;
 
 final class GroupingService
 {
     private ?array $_groupedUsers = null;
-
-    private bool $groupingEnabled = false;
 
     private ?ActiveQueryActivity $groupQuery;
 
@@ -24,7 +23,7 @@ final class GroupingService
         }
     }
 
-    public function getGroupedUsers(): array
+    public function getOtherGroupedUsers(?User $currentUser = null): array
     {
         if (!$this->groupQuery) {
             return [];
@@ -34,7 +33,8 @@ final class GroupingService
             $this->_groupedUsers = User::find()->visible()
                 ->leftJoin('activity', 'user.id=activity.created_by')
                 ->andWhere(['activity.grouping_key' => $this->activity->record->grouping_key])
-                //->andWhere(['!=', 'activity.id', $this->activity->record->id])
+                ->andWhere(['!=', 'activity.id', $this->activity->record->id])
+                ->andWhere(['!=', 'activity.created_by', $currentUser->id ?? 0])
                 ->orderBy('activity.id DESC')
                 ->limit(5)
                 ->all();
@@ -90,32 +90,46 @@ final class GroupingService
      */
     public function afterUpdate(): void
     {
-        if (!$this->groupingEnabled) {
+        if (!$this->groupQuery) {
             return;
         }
 
-        // Are we currently in a Group?
-        /*
-        $stillInSameGroup = false;
-        if ($this->getGroupCount() > 1) {
-            // Check we're still in the group
-            if (!$this->getNextGroupedActivity()?->findGroupedQuery()
-                ->andWhere(['id' => $this->activity->record->id])->exists()) {
-                // We're no longer in the group, another member doesn't find us, via it's grouping query, remove us
-                $this->activity->record->grouping_key = $this->activity->record->id;
-                $this->activity->record->update(false);
-            } else {
-                $stillInSameGroup = true;
-            }
+        // We're not in a group, check for grouping
+        if ($this->getGroupCount() <= 1) {
+            $this->afterInsert();
+            return;
         }
 
-        // If we were previously removed from a group OR now in a new group, add us:
-        if (!$stillInSameGroup) {
+        // No longer in assigned group
+        if (!$this->checkStillInCurrentGroup()) {
+            $sibling = $this->getNextGroupedActivity();
+
+            $this->activity->record->updateAttributes(['grouping_key' => $this->activity->record->id]);
+
+            // Check if old group is large enough
+            if (!$sibling->getGroupingService()->needsGrouping()) {
+                $sibling->getGroupingService()->destroyGroup();
+            }
+
             $this->afterInsert();
         }
-        */
     }
 
+    /**
+     * Checks if the current activity is still in the current group.
+     * Query another group member and check if we're still a sibiling.
+     *
+     * @return bool
+     */
+    private function checkStillInCurrentGroup(): bool
+    {
+        return $this->getNextGroupedActivity()->getGroupingService()->hasSibling($this->activity->record->id) ?? false;
+    }
+
+    public function hasSibling(int $id): bool
+    {
+        return $this->groupQuery->andWhere(['activity.id' => $id])->exists();
+    }
 
     private function getGroupCount(): int
     {
@@ -137,10 +151,12 @@ final class GroupingService
      */
     private function getNextGroupedActivity(): ?BaseActivity
     {
+        // TODO: Cache me
+
         $secondActivityRecord = Activity::find()
             ->andWhere(['grouping_key' => $this->activity->record->grouping_key])
-            ->andWhere(['!=', 'id', $this->activity->record->id])
-            ->orderBy(['created_at DESC', 'id DESC'])->one();
+            ->andWhere(['!=', 'activity.id', $this->activity->record->id])
+            ->orderBy(['created_at' => SORT_DESC, 'id' => SORT_DESC])->one();
         return ActivityManager::load($secondActivityRecord);
     }
 

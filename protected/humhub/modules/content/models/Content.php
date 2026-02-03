@@ -295,7 +295,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
             }
         }
 
-        if (in_array('visibility', $changedAttributes)) {
+        if (array_key_exists('visibility', $changedAttributes)) {
             ActivityManager::afterContentChange($this);
         }
 
