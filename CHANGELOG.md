@@ -35,6 +35,7 @@ HumHub Changelog
 - Fix #7991: Space image acronym in banner on mobile
 - Enh #7991: On medium size, don't display the Space statistics under the Space image in the banner
 - Fix #7989: Fix site icon on installer pages
+- Fix: Opening Modals indents top bars
 
 1.18.0-beta.6 (January 8, 2026)
 -------------------------------
