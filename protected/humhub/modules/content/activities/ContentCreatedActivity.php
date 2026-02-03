@@ -2,17 +2,20 @@
 
 namespace humhub\modules\content\activities;
 
+use humhub\modules\activity\components\ActiveQueryActivity;
+use humhub\modules\activity\models\Activity;
 use Yii;
 use humhub\modules\activity\components\BaseContentActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 
 final class ContentCreatedActivity extends BaseContentActivity implements ConfigurableActivityInterface
 {
-    public int $groupingTimeBucketSeconds = 900;
+    public int $groupingThreshold = 4;
 
-    /*
-    public ?int $groupingThreshold = 4;
-    */
+    /**
+     * @var array Content type classes which should be not grouped
+     */
+    public array $contentTypeNoGrouping = [];
 
     public static function getTitle(): string
     {
@@ -27,9 +30,10 @@ final class ContentCreatedActivity extends BaseContentActivity implements Config
     protected function getMessage(array $params): string
     {
         if ($this->groupCount > 1) {
+            $params['groupCount'] = $this->groupCount - 1;
             return Yii::t(
                 'ContentModule.activities',
-                '{displayName} created a new {content} and {groupCount} others.',
+                '{displayName} created a new {content} and {groupCount} more.',
                 $params,
             );
         } else {
@@ -41,14 +45,20 @@ final class ContentCreatedActivity extends BaseContentActivity implements Config
         }
     }
 
-    /*
-    public function findGroupedQuery(): ActiveQueryActivity
+    public function getUrl(bool $scheme = false): ?string
+    {
+        //ToDo: If grouped, link to Stream with enabled filters
+        return parent::getUrl($scheme);
+    }
+
+    public function getGroupingQuery(): ?ActiveQueryActivity
     {
         return Activity::find()
-            ->timeBucket($this->groupingTimeBucketSeconds, $this->createdAt)
             ->andWhere(['activity.class' => static::class])
             ->andWhere(['activity.contentcontainer_id' => $this->contentContainer->id])
-            ->andWhere(['activity.created_by' => $this->user->id]);
+            ->andWhere(['activity.created_by' => $this->user->id])
+            ->andWhere(['content.object_model' => $this->record->content->object_model])
+            ->andWhere(['content.visibility' => $this->record->content->visibility])
+            ->andWhere(['NOT IN', 'content.object_model', $this->contentTypeNoGrouping]);
     }
-    */
 }

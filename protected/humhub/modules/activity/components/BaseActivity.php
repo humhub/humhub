@@ -3,7 +3,6 @@
 namespace humhub\modules\activity\components;
 
 use humhub\helpers\Html;
-use humhub\modules\activity\models\Activity;
 use humhub\modules\activity\models\Activity as ActivityRecord;
 use humhub\modules\activity\services\GroupingService;
 use humhub\modules\content\models\ContentContainer;
@@ -17,17 +16,16 @@ use yii\base\BaseObject;
 abstract class BaseActivity extends BaseObject
 {
     public readonly ActivityRecord $record;
-
     public readonly ContentContainer $contentContainer;
-
     public readonly User $user;
-
     public readonly string $createdAt;
     public readonly int $groupCount;
-    public ?int $groupingThreshold = null;
+    /**
+     * @var int minimum members in a group
+     */
+    public int $groupingThreshold = 2;
     public int $groupingTimeBucketSeconds = 900;
-
-    protected GroupingService $groupingService;
+    private ?GroupingService $_groupingService = null;
 
     public function __construct(ActivityRecord $record, $config = [])
     {
@@ -38,7 +36,6 @@ abstract class BaseActivity extends BaseObject
         $this->createdAt = $record->created_at;
         $this->record = $record;
         $this->groupCount = $this->record->group_count ?? 1;
-        $this->groupingService = new GroupingService($this);
     }
 
     abstract protected function getMessage(array $params): string;
@@ -90,25 +87,29 @@ abstract class BaseActivity extends BaseObject
 
     protected function formatDisplayNames(callable $formatter): string
     {
-        $groupedUsers = $this->groupingService->getGroupedUsers();
+        if ($this->groupCount < 2) {
+            return '';
+        }
 
-        if (count($groupedUsers) === 2) {
+        $otherUsers = $this->getGroupingService()->getOtherGroupedUsers(Yii::$app->user?->getIdentity());
+
+        if (count($otherUsers) === 1) {
             return Yii::t(
                 'ActivityModule.base',
                 '{displayName1} and {displayName2}',
                 [
-                    'displayName1' => $formatter($groupedUsers[0]->displayName),
-                    'displayName2' => $formatter($groupedUsers[1]->displayName),
+                    'displayName1' => $formatter($this->user->displayName),
+                    'displayName2' => $formatter($otherUsers[0]->displayName),
                 ],
             );
-        } elseif (count($groupedUsers) > 2) {
+        } elseif (count($otherUsers) > 1) {
             return Yii::t(
                 'ActivityModule.base',
                 '{displayName1}, {displayName2} and {count} more',
                 [
-                    'displayName1' => $formatter($groupedUsers[0]->displayName),
-                    'displayName2' => $formatter($groupedUsers[2]->displayName),
-                    'count' => count($groupedUsers) - 2,
+                    'displayName1' => $formatter($this->user->displayName),
+                    'displayName2' => $formatter($otherUsers[0]->displayName),
+                    'count' => count($otherUsers) - 1,
                 ],
             );
         }
@@ -116,12 +117,17 @@ abstract class BaseActivity extends BaseObject
         return '';
     }
 
-    public function findGroupedQuery(): ActiveQueryActivity
+    public function getGroupingQuery(): ?ActiveQueryActivity
     {
-        return Activity::find()
-            ->timeBucket($this->groupingTimeBucketSeconds, $this->createdAt)
-            ->andWhere(['activity.class' => static::class])
-            ->andWhere(['activity.contentcontainer_id' => $this->contentContainer->id])
-            ->andWhere(['activity.created_by' => $this->user->id]);
+        return null;
+    }
+
+    public function getGroupingService(): GroupingService
+    {
+        if ($this->_groupingService === null) {
+            $this->_groupingService = new GroupingService($this);
+        }
+
+        return $this->_groupingService;
     }
 }

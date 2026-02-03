@@ -8,7 +8,6 @@ use humhub\modules\activity\Module;
 use humhub\modules\admin\widgets\SettingsMenu;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\content\models\Content;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\AccountMenu;
 use yii\db\BaseActiveRecord;
@@ -32,8 +31,5 @@ return [
             [Events::class, 'onBeforeContentContainerDelete'],
         ],
         [ContentActiveRecord::class, BaseActiveRecord::EVENT_BEFORE_DELETE, [Events::class, 'onBeforeContentRecordDelete']],
-    ],
-    'consoleControllerMap' => [
-        'activity' => 'humhub\modules\activity\commands\TestController',
     ],
 ];
