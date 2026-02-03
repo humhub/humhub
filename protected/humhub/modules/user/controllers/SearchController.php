@@ -11,9 +11,9 @@ namespace humhub\modules\user\controllers;
 use Exception;
 use humhub\components\behaviors\AccessControl;
 use humhub\modules\user\models\User;
+use humhub\modules\user\models\UserPicker;
 use humhub\modules\user\permissions\CanMention;
 use humhub\modules\user\widgets\Image;
-use humhub\modules\user\widgets\UserPicker;
 use Yii;
 use yii\web\Controller;
 
