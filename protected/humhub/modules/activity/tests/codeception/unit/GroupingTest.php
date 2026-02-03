@@ -106,8 +106,10 @@ class GroupingTest extends HumHubDbTestCase
 
         $post0 = new Post($space, Content::VISIBILITY_PUBLIC, ['message' => '0']);
         $post0->save();
-        Activity::updateAll(['created_at' => new Expression('created_at - INTERVAL 2 HOUR')],
-            ['content_id' => $post0->content->id]);
+        Activity::updateAll(
+            ['created_at' => new Expression('created_at - INTERVAL 2 HOUR')],
+            ['content_id' => $post0->content->id],
+        );
 
         $post1 = new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'A']);
         $post1->save();
@@ -147,13 +149,13 @@ class GroupingTest extends HumHubDbTestCase
 
         $this->assertEquals(
             'Sara Tester likes post "Hello World!".',
-            $this->getActivityForContent($post)->asText()
+            $this->getActivityForContent($post)->asText(),
         );
 
         $this->becomeUser('Admin'); // Admin
         $this->assertEquals(
             'Andreas Tester and Sara Tester like post "Hello World!".',
-            $this->getActivityForContent($post)->asText()
+            $this->getActivityForContent($post)->asText(),
         );
 
         $this->becomeUser('User1'); // Peter Tester
@@ -162,18 +164,18 @@ class GroupingTest extends HumHubDbTestCase
         $this->becomeUser('Admin'); // Admin
         $this->assertEquals(
             'Peter Tester, Andreas Tester and 1 more like post "Hello World!".',
-            $this->getActivityForContent($post)->asText()
+            $this->getActivityForContent($post)->asText(),
         );
 
         $this->becomeUser('User1'); // Peter Tester
         $this->assertEquals(
             'Andreas Tester and Sara Tester like post "Hello World!".',
-            $this->getActivityForContent($post)->asText()
+            $this->getActivityForContent($post)->asText(),
         );
         (new LikeService($post))->unlike();
         $this->assertEquals(
             'Andreas Tester and Sara Tester like post "Hello World!".',
-            $this->getActivityForContent($post)->asText()
+            $this->getActivityForContent($post)->asText(),
         );
     }
 
@@ -198,7 +200,7 @@ class GroupingTest extends HumHubDbTestCase
         $this->becomeUser('Admin');
         $this->assertEquals(
             'Sara Tester likes comment "Test comment!".',
-            $this->getActivityForContent($post, LikeActivity::class)->asText()
+            $this->getActivityForContent($post, LikeActivity::class)->asText(),
         );
 
         $this->becomeUser('User1'); // Peter Tester
@@ -207,7 +209,7 @@ class GroupingTest extends HumHubDbTestCase
         $this->becomeUser('Admin');
         $this->assertEquals(
             'Peter Tester and Sara Tester like comment "Test comment!".',
-            $this->getActivityForContent($post, LikeActivity::class)->asText()
+            $this->getActivityForContent($post, LikeActivity::class)->asText(),
         );
 
         $this->becomeUser('User3'); // Andreas Tester
@@ -216,7 +218,7 @@ class GroupingTest extends HumHubDbTestCase
         $this->becomeUser('Admin');
         $this->assertEquals(
             'Andreas Tester, Peter Tester and 1 more like comment "Test comment!".',
-            $this->getActivityForContent($post, LikeActivity::class)->asText()
+            $this->getActivityForContent($post, LikeActivity::class)->asText(),
         );
 
         $this->becomeUser('User1'); // Peter Tester
@@ -225,7 +227,7 @@ class GroupingTest extends HumHubDbTestCase
         $this->becomeUser('Admin');
         $this->assertEquals(
             'Andreas Tester and Sara Tester like comment "Test comment!".',
-            $this->getActivityForContent($post, LikeActivity::class)->asText()
+            $this->getActivityForContent($post, LikeActivity::class)->asText(),
         );
     }
 
@@ -288,10 +290,10 @@ class GroupingTest extends HumHubDbTestCase
         $this->assertEquals(2, ActivityBoxController::getQuery($space->contentContainerRecord)->count());
     }
 
-    private function getActivityForContent(ContentProvider $record, ?string $activityClass=null): ?BaseActivity
+    private function getActivityForContent(ContentProvider $record, ?string $activityClass = null): ?BaseActivity
     {
         $query = ActivityBoxController::getQuery($record->content->contentContainer)->andWhere(
-            ['content_id' => $record->content->id]
+            ['content_id' => $record->content->id],
         );
 
         if ($activityClass !== null) {
