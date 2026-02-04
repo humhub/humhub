@@ -1,8 +1,17 @@
 HumHub Changelog
 ================
 
-1.18.0 (Unreleased)
--------------------------------
+1.18.0 (February 4, 2026)
+-------------------------
+
+> See also: HumHub 1.18 - [Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_18)
+
+> Info: The minimum PHP version is now `PHP 8.2`!
+
+> Bootstrap 5 is the default CSS framework, which may require migration of custom modules or themes.
+
+> Caching must now be configured via the [configuration file](https://docs.humhub.org/docs/admin/performance), with `FileCache` as the default.
+
 - Fix #7921: Alert widget broken since beta.6
 - Fix #7925: Space Members dropdown menu
 - Fix #7924: Admin Pending Approvals buttons layout
