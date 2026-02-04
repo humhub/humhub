@@ -126,13 +126,7 @@
     }
 
     body.modal-open {
-        height: 100vh;;
-
-        // BS5 adds 15px right padding to the body by JS to compensate the right scrollbar which is hidden by overflow
-        // But it's not taken into account for the child fixed elements, so we need to add it here:
-        .topbar {
-            padding-right: calc(var(--bs-navbar-padding-x) + 15px);
-        }
+        height: 100vh;
     }
 
     .modal-backdrop {
