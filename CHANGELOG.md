@@ -28,6 +28,7 @@ HumHub Changelog
 - Fix #7972: Content footer comment/like links separator spacings
 - Enh #7975: More details in the log message in case of error with AltchaCaptcha
 - Fix #7977: Skip adding of a default group when another is selected on the registration form
+- Fix #7981: Error on sending mail
 - Fix #7987: Fix registration by link with existing email
 - Fix #7979: Topics and Online profile images margins
 - Enh #7988: When the Altcha Captcha box is not checked, don't log any error
