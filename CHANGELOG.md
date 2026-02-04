@@ -25,6 +25,7 @@ HumHub Changelog
 - Enh #7964: Add option for disabling certificate checking for ldap connections.
 - Fix #7967: Don't store fixed settings to DB
 - Fix #7966: ENV loading for Queue workers
+- Fix #7970: Margins in comments
 - Fix #7972: Content footer comment/like links separator spacings
 - Enh #7975: More details in the log message in case of error with AltchaCaptcha
 - Fix #7977: Skip adding of a default group when another is selected on the registration form
