@@ -53,7 +53,7 @@ $logTargetConfig = [
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.18.0',
+    'version' => '1.18.1',
     'minRecommendedPhpVersion' => '8.2',
     'minSupportedPhpVersion' => '8.2',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
