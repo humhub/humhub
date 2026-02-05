@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.18.1 (Unreleased)
+-------------------------
+- Fix #8003: `Migration::foreignIndexExists()` doesn't find tables in braces
+
 1.18.0 (February 4, 2026)
 -------------------------
 
