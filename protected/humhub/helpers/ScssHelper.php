@@ -330,17 +330,17 @@ class ScssHelper
      * Returns black or white text color based on color contrast.
      * Similar to Bootstrap's color-contrast() Sass function.
      *
-     * @param string $color Hex, RGBA/RGB, or Sass variable
+     * @param string|null $color Hex, RGBA/RGB, or Sass variable
      * @param float|null $minContrast
      * @return string|null Hex color ('#FFFFFF' or '#000000')
      */
-    public static function getColorContrast(string $color, float $minContrast = null): ?string
+    public static function getColorContrast(?string $color, ?float $minContrast = null): ?string
     {
         if ($minContrast === null) {
-            $minContrast = (float)Yii::$app->view->theme->variable('min-contrast-ratio', 3);
+            $minContrast = (float) Yii::$app->view->theme->variable('min-contrast-ratio', 3);
         }
 
-        $color = trim($color);
+        $color = trim((string) $color);
 
         if (!preg_match('/^#[0-9A-F]{6}$/i', $color)) {
             // Not #xxxxxx format

@@ -31,12 +31,13 @@ AppAsset::register($this);
         <?php $this->beginBody() ?>
 
         <!-- start: first top navigation bar -->
-        <div id="topbar-first" class="topbar navbar">
-            <div class="container">
+        <div id="topbar-first" class="topbar fixed-top navbar">
+            <div class="container position-relative">
                 <div class="topbar-brand d-none d-md-block">
                     <?= SiteLogo::widget() ?>
                 </div>
 
+                <?php // "notifications" is centered independently of "brand" and "actions" block widths?>
                 <div class="notifications position-absolute start-50 translate-middle-x">
                     <?= NotificationArea::widget() ?>
                 </div>
@@ -49,7 +50,7 @@ AppAsset::register($this);
         <!-- end: first top navigation bar -->
 
         <!-- start: second top navigation bar -->
-        <div id="topbar-second" class="topbar navbar">
+        <div id="topbar-second" class="topbar fixed-top navbar">
             <div class="container">
                 <ul class="nav" id="top-menu-nav">
                     <!-- load space chooser widget -->

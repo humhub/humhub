@@ -467,7 +467,7 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
         }
 
         .panel-profile-controls {
-            padding-left: 160px;
+            padding-left: 148px;
         }
     }
 
@@ -478,14 +478,20 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
 
     @include media-breakpoint-down(md) {
         .panel-profile-controls {
-            padding-left: 0 !important;
-            padding-top: 50px;
+            padding-left: 100px !important;
         }
 
         .panel-profile .panel-profile-header .img-profile-data h1 {
             font-size: 20px !important;
             line-height: 20px;
             margin-bottom: 2px;
+        }
+    }
+
+    @include media-breakpoint-down(sm) {
+        .panel-profile-controls {
+            padding-left: 0 !important;
+            padding-top: 50px;
         }
     }
 

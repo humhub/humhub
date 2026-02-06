@@ -9,8 +9,6 @@
     }
 
     .topbar {
-        position: fixed;
-        display: block;
         height: 50px;
         width: 100%;
 
@@ -57,8 +55,6 @@
 
     #topbar-first {
         background-color: var(--bs-primary);
-        top: 0;
-        z-index: 1030;
         color: var(--hh-primary-contrast);
 
         .topbar-brand {
@@ -416,12 +412,6 @@
             font-size: 11px;
             margin: 0;
             font-weight: 400;
-        }
-    }
-
-    @include media-breakpoint-up(md) {
-        .navbar.topbar {
-            --bs-navbar-padding-x: 15px;
         }
     }
 }
