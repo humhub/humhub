@@ -5,6 +5,7 @@ HumHub Changelog
 -------------------------
 - Fix #8003: `Migration::foreignIndexExists()` doesn't find tables in braces
 - Fix #8002: Comment dropdowns truncated (e.g. to select a title)
+- Fix: Space Tour Wrong Target for "Preferences" menu
 
 1.18.0 (February 4, 2026)
 -------------------------

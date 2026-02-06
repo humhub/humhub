@@ -51,7 +51,7 @@ return [
                 ],
             ],
             [
-                'element' => ".dropdown",
+                'element' => "#space-header-controls-menu",
                 'popover' => [
                     'title' => Yii::t('TourModule.spaces', '<strong>Space</strong> preferences'),
                     'description' => Yii::t('TourModule.spaces', 'This menu is only visible for space admins. Here you can manage your space settings, add/block members and activate/deactivate tools for this space.'),
