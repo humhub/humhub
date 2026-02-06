@@ -8,8 +8,6 @@
 
 namespace humhub\modules\space\modules\manage\controllers;
 
-use Yii;
-use yii\web\HttpException;
 use humhub\modules\content\models\Content;
 use humhub\modules\space\modules\manage\jobs\ChangeContentVisibilityJob;
 use humhub\modules\space\modules\manage\components\Controller;
@@ -17,6 +15,9 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\user\helpers\AuthHelper;
+use humhub\modules\user\models\Follow;
+use Yii;
+use yii\web\HttpException;
 
 /**
  * SecurityController
@@ -39,6 +40,9 @@ class SecurityController extends Controller
                         'contentContainerId' => $space->contentcontainer_id,
                         'visibility' => Content::VISIBILITY_PRIVATE,
                     ]));
+
+                    // Delete all followers because they cannot see private space anymore
+                    Follow::deleteAll(['object_id' => $space->id, 'object_model' => Space::class]);
                 }
 
                 $this->view->saved();
