@@ -8,8 +8,6 @@
 
 namespace humhub\modules\like;
 
-use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\like\models\Like;
 use Yii;
 
 /**
@@ -72,34 +70,4 @@ class Module extends \humhub\components\Module
             'humhub\modules\like\notifications\NewLike',
         ];
     }
-
-    /**
-     * Checks if given content object can be liked
-     *
-     * @param Like|ContentActiveRecord $object
-     * @return bool can like
-     */
-    public function canLike($object)
-    {
-        $content = $object->content;
-
-        if (!$this->isEnabled) {
-            return false;
-        }
-
-        if (!$content->getStateService()->isPublished()) {
-            return false;
-        }
-
-        if (isset($content->container) && !$content->container->can(new permissions\CanLike())) {
-            return false;
-        }
-
-        if ($content->isArchived()) {
-            return false;
-        }
-
-        return true;
-    }
-
 }

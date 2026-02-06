@@ -3,11 +3,12 @@
 use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\comment\widgets\Form;
-use humhub\modules\content\components\ContentActiveRecord;
 use humhub\widgets\modal\Modal;
 
 /* @var $this View */
-/* @var $object ContentActiveRecord */
+/* @var $content \humhub\modules\content\models\Content */
+/* @var $output string */
+/* @var $id string */
 ?>
 
 <?php Modal::beginDialog([
@@ -23,7 +24,7 @@ use humhub\widgets\modal\Modal;
             <div class="comment" id="comments_area_<?= $id ?>">
                 <?= $output ?>
             </div>
-            <?= Form::widget(['object' => $object]); ?>
+            <?= Form::widget(['content' => $content]); ?>
         </div>
     </div>
 

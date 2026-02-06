@@ -1,11 +1,5 @@
 <?php
 
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
-
 namespace humhub\modules\activity\controllers;
 
 use humhub\modules\admin\components\Controller;
@@ -18,13 +12,9 @@ use Yii;
  * AdminController is for system administrators to set activity e-mail defaults.
  *
  * @since 1.2
- * @author Luke
  */
 class AdminController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
     protected function getAccessRules()
     {
         return [
@@ -48,9 +38,6 @@ class AdminController extends Controller
         ]);
     }
 
-    /**
-     * Resets the overwritten settings of all users to the system defaults
-     */
     public function actionResetAllUsers()
     {
         $this->forcePostRequest();
