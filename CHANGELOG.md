@@ -5,6 +5,7 @@ HumHub Changelog
 -------------------------
 - Fix #8003: `Migration::foreignIndexExists()` doesn't find tables in braces
 - Fix #8002: Comment dropdowns truncated (e.g. to select a title)
+- Fix #8007: Fix unsaved changes warning on Profile Edit page
 
 1.18.0 (February 4, 2026)
 -------------------------
