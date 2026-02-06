@@ -15,11 +15,18 @@ humhub.module('space.chooser', function (module, require, $) {
     var additions = require('ui.additions');
     var user = require('user');
     var view = require('ui.view');
+    var i18n = require('i18n');
 
     var SELECTOR_ITEM = '[data-space-chooser-item]';
     var SELECTOR_ITEM_REMOTE = '[data-space-none],[data-space-archived]';
 
     var SpaceChooser = Widget.extend();
+
+    const init = function() {
+        SpaceChooser.instance($('#space-menu-dropdown'));
+
+        return i18n.preload('SpaceModule.chooser');
+    }
 
     SpaceChooser.prototype.init = function () {
         this.$menu = $('#space-menu');
@@ -382,12 +389,14 @@ humhub.module('space.chooser', function (module, require, $) {
         var emptyResult = !this.getFirstItem().length;
         var inputLength = input ? input.length : 0;
 
+        const remoteAtLeastInput = i18n.t('SpaceModule.chooser', 'Please enter at least {count} characters to search Spaces.', {count: 2});
+
         if (emptyResult && inputLength > 1) {
-            this.$remoteSearch.html('<div class="text-body-secondary">' + module.text('info.emptyResult') + '</div>');
+            this.$remoteSearch.html('<div class="text-body-secondary">' + i18n.t('SpaceModule.chooser', 'No Spaces found.') + '</div>');
         } else if (emptyResult) {
-            this.$remoteSearch.html('<div class="text-body-secondary">' + module.text('info.emptyOwnResult') + '<br/>' + module.text('info.remoteAtLeastInput') + '</div>');
+            this.$remoteSearch.html('<div class="text-body-secondary">' + i18n.t('SpaceModule.chooser', 'You are not a member of or following any Spaces.') + '<br/>' + remoteAtLeastInput + '</div>');
         } else if (inputLength === 1) {
-            this.$remoteSearch.html('<div class="text-body-secondary">' + module.text('info.remoteAtLeastInput') + '</div>');
+            this.$remoteSearch.html('<div class="text-body-secondary">' + remoteAtLeastInput + '</div>');
         }
     }
 
@@ -464,8 +473,6 @@ humhub.module('space.chooser', function (module, require, $) {
 
     module.export({
         SpaceChooser: SpaceChooser,
-        init: function () {
-            SpaceChooser.instance($('#space-menu-dropdown'));
-        }
+        init: init
     });
 });
