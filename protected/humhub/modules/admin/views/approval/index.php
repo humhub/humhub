@@ -36,6 +36,7 @@ if (Yii::$app->getModule('user')->settings->get('auth.showRegistrationUserGroup'
         'label' => Yii::t('UserModule.base', 'Group'),
         'format' => 'raw',
         'value' => fn(User $model) => Badge::accent($model->getGroups()->one()?->name)
+            ->cssClass('text-wrap')
             ->tooltip($model->originator
                 ? Yii::t('UserModule.base', 'Invited by {userName}', ['userName' => $model->originator->username])
                 : null),
@@ -53,6 +54,7 @@ $columns[] = [
     'label' => Yii::t('UserModule.base', 'Created at'),
     'attribute' => 'created_at',
     'format' => 'raw',
+    'contentOptions' => ['class' => 'text-nowrap'],
     'value' => fn(User $model) => Html::tag('span', Yii::$app->formatter->asDate($model->created_at, 'short'), [
         'data-bs-title' => Yii::$app->formatter->asDatetime($model->created_at),
         'data-bs-toggle' => 'tooltip',

@@ -53,12 +53,13 @@ $logTargetConfig = [
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.18.0-beta.7',
+    'version' => '1.19.0-dev',
     'minRecommendedPhpVersion' => '8.2',
     'minSupportedPhpVersion' => '8.2',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
     'bootstrap' => [
         'log',
+        'systemRevision',
         'humhub\components\bootstrap\ModuleAutoLoader',
         'humhub\components\bootstrap\ComponentLoader',
         'queue',
@@ -138,6 +139,9 @@ $config = [
         ],
         'cache' => [
             'class' => \yii\caching\FileCache::class,
+        ],
+        'systemRevision' => [
+            'class' => \humhub\components\bootstrap\SystemRevision::class,
         ],
         'runtimeCache' => [
             'class' => \yii\caching\ArrayCache::class,

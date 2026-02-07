@@ -17,6 +17,7 @@ return [
   'An unexpected server error occurred. If this keeps happening, please contact a site administrator.' => 'Une erreur inattendue du serveur s\'est produite. Si cela se reproduit à nouveau, contactez un administrateur du site.',
   'Back' => 'Retour',
   'Back to dashboard' => 'Retour à la vue d\'ensemble',
+  'Back to login' => 'Retour à la page de connexion',
   'Cancel' => 'Annuler',
   'Choose language:' => 'Choisir la langue :',
   'Close' => 'Fermer',

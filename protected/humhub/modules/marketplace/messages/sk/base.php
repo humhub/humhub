@@ -56,7 +56,6 @@ The license was successfully removed!
     'Could not update license. Error: ' => 'Licenciu sa nepodarilo aktualizovať.  Chyba:',
     'Deprecated' => 'Zastarané',
     'Download of module failed!' => 'Sťahovanie modulu zlyhalo!',
-    'Edit license' => 'Upraviť licenciu',
     'Enable' => 'Povoliť',
     'Enable now' => 'Povoliť teraz',
     'Enabled' => 'Povolené',
@@ -129,7 +128,6 @@ The license was successfully removed!
     'Update' => 'Aktualizovať',
     'Update all' => 'Aktualizovať všetko',
     'Update successful' => 'Aktualizácia úspešná',
-    'Upgrade to Professional Edition' => 'Inovujte na Profesionálne vydanie',
     'Version:' => 'Verzia:',
     'We are almost there! As a final step, we recommend that you take a look at the module configuration, where you will find numerous configuration options, some of which are required.' => 'Už sme skoro tam!  Ako posledný krok vám odporúčame pozrieť si konfiguráciu modulu, kde nájdete množstvo možností konfigurácie, z ktorých niektoré sú potrebné.',
     'Well done! To make the module available within your network, you will also need to enable it. Do you want to enable it now?' => 'Výborne!  Aby bol modul dostupný vo vašej sieti, musíte ho tiež povoliť.  Chcete ho teraz povoliť?',
@@ -137,4 +135,6 @@ The license was successfully removed!
     'Without category' => 'Bez kategórie',
     'Would you like to jump straight to it?' => 'Chceli by ste na to skočiť rovno?',
     'Your HumHub installation is up to date!' => 'Vaša inštalácia HumHub je aktuálna!',
+    'Add License' => '',
+    'Edit License' => '',
 ];

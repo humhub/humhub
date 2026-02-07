@@ -50,6 +50,7 @@ class CoreJsConfig extends Widget
                     'cspViolationReloadInterval' => Security::CSP_VIOLATION_RELOAD_INTERVAL,
                 ],
                 'i18n' => [
+                    'revision' => Yii::$app->systemRevision->getPublicSignature(),
                     'language' => Yii::$app->language,
                     'translationUrl' => Url::to(['/i18n/translations']),
                     'version' => Yii::$app->version,

@@ -1,7 +1,7 @@
 <?php
 
+use humhub\components\Migration;
 use yii\db\Schema;
-use yii\db\Migration;
 
 /**
  * Class m201130_073907_default_permissions
@@ -18,7 +18,7 @@ class m201130_073907_default_permissions extends Migration
 
         if ($this->tableExists($table)) {
             // Make sure the column has a correct length because in first version it had a wrong length 255 chars so PK couldn't be created
-            $this->alterColumn($table, 'contentcontainer_class', $this->char(60)->notNull());
+            $this->safeAlterColumn($table, 'contentcontainer_class', $this->char(60)->notNull());
         } else {
             $this->createTable($table, [
                 'permission_id' => $this->string(150)->notNull(),

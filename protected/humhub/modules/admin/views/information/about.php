@@ -5,10 +5,10 @@ use humhub\modules\marketplace\widgets\AboutVersion;
 
 ?>
 
-<div class="alert alert-secondary">
+<div class="alert alert-secondary pb-0">
     <?= AboutVersion::widget() ?>
 </div>
-<br/>
+<br>
 
 <?php if ($isNewVersionAvailable) : ?>
     <div class="alert alert-danger">

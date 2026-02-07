@@ -14,8 +14,6 @@ use humhub\widgets\form\ActiveForm;
 use yii\helpers\Url;
 
 /* @var $this View */
-/* @var $objectModel string */
-/* @var $objectId int */
 /* @var $model Comment */
 /* @var $id string unique object id */
 /* @var $isNestedComment bool */
@@ -41,9 +39,8 @@ $placeholder = ($isNestedComment)
         'action' => $submitUrl,
         'acknowledge' => true,
     ]) ?>
-
-    <?= Html::hiddenInput('objectModel', $objectModel) ?>
-    <?= Html::hiddenInput('objectId', $objectId) ?>
+    <?= Html::hiddenInput('contentId', $model->content_id) ?>
+    <?= Html::hiddenInput('parentCommentId', $model->parent_comment_id) ?>
 
     <div class="richtext-create-input-group input-group">
         <?= $form->field($model, 'message')->widget(RichTextField::class, [
@@ -62,6 +59,8 @@ $placeholder = ($isNestedComment)
         <div class="richtext-create-buttons">
             <?php $uploadButton = UploadButton::widget([
                 'id' => 'comment_create_upload_' . $id,
+                'model' => $model,
+                'attribute' => 'fileList',
                 'tooltip' => Yii::t('ContentModule.base', 'Attach Files'),
                 'options' => ['class' => 'main_comment_upload'],
                 'progress' => '#comment_create_upload_progress_' . $id,

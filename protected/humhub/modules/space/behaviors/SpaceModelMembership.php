@@ -8,9 +8,10 @@
 
 namespace humhub\modules\space\behaviors;
 
+use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\admin\permissions\ManageSpaces;
-use humhub\modules\space\activities\MemberAdded;
-use humhub\modules\space\activities\MemberRemoved;
+use humhub\modules\space\activities\MemberAddedActivity;
+use humhub\modules\space\activities\MemberRemovedActivity;
 use humhub\modules\space\MemberEvent;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
@@ -289,7 +290,9 @@ class SpaceModelMembership extends Behavior
 
         $membership->save();
 
-        ApprovalRequest::instance()->from($user)->about($this->owner)->withMessage($message)->sendBulk($this->getAdminsQuery());
+        ApprovalRequest::instance()->from($user)->about($this->owner)->withMessage($message)->sendBulk(
+            $this->getAdminsQuery(),
+        );
     }
 
     /**
@@ -397,11 +400,11 @@ class SpaceModelMembership extends Behavior
      * @throws InvalidConfigException
      */
     public function addMember(
-        int    $userId,
-        int    $canLeave = 1,
-        bool   $silent = false,
+        int $userId,
+        int $canLeave = 1,
+        bool $silent = false,
         string $groupId = Space::USERGROUP_MEMBER,
-        bool   $showAtDashboard = true,
+        bool $showAtDashboard = true,
     ): bool {
         $user = User::findOne(['id' => $userId]);
         if (!$user) {
@@ -459,12 +462,13 @@ class SpaceModelMembership extends Behavior
         }
 
         MemberEvent::trigger(Membership::class, Membership::EVENT_MEMBER_ADDED, new MemberEvent([
-            'space' => $this->owner, 'user' => $user,
+            'space' => $this->owner,
+            'user' => $user,
         ]));
 
-        if (!$silent && !$this->owner->settings->get('hideMembers')) {
+        if (!$this->owner->settings->get('hideMembers')) {
             // Create Activity
-            MemberAdded::instance()->from($user)->about($this->owner)->save();
+            ActivityManager::dispatch(MemberAddedActivity::class, $this->owner, $user);
         }
 
         // Members can't also follow the space
@@ -505,7 +509,9 @@ class SpaceModelMembership extends Behavior
         }
 
         Membership::getDb()->transaction(function ($db) use ($membership, $user): void {
-            foreach (Membership::findAll(['user_id' => $user->id, 'space_id' => $this->owner->id]) as $obsoleteMembership) {
+            foreach (
+                Membership::findAll(['user_id' => $user->id, 'space_id' => $this->owner->id]) as $obsoleteMembership
+            ) {
                 $obsoleteMembership->delete();
             }
 
@@ -549,7 +555,7 @@ class SpaceModelMembership extends Behavior
     private function handleCancelMemberEvent(User $user)
     {
         if (!$this->owner->settings->get('hideMembers')) {
-            MemberRemoved::instance()->about($this->owner)->from($user)->create();
+            ActivityManager::dispatch(MemberRemovedActivity::class, $this->owner, $user);
         }
 
         MemberEvent::trigger(
@@ -570,7 +576,9 @@ class SpaceModelMembership extends Behavior
     private function handleCancelInvitationEvent(Membership $membership, User $user)
     {
         if ($membership->originator && $membership->isCurrentUser()) {
-            InviteDeclined::instance()->from(Yii::$app->user->identity)->about($this->owner)->send($membership->originator);
+            InviteDeclined::instance()->from(Yii::$app->user->identity)->about($this->owner)->send(
+                $membership->originator,
+            );
         } elseif (Yii::$app->user->identity) {
             InviteRevoked::instance()->from(Yii::$app->user->identity)->about($this->owner)->send($user);
         }

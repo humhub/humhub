@@ -88,6 +88,7 @@ return [
     'Upload file' => 'Unggah Dokumen',
     'You are not allowed to run this action.' => 'Anda tidak diizinkan menjalankan tindakan ini.',
     'An unexpected error occurred. Please check whether your file exceeds the allowed upload limit of {maxUploadSize}.' => '',
+    'Back to login' => '',
     'Enter security code above' => '',
     'I\'m not a robot' => '',
     'Switch network' => '',

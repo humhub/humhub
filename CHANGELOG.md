@@ -1,12 +1,51 @@
 HumHub Changelog
 ================
 
-1.18.0-beta.7 (Unreleased)
--------------------------------
+1.18.0 (February 4, 2026)
+-------------------------
+
+> See also: HumHub 1.18 - [Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_18)
+
+> Info: The minimum PHP version is now `PHP 8.2`!
+
+> Bootstrap 5 is the default CSS framework, which may require migration of custom modules or themes.
+
+> Caching must now be configured via the [configuration file](https://docs.humhub.org/docs/admin/performance), with `FileCache` as the default.
+
 - Fix #7921: Alert widget broken since beta.6
 - Fix #7925: Space Members dropdown menu
 - Fix #7924: Admin Pending Approvals buttons layout
 - Fix #7928: Top menu: long usernames overlap notification buttons for md screen sizes
+- Fix #7930: Remove bottom margin to RichText Create Input fields
+- Fix #7937: Spaces and Marketplace layouts are missing fluid container
+- Fix #7932: Fix content default visibility after form submit
+- Enh #7941: Display http exception name when message is not provided
+- Fix #7940: Fix space acronym on the picker for saved items
+- Fix #7943: Fix MailButton widget color when the type is specified
+- Fix #7946: Warnings when compiling CSS
+- Enh #7948: Update styles of the "About Humhub" page
+- Enh #7955: Add `safeAlterColumn()` method to `humhub\components\Migration` class
+- Fix #7956: In "New User" form, "or" divider is not translated
+- Fix #7957: Clean up markdown syntax from email notification subject
+- Enh #7958: Improve topic url for hidden content on stream
+- Fix #7960: Opening Modals indents Topbar
+- Fix #7961: In menu dropdowns, hide divider if it's the first or the last element
+- Fix #7963: If the Registration form has multiple Auth clients, make the container wider
+- Enh #7964: Add option for disabling certificate checking for ldap connections.
+- Fix #7967: Don't store fixed settings to DB
+- Fix #7966: ENV loading for Queue workers
+- Fix #7970: Margins in comments
+- Fix #7972: Content footer comment/like links separator spacings
+- Enh #7975: More details in the log message in case of error with AltchaCaptcha
+- Fix #7977: Skip adding of a default group when another is selected on the registration form
+- Fix #7981: Error on sending mail
+- Fix #7987: Fix registration by link with existing email
+- Fix #7979: Topics and Online profile images margins
+- Enh #7988: When the Altcha Captcha box is not checked, don't log any error
+- Fix #7991: Space image acronym in banner on mobile
+- Enh #7991: On medium size, don't display the Space statistics under the Space image in the banner
+- Fix #7989: Fix site icon on installer pages
+- Fix #7994: Opening Modals indents top bars
 
 1.18.0-beta.6 (January 8, 2026)
 -------------------------------

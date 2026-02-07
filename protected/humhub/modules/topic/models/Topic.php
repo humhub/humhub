@@ -60,11 +60,13 @@ class Topic extends ContentTag
     }
 
     /**
+     * @param ContentContainerActiveRecord|null $contentContainer
+     * @param array $options
      * @return string link to topic filter stream page
      */
-    public function getUrl(?ContentContainerActiveRecord $contentContainer = null)
+    public function getUrl(?ContentContainerActiveRecord $contentContainer = null, array $options = [])
     {
-        return StreamHelper::createUrl($contentContainer ?: $this->container, ['topicId' => $this->id]);
+        return StreamHelper::createUrl($contentContainer ?: $this->container, array_merge($options, ['topics[]' => $this->id]));
     }
 
     /**

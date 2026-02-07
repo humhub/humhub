@@ -55,7 +55,6 @@ The license was successfully removed!
     'Could not update license. Error: ' => 'Nem sikerült frissíteni a licencet. Hiba:',
     'Deprecated' => 'Elavult',
     'Download of module failed!' => 'Modul letöltése sikertelen!',
-    'Edit license' => 'Licenc szerkesztése',
     'Enable' => 'Bekapcsolás',
     'Enable now' => 'Aktiválás most',
     'Enabled' => 'Aktiválva',
@@ -128,7 +127,6 @@ The license was successfully removed!
     'Update' => 'Frissítés',
     'Update all' => 'Összes frissítése',
     'Update successful' => 'A frissítés sikeresen befejeződött',
-    'Upgrade to Professional Edition' => 'Frissítés Professional változatra',
     'Version:' => 'Verzió:',
     'We are almost there! As a final step, we recommend that you take a look at the module configuration, where you will find numerous configuration options, some of which are required.' => 'Már majdnem ott vagyunk! Utolsó lépésként javasoljuk, hogy vessen egy pillantást a modul konfigurációjára, ahol számos konfigurációs lehetőséget talál, amelyek közül néhány kötelező.',
     'Well done! To make the module available within your network, you will also need to enable it. Do you want to enable it now?' => 'Szép munka! Ahhoz, hogy a modul elérhető legyen a hálózaton belül, aktiválnia kell azt is. Most szeretné aktiválni?',
@@ -136,5 +134,7 @@ The license was successfully removed!
     'Without category' => 'Kategória nélkül',
     'Would you like to jump straight to it?' => 'Szeretne egyenesen rá ugrani?',
     'Your HumHub installation is up to date!' => 'A HumHub naprakész!',
+    'Add License' => '',
     'Advanced Module Search' => '',
+    'Edit License' => '',
 ];

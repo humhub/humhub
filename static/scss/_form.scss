@@ -411,6 +411,7 @@
             > .mb-3 {
                 flex-grow: 1;
                 width: 100%;
+                margin-bottom: 0 !important;
 
                 [data-ui-markdown] {
                     word-break: break-word !important;

@@ -153,7 +153,7 @@ class SettingsManagerTest extends HumHubDbTestCase
         $this->assertRecordValue($value, 'value', $table, ['name' => $setting, 'module_id' => $module]);
         $this->assertEquals($value, $sm->get($setting));
 
-        $this->expectExceptionTypeError(BaseSettingsManager::class, 'set', 1, '$name', 'string', 'null');
+        $this->expectExceptionTypeError(SettingsManager::class, 'set', 1, '$name', 'string', 'null');
         $sm->set(null, "NULL");
 
         $this->expectException(InvalidArgumentException::class);
