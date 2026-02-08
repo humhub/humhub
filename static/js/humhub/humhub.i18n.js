@@ -8,6 +8,10 @@ humhub.module('i18n', function(module, require, $) {
     var loadedCategories = new Set();
     var pendingLoads = new Map();
     var compiledCache = new Map();
+    var preloadPromise = null;
+    var batchCategories = new Set();
+    var batchPromise = null;
+    var batchResolvers = [];
 
     var getStorageKey = function(category) {
         var revision = module.config.revision || '';
@@ -111,7 +115,40 @@ humhub.module('i18n', function(module, require, $) {
      * @returns {Promise} Promise that resolves when all categories are loaded
      */
     var preload = function(categories) {
-        return loadTranslations(categories);
+        if (typeof categories === 'string') {
+            categories = [categories];
+        }
+
+        categories.forEach(function(category) {
+            batchCategories.add(category);
+        });
+
+        if (!batchPromise) {
+            batchPromise = new Promise(function(resolve, reject) {
+                batchResolvers.push({resolve: resolve, reject: reject});
+            });
+
+            setTimeout(function() {
+                var queued = Array.from(batchCategories);
+                batchCategories.clear();
+
+                loadTranslations(queued).then(function() {
+                    batchResolvers.forEach(function(handler) {
+                        handler.resolve();
+                    });
+                    batchResolvers = [];
+                    batchPromise = null;
+                }).catch(function(error) {
+                    batchResolvers.forEach(function(handler) {
+                        handler.reject(error);
+                    });
+                    batchResolvers = [];
+                    batchPromise = null;
+                });
+            }, 0);
+        }
+
+        return batchPromise;
     };
 
     module.export({
