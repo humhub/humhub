@@ -19,14 +19,26 @@ class SpaceChooserCest
 {
     public function testChooserTranslations(AcceptanceTester $I)
     {
-        $I->wantTo('ensure space chooser messages match Yii::t translations.');
+        $this->ensureUserWithoutSpaces('User3');
+        $I->wantTo('ensure space chooser js messages match Yii::t translations for language EN.');
+        $this->checkChooserTranslations($I, 'en-US');
+        $I->wantTo('ensure space chooser js messages match Yii::t translations for language DE.');
+        $this->checkChooserTranslations($I, 'de');
+    }
 
-//        $this->ensureUserWithoutSpaces('User3');
+    private function checkChooserTranslations(AcceptanceTester $I, string $language): void
+    {
+        $this->setUserLanguage('User3', $language);
+
         $I->amUser3();
         $I->amOnDashboard();
 
+        $I->waitForElementVisible('#space-menu');
         $I->click('#space-menu');
         $I->waitForElementVisible('#space-menu-search');
+
+        $previousLanguage = Yii::$app->language;
+        Yii::$app->language = $language;
 
         $notMemberMessage = Yii::t('SpaceModule.chooser', 'You are not a member of or following any Spaces.');
         $minCharsMessage = Yii::t(
@@ -44,6 +56,10 @@ class SpaceChooserCest
 
         $noSpacesMessage = Yii::t('SpaceModule.chooser', 'No Spaces found.');
         $I->waitForText($noSpacesMessage, 10, '#space-menu-remote-search');
+
+        Yii::$app->language = $previousLanguage;
+
+        $I->logout();
     }
 
     private function ensureUserWithoutSpaces(string $username): void
@@ -57,5 +73,16 @@ class SpaceChooserCest
         Follow::deleteAll(['user_id' => $user->id, 'object_model' => Space::class]);
         Yii::$app->cache->delete(Membership::USER_SPACES_CACHE_KEY . $user->id);
         Yii::$app->cache->delete(Membership::USER_SPACEIDS_CACHE_KEY . $user->id);
+    }
+
+    private function setUserLanguage(string $username, string $language): void
+    {
+        $user = User::findOne(['username' => $username]);
+        if ($user === null) {
+            throw new \RuntimeException('Missing test user: ' . $username);
+        }
+
+        $user->setAttribute('language', $language);
+        $user->save(false);
     }
 }

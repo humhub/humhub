@@ -81,6 +81,24 @@ humhub.module('space.chooser', function (module, require, $) {
             that.clearSelection();
         });
 
+        this.$menu.on('click', function () {
+            setTimeout(function () {
+                if (!that.lazyLoad) {
+                    return;
+                }
+
+                if (!that.$.hasClass('show')) {
+                    return;
+                }
+
+                if (that.$remoteSearch.children().length) {
+                    return;
+                }
+
+                that.triggerRemoteSearch('');
+            }, 0);
+        });
+
         if (!pjax.isActive()) {
             return;
         }

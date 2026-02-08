@@ -1,5 +1,7 @@
 humhub.module('i18n', function(module, require, $) {
-    var IntlMessageFormat = require('intl-messageformat');
+    var IntlMessageFormatter = (typeof IntlMessageFormat === 'function')
+        ? IntlMessageFormat
+        : (window.IntlMessageFormat && (window.IntlMessageFormat.IntlMessageFormat || window.IntlMessageFormat));
 
     var locale = module.config.language;
     var globalMessages = {};
@@ -8,9 +10,9 @@ humhub.module('i18n', function(module, require, $) {
     var compiledCache = new Map();
 
     var getStorageKey = function(category) {
-        var version = module.config.version || '';
+        var revision = module.config.revision || '';
         var language = module.config.language || 'en';
-        return 'humhub.i18n.' + version + '.' + language + '.' + category;
+        return 'humhub.i18n.' + revision + '.' + language + '.' + category;
     };
 
     function compileMessage(template) {
@@ -21,7 +23,7 @@ humhub.module('i18n', function(module, require, $) {
         }
         var formatter = perLocale.get(template);
         if (!formatter) {
-            formatter = new IntlMessageFormat(template, locale);
+            formatter = new IntlMessageFormatter(template, locale);
             perLocale.set(template, formatter);
         }
         return formatter;
@@ -95,7 +97,6 @@ humhub.module('i18n', function(module, require, $) {
 
         if (!loadedCategories.has(category)) {
             module.log.warn(`Category '${category}' was not correctly preloaded for translation '${key}'`);
-            loadTranslations(category);
         }
 
         var template = (globalMessages[category] && key in globalMessages[category]) ? globalMessages[category][key] : key;
