@@ -137,14 +137,18 @@ class AssetManager extends \yii\web\AssetManager
     protected function publishDirectory($src, $options)
     {
         $dstDir = $this->hash($src);
-        $currentLength = strlen($src);
 
-        if (!empty($options['forceCopy']) || ($this->forceCopy && !isset($options['forceCopy'])) || !$this->flySystem->has(
-            $dstDir,
-        )) {
+        $forceCopy = !empty($options['forceCopy']) || ($this->forceCopy && !isset($options['forceCopy']));
+
+        if ($forceCopy || !$this->flySystem->has($dstDir)) {
+            $currentLength = strlen($src);
+
+            /*
+            // Causes problem with Theme Rebuild, since Theme.CSS built and copied afterwards.
             if ($this->flySystem->has($dstDir)) {
                 $this->flySystem->deleteDirectory($dstDir);
             }
+            */
 
             $folders = FileHelper::findDirectories($src);
             foreach ($folders as $folder) {
@@ -163,6 +167,9 @@ class AssetManager extends \yii\web\AssetManager
     }
 
 
+    /**
+     * Temporary Hack for dynamic CSS Compile
+     */
     public function addAssetFileByContent($file, $content)
     {
         try {
@@ -172,5 +179,18 @@ class AssetManager extends \yii\web\AssetManager
             die();
         }
     }
+    public function fileExists($file) {
+        try {
+            return $this->flySystem->has($file);
+        } catch (FilesystemException $e) {
+            print $e->getMessage();
+            die();
+        }
+
+    }
+
+
+
+
 
 }
