@@ -37,6 +37,7 @@
         "laminas/laminas-ldap": "^2.10",
         "laminas/laminas-zendframework-bridge": "^1.4",
         "lcobucci/jwt": "^5.6",
+        "league/flysystem": "^3.0",
         "matthewbdaly/zendsearch": "^0.0.3",
         "mistic100/randomcolor": "^1.0",
         "mobiledetect/mobiledetectlib": "4.8.09",

@@ -25,6 +25,7 @@ Version 1.19 (Unreleased)
   - Instead of View files you need to implement a `getMessage()` method which returns the Activity text.
   - Use following code to create a Activity `ActivityManager::dispatch(TaskCompletedActivity::class, $this->task, $user)`
 - `MigrateController::$includeModuleMigrations` is now `true` by default
+- SiteIcon: Remove support for manually uploaded `@web/uploads/icon/` icons
 
 Version 1.18 (Unreleased)
 ------------

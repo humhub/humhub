@@ -94,9 +94,10 @@ class ProfileImage
     public function getUrl($prefix = '', $scheme = false)
     {
         if (file_exists($this->getPath($prefix))) {
-            $path = '@web/uploads/' . $this->folder_images . '/';
+            $path = '@webroot/uploads/' . $this->folder_images . '/';
             $path .= $this->guid . $prefix;
-            $path .= '.jpg?m=' . filemtime($this->getPath($prefix));
+            $path .= '.jpg';
+            return Url::to(Yii::$app->assetManager->publish($path)[1], $scheme);
         } else {
             $path = '@web-static/img/' . $this->defaultImage;
             $path .= '.jpg';

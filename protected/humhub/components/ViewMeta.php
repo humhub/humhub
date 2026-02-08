@@ -8,7 +8,6 @@
 
 namespace humhub\components;
 
-use humhub\libs\LogoImage;
 use humhub\libs\StringHelper;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\file\converter\PreviewImage;
@@ -179,8 +178,8 @@ class ViewMeta extends BaseObject
             }
 
             // Fallback to Site Logo
-            if (LogoImage::hasImage()) {
-                $this->images[] = Url::to(LogoImage::getUrl(600, 600), true);
+            if (Yii::$app->img->logo->exists()) {
+                $this->images[] = Yii::$app->img->logo->getUrl(['maxWidth' => 600, 'maxHeight' => 600], true);
             }
         }
     }

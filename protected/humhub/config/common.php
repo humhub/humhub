@@ -155,9 +155,18 @@ $config = [
             ],
         ],
         'assetManager' => [
-            'class' => \humhub\components\AssetManager::class,
+            'class' => \humhub\components\assets\AssetManager::class,
             'appendTimestamp' => true,
             'bundles' => require(__DIR__ . '/' . (YII_ENV_PROD || YII_ENV_TEST ? 'assets-prod.php' : 'assets-dev.php')),
+        ],
+        'img' => [
+            'class' => 'humhub\components\assets\AssetImageRegistry',
+            'definitions' => [
+                'logo' => ['path' => '@webroot/uploads/logo_image', 'file' => 'logo.png'],
+                'icon' => ['path' => '@webroot/uploads/icon', 'file' => 'icon.png', 'defaultFile' => '@webroot-static/img/default_icon.png'],
+                'loginBackground' => ['path' => '@webroot/uploads/login-bg', 'file' => 'background.png'],
+                'mailHeader' => ['path' => '@webroot/uploads/icon', 'file' => 'icon.png'],
+            ],
         ],
         'view' => [
             'class' => \humhub\components\View::class,
