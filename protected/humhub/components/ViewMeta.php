@@ -173,8 +173,8 @@ class ViewMeta extends BaseObject
                 $contentContainer = $this->view->context->contentContainer;
             }
 
-            if ($contentContainer !== null && $contentContainer->getProfileImage()->hasImage()) {
-                $this->images[] = Url::to($contentContainer->getProfileImage()->getUrl(), true);
+            if ($contentContainer !== null && $contentContainer->image->exists()) {
+                $this->images[] = $contentContainer->image->getUrl(null, true);
             }
 
             // Fallback to Site Logo

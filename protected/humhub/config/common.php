@@ -162,10 +162,10 @@ $config = [
         'img' => [
             'class' => 'humhub\components\assets\AssetImageRegistry',
             'definitions' => [
-                'logo' => ['path' => '@webroot/uploads/logo_image', 'file' => 'logo.png'],
-                'icon' => ['path' => '@webroot/uploads/icon', 'file' => 'icon.png', 'defaultFile' => '@webroot-static/img/default_icon.png'],
-                'loginBackground' => ['path' => '@webroot/uploads/login-bg', 'file' => 'background.png'],
-                'mailHeader' => ['path' => '@webroot/uploads/icon', 'file' => 'icon.png'],
+                'logo' => ['file' => '@webroot/uploads/logo_image/logo.png'],
+                'icon' => ['file' => '@webroot/uploads/icon/icon.png', 'defaultFile' => '@webroot-static/img/default_icon.png'],
+                'loginBackground' => ['file' => '@webroot/uploads/login-bg/background.png'],
+                'mailHeader' => ['file' => '@webroot/uploads/icon/icon.png'],
             ],
         ],
         'view' => [

@@ -398,19 +398,19 @@ class DesignSettingsForm extends Model
         Yii::$app->getModule('stream')->settings->set('defaultSort', $this->defaultStreamSort);
 
         if ($this->logo) {
-            Yii::$app->img->logo->setNew($this->logo);
+            Yii::$app->img->logo->setUploadedFile($this->logo);
         }
 
         if ($this->icon) {
-            Yii::$app->img->icon->setNew($this->icon);
+            Yii::$app->img->icon->setUploadedFile($this->icon);
         }
 
         if ($this->loginBackgroundImage instanceof UploadedFile) {
-            Yii::$app->img->loginBackground->setNew($this->loginBackgroundImage);
+            Yii::$app->img->loginBackground->setUploadedFile($this->loginBackgroundImage);
         }
 
         if ($this->mailHeaderImage instanceof UploadedFile) {
-            Yii::$app->img->mailHeader->setNew($this->mailHeaderImage);
+            Yii::$app->img->mailHeader->setUploadedFile($this->mailHeaderImage);
         }
 
         $settingsManager->set(

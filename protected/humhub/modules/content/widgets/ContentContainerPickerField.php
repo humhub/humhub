@@ -58,7 +58,7 @@ class ContentContainerPickerField extends BasePicker
     protected function getItemImage($item)
     {
         return $this->itemClass === ContentContainer::class
-            ? $item->getPolymorphicRelation()->getProfileImage()->getUrl()
-            : $item->getProfileImage()->getUrl();
+            ? $item->getPolymorphicRelation()->image
+            : $item->image;
     }
 }

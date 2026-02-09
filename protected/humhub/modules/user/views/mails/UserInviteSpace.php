@@ -106,7 +106,7 @@ use humhub\modules\user\models\User;
                                                         <!-- START: USER IMAGE -->
                                                         <a href="<?= $originator->createUrl('/user/profile', [], true) ?>">
                                                             <img
-                                                                src="<?= $originator->getProfileImage()->getUrl('', true) ?>"
+                                                                src="<?= $originator->image->getUrl(null, true) ?>"
                                                                 width="69"
                                                                 alt=""
                                                                 style="max-width:69px; display:block !important; border-radius: 4px;"

@@ -274,7 +274,7 @@ class UserPicker extends Widget
         // Deprecated since v1.2 used by old user picker implementation...
         $userInfo['displayName'] = $text;
         $userInfo['text'] = $text;
-        $userInfo['image'] = $user->getProfileImage()->getUrl();
+        $userInfo['image'] = $user->image->getUrl();
         $userInfo['priority'] = $priority;
         $userInfo['link'] = $user->getUrl();
         return $userInfo;

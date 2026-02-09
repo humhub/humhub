@@ -14,6 +14,8 @@ use yii\web\AssetBundle;
 
 class AssetManager extends \yii\web\AssetManager
 {
+    public $appendTimestamp = true;
+
     private Filesystem $flySystem;
 
     /**
@@ -131,6 +133,10 @@ class AssetManager extends \yii\web\AssetManager
             $this->flySystem->writeStream($dstFile, fopen($src, 'r'));
         }
 
+        if ($this->appendTimestamp && ($timestamp = $this->flySystem->lastModified($dstFile)) > 0) {
+            $fileName = $fileName . "?v=$timestamp";
+        }
+
         return [$dstFile, "{$this->baseUrl}/$dir/$fileName"];
     }
 
@@ -179,7 +185,8 @@ class AssetManager extends \yii\web\AssetManager
             die();
         }
     }
-    public function fileExists($file) {
+    public function fileExists($file)
+    {
         try {
             return $this->flySystem->has($file);
         } catch (FilesystemException $e) {

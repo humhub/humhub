@@ -31,13 +31,13 @@ use humhub\widgets\bootstrap\Button;
 ContainerHeaderAsset::register($this);
 
 // if the default banner image is displaying change padding to the lower image height
-$bannerProgressBarPadding = $container->getProfileBannerImage()->hasImage() ? '90px 350px' : '50px 350px';
+$bannerProgressBarPadding = $container->bannerImage->exists() ? '90px 350px' : '50px 350px';
 $bannerUpload = Upload::withName($coverUploadName, ['url' => $coverUploadUrl]);
 
 $profileImageUpload = Upload::withName($imageUploadName, ['url' => $imageUploadUrl]);
 
-$profileImageWidth = $container->getProfileImage()->width();
-$profileImageHeight = $container->getProfileImage()->height();
+$profileImageWidth = $container->image->defaultOptions['width'];
+$profileImageHeight = $container->image->defaultOptions['height'];
 ?>
 
 <?= Html::beginTag('div', $options) ?>
@@ -46,10 +46,9 @@ $profileImageHeight = $container->getProfileImage()->height();
 
     <div class="image-upload-container profile-banner-image-container">
         <!-- profile image output-->
-        <?= $container->getProfileBannerImage()->render('100%', ['class' => 'img-profile-header-background']) ?>
+        <?= Html::img($container->bannerImage, ['width => 100%', 'class' => 'img-profile-header-background']) ?>
 
         <!-- show user name and title -->
-
         <div class="img-profile-data">
             <h1 class="<?= $classPrefix ?>"><?= Button::asLink($title)->link($container->getUrl()) ?></h1>
             <h2 class="<?= $classPrefix ?>"><?= $subTitle ?></h2>
@@ -65,7 +64,7 @@ $profileImageHeight = $container->getProfileImage()->height();
         <?php if ($canEdit) : ?>
             <?= $this->render('containerProfileImageMenu', [
                 'upload' => $bannerUpload,
-                'hasImage' => $container->getProfileBannerImage()->hasImage(),
+                'hasImage' => $container->bannerImage->exists(),
                 'cropUrl' => $coverCropUrl,
                 'deleteUrl' => $coverDeleteUrl,
                 'dropZone' => '.profile-banner-image-container',
@@ -77,8 +76,8 @@ $profileImageHeight = $container->getProfileImage()->height();
     <div class="image-upload-container profile-user-photo-container"
          style="width: <?= $profileImageWidth ?>px; height: <?= $profileImageHeight ?>px;">
 
-        <?php if ($container->getProfileImage()->hasImage()) : ?>
-            <a data-ui-gallery="spaceHeader" href="<?= $container->profileImage->getUrl('_org') ?>">
+        <?php if ($container->image->exists()) : ?>
+            <a data-ui-gallery="spaceHeader" href="<?= $container->image->getUrl([]) ?>">
                 <?= $container->getProfileImage()->render($profileImageWidth - 10, ['class' => 'img-profile-header-background profile-user-photo', 'link' => false, 'showSelfOnlineStatus' => true]) ?>
             </a>
         <?php else : ?>
@@ -92,7 +91,7 @@ $profileImageHeight = $container->getProfileImage()->height();
 
             <?= $this->render('containerProfileImageMenu', [
                 'upload' => $profileImageUpload,
-                'hasImage' => $container->getProfileImage()->hasImage(),
+                'hasImage' => $container->image->exists(),
                 'deleteUrl' => $imageDeleteUrl,
                 'cropUrl' => $imageCropUrl,
                 'dropZone' => '.profile-user-photo-container',

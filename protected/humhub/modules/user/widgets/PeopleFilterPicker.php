@@ -147,7 +147,7 @@ class PeopleFilterPicker extends BasePicker
      */
     protected function getItemImage($item)
     {
-        return $item->user->getProfileImage();
+        return $item->user->image;
     }
 
     /**
