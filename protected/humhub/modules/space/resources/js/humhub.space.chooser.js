@@ -22,10 +22,10 @@ humhub.module('space.chooser', function (module, require, $) {
 
     var SpaceChooser = Widget.extend();
 
+    module.requiredI18nCategories = ['SpaceModule.chooser'];
+
     const init = function() {
         SpaceChooser.instance($('#space-menu-dropdown'));
-
-        return i18n.preload('SpaceModule.chooser');
     }
 
     SpaceChooser.prototype.init = function () {

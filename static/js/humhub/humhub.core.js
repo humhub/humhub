@@ -91,6 +91,11 @@ var humhub = humhub || (function ($) {
      * };
      * ```
      *
+     * If a module requires translations during startup, it can declare
+     * `module.requiredI18nCategories = ['CategoryA', 'CategoryB']`. Core will
+     * batch-load these categories before triggering `humhub:ready`. This works
+     * alongside async `init()`; any promise returned by `init()` is still awaited.
+     *
      * In case a module `init` function needs to be called also after each `pjax` request, the module `initOnPjaxLoad` has to be
      * set to `true`:
      *
@@ -600,6 +605,26 @@ var humhub = humhub || (function ($) {
                 initPromises.push(result);
             }
         });
+
+        var i18nPreloadPromise = null;
+        try {
+            var i18n = require('i18n');
+            var preloadCategories = [];
+
+            $.each(initialModules, function (i, module) {
+                if (module.requiredI18nCategories && module.requiredI18nCategories.length) {
+                    preloadCategories = preloadCategories.concat(module.requiredI18nCategories);
+                }
+            });
+
+            if (preloadCategories.length) {
+                i18nPreloadPromise = i18n.preload(preloadCategories);
+            }
+        } catch (e) {}
+
+        if (i18nPreloadPromise) {
+            initPromises.push(i18nPreloadPromise);
+        }
 
         // Wait for all async initializations to complete
         Promise.all(initPromises).then(function() {
