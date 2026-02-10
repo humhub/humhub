@@ -8,6 +8,7 @@
 
 namespace humhub\commands;
 
+use humhub\helpers\ArrayHelper;
 use Yii;
 use yii\helpers\Console;
 use yii\helpers\FileHelper;
@@ -32,13 +33,14 @@ class MessageController extends \yii\console\controllers\MessageController
 
         $configFile = Yii::getAlias('@humhub/config/i18n.php');
 
-        $config = array_merge([
+        $config = ArrayHelper::merge([
             'translator' => 'Yii::t',
             'overwrite' => false,
             'removeUnused' => false,
             'sort' => true,
             'format' => 'php',
             'ignoreCategories' => [],
+            'except' => ['vendor'],
         ], require($configFile));
 
         $config['sourcePath'] = $module->getBasePath();
@@ -50,7 +52,7 @@ class MessageController extends \yii\console\controllers\MessageController
 
         $messages = [];
         foreach ($files as $file) {
-            $messages = array_merge_recursive($messages, $this->extractMessages($file, $config['translator'], $config['ignoreCategories']));
+            $messages = ArrayHelper::merge($messages, $this->extractMessages($file, $config['translator'], $config['ignoreCategories']));
         }
 
         // Remove unrelated translation categories
