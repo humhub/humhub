@@ -10,7 +10,6 @@ namespace humhub\modules\content\components;
 
 use humhub\components\ActiveRecord;
 use humhub\libs\BasePermission;
-use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\interfaces\ContentProvider;
 use humhub\modules\content\interfaces\SoftDeletable;
@@ -627,7 +626,6 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      */
     public function afterMove(?ContentContainerActiveRecord $container = null)
     {
-        ActivityManager::afterContentChange($this->content);
     }
 
     /**

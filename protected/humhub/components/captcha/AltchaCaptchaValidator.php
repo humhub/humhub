@@ -30,21 +30,23 @@ class AltchaCaptchaValidator extends Validator
     public function validateAttribute($model, $attribute): void
     {
         $errorMessage = null;
-        try {
-            $decodedValue = base64_decode((string)$model->$attribute, true);
-            if ($decodedValue === false) {
-                $errorMessage = 'Invalid base64 encoding';
-            } else {
-                $payload = json_decode($decodedValue, true, 512, JSON_THROW_ON_ERROR);
-                $altcha = new Altcha(static::getHmacKey());
-                if ($altcha->verifySolution($payload, true)) {
-                    return;
+        if ($model->$attribute) {
+            try {
+                $decodedValue = base64_decode((string)$model->$attribute, true);
+                if ($decodedValue === false) {
+                    $errorMessage = 'Invalid base64 encoding';
+                } else {
+                    $payload = json_decode($decodedValue, true, 512, JSON_THROW_ON_ERROR);
+                    $altcha = new Altcha(static::getHmacKey());
+                    if ($altcha->verifySolution($payload, true)) {
+                        return;
+                    }
                 }
+            } catch (JsonException $e) {
+                $errorMessage = 'JSON decode error: ' . $e->getMessage();
+            } catch (Exception $e) {
+                $errorMessage = 'Undefined error: ' . $e->getMessage();
             }
-        } catch (JsonException $e) {
-            $errorMessage = 'JSON decode error: ' . $e->getMessage();
-        } catch (Exception $e) {
-            $errorMessage = 'Undefined error: ' . $e->getMessage();
         }
 
         if ($errorMessage) {

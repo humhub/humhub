@@ -26,7 +26,7 @@ class ContentTypeTest extends ContentModelTest
 
         // Make sure there is no content
         foreach (Content::find()->all() as $content) {
-            $content->hardDelete();
+            $content->polymorphicRelation->hardDelete();
         };
     }
 

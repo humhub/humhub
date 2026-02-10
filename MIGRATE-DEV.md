@@ -80,6 +80,7 @@ Version 1.19 (Unreleased)
   - `getTitle` and `getDescription` are now `static`.
   - Instead of View files you need to implement a `getMessage()` method which returns the Activity text.
   - Use following code to create a Activity `ActivityManager::dispatch(TaskCompletedActivity::class, $this->task, $user)`
+- `MigrateController::$includeModuleMigrations` is now `true` by default
 
 
 Version 1.18 (Unreleased)

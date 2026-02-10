@@ -2,6 +2,7 @@
 
 namespace humhub\modules\activity\services;
 
+use humhub\components\Event;
 use humhub\helpers\DataTypeHelper;
 use humhub\models\RecordMap;
 use humhub\modules\activity\components\BaseActivity;
@@ -12,17 +13,28 @@ use humhub\modules\content\interfaces\ContentProvider;
 use humhub\modules\content\models\Content;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\base\Component;
 use yii\base\InvalidArgumentException;
+use yii\base\ModelEvent;
 
-class ActivityManager
+class ActivityManager extends Component
 {
+    public const EVENT_BEFORE_DISPATCH = 'beforeDispatch';
+
     public static function dispatch(
         string $class,
         ContentProvider|ContentContainerActiveRecord $target,
         ?User $user = null,
-    ): BaseActivity {
+    ): ?BaseActivity {
         if (!DataTypeHelper::isClassType($class, BaseActivity::class)) {
             throw new InvalidArgumentException("Class {$class} does not implement " . BaseActivity::class);
+        }
+
+        $event = new ModelEvent(['data' => ['class' => $class, 'target' => $target, 'user' => $user]]);
+        Event::trigger(static::class, self::EVENT_BEFORE_DISPATCH, $event);
+
+        if (!$event->isValid) {
+            return null;
         }
 
         $model = new Activity();
@@ -53,6 +65,12 @@ class ActivityManager
 
     public static function load(Activity $record): BaseActivity
     {
+        if (!empty($record->group_max_id) && $record->group_max_id !== $record->id) {
+            $groupCount = $record->group_count;
+            $record = Activity::findOne(['activity.id' => $record->group_max_id]);
+            $record->group_count = $groupCount;
+        }
+
         return Yii::createObject($record->class, ['record' => $record]);
     }
 

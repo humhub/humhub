@@ -2,6 +2,7 @@
 
 namespace humhub\modules\activity\services;
 
+use humhub\modules\activity\components\ActiveQueryActivity;
 use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\user\models\User;
@@ -11,23 +12,33 @@ final class GroupingService
 {
     private ?array $_groupedUsers = null;
 
+    private ?BaseActivity $_sibling = null;
+
+    public ?ActiveQueryActivity $groupQuery;
+
     public function __construct(private BaseActivity $activity)
     {
+        $this->groupQuery = $this->activity->getGroupingQuery();
+        if ($this->groupQuery) {
+            $this->groupQuery->timeBucket($this->activity->groupingTimeBucketSeconds, $this->activity->createdAt);
+        }
     }
 
-    public function getGroupedUsers(): array
+    public function getOtherGroupedUsers(?User $currentUser = null): array
     {
-        if (!$this->_groupedUsers) {
-            $this->_groupedUsers = [];
+        if (!$this->groupQuery) {
+            return [];
+        }
 
-            $query = $this->activity->findGroupedQuery()
-                ->select(['activity.created_by'])->distinct()
-                ->defaultScopes($this->activity->user)
+        if (!$this->_groupedUsers) {
+            $this->_groupedUsers = User::find()->visible()
+                ->leftJoin('activity', 'user.id=activity.created_by')
+                ->andWhere(['activity.grouping_key' => $this->activity->record->grouping_key])
                 ->andWhere(['!=', 'activity.id', $this->activity->record->id])
-                ->limit(3);
-            foreach ($query->column() as $userId) {
-                $this->_groupedUsers[] = User::findOne($userId);
-            }
+                ->andWhere(['!=', 'activity.created_by', $currentUser->id ?? 0])
+                ->orderBy('activity.id DESC')
+                ->limit(5)
+                ->all();
         }
 
         return $this->_groupedUsers;
@@ -39,7 +50,7 @@ final class GroupingService
     public function afterInsert(): void
     {
         if ($this->needsGrouping()) {
-            $subSelect = $this->activity->findGroupedQuery()->select('activity.id')->createCommand()->getRawSql();
+            $subSelect = (clone $this->groupQuery)->select('activity.id')->createCommand()->getRawSql();
             Activity::updateAll(
                 ['grouping_key' => $this->activity->record->id],
                 // We need a "double" SubSelect to avoid MySQL Err: 1093
@@ -80,51 +91,78 @@ final class GroupingService
      */
     public function afterUpdate(): void
     {
-        // Are we currently in a Group?
-        $stillInSameGroup = false;
-        if ($this->getGroupCount() > 1) {
-            // Check we're still in the group
-            if (!$this->getNextGroupedActivity()?->findGroupedQuery()
-                ->andWhere(['id' => $this->activity->record->id])->exists()) {
-                // We're no longer in the group, another member doesn't find us, via it's grouping query, remove us
-                $this->activity->record->grouping_key = $this->activity->record->id;
-                $this->activity->record->update(false);
-            } else {
-                $stillInSameGroup = true;
-            }
+        if (!$this->groupQuery) {
+            return;
         }
 
-        // If we were previously removed from a group OR now in a new group, add us:
-        if (!$stillInSameGroup) {
+        // We're not in a group, check for grouping
+        if ($this->getGroupCount() <= 1) {
+            $this->afterInsert();
+            return;
+        }
+
+        // No longer in assigned group
+        if (!$this->checkStillInCurrentGroup()) {
+            $sibling = $this->getSiblingActivity();
+
+            $this->activity->record->updateAttributes(['grouping_key' => $this->activity->record->id]);
+
+            // Check if old group is large enough
+            if (!$sibling->getGroupingService()->needsGrouping()) {
+                $sibling->getGroupingService()->destroyGroup();
+            }
+
             $this->afterInsert();
         }
     }
 
+    /**
+     * Checks if the current activity is still in the current group.
+     * Query another group member and check if we're still a sibiling.
+     *
+     * @return bool
+     */
+    private function checkStillInCurrentGroup(): bool
+    {
+        return $this->getSiblingActivity()->getGroupingService()->hasSibling($this->activity->record->id) ?? false;
+    }
+
+    public function hasSibling(int $id): bool
+    {
+        $query = clone $this->groupQuery;
+        return $query->andWhere(['activity.id' => $id])->exists();
+    }
+
     private function getGroupCount(): int
     {
-        return Activity::find()->andWhere(
-            ['grouping_key' => $this->activity->record->grouping_key],
-        )->count();
+        return Activity::find()
+            ->andWhere(['grouping_key' => $this->activity->record->grouping_key])
+            ->count();
     }
 
     private function needsGrouping(): bool
     {
-        return ($this->activity->groupingThreshold && $this->activity->findGroupedQuery()->count(
-        ) > $this->activity->groupingThreshold);
+        return (
+            $this->groupQuery
+            && $this->groupQuery->count() >= $this->activity->groupingThreshold
+        );
     }
 
-    /**
-     * Returns the first next activity in the current Activity group
-     */
-    private function getNextGroupedActivity(): ?BaseActivity
+    private function getSiblingActivity(): ?BaseActivity
     {
-        $secondActivityRecord = Activity::find()
-            ->andWhere(['grouping_key' => $this->activity->record->grouping_key])
-            ->andWhere(['!=', 'id', $this->activity->record->id])
-            ->orderBy(['created_at DESC', 'id DESC'])->one();
-        return ActivityManager::load($secondActivityRecord);
-    }
+        if (!$this->_sibling) {
+            // Returns the first next activity in the current Activity group
+            $record = Activity::find()
+                ->andWhere(['grouping_key' => $this->activity->record->grouping_key])
+                ->andWhere(['!=', 'activity.id', $this->activity->record->id])
+                ->orderBy(['created_at' => SORT_DESC, 'id' => SORT_DESC])->one();
+            if ($record) {
+                $this->_sibling = ActivityManager::load($record);
+            }
+        }
 
+        return $this->_sibling;
+    }
 
     private function destroyGroup(): void
     {

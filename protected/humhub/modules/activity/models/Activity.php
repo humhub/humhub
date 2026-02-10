@@ -21,13 +21,13 @@ use yii\db\ActiveQuery;
  * @property int $created_by
  * @property string $created_at
  *
- * @property-read int $group_count
  * @property-read Content $content
  * @property-read ContentContainer $contentContainer
  */
 class Activity extends \humhub\components\ActiveRecord
 {
     public ?int $group_count = null;
+    public ?int $group_max_id = null;
 
     public static function tableName()
     {

@@ -3,6 +3,7 @@
 namespace humhub\modules\user\activities;
 
 use humhub\helpers\Html;
+use humhub\modules\activity\components\ActiveQueryActivity;
 use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use humhub\modules\activity\models\Activity;
@@ -37,7 +38,11 @@ final class FollowActivity extends BaseActivity implements ConfigurableActivityI
 
     protected function getMessage(array $params): string
     {
-        return Yii::t('ActivityModule.base', '{displayName} ow follows {followedDisplayName}.', $params);
+        if ($this->groupCount > 1) {
+            return Yii::t('ActivityModule.base', '{displayNames} now follow {followedDisplayName}.', $params);
+        } else {
+            return Yii::t('ActivityModule.base', '{displayName} now follows {followedDisplayName}.', $params);
+        }
     }
 
     protected function getMessageParamsText(): array
@@ -58,5 +63,12 @@ final class FollowActivity extends BaseActivity implements ConfigurableActivityI
                 'followedDisplayName' => Html::strong(Html::encode($this->followedUser->displayName)),
             ],
         );
+    }
+
+    public function getGroupingQuery(): ?ActiveQueryActivity
+    {
+        return Activity::find()
+            ->andWhere(['activity.class' => static::class])
+            ->andWhere(['activity.contentcontainer_id' => $this->record->contentcontainer_id]);
     }
 }

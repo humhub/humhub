@@ -55,6 +55,16 @@ class ActivityTest extends HumHubDbTestCase
         $this->assertTrue($post->hardDelete());
 
         $this->assertNull(Activity::findOne(['class' => TestActivity::class]));
+
+        /*
+        $post2 = Post::findOne(2);
+        ActivityManager::dispatch(TestActivity::class, $post2);
+        $this->assertNotNull(Activity::findOne(['class' => TestActivity::class]));
+        $post2->content->delete();
+        $this->assertNotNull(Activity::findOne(['class' => TestActivity::class]));
+        $post2->content->hardDelete();
+        $this->assertNull(Activity::findOne(['class' => TestActivity::class]));
+        */
     }
 
     public function testDeleteOriginator()

@@ -6,9 +6,11 @@ use humhub\modules\activity\models\MailSummaryForm;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\live\Module;
+use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\db\ActiveQuery;
+use yii\db\Expression;
 
 class ActiveQueryActivity extends ActiveQuery
 {
@@ -44,9 +46,11 @@ class ActiveQueryActivity extends ActiveQuery
         return $this;
     }
 
-    public function defaultScopes(User $user): static
+    public function defaultScopes(?User $user): static
     {
-        $this->excludeUser($user);
+        if ($user !== null) {
+            $this->excludeUser($user);
+        }
         $this->visible();
         $this->orderBy(['activity.grouping_key' => SORT_DESC]);
 
@@ -61,8 +65,20 @@ class ActiveQueryActivity extends ActiveQuery
         return $this;
     }
 
-    public function contentContainer(ContentContainer $contentContainer, User $user): static
+    public function contentContainer(ContentContainer $contentContainer, ?User $user): static
     {
+        // Handle Guests
+        if ($user === null) {
+            $ccRecord = $contentContainer->polymorphicRelation;
+            if ($ccRecord instanceof Space && $ccRecord->visibility === Space::VISIBILITY_ALL) {
+                $this->andWhere(['content.visibility' => Content::VISIBILITY_PUBLIC]);
+            } else {
+                // Block execution
+                $this->andWhere('1=0');
+            }
+            return $this;
+        }
+
         $legitimation = $this->getContainerLegitimation($user);
 
         $this->andWhere(['activity.contentcontainer_id' => $contentContainer->id]);
@@ -80,8 +96,13 @@ class ActiveQueryActivity extends ActiveQuery
         return $this;
     }
 
-    public function subscribedContentContainers(User $user): static
+    public function subscribedContentContainers(?User $user): static
     {
+        if ($user === null) {
+            $spaceIdSubQuery = Space::find()->select('space.id')->where(['space.visibility' => Space::VISIBILITY_ALL])->createCommand()->getRawSql();
+            $this->andWhere(['IN', 'activity.contentcontainer_id', new Expression($spaceIdSubQuery)]);
+        }
+
         $legitimation = $this->getContainerLegitimation($user);
 
         // Fix Empty Array IN Condition Query Builder Problem
@@ -204,7 +225,7 @@ class ActiveQueryActivity extends ActiveQuery
     public function enableGrouping(): static
     {
         $this->addGroupBy('activity.grouping_key');
-        $this->addSelect(['activity.*', 'count(*) as group_count']);
+        $this->addSelect(['activity.*', 'count(*) as group_count', 'max(activity.id) as group_max_id']);
         return $this;
     }
 

@@ -41,7 +41,11 @@ abstract class BaseContentActivity extends BaseActivity
         $this->content = $record->content;
 
         if (!$this->content->polymorphicRelation instanceof $this->contentActiveRecordClass) {
-            throw new InvalidValueException('Content must be type of ' . $this->contentActiveRecordClass);
+            throw new InvalidValueException(
+                'Content must be type of ' . $this->contentActiveRecordClass . ', ' . get_class(
+                    $this->content->polymorphicRelation,
+                ) . ' given.',
+            );
         }
         /** @noinspection PhpFieldAssignmentTypeMismatchInspection */
         $this->contentActiveRecord = $this->content->polymorphicRelation;
