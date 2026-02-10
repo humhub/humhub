@@ -40,11 +40,12 @@ $this->registerJsConfig('admin', [
     ],
 ]);
 
-$iconUrl = Yii::$app->img->icon->getUrl(['square' => 140]);
-$loginBgUrl = Yii::$app->img->loginBackground->getUrl();
-$mailHeaderUrl = Yii::$app->img->mailHeader->getUrl(
+$logoUrl = (Yii::$app->img->logo->exists()) ? Yii::$app->img->logo->getUrl() : '';
+$iconUrl = (Yii::$app->img->icon->exists()) ? Yii::$app->img->icon->getUrl(['square' => 140]) : '';
+$loginBgUrl = (Yii::$app->img->loginBackground->exists()) ? Yii::$app->img->loginBackground->getUrl() : '';
+$mailHeaderUrl = (Yii::$app->img->mailHeader->exists()) ? Yii::$app->img->mailHeader->getUrl(
     ['maxHeight' => MailHeaderImage::MAX_HEIGHT, 'maxWidth' => MailHeaderImage::MAX_WIDTH]
-);
+) : '';
 $themeVariables = Yii::$app->view->theme->variables;
 ?>
 
@@ -113,7 +114,7 @@ $themeVariables = Yii::$app->view->theme->variables;
         ); ?>
         <div class="image-upload-container" id="logo-upload">
 
-            <img class="rounded" id="logo-image" src="<?= Yii::$app->img->logo->getUrl() ?>"
+            <img class="rounded" id="logo-image" src="<?= $logoUrl ?>"
                  data-src="holder.js/140x140"
                  alt="<?= Yii::t(
                      'AdminModule.settings',
@@ -204,7 +205,9 @@ $themeVariables = Yii::$app->view->theme->variables;
 
                 <?= Button::danger()->id('admin-delete-mailHeader-image')
                     ->action('admin.deleteMailHeader', Url::to(['/admin/setting/delete-mail-header-image']))
-                    ->style(Yii::$app->img->mailHeader->exists() ? '' : 'display:none')->icon('remove')->sm()->loader(false) ?>
+                    ->style(Yii::$app->img->mailHeader->exists() ? '' : 'display:none')->icon('remove')->sm()->loader(
+                        false
+                    ) ?>
             </div>
         </div>
     </div>
