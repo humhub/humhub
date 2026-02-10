@@ -88,7 +88,7 @@ use yii\web\UploadedFile;
  * @since 0.5
  * @noinspection PropertiesInspection
  */
-class File extends FileCompat implements ViewableInterface
+class File extends ActiveRecord implements ViewableInterface
 {
     /**
      * @event Event that is triggered after a new file content has been stored.
@@ -283,14 +283,6 @@ class File extends FileCompat implements ViewableInterface
         return $length
             ? substr($this->hash_sha1 ?: '', 0, $length)
             : $this->hash_sha1;
-    }
-
-    /**
-     * @deprecated Use canView() instead. It will be deleted since v1.17
-     */
-    public function canRead($user = null): bool
-    {
-        return $this->canView($user);
     }
 
     /**

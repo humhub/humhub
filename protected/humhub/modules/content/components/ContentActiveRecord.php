@@ -10,8 +10,6 @@ namespace humhub\modules\content\components;
 
 use humhub\components\ActiveRecord;
 use humhub\libs\BasePermission;
-use humhub\modules\activity\helpers\ActivityHelper;
-use humhub\modules\activity\models\Activity;
 use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\interfaces\ContentProvider;
@@ -237,14 +235,6 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     }
 
     /**
-     * @deprecated since 1.18 use getBadges() instead
-     */
-    public function getLabels($labels = [], $includeContentName = true)
-    {
-        return $this->getBadges($labels, $includeContentName);
-    }
-
-    /**
      * Returns either Label widget instances or strings.
      *
      * Subclasses should call `paren::getLabels()` as follows:
@@ -383,24 +373,6 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     public function hasManagePermission()
     {
         return !empty($this->managePermission);
-    }
-
-    /**
-     * Returns the wall output widget of this content.
-     *
-     * @param array $params optional parameters for WallEntryWidget
-     * @return string
-     * @deprecated since 1.7 use StreamEntryWidget::renderStreamEntry()
-     */
-    public function getWallOut($params = [])
-    {
-        if (is_subclass_of($this->wallEntryClass, StreamEntryWidget::class, true)) {
-            $params['model'] = $this;
-        } elseif (!empty($this->wallEntryClass)) {
-            $params['contentObject'] = $this; // legacy WallEntry widget
-        }
-
-        return call_user_func($this->wallEntryClass . '::widget', $params);
     }
 
     /**

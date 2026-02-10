@@ -12,7 +12,6 @@ use humhub\components\ActiveRecord;
 use humhub\libs\BasePermission;
 use humhub\libs\ProfileBannerImage;
 use humhub\libs\ProfileImage;
-use humhub\libs\UUID;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\content\models\ContentContainerBlockedUsers;
@@ -20,7 +19,6 @@ use humhub\modules\content\models\ContentContainerTagRelation;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module as UserModule;
 use Yii;
-use yii\base\Component;
 use yii\db\ActiveQuery;
 use yii\helpers\Url;
 use yii\web\IdentityInterface;
@@ -172,17 +170,6 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     public function canAccessPrivateContent(?User $user = null)
     {
         return false;
-    }
-
-    /**
-     * Returns the wall output for this content container.
-     * This is e.g. used in search results.
-     *
-     * @return string
-     */
-    public function getWallOut()
-    {
-        return "Default Wall Output for Class " . static::class;
     }
 
     /**
