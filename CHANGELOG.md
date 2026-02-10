@@ -1,6 +1,11 @@
 HumHub Changelog
 ================
 
+1.18.1 (Unreleased)
+-------------------------
+
+- Enh #8014: Exclude `vendor` from module i18n extract  
+
 1.18.0 (February 4, 2026)
 -------------------------
 
