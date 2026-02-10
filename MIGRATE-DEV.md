@@ -30,6 +30,8 @@ Version 1.19 (Unreleased)
   - `LogoImage`, `SiteIcon`, `LoginBackground`, `MailHeader`, `ProfileImage`, `ProfileBannerImage` are now deprecated or removed.
     - `Space|User::getProfileImage()` => `Space|User::image()`, `Space|User::profileImage` => `Space|User::image`
     - `Space|User::getProfileBannerImage()` => `Space|User::bannerImage()`, `Space|User::profileBannerImage` => `Space|User::bannerImage`
+    - `SiteLogo|SiteIcon|LoginBackground|MailHeader::getUrl()` => `Yii::$app->img->logo|icon|loginBackground|mailHeader->getUrl()`
+
 
 Version 1.18 (Unreleased)
 ------------
