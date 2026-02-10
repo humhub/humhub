@@ -8,10 +8,40 @@ humhub.module('i18n', function(module, require, $) {
     var loadedCategories = new Set();
     var pendingLoads = new Map();
     var compiledCache = new Map();
-    var preloadPromise = null;
     var batchCategories = new Set();
     var batchPromise = null;
     var batchResolvers = [];
+
+    var checkRevision = function() {
+        var revisionKey = 'humhub.i18n.revision';
+
+        var revision = module.config.revision || '';
+
+        try {
+            var storedRevision = localStorage.getItem(revisionKey);
+            if (storedRevision === revision) {
+                return;
+            }
+
+            for (var i = localStorage.length - 1; i >= 0; i--) {
+                var key = localStorage.key(i);
+                if (key && key.indexOf('humhub.i18n.') === 0) {
+                    localStorage.removeItem(key);
+                }
+            }
+
+            localStorage.setItem(revisionKey, revision);
+
+            module.log.debug('i18n cache cleared due to revision change', {
+                oldRevision: storedRevision,
+                newRevision: revision
+            });
+        } catch (e) {}
+    };
+
+    var init = function () {
+        checkRevision();
+    }
 
     var getStorageKey = function(category) {
         var revision = module.config.revision || '';
@@ -47,6 +77,7 @@ humhub.module('i18n', function(module, require, $) {
 
         var categoriesToLoad = categories.filter(function(category) {
             if (loadedCategories.has(category)) {
+                module.log.debug('i18n category already loaded', {category: category});
                 return false;
             }
 
@@ -56,10 +87,12 @@ humhub.module('i18n', function(module, require, $) {
                     var messages = JSON.parse(cached);
                     updateIntlMessages(category, messages);
                     loadedCategories.add(category);
+                    module.log.debug('i18n category loaded from cache', {category: category});
                     return false;
                 }
             } catch (e) {}
 
+            module.log.debug('i18n category cache missing', {category: category});
             return true;
         });
 
@@ -72,6 +105,7 @@ humhub.module('i18n', function(module, require, $) {
             return pendingLoads.get(categoriesLoadingKey);
         }
 
+        module.log.debug('i18n loading categories', {categories: categoriesToLoad});
         var promise = $.ajax({
             url: module.config.translationUrl,
             data: {category: categoriesLoadingKey},
@@ -87,6 +121,7 @@ humhub.module('i18n', function(module, require, $) {
                     } catch (e) {}
                 });
             }
+            module.log.debug('i18n categories loaded', {categories: categoriesToLoad});
         }).always(function() {
             pendingLoads.delete(categoriesLoadingKey);
         });
@@ -132,6 +167,7 @@ humhub.module('i18n', function(module, require, $) {
                 var queued = Array.from(batchCategories);
                 batchCategories.clear();
 
+                module.log.debug('i18n preload batch', {categories: queued});
                 loadTranslations(queued).then(function() {
                     batchResolvers.forEach(function(handler) {
                         handler.resolve();
@@ -152,6 +188,7 @@ humhub.module('i18n', function(module, require, $) {
     };
 
     module.export({
+        init: init,
         t: translate,
         loadTranslations: loadTranslations,
         preload: preload
