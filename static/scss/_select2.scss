@@ -278,11 +278,7 @@
             @include box-shadow($dropdown-box-shadow);
             border-color: var(--hh-background3);
             overflow-x: hidden;
-            margin-top: -1px;
-
-            &--above {
-                margin-top: 1px;
-            }
+            margin-top: 0;
         }
 
         /**
@@ -709,6 +705,15 @@
         .input-group,
         .input-group .btn {
             vertical-align: top;
+        }
+    }
+
+    .select2-humhub-append.input-group .select2-container {
+        margin-left: initial !important;
+
+        .select2-selection {
+            border-top-left-radius: var(--bs-border-radius) !important;
+            border-bottom-left-radius: var(--bs-border-radius) !important;
         }
     }
 
