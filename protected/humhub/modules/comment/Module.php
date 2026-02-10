@@ -2,13 +2,10 @@
 
 namespace humhub\modules\comment;
 
-use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\permissions\CreateComment;
 use humhub\modules\comment\notifications\NewComment;
-use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\models\Content;
 use Yii;
-use yii\base\Exception;
-use yii\base\InvalidConfigException;
 
 /**
  * CommentModule adds the comment content addon functionalities.
@@ -75,18 +72,13 @@ class Module extends \humhub\components\Module
     /**
      * Checks if given content object can be commented by current user
      *
-     * @param Comment|ContentActiveRecord $object
      * @return bool can comment
-     * @throws Exception
-     * @throws InvalidConfigException
      */
-    public function canComment($object)
+    public function canComment(Content $content)
     {
         if (Yii::$app->user->isGuest) {
             return false;
         }
-
-        $content = $object->content;
 
         if (!$content->getStateService()->isPublished()) {
             return false;

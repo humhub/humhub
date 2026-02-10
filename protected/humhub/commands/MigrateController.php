@@ -69,7 +69,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
     /**
      * @var bool also include migration paths of all enabled modules
      */
-    public bool $includeModuleMigrations = false;
+    public bool $includeModuleMigrations = true;
 
     /**
      * When includeModuleMigrations is enabled, this maps migrations to the

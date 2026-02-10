@@ -92,7 +92,7 @@ class Mentioning extends ActiveRecord
             return $source->content->createdBy;
         } elseif ($source instanceof ContentAddonActiveRecord) {
             /** @var ContentAddonActiveRecord $source */
-            return $source->user;
+            return $source->createdBy;
         }
 
         return null;

@@ -1,133 +1,65 @@
 <?php
 
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
-
 namespace humhub\modules\activity\models;
 
-use humhub\modules\activity\components\BaseActivity;
-use Yii;
-use yii\base\Exception;
-use yii\base\InvalidConfigException;
-use yii\db\ActiveRecord;
-use humhub\modules\content\components\ContentActiveRecord;
-use humhub\components\behaviors\PolymorphicRelation;
-use yii\db\IntegrityException;
-use humhub\modules\activity\widgets\Activity as ActivityStreamEntryWidget;
+use humhub\modules\activity\components\ActiveQueryActivity;
+use humhub\modules\activity\services\ActivityManager;
+use humhub\modules\activity\services\GroupingService;
+use humhub\modules\content\models\Content;
+use humhub\modules\content\models\ContentContainer;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "activity".
  *
  * @property int $id
  * @property string $class
- * @property string $module
- * @property string $object_model
- * @property int $object_id
+ * @property int $contentcontainer_id
+ * @property int $content_id
+ * @property int $content_addon_record_id
+ * @property string $grouping_key
+ * @property int $created_by
+ * @property string $created_at
  *
- * @mixin PolymorphicRelation
+ * @property-read Content $content
+ * @property-read ContentContainer $contentContainer
  */
-class Activity extends ContentActiveRecord
+class Activity extends \humhub\components\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
-    public $wallEntryClass = ActivityStreamEntryWidget::class;
+    public ?int $group_count = null;
+    public ?int $group_max_id = null;
 
-    /**
-     * @inheritdoc
-     */
-    public $autoFollow = false;
-
-    /**
-     * @inheritdoc
-     */
-    protected $streamChannel = 'activity';
-
-    /**
-     * @inheritdoc
-     */
-    public $silentContentCreation = true;
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            [
-                'class' => PolymorphicRelation::class,
-                'strict' => true,
-                'mustBeInstanceOf' => [
-                    ActiveRecord::class,
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
     public static function tableName()
     {
         return 'activity';
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function rules()
+    public function afterSave($insert, $changedAttributes)
     {
-        return [
-            [['object_id'], 'integer'],
-            [['class'], 'string', 'max' => 100],
-            [['module', 'object_model'], 'string', 'max' => 100],
-        ];
-    }
-
-    /**
-     * Returns the related BaseActivity object of this Activity record.
-     *
-     * @return BaseActivity
-     * @throws Exception
-     * @throws InvalidConfigException
-     * @throws IntegrityException
-     */
-    public function getActivityBaseClass()
-    {
-        if (!class_exists($this->class)) {
-            throw new Exception('Could not find BaseActivity ' . $this->class . ' for Activity Record.');
+        if ($insert) {
+            $this->updateAttributes(['grouping_key' => $this->id]);
         }
-
-        $result = Yii::createObject([
-            'class' => $this->class,
-            'originator' => $this->content->createdBy,
-            'source' => $this->getSource(),
-        ]);
-        $result->record = $this; // If we include the record in createObject, it somehow loses activerecord data (id etc...)
-        return $result;
+        parent::afterSave($insert, $changedAttributes);
     }
 
-    /**
-     * Returns the source object which belongs to this Activity.
-     *
-     * @return mixed
-     * @throws IntegrityException
-     * @see BaseActivity
-     */
-    public function getSource()
+    public function beforeDelete()
     {
-        return $this->getPolymorphicRelation();
+        (new GroupingService(ActivityManager::load($this)))->beforeDelete();
+        return parent::beforeDelete();
     }
 
-    /**
-     * @return bool|int
-     */
-    public function delete()
+    public function getContent(): ActiveQuery
     {
-        // Always hard delete activities
-        return $this->hardDelete();
+        return $this->hasOne(Content::class, ['id' => 'content_id']);
+    }
+
+    public function getContentContainer(): ActiveQuery
+    {
+        return $this->hasOne(ContentContainer::class, ['id' => 'contentcontainer_id']);
+    }
+
+    public static function find(): ActiveQueryActivity
+    {
+        return new ActiveQueryActivity(static::class);
     }
 }

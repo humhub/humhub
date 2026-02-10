@@ -56,13 +56,7 @@ class DashboardController extends Controller
         return [
             'stream' => [
                 'class' => DashboardStreamAction::class,
-                'activity' => false,
             ],
-            'activity-stream' => [
-                'class' => DashboardStreamAction::class,
-                'activity' => true,
-            ],
-
         ];
     }
 

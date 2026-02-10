@@ -241,7 +241,7 @@ humhub.module('comment', function (module, require, $) {
         client.post(evt, {dataType: 'html'}).then(function (response) {
             var $container = evt.$trigger.closest('.comment');
             var $html = $(response.html);
-            evt.$trigger.data('type') === 'previous'
+            evt.$trigger.data('direction') === 'previous'
                 ? $container.prepend($html)
                 : $container.append($html);
             evt.$trigger.closest('.showMore').remove();

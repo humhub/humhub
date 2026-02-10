@@ -8,7 +8,7 @@
 
 namespace humhub\modules\comment\widgets;
 
-use humhub\modules\comment\models\forms\AdminDeleteCommentForm;
+use humhub\modules\comment\models\AdminDeleteCommentForm;
 use yii\base\Widget;
 
 /**
