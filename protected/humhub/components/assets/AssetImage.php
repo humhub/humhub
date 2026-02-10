@@ -63,10 +63,6 @@ class AssetImage extends Component
         $this->exists = file_exists($this->file);
         $this->defaultFile = Yii::getAlias($this->defaultFile);
 
-        if (!$this->exists && empty($this->defaultFile)) {
-            throw new InvalidValueException('File and DefaultFile cannot be empty.');
-        }
-
         FileHelper::createDirectory($this->path);
     }
 
@@ -77,6 +73,10 @@ class AssetImage extends Component
      */
     public function getUrl(?array $options = null, $scheme = false): string
     {
+        if (!$this->exists && empty($this->defaultFile)) {
+            throw new InvalidValueException('File and DefaultFile cannot be empty.');
+        }
+
         if ($options === null) {
             $options = $this->defaultOptions;
         }
