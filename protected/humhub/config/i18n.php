@@ -96,6 +96,10 @@ return [
         '.hgkeep',
         '/messages',
         'messages',
+        '/vendor',
+        'vendor',
+        '/protected/vendor',
+        'protected/vendor',
     ],
     // 'php' output format is for saving messages to php files.
     'format' => 'php',
