@@ -9,6 +9,7 @@ HumHub Changelog
 - Fix #8008: Space Tour Wrong Target for "Preferences" menu
 - Fix #8013: Fix error displaying on update a module
 - Fix #8009: Administration Group label misplaced
+- Enh #8014: Exclude `vendor` from module i18n extract  
 
 1.18.0 (February 4, 2026)
 -------------------------
