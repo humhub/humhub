@@ -61,6 +61,7 @@ class Events extends BaseObject
         }
 
         /* @var AccountMenu $menu */
+        $menu = $event->sender;
 
         $menu->addEntry(new MenuLink([
             'label' => Yii::t('TopicModule.base', 'Topics'),

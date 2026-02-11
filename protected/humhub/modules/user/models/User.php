@@ -820,18 +820,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     }
 
     /**
-     * User can approve other users
-     *
-     * @return bool
-     * @throws InvalidConfigException
-     * @deprecated since 1.18
-     */
-    public function canApproveUsers(): bool
-    {
-        return $this->canManageUsers();
-    }
-
-    /**
      * User can manage other users
      *
      * @return bool

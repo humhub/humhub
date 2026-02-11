@@ -42,14 +42,6 @@ trait BootstrapVariationsTrait
 
     abstract public static function instance(?string $text = null, ?string $color = null): static;
 
-    /**
-     * @deprecated since 1.18 use [[secondary]] instead
-     */
-    public static function defaultType($text = null)
-    {
-        return self::light($text);
-    }
-
     public static function primary(?string $label = null): static
     {
         return static::instance($label, 'primary');
@@ -116,14 +108,6 @@ trait BootstrapVariationsTrait
         }
 
         return $this;
-    }
-
-    /**
-     * @deprecated since 1.18 use [[sm]] instead
-     */
-    public function xs(): static
-    {
-        return $this->sm();
     }
 
     public function sm(): static
@@ -237,25 +221,6 @@ trait BootstrapVariationsTrait
     public function visible($isVisible = true): static
     {
         $this->_visible = $isVisible;
-        return $this;
-    }
-
-    /**
-     * @deprecated since 1.18
-     * Use `static::instance($text, $color)` instead for a Bootstrap color
-     * Or `cssBgColor()` for a custom color (Hexadecimal, RGB, RGBA, HSL, HSLA)
-     */
-    public function color($color)
-    {
-        return $this;
-    }
-
-    /**
-     * @deprecated since 1.18
-     * Use `cssTextColor()` instead
-     */
-    public function textColor($color)
-    {
         return $this;
     }
 
