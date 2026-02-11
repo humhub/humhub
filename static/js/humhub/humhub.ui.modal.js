@@ -601,9 +601,7 @@ humhub.module('ui.modal', function (module, require, $) {
     var _setModalsAndBackdropsOrder = function () {
         var modalZIndex = 1040;
         $('.modal.show').each(function (index) {
-            var $modal = $(this);
-            modalZIndex++;
-            $modal.css('zIndex', modalZIndex);
+            $(this).css('zIndex', ++modalZIndex);
         });
         $('.modal-backdrop.show').css('zIndex', modalZIndex - 1);
         $('.modal.show:visible:last').focus();
