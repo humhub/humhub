@@ -232,15 +232,12 @@
             .select2-selection {
                 border-color: $input-border-color;
                 @include box-shadow(none);
+                background-color: var(--bs-secondary-bg);
             }
 
             .select2-selection,
             .select2-search__field {
                 cursor: not-allowed;
-            }
-
-            .select2-selection {
-                background-color: var(--bs-secondary-bg);
             }
 
             .select2-selection--multiple .select2-selection__choice {
@@ -613,6 +610,7 @@
             }
         }
     }
+
 
     /*------------------------------------*\
         #ADDITIONAL GOODIES

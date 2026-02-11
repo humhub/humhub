@@ -46,6 +46,7 @@ class UpdateController extends Controller
      */
     public function actionInstall()
     {
+        $this->response->format = Response::FORMAT_JSON;
         $this->forcePostRequest();
 
         $moduleService = new ModuleService(Yii::$app->request->get('moduleId'));
