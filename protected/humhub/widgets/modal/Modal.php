@@ -93,11 +93,6 @@ class Modal extends \yii\bootstrap5\Modal
     public $animation;
 
     /**
-     * @deprecated since 1.18.0
-     */
-    public $centerText;
-
-    /**
      * @var string Body text, useful when this widget is called as Modal::widget(['body' => '...'])
      */
     public string $body = '';

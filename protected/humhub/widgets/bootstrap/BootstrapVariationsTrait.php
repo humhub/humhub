@@ -212,10 +212,12 @@ trait BootstrapVariationsTrait
 
     /**
      * @param string $label
+     * @return static
      */
-    public function setLabel(string $label): void
+    public function setLabel(string $label): static
     {
         $this->label = $label;
+        return $this;
     }
 
     public function visible($isVisible = true): static

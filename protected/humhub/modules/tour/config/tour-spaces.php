@@ -10,7 +10,7 @@ use humhub\modules\space\controllers\SpaceController;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\tour\TourConfig;
-use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
 
 // Get Space to run Tour in
 $tourSpace = null;
@@ -90,7 +90,7 @@ return [
                     'title' => Yii::t('TourModule.spaces', '<strong>Yay! You\'re done.</strong>'),
                     'description'
                         => Yii::t('TourModule.spaces', "That's it for the space guide.<br><br>To carry on with the user profile guide, click here: ")
-                        . Button::asLink(Yii::t("TourModule.spaces", "<strong>Profile Guide</strong>"))->action('tour.next')
+                        . Link::to(Yii::t("TourModule.spaces", "<strong>Profile Guide</strong>"))->action('tour.next')
                         . '<br><br>',
                 ],
             ],

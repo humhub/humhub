@@ -106,11 +106,6 @@ class JsModal extends JsWidget
     public $showClose;
 
     /**
-     * @deprecated since 1.18.0
-     */
-    public $centerText = false;
-
-    /**
      * Can be set to false if the modal body should not be initialized with an
      * loader animation. Default is true, if no body is provided.
      *
