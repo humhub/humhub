@@ -7,6 +7,7 @@ HumHub Changelog
 - Fix #8002: Comment dropdowns truncated (e.g. to select a title)
 - Fix #8007: Fix unsaved changes warning on Profile Edit page
 - Fix #8008: Space Tour Wrong Target for "Preferences" menu
+- Fix #8013: Fix error displaying on update a module
 
 1.18.0 (February 4, 2026)
 -------------------------
