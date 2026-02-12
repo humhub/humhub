@@ -4,8 +4,9 @@ namespace humhub\components\assets;
 
 use humhub\assets\AppAsset;
 use humhub\assets\CoreBundleAsset;
-use League\Flysystem\Filesystem;
+use humhub\components\fs\AbstractFs;
 use League\Flysystem\FilesystemException;
+use League\Flysystem\Visibility;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\base\InvalidConfigException;
@@ -15,42 +16,33 @@ use yii\web\AssetBundle;
 class AssetManager extends \yii\web\AssetManager
 {
     public $appendTimestamp = true;
+    public string $fsMount;
+    private array $filesystemOptions = [
+        'visibility' => Visibility::PUBLIC,
+        'directory_visibility' => Visibility::PUBLIC,
+    ];
+    public bool $preventDefer = false;
+    private AbstractFs $fs;
 
-    private Filesystem $flySystem;
-
-    /**
-     * @var bool if true will prevent `defer` on all asset bundle scripts
-     * @since 1.5
-     */
-    public $preventDefer = false;
-
-    public function init()
+    public function init(): void
     {
         parent::init();
 
-        $adapter = new \League\Flysystem\Local\LocalFilesystemAdapter(Yii::getAlias($this->basePath));
-        $this->flySystem = new \League\Flysystem\Filesystem($adapter);
+        $this->fs = Yii::$app->fs->disk($this->fsMount);
+        $this->baseUrl = $this->fs->baseUrl;
+
+        if (empty($this->baseUrl)) {
+            throw new InvalidArgumentException('Base URL must be set.');
+        }
 
         if ($this->linkAssets) {
             throw new InvalidConfigException('Linking assets is not supported.');
         }
     }
 
-    /**
-     * Clears all currently published assets
-     */
     public function clear()
     {
-        if ($this->basePath == '') {
-            return;
-        }
-
-        foreach (scandir(realpath($this->basePath)) as $file) {
-            if (str_starts_with($file, '.')) {
-                continue;
-            }
-            FileHelper::removeDirectory($this->basePath . DIRECTORY_SEPARATOR . $file);
-        }
+        $this->fs->deleteDirectory('.');
     }
 
     /**
@@ -122,18 +114,18 @@ class AssetManager extends \yii\web\AssetManager
 
         $shouldWrite = true;
         try {
-            if ($this->flySystem->fileExists($dstFile)
-                && $this->flySystem->lastModified($dstFile) >= @filemtime($src)) {
+            if ($this->fs->fileExists($dstFile)
+                && $this->fs->lastModified($dstFile) >= @filemtime($src)) {
                 $shouldWrite = false;
             }
         } catch (\League\Flysystem\FilesystemException $e) {
         }
 
         if ($shouldWrite) {
-            $this->flySystem->writeStream($dstFile, fopen($src, 'r'));
+            $this->fs->writeStream($dstFile, fopen($src, 'r'), $this->filesystemOptions);
         }
 
-        if ($this->appendTimestamp && ($timestamp = $this->flySystem->lastModified($dstFile)) > 0) {
+        if ($this->appendTimestamp && ($timestamp = $this->fs->lastModified($dstFile)) > 0) {
             $fileName = $fileName . "?v=$timestamp";
         }
 
@@ -146,7 +138,7 @@ class AssetManager extends \yii\web\AssetManager
 
         $forceCopy = !empty($options['forceCopy']) || ($this->forceCopy && !isset($options['forceCopy']));
 
-        if ($forceCopy || !$this->flySystem->has($dstDir)) {
+        if ($forceCopy || !$this->fs->has($dstDir)) {
             $currentLength = strlen($src);
 
             /*
@@ -159,13 +151,13 @@ class AssetManager extends \yii\web\AssetManager
             $folders = FileHelper::findDirectories($src);
             foreach ($folders as $folder) {
                 $folder = substr($folder, $currentLength);
-                $this->flySystem->createDirectory($dstDir . $folder);
+                $this->fs->createDirectory($dstDir . $folder, $this->filesystemOptions);
             }
 
             $files = FileHelper::findFiles($src);
             foreach ($files as $file) {
                 $dstFile = substr($file, $currentLength);
-                $this->flySystem->writeStream($dstDir . $dstFile, fopen($file, 'r'));
+                $this->fs->writeStream($dstDir . $dstFile, fopen($file, 'r'), $this->filesystemOptions);
             }
         }
 
@@ -179,25 +171,20 @@ class AssetManager extends \yii\web\AssetManager
     public function addAssetFileByContent($file, $content)
     {
         try {
-            $this->flySystem->write($file, $content);
+            $this->fs->write($file, $content, $this->filesystemOptions);
         } catch (FilesystemException $e) {
             print $e->getMessage();
             die();
         }
     }
+
     public function fileExists($file)
     {
         try {
-            return $this->flySystem->has($file);
+            return $this->fs->has($file);
         } catch (FilesystemException $e) {
             print $e->getMessage();
             die();
         }
-
     }
-
-
-
-
-
 }

@@ -41,6 +41,7 @@ class Yii
  * @property \yii\caching\ArrayCache $runtimeCache
  * @property \humhub\components\assets\AssetImageRegistry $img
  * @property \humhub\components\InstallationState $installationState
+ * @property \humhub\components\fs\FilesystemManager $fs
  */
 class __Application
 {
