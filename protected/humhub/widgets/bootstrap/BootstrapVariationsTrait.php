@@ -28,11 +28,6 @@ trait BootstrapVariationsTrait
 
     public ?string $size = null;
 
-    /**
-     * @var array the HTML attributes for the widget container tag.
-     * @deprecated since 1.18 use [[options]] instead
-     */
-    public array $htmlOptions = [];
     public bool $_visible = true;
 
     public function __toString(): string

@@ -25,21 +25,6 @@ class WallEntryAddons extends BaseStack
     public $object = null;
 
     /**
-     * Can be set to overwrite or extend the widget options of a given addon widget as:
-     *
-     * ```
-     * $widgetOptions = [
-     *      MyAddonWidget::class => [
-     *          'someOption' => false
-     *      ]
-     * ]
-     * ```
-     * @var array
-     * @deprecated since 1.7 use WallStreamEntryOptions
-     */
-    public $widgetOptions = [];
-
-    /**
      * @var WallStreamEntryOptions
      */
     public $renderOptions;
@@ -57,10 +42,6 @@ class WallEntryAddons extends BaseStack
             if (is_array($this->renderOptions->getAddonWidgetOptions($className))) {
                 $params = ArrayHelper::merge($params, $this->renderOptions->getAddonWidgetOptions($className));
             }
-        }
-
-        if (isset($this->widgetOptions[$className])) {
-            $params = ArrayHelper::merge($params, $this->widgetOptions[$className]);
         }
 
         parent::addWidget($className, $params, $options);

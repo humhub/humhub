@@ -197,11 +197,6 @@ class Button extends \yii\bootstrap5\Button
      */
     public function run(): string
     {
-        $this->options = array_merge(
-            $this->options,
-            $this->htmlOptions,
-        ); // For compatibility with old bootstrap buttons
-
         if ($this->loader) {
             $this->options['data-ui-loader'] = $this->loader;
         }
