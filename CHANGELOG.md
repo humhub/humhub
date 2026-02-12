@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.19.0 (Unreleased)
+-------------------------
+- Enh #7980: Remove deprecations
+
 1.18.0 (February 4, 2026)
 -------------------------
 

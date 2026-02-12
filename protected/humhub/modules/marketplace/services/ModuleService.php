@@ -78,16 +78,6 @@ class ModuleService
         return true;
     }
 
-    /**
-     * @return bool
-     * @deprecated since v1.16; use static::enable()
-     * @see static::enable()
-     */
-    public function activate(): bool
-    {
-        return $this->enable();
-    }
-
     public function enable(): bool
     {
         return $this->module instanceof CoreModule && $this->module->enable() !== false;

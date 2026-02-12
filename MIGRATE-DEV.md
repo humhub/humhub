@@ -19,12 +19,69 @@ Version 1.19 (Unreleased)
   - Used `RecordMap` for ContentAddon relations
 - Removed methods `getContentPlainTextInfo()` and `getContentPlainTextPreview()` from the class `SocialActivity`(`BaseNotification`)
   - Replace them with `getContentInfo()` and `getContentPreview()` in all extended classes, especially inside the method `getMailSubject()`
+- Replaced classes:
+  - `humhub\widgets\BaseMenu` => `humhub\modules\ui\menu\widgets\Menu`
+  - `humhub\widgets\Button` => `humhub\widgets\bootstrap\Button`
+  - `humhub\widgets\Label` => `humhub\widgets\bootstrap\Badge`
+  - `humhub\widgets\ContentTagDropDown` => `humhub\modules\content\widgets\ContentTagDropDown`
+  - `humhub\widgets\DatePicker` => `humhub\modules\ui\form\widgets\DatePicker`
+  - `humhub\widgets\DurationPicker` => `humhub\modules\ui\form\widgets\DurationPicker`
+  - `humhub\widgets\GlobalConfirmModal` => `humhub\widgets\modal\GlobalConfirmModal`
+  - `humhub\widgets\GlobalModal` => `humhub\widgets\modal\GlobalModal`
+  - `humhub\widgets\Link` => `humhub\widgets\bootstrap\Link`
+  - `humhub\widgets\LinkPager` => `humhub\widgets\bootstrap\LinkPager`
+  - `humhub\widgets\Modal` => `humhub\widgets\modal\Modal`
+  - `humhub\widgets\ModalButton` => `humhub\widgets\modal\ModalButton`
+  - `humhub\widgets\ModalClose` => `humhub\widgets\modal\ModalClose`
+  - `humhub\widgets\ModalDialog` => `humhub\widgets\modal\Modal`
+  - `humhub\widgets\Tabs` => `humhub\widgets\bootstrap\Tabs`
+  - `humhub\widgets\TimePicker` => `humhub\modules\ui\form\widgets\TimePicker`
+  - `humhub\modules\search\interfaces\Searchable` => `humhub\modules\content\interfaces\Searchable`
+  - `humhub\components\queue` => `humhub\modules\queue\ActiveJob`
+  - `humhub\libs\Html` => `humhub\helpers\Html`
+  - `humhub\libs\ThemeHelper` => `humhub\helpers\ThemeHelper`
+  - `humhub\modules\activity\widgets\Stream` => `humhub\modules\activity\widgets\ActivityStreamViewer`
+  - `humhub\modules\content\components\actions\ContentContainerStream` => `humhub\modules\stream\actions\ContentContainerStream`
+  - `humhub\modules\content\widgets\WallEntry` => `humhub\modules\content\widgets\stream\WallStreamEntryWidget`
+  - `humhub\modules\space\modules\manage\widgets\Menu` => `humhub\modules\space\widgets\HeaderControlsMenu`
+  - `humhub\modules\topic\widgets\TopicLabel` => `humhub\modules\topic\widgets\TopicBadge`
+  - `humhub\modules\ui\form\widgets\ActiveField` => `humhub\widgets\form\ActiveField`
+  - `humhub\modules\ui\form\widgets\ActiveForm` => `humhub\widgets\form\ActiveForm`
+  - `humhub\modules\ui\form\widgets\ContentHiddenCheckbox` => `humhub\widgets\form\ContentHiddenCheckbox`
+  - `humhub\modules\ui\form\widgets\ContentVisibilitySelect` => `humhub\widgets\form\ContentVisibilitySelect`
+  - `humhub\modules\ui\form\widgets\FormTabs` => `humhub\widgets\bootstrap\FormTabs`
+  - `humhub\modules\ui\form\widgets\SortOrderField` => `humhub\widgets\form\SortOrderField`
+  - `humhub\modules\ui\mail\DefaultMailStyle` => `humhub\helpers\MailStyleHelper`
+  - `humhub\modules\ui\view\components\View` => `humhub\components\View`
+  - `humhub\modules\ui\view\helpers` => `humhub\helpers\ThemeHelper`
+  - `humhub\modules\user\components\ProfileStream` => `humhub\modules\user\actions\ProfileStreamAction`
+  - `humhub\modules\user\widgets\UserPicker` => `humhub\modules\user\widgets\UserPickerField` for rendering, `humhub\modules\user\models\UserPicker` for searching
+- Removed classes:
+  - `humhub\widgets\BootstrapComponent`
+  - `humhub\assets\Select2BootstrapAsset`
+  - `humhub\modules\search\events\SearchAddEvent`
+  - `humhub\libs\DynamicConfig`
+  - `humhub\modules\content\widgets\LegacyWallEntryControlLink`
+  - `humhub\modules\content\widgets\Stream`
+  - `humhub\modules\directory\Module`
+  - `humhub\modules\file\widgets\FileUploadButton`
+  - `humhub\modules\file\widgets\FileUploadList`
+  - `humhub\modules\queue\driver\MySQLCommand`
+  - `humhub\modules\user\authclient\AuthClientHelpers`
+  - `humhub\modules\user\authclient\Facebook`
+  - `humhub\modules\user\authclient\GitHub`
+  - `humhub\modules\user\authclient\Google`
+  - `humhub\modules\user\authclient\LinkedIn`
+  - `humhub\modules\user\authclient\Live`
+  - `humhub\modules\user\authclient\Twitter`
+  - `humhub\modules\user\authclient\ZendLdapClient`
 - Refactored `Activities`
   - Make sure Content related Activities are now extended from `BaseContentActivity`
   - `getTitle` and `getDescription` are now `static`.
   - Instead of View files you need to implement a `getMessage()` method which returns the Activity text.
   - Use following code to create a Activity `ActivityManager::dispatch(TaskCompletedActivity::class, $this->task, $user)`
 - `MigrateController::$includeModuleMigrations` is now `true` by default
+
 
 Version 1.18 (Unreleased)
 ------------

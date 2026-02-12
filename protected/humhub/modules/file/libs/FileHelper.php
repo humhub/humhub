@@ -80,7 +80,7 @@ class FileHelper extends \yii\helpers\FileHelper
      */
     public static function createLink(File $file, $options = [], $htmlOptions = [])
     {
-        $label = $htmlOptions['label'] ?? Html::encode($file->fileName);
+        $label = $htmlOptions['label'] ?? Html::encode($file->file_name);
 
         $fileHandlers = FileHandlerCollection::getByType([FileHandlerCollection::TYPE_VIEW, FileHandlerCollection::TYPE_EXPORT, FileHandlerCollection::TYPE_EDIT, FileHandlerCollection::TYPE_IMPORT], $file);
         if (count($fileHandlers) === 1 && $fileHandlers[0] instanceof DownloadFileHandler) {

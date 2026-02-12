@@ -105,18 +105,6 @@ class Notification extends ActiveRecord
     }
 
     /**
-     * Use getBaseModel instead.
-     * @param array $params
-     * @return BaseNotification
-     * @throws IntegrityException
-     * @deprecated since version 1.2 use [getBaseModel()] instead
-     */
-    public function getClass($params = [])
-    {
-        return $this->getBaseModel($params);
-    }
-
-    /**
      * Returns the business model of this notification
      *
      * @param array $params

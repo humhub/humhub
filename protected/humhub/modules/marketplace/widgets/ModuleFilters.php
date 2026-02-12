@@ -13,7 +13,7 @@ use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\marketplace\Module;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\widgets\DirectoryFilters;
-use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
 use Yii;
 use yii\helpers\Url;
 
@@ -111,7 +111,7 @@ class ModuleFilters extends DirectoryFilters
                 'class' => 'directory-filters-footer-warning',
                 'icon' => 'info-circle',
                 'info' => Yii::t('MarketplaceModule.base', 'A new update is available (HumHub %version%)!', ['%version%' => $latestVersion]),
-                'link' => Button::asLink(Yii::t('MarketplaceModule.base', 'Learn more'), $updateUrl)
+                'link' => Link::to(Yii::t('MarketplaceModule.base', 'Learn more'), $updateUrl)
                     ->cssClass('btn btn-primary'),
             ];
         } else {
@@ -119,7 +119,7 @@ class ModuleFilters extends DirectoryFilters
                 'class' => 'directory-filters-footer-info',
                 'icon' => 'check-circle',
                 'info' => Yii::t('MarketplaceModule.base', 'Your HumHub installation is up to date!'),
-                'link' => Button::asLink('https://www.humhub.com', 'https://www.humhub.com')
+                'link' => Link::to('https://www.humhub.com', 'https://www.humhub.com')
                     ->cssClass('btn btn-accent'),
             ];
         }

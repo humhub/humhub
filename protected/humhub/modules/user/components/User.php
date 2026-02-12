@@ -12,7 +12,6 @@ use humhub\helpers\DeviceDetectorHelper;
 use humhub\helpers\MobileAppHelper;
 use humhub\libs\BasePermission;
 use humhub\modules\user\events\UserEvent;
-use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User as UserModel;
 use humhub\modules\user\services\AuthClientUserService;
 use Throwable;
@@ -171,17 +170,6 @@ class User extends \yii\web\User
     }
 
     /**
-     * Checks if the system configuration allows access for guests
-     *
-     * @return bool is guest access enabled and allowed
-     * @deprecated since 1.4
-     */
-    public static function isGuestAccessEnabled()
-    {
-        return AuthHelper::isGuestAccessEnabled();
-    }
-
-    /**
      * @inheritdoc
      */
     public function switchIdentity($identity, $duration = 0)
@@ -195,15 +183,6 @@ class User extends \yii\web\User
         }
 
         parent::switchIdentity($identity, $duration);
-    }
-
-    /**
-     * @return bool
-     * @deprecated since 1.14
-     */
-    public function canDeleteAccount()
-    {
-        return ($this->getAuthClientUserService())->canDeleteAccount();
     }
 
     /**

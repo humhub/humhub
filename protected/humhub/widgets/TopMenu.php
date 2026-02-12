@@ -8,9 +8,9 @@
 
 namespace humhub\widgets;
 
-use Yii;
 use humhub\modules\ui\menu\widgets\Menu;
-use humhub\modules\user\components\User;
+use humhub\modules\user\helpers\AuthHelper;
+use Yii;
 
 /**
  * TopMenuWidget is the primary top navigation class extended from MenuWidget.
@@ -39,7 +39,7 @@ class TopMenu extends Menu
         parent::init();
 
         // Don't show top menu if guest access is disabled
-        if (Yii::$app->user->isGuest && !User::isGuestAccessEnabled()) {
+        if (Yii::$app->user->isGuest && !AuthHelper::isGuestAccessEnabled()) {
             $this->template = '';
         }
     }
