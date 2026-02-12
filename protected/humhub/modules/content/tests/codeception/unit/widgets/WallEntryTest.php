@@ -8,7 +8,6 @@
 
 namespace humhub\modules\content\tests\codeception\unit\widgets;
 
-
 use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
 
 /**
