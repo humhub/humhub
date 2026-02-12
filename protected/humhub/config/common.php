@@ -90,6 +90,16 @@ $config = [
                 \humhub\modules\notification\targets\MobileTarget::class => [],
             ],
         ],
+        'fs' => [
+            'class' => 'humhub\components\fs\FilesystemManager',
+            'mounts' => [
+                'assets' => [
+                    'class' => 'humhub\components\fs\Local',
+                    'path' => '@webroot/assets',
+                    'baseUrl' => '@web/assets',
+                ],
+            ],
+        ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
@@ -163,7 +173,10 @@ $config = [
             'class' => 'humhub\components\assets\AssetImageRegistry',
             'definitions' => [
                 'logo' => ['file' => '@webroot/uploads/logo_image/logo.png'],
-                'icon' => ['file' => '@webroot/uploads/icon/icon.png', 'defaultFile' => '@webroot-static/img/default_icon.png'],
+                'icon' => [
+                    'file' => '@webroot/uploads/icon/icon.png',
+                    'defaultFile' => '@webroot-static/img/default_icon.png'
+                ],
                 'loginBackground' => ['file' => '@webroot/uploads/login-bg/background.png'],
                 'mailHeader' => ['file' => '@webroot/uploads/icon/icon.png'],
             ],
