@@ -16,7 +16,7 @@ use yii\web\AssetBundle;
 class AssetManager extends \yii\web\AssetManager
 {
     public $appendTimestamp = true;
-    public string $fsMount;
+    public string $fsMount = 'assets';
     private array $filesystemOptions = [
         'visibility' => Visibility::PUBLIC,
         'directory_visibility' => Visibility::PUBLIC,
