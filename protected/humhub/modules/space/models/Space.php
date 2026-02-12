@@ -668,15 +668,6 @@ class Space extends ContentContainerActiveRecord
     }
 
     /**
-     * @return bool
-     * @deprecated
-     */
-    public function isModuleEnabled($id)
-    {
-        return $this->moduleManager->isEnabled($id);
-    }
-
-    /**
      * @return MemberListService
      * @since 1.14
      */

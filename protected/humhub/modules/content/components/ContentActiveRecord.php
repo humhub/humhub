@@ -18,7 +18,6 @@ use humhub\modules\content\models\Movable;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
-use humhub\modules\content\widgets\WallEntry;
 use humhub\modules\file\models\File;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicBadge;
@@ -235,14 +234,6 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     }
 
     /**
-     * @deprecated since 1.18 use getBadges() instead
-     */
-    public function getLabels($labels = [], $includeContentName = true)
-    {
-        return $this->getBadges($labels, $includeContentName);
-    }
-
-    /**
      * Returns either Label widget instances or strings.
      *
      * Subclasses should call `paren::getLabels()` as follows:
@@ -384,51 +375,18 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     }
 
     /**
-     * Returns the wall output widget of this content.
-     *
-     * @param array $params optional parameters for WallEntryWidget
-     * @return string
-     * @deprecated since 1.7 use StreamEntryWidget::renderStreamEntry()
-     */
-    public function getWallOut($params = [])
-    {
-        if (is_subclass_of($this->wallEntryClass, StreamEntryWidget::class, true)) {
-            $params['model'] = $this;
-        } elseif (!empty($this->wallEntryClass)) {
-            $params['contentObject'] = $this; // legacy WallEntry widget
-        }
-
-        return call_user_func($this->wallEntryClass . '::widget', $params);
-    }
-
-    /**
      * Returns an instance of the assigned wall entry widget instance. This can be used to check matadata fields
      * of the related widget.
      *
-     * @return null|WallEntry|WallStreamEntryWidget for this class by wallEntryClass property , null will be
+     * @return null|WallStreamEntryWidget for this class by wallEntryClass property , null will be
      * returned if this wallEntryClass is empty
      * @deprecated since 1.7
      */
     public function getWallEntryWidget()
     {
-        if (empty($this->wallEntryClass)) {
-            return null;
-        }
-
-        if (is_subclass_of($this->wallEntryClass, WallEntry::class)) {
-            $class = $this->wallEntryClass;
-            $widget = new $class();
-            $widget->contentObject = $this;
-            return $widget;
-        }
-
-        if ($this->wallEntryClass) {
-            $class = $this->wallEntryClass;
-            $widget = new $class(['model' => $this]);
-            return $widget;
-        }
-
-        return null;
+        return $this->wallEntryClass
+            ? new $this->wallEntryClass(['model' => $this])
+            : null;
     }
 
     /**

@@ -202,17 +202,6 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     }
 
     /**
-     * Returns the wall output for this content container.
-     * This is e.g. used in search results.
-     *
-     * @return string
-     */
-    public function getWallOut()
-    {
-        return "Default Wall Output for Class " . static::class;
-    }
-
-    /**
      * @param $token
      * @return ContentContainerActiveRecord|null
      */

@@ -136,11 +136,6 @@ abstract class BasePicker extends JsInputWidget
     public $form;
 
     /**
-     * @deprecated since 1.2.2 use $name instead
-     */
-    public $formName;
-
-    /**
      * Model instance.
      *
      * @var ActiveRecord
@@ -220,19 +215,6 @@ abstract class BasePicker extends JsInputWidget
      * @return string|null image url or null if no selection image required.
      */
     abstract protected function getItemImage($item);
-
-    /**
-     * @inhertidoc
-     */
-    public function beforeRun()
-    {
-        //Only for compatibility
-        if (empty($this->name)) {
-            $this->name = $this->formName;
-        }
-
-        return parent::beforeRun();
-    }
 
     /**
      * @inhertidoc

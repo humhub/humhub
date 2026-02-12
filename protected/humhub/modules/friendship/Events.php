@@ -8,10 +8,12 @@
 
 namespace humhub\modules\friendship;
 
+use humhub\helpers\ControllerHelper;
+use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\user\widgets\AccountMenu;
 use Yii;
 use yii\base\BaseObject;
 use yii\base\Event;
-use yii\helpers\Url;
 
 /**
  * Events provides callbacks for all defined module events.
@@ -28,14 +30,16 @@ class Events extends BaseObject
     public static function onAccountMenuInit($event)
     {
         if (Yii::$app->getModule('friendship')->isFriendshipEnabled()) {
-            $event->sender->addItem([
+            /* @var AccountMenu $menu */
+            $menu = $event->sender;
+
+            $menu->addEntry(new MenuLink([
                 'label' => Yii::t('FriendshipModule.base', 'Friends'),
-                'url' => Url::to(['/friendship/manage']),
-                'icon' => '<i class="fa fa-group"></i>',
-                'group' => 'account',
+                'url' => ['/friendship/manage'],
+                'icon' => 'group',
                 'sortOrder' => 130,
-                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'friendship'),
-            ]);
+                'isActive' => ControllerHelper::isActivePath('friendship'),
+            ]));
         }
     }
 

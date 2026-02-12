@@ -16,7 +16,6 @@ use humhub\interfaces\ArchiveableInterface;
 use humhub\interfaces\EditableInterface;
 use humhub\interfaces\ViewableInterface;
 use humhub\libs\UUIDValidator;
-use humhub\modules\activity\models\Activity;
 use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\content\activities\ContentCreatedActivity;
 use humhub\modules\content\components\ContentActiveRecord;
@@ -34,7 +33,6 @@ use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\content\services\ContentStateService;
-use humhub\modules\content\services\ContentTagService;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\PermissionManager;
@@ -143,12 +141,6 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      * @var ContentContainerActiveRecord the Container (e.g. Space or User) where this content belongs to.
      */
     protected $_container = null;
-
-    /**
-     * @var bool flag to disable the creation of default social activities like activity and notifications in afterSave() at content creation.
-     * @deprecated since v1.2.3 use ContentActiveRecord::silentContentCreation instead.
-     */
-    public $muteDefaultSocialActivities = false;
 
     /**
      * @event Event is used when a Content state is changed.
@@ -862,29 +854,6 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     }
 
     /**
-     * Adds a new ContentTagRelation for this content and the given $tag instance.
-     *
-     * @param ContentTag $tag
-     * @return bool if the provided tag is part of another ContentContainer
-     * @deprecated since 1.15
-     */
-    public function addTag(ContentTag $tag)
-    {
-        return (new ContentTagService($this))->addTag($tag);
-    }
-
-    /**
-     * Adds the given ContentTag array to this content.
-     *
-     * @param $tags ContentTag[]
-     * @deprecated since 1.15
-     */
-    public function addTags($tags)
-    {
-        (new ContentTagService($this))->addTags($tags);
-    }
-
-    /**
      * Checks if the given user can edit/create this content.
      *
      * A user can edit a content if one of the following conditions are met:
@@ -1115,17 +1084,4 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     {
         return new ContentStateService(['content' => $this]);
     }
-
-    /**
-     * @param int|string|null $state
-     * @param array $options Additional options depending on state
-     * @since 1.14
-     * @deprecated Use $this->getStateService()->set(). It will be deleted in v1.15.
-     */
-    public function setState($state, array $options = [])
-    {
-        $this->getStateService()->set($state, $options);
-    }
-
-
 }

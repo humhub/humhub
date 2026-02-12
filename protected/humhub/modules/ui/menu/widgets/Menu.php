@@ -9,13 +9,11 @@
 namespace humhub\modules\ui\menu\widgets;
 
 use humhub\components\Event;
-use humhub\components\View;
 use humhub\libs\Sort;
 use humhub\modules\ui\menu\MenuEntry;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\widgets\BaseStack;
 use humhub\widgets\JsWidget;
-use Yii;
 use yii\helpers\Url;
 
 /**
@@ -82,12 +80,6 @@ abstract class Menu extends JsWidget
             return '';
         }
 
-        if ($this->template === '@humhub/widgets/views/leftNavigation') {
-            Yii::debug('Deprecated usage of leftNavigation view!');
-            $this->template = '@ui/menu/widgets/views/left-navigation.php';
-        }
-
-
         return $this->render($this->template, $this->getViewParams());
     }
 
@@ -102,9 +94,6 @@ abstract class Menu extends JsWidget
             'menu' => $this,
             'entries' => $this->getSortedEntries(),
             'options' => $this->getOptions(),
-            // Deprecated
-            'items' => $this->getItems(),
-            'numItems' => count($this->getItems()),
         ];
     }
 
@@ -198,57 +187,6 @@ abstract class Menu extends JsWidget
         foreach ($this->entries as $currentEntry) {
             $currentEntry->setIsActive(($currentEntry->compare($entry)));
         }
-    }
-
-    /**
-     * -------------------------------------------------------------------
-     *                       Compatibility Layer
-     * -------------------------------------------------------------------
-     */
-
-    /**
-     * @param array $entryArray
-     * @deprecated since 1.4
-     */
-    public function addItem($entryArray)
-    {
-        $entry = MenuLink::createByArray($entryArray);
-        $this->addEntry($entry);
-    }
-
-    /**
-     * @return array item group
-     * @deprecated since 1.4 not longer supported!
-     */
-    public function addItemGroup($itemGroup)
-    {
-        //throw new InvalidCallException('Item groups are not longer supported');
-    }
-
-    /**
-     * @return array the item group
-     * @deprecated since 1.4
-     */
-    public function getItemGroups()
-    {
-        return [
-            ['id' => 'default', 'label' => '', 'icon' => '', 'sortOrder' => 1000],
-        ];
-    }
-
-    /**
-     * @return array the menu items as array list
-     * @deprecated since 1.4
-     */
-    public function getItems($group = '')
-    {
-        $items = [];
-        foreach ($this->entries as $entry) {
-            if ($entry instanceof MenuLink) {
-                $items[] = $entry->toArray();
-            }
-        }
-        return $items;
     }
 
     /**
@@ -351,44 +289,6 @@ abstract class Menu extends JsWidget
         Event::on(static::class, static::EVENT_RUN, function ($event) use ($url): void {
             $event->sender->setInactive($url);
         });
-    }
-
-    /**
-     * @return array the menu entry as array
-     * @deprecated since 1.4
-     */
-    public function getActive()
-    {
-        $activeEntry = $this->getActiveEntry();
-        if ($activeEntry && $activeEntry instanceof MenuLink) {
-            return $activeEntry->toArray();
-        }
-
-        return null;
-    }
-
-    /**
-     * @param $url string the URL or route
-     * @deprecated since 1.4
-     */
-    public function deleteItemByUrl($url)
-    {
-        $entry = $this->getEntryByUrl($url);
-        if ($entry) {
-            $this->removeEntry($entry);
-        }
-    }
-
-    /**
-     * @deprecated since 1.4
-     */
-    public static function setViewState()
-    {
-        $instance = new static();
-        if (!empty($instance->id)) {
-            $active = $instance->getActive();
-            $instance->view->registerJs('humhub.modules.ui.navigation.setActive("' . $instance->id . '", ' . json_encode($active) . ');', View::POS_END, 'active-' . $instance->id);
-        }
     }
 
 }

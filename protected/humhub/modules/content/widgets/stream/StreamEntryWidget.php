@@ -5,7 +5,6 @@ namespace humhub\modules\content\widgets\stream;
 use Exception;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\widgets\JsWidget;
-use Yii;
 
 /**
  * This widget class serves as base class for all kind of wall entries.
@@ -77,51 +76,12 @@ abstract class StreamEntryWidget extends JsWidget
      */
     public static function renderStreamEntry(ContentActiveRecord $model, ?StreamEntryOptions $renderOptions = null, $widgetParams = [])
     {
-        if (!is_a($model->wallEntryClass, static::class, true)) {
-            return static::renderLegacyWallEntry($model, $widgetParams);
-        }
-
         $widgetParams['model'] = $model;
         $widgetParams['renderOptions'] = $renderOptions;
         if ($renderOptions && is_a($renderOptions->getStreamEntryWidgetClass(), static::class, true)) {
             $widgetParams['class'] = $renderOptions->getStreamEntryWidgetClass();
         }
         return call_user_func($model->wallEntryClass . '::widget', $widgetParams);
-    }
-
-    /**
-     * @param ContentActiveRecord $record
-     * @param array $options
-     * @return string
-     * @throws Exception
-     * @deprecated since 1.7 contains render logic for deprecated WallEntry widget
-     */
-    private static function renderLegacyWallEntry(ContentActiveRecord $record, $options = [])
-    {
-        if (!is_array($options)) {
-            $options = [];
-        }
-
-        if (isset($options['jsWidget'])) {
-            $jsWidget = $options['jsWidget'];
-            unset($options['jsWidget']);
-        } else {
-            $wallEntryWidget = $record->getWallEntryWidget();
-            $jsWidget = $wallEntryWidget instanceof StreamEntryWidget ? $wallEntryWidget->jsWidget : null;
-        }
-
-        if ($jsWidget === null) {
-            Yii::error('Model ' . $record::class . ' must define $wallEntryClass or set $streamChannel to null!', 'content');
-            return '';
-        }
-
-        $params = [
-            'content' => $record->getWallOut($options),
-            'jsWidget' => $jsWidget,
-            'entry' => $record->content,
-        ];
-
-        return Yii::$app->controller->renderPartial('@humhub/modules/content/views/layouts/wallEntry', $params);
     }
 
     /**

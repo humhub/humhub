@@ -35,7 +35,7 @@ class Badge extends Widget
     public bool $encodeLabel = false;
 
     public int $sortOrder = 1000;
-    public $link;
+    public ?Button $link = null;
 
     /**
      * Initializes the widget.
@@ -61,7 +61,7 @@ class Badge extends Widget
         $result = Html::tag('span', $text, $this->options);
 
         if ($this->link) {
-            $result = (string) $this->link->setText($result);
+            $result = (string) $this->link->setLabel($result);
         }
 
         return $result;

@@ -13,8 +13,6 @@ Yii::setAlias('@humhub', $_ENV['HUMHUB_ALIASES__HUMHUB'] ?? realpath(__DIR__ . '
 
 // Workaround: PHP 7.3 compatible ZF2 ArrayObject class
 Yii::$classMap[\Zend\Stdlib\ArrayObject::class] = '@humhub/compat/ArrayObject.php';
-Yii::$classMap['humhub\modules\search\interfaces\Searchable'] = '@humhub/compat/search/Searchable.php';
-Yii::$classMap['humhub\modules\search\events\SearchAddEvent'] = '@humhub/compat/search/SearchAddEvent.php';
 
 // Bootstrap 5 Migration
 Yii::$classMap['yii\bootstrap\BootstrapAsset'] = '@humhub/compat/bootstrap/BootstrapAsset.php';

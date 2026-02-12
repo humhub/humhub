@@ -28,11 +28,6 @@ class FilterPanel extends Widget
     public $view = 'filterPanel';
 
     /**
-     * @deprecated since 1.18
-     */
-    public $span = 3;
-
-    /**
      * @inheritdoc
      */
     public function run()

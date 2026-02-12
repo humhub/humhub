@@ -5,7 +5,7 @@ HumHub Changelog
 ----------
 - Enh #8011: Added `AssetImage` as replacement for `ProfileImage`, `SiteIcon`, `LogoImage`, `LoginBackground`, `MailHeader`
 - Enh #8011: Added `AssetManager` FlySystem support
-
+- Enh #7980: Remove deprecations
 
 1.18.0 (February 4, 2026)
 -------------------------
