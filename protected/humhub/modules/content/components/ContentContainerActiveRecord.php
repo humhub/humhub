@@ -117,7 +117,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     {
         if ($this->_image === null) {
             $this->_image = new AssetImage([
-                'file' => '@webroot/uploads/profile_image/' . $this->guid . '.jpg',
+                'file' => '/profile_image/' . $this->guid . '.jpg',
                 'defaultOptions' => [
                     'width' => 150,
                     'height' => 150,
@@ -138,7 +138,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     {
         if ($this->_bannerImage === null) {
             $this->_bannerImage = new AssetImage([
-                'file' => '@webroot/uploads/profile_image/banner/' . $this->guid . '.jpg',
+                'file' => '/profile_image/banner/' . $this->guid . '.jpg',
                 'defaultOptions' => [
                     'width' => 1134,
                     'height' => 192,

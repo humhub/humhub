@@ -8,12 +8,21 @@ use yii\base\InvalidConfigException;
 
 class FilesystemManager extends Component
 {
+
+    public $fsData = 'data';
+
     public array $mounts = [];
 
     /**
      * @var array<string, AbstractFs>
      */
     private array $_instances = [];
+
+
+    public function data(): AbstractFs
+    {
+        return $this->disk($this->fsData);
+    }
 
     public function disk(string $id): AbstractFs
     {

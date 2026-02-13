@@ -5,6 +5,7 @@ namespace humhub\components\assets;
 use humhub\assets\AppAsset;
 use humhub\assets\CoreBundleAsset;
 use humhub\components\fs\AbstractFs;
+use humhub\components\fs\Local;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\Visibility;
 use Yii;
@@ -38,6 +39,19 @@ class AssetManager extends \yii\web\AssetManager
         if ($this->linkAssets) {
             throw new InvalidConfigException('Linking assets is not supported.');
         }
+    }
+
+    public function publish($path, $options = [])
+    {
+        if (!empty($options['mount'])) {
+            if ($options['mount'] instanceof Local) {
+                $path = $options['mount']->path . DIRECTORY_SEPARATOR . $path;
+            } else {
+                // ToDo: Copy Path or File into Temp. Dir and Publish it
+                throw new InvalidArgumentException('Unsupported Mount class: ' . gettype($options['mount']));
+            }
+        }
+        return parent::publish($path, $options);
     }
 
     public function clear()

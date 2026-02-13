@@ -2,14 +2,15 @@
 
 namespace humhub\components\assets;
 
+use humhub\components\fs\AbstractFs;
 use humhub\modules\file\libs\ImageHelper;
 use Imagine\Image\Box;
+use Imagine\Image\Format;
 use Imagine\Image\ManipulatorInterface;
 use Imagine\Image\Point;
 use Yii;
 use yii\base\Component;
 use yii\base\InvalidValueException;
-use yii\helpers\FileHelper;
 use yii\helpers\Url;
 use yii\imagine\Image;
 use yii\web\UploadedFile;
@@ -49,6 +50,8 @@ class AssetImage extends Component
     private string $fileName;
     private bool $exists;
 
+    private AbstractFs $fs;
+
     public function __construct($config = [])
     {
         parent::__construct($config);
@@ -57,13 +60,15 @@ class AssetImage extends Component
             throw new InvalidValueException('Asset image file cannot be empty.');
         }
 
+        $this->fs = Yii::$app->fs->data();
+
         $this->file = Yii::getAlias($this->file);
         $this->fileName = basename($this->file);
         $this->path = dirname($this->file);
-        $this->exists = file_exists($this->file);
+        $this->exists = $this->fs->fileExists($this->file);
         $this->defaultFile = Yii::getAlias($this->defaultFile);
 
-        FileHelper::createDirectory($this->path);
+        $this->fs->createDirectory($this->path);
     }
 
     /**
@@ -82,11 +87,11 @@ class AssetImage extends Component
         }
 
         $scaledFileName = $this->path . DIRECTORY_SEPARATOR . $this->getFileNameWithOptions($options);
-        if (!file_exists($scaledFileName)) {
+        if (!$this->fs->fileExists($scaledFileName)) {
             $this->convert($scaledFileName, $options);
         }
 
-        $published = Yii::$app->assetManager->publish($scaledFileName);
+        $published = Yii::$app->assetManager->publish($scaledFileName, ['mount' => $this->fs]);
         return Url::to($published[1], $scheme);
     }
 
@@ -95,13 +100,13 @@ class AssetImage extends Component
         $this->setByFile($file->tempName);
     }
 
-    public function setByFile(string $fileName): void
+    public function setByFile(string $tempFileName): void
     {
         $this->delete();
-        ImageHelper::checkMaxDimensions($fileName);
-        $image = Image::getImagine()->open($fileName);
-        ImageHelper::fixJpegOrientation($image, $fileName);
-        $image->save($this->file);
+        ImageHelper::checkMaxDimensions($tempFileName);
+        $image = Image::getImagine()->open($tempFileName);
+        ImageHelper::fixJpegOrientation($image, $tempFileName);
+        $this->fs->write($this->file, $image->get($this->getFileFormat()));
 
         $this->exists = true;
 
@@ -123,8 +128,12 @@ class AssetImage extends Component
 
     private function convert(string $newFileName, array $options = []): bool
     {
-        $file = ($this->exists) ? $this->file : $this->defaultFile;
-        $image = Image::getImagine()->open($file);
+        $image = Image::getImagine();
+        if ($this->exists) {
+            $image = $image->load($this->fs->read($this->file));
+        } else {
+            $image = $image->open($this->defaultFile);
+        }
 
         if (isset($options['square'])) {
             $options['width'] = $options['square'];
@@ -146,7 +155,7 @@ class AssetImage extends Component
             $image = $image->resize($image->getSize()->widen($options['maxWidth']));
         }
 
-        $image->save($newFileName);
+        $this->fs->write($newFileName, $image->get($this->getFileFormat()));
 
         return true;
     }
@@ -154,8 +163,8 @@ class AssetImage extends Component
     public function delete(): void
     {
         try {
-            if (file_exists($this->file)) {
-                FileHelper::unlink($this->file);
+            if ($this->fs->fileExists($this->file)) {
+                $this->fs->delete($this->file);
             }
         } catch (\Exception $e) {
             Yii::error($e, 'base');
@@ -167,10 +176,10 @@ class AssetImage extends Component
 
     public function crop($x, $y, $h, $w)
     {
-        $image = Image::getImagine()->open($this->file)
+        $image = Image::getImagine()->load($this->fs->read($this->file))
             ->crop(new Point($x, $y), new Box($w, $h));
 
-        $image->save($this->file);
+        $this->fs->write($this->file, $image->get($this->getFileFormat()));
 
         $this->deleteWithOptions();
     }
@@ -182,10 +191,28 @@ class AssetImage extends Component
 
     private function deleteWithOptions(): void
     {
-        $info = pathinfo($this->fileName);
-        foreach (FileHelper::findFiles($this->path, ['only' => [$info['filename'] . '_*']]) as $file) {
-            FileHelper::unlink($file);
+        $prefix = pathinfo($this->fileName, PATHINFO_FILENAME) . '_';
+
+        foreach ($this->fs->listContents($this->path) as $f) {
+            if ($f->isFile() && str_starts_with(basename($f->path()), $prefix)) {
+                $this->fs->delete($f->path());
+            }
         }
+    }
+
+    private function getFileFormat(): string
+    {
+        $extension = strtolower(pathinfo($this->file, PATHINFO_EXTENSION));
+
+        $formatMap = [
+            'jpg' => Format::ID_JPEG,
+            'jpeg' => Format::ID_JPEG,
+            'png' => Format::ID_PNG,
+            'gif' => Format::ID_PNG,
+            'webp' => Format::ID_WEBP,
+        ];
+
+        return $formatMap[$extension] ?? 'png';
     }
 
     public function __toString(): string

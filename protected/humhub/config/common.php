@@ -96,6 +96,10 @@ $config = [
                     'path' => '@webroot/assets',
                     'baseUrl' => '@web/assets',
                 ],
+                'data' => [
+                    'class' => 'humhub\components\fs\Local',
+                    'path' => '@webroot/uploads',
+                ],
             ],
         ],
         'log' => [
@@ -170,13 +174,13 @@ $config = [
         'img' => [
             'class' => 'humhub\components\assets\AssetImageRegistry',
             'definitions' => [
-                'logo' => ['file' => '@webroot/uploads/logo_image/logo.png'],
+                'logo' => ['file' => '/logo_image/logo.png'],
                 'icon' => [
-                    'file' => '@webroot/uploads/icon/icon.png',
-                    'defaultFile' => '@webroot-static/img/default_icon.png'
+                    'file' => '/icon/icon.png',
+                    'defaultFile' => '@webroot-static/img/default_icon.png',
                 ],
-                'loginBackground' => ['file' => '@webroot/uploads/login-bg/background.png'],
-                'mailHeader' => ['file' => '@webroot/uploads/icon/icon.png'],
+                'loginBackground' => ['file' => '/login-bg/background.png'],
+                'mailHeader' => ['file' => '/icon/icon.png'],
             ],
         ],
         'view' => [
