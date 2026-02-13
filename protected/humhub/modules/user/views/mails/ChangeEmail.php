@@ -9,6 +9,8 @@ use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\helpers\MailStyleHelper;
 use humhub\modules\user\models\User;
+use humhub\widgets\mails\MailButton;
+use humhub\widgets\mails\MailButtonList;
 
 /* @var View $this */
 /* @var string $approveUrl */
@@ -37,7 +39,6 @@ use humhub\modules\user\models\User;
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
                                     <tr>
                                         <td valign="top" width="auto" align="center">
-                                            <!-- start button -->
                                             <table border="0" align="center" cellpadding="0" cellspacing="0">
                                                 <tr>
                                                     <td width="auto" align="center" valign="middle" height="28"
@@ -50,7 +51,6 @@ use humhub\modules\user\models\User;
                                                     </td>
                                                 </tr>
                                             </table>
-                                            <!-- end button -->
                                         </td>
                                     </tr>
 
@@ -134,24 +134,12 @@ use humhub\modules\user\models\User;
 
                                     <tr>
                                         <td valign="top" width="auto" align="center">
-                                            <!-- start button -->
-                                            <table border="0" align="center" cellpadding="0" cellspacing="0">
-                                                <tr>
-                                                    <td width="auto" align="center" valign="middle" height="32"
-                                                        style="background-color:<?= MailStyleHelper::getColorPrimary() ?>;  border-radius:5px; background-clip: padding-box;font-size:14px; font-family: <?= MailStyleHelper::getFontFamily() ?>; text-align:center;  color:<?= MailStyleHelper::getTextColorContrast() ?>; font-weight: 600; padding: 5px 30px">
-
-                                                        <span
-                                                            style="color: <?= MailStyleHelper::getTextColorContrast() ?>; font-weight: 300">
-                                                            <a href="<?= $approveUrl ?>"
-                                                               style="text-decoration: none; color: <?= MailStyleHelper::getTextColorContrast() ?>; font-weight: 300">
-                                                                <strong><?= Yii::t('UserModule.account', 'Confirm') ?></strong>
-                                                            </a>
-                                                        </span>
-                                                    </td>
-
-                                                </tr>
-                                            </table>
-                                            <!-- end button -->
+                                            <?= MailButtonList::widget(['buttons' => [
+                                                MailButton::widget([
+                                                    'url' => $approveUrl,
+                                                    'text' => Yii::t('UserModule.account', 'Confirm'),
+                                                ]),
+                                            ]]) ?>
                                         </td>
 
                                     </tr>
