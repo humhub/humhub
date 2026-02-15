@@ -8,6 +8,8 @@
 
 namespace humhub\widgets;
 
+use humhub\widgets\bootstrap\Tabs;
+
 class SettingsTabs extends Tabs
 {
     public $navType = 'nav-tabs tab-menu tab-menu-settings';
