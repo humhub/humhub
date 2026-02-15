@@ -8,6 +8,7 @@ use Imagine\Image\Box;
 use Imagine\Image\Format;
 use Imagine\Image\ManipulatorInterface;
 use Imagine\Image\Point;
+use League\Flysystem\Visibility;
 use Yii;
 use yii\base\Component;
 use yii\base\InvalidValueException;
@@ -46,6 +47,10 @@ class AssetImage extends Component
     public array $masterOptions = [];
     public ?string $defaultFile = null;
 
+    private array $filesystemOptions = [
+        'visibility' => Visibility::PUBLIC,
+        'directory_visibility' => Visibility::PUBLIC,
+    ];
     private string $path;
     private string $fileName;
     private bool $exists;
@@ -68,7 +73,7 @@ class AssetImage extends Component
         $this->exists = $this->fs->fileExists($this->file);
         $this->defaultFile = Yii::getAlias($this->defaultFile);
 
-        $this->fs->createDirectory($this->path);
+        $this->fs->createDirectory($this->path, $this->filesystemOptions);
     }
 
     /**
@@ -106,7 +111,7 @@ class AssetImage extends Component
         ImageHelper::checkMaxDimensions($tempFileName);
         $image = Image::getImagine()->open($tempFileName);
         ImageHelper::fixJpegOrientation($image, $tempFileName);
-        $this->fs->write($this->file, $image->get($this->getFileFormat()));
+        $this->fs->write($this->file, $image->get($this->getFileFormat()), $this->filesystemOptions);
 
         $this->exists = true;
 
@@ -155,7 +160,7 @@ class AssetImage extends Component
             $image = $image->resize($image->getSize()->widen($options['maxWidth']));
         }
 
-        $this->fs->write($newFileName, $image->get($this->getFileFormat()));
+        $this->fs->write($newFileName, $image->get($this->getFileFormat()), $this->filesystemOptions);
 
         return true;
     }
@@ -179,7 +184,7 @@ class AssetImage extends Component
         $image = Image::getImagine()->load($this->fs->read($this->file))
             ->crop(new Point($x, $y), new Box($w, $h));
 
-        $this->fs->write($this->file, $image->get($this->getFileFormat()));
+        $this->fs->write($this->file, $image->get($this->getFileFormat()), $this->filesystemOptions);
 
         $this->deleteWithOptions();
     }
