@@ -56,11 +56,11 @@ $module = Yii::$app->getModule('comment');
         </div>
 
         <div class="wall-entry-controls">
-            <?= CommentEntryLinks::widget(['object' => $comment]) ?>
+            <?= CommentEntryLinks::widget(['comment' => $comment]) ?>
         </div>
 
         <div class="nested-comments-root">
-            <?= Comments::widget(['object' => $comment]) ?>
+            <?= Comments::widget(['parentComment' => $comment]) ?>
         </div>
     </div>
 </div>

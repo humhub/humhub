@@ -8,29 +8,19 @@
 
 namespace humhub\modules\comment\widgets;
 
-use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Widget;
+use humhub\modules\comment\helpers\IdHelper;
 use humhub\modules\comment\models\Comment as CommentModel;
 use humhub\modules\comment\Module;
-use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\models\Content;
 use humhub\modules\file\handler\FileHandlerCollection;
 use Yii;
 use yii\helpers\Url;
 
-/**
- * This widget is used include the comments functionality to a wall entry.
- *
- * Normally it shows a excerpt of all comments, but provides the functionality
- * to show all comments.
- *
- * @since 0.5
- */
 class Form extends Widget
 {
-    /**
-     * @var CommentModel|ContentActiveRecord
-     */
-    public $object;
+    public ?Content $content;
+    public ?CommentModel $parentComment;
 
     /**
      * @var Comment|null can be provided if comment validation failed, otherwise a dummy model will be created
@@ -56,7 +46,7 @@ class Form extends Widget
 
         if ($this->isHidden === null) {
             // Hide the comment form for sub comments until the button is clicked
-            $this->isHidden = ($this->object instanceof Comment);
+            $this->isHidden = ($this->parentComment !== null);
         }
     }
 
@@ -72,25 +62,23 @@ class Form extends Widget
         /** @var Module $module */
         $module = Yii::$app->getModule('comment');
 
-        if (!$module->canComment($this->object)) {
+        if (!$module->canComment($this->content)) {
             return '';
         }
 
         if (!$this->model) {
             $this->model = new CommentModel();
-            $this->model->setPolyMorphicRelation($this->object);
+            $this->model->content_id = $this->content->id;
+            $this->model->parent_comment_id = $this->parentComment?->id;
         }
 
         return $this->render('form', [
-            'objectModel' => PolymorphicRelation::getObjectModel($this->object),
-            'objectId' => $this->object->getPrimaryKey(),
-            'id' => $this->object->getUniqueId(),
+            'id' => IdHelper::getId($this->content, $this->parentComment),
             'model' => $this->model,
-            'isNestedComment' => ($this->object instanceof CommentModel),
-            'mentioningUrl' => Url::to([$this->mentioningUrl, 'id' => $this->object->content->id]),
+            'isNestedComment' => ($this->parentComment !== null),
+            'mentioningUrl' => Url::to([$this->mentioningUrl, 'id' => $this->content->id]),
             'isHidden' => $this->isHidden,
             'fileHandlers' => FileHandlerCollection::getByType([FileHandlerCollection::TYPE_IMPORT, FileHandlerCollection::TYPE_CREATE]),
         ]);
     }
-
 }

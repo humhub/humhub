@@ -2,6 +2,7 @@
 /* @var $this yii\web\View */
 /* @var $viewable humhub\modules\user\notifications\Mentioned */
 /* @var $originator \humhub\modules\user\models\User */
+/* @var $comment \humhub\modules\comment\models\Comment */
 
 /* @var $record Notification */
 
@@ -13,7 +14,7 @@ use humhub\widgets\mails\MailButtonList;
 <?php $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>
 
 <?php $comment = $viewable->source; ?>
-<?php $contentRecord = $comment->getCommentedRecord() ?>
+<?php $contentRecord = $comment->content->getPolymorphicRelation() ?>
     <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
         <tr>
             <td>

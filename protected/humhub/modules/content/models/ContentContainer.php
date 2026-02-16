@@ -23,6 +23,7 @@ use yii\db\IntegrityException;
  * @property int $pk
  * @property int $owner_user_id
  * @property string $tags_cached readonly, a comma separted list of assigned tags
+ * @property ContentContainerActiveRecord $polymorphicRelation
  * @mixin PolymorphicRelation
  * @noinspection PropertiesInspection
  */

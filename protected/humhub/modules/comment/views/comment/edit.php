@@ -12,8 +12,6 @@ use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 
 /* @var $this View */
-/* @var $objectModel string */
-/* @var $objectId int */
 /* @var $comment \humhub\modules\comment\models\Comment */
 /* @var $submitUrl string */
 /* @var $fileHandlers BaseFileHandler[] */
@@ -24,8 +22,6 @@ $contentModule = Yii::$app->getModule('content');
 ?>
 <div class="content_edit input-container" id="comment_edit_<?= $comment->id; ?>">
     <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
-    <?= Html::hiddenInput('objectModel', $objectModel); ?>
-    <?= Html::hiddenInput('objectId', $objectId); ?>
 
     <div class="richtext-create-input-group">
         <?= $form->field($comment, 'message')->widget(RichTextField::class, [

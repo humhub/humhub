@@ -16,6 +16,7 @@ use Codeception\Exception\ModuleException;
 use Codeception\Module\Yii2;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\libs\UUID;
+use humhub\models\RecordMap;
 use humhub\models\UrlOembed;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
@@ -149,8 +150,7 @@ trait HumHubHelperTrait
     {
         $activity = Activity::findOne([
             'class' => $class,
-            'object_model' => PolymorphicRelation::getObjectModel($source),
-            'object_id' => $source->getPrimaryKey(),
+            'content_addon_record_id' => RecordMap::getId($source),
         ]);
 
         static::assertNotNull($activity, $msg);

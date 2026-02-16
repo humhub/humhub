@@ -1,26 +1,17 @@
 <?php
 
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
-
-use humhub\components\View;
 use humhub\helpers\Html;
-use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\helpers\MailStyleHelper;
-use humhub\modules\user\models\User;
 
-/* @var $this View */
-/* @var $space Space */
+/* @var $user \humhub\modules\user\models\User */
 /* @var $url string */
-/* @var $contentContainer ContentContainerActiveRecord */
-/* @var $html string */
-/* @var $text string */
-/* @var $originator User */
-/* @var $content string */
+/* @var $content \humhub\modules\content\models\Content */
+/* @var $contentAddon \humhub\modules\content\interfaces\ContentProvider */
+/* @var $contentContainer \humhub\modules\content\models\ContentContainer */
+/* @var $createdAt string */
+/* @var $message string */
+
 ?>
 
 <!-- START NOTIFICATION/ACTIVITY -->
@@ -60,9 +51,9 @@ use humhub\modules\user\models\User;
 
                                                     <td valign="top" align="left" style="padding-right:20px">
                                                         <!-- START: USER IMAGE -->
-                                                        <a href="<?= $originator->createUrl('/user/profile', [], true) ?>">
+                                                        <a href="<?= $user->createUrl('/user/profile', [], true) ?>">
                                                             <img
-                                                                src="<?= $originator->getProfileImage()->getUrl('', true) ?>"
+                                                                src="<?= $user->getProfileImage()->getUrl('', true) ?>"
                                                                 width="50"
                                                                 alt=""
                                                                 style="max-width:50px; display:block !important; border-radius: 4px;"
@@ -83,13 +74,13 @@ use humhub\modules\user\models\User;
                                                                     <div
                                                                         style="width:480px;overflow:hidden;text-overflow:ellipsis;font-size: 13px; line-height: 22px; font-family: <?= MailStyleHelper::getFontFamily() ?>; color:<?= MailStyleHelper::getTextColorMain() ?>; font-weight:300; text-align:left">
                                                                         <!-- content output-->
-                                                                        <?= $content ?>
+                                                                        <?= $message ?>
 
                                                                         <!-- check if activity object has a space -->
-                                                                        <?php if ($space !== null): ?>
+                                                                        <?php if ($contentContainer->polymorphicRelation instanceof Space): ?>
                                                                             <?= Html::a(
-                                                                                $space->displayName,
-                                                                                $space->createUrl(null, [], true),
+                                                                                $contentContainer->polymorphicRelation->displayName,
+                                                                                $contentContainer->polymorphicRelation->createUrl(null, [], true),
                                                                                 [
                                                                                     'style' => 'text-decoration: none; color: ' . MailStyleHelper::getTextColorMain(),
                                                                                 ],

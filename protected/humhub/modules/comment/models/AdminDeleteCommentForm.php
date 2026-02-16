@@ -1,0 +1,41 @@
+<?php
+
+namespace humhub\modules\comment\models;
+
+use Yii;
+
+/**
+ * AdminCommentDeleteForm is shown when admin deletes someone's comment
+ */
+class AdminDeleteCommentForm extends yii\base\Model
+{
+    /**
+     * @var string
+     */
+    public $message;
+
+    /**
+     * @var bool
+     */
+    public $notify;
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['message'], 'required', 'when' => fn($model) => $model->notify],
+            [['message'], 'string'],
+            [['notify'], 'boolean'],
+        ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'message' => Yii::t('CommentModule.base', 'Reason'),
+            'notify' => Yii::t('CommentModule.base', 'Send a notification to author'),
+        ];
+    }
+}
