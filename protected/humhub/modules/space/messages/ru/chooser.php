@@ -8,10 +8,10 @@ return [
     'No spaces found for the given query' => 'По вашему запросу сообщества не найдены.',
     'Search' => 'Поиск',
     'Search for spaces' => 'Поиск по сообществам',
-    'Select {n,plural,=1{space} other{spaces}}' => 'Выберите {n,plural,=1{сообщество} other{сообщества}}',
-    'This field only allows a maximum of {n,plural,=1{# space} other{# spaces}}' => 'Это поле поддерживает максимум {n,plural,=1{# сообщество} other{# сообщества}}',
+    'Select {n,plural,=1{space} other{spaces}}' => 'Выберите {n,plural,one{# сообщество} many{# сообществ} other{# сообщества}}',
+    'This field only allows a maximum of {n,plural,=1{# space} other{# spaces}}' => 'Это поле поддерживает максимум {n,plural,one{# сообщество} many{# сообществ} other{# сообщества}}',
     'This space is archived' => 'Это сообщество архивировано',
     'Please enter at least {count} characters to search Spaces.' => 'Чтобы найти другие сообщества, введите в поиске по крайней мере {count} символов.',
     'You are following this space' => 'Вы являетесь подписчиком этого сообщества',
-    '{n,plural,=1{# new entry} other{# new entries}} since your last visit' => '{n,plural,=1{# новая запись} other{# новых записей}} со времени вашего последнего визита',
+    '{n,plural,=1{# new entry} other{# new entries}} since your last visit' => '{n, plural, one{# новая запись} few{# новых записи} other{# новых записей}} со времени вашего последнего визита',
 ];
