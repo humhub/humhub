@@ -12,7 +12,7 @@ HumHub Changelog
 - Fix #8012: Modal backdrop over the account deletion modal for new Users
 - Enh #8017: Exclude `vendor` from module i18n extract
 - Fix #8020: Some email notifications are missing auto-contrast for the button text color
-- Fix: Cannot register if `showRegistrationForm` is disabled
+- Fix #8027: Cannot register if `showRegistrationForm` is disabled
 
 1.18.0 (February 4, 2026)
 -------------------------
