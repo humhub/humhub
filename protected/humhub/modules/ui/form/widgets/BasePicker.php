@@ -383,10 +383,8 @@ abstract class BasePicker extends JsInputWidget
      */
     protected function getData()
     {
-        $allowMultiple = $this->maxSelection !== 1;
-
-        $placeholder = ($this->placeholder != null) ? $this->placeholder : Yii::t('UserModule.chooser', 'Select {n,plural,=1{item} other{items}}', ['n' => ($allowMultiple) ? 2 : 1]);
-        $placeholderMore = ($this->placeholderMore != null) ? $this->placeholderMore : Yii::t('UserModule.chooser', 'Select...');
+        $placeholder = ($this->placeholder != null) ? $this->placeholder : Yii::t('UiModule.base', 'Select something');
+        $placeholderMore = ($this->placeholderMore != null) ? $this->placeholderMore : Yii::t('UiModule.base', 'Select something');
 
         $result = [
             'add-options' => $this->addOptions,

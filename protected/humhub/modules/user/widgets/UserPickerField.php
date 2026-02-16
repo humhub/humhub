@@ -53,16 +53,12 @@ class UserPickerField extends ContentContainerPickerField
         $allowMultiple = $this->maxSelection !== 1;
         $result['placeholder'] = ($this->placeholder != null)
             ? $this->placeholder
-            : Yii::t(
-                'UserModule.chooser',
-                'Select {n,plural,=1{user} other{users}}',
-                ['n' => ($allowMultiple) ? 2 : 1],
-            );
+            : Yii::t('UiModule.base', 'Select something');
 
         if ($this->placeholder && !$this->placeholderMore) {
             $result['placeholder-more'] = $this->placeholder;
         } else {
-            $result['placeholder-more'] = ($this->placeholderMore) ?: Yii::t('UserModule.chooser', 'Add user');
+            $result['placeholder-more'] = ($this->placeholderMore) ?: Yii::t('UiModule.base', 'Select something');
         }
 
         $result['no-result'] = Yii::t('UserModule.chooser', 'No users found for the given query.');
