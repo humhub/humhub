@@ -48,7 +48,7 @@ return [
     'Last updated {time}' => 'Обновлено: {time}',
     'Load more' => 'Показать ещё',
     'Lock comments' => 'Блокировать комментарии',
-    'Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.' => 'Уже закреплено максимальное количество записей!<br>Одновременно можно закрепить не более {count, plural, =0{# записей} 1{# записи} few{# записей} many{# записей}}',
+    'Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.' => 'Уже закреплено максимальное количество записей!<br>Одновременно можно закрепить не более {count} записей',
     'Move content' => 'Переместить запись',
     'Move to archive' => 'Переместить в архив',
     'New Updates Available!' => 'Доступны новые обновления!',
