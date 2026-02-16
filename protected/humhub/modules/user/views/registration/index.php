@@ -29,12 +29,10 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
                 <?= AuthChoice::widget(['showOrDivider' => $showRegistrationForm]) ?>
             <?php endif; ?>
 
-            <?php if ($showRegistrationForm): ?>
-                <?php $form = ActiveForm::begin(['id' => 'registration-form', 'enableClientValidation' => false]); ?>
-                <?= Html::hiddenInput('ChooseLanguage[language]', Yii::$app->language) ?>
-                <?= $hForm->render($form); ?>
-                <?php ActiveForm::end(); ?>
-            <?php endif; ?>
+            <?php $form = ActiveForm::begin(['id' => 'registration-form', 'enableClientValidation' => false]); ?>
+            <?= Html::hiddenInput('ChooseLanguage[language]', Yii::$app->language) ?>
+            <?= $hForm->render($form); ?>
+            <?php ActiveForm::end(); ?>
         </div>
     </div>
 
