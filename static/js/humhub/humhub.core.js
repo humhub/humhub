@@ -79,6 +79,23 @@ var humhub = humhub || (function ($) {
      * A module can provide an `init` function, which by default is only called after the first initialization
      * e.g. after a full page load when the document is ready or when loaded by means of ajax.
      *
+     * The `init` function can be either synchronous or asynchronous. If it returns a Promise, the initialization
+     * process will await its completion before triggering the 'humhub:ready' event:
+     *
+     * ```
+     * module.init = function() {
+     *     // Async initialization that returns a Promise
+     *     return humhub.require('i18n').loadTranslations('myCategory').then(function() {
+     *         // Initialize after translations are loaded
+     *     });
+     * };
+     * ```
+     *
+     * If a module requires translations during startup, it can declare
+     * `module.requiredI18nCategories = ['CategoryA', 'CategoryB']`. Core will
+     * batch-load these categories before triggering `humhub:ready`. This works
+     * alongside async `init()`; any promise returned by `init()` is still awaited.
+     *
      * In case a module `init` function needs to be called also after each `pjax` request, the module `initOnPjaxLoad` has to be
      * set to `true`:
      *
@@ -203,6 +220,7 @@ var humhub = humhub || (function ($) {
         instance.require = require;
         instance.initOnPjaxLoad = false;
         instance.initOnAjaxLoad = false;
+        instance.asyncInit = false;
         instance.isModule = true;
         instance.id = 'humhub.modules.' + _cutModulePrefix(id);
         instance.config = require('config').module(instance);
@@ -579,13 +597,46 @@ var humhub = humhub || (function ($) {
             return 1;
         });
 
+        // Initialize modules, handling both sync and async init functions
+        var initPromises = [];
         $.each(initialModules, function (i, module) {
-            initModule(module);
+            var result = initModule(module);
+            if (result && typeof result.then === 'function') {
+                initPromises.push(result);
+            }
         });
 
-        humhub.initialized = true;
-        event.trigger('humhub:ready');
-        $(document).trigger('humhub:ready', [false, humhub]);
+        var i18nPreloadPromise = null;
+        try {
+            var i18n = require('i18n');
+            var preloadCategories = [];
+
+            $.each(initialModules, function (i, module) {
+                if (module.requiredI18nCategories && module.requiredI18nCategories.length) {
+                    preloadCategories = preloadCategories.concat(module.requiredI18nCategories);
+                }
+            });
+
+            if (preloadCategories.length) {
+                i18nPreloadPromise = i18n.preload(preloadCategories);
+            }
+        } catch (e) {}
+
+        if (i18nPreloadPromise) {
+            initPromises.push(i18nPreloadPromise);
+        }
+
+        // Wait for all async initializations to complete
+        Promise.all(initPromises).then(function() {
+            humhub.initialized = true;
+            event.trigger('humhub:ready');
+            $(document).trigger('humhub:ready', [false, humhub]);
+        }).catch(function(err) {
+            log.error('Error during async module initialization', err);
+            humhub.initialized = true;
+            event.trigger('humhub:ready');
+            $(document).trigger('humhub:ready', [false, humhub]);
+        });
     });
 
     var initModule = function (module) {
@@ -597,11 +648,20 @@ var humhub = humhub || (function ($) {
                 event.trigger(module.id.replace('.', ':') + ':beforeInit', module);
 
                 event.trigger(module.id.replace(/\./g, ':') + ':beforeInit', module);
-                module.init();
-                event.trigger(module.id.replace(/\./g, ':') + ':afterInit', module);
+                var result = module.init();
 
-                // compatibility with beta 1.2 beta release
-                event.trigger(module.id.replace('.', ':') + ':afterInit', module);
+                // Check if init() returned a promise
+                if (result && typeof result.then === 'function') {
+                    return result.then(function() {
+                        event.trigger(module.id.replace(/\./g, ':') + ':afterInit', module);
+                        event.trigger('humhub:afterInitModule', module);
+                        log.debug('Module initialized: ' + module.id);
+                    }).catch(function(err) {
+                        log.error('Could not initialize module: ' + module.id, err);
+                    });
+                }
+
+                event.trigger(module.id.replace(/\./g, ':') + ':afterInit', module);
             } catch (err) {
                 log.error('Could not initialize module: ' + module.id, err);
             }

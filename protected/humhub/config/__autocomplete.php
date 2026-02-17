@@ -40,6 +40,7 @@ class Yii
  * @property \yii\web\User|__WebUser $user
  * @property \yii\caching\ArrayCache $runtimeCache
  * @property \humhub\components\InstallationState $installationState
+ * @property \humhub\components\bootstrap\SystemRevision $systemRevision
  */
 class __Application
 {

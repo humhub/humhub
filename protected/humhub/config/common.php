@@ -57,6 +57,7 @@ $config = [
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
     'bootstrap' => [
         'log',
+        'systemRevision',
         'humhub\components\bootstrap\ModuleAutoLoader',
         'humhub\components\bootstrap\ComponentLoader',
         'queue',
@@ -136,6 +137,9 @@ $config = [
         ],
         'cache' => [
             'class' => \yii\caching\FileCache::class,
+        ],
+        'systemRevision' => [
+            'class' => \humhub\components\bootstrap\SystemRevision::class,
         ],
         'runtimeCache' => [
             'class' => \yii\caching\ArrayCache::class,

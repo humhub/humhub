@@ -45,7 +45,7 @@ class PhpMessageSource extends PhpMessageSourceYii
      *
      * Actually the original method with reduced error messages!
      */
-    protected function loadMessages($category, $language)
+    public function loadMessages($category, $language)
     {
         $messageFile = $this->getMessageFilePath($category, $language);
         $messages = $this->loadMessagesFromFile($messageFile);

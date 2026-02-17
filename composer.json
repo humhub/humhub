@@ -53,6 +53,7 @@
         "npm-asset/humhub-prosemirror-richtext": "2.3.*",
         "npm-asset/imagesloaded": "^5.0",
         "npm-asset/intersection-observer": "^0.7.0",
+        "npm-asset/intl-messageformat": "^11.0",
         "npm-asset/jplayer": "^2.9",
         "npm-asset/jquery": "~3.7.1",
         "npm-asset/jquery-autosize": "^1.0",

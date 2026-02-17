@@ -63,7 +63,7 @@ class ModuleMessageSource extends PhpMessageSource
     /**
      * @inheritDoc
      */
-    protected function loadMessages($category, $language)
+    public function loadMessages($category, $language)
     {
         $messages = parent::loadMessages($category, $language);
 
