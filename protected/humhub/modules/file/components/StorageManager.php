@@ -11,10 +11,10 @@ namespace humhub\modules\file\components;
 use Exception;
 use humhub\modules\file\models\File;
 use humhub\modules\file\libs\FileHelper;
+use humhub\modules\file\models\FileHistory;
 use Yii;
 use yii\base\Component;
 use yii\helpers\ArrayHelper;
-use yii\imagine\Image;
 use yii\web\UploadedFile;
 
 /**
@@ -50,7 +50,16 @@ class StorageManager extends Component implements StorageManagerInterface
      */
     public function has($variant = null): bool
     {
-        return file_exists($this->get($variant));
+        if (file_exists($this->get($variant))) {
+            return true;
+        }
+
+        if ($variant === null) {
+            // Try to restore only original file
+            return $this->restoreMissedOriginalFile();
+        }
+
+        return false;
     }
 
     /**
@@ -63,6 +72,31 @@ class StorageManager extends Component implements StorageManagerInterface
         }
 
         return $this->getPath() . DIRECTORY_SEPARATOR . $variant;
+    }
+
+    /**
+     * Restore original file from the latest version if it was missed by some reason
+     *
+     * @return bool TRUE if original file is restored successfully or if it already exists
+     */
+    protected function restoreMissedOriginalFile(): bool
+    {
+        $originalFilePath = $this->getPath() . DIRECTORY_SEPARATOR . $this->originalFileName;
+
+        if (file_exists($originalFilePath)) {
+            // Original File exists as expected, nothing to restore
+            return true;
+        }
+
+        $latestHistoryFile = $this->file->getHistoryFiles()->limit(1)->one();
+        if (!$latestHistoryFile instanceof FileHistory) {
+            // File has no any history version, impossible to restore
+            return false;
+        }
+
+        // Copy the latest version to original File path
+        return copy($latestHistoryFile->getFileStorePath(), $originalFilePath) &&
+            @chmod($originalFilePath, $this->fileMode);
     }
 
     /**
