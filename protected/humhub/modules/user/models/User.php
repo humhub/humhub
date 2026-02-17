@@ -35,6 +35,7 @@ use humhub\modules\user\services\PasswordRecoveryService;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
+use yii\caching\TagDependency;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
 use yii\web\IdentityInterface;
@@ -509,6 +510,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
 
         if ($this->profile !== null) {
             $this->profile->delete();
+            TagDependency::invalidate(Yii::$app->cache, 'profile_field_' . $this->id);
         }
 
         return parent::beforeDelete();
@@ -636,6 +638,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
         if (Yii::$app->user->id == $this->id) {
             Yii::$app->user->setIdentity($user);
         }
+
+        TagDependency::invalidate(Yii::$app->cache, 'profile_field_' . $this->id);
     }
 
 

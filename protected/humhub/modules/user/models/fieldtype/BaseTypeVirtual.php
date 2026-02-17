@@ -9,6 +9,8 @@
 namespace humhub\modules\user\models\fieldtype;
 
 use humhub\modules\user\models\User;
+use Yii;
+use yii\caching\TagDependency;
 
 /**
  * Base type for virtual profile fields
@@ -36,7 +38,16 @@ abstract class BaseTypeVirtual extends BaseType
      */
     final public function getUserValue(User $user, bool $raw = true, bool $encode = true): ?string
     {
-        return $this->getVirtualUserValue($user, $raw, $encode);
+        $cacheTag = 'profile_field_' . $user->id;
+
+        $cacheKey = $cacheTag . '_'
+            . $this->profileField->id . '_'
+            . intval($raw) . '_'
+            . intval($encode);
+
+        return Yii::$app->cache->getOrSet($cacheKey, function () use ($user, $raw, $encode) {
+            return $this->getVirtualUserValue($user, $raw, $encode);
+        }, null, new TagDependency(['tags' => $cacheTag]));
     }
 
     /**
