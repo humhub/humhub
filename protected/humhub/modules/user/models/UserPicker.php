@@ -147,7 +147,7 @@ class UserPicker
             'disabled' => $disabled,
             'disabledText' => ($disabled) ? $disabledText : null,
             'text' => $user->displayName,
-            'image' => $user->getProfileImage()->getUrl(),
+            'image' => $user->image->getUrl(),
             'priority' => ($priority == null) ? 0 : $priority,
             'link' => $user->getUrl(),
         ];

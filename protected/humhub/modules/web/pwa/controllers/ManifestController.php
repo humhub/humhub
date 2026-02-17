@@ -11,7 +11,6 @@ namespace humhub\modules\web\pwa\controllers;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\modules\web\Module;
-use humhub\modules\web\pwa\widgets\SiteIcon;
 use Yii;
 use yii\helpers\Url;
 
@@ -68,7 +67,7 @@ class ManifestController extends Controller
         $this->manifest['icons'] = [];
 
         foreach ([48, 72, 96, 192, 512] as $size) {
-            $src = SiteIcon::getUrl($size);
+            $src = Yii::$app->img->icon->getUrl(['square' => $size]);
             if (!empty($src)) {
                 $this->manifest['icons'][] = [
                     'src' => $src,

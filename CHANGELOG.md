@@ -1,8 +1,10 @@
 HumHub Changelog
 ================
 
-1.19.0 (Unreleased)
--------------------------
+1.19 (TBD)
+----------
+- Enh #8011: Added `AssetImage` as replacement for `ProfileImage`, `SiteIcon`, `LogoImage`, `LoginBackground`, `MailHeader`
+- Enh #8011: Added `AssetManager` FlySystem support
 - Enh #7980: Remove deprecations
 - Enh #8025: Implement URL for Content Created Activity
 
@@ -13,7 +15,7 @@ HumHub Changelog
 
 > Info: The minimum PHP version is now `PHP 8.2`!
 
-> Bootstrap 5 is the default CSS framework, which may require migration of custom modules or themes.
+> Bootstrap 5 is the default CSS framework, which may require migration of custom modules or themes. See [MIGRATE-BS5.md](https://github.com/humhub/humhub/blob/v1.18.0/MIGRATE-BS5.md)
 
 > Caching must now be configured via the [configuration file](https://docs.humhub.org/docs/admin/performance), with `FileCache` as the default.
 
@@ -51,6 +53,7 @@ HumHub Changelog
 - Enh #7991: On medium size, don't display the Space statistics under the Space image in the banner
 - Fix #7989: Fix site icon on installer pages
 - Fix #7994: Opening Modals indents top bars
+
 
 1.18.0-beta.6 (January 8, 2026)
 -------------------------------

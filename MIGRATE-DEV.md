@@ -81,6 +81,13 @@ Version 1.19 (Unreleased)
   - Instead of View files you need to implement a `getMessage()` method which returns the Activity text.
   - Use following code to create a Activity `ActivityManager::dispatch(TaskCompletedActivity::class, $this->task, $user)`
 - `MigrateController::$includeModuleMigrations` is now `true` by default
+- SiteIcon: Remove support for manually uploaded `@web/uploads/icon/` icons
+- New `AssetImage` class
+  - `LogoImage`, `SiteIcon`, `LoginBackground`, `MailHeader`, `ProfileImage`, `ProfileBannerImage` are now deprecated or removed.
+    - `Space|User::getProfileImage()` => `Space|User::image()`, `Space|User::profileImage` => `Space|User::image`
+    - `Space|User::getProfileBannerImage()` => `Space|User::bannerImage()`, `Space|User::profileBannerImage` => `Space|User::bannerImage`
+    - `SiteLogo|SiteIcon|LoginBackground|MailHeader::getUrl()` => `Yii::$app->img->logo|icon|loginBackground|mailHeader->getUrl()`
+
 
 
 Version 1.18 (Unreleased)

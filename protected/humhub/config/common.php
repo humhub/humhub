@@ -88,6 +88,20 @@ $config = [
                 \humhub\modules\notification\targets\MobileTarget::class => [],
             ],
         ],
+        'fs' => [
+            'class' => 'humhub\components\fs\FilesystemManager',
+            'mounts' => [
+                'assets' => [
+                    'class' => 'humhub\components\fs\Local',
+                    'path' => '@webroot/assets',
+                    'baseUrl' => '@web/assets',
+                ],
+                'data' => [
+                    'class' => 'humhub\components\fs\Local',
+                    'path' => '@webroot/uploads',
+                ],
+            ],
+        ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
@@ -153,9 +167,21 @@ $config = [
             ],
         ],
         'assetManager' => [
-            'class' => \humhub\components\AssetManager::class,
+            'class' => \humhub\components\assets\AssetManager::class,
             'appendTimestamp' => true,
             'bundles' => require(__DIR__ . '/' . (YII_ENV_PROD || YII_ENV_TEST ? 'assets-prod.php' : 'assets-dev.php')),
+        ],
+        'img' => [
+            'class' => 'humhub\components\assets\AssetImageRegistry',
+            'definitions' => [
+                'logo' => ['file' => '/logo_image/logo.png'],
+                'icon' => [
+                    'file' => '/icon/icon.png',
+                    'defaultFile' => '@webroot-static/img/default_icon.png',
+                ],
+                'loginBackground' => ['file' => '/login-bg/background.png'],
+                'mailHeader' => ['file' => '/icon/icon.png'],
+            ],
         ],
         'view' => [
             'class' => \humhub\components\View::class,

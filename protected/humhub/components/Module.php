@@ -8,6 +8,7 @@
 
 namespace humhub\components;
 
+use humhub\components\assets\AssetManager;
 use humhub\helpers\ThemeHelper;
 use humhub\models\Setting;
 use humhub\modules\activity\components\BaseActivity;

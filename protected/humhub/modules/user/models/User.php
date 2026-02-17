@@ -530,8 +530,9 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
         if ($this->profile !== null) {
             $this->profile->softDelete();
         }
-        $this->getProfileImage()->delete();
-        $this->getProfileBannerImage()->delete();
+
+        $this->image->delete();
+        $this->bannerImage->delete();
 
         foreach ($this->moduleManager->getEnabled() as $module) {
             $this->moduleManager->disable($module);
