@@ -30,12 +30,12 @@ use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\helpers\AuthHelper;
+use humhub\modules\user\models\fieldtype\BaseTypeVirtual;
 use humhub\modules\user\Module;
 use humhub\modules\user\services\PasswordRecoveryService;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
-use yii\caching\TagDependency;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
 use yii\web\IdentityInterface;
@@ -510,7 +510,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
 
         if ($this->profile !== null) {
             $this->profile->delete();
-            $this->flushCache();
+            BaseTypeVirtual::flushCache($this);
         }
 
         return parent::beforeDelete();
@@ -639,7 +639,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
             Yii::$app->user->setIdentity($user);
         }
 
-        $this->flushCache();
+        BaseTypeVirtual::flushCache($this);
     }
 
 
@@ -1049,13 +1049,5 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     public function getPasswordRecoveryService(): PasswordRecoveryService
     {
         return new PasswordRecoveryService($this);
-    }
-
-    /**
-     * @since 1.18.1
-     */
-    public function flushCache(): void
-    {
-        TagDependency::invalidate(Yii::$app->cache, 'profile_field_' . $this->id);
     }
 }

@@ -32,13 +32,14 @@ abstract class BaseTypeVirtual extends BaseType
      */
     public $isVirtual = true;
 
+    private const CACHE_PREFIX = 'profile_field_';
 
     /**
      * @inheritdoc
      */
     final public function getUserValue(User $user, bool $raw = true, bool $encode = true): ?string
     {
-        $cacheTag = 'profile_field_' . $user->id;
+        $cacheTag = self::CACHE_PREFIX . $user->id;
 
         $cacheKey = $cacheTag . '_'
             . $this->profileField->id . '_'
@@ -104,5 +105,11 @@ abstract class BaseTypeVirtual extends BaseType
         return parent::save();
     }
 
-
+    /**
+     * @since 1.18.1
+     */
+    public static function flushCache(User $user): void
+    {
+        TagDependency::invalidate(Yii::$app->cache, self::CACHE_PREFIX . $user->id);
+    }
 }
