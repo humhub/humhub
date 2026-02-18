@@ -32,6 +32,11 @@ abstract class BaseTypeVirtual extends BaseType
      */
     public $isVirtual = true;
 
+    /**
+     * @var bool whether the field value can be cached
+     */
+    protected bool $isCacheable = false;
+
     private const CACHE_PREFIX = 'profile_field_';
 
     /**
@@ -39,6 +44,10 @@ abstract class BaseTypeVirtual extends BaseType
      */
     final public function getUserValue(User $user, bool $raw = true, bool $encode = true): ?string
     {
+        if (!$this->isCacheable) {
+            return $this->getVirtualUserValue($user, $raw, $encode);
+        }
+
         $cacheTag = self::CACHE_PREFIX . $user->id;
 
         $cacheKey = $cacheTag . '_'
