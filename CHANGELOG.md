@@ -13,6 +13,7 @@ HumHub Changelog
 - Enh #8017: Exclude `vendor` from module i18n extract
 - Fix #8020: Some email notifications are missing auto-contrast for the button text color
 - Fix #8027: Cannot register if `showRegistrationForm` is disabled
+- Fix #8030: Fix abandoned composer packages
 
 1.18.0 (February 4, 2026)
 -------------------------
