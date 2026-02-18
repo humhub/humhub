@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
+use humhub\modules\user\models\fieldtype\BaseTypeVirtual;
 use yii\db\ActiveQuery;
 
 /**
@@ -81,11 +82,12 @@ class GroupUser extends ActiveRecord
      */
     public function afterSave($insert, $changedAttributes)
     {
-        if ($insert && $this->group instanceof Group) {
+        if ($insert && $this->group instanceof Group && $this->user instanceof User) {
             foreach ($this->group->getAllGroupSpaces()->each() as $groupSpace) {
                 /* @var GroupSpace $groupSpace */
                 $groupSpace->space->addMember($this->user->id);
             }
+            BaseTypeVirtual::flushCache($this->user);
         }
 
         parent::afterSave($insert, $changedAttributes);
@@ -96,6 +98,10 @@ class GroupUser extends ActiveRecord
      */
     public function afterDelete()
     {
+        if ($this->user instanceof User) {
+            BaseTypeVirtual::flushCache($this->user);
+        }
+
         parent::afterDelete();
     }
 

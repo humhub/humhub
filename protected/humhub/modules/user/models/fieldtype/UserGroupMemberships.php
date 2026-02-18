@@ -21,6 +21,11 @@ class UserGroupMemberships extends BaseTypeVirtual
     /**
      * @inheritdoc
      */
+    protected bool $isCacheable = true;
+
+    /**
+     * @inheritdoc
+     */
     protected function getVirtualUserValue(User $user, bool $raw = true, bool $encode = true): string
     {
         $groupNames = array_map(fn($group) => $group->name, $user->groups);
