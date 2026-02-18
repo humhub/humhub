@@ -510,7 +510,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
 
         if ($this->profile !== null) {
             $this->profile->delete();
-            TagDependency::invalidate(Yii::$app->cache, 'profile_field_' . $this->id);
+            $this->flushCache();
         }
 
         return parent::beforeDelete();
@@ -639,7 +639,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
             Yii::$app->user->setIdentity($user);
         }
 
-        TagDependency::invalidate(Yii::$app->cache, 'profile_field_' . $this->id);
+        $this->flushCache();
     }
 
 
@@ -1049,5 +1049,13 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     public function getPasswordRecoveryService(): PasswordRecoveryService
     {
         return new PasswordRecoveryService($this);
+    }
+
+    /**
+     * @since 1.18.1
+     */
+    public function flushCache(): void
+    {
+        TagDependency::invalidate(Yii::$app->cache, 'profile_field_' . $this->id);
     }
 }

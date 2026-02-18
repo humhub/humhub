@@ -81,11 +81,12 @@ class GroupUser extends ActiveRecord
      */
     public function afterSave($insert, $changedAttributes)
     {
-        if ($insert && $this->group instanceof Group) {
+        if ($insert && $this->group instanceof Group && $this->user instanceof User) {
             foreach ($this->group->getAllGroupSpaces()->each() as $groupSpace) {
                 /* @var GroupSpace $groupSpace */
                 $groupSpace->space->addMember($this->user->id);
             }
+            $this->user->flushCache();
         }
 
         parent::afterSave($insert, $changedAttributes);
@@ -96,6 +97,10 @@ class GroupUser extends ActiveRecord
      */
     public function afterDelete()
     {
+        if ($this->user instanceof User) {
+            $this->user->flushCache();
+        }
+
         parent::afterDelete();
     }
 
