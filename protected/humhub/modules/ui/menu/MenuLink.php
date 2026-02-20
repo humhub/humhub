@@ -8,7 +8,7 @@
 
 namespace humhub\modules\ui\menu;
 
-use Exception;
+use humhub\helpers\ControllerHelper;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\menu\widgets\Menu;
 use humhub\widgets\bootstrap\Button;
@@ -122,14 +122,25 @@ class MenuLink extends MenuEntry
     }
 
     /**
-     * @param $icon Icon|string the icon instance or icon name
-     * @param bool $right
-     * @return static
-     * @throws Exception
+     * @deprecated since 1.19 use icon() instead
      */
     public function setIcon($icon, $right = false)
     {
         $this->getLink()->icon($icon, $right);
+        return $this;
+    }
+
+    /**
+     * Sets the icon
+     *
+     * @param $icon Icon|string the icon instance or icon name
+     * @param bool $right
+     * @return static
+     * @since 1.19
+     */
+    public function icon(string|Icon $icon, bool $right = false, array $options = []): static
+    {
+        $this->getLink()->icon($icon, $right, $options);
         return $this;
     }
 
@@ -139,12 +150,20 @@ class MenuLink extends MenuEntry
      * @param $url array|string
      * @return static
      */
-    public function setUrl($url)
+    public function link(string|array $url, bool $pjax = true): static
     {
         // we save the raw url
         $this->url = $url;
-        $this->getLink()->link($url);
+        $this->getLink()->link($url, $pjax);
         return $this;
+    }
+
+    /**
+     * @deprecated since 1.19 use link() instead
+     */
+    public function setUrl($url)
+    {
+        return $this->link($url);
     }
 
 
@@ -188,6 +207,74 @@ class MenuLink extends MenuEntry
     public function setHtmlOptions($htmlOptions)
     {
         $this->getLink()->options($htmlOptions);
+        return $this;
+    }
+
+    /**
+     * Sets the ID
+     *
+     * @param string $id
+     * @return static
+     * @since 1.19
+     */
+    public function id(string $id): static
+    {
+        return $this->setId($id);
+    }
+
+    /**
+     * Sets the sort order
+     *
+     * @param int $sortOrder
+     * @return static
+     * @since 1.19
+     */
+    public function sortOrder(int $sortOrder): static
+    {
+        return $this->setSortOrder($sortOrder);
+    }
+
+    /**
+     * Sets the active state
+     *
+     * @param bool|string|null $moduleIdOrIsActive
+     * @param string|array $controllerIds
+     * @param string|array $actionIds
+     * @param array $queryParams
+     * @return static
+     * @since 1.19
+     */
+    public function active(string|bool|null $moduleIdOrIsActive = null, string|array $controllerIds = [], string|array $actionIds = [], array $queryParams = []): static
+    {
+        if (!is_bool($moduleIdOrIsActive)) {
+            $moduleIdOrIsActive = ControllerHelper::isActivePath($moduleIdOrIsActive, $controllerIds, $actionIds, $queryParams);
+        }
+
+        return $this->setIsActive($moduleIdOrIsActive);
+    }
+
+    /**
+     * Sets the visible state
+     *
+     * @param bool $isVisible
+     * @return static
+     * @since 1.19
+     */
+    public function visible(bool $isVisible): static
+    {
+        return $this->setIsVisible($isVisible);
+    }
+
+    /**
+     * Sets the CSS class
+     *
+     * @param array|string $cssClass
+     * @return static
+     * @since 1.19
+     */
+    public function cssClass(array|string $cssClass): static
+    {
+        $this->getLink()->cssClass($cssClass);
         return $this;
     }
 }
