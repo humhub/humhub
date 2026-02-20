@@ -5,6 +5,7 @@ HumHub Changelog
 -------------------------
 - Enh #7980: Remove deprecations
 - Enh #8025: Implement URL for Content Created Activity
+- Enh #8032: Improve menu link adding
 
 1.18.0 (February 4, 2026)
 -------------------------

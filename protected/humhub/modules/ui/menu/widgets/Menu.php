@@ -50,6 +50,20 @@ abstract class Menu extends JsWidget
     }
 
     /**
+     * Add a Menu Link to the navigation
+     *
+     * @param string $label
+     * @return MenuLink
+     */
+    public function addLink(string $label): MenuLink
+    {
+        $menuLink = new MenuLink(['label' => $label]);
+        $this->addEntry($menuLink);
+
+        return $menuLink;
+    }
+
+    /**
      * Removes the entry from the navigation
      *
      * @param MenuEntry $entry
