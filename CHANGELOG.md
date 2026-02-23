@@ -6,6 +6,7 @@ HumHub Changelog
 - Enh #7980: Remove deprecations
 - Enh #8025: Implement URL for Content Created Activity
 - Fix #8031: Border Radius for Color Picker under Theme Customisation
+- Fix #8006: Web Installer Nginx Example
 
 1.18.0 (February 4, 2026)
 -------------------------

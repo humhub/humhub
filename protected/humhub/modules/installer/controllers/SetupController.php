@@ -188,7 +188,7 @@ class SetupController extends Controller
             }
         } elseif (StringHelper::startsWith($serverSoftware, 'nginx')) {
             $info[] = Yii::t('InstallerModule.base', '<strong>Nginx</strong> web server detected.');
-            $info[] = Yii::t('InstallerModule.base', 'Ensure the following rule is present in your configuration: <strong>try_files \$uri \$uri/ /index.php?\$args;</strong>.');
+            $info[] = Yii::t('InstallerModule.base', 'Ensure the following rule is present in your configuration: <strong>try_files $uri $uri/ /index.php$is_args$args;</strong>.');
         } else {
             $errors[] = Yii::t('InstallerModule.base', 'Unable to automatically detect your web server type. Please ensure URL rewriting is configured.');
         }
