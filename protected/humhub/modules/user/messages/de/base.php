@@ -52,7 +52,7 @@ return [
   'Invite by link' => 'Per Link einladen',
   'Invite new people' => 'Neue Benutzer einladen',
   'Invited by' => 'Eingeladen von',
-  'Invited by {userName}' => '',
+  'Invited by {userName}' => 'Eingeladen von {userName}',
   'It looks like you clicked on an invalid password reset link. Please try again.' => 'Es sieht so aus, als ob du auf einen ungültigen Link zum Zurücksetzen des Passworts geklickt hast. Bitte versuche es erneut.',
   'Language' => 'Sprache',
   'Last Login' => 'Letzter Login',
