@@ -216,10 +216,10 @@ humhub.module('ui.picker', function (module, require, $) {
     Picker.template = {
         selectionWithImage: '{imageNode}<span class="picker-text with-image"></span>',
         selectionNoImage: '<span class="picker-text no-image"></span>',
-        selectionClear: ' <i class="fa fa-times-circle picker-close"></i>',
+        selectionClear: ' <i class="fa fa-times picker-close"></i>',
         result: '<a href="#" tabindex="-1" style="margin-right:5px;">{imageNode} <span class="picker-text"></span></a>',
         resultDisabled: '<a href="#" title="{disabledText}" data-placement="right" tabindex="-1" style="margin-right:5px;opacity: 0.4;cursor:not-allowed">{imageNode} <span class="picker-text"></span></a>',
-        imageNode: '<img class="rounded" src="{image}" alt="" style="width:24px;height:24px;"  height="24" width="24">',
+        imageNode: '<img class="rounded" src="{image}" alt="" style="width:18px;height:18px;"  height="24" width="24">',
         imageIcon: '<i class="fa {image}"></i> ',
         imageColor: '<span class="picker-color" style="background:{image}"></span> ',
         option: '<option value="{id}" data-image=\'{image}\' selected></option>',
