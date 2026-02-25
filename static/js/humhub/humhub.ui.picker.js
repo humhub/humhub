@@ -346,7 +346,7 @@ humhub.module('ui.picker', function (module, require, $) {
         item.text = item.textValue || item.text || $(item.element).data('text');
         item.subText = item.subText || item.displayNameSub || $(item.element).data('subtext');
         item.image = item.image || $(item.element).data('image');
-        item.imageNode = this.getImageNode(item, !(item.subText && item.subText.length));
+        item.imageNode = this.getImageNode(item);
         item.imageNodeSelected = this.getImageNode(item, true);
         item.disabledText = item.disabledText || '';
     }
