@@ -19,15 +19,19 @@ use humhub\widgets\modal\ModalButton;
  * ```
  * Link::to('Text', ['/index'])->icon('info')
  * Link::primary()->link(['/index'])->icon('info')
+ * Link::modal('Modal text')->load(['/modal-url'])->icon('info')
  * ```
  */
 class Link extends Button
 {
     /**
-     * @inerhitdoc
+     * @inheritdoc
      */
     public bool $asLink = true;
 
+    /**
+     * @inheritdoc
+     */
     public static function instance(?string $text = null, ?string $color = null): static
     {
         return parent::instance($text, $color)->cssClass('link');
@@ -43,6 +47,14 @@ class Link extends Button
         return static::none($text)->action($action, $url, $target);
     }
 
+    /**
+     * Creates a link for opening a modal window
+     *
+     * @param string|null $text
+     * @param string|array $url
+     * @return ModalButton
+     * @since 1.19
+     */
     public static function modal(?string $text = null, $url = '#'): ModalButton
     {
         return ModalButton::none($text)->link($url)->cssClass('link');
