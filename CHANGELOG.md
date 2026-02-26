@@ -15,7 +15,7 @@ HumHub Changelog
 - Fix #8027: Cannot register if `showRegistrationForm` is disabled
 - Enh #8029: Display and cache virtual profile field in the user name subtitle
 - Fix #8030: Fix abandoned composer packages
-- Fix: Encode `Button`, `Link`, `Badge` and `DropdownMenu` labels by default to fix potential XSS security issue (see [migration guide](https://github.com/humhub/humhub/blob/master/MIGRATE-DEV.md#version-1181) for details)
+- Fix #8039: Encode `Button`, `Link`, `Badge` and `DropdownMenu` labels by default to fix potential XSS security issue (see [migration guide](https://github.com/humhub/humhub/blob/master/MIGRATE-DEV.md#version-1181) for details)
 
 1.18.0 (February 4, 2026)
 -------------------------
