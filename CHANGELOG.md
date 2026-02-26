@@ -16,6 +16,7 @@ HumHub Changelog
 - Enh #8029: Display and cache virtual profile field in the user name subtitle
 - Fix #8030: Fix abandoned composer packages
 - Fix #8039: Encode `Button`, `Link`, `Badge` and `DropdownMenu` labels by default to fix potential XSS security issue (see [migration guide](https://github.com/humhub/humhub/blob/master/MIGRATE-DEV.md#version-1181) for details)
+- Fix #8038: Improve paragraph and image styles in RichText content
 - Enh #7978: Show `DisplayNameSub` in UserPicker
 
 1.18.0 (February 4, 2026)
