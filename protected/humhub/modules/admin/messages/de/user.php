@@ -77,7 +77,7 @@ return [
   'Delete spaces which are owned by this user' => 'Spaces löschen, die im Besitz des Benutzers stehen',
   'Deleted' => 'Gelöscht',
   'Deleted invitation' => 'Gelöschte Einladung',
-  'Deleted users' => 'Gelöschte Benutzer.',
+  'Deleted users' => 'Gelöschte Benutzer',
   'Disable' => 'Deaktivieren',
   'Disabled' => 'Deaktiviert',
   'Disabled users' => 'Deaktivierte Benutzer',

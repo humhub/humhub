@@ -15,8 +15,8 @@ use humhub\helpers\Html;
 use humhub\modules\space\models\forms\InviteForm;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
 use humhub\widgets\modal\Modal;
-use humhub\widgets\modal\ModalButton;
 
 $modalAnimationClass = ($model->hasErrors()) ? 'shake' : 'fadeIn';
 
@@ -138,6 +138,7 @@ $form = Modal::beginFormDialog([
                     <?= Html::textarea('secureLink', $model->getInviteLink(), ['readonly' => 'readonly', 'class' => 'form-control w-100']) ?>
                     <?php if (Yii::$app->controller->id === 'membership' && $model->space->isAdmin()) : ?>
                         <?= ModalButton::asLink(Html::tag('small', Yii::t('SpaceModule.base', 'Create new link')))
+                            ->encodeLabel(false)
                             ->confirm(
                                 Yii::t('SpaceModule.base', 'Create new link'),
                                 Yii::t('SpaceModule.base', 'Please note that any links you have previously created will become invalid as soon as you create a new one. Would you like to proceed?'),

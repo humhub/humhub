@@ -122,7 +122,6 @@ class RegistrationController extends Controller
 
         return $this->render('index', [
             'hForm' => $registration,
-            'showRegistrationForm' => $this->module->showRegistrationForm,
             'hasAuthClient' => $authClient !== null,
         ]);
     }
@@ -156,8 +155,11 @@ class RegistrationController extends Controller
             'scenario' => Invite::SCENARIO_INVITE_BY_LINK_FORM,
         ]);
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            $invite = $linkRegistrationService->convertToInvite($form->email);
-            $invite?->sendInviteMail();
+            if ($invite = $linkRegistrationService->convertToInvite($form->email)) {
+                $invite->sendInviteMail();
+            } else {
+                $invite = new Invite(['email' => $form->email]);
+            }
             return $this->render('@user/views/auth/register_success', ['model' => $invite]);
         }
 

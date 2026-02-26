@@ -8,6 +8,7 @@
 
 namespace humhub\modules\marketplace;
 
+use humhub\helpers\Html;
 use humhub\modules\admin\events\ModulesEvent;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\marketplace\models\Module as ModelModule;
@@ -78,7 +79,8 @@ class Events extends BaseObject
         $updatesCountInfo = $updatesCount > 0 ? ' ' . Badge::light($updatesCount) : '';
 
         $menu->addEntry(new MenuLink([
-            'label' => Yii::t('MarketplaceModule.base', 'Marketplace') . $updatesCountInfo,
+            'label' => Html::encode(Yii::t('MarketplaceModule.base', 'Marketplace')) . $updatesCountInfo,
+            'encodeLabel' => false, // $updatesCountInfo shouldn't be encoded
             'icon' => 'cubes',
             'url' => Url::toRoute('/marketplace/browse'),
             'sortOrder' => 450,

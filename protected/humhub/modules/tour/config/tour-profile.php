@@ -8,7 +8,7 @@
 
 use humhub\modules\tour\TourConfig;
 use humhub\modules\user\controllers\ProfileController;
-use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
 
 return [
     TourConfig::KEY_TOUR_ID => TourConfig::TOUR_ID_PROFILE,
@@ -58,7 +58,9 @@ return [
                         'title' => Yii::t('TourModule.profile', '<strong>Hurray!</strong> You\'re done!'),
                         'description'
                             => Yii::t('TourModule.profile', 'You\'ve completed the user profile guide!<br><br>To carry on with the administration guide, click here:<br /><br />')
-                            . Button::asLink(Yii::t("TourModule.profile", "<strong>Administration (Modules)</strong>"))->action('tour.next')
+                            . Button::asLink(Yii::t("TourModule.profile", "<strong>Administration (Modules)</strong>"))
+                                ->encodeLabel(false)
+                                ->action('tour.next')
                             . '<br><br>',
                     ]
                     : [

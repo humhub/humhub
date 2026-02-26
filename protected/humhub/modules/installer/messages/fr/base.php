@@ -23,7 +23,7 @@ return [
   'Default Language' => 'Langue par défaut',
   'Default Timezone' => 'Fuseau horaire par défaut',
   'Downloading & Installing Modules...' => 'Téléchargement et installation des modules...',
-  'Ensure the following rule is present in your configuration: <strong>try_files $uri $uri/ /index.php?$args;</strong>.' => 'Assurez-vous que la règle suivante est présente dans votre configuration : <strong>try_files $uri $uri/ /index.php?$args;</strong>.',
+  'Ensure the following rule is present in your configuration: <strong>try_files $uri $uri/ /index.php$is_args$args;</strong>.' => 'Assurez-vous que la règle suivante est présente dans votre configuration : <strong>try_files $uri $uri/ /index.php$is_args$args;</strong>.',
   'External users can register (show registration form on login)' => 'Les utilisateurs externes peuvent s\'inscrire (le formulaire d\'inscription sera affiché lors de la connexion)',
   'For more information on this topic, please refer to our <a href="{link}" target="_blank">documentation</a>.' => 'Pour plus d’informations à ce sujet, veuillez consulter notre <a href="{link}" target="_blank">documentation</a>.',
   'Here you can decide how new, unregistered users can access HumHub.' => 'Vous pouvez décider ici de la façon dont les nouveaux utilisateurs non inscrits peuvent accéder à HumHub.',

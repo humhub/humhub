@@ -21,7 +21,7 @@ $imageUrl = $space->getProfileImage()->getUrl();
 <?php endif; ?>
 
 <?= Html::beginTag('div', $acronymHtmlOptions) ?>
-<?= $acronym ?>
+    <span><?= $acronym ?></span>
 <?= Html::endTag('div') ?>
 <?= Html::img($imageUrl, $imageHtmlOptions) ?>
 

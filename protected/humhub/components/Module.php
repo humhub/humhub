@@ -221,16 +221,6 @@ class Module extends \yii\base\Module
     }
 
     /**
-     * @see          static::getIsEnabled()
-     * @deprecated since 1.16; use static::getIsEnabled() instead.
-     * @noinspection PhpUnused
-     */
-    public function getIsActivated(): bool
-    {
-        return $this->getIsEnabled();
-    }
-
-    /**
      * Enables this module
      *
      * @return bool|null Result of migration or null if beforeEnable() returned false (since v1.16)
@@ -285,15 +275,6 @@ class Module extends \yii\base\Module
         return $result;
     }
 
-    /**
-     * Execute all not applied module migrations
-     * @deprecated since v1.16; use static::getMigrationService()->migrateUp()
-     */
-    public function migrate()
-    {
-        return $this->getMigrationService()->migrateUp();
-    }
-
     public function getMigrationService(): MigrationService
     {
         return new MigrationService($this);
@@ -338,29 +319,6 @@ class Module extends \yii\base\Module
                 }
             }
         }
-    }
-
-    /**
-     * Called right before the module is updated.
-     *
-     * The update will cancel if this function does return false;
-     *
-     * @return bool
-     * @deprecated since v1.15.3
-     *
-     */
-    public function beforeUpdate()
-    {
-        return true;
-    }
-
-    /**
-     * Called right after the module update.
-     *
-     * @deprecated since v1.15.3
-     */
-    public function afterUpdate()
-    {
     }
 
     /**

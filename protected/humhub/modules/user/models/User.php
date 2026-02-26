@@ -14,7 +14,6 @@ use humhub\libs\UUIDValidator;
 use humhub\modules\admin\Module as AdminModule;
 use humhub\modules\admin\permissions\ManageAllContent;
 use humhub\modules\admin\permissions\ManageGroups;
-use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;
@@ -30,6 +29,7 @@ use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\helpers\AuthHelper;
+use humhub\modules\user\models\fieldtype\BaseTypeVirtual;
 use humhub\modules\user\Module;
 use humhub\modules\user\services\PasswordRecoveryService;
 use Yii;
@@ -134,6 +134,11 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
      * @var bool|null is a manager of at least one group (cached)
      */
     private $_isGroupManager = null;
+
+    /**
+     * @var bool|null can a default group be assigned to the user (cached)
+     */
+    private $_allowAssignDefaultGroup = null;
 
     /**
      * @inheritdoc
@@ -429,9 +434,9 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
      * Checks if the user has at least one group assigned.
      * @return bool
      */
-    public function hasGroup()
+    public function hasGroup(): bool
     {
-        return $this->getGroups()->count() > 0;
+        return $this->getGroups()->exists();
     }
 
     /**
@@ -504,6 +509,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
 
         if ($this->profile !== null) {
             $this->profile->delete();
+            BaseTypeVirtual::flushCache($this);
         }
 
         return parent::beforeDelete();
@@ -631,6 +637,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
         if (Yii::$app->user->id == $this->id) {
             Yii::$app->user->setIdentity($user);
         }
+
+        BaseTypeVirtual::flushCache($this);
     }
 
 
@@ -661,11 +669,29 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
         $userModule = Yii::$app->getModule('user');
 
         // Add User to the default group if no yet
-        if (!$this->hasGroup() && ($defaultGroup = $userModule->getDefaultGroup())) {
+        if ($this->allowAssignDefaultGroup() && ($defaultGroup = $userModule->getDefaultGroup())) {
             $defaultGroup->addUser($this);
         }
     }
 
+    /**
+     * Check if a default group can be assigned to the user.
+     *
+     * @param bool|null $forceResult Override the result
+     * @return bool
+     */
+    public function allowAssignDefaultGroup(?bool $forceResult = null): bool
+    {
+        if ($forceResult !== null) {
+            $this->_allowAssignDefaultGroup = $forceResult;
+        }
+
+        if ($this->_allowAssignDefaultGroup === null) {
+            $this->_allowAssignDefaultGroup = !$this->hasGroup();
+        }
+
+        return $this->_allowAssignDefaultGroup;
+    }
 
     /**
      * Returns users display name
@@ -761,27 +787,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     }
 
     /**
-     * Checks if the user is allowed to view all content
-     *
-     * @param string|null $containerClass class name of the content container
-     * @return bool
-     * @throws InvalidConfigException
-     * @deprecated since 1.17 use canManageAllContent() instead
-     * @since 1.8
-     */
-    public function canViewAllContent(?string $containerClass = null): bool
-    {
-        /** @var \humhub\modules\content\Module $module */
-        $module = Yii::$app->getModule('content');
-
-        return $module->adminCanViewAllContent && (
-            $this->isSystemAdmin()
-                || ($containerClass === Space::class && (new PermissionManager(['subject' => $this]))->can(ManageSpaces::class))
-                || ($containerClass === static::class && (new PermissionManager(['subject' => $this]))->can(ManageUsers::class))
-        );
-    }
-
-    /**
      * Checks if the user is allowed to manage all content
      *
      * @return bool
@@ -816,18 +821,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     public function getHttpSessions()
     {
         return $this->hasMany(Session::class, ['user_id' => 'id']);
-    }
-
-    /**
-     * User can approve other users
-     *
-     * @return bool
-     * @throws InvalidConfigException
-     * @deprecated since 1.18
-     */
-    public function canApproveUsers(): bool
-    {
-        return $this->canManageUsers();
     }
 
     /**

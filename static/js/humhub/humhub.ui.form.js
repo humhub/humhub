@@ -21,7 +21,7 @@ humhub.module('ui.form', function (module, require, $) {
         var $tabContent = $('<div class="tab-content"></div>');
         var $tabs = $('<ul id="profile-tabs" class="nav nav-tabs tab-sub-menu" data-tabs="tabs"></ul>');
         this.$.prepend($tabContent).prepend($tabs);
-        var inputCsrf = $('input[name ="_csrf"]').detach();
+        var inputCsrf = this.$.find('input[name ="_csrf"]').detach();
 
         var index = 0;
         $.each(this.getPreparedFieldSets(), function (label, $fieldSet) {
@@ -80,7 +80,7 @@ humhub.module('ui.form', function (module, require, $) {
         // activate the first tab or the tab with errors
         $tabs.find('a[href="#tab-' + activeTab + '"]').tab('show');
         this.$.fadeIn();
-        inputCsrf.insertBefore($("#profile-tabs"));
+        this.$.prepend(inputCsrf);
     };
 
     /**

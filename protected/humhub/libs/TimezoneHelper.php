@@ -11,7 +11,6 @@ namespace humhub\libs;
 use DateTime;
 use DateTimeZone;
 use Yii;
-use yii\db\Exception;
 
 /**
  * TimezoneHelpers
@@ -77,18 +76,6 @@ class TimezoneHelper
         }
 
         return $timezone_list;
-    }
-
-    /**
-     * Returns the date time from the database connection
-     *
-     * @return DateTime
-     * @deprecated since 1.17 because it is not used anymore
-     */
-    public static function getDatabaseConnectionTime(): DateTime
-    {
-        $timestamp = Yii::$app->db->createCommand('SELECT NOW()')->queryScalar();
-        return DateTime::createFromFormat("Y-m-d H:i:s", $timestamp);
     }
 
     /**

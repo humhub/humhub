@@ -132,45 +132,6 @@ class PreviewImage extends BaseConverter
     }
 
     /**
-     * @return int the image width or 0 if not valid
-     * @deprecated since 1.5
-     */
-    public function getWidth()
-    {
-        if ($this->image !== null) {
-            return $this->image->getSize()->getWidth();
-        }
-        return 0;
-    }
-
-    /**
-     * @return int the image height or 0 if not valid
-     * @deprecated since 1.5
-     */
-    public function getHeight()
-    {
-        if ($this->image !== null) {
-            return $this->image->getSize()->getHeight();
-        }
-        return 0;
-    }
-
-    /**
-     * @return ImageInterface
-     * @deprecated since 1.5
-     */
-    public function getImage()
-    {
-        $fileName = $this->file->store->get($this->getFilename());
-        if ($this->_image === null || $fileName !== $this->_imageFile) {
-            $this->_image = Image::getImagine()->open($fileName);
-            $this->_imageFile = $fileName;
-        }
-
-        return $this->_image;
-    }
-
-    /**
      * Returns the gallery link to the original file
      *
      * @param array $htmlOptions optional link html options

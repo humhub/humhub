@@ -13,8 +13,6 @@ Yii::setAlias('@humhub', $_ENV['HUMHUB_ALIASES__HUMHUB'] ?? realpath(__DIR__ . '
 
 // Workaround: PHP 7.3 compatible ZF2 ArrayObject class
 Yii::$classMap[\Zend\Stdlib\ArrayObject::class] = '@humhub/compat/ArrayObject.php';
-Yii::$classMap['humhub\modules\search\interfaces\Searchable'] = '@humhub/compat/search/Searchable.php';
-Yii::$classMap['humhub\modules\search\events\SearchAddEvent'] = '@humhub/compat/search/SearchAddEvent.php';
 
 // Bootstrap 5 Migration
 Yii::$classMap['yii\bootstrap\BootstrapAsset'] = '@humhub/compat/bootstrap/BootstrapAsset.php';
@@ -53,7 +51,7 @@ $logTargetConfig = [
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.18.0-beta.7',
+    'version' => '1.19.0-dev',
     'minRecommendedPhpVersion' => '8.2',
     'minSupportedPhpVersion' => '8.2',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,

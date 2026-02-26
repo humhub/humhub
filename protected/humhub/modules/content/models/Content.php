@@ -16,13 +16,15 @@ use humhub\interfaces\ArchiveableInterface;
 use humhub\interfaces\EditableInterface;
 use humhub\interfaces\ViewableInterface;
 use humhub\libs\UUIDValidator;
-use humhub\modules\content\activities\ContentCreated as ActivitiesContentCreated;
+use humhub\modules\activity\services\ActivityManager;
+use humhub\modules\content\activities\ContentCreatedActivity;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\content\events\ContentEvent;
 use humhub\modules\content\events\ContentStateEvent;
 use humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\content\interfaces\ContentProvider;
 use humhub\modules\content\interfaces\SoftDeletable;
 use humhub\modules\content\live\NewContent;
 use humhub\modules\content\notifications\ContentCreated as NotificationsContentCreated;
@@ -31,7 +33,6 @@ use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\content\services\ContentStateService;
-use humhub\modules\content\services\ContentTagService;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\PermissionManager;
@@ -140,12 +141,6 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      * @var ContentContainerActiveRecord the Container (e.g. Space or User) where this content belongs to.
      */
     protected $_container = null;
-
-    /**
-     * @var bool flag to disable the creation of default social activities like activity and notifications in afterSave() at content creation.
-     * @deprecated since v1.2.3 use ContentActiveRecord::silentContentCreation instead.
-     */
-    public $muteDefaultSocialActivities = false;
 
     /**
      * @event Event is used when a Content state is changed.
@@ -292,6 +287,10 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
             }
         }
 
+        if (!$insert && array_key_exists('visibility', $changedAttributes)) {
+            ActivityManager::afterContentChange($this);
+        }
+
         (new ContentSearchService($this))->update();
 
         parent::afterSave($insert, $changedAttributes);
@@ -360,6 +359,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      */
     private function notifyContentCreated()
     {
+        /** @var ContentProvider $contentSource */
         $contentSource = $this->getPolymorphicRelation();
 
         $userQuery = Yii::$app->notification->getFollowers($this);
@@ -375,9 +375,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
             ->about($contentSource)
             ->sendBulk($userQuery);
 
-        ActivitiesContentCreated::instance()
-            ->from($this->createdBy)
-            ->about($contentSource)->save();
+        ActivityManager::dispatch(ContentCreatedActivity::class, $contentSource, $this->createdBy);
     }
 
     /**
@@ -643,6 +641,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
                     $model->afterMove($container);
                 }
             });
+            ActivityManager::afterContentChange($this);
         }
 
         return $move;
@@ -852,29 +851,6 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         return $this->hasMany($tagClass, ['id' => 'tag_id'])
             ->via('tagRelations')
             ->orderBy($tagClass::tableName() . '.sort_order');
-    }
-
-    /**
-     * Adds a new ContentTagRelation for this content and the given $tag instance.
-     *
-     * @param ContentTag $tag
-     * @return bool if the provided tag is part of another ContentContainer
-     * @deprecated since 1.15
-     */
-    public function addTag(ContentTag $tag)
-    {
-        return (new ContentTagService($this))->addTag($tag);
-    }
-
-    /**
-     * Adds the given ContentTag array to this content.
-     *
-     * @param $tags ContentTag[]
-     * @deprecated since 1.15
-     */
-    public function addTags($tags)
-    {
-        (new ContentTagService($this))->addTags($tags);
     }
 
     /**
@@ -1107,16 +1083,5 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     public function getStateService(): ContentStateService
     {
         return new ContentStateService(['content' => $this]);
-    }
-
-    /**
-     * @param int|string|null $state
-     * @param array $options Additional options depending on state
-     * @since 1.14
-     * @deprecated Use $this->getStateService()->set(). It will be deleted in v1.15.
-     */
-    public function setState($state, array $options = [])
-    {
-        $this->getStateService()->set($state, $options);
     }
 }

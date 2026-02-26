@@ -73,7 +73,7 @@ Assets::register($this);
 
                     <div class="module-controls">
                         <?php if (!Yii::$app->moduleManager->hasModule($module['id'])): ?>
-                            <strong><?= Link::asLink(Yii::t('MarketplaceModule.base', 'Install'))
+                            <strong><?= Link::to(Yii::t('MarketplaceModule.base', 'Install'))
                                     ->action('marketplace.install', ['/marketplace/browse/install'])
                                     ->options(['data-module-id' => $module['id']]) ?></strong>
                             &middot;

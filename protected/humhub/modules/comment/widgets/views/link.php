@@ -5,31 +5,30 @@ use humhub\helpers\Html;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\Module;
 use humhub\modules\comment\widgets\CommentLink;
-use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
 use yii\helpers\Url;
 
 /* @var $this View */
-/* @var $objectModel string */
-/* @var $objectId int */
+/* @var $content \humhub\modules\content\models\Content */
+/* @var $parentComment Comment */
 /* @var $id string unique object id */
 /* @var $commentCount int */
 /* @var $mode string */
 /* @var $isNestedComment bool */
-/* @var $comment Comment */
 /* @var $module Module */
 
 $hasComments = ($commentCount > 0);
 $commentCountSpan = Html::tag('span', ' (' . $commentCount . ')', [
     'class' => 'comment-count',
     'data-count' => $commentCount,
-    'style' => ($hasComments) ? null : 'display:none'
+    'style' => ($hasComments) ? null : 'display:none',
 ]);
 
 $label = ($isNestedComment) ? Yii::t('CommentModule.base', "Reply") : Yii::t('CommentModule.base', "Comment");
 
 ?>
 <?php if ($mode == CommentLink::MODE_POPUP): ?>
-    <?php $url = Url::to(['/comment/comment/show', 'objectModel' => $objectModel, 'objectId' => $objectId, 'mode' => 'popup']); ?>
+    <?php $url = Url::to(['/comment/comment/show', 'contentId' => $content->id, 'parentCommentId' => $parentComment?->id, 'mode' => 'popup']); ?>
     <a href="#" data-action-click="ui.modal.load" data-action-url="<?= $url ?>">
         <?= $label . ' (' . $commentCount . ')' ?>
     </a>
@@ -41,5 +40,6 @@ $label = ($isNestedComment) ? Yii::t('CommentModule.base', "Reply") : Yii::t('Co
     ) ?>
 <?php else : ?>
     <?= Button::asLink($label . $commentCountSpan)
+        ->encodeLabel(false)
         ->action('comment.toggleComment', null, '#comment_' . $id) ?>
 <?php endif; ?>

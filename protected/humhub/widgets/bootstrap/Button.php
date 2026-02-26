@@ -31,67 +31,16 @@ class Button extends \yii\bootstrap5\Button
      */
     public bool|string $loader = true;
 
-    /**
-     * @inerhitdoc
-     */
-    public $encodeLabel = false;
-
     public bool $asLink = false;
-
-    /**
-     * @deprecated since 1.18
-     */
-    public const TYPE_PRIMARY = 'primary';
-    /**
-     * @deprecated since 1.18
-     */
-    public const TYPE_DEFAULT = self::TYPE_SECONDARY;
-    /**
-     * @deprecated since 1.18
-     */
-    public const TYPE_SECONDARY = 'secondary';
-    /**
-     * @deprecated since 1.18
-     */
-    public const TYPE_INFO = 'info';
-    /**
-     * @deprecated since 1.18
-     */
-    public const TYPE_WARNING = 'warning';
-    /**
-     * @deprecated since 1.18
-     */
-    public const TYPE_DANGER = 'danger';
-    /**
-     * @deprecated since 1.18
-     */
-    public const TYPE_SUCCESS = 'success';
-    /**
-     * @deprecated since 1.18
-     */
-    public const TYPE_NONE = 'none';
 
     public static function save($label = null): static
     {
         return static::primary($label ?? Yii::t('base', 'Save'));
     }
 
-    /**
-     * @deprecated since 1.18 use [[\humhub\widgets\bootstrap\Link::to()]] instead
-     */
-    public static function asLink(?string $label = null, $href = '#'): static
-    {
-        $button = self::instance($label)
-            ->loader(false)
-            ->link($href);
-        Html::removeCssClass($button->options, ['class' => 'btn']);
-        Html::addCssClass($button->options, ['class' => 'link']);
-        return $button;
-    }
-
     public static function none(?string $label = null): static
     {
-        $button = self::instance($label)
+        $button = static::instance($label)
             ->loader(false);
         Html::removeCssClass($button->options, ['class' => 'btn']);
         return $button;
@@ -113,15 +62,6 @@ class Button extends \yii\bootstrap5\Button
             ->icon('back')
             ->right()
             ->sm();
-    }
-
-    public static function userPickerSelfSelect($selector, $label = null): static
-    {
-        return self::asLink($label ?? Yii::t('base', 'Select Me'))
-            ->action('selectSelf', null, $selector)
-            ->icon('fa-check-circle-o')
-            ->right()
-            ->cssClass('input-field-addon');
     }
 
     public function loader(bool|string $loader = true): static
@@ -247,16 +187,17 @@ class Button extends \yii\bootstrap5\Button
         return $this;
     }
 
+    public function encodeLabel(bool $encodeLabel): static
+    {
+        $this->encodeLabel = $encodeLabel;
+        return $this;
+    }
+
     /**
      * @inerhitdoc
      */
     public function run(): string
     {
-        $this->options = array_merge(
-            $this->options,
-            $this->htmlOptions,
-        ); // For compatibility with old bootstrap buttons
-
         if ($this->loader) {
             $this->options['data-ui-loader'] = $this->loader;
         }
@@ -306,26 +247,6 @@ class Button extends \yii\bootstrap5\Button
             $this->options['class'] = preg_replace($pattern, $replacement, $this->options['class']);
         }
 
-        return $this;
-    }
-
-    /**
-     * @deprecated since 1.18
-     */
-    public function setType($type): static
-    {
-        if ($type !== static::TYPE_NONE) {
-            $this->options['class'] = ['btn-' . $type];
-        }
-        return $this;
-    }
-
-    /**
-     * @deprecated since 1.18
-     */
-    public function setText($text): static
-    {
-        $this->label = $text;
         return $this;
     }
 }

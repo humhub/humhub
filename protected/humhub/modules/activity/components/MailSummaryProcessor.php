@@ -21,7 +21,7 @@ use yii\helpers\Console;
  * @since 1.2
  * @author Luke
  */
-class MailSummaryProcessor
+final class MailSummaryProcessor
 {
     /**
      * Processes mail summary for given interval
@@ -85,14 +85,7 @@ class MailSummaryProcessor
         }
     }
 
-    /**
-     * Checks if a e-mail summary should be send to the user
-     *
-     * @param User $user
-     * @param int $interval
-     * @return bool
-     */
-    protected static function checkUser(User $user, $interval)
+    private static function checkUser(User $user, int $interval): bool
     {
         if (empty($user->email)) {
             return false;

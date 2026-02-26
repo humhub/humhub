@@ -8,10 +8,8 @@
 
 namespace humhub\helpers;
 
-use humhub\modules\file\Module;
 use Yii;
 use yii\helpers\Json;
-use yii\helpers\Url;
 
 /**
  * @since 1.18.0
@@ -30,34 +28,6 @@ class MobileAppHelper
             'type' => 'showOpener',
         ]);
 
-        self::sendFlutterMessage($message);
-    }
-
-    /**
-     * @deprecated Remove in 1.19
-     */
-    public static function getFileUploadSettings(): void
-    {
-        if (!DeviceDetectorHelper::isAppRequest()) {
-            return;
-        }
-
-        /* @var Module $module */
-        $module = Yii::$app->getModule('file');
-
-        $message = Json::encode([
-            'type' => 'fileUploadSettings',
-            'fileUploadUrl' => Url::to(['/file/file/upload'], true),
-            'contentCreateUrl' => Url::to(['/file/share-intend/index'], true),
-            'maxFileSize' => $module->settings->get('maxFileSize'),
-            'allowedExtensions' => $module->settings->get('allowedExtensions'),
-            'imageMaxResolution' => $module->imageMaxResolution,
-            'imageJpegQuality' => $module->imageJpegQuality,
-            'imagePngCompressionLevel' => $module->imagePngCompressionLevel,
-            'imageWebpQuality' => $module->imageWebpQuality,
-            'imageMaxProcessingMP' => $module->imageMaxProcessingMP,
-            'denyDoubleFileExtensions' => $module->denyDoubleFileExtensions,
-        ]);
         self::sendFlutterMessage($message);
     }
 

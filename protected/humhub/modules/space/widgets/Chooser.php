@@ -221,26 +221,6 @@ class Chooser extends Widget
     }
 
     /**
-     * Returns the membership query
-     *
-     * @return Query
-     * @deprecated since version 1.2
-     */
-    protected function getMembershipQuery()
-    {
-        $query = Membership::find()->joinWith('space')
-            ->where(['space_membership.user_id' => Yii::$app->user->id, 'space_membership.status' => Membership::STATUS_MEMBER]);
-
-        if (Yii::$app->getModule('space')->settings->get('spaceOrder') == 0) {
-            $query->orderBy('name ASC');
-        } else {
-            $query->orderBy('last_visit DESC');
-        }
-
-        return $query;
-    }
-
-    /**
      * @param Space $space
      * @param bool $withChooserItem
      * @param array $itemOptions

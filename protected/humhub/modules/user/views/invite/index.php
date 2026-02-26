@@ -6,6 +6,7 @@ use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\user\models\forms\Invite;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
@@ -67,6 +68,7 @@ use humhub\widgets\modal\ModalButton;
                     <?= Html::textarea('secureLink', $model->getInviteLink(), ['readonly' => 'readonly', 'class' => 'form-control w-100']) ?>
                     <?php if (Yii::$app->user->can([ManageUsers::class, ManageGroups::class])): ?>
                         <?= ModalButton::asLink(Html::tag('small', Yii::t('SpaceModule.base', 'Create new link')))
+                            ->encodeLabel(false)
                             ->confirm(
                                 Yii::t('SpaceModule.base', 'Create new link'),
                                 Yii::t('SpaceModule.base', 'Please note that any links you have previously created will become invalid as soon as you create a new one. Would you like to proceed?'),

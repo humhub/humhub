@@ -23,7 +23,7 @@ use yii\helpers\Url;
  * @property-read string $image
  * @property-read string $checkoutUrl
  * @property-read bool $isNonFree
- * @property-read bool $isActivated
+ * @property-read bool $isEnabled
  *
  * @since 1.11
  */
@@ -195,15 +195,6 @@ class Module extends Model
     }
 
     /**
-     * @deprecated since v1.16; use self::getIsEnabled()
-     * @see self::getIsEnabled()
-     */
-    public function getIsActivated(): bool
-    {
-        return $this->getIsEnabled();
-    }
-
-    /**
      * @since v1.16
      */
     public function getIsEnabled(): bool
@@ -221,15 +212,6 @@ class Module extends Model
         return !empty($this->professional_only);
     }
 
-    /**
-     * @return bool
-     * @deprecated since 1.17 Use isProFeature()
-     */
-    public function isProOnly(): bool
-    {
-        return $this->isProFeature();
-    }
-
     public function getCheckoutUrl(): string
     {
         return str_replace('-returnToUrl-', Url::to(['/marketplace/purchase/list'], true), $this->checkoutUrl);
@@ -242,6 +224,8 @@ class Module extends Model
 
     public function marketplaceLink(string $text): Link
     {
-        return Link::asLink($text, $this->marketplaceUrl)->blank();
+        return Link::asLink($text, $this->marketplaceUrl)
+            ->encodeLabel(false)
+            ->blank();
     }
 }

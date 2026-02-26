@@ -21,7 +21,7 @@ use humhub\modules\topic\widgets\TopicBadge;
         </div>
 
         <div class="wall-entry-body">
-            <div class="topic-label-list">
+            <div class="topic-label-list d-flex gap-1 flex-wrap">
                 <?php foreach ($topics as $topic) : ?>
                     <?= TopicBadge::forTopic($topic, $model->content) ?>
                 <?php endforeach; ?>

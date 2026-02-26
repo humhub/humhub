@@ -26,7 +26,7 @@ use humhub\helpers\Html;
 use humhub\modules\content\assets\ContainerHeaderAsset;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\file\widgets\Upload;
-use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
 
 ContainerHeaderAsset::register($this);
 
@@ -51,7 +51,7 @@ $profileImageHeight = $container->getProfileImage()->height();
         <!-- show user name and title -->
 
         <div class="img-profile-data">
-            <h1 class="<?= $classPrefix ?>"><?= Button::asLink($title)->link($container->getUrl()) ?></h1>
+            <h1 class="<?= $classPrefix ?>"><?= Link::to($title)->link($container->getUrl()) ?></h1>
             <h2 class="<?= $classPrefix ?>"><?= $subTitle ?></h2>
         </div>
 

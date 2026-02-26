@@ -1,8 +1,42 @@
 HumHub Changelog
 ================
 
-1.18.0 (Unreleased)
--------------------------------
+1.19.0 (Unreleased)
+-------------------------
+- Enh #7980: Remove deprecations
+- Enh #8025: Implement URL for Content Created Activity
+- Fix #8031: Border Radius for Color Picker under Theme Customisation
+- Fix #8006: Web Installer Nginx Example
+
+1.18.1 (Unreleased)
+-------------------------
+- Fix #8003: `Migration::foreignIndexExists()` doesn't find tables in braces
+- Fix #8002: Comment dropdowns truncated (e.g. to select a title)
+- Fix #8007: Fix unsaved changes warning on Profile Edit page
+- Fix #8008: Space Tour Wrong Target for "Preferences" menu
+- Fix #8013: Fix error displaying on update a module
+- Fix #8009: Administration Group label misplaced
+- Fix #8012: Modal backdrop over the account deletion modal for new Users
+- Enh #8017: Exclude `vendor` from module i18n extract
+- Fix #8020: Some email notifications are missing auto-contrast for the button text color
+- Fix #8027: Cannot register if `showRegistrationForm` is disabled
+- Enh #8029: Display and cache virtual profile field in the user name subtitle
+- Fix #8030: Fix abandoned composer packages
+- Fix #8039: Encode `Button`, `Link`, `Badge` and `DropdownMenu` labels by default to fix potential XSS security issue (see [migration guide](https://github.com/humhub/humhub/blob/master/MIGRATE-DEV.md#version-1181) for details)
+- Fix #8038: Improve paragraph and image styles in RichText content
+- Enh #7978: Show `DisplayNameSub` in UserPicker
+
+1.18.0 (February 4, 2026)
+-------------------------
+
+> See also: HumHub 1.18 - [Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_18)
+
+> Info: The minimum PHP version is now `PHP 8.2`!
+
+> Bootstrap 5 is the default CSS framework, which may require migration of custom modules or themes.
+
+> Caching must now be configured via the [configuration file](https://docs.humhub.org/docs/admin/performance), with `FileCache` as the default.
+
 - Fix #7921: Alert widget broken since beta.6
 - Fix #7925: Space Members dropdown menu
 - Fix #7924: Admin Pending Approvals buttons layout
@@ -25,7 +59,18 @@ HumHub Changelog
 - Enh #7964: Add option for disabling certificate checking for ldap connections.
 - Fix #7967: Don't store fixed settings to DB
 - Fix #7966: ENV loading for Queue workers
+- Fix #7970: Margins in comments
 - Fix #7972: Content footer comment/like links separator spacings
+- Enh #7975: More details in the log message in case of error with AltchaCaptcha
+- Fix #7977: Skip adding of a default group when another is selected on the registration form
+- Fix #7981: Error on sending mail
+- Fix #7987: Fix registration by link with existing email
+- Fix #7979: Topics and Online profile images margins
+- Enh #7988: When the Altcha Captcha box is not checked, don't log any error
+- Fix #7991: Space image acronym in banner on mobile
+- Enh #7991: On medium size, don't display the Space statistics under the Space image in the banner
+- Fix #7989: Fix site icon on installer pages
+- Fix #7994: Opening Modals indents top bars
 
 1.18.0-beta.6 (January 8, 2026)
 -------------------------------

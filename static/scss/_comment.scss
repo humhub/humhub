@@ -13,6 +13,10 @@
                 position: relative !important;
                 margin: -0.5rem;
 
+                &.d-flex > .flex-grow-1 {
+                    min-width: 0; // Allow shrinking to fit the flex container
+                }
+
                 > .nav-pills.preferences {
                     right: 6px;
 
@@ -50,9 +54,11 @@
                 }
 
                 h4.comment-heading {
+                    font-size: 13px;
+                    padding-top: 1px;
+                    margin-bottom: 3px;
+
                     a {
-                        font-size: 13px;
-                        margin-bottom: 3px;
                         font-weight: 500;
                     }
 
