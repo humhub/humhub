@@ -9,7 +9,6 @@
 namespace humhub\modules\marketplace\widgets;
 
 use humhub\modules\marketplace\models\Module;
-use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\DropdownMenu;
 use Yii;
@@ -26,7 +25,7 @@ class Settings extends DropdownMenu
         parent::init();
 
         if (!$this->label) {
-            $this->label = Icon::get('cog');
+            $this->icon = 'cog';
         }
 
         $this->addEntry(new MenuLink([
