@@ -137,7 +137,7 @@ $form = Modal::beginFormDialog([
                 <div class="input-group w-100 d-flex flex-column align-items-end">
                     <?= Html::textarea('secureLink', $model->getInviteLink(), ['readonly' => 'readonly', 'class' => 'form-control w-100']) ?>
                     <?php if (Yii::$app->controller->id === 'membership' && $model->space->isAdmin()) : ?>
-                        <?= ModalButton::asLink(Html::tag('small', Yii::t('SpaceModule.base', 'Create new link')))
+                        <?= Link::modal(Html::tag('small', Yii::t('SpaceModule.base', 'Create new link')))
                             ->encodeLabel(false)
                             ->confirm(
                                 Yii::t('SpaceModule.base', 'Create new link'),
