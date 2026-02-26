@@ -7,6 +7,7 @@ HumHub Changelog
 - Enh #8025: Implement URL for Content Created Activity
 - Fix #8031: Border Radius for Color Picker under Theme Customisation
 - Fix #8006: Web Installer Nginx Example
+- Fix #8041: Update `Button::asLink` to `Link::to`
 
 1.18.1 (Unreleased)
 -------------------------
