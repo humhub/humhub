@@ -644,6 +644,10 @@
         a {
             color: var(--bs-accent);
         }
+
+        p {
+            display: flow-root;
+        }
     }
 
     #wallStream {

@@ -8,6 +8,24 @@ HumHub Changelog
 - Fix #8031: Border Radius for Color Picker under Theme Customisation
 - Fix #8006: Web Installer Nginx Example
 
+1.18.1 (Unreleased)
+-------------------------
+- Fix #8003: `Migration::foreignIndexExists()` doesn't find tables in braces
+- Fix #8002: Comment dropdowns truncated (e.g. to select a title)
+- Fix #8007: Fix unsaved changes warning on Profile Edit page
+- Fix #8008: Space Tour Wrong Target for "Preferences" menu
+- Fix #8013: Fix error displaying on update a module
+- Fix #8009: Administration Group label misplaced
+- Fix #8012: Modal backdrop over the account deletion modal for new Users
+- Enh #8017: Exclude `vendor` from module i18n extract
+- Fix #8020: Some email notifications are missing auto-contrast for the button text color
+- Fix #8027: Cannot register if `showRegistrationForm` is disabled
+- Enh #8029: Display and cache virtual profile field in the user name subtitle
+- Fix #8030: Fix abandoned composer packages
+- Fix #8039: Encode `Button`, `Link`, `Badge` and `DropdownMenu` labels by default to fix potential XSS security issue (see [migration guide](https://github.com/humhub/humhub/blob/master/MIGRATE-DEV.md#version-1181) for details)
+- Fix #8038: Improve paragraph and image styles in RichText content
+- Enh #7978: Show `DisplayNameSub` in UserPicker
+
 1.18.0 (February 4, 2026)
 -------------------------
 

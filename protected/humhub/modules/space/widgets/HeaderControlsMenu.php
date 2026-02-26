@@ -10,7 +10,6 @@ namespace humhub\modules\space\widgets;
 
 use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
-use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\menu\DropdownDivider;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\DropdownMenu;
@@ -33,11 +32,6 @@ class HeaderControlsMenu extends DropdownMenu
     /**
      * @inheritdoc
      */
-    public $label;
-
-    /**
-     * @inheritdoc
-     */
     public $id = 'space-header-controls-menu';
 
     /**
@@ -48,7 +42,7 @@ class HeaderControlsMenu extends DropdownMenu
         parent::init();
 
         if (!$this->label) {
-            $this->label = Icon::get('controls');
+            $this->icon = 'controls';
         }
 
         if ($this->template === '@humhub/widgets/views/dropdownNavigation') {

@@ -32,7 +32,7 @@ class Badge extends Widget
     /**
      * @var bool whether to encode the label.
      */
-    public bool $encodeLabel = false;
+    public bool $encodeLabel = true;
 
     public int $sortOrder = 1000;
     public ?Button $link = null;
@@ -122,11 +122,9 @@ class Badge extends Widget
      */
     public function action($handler, $url = null, $target = null)
     {
-        $label = ($this->encodeLabel) ? Html::encode($this->label) : $this->label;
-        if ($this->icon) {
-            $label = $this->icon . ' ' . $label;
-        }
-        $this->link = Link::withAction($label, $handler, $url, $target);
+        $this->link = Link::withAction($this->label, $handler, $url, $target)
+            ->encodeLabel($this->encodeLabel)
+            ->icon($this->icon);
         return $this;
     }
 

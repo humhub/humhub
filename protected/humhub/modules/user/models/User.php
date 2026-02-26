@@ -29,6 +29,7 @@ use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\helpers\AuthHelper;
+use humhub\modules\user\models\fieldtype\BaseTypeVirtual;
 use humhub\modules\user\Module;
 use humhub\modules\user\services\PasswordRecoveryService;
 use Yii;
@@ -508,6 +509,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
 
         if ($this->profile !== null) {
             $this->profile->delete();
+            BaseTypeVirtual::flushCache($this);
         }
 
         return parent::beforeDelete();
@@ -635,6 +637,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
         if (Yii::$app->user->id == $this->id) {
             Yii::$app->user->setIdentity($user);
         }
+
+        BaseTypeVirtual::flushCache($this);
     }
 
 

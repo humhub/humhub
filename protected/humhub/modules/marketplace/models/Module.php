@@ -224,6 +224,8 @@ class Module extends Model
 
     public function marketplaceLink(string $text): Link
     {
-        return Link::to($text, $this->marketplaceUrl)->blank();
+        return Link::asLink($text, $this->marketplaceUrl)
+            ->encodeLabel(false)
+            ->blank();
     }
 }
