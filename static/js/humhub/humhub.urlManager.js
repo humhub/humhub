@@ -52,6 +52,25 @@ humhub.module('urlManager', function (module, require, $) {
             path = '';
         }
 
+        if (!path.length) {
+            return baseUrl;
+        }
+
+        if (path.charAt(0) === '?' || path.charAt(0) === '#') {
+            return baseUrl + path;
+        }
+
+        var baseEndsWithSlash = baseUrl.charAt(baseUrl.length - 1) === '/';
+        var pathStartsWithSlash = path.charAt(0) === '/';
+
+        if (baseEndsWithSlash && pathStartsWithSlash) {
+            return baseUrl + path.substr(1);
+        }
+
+        if (!baseEndsWithSlash && !pathStartsWithSlash) {
+            return baseUrl + '/' + path;
+        }
+
         return baseUrl + path;
     };
 
@@ -117,14 +136,12 @@ humhub.module('urlManager', function (module, require, $) {
     const findContainerConfig = function (route) {
         var config = getConfig();
         var types = (config.contentContainer && config.contentContainer.types) || {};
-        var typeList = Object.keys(types);
 
-        if (typeList.length === 0) {
-            return null;
-        }
+        for (var type in types) {
+            if (!Object.prototype.hasOwnProperty.call(types, type)) {
+                continue;
+            }
 
-        for (var i = 0; i < typeList.length; i++) {
-            var type = typeList[i];
             var typeConfig = types[type];
             if (typeConfig && typeConfig.defaultRoute === route) {
                 return $.extend({type: type}, typeConfig);

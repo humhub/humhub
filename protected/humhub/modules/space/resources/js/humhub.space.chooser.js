@@ -302,6 +302,8 @@ humhub.module('space.chooser', function (module, require, $) {
                 urlManager.create('/file/file/upload', {objectModel: 'aaa', objectId: 'bbb'}),
                 urlManager.create('/web/pwa-service-worker/index'),
                 urlManager.create('web/pwa-service-worker/index'),
+                urlManager.create('calendar/cal-dav/well-known'),
+                urlManager.create('/calendar/cal-dav/well-known'),
             )
 
             // Clear all current remote results not matching the current search
