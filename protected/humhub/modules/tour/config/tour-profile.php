@@ -58,7 +58,7 @@ return [
                         'title' => Yii::t('TourModule.profile', '<strong>Hurray!</strong> You\'re done!'),
                         'description'
                             => Yii::t('TourModule.profile', 'You\'ve completed the user profile guide!<br><br>To carry on with the administration guide, click here:<br /><br />')
-                            . Link::to(Yii::t("TourModule.profile", "<strong>Administration (Modules)</strong>"))
+                            . Button::asLink(Yii::t("TourModule.profile", "<strong>Administration (Modules)</strong>"))
                                 ->encodeLabel(false)
                                 ->action('tour.next')
                             . '<br><br>',

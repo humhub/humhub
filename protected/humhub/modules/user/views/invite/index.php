@@ -67,7 +67,7 @@ use humhub\widgets\modal\ModalButton;
                 <div class="input-group w-100 d-flex flex-column align-items-end">
                     <?= Html::textarea('secureLink', $model->getInviteLink(), ['readonly' => 'readonly', 'class' => 'form-control w-100']) ?>
                     <?php if (Yii::$app->user->can([ManageUsers::class, ManageGroups::class])): ?>
-                        <?= Link::modal(Html::tag('small', Yii::t('SpaceModule.base', 'Create new link')))
+                        <?= ModalButton::asLink(Html::tag('small', Yii::t('SpaceModule.base', 'Create new link')))
                             ->encodeLabel(false)
                             ->confirm(
                                 Yii::t('SpaceModule.base', 'Create new link'),
