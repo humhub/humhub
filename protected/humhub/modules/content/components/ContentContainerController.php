@@ -112,8 +112,33 @@ class ContentContainerController extends Controller
         $this->checkModuleIsEnabled();
 
         if ($this->contentContainer) {
-            $this->view->registerJsConfig('content.container', [
+            $containerType = null;
+            $containerPrefix = null;
+            $containerUrlPart = null;
+
+            if ($this->contentContainer instanceof Space) {
+                $containerType = 'space';
+                $containerPrefix = 's';
+                $containerUrlPart = $this->contentContainer->url ?: $this->contentContainer->guid;
+            } elseif ($this->contentContainer instanceof User) {
+                $containerType = 'user';
+                $containerPrefix = 'u';
+                $containerUrlPart = $this->contentContainer->username;
+            }
+
+            $containerConfig = [
                 'guid' => $this->contentContainer->guid,
+                'type' => $containerType,
+                'prefix' => $containerPrefix,
+                'urlPart' => $containerUrlPart,
+                'url' => $this->contentContainer->getUrl(),
+            ];
+
+            $this->view->registerJsConfig('content.container', $containerConfig);
+            $this->view->registerJsConfig('urlManager', [
+                'contentContainerMap' => [
+                    $this->contentContainer->guid => $containerConfig,
+                ],
             ]);
         } else {
             $this->view->registerJsConfig('content.container', [

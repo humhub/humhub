@@ -17,6 +17,7 @@ use humhub\modules\web\security\helpers\Security;
 use Yii;
 use yii\base\Widget;
 use yii\helpers\Url;
+use yii\web\UrlRule;
 
 /**
  * JSConfig LayoutAddition used to configure core js modules.
@@ -53,6 +54,7 @@ class CoreJsConfig extends Widget
                         'warn.onBeforeCloseModal' => Yii::t('base', 'Unsaved changes will be lost. Do you want to proceed?'),
                     ],
                 ],
+                'urlManager' => $this->getUrlManagerConfig(),
                 'file' => [
                     'upload' => [
                         'url' => Url::to(['/file/file/upload']),
@@ -305,5 +307,60 @@ class CoreJsConfig extends Widget
                 ],
             ],
         );
+    }
+
+    protected function getUrlManagerConfig(): array
+    {
+        $manager = Yii::$app->urlManager;
+        $rules = [];
+
+        if ($manager->enablePrettyUrl) {
+            foreach ($manager->rules as $rule) {
+                if (!($rule instanceof UrlRule)) {
+                    continue;
+                }
+                if ($rule->mode === UrlRule::PARSING_ONLY) {
+                    continue;
+                }
+                if ($rule->host !== null) {
+                    continue;
+                }
+
+                $name = $rule->name ?: $rule->pattern;
+                if (empty($name)) {
+                    continue;
+                }
+
+                $rules[] = [
+                    'name' => $name,
+                    'route' => $rule->route,
+                    'suffix' => $rule->suffix,
+                ];
+            }
+        }
+
+        return [
+            'baseUrl' => $manager->getBaseUrl(),
+            'scriptUrl' => $manager->getScriptUrl(),
+            'enablePrettyUrl' => $manager->enablePrettyUrl,
+            'showScriptName' => $manager->showScriptName,
+            'suffix' => $manager->suffix,
+            'routeParam' => $manager->routeParam,
+            'rules' => $rules,
+            'contentContainer' => [
+                'types' => [
+                    'user' => [
+                        'prefix' => 'u',
+                        'defaultRoute' => 'user/profile',
+                        'routePrefixes' => ['<contentContainer>', '<userContainer>'],
+                    ],
+                    'space' => [
+                        'prefix' => 's',
+                        'defaultRoute' => 'space/space',
+                        'routePrefixes' => ['<contentContainer>', '<spaceContainer>'],
+                    ],
+                ],
+            ],
+        ];
     }
 }
