@@ -2,28 +2,32 @@
 
 namespace humhub\components\assets;
 
-use humhub\assets\AppAsset;
-use humhub\assets\CoreBundleAsset;
 use humhub\components\fs\AbstractFs;
-use humhub\components\fs\Local;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\Visibility;
 use Yii;
+use yii\base\Application;
 use yii\base\InvalidArgumentException;
 use yii\base\InvalidConfigException;
 use yii\helpers\FileHelper;
-use yii\web\AssetBundle;
 
 class AssetManager extends \yii\web\AssetManager
 {
     public $appendTimestamp = true;
     public string $fsMount = 'assets';
+
     private array $filesystemOptions = [
         'visibility' => Visibility::PUBLIC,
         'directory_visibility' => Visibility::PUBLIC,
     ];
     public bool $preventDefer = false;
     private AbstractFs $fs;
+
+    public bool $enableCache = false;
+
+    private array $_published = [];
+
+    private bool $_cacheTainted = false;
 
     public function init(): void
     {
@@ -39,111 +43,49 @@ class AssetManager extends \yii\web\AssetManager
         if ($this->linkAssets) {
             throw new InvalidConfigException('Linking assets is not supported.');
         }
+
+        if ($this->enableCache) {
+            $this->_published = Yii::$app->cache->get('assetManagerPublished') ?: [];
+
+            Yii::$app->on(Application::EVENT_AFTER_REQUEST, function ($event) {
+                if ($this->_cacheTainted && !Yii::$app->request->isConsoleRequest) {
+                    Yii::$app->cache->set('assetManagerPublished', $this->_published);
+                }
+            });
+        }
     }
 
     public function publish($path, $options = [])
     {
-        if (!empty($options['mount'])) {
-            if ($options['mount'] instanceof Local) {
-                $path = $options['mount']->path . DIRECTORY_SEPARATOR . $path;
-            } else {
-                // ToDo: Copy Path or File into Temp. Dir and Publish it
-                throw new InvalidArgumentException('Unsupported Mount class: ' . gettype($options['mount']));
-            }
-        }
-        return parent::publish($path, $options);
-    }
+        $path = Yii::getAlias($path);
 
-    public function clear()
-    {
-        $this->fs->deleteDirectory('.');
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * Adds defer support for non HumHub AssetBundles by $defer property and adds dependency to [[CoreBundleAsset]]
-     *
-     * @param string $name
-     * @param array $config
-     * @param bool $publish
-     * @return AssetBundle
-     * @throws InvalidConfigException
-     * @since 1.5
-     */
-    protected function loadBundle($name, $config = [], $publish = true)
-    {
-        $bundle = parent::loadBundle($name, $config, $publish);
-        $bundleClass = $bundle::class;
-
-        if ($bundleClass !== AppAsset::class
-            && !in_array($bundleClass, AppAsset::STATIC_DEPENDS)
-            && !in_array($bundleClass, CoreBundleAsset::STATIC_DEPENDS)
-            && !is_subclass_of($bundleClass, AssetBundle::class)) {
-            // Force dependency to CoreBundleAsset
-            array_unshift($bundle->depends, CoreBundleAsset::class);
-
-            // Allows to add defer to non HumHub AssetBundles
-            if (property_exists($bundle, 'defer') && $bundle->defer) {
-                $bundle->jsOptions['defer'] = 'defer';
-            }
+        if (isset($this->_published[$path])) {
+            return $this->_published[$path];
         }
 
-        if ($this->preventDefer && isset($bundle->jsOptions['defer'])) {
-            unset($bundle->jsOptions['defer']);
-        }
-
-        return $bundle;
-    }
-
-    public function forcePublish(AssetBundle $bundle, $options = [])
-    {
-        $options['forceCopy'] = true;
-
-        if ($bundle->sourcePath !== null && !isset($bundle->basePath, $bundle->baseUrl)) {
-            $path = Yii::getAlias($bundle->sourcePath);
-
-            if (!is_string($path) || ($src = realpath($path)) === false) {
-                throw new InvalidArgumentException("The file or directory to be published does not exist: $path");
-            }
-
-            if (is_file($src)) {
-                return $this->publishFile($src);
-            } else {
-                return $this->publishDirectory($src, $options);
-            }
-        } else {
-            $bundle->publish($this);
-        }
+        $this->_cacheTainted = true;
+        return $this->_published[$path] = parent::publish($path, $options);
     }
 
     protected function publishFile($src)
     {
-        // Remove root dir, and hash e.g. '/uploads/profile_image/', to store all profile images in same directory
-        $dir = str_replace(Yii::getAlias('@webroot'), '', $src);
-        $dir = '_/' . hash('xxh32', dirname($dir));
-
+        $dir = $this->hash($src);
         $fileName = basename($src);
-        $dstFile = $dir . DIRECTORY_SEPARATOR . $fileName;
+        $dstDir = $this->basePath . DIRECTORY_SEPARATOR . $dir;
+        $dstFile = $dstDir . DIRECTORY_SEPARATOR . $fileName;
 
-        $shouldWrite = true;
-        try {
-            if ($this->fs->fileExists($dstFile)
-                && $this->fs->lastModified($dstFile) >= @filemtime($src)) {
-                $shouldWrite = false;
-            }
-        } catch (\League\Flysystem\FilesystemException $e) {
-        }
-
-        if ($shouldWrite) {
-            $this->fs->writeStream($dstFile, fopen($src, 'r'), $this->filesystemOptions);
+        if (
+            !$this->fs->fileExists($dstFile)
+            || $this->fs->lastModified($dstFile) < @filemtime($src)
+        ) {
+            $this->fs->writeStream($dstFile, fopen($src, 'r'));
         }
 
         if ($this->appendTimestamp && ($timestamp = $this->fs->lastModified($dstFile)) > 0) {
             $fileName = $fileName . "?v=$timestamp";
         }
 
-        return [$dstFile, "{$this->baseUrl}/$dir/$fileName"];
+        return [$dstFile, $this->baseUrl . "/$dir/$fileName"];
     }
 
     protected function publishDirectory($src, $options)
@@ -160,13 +102,13 @@ class AssetManager extends \yii\web\AssetManager
             if ($this->flySystem->has($dstDir)) {
                 $this->flySystem->deleteDirectory($dstDir);
             }
-            */
 
             $folders = FileHelper::findDirectories($src);
             foreach ($folders as $folder) {
                 $folder = substr($folder, $currentLength);
                 $this->fs->createDirectory($dstDir . $folder, $this->filesystemOptions);
             }
+            */
 
             $files = FileHelper::findFiles($src);
             foreach ($files as $file) {
@@ -178,11 +120,55 @@ class AssetManager extends \yii\web\AssetManager
         return [$dstDir, $this->baseUrl . '/' . $dstDir];
     }
 
+    /**
+     * Publishes an AssetImage
+     * We need a separate method here, because AssetImages may located in another FlySystem.
+     */
+    public function publishAssetImage(AssetImage $assetImage, string $fileNameWithOptions): array
+    {
+        if (isset($this->_published[$fileNameWithOptions])) {
+            return $this->_published[$fileNameWithOptions];
+        }
+
+        // Remove root dir, and hash e.g. '/uploads/profile_image/', to store all AssetImage types in an individual directory
+        $dstDir = '_/' . hash('xxh32', dirname($fileNameWithOptions));
+        $dstFile = $dstDir . DIRECTORY_SEPARATOR . basename($fileNameWithOptions);
+
+        $shouldWrite = true;
+        try {
+            if ($this->fs->fileExists($dstFile)
+                && $this->fs->lastModified($dstFile) >= $assetImage->fs->lastModified($fileNameWithOptions)) {
+                $shouldWrite = false;
+            }
+        } catch (\League\Flysystem\FilesystemException $e) {
+            Yii::error($e->getMessage());
+        }
+
+        if ($shouldWrite) {
+            $this->fs->writeStream(
+                $dstFile,
+                $assetImage->fs->readStream($fileNameWithOptions),
+                $this->filesystemOptions
+            );
+        }
+
+        $this->_cacheTainted = true;
+        return $this->_published[$fileNameWithOptions] = [$dstFile, $this->baseUrl . '/' . $dstFile];
+    }
+
+    public function clear()
+    {
+        $this->enableCache = false;
+        Yii::$app->cache->delete('assetManagerPublished');
+
+        $this->fs->deleteDirectory('.');
+    }
+
 
     /**
      * Temporary Hack for dynamic CSS Compile
      */
-    public function addAssetFileByContent($file, $content)
+    public function fileWrite($file, $content)
     {
         try {
             $this->fs->write($file, $content, $this->filesystemOptions);

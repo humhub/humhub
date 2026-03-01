@@ -55,7 +55,7 @@ class AssetImage extends Component
     private string $fileName;
     private bool $exists;
 
-    private AbstractFs $fs;
+    public AbstractFs $fs;
 
     public function __construct($config = [])
     {
@@ -72,8 +72,6 @@ class AssetImage extends Component
         $this->path = dirname($this->file);
         $this->exists = $this->fs->fileExists($this->file);
         $this->defaultFile = Yii::getAlias($this->defaultFile);
-
-        $this->fs->createDirectory($this->path, $this->filesystemOptions);
     }
 
     /**
@@ -96,7 +94,7 @@ class AssetImage extends Component
             $this->convert($scaledFileName, $options);
         }
 
-        $published = Yii::$app->assetManager->publish($scaledFileName, ['mount' => $this->fs]);
+        $published = Yii::$app->assetManager->publishAssetImage($this, $scaledFileName);
         return Url::to($published[1], $scheme);
     }
 

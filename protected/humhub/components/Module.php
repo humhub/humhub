@@ -181,8 +181,8 @@ class Module extends \yii\base\Module
         if ($all) {
             foreach ($this->getAssetClasses() as $assetClass) {
                 $assetBundle = new $assetClass();
-                $manager = Yii::$app->getAssetManager();
-                $manager->forcePublish($assetBundle);
+                $assetBundle->publishOptions['forceCopy'] = true;
+                $assetBundle->publish(Yii::$app->assetManager);
             }
         }
 

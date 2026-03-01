@@ -132,11 +132,11 @@ class FileHistory extends ActiveRecord
         $entry->created_by = empty($file->old_updated_by) ? $file->updated_by : $file->old_updated_by;
         $entry->created_at = empty($file->old_updated_at) ? $file->updated_at : $file->old_updated_at;
         if ($file->store->has()) {
-            $entry->hash_sha1 = sha1_file($file->store->get());
-            $entry->size = filesize($file->store->get());
+            $entry->hash_sha1 = $file->store->checksum();
+            $entry->size = $file->store->fileSize();
         }
         if ($entry->save()) {
-            $file->store->setByPath($file->store->get(), $entry->getFileVariantId());
+            $file->store->setContent($file->store->getContent(), $entry->getFileVariantId());
             return true;
         }
 

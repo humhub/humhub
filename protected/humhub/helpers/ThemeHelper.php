@@ -351,8 +351,8 @@ class ThemeHelper
             if (!$css) {
                 return static::logAndGetError('Could not compile SCSS');
             }
-            Yii::$app->assetManager->addAssetFileByContent($cssFilePath, $css);
-            Yii::$app->assetManager->addAssetFileByContent($mapFilePath, $map);
+            Yii::$app->assetManager->fileWrite($cssFilePath, $css);
+            Yii::$app->assetManager->fileWrite($mapFilePath, $map);
         } catch (SassException $e) {
             return static::logAndGetError('Saas compiler error: ' . $e->getMessage());
         }
