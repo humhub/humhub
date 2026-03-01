@@ -94,6 +94,7 @@ Replaced methods:
     - `Space|User::getProfileBannerImage()` => `Space|User::bannerImage()`, `Space|User::profileBannerImage` => `Space|User::bannerImage`
     - `SiteLogo|SiteIcon|LoginBackground|MailHeader::getUrl()` => `Yii::$app->img->logo|icon|loginBackground|mailHeader->getUrl()`
 - `AssetManager::forcePublish()` removed
+- Removed `@filestore` Alias
 
 
 Version 1.18 (Unreleased)

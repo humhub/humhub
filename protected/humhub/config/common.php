@@ -68,7 +68,6 @@ $config = [
         '@webroot' => realpath(__DIR__ . '/../../../'),
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
-        '@filestore' => '@webroot/uploads/file',
         '@config' => '@app/config',
         '@themes' => '@webroot/themes',
     ],

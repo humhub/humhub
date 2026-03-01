@@ -460,8 +460,10 @@ class File extends ActiveRecord implements ViewableInterface
             }
             $store->setContent($file->store->getContent());
             $file->delete();
-        } elseif (is_string($file) && is_file($file)) {
-            $store->setByPath($file);
+        } elseif (is_string($file) && $this->store->fs->has($file)) {
+            $store->setContent($this->store->fs->read($file));
+        } else {
+            throw new InvalidArgumentException('Invalid parameter type.');
         }
 
         $this->afterNewStoredFile();

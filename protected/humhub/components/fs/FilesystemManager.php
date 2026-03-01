@@ -9,7 +9,7 @@ use yii\base\InvalidConfigException;
 class FilesystemManager extends Component
 {
 
-    public $fsData = 'data';
+    public string $fsData = 'data';
 
     public array $mounts = [];
 
