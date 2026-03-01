@@ -52,10 +52,14 @@ class TopicBadge extends Badge
         }
 
         if ($contentContainer instanceof ContentContainerActiveRecord) {
-            $badge->withLink(Link::withAction('', 'topic.addTopic')->options([
-                'data-topic-id' => $topic->id,
-                'data-topic-url' => $topic->getUrl($contentContainer, $urlParams),
-            ]));
+            $badge->withLink(
+                Link::withAction('', 'topic.addTopic')
+                ->options([
+                    'data-topic-id' => $topic->id,
+                    'data-topic-url' => $topic->getUrl($contentContainer, $urlParams),
+                ])
+                ->encodeLabel(false),
+            );
         }
 
         return $badge;

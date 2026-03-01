@@ -10,7 +10,6 @@ use humhub\widgets\SiteLogo;
 /**
  * @var $hForm Registration
  * @var $hasAuthClient bool
- * @var $showRegistrationForm bool
  */
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
@@ -26,15 +25,13 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
         </div>
         <div class="panel-body">
             <?php if (!$hasAuthClient && AuthChoice::hasClients()): ?>
-                <?= AuthChoice::widget(['showOrDivider' => $showRegistrationForm]) ?>
+                <?= AuthChoice::widget(['showOrDivider' => true]) ?>
             <?php endif; ?>
 
-            <?php if ($showRegistrationForm): ?>
-                <?php $form = ActiveForm::begin(['id' => 'registration-form', 'enableClientValidation' => false]); ?>
-                <?= Html::hiddenInput('ChooseLanguage[language]', Yii::$app->language) ?>
-                <?= $hForm->render($form); ?>
-                <?php ActiveForm::end(); ?>
-            <?php endif; ?>
+            <?php $form = ActiveForm::begin(['id' => 'registration-form', 'enableClientValidation' => false]); ?>
+            <?= Html::hiddenInput('ChooseLanguage[language]', Yii::$app->language) ?>
+            <?= $hForm->render($form); ?>
+            <?php ActiveForm::end(); ?>
         </div>
     </div>
 

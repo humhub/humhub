@@ -76,7 +76,7 @@ return [
     'Your first sample space to discover the platform.' => 'Din første rum til at opdage platformen.',
     '<strong>Apache</strong> web server detected.' => '',
     '<strong>Nginx</strong> web server detected.' => '',
-    'Ensure the following rule is present in your configuration: <strong>try_files $uri $uri/ /index.php?$args;</strong>.' => '',
+    'Ensure the following rule is present in your configuration: <strong>try_files $uri $uri/ /index.php$is_args$args;</strong>.' => '',
     'Pretty URLs may not work correctly.' => '',
     'Pretty URLs should work correctly.' => '',
     'The <strong>.htaccess</strong> file is in place.' => '',

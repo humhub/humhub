@@ -3,10 +3,10 @@
 namespace humhub\modules\content\activities;
 
 use humhub\modules\activity\components\ActiveQueryActivity;
-use humhub\modules\activity\models\Activity;
-use Yii;
 use humhub\modules\activity\components\BaseContentActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
+use humhub\modules\activity\models\Activity;
+use Yii;
 
 final class ContentCreatedActivity extends BaseContentActivity implements ConfigurableActivityInterface
 {
@@ -47,7 +47,20 @@ final class ContentCreatedActivity extends BaseContentActivity implements Config
 
     public function getUrl(bool $scheme = false): ?string
     {
-        //ToDo: If grouped, link to Stream with enabled filters
+        if ($this->groupCount > 1) {
+            $firstDate = Activity::find()->select('MIN(activity.created_at)')
+                ->where(['activity.grouping_key' => $this->record->grouping_key]);
+            $lastDate = Activity::find()->select('MAX(activity.created_at)')
+                ->where(['activity.grouping_key' => $this->record->grouping_key]);
+
+            return $this->content->container->createUrl(null, [
+                'originators[]' => $this->user->guid,
+                'includes[]' => $this->content->object_model,
+                'date_filter_from' => Yii::$app->formatter->asDate($firstDate->scalar(), 'short'),
+                'date_filter_to' => Yii::$app->formatter->asDate($lastDate->scalar(), 'short'),
+            ], $scheme);
+        }
+
         return parent::getUrl($scheme);
     }
 

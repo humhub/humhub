@@ -28,13 +28,16 @@ class MenuLink extends MenuEntry
      * @var string|array the url or route
      */
     protected $url;
-
-
     /**
      * @var Button
      */
     protected $link;
 
+    public function setEncodeLabel(bool $encodeLabel)
+    {
+        $this->getLink()->encodeLabel($encodeLabel);
+        return $this;
+    }
 
     /**
      * @return Button
