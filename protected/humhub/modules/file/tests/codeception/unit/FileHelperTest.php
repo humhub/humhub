@@ -25,8 +25,8 @@ class FileHelperTest extends HumHubDbTestCase
         parent::setUp();
 
         Yii::$app->fs->mounts['fsDataTest'] = [
-          'class' => Local::class,
-          'path' => '@tests/codeception/_data'
+            'class' => Local::class,
+            'path' => '@tests/codeception/_data',
         ];
         Yii::$app->fs->fsData = 'fsDataTest';
 
