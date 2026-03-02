@@ -3,6 +3,9 @@ HumHub Changelog
 
 1.18.1 (March 2, 2026)
 ----------------------
+
+> This release also fixes a [security](https://github.com/humhub/humhub/security/advisories/GHSA-qxjh-478x-23gm) issue.
+ 
 - Fix #8003: `Migration::foreignIndexExists()` doesn't find tables in braces
 - Fix #8002: Comment dropdowns truncated (e.g. to select a title)
 - Fix #8007: Fix unsaved changes warning on Profile Edit page
