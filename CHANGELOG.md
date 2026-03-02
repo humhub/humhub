@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.18.2 (Unreleased)
+-------------------------
+- Enh #8044: Update package `firebase/php-jwt` to v7
+
 1.18.1 (Unreleased)
 -------------------------
 - Fix #8003: `Migration::foreignIndexExists()` doesn't find tables in braces
