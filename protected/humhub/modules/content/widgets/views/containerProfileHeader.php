@@ -52,7 +52,7 @@ $profileImageHeight = $container->getProfileImage()->height();
 
         <div class="img-profile-data">
             <h1 class="<?= $classPrefix ?>"><?= Button::asLink($title)->link($container->getUrl()) ?></h1>
-            <h2 class="<?= $classPrefix ?>"><?= $subTitle ?></h2>
+            <h2 class="<?= $classPrefix ?>"><?= Html::encode($subTitle) ?></h2>
         </div>
 
 

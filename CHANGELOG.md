@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.18.2 (Unreleased)
+----------------------
+- Fix #8046: Profile Header Title HTML encoded twice since 1.18.1
+
 1.18.1 (March 2, 2026)
 ----------------------
 

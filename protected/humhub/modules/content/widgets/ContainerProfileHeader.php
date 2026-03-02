@@ -52,8 +52,8 @@ class ContainerProfileHeader extends JsWidget
     {
         parent::init();
 
-        $this->title = Html::encode($this->container->getDisplayName());
-        $this->subTitle = Html::encode($this->container->getDisplayNameSub());
+        $this->title = $this->container->getDisplayName();
+        $this->subTitle = $this->container->getDisplayNameSub();
 
         if ($this->container instanceof Space) {
             $this->initSpaceData();
