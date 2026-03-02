@@ -2,8 +2,8 @@
 
 /* @var $this \humhub\components\View */
 /* @var $options array */
-/* @var $title string */
-/* @var $subTitle string */
+/* @var $title string HTML encoded */
+/* @var $subTitle string HTML encoded */
 /* @var $classPrefix string */
 /* @var $canEdit bool */
 /* @var $coverCropUrl string */
@@ -51,8 +51,8 @@ $profileImageHeight = $container->getProfileImage()->height();
         <!-- show user name and title -->
 
         <div class="img-profile-data">
-            <h1 class="<?= $classPrefix ?>"><?= Button::asLink($title)->link($container->getUrl()) ?></h1>
-            <h2 class="<?= $classPrefix ?>"><?= Html::encode($subTitle) ?></h2>
+            <h1 class="<?= $classPrefix ?>"><?= Button::asLink($title)->link($container->getUrl())->encodeLabel(false) ?></h1>
+            <h2 class="<?= $classPrefix ?>"><?= $subTitle ?></h2>
         </div>
 
 
