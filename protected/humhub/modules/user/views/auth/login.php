@@ -140,9 +140,13 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
     $('#app-title').removeClass('fadeIn');
     <?php } ?>
 
-    <?php if ($invite->showCaptureInRegisterForm()) { ?>
-    $('#register-email').on('focus', function () {
-        $('#registration-form-captcha').fadeIn(500);
-    });
-    <?php } ?>
+    <?php if ($invite->showCaptureInRegisterForm()) : ?>
+    if ($('#invite-captcha.is-invalid').length) {
+        $('#registration-form-captcha').show();
+    } else {
+        $('#register-email').on('focus', function () {
+            $('#registration-form-captcha').fadeIn(500);
+        });
+    }
+    <?php endif; ?>
 </script>
