@@ -4,6 +4,7 @@ HumHub Changelog
 1.18.2 (Unreleased)
 ----------------------
 - Fix #8046: Profile Header Title HTML encoded twice since 1.18.1
+- Fix #8050: Fix page title on PJAX request
 
 1.18.1 (March 2, 2026)
 ----------------------

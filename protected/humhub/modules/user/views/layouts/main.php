@@ -22,7 +22,7 @@ if (LoginBackgroundImageHelper::hasImage()) {
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>" class="<?= LoginBackgroundImageHelper::hasImage() ? 'login-layout-background' : '' ?>">
 <head>
-    <title><?= Html::encode($this->pageTitle); ?></title>
+    <title><?= Html::encode(strip_tags($this->pageTitle)) ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <?php $this->head() ?>
     <?= $this->render('@humhub/views/layouts/head'); ?>
