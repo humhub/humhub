@@ -16,7 +16,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
  */
 
 ?>
-<div id="user-password-recovery" class="container">
+<div id="user-password-recovery" class="container container-password">
     <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br>
 
