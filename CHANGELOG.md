@@ -4,6 +4,7 @@ HumHub Changelog
 1.18.2 (Unreleased)
 ----------------------
 - Fix #8046: Profile Header Title HTML encoded twice since 1.18.1
+- Fix: Login layout widths (Default: Bootstrap width, Registration: 500px, Login & Password: 300px, Login with multiple SSO buttons: 500px)
 
 1.18.1 (March 2, 2026)
 ----------------------
