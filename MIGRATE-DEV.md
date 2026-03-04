@@ -95,11 +95,11 @@ Replaced methods:
     - `SiteLogo|SiteIcon|LoginBackground|MailHeader::getUrl()` => `Yii::$app->img->logo|icon|loginBackground|mailHeader->getUrl()`
 - `AssetManager::forcePublish()` removed
 - Removed `@filestore` Alias
+- Removed `AssetManager::$preventDefer` option
 
 
-Version 1.18 (Unreleased)
 Version 1.18.1
-------------
+--------------
 - `humhub\widgets\bootstrap\Button`, `humhub\widgets\bootstrap\Link`, `humhub\widgets\bootstrap\Badge`, `humhub\modules\ui\menu\widgets\DropdownMenu` labels are now HTML encoded by default. Set `encodeLabel` to `false` if already encoded.
 
 Version 1.18

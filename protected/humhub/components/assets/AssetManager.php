@@ -20,7 +20,7 @@ class AssetManager extends \yii\web\AssetManager
         'visibility' => Visibility::PUBLIC,
         'directory_visibility' => Visibility::PUBLIC,
     ];
-    public bool $preventDefer = false;
+
     private AbstractFs $fs;
 
     public bool $enableCache = false;
