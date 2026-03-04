@@ -39,9 +39,10 @@ class YiiCaptchaInput extends Captcha
             $view->registerJs("
                 $(function () {
                     const container = $('#$id').parent();
-                    if (!$('#$id.is-invalid').length) {
+                    const focusInput = $('$this->showOnFocusElement');
+                    if (!$('#$id.is-invalid').length && !focusInput.is(':focus')) {
                         container.hide();
-                        $('$this->showOnFocusElement').on('focus', function () {
+                        focusInput.on('focus', function () {
                             container.fadeIn(500);
                         });
                     }
