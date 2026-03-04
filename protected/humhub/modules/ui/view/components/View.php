@@ -457,7 +457,7 @@ class View extends \yii\web\View
 
         // In case of pjax we have to add the title manually, pjax will remove this node
         if (Yii::$app->request->isPjax) {
-            echo '<title>' . $this->getPageTitle() . '</title>';
+            echo '<title>' . Html::encode($this->pageTitle) . '</title>';
         }
 
         if (Yii::$app->isInstalled()) {
