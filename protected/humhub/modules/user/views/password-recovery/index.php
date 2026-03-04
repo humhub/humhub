@@ -32,7 +32,9 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
             <?= $form->field($model, 'email')->textInput(['class' => 'form-control', 'id' => 'email_txt', 'placeholder' => Yii::t('UserModule.auth', 'Your email')])->label(false) ?>
 
             <div class="mb-3">
-                <?= $form->field($model, 'captcha')->widget(CaptchaField::class)->label(false) ?>
+                <?= $form->field($model, 'captcha')
+                    ->widget(CaptchaField::class, ['showOnFocusElement' => '#email_txt'])
+                    ->label(false) ?>
             </div>
 
             <?= Button::light(Yii::t('UserModule.auth', 'Back'))->link(Url::home())->pjax(false) ?>

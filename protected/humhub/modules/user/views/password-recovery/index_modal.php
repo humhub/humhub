@@ -21,7 +21,9 @@ use humhub\widgets\modal\ModalButton;
 ]) ?>
     <p><?= Yii::t('UserModule.auth', 'Just enter your e-mail address. We\'ll send you recovery instructions!') ?></p>
     <?= $form->field($model, 'email')->textInput(['id' => 'email_txt', 'placeholder' => Yii::t('UserModule.auth', 'Your email')]) ?>
-    <?= $form->field($model, 'captcha')->widget(CaptchaField::class)->label(false) ?>
+    <?= $form->field($model, 'captcha')
+        ->widget(CaptchaField::class, ['showOnFocusElement' => '#email_txt'])
+        ->label(false) ?>
 <?php Modal::endFormDialog() ?>
 
 

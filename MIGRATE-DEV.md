@@ -4,7 +4,8 @@ Module Migration Guide
 Version 1.18.1
 ------------
 
-### New
+## New
+- `AltchaCaptchaInput::$showOnFocusElement` and `YiiCaptchaInput::$showOnFocusElement` allowing hiding the Captcha input until a form field is focused
 - HTML classes in views using the `user/views/layouts/main.php` layout to set the container width ([see PR #8054](https://github.com/humhub/humhub/pull/8054)): `.container-registration`, `.container-login` and `.container-password`
 
 ### Changed
