@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.17.6 (March 4, 2026)
+----------------------
+- Fix #8055: Fix page title
+
 1.17.5 (December 11, 2025)
 --------------------------
 - Fix #7835: Truncate application name in the theme header
