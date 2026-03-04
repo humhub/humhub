@@ -3,10 +3,18 @@ HumHub Changelog
 
 1.18.2 (Unreleased)
 -------------------------
+- Fix #8046: Profile Header Title HTML encoded twice since 1.18.1
+- Fix #8043: User display name bottom truncated in top bar
+- Fix #8051: Registration - Display Captcha field if invalid after form submit via keyboard
+- Enh #8051: Add `AltchaCaptchaInput::$showOnFocusElement` and `YiiCaptchaInput::$showOnFocusElement` (see [migration guide](https://github.com/humhub/humhub/blob/master/MIGRATE-DEV.md#version-1181) for details)
+- Fix #8054: Login layout widths (Default: Bootstrap width, Registration: 500px, Login & Password: 300px, Login with multiple SSO buttons: 500px)
 - Enh #8044: Update package `firebase/php-jwt` to v7
 
-1.18.1 (Unreleased)
--------------------------
+1.18.1 (March 2, 2026)
+----------------------
+
+> This release also fixes a [security](https://github.com/humhub/humhub/security/advisories/GHSA-qxjh-478x-23gm) issue.
+ 
 - Fix #8003: `Migration::foreignIndexExists()` doesn't find tables in braces
 - Fix #8002: Comment dropdowns truncated (e.g. to select a title)
 - Fix #8007: Fix unsaved changes warning on Profile Edit page
