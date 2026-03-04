@@ -5,7 +5,7 @@ Version 1.18.1
 ------------
 
 ### New
-- HTML classes in views using the `user/views/layouts/main.php` layout to set the container width ([see PR #8054](https://github.com/humhub/humhub/pull/8054))
+- HTML classes in views using the `user/views/layouts/main.php` layout to set the container width ([see PR #8054](https://github.com/humhub/humhub/pull/8054)): `.container-registration`, `.container-login` and `.container-password`
 
 ### Changed
 - `humhub\widgets\bootstrap\Button`, `humhub\widgets\bootstrap\Link`, `humhub\widgets\bootstrap\Badge`, `humhub\modules\ui\menu\widgets\DropdownMenu` labels are now HTML encoded by default. Set `encodeLabel` to `false` if already encoded.
