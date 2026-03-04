@@ -3,6 +3,11 @@ Module Migration Guide
 
 Version 1.18.1
 ------------
+
+## New
+- `AltchaCaptchaInput::$showOnFocusElement` and `YiiCaptchaInput::$showOnFocusElement` allowing hiding the Captcha input until a form field is focused
+
+### Changed
 - `humhub\widgets\bootstrap\Button`, `humhub\widgets\bootstrap\Link`, `humhub\widgets\bootstrap\Badge`, `humhub\modules\ui\menu\widgets\DropdownMenu` labels are now HTML encoded by default. Set `encodeLabel` to `false` if already encoded.
 
 Version 1.18
