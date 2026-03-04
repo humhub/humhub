@@ -166,19 +166,6 @@ class File extends ActiveRecord implements ViewableInterface
         ];
     }
 
-    /**
-     * @return array
-     * @noinspection PhpMissingReturnTypeInspection
-     * @noinspection ReturnTypeCanBeDeclaredInspection
-     */
-    public function transactions()
-    {
-        return [
-            // ToDo: enable in v.16
-            // 'default' => self::OP_INSERT + self::OP_DELETE,
-        ];
-    }
-
     public function __get($name)
     {
         if ($name === 'metadata') {
@@ -277,7 +264,8 @@ class File extends ActiveRecord implements ViewableInterface
         $store = $this->getStore();
 
         if (empty($this->hash_sha1) && $store->has()) {
-            $this->updateAttributes(['hash_sha1' => sha1_file($store->get())]);
+            $checksum = $store->fs->checksum($store->get(), ['checksum_algo' => 'sha1']);
+            $this->updateAttributes(['hash_sha1' => $checksum]);
         }
 
         return $length
@@ -470,10 +458,12 @@ class File extends ActiveRecord implements ViewableInterface
             if ($file->isAssigned()) {
                 throw new InvalidArgumentException('Already assigned File records cannot stored as another File record.');
             }
-            $store->setByPath($file->getStore()->get());
+            $store->setContent($file->store->getContent());
             $file->delete();
-        } elseif (is_string($file) && is_file($file)) {
-            $store->setByPath($file);
+        } elseif (is_string($file) && $this->store->fs->has($file)) {
+            $store->setContent($this->store->fs->read($file));
+        } else {
+            throw new InvalidArgumentException('Invalid parameter type.');
         }
 
         $this->afterNewStoredFile();
@@ -531,10 +521,9 @@ class File extends ActiveRecord implements ViewableInterface
             // Make sure to update updated_by & updated_at and avoid save()
             $this->beforeSave(false);
 
-            $filename = $store->get();
             $this->updateAttributes([
-                'hash_sha1' => sha1_file($filename),
-                'size' => filesize($filename),
+                'hash_sha1' => $store->checksum(),
+                'size' => $store->fileSize(),
                 'updated_by' => $this->updated_by,
                 'updated_at' => $this->updated_at,
             ]);

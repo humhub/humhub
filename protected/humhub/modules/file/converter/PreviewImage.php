@@ -14,6 +14,7 @@ use humhub\modules\admin\models\Log;
 use humhub\modules\file\libs\ImageHelper;
 use humhub\modules\file\models\File;
 use humhub\modules\file\Module;
+use Imagine\Image\Format;
 use Imagine\Image\ImageInterface;
 use Yii;
 use yii\imagine\Image;
@@ -88,8 +89,9 @@ class PreviewImage extends BaseConverter
     protected function convert($fileName)
     {
         try {
-            if (!is_file($this->file->store->get($fileName))) {
-                $image = Image::getImagine()->open($this->file->store->get());
+            if (!$this->file->store->has($fileName)) {
+
+                $image = Image::getImagine()->load($this->file->store->getContent());
                 ImageHelper::fixJpegOrientation($image, $this->file);
 
                 if ($image->getSize()->getHeight() > $this->options['height']) {
@@ -105,7 +107,8 @@ class PreviewImage extends BaseConverter
                     $options = ['format' => 'gif', 'animated' => true];
                 }
 
-                $image->save($this->file->store->get($fileName), $options);
+
+                $this->file->store->setContent($image->get(Format::ID_PNG, $options), $fileName);
             }
         } catch (Exception $ex) {
             $message = 'Could not convert file with id ' . $this->file->id . '. Error: ' . $ex->getMessage();
@@ -122,9 +125,7 @@ class PreviewImage extends BaseConverter
      */
     protected function canConvert(File $file)
     {
-        $originalFile = $file->store->get();
-
-        if (!str_starts_with($file->mime_type, 'image/') || !is_file($originalFile)) {
+        if (!str_starts_with($file->mime_type, 'image/') || !$file->store->has()) {
             return false;
         }
 
