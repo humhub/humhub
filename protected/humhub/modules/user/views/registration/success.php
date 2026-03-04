@@ -7,7 +7,7 @@ use yii\helpers\Url;
 $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
 ?>
 
-<div id="user-registration-success" class="container">
+<div id="user-registration-success" class="container container-registration">
     <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br/>
     <div class="panel panel-default animated fadeIn">
