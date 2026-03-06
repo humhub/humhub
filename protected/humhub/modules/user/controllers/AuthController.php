@@ -134,7 +134,7 @@ class AuthController extends Controller
         ];
 
         if (Yii::$app->settings->get('maintenanceMode')) {
-            Yii::$app->session->setFlash('error', ControllerAccess::getMaintenanceModeWarningText());
+            Yii::$app->session->setFlash('error', ControllerAccess::getMaintenanceModeWarningText('<br><br>'));
         }
 
         if (Yii::$app->request->isAjax) {
