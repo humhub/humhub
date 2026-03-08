@@ -24,6 +24,7 @@ $removeOptionHtml = Html::tag(
         Yii::t('TourModule.base', '<strong>Remove</strong> tour panel'),
         ["/tour/tour/hide-panel", "ajax" => 1],
     )
+        ->encodeLabel(false)
         ->icon('eye-slash')
         ->action('tour.hidePanel')
         ->confirm(
