@@ -62,7 +62,7 @@ class UserPickerField extends ContentContainerPickerField
         if ($this->placeholder && !$this->placeholderMore) {
             $result['placeholder-more'] = $this->placeholder;
         } else {
-            $result['placeholder-more'] = ($this->placeholderMore) ?: Yii::t('UserModule.chooser', 'Add user');
+            $result['placeholder-more'] = $this->placeholderMore ?: Yii::t('UserModule.chooser', 'Select...');
         }
 
         $result['no-result'] = Yii::t('UserModule.chooser', 'No users found for the given query.');

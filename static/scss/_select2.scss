@@ -333,8 +333,13 @@
         \*------------------------------------*/
 
         .select2-selection--multiple {
-            min-height: $input-height;
+            min-height: 35px;
             border-radius: var(--bs-border-radius);
+            position: relative;
+            border: 1px solid #d9d9d9;
+            background: transparent;
+            box-shadow: none;
+            transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
 
             .picker-color {
                 top: 4px;
@@ -344,15 +349,18 @@
 
             .select2-selection__rendered {
                 box-sizing: border-box;
-                display: block;
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 6px;
                 line-height: $line-height-base;
                 list-style: none;
                 margin: 0;
                 overflow: hidden;
-                padding: 0;
+                padding: 4px 36px 4px 4px;
                 width: 100%;
                 text-overflow: ellipsis;
-                white-space: nowrap;
+                white-space: normal;
             }
 
             .select2-selection__placeholder {
@@ -366,38 +374,79 @@
              */
 
             .select2-selection__choice {
+                display: inline-flex;
+                align-items: center;
                 color: $input-color;
-                border-radius: 4px;
+                border-radius: 2px;
                 cursor: default;
-                float: left;
-                padding: 0 $input-btn-padding-y;
-
+                float: none;
                 background-color: var(--bs-accent);
                 color: var(--hh-accent-contrast);
-                border-radius: 3px;
                 font-size: 12px !important;
-                padding: 0 5px 2px 2px;
-                float: left;
-                margin: 2px;
-                height: 28px;
+                font-weight: 400;
+                padding: 0 9px 0 4px;
+                margin: 0;
+                height: 26px;
+                line-height: 1;
+                border: 0;
 
 
-                img, div {
+                img,
+                div {
+                    width: 18px !important;
+                    height: 18px !important;
                     margin-right: 5px;
+                    border-radius: 2px !important;
+                }
+
+                > i.fa {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 18px;
+                    height: 18px;
+                    margin-right: 5px;
+                    font-size: 13px;
+                    line-height: 18px;
                 }
 
                 span.no-image {
-                    line-height: 27px;
-                    padding-left: 5px;
-                }
-
-                i {
-                    margin: 0px 2px;
-                    line-height: 27px;
+                    line-height: 1;
+                    padding-left: 2px;
                 }
 
                 .picker-close {
+                    position: relative;
+                    display: inline-block;
+                    width: 14px;
+                    height: 14px;
                     cursor: pointer;
+                    margin-left: 8px;
+
+                    &::before,
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        top: 6px;
+                        left: 1px;
+                        width: 12px;
+                        height: 2px;
+                        background: rgba(255, 255, 255, .96);
+                        border-radius: 1px;
+                    }
+
+                    &::before {
+                        transform: rotate(45deg);
+                    }
+
+                    &::after {
+                        transform: rotate(-45deg);
+                    }
+                }
+
+                .space-acronym span {
+                    font-size: 9px;
+                    font-weight: 700;
                 }
             }
 
@@ -406,14 +455,27 @@
              */
 
             .select2-search--inline {
+                display: flex;
+                flex: 1 1 120px;
+                float: none;
+                min-width: 96px;
+                margin: 0;
+
                 .select2-search__field {
                     background: transparent;
-                    padding: 0 5px;
-                    width: auto !important;
-                    height: calc(#{$input-height} - 2px);
-                    line-height: 30px;
+                    padding: 0 3px;
+                    width: 100% !important;
+                    height: 26px;
+                    line-height: 26px;
                     margin-top: 0;
-                    min-width: 5em;
+                    min-width: 86px;
+                    color: #1f2933;
+                    font-size: 14px;
+
+                    &::placeholder {
+                        color: #c9c9c9;
+                        opacity: 1;
+                    }
                 }
             }
 
@@ -434,7 +496,52 @@
              */
 
             .select2-selection__clear {
-                margin-top: $input-btn-padding-y;
+                display: block;
+                width: 14px;
+                height: 14px;
+                margin: 0;
+                color: transparent;
+                font-size: 0;
+                line-height: 0;
+                position: absolute;
+                right: 12px;
+                top: 50%;
+                transform: translateY(-50%);
+
+                &::before,
+                &::after {
+                    content: '';
+                    position: absolute;
+                    top: 6px;
+                    left: 1px;
+                    width: 12px;
+                    height: 2px;
+                    background: #111;
+                    border-radius: 1px;
+                }
+
+                &::before {
+                    transform: rotate(45deg);
+                }
+
+                &::after {
+                    transform: rotate(-45deg);
+                }
+
+                &:hover {
+                    color: transparent;
+                    background: transparent;
+                }
+            }
+        }
+
+        &.select2-container--focus,
+        &.select2-container--open {
+            .select2-selection--multiple {
+                border-width: 1px;
+                border-color: var(--bs-accent);
+                background: #fff;
+                box-shadow: 0 0 0 3px rgba($info, .14);
             }
         }
 

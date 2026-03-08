@@ -164,6 +164,8 @@ humhub.module('ui.picker', function (module, require, $) {
             $node.on('select2:select', function () {
                 $('.tooltip').remove();
                 Widget.instance($node).renderPlaceholder(true);
+            }).on('change', function () {
+                Widget.instance($node).renderPlaceholder(true);
             }).on('select2:close', function () {
                 $('.tooltip').remove();
             });
@@ -199,24 +201,28 @@ humhub.module('ui.picker', function (module, require, $) {
         }
 
         var input = this.$.data('select2').$selection.find('input');
+        var placeholder = null;
         if (this.$.children(':selected').length >= this.$.data('maximum-selection-length')) {
-            input.attr('placeholder', null).attr('title', null);
+            input.prop('placeholder', '').attr('placeholder', '').attr('title', null);
         } else if (this.$.val()) {
-            input.attr('placeholder', this.options.placeholderMore).attr('title', this.options.placeholderMore);
+            placeholder = this.options.placeholderMore;
         } else {
-            input.attr('placeholder', this.options.placeholder).attr('title', this.options.placeholderMore);
+            placeholder = this.options.placeholder;
         }
 
-        var placeholder = input.attr('placeholder');
-        if (typeof placeholder !== 'undefined' && placeholder.length) {
-            input.attr('size', placeholder.length);
+        if (placeholder !== null) {
+            input.prop('placeholder', placeholder).attr('placeholder', placeholder).attr('title', placeholder);
+        }
+
+        if (placeholder && placeholder.length) {
+            input.attr('size', placeholder.length + 1);
         }
     };
 
     Picker.template = {
         selectionWithImage: '{imageNode}<span class="picker-text with-image"></span>',
         selectionNoImage: '<span class="picker-text no-image"></span>',
-        selectionClear: ' <i class="fa fa-times-circle picker-close"></i>',
+        selectionClear: ' <span class="picker-close" aria-hidden="true"></span>',
         result: '<a href="#" tabindex="-1" style="margin-right:5px;">{imageNode} <span class="picker-text"></span></a>',
         resultDisabled: '<a href="#" title="{disabledText}" data-placement="right" tabindex="-1" style="margin-right:5px;opacity: 0.4;cursor:not-allowed">{imageNode} <span class="picker-text"></span></a>',
         imageNode: '<img class="rounded" src="{image}" alt="" style="width:24px;height:24px;"  height="24" width="24">',
@@ -322,9 +328,7 @@ humhub.module('ui.picker', function (module, require, $) {
         var test = $result.find('.picker-text');
         $result.filter('.picker-text').text(item.text);
 
-        // Initialize item close button
-        var that = this;
-        $result.filter('.picker-close').on('click', function () {
+        $result.find('.picker-close').on('click', function () {
             $(this).siblings('.select2-selection__choice__remove').trigger('click');
         });
 
