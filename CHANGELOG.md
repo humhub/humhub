@@ -10,6 +10,7 @@ HumHub Changelog
 - Fix #8054: Login layout widths (Default: Bootstrap width, Registration: 500px, Login & Password: 300px, Login with multiple SSO buttons: 500px)
 - Enh #8044: Update package `firebase/php-jwt` to v7
 - Fix #8056: Fix linked badge icon
+- Fix #8060: Double HTML encoding of the Tour widget menu "remove" item
 
 1.18.1 (March 2, 2026)
 ----------------------
