@@ -28,8 +28,6 @@ class MenuLink extends MenuEntry
      * @var string|array the url or route
      */
     protected $url;
-
-
     /**
      * @var Button
      */
@@ -41,6 +39,27 @@ class MenuLink extends MenuEntry
             'label' => $label,
             'url' => $route,
         ]);
+    }
+
+    /**
+     * Sets whether the label should be HTML-encoded
+     *
+     * @param bool $encodeLabel
+     * @return static
+     * @since 1.19
+     */
+    public function encodeLabel(bool $encodeLabel): static
+    {
+        $this->getLink()->encodeLabel($encodeLabel);
+        return $this;
+    }
+
+    /**
+     * @deprecated since 1.19 use encodeLabel() instead
+     */
+    public function setEncodeLabel(bool $encodeLabel): static
+    {
+        return $this->encodeLabel($encodeLabel);
     }
 
     /**

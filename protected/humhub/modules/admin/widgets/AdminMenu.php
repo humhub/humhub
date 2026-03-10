@@ -10,6 +10,7 @@ namespace humhub\modules\admin\widgets;
 
 use humhub\components\Application;
 use humhub\helpers\ControllerHelper;
+use humhub\helpers\Html;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\admin\permissions\ManageSettings;
@@ -82,6 +83,7 @@ class AdminMenu extends LeftNavigation
 
         $this->addEntry(MenuLink::instance(Yii::t('AdminModule.base', 'Modules') . $this->getMarketplaceUpdatesBadge())
             ->url(['/admin/module'])
+            ->encodeLabel(false)
             ->id('modules')
             ->icon('rocket')
             ->sortOrder(500)

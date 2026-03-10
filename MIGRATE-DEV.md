@@ -75,6 +75,12 @@ Version 1.19 (Unreleased)
   - `humhub\modules\user\authclient\Live`
   - `humhub\modules\user\authclient\Twitter`
   - `humhub\modules\user\authclient\ZendLdapClient`
+Replaced methods:
+  - `humhub\widgets\bootstrap\Link::asLink()` => `humhub\widgets\bootstrap\Link::to()`
+  - `humhub\widgets\bootstrap\Button::asLink()` => `humhub\widgets\bootstrap\Link::to()`
+  - `humhub\widgets\bootstrap\ModalButton::asLink()` => `humhub\widgets\bootstrap\Link::modal()`(new since v1.19)
+  - `humhub\modules\ui\menu\widgets\Menu->addItem([...])` => `humhub\modules\ui\menu\widgets\Menu->addEntry(new MenuLink([...]))`(used in module files `Events.php` as `$event->sender->addItem([...])`)
+  - `humhub\widgets\bootstrap\Link::userPickerSelfSelect()` => `humhub\modules\user\widgets\UserPickerField::selfSelect()` or use new option `UserPickerField->selfSelect`
 - Refactored `Activities`
   - Make sure Content related Activities are now extended from `BaseContentActivity`
   - `getTitle` and `getDescription` are now `static`.
@@ -84,6 +90,11 @@ Version 1.19 (Unreleased)
 
 
 Version 1.18 (Unreleased)
+Version 1.18.1
+------------
+- `humhub\widgets\bootstrap\Button`, `humhub\widgets\bootstrap\Link`, `humhub\widgets\bootstrap\Badge`, `humhub\modules\ui\menu\widgets\DropdownMenu` labels are now HTML encoded by default. Set `encodeLabel` to `false` if already encoded.
+
+Version 1.18
 ------------
 Updated minimum required PHP version to 8.2.
 
