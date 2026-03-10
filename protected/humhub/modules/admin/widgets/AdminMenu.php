@@ -18,6 +18,7 @@ use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\admin\permissions\SeeAdminInformation;
 use humhub\modules\marketplace\services\MarketplaceService;
 use humhub\modules\ui\menu\MenuEntry;
+use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\LeftNavigation;
 use humhub\widgets\bootstrap\Badge;
 use Yii;
@@ -63,49 +64,45 @@ class AdminMenu extends LeftNavigation
     {
         $this->panelTitle = Yii::t('AdminModule.base', '<strong>Administration</strong> menu');
 
-        $this->addLink(Yii::t('AdminModule.base', 'Users'))
-            ->link(['/admin/user'])
+        $this->addEntry(MenuLink::instance(Yii::t('AdminModule.base', 'Users'), ['/admin/user'])
             ->id('user')
             ->icon('user')
             ->sortOrder(200)
             ->active(ControllerHelper::isActivePath('admin', ['user', 'group', 'approval', 'authentication', 'user-profile', 'pending-registrations', 'user-permissions', 'user-people'])
                 || ControllerHelper::isActivePath('ldap', 'admin'))
             ->visible(Yii::$app->user->can([ManageUsers::class, ManageSettings::class, ManageGroups::class])
-                || Yii::$app->user->isGroupManager());
+                || Yii::$app->user->isGroupManager()));
 
-        $this->addLink(Yii::t('AdminModule.base', 'Spaces'))
-            ->link(['/admin/space'])
+        $this->addEntry(MenuLink::instance(Yii::t('AdminModule.base', 'Spaces'), ['/admin/space'])
             ->id('spaces')
             ->icon('dot-circle-o')
             ->sortOrder(400)
             ->active('admin', 'space')
-            ->visible(Yii::$app->user->can([ManageSpaces::class, ManageSettings::class]));
+            ->visible(Yii::$app->user->can([ManageSpaces::class, ManageSettings::class])));
 
-        $this->addLink(Yii::t('AdminModule.base', 'Modules') . $this->getMarketplaceUpdatesBadge())
-            ->link(['/admin/module'])
+        $this->addEntry(MenuLink::instance(Yii::t('AdminModule.base', 'Modules') . $this->getMarketplaceUpdatesBadge())
+            ->url(['/admin/module'])
             ->id('modules')
             ->icon('rocket')
             ->sortOrder(500)
             ->cssClass('modules')
             ->active('admin', 'module')
             ->visible(Yii::$app->user->can(ManageModules::class)
-                || Yii::$app->user->can(ManageSettings::class));
+                || Yii::$app->user->can(ManageSettings::class)));
 
-        $this->addLink(Yii::t('AdminModule.base', 'Settings'))
-            ->link(['/admin/setting'])
+        $this->addEntry(MenuLink::instance(Yii::t('AdminModule.base', 'Settings'), ['/admin/setting'])
             ->id('settings')
             ->icon('gears')
             ->sortOrder(600)
             ->active('admin', 'setting')
-            ->visible(Yii::$app->user->can(ManageSettings::class));
+            ->visible(Yii::$app->user->can(ManageSettings::class)));
 
-        $this->addLink(Yii::t('AdminModule.base', 'Information'))
-            ->link(['/admin/information'])
+        $this->addEntry(MenuLink::instance(Yii::t('AdminModule.base', 'Information'), ['/admin/information'])
             ->id('information')
             ->icon('info-circle')
             ->sortOrder(1000)
             ->active('admin', ['information', 'logging'])
-            ->visible(Yii::$app->user->can(SeeAdminInformation::class));
+            ->visible(Yii::$app->user->can(SeeAdminInformation::class)));
 
         parent::init();
     }

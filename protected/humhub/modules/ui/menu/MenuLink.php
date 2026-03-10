@@ -35,6 +35,13 @@ class MenuLink extends MenuEntry
      */
     protected $link;
 
+    public static function instance(string $label, string|array|null $route = null): static
+    {
+        return new MenuLink([
+            'label' => $label,
+            'url' => $route,
+        ]);
+    }
 
     /**
      * @return Button
@@ -149,8 +156,9 @@ class MenuLink extends MenuEntry
      *
      * @param $url array|string
      * @return static
+     * @since 1.19
      */
-    public function link(string|array $url, bool $pjax = true): static
+    public function url(string|array|null $url, bool $pjax = true): static
     {
         // we save the raw url
         $this->url = $url;
@@ -163,7 +171,7 @@ class MenuLink extends MenuEntry
      */
     public function setUrl($url)
     {
-        return $this->link($url);
+        return $this->url($url);
     }
 
 
