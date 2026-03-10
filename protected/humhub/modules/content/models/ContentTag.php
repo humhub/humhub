@@ -161,7 +161,7 @@ class ContentTag extends ActiveRecord
     public function validateUnique($attribute, $params, $validator)
     {
         if (empty($this->contentcontainer_id)) {
-            $query = static::find();
+            $query = static::find()->andWhere(['contentcontainer_id' => null]);
         } else {
             $query = static::findByContainer($this->contentcontainer_id, true);
         }
@@ -612,7 +612,7 @@ class ContentTag extends ActiveRecord
      *
      * If $includeGlobal is set to true the query will also include global content tags of this type.
      *
-     * @param $container ContentContainerActiveRecord|int
+     * @param $container ContentContainerActiveRecord|int|null
      * @param bool $includeGlobal if true the query will include global tags as well @since 1.2.3
      * @return ContentTagActiveQuery
      * @internal param ContentContainerActiveRecord|int $record Container instance or contentcontainer_id
