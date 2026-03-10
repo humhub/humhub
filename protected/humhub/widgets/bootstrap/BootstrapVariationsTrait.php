@@ -100,7 +100,7 @@ trait BootstrapVariationsTrait
         return static::instance($label);
     }
 
-    public function icon(string|Icon $icon, bool $right = false, $options = []): static
+    public function icon(string|Icon|null $icon, bool $right = false, $options = []): static
     {
         // Extract icon from FontAwesome 4 HTML element
         // TODO: remove later ($icon should be the name of the Icon or an instance of Icon)
@@ -109,10 +109,10 @@ trait BootstrapVariationsTrait
             $icon = $matches[1] ?? null;
         }
 
-        $this->icon = ($icon instanceof Icon) ? $icon : Icon::get($icon, $options);
+        $this->icon = Icon::get($icon, $options);
 
         if ($right) {
-            $this->icon->right();
+            $this->icon?->right();
         }
 
         return $this;
