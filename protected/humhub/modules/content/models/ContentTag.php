@@ -161,7 +161,7 @@ class ContentTag extends ActiveRecord
     public function validateUnique($attribute, $params, $validator)
     {
         if (empty($this->contentcontainer_id)) {
-            $query = static::find()->andWhere(['contentcontainer_id' => null]);
+            $query = static::find();
         } else {
             $query = static::findByContainer($this->contentcontainer_id, true);
         }
