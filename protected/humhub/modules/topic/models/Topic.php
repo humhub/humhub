@@ -171,6 +171,7 @@ class Topic extends ContentTag
             return Yii::$app->getModule('user')->settings->get('auth.allowUserTopics', true);
         }
 
-        return !Yii::$app->user->isGuest;
+        // Global Topics can be created only in Administration
+        return false;
     }
 }
