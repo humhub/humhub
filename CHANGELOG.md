@@ -13,6 +13,7 @@ HumHub Changelog
 - Fix #8059: Prevent previous message reused on attachment replies
 - Fix #8060: Double HTML encoding of the Tour widget menu "remove" item
 - Enh #8061: Display warning when URL cannot be embedded
+- Fix #8062: Fix global topics
 
 1.18.1 (March 2, 2026)
 ----------------------
