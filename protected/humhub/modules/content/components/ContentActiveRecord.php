@@ -473,7 +473,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
             return false;
         }
 
-        if (!$this->content->softDelete()) {
+        if (!$this->content->softDeleteInternal()) {
             return false;
         }
 
@@ -505,9 +505,13 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      */
     public function afterDelete()
     {
-        $content = Content::findOne(['object_id' => $this->getPrimaryKey(), 'object_model' => static::getObjectModel()]);
-        if ($content !== null) {
-            $content->hardDelete();
+        $content = Content::findOne([
+            'object_id' => $this->getPrimaryKey(),
+            'object_model' => static::getObjectModel(),
+        ]);
+
+        if ($content instanceof Content) {
+            $content->hardDeleteInternal();
         }
 
         parent::afterDelete();
