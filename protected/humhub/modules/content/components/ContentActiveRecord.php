@@ -505,14 +505,10 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      */
     public function afterDelete()
     {
-        $content = Content::findOne([
+        Content::findOne([
             'object_id' => $this->getPrimaryKey(),
             'object_model' => static::getObjectModel(),
-        ]);
-
-        if ($content instanceof Content) {
-            $content->hardDeleteInternal();
-        }
+        ])?->hardDeleteInternal();
 
         parent::afterDelete();
     }
