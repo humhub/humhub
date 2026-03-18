@@ -2,7 +2,7 @@
 
 namespace humhub\components\assets;
 
-use humhub\components\fs\AbstractFs;
+use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\Visibility;
 use Yii;
@@ -14,14 +14,13 @@ use yii\helpers\FileHelper;
 class AssetManager extends \yii\web\AssetManager
 {
     public $appendTimestamp = true;
-    public string $fsMount = 'assets';
 
     private array $filesystemOptions = [
         'visibility' => Visibility::PUBLIC,
         'directory_visibility' => Visibility::PUBLIC,
     ];
 
-    private AbstractFs $fs;
+    private FileSystem $fs;
 
     public bool $enableCache = false;
 
@@ -33,8 +32,8 @@ class AssetManager extends \yii\web\AssetManager
     {
         parent::init();
 
-        $this->fs = Yii::$app->fs->disk($this->fsMount);
-        $this->baseUrl = $this->fs->baseUrl;
+        $this->fs = Yii::$app->fs->getAssetsMount();
+        $this->baseUrl = Yii::$app->fs->getAssetsMountConfig()->getBaseUrl();
 
         if (empty($this->baseUrl)) {
             throw new InvalidArgumentException('Base URL must be set.');

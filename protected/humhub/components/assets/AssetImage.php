@@ -2,12 +2,12 @@
 
 namespace humhub\components\assets;
 
-use humhub\components\fs\AbstractFs;
 use humhub\modules\file\libs\ImageHelper;
 use Imagine\Image\Box;
 use Imagine\Image\Format;
 use Imagine\Image\ManipulatorInterface;
 use Imagine\Image\Point;
+use League\Flysystem\Filesystem;
 use League\Flysystem\Visibility;
 use Yii;
 use yii\base\Component;
@@ -55,7 +55,7 @@ class AssetImage extends Component
     private string $fileName;
     private bool $exists;
 
-    public AbstractFs $fs;
+    public FileSystem $fs;
 
     public function __construct($config = [])
     {
@@ -65,7 +65,7 @@ class AssetImage extends Component
             throw new InvalidValueException('Asset image file cannot be empty.');
         }
 
-        $this->fs = Yii::$app->fs->data();
+        $this->fs = Yii::$app->fs->getDataMount();
 
         $this->file = Yii::getAlias($this->file);
         $this->fileName = basename($this->file);

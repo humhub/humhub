@@ -3,9 +3,9 @@
 namespace humhub\modules\file\components;
 
 use Exception;
-use humhub\components\fs\AbstractFs;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
+use League\Flysystem\Filesystem;
 use League\Flysystem\StorageAttributes;
 use League\Flysystem\Visibility;
 use Yii;
@@ -19,7 +19,7 @@ class StorageManager extends Component implements StorageManagerInterface
      */
     public $originalFileName = 'file';
     private string $pathPrefix = 'file';
-    public AbstractFs $fs;
+    public Filesystem $fs;
     private array $filesystemOptions = [
         'visibility' => Visibility::PRIVATE,
         'directory_visibility' => Visibility::PRIVATE,
@@ -34,7 +34,7 @@ class StorageManager extends Component implements StorageManagerInterface
     {
         parent::init();
 
-        $this->fs = Yii::$app->fs->data();
+        $this->fs = Yii::$app->fs->getDataMount();
     }
 
     public function has(?string $variant = null): bool
@@ -126,7 +126,7 @@ class StorageManager extends Component implements StorageManagerInterface
     {
         $cleanedExcept = array_map(fn($e) => str_replace('*', '', $e), $except);
 
-        $files = $this->fs->listContents($this->getPath())
+        $files = $this->fs->listContents($this->getPath(), false)
             ->filter(fn(StorageAttributes $attributes) => $attributes->isFile())
             ->filter(
                 fn(StorageAttributes $attribute) => empty(

@@ -91,12 +91,12 @@ $config = [
             'class' => 'humhub\components\fs\FilesystemManager',
             'mounts' => [
                 'assets' => [
-                    'class' => 'humhub\components\fs\Local',
+                    'class' => 'humhub\components\fs\LocalMountConfig',
                     'path' => '@webroot/assets',
                     'baseUrl' => '@web/assets',
                 ],
                 'data' => [
-                    'class' => 'humhub\components\fs\Local',
+                    'class' => 'humhub\components\fs\LocalMountConfig',
                     'path' => '@webroot/uploads',
                 ],
             ],

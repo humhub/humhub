@@ -10,7 +10,7 @@ namespace humhub\modules\file\actions;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use humhub\components\fs\Local;
+use humhub\components\fs\LocalMountConfig;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
 use humhub\modules\file\Module;
@@ -109,12 +109,21 @@ class DownloadAction extends Action
             'mimeType' => $mimeType,
         ];
 
-        if ($this->getModule()->settings->get('useXSendfile') && $this->file->store instanceof Local) {
-            Yii::$app->response->xSendFile(
-                $this->file->store->fs->path . DIRECTORY_SEPARATOR . $this->file->store->get($this->variant),
-                $fileName,
-                $options,
-            );
+
+        if ($this->getModule()->settings->get('useXSendfile')) {
+            $dataMountConfig = Yii::$app->fs->getDataMountConfig();
+            if ($dataMountConfig instanceof LocalMountConfig) {
+                Yii::$app->response->xSendFile(
+                    $dataMountConfig->path . DIRECTORY_SEPARATOR . $this->file->store->get($this->variant),
+                    $fileName,
+                    $options,
+                );
+            } else {
+                Yii::error(
+                    'XSendfile is only supported by ' . LocalMountConfig::class . ' mounts. '
+                    . get_class($dataMountConfig) . ' given.',
+                );
+            }
         } else {
             $options['fileSize'] = $this->file->store->fileSize($this->variant);
             Yii::$app->response->sendStreamAsFile(

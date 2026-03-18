@@ -2,48 +2,70 @@
 
 namespace humhub\components\fs;
 
+use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemAdapter;
 use Yii;
 use yii\base\Component;
-use yii\base\InvalidConfigException;
+use yii\base\InvalidArgumentException;
 
 class FilesystemManager extends Component
 {
+    public string $mountData = 'data';
+    public string $mountAssets = 'assets';
 
-    public string $fsData = 'data';
-
+    /**
+     * @var array<string,MountConfigInterface|array>
+     */
     public array $mounts = [];
 
     /**
-     * @var array<string, AbstractFs>
+     * @var array<string,Filesystem>
      */
-    private array $_instances = [];
+    private array $_mountedFileSystem = [];
 
-
-    public function data(): AbstractFs
+    public function getMount(string $name): Filesystem
     {
-        return $this->disk($this->fsData);
-    }
-
-    public function disk(string $id): AbstractFs
-    {
-        if (isset($this->_instances[$id])) {
-            return $this->_instances[$id];
+        if (isset($this->_mountedFileSystem[$name])) {
+            return $this->_mountedFileSystem[$name];
         }
 
-        if (!isset($this->mounts[$id])) {
-            throw new InvalidConfigException("Mount '$id' not exists.");
-        }
+        $mountConf = $this->getMountConfiguration($name);
 
-        $this->_instances[$id] = Yii::createObject($this->mounts[$id]);
-
-        return $this->_instances[$id];
+        $this->_mountedFileSystem[$name] = new Filesystem($mountConf->getFileSystemAdapter());
+        return $this->_mountedFileSystem[$name];
     }
 
-    public function __get($name)
+    public function getMountConfiguration(string $name): MountConfigInterface
     {
-        if (isset($this->mounts[$name])) {
-            return $this->disk($name);
+        if (!isset($this->mounts[$name])) {
+            throw new InvalidArgumentException(sprintf('Mount %s not exists!', $name));
         }
-        return parent::__get($name);
+
+        if (is_array($this->mounts[$name])) {
+            $this->mounts[$name] = Yii::createObject($this->mounts[$name]);
+        }
+
+        return $this->mounts[$name];
     }
+
+    public function getDataMount(): FileSystem
+    {
+        return $this->getMount($this->mountData);
+    }
+
+    public function getDataMountConfig(): MountConfigInterface
+    {
+        return $this->getMountConfiguration($this->mountData);
+    }
+
+    public function getAssetsMount(): FileSystem
+    {
+        return $this->getMount($this->mountAssets);
+    }
+
+    public function getAssetsMountConfig(): MountConfigInterface
+    {
+        return $this->getMountConfiguration($this->mountAssets);
+    }
+
 }

@@ -9,7 +9,7 @@
 namespace tests\codeception\unit\modules\file;
 
 use Exception;
-use humhub\components\fs\Local;
+use humhub\components\fs\LocalMountConfig;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
 use SplFileInfo;
@@ -25,10 +25,10 @@ class FileHelperTest extends HumHubDbTestCase
         parent::setUp();
 
         Yii::$app->fs->mounts['fsDataTest'] = [
-            'class' => Local::class,
+            'class' => LocalMountConfig::class,
             'path' => '@tests/codeception/_data',
         ];
-        Yii::$app->fs->fsData = 'fsDataTest';
+        Yii::$app->fs->mountData = 'fsDataTest';
 
     }
 

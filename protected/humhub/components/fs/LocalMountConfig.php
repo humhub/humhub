@@ -7,19 +7,25 @@ use League\Flysystem\Local\LocalFilesystemAdapter;
 use Yii;
 use yii\base\InvalidArgumentException;
 
-class Local extends AbstractFs
+class LocalMountConfig implements MountConfigInterface
 {
     public string $path = '';
 
-    protected function getAdapter(): FileSystemAdapter
+    public string $baseUrl = '';
+
+    public function getBaseUrl(): ?string
+    {
+        return $this->baseUrl;
+    }
+
+    public function getFileSystemAdapter(): FileSystemAdapter
     {
         if (empty($this->path)) {
             throw new InvalidArgumentException('Base path must be set.');
         }
 
         $root = Yii::getAlias($this->path);
+
         return new LocalFilesystemAdapter($root);
     }
-
-
 }
