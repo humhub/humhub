@@ -113,7 +113,7 @@ class SpaceSettingsForm extends Model
             'defaultContentVisibility' => Yii::t('AdminModule.space', 'Default Content Visiblity'),
             'defaultIndexRoute' => Yii::t('AdminModule.space', 'Default Homepage'),
             'defaultIndexGuestRoute' => Yii::t('AdminModule.space', 'Default Homepage (Non-members)'),
-            'defaultStreamSort' => Yii::t('AdminModule.space', 'Default Stream Sort'),
+            'defaultStreamSort' => Yii::t('AdminModule.space', 'Default Content Sort Order'),
             'defaultHideMembers' => Yii::t('AdminModule.space', 'Default "Hide Members"'),
             'defaultHideActivities' => Yii::t('AdminModule.space', 'Default "Hide Activity Sidebar Widget"'),
             'defaultHideAbout' => Yii::t('AdminModule.space', 'Default "Hide About Page"'),
