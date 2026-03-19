@@ -14,6 +14,7 @@ HumHub Changelog
 - Fix #8060: Double HTML encoding of the Tour widget menu "remove" item
 - Enh #8061: Display warning when URL cannot be embedded
 - Fix #8062: Fix global topics
+- Fix #8072: Fix missing translations
 
 1.18.1 (March 2, 2026)
 ----------------------
