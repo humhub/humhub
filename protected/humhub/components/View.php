@@ -13,7 +13,6 @@ use humhub\assets\CoreBundleAsset;
 use humhub\components\assets\AssetBundle;
 use humhub\helpers\Html;
 use humhub\modules\web\pwa\widgets\LayoutHeader;
-use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\widgets\CoreJsConfig;
 use humhub\widgets\LayoutAddons;
 use Yii;
@@ -335,7 +334,41 @@ class View extends \yii\web\View
     protected function renderHeadHtml()
     {
         if (!Yii::$app->request->isAjax) {
-            SiteIcon::registerMetaTags($this);
+            // Add Apple touch icons
+            // https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html
+            $this->registerLinkTag(
+                [
+                    'rel' => 'apple-touch-icon',
+                    'href' => Yii::$app->img->icon->getUrl(['square' => 152]),
+                    'sizes' => '152x152'
+                ]
+            );
+            $this->registerLinkTag(
+                [
+                    'rel' => 'apple-touch-icon',
+                    'href' => Yii::$app->img->icon->getUrl(['square' => 180]),
+                    'sizes' => '180x180'
+                ]
+            );
+            $this->registerLinkTag(
+                [
+                    'rel' => 'apple-touch-icon',
+                    'href' => Yii::$app->img->icon->getUrl(['square' => 167]),
+                    'sizes' => '167x167'
+                ]
+            );
+
+            // Chrome, Firefox & Co.
+            $this->registerLinkTag(
+                ['rel' => 'icon', 'href' => Yii::$app->img->icon->getUrl(['square' => 192]), 'sizes' => '192x192']
+            );
+            $this->registerLinkTag(
+                ['rel' => 'icon', 'href' => Yii::$app->img->icon->getUrl(['square' => 96]), 'sizes' => '96x96']
+            );
+            $this->registerLinkTag(
+                ['rel' => 'icon', 'href' => Yii::$app->img->icon->getUrl(['square' => 32]), 'sizes' => '32x32']
+            );
+
             if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
                 LayoutHeader::registerHeadTags($this);
                 $this->meta->registerMetaTags();
@@ -361,7 +394,7 @@ class View extends \yii\web\View
     {
         $cacheBustedUrl = $this->addCacheBustQuery($url);
         foreach (static::$preload as $fileName) {
-            if (strpos($url, (string) $fileName)) {
+            if (strpos($url, (string)$fileName)) {
                 $this->registerPreload($cacheBustedUrl, 'script');
             }
         }
@@ -377,7 +410,7 @@ class View extends \yii\web\View
     {
         $cacheBustedUrl = $this->addCacheBustQuery($url);
         foreach (static::$preload as $fileName) {
-            if (strpos($url, (string) $fileName)) {
+            if (strpos($url, (string)$fileName)) {
                 $this->registerPreload($cacheBustedUrl, 'style');
             }
         }
@@ -464,11 +497,15 @@ class View extends \yii\web\View
         if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
             if (Yii::$app->getSession()->hasFlash('view-status')) {
                 $viewStatus = Yii::$app->getSession()->getFlash('view-status');
-                $type = strtolower((string) key($viewStatus));
+                $type = strtolower((string)key($viewStatus));
                 $value = Html::encode(array_values($viewStatus)[0]);
                 $value = str_replace('&quot;', '', $value);
                 $value = trim($value);
-                $this->registerJs('humhub.modules.ui.status.' . $type . '("' . $value . '")', View::POS_END, 'viewStatusMessage');
+                $this->registerJs(
+                    'humhub.modules.ui.status.' . $type . '("' . $value . '")',
+                    View::POS_END,
+                    'viewStatusMessage'
+                );
             }
 
             if (Yii::$app->session->hasFlash('executeJavascript')) {
@@ -509,7 +546,11 @@ class View extends \yii\web\View
     private function registerViewContext()
     {
         if (!empty(static::$viewContext)) {
-            $this->registerJs('humhub.modules.ui.view.setViewContext("' . static::$viewContext . '")', View::POS_END, 'viewContext');
+            $this->registerJs(
+                'humhub.modules.ui.view.setViewContext("' . static::$viewContext . '")',
+                View::POS_END,
+                'viewContext'
+            );
         }
     }
 

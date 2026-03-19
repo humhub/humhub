@@ -1,62 +1,48 @@
 <?php
 
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
-
 namespace humhub\modules\file\components;
 
 use Exception;
-use humhub\modules\file\models\File;
 use humhub\modules\file\libs\FileHelper;
+use humhub\modules\file\models\File;
+use League\Flysystem\Filesystem;
+use League\Flysystem\StorageAttributes;
+use League\Flysystem\Visibility;
 use Yii;
 use yii\base\Component;
-use yii\helpers\ArrayHelper;
-use yii\imagine\Image;
 use yii\web\UploadedFile;
 
-/**
- * StorageManager for File records
- *
- * @since 1.2
- * @author Luke
- */
 class StorageManager extends Component implements StorageManagerInterface
 {
     /**
      * @var string file name of the base file (without variant)
      */
     public $originalFileName = 'file';
-
-    /**
-     * @var string storage base path
-     */
-    protected $storagePath = '@filestore';
-
-    /**
-     * @var int file mode
-     */
-    public $fileMode = 0744;
+    private string $pathPrefix = 'file';
+    public Filesystem $fs;
+    private array $filesystemOptions = [
+        'visibility' => Visibility::PRIVATE,
+        'directory_visibility' => Visibility::PRIVATE,
+    ];
 
     /**
      * @var File
      */
     protected $file;
 
-    /**
-     * @inheritdoc
-     */
-    public function has($variant = null): bool
+    public function init(): void
     {
-        return file_exists($this->get($variant));
+        parent::init();
+
+        $this->fs = Yii::$app->fs->getDataMount();
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function get($variant = null)
+    public function has(?string $variant = null): bool
+    {
+        return $this->fs->fileExists($this->get($variant));
+    }
+
+    public function get(?string $variant = null): string
     {
         if ($variant === null) {
             $variant = $this->originalFileName;
@@ -65,100 +51,118 @@ class StorageManager extends Component implements StorageManagerInterface
         return $this->getPath() . DIRECTORY_SEPARATOR . $variant;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getVariants($except = [])
+    public function fileSize(?string $variant = null): int
     {
-        return array_map(
-            fn(string $s): string => basename($s),
-            FileHelper::findFiles($this->getPath(), ['except' => ArrayHelper::merge(['file'], $except)]),
-        );
+        return $this->fs->fileSize($this->get($variant));
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function set(UploadedFile $file, $variant = null)
+    public function mimeType(?string $variant = null): string
+    {
+        try {
+            return $this->fs->mimeType($this->get($variant));
+        } catch (\Exception $ex) {
+            return FileHelper::getMimeTypeByExtension($this->file->file_name);
+        }
+    }
+
+    public function getContentStream(?string $variant = null)
+    {
+        return $this->fs->readStream($this->get($variant));
+    }
+
+    public function getContent($variant = null): string
+    {
+        return $this->fs->read($this->get($variant));
+    }
+
+    public function checksum($variant = null, string $algo = 'sha1'): string
+    {
+        return $this->fs->checksum($this->get($variant), ['checksum_algo' => $algo]);
+    }
+
+    public function getVariants(array $except = []): array
+    {
+        return $this->fs->listContents($this->getPath())
+            ->filter(fn($f) => $f->isFile())
+            ->filter(function ($f) use ($except) {
+                $name = basename($f->path());
+                if ($name === $this->originalFileName) {
+                    return false;
+                }
+                foreach ($except as $e) {
+                    $e = str_replace('*', '', $e);
+                    if (str_contains($name, $e)) {
+                        return false;
+                    }
+                }
+                return true;
+            })
+            ->map(fn($f) => basename($f->path()))
+            ->toArray();
+    }
+
+    public function set(UploadedFile $file, ?string $variant = null): void
     {
         if (is_uploaded_file($file->tempName)) {
-            move_uploaded_file($file->tempName, $this->get($variant));
-            @chmod($this->get($variant), $this->fileMode);
+            $this->setByPath($file->tempName);
         }
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function setContent($content, $variant = null)
+    public function setContent($content, ?string $variant = null): void
     {
-        file_put_contents($this->get($variant), $content);
-        @chmod($this->get($variant), $this->fileMode);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function setByPath(string $path, $variant = null)
-    {
-        copy($path, $this->get($variant));
-        @chmod($this->get($variant), $this->fileMode);
-    }
-
-
-    /**
-     * @inheritdoc
-     */
-    public function delete($variant = null, $except = [])
-    {
-        if ($variant === null) {
-            foreach (FileHelper::findFiles($this->getPath(), ['except' => $except]) as $f) {
-                if (is_file($f)) {
-                    FileHelper::unlink($f);
-                }
-            }
-
-            if (empty($except)) {
-                FileHelper::removeDirectory($this->getPath());
-            }
-
-        } elseif (is_file($this->get($variant))) {
-            FileHelper::unlink($this->get($variant));
+        try {
+            $this->fs->write($this->get($variant), $content, $this->filesystemOptions);
+        } catch (\Exception $ex) {
+            Yii::error("Could  not write: ". $ex->getMessage());
         }
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function setFile(File $file)
+    public function setByPath(string $path, ?string $variant = null): void
+    {
+        $this->fs->writeStream($this->get($variant), fopen($path, 'r'), $this->filesystemOptions);
+    }
+
+    public function delete($variant = null, array $except = []): void
+    {
+        $cleanedExcept = array_map(fn($e) => str_replace('*', '', $e), $except);
+
+        $files = $this->fs->listContents($this->getPath(), false)
+            ->filter(fn(StorageAttributes $attributes) => $attributes->isFile())
+            ->filter(
+                fn(StorageAttributes $attribute) => empty(
+                    array_filter(
+                        $cleanedExcept,
+                        fn($e) => str_contains(basename($attribute->path()), $e),
+                    )
+                ),
+            )
+            ->map(fn(StorageAttributes $attributes) => $attributes->path())
+            ->toArray();
+
+        foreach ($files as $file) {
+            $this->fs->delete($file);
+        }
+
+        if (empty($except)) {
+            $this->fs->deleteDirectory($this->getPath());
+        }
+    }
+
+    public function setFile(File $file): void
     {
         $this->file = $file;
     }
 
-    /**
-     * Returns the path where the files of this file are located
-     *
-     * @return string the path
-     */
-    protected function getPath()
+    protected function getPath(): string
     {
         if ($this->file->guid == '') {
             throw new Exception('File GUID empty!');
         }
 
-        $basePath = Yii::getAlias($this->storagePath);
-
-        // File storage prior HumHub 1.2
-        if (is_dir($basePath . DIRECTORY_SEPARATOR . $this->file->guid)) {
-            return $basePath . DIRECTORY_SEPARATOR . $this->file->guid;
-        }
-
-        $path = $basePath . DIRECTORY_SEPARATOR
+        $path = $this->pathPrefix . DIRECTORY_SEPARATOR
             . substr($this->file->guid, 0, 1) . DIRECTORY_SEPARATOR
             . substr($this->file->guid, 1, 1) . DIRECTORY_SEPARATOR
             . $this->file->guid;
-
-        FileHelper::createDirectory($path, $this->fileMode, true);
 
         return $path;
     }
