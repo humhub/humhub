@@ -94,4 +94,16 @@ class Link extends Button
     {
         return $this->target('_blank');
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function run(): string
+    {
+        if ($this->label === null && $this->icon !== null) {
+            $this->cssClass('link-icon-only');
+        }
+
+        return parent::run();
+    }
 }

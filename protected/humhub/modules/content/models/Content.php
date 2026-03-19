@@ -16,6 +16,7 @@ use humhub\interfaces\ArchiveableInterface;
 use humhub\interfaces\EditableInterface;
 use humhub\interfaces\ViewableInterface;
 use humhub\libs\UUIDValidator;
+use humhub\modules\activity\models\Activity;
 use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\content\activities\ContentCreatedActivity;
 use humhub\modules\content\components\ContentActiveRecord;
@@ -382,34 +383,20 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      * Marks this content for deletion (soft delete).
      * Use `hardDelete()` method to delete a content immediately.
      *
-     * @return bool
      * @inheritdoc
+     * @deprecated since 1.19 (will throw error in future)
      */
     public function delete()
     {
         return $this->softDelete();
+        // TODO: since 1.20
+        // throw new Exception('Forbidden Content->delete()! Use Content->getPolymorphicRelation()->delete() instead!');
     }
 
     /**
      * @inheritdoc
-     */
-    public function afterDelete()
-    {
-        // Try to delete the underlying object (Post, Question, Task, ...)
-        $this->resetPolymorphicRelation();
-
-        /** @var ContentActiveRecord $record */
-        $record = $this->getPolymorphicRelation();
-
-        if ($record) {
-            $record->hardDelete();
-        }
-
-        parent::afterDelete();
-    }
-
-    /**
-     * @inheritdoc
+     * @deprecated since 1.19
+     * @hint Use event ContentActiveRecord::EVENT_BEFORE_SOFT_DELETE instead
      */
     public function beforeSoftDelete(): bool
     {
@@ -421,28 +408,35 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
 
     /**
      * @inheritdoc
+     * @deprecated since 1.19 Use ContentActiveRecord::softDelete() instead
      */
     public function softDelete(): bool
     {
-        if (!$this->beforeSoftDelete()) {
-            return false;
-        }
+        $record = $this->getPolymorphicRelation();
+        return $record instanceof ContentActiveRecord ? $record->softDelete() : false;
+    }
 
+    /**
+     * Marks the Content as deleted.
+     * (It must be called only from ContentActiveRecord)
+     *
+     * @return bool
+     * @since 1.19
+     */
+    public function softDeleteInternal(): bool
+    {
         Notification::deleteAll([
             'source_class' => PolymorphicRelation::getObjectModel($this),
             'source_pk' => $this->getPrimaryKey(),
         ]);
 
-        if (!$this->getStateService()->delete()) {
-            return false;
-        }
-
-        $this->afterSoftDelete();
-        return true;
+        return $this->getStateService()->delete();
     }
 
     /**
      * @inheritdoc
+     * @deprecated since 1.19
+     * @hint Use event ContentActiveRecord::EVENT_AFTER_SOFT_DELETE instead
      */
     public function afterSoftDelete()
     {
@@ -456,9 +450,24 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      * @throws Throwable
      * @throws StaleObjectException
      * @since 1.14
+     * @deprecated since 1.19 ContentActiveRecord::hardDelete() instead
      */
     public function hardDelete(): bool
     {
+        return $this->hardDeleteInternal();
+    }
+
+    /**
+     * Deletes this content immediately and permanently.
+     * (It must be called only from ContentActiveRecord)
+     *
+     * @return bool
+     * @since 1.19
+     */
+    public function hardDeleteInternal(): bool
+    {
+        Activity::deleteAll(['content_id' => $this->id]);
+
         return parent::delete() !== false;
     }
 

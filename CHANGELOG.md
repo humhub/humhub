@@ -10,6 +10,8 @@ HumHub Changelog
 - Fix #8031: Border Radius for Color Picker under Theme Customisation
 - Fix #8006: Web Installer Nginx Example
 - Fix #8041: Update `Button::asLink` to `Link::to`
+- Fix #8070: Refactor Content deletion to make it possible only from ContentActiveRecord
+- Fix #8071: Fix button link with icon only
 
 1.18.1 (Unreleased)
 -------------------------
