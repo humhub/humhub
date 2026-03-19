@@ -11,7 +11,7 @@ use yii\helpers\Url;
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Change password');
 ?>
-<div id="user-must-change-password" class="container">
+<div id="user-must-change-password" class="container container-password">
     <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br>
 

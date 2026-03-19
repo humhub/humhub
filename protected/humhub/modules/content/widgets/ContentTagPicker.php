@@ -58,6 +58,9 @@ class ContentTagPicker extends BasePicker
         return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->id, fn() => $query->all());
     }
 
+    /**
+     * @deprecated since 1.18.2 use static::searchByContainer() instead
+     */
     public static function search($term, $contentContainer = null, $includeGlobal = false)
     {
         $instance = new static();
@@ -74,10 +77,6 @@ class ContentTagPicker extends BasePicker
 
     public static function searchByContainer($term, $contentContainer, $includeGlobal = true)
     {
-        if (!$contentContainer) {
-            return static::search($term);
-        }
-
         $instance = new static();
 
         /* @var ContentTagActiveQuery $query */
