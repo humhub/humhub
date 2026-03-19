@@ -9,6 +9,7 @@
 
 namespace humhub\modules\topic\models;
 
+use humhub\helpers\ArrayHelper;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\models\Content;
@@ -66,7 +67,12 @@ class Topic extends ContentTag
      */
     public function getUrl(?ContentContainerActiveRecord $contentContainer = null, array $options = [])
     {
-        return StreamHelper::createUrl($contentContainer ?: $this->container, array_merge($options, ['topics[]' => $this->id]));
+        $contentContainer ??= $this->container;
+        $options = ArrayHelper::merge($options, ['topics[]' => $this->id]);
+
+        return $contentContainer
+            ? StreamHelper::createUrl($contentContainer, $options)
+            : StreamHelper::createDashboardUrl($options);
     }
 
     /**
