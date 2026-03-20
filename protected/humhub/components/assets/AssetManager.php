@@ -4,7 +4,6 @@ namespace humhub\components\assets;
 
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemException;
-use League\Flysystem\StorageAttributes;
 use League\Flysystem\Visibility;
 use Yii;
 use yii\base\Application;
@@ -27,7 +26,7 @@ class AssetManager extends \yii\web\AssetManager
 
     private array $_published = [];
 
-    private bool $_cacheTainted = false;
+    private bool $_cacheDirty = false;
 
     public function init(): void
     {
@@ -48,7 +47,7 @@ class AssetManager extends \yii\web\AssetManager
             $this->_published = Yii::$app->cache->get('assetManagerPublished') ?: [];
 
             Yii::$app->on(Application::EVENT_AFTER_REQUEST, function ($event) {
-                if ($this->_cacheTainted && !Yii::$app->request->isConsoleRequest) {
+                if ($this->_cacheDirty && !Yii::$app->request->isConsoleRequest) {
                     Yii::$app->cache->set('assetManagerPublished', $this->_published);
                 }
             });
@@ -66,7 +65,7 @@ class AssetManager extends \yii\web\AssetManager
 
         Yii::debug("Publishing asset '{$path}'", __METHOD__);
 
-        $this->_cacheTainted = true;
+        $this->_cacheDirty = true;
         return $this->_published[$path] = parent::publish($path, $options);
     }
 
@@ -158,7 +157,7 @@ class AssetManager extends \yii\web\AssetManager
             );
         }
 
-        $this->_cacheTainted = true;
+        $this->_cacheDirty = true;
         return $this->_published[$fileNameWithOptions] = [$dstFile, $this->baseUrl . '/' . $dstFile. '?t='.time()];
     }
 
@@ -173,7 +172,7 @@ class AssetManager extends \yii\web\AssetManager
             $this->fs->delete($dstFile);
         }
 
-        $this->_cacheTainted = true;
+        $this->_cacheDirty = true;
         unset($this->_published[$fileNameWithOptions]);
     }
 

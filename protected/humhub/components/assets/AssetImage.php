@@ -53,9 +53,12 @@ class AssetImage extends Component
     ];
     public string $path;
     private string $fileName;
-    private bool $exists;
 
     public FileSystem $fs;
+
+    public bool $cachePublishedDirty = false;
+    public array $cachePublished = [];
+    private ?bool $_exists = null;
 
     public function __construct($config = [])
     {
@@ -70,7 +73,6 @@ class AssetImage extends Component
         $this->file = Yii::getAlias($this->file);
         $this->fileName = basename($this->file);
         $this->path = dirname($this->file);
-        $this->exists = $this->fs->fileExists($this->file);
         $this->defaultFile = Yii::getAlias($this->defaultFile);
     }
 
@@ -81,20 +83,33 @@ class AssetImage extends Component
      */
     public function getUrl(?array $options = null, $scheme = false): string
     {
-        if (!$this->exists && empty($this->defaultFile)) {
-            throw new InvalidValueException('File and DefaultFile cannot be empty.');
-        }
-
         if ($options === null) {
             $options = $this->defaultOptions;
         }
 
         $scaledFileName = $this->path . DIRECTORY_SEPARATOR . $this->getFileNameWithOptions($options);
-        if (!$this->fs->fileExists($scaledFileName)) {
-            $this->convert($scaledFileName, $options);
+
+        if (isset($this->cachePublished[$scaledFileName])) {
+            Yii::debug("AssetImage: Use Cached: " . $scaledFileName);
+
+            $published = $this->cachePublished[$scaledFileName];
+        } else {
+            Yii::debug("AssetImage: Check file exists: " . $scaledFileName);
+
+            if (!$this->exists() && empty($this->defaultFile)) {
+                throw new InvalidValueException('File and DefaultFile cannot be empty.');
+            }
+
+            if (!$this->fs->fileExists($scaledFileName)) {
+                $this->convert($scaledFileName, $options);
+            }
+
+            $published = Yii::$app->assetManager->publishAssetImage($this, $scaledFileName);
+
+            $this->cachePublishedDirty = true;
+            $this->cachePublished[$scaledFileName] = $published;
         }
 
-        $published = Yii::$app->assetManager->publishAssetImage($this, $scaledFileName);
         return Url::to($published[1], $scheme);
     }
 
@@ -111,7 +126,7 @@ class AssetImage extends Component
         ImageHelper::fixJpegOrientation($image, $tempFileName);
         $this->fs->write($this->file, $image->get($this->getFileFormat()), $this->filesystemOptions);
 
-        $this->exists = true;
+        $this->_exists = true;
 
         if (!empty($this->masterOptions)) {
             $this->convert($this->file, $this->masterOptions);
@@ -120,7 +135,7 @@ class AssetImage extends Component
 
     private function getFileNameWithOptions(array $options): string
     {
-        $fileName = ($this->exists) ? $this->fileName : basename($this->defaultFile);
+        $fileName = ($this->exists()) ? $this->fileName : basename($this->defaultFile);
 
         ksort($options);
         $checksum = hash('xxh32', json_encode($options));
@@ -132,7 +147,7 @@ class AssetImage extends Component
     private function convert(string $newFileName, array $options = []): bool
     {
         $image = Image::getImagine();
-        if ($this->exists) {
+        if ($this->exists()) {
             $image = $image->load($this->fs->read($this->file));
         } else {
             $image = $image->open($this->defaultFile);
@@ -165,6 +180,9 @@ class AssetImage extends Component
 
     public function delete(): void
     {
+        $this->cachePublishedDirty = true;
+        $this->cachePublished = [];
+
         try {
             if ($this->fs->fileExists($this->file)) {
                 $this->fs->delete($this->file);
@@ -173,7 +191,7 @@ class AssetImage extends Component
             Yii::error($e, 'base');
         }
 
-        $this->exists = false;
+        $this->_exists = false;
         $this->deleteWithOptions();
     }
 
@@ -189,7 +207,11 @@ class AssetImage extends Component
 
     public function exists(): bool
     {
-        return $this->exists;
+        if ($this->_exists === null) {
+            $this->_exists = $this->fs->fileExists($this->file);
+        }
+
+        return $this->_exists;
     }
 
     private function deleteWithOptions(): void
