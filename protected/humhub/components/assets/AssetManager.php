@@ -4,6 +4,7 @@ namespace humhub\components\assets;
 
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemException;
+use League\Flysystem\StorageAttributes;
 use League\Flysystem\Visibility;
 use Yii;
 use yii\base\Application;
@@ -22,7 +23,7 @@ class AssetManager extends \yii\web\AssetManager
 
     private FileSystem $fs;
 
-    public bool $enableCache = false;
+    public bool $enableCache = true;
 
     private array $_published = [];
 
@@ -58,9 +59,12 @@ class AssetManager extends \yii\web\AssetManager
     {
         $path = Yii::getAlias($path);
 
-        if (isset($this->_published[$path])) {
+        if (isset($this->_published[$path]) && !empty($options['forceCopy'])) {
+            Yii::debug("Cached asset '{$path}'", __METHOD__);
             return $this->_published[$path];
         }
+
+        Yii::debug("Publishing asset '{$path}'", __METHOD__);
 
         $this->_cacheTainted = true;
         return $this->_published[$path] = parent::publish($path, $options);
@@ -126,11 +130,14 @@ class AssetManager extends \yii\web\AssetManager
     public function publishAssetImage(AssetImage $assetImage, string $fileNameWithOptions): array
     {
         if (isset($this->_published[$fileNameWithOptions])) {
+            Yii::debug("Cached asset image '{$fileNameWithOptions}'", __METHOD__);
             return $this->_published[$fileNameWithOptions];
         }
 
+        Yii::debug("Published asset image '{$fileNameWithOptions}'", __METHOD__);
+
         // Remove root dir, and hash e.g. '/uploads/profile_image/', to store all AssetImage types in an individual directory
-        $dstDir = '_/' . hash('xxh32', dirname($fileNameWithOptions));
+        $dstDir = '_/' . hash('xxh32', $assetImage->path);
         $dstFile = $dstDir . DIRECTORY_SEPARATOR . basename($fileNameWithOptions);
 
         $shouldWrite = true;
@@ -152,7 +159,22 @@ class AssetManager extends \yii\web\AssetManager
         }
 
         $this->_cacheTainted = true;
-        return $this->_published[$fileNameWithOptions] = [$dstFile, $this->baseUrl . '/' . $dstFile];
+        return $this->_published[$fileNameWithOptions] = [$dstFile, $this->baseUrl . '/' . $dstFile. '?t='.time()];
+    }
+
+
+    public function unpublishAssetImage(AssetImage $assetImage, string $fileNameWithOptions): void
+    {
+        // Remove root dir, and hash e.g. '/uploads/profile_image/', to store all AssetImage types in an individual directory
+        $dstDir = '_/' . hash('xxh32', $assetImage->path);
+        $dstFile = $dstDir . DIRECTORY_SEPARATOR . basename($fileNameWithOptions);
+
+        if ($this->fs->fileExists($dstFile)) {
+            $this->fs->delete($dstFile);
+        }
+
+        $this->_cacheTainted = true;
+        unset($this->_published[$fileNameWithOptions]);
     }
 
     public function clear()
@@ -162,7 +184,6 @@ class AssetManager extends \yii\web\AssetManager
 
         $this->fs->deleteDirectory('.');
     }
-
 
     /**
      * Temporary Hack for dynamic CSS Compile

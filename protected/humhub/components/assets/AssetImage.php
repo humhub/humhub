@@ -51,7 +51,7 @@ class AssetImage extends Component
         'visibility' => Visibility::PUBLIC,
         'directory_visibility' => Visibility::PUBLIC,
     ];
-    private string $path;
+    public string $path;
     private string $fileName;
     private bool $exists;
 
@@ -199,6 +199,7 @@ class AssetImage extends Component
         foreach ($this->fs->listContents($this->path) as $f) {
             if ($f->isFile() && str_starts_with(basename($f->path()), $prefix)) {
                 $this->fs->delete($f->path());
+                Yii::$app->assetManager->unpublishAssetImage($this, $this->path . DIRECTORY_SEPARATOR . basename($f->path()));
             }
         }
     }
