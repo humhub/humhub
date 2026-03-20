@@ -37,6 +37,7 @@ class CoreApiAsset extends WebStaticAssetBundle
     public $js = [
         'js/humhub/humhub.core.js',
         'js/humhub/humhub.util.js',
+        'js/humhub/humhub.urlManager.js',
         'js/humhub/humhub.log.js',
         'js/humhub/humhub.ui.additions.js',
         'js/humhub/humhub.ui.loader.js',
