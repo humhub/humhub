@@ -15,6 +15,7 @@ HumHub Changelog
 - Enh #8061: Display warning when URL cannot be embedded
 - Fix #8062: Fix global topics
 - Fix #8072: Fix missing translations
+- Fix #8077: Topics in new post won't save
 
 1.18.1 (March 2, 2026)
 ----------------------
