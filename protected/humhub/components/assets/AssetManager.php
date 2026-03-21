@@ -2,6 +2,7 @@
 
 namespace humhub\components\assets;
 
+use humhub\helpers\TrackableArray;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\Visibility;
@@ -24,9 +25,7 @@ class AssetManager extends \yii\web\AssetManager
 
     public bool $enableCache = true;
 
-    private array $_published = [];
-
-    private bool $_cacheDirty = false;
+    private TrackableArray $_published;
 
     public function init(): void
     {
@@ -43,14 +42,17 @@ class AssetManager extends \yii\web\AssetManager
             throw new InvalidConfigException('Linking assets is not supported.');
         }
 
+
         if ($this->enableCache) {
-            $this->_published = Yii::$app->cache->get('assetManagerPublished') ?: [];
+            $this->_published = new TrackableArray(Yii::$app->cache->get('assetManagerPublished') ?: []);
 
             Yii::$app->on(Application::EVENT_AFTER_REQUEST, function ($event) {
-                if ($this->_cacheDirty && !Yii::$app->request->isConsoleRequest) {
-                    Yii::$app->cache->set('assetManagerPublished', $this->_published);
+                if ($this->_published->hasChanged() && !Yii::$app->request->isConsoleRequest) {
+                    Yii::$app->cache->set('assetManagerPublished', $this->_published->toArray());
                 }
             });
+        } else {
+            $this->_published = new TrackableArray();
         }
     }
 
@@ -58,14 +60,13 @@ class AssetManager extends \yii\web\AssetManager
     {
         $path = Yii::getAlias($path);
 
-        if (isset($this->_published[$path]) && !empty($options['forceCopy'])) {
+        if (isset($this->_published[$path]) && empty($options['forceCopy'])) {
             Yii::debug("Cached asset '{$path}'", __METHOD__);
             return $this->_published[$path];
         }
 
         Yii::debug("Publishing asset '{$path}'", __METHOD__);
 
-        $this->_cacheDirty = true;
         return $this->_published[$path] = parent::publish($path, $options);
     }
 
@@ -157,7 +158,6 @@ class AssetManager extends \yii\web\AssetManager
             );
         }
 
-        $this->_cacheDirty = true;
         return $this->_published[$fileNameWithOptions] = [$dstFile, $this->baseUrl . '/' . $dstFile. '?t='.time()];
     }
 
@@ -172,7 +172,6 @@ class AssetManager extends \yii\web\AssetManager
             $this->fs->delete($dstFile);
         }
 
-        $this->_cacheDirty = true;
         unset($this->_published[$fileNameWithOptions]);
     }
 

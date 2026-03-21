@@ -2,6 +2,7 @@
 
 namespace humhub\components\assets;
 
+use humhub\helpers\TrackableArray;
 use Yii;
 use yii\base\Application;
 use yii\base\Component;
@@ -19,24 +20,32 @@ class AssetImageRegistry extends Component
     /**
      * @var array
      */
-    private mixed $_publishedCache;
+    private mixed $_cache;
 
     public function init()
     {
         parent::init();
 
-        $this->_publishedCache = Yii::$app->cache->get('assetImageCache') ?: [];
+        /**
+         * We're caching published URLs and existence of default Asset Images (e.g. Logo/Icon) to avoid
+         * Filesystem lookups
+         */
+        $this->_cache = Yii::$app->cache->get('assetImageRegistry') ?: [];
         Yii::$app->on(Application::EVENT_AFTER_REQUEST, function ($event) {
             $modified = false;
             /** @var AssetImage $assetImage */
             foreach ($this->_instances as $name => $assetImage) {
-                if ($assetImage->cachePublishedDirty) {
-                    $this->_publishedCache[$name] = $assetImage->cachePublished;
+                if ($assetImage->cachePublish->hasChanged()) {
+                    $this->_cache[$name]['published'] = $assetImage->cachePublish->toArray();
+                    $modified = true;
+                }
+                if (!isset($this->_cache[$name]['fileExists']) ?? $this->_cache[$name]['fileExists'] !== $assetImage->fileExists) {
+                    $this->_cache[$name]['fileExists'] = $assetImage->fileExists;
                     $modified = true;
                 }
             }
             if ($modified) {
-                Yii::$app->cache->set('assetImageCache', $this->_publishedCache);
+                Yii::$app->cache->set('assetImageRegistry', $this->_cache);
             }
         });
     }
@@ -51,12 +60,14 @@ class AssetImageRegistry extends Component
             $this->_instances[$name] = Yii::$container->get(
                 AssetImage::class,
                 [],
-                $this->definitions[$name],
+                array_merge(
+                    $this->definitions[$name],
+                    [
+                        'cachePublish' => new TrackableArray($this->_cache[$name]['published'] ?? []),
+                        'fileExists' => $this->_cache[$name]['fileExists'] ?? null,
+                    ],
+                ),
             );
-
-            if (isset($this->_publishedCache[$name])) {
-                $this->_instances[$name]->cachePublished = $this->_publishedCache[$name];
-            }
         }
 
         return $this->_instances[$name];

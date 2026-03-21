@@ -2,6 +2,7 @@
 
 namespace humhub\components\assets;
 
+use humhub\helpers\TrackableArray;
 use humhub\modules\file\libs\ImageHelper;
 use Imagine\Image\Box;
 use Imagine\Image\Format;
@@ -53,12 +54,9 @@ class AssetImage extends Component
     ];
     public string $path;
     private string $fileName;
-
     public FileSystem $fs;
-
-    public bool $cachePublishedDirty = false;
-    public array $cachePublished = [];
-    private ?bool $_exists = null;
+    public TrackableArray $cachePublish;
+    public ?bool $fileExists = null;
 
     public function __construct($config = [])
     {
@@ -69,11 +67,11 @@ class AssetImage extends Component
         }
 
         $this->fs = Yii::$app->fs->getDataMount();
-
         $this->file = Yii::getAlias($this->file);
         $this->fileName = basename($this->file);
         $this->path = dirname($this->file);
         $this->defaultFile = Yii::getAlias($this->defaultFile);
+        $this->cachePublish ??= new TrackableArray();
     }
 
     /**
@@ -89,10 +87,10 @@ class AssetImage extends Component
 
         $scaledFileName = $this->path . DIRECTORY_SEPARATOR . $this->getFileNameWithOptions($options);
 
-        if (isset($this->cachePublished[$scaledFileName])) {
+        if (isset($this->cachePublish[$scaledFileName])) {
             Yii::debug("AssetImage: Use Cached: " . $scaledFileName);
 
-            $published = $this->cachePublished[$scaledFileName];
+            $published = $this->cachePublish[$scaledFileName];
         } else {
             Yii::debug("AssetImage: Check file exists: " . $scaledFileName);
 
@@ -105,9 +103,7 @@ class AssetImage extends Component
             }
 
             $published = Yii::$app->assetManager->publishAssetImage($this, $scaledFileName);
-
-            $this->cachePublishedDirty = true;
-            $this->cachePublished[$scaledFileName] = $published;
+            $this->cachePublish[$scaledFileName] = $published;
         }
 
         return Url::to($published[1], $scheme);
@@ -126,7 +122,7 @@ class AssetImage extends Component
         ImageHelper::fixJpegOrientation($image, $tempFileName);
         $this->fs->write($this->file, $image->get($this->getFileFormat()), $this->filesystemOptions);
 
-        $this->_exists = true;
+        $this->fileExists = true;
 
         if (!empty($this->masterOptions)) {
             $this->convert($this->file, $this->masterOptions);
@@ -180,8 +176,7 @@ class AssetImage extends Component
 
     public function delete(): void
     {
-        $this->cachePublishedDirty = true;
-        $this->cachePublished = [];
+        $this->cachePublish->clear();
 
         try {
             if ($this->fs->fileExists($this->file)) {
@@ -191,7 +186,7 @@ class AssetImage extends Component
             Yii::error($e, 'base');
         }
 
-        $this->_exists = false;
+        $this->fileExists = false;
         $this->deleteWithOptions();
     }
 
@@ -207,11 +202,11 @@ class AssetImage extends Component
 
     public function exists(): bool
     {
-        if ($this->_exists === null) {
-            $this->_exists = $this->fs->fileExists($this->file);
+        if ($this->fileExists === null) {
+            $this->fileExists = $this->fs->fileExists($this->file);
         }
 
-        return $this->_exists;
+        return $this->fileExists;
     }
 
     private function deleteWithOptions(): void
@@ -221,7 +216,10 @@ class AssetImage extends Component
         foreach ($this->fs->listContents($this->path) as $f) {
             if ($f->isFile() && str_starts_with(basename($f->path()), $prefix)) {
                 $this->fs->delete($f->path());
-                Yii::$app->assetManager->unpublishAssetImage($this, $this->path . DIRECTORY_SEPARATOR . basename($f->path()));
+                Yii::$app->assetManager->unpublishAssetImage(
+                    $this,
+                    $this->path . DIRECTORY_SEPARATOR . basename($f->path()),
+                );
             }
         }
     }
