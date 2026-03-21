@@ -88,11 +88,11 @@ class AssetImage extends Component
         $scaledFileName = $this->path . DIRECTORY_SEPARATOR . $this->getFileNameWithOptions($options);
 
         if (isset($this->cachePublish[$scaledFileName])) {
-            Yii::debug("AssetImage: Use Cached: " . $scaledFileName);
+            //Yii::debug("AssetImage: Use Cached: " . $scaledFileName);
 
             $published = $this->cachePublish[$scaledFileName];
         } else {
-            Yii::debug("AssetImage: Check file exists: " . $scaledFileName);
+            //Yii::debug("AssetImage: Check file exists: " . $scaledFileName);
 
             if (!$this->exists() && empty($this->defaultFile)) {
                 throw new InvalidValueException('File and DefaultFile cannot be empty.');

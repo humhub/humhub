@@ -61,7 +61,7 @@ class AssetManager extends \yii\web\AssetManager
         $path = Yii::getAlias($path);
 
         if (isset($this->_published[$path]) && empty($options['forceCopy'])) {
-            Yii::debug("Cached asset '{$path}'", __METHOD__);
+            //Yii::debug("Cached asset '{$path}'", __METHOD__);
             return $this->_published[$path];
         }
 
@@ -97,7 +97,7 @@ class AssetManager extends \yii\web\AssetManager
 
         $forceCopy = !empty($options['forceCopy']) || ($this->forceCopy && !isset($options['forceCopy']));
 
-        if ($forceCopy || !$this->fs->has($dstDir)) {
+        if ($forceCopy || !$this->fs->directoryExists($dstDir)) {
             $currentLength = strlen($src);
 
             /*
@@ -130,11 +130,11 @@ class AssetManager extends \yii\web\AssetManager
     public function publishAssetImage(AssetImage $assetImage, string $fileNameWithOptions): array
     {
         if (isset($this->_published[$fileNameWithOptions])) {
-            Yii::debug("Cached asset image '{$fileNameWithOptions}'", __METHOD__);
+            //Yii::debug("Cached asset image '{$fileNameWithOptions}'", __METHOD__);
             return $this->_published[$fileNameWithOptions];
         }
 
-        Yii::debug("Published asset image '{$fileNameWithOptions}'", __METHOD__);
+        //Yii::debug("Published asset image '{$fileNameWithOptions}'", __METHOD__);
 
         // Remove root dir, and hash e.g. '/uploads/profile_image/', to store all AssetImage types in an individual directory
         $dstDir = '_/' . hash('xxh32', $assetImage->path);

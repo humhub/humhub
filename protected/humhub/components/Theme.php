@@ -211,16 +211,11 @@ class Theme extends BaseTheme
     /**
      * Published theme assets (e.g. images or css)
      *
-     * @param bool|null $force
-     *
+     * @param bool $force publish of resources
      * @return string URL of published resources
      */
-    public function publishResources($force = null)
+    public function publishResources(bool $force = false)
     {
-        if ($force === null) {
-            $force = YII_DEBUG;
-        }
-
         $published = Yii::$app->assetManager->publish(
             $this->getBasePath(),
             ['forceCopy' => $force, 'except' => ['views/', 'scss/']],
