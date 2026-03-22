@@ -3,7 +3,6 @@
 namespace humhub\components\fs;
 
 use League\Flysystem\Filesystem;
-use League\Flysystem\FilesystemAdapter;
 use Yii;
 use yii\base\Component;
 use yii\base\InvalidArgumentException;
@@ -31,7 +30,7 @@ class FilesystemManager extends Component
 
         $mountConf = $this->getMountConfiguration($name);
 
-        $this->_mountedFileSystem[$name] = new Filesystem($mountConf->getFileSystemAdapter());
+        $this->_mountedFileSystem[$name] = $mountConf->getFileSystem();
         return $this->_mountedFileSystem[$name];
     }
 

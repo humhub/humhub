@@ -2,6 +2,7 @@
 
 namespace humhub\components\fs;
 
+use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use Yii;
@@ -18,7 +19,7 @@ class LocalMountConfig implements MountConfigInterface
         return $this->baseUrl;
     }
 
-    public function getFileSystemAdapter(): FileSystemAdapter
+    public function getFileSystem(): FileSystem
     {
         if (empty($this->path)) {
             throw new InvalidArgumentException('Base path must be set.');
@@ -26,6 +27,11 @@ class LocalMountConfig implements MountConfigInterface
 
         $root = Yii::getAlias($this->path);
 
-        return new LocalFilesystemAdapter($root);
+        return new Filesystem(new LocalFilesystemAdapter($root));
+    }
+
+    public function useTemporaryUrls(): bool
+    {
+        return false;
     }
 }

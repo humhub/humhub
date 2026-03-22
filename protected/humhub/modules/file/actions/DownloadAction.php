@@ -8,6 +8,7 @@
 
 namespace humhub\modules\file\actions;
 
+use DateTimeImmutable;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use humhub\components\fs\LocalMountConfig;
@@ -109,9 +110,8 @@ class DownloadAction extends Action
             'mimeType' => $mimeType,
         ];
 
-
+        $dataMountConfig = Yii::$app->fs->getDataMountConfig();
         if ($this->getModule()->settings->get('useXSendfile')) {
-            $dataMountConfig = Yii::$app->fs->getDataMountConfig();
             if ($dataMountConfig instanceof LocalMountConfig) {
                 Yii::$app->response->xSendFile(
                     $dataMountConfig->path . DIRECTORY_SEPARATOR . $this->file->store->get($this->variant),
@@ -124,6 +124,12 @@ class DownloadAction extends Action
                     . get_class($dataMountConfig) . ' given.',
                 );
             }
+        } elseif ($dataMountConfig->useTemporaryUrls()) {
+            $url = Yii::$app->fs->getDataMount()->temporaryUrl(
+                $this->file->store->get($this->variant),
+                new DateTimeImmutable('+1 hour'),
+            );
+            Yii::$app->response->redirect($url);
         } else {
             $options['fileSize'] = $this->file->store->fileSize($this->variant);
             Yii::$app->response->sendStreamAsFile(
