@@ -1,9 +1,10 @@
 HumHub Changelog
 ================
 
-1.18.2 (Unreleased)
--------------------------
+1.18.2 (March 22, 2026)
+-----------------------
 - Fix #8046: Profile Header Title HTML encoded twice since 1.18.1
+- Fix #8050: Fix page title on PJAX request
 - Fix #8043: User display name bottom truncated in top bar
 - Fix #8051: Registration - Display Captcha field if invalid after form submit via keyboard
 - Enh #8051: Add `AltchaCaptchaInput::$showOnFocusElement` and `YiiCaptchaInput::$showOnFocusElement` (see [migration guide](https://github.com/humhub/humhub/blob/master/MIGRATE-DEV.md#version-1181) for details)
