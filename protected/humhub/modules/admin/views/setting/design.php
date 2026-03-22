@@ -20,23 +20,6 @@ use yii\helpers\Url;
 
 AdminAsset::register($this);
 
-$this->registerJsConfig('admin', [
-    'text' => [
-        'confirm.deleteLogo.header' => Yii::t('AdminModule.settings', '<strong>Confirm</strong> image deletion'),
-        'confirm.deleteLogo.body' => Yii::t('UserModule.account', 'Do you really want to delete your logo image?'),
-        'confirm.deleteLogo.confirm' => Yii::t('AdminModule.settings', 'Delete'),
-        'confirm.deleteIcon.header' => Yii::t('AdminModule.settings', '<strong>Confirm</strong> icon deletion'),
-        'confirm.deleteIcon.body' => Yii::t('UserModule.account', 'Do you really want to delete your icon image?'),
-        'confirm.deleteIcon.confirm' => Yii::t('AdminModule.settings', 'Delete'),
-        'confirm.deleteLoginBg.header' => Yii::t('AdminModule.settings', '<strong>Confirm</strong> image deletion'),
-        'confirm.deleteLoginBg.body' => Yii::t('UserModule.account', 'Do you really want to delete your login background image?'),
-        'confirm.deleteLoginBg.confirm' => Yii::t('AdminModule.settings', 'Delete'),
-        'confirm.deleteMailHeader.header' => Yii::t('AdminModule.settings', '<strong>Confirm</strong> image deletion'),
-        'confirm.deleteMailHeader.body' => Yii::t('UserModule.account', 'Do you really want to delete your mail header image?'),
-        'confirm.deleteMailHeader.confirm' => Yii::t('AdminModule.settings', 'Delete'),
-    ],
-]);
-
 $iconUrl = SiteIcon::getUrl(140);
 $loginBgUrl = LoginBackgroundImageHelper::getUrl();
 $mailHeaderUrl = MailHeaderImage::getUrl();

@@ -2,10 +2,6 @@
 
 use humhub\helpers\Html;
 use yii\helpers\Url;
-
-$this->registerJsVar('fileuploader_error_modal_title', Yii::t('FileModule.base', '<strong>Upload</strong> error'));
-$this->registerJsVar('fileuploader_error_modal_btn_close', Yii::t('FileModule.base', 'Close'));
-$this->registerJsVar('fileuploader_error_modal_errormsg', Yii::t('FileModule.base', 'Could not upload File:'));
 ?>
 
 <?php echo Html::hiddenInput($this->context->fileListFieldName, '', ['id' => "fileUploaderHiddenField_" . $uploaderId]); ?>

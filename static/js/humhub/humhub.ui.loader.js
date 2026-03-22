@@ -22,9 +22,12 @@
  * @param {type} param2
  */
 humhub.module('ui.loader', function (module, require, $) {
+    var i18n = require('i18n');
 
     var DEFAULT_LOADER_SELECTOR = '#humhub-ui-loader-default';
     var LOADER_SELECTOR = '.hh-loader';
+
+    module.requiredI18nCategories = ['base'];
 
     var set = function (node, cfg) {
         var $node = (node instanceof $) ? node : $(node);
@@ -189,7 +192,7 @@ humhub.module('ui.loader', function (module, require, $) {
             + '<span class="spinner-border spinner-border-sm" aria-hidden="true"></span>'
             + ' '
             + '<span role="status"' + (loadingMessage ? '' : ' class="visually-hidden"') + '>'
-                + (loadingMessage || module.text('loading'))
+                + (loadingMessage || i18n.t('base', 'Loading...'))
             + '</span>'
         + '</span>';
     }
