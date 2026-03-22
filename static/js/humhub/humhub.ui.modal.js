@@ -22,9 +22,12 @@ humhub.module('ui.modal', function (module, require, $) {
     var loader = require('ui.loader');
     var client = require('client', true);
     var Widget = require('ui.widget').Widget;
+    var i18n = require('i18n');
 
     //Keeps track of all initialized modals
     var modals = {};
+
+    module.requiredI18nCategories = ['base'];
 
     var ERROR_DEFAULT_TITLE = 'Error';
     var ERROR_DEFAULT_MESSAGE = 'An unknown error occurred!';
@@ -528,10 +531,10 @@ humhub.module('ui.modal', function (module, require, $) {
             cfg.reject = reject;
 
             that.clear();
-            cfg['header'] = cfg['header'] || module.config.defaultConfirmHeader;
-            cfg['body'] = cfg['body'] || module.config.defaultConfirmBody;
-            cfg['confirmText'] = cfg['confirmText'] || module.config.defaultConfirmText;
-            cfg['cancelText'] = cfg['cancelText'] || module.config.defaultCancelText;
+            cfg['header'] = cfg['header'] || i18n.t('base', '<strong>Confirm</strong> Action');
+            cfg['body'] = cfg['body'] || i18n.t('base', 'Do you really want to perform this action?');
+            cfg['confirmText'] = cfg['confirmText'] || i18n.t('base', 'Confirm');
+            cfg['cancelText'] = cfg['cancelText'] || i18n.t('base', 'Cancel');
             that.setHeader(cfg['header']);
             that.setBody(cfg['body']);
             that.initButtons(cfg);

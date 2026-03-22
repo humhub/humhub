@@ -29,9 +29,6 @@ class Overview extends JsWidget
     {
         $this->view->registerJsConfig('notification', [
             'loadEntriesUrl' => Url::to(['/notification/list']),
-            'text' => [
-                'info' => Yii::t('NotificationModule.base', 'There are no notifications yet.'),
-            ],
         ]);
 
         parent::init();

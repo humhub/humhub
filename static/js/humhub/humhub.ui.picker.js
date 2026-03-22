@@ -6,6 +6,9 @@ humhub.module('ui.picker', function (module, require, $) {
     var util = require('util');
     var object = util.object;
     var string = util.string;
+    var i18n = require('i18n');
+
+    module.requiredI18nCategories = ['base'];
 
     var Picker = function (node, options) {
         Widget.call(this, node, options);
@@ -58,7 +61,7 @@ humhub.module('ui.picker', function (module, require, $) {
                     return loader.set($('<div></div>'), {'css': {'padding': '4px'}});
                 },
                 loadingMore: function () {
-                    return module.text('showMore');
+                    return i18n.t('base', 'Show more');
                 },
                 noResults: function () {
                     return that.$.data('no-result');
@@ -257,7 +260,7 @@ humhub.module('ui.picker', function (module, require, $) {
 
             data.push({
                 'id': '_add:' + params.term,
-                'text': module.text('addOption') + ' \'' + encodedTerm + '\'',
+                'text': i18n.t('base', 'Add:') + ' \'' + encodedTerm + '\'',
                 'textValue': params.term,
                 'image': '<i class="fa fa-plus-circle" aria-hidden="true"></i>',
                 'new': true

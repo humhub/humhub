@@ -3,6 +3,9 @@ humhub.module('marketplace', function (module, require, $) {
     const loader = require('ui.loader');
     const status = require('ui.status');
     const modal = require('ui.modal');
+    const i18n = require('i18n');
+
+    module.requiredI18nCategories = ['MarketplaceModule.base'];
 
     const update = function (evt) {
         startUpdate(evt);
@@ -139,7 +142,7 @@ humhub.module('marketplace', function (module, require, $) {
         const moduleId = installButton.data('module-id');
 
         modal.global.reset();
-        modal.global.setHeader(module.config.text.installing);
+        modal.global.setHeader(i18n.t('MarketplaceModule.base', 'Module is <strong>installing...</strong>'));
         modal.global.$.removeClass('fade');
         modal.global.$.find('button[data-modal-close]').hide();
         modal.global.show();

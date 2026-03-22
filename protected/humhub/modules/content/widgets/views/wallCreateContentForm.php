@@ -17,11 +17,6 @@ ContentFormAsset::register($this);
 $this->registerJsConfig('content.form', [
     'defaultVisibility' => $defaultVisibility,
     'disabled' => ($contentContainer instanceof Space && $contentContainer->isArchived()),
-    'text' => [
-        'makePrivate' => Yii::t('ContentModule.base', 'Change to "Private"'),
-        'makePublic' => Yii::t('ContentModule.base', 'Change to "Public"'),
-        'info.archived' => Yii::t('ContentModule.base', 'This space is archived.'),
-    ],
     'redirectToContentContainerUrl' => Url::to(['/content/content/redirect-to-content-container', 'contentId' => 'the-content-id']),
 ]);
 ?>

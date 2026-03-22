@@ -101,7 +101,6 @@ class Chooser extends Widget
     {
         return [
             'lazyLoad' => $this->lazyLoad,
-            'noSpace' => $this->getNoSpaceHtml(),
             'remoteSearchUrl' => Url::to(['/space/browse/search-json']),
             'lazySearchUrl' => Url::to(['/space/browse/search-lazy']),
         ];

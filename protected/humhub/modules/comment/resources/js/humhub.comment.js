@@ -4,6 +4,9 @@ humhub.module('comment', function (module, require, $) {
     var client = require('client');
     var loader = require('ui.loader');
     var additions = require('ui.additions');
+    var i18n = require('i18n');
+
+    module.requiredI18nCategories = ['CommentModule.base'];
 
     var Form = Widget.extend();
 
@@ -126,9 +129,14 @@ humhub.module('comment', function (module, require, $) {
 
         this.$.data('content-delete-url', evt.$trigger.data('content-delete-url'));
 
-        this.super('delete', {modal: module.config.modal.delteConfirm}).then(function ($confirm) {
+        this.super('delete', {modal: {
+            header: i18n.t('CommentModule.base', '<strong>Confirm</strong> comment deleting'),
+            body: i18n.t('CommentModule.base', 'Do you really want to delete this comment?'),
+            confirmText: i18n.t('CommentModule.base', 'Delete'),
+            cancelText: i18n.t('CommentModule.base', 'Cancel')
+        }}).then(function ($confirm) {
             if ($confirm) {
-                module.log.success('success.delete');
+                module.log.success(i18n.t('CommentModule.base', 'Comment has been deleted'));
                 hideHr && form.$.find('hr').css('display', 'none');
                 form.incrementCommentCount(-1);
             }
@@ -146,7 +154,7 @@ humhub.module('comment', function (module, require, $) {
 
         this.super('adminDelete').then(function ($confirm) {
             if ($confirm) {
-                module.log.success('success.delete');
+                module.log.success(i18n.t('CommentModule.base', 'Comment has been deleted'));
                 if (hideHr) {
                     $form.find('hr').css('display', 'none');
                 }

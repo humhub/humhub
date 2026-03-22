@@ -27,12 +27,6 @@ class Assets extends AssetBundle
 
     public static function register($view)
     {
-        $view->registerJsConfig('marketplace', [
-            'text' => [
-                'installing' => Yii::t('MarketplaceModule.base', 'Module is <strong>installing...</strong>'),
-            ],
-        ]);
-
         return parent::register($view);
     }
 }
