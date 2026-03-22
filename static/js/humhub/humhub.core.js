@@ -199,7 +199,7 @@ var humhub = humhub || (function ($) {
                                 }
                             });
                             if (initOnAjaxUrls.includes(ajaxUrl.pathname + ajaxUrl.search)) {
-                                initModule(instance);
+                                initModuleWithRequiredI18n(instance);
                             }
                         }
                     }
@@ -212,7 +212,7 @@ var humhub = humhub || (function ($) {
             initialModules.push(instance);
         } else { // Init modules added asynchronously (ajax/pjax)
             addModuleLogger(instance);
-            initModule(instance);
+            initModuleWithRequiredI18n(instance);
         }
     };
 
@@ -597,25 +597,7 @@ var humhub = humhub || (function ($) {
             return 1;
         });
 
-        var i18nPreloadPromise = Promise.resolve();
-        try {
-            var i18n = require('i18n');
-            var preloadCategories = new Set();
-
-            $.each(initialModules, function (i, module) {
-                if (module.requiredI18nCategories && module.requiredI18nCategories.length) {
-                    module.requiredI18nCategories.forEach(function(category) {
-                        preloadCategories.add(category);
-                    });
-                }
-            });
-
-            if (preloadCategories.size) {
-                i18nPreloadPromise = i18n.preload(Array.from(preloadCategories));
-            }
-        } catch (e) {}
-
-        i18nPreloadPromise.then(function() {
+        preloadRequiredI18n(initialModules).then(function() {
             var initChain = Promise.resolve();
 
             $.each(initialModules, function (i, module) {
@@ -637,7 +619,36 @@ var humhub = humhub || (function ($) {
         });
     });
 
-    var initModule = function (module) {
+    var preloadRequiredI18n = function(modules) {
+        var preloadPromise = Promise.resolve();
+
+        try {
+            var i18n = require('i18n');
+            var preloadCategories = new Set();
+
+            $.each(modules, function(i, module) {
+                if (module.requiredI18nCategories && module.requiredI18nCategories.length) {
+                    module.requiredI18nCategories.forEach(function(category) {
+                        preloadCategories.add(category);
+                    });
+                }
+            });
+
+            if (preloadCategories.size) {
+                preloadPromise = i18n.preload(Array.from(preloadCategories));
+            }
+        } catch (e) {}
+
+        return preloadPromise;
+    };
+
+    var initModuleWithRequiredI18n = function(module, isPjax) {
+        return preloadRequiredI18n([module]).then(function() {
+            return initModule(module, isPjax);
+        });
+    };
+
+    var initModule = function (module, isPjax) {
         var log = require('log');
         event.trigger('humhub:beforeInitModule', module);
         if (module.init) {
@@ -646,7 +657,7 @@ var humhub = humhub || (function ($) {
                 event.trigger(module.id.replace('.', ':') + ':beforeInit', module);
 
                 event.trigger(module.id.replace(/\./g, ':') + ':beforeInit', module);
-                var result = module.init();
+                var result = module.init(isPjax);
 
                 // Check if init() returned a promise
                 if (result && typeof result.then === 'function') {
@@ -674,14 +685,21 @@ var humhub = humhub || (function ($) {
     event.on('humhub:modules:client:pjax:success', function (evt) {
         // Init all modules again which were unloaded in the beforeSend and are configured for pjax initialization.
         // Note: this does not include modules loaded by the pjax request, those are initialized in the module function.
+        var initPromises = [];
         $.each(pjaxInitModules, function (i, module) {
             if (module.initOnPjaxLoad && unloaded.indexOf(module.id) > -1) {
-                module.init(true);
+                initPromises.push(initModuleWithRequiredI18n(module, true));
             }
         });
 
-        event.trigger('humhub:ready');
-        $(document).trigger('humhub:ready', [true, humhub]);
+        Promise.all(initPromises).then(function() {
+            event.trigger('humhub:ready');
+            $(document).trigger('humhub:ready', [true, humhub]);
+        }).catch(function(err) {
+            require('log').error('Error during pjax module initialization', err);
+            event.trigger('humhub:ready');
+            $(document).trigger('humhub:ready', [true, humhub]);
+        });
     }).on('humhub:modules:client:pjax:beforeSend', function (evt) {
         unloaded = [];
         $.each(moduleArr, function (i, module) {

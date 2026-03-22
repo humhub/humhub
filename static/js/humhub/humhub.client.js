@@ -12,6 +12,8 @@ humhub.module('client', function (module, require, $) {
 
     var HEADER_VIEW_CONTEXT = 'HUMHUB-VIEW-CONTEXT';
 
+    module.requiredI18nCategories = ['base'];
+
     /**
      * Response Wrapper Object for easily accessing common data
      */
