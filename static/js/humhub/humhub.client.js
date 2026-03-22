@@ -491,7 +491,6 @@ humhub.module('client', function (module, require, $) {
             offBeforeLoad();
         }
 
-        return i18n.preload('base');
     };
 
     const checkContentSecurityPolicyViolation = function () {

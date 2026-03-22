@@ -597,37 +597,35 @@ var humhub = humhub || (function ($) {
             return 1;
         });
 
-        // Initialize modules, handling both sync and async init functions
-        var initPromises = [];
-        $.each(initialModules, function (i, module) {
-            var result = initModule(module);
-            if (result && typeof result.then === 'function') {
-                initPromises.push(result);
-            }
-        });
-
-        var i18nPreloadPromise = null;
+        var i18nPreloadPromise = Promise.resolve();
         try {
             var i18n = require('i18n');
-            var preloadCategories = [];
+            var preloadCategories = new Set();
 
             $.each(initialModules, function (i, module) {
                 if (module.requiredI18nCategories && module.requiredI18nCategories.length) {
-                    preloadCategories = preloadCategories.concat(module.requiredI18nCategories);
+                    module.requiredI18nCategories.forEach(function(category) {
+                        preloadCategories.add(category);
+                    });
                 }
             });
 
-            if (preloadCategories.length) {
-                i18nPreloadPromise = i18n.preload(preloadCategories);
+            if (preloadCategories.size) {
+                i18nPreloadPromise = i18n.preload(Array.from(preloadCategories));
             }
         } catch (e) {}
 
-        if (i18nPreloadPromise) {
-            initPromises.push(i18nPreloadPromise);
-        }
+        i18nPreloadPromise.then(function() {
+            var initChain = Promise.resolve();
 
-        // Wait for all async initializations to complete
-        Promise.all(initPromises).then(function() {
+            $.each(initialModules, function (i, module) {
+                initChain = initChain.then(function() {
+                    return initModule(module);
+                });
+            });
+
+            return initChain;
+        }).then(function() {
             humhub.initialized = true;
             event.trigger('humhub:ready');
             $(document).trigger('humhub:ready', [false, humhub]);
