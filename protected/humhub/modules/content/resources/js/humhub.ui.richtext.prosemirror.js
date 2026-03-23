@@ -66,6 +66,8 @@ humhub.module('ui.richtext.prosemirror', function (module, require, $) {
             that.getInput().val(that.editor.serialize()).trigger('blur');
         }).on('clear', function () {
             that.editor.clear();
+            that.getInput().val('').trigger('blur');
+            that.resetBackup();
         });
 
         if (this.options.backupInterval) {
