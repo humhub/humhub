@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.18.3 (TBD)
+------------
+- Fix #8079: Hide wall entry topics container when no topics
+
 1.18.2 (March 22, 2026)
 -----------------------
 - Fix #8046: Profile Header Title HTML encoded twice since 1.18.1
