@@ -4,6 +4,7 @@ HumHub Changelog
 1.18.3 (TBD)
 ------------
 - Fix #8079: Hide wall entry topics container when no topics
+- Fix #8075: Filtering by Global Topic in Dashboard
 
 1.18.2 (March 22, 2026)
 -----------------------
