@@ -114,7 +114,7 @@ class DownloadAction extends Action
         if ($this->getModule()->settings->get('useXSendfile')) {
             if ($dataMountConfig instanceof LocalMountConfig) {
                 Yii::$app->response->xSendFile(
-                    $dataMountConfig->path . DIRECTORY_SEPARATOR . $this->file->store->get($this->variant),
+                    Yii::getAlias($dataMountConfig->path) . DIRECTORY_SEPARATOR . $this->file->store->get($this->variant),
                     $fileName,
                     $options,
                 );
