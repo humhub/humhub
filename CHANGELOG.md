@@ -1,9 +1,15 @@
 HumHub Changelog
 ================
 
-1.18.2 (Unreleased)
--------------------------
+1.18.3 (TBD)
+------------
+- Fix #8079: Hide wall entry topics container when no topics
+- Fix #8075: Filtering by Global Topic in Dashboard
+
+1.18.2 (March 22, 2026)
+-----------------------
 - Fix #8046: Profile Header Title HTML encoded twice since 1.18.1
+- Fix #8050: Fix page title on PJAX request
 - Fix #8043: User display name bottom truncated in top bar
 - Fix #8051: Registration - Display Captcha field if invalid after form submit via keyboard
 - Enh #8051: Add `AltchaCaptchaInput::$showOnFocusElement` and `YiiCaptchaInput::$showOnFocusElement` (see [migration guide](https://github.com/humhub/humhub/blob/master/MIGRATE-DEV.md#version-1181) for details)
@@ -15,7 +21,7 @@ HumHub Changelog
 - Enh #8061: Display warning when URL cannot be embedded
 - Fix #8062: Fix global topics
 - Fix #8072: Fix missing translations
-- Fix #8075: Filtering by Global Topic in Dashboard
+- Fix #8077: Topics in new post won't save
 
 1.18.1 (March 2, 2026)
 ----------------------

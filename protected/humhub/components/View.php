@@ -121,9 +121,9 @@ class View extends \yii\web\View
      *
      * @return string the page title
      */
-    public function getPageTitle()
+    public function getPageTitle(): string
     {
-        return (($this->_pageTitle) ? $this->_pageTitle . " - " : '') . Yii::$app->name;
+        return ($this->_pageTitle ? $this->_pageTitle . ' - ' : '') . Yii::$app->name;
     }
 
 
@@ -458,7 +458,7 @@ class View extends \yii\web\View
 
         // In case of pjax we have to add the title manually, pjax will remove this node
         if (Yii::$app->request->isPjax) {
-            echo '<title>' . $this->getPageTitle() . '</title>';
+            echo '<title>' . Html::encode($this->pageTitle) . '</title>';
         }
 
         if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
