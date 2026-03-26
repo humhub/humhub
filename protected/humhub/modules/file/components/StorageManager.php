@@ -61,7 +61,7 @@ class StorageManager extends Component implements StorageManagerInterface
         try {
             return $this->fs->mimeType($this->get($variant));
         } catch (\Exception $ex) {
-            return FileHelper::getMimeTypeByExtension($this->file->file_name);
+            return FileHelper::getMimeTypeByExtension($this->file->file_name) ?? $this->file->mime_type;
         }
     }
 
