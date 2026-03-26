@@ -5,6 +5,7 @@ HumHub Changelog
 ------------
 - Fix #8079: Hide wall entry topics container when no topics
 - Fix #8075: Filtering by Global Topic in Dashboard
+- Fix #8081: Adds null check for removeItem and appendItem.
 
 1.18.2 (March 22, 2026)
 -----------------------
