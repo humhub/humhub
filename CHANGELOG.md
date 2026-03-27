@@ -10,6 +10,7 @@ HumHub Changelog
 - Fix #8041: Update `Button::asLink` to `Link::to`
 - Fix #8070: Refactor Content deletion to make it possible only from ContentActiveRecord
 - Fix #8071: Fix button link with icon only
+- Enh #8083: Store module version in DB
 
 1.18.2 (Unreleased)
 -------------------------
