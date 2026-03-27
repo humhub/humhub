@@ -8,6 +8,7 @@
 
 namespace humhub\components;
 
+use humhub\components\assets\AssetManager;
 use humhub\helpers\ThemeHelper;
 use humhub\models\Setting;
 use humhub\modules\activity\components\BaseActivity;
@@ -24,6 +25,7 @@ use Yii;
 use yii\base\InvalidConfigException;
 use yii\db\StaleObjectException;
 use yii\helpers\Json;
+use yii\helpers\Url;
 use yii\web\AssetBundle;
 
 /**
@@ -160,19 +162,18 @@ class Module extends \yii\base\Module
      *
      * @return string Image Url
      */
-    public function getAssetsUrl()
+    public function getAssetsUrl(): string
     {
-        if (($published = $this->publishAssets()) != null) {
-            return $published[1];
-        }
+        $published = $this->publishAssets();
+        return $published && isset($published[1]) ? Url::to($published[1]) : '';
     }
 
     /**
      * Publishes the basePath/resourcesPath (assets) module directory if existing.
      * @param bool $all whether or not to publish sub assets within the `assets` directory
-     * @return array
+     * @return array|null
      */
-    public function publishAssets($all = false)
+    public function publishAssets(bool $all = false): ?array
     {
         /** @var $assetBundle AssetBundle */
         /** @var $manager AssetManager */
@@ -180,14 +181,14 @@ class Module extends \yii\base\Module
         if ($all) {
             foreach ($this->getAssetClasses() as $assetClass) {
                 $assetBundle = new $assetClass();
-                $manager = Yii::$app->getAssetManager();
-                $manager->forcePublish($assetBundle);
+                $assetBundle->publishOptions['forceCopy'] = true;
+                $assetBundle->publish(Yii::$app->assetManager);
             }
         }
 
-        if ($this->hasAssets()) {
-            return Yii::$app->assetManager->publish($this->getAssetPath(), ['forceCopy' => true]);
-        }
+        return $this->hasAssets()
+            ? Yii::$app->assetManager->publish($this->getAssetPath(), ['forceCopy' => true])
+            : null;
     }
 
     /**

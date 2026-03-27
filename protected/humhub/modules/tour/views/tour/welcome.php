@@ -38,7 +38,7 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
         <div class="col-lg-3" data-ui-widget="humhub.content.container.Header" data-ui-init>
             <div class="image-upload-container profile-user-photo-container"
                  style="width: 140px; height: 140px;">
-                <?= Html::img($user->getProfileImage()->getUrl(), [
+                <?= Html::img($user->image, [
                     'id' => 'welcome-modal-profile-image',
                     'class' => 'img-profile-header-background',
                     'style' => 'width:100%',

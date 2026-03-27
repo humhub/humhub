@@ -5,7 +5,7 @@ namespace humhub\components\assets;
 /**
  * Base asset bundle class for @web-static assets residing in `static` directory.
  *
- * @package humhub\components\assets
+ * @package humhub\humhub\humhub\humhub\components\assets
  */
 class WebStaticAssetBundle extends AssetBundle
 {
