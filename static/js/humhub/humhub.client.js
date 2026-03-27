@@ -502,6 +502,14 @@ humhub.module('client', function (module, require, $) {
                 return;
             }
 
+            // If the script was blocked, check if it had a nonce.
+            // If the nonce is missing (null or empty), then the below refresh won't help.
+            const violatedElement = event.target;
+            if (violatedElement instanceof HTMLScriptElement && !violatedElement.nonce) {
+                module.log.warn('CSP Violation: Script blocked because it has NO nonce. Reload skipped.');
+                return;
+            }
+
             const lastReloadTime = localStorage.getItem('cspViolationReloadTime');
             const nextReloadTime = lastReloadTime
                 ? module.config.cspViolationReloadInterval * 1000 - (Date.now() - lastReloadTime)
