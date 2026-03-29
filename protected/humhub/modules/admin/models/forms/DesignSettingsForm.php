@@ -12,13 +12,9 @@ use humhub\components\InstallationState;
 use humhub\components\Theme;
 use humhub\helpers\ScssHelper;
 use humhub\helpers\ThemeHelper;
-use humhub\libs\LogoImage;
 use humhub\modules\file\validators\ImageSquareValidator;
 use humhub\modules\stream\actions\Stream;
-use humhub\modules\user\helpers\LoginBackgroundImageHelper;
 use humhub\modules\user\models\ProfileField;
-use humhub\modules\web\pwa\widgets\SiteIcon;
-use humhub\widgets\mails\MailHeaderImage;
 use RuntimeException;
 use ScssPhp\ScssPhp\Compiler;
 use ScssPhp\ScssPhp\Exception\SassException;
@@ -33,6 +29,25 @@ use yii\web\UploadedFile;
  */
 class DesignSettingsForm extends Model
 {
+    public const LOGO_MIN_WIDTH = 100;
+    public const LOGO_MIN_HEIGHT = 120;
+    public const LOGO_RECOMMENDED_MIN_HEIGHT = 248;
+
+    public const ICON_MIN_WIDTH = 256;
+    public const ICON_MIN_HEIGHT = 256;
+    public const ICON_RECOMMENDED_WIDTH = 512;
+    public const ICON_RECOMMENDED_HEIGHT = 512;
+
+    public const LOGIN_BG_MIN_WIDTH = 800;
+    public const LOGIN_BG_MIN_HEIGHT = 600;
+    public const LOGIN_BG_RECOMMENDED_WIDTH = 1920;
+    public const LOGIN_BG_RECOMMENDED_HEIGHT = 1080;
+
+    public const MAIL_HEADER_MIN_WIDTH = 50;
+    public const MAIL_HEADER_MIN_HEIGHT = 50;
+    public const MAIL_HEADER_RECOMMENDED_WIDTH = 600;
+    public const MAIL_HEADER_RECOMMENDED_HEIGHT = 150;
+
     public $theme;
     public $paginationSize;
     public $displayNameFormat;
@@ -120,12 +135,12 @@ class DesignSettingsForm extends Model
             ['paginationSize', 'integer', 'max' => 200, 'min' => 1],
             ['theme', 'in', 'range' => $this->getThemes()],
             [['displayNameFormat', 'displayNameSubFormat', 'spaceOrder'], 'safe'],
-            ['logo', 'image', 'extensions' => 'png, jpg, jpeg', 'minWidth' => LogoImage::MIN_WIDTH, 'minHeight' => LogoImage::MIN_WIDTH],
+            ['logo', 'image', 'extensions' => 'png, jpg, jpeg', 'minWidth' => static::LOGO_MIN_WIDTH, 'minHeight' => static::LOGO_MIN_WIDTH],
             [['defaultStreamSort'], 'in', 'range' => array_keys($this->getDefaultStreamSortOptions())],
-            ['icon', 'image', 'extensions' => 'png, jpg, jpeg', 'minWidth' => SiteIcon::MIN_WIDTH, 'minHeight' => SiteIcon::MIN_HEIGHT],
+            ['icon', 'image', 'extensions' => 'png, jpg, jpeg', 'minWidth' => static::ICON_MIN_WIDTH, 'minHeight' => static::ICON_MIN_HEIGHT],
             ['icon', ImageSquareValidator::class],
-            ['loginBackgroundImage', 'image', 'extensions' => 'png, jpg, jpeg', 'minWidth' => LoginBackgroundImageHelper::MIN_WIDTH, 'minHeight' => LoginBackgroundImageHelper::MIN_HEIGHT],
-            ['mailHeaderImage', 'image', 'extensions' => 'png, jpg, jpeg', 'minWidth' => MailHeaderImage::MIN_WIDTH, 'minHeight' => MailHeaderImage::MIN_HEIGHT],
+            ['loginBackgroundImage', 'image', 'extensions' => 'png, jpg, jpeg', 'minWidth' => static::LOGIN_BG_MIN_WIDTH, 'minHeight' => static::LOGIN_BG_MIN_HEIGHT],
+            ['mailHeaderImage', 'image', 'extensions' => 'png, jpg, jpeg', 'minWidth' => static::MAIL_HEADER_MIN_WIDTH, 'minHeight' => static::MAIL_HEADER_MIN_HEIGHT],
             ['dateInputDisplayFormat', 'in', 'range' => ['', 'php:d/m/Y']],
             [
                 [
@@ -288,27 +303,27 @@ class DesignSettingsForm extends Model
             ),
             'themeCustomScss' => Yii::t('AdminModule.settings', 'Use Sassy CSS syntax (SCSS)'),
             'logo' => Yii::t('AdminModule.settings', 'Recommended minimum height: {recommendedMinHeight}px (minimum {minWidth} x {minHeight} px).', [
-                'recommendedMinHeight' => LogoImage::RECOMMENDED_MIN_HEIGHT,
-                'minWidth' => LogoImage::MIN_WIDTH,
-                'minHeight' => LogoImage::MIN_HEIGHT,
+                'recommendedMinHeight' => static::LOGO_RECOMMENDED_MIN_HEIGHT,
+                'minWidth' => static::LOGO_MIN_WIDTH,
+                'minHeight' => static::LOGO_MIN_HEIGHT,
             ]),
             'icon' => Yii::t('AdminModule.settings', 'Recommended size: {recommendedWidth} × {recommendedHeight}px (minimum {minWidth} x {minHeight} px).', [
-                'recommendedWidth' => SiteIcon::RECOMMENDED_WIDTH,
-                'recommendedHeight' => SiteIcon::RECOMMENDED_HEIGHT,
-                'minWidth' => SiteIcon::MIN_WIDTH,
-                'minHeight' => SiteIcon::MIN_HEIGHT,
+                'recommendedWidth' => static::ICON_RECOMMENDED_WIDTH,
+                'recommendedHeight' => static::ICON_RECOMMENDED_HEIGHT,
+                'minWidth' => static::ICON_MIN_WIDTH,
+                'minHeight' => static::ICON_MIN_HEIGHT,
             ]),
             'loginBackgroundImage' => Yii::t('AdminModule.settings', 'Recommended size: {recommendedWidth} × {recommendedHeight}px (minimum {minWidth} x {minHeight} px).', [
-                'recommendedWidth' => LoginBackgroundImageHelper::RECOMMENDED_WIDTH,
-                'recommendedHeight' => LoginBackgroundImageHelper::RECOMMENDED_HEIGHT,
-                'minWidth' => LoginBackgroundImageHelper::MIN_WIDTH,
-                'minHeight' => LoginBackgroundImageHelper::MIN_HEIGHT,
+                'recommendedWidth' => static::LOGIN_BG_RECOMMENDED_WIDTH,
+                'recommendedHeight' => static::LOGIN_BG_RECOMMENDED_HEIGHT,
+                'minWidth' => static::LOGIN_BG_MIN_WIDTH,
+                'minHeight' => static::LOGIN_BG_MIN_HEIGHT,
             ]),
             'mailHeaderImage' => Yii::t('AdminModule.settings', 'Recommended size: {recommendedWidth} × {recommendedHeight}px (minimum {minWidth} x {minHeight} px).', [
-                'recommendedWidth' => MailHeaderImage::RECOMMENDED_WIDTH,
-                'recommendedHeight' => MailHeaderImage::RECOMMENDED_HEIGHT,
-                'minWidth' => MailHeaderImage::MIN_WIDTH,
-                'minHeight' => MailHeaderImage::MIN_HEIGHT,
+                'recommendedWidth' => static::MAIL_HEADER_RECOMMENDED_WIDTH,
+                'recommendedHeight' => static::MAIL_HEADER_RECOMMENDED_HEIGHT,
+                'minWidth' => static::MAIL_HEADER_MIN_WIDTH,
+                'minHeight' => static::MAIL_HEADER_MIN_HEIGHT,
             ]),
         ];
     }
@@ -383,19 +398,19 @@ class DesignSettingsForm extends Model
         Yii::$app->getModule('stream')->settings->set('defaultSort', $this->defaultStreamSort);
 
         if ($this->logo) {
-            LogoImage::set($this->logo);
+            Yii::$app->img->logo->setUploadedFile($this->logo);
         }
 
         if ($this->icon) {
-            SiteIcon::set($this->icon);
+            Yii::$app->img->icon->setUploadedFile($this->icon);
         }
 
         if ($this->loginBackgroundImage instanceof UploadedFile) {
-            LoginBackgroundImageHelper::set($this->loginBackgroundImage->tempName);
+            Yii::$app->img->loginBackground->setUploadedFile($this->loginBackgroundImage);
         }
 
         if ($this->mailHeaderImage instanceof UploadedFile) {
-            MailHeaderImage::set($this->mailHeaderImage->tempName);
+            Yii::$app->img->mailHeader->setUploadedFile($this->mailHeaderImage);
         }
 
         $settingsManager->set(
