@@ -52,7 +52,7 @@ class ThemeHelper
                 } catch (Exception $ex) {
                     Yii::error(
                         'Could not load module to fetch themes! Module: ' . $id . ' Error: ' . $ex->getMessage(),
-                        'ui'
+                        'ui',
                     );
                     continue;
                 }
@@ -152,14 +152,14 @@ class ThemeHelper
         foreach (array_reverse(static::getThemeTree($theme)) as $treeTheme) {
             $variables = ArrayHelper::merge(
                 $variables,
-                ScssHelper::getVariables(ScssHelper::getVariableFile($treeTheme))
+                ScssHelper::getVariables(ScssHelper::getVariableFile($treeTheme)),
             );
         }
 
         // Overwrite with custom variables from DesignSettingsForm
         $settingsManager = Yii::$app->settings; // Don't use `new DesignSettingsForm()` as it would make an infinite loop
         [$customVariables, $customMaps, $otherCustomScss] = ScssHelper::extractVariablesAndMaps(
-            $settingsManager->get('themeCustomScss')
+            $settingsManager->get('themeCustomScss'),
         );
         $variables = ArrayHelper::merge($variables, ScssHelper::parseVariables($customVariables));
 
@@ -297,7 +297,7 @@ class ThemeHelper
             'sourceMapFilename' => 'theme.css',
             'sourceRoot' => $theme->name === Theme::CORE_THEME_NAME ? '../../../static/scss/' : '../',
             'sourceMapBasepath' => $theme->name === Theme::CORE_THEME_NAME ? Yii::getAlias(
-                '@webroot-static/scss'
+                '@webroot-static/scss',
             ) : $theme->getBasePath(),
         ]);
 
@@ -344,7 +344,7 @@ class ThemeHelper
         // Compile to CSS
         try {
             $result = $compiler->compileString(
-                str_replace('\\', '/', $scssSource)
+                str_replace('\\', '/', $scssSource),
             ); // replace backslashes with forward slashes for Windows compatibility
             $css = $result->getCss();
             $map = $result->getSourceMap();
@@ -368,9 +368,9 @@ class ThemeHelper
     {
         if (file_exists($filePath) && !is_writable($filePath)) {
             return 'File ' . $filePath . ' is not writable. Check files ownership and permissions. Current: ' . substr(
-                    sprintf('%o', fileperms($filePath)),
-                    -4
-                );
+                sprintf('%o', fileperms($filePath)),
+                -4,
+            );
         }
 
         return null;

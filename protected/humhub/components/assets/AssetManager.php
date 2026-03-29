@@ -154,11 +154,11 @@ class AssetManager extends \yii\web\AssetManager
             $this->fs->writeStream(
                 $dstFile,
                 $assetImage->fs->readStream($fileNameWithOptions),
-                $this->filesystemOptions
+                $this->filesystemOptions,
             );
         }
 
-        return $this->_published[$fileNameWithOptions] = [$dstFile, $this->baseUrl . '/' . $dstFile. '?t='.time()];
+        return $this->_published[$fileNameWithOptions] = [$dstFile, $this->baseUrl . '/' . $dstFile . '?t=' . time()];
     }
 
 

@@ -122,8 +122,8 @@ class TextConverter extends BaseConverter
             if (!empty($converter['except']) && is_array($converter['except'])) {
                 foreach ($converter['except'] as $except) {
                     if (str_contains($this->file->mime_type, (string)$except) || FileHelper::getExtension(
-                            $this->file
-                        ) == $except) {
+                        $this->file,
+                    ) == $except) {
                         continue 2;
                     }
                 }
@@ -132,8 +132,8 @@ class TextConverter extends BaseConverter
             if (!empty($converter['only']) && is_array($converter['only'])) {
                 foreach ($converter['only'] as $only) {
                     if (str_contains($this->file->mime_type, (string)$only) || FileHelper::getExtension(
-                            $this->file
-                        ) == $only) {
+                        $this->file,
+                    ) == $only) {
                         return $converter;
                     }
                 }

@@ -340,33 +340,33 @@ class View extends \yii\web\View
                 [
                     'rel' => 'apple-touch-icon',
                     'href' => Yii::$app->img->icon->getUrl(['square' => 152]),
-                    'sizes' => '152x152'
-                ]
+                    'sizes' => '152x152',
+                ],
             );
             $this->registerLinkTag(
                 [
                     'rel' => 'apple-touch-icon',
                     'href' => Yii::$app->img->icon->getUrl(['square' => 180]),
-                    'sizes' => '180x180'
-                ]
+                    'sizes' => '180x180',
+                ],
             );
             $this->registerLinkTag(
                 [
                     'rel' => 'apple-touch-icon',
                     'href' => Yii::$app->img->icon->getUrl(['square' => 167]),
-                    'sizes' => '167x167'
-                ]
+                    'sizes' => '167x167',
+                ],
             );
 
             // Chrome, Firefox & Co.
             $this->registerLinkTag(
-                ['rel' => 'icon', 'href' => Yii::$app->img->icon->getUrl(['square' => 192]), 'sizes' => '192x192']
+                ['rel' => 'icon', 'href' => Yii::$app->img->icon->getUrl(['square' => 192]), 'sizes' => '192x192'],
             );
             $this->registerLinkTag(
-                ['rel' => 'icon', 'href' => Yii::$app->img->icon->getUrl(['square' => 96]), 'sizes' => '96x96']
+                ['rel' => 'icon', 'href' => Yii::$app->img->icon->getUrl(['square' => 96]), 'sizes' => '96x96'],
             );
             $this->registerLinkTag(
-                ['rel' => 'icon', 'href' => Yii::$app->img->icon->getUrl(['square' => 32]), 'sizes' => '32x32']
+                ['rel' => 'icon', 'href' => Yii::$app->img->icon->getUrl(['square' => 32]), 'sizes' => '32x32'],
             );
 
             if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
@@ -504,7 +504,7 @@ class View extends \yii\web\View
                 $this->registerJs(
                     'humhub.modules.ui.status.' . $type . '("' . $value . '")',
                     View::POS_END,
-                    'viewStatusMessage'
+                    'viewStatusMessage',
                 );
             }
 
@@ -549,7 +549,7 @@ class View extends \yii\web\View
             $this->registerJs(
                 'humhub.modules.ui.view.setViewContext("' . static::$viewContext . '")',
                 View::POS_END,
-                'viewContext'
+                'viewContext',
             );
         }
     }
