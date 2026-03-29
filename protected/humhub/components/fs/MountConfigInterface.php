@@ -2,7 +2,6 @@
 
 namespace humhub\components\fs;
 
-
 use League\Flysystem\Filesystem;
 
 interface MountConfigInterface

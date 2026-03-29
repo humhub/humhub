@@ -87,9 +87,9 @@ class FileHelper extends \yii\helpers\FileHelper
                 FileHandlerCollection::TYPE_VIEW,
                 FileHandlerCollection::TYPE_EXPORT,
                 FileHandlerCollection::TYPE_EDIT,
-                FileHandlerCollection::TYPE_IMPORT
+                FileHandlerCollection::TYPE_IMPORT,
             ],
-            $file
+            $file,
         );
         if (count($fileHandlers) === 1 && $fileHandlers[0] instanceof DownloadFileHandler) {
             $htmlOptions['target'] = '_blank';
