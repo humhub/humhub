@@ -61,7 +61,9 @@ class StorageManager extends Component implements StorageManagerInterface
         try {
             return $this->fs->mimeType($this->get($variant));
         } catch (\Exception $ex) {
-            return FileHelper::getMimeTypeByExtension($this->file->file_name) ?? $this->file->mime_type;
+            return (!empty($this->file->mime_type))
+                ? $this->file->mime_type
+                : FileHelper::getMimeTypeByExtension($this->file->file_name);
         }
     }
 
@@ -113,7 +115,7 @@ class StorageManager extends Component implements StorageManagerInterface
         try {
             $this->fs->write($this->get($variant), $content, $this->filesystemOptions);
         } catch (\Exception $ex) {
-            Yii::error("Could  not write: ". $ex->getMessage());
+            Yii::error("Could  not write: " . $ex->getMessage());
         }
     }
 
