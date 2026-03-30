@@ -1,11 +1,5 @@
 <?php
 
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2019 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
-
 namespace humhub\modules\ldap\helpers;
 
 use humhub\modules\ldap\authclient\LdapAuth;
@@ -25,10 +19,6 @@ class LdapHelper
      */
     public static function isLdapAvailable()
     {
-        if (!class_exists(\Laminas\Ldap\Ldap::class)) {
-            return false;
-        }
-
         if (!function_exists('ldap_bind')) {
             return false;
         }
@@ -51,4 +41,31 @@ class LdapHelper
 
         return false;
     }
+
+    public static function isBinary(string $value): bool
+    {
+        if (!mb_check_encoding($value, 'UTF-8') || str_contains($value, "\0")) {
+            return true;
+        }
+        return false;
+    }
+
+    public static function dropMultiValues(array $attributes, array $keepMultiValueKeys = []): array
+    {
+        $normalized = [];
+
+        foreach ($attributes as $name => $value) {
+            if (is_array($value) && !in_array($name, $keepMultiValueKeys)) {
+                if (isset($value[0])) {
+                    $normalized[$name] = $value[0];
+                }
+            } else {
+                $normalized[$name] = $value;
+            }
+        }
+
+        return $normalized;
+    }
+
+
 }

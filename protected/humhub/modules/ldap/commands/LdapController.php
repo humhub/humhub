@@ -10,8 +10,9 @@ namespace humhub\modules\ldap\commands;
 
 use Exception;
 use humhub\modules\ldap\authclient\LdapAuth;
+use humhub\modules\ldap\helpers\LdapHelper;
+use humhub\modules\ldap\services\LdapService;
 use humhub\modules\user\models\User;
-use Laminas\Ldap\Ldap;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\console\Controller;
@@ -69,25 +70,22 @@ class LdapController extends Controller
         $this->stdout("*** LDAP Status for AuthClient ID: " . $id . "\n\n");
 
         try {
-            $ldapAuthClient = $this->getAuthClient($id);
-
-            $ldap = $ldapAuthClient->getLdap();
-            $userCount = $ldap->count($ldapAuthClient->userFilter, $ldapAuthClient->baseDn, Ldap::SEARCH_SCOPE_SUB);
+            $ldapService = LdapService::create($id);
         } catch (Exception $ex) {
             $this->stderr("Error: " . $ex->getMessage() . "\n\n");
             return ExitCode::UNSPECIFIED_ERROR;
         }
 
-        $this->stdout("Host:\t\t" . $ldapAuthClient->hostname . "\n");
-        $this->stdout("Port:\t\t" . $ldapAuthClient->port . "\n");
-        $this->stdout("BaseDN:\t\t" . $ldapAuthClient->baseDn . "\n\n");
+        $this->stdout("Host:\t\t" . $ldapService->authClient->hostname . "\n");
+        $this->stdout("Port:\t\t" . $ldapService->authClient->port . "\n");
+        $this->stdout("BaseDN:\t\t" . $ldapService->authClient->baseDn . "\n\n");
 
         $this->stdout("LDAP connection successful!\n\n", Console::FG_GREEN);
 
-        $activeUserCount = User::find()->andWhere(['auth_mode' => $ldapAuthClient->getId(), 'status' => User::STATUS_ENABLED])->count();
-        $disabledUserCount = User::find()->andWhere(['auth_mode' => $ldapAuthClient->getId(), 'status' => User::STATUS_DISABLED])->count();
+        $activeUserCount = User::find()->andWhere(['auth_mode' => $ldapService->authClient->getId(), 'status' => User::STATUS_ENABLED])->count();
+        $disabledUserCount = User::find()->andWhere(['auth_mode' => $ldapService->authClient->getId(), 'status' => User::STATUS_DISABLED])->count();
 
-        $this->stdout("LDAP user count:\t\t" . $userCount . " users.\n");
+        $this->stdout("LDAP user count:\t\t" . $ldapService->countUsers() . " users.\n");
         $this->stdout("HumHub user count (active):\t" . $activeUserCount . " users.\n");
         $this->stdout("HumHub user count (disabled):\t" . $disabledUserCount . " users.\n\n");
 
@@ -127,14 +125,14 @@ class LdapController extends Controller
      */
     public function actionListUsers($id = 'ldap')
     {
+
         $this->stdout("*** LDAP User List for AuthClient ID: " . $id . "\n\n");
 
         try {
-            $ldapAuthClient = $this->getAuthClient($id);
+            $ldapService = LdapService::create($id);
 
             $users = [];
-            foreach ($ldapAuthClient->getUserCollection() as $user) {
-                $authClient = $ldapAuthClient->getAuthClientInstance($user);
+            foreach ($ldapService->getAuthClients() as $authClient) {
                 $attributes = $authClient->getUserAttributes();
 
                 $username = ($attributes['username'] ?? '---');
@@ -191,13 +189,11 @@ class LdapController extends Controller
         $d = 0;
 
         try {
-            $newAuthClient = $this->getAuthClient($id);
+            $ldapService = LdapService::create($id);
 
             // Loop over users of this authclient
-            foreach ($newAuthClient->getUserCollection() as $userEntry) {
+            foreach ($ldapService->getAuthClients() as $authClient) {
                 $i++;
-
-                $authClient = $newAuthClient->getAuthClientInstance($userEntry);
                 $attributes = $authClient->getUserAttributes();
 
                 if (!isset($attributes['id'])) {
@@ -225,8 +221,8 @@ class LdapController extends Controller
 
                 // Fix wrong/missing 'auth_mode' by authclient_id
                 $user = User::findOne(['authclient_id' => $attributes['id']]);
-                if ($user !== null && $user->auth_mode != $newAuthClient->getId()) {
-                    $user->updateAttributes(['auth_mode' => $newAuthClient->getId()]);
+                if ($user !== null && $user->auth_mode != $authClient->getId()) {
+                    $user->updateAttributes(['auth_mode' => $authClient->getId()]);
                     $m++;
                 }
             }
@@ -247,7 +243,7 @@ class LdapController extends Controller
     /**
      * Shows all returned user attributes provided by the LDAP connection.
      *
-     * @param string $user the username (inserted into the LoginFilter)
+     * @param string $user the username
      * @param string $id the auth client id (default: ldap)
      * @return int status code
      * @since 1.8
@@ -257,14 +253,17 @@ class LdapController extends Controller
         $this->stdout("*** LDAP User Details for \"" . $user . "\" for AuthClient ID: " . $id . "\n\n");
 
         try {
-            $ldapAuthClient = $this->getAuthClient($id);
+            $ldapService = LdapService::create($id);
 
-            $dn = $ldapAuthClient->getLdap()->getCanonicalAccountName($user, Ldap::ACCTNAME_FORM_DN);
-            $x = $ldapAuthClient->getAuthClientInstance($ldapAuthClient->getLdap()->getEntry($dn));
+            $dn = $ldapService->getUserDn($user);
+            if ($dn === null) {
+                $this->stderr("Error: User or Email not found!\n\n");
+                return ExitCode::UNSPECIFIED_ERROR;
+            }
 
             $rows = [];
-            foreach ($x->getUserAttributes() as $name => $value) {
-                if (!is_array($value) && empty(mb_detect_encoding((string) $value))) {
+            foreach ($ldapService->getUserAttributes($dn) as $name => $value) {
+                if (!is_array($value) && LdapHelper::isBinary($value)) {
                     $value = '-Binary-';
                 }
                 $rows[] = [$name, $value];
