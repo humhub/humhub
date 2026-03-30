@@ -137,7 +137,7 @@ class ImageHelper
 
         if ($isModified) {
             $image->save($file->store->get(), $imagineOptions);
-            $file->updateAttributes(['size' => filesize($file->store->get())]);
+            $file->updateAttributes(['size' => $file->store->fileSize()]);
         }
 
     }
