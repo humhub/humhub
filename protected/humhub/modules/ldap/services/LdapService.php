@@ -2,8 +2,8 @@
 
 namespace humhub\modules\ldap\services;
 
-use humhub\libs\StringHelper;
 use humhub\modules\ldap\authclient\LdapAuth;
+use humhub\modules\ldap\helpers\LdapHelper;
 use humhub\modules\ldap\Module;
 use LdapRecord\Connection;
 use Yii;
@@ -91,7 +91,7 @@ class LdapService
 
     public function getUserAttributes(string $dn)
     {
-        return $this->cleanLdapResponse(
+        return LdapHelper::cleanLdapResponse(
             $this->connection->query()
                 ->select($this->getQueriedAttributes())
                 ->setDn($dn)
@@ -115,7 +115,7 @@ class LdapService
                 }
             }
 
-            $users[] = $this->cleanLdapResponse($entity);
+            $users[] = LdapHelper::cleanLdapResponse($entity);
         }
 
         return $users;
@@ -150,41 +150,4 @@ class LdapService
 
         return $authClients;
     }
-
-
-    private function cleanLdapResponse(array $rawEntry): array
-    {
-        $cleanAttributes = [];
-
-        foreach ($rawEntry as $key => $values) {
-            if (is_int($key)) {
-                continue;
-            }
-
-            $key = strtolower((string)$key);
-
-            if (is_array($values)) {
-                // Unset first value and reset array (php ldap always adds count value on each entry)
-                unset($values['count']);
-                $values = array_values($values);
-
-                if (count($values) === 1) {
-                    if ($key === 'objectguid') {
-                        $value = StringHelper::binaryToGuid($values[0]);
-                    } else {
-                        $value = $values[0];
-                    }
-                } else {
-                    $value = $values;
-                }
-
-                $cleanAttributes[$key] = $value;
-            } else {
-                $cleanAttributes[$key] = $values;
-            }
-        }
-        return $cleanAttributes;
-    }
-
-
 }

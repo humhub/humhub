@@ -2,6 +2,7 @@
 
 namespace humhub\modules\ldap\helpers;
 
+use humhub\libs\StringHelper;
 use humhub\modules\ldap\authclient\LdapAuth;
 use Yii;
 
@@ -65,6 +66,48 @@ class LdapHelper
         }
 
         return $normalized;
+    }
+
+
+    /**
+     * Sanitizes a raw LDAP result array by removing numerical indices and 'count' keys, and unwrapping
+     * single-value arrays.
+     *
+     * @param array $rawEntry
+     * @return array
+     */
+    public static function cleanLdapResponse(array $rawEntry): array
+    {
+        $cleanAttributes = [];
+
+        foreach ($rawEntry as $key => $values) {
+            if (is_int($key)) {
+                continue;
+            }
+
+            $key = strtolower((string)$key);
+
+            if (is_array($values)) {
+                // Unset first value and reset array (php ldap always adds count value on each entry)
+                unset($values['count']);
+                $values = array_values($values);
+
+                if (count($values) === 1) {
+                    if ($key === 'objectguid') {
+                        $value = StringHelper::binaryToGuid($values[0]);
+                    } else {
+                        $value = $values[0];
+                    }
+                } else {
+                    $value = $values;
+                }
+
+                $cleanAttributes[$key] = $value;
+            } else {
+                $cleanAttributes[$key] = $values;
+            }
+        }
+        return $cleanAttributes;
     }
 
 
