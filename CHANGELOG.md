@@ -7,6 +7,7 @@ HumHub Changelog
 - Fix #8075: Filtering by Global Topic in Dashboard
 - Fix #8081: Adds null check for removeItem and appendItem.
 - Fix #8090: Show only visible groups on the profile field "Group memberships"
+- Fix #8091: Bypass `StreamViewer::$showFilters` when `topics` query param is present
 
 1.18.2 (March 22, 2026)
 -----------------------
