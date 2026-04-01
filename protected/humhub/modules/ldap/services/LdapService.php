@@ -11,7 +11,7 @@ use yii\base\InvalidArgumentException;
 
 class LdapService
 {
-    private Connection $connection;
+    public Connection $connection;
     public readonly LdapAuth $authClient;
 
     public function __construct(LdapAuth $authClient)
@@ -68,7 +68,10 @@ class LdapService
 
     public function countUsers(): int
     {
-        return count($this->connection->query()->select('dn')->rawFilter($this->authClient->userFilter)->get());
+        $query = $this->connection->query()->select('dn')
+            ->rawFilter($this->authClient->userFilter);
+
+        return count($query->paginate($this->getPageSize()));
     }
 
     public function getUserDn(string $usernameOrEmail): ?string
@@ -89,16 +92,6 @@ class LdapService
         return null;
     }
 
-    public function getUserAttributes(string $dn)
-    {
-        return LdapHelper::cleanLdapResponse(
-            $this->connection->query()
-                ->select($this->getQueriedAttributes())
-                ->setDn($dn)
-                ->first(),
-        );
-    }
-
     private function getAllUsersAttributes(): array
     {
         $query = $this->connection->query()
@@ -107,7 +100,7 @@ class LdapService
             ->select($this->getQueriedAttributes());
 
         $users = [];
-        foreach ($query->get() as $entity) {
+        foreach ($query->paginate($this->getPageSize()) as $entity) {
             $dn = strtolower((string)$entity['dn']);
             foreach ($this->authClient->ignoredDNs as $ignoredDN) {
                 if (!empty($ignoredDN) && str_starts_with($dn, strtolower($ignoredDN))) {
@@ -144,10 +137,44 @@ class LdapService
 
             // Init
             $authClient->getUserAttributes();
+            $authClient->ldapService = $this;
 
             $authClients[$ldapEntry['dn']] = $authClient;
         }
 
         return $authClients;
+    }
+
+    private function getPageSize(): int
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('ldap');
+
+        return $module->pageSize;
+    }
+
+    public function getEntry(string $dn, ?array $attributes = null): ?array
+    {
+        $attributes ??= $this->getQueriedAttributes();
+
+        return LdapHelper::cleanLdapResponse(
+            $this->connection->query()
+                ->select($attributes)
+                ->setDn($dn)
+                ->first(),
+        );
+    }
+
+    public function getDnList(string $searchQuery): array
+    {
+        $results = [];
+        $query = $this->connection->query()->select('dn')
+            ->rawFilter($searchQuery);
+
+        foreach ($query->paginate($this->getPageSize()) as $entity) {
+            $results[] = strtolower($entity['dn']);
+        }
+
+        return $results;
     }
 }

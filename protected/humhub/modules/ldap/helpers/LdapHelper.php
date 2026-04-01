@@ -107,6 +107,14 @@ class LdapHelper
                 $cleanAttributes[$key] = $values;
             }
         }
+
+        // Ensure memberof Array and strtolower
+        if (isset($cleanAttributes['memberof'])) {
+            $cleanAttributes['memberof'] = is_array($cleanAttributes['memberof'])
+                ? array_map('strtolower', $cleanAttributes['memberof'])
+                : [strtolower($cleanAttributes['memberof'])];
+        }
+
         return $cleanAttributes;
     }
 

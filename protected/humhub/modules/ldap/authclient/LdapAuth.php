@@ -148,6 +148,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
      */
     public $ignoredDNs = [];
 
+    public ?LdapService $ldapService = null;
 
     /**
      * @inheritdoc
@@ -159,7 +160,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
         if (empty($this->idAttribute)) {
             $this->idAttribute = null;
         }
-        $this->idAttribute = strtolower((string) $this->idAttribute);
+        $this->idAttribute = strtolower((string)$this->idAttribute);
 
         if (empty($this->usernameAttribute)) {
             $this->usernameAttribute = 'samaccountname';
@@ -178,6 +179,14 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
     public function getId()
     {
         return $this->clientId;
+    }
+
+    public function getLdapService(): LdapService
+    {
+        if ($this->ldapService === null) {
+            $this->ldapService = new LdapService($this);
+        }
+        return $this->ldapService;
     }
 
     /**
@@ -266,7 +275,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
      */
     public function auth()
     {
-        $ldapService = (new LdapService($this));
+        $ldapService = $this->getLdapService();
         $dn = $ldapService->attemptAuth($this->login->username, $this->login->password);
 
         // Login failed
@@ -277,7 +286,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
             return false;
         }
 
-        $this->setUserAttributes($ldapService->getUserAttributes($dn));
+        $this->setUserAttributes($ldapService->getEntry($dn));
         return true;
     }
 
@@ -373,7 +382,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
 
         try {
             $ids = [];
-            foreach ((new LdapService($this))->getAuthClients() as $dn => $authClient) {
+            foreach ($this->getLdapService()->getAuthClients() as $dn => $authClient) {
                 $user = (new AuthClientService($authClient))->getUser();
                 if ($user === null) {
                     $registration = (new AuthClientService($authClient))->createRegistration();
@@ -383,8 +392,11 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
                     }
 
                     if (!$registration->register($authClient)) {
-                        Yii::warning('Could not create LDAP user (' . $dn . '). Error: '
-                            . VarDumper::dumpAsString($registration->getErrors()), 'ldap');
+                        Yii::warning(
+                            'Could not create LDAP user (' . $dn . '). Error: '
+                            . VarDumper::dumpAsString($registration->getErrors()),
+                            'ldap'
+                        );
                     }
                 } else {
                     (new AuthClientService($authClient))->updateUser($user);
@@ -410,7 +422,10 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
                         // Disable users that were not found in ldap
                         $user->status = User::STATUS_DISABLED;
                         $user->save();
-                        Yii::warning('Disabled user: ' . $user->username . ' (' . $user->id . ') - Not found in LDAP!', 'ldap');
+                        Yii::warning(
+                            'Disabled user: ' . $user->username . ' (' . $user->id . ') - Not found in LDAP!',
+                            'ldap'
+                        );
                     }
                 }
             }
@@ -427,7 +442,9 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
         // This method is called if an additional attribute mapping is specified in the configuration file
         // So automatically merge HumHub auto mapping with the given one
         $this->init(); // defaultNormalizeAttributeMap is available after init
-        parent::setNormalizeUserAttributeMap(ArrayHelper::merge($this->defaultNormalizeUserAttributeMap(), $normalizeUserAttributeMap));
+        parent::setNormalizeUserAttributeMap(
+            ArrayHelper::merge($this->defaultNormalizeUserAttributeMap(), $normalizeUserAttributeMap)
+        );
     }
 
     /**

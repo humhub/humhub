@@ -262,7 +262,7 @@ class LdapController extends Controller
             }
 
             $rows = [];
-            foreach ($ldapService->getUserAttributes($dn) as $name => $value) {
+            foreach ($ldapService->getEntry($dn) as $name => $value) {
                 if (!is_array($value) && LdapHelper::isBinary($value)) {
                     $value = '-Binary-';
                 }
