@@ -110,6 +110,8 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
      */
     public $usernameAttribute = null;
 
+    public $languageAttribute = 'preferredLanguage';
+
     /**
      * @var string the ldap base dn
      */
@@ -298,6 +300,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
         $map = [];
         $map['username'] = $this->usernameAttribute;
         $map['email'] = $this->emailAttribute;
+        $map['language'] = $this->languageAttribute;
 
         // Profile Field Mapping
         foreach (ProfileField::find()->andWhere(['!=', 'ldap_attribute', ''])->all() as $profileField) {
