@@ -13,6 +13,7 @@ HumHub Changelog
 - Fix #8070: Refactor Content deletion to make it possible only from ContentActiveRecord
 - Fix #8071: Fix button link with icon only
 - Enh #8083: Store module version in DB
+- Enh #5141: Added CLI command to delete disabled or soft deleted users
 
 1.18.2 (Unreleased)
 -------------------------
