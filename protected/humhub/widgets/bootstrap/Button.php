@@ -31,11 +31,6 @@ class Button extends \yii\bootstrap5\Button
      */
     public bool|string $loader = true;
 
-    /**
-     * @inerhitdoc
-     */
-    public $encodeLabel = false;
-
     public bool $asLink = false;
 
     /**
@@ -244,6 +239,19 @@ class Button extends \yii\bootstrap5\Button
             }
         }
 
+        return $this;
+    }
+
+    /**
+     * Sets the label to be HTML encoded.
+     *
+     * @param bool $encodeLabel
+     * @return static
+     * @since 1.18.1
+     */
+    public function encodeLabel(bool $encodeLabel): static
+    {
+        $this->encodeLabel = $encodeLabel;
         return $this;
     }
 

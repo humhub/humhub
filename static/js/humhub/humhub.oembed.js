@@ -7,6 +7,7 @@
 humhub.module('oembed', function(module, require, $) {
     var client = require('client');
     var util = require('util');
+    var status = require('ui.status');
     var cache = {};
 
     var load = function(urls) {
@@ -23,7 +24,14 @@ humhub.module('oembed', function(module, require, $) {
 
             client.post(module.config.loadUrl, {data: {urls: requestUrls}}).then(function(response) {
                 $.extend(cache, response.data);
-                resolve($.extend(result, response.data));
+                const resolveUrls = $.extend(result, response.data);
+
+                const brokenUrls = urls.filter(url => !resolveUrls.hasOwnProperty(url));
+                if (brokenUrls.length > 0) {
+                    status.warn(module.text('brokenUrl').replace('{urls}',  brokenUrls.join(', ')));
+                }
+
+                resolve(resolveUrls);
             }).catch(reject);
         });
     };
