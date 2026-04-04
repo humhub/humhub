@@ -370,6 +370,10 @@
              */
 
             .select2-selection__choice {
+                i {
+                    font-size: 15px;
+                }
+
                 color: $input-color;
                 border-radius: 4px;
                 cursor: default;
@@ -402,6 +406,10 @@
 
                 .picker-close {
                     cursor: pointer;
+                    font-size: 16px;
+                    line-height: 27px;
+                    margin-left: 3px;
+                    opacity: 0.95;
                 }
             }
 
@@ -438,7 +446,12 @@
              */
 
             .select2-selection__clear {
-                margin-top: $input-btn-padding-y;
+                font-size: 28px;
+                line-height: 28px;
+                font-weight: 700;
+                right: 0.4rem;
+                bottom: .25rem;
+                top: unset;
             }
         }
 
