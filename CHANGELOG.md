@@ -9,6 +9,7 @@ HumHub Changelog
 - Fix #8086: Fix Daylight Saving Time issue in `DbDateValidator`
 - Fix #8090: Show only visible groups on the profile field "Group memberships"
 - Fix #8091: Bypass `StreamViewer::$showFilters` when `topics` query param is present
+- Fix #8093: Fix Yii2 debug panel
 
 1.18.2 (March 22, 2026)
 -----------------------
