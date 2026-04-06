@@ -41,6 +41,9 @@ class DebugModule extends \yii\debug\Module
     {
         parent::resetGlobalSettings();
 
+        // Clear all assets in order to don't append them to the debug iframe
+        Yii::$app->view->clear();
+
         // Restore asset bundles from config
         $webConfig = (new BootstrapService())->getConfig('web');
         if (isset($webConfig['components']['assetManager']['bundles'])) {
