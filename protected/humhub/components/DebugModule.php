@@ -31,7 +31,7 @@ class DebugModule extends \yii\debug\Module
     {
         ob_start();
         parent::renderToolbar($event);
-        echo str_replace('<script', '<script '. Html::nonce(), ob_get_clean());
+        echo str_replace('<script', '<script ' . Html::nonce(), ob_get_clean());
     }
 
     /**
@@ -49,7 +49,7 @@ class DebugModule extends \yii\debug\Module
         if (isset($webConfig['components']['assetManager']['bundles'])) {
             Yii::$app->assetManager->bundles = ArrayHelper::merge(
                 Yii::$app->assetManager->bundles,
-                $webConfig['components']['assetManager']['bundles']
+                $webConfig['components']['assetManager']['bundles'],
             );
         }
     }
