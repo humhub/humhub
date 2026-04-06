@@ -6,7 +6,9 @@ HumHub Changelog
 - Fix #8079: Hide wall entry topics container when no topics
 - Fix #8075: Filtering by Global Topic in Dashboard
 - Fix #8081: Adds null check for removeItem and appendItem.
+- Fix #8086: Fix Daylight Saving Time issue in `DbDateValidator`
 - Fix #8090: Show only visible groups on the profile field "Group memberships"
+- Fix #8091: Bypass `StreamViewer::$showFilters` when `topics` query param is present
 - Fix #8093: Fix Yii2 debug panel
 
 1.18.2 (March 22, 2026)
