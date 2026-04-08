@@ -10,6 +10,7 @@ HumHub Changelog
 - Fix #8090: Show only visible groups on the profile field "Group memberships"
 - Fix #8091: Bypass `StreamViewer::$showFilters` when `topics` query param is present
 - Fix #8093: Fix Yii2 debug panel
+- Enh #8095: Improve authorization checks
 
 1.18.2 (March 22, 2026)
 -----------------------
