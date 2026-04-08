@@ -8,6 +8,7 @@ HumHub Changelog
 - Enh #7980: Remove deprecations
 - Enh #8025: Implement URL for Content Created Activity
 - Fix #8031: Border Radius for Color Picker under Theme Customisation
+- Enh #8032: Improve menu link adding
 - Fix #8006: Web Installer Nginx Example
 - Fix #8041: Update `Button::asLink` to `Link::to`
 - Fix #8070: Refactor Content deletion to make it possible only from ContentActiveRecord
