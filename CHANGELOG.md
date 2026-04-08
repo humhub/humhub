@@ -15,10 +15,21 @@ HumHub Changelog
 - Enh #8083: Store module version in DB
 - Enh #5141: Added CLI command to delete disabled or soft deleted users
 
-1.18.2 (Unreleased)
--------------------------
+1.18.3 (TBD)
+------------
+- Fix #8079: Hide wall entry topics container when no topics
+- Fix #8075: Filtering by Global Topic in Dashboard
+- Fix #8081: Adds null check for removeItem and appendItem.
+- Fix #8086: Fix Daylight Saving Time issue in `DbDateValidator`
+- Fix #8090: Show only visible groups on the profile field "Group memberships"
+- Fix #8091: Bypass `StreamViewer::$showFilters` when `topics` query param is present
+- Fix #8093: Fix Yii2 debug panel
+
+1.18.2 (March 22, 2026)
+-----------------------
 - Fix #8046: Profile Header Title HTML encoded twice since 1.18.1
 - Fix #8043: User display name bottom truncated in top bar
+- Fix #8050: Fix page title on PJAX request
 - Fix #8051: Registration - Display Captcha field if invalid after form submit via keyboard
 - Enh #8051: Add `AltchaCaptchaInput::$showOnFocusElement` and `YiiCaptchaInput::$showOnFocusElement` (see [migration guide](https://github.com/humhub/humhub/blob/master/MIGRATE-DEV.md#version-1181) for details)
 - Fix #8054: Login layout widths (Default: Bootstrap width, Registration: 500px, Login & Password: 300px, Login with multiple SSO buttons: 500px)
@@ -29,6 +40,7 @@ HumHub Changelog
 - Enh #8061: Display warning when URL cannot be embedded
 - Fix #8062: Fix global topics
 - Fix #8072: Fix missing translations
+- Fix #8077: Topics in new post won't save
 
 1.18.1 (March 2, 2026)
 ----------------------

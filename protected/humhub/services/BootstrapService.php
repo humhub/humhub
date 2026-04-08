@@ -43,7 +43,7 @@ final class BootstrapService
         Yii::setAlias('@humhub', $this->humhubPath);
     }
 
-    private function getConfig($mode = 'web'): array
+    public function getConfig($mode = 'web'): array
     {
         $humhubConfig = [
             require($this->humhubPath . '/config/common.php'),

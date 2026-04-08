@@ -21,7 +21,7 @@ if (Yii::$app->img->loginBackground->exists()) {
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>" class="<?= Yii::$app->img->loginBackground->exists() ? 'login-layout-background' : '' ?>">
 <head>
-    <title><?= Html::encode($this->pageTitle); ?></title>
+    <title><?= Html::encode($this->pageTitle) ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <?php $this->head() ?>
     <?= $this->render('@humhub/views/layouts/head'); ?>
