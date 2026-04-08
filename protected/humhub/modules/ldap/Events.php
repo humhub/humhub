@@ -9,11 +9,13 @@
 namespace humhub\modules\ldap;
 
 use humhub\components\Event;
+use humhub\helpers\ControllerHelper;
+use humhub\modules\admin\widgets\AuthenticationMenu;
 use humhub\modules\ldap\models\LdapSettings;
+use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\user\authclient\Collection;
 use Yii;
 use yii\base\BaseObject;
-use yii\helpers\Url;
 
 /**
  * Events provides callbacks for all defined module events.
@@ -27,12 +29,15 @@ class Events extends BaseObject
      */
     public static function onAuthenticationMenu($event)
     {
-        $event->sender->addItem([
+        /* @var AuthenticationMenu $menu */
+        $menu = $event->sender;
+
+        $menu->addEntry(new MenuLink([
             'label' => Yii::t('LdapModule.base', 'LDAP'),
-            'url' => Url::to(['/ldap/admin']),
+            'url' => ['/ldap/admin'],
             'sortOrder' => 200,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'ldap' && Yii::$app->controller->id == 'admin'),
-        ]);
+            'isActive' => ControllerHelper::isActivePath('ldap', 'admin'),
+        ]));
     }
 
     /**

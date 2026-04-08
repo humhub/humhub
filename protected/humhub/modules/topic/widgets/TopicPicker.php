@@ -42,15 +42,18 @@ class TopicPicker extends ContentTagPicker
      */
     public function init()
     {
-        $this->contentContainer = $this->contentContainer ?: ContentContainerHelper::getCurrent();
-
-        if (!$this->url && $this->contentContainer) {
-            $this->url = $this->contentContainer->createUrl('/topic/topic/search');
-        } else {
-            $this->url = Url::to(['/topic/topic/search']);
+        if (!$this->contentContainer) {
+            $this->contentContainer = ContentContainerHelper::getCurrent();
         }
 
-        $this->addOptions = static::canAddTopic($this->contentContainer) && Topic::isAllowedToCreate($this->contentContainer);
+        if (!$this->url) {
+            $this->url = $this->contentContainer
+                ? $this->contentContainer->createUrl('/topic/topic/search')
+                : Url::to(['/topic/topic/search']);
+        }
+
+        $this->addOptions = Topic::isAllowedToCreate($this->contentContainer);
+
         parent::init();
     }
 
@@ -59,11 +62,9 @@ class TopicPicker extends ContentTagPicker
      */
     public function run()
     {
-        if (!static::canAddTopic($this->contentContainer) && !static::hasTopics($this->contentContainer)) {
-            return $this->emptyResult();
-        }
-
-        return parent::run();
+        return static::showTopicPicker($this->contentContainer)
+            ? parent::run()
+            : $this->emptyResult();
     }
 
     /**
@@ -75,7 +76,7 @@ class TopicPicker extends ContentTagPicker
      */
     public static function showTopicPicker(?ContentContainerActiveRecord $container = null)
     {
-        return static::canAddTopic($container) || static::hasTopics($container);
+        return Topic::isAllowedToCreate($container) || static::hasTopics($container);
     }
 
     /**
@@ -83,10 +84,11 @@ class TopicPicker extends ContentTagPicker
      *
      * @return bool
      * @since 1.6
+     * @deprecated since 1.18.2 use Topic::isAllowedToCreate() instead
      */
     private static function canAddTopic(?ContentContainerActiveRecord $container = null)
     {
-        return $container && Topic::isAllowedToCreate($container);
+        return Topic::isAllowedToCreate($container);
     }
 
     /**

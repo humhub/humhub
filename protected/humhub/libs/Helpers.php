@@ -8,10 +8,7 @@
 
 namespace humhub\libs;
 
-use humhub\exceptions\InvalidArgumentClassException;
-use humhub\exceptions\InvalidArgumentTypeException;
 use humhub\exceptions\InvalidArgumentValueException;
-use humhub\helpers\DataTypeHelper;
 use Yii;
 
 /**
@@ -21,62 +18,6 @@ use Yii;
  */
 class Helpers
 {
-    /**
-     * @var int
-     * @deprecated since 1.16; Use constant in DataTypeHelper class instead
-     * @see DataTypeHelper
-     * */
-    public const CLASS_CHECK_INVALID_CLASSNAME_PARAMETER = DataTypeHelper::TYPE_CHECK_INVALID_VALUE_PARAMETER;
-
-    /**
-     * @var int
-     * @deprecated since 1.16; Use constant in DataTypeHelper class instead
-     * @see DataTypeHelper
-     * */
-    public const CLASS_CHECK_INVALID_TYPE_PARAMETER = DataTypeHelper::TYPE_CHECK_INVALID_TYPE_PARAMETER;
-
-    /**
-     * @var int
-     * @deprecated since 1.16; Use constant in DataTypeHelper class instead
-     * @see DataTypeHelper
-     * */
-    public const CLASS_CHECK_VALUE_IS_EMPTY = DataTypeHelper::TYPE_CHECK_VALUE_IS_EMPTY;
-
-    /**
-     * @var int
-     * @deprecated since 1.16; Use constant in DataTypeHelper class instead
-     * @see DataTypeHelper
-     * */
-    public const CLASS_CHECK_INVALID_TYPE = DataTypeHelper::TYPE_CHECK_INVALID_TYPE;
-
-    /**
-     * @var int
-     * @deprecated since 1.16; Use constant in DataTypeHelper class instead
-     * @see DataTypeHelper
-     * */
-    public const CLASS_CHECK_NON_EXISTING_CLASS = DataTypeHelper::TYPE_CHECK_NON_EXISTING_CLASS;
-
-    /**
-     * @var int
-     * @deprecated since 1.16; Use constant in DataTypeHelper class instead
-     * @see DataTypeHelper
-     * */
-    public const CLASS_CHECK_TYPE_NOT_IN_LIST = DataTypeHelper::TYPE_CHECK_TYPE_NOT_IN_LIST;
-
-    /**
-     * @var int
-     * @deprecated since 1.16; Use constant in DataTypeHelper class instead
-     * @see DataTypeHelper
-     * */
-    public const CLASS_CHECK_VALUE_IS_INSTANCE = DataTypeHelper::TYPE_CHECK_VALUE_IS_INSTANCE;
-
-    /**
-     * @var int
-     * @deprecated since 1.16; Use constant in DataTypeHelper class instead
-     * @see DataTypeHelper
-     * */
-    public const CLASS_CHECK_VALUE_IS_NULL = DataTypeHelper::TYPE_CHECK_VALUE_IS_NULL;
-
     /**
      * Shorten a text string
      *
@@ -124,26 +65,6 @@ class Helpers
     }
 
     /**
-     * Temp Function to use UTF8 SubStr
-     *
-     * @deprecated since 1.11 Use mb_substr() instead.
-     *
-     * @param string $str
-     * @param int $from
-     * @param int $len
-     *
-     * @return string
-     */
-    public static function substru($str, $from, $len): string
-    {
-        return preg_replace(
-            '#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $from . '}' . '((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $len . '}).*#s',
-            '$1',
-            $str,
-        );
-    }
-
-    /**
      * Get a readable time format from seconds
      *
      * @param string $sekunden - Seconds you will formatting
@@ -168,36 +89,6 @@ class Helpers
         $stunden = bcmod($stunden, '24');
 
         return $minus . $stunden . ':' . $minuten;
-    }
-
-    /**
-     * Returns bytes of a PHP Ini Setting Value
-     * E.g. 10M will converted into 10485760
-     *
-     * Source: http://php.net/manual/en/function.ini-get.php
-     *
-     * @param String $val
-     *
-     * @return int bytes
-     * @deprecated bug on PHP7 "A non well formed numeric value encountered"
-     * @see \humhub\libs\Helpers::getBytesOfIniValue instead
-     */
-    public static function GetBytesOfPHPIniValue($val)
-    {
-        $val = trim($val);
-        $last = strtolower($val[strlen($val) - 1]);
-        switch ($last) {
-            case 'g':
-                $val *= 1024;
-                // no break
-            case 'm':
-                $val *= 1024;
-                // no break
-            case 'k':
-                $val *= 1024;
-        }
-
-        return $val;
     }
 
     /**
@@ -237,28 +128,6 @@ class Helpers
     public static function GetUniqeId()
     {
         return str_replace('.', '', uniqid('', true));
-    }
-
-    /**
-     * @deprecated since 1.16; use DataTypeHelper::checkClassType()
-     * @see DataTypeHelper::matchClassType
-     */
-    public static function checkClassType($className, $type = '')
-    {
-        if (is_string($className)) {
-            $className = preg_replace('/[^a-z0-9_\-\\\]/i', '', $className);
-        }
-
-        return DataTypeHelper::matchClassType($className, $type, false);
-    }
-
-    /**
-     * @deprecated since 1.16; use DataTypeHelper::classUsesTraits()
-     * @see DataTypeHelper::classUsesTraits
-     */
-    public static function &classUsesTraits($class, bool $autoload = true): ?array
-    {
-        return DataTypeHelper::classUsesTraits($class, $autoload);
     }
 
     /**

@@ -13,7 +13,6 @@ use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\file\models\File;
 use yii\base\BaseObject;
 use yii\base\Event;
-use humhub\modules\file\converter\TextConverter;
 use yii\helpers\Console;
 
 /**

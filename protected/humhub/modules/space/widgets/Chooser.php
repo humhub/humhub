@@ -18,7 +18,6 @@ use humhub\modules\user\models\Follow;
 use Throwable;
 use Yii;
 use yii\base\InvalidConfigException;
-use yii\db\Query;
 use yii\helpers\Url;
 
 /**
@@ -221,26 +220,6 @@ class Chooser extends Widget
         }
 
         return null;
-    }
-
-    /**
-     * Returns the membership query
-     *
-     * @return Query
-     * @deprecated since version 1.2
-     */
-    protected function getMembershipQuery()
-    {
-        $query = Membership::find()->joinWith('space')
-            ->where(['space_membership.user_id' => Yii::$app->user->id, 'space_membership.status' => Membership::STATUS_MEMBER]);
-
-        if (Yii::$app->getModule('space')->settings->get('spaceOrder') == 0) {
-            $query->orderBy('name ASC');
-        } else {
-            $query->orderBy('last_visit DESC');
-        }
-
-        return $query;
     }
 
     /**

@@ -44,6 +44,17 @@
             background-color: var(--hh-background-color-main);
         }
 
+        .picker-content {
+            display:flex;
+            flex-direction:column;
+            margin-left:5px;
+            overflow: hidden;
+        }
+
+        .picker-subtext {
+            color: var(--hh-text-color-soft);
+        }
+
         /**
          * Search field in the Select2 dropdown.
          */
@@ -232,15 +243,12 @@
             .select2-selection {
                 border-color: $input-border-color;
                 @include box-shadow(none);
+                background-color: var(--bs-secondary-bg);
             }
 
             .select2-selection,
             .select2-search__field {
                 cursor: not-allowed;
-            }
-
-            .select2-selection {
-                background-color: var(--bs-secondary-bg);
             }
 
             .select2-selection--multiple .select2-selection__choice {
@@ -265,11 +273,7 @@
             @include box-shadow($dropdown-box-shadow);
             border-color: var(--hh-background3);
             overflow-x: hidden;
-            margin-top: -1px;
-
-            &--above {
-                margin-top: 1px;
-            }
+            margin-top: 0;
         }
 
         /**
@@ -614,6 +618,7 @@
         }
     }
 
+
     /*------------------------------------*\
         #ADDITIONAL GOODIES
     \*------------------------------------*/
@@ -695,6 +700,15 @@
         .input-group,
         .input-group .btn {
             vertical-align: top;
+        }
+    }
+
+    .select2-humhub-append.input-group .select2-container {
+        margin-left: initial !important;
+
+        .select2-selection {
+            border-top-left-radius: var(--bs-border-radius) !important;
+            border-bottom-left-radius: var(--bs-border-radius) !important;
         }
     }
 

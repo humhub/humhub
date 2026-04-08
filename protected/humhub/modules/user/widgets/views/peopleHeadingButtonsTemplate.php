@@ -20,6 +20,7 @@ use humhub\widgets\bootstrap\Button;
     ?>
     <div style="margin-left: 10px" class="float-end">
         <?= Button::accent($entry->getIcon() . '&nbsp;&nbsp;' . Html::tag('strong', $entry->getLabel()))
+            ->encodeLabel(false)
             ->link($entry->getUrl())
             ->options($htmlOptions)
             ->sm() ?>

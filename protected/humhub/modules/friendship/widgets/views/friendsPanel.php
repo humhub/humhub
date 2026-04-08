@@ -16,7 +16,7 @@ use humhub\widgets\PanelMenu;
             <div class="d-flex gap-2 flex-wrap">
                 <?php foreach ($friends as $friend): ?>
                     <a href="<?= $friend->getUrl() ?>">
-                        <img src="<?= $friend->getProfileImage()->getUrl() ?>" class="rounded tt img_margin"
+                        <img src="<?= $friend->image ?>" class="rounded tt img_margin"
                              height="24" width="24" alt="24x24" data-src="holder.js/24x24"
                              style="width: 24px; height: 24px;"
                              data-bs-toggle="tooltip" data-placement="top" title=""

@@ -58,9 +58,7 @@ class TextConverter extends BaseConverter
      */
     protected function canConvert(File $file)
     {
-        $originalFile = $file->store->get();
-
-        if (!is_file($originalFile)) {
+        if (!$file->store->has()) {
             return false;
         }
 
@@ -77,13 +75,15 @@ class TextConverter extends BaseConverter
      */
     protected function convert($fileName)
     {
-        $convertedFile = $this->file->store->get($fileName);
-
-        if (is_file($convertedFile)) {
+        if ($this->file->store->has($fileName)) {
             return;
         }
 
-        $textContent = '';
+        // We need to create a Temp File with the File content, since file could also
+        // located on a external object store.
+        $tempFile = FileHelper::getTempFile();
+        file_put_contents($tempFile, $this->file->store->getContentStream());
+
         $converter = $this->getConverter();
 
         if ($converter !== null) {
@@ -91,15 +91,23 @@ class TextConverter extends BaseConverter
                 print "C";
             }
 
-            $command = str_replace('{fileName}', $this->file->store->get(), $converter['cmd']);
+            $command = str_replace('{fileName}', $tempFile, $converter['cmd']);
+
             if (str_contains($command, "{outputFileName}")) {
-                $command = str_replace('{outputFileName}', $convertedFile, $command);
+                $tempOutFile = FileHelper::getTempFile();
+
+                $command = str_replace('{outputFileName}', $tempOutFile, $command);
                 shell_exec($command);
+
+                $this->file->store->setContent(file_get_contents($tempOutFile), $fileName);
+                unlink($tempOutFile);
             } else {
                 $textContent = shell_exec($command) . "\n";
-                file_put_contents($convertedFile, $textContent);
+                $this->file->store->setContent($textContent, $fileName);
             }
         }
+
+        unlink($tempFile);
     }
 
     /**
@@ -113,7 +121,9 @@ class TextConverter extends BaseConverter
             // Check Exceptions
             if (!empty($converter['except']) && is_array($converter['except'])) {
                 foreach ($converter['except'] as $except) {
-                    if (str_contains($this->file->mime_type, (string) $except) || FileHelper::getExtension($this->file) == $except) {
+                    if (str_contains($this->file->mime_type, (string)$except) || FileHelper::getExtension(
+                        $this->file,
+                    ) == $except) {
                         continue 2;
                     }
                 }
@@ -121,7 +131,9 @@ class TextConverter extends BaseConverter
 
             if (!empty($converter['only']) && is_array($converter['only'])) {
                 foreach ($converter['only'] as $only) {
-                    if (str_contains($this->file->mime_type, (string) $only) || FileHelper::getExtension($this->file) == $only) {
+                    if (str_contains($this->file->mime_type, (string)$only) || FileHelper::getExtension(
+                        $this->file,
+                    ) == $only) {
                         return $converter;
                     }
                 }
@@ -142,19 +154,8 @@ class TextConverter extends BaseConverter
     public function getContentAsText()
     {
         $fileName = $this->getFilename();
-
-        $convertedFile = $this->file->store->get($fileName);
-
-        if (is_file($convertedFile)) {
-
-            // Reduce file size to max text length
-            if (filesize($convertedFile) > $this->maxTextFileSize) {
-                $fp = fopen($convertedFile, "r+");
-                ftruncate($fp, $this->maxTextFileSize);
-                fclose($fp);
-            }
-
-            return file_get_contents($convertedFile);
+        if ($this->file->store->has($fileName)) {
+            return stream_get_contents($this->file->store->getContentStream($fileName), $this->maxTextFileSize, 0);
         }
 
         return null;

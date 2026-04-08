@@ -11,6 +11,17 @@ return [
                 PDO::ATTR_PERSISTENT => true,
             ],
         ],
+        'fs' => [
+            'mounts' => [
+                'assets' => [
+                    'path' => '@webroot/assets/tests',
+                    'baseUrl' => '@web/assets/tests',
+                ],
+                'data' => [
+                    'path' => '@webroot/uploads/tests',
+                ],
+            ],
+        ],
         'view' => [
             'theme'
             => [

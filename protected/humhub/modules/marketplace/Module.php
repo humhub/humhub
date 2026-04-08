@@ -91,16 +91,6 @@ class Module extends BaseModule
 
     /**
      * @return bool
-     * @deprecated since v1.16; use `static::isMarketplaceEnabled()` instead
-     * @see static::isMarketplaceEnabled()
-     */
-    public static function isEnabled(): bool
-    {
-        return static::isMarketplaceEnabled();
-    }
-
-    /**
-     * @return bool
      */
     public static function isMarketplaceEnabled(): bool
     {

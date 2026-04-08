@@ -13,8 +13,6 @@ Yii::setAlias('@humhub', $_ENV['HUMHUB_ALIASES__HUMHUB'] ?? realpath(__DIR__ . '
 
 // Workaround: PHP 7.3 compatible ZF2 ArrayObject class
 Yii::$classMap[\Zend\Stdlib\ArrayObject::class] = '@humhub/compat/ArrayObject.php';
-Yii::$classMap['humhub\modules\search\interfaces\Searchable'] = '@humhub/compat/search/Searchable.php';
-Yii::$classMap['humhub\modules\search\events\SearchAddEvent'] = '@humhub/compat/search/SearchAddEvent.php';
 
 // Bootstrap 5 Migration
 Yii::$classMap['yii\bootstrap\BootstrapAsset'] = '@humhub/compat/bootstrap/BootstrapAsset.php';
@@ -70,7 +68,6 @@ $config = [
         '@webroot' => realpath(__DIR__ . '/../../../'),
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
-        '@filestore' => '@webroot/uploads/file',
         '@config' => '@app/config',
         '@themes' => '@webroot/themes',
     ],
@@ -88,6 +85,20 @@ $config = [
                     'renderer' => ['class' => \humhub\modules\notification\renderer\MailRenderer::class],
                 ],
                 \humhub\modules\notification\targets\MobileTarget::class => [],
+            ],
+        ],
+        'fs' => [
+            'class' => 'humhub\components\fs\FilesystemManager',
+            'mounts' => [
+                'assets' => [
+                    'class' => 'humhub\components\fs\LocalMountConfig',
+                    'path' => '@webroot/assets',
+                    'baseUrl' => '@web/assets',
+                ],
+                'data' => [
+                    'class' => 'humhub\components\fs\LocalMountConfig',
+                    'path' => '@webroot/uploads',
+                ],
             ],
         ],
         'log' => [
@@ -155,9 +166,21 @@ $config = [
             ],
         ],
         'assetManager' => [
-            'class' => \humhub\components\AssetManager::class,
+            'class' => \humhub\components\assets\AssetManager::class,
             'appendTimestamp' => true,
             'bundles' => require(__DIR__ . '/' . (YII_ENV_PROD || YII_ENV_TEST ? 'assets-prod.php' : 'assets-dev.php')),
+        ],
+        'img' => [
+            'class' => 'humhub\components\assets\AssetImageRegistry',
+            'definitions' => [
+                'logo' => ['file' => '/logo_image/logo.png'],
+                'icon' => [
+                    'file' => '/icon/icon.png',
+                    'defaultFile' => '@webroot-static/img/default_icon.png',
+                ],
+                'loginBackground' => ['file' => '/login-bg/background.png'],
+                'mailHeader' => ['file' => '/icon/icon.png'],
+            ],
         ],
         'view' => [
             'class' => \humhub\components\View::class,

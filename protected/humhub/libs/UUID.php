@@ -153,16 +153,4 @@ class UUID
 
         return $uuid;
     }
-
-    /**
-     * @deprecated since 1.15, use static::validate()
-     * @see static::validate()
-     * @codingStandardsIgnoreStart
-     * @noinspection PhpMissingReturnTypeInspection
-     * @noinspection PhpUnused
-     */
-    public static function is_valid($uuid)
-    {
-        return preg_match('/^\{?[0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?' . '[0-9a-f]{4}-?[0-9a-f]{12}}?$/i', (string) $uuid) === 1;
-    }
 }

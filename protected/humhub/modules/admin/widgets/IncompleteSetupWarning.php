@@ -12,7 +12,7 @@ use humhub\components\Widget;
 use humhub\helpers\DeviceDetectorHelper;
 use humhub\libs\SelfTest;
 use humhub\modules\admin\Module;
-use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
 use Yii;
 use yii\db\Query;
 use yii\queue\db\Queue;
@@ -130,9 +130,8 @@ class IncompleteSetupWarning extends Widget
         if (!Yii::$app->user->isAdmin()) {
             return '';
         }
-        return Button::asLink(Yii::t('AdminModule.base', 'Open documentation'))
+        return Link::to(Yii::t('AdminModule.base', 'Open documentation'), $url)
             ->icon('external-link')
-            ->link($url)
             ->loader(false)
             ->options(['target' => '_blank'])
             ->sm();

@@ -9,9 +9,7 @@
 namespace humhub\modules\ui\menu;
 
 use humhub\helpers\Html;
-use humhub\helpers\ControllerHelper;
 use humhub\modules\ui\menu\widgets\Menu;
-use Yii;
 use yii\base\BaseObject;
 
 /**
@@ -103,27 +101,6 @@ abstract class MenuEntry extends BaseObject
     {
         $this->isActive = $state;
         return $this;
-    }
-
-    /**
-     * Activates this MenuEntry in case the given moduleId, controllerId and actionId matches the current request.
-     * @param string $moduleId controller module id
-     * @param array|string $controllerIds controller id
-     * @param array|string $actionIds action id
-     * @return static
-     */
-    public function setIsActiveState($moduleId, $controllerIds = [], $actionIds = [])
-    {
-        $this->isActive = static::isActiveState($moduleId, $controllerIds, $actionIds);
-        return $this;
-    }
-
-    /**
-     * @deprecated since 1.17, use humhub\helpers\ControllerHelper::isActivePath()
-     */
-    public static function isActiveState($moduleId = null, $controllerIds = [], $actionIds = [], $queryParams = [])
-    {
-        return ControllerHelper::isActivePath($moduleId, $controllerIds, $actionIds, $queryParams);
     }
 
     /**

@@ -21,10 +21,17 @@ class UserGroupMemberships extends BaseTypeVirtual
     /**
      * @inheritdoc
      */
+    protected bool $isCacheable = true;
+
+    /**
+     * @inheritdoc
+     */
     protected function getVirtualUserValue(User $user, bool $raw = true, bool $encode = true): string
     {
-        $groupNames = array_map(fn($group) => $group->name, $user->groups);
-        $value = implode(', ', $groupNames);
+        $value = implode(', ', $user->getGroups()
+            ->select('group.name')
+            ->andWhere(['group.show_at_directory' => 1])
+            ->column());
 
         return $encode ? Html::encode($value) : $value;
     }

@@ -21,7 +21,7 @@ use yii\web\View;
 SearchAsset::register($this);
 ?>
 <?= Html::beginTag('li', $options) ?>
-<?= Link::asLink('')
+<?= Link::to()
     ->icon('search')
     ->id('search-menu')
     ->action('menu')

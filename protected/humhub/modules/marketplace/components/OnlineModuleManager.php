@@ -9,6 +9,7 @@
 namespace humhub\modules\marketplace\components;
 
 use humhub\components\ModuleEvent;
+use humhub\models\ModuleEnabled;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\marketplace\models\Module as ModelModule;
 use humhub\modules\marketplace\Module;
@@ -81,6 +82,7 @@ class OnlineModuleManager extends Component
 
         Yii::$app->moduleManager->flushCache();
         Yii::$app->moduleManager->register($modulesPath . DIRECTORY_SEPARATOR . $moduleId);
+        $this->refreshMarketplaceLastChange();
     }
 
 
@@ -219,6 +221,14 @@ class OnlineModuleManager extends Component
         $updatedModule->update();
 
         (new MarketplaceService())->refreshPendingModuleUpdateCount();
+
+        $moduleEnabled = ModuleEnabled::findOne(['module_id' => $updatedModule->id]);
+        if ($moduleEnabled) {
+            $moduleEnabled->version = $updatedModule->version;
+            $moduleEnabled->save();
+        }
+
+        $this->refreshMarketplaceLastChange();
 
         $this->trigger(static::EVENT_AFTER_UPDATE, new ModuleEvent(['module' => $updatedModule]));
     }
@@ -446,6 +456,11 @@ class OnlineModuleManager extends Component
     {
         Yii::error('Error installing or updating the "' . $moduleId . '" module: ' . $errorMsg, 'marketplace');
         throw new ServerErrorHttpException($displayedErrorMsg ?? $errorMsg);
+    }
+
+    public function refreshMarketplaceLastChange(): void
+    {
+        Yii::$app->settings->set('marketplaceLastChange', time());
     }
 
 }

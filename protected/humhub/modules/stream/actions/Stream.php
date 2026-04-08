@@ -15,7 +15,6 @@ use Throwable;
 use Yii;
 use yii\base\Action;
 use yii\base\Exception;
-use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\stream\models\StreamQuery;
 use humhub\modules\stream\models\WallStreamQuery;
@@ -42,8 +41,6 @@ use yii\base\InvalidConfigException;
  */
 abstract class Stream extends Action
 {
-    use LegacyStreamTrait;
-
     /**
      * @event Event triggered before stream filter handlers are applied
      * This can be used for adding filters.
@@ -74,30 +71,6 @@ abstract class Stream extends Action
      * Sort by update sort value
      */
     public const SORT_UPDATED_AT = 'u';
-
-    /**
-     * @var string
-     * @deprecated since 1.6 use ActivityStreamAction
-     */
-    public const MODE_NORMAL = 'normal';
-
-    /**
-     * @var string
-     * @deprecated since 1.6 use ActivityStreamAction
-     */
-    public const MODE_ACTIVITY = 'activity';
-
-    /**
-     * @var string
-     * @deprecated since 1.7 use BaseStreamEntryWidget::VIEW_MODE_DASHBOARD
-     */
-    public const FROM_DASHBOARD = 'dashboard';
-
-    /**
-     * Maximum wall entries per request
-     * @deprecated since 1.7 not in use
-     */
-    public const MAX_LIMIT = 50;
 
     /**
      * Optional stream user if no user is specified, the current logged in user will be used.
@@ -305,8 +278,6 @@ abstract class Stream extends Action
      */
     protected function afterApplyFilters()
     {
-        $this->setDeprecatedActionProperties();
-
         // Update action filters with merged request and configured action filters.
         $this->filters = $this->streamQuery->filters;
         $this->user = $this->streamQuery->user;
@@ -407,10 +378,6 @@ abstract class Stream extends Action
         try {
             if (!$content->getModel()) {
                 throw new Exception('Could not get contents underlying object! - contentid: ' . $content->id);
-            }
-
-            if (!is_subclass_of($content->getModel()->wallEntryClass, StreamEntryWidget::class, true)) {
-                return static::getContentResultEntry($content);
             }
 
             return StreamEntryResponse::getAsArray($content, $options);

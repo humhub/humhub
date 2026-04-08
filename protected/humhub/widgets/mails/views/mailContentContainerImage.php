@@ -14,7 +14,7 @@ use humhub\helpers\Html;
 
 <a href="<?= $url ?>">
     <div>
-        <img src="<?= $container->getProfileImage()->getUrl("", true); ?>"
+        <img src="<?= $container->image->getUrl(null, true); ?>"
              width="50"
              height="50"
              alt=""

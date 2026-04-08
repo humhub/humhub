@@ -601,12 +601,10 @@ humhub.module('ui.modal', function (module, require, $) {
     var _setModalsAndBackdropsOrder = function () {
         var modalZIndex = 1040;
         $('.modal.show').each(function (index) {
-            var $modal = $(this);
-            modalZIndex++;
-            $modal.css('zIndex', modalZIndex);
-            $modal.next('.modal-backdrop.show').addClass('d-none').css('zIndex', modalZIndex - 1);
+            $(this).css('zIndex', ++modalZIndex);
         });
-        $('.modal.show:visible:last').focus().next('.modal-backdrop.show').removeClass('d-none');
+        $('.modal-backdrop.show').css('zIndex', modalZIndex - 1);
+        $('.modal.show:visible:last').focus();
     };
 
     /**
