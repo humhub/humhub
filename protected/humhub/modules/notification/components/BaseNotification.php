@@ -13,6 +13,7 @@ use humhub\components\SocialActivity;
 use humhub\helpers\Html;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\notification\jobs\SendBulkNotification;
 use humhub\modules\notification\jobs\SendNotification;
 use humhub\modules\notification\models\Notification;
@@ -280,6 +281,10 @@ abstract class BaseNotification extends SocialActivity
      */
     public function isBlockedForUser(User $user): bool
     {
+        if ($this->hasContent()) {
+            return !$this->getContent()->canView($user);
+        }
+
         if ($this->isSpaceContent()) {
             /* @var Space $space */
             $space = $this->source->content->container;
@@ -288,6 +293,19 @@ abstract class BaseNotification extends SocialActivity
         }
 
         return false;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getContentInfo(?ContentOwner $content = null, $withContentName = true)
+    {
+        $user = $this->record->user ?? null;
+        if ($user instanceof User && $this->hasContent() && !$this->getContent()->canView($user)) {
+            return null;
+        }
+
+        return parent::getContentInfo($content, $withContentName);
     }
 
     /**
