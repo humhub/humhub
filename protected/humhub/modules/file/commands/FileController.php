@@ -37,12 +37,12 @@ class FileController extends Controller
                 continue;
             }
 
-            $fileSize += filesize($file->store->get());
+            $fileSize += $file->store->fileSize();
             foreach ($file->store->getVariants() as $variant) {
                 if (!isset($fileSizes[$variant])) {
                     $fileSizes[$variant] = 0;
                 }
-                $fileSizes[$variant] += filesize($file->store->get($variant));
+                $fileSizes[$variant] += $file->store->fileSize($variant);
             }
         }
 

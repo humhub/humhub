@@ -16,7 +16,7 @@ use yii\helpers\Url;
 /* @var View $this */
 /* @var string $content */
 
-$hasMailHeaderImage = MailHeaderImage::hasImage();
+$hasMailHeaderImage = Yii::$app->img->mailHeader->exists();
 
 $backgroundColorMain = MailStyleHelper::getBackgroundColorMain();
 $backgroundColorPage = MailStyleHelper::getBackgroundColorPage();

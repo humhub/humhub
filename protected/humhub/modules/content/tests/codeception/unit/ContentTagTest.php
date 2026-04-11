@@ -171,11 +171,11 @@ class ContentTagTest extends HumHubDbTestCase
         (new ContentTagService($content))->addTag($tag2);
         $this->assertEquals(1, ContentTagRelation::find()->count());
 
-        $content->delete();
+        $content->getPolymorphicRelation()->delete();
         $this->assertEquals(1, Content::find()->where(['id' => 1])->count());
         $this->assertEquals(0, Content::find()->where(['id' => 1, 'state' => Content::STATE_PUBLISHED])->count());
 
-        $content->hardDelete();
+        $content->getPolymorphicRelation()->hardDelete();
         $this->assertEquals(0, Content::find()->where(['id' => 1])->count());
 
     }

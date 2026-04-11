@@ -100,6 +100,9 @@ class CoreJsConfig extends Widget
                 'oembed' => [
                     'loadUrl' => Url::to(['/oembed']),
                     'displayUrl' => Url::to(['/oembed/display']),
+                    'text' => [
+                        'brokenUrl' => Yii::t('base', 'The URLs cannot be embedded: {urls}'),
+                    ],
                 ],
                 'ui.markdown', [
                     'text' => [

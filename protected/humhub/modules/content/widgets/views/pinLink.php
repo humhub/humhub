@@ -5,18 +5,18 @@
 
 /* @var $pinUrl string */
 
-use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
 use yii\web\View;
 
 ?>
 <li>
     <?php if ($isPinned): ?>
-        <?= Button::asLink(Yii::t('ContentModule.base', 'Unpin'))
+        <?= Link::to(Yii::t('ContentModule.base', 'Unpin'))
             ->action('unpin', $unpinUrl)
             ->cssClass('dropdown-item')
             ->icon('map-pin') ?>
     <?php else: ?>
-        <?= Button::asLink(Yii::t('ContentModule.base', 'Pin to top'))
+        <?= Link::to(Yii::t('ContentModule.base', 'Pin to top'))
             ->action('pin', $pinUrl)
             ->cssClass('dropdown-item')
             ->icon('map-pin') ?>

@@ -434,10 +434,9 @@ class ModuleManagerTest extends HumHubDbTestCase
         // Workaround for internal SaaS core module
         unset($modules['hostinginfo']);
 
-        $locallyEnabledModules = array_intersect_key(static::$moduleDirList, array_flip(array_column(
-            static::dbSelect('module_enabled', 'module_id'),
-            'module_id',
-        )));
+        $locallyEnabledModules = array_intersect_key(static::$moduleDirList, array_flip(
+            ModuleEnabled::find()->select('module_id')->column(),
+        ));
 
         $expected = array_merge(
             [],
@@ -1128,7 +1127,7 @@ class ModuleManagerTest extends HumHubDbTestCase
 
         $this->firedEvents = [];
 
-        static::dbDelete(ModuleEnabled::tableName(), [
+        ModuleEnabled::deleteAll([
             'module_id' => [
                 'module1',
                 'module2',
@@ -1142,10 +1141,7 @@ class ModuleManagerTest extends HumHubDbTestCase
         ]);
 
         if (Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
-            static::$moduleEnabledList ??= array_column(
-                static::dbSelect('module_enabled', 'module_id'),
-                'module_id',
-            );
+            static::$moduleEnabledList ??= ModuleEnabled::find()->select('module_id')->column();
         } else {
             static::$moduleEnabledList ??= [];
         }

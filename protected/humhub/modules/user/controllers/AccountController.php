@@ -427,61 +427,6 @@ class AccountController extends BaseAccountController
     }
 
     /**
-     * Crops the banner image of the user
-     * @deprecated since version 1.2
-     */
-    public function actionCropBannerImage()
-    {
-        return Yii::$app->runAction('/user/image/crop', ['type' => ImageController::TYPE_PROFILE_BANNER_IMAGE]);
-    }
-
-    /**
-     * Handle the banner image upload
-     *
-     * @deprecated since version 1.2
-     */
-    public function actionBannerImageUpload()
-    {
-        // Ensure view file backward compatibility prior 1.2
-        if (isset($_FILES['bannerfiles'])) {
-            $_FILES['images'] = $_FILES['bannerfiles'];
-        }
-        return Yii::$app->runAction('/user/image/upload', ['type' => ImageController::TYPE_PROFILE_BANNER_IMAGE]);
-    }
-
-    /**
-     * Handle the profile image upload
-     *
-     * @deprecated since version 1.2
-     */
-    public function actionProfileImageUpload()
-    {
-        // Ensure view file backward compatibility prior 1.2
-        if (isset($_FILES['profilefiles'])) {
-            $_FILES['images'] = $_FILES['profilefiles'];
-        }
-        return Yii::$app->runAction('/user/image/upload', ['type' => ImageController::TYPE_PROFILE_IMAGE]);
-    }
-
-    /**
-     * Crops the profile image of the user
-     * @deprecated since version 1.2
-     */
-    public function actionCropProfileImage()
-    {
-        return Yii::$app->runAction('/user/image/crop', ['type' => ImageController::TYPE_PROFILE_IMAGE]);
-    }
-
-    /**
-     * Deletes the profile image or profile banner
-     * @deprecated since version 1.2
-     */
-    public function actionDeleteProfileImage()
-    {
-        return Yii::$app->runAction('/user/image/delete', ['type' => (Yii::$app->request->get('type', 'profile') == 'profile') ? ImageController::TYPE_PROFILE_IMAGE : ImageController::TYPE_PROFILE_BANNER_IMAGE]);
-    }
-
-    /**
      * Returns the current user of this account
      *
      * An administration can also pass a user id via GET parameter to change users

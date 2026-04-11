@@ -11,6 +11,7 @@ namespace humhub\modules\marketplace\widgets;
 use humhub\components\Widget;
 use humhub\modules\marketplace\models\Module;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
 use Yii;
 
 /**
@@ -40,7 +41,7 @@ class ModuleInstalledActionButtons extends Widget
 
         if ($this->module->getIsEnabled()) {
             if ($this->module->getConfigUrl() != '') {
-                $html .= Button::asLink(Yii::t('MarketplaceModule.base', 'Configure'), $this->module->getConfigUrl())
+                $html .= Link::to(Yii::t('MarketplaceModule.base', 'Configure'), $this->module->getConfigUrl())
                     ->cssClass('btn btn-sm btn-accent');
             }
             $html .= Button::accent(Yii::t('MarketplaceModule.base', 'Enabled'))

@@ -65,7 +65,7 @@ return [
     'Create the database if it doesn\'t exist yet.' => '',
     'Default Language' => '',
     'Default Timezone' => '',
-    'Ensure the following rule is present in your configuration: <strong>try_files $uri $uri/ /index.php?$args;</strong>.' => '',
+    'Ensure the following rule is present in your configuration: <strong>try_files $uri $uri/ /index.php$is_args$args;</strong>.' => '',
     'For more information on this topic, please refer to our <a href="{link}" target="_blank">documentation</a>.' => '',
     'HumHub uses cron jobs to execute scheduled or to run potentially heavy tasks such as sending out email summaries and notifications or optimizing the search index.' => '',
     'In the installation folder, locate the <strong>.env.example</strong> file and copy its contents into the <strong>.env</strong> file. Next, find the <strong>Pretty URLs</strong> block and uncomment it by removing the <strong>#</strong> symbol.' => '',

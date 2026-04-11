@@ -35,7 +35,7 @@ use humhub\widgets\bootstrap\Link;
     <?= UserPickerField::widget([
         'id' => 'notifyUserInput' . ($isModal ? 'Modal' : ''),
         'url' => $pickerUrl,
-        'formName' => 'notifyUserInput',
+        'name' => 'notifyUserInput',
         'maxSelection' => 10,
         'disabledItems' => [Yii::$app->user->guid],
         'placeholder' => Yii::t('ContentModule.base', 'Add a member to notify'),

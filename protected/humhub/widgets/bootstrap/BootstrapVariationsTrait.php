@@ -28,11 +28,6 @@ trait BootstrapVariationsTrait
 
     public ?string $size = null;
 
-    /**
-     * @var array the HTML attributes for the widget container tag.
-     * @deprecated since 1.18 use [[options]] instead
-     */
-    public array $htmlOptions = [];
     public bool $_visible = true;
 
     public function __toString(): string
@@ -41,14 +36,6 @@ trait BootstrapVariationsTrait
     }
 
     abstract public static function instance(?string $text = null, ?string $color = null): static;
-
-    /**
-     * @deprecated since 1.18 use [[secondary]] instead
-     */
-    public static function defaultType($text = null)
-    {
-        return self::light($text);
-    }
 
     public static function primary(?string $label = null): static
     {
@@ -100,7 +87,7 @@ trait BootstrapVariationsTrait
         return static::instance($label);
     }
 
-    public function icon(string|Icon $icon, bool $right = false, $options = []): static
+    public function icon(string|Icon|null $icon, bool $right = false, $options = []): static
     {
         // Extract icon from FontAwesome 4 HTML element
         // TODO: remove later ($icon should be the name of the Icon or an instance of Icon)
@@ -109,21 +96,13 @@ trait BootstrapVariationsTrait
             $icon = $matches[1] ?? null;
         }
 
-        $this->icon = ($icon instanceof Icon) ? $icon : Icon::get($icon, $options);
+        $this->icon = Icon::get($icon, $options);
 
         if ($right) {
-            $this->icon->right();
+            $this->icon?->right();
         }
 
         return $this;
-    }
-
-    /**
-     * @deprecated since 1.18 use [[sm]] instead
-     */
-    public function xs(): static
-    {
-        return $this->sm();
     }
 
     public function sm(): static
@@ -228,34 +207,17 @@ trait BootstrapVariationsTrait
 
     /**
      * @param string $label
+     * @return static
      */
-    public function setLabel(string $label): void
+    public function setLabel(string $label): static
     {
         $this->label = $label;
+        return $this;
     }
 
     public function visible($isVisible = true): static
     {
         $this->_visible = $isVisible;
-        return $this;
-    }
-
-    /**
-     * @deprecated since 1.18
-     * Use `static::instance($text, $color)` instead for a Bootstrap color
-     * Or `cssBgColor()` for a custom color (Hexadecimal, RGB, RGBA, HSL, HSLA)
-     */
-    public function color($color)
-    {
-        return $this;
-    }
-
-    /**
-     * @deprecated since 1.18
-     * Use `cssTextColor()` instead
-     */
-    public function textColor($color)
-    {
         return $this;
     }
 

@@ -37,26 +37,26 @@ class TopicBadge extends Badge
             ->cssClass(['border', 'border-secondary', 'text-secondary', 'bg-transparent']);
 
         $urlParams = [];
+        $contentContainer = ContentContainerHelper::getCurrent();
 
         if ($content instanceof Content) {
-            $contentContainer = $content->container;
             if ($content->hidden) {
                 $urlParams['filters[entry_hidden]'] = 1;
                 $urlParams['filters_visible'] = 1;
             }
         } elseif ($content instanceof ContentContainerActiveRecord) {
-            $contentContainer = $content;
+            $contentContainer ??= $content;
             Yii::warning('Deprecated type ContentContainerActiveRecord for the second param TopicBadge::forTopic()', 'content');
-        } else {
-            $contentContainer = ContentContainerHelper::getCurrent();
         }
 
-        if ($contentContainer instanceof ContentContainerActiveRecord) {
-            $badge->withLink(Link::withAction('', 'topic.addTopic')->options([
+        $badge->withLink(
+            Link::withAction('', 'topic.addTopic')
+            ->options([
                 'data-topic-id' => $topic->id,
                 'data-topic-url' => $topic->getUrl($contentContainer, $urlParams),
-            ]));
-        }
+            ])
+            ->encodeLabel(false),
+        );
 
         return $badge;
     }

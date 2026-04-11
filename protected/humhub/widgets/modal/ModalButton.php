@@ -51,17 +51,6 @@ class ModalButton extends Button
     }
 
     /**
-     * @param null $url
-     * @param null $text
-     * @return Button
-     * @deprecated since 1.18
-     */
-    public static function submitModal($url = null, $text = null)
-    {
-        return static::save($text)->submit($url);
-    }
-
-    /**
      * @param null $text
      * @return $this
      */
