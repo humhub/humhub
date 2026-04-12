@@ -43,6 +43,7 @@ class Yii
  * @property \humhub\components\InstallationState $installationState
  * @property \humhub\components\bootstrap\SystemRevision $systemRevision
  * @property \humhub\components\fs\FilesystemManager $fs
+ * @property \humhub\components\bootstrap\SystemRevision $systemRevision
  */
 class __Application
 {

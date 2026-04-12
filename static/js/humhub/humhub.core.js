@@ -79,22 +79,9 @@ var humhub = humhub || (function ($) {
      * A module can provide an `init` function, which by default is only called after the first initialization
      * e.g. after a full page load when the document is ready or when loaded by means of ajax.
      *
-     * The `init` function can be either synchronous or asynchronous. If it returns a Promise, the initialization
-     * process will await its completion before triggering the 'humhub:ready' event:
-     *
-     * ```
-     * module.init = function() {
-     *     // Async initialization that returns a Promise
-     *     return humhub.require('i18n').loadTranslations('myCategory').then(function() {
-     *         // Initialize after translations are loaded
-     *     });
-     * };
-     * ```
-     *
      * If a module requires translations during startup, it can declare
      * `module.requiredI18nCategories = ['CategoryA', 'CategoryB']`. Core will
-     * batch-load these categories before triggering `humhub:ready`. This works
-     * alongside async `init()`; any promise returned by `init()` is still awaited.
+     * batch-load these categories before triggering `humhub:ready`.
      *
      * In case a module `init` function needs to be called also after each `pjax` request, the module `initOnPjaxLoad` has to be
      * set to `true`:
@@ -220,7 +207,6 @@ var humhub = humhub || (function ($) {
         instance.require = require;
         instance.initOnPjaxLoad = false;
         instance.initOnAjaxLoad = false;
-        instance.asyncInit = false;
         instance.isModule = true;
         instance.id = 'humhub.modules.' + _cutModulePrefix(id);
         instance.config = require('config').module(instance);
@@ -598,21 +584,15 @@ var humhub = humhub || (function ($) {
         });
 
         preloadRequiredI18n(initialModules).then(function() {
-            var initChain = Promise.resolve();
-
             $.each(initialModules, function (i, module) {
-                initChain = initChain.then(function() {
-                    return initModule(module);
-                });
+                initModule(module);
             });
-
-            return initChain;
         }).then(function() {
             humhub.initialized = true;
             event.trigger('humhub:ready');
             $(document).trigger('humhub:ready', [false, humhub]);
         }).catch(function(err) {
-            log.error('Error during async module initialization', err);
+            log.error('Error during module initialization', err);
             humhub.initialized = true;
             event.trigger('humhub:ready');
             $(document).trigger('humhub:ready', [false, humhub]);
@@ -644,7 +624,7 @@ var humhub = humhub || (function ($) {
 
     var initModuleWithRequiredI18n = function(module, isPjax) {
         return preloadRequiredI18n([module]).then(function() {
-            return initModule(module, isPjax);
+            initModule(module, isPjax);
         });
     };
 
@@ -657,18 +637,7 @@ var humhub = humhub || (function ($) {
                 event.trigger(module.id.replace('.', ':') + ':beforeInit', module);
 
                 event.trigger(module.id.replace(/\./g, ':') + ':beforeInit', module);
-                var result = module.init(isPjax);
-
-                // Check if init() returned a promise
-                if (result && typeof result.then === 'function') {
-                    return result.then(function() {
-                        event.trigger(module.id.replace(/\./g, ':') + ':afterInit', module);
-                        event.trigger('humhub:afterInitModule', module);
-                        log.debug('Module initialized: ' + module.id);
-                    }).catch(function(err) {
-                        log.error('Could not initialize module: ' + module.id, err);
-                    });
-                }
+                module.init(isPjax);
 
                 event.trigger(module.id.replace(/\./g, ':') + ':afterInit', module);
             } catch (err) {
@@ -685,14 +654,15 @@ var humhub = humhub || (function ($) {
     event.on('humhub:modules:client:pjax:success', function (evt) {
         // Init all modules again which were unloaded in the beforeSend and are configured for pjax initialization.
         // Note: this does not include modules loaded by the pjax request, those are initialized in the module function.
-        var initPromises = [];
-        $.each(pjaxInitModules, function (i, module) {
-            if (module.initOnPjaxLoad && unloaded.indexOf(module.id) > -1) {
-                initPromises.push(initModuleWithRequiredI18n(module, true));
-            }
-        });
+        preloadRequiredI18n(pjaxInitModules.filter(function(module) {
+            return module.initOnPjaxLoad && unloaded.indexOf(module.id) > -1;
+        })).then(function() {
+            $.each(pjaxInitModules, function (i, module) {
+                if (module.initOnPjaxLoad && unloaded.indexOf(module.id) > -1) {
+                    initModule(module, true);
+                }
+            });
 
-        Promise.all(initPromises).then(function() {
             event.trigger('humhub:ready');
             $(document).trigger('humhub:ready', [true, humhub]);
         }).catch(function(err) {
