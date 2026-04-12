@@ -11,8 +11,13 @@ humhub.module('i18n', function(module, require, $) {
     var batchCategories = new Set();
     var batchPromise = null;
     var batchResolvers = [];
+    var useCache = !module.config.debug;
 
     var checkRevision = function() {
+        if (!useCache) {
+            return;
+        }
+
         var revisionKey = 'humhub.i18n.revision';
 
         var revision = module.config.revision || '';
@@ -81,16 +86,18 @@ humhub.module('i18n', function(module, require, $) {
                 return false;
             }
 
-            try {
-                var cached = localStorage.getItem(getStorageKey(category));
-                if (cached) {
-                    var messages = JSON.parse(cached);
-                    updateIntlMessages(category, messages);
-                    loadedCategories.add(category);
-                    module.log.debug('i18n category loaded from cache', {category: category});
-                    return false;
-                }
-            } catch (e) {}
+            if (useCache) {
+                try {
+                    var cached = localStorage.getItem(getStorageKey(category));
+                    if (cached) {
+                        var messages = JSON.parse(cached);
+                        updateIntlMessages(category, messages);
+                        loadedCategories.add(category);
+                        module.log.debug('i18n category loaded from cache', {category: category});
+                        return false;
+                    }
+                } catch (e) {}
+            }
 
             module.log.debug('i18n category cache missing', {category: category});
             return true;
@@ -116,9 +123,11 @@ humhub.module('i18n', function(module, require, $) {
                     updateIntlMessages(category, messages);
                     loadedCategories.add(category);
 
-                    try {
-                        localStorage.setItem(getStorageKey(category), JSON.stringify(messages));
-                    } catch (e) {}
+                    if (useCache) {
+                        try {
+                            localStorage.setItem(getStorageKey(category), JSON.stringify(messages));
+                        } catch (e) {}
+                    }
                 });
             }
             module.log.debug('i18n categories loaded', {categories: categoriesToLoad});
