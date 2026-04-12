@@ -9,6 +9,7 @@
 use humhub\helpers\DeviceDetectorHelper;
 use humhub\helpers\Html;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
 use yii\helpers\Json;
@@ -55,7 +56,7 @@ use yii\helpers\Url;
         <h4>Test Push Notification</h4>
         <p>
             Make sure the <code>Mobile</code> checkbox is enabled for
-            <?= Button::asLink('Administrative Notifications!', ['/notification/user']) ?>.
+            <?= Link::to('Administrative Notifications!', ['/notification/user']) ?>.
             It may take a few minutes.
         </p>
         <?= Button::primary('Trigger "HumHub Update" notification')

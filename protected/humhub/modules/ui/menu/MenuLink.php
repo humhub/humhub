@@ -28,13 +28,16 @@ class MenuLink extends MenuEntry
      * @var string|array the url or route
      */
     protected $url;
-
-
     /**
      * @var Button
      */
     protected $link;
 
+    public function setEncodeLabel(bool $encodeLabel)
+    {
+        $this->getLink()->encodeLabel($encodeLabel);
+        return $this;
+    }
 
     /**
      * @return Button
@@ -182,54 +185,6 @@ class MenuLink extends MenuEntry
     }
 
     /**
-     * Creates MenuEntry by old and deprecated array structure
-     *
-     * > Note: In the array icons must be provided in legacy html format.
-     *
-     * @param $item
-     * @return MenuLink
-     * @deprecated since 1.4
-     */
-    public static function createByArray($item)
-    {
-        $entry = new static();
-
-        if (isset($item['id'])) {
-            $entry->id = $item['id'];
-        }
-
-        if (isset($item['label'])) {
-            $entry->setLabel($item['label']);
-        }
-
-        if (isset($item['icon'])) {
-            $entry->setIcon($item['icon']);
-        }
-
-        if (isset($item['url'])) {
-            $entry->setUrl($item['url']);
-        }
-
-        if (isset($item['sortOrder'])) {
-            $entry->sortOrder = $item['sortOrder'];
-        }
-
-        if (isset($item['isActive'])) {
-            $entry->isActive = $item['isActive'];
-        }
-
-        if (isset($item['isVisible'])) {
-            $entry->isVisible = $item['isVisible'];
-        }
-
-        if (isset($item['htmlOptions'])) {
-            $entry->setHtmlOptions($item['htmlOptions']);
-        }
-
-        return $entry;
-    }
-
-    /**
      * @param array $htmlOptions
      * @return static
      */
@@ -238,28 +193,4 @@ class MenuLink extends MenuEntry
         $this->getLink()->options($htmlOptions);
         return $this;
     }
-
-    /**
-     * Returns the MenuEntry as array structure
-     *
-     * @return array the menu entry array representation
-     * @deprecated since 1.4
-     */
-    public function toArray()
-    {
-        if (!isset($this->htmlOptions['class'])) {
-            $this->htmlOptions['class'] = '';
-        }
-
-        return [
-            'label' => $this->getLabel(),
-            'id' => $this->getId(),
-            'icon' => $this->getIcon(),
-            'url' => $this->getUrl(),
-            'sortOrder' => $this->sortOrder,
-            'isActive' => $this->isActive,
-            'htmlOptions' => $this->getHtmlOptions(),
-        ];
-    }
-
 }

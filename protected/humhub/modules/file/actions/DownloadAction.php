@@ -8,8 +8,10 @@
 
 namespace humhub\modules\file\actions;
 
+use DateTimeImmutable;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use humhub\components\fs\LocalMountConfig;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
 use humhub\modules\file\Module;
@@ -61,7 +63,10 @@ class DownloadAction extends Action
         $this->loadFile(Yii::$app->request->get('guid'), Yii::$app->request->get('token'));
         $this->download = (bool)Yii::$app->request->get('download', false);
         $this->loadVariant(Yii::$app->request->get('variant'));
-        $this->checkFileExists();
+
+        if (!$this->file->store->has($this->variant)) {
+            throw new HttpException(404, Yii::t('FileModule.base', 'Could not find requested file!'));
+        }
     }
 
     /**
@@ -77,18 +82,14 @@ class DownloadAction extends Action
         if (!parent::beforeRun()) {
             return false;
         }
+
         if (!$this->enableHttpCache) {
             return true;
         }
 
         $httpCache = new HttpCache();
         $httpCache->lastModified = (fn() => Yii::$app->formatter->asTimestamp($this->file->updated_at));
-        $httpCache->etagSeed = function () {
-            if (file_exists($this->getStoredFilePath())) {
-                return md5_file($this->getStoredFilePath());
-            }
-            return null;
-        };
+        $httpCache->etagSeed = (fn() => $this->file->store->checksum($this->variant, 'md5'));
         if (!$httpCache->beforeAction($this)) {
             return false;
         }
@@ -102,17 +103,40 @@ class DownloadAction extends Action
     public function run()
     {
         $fileName = $this->getFileName();
-        $mimeType = FileHelper::getMimeType($this->getStoredFilePath());
+        $mimeType = $this->file->store->mimeType($this->variant);
 
         $options = [
             'inline' => (!$this->download && in_array($mimeType, $this->getModule()->inlineMimeTypes, true)),
             'mimeType' => $mimeType,
         ];
 
-        if ($this->useXSendFile()) {
-            Yii::$app->response->xSendFile($this->getStoredFilePath(), $fileName, $options);
+        $dataMountConfig = Yii::$app->fs->getDataMountConfig();
+        if ($this->getModule()->settings->get('useXSendfile')) {
+            if ($dataMountConfig instanceof LocalMountConfig) {
+                Yii::$app->response->xSendFile(
+                    Yii::getAlias($dataMountConfig->path) . DIRECTORY_SEPARATOR . $this->file->store->get($this->variant),
+                    $fileName,
+                    $options,
+                );
+            } else {
+                Yii::error(
+                    'XSendfile is only supported by ' . LocalMountConfig::class . ' mounts. '
+                    . get_class($dataMountConfig) . ' given.',
+                );
+            }
+        } elseif ($dataMountConfig->useTemporaryUrls()) {
+            $url = Yii::$app->fs->getDataMount()->temporaryUrl(
+                $this->file->store->get($this->variant),
+                new DateTimeImmutable('+1 hour'),
+            );
+            Yii::$app->response->redirect($url);
         } else {
-            Yii::$app->response->sendFile($this->getStoredFilePath(), $fileName, $options);
+            $options['fileSize'] = $this->file->store->fileSize($this->variant);
+            Yii::$app->response->sendStreamAsFile(
+                $this->file->store->getContentStream($this->variant),
+                $fileName,
+                $options,
+            );
         }
     }
 
@@ -177,21 +201,9 @@ class DownloadAction extends Action
      *
      * @return Module
      */
-    protected function getModule()
+    protected function getModule(): Module
     {
         return Yii::$app->getModule('file');
-    }
-
-    /**
-     * Check if requested file exists
-     *
-     * @throws HttpException
-     */
-    protected function checkFileExists()
-    {
-        if (!file_exists($this->file->store->get($this->variant))) {
-            throw new HttpException(404, Yii::t('FileModule.base', 'Could not find requested file!'));
-        }
     }
 
     /**
@@ -218,26 +230,6 @@ class DownloadAction extends Action
         }
 
         return $this->file->file_name . '_' . $this->variant;
-    }
-
-    /**
-     * Checks if XSendFile downloads are enabled
-     *
-     * @return bool
-     */
-    protected function useXSendFile()
-    {
-        return ($this->getModule()->settings->get('useXSendfile'));
-    }
-
-    /**
-     * Returns the file path of the stored file
-     *
-     * @return string path to the saved file
-     */
-    protected function getStoredFilePath()
-    {
-        return $this->file->store->get($this->variant);
     }
 
     /**

@@ -5,7 +5,7 @@ use humhub\helpers\Html;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\Module;
 use humhub\modules\comment\widgets\CommentLink;
-use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
 use yii\helpers\Url;
 
 /* @var $this View */
@@ -21,7 +21,7 @@ $hasComments = ($commentCount > 0);
 $commentCountSpan = Html::tag('span', ' (' . $commentCount . ')', [
     'class' => 'comment-count',
     'data-count' => $commentCount,
-    'style' => ($hasComments) ? null : 'display:none'
+    'style' => ($hasComments) ? null : 'display:none',
 ]);
 
 $label = ($isNestedComment) ? Yii::t('CommentModule.base', "Reply") : Yii::t('CommentModule.base', "Comment");
@@ -39,6 +39,7 @@ $label = ($isNestedComment) ? Yii::t('CommentModule.base', "Reply") : Yii::t('Co
         ['data-bs-target' => '#globalModal']
     ) ?>
 <?php else : ?>
-    <?= Button::asLink($label . $commentCountSpan)
+    <?= Link::to($label . $commentCountSpan)
+        ->encodeLabel(false)
         ->action('comment.toggleComment', null, '#comment_' . $id) ?>
 <?php endif; ?>

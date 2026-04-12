@@ -3,11 +3,11 @@
 namespace humhub\modules\content\controllers;
 
 use Exception;
+use humhub\components\assets\AssetImage;
 use Yii;
 use yii\web\HttpException;
 use yii\web\Response;
 use yii\web\UploadedFile;
-use humhub\libs\ProfileImage;
 use humhub\models\forms\CropProfileImage;
 use humhub\models\forms\UploadProfileImage;
 use humhub\modules\content\components\ContentContainerController;
@@ -73,14 +73,14 @@ abstract class ContainerImageController extends ContentContainerController
     protected function handleImageUpload($uploadName, $type = self::TYPE_PROFILE_IMAGE)
     {
         $files = UploadedFile::getInstancesByName($uploadName);
-
         $model = new UploadProfileImage(['image' => $files[0] ?? null]);
 
         if ($model->validate()) {
             try {
-                $profileImage = $this->getImageByType($type);
-                $profileImage->setNew($model->image);
+                $assetImage = $this->getImageByType($type);
+                $assetImage->setUploadedFile($files[0]);
             } catch (Exception $e) {
+                Yii::error($e);
                 return $this->asJson([
                     'files' => [
                         [
@@ -95,7 +95,7 @@ abstract class ContainerImageController extends ContentContainerController
             return $this->asJson([
                 'files' => [
                     [
-                        'url' => $profileImage->getUrl(),
+                        'url' => $assetImage->getUrl(),
                         'type' => $type,
                         'container_id' => $this->contentContainer->contentcontainer_id,
                         'space_id' => $this->contentContainer->id, // Deprecated, only remained for legacy themes prior to 1.4
@@ -117,17 +117,18 @@ abstract class ContainerImageController extends ContentContainerController
     public function handleCrop($type = self::TYPE_PROFILE_IMAGE)
     {
         $model = new CropProfileImage();
-        $profileImage = $this->getImageByType($type);
+        $assetImage = $this->getImageByType($type);
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $profileImage->cropOriginal($model->cropX, $model->cropY, $model->cropH, $model->cropW);
+            $assetImage->crop($model->cropX, $model->cropY, $model->cropH, $model->cropW);
             $this->view->saved();
             return $this->htmlRedirect($this->contentContainer->getUrl());
         }
 
         return $this->renderAjax('@content/views/container-image/cropModal', [
             'model' => $model,
-            'profileImage' => $profileImage,
+            'assetImage' => $assetImage,
+            'imageType' => $type,
             'container' => $this->contentContainer,
         ]);
     }
@@ -151,14 +152,10 @@ abstract class ContainerImageController extends ContentContainerController
         return $this->asJson($result);
     }
 
-    /**
-     * @param $type
-     * @return ProfileImage
-     */
-    protected function getImageByType($type)
+    protected function getImageByType($type): AssetImage
     {
         return $type === static::TYPE_PROFILE_BANNER_IMAGE
-            ? $this->contentContainer->getProfileBannerImage()
-            : $this->contentContainer->getProfileImage();
+            ? $this->contentContainer->bannerImage
+            : $this->contentContainer->image;
     }
 }

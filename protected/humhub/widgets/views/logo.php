@@ -1,7 +1,6 @@
 <?php
 
 use humhub\helpers\Html;
-use humhub\libs\LogoImage;
 use humhub\widgets\SiteLogo;
 
 /**
@@ -12,9 +11,8 @@ use humhub\widgets\SiteLogo;
  * @var $class string
  */
 
-$hasLogoImage = LogoImage::hasImage();
-if ($hasLogoImage) {
-    $img = Html::img(LogoImage::getUrl($maxWidth, $maxHeight), [
+if (Yii::$app->img->logo->exists()) {
+    $img = Html::img(Yii::$app->img->logo->getUrl(['maxWidth' => $maxWidth, 'maxHeight' => $maxHeight]), [
         'id' => $id,
         'class' => $class,
         'alt' => Yii::t('base', 'Logo of {appName}', ['appName' => Html::encode(Yii::$app->name)]),
@@ -23,7 +21,7 @@ if ($hasLogoImage) {
 ?>
 
 <?php if ($place === SiteLogo::PLACE_TOP_MENU) : ?>
-    <?php if ($hasLogoImage) : ?>
+    <?php if (Yii::$app->img->logo->exists()) : ?>
         <a class="navbar-brand d-none d-sm-block" href="<?= Yii::$app->homeUrl ?>">
             <?= $img ?>
         </a>
@@ -36,7 +34,7 @@ if ($hasLogoImage) {
 <?php endif; ?>
 
 <?php if ($place === SiteLogo::PLACE_LOGIN) : ?>
-    <?php if ($hasLogoImage) : ?>
+    <?php if (Yii::$app->img->logo->exists()) : ?>
         <a href="<?= Yii::$app->homeUrl ?>" data-pjax-prevent>
             <?= $img ?>
         </a>

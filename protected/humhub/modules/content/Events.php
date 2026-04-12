@@ -39,7 +39,7 @@ class Events extends BaseObject
 
         // Delete user profile content on soft delete
         foreach (Content::findAll(['contentcontainer_id' => $event->user->contentcontainer_id]) as $content) {
-            $content->hardDelete();
+            $content->getPolymorphicRelation()->hardDelete();
         }
     }
 
@@ -52,7 +52,7 @@ class Events extends BaseObject
     {
         $user = $event->sender;
         foreach (Content::findAll(['created_by' => $user->id]) as $content) {
-            $content->hardDelete();
+            $content->getPolymorphicRelation()->hardDelete();
         }
     }
 
@@ -88,12 +88,12 @@ class Events extends BaseObject
             /* @var Content $content */
             if ($content->createdBy == null) {
                 if ($integrityController->showFix('Deleting content id ' . $content->id . ' of type ' . $content->object_model . ' without valid user!')) {
-                    $content->hardDelete();
+                    $content->getPolymorphicRelation()->hardDelete();
                 }
             }
             if ($content->getPolymorphicRelation() === null) {
                 if ($integrityController->showFix('Deleting content id ' . $content->id . ' of type ' . $content->object_model . ' without valid content object!')) {
-                    $content->hardDelete();
+                    $content->getPolymorphicRelation()->hardDelete();
                 }
             }
         }

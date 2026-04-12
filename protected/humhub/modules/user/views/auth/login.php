@@ -22,7 +22,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 
 ?>
 
-<div id="user-auth-login" class="container<?= AuthChoice::getClientsCount() > 1 ? ' has-multiple-auth-buttons' : '' ?>">
+<div id="user-auth-login" class="container container-login<?= AuthChoice::getClientsCount() > 1 ? ' has-multiple-auth-buttons' : '' ?>">
     <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br>
 
@@ -102,9 +102,9 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
                 <?php $form = ActiveForm::begin(['id' => 'invite-form']); ?>
                 <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email'), 'aria-label' => $invite->getAttributeLabel('email')])->label(false); ?>
                 <?php if ($invite->showCaptureInRegisterForm()) : ?>
-                    <div id="registration-form-captcha" style="display: none;">
-                        <?= $form->field($invite, 'captcha')->widget(CaptchaField::class)->label(false) ?>
-                    </div>
+                    <?= $form->field($invite, 'captcha')
+                        ->widget(CaptchaField::class, ['showOnFocusElement' => '#register-email'])
+                        ->label(false) ?>
                 <?php endif; ?>
 
                 <?= Html::submitButton(Yii::t('UserModule.auth', 'Register'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']) ?>
@@ -138,11 +138,5 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
     $('#register-form').addClass('shake');
     $('#login-form').removeClass('bounceIn');
     $('#app-title').removeClass('fadeIn');
-    <?php } ?>
-
-    <?php if ($invite->showCaptureInRegisterForm()) { ?>
-    $('#register-email').on('focus', function () {
-        $('#registration-form-captcha').fadeIn(500);
-    });
     <?php } ?>
 </script>

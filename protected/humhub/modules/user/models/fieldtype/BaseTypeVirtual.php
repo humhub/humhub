@@ -9,6 +9,8 @@
 namespace humhub\modules\user\models\fieldtype;
 
 use humhub\modules\user\models\User;
+use Yii;
+use yii\caching\TagDependency;
 
 /**
  * Base type for virtual profile fields
@@ -30,13 +32,32 @@ abstract class BaseTypeVirtual extends BaseType
      */
     public $isVirtual = true;
 
+    /**
+     * @var bool whether the field value can be cached
+     */
+    protected bool $isCacheable = false;
+
+    private const CACHE_PREFIX = 'profile_field_';
 
     /**
      * @inheritdoc
      */
     final public function getUserValue(User $user, bool $raw = true, bool $encode = true): ?string
     {
-        return $this->getVirtualUserValue($user, $raw, $encode);
+        if (!$this->isCacheable) {
+            return $this->getVirtualUserValue($user, $raw, $encode);
+        }
+
+        $cacheTag = self::CACHE_PREFIX . $user->id;
+
+        $cacheKey = $cacheTag . '_'
+            . $this->profileField->id . '_'
+            . intval($raw) . '_'
+            . intval($encode);
+
+        return Yii::$app->cache->getOrSet($cacheKey, function () use ($user, $raw, $encode) {
+            return $this->getVirtualUserValue($user, $raw, $encode);
+        }, null, new TagDependency(['tags' => $cacheTag]));
     }
 
     /**
@@ -93,5 +114,11 @@ abstract class BaseTypeVirtual extends BaseType
         return parent::save();
     }
 
-
+    /**
+     * @since 1.18.1
+     */
+    public static function flushCache(User $user): void
+    {
+        TagDependency::invalidate(Yii::$app->cache, self::CACHE_PREFIX . $user->id);
+    }
 }
