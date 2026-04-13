@@ -2,18 +2,13 @@
 nixPkgs = [
   "php82",
   "php82Packages.composer",
-  "php82Extensions.curl",
-  "php82Extensions.gd",
-  "php82Extensions.intl",
-  "php82Extensions.mbstring",
-  "php82Extensions.pdo_mysql",
-  "php82Extensions.xml",
-  "php82Extensions.zip"
+  "nodejs_22"
 ]
 
 [phases.build]
 cmds = [
-  "composer install --no-dev --optimize-autoloader --no-interaction"
+  "composer install --ignore-platform-reqs",
+  "npm ci"
 ]
 
 [start]
