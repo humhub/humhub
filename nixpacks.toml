@@ -1,15 +1,14 @@
 [phases.setup]
 nixPkgs = [
   "php82",
+  "php82Packages.composer",
+  "php82Extensions.curl",
   "php82Extensions.gd",
   "php82Extensions.intl",
-  "php82Extensions.pdo_mysql",
-  "php82Extensions.zip",
-  "php82Extensions.curl",
   "php82Extensions.mbstring",
+  "php82Extensions.pdo_mysql",
   "php82Extensions.xml",
-  "php82Extensions.imagick",
-  "composer"
+  "php82Extensions.zip"
 ]
 
 [phases.build]
@@ -18,4 +17,4 @@ cmds = [
 ]
 
 [start]
-cmd = "chmod -R 777 assets uploads protected/runtime protected/config && php-fpm"
+cmd = "chmod -R 777 /app/assets /app/uploads /app/protected/runtime /app/protected/config && php-fpm"
