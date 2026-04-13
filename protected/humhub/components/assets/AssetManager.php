@@ -32,7 +32,7 @@ class AssetManager extends \yii\web\AssetManager
         parent::init();
 
         $this->fs = Yii::$app->fs->getAssetsMount();
-        $this->baseUrl = Yii::$app->fs->getAssetsMountConfig()->getBaseUrl();
+        $this->baseUrl = rtrim((string) Yii::getAlias(Yii::$app->fs->getAssetsMountConfig()->getBaseUrl()), '/');
 
         if (empty($this->baseUrl)) {
             throw new InvalidArgumentException('Base URL must be set.');
@@ -61,13 +61,35 @@ class AssetManager extends \yii\web\AssetManager
         $path = Yii::getAlias($path);
 
         if (isset($this->_published[$path]) && empty($options['forceCopy'])) {
-            //Yii::debug("Cached asset '{$path}'", __METHOD__);
-            return $this->_published[$path];
+            if ($this->isPublishedEntryAvailable($this->_published[$path])) {
+                //Yii::debug("Cached asset '{$path}'", __METHOD__);
+                return $this->_published[$path];
+            }
+
+            unset($this->_published[$path]);
         }
 
         Yii::debug("Publishing asset '{$path}'", __METHOD__);
 
         return $this->_published[$path] = parent::publish($path, $options);
+    }
+
+    private function isPublishedEntryAvailable(mixed $published): bool
+    {
+        if (!is_array($published) || empty($published[0]) || !is_string($published[0])) {
+            return false;
+        }
+
+        $publishedPath = $this->getFsPath($published[0]);
+        if ($publishedPath === '') {
+            return false;
+        }
+
+        try {
+            return $this->fs->fileExists($publishedPath) || $this->fs->directoryExists($publishedPath);
+        } catch (FilesystemException) {
+            return false;
+        }
     }
 
     protected function publishFile($src)
@@ -76,15 +98,16 @@ class AssetManager extends \yii\web\AssetManager
         $fileName = basename($src);
         $dstDir = $this->basePath . DIRECTORY_SEPARATOR . $dir;
         $dstFile = $dstDir . DIRECTORY_SEPARATOR . $fileName;
+        $relativeDstFile = $this->getFsPath($dstFile);
 
         if (
-            !$this->fs->fileExists($dstFile)
-            || $this->fs->lastModified($dstFile) < @filemtime($src)
+            !$this->fs->fileExists($relativeDstFile)
+            || $this->fs->lastModified($relativeDstFile) < @filemtime($src)
         ) {
-            $this->fs->writeStream($dstFile, fopen($src, 'r'));
+            $this->fs->writeStream($relativeDstFile, fopen($src, 'r'));
         }
 
-        if ($this->appendTimestamp && ($timestamp = $this->fs->lastModified($dstFile)) > 0) {
+        if ($this->appendTimestamp && ($timestamp = $this->fs->lastModified($relativeDstFile)) > 0) {
             $fileName = $fileName . "?v=$timestamp";
         }
 
@@ -94,10 +117,11 @@ class AssetManager extends \yii\web\AssetManager
     protected function publishDirectory($src, $options)
     {
         $dstDir = $this->hash($src);
+        $relativeDstDir = $this->getFsPath($dstDir);
 
         $forceCopy = !empty($options['forceCopy']) || ($this->forceCopy && !isset($options['forceCopy']));
 
-        if ($forceCopy || !$this->fs->directoryExists($dstDir)) {
+        if ($forceCopy || !$this->fs->directoryExists($relativeDstDir)) {
             $currentLength = strlen($src);
 
             /*
@@ -116,7 +140,7 @@ class AssetManager extends \yii\web\AssetManager
             $files = FileHelper::findFiles($src);
             foreach ($files as $file) {
                 $dstFile = substr($file, $currentLength);
-                $this->fs->writeStream($dstDir . $dstFile, fopen($file, 'r'), $this->filesystemOptions);
+                $this->fs->writeStream($this->getFsPath($dstDir . $dstFile), fopen($file, 'r'), $this->filesystemOptions);
             }
         }
 
@@ -189,7 +213,7 @@ class AssetManager extends \yii\web\AssetManager
     public function fileWrite($file, $content)
     {
         try {
-            $this->fs->write($file, $content, $this->filesystemOptions);
+            $this->fs->write($this->getFsPath($file), $content, $this->filesystemOptions);
         } catch (FilesystemException $e) {
             print $e->getMessage();
             die();
@@ -199,10 +223,22 @@ class AssetManager extends \yii\web\AssetManager
     public function fileExists($file)
     {
         try {
-            return $this->fs->has($file);
+            return $this->fs->has($this->getFsPath($file));
         } catch (FilesystemException $e) {
             print $e->getMessage();
             die();
         }
+    }
+
+    private function getFsPath(string $path): string
+    {
+        $path = str_replace('\\', '/', $path);
+        $basePathPrefix = rtrim(str_replace('\\', '/', $this->basePath), '/') . '/';
+
+        if (str_starts_with($path, $basePathPrefix)) {
+            $path = substr($path, strlen($basePathPrefix));
+        }
+
+        return trim($path, '/');
     }
 }
