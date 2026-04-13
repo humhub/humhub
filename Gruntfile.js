@@ -22,11 +22,11 @@ module.exports = function (grunt) {
                 command: function () {
                     let rm = isWin() ? 'del' : 'rm';
                     let sep = cmdSep();
-                    let delAssets = isWin() ? '(For /D %i in (static\\assets\\*.*) do (rmdir %i /S /Q))' : `${rm} -rf static/assets/*/`;
+                    let delAssets = isWin() ? '(For /D %i in (assets\\*.*) do (rmdir %i /S /Q))' : `${rm} -rf assets/*/`;
                     let dirSep = isWin() ? "\\" : '/';
-                    let jsFile = `static${dirSep}js${dirSep}humhub-*.js`;
-                    let cssFile = `static${dirSep}css${dirSep}humhub-*.css`;
-                    return `${rm} ${jsFile} ${sep} ${rm} ${cssFile} ${sep} ${delAssets} ${sep} cd protected ${sep} php yii asset humhub/config/assets.php humhub/config/assets-prod.php`;
+                    let jsFile = `protected${dirSep}humhub${dirSep}resources${dirSep}js${dirSep}humhub-*.js`;
+                    let cssFile = `protected${dirSep}humhub${dirSep}resources${dirSep}css${dirSep}humhub-*.css`;
+                    return `${rm} ${jsFile} ${sep} ${rm} ${cssFile} ${sep} ${delAssets} ${sep} cd protected ${sep} php yii asset humhub/config/assets.php humhub/config/assets-prod.php ${sep} php yii cache/flush-all`;
                 }
             },
             buildSearch: {

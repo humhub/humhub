@@ -8,22 +8,19 @@
 
 namespace humhub\assets;
 
+use humhub\components\assets\WebResourcesAssetBundle;
 use yii\helpers\Url;
-use yii\web\AssetBundle;
 use yii\web\View;
 
 /**
  * @since 1.16
  */
-class SearchAsset extends AssetBundle
+class SearchAsset extends WebResourcesAssetBundle
 {
     /**
      * @inheritdoc
      */
     public $jsOptions = ['position' => View::POS_END];
-
-    public $basePath = '@webroot-static';
-    public $baseUrl = '@web-static';
 
     /**
      * @inheritdoc

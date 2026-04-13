@@ -176,7 +176,7 @@ class Module extends Model
     public function getImage(): string
     {
         return empty($this->moduleImageUrl)
-            ? Yii::getAlias('@web-static/img/default_module.jpg')
+            ? Yii::getAlias('@web-resources/img/default_module.jpg')
             : $this->moduleImageUrl;
     }
 

@@ -8,13 +8,13 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\WebStaticAssetBundle;
+use humhub\components\assets\WebResourcesAssetBundle;
 use yii\web\View;
 
 /**
  * HumHub Core Api Asset
  */
-class CoreApiAsset extends WebStaticAssetBundle
+class CoreApiAsset extends WebResourcesAssetBundle
 {
     /**
      * @inheritdoc

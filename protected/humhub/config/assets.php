@@ -9,7 +9,7 @@
 use humhub\assets\AppAsset;
 use humhub\assets\CoreBundleAsset;
 use humhub\assets\JuiBootstrapBridgeAsset;
-use humhub\components\assets\WebStaticAssetBundle;
+use humhub\components\assets\WebResourcesAssetBundle;
 use humhub\components\View;
 use yii\bootstrap5\BootstrapAsset;
 use yii\bootstrap5\BootstrapPluginAsset;
@@ -26,8 +26,8 @@ use yii\web\JqueryAsset;
 Yii::setAlias('@webroot', __DIR__ . '/../../../');
 Yii::setAlias('@web', '/');
 
-Yii::setAlias('@webroot-static', __DIR__ . '/../../../static');
-Yii::setAlias('@web-static', '/static');
+Yii::setAlias('@webroot-resources', __DIR__ . '/../resources');
+Yii::setAlias('@web-resources', Yii::$app->assetManager->getPublishedUrl('@webroot-resources'));
 
 $bundels = ArrayHelper::merge(AppAsset::STATIC_DEPENDS, CoreBundleAsset::STATIC_DEPENDS);
 $bundels = ArrayHelper::merge([AppAsset::class, CoreBundleAsset::class], $bundels);
@@ -42,11 +42,11 @@ return [
     // Asset bundle for compression output:
     'targets' => [
         AppAsset::BUNDLE_NAME => [
-            'class' => WebStaticAssetBundle::class,
+            'class' => WebResourcesAssetBundle::class,
             'defer' => false,
             'defaultDepends' => false,
-            'basePath' => '@webroot-static',
-            'baseUrl' => '@web-static',
+            'basePath' => '@webroot-resources',
+            'baseUrl' => '@web-resources',
             'jsPosition' => View::POS_HEAD,
             'js' => 'js/humhub-app.js',
             'css' => 'css/humhub-app.css',
@@ -57,12 +57,12 @@ return [
             'depends' => AppAsset::STATIC_DEPENDS,
         ],
         CoreBundleAsset::BUNDLE_NAME => [
-            'class' => WebStaticAssetBundle::class,
+            'class' => WebResourcesAssetBundle::class,
             'defer' => true,
             'jsPosition' => View::POS_HEAD,
             'defaultDepends' => false,
-            'basePath' => '@webroot-static',
-            'baseUrl' => '@web-static',
+            'basePath' => '@webroot-resources',
+            'baseUrl' => '@web-resources',
             'js' => 'js/humhub-bundle.js',
             'css' => 'css/humhub-bundle.css',
             'preload' => [
@@ -73,8 +73,8 @@ return [
         ],
     ],
     'assetManager' => [
-        'basePath' => '@webroot-static/assets',
-        'baseUrl' => '@web-static/assets',
+        'basePath' => '@webroot/assets',
+        'baseUrl' => '@web/assets',
         'bundles' => [
             JqueryAsset::class => [
                 'sourcePath' => '@npm/jquery/dist',

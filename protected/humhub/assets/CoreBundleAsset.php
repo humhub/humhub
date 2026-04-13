@@ -2,7 +2,7 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\WebStaticAssetBundle;
+use humhub\components\assets\WebResourcesAssetBundle;
 use humhub\modules\activity\assets\ActivityAsset;
 use humhub\modules\comment\assets\CommentAsset;
 use humhub\modules\content\assets\ContentContainerAsset;
@@ -27,7 +27,7 @@ use humhub\modules\user\assets\UserPickerAsset;
  * > Note: this class should not depend on any style assets, otherwise an extra humhub-bundle.css will be created which
  * will triggers an extra asset request. All core style assets should be part of the `AppAsset` class.
  */
-class CoreBundleAsset extends WebStaticAssetBundle
+class CoreBundleAsset extends WebResourcesAssetBundle
 {
     public const BUNDLE_NAME = 'defer';
 

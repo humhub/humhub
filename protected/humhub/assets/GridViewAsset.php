@@ -2,9 +2,9 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\WebStaticAssetBundle;
+use humhub\components\assets\WebResourcesAssetBundle;
 
-class GridViewAsset extends WebStaticAssetBundle
+class GridViewAsset extends WebResourcesAssetBundle
 {
     public $js = [
         'js/grid-view.js',

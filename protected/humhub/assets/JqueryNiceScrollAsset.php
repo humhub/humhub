@@ -8,14 +8,14 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\WebStaticAssetBundle;
+use humhub\components\assets\WebResourcesAssetBundle;
 
 /**
  * jQuery-nicescroll
  *
  * @author luke
  */
-class JqueryNiceScrollAsset extends WebStaticAssetBundle
+class JqueryNiceScrollAsset extends WebResourcesAssetBundle
 {
     /**
      * @inheritdoc
