@@ -2,14 +2,16 @@
 nixPkgs = [
   "php82",
   "php82Packages.composer",
-  "nodejs_22"
+  "nodejs_22",
+  "nginx"
 ]
 
 [phases.build]
 cmds = [
   "composer install --ignore-platform-reqs",
-  "npm ci"
+  "npm ci",
+  "chmod +x /app/start.sh"
 ]
 
 [start]
-cmd = "useradd -m phpuser 2>/dev/null || true && mkdir -p /run && chmod -R 777 /app/assets /app/uploads /app/protected/runtime /app/protected/config && /assets/start.sh"
+cmd = "/app/start.sh"
