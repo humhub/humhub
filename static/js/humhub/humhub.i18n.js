@@ -3,6 +3,7 @@ humhub.module('i18n', function(module, require, $) {
         ? IntlMessageFormat
         : (window.IntlMessageFormat && (window.IntlMessageFormat.IntlMessageFormat || window.IntlMessageFormat));
 
+    var coreConfig = require('config').module('core');
     var locale = module.config.language;
     var globalMessages = {};
     var loadedCategories = new Set();
@@ -13,13 +14,13 @@ humhub.module('i18n', function(module, require, $) {
     var batchResolvers = [];
 
     var checkRevision = function() {
-        if (module.config.debug) {
+        if (coreConfig.debug) {
             return;
         }
 
         var revisionKey = 'humhub.i18n.revision';
 
-        var revision = module.config.revision || '';
+        var revision = coreConfig.systemRevision || '';
 
         try {
             var storedRevision = localStorage.getItem(revisionKey);
@@ -48,7 +49,7 @@ humhub.module('i18n', function(module, require, $) {
     }
 
     var getStorageKey = function(category) {
-        var revision = module.config.revision || '';
+        var revision = coreConfig.systemRevision || '';
         var language = module.config.language || 'en';
         return 'humhub.i18n.' + revision + '.' + language + '.' + category;
     };
@@ -85,7 +86,7 @@ humhub.module('i18n', function(module, require, $) {
                 return false;
             }
 
-            if (!module.config.debug) {
+            if (!coreConfig.debug) {
                 try {
                     var cached = localStorage.getItem(getStorageKey(category));
                     if (cached) {
@@ -122,7 +123,7 @@ humhub.module('i18n', function(module, require, $) {
                     updateIntlMessages(category, messages);
                     loadedCategories.add(category);
 
-                    if (!module.config.debug) {
+                    if (!coreConfig.debug) {
                         try {
                             localStorage.setItem(getStorageKey(category), JSON.stringify(messages));
                         } catch (e) {}
