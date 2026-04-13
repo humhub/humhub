@@ -12,4 +12,4 @@ cmds = [
 ]
 
 [start]
-cmd = "chmod -R 777 /app/assets /app/uploads /app/protected/runtime /app/protected/config && php-fpm -y /app/php-fpm.conf"
+cmd = "useradd -m phpuser 2>/dev/null || true && chown -R phpuser /app/assets /app/uploads /app/protected/runtime /app/protected/config 2>/dev/null || true && chmod -R 777 /app/assets /app/uploads /app/protected/runtime /app/protected/config && php-fpm -y /app/php-fpm.conf"
