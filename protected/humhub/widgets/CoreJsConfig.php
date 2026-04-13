@@ -54,7 +54,6 @@ class CoreJsConfig extends Widget
                     'revision' => Yii::$app->systemRevision->getPublicSignature(),
                     'language' => Yii::$app->language,
                     'translationUrl' => Url::to(['/i18n/translations']),
-                    'version' => Yii::$app->version,
                 ],
                 'file' => [
                     'upload' => [

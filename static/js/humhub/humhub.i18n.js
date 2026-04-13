@@ -11,10 +11,9 @@ humhub.module('i18n', function(module, require, $) {
     var batchCategories = new Set();
     var batchPromise = null;
     var batchResolvers = [];
-    var useCache = !module.config.debug;
 
     var checkRevision = function() {
-        if (!useCache) {
+        if (module.config.debug) {
             return;
         }
 
@@ -86,7 +85,7 @@ humhub.module('i18n', function(module, require, $) {
                 return false;
             }
 
-            if (useCache) {
+            if (!module.config.debug) {
                 try {
                     var cached = localStorage.getItem(getStorageKey(category));
                     if (cached) {
@@ -123,7 +122,7 @@ humhub.module('i18n', function(module, require, $) {
                     updateIntlMessages(category, messages);
                     loadedCategories.add(category);
 
-                    if (useCache) {
+                    if (!module.config.debug) {
                         try {
                             localStorage.setItem(getStorageKey(category), JSON.stringify(messages));
                         } catch (e) {}
