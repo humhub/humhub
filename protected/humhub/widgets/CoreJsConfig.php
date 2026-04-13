@@ -49,9 +49,11 @@ class CoreJsConfig extends Widget
                     'reloadableScripts' => CacheHelper::getReloadableScriptUrls(),
                     'cspViolationReloadInterval' => Security::CSP_VIOLATION_RELOAD_INTERVAL,
                 ],
-                'i18n' => [
+                'core' => [
                     'debug' => YII_DEBUG,
-                    'revision' => Yii::$app->systemRevision->getPublicSignature(),
+                    'systemRevision' => Yii::$app->systemRevision->getPublicSignature(),
+                ],
+                'i18n' => [
                     'language' => Yii::$app->language,
                     'translationUrl' => Url::to(['/i18n/translations']),
                 ],
