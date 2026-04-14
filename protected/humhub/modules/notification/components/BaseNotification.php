@@ -296,19 +296,6 @@ abstract class BaseNotification extends SocialActivity
     }
 
     /**
-     * @inheritdoc
-     */
-    public function getContentInfo(?ContentOwner $content = null, $withContentName = true)
-    {
-        $user = $this->record->user ?? null;
-        if ($user instanceof User && $this->hasContent() && !$this->getContent()->canView($user)) {
-            return null;
-        }
-
-        return parent::getContentInfo($content, $withContentName);
-    }
-
-    /**
      * Check if the source is a Content from a Space
      *
      * @return bool
