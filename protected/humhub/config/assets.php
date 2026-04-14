@@ -29,8 +29,13 @@ Yii::setAlias('@web', '/');
 Yii::setAlias('@webroot-resources', __DIR__ . '/../resources');
 Yii::setAlias('@web-resources', Yii::$app->assetManager->getPublishedUrl('@webroot-resources'));
 
-$bundels = ArrayHelper::merge(AppAsset::STATIC_DEPENDS, CoreBundleAsset::STATIC_DEPENDS);
-$bundels = ArrayHelper::merge([AppAsset::class, CoreBundleAsset::class], $bundels);
+$bundles = ArrayHelper::merge(
+    [AppAsset::class, CoreBundleAsset::class],
+    AppAsset::STATIC_DEPENDS,
+    CoreBundleAsset::STATIC_DEPENDS,
+);
+
+$webBundle = WebResourcesAssetBundle::register(Yii::$app->view);
 
 return [
     // Adjust command/callback for JavaScript files compressing:
@@ -38,15 +43,15 @@ return [
     // Adjust command/callback for CSS files compressing:
     'cssCompressor' => 'grunt cssmin --from={from} --to={to}',
     // The list of asset bundles to compress:
-    'bundles' => $bundels,
+    'bundles' => $bundles,
     // Asset bundle for compression output:
     'targets' => [
         AppAsset::BUNDLE_NAME => [
             'class' => WebResourcesAssetBundle::class,
             'defer' => false,
             'defaultDepends' => false,
-            'basePath' => '@webroot-resources',
-            'baseUrl' => '@web-resources',
+            'basePath' => '@webroot/assets/' . $webBundle->basePath,
+            'baseUrl' => $webBundle->baseUrl,
             'jsPosition' => View::POS_HEAD,
             'js' => 'js/humhub-app.js',
             'css' => 'css/humhub-app.css',
@@ -61,8 +66,8 @@ return [
             'defer' => true,
             'jsPosition' => View::POS_HEAD,
             'defaultDepends' => false,
-            'basePath' => '@webroot-resources',
-            'baseUrl' => '@web-resources',
+            'basePath' => '@webroot/assets/' . $webBundle->basePath,
+            'baseUrl' => $webBundle->baseUrl,
             'js' => 'js/humhub-bundle.js',
             'css' => 'css/humhub-bundle.css',
             'preload' => [
