@@ -69,7 +69,7 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
         '@config' => '@app/config',
-        '@themes' => '@webroot/themes',
+        '@themes' => '@webroot/protected/humhub/themes',
     ],
     'components' => [
         'moduleManager' => [
