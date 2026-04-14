@@ -43,6 +43,7 @@ return [
     'An unexpected error occurred. If this keeps happening, please contact a site administrator.' => '',
     'An unexpected error occurred. Please check whether your file exceeds the allowed upload limit of {maxUploadSize}.' => '',
     'An unexpected server error occurred. If this keeps happening, please contact a site administrator.' => '',
+    'Back to login' => '',
     'Cancel' => '',
     'Confirm' => '',
     'Copy to clipboard' => '',

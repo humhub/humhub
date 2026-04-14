@@ -11,7 +11,6 @@
 namespace humhub\tests\codeception\unit\components;
 
 use humhub\components\SettingsManager;
-use humhub\libs\BaseSettingsManager;
 use humhub\models\Setting;
 use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\space\models\Space;
@@ -153,7 +152,7 @@ class SettingsManagerTest extends HumHubDbTestCase
         $this->assertRecordValue($value, 'value', $table, ['name' => $setting, 'module_id' => $module]);
         $this->assertEquals($value, $sm->get($setting));
 
-        $this->expectExceptionTypeError(BaseSettingsManager::class, 'set', 1, '$name', 'string', 'null');
+        $this->expectExceptionTypeError(SettingsManager::class, 'set', 1, '$name', 'string', 'null');
         $sm->set(null, "NULL");
 
         $this->expectException(InvalidArgumentException::class);
@@ -385,7 +384,7 @@ class SettingsManagerTest extends HumHubDbTestCase
 
         // changing the value behind the scenes
         $value2 = 'third value';
-        self::dbUpdate($table, ['value' => $value2], ['name' => $setting, 'module_id' => $module]);
+        Setting::updateAll(['value' => $value2], ['name' => $setting, 'module_id' => $module]);
         $this->assertRecordValue($value2, 'value', $table, ['name' => $setting, 'module_id' => $module]);
 
         // getting the value now should still show tho "old" value

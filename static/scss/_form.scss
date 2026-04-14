@@ -22,7 +22,6 @@
 
     label {
         font-weight: 700;
-        margin-bottom: 5px;
 
         &[required]:after {
             content: " *";
@@ -35,22 +34,11 @@
         background-color: transparent;
     }
 
-    .radio,
-    .checkbox {
-        margin-top: 5px !important;
-        margin-bottom: 0;
-    }
-
     div.required > label:after {
         content: " *";
         color: var(--bs-accent);
     }
 
-    .radio label,
-    .checkbox label {
-        font-weight: bold;
-        padding-left: 0;
-    }
     .form-checkboxes-normal {
         .radio label,
         .checkbox label {
@@ -168,42 +156,6 @@
     .hint-block:hover {
         color: var(--hh-text-color-secondary) !important;
         font-size: 12px;
-    }
-
-    .input-color-group {
-        flex-wrap: nowrap;
-
-        > div > label {
-            display: none;
-        }
-
-        input {
-            height: 36px;
-        }
-
-        div:first-child input {
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-        }
-
-        div:last-child {
-            flex-grow: 1;
-
-            input {
-                margin-left: calc(-1 * var(--bs-border-width));
-                border-top-left-radius: 0;
-                border-bottom-left-radius: 0;
-            }
-        }
-
-        input:focus {
-            position: relative;
-            z-index: 1;
-        }
-    }
-
-    .input-group-text {
-        border: none;
     }
 
     a.input-field-addon {
@@ -434,27 +386,17 @@
         padding-right: 12px;
     }
 
-    .form-collapsible-fields.opened {
-        fieldset {
-            display: block;
-        }
-
-        .iconClose {
-            display: inline;
-        }
-
-        .iconOpen {
+    .form-collapsible-fields-label {
+        .fa-plus {
             display: none;
         }
-    }
-
-    .form-collapsible-fields.closed {
-        fieldset, .iconClose {
-            display: none;
-        }
-
-        .iconOpen {
-            display: inline;
+        &.collapsed {
+            .fa-minus {
+                display: none;
+            }
+            .fa-plus {
+                display: initial;
+            }
         }
     }
 
@@ -469,6 +411,7 @@
             > .mb-3 {
                 flex-grow: 1;
                 width: 100%;
+                margin-bottom: 0 !important;
 
                 [data-ui-markdown] {
                     word-break: break-word !important;

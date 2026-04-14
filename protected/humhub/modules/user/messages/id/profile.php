@@ -46,6 +46,7 @@ return [
     'First name' => '',
     'Following' => '',
     'Gender' => '',
+    'Group memberships' => '',
     'Hide age per default' => '',
     'Hide year in profile' => '',
     'Instagram URL' => '',

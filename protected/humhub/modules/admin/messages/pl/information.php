@@ -103,4 +103,6 @@ return [
     '{imageExtension} Support' => 'Wsparcie dla {imageExtension}',
     '{phpExtension} Extension' => 'Rozszerzenie {phpExtension}',
     '{phpExtension} Support' => 'Wsparcie dla {phpExtension}',
+    'Install {phpExtension} Extension for Mercure push live driver' => '',
+    'Uploads - File' => '',
 ];

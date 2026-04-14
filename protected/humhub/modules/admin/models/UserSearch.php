@@ -145,7 +145,7 @@ class UserSearch extends User
         return $dataProvider;
     }
 
-    public static function getStatusAttributes()
+    public function getStatusAttributes(): array
     {
         $countActive = User::find()->where(['user.status' => User::STATUS_ENABLED])->count();
         $countDisabled = User::find()->where(['user.status' => User::STATUS_DISABLED])->count();

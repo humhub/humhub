@@ -103,4 +103,6 @@ return [
     '{phpExtension} Extension' => 'Расширение {phpExtension}',
     '{phpExtension} Support' => 'Поддержка {phpExtension}',
     'Enable <a href="{url}">Link Redirection Service</a>' => '',
+    'Install {phpExtension} Extension for Mercure push live driver' => '',
+    'Uploads - File' => '',
 ];

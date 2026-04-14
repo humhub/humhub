@@ -4,6 +4,7 @@ namespace humhub\modules\user\widgets;
 
 use humhub\modules\content\widgets\ContentContainerPickerField;
 use humhub\modules\user\models\User;
+use humhub\widgets\bootstrap\Link;
 use Yii;
 use yii\helpers\Url;
 
@@ -26,6 +27,12 @@ class UserPickerField extends ContentContainerPickerField
      * @inheritdoc
      */
     public $jsWidget = 'user.picker.UserPicker';
+
+    /**
+     * @var string|bool|null True to show a link to select the current user, String to use a custom link text
+     * @since 1.19
+     */
+    public string|bool|null $selfSelect = null;
 
     /**
      * @inheritdoc
@@ -75,5 +82,42 @@ class UserPickerField extends ContentContainerPickerField
             );
         }
         return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function run()
+    {
+        return parent::run() . $this->renderSelfSelect();
+    }
+
+    /**
+     * Renders self-selector for this user picker
+     *
+     * @return string
+     * @since 1.19
+     */
+    protected function renderSelfSelect(): string
+    {
+        return $this->selfSelect === true || is_string($this->selfSelect)
+            ? static::selfSelect('#' . $this->getId(), is_string($this->selfSelect) ? $this->selfSelect : null)
+            : '';
+    }
+
+    /**
+     * Renders self-selector for a user picker
+     *
+     * @param string $selector
+     * @param string|null $label
+     * @return Link
+     * @since 1.19
+     */
+    public static function selfSelect(string $selector, ?string $label = null): Link
+    {
+        return Link::to($label ?? Yii::t('base', 'Select Me'))
+            ->action('selectSelf', null, $selector)
+            ->icon('check-circle-o')
+            ->right();
     }
 }

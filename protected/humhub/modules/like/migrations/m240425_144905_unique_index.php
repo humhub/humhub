@@ -25,8 +25,6 @@ class m240425_144905_unique_index extends Migration
                 ['created_by' => $like->created_by],
                 ['!=', 'id', $like->id],
             ]);
-
-            $like->flushCache();
         }
 
         $this->safeCreateIndex('unique-object-user', 'like', ['object_model', 'object_id', 'created_by'], true);

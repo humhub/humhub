@@ -18,8 +18,8 @@ class m240916_150536_extend_language extends Migration
      */
     public function safeUp()
     {
-        $this->alterColumn('user', 'language', 'varchar(20) DEFAULT NULL');
-        $this->alterColumn('user_invite', 'language', 'varchar(20) DEFAULT NULL');
+        $this->safeAlterColumn('user', 'language', 'varchar(20) DEFAULT NULL');
+        $this->safeAlterColumn('user_invite', 'language', 'varchar(20) DEFAULT NULL');
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-use yii\db\Migration;
+use humhub\components\Migration;
 
 /**
  * Class m230217_175411_content_hidden
@@ -12,19 +12,19 @@ class m230217_175411_content_hidden extends Migration
      */
     public function safeUp()
     {
-        $this->alterColumn('content', 'contentcontainer_id', $this->integer()->after('object_id'));
+        $this->safeAlterColumn('content', 'contentcontainer_id', $this->integer()->after('object_id'));
 
-        $this->alterColumn('content', 'stream_sort_date', $this->datetime()->after('contentcontainer_id'));
-        $this->alterColumn('content', 'stream_channel', $this->string(15)->defaultValue('default')->after('contentcontainer_id'));
+        $this->safeAlterColumn('content', 'stream_sort_date', $this->datetime()->after('contentcontainer_id'));
+        $this->safeAlterColumn('content', 'stream_channel', $this->string(15)->defaultValue('default')->after('contentcontainer_id'));
 
-        $this->alterColumn('content', 'visibility', $this->tinyInteger()->defaultValue(0)->notNull());
-        $this->alterColumn('content', 'pinned', $this->boolean()->defaultValue(false)->notNull());
-        $this->alterColumn('content', 'archived', $this->boolean()->defaultValue(false)->notNull());
+        $this->safeAlterColumn('content', 'visibility', $this->tinyInteger()->defaultValue(0)->notNull());
+        $this->safeAlterColumn('content', 'pinned', $this->boolean()->defaultValue(false)->notNull());
+        $this->safeAlterColumn('content', 'archived', $this->boolean()->defaultValue(false)->notNull());
 
         $this->update('content', ['locked_comments' => 0], 'locked_comments IS NULL');
-        $this->alterColumn('content', 'locked_comments', $this->boolean()->defaultValue(false)->notNull()->after('archived'));
+        $this->safeAlterColumn('content', 'locked_comments', $this->boolean()->defaultValue(false)->notNull()->after('archived'));
 
-        $this->addColumn('content', 'hidden', $this->boolean()->after('archived')->defaultValue(false)->notNull());
+        $this->safeAddColumn('content', 'hidden', $this->boolean()->after('archived')->defaultValue(false)->notNull());
     }
 
     /**

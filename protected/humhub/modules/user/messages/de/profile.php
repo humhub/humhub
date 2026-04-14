@@ -42,6 +42,7 @@ return [
   'Friends' => 'Freunde',
   'Gender' => 'Geschlecht',
   'General' => 'Allgemein',
+  'Group memberships' => 'Gruppenmitgliedschaften',
   'Hide age per default' => 'Standardmäßig Alter verstecken',
   'Hide year in profile' => 'Jahr im Profil verbergen',
   'ID' => 'ID',

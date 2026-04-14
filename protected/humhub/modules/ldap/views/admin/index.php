@@ -61,6 +61,7 @@ use yii\web\View;
     <?= $form->field($model, 'hostname')->textInput() ?>
     <?= $form->field($model, 'port')->textInput() ?>
     <?= $form->field($model, 'encryption')->dropDownList($model->encryptionTypes) ?>
+    <?= $form->field($model, 'disableCertificateChecking')->checkbox() ?>
     <?= $form->field($model, 'username')->textInput() ?>
     <?= $form->field($model, 'passwordField')->passwordInput() ?>
 

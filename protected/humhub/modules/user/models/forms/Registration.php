@@ -32,6 +32,7 @@ class Registration extends HForm
      * @event \yii\web\UserEvent triggered after successful registration.
      */
     public const EVENT_AFTER_REGISTRATION = 'afterRegistration';
+    public const EVENT_AFTER_SET_FORM = 'afterSetForm';
 
     /**
      * @var bool|null require user approval by admin after registration.
@@ -239,15 +240,11 @@ class Registration extends HForm
         return $status;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function submitted($buttonName = "")
+    public function setForm(): void
     {
         $this->setFormDefinition();
         $this->setModels();
-
-        return parent::submitted($buttonName);
+        $this->trigger(static::EVENT_AFTER_SET_FORM);
     }
 
     /**
@@ -265,6 +262,11 @@ class Registration extends HForm
         if ($this->enableUserApproval) {
             $this->models['User']->status = User::STATUS_NEED_APPROVAL;
             $this->models['User']->registrationGroupId = $this->models['GroupUser']->group_id;
+        }
+
+        if ($this->models['GroupUser']->group_id !== null) {
+            // Skip adding of the user to a default group if some group is already selected on the registration form
+            $this->models['User']->allowAssignDefaultGroup(false);
         }
 
         if ($this->models['User']->save()) {

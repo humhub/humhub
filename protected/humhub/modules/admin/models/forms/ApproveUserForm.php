@@ -102,7 +102,7 @@ class ApproveUserForm extends Model
             throw new ForbiddenHttpException();
         }
 
-        if (!$this->admin->canApproveUsers()) {
+        if (!$this->admin->canManageUsers()) {
             throw new ForbiddenHttpException();
         }
     }

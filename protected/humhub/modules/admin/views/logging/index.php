@@ -43,36 +43,38 @@ if ($filter->day) {
 
 <div id="admin-log-root">
     <div data-ui-widget="admin.log.LogFilterForm" data-ui-init="1">
-        <?php $form = ActiveForm::begin([
-            'action' => Url::to(['/admin/logging/index']),
-            'options' => ['class' => 'row'],
-        ]) ?>
+        <div class="container gx-0 overflow-x-hidden">
+            <?php $form = ActiveForm::begin([
+                'action' => Url::to(['/admin/logging/index']),
+                'options' => ['class' => 'row'],
+            ]) ?>
 
-        <div class="col-lg-3 col-lg-push-1" style="padding-right:0">
-            <?= $form->field($filter, 'term')->textInput(
-                [
-                    'placeholder' => Yii::t('AdminModule.information', 'Search term...'),
-                    'maxlength' => 200,
-                ]
-            )->label(false) ?>
-        </div>
-        <div class="col-lg-2" style="padding-right:0">
-            <?= $form->field($filter, 'day')->widget(DatePicker::class, [
-                'dateFormat' => Yii::$app->formatter->dateInputFormat,
-                'options' => ['placeholder' => Yii::t('AdminModule.information', 'Select day')],
-            ])->label(false) ?>
-        </div>
-        <div class="col-lg-4" style="padding-right:0">
-            <?= $form->field($filter, 'levels')->widget(MultiSelect::class, [
-                'items' => $filter->getLevelSelection(),
-                'placeholderMore' => Yii::t('AdminModule.information', 'Select level...')
-            ])->label(false) ?>
-        </div>
-        <div class="col-lg-3">
-            <?= $form->field($filter, 'category')->dropDownList($filter->getCategorySelection())->label(false) ?>
-        </div>
+            <div class="col-lg-3 col-lg-push-1" style="padding-right:0">
+                <?= $form->field($filter, 'term')->textInput(
+                    [
+                        'placeholder' => Yii::t('AdminModule.information', 'Search term...'),
+                        'maxlength' => 200,
+                    ]
+                )->label(false) ?>
+            </div>
+            <div class="col-lg-2" style="padding-right:0">
+                <?= $form->field($filter, 'day')->widget(DatePicker::class, [
+                    'dateFormat' => Yii::$app->formatter->dateInputFormat,
+                    'options' => ['placeholder' => Yii::t('AdminModule.information', 'Select day')],
+                ])->label(false) ?>
+            </div>
+            <div class="col-lg-4" style="padding-right:0">
+                <?= $form->field($filter, 'levels')->widget(MultiSelect::class, [
+                    'items' => $filter->getLevelSelection(),
+                    'placeholderMore' => Yii::t('AdminModule.information', 'Select level...')
+                ])->label(false) ?>
+            </div>
+            <div class="col-lg-3">
+                <?= $form->field($filter, 'category')->dropDownList($filter->getCategorySelection())->label(false) ?>
+            </div>
 
-        <?php ActiveForm::end() ?>
+            <?php ActiveForm::end() ?>
+        </div>
     </div>
 
     <?= $this->render('log_entries', ['pagination' => $pagination, 'logEntries' => $logEntries]) ?>

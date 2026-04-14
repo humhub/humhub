@@ -21,12 +21,6 @@ $config = [
                 'yii\jui\JuiAsset' => [
                     'sourcePath' => '@npm/jquery-ui/dist',
                 ],
-                'yii\bootstrap5\BootstrapAsset' => [
-                    'sourcePath' => '@npm/bootstrap/dist',
-                ],
-                'yii\bootstrap5\BootstrapPluginAsset' => [
-                    'sourcePath' => '@npm/bootstrap/dist',
-                ],
                 'yii\jui\DatePickerLanguageAsset' => [
                     'sourcePath' => '@npm/jquery-ui',
                 ],

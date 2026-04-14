@@ -27,8 +27,6 @@ class FilterPanel extends Widget
 
     public $view = 'filterPanel';
 
-    public $span = 3;
-
     /**
      * @inheritdoc
      */
@@ -39,6 +37,6 @@ class FilterPanel extends Widget
             return '';
         }
 
-        return $this->render($this->view, ['blocks' => Sort::sort($this->blocks), 'span' => $this->span]);
+        return $this->render($this->view, ['blocks' => Sort::sort($this->blocks)]);
     }
 }

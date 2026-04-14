@@ -56,7 +56,6 @@ The license was successfully removed!
     'Could not update license. Error: ' => 'Не удалось обновить лицензию. Ошибка:',
     'Deprecated' => 'Устарел',
     'Download of module failed!' => 'Не удалось загрузить модуль!',
-    'Edit license' => 'Редактировать лицензию',
     'Enable' => 'Активировать',
     'Enable now' => 'Активировать сейчас',
     'Enabled' => 'Активирован',
@@ -129,7 +128,6 @@ The license was successfully removed!
     'Update' => 'Обновить',
     'Update all' => 'Обновить всё',
     'Update successful' => 'Обновление прошло успешно',
-    'Upgrade to Professional Edition' => 'Улучшить до Профессиональной версии',
     'Version:' => 'Версия:',
     'We are almost there! As a final step, we recommend that you take a look at the module configuration, where you will find numerous configuration options, some of which are required.' => 'Мы почти закончили! В качестве последнего шага рекомендуем вам просмотреть настройки модуля, где вы найдёте множество параметров конфигурации, некоторые из которых являются обязательными.',
     'Well done! To make the module available within your network, you will also need to enable it. Do you want to enable it now?' => 'Отличная работа! Чтобы модуль начал выполнять свои функции, вам необходимо активировать его. Хотите активировать его сейчас?',
@@ -137,4 +135,6 @@ The license was successfully removed!
     'Without category' => 'Без категории',
     'Would you like to jump straight to it?' => 'Хотите сразу перейти к этому?',
     'Your HumHub installation is up to date!' => 'Ваша установка HumHub обновлена!',
+    'Add License' => '',
+    'Edit License' => '',
 ];

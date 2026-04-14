@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Followers</strong>' => '<strong>Sledovatelia</strong>',
   '<strong>Following</strong>' => '<strong>Sledované</strong>',
   '<strong>Member</strong> in these spaces' => '<strong>Člen</strong> v týchto priestoroch',
@@ -44,6 +44,7 @@ return array (
   'Force password change upon first login' => 'Vynútiť zmenu hesla pri prvom prihlásení',
   'Force password change upon next login' => 'Vynútiť zmenu hesla pri ďalšom prihlásení',
   'Friends' => 'Priatelia',
+  'Group' => 'Skupina',
   'Group Manager(s)' => 'Správcovia skupiny',
   'Here you can connect to external service provider for using external services like a single sign on authentication.' => 'Tu sa môžete pripojiť k externému poskytovateľovi služieb na používanie externých služieb, ako je napríklad autentifikácia jedným prihlásením.',
   'If this wasn\'t you, you can disregard this message.' => 'Ak ste to neboli vy, môžete túto správu ignorovať.',
@@ -51,6 +52,7 @@ return array (
   'Invite by link' => 'Pozvať linkom',
   'Invite new people' => 'Pozvať nových ľudí',
   'Invited by' => 'Pozvať',
+  'Invited by {userName}' => '',
   'It looks like you clicked on an invalid password reset link. Please try again.' => 'Zdá sa, že ste klikli na neplatný odkaz na obnovenie hesla. Prosím skúste znova.',
   'Language' => 'Jazyk',
   'Last Login' => 'Posledné prihlásenie',
@@ -121,4 +123,4 @@ return array (
   'invited you to join {name}.' => 'pozval Vás, aby ste sa pripojili k {name} .',
   'invited you to join {space} on {name}.' => 'pozval Vás do {space} na {name}.',
   'or' => 'alebo',
-);
+];

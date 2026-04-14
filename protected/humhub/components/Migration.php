@@ -8,7 +8,7 @@
 
 namespace humhub\components;
 
-use humhub\modules\like\activities\Liked;
+use humhub\modules\like\activities\LikeActivity;
 use humhub\modules\like\models\Like;
 use Throwable;
 use Traversable;
@@ -264,6 +264,32 @@ class Migration extends \yii\db\Migration
     }
 
     /**
+     * Alter column
+     *
+     * @param string $table the table whose column is to be changed. The table name will be properly quoted by the method.
+     * @param string $column the name of the column to be changed. The name will be properly quoted by the method.
+     * @param string $type the new column type. The [[QueryBuilder::getColumnType()]] method will be invoked to convert abstract column type (if any)
+     *
+     * @return bool indicates if column has been altered
+     * @see static::alterColumn()
+     * @noinspection PhpMissingReturnTypeInspection
+     * @since 1.18
+     */
+    protected function safeAlterColumn(string $table, string $column, string $type): bool
+    {
+        if (!$this->columnExists($column, $table)) {
+            if (!$this->compact) {
+                echo "    > skipped alter column $column to type $type in table $table, column $column doesn't exist ...\n";
+            }
+            $this->logWarning("Tried to alter a not existing column '$column' to type '$type' in table '$table'");
+            return false;
+        }
+
+        $this->alterColumn($table, $column, $type);
+        return true;
+    }
+
+    /**
      * Check if the index already exists in the table
      *
      * @param string $index
@@ -292,9 +318,12 @@ class Migration extends \yii\db\Migration
      */
     protected function foreignIndexExists(string $index, string $table): bool
     {
+        // Resolve `{{%table_name}}` to `table_name`
+        $rawTableName = $this->db->getSchema()->getRawTableName($table);
+
         return (bool) $this->db->createCommand('SELECT * FROM information_schema.key_column_usage
             WHERE REFERENCED_TABLE_NAME IS NOT NULL
-              AND TABLE_NAME = ' . $this->db->quoteValue($table) . '
+              AND TABLE_NAME = ' . $this->db->quoteValue($rawTableName) . '
               AND TABLE_SCHEMA = ' . $this->db->quoteValue($this->getDsnAttribute('dbname')) . '
               AND CONSTRAINT_NAME = ' . $this->db->quoteValue($index))
             ->queryOne();
@@ -570,12 +599,22 @@ class Migration extends \yii\db\Migration
      */
     protected function renameClass(string $oldClass, string $newClass): void
     {
-        $this->updateSilent('activity', ['object_model' => $newClass], ['object_model' => $oldClass]);
+        if ($this->db->getTableSchema('activity', true)->getColumn('object_model') !== null) {
+            $this->updateSilent('activity', ['object_model' => $newClass], ['object_model' => $oldClass]);
+        }
+
         $this->updateSilent('activity', ['class' => $newClass], ['class' => $oldClass]);
-        $this->updateSilent('comment', ['object_model' => $newClass], ['object_model' => $oldClass]);
+
+        if ($this->db->getTableSchema('comment', true)->getColumn('object_model') !== null) {
+            $this->updateSilent('comment', ['object_model' => $newClass], ['object_model' => $oldClass]);
+        }
+
+        if ($this->db->getTableSchema('like', true)->getColumn('object_model') !== null) {
+            $this->updateSilent('like', ['object_model' => $newClass], ['object_model' => $oldClass]);
+        }
+
         $this->updateSilent('content', ['object_model' => $newClass], ['object_model' => $oldClass]);
         $this->updateSilent('file', ['object_model' => $newClass], ['object_model' => $oldClass]);
-        $this->updateSilent('like', ['object_model' => $newClass], ['object_model' => $oldClass]);
         $this->updateSilent('notification', ['source_class' => $newClass], ['source_class' => $oldClass]);
         $this->updateSilent('notification', ['class' => $newClass], ['class' => $oldClass]);
         $this->updateSilent('user_mentioning', ['object_model' => $newClass], ['object_model' => $oldClass]);
@@ -583,23 +622,25 @@ class Migration extends \yii\db\Migration
 
         //$this->updateSilent('wall', ['object_model' => $newClass], ['object_model' => $oldClass]);
 
-        /**
-         * Looking up "NewLike" activities with this className
-         * Since 0.20 the className changed to Like (is not longer the target object, e.g. post)
-         *
-         * Use a raw query for better performance.
-         */
-        $updateSql = "
-            UPDATE activity
-            LEFT JOIN `like` ON like.object_model=activity.object_model AND like.object_id=activity.object_id
-            SET activity.object_model=:likeModelClass, activity.object_id=like.id
-            WHERE activity.class=:likedActivityClass AND like.id IS NOT NULL and activity.object_model != :likeModelClass
-        ";
+        if ($this->db->getTableSchema('like')->getColumn('object_model') !== null) {
+            /**
+             * Looking up "NewLike" activities with this className
+             * Since 0.20 the className changed to Like (is not longer the target object, e.g. post)
+             *
+             * Use a raw query for better performance.
+             */
+            $updateSql = "
+                UPDATE activity
+                LEFT JOIN `like` ON like.object_model=activity.object_model AND like.object_id=activity.object_id
+                SET activity.object_model=:likeModelClass, activity.object_id=like.id
+                WHERE activity.class=:likedActivityClass AND like.id IS NOT NULL and activity.object_model != :likeModelClass
+            ";
 
-        Yii::$app->db->createCommand($updateSql, [
-            ':likeModelClass' => Like::class,
-            ':likedActivityClass' => Liked::class,
-        ])->execute();
+            Yii::$app->db->createCommand($updateSql, [
+                ':likeModelClass' => Like::class,
+                ':likedActivityClass' => LikeActivity::class,
+            ])->execute();
+        }
     }
 
     /**

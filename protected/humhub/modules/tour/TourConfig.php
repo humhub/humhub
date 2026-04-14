@@ -176,7 +176,7 @@ class TourConfig
             return null;
         }
 
-        $nextConfig = static::get()[$nextTourId];
+        $nextConfig = static::get()[$nextTourId] ?? null;
         if (!$nextConfig) {
             return null;
         }

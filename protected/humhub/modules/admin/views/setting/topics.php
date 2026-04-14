@@ -32,10 +32,8 @@ $form = ActiveForm::begin(['options' => ['data-pjax' => true]]);
 echo $form->field($addModel, 'name', [
     'template' => '
 <div class="input-group">
-{input}
-<span class="input-group-btn">
+    {input}
     ' . Button::light()->icon('add')->loader()->submit() . '
-</span>
 </div>
 {error}
 {hint}',

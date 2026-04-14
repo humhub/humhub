@@ -39,7 +39,6 @@ class ServiceWorkerController extends Controller
         Yii::$app->response->getHeaders()->set('Content-Type', 'application/javascript');
 
         $this->addInstallEvent();
-        $this->addFetchEvent();
 
         return $this->baseJs . $this->additionalJs;
     }
@@ -71,25 +70,4 @@ class ServiceWorkerController extends Controller
 
 JS;
     }
-
-    private function addFetchEvent()
-    {
-        $this->baseJs .= <<<JS
-            self.addEventListener('fetch', function (event) {
-                var request = event.request;
-                // Check is "page" request
-                if (request.method === 'GET' && request.destination === 'document') {
-                    event.respondWith(
-                        fetch(request).catch(function (error) {
-                        console.error('[onfetch] Failed. Serving cached offline fallback ' + error);
-                        return caches.open('offline').then(function (cache) {
-                                return cache.match(OFFLINE_PAGE_URL);
-                            });
-                        })
-                    );
-                }
-            });
-JS;
-    }
-
 }

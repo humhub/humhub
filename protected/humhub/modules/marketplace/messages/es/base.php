@@ -56,7 +56,6 @@ The license was successfully removed!
     'Could not update license. Error: ' => 'No se pudo actualizar la licencia. Error:',
     'Deprecated' => 'Obsoleto',
     'Download of module failed!' => '¡Falló la descarga del módulo!',
-    'Edit license' => 'Editar licencia',
     'Enable' => 'Activar',
     'Enable now' => 'Activar ahora',
     'Enabled' => 'Activado',
@@ -129,7 +128,6 @@ The license was successfully removed!
     'Update' => 'Actualizar',
     'Update all' => 'Actualizar todos',
     'Update successful' => 'Actualización completada con éxito.',
-    'Upgrade to Professional Edition' => 'Actualizar a la edición profesional',
     'Version:' => 'Versión:',
     'We are almost there! As a final step, we recommend that you take a look at the module configuration, where you will find numerous configuration options, some of which are required.' => '¡Ya casi está! Como paso final, le recomendamos que eche un vistazo a la configuración del módulo, donde encontrará muchas opciones de configuración, algunas de las cuales son requeridas.',
     'Well done! To make the module available within your network, you will also need to enable it. Do you want to enable it now?' => '¡Bien hecho! Para hacer que el módulo esté disponible en su red, tendrá que activarlo también. ¿Quiere activarlo ahora?',
@@ -137,4 +135,6 @@ The license was successfully removed!
     'Without category' => 'Sin categoría',
     'Would you like to jump straight to it?' => '¿Quiere ir directamente allí?',
     'Your HumHub installation is up to date!' => 'Tu instalación de HumHub está actualizada.',
+    'Add License' => '',
+    'Edit License' => '',
 ];

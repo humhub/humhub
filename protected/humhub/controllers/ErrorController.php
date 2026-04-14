@@ -82,6 +82,10 @@ class ErrorController extends Controller
             return $this->exception->getMessage();
         }
 
+        if ($this->exception instanceof HttpException) {
+            return $this->exception->getName();
+        }
+
         return Yii::t('error', 'An internal server error occurred.');
     }
 }

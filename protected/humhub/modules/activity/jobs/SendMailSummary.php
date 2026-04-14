@@ -23,22 +23,13 @@ use Yii;
  */
 class SendMailSummary extends LongRunningActiveJob implements ExclusiveJobInterface
 {
-    /**
-     * @var int the interval
-     */
-    public $interval;
+    public int $interval;
 
-    /**
-     * @inhertidoc
-     */
     public function getExclusiveJobId()
     {
         return static::class . $this->interval;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function run()
     {
         /** @var Module $module */
@@ -56,7 +47,6 @@ class SendMailSummary extends LongRunningActiveJob implements ExclusiveJobInterf
             MailSummaryProcessor::process($this->interval);
         } else {
             Yii::error('Invalid summary interval given' . $this->interval, 'activity.job');
-            return;
         }
     }
 }

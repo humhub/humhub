@@ -1,10 +1,10 @@
 <?php
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\user\widgets\HeaderControlsMenu;
-use humhub\modules\user\widgets\ProfileHeaderControls;
 use humhub\modules\friendship\widgets\FriendshipButton;
+use humhub\modules\user\widgets\HeaderControlsMenu;
 use humhub\modules\user\widgets\ProfileEditButton;
+use humhub\modules\user\widgets\ProfileHeaderControls;
 use humhub\modules\user\widgets\ProfileHeaderCounterSet;
 use humhub\modules\user\widgets\UserFollowButton;
 
@@ -20,15 +20,17 @@ $controls[] = [HeaderControlsMenu::class, ['user' => $container]];
 ?>
 <div class="panel-body">
     <div class="panel-profile-controls">
-        <div class="row">
-            <div class="col-lg-12">
-                <?= ProfileHeaderCounterSet::widget(['user' => $container]); ?>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <?= ProfileHeaderCounterSet::widget(['user' => $container]); ?>
 
-                <div class="controls controls-header float-end">
-                    <?= ProfileHeaderControls::widget([
-                        'user' => $container,
-                        'widgets' => $controls
-                    ]) ?>
+                    <div class="controls controls-header float-end">
+                        <?= ProfileHeaderControls::widget([
+                            'user' => $container,
+                            'widgets' => $controls
+                        ]) ?>
+                    </div>
                 </div>
             </div>
         </div>

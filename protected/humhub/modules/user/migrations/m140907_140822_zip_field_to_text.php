@@ -9,7 +9,7 @@ class m140907_140822_zip_field_to_text extends Migration
     {
         if (!$this->isInitialInstallation()) {
 
-            $this->alterColumn('profile', 'zip', 'VARCHAR(10) DEFAULT NULL');
+            $this->safeAlterColumn('profile', 'zip', 'VARCHAR(10) DEFAULT NULL');
 
             $this->update('profile_field', [
                 'field_type_class' => 'ProfileFieldTypeText',
@@ -20,7 +20,7 @@ class m140907_140822_zip_field_to_text extends Migration
 
     public function down()
     {
-        $this->alterColumn('profile', 'birthday', 'INT(11) DEFAULT NULL');
+        $this->safeAlterColumn('profile', 'birthday', 'INT(11) DEFAULT NULL');
 
         $this->update('profile_field', [
             'field_type_class' => 'ProfileFieldTypeNumber',

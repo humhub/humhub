@@ -56,5 +56,4 @@ return [
     'Your password has been successfully changed!' => '',
     'Your password is incorrect!' => '',
     'a new user {displayName} needs approval.' => '',
-    'back to home' => '',
 ];

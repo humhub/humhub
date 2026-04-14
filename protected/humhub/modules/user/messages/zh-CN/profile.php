@@ -99,6 +99,7 @@ return [
     'Diverse' => '',
     'E-mail address of the user' => '',
     'Each line must be formatted as Key=>Value!' => '',
+    'Group memberships' => '',
     'Instagram URL' => '',
     'Invalid!' => '',
     'Last login date of the user' => '',

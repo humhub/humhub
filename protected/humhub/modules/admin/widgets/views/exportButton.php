@@ -5,22 +5,22 @@
  * @var string $xlsx
  */
 
-use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
 
 ?>
-<div class="btn-group">
-    <button type="button" class="btn btn-sm btn-accent">
+<div class="btn-group btn-group-sm">
+    <button type="button" class="btn btn-accent">
         <i class="fa fa-download"></i> <?= Yii::t('base', 'Export') ?>
     </button>
-    <button type="button" class="btn btn-sm btn-accent dropdown-toggle" data-bs-toggle="dropdown">
+    <button type="button" class="btn btn-accent btn-icon-only dropdown-toggle" data-bs-toggle="dropdown">
         <span class="sr-only">Toggle Dropdown</span>
     </button>
     <ul class="dropdown-menu">
-        <li><?= Button::asLink('csv', $csv)->pjax(false)
+        <li><?= Link::to('csv', $csv, false)
                 ->cssClass('dropdown-item')
-                ->icon('fa-file-code-o')->sm() ?></li>
-        <li><?= Button::asLink('xlsx', $xlsx)->pjax(false)
+                ->icon('file-code-o')->sm() ?></li>
+        <li><?= Link::to('xlsx', $xlsx, false)
                 ->cssClass('dropdown-item')
-                ->icon('fa-file-excel-o')->sm() ?></li>
+                ->icon('file-excel-o')->sm() ?></li>
     </ul>
 </div>

@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\components;
 
+use humhub\modules\user\models\fieldtype\CheckboxList;
 use humhub\modules\user\models\fieldtype\Select;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\ProfileField;
@@ -110,9 +111,19 @@ class PeopleQuery extends ActiveQueryUser
                 // Skip unknown field
                 continue;
             }
+
+            $fieldType = $filteredField->getFieldType();
+            if ($fieldType instanceof CheckboxList) {
+                $condition = 'REGEXP';
+            } elseif ($fieldType instanceof Select) {
+                $condition = '=';
+            } else {
+                $condition = 'LIKE';
+            }
+
             $checkedFilteredFields[$filteredField->internal_name] = [
                 'value' => $fields[$filteredField->internal_name],
-                'condition' => $filteredField->getFieldType() instanceof Select ? '=' : 'LIKE',
+                'condition' => $condition,
             ];
         }
 
@@ -123,7 +134,12 @@ class PeopleQuery extends ActiveQueryUser
         $this->joinWith('profile');
 
         foreach ($checkedFilteredFields as $field => $data) {
-            $this->andWhere([$data['condition'], 'profile.' . $field, $data['value']]);
+            $condition = $data['condition'];
+            $value = $data['value'];
+            $search = ($condition === 'REGEXP')
+                ? '(^|\\n)' . preg_quote($value, '/') . '(\\n|$)' // Search if match a line, i.e. a key of the available options of the Checkbox List
+                : $value;
+            $this->andWhere([$condition, 'profile.' . $field, $search]);
         }
 
         return $this;

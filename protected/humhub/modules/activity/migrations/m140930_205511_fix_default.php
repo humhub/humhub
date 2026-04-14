@@ -1,15 +1,15 @@
 <?php
 
 
-use yii\db\Migration;
+use humhub\components\Migration;
 
 class m140930_205511_fix_default extends Migration
 {
     public function up()
     {
-        $this->alterColumn('activity', 'module', "varchar(100) DEFAULT ''");
-        $this->alterColumn('activity', 'object_model', "varchar(100) DEFAULT ''");
-        $this->alterColumn('activity', 'object_id', "varchar(100) DEFAULT ''");
+        $this->safeAlterColumn('activity', 'module', "varchar(100) DEFAULT ''");
+        $this->safeAlterColumn('activity', 'object_model', "varchar(100) DEFAULT ''");
+        $this->safeAlterColumn('activity', 'object_id', "varchar(100) DEFAULT ''");
     }
 
     public function down()

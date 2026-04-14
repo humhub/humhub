@@ -54,7 +54,7 @@ class Image extends BaseImage
         $acronymHtmlOptions = $this->htmlOptions;
         $imageHtmlOptions = $this->htmlOptions;
 
-        $acronymHtmlOptions['class'] .= " space-profile-acronym-" . $this->space->id . " space-acronym";
+        $acronymHtmlOptions['class'] .= " space-profile-acronym-" . $this->space->id . " space-acronym d-inline-flex justify-content-center align-items-center";
         $acronymHtmlOptions['style'] .= " background-color: " . $color . "; width: " . $this->width . "px; height: " . $this->height . "px;";
         $acronymHtmlOptions['style'] .= " " . $this->getDynamicStyles($this->width);
         $acronymHtmlOptions['data-contentcontainer-id'] = $this->space->contentcontainer_id;
@@ -72,9 +72,7 @@ class Image extends BaseImage
             $imageHtmlOptions['data-bs-title'] = $this->tooltipText ?: Html::encode($this->space->name);
         }
 
-        $isDefaultImage = str_starts_with(basename($this->space->getProfileImage()->getUrl()), 'default_space.jpg');
-
-        if ($isDefaultImage) {
+        if (!$this->space->image->exists()) {
             $imageHtmlOptions['class'] .= ' d-none-space-image'; // Don't replace with `d-none` because it would be removed after changing space
         } else {
             $acronymHtmlOptions['class'] .= ' d-none-space-image'; // Idem
@@ -107,9 +105,6 @@ class Image extends BaseImage
 
     protected function getDynamicStyles($elementWidth)
     {
-
-        $fontSize = 44 * $elementWidth / 100;
-        $padding = 18 * $elementWidth / 100;
         $borderRadius = 4;
 
         if ($elementWidth < 140 && $elementWidth > 40) {
@@ -120,7 +115,7 @@ class Image extends BaseImage
             $borderRadius = 2;
         }
 
-        return "font-size: " . $fontSize . "px; padding: " . $padding . "px 0; border-radius: " . $borderRadius . "px;";
+        return "border-radius: " . $borderRadius . "px;";
     }
 
 }

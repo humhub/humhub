@@ -52,16 +52,17 @@
 
     @include media-breakpoint-down(md) {
         .notifications {
-            position: inherit !important;
-            float: left !important;
-        }
+            // Overwrite BS classes as -md variants doesn't exist
+            position: static !important;
+            transform: none !important;
 
-        .notifications .dropdown-menu {
-            width: 300px !important;
-            margin-left: 0 !important;
+            .dropdown-menu {
+                width: 300px !important;
+                margin-left: 0 !important;
 
-            .arrow {
-                margin-left: -142px !important;
+                .arrow {
+                    margin-left: -142px !important;
+                }
             }
         }
     }

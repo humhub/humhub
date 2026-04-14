@@ -1,14 +1,14 @@
 <?php
 
-use yii\db\Migration;
+use humhub\components\Migration;
 
 class m171025_200312_utf8mb4_fixes extends Migration
 {
     public function safeUp()
     {
-        $this->alterColumn('user_http_session', 'id', 'char(64) NOT NULL');
-        $this->alterColumn('contentcontainer', 'guid', 'char(36) NOT NULL');
-        $this->alterColumn('contentcontainer', 'class', 'char(60) NOT NULL');
+        $this->safeAlterColumn('user_http_session', 'id', 'char(64) NOT NULL');
+        $this->safeAlterColumn('contentcontainer', 'guid', 'char(36) NOT NULL');
+        $this->safeAlterColumn('contentcontainer', 'class', 'char(60) NOT NULL');
     }
 
     public function safeDown()

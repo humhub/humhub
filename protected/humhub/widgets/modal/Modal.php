@@ -78,26 +78,6 @@ class Modal extends \yii\bootstrap5\Modal
     public bool $show = false;
 
     /**
-     * @deprecated since 1.18.0 use [[closeButton]] instead
-     */
-    public $showClose;
-
-    /**
-     * @deprecated since 1.18.0 use [[title]] instead
-     */
-    public $header;
-
-    /**
-     * @deprecated since 1.18.0 (all modal boxes are opened with the fade animation)
-     */
-    public $animation;
-
-    /**
-     * @deprecated since 1.18.0
-     */
-    public $centerText;
-
-    /**
      * @var string Body text, useful when this widget is called as Modal::widget(['body' => '...'])
      */
     public string $body = '';
@@ -114,7 +94,7 @@ class Modal extends \yii\bootstrap5\Modal
      */
     public static self $stackForDialog;
 
-    protected function initOptions()
+    protected function initOptions(): void
     {
         $this->options['data-bs-backdrop'] = ($this->closable && $this->backdrop) ? 'true' : 'static';
         $this->options['data-bs-keyboard'] = ($this->closable && $this->keyboard) ? 'true' : 'false';
@@ -127,10 +107,6 @@ class Modal extends \yii\bootstrap5\Modal
         }
 
         // TODO: remove in later version
-        $this->title = $this->title ?: $this->header;
-        if ($this->showClose === false) {
-            $this->closeButton = false;
-        }
         // Convert size from deprecated values to new ones
         if ($this->size === 'extra-small') {
             $this->size = static::SIZE_SMALL;
@@ -147,19 +123,19 @@ class Modal extends \yii\bootstrap5\Modal
         parent::initOptions();
     }
 
-    public function run()
+    public function run(): string
     {
         if ($this->isHumHubDialog === true) {
-            echo $this->renderDialogBegin() . "\n"
+            $this->registerPlugin('modal');
+            return $this->renderDialogBegin() . "\n"
                 . $this->renderHeader() . "\n"
                 . $this->renderBodyBegin() . "\n"
                 . $this->body . "\n"
                 . $this->renderBodyEnd() . "\n"
                 . $this->renderFooter() . "\n"
                 . $this->renderDialogEnd();
-            $this->registerPlugin('modal');
         } else {
-            parent::run();
+            return parent::run();
         }
     }
 
@@ -172,7 +148,7 @@ class Modal extends \yii\bootstrap5\Modal
     /**
      * {@inheritDoc}
      */
-    public function init()
+    public function init(): void
     {
         if ($this->isHumHubDialog) {
             $this->trigger(self::EVENT_INIT);

@@ -1,6 +1,6 @@
 <?php
 
-use yii\db\Migration;
+use humhub\components\Migration;
 use yii\db\Schema;
 
 class m160227_073020_birthday_date extends Migration
@@ -9,7 +9,7 @@ class m160227_073020_birthday_date extends Migration
     {
         $table = Yii::$app->db->schema->getTableSchema('profile');
         if (isset($table->columns['birthday'])) {
-            $this->alterColumn('profile', 'birthday', Schema::TYPE_DATE);
+            $this->safeAlterColumn('profile', 'birthday', Schema::TYPE_DATE);
         }
     }
 

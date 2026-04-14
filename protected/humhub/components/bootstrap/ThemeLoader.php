@@ -45,8 +45,6 @@ class ThemeLoader implements BootstrapInterface
                     $app->mailer->view->theme = $theme;
                 }
             }
-        } else {
-            EnvironmentChecker::preInstallChecks();
         }
 
         if (

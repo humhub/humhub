@@ -12,7 +12,6 @@ use Exception;
 use humhub\compat\HForm;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
-use humhub\libs\ProfileImage;
 use humhub\libs\UUID;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\models\Content;
@@ -22,7 +21,7 @@ use humhub\modules\installer\forms\SampleDataForm;
 use humhub\modules\installer\forms\SecurityForm;
 use humhub\modules\installer\forms\UseCaseForm;
 use humhub\modules\installer\libs\InitialData;
-use humhub\modules\like\models\Like;
+use humhub\modules\like\services\LikeService;
 use humhub\modules\marketplace\Module;
 use humhub\modules\post\models\Post;
 use humhub\modules\queue\driver\Sync;
@@ -289,9 +288,9 @@ class ConfigController extends Controller
 
             if (Yii::$app->getModule('installer')->settings->get('sampleData')) {
                 // Add sample image to admin
+                /** @var User $admin */
                 $admin = User::find()->where(['id' => 1])->one();
-                $adminImage = new ProfileImage($admin->guid);
-                $adminImage->setNew(Yii::getAlias("@webroot-static/resources/installer/user_male_1.jpg"));
+                $admin->image->setByFile(Yii::getAlias("@webroot-static/resources/installer/user_male_1.jpg"));
 
                 $usersGroup = Group::findOne(['name' => 'Users']);
 
@@ -308,8 +307,7 @@ class ConfigController extends Controller
                 $userModel->tagsField = ['Microsoft Office', 'Marketing', 'SEM', 'Digital Native'];
                 $userModel->save();
 
-                $profileImage = new ProfileImage($userModel->guid);
-                $profileImage->setNew(Yii::getAlias("@webroot-static/resources/installer/user_male_2.jpg"));
+                $userModel->image->setByFile(Yii::getAlias("@webroot-static/resources/installer/user_male_2.jpg"));
 
                 $profileModel->user_id = $userModel->id;
                 $profileModel->firstname = "David";
@@ -338,8 +336,7 @@ class ConfigController extends Controller
                 $userModel2->tagsField = ['Yoga', 'Travel', 'English', 'German', 'French'];
                 $userModel2->save();
 
-                $profileImage2 = new ProfileImage($userModel2->guid);
-                $profileImage2->setNew(Yii::getAlias("@webroot-static/resources/installer/user_female_1.jpg"));
+                $userModel2->image->setByFile(Yii::getAlias("@webroot-static/resources/installer/user_female_1.jpg"));
 
                 $profileModel2->user_id = $userModel2->id;
                 $profileModel2->firstname = "Sara";
@@ -385,8 +382,7 @@ class ConfigController extends Controller
 
                 $comment = new Comment();
                 $comment->message = Yii::t("InstallerModule.base", "Nike – Just buy it. :wink:");
-                $comment->object_model = Post::class;
-                $comment->object_id = $post->getPrimaryKey();
+                $comment->content_id = $post->content->id;
                 $comment->save();
 
                 // Switch Identity
@@ -397,20 +393,12 @@ class ConfigController extends Controller
                     "InstallerModule.base",
                     "Calvin Klein – Between love and madness lies obsession.",
                 );
-                $comment2->object_model = Post::class;
-                $comment2->object_id = $post->getPrimaryKey();
+                $comment2->content_id = $post->content->id;
                 $comment2->save();
 
-                // Create Like Object
-                $like = new Like();
-                $like->object_model = Comment::class;
-                $like->object_id = $comment->getPrimaryKey();
-                $like->save();
 
-                $like = new Like();
-                $like->object_model = Post::class;
-                $like->object_id = $post->getPrimaryKey();
-                $like->save();
+                (new LikeService($comment))->like();
+                (new LikeService($post))->like();
 
                 // trigger install sample data event
                 $this->trigger(self::EVENT_INSTALL_SAMPLE_DATA);

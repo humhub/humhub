@@ -14,6 +14,7 @@ use Yii;
  * This is the model class for table "module_enabled".
  *
  * @property string $module_id
+ * @property string $version
  */
 class ModuleEnabled extends \yii\db\ActiveRecord
 {

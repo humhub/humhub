@@ -24,54 +24,56 @@ if (empty($lastRunDaily)) {
     $lastRunDaily = Yii::$app->formatter->asRelativeTime($lastRunDaily);
 }
 ?>
-<div class="row">
-    <div class="col-lg-6">
-        <div class="panel">
-            <div class="panel-heading">
-                <?= Yii::t('AdminModule.information', '<strong>CronJob</strong> Status'); ?>
-            </div>
-            <div class="panel-body">
-                <strong><?= Yii::t('AdminModule.information', 'Last run (hourly):'); ?></strong><br> <?= $lastRunHourly; ?>
-                <br/><br/>
-                <strong><?= Yii::t('AdminModule.information', 'Last run (daily):'); ?></strong><br> <?= $lastRunDaily; ?>
-                <br/><br/>
+<div class="container g-0 p-1 overflow-x-hidden"> <?php // p-1 is required for the panel-body box-shadow to be visible despite the overflow-x-hidden ?>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="panel">
+                <div class="panel-heading">
+                    <?= Yii::t('AdminModule.information', '<strong>CronJob</strong> Status'); ?>
+                </div>
+                <div class="panel-body">
+                    <strong><?= Yii::t('AdminModule.information', 'Last run (hourly):'); ?></strong><br> <?= $lastRunHourly; ?>
+                    <br/><br/>
+                    <strong><?= Yii::t('AdminModule.information', 'Last run (daily):'); ?></strong><br> <?= $lastRunDaily; ?>
+                    <br/><br/>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="col-lg-6">
-        <div class="panel">
-            <div class="panel-heading">
-                <?php if ($canClearQueue): ?>
-                    <?= Button::danger('Clear queue')
-                        ->link(['background-jobs', 'clearQueue' => 1])
-                        ->options(['data-method' => 'POST'])
-                        ->sm()->right();
-                    ?>
-                <?php endif; ?>
-                <?= Yii::t('AdminModule.information', '<strong>Queue</strong> Status'); ?>
-            </div>
-            <div class="panel-body">
-                <strong><?= Yii::t('AdminModule.information', 'Driver'); ?></strong><br/>
-                <?= $driverName; ?><br/>
-                <br/>
+        <div class="col-lg-6">
+            <div class="panel">
+                <div class="panel-heading">
+                    <?php if ($canClearQueue): ?>
+                        <?= Button::danger('Clear queue')
+                            ->link(['background-jobs', 'clearQueue' => 1])
+                            ->options(['data-method' => 'POST'])
+                            ->sm()->right();
+                        ?>
+                    <?php endif; ?>
+                    <?= Yii::t('AdminModule.information', '<strong>Queue</strong> Status'); ?>
+                </div>
+                <div class="panel-body">
+                    <strong><?= Yii::t('AdminModule.information', 'Driver'); ?></strong><br/>
+                    <?= $driverName; ?><br/>
+                    <br/>
 
-                <strong><?= Yii::t('AdminModule.information', 'Waiting'); ?></strong><br/>
-                <?= $waitingJobs ?><br/>
-                <br/>
+                    <strong><?= Yii::t('AdminModule.information', 'Waiting'); ?></strong><br/>
+                    <?= $waitingJobs ?><br/>
+                    <br/>
 
-                <strong><?= Yii::t('AdminModule.information', 'Delayed'); ?></strong><br/>
-                <?= $delayedJobs ?><br/>
-                <br/>
+                    <strong><?= Yii::t('AdminModule.information', 'Delayed'); ?></strong><br/>
+                    <?= $delayedJobs ?><br/>
+                    <br/>
 
-                <strong><?= Yii::t('AdminModule.information', 'Reserved'); ?></strong><br/>
-                <?= $reservedJobs ?><br/>
-                <br/>
+                    <strong><?= Yii::t('AdminModule.information', 'Reserved'); ?></strong><br/>
+                    <?= $reservedJobs ?><br/>
+                    <br/>
 
-                <strong><?= Yii::t('AdminModule.information', 'Done'); ?></strong><br/>
-                <?= $doneJobs ?><br/>
-                <br/>
+                    <strong><?= Yii::t('AdminModule.information', 'Done'); ?></strong><br/>
+                    <?= $doneJobs ?><br/>
+                    <br/>
 
+                </div>
             </div>
         </div>
     </div>

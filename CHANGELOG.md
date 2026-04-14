@@ -1,8 +1,117 @@
 HumHub Changelog
 ================
 
-1.18.0-beta.6 (Unreleased)
----------------------------------
+1.19 (TBD)
+----------
+- Enh #8011: Added `AssetImage` as replacement for `ProfileImage`, `SiteIcon`, `LogoImage`, `LoginBackground`, `MailHeader`
+- Enh #8011: Added `AssetManager` FlySystem support
+- Enh #7980: Remove deprecations
+- Enh #8025: Implement URL for Content Created Activity
+- Fix #8031: Border Radius for Color Picker under Theme Customisation
+- Fix #8006: Web Installer Nginx Example
+- Fix #8041: Update `Button::asLink` to `Link::to`
+- Fix #8070: Refactor Content deletion to make it possible only from ContentActiveRecord
+- Fix #8071: Fix button link with icon only
+- Enh #8083: Store module version in DB
+- Enh #5141: Added CLI command to delete disabled or soft deleted users
+
+1.18.3 (TBD)
+------------
+- Fix #8079: Hide wall entry topics container when no topics
+- Fix #8075: Filtering by Global Topic in Dashboard
+- Fix #8081: Adds null check for removeItem and appendItem.
+- Fix #8086: Fix Daylight Saving Time issue in `DbDateValidator`
+- Fix #8090: Show only visible groups on the profile field "Group memberships"
+- Fix #8091: Bypass `StreamViewer::$showFilters` when `topics` query param is present
+- Fix #8093: Fix Yii2 debug panel
+
+1.18.2 (March 22, 2026)
+-----------------------
+- Fix #8046: Profile Header Title HTML encoded twice since 1.18.1
+- Fix #8043: User display name bottom truncated in top bar
+- Fix #8050: Fix page title on PJAX request
+- Fix #8051: Registration - Display Captcha field if invalid after form submit via keyboard
+- Enh #8051: Add `AltchaCaptchaInput::$showOnFocusElement` and `YiiCaptchaInput::$showOnFocusElement` (see [migration guide](https://github.com/humhub/humhub/blob/master/MIGRATE-DEV.md#version-1181) for details)
+- Fix #8054: Login layout widths (Default: Bootstrap width, Registration: 500px, Login & Password: 300px, Login with multiple SSO buttons: 500px)
+- Enh #8044: Update package `firebase/php-jwt` to v7
+- Fix #8056: Fix linked badge icon
+- Fix #8059: Prevent previous message reused on attachment replies
+- Fix #8060: Double HTML encoding of the Tour widget menu "remove" item
+- Enh #8061: Display warning when URL cannot be embedded
+- Fix #8062: Fix global topics
+- Fix #8072: Fix missing translations
+- Fix #8077: Topics in new post won't save
+
+1.18.1 (March 2, 2026)
+----------------------
+
+> This release also fixes a [security](https://github.com/humhub/humhub/security/advisories/GHSA-qxjh-478x-23gm) issue.
+ 
+- Fix #8003: `Migration::foreignIndexExists()` doesn't find tables in braces
+- Fix #8002: Comment dropdowns truncated (e.g. to select a title)
+- Fix #8007: Fix unsaved changes warning on Profile Edit page
+- Fix #8008: Space Tour Wrong Target for "Preferences" menu
+- Fix #8013: Fix error displaying on update a module
+- Fix #8009: Administration Group label misplaced
+- Fix #8012: Modal backdrop over the account deletion modal for new Users
+- Enh #8017: Exclude `vendor` from module i18n extract
+- Fix #8020: Some email notifications are missing auto-contrast for the button text color
+- Fix #8027: Cannot register if `showRegistrationForm` is disabled
+- Enh #8029: Display and cache virtual profile field in the user name subtitle
+- Fix #8030: Fix abandoned composer packages
+- Fix #8039: Encode `Button`, `Link`, `Badge` and `DropdownMenu` labels by default to fix potential XSS security issue (see [migration guide](https://github.com/humhub/humhub/blob/master/MIGRATE-DEV.md#version-1181) for details)
+- Fix #8038: Improve paragraph and image styles in RichText content
+- Enh #7978: Show `DisplayNameSub` in UserPicker
+
+1.18.0 (February 4, 2026)
+-------------------------
+
+> See also: HumHub 1.18 - [Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_18)
+
+> Info: The minimum PHP version is now `PHP 8.2`!
+
+> Bootstrap 5 is the default CSS framework, which may require migration of custom modules or themes. See [MIGRATE-BS5.md](https://github.com/humhub/humhub/blob/v1.18.0/MIGRATE-BS5.md)
+
+> Caching must now be configured via the [configuration file](https://docs.humhub.org/docs/admin/performance), with `FileCache` as the default.
+
+- Fix #7921: Alert widget broken since beta.6
+- Fix #7925: Space Members dropdown menu
+- Fix #7924: Admin Pending Approvals buttons layout
+- Fix #7928: Top menu: long usernames overlap notification buttons for md screen sizes
+- Fix #7930: Remove bottom margin to RichText Create Input fields
+- Fix #7937: Spaces and Marketplace layouts are missing fluid container
+- Fix #7932: Fix content default visibility after form submit
+- Enh #7941: Display http exception name when message is not provided
+- Fix #7940: Fix space acronym on the picker for saved items
+- Fix #7943: Fix MailButton widget color when the type is specified
+- Fix #7946: Warnings when compiling CSS
+- Enh #7948: Update styles of the "About Humhub" page
+- Enh #7955: Add `safeAlterColumn()` method to `humhub\components\Migration` class
+- Fix #7956: In "New User" form, "or" divider is not translated
+- Fix #7957: Clean up markdown syntax from email notification subject
+- Enh #7958: Improve topic url for hidden content on stream
+- Fix #7960: Opening Modals indents Topbar
+- Fix #7961: In menu dropdowns, hide divider if it's the first or the last element
+- Fix #7963: If the Registration form has multiple Auth clients, make the container wider
+- Enh #7964: Add option for disabling certificate checking for ldap connections.
+- Fix #7967: Don't store fixed settings to DB
+- Fix #7966: ENV loading for Queue workers
+- Fix #7970: Margins in comments
+- Fix #7972: Content footer comment/like links separator spacings
+- Enh #7975: More details in the log message in case of error with AltchaCaptcha
+- Fix #7977: Skip adding of a default group when another is selected on the registration form
+- Fix #7981: Error on sending mail
+- Fix #7987: Fix registration by link with existing email
+- Fix #7979: Topics and Online profile images margins
+- Enh #7988: When the Altcha Captcha box is not checked, don't log any error
+- Fix #7991: Space image acronym in banner on mobile
+- Enh #7991: On medium size, don't display the Space statistics under the Space image in the banner
+- Fix #7989: Fix site icon on installer pages
+- Fix #7994: Opening Modals indents top bars
+
+
+1.18.0-beta.6 (January 8, 2026)
+-------------------------------
 - Enh #7834: Login Screen: revert container width to 300px when less than 2 SSO buttons and remove Language Chooser label
 - Fix #7843: Allow child theme not to have a build.scss file (only variables.scss is mandatory)
 - Fix #7842: Fixed php deprecation warning in `ConfigHelper`
@@ -24,7 +133,35 @@ HumHub Changelog
 - Fix #7868: Add a minimal fallback CSS in case of CSS compilation issue
 - Fix #7872: Email inline style from Sass variables, e.g. when overwriting `$mail-font-family` in the Custom SCSS field
 - Fix #7873: Fix `required` validator
+- Fix #7875: Fix theme color default settings after initial installation
 - Fix #7876: Support for .mjs (ES modules)
+- Chg #7878: Registration form definitions now requires to use the `EVENT_AFTER_SET_FORM` instead of `EVENT_AFTER_INIT` 
+- Enh #7883: Allow CheckboxList Profile Field Type to be used "as Directory filter"
+- Fix #7884: On small screen, the modal box is not centered
+- Fix #7885: Layout padding on small screens
+- Fix #7886: View using the Login layout (auth, registration, must-change-password and password-recovery): Styling, Back button, remove inline CSS, add unique ID
+- Fix #7887: Delete Account Spaces List
+- Fix #7888: Activate License link styling
+- Fix #7888: User/Space List Modals
+- Fix #7889: Remove btn class from sub-menu dropdowns and fix extra space after the icon
+- Fix #7890: Modal moves the topbar to the right when it opens
+- Fix #7895: Button styling when in Input form field
+- Fix #7896: Top bar notification block not centered
+- Fix #7897: Admin Advanced OEmbeded styling
+- Fix #7900: About HumHub Information page styling
+- Fix #7901: Database Information page styling
+- Fix #7903: Admin User Export button group spacing and missing line in the table header
+- Fix #7904: Logging admin page styling
+- Enh #7904: New Sass text color contrast variables, `$text-color-contrast` is now deprecated
+- Fix #7902: Community Theme - Container Paddings in different Breakpoints
+- Fix #7902: Marketplace update colors
+- Fix #7910: `.row` HTML elements without `.container` overflow
+- Fix #7907: In the Profile, allow unlimited selections for Checkbox Lists
+- Fix #7906: Comment menu disappear when the cursor moves out the comment & refactor _comment.scss
+- Enh #7911: Use BS5 for form fieldset
+- Enh #7914: Show "Group" column on the pending user approvals list
+- Fix #7915: Invalid multiple inputs in Content form
+- Fix #7918: Fix `transport type` to be readonly/disabled when fixed in mailer settings
 
 1.18.0-beta.5 (November 13, 2025)
 ---------------------------------
@@ -175,10 +312,11 @@ HumHub Changelog
 - Enh #7661: Parent groups
 - Enh #7662: In buttons, add right margin to the icon, so that the space char between the icon and the label is no longer needed (see MIGRATE-BS5.md -> ## Buttons)
 
-1.17.5 (Unreleased)
+1.17.5 (December 11, 2025)
 --------------------------
 - Fix #7835: Truncate application name in the theme header
 - Fix #7841: Send user approval notification only to active group managers
+- Fix #7891: Edge shows blank home page
 
 1.17.4 (November 11, 2025)
 --------------------------

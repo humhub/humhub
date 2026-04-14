@@ -10,14 +10,11 @@ use humhub\components\View;
 use humhub\modules\ui\filter\widgets\FilterBlock;
 
 /* @var $this View */
-/* @var $span int */
 /* @var $blocks [] */
-
-$colSpan = $span <= 4 ? 12 / $span : 6;
 
 ?>
 
-<div class="filter-panel col-lg-<?= $colSpan ?>">
+<div class="filter-panel col">
     <?php foreach ($blocks as $block): ?>
         <?= FilterBlock::widget($block) ?>
     <?php endforeach; ?>

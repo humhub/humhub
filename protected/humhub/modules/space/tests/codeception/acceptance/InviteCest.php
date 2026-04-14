@@ -37,7 +37,7 @@ class InviteCest
 
         $I->amUser1(true);
         $I->seeInNotifications('Sara Tester accepted your invite for the space Space 2', true);
-        $I->waitForText('Sara Tester joined this space.');
+        $I->waitForText('Sara Tester joined this Space.');
     }
 
     /**

@@ -107,14 +107,37 @@ class DbDateValidator extends DateValidator
             return strtotime($value);
         }
 
-        $timestamp = $this->parseDateValue($value);
+        if ($this->hasTime() && !empty($timeValue)) {
+            if (!DateHelper::isInDbFormat($value, true)) {
+                $timestamp = $this->parseDateValue($value);
 
-        if ($timestamp !== false && $this->hasTime() && !empty($timeValue)) {
-            $timestamp += $this->parseTimeValue($timeValue);
-            $timestamp = $this->fixTimestampTimeZone($timestamp, $this->timeZone);
+                if ($timestamp === false) {
+                    return false;
+                }
+
+                $value = (new \DateTimeImmutable('@' . $timestamp))
+                    ->setTimezone(new \DateTimeZone('UTC'))
+                    ->format('Y-m-d');
+            }
+
+            try {
+                $timeValue = (new \DateTimeImmutable($timeValue, new \DateTimeZone('UTC')))->format('H:i:s');
+            } catch (\Exception $e) {
+                return false;
+            }
+
+            $dateTime = \DateTimeImmutable::createFromFormat(
+                '!Y-m-d H:i:s',
+                $value . ' ' . $timeValue,
+                new \DateTimeZone($this->timeZone),
+            );
+
+            return $dateTime === false
+                ? false
+                : $dateTime->setTimezone(new \DateTimeZone('UTC'))->getTimestamp();
         }
 
-        return $timestamp;
+        return $this->parseDateValue($value);
     }
 
     /**
@@ -164,35 +187,4 @@ class DbDateValidator extends DateValidator
         return (new self())->parseDateTimeValue($value, $timeValue);
     }
 
-    /**
-     * Parses given time value (hh:mm) to seconds
-     *
-     * @todo Allow more time formats
-     * @param string $value
-     * @return int time converted to seconds
-     */
-    protected function parseTimeValue($value)
-    {
-        return strtotime($value) - strtotime('TODAY');
-    }
-
-    /**
-     * Converts the given timestamp from user (or configured) timezone to a utc timestamp
-     *
-     * @param int $ts the timestamp
-     * @param String $timeZone users timezone
-     * @return int
-     * @throws \Exception
-     */
-    protected function fixTimestampTimeZone($ts, $timeZone)
-    {
-        // Create date string
-        $fromDateTime = new \DateTime('@' . $ts);
-
-        // Create date object
-        $toDateTime = \DateTime::createFromFormat('Y-m-d H:i:s', $fromDateTime->format('Y-m-d H:i:s'), new \DateTimeZone($timeZone));
-        $toDateTime->setTimezone(new \DateTimeZone('UTC'));
-
-        return $toDateTime->getTimestamp();
-    }
 }

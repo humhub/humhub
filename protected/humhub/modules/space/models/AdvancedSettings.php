@@ -98,7 +98,7 @@ class AdvancedSettings extends Model
             'url' => 'URL',
             'indexUrl' => Yii::t('SpaceModule.base', 'Homepage'),
             'indexGuestUrl' => Yii::t('SpaceModule.base', 'Homepage (Non-members)'),
-            'defaultStreamSort' => Yii::t('SpaceModule.base', 'Stream Sort'),
+            'defaultStreamSort' => Yii::t('SpaceModule.base', 'Content Sort Order'),
             'hideMembers' => Yii::t('SpaceModule.base', 'Hide Members'),
             'hideActivities' => Yii::t('SpaceModule.base', 'Hide Activity Sidebar Widget'),
             'hideAbout' => Yii::t('SpaceModule.base', 'Hide About Page'),
@@ -114,7 +114,7 @@ class AdvancedSettings extends Model
         return [
             'indexUrl' => Yii::t('SpaceModule.base', 'The default homepage for members of this Space'),
             'indexGuestUrl' => Yii::t('SpaceModule.base', 'The default homepage for non-members and guests visiting this Space'),
-            'defaultStreamSort' => Yii::t('SpaceModule.base', 'Default Stream Sort'),
+            'defaultStreamSort' => Yii::t('SpaceModule.base', 'Order of content in stream'),
         ];
     }
 

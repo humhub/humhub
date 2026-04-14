@@ -56,7 +56,6 @@ The license was successfully removed!
     'Could not update license. Error: ' => 'Kunne ikke opdatere licensen. Fejl:',
     'Deprecated' => 'Udgået',
     'Download of module failed!' => 'Download af modul mislykkedes!',
-    'Edit license' => 'Rediger licens',
     'Enable' => 'Gør det muligt',
     'Enable now' => 'Aktivér nu',
     'Enabled' => 'Aktiveret',
@@ -129,7 +128,6 @@ The license was successfully removed!
     'Update' => 'Opdater',
     'Update all' => 'Opdater alle',
     'Update successful' => 'Opdatering vellykket',
-    'Upgrade to Professional Edition' => 'Opgrader til Professional Edition',
     'Version:' => 'Version:',
     'We are almost there! As a final step, we recommend that you take a look at the module configuration, where you will find numerous configuration options, some of which are required.' => 'Vi er der næsten! Som et sidste skridt anbefaler vi, at du tager et kig på modulkonfigurationen, hvor du finder mange konfigurationsmuligheder, hvoraf nogle er nødvendige.',
     'Well done! To make the module available within your network, you will also need to enable it. Do you want to enable it now?' => 'Det er godt gået! For at gøre modulet tilgængeligt i dit netværk skal du også aktivere det. Vil du aktivere det nu?',
@@ -137,4 +135,6 @@ The license was successfully removed!
     'Without category' => 'Uden kategori',
     'Would you like to jump straight to it?' => 'Vil du gerne springe direkte til det?',
     'Your HumHub installation is up to date!' => 'Din HumHub-installation er opdateret!',
+    'Add License' => '',
+    'Edit License' => '',
 ];

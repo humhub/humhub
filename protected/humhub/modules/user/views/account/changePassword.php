@@ -19,7 +19,6 @@ use humhub\widgets\form\ActiveForm;
 
 <?php echo $form->field($model, 'newPasswordConfirm')->passwordInput(['maxlength' => 45]); ?>
 
-<hr>
 <?php echo Html::submitButton(Yii::t('UserModule.account', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
 <?php ActiveForm::end(); ?>

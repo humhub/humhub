@@ -59,9 +59,14 @@
     }
 
     .space-acronym {
-        color: var(--hh-text-color-contrast);
-        text-align: center;
-        display: inline-block;
+        color: #fff; // TODO auto-contrast via PHP from the background color
+        container-type: size; // allow dynamic font size to adjust the container
+        overflow: hidden;
+
+        span {
+            font-size: 50cqw; // 50% of container's width
+            white-space: nowrap;
+        }
     }
 
     .d-none-space-image {

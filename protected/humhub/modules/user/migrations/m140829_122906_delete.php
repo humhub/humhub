@@ -1,7 +1,7 @@
 <?php
 
 
-use yii\db\Migration;
+use humhub\components\Migration;
 
 class m140829_122906_delete extends Migration
 {
@@ -9,10 +9,10 @@ class m140829_122906_delete extends Migration
     {
         $this->delete('user', ['status' => 3]);
 
-        $this->dropColumn('user', 'user_invite_id');
+        $this->safeDropColumn('user', 'user_invite_id');
 
         # Remove status default value
-        $this->alterColumn('user', 'status', 'tinyint(4)');
+        $this->safeAlterColumn('user', 'status', 'tinyint(4)');
     }
 
     public function down()

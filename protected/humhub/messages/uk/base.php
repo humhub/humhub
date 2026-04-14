@@ -88,6 +88,7 @@ return [
     '{nFormatted}K' => '{nFormatted}K',
     '{nFormatted}M' => '{nFormatted}M',
     'An unexpected error occurred. Please check whether your file exceeds the allowed upload limit of {maxUploadSize}.' => '',
+    'Back to login' => '',
     'Enter security code above' => '',
     'I\'m not a robot' => '',
     'My Profile' => '',

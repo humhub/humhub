@@ -20,8 +20,11 @@ TourAsset::register($this);
 
 $removeOptionHtml = Html::tag(
     'li',
-    Link::to(Yii::t('TourModule.base', '<strong>Remove</strong> tour panel'))
-        ->link(["/tour/tour/hide-panel", "ajax" => 1])
+    Link::to(
+        Yii::t('TourModule.base', '<strong>Remove</strong> tour panel'),
+        ["/tour/tour/hide-panel", "ajax" => 1],
+    )
+        ->encodeLabel(false)
         ->icon('eye-slash')
         ->action('tour.hidePanel')
         ->confirm(
@@ -30,7 +33,7 @@ $removeOptionHtml = Html::tag(
             Yii::t('TourModule.base', 'Ok'),
             Yii::t('TourModule.base', 'Cancel'),
         )
-        ->cssClass(['btn', 'dropdown-item']),
+        ->cssClass(['dropdown-item']),
 );
 ?>
 

@@ -12,13 +12,13 @@ class m150714_093525_activity extends Migration
         $this->dropColumn('activity', 'updated_by');
         $this->dropColumn('activity', 'updated_at');
 
-        $this->update('activity', ['module' => 'comment'], ['class' => 'humhub\modules\comment\activities\NewComment']);
-        $this->update('activity', ['module' => 'content'], ['class' => 'humhub\modules\content\activities\ContentCreated']);
-        $this->update('activity', ['module' => 'like'], ['class' => 'humhub\modules\like\activities\Liked']);
-        $this->update('activity', ['module' => 'space'], ['class' => 'humhub\modules\space\activities\Created']);
-        $this->update('activity', ['module' => 'space'], ['class' => 'humhub\modules\space\activities\MemberAdded']);
-        $this->update('activity', ['module' => 'space'], ['class' => 'humhub\modules\space\activities\MemberRemoved']);
-        $this->update('activity', ['module' => 'user'], ['class' => 'humhub\modules\user\activities\UserFollow']);
+        $this->update('activity', ['module' => 'comment'], ['class' => 'humhub\modules\comment\activities\NewCommentActivity']);
+        $this->update('activity', ['module' => 'content'], ['class' => 'humhub\modules\content\activities\ContentCreatedActivity']);
+        $this->update('activity', ['module' => 'like'], ['class' => 'humhub\modules\like\activities\LikeActivity']);
+        $this->update('activity', ['module' => 'space'], ['class' => 'humhub\modules\space\activities\SpaceCreatedActivity']);
+        $this->update('activity', ['module' => 'space'], ['class' => 'humhub\modules\space\activities\MemberAddedActivity']);
+        $this->update('activity', ['module' => 'space'], ['class' => 'humhub\modules\space\activities\MemberRemovedActivity']);
+        $this->update('activity', ['module' => 'user'], ['class' => 'humhub\modules\user\activities\FollowActivity']);
     }
 
     public function down()

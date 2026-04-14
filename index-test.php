@@ -27,7 +27,7 @@ defined('YII_ENV_TEST') or define('YII_ENV_TEST', true);
 require(__DIR__ . '/protected/vendor/autoload.php');
 require(__DIR__ . '/protected/vendor/yiisoft/yii2/Yii.php');
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__, '.env');
+$dotenv = Dotenv\Dotenv::createMutable(__DIR__, '.env');
 $dotenv->safeLoad();
 
 $config = yii\helpers\ArrayHelper::merge(

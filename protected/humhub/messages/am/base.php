@@ -80,6 +80,7 @@ return [
     'Allow content from external source' => '',
     'Always allow content from this provider!' => '',
     'An unexpected error occurred. Please check whether your file exceeds the allowed upload limit of {maxUploadSize}.' => '',
+    'Back to login' => '',
     'Do you want to enable content from \'{urlPrefix}\'?' => '',
     'Enter security code above' => '',
     'I\'m not a robot' => '',

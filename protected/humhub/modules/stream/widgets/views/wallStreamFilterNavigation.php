@@ -10,7 +10,7 @@ use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\stream\widgets\WallStreamFilterNavigation;
 use humhub\modules\ui\filter\widgets\FilterPanel;
-use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
 
 /* @var $this View */
 /* @var $panels [] */
@@ -29,17 +29,17 @@ $panelColumn4Blocks = $panels[WallStreamFilterNavigation::PANEL_COLUMN_4] ?? nul
 <div class="wall-stream-filter-root nav-tabs">
     <div class="wall-stream-filter-head clearfix">
         <div class="wall-stream-filter-bar"></div>
-        <?= Button::asLink(Yii::t('ContentModule.base', 'Filter'))
+        <?= Link::to(Yii::t('ContentModule.base', 'Filter'))
             ->cssClass('wall-stream-filter-toggle filter-toggle-link')
             ->icon('filter')
             ->sm() ?>
     </div>
     <div class="wall-stream-filter-body<?= $isCollapsed ? ' d-none' : '' ?>">
-        <div class="filter-root">
+        <div class="filter-root container">
             <div class="row">
-                <?= FilterPanel::widget(['blocks' => $panelColumn1Blocks, 'span' => count($panels)]) ?>
-                <?= FilterPanel::widget(['blocks' => $panelColumn2Blocks, 'span' => count($panels)]) ?>
-                <?= FilterPanel::widget(['blocks' => $panelColumn3Blocks, 'span' => count($panels)]) ?>
+                <?= FilterPanel::widget(['blocks' => $panelColumn1Blocks]) ?>
+                <?= FilterPanel::widget(['blocks' => $panelColumn2Blocks]) ?>
+                <?= FilterPanel::widget(['blocks' => $panelColumn3Blocks]) ?>
             </div>
         </div>
     </div>

@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Followers</strong>' => '<strong>Volgers</strong>',
   '<strong>Following</strong>' => '<strong>Volgt</strong>',
   '<strong>Member</strong> in these spaces' => '<strong>Lid</strong> van deze ruimten',
@@ -44,6 +44,7 @@ return array (
   'Force password change upon first login' => 'Forceer nieuw wachtwoord na de eerste inlog',
   'Force password change upon next login' => 'Forceer nieuw wachtwoord na de volgende inlog',
   'Friends' => 'Vrienden',
+  'Group' => 'Groep',
   'Group Manager(s)' => 'Groepsbeheerder(s)',
   'Here you can connect to external service provider for using external services like a single sign on authentication.' => 'Hier kunt u verbinding maken met andere websites om daarmee snel in te loggen.',
   'If this wasn\'t you, you can disregard this message.' => 'Als u dit niet was, kunt u dit bericht negeren.',
@@ -51,6 +52,7 @@ return array (
   'Invite by link' => 'Uitnodigen met link',
   'Invite new people' => 'Nodig nieuwe personen uit',
   'Invited by' => 'Uitgenodigd door',
+  'Invited by {userName}' => 'Uitgenodigd door {userName}',
   'It looks like you clicked on an invalid password reset link. Please try again.' => 'Het lijkt erop dat u op een ongeldige koppeling voor het opnieuw instellen van uw wachtwoord heeft geklikt. Probeer het opnieuw.',
   'Language' => 'Taal',
   'Last Login' => 'Laatste login',
@@ -121,4 +123,4 @@ return array (
   'invited you to join {name}.' => 'heeft uw uitgenodigd om lid te worden van {name}.',
   'invited you to join {space} on {name}.' => 'nodigt u uit om deel te nemen aan {space} op {name}.',
   'or' => 'of',
-);
+];

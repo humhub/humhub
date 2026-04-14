@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Followers</strong>' => '<strong>Korisnikovi</strong> pratitelji',
   '<strong>Following</strong>' => '<strong>Prati</strong> korisnika',
   '<strong>Member</strong> in these spaces' => '<strong>Član</strong> u ovim prostorima',
@@ -10,7 +10,7 @@ return array (
   'All' => 'Sve',
   'Allow users to mention you' => '',
   'Allows access to your about page with personal information' => 'Dopusti pristup stranici o sebi s osobnim informacijama',
-  'Any' => '',
+  'Any' => 'Bilo koji',
   'Auth Mode' => 'Način potvrde',
   'Basic Settings' => 'Osnovne postavke',
   'Block user' => '',
@@ -44,6 +44,7 @@ return array (
   'Force password change upon first login' => '',
   'Force password change upon next login' => '',
   'Friends' => 'Prijatelji',
+  'Group' => 'Grupa',
   'Group Manager(s)' => '',
   'Here you can connect to external service provider for using external services like a single sign on authentication.' => 'Ovdje se možete povezati s vanjskim davateljem usluga za korištenje vanjskih usluga kao što je jedan znak na autentičnosti.',
   'If this wasn\'t you, you can disregard this message.' => '',
@@ -51,6 +52,7 @@ return array (
   'Invite by link' => 'Pozovi putem poveznice',
   'Invite new people' => '',
   'Invited by' => 'Poziv od',
+  'Invited by {userName}' => '',
   'It looks like you clicked on an invalid password reset link. Please try again.' => '',
   'Language' => 'Jezik',
   'Last Login' => 'Zadnja prijava',
@@ -61,7 +63,7 @@ return array (
   'My Account' => 'Moj račun',
   'Name' => 'Ime',
   'New password' => 'Nova lozinka',
-  'No results found!' => '',
+  'No results found!' => 'Pretraga nije dala rezultate!',
   'No users found.' => 'Korisnici nisu pronađeni.',
   'Notifications' => 'Obavijesti',
   'Offline' => '',
@@ -93,7 +95,7 @@ return array (
   'The secure link has been copied in your clipboard!' => '',
   'The user has been blocked for you.' => '',
   'The user has been unblocked for you.' => '',
-  'Try other keywords or remove filters.' => '',
+  'Try other keywords or remove filters.' => 'Pokušajte pretražiti po drugim ključnim riječima ili uklonite filtere.',
   'Unblock user' => '',
   'Unknown user status!' => 'Nepoznat status korisnika!',
   'Unsuccessful login attempts since last login: {failedLoginAttemptsCount}' => '',
@@ -121,4 +123,4 @@ return array (
   'invited you to join {name}.' => 'pozvao vas je da se pridružite {name}.',
   'invited you to join {space} on {name}.' => 'pozvao vas je da se pridružite {space} na {name}.',
   'or' => 'ili',
-);
+];

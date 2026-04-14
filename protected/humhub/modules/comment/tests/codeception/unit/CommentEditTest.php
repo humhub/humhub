@@ -20,8 +20,7 @@ class CommentEditTest extends HumHubDbTestCase
         $this->becomeUser('User2');
         $comment = new Comment([
             'message' => 'User2 comment!',
-            'object_model' => Post::class,
-            'object_id' => 11,
+            'content_id' => 11,
         ]);
 
         $this->assertTrue($comment->save());
@@ -37,8 +36,7 @@ class CommentEditTest extends HumHubDbTestCase
         $this->becomeUser('User2');
         $comment = new Comment([
             'message' => 'User2 comment!',
-            'object_model' => Post::class,
-            'object_id' => 11,
+            'content_id' => 11,
         ]);
 
         $this->assertTrue($comment->save());

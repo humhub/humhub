@@ -397,6 +397,22 @@ class SelfTest
             ];
         }
 
+        // Checks Sodium Extension
+        $title = 'PHP - ' . Yii::t('AdminModule.information', '{phpExtension} Extension', ['phpExtension' => 'Sodium']);
+        if (extension_loaded('sodium')) {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'OK',
+            ];
+        } else {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'WARNING',
+                'hint' => Yii::t('AdminModule.information', 'Optional') . ' - '
+                    . Yii::t('AdminModule.information', 'Install {phpExtension} Extension for Mercure push live driver', ['phpExtension' => 'Sodium']),
+            ];
+        }
+
         // Checks `proc_open` is on in Disabled Functions
         $title = 'PHP - ' . Yii::t('AdminModule.information', 'Disabled Functions');
         if (function_exists('proc_open')) {

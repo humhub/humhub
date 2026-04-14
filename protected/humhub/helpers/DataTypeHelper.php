@@ -317,14 +317,14 @@ class DataTypeHelper
      * @param bool $throwException throws an exception instead of returning `null`.
      * Code of the thrown Exception is a bit-mask consisting of the following bits:
      * ``
-     *   - self::CLASS_CHECK_INVALID_CLASSNAME_PARAMETER: Invalid $className parameter
-     *   - self::CLASS_CHECK_INVALID_TYPE_PARAMETER: Invalid $type parameter
-     *   - self::CLASS_CHECK_VALUE_IS_EMPTY: Empty parameter
-     *   - self::CLASS_CHECK_INVALID_TYPE: Invalid type
-     *   - self::CLASS_CHECK_NON_EXISTING_CLASS: Non-existing class
-     *   - self::CLASS_CHECK_TYPE_NOT_IN_LIST: Class that is not in $type parameter
-     *   - self::CLASS_CHECK_VALUE_IS_INSTANCE: $className is an object instance
-     *   - self::CLASS_CHECK_VALUE_IS_NULL: NULL value
+     *   - self::TYPE_CHECK_INVALID_VALUE_PARAMETER: Invalid $className parameter
+     *   - self::TYPE_CHECK_INVALID_TYPE_PARAMETER: Invalid $type parameter
+     *   - self::TYPE_CHECK_VALUE_IS_EMPTY: Empty parameter
+     *   - self::TYPE_CHECK_INVALID_TYPE: Invalid type
+     *   - self::TYPE_CHECK_NON_EXISTING_CLASS: Non-existing class
+     *   - self::TYPE_CHECK_TYPE_NOT_IN_LIST: Class that is not in $type parameter
+     *   - self::TYPE_CHECK_VALUE_IS_INSTANCE: $className is an object instance
+     *   - self::TYPE_CHECK_VALUE_IS_NULL: NULL value
      * ``
      *
      * @return string|null

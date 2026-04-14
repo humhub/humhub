@@ -132,6 +132,7 @@ class PeopleFilters extends DirectoryFilters
         switch ($fieldType) {
             case 'text':
             case 'dropdownlist':
+            case 'checkboxlist':
                 $filterData['type'] = 'widget';
                 $filterData['widget'] = PeopleFilterPicker::class;
                 $filterData['inputOptions'] = ['data-dropdown-auto-width' => 'true'];

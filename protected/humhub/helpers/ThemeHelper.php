@@ -18,7 +18,6 @@ use ScssPhp\ScssPhp\OutputStyle;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
-use yii\helpers\FileHelper;
 
 /**
  * ThemeHelper
@@ -51,7 +50,10 @@ class ThemeHelper
                 try {
                     $module = Yii::$app->getModule($id);
                 } catch (Exception $ex) {
-                    Yii::error('Could not load module to fetch themes! Module: ' . $id . ' Error: ' . $ex->getMessage(), 'ui');
+                    Yii::error(
+                        'Could not load module to fetch themes! Module: ' . $id . ' Error: ' . $ex->getMessage(),
+                        'ui',
+                    );
                     continue;
                 }
             }
@@ -148,12 +150,17 @@ class ThemeHelper
         // Get variables from theme files
         $variables = ScssHelper::getVariables(Yii::getAlias('@webroot-static/scss/variables.scss'));
         foreach (array_reverse(static::getThemeTree($theme)) as $treeTheme) {
-            $variables = ArrayHelper::merge($variables, ScssHelper::getVariables(ScssHelper::getVariableFile($treeTheme)));
+            $variables = ArrayHelper::merge(
+                $variables,
+                ScssHelper::getVariables(ScssHelper::getVariableFile($treeTheme)),
+            );
         }
 
         // Overwrite with custom variables from DesignSettingsForm
         $settingsManager = Yii::$app->settings; // Don't use `new DesignSettingsForm()` as it would make an infinite loop
-        [$customVariables, $customMaps, $otherCustomScss] = ScssHelper::extractVariablesAndMaps($settingsManager->get('themeCustomScss'));
+        [$customVariables, $customMaps, $otherCustomScss] = ScssHelper::extractVariablesAndMaps(
+            $settingsManager->get('themeCustomScss'),
+        );
         $variables = ArrayHelper::merge($variables, ScssHelper::parseVariables($customVariables));
 
         return ScssHelper::updateLinkedScssVariables($variables);
@@ -250,28 +257,28 @@ class ThemeHelper
         $compiler->setOutputStyle(OutputStyle::COMPRESSED);
 
         // Set import paths
-        $compiler->setImportPaths(Yii::getAlias('@npm/bootstrap/scss'));
+        $compiler->setImportPaths(Yii::getAlias('@vendor/twbs/bootstrap/scss'));
         $compiler->addImportPath(Yii::getAlias('@webroot-static/scss'));
         foreach ($treeThemes as $treeTheme) {
             $compiler->addImportPath($treeTheme->getBasePath() . '/scss');
         }
 
         // Import Bootstrap functions
-        $imports[] = Yii::getAlias('@npm/bootstrap/scss/functions');
+        $imports[] = Yii::getAlias('@vendor/twbs/bootstrap/scss/functions');
 
         // Import variables child theme first, because they have the !default flag
         foreach ($treeThemes as $treeTheme) {
             $imports[] = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'variables';
         }
         $imports[] = Yii::getAlias('@webroot-static/scss/variables');
-        $imports[] = Yii::getAlias('@npm/bootstrap/scss/variables');
+        $imports[] = Yii::getAlias('@vendor/twbs/bootstrap/scss/variables');
 
         // Import maps
-        $imports[] = Yii::getAlias('@npm/bootstrap/scss/maps');
+        $imports[] = Yii::getAlias('@vendor/twbs/bootstrap/scss/maps');
         $imports[] = Yii::getAlias('@webroot-static/scss/maps');
 
         // Import Bootstrap files
-        $imports[] = Yii::getAlias('@npm/bootstrap/scss/bootstrap');
+        $imports[] = Yii::getAlias('@vendor/twbs/bootstrap/scss/bootstrap');
 
         // Import all other files, in reverse order (parent theme first)
         $imports[] = Yii::getAlias('@webroot-static/scss/build');
@@ -289,26 +296,15 @@ class ThemeHelper
             'sourceMapURL' => './theme.map',
             'sourceMapFilename' => 'theme.css',
             'sourceRoot' => $theme->name === Theme::CORE_THEME_NAME ? '../../../static/scss/' : '../',
-            'sourceMapBasepath' => $theme->name === Theme::CORE_THEME_NAME ? Yii::getAlias('@webroot-static/scss') : $theme->getBasePath(),
+            'sourceMapBasepath' => $theme->name === Theme::CORE_THEME_NAME ? Yii::getAlias(
+                '@webroot-static/scss',
+            ) : $theme->getBasePath(),
         ]);
 
         // Define the output files
         $cssDir = $theme->getPublishedResourcesPath() . DIRECTORY_SEPARATOR . 'css';
-        if (!file_exists($cssDir) && !FileHelper::createDirectory($cssDir)) {
-            return static::logAndGetError('Could not create directory ' . $cssDir);
-        }
         $cssFilePath = $cssDir . DIRECTORY_SEPARATOR . 'theme.css';
         $mapFilePath = $cssDir . DIRECTORY_SEPARATOR . 'theme.map';
-
-        // Check if files are writable
-        $cssFilePermissionError = static::getFilePermissionError($cssFilePath);
-        if ($cssFilePermissionError) {
-            return static::logAndGetError($cssFilePermissionError);
-        }
-        $mapFilePermissionError = static::getFilePermissionError($mapFilePath);
-        if ($mapFilePermissionError) {
-            return static::logAndGetError($mapFilePermissionError);
-        }
 
         // Create SCSS source from Design Settings form and imports
         $scssSource = '';
@@ -347,18 +343,16 @@ class ThemeHelper
 
         // Compile to CSS
         try {
-            $result = $compiler->compileString(str_replace('\\', '/', $scssSource)); // replace backslashes with forward slashes for Windows compatibility
+            $result = $compiler->compileString(
+                str_replace('\\', '/', $scssSource),
+            ); // replace backslashes with forward slashes for Windows compatibility
             $css = $result->getCss();
             $map = $result->getSourceMap();
             if (!$css) {
                 return static::logAndGetError('Could not compile SCSS');
             }
-            if (file_put_contents($cssFilePath, $css) === false) {
-                return static::logAndGetError('Could not write to file ' . $cssFilePath);
-            }
-            if (file_put_contents($mapFilePath, $map) === false) {
-                return static::logAndGetError('Could not write to file ' . $mapFilePath);
-            }
+            Yii::$app->assetManager->fileWrite($cssFilePath, $css);
+            Yii::$app->assetManager->fileWrite($mapFilePath, $map);
         } catch (SassException $e) {
             return static::logAndGetError('Saas compiler error: ' . $e->getMessage());
         }
@@ -373,7 +367,10 @@ class ThemeHelper
     private static function getFilePermissionError(string $filePath): ?string
     {
         if (file_exists($filePath) && !is_writable($filePath)) {
-            return 'File ' . $filePath . ' is not writable. Check files ownership and permissions. Current: ' . substr(sprintf('%o', fileperms($filePath)), -4);
+            return 'File ' . $filePath . ' is not writable. Check files ownership and permissions. Current: ' . substr(
+                sprintf('%o', fileperms($filePath)),
+                -4,
+            );
         }
 
         return null;

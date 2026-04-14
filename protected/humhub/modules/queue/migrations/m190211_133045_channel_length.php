@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-use yii\db\Migration;
+use humhub\components\Migration;
 
 /**
  * Class m190211_133045_channel_length
@@ -18,7 +18,7 @@ class m190211_133045_channel_length extends Migration
      */
     public function safeUp()
     {
-        $this->alterColumn('queue', 'channel', $this->string(50)->notNull());
+        $this->safeAlterColumn('queue', 'channel', $this->string(50)->notNull());
     }
 
     /**

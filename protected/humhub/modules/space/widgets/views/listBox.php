@@ -17,6 +17,7 @@ use yii\data\Pagination;
 <?php Modal::beginDialog([
     'title' => $title,
     'footer' => ModalButton::cancel(Yii::t('base', 'Close')),
+    'bodyOptions' => ['style' => 'margin: 0 calc(var(--hh-modal-content-padding) * -1); padding: var(--bs-modal-padding) 0;'], // Body fullwidth
 ]) ?>
 
     <?php if (count($spaces) === 0) : ?>

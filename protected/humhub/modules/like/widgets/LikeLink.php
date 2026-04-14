@@ -2,50 +2,34 @@
 
 namespace humhub\modules\like\widgets;
 
-use humhub\components\behaviors\PolymorphicRelation;
-use humhub\helpers\Html;
+use humhub\models\RecordMap;
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\like\services\LikeService;
 use humhub\modules\like\models\Like as LikeModel;
 use humhub\modules\like\Module;
 use humhub\modules\like\vue\LikeWidget;
 use Yii;
 use yii\base\Widget;
-use yii\helpers\Json;
 use yii\helpers\Url;
 
-/**
- * This widget is used to show a like link inside the wall entry controls.
- *
- * @package humhub.modules_core.like
- * @since 0.5
- */
 class LikeLink extends Widget
 {
-    /**
-     * The Object to be liked
-     *
-     * @var LikeModel|ContentActiveRecord
-     */
-    public $object;
+    public ContentActiveRecord|ContentAddonActiveRecord $object;
 
-    /**
-     * @inheritdoc
-     */
+    private LikeService $likeService;
+
     public function beforeRun()
     {
-        /* @var Module $module */
-        $module = Yii::$app->getModule('like');
+        $this->likeService = new LikeService($this->object);
 
-        if (!$module->canLike($this->object)) {
+        if (!$this->likeService->canLike()) {
             return false;
         }
 
         return parent::beforeRun();
     }
 
-    /**
-     * Executes the widget.
-     */
     public function run()
     {
         $currentUserLiked = false;
@@ -77,15 +61,15 @@ class LikeLink extends Widget
         ]);
 
         return $this->render('likeLink', [
-            'canLike' => $canLike,
-            'object' => $this->object,
-            'likes' => $likes,
-            'currentUserLiked' => $currentUserLiked,
-            'id' => $this->object->getUniqueId(),
-            'likeUrl' => Url::to(['/like/like/like', 'contentModel' => PolymorphicRelation::getObjectModel($this->object), 'contentId' => $this->object->id]),
-            'unlikeUrl' => Url::to(['/like/like/unlike', 'contentModel' => PolymorphicRelation::getObjectModel($this->object), 'contentId' => $this->object->id]),
-            'userListUrl' => Url::to(['/like/like/user-list', 'contentModel' => PolymorphicRelation::getObjectModel($this->object), 'contentId' => $this->object->getPrimaryKey()]),
-            'title' => $this->generateLikeTitleText($currentUserLiked, $likes),
+            'likeCount' => $this->likeService->getCount(),
+            'currentUserLiked' => $this->likeService->hasLiked(),
+            'id' => 'like_' . RecordMap::getId($this->object),
+            'likeUrl' => Url::to(['/like/like/like', 'recordId' => RecordMap::getId($this->object)]),
+            'unlikeUrl' => Url::to(['/like/like/unlike', 'recordId' => RecordMap::getId($this->object)]),
+            'userListUrl' => Url::to(
+                ['/like/like/user-list', 'recordId' => RecordMap::getId($this->object)],
+            ),
+            'title' => $this->likeService->generateLikeTitleText(),
         ]);
     }
 

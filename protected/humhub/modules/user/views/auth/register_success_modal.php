@@ -12,6 +12,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Almost there!');
 ?>
 
 <?php Modal::beginDialog([
+    'id' => 'user-auth-register-success-modal',
     'title' => Yii::t('UserModule.auth', '<strong>Registration</strong> successful!'),
     'footer' => ModalButton::cancel(Yii::t('base', 'Close')),
 ]) ?>

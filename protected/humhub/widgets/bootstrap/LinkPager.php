@@ -20,7 +20,7 @@ class LinkPager extends \yii\bootstrap5\LinkPager
      */
     public $maxButtonCount = 5;
 
-    public function init()
+    public function init(): void
     {
         $this->nextPageLabel = (string)Icon::get('step-forward');
         $this->prevPageLabel = (string)Icon::get('step-backward');

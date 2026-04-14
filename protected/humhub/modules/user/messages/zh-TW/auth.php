@@ -34,7 +34,6 @@ return [
     'Your password has been successfully changed!' => '您的密碼已成功變更!',
     'Your password is incorrect!' => '您輸入的密碼錯誤!',
     'a new user {displayName} needs approval.' => '有一個新用戶 {displayName} 需要核准。',
-    'back to home' => '返回主頁',
     '<strong>Join</strong> the network' => '',
     '<strong>Please</strong> sign in' => '',
     '<strong>Registration</strong> successful!' => '',

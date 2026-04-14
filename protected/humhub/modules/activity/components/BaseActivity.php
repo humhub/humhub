@@ -1,193 +1,133 @@
 <?php
 
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
-
 namespace humhub\modules\activity\components;
 
-use humhub\modules\content\components\ContentContainerActiveRecord;
-use yii\base\InvalidConfigException;
-use yii\base\Exception;
-use yii\db\ActiveRecord;
-use humhub\components\SocialActivity;
-use humhub\modules\activity\models\Activity;
-use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\components\ContentAddonActiveRecord;
-use humhub\modules\content\models\Content;
+use humhub\helpers\Html;
+use humhub\modules\activity\models\Activity as ActivityRecord;
+use humhub\modules\activity\services\GroupingService;
+use humhub\modules\content\models\ContentContainer;
+use humhub\modules\user\models\User;
+use Yii;
+use yii\base\BaseObject;
 
 /**
- * BaseActivity is the base class for all activities.
- *
- * @property Activity $record
- * @author luke
+ * @property-read User[] $groupedUsers
  */
-abstract class BaseActivity extends SocialActivity
+abstract class BaseActivity extends BaseObject
 {
+    public readonly ActivityRecord $record;
+    public readonly ContentContainer $contentContainer;
+    public readonly User $user;
+    public readonly string $createdAt;
+    public readonly int $groupCount;
     /**
-     * Default content visibility of this Activity.
-     * @var int
+     * @var int minimum members in a group
      */
-    public $visibility = Content::VISIBILITY_PRIVATE;
+    public int $groupingThreshold = 2;
+    public int $groupingTimeBucketSeconds = 900;
+    private ?GroupingService $_groupingService = null;
 
-    /**
-     * @inheritdoc
-     */
-    public $recordClass = Activity::class;
-
-    /**
-     * @var bool
-     */
-    public $clickable = true;
-
-    /**
-     * @inheritdoc
-     */
-    public function init()
+    public function __construct(ActivityRecord $record, $config = [])
     {
-        if ($this->viewName == '') {
-            throw new InvalidConfigException('Missing viewName!');
-        }
+        parent::__construct($config);
 
-        parent::init();
+        $this->contentContainer = $record->contentContainer;
+        $this->user = $record->createdBy;
+        $this->createdAt = $record->created_at;
+        $this->record = $record;
+        $this->groupCount = $this->record->group_count ?? 1;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getViewParams($params = [])
-    {
-        $params['clickable'] = $this->clickable;
+    abstract protected function getMessage(array $params): string;
 
-        return parent::getViewParams($params);
+    final public function asText(): string
+    {
+        return $this->getMessage($this->getMessageParamsText());
     }
 
-    /**
-     * Creates an activity model and determines the contentContainer/visibility
-     *
-     * @return static
-     * @throws Exception
-     */
-    public function create()
+    final public function asHtml(): string
     {
-        if (empty($this->moduleId)) {
-            throw new InvalidConfigException('No moduleId given!');
-        }
-
-        if (!$this->source instanceof ActiveRecord) {
-            throw new InvalidConfigException('Invalid source object given!');
-        }
-
-        $this->saveModelInstance();
-
-        return $this;
+        return $this->getMessage($this->getMessageParamsHtml());
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function from($originator)
+    final public function asHtmlMail(): string
     {
-        parent::from($originator);
-        $this->record->content->created_by = $originator->id;
-
-        return $this;
+        return $this->getMessage($this->getMessageParamsHtmlMail());
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function about($source)
+    public function getUrl(bool $scheme = true): ?string
     {
-        parent::about($source);
-        $this->record->content->visibility = $this->getContentVisibility();
-        if (!$this->record->content->container && $this->getContentContainer()) {
-            $this->container($this->getContentContainer());
-        }
-
-        return $this;
+        return $this->contentContainer->polymorphicRelation->getUrl($scheme);
     }
 
-    /**
-     * Builder function for setting ContentContainerActiveRecord
-     *
-     * @param ContentContainerActiveRecord $container
-     * @return BaseActivity
-     */
-    public function container($container)
+    protected function getMessageParamsText(): array
     {
-        $this->record->content->container = $container;
-        return $this;
+        return [
+            'displayName' => $this->user->displayName,
+            'displayNames' => $this->formatDisplayNames(fn($dn) => $dn),
+            'groupCount' => $this->groupCount,
+        ];
     }
 
-    /**
-     * Saves the underlying Activity model record.
-     *
-     * @throws InvalidConfigException
-     * @throws Exception
-     */
-    private function saveModelInstance()
+    protected function getMessageParamsHtml(): array
     {
-        $this->record->setPolymorphicRelation($this->source);
-        $this->record->content->visibility = $this->getContentVisibility();
-
-        if (!$this->record->content->container && $this->getContentContainer()) {
-            $this->record->content->container = $this->getContentContainer();
-        }
-
-        $this->record->content->created_by = $this->getOriginatorId();
-
-        if ($this->record->content->created_by == null) {
-            throw new InvalidConfigException('Could not determine originator for activity!');
-        }
-
-        if (!$this->record->save()) {
-            throw new Exception('Could not save activity!' . $this->record->getErrors());
-        }
+        return array_merge($this->getMessageParamsText(), [
+            'displayName' => Html::strong(Html::encode($this->user->displayName)),
+            'displayNames' => $this->formatDisplayNames(fn($dn) => Html::strong(Html::encode($dn))),
+        ]);
     }
 
-    /**
-     * Stores the activity in database
-     *
-     * @return bool
-     */
-    public function save()
+    protected function getMessageParamsHtmlMail(): array
     {
-        return $this->record->save();
+        return array_merge($this->getMessageParamsHtml(), [
+            'displayName' => Html::strong(Html::encode($this->user->displayName)),
+            'displayNames' => $this->formatDisplayNames(fn($dn) => Html::strong(Html::encode($dn))),
+        ]);
     }
 
-    /**
-     * Returns the visibility of the content
-     *
-     * @return int the visibility
-     */
-    protected function getContentVisibility()
+    protected function formatDisplayNames(callable $formatter): string
     {
-        return $this->hasContent() ? $this->getContent()->visibility : $this->visibility;
+        if ($this->groupCount < 2) {
+            return '';
+        }
+
+        $otherUsers = $this->getGroupingService()->getOtherGroupedUsers(Yii::$app->user?->getIdentity());
+
+        if (count($otherUsers) === 1) {
+            return Yii::t(
+                'ActivityModule.base',
+                '{displayName1} and {displayName2}',
+                [
+                    'displayName1' => $formatter($this->user->displayName),
+                    'displayName2' => $formatter($otherUsers[0]->displayName),
+                ],
+            );
+        } elseif (count($otherUsers) > 1) {
+            return Yii::t(
+                'ActivityModule.base',
+                '{displayName1}, {displayName2} and {count} more',
+                [
+                    'displayName1' => $formatter($this->user->displayName),
+                    'displayName2' => $formatter($otherUsers[0]->displayName),
+                    'count' => count($otherUsers) - 1,
+                ],
+            );
+        }
+
+        return '';
     }
 
-    /**
-     * Returns the user id of the originator of this activity
-     *
-     * @return int user id
-     */
-    protected function getOriginatorId()
+    public function getGroupingQuery(): ?ActiveQueryActivity
     {
-        if ($this->originator !== null) {
-            return $this->originator->id;
-        }
-
-        if ($this->source instanceof ContentActiveRecord) {
-            return $this->source->content->created_by;
-        }
-
-        if ($this->source instanceof ContentAddonActiveRecord) {
-            return $this->source->created_by;
-        }
-
         return null;
     }
 
+    public function getGroupingService(): GroupingService
+    {
+        if ($this->_groupingService === null) {
+            $this->_groupingService = new GroupingService($this);
+        }
+
+        return $this->_groupingService;
+    }
 }

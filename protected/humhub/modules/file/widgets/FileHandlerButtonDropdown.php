@@ -29,6 +29,7 @@ class FileHandlerButtonDropdown extends Widget
     /**
      * @var string the default parent css class
      * You can make the menu drop up by replacing it with 'btn-group dropup'
+     * Or smaller with `btn-group btn-group-sm`
      */
     public $cssClass = 'btn-group';
 
@@ -67,7 +68,7 @@ class FileHandlerButtonDropdown extends Widget
         }
 
         if ($this->isDropdown()) {
-            $output .= '<button type="button" class="btn ' . $this->cssButtonClass . ' dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>';
+            $output .= '<button type="button" class="btn ' . $this->cssButtonClass . ' btn-icon-only dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>';
 
             $cssClass = ($this->pullRight) ? 'dropdown-menu dropdown-menu-end' : 'dropdown-menu';
 

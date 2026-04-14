@@ -47,6 +47,7 @@ return [
     'Following' => '',
     'Gender' => '',
     'General' => '',
+    'Group memberships' => '',
     'Hide age per default' => '',
     'Hide year in profile' => '',
     'ID' => '',

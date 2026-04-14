@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Followers</strong>' => '<strong>يتابعه</strong>',
   '<strong>Following</strong>' => '<strong>يتابع</strong>',
   '<strong>Member</strong> in these spaces' => '<strong>عضو</strong> في هذه المساحات',
@@ -44,6 +44,7 @@ return array (
   'Force password change upon first login' => 'فرض تغيير كلمة المرور عند تسجيل الدخول لأول مرة',
   'Force password change upon next login' => 'فرض تغيير كلمة المرور عند تسجيل الدخول التالي',
   'Friends' => 'أصدقاء',
+  'Group' => 'مجموعة',
   'Group Manager(s)' => 'مدير (مدراء) المجموعة',
   'Here you can connect to external service provider for using external services like a single sign on authentication.' => 'هنا يمكنك الاتصال بمزود الخدمة الخارجي لاستخدام الخدمات الخارجية مثل مصادقة تسجيل الدخول الموحد.',
   'If this wasn\'t you, you can disregard this message.' => 'إذا لم تكن أنت، فيمكنك تجاهل هذه الرسالة',
@@ -51,6 +52,7 @@ return array (
   'Invite by link' => 'دعوة عبر رابط',
   'Invite new people' => 'دعوة أشخاص جدد',
   'Invited by' => 'دعوة من',
+  'Invited by {userName}' => '',
   'It looks like you clicked on an invalid password reset link. Please try again.' => 'يبدو أنك نقرت على رابط غير صالح لإعادة تعيين كلمة المرور. حاول مرة اخرى.',
   'Language' => 'اللغة',
   'Last Login' => 'آخر تسجيل دخول',
@@ -121,4 +123,4 @@ return array (
   'invited you to join {name}.' => 'دعاك للانضمام إلى {name}.',
   'invited you to join {space} on {name}.' => 'دعاك للانضمام إلى {space} على {name}.',
   'or' => 'أو',
-);
+];
