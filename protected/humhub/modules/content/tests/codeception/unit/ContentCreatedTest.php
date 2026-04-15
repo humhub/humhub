@@ -160,18 +160,14 @@ class ContentCreatedTest extends HumHubDbTestCase
         $notification = ContentCreatedNotification::instance()->from(User::findOne(['id' => 1]))->about($post);
 
         $this->assertTrue($notification->isBlockedForUser($recipient));
-        $this->assertTrue($notification->saveRecord($recipient));
+        $notification->send($recipient);
 
-        $storedNotification = Notification::find()->where([
+        $this->assertNull(Notification::find()->where([
             'class' => ContentCreatedNotification::class,
             'user_id' => $recipient->id,
             'source_class' => Post::class,
             'source_pk' => $post->id,
-        ])->one();
-
-        $this->assertNotNull($storedNotification);
-        $this->assertNull($storedNotification->getBaseModel()->getContentInfo($post));
-        $this->assertStringNotContainsString('MyTestContent', $storedNotification->getBaseModel()->html());
+        ])->one());
     }
 
     /**
