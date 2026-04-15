@@ -1,11 +1,10 @@
 <?php
 
-namespace humhub\modules\space\widgets\react;
+namespace humhub\modules\space\widgets\vue;
 
+use humhub\components\rendering\templating\VueWidget;
 
-use humhub\components\rendering\templating\ReactWidget;
-
-class SpaceChooserWidget extends ReactWidget
+class SpaceChooserWidget extends VueWidget
 {
     public string $renderer = 'renderSpaceChooser';
     public string $rootTag = 'li';
@@ -13,9 +12,4 @@ class SpaceChooserWidget extends ReactWidget
         'class' => 'nav-item dropdown',
     ];
     public string $assetBundle = SpaceChooserAsset::class;
-
-    public function translations(): array
-    {
-        return [];
-    }
 }

@@ -1,4 +1,4 @@
-import axios from 'axios'
+import http from 'humhub/http'
 import IntlMessageFormat from 'intl-messageformat'
 
 const detectLocale = () => {
@@ -48,7 +48,7 @@ export async function loadTranslations(category) {
 
   const promise = (async () => {
     try {
-      const {data} = await axios.get('/translation', {params: {category}})
+      const {data} = await http.get('/translation', {params: {category}})
       if (data) {
           locale = data.locale
           updateIntlMessages(data.messages)

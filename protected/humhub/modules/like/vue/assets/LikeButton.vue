@@ -1,14 +1,9 @@
 <script setup>
 import {onMounted, ref} from 'vue'
-import axios from 'axios'
+import http, {getCsrfParam, getCsrfToken} from 'humhub/http'
 import {loadTranslations, translate} from 'humhub/translate'
 
-const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || ''
-const csrfParam = document.querySelector('meta[name="csrf-param"]')?.content || '_csrf'
-
-axios.defaults.withCredentials = true
-axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
-axios.defaults.headers.common['X-CSRF-Token'] = csrfToken
+const csrfParam = getCsrfParam()
 
 const props = defineProps({
     isGuest: { type: Boolean, required: true },
@@ -48,8 +43,8 @@ const toggleLike = async (event) => {
     const url = isLiked.value ? props.urls.unlikeUrl : props.urls.likeUrl
 
     try {
-        const response = await axios.post(url, {
-            [csrfParam]: csrfToken
+        const response = await http.post(url, {
+            [csrfParam]: getCsrfToken()
         })
 
         isLiked.value = response.data.currentUserLiked ?? !isLiked.value

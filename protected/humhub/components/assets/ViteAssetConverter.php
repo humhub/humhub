@@ -11,19 +11,27 @@ class ViteAssetConverter extends AssetConverter
     {
         parent::init();
 
+        $env = YII_ENV_PROD ? 'production' : 'development';
+
         $this->commands = ArrayHelper::merge(
             $this->commands, [
-                'vue.js' => ['js', 'npm run build-vite entry {from} dist {to}'],
-                'jsx' => ['js', 'npm run build-vite entry {from} dist {to}'],
+                'vue.js' => ['js', "npm run build-vite entry {from} dist {to} --mode $env"],
             ]
         );
     }
 
     public function convert($asset, $basePath)
     {
+
         $pos = strpos($asset, '.');
         if ($pos !== false) {
             $ext = substr($asset, $pos + 1);
+
+            if ($ext == 'vue.js') {
+                $this->forceConvert = true;
+                $basePath = \Yii::getAlias("@webroot/assets/$basePath");
+            }
+
             if (isset($this->commands[$ext])) {
                 list($ext, $command) = $this->commands[$ext];
                 $result = substr($asset, 0, $pos + 1) . $ext;

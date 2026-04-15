@@ -1,6 +1,5 @@
 import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
-import react from '@vitejs/plugin-react'
 import {dirname, resolve} from 'path'
 
 const entryPath = process.argv[process.argv.indexOf('entry') + 1]
@@ -21,7 +20,7 @@ const entryDir = dirname(entry)
 const outDir = dirname(distPath)
 
 export default defineConfig({
-    plugins: [vue(), react()],
+    plugins: [vue()],
     root: entryDir,
 
     build: {
@@ -31,6 +30,7 @@ export default defineConfig({
         rollupOptions: {
             input: entry,
             output: {
+                format: 'iife',
                 entryFileNames: 'entry.js'
             }
         },
