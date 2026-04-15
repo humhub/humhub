@@ -11,7 +11,8 @@ HumHub Changelog
 - Fix #8091: Bypass `StreamViewer::$showFilters` when `topics` query param is present
 - Fix #8093: Fix Yii2 debug panel
 - Enh #8095: Improve authorization checks
-- Fix #PR: Validate content visibility before switching content notifications
+- Fix #8099: Validate content visibility before switching content notifications
+- Enh #8098: Improve notification authorization checks
 
 1.18.2 (March 22, 2026)
 -----------------------
