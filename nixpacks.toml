@@ -1,22 +1,8 @@
-[phases.setup]
-nixPkgs = [
-  "php82",
-  "php82Packages.composer",
-  "nodejs_22",
-  "nginx"
-]
-
-[phases.build]
-cmds = [
-  "composer install --ignore-platform-reqs",
-  "npm ci"
-]
-
 [start]
 cmd = """
-useradd -m phpuser 2>/dev/null || true &&
-mkdir -p /run /var/log/nginx /var/cache/nginx &&
-chmod -R 777 /app/assets /app/uploads /app/protected/runtime /app/protected/config 2>/dev/null || true &&
+useradd -m phpuser 2>/dev/null || true && \
+mkdir -p /run /var/log/nginx /var/cache/nginx && \
+chmod -R 777 /app/assets /app/uploads /app/protected/runtime /app/protected/config 2>/dev/null || true && \
 cat > /tmp/nginx.conf << 'NGINXEOF'
 daemon off;
 worker_processes 1;
@@ -41,7 +27,7 @@ http {
   }
 }
 NGINXEOF
-php-fpm -y /app/php-fpm.conf &
-sleep 2 &&
+php-fpm -y /app/php-fpm.conf & \
+sleep 2 && \
 nginx -c /tmp/nginx.conf
 """
