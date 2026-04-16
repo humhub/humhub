@@ -8,7 +8,7 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\WebResourcesAssetBundle;
 use yii\jui\JuiAsset;
 
 /**
@@ -17,18 +17,8 @@ use yii\jui\JuiAsset;
  * @author buddha
  * @since 1.7.1
  */
-class DatePickerRussianLanguageAsset extends AssetBundle
+class DatePickerRussianLanguageAsset extends WebResourcesAssetBundle
 {
-    /**
-     * @inheritdoc
-     */
-    public $basePath = '@webroot-static';
-
-    /**
-     * @inheritdoc
-     */
-    public $baseUrl = '@web-static';
-
     /**
      * @inheritdoc
      */

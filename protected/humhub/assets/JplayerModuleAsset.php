@@ -8,14 +8,14 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\WebStaticAssetBundle;
+use humhub\components\assets\WebResourcesAssetBundle;
 
 /**
  * jquery-At.js
  *
  * @author buddha
  */
-class JplayerModuleAsset extends WebStaticAssetBundle
+class JplayerModuleAsset extends WebResourcesAssetBundle
 {
     /**
      * @inheritdoc

@@ -49,7 +49,7 @@ use humhub\widgets\mails\MailButtonList;
                         <td width="109"></td>
                         <td width="50"><?= \humhub\modules\notification\widgets\MailContentContainerImage::widget(['container' => $originator])?></td>
                         <td width="109"></td>
-                        <td width="25"><img src="<?= \yii\helpers\Url::to('@web-static/img/mail_ico_no.png', true) ?>" /></td>
+                        <td width="25"><img src="<?= \yii\helpers\Url::to('@web-resources/img/mail_ico_no.png', true) ?>" /></td>
                         <td width="109"></td>
                         <td width="50"><?= \humhub\modules\notification\widgets\MailContentContainerImage::widget(['container' => $space])?></td>
                         <td></td>

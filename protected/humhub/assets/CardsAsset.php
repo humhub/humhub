@@ -8,10 +8,10 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\WebStaticAssetBundle;
+use humhub\components\assets\WebResourcesAssetBundle;
 use yii\web\View;
 
-class CardsAsset extends WebStaticAssetBundle
+class CardsAsset extends WebResourcesAssetBundle
 {
     /**
      * @inheritdoc

@@ -92,7 +92,7 @@ class CoreJsConfig extends Widget
                     ],
                 ],
                 'ui.richtext' => [
-                    'emoji.url' => Yii::getAlias('@web-static/img/emoji/'),
+                    'emoji.url' => Yii::getAlias('@web-resources/img/emoji/'),
                     'text' => [
                         'info.minInput' => Yii::t('base', 'Please type at least 3 characters'),
                         'info.loading' => Yii::t('base', 'Loading...'),
@@ -228,7 +228,7 @@ class CoreJsConfig extends Widget
                     ],
                 ],
                 'ui.picker' => [
-                    'addImage' => $this->view->theme->getBaseUrl() . '/img/picker_add.png',
+                    'addImage' => Yii::getAlias($this->view->theme->getBaseUrl() . '/img/picker_add.png'),
                     'text' => [
                         'error.loadingResult' => Yii::t('base', 'An unexpected error occurred while loading the search result.'),
                         'showMore' => Yii::t('base', 'Show more'),

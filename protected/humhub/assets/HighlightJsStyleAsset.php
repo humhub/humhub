@@ -9,9 +9,9 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\WebStaticAssetBundle;
+use humhub\components\assets\WebResourcesAssetBundle;
 
-class HighlightJsStyleAsset extends WebStaticAssetBundle
+class HighlightJsStyleAsset extends WebResourcesAssetBundle
 {
     /**
      * @inheritdoc

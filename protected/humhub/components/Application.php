@@ -48,14 +48,15 @@ class Application extends \yii\web\Application implements ApplicationInterface
      */
     public function bootstrap()
     {
-        $request = $this->getRequest();
-
-        if (Yii::getAlias('@web-static', false) === false) {
-            Yii::setAlias('@web-static', $request->getBaseUrl() . '/static');
+        if (Yii::getAlias('@webroot-resources', false) === false) {
+            Yii::setAlias('@webroot-resources', '@webroot/protected/humhub/resources');
         }
 
-        if (Yii::getAlias('@webroot-static', false) === false) {
-            Yii::setAlias('@webroot-static', '@webroot/static');
+        if (Yii::getAlias('@web-resources', false) === false) {
+            if (Yii::getAlias('@web', false) === false) {
+                Yii::setAlias('@web', $this->getRequest()->getBaseUrl());
+            }
+            Yii::setAlias('@web-resources', $this->assetManager->getPublishedUrl('@webroot-resources'));
         }
 
         parent::bootstrap();

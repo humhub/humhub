@@ -141,7 +141,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
             return;
         }
 
-        $this->view->registerCssFile('@web-static/resources/user/authChoice.css');
+        $this->view->registerCssFile('@web-resources/resources/user/authChoice.css');
 
         echo Html::beginTag('div', ['class' => 'authChoice row g-3']);
 

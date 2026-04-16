@@ -43,7 +43,7 @@ use yii\helpers\Url;
                         <td width="109"></td>
                         <td width="50"><?= MailContentContainerImage::widget(['container' => $originator]) ?></td>
                         <td width="109"></td>
-                        <td width="25"><img src="<?= Url::to('@web-static/img/mail_ico_check.png', true) ?>"/></td>
+                        <td width="25"><img src="<?= Url::to('@web-resources/img/mail_ico_check.png', true) ?>"/></td>
                         <td width="109"></td>
                         <td width="50"><?= MailContentContainerImage::widget(['container' => $space]) ?></td>
                         <td></td>

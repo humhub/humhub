@@ -127,8 +127,8 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
                     'maxHeight' => 1080,
                 ],
                 'defaultFile' => ($this instanceof Space)
-                    ? '@webroot-static/img/default_space.jpg'
-                    : '@webroot-static/img/default_user.jpg',
+                    ? '@webroot-resources/img/default_space.jpg'
+                    : '@webroot-resources/img/default_user.jpg',
             ]);
         }
         return $this->_image;
@@ -147,7 +147,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
                     'maxWidth' => 1920,
                     'maxHeight' => 1080,
                 ],
-                'defaultFile' => '@webroot-static/img/default_banner.jpg',
+                'defaultFile' => '@webroot-resources/img/default_banner.jpg',
             ]);
         }
         return $this->_bannerImage;

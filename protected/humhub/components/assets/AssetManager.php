@@ -113,7 +113,7 @@ class AssetManager extends \yii\web\AssetManager
             }
             */
 
-            $files = FileHelper::findFiles($src);
+            $files = FileHelper::findFiles($src, $options);
             foreach ($files as $file) {
                 $dstFile = substr($file, $currentLength);
                 $this->fs->writeStream($dstDir . $dstFile, fopen($file, 'r'), $this->filesystemOptions);
