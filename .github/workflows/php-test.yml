@@ -70,11 +70,12 @@ jobs:
               run: |
                 docker run --detach \
                   --name openldap \
-                  -p 389:1389 \
-                  -e LDAP_ROOT="dc=example,dc=org" \
-                  -e LDAP_ADMIN_USERNAME="admin" \
+                  -p 389:389 \
+                  -e LDAP_ORGANISATION="HumHub Test" \
+                  -e LDAP_DOMAIN="example.org" \
                   -e LDAP_ADMIN_PASSWORD="adminpassword" \
-                  bitnami/openldap:latest
+                  -e LDAP_TLS=false \
+                  osixia/openldap:1.5.0 --copy-service
 
             - uses: actions/checkout@v4
             - uses: actions/setup-node@v4
