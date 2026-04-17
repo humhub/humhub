@@ -1,0 +1,19 @@
+# Codeception Test Suite Configuration – LDAP Acceptance Tests
+# RUN `codecept build` AFTER ADDING/REMOVING MODULES.
+
+actor: AcceptanceTester
+modules:
+    enabled:
+        - WebDriver
+        - tests\codeception\_support\WebHelper
+        - tests\codeception\_support\DynamicFixtureHelper
+    config:
+        WebDriver:
+            url: 'http://localhost:8080/'
+            browser: chrome
+            port: 4444
+            window_size: maximize
+            restart: true
+            capabilities:
+                chromeOptions:
+                    args: [ "--lang=en-US" ]

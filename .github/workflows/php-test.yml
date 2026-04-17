@@ -167,13 +167,6 @@ jobs:
             - name: Run test suite
               run: grunt test -build -env=github
 
-            - name: Run LDAP test suite
-              run: |
-                CODECEPT=$GITHUB_WORKSPACE/protected/vendor/codeception/codeception/codecept
-                cd $GITHUB_WORKSPACE/protected/humhub/modules/ldap/tests
-                php $CODECEPT build
-                php $CODECEPT run unit --env github
-
             - name: Upload Codeception Output
               if: failure()
               uses: actions/upload-artifact@v4
