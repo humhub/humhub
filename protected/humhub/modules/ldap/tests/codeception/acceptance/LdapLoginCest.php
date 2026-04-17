@@ -38,9 +38,8 @@ class LdapLoginCest
             );
         }
 
-        // Reset DB to a clean fixture state before every test so that a user
-        // created by a previous test does not interfere with the next one.
-        $I->loadFixtures('default');
+        // The DynamicFixtureHelper reloads all configured fixtures automatically
+        // before each test, so no explicit loadFixtures() call is needed here.
     }
 
     public function _after(AcceptanceTester $I): void
