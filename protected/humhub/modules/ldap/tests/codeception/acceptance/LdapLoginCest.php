@@ -99,9 +99,7 @@ class LdapLoginCest
         $I->amOnPage('/admin/user-profile/edit-field?id=1');
         $I->waitForElementVisible('#profilefield-ldap_attribute');
         $I->clearField('#profilefield-ldap_attribute');
-        $I->scrollToBottom();
-        $I->wait(1);
-        $I->click('Save');
+        $I->jsClick('#edit-profile-field-root [type=submit]');
         $I->seeSuccess();
 
         $I->logout();
@@ -162,9 +160,7 @@ class LdapLoginCest
             $I->uncheckOption('#ldapsettings-refreshusers');
         }
 
-        $I->scrollToBottom();
-        $I->wait(1);
-        $I->click('Save');
+        $I->jsClick('#authentication-settings-form [type=submit]');
         $I->seeSuccess();
 
         $I->logout();
@@ -180,9 +176,7 @@ class LdapLoginCest
             $I->amOnPage('/ldap/admin');
             $I->waitForElementVisible('#authentication-settings-form', 5);
             $I->uncheckOption('#ldapsettings-enabled');
-            $I->scrollToBottom();
-            $I->wait(1);
-            $I->click('Save');
+            $I->jsClick('#authentication-settings-form [type=submit]');
             $I->seeSuccess();
             $I->logout();
         } catch (\Throwable) {
