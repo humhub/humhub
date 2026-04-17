@@ -100,6 +100,7 @@ class LdapLoginCest
         $I->waitForElementVisible('#profilefield-ldap_attribute');
         $I->clearField('#profilefield-ldap_attribute');
         $I->scrollToBottom();
+        $I->wait(1);
         $I->click('Save');
         $I->seeSuccess();
 
@@ -162,6 +163,7 @@ class LdapLoginCest
         }
 
         $I->scrollToBottom();
+        $I->wait(1);
         $I->click('Save');
         $I->seeSuccess();
 
@@ -179,6 +181,7 @@ class LdapLoginCest
             $I->waitForElementVisible('#authentication-settings-form', 5);
             $I->uncheckOption('#ldapsettings-enabled');
             $I->scrollToBottom();
+            $I->wait(1);
             $I->click('Save');
             $I->seeSuccess();
             $I->logout();
