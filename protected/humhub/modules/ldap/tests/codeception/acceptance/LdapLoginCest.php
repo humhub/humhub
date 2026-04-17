@@ -144,21 +144,21 @@ class LdapLoginCest
         $I->fillField('#ldapsettings-port', getenv('LDAP_TEST_PORT') ?: '389');
         $I->clearField('#ldapsettings-username');
         $I->fillField('#ldapsettings-username', getenv('LDAP_TEST_BIND_DN') ?: 'cn=admin,dc=example,dc=org');
-        $I->clearField('#ldapsettings-passwordField');
-        $I->fillField('#ldapsettings-passwordField', getenv('LDAP_TEST_BIND_PASSWORD') ?: 'adminpassword');
-        $I->clearField('#ldapsettings-baseDn');
-        $I->fillField('#ldapsettings-baseDn', getenv('LDAP_TEST_BASE_DN') ?: 'dc=example,dc=org');
-        $I->clearField('#ldapsettings-userFilter');
-        $I->fillField('#ldapsettings-userFilter', getenv('LDAP_TEST_USER_FILTER') ?: '(objectClass=inetOrgPerson)');
-        $I->clearField('#ldapsettings-usernameAttribute');
-        $I->fillField('#ldapsettings-usernameAttribute', getenv('LDAP_TEST_USERNAME_ATTRIBUTE') ?: 'uid');
-        $I->clearField('#ldapsettings-idAttribute');
-        $I->fillField('#ldapsettings-idAttribute', 'uid');
+        $I->clearField('#ldapsettings-passwordfield');
+        $I->fillField('#ldapsettings-passwordfield', getenv('LDAP_TEST_BIND_PASSWORD') ?: 'adminpassword');
+        $I->clearField('#ldapsettings-basedn');
+        $I->fillField('#ldapsettings-basedn', getenv('LDAP_TEST_BASE_DN') ?: 'dc=example,dc=org');
+        $I->clearField('#ldapsettings-userfilter');
+        $I->fillField('#ldapsettings-userfilter', getenv('LDAP_TEST_USER_FILTER') ?: '(objectClass=inetOrgPerson)');
+        $I->clearField('#ldapsettings-usernameattribute');
+        $I->fillField('#ldapsettings-usernameattribute', getenv('LDAP_TEST_USERNAME_ATTRIBUTE') ?: 'uid');
+        $I->clearField('#ldapsettings-idattribute');
+        $I->fillField('#ldapsettings-idattribute', 'uid');
 
         if ($refreshUsers) {
-            $I->checkOption('#ldapsettings-refreshUsers');
+            $I->checkOption('#ldapsettings-refreshusers');
         } else {
-            $I->uncheckOption('#ldapsettings-refreshUsers');
+            $I->uncheckOption('#ldapsettings-refreshusers');
         }
 
         $I->scrollToBottom();
