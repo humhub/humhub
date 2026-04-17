@@ -28,6 +28,13 @@ jobs:
         env:
             extensions: curl, intl, pdo, pdo_mysql, zip, exif, fileinfo, mbstring, gd, ldap
             key: cache-v2
+            LDAP_TEST_HOST: 127.0.0.1
+            LDAP_TEST_PORT: 389
+            LDAP_TEST_BASE_DN: dc=example,dc=org
+            LDAP_TEST_BIND_DN: cn=admin,dc=example,dc=org
+            LDAP_TEST_BIND_PASSWORD: adminpassword
+            LDAP_TEST_USER_FILTER: "(objectClass=inetOrgPerson)"
+            LDAP_TEST_USERNAME_ATTRIBUTE: uid
 
         runs-on: ${{ matrix.os }}
 
@@ -58,6 +65,16 @@ jobs:
             - name: Start Selenium
               run: |
                 docker run --detach --net=host --shm-size="2g" selenium/standalone-chrome:108.0-20250123
+
+            - name: Start OpenLDAP
+              run: |
+                docker run --detach \
+                  --name openldap \
+                  -p 389:1389 \
+                  -e LDAP_ROOT="dc=example,dc=org" \
+                  -e LDAP_ADMIN_USERNAME="admin" \
+                  -e LDAP_ADMIN_PASSWORD="adminpassword" \
+                  bitnami/openldap:latest
 
             - uses: actions/checkout@v4
             - uses: actions/setup-node@v4
@@ -122,6 +139,21 @@ jobs:
             - name: Rebuild search index
               run: php protected/humhub/tests/codeception/bin/yii content-search/rebuild
 
+            - name: Load LDAP test data
+              run: |
+                sudo apt-get install -y ldap-utils -q
+                echo "Waiting for OpenLDAP..."
+                for i in $(seq 1 30); do
+                  ldapsearch -x -H ldap://127.0.0.1:389 \
+                    -D "cn=admin,dc=example,dc=org" -w adminpassword \
+                    -b "dc=example,dc=org" "(objectClass=*)" dn &>/dev/null && break
+                  echo "  attempt $i/30 – retrying in 2s..."
+                  sleep 2
+                done
+                ldapadd -x -H ldap://127.0.0.1:389 \
+                  -D "cn=admin,dc=example,dc=org" -w adminpassword \
+                  -f protected/humhub/modules/ldap/tests/codeception/_data/init.ldif
+
             - name: Run test server
               run: php --server 127.0.0.1:8080 index-test.php &>/tmp/phpserver.log &
 
@@ -134,6 +166,13 @@ jobs:
             - name: Run test suite
               run: grunt test -build -env=github
 
+            - name: Run LDAP test suite
+              run: |
+                CODECEPT=$GITHUB_WORKSPACE/protected/vendor/codeception/codeception/codecept
+                cd $GITHUB_WORKSPACE/protected/humhub/modules/ldap/tests
+                php $CODECEPT build
+                php $CODECEPT run unit --env github
+
             - name: Upload Codeception Output
               if: failure()
               uses: actions/upload-artifact@v4
@@ -143,3 +182,4 @@ jobs:
                   protected/humhub/tests/codeception/_output/*
                   protected/humhub/modules/*/tests/codeception/_output/*
                   protected/runtime/logs/*
+                  /tmp/phpserver.log
