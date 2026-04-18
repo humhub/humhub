@@ -79,6 +79,10 @@ var humhub = humhub || (function ($) {
      * A module can provide an `init` function, which by default is only called after the first initialization
      * e.g. after a full page load when the document is ready or when loaded by means of ajax.
      *
+     * If a module requires translations during startup, it can declare
+     * `module.requiredI18nCategories = ['CategoryA', 'CategoryB']`. Core will
+     * batch-load these categories before triggering `humhub:ready`.
+     *
      * In case a module `init` function needs to be called also after each `pjax` request, the module `initOnPjaxLoad` has to be
      * set to `true`:
      *
@@ -182,7 +186,7 @@ var humhub = humhub || (function ($) {
                                 }
                             });
                             if (initOnAjaxUrls.includes(ajaxUrl.pathname + ajaxUrl.search)) {
-                                initModule(instance);
+                                initModuleWithRequiredI18n(instance);
                             }
                         }
                     }
@@ -195,7 +199,7 @@ var humhub = humhub || (function ($) {
             initialModules.push(instance);
         } else { // Init modules added asynchronously (ajax/pjax)
             addModuleLogger(instance);
-            initModule(instance);
+            initModuleWithRequiredI18n(instance);
         }
     };
 
@@ -579,16 +583,52 @@ var humhub = humhub || (function ($) {
             return 1;
         });
 
-        $.each(initialModules, function (i, module) {
-            initModule(module);
+        preloadRequiredI18n(initialModules).then(function() {
+            $.each(initialModules, function (i, module) {
+                initModule(module);
+            });
+        }).then(function() {
+            humhub.initialized = true;
+            event.trigger('humhub:ready');
+            $(document).trigger('humhub:ready', [false, humhub]);
+        }).catch(function(err) {
+            log.error('Error during module initialization', err);
+            humhub.initialized = true;
+            event.trigger('humhub:ready');
+            $(document).trigger('humhub:ready', [false, humhub]);
         });
-
-        humhub.initialized = true;
-        event.trigger('humhub:ready');
-        $(document).trigger('humhub:ready', [false, humhub]);
     });
 
-    var initModule = function (module) {
+    var preloadRequiredI18n = function(modules) {
+        var preloadPromise = Promise.resolve();
+
+        try {
+            var i18n = require('i18n');
+            var preloadCategories = new Set();
+
+            $.each(modules, function(i, module) {
+                if (module.requiredI18nCategories && module.requiredI18nCategories.length) {
+                    module.requiredI18nCategories.forEach(function(category) {
+                        preloadCategories.add(category);
+                    });
+                }
+            });
+
+            if (preloadCategories.size) {
+                preloadPromise = i18n.preload(Array.from(preloadCategories));
+            }
+        } catch (e) {}
+
+        return preloadPromise;
+    };
+
+    var initModuleWithRequiredI18n = function(module, isPjax) {
+        return preloadRequiredI18n([module]).then(function() {
+            initModule(module, isPjax);
+        });
+    };
+
+    var initModule = function (module, isPjax) {
         var log = require('log');
         event.trigger('humhub:beforeInitModule', module);
         if (module.init) {
@@ -597,11 +637,9 @@ var humhub = humhub || (function ($) {
                 event.trigger(module.id.replace('.', ':') + ':beforeInit', module);
 
                 event.trigger(module.id.replace(/\./g, ':') + ':beforeInit', module);
-                module.init();
-                event.trigger(module.id.replace(/\./g, ':') + ':afterInit', module);
+                module.init(isPjax);
 
-                // compatibility with beta 1.2 beta release
-                event.trigger(module.id.replace('.', ':') + ':afterInit', module);
+                event.trigger(module.id.replace(/\./g, ':') + ':afterInit', module);
             } catch (err) {
                 log.error('Could not initialize module: ' + module.id, err);
             }
@@ -616,14 +654,22 @@ var humhub = humhub || (function ($) {
     event.on('humhub:modules:client:pjax:success', function (evt) {
         // Init all modules again which were unloaded in the beforeSend and are configured for pjax initialization.
         // Note: this does not include modules loaded by the pjax request, those are initialized in the module function.
-        $.each(pjaxInitModules, function (i, module) {
-            if (module.initOnPjaxLoad && unloaded.indexOf(module.id) > -1) {
-                module.init(true);
-            }
-        });
+        preloadRequiredI18n(pjaxInitModules.filter(function(module) {
+            return module.initOnPjaxLoad && unloaded.indexOf(module.id) > -1;
+        })).then(function() {
+            $.each(pjaxInitModules, function (i, module) {
+                if (module.initOnPjaxLoad && unloaded.indexOf(module.id) > -1) {
+                    initModule(module, true);
+                }
+            });
 
-        event.trigger('humhub:ready');
-        $(document).trigger('humhub:ready', [true, humhub]);
+            event.trigger('humhub:ready');
+            $(document).trigger('humhub:ready', [true, humhub]);
+        }).catch(function(err) {
+            require('log').error('Error during pjax module initialization', err);
+            event.trigger('humhub:ready');
+            $(document).trigger('humhub:ready', [true, humhub]);
+        });
     }).on('humhub:modules:client:pjax:beforeSend', function (evt) {
         unloaded = [];
         $.each(moduleArr, function (i, module) {

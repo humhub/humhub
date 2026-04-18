@@ -13,6 +13,9 @@ humhub.module('action', function(module, require, $) {
     var object = util.object;
     var string = util.string;
     var loader = require('ui.loader');
+    var i18n = require('i18n');
+
+    module.requiredI18nCategories = ['base'];
 
     /**
      * Used for non blocked actions.
@@ -558,7 +561,7 @@ humhub.module('action', function(module, require, $) {
             var target = require(string.cutSuffix(event.handler, '.' + handlerAction));
 
             if(!_executeAction(target, handlerAction, event)) {
-                module.log.error('actionHandlerNotFound', event.handler, true);
+                module.log.error(i18n.t('base', 'An error occurred while handling your last action. (Handler not found).'), event.handler, true);
             }
         } catch(e) {
             module.log.error('error.default', e, true);

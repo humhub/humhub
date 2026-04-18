@@ -8,11 +8,12 @@
 
 namespace humhub\commands;
 
+use humhub\components\i18n\JsMessageExtractor;
 use Yii;
+use yii\base\Exception;
 use yii\helpers\Console;
 use yii\helpers\FileHelper;
 use yii\helpers\Json;
-use yii\base\Exception;
 
 /**
  * Extracts messages to be translated from source files.
@@ -69,6 +70,19 @@ class MessageController extends \yii\console\controllers\MessageController
         }
 
 
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function extractMessages($fileName, $translator, $ignoreCategories = [])
+    {
+        $extension = pathinfo($fileName, PATHINFO_EXTENSION);
+        if (in_array($extension, ['js', 'jsx'])) {
+            return Yii::createObject(JsMessageExtractor::class)->extract($fileName, ['i18n.t'], $ignoreCategories);
+        }
+
+        return parent::extractMessages($fileName, $translator, $ignoreCategories);
     }
 
     /**
