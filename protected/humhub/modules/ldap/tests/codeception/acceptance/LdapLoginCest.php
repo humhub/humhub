@@ -167,7 +167,9 @@ class LdapLoginCest
     }
 
     /**
-     * Disable LDAP via the admin settings form.
+     * Disable LDAP via the admin settings form and restore any profile field
+     * changes made during the test suite so subsequent test suites (e.g. unit
+     * tests) see the original fixture state.
      */
     private function disableLdap(AcceptanceTester $I): void
     {
@@ -178,9 +180,28 @@ class LdapLoginCest
             $I->uncheckOption('#ldapsettings-enabled');
             $I->jsClick('#authentication-settings-form [type=submit]');
             $I->seeSuccess();
-            $I->logout();
         } catch (\Throwable) {
             // Best-effort cleanup – don't fail the test if this step errors
+        }
+
+        // Restore the ldap_attribute for "firstname" (profile field id=1) to its
+        // default value. testLoginWithMissingRequiredFieldShowsRegistrationForm
+        // clears this field; if it stays empty, unit-test syncs fail because
+        // firstname is required and no longer mapped from LDAP.
+        try {
+            $I->amOnPage('/admin/user-profile/edit-field?id=1');
+            $I->waitForElementVisible('#profilefield-ldap_attribute');
+            $I->clearField('#profilefield-ldap_attribute');
+            $I->fillField('#profilefield-ldap_attribute', 'givenName');
+            $I->jsClick('#edit-profile-field-root [type=submit]');
+            $I->seeSuccess();
+        } catch (\Throwable) {
+            // Best-effort cleanup
+        }
+
+        try {
+            $I->logout();
+        } catch (\Throwable) {
         }
     }
 }
