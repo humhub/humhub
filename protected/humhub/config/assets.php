@@ -26,9 +26,6 @@ use yii\web\JqueryAsset;
 Yii::setAlias('@webroot', __DIR__ . '/../../../');
 Yii::setAlias('@web', '/');
 
-Yii::setAlias('@webroot-resources', __DIR__ . '/../resources');
-Yii::setAlias('@web-resources', Yii::$app->assetManager->getPublishedUrl('@webroot-resources'));
-
 $bundles = ArrayHelper::merge(
     [AppAsset::class, CoreBundleAsset::class],
     AppAsset::STATIC_DEPENDS,

@@ -33,9 +33,6 @@ Yii::setAlias('@root', $config['humhub_root']);
 Yii::setAlias('@humhubTests', $config['humhub_root'] . '/protected/humhub/tests');
 Yii::setAlias('@humhub', $config['humhub_root'] . '/protected/humhub');
 
-Yii::setAlias('@web-resources', '/protected/humhub/resources');
-Yii::setAlias('@webroot-resources', '@root/protected/humhub/resources');
-
 // Load all supporting test classes needed for test execution
 Autoload::addNamespace('', Yii::getAlias('@humhubTests/codeception/_support'));
 Autoload::addNamespace('', Yii::getAlias('@tests/codeception/fixtures'));

@@ -20,7 +20,7 @@ class ScssHelperTest extends Unit
 {
     public function testParseScssVariablesFile()
     {
-        $file = Yii::getAlias('@webroot-resources/scss/variables.scss');
+        $file = Yii::getAlias('@humhub/resources/scss/variables.scss');
         $accent = ScssHelper::getVariable($file, 'accent');
 
         $this->assertEquals('#21A1B3', $accent);

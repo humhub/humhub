@@ -290,7 +290,7 @@ class ConfigController extends Controller
                 // Add sample image to admin
                 /** @var User $admin */
                 $admin = User::find()->where(['id' => 1])->one();
-                $admin->image->setByFile(Yii::getAlias("@webroot-resources/resources/installer/user_male_1.jpg"));
+                $admin->image->setByFile(Yii::getAlias("@humhub/resources/resources/installer/user_male_1.jpg"));
 
                 $usersGroup = Group::findOne(['name' => 'Users']);
 
@@ -307,7 +307,7 @@ class ConfigController extends Controller
                 $userModel->tagsField = ['Microsoft Office', 'Marketing', 'SEM', 'Digital Native'];
                 $userModel->save();
 
-                $userModel->image->setByFile(Yii::getAlias("@webroot-resources/resources/installer/user_male_2.jpg"));
+                $userModel->image->setByFile(Yii::getAlias("@humhub/resources/resources/installer/user_male_2.jpg"));
 
                 $profileModel->user_id = $userModel->id;
                 $profileModel->firstname = "David";
@@ -336,7 +336,7 @@ class ConfigController extends Controller
                 $userModel2->tagsField = ['Yoga', 'Travel', 'English', 'German', 'French'];
                 $userModel2->save();
 
-                $userModel2->image->setByFile(Yii::getAlias("@webroot-resources/resources/installer/user_female_1.jpg"));
+                $userModel2->image->setByFile(Yii::getAlias("@humhub/resources/resources/installer/user_female_1.jpg"));
 
                 $profileModel2->user_id = $userModel2->id;
                 $profileModel2->firstname = "Sara";

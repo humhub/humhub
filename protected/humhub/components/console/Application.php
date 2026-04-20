@@ -47,12 +47,6 @@ class Application extends \yii\console\Application implements ApplicationInterfa
                 if (Yii::getAlias('@web', false) === false) {
                     Yii::setAlias('@web', $baseUrl);
                 }
-                if (Yii::getAlias('@web-resources', false) === false) {
-                    Yii::setAlias('@web-resources', '@web/protected/humhub/resources');
-                }
-                if (Yii::getAlias('@webroot-resources', false) === false) {
-                    Yii::setAlias('@webroot-resources', '@webroot/protected/humhub/resources');
-                }
             }
         }
 

@@ -92,7 +92,7 @@ class CoreJsConfig extends Widget
                     ],
                 ],
                 'ui.richtext' => [
-                    'emoji.url' => Yii::getAlias('@web-resources/img/emoji/'),
+                    'emoji.url' => Yii::getAlias(Yii::$app->assetManager->getPublishedUrl('@humhub/resources') . '/img/emoji/'),
                     'text' => [
                         'info.minInput' => Yii::t('base', 'Please type at least 3 characters'),
                         'info.loading' => Yii::t('base', 'Loading...'),
@@ -101,8 +101,8 @@ class CoreJsConfig extends Widget
                 'ui.richtext.prosemirror' => [
                     'emoji' => [
                         'twemoji' => [
-                            'base' => Yii::getAlias(Yii::$app->params['twemoji']['path']),
-                            'size' => Yii::getAlias(Yii::$app->params['twemoji']['size']),
+                            'base' => Yii::getAlias(Yii::$app->params['twemoji']['path'] ?? Yii::$app->assetManager->getPublishedUrl('@humhub/resources') . '/img/twemoji/'),
+                            'size' => Yii::$app->params['twemoji']['size'],
                         ],
                     ],
                     'oembed' => [

@@ -9,7 +9,7 @@
 namespace humhub\components\assets;
 
 /**
- * Base asset bundle class for @webroot-resources assets residing in `protected/humhub/resources` directory.
+ * Base asset bundle class for @humhub/resources assets residing in `protected/humhub/resources` directory.
  *
  * @package humhub\components\assets
  */
@@ -18,7 +18,7 @@ class WebResourcesAssetBundle extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@webroot-resources';
+    public $sourcePath = '@humhub/resources';
 
     /**
      * @inheritdoc

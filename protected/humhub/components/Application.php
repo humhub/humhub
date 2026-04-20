@@ -10,7 +10,6 @@ namespace humhub\components;
 
 use Exception;
 use humhub\interfaces\ApplicationInterface;
-use Yii;
 
 /**
  * Description of Application
@@ -41,25 +40,6 @@ class Application extends \yii\web\Application implements ApplicationInterface
 
         parent::init();
         $this->trigger(self::EVENT_ON_INIT);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function bootstrap()
-    {
-        if (Yii::getAlias('@webroot-resources', false) === false) {
-            Yii::setAlias('@webroot-resources', '@webroot/protected/humhub/resources');
-        }
-
-        if (Yii::getAlias('@web-resources', false) === false) {
-            if (Yii::getAlias('@web', false) === false) {
-                Yii::setAlias('@web', $this->getRequest()->getBaseUrl());
-            }
-            Yii::setAlias('@web-resources', $this->assetManager->getPublishedUrl('@webroot-resources'));
-        }
-
-        parent::bootstrap();
     }
 
     /**

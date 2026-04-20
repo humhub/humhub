@@ -106,7 +106,7 @@ class Module extends \yii\base\Module
         $url = $this->getPublishedUrl('/module_image.png');
 
         if ($url == null) {
-            $url = Yii::getAlias('@web-resources/img/default_module.jpg');
+            $url = Yii::$app->assetManager->getPublishedUrl('@humhub/resources') . '/img/default_module.jpg';
         }
 
         return $url;
