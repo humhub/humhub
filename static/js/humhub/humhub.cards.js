@@ -8,12 +8,31 @@ humhub.module('cards', function(module, require, $) {
 
     const initFiltersForm = function () {
         const form = $('form.form-search');
-        form.find('input[type=text]:first').focus();
+        if (!('ontouchstart' in window || navigator.maxTouchPoints > 0)) {
+            form.find('input[type=text]:first').focus();
+        }
         form.on('submit', function () {
             $(this).find('select[data-select2-id] option[data-id]').each(function() {
                 $(this).val($(this).data('id'));
             });
         });
+    }
+
+    const initMoreFiltersVisibility = function() {
+        const togglerSelector = '.container-cards .form-search-action-toggle-more';
+        const filterSelector = '.container-cards .form-search .d-flex .flex-fill';
+        $(window).on('resize', function() {
+            if ($(togglerSelector).is(':hidden') && $(filterSelector + ':hidden').length) {
+                $(filterSelector).show();
+                $(togglerSelector).find('.btn').removeClass('active');
+            }
+        });
+    }
+
+    const toggleMoreFilters = function(evt) {
+        const toggler = $(evt.$trigger);
+        toggler.closest('.d-flex').find('.form-search-action').last().nextAll('.flex-fill').stop().slideToggle(200);
+        toggler.toggleClass('active');
     }
 
     const selectTag = function (evt) {
@@ -123,6 +142,7 @@ humhub.module('cards', function(module, require, $) {
         hideLastNotCompletedRow();
         initFiltersForm();
         initScroll();
+        initMoreFiltersVisibility();
     }
 
     module.export({
@@ -130,5 +150,6 @@ humhub.module('cards', function(module, require, $) {
         init,
         applyFilters,
         selectTag,
+        toggleMoreFilters,
     });
 });
