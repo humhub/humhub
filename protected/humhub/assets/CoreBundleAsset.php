@@ -2,7 +2,7 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\WebResourcesAssetBundle;
+use humhub\components\assets\AssetBundle;
 use humhub\modules\activity\assets\ActivityAsset;
 use humhub\modules\comment\assets\CommentAsset;
 use humhub\modules\content\assets\ContentContainerAsset;
@@ -27,8 +27,13 @@ use humhub\modules\user\assets\UserPickerAsset;
  * > Note: this class should not depend on any style assets, otherwise an extra humhub-bundle.css will be created which
  * will triggers an extra asset request. All core style assets should be part of the `AppAsset` class.
  */
-class CoreBundleAsset extends WebResourcesAssetBundle
+class CoreBundleAsset extends AssetBundle
 {
+    /**
+     * @inheritdoc
+     */
+    public $sourcePath = '@humhub/resources';
+
     public const BUNDLE_NAME = 'defer';
 
     public $defaultDepends = false;

@@ -2,10 +2,15 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\WebResourcesAssetBundle;
+use humhub\components\assets\AssetBundle;
 
-class TopNavigationAsset extends WebResourcesAssetBundle
+class TopNavigationAsset extends AssetBundle
 {
+    /**
+     * @inheritdoc
+     */
+    public $sourcePath = '@humhub/resources';
+
     public $jsOptions = ['position' => \yii\web\View::POS_END];
 
     /**

@@ -8,15 +8,20 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\WebResourcesAssetBundle;
+use humhub\components\assets\AssetBundle;
 
 /**
  * jquery-At.js
  *
  * @author buddha
  */
-class JplayerModuleAsset extends WebResourcesAssetBundle
+class JplayerModuleAsset extends AssetBundle
 {
+    /**
+     * @inheritdoc
+     */
+    public $sourcePath = '@humhub/resources';
+
     /**
      * @inheritdoc
      */

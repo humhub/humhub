@@ -2,10 +2,15 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\WebResourcesAssetBundle;
+use humhub\components\assets\AssetBundle;
 
-class GridViewAsset extends WebResourcesAssetBundle
+class GridViewAsset extends AssetBundle
 {
+    /**
+     * @inheritdoc
+     */
+    public $sourcePath = '@humhub/resources';
+
     public $js = [
         'js/grid-view.js',
     ];

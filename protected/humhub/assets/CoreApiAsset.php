@@ -8,14 +8,19 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\WebResourcesAssetBundle;
+use humhub\components\assets\AssetBundle;
 use yii\web\View;
 
 /**
  * HumHub Core Api Asset
  */
-class CoreApiAsset extends WebResourcesAssetBundle
+class CoreApiAsset extends AssetBundle
 {
+    /**
+     * @inheritdoc
+     */
+    public $sourcePath = '@humhub/resources';
+
     /**
      * @inheritdoc
      */

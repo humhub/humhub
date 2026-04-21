@@ -9,7 +9,7 @@
 use humhub\assets\AppAsset;
 use humhub\assets\CoreBundleAsset;
 use humhub\assets\JuiBootstrapBridgeAsset;
-use humhub\components\assets\WebResourcesAssetBundle;
+use humhub\components\assets\AssetBundle;
 use humhub\components\View;
 use yii\bootstrap5\BootstrapAsset;
 use yii\bootstrap5\BootstrapPluginAsset;
@@ -32,7 +32,8 @@ $bundles = ArrayHelper::merge(
     CoreBundleAsset::STATIC_DEPENDS,
 );
 
-$webBundle = WebResourcesAssetBundle::register(Yii::$app->view);
+$basePath = '@webroot/assets/' . basename(Yii::$app->assetManager->getPublishedPath('@humhub/resources'));
+$baseUrl = Yii::$app->assetManager->getPublishedUrl('@humhub/resources');
 
 return [
     // Adjust command/callback for JavaScript files compressing:
@@ -44,11 +45,11 @@ return [
     // Asset bundle for compression output:
     'targets' => [
         AppAsset::BUNDLE_NAME => [
-            'class' => WebResourcesAssetBundle::class,
+            'class' => AssetBundle::class,
             'defer' => false,
             'defaultDepends' => false,
-            'basePath' => '@webroot/assets/' . $webBundle->basePath,
-            'baseUrl' => $webBundle->baseUrl,
+            'basePath' => $basePath,
+            'baseUrl' => $baseUrl,
             'jsPosition' => View::POS_HEAD,
             'js' => 'js/humhub-app.js',
             'css' => 'css/humhub-app.css',
@@ -59,12 +60,12 @@ return [
             'depends' => AppAsset::STATIC_DEPENDS,
         ],
         CoreBundleAsset::BUNDLE_NAME => [
-            'class' => WebResourcesAssetBundle::class,
+            'class' => AssetBundle::class,
             'defer' => true,
             'jsPosition' => View::POS_HEAD,
             'defaultDepends' => false,
-            'basePath' => '@webroot/assets/' . $webBundle->basePath,
-            'baseUrl' => $webBundle->baseUrl,
+            'basePath' => $basePath,
+            'baseUrl' => $baseUrl,
             'js' => 'js/humhub-bundle.js',
             'css' => 'css/humhub-bundle.css',
             'preload' => [

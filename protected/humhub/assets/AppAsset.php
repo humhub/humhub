@@ -8,7 +8,7 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\WebResourcesAssetBundle;
+use humhub\components\assets\AssetBundle;
 use humhub\modules\content\assets\ContentAsset;
 use humhub\modules\content\assets\ContentHighlightAsset;
 use humhub\modules\file\assets\FileAsset;
@@ -28,8 +28,23 @@ use yii\widgets\ActiveFormAsset;
  * Note: All CSS/JS files will be compressed and bundled. If you need dynamic
  * css/js loading e.g. based on users locale: see AppDynamicAsset
  */
-class AppAsset extends WebResourcesAssetBundle
+class AppAsset extends AssetBundle
 {
+    /**
+     * @inheritdoc
+     */
+    public $sourcePath = '@humhub/resources';
+
+    /**
+     * @inheritdoc
+     */
+    public $publishOptions = [
+        'except' => [
+            'scss/',
+            '.gitignore',
+        ],
+    ];
+
     /**
      * @inheritdoc
      */

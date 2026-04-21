@@ -8,15 +8,20 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\WebResourcesAssetBundle;
+use humhub\components\assets\AssetBundle;
 use yii\helpers\Url;
 use yii\web\View;
 
 /**
  * @since 1.16
  */
-class SearchAsset extends WebResourcesAssetBundle
+class SearchAsset extends AssetBundle
 {
+    /**
+     * @inheritdoc
+     */
+    public $sourcePath = '@humhub/resources';
+
     /**
      * @inheritdoc
      */
