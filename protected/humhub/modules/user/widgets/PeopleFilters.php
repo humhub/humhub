@@ -52,8 +52,8 @@ class PeopleFilters extends DirectoryFilters
     {
         // Keyword
         $this->addFilter('keyword', [
-            'title' => Yii::t('UserModule.base', 'Find people by their profile data or user tags'),
-            'placeholder' => Yii::t('UserModule.base', 'Search...'),
+            'title' => Yii::t('UserModule.base', 'Search'),
+            'placeholder' => Yii::t('UserModule.base', 'Search people...'),
             'type' => 'text',
             'inputOptions' => ['autocomplete' => 'off'],
             'wrapperClass' => 'flex-fill form-search-filter-keyword',

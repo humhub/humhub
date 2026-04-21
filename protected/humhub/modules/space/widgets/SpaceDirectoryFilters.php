@@ -28,8 +28,8 @@ class SpaceDirectoryFilters extends DirectoryFilters
     protected function initDefaultFilters()
     {
         $this->addFilter('keyword', [
-            'title' => Yii::t('SpaceModule.base', 'Find Spaces by their description or by their tags'),
-            'placeholder' => Yii::t('SpaceModule.base', 'Search...'),
+            'title' => Yii::t('SpaceModule.base', 'Search'),
+            'placeholder' => Yii::t('SpaceModule.base', 'Search spaces...'),
             'type' => 'input',
             'inputOptions' => ['autocomplete' => 'off'],
             'wrapperClass' => 'flex-fill form-search-filter-keyword',

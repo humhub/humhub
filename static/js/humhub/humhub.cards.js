@@ -21,18 +21,63 @@ humhub.module('cards', function(module, require, $) {
     const initMoreFiltersVisibility = function() {
         const togglerSelector = '.container-cards .form-search-action-toggle-more';
         const filterSelector = '.container-cards .form-search .d-flex .flex-fill';
+        var togglerIsVisibleCurrent = $(togglerSelector).is(':visible');
+        var togglerIsVisiblePrevious = togglerIsVisibleCurrent;
+
+        if (togglerIsVisibleCurrent) {
+            toggleMoreFilters(getMoreFiltersState(), false, 'none');
+        }
+
         $(window).on('resize', function() {
-            if ($(togglerSelector).is(':hidden') && $(filterSelector + ':hidden').length) {
-                $(filterSelector).show();
-                $(togglerSelector).find('.btn').removeClass('active');
+            togglerIsVisibleCurrent = $(togglerSelector).is(':visible');
+
+            if (!togglerIsVisibleCurrent && $(filterSelector + ':hidden').length) {
+                toggleMoreFilters(true, false);
             }
+
+            if (togglerIsVisiblePrevious !== togglerIsVisibleCurrent && togglerIsVisibleCurrent) {
+                toggleMoreFilters(getMoreFiltersState());
+            }
+
+            togglerIsVisiblePrevious = $(togglerSelector).is(':visible');
         });
     }
 
-    const toggleMoreFilters = function(evt) {
-        const toggler = $(evt.$trigger);
-        toggler.closest('.d-flex').find('.form-search-action').last().nextAll('.flex-fill').stop().slideToggle(200);
-        toggler.toggleClass('active');
+    const toggleMoreFilters = function(evt, updateState = true, effect = 'slide') {
+        const toggler = typeof(evt) === 'boolean' ? $('.form-search-action-toggle-more').find('.btn') : $(evt.$trigger);
+        const show = typeof(evt) === 'boolean' ? evt : toggler.hasClass('active');
+        const moreFilters = toggler.closest('.d-flex').find('.form-search-action').last().nextAll('.flex-fill').stop();
+        if (effect === 'slide') {
+            show ? moreFilters.slideDown(200) : moreFilters.slideUp(200);
+        } else {
+            moreFilters.toggle(show);
+        }
+        toggler.toggleClass('active', !show);
+        if (updateState) {
+            updateMoreFiltersState(show);
+        }
+    }
+
+    const getMoreFiltersStates = function () {
+        const states = window.localStorage.getItem('cards-more-filters');
+        return states ? JSON.parse(states) : {};
+    }
+
+    const getMoreFiltersState = function (defaultState = false) {
+        const states = getMoreFiltersStates();
+        return typeof(states[getMoreFiltersPage()]) === 'undefined'
+            ? defaultState
+            : states[getMoreFiltersPage()];
+    }
+
+    const getMoreFiltersPage = function () {
+        return $('.form-search-action-toggle-more').closest('form').attr('action').replace(/^\/*(.+)\/*$/, '$1');
+    }
+
+    const updateMoreFiltersState = function (state) {
+        const states = getMoreFiltersStates();
+        states[getMoreFiltersPage()] = state;
+        window.localStorage.setItem('cards-more-filters', JSON.stringify(states));
     }
 
     const selectTag = function (evt) {
