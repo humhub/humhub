@@ -173,10 +173,14 @@ class AccountController extends BaseAccountController
      */
     public function actionSearchTagsJson()
     {
-        $keyword = Yii::$app->request->get('keyword');
-        $pickerTags = ContainerTagPicker::searchTagsByContainer($this->contentContainer, $keyword);
+        $keyword = Yii::$app->request->get('keyword', '');
 
-        return $this->asJson($pickerTags);
+        $guid = Yii::$app->request->get('guid');
+        $user = $guid ? User::findOne(['guid' => $guid]) : null;
+
+        return $this->asJson($user
+            ? ContainerTagPicker::searchTagsByContainer($user, $keyword)
+            : ContainerTagPicker::searchTagsByContainerClass(User::class, $keyword));
     }
 
     /**

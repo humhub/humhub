@@ -16,6 +16,7 @@ use humhub\modules\ui\form\widgets\BasePicker;
 use humhub\modules\user\models\forms\AccountSettings;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\helpers\Url;
 
 /**
  * This InputWidget provides a Container Tags Picker
@@ -49,9 +50,9 @@ class ContainerTagPicker extends BasePicker
 
         $contentContainer = $this->getContentContainer();
         if ($contentContainer instanceof Space) {
-            $this->url = $contentContainer->createUrl('/space/browse/search-tags-json');
+            $this->url = Url::to(['/space/browse/search-tags-json', 'guid' => $contentContainer->guid]);;
         } elseif ($contentContainer instanceof User) {
-            $this->url = $contentContainer->createUrl('/user/account/search-tags-json');
+            $this->url = Url::to(['/user/account/search-tags-json', 'guid' => $contentContainer->guid]);
         }
     }
 
@@ -142,7 +143,6 @@ class ContainerTagPicker extends BasePicker
      * @param string $contentContainerClass
      * @param string $keyword
      * @return array
-     * @deprecated since 1.18.3 use searchTagsByContainer() instead
      */
     public static function searchTagsByContainerClass($contentContainerClass, $keyword, bool $allowAdd = true)
     {
