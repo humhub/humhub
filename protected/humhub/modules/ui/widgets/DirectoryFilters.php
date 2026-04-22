@@ -84,10 +84,11 @@ abstract class DirectoryFilters extends Widget
             ]);
         }
 
-        if ($this->isFiltered()) {
+        if (isset($this->data['action-url']) || $this->isFiltered()) {
             $this->addFilter('reset', [
                 'type' => 'info',
-                'wrapperClass' => 'form-search-action form-search-action-reset',
+                'wrapperClass' => 'form-search-action form-search-action-reset' .
+                    ($this->isFiltered() ? '' : ' d-none'),
                 'info' => Button::danger()
                     ->icon('times')
                     ->link([$this->pageUrl])
@@ -261,8 +262,8 @@ abstract class DirectoryFilters extends Widget
 
     public function isFiltered(): bool
     {
-        foreach ($this->filters as $filter => $data) {
-            if (static::getValue($filter) !== static::getDefaultValue($filter)) {
+        foreach (Yii::$app->request->getQueryParams() as $key => $value) {
+            if (!in_array($key, ['page', '_pjax', '_']) && static::getValue($key) !== static::getDefaultValue($key)) {
                 return true;
             }
         }

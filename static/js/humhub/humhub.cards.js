@@ -15,6 +15,9 @@ humhub.module('cards', function(module, require, $) {
             $(this).find('select[data-select2-id] option[data-id]').each(function() {
                 $(this).val($(this).data('id'));
             });
+            if (form.data('action-url') !== undefined) {
+                $('.container-cards .form-search-action-reset').show();
+            }
         });
     }
 
@@ -25,7 +28,9 @@ humhub.module('cards', function(module, require, $) {
         var togglerIsVisiblePrevious = togglerIsVisibleCurrent;
 
         if (togglerIsVisibleCurrent) {
-            toggleMoreFilters(getMoreFiltersState(), false, 'none');
+            const resetSelector = '.container-cards .form-search-action-reset';
+            const initState = getMoreFiltersState() && $(resetSelector).length > 0;
+            toggleMoreFilters(initState, false, 'none');
         }
 
         $(window).on('resize', function() {
@@ -45,14 +50,14 @@ humhub.module('cards', function(module, require, $) {
 
     const toggleMoreFilters = function(evt, updateState = true, effect = 'slide') {
         const toggler = typeof(evt) === 'boolean' ? $('.form-search-action-toggle-more').find('.btn') : $(evt.$trigger);
-        const show = typeof(evt) === 'boolean' ? evt : toggler.hasClass('active');
+        const show = typeof(evt) === 'boolean' ? evt : !toggler.hasClass('active');
         const moreFilters = toggler.closest('.d-flex').find('.form-search-action').last().nextAll('.flex-fill').stop();
         if (effect === 'slide') {
             show ? moreFilters.slideDown(200) : moreFilters.slideUp(200);
         } else {
             moreFilters.toggle(show);
         }
-        toggler.toggleClass('active', !show);
+        toggler.toggleClass('active', show);
         if (updateState) {
             updateMoreFiltersState(show);
         }

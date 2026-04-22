@@ -42,9 +42,9 @@ class ModuleFilters extends DirectoryFilters
 
         $this->addFilter('keyword', [
             'title' => Yii::t('MarketplaceModule.base', 'Search'),
-            'placeholder' => Yii::t('MarketplaceModule.base', 'Search...'),
+            'placeholder' => Yii::t('MarketplaceModule.base', 'Description, Name, Keywords...'),
             'type' => 'input',
-            'wrapperClass' => 'col-lg-7 form-search-filter-keyword',
+            'wrapperClass' => 'flex-fill form-search-filter-keyword',
             'afterInput' => Html::submitButton(Icon::get('search'), ['class' => 'form-button-search']),
             'sortOrder' => 100,
         ]);
@@ -55,7 +55,6 @@ class ModuleFilters extends DirectoryFilters
                 'title' => Yii::t('MarketplaceModule.base', 'Categories'),
                 'type' => 'dropdown',
                 'options' => $categories,
-                'wrapperClass' => 'col-lg-3',
                 'sortOrder' => 200,
             ]);
         }
@@ -73,7 +72,7 @@ class ModuleFilters extends DirectoryFilters
                 'partner' => Yii::t('MarketplaceModule.base', 'Partner'),
                 'new' => Yii::t('MarketplaceModule.base', 'New'),
             ],
-            'wrapperClass' => 'col-lg-12 form-search-filter-tags',
+            'wrapperClass' => 'w-100 form-search-filter-tags',
             'sortOrder' => 20000,
         ]);
     }
