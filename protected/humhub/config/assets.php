@@ -76,8 +76,8 @@ return [
         ],
     ],
     'assetManager' => [
-        'basePath' => '@webroot/assets',
-        'baseUrl' => '@web/assets',
+        'basePath' => Yii::$app->assetManager->basePath,
+        'baseUrl' => Yii::$app->assetManager->baseUrl,
         'bundles' => [
             JqueryAsset::class => [
                 'sourcePath' => '@npm/jquery/dist',
