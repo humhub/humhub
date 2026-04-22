@@ -13,7 +13,7 @@ HumHub Changelog
 - Enh #8095: Improve authorization checks
 - Fix #8099: Validate content visibility before switching content notifications
 - Enh #8098: Improve notification authorization checks
-- Enh #8104: Fix adding of new individual user and space topics
+- Enh #8105: Fix adding of new individual user and space topics
 
 1.18.2 (March 22, 2026)
 -----------------------
