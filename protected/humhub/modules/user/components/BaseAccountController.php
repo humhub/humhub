@@ -8,9 +8,9 @@
 
 namespace humhub\modules\user\components;
 
-use humhub\components\Controller;
-use Yii;
 use humhub\components\access\ControllerAccess;
+use humhub\modules\content\components\ContentContainerController;
+use Yii;
 
 /**
  * BaseAccountController is the base controller for user account (settings) pages
@@ -18,8 +18,13 @@ use humhub\components\access\ControllerAccess;
  * @since 1.1
  * @author luke
  */
-class BaseAccountController extends Controller
+class BaseAccountController extends ContentContainerController
 {
+    /**
+     * @inheritdoc
+     */
+    public $requireContainer = false;
+
     /**
      * @inheritdoc
      */

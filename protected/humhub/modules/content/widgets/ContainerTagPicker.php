@@ -8,13 +8,14 @@
 
 namespace humhub\modules\content\widgets;
 
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\ContentContainerTag;
 use humhub\modules\space\models\Space;
+use humhub\modules\topic\models\Topic;
 use humhub\modules\ui\form\widgets\BasePicker;
 use humhub\modules\user\models\forms\AccountSettings;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\helpers\Url;
 
 /**
  * This InputWidget provides a Container Tags Picker
@@ -46,11 +47,22 @@ class ContainerTagPicker extends BasePicker
     {
         parent::init();
 
-        if ($this->model instanceof Space) {
-            $this->url = Url::to(['/space/browse/search-tags-json']);
-        } elseif ($this->model instanceof User || $this->model instanceof AccountSettings) {
-            $this->url = Url::to(['/user/account/search-tags-json']);
+        $contentContainer = $this->getContentContainer();
+        if ($contentContainer instanceof Space) {
+            $this->url = $contentContainer->createUrl('/space/browse/search-tags-json');
+        } elseif ($contentContainer instanceof User) {
+            $this->url = $contentContainer->createUrl('/user/account/search-tags-json');
         }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getAttributes()
+    {
+        return array_merge(parent::getAttributes(), [
+            'data-tags' => Topic::isAllowedToCreate($this->getContentContainer()) ? 'true' : 'false',
+        ]);
     }
 
     /**
@@ -94,14 +106,45 @@ class ContainerTagPicker extends BasePicker
         return null;
     }
 
+    protected function getContentContainer(): ?ContentContainerActiveRecord
+    {
+        if ($this->model instanceof ContentContainerActiveRecord) {
+            return $this->model;
+        }
+
+        if ($this->model instanceof AccountSettings) {
+            return $this->model->user;
+        }
+
+        return null;
+    }
+
+    /**
+     * Search tags data from Space/User containers for JSON response
+     *
+     * @param ContentContainerActiveRecord $contentContainer
+     * @param string|null $keyword
+     * @return array
+     * @since 1.18.3
+     */
+    public static function searchTagsByContainer(ContentContainerActiveRecord $contentContainer, ?string $keyword): array
+    {
+        return static::searchTagsByContainerClass(
+            get_class($contentContainer),
+            $keyword,
+            Topic::isAllowedToCreate($contentContainer),
+        );
+    }
+
     /**
      * Search tags data from Space/User containers for JSON response
      *
      * @param string $contentContainerClass
      * @param string $keyword
      * @return array
+     * @deprecated since 1.18.3 use searchTagsByContainer() instead
      */
-    public static function searchTagsByContainerClass($contentContainerClass, $keyword)
+    public static function searchTagsByContainerClass($contentContainerClass, $keyword, bool $allowAdd = true)
     {
         $keyword = trim($keyword);
 
@@ -116,6 +159,10 @@ class ContainerTagPicker extends BasePicker
             ->asArray()
             ->all();
 
-        return array_merge([['id' => $keyword, 'text' => $keyword]], $containerTags);
+        if ($allowAdd) {
+            $containerTags = array_merge([['id' => $keyword, 'text' => $keyword]], $containerTags);
+        }
+
+        return $containerTags;
     }
 }

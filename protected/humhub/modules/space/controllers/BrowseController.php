@@ -9,7 +9,7 @@
 namespace humhub\modules\space\controllers;
 
 use humhub\components\behaviors\AccessControl;
-use humhub\components\Controller;
+use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\content\widgets\ContainerTagPicker;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Chooser;
@@ -25,8 +25,13 @@ use yii\web\Response;
  * @package humhub.modules_core.space.controllers
  * @since 0.5
  */
-class BrowseController extends Controller
+class BrowseController extends ContentContainerController
 {
+    /**
+     * @inheritdoc
+     */
+    public $requireContainer = false;
+
     /**
      * @inheritdoc
      */
@@ -81,7 +86,7 @@ class BrowseController extends Controller
     public function actionSearchTagsJson()
     {
         $keyword = Yii::$app->request->get('keyword');
-        $pickerTags = ContainerTagPicker::searchTagsByContainerClass(Space::class, $keyword);
+        $pickerTags = ContainerTagPicker::searchTagsByContainer($this->contentContainer, $keyword);
 
         return $this->asJson($pickerTags);
     }
