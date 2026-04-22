@@ -13,6 +13,7 @@ HumHub Changelog
 - Enh #8095: Improve authorization checks
 - Fix #8099: Validate content visibility before switching content notifications
 - Enh #8098: Improve notification authorization checks
+- Enh #8106: ensure migrations are run after reinstallation of modules
 
 1.18.2 (March 22, 2026)
 -----------------------
