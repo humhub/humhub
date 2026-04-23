@@ -84,15 +84,13 @@ class LoginCest
         $loginPage->login('User3', 'user^humhub@PASS%worD!');
 
         $I->expectTo('see password change dialog');
-        $I->waitForText('Due to security reasons');
-        $I->fillField('#password-currentpassword', 'user^humhub@PASS%worD!');
-        $I->fillField('#password-newpassword', '321QW12e');
-        $I->fillField('#password-newpasswordconfirm', '321QW12e');
-        $I->click('Confirm');
+        $I->waitForElement('//input[@name="Password[currentPassword]"]', 20);
+        $I->seeInCurrentUrl('/must-change-password');
 
-        $I->expectTo('see dashboard');
-        $I->waitForText('Password changed');
-        $I->see('Latest activities');
+        $I->amGoingTo('open the dashboard before changing password');
+        $I->amOnRoute(['/dashboard/dashboard']);
+        $I->waitForElement('//input[@name="Password[currentPassword]"]', 20);
+        $I->seeInCurrentUrl('/must-change-password');
     }
 
     //Login by email

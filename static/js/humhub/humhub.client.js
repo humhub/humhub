@@ -8,8 +8,11 @@ humhub.module('client', function (module, require, $) {
     var action = require('action');
     var additions = require('ui.additions');
     var view = require('ui.view');
+    var i18n = require('i18n');
 
     var HEADER_VIEW_CONTEXT = 'HUMHUB-VIEW-CONTEXT';
+
+    module.requiredI18nCategories = ['base'];
 
     /**
      * Response Wrapper Object for easily accessing common data
@@ -379,8 +382,10 @@ humhub.module('client', function (module, require, $) {
 
         $form.data('state', serializeFormState($form));
 
-        msg = msg || module.text('warn.onBeforeLoad');
-        msgModal = msgModal || module.text('warn.onBeforeCloseModal');
+        const onBeforeLoadMsg = i18n.t('base', 'Unsaved changes will be lost. Do you want to proceed?');
+
+        msg = msg || onBeforeLoadMsg;
+        msgModal = msgModal || onBeforeLoadMsg;
 
         $form.resetChanges = function() {
             $form.data('state', null);
@@ -441,7 +446,7 @@ humhub.module('client', function (module, require, $) {
             module.confirmedMessages = {};
         }
 
-        msg = msg || module.text('warn.onBeforeLoad');
+        msg = msg || i18n.t('base', 'Unsaved changes will be lost. Do you want to proceed?');
 
         if (module.confirmedMessages[msg] && (Date.now() - module.confirmedMessages[msg].time < 100)) {
             // Don't ask the same confirmation message twice if it was answered recently
@@ -487,6 +492,7 @@ humhub.module('client', function (module, require, $) {
         } else {
             offBeforeLoad();
         }
+
     };
 
     const checkContentSecurityPolicyViolation = function () {
