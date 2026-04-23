@@ -91,6 +91,7 @@ class Group extends ActiveRecord
         if ($this->is_admin_group) {
             $this->removeScenarioAttributes($scenarios, [
                 'defaultSpaceGuid',
+                'updateSpaceMemberships',
                 'managerGuids',
                 'show_at_registration',
                 'is_default_group',

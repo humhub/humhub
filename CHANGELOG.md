@@ -13,6 +13,7 @@ HumHub Changelog
 - Enh #8095: Improve authorization checks
 - Fix #8099: Validate content visibility before switching content notifications
 - Enh #8098: Improve notification authorization checks
+- Fix #8107: Hide option "Update Space memberships" on administrative group edit form
 
 1.18.2 (March 22, 2026)
 -----------------------
