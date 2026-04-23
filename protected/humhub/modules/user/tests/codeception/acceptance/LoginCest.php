@@ -84,7 +84,9 @@ class LoginCest
         $loginPage->login('User3', 'user^humhub@PASS%worD!');
 
         $I->expectTo('see password change dialog');
-        $I->waitForText('Due to security reasons');
+        $I->waitForElementVisible('#must-change-password-form', 20);
+        $I->waitForText('Due to security reasons', 10, '#must-change-password-form');
+        $I->waitForElementClickable('#password-currentpassword');
         $I->fillField('#password-currentpassword', 'user^humhub@PASS%worD!');
         $I->fillField('#password-newpassword', '321QW12e');
         $I->fillField('#password-newpasswordconfirm', '321QW12e');
