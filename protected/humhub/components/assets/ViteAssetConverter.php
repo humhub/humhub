@@ -1,0 +1,48 @@
+<?php
+
+namespace humhub\components\assets;
+
+use humhub\helpers\ArrayHelper;
+use yii\web\AssetConverter;
+
+class ViteAssetConverter extends AssetConverter
+{
+    public function init()
+    {
+        parent::init();
+
+        $env = YII_ENV_PROD ? 'production' : 'development';
+
+        $this->commands = ArrayHelper::merge(
+            $this->commands, [
+                'vue.js' => ['js', "npm run build-vite entry {from} dist {to} --mode $env"],
+            ]
+        );
+    }
+
+    public function convert($asset, $basePath)
+    {
+
+        $pos = strpos($asset, '.');
+        if ($pos !== false) {
+            $ext = substr($asset, $pos + 1);
+
+            if ($ext == 'vue.js') {
+                $this->forceConvert = true;
+                $basePath = \Yii::getAlias("@webroot/assets/$basePath");
+            }
+
+            if (isset($this->commands[$ext])) {
+                list($ext, $command) = $this->commands[$ext];
+                $result = substr($asset, 0, $pos + 1) . $ext;
+                if ($this->forceConvert || @filemtime("$basePath/$result") < @filemtime("$basePath/$asset")) {
+                    $this->runCommand($command, $basePath, $asset, $result);
+                }
+
+                return $result;
+            }
+        }
+
+        return $asset;
+    }
+}

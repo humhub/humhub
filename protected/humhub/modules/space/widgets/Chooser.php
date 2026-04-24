@@ -6,12 +6,13 @@ use Exception;
 use humhub\components\Widget;
 use humhub\helpers\Html;
 use humhub\modules\content\components\ContentContainerController;
-use humhub\modules\space\assets\SpaceChooserAsset;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\space\permissions\SpaceDirectoryAccess;
+use humhub\modules\space\widgets\Image;
+use humhub\modules\space\widgets\vue\SpaceChooserWidget;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\models\Follow;
@@ -46,7 +47,6 @@ class Chooser extends Widget
             return false;
         }
 
-        $this->configure();
         return parent::beforeRun();
     }
 
@@ -57,7 +57,9 @@ class Chooser extends Widget
      */
     public function run()
     {
-        return $this->render($this->viewName, $this->getViewParams());
+        return SpaceChooserWidget::widget([
+            'props' => $this->getVueProps(),
+        ]);
     }
 
     /**
@@ -69,12 +71,12 @@ class Chooser extends Widget
     }
 
     /**
-     * Configure widget before run, used to register assets and js config
+     * @return string
      */
-    protected function configure()
+    protected function getNoSpaceHtml()
     {
-        SpaceChooserAsset::register($this->view);
-        $this->view->registerJsConfig('space.chooser', $this->getJsConfigParams());
+        $html = Icon::get('dot-circle-o') . '<br>' . Yii::t('SpaceModule.chooser', 'My spaces');
+        return Html::tag('div', $html, ['class' => 'no-space']);
     }
 
     /**
@@ -82,42 +84,33 @@ class Chooser extends Widget
      * @throws Throwable
      * @throws InvalidConfigException
      */
-    protected function getViewParams()
+    protected function getVueProps()
     {
-        return [
-            'currentSpace' => $this->getCurrentSpace(),
-            'canCreateSpace' => $this->canCreateSpace(),
-            'canAccessDirectory' => Yii::$app->user->can(SpaceDirectoryAccess::class),
-            'renderedItems' => $this->renderItems(),
-            'noSpaceHtml' => $this->getNoSpaceHtml(),
-        ];
-    }
+        $currentSpace = $this->getCurrentSpace();
 
-    /**
-     * @return array
-     */
-    protected function getJsConfigParams()
-    {
         return [
             'lazyLoad' => $this->lazyLoad,
-            'noSpace' => $this->getNoSpaceHtml(),
-            'remoteSearchUrl' => Url::to(['/space/browse/search-json']),
             'lazySearchUrl' => Url::to(['/space/browse/search-lazy']),
+            'remoteSearchUrl' => Url::to(['/space/browse/search-json']),
+            'directoryUrl' => Url::to(['/space/spaces']),
+            'createSpaceUrl' => Url::to(['/space/create/create']),
+            'canCreateSpace' => $this->canCreateSpace(),
+            'canAccessDirectory' => Yii::$app->user->can(SpaceDirectoryAccess::class),
+            'currentSpaceImage' => $currentSpace
+                ? Image::widget(['space' => $currentSpace, 'width' => 32, 'htmlOptions' => ['class' => 'current-space-image']])
+                : '',
+            'directoryIcon' => Icon::get('directory')->asString(),
+            'noSpaceHtml' => $this->getNoSpaceHtml(),
+            'spaces' => $this->lazyLoad ? [] : $this->getSpaceResults(),
             'text' => [
-                'info.remoteAtLeastInput' => Yii::t('SpaceModule.chooser', 'Please enter at least {count} characters to search Spaces.', ['count' => 2]),
-                'info.emptyOwnResult' => Yii::t('SpaceModule.chooser', 'You are not a member of or following any Spaces.'),
-                'info.emptyResult' => Yii::t('SpaceModule.chooser', 'No Spaces found.'),
+                'search' => Yii::t('SpaceModule.chooser', 'Search'),
+                'searchForSpaces' => Yii::t('SpaceModule.chooser', 'Search for spaces'),
+                'createSpace' => Yii::t('SpaceModule.chooser', 'Create Space'),
+                'remoteAtLeastInput' => Yii::t('SpaceModule.chooser', 'Please enter at least {count} characters to search Spaces.', ['count' => 2]),
+                'emptyOwnResult' => Yii::t('SpaceModule.chooser', 'You are not a member of or following any Spaces.'),
+                'emptyResult' => Yii::t('SpaceModule.chooser', 'No Spaces found.'),
             ],
         ];
-    }
-
-    /**
-     * @return string
-     */
-    protected function getNoSpaceHtml()
-    {
-        $html = Icon::get('dot-circle-o') . '<br>' . Yii::t('SpaceModule.chooser', 'My spaces');
-        return Html::tag('div', $html, ['class' => 'no-space']);
     }
 
     /**
@@ -147,6 +140,39 @@ class Chooser extends Widget
         }
 
         return $output;
+    }
+
+    /**
+     * @return array
+     * @throws Throwable
+     */
+    protected function getSpaceResults()
+    {
+        $results = [];
+        $guids = [];
+
+        foreach ($this->getMemberships() as $membership) {
+            if (isset($guids[$membership->space->guid])) {
+                continue;
+            }
+
+            $guids[$membership->space->guid] = true;
+            $results[] = self::getSpaceResult($membership->space, true, [
+                'updateCount' => $membership->countNewItems(),
+                'isMember' => true,
+            ]);
+        }
+
+        foreach ($this->getFollowSpaces() as $space) {
+            if (isset($guids[$space->guid])) {
+                continue;
+            }
+
+            $guids[$space->guid] = true;
+            $results[] = self::getSpaceResult($space, true, ['isFollowing' => true]);
+        }
+
+        return $results;
     }
 
     /**

@@ -6,6 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\components\assets\ViteAssetConverter;
 use humhub\components\i18n\PhpMessageSource;
 
 // TODO: Remove this line, should be already handled by BootstrapService
@@ -169,6 +170,9 @@ $config = [
             'class' => \humhub\components\assets\AssetManager::class,
             'appendTimestamp' => true,
             'bundles' => require(__DIR__ . '/' . (YII_ENV_PROD || YII_ENV_TEST ? 'assets-prod.php' : 'assets-dev.php')),
+            'converter' => [
+                'class' => ViteAssetConverter::class,
+            ]
         ],
         'img' => [
             'class' => 'humhub\components\assets\AssetImageRegistry',
