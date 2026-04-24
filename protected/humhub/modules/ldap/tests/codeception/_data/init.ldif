@@ -1,0 +1,28 @@
+# LDAP test data for HumHub LDAP integration tests
+# Base DN dc=example,dc=org is auto-created by the OpenLDAP container.
+# This file adds the users OU and test accounts.
+
+# Organizational Unit for users
+dn: ou=users,dc=example,dc=org
+objectClass: organizationalUnit
+ou: users
+
+# john.doe – primary test user used for login and sync tests
+dn: uid=john.doe,ou=users,dc=example,dc=org
+objectClass: inetOrgPerson
+cn: John Doe
+sn: Doe
+givenName: John
+uid: john.doe
+mail: john@example.org
+userPassword: Password123
+
+# jane.doe – second test user used to verify multi-user sync
+dn: uid=jane.doe,ou=users,dc=example,dc=org
+objectClass: inetOrgPerson
+cn: Jane Doe
+sn: Doe
+givenName: Jane
+uid: jane.doe
+mail: jane@example.org
+userPassword: Password456
