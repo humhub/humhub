@@ -87,8 +87,8 @@ abstract class DirectoryFilters extends Widget
         if (isset($this->data['action-url']) || $this->isFiltered()) {
             $this->addFilter('reset', [
                 'type' => 'info',
-                'wrapperClass' => 'form-search-action form-search-action-reset' .
-                    ($this->isFiltered() ? '' : ' d-none'),
+                'wrapperClass' => 'form-search-action form-search-action-reset'
+                    . ($this->isFiltered() ? '' : ' d-none'),
                 'info' => Button::danger()
                     ->icon('times')
                     ->link([$this->pageUrl])
