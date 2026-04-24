@@ -50,7 +50,8 @@ class ContainerTagPicker extends BasePicker
 
         $contentContainer = $this->getContentContainer();
         if ($contentContainer instanceof Space) {
-            $this->url = Url::to(['/space/browse/search-tags-json', 'guid' => $contentContainer->guid]);;
+            $this->url = Url::to(['/space/browse/search-tags-json', 'guid' => $contentContainer->guid]);
+            ;
         } elseif ($contentContainer instanceof User) {
             $this->url = Url::to(['/user/account/search-tags-json', 'guid' => $contentContainer->guid]);
         }
