@@ -1,0 +1,17 @@
+[phases.setup]
+nixPkgs = [
+  "php82",
+  "php82Packages.composer",
+  "nodejs_22",
+  "nginx"
+]
+
+[phases.build]
+cmds = [
+  "composer install --ignore-platform-reqs",
+  "npm ci",
+  "chmod +x start.sh"
+]
+
+[start]
+cmd = "bash start.sh"

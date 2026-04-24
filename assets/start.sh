@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# Configura o usuário e pastas
+useradd -m phpuser 2>/dev/null || true
+mkdir -p /run /var/log/nginx /var/cache/nginx
+chmod -R 777 /app/assets /app/uploads /app/protected/runtime /app/protected/config 2>/dev/null || true
+
+# Gera o arquivo do Nginx dinamicamente
+cat > /tmp/nginx.conf << 'NGINXEOF'
+daemon off;
+worker_processes 1;
+error_log /dev/stderr;
+events { worker_connections 1024; }
+http {
+  default_type application/octet-stream;
+  access_log /dev/stdout;
+  server {
+    listen 8080;
+    root /app;
+    index index.php;
+    location / { try_files $uri $uri/ /index.php?$args; }
+    location ~ \.php$ {
+      fastcgi_pass unix:/run/php-fpm.sock;
+      fastcgi_index index.php;
+      fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+      fastcgi_param DOCUMENT_ROOT $document_root;
+      include fastcgi_params;
+    }
+    location ~ /\. { deny all; }
+  }
+}
+NGINXEOF
+
+# Inicia o PHP-FPM em background
+php-fpm -y /app/php-fpm.conf &
+
+# Espera um pouco e inicia o Nginx
+sleep 2 && nginx -c /tmp/nginx.conf
