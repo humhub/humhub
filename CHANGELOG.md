@@ -14,6 +14,7 @@ HumHub Changelog
 - Fix #8071: Fix button link with icon only
 - Enh #8083: Store module version in DB
 - Enh #5141: Added CLI command to delete disabled or soft deleted users
+- Enh #8100: Move `static` and `themes` into `protected/humhub`
 
 1.18.3 (TBD)
 ------------

@@ -69,7 +69,7 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
         '@config' => '@app/config',
-        '@themes' => '@webroot/themes',
+        '@themes' => '@webroot/protected/humhub/themes',
     ],
     'components' => [
         'moduleManager' => [
@@ -176,7 +176,7 @@ $config = [
                 'logo' => ['file' => '/logo_image/logo.png'],
                 'icon' => [
                     'file' => '/icon/icon.png',
-                    'defaultFile' => '@webroot-static/img/default_icon.png',
+                    'defaultFile' => '@humhub/resources/img/default_icon.png',
                 ],
                 'loginBackground' => ['file' => '/login-bg/background.png'],
                 'mailHeader' => ['file' => '/icon/icon.png'],
@@ -321,7 +321,7 @@ $config = [
             'class' => \humhub\modules\content\widgets\richtext\ProsemirrorRichText::class,
         ],
         'twemoji' => [
-            'path' => '@web-static/img/twemoji/',
+            'path' => null,
             'size' => '72x72',
         ],
         'enablePjax' => true,
