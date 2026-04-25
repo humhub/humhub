@@ -107,14 +107,17 @@ class LdapSyncTest extends HumHubDbTestCase
         $this->ldapAuth->autoRefreshUsers = true;
         $this->ldapAuth->syncUsers();
 
-        // Mark an existing fixture user as an LDAP user with a non-existent LDAP uid
-        $ghostUser = User::findOne(['username' => 'User1']);
+        // Use a freshly synced LDAP user (john.doe) as the ghost candidate.
+        // Override authclient_id to a value that does not exist in LDAP so that
+        // the next sync run cannot match it and must disable the account.
+        $ghostUser = User::findOne(['email' => 'john@example.org']);
         $this->assertNotNull($ghostUser);
 
-        $ghostUser->auth_mode     = 'ldap';
-        $ghostUser->authclient_id = 'ghost.user.not.in.ldap';
-        $ghostUser->status        = User::STATUS_ENABLED;
-        $ghostUser->save(false);
+        User::updateAll(
+            ['authclient_id' => 'ghost.user.not.in.ldap'],
+            ['id' => $ghostUser->id],
+        );
+        $ghostUser->refresh();
 
         // Re-run sync – the ghost user has an ID that doesn't exist in LDAP
         $this->ldapAuth->syncUsers();
