@@ -22,7 +22,7 @@ $hasComments = ($commentCount > 0);
 $commentCountSpan = Html::tag('span', ' (' . $commentCount . ')', [
     'class' => 'comment-count',
     'data-count' => $commentCount,
-    'style' => ($hasComments) ? null : 'display:none'
+    'style' => ($hasComments) ? null : 'display:none',
 ]);
 
 $label = ($isNestedComment) ? Yii::t('CommentModule.base', "Reply") : Yii::t('CommentModule.base', "Comment");
@@ -41,5 +41,6 @@ $label = ($isNestedComment) ? Yii::t('CommentModule.base', "Reply") : Yii::t('Co
     ) ?>
 <?php else : ?>
     <?= Button::asLink($label . $commentCountSpan)
+        ->encodeLabel(false)
         ->action('comment.toggleComment', null, '#comment_' . $id) ?>
 <?php endif; ?>

@@ -113,7 +113,9 @@ use yii\helpers\Url;
 
                 <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email')]) ?>
                 <?php if ($invite->showCaptureInRegisterForm()) : ?>
-                    <?= $form->field($invite, 'captcha')->widget(CaptchaField::class)->label(false) ?>
+                    <?= $form->field($invite, 'captcha')
+                        ->widget(CaptchaField::class, ['showOnFocusElement' => '#register-email'])
+                        ->label(false) ?>
                 <?php endif; ?>
 
                 <div class="modal-body-footer">

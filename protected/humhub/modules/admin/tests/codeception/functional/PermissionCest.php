@@ -9,7 +9,9 @@ use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\admin\permissions\SeeAdminInformation;
+use humhub\modules\user\models\User;
 use tests\codeception\_pages\AdminPage;
+use yii\helpers\Url;
 
 class PermissionCest
 {
@@ -94,6 +96,38 @@ class PermissionCest
 
         $I->amOnRoute('/admin/information');
         $I->see('You are not permitted to access this section.');
+    }
+
+    public function testManageUsersCannotEnableDisabledSystemAdmin(FunctionalTester $I)
+    {
+        $I->wantTo('ensure that non-admin user managers cannot enable disabled system admins');
+
+        $I->loginUserWithoutGroupManagerPermission();
+        $I->setGroupPermission(3, new ManageUsers());
+
+        $admin = User::findOne(['username' => 'Admin']);
+        $admin->status = User::STATUS_DISABLED;
+        $admin->save(false);
+
+        $I->sendAjaxPostRequest(Url::toRoute(['/admin/user/enable', 'id' => $admin->id]));
+        $I->seeResponseCodeIs(403);
+        $I->seeRecord(User::class, ['id' => $admin->id, 'status' => User::STATUS_DISABLED]);
+    }
+
+    public function testManageUsersCanEnableDisabledNonAdminUser(FunctionalTester $I)
+    {
+        $I->wantTo('ensure that non-admin user managers can still enable disabled non-admin users');
+
+        $I->loginUserWithoutGroupManagerPermission();
+        $I->setGroupPermission(3, new ManageUsers());
+
+        $user = User::findOne(['username' => 'User1']);
+        $user->status = User::STATUS_DISABLED;
+        $user->save(false);
+
+        $I->sendAjaxPostRequest(Url::toRoute(['/admin/user/enable', 'id' => $user->id]));
+        $I->seeResponseCodeIs(302);
+        $I->seeRecord(User::class, ['id' => $user->id, 'status' => User::STATUS_ENABLED]);
     }
 
     public function testCanManageGroups(FunctionalTester $I)

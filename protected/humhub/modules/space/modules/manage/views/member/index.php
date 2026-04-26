@@ -38,7 +38,7 @@ use humhub\widgets\TimeAgo;
                 <div class="float-end">
                     <?= MemberHeaderControlsMenu::widget([
                         'space' => $space,
-                        'label' => Icon::get('cog'),
+                        'icon' => 'cog',
                     ]) ?>
                 </div>
             </div>

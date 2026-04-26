@@ -128,20 +128,16 @@ abstract class WallCreateContentForm extends Widget
         ]);
 
         // Handle Notify User Features of ContentFormWidget
-        // ToDo: Check permissions of user guids
-        $userGuids = Yii::$app->request->post('notifyUserInput');
-        if (!empty($userGuids)) {
-            foreach ($userGuids as $guid) {
-                $user = User::findOne(['guid' => trim((string) $guid)]);
-                if ($user) {
-                    $record->content->notifyUsersOfNewContent[] = $user;
-                }
+        $userGuids = array_unique((array) Yii::$app->request->post('notifyUserInput', []));
+        foreach (User::find()->where(['guid' => $userGuids])->all() as $user) {
+            if ($record->content->canView($user)) {
+                $record->content->notifyUsersOfNewContent[] = $user;
             }
         }
 
         if ($record->save()) {
             $topics = Yii::$app->request->post('postTopicInput');
-            if (!empty($topics) && Topic::isAllowedToCreate($contentContainer)) {
+            if (!empty($topics)) {
                 Topic::attach($record->content, $topics);
             }
 

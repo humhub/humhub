@@ -17,7 +17,9 @@ $text = ' <span>' . $membersCount . '</span>';
 $class = 'fa fa-users';
 ?>
 <?php if ($canViewMembers) : ?>
-    <?= Link::withAction($text, 'ui.modal.load', $space->createUrl('/space/membership/members-list'))->cssClass($class) ?>
+    <?= Link::withAction($text, 'ui.modal.load', $space->createUrl('/space/membership/members-list'))
+        ->encodeLabel(false)
+        ->cssClass($class) ?>
 <?php else: ?>
     <?= Html::tag('span', $text, ['class' => $class]) ?>
 <?php endif; ?>

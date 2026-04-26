@@ -318,9 +318,12 @@ class Migration extends \yii\db\Migration
      */
     protected function foreignIndexExists(string $index, string $table): bool
     {
+        // Resolve `{{%table_name}}` to `table_name`
+        $rawTableName = $this->db->getSchema()->getRawTableName($table);
+
         return (bool) $this->db->createCommand('SELECT * FROM information_schema.key_column_usage
             WHERE REFERENCED_TABLE_NAME IS NOT NULL
-              AND TABLE_NAME = ' . $this->db->quoteValue($table) . '
+              AND TABLE_NAME = ' . $this->db->quoteValue($rawTableName) . '
               AND TABLE_SCHEMA = ' . $this->db->quoteValue($this->getDsnAttribute('dbname')) . '
               AND CONSTRAINT_NAME = ' . $this->db->quoteValue($index))
             ->queryOne();
