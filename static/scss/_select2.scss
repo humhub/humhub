@@ -377,6 +377,9 @@
                 color: $input-color;
                 border-radius: 4px;
                 cursor: default;
+                display: flex;
+                align-items: center;
+                box-sizing: border-box;
                 float: left;
                 padding: 0 $input-btn-padding-y;
 
@@ -384,7 +387,7 @@
                 color: var(--hh-accent-contrast);
                 border-radius: 3px;
                 font-size: 12px !important;
-                padding: 0 5px 2px 2px;
+                padding: 2px 5px 2px 2px;
                 float: left;
                 margin: 2px;
                 height: 28px;
@@ -394,22 +397,31 @@
                     margin-right: 5px;
                 }
 
+                img {
+                    display: block;
+                }
+
+                .picker-text {
+                    line-height: 24px;
+                }
+
                 span.no-image {
-                    line-height: 27px;
                     padding-left: 5px;
                 }
 
                 i {
-                    margin: 0px 2px;
-                    line-height: 27px;
+                    display: inline-flex;
+                    align-items: center;
+                    height: 24px;
+                    margin: 0 2px;
+                    line-height: 1;
                 }
 
                 .picker-close {
                     cursor: pointer;
-                    font-size: 16px;
-                    line-height: 27px;
+                    font-size: 14px;
                     margin-left: 3px;
-                    opacity: 0.95;
+                    opacity: 0.85;
                 }
             }
 
