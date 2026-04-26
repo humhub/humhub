@@ -107,7 +107,8 @@ jobs:
               with:
                   anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
                   github_token: ${{ secrets.GITHUB_TOKEN }}
-                  direct_prompt: |
+                  include_fix_links: false
+                  prompt: |
                       Review this pull request targeting the `master` branch (stable release).
                       Read CLAUDE.md first for project-specific conventions.
 
@@ -156,7 +157,8 @@ jobs:
               with:
                   anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
                   github_token: ${{ secrets.GITHUB_TOKEN }}
-                  direct_prompt: |
+                  include_fix_links: false
+                  prompt: |
                       Review this pull request targeting the `${{ steps.pr-info.outputs.base_branch }}` branch.
                       Read CLAUDE.md first for project-specific conventions.
 
