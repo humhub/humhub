@@ -44,12 +44,35 @@ $default = [
     ],
 ];
 
+$ldap = [
+    'components' => [
+        'authClientCollection' => [
+            'clients' => [
+                'ldap' => [
+                    'class' => \humhub\modules\ldap\authclient\LdapAuth::class,
+                    'hostname' => getenv('LDAP_TEST_HOST') ?: 'localhost',
+                    'port' => (int)(getenv('LDAP_TEST_PORT') ?: 389),
+                    'bindUsername' => getenv('LDAP_TEST_BIND_DN') ?: 'cn=admin,dc=example,dc=org',
+                    'bindPassword' => getenv('LDAP_TEST_BIND_PASSWORD') ?: 'secret',
+                    'baseDn' => getenv('LDAP_TEST_BASE_DN') ?: 'ou=users,dc=example,dc=org',
+                    'userFilter' => getenv('LDAP_TEST_USER_FILTER') ?: '(objectClass=inetOrgPerson)',
+                    'usernameAttribute' => getenv('LDAP_TEST_USERNAME_ATTRIBUTE') ?: 'uid',
+                    'emailAttribute' => 'mail',
+                    'idAttribute' => 'uid',
+                ],
+            ],
+        ],
+    ],
+];
+
 $envCfg = dirname(__DIR__) . '/../config/env/env.php';
 $env = file_exists($envCfg) ? require($envCfg) : [];
 
 return yii\helpers\ArrayHelper::merge(
     // Default Test Config
     $default,
+    // LDAP Auth Client
+    $ldap,
     // User Overwrite
     require(dirname(__DIR__) . '/../config/common.php'),
     $env,

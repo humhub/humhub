@@ -457,5 +457,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
     {
         // Make sure we normalized user attributes before put it in session (anonymous functions)
         $this->setNormalizeUserAttributeMap([]);
+        // LDAP\Connection handles cannot be serialized; drop the service so it is re-created on next use
+        $this->ldapService = null;
     }
 }

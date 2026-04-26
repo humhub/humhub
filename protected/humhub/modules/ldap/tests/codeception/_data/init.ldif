@@ -26,3 +26,14 @@ givenName: Jane
 uid: jane.doe
 mail: jane@example.org
 userPassword: Password456
+
+# no.name – user without givenName to trigger the registration form
+# (firstname is a required profile field mapped from givenName; without it
+#  HumHub cannot auto-register the user and shows the registration form instead)
+dn: uid=no.name,ou=users,dc=example,dc=org
+objectClass: inetOrgPerson
+cn: No Name
+sn: Name
+uid: no.name
+mail: noname@example.org
+userPassword: Password789
