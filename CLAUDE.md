@@ -163,7 +163,7 @@ Search scope: `humhub/*` and `humhub-contrib/*` orgs on GitHub. Use `module.json
 
 ## Private Module Repositories
 
-Some module repos are private. Their contents must never be exposed to non-team members. In GitHub Actions workflows that access module repos, always verify the triggering actor has team-level access before processing or displaying private module code.
+Some module repos are private. Their contents must never be exposed to non-team members. Private repos do not appear in `gh search code` results without explicit token access, so impact analysis via GitHub search is safe by default.
 
 ## Module Coding Standards
 

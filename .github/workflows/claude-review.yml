@@ -87,18 +87,6 @@ jobs:
             contains(github.event.comment.body, '@claude review')
         runs-on: ubuntu-latest
         steps:
-            - name: Verify org membership
-              env:
-                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  COMMENT_USER: ${{ github.event.comment.user.login }}
-              run: |
-                  HTTP=$(gh api "orgs/humhub/members/${COMMENT_USER}" \
-                      --silent -i 2>&1 | head -1 | awk '{print $2}')
-                  if [ "$HTTP" != "204" ]; then
-                      echo "::error::${COMMENT_USER} is not a humhub org member."
-                      exit 1
-                  fi
-
             - name: Get PR base branch
               id: pr-info
               env:
