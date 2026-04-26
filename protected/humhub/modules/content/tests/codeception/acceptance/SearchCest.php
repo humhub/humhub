@@ -56,7 +56,7 @@ class SearchCest
 
         $I->amGoingTo('test content search');
         $I->amOnPage('/content/search');
-        $I->waitForText('Find Content based on keywords');
+        $I->waitForText('Search', 10, '.form-search-filter-keyword');
         $I->dontSee('No results found!', '.panel');
 
         $I->fillField('.form-search [name=keyword]', 'Post');

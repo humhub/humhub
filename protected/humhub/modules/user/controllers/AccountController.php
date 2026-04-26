@@ -119,7 +119,7 @@ class AccountController extends BaseAccountController
         /** @var User $user */
         $user = Yii::$app->user->getIdentity();
 
-        $model = new AccountSettings();
+        $model = new AccountSettings(['user' => $user]);
         $model->language = Yii::$app->i18n->getAllowedLanguage($user->language);
         $model->timeZone = $user->time_zone;
         if (empty($model->timeZone)) {
@@ -173,10 +173,14 @@ class AccountController extends BaseAccountController
      */
     public function actionSearchTagsJson()
     {
-        $keyword = Yii::$app->request->get('keyword');
-        $pickerTags = ContainerTagPicker::searchTagsByContainerClass(User::class, $keyword);
+        $keyword = Yii::$app->request->get('keyword', '');
 
-        return $this->asJson($pickerTags);
+        $guid = Yii::$app->request->get('guid');
+        $user = $guid ? User::findOne(['guid' => $guid]) : null;
+
+        return $this->asJson($user
+            ? ContainerTagPicker::searchTagsByContainer($user, $keyword)
+            : ContainerTagPicker::searchTagsByContainerClass(User::class, $keyword));
     }
 
     /**

@@ -1,0 +1,217 @@
+name: Claude Review
+
+on:
+    pull_request:
+        types: [opened, synchronize, reopened]
+        branches:
+            - master
+            - develop
+            - next
+    issue_comment:
+        types: [created]
+
+permissions:
+    contents: read
+    pull-requests: write
+    issues: write
+
+jobs:
+    # Runs on every PR push — detects API changes and offers a full review
+    lightweight-check:
+        name: Detect API Changes
+        if: github.event_name == 'pull_request'
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Check for public API changes
+              id: check
+              env:
+                  BASE_BRANCH: ${{ github.base_ref }}
+              run: |
+                  git fetch origin "${BASE_BRANCH}"
+
+                  MIGRATE=$(git diff "origin/${BASE_BRANCH}...HEAD" --name-only | grep -c "MIGRATE-DEV.md" || true)
+                  API=$(git diff "origin/${BASE_BRANCH}...HEAD" -- '*.php' \
+                      | grep -cE "^\+.*(public (static )?(function|class|interface|abstract class)|const [A-Z_]+ =|EVENT_[A-Z_]+ =)" \
+                      || true)
+
+                  if [ "$MIGRATE" -gt 0 ] || [ "$API" -gt 3 ]; then
+                      echo "has_changes=true" >> $GITHUB_OUTPUT
+                  else
+                      echo "has_changes=false" >> $GITHUB_OUTPUT
+                  fi
+
+            - name: Check for existing offer comment
+              if: steps.check.outputs.has_changes == 'true'
+              id: find-comment
+              uses: peter-evans/find-comment@v3
+              with:
+                  issue-number: ${{ github.event.pull_request.number }}
+                  comment-author: github-actions[bot]
+                  body-includes: "<!-- claude-review-offer -->"
+
+            - name: Post review offer
+              if: steps.check.outputs.has_changes == 'true' && steps.find-comment.outputs.comment-id == ''
+              uses: actions/github-script@v7
+              env:
+                  BASE_BRANCH: ${{ github.base_ref }}
+              with:
+                  script: |
+                      const isMaster = process.env.BASE_BRANCH === 'master';
+                      const policyNote = isMaster
+                          ? '> **Note:** `master` only accepts bug fixes and critical security patches.'
+                          : '';
+
+                      await github.rest.issues.createComment({
+                          owner: context.repo.owner,
+                          repo: context.repo.repo,
+                          issue_number: context.payload.pull_request.number,
+                          body: [
+                              '<!-- claude-review-offer -->',
+                              'Public API changes detected in this PR.',
+                              policyNote,
+                              '',
+                              'Comment `@claude review` for a full code review with module impact analysis.',
+                          ].filter(Boolean).join('\n')
+                      });
+
+    # Runs on "@claude review" comment — full review with impact analysis
+    full-review:
+        name: Full Claude Review
+        if: |
+            github.event_name == 'issue_comment' &&
+            github.event.issue.pull_request != null &&
+            contains(github.event.comment.body, '@claude review')
+        runs-on: ubuntu-latest
+        steps:
+            - name: Verify org membership
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  COMMENT_USER: ${{ github.event.comment.user.login }}
+              run: |
+                  HTTP=$(gh api "orgs/humhub/members/${COMMENT_USER}" \
+                      --silent -i 2>&1 | head -1 | awk '{print $2}')
+                  if [ "$HTTP" != "204" ]; then
+                      echo "::error::${COMMENT_USER} is not a humhub org member."
+                      exit 1
+                  fi
+
+            - name: Get PR base branch
+              id: pr-info
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  PR_NUMBER: ${{ github.event.issue.number }}
+              run: |
+                  BASE=$(gh api "repos/${{ github.repository }}/pulls/${PR_NUMBER}" --jq '.base.ref')
+                  echo "base_branch=${BASE}" >> $GITHUB_OUTPUT
+
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            # --- master: stability-focused, fix-only policy ---
+            - name: Run Claude Review (master)
+              if: steps.pr-info.outputs.base_branch == 'master'
+              uses: anthropics/claude-code-action@v1
+              with:
+                  anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  direct_prompt: |
+                      Review this pull request targeting the `master` branch (stable release).
+                      Read CLAUDE.md first for project-specific conventions.
+
+                      ## Policy
+                      `master` only accepts **bug fixes** and **critical security patches**.
+                      New features, refactoring, and breaking changes must go to `develop`.
+
+                      ## 1. Policy Check
+                      Determine whether this PR is a legitimate fix or security patch.
+                      Flag anything that looks like a feature, refactoring, or non-trivial
+                      change as a **policy violation**.
+
+                      ## 2. Code Review
+                      Review the diff for:
+                      - PHP 8.2+ and Yii2 conventions
+                      - Security issues (SQL injection, XSS, permission checks)
+                      - Correctness and minimal scope of the fix
+                      - Regression risks
+
+                      ## 3. Module Impact
+                      Even bug fixes can break modules. For any changed public class or method:
+                      ```
+                      gh search code "ClassName" --owner humhub --limit 50
+                      gh search code "ClassName" --owner humhub-contrib --limit 50
+                      ```
+                      Only report repos that have module.json in their root.
+
+                      ## Output Format
+
+                      ### Policy Check
+                      (✅ Fix/patch — compliant. Or: list violations with explanation.)
+
+                      ### Code Review
+                      (Errors / Warnings / Suggestions)
+
+                      ### Module Impact
+                      (table: Module | Affected API | Risk)
+                      Or: "No public API changes."
+
+                      ### Next Steps
+
+            # --- develop/next: feature development with API documentation check ---
+            - name: Run Claude Review (develop/next)
+              if: steps.pr-info.outputs.base_branch != 'master'
+              uses: anthropics/claude-code-action@v1
+              with:
+                  anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  direct_prompt: |
+                      Review this pull request targeting the `${{ steps.pr-info.outputs.base_branch }}` branch.
+                      Read CLAUDE.md first for project-specific conventions.
+
+                      ## 1. MIGRATE-DEV.md Compliance (highest priority)
+                      Read MIGRATE-DEV.md carefully.
+
+                      Check whether ALL of the following are documented under the current
+                      unreleased version section:
+                      - Renamed or moved classes
+                      - Removed classes or methods
+                      - Changed method signatures
+                      - New constants or events that modules need to know about
+                      - Deprecated APIs
+
+                      Flag any undocumented breaking or notable API change as an **error**.
+
+                      ## 2. Code Review
+                      Review the diff for:
+                      - PHP 8.2+ and Yii2 conventions
+                      - Security issues (SQL injection, XSS, permission checks)
+                      - Test coverage for new functionality
+                      - HumHub coding conventions from CLAUDE.md
+
+                      ## 3. Module Impact Analysis
+                      For each changed public API item, search across HumHub module repos:
+                      ```
+                      gh search code "ClassName" --owner humhub --limit 50
+                      gh search code "ClassName" --owner humhub-contrib --limit 50
+                      ```
+                      A repo is a HumHub module only if it contains module.json in its root.
+                      Skip non-module repos. Private repos are not visible in search results
+                      and are protected by default.
+
+                      ## Output Format
+
+                      ### MIGRATE-DEV.md Check
+                      (✅ All API changes documented. Or: list missing entries with suggested wording.)
+
+                      ### Code Review
+                      (Errors / Warnings / Suggestions)
+
+                      ### Module Impact
+                      (table: Module | Affected class/method | Recommended fix)
+                      Or: "No public API changes detected."
+
+                      ### Next Steps

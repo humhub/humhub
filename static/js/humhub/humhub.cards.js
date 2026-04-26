@@ -8,12 +8,81 @@ humhub.module('cards', function(module, require, $) {
 
     const initFiltersForm = function () {
         const form = $('form.form-search');
-        form.find('input[type=text]:first').focus();
+        if (!('ontouchstart' in window || navigator.maxTouchPoints > 0)) {
+            form.find('input[type=text]:first').focus();
+        }
         form.on('submit', function () {
             $(this).find('select[data-select2-id] option[data-id]').each(function() {
                 $(this).val($(this).data('id'));
             });
+            if (form.data('action-url') !== undefined) {
+                $('.container-cards .form-search-action-reset').show();
+            }
         });
+    }
+
+    const initMoreFiltersVisibility = function() {
+        const togglerSelector = '.container-cards .form-search-action-toggle-more';
+        const filterSelector = '.container-cards .form-search .d-flex .flex-fill';
+        var togglerIsVisibleCurrent = $(togglerSelector).is(':visible');
+        var togglerIsVisiblePrevious = togglerIsVisibleCurrent;
+
+        if (togglerIsVisibleCurrent) {
+            const resetSelector = '.container-cards .form-search-action-reset';
+            const initState = getMoreFiltersState() && $(resetSelector).length > 0;
+            toggleMoreFilters(initState, false, 'none');
+        }
+
+        $(window).on('resize', function() {
+            togglerIsVisibleCurrent = $(togglerSelector).is(':visible');
+
+            if (!togglerIsVisibleCurrent && $(filterSelector + ':hidden').length) {
+                toggleMoreFilters(true, false);
+            }
+
+            if (togglerIsVisiblePrevious !== togglerIsVisibleCurrent && togglerIsVisibleCurrent) {
+                toggleMoreFilters(getMoreFiltersState());
+            }
+
+            togglerIsVisiblePrevious = $(togglerSelector).is(':visible');
+        });
+    }
+
+    const toggleMoreFilters = function(evt, updateState = true, effect = 'slide') {
+        const toggler = typeof(evt) === 'boolean' ? $('.form-search-action-toggle-more').find('.btn') : $(evt.$trigger);
+        const show = typeof(evt) === 'boolean' ? evt : !toggler.hasClass('active');
+        const moreFilters = toggler.closest('.d-flex').find('.form-search-action').last().nextAll('.flex-fill').stop();
+        if (effect === 'slide') {
+            show ? moreFilters.slideDown(200) : moreFilters.slideUp(200);
+        } else {
+            moreFilters.toggle(show);
+        }
+        toggler.toggleClass('active', show);
+        if (updateState) {
+            updateMoreFiltersState(show);
+        }
+    }
+
+    const getMoreFiltersStates = function () {
+        const states = window.localStorage.getItem('cards-more-filters');
+        return states ? JSON.parse(states) : {};
+    }
+
+    const getMoreFiltersState = function (defaultState = false) {
+        const states = getMoreFiltersStates();
+        return typeof(states[getMoreFiltersPage()]) === 'undefined'
+            ? defaultState
+            : states[getMoreFiltersPage()];
+    }
+
+    const getMoreFiltersPage = function () {
+        return $('.form-search-action-toggle-more').closest('form').attr('action').replace(/^\/*(.+)\/*$/, '$1');
+    }
+
+    const updateMoreFiltersState = function (state) {
+        const states = getMoreFiltersStates();
+        states[getMoreFiltersPage()] = state;
+        window.localStorage.setItem('cards-more-filters', JSON.stringify(states));
     }
 
     const selectTag = function (evt) {
@@ -123,6 +192,7 @@ humhub.module('cards', function(module, require, $) {
         hideLastNotCompletedRow();
         initFiltersForm();
         initScroll();
+        initMoreFiltersVisibility();
     }
 
     module.export({
@@ -130,5 +200,6 @@ humhub.module('cards', function(module, require, $) {
         init,
         applyFilters,
         selectTag,
+        toggleMoreFilters,
     });
 });
