@@ -35,6 +35,8 @@ class AppDynamicAsset extends AssetBundle
      */
     public $depends = [
         JqueryTimeAgoLocaleAsset::class,
+        FontAwesomeAsset::class,
+        OpenSansAsset::class,
     ];
 
 }

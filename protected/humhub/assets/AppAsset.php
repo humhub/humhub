@@ -73,9 +73,7 @@ class AppAsset extends AssetBundle
         BootstrapAsset::class,
         BootstrapPluginAsset::class,
         BluebirdAsset::class,
-        FontAwesomeAsset::class,
         AnimateCssAsset::class, // preload
-        OpenSansAsset::class,
         PjaxAsset::class,
         JqueryTimeAgoAsset::class,
 
