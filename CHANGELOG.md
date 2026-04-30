@@ -16,7 +16,8 @@ HumHub Changelog
 - Enh #8088: Improve people/space filters
 - Enh #8105: Fix adding of new individual user and space topics
 - Fix #8107: Hide option "Update Space memberships" on administrative group edit form
-- Enh #8106: ensure migrations are run after reinstallation of enabled modules
+- Enh #8106: Ensure migrations are run after reinstallation of enabled modules
+- Enh: Allow using filter toggling in modals
 
 1.18.2 (March 22, 2026)
 -----------------------
