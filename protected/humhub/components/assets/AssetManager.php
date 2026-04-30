@@ -5,6 +5,7 @@ namespace humhub\components\assets;
 use humhub\helpers\TrackableArray;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemException;
+use League\Flysystem\StorageAttributes;
 use League\Flysystem\Visibility;
 use Yii;
 use yii\base\Application;
@@ -180,7 +181,14 @@ class AssetManager extends \yii\web\AssetManager
         $this->enableCache = false;
         Yii::$app->cache->delete('assetManagerPublished');
 
-        $this->fs->deleteDirectory('.');
+        // Delete only directories inside the assets directory
+        $contents = $this->fs->listContents('.');
+        foreach ($contents as $attributes) {
+            /* @var StorageAttributes $attributes */
+            if ($attributes->isDir()) {
+                $this->fs->deleteDirectory($attributes->path());
+            }
+        }
     }
 
     /**

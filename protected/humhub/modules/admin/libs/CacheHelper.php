@@ -2,6 +2,7 @@
 
 namespace humhub\modules\admin\libs;
 
+use humhub\helpers\ControllerHelper;
 use humhub\modules\admin\events\FetchReloadableScriptsEvent;
 use humhub\modules\admin\Module;
 use Yii;
@@ -24,11 +25,17 @@ class CacheHelper extends Component
 
     public static function flushCache(): string
     {
-        $output = "Flushing cache ...";
-        Yii::$app->cache->flush();
-
-        $output .= "\nFlushing asset manager ...";
+        $output = "Flushing asset manager ...";
         Yii::$app->assetManager->clear();
+
+        $output .= "\nRebuilding assets ...";
+        ControllerHelper::runConsoleAction('asset', [
+            'protected/humhub/config/assets.php',
+            'protected/humhub/config/assets-prod.php',
+        ]);
+
+        $output .= "\nFlushing cache ...";
+        Yii::$app->cache->flush();
 
         $output .= "\nFlushing theme cache ...";
         Yii::$app->view->theme->activate();

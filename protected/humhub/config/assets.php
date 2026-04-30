@@ -32,7 +32,6 @@ $bundles = ArrayHelper::merge(
     CoreBundleAsset::STATIC_DEPENDS,
 );
 
-$basePath = '@webroot/assets/' . basename(Yii::$app->assetManager->getPublishedPath('@humhub/resources'));
 $baseUrl = Yii::$app->assetManager->getPublishedUrl('@humhub/resources');
 
 return [
@@ -48,7 +47,7 @@ return [
             'class' => AssetBundle::class,
             'defer' => false,
             'defaultDepends' => false,
-            'basePath' => $basePath,
+            'basePath' => '@humhub/resources',
             'baseUrl' => $baseUrl,
             'jsPosition' => View::POS_HEAD,
             'js' => 'js/humhub-app.js',
@@ -64,7 +63,7 @@ return [
             'defer' => true,
             'jsPosition' => View::POS_HEAD,
             'defaultDepends' => false,
-            'basePath' => $basePath,
+            'basePath' => '@humhub/resources',
             'baseUrl' => $baseUrl,
             'js' => 'js/humhub-bundle.js',
             'css' => 'css/humhub-bundle.css',
