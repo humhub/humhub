@@ -18,6 +18,8 @@ HumHub Changelog
 - Fix #8107: Hide option "Update Space memberships" on administrative group edit form
 - Enh #8106: ensure migrations are run after reinstallation of enabled modules
 - Enh #8113: Optimize user space membership lookups
+- Enh #8114: Fix old theme updating migration
+- Enh #8122: Update PHPspreadsheet
 
 1.18.2 (March 22, 2026)
 -----------------------
