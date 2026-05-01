@@ -516,7 +516,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
     public function testConvertOrderedList()
     {
         $expected = "<p>This is a list</p>\r\n";
-        $expected .= "<ol>" . PHP_EOL;
+        $expected .= "<ol start=\"1\">" . PHP_EOL;
         $expected .= "<li>First Element</li>" . PHP_EOL;
         $expected .= "<li>Second Element</li>" . PHP_EOL;
         $expected .= "</ol>";
