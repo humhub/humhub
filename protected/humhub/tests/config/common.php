@@ -14,8 +14,8 @@ return [
         'fs' => [
             'mounts' => [
                 'assets' => [
-                    'path' => '@webroot/assets/tests',
-                    'baseUrl' => '@web/assets/tests',
+                    'path' => '@webroot/assets',
+                    'baseUrl' => '@web/assets',
                 ],
                 'data' => [
                     'path' => '@webroot/uploads/tests',
