@@ -82,6 +82,11 @@ abstract class BaseRichTextConverter extends GithubMarkdown
     /**
      * @inheritdoc
      */
+    public $keepListStartNumber = true;
+
+    /**
+     * @inheritdoc
+     */
     public $html5 = true;
 
     /**

@@ -8,9 +8,7 @@
 
 namespace humhub\widgets\mails;
 
-use humhub\modules\comment\models\Comment;
 use humhub\modules\content\widgets\richtext\converter\RichTextToEmailHtmlConverter;
-use humhub\modules\post\models\Post;
 use Yii;
 use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
 use humhub\components\rendering\ViewPathRenderer;
@@ -73,15 +71,7 @@ class MailContentEntry extends \yii\base\Widget
                 Yii::error($e);
             }
         } elseif ($this->content instanceof ContentOwner) {
-            $contentDescription = $this->content->getContentDescription();
-
-            if (!$this->content instanceof Comment && !$this->content instanceof Post) {
-                // Don't apply the list markdown for other Content Active Records like Calendar, News, WikiPage and etc.
-                // because they usually have here a single line title which is not a RichText content.
-                $contentDescription = preg_replace('/^(\d+)\. /m', '$1\\. ', $contentDescription);
-            }
-
-            $content = RichTextToEmailHtmlConverter::process($contentDescription, [
+            $content = RichTextToEmailHtmlConverter::process($this->content->getContentDescription(), [
                 RichTextToEmailHtmlConverter::OPTION_RECEIVER_USER => $this->receiver,
                 RichTextToHtmlConverter::OPTION_CACHE_KEY => RichTextToHtmlConverter::buildCacheKeyForContent($this->content, 'mail_entry'),
             ]);
