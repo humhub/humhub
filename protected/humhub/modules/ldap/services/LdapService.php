@@ -158,7 +158,6 @@ class LdapService
         $result = $this->connection->query()
             ->select($attributes)
             ->setDn($dn)
-            ->whereRaw('(objectClass=*)')
             ->first();
 
         return $result !== null ? LdapHelper::cleanLdapResponse($result) : null;
