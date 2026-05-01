@@ -404,7 +404,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
                         Yii::warning(
                             'Could not create LDAP user (' . $dn . '). Error: '
                             . VarDumper::dumpAsString($registration->getErrors()),
-                            'ldap'
+                            'ldap',
                         );
                     }
                 } else {
@@ -433,7 +433,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
                         $user->save();
                         Yii::warning(
                             'Disabled user: ' . $user->username . ' (' . $user->id . ') - Not found in LDAP!',
-                            'ldap'
+                            'ldap',
                         );
                     }
                 }
@@ -452,7 +452,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
         // So automatically merge HumHub auto mapping with the given one
         $this->init(); // defaultNormalizeAttributeMap is available after init
         parent::setNormalizeUserAttributeMap(
-            ArrayHelper::merge($this->defaultNormalizeUserAttributeMap(), $normalizeUserAttributeMap)
+            ArrayHelper::merge($this->defaultNormalizeUserAttributeMap(), $normalizeUserAttributeMap),
         );
     }
 
