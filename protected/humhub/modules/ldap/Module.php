@@ -21,7 +21,7 @@ class Module extends \humhub\components\Module
     /**
      * @var int the page size for ldap query, set to 0 to disable pagination
      */
-    public $pageSize = 10000;
+    public $pageSize = 1000;
 
     /**
      * @var array|null the queried LDAP attributes, leave empty to retrieve all

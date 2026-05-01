@@ -1,0 +1,13 @@
+# Codeception Test Suite Configuration – LDAP Unit Tests
+# RUN `codecept build` AFTER ADDING/REMOVING MODULES.
+
+actor: UnitTester
+modules:
+    enabled:
+        - tests\codeception\_support\CodeHelper
+        - Yii2
+    config:
+        Yii2:
+            configFile: 'codeception/config/unit.php'
+            transaction: true
+            cleanup: false
