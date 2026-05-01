@@ -36,7 +36,7 @@
         "lcobucci/jwt": "^5.6",
         "matthewbdaly/zendsearch": "^0.0.3",
         "mistic100/randomcolor": "^1.0",
-        "mobiledetect/mobiledetectlib": "4.8.09",
+        "mobiledetect/mobiledetectlib": "4.10.0",
         "npm-asset/altcha": "^2.2",
         "npm-asset/animate.css": "^4.0",
         "npm-asset/bluebird": "^3.3.5",

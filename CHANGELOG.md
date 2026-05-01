@@ -20,6 +20,7 @@ HumHub Changelog
 - Enh #8113: Optimize user space membership lookups
 - Enh #8114: Fix old theme updating migration
 - Enh #8122: Update PHPspreadsheet
+- Enh #8112: Update Mobile-Detect library to 4.10.0
 
 1.18.2 (March 22, 2026)
 -----------------------
