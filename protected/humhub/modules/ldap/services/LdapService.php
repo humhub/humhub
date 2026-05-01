@@ -52,7 +52,6 @@ class LdapService
         $this->connection->connect();
     }
 
-
     public function attemptAuth(string $username, string $password): ?string
     {
         $userDn = $this->getUserDn($username);
@@ -122,7 +121,6 @@ class LdapService
         return array_merge(['*', 'dn'], $module->queriedAttributes);
     }
 
-
     /**
      * @return LdapAuth[]
      */
@@ -157,12 +155,13 @@ class LdapService
     {
         $attributes ??= $this->getQueriedAttributes();
 
-        return LdapHelper::cleanLdapResponse(
-            $this->connection->query()
-                ->select($attributes)
-                ->setDn($dn)
-                ->first(),
-        );
+        $result = $this->connection->query()
+            ->select($attributes)
+            ->setDn($dn)
+            ->whereRaw('(objectClass=*)')
+            ->first();
+
+        return $result !== null ? LdapHelper::cleanLdapResponse($result) : null;
     }
 
     public function getDnList(string $searchQuery): array

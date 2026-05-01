@@ -161,8 +161,9 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
 
         if (empty($this->idAttribute)) {
             $this->idAttribute = null;
+        } else {
+            $this->idAttribute = strtolower($this->idAttribute);
         }
-        $this->idAttribute = strtolower((string)$this->idAttribute);
 
         if (empty($this->usernameAttribute)) {
             $this->usernameAttribute = 'samaccountname';
@@ -277,8 +278,13 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
      */
     public function auth()
     {
-        $ldapService = $this->getLdapService();
-        $dn = $ldapService->attemptAuth($this->login->username, $this->login->password);
+        try {
+            $ldapService = $this->getLdapService();
+            $dn = $ldapService->attemptAuth($this->login->username, $this->login->password);
+        } catch (\Exception $e) {
+            Yii::error('LDAP authentication error: ' . $e->getMessage(), 'ldap');
+            return false;
+        }
 
         // Login failed
         if ($dn === null) {
