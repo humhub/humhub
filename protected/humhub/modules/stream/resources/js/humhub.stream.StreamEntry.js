@@ -23,6 +23,7 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
     var modal = require('ui.modal');
     var additions = require('ui.additions');
     var streamModule = require('stream');
+    var i18n = require('i18n');
 
     /**
      * Represents a single stream entry within a stream.
@@ -383,11 +384,11 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
                 // Either just remove entry or reload it in case the stream includes archived entries
                 if (typeof that.stream().filter === 'undefined' || that.stream().filter.isActive('entry_archived')) {
                     that.reload().then(function () {
-                        streamModule.log.success('success.archive', true);
+                        streamModule.log.success(i18n.t('ContentModule.base', 'The content has been archived.'), true);
                     });
                 } else {
                     that.remove().then(function () {
-                        streamModule.log.success('success.archive', true);
+                        streamModule.log.success(i18n.t('ContentModule.base', 'The content has been archived.'), true);
                     });
                 }
             } else {
@@ -410,7 +411,7 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
         client.post(evt.url).then(function (response) {
             if (response.success) {
                 that.reload().then(function () {
-                    streamModule.log.success('success.unarchive', true);
+                    streamModule.log.success(i18n.t('ContentModule.base', 'The content has been unarchived.'), true);
                 }).catch(function (err) {
                     streamModule.log.error('error.default', true);
                 });

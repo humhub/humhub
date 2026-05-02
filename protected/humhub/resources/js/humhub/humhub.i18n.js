@@ -62,7 +62,7 @@ humhub.module('i18n', function(module, require, $) {
         }
         var formatter = perLocale.get(template);
         if (!formatter) {
-            formatter = new IntlMessageFormatter(template, locale);
+            formatter = new IntlMessageFormatter(template, locale, undefined, {ignoreTag: true});
             perLocale.set(template, formatter);
         }
         return formatter;

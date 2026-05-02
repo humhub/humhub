@@ -9,9 +9,12 @@ humhub.module('ui.additions', function (module, require, $) {
 
     var event = require('event');
     var object = require('util.object');
+    var i18n = require('i18n');
 
     var _additions = {};
     var _order = [];
+
+    module.requiredI18nCategories = ['base'];
 
     /**
      * Registers an addition for a given jQuery selector. There can be registered
@@ -137,9 +140,9 @@ humhub.module('ui.additions', function (module, require, $) {
 
         require('action').registerHandler('copyToClipboard', function (evt) {
             clipboard.writeText(evt.$target.text()).then(function () {
-                require('ui.status').success(module.text('success.clipboard'));
+                require('ui.status').success(i18n.t('base', 'Text has been copied to clipboard'));
             }).catch(function (err) {
-                require('ui.status').error(module.text('error.clipboard'), true);
+                require('ui.status').error(i18n.t('base', 'Text could not be copied to clipboard'), true);
             });
         });
 

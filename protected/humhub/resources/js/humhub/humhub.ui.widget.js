@@ -14,6 +14,9 @@ humhub.module('ui.widget', function (module, require, $) {
     var action = require('action');
     var event = require('event');
     var loader = require('ui.loader');
+    var i18n = require('i18n');
+
+    module.requiredI18nCategories = ['base'];
 
     // Add selector for component detection so we can use data-ui-widget instead of data-action-component
     Component.addSelector('ui-widget');
@@ -203,14 +206,14 @@ humhub.module('ui.widget', function (module, require, $) {
     };
 
     Widget.prototype.statusError = function (title) {
-        var msg = title || module.text('error.title');
+        var msg = title || i18n.t('base', 'Error:');
         msg += '<br /><br /><ul style="list-style:none;">';
 
         $.each(this.errors, function (i, error) {
             if (error && !object.isArray(error)) {
                 msg += '<li>' + error + '</li>';
             } else if (!error[0]) {
-                msg += '<li>' + module.text('error.unknown') + '</li>';
+                msg += '<li>' + i18n.t('base', 'No error information given.') + '</li>';
             } else {
                 msg += '<li>' + error[0] + '</li>';
             }
@@ -222,14 +225,14 @@ humhub.module('ui.widget', function (module, require, $) {
     };
 
     Widget.prototype.statusInfo = function (infos, title) {
-        var msg = title || module.text('info.title');
+        var msg = title || i18n.t('base', 'Info:');
         msg += '<br /><br /><ul style="list-style:none;">';
 
         $.each(infos, function (i, error) {
             if (error && !object.isArray(error)) {
                 msg += '<li>' + error + '</li>';
             } else if (!error[0]) {
-                msg += '<li>' + module.text('error.unknown') + '</li>';
+                msg += '<li>' + i18n.t('base', 'No error information given.') + '</li>';
             } else {
                 msg += '<li>' + error[0] + '</li>';
             }

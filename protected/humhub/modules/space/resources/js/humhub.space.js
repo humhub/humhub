@@ -9,9 +9,12 @@ humhub.module('space', function (module, require, $) {
     var additions = require('ui.additions');
     var event = require('event');
     var modal = require('ui.modal');
+    var i18n = require('i18n');
 
     // Current space options (guid, image)
     var options;
+
+    module.requiredI18nCategories = ['base'];
 
     var isSpacePage = function () {
         return $('.space-layout-container').length > 0;
@@ -34,7 +37,7 @@ humhub.module('space', function (module, require, $) {
         client.post(evt).then(function (response) {
             if (response.success) {
                 additions.switchButtons(evt.$trigger, evt.$trigger.siblings('.unarchive'));
-                module.log.success('success.archived');
+                module.log.success(i18n.t('base', 'The space has been archived.'));
                 event.trigger('humhub:space:archived', response.space);
             }
         }).catch(function (err) {
@@ -46,7 +49,7 @@ humhub.module('space', function (module, require, $) {
         client.post(evt).then(function (response) {
             if (response.success) {
                 additions.switchButtons(evt.$trigger, evt.$trigger.siblings('.archive'));
-                module.log.success('success.unarchived');
+                module.log.success(i18n.t('base', 'The space has been unarchived.'));
 
                 event.trigger('humhub:space:unarchived', response.space);
             }

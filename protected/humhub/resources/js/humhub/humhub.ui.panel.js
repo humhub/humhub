@@ -7,8 +7,11 @@
 humhub.module('ui.panel', function (module, require, $) {
 
     const Widget = require('ui.widget').Widget;
+    const i18n = require('i18n');
     const PanelMenu = Widget.extend();
     const STATE_COLLAPSED = 'collapsed';
+
+    module.requiredI18nCategories = ['base'];
 
     PanelMenu.prototype.init = function () {
         const that = this;
@@ -89,8 +92,8 @@ humhub.module('ui.panel', function (module, require, $) {
             : module.config.icon.down;
 
         const text = isExpanded
-            ? module.text('collapse')
-            : module.text('expand');
+            ? i18n.t('base', 'Collapse')
+            : i18n.t('base', 'Expand');
 
         this.$collapseLink.html(icon + text).removeClass('disabled').removeAttr('disabled');
     };

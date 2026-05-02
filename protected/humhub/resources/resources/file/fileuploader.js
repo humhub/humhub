@@ -38,6 +38,34 @@ function installUploader(uploaderId) {
     });
 }
 
+function getFileUploaderText(key) {
+    if (!(window.humhub && humhub.require)) {
+        switch (key) {
+            case 'title':
+                return '<strong>Upload</strong> error';
+            case 'close':
+                return 'Close';
+            case 'errorMessage':
+                return 'Could not upload File:';
+            default:
+                return key;
+        }
+    }
+
+    var i18n = humhub.require('i18n');
+
+    switch (key) {
+        case 'title':
+            return i18n.t('FileModule.base', '<strong>Upload</strong> error');
+        case 'close':
+            return i18n.t('FileModule.base', 'Close');
+        case 'errorMessage':
+            return i18n.t('FileModule.base', 'Could not upload File:');
+        default:
+            return key;
+    }
+}
+
 
 function addToUploadList(uploaderId, guid, name, icon) {
     $('#fileUploaderList_' + uploaderId).fadeIn('slow');
@@ -89,12 +117,12 @@ function showFileUploadError(file) {
         '<div class="modal-dialog">' +
         '<div class="modal-content">' +
         '<div class="modal-header">' +
-        '<h5 class="modal-title" id="myModalLabel">' + fileuploader_error_modal_title + '</h5> ' +
+        '<h5 class="modal-title" id="myModalLabel">' + getFileUploaderText('title') + '</h5> ' +
         '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
         '</div>' +
-        '<div class="modal-body text-center">' + fileuploader_error_modal_errormsg + ' ' + htmlEncode(file.name) + '<br>' + htmlEncode(errorMessage) + '</div>' +
+        '<div class="modal-body text-center">' + getFileUploaderText('errorMessage') + ' ' + htmlEncode(file.name) + '<br>' + htmlEncode(errorMessage) + '</div>' +
         '<div class="modal-footer">' +
-        '<button type="button" class="btn btn-primary" data-dismiss="modal">' + fileuploader_error_modal_btn_close + '</button>' +
+        '<button type="button" class="btn btn-primary" data-dismiss="modal">' + getFileUploaderText('close') + '</button>' +
         '</div>' +
         '</div>' +
         '</div>' +
