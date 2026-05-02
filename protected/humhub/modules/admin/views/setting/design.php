@@ -46,9 +46,6 @@ $loginBgUrl = (Yii::$app->img->loginBackground->exists()) ? Yii::$app->img->logi
 $mailHeaderUrl = (Yii::$app->img->mailHeader->exists()) ? Yii::$app->img->mailHeader->getUrl(
     ['maxHeight' => MailHeaderImage::MAX_HEIGHT, 'maxWidth' => MailHeaderImage::MAX_WIDTH]
 ) : '';
-$iconUrl = SiteIcon::getUrl(140);
-$loginBgUrl = LoginBackgroundImageHelper::getUrl();
-$mailHeaderUrl = MailHeaderImage::getUrl();
 $themeVariables = Yii::$app->view->theme->variables;
 ?>
 
