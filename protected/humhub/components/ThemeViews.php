@@ -124,13 +124,13 @@ class ThemeViews extends Component
     protected function legacyTranslateResource($path)
     {
         // Web Resource e.g. image
-        if (str_starts_with((string) $path, '@web/') || str_starts_with((string) $path, '@web-static/')) {
+        if (str_starts_with((string) $path, '@web/')) {
 
-            $themedFile = str_replace(['@web/', '@web-static/'], [$this->theme->getBasePath(), $this->theme->getBasePath() . DIRECTORY_SEPARATOR . '/'], $path);
+            $themedFile = str_replace('@web/', $this->theme->getBasePath(), $path);
 
             // Check if file exists in theme base dir
             if (file_exists($themedFile)) {
-                return str_replace(['@web/', '@web-static/'], [$this->theme->getBaseUrl(), $this->theme->getBaseUrl() . DIRECTORY_SEPARATOR . '/'], $path);
+                return str_replace('@web/', $this->theme->getBaseUrl(), $path);
             }
             return $path;
         }

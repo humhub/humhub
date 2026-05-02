@@ -9,7 +9,7 @@
 use humhub\assets\AppAsset;
 use humhub\assets\CoreBundleAsset;
 use humhub\assets\JuiBootstrapBridgeAsset;
-use humhub\components\assets\WebStaticAssetBundle;
+use humhub\components\assets\AssetBundle;
 use humhub\components\View;
 use yii\bootstrap5\BootstrapAsset;
 use yii\bootstrap5\BootstrapPluginAsset;
@@ -26,11 +26,14 @@ use yii\web\JqueryAsset;
 Yii::setAlias('@webroot', __DIR__ . '/../../../');
 Yii::setAlias('@web', '/');
 
-Yii::setAlias('@webroot-static', __DIR__ . '/../../../static');
-Yii::setAlias('@web-static', '/static');
+$bundles = ArrayHelper::merge(
+    [AppAsset::class, CoreBundleAsset::class],
+    AppAsset::STATIC_DEPENDS,
+    CoreBundleAsset::STATIC_DEPENDS,
+);
 
-$bundels = ArrayHelper::merge(AppAsset::STATIC_DEPENDS, CoreBundleAsset::STATIC_DEPENDS);
-$bundels = ArrayHelper::merge([AppAsset::class, CoreBundleAsset::class], $bundels);
+$basePath = '@webroot/assets/' . basename(Yii::$app->assetManager->getPublishedPath('@humhub/resources'));
+$baseUrl = Yii::$app->assetManager->getPublishedUrl('@humhub/resources');
 
 return [
     // Adjust command/callback for JavaScript files compressing:
@@ -38,15 +41,15 @@ return [
     // Adjust command/callback for CSS files compressing:
     'cssCompressor' => 'grunt cssmin --from={from} --to={to}',
     // The list of asset bundles to compress:
-    'bundles' => $bundels,
+    'bundles' => $bundles,
     // Asset bundle for compression output:
     'targets' => [
         AppAsset::BUNDLE_NAME => [
-            'class' => WebStaticAssetBundle::class,
+            'class' => AssetBundle::class,
             'defer' => false,
             'defaultDepends' => false,
-            'basePath' => '@webroot-static',
-            'baseUrl' => '@web-static',
+            'basePath' => $basePath,
+            'baseUrl' => $baseUrl,
             'jsPosition' => View::POS_HEAD,
             'js' => 'js/humhub-app.js',
             'css' => 'css/humhub-app.css',
@@ -57,12 +60,12 @@ return [
             'depends' => AppAsset::STATIC_DEPENDS,
         ],
         CoreBundleAsset::BUNDLE_NAME => [
-            'class' => WebStaticAssetBundle::class,
+            'class' => AssetBundle::class,
             'defer' => true,
             'jsPosition' => View::POS_HEAD,
             'defaultDepends' => false,
-            'basePath' => '@webroot-static',
-            'baseUrl' => '@web-static',
+            'basePath' => $basePath,
+            'baseUrl' => $baseUrl,
             'js' => 'js/humhub-bundle.js',
             'css' => 'css/humhub-bundle.css',
             'preload' => [
@@ -73,8 +76,8 @@ return [
         ],
     ],
     'assetManager' => [
-        'basePath' => '@webroot-static/assets',
-        'baseUrl' => '@web-static/assets',
+        'basePath' => Yii::$app->assetManager->basePath,
+        'baseUrl' => Yii::$app->assetManager->baseUrl,
         'bundles' => [
             JqueryAsset::class => [
                 'sourcePath' => '@npm/jquery/dist',

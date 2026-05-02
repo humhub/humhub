@@ -8,7 +8,7 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\WebStaticAssetBundle;
+use humhub\components\assets\AssetBundle;
 
 /**
  * jQuery Fix to work with Bootstrap 5
@@ -17,8 +17,13 @@ use humhub\components\assets\WebStaticAssetBundle;
  *
  * TODO: Remove when jQuery is no longer supported
  */
-class JqueryBs5FixAsset extends WebStaticAssetBundle
+class JqueryBs5FixAsset extends AssetBundle
 {
+    /**
+     * @inheritdoc
+     */
+    public $sourcePath = '@humhub/resources';
+
     /**
      * @inheritdoc
      */

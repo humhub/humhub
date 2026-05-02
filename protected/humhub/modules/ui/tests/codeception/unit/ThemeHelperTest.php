@@ -39,7 +39,7 @@ class ThemeHelperTest extends HumHubDbTestCase
     private function createTheme(string $newThemeName): ?Theme
     {
         $sourceThemeDir = ThemeHelper::getThemeByName(Theme::CORE_THEME_NAME)->getBasePath();
-        $newThemeDir = Yii::getAlias('@webroot/themes') . '/' . $newThemeName;
+        $newThemeDir = Yii::getAlias('@themes') . '/' . $newThemeName;
 
         FileHelper::removeDirectory($newThemeDir);
         FileHelper::copyDirectory($sourceThemeDir, $newThemeDir, ['recursive' => true]);
