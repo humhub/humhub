@@ -40,6 +40,8 @@ use yii\base\Theme as BaseTheme;
  */
 class Theme extends BaseTheme
 {
+    public const EVENT_AFTER_THEME_ACTIVATE = 'afterThemeActivate';
+
     /**
      * @since 1.18
      */
@@ -145,6 +147,8 @@ class Theme extends BaseTheme
 
         // Publish resources to assets (the CSS will be automatically generated on layout rendering)
         $this->publishResources(true);
+
+        $this->trigger(static::EVENT_AFTER_THEME_ACTIVATE, new Event());
     }
 
     /**

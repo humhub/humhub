@@ -48,10 +48,14 @@ class CoreJsConfig extends Widget
                     'baseUrl' => Yii::$app->settings->get('baseUrl'),
                     'reloadableScripts' => CacheHelper::getReloadableScriptUrls(),
                     'cspViolationReloadInterval' => Security::CSP_VIOLATION_RELOAD_INTERVAL,
-                    'text' => [
-                        'warn.onBeforeLoad' => Yii::t('base', 'Unsaved changes will be lost. Do you want to proceed?'),
-                        'warn.onBeforeCloseModal' => Yii::t('base', 'Unsaved changes will be lost. Do you want to proceed?'),
-                    ],
+                ],
+                'core' => [
+                    'debug' => YII_DEBUG,
+                    'systemRevision' => Yii::$app->systemRevision->getPublicSignature(),
+                ],
+                'i18n' => [
+                    'language' => Yii::$app->language,
+                    'translationUrl' => Url::to(['/i18n/translations']),
                 ],
                 'file' => [
                     'upload' => [

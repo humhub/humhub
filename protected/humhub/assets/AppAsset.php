@@ -78,6 +78,7 @@ class AppAsset extends AssetBundle
         OpenSansAsset::class,
         PjaxAsset::class,
         JqueryTimeAgoAsset::class,
+        IntlMessageFormatAsset::class,
 
         /**
          * Style only assets
