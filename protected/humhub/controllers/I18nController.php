@@ -41,7 +41,8 @@ class I18nController extends Controller
 
                     $messages[$originalCat] = $messageSource->loadMessages($cat, Yii::$app->language);
                 }
-            } catch (\Exception) {}
+            } catch (\Exception) {
+            }
         }
 
         return $this->asJson([
