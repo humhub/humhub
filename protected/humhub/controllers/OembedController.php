@@ -40,6 +40,8 @@ class OembedController extends Controller
             $oembed = UrlOembed::getOEmbed($url, true);
             if ($oembed) {
                 $result[$url] = $oembed;
+            } elseif (UrlOembed::hasOEmbedSupport($url)) {
+                $result[$url] = null;
             }
         }
 
