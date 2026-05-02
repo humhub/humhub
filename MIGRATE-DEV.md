@@ -88,6 +88,15 @@ Version 1.19 (Unreleased)
   - `getTitle` and `getDescription` are now `static`.
   - Instead of View files you need to implement a `getMessage()` method which returns the Activity text.
   - Use following code to create a Activity `ActivityManager::dispatch(TaskCompletedActivity::class, $this->task, $user)`
+- Refactored `ldap` module: replaced `laminas/laminas-ldap` with `directorytree/ldaprecord`
+  - Removed class `humhub\modules\ldap\components\ZendLdap`
+  - Removed from `humhub\modules\ldap\authclient\LdapAuth`:
+    - Property `$loginFilter`
+    - Methods `getLdap()`, `setLdap()`, `getUserNode()`, `getUserDn()`, `getUserCollection()`, `getAuthClientInstance()`
+  - Added `humhub\modules\ldap\services\LdapService` as the new LDAP connection and query layer
+  - Added `LdapAuth::getLdapService()` returning `LdapService`
+  - `cleanLdapResponse()` moved from `LdapService` to `humhub\modules\ldap\helpers\LdapHelper`
+  - New `LdapAuth::$languageAttribute` property (default: `'preferredLanguage'`) for syncing the user language
 - `MigrateController::$includeModuleMigrations` is now `true` by default
 - SiteIcon: Remove support for manually uploaded `@web/uploads/icon/` icons
 - New `AssetImage` class

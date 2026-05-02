@@ -1,17 +1,11 @@
 <?php
 
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2019 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
-
 namespace humhub\modules\ldap\authclient;
 
 use DateTime;
 use Exception;
-use humhub\libs\StringHelper;
-use humhub\modules\ldap\Module;
+use humhub\modules\ldap\helpers\LdapHelper;
+use humhub\modules\ldap\services\LdapService;
 use humhub\modules\user\authclient\BaseFormAuth;
 use humhub\modules\user\authclient\interfaces\ApprovalBypass;
 use humhub\modules\user\authclient\interfaces\AutoSyncUsers;
@@ -25,24 +19,14 @@ use Yii;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 use yii\helpers\VarDumper;
-use Laminas\Ldap\Exception\LdapException;
-use Laminas\Ldap\Ldap;
-use humhub\modules\ldap\components\ZendLdap;
-use Laminas\Ldap\Node;
 
 /**
  * LDAP Authentication
  *
- * @todo create base ldap authentication, to bypass ApprovalByPass Interface
  * @since 1.1
  */
 class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, ApprovalBypass, PrimaryClient
 {
-    /**
-     * @var Ldap
-     */
-    private $_ldap = null;
-
     /**
      * @var string the auth client id
      */
@@ -126,6 +110,8 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
      */
     public $usernameAttribute = null;
 
+    public $languageAttribute = 'preferredLanguage';
+
     /**
      * @var string the ldap base dn
      */
@@ -135,14 +121,6 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
      * @var string the ldap query to find humhub users
      */
     public $userFilter = null;
-
-    /**
-     * The LDAP search filter used to search for accounts.
-     * This string is a printf()-style expression that must contain one ‘%s’ to accommodate the username.
-     *
-     * @var string the login filter
-     */
-    public $loginFilter = null;
 
     /**
      * Automatically refresh user profiles on cron run
@@ -172,6 +150,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
      */
     public $ignoredDNs = [];
 
+    public ?LdapService $ldapService = null;
 
     /**
      * @inheritdoc
@@ -182,8 +161,9 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
 
         if (empty($this->idAttribute)) {
             $this->idAttribute = null;
+        } else {
+            $this->idAttribute = strtolower($this->idAttribute);
         }
-        $this->idAttribute = strtolower((string) $this->idAttribute);
 
         if (empty($this->usernameAttribute)) {
             $this->usernameAttribute = 'samaccountname';
@@ -202,6 +182,14 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
     public function getId()
     {
         return $this->clientId;
+    }
+
+    public function getLdapService(): LdapService
+    {
+        if ($this->ldapService === null) {
+            $this->ldapService = new LdapService($this);
+        }
+        return $this->ldapService;
     }
 
     /**
@@ -290,15 +278,24 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
      */
     public function auth()
     {
-        $node = $this->getUserNode();
-        if ($node !== null) {
-            $this->setUserAttributes(array_merge(['dn' => $node], $node->getAttributes()));
-            return true;
-        } elseif ($this->login instanceof Login) {
-            $this->countFailedLoginAttempts();
+        try {
+            $ldapService = $this->getLdapService();
+            $dn = $ldapService->attemptAuth($this->login->username, $this->login->password);
+        } catch (\Exception $e) {
+            Yii::error('LDAP authentication error: ' . $e->getMessage(), 'ldap');
+            return false;
         }
 
-        return false;
+        // Login failed
+        if ($dn === null) {
+            if ($this->login instanceof Login) {
+                $this->countFailedLoginAttempts();
+            }
+            return false;
+        }
+
+        $this->setUserAttributes($ldapService->getEntry($dn));
+        return true;
     }
 
     /**
@@ -309,6 +306,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
         $map = [];
         $map['username'] = $this->usernameAttribute;
         $map['email'] = $this->emailAttribute;
+        $map['language'] = $this->languageAttribute;
 
         // Profile Field Mapping
         foreach (ProfileField::find()->andWhere(['!=', 'ldap_attribute', ''])->all() as $profileField) {
@@ -323,22 +321,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
      */
     protected function normalizeUserAttributes($attributes)
     {
-        $normalized = [];
-
-        // Fix LDAP Attributes
-        foreach ($attributes as $name => $value) {
-            if (is_array($value) && !in_array($name, ['memberof', 'ismemberof'])) {
-                if (isset($value[0])) {
-                    $normalized[$name] = $value[0];
-                }
-            } else {
-                $normalized[$name] = $value;
-            }
-        }
-
-        if (isset($normalized['objectguid'])) {
-            $normalized['objectguid'] = StringHelper::binaryToGuid($normalized['objectguid']);
-        }
+        $normalized = LdapHelper::dropMultiValues($attributes, ['memberof', 'ismemberof']);
 
         // Handle date fields (formats are specified in config)
         foreach ($normalized as $name => $value) {
@@ -378,98 +361,6 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
         return $attributes;
     }
 
-    /**
-     * Returns Users LDAP Node
-     *
-     * @return Node the users ldap node
-     * @throws LdapException
-     */
-    protected function getUserNode()
-    {
-        $dn = $this->getUserDn();
-        if ($dn !== '') {
-            return $this->getLdap()->getNode($dn);
-        }
-
-        return null;
-    }
-
-    /**
-     * Returns the users LDAP DN
-     *
-     * @return string the user dn if found
-     */
-    protected function getUserDn()
-    {
-        $userName = $this->login->username;
-
-        // Translate given e-mail to username
-        if (str_contains($userName, '@')) {
-            $user = User::findOne(['email' => $userName]);
-            if ($user !== null) {
-                $userName = $user->username;
-            }
-        }
-
-        try {
-            $this->getLdap()->bind($userName, $this->login->password);
-
-            // Rebind with administrative DN
-            $this->getLdap()->bind();
-
-            $dn = $this->getLdap()->getCanonicalAccountName($userName, Ldap::ACCTNAME_FORM_DN);
-
-            return $dn;
-        } catch (LdapException) {
-            // User not found in LDAP
-        }
-        return '';
-    }
-
-    /**
-     * Returns Zend LDAP
-     *
-     * @return ZendLdap
-     * @throws LdapException
-     */
-    public function getLdap()
-    {
-        if ($this->_ldap === null) {
-            $options = [
-                'host' => $this->hostname,
-                'port' => $this->port,
-                'username' => $this->bindUsername,
-                'password' => $this->bindPassword,
-                'useStartTls' => $this->useStartTls,
-                'useSsl' => $this->useSsl,
-                'bindRequiresDn' => true,
-                'baseDn' => $this->baseDn,
-                'accountFilterFormat' => $this->loginFilter,
-                'networkTimeout' => $this->networkTimeout,
-            ];
-
-            ldap_set_option(
-                null,
-                LDAP_OPT_X_TLS_REQUIRE_CERT,
-                ($this->disableCertificateChecking) ? LDAP_OPT_X_TLS_NEVER : LDAP_OPT_X_TLS_DEMAND,
-            );
-
-            $this->_ldap = new ZendLdap($options);
-            $this->_ldap->bind();
-        }
-
-        return $this->_ldap;
-    }
-
-    /**
-     * Sets an Zend LDAP Instance
-     *
-     * @param Ldap $ldap
-     */
-    public function setLdap(Ldap $ldap)
-    {
-        $this->_ldap = $ldap;
-    }
 
     /**
      * @inheritdoc
@@ -499,17 +390,8 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
         }
 
         try {
-            $authClient = null;
             $ids = [];
-            foreach ($this->getUserCollection() as $ldapEntry) {
-                $dn = strtolower((string) $ldapEntry['dn']);
-                foreach ($this->ignoredDNs as $ignoredDN) {
-                    if (!empty($ignoredDN) && str_starts_with($dn, strtolower($ignoredDN))) {
-                        continue 2;
-                    }
-                }
-
-                $authClient = $this->getAuthClientInstance($ldapEntry);
+            foreach ($this->getLdapService()->getAuthClients() as $dn => $authClient) {
                 $user = (new AuthClientService($authClient))->getUser();
                 if ($user === null) {
                     $registration = (new AuthClientService($authClient))->createRegistration();
@@ -519,8 +401,11 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
                     }
 
                     if (!$registration->register($authClient)) {
-                        Yii::warning('Could not create LDAP user (' . $ldapEntry['dn'] . '). Error: '
-                            . VarDumper::dumpAsString($registration->getErrors()), 'ldap');
+                        Yii::warning(
+                            'Could not create LDAP user (' . $dn . '). Error: '
+                            . VarDumper::dumpAsString($registration->getErrors()),
+                            'ldap',
+                        );
                     }
                 } else {
                     (new AuthClientService($authClient))->updateUser($user);
@@ -546,12 +431,13 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
                         // Disable users that were not found in ldap
                         $user->status = User::STATUS_DISABLED;
                         $user->save();
-                        Yii::warning('Disabled user: ' . $user->username . ' (' . $user->id . ') - Not found in LDAP!', 'ldap');
+                        Yii::warning(
+                            'Disabled user: ' . $user->username . ' (' . $user->id . ') - Not found in LDAP!',
+                            'ldap',
+                        );
                     }
                 }
             }
-        } catch (LdapException $ex) {
-            Yii::error('Could not connect to LDAP instance: ' . $ex->getMessage(), 'ldap');
         } catch (Exception $ex) {
             Yii::error('An error occurred while user sync: ' . $ex->getMessage(), 'ldap');
         }
@@ -565,38 +451,9 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
         // This method is called if an additional attribute mapping is specified in the configuration file
         // So automatically merge HumHub auto mapping with the given one
         $this->init(); // defaultNormalizeAttributeMap is available after init
-        parent::setNormalizeUserAttributeMap(ArrayHelper::merge($this->defaultNormalizeUserAttributeMap(), $normalizeUserAttributeMap));
-    }
-
-    /**
-     * @return array
-     * @throws LdapException
-     */
-    public function getUserCollection()
-    {
-        /** @var Module $module */
-        $module = Yii::$app->getModule('ldap');
-
-        if (empty($module->pageSize)) {
-            return $this->getLdap()->search($this->userFilter, $this->baseDn, Ldap::SEARCH_SCOPE_SUB, $module->queriedAttributes);
-        }
-
-        return $this->getLdap()->multiPageSearch($this->userFilter, $this->baseDn, Ldap::SEARCH_SCOPE_SUB, $module->queriedAttributes, null, null, 0, $module->pageSize);
-    }
-
-    /**
-     * @param $ldapEntry array
-     * @return LdapAuth
-     */
-    public function getAuthClientInstance($ldapEntry)
-    {
-        $authClient = clone $this;
-        $authClient->init();
-        $authClient->setUserAttributes($ldapEntry);
-        // Init
-        $attributes = $authClient->getUserAttributes();
-
-        return $authClient;
+        parent::setNormalizeUserAttributeMap(
+            ArrayHelper::merge($this->defaultNormalizeUserAttributeMap(), $normalizeUserAttributeMap),
+        );
     }
 
     /**
@@ -606,7 +463,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
     {
         // Make sure we normalized user attributes before put it in session (anonymous functions)
         $this->setNormalizeUserAttributeMap([]);
-
-        $this->_ldap = null;
+        // LDAP\Connection handles cannot be serialized; drop the service so it is re-created on next use
+        $this->ldapService = null;
     }
 }

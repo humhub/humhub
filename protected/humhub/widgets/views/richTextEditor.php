@@ -87,8 +87,8 @@ use yii\helpers\Url;
             }
         }).atwho({
             at: ":",
-            insert_tpl: "<img data-emoji-name=';${name};' class='atwho-emoji' with='18' height='18' src='<?php echo Yii::getAlias('@web-static/img/emoji/${name}.svg'); ?>' />",
-            tpl: "<li class='atwho-emoji-entry' data-value=';${name};'><img with='18' height='18' src='<?php echo Yii::getAlias('@web-static/img/emoji/${name}.svg'); ?>'/></li>",
+            insert_tpl: "<img data-emoji-name=';${name};' class='atwho-emoji' with='18' height='18' src='<?= Yii::getAlias(Yii::$app->assetManager->getPublishedUrl('@humhub/resources') . '/img/emoji/${name}.svg') ?>' />",
+            tpl: "<li class='atwho-emoji-entry' data-value=';${name};'><img with='18' height='18' src='<?= Yii::getAlias(Yii::$app->assetManager->getPublishedUrl('@humhub/resources') . '/img/emoji/${name}.svg') ?>'/></li>",
             data: emojis_list,
             highlight_first: true,
             limit: 100

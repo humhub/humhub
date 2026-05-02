@@ -85,7 +85,7 @@ class Theme extends BaseTheme
     public function init()
     {
         if ($this->getBasePath() == '') {
-            $this->setBasePath('@webroot/themes/' . $this->name);
+            $this->setBasePath('@themes/' . $this->name);
         }
 
         $this->variables = new ThemeVariables(['theme' => $this]);

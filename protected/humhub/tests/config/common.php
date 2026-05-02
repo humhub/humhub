@@ -26,7 +26,7 @@ return [
             'theme'
             => [
                 'name' => \humhub\components\Theme::CORE_THEME_NAME,
-                'basePath' => '@webroot/themes/' . \humhub\components\Theme::CORE_THEME_NAME,
+                'basePath' => '@themes/' . \humhub\components\Theme::CORE_THEME_NAME,
             ],
         ],
         'queue' => [

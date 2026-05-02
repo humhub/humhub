@@ -148,7 +148,7 @@ class ThemeHelper
     public static function getAllVariables(Theme $theme): array
     {
         // Get variables from theme files
-        $variables = ScssHelper::getVariables(Yii::getAlias('@webroot-static/scss/variables.scss'));
+        $variables = ScssHelper::getVariables(Yii::getAlias('@humhub/resources/scss/variables.scss'));
         foreach (array_reverse(static::getThemeTree($theme)) as $treeTheme) {
             $variables = ArrayHelper::merge(
                 $variables,
@@ -258,7 +258,7 @@ class ThemeHelper
 
         // Set import paths
         $compiler->setImportPaths(Yii::getAlias('@vendor/twbs/bootstrap/scss'));
-        $compiler->addImportPath(Yii::getAlias('@webroot-static/scss'));
+        $compiler->addImportPath(Yii::getAlias('@humhub/resources/scss'));
         foreach ($treeThemes as $treeTheme) {
             $compiler->addImportPath($treeTheme->getBasePath() . '/scss');
         }
@@ -270,18 +270,18 @@ class ThemeHelper
         foreach ($treeThemes as $treeTheme) {
             $imports[] = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'variables';
         }
-        $imports[] = Yii::getAlias('@webroot-static/scss/variables');
+        $imports[] = Yii::getAlias('@humhub/resources/scss/variables');
         $imports[] = Yii::getAlias('@vendor/twbs/bootstrap/scss/variables');
 
         // Import maps
         $imports[] = Yii::getAlias('@vendor/twbs/bootstrap/scss/maps');
-        $imports[] = Yii::getAlias('@webroot-static/scss/maps');
+        $imports[] = Yii::getAlias('@humhub/resources/scss/maps');
 
         // Import Bootstrap files
         $imports[] = Yii::getAlias('@vendor/twbs/bootstrap/scss/bootstrap');
 
         // Import all other files, in reverse order (parent theme first)
-        $imports[] = Yii::getAlias('@webroot-static/scss/build');
+        $imports[] = Yii::getAlias('@humhub/resources/scss/build');
         foreach (array_reverse($treeThemes) as $treeTheme) {
             $buildFile = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'build';
             if (file_exists($buildFile . '.scss')) {
@@ -295,9 +295,9 @@ class ThemeHelper
         $compiler->setSourceMapOptions([
             'sourceMapURL' => './theme.map',
             'sourceMapFilename' => 'theme.css',
-            'sourceRoot' => $theme->name === Theme::CORE_THEME_NAME ? '../../../static/scss/' : '../',
+            'sourceRoot' => $theme->name === Theme::CORE_THEME_NAME ? '../resources/scss/' : '../',
             'sourceMapBasepath' => $theme->name === Theme::CORE_THEME_NAME ? Yii::getAlias(
-                '@webroot-static/scss',
+                '@humhub/resources/scss',
             ) : $theme->getBasePath(),
         ]);
 

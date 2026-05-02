@@ -76,11 +76,6 @@ class LdapSettings extends Model
     /**
      * @var string
      */
-    public $loginFilter;
-
-    /**
-     * @var string
-     */
     public $userFilter;
 
     /**
@@ -128,8 +123,8 @@ class LdapSettings extends Model
     {
         return [
             [['enabled', 'refreshUsers', 'usernameAttribute', 'emailAttribute', 'username', 'passwordField', 'hostname', 'port', 'idAttribute', 'disableCertificateChecking'], 'string', 'max' => 255],
-            [['baseDn', 'loginFilter', 'userFilter', 'ignoredDNs'], 'string'],
-            [['usernameAttribute', 'username', 'passwordField', 'hostname', 'port', 'baseDn', 'loginFilter', 'userFilter', 'idAttribute'], 'required'],
+            [['baseDn', 'userFilter', 'ignoredDNs'], 'string'],
+            [['usernameAttribute', 'username', 'passwordField', 'hostname', 'port', 'baseDn', 'userFilter', 'idAttribute'], 'required'],
             ['encryption', 'in', 'range' => ['', 'ssl', 'tls']],
         ];
     }
@@ -149,7 +144,6 @@ class LdapSettings extends Model
             'hostname' => Yii::t('LdapModule.base', 'Hostname'),
             'port' => Yii::t('LdapModule.base', 'Port'),
             'baseDn' => Yii::t('LdapModule.base', 'Base DN'),
-            'loginFilter' => Yii::t('LdapModule.base', 'Login Filter'),
             'userFilter' => Yii::t('LdapModule.base', 'User Filter'),
             'usernameAttribute' => Yii::t('LdapModule.base', 'Username Attribute'),
             'emailAttribute' => Yii::t('LdapModule.base', 'E-Mail Address Attribute'),
@@ -167,7 +161,6 @@ class LdapSettings extends Model
             'username' => Yii::t('LdapModule.base', 'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.'),
             'passwordField' => Yii::t('LdapModule.base', 'The default credentials password (used only with username above).'),
             'baseDn' => Yii::t('LdapModule.base', 'The default base DN used for searching for accounts.'),
-            'loginFilter' => Yii::t('LdapModule.base', 'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;'),
             'usernameAttribute' => Yii::t('LdapModule.base', 'LDAP Attribute for Username. Example: &quot;uid&quot; or &quot;sAMAccountName&quot;'),
             'emailAttribute' => Yii::t('LdapModule.base', 'LDAP Attribute for E-Mail Address. Default: &quot;mail&quot;'),
             'idAttribute' => Yii::t('LdapModule.base', 'Not changeable LDAP attribute to unambiguously identify the user in the directory. If empty the user will be determined automatically by e-mail address or username. Examples: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)'),
@@ -202,7 +195,6 @@ class LdapSettings extends Model
         $this->disableCertificateChecking = $settings->get('disableCertificateChecking');
         $this->baseDn = $settings->get('baseDn');
 
-        $this->loginFilter = $settings->get('loginFilter');
         $this->userFilter = $settings->get('userFilter');
 
         $this->usernameAttribute = $settings->get('usernameAttribute');
@@ -234,7 +226,6 @@ class LdapSettings extends Model
             $settings->set('password', $this->passwordField);
         }
         $settings->set('baseDn', $this->baseDn);
-        $settings->set('loginFilter', $this->loginFilter);
         $settings->set('userFilter', $this->userFilter);
         $settings->set('usernameAttribute', $this->usernameAttribute);
         $settings->set('emailAttribute', $this->emailAttribute);
@@ -265,7 +256,6 @@ class LdapSettings extends Model
             'useStartTls' => ($this->encryption === 'tls'),
             'disableCertificateChecking' => $this->disableCertificateChecking,
             'baseDn' => $this->baseDn,
-            'loginFilter' => $this->loginFilter,
             'userFilter' => $this->userFilter,
             'autoRefreshUsers' => (bool)$this->refreshUsers,
             'emailAttribute' => $this->emailAttribute,

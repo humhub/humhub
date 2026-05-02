@@ -66,7 +66,6 @@ use yii\web\View;
     <?= $form->field($model, 'passwordField')->passwordInput() ?>
 
     <?= $form->field($model, 'baseDn')->textInput() ?>
-    <?= $form->field($model, 'loginFilter')->textArea() ?>
     <?= $form->field($model, 'userFilter')->textArea() ?>
 
     <?= $form->field($model, 'usernameAttribute')->textInput() ?>
