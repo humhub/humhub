@@ -19,7 +19,7 @@ use humhub\modules\user\services\UserSourceService;
 use Yii;
 use yii\authclient\ClientInterface;
 use yii\helpers\ArrayHelper;
-use yii\web\UserEvent;
+use humhub\modules\user\events\UserEvent;
 
 /**
  * Description of Registration
