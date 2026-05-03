@@ -24,6 +24,7 @@ use humhub\modules\user\models\forms\AccountSettings;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
+use humhub\modules\user\services\UserSourceService;
 use Throwable;
 use Yii;
 use yii\web\HttpException;
@@ -315,7 +316,7 @@ class AccountController extends BaseAccountController
      */
     public function actionDelete()
     {
-        if (!Yii::$app->user->getAuthClientUserService()->canDeleteAccount()) {
+        if (!UserSourceService::getForUser()->canDeleteAccount()) {
             throw new HttpException(500, 'Account deletion not allowed!');
         }
 
@@ -339,7 +340,7 @@ class AccountController extends BaseAccountController
      */
     public function actionChangeUsername()
     {
-        if (!Yii::$app->user->getAuthClientUserService()->canChangeUsername()) {
+        if (!UserSourceService::getForUser()->canChangeUsername()) {
             throw new HttpException(500, 'Change Username is not allowed');
         }
 
@@ -358,7 +359,7 @@ class AccountController extends BaseAccountController
      */
     public function actionChangeEmail()
     {
-        if (!Yii::$app->user->getAuthClientUserService()->canChangeEmail()) {
+        if (!UserSourceService::getForUser()->canChangeEmail()) {
             throw new HttpException(500, 'Change E-Mail is not allowed');
         }
 
@@ -377,7 +378,7 @@ class AccountController extends BaseAccountController
      */
     public function actionChangeEmailValidate()
     {
-        if (!Yii::$app->user->getAuthClientUserService()->canChangeEmail()) {
+        if (!UserSourceService::getForUser()->canChangeEmail()) {
             throw new HttpException(500, 'Change E-Mail is not allowed');
         }
 
@@ -408,7 +409,7 @@ class AccountController extends BaseAccountController
      */
     public function actionChangePassword()
     {
-        if (!Yii::$app->user->getAuthClientUserService()->canChangePassword()) {
+        if (!UserSourceService::getForUser()->canChangePassword()) {
             throw new HttpException(500, 'Password change is not allowed');
         }
 

@@ -14,6 +14,7 @@ use humhub\components\Response;
 use humhub\helpers\DeviceDetectorHelper;
 use humhub\modules\user\authclient\AuthAction;
 use humhub\modules\user\authclient\BaseFormAuth;
+use humhub\modules\user\authclient\interfaces\SerializableAuthClient;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\models\Invite;
@@ -23,6 +24,7 @@ use humhub\modules\user\Module;
 use humhub\modules\user\services\AuthClientService;
 use humhub\modules\user\services\InviteRegistrationService;
 use humhub\modules\user\services\LinkRegistrationService;
+use humhub\modules\user\services\UserSourceService;
 use Throwable;
 use Yii;
 use yii\authclient\BaseClient;
@@ -155,6 +157,10 @@ class AuthController extends Controller
     {
         // User already logged in - Add new authclient to existing user
         if (!Yii::$app->user->isGuest) {
+            if (!$this->isAuthClientAllowed(Yii::$app->user->identity, $authClient)) {
+                Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'This login method is not allowed for your account.'));
+                return $this->redirect(['/user/account/connected-accounts']);
+            }
             Yii::$app->user->getAuthClientUserService()->add($authClient);
             return $this->redirect(['/user/account/connected-accounts']);
         }
@@ -169,8 +175,11 @@ class AuthController extends Controller
             return $this->redirect(['/user/auth/login']);
         }
 
-
         if ($user !== null) {
+            if (!$this->isAuthClientAllowed($user, $authClient)) {
+                Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'This login method is not allowed for your account.'));
+                return $this->redirect(['/user/auth/login']);
+            }
             return $this->login($user, $authClient);
         }
 
@@ -235,8 +244,7 @@ class AuthController extends Controller
 
     private function redirectToRegistration(BaseClient $authClient)
     {
-        if ($authClient instanceof \humhub\modules\user\authclient\BaseClient) {
-            /** @var \humhub\modules\user\authclient\BaseClient $authClient */
+        if ($authClient instanceof SerializableAuthClient) {
             $authClient->beforeSerialize();
         }
 
@@ -274,6 +282,11 @@ class AuthController extends Controller
         }
 
         return [$success, $redirectUrl];
+    }
+
+    private function isAuthClientAllowed(User $user, BaseClient $authClient): bool
+    {
+        return UserSourceService::getForUser($user)->isAuthClientAllowed($authClient->getId());
     }
 
     /**

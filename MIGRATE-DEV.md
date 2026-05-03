@@ -88,6 +88,44 @@ Version 1.19 (Unreleased)
   - `getTitle` and `getDescription` are now `static`.
   - Instead of View files you need to implement a `getMessage()` method which returns the Activity text.
   - Use following code to create a Activity `ActivityManager::dispatch(TaskCompletedActivity::class, $this->task, $user)`
+- Introduced **UserSource architecture** — separates user provisioning (who owns the user) from authentication (how the user logs in)
+  - New `humhub\modules\user\source\UserSourceInterface` — contract for user provisioning sources
+  - New `humhub\modules\user\source\BaseUserSource` — abstract base with sensible defaults
+  - New `humhub\modules\user\source\LocalUserSource` — handles self-registered / admin-created users
+  - New `humhub\modules\user\source\GenericUserSource` — fully config-driven source for custom integrations
+  - New `humhub\modules\user\source\UserSourceCollection` — application component (`Yii::$app->userSourceCollection`)
+  - New `humhub\modules\user\source\HasUserSource` — interface for AuthClients that own a UserSource (e.g. `LdapAuth`)
+  - New `humhub\modules\user\services\UserSourceService` — per-user capability checks and lifecycle helpers
+    - `UserSourceService::getForUser(?User $user = null)` — factory method; falls back to current identity
+    - `UserSourceService::updateUser(array $attributes)` — updates user via UserSource and fires lifecycle event
+    - `UserSourceService::triggerAfterCreate(User $user)` — fires lifecycle event after creation
+  - New `humhub\modules\ldap\source\LdapUserSource` — extracted from `LdapAuth`; handles LDAP user lifecycle
+  - Database: `user.auth_mode` + `user.authclient_id` replaced by `user.user_source` (string source ID)
+  - Database: LDAP identity now stored in `user_auth` table (`source='ldap'`, `source_id=<idAttribute value>`) — consistent with OAuth
+  - Lifecycle events moved from `User` model to `UserSourceService` constants; fired on the `User` object:
+    - `User::EVENT_AFTER_USER_SOURCE_CREATE` → `UserSourceService::EVENT_AFTER_CREATE` (`'afterUserSourceCreate'`)
+    - `User::EVENT_AFTER_USER_SOURCE_UPDATE` → `UserSourceService::EVENT_AFTER_UPDATE` (`'afterUserSourceUpdate'`)
+    - Listen via `Event::on(UserSourceService::class, UserSourceService::EVENT_AFTER_CREATE, $handler)`
+  - `LdapAuth` now implements `HasUserSource` — use `$ldapAuth->getUserSource()` to access `LdapUserSource`
+  - LDAP: new `LdapAuth::$allowedAuthClientIds` (default `['ldap']`) — restricts which auth clients LDAP users may use; configurable in admin UI
+  - LDAP: login with a disallowed auth client is now blocked in `AuthController` with an error flash
+- Removed `humhub\modules\user\authclient\BaseClient`
+  - Replace `extends BaseClient` with `extends \yii\authclient\BaseClient` (or `BaseFormAuth` for form-based clients)
+  - `BaseClient::EVENT_CREATE_USER` removed — replace listeners with `Event::on(User::class, UserSourceService::EVENT_AFTER_CREATE, $handler)`
+  - `BaseClient::canBypassApproval()` removed — implement `humhub\modules\user\authclient\interfaces\ApprovalBypass` instead
+  - `BaseClient::beforeSerialize()` removed — implement `humhub\modules\user\authclient\interfaces\SerializableAuthClient` instead
+- New `humhub\modules\user\authclient\interfaces\SerializableAuthClient` — opt-in hook for auth clients that need pre-serialization logic
+- `humhub\modules\user\authclient\interfaces\ApprovalBypass` reinstated (no longer deprecated) — implement to bypass approval for users created by a given auth client
+- Removed `humhub\modules\user\jobs\SyncUsers` — was deprecated since 1.16; register a dedicated sync job in your module instead (see `humhub\modules\ldap\jobs\LdapSyncJob` as example)
+  - `humhub\modules\user\authclient\interfaces\AutoSyncUsers` is kept for now but no longer called by core — implement a dedicated queue job instead
+- Removed from `humhub\modules\user\services\AuthClientService`:
+  - `createRegistration()` — use `createUser()` instead
+  - `legacySyncAttributes()` — implement `UserSourceInterface::updateUser()` on your UserSource instead
+- Removed from `humhub\modules\user\services\AuthClientUserService`:
+  - `getPrimaryAuthClient()` — use `UserSourceService::getForUser($user)->getUserSource()` instead
+  - `canChangePassword()`, `canChangeEmail()`, `canChangeUsername()`, `canDeleteAccount()`, `getSyncAttributes()` — use `UserSourceService` directly
+- Removed from `humhub\modules\user\models\User`:
+  - `getUserSourceService()` — use `UserSourceService::getForUser($user)` instead
 - Refactored `ldap` module: replaced `laminas/laminas-ldap` with `directorytree/ldaprecord`
   - Removed class `humhub\modules\ldap\components\ZendLdap`
   - Removed from `humhub\modules\ldap\authclient\LdapAuth`:

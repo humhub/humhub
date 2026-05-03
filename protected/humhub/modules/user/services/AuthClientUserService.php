@@ -8,16 +8,11 @@
 
 namespace humhub\modules\user\services;
 
-use humhub\modules\user\authclient\interfaces\AutoSyncUsers;
-use humhub\modules\user\authclient\interfaces\PrimaryClient;
-use humhub\modules\user\authclient\interfaces\SyncAttributes;
-use humhub\modules\user\authclient\Password;
 use humhub\modules\user\models\Auth;
 use humhub\modules\user\models\User;
+use humhub\modules\user\source\HasUserSource;
 use Yii;
 use yii\authclient\ClientInterface;
-use yii\base\InvalidArgumentException;
-use yii\base\InvalidConfigException;
 
 /**
  * AuthClient handling for users
@@ -37,36 +32,41 @@ class AuthClientUserService
 
     public function add(ClientInterface $authClient): void
     {
+        if (!($authClient instanceof HasUserSource)
+            && UserSourceService::getCollection()->hasUserSource($authClient->getId())) {
+            Yii::warning(sprintf(
+                "add() called with source-owning client '%s' for user %d — this client manages user identity directly and does not use user_auth.",
+                $authClient->getId(),
+                $this->user->id,
+            ), 'user');
+            return;
+        }
+
         $attributes = $authClient->getUserAttributes();
 
-        if ($authClient instanceof PrimaryClient) {
-            $this->user->auth_mode = $authClient->getId();
-            $this->user->save();
-        } elseif (!empty($attributes['id'])) {
-            $auth = Auth::findOne(['source' => $authClient->getId(), 'source_id' => $attributes['id']]);
-
-            /**
-             * Make sure authClient is not double assigned
-             */
-            if ($auth !== null && $auth->user_id != $this->user->id) {
-                $auth->delete();
-                $auth = null;
-            }
-
-            if ($auth === null) {
-                $auth = new Auth([
-                    'user_id' => $this->user->id,
-                    'source' => (string)$authClient->getId(),
-                    'source_id' => (string)$attributes['id'],
-                ]);
-
-                $auth->save();
-            }
-        } else {
+        if (empty($attributes['id'])) {
             Yii::error(
                 'Could not store auth client without given ID attribute. User: ' . $this->user->displayName . ' (' . $this->user->id . ')',
                 'user',
             );
+            return;
+        }
+
+        $auth = Auth::findOne(['source' => $authClient->getId(), 'source_id' => $attributes['id']]);
+
+        if ($auth !== null && $auth->user_id != $this->user->id) {
+            $auth->delete();
+            $auth = null;
+        }
+
+        if ($auth === null) {
+            $auth = new Auth([
+                'user_id' => $this->user->id,
+                'source' => (string)$authClient->getId(),
+                'source_id' => (string)$attributes['id'],
+            ]);
+
+            $auth->save();
         }
     }
 
@@ -78,67 +78,9 @@ class AuthClientUserService
         ]);
     }
 
-
-    public function canChangeUsername(): bool
-    {
-        foreach ($this->getClients() as $authClient) {
-            if ($authClient::class == Password::class) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public function canChangeEmail(): bool
-    {
-        if (in_array('email', $this->getSyncAttributes())) {
-            return false;
-        }
-
-        return true;
-    }
-
-    public function canDeleteAccount(): bool
-    {
-        foreach ($this->getClients() as $authClient) {
-            if ($authClient instanceof AutoSyncUsers) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     /**
-     * Determines if this user is able to change the password.
+     * Returns all auth clients associated with this user.
      *
-     * @return bool
-     */
-    public function canChangePassword(): bool
-    {
-        $primaryAuthClient = $this->getPrimaryClient();
-        return $primaryAuthClient && $primaryAuthClient::class === Password::class;
-    }
-
-    /**
-     * Returns a list of attributes synced and handled by an AuthClient
-     * which is assigned to the user.
-     *
-     * @return string[]
-     */
-    public function getSyncAttributes(): array
-    {
-        $attributes = [];
-        foreach ($this->getClients() as $authClient) {
-            if ($authClient instanceof SyncAttributes) {
-                $attributes = array_merge($attributes, $authClient->getSyncAttributes());
-            }
-        }
-        return $attributes;
-    }
-
-    /**
      * @return ClientInterface[]
      */
     public function getClients(): array
@@ -147,12 +89,12 @@ class AuthClientUserService
             $this->_authClients = [];
 
             foreach (AuthClientService::getCollection()->getClients() as $client) {
-                // Add primary authClient
-                if ($this->user->auth_mode == $client->getId()) {
+                // Add auth client whose ID matches user_source (the "primary" client)
+                if ($this->user->user_source == $client->getId()) {
                     $this->_authClients[] = $client;
                 }
 
-                // Add additional authClient (OAuth 2.0)
+                // Add additional auth clients (OAuth, SAML, etc.) via user_auth table
                 foreach ($this->user->auths as $auth) {
                     if ($auth->source == $client->getId()) {
                         $this->_authClients[] = $client;
@@ -162,17 +104,5 @@ class AuthClientUserService
         }
 
         return $this->_authClients;
-    }
-
-    private function getPrimaryClient(): ?ClientInterface
-    {
-        try {
-            return AuthClientService::getCollection()->getClient($this->user->auth_mode);
-        } catch (InvalidArgumentException) {
-            Yii::error('Could not get primary auth client for user: ' . $this->user->id, 'user');
-        } catch (InvalidConfigException $e) {
-            Yii::error($e, 'user');
-        }
-        return null;
     }
 }

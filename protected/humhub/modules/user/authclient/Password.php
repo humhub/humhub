@@ -64,7 +64,7 @@ class Password extends BaseFormAuth implements interfaces\PrimaryClient
     public function getUser()
     {
         $attributes = $this->getUserAttributes();
-        return User::findOne(['id' => $attributes['id'], 'auth_mode' => $this->getId()]);
+        return User::findOne(['id' => $attributes['id'], 'user_source' => $this->getId()]);
     }
 
 }

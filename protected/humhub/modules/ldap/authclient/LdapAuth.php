@@ -3,34 +3,39 @@
 namespace humhub\modules\ldap\authclient;
 
 use DateTime;
-use Exception;
 use humhub\modules\ldap\helpers\LdapHelper;
 use humhub\modules\ldap\services\LdapService;
+use humhub\modules\ldap\source\LdapUserSource;
 use humhub\modules\user\authclient\BaseFormAuth;
-use humhub\modules\user\authclient\interfaces\ApprovalBypass;
-use humhub\modules\user\authclient\interfaces\AutoSyncUsers;
-use humhub\modules\user\authclient\interfaces\PrimaryClient;
-use humhub\modules\user\authclient\interfaces\SyncAttributes;
+use humhub\modules\user\models\Auth;
 use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
-use humhub\modules\user\services\AuthClientService;
+use humhub\modules\user\authclient\interfaces\ApprovalBypass;
+use humhub\modules\user\authclient\interfaces\SerializableAuthClient;
+use humhub\modules\user\source\HasUserSource;
 use Yii;
-use yii\db\Expression;
 use yii\helpers\ArrayHelper;
-use yii\helpers\VarDumper;
 
 /**
  * LDAP Authentication
  *
  * @since 1.1
  */
-class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, ApprovalBypass, PrimaryClient
+class LdapAuth extends BaseFormAuth implements HasUserSource, ApprovalBypass, SerializableAuthClient
 {
     /**
      * @var string the auth client id
      */
     public $clientId = 'ldap';
+
+    /**
+     * Auth client IDs that LDAP users are allowed to use.
+     * Defaults to only LDAP itself — extend to e.g. ['ldap', 'local'] to allow password login.
+     *
+     * @var string[]
+     */
+    public array $allowedAuthClientIds = ['ldap'];
 
     /**
      * The hostname of LDAP server that these options represent. This option is required.
@@ -79,7 +84,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
 
     /**
      * The DN of the account used to perform account DN lookups.
-     * LDAP servers that require the username to be in DN form when performing the “bind” require this option.
+     * LDAP servers that require the username to be in DN form when performing the "bind" require this option.
      *
      * @var string
      */
@@ -152,6 +157,8 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
 
     public ?LdapService $ldapService = null;
 
+    private ?LdapUserSource $_userSource = null;
+
     /**
      * @inheritdoc
      */
@@ -192,6 +199,14 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
         return $this->ldapService;
     }
 
+    public function getUserSource(): LdapUserSource
+    {
+        if ($this->_userSource === null) {
+            $this->_userSource = new LdapUserSource($this);
+        }
+        return $this->_userSource;
+    }
+
     /**
      * @inheritdoc
      */
@@ -217,60 +232,54 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
     }
 
     /**
-     * Find user based on ldap attributes
+     * Find user based on LDAP attributes.
      *
-     * @inheritdoc
-     * @return User the user
-     * @see PrimaryClient
+     * Primary lookup uses the user_auth table (source + source_id).
+     * Falls back to matching by user_source + email/objectguid/username for
+     * users without an idAttribute or not yet migrated.
      */
-    public function getUser()
+    public function getUser(): ?User
     {
         $attributes = $this->getUserAttributes();
 
-        // Try to load user by ldap id attribute
-        if ($this->idAttribute !== null && isset($attributes['authclient_id'])) {
-            $user = User::findOne(['authclient_id' => $attributes['authclient_id'], 'auth_mode' => $this->getId()]);
-            if ($user !== null) {
-                return $user;
+        // Primary lookup: user_auth table
+        if (isset($attributes['id'])) {
+            $auth = Auth::find()
+                ->where(['source' => $this->getId(), 'source_id' => (string)$attributes['id']])
+                ->one();
+            if ($auth !== null) {
+                return $auth->user;
             }
         }
 
-        return $this->getUserAuto();
+        // Fallback: match by user_source + email/objectguid/username
+        return $this->getUserFallback($attributes);
     }
 
     /**
-     * Try to find the user if authclient_id mapping is not set yet (legency)
-     * or idAttribute is not specified.
-     *
-     * @return User
+     * Fallback user lookup for users without a unique id attribute or legacy installs
+     * where user_auth entries may not yet exist.
      */
-    protected function getUserAuto()
+    private function getUserFallback(array $attributes): ?User
     {
-        $attributes = $this->getUserAttributes();
-
-        // Try to find user user if authclient_id is null based on ldap fields objectguid and e-mail
-        $query = User::find();
-        $query->where(['auth_mode' => $this->getId()]);
-
-        if ($this->idAttribute !== null) {
-            $query->andWhere(['IS', 'authclient_id', new Expression('NULL')]);
-        }
+        $query = User::find()->where(['user_source' => $this->getId()]);
 
         $conditions = ['OR'];
-        if (isset($attributes['email']) && !empty($attributes['email'])) {
+        if (!empty($attributes['email'])) {
             $conditions[] = ['email' => $attributes['email']];
         }
-        if (isset($attributes['objectguid']) && !empty($attributes['objectguid'])) {
+        if (!empty($attributes['objectguid'])) {
             $conditions[] = ['guid' => $attributes['objectguid']];
         }
-        if (isset($attributes['uid']) && !empty($attributes['uid'])) {
+        if (!empty($attributes['uid'])) {
             $conditions[] = ['username' => $attributes['uid']];
         }
-        if ($conditions) {
-            $query->andWhere($conditions);
+
+        if (count($conditions) <= 1) {
+            return null;
         }
 
-        return $query->one();
+        return $query->andWhere($conditions)->one();
     }
 
     /**
@@ -338,10 +347,8 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
         }
 
         if ($this->idAttribute !== null && isset($normalized[$this->idAttribute])) {
-            $normalized['authclient_id'] = $normalized[$this->idAttribute];
+            $normalized['id'] = $normalized[$this->idAttribute];
         }
-
-        $normalized['id'] = 'unused';
 
         return parent::normalizeUserAttributes($normalized);
     }
@@ -353,94 +360,12 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
     {
         $attributes = parent::getUserAttributes();
 
-        // Make sure id attributes sits on id attribute key
-        if (isset($attributes[$this->getIdAttribute()])) {
+        // Make sure id attribute sits on id attribute key
+        if ($this->getIdAttribute() !== null && isset($attributes[$this->getIdAttribute()])) {
             $attributes['id'] = $attributes[$this->getIdAttribute()];
         }
 
         return $attributes;
-    }
-
-
-    /**
-     * @inheritdoc
-     */
-    public function getSyncAttributes()
-    {
-        $attributes = $this->syncUserTableAttributes;
-        $attributes[] = 'authclient_id';
-
-        foreach (ProfileField::find()->andWhere(['!=', 'ldap_attribute', ''])->all() as $profileField) {
-            $attributes[] = $profileField->internal_name;
-        }
-
-        return $attributes;
-    }
-
-    /**
-     * Refresh ldap users
-     *
-     * New users (found in ldap) will be automatically created if all required fiélds are set.
-     * Profile fields which are bind to LDAP will automatically updated.
-     */
-    public function syncUsers()
-    {
-        if ($this->autoRefreshUsers !== true) {
-            return;
-        }
-
-        try {
-            $ids = [];
-            foreach ($this->getLdapService()->getAuthClients() as $dn => $authClient) {
-                $user = (new AuthClientService($authClient))->getUser();
-                if ($user === null) {
-                    $registration = (new AuthClientService($authClient))->createRegistration();
-                    if ($registration === null) {
-                        Yii::warning('Could not automatically create LDAP user  - No ID attribute!', 'ldap');
-                        continue;
-                    }
-
-                    if (!$registration->register($authClient)) {
-                        Yii::warning(
-                            'Could not create LDAP user (' . $dn . '). Error: '
-                            . VarDumper::dumpAsString($registration->getErrors()),
-                            'ldap',
-                        );
-                    }
-                } else {
-                    (new AuthClientService($authClient))->updateUser($user);
-                }
-
-                $attributes = $authClient->getUserAttributes();
-                if (isset($attributes['authclient_id'])) {
-                    $ids[] = $attributes['authclient_id'];
-                }
-            }
-
-            // Disable or Reenable Users based on collected $ids Arrays
-            // This is only possible if a unique id attribute is specified.
-            if ($this->idAttribute !== null) {
-                foreach ((new AuthClientService($this))->getUsersQuery()->each() as $user) {
-                    $foundInLdap = in_array($user->authclient_id, $ids);
-                    if ($foundInLdap && $user->status === User::STATUS_DISABLED) {
-                        // Enable disabled users that have been found in ldap
-                        $user->status = User::STATUS_ENABLED;
-                        $user->save();
-                        Yii::info('Enabled user: ' . $user->username . ' (' . $user->id . ') - Found in LDAP!', 'ldap');
-                    } elseif (!$foundInLdap && $user->status == User::STATUS_ENABLED) {
-                        // Disable users that were not found in ldap
-                        $user->status = User::STATUS_DISABLED;
-                        $user->save();
-                        Yii::warning(
-                            'Disabled user: ' . $user->username . ' (' . $user->id . ') - Not found in LDAP!',
-                            'ldap',
-                        );
-                    }
-                }
-            }
-        } catch (Exception $ex) {
-            Yii::error('An error occurred while user sync: ' . $ex->getMessage(), 'ldap');
-        }
     }
 
     /**
@@ -465,5 +390,6 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
         $this->setNormalizeUserAttributeMap([]);
         // LDAP\Connection handles cannot be serialized; drop the service so it is re-created on next use
         $this->ldapService = null;
+        $this->_userSource = null;
     }
 }

@@ -11,7 +11,9 @@ namespace humhub\modules\ldap;
 use humhub\components\Event;
 use humhub\helpers\ControllerHelper;
 use humhub\modules\admin\widgets\AuthenticationMenu;
+use humhub\modules\ldap\jobs\LdapSyncJob;
 use humhub\modules\ldap\models\LdapSettings;
+use humhub\modules\ldap\source\LdapUserSource;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\user\authclient\Collection;
 use Yii;
@@ -40,6 +42,13 @@ class Events extends BaseObject
         ]));
     }
 
+    public static function onHourlyCron(): void
+    {
+        if (LdapSettings::isEnabled()) {
+            Yii::$app->queue->push(new LdapSyncJob());
+        }
+    }
+
     /**
      * @param $event Event
      */
@@ -54,6 +63,10 @@ class Events extends BaseObject
 
             $configParams = $event->parameters['clients']['ldap'] ?? [];
             $collection->setClient('ldap', array_merge($settings->getLdapAuthDefinition(), $configParams));
+
+            // Register the LdapUserSource in the userSourceCollection
+            $ldapAuth = $collection->getClient('ldap');
+            Yii::$app->userSourceCollection->setUserSource('ldap', new LdapUserSource($ldapAuth));
         }
     }
 }

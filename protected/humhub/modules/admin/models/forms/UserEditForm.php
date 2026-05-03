@@ -6,7 +6,7 @@ use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\User;
-use humhub\modules\user\services\AuthClientUserService;
+use humhub\modules\user\services\UserSourceService;
 use Yii;
 
 /**
@@ -27,8 +27,6 @@ class UserEditForm extends User
      * @var Group[]
      */
     public $currentGroups;
-
-    protected ?AuthClientUserService $authClientUserService = null;
 
     /**
      * @inheritdoc
@@ -166,15 +164,6 @@ class UserEditForm extends User
         return $result;
     }
 
-    public function getAuthClientUserService(): AuthClientUserService
-    {
-        if ($this->authClientUserService === null) {
-            $this->authClientUserService = new AuthClientUserService($this);
-        }
-
-        return $this->authClientUserService;
-    }
-
     public function canEditAdminFields(): bool
     {
         return Yii::$app->user->isAdmin() || !$this->isSystemAdmin();
@@ -182,6 +171,6 @@ class UserEditForm extends User
 
     public function canEditPassword(): bool
     {
-        return $this->canEditAdminFields() && $this->getAuthClientUserService()->canChangePassword();
+        return $this->canEditAdminFields() && UserSourceService::getForUser($this)->canChangePassword();
     }
 }

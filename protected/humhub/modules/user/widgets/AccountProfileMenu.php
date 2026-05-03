@@ -11,6 +11,7 @@ namespace humhub\modules\user\widgets;
 use humhub\helpers\ControllerHelper;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\TabMenu;
+use humhub\modules\user\services\UserSourceService;
 use Yii;
 
 /**
@@ -35,7 +36,7 @@ class AccountProfileMenu extends TabMenu
             'url' => ['/user/account/change-username'],
             'sortOrder' => 200,
             'isActive' => ControllerHelper::isActivePath('user', 'account', 'change-username'),
-            'isVisible' => Yii::$app->user->getAuthClientUserService()->canChangeUsername(),
+            'isVisible' => UserSourceService::getForUser()->canChangeUsername(),
         ]));
 
         $this->addEntry(new MenuLink([
@@ -43,7 +44,7 @@ class AccountProfileMenu extends TabMenu
             'url' => ['/user/account/change-email'],
             'sortOrder' => 200,
             'isActive' => ControllerHelper::isActivePath('user', 'account', ['change-email', 'change-email-validate']),
-            'isVisible' => Yii::$app->user->getAuthClientUserService()->canChangeEmail(),
+            'isVisible' => UserSourceService::getForUser()->canChangeEmail(),
         ]));
 
         $this->addEntry(new MenuLink([
@@ -51,7 +52,7 @@ class AccountProfileMenu extends TabMenu
             'url' => ['/user/account/change-password'],
             'sortOrder' => 400,
             'isActive' => ControllerHelper::isActivePath('user', 'account', 'change-password'),
-            'isVisible' => Yii::$app->user->getAuthClientUserService()->canChangePassword(),
+            'isVisible' => UserSourceService::getForUser()->canChangePassword(),
         ]));
 
         $this->addEntry(new MenuLink([
@@ -59,7 +60,7 @@ class AccountProfileMenu extends TabMenu
             'url' => ['/user/account/delete'],
             'sortOrder' => 500,
             'isActive' => ControllerHelper::isActivePath('user', 'account', 'delete'),
-            'isVisible' => Yii::$app->user->getAuthClientUserService()->canDeleteAccount(),
+            'isVisible' => UserSourceService::getForUser()->canDeleteAccount(),
         ]));
 
         parent::init();

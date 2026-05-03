@@ -98,24 +98,24 @@ class LdapAuthTest extends HumHubDbTestCase
     // ID attribute mapping
     // ---------------------------------------------------------------------------
 
-    public function testIdAttributeIsSetAsAuthclientId(): void
+    public function testIdAttributeIsSetAsId(): void
     {
         $auth = $this->makeLdapAuth(['idAttribute' => 'uid']);
         $auth->setUserAttributes(['uid' => 'john.doe', 'mail' => 'john@example.org']);
 
         $attrs = $auth->getUserAttributes();
 
-        $this->assertSame('john.doe', $attrs['authclient_id']);
+        $this->assertSame('john.doe', $attrs['id']);
     }
 
-    public function testAuthclientIdIsAbsentWhenNoIdAttributeConfigured(): void
+    public function testIdIsAbsentWhenNoIdAttributeConfigured(): void
     {
         $auth = $this->makeLdapAuth(['idAttribute' => null]);
         $auth->setUserAttributes(['uid' => 'john.doe', 'mail' => 'john@example.org']);
 
         $attrs = $auth->getUserAttributes();
 
-        $this->assertArrayNotHasKey('authclient_id', $attrs);
+        $this->assertArrayNotHasKey('id', $attrs);
     }
 
     // ---------------------------------------------------------------------------

@@ -19,7 +19,7 @@ use humhub\modules\user\models\forms\Login;
  *
  * @since 1.1
  */
-class BaseFormAuth extends BaseClient
+class BaseFormAuth extends \yii\authclient\BaseClient
 {
     /**
      * @var Login the login form model
@@ -30,6 +30,13 @@ class BaseFormAuth extends BaseClient
      * @var User User from submitted login form (by username, without password)
      */
     private $loginUser = null;
+
+    /**
+     * @inheritdoc
+     */
+    protected function initUserAttributes()
+    {
+    }
 
     /**
      * Authenticate the user using the login form.
@@ -53,7 +60,7 @@ class BaseFormAuth extends BaseClient
                 ? User::find()
                     ->where(['username' => $this->login->username])
                     ->orWhere(['email' => $this->login->username])
-                    ->andWhere(['auth_mode' => $this->id])
+                    ->andWhere(['user_source' => $this->id])
                     ->one()
                 : null;
         }

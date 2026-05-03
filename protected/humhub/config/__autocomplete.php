@@ -32,6 +32,7 @@ class Yii
  * @property \humhub\components\i18n\Formatter
  * @property \humhub\components\assets\AssetManager $assetManager
  * @property \humhub\modules\user\authclient\Collection $authClientCollection
+ * @property \humhub\modules\user\source\UserSourceCollection $userSourceCollection
  * @property \yii\queue\Queue $queue
  * @property \humhub\components\Request $request
  * @property \humhub\components\UrlManager $urlManager

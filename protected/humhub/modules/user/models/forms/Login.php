@@ -4,7 +4,6 @@ namespace humhub\modules\user\models\forms;
 
 use humhub\helpers\DeviceDetectorHelper;
 use humhub\modules\user\assets\UserAsset;
-use humhub\modules\user\authclient\BaseClient;
 use humhub\modules\user\authclient\BaseFormAuth;
 use Yii;
 use yii\base\Model;
@@ -35,7 +34,7 @@ class Login extends Model
     public $hideRememberMe = false;
 
     /**
-     * @var BaseClient auth client used to authenticate
+     * @var BaseFormAuth auth client used to authenticate
      */
     public $authClient = null;
 

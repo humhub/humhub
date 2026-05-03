@@ -4,6 +4,7 @@ namespace tests\codeception\unit;
 
 use humhub\modules\ldap\authclient\LdapAuth;
 use humhub\modules\ldap\services\LdapService;
+use humhub\modules\user\models\Auth;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
 
@@ -51,7 +52,7 @@ class LdapSyncTest extends HumHubDbTestCase
 
         $beforeCount = $this->countLdapUsers();
 
-        $this->ldapAuth->syncUsers();
+        $this->ldapAuth->getUserSource()->syncUsers();
 
         $afterCount = $this->countLdapUsers();
 
@@ -65,17 +66,17 @@ class LdapSyncTest extends HumHubDbTestCase
     public function testSyncCreatesUserWithCorrectEmail(): void
     {
         $this->ldapAuth->autoRefreshUsers = true;
-        $this->ldapAuth->syncUsers();
+        $this->ldapAuth->getUserSource()->syncUsers();
 
         $john = User::findOne(['email' => 'john@example.org']);
         $this->assertNotNull($john, 'john@example.org should exist in HumHub after sync.');
-        $this->assertSame('ldap', $john->auth_mode);
+        $this->assertSame('ldap', $john->user_source);
     }
 
     public function testSyncCreatesUserWithCorrectUsername(): void
     {
         $this->ldapAuth->autoRefreshUsers = true;
-        $this->ldapAuth->syncUsers();
+        $this->ldapAuth->getUserSource()->syncUsers();
 
         $jane = User::findOne(['email' => 'jane@example.org']);
         $this->assertNotNull($jane, 'jane@example.org should exist in HumHub after sync.');
@@ -83,18 +84,21 @@ class LdapSyncTest extends HumHubDbTestCase
     }
 
     // ---------------------------------------------------------------------------
-    // Sync stores authclient_id
+    // Sync stores source_id in user_auth
     // ---------------------------------------------------------------------------
 
-    public function testSyncSetsAuthclientIdFromIdAttribute(): void
+    public function testSyncSetsSourceIdInUserAuthFromIdAttribute(): void
     {
         $this->ldapAuth->autoRefreshUsers = true;
-        $this->ldapAuth->syncUsers();
+        $this->ldapAuth->getUserSource()->syncUsers();
 
         $john = User::findOne(['email' => 'john@example.org']);
         $this->assertNotNull($john);
-        // idAttribute is 'uid', so authclient_id should equal the LDAP uid
-        $this->assertSame('john.doe', $john->authclient_id);
+
+        // idAttribute is 'uid', so user_auth.source_id should equal the LDAP uid
+        $auth = Auth::findOne(['source' => 'ldap', 'user_id' => $john->id]);
+        $this->assertNotNull($auth, 'A user_auth entry should exist for the synced LDAP user.');
+        $this->assertSame('john.doe', $auth->source_id);
     }
 
     // ---------------------------------------------------------------------------
@@ -105,28 +109,27 @@ class LdapSyncTest extends HumHubDbTestCase
     {
         // Run an initial sync so that any existing LDAP users are properly created
         $this->ldapAuth->autoRefreshUsers = true;
-        $this->ldapAuth->syncUsers();
+        $this->ldapAuth->getUserSource()->syncUsers();
 
         // Use a freshly synced LDAP user (john.doe) as the ghost candidate.
-        // Override authclient_id to a value that does not exist in LDAP so that
-        // the next sync run cannot match it and must disable the account.
+        // Override source_id in user_auth to a value that does not exist in LDAP
+        // so that the next sync run cannot match it and must disable the account.
         $ghostUser = User::findOne(['email' => 'john@example.org']);
         $this->assertNotNull($ghostUser);
 
-        User::updateAll(
-            ['authclient_id' => 'ghost.user.not.in.ldap'],
-            ['id' => $ghostUser->id],
+        Auth::updateAll(
+            ['source_id' => 'ghost.user.not.in.ldap'],
+            ['user_id' => $ghostUser->id, 'source' => 'ldap'],
         );
-        $ghostUser->refresh();
 
-        // Re-run sync – the ghost user has an ID that doesn't exist in LDAP
-        $this->ldapAuth->syncUsers();
+        // Re-run sync – the ghost user has a source_id that doesn't exist in LDAP
+        $this->ldapAuth->getUserSource()->syncUsers();
 
         $ghostUser->refresh();
         $this->assertSame(
             User::STATUS_DISABLED,
             $ghostUser->status,
-            'User with authclient_id not found in LDAP should be disabled after sync.',
+            'User with source_id not found in LDAP should be disabled after sync.',
         );
     }
 
@@ -138,7 +141,7 @@ class LdapSyncTest extends HumHubDbTestCase
     {
         // First sync to create john.doe in HumHub
         $this->ldapAuth->autoRefreshUsers = true;
-        $this->ldapAuth->syncUsers();
+        $this->ldapAuth->getUserSource()->syncUsers();
 
         $john = User::findOne(['email' => 'john@example.org']);
         $this->assertNotNull($john);
@@ -149,7 +152,7 @@ class LdapSyncTest extends HumHubDbTestCase
         $this->assertSame(User::STATUS_DISABLED, $john->status);
 
         // Sync again – john.doe still exists in LDAP, so the user must be re-enabled
-        $this->ldapAuth->syncUsers();
+        $this->ldapAuth->getUserSource()->syncUsers();
 
         $john->refresh();
         $this->assertSame(
@@ -168,7 +171,7 @@ class LdapSyncTest extends HumHubDbTestCase
         $this->ldapAuth->autoRefreshUsers = false;
 
         $beforeCount = $this->countLdapUsers();
-        $this->ldapAuth->syncUsers();
+        $this->ldapAuth->getUserSource()->syncUsers();
         $afterCount = $this->countLdapUsers();
 
         $this->assertSame($beforeCount, $afterCount, 'No users should be synced when autoRefreshUsers is false.');
@@ -180,7 +183,7 @@ class LdapSyncTest extends HumHubDbTestCase
 
     private function countLdapUsers(): int
     {
-        return (int) User::find()->where(['auth_mode' => 'ldap'])->count();
+        return (int) User::find()->where(['user_source' => 'ldap'])->count();
     }
 
     private function createTestLdapAuth(): LdapAuth

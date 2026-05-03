@@ -228,4 +228,5 @@ class User extends \yii\web\User
 
         return $this->authClientUserService;
     }
+
 }

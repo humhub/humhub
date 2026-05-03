@@ -10,6 +10,7 @@ namespace humhub\modules\ldap\models;
 
 use humhub\components\SettingsManager;
 use humhub\modules\ldap\authclient\LdapAuth;
+use humhub\modules\user\authclient\Collection;
 use Yii;
 use yii\base\Model;
 
@@ -99,6 +100,11 @@ class LdapSettings extends Model
     public $idAttribute;
 
     /**
+     * @var string[]
+     */
+    public array $allowedAuthClientIds = ['ldap'];
+
+    /**
      * @var array
      */
     public $encryptionTypes = [
@@ -126,6 +132,7 @@ class LdapSettings extends Model
             [['baseDn', 'userFilter', 'ignoredDNs'], 'string'],
             [['usernameAttribute', 'username', 'passwordField', 'hostname', 'port', 'baseDn', 'userFilter', 'idAttribute'], 'required'],
             ['encryption', 'in', 'range' => ['', 'ssl', 'tls']],
+            ['allowedAuthClientIds', 'each', 'rule' => ['in', 'range' => array_keys($this->getAuthClientOptions())]],
         ];
     }
 
@@ -149,6 +156,7 @@ class LdapSettings extends Model
             'emailAttribute' => Yii::t('LdapModule.base', 'E-Mail Address Attribute'),
             'idAttribute' => Yii::t('LdapModule.base', 'ID Attribute'),
             'ignoredDNs' => Yii::t('LdapModule.base', 'Ignored LDAP entries'),
+            'allowedAuthClientIds' => Yii::t('LdapModule.base', 'Allowed Authentication Methods'),
         ];
     }
 
@@ -203,6 +211,9 @@ class LdapSettings extends Model
 
         $this->ignoredDNs = $settings->get('ignoredDNs');
         $this->refreshUsers = $settings->get('refreshUsers');
+
+        $saved = $settings->get('allowedAuthClientIds');
+        $this->allowedAuthClientIds = $saved !== null ? json_decode($saved, true) : ['ldap'];
     }
 
 
@@ -232,6 +243,9 @@ class LdapSettings extends Model
         $settings->set('ignoredDNs', $this->ignoredDNs);
         $settings->set('idAttribute', $this->idAttribute);
         $settings->set('refreshUsers', $this->refreshUsers);
+        $settings->set('allowedAuthClientIds', json_encode(
+            array_unique(array_merge(['ldap'], $this->allowedAuthClientIds))
+        ));
 
         return true;
     }
@@ -258,11 +272,31 @@ class LdapSettings extends Model
             'baseDn' => $this->baseDn,
             'userFilter' => $this->userFilter,
             'autoRefreshUsers' => (bool)$this->refreshUsers,
+            'allowedAuthClientIds' => $this->allowedAuthClientIds,
             'emailAttribute' => $this->emailAttribute,
             'usernameAttribute' => $this->usernameAttribute,
             'idAttribute' => $this->idAttribute,
             'ignoredDNs' => explode("\n", strtolower($this->ignoredDNs)),
         ];
+    }
+
+    /**
+     * Returns auth client options available for LDAP users (excluding ldap and local/password clients).
+     * Keys are client IDs, values are display titles.
+     *
+     * @return array<string, string>
+     */
+    public function getAuthClientOptions(): array
+    {
+        /** @var Collection $collection */
+        $collection = Yii::$app->authClientCollection;
+        $options = [];
+        foreach ($collection->getClients() as $id => $client) {
+            if ($id !== 'ldap' && $id !== 'local') {
+                $options[$id] = $client->getTitle();
+            }
+        }
+        return $options;
     }
 
     /**

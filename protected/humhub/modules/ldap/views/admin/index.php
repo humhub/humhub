@@ -12,6 +12,7 @@
  * @var $errorMessage string
  * @var $model LdapSettings
  * @var $userCount string
+ * @var $authClientOptions array
  */
 
 use humhub\helpers\Html;
@@ -76,6 +77,12 @@ use yii\web\View;
 
     <?= $form->beginCollapsibleFields(Yii::t('AdminModule.base', 'Advanced settings')); ?>
     <?= $form->field($model, 'ignoredDNs')->textarea(['style' => 'white-space:nowrap;']) ?>
+    <?php if (!empty($authClientOptions)): ?>
+    <?= $form->field($model, 'allowedAuthClientIds')->checkboxList(
+        $authClientOptions,
+        ['hint' => Yii::t('LdapModule.base', 'LDAP is always included. Select additional authentication methods LDAP users may use (e.g. local password login).')]
+    ) ?>
+    <?php endif; ?>
     <?= $form->endCollapsibleFields(); ?>
 
     <hr>

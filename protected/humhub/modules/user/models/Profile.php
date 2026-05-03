@@ -10,7 +10,7 @@ namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
 use humhub\modules\user\Module;
-use humhub\modules\user\services\AuthClientUserService;
+use humhub\modules\user\services\UserSourceService;
 use Yii;
 use yii\base\Exception;
 
@@ -105,7 +105,7 @@ class Profile extends ActiveRecord
         // Get synced attributes if user is set
         $syncAttributes = [];
         if ($this->user !== null) {
-            $syncAttributes = (new AuthClientUserService($this->user))->getSyncAttributes();
+            $syncAttributes = UserSourceService::getForUser($this->user)->getManagedAttributes();
         }
 
         foreach (static::getValidProfileFields() as $profileField) {
@@ -210,7 +210,7 @@ class Profile extends ActiveRecord
 
         $syncAttributes = [];
         if ($this->user !== null) {
-            $syncAttributes = (new AuthClientUserService($this->user))->getSyncAttributes();
+            $syncAttributes = UserSourceService::getForUser($this->user)->getManagedAttributes();
         }
 
         $safeAttributes = $this->safeAttributes();

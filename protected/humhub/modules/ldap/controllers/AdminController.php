@@ -74,6 +74,7 @@ class AdminController extends Controller
             'enabled' => $enabled,
             'userCount' => $userCount,
             'errorMessage' => $errorMessage,
+            'authClientOptions' => $settings->getAuthClientOptions(),
         ]);
     }
 }
