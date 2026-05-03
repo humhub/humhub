@@ -9,13 +9,13 @@
 namespace humhub\modules\user\models\forms;
 
 use humhub\compat\HForm;
-use humhub\modules\user\authclient\BaseClient;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
 use humhub\modules\user\services\AuthClientUserService;
+use humhub\modules\user\services\UserSourceService;
 use Yii;
 use yii\authclient\ClientInterface;
 use yii\helpers\ArrayHelper;
@@ -293,13 +293,10 @@ class Registration extends HForm
 
             if ($authClient !== null) {
                 (new AuthClientUserService($this->models['User']))->add($authClient);
-                $authClient->trigger(
-                    BaseClient::EVENT_CREATE_USER,
-                    new UserEvent(['identity' => $this->models['User']]),
-                );
+                UserSourceService::triggerAfterCreate($this->models['User']);
             }
 
-            $this->trigger(self::EVENT_AFTER_REGISTRATION, new UserEvent(['identity' => $this->models['User']]));
+            $this->trigger(self::EVENT_AFTER_REGISTRATION, new UserEvent(['user' => $this->models['User']]));
 
             return true;
         }
