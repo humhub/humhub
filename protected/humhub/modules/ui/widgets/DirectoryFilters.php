@@ -78,7 +78,10 @@ abstract class DirectoryFilters extends Widget
                 'wrapperClass' => 'form-search-action form-search-action-toggle-more',
                 'info' => Button::light()
                     ->icon('filter')
-                    ->action('cards.toggleMoreFilters')
+                    ->options([
+                        'data-bs-toggle' => 'collapse',
+                        'data-bs-target' => '.card-filter-' . $this->id,
+                    ])
                     ->loader(false),
                 'sortOrder' => ++$minSortOrder,
             ]);
@@ -127,6 +130,10 @@ abstract class DirectoryFilters extends Widget
         $filtersHtml = '';
         foreach ($this->filters as $filter => $data) {
             $data = array_merge(self::getDefaultFilterData(), $data);
+            if ($filtersHtml !== '' && !str_contains($data['wrapperClass'], 'form-search-action')) {
+                // Add styles for filters collapsing by Bootstrap (except of the first filter)
+                $data['wrapperClass'] .= ' collapse show card-filter-' . $this->id;
+            }
             $filterInput = $this->renderFilterInput($filter, $data);
 
             if ($filterInput !== $data['beforeInput'] . $data['afterInput']) {

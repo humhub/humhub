@@ -25,12 +25,22 @@ humhub.module('cards', function(module, require, $) {
         const $toggler = $container.find('.form-search-action-toggle-more');
         if (!$toggler.length) return;
 
+        const $moreFilter = $container.find('.collapse');
+        if ($moreFilter.length > 0) {
+            $moreFilter[0].addEventListener('hidden.bs.collapse', event => {
+                updateMoreFiltersState($container, false);
+            });
+            $moreFilter[0].addEventListener('shown.bs.collapse', event => {
+                updateMoreFiltersState($container, true);
+            });
+        }
+
         const isVisible = $toggler.is(':visible');
         $container.data('toggler-visible', isVisible);
 
         if (isVisible) {
             const initState = getMoreFiltersState($container) && $container.find('.form-search-action-reset').length > 0;
-            _toggleContainerMoreFilters($container, initState, false, 'none');
+            _toggleContainerMoreFilters($container, initState, false);
         }
     }
 
@@ -41,7 +51,7 @@ humhub.module('cards', function(module, require, $) {
         const isVisiblePrevious = $container.data('toggler-visible') || false;
         const isVisibleCurrent = $toggler.is(':visible');
 
-        if (!isVisibleCurrent && $container.find('.form-search .d-flex .flex-fill:hidden').length) {
+        if (!isVisibleCurrent && $container.find('.collapse:hidden').length) {
             _toggleContainerMoreFilters($container, true, false);
         }
 
@@ -52,15 +62,11 @@ humhub.module('cards', function(module, require, $) {
         $container.data('toggler-visible', isVisibleCurrent);
     }
 
-    const _toggleContainerMoreFilters = function($container, show, updateState = true, effect = 'slide') {
+    const _toggleContainerMoreFilters = function($container, show, updateState = true) {
         const $toggler = $container.find('.form-search-action-toggle-more .btn');
-        const $moreFilters = $toggler.closest('.d-flex').find('.form-search-action').last().nextAll('.flex-fill').stop();
-        if (effect === 'slide') {
-            show ? $moreFilters.slideDown(200) : $moreFilters.slideUp(200);
-        } else {
-            $moreFilters.toggle(show);
-        }
-        $toggler.toggleClass('active', show);
+        const $moreFilters = $container.find($toggler.data('bs-target'));
+        $toggler.toggleClass('collapsed', !show);
+        $moreFilters.toggleClass('show', show);
         if (updateState) {
             updateMoreFiltersState($container, show);
         }
@@ -82,23 +88,6 @@ humhub.module('cards', function(module, require, $) {
                 _initContainerMoreFilters($(this));
             });
         });
-    }
-
-    const toggleMoreFilters = function(evt, updateState = true, effect = 'slide') {
-        const $toggler = $(evt.$trigger);
-        const show = !$toggler.hasClass('active');
-        const $container = $toggler.closest('.container-cards');
-        if ($container.length) {
-            _toggleContainerMoreFilters($container, show, updateState, effect);
-        } else {
-            const $moreFilters = $toggler.closest('.d-flex').find('.form-search-action').last().nextAll('.flex-fill').stop();
-            if (effect === 'slide') {
-                show ? $moreFilters.slideDown(200) : $moreFilters.slideUp(200);
-            } else {
-                $moreFilters.toggle(show);
-            }
-            $toggler.toggleClass('active', show);
-        }
     }
 
     const getMoreFiltersStates = function () {
@@ -240,6 +229,5 @@ humhub.module('cards', function(module, require, $) {
         init,
         applyFilters,
         selectTag,
-        toggleMoreFilters,
     });
 });
