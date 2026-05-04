@@ -104,7 +104,7 @@ class UserSearch extends User
         if (!empty($this->freeText)) {
             $query->andWhere([
                 'OR',
-                ['like', 'user.id', $this->freeText],
+                ['=', 'user.id', $this->freeText],
                 ['like', 'user.username', $this->freeText],
                 ['like', 'user.email', $this->freeText],
                 ['like', 'profile.firstname', $this->freeText],
