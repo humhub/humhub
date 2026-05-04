@@ -31,6 +31,11 @@ abstract class BaseContentActivity extends BaseActivity
 
     protected ?ContentProvider $contentAddon = null;
 
+    /**
+     * @var int Max length of the activity content
+     */
+    public int $maxContentLength = 300;
+
     public function __construct(Activity $record, $config = [])
     {
         parent::__construct($record, $config);
@@ -67,15 +72,15 @@ abstract class BaseContentActivity extends BaseActivity
     protected function getMessageParamsText(): array
     {
         return array_merge(parent::getMessageParamsText(), [
-            'content' => ContentHelper::getContentInfo($this->content),
-            'contentTitle' => ContentHelper::getContentInfo($this->content, false),
+            'content' => ContentHelper::getContentInfo($this->content, true, $this->maxContentLength),
+            'contentTitle' => ContentHelper::getContentInfo($this->content, false, $this->maxContentLength),
         ]);
     }
 
     protected function getMessageParamsHtmlMail(): array
     {
         return array_merge(parent::getMessageParamsHtmlMail(), [
-            'content' => Html::strong(ContentHelper::getContentInfo($this->content)),
+            'content' => Html::strong(ContentHelper::getContentInfo($this->content, true, $this->maxContentLength)),
         ]);
     }
 }

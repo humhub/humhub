@@ -15,6 +15,11 @@ class LikeActivity extends BaseContentActivity implements ConfigurableActivityIn
 {
     private Like $like;
 
+    /**
+     * @inerhitdoc
+     */
+    public int $maxContentLength = 100;
+
     public function __construct(Activity $record, $config = [])
     {
         parent::__construct($record, $config);
@@ -54,7 +59,7 @@ class LikeActivity extends BaseContentActivity implements ConfigurableActivityIn
         return array_merge(
             parent::getMessageParamsText(),
             [
-                'content' => ContentHelper::getContentInfo($this->like->getContentOwnerObject()),
+                'content' => ContentHelper::getContentInfo($this->like->getContentOwnerObject(), true, $this->maxContentLength),
             ],
         );
     }

@@ -15,6 +15,11 @@ final class NewCommentActivity extends BaseContentActivity implements Configurab
 {
     private Comment $comment;
 
+    /**
+     * @inerhitdoc
+     */
+    public int $maxContentLength = 100;
+
     public function __construct(Activity $record, $config = [])
     {
         parent::__construct($record, $config);
@@ -50,7 +55,9 @@ final class NewCommentActivity extends BaseContentActivity implements Configurab
         return array_merge(
             parent::getMessageParamsText(),
             [
-                'comment' => "\n" . '"' . RichTextToPlainTextConverter::process($this->comment->message) . '"',
+                'comment' => "\n" . '"' . RichTextToPlainTextConverter::process($this->comment->message, [
+                    RichTextToPlainTextConverter::OPTION_MAX_LENGTH => $this->maxContentLength,
+                ]) . '"',
             ],
         );
     }
@@ -60,7 +67,7 @@ final class NewCommentActivity extends BaseContentActivity implements Configurab
         return array_merge(
             parent::getMessageParamsHtml(),
             [
-                'comment' => '"' . RichText::preview($this->comment->message, 100) . '"',
+                'comment' => '"' . RichText::preview($this->comment->message, $this->maxContentLength) . '"',
             ],
         );
     }
