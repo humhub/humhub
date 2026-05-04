@@ -73,12 +73,16 @@ humhub.module('cards', function(module, require, $) {
     }
 
     const initMoreFiltersVisibility = function() {
-        $('.container-cards').each(function() {
+        $('.container-cards').filter(function() {
+            return !$(this).closest('.modal').length;
+        }).each(function() {
             _initContainerMoreFilters($(this));
         });
 
         $(window).on('resize', function() {
-            $('.container-cards').each(function() {
+            $('.container-cards').filter(function() {
+                return !$(this).closest('.modal').length;
+            }).each(function() {
                 _handleContainerMoreFiltersResize($(this));
             });
         });
