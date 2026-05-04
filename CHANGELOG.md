@@ -19,6 +19,12 @@ HumHub Changelog
 - Enh #8106: Ensure migrations are run after reinstallation of enabled modules
 - Enh #8114: Fix old theme updating migration
 - Enh #8120: Allow using filter toggling in modals
+- Enh #8106: ensure migrations are run after reinstallation of enabled modules
+- Enh #8113: Optimize user space membership lookups
+- Enh #8114: Fix old theme updating migration
+- Enh #8122: Update PHPspreadsheet
+- Enh #8112: Update Mobile-Detect library to 4.10.0
+- Fix #8125: Show oEmbed warning only for supported embed URLs
 
 1.18.2 (March 22, 2026)
 -----------------------

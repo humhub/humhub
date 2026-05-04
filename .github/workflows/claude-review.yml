@@ -24,14 +24,14 @@ jobs:
         steps:
             - uses: actions/checkout@v4
               with:
-                  fetch-depth: 0
+                  fetch-depth: 20
 
             - name: Check for public API changes
               id: check
               env:
                   BASE_BRANCH: ${{ github.base_ref }}
               run: |
-                  git fetch origin "${BASE_BRANCH}"
+                  git fetch --depth=20 origin "${BASE_BRANCH}"
 
                   MIGRATE=$(git diff "origin/${BASE_BRANCH}...HEAD" --name-only | grep -c "MIGRATE-DEV.md" || true)
                   API=$(git diff "origin/${BASE_BRANCH}...HEAD" -- '*.php' \
@@ -86,6 +86,9 @@ jobs:
             github.event.issue.pull_request != null &&
             contains(github.event.comment.body, '@claude review')
         runs-on: ubuntu-latest
+        concurrency:
+            group: claude-full-review-${{ github.event.issue.number }}
+            cancel-in-progress: true
         steps:
             - name: Get PR base branch
               id: pr-info
