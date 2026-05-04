@@ -106,6 +106,12 @@
             order: 1;
             &.form-search-action-toggle-more {
                 display: none;
+                .btn:not(.collapsed) {
+                    color: var(--bs-btn-active-color);
+                    background-color: var(--bs-btn-active-bg);
+                    border-color: var(--bs-btn-active-border-color);
+                    box-shadow: var(--bs-btn-active-shadow);
+                }
             }
         }
 

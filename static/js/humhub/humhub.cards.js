@@ -21,46 +21,77 @@ humhub.module('cards', function(module, require, $) {
         });
     }
 
-    const initMoreFiltersVisibility = function() {
-        const togglerSelector = '.container-cards .form-search-action-toggle-more';
-        const filterSelector = '.container-cards .form-search .d-flex .flex-fill';
-        var togglerIsVisibleCurrent = $(togglerSelector).is(':visible');
-        var togglerIsVisiblePrevious = togglerIsVisibleCurrent;
+    const _initContainerMoreFilters = function($container) {
+        const $toggler = $container.find('.form-search-action-toggle-more');
+        if (!$toggler.length) return;
 
-        if (togglerIsVisibleCurrent) {
-            const resetSelector = '.container-cards .form-search-action-reset';
-            const initState = getMoreFiltersState() && $(resetSelector).length > 0;
-            toggleMoreFilters(initState, false, 'none');
+        const $moreFilter = $container.find('.collapse');
+        if ($moreFilter.length > 0) {
+            $moreFilter[0].addEventListener('hidden.bs.collapse', event => {
+                updateMoreFiltersState($container, false);
+            });
+            $moreFilter[0].addEventListener('shown.bs.collapse', event => {
+                updateMoreFiltersState($container, true);
+            });
         }
 
-        $(window).on('resize', function() {
-            togglerIsVisibleCurrent = $(togglerSelector).is(':visible');
+        const isVisible = $toggler.is(':visible');
+        $container.data('toggler-visible', isVisible);
 
-            if (!togglerIsVisibleCurrent && $(filterSelector + ':hidden').length) {
-                toggleMoreFilters(true, false);
-            }
-
-            if (togglerIsVisiblePrevious !== togglerIsVisibleCurrent && togglerIsVisibleCurrent) {
-                toggleMoreFilters(getMoreFiltersState());
-            }
-
-            togglerIsVisiblePrevious = $(togglerSelector).is(':visible');
-        });
+        if (isVisible) {
+            const initState = getMoreFiltersState($container) && $container.find('.form-search-action-reset').length > 0;
+            _toggleContainerMoreFilters($container, initState, false);
+        }
     }
 
-    const toggleMoreFilters = function(evt, updateState = true, effect = 'slide') {
-        const toggler = typeof(evt) === 'boolean' ? $('.form-search-action-toggle-more').find('.btn') : $(evt.$trigger);
-        const show = typeof(evt) === 'boolean' ? evt : !toggler.hasClass('active');
-        const moreFilters = toggler.closest('.d-flex').find('.form-search-action').last().nextAll('.flex-fill').stop();
-        if (effect === 'slide') {
-            show ? moreFilters.slideDown(200) : moreFilters.slideUp(200);
-        } else {
-            moreFilters.toggle(show);
+    const _handleContainerMoreFiltersResize = function($container) {
+        const $toggler = $container.find('.form-search-action-toggle-more');
+        if (!$toggler.length) return;
+
+        const isVisiblePrevious = $container.data('toggler-visible') || false;
+        const isVisibleCurrent = $toggler.is(':visible');
+
+        if (!isVisibleCurrent && $container.find('.collapse:hidden').length) {
+            _toggleContainerMoreFilters($container, true, false);
         }
-        toggler.toggleClass('active', show);
+
+        if (isVisiblePrevious !== isVisibleCurrent && isVisibleCurrent) {
+            _toggleContainerMoreFilters($container, getMoreFiltersState($container));
+        }
+
+        $container.data('toggler-visible', isVisibleCurrent);
+    }
+
+    const _toggleContainerMoreFilters = function($container, show, updateState = true) {
+        const $toggler = $container.find('.form-search-action-toggle-more .btn');
+        const $moreFilters = $container.find($toggler.data('bs-target'));
+        $toggler.toggleClass('collapsed', !show);
+        $moreFilters.toggleClass('show', show);
         if (updateState) {
-            updateMoreFiltersState(show);
+            updateMoreFiltersState($container, show);
         }
+    }
+
+    const initMoreFiltersVisibility = function() {
+        $('.container-cards').filter(function() {
+            return !$(this).closest('.modal').length;
+        }).each(function() {
+            _initContainerMoreFilters($(this));
+        });
+
+        $(window).on('resize', function() {
+            $('.container-cards').filter(function() {
+                return !$(this).closest('.modal').length;
+            }).each(function() {
+                _handleContainerMoreFiltersResize($(this));
+            });
+        });
+
+        $(document).on('shown.bs.modal', '.modal.show', function() {
+            $(this).find('.container-cards').each(function() {
+                _initContainerMoreFilters($(this));
+            });
+        });
     }
 
     const getMoreFiltersStates = function () {
@@ -68,20 +99,22 @@ humhub.module('cards', function(module, require, $) {
         return states ? JSON.parse(states) : {};
     }
 
-    const getMoreFiltersState = function (defaultState = false) {
+    const getMoreFiltersState = function ($container, defaultState = false) {
         const states = getMoreFiltersStates();
-        return typeof(states[getMoreFiltersPage()]) === 'undefined'
-            ? defaultState
-            : states[getMoreFiltersPage()];
+        const page = getMoreFiltersPage($container);
+        return typeof(states[page]) === 'undefined' ? defaultState : states[page];
     }
 
-    const getMoreFiltersPage = function () {
-        return $('.form-search-action-toggle-more').closest('form').attr('action').replace(/^\/*(.+)\/*$/, '$1');
+    const getMoreFiltersPage = function ($container) {
+        const $form = $container
+            ? $container.find('.form-search-action-toggle-more').closest('form')
+            : $('.form-search-action-toggle-more').closest('form');
+        return $form.attr('action').replace(/^\/*(.+)\/*$/, '$1');
     }
 
-    const updateMoreFiltersState = function (state) {
+    const updateMoreFiltersState = function ($container, state) {
         const states = getMoreFiltersStates();
-        states[getMoreFiltersPage()] = state;
+        states[getMoreFiltersPage($container)] = state;
         window.localStorage.setItem('cards-more-filters', JSON.stringify(states));
     }
 
@@ -200,6 +233,5 @@ humhub.module('cards', function(module, require, $) {
         init,
         applyFilters,
         selectTag,
-        toggleMoreFilters,
     });
 });
