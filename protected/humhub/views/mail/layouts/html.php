@@ -129,7 +129,6 @@ $colorMain = MailStyleHelper::getTextColorMain();
                 }
 
                 .content table {
-                    border: 1px solid var(--hh-background3);
                     margin-bottom: 1.2em !important;
                     width: 100%;
                     border-collapse: collapse;
