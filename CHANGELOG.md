@@ -20,6 +20,7 @@ HumHub Changelog
 - Enh #8114: Fix old theme updating migration
 - Enh #8120: Allow using filter toggling in modals
 - Enh #8106: ensure migrations are run after reinstallation of enabled modules
+- Fix #8118: Keep list start number on RichText rendering
 - Enh #8113: Optimize user space membership lookups
 - Enh #8114: Fix old theme updating migration
 - Enh #8122: Update PHPspreadsheet
