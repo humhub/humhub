@@ -6,6 +6,7 @@ use humhub\modules\content\Events;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\Module;
 use humhub\modules\content\widgets\WallEntryAddons;
+use humhub\modules\file\models\File;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 
@@ -20,6 +21,7 @@ return [
         ['class' => User::class, 'event' => User::EVENT_BEFORE_SOFT_DELETE, 'callback' => [Events::class, 'onUserSoftDelete']],
         ['class' => Space::class, 'event' => User::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onSpaceDelete']],
         ['class' => Content::class, 'event' => Content::EVENT_AFTER_DELETE, 'callback' => [Events::class, 'onContentAfterDelete']],
+        ['class' => File::class, 'event' => File::EVENT_AFTER_NEW_STORED_FILE, 'callback' => [Events::class, 'onFileAfterNewStoredFile']],
         ['class' => CronController::class, 'event' => CronController::EVENT_ON_DAILY_RUN, 'callback' => [Events::class, 'onCronDailyRun']],
         ['class' => CronController::class, 'event' => CronController::EVENT_BEFORE_ACTION, 'callback' => [Events::class, 'onCronBeforeAction']],
     ],
