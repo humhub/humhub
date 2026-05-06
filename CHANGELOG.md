@@ -28,6 +28,7 @@ HumHub Changelog
 - Fix #8125: Show oEmbed warning only for supported embed URLs
 - Fix #8133: Rebuild search index after file updating
 - Fix #8132: Improve RichText styles in email message
+- Fix #8135: Missing border around profile pictures in Spaces overview
 
 1.18.2 (March 22, 2026)
 -----------------------
