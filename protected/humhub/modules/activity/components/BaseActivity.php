@@ -79,10 +79,7 @@ abstract class BaseActivity extends BaseObject
 
     protected function getMessageParamsHtmlMail(): array
     {
-        return array_merge($this->getMessageParamsHtml(), [
-            'displayName' => Html::strong(Html::encode($this->user->displayName)),
-            'displayNames' => $this->formatDisplayNames(fn($dn) => Html::strong(Html::encode($dn))),
-        ]);
+        return $this->getMessageParamsHtml();
     }
 
     protected function formatDisplayNames(callable $formatter): string

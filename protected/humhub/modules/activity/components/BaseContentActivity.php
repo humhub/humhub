@@ -32,9 +32,14 @@ abstract class BaseContentActivity extends BaseActivity
     protected ?ContentProvider $contentAddon = null;
 
     /**
-     * @var int Max length of the activity content
+     * @var int Max length of the activity content in Web view
      */
-    public int $maxContentLength = 300;
+    public int $webContentLength = 60;
+
+    /**
+     * @var int Max length of the activity content in Mail messages
+     */
+    public int $mailContentLength = 300;
 
     public function __construct(Activity $record, $config = [])
     {
@@ -69,18 +74,27 @@ abstract class BaseContentActivity extends BaseActivity
         return $this->content->getUrl($scheme);
     }
 
+    protected function getMessageParamsHtml(): array
+    {
+        return array_merge(parent::getMessageParamsHtml(), [
+            'content' => ContentHelper::getContentInfo($this->content, true, $this->webContentLength),
+            'contentTitle' => ContentHelper::getContentInfo($this->content, false, $this->webContentLength),
+        ]);
+    }
+
     protected function getMessageParamsText(): array
     {
         return array_merge(parent::getMessageParamsText(), [
-            'content' => ContentHelper::getContentInfo($this->content, true, $this->maxContentLength),
-            'contentTitle' => ContentHelper::getContentInfo($this->content, false, $this->maxContentLength),
+            'content' => ContentHelper::getContentInfo($this->content, true, $this->mailContentLength),
+            'contentTitle' => ContentHelper::getContentInfo($this->content, false, $this->mailContentLength),
         ]);
     }
 
     protected function getMessageParamsHtmlMail(): array
     {
         return array_merge(parent::getMessageParamsHtmlMail(), [
-            'content' => Html::strong(ContentHelper::getContentInfo($this->content, true, $this->maxContentLength)),
+            'content' => Html::strong(ContentHelper::getContentInfo($this->content, true, $this->mailContentLength)),
+            'contentTitle' => ContentHelper::getContentInfo($this->content, false, $this->mailContentLength),
         ]);
     }
 }

@@ -15,11 +15,6 @@ class LikeActivity extends BaseContentActivity implements ConfigurableActivityIn
 {
     private Like $like;
 
-    /**
-     * @inerhitdoc
-     */
-    public int $maxContentLength = 100;
-
     public function __construct(Activity $record, $config = [])
     {
         parent::__construct($record, $config);
@@ -54,14 +49,25 @@ class LikeActivity extends BaseContentActivity implements ConfigurableActivityIn
         }
     }
 
+    protected function getMessageParamsHtml(): array
+    {
+        return array_merge(parent::getMessageParamsHtml(), [
+            'content' => ContentHelper::getContentInfo($this->like->getContentOwnerObject(), true, $this->webContentLength),
+        ]);
+    }
+
     protected function getMessageParamsText(): array
     {
-        return array_merge(
-            parent::getMessageParamsText(),
-            [
-                'content' => ContentHelper::getContentInfo($this->like->getContentOwnerObject(), true, $this->maxContentLength),
-            ],
-        );
+        return array_merge(parent::getMessageParamsText(), [
+            'content' => ContentHelper::getContentInfo($this->like->getContentOwnerObject(), true, $this->mailContentLength),
+        ]);
+    }
+
+    protected function getMessageParamsHtmlMail(): array
+    {
+        return array_merge(parent::getMessageParamsHtmlMail(), [
+            'content' => ContentHelper::getContentInfo($this->like->getContentOwnerObject(), true, $this->mailContentLength),
+        ]);
     }
 
     public function getGroupingQuery(): ?ActiveQueryActivity
