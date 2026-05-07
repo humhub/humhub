@@ -30,6 +30,7 @@ HumHub Changelog
 - Fix #8132: Improve RichText styles in email message
 - Fix #8135: Missing border around profile pictures in Spaces overview
 - Fix #8136: Missing vertical paddings in Followers / Following snippets
+- Enh #8140: Preserve selected profile columns in pending approvals
 
 1.18.2 (March 22, 2026)
 -----------------------
