@@ -53,17 +53,23 @@ class Events extends BaseObject
         $integrityController = $event->sender;
         $integrityController->showTestHeadline("Like (" . Like::find()->count() . " entries)");
 
+        /** @var Like $like */
         foreach (Like::find()->each() as $like) {
-            if ($like->source === null) {
-                if ($integrityController->showFix("Deleting like id " . $like->id . " without existing target!")) {
-                    $like->delete();
-                }
+
+            // Check underlying record exists
+            if (
+                !$like->getContent()->exists()
+                && $integrityController->showFix("Deleting like id " . $like->id . " without existing target!")
+            ) {
+                $like->delete();
             }
+
             // User exists
-            if ($like->user === null) {
-                if ($integrityController->showFix("Deleting like id " . $like->id . " without existing user!")) {
-                    $like->delete();
-                }
+            if (
+                !$like->getContent()->exists()
+                && $integrityController->showFix("Deleting like id " . $like->id . " without existing user!")
+            ) {
+                $like->delete();
             }
         }
     }

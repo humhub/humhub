@@ -36,20 +36,23 @@ class Events extends Component
         $integrityController->showTestHeadline('Comment Module (' . Comment::find()->count() . ' entries)');
 
         // Loop over all comments
+        /** @var Comment $c */
         foreach (Comment::find()->each() as $c) {
 
             // Check underlying record exists
-            if ($c->source === null) {
-                if ($integrityController->showFix('Deleting comment id ' . $c->id . ' without existing target!')) {
-                    $c->delete();
-                }
+            if (
+                !$c->getContent()->exists()
+                && $integrityController->showFix('Deleting comment id ' . $c->id . ' without existing target!')
+            ) {
+                $c->delete();
             }
 
             // User exists
-            if ($c->user === null) {
-                if ($integrityController->showFix('Deleting comment id ' . $c->id . ' without existing user!')) {
-                    $c->delete();
-                }
+            if (
+                !$c->getCreatedBy()->exists()
+                && $integrityController->showFix('Deleting comment id ' . $c->id . ' without existing user!')
+            ) {
+                $c->delete();
             }
         }
     }
