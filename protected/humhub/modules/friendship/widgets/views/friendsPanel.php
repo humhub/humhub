@@ -3,12 +3,14 @@
 use humhub\helpers\Html;
 use humhub\widgets\PanelMenu;
 
+$title = Yii::t('FriendshipModule.base', 'Friends');
 ?>
+
 <?php if (count($friends) > 0) { ?>
     <div class="panel panel-default profile-friends-panel" id="profile-friends-panel">
-        <?= PanelMenu::widget() ?>
+        <?= PanelMenu::widget(['panelLabel' => $title]) ?>
 
-        <div class="panel-heading"><strong><?= Yii::t('FriendshipModule.base', 'Friends') ?></strong>
+        <div class="panel-heading"><strong><?= $title ?></strong>
             (<?php echo $totalCount; ?>)
         </div>
 

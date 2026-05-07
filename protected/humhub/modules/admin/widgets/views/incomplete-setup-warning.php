@@ -8,14 +8,17 @@
 
 use humhub\components\View;
 use humhub\modules\admin\widgets\IncompleteSetupWarning;
+use humhub\widgets\PanelMenu;
 
 /* @var $this View */
 /* @var $problems array */
 
+$title = Yii::t('AdminModule.base', '<strong>Warning</strong> incomplete setup!');
 ?>
 
 <div class="panel panel-danger panel-invalid">
-    <div class="panel-heading"><?= Yii::t('AdminModule.base', '<strong>Warning</strong> incomplete setup!'); ?></div>
+    <?= PanelMenu::widget(['panelLabel' => $title]) ?>
+    <div class="panel-heading"><?= $title ?></div>
     <div class="panel-body">
         <ul>
             <?php if (in_array(IncompleteSetupWarning::PROBLEM_QUEUE_RUNNER, $problems)): ?>

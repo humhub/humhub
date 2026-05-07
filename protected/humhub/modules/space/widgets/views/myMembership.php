@@ -6,12 +6,14 @@ use humhub\widgets\PanelMenu;
  * @var string $role
  * @var string $memberSince
  */
+
+$title = Yii::t('SpaceModule.base', '<strong>About</strong> your membership');
 ?>
 
 <div class="panel panel-default panel-my-membership" id="my-membership-panel">
-    <?= PanelMenu::widget() ?>
+    <?= PanelMenu::widget(['panelLabel' => $title]) ?>
     <div class="panel-heading">
-        <?= Yii::t('SpaceModule.base', '<strong>About</strong> your membership') ?>
+        <?= $title ?>
     </div>
     <div class="panel-body">
         <p>

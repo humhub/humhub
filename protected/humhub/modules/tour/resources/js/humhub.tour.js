@@ -45,14 +45,8 @@ humhub.module('tour', function (module, requrie, $) {
         tourCompleted(true);
     };
 
-    var hidePanel = function (event) {
-        $(".panel-tour").slideToggle("slow");
-        client.post(event)
-    }
-
     module.export({
         start: start,
         next: next,
-        hidePanel: hidePanel,
     });
 });

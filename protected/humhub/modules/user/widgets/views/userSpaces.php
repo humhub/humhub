@@ -4,15 +4,17 @@ use humhub\helpers\Html;
 use humhub\modules\space\widgets\Image;
 use humhub\widgets\PanelMenu;
 
+$title = Yii::t('UserModule.base', '<strong>Member</strong> of these Spaces');
 ?>
+
 <?php if (count($spaces) > 0) : ?>
     <div id="user-spaces-panel" class="panel panel-default members" style="position: relative;">
 
         <!-- Display panel menu widget -->
-        <?= PanelMenu::widget() ?>
+        <?= PanelMenu::widget(['panelLabel' => $title]) ?>
 
         <div class="panel-heading">
-            <?= Yii::t('UserModule.base', '<strong>Member</strong> of these Spaces') ?>
+            <?= $title ?>
         </div>
 
         <div class="panel-body d-flex gap-2 flex-wrap">

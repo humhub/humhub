@@ -14,13 +14,16 @@ use humhub\widgets\PanelMenu;
 /* @var int $totalMemberCount */
 /* @var array $showListOptions */
 
+$title = Yii::t('SpaceModule.base', '<strong>Space</strong> members');
 ?>
+
 <div class="panel panel-default members" id="space-members-panel">
     <?= PanelMenu::widget([
         'extraMenus' => Html::tag('li', Link::to(Yii::t('SpaceModule.base', 'Show as List'))->icon('list')->options($showListOptions)),
+        'panelLabel' => $title,
     ]) ?>
     <div class="panel-heading"<?= Html::renderTagAttributes($showListOptions + ['style' => 'cursor:pointer']) ?>>
-        <?= Yii::t('SpaceModule.base', '<strong>Space</strong> members'); ?> (<?= $totalMemberCount ?>)
+        <?= $title ?> (<?= $totalMemberCount ?>)
     </div>
     <div class="panel-body">
         <div class="d-flex gap-2 flex-wrap">

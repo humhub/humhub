@@ -7,15 +7,17 @@ use humhub\widgets\PanelMenu;
 
 /* @var $newSpaces Space[] */
 /* @var $showMoreButton bool */
+
+$title = Yii::t('SpaceModule.base', '<strong>New</strong> spaces');
 ?>
 
 <div class="panel panel-default spaces" id="new-spaces-panel">
 
     <!-- Display panel menu widget -->
-    <?= PanelMenu::widget() ?>
+    <?= PanelMenu::widget(['panelLabel' => $title]) ?>
 
     <div class="panel-heading">
-        <?= Yii::t('SpaceModule.base', '<strong>New</strong> spaces') ?>
+        <?= $title ?>
     </div>
     <div class="panel-body">
         <?php foreach ($newSpaces as $space) : ?>

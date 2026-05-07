@@ -13,14 +13,18 @@ use humhub\widgets\PanelMenu;
 /* @var User[] $followers */
 /* @var int $totalFollowerCount */
 /* @var array $showListOptions */
+
+$title = Yii::t('SpaceModule.base', '<strong>Space</strong> followers');
 ?>
+
 <div class="panel panel-default follower" id="space-follower-panel">
     <?= PanelMenu::widget([
         'extraMenus' => Html::tag('li', Link::to(Yii::t('SpaceModule.base', 'Show as List'))->icon('list')->options($showListOptions)),
+        'panelLabel' => $title,
     ]) ?>
 
     <div class="panel-heading"<?= Html::renderTagAttributes($showListOptions + ['style' => 'cursor:pointer']) ?>>
-        <?= Yii::t('SpaceModule.base', '<strong>Space</strong> followers') ?> (<?= $totalFollowerCount ?>)
+        <?= $title ?> (<?= $totalFollowerCount ?>)
     </div>
 
     <div class="panel-body">

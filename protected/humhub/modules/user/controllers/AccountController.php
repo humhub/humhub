@@ -129,14 +129,17 @@ class AccountController extends BaseAccountController
         $model->tags = $user->getTags();
         $model->hideOnlineStatus = $user->settings->get('hideOnlineStatus');
         $model->markdownEditorMode = $user->settings->get("markdownEditorMode");
-        $model->show_introduction_tour = Yii::$app->getModule('tour')->settings->contentContainer($user)->get("hideTourPanel");
+        $model->hiddenPanels = (array) $user->settings->getSerialized('hiddenPanels');
+        $model->hiddenPanelIds = array_keys((array) $model->hiddenPanels);
         $model->visibility = $user->visibility;
         $model->blockedUsers = $user->getBlockedUserGuids();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $user->settings->set('hideOnlineStatus', $model->hideOnlineStatus);
             $user->settings->set('markdownEditorMode', $model->markdownEditorMode);
-            Yii::$app->getModule('tour')->settings->contentContainer($user)->set('hideTourPanel', $model->show_introduction_tour);
+            // Remove all hiddenPanels where the key is not in hiddenPanelIds
+            $model->hiddenPanels = array_intersect_key($model->hiddenPanels, array_flip((array) $model->hiddenPanelIds));
+            $user->settings->setSerialized('hiddenPanels', $model->hiddenPanels);
 
             $user->scenario = User::SCENARIO_EDIT_ACCOUNT_SETTINGS;
             $user->language = $model->language;

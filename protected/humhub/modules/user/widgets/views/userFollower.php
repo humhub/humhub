@@ -6,16 +6,20 @@ use humhub\widgets\PanelMenu;
 
 /* @var User[] $followers */
 /* @var User[] $following */
+
+$followersTile = Yii::t('UserModule.base', '<strong>Followers</strong>');
+$followingTile = Yii::t('UserModule.base', '<strong>Following</strong>');
 ?>
 <?php if (count($followers) > 0) : ?>
     <div class="panel panel-default profile-follower-panel" id="profile-follower-panel">
 
         <!-- Display panel menu widget -->
         <?= PanelMenu::widget([
-            'collapseId' => 'humhubmodulesuserfollowerwidgetspanel', // Unique ID, as the widget class is the same for both panels
+            'panelId' => 'humhubmodulesuserfollowerwidgetspanel', // Unique ID, as the widget class is the same for both panels
+            'panelLabel' => $followersTile,
         ]) ?>
 
-        <div class="panel-heading"><?= Yii::t('UserModule.base', '<strong>Followers</strong>') ?></div>
+        <div class="panel-heading"><?= $followersTile ?></div>
 
         <div class="panel-body">
             <div class="d-flex column-gap-2 flex-wrap">
@@ -37,11 +41,12 @@ use humhub\widgets\PanelMenu;
 
         <!-- Display panel menu widget -->
         <?= PanelMenu::widget([
-            'collapseId' => 'humhubmodulesuserfollowingwidgetspanel', // Unique ID, as the widget class is the same for both panels
+            'panelId' => 'humhubmodulesuserfollowingwidgetspanel', // Unique ID, as the widget class is the same for both panels
+            'panelLabel' => $followingTile,
         ]) ?>
 
         <div class="panel-heading">
-            <?= Yii::t('UserModule.base', '<strong>Following</strong>') ?>
+            <?= $followingTile ?>
         </div>
 
         <div class="panel-body">
