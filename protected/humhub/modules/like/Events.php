@@ -53,6 +53,7 @@ class Events extends BaseObject
         $integrityController = $event->sender;
         $integrityController->showTestHeadline("Like (" . Like::find()->count() . " entries)");
 
+        /** @var Like $like */
         foreach (Like::find()->each() as $like) {
 
             // Check underlying record exists
