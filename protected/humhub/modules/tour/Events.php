@@ -8,6 +8,7 @@
 
 namespace humhub\modules\tour;
 
+use humhub\components\SettingsManager;
 use humhub\modules\dashboard\widgets\Sidebar;
 use humhub\modules\tour\widgets\Dashboard as DashboardWidget;
 use humhub\modules\tour\widgets\Tour;
@@ -27,7 +28,10 @@ class Events
             return;
         }
 
-        if (DashboardWidget::isVisible()) {
+        /* @var SettingsManager $settings */
+        $settings = Yii::$app->getModule('tour')->settings;
+
+        if ($settings->get('enable')) {
             /* @var Sidebar $sidebar */
             $sidebar = $event->sender;
             $sidebar->addWidget(DashboardWidget::class, [], ['sortOrder' => 100]);

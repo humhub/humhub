@@ -108,6 +108,9 @@ Version 1.19 (Unreleased)
 - Removed `@filestore` Alias
 - Removed `AssetManager::$preventDefer` option
 - New Flysystem Filesystem Wrapper - Migrate all file access for assets and uploads to the Flysystem wrapper (`Yii::$app->fs->getDataMount()` or `Yii::$app->fs->getAssetsMount()`). Read more: https://flysystem.thephpleague.com/docs/usage/filesystem-api/
+- `humhub\widgets\PanelMenu`:
+  - Added `enableHideOption` and `panelLabel` for the Account Settings -> Hidden panels list
+  - Renamed `collapseId` to `panelId`
 
 Version 1.18.1
 --------------

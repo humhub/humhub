@@ -4,13 +4,15 @@ use humhub\helpers\Html;
 use humhub\widgets\PanelMenu;
 use yii\helpers\Url;
 
+$title = Yii::t('UserModule.base', '<strong>User</strong> tags');
 ?>
+
 <?php if ($user->hasTags()) : ?>
     <div id="user-tags-panel" class="panel panel-default" style="position: relative;">
 
-        <?= PanelMenu::widget() ?>
+        <?= PanelMenu::widget(['panelLabel' => $title]) ?>
 
-        <div class="panel-heading"><?= Yii::t('UserModule.base', '<strong>User</strong> tags') ?></div>
+        <div class="panel-heading"><?= $title ?></div>
         <div class="panel-body">
             <!-- start: tags for user skills -->
             <div class="tags">

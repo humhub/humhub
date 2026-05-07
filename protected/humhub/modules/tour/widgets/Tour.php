@@ -39,8 +39,10 @@ class Tour extends Widget
             return '';
         }
 
-        // Check if Tour is activated by admin and users
-        if (!DashboardWidget::isVisible()) {
+        // Check if Tour is enabled
+        /* @var SettingsManager $settings */
+        $settings = Yii::$app->getModule('tour')->settings;
+        if (!$settings->get('enable')) {
             return '';
         }
 

@@ -32,8 +32,8 @@ use humhub\widgets\form\ActiveForm;
     <?= $form->field($model, 'hideOnlineStatus')->checkbox(); ?>
 <?php endif; ?>
 
-<?php if (Yii::$app->getModule('tour')->settings->get('enable') == 1): ?>
-    <?= $form->field($model, 'show_introduction_tour')->checkbox(); ?>
+<?php if ($model->hiddenPanels): ?>
+    <?= $form->field($model, 'hiddenPanelIds')->checkboxList($model->hiddenPanels) ?>
 <?php endif; ?>
 
 <?= $form->field($model, 'markdownEditorMode')->dropDownList($model->getEditorModeList(), ['data-ui-select2' => '']) ?>

@@ -20,9 +20,7 @@
 
 namespace humhub\modules\tour\widgets;
 
-use humhub\components\SettingsManager;
 use humhub\modules\tour\Module;
-use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Widget;
 
@@ -40,15 +38,5 @@ class Dashboard extends Widget
             'settingsManager' => $module->settings->user(),
             'showWelcome' => $module->showWelcomeWindow(),
         ]);
-    }
-
-    public static function isVisible(?User $user = null): bool
-    {
-        /* @var SettingsManager $settings */
-        $settings = Yii::$app->getModule('tour')->settings;
-
-        return
-            $settings->get('enable')
-            && !$settings->user($user)->get('hideTourPanel');
     }
 }

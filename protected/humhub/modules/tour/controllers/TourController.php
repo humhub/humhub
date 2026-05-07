@@ -48,12 +48,6 @@ class TourController extends Controller
         Yii::$app->getModule('tour')->settings->user()->set($tourId, true);
     }
 
-    public function actionHidePanel()
-    {
-        // set tour status to seen for current user
-        Yii::$app->getModule('tour')->settings->user()->set('hideTourPanel', true);
-    }
-
     /**
      * Admin Welcome Lightbox
      */

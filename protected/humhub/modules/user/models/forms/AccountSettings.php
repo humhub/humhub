@@ -9,10 +9,12 @@
 namespace humhub\modules\user\models\forms;
 
 use DateTimeZone;
+use humhub\modules\dashboard\widgets\Sidebar as DashboardSidebar;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Model;
+use yii\helpers\BaseInflector;
 
 /**
  * Form Model for changing basic account settings
@@ -25,7 +27,18 @@ class AccountSettings extends Model
     public $language;
     public $hideOnlineStatus;
     public $markdownEditorMode;
-    public $show_introduction_tour;
+
+    /**
+     * Key = Panel ID
+     * Value = Panel Label
+     * @since 1.19
+     */
+    public $hiddenPanels = [];
+    /**
+     * Auto-Generated from $hiddenPanels
+     */
+    public $hiddenPanelIds = [];
+
     public $visibility;
     public $timeZone;
     public $blockedUsers;
@@ -36,8 +49,9 @@ class AccountSettings extends Model
     public function rules()
     {
         return [
-            [['tags', 'blockedUsers'], 'safe'],
-            [['hideOnlineStatus', 'show_introduction_tour'], 'boolean'],
+            [['tags', 'hiddenPanelIds', 'blockedUsers'], 'safe'],
+            [['hideOnlineStatus'], 'boolean'],
+            [['hiddenPanels'], 'each', 'rule' => ['string']],
             [['markdownEditorMode'], 'in', 'range' => [0, 1]],
             [['timeZone'], 'in', 'range' => DateTimeZone::listIdentifiers()],
             ['language', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages())],
@@ -56,7 +70,7 @@ class AccountSettings extends Model
             'language' => Yii::t('UserModule.account', 'Language'),
             'hideOnlineStatus' => Yii::t('UserModule.account', 'Hide my online status'),
             'markdownEditorMode' => Yii::t('UserModule.account', 'Markdown Editor Mode'),
-            'show_introduction_tour' => Yii::t('UserModule.account', 'Hide introduction tour panel on dashboard'),
+            'hiddenPanelIds' => Yii::t('UserModule.account', 'Hidden panels in the sidebar'),
             'timeZone' => Yii::t('UserModule.account', 'TimeZone'),
             'visibility' => Yii::t('UserModule.account', 'Profile visibility'),
             'blockedUsers' => Yii::t('UserModule.account', 'Blocked users'),
@@ -78,6 +92,14 @@ class AccountSettings extends Model
     public function isHiddenUser(): bool
     {
         return Yii::$app->user->getIdentity()->visibility == User::VISIBILITY_HIDDEN;
+    }
+
+    public static function isHiddenPanel(string $panelId): bool
+    {
+        /** @var User $user */
+        $user = Yii::$app->user->getIdentity();
+        $hiddenPanels = (array) $user->settings->getSerialized('hiddenPanels');
+        return array_key_exists($panelId, $hiddenPanels);
     }
 
     public function isVisibilityViewable(): bool

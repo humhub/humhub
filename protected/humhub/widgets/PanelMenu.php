@@ -8,6 +8,7 @@
 
 namespace humhub\widgets;
 
+use humhub\modules\user\models\forms\AccountSettings;
 use yii\base\Widget;
 use yii\helpers\BaseInflector;
 
@@ -28,13 +29,33 @@ class PanelMenu extends Widget
     public bool $enableCollapseOption = true;
 
     /**
-     * Optional unique ID for the collapse element and the local storage state (expanded/collapsed)
+     * Allow hiding the panel
+     *
+     * Requires $panelLabel not to be empty
+     *
+     * @since since 1.19
+     */
+    public bool $enableHideOption = true;
+
+    /**
+     * Optional unique ID of the panel
+     *
+     * Used for local storage state (expanded/collapsed or hidden)
      *
      * If the parent widget class is unique, it can be null
      *
-     * @since since 1.18
+     * @since since 1.19
      */
-    public ?string $collapseId = null;
+    public ?string $panelId = null;
+
+    /**
+     * Optional Label of the panel (usually the panel header title)
+     *
+     * Used to show hidden panels from the User Account Settings
+     *
+     * @since since 1.19
+     */
+    public ?string $panelLabel = null;
 
     /**
      * Workaround to inject menu items to PanelMenu
@@ -45,6 +66,22 @@ class PanelMenu extends Widget
      */
     public $extraMenus = '';
 
+    public function init()
+    {
+        parent::init();
+
+        $class = $this->view->context::class;
+
+        // Generate a unique ID from the parent Widget class name
+        $this->panelId ??= BaseInflector::slug($class);
+
+        if ($this->panelLabel) {
+            $this->panelLabel = strip_tags($this->panelLabel);
+        } else {
+            $this->enableHideOption = false;
+        }
+    }
+
     /**
      * Displays / Run the Widgets
      */
@@ -52,7 +89,10 @@ class PanelMenu extends Widget
     {
         return $this->render('panelMenu', [
             'enableCollapseOption' => $this->enableCollapseOption,
-            'collapseId' => $this->collapseId ?? BaseInflector::slug($this->view->context::class), // Generate a unique ID from the parent Widget class name
+            'enableHideOption' => $this->enableHideOption,
+            'hidePanel' => AccountSettings::isHiddenPanel($this->panelId),
+            'panelId' => $this->panelId,
+            'panelLabel' => $this->panelLabel,
             'extraMenus' => $this->extraMenus,
         ]);
     }

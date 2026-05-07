@@ -7,13 +7,15 @@ use yii\helpers\Url;
 
 /* @var $space Space */
 
+$title = Yii::t('SpaceModule.base', '<strong>Space</strong> tags');
 ?>
+
 <?php if (!empty($space->getTags())) : ?>
     <div id="user-tags-panel" class="panel panel-default">
 
-        <?= PanelMenu::widget() ?>
+        <?= PanelMenu::widget(['panelLabel' => $title]) ?>
 
-        <div class="panel-heading"><?= Yii::t('SpaceModule.base', '<strong>Space</strong> tags') ?></div>
+        <div class="panel-heading"><?= $title ?></div>
         <div class="panel-body">
             <div class="tags">
                 <?php foreach ($space->getTags() as $tag): ?>

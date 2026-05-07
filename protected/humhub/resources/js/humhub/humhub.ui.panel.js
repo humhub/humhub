@@ -7,6 +7,7 @@
 humhub.module('ui.panel', function (module, require, $) {
 
     const Widget = require('ui.widget').Widget;
+    const client = require('client');
     const i18n = require('i18n');
     const PanelMenu = Widget.extend();
     const STATE_COLLAPSED = 'collapsed';
@@ -32,6 +33,10 @@ humhub.module('ui.panel', function (module, require, $) {
         const $parent = this.$.closest('.panel');
         if (!$parent.length) {
             throw new Error('Panel for ' + collapseId + ' not found.');
+        }
+
+        if (that.data('hide-panel')) {
+            $parent.detach();
         }
 
         // Get HTML element to collapse (next if it is not a heading)
@@ -98,7 +103,13 @@ humhub.module('ui.panel', function (module, require, $) {
         this.$collapseLink.html(icon + text).removeClass('disabled').removeAttr('disabled');
     };
 
+    const hidePanel = function (evt) {
+        evt.$trigger.closest('.panel').slideToggle("slow");
+        client.post(evt)
+    }
+
     module.export({
-        PanelMenu: PanelMenu
+        PanelMenu: PanelMenu,
+        hidePanel: hidePanel
     });
 });
