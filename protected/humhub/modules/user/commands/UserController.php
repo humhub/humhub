@@ -163,9 +163,7 @@ class UserController extends Controller
     public function actionDeleteDisabled(array $exceptUserIds = [])
     {
         $query = User::find()->where(['status' => User::STATUS_DISABLED])->andWhere(['not in', 'id', $exceptUserIds]);
-        $users = array_map(function ($user) {
-            return ['id' => $user->id, 'username' => $user->username, 'email' => $user->email];
-        }, $query->all());
+        $users = array_map(fn($user) => ['id' => $user->id, 'username' => $user->username, 'email' => $user->email], $query->all());
 
         if (count($users) === 0) {
             $this->stdout(
@@ -218,9 +216,7 @@ class UserController extends Controller
         $query = User::find()->where(['status' => User::STATUS_SOFT_DELETED])
             ->andWhere(['not in', 'id', $exceptUserIds]);
 
-        $users = array_map(function ($user) {
-            return ['id' => $user->id, 'username' => $user->username, 'email' => $user->email];
-        }, $query->all());
+        $users = array_map(fn($user) => ['id' => $user->id, 'username' => $user->username, 'email' => $user->email], $query->all());
 
         if (count($users) === 0) {
             $this->stdout(

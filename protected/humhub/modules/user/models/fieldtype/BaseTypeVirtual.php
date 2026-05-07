@@ -55,9 +55,7 @@ abstract class BaseTypeVirtual extends BaseType
             . intval($raw) . '_'
             . intval($encode);
 
-        return Yii::$app->cache->getOrSet($cacheKey, function () use ($user, $raw, $encode) {
-            return $this->getVirtualUserValue($user, $raw, $encode);
-        }, null, new TagDependency(['tags' => $cacheTag]));
+        return Yii::$app->cache->getOrSet($cacheKey, fn() => $this->getVirtualUserValue($user, $raw, $encode), null, new TagDependency(['tags' => $cacheTag]));
     }
 
     /**
