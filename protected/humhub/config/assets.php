@@ -27,10 +27,10 @@ use yii\web\JqueryAsset;
 Yii::setAlias('@webroot', __DIR__ . '/../../../');
 Yii::setAlias('@web', '/');
 
-$bundlesPath = Yii::getAlias('@webroot/assets/bundles');
+$bundlesPath = Yii::getAlias('@webroot/assets/static/bundles');
 if (!is_dir($bundlesPath)) {
-    FileHelper::createDirectory($bundlesPath . '/js');
-    FileHelper::createDirectory($bundlesPath . '/css');
+    FileHelper::createDirectory($bundlesPath . '/js', Yii::$app->assetManager->dirMode);
+    FileHelper::createDirectory($bundlesPath . '/css', Yii::$app->assetManager->dirMode);
 }
 
 $bundles = ArrayHelper::merge(
@@ -52,8 +52,8 @@ return [
             'class' => AssetBundle::class,
             'defer' => false,
             'defaultDepends' => false,
-            'basePath' => '@webroot/assets/bundles',
-            'baseUrl' => '@web/assets/bundles',
+            'basePath' => '@webroot/assets/static/bundles',
+            'baseUrl' => '@web/assets/static/bundles',
             'jsPosition' => View::POS_HEAD,
             'js' => 'js/humhub-app.js',
             'css' => 'css/humhub-app.css',
@@ -68,8 +68,8 @@ return [
             'defer' => true,
             'jsPosition' => View::POS_HEAD,
             'defaultDepends' => false,
-            'basePath' => '@webroot/assets/bundles',
-            'baseUrl' => '@web/assets/bundles',
+            'basePath' => '@webroot/assets/static/bundles',
+            'baseUrl' => '@web/assets/static/bundles',
             'js' => 'js/humhub-bundle.js',
             'css' => 'css/humhub-bundle.css',
             'preload' => [
@@ -80,8 +80,8 @@ return [
         ],
     ],
     'assetManager' => [
-        'basePath' => Yii::$app->assetManager->basePath,
-        'baseUrl' => Yii::$app->assetManager->baseUrl,
+        'basePath' => '@webroot/assets/static',
+        'baseUrl' => '@web/assets/static',
         'bundles' => [
             JqueryAsset::class => [
                 'sourcePath' => '@npm/jquery/dist',

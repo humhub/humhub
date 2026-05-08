@@ -8,10 +8,7 @@
 
 namespace humhub\helpers;
 
-use humhub\components\console\Application as consoleApplication;
-use humhub\services\BootstrapService;
 use Yii;
-use yii\console\Response;
 
 class ControllerHelper
 {
@@ -59,25 +56,5 @@ class ControllerHelper
         }
 
         return true;
-    }
-
-    /**
-     * Run a console controller action
-     *
-     * @param string $route the route that specifies the action.
-     * @param array $params the parameters to be passed to the action
-     * @return int|Response|null
-     */
-    public static function runConsoleAction(string $route, array $params = []): int|Response|null
-    {
-        $webApp = Yii::$app;
-
-        $config = (new BootstrapService())->getConfig('console');
-        $consoleApp = new consoleApplication($config);
-        $result = $consoleApp->runAction($route, $params);
-
-        Yii::$app = $webApp;
-
-        return $result;
     }
 }

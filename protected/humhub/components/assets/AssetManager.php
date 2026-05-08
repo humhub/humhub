@@ -185,7 +185,7 @@ class AssetManager extends \yii\web\AssetManager
         $contents = $this->fs->listContents('.');
         foreach ($contents as $attributes) {
             /* @var StorageAttributes $attributes */
-            if ($attributes->isDir()) {
+            if ($attributes->isDir() && $attributes->path() !== 'static') {
                 $this->fs->deleteDirectory($attributes->path());
             }
         }
