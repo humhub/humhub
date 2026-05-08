@@ -3,7 +3,6 @@
 use humhub\helpers\Html;
 use humhub\modules\file\converter\PreviewImage;
 use humhub\modules\file\handler\BaseFileHandler;
-use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
 
@@ -44,9 +43,47 @@ use humhub\widgets\modal\ModalButton;
     </p>
 
     <div class="float-start">
-        <?= FileHandlerButtonDropdown::widget(['handlers' => $viewHandler]); ?>
-        <?= FileHandlerButtonDropdown::widget(['handlers' => $exportHandler]); ?>
-        <?= FileHandlerButtonDropdown::widget(['handlers' => array_merge($editHandler, $importHandler)]); ?>
+        <?php
+        /**
+         * Renders a group of file handler buttons (view, export, edit/import).
+         * @param BaseFileHandler[] $handlers
+         * @param string $cssButtonClass
+         */
+        $renderHandlerButtons = static function (array $handlers, string $cssButtonClass = 'btn-default') use (&$renderHandlerButtons): string {
+            if (empty($handlers)) {
+                return '';
+            }
+            $output = Html::beginTag('div', ['class' => 'btn-group']);
+            $firstAttrs = array_shift($handlers)->getLinkAttributes();
+            $firstAttrs['data-action-process'] = 'file-handler';
+            Html::addCssClass($firstAttrs, ['btn', $cssButtonClass]);
+            $label = \yii\helpers\ArrayHelper::remove($firstAttrs, 'label', '');
+            if (isset($firstAttrs['url'])) {
+                $firstAttrs['href'] = \yii\helpers\ArrayHelper::remove($firstAttrs, 'url', '#');
+            }
+            $output .= Html::tag('a', $label, $firstAttrs);
+            if (!empty($handlers)) {
+                $output .= '<button type="button" class="btn ' . $cssButtonClass . ' btn-icon-only dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>';
+                $output .= Html::beginTag('ul', ['class' => 'dropdown-menu']);
+                foreach ($handlers as $handler) {
+                    $attrs = $handler->getLinkAttributes();
+                    $attrs['data-action-process'] = 'file-handler';
+                    Html::addCssClass($attrs, 'dropdown-item');
+                    $itemLabel = \yii\helpers\ArrayHelper::remove($attrs, 'label', '');
+                    if (isset($attrs['url'])) {
+                        $attrs['href'] = \yii\helpers\ArrayHelper::remove($attrs, 'url', '#');
+                    }
+                    $output .= Html::beginTag('li') . Html::tag('a', $itemLabel, $attrs) . Html::endTag('li');
+                }
+                $output .= Html::endTag('ul');
+            }
+            $output .= Html::endTag('div');
+            return $output;
+        };
+        echo $renderHandlerButtons($viewHandler);
+        echo $renderHandlerButtons($exportHandler);
+        echo $renderHandlerButtons(array_merge($editHandler, $importHandler));
+        ?>
     </div>
 
 <?php Modal::endDialog(); ?>

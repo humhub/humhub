@@ -12,6 +12,7 @@ use humhub\modules\file\models\File;
 use humhub\modules\file\Module;
 use Yii;
 use yii\base\Component;
+use yii\base\InvalidConfigException;
 
 /**
  * FileHandlerCollection
@@ -81,7 +82,7 @@ class FileHandlerCollection extends Component
     }
 
     /**
-     * @param \humhub\modules\file\components\BaseFileHandler $handler
+     * @param BaseFileHandler $handler
      */
     public function register(BaseFileHandler $handler)
     {
@@ -92,26 +93,26 @@ class FileHandlerCollection extends Component
     /**
      * Returns registered handlers by type
      *
-     * @param string|array $type or multiple type array
-     * @param File $file the file (optional)
+     * @param $types
+     * @param null $file the file (optional)
      * @return BaseFileHandler[] the registered handlers
+     * @throws InvalidConfigException
      */
     public static function getByType($types, $file = null)
     {
-        $handlers = [];
-
         if (!is_array($types)) {
             $types = [$types];
         }
 
+        $handlerArrays = [];
         foreach ($types as $type) {
-            $handlers = array_merge($handlers, Yii::createObject([
+            $handlerArrays[] = Yii::createObject([
                 'class' => static::class,
                 'file' => $file,
                 'type' => $type,
-            ])->handlers);
+            ])->handlers;
         }
-        return $handlers;
+        return array_merge(...$handlerArrays);
     }
 
     /**

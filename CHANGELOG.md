@@ -17,6 +17,7 @@ HumHub Changelog
 - Enh #8100: Move `static` and `themes` into `protected/humhub`
 - Enh #8128: Exact search for user id in admin user search
 - Enh #8139: Update rector rules
+- Enh #6933: File upload dropdown: move the default upload button to the dropdown (see [migration guide](https://github.com/humhub/humhub/blob/master/MIGRATE-DEV.md#version-119) for details)
 
 1.18.3 (TBD)
 ------------

@@ -4,7 +4,7 @@ namespace humhub\modules\content\widgets\richtext;
 
 use humhub\helpers\Html;
 use humhub\modules\file\handler\FileHandlerCollection;
-use humhub\modules\file\widgets\FileHandlerButtonDropdown;
+use humhub\modules\file\handler\UploadFileHandler;
 use humhub\modules\file\widgets\UploadButton;
 
 /**
@@ -58,20 +58,37 @@ class ProsemirrorRichTextEditor extends AbstractRichTextEditor
     }
 
     /**
-     * Prepends an upload input form element to the rich text editor used by the upload editor plugin.
+     * Prepends the hidden UploadButton used by the file_handler ProseMirror plugin.
+     * UploadFileHandler is excluded here because ProseMirror already provides its own
+     * "Upload File" menu item via the upload plugin (menu.js), avoiding a duplicate entry.
      */
-    public function prepend()
+    public function prepend(): string
     {
-        return FileHandlerButtonDropdown::widget([
-            'primaryButton' => UploadButton::widget([
-                'id' => $this->getId(true) . '-file-upload',
-                'hideInStream' => true,
-            ]),
-            'handlers' => FileHandlerCollection::getByType([
-                FileHandlerCollection::TYPE_IMPORT,
-                FileHandlerCollection::TYPE_CREATE,
-            ]),
-            'cssClass' => 'btn-group d-none' . ($this->hasModel() && $this->model->hasErrors($this->attribute) ? ' is-invalid' : ''),
+        $handlers = FileHandlerCollection::getByType([
+            FileHandlerCollection::TYPE_IMPORT,
+            FileHandlerCollection::TYPE_CREATE,
+        ]);
+
+        // If only one handler, a button would be is rendered instead of a dropdown, so no need to prepend, as "Upload File" entry is already added to the menu via ProseMirror via upload/menu.js
+        if (count($handlers) <= 1) {
+            return '';
+        }
+
+        // Exclude only the generic UploadFileHandler ("Attach a file") because ProseMirror
+        // already provides its own "Upload File" item via ProseMirror upload/menu.js.
+        // Other handlers (Audio, Image, Video) are kept because they are distinct handlers.
+        $handlers = array_values(
+            array_filter(
+                $handlers,
+                fn($handler) => $handler::class !== UploadFileHandler::class,
+            ),
+        );
+
+        return UploadButton::widget([
+            'id' => $this->getId(true) . '-file-upload',
+            'hideInStream' => true,
+            'handlers' => $handlers,
+            'cssDropdownButtonClass' => 'btn-group d-none' . ($this->hasModel() && $this->model->hasErrors($this->attribute) ? ' is-invalid' : ''),
         ]);
     }
 }
