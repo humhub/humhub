@@ -18,6 +18,7 @@ use yii\helpers\ArrayHelper;
  *
  * @since 1.2
  * @author Luke
+ * @deprecated since 1.19 Use {@see UploadButton} with the `handlers` property instead.
  */
 class FileHandlerButtonDropdown extends Widget
 {
@@ -50,68 +51,10 @@ class FileHandlerButtonDropdown extends Widget
 
     /**
      * @inheritdoc
+     * @deprecated since 1.19 Use {@see UploadButton} with the `handlers` property instead.
      */
     public function run()
     {
-        if (!$this->primaryButton && !$this->isDropdown()) {
-            return '';
-        }
-
-        $output = Html::beginTag('div', ['class' => $this->cssClass]);
-
-        if (!$this->primaryButton) {
-            $firstButton = array_shift($this->handlers)->getLinkAttributes();
-            Html::addCssClass($firstButton, ['btn', $this->cssButtonClass]);
-            $output .= $this->renderLink($firstButton);
-        } else {
-            $output .= $this->primaryButton;
-        }
-
-        if ($this->isDropdown()) {
-            $output .= '<button type="button" class="btn ' . $this->cssButtonClass . ' btn-icon-only dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>';
-
-            $cssClass = ($this->pullRight) ? 'dropdown-menu dropdown-menu-end' : 'dropdown-menu';
-
-            $output .= Html::beginTag('ul', ['class' => $cssClass]);
-            foreach ($this->handlers as $handler) {
-                $output .= Html::beginTag('li');
-                $output .= $this->renderLink($handler->getLinkAttributes(), true);
-                $output .= Html::endTag('li');
-            }
-            $output .= Html::endTag('ul');
-        }
-        $output .= Html::endTag('div');
-
-        return $output;
-    }
-
-    /**
-     * Renders the file handle link
-     *
-     * @param array $options the HTML options
-     * @return string the rendered HTML tag
-     */
-    protected function renderLink($options, bool $asDropdownItem = false)
-    {
-
-        $options['data-action-process'] = 'file-handler';
-
-        if ($asDropdownItem) {
-            Html::addCssClass($options, 'dropdown-item');
-        }
-
-        $label = ArrayHelper::remove($options, 'label', 'Label');
-
-        if (isset($options['url'])) {
-            $url = ArrayHelper::remove($options, 'url', '#');
-            $options['href'] = $url;
-        }
-
-        return Html::tag('a', $label, $options);
-    }
-
-    protected function isDropdown(): bool
-    {
-        return count($this->handlers) !== 0;
+        return '';
     }
 }

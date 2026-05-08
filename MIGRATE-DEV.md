@@ -109,6 +109,38 @@ Version 1.19 (Unreleased)
 - Removed `AssetManager::$preventDefer` option
 - New Flysystem Filesystem Wrapper - Migrate all file access for assets and uploads to the Flysystem wrapper (`Yii::$app->fs->getDataMount()` or `Yii::$app->fs->getAssetsMount()`). Read more: https://flysystem.thephpleague.com/docs/usage/filesystem-api/
 
+### Refactor of the Upload Button
+
+- Added to `humhub\modules\file\widgets\UploadButton`:
+    - `cssDropdownButtonClass`
+    - `cssButtonClass`
+    - `handlers`
+    - `size`
+    - `dropdownMenuEnd`
+- Deprecated: `humhub\modules\file\widgets\FileHandlerButtonDropdown`
+
+In the views, replace:
+```php
+<?php $uploadButton = UploadButton::widget([
+    'cssButtonClass' => 'btn-sm btn-light',
+    ... other options
+]) ?>
+<?= FileHandlerButtonDropdown::widget([
+    'primaryButton' => $uploadButton,
+    'cssButtonClass' => 'btn-sm btn-light',
+    'handlers' => $fileHandlers,
+    ... other options
+]) ?>
+```
+
+with:
+```php
+<?= UploadButton::widget([
+    'handlers' => $handlers,
+    'size' => 'sm',
+]) ?>
+```
+
 Version 1.18.1
 --------------
 

@@ -6,7 +6,6 @@ use humhub\modules\comment\models\Comment;
 use humhub\modules\content\Module;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\file\handler\BaseFileHandler;
-use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
 use humhub\widgets\bootstrap\Button;
@@ -57,7 +56,7 @@ $placeholder = ($isNestedComment)
         ])->label(false) ?>
 
         <div class="richtext-create-buttons">
-            <?php $uploadButton = UploadButton::widget([
+            <?= UploadButton::widget([
                 'id' => 'comment_create_upload_' . $id,
                 'model' => $model,
                 'attribute' => 'fileList',
@@ -67,12 +66,9 @@ $placeholder = ($isNestedComment)
                 'preview' => '#comment_create_upload_preview_' . $id,
                 'dropZone' => '#comment_create_form_' . $id,
                 'max' => $contentModule->maxAttachedFiles,
-            ]) ?>
-            <?= FileHandlerButtonDropdown::widget([
-                'primaryButton' => $uploadButton,
                 'handlers' => $fileHandlers,
-                'cssClass' => 'btn-group btn-group-sm',
-                'pullRight' => true,
+                'size' => 'sm',
+                'dropdownMenuEnd' => true,
             ]) ?>
             <?= Button::accent()
                 ->icon('send')

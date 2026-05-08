@@ -9,7 +9,6 @@ use humhub\helpers\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\file\handler\BaseFileHandler;
-use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
 use humhub\modules\file\widgets\UploadProgress;
@@ -58,7 +57,7 @@ use humhub\widgets\bootstrap\Link;
     <div class="btn_container">
         <?= Button::accent($submitButtonText)->action('submit', $submitUrl)->id('post_submit_button' . ($isModal ? '_modal' : ''))->submit() ?>
 
-        <?php $uploadButton = UploadButton::widget([
+        <?= UploadButton::widget([
             'id' => 'contentFormFiles' . ($isModal ? 'Modal' : ''),
             'tooltip' => Yii::t('ContentModule.base', 'Attach Files'),
             'progress' => '#contentFormFiles_progress' . ($isModal ? 'Modal' : ''),
@@ -66,8 +65,8 @@ use humhub\widgets\bootstrap\Link;
             'dropZone' => '#contentFormBody' . ($isModal ? 'Modal' : ''),
             'max' => Yii::$app->getModule('content')->maxAttachedFiles,
             'fileList' => $fileList,
+            'handlers' => $fileHandlers,
         ]); ?>
-        <?= FileHandlerButtonDropdown::widget(['primaryButton' => $uploadButton, 'handlers' => $fileHandlers, 'cssButtonClass' => 'btn-light']); ?>
 
         <!-- public checkbox -->
         <?= Html::checkbox('visibility', '', ['class' => 'contentForm_visibility contentForm d-none', 'aria-hidden' => 'true']); ?>

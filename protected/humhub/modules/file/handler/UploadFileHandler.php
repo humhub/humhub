@@ -9,17 +9,23 @@
 namespace humhub\modules\file\handler;
 
 use humhub\modules\ui\icon\widgets\Icon;
+use Yii;
 
 /**
  * Allows uploading files of a specific type
  * @since 1.15
  */
-abstract class UploadFileHandler extends BaseFileHandler
+class UploadFileHandler extends BaseFileHandler
 {
     /**
      * @var string Available types: https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/accept
      */
     public $type = '*/*';
+
+    /**
+     * @inheritdoc
+     */
+    public $position = self::POSITION_TOP;
 
     /**
      * @var string
@@ -33,7 +39,7 @@ abstract class UploadFileHandler extends BaseFileHandler
 
     public function getLabel(): string
     {
-        return $this->label;
+        return $this->label ?: Yii::t('FileModule.base', 'Attach a file');
     }
 
     /**

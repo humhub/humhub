@@ -3,7 +3,6 @@
 use humhub\helpers\Html;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\file\handler\BaseFileHandler;
-use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
 use humhub\modules\file\widgets\UploadProgress;
@@ -29,20 +28,17 @@ use humhub\widgets\form\ActiveForm;
         ])->label(false) ?>
 
         <div class="richtext-create-buttons">
-            <?= FileHandlerButtonDropdown::widget([
-                'primaryButton' => UploadButton::widget([
-                    'id' => 'post_upload_' . $model->post->id,
-                    'tooltip' => Yii::t('ContentModule.base', 'Attach Files'),
-                    'model' => $model,
-                    'dropZone' => '#post_edit_' . $model->post->id . ':parent',
-                    'preview' => '#post_upload_preview_' . $model->post->id,
-                    'progress' => '#post_upload_progress_' . $model->post->id,
-                    'max' => Yii::$app->getModule('content')->maxAttachedFiles,
-                    'cssButtonClass' => 'btn-sm btn-light',
-                ]),
+            <?= UploadButton::widget([
+                'id' => 'post_upload_' . $model->post->id,
+                'tooltip' => Yii::t('ContentModule.base', 'Attach Files'),
+                'model' => $model,
+                'dropZone' => '#post_edit_' . $model->post->id . ':parent',
+                'preview' => '#post_upload_preview_' . $model->post->id,
+                'progress' => '#post_upload_progress_' . $model->post->id,
+                'max' => Yii::$app->getModule('content')->maxAttachedFiles,
+                'size' => 'sm',
                 'handlers' => $fileHandlers,
-                'cssButtonClass' => 'btn-sm btn-light',
-                'pullRight' => true,
+                'dropdownMenuEnd' => true,
             ]) ?>
             <?= Button::accent()
                 ->icon('send')

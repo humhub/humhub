@@ -5,7 +5,6 @@ use humhub\helpers\Html;
 use humhub\modules\content\Module;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\file\handler\BaseFileHandler;
-use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
 use humhub\widgets\bootstrap\Button;
@@ -36,8 +35,8 @@ $contentModule = Yii::$app->getModule('content');
             ],
         ])->label(false) ?>
 
-        <div class="richtext-create-buttons"><?php
-            $uploadButton = UploadButton::widget([
+        <div class="richtext-create-buttons">
+            <?= UploadButton::widget([
                 'id' => 'comment_upload_' . $comment->id,
                 'model' => $comment,
                 'tooltip' => Yii::t('ContentModule.base', 'Attach Files'),
@@ -45,19 +44,14 @@ $contentModule = Yii::$app->getModule('content');
                 'preview' => '#comment_upload_preview_' . $comment->id,
                 'progress' => '#comment_upload_progress_' . $comment->id,
                 'max' => $contentModule->maxAttachedFiles,
-                'cssButtonClass' => 'btn-sm btn-light',
-            ]);
-            echo FileHandlerButtonDropdown::widget([
-                'primaryButton' => $uploadButton,
+                'size' => 'sm',
                 'handlers' => $fileHandlers,
-                'cssButtonClass' => 'btn-light btn-sm',
-                'pullRight' => true,
-            ]);
-            echo Button::accent()
+                'dropdownMenuEnd' => true,
+            ]) ?>
+            <?= Button::accent()
                 ->icon('send')
                 ->cssClass('btn-comment-submit')->sm()
-                ->action('editSubmit', $submitUrl)->submit();
-            ?>
+                ->action('editSubmit', $submitUrl)->submit() ?>
         </div>
     </div>
 
