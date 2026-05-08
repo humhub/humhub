@@ -13,7 +13,7 @@ use yii\base\InvalidValueException;
 
 final class NewCommentActivity extends BaseContentActivity implements ConfigurableActivityInterface
 {
-    private Comment $comment;
+    private readonly Comment $comment;
 
     /**
      * @inerhitdoc

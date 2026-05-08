@@ -12,11 +12,9 @@ use yii\base\InvalidArgumentException;
 class LdapService
 {
     public Connection $connection;
-    public readonly LdapAuth $authClient;
 
-    public function __construct(LdapAuth $authClient)
+    public function __construct(public readonly LdapAuth $authClient)
     {
-        $this->authClient = $authClient;
         $this->ldapConnect();
     }
 
@@ -78,17 +76,13 @@ class LdapService
         $result = $this->connection->query()
             ->select('dn')
             ->rawFilter($this->authClient->userFilter)
-            ->orFilter(function ($query) use ($usernameOrEmail) {
+            ->orFilter(function ($query) use ($usernameOrEmail): void {
                 $query->where($this->authClient->usernameAttribute, '=', $usernameOrEmail)
                     ->where($this->authClient->emailAttribute, '=', $usernameOrEmail);
             })
             ->first();
 
-        if (isset($result['dn'])) {
-            return $result['dn'];
-        }
-
-        return null;
+        return $result['dn'] ?? null;
     }
 
     private function getAllUsersAttributes(): array
@@ -170,7 +164,7 @@ class LdapService
             ->rawFilter($searchQuery);
 
         foreach ($query->paginate($this->getPageSize()) as $entity) {
-            $results[] = strtolower($entity['dn']);
+            $results[] = strtolower((string) $entity['dn']);
         }
 
         return $results;

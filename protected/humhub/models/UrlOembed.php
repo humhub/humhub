@@ -194,7 +194,7 @@ class UrlOembed extends ActiveRecord
                         return Html::tag('div', '', ['id' => $placeholderId]);
                     }, $result);
 
-                    return trim((string) preg_replace('/\s+/', ' ', $result));
+                    return trim((string) preg_replace('/\s+/', ' ', (string) $result));
                 }
             }
         } catch (RestrictedCallException $re) {

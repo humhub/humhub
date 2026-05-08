@@ -242,7 +242,7 @@ class ActiveQueryActivity extends ActiveQuery
         } else {
             try {
                 $dt = new \DateTimeImmutable($dateTime);
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 throw new \InvalidArgumentException("Invalid date time given: '{$dateTime}'");
             }
         }

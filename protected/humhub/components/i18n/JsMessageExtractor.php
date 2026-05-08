@@ -95,7 +95,7 @@ class JsMessageExtractor extends Component
         }
 
         foreach ($ignoreCategories as $pattern) {
-            if ($category === $pattern || (str_ends_with($pattern, '*') && str_starts_with($category, rtrim($pattern, '*')))) {
+            if ($category === $pattern || (str_ends_with((string) $pattern, '*') && str_starts_with($category, rtrim((string) $pattern, '*')))) {
                 return true;
             }
         }

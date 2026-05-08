@@ -31,7 +31,7 @@ class AssetImageRegistry extends Component
          * Filesystem lookups
          */
         $this->_cache = Yii::$app->cache->get('assetImageRegistry') ?: [];
-        Yii::$app->on(Application::EVENT_AFTER_REQUEST, function ($event) {
+        Yii::$app->on(Application::EVENT_AFTER_REQUEST, function ($event): void {
             $modified = false;
             /** @var AssetImage $assetImage */
             foreach ($this->_instances as $name => $assetImage) {

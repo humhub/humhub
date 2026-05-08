@@ -13,7 +13,7 @@ use yii\base\InvalidValueException;
 
 class LikeActivity extends BaseContentActivity implements ConfigurableActivityInterface
 {
-    private Like $like;
+    private readonly Like $like;
 
     public function __construct(Activity $record, $config = [])
     {
