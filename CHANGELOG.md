@@ -25,6 +25,7 @@ HumHub Changelog
 - Enh #8122: Update PHPspreadsheet
 - Enh #8112: Update Mobile-Detect library to 4.10.0
 - Fix #8125: Show oEmbed warning only for supported embed URLs
+- Fix #8134: Revert "Improve `<p>` style in RichText editor"
 
 1.18.2 (March 22, 2026)
 -----------------------
