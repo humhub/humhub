@@ -14,6 +14,7 @@ use humhub\components\View;
 use yii\bootstrap5\BootstrapAsset;
 use yii\bootstrap5\BootstrapPluginAsset;
 use yii\helpers\ArrayHelper;
+use yii\helpers\FileHelper;
 use yii\jui\DatePickerLanguageAsset;
 use yii\jui\JuiAsset;
 use yii\web\JqueryAsset;
@@ -26,13 +27,17 @@ use yii\web\JqueryAsset;
 Yii::setAlias('@webroot', __DIR__ . '/../../../');
 Yii::setAlias('@web', '/');
 
+$bundlesPath = Yii::getAlias('@webroot/assets/bundles');
+if (!is_dir($bundlesPath)) {
+    FileHelper::createDirectory($bundlesPath . '/js');
+    FileHelper::createDirectory($bundlesPath . '/css');
+}
+
 $bundles = ArrayHelper::merge(
     [AppAsset::class, CoreBundleAsset::class],
     AppAsset::STATIC_DEPENDS,
     CoreBundleAsset::STATIC_DEPENDS,
 );
-
-$baseUrl = Yii::$app->assetManager->getPublishedUrl('@humhub/resources');
 
 return [
     // Adjust command/callback for JavaScript files compressing:
@@ -47,8 +52,8 @@ return [
             'class' => AssetBundle::class,
             'defer' => false,
             'defaultDepends' => false,
-            'basePath' => '@humhub/resources',
-            'baseUrl' => $baseUrl,
+            'basePath' => '@webroot/assets/bundles',
+            'baseUrl' => '@web/assets/bundles',
             'jsPosition' => View::POS_HEAD,
             'js' => 'js/humhub-app.js',
             'css' => 'css/humhub-app.css',
@@ -63,8 +68,8 @@ return [
             'defer' => true,
             'jsPosition' => View::POS_HEAD,
             'defaultDepends' => false,
-            'basePath' => '@humhub/resources',
-            'baseUrl' => $baseUrl,
+            'basePath' => '@webroot/assets/bundles',
+            'baseUrl' => '@web/assets/bundles',
             'js' => 'js/humhub-bundle.js',
             'css' => 'css/humhub-bundle.css',
             'preload' => [
