@@ -67,8 +67,8 @@ class MailSummary extends Component
         foreach ($this->getActivities() as $record) {
             $renderService = new RenderService($record);
 
-            $outputHtml .= $renderService->getMail();
-            $outputPlaintext .= $renderService->getPlaintext();
+            $outputHtml .= $renderService->getMailHtml();
+            $outputPlaintext .= $renderService->getMailText();
         }
 
         if (empty($outputHtml)) {

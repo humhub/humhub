@@ -45,20 +45,20 @@ final class FollowActivity extends BaseActivity implements ConfigurableActivityI
         }
     }
 
-    protected function getMessageParamsText(): array
+    protected function getMessageParamsMailText(): array
     {
         return array_merge(
-            parent::getMessageParamsText(),
+            parent::getMessageParamsMailText(),
             [
                 'followedDisplayName' => $this->followedUser->displayName,
             ],
         );
     }
 
-    protected function getMessageParamsHtml(): array
+    protected function getMessageParamsWeb(): array
     {
         return array_merge(
-            parent::getMessageParamsHtml(),
+            parent::getMessageParamsWeb(),
             [
                 'followedDisplayName' => Html::strong(Html::encode($this->followedUser->displayName)),
             ],
