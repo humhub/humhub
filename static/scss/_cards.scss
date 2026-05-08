@@ -248,10 +248,9 @@
                     width: 98px;
                 }
 
-                .card-image-link {
-                    display: inline-block;
+                .profile-user-photo,
+                .space-acronym {
                     border: 2px solid var(--hh-background-color-main);
-                    border-radius: 6px;
                 }
 
                 .card-status {

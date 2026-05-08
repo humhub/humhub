@@ -11,8 +11,10 @@ namespace humhub\modules\content;
 use humhub\commands\CronController;
 use humhub\commands\IntegrityController;
 use humhub\components\Event;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\services\ContentSearchService;
+use humhub\modules\file\models\File;
 use humhub\modules\user\events\UserEvent;
 use Yii;
 use yii\base\BaseObject;
@@ -126,6 +128,17 @@ class Events extends BaseObject
         $content = $event->sender;
 
         (new ContentSearchService($content))->delete();
+    }
+
+    public static function onFileAfterNewStoredFile($event)
+    {
+        /* @var File $file */
+        $file = $event->sender;
+
+        $record = $file->getPolymorphicRelation();
+        if ($record instanceof ContentActiveRecord && $record->content instanceof Content) {
+            (new ContentSearchService($record->content))->update();
+        }
     }
 
     /**

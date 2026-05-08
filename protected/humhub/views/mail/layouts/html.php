@@ -20,10 +20,13 @@ $hasMailHeaderImage = MailHeaderImage::hasImage();
 
 $backgroundColorMain = MailStyleHelper::getBackgroundColorMain();
 $backgroundColorPage = MailStyleHelper::getBackgroundColorPage();
+$backgroundColorSecondary = MailStyleHelper::getBackgroundColorSecondary();
 $colorPrimary = MailStyleHelper::getColorPrimary();
 $colorInfo = MailStyleHelper::getColorInfo();
 $colorSoft2 = MailStyleHelper::getTextColorSoft2();
+$colorContrast = MailStyleHelper::getTextColorContrast();
 $fontFamily = MailStyleHelper::getFontFamily();
+$colorMain = MailStyleHelper::getTextColorMain();
 ?>
 
 <?php $this->beginPage() ?>
@@ -100,6 +103,10 @@ $fontFamily = MailStyleHelper::getFontFamily();
                     line-height: 100%;
                 }
 
+                p:last-child {
+                    margin: 0;
+                }
+
                 h1, h2, h3, h4, h5, h6 {
                     line-height: 100% !important;
                     -webkit-font-smoothing: antialiased;
@@ -121,6 +128,26 @@ $fontFamily = MailStyleHelper::getFontFamily();
                     border-collapse: collapse;
                 }
 
+                .content table {
+                    margin-bottom: 1.2em !important;
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+                .content table th, .content table td {
+                    border: 1px solid <?= $backgroundColorPage ?> !important;
+                    box-sizing: border-box;
+                }
+                .content table th {
+                    background-color: <?= $colorPrimary ?>;
+                    color: <?= $colorContrast ?> !important;
+                    padding: 10px 15px;
+                    font-weight: normal;
+                    text-align: inherit;
+                }
+                .content table td {
+                    padding: 15px;
+                }
+
                 .yshortcuts, .yshortcuts a, .yshortcuts a:link, .yshortcuts a:visited, .yshortcuts a:hover, .yshortcuts a span {
                     color: black;
                     text-decoration: none !important;
@@ -128,9 +155,39 @@ $fontFamily = MailStyleHelper::getFontFamily();
                     background: none !important;
                 }
 
+                pre {
+                    color: <?= $colorMain ?>;
+                    background-color: <?= $backgroundColorSecondary ?>;
+                    border-left: 2px solid <?= $colorPrimary ?>;
+                    padding: 10px 20px;
+                    margin: 0 0 1.2em;
+                }
+                pre code {
+                    color: <?= $colorMain ?>;
+                    background-color: <?= $backgroundColorSecondary ?>;
+                    word-break: normal;
+                    overflow-x: auto;
+                    display: block;
+                }
+
                 code {
                     white-space: normal;
                     word-break: break-all;
+                    padding: 4px 8px;
+                    background-color: #dbf5f8;
+                    color: #1e91a1;
+                    border-radius: 4px;
+                    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+                    line-height: 16px;
+                }
+
+                blockquote {
+                    background-color: rgba(128, 128, 128, .05);
+                    border-top-right-radius: 5px;
+                    border-bottom-right-radius: 5px;
+                    margin: 0 0 1.2em;
+                    padding: 15px 20px;
+                    border-left: 5px solid <?= $colorPrimary ?>;
                 }
 
                 span a {
