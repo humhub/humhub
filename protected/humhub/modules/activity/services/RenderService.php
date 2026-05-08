@@ -8,7 +8,7 @@ use Yii;
 
 class RenderService
 {
-    private BaseActivity $activity;
+    private readonly BaseActivity $activity;
 
     public function __construct(Activity $record)
     {

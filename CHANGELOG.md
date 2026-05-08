@@ -16,6 +16,7 @@ HumHub Changelog
 - Enh #5141: Added CLI command to delete disabled or soft deleted users
 - Enh #8100: Move `static` and `themes` into `protected/humhub`
 - Enh #8128: Exact search for user id in admin user search
+- Enh #8139: Update rector rules
 
 1.18.3 (TBD)
 ------------

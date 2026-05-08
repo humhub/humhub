@@ -73,7 +73,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         // Handle mentioned users
         // Execute before NewCommentNotification to avoid double notification when mentioned.
         $processResult = RichText::postProcess($this->message, $this, 'message');
-        $mentionedUsers = (isset($processResult['mentioning'])) ? $processResult['mentioning'] : [];
+        $mentionedUsers = $processResult['mentioning'] ?? [];
 
         if ($insert) {
             $followerQuery = $this->content->getPolymorphicRelation()->getFollowersWithNotificationQuery();
@@ -83,9 +83,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
                 $followerQuery->andWhere([
                     'NOT IN',
                     'user.id',
-                    array_map(function (User $user) {
-                        return $user->id;
-                    }, $mentionedUsers),
+                    array_map(fn(User $user) => $user->id, $mentionedUsers),
                 ]);
             }
 

@@ -21,10 +21,10 @@ class ErrorController extends Controller
 {
     public $access = ControllerAccess::class;
 
-    private ?Throwable $exception;
+    private ?Throwable $exception = null;
 
-    private ?string $buttonLabel;
-    private ?string $buttonHref;
+    private ?string $buttonLabel = null;
+    private ?string $buttonHref = null;
 
     public function beforeAction($action)
     {

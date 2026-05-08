@@ -112,7 +112,7 @@ class LdapHelper
         if (isset($cleanAttributes['memberof'])) {
             $cleanAttributes['memberof'] = is_array($cleanAttributes['memberof'])
                 ? array_map('strtolower', $cleanAttributes['memberof'])
-                : [strtolower($cleanAttributes['memberof'])];
+                : [strtolower((string) $cleanAttributes['memberof'])];
         }
 
         return $cleanAttributes;
