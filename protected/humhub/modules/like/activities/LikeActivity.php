@@ -49,23 +49,23 @@ class LikeActivity extends BaseContentActivity implements ConfigurableActivityIn
         }
     }
 
-    protected function getMessageParamsHtml(): array
+    protected function getMessageParamsWeb(): array
     {
-        return array_merge(parent::getMessageParamsHtml(), [
+        return array_merge(parent::getMessageParamsWeb(), [
             'content' => ContentHelper::getContentInfo($this->like->getContentOwnerObject(), true, $this->webContentLength),
         ]);
     }
 
-    protected function getMessageParamsText(): array
+    protected function getMessageParamsMailText(): array
     {
-        return array_merge(parent::getMessageParamsText(), [
+        return array_merge(parent::getMessageParamsMailText(), [
             'content' => ContentHelper::getContentInfo($this->like->getContentOwnerObject(), true, $this->mailContentLength),
         ]);
     }
 
-    protected function getMessageParamsHtmlMail(): array
+    protected function getMessageParamsMailHtml(): array
     {
-        return array_merge(parent::getMessageParamsHtmlMail(), [
+        return array_merge(parent::getMessageParamsMailHtml(), [
             'content' => ContentHelper::getContentInfo($this->like->getContentOwnerObject(), true, $this->mailContentLength),
         ]);
     }

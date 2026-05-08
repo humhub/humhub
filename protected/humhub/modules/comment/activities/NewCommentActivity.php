@@ -50,25 +50,25 @@ final class NewCommentActivity extends BaseContentActivity implements Configurab
         return Yii::t('CommentModule.base', '{displayName} wrote a new comment {comment}.', $params);
     }
 
-    protected function getMessageParamsHtml(): array
+    protected function getMessageParamsWeb(): array
     {
-        return array_merge(parent::getMessageParamsHtml(), [
+        return array_merge(parent::getMessageParamsWeb(), [
             'comment' => '"' . RichText::preview($this->comment->message, $this->webContentLength) . '"',
         ]);
     }
 
-    protected function getMessageParamsText(): array
+    protected function getMessageParamsMailText(): array
     {
-        return array_merge(parent::getMessageParamsText(), [
+        return array_merge(parent::getMessageParamsMailText(), [
             'comment' => "\n" . '"' . RichTextToPlainTextConverter::process($this->comment->message, [
                 RichTextToPlainTextConverter::OPTION_MAX_LENGTH => $this->mailContentLength,
             ]) . '"',
         ]);
     }
 
-    protected function getMessageParamsHtmlMail(): array
+    protected function getMessageParamsMailHtml(): array
     {
-        return array_merge(parent::getMessageParamsHtmlMail(), [
+        return array_merge(parent::getMessageParamsMailHtml(), [
             'comment' => '"' . RichText::preview($this->comment->message, $this->mailContentLength) . '"',
         ]);
     }
