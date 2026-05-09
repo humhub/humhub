@@ -33,6 +33,20 @@ class MobileAppHelper
         self::sendFlutterMessage($message);
     }
 
+    public static function sendAuthClientRedirect(string $url): void
+    {
+        if (!DeviceDetectorHelper::isAppRequest()) {
+            return;
+        }
+
+        $message = Json::encode([
+            'type' => 'authClientRedirect',
+            'url' => $url,
+        ]);
+
+        self::sendFlutterMessage($message);
+    }
+
     /**
      * @deprecated Remove in 1.19
      */
