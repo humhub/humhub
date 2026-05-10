@@ -12,12 +12,15 @@ namespace humhub\helpers;
 use Detection\Exception\MobileDetectException;
 use Detection\MobileDetect;
 use Yii;
+use yii\helpers\Json;
 
 /**
  * @since 1.17
  */
 class DeviceDetectorHelper
 {
+    public const MOBILE_APP_FEATURE_AUTH_CLIENT_REDIRECT = 'auth_client_redirect';
+
     public static function isMobile(): bool
     {
         try {
@@ -65,6 +68,47 @@ class DeviceDetectorHelper
         return
             Yii::$app->request->headers->get('x-requested-with', null, true) === 'com.humhub.app'
             || Yii::$app->request->headers->has('x-humhub-app');
+    }
+
+    /**
+     * @since 1.18.3
+     */
+    public static function getAppVersion(): ?string
+    {
+        return Yii::$app->request->headers->get('x-humhub-app', '', true);
+    }
+
+    /**
+     * Returns the list of features supported by the app
+     *
+     * @since 1.18.3
+     */
+    public static function getAppFeatures(): ?array
+    {
+        $featureFlags = Yii::$app->request->headers->get('x-humhub-app-feature-flags', '', true);
+        return $featureFlags ? (array) Json::decode($featureFlags) : null;
+    }
+
+    /**
+     * Checks if the app supports a specific feature
+     *
+     * @since 1.18.3
+     */
+    public static function hasFeature(string $featureKey): bool
+    {
+        $features = static::getAppFeatures();
+        if (!$features) {
+            return false;
+        }
+        foreach ($features as $feature) {
+            if (
+                $feature['key'] === $featureKey
+                && $feature['value'] === 'true'
+            ) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

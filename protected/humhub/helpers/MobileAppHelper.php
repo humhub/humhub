@@ -33,9 +33,17 @@ class MobileAppHelper
         self::sendFlutterMessage($message);
     }
 
+    /**
+     * Send a URL to the mobile app, which will then redirect to the Flutter WebView.
+     *
+     * @since 1.18.3
+     */
     public static function sendAuthClientRedirect(string $url): void
     {
-        if (!DeviceDetectorHelper::isAppRequest()) {
+        if (
+            !DeviceDetectorHelper::isAppRequest()
+            || !DeviceDetectorHelper::hasFeature(DeviceDetectorHelper::MOBILE_APP_FEATURE_AUTH_CLIENT_REDIRECT)
+        ) {
             return;
         }
 

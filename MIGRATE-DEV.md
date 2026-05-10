@@ -1,6 +1,15 @@
 Module Migration Guide
 ======================
 
+Version 1.18.3
+------------
+
+### New
+- `\humhub\helpers\MobileAppHelper::sendAuthClientRedirect()` to send a redirect to the SSO inside the mobile app
+- `\humhub\helpers\DeviceDetectorHelper::getAppVersion()` to get the mobile app version
+- `\humhub\helpers\DeviceDetectorHelper::getAppFeatures()` to get the supported features of the mobile app
+- `\humhub\helpers\DeviceDetectorHelper::hasFeature()` to checks if the app supports a specific feature
+
 Version 1.18.1
 ------------
 

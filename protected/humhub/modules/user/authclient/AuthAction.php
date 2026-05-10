@@ -43,7 +43,12 @@ class AuthAction extends \yii\authclient\AuthAction
         // When called from the mobile app, intercept the server-side redirect to the OAuth
         // provider and hand the URL to the Flutter WebView via postMessage instead, so the
         // app can open it in the in-app-browser.
-        if (DeviceDetectorHelper::isAppRequest() && $response->getStatusCode() >= 300 && $response->getStatusCode() < 400) {
+        if (
+            DeviceDetectorHelper::isAppRequest()
+            && DeviceDetectorHelper::hasFeature(DeviceDetectorHelper::MOBILE_APP_FEATURE_AUTH_CLIENT_REDIRECT)
+            && $response->getStatusCode() >= 300
+            && $response->getStatusCode() < 400
+        ) {
             $redirectUrl = $response->headers->get('Location');
             if ($redirectUrl !== null) {
                 // Reset the redirect response so we can render a normal HTML page.
