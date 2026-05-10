@@ -34,6 +34,28 @@ class MobileAppHelper
     }
 
     /**
+     * Send a URL to the mobile app, which will then redirect to the Flutter WebView.
+     *
+     * @since 1.18.3
+     */
+    public static function sendAuthClientRedirect(string $url): void
+    {
+        if (
+            !DeviceDetectorHelper::isAppRequest()
+            || !DeviceDetectorHelper::hasFeature(DeviceDetectorHelper::MOBILE_APP_FEATURE_AUTH_CLIENT_REDIRECT)
+        ) {
+            return;
+        }
+
+        $message = Json::encode([
+            'type' => 'authClientRedirect',
+            'url' => $url,
+        ]);
+
+        self::sendFlutterMessage($message);
+    }
+
+    /**
      * @deprecated Remove in 1.19
      */
     public static function getFileUploadSettings(): void
