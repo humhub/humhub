@@ -73,7 +73,7 @@ class LdapService
         $result = $this->connection->query()
             ->select('dn')
             ->rawFilter($this->config->userFilter)
-            ->orFilter(function ($query) use ($usernameOrEmail) {
+            ->orFilter(function ($query) use ($usernameOrEmail): void {
                 $query->where($this->config->usernameAttribute, '=', $usernameOrEmail)
                     ->where($this->config->emailAttribute, '=', $usernameOrEmail);
             })
@@ -130,7 +130,7 @@ class LdapService
             ->rawFilter($searchQuery);
 
         foreach ($query->paginate($this->getPageSize()) as $entity) {
-            $results[] = strtolower($entity['dn']);
+            $results[] = strtolower((string) $entity['dn']);
         }
 
         return $results;

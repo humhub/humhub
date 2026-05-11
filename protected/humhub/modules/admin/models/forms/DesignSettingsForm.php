@@ -239,7 +239,7 @@ class DesignSettingsForm extends Model
             $compiler = new Compiler();
 
             // Block any @import or @use on direct files
-            $compiler->addImportPath(function () {
+            $compiler->addImportPath(function (): void {
                 throw new RuntimeException("Import blocked: only external URLs are allowed");
             });
 

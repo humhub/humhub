@@ -19,7 +19,7 @@ use yii\db\Expression;
 
 class LikeService
 {
-    private Content $content;
+    private readonly Content $content;
     private ?ContentAddonActiveRecord $contentAddon = null;
     private ?User $user;
     private ?int $_count = null;

@@ -10,15 +10,12 @@ use Yii;
 
 final class BootstrapService
 {
-    private bool $debug;
     private string $humhubPath = __DIR__ . '/..';
     private string $configPath = __DIR__ . '/../../config';
     private string $vendorPath = __DIR__ . '/../../vendor';
 
-    public function __construct(bool $debug = false)
+    public function __construct(private readonly bool $debug = false)
     {
-        $this->debug = $debug;
-
         if (!empty($_ENV['HUMHUB_ALIASES__HUMHUB'])) {
             $this->humhubPath = $_ENV['HUMHUB_ALIASES__HUMHUB'];
         }

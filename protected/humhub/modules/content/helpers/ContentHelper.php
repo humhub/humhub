@@ -16,9 +16,9 @@ final class ContentHelper
      * This is a combination of the type of the content with a short preview
      * of it.
      */
-    public static function getContentInfo(ContentOwner $content, $withContentName = true): string
+    public static function getContentInfo(ContentOwner $content, $withContentName = true, int $maxLength = 60): string
     {
-        $info = self::getContentPreview($content, 60);
+        $info = self::getContentPreview($content, $maxLength);
 
         if (empty($info)) {
             return '';
@@ -40,7 +40,7 @@ final class ContentHelper
      *
      *  If no $content is provided the contentPreview of $source is returned.
      */
-    public static function getContentPreview(ContentOwner $content, $maxLength = 60): string
+    public static function getContentPreview(ContentOwner $content, int $maxLength = 60): string
     {
         return RichTextToShortTextConverter::process($content->getContentDescription(), [
             RichTextToShortTextConverter::OPTION_MAX_LENGTH => $maxLength,

@@ -325,14 +325,14 @@ SCSS;
 
         // Normalize both
         $scssNormalized = preg_replace('/\/\*.*?\*\//s', '', $scss);
-        $scssNormalized = preg_replace('/\/\/.*$/m', '', $scssNormalized);
-        $scssNormalized = preg_replace('/\n\s*\n+/', "\n", trim($scssNormalized));
+        $scssNormalized = preg_replace('/\/\/.*$/m', '', (string) $scssNormalized);
+        $scssNormalized = preg_replace('/\n\s*\n+/', "\n", trim((string) $scssNormalized));
 
         $reconstructedNormalized = preg_replace('/\n\s*\n+/', "\n", trim($reconstructed));
 
         // Count lines
-        $originalLines = count(array_filter(explode("\n", $scssNormalized)));
-        $reconstructedLines = count(array_filter(explode("\n", $reconstructedNormalized)));
+        $originalLines = count(array_filter(explode("\n", (string) $scssNormalized)));
+        $reconstructedLines = count(array_filter(explode("\n", (string) $reconstructedNormalized)));
 
         $this->assertEquals(
             $originalLines,

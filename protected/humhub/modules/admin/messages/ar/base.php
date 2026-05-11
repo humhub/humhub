@@ -68,7 +68,7 @@ return [
   'Statistics' => 'الإحصاءات',
   'The cron job for the background jobs (queue) does not seem to work properly.' => 'يبدو أن الوظائف التلقائية لوظائف الخلفية (قائمة الانتظار) لا تعمل بشكل صحيح.',
   'The cron job for the regular tasks (cron) does not seem to work properly.' => 'الوظائف التلقائية  للوظائف العادية لا يبدو أنها تعمل بشكل صحيح.',
-  'The mobile app push service is not available. Please install and configure the "Push Notifications" module.' => '',
+  'The mobile app push service is not available. Please install and configure the "Push Notifications" module.' => 'خدمة الإشعارات الفورية لتطبيق الهاتف غير متاحة. يرجى تثبيت وتكوين وحدة "الإشعارات الفورية".',
   'This overview shows you all installed modules and allows you to enable, disable, configure and of course uninstall them. To discover new modules, take a look into our Marketplace. Please note that deactivating or uninstalling a module will result in the loss of any content that was created with that module.' => 'توضح لك هذه النظرة العامة جميع الوحدات المثبتة وتسمح لك بتمكينها وتعطيلها وتكوينها وبالطبع إلغاء تثبيتها. لاكتشاف وحدات جديدة، قم بإلقاء نظرة على السوق الخاص بنا. يرجى ملاحظة أن إلغاء تنشيط الوحدة النمطية أو إلغاء تثبيتها سيؤدي إلى فقدان أي محتوى تم إنشاؤه باستخدام تلك الوحدة.',
   'Topics' => 'المواضيع',
   'Uninstall' => 'إلغاء التثبيت',

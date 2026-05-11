@@ -13,7 +13,7 @@ use yii\base\InvalidValueException;
 
 final class FollowActivity extends BaseActivity implements ConfigurableActivityInterface
 {
-    private User $followedUser;
+    private readonly User $followedUser;
 
     public function __construct(Activity $record, $config = [])
     {
@@ -45,20 +45,20 @@ final class FollowActivity extends BaseActivity implements ConfigurableActivityI
         }
     }
 
-    protected function getMessageParamsText(): array
+    protected function getMessageParamsMailText(): array
     {
         return array_merge(
-            parent::getMessageParamsText(),
+            parent::getMessageParamsMailText(),
             [
                 'followedDisplayName' => $this->followedUser->displayName,
             ],
         );
     }
 
-    protected function getMessageParamsHtml(): array
+    protected function getMessageParamsWeb(): array
     {
         return array_merge(
-            parent::getMessageParamsHtml(),
+            parent::getMessageParamsWeb(),
             [
                 'followedDisplayName' => Html::strong(Html::encode($this->followedUser->displayName)),
             ],
@@ -68,7 +68,7 @@ final class FollowActivity extends BaseActivity implements ConfigurableActivityI
     public function getGroupingQuery(): ?ActiveQueryActivity
     {
         return Activity::find()
-            ->andWhere(['activity.class' => static::class])
+            ->andWhere(['activity.class' => self::class])
             ->andWhere(['activity.contentcontainer_id' => $this->record->contentcontainer_id]);
     }
 }

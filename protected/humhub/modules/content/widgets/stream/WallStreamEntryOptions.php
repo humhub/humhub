@@ -250,8 +250,8 @@ class WallStreamEntryOptions extends StreamEntryOptions
      */
     public function isContextMenuEntryDisabled(MenuEntry $entry)
     {
-        return (isset($this->controlsMenuOptions[$entry->getId()]) && $this->controlsMenuOptions[$entry->getId()] === false)
-            || (isset($this->controlsMenuOptions[$entry->getEntryClass()]) && $this->controlsMenuOptions[$entry->getEntryClass()] === false);
+        return (isset($this->controlsMenuOptions[$entry->getId() ?? '']) && $this->controlsMenuOptions[$entry->getId()] === false)
+            || (isset($this->controlsMenuOptions[$entry->getEntryClass() ?? '']) && $this->controlsMenuOptions[$entry->getEntryClass()] === false);
     }
 
     /**

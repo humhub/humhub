@@ -40,19 +40,19 @@ abstract class BaseActivity extends BaseObject
 
     abstract protected function getMessage(array $params): string;
 
-    final public function asText(): string
+    final public function asMailText(): string
     {
-        return $this->getMessage($this->getMessageParamsText());
+        return $this->getMessage($this->getMessageParamsMailText());
     }
 
-    final public function asHtml(): string
+    final public function asWeb(): string
     {
-        return $this->getMessage($this->getMessageParamsHtml());
+        return $this->getMessage($this->getMessageParamsWeb());
     }
 
-    final public function asHtmlMail(): string
+    final public function asMailHtml(): string
     {
-        return $this->getMessage($this->getMessageParamsHtmlMail());
+        return $this->getMessage($this->getMessageParamsMailHtml());
     }
 
     public function getUrl(bool $scheme = true): ?string
@@ -60,7 +60,7 @@ abstract class BaseActivity extends BaseObject
         return $this->contentContainer->polymorphicRelation->getUrl($scheme);
     }
 
-    protected function getMessageParamsText(): array
+    protected function getMessageParamsMailText(): array
     {
         return [
             'displayName' => $this->user->displayName,
@@ -69,20 +69,17 @@ abstract class BaseActivity extends BaseObject
         ];
     }
 
-    protected function getMessageParamsHtml(): array
+    protected function getMessageParamsWeb(): array
     {
-        return array_merge($this->getMessageParamsText(), [
+        return array_merge($this->getMessageParamsMailText(), [
             'displayName' => Html::strong(Html::encode($this->user->displayName)),
             'displayNames' => $this->formatDisplayNames(fn($dn) => Html::strong(Html::encode($dn))),
         ]);
     }
 
-    protected function getMessageParamsHtmlMail(): array
+    protected function getMessageParamsMailHtml(): array
     {
-        return array_merge($this->getMessageParamsHtml(), [
-            'displayName' => Html::strong(Html::encode($this->user->displayName)),
-            'displayNames' => $this->formatDisplayNames(fn($dn) => Html::strong(Html::encode($dn))),
-        ]);
+        return $this->getMessageParamsWeb();
     }
 
     protected function formatDisplayNames(callable $formatter): string

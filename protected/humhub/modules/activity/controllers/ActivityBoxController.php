@@ -25,7 +25,7 @@ class ActivityBoxController extends ContentContainerController
             $query->andWhere(['<', Activity::tableName() . '.id', $lastActivityId]);
         }
 
-        $activities = array_map(fn($activity) => ActivityBox::renderActivity($activity), $query->all());
+        $activities = array_map(ActivityBox::renderActivity(...), $query->all());
 
         return $this->asJson([
             'activities' => $activities,
