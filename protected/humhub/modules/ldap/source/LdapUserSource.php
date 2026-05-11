@@ -10,6 +10,9 @@ namespace humhub\modules\ldap\source;
 
 use Exception;
 use humhub\modules\ldap\authclient\LdapAuth;
+use humhub\modules\ldap\connection\LdapConnectionConfig;
+use humhub\modules\ldap\Module;
+use humhub\modules\ldap\services\LdapService;
 use humhub\modules\user\models\Auth;
 use humhub\modules\user\models\forms\Registration;
 use humhub\modules\user\models\ProfileField;
@@ -18,45 +21,82 @@ use humhub\modules\user\services\AuthClientService;
 use humhub\modules\user\source\BaseUserSource;
 use humhub\modules\user\source\UserSourceInterface;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\helpers\VarDumper;
 
 /**
- * LdapUserSource manages user provisioning for LDAP-sourced users.
+ * LdapUserSource manages provisioning for users from a single LDAP connection.
  *
- * Responsible for creating, updating and deleting LDAP users in HumHub.
- * Stores LDAP user associations in the user_auth table.
+ * One instance per connection ID — the source is created/registered by the
+ * LDAP module's bootstrap based on the {@see LdapConnectionRegistry}.
  *
  * @since 1.19
  */
 class LdapUserSource extends BaseUserSource
 {
     /**
-     * Default allow list — only LDAP itself; configurable via LdapSettings.
+     * @var string|null The connection (and source) ID this source provisions for.
+     * Required — must match an entry in {@see LdapConnectionRegistry}.
      */
-    public array $allowedAuthClientIds = ['ldap'];
+    public ?string $connectionId = null;
 
-    public function __construct(public readonly LdapAuth $authClient, array $config = [])
+    public function init()
     {
-        parent::__construct($config);
+        parent::init();
+
+        if ($this->connectionId === null || $this->connectionId === '') {
+            throw new InvalidConfigException(self::class . ' requires a non-empty $connectionId.');
+        }
+        if ($this->id === '') {
+            $this->id = $this->connectionId;
+        }
+        if ($this->allowedAuthClientIds === []) {
+            $this->allowedAuthClientIds = [$this->connectionId];
+        }
     }
 
     public function getId(): string
     {
-        return $this->authClient->getId();
+        return $this->id;
     }
 
     public function getTitle(): string
     {
-        return 'LDAP (' . $this->authClient->getId() . ')';
+        return $this->title !== '' ? $this->title : $this->getConfig()->title;
+    }
+
+    public function getConfig(): LdapConnectionConfig
+    {
+        return $this->getModule()->getConnectionRegistry()->getConfig($this->connectionId);
+    }
+
+    public function getLdapService(): LdapService
+    {
+        return $this->getModule()->getConnectionRegistry()->getService($this->connectionId);
+    }
+
+    private function getModule(): Module
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('ldap');
+        return $module;
     }
 
     /**
-     * Returns attributes managed by LDAP (profile fields with ldap_attribute set
-     * plus user-table attributes configured in syncUserTableAttributes).
+     * Resolves the AuthClient that maps LDAP attributes for this source.
+     * The AuthClient handles the normalisation logic (id/username/email/profile
+     * fields), even when sync runs independently of an actual login.
      */
+    private function getAuthClient(): LdapAuth
+    {
+        /** @var LdapAuth $client */
+        $client = Yii::$app->authClientCollection->getClient($this->connectionId);
+        return $client;
+    }
+
     public function getManagedAttributes(): array
     {
-        $attributes = $this->authClient->syncUserTableAttributes;
+        $attributes = $this->getConfig()->syncUserTableAttributes;
 
         foreach (ProfileField::find()->andWhere(['!=', 'ldap_attribute', ''])->all() as $profileField) {
             $attributes[] = $profileField->internal_name;
@@ -126,7 +166,7 @@ class LdapUserSource extends BaseUserSource
     private function buildRegistration(array $attributes): ?Registration
     {
         $registration = new Registration(enableEmailField: true, enablePasswordForm: false);
-        $registration->enableUserApproval = $this->requiresApproval($this->authClient->getId());
+        $registration->enableUserApproval = $this->requiresApproval($this->connectionId);
 
         unset(
             $attributes['id'],
@@ -164,10 +204,8 @@ class LdapUserSource extends BaseUserSource
                 } elseif ($user->profile->hasAttribute($attributeName)) {
                     $user->profile->setAttribute($attributeName, $attributes[$attributeName]);
                 }
-            } else {
-                if ($user->profile->hasAttribute($attributeName)) {
-                    $user->profile->setAttribute($attributeName, '');
-                }
+            } elseif ($user->profile->hasAttribute($attributeName)) {
+                $user->profile->setAttribute($attributeName, '');
             }
         }
 
@@ -198,19 +236,30 @@ class LdapUserSource extends BaseUserSource
      */
     public function syncUsers(): void
     {
-        if ($this->authClient->autoRefreshUsers !== true) {
+        $config = $this->getConfig();
+        if (!$config->autoRefreshUsers) {
             return;
         }
 
         try {
+            $service = $this->getLdapService();
+            $authClient = $this->getAuthClient();
+
             $ids = [];
 
-            foreach ($this->authClient->getLdapService()->getAuthClients() as $dn => $authClient) {
-                $authClientService = new AuthClientService($authClient);
+            foreach ($service->getAllUserEntries() as $entry) {
+                $dn = $entry['dn'] ?? '?';
+
+                // Each entry gets its own client clone so attribute state doesn't leak.
+                $clientForUser = clone $authClient;
+                $clientForUser->init();
+                $clientForUser->setUserAttributes($entry);
+
+                $authClientService = new AuthClientService($clientForUser);
                 $user = $authClientService->getUser();
+                $attributes = $clientForUser->getUserAttributes();
 
                 if ($user === null) {
-                    $attributes = $authClient->getUserAttributes();
                     $user = $this->createUser($attributes);
                     if ($user === null) {
                         Yii::warning('Could not automatically create LDAP user - DN: ' . $dn, 'ldap');
@@ -220,38 +269,51 @@ class LdapUserSource extends BaseUserSource
                     $authClientService->updateUser($user);
                 }
 
-                $attributes = $authClient->getUserAttributes();
                 if (isset($attributes['id'])) {
                     $ids[] = $attributes['id'];
                 }
             }
 
-            if ($this->authClient->idAttribute !== null) {
-                foreach ((new AuthClientService($this->authClient))->getUsersQuery()->each() as $user) {
-                    $ldapId = Auth::find()
-                        ->select('source_id')
-                        ->where(['user_id' => $user->id, 'source' => $this->getId()])
-                        ->scalar();
-
-                    $foundInLdap = $ldapId !== null && in_array($ldapId, $ids);
-
-                    if ($foundInLdap && $user->status === User::STATUS_DISABLED) {
-                        $this->enableUser($user);
-                        Yii::info(
-                            'Enabled user: ' . $user->username . ' (' . $user->id . ') - Found in LDAP!',
-                            'ldap',
-                        );
-                    } elseif (!$foundInLdap && $user->status == User::STATUS_ENABLED) {
-                        $this->deleteUser($user);
-                        Yii::warning(
-                            'Disabled user: ' . $user->username . ' (' . $user->id . ') - Not found in LDAP!',
-                            'ldap',
-                        );
-                    }
-                }
-            }
+            $this->syncUserStatuses($ids);
         } catch (Exception $ex) {
             Yii::error('An error occurred while LDAP user sync: ' . $ex->getMessage(), 'ldap');
+        }
+    }
+
+    /**
+     * Re-enables users present in LDAP and disables users no longer found.
+     * No-op when the connection has no idAttribute (we'd risk re-enabling users
+     * that haven't been mapped yet).
+     */
+    private function syncUserStatuses(array $ldapIds): void
+    {
+        if ($this->getConfig()->idAttribute === null) {
+            return;
+        }
+
+        $query = User::find()->andWhere(['user_source' => $this->getId()]);
+
+        foreach ($query->each() as $user) {
+            $ldapId = Auth::find()
+                ->select('source_id')
+                ->where(['user_id' => $user->id, 'source' => $this->getId()])
+                ->scalar();
+
+            $foundInLdap = $ldapId !== null && in_array($ldapId, $ldapIds, true);
+
+            if ($foundInLdap && $user->status === User::STATUS_DISABLED) {
+                $this->enableUser($user);
+                Yii::info(
+                    'Enabled user: ' . $user->username . ' (' . $user->id . ') - Found in LDAP!',
+                    'ldap',
+                );
+            } elseif (!$foundInLdap && $user->status === User::STATUS_ENABLED) {
+                $this->deleteUser($user);
+                Yii::warning(
+                    'Disabled user: ' . $user->username . ' (' . $user->id . ') - Not found in LDAP!',
+                    'ldap',
+                );
+            }
         }
     }
 }

@@ -9,7 +9,7 @@
 namespace humhub\modules\ldap\models;
 
 use humhub\components\SettingsManager;
-use humhub\modules\ldap\authclient\LdapAuth;
+use humhub\modules\ldap\connection\LdapConnectionConfig;
 use humhub\modules\user\authclient\Collection;
 use Yii;
 use yii\base\Model;
@@ -252,46 +252,33 @@ class LdapSettings extends Model
 
 
     /**
-     * Returns a configured LdapAuth class definition
+     * Returns an LdapConnectionConfig populated from the saved settings.
+     * The default 'ldap' connection in {@see LdapConnectionRegistry} is built
+     * from this config.
      *
-     * @return array the LDAP Auth definition
+     * @since 1.19
      */
-    public function getLdapAuthDefinition()
+    public function getConnectionConfig(): LdapConnectionConfig
     {
-        $this->ignoredDNs = str_replace("\r", '', $this->ignoredDNs);
+        $ignoredDNs = explode("\n", strtolower(str_replace("\r", '', $this->ignoredDNs ?? '')));
 
-        return [
-            'class' => LdapAuth::class,
-            'hostname' => $this->hostname,
-            'port' => $this->port,
-            'bindUsername' => $this->username,
-            'bindPassword' => $this->password,
+        return new LdapConnectionConfig([
+            'title' => 'LDAP',
+            'hostname' => (string)$this->hostname,
+            'port' => (int)$this->port,
             'useSsl' => ($this->encryption === 'ssl'),
             'useStartTls' => ($this->encryption === 'tls'),
-            'disableCertificateChecking' => $this->disableCertificateChecking,
-            'baseDn' => $this->baseDn,
-            'userFilter' => $this->userFilter,
+            'disableCertificateChecking' => (bool)$this->disableCertificateChecking,
+            'bindUsername' => (string)$this->username,
+            'bindPassword' => (string)$this->password,
+            'baseDn' => (string)$this->baseDn,
+            'userFilter' => (string)$this->userFilter,
             'autoRefreshUsers' => (bool)$this->refreshUsers,
-            'emailAttribute' => $this->emailAttribute,
-            'usernameAttribute' => $this->usernameAttribute,
-            'idAttribute' => $this->idAttribute,
-            'ignoredDNs' => explode("\n", strtolower($this->ignoredDNs)),
-        ];
-    }
-
-    /**
-     * Returns the configured `LdapUserSource` definition for runtime registration.
-     *
-     * Encapsulates UserSource-specific settings (currently `allowedAuthClientIds`)
-     * so that LdapAuth itself can stay free of HumHub-specific properties.
-     *
-     * @return array
-     */
-    public function getLdapUserSourceDefinition(): array
-    {
-        return [
-            'allowedAuthClientIds' => $this->allowedAuthClientIds,
-        ];
+            'emailAttribute' => $this->emailAttribute ?: 'mail',
+            'usernameAttribute' => $this->usernameAttribute ?: 'samaccountname',
+            'idAttribute' => $this->idAttribute ?: null,
+            'ignoredDNs' => $ignoredDNs,
+        ]);
     }
 
     /**

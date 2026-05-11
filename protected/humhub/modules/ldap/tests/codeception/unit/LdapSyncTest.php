@@ -3,25 +3,29 @@
 namespace tests\codeception\unit;
 
 use humhub\modules\ldap\authclient\LdapAuth;
+use humhub\modules\ldap\connection\LdapConnectionConfig;
+use humhub\modules\ldap\connection\LdapConnectionRegistry;
+use humhub\modules\ldap\Module;
 use humhub\modules\ldap\services\LdapService;
 use humhub\modules\ldap\source\LdapUserSource;
 use humhub\modules\user\models\Auth;
 use humhub\modules\user\models\User;
+use humhub\modules\user\source\UserSourceCollection;
 use tests\codeception\_support\HumHubDbTestCase;
+use Yii;
 
 /**
- * Integration tests for the LDAP user-sync feature ({@see LdapAuth::syncUsers()}).
+ * Integration tests for the LDAP user-sync feature ({@see LdapUserSource::syncUsers()}).
  *
  * These tests verify that running syncUsers() against the test OpenLDAP container
  * (seeded via .github/ldap/init.ldif) correctly creates, updates, and disables
  * HumHub users.
  *
- * The tests are skipped when LDAP_TEST_HOST is not set.
- * A database with the default HumHub fixtures is required (loaded by HumHubDbTestCase).
+ * Skipped when LDAP_TEST_HOST is not set.
  */
 class LdapSyncTest extends HumHubDbTestCase
 {
-    private LdapAuth $ldapAuth;
+    private LdapConnectionConfig $ldapConfig;
     private LdapUserSource $ldapUserSource;
 
     protected function _before(): void
@@ -34,15 +38,49 @@ class LdapSyncTest extends HumHubDbTestCase
             );
         }
 
-        $this->ldapAuth = $this->createTestLdapAuth();
-        $this->ldapUserSource = new LdapUserSource($this->ldapAuth);
+        $this->ldapConfig = $this->createTestConfig(false);
+        $this->installConnection();
 
         try {
-            // Verify connectivity; LdapService constructor calls connect()
-            new LdapService($this->ldapAuth);
+            // Verify connectivity
+            new LdapService($this->ldapConfig);
         } catch (\Exception $e) {
             $this->markTestSkipped('Cannot connect to LDAP server: ' . $e->getMessage());
         }
+
+        // Register AuthClient (sync needs it for attribute normalisation)
+        Yii::$app->authClientCollection->setClient('ldap', [
+            'class' => LdapAuth::class,
+            'connectionId' => 'ldap',
+            'clientId' => 'ldap',
+        ]);
+
+        // Register a fresh UserSourceCollection that contains the LDAP source
+        $sourceCollection = new UserSourceCollection();
+        $sourceCollection->setUserSources([
+            'ldap' => [
+                'class' => LdapUserSource::class,
+                'connectionId' => 'ldap',
+                'allowedAuthClientIds' => ['ldap'],
+            ],
+        ]);
+        Yii::$app->set('userSourceCollection', $sourceCollection);
+
+        $this->ldapUserSource = $sourceCollection->getUserSource('ldap');
+    }
+
+    private function installConnection(): void
+    {
+        $registry = new LdapConnectionRegistry();
+        $registry->setConfigs(['ldap' => $this->ldapConfig]);
+        /** @var Module $module */
+        $module = Yii::$app->getModule('ldap');
+        $module->setConnectionRegistry($registry);
+    }
+
+    private function enableAutoRefresh(): void
+    {
+        $this->ldapConfig->autoRefreshUsers = true;
     }
 
     // ---------------------------------------------------------------------------
@@ -51,7 +89,7 @@ class LdapSyncTest extends HumHubDbTestCase
 
     public function testSyncCreatesNewLdapUsers(): void
     {
-        $this->ldapAuth->autoRefreshUsers = true;
+        $this->enableAutoRefresh();
 
         $beforeCount = $this->countLdapUsers();
 
@@ -68,7 +106,7 @@ class LdapSyncTest extends HumHubDbTestCase
 
     public function testSyncCreatesUserWithCorrectEmail(): void
     {
-        $this->ldapAuth->autoRefreshUsers = true;
+        $this->enableAutoRefresh();
         $this->ldapUserSource->syncUsers();
 
         $john = User::findOne(['email' => 'john@example.org']);
@@ -78,7 +116,7 @@ class LdapSyncTest extends HumHubDbTestCase
 
     public function testSyncCreatesUserWithCorrectUsername(): void
     {
-        $this->ldapAuth->autoRefreshUsers = true;
+        $this->enableAutoRefresh();
         $this->ldapUserSource->syncUsers();
 
         $jane = User::findOne(['email' => 'jane@example.org']);
@@ -92,13 +130,12 @@ class LdapSyncTest extends HumHubDbTestCase
 
     public function testSyncSetsSourceIdInUserAuthFromIdAttribute(): void
     {
-        $this->ldapAuth->autoRefreshUsers = true;
+        $this->enableAutoRefresh();
         $this->ldapUserSource->syncUsers();
 
         $john = User::findOne(['email' => 'john@example.org']);
         $this->assertNotNull($john);
 
-        // idAttribute is 'uid', so user_auth.source_id should equal the LDAP uid
         $auth = Auth::findOne(['source' => 'ldap', 'user_id' => $john->id]);
         $this->assertNotNull($auth, 'A user_auth entry should exist for the synced LDAP user.');
         $this->assertSame('john.doe', $auth->source_id);
@@ -110,13 +147,9 @@ class LdapSyncTest extends HumHubDbTestCase
 
     public function testSyncDisablesUserNotFoundInLdap(): void
     {
-        // Run an initial sync so that any existing LDAP users are properly created
-        $this->ldapAuth->autoRefreshUsers = true;
+        $this->enableAutoRefresh();
         $this->ldapUserSource->syncUsers();
 
-        // Use a freshly synced LDAP user (john.doe) as the ghost candidate.
-        // Override source_id in user_auth to a value that does not exist in LDAP
-        // so that the next sync run cannot match it and must disable the account.
         $ghostUser = User::findOne(['email' => 'john@example.org']);
         $this->assertNotNull($ghostUser);
 
@@ -125,7 +158,6 @@ class LdapSyncTest extends HumHubDbTestCase
             ['user_id' => $ghostUser->id, 'source' => 'ldap'],
         );
 
-        // Re-run sync – the ghost user has a source_id that doesn't exist in LDAP
         $this->ldapUserSource->syncUsers();
 
         $ghostUser->refresh();
@@ -142,19 +174,16 @@ class LdapSyncTest extends HumHubDbTestCase
 
     public function testSyncReEnablesDisabledUserFoundAgainInLdap(): void
     {
-        // First sync to create john.doe in HumHub
-        $this->ldapAuth->autoRefreshUsers = true;
+        $this->enableAutoRefresh();
         $this->ldapUserSource->syncUsers();
 
         $john = User::findOne(['email' => 'john@example.org']);
         $this->assertNotNull($john);
 
-        // Manually disable the user (simulating a previous removal)
         $john->status = User::STATUS_DISABLED;
         $john->save(false);
         $this->assertSame(User::STATUS_DISABLED, $john->status);
 
-        // Sync again – john.doe still exists in LDAP, so the user must be re-enabled
         $this->ldapUserSource->syncUsers();
 
         $john->refresh();
@@ -171,7 +200,7 @@ class LdapSyncTest extends HumHubDbTestCase
 
     public function testSyncDoesNothingWhenAutoRefreshIsDisabled(): void
     {
-        $this->ldapAuth->autoRefreshUsers = false;
+        $this->ldapConfig->autoRefreshUsers = false;
 
         $beforeCount = $this->countLdapUsers();
         $this->ldapUserSource->syncUsers();
@@ -189,19 +218,20 @@ class LdapSyncTest extends HumHubDbTestCase
         return (int) User::find()->where(['user_source' => 'ldap'])->count();
     }
 
-    private function createTestLdapAuth(): LdapAuth
+    private function createTestConfig(bool $autoRefresh): LdapConnectionConfig
     {
-        return new LdapAuth([
-            'hostname'          => getenv('LDAP_TEST_HOST'),
-            'port'              => (int)(getenv('LDAP_TEST_PORT') ?: 389),
-            'baseDn'            => getenv('LDAP_TEST_BASE_DN') ?: 'dc=example,dc=org',
-            'bindUsername'      => getenv('LDAP_TEST_BIND_DN') ?: 'cn=admin,dc=example,dc=org',
-            'bindPassword'      => getenv('LDAP_TEST_BIND_PASSWORD') ?: 'adminpassword',
-            'userFilter'        => getenv('LDAP_TEST_USER_FILTER') ?: '(objectClass=inetOrgPerson)',
+        return new LdapConnectionConfig([
+            'title' => 'LDAP Test',
+            'hostname' => getenv('LDAP_TEST_HOST'),
+            'port' => (int)(getenv('LDAP_TEST_PORT') ?: 389),
+            'baseDn' => getenv('LDAP_TEST_BASE_DN') ?: 'dc=example,dc=org',
+            'bindUsername' => getenv('LDAP_TEST_BIND_DN') ?: 'cn=admin,dc=example,dc=org',
+            'bindPassword' => getenv('LDAP_TEST_BIND_PASSWORD') ?: 'adminpassword',
+            'userFilter' => getenv('LDAP_TEST_USER_FILTER') ?: '(objectClass=inetOrgPerson)',
             'usernameAttribute' => getenv('LDAP_TEST_USERNAME_ATTRIBUTE') ?: 'uid',
-            'emailAttribute'    => 'mail',
-            'idAttribute'       => 'uid',
-            'autoRefreshUsers'  => false,
+            'emailAttribute' => 'mail',
+            'idAttribute' => 'uid',
+            'autoRefreshUsers' => $autoRefresh,
         ]);
     }
 }

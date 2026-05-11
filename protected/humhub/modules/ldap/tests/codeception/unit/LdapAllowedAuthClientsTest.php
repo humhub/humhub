@@ -2,7 +2,9 @@
 
 namespace tests\codeception\unit;
 
-use humhub\modules\ldap\authclient\LdapAuth;
+use humhub\modules\ldap\connection\LdapConnectionConfig;
+use humhub\modules\ldap\connection\LdapConnectionRegistry;
+use humhub\modules\ldap\Module;
 use humhub\modules\ldap\source\LdapUserSource;
 use humhub\modules\user\models\User;
 use humhub\modules\user\services\UserSourceService;
@@ -13,25 +15,51 @@ use Yii;
  * Tests that allowedAuthClientIds on LdapUserSource is correctly
  * exposed and enforced via UserSourceService.
  *
- * No real LDAP server is required — LdapAuth and LdapUserSource objects are
- * constructed directly.
+ * No real LDAP server is required — LdapUserSource and a fake connection
+ * config are constructed in-memory.
  */
 class LdapAllowedAuthClientsTest extends HumHubDbTestCase
 {
+    protected function _before(): void
+    {
+        parent::_before();
+        $this->installFakeConnection();
+    }
+
+    private function installFakeConnection(): void
+    {
+        $registry = new LdapConnectionRegistry();
+        $registry->setConfigs([
+            'ldap' => new LdapConnectionConfig([
+                'usernameAttribute' => 'uid',
+                'emailAttribute' => 'mail',
+                'idAttribute' => 'uid',
+            ]),
+        ]);
+        /** @var Module $module */
+        $module = Yii::$app->getModule('ldap');
+        $module->setConnectionRegistry($registry);
+    }
+
     // ---------------------------------------------------------------------------
     // LdapUserSource::getAllowedAuthClientIds
     // ---------------------------------------------------------------------------
 
     public function testDefaultAllowedAuthClientsIsLdapOnly(): void
     {
-        $source = new LdapUserSource($this->makeLdapAuth());
+        $source = new LdapUserSource(['connectionId' => 'ldap']);
+        $source->init();
 
         $this->assertSame(['ldap'], $source->getAllowedAuthClientIds());
     }
 
     public function testAllowedAuthClientsAreConfigurable(): void
     {
-        $source = new LdapUserSource($this->makeLdapAuth(), ['allowedAuthClientIds' => ['ldap', 'saml']]);
+        $source = new LdapUserSource([
+            'connectionId' => 'ldap',
+            'allowedAuthClientIds' => ['ldap', 'saml'],
+        ]);
+        $source->init();
 
         $this->assertContains('ldap', $source->getAllowedAuthClientIds());
         $this->assertContains('saml', $source->getAllowedAuthClientIds());
@@ -89,22 +117,15 @@ class LdapAllowedAuthClientsTest extends HumHubDbTestCase
     // Helpers
     // ---------------------------------------------------------------------------
 
-    private function makeLdapAuth(): LdapAuth
-    {
-        return new LdapAuth([
-            'usernameAttribute' => 'uid',
-            'emailAttribute'    => 'mail',
-            'idAttribute'       => 'uid',
-        ]);
-    }
-
     /**
      * Registers a LdapUserSource in userSourceCollection and returns a User
      * model instance (not persisted) with user_source = 'ldap'.
      */
     private function makeUserWithLdapSource(array $sourceConfig = []): User
     {
-        $source = new LdapUserSource($this->makeLdapAuth(), $sourceConfig);
+        $sourceConfig = array_merge(['connectionId' => 'ldap'], $sourceConfig);
+        $source = new LdapUserSource($sourceConfig);
+        $source->init();
         Yii::$app->userSourceCollection->setUserSource('ldap', $source);
 
         $user = new User();

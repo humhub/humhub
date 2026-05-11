@@ -3,24 +3,37 @@
 namespace tests\codeception\unit;
 
 use humhub\modules\ldap\authclient\LdapAuth;
+use humhub\modules\ldap\connection\LdapConnectionConfig;
+use humhub\modules\ldap\connection\LdapConnectionRegistry;
+use humhub\modules\ldap\Module;
 use tests\codeception\_support\HumHubDbTestCase;
+use Yii;
 
 /**
  * Unit tests for {@see LdapAuth} attribute normalisation logic.
  *
- * These tests exercise the mapping from raw LDAP attributes to HumHub user
- * attributes.  A real LDAP server is NOT required – user attributes are
- * injected directly via setUserAttributes().
+ * No real LDAP server is required. Connection metadata lives in
+ * {@see LdapConnectionConfig}; the test installs a fake registry per case.
  */
 class LdapAuthTest extends HumHubDbTestCase
 {
-    private function makeLdapAuth(array $config = []): LdapAuth
+    private function makeLdapAuth(array $configOverrides = []): LdapAuth
     {
-        return new LdapAuth(array_merge([
+        $config = new LdapConnectionConfig(array_merge([
             'usernameAttribute' => 'uid',
-            'emailAttribute'    => 'mail',
-            'idAttribute'       => null,
-        ], $config));
+            'emailAttribute' => 'mail',
+            'idAttribute' => null,
+        ], $configOverrides));
+
+        $registry = new LdapConnectionRegistry();
+        $registry->setConfigs(['ldap' => $config]);
+        /** @var Module $module */
+        $module = Yii::$app->getModule('ldap');
+        $module->setConnectionRegistry($registry);
+
+        $auth = new LdapAuth(['connectionId' => 'ldap', 'clientId' => 'ldap']);
+        $auth->init();
+        return $auth;
     }
 
     // ---------------------------------------------------------------------------
@@ -49,11 +62,13 @@ class LdapAuthTest extends HumHubDbTestCase
 
     public function testLanguageAttributeIsMappedToLanguage(): void
     {
+        // LdapHelper::cleanLdapResponse() lowercases all keys before they reach
+        // the AuthClient, so the normalise-map is case-sensitive on lowercase keys.
         $auth = $this->makeLdapAuth();
         $auth->setUserAttributes([
-            'uid'               => 'john.doe',
-            'mail'              => 'john@example.org',
-            'preferredLanguage' => 'de',
+            'uid' => 'john.doe',
+            'mail' => 'john@example.org',
+            'preferredlanguage' => 'de',
         ]);
 
         $attrs = $auth->getUserAttributes();
@@ -69,7 +84,7 @@ class LdapAuthTest extends HumHubDbTestCase
     {
         $auth = $this->makeLdapAuth();
         $auth->setUserAttributes([
-            'uid'  => ['john.doe', 'johndoe'],
+            'uid' => ['john.doe', 'johndoe'],
             'mail' => ['john@example.org'],
         ]);
 
@@ -83,8 +98,8 @@ class LdapAuthTest extends HumHubDbTestCase
     {
         $auth = $this->makeLdapAuth();
         $auth->setUserAttributes([
-            'uid'      => 'john.doe',
-            'mail'     => 'john@example.org',
+            'uid' => 'john.doe',
+            'mail' => 'john@example.org',
             'memberof' => ['cn=group1,dc=example', 'cn=group2,dc=example'],
         ]);
 
@@ -124,13 +139,12 @@ class LdapAuthTest extends HumHubDbTestCase
 
     public function testDateFieldIsFormattedAccordingToConfig(): void
     {
-        // Configure a date field mapping via Yii params
         \Yii::$app->params['ldap']['dateFields'] = ['birthday' => 'Ymd'];
 
         $auth = $this->makeLdapAuth();
         $auth->setUserAttributes([
-            'uid'      => 'john.doe',
-            'mail'     => 'john@example.org',
+            'uid' => 'john.doe',
+            'mail' => 'john@example.org',
             'birthday' => '19900115',
         ]);
 
@@ -138,7 +152,6 @@ class LdapAuthTest extends HumHubDbTestCase
 
         $this->assertSame('1990-01-15', $attrs['birthday']);
 
-        // Clean up
         \Yii::$app->params['ldap']['dateFields'] = [];
     }
 
@@ -148,8 +161,8 @@ class LdapAuthTest extends HumHubDbTestCase
 
         $auth = $this->makeLdapAuth();
         $auth->setUserAttributes([
-            'uid'      => 'john.doe',
-            'mail'     => 'john@example.org',
+            'uid' => 'john.doe',
+            'mail' => 'john@example.org',
             'birthday' => 'not-a-date',
         ]);
 

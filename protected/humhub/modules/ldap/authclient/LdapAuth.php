@@ -3,206 +3,91 @@
 namespace humhub\modules\ldap\authclient;
 
 use DateTime;
+use humhub\modules\ldap\connection\LdapConnectionConfig;
 use humhub\modules\ldap\helpers\LdapHelper;
+use humhub\modules\ldap\Module;
 use humhub\modules\ldap\services\LdapService;
 use humhub\modules\user\authclient\BaseFormAuth;
 use humhub\modules\user\models\Auth;
 use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
-use humhub\modules\user\authclient\interfaces\SerializableAuthClient;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
 
 /**
- * LDAP Authentication
+ * LDAP Authentication client.
+ *
+ * Dumb wrapper around an LDAP connection that the registry owns. Connection
+ * parameters live on {@see LdapConnectionConfig}; this class only resolves
+ * its connection by ID and handles auth + attribute normalisation.
  *
  * @since 1.1
+ * @since 1.19 — connection parameters moved to LdapConnectionConfig / LdapConnectionRegistry.
  */
-class LdapAuth extends BaseFormAuth implements SerializableAuthClient
+class LdapAuth extends BaseFormAuth
 {
     /**
-     * @var string the auth client id
+     * @var string|null ID of the connection this client uses. Required — must
+     * match an entry in {@see LdapConnectionRegistry}. Also serves as the
+     * AuthClient ID by default.
      */
-    public $clientId = 'ldap';
+    public ?string $connectionId = null;
 
     /**
-     * The hostname of LDAP server that these options represent. This option is required.
-     *
-     * @var string
+     * @var string|null AuthClient ID — defaults to {@see $connectionId}.
      */
-    public $hostname;
+    public $clientId = null;
 
-    /**
-     * The port on which the LDAP server is listening.
-     *
-     * @var int 389
-     */
-    public $port;
-
-    /**
-     * Whether or not the LDAP client should use SSL encrypted transport.
-     * The useSsl and useStartTls options are mutually exclusive, but useStartTls should be favored
-     * if the server and LDAP client library support it.
-     *
-     * @var bool
-     */
-    public $useSsl = false;
-
-    /**
-     * Whether or not the LDAP client should use TLS (aka SSLv2) encrypted transport.
-     * A value of TRUE is strongly favored in production environments to prevent passwords from be transmitted in clear text.
-     *
-     * The default value is FALSE, as servers frequently require that a certificate be installed separately after installation.
-     * The useSsl and useStartTls options are mutually exclusive.
-     * The useStartTls option should be favored over useSsl but not all servers support this newer mechanism.
-     *
-     * @var bool
-     */
-    public $useStartTls = false;
-
-    /**
-     * Disables Certificate Checking
-     * A value of FALSE is strongly favored in production environments.
-     *
-     * The default value is FALSE, as production servers should use a valid certificate chain.
-     *
-     * @var bool
-     */
-    public $disableCertificateChecking = false;
-
-    /**
-     * The DN of the account used to perform account DN lookups.
-     * LDAP servers that require the username to be in DN form when performing the "bind" require this option.
-     *
-     * @var string
-     */
-    public $bindUsername;
-
-    /**
-     * The password of the account used to perform account DN lookups.
-     *
-     * @var string
-     */
-    public $bindPassword;
-
-    /**
-     * ID attribute to uniquely identify user.
-     * If set to null, automatically a value email or objectguid will be used if available.
-     *
-     * @var string attribute name to identify node
-     */
-    public $idAttribute = null;
-
-    /**
-     * @var string the email attribute
-     */
-    public $emailAttribute = null;
-
-    /**
-     * @var string the ldap username attribute
-     */
-    public $usernameAttribute = null;
-
-    public $languageAttribute = 'preferredLanguage';
-
-    /**
-     * @var string the ldap base dn
-     */
-    public $baseDn = null;
-
-    /**
-     * @var string the ldap query to find humhub users
-     */
-    public $userFilter = null;
-
-    /**
-     * Automatically refresh user profiles on cron run
-     *
-     * @var bool|null
-     */
-    public $autoRefreshUsers = null;
-
-    /**
-     * @var array of attributes which are synced with the user table
-     */
-    public $syncUserTableAttributes = ['username', 'email'];
-
-    /**
-     * @var int The value for network timeout when connect to the LDAP server.
-     */
-    public $networkTimeout = 30;
-
-    /**
-     * @var string[] a list of ignored DNs (lowercase)
-     * @since 1.9
-     */
-    public $ignoredDNs = [];
-
-    public ?LdapService $ldapService = null;
-
-    /**
-     * @inheritdoc
-     */
     public function init()
     {
         parent::init();
 
-        if (empty($this->idAttribute)) {
-            $this->idAttribute = null;
-        } else {
-            $this->idAttribute = strtolower($this->idAttribute);
+        if ($this->connectionId === null || $this->connectionId === '') {
+            throw new InvalidConfigException(self::class . ' requires a non-empty $connectionId.');
         }
-
-        if (empty($this->usernameAttribute)) {
-            $this->usernameAttribute = 'samaccountname';
+        if ($this->clientId === null || $this->clientId === '') {
+            $this->clientId = $this->connectionId;
         }
-        $this->usernameAttribute = strtolower($this->usernameAttribute);
-
-        if (empty($this->emailAttribute)) {
-            $this->emailAttribute = 'mail';
-        }
-        $this->emailAttribute = strtolower($this->emailAttribute);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getId()
     {
         return $this->clientId;
     }
 
-    public function getLdapService(): LdapService
+    public function getConfig(): LdapConnectionConfig
     {
-        if ($this->ldapService === null) {
-            $this->ldapService = new LdapService($this);
-        }
-        return $this->ldapService;
+        return $this->getRegistry()->getConfig($this->connectionId);
     }
 
-    /**
-     * @inheritdoc
-     */
+    public function getLdapService(): LdapService
+    {
+        return $this->getRegistry()->getService($this->connectionId);
+    }
+
+    private function getRegistry()
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('ldap');
+        return $module->getConnectionRegistry();
+    }
+
     protected function defaultName()
     {
         return $this->clientId;
     }
 
-    /**
-     * @inheritdoc
-     */
     protected function defaultTitle()
     {
-        return 'LDAP (' . $this->clientId . ')';
+        return $this->getConfig()->title;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getIdAttribute()
     {
-        return $this->idAttribute;
+        $idAttribute = $this->getConfig()->idAttribute;
+        return $idAttribute !== null ? strtolower($idAttribute) : null;
     }
 
     /**
@@ -256,20 +141,16 @@ class LdapAuth extends BaseFormAuth implements SerializableAuthClient
         return $query->andWhere($conditions)->one();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function auth()
     {
         try {
-            $ldapService = $this->getLdapService();
-            $dn = $ldapService->attemptAuth($this->login->username, $this->login->password);
+            $service = $this->getLdapService();
+            $dn = $service->attemptAuth($this->login->username, $this->login->password);
         } catch (\Exception $e) {
             Yii::error('LDAP authentication error: ' . $e->getMessage(), 'ldap');
             return false;
         }
 
-        // Login failed
         if ($dn === null) {
             if ($this->login instanceof Login) {
                 $this->countFailedLoginAttempts();
@@ -277,21 +158,19 @@ class LdapAuth extends BaseFormAuth implements SerializableAuthClient
             return false;
         }
 
-        $this->setUserAttributes($ldapService->getEntry($dn));
+        $this->setUserAttributes($service->getEntry($dn));
         return true;
     }
 
-    /**
-     * @inheritdoc
-     */
     protected function defaultNormalizeUserAttributeMap()
     {
-        $map = [];
-        $map['username'] = $this->usernameAttribute;
-        $map['email'] = $this->emailAttribute;
-        $map['language'] = $this->languageAttribute;
+        $config = $this->getConfig();
+        $map = [
+            'username' => strtolower($config->usernameAttribute),
+            'email' => strtolower($config->emailAttribute),
+            'language' => strtolower($config->languageAttribute),
+        ];
 
-        // Profile Field Mapping
         foreach (ProfileField::find()->andWhere(['!=', 'ldap_attribute', ''])->all() as $profileField) {
             $map[$profileField->internal_name] = strtolower($profileField->ldap_attribute);
         }
@@ -299,9 +178,6 @@ class LdapAuth extends BaseFormAuth implements SerializableAuthClient
         return $map;
     }
 
-    /**
-     * @inheritdoc
-     */
     protected function normalizeUserAttributes($attributes)
     {
         $normalized = LdapHelper::dropMultiValues($attributes, ['memberof', 'ismemberof']);
@@ -312,57 +188,35 @@ class LdapAuth extends BaseFormAuth implements SerializableAuthClient
                 $dateFormat = Yii::$app->params['ldap']['dateFields'][$name];
                 $date = DateTime::createFromFormat($dateFormat, $value ?? '');
 
-                if ($date !== false) {
-                    $normalized[$name] = $date->format('Y-m-d');
-                } else {
-                    $normalized[$name] = '';
-                }
+                $normalized[$name] = $date !== false ? $date->format('Y-m-d') : '';
             }
         }
 
-        if ($this->idAttribute !== null && isset($normalized[$this->idAttribute])) {
-            $normalized['id'] = $normalized[$this->idAttribute];
+        $idAttribute = $this->getIdAttribute();
+        if ($idAttribute !== null && isset($normalized[$idAttribute])) {
+            $normalized['id'] = $normalized[$idAttribute];
         }
 
         return parent::normalizeUserAttributes($normalized);
     }
 
-    /**
-     * @return array list of user attributes
-     */
     public function getUserAttributes()
     {
         $attributes = parent::getUserAttributes();
 
-        // Make sure id attribute sits on id attribute key
-        if ($this->getIdAttribute() !== null && isset($attributes[$this->getIdAttribute()])) {
-            $attributes['id'] = $attributes[$this->getIdAttribute()];
+        $idAttribute = $this->getIdAttribute();
+        if ($idAttribute !== null && isset($attributes[$idAttribute])) {
+            $attributes['id'] = $attributes[$idAttribute];
         }
 
         return $attributes;
     }
 
-    /**
-     * @param array $normalizeUserAttributeMap normalize user attribute map.
-     */
     public function setNormalizeUserAttributeMap($normalizeUserAttributeMap)
     {
-        // This method is called if an additional attribute mapping is specified in the configuration file
-        // So automatically merge HumHub auto mapping with the given one
-        $this->init(); // defaultNormalizeAttributeMap is available after init
+        // Merge HumHub auto mapping with config-provided overrides
         parent::setNormalizeUserAttributeMap(
             ArrayHelper::merge($this->defaultNormalizeUserAttributeMap(), $normalizeUserAttributeMap),
         );
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function beforeSerialize(): void
-    {
-        // Make sure we normalized user attributes before put it in session (anonymous functions)
-        $this->setNormalizeUserAttributeMap([]);
-        // LDAP\Connection handles cannot be serialized; drop the service so it is re-created on next use
-        $this->ldapService = null;
     }
 }

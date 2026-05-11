@@ -160,7 +160,16 @@ Version 1.19 (Unreleased)
   - Added `humhub\modules\ldap\services\LdapService` as the new LDAP connection and query layer
   - Added `LdapAuth::getLdapService()` returning `LdapService`
   - `cleanLdapResponse()` moved from `LdapService` to `humhub\modules\ldap\helpers\LdapHelper`
-  - New `LdapAuth::$languageAttribute` property (default: `'preferredLanguage'`) for syncing the user language
+- Refactored `ldap` module to the connection-registry pattern (reference implementation of the UserSource architecture):
+  - New `humhub\modules\ldap\connection\LdapConnectionConfig` — plain value object holding hostname, port, baseDn, bindDn, attribute mappings, etc.
+  - New `humhub\modules\ldap\connection\LdapConnectionRegistry` — keyed registry of connections; instantiated lazily on `Module::getConnectionRegistry()`. The default `'ldap'` connection is populated from the DB-backed `LdapSettings` UI; additional read-only connections can be added via `protected/config/common.php` → `modules.ldap.connections.<id> = [...]`.
+  - `humhub\modules\ldap\authclient\LdapAuth` is now a vanilla `BaseFormAuth` that references its connection by ID (`$connectionId`). Connection parameters (hostname/port/baseDn/bindUsername/bindPassword/userFilter/idAttribute/usernameAttribute/emailAttribute/languageAttribute/ignoredDNs/networkTimeout/disableCertificateChecking/autoRefreshUsers/syncUserTableAttributes) are gone — read them from `LdapConnectionConfig` via `LdapAuth::getConfig()` if needed.
+  - `LdapAuth` no longer implements `SerializableAuthClient` — it carries no connection state.
+  - `LdapUserSource` is registered once per connection. The constructor takes `$connectionId` (not an `LdapAuth` instance). Sync uses the registered AuthClient for attribute normalisation but doesn't own it.
+  - `LdapService` constructor now takes `LdapConnectionConfig` (was `LdapAuth`). Obtain instances via `Module::getConnectionRegistry()->getService($connectionId)`. The static `LdapService::create()` factory and `LdapService::getAuthClients()` are removed — use `LdapConnectionRegistry::getService($id)` and `LdapService::getAllUserEntries()` respectively.
+  - `LdapSettings::getLdapAuthDefinition()` and `getLdapUserSourceDefinition()` removed — use `LdapSettings::getConnectionConfig()` which returns an `LdapConnectionConfig`.
+  - `LdapAuth::$connectionId` and `LdapUserSource::$connectionId` are now required (no default `'ldap'` fallback) — instantiating either class without a connection ID throws `InvalidConfigException`. The bootstrap registers them per connection ID from the registry.
+  - The LDAP UserSource is now registered via its own event hook on `UserSourceCollection::EVENT_BEFORE_USER_SOURCES_SET` (`Events::onUserSourceCollectionSet`), separate from the AuthClient registration on `Collection::EVENT_BEFORE_CLIENTS_SET`. The two collections are no longer coupled through a single event handler.
 - `MigrateController::$includeModuleMigrations` is now `true` by default
 - SiteIcon: Remove support for manually uploaded `@web/uploads/icon/` icons
 - New `AssetImage` class

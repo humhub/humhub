@@ -3,15 +3,18 @@
 namespace tests\codeception\unit;
 
 use humhub\modules\ldap\authclient\LdapAuth;
+use humhub\modules\ldap\connection\LdapConnectionConfig;
+use humhub\modules\ldap\connection\LdapConnectionRegistry;
+use humhub\modules\ldap\Module;
 use humhub\modules\ldap\services\LdapService;
 use tests\codeception\_support\HumHubDbTestCase;
+use Yii;
 
 /**
  * Integration tests for {@see LdapService}.
  *
- * These tests connect to a real OpenLDAP server.  They are skipped automatically
- * when the LDAP_TEST_HOST environment variable is not set, so local runs without
- * Docker are safe.
+ * These tests connect to a real OpenLDAP server. Skipped automatically when
+ * LDAP_TEST_HOST is not set so local runs without Docker are safe.
  *
  * In CI the workflow (.github/workflows/ldap-test.yml) starts an OpenLDAP
  * container and seeds it with the test users defined in .github/ldap/init.ldif.
@@ -19,6 +22,7 @@ use tests\codeception\_support\HumHubDbTestCase;
 class LdapServiceTest extends HumHubDbTestCase
 {
     private LdapService $ldapService;
+    private LdapConnectionConfig $ldapConfig;
     private LdapAuth $ldapAuth;
 
     protected function _before(): void
@@ -31,13 +35,22 @@ class LdapServiceTest extends HumHubDbTestCase
             );
         }
 
-        $this->ldapAuth = $this->createTestLdapAuth();
+        $this->ldapConfig = $this->createTestConfig();
 
         try {
-            $this->ldapService = new LdapService($this->ldapAuth);
+            $this->ldapService = new LdapService($this->ldapConfig);
         } catch (\Exception $e) {
             $this->markTestSkipped('Cannot connect to LDAP server: ' . $e->getMessage());
         }
+
+        $registry = new LdapConnectionRegistry();
+        $registry->setConfigs(['ldap' => $this->ldapConfig]);
+        /** @var Module $module */
+        $module = Yii::$app->getModule('ldap');
+        $module->setConnectionRegistry($registry);
+
+        $this->ldapAuth = new LdapAuth(['connectionId' => 'ldap', 'clientId' => 'ldap']);
+        $this->ldapAuth->init();
     }
 
     // ---------------------------------------------------------------------------
@@ -83,28 +96,26 @@ class LdapServiceTest extends HumHubDbTestCase
         $this->assertSame('john@example.org', $entry['mail']);
     }
 
-    public function testGetAuthClientsReturnsAllLdapUsers(): void
+    public function testGetAllUserEntriesReturnsAllLdapUsers(): void
     {
-        $clients = $this->ldapService->getAuthClients();
+        $entries = $this->ldapService->getAllUserEntries();
 
-        $this->assertNotEmpty($clients);
-        $this->assertGreaterThanOrEqual(2, count($clients));
+        $this->assertNotEmpty($entries);
+        $this->assertGreaterThanOrEqual(2, count($entries));
 
-        foreach ($clients as $authClient) {
-            $this->assertInstanceOf(LdapAuth::class, $authClient);
+        foreach ($entries as $entry) {
+            $this->assertArrayHasKey('dn', $entry);
         }
     }
 
-    public function testGetAuthClientsIncludeExpectedUsers(): void
+    public function testGetAllUserEntriesIncludeExpectedUsers(): void
     {
-        $clients    = $this->ldapService->getAuthClients();
-        $usernames  = array_map(
-            static fn(LdapAuth $c) => $c->getUserAttributes()['username'] ?? null,
-            $clients,
-        );
+        $entries = $this->ldapService->getAllUserEntries();
 
-        $this->assertContains('john.doe', $usernames);
-        $this->assertContains('jane.doe', $usernames);
+        $uids = array_map(static fn(array $e) => $e['uid'] ?? null, $entries);
+
+        $this->assertContains('john.doe', $uids);
+        $this->assertContains('jane.doe', $uids);
     }
 
     // ---------------------------------------------------------------------------
@@ -152,18 +163,19 @@ class LdapServiceTest extends HumHubDbTestCase
     // Helpers
     // ---------------------------------------------------------------------------
 
-    private function createTestLdapAuth(): LdapAuth
+    private function createTestConfig(): LdapConnectionConfig
     {
-        return new LdapAuth([
-            'hostname'          => getenv('LDAP_TEST_HOST'),
-            'port'              => (int)(getenv('LDAP_TEST_PORT') ?: 389),
-            'baseDn'            => getenv('LDAP_TEST_BASE_DN') ?: 'dc=example,dc=org',
-            'bindUsername'      => getenv('LDAP_TEST_BIND_DN') ?: 'cn=admin,dc=example,dc=org',
-            'bindPassword'      => getenv('LDAP_TEST_BIND_PASSWORD') ?: 'adminpassword',
-            'userFilter'        => getenv('LDAP_TEST_USER_FILTER') ?: '(objectClass=inetOrgPerson)',
+        return new LdapConnectionConfig([
+            'title' => 'LDAP Test',
+            'hostname' => getenv('LDAP_TEST_HOST'),
+            'port' => (int)(getenv('LDAP_TEST_PORT') ?: 389),
+            'baseDn' => getenv('LDAP_TEST_BASE_DN') ?: 'dc=example,dc=org',
+            'bindUsername' => getenv('LDAP_TEST_BIND_DN') ?: 'cn=admin,dc=example,dc=org',
+            'bindPassword' => getenv('LDAP_TEST_BIND_PASSWORD') ?: 'adminpassword',
+            'userFilter' => getenv('LDAP_TEST_USER_FILTER') ?: '(objectClass=inetOrgPerson)',
             'usernameAttribute' => getenv('LDAP_TEST_USERNAME_ATTRIBUTE') ?: 'uid',
-            'emailAttribute'    => 'mail',
-            'idAttribute'       => 'uid',
+            'emailAttribute' => 'mail',
+            'idAttribute' => 'uid',
         ]);
     }
 }

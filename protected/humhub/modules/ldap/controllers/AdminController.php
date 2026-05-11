@@ -12,7 +12,7 @@ use Exception;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\ldap\models\LdapSettings;
-use humhub\modules\ldap\services\LdapService;
+use humhub\modules\ldap\Module;
 use Yii;
 
 /**
@@ -63,7 +63,10 @@ class AdminController extends Controller
             $enabled = true;
 
             try {
-                $userCount = LdapService::create()->countUsers();
+                /** @var Module $module */
+                $module = Yii::$app->getModule('ldap');
+                // The UI only ever shows the legacy DB-backed default connection.
+                $userCount = $module->getConnectionRegistry()->getService('ldap')->countUsers();
             } catch (Exception $ex) {
                 $errorMessage = $ex->getMessage();
             }
