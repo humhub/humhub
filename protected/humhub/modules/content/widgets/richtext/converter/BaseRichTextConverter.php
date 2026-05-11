@@ -528,7 +528,11 @@ REGEXP;
             }
         }
 
-        return '<img' . $linkBlock->renderImageAttributes() . ($this->html5 ? '>' : ' />');
+        return match($linkBlock->getType()) {
+            'video' => Html::tag('video', '', $linkBlock->getVideoAttributes()),
+            'audio' => Html::tag('audio', '', $linkBlock->getAudioAttributes()),
+            default => Html::tag('img', '', $linkBlock->getImageAttributes()),
+        };
     }
 
     /**

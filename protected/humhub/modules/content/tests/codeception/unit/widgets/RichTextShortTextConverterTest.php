@@ -160,14 +160,6 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
      * Images
      */
 
-    public function testConvertImageAsLink()
-    {
-        $this->assertConversionResult(
-            'Test ![Alt Text](https://www.humhub.com/static/img/logo.png)',
-            'Test [Image]',
-        );
-    }
-
     /**
      * @throws InvalidConfigException
      */
@@ -275,6 +267,46 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
         $this->assertConversionResult(
             'Test ![Scaled Image><](http://localhost/static/img/logo.png =150x)',
             'Test [Image]',
+        );
+    }
+
+    /*
+     * Videos
+     */
+
+    public function testConvertVideoToShortText()
+    {
+        $this->assertConversionResult(
+            'Test ![Video Title](https://www.humhub.com/static/sample.mp4 video)',
+            'Test [Video]',
+        );
+    }
+
+    public function testConvertVideoWithAllOptionsToShortText()
+    {
+        $this->assertConversionResult(
+            'Test ![Video Title><](https://www.humhub.com/static/sample.mp4 video controls autoplay muted loop =300x200)',
+            'Test [Video]',
+        );
+    }
+
+    /*
+     * Audios
+     */
+
+    public function testConvertAudioToShortText()
+    {
+        $this->assertConversionResult(
+            'Test ![Audio Title](https://www.humhub.com/static/sample.mp3 audio)',
+            'Test [Audio]',
+        );
+    }
+
+    public function testConvertAudioWithAllOptionsToShortText()
+    {
+        $this->assertConversionResult(
+            'Test ![Audio Title><](https://www.humhub.com/static/sample.mp3 audio controls autoplay muted loop)',
+            'Test [Audio]',
         );
     }
 
