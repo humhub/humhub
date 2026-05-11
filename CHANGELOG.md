@@ -32,6 +32,7 @@ HumHub Changelog
 - Fix #8135: Missing border around profile pictures in Spaces overview
 - Fix #8136: Missing vertical paddings in Followers / Following snippets
 - Enh #8140: Preserve selected profile columns in pending approvals
+- Fix #8143: Fix updating of Space memberships for existing members
 - Fix #8144: Restrict file view action
 
 1.18.2 (March 22, 2026)
