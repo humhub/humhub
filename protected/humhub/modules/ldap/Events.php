@@ -66,7 +66,10 @@ class Events extends BaseObject
 
             // Register the LdapUserSource in the userSourceCollection
             $ldapAuth = $collection->getClient('ldap');
-            Yii::$app->userSourceCollection->setUserSource('ldap', new LdapUserSource($ldapAuth));
+            Yii::$app->userSourceCollection->setUserSource(
+                'ldap',
+                new LdapUserSource($ldapAuth, $settings->getLdapUserSourceDefinition()),
+            );
         }
     }
 }

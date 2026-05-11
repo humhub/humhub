@@ -112,6 +112,41 @@ class UserSourceCollection extends Component
     }
 
     /**
+     * Finds the user source that claims responsibility for the given AuthClient ID.
+     *
+     * Iteration order: any source whose non-empty `getAllowedAuthClientIds()` list
+     * contains the client ID wins. If no source claims the client (e.g. vanilla
+     * Yii2 OAuth client without a dedicated source), LocalUserSource is the
+     * implicit fallback.
+     */
+    public function findUserSourceForAuthClient(string $authClientId): UserSourceInterface
+    {
+        foreach ($this->getUserSources() as $source) {
+            $list = $source->getAllowedAuthClientIds();
+            if (!empty($list) && in_array($authClientId, $list, true)) {
+                return $source;
+            }
+        }
+        return $this->getLocalUserSource();
+    }
+
+    /**
+     * Returns whether any registered UserSource explicitly lists the given
+     * AuthClient ID in its allowedAuthClientIds. Used to detect "trusted"
+     * providers that may auto-register users without the anonymousRegistration
+     * setting being enabled.
+     */
+    public function isAuthClientClaimed(string $authClientId): bool
+    {
+        foreach ($this->getUserSources() as $source) {
+            if (in_array($authClientId, $source->getAllowedAuthClientIds(), true)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Returns the LocalUserSource instance.
      */
     public function getLocalUserSource(): LocalUserSource

@@ -10,7 +10,6 @@ namespace humhub\modules\user\services;
 
 use humhub\modules\user\models\Auth;
 use humhub\modules\user\models\User;
-use humhub\modules\user\source\HasUserSource;
 use Yii;
 use yii\authclient\ClientInterface;
 
@@ -30,13 +29,22 @@ class AuthClientUserService
     {
     }
 
+    /**
+     * Records an AuthClient as a login method for this user via the user_auth table.
+     *
+     * No-op for source-owning clients — i.e. clients whose ID matches a UserSource ID
+     * that owns the user's identity. Those clients are tracked via `user.user_source`,
+     * not user_auth.
+     */
     public function add(ClientInterface $authClient): void
     {
-        if (!($authClient instanceof HasUserSource)
-            && UserSourceService::getCollection()->hasUserSource($authClient->getId())) {
+        $clientId = $authClient->getId();
+        $sourceCollection = UserSourceService::getCollection();
+
+        if ($sourceCollection->hasUserSource($clientId)) {
             Yii::warning(sprintf(
                 "add() called with source-owning client '%s' for user %d — this client manages user identity directly and does not use user_auth.",
-                $authClient->getId(),
+                $clientId,
                 $this->user->id,
             ), 'user');
             return;
@@ -52,7 +60,7 @@ class AuthClientUserService
             return;
         }
 
-        $auth = Auth::findOne(['source' => $authClient->getId(), 'source_id' => $attributes['id']]);
+        $auth = Auth::findOne(['source' => $clientId, 'source_id' => $attributes['id']]);
 
         if ($auth !== null && $auth->user_id != $this->user->id) {
             $auth->delete();
@@ -62,7 +70,7 @@ class AuthClientUserService
         if ($auth === null) {
             $auth = new Auth([
                 'user_id' => $this->user->id,
-                'source' => (string)$authClient->getId(),
+                'source' => (string)$clientId,
                 'source_id' => (string)$attributes['id'],
             ]);
 
@@ -89,7 +97,7 @@ class AuthClientUserService
             $this->_authClients = [];
 
             foreach (AuthClientService::getCollection()->getClients() as $client) {
-                // Add auth client whose ID matches user_source (the "primary" client)
+                // Add auth client whose ID matches user_source (the source-owning client)
                 if ($this->user->user_source == $client->getId()) {
                     $this->_authClients[] = $client;
                 }

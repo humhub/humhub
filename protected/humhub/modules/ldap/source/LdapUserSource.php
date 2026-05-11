@@ -30,6 +30,11 @@ use yii\helpers\VarDumper;
  */
 class LdapUserSource extends BaseUserSource
 {
+    /**
+     * Default allow list — only LDAP itself; configurable via LdapSettings.
+     */
+    public array $allowedAuthClientIds = ['ldap'];
+
     public function __construct(public readonly LdapAuth $authClient, array $config = [])
     {
         parent::__construct($config);
@@ -60,16 +65,6 @@ class LdapUserSource extends BaseUserSource
         return $attributes;
     }
 
-    public function requiresApproval(): bool
-    {
-        return false;
-    }
-
-    public function getAllowedAuthClientIds(): array
-    {
-        return $this->authClient->allowedAuthClientIds;
-    }
-
     public function canDeleteAccount(): bool
     {
         return false;
@@ -98,6 +93,10 @@ class LdapUserSource extends BaseUserSource
             return null;
         }
 
+        // Set user_source before save so EVENT_AFTER_CREATE listeners see the
+        // correct source rather than the default 'local'.
+        $registration->getUser()->user_source = $this->getId();
+
         if (!$registration->register()) {
             Yii::warning(
                 'Could not create LDAP user. Errors: ' . VarDumper::dumpAsString($registration->getErrors()),
@@ -107,7 +106,6 @@ class LdapUserSource extends BaseUserSource
         }
 
         $user = $registration->getUser();
-        $user->updateAttributes(['user_source' => $this->getId()]);
 
         $auth = new Auth([
             'user_id' => $user->id,
@@ -128,7 +126,7 @@ class LdapUserSource extends BaseUserSource
     private function buildRegistration(array $attributes): ?Registration
     {
         $registration = new Registration(enableEmailField: true, enablePasswordForm: false);
-        $registration->enableUserApproval = false;
+        $registration->enableUserApproval = $this->requiresApproval($this->authClient->getId());
 
         unset(
             $attributes['id'],

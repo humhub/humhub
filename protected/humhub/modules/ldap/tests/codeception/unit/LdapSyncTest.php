@@ -4,6 +4,7 @@ namespace tests\codeception\unit;
 
 use humhub\modules\ldap\authclient\LdapAuth;
 use humhub\modules\ldap\services\LdapService;
+use humhub\modules\ldap\source\LdapUserSource;
 use humhub\modules\user\models\Auth;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
@@ -21,6 +22,7 @@ use tests\codeception\_support\HumHubDbTestCase;
 class LdapSyncTest extends HumHubDbTestCase
 {
     private LdapAuth $ldapAuth;
+    private LdapUserSource $ldapUserSource;
 
     protected function _before(): void
     {
@@ -33,6 +35,7 @@ class LdapSyncTest extends HumHubDbTestCase
         }
 
         $this->ldapAuth = $this->createTestLdapAuth();
+        $this->ldapUserSource = new LdapUserSource($this->ldapAuth);
 
         try {
             // Verify connectivity; LdapService constructor calls connect()
@@ -52,7 +55,7 @@ class LdapSyncTest extends HumHubDbTestCase
 
         $beforeCount = $this->countLdapUsers();
 
-        $this->ldapAuth->getUserSource()->syncUsers();
+        $this->ldapUserSource->syncUsers();
 
         $afterCount = $this->countLdapUsers();
 
@@ -66,7 +69,7 @@ class LdapSyncTest extends HumHubDbTestCase
     public function testSyncCreatesUserWithCorrectEmail(): void
     {
         $this->ldapAuth->autoRefreshUsers = true;
-        $this->ldapAuth->getUserSource()->syncUsers();
+        $this->ldapUserSource->syncUsers();
 
         $john = User::findOne(['email' => 'john@example.org']);
         $this->assertNotNull($john, 'john@example.org should exist in HumHub after sync.');
@@ -76,7 +79,7 @@ class LdapSyncTest extends HumHubDbTestCase
     public function testSyncCreatesUserWithCorrectUsername(): void
     {
         $this->ldapAuth->autoRefreshUsers = true;
-        $this->ldapAuth->getUserSource()->syncUsers();
+        $this->ldapUserSource->syncUsers();
 
         $jane = User::findOne(['email' => 'jane@example.org']);
         $this->assertNotNull($jane, 'jane@example.org should exist in HumHub after sync.');
@@ -90,7 +93,7 @@ class LdapSyncTest extends HumHubDbTestCase
     public function testSyncSetsSourceIdInUserAuthFromIdAttribute(): void
     {
         $this->ldapAuth->autoRefreshUsers = true;
-        $this->ldapAuth->getUserSource()->syncUsers();
+        $this->ldapUserSource->syncUsers();
 
         $john = User::findOne(['email' => 'john@example.org']);
         $this->assertNotNull($john);
@@ -109,7 +112,7 @@ class LdapSyncTest extends HumHubDbTestCase
     {
         // Run an initial sync so that any existing LDAP users are properly created
         $this->ldapAuth->autoRefreshUsers = true;
-        $this->ldapAuth->getUserSource()->syncUsers();
+        $this->ldapUserSource->syncUsers();
 
         // Use a freshly synced LDAP user (john.doe) as the ghost candidate.
         // Override source_id in user_auth to a value that does not exist in LDAP
@@ -123,7 +126,7 @@ class LdapSyncTest extends HumHubDbTestCase
         );
 
         // Re-run sync – the ghost user has a source_id that doesn't exist in LDAP
-        $this->ldapAuth->getUserSource()->syncUsers();
+        $this->ldapUserSource->syncUsers();
 
         $ghostUser->refresh();
         $this->assertSame(
@@ -141,7 +144,7 @@ class LdapSyncTest extends HumHubDbTestCase
     {
         // First sync to create john.doe in HumHub
         $this->ldapAuth->autoRefreshUsers = true;
-        $this->ldapAuth->getUserSource()->syncUsers();
+        $this->ldapUserSource->syncUsers();
 
         $john = User::findOne(['email' => 'john@example.org']);
         $this->assertNotNull($john);
@@ -152,7 +155,7 @@ class LdapSyncTest extends HumHubDbTestCase
         $this->assertSame(User::STATUS_DISABLED, $john->status);
 
         // Sync again – john.doe still exists in LDAP, so the user must be re-enabled
-        $this->ldapAuth->getUserSource()->syncUsers();
+        $this->ldapUserSource->syncUsers();
 
         $john->refresh();
         $this->assertSame(
@@ -171,7 +174,7 @@ class LdapSyncTest extends HumHubDbTestCase
         $this->ldapAuth->autoRefreshUsers = false;
 
         $beforeCount = $this->countLdapUsers();
-        $this->ldapAuth->getUserSource()->syncUsers();
+        $this->ldapUserSource->syncUsers();
         $afterCount = $this->countLdapUsers();
 
         $this->assertSame($beforeCount, $afterCount, 'No users should be synced when autoRefreshUsers is false.');

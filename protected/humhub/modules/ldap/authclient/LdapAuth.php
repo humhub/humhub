@@ -5,15 +5,12 @@ namespace humhub\modules\ldap\authclient;
 use DateTime;
 use humhub\modules\ldap\helpers\LdapHelper;
 use humhub\modules\ldap\services\LdapService;
-use humhub\modules\ldap\source\LdapUserSource;
 use humhub\modules\user\authclient\BaseFormAuth;
 use humhub\modules\user\models\Auth;
 use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
-use humhub\modules\user\authclient\interfaces\ApprovalBypass;
 use humhub\modules\user\authclient\interfaces\SerializableAuthClient;
-use humhub\modules\user\source\HasUserSource;
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -22,20 +19,12 @@ use yii\helpers\ArrayHelper;
  *
  * @since 1.1
  */
-class LdapAuth extends BaseFormAuth implements HasUserSource, ApprovalBypass, SerializableAuthClient
+class LdapAuth extends BaseFormAuth implements SerializableAuthClient
 {
     /**
      * @var string the auth client id
      */
     public $clientId = 'ldap';
-
-    /**
-     * Auth client IDs that LDAP users are allowed to use.
-     * Defaults to only LDAP itself — extend to e.g. ['ldap', 'local'] to allow password login.
-     *
-     * @var string[]
-     */
-    public array $allowedAuthClientIds = ['ldap'];
 
     /**
      * The hostname of LDAP server that these options represent. This option is required.
@@ -135,11 +124,6 @@ class LdapAuth extends BaseFormAuth implements HasUserSource, ApprovalBypass, Se
     public $autoRefreshUsers = null;
 
     /**
-     * @inheritdoc
-     */
-    public $byPassApproval = true;
-
-    /**
      * @var array of attributes which are synced with the user table
      */
     public $syncUserTableAttributes = ['username', 'email'];
@@ -156,8 +140,6 @@ class LdapAuth extends BaseFormAuth implements HasUserSource, ApprovalBypass, Se
     public $ignoredDNs = [];
 
     public ?LdapService $ldapService = null;
-
-    private ?LdapUserSource $_userSource = null;
 
     /**
      * @inheritdoc
@@ -197,14 +179,6 @@ class LdapAuth extends BaseFormAuth implements HasUserSource, ApprovalBypass, Se
             $this->ldapService = new LdapService($this);
         }
         return $this->ldapService;
-    }
-
-    public function getUserSource(): LdapUserSource
-    {
-        if ($this->_userSource === null) {
-            $this->_userSource = new LdapUserSource($this);
-        }
-        return $this->_userSource;
     }
 
     /**
@@ -390,6 +364,5 @@ class LdapAuth extends BaseFormAuth implements HasUserSource, ApprovalBypass, Se
         $this->setNormalizeUserAttributeMap([]);
         // LDAP\Connection handles cannot be serialized; drop the service so it is re-created on next use
         $this->ldapService = null;
-        $this->_userSource = null;
     }
 }

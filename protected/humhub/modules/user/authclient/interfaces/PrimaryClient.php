@@ -9,7 +9,8 @@
 namespace humhub\modules\user\authclient\interfaces;
 
 /**
- * @deprecated since 1.16 — use HasUserSource and user_auth table lookup instead.
+ * @deprecated since 1.16 — register a UserSource with matching ID instead and
+ * use the user_auth table for non-source-owning auth clients.
  */
 interface PrimaryClient
 {

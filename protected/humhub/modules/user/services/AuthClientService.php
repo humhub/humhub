@@ -14,8 +14,6 @@ use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\Auth;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
-use humhub\modules\user\source\HasUserSource;
-use humhub\modules\user\source\LocalUserSource;
 use Yii;
 use yii\authclient\ClientInterface;
 
@@ -31,47 +29,43 @@ class AuthClientService
     }
 
     /**
-     * Returns the user object which is linked against given authClient
+     * Returns the user object linked to the current AuthClient.
      *
-     * @return User|null the user model or null if not found
+     * Two lookup paths:
+     *  - via the user_auth table (source + source_id) for clients that record
+     *    an external identity (OAuth, SAML, LDAP)
+     *  - via user.user_source matching the AuthClient ID (Password and any
+     *    other source-owning client whose attributes['id'] is the user's PK)
      */
     public function getUser(): ?User
     {
         $attributes = $this->authClient->getUserAttributes();
+        $clientId = $this->authClient->getId();
 
         if (isset($attributes['id'])) {
-            $auth = Auth::find()->where(['source' => $this->authClient->getId(), 'source_id' => $attributes['id']])->one();
+            $auth = Auth::find()->where(['source' => $clientId, 'source_id' => $attributes['id']])->one();
             if ($auth !== null) {
                 return $auth->user;
             }
         }
 
-        // Fallback for HasUserSource auth clients (e.g. LDAP without idAttribute configured):
-        // try email + user_source match. On success, opportunistically create user_auth entry.
-        if ($this->authClient instanceof HasUserSource && isset($attributes['email'])) {
-            $user = User::findOne([
-                'email' => $attributes['email'],
-                'user_source' => $this->authClient->getId(),
-            ]);
-            if ($user !== null && isset($attributes['id'])) {
-                (new AuthClientUserService($user))->add($this->authClient);
-            }
-            return $user;
-        }
-
-        // Fallback for source-owning clients that don't use user_auth (e.g. Password):
-        // these store the HumHub user.id as attributes['id'] directly.
-        if (isset($attributes['id']) && !($this->authClient instanceof HasUserSource)
-            && UserSourceService::getCollection()->hasUserSource($this->authClient->getId())) {
-            return User::findOne(['id' => $attributes['id'], 'user_source' => $this->authClient->getId()]);
+        // Source-owning clients (e.g. Password) store the HumHub user.id as attributes['id']
+        // and don't use the user_auth table.
+        $source = UserSourceService::getCollection()->findUserSourceForAuthClient($clientId);
+        if ($source->getId() === $clientId && isset($attributes['id'])) {
+            return User::findOne(['id' => $attributes['id'], 'user_source' => $clientId]);
         }
 
         return null;
     }
 
     /**
-     * Updates a user in HumHub using the AuthClient's attributes.
-     * Called after login or by source-specific sync mechanisms.
+     * Updates a user with attributes provided by the AuthClient.
+     *
+     * The user's UserSource must allow this AuthClient to push attributes
+     * (via `getAllowedAuthClientIds()`); otherwise the call is a no-op so
+     * that AuthClients used purely for authentication cannot overwrite data
+     * managed by the user's source.
      *
      * A failure here must NOT block login — the caller logs and proceeds.
      */
@@ -84,14 +78,20 @@ class AuthClientService
             }
         }
 
-        return UserSourceService::getForUser($user)->updateUser($this->authClient->getUserAttributes());
+        $service = UserSourceService::getForUser($user);
+        if (!$service->isAuthClientAllowed($this->authClient->getId())) {
+            return true;
+        }
+
+        return $service->updateUser($this->authClient->getUserAttributes());
     }
 
     /**
-     * Creates a user via the appropriate UserSource.
+     * Creates a user via the UserSource that claims this AuthClient.
      *
-     * If the AuthClient implements HasUserSource, its source is used.
-     * Otherwise LocalUserSource is used as the default.
+     * Dispatch: any UserSource whose `getAllowedAuthClientIds()` lists the
+     * current client wins. If none claim it (e.g. a vanilla Yii2 OAuth client
+     * without a dedicated source), LocalUserSource is the fallback.
      *
      * Returns null if creation failed — the caller (AuthController) decides
      * whether to redirect to the registration form or show an error.
@@ -99,18 +99,17 @@ class AuthClientService
     public function createUser(): ?User
     {
         $attributes = $this->authClient->getUserAttributes();
+        $userSource = UserSourceService::getCollection()
+            ->findUserSourceForAuthClient($this->authClient->getId());
 
-        $userSource = $this->authClient instanceof HasUserSource
-            ? $this->authClient->getUserSource()
-            : Yii::$app->userSourceCollection->getLocalUserSource();
-
-        $user = $userSource instanceof LocalUserSource
-            ? $userSource->createUser($attributes, $this->authClient)
-            : $userSource->createUser($attributes);
-
-        if ($user !== null) {
-            UserSourceService::triggerAfterCreate($user);
+        $user = $userSource->createUser($attributes);
+        if ($user === null) {
+            return null;
         }
+
+        // Record the AuthClient as a login method (no-op for source-owning clients
+        // such as Password or LdapAuth — those manage identity via user.user_source).
+        (new AuthClientUserService($user))->add($this->authClient);
 
         return $user;
     }
@@ -123,12 +122,14 @@ class AuthClientService
     public function getUsersQuery(): ActiveQueryUser
     {
         $query = User::find();
+        $clientId = $this->authClient->getId();
+        $source = UserSourceService::getCollection()->findUserSourceForAuthClient($clientId);
 
-        if (UserSourceService::getCollection()->hasUserSource($this->authClient->getId())) {
-            $query->where(['user.user_source' => $this->authClient->getId()]);
+        if ($source->getId() === $clientId) {
+            $query->where(['user.user_source' => $clientId]);
         } else {
             $query->leftJoin('user_auth', 'user_auth.user_id = user.id')
-                ->where(['user_auth.source' => $this->authClient->getId()]);
+                ->where(['user_auth.source' => $clientId]);
         }
 
         return $query;
@@ -146,14 +147,26 @@ class AuthClientService
     {
         $attributes = $this->authClient->getUserAttributes();
 
-        // Check if e-mail is already in use with another auth method
-        if ($this->getUser() === null && isset($attributes['email'])) {
-            $user = User::findOne(['email' => $attributes['email']]);
-            if ($user !== null) {
-                // Map current auth method to user with same e-mail address
-                (new AuthClientUserService($user))->add($this->authClient);
-            }
+        if ($this->getUser() !== null || !isset($attributes['email'])) {
+            return;
         }
+
+        $user = User::findOne(['email' => $attributes['email']]);
+        if ($user === null) {
+            return;
+        }
+
+        // Respect the target user's source policy: only link if its source
+        // allows this auth client and email auto-link is not disabled.
+        $service = UserSourceService::getForUser($user);
+        if (!$service->getUserSource()->allowEmailAutoLink()) {
+            return;
+        }
+        if (!$service->isAuthClientAllowed($this->authClient->getId())) {
+            return;
+        }
+
+        (new AuthClientUserService($user))->add($this->authClient);
     }
 
     /**
@@ -162,7 +175,15 @@ class AuthClientService
      */
     public function allowSelfRegistration(): bool
     {
-        // Always also AuthClients like LDAP to automatic registration
+        // Auth clients explicitly claimed by a UserSource (i.e. listed in its
+        // allowedAuthClientIds) are considered trusted providers and may always
+        // auto-register users, independent of the anonymousRegistration setting.
+        if (UserSourceService::getCollection()->isAuthClientClaimed($this->authClient->getId())) {
+            return true;
+        }
+
+        // Backwards-compatibility: legacy auth clients still implementing
+        // ApprovalBypass are trusted. Deprecated since 1.19.
         if ($this->authClient instanceof ApprovalBypass) {
             return true;
         }

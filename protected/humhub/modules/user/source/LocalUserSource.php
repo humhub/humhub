@@ -12,14 +12,14 @@ use humhub\modules\user\models\forms\Registration;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use Yii;
-use yii\authclient\ClientInterface;
 
 /**
- * LocalUserSource handles self-registered and admin-created users.
+ * LocalUserSource handles self-registered and admin-created users, and acts as
+ * the default fallback source for any AuthClient that is not explicitly claimed
+ * by another UserSource.
  *
- * createUser() delegates to Registration::register(). On validation failure
- * null is returned and the caller (AuthController) redirects to the
- * registration form.
+ * Attribute sync from external auth clients (e.g. SAML SSO) is opt-in: configure
+ * `$allowedAuthClientIds` and `$managedAttributes` to enable it.
  *
  * @since 1.19
  */
@@ -35,8 +35,11 @@ class LocalUserSource extends BaseUserSource
         return Yii::t('UserModule.base', 'Local');
     }
 
-    public function requiresApproval(): bool
+    public function requiresApproval(?string $authClientId = null): bool
     {
+        if ($authClientId !== null && in_array($authClientId, $this->trustedAuthClientIds, true)) {
+            return false;
+        }
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
         return (bool) $module->settings->get('auth.needApproval');
@@ -47,26 +50,20 @@ class LocalUserSource extends BaseUserSource
         return UserSourceInterface::USERNAME_REQUIRE;
     }
 
-    public function canDeleteAccount(): bool
-    {
-        return true;
-    }
-
     /**
      * Creates a user via the Registration form model.
-     * Returns null if validation fails — the caller should redirect to the
-     * registration form in that case.
      *
-     * @param ClientInterface|null $authClient optional auth client that triggered registration
+     * Returns null if validation fails — the caller should redirect to the
+     * registration form so the user can supply missing data.
      */
-    public function createUser(array $attributes, ?ClientInterface $authClient = null): ?User
+    public function createUser(array $attributes): ?User
     {
         $registration = $this->buildRegistration($attributes);
         if ($registration === null) {
             return null;
         }
 
-        if (!$registration->register($authClient)) {
+        if (!$registration->register()) {
             return null;
         }
 
@@ -93,10 +90,4 @@ class LocalUserSource extends BaseUserSource
 
         return $registration;
     }
-
-    public function updateUser(User $user, array $attributes): bool
-    {
-        return true;
-    }
-
 }

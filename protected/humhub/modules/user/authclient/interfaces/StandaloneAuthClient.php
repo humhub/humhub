@@ -8,24 +8,10 @@
 
 namespace humhub\modules\user\authclient\interfaces;
 
-use humhub\modules\user\authclient\AuthAction;
-use yii\web\Response;
-
 /**
- * StandaloneAuthClient allows implementation of custom authclients
- * which not relies on auth handling by AuthAction
- *
- * @see \yii\authclient\AuthAction
- * @since 1.1.2
- * @author Luke
+ * @deprecated since 1.19 — implement auth() on your AuthClient instead.
+ *   See MIGRATE-DEV.md for migration instructions.
  */
 interface StandaloneAuthClient
 {
-    /**
-     * Custom auth action implementation
-     *
-     * @param AuthAction $authAction
-     * @return Response response instance.
-     */
-    public function authAction($authAction);
 }

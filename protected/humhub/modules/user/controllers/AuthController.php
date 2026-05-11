@@ -12,7 +12,6 @@ use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\components\Response;
 use humhub\helpers\DeviceDetectorHelper;
-use humhub\modules\user\authclient\AuthAction;
 use humhub\modules\user\authclient\BaseFormAuth;
 use humhub\modules\user\authclient\interfaces\SerializableAuthClient;
 use humhub\modules\user\events\UserEvent;
@@ -29,7 +28,6 @@ use Throwable;
 use Yii;
 use yii\authclient\BaseClient;
 use yii\base\Exception;
-use yii\captcha\CaptchaAction;
 use yii\web\Cookie;
 use yii\web\HttpException;
 
@@ -77,7 +75,7 @@ class AuthController extends Controller
     {
         return [
             'external' => [
-                'class' => AuthAction::class,
+                'class' => \yii\authclient\AuthAction::class,
                 'successCallback' => $this->onAuthSuccess(...),
             ],
         ];
@@ -238,12 +236,6 @@ class AuthController extends Controller
         }
 
         // Start Registration
-        return $this->redirectToRegistration($authClient);
-    }
-
-
-    private function redirectToRegistration(BaseClient $authClient)
-    {
         if ($authClient instanceof SerializableAuthClient) {
             $authClient->beforeSerialize();
         }
@@ -253,7 +245,6 @@ class AuthController extends Controller
 
         return $this->redirect(['/user/registration']);
     }
-
 
     /**
      * Do log in user
@@ -267,10 +258,7 @@ class AuthController extends Controller
     {
         $duration = 0;
 
-        if (
-            ($authClient instanceof BaseFormAuth && $authClient->login->rememberMe)
-            || !empty(Yii::$app->session->get('loginRememberMe'))
-        ) {
+        if ($authClient instanceof BaseFormAuth && $authClient->login->rememberMe) {
             $duration = Yii::$app->getModule('user')->loginRememberMeDuration;
         }
 

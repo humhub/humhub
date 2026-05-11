@@ -10,10 +10,11 @@ use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
 
 /**
- * Tests that allowedAuthClientIds on LdapAuth/LdapUserSource is correctly
+ * Tests that allowedAuthClientIds on LdapUserSource is correctly
  * exposed and enforced via UserSourceService.
  *
- * No real LDAP server is required — LdapAuth objects are constructed directly.
+ * No real LDAP server is required — LdapAuth and LdapUserSource objects are
+ * constructed directly.
  */
 class LdapAllowedAuthClientsTest extends HumHubDbTestCase
 {
@@ -30,18 +31,10 @@ class LdapAllowedAuthClientsTest extends HumHubDbTestCase
 
     public function testAllowedAuthClientsAreConfigurable(): void
     {
-        $source = new LdapUserSource($this->makeLdapAuth(['allowedAuthClientIds' => ['ldap', 'saml']]));
+        $source = new LdapUserSource($this->makeLdapAuth(), ['allowedAuthClientIds' => ['ldap', 'saml']]);
 
         $this->assertContains('ldap', $source->getAllowedAuthClientIds());
         $this->assertContains('saml', $source->getAllowedAuthClientIds());
-    }
-
-    public function testAllowedAuthClientIdsDelegatesToLdapAuth(): void
-    {
-        $auth = $this->makeLdapAuth(['allowedAuthClientIds' => ['ldap', 'local']]);
-        $source = new LdapUserSource($auth);
-
-        $this->assertSame($auth->allowedAuthClientIds, $source->getAllowedAuthClientIds());
     }
 
     // ---------------------------------------------------------------------------
@@ -96,23 +89,22 @@ class LdapAllowedAuthClientsTest extends HumHubDbTestCase
     // Helpers
     // ---------------------------------------------------------------------------
 
-    private function makeLdapAuth(array $config = []): LdapAuth
+    private function makeLdapAuth(): LdapAuth
     {
-        return new LdapAuth(array_merge([
-            'usernameAttribute'   => 'uid',
-            'emailAttribute'      => 'mail',
-            'idAttribute'         => 'uid',
-            'allowedAuthClientIds' => ['ldap'],
-        ], $config));
+        return new LdapAuth([
+            'usernameAttribute' => 'uid',
+            'emailAttribute'    => 'mail',
+            'idAttribute'       => 'uid',
+        ]);
     }
 
     /**
      * Registers a LdapUserSource in userSourceCollection and returns a User
      * model instance (not persisted) with user_source = 'ldap'.
      */
-    private function makeUserWithLdapSource(array $authConfig = []): User
+    private function makeUserWithLdapSource(array $sourceConfig = []): User
     {
-        $source = new LdapUserSource($this->makeLdapAuth($authConfig));
+        $source = new LdapUserSource($this->makeLdapAuth(), $sourceConfig);
         Yii::$app->userSourceCollection->setUserSource('ldap', $source);
 
         $user = new User();

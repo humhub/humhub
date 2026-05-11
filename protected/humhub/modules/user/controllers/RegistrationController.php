@@ -18,6 +18,7 @@ use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use humhub\modules\user\services\InviteRegistrationService;
 use humhub\modules\user\services\LinkRegistrationService;
+use humhub\modules\user\services\UserSourceService;
 use Throwable;
 use Yii;
 use yii\authclient\BaseClient;
@@ -187,6 +188,11 @@ class RegistrationController extends Controller
 
         $registration = new Registration(enablePasswordForm: false);
 
+        $userSource = UserSourceService::getCollection()->findUserSourceForAuthClient($authClient->getId());
+        $registration->enableUserApproval = $userSource->requiresApproval($authClient->getId());
+
+        // Backwards-compatibility: legacy auth clients still implementing
+        // ApprovalBypass force-skip approval. Deprecated since 1.19.
         if ($authClient instanceof ApprovalBypass) {
             $registration->enableUserApproval = false;
         }

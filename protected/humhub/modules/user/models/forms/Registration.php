@@ -29,7 +29,12 @@ use humhub\modules\user\events\UserEvent;
 class Registration extends HForm
 {
     /**
-     * @event \yii\web\UserEvent triggered after successful registration.
+     * @event UserEvent triggered after successful registration via the form flow.
+     * Fires only for users created through `Registration::register()` (UI self-registration
+     * or AuthClient-driven auto-registration via LocalUserSource / LdapUserSource).
+     *
+     * For a generic "user was created by any UserSource" hook (covering SCIM and
+     * config-driven sources too), use `UserSourceService::EVENT_AFTER_CREATE`.
      */
     public const EVENT_AFTER_REGISTRATION = 'afterRegistration';
     public const EVENT_AFTER_SET_FORM = 'afterSetForm';
@@ -293,9 +298,9 @@ class Registration extends HForm
 
             if ($authClient !== null) {
                 (new AuthClientUserService($this->models['User']))->add($authClient);
-                UserSourceService::triggerAfterCreate($this->models['User']);
             }
 
+            UserSourceService::triggerAfterCreate($this->models['User']);
             $this->trigger(self::EVENT_AFTER_REGISTRATION, new UserEvent(['user' => $this->models['User']]));
 
             return true;

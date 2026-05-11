@@ -272,11 +272,25 @@ class LdapSettings extends Model
             'baseDn' => $this->baseDn,
             'userFilter' => $this->userFilter,
             'autoRefreshUsers' => (bool)$this->refreshUsers,
-            'allowedAuthClientIds' => $this->allowedAuthClientIds,
             'emailAttribute' => $this->emailAttribute,
             'usernameAttribute' => $this->usernameAttribute,
             'idAttribute' => $this->idAttribute,
             'ignoredDNs' => explode("\n", strtolower($this->ignoredDNs)),
+        ];
+    }
+
+    /**
+     * Returns the configured `LdapUserSource` definition for runtime registration.
+     *
+     * Encapsulates UserSource-specific settings (currently `allowedAuthClientIds`)
+     * so that LdapAuth itself can stay free of HumHub-specific properties.
+     *
+     * @return array
+     */
+    public function getLdapUserSourceDefinition(): array
+    {
+        return [
+            'allowedAuthClientIds' => $this->allowedAuthClientIds,
         ];
     }
 

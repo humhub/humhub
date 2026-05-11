@@ -90,32 +90,58 @@ Version 1.19 (Unreleased)
   - Use following code to create a Activity `ActivityManager::dispatch(TaskCompletedActivity::class, $this->task, $user)`
 - Introduced **UserSource architecture** — separates user provisioning (who owns the user) from authentication (how the user logs in)
   - New `humhub\modules\user\source\UserSourceInterface` — contract for user provisioning sources
-  - New `humhub\modules\user\source\BaseUserSource` — abstract base with sensible defaults
-  - New `humhub\modules\user\source\LocalUserSource` — handles self-registered / admin-created users
+  - New `humhub\modules\user\source\BaseUserSource` — abstract base with sensible defaults; provides a default `updateUser()` that applies attributes listed in `$managedAttributes`
+  - New `humhub\modules\user\source\LocalUserSource` — handles self-registered / admin-created users; default fallback for any AuthClient not claimed by another UserSource
   - New `humhub\modules\user\source\GenericUserSource` — fully config-driven source for custom integrations
-  - New `humhub\modules\user\source\UserSourceCollection` — application component (`Yii::$app->userSourceCollection`)
-  - New `humhub\modules\user\source\HasUserSource` — interface for AuthClients that own a UserSource (e.g. `LdapAuth`)
+  - New `humhub\modules\user\source\UserSourceCollection` — application component (`Yii::$app->userSourceCollection`); exposes `findUserSourceForAuthClient(string $clientId)` for AuthClient → UserSource dispatch
   - New `humhub\modules\user\services\UserSourceService` — per-user capability checks and lifecycle helpers
     - `UserSourceService::getForUser(?User $user = null)` — factory method; falls back to current identity
     - `UserSourceService::updateUser(array $attributes)` — updates user via UserSource and fires lifecycle event
+    - `UserSourceService::deleteUser()` — removes user via UserSource and fires lifecycle event
     - `UserSourceService::triggerAfterCreate(User $user)` — fires lifecycle event after creation
   - New `humhub\modules\ldap\source\LdapUserSource` — extracted from `LdapAuth`; handles LDAP user lifecycle
   - Database: `user.auth_mode` + `user.authclient_id` replaced by `user.user_source` (string source ID)
   - Database: LDAP identity now stored in `user_auth` table (`source='ldap'`, `source_id=<idAttribute value>`) — consistent with OAuth
-  - Lifecycle events moved from `User` model to `UserSourceService` constants; fired on the `User` object:
-    - `User::EVENT_AFTER_USER_SOURCE_CREATE` → `UserSourceService::EVENT_AFTER_CREATE` (`'afterUserSourceCreate'`)
-    - `User::EVENT_AFTER_USER_SOURCE_UPDATE` → `UserSourceService::EVENT_AFTER_UPDATE` (`'afterUserSourceUpdate'`)
-    - Listen via `Event::on(UserSourceService::class, UserSourceService::EVENT_AFTER_CREATE, $handler)`
-  - `LdapAuth` now implements `HasUserSource` — use `$ldapAuth->getUserSource()` to access `LdapUserSource`
-  - LDAP: new `LdapAuth::$allowedAuthClientIds` (default `['ldap']`) — restricts which auth clients LDAP users may use; configurable in admin UI
+  - New class-level lifecycle events on `UserSourceService` — listen via `Event::on(UserSourceService::class, ...)`:
+    - `UserSourceService::EVENT_AFTER_CREATE` (`'afterUserSourceCreate'`) — fired after a UserSource creates a user
+    - `UserSourceService::EVENT_AFTER_UPDATE` (`'afterUserSourceUpdate'`) — fired after a UserSource updates a user
+    - `UserSourceService::EVENT_AFTER_DELETE` (`'afterUserSourceDelete'`) — fired after a UserSource removes a user
+  - **AuthClient → UserSource link is declarative on the UserSource side** — AuthClients stay vanilla `\yii\authclient\*` implementations with no HumHub-specific interfaces. Each UserSource declares which AuthClient IDs it is responsible for via `$allowedAuthClientIds`; that list governs login authorisation, sync, and createUser dispatch.
+  - LDAP: `LdapUserSource::$allowedAuthClientIds` (default `['ldap']`) — restricts which auth clients LDAP users may use; configurable in admin UI
   - LDAP: login with a disallowed auth client is now blocked in `AuthController` with an error flash
 - Removed `humhub\modules\user\authclient\BaseClient`
   - Replace `extends BaseClient` with `extends \yii\authclient\BaseClient` (or `BaseFormAuth` for form-based clients)
-  - `BaseClient::EVENT_CREATE_USER` removed — replace listeners with `Event::on(User::class, UserSourceService::EVENT_AFTER_CREATE, $handler)`
-  - `BaseClient::canBypassApproval()` removed — implement `humhub\modules\user\authclient\interfaces\ApprovalBypass` instead
+  - `BaseClient::EVENT_CREATE_USER` removed — replace listeners with `Event::on(UserSourceService::class, UserSourceService::EVENT_AFTER_CREATE, $handler)`
+  - `BaseClient::EVENT_UPDATE_USER` removed — replace listeners with `Event::on(UserSourceService::class, UserSourceService::EVENT_AFTER_UPDATE, $handler)`
+  - `BaseClient::canBypassApproval()` removed — configure on the UserSource via `$approval` / `$trustedAuthClientIds` (see below)
   - `BaseClient::beforeSerialize()` removed — implement `humhub\modules\user\authclient\interfaces\SerializableAuthClient` instead
+- Removed `humhub\modules\user\authclient\interfaces\SyncAttributes` (was deprecated since 1.16; the legacy sync path in `AuthClientService` is removed)
+  - Replacement: have a UserSource declare which AuthClient IDs it accepts via `$allowedAuthClientIds`. The UserSource's `updateUser()` (or the default in `BaseUserSource` driven by `$managedAttributes`) writes the synced fields.
+  - Affected modules requiring migration: `saml-sso`, `jwt-sso`, `spd-login`, and any custom AuthClient that implemented `SyncAttributes`. Existing local users authenticating via SAML/JWT will no longer be sync'd unless an admin opts in by adding the auth client ID to `LocalUserSource::$allowedAuthClientIds` and listing the synced fields in `LocalUserSource::$managedAttributes`.
 - New `humhub\modules\user\authclient\interfaces\SerializableAuthClient` — opt-in hook for auth clients that need pre-serialization logic
-- `humhub\modules\user\authclient\interfaces\ApprovalBypass` reinstated (no longer deprecated) — implement to bypass approval for users created by a given auth client
+- Deprecated `humhub\modules\user\authclient\interfaces\ApprovalBypass` — approval is now configured on the UserSource side. AuthClients stay vanilla `\yii\authclient\*` implementations.
+  - The interface still works as a fallback (kept for backwards-compatibility with modules like `saml-sso`, `spd-login`) and will be removed in a future release.
+  - Migration: drop `implements ApprovalBypass` from your AuthClient. To skip approval for users provisioned via that auth client, configure the responsible UserSource with `'approval' => true, 'trustedAuthClientIds' => ['<client-id>']` — or leave `$approval = false` (default) to skip approval entirely for that source.
+  - `UserSourceInterface::requiresApproval(?string $authClientId = null)` decides per-request: form-based self-registration passes `null`; auth-client-driven registration passes the client ID.
+  - Core `LdapAuth` no longer implements `ApprovalBypass`; the LDAP approval policy is owned by `LdapUserSource`.
+- Deprecated `humhub\modules\user\authclient\interfaces\StandaloneAuthClient` — implement `auth()` on your AuthClient instead:
+  ```php
+  // Before:
+  class MyClient extends BaseClient implements StandaloneAuthClient {
+      public function authAction($authAction) {
+          // custom logic
+          return $authAction->authSuccess($this);
+      }
+  }
+  // After:
+  class MyClient extends \yii\authclient\BaseClient {
+      public function auth() {
+          // custom logic — AuthAction calls authSuccess() automatically after auth() returns
+      }
+  }
+  ```
+- Deprecated `humhub\modules\user\authclient\AuthAction` — use `\yii\authclient\AuthAction` directly
+  - The `rememberMe` query-parameter handling (writing to `loginRememberMe` session key) is removed; remember-me for OAuth/SSO clients was never supported anyway
 - Removed `humhub\modules\user\jobs\SyncUsers` — was deprecated since 1.16; register a dedicated sync job in your module instead (see `humhub\modules\ldap\jobs\LdapSyncJob` as example)
   - `humhub\modules\user\authclient\interfaces\AutoSyncUsers` is kept for now but no longer called by core — implement a dedicated queue job instead
 - Removed from `humhub\modules\user\services\AuthClientService`:

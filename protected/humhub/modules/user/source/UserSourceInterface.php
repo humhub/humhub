@@ -87,9 +87,12 @@ interface UserSourceInterface
 
     /**
      * Whether newly created users from this source require admin approval.
-     * Can be overridden per-login by an AuthClient implementing ApprovalBypass.
+     *
+     * The optional $authClientId allows the source to decide context-dependent:
+     * a source can require approval for form-based self-registration ($authClientId === null)
+     * but skip it for trusted auth clients (e.g. SAML, LDAP).
      */
-    public function requiresApproval(): bool;
+    public function requiresApproval(?string $authClientId = null): bool;
 
     // --- Auth Client Integration ---
 

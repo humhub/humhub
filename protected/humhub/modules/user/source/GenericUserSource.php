@@ -9,6 +9,7 @@
 namespace humhub\modules\user\source;
 
 use humhub\modules\user\models\User;
+use humhub\modules\user\services\UserSourceService;
 use Yii;
 use yii\helpers\VarDumper;
 
@@ -26,7 +27,7 @@ use yii\helpers\VarDumper;
  *             'title' => 'Workday HR',
  *             'managedAttributes' => ['email', 'firstname', 'lastname'],
  *             'approval' => false,
- *             'allowedAuthClientIds' => ['local', 'saml-sso'],
+ *             'allowedAuthClientIds' => ['saml-sso'],
  *         ],
  *     ],
  * ],
@@ -36,43 +37,6 @@ use yii\helpers\VarDumper;
  */
 class GenericUserSource extends BaseUserSource
 {
-    public array $managedAttributes = [];
-    public bool $approval = false;
-    public bool $deleteAccount = true;
-    public bool $emailAutoLink = true;
-    public string $usernameStrategy = UserSourceInterface::USERNAME_AUTO_GENERATE;
-    public array $allowedAuthClientIds = [];
-
-    public function getManagedAttributes(): array
-    {
-        return $this->managedAttributes;
-    }
-
-    public function requiresApproval(): bool
-    {
-        return $this->approval;
-    }
-
-    public function getAllowedAuthClientIds(): array
-    {
-        return $this->allowedAuthClientIds;
-    }
-
-    public function allowEmailAutoLink(): bool
-    {
-        return $this->emailAutoLink;
-    }
-
-    public function canDeleteAccount(): bool
-    {
-        return $this->deleteAccount;
-    }
-
-    public function getUsernameStrategy(): string
-    {
-        return $this->usernameStrategy;
-    }
-
     public function createUser(array $attributes): ?User
     {
         $user = new User();
@@ -101,45 +65,8 @@ class GenericUserSource extends BaseUserSource
         $user->profile->setAttributes($attributes, false);
         $user->profile->save();
 
+        UserSourceService::triggerAfterCreate($user);
+
         return $user;
-    }
-
-    public function updateUser(User $user, array $attributes): bool
-    {
-        $managed = $this->getManagedAttributes();
-        if (empty($managed)) {
-            return true;
-        }
-
-        foreach ($managed as $attr) {
-            if (!isset($attributes[$attr])) {
-                continue;
-            }
-            if ($user->hasAttribute($attr)) {
-                $user->setAttribute($attr, $attributes[$attr]);
-            } elseif ($user->profile->hasAttribute($attr)) {
-                $user->profile->setAttribute($attr, $attributes[$attr]);
-            }
-        }
-
-        if ($user->getDirtyAttributes() && !$user->save()) {
-            Yii::warning(
-                'GenericUserSource (' . $this->getId() . '): could not update user (' . $user->id . '). Errors: '
-                . VarDumper::dumpAsString($user->getErrors()),
-                'user',
-            );
-            return false;
-        }
-
-        if ($user->profile->getDirtyAttributes() && !$user->profile->save()) {
-            Yii::warning(
-                'GenericUserSource (' . $this->getId() . '): could not update profile (' . $user->id . '). Errors: '
-                . VarDumper::dumpAsString($user->profile->getErrors()),
-                'user',
-            );
-            return false;
-        }
-
-        return true;
     }
 }

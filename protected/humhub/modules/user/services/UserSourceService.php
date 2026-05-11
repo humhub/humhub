@@ -38,6 +38,13 @@ class UserSourceService
      */
     public const EVENT_AFTER_UPDATE = 'afterUserSourceUpdate';
 
+    /**
+     * @event UserEvent triggered on UserSourceService after a user is deleted/disabled by a UserSource.
+     * Listen via: Event::on(UserSourceService::class, UserSourceService::EVENT_AFTER_DELETE, $handler)
+     * @since 1.19
+     */
+    public const EVENT_AFTER_DELETE = 'afterUserSourceDelete';
+
     public function __construct(public readonly User $user)
     {
     }
@@ -76,8 +83,22 @@ class UserSourceService
     }
 
     /**
+     * Removes the user via its UserSource and fires EVENT_AFTER_DELETE.
+     *
+     * The concrete behaviour (disable / anonymise / hard-delete) is defined
+     * by the UserSource implementation. The default in BaseUserSource is to
+     * soft-disable.
+     */
+    public function deleteUser(): bool
+    {
+        $result = $this->getUserSource()->deleteUser($this->user);
+        Event::trigger(self::class, self::EVENT_AFTER_DELETE, new UserEvent(['user' => $this->user]));
+        return $result;
+    }
+
+    /**
      * Fires EVENT_AFTER_CREATE on UserSourceService.
-     * Called by AuthClientService after a UserSource has created the user.
+     * Called by callers that have just created a user via a UserSource.
      */
     public static function triggerAfterCreate(User $user): void
     {
