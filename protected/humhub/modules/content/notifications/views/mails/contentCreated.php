@@ -17,7 +17,7 @@ use humhub\modules\notification\models\Notification;
 use humhub\widgets\mails\MailButtonList;
 
 ?>
-<?php $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>
+<?php $this->beginContent('@notification/views/layouts/mail.php') ?>
 
 <?= humhub\widgets\mails\MailContentEntry::widget([
     'originator' => $originator,
