@@ -83,7 +83,7 @@
         "vlucas/phpdotenv": "^5.6",
         "web-token/jwt-library": "^4.1",
         "xj/yii2-jplayer-widget": "^2.7",
-        "yiisoft/yii2": "^2.0.54",
+        "yiisoft/yii2": "^2.0.55",
         "yiisoft/yii2-authclient": "^2.2.0",
         "yiisoft/yii2-bootstrap5": "^2.0",
         "yiisoft/yii2-httpclient": "^2.0.0",
