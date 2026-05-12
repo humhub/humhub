@@ -18,6 +18,7 @@ HumHub Changelog
 - Enh #8128: Exact search for user id in admin user search
 - Enh #8129: Limit activity content length
 - Enh #8139: Update rector rules
+- Enh #8147: Sort modules alphabetically in admin module list
 
 1.18.3 (TBD)
 ------------
