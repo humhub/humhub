@@ -14,11 +14,15 @@ class LoginCest
 
         $loginPage = LoginPage::openBy($I);
 
-        $I->amGoingTo('try to login with empty credentials');
+        $I->amGoingTo('try to continue with an empty username on Step 1');
         $loginPage->login('', '');
-        $I->expectTo('see validations errors');
+        $I->expectTo('see Step 1 validation error');
         $I->waitForText('Username or Email cannot be blank.');
-        $I->see('Password cannot be blank.');
+
+        $I->amGoingTo('try to submit Step 2 with an empty password');
+        $loginPage->openPasswordStep('User1');
+        $loginPage->actor->click('#login-button');
+        $I->waitForText('Password cannot be blank.');
 
         $I->amGoingTo('try to login with wrong credentials');
         $loginPage->login('User1', 'wrong');

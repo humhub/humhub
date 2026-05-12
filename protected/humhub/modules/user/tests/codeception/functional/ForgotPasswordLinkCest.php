@@ -17,18 +17,19 @@ class ForgotPasswordLinkCest
     public function testDefaultForgotPasswordLink(FunctionalTester $I)
     {
         $I->wantTo('ensure that default forgot password link works');
-        LoginPage::openBy($I);
+        $loginPage = LoginPage::openBy($I);
+        $loginPage->openPasswordStep('admin');
         $I->see('Forgot your password?');
         $I->click('Forgot your password?');
         $I->see('Password recovery');
-
     }
 
     public function testDisabledForgotPasswordLink(FunctionalTester $I)
     {
         $I->wantTo('ensure that forgot password link missing when disabled');
         Yii::$app->getModule('user')->passwordRecoveryRoute = null;
-        LoginPage::openBy($I);
+        $loginPage = LoginPage::openBy($I);
+        $loginPage->openPasswordStep('admin');
         $I->dontSee('Forgot your password?');
     }
 
@@ -36,7 +37,8 @@ class ForgotPasswordLinkCest
     {
         $I->wantTo('ensure that external forgot password link works');
         Yii::$app->getModule('user')->passwordRecoveryRoute = 'https://some.external.link';
-        LoginPage::openBy($I);
+        $loginPage = LoginPage::openBy($I);
+        $loginPage->openPasswordStep('admin');
         $I->seeLink('Forgot your password?', 'https://some.external.link');
     }
 }

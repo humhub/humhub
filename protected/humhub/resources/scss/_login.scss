@@ -13,6 +13,7 @@
         #img-logo {
             max-width: 100%;
             padding: 0 16px;
+            margin-bottom: 32px;
         }
 
         .text {
@@ -39,6 +40,10 @@
                 padding: 15px;
             }
 
+            .panel-body p {
+                text-wrap: balance;
+            }
+
             h1,
             h2 {
                 color: var(--hh-text-color-main) !important;
@@ -52,14 +57,9 @@
         .container {
             text-align: center;
 
-            &.container-registration {
-                max-width: 500px;
-            }
+            &.container-registration,
             &.container-login,
             &.container-password {
-                max-width: 330px;
-            }
-            &.container-login.has-multiple-auth-buttons {
                 max-width: 500px;
             }
 

@@ -322,13 +322,14 @@ class Invite extends ActiveRecord
     }
 
     /**
-     * Allow users to invite themself
+     * Allow users to invite themself.
      *
      * @return bool allow self invite
+     * @deprecated since 1.19 — use {@see \humhub\modules\user\controllers\AuthController::isSelfRegistrationEnabled()}
      */
     public function allowSelfInvite()
     {
-        return (!Yii::$app->settings->get('maintenanceMode') && Yii::$app->getModule('user')->settings->get('auth.anonymousRegistration'));
+        return \humhub\modules\user\controllers\AuthController::isSelfRegistrationEnabled();
     }
 
     /**

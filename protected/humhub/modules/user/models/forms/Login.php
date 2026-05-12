@@ -9,7 +9,15 @@ use Yii;
 use yii\base\Model;
 
 /**
- * LoginForm is the model behind the login form.
+ * Single-shot login form — username + password validated together.
+ *
+ * Used by:
+ *  - {@see LoginPassword} (Step 2 of the interactive web flow, via inheritance)
+ *  - third-party integrations that authenticate a user from username + password
+ *    in one call (e.g. CalDAV `HttpBasicAuth` backend, REST `auth/AuthController`)
+ *
+ * The interactive web flow does not instantiate this class directly — it uses
+ * {@see LoginIdentity} (Step 1) and {@see LoginPassword} (Step 2).
  */
 class Login extends Model
 {
@@ -32,6 +40,14 @@ class Login extends Model
      * @var bool hide "Remember me" form field in the view
      */
     public $hideRememberMe = false;
+
+    /**
+     * @var bool whether to remember the entered username/email in a cookie so
+     * the user lands directly on Step 2 on the next visit. Only applies to the
+     * Step-2 form (LoginPassword); the base BC-Login does not surface it.
+     * @since 1.19
+     */
+    public $rememberUsername = false;
 
     /**
      * @var BaseFormAuth auth client used to authenticate
@@ -68,16 +84,19 @@ class Login extends Model
         return [
             'username' => Yii::t('UserModule.auth', 'Username or Email'),
             'password' => Yii::t('UserModule.auth', 'Password'),
-            'rememberMe' => Yii::t('UserModule.auth', 'Remember me'),
+            'rememberMe' => Yii::t('UserModule.auth', 'Keep me signed in'),
+            'rememberUsername' => Yii::t('UserModule.auth', 'Remember username'),
         ];
     }
 
     /**
-     * Validation
+     * Iterates over the configured form-based auth clients and tries each one.
+     * Sets {@see $authClient} on the first successful auth. Adds a generic
+     * "User or Password incorrect" error otherwise — never reveals which side
+     * (username vs password) failed.
      */
     public function afterValidate()
     {
-        // Loop over enabled authclients
         $authClientDelayed = null;
         foreach (Yii::$app->authClientCollection->getClients() as $authClient) {
             if ($authClient instanceof BaseFormAuth) {
@@ -103,7 +122,6 @@ class Login extends Model
                 if ($authClient->isDelayedLoginAction()) {
                     $authClientDelayed = $authClient;
                 }
-
             }
         }
 
@@ -124,5 +142,4 @@ class Login extends Model
 
         parent::afterValidate();
     }
-
 }

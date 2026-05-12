@@ -9,7 +9,6 @@
 namespace humhub\modules\user\tests\codeception\functional;
 
 use humhub\modules\user\models\User;
-use tests\codeception\_pages\LoginPage;
 use user\FunctionalTester;
 use Yii;
 
@@ -29,7 +28,7 @@ class RegistrationCest
      */
     public function testRegisterInvalidEmail(FunctionalTester $I)
     {
-        LoginPage::openBy($I);
+        $I->amOnRoute('user/auth/register');
 
         $I->see('Sign up');
         $I->fillField('#register-email', 'wrongEmail');
@@ -42,7 +41,7 @@ class RegistrationCest
      */
     public function testRegister(FunctionalTester $I)
     {
-        LoginPage::openBy($I);
+        $I->amOnRoute('user/auth/register');
 
         $I->see('Sign up');
         $I->fillField('#register-email', 'mytestmail@test.de');
