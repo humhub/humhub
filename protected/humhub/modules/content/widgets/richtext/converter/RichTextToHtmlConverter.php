@@ -93,7 +93,7 @@ class RichTextToHtmlConverter extends BaseRichTextConverter
 
             $htmlDefinition->addAttribute('a', 'target', 'Text');
             $htmlDefinition->addAttribute('img', 'style', 'Text');
-            $htmlDefinition->addElement('video', 'Block', 'Optional: (source, Flow) | Flow', 'Common', [
+            $htmlDefinition->addElement('video', 'Inline', 'Optional: (source, Flow) | Flow', 'Common', [
                 'src'      => 'URI',
                 'title'    => 'Text',
                 'width'    => 'Length',
@@ -103,7 +103,7 @@ class RichTextToHtmlConverter extends BaseRichTextConverter
                 'muted'    => 'Bool',
                 'loop'     => 'Bool',
             ]);
-            $htmlDefinition->addElement('audio', 'Block', 'Optional: (source, Flow) | Flow', 'Common', [
+            $htmlDefinition->addElement('audio', 'Inline', 'Optional: (source, Flow) | Flow', 'Common', [
                 'src'      => 'URI',
                 'title'    => 'Text',
                 'controls' => 'Bool',

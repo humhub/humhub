@@ -360,6 +360,7 @@ class LinkParserBlock extends Model
     public function getVideoAttributes(): array
     {
         $attrs = $this->getImageAttributes();
+        $attrs['title'] = $this->getText();
         unset($attrs['alt']);
 
         if ($this->hasOption(static::BLOCK_KEY_CONTROLS)) {
