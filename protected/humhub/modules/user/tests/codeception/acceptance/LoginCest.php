@@ -25,6 +25,9 @@ class LoginCest
         $I->waitForText('Password cannot be blank.');
 
         $I->amGoingTo('try to login with wrong credentials');
+        // Reset to Step 1 — the previous assertion left us on Step 2, where
+        // LoginPage::login() can't fill the username field.
+        $loginPage = LoginPage::openBy($I);
         $loginPage->login('User1', 'wrong');
         $I->expectTo('see validations errors');
         $I->waitForText('User or Password incorrect.');

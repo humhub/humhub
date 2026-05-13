@@ -19,6 +19,10 @@ use user\AcceptanceTester;
  *  - The Step-2 back-arrow (`?forget=1`) clears the cookie and brings the
  *    visitor back to a blank Step 1.
  *
+ * One scripted end-to-end run rather than three independent tests — the
+ * cookie is signed by Yii (cookieValidationKey), so we can't fabricate one
+ * with Selenium's setCookie and expect the server to honour it.
+ *
  * @since 1.19
  */
 class RememberUsernameCest
@@ -35,52 +39,36 @@ class RememberUsernameCest
         $I->resetCookie(self::COOKIE_NAME);
     }
 
-    public function testCookieSetWhenCheckboxTicked(AcceptanceTester $I)
+    public function testRememberUsernameRoundtrip(AcceptanceTester $I)
     {
-        $I->wantTo('store the username in a cookie when "Remember login name" is ticked');
+        $I->wantTo('store, replay and clear the username via the "Remember login name" cookie');
 
+        $I->amGoingTo('login with the "Remember login name" box ticked');
         LoginPage::openBy($I);
         $I->fillField('Login[username]', 'User1');
         $I->click('#continue-button');
         $I->waitForElement('#login_password');
-
         $I->checkOption('Login[rememberUsername]');
         $I->fillField('Login[password]', 'user^humhub@PASS%worD!');
         $I->click('#login-button');
         $I->waitForText('User 2 Space 2 Post Public');
 
+        $I->expectTo('see the username cookie set by the server');
         $I->seeCookie(self::COOKIE_NAME);
-        $I->assertSame('User1', $I->grabCookie(self::COOKIE_NAME));
-    }
 
-    public function testStep1AutoSkippedWhenCookiePresent(AcceptanceTester $I)
-    {
-        $I->wantTo('auto-skip Step 1 when the username cookie is set');
-
-        $I->amOnPage('/');
-        $I->setCookie(self::COOKIE_NAME, 'User1');
-
+        $I->amGoingTo('logout and revisit the login page');
+        $I->logout();
         LoginPage::openBy($I);
 
-        $I->expectTo('land on Step 2 with the password input visible');
+        $I->expectTo('be auto-skipped to Step 2 with the remembered username displayed');
         $I->waitForElement('#login_password');
         $I->dontSeeElement('input[name="Login[username]"]');
         $I->see('User1');
-    }
 
-    public function testForgetLinkClearsCookieAndReturnsToStep1(AcceptanceTester $I)
-    {
-        $I->wantTo('drop the cookie and bounce back to Step 1 via the back-arrow link');
-
-        $I->amOnPage('/');
-        $I->setCookie(self::COOKIE_NAME, 'User1');
-
-        LoginPage::openBy($I);
-        $I->waitForElement('#login_password');
-
+        $I->amGoingTo('use the back-arrow to forget the username');
         $I->click('#login-back');
 
-        $I->expectTo('see a blank Step 1 again');
+        $I->expectTo('see a blank Step 1 again with the cookie cleared');
         $I->waitForElement('input[name="Login[username]"]');
         $I->dontSeeElement('#login_password');
         $I->dontSeeCookie(self::COOKIE_NAME);
