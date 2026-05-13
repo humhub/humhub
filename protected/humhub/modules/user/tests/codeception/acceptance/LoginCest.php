@@ -33,6 +33,8 @@ class LoginCest
         $I->waitForText('User or Password incorrect.');
 
         $I->amGoingTo('try to login with correct credentials');
+        // Wrong-credentials POST left us on Step 2 — start over from Step 1.
+        $loginPage = LoginPage::openBy($I);
         $loginPage->login('User1', 'user^humhub@PASS%worD!');
         $I->expectTo('see dashboard');
         $I->waitForText('User 2 Space 2 Post Public');
