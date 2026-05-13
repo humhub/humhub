@@ -110,6 +110,15 @@ abstract class BaseUserSource extends Component implements UserSourceInterface
         return $this->allowedAuthClientIds;
     }
 
+    /**
+     * Default claim: the source's configured allow-list lists this auth client.
+     * Attribute inspection is left to directory-backed sources that override.
+     */
+    public function claimsUserCreation(string $authClientId, array $attributes): bool
+    {
+        return in_array($authClientId, $this->allowedAuthClientIds, true);
+    }
+
     public function allowEmailAutoLink(): bool
     {
         return $this->emailAutoLink;

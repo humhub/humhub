@@ -22,6 +22,7 @@ use humhub\modules\user\models\Session;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use humhub\modules\user\services\AuthClientService;
+use humhub\modules\user\services\AutoMapResult;
 use humhub\modules\user\services\InviteRegistrationService;
 use humhub\modules\user\services\LinkRegistrationService;
 use humhub\modules\user\services\UserSourceService;
@@ -415,7 +416,7 @@ class AuthController extends Controller
         }
 
         $authClientService = new AuthClientService($authClient);
-        $authClientService->autoMapToExistingUser();
+        $mapResult = $authClientService->autoMapToExistingUser();
 
         $user = $authClientService->getUser();
 
@@ -439,6 +440,14 @@ class AuthController extends Controller
                 return $this->redirect(['/user/auth/login']);
             }
             return $this->login($user, $authClient);
+        }
+
+        // An account with the matching email exists but its UserSource refuses
+        // to link this auth client. Falling through to register() would only
+        // produce a duplicate-email failure on the registration form.
+        if ($mapResult === AutoMapResult::Denied) {
+            Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'This login method is not allowed for your account.'));
+            return $this->redirect(['/user/auth/login']);
         }
 
         return $this->register($authClient);
@@ -492,6 +501,14 @@ class AuthController extends Controller
         // Try automatic user creation
         $user = $authClientService->createUser();
         if ($user !== null) {
+            // Pending approval: redirect to the registration controller's
+            // dedicated pending page instead of attempting login() and
+            // bouncing back to /user/auth/login with a bare flash error.
+            // AuthAction's successCallback requires a Response, so a redirect
+            // is used here rather than rendering inline.
+            if ($user->status === User::STATUS_NEED_APPROVAL) {
+                return $this->redirect(['/user/registration/pending']);
+            }
             return $this->login($user, $authClient);
         }
 

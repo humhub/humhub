@@ -75,12 +75,17 @@ class LoginIdentity extends Model
      * Decide the next step after a successful Step-1 validation.
      *
      * Returns a redirect target (array form) when the user should be sent to
-     * an external IdP instead of seeing the password screen:
-     *  - Their UserSource permits no {@see BaseFormAuth} client
+     * an external IdP instead of seeing the password screen — i.e. they have
+     * no usable form-based auth:
+     *  - Their UserSource's allow-list contains no {@see BaseFormAuth} client
      *    (e.g. SAML/OIDC-only sources); or
-     *  - They have no local password and a linked OAuth/SAML provider, in
-     *    which case we redirect to the most recently linked one so they
-     *    don't land on a useless password screen.
+     *  - Their source has no allow-list at all (LocalUserSource default) and
+     *    they have no local password set — the password screen would be a
+     *    dead end, so we send them to their most recently linked external
+     *    provider instead.
+     *
+     * For LDAP-sourced users the allow-list always contains the LDAP form
+     * client, so a linked OAuth provider does NOT shadow the password screen.
      *
      * Returns null when the password screen should be rendered — including
      * the unknown-user case (account-enumeration protection: an unknown user
@@ -98,44 +103,61 @@ class LoginIdentity extends Model
         $collection = Yii::$app->authClientCollection;
         $allowedIds = UserSourceService::getForUser($user)->getUserSource()->getAllowedAuthClientIds();
 
-        // UserSource permits no form-based auth → first allowed (assumed-IdP) wins.
+        if ($this->hasUsableFormAuth($user, $allowedIds)) {
+            return null;
+        }
+
+        // No usable form-based auth — pick an external provider.
+        // Preference 1: the first explicitly allowed client (the source's
+        // declared IdP, e.g. SAML/OIDC for an SSO-only source).
         if (!empty($allowedIds)) {
-            $hasFormAuth = false;
-            foreach ($allowedIds as $clientId) {
-                if ($collection->hasClient($clientId)
-                    && $collection->getClient($clientId) instanceof BaseFormAuth) {
-                    $hasFormAuth = true;
-                    break;
-                }
-            }
-            if (!$hasFormAuth) {
-                $firstClientId = reset($allowedIds);
-                if ($collection->hasClient($firstClientId)) {
-                    return ['/user/auth/external', 'authclient' => $firstClientId];
-                }
+            $firstClientId = reset($allowedIds);
+            if ($collection->hasClient($firstClientId)) {
+                return ['/user/auth/external', 'authclient' => $firstClientId];
             }
         }
 
-        // User has no local password but a linked OAuth/SAML provider → send
-        // them straight to the latest linked one. Iterate desc-by-id so the
-        // most recently linked OAuth wins; skip rows that point at form-based
-        // clients (e.g. LDAP since 1.19 also writes user_auth rows for DN
-        // tracking) or at clients no longer registered.
-        if ($user->currentPassword === null) {
-            $auths = Auth::find()
-                ->where(['user_id' => $user->id])
-                ->orderBy(['id' => SORT_DESC])
-                ->all();
-            foreach ($auths as $auth) {
-                if (!$collection->hasClient($auth->source)) {
-                    continue;
-                }
-                if (!$collection->getClient($auth->source) instanceof BaseFormAuth) {
-                    return ['/user/auth/external', 'authclient' => $auth->source];
-                }
+        // Preference 2: the user's most recently linked external provider.
+        // Iterate desc-by-id so the most recent OAuth/SAML wins; skip rows
+        // pointing at form-based clients (LDAP also writes user_auth rows for
+        // DN tracking since 1.19) or at clients no longer registered.
+        $auths = Auth::find()
+            ->where(['user_id' => $user->id])
+            ->orderBy(['id' => SORT_DESC])
+            ->all();
+        foreach ($auths as $auth) {
+            if (!$collection->hasClient($auth->source)) {
+                continue;
+            }
+            if (!$collection->getClient($auth->source) instanceof BaseFormAuth) {
+                return ['/user/auth/external', 'authclient' => $auth->source];
             }
         }
 
         return null;
+    }
+
+    /**
+     * Whether the password screen is a meaningful next step for this user.
+     *
+     * - Source with an allow-list: any allowed BaseFormAuth client (LDAP, Local)
+     *   means the user can authenticate via form.
+     * - Source without an allow-list (e.g. LocalUserSource default): the password
+     *   screen is only useful if the user actually has a local password set.
+     */
+    private function hasUsableFormAuth(User $user, array $allowedIds): bool
+    {
+        if (!empty($allowedIds)) {
+            $collection = Yii::$app->authClientCollection;
+            foreach ($allowedIds as $clientId) {
+                if ($collection->hasClient($clientId)
+                    && $collection->getClient($clientId) instanceof BaseFormAuth) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        return $user->currentPassword !== null;
     }
 }

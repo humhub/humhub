@@ -59,14 +59,17 @@ class AdminController extends Controller
         $userCount = 0;
         $errorMessage = "";
 
-        if ($settings->enabled) {
+        // Registry is populated from the DB-backed LdapSettings. If the model
+        // is "enabled" (checkbox checked, possibly only in POST after a failed
+        // save) but DB isn't yet, the 'ldap' connection isn't registered —
+        // skip the status box silently so the user just sees the form errors.
+        /** @var Module $module */
+        $module = Yii::$app->getModule('ldap');
+        $registry = $module->getConnectionRegistry();
+        if ($settings->enabled && $registry->has('ldap')) {
             $enabled = true;
-
             try {
-                /** @var Module $module */
-                $module = Yii::$app->getModule('ldap');
-                // The UI only ever shows the legacy DB-backed default connection.
-                $userCount = $module->getConnectionRegistry()->getService('ldap')->countUsers();
+                $userCount = $registry->getService('ldap')->countUsers();
             } catch (Exception $ex) {
                 $errorMessage = $ex->getMessage();
             }

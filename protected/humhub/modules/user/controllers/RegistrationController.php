@@ -129,6 +129,27 @@ class RegistrationController extends Controller
 
 
     /**
+     * Renders the registration success view for users whose account was just
+     * created via an auth client (SSO) and is awaiting admin approval.
+     *
+     * The auth flow ({@see AuthController::register()}) redirects here instead
+     * of attempting to log the user in immediately, which would bounce them
+     * back to the login form with a bare "not approved yet" flash error.
+     *
+     * @since 1.19
+     */
+    public function actionPending()
+    {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        return $this->render('success', [
+            'needApproval' => true,
+        ]);
+    }
+
+    /**
      * Invitation by link
      * @param null $token
      * @param null $spaceId
@@ -188,7 +209,7 @@ class RegistrationController extends Controller
 
         $registration = new Registration(enablePasswordForm: false);
 
-        $userSource = UserSourceService::getCollection()->findUserSourceForAuthClient($authClient->getId());
+        $userSource = UserSourceService::getCollection()->findUserSourceForAuthClient($authClient->getId(), $attributes);
         $registration->enableUserApproval = $userSource->requiresApproval($authClient->getId());
 
         // Backwards-compatibility: legacy auth clients still implementing

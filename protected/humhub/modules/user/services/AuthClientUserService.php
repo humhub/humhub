@@ -32,24 +32,15 @@ class AuthClientUserService
     /**
      * Records an AuthClient as a login method for this user via the user_auth table.
      *
-     * No-op for source-owning clients — i.e. clients whose ID matches a UserSource ID
-     * that owns the user's identity. Those clients are tracked via `user.user_source`,
-     * not user_auth.
+     * Always writes the row, including for source-owning clients (LDAP, Password).
+     * For LDAP it's essential — the row maps objectGuid → user.id, which is the
+     * only way getUser() finds the user on the next direct LDAP login (the
+     * objectGuid is not the user PK). For Password the row is redundant
+     * (source_id equals user.id), but harmless and keeps the model uniform.
      */
     public function add(ClientInterface $authClient): void
     {
         $clientId = $authClient->getId();
-        $sourceCollection = UserSourceService::getCollection();
-
-        if ($sourceCollection->hasUserSource($clientId)) {
-            Yii::warning(sprintf(
-                "add() called with source-owning client '%s' for user %d — this client manages user identity directly and does not use user_auth.",
-                $clientId,
-                $this->user->id,
-            ), 'user');
-            return;
-        }
-
         $attributes = $authClient->getUserAttributes();
 
         if (empty($attributes['id'])) {

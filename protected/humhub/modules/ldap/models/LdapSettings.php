@@ -100,9 +100,12 @@ class LdapSettings extends Model
     public $idAttribute;
 
     /**
-     * @var string[]
+     * @var string[] auth clients allowed for LDAP-sourced users. Defaults to
+     * `['ldap']` for fresh installs — i.e. LDAP password login is enabled out
+     * of the box. Unchecking 'ldap' disables direct LDAP password login and
+     * forces users to sign in via one of the other selected methods (SSO).
      */
-    public array $allowedAuthClientIds = ['ldap'];
+    public $allowedAuthClientIds = [];
 
     /**
      * @var array
@@ -132,6 +135,7 @@ class LdapSettings extends Model
             [['baseDn', 'userFilter', 'ignoredDNs'], 'string'],
             [['usernameAttribute', 'username', 'passwordField', 'hostname', 'port', 'baseDn', 'userFilter', 'idAttribute'], 'required'],
             ['encryption', 'in', 'range' => ['', 'ssl', 'tls']],
+            ['allowedAuthClientIds', 'filter', 'filter' => fn($v) => is_array($v) && $v !== [] ? $v : ['ldap']],
             ['allowedAuthClientIds', 'each', 'rule' => ['in', 'range' => array_keys($this->getAuthClientOptions())]],
         ];
     }
@@ -212,8 +216,14 @@ class LdapSettings extends Model
         $this->ignoredDNs = $settings->get('ignoredDNs');
         $this->refreshUsers = $settings->get('refreshUsers');
 
+        // Fresh installs get LDAP password login pre-enabled. Existing installs
+        // upgrade transparently because the previous save() always wrote
+        // 'ldap' into the stored list. An empty stored list is also normalised
+        // back to ['ldap'] so the system always has at least one usable login
+        // path for LDAP users.
         $saved = $settings->get('allowedAuthClientIds');
-        $this->allowedAuthClientIds = $saved !== null ? json_decode($saved, true) : ['ldap'];
+        $decoded = $saved !== null ? (json_decode($saved, true) ?? []) : [];
+        $this->allowedAuthClientIds = $decoded !== [] ? $decoded : ['ldap'];
     }
 
 
@@ -244,7 +254,7 @@ class LdapSettings extends Model
         $settings->set('idAttribute', $this->idAttribute);
         $settings->set('refreshUsers', $this->refreshUsers);
         $settings->set('allowedAuthClientIds', json_encode(
-            array_unique(array_merge(['ldap'], $this->allowedAuthClientIds))
+            array_values(array_unique($this->allowedAuthClientIds)),
         ));
 
         return true;
@@ -282,7 +292,9 @@ class LdapSettings extends Model
     }
 
     /**
-     * Returns auth client options available for LDAP users (excluding ldap and local/password clients).
+     * Returns auth client options available for LDAP users. Includes 'ldap'
+     * (LDAP password login) as a first-class checkbox entry. Excludes 'local'
+     * — local password login for LDAP users is not exposed here.
      * Keys are client IDs, values are display titles.
      *
      * @return array<string, string>
@@ -293,7 +305,7 @@ class LdapSettings extends Model
         $collection = Yii::$app->authClientCollection;
         $options = [];
         foreach ($collection->getClients() as $id => $client) {
-            if ($id !== 'ldap' && $id !== 'local') {
+            if ($id !== 'local') {
                 $options[$id] = $client->getTitle();
             }
         }

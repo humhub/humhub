@@ -18,6 +18,7 @@ use humhub\modules\user\models\forms\Registration;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
 use humhub\modules\user\services\AuthClientService;
+use humhub\modules\user\services\AuthClientUserService;
 use humhub\modules\user\source\BaseUserSource;
 use humhub\modules\user\source\UserSourceInterface;
 use Yii;
@@ -50,6 +51,12 @@ class LdapUserSource extends BaseUserSource
         if ($this->id === '') {
             $this->id = $this->connectionId;
         }
+        // Default to allowing LDAP login when no explicit list was configured
+        // (e.g. direct LdapUserSource instantiation without an admin-UI save).
+        // The admin UI controls 'ldap' as a regular entry in the list, so it
+        // must NOT be re-added unconditionally — an empty list passed in is
+        // a deliberate "all clients permitted" config, distinguished here only
+        // from "absolutely nothing configured at all".
         if ($this->allowedAuthClientIds === []) {
             $this->allowedAuthClientIds = [$this->connectionId];
         }
@@ -94,6 +101,43 @@ class LdapUserSource extends BaseUserSource
         return $client;
     }
 
+    /**
+     * Claims user creation only when the directory actually contains the user.
+     *
+     * For the source's own LDAP auth client the user is by definition an LDAP
+     * user (the client's `id` attribute IS the directory ID). For foreign
+     * clients also listed in `allowedAuthClientIds` (e.g. OpenID/SAML allowed
+     * for LDAP users), we verify the email exists in the directory before
+     * claiming — otherwise an unrelated external user would get
+     * `user_source = 'ldap'` and collide with the real LDAP user on the
+     * next direct LDAP login.
+     */
+    public function claimsUserCreation(string $authClientId, array $attributes): bool
+    {
+        if (!parent::claimsUserCreation($authClientId, $attributes)) {
+            return false;
+        }
+        if ($authClientId === $this->connectionId) {
+            return true;
+        }
+
+        $email = $attributes['email'] ?? null;
+        if (!is_string($email) || $email === '') {
+            return false;
+        }
+
+        try {
+            return $this->getLdapService()->getUserDn($email) !== null;
+        } catch (Exception $ex) {
+            Yii::warning(
+                'LdapUserSource (' . $this->getId() . '): directory lookup failed during claim check: '
+                . $ex->getMessage(),
+                'ldap',
+            );
+            return false;
+        }
+    }
+
     public function getManagedAttributes(): array
     {
         $attributes = $this->getConfig()->syncUserTableAttributes;
@@ -116,18 +160,18 @@ class LdapUserSource extends BaseUserSource
     }
 
     /**
-     * Creates a new HumHub user from LDAP attributes.
+     * Creates a new HumHub user with user_source = this source.
      *
-     * Requires an 'id' attribute (mapped from idAttribute). Returns null if the
-     * ID is missing or validation fails — the caller logs and skips.
+     * Does NOT record a user_auth row. The caller knows which auth client was
+     * used and must record the row through {@see AuthClientUserService::add()}
+     * — which writes the right `source_id` for the actual auth client. This
+     * matters when the source is dispatched by a foreign auth client (e.g.
+     * OpenID matched to the LDAP source by email): writing the LDAP objectGuid
+     * row here from OpenID attributes would store the OpenID subject as the
+     * LDAP source_id and break the next direct LDAP login.
      */
     public function createUser(array $attributes): ?User
     {
-        if (!isset($attributes['id'])) {
-            Yii::warning('Cannot create LDAP user: missing ID attribute (idAttribute not configured?).', 'ldap');
-            return null;
-        }
-
         $registration = $this->buildRegistration($attributes);
         if ($registration === null) {
             return null;
@@ -145,22 +189,7 @@ class LdapUserSource extends BaseUserSource
             return null;
         }
 
-        $user = $registration->getUser();
-
-        $auth = new Auth([
-            'user_id' => $user->id,
-            'source' => $this->getId(),
-            'source_id' => (string)$attributes['id'],
-        ]);
-        if (!$auth->save()) {
-            Yii::warning(
-                'Could not create user_auth entry for LDAP user ' . $user->id . ': '
-                . VarDumper::dumpAsString($auth->getErrors()),
-                'ldap',
-            );
-        }
-
-        return $user;
+        return $registration->getUser();
     }
 
     private function buildRegistration(array $attributes): ?Registration
@@ -267,6 +296,10 @@ class LdapUserSource extends BaseUserSource
                         Yii::warning('Could not automatically create LDAP user - DN: ' . $dn, 'ldap');
                         continue;
                     }
+                    // Record the LDAP objectGuid -> user mapping. createUser()
+                    // no longer writes user_auth itself (so it stays usable
+                    // when dispatched from a foreign auth client).
+                    (new AuthClientUserService($user))->add($authClient);
                 } else {
                     $authClientService->updateUser($user);
                 }

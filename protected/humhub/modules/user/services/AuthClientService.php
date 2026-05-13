@@ -100,7 +100,7 @@ class AuthClientService
     {
         $attributes = $this->authClient->getUserAttributes();
         $userSource = UserSourceService::getCollection()
-            ->findUserSourceForAuthClient($this->authClient->getId());
+            ->findUserSourceForAuthClient($this->authClient->getId(), $attributes);
 
         $user = $userSource->createUser($attributes);
         if ($user === null) {
@@ -143,30 +143,56 @@ class AuthClientService
         return $authClientCollection;
     }
 
-    public function autoMapToExistingUser(): void
+    /**
+     * Attempts to link the current AuthClient to an existing user matched by email.
+     *
+     * Returns a status the controller uses to distinguish "no candidate, fall
+     * through to registration" from "candidate exists but policy denies linking
+     * — show a permission error instead of routing to registration where the
+     * user would only hit a duplicate-email failure".
+     */
+    public function autoMapToExistingUser(): AutoMapResult
     {
-        $attributes = $this->authClient->getUserAttributes();
+        if ($this->getUser() !== null) {
+            return AutoMapResult::Mapped;
+        }
 
-        if ($this->getUser() !== null || !isset($attributes['email'])) {
-            return;
+        $attributes = $this->authClient->getUserAttributes();
+        if (!isset($attributes['email'])) {
+            return AutoMapResult::NotFound;
         }
 
         $user = User::findOne(['email' => $attributes['email']]);
         if ($user === null) {
-            return;
+            return AutoMapResult::NotFound;
         }
 
         // Respect the target user's source policy: only link if its source
         // allows this auth client and email auto-link is not disabled.
         $service = UserSourceService::getForUser($user);
-        if (!$service->getUserSource()->allowEmailAutoLink()) {
-            return;
+        $source = $service->getUserSource();
+        $clientId = $this->authClient->getId();
+
+        if (!$source->allowEmailAutoLink()) {
+            return AutoMapResult::Denied;
         }
-        if (!$service->isAuthClientAllowed($this->authClient->getId())) {
-            return;
+        if (!$service->isAuthClientAllowed($clientId)) {
+            return AutoMapResult::Denied;
+        }
+        // Cross-source guard: if another source explicitly claims this auth
+        // client and the user's own source doesn't list it, refuse to bridge.
+        // Without this, a Local user whose email happens to match an LDAP
+        // entry would get LDAP login silently grafted onto their account.
+        // Generic clients claimed by nobody (vanilla OAuth/OIDC linked
+        // post-hoc by a Local user) still pass through.
+        $collection = UserSourceService::getCollection();
+        $ownSourceClaimsIt = in_array($clientId, $source->getAllowedAuthClientIds(), true);
+        if (!$ownSourceClaimsIt && $collection->isAuthClientClaimed($clientId)) {
+            return AutoMapResult::Denied;
         }
 
         (new AuthClientUserService($user))->add($this->authClient);
+        return AutoMapResult::Mapped;
     }
 
     /**

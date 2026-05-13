@@ -103,6 +103,24 @@ interface UserSourceInterface
     public function getAllowedAuthClientIds(): array;
 
     /**
+     * Whether this source claims responsibility for creating a HumHub user
+     * from the given auth client and attribute set.
+     *
+     * Used by {@see UserSourceCollection::findUserSourceForAuthClient()} to
+     * dispatch new-user creation when several sources allow the same auth
+     * client (e.g. LDAP and Local both accepting OpenID/SAML).
+     *
+     * The default in {@see BaseUserSource} is a plain `in_array` check on
+     * {@see getAllowedAuthClientIds()}, i.e. ID-only matching with no
+     * attribute inspection. Sources backed by an external directory
+     * (LDAP, SCIM, …) should override to verify that the user actually
+     * exists in that directory — otherwise the wrong source would adopt
+     * an unrelated user and the email collision shows up on the next
+     * login through the real source.
+     */
+    public function claimsUserCreation(string $authClientId, array $attributes): bool;
+
+    /**
      * Whether an existing user with the same email can automatically be linked
      * to this source on first login.
      * Should return false for authoritative sources like SCIM.

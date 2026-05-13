@@ -56,6 +56,8 @@ use yii\web\View;
         ]
     ]) ?>
 
+    <?= $form->errorSummary($model) ?>
+
     <?= $form->field($model, 'enabled')->checkbox() ?>
     <hr>
 
@@ -75,15 +77,14 @@ use yii\web\View;
 
     <?= $form->field($model, 'refreshUsers')->checkbox() ?>
 
-    <?= $form->beginCollapsibleFields(Yii::t('AdminModule.base', 'Advanced settings')); ?>
-    <?= $form->field($model, 'ignoredDNs')->textarea(['style' => 'white-space:nowrap;']) ?>
     <?php if (!empty($authClientOptions)): ?>
     <?= $form->field($model, 'allowedAuthClientIds')->checkboxList(
         $authClientOptions,
-        ['hint' => Yii::t('LdapModule.base', 'LDAP is always included. Select additional authentication methods LDAP users may use (e.g. local password login).')]
+        ['hint' => Yii::t('LdapModule.base', 'Select the authentication methods LDAP users may use. Unchecking "LDAP" disables direct LDAP password login and forces users through the other selected methods (e.g. SAML, OpenID Connect).')]
     ) ?>
     <?php endif; ?>
-    <?= $form->endCollapsibleFields(); ?>
+
+    <?= $form->field($model, 'ignoredDNs')->textarea(['style' => 'white-space:nowrap;']) ?>
 
     <hr>
 

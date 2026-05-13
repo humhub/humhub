@@ -112,22 +112,36 @@ class UserSourceCollection extends Component
     }
 
     /**
-     * Finds the user source that claims responsibility for the given AuthClient ID.
+     * Finds the user source that claims responsibility for creating a user
+     * from the given auth client.
      *
-     * Iteration order: any source whose non-empty `getAllowedAuthClientIds()` list
-     * contains the client ID wins. If no source claims the client (e.g. vanilla
-     * Yii2 OAuth client without a dedicated source), LocalUserSource is the
-     * implicit fallback.
+     * Dispatch:
+     *  1. Non-local sources first — they ask {@see UserSourceInterface::claimsUserCreation()}
+     *     which may inspect $attributes (e.g. LDAP verifies the user exists
+     *     in the directory before claiming a foreign auth client).
+     *  2. LocalUserSource is checked last, only as the explicit fallback.
+     *
+     * The attribute argument is optional — callers that only need to identify
+     * the canonical source for an auth client ID (e.g. listing users) may omit
+     * it, in which case the default {@see BaseUserSource::claimsUserCreation()}
+     * behaves like the original ID-only match.
      */
-    public function findUserSourceForAuthClient(string $authClientId): UserSourceInterface
+    public function findUserSourceForAuthClient(string $authClientId, array $attributes = []): UserSourceInterface
     {
         foreach ($this->getUserSources() as $source) {
-            $list = $source->getAllowedAuthClientIds();
-            if (!empty($list) && in_array($authClientId, $list, true)) {
+            if ($source->getId() === 'local') {
+                continue;
+            }
+            if ($source->claimsUserCreation($authClientId, $attributes)) {
                 return $source;
             }
         }
-        return $this->getLocalUserSource();
+
+        $local = $this->getLocalUserSource();
+        if ($local->claimsUserCreation($authClientId, $attributes)) {
+            return $local;
+        }
+        return $local;
     }
 
     /**
