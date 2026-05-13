@@ -244,20 +244,22 @@ class LdapUserSource extends BaseUserSource
         try {
             $service = $this->getLdapService();
             $authClient = $this->getAuthClient();
+            $authClientService = new AuthClientService($authClient);
 
             $ids = [];
 
             foreach ($service->getAllUserEntries() as $entry) {
                 $dn = $entry['dn'] ?? '?';
 
-                // Each entry gets its own client clone so attribute state doesn't leak.
-                $clientForUser = clone $authClient;
-                $clientForUser->init();
-                $clientForUser->setUserAttributes($entry);
-
-                $authClientService = new AuthClientService($clientForUser);
+                // Single AuthClient instance, attributes overwritten per
+                // iteration. setUserAttributes() re-normalises and replaces
+                // the cached value, so nothing leaks between users.
+                // (Cloning + re-init() on every entry would re-fire init-time
+                // event subscriptions in subclasses, which is what subscribed
+                // module code relies on NOT happening.)
+                $authClient->setUserAttributes($entry);
                 $user = $authClientService->getUser();
-                $attributes = $clientForUser->getUserAttributes();
+                $attributes = $authClient->getUserAttributes();
 
                 if ($user === null) {
                     $user = $this->createUser($attributes);
