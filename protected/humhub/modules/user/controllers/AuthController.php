@@ -141,6 +141,25 @@ class AuthController extends Controller
             $this->enableCsrfValidation = false;
         }
 
+        // Stale CSRF on the login flow: redirect back to a fresh Step 1 with a
+        // friendly notice instead of the generic "Unable to verify your data
+        // submission" page. Sessions can age out between rendering the form and
+        // submitting it (long idle, computer sleep, cookie wiped) — for an
+        // unauthenticated form this is a UX issue, not a security incident.
+        if (in_array($action->id, ['login', 'password'], true)
+            && Yii::$app->request->isPost
+            && $this->enableCsrfValidation
+            && !Yii::$app->request->validateCsrfToken()) {
+            $this->enableCsrfValidation = false;
+            Yii::$app->session->remove(self::SESSION_KEY_STEP1_USERNAME);
+            Yii::$app->session->setFlash(
+                'error',
+                Yii::t('UserModule.auth', 'Your session expired. Please try signing in again.'),
+            );
+            Yii::$app->response->redirect(['/user/auth/login']);
+            return false;
+        }
+
         // Remove authClient from session - if already exists
         Yii::$app->session->remove('authClient');
 
