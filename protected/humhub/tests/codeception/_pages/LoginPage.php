@@ -15,6 +15,25 @@ class LoginPage extends BasePage
     public $registerRoute = 'user/auth/register';
 
     /**
+     * GET params passed to {@see openBy()}, replayed by {@see login()} when it
+     * needs to navigate back to a fresh Step 1 — keeps `?maintenanceAdmin=1`
+     * (and any future variants) sticky across the helper's internal navigations.
+     */
+    private array $openParams = [];
+
+    /**
+     * @inheritdoc
+     */
+    public static function openBy($I, $params = [])
+    {
+        /** @var static $page */
+        $page = parent::openBy($I, $params);
+        $page->openParams = $params;
+
+        return $page;
+    }
+
+    /**
      * Two-step sign-in: Step 1 (username/email + Continue) followed by Step 2
      * (password). When $password is empty the helper stops on Step 1 so callers
      * can assert against the Step 1 validation error.
@@ -24,6 +43,12 @@ class LoginPage extends BasePage
      */
     public function login($username, $password)
     {
+        // Always start from Step 1 — callers may chain login() after a previous
+        // assertion that left the browser on Step 2 (e.g. an empty-password
+        // validation case), where Login[username] no longer exists. Replay the
+        // openBy() params so that `?maintenanceAdmin=1` (and similar sticky
+        // flags) stay in effect across the helper's internal navigations.
+        $this->actor->amOnPage($this->getUrl($this->openParams));
         $this->actor->fillField('Login[username]', $username);
         $this->actor->click('#continue-button');
 
@@ -58,10 +83,7 @@ class LoginPage extends BasePage
      */
     public function openPasswordStep($username): void
     {
-        // Absolute route — Codeception's amOnRoute treats a leading-slash-less
-        // route as relative to the current controller after the first request,
-        // which would mangle "user/auth/login" into "user/auth/user/auth/login".
-        $this->actor->amOnRoute('/' . $this->route);
+        $this->actor->amOnPage($this->getUrl($this->openParams));
         $this->actor->fillField('Login[username]', $username);
         $this->actor->click('#continue-button');
         if (method_exists($this->actor, 'waitForElement')) {
