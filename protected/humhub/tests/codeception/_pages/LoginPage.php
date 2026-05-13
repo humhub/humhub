@@ -24,9 +24,6 @@ class LoginPage extends BasePage
      */
     public function login($username, $password)
     {
-        if (method_exists($this->actor, 'waitForText')) {
-            $this->actor->waitForText('Please sign in');
-        }
         $this->actor->fillField('Login[username]', $username);
         $this->actor->click('#continue-button');
 
@@ -36,8 +33,10 @@ class LoginPage extends BasePage
             return;
         }
 
-        if (method_exists($this->actor, 'waitForText')) {
-            $this->actor->waitForText('Please sign in');
+        // "Please sign in" is the heading on both steps, so we can't wait on it
+        // to detect the transition — wait on Step 2's password input instead.
+        if (method_exists($this->actor, 'waitForElement')) {
+            $this->actor->waitForElement('#login_password');
         }
         $this->actor->fillField('Login[password]', $password);
         $this->actor->click('#login-button');
@@ -63,13 +62,10 @@ class LoginPage extends BasePage
         // route as relative to the current controller after the first request,
         // which would mangle "user/auth/login" into "user/auth/user/auth/login".
         $this->actor->amOnRoute('/' . $this->route);
-        if (method_exists($this->actor, 'waitForText')) {
-            $this->actor->waitForText('Please sign in');
-        }
         $this->actor->fillField('Login[username]', $username);
         $this->actor->click('#continue-button');
-        if (method_exists($this->actor, 'waitForText')) {
-            $this->actor->waitForText('Please sign in');
+        if (method_exists($this->actor, 'waitForElement')) {
+            $this->actor->waitForElement('#login_password');
         }
     }
 }

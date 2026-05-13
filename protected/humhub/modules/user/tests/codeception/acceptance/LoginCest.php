@@ -21,7 +21,7 @@ class LoginCest
 
         $I->amGoingTo('try to submit Step 2 with an empty password');
         $loginPage->openPasswordStep('User1');
-        $loginPage->actor->click('#login-button');
+        $I->click('#login-button');
         $I->waitForText('Password cannot be blank.');
 
         $I->amGoingTo('try to login with wrong credentials');
