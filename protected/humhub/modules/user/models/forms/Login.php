@@ -108,7 +108,7 @@ class Login extends Model
                     break;
                 }
 
-                if ($authClient->authenticate($this->username, $this->password) !== null) {
+                if ($authClient->authenticate($this->username, $this->password)) {
                     $this->authClient = $authClient;
 
                     // Delete password after successful auth

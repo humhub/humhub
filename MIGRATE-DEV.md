@@ -152,13 +152,14 @@ Version 1.19 (Unreleased)
   ```
   `humhub\modules\user\authclient\AuthAction` no longer falls back on the legacy marker — custom auth clients that didn't migrate will throw a `NotSupportedException` at dispatch time.
 - Renamed `humhub\modules\user\authclient\BaseFormAuth` to `BaseFormClient`. The previous name doubled the "Auth" suffix with the surrounding `authclient/` namespace — the new name mirrors Yii's `BaseClient` parent. Drop-in rename; the class lives in the same namespace.
+- Added `humhub\modules\user\authclient\interfaces\SingleLogout` — capability marker for AuthClients that support Single Logout (terminating the user's session at the identity provider, not just locally). `AuthController::actionLogout()` calls `$client->singleLogout(): ?Response` on the user's current AuthClient before tearing down the local session; a returned Response (typically a redirect SP → IdP) short-circuits, the IdP eventually redirects back to a module-owned callback URL that finalises the local logout. Modules previously implementing SLO via `EVENT_BEFORE_ACTION` interception on `AuthController` (saml-sso) should migrate to the interface and drop the event hook.
 - Added `humhub\modules\user\authclient\interfaces\PasswordAuth` — declares the contract for AuthClients that authenticate via the login form (password-based):
   ```php
   interface PasswordAuth {
-      public function authenticate(string $username, string $password): ?User;
+      public function authenticate(string $username, string $password): bool;
   }
   ```
-  `BaseFormClient` and its subclasses (Password, LdapAuth) now implement it. The old stateful pattern — set `$client->login = $loginForm`, then call `$client->auth()` returning `bool` — is replaced by explicit parameter passing and a `User` return value. Custom form-auth modules need to rename `auth()` → `authenticate(string, string): ?User` and read credentials from the parameters instead of `$this->login->...`.
+  `BaseFormClient` and its subclasses (Password, LdapAuth) now implement it. The old stateful pattern — set `$client->login = $loginForm`, then call `$client->auth()` — is replaced by explicit parameter passing. Custom form-auth modules need to rename `auth()` → `authenticate(string, string): bool` and read credentials from the parameters instead of `$this->login->...`. Implementations must still call `setUserAttributes()` on success so the downstream lookup in `AuthClientService::getUser()` works; the `User` lookup itself no longer happens inside `authenticate()`.
 - `humhub\modules\user\authclient\AuthAction` now dispatches `CustomAuth` clients before falling through to the OAuth/OpenID families. `AuthController::actions()['external']` uses the HumHub AuthAction class again.
   - The `rememberMe` query-parameter handling (writing to `loginRememberMe` session key) is removed; remember-me for OAuth/SSO clients was never supported anyway
 - Removed `humhub\modules\user\jobs\SyncUsers` — was deprecated since 1.16; register a dedicated sync job in your module instead (see `humhub\modules\ldap\jobs\LdapSyncJob` as example)

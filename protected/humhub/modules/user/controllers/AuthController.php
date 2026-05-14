@@ -14,6 +14,7 @@ use humhub\components\Response;
 use humhub\helpers\DeviceDetectorHelper;
 use humhub\modules\user\authclient\AuthAction;
 use humhub\modules\user\authclient\BaseFormClient;
+use humhub\modules\user\authclient\interfaces\SingleLogout;
 use humhub\modules\user\services\PendingAuthService;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\models\forms\LoginIdentity;
@@ -609,6 +610,19 @@ class AuthController extends Controller
     public function actionLogout()
     {
         $this->forcePostRequest();
+
+        // Single Logout — hand off to the current AuthClient when it
+        // supports SLO. A Response return (typically a redirect SP → IdP)
+        // short-circuits the local logout; the IdP then redirects back
+        // to a module-owned callback URL that calls
+        // Yii::$app->user->logout() to finalise the local teardown.
+        $authClient = Yii::$app->user->getCurrentAuthClient();
+        if ($authClient instanceof SingleLogout) {
+            $response = $authClient->singleLogout();
+            if ($response !== null) {
+                return $response;
+            }
+        }
 
         $language = Yii::$app->user->language;
 

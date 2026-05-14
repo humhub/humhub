@@ -48,7 +48,7 @@ class BaseFormClient extends \yii\authclient\BaseClient implements PasswordAuth
      *
      * Default throws — concrete subclasses (Password, LdapAuth, …) override.
      */
-    public function authenticate(string $username, string $password): ?User
+    public function authenticate(string $username, string $password): bool
     {
         throw new NotSupportedException('Method "' . static::class . '::' . __FUNCTION__ . '" not implemented.');
     }

@@ -7,12 +7,9 @@ use humhub\modules\ldap\connection\LdapConnectionConfig;
 use humhub\modules\ldap\helpers\LdapHelper;
 use humhub\modules\ldap\Module;
 use humhub\modules\ldap\services\LdapService;
-use humhub\modules\ldap\source\LdapUserSource;
 use humhub\modules\user\authclient\BaseFormClient;
 use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\models\ProfileField;
-use humhub\modules\user\models\User;
-use humhub\modules\user\services\UserSourceService;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
@@ -91,46 +88,32 @@ class LdapAuth extends BaseFormClient
         return $idAttribute !== null ? strtolower($idAttribute) : null;
     }
 
-    public function authenticate(string $username, string $password): ?User
+    /**
+     * Performs an LDAP bind and, on success, populates the user attributes
+     * from the directory entry. Identity resolution against the HumHub
+     * database lives downstream — see
+     * {@see \humhub\modules\user\services\AuthClientService::getUser()} and
+     * {@see \humhub\modules\ldap\source\LdapUserSource::findUser()}.
+     */
+    public function authenticate(string $username, string $password): bool
     {
         try {
             $service = $this->getLdapService();
             $dn = $service->attemptAuth($username, $password);
         } catch (\Exception $e) {
             Yii::error('LDAP authentication error: ' . $e->getMessage(), 'ldap');
-            return null;
+            return false;
         }
 
         if ($dn === null) {
             if ($this->login instanceof Login) {
                 $this->countFailedLoginAttempts();
             }
-            return null;
+            return false;
         }
 
         $this->setUserAttributes($service->getEntry($dn));
-        return $this->getSource()->findUser($this->getUserAttributes());
-    }
-
-    /**
-     * Returns the LdapUserSource for this client's LDAP connection. Identity
-     * resolution (user_auth lookup, email/guid fallback, source-id healing)
-     * lives on the source, not the auth client.
-     *
-     * Match is done via {@see $connectionId} — that's the stable invariant
-     * between auth client and source. Their public IDs may differ when an
-     * admin overrides them through config.
-     */
-    private function getSource(): LdapUserSource
-    {
-        foreach (UserSourceService::getCollection()->getUserSources() as $source) {
-            if ($source instanceof LdapUserSource && $source->connectionId === $this->connectionId) {
-                return $source;
-            }
-        }
-        throw new InvalidConfigException(
-            "No LdapUserSource registered for LDAP connection '{$this->connectionId}'.",
-        );
+        return true;
     }
 
     protected function defaultNormalizeUserAttributeMap()

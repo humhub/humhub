@@ -21,7 +21,7 @@ HumHub speaks three structurally different authentication protocols. Each family
 | Family | Trigger | Dispatch path | Contract |
 |---|---|---|---|
 | **OAuth / OpenID** | User clicks an SSO button | `\yii\authclient\AuthAction::auth()` recognises `OAuth1`/`OAuth2`/`OpenId` and runs the protocol | Yii's `BaseOAuth` machinery |
-| **Form-based** | User submits the login form | `Login::afterValidate()` iterates `PasswordAuth` clients, calls `$client->authenticate($u, $p)` | `PasswordAuth::authenticate(string, string): ?User` |
+| **Form-based** | User submits the login form | `Login::afterValidate()` iterates `PasswordAuth` clients, calls `$client->authenticate($u, $p)` | `PasswordAuth::authenticate(string, string): bool` |
 | **Custom-protocol** | User lands on `/user/auth/external?authclient=<id>` | HumHub's `AuthAction::auth()` recognises `CustomAuth` and calls `$client->handleAuthRequest()` | `CustomAuth::handleAuthRequest(): ?Response` |
 
 ## The two HumHub interfaces
@@ -36,7 +36,7 @@ interface CustomAuth
 // humhub\modules\user\authclient\interfaces\PasswordAuth
 interface PasswordAuth
 {
-    public function authenticate(string $username, string $password): ?User;
+    public function authenticate(string $username, string $password): bool;
 }
 ```
 
@@ -45,7 +45,7 @@ interface PasswordAuth
 - Return a `Response` to short-circuit the flow (e.g. a `Redirect` SP → IdP, or rendering an intermediate JS page).
 - Return `null` once user attributes are set on the client — `AuthAction::authSuccess()` is then invoked automatically.
 
-`PasswordAuth` is for clients that take credentials from the login form. Implementations validate the credentials against their backend (local hash, LDAP bind, …) and return the matching `User` on success. The legacy stateful pattern (set `$client->login = $form`, then call `$client->auth()` returning bool) is gone — the contract is now explicit.
+`PasswordAuth` is for clients that take credentials from the login form. Implementations validate the credentials against their backend (local hash, LDAP bind, …) and return `true` on success. They MUST also populate user attributes via `setUserAttributes()` so the downstream lookup in `AuthClientService::getUser()` has something to work with. The legacy stateful pattern (set `$client->login = $form`, then call `$client->auth()`) is gone — credentials are passed explicitly.
 
 ## AuthAction dispatch
 
@@ -60,15 +60,33 @@ Clients that don't implement `CustomAuth` and aren't OAuth/OpenID will throw a `
 
 ## Form-login path
 
-`Login::afterValidate()` iterates the AuthClient collection, calls `$client->authenticate($this->username, $this->password)` on every `PasswordAuth` client until one returns a non-null `User`. `BaseFormClient` carries the comfort infrastructure (`$login` property for failed-attempt tracking helpers, `getUserByLogin()`, `countFailedLoginAttempts()`); the `Login` form still sets `$client->login = $this` for those helpers, but the credentials are passed explicitly to `authenticate()`.
+`Login::afterValidate()` iterates the AuthClient collection, calls `$client->authenticate($this->username, $this->password)` on every `PasswordAuth` client until one returns `true`. `BaseFormClient` carries the comfort infrastructure (`$login` property for failed-attempt tracking helpers, `getUserByLogin()`, `countFailedLoginAttempts()`); the `Login` form still sets `$client->login = $this` for those helpers, but the credentials are passed explicitly to `authenticate()`.
 
 ## Identity resolution after authentication
 
 Two different lookup mechanisms — they serve different moments in the flow.
 
-**During `authenticate()` / `handleAuthRequest()`** the auth client knows the credentials directly. `Password` queries by username, validates the hash, returns the `User`. `LdapAuth` does the bind, fetches the entry, then delegates to `LdapUserSource::findUser($attributes)` (identity resolution lives on the source — see [`user-source.md`](user-source.md)).
+**`authenticate()` and `handleAuthRequest()` don't resolve the `User`** — they validate credentials and populate user attributes. `Password` validates the local hash and writes `['id' => $user->id]`. `LdapAuth` does the bind and writes the normalised directory entry. `CustomAuth` clients populate attributes from the protocol's response. None of them touch the `User` instance.
 
-**After session rehydration** (OAuth/SAML callbacks land on a second request, the client was serialised in between) the user attributes are present but the `User` instance isn't. `AuthClientService::getUser()` provides the generic post-attributes lookup: primary via `user_auth` (source + source_id), with a fallback to `user.user_source` for source-owning clients (Password/LDAP).
+**Lookup happens after** in `AuthClientService::getUser()`: primary via `user_auth` (source + source_id), with a fallback to `user.user_source` for source-owning clients (Password/LDAP). For LDAP the controller's `register()` path then delegates auto-creation and the self-healing fallback (email/guid/username, `source_id` rewrite) to `LdapUserSource::findUser()` and `createUser()` — see [`user-source.md`](user-source.md).
+
+## Single Logout (`SingleLogout`)
+
+When the user clicks Logout in HumHub, federated identities (SAML, OIDC, …) often want to terminate the user's session at the identity provider too — Single Logout. AuthClients that support it opt in via the `SingleLogout` interface:
+
+```php
+interface SingleLogout
+{
+    public function singleLogout(): ?Response;
+}
+```
+
+`AuthController::actionLogout()` calls `singleLogout()` on the user's current AuthClient (per `User::getCurrentAuthClient()`) before tearing down the local session. The return value drives the flow:
+
+- **Response** (typically a redirect SP → IdP for the SLO handshake) — the local logout is paused. The IdP processes the logout and redirects back to a module-owned callback URL (e.g. `/saml-sso/logout`) that finalises the local logout via `Yii::$app->user->logout()`.
+- **null** — no remote action needed (e.g. the SLO endpoint isn't configured); the local logout proceeds.
+
+IdP-initiated SLO (the IdP sends an unsolicited logout request to the SP, no preceding click in HumHub) lives entirely in the responsible module — it owns the protocol-specific endpoint, validates the incoming request, and terminates the local session.
 
 ## Crossing the request boundary (`PendingAuthService`)
 
@@ -100,21 +118,20 @@ Effect for custom AuthClients: nothing — they no longer need to know about ses
 
 ```php
 use humhub\modules\user\authclient\BaseFormClient;
-use humhub\modules\user\models\User;
 
 class MyPasswordClient extends BaseFormClient
 {
     public function getId() { return 'mypwauth'; }
 
-    public function authenticate(string $username, string $password): ?User
+    public function authenticate(string $username, string $password): bool
     {
         // 1. Validate credentials against your backend.
-        // 2. On success, populate user attributes so post-rehydration
-        //    lookups still work:
+        // 2. On success, populate user attributes so the downstream lookup
+        //    in AuthClientService::getUser() finds the User:
         //        $this->setUserAttributes(['id' => $user->id]);
         // 3. Optionally call $this->countFailedLoginAttempts() on failure
         //    to engage the BaseFormClient rate-limit machinery.
-        // 4. Return the User on success, null on failure.
+        // 4. Return true on success, false on failure.
     }
 }
 ```
@@ -157,7 +174,7 @@ Trigger via `/user/auth/external?authclient=myproto`. HumHub's `AuthAction` reco
 
 AuthClient and UserSource are orthogonal:
 
-- The AuthClient answers *“is this person who they claim to be?”* — it returns user attributes and (for source-owning clients) the matching `User`.
+- The AuthClient answers *“is this person who they claim to be?”* — it validates credentials and populates the user attributes.
 - The UserSource answers *“who manages this account, what attributes are theirs to own, what's the lifecycle?”* — it owns `createUser()`, `updateUser()`, approval policy, attribute lock-down, etc.
 
 After authentication succeeds, `AuthClientService::createUser()` (for new users) or `UserSourceService::updateUser()` (for sync-time attribute pushes) hands off to the right UserSource. See [`user-source.md`](user-source.md) for the provisioning side.
@@ -170,7 +187,7 @@ After authentication succeeds, `AuthClientService::createUser()` (for new users)
 | `implements StandaloneAuthClient` + `authAction($authAction)` | `implements CustomAuth` + `handleAuthRequest(): ?Response` — `StandaloneAuthClient` is gone, no fallback. |
 | `$authAction->controller->enableCsrfValidation = false` | `Yii::$app->controller->enableCsrfValidation = false` |
 | `return $authAction->authSuccess($this)` | `return null` (AuthAction does it automatically) |
-| `BaseFormClient::auth()` returning `bool`, with `$client->login` set as side input | `BaseFormClient::authenticate(string $username, string $password): ?User` — credentials passed in, User returned |
+| `BaseFormClient::auth()` returning `bool`, with `$client->login` set as side input | `BaseFormClient::authenticate(string $username, string $password): bool` — credentials passed in explicitly; user lookup happens downstream in `AuthClientService::getUser()` |
 | `implements ApprovalBypass` | Configure the responsible UserSource: `'approval' => true, 'trustedAuthClientIds' => ['<client-id>']` (or `$approval = false` to skip approval entirely). Interface deprecated but still works as a fallback marker. |
 | `implements SyncAttributes` + `getSyncAttributes()` | Configure `LocalUserSource::$allowedAuthClientIds` and `$managedAttributes`, or ship a dedicated UserSource. Interface deprecated. |
 | `BaseClient::beforeSerialize()` (built-in hook) | No longer needed — AuthClients aren't stored in the session. See *Crossing the request boundary* above. |

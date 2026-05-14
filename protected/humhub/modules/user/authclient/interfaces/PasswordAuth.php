@@ -8,8 +8,6 @@
 
 namespace humhub\modules\user\authclient\interfaces;
 
-use humhub\modules\user\models\User;
-
 /**
  * Marks an AuthClient that authenticates the user via a password supplied
  * through HumHub's login form (as opposed to a redirect-based or
@@ -18,7 +16,7 @@ use humhub\modules\user\models\User;
  * Implementations validate the credentials against their backend — e.g.
  * local password hash comparison ({@see \humhub\modules\user\authclient\Password})
  * or an LDAP bind ({@see \humhub\modules\ldap\authclient\LdapAuth}) — and
- * return the matching HumHub user on success.
+ * signal whether the credentials were accepted.
  *
  * Sibling concept on the redirect/protocol side: {@see CustomAuth}.
  *
@@ -27,13 +25,17 @@ use humhub\modules\user\models\User;
 interface PasswordAuth
 {
     /**
-     * Validate the supplied credentials. Returns the authenticated user on
-     * success, null on failure.
+     * Validate the supplied credentials. Returns true when the backend
+     * accepted them, false otherwise.
      *
-     * Implementations are also expected to call {@see setUserAttributes()}
-     * with at minimum an `id` key so the Yii auth-client machinery and
-     * session-storage flow stay consistent — but the return value is the
-     * authoritative contract for callers.
+     * A true return means "credentials are valid" — it does NOT imply that
+     * a matching HumHub user already exists. For source-owning clients
+     * (e.g. LDAP) the HumHub user may still need to be auto-created by
+     * the controller's registration flow. Implementations MUST call
+     * {@see \yii\authclient\BaseClient::setUserAttributes()} with the
+     * normalised attribute set (at minimum an `id` key) so the downstream
+     * lookup in {@see \humhub\modules\user\services\AuthClientService::getUser()}
+     * has something to work with.
      */
-    public function authenticate(string $username, string $password): ?User;
+    public function authenticate(string $username, string $password): bool;
 }
