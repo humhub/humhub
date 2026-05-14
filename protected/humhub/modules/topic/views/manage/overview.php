@@ -11,6 +11,7 @@ use humhub\helpers\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\DefaultMenu;
+use humhub\modules\topic\models\forms\TopicSettingsForm;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\AccountSettingsMenu;
@@ -25,6 +26,7 @@ use yii\grid\ActionColumn;
 /* @var $dataProvider ActiveDataProvider */
 /* @var $contentContainer ContentContainerActiveRecord */
 /* @var $addModel Topic */
+/* @var $topicSettings TopicSettingsForm */
 /* @var $title string */
 ?>
 
@@ -51,6 +53,11 @@ use yii\grid\ActionColumn;
                 </div>
             </div>
             <?php ActiveForm::end(); ?>
+
+            <?php $form = ActiveForm::begin() ?>
+                <?= $form->field($topicSettings, 'topicInputBehavior')
+                    ->dropDownList($topicSettings->getTopicInputBehaviorOptions(), ['data-action-change' => 'ui.form.submit']) ?>
+            <?php ActiveForm::end() ?>
         <?php endif; ?>
 
         <?= GridView::widget([
