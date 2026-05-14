@@ -153,6 +153,15 @@ class LdapSyncTest extends HumHubDbTestCase
         $ghostUser = User::findOne(['email' => 'john@example.org']);
         $this->assertNotNull($ghostUser);
 
+        // Simulate a HumHub user whose LDAP entry was deleted: email, username
+        // AND source_id all diverge from the directory so neither the user_auth
+        // primary lookup nor findUser()'s email/username/guid fallback can
+        // re-link the row to the live `john.doe` entry. (Without the email/
+        // username mutation, the self-healing fallback would rewrite the
+        // source_id back and keep the user enabled — see LdapUserSource::findUser.)
+        $ghostUser->email = 'deleted-from-ldap@example.org';
+        $ghostUser->username = 'deleted.from.ldap';
+        $ghostUser->save(false);
         Auth::updateAll(
             ['source_id' => 'ghost.user.not.in.ldap'],
             ['user_id' => $ghostUser->id, 'source' => 'ldap'],
@@ -164,7 +173,7 @@ class LdapSyncTest extends HumHubDbTestCase
         $this->assertSame(
             User::STATUS_DISABLED,
             $ghostUser->status,
-            'User with source_id not found in LDAP should be disabled after sync.',
+            'User with no matching LDAP entry should be disabled after sync.',
         );
     }
 
