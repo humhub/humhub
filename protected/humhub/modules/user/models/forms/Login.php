@@ -4,7 +4,7 @@ namespace humhub\modules\user\models\forms;
 
 use humhub\helpers\DeviceDetectorHelper;
 use humhub\modules\user\assets\UserAsset;
-use humhub\modules\user\authclient\BaseFormAuth;
+use humhub\modules\user\authclient\BaseFormClient;
 use Yii;
 use yii\base\Model;
 
@@ -50,7 +50,7 @@ class Login extends Model
     public $rememberUsername = false;
 
     /**
-     * @var BaseFormAuth auth client used to authenticate
+     * @var BaseFormClient auth client used to authenticate
      */
     public $authClient = null;
 
@@ -99,7 +99,7 @@ class Login extends Model
     {
         $authClientDelayed = null;
         foreach (Yii::$app->authClientCollection->getClients() as $authClient) {
-            if ($authClient instanceof BaseFormAuth) {
+            if ($authClient instanceof BaseFormClient) {
                 $authClient->login = $this;
 
                 if ($authClient->isDelayedLoginAction()) {
@@ -108,7 +108,7 @@ class Login extends Model
                     break;
                 }
 
-                if ($authClient->auth()) {
+                if ($authClient->authenticate($this->username, $this->password) !== null) {
                     $this->authClient = $authClient;
 
                     // Delete password after successful auth

@@ -12,8 +12,9 @@ use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\components\Response;
 use humhub\helpers\DeviceDetectorHelper;
-use humhub\modules\user\authclient\BaseFormAuth;
-use humhub\modules\user\authclient\interfaces\SerializableAuthClient;
+use humhub\modules\user\authclient\AuthAction;
+use humhub\modules\user\authclient\BaseFormClient;
+use humhub\modules\user\services\PendingAuthService;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\models\forms\LoginIdentity;
 use humhub\modules\user\models\forms\LoginPassword;
@@ -126,7 +127,7 @@ class AuthController extends Controller
     {
         return [
             'external' => [
-                'class' => \yii\authclient\AuthAction::class,
+                'class' => AuthAction::class,
                 'successCallback' => $this->onAuthSuccess(...),
             ],
         ];
@@ -161,8 +162,8 @@ class AuthController extends Controller
             return false;
         }
 
-        // Remove authClient from session - if already exists
-        Yii::$app->session->remove('authClient');
+        // Clear any leftover pending-auth state from an abandoned flow
+        (new PendingAuthService())->clear();
 
         return parent::beforeAction($action);
     }
@@ -512,13 +513,10 @@ class AuthController extends Controller
             return $this->login($user, $authClient);
         }
 
-        // Start Registration
-        if ($authClient instanceof SerializableAuthClient) {
-            $authClient->beforeSerialize();
-        }
-
-        // Store authclient in session - for registration controller
-        Yii::$app->session->set('authClient', $authClient);
+        // Start Registration — hand the auth state to the registration
+        // form via a DTO (id + already-normalised attributes), so the
+        // AuthClient instance itself never enters the session.
+        (new PendingAuthService())->store($authClient);
 
         return $this->redirect(['/user/registration']);
     }
@@ -535,7 +533,7 @@ class AuthController extends Controller
     {
         $duration = 0;
 
-        if ($authClient instanceof BaseFormAuth && $authClient->login->rememberMe) {
+        if ($authClient instanceof BaseFormClient && $authClient->login->rememberMe) {
             $duration = Yii::$app->getModule('user')->loginRememberMeDuration;
         }
 

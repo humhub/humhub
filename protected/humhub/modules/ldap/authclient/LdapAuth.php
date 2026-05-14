@@ -7,11 +7,12 @@ use humhub\modules\ldap\connection\LdapConnectionConfig;
 use humhub\modules\ldap\helpers\LdapHelper;
 use humhub\modules\ldap\Module;
 use humhub\modules\ldap\services\LdapService;
-use humhub\modules\user\authclient\BaseFormAuth;
-use humhub\modules\user\models\Auth;
+use humhub\modules\ldap\source\LdapUserSource;
+use humhub\modules\user\authclient\BaseFormClient;
 use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
+use humhub\modules\user\services\UserSourceService;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
@@ -26,7 +27,7 @@ use yii\helpers\ArrayHelper;
  * @since 1.1
  * @since 1.19 — connection parameters moved to LdapConnectionConfig / LdapConnectionRegistry.
  */
-class LdapAuth extends BaseFormAuth
+class LdapAuth extends BaseFormClient
 {
     /**
      * @var string|null ID of the connection this client uses. Required — must
@@ -90,76 +91,46 @@ class LdapAuth extends BaseFormAuth
         return $idAttribute !== null ? strtolower($idAttribute) : null;
     }
 
-    /**
-     * Find user based on LDAP attributes.
-     *
-     * Primary lookup uses the user_auth table (source + source_id).
-     * Falls back to matching by user_source + email/objectguid/username for
-     * users without an idAttribute or not yet migrated.
-     */
-    public function getUser(): ?User
-    {
-        $attributes = $this->getUserAttributes();
-
-        // Primary lookup: user_auth table
-        if (isset($attributes['id'])) {
-            $auth = Auth::find()
-                ->where(['source' => $this->getId(), 'source_id' => (string)$attributes['id']])
-                ->one();
-            if ($auth !== null) {
-                return $auth->user;
-            }
-        }
-
-        // Fallback: match by user_source + email/objectguid/username
-        return $this->getUserFallback($attributes);
-    }
-
-    /**
-     * Fallback user lookup for users without a unique id attribute or legacy installs
-     * where user_auth entries may not yet exist.
-     */
-    private function getUserFallback(array $attributes): ?User
-    {
-        $query = User::find()->where(['user_source' => $this->getId()]);
-
-        $conditions = ['OR'];
-        if (!empty($attributes['email'])) {
-            $conditions[] = ['email' => $attributes['email']];
-        }
-        if (!empty($attributes['objectguid'])) {
-            $conditions[] = ['guid' => $attributes['objectguid']];
-        }
-        if (!empty($attributes['uid'])) {
-            $conditions[] = ['username' => $attributes['uid']];
-        }
-
-        if (count($conditions) <= 1) {
-            return null;
-        }
-
-        return $query->andWhere($conditions)->one();
-    }
-
-    public function auth()
+    public function authenticate(string $username, string $password): ?User
     {
         try {
             $service = $this->getLdapService();
-            $dn = $service->attemptAuth($this->login->username, $this->login->password);
+            $dn = $service->attemptAuth($username, $password);
         } catch (\Exception $e) {
             Yii::error('LDAP authentication error: ' . $e->getMessage(), 'ldap');
-            return false;
+            return null;
         }
 
         if ($dn === null) {
             if ($this->login instanceof Login) {
                 $this->countFailedLoginAttempts();
             }
-            return false;
+            return null;
         }
 
         $this->setUserAttributes($service->getEntry($dn));
-        return true;
+        return $this->getSource()->findUser($this->getUserAttributes());
+    }
+
+    /**
+     * Returns the LdapUserSource for this client's LDAP connection. Identity
+     * resolution (user_auth lookup, email/guid fallback, source-id healing)
+     * lives on the source, not the auth client.
+     *
+     * Match is done via {@see $connectionId} — that's the stable invariant
+     * between auth client and source. Their public IDs may differ when an
+     * admin overrides them through config.
+     */
+    private function getSource(): LdapUserSource
+    {
+        foreach (UserSourceService::getCollection()->getUserSources() as $source) {
+            if ($source instanceof LdapUserSource && $source->connectionId === $this->connectionId) {
+                return $source;
+            }
+        }
+        throw new InvalidConfigException(
+            "No LdapUserSource registered for LDAP connection '{$this->connectionId}'.",
+        );
     }
 
     protected function defaultNormalizeUserAttributeMap()

@@ -93,12 +93,21 @@ class LdapUserSource extends BaseUserSource
      * Resolves the AuthClient that maps LDAP attributes for this source.
      * The AuthClient handles the normalisation logic (id/username/email/profile
      * fields), even when sync runs independently of an actual login.
+     *
+     * Match is done via {@see $connectionId} — that's the stable invariant
+     * between source and auth client. Their public IDs may differ when an
+     * admin overrides them through config.
      */
     private function getAuthClient(): LdapAuth
     {
-        /** @var LdapAuth $client */
-        $client = Yii::$app->authClientCollection->getClient($this->connectionId);
-        return $client;
+        foreach (Yii::$app->authClientCollection->getClients() as $client) {
+            if ($client instanceof LdapAuth && $client->connectionId === $this->connectionId) {
+                return $client;
+            }
+        }
+        throw new InvalidConfigException(
+            "No LdapAuth registered for LDAP connection '{$this->connectionId}'.",
+        );
     }
 
     /**
@@ -136,6 +145,129 @@ class LdapUserSource extends BaseUserSource
             );
             return false;
         }
+    }
+
+    /**
+     * Resolves the HumHub user that corresponds to the given LDAP attribute
+     * set, with self-healing semantics:
+     *
+     *  1. Primary lookup via the user_auth table (source + source_id).
+     *  2. If that misses, falls back to matching by user_source + email,
+     *     objectguid or username — typical when the LDAP entry has been
+     *     deleted and re-created (objectGuid changes, the user's email is
+     *     preserved) or for users imported pre-1.19 that don't yet have a
+     *     user_auth row.
+     *  3. When the fallback hits and a new LDAP unique ID is available,
+     *     the user_auth row is transparently rewritten to the new ID and
+     *     a warning is logged. This prevents stale rows from leaving a
+     *     "ghost" HumHub user that blocks re-provisioning via email
+     *     uniqueness.
+     *
+     * When the LDAP unique ID is stable and only the email changed, the
+     * primary lookup hits as before — no reassign happens, the email
+     * update flows through the regular attribute sync.
+     *
+     * Returns null only when no matching user exists at all; the caller
+     * (login flow, sync job) may then proceed to create a new user.
+     */
+    public function findUser(array $attributes): ?User
+    {
+        $sourceId = isset($attributes['id']) ? (string) $attributes['id'] : null;
+
+        if ($sourceId !== null) {
+            $auth = Auth::find()
+                ->where(['source' => $this->getId(), 'source_id' => $sourceId])
+                ->one();
+            if ($auth !== null) {
+                return $auth->user;
+            }
+        }
+
+        // Match on the *normalised* keys ('email', 'username', 'id') — those
+        // reflect the connection's configured emailAttribute / usernameAttribute /
+        // idAttribute mappings, not any specific LDAP-server flavour
+        // (Active Directory's objectGuid, OpenLDAP's uid, etc.).
+        $conditions = ['OR'];
+        if (!empty($attributes['email'])) {
+            $conditions[] = ['email' => $attributes['email']];
+        }
+        if (!empty($attributes['username'])) {
+            $conditions[] = ['username' => $attributes['username']];
+        }
+        if ($sourceId !== null) {
+            // Legacy fallback: pre-1.19 LDAP integrations stored the LDAP
+            // unique id in user.guid before the user_auth table existed.
+            $conditions[] = ['guid' => $sourceId];
+        }
+        if (count($conditions) <= 1) {
+            return null;
+        }
+
+        $user = User::find()
+            ->where(['user_source' => $this->getId()])
+            ->andWhere($conditions)
+            ->one();
+        if ($user === null) {
+            return null;
+        }
+
+        if ($sourceId !== null) {
+            $this->reassignSourceId($user, $sourceId);
+        }
+        return $user;
+    }
+
+    /**
+     * Updates (or creates) the user_auth row so its source_id points at the
+     * current LDAP unique ID. Logs a warning when a previous, different ID
+     * was on file — the diagnostic trail for admins investigating a
+     * deleted-and-re-created LDAP entry.
+     */
+    private function reassignSourceId(User $user, string $newSourceId): void
+    {
+        $auth = Auth::find()
+            ->where(['user_id' => $user->id, 'source' => $this->getId()])
+            ->one();
+
+        if ($auth === null) {
+            $auth = new Auth([
+                'user_id' => $user->id,
+                'source' => $this->getId(),
+                'source_id' => $newSourceId,
+            ]);
+            if (!$auth->save()) {
+                Yii::warning(
+                    'LdapUserSource (' . $this->getId() . '): could not record LDAP id for user '
+                    . $user->username . ' (' . $user->id . '); errors: '
+                    . VarDumper::dumpAsString($auth->getErrors()),
+                    'ldap',
+                );
+            }
+            return;
+        }
+
+        if ($auth->source_id === $newSourceId) {
+            return;
+        }
+
+        $oldId = $auth->source_id;
+        $auth->source_id = $newSourceId;
+        if (!$auth->save()) {
+            Yii::warning(
+                'LdapUserSource (' . $this->getId() . '): could not update LDAP id for user '
+                . $user->username . ' (' . $user->id . '); old=' . $oldId . ' new=' . $newSourceId
+                . '; errors: ' . VarDumper::dumpAsString($auth->getErrors()),
+                'ldap',
+            );
+            return;
+        }
+
+        Yii::warning(
+            'LdapUserSource (' . $this->getId() . '): rewrote LDAP id for user '
+            . $user->username . ' (' . $user->id . ') — old=' . $oldId . ' new=' . $newSourceId
+            . '. Matched by email/guid/username; LDAP entry was likely deleted and re-created.',
+            'ldap',
+        );
     }
 
     public function getManagedAttributes(): array
@@ -287,8 +419,12 @@ class LdapUserSource extends BaseUserSource
                 // event subscriptions in subclasses, which is what subscribed
                 // module code relies on NOT happening.)
                 $authClient->setUserAttributes($entry);
-                $user = $authClientService->getUser();
                 $attributes = $authClient->getUserAttributes();
+                // Self-healing lookup: primary user_auth hit, fallback per
+                // email/guid/username, transparent reassign on LDAP-id
+                // change. Avoids the "ghost user blocking createUser via
+                // email uniqueness" support case.
+                $user = $this->findUser($attributes);
 
                 if ($user === null) {
                     $user = $this->createUser($attributes);

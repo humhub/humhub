@@ -18,6 +18,7 @@ use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use humhub\modules\user\services\InviteRegistrationService;
 use humhub\modules\user\services\LinkRegistrationService;
+use humhub\modules\user\services\PendingAuthService;
 use humhub\modules\user\services\UserSourceService;
 use Throwable;
 use Yii;
@@ -84,6 +85,7 @@ class RegistrationController extends Controller
          * @var BaseClient
          */
         $authClient = null;
+        $pendingAuth = new PendingAuthService();
 
         if (Yii::$app->request->get('token')) {
             $inviteRegistrationService = new InviteRegistrationService(Yii::$app->request->get('token'));
@@ -91,11 +93,11 @@ class RegistrationController extends Controller
                 throw new HttpException(404, 'Invalid registration token!');
             }
             $inviteRegistrationService->populateRegistration($registration);
-        } elseif (Yii::$app->session->has('authClient')) {
-            $authClient = Yii::$app->session->get('authClient');
+        } elseif ($pendingAuth->hasPending()) {
+            $authClient = $pendingAuth->restore();
             $registration = $this->createRegistrationByAuthClient($authClient);
         } else {
-            Yii::warning('Registration failed: No token (query) or authclient (session) found!', 'user');
+            Yii::warning('Registration failed: No token (query) or pending auth (session) found!', 'user');
             Yii::$app->session->setFlash('error', 'Registration failed.');
             return $this->redirect(['/user/auth/login']);
         }
@@ -103,7 +105,7 @@ class RegistrationController extends Controller
         $registration->setForm();
 
         if ($registration->submitted('save') && $registration->register($authClient)) {
-            Yii::$app->session->remove('authClient');
+            $pendingAuth->clear();
 
             // Autologin when user is enabled (no approval required)
             if ($registration->getUser()->status === User::STATUS_ENABLED) {

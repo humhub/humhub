@@ -2,7 +2,7 @@
 
 namespace humhub\modules\user\models\forms;
 
-use humhub\modules\user\authclient\BaseFormAuth;
+use humhub\modules\user\authclient\BaseFormClient;
 use humhub\modules\user\models\Auth;
 use humhub\modules\user\models\User;
 use humhub\modules\user\services\UserSourceService;
@@ -77,7 +77,7 @@ class LoginIdentity extends Model
      * Returns a redirect target (array form) when the user should be sent to
      * an external IdP instead of seeing the password screen — i.e. they have
      * no usable form-based auth:
-     *  - Their UserSource's allow-list contains no {@see BaseFormAuth} client
+     *  - Their UserSource's allow-list contains no {@see BaseFormClient} client
      *    (e.g. SAML/OIDC-only sources); or
      *  - Their source has no allow-list at all (LocalUserSource default) and
      *    they have no local password set — the password screen would be a
@@ -129,7 +129,7 @@ class LoginIdentity extends Model
             if (!$collection->hasClient($auth->source)) {
                 continue;
             }
-            if (!$collection->getClient($auth->source) instanceof BaseFormAuth) {
+            if (!$collection->getClient($auth->source) instanceof BaseFormClient) {
                 return ['/user/auth/external', 'authclient' => $auth->source];
             }
         }
@@ -140,7 +140,7 @@ class LoginIdentity extends Model
     /**
      * Whether the password screen is a meaningful next step for this user.
      *
-     * - Source with an allow-list: any allowed BaseFormAuth client (LDAP, Local)
+     * - Source with an allow-list: any allowed BaseFormClient client (LDAP, Local)
      *   means the user can authenticate via form.
      * - Source without an allow-list (e.g. LocalUserSource default): the password
      *   screen is only useful if the user actually has a local password set.
@@ -151,7 +151,7 @@ class LoginIdentity extends Model
             $collection = Yii::$app->authClientCollection;
             foreach ($allowedIds as $clientId) {
                 if ($collection->hasClient($clientId)
-                    && $collection->getClient($clientId) instanceof BaseFormAuth) {
+                    && $collection->getClient($clientId) instanceof BaseFormClient) {
                     return true;
                 }
             }

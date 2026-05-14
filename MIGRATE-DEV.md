@@ -110,7 +110,7 @@ Version 1.19 (Unreleased)
   - LDAP: `LdapUserSource::$allowedAuthClientIds` (default `['ldap']`) — restricts which auth clients LDAP users may use; configurable in admin UI
   - LDAP: login with a disallowed auth client is now blocked in `AuthController` with an error flash
 - Removed `humhub\modules\user\authclient\BaseClient`
-  - Replace `extends BaseClient` with `extends \yii\authclient\BaseClient` (or `BaseFormAuth` for form-based clients)
+  - Replace `extends BaseClient` with `extends \yii\authclient\BaseClient` (or `BaseFormClient` for form-based clients)
   - `BaseClient::EVENT_CREATE_USER` removed — replace listeners with `Event::on(UserSourceService::class, UserSourceService::EVENT_AFTER_CREATE, $handler)`
   - `BaseClient::EVENT_UPDATE_USER` removed — replace listeners with `Event::on(UserSourceService::class, UserSourceService::EVENT_AFTER_UPDATE, $handler)`
   - `BaseClient::canBypassApproval()` removed — configure on the UserSource via `$approval` / `$trustedAuthClientIds` (see below)
@@ -118,29 +118,48 @@ Version 1.19 (Unreleased)
 - Removed `humhub\modules\user\authclient\interfaces\SyncAttributes` (was deprecated since 1.16; the legacy sync path in `AuthClientService` is removed)
   - Replacement: have a UserSource declare which AuthClient IDs it accepts via `$allowedAuthClientIds`. The UserSource's `updateUser()` (or the default in `BaseUserSource` driven by `$managedAttributes`) writes the synced fields.
   - Affected modules requiring migration: `saml-sso`, `jwt-sso`, `spd-login`, and any custom AuthClient that implemented `SyncAttributes`. Existing local users authenticating via SAML/JWT will no longer be sync'd unless an admin opts in by adding the auth client ID to `LocalUserSource::$allowedAuthClientIds` and listing the synced fields in `LocalUserSource::$managedAttributes`.
-- New `humhub\modules\user\authclient\interfaces\SerializableAuthClient` — opt-in hook for auth clients that need pre-serialization logic
+- Removed `humhub\modules\user\authclient\interfaces\SerializableAuthClient` and its `beforeSerialize()` hook. AuthClient instances are no longer stored in the session at all — `AuthController` now hands the auth state to the registration form via `humhub\modules\user\services\PendingAuthService`, which captures only the client id + already-normalised user attributes. The AuthClient is reconstructed from the AuthClientCollection on the receiving side. Closures in normalize maps, connection handles, and other non-serialisable client state are no longer a session concern. Modules with custom AuthClients can drop `implements SerializableAuthClient` and their `beforeSerialize()` method.
 - Deprecated `humhub\modules\user\authclient\interfaces\ApprovalBypass` — approval is now configured on the UserSource side. AuthClients stay vanilla `\yii\authclient\*` implementations.
   - The interface still works as a fallback (kept for backwards-compatibility with modules like `saml-sso`, `spd-login`) and will be removed in a future release.
   - Migration: drop `implements ApprovalBypass` from your AuthClient. To skip approval for users provisioned via that auth client, configure the responsible UserSource with `'approval' => true, 'trustedAuthClientIds' => ['<client-id>']` — or leave `$approval = false` (default) to skip approval entirely for that source.
   - `UserSourceInterface::requiresApproval(?string $authClientId = null)` decides per-request: form-based self-registration passes `null`; auth-client-driven registration passes the client ID.
   - Core `LdapAuth` no longer implements `ApprovalBypass`; the LDAP approval policy is owned by `LdapUserSource`.
-- Deprecated `humhub\modules\user\authclient\interfaces\StandaloneAuthClient` — implement `auth()` on your AuthClient instead:
+- Removed `humhub\modules\user\authclient\interfaces\StandaloneAuthClient` and its dispatcher fallback. Migrate to the new `humhub\modules\user\authclient\interfaces\CustomAuth` interface:
   ```php
   // Before:
+  use humhub\modules\user\authclient\BaseClient;
+  use humhub\modules\user\authclient\interfaces\StandaloneAuthClient;
+
   class MyClient extends BaseClient implements StandaloneAuthClient {
       public function authAction($authAction) {
           // custom logic
           return $authAction->authSuccess($this);
       }
   }
+
   // After:
-  class MyClient extends \yii\authclient\BaseClient {
-      public function auth() {
-          // custom logic — AuthAction calls authSuccess() automatically after auth() returns
+  use humhub\modules\user\authclient\interfaces\CustomAuth;
+  use yii\authclient\BaseClient;
+  use yii\web\Response;
+
+  class MyClient extends BaseClient implements CustomAuth {
+      public function handleAuthRequest(): ?Response {
+          // custom logic. Return a Response for a redirect (e.g. SP → IdP),
+          // or null to signal completion — AuthAction calls authSuccess()
+          // automatically.
       }
   }
   ```
-- Deprecated `humhub\modules\user\authclient\AuthAction` — use `\yii\authclient\AuthAction` directly
+  `humhub\modules\user\authclient\AuthAction` no longer falls back on the legacy marker — custom auth clients that didn't migrate will throw a `NotSupportedException` at dispatch time.
+- Renamed `humhub\modules\user\authclient\BaseFormAuth` to `BaseFormClient`. The previous name doubled the "Auth" suffix with the surrounding `authclient/` namespace — the new name mirrors Yii's `BaseClient` parent. Drop-in rename; the class lives in the same namespace.
+- Added `humhub\modules\user\authclient\interfaces\PasswordAuth` — declares the contract for AuthClients that authenticate via the login form (password-based):
+  ```php
+  interface PasswordAuth {
+      public function authenticate(string $username, string $password): ?User;
+  }
+  ```
+  `BaseFormClient` and its subclasses (Password, LdapAuth) now implement it. The old stateful pattern — set `$client->login = $loginForm`, then call `$client->auth()` returning `bool` — is replaced by explicit parameter passing and a `User` return value. Custom form-auth modules need to rename `auth()` → `authenticate(string, string): ?User` and read credentials from the parameters instead of `$this->login->...`.
+- `humhub\modules\user\authclient\AuthAction` now dispatches `CustomAuth` clients before falling through to the OAuth/OpenID families. `AuthController::actions()['external']` uses the HumHub AuthAction class again.
   - The `rememberMe` query-parameter handling (writing to `loginRememberMe` session key) is removed; remember-me for OAuth/SSO clients was never supported anyway
 - Removed `humhub\modules\user\jobs\SyncUsers` — was deprecated since 1.16; register a dedicated sync job in your module instead (see `humhub\modules\ldap\jobs\LdapSyncJob` as example)
   - `humhub\modules\user\authclient\interfaces\AutoSyncUsers` is kept for now but no longer called by core — implement a dedicated queue job instead
@@ -163,7 +182,7 @@ Version 1.19 (Unreleased)
 - Refactored `ldap` module to the connection-registry pattern (reference implementation of the UserSource architecture):
   - New `humhub\modules\ldap\connection\LdapConnectionConfig` — plain value object holding hostname, port, baseDn, bindDn, attribute mappings, etc.
   - New `humhub\modules\ldap\connection\LdapConnectionRegistry` — keyed registry of connections; instantiated lazily on `Module::getConnectionRegistry()`. The default `'ldap'` connection is populated from the DB-backed `LdapSettings` UI; additional read-only connections can be added via `protected/config/common.php` → `modules.ldap.connections.<id> = [...]`.
-  - `humhub\modules\ldap\authclient\LdapAuth` is now a vanilla `BaseFormAuth` that references its connection by ID (`$connectionId`). Connection parameters (hostname/port/baseDn/bindUsername/bindPassword/userFilter/idAttribute/usernameAttribute/emailAttribute/languageAttribute/ignoredDNs/networkTimeout/disableCertificateChecking/autoRefreshUsers/syncUserTableAttributes) are gone — read them from `LdapConnectionConfig` via `LdapAuth::getConfig()` if needed.
+  - `humhub\modules\ldap\authclient\LdapAuth` is now a vanilla `BaseFormClient` that references its connection by ID (`$connectionId`). Connection parameters (hostname/port/baseDn/bindUsername/bindPassword/userFilter/idAttribute/usernameAttribute/emailAttribute/languageAttribute/ignoredDNs/networkTimeout/disableCertificateChecking/autoRefreshUsers/syncUserTableAttributes) are gone — read them from `LdapConnectionConfig` via `LdapAuth::getConfig()` if needed.
   - `LdapAuth` no longer implements `SerializableAuthClient` — it carries no connection state.
   - `LdapUserSource` is registered once per connection. The constructor takes `$connectionId` (not an `LdapAuth` instance). Sync uses the registered AuthClient for attribute normalisation but doesn't own it.
   - `LdapService` constructor now takes `LdapConnectionConfig` (was `LdapAuth`). Obtain instances via `Module::getConnectionRegistry()->getService($connectionId)`. The static `LdapService::create()` factory and `LdapService::getAuthClients()` are removed — use `LdapConnectionRegistry::getService($id)` and `LdapService::getAllUserEntries()` respectively.

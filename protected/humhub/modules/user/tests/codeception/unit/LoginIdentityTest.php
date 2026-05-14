@@ -8,7 +8,7 @@
 
 namespace humhub\modules\user\tests\codeception\unit;
 
-use humhub\modules\user\authclient\BaseFormAuth;
+use humhub\modules\user\authclient\BaseFormClient;
 use humhub\modules\user\authclient\Collection;
 use humhub\modules\user\models\Auth;
 use humhub\modules\user\models\Password;
@@ -97,7 +97,7 @@ class LoginIdentityTest extends HumHubDbTestCase
         // rows must NOT trigger the OAuth-redirect branch — the user belongs
         // on the password screen so the LDAP form handler can claim them.
         Password::deleteAll(['user_id' => 2]);
-        $this->registerAuthClient('ldap', new BaseFormAuth(['id' => 'ldap']));
+        $this->registerAuthClient('ldap', new BaseFormClient(['id' => 'ldap']));
         $this->linkUserToAuthClient(2, 'ldap');
 
         $login = new LoginIdentity(['username' => 'User1']);
@@ -151,7 +151,7 @@ class LoginIdentityTest extends HumHubDbTestCase
     {
         // Mixed source (form + external both allowed) and the user has a
         // password → Step 2 wins; the password screen is the right answer.
-        $this->registerAuthClient('local', new BaseFormAuth(['id' => 'local']));
+        $this->registerAuthClient('local', new BaseFormClient(['id' => 'local']));
         $this->registerAuthClient('saml', new ExternalAuthClientStub());
         Yii::$app->userSourceCollection->setUserSource(
             'mixed',
@@ -188,7 +188,7 @@ class LoginIdentityTest extends HumHubDbTestCase
 }
 
 /**
- * Minimal concrete BaseClient that is *not* a BaseFormAuth — used to stand in
+ * Minimal concrete BaseClient that is *not* a BaseFormClient — used to stand in
  * for an OAuth/SAML provider in the redirect-routing tests.
  */
 class ExternalAuthClientStub extends BaseClient

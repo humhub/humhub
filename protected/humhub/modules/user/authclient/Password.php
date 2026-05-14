@@ -11,11 +11,15 @@ namespace humhub\modules\user\authclient;
 use humhub\modules\user\models\User;
 
 /**
- * Standard password authentication client
+ * Standard password authentication client.
+ *
+ * Lookup of the authenticated User is owned by {@see authenticate()} (direct
+ * return value) and {@see \humhub\modules\user\services\AuthClientService::getUser()}
+ * (attribute-based lookup, used after session rehydration).
  *
  * @since 1.1
  */
-class Password extends BaseFormAuth implements interfaces\PrimaryClient
+class Password extends BaseFormClient implements interfaces\PrimaryClient
 {
     /**
      * @inheritdoc
@@ -44,27 +48,16 @@ class Password extends BaseFormAuth implements interfaces\PrimaryClient
     /**
      * @inheritdoc
      */
-    public function auth()
+    public function authenticate(string $username, string $password): ?User
     {
         $user = $this->getUserByLogin();
 
-        if ($user !== null && $user->currentPassword !== null && $user->currentPassword->validatePassword($this->login->password)) {
+        if ($user !== null && $user->currentPassword !== null && $user->currentPassword->validatePassword($password)) {
             $this->setUserAttributes(['id' => $user->id]);
-            return true;
-        } else {
-            $this->countFailedLoginAttempts();
+            return $user;
         }
 
-        return false;
+        $this->countFailedLoginAttempts();
+        return null;
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function getUser()
-    {
-        $attributes = $this->getUserAttributes();
-        return User::findOne(['id' => $attributes['id'], 'user_source' => $this->getId()]);
-    }
-
 }

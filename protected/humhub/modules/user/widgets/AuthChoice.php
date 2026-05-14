@@ -10,7 +10,7 @@ namespace humhub\modules\user\widgets;
 
 use humhub\helpers\DeviceDetectorHelper;
 use humhub\helpers\Html;
-use humhub\modules\user\authclient\BaseFormAuth;
+use humhub\modules\user\authclient\BaseFormClient;
 use Yii;
 use yii\authclient\ClientInterface;
 
@@ -82,7 +82,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
     /**
      * Filters out clients which need login form
      * @param $clients
-     * @return BaseFormAuth[]
+     * @return BaseFormClient[]
      */
     private static function filterClients($clients)
     {
@@ -90,7 +90,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
         foreach ($clients as $client) {
 
             // Don't show clients which need login form
-            if (!$client instanceof BaseFormAuth) {
+            if (!$client instanceof BaseFormClient) {
                 $result[] = $client;
             }
         }
