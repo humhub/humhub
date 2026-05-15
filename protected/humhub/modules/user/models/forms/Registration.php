@@ -137,10 +137,13 @@ class Registration extends HForm
             'elements' => [],
         ];
 
+        $managed = $this->getManagedAttributes();
+
         $form['elements']['username'] = [
             'type' => 'text',
             'class' => 'form-control',
             'maxlength' => 25,
+            'readonly' => in_array('username', $managed, true),
         ];
         $form['elements']['time_zone'] = [
             'type' => 'hidden',
@@ -150,10 +153,32 @@ class Registration extends HForm
             $form['elements']['email'] = [
                 'type' => 'text',
                 'class' => 'form-control',
+                'readonly' => in_array('email', $managed, true),
             ];
         }
 
         return $form;
+    }
+
+    /**
+     * Managed attributes from the UserSource that owns the new user (LDAP, SCIM…).
+     * Empty when the user has no source yet — i.e. anonymous self-registration
+     * via the form. Used to render source-owned fields (username, email) as
+     * readonly so the user can see what was pre-filled without overriding it.
+     */
+    private function getManagedAttributes(): array
+    {
+        $sourceId = $this->getUser()->user_source;
+        if (!is_string($sourceId) || $sourceId === '') {
+            return [];
+        }
+
+        $collection = Yii::$app->userSourceCollection ?? null;
+        if ($collection === null || !$collection->hasUserSource($sourceId)) {
+            return [];
+        }
+
+        return $collection->getUserSource($sourceId)->getManagedAttributes();
     }
 
     /**
@@ -338,6 +363,12 @@ class Registration extends HForm
         if ($this->_profile === null) {
             $this->_profile = $this->getUser()->profile;
             $this->_profile->scenario = 'registration';
+            // Inverse-populate the user relation. Without this, Profile->user
+            // resolves via the hasOne(user_id) query and returns null for a
+            // not-yet-saved user — Profile::scenarios() / getFormDefinition()
+            // would then never see the UserSource and treat every managed
+            // attribute (LDAP firstname, etc.) as a writable registration field.
+            $this->_profile->populateRelation('user', $this->getUser());
         }
 
         return $this->_profile;
