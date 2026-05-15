@@ -26,7 +26,7 @@ Other topics:
 - [Translations](concept-i18n.md)
 - [Testing](intro-testing.md)
 - [Security](advanced-security.md)
-- [Embedded themes](https://docs.humhub.org/docs/theme/module)
+- [Bundled themes](theme-overview.md)
 
 Browse existing modules for working patterns — [github.com/humhub](https://github.com/humhub) and [github.com/humhub-contrib](https://github.com/humhub-contrib).
 

@@ -59,6 +59,14 @@ Widgets, menus, theming, and the HumHub JavaScript layer.
 - [JavaScript stream](ui-js-stream.md)
 - [JavaScript client](ui-js-client.md) — REST/AJAX wrapper
 
+## Theming
+
+Most appearance changes are handled in *Administration → Settings → Appearance* (colours, logo, custom SCSS). A dedicated theme is only needed when you want to override view templates or ship a coordinated style as a module.
+
+- [Theming overview](theme-overview.md) — when a theme is needed, lifecycle
+- [Theme structure](theme-structure.md) — folder layout, SCSS variables, parent themes
+- [View and mail overrides](theme-views.md) — overriding controller, widget and mail views
+
 ## User & authentication (HumHub 1.19+)
 
 How user accounts and login are wired together.

@@ -70,4 +70,4 @@ See [overwriting module behaviour](ui-js-overview.md#overwrite-module-behaviour)
 
 ## Embedded themes
 
-Custom modules can bundle their own themes. See the [theme — module integration](https://docs.humhub.org/docs/theme/module) guide.
+Custom modules can bundle their own themes — see [theming overview](theme-overview.md).
