@@ -47,6 +47,20 @@ class DatabaseHelper
             default => $ex->getMessage(),
         };
 
+        // If a table is missing AND the core `setting` table is gone, the
+        // database schema has been wiped entirely (typical dev reset). Any
+        // cached state (e.g. InstallationState=INSTALLED) is now stale and
+        // would prevent the installer from running on the next request.
+        if ($ex->getCode() === '42S02') {
+            try {
+                if (!in_array('setting', Yii::$app->db->schema->getTableNames('', true), true)) {
+                    Yii::$app->cache->flush();
+                }
+            } catch (Throwable) {
+                // best-effort; ignore secondary failures
+            }
+        }
+
         /**
          * @see https://www.php.net/manual/en/ref.pdo-odbc.connection.php
          * @see https://www.php.net/manual/en/ref.pdo-ibm.connection.php
