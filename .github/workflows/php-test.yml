@@ -10,6 +10,7 @@ on:
             - bs5
         paths-ignore:
             - '*.md'
+            - 'docs/**'
     pull_request:
         branches:
             - master
@@ -18,6 +19,7 @@ on:
             - statable
         paths-ignore:
             - '*.md'
+            - 'docs/**'
 
 permissions:
   contents: read
