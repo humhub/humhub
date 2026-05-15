@@ -611,22 +611,28 @@ class AuthController extends Controller
     {
         $this->forcePostRequest();
 
-        // Single Logout — hand off to the current AuthClient when it
-        // supports SLO. A Response return (typically a redirect SP → IdP)
-        // short-circuits the local logout; the IdP then redirects back
-        // to a module-owned callback URL that calls
-        // Yii::$app->user->logout() to finalise the local teardown.
-        $authClient = Yii::$app->user->getCurrentAuthClient();
-        if ($authClient instanceof SingleLogout) {
-            $response = $authClient->singleLogout();
-            if ($response !== null) {
-                return $response;
-            }
-        }
-
         $language = Yii::$app->user->language;
 
-        Yii::$app->user->logout();
+        // Single Logout — hand off to the current AuthClient when it
+        // supports SLO. A Response return (typically a redirect SP → IdP)
+        // is the SLO handshake; the IdP then redirects back to a
+        // module-owned callback URL that processes the LogoutResponse.
+        // Regardless of the SLO outcome, the local Yii identity is cleared
+        // immediately below — that way the user is genuinely logged out
+        // even if the IdP never redirects back (e.g. front-channel iframe
+        // logout flows where the response leg is unreliable).
+        $authClient = Yii::$app->user->getCurrentAuthClient();
+        $sloResponse = null;
+        if ($authClient instanceof SingleLogout) {
+            $sloResponse = $authClient->singleLogout();
+        }
+
+        // When an SLO redirect is pending, keep the PHP session alive so the
+        // IdP's response callback can still read state (e.g. the SAML
+        // LogoutRequest ID for InResponseTo validation) — but unauthenticate
+        // the Yii user identity right now. Without a pending SLO, drop the
+        // session entirely.
+        Yii::$app->user->logout($sloResponse === null);
 
         // Store users language in session
         if ($language !== '') {
@@ -636,6 +642,10 @@ class AuthController extends Controller
                 'expire' => time() + 86400 * 365,
             ]);
             Yii::$app->getResponse()->getCookies()->add($cookie);
+        }
+
+        if ($sloResponse !== null) {
+            return $sloResponse;
         }
 
         return $this->redirect($this->module->logoutUrl ?: Yii::$app->homeUrl);

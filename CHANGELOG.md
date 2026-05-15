@@ -18,6 +18,8 @@ HumHub Changelog
 - Enh #8128: Exact search for user id in admin user search
 - Enh #8129: Limit activity content length
 - Enh #8139: Update rector rules
+- Fix: Auto-flush cache when database schema is missing (recovers from dev DB wipes that left a stale `InstallationState=INSTALLED` cache entry)
+- Fix: SingleLogout — always clear the local Yii identity in `AuthController::actionLogout()`, even when the AuthClient short-circuits with an SLO redirect. The user is now locally logged out at the moment they leave HumHub, regardless of whether the IdP ever redirects back (e.g. front-channel iframe SLO setups).
 
 1.18.3 (TBD)
 ------------

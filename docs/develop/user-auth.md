@@ -81,12 +81,12 @@ interface SingleLogout
 }
 ```
 
-`AuthController::actionLogout()` calls `singleLogout()` on the user's current AuthClient (per `User::getCurrentAuthClient()`) before tearing down the local session. The return value drives the flow:
+`AuthController::actionLogout()` calls `singleLogout()` on the user's current AuthClient (per `User::getCurrentAuthClient()`) and then always clears the local Yii identity — regardless of the return value. That guarantees the user is locally logged out even if the IdP never redirects back (e.g. front-channel iframe SLO setups, where the response leg is unreliable). Implementations of `singleLogout()` therefore must not call `Yii::$app->user->logout()` themselves.
 
-- **Response** (typically a redirect SP → IdP for the SLO handshake) — the local logout is paused. The IdP processes the logout and redirects back to a module-owned callback URL (e.g. `/saml-sso/logout`) that finalises the local logout via `Yii::$app->user->logout()`.
-- **null** — no remote action needed (e.g. the SLO endpoint isn't configured); the local logout proceeds.
+- **Response** (typically a redirect SP → IdP for the SLO handshake) — the controller emits the redirect after clearing the identity. The PHP session is kept alive for the moment so the IdP's response callback (e.g. `/saml-sso/logout`) can still read state like the LogoutRequest ID for `InResponseTo` validation; that callback is then responsible for destroying the PHP session.
+- **null** — no remote action needed (e.g. the SLO endpoint isn't configured); the standard local logout proceeds, destroying the PHP session immediately.
 
-IdP-initiated SLO (the IdP sends an unsolicited logout request to the SP, no preceding click in HumHub) lives entirely in the responsible module — it owns the protocol-specific endpoint, validates the incoming request, and terminates the local session.
+IdP-initiated SLO (the IdP sends an unsolicited logout request to the SP, no preceding click in HumHub) lives entirely in the responsible module — it owns the protocol-specific endpoint, validates the incoming request, and terminates the local session. Note that browser front-channel mechanisms (iframes loaded from the IdP) are subject to `SameSite` cookie rules; if the SP session cookie isn't sent in that context, only the SP-initiated path can reliably terminate the local session.
 
 ## Crossing the request boundary (`PendingAuthService`)
 
