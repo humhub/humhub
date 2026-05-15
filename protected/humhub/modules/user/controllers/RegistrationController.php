@@ -226,6 +226,11 @@ class RegistrationController extends Controller
         $registration->getUser()->setAttributes($attributes, false);
         $registration->getProfile()->setAttributes($attributes, false);
 
+        // Pin user_source to the dispatching source. Otherwise User::beforeSave()
+        // falls back to 'local' and a user that should have been provisioned via
+        // LdapUserSource ends up as a local user — breaking later LDAP login/sync.
+        $registration->getUser()->user_source = $userSource->getId();
+
         return $registration;
     }
 }
