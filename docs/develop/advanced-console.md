@@ -1,58 +1,91 @@
 # Console
 
-## Add controller to the console application
+HumHub exposes the same Yii console runner the framework provides — `php yii <controller>/<action>` from the `protected/` directory. Modules can ship their own controllers and tap into core console events (integrity check, cron).
 
-To add a custom controller to the console application, you need to catch the `humhub\components\console\Application::EVENT_ON_INIT`.
+## Adding a console controller
 
-Example event:
+The preferred way (HumHub 1.7+) is the `consoleControllerMap` entry in your module's `config.php`. Place the controller class under `commands/`:
 
 ```php
-<?php
+// example/config.php
+return [
+    'id' => 'example',
+    'class' => 'johndoe\example\Module',
+    'namespace' => 'johndoe\example',
+    'consoleControllerMap' => [
+        'example' => 'johndoe\example\commands\ExampleController',
+    ],
+];
+```
 
+After enabling the module, `php yii example/<action>` is available.
+
+For more complex setups — e.g. registering different controllers based on conditions — you can still listen for `humhub\components\console\Application::EVENT_ON_INIT` and populate `controllerMap` programmatically:
+
+```php
 use humhub\components\console\Application;
 
 return [
-    'id' => 'translation',
-    'class' => 'humhub\modules\translation\Module',
-    'namespace' => 'humhub\modules\translation',
+    // ...
     'events' => [
-        //...
-        [Application::class, Application::EVENT_ON_INIT, ['humhub\modules\translation\Module', 'onConsoleApplicationInit']],
-        //...
+        [
+            'class' => Application::class,
+            'event' => Application::EVENT_ON_INIT,
+            'callback' => [Events::class, 'onConsoleApplicationInit'],
+        ],
     ],
 ];
-?>
 ```
 
-Example callback:
-
 ```php
-public static function onConsoleApplicationInit($event) {
+public static function onConsoleApplicationInit($event)
+{
     $application = $event->sender;
-    $application->controllerMap['translation'] = commands\TranslationController::class;
+    $application->controllerMap['example'] = \johndoe\example\commands\ExampleController::class;
 }
 ```
 
-## Integrity Checker
+## Integrity checker hook
 
-The integrity checker is a command which validates and if necessary repairs the application database.
-
-If you want to add own checking methods for your module to it, you can intercept the `humhub\commands\IntegrityController::EVENT_ON_RUN` event.
-
-Example callback implementation:
+`php yii integrity/run` validates and (interactively) repairs application state. Modules with their own invariants should hook into it via `humhub\commands\IntegrityController::EVENT_ON_RUN`:
 
 ```php
 public static function onIntegrityCheck($event)
 {
-    $integrityController = $event->sender;
-    $integrityController->showTestHeadline("Polls Module - Answers (" . PollAnswer::find()->count() . " entries)");
+    $controller = $event->sender;
+    $controller->showTestHeadline('Polls module — Answers (' . PollAnswer::find()->count() . ' entries)');
 
     foreach (PollAnswer::find()->joinWith('poll')->all() as $answer) {
         if ($answer->poll === null) {
-            if ($integrityController->showFix("Deleting poll answer id " . $answer->id . " without existing poll!")) {
+            if ($controller->showFix('Deleting poll answer id ' . $answer->id . ' without existing poll')) {
                 $answer->delete();
             }
         }
     }
 }
 ```
+
+`showFix()` returns `true` when the operator confirms the fix interactively (or always in non-interactive mode). The pattern is: detect → describe → conditionally apply.
+
+## Cron events
+
+Core fires per-frequency cron events on `humhub\commands\CronController`:
+
+- `CronController::EVENT_ON_HOURLY_RUN`
+- `CronController::EVENT_ON_DAILY_RUN`
+
+Subscribe in `config.php` for tasks that should run on the cron schedule:
+
+```php
+use humhub\commands\CronController;
+
+'events' => [
+    [
+        'class' => CronController::class,
+        'event' => CronController::EVENT_ON_HOURLY_RUN,
+        'callback' => [Events::class, 'onHourlyRun'],
+    ],
+],
+```
+
+The cron is configured by the operator — see [admin → cron jobs](https://docs.humhub.org/docs/admin/cron-jobs).

@@ -1,43 +1,62 @@
-# Stream
+# Stream (JS)
 
-This section describes the new (since v1.3) Javascript Stream API.
+The JavaScript stream API mirrors the PHP-side [stream concept](concept-stream.md) on the client. Use it when you need to drive a stream from JavaScript — custom filters, programmatic reloads, embedding a stream in your own widget.
 
-Please refer to the main [Stream Section](concept-stream.md) for more information about Streams.
+The API lives under `humhub.modules.stream` and splits into these components:
 
-Since HumHub v1.3 the Javascript Stream API was split into the following main components within the `humhub.modules.stream` namespace:
+| Class                       | Role                                                                            |
+|-----------------------------|---------------------------------------------------------------------------------|
+| `Stream`                    | Abstract base `ui.Widget`. Stream lifecycle and access to the other components. |
+| `StreamState`               | Mutable state — `lastContentId`, `lastEntryLoaded`, `loading`.                  |
+| `StreamEntry`               | Base class for entry-level operations (edit, delete, …).                        |
+| `StreamRequest`             | Sends and tracks the actual XHR for entry batches.                              |
+| `wall.WallStream`           | Concrete `Stream` used for space / profile / dashboard streams.                 |
+| `wall.WallStreamFilter`     | Extensible filter for `WallStream`.                                             |
 
-- `Stream` serves as abstract `ui.Widget` class for all streams and provides the basic stream logic as initialization of a stream and accessing other components of the stream.
-- `StreamState` contains the current state of the stream as for example `lastContentId`, `lastEntryLoaded`, `loading`
-- `StreamEntry` serves as base class for all stream entries and implements basic logic for accessing the underlying content (edit/delete/etc.) of a single stream entry.
-- `StreamRequest` is responsible for requesting and reloading stream entries
-- `wall.WallStream` extends the abstract `Stream` and is used for example for the space, profile and dashboard streams
-- `wall.WallStreamFilter` is used as extensible filter component for the wall stream
+## Stream initialisation
 
-######  Stream Initialization
+When a stream is constructed, the following happens in order. Subclasses override the abstract steps (`initEvents`, `initScroll`, `onClear`).
 
-The initialization of a stream is handled as follows:
+1. `new Stream(container, options)` — subclasses should call `Stream.call(this, container, options)` in their own constructor.
+2. `Stream.init()` runs once per stream:
+   1. Sets up a fresh `StreamState` on `Stream.state`.
+   2. `Stream.initWidget()`:
+      1. `Stream.initEvents()` — abstract; bind widget-level listeners (e.g. `humhub:stream:beforeLoadEntries`).
+      2. `Stream.initFilter()` — installs the filter from `options.filter` if present.
+      3. `Stream.initScroll()` — abstract; wire up infinite scroll if applicable.
+   3. `Stream.clear()` — hides the stream, removes existing entries and the loader, fires `humhub:stream:clear`, then calls the abstract `Stream.onClear()`.
+   4. `Stream.loadInit()` — fires the first `StreamRequest`.
+   5. `Stream.handleResponse()` — dispatches based on response shape:
+      - If the response indicates the last entry was reached → `Stream.handleLastEntryLoaded()`.
+      - If `options.insertAfter` is set → `Stream.handleInsertAfterResponse()` (entries are inserted after the named entry).
+      - Otherwise → `Stream.handleLoadMoreResponse()` (default append).
 
-1. Constructor call (subclasses should call `Stream.call(this, container, options);` in case of an overwritten constructor);
-2. Call of widgets `Stream.init()`
-    1. Initialize a new `StreamState` instance as `Stream.state` 
-    2. Call of `Stream.initWidget` which is only called once for a stream
-        1. Call of abstract function `Stream.initEvents()` which can be overwritten to define widget event listeners as `humhub:stream:beforeLoadEntries`
-        2. Call of `Stream.initFilter()` sets an optional stream filter defined in `options.filter`
-        3. Call of abstract function `Stream.initScroll()` can be used to define auto scroll loading
-    3. Call of `Stream.clear()` to reset the stream
-        1. Hides the stream
-        2. Removes all stream entries
-        3. Removes the stream loader
-        4. Triggers `humhub:stream:clear`
-        5. Call of abstract function `Stream.onClear()` which can be used for further cleanups
-    4. Call of `Stream.loadInit()` which requests the initial entries of the stream by means of a `StreamRequest` call
-    5. Call of `Stream.handleResponse` in case there was no error
-        1. In case the response contains the last entry call `Stream.handleLastEntryLoaded()`
-        2. In case the request options `insertAfter` is set call `Stream.handleInsertAfterResponse()` which appends the resulted entries after a certain StreamEntry
-        3. Else call the default `Stream.handleLoadMoreResponse()`
-        
+## Reloading a stream entry
 
-######  StreamEntry loading:
+To re-render a single entry — typically after an edit or like that the server-side wall entry widget already knows how to display:
 
- 
-######  Reload a stream entry:
+```js
+var stream = humhub.modules.stream.getStream();
+stream.reloadEntry(entryNode);
+```
+
+`entryNode` may be a DOM node, a `StreamEntry` instance, or an entry's content ID. The request hits the original stream URL with the entry's content ID and replaces the rendered HTML in place.
+
+## Stream events
+
+The stream widget fires events at the major lifecycle points:
+
+| Event                                  | When                                       |
+|----------------------------------------|--------------------------------------------|
+| `humhub:stream:beforeLoadEntries`      | A `StreamRequest` is about to fire.        |
+| `humhub:stream:afterAddEntries`        | New entries have been inserted in the DOM. |
+| `humhub:stream:clear`                  | The stream is being reset (e.g. filter changed). |
+| `humhub:stream:lastEntryLoaded`        | The end of the stream has been reached.    |
+
+Subscribe via `Stream.on(...)` inside `initEvents()`, or globally:
+
+```js
+humhub.modules.event.on('humhub:stream:afterAddEntries', function (evt, stream, response) {
+    // ...
+});
+```

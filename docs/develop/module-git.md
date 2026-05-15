@@ -1,37 +1,47 @@
-# Git Repositories
+# Module Git Repositories
 
-This section describes the organization of Git Repositories for Modules in GitHub/GitLab environments operated by HumHub.
+Conventions for HumHub-operated module repositories on GitHub / GitLab. Custom modules outside HumHub's organisations can ignore this — it's a description of how the official modules are organised.
 
 ## Branches
 
-If a public module release is planned and possible in a timely manner, changes can be comitted (PR) directly in the `master` Branch. (If no active `develop` branch exists.)
+- `master` — current stable release. Bugfixes and small enhancements land here when a public release is planned shortly.
+- `develop` — exists only when a larger change is in progress against a future module version line. Not all modules have it; when it does exist, it can lag behind master, so rebase or pull before committing.
 
-Before making changes in the `develop` branch, make sure that it is up to date, since this branch is not always used in the regular maintenance and development of the modules.
+When in doubt, target `master`.
 
 ## Versioning
 
-Even though the HumHub core currently follows its own versioning scheme, modules should rely on [Semantic Versioning](https://semver.org/).
+Modules follow [semantic versioning](https://semver.org/) (`MAJOR.MINOR.PATCH`), independent of HumHub core's own versioning.
 
-## Increase required minimum HumHub Version
+| Change                                           | Version bump |
+|--------------------------------------------------|--------------|
+| Bug fix, minor enhancement                       | PATCH        |
+| New feature, bump of `humhub.minVersion`         | MINOR or MAJOR |
+| Breaking change to the module's public API       | MAJOR        |
 
-If a feature necessarily requires a newer **HumHub Core** version than the one specified in the current `modules.json`, at least the **Minor Version Part** of the module must be increased. 
-(Changing the patch level is not sufficient in this cases.)
+The `version` in `module.json` is *only* bumped when a release is actually cut — unreleased work lives under the `(Unreleased)` section of `docs/CHANGELOG.md` with the same version still set.
 
-If the required **HumHub Core** version has not yet been released, the change must be made in the `develop` branch of the module.
+## Raising the required HumHub core version
 
-Additionally the new minimum version of HumHub should be added in the `docs/CHANGELOG.md` file. 
+If your change relies on a feature only available in a newer HumHub core, bump `humhub.minVersion` in `module.json` and bump at least the MINOR version of the module. A PATCH bump is not enough.
 
-## New Version Marketplace Releases
+If the required core version is not yet released, the change must go onto a `develop` branch — the module repo gets a `develop` branch (creating one if missing) and work targets it.
 
-Steps to release a new module version:
+Note the required core version in `docs/CHANGELOG.md` under the upcoming version.
 
-1. Merge `develop` into `master` (if applicable)
-2. Add release date to `docs/CHANGELOG.md` and check version number in `module.json`.
-3. Create a Git tag for the new version e.g. ```git add -a "1.1.0" -m "Release 1.1.0"```
+## Marketplace release
+
+1. (If `develop` exists) merge `develop` into `master`.
+2. Replace `(Unreleased)` in `docs/CHANGELOG.md` with today's date — match the format used by the previous entry.
+3. Verify `version` in `module.json` matches the topmost CHANGELOG entry.
+4. Commit `Release <version>` and push.
+5. Create a GitHub release with tag `v<version>` and title `<version>` (no `v`). Body = the CHANGELOG section.
+
+The marketplace upload runs automatically via the module's GitHub Actions workflow on the `release` event.
 
 ## Translations
 
-For modules that are translated via our translation service on https://translate.humhub.org:
+For modules whose translations are managed via [translate.humhub.org](https://translate.humhub.org):
 
-- The `message` files MUST NOT be generated automatically using the `yii message` command.
-- Modifications to the `message` files may only be made via the translate.humhub.org site. 
+- **Do not** run `yii message/extract-module` to regenerate message files — the translation platform owns them.
+- All `messages/*` changes must come from translate.humhub.org. Manual edits get overwritten on the next sync.

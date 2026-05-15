@@ -1,89 +1,65 @@
-# Getting Started
+# Module Development
 
-The following guide describes the basic module structure and extended module features as well as important considerations regarding your own custom modules. Since HumHub is based on the [Yii Application Framework](http://www.yiiframework.com/doc-2.0) you should at least be familiar with the basic concepts of this framework before writing your own code as:
+A HumHub module is a [Yii 2 module](https://www.yiiframework.com/doc/guide/2.0/en/structure-modules) with a small amount of HumHub-specific metadata and conventions on top. Most of what HumHub adds — content containers, streams, notifications, permissions — is opt-in: a basic module needs only three files.
 
-- [Basic Application Structure](https://www.yiiframework.com/doc/guide/2.0/en/structure-overview)
-- [Controllers](https://www.yiiframework.com/doc/guide/2.0/en/structure-controllers)
-- [Models](https://www.yiiframework.com/doc/guide/2.0/en/structure-models)
-- [Views](https://www.yiiframework.com/doc/guide/2.0/en/structure-views)
-- [Assets](https://www.yiiframework.com/doc/guide/2.0/en/structure-assets)
+Familiarity with Yii 2 is assumed: [application structure](https://www.yiiframework.com/doc/guide/2.0/en/structure-overview), [controllers](https://www.yiiframework.com/doc/guide/2.0/en/structure-controllers), [models](https://www.yiiframework.com/doc/guide/2.0/en/structure-models), [views](https://www.yiiframework.com/doc/guide/2.0/en/structure-views), [assets](https://www.yiiframework.com/doc/guide/2.0/en/structure-assets).
 
-You should also follow the [Coding Standards](intro-coding-standards.md) and keep an eye on the [Migration Guide](https://github.com/humhub/humhub/blob/develop/MIGRATE-DEV.md) in order to keep your module compatible with new HumHub versions and facilitate new features.
+Follow the [coding standards](intro-coding-standards.md) and keep an eye on [`MIGRATE-DEV.md`](https://github.com/humhub/humhub/blob/develop/MIGRATE-DEV.md) for breaking changes between core versions.
 
 ## Before you start
 
-Before starting with the development of your custom module, first consider the following module options:
+Decide which HumHub subsystems your module touches:
 
-- Can my module be [enabled on user and/or space level](module-base-class.md#contentcontainermodule)?
-- Does my module produce [content](concept-content.md)?
-- Does my module produce [stream entries](concept-stream.md)?
-- Does my module add any [sidebar snippets](ui-snippets.md)?
-- Do I need specific [permissions](concept-permissions.md) for my module?
-- Does my module create any [notifications](concept-notifications.md) or [activities](concept-activities.md)?
-- Should [guest users](concept-permissions.md#guest-access) have access to some parts of my module?
+- Should it be [enabled per space or per user](module-base-class.md#contentcontainermodule)?
+- Does it produce [content](concept-content.md) or [stream entries](concept-stream.md)?
+- Does it add [sidebar snippets](ui-snippets.md), [menus](ui-menus.md), or [widgets](ui-widgets.md)?
+- Does it need its own [permissions](concept-permissions.md) — including [guest access](concept-permissions.md#guest-access)?
+- Does it create [notifications](concept-notifications.md) or [activities](concept-activities.md)?
 
-Furthermore, you may have to consider the following issues:
+Other topics:
 
-- [Module settings and configuration](concept-settings.md)
-- [Append a module to a specific navigation](module-change-behavior.md#extend-menus)
-- [Client side development](ui-js-overview.md)
-- [Schema Migrations and Integrity](concept-models.md)
-- [Testing](intro-testing.md)
+- [Settings storage](concept-settings.md) — per-module and per-container settings
+- [Event handlers](module-event-handler.md) — hook into core or other modules
+- [Models & migrations](concept-models.md)
 - [File handling](concept-files.md)
-- [Events](concept-events.md)
-- [Translation](concept-i18n.md)
 - [Live UI updates](concept-live.md)
+- [Translations](concept-i18n.md)
+- [Testing](intro-testing.md)
 - [Security](advanced-security.md)
-- [Embedded Themes](https://docs.humhub.org/docs/theme/module)
+- [Embedded themes](https://docs.humhub.org/docs/theme/module)
 
-It's always a good idea to get some inspiration from existing modules which may already solved some of the problems you are facing in your custom module. For example have a look at repositories at:
+Browse existing modules for working patterns — [github.com/humhub](https://github.com/humhub) and [github.com/humhub-contrib](https://github.com/humhub-contrib).
 
-- [https://github.com/humhub](https://github.com/humhub)
-- [https://github.com/humhub-contrib](https://github.com/humhub-contrib)
-  :::
+## Module skeleton
 
-## Setup a module skeleton
+The fastest way to start is the [devtools](https://github.com/humhub/humhub-modules-devtools) module — it bundles a [Gii](https://www.yiiframework.com/doc/guide/2.0/en/start-gii)-based generator for module skeletons. Drop the generated directory into a [module autoload path](intro-environment.md#module-loader-path) and it shows up under *Administration → Modules*.
 
-The easiest way of setting up a basic HumHub module is by using the [Developer Tools Module](https://github.com/humhub/humhub-modules-devtools). Once you've generated a module skeleton, copy the module to a [module loader path](intro-environment.md#module-loader-path). Now the module should be visible under `Administration -> Modules` and can be [enabled](#enabled-a-module).
+Alternatively, fork the [example-basic](https://github.com/humhub/example-basic) template.
 
-Alternatively, you can take a look at the following GitHub template project: [Example Module](https://github.com/humhub/example-basic).
-
-## Module Structure
-
-Basically HumHub modules are identical to [Yii2 modules](http://www.yiiframework.com/doc-2.0/guide-structure-modules.html).
-
-A minimal HumHub module at least has to define the following files and metadata:
+## Minimal layout
 
 ```
-my-module
-├── config.php
-│   ├── id
-│   ├── namespace
-│   └── class
-├── module.json
-│   ├── id
-│   ├── name
-│   ├── description
-│   └── version
-└── Module.php
+my-module/
+├── config.php       module config (id, namespace, class, events)
+├── module.json      marketplace metadata
+└── Module.php       module class
 ```
 
 ### `config.php`
 
-The `config.php` can be used to define event handlers, and the definition of [URL Rules](https://www.yiiframework.com/doc/guide/2.0/en/runtime-routing#creating-rules)
-and consists of the following data:
+Defines the module ID, class, event handlers and URL rules. The file is *loaded once and cached* — do not execute dynamic code in it.
 
-| Attribute              | Description                                                                                                                                         |    
-|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
-| `id`                   | Unique module ID **(required)**                                                                                                                     | 
-| `class`                | Namespaced classname of the module class **(required)**                                                                                             |
-| `namespace`            | The namespace of your module **(required)**                                                                                                         |
-| `events`               | Array containing the modules event configuration                                                                                                    |
-| `urlManagerRules`      | Array of [URL Manager Rules](https://www.yiiframework.com/doc/guide/2.0/en/runtime-routing#creating-rules)                                          |
-| `modules`              | Can be used to define submodules                                                                                                                    |
-| `consoleControllerMap` | List of console controllers. See also: [Yii2 API](https://www.yiiframework.com/doc/api/2.0/yii-base-module#$controllerMap-detail) **(HumHub 1.7+)** |
+| Attribute              | Required | Description                                                                                                |
+|------------------------|----------|------------------------------------------------------------------------------------------------------------|
+| `id`                   | yes      | Unique module ID — must not clash with [core](intro-overview.md#core-modules) or marketplace modules       |
+| `class`                | yes      | Fully-qualified class name of the module class                                                             |
+| `namespace`            | yes      | Module namespace                                                                                           |
+| `events`               | no       | Event handlers — see [module event handler](module-event-handler.md)                                       |
+| `urlManagerRules`      | no       | [URL Manager rules](https://www.yiiframework.com/doc/guide/2.0/en/runtime-routing#creating-rules)          |
+| `modules`              | no       | Submodules                                                                                                 |
+| `consoleControllerMap` | no       | Console controllers — see Yii's [`controllerMap`](https://www.yiiframework.com/doc/api/2.0/yii-base-module#$controllerMap-detail) |
 
-**Example:**
+Example:
 
 ```php
 // @example/config.php
@@ -95,180 +71,105 @@ return [
     'namespace' => 'johndoe\example',
     'events' => [
         [
-           'class' => TopMenu::class, 'event' => TopMenu::EVENT_INIT, 
-           'callback' => ['johndoe\example\Events', 'onTopMenuInit']
-        ]
+            'class' => TopMenu::class,
+            'event' => TopMenu::EVENT_INIT,
+            'callback' => ['johndoe\example\Events', 'onTopMenuInit'],
+        ],
     ],
     'consoleControllerMap' => [
-          'example' => 'johndoe\example\console\ExampleController'
-    ]
+        'example' => 'johndoe\example\console\ExampleController',
+    ],
 ];
 ```
-Do not execute any dynamic code directly within `config.php` since the result will be cached!
-
-Do choose a preferably unique module id which does not interfere with any [core](intro-overview.md#core-modules-and-components)
-or other available module.
 
 ### `module.json`
 
-The `module.json` file holds basic metadata of a module used by the marketplace.
+Marketplace metadata.
 
-Available attributes:
+| Field         | Required | Description                                                                |
+|---------------|----------|----------------------------------------------------------------------------|
+| `id`          | yes      | Module ID                                                                  |
+| `version`     | yes      | `X.Y.Z` semver — only bumped on release                                    |
+| `name`        | yes      | Display name                                                               |
+| `description` | yes      | One-line description                                                       |
+| `humhub`      | no       | `minVersion` and `maxVersion` core compatibility                           |
+| `keywords`    | no       | Array of keywords for marketplace search                                   |
+| `screenshots` | no       | Screenshot file names, relative to [`Module::$resourcesPath`](module-base-class.md#resourcespath) |
+| `homepage`    | no       | Module homepage URL                                                        |
+| `authors`     | no       | `[{name, email, homepage, role}]`                                          |
+| `licence`     | no       | [SPDX](https://spdx.org/licenses/) identifier, or `proprietary`            |
 
-| Field         | Description                                                                                          |    
-|---------------|------------------------------------------------------------------------------------------------------|
-| `id`          | The module ID **(required)**                                                                         | 
-| `version`     | The module version. This must follow the format of X.Y.Z. **(required)**                             |
-| `name`        | The modules name **(required)**                                                                      |
-| `description` | A short module description **(required)**                                                            |
-| `humhub`      | HumHub core `minVersion` and `maxVersion` requirements                                               |
-| `keywords`    | Module related keywords as string array                                                              |
-| `screenshots` | Some screenshots file names for the marketplace, those should reside in the `Module::$resourcesPath` |
-| `homepage`    | A URL to the website of the module                                                                   |
-| `authors`     | Author information as `name`, `email`, `homepage`, `role`                                            |
-| `licence`     | Licence identifier See (https://spdx.org/licenses/) or use `proprietary`                             |
-
-**Example:**
+Example:
 
 ```json
 {
-  "id": "example",
-  "version": "1.0",
-  "name": "My Example Module",
-  "description": "My testing module.",
-  "humhub": {
-    "minVersion": "1.2"
-  },
-  "keywords": [
-    "my",
-    "cool",
-    "module"
-  ],
-  "screenshots": [
-    "assets/screen_1.jpg"
-  ],
-  "homepage": "https://www.example.com",
-  "authors": [
-    {
-      "name": "Tom Coder",
-      "email": "tc@example.com",
-      "role": "Developer"
+    "id": "example",
+    "version": "1.0.0",
+    "name": "My Example Module",
+    "description": "My testing module.",
+    "humhub": {
+        "minVersion": "1.16"
     },
-    {
-      "name": "Sarah Mustermann",
-      "email": "sm@example.com",
-      "homepage": "https://example.com",
-      "role": "Translator"
-    }
-  ],
-  "licence": "AGPL-3.0-or-later"
+    "keywords": ["my", "cool", "module"],
+    "screenshots": ["assets/screen_1.jpg"],
+    "homepage": "https://www.example.com",
+    "authors": [
+        {
+            "name": "Tom Coder",
+            "email": "tc@example.com",
+            "role": "Developer"
+        }
+    ],
+    "licence": "AGPL-3.0-or-later"
 }
 ```
 
-Align the `minVersion` of your module when using new features and test your modules on all supported versions. In case you are not sure about the `minVersion` use the version you are testing with or the latest stable HumHub version.
+Bump `minVersion` whenever you start relying on a feature that arrived in a newer core version, and test against the supported range. When unsure, use the version you're developing against.
 
 ### `Module.php`
 
-The module class of a module may contain basic install/uninstall functionality as well as module class level configuration. See chapter [Module Class](module-base-class.md) for an introduction of the base module class.
+The module class hosts install/uninstall logic and module-level configuration. See [Module Class](module-base-class.md) for details.
 
-### Documentation
+## Documentation files
 
-The documentation files of a module must be located in the module's `docs` folder.
+A module's `docs/` directory carries its documentation. The marketplace surfaces these files; private modules can ship any subset.
 
-The following table lists files which can be added in order to provide module documentation for the marketplace. Note, the
-**required** field only applies to the marketplace modules and is not required for private modules.
+| File            | Required for marketplace | Description                                                              |
+|-----------------|--------------------------|--------------------------------------------------------------------------|
+| `README.md`     | yes                      | High-level description and feature overview                              |
+| `CHANGELOG.md`  | yes                      | Versioned change list, newest on top                                     |
+| `MANUAL.md`     | no                       | End-user documentation                                                   |
+| `INSTALLATION.md` | no                     | Installation notes beyond the marketplace default                        |
+| `LICENCE.md`    | no                       | Licence text                                                             |
+| `DEVELOPER.md`  | no                       | Developer-facing notes                                                   |
 
-| File            | Required | Description                                                                               |
-|-----------------|----------|-------------------------------------------------------------------------------------------|
-| README.md       | Yes      | A description and overview of the features                                                |
-| CHANGELOG.md    | Yes      | A file which contains a curated, chronologically ordered list of changes for each version |
-| MANUAL.md       | No       | Information on how to use this module                                                     |
-| INSTALLATION.md | No       | Additional installation information                                                       |
-| LICENCE.md      | No       | Licencing information including the licence                                               |
-| DEVELOPER.md    | No       | Additional information for developers                                                     |
+## Extended layout
 
-### Extended module structure example
+Common directories beyond the minimal three files:
 
-The following table describes other common module directories used for more specific use cases:
+| Directory        | What goes there                                                              |
+|------------------|------------------------------------------------------------------------------|
+| `activities/`    | [Activity](concept-activities.md) classes                                    |
+| `assets/`        | Asset bundles                                                                |
+| `components/`    | Yii [components](https://www.yiiframework.com/doc/guide/2.0/en/concept-components) |
+| `controllers/`   | Web and console controllers                                                  |
+| `live/`          | [Live](concept-live.md) event classes                                        |
+| `jobs/`          | Queue jobs                                                                   |
+| `messages/`      | Translation message files                                                    |
+| `migrations/`    | Database migrations                                                          |
+| `helpers/`       | Utility classes                                                              |
+| `notifications/` | Notification classes                                                         |
+| `permissions/`   | [Permission](concept-permissions.md) classes                                 |
+| `resources/`     | Static scripts, stylesheets, images                                          |
+| `tests/`         | [Tests](intro-testing.md)                                                    |
+| `views/`         | View files                                                                   |
+| `widgets/`       | Widget classes                                                               |
+| `Events.php`     | Static event handlers                                                        |
 
-| Directory       | Description                                                                       |    
-|-----------------|-----------------------------------------------------------------------------------|
-| `activities`    | [Activity](concept-activities.md) classes                                                 | 
-| `assets`        | Asset Bundles                                                                     |
-| `components`    | [Components](https://www.yiiframework.com/doc/guide/2.0/en/concept-components)    |
-| `controllers`   | Web or Console controller                                                         |
-| `live`          | HumHub live related classes used for live frontend updates                        |
-| `jobs`          | Asynchronous jobs (queue)                                                         |
-| `messages`      | Translation message files                                                         |
-| `migrations`    | Database migration files                                                          |
-| `helpers`       | Helper and utility classes                                                        |
-| `notifications` | Module notifications                                                              |
-| `permissions`   | Module [permissions](concept-permissions.md)                                              |
-| `resources`     | Assets as scripts, style sheets, images                                           |
-| `tests`         | Module [tests](intro-testing.md)                                                        |
-| `views`         | [View](https://www.yiiframework.com/doc/guide/2.0/en/structure-views) files       |
-| `widgets`       | [Widget](https://www.yiiframework.com/doc/guide/2.0/en/structure-widgets) classes |
-| `Events.php`    | Event handlers                                                                    |
+## Module icon
 
-### Module Icon
+Each module should ship a `module_image.png` — square, at least 128×128 px — in the [`resourcesPath`](module-base-class.md#resourcespath) (defaults to `assets/`). Override `Module::getImage()` to point elsewhere.
 
-Each module should also provide an icon image.
+## Lifecycle
 
-The icon must be provided in PNG format, squared and with a minimum size of 128x128 pixels.
-
-By default, the image must be stored as `module_image.png` in your module's ressource directory
-(see [`Module::$resourcesPath`](modules-base-class#resourcespath)), hence defaulting to `assets/module_image.png`. You can also override the `getImage()` method of your module, if you need to return a different URL.
-
-## Module Lifecycle
-
-### Install a Module
-
-A module is considered as installed once it resides in one of the [module autoloader paths](intro-environment.md#module-loader-path). By default modules from [the marketplace]([url](https://marketplace.humhub.com/)) reside in `@humhub/protected/modules`. Custom modules should be installed by adding them manually to an autoload path such as `@app/custom-modules` or by loading them from the marketplace.
-
-You can add additional module paths by means of the `moduleAutoloadPaths` parameter. Please see the [Development Environment Section](intro-environment.md#module-loader-path) for more information.
-
-### Enabled a Module
-
-In order to use a module, you'll have to enable it first. This can be achieved by:
-
-- Administration Backend `Administration -> Modules`
-- Console command `php yii module/enable`
-
-Enabling a module will automatically run the modules [database migrations](concept-models.md#initial-migration)
-and add an entry to the `modules_enabled` table.
-
-The `ModuleManager` responsible for enabling modules will trigger the following events right before and after enabling a module:
-
-- `ModuleManager::EVENT_BEFORE_MODULE_ENABLE`
-- `ModuleManager::EVENT_AFTER_MODULE_ENABLE`
-
-[ContentContainerModules](module-base-class.md#contentcontainermodule) also have to be enabled within a space or user profile within the container's module management section.
-
-### Module Bootstrap
-
-Every [request](https://www.yiiframework.com/doc/guide/2.0/en/runtime-overview) during the application bootstrap phase, the `humhub\components\bootstrap\ModuleAutoLoader` will search for all [enabled](#enabled-a-module)
-modules within the [module autoload paths](intro-environment.md#module-loader-path) and register configured [module event listeners](concept-events.md)
-defined in the modules `config.php`.
-
-### Disable Module
-
-Disabling a module will usually drop all related module data from the database and will detach the module from the [bootstrap](#module-bootstrap) process.
-
-Modules can be disabled by means of
-
-- Administration Backend `Administration -> Modules`
-- Console command `php yii module/disable`
-
-The `ModuleManager` responsible for disabling modules will trigger the following events right before and after enabling a module:
-
-- `ModuleManager::EVENT_BEFORE_MODULE_DISABLE`
-- `ModuleManager::EVENT_AFTER_MODULE_DISABLE`
-
-See [Module::disable()](module-base-class.md#disable) and [ContentContainerModule::disable()](module-base-class.md#disable-1)
-for more information about how to implement custom disable logic.
-
-### Uninstall Module
-
-Uninstalling a module means removing it from the autoload path.
-
-You should never delete an enabled module folder manually without disabling it first.
+Installing, enabling, disabling and uninstalling are covered in [module lifecycle](module-lifecycle.md).

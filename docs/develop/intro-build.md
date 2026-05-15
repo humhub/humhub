@@ -1,88 +1,84 @@
-# HumHub Build
+# Build
 
-HumHub provides some [grunt](https://gruntjs.com/) tasks to ease the execution of some console commands. This guide describes how to setup
-grunt and run these commands. All grunt tasks need to be run within your HumHub root.
+HumHub bundles a few [Grunt](https://gruntjs.com/) tasks that wrap common console commands — asset builds, migrations, search-index rebuilds, the test server. Run them from the repository root.
 
-## Setup Grunt 
+## Setup
 
- 1. [Install Node.js](https://nodejs.org/en/download/package-manager/)
- 2. [Install Grunt CLI](https://gruntjs.com/using-the-cli)
- 
-```console
-npm install -g grunt-cli
-```
+1. Install [Node.js](https://nodejs.org/en/download/package-manager/)
+2. Install the Grunt CLI globally:
 
- 3. call `npm install` in your HumHub root
+   ```sh
+   npm install -g grunt-cli
+   ```
+
+3. Install local dependencies in the HumHub root:
+
+   ```sh
+   npm install
+   ```
 
 ## Build production assets
 
-HumHub uses Yii`s build-in mechanism for [compressing and combining assets](https://www.yiiframework.com/doc/guide/2.0/en/structure-assets#combining-compressing-assets)
-as javascript or stylesheet files in combination with grunt. Those compressed assets are only used when running 
-in [production mode](advanced-security.md#enable-production-mode) and in [acceptance tests](intro-testing.md#run-acceptance-tests).
-When running in debug mode, separate assets files are used to ease development and debugging.
+HumHub uses Yii's built-in [asset combining and compression](https://www.yiiframework.com/doc/guide/2.0/en/structure-assets#combining-compressing-assets). Compressed assets are only served in [production mode](advanced-security.md#enable-production-mode) and during [acceptance tests](intro-testing.md#run-acceptance-tests). Debug mode serves the source files separately so they can be inspected in the browser.
 
-When running a [development environment](intro-environment.md#gitcomposer-installation), you'll have to manually build those
-production assets in order to run acceptance tests (or testing the production mode). The production build will compress
-scripts and stylesheets configured in `humhub\assets\AppAsset` into the following files:
+A git-based install does *not* ship pre-built production assets — you have to build them manually before running in production mode or running acceptance tests. The build writes:
 
-- `@humhub/static/js/all-*.js`
-- `@humhub/static/css/all-*.css`
+- `static/js/all-*.js`
+- `static/css/all-*.css`
 
-#### Grunt based build
+### Grunt task (recommended)
 
-The simples way to build your production assets is by running the following grunt task:
-
-```console
+```sh
 grunt build-assets
 ```
 
-#### Manual build
+The task clears `assets/*`, runs the asset compiler, and flushes the cache.
 
-1. Delete the content of your `static/assets` directory.
-2. Delete the old compressed file `@humhub/static/js/all-*.js` and `@humhub/static/css/all-*.css`
-2. Run the following command within your `protected` directory:
+### Manual build
 
-```console
+```sh
+rm -rf assets/*/
+cd protected
 php yii asset humhub/config/assets.php humhub/config/assets-prod.php
+php yii cache/flush-all
 ```
 
-Refer to the [Yii Asset Guide](http://www.yiiframework.com/doc-2.0/guide-structure-assets.html#combining-compressing-assets)
-for more information.
+See the [Yii Asset Guide](https://www.yiiframework.com/doc/guide/2.0/en/structure-assets#combining-compressing-assets) for what the compiler actually does.
 
-## Search index rebuild
+## Rebuild search index
 
-Grunt task for rebuilding your [Search Index](concept-search.md)
+Rebuilds the [search index](concept-search.md):
 
-```console
+```sh
 grunt build-search
 ```
 
-## Run migration
+## Run migrations
 
-Grunt task for running database [migrations](concept-models.md#scheme-updates).
+Apply all pending [database migrations](concept-models.md#scheme-updates) for the core *and* enabled modules:
 
-The following command will run the migration for core and modules:
-
-```console
+```sh
 grunt migrate-up
 ```
 
-Run core migrations only:
+Core migrations only:
 
-```console
+```sh
 grunt migrate-up --module=0
 ```
-## Testing
 
-Run test server:
+## Tests
 
-```console
+Start the test web server (`php -S localhost:8080 index-test.php`):
+
+```sh
 grunt test-server
 ```
 
-Run tests:
+Run the test suite:
 
-```console
+```sh
 grunt test
 ```
-See [Testing Guide](intro-testing.md) for more use cases of the `grunt test` task.
+
+See the [testing guide](intro-testing.md) for filtering by module, running specific suites, and acceptance-test setup.

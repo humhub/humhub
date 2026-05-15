@@ -1,99 +1,85 @@
 # Notifications
 
-Notifications are used to inform one or a given set of users about a specific event in your network as the liking of a post or mentioning of a user over multiple channels (e.g. web and mail). 
+Notifications inform one or more specific users about an event — a like, a mention, a new comment — and can dispatch through multiple channels (web, mail, mobile push). Compare with [activities](concept-activities.md), which are container-bound and not targeted at a specific user.
 
-Custom notification classes are derived from `humhub\modules\notification\components\BaseNotification`.
-A `humhub\modules\notification\components\BaseNotification|BaseNotification` usually is assigned with an
-`$originator` user instance and a `$source` instance, which connects the Notification with a Content or any other kind of [yii\db\ActiveRecord](https://www.yiiframework.com/doc/api/2.0/yii-db-activerecord).
+A `BaseNotification` typically carries an `$originator` (the user who caused it) and a `$source` (the record the notification is about). Since HumHub 1.3, notifications are dispatched via the [queue](https://docs.humhub.org/docs/admin/asynchronous-tasks), so `send()` returns quickly and the actual fan-out happens out-of-band.
 
-A Notification can be sent to a user by calling the `send()` or `sendBulk()` function. This will persist an `humhub\modules\notification\models\Notification` instance for each user and send out a notification to all allowed `NotificationTargets`.
+Examples of core notifications:
 
-Since **HumHub v1.3** Notifications are sent by means of a [queued job](https://docs.humhub.org/docs/admin/asynchronous-tasks).
+- `humhub\modules\like\notifications\NewLike` — a user liked a post or comment
+- `humhub\modules\user\notifications\Followed` — a user started following another user
+- `humhub\modules\user\notifications\Mentioned` — a user was mentioned in a post or comment
+- `humhub\modules\content\notifications\ContentCreated` — new content was created
 
-Examples for core notifications are:
+## Implementing a notification
 
- - `humhub\modules\like\notifications\NewLike`: is sent if an user likes a post or comment.
- - `humhub\modules\user\notifications\Followed`: is sent if an user follows another user.
- - `humhub\modules\user\notifications\Mentioned`: is sent if an user is mentioned within an post or comment.
- - `humhub\modules\content\notifications\ContentCreated`: is sent when content (e.g. a post) was created.
+### 1. The notification class
 
-> Note: Unlike [Activities](concept-activities.md) which are targeted for multiple users e.g. all Users of a Space, a Notification is always targeted to a single user.
-
-## Custom Notifications
-
-### Notification Class
-
-Custom Notifications are derived from `humhub\modules\notification\components\BaseNotification|BaseNotification]] and should reside in the `notifications` directory of your module.
-
-The notification class at least has to overwrite the `$moduleId` variable with the id of your module and the.
+Place it under your module's `notifications/` directory. The class must set `$moduleId` and override `html()`:
 
 ```php
-<?php
-
 namespace johndoe\example\notifications;
 
 use humhub\modules\notification\components\BaseNotification;
-
 use yii\helpers\Html;
 
-/**
- * Notifies a user about something happend
- */
-class SomethingHappend extends BaseNotification
+class SomethingHappened extends BaseNotification
 {
-    // Module Id (required)
-    public $moduleId = "example";
+    public $moduleId = 'example';
+    public $viewName = 'somethingHappened';
 
-    // Viewname (optional)
-    public $viewName = "somethingHappend";
-    
-    // Content
     public function html()
     {
-        return Yii::t('SomethingHappend.views_notifications_somethingHappened', "%someUser% did something cool.", [
-            '%someUser%' => '<strong>' . Html::encode($originator->displayName) . '</strong>'
+        return Yii::t('ExampleModule.notifications', '{user} did something cool.', [
+            '{user}' => '<strong>' . Html::encode($this->originator->displayName) . '</strong>',
         ]);
     }
 }
 ```
 
-#### Notification View (optional)
+### 2. View files (optional)
 
-By default, the view of a notification should be located inside `notifications/views`.
-The view of the example above should therefore be located in `mymodule/notifications/views/somethingHappened.php`.
+The default view sits at `notifications/views/<viewName>.php`. Mail uses a separate file at `notifications/views/mail/<viewName>.php` when present, falling back to the default otherwise.
 
-> Info: If you require a different notification view for mails, you have to add an extra view file to `notifications/views/mail`. 
-
-## Send Notifications
-
-After an event was triggered, you'll have to instantiate your custom `BaseNotification` and call its
-`send()` or `sendBulk()` function.
-
-A notification can optionally be assigned with a `$source` model instance (e.g. a post or comment related to the notification) which has to be derived from [yii\db\ActiveRecord](https://www.yiiframework.com/doc/api/2.0/yii-db-activerecord).
+### 3. Sending
 
 ```php
-// Sending to a single user
-SomethingHappend::instance()->from($user)->about($source)->send($targetUser);
+// Single target
+SomethingHappened::instance()
+    ->from($originator)
+    ->about($source)
+    ->send($targetUser);
 
-// Sending to multiple users
-SomethingHappend::instance()->from($user)->about($source)->sendBulk($users);
+// Bulk
+SomethingHappened::instance()
+    ->from($originator)
+    ->about($source)
+    ->sendBulk($users);          // array or iterable of User
 ```
 
-Since HumHub v1.3 you have to overwrite `BaseNotification::requireOriginator` or `BaseNotification::requireSource` in case your notification does not require an
-`originator` or `source`, otherwise they won't be sent out.
+`send()` and `sendBulk()` persist one `humhub\modules\notification\models\Notification` row per recipient and enqueue delivery to every enabled `NotificationTarget`.
 
-> Info: The `send` and `sendBulk` will create and persist a `humhub\modules\notification\models\Notification` instance for each user.
-
-> Tip: Notifications are often created and sent within the `afterSave` hook of the related `source` instance. This should be prefered over the instantiation within a controller.
-
-> Note: Notifications are only sent to a specific NotificationTarget depending on the user's account settings.
-
-### Clear Notifications
-
-Sometimes you want to remove or replace notifications of a specific type.
-You can delete notifications similary to its creation syntax:
+If your notification does **not** need an originator or source, override `requireOriginator` / `requireSource` on the class — otherwise sends will silently no-op:
 
 ```php
-// Will remove all SomethingHappened notification with the given source for the given $user
-SomethingHappend::instance()->about($this)->delete($user);
+public $requireOriginator = false;
+public $requireSource = false;
 ```
+
+The conventional place to fire a notification is the `afterSave()` hook of the source record. That way it triggers exactly once per state change and the source is guaranteed to exist when the queued job runs.
+
+### Notification targets
+
+Each user's account settings decide which targets receive a given notification category — *Web*, *E-mail*, *Mobile* via the [Firebase module](https://marketplace.humhub.com/module/fcm-push), and so on. The notification framework respects these settings; you don't need to check them yourself.
+
+## Clearing / replacing notifications
+
+When the underlying event is undone (a like is removed, a mention is edited away), delete the matching notification:
+
+```php
+SomethingHappened::instance()
+    ->about($source)
+    ->delete($user);
+```
+
+The same matching rule applies as for `send()` — the originator, source and target must agree.

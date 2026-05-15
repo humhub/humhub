@@ -204,8 +204,19 @@ humhub.module('example.MyWidget', function(module, require, $) {
 
 > Note: Notice the transformation of `data-some-setting` to the camelcase option name `someSetting`.
 
-#### Widget Events
-TBD
+#### Widget events
+
+Widgets can fire and listen for events via the underlying `event` module. Inside a widget instance:
+
+```js
+this.fire('myWidget.somethingHappened', { detail: 'value' });
+
+this.on('myWidget.somethingHappened', function (evt) {
+    // evt.detail === 'value'
+});
+```
+
+Use namespaced event names (`<widgetId>.<eventName>`) to avoid collisions with other widgets and core events.
 
 #### JsWidget class
 

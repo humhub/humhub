@@ -1,58 +1,52 @@
 # Activities
 
-Activity instances are created for special events in the context of a `humhub\modules\content\models\ContentContainer|ContentContainer` like the creation of content.
+Activities record noteworthy things that happened in a content container — "X created a post", "Y joined the space", "Z liked a comment". Each activity is rendered into a stream entry and may also appear in the daily summary email.
 
-Contrary to notifications - activities are always bound to a `humhub\modules\content\models\ContentContainer|ContentContainer`, and are not targeted for specific users.
-Besides the relation to the `ContentContainer` - an activity can also be assigned with a Content or ContentAddon and automatically inherits some content properties such as `visibility`.
+The two related concepts:
 
-Similar to [notifications](concept-notifications.md) activities can be related to an `originator` user and a `source` object. 
-The activity will adopt some properties as the `visibility` in cas of `Content` or `ContentAddon` sources.
+- **Activity** — bound to a `ContentContainer`, not targeted at a specific user. Anyone with access to the container sees it. Compare with [notifications](concept-notifications.md), which target a specific user.
+- **Originator** — the user the activity is *about* (e.g. the comment author).
+- **Source** — an optional `Content` or `ContentAddon` the activity describes. When a source is set, the activity inherits its `visibility` and other content properties.
 
-## Implement a Custom Activity
+## Implementing an activity
 
-### Create Class & View
+Place activity classes under your module's `activities/` directory.
 
-Your custom activites should reside in your modules `activities` directory.
-
-Example activity:
+### 1. The activity class
 
 ```php
-<?php
-
 namespace johndoe\example\activities;
 
-use humhub\core\activity\components\BaseActivity;
+use humhub\modules\activity\components\BaseActivity;
 
-class SomethingHappend extends BaseActivity
+class SomethingHappened extends BaseActivity
 {
-    // View Name for activity
-    public $viewName = "somethingHappend";
-
-    // Module Id (required)
-    public $moduleId = "example";
+    public $viewName = 'somethingHappened';   // view file (without .php)
+    public $moduleId = 'example';             // required
 }
-?>
 ```
 
-By default activity views should be located inside a `activities/views` directory (e.g. `mymodule/activities/views/`).
+### 2. The view file
 
-Example view file **somethingHappend.php**:
+By default the view sits at `activities/views/<viewName>.php`. It receives `$originator`, the source record, and a few helpers:
 
 ```php
-<?php
-
 use yii\helpers\Html;
 
-echo Yii::t('ExampleModule.views_notifications_newLike', "%someUser% did something cool.", array(
-    '%someUser%' => '<strong>' . Html::encode($originator->displayName) . '</strong>'
-));
-?>
+echo Yii::t('ExampleModule.activity', '{user} did something cool.', [
+    '{user}' => '<strong>' . Html::encode($originator->displayName) . '</strong>',
+]);
 ```
 
-If you require a different view for mails, you have to  add a view with the same view name to the `activities/views/mail` directory.  
+For a different mail rendering, ship a `activities/views/mail/<viewName>.php` with the same view name — `BaseActivity` picks it up automatically when generating the summary mail.
 
-### Activity creation
+### 3. Firing the activity
 
 ```php
-SomethingHappend::instance()->from($user)->about($this)->create();
+SomethingHappened::instance()
+    ->from($user)        // originator
+    ->about($this)       // source (Content or ContentAddon)
+    ->create();
 ```
+
+`create()` persists the activity, dispatches stream entries, and queues mail delivery if applicable. Activities are typically fired from the `afterSave()` hook of the source record — once per state transition, never on every save.

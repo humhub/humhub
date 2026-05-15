@@ -1,139 +1,135 @@
 # Files
 
-The HumHub core module *humhub/modules/file* provides a generic file management which can be used in custom modules to store and read files including access control.
+The `humhub\modules\file` module provides file storage with attached access control, available to any `humhub\components\ActiveRecord`. Records get a `fileManager` (`humhub\modules\file\components\FileManager`) that handles attaching, listing and querying related files.
 
-The file management is available for all `humhub\components\ActiveRecord` classes.
+## Uploading
 
-## Basic Usages
+Two patterns exist depending on how the upload reaches the controller.
 
-### Create
+### Direct mapping (ActiveForm upload)
 
-There are two typical variants for file upload implementations.
+When a single form posts both metadata and the file in one request. See [Yii's file upload guide](https://www.yiiframework.com/doc/guide/2.0/en/input-file-upload) for the form side.
 
-#### Uploads via ActiveForm (Direct Mapping)
-
-For direct File Uploads via ActiveForm, see [Yii2 Guide - Uploading files](http://www.yiiframework.com/doc-2.0/guide-input-file-upload.html).
-
-Example to add an uploaded file to HumHub file storage:
+After validation, persist the upload into HumHub's file storage:
 
 ```php
+use humhub\modules\file\models\File;
+use yii\web\UploadedFile;
 
-$model = new YourModelIncludingFileField();
+$model = new YourModel();
 if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-	
-	$humhubFile = new \humhub\modules\file\models\File();
-	$humhubFile->file_name = $this->image->baseName . '.' . $$this->image->extension;
-	$humhubFile->mime_type = $this->image->type;
-	$humhubFile->size = $this->image->size;
-	if ($humhubFile->save()) {
-	    $humhubFile->setStoredFile($this->image);
-	}
-}
+    $upload = UploadedFile::getInstance($model, 'image');
 
+    $file = new File();
+    $file->file_name = $upload->baseName . '.' . $upload->extension;
+    $file->mime_type = $upload->type;
+    $file->size = $upload->size;
+    if ($file->save()) {
+        $file->setStoredFile($upload);
+    }
+}
 ```
 
-#### Uploads via Javascript (Lazy Mapping)
+### Lazy mapping (JS upload, attach later)
 
-When using lazy file mapping, the files are uploaded by Javascript (see Javascript Uploads section) first and later mapped to an existing ActiveRecord.
+For modules that upload before the parent record exists — the JS client uploads files individually, collects their GUIDs, and the controller attaches them after saving the form:
 
-Typical workflow:
-1. File upload (handled by Javascript)
-2. Store successfully uploaded file guids in a hidden form field (comma separated)
-3. After saving the form in controller action, assign previously collected file guids to the record.
-
-Example (Step 3):
+1. JS uploads each file via the file API; the response contains the file's `guid`.
+2. The form stores collected GUIDs in a hidden field (comma-separated).
+3. After `save()`, attach them in the controller:
 
 ```php
-
 $model = new YourModel();
 
 if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->save()) {
-	// Lazy map uploaded images
-	$model->fileManager->attach(Yii::$app->request->post('field-which-contains-uploaded-file-guids'));
-
-	// Create or Update success
+    $model->fileManager->attach(Yii::$app->request->post('fileList'));
 }
-
 ```
 
-### Find/Query
- 
-To read mapped files of an ActiveRecord, use the `humhub\modules\file\components\FileManager` via `humhub\components\ActiveRecord::getFileManager`.
+## Querying
+
+Use the record's `fileManager` to look up attached files:
 
 ```php
-// Get all files
+// All files attached to the record
 $files = $record->fileManager->findAll();
 
-// Get a single file
-$bannerFile = $record->fileManager->find()->andWhere(['title' => 'banner')->one();
-
+// Filtered query
+$banner = $record->fileManager->find()
+    ->andWhere(['title' => 'banner'])
+    ->one();
 ```
 
-### Update File Content
+## Updating file contents
 
-The content of a file object can be easily updated using the following methods.
-If the file history is activated, a new history entry is created automatically.
+Three ways to replace the bytes of an existing `File` record without creating a new row:
 
 ```php
-$file->setStoredFileContent('V1');
-$file->setStoredFile($UploadedFileObject);
-$file->setStoredFile($AnotherNewFileRecord);
+$file->setStoredFileContent('new content as string');
+$file->setStoredFile($uploadedFile);          // yii\web\UploadedFile
+$file->setStoredFile($anotherFileRecord);     // copy from another File
 ```
 
-## File History
+If file history is enabled on the record, each replacement appends a history entry — see below.
 
-By default, no history (versioning) of files is created. This must be activated by a flag `ActiveRecord::fileManagerEnableHistory`.
+## File history (versioning)
 
-### Access File History Versions
-
-```php 
-// get a latest history records
-$fileHistorys = $file->getHistoryFiles()->all();
-
-// get latest version file data
-$fileHistoryLatest = $file->getHistoryFiles()->one();
-$fileData = file_get_contents($previousVersion->getFileStorePath());
-```
-
-### Rollback File History Version
-
-```php 
-// get latest version file data
-$fileHistoryLatest = $file->getHistoryFiles()->one();
-$file->setStoredFile($previousVersion->getFileStorePath());
-```
-
-## Converter & Variants
-
-Converters are used to create variants (e.g. different file formats or images sizes) of an existing file.
-All converted files (variants) will be automatically stored with the original file.
-
-Example usage:
+History is opt-in via a flag on the record:
 
 ```php
-
-$file = \humhub\modules\file\models\File::findOne(['guid' => 'your file guid']);
-
-$previewImage = new \humhub\modules\file\converter\PreviewImage();
-if ($previewImage->applyFile($file)) {
-    // Can create preview of given file
-    echo $previewImage->getUrl();
+class YourModel extends \humhub\components\ActiveRecord
+{
+    public $fileManagerEnableHistory = true;
 }
 ```
 
-You can also create own Converters by using `humhub\modules\file\converter\BaseConverter`.
+With history enabled, every `setStoredFile()` / `setStoredFileContent()` call snapshots the previous version.
 
-> Note: Always create file variants (e.g. previews) on the fly - variants may deleted during the upgrade progress.
+```php
+// All history entries, newest first
+$history = $file->getHistoryFiles()->all();
 
-## Image Manipulation
+// Newest history entry
+$latest = $file->getHistoryFiles()->one();
+$bytes = file_get_contents($latest->getFileStorePath());
 
-HumHub bundles **Imagine **as Yii 2 Extension.
+// Roll back to the latest history version
+$file->setStoredFile($latest->getFileStorePath());
+```
 
-Please see the [Imagine Extension for Yii 2](http://www.yiiframework.com/doc-2.0/ext-imagine-index.html) documentation for more details.
+## Converters and variants
 
-## Access Control
-TBD
+A converter produces a *variant* of a file — a thumbnail, a different format, a resized image. The variant is stored alongside the original.
 
-## Storage Manager
-TBD
+```php
+use humhub\modules\file\converter\PreviewImage;
+use humhub\modules\file\models\File;
 
+$file = File::findOne(['guid' => $guid]);
+
+$preview = new PreviewImage();
+if ($preview->applyFile($file)) {
+    echo $preview->getUrl();
+}
+```
+
+Custom converters extend `humhub\modules\file\converter\BaseConverter`.
+
+Always generate variants on demand — they can be removed during upgrades or migrations, so treat them as cache, not source of truth.
+
+## Image manipulation
+
+The core bundles the [Yii Imagine extension](https://www.yiiframework.com/extension/yiisoft/yii2-imagine/doc/guide/2.0/en/README) for image processing. See its docs for the API; HumHub does not wrap it.
+
+## Access control
+
+Attached files inherit visibility from the record they're attached to. Polymorphic relations carry the access rules:
+
+- File attached to a `Content` → enforces the content's `visibility`, container membership, and content permissions.
+- File attached to a freestanding ActiveRecord → access is whatever the record's class declares; if your record exposes files via a controller action, that action is responsible for the access check.
+
+There is no separate ACL on the file itself — the access path is *always* through the parent record.
+
+## Storage backend
+
+The default backend writes to `uploads/file/` on the local filesystem. Alternative storage drivers (S3 etc.) are typically provided by third-party modules and configured on the `file` module.

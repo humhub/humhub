@@ -1,47 +1,33 @@
 # Settings
 
-The SettingsManager allows you to easily store key/value based configuration settings 
-based on module components and also optionally bound to a contentcontainer (e.g. users or spaces).
+`SettingsManager` stores key/value pairs per module — optionally scoped to a content container (user or space). Every `humhub\components\Module` ships with a `$settings` property automatically.
 
-If you need to categorize key names, use this syntax: category.subcategory.camelCaseKeyName
+For nested keys, use dotted notation: `category.subcategory.camelCaseKeyName`.
 
-The SettingsManager component is automatically added all to humhub\components\Module classes.
+The data lives in the `setting` and `contentcontainer_setting` tables. Reads are cached, so they're cheap to call from hot paths after the first lookup.
 
-## Module settings
-
-Get desired module / application instance:
+## Module-scoped settings
 
 ```php
-$module = Yii::$app;
-// or
 $module = Yii::$app->getModule('polls');
-// or
+// or, from a controller:
 $module = $controller->module;
-```
 
-Create or update existing setting in settings manager:
-
-```php
 $module->settings->set('key', $value);
-```
-
-Get value of setting manager:
-
-```php
 $value = $module->settings->get('key');
+$module->settings->delete('key');                 // delete
+$module->settings->set('key', null);              // also deletes
 ```
 
-Delete setting:
+`get()` returns `null` for missing keys; pass a default as the second argument:
 
 ```php
-$module->settings->delete('key');
-// or
-$module->settings->set('key', null);
+$value = $module->settings->get('key', 'default');
 ```
 
-## ContentContainer related settings
+## Per-container settings
 
-If you want to store settings related to an user or space - use the ContentContainerSettingsManager:
+For settings that vary per space or per user, use `contentContainer()`:
 
 ```php
 $module->settings->contentContainer($user)->get('key');
@@ -49,7 +35,9 @@ $module->settings->contentContainer($user)->set('key', $value);
 $module->settings->contentContainer($user)->delete('key');
 ```
 
-Shortcuts for currently logged in user settings:
+### Convenience accessors
+
+For the current logged-in user:
 
 ```php
 $module->settings->user()->get('key');
@@ -57,11 +45,14 @@ $module->settings->user()->set('key', $value);
 $module->settings->user()->delete('key');
 ```
 
-Shortcuts for current space settings:
-Note: This is only available if current controller is instance of ContentContainerController.
+For the space of the current request (only inside a `ContentContainerController`):
 
 ```php
 $module->settings->space()->get('key');
 $module->settings->space()->set('key', $value);
 $module->settings->space()->delete('key');
 ```
+
+## Cleanup on module disable
+
+The default `Module::disable()` clears all global settings and `ContentContainerModule::disableContentContainer()` clears all container settings belonging to your module — you don't need to enumerate keys yourself when uninstalling.

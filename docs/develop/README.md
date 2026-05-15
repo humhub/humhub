@@ -20,7 +20,6 @@ Everything specific to writing a HumHub module — packaging, lifecycle, persist
 - [Module development](module-development.md) — the main starting point
 - [Module base class](module-base-class.md) — `Module` and `ContentContainerModule`
 - [Module lifecycle](module-lifecycle.md) — install, enable, disable, uninstall
-- [Module database](module-db.md) — migrations
 - [Module content](module-content.md) — content containers
 - [Module event handler](module-event-handler.md) — catalogue of catchable core events
 - [Module migration guide](module-migrate.md) — upgrading modules between core versions

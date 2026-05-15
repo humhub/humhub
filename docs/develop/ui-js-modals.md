@@ -1,55 +1,56 @@
 # Modals
 
-HumHub Modals are based upon [Bootstrap Modals](https://getbootstrap.com/docs/3.4/javascript/#modals) and can be used to render forms or user feedback as confirmation requests or other information. The Javascript module `ui.modals` provides some additional functaionality for creating and loading modals.
+HumHub modals build on [Bootstrap modals](https://getbootstrap.com/docs/5.3/components/modal/). The `ui.modal` JavaScript module adds loading, posting and confirmation helpers on top.
 
-###### Global Modal
+## The global modal
 
-By default an empty global modal with the id `globalModal` is available in the default HumHub layout.
-The instance for this modal is available under the namespace `ui.modal.global` and can be reused by other modules at any time as follows
+The default HumHub layout includes an empty modal with id `globalModal`. Its instance is available at `ui.modal.global` and can be reused from any module:
 
-```javascript
+```js
 var modal = require('ui.modal');
 
-// load the result of someUrl into the global modal
 modal.global.load(someUrl);
 ```
 
-###### Create new Modals:
+Reusing the global modal is the right default — only create your own when you need two modals visible at once.
 
-In most cases the global modal should be sufficient for your usecases. In some cases you'll need to create an independent modal which can be achieved by using the `modal.get()` function, which expects an modal id as fist argument and will search for the existence of a modal with the given id and will create a new one in case there is no such an modal.
+## Creating your own modal
 
-```
+`modal.get(id)` returns the existing modal for `id` or creates a new one:
+
+```js
 var myModal = modal.get('myModalId');
 myModal.load(someUrl);
 ```
 
-You can also manipulate your modal content by means of the following functions:
+A modal exposes setters for each region:
 
-- `setDialog(content)`: sets the dialog part of your modal, the `content` should be a `string`, `node` or `client.Response`. In case of a response instance, it should either be an `html` response or a `json` response with `output` markup.
-- `setBody(content)`: sets the body part of your modal
-- `setContent(content)`: sets the content part of your modal 
-- `setHeader(content)`: sets the modal header title
-- `setFooter(content)`: setts the modal footer
-- `set(options)`: sets the modal options `header`, `body`, `content`, `footer` and bootstrap modal options (e.g. `backdrop`, `keyboard`.
+| Method                       | What it sets                                                                                            |
+|------------------------------|---------------------------------------------------------------------------------------------------------|
+| `setDialog(content)`         | The `.modal-dialog`. Accepts string, DOM node or `client.Response` (`html` or `json` with `output`).    |
+| `setBody(content)`           | The `.modal-body`.                                                                                      |
+| `setContent(content)`        | The whole `.modal-content`.                                                                             |
+| `setHeader(content)`         | The header title.                                                                                       |
+| `setFooter(content)`         | The footer.                                                                                             |
+| `set(options)`               | Bulk update — `header`, `body`, `content`, `footer`, plus Bootstrap options like `backdrop`, `keyboard`. |
 
-> Note: Since Modals are derived from [ui.widget.Widget](ui-js-components.md) you can also configure your custom modal by using `data-*` options.
+Modals extend [`ui.widget.Widget`](ui-js-components.md), so you can also drive configuration via `data-*` attributes on the markup.
 
-### Load Remote Modal
+## Loading remote content
 
-To load remote content into your modal you can either manually load it by calling the `load` function of your modal or use the `load` action of the modal module.
+### `load(url, options, originalEvent)`
 
-#### Modal load
+GET request; the response markup must be the `modal-dialog`:
 
-A call to your modals `load(url, options, originalEvent)` loads the result of `url` into your modal by means of a `GET` request. The response markup has to be the `modal-dialog` part of the modal. 
-
-```javascript
-modal.global.load(url).then(function(response) {
-    // Called after your modal was filled with the response
-}).catch(function(e) {
+```js
+modal.global.load(url).then(function (response) {
+    // modal filled with response markup
+}).catch(function (e) {
     module.log.error(e, true);
 });
 ```
-###### Returned view:
+
+The view rendered server-side:
 
 ```php
 <?php ModalDialog::begin(['header' => 'My Title']) ?>
@@ -58,75 +59,82 @@ modal.global.load(url).then(function(response) {
 <?php ModalDialog::end() ?>
 ```
 
-> Info: By default the `load` function expects `dataType: html`, if you require to return `json` content instead, your server response has to provide an `output` part with the rendered modal dialog.
+`load()` defaults to `dataType: 'html'`. For a JSON response, ship the markup as `output` — the modal pulls that field automatically.
 
-#### Modal load action
+### Declarative load via action
 
-If you just want to trigger a simple modal load event after clicking a button, you can use the `ui.modal.load` action as follows
-
-```php
-<!-- loads the result of $someUrl to the global modal -->
-<button data-action-click="ui.modal.load" data-action-url="<?= $someUrl ?>">Load my Modal!</button>
-
-<!-- loads the result from $someJsonUrl and insert the response.output to the global modal -->
-<button data-action-click="ui.modal.load" data-action-url="<?= $someJsonUrl ?>" data-type="json">Load my Modal!</button>
-
-<!-- loads the result of $someJsonUrl and insert the response.output to a custom modal -->
-<button data-action-click="ui.modal.load" data-action-url="<?= $someJsonUrl ?>" data-modal-id="myId">Load my Modal!</button>
-```
-
-> Tip: If your button is rendered within your custom modal itself you can omit the data-modal-id setting.
-
-#### Modal post
-
-Similar to the load function you can use the `post` modal function or action to submit a post request.
-
-```javascript
-modal.global.post(url, {data: {somePostData: 'value' } });
-```
-
-or
+For simple click-to-load buttons, use the `ui.modal.load` action — no JS required:
 
 ```php
-<button data-action-click="ui.modal.post" data-action-url="<?= $someUrl ?>">Post Modal!</button>
+<!-- HTML response into the global modal -->
+<button data-action-click="ui.modal.load" data-action-url="<?= $url ?>">
+    Open
+</button>
+
+<!-- JSON response (output is plucked) into the global modal -->
+<button data-action-click="ui.modal.load" data-action-url="<?= $jsonUrl ?>" data-type="json">
+    Open
+</button>
+
+<!-- ...into a named modal -->
+<button data-action-click="ui.modal.load" data-action-url="<?= $jsonUrl ?>" data-modal-id="myId">
+    Open
+</button>
 ```
 
-#### Modal submit
+When the button lives inside a modal, omit `data-modal-id` — the action targets the surrounding modal.
 
-To render the result of a form submit into the global modal, your submit button should use the `ui.modal.submit` action on your submit button. This action will use the `client.submit` to submit the given form and set the result into the global modal.
+### POST
 
-### Modal Confirm
+```js
+modal.global.post(url, { data: { foo: 'value' } });
+```
 
-By using the `modal.confirm()` function, you can request a user confirmation as follows
+Or as a declarative action:
 
-```javascript
-var options = {
-    header: 'Please confirm this action!'
+```html
+<button data-action-click="ui.modal.post" data-action-url="<?= $url ?>">Post</button>
+```
+
+### Form submit
+
+`ui.modal.submit` submits the surrounding form (via `client.submit`) and renders the response into the global modal:
+
+```html
+<button type="submit" data-action-click="ui.modal.submit">Save</button>
+```
+
+## Confirmation
+
+`modal.confirm()` returns a promise that resolves to `true` (OK) or `false` (cancel):
+
+```js
+modal.confirm({
+    header: 'Please confirm this action',
     body: 'Do you really want to execute this action?',
     confirmText: 'Yes',
-    cancelText: 'No'
-}
-
-modal.confirm(options).then(function(confirmation) {
-    if(confirmation) {
-        //do something
+    cancelText: 'No',
+}).then(function (confirmed) {
+    if (confirmed) {
+        // ...
     }
 });
 ```
 
-> Note: You do not have to provide all texts, there are default texts for your confirm modal.
+All texts default to localised core values, so a bare `modal.confirm({ body: '…' })` is enough for most cases.
 
-#### Action confirm
+### Confirm on an action
+
+For "click button → confirm → run action" without JS, attach the confirm attributes directly to the action element:
 
 ```php
-<button data-action-click="someAction" 
+<button data-action-click="someAction"
         data-action-confirm="Do you really want to execute this action?"
         data-action-confirm-header="Please confirm this action!"
         data-action-confirm-text="Yes"
         data-action-cancel-text="No">
-    Do something!
+    Do something
 </button>
 ```
 
-### Render Modal
-### Close Modal
+The action fires only after the user confirms.

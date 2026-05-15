@@ -7,7 +7,7 @@ Instead of embeding inline script blocks into your views, it's highly recommende
 
 Your script files should reside within the `resources/js` folder of your humhub module and should ideally be appended at the bottom of the document. 
 
-In order to add a Javascript module file to your view, you should use a [Asset Bundle](http://www.yiiframework.com/doc-2.0/guide-structure-assets.html) class residing within the `assets` directory of your module. By setting `public $jsOptions = ['position' => \yii\web\View::POS_END];`, your assets will be appended to the end of the document body. This will assure all core modules are already registered.
+In order to add a Javascript module file to your view, you should use a [Asset Bundle](https://www.yiiframework.com/doc/guide/2.0/en/structure-assets) class residing within the `assets` directory of your module. By setting `public $jsOptions = ['position' => \yii\web\View::POS_END];`, your assets will be appended to the end of the document body. This will assure all core modules are already registered.
 
 Be careful though, when you want to edit your files in `resources/js`. All asset files are bundled and then copied to the `@webroot`-folder of your application, when registered in the view for the first time (see below). In order to force your module assets to be re-published with each requests, you can add the publish option `forceCopy` as in the following example. This can be useful while developing your module, but don't forget to disable this option in official releases!
 
@@ -29,13 +29,13 @@ class ExampleAsset extends AssetBundle
 }
 ```
 
-The [Asset Bundle](http://www.yiiframework.com/doc-2.0/guide-structure-assets.html) can be registered to a view by calling 
+The [Asset Bundle](https://www.yiiframework.com/doc/guide/2.0/en/structure-assets) can be registered to a view by calling 
 
 ```php
 \humhub\modules\example\assets\ExampleAsset::register($this);
 ```
 
-Where `$this` is the view instance. More infos about Asset Bundles are available in the [Yii Guide](http://www.yiiframework.com/doc-2.0/guide-structure-assets.html).
+Where `$this` is the view instance. More infos about Asset Bundles are available in the [Yii Guide](https://www.yiiframework.com/doc/guide/2.0/en/structure-assets).
 
 If your bundle is registered to a view retrieved by an ajax call, make sure to render your view by using your controllers `$this->renderAjaxContent()` function. In contrast to `renderPartial()`, this function will add all your asset dependencies to your partial content.
 

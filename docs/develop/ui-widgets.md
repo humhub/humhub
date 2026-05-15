@@ -1,126 +1,95 @@
 # Widgets
 
-Widgets are used to provide reusable view parts by means of a view class. Please refer to the [Yii-Guide](http://www.yiiframework.com/doc-2.0/guide-structure-widgets.html)
-for more information about widgets.
+Widgets package a reusable view fragment behind a class — see [Yii's widget guide](https://www.yiiframework.com/doc/guide/2.0/en/structure-widgets) for the underlying concept. This page documents the HumHub-specific extensions: `JsWidget` (a widget with a paired JavaScript module) and `BaseStack` (an event-driven container for other widgets).
 
-This guide describes the usage of some HumHubs base widget types.
+## JsWidget
 
-## JsWidgets
+`humhub\widgets\JsWidget` connects a PHP widget to a [JavaScript widget](ui-js-components.md#widgets). It handles the wiring you'd otherwise repeat in every module:
 
-JsWidgets in HumHub are used to connect your Yii Widget with a [javascript widget](ui-js-components.md#widgets).
-Custom JsWidget are extended from `humhub\widgets\JsWidget` and can facilitate the following features:
+- Pass options from PHP into JS via `data-*` attributes
+- Auto-initialise the JS side via the `init` field
+- Reload itself on demand via the `Reloadable` interface
+- Bind events declaratively
 
- - Transfer options from PHP to your javascript widget
- - Manage your widget initialization through the `init` field
- - Reloadable widget
- - Widget event binding
-
-> Info: Refer to the [Javascript Widget](ui-js-components.md#widgets) part for more information about writing javascript modules.
- 
-A very basic JsWidget:
-
-**SimpleWidget.php**
+### Minimal example
 
 ```php
-namespace humhub\modules\devtools\widgets;
+// SimpleWidget.php
+namespace johndoe\example\widgets;
 
-use Yii;
 use humhub\widgets\JsWidget;
 use yii\helpers\Url;
 
-class SimpleWidget extends JsWidget implements Reloadable
+class SimpleWidget extends JsWidget
 {
     public $jsWidget = 'example.SimpleWidget';
-    
-    /**
-     * This will automatically initialize the widget
-     */
-    public $init = true;
-    
-    /**
-     * Used to add HTML attributes to the root of your widget
-     */
+    public $init = true;          // run the JS init() automatically on detect
+
     public function getAttributes()
     {
         return [
-            'class' => 'my-widget'
-        ]
+            'class' => 'my-widget',
+        ];
     }
-    
-    /**
-     * Used to add data-* options to your widget
-     */
+
     public function getData()
     {
         return [
-            'some-url' : Url::to(['/some/route'])
-        ]
+            'some-url' => Url::to(['/some/route']),
+        ];
     }
 }
 ```
 
-**example.SimpleWidget.js**
+```js
+// example.SimpleWidget.js
+humhub.module('example.SimpleWidget', function (module, require, $) {
+    var Widget = require('ui.widget').Widget;
 
-```javascript
+    var SimpleWidget = Widget.extend();
 
-humhub.module('example.SimpleWidget', function(module, require, $) {
-     var Widget = require('ui.widget').Widget;
-    
-     var SimpleWidget = Widget.extend();
-    
-     SimpleWidget.prototype.init = function() {
-        console.log(this.options.someUrl)
-     };
-     
-     module.export = SimpleJsWidget;
+    SimpleWidget.prototype.init = function () {
+        console.log(this.options.someUrl);
+    };
+
+    module.export = SimpleWidget;
 });
 ```
 
-### JsWidget rendering
+Note how `some-url` on the PHP side becomes `options.someUrl` (camelCase) in JS — `data-*` attributes are converted on read.
 
-The example above does not overwrite the `humhub\widgets\JsWidget::run()` function and therefore uses the default
-rendering of the JsWidget class, which can be used for very simple widgets. The default rendering mechanism uses renders
-a simple HTML tag defined by `humhub\widgets\JsWidget::container` and `humhub\widgets\JsWidget::content` and furthermore
-uses the `humhub\widgets\JsWidget::getOptions()` function for fetching the HTML attributes and widget data-* options.
+### Rendering
 
-In the following example we manipulate the default rendering to render a simple list:
+The default `JsWidget::run()` emits a single HTML tag — `JsWidget::$container` for the tag name and `JsWidget::$content` for its inner HTML. That's enough for most widgets:
 
 ```php
-class SimpleWidget extends JsWidget implements Reloadable
+class SimpleWidget extends JsWidget
 {
     public $jsWidget = 'example.SimpleWidget';
-    
     public $init = true;
-    
-    public $id = 'iamUnique'
-    
+    public $id = 'iamUnique';
     public $container = 'ul';
-    
     public $myOption = 300;
-    
+
     public function run()
     {
-      $this->content = Html::tag('li', 'My List Item');
-      return parent::render();
+        $this->content = Html::tag('li', 'My List Item');
+        return parent::run();
     }
-    
+
     public function getAttributes()
     {
-        return [
-            'class' => 'my-widget-list'
-        ]
+        return ['class' => 'my-widget-list'];
     }
-        
+
     public function getData()
     {
-        return [
-            'some-important-option' : $this->myOption
-        ]
+        return ['some-important-option' => $this->myOption];
     }
 }
 ```
 
-This will result in the following output:
+Output:
 
 ```html
 <ul id="iamUnique" class="my-widget-list" data-ui-widget="example.SimpleWidget" data-ui-init data-some-important-option="300">
@@ -128,54 +97,50 @@ This will result in the following output:
 </ul>
 ```
 
-Fore more complex cases you may want to use a custom view as follows:
+For more complex output, render a view file and pass the assembled HTML attributes via `$this->getOptions()`:
 
 ```php
 public function run()
 {
-  return $this->render('myWidget', [
-    'model' => $this->model,
-    'options' => $this->getOptions();
-  ])
+    return $this->render('myWidget', [
+        'model' => $this->model,
+        'options' => $this->getOptions(),
+    ]);
 }
 ```
 
-**myWidget.php**
-
 ```php
 <?= Html::beginTag('div', $options) ?>
-  // Some complex widget content...
+    <!-- complex widget content -->
 <?= Html::endTag('div') ?>
 ```
 
-> Note: The `getOptoins()` function assembles all html attributes and data-* options of your widget, which always should be added
-to the root node of your widget.
+`getOptions()` aggregates HTML attributes *and* `data-*` options, so it must be applied to the root element — that's what the JS side looks for when binding.
 
-### JsWidget initialization
+### Initialisation
 
-The initialization is managed by the `humhub\widgets\JsWidget::init` field, which either accepts a boolean or array.
-Please refer to [Widget Initialization](ui-js-components.md#widget-initialization) for the javascript part of your
-initialization logic.
+`JsWidget::$init` decides whether the JS init runs automatically once the markup is detected in the DOM:
 
-When setting your `init` field to true or add a value, your widget will be initialized once detected in the frontend,
-otherwise your widget may be initialized by an action trigger or manually within your javascript module.
+| Value          | Behaviour                                                                  |
+|----------------|----------------------------------------------------------------------------|
+| `false` (default) | No auto-init. Trigger via action or manually in JS.                      |
+| `true`         | Auto-init. JS `init()` is called with no arguments.                        |
+| `array`/`scalar` | Auto-init. The value is serialised and passed as the first arg of `init()`. |
 
-By providing a non boolean value as `init` value you can add serialized data which will be used as first parameter of 
-your `SimpleWidget.prototype.init` function.
+See [JavaScript components → widget initialisation](ui-js-components.md#widget-initialization) for the JS side.
 
-### Reloadable JsWidgets
+### Reloadable widgets
 
-Often you want to reload your widget in order to update parts of your view. This can be achieved by implementing the
-`humhub\widgets\Reloadable]] interface and providing a reload-url in your `getReloadUrl()` as in the following example
+Implement `humhub\widgets\Reloadable` and supply a `getReloadUrl()` to make a widget reloadable from JS:
 
 ```php
+use humhub\widgets\Reloadable;
+
 class ReloadableWidget extends JsWidget implements Reloadable
 {
-    //...
-    
     public function getReloadUrl()
     {
-      return ['/mymodule/widget/reload', 'id' => $this->id];
+        return ['/mymodule/widget/reload', 'id' => $this->id];
     }
 }
 ```
@@ -190,43 +155,49 @@ class WidgetController extends Controller
 }
 ```
 
-Now you will be able to reload your widget with `myWidget.reload()` or a `reload` button action.
+Reload from JS via `myWidget.reload()` or a `reload` action button.
 
-## Widget Stacks
+## Widget stacks
 
-HumHub uses Widget-Stacks to assemble multiple entries of a base widget as a naviagation or list.
-Stacked widget are derived from `humhub\widgets\BaseStack` and will fire an `onInit` and `onRun` event by default,
-which can be subscribed by other modules to inject widget items. This mechanism can be used for example for sidebars.
-
-Example of stack used as sidebar:
+`humhub\widgets\BaseStack` is a container that assembles multiple widgets into a navigation, sidebar or list. Stacks fire `onInit` and `onRun` events so other modules can inject items — this is the canonical pattern for plugging into sidebars and similar surfaces.
 
 ```php
-<?php
-// Render the sidebar with two default item
-echo \humhub\core\space\widgets\Sidebar::widget(['widgets' => [
-        [\humhub\core\activity\widgets\Stream::class, ['streamAction' => '/space/space/stream', 'contentContainer' => $space], ['sortOrder' => 10]],
-        [\humhub\core\space\widgets\Members::class, ['space' => $space], ['sortOrder' => 20]]
-]]);
-?>
-```
-
-__config.php__
-
-```php
-    // Subscribe to the onInit event of the sidebar
-    'events' => [
-        // Wait for TopMenu Initalization Event
-        ['class' => 'DashboardSidebarWidget', 'event' => 'onInit', 'callback' => ['ExampleModule', 'onDashboardSidebarInit']],
+echo \humhub\modules\space\widgets\Sidebar::widget([
+    'widgets' => [
+        [\humhub\modules\stream\widgets\Stream::class, ['streamAction' => '/space/space/stream', 'contentContainer' => $space], ['sortOrder' => 10]],
+        [\humhub\modules\space\widgets\Members::class, ['space' => $space], ['sortOrder' => 20]],
     ],
-    //...
+]);
 ```
 
-__Events.php__
+Subscribe to the stack's init event to inject your own widget from a module:
 
 ```php
-    // This handler function will inject a custom widget to the stack
-    public static function onDashboardSidebarInit($event) {
-        $event->sender->addWidget('application.modules.example.widgets.MyCoolWidget', [], ['sortOrder' => 1]);
-    }
+// example/config.php
+use humhub\modules\space\widgets\Sidebar;
+use johndoe\example\Events;
+
+return [
+    'events' => [
+        [
+            'class' => Sidebar::class,
+            'event' => Sidebar::EVENT_INIT,
+            'callback' => [Events::class, 'onSidebarInit'],
+        ],
+    ],
+];
 ```
 
+```php
+// example/Events.php
+public static function onSidebarInit($event)
+{
+    $event->sender->addWidget(
+        \johndoe\example\widgets\MyCoolWidget::class,
+        [],
+        ['sortOrder' => 1]
+    );
+}
+```
+
+See [sidebars and snippets](ui-snippets.md) for sidebar-specific patterns and [change behavior → extend an existing menu](module-change-behavior.md#extend-an-existing-menu) for menu-style stacks.

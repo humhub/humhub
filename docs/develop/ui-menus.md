@@ -11,10 +11,12 @@ Additionally, there are following sub base classes with predefined templates ava
 
 Based on these base classes, following menu implementations are most frequently used:
 
-- TopMenu (Main navigation with entries like Dashboard/Directory) -  `humhub\widgets\TopMenu`
-- FooterMenu - `humhub\widgets\FooterMenu`
-- AdminMenu - Administrative Section -  `humhub\modules\admin\widgets\AdminMenu`
-- AccountMenu - `humhub\modules\user\widgets\AccountTopMenu`
+| Class                                                | Where it appears                                  |
+|------------------------------------------------------|---------------------------------------------------|
+| `humhub\widgets\TopMenu`                             | Main navigation (Dashboard, Directory, …)         |
+| `humhub\widgets\FooterMenu`                          | Footer                                            |
+| `humhub\modules\admin\widgets\AdminMenu`             | Administration section                            |
+| `humhub\modules\user\widgets\AccountTopMenu`         | Account dropdown                                  |
 
 Menu entries are represented by the class `humhub\modules\ui\menu\MenuEntry`. 
 Instances of this class can be added via the menu class.
@@ -54,20 +56,8 @@ use Yii;
 use yii\base\Event;
 use yii\helpers\Url;
 
-/**
- * Description of Events
- *
- * @author luke
- */
 class Events
 {
-
-    /**
-     * TopMenu init event callback
-     *
-     * @see TopMenu
-     * @param Event $event
-     */
     public static function onTopMenuInit($event)
     {
         /** @var TopMenu $topMenu */
@@ -87,13 +77,4 @@ class Events
 
 }
 
-``` 
-
- 
-## ToDos
-
-- Add UnitTesting
-- Allow submenus
-- Separator Entry support
-- Location for Footer/TopMenu sources? Move into UI module?
-- PanelMenu Cleanup
+```

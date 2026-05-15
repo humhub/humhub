@@ -1,13 +1,27 @@
 # Coding Standards
 
-Consistency is important, even more so when writing open-source code, since the code belongs to millions of eyeballs, and bug-fixing relies on these teeming millions to actually locate bugs and understand how to solve it.
+HumHub follows [PSR-12](https://www.php-fig.org/psr/psr-12/) (extending [PSR-1](https://www.php-fig.org/psr/psr-1/)), with a few additional rules borrowed from the [Yii core code style](https://github.com/yiisoft/yii2/blob/master/docs/internals/core-code-style.md).
 
-This is why, when writing anything for HumHub, be it a theme, a module or a core patch, you should strive to follow the following guidelines. 
-They are the ones that the HumHub developers adhere to, and following them is the surest way to have your code be elegantly integrated in HumHub.
+The configuration is checked into the repository:
 
-In short, having code consistency helps keeping the code readable and maintainable.
+- [`.php-cs-fixer.php`](../../.php-cs-fixer.php) — PHP-CS-Fixer ruleset (extends `@PER-CS`)
+- [`rector.php`](../../rector.php) — Rector rules used for refactoring sweeps
+- [`.editorconfig`](../../.editorconfig) — indentation, line endings, trailing whitespace
 
-We keep [PSR-1](https://www.php-fig.org/psr/psr-1/) and [PSR-12](https://www.php-fig.org/psr/psr-12/), along with a few nice details from Yii2 Core Framework.
+Run the formatter before submitting a pull request:
 
-https://github.com/yiisoft/yii2/blob/master/docs/internals/core-code-style.md
+```sh
+vendor/bin/php-cs-fixer fix
+```
 
+CI runs the same fixer in `--dry-run` mode and rejects PRs that diverge from the ruleset.
+
+## JavaScript
+
+JavaScript code under `static/js/` follows the existing patterns — 4-space indent, no semicolons omitted, `humhub.module(...)` registration. There is no automated formatter for JS at the moment; match the surrounding file.
+
+## Commit style
+
+- Imperative subject ("Fix X" not "Fixed X" or "Fixes X")
+- Subject line under ~70 characters
+- Body explains *why* when it isn't obvious from the diff

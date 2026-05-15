@@ -8,7 +8,7 @@ Please refer to the [Yii Events Guide](https://www.yiiframework.com/doc/guide/2.
 
 ## Event handler configuration
 
-Event handlers in HumHub modules are registered within the `events` section of the [config.php](modules#configphp) file. It is recommended to implement the handler functions within a dedicated `Events.php` file in the module root. Some modules may use the `Module.php` class for event handler implementations, this should only be considered for simple and few event handlers in order to keep a clean module structure.
+Event handlers in HumHub modules are registered within the `events` section of the [`config.php`](module-development.md#configphp) file. It is recommended to implement the handler functions within a dedicated `Events.php` file in the module root. Some modules may use the `Module.php` class for event handler implementations, this should only be considered for simple and few event handlers in order to keep a clean module structure.
 
 **Example handler configuration**
 
@@ -93,7 +93,7 @@ Depending on the triggered event, there are different types of events provided a
 
 ### ModuleManager
 
-`humhub\components\ModuleManager` events can be used to listen for [enable](module-development.md#enabled-a-module) and [disable](module-development.md#disable-module)
+`humhub\components\ModuleManager` events can be used to listen for [enable](module-lifecycle.md#enabling) and [disable](module-lifecycle.md#disabling)
 events of modules. This can be useful in order to listen and react to lifecycle events of dependent modules.
 
 | Event                                        | Class                           | Description                        |    

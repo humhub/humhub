@@ -21,10 +21,10 @@ Content without a ContentContainer relation are considered global.
 
 ## Content and ContentActiveRecord 
 
-The `\humhub\modules\content\components\ContentActiveRecord|ContentActiveRecord` class serves as the base class for
+The `ContentActiveRecord` class serves as the base class for
 every content type as for example Polls, Posts or Wiki pages. While the ContentActiveRecord implementation
 describes the specific behavior of a content type, all ContentActiveRecord instances are related 
-to a `humhub\modules\content\models\Content|Content` record which holds general content data as:
+to a `Content` record which holds general content data as:
 
  - visibility
  - originator
@@ -47,9 +47,7 @@ In case you just want to exclude your content from the wall stream, set the stre
 This setting can also be changed by model updates in order to exclude the content only if some conditions are met.
 As with activities, this field can also be used to create own custom streams.
 
-`ContentActiveRecord::silentContentCreation` can be set to `false` if you want to prevent the creation of `ContentCreated`
-notifications and activities for this type of content. Note, those activity records are only created when inserting
-the content record. Changing this setting afterwards won't have any effect.
+`ContentActiveRecord::silentContentCreation` defaults to `false`. Set it to `true` to suppress the `ContentCreated` notifications and activities for this type of content. Activity records are only created on insert, so flipping the flag after the fact has no effect.
 
 ### Custom ContentActiveRecord
 
@@ -108,7 +106,7 @@ new Post($space, ['message' => 'Some message'])
 The following example provides an additional visibility setting in order to force a content visibility:
 
 ```php
-new Post($space, Content::VISIBILITY_PRIVATE ['message' => 'Some message'])
+new Post($space, Content::VISIBILITY_PRIVATE, ['message' => 'Some message'])
 ```
 
 A global content entry can be created as follows:
@@ -158,7 +156,7 @@ $model->content->isPublic();
 $model->content->isPrivate();
 
 // Set visibility
-$model->content->container = Content::VISIBILITY_PRIVATE;
+$model->content->visibility = Content::VISIBILITY_PRIVATE;
 $model->save();
 ```
 
@@ -200,7 +198,7 @@ if($model->content->canEdit($someUserIdentity)) {
 }
 
 // Check other permission for the current logged user on the contents contentContainer
-if($model->content->can(new MyCustomPermission()) {
+if ($model->content->can(new MyCustomPermission())) {
   //...
 }
 ```
@@ -210,8 +208,8 @@ You can overwrite the default ManageContent permission as follows:
 ```php
 class Example extends ContentContainerActiveRecord
 {
-    $managePermission = MyCustomManagePermission::class;
-    
+    public $managePermission = MyCustomManagePermission::class;
+
     // ...
 }
 ```
@@ -225,7 +223,7 @@ class Example extends ContentContainerActiveRecord
 ## Content queries
 
 The `Content` class furthermore provides some extended [ActiveQuery](https://www.yiiframework.com/doc/guide/2.0/en/db-active-record#querying-data) capabilities.
-Calling `\humhub\modules\content\components\ContentActiveRecord::find()|ContentActiveRecord::find()` will return a `\humhub\modules\content\components\ActiveQueryContent]] instance with additional methods to filter specific content entries:
+Calling `ContentActiveRecord::find()` returns a `humhub\modules\content\components\ActiveQueryContent` instance with extra methods to filter content:
 
 ```php
 // Returns all MyModels related to the given $space
@@ -265,8 +263,8 @@ The defintive deletion of the record then takes place as background job using th
 
 ## Move Content
 
-In case your content should be movable to other spaces you'll have to enable the `\humhub\modules\content\components\ContentActiveRecord::canMove|ContentActiveRecord::canMove` flag.
-For complex content-types you may want to overwrite the `\humhub\modules\content\components\ContentActiveRecord::afterMove()|ContentActiveRecord::afterMove()` function.
+In case your content should be movable to other spaces you'll have to enable the `ContentActiveRecord::canMove` flag.
+For complex content-types you may want to overwrite the `ContentActiveRecord::afterMove()` function.
 This is required for example if your content is related to other sub content entries.
 
 ```php
@@ -334,7 +332,7 @@ $model->content->canArchive();
 ## ContentContainerController
 
 When working with Content or other ContentContainer related data, your controller should extend the
- `humhub\modules\content\components\ContentContainerController|ContentContainerController` class.
+ `ContentContainerController` class.
 This controller will automatically search and instantiate a container instance related to the 
 `cguid` request parameter and provide additional features as:
 
@@ -388,8 +386,8 @@ $url = \yii\helpers\Url::to(['/some/route', 'container' => $space);
 
 Content addons can be used to extend the content concept with further features. Examples of content addons are
 
-- `humhub\modules\like\models\Like|Like`
-- `humhub\modules\comment\models\Comment|Comment`
+- `Like`
+- `Comment`
 
 ## ContentContainerModule
 

@@ -138,8 +138,8 @@ class Module extends \humhub\components\Module
 ## ContentContainerModule
 
 The `ContentContainerModule` class needs to be extended for modules which are
-installable on space or user profile level. A module can only be enabled on container level,
-once it is globally [enabled](module-development.md#enabled-a-module). Enabling a module on container level will add a relation 
+installable on space or user profile level. A module can only be enabled on container level
+once it is globally [enabled](module-lifecycle.md#enabled-module). Enabling a module on container level will add a relation 
 to the `contentcontainer_module`. Note, this is not the case for modules, which are set as default for a given container type.
 
 `ContentContainerModule` extends the base `humhub\components\Module` class
@@ -199,11 +199,10 @@ public function getContentContainerConfigUrl(ContentContainerActiveRecord $conta
 
 ### `disable()`
 
-In addition to `Module::disable` the `ContentContainerModule::disable()` function will:
- 
- - call `Cont
- entContainerModule::disableContentContainer()` for each container this module is enabled.
- - clear all `contentcontainer_module` entries related to this module.
+In addition to `Module::disable()` the `ContentContainerModule::disable()` function will:
+
+- call `ContentContainerModule::disableContentContainer()` for each container this module is enabled on.
+- clear all `contentcontainer_module` entries related to this module.
 
 ### `disableContentContainer()`
 

@@ -5,9 +5,9 @@ your modules `migration` directory.
 
 ## Conventions
 
-- **prefix** your tables with the module id. e.g. `example_foo`
+- **prefix** your tables with the module id, e.g. `example_foo`
 - **singular** table names
-- use **underscorce** in fieldnames andattributes e.g. `user_id`
+- **snake_case** field and attribute names, e.g. `user_id`
 
 ## Initial Migration
 
@@ -107,4 +107,6 @@ public static function onIntegrityCheck($event)
 
 ## ActiveRecord
 
-HumHub uses Yii's [ActiveRecords](http://www.yiiframework.com/doc-2.0/guide-db-active-record.html) as database access layer.
+HumHub uses Yii's [ActiveRecords](https://www.yiiframework.com/doc/guide/2.0/en/db-active-record) as database access layer. The base class `humhub\components\ActiveRecord` extends `yii\db\ActiveRecord` and automatically maintains the columns `created_by`, `created_at`, `updated_by`, `updated_at` when they exist on the table.
+
+For polymorphic relations, store the target as a `humhub\modules\content\models\Content` row and use [`PolymorphicRelation`](https://github.com/humhub/humhub/blob/master/protected/humhub/libs/PolymorphicRelation.php) — never store class names directly. The base `Migration` class includes a `renameClass()` helper because polymorphic relations are stored as fully-qualified class names; renaming a class is therefore a migration concern.

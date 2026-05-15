@@ -1,62 +1,56 @@
 # Pull Requests
 
-## Issue Reference
+## Issue reference
 
-All new features and bug fixes should have an associated issue to provide a single point of reference for discussion and documentation. Take a few minutes to look through the existing issue list for one that matches the contribution you intend to make. If you find one already on the issue list, then please leave a comment on that issue indicating you intend to work on that item. If you do not find an existing issue matching what you intend to work on, please open a new issue or create a pull request directly if it is straightforward fix. This will allow the team to review your suggestion, and provide appropriate feedback along the way.
+New features and bug fixes should reference an issue — a single place to discuss scope and decisions. Before starting, check the [issue list](https://github.com/humhub/humhub/issues) for an existing entry; if you find one, leave a comment that you're picking it up. Otherwise open a new issue (or, for a straightforward fix, just open the PR directly).
 
-For small changes or documentation issues or straightforward fixes, you don't need to create an issue, a pull request is enough in this case. In such cases you can use the Pull Request ID in the Changelog. 
+Small documentation fixes don't need an issue — the PR ID is enough. The changelog entry then references the PR number.
 
-## Git - Branches
+## Branches
 
-** Core Repository (github.com/humhub/humhub) **
+**Core repository ([github.com/humhub/humhub](https://github.com/humhub/humhub)):**
 
-- `master` For bugfixes and critical translation updates 
-- `develop` For all new features, optimizations, refactoring, complex non-critical bug fixes
+- `master` — bug fixes and critical translation updates against the current stable release
+- `develop` — new features, refactoring, non-critical fixes for the next release
 
-** For new branches **
-Usually we use enh/[issue-id]-some-info or fix/[issue-id]-some-info
-  
-** Module Repositories (github.com/humhub and github.com/humhub-contrib) **
+Branch naming: `enh/<issue-id>-<short-info>` or `fix/<issue-id>-<short-info>`.
 
-Usually there is only one `master` or `main` branch in module repositories. If there is an active `develop` branch and it is a major change PR, please use this branch if necessary.
+**Module repositories ([github.com/humhub](https://github.com/humhub), [github.com/humhub-contrib](https://github.com/humhub-contrib)):**
+
+Most modules have a single `master` (or `main`) branch. If a `develop` branch exists and your PR is a major change, target `develop`.
 
 ## Changelog
 
-Edit the CHANGELOG file to include your change, you should insert this at the bottom of the file under the first heading (the version that is currently under development), the line in the change log should look like one of the following:
+Add a line to the changelog of the version under development:
 
 ```
-Bug #999: a description of the bug fix (Your Name)
-Enh #999: a description of the enhancement (Your Name)
+Enh #999: short description (Your Name)
+Fix #999: short description (Your Name)
 ```
 
-`#999` is the GitHub issue number. If there is no GitHub issue, or the GitHub issue is in a different repository, please use the GitHub PR number.
+`#999` is the GitHub issue number; if there is no issue, use the PR number.
 
-The changelog files are located in the following locations:
+Changelog locations:
 
-** Core Repository **
+| Repo      | Path                |
+|-----------|---------------------|
+| Core      | `CHANGELOG.md`      |
+| Modules   | `docs/CHANGELOG.md` |
 
-- `/CHANGELOG.md`
+For modules without an existing "Unreleased" section, create one and bump `module.json` accordingly:
 
-** Module Repositories ** 
-
-- `/docs/CHANGELOG.md` 
-
-For modules, it can be the case that no "Under Development" version exists in the changelog file yet. In this case please create a new version section and also adjust the file `module.json`. 
-
-For minor enhancements and bugfixes, only the minor version has to be changed. e.g. 1.0.**1** If a newer HumHub core version is required (`minVersion` adjustment in `module.json`) or a major module feature was implemented, the major version should be changed. e.g. 1.**1**.0
+- Bugfix / minor enhancement → patch version (`1.0.0` → `1.0.1`)
+- New feature, or bump of `humhub.minVersion` → minor or major version (`1.0.0` → `1.1.0`)
 
 ## Tests
 
-TBD
+Unit tests are welcome and make review much easier. See the [testing guide](intro-testing.md) for the layout.
 
-Unit tests are always welcome. Tested and well covered code greatly simplifies the task of checking your contributions. 
+## Contributor License Agreement
 
-## CLA
-
-To have your contribution accepted, you, as the author of the pull request, need to accept our Contributor License Agreement (CLA). A CLA is an agreement that ensures you have the necessary rights and permissions to contribute the code or changes you submit to our open-source project. You can review and accept the CLA at this link: https://cla-assistant.io/humhub/humhub
+To have your contribution accepted you must accept the HumHub CLA, signed once via [cla-assistant.io/humhub/humhub](https://cla-assistant.io/humhub/humhub). The CLA bot comments on your first PR with the signing link.
 
 ## Documentation
 
-- **Core Changes** Should always be briefly described in the documentation in the [Migration Guide](https://github.com/humhub/humhub/blob/develop/MIGRATE-DEV.md).
-
-- **Module Features** New features should also be added in the Readme files if necessary.  
+- **Core changes** that affect modules go into [`MIGRATE-DEV.md`](https://github.com/humhub/humhub/blob/develop/MIGRATE-DEV.md).
+- **Module features** should be reflected in the module's `README.md` and `docs/`.

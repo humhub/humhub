@@ -1,14 +1,10 @@
-# Module Migration Guide (Outdated)
+# Module Migration Guide
 
-<br />
-Starting with version 1.16, the migration instructions are available in the Git repository at: https://github.com/humhub/humhub/blob/develop/MIGRATE-DEV.md.
+Migration notes for keeping a module compatible with newer HumHub core releases.
 
-<br />
-<br />
-<br />
-<br />
+**Recent versions (1.16 onwards)** are tracked in the core repository at [`MIGRATE-DEV.md`](https://github.com/humhub/humhub/blob/develop/MIGRATE-DEV.md). Check there for current breaking changes.
 
-# Migration Notes for Older Versions
+The remainder of this page collects notes for older versions, kept for reference when porting legacy modules forward.
 
 ## Version 1.18
 
@@ -19,11 +15,8 @@ Starting with version 1.16, the migration instructions are available in the Git 
 ## Version 1.15
 
 - New `PolymorphicRelation::getObjectModel()`: should replace `get_class()`
-- This version enables Javascript nonces by default for advanced CSRF protection. Make sure that all inserted javascript contains the current nonce. This is done automatically e.g. via the `Html` helper. 
-
-## Version 1.15
-
-- Nuw method signature of `\humhub\modules\user\models\Group::getAdminGroupId()` now requires the return type to be `int`
+- This version enables Javascript nonces by default for advanced CSRF protection. Make sure that all inserted javascript contains the current nonce. This is done automatically e.g. via the `Html` helper.
+- New method signature of `\humhub\modules\user\models\Group::getAdminGroupId()` now requires the return type to be `int`
 
 ## Version 1.14
 

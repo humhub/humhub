@@ -15,18 +15,18 @@ There are two different types of permission: `humhub\modules\user\models\GroupPe
 ## Verifying permissions
 
 Permissions are verified by means of a `humhub\modules\user\components\PermissionManager`. 
-There are two types of `humhub\modules\user\components\PermissionManager|PermissionManager`, one for verifying `humhub\modules\user\models\GroupPermission|GroupPermissions`
-and one for `humhub\modules\content\models\ContentContainerPermission|ContentContainerPermissions`.
+There are two types of `PermissionManager`, one for verifying `GroupPermissions`
+and one for `ContentContainerPermissions`.
 
 ## Group Permissions
 
-`humhub\modules\user\models\GroupPermission|GroupPermissions` are system wide permissions which can be assigned to system groups (Administration -> Users -> Groups).
+`GroupPermissions` are system wide permissions which can be assigned to system groups (Administration -> Users -> Groups).
 
-Example of GroupPermissions `GroupPermissions are
+Examples of `GroupPermission`:
 
- - `humhub\modules\admin\permissions\ManageUsers` - Permission to access the global user management section.
- - `humhub\modules\admin\permissions\ManageGroups` - Permission to access the global user group section.
- - `humhub\modules\space\permissions\CreatePublicSpace` - Permission to create public spaces.
+- `humhub\modules\admin\permissions\ManageUsers` — access the global user management section
+- `humhub\modules\admin\permissions\ManageGroups` — access the global user-group section
+- `humhub\modules\space\permissions\CreatePublicSpace` — create public spaces
 
 ### Verify Group Permissions
 
@@ -47,7 +47,7 @@ $permissionManager->can(new MyPermission());
 
 ## Content Container Permissions
 
-`humhub\modules\content\models\ContentContainerPermission|ContentContainerPermissions` are container (Space/User) specific permissions and can be assigned to 
+`ContentContainerPermissions` are container (Space/User) specific permissions and can be assigned to 
 so-called user-groups.
 
 User user-groups:
@@ -81,8 +81,8 @@ $spaceA->can(ManageContent::class);
 
 // or
 // Note the 'all' parameter is used in this example to require all given Permissions to be verified successfully instead of only one.
-$permissionManager = new ContentContainerPermissionManager(['subject' => $myUserModel, 'contentContainer' => '$mySpace']);
-$permissionManager->can([new MyPermissionA, new MyPermissionB], ['all' => true]);
+$permissionManager = new ContentContainerPermissionManager(['subject' => $myUserModel, 'contentContainer' => $mySpace]);
+$permissionManager->can([new MyPermissionA(), new MyPermissionB()], ['all' => true]);
 ```
 
 ## Custom Permissions
@@ -90,15 +90,15 @@ $permissionManager->can([new MyPermissionA, new MyPermissionB], ['all' => true])
 All permission classes are derived from `humhub\libs\BasePermission` and should reside in the `permissions` directory of your module. 
 A `humhub\libs\BasePermission` subclass should at least overwrite the following attributes:
 
- - `humhub\libs\BasePermission::id|BasePermission::id` - A unique permission id.
- - `humhub\libs\BasePermission::moduleId|BasePermission::moduleId` - The moduleId this Permission belongs to.
- - `humhub\libs\BasePermission::title|BasePermission::title` - Permission title used to display the permission.
- - `humhub\libs\BasePermission::description|BasePermission::description` - Short description of the permission.
+ - `BasePermission::id` - A unique permission id.
+ - `BasePermission::moduleId` - The moduleId this Permission belongs to.
+ - `BasePermission::title` - Permission title used to display the permission.
+ - `BasePermission::description` - Short description of the permission.
 
 ### Default State
 
-By default a permission is only granted if either the `humhub\libs\BasePermission::$defaultState|BasePermission::defaultState` is set to `humhub\libs\BasePermission::STATE_ALLOW|BasePermission::STATE_ALLOW`
-or if the given group is contained in the `humhub\libs\BasePermission::defaultAllowedGroups|BasePermission::defaultAllowedGroups` array.
+By default a permission is only granted if either the `BasePermission::defaultState` is set to `BasePermission::STATE_ALLOW`
+or if the given group is contained in the `BasePermission::defaultAllowedGroups` array.
 
 The default state of a group can either be overwritten by setting a group state in the database
 
@@ -126,7 +126,7 @@ return [
 
 ### Fixed Groups
 
-The default-state of a group can be fixated by overwriting the `humhub\libs\BasePermission::fixedGroups|BasePermission::fixedGroups` array within your permission class.
+The default-state of a group can be fixated by overwriting the `BasePermission::fixedGroups` array within your permission class.
 This will disable the edit capabilities of the given groups.
 
 By default the following space user-groups are fixed:
@@ -138,7 +138,7 @@ By default the following space user-groups are fixed:
 ## Edit Permissions
 
 If you plan to make your custom permissions editable, you have to return an array of all your module permissions within the 
-`humhub\components\Module::getPermissions()|Module::getPermissions()` method of your Module.php. Your permissions will be added automatically to 
+`Module::getPermissions()` method of your `Module.php`. Your permissions will be added automatically to 
 the permission grid of your content-container or to the global permission settings in case of group level permissions.
 
 ```php
@@ -149,7 +149,7 @@ public function getPermissions($contentContainer = null)
             new permissions\MySpacePermission()
         ];
     } elseif ($contentContainer instanceof User) {
-        // This module does not provide yn user level permission
+        // This module does not provide a user-level permission
         return [];
     }
 
@@ -170,11 +170,11 @@ class SpecialController extends Controller
     public function getAccessRules()
     {
         return [
-            // This will block all controller actions for non loggedIn users.
+            // Block all actions for unauthenticated users
             ['login'],
-            // This will block the secret action for users without SpecialPermission
-            ['permission' => [SpecialPermission::class, 'actions' => ['secret']]
-        ]
+            // Require SpecialPermission for the 'secret' action
+            ['permission' => SpecialPermission::class, 'actions' => ['secret']],
+        ];
     }
 
     public function actionIndex()

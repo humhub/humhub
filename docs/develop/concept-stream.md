@@ -38,7 +38,7 @@ class MyContent extends ContentActiveRecord
           $this->streamChannel = null;
         }
 
-        return parent::beforeSave($insert)
+        return parent::beforeSave($insert);
     }
     
     //...

@@ -1,51 +1,56 @@
-# Module Life Cycle
+# Module Lifecycle
+
+A module passes through four states — installed, enabled, disabled, uninstalled — controlled by the `ModuleManager`. This page covers what each transition actually does, and which hooks fire.
+
+## Installed
+
+A module is *installed* once its directory sits in one of the [module autoload paths](intro-environment.md#module-loader-path) (default: `protected/modules`). Installation is purely filesystem — no DB writes happen yet.
+
+You can extend the autoload paths via the `moduleAutoloadPaths` parameter. See [development environment → module loader path](intro-environment.md#module-loader-path).
 
 ## Bootstrap
 
-During the `bootstrap` phase of the application the `humhub\components\bootstrap\ModuleAutoLoader` will search for all `enabled` modules
-within the module autoload path and attach the [modules event listeners](concept-events.md).
+On every request the `humhub\components\bootstrap\ModuleAutoLoader` scans the autoload paths, picks up enabled modules, and attaches the [event listeners](concept-events.md) declared in each module's `config.php`. Disabled modules are skipped here — their event handlers don't run.
 
-## Install Module
+## Enabling
 
-A module is considered as `installed` once it resides in one of the `moduleAutoloadPaths`. By default non core modules reside in `@humhub/protected/modules`.
-You can install modules either by adding them manually to an autoload path or by loading them from the marketplace. 
+A module starts inert. To make it do anything, enable it via:
 
-> Info: You can add additional module paths by means of the `moduleAutoloadPaths` parameter. 
-Please see the [Developement Environment Section](intro-environment.md#module-loader-path) for more information.
+- *Administration → Modules* in the admin UI
+- `php yii module/enable <module-id>` on the console
 
-## Enabled Module
+Enabling will:
 
-In order to use a module, you'll have to `enable` it first. This can be achieved by:
+1. run all of the module's [database migrations](concept-models.md#initial-migration)
+2. insert a row into `module_enabled`
 
-- Administration Backend `Administration -> Modules`
-- Console command `php yii module/enable`
-
-Enabling a module will run the modules [database migrations](concept-models.md#initial-migration) and add an entry to the `modules_enabled` table.
-
-The `ModuleManager` responsible for enabling modules will trigger the following events right before and after enabling a module:
+The `ModuleManager` fires:
 
 - `ModuleManager::EVENT_BEFORE_MODULE_ENABLE`
 - `ModuleManager::EVENT_AFTER_MODULE_ENABLE`
 
-## Disable Module
+[`ContentContainerModule`](module-base-class.md#contentcontainermodule) instances additionally need to be enabled on a per-space or per-user basis, in that container's module management section.
 
-`Disabling` a module will usually drop all related module data from the database and will detach the module from the `bootstrap` process.
+## Disabling
 
-Modules can be disabled by means of
+Disabling drops module-specific data and detaches the module from the bootstrap process:
 
-- Administration Backend `Administration -> Modules`
-- Console command `php yii module/disable`
+- *Administration → Modules*
+- `php yii module/disable <module-id>`
 
-The `ModuleManager` responsible for disabling modules will trigger the following events right before and after enabling a module:
+The `ModuleManager` fires:
 
 - `ModuleManager::EVENT_BEFORE_MODULE_DISABLE`
 - `ModuleManager::EVENT_AFTER_MODULE_DISABLE`
 
-> Note: [ContentContainerModules](module-base-class.md#contentcontainermodule) also have to be enabled within a space or user profile by means of the space management
-section.
+The default `Module::disable()` implementation:
 
-## Uninstall Module
+- runs `migrations/uninstall.php` (drop tables / columns)
+- clears all `ContentContainerSettings` and global `Settings` belonging to the module
+- removes the `module_enabled` row
 
-`Uninstalling` a module means removing it from the autoload path.
+`ContentContainerModule` adds per-container cleanup. See [`Module::disable()`](module-base-class.md#disable) and [`ContentContainerModule::disableContentContainer()`](module-base-class.md#disablecontentcontainer) for hooks where you delete your own module data.
 
-> Warning: You should never delete an enabled module folder manually without disabling it first.
+## Uninstalling
+
+Uninstalling = removing the module directory from the autoload path. The marketplace UI does this for you. **Disable the module first** — deleting an enabled module folder leaves orphaned tables and settings that the disable hook would normally clean up.
