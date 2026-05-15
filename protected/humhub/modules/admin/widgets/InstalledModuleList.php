@@ -40,6 +40,7 @@ class InstalledModuleList extends Widget
     {
         /* @var Module[] $modules */
         $modules = Yii::$app->moduleManager->getModules();
+        ArrayHelper::multisort($modules, 'name');
 
         $activeModules = [];
         $inactiveModules = [];
