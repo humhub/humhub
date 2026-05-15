@@ -28,6 +28,8 @@ nbproject
 .gitmodules
 .vscode
 .php-cs-fixer.cache
+.php_cs.cache
+.DS_Store
 
 themes/*
 !themes/HumHub
@@ -38,10 +40,16 @@ favicon.ico
 /.project
 /protected/vendor/
 
+# Tests
 **/tests/codeception/_data/e/8/e882f005-efd5-4b8f-aadb-2726621b960a/preview-image
 **/tests/codeception/_support/_generated/**
-
 **/tests/codeception/_output/**
-/.php_cs.cache
+/protected/humhub/themes/Test
+/protected/humhub/modules/file/tests/codeception/_data/file/e/8/e882f005-efd5-4b8f-aadb-2726621b960a/preview-image
 
-.DS_Store
+# Built assets — regenerate with `grunt build-assets`
+/protected/humhub/resources/build/*
+/protected/humhub/resources/css/humhub-app.css
+/protected/humhub/resources/css/humhub-bundle.css
+/protected/humhub/resources/js/humhub-app.js
+/protected/humhub/resources/js/humhub-bundle.js

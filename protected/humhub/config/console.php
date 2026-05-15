@@ -11,6 +11,9 @@ Yii::setAlias('@tests', dirname(__DIR__) . '/tests');
 return [
     'id' => 'humhub-console',
     'controllerNamespace' => 'humhub\commands',
+    'controllerMap' => [
+        'asset' => \humhub\commands\AssetController::class,
+    ],
     'components' => [
         'user' => [
             'class' => \humhub\modules\user\components\User::class,

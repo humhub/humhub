@@ -23,8 +23,11 @@ HumHub uses Yii's built-in [asset combining and compression](https://www.yiifram
 
 A git-based install does *not* ship pre-built production assets — you have to build them manually before running in production mode or running acceptance tests. The build writes:
 
-- `static/js/all-*.js`
-- `static/css/all-*.css`
+- `protected/humhub/resources/js/humhub-app.js` and `humhub-bundle.js`
+- `protected/humhub/resources/css/humhub-app.css` and `humhub-bundle.css`
+- `protected/humhub/resources/build/<hash>/...` — external dependencies (FontAwesome, jQuery, Bootstrap, …)
+
+At runtime the whole `protected/humhub/resources` tree gets published into the assets mount (`webroot/assets/` by default).
 
 ### Grunt task (recommended)
 
@@ -32,18 +35,18 @@ A git-based install does *not* ship pre-built production assets — you have to 
 grunt build-assets
 ```
 
-The task clears `assets/*`, runs the asset compiler, and flushes the cache.
+The task clears `protected/humhub/resources/build/*`, runs the asset compiler, and flushes the cache.
 
 ### Manual build
 
 ```sh
-rm -rf assets/*/
+rm -rf protected/humhub/resources/build/*/
 cd protected
 php yii asset humhub/config/assets.php humhub/config/assets-prod.php
 php yii cache/flush-all
 ```
 
-See the [Yii Asset Guide](https://www.yiiframework.com/doc/guide/2.0/en/structure-assets#combining-compressing-assets) for what the compiler actually does.
+See the [Yii Asset Guide](https://www.yiiframework.com/doc/guide/2.0/en/structure-assets#combining-compressing-assets) for what the compiler does upstream, and [Asset building](internals-assets.md) for HumHub's wiring on top.
 
 ## Rebuild search index
 

@@ -79,3 +79,9 @@ How user accounts, authentication and provisioning fit together.
 - [Console commands](advanced-console.md)
 - [Security](advanced-security.md)
 - [OEmbed providers](advanced-oembed.md)
+
+## Internals
+
+Deep dives into how parts of the core are wired. Not needed for module development — useful when touching the core machinery itself.
+
+- [Asset building](internals-assets.md) — bundles, AssetManager publishing, the build pipeline

@@ -20,6 +20,13 @@ use yii\web\JqueryAsset;
 
 /**
  * Configuration file for the "yii asset" console command.
+ *
+ * The build publishes every external dependency into `@humhub/resources/build/<hash>/`
+ * and writes the compressed bundles into `@humhub/resources/{js,css}/`, so the
+ * whole `@humhub/resources` tree becomes a self-contained, source-controlled
+ * deployment unit. At runtime AssetManager publishes that tree to the assets
+ * mount; relative URLs inside the bundled CSS resolve against the published
+ * location because every reference stays inside the tree.
  */
 
 // In the console environment, some path aliases may not exist. Please define these:
@@ -27,14 +34,24 @@ Yii::setAlias('@webroot', __DIR__ . '/../../../');
 Yii::setAlias('@web', '/');
 
 $bundles = ArrayHelper::merge(
-    [AppAsset::class, CoreBundleAsset::class],
     AppAsset::STATIC_DEPENDS,
     CoreBundleAsset::STATIC_DEPENDS,
 );
 
-$basePath = '@webroot/assets/' . basename(Yii::$app->assetManager->getPublishedPath('@humhub/resources'));
-$baseUrl = Yii::$app->assetManager->getPublishedUrl('@humhub/resources');
+$publishOptions = [
+    'except' => [
+        'scss/',
+        '.gitignore',
+    ],
+];
 
+// `basePath` is the filesystem location Yii writes the compressed output to
+// and uses to compute relative URLs inside the bundled CSS. `baseUrl` would
+// be the matching public URL — but the build never emits markup, Yii's CSS
+// URL rewriting operates purely on filesystem paths, and our `saveTargets()`
+// override strips it from `assets-prod.php` anyway. We pass an empty string
+// where Yii requires the property to be set, so the build never suggests
+// `protected/` is web-accessible.
 return [
     // Adjust command/callback for JavaScript files compressing:
     'jsCompressor' => 'grunt uglify:assets  --from={from} --to={to} -d',
@@ -48,8 +65,10 @@ return [
             'class' => AssetBundle::class,
             'defer' => false,
             'defaultDepends' => false,
-            'basePath' => $basePath,
-            'baseUrl' => $baseUrl,
+            'sourcePath' => '@humhub/resources',
+            'basePath' => '@humhub/resources',
+            'baseUrl' => '',
+            'publishOptions' => $publishOptions,
             'jsPosition' => View::POS_HEAD,
             'js' => 'js/humhub-app.js',
             'css' => 'css/humhub-app.css',
@@ -64,8 +83,10 @@ return [
             'defer' => true,
             'jsPosition' => View::POS_HEAD,
             'defaultDepends' => false,
-            'basePath' => $basePath,
-            'baseUrl' => $baseUrl,
+            'sourcePath' => '@humhub/resources',
+            'basePath' => '@humhub/resources',
+            'baseUrl' => '',
+            'publishOptions' => $publishOptions,
             'js' => 'js/humhub-bundle.js',
             'css' => 'css/humhub-bundle.css',
             'preload' => [
@@ -76,8 +97,9 @@ return [
         ],
     ],
     'assetManager' => [
-        'basePath' => Yii::$app->assetManager->basePath,
-        'baseUrl' => Yii::$app->assetManager->baseUrl,
+        'class' => \humhub\components\assets\BuildAssetManager::class,
+        'basePath' => '@humhub/resources/build',
+        'baseUrl' => '',
         'bundles' => [
             JqueryAsset::class => [
                 'sourcePath' => '@npm/jquery/dist',

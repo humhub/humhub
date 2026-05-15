@@ -16,14 +16,16 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        clean: ["assets/*"],
+        clean: ["protected/humhub/resources/build/*"],
         shell: {
             buildAssets: {
                 command: function () {
-                    let rm = isWin() ? 'del' : 'rm';
                     let sep = cmdSep();
-                    let delAssets = isWin() ? '(For /D %i in (assets\\*.*) do (rmdir %i /S /Q))' : `${rm} -rf assets/*/`;
-                    return `${delAssets} ${sep} cd protected ${sep} php yii asset humhub/config/assets.php humhub/config/assets-prod.php ${sep} php yii cache/flush-all`;
+                    let resourcesAssets = 'protected/humhub/resources/build';
+                    let resetResources = isWin()
+                        ? `(if not exist ${resourcesAssets.replace(/\//g, '\\')} (mkdir ${resourcesAssets.replace(/\//g, '\\')})) ${sep} (For /D %i in (${resourcesAssets.replace(/\//g, '\\')}\\*.*) do (rmdir %i /S /Q))`
+                        : `mkdir -p ${resourcesAssets} ${sep} rm -rf ${resourcesAssets}/*/`;
+                    return `${resetResources} ${sep} cd protected ${sep} php yii asset humhub/config/assets.php humhub/config/assets-prod.php ${sep} php yii cache/flush-all`;
                 }
             },
             buildSearch: {
