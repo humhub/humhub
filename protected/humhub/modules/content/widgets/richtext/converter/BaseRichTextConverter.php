@@ -533,7 +533,7 @@ REGEXP;
             }
         }
 
-        return match($linkBlock->getType()) {
+        return match ($linkBlock->getType()) {
             'video' => Html::tag('video', '', $linkBlock->getVideoAttributes()),
             'audio' => Html::tag('audio', '', $linkBlock->getAudioAttributes()),
             default => Html::tag('img', '', $linkBlock->getImageAttributes()),
