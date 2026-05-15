@@ -67,9 +67,9 @@ Most appearance changes are handled in *Administration → Settings → Appearan
 - [Theme structure](theme-structure.md) — folder layout, SCSS variables, parent themes
 - [View and mail overrides](theme-views.md) — overriding controller, widget and mail views
 
-## User & authentication (HumHub 1.19+)
+## User
 
-How user accounts and login are wired together.
+How user accounts, authentication and provisioning fit together.
 
 - [Authentication](user-auth.md) — AuthClient families, login flow
 - [UserSource](user-source.md) — provisioning model, attribute sync, LDAP/SCIM

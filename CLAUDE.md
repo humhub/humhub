@@ -57,17 +57,18 @@ Handler methods are always in `Events.php`. This is a fixed pattern across all m
 
 **This is the primary breaking point for core changes.** Renaming, moving, or removing a core class referenced in any module's `config.php` silently breaks that module at runtime.
 
-## MIGRATE-DEV.md
+## Migration guide
 
-`MIGRATE-DEV.md` is the authoritative record of all breaking API changes. Always read it first when assessing module impact.
+`docs/develop/module-migrate.md` is the authoritative record of all breaking API changes. Always read it first when assessing module impact.
 
 Structure:
-- Organized by version, newest first
-- Sections: Replaced classes · Removed classes · Replaced methods · Deprecated · Refactored
-- Unreleased changes go under `Version X.Y (Unreleased)`
+- Active development cycle lives in the `Unreleased` section of `docs/develop/module-migrate.md`
+- Released versions: `docs/develop/module-migrate-1.18.md`, `module-migrate-1.17.md`, etc.
+- Pre-1.15: `docs/develop/module-migrate-legacy.md`
+- Sections within each version: Replaced classes · Removed classes · Replaced methods · Deprecated · Refactored
 
 When doing impact analysis:
-1. Read `MIGRATE-DEV.md` to identify what changed in this PR/branch
+1. Read `docs/develop/module-migrate.md` (Unreleased) to identify what changed in this PR/branch
 2. Search module `config.php` files for references to changed classes (event breakage)
 3. Search module PHP files for direct class/method usage
 4. Determine if `humhub.minVersion` in `module.json` needs updating
@@ -81,6 +82,10 @@ When doing impact analysis:
 | `next` | Version after next |
 
 External modules follow the same convention. A module's `develop` branch targets the upcoming core version. Verify by checking `humhub.minVersion` in the module's `module.json` on that branch.
+
+### `@since` annotations on develop
+
+New features introduced in the current development cycle belong to **v1.19** (the next release), not the previous version. Use `@since 1.19` in docblocks and `@since` annotations — even when surrounding code still shows older `@since` values from past PRs.
 
 ## Running Tests
 
@@ -153,7 +158,7 @@ php $GITHUB_WORKSPACE/protected/vendor/bin/codecept run --env github
 
 When a PR changes public core APIs:
 
-1. Read `MIGRATE-DEV.md` section for current version to understand what changed
+1. Read the `Unreleased` section of `docs/develop/module-migrate.md` to understand what changed
 2. Search `config.php` across all module repos for old class/event names
 3. Search PHP files for direct usage of changed classes or methods
 4. For each affected module: check if `develop` branch exists and what its `humhub.minVersion` is
