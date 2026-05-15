@@ -19,7 +19,7 @@ use humhub\modules\notification\models\Notification;
 use humhub\helpers\MailStyleHelper;
 
 ?>
-<?php $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>
+<?php $this->beginContent('@notification/views/layouts/mail.php') ?>
 
 <?php $comment = $viewable->source; ?>
 <?php $contentRecord = $viewable->getCommentedRecord() ?>
