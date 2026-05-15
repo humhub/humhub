@@ -133,6 +133,7 @@ class LdapSettings extends Model
         return [
             [['enabled', 'refreshUsers', 'usernameAttribute', 'emailAttribute', 'username', 'passwordField', 'hostname', 'port', 'idAttribute', 'disableCertificateChecking'], 'string', 'max' => 255],
             [['baseDn', 'userFilter', 'ignoredDNs'], 'string'],
+            [['hostname', 'port', 'baseDn', 'userFilter', 'usernameAttribute', 'emailAttribute', 'idAttribute', 'username'], 'trim'],
             [['usernameAttribute', 'username', 'passwordField', 'hostname', 'port', 'baseDn', 'userFilter', 'idAttribute'], 'required'],
             ['encryption', 'in', 'range' => ['', 'ssl', 'tls']],
             ['allowedAuthClientIds', 'filter', 'filter' => fn($v) => is_array($v) && $v !== [] ? $v : ['ldap']],
@@ -292,9 +293,11 @@ class LdapSettings extends Model
     }
 
     /**
-     * Returns auth client options available for LDAP users. Includes 'ldap'
-     * (LDAP password login) as a first-class checkbox entry. Excludes 'local'
-     * — local password login for LDAP users is not exposed here.
+     * Returns auth client options available for LDAP users. Always includes
+     * 'ldap' (LDAP password login) as a first-class checkbox entry — even on
+     * fresh installs where the LdapAuth client has not been registered yet
+     * because LDAP itself is still disabled. Excludes 'local' — local password
+     * login for LDAP users is not exposed here.
      * Keys are client IDs, values are display titles.
      *
      * @return array<string, string>
@@ -303,9 +306,9 @@ class LdapSettings extends Model
     {
         /** @var Collection $collection */
         $collection = Yii::$app->authClientCollection;
-        $options = [];
+        $options = ['ldap' => Yii::t('LdapModule.base', 'LDAP')];
         foreach ($collection->getClients() as $id => $client) {
-            if ($id !== 'local') {
+            if ($id !== 'local' && $id !== 'ldap') {
                 $options[$id] = $client->getTitle();
             }
         }
