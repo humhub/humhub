@@ -29,6 +29,7 @@ use humhub\modules\admin\models\Log;
 use humhub\modules\admin\notifications\NewVersionAvailable;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\notification\models\forms\NotificationSettings;
+use humhub\modules\topic\models\forms\TopicSettingsForm;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\user\helpers\LoginBackgroundImageHelper;
 use humhub\modules\user\models\User;
@@ -396,6 +397,12 @@ class SettingController extends Controller
             }
         }
 
+        $topicSettings = new TopicSettingsForm();
+        if ($topicSettings->load(Yii::$app->request->post()) && $topicSettings->save()) {
+            $this->view->saved();
+            $this->redirect('topics');
+        }
+
         return $this->render('topics', [
             'contentContainer' => null,
             'dataProvider' => new ActiveDataProvider([
@@ -409,6 +416,7 @@ class SettingController extends Controller
             ]),
             'addModel' => $model,
             'suggestGlobalConversion' => $suggestGlobalConversion,
+            'topicSettings' => $topicSettings,
         ]);
     }
 

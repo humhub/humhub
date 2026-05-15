@@ -3,6 +3,7 @@
 use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\admin\assets\AdminTopicAsset;
+use humhub\modules\topic\models\forms\TopicSettingsForm;
 use humhub\modules\topic\models\Topic;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
@@ -17,6 +18,7 @@ use yii\widgets\Pjax;
  * @var ActiveDataProvider $dataProvider
  * @var Topic $addModel
  * @var bool $suggestGlobalConversion
+ * @var TopicSettingsForm $topicSettings
  */
 
 AdminTopicAsset::register($this);
@@ -55,6 +57,11 @@ if ($suggestGlobalConversion) {
         ->label(Yii::t('AdminModule.settings', 'Convert to global topic'));
 }
 
+ActiveForm::end();
+
+$form = ActiveForm::begin(['options' => ['data-pjax' => true]]);
+    echo $form->field($topicSettings, 'topicInputBehavior')
+        ->dropDownList($topicSettings->getTopicInputBehaviorOptions(), ['data-action-change' => 'ui.form.submit']);
 ActiveForm::end();
 
 echo GridView::widget([
