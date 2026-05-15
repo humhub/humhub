@@ -52,5 +52,5 @@ To have your contribution accepted you must accept the HumHub CLA, signed once v
 
 ## Documentation
 
-- **Core changes** that affect modules go into [`MIGRATE-DEV.md`](https://github.com/humhub/humhub/blob/develop/MIGRATE-DEV.md).
+- **Core changes** that affect modules go into the `Unreleased` section of [`module-migrate.md`](module-migrate.md).
 - **Module features** should be reflected in the module's `README.md` and `docs/`.

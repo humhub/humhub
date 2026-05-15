@@ -64,7 +64,7 @@ HumHub Changelog
 - Fix #8043: User display name bottom truncated in top bar
 - Fix #8050: Fix page title on PJAX request
 - Fix #8051: Registration - Display Captcha field if invalid after form submit via keyboard
-- Enh #8051: Add `AltchaCaptchaInput::$showOnFocusElement` and `YiiCaptchaInput::$showOnFocusElement` (see [migration guide](https://github.com/humhub/humhub/blob/master/MIGRATE-DEV.md#version-1181) for details)
+- Enh #8051: Add `AltchaCaptchaInput::$showOnFocusElement` and `YiiCaptchaInput::$showOnFocusElement` (see [migration guide](https://github.com/humhub/humhub/blob/master/docs/develop/module-migrate-1.18.md#version-1181) for details)
 - Fix #8054: Login layout widths (Default: Bootstrap width, Registration: 500px, Login & Password: 300px, Login with multiple SSO buttons: 500px)
 - Enh #8044: Update package `firebase/php-jwt` to v7
 - Fix #8056: Fix linked badge icon
@@ -92,7 +92,7 @@ HumHub Changelog
 - Fix #8027: Cannot register if `showRegistrationForm` is disabled
 - Enh #8029: Display and cache virtual profile field in the user name subtitle
 - Fix #8030: Fix abandoned composer packages
-- Fix #8039: Encode `Button`, `Link`, `Badge` and `DropdownMenu` labels by default to fix potential XSS security issue (see [migration guide](https://github.com/humhub/humhub/blob/master/MIGRATE-DEV.md#version-1181) for details)
+- Fix #8039: Encode `Button`, `Link`, `Badge` and `DropdownMenu` labels by default to fix potential XSS security issue (see [migration guide](https://github.com/humhub/humhub/blob/master/docs/develop/module-migrate-1.18.md#version-1181) for details)
 - Fix #8038: Improve paragraph and image styles in RichText content
 - Enh #7978: Show `DisplayNameSub` in UserPicker
 
@@ -434,7 +434,7 @@ Info: The minimum PHP version is now `PHP 8.1`!
 - Fix #454: Profile about page missing left and right margin on mobile screen
 - Fix #7316: Fix formatter default time zone
 - Enh #7317: Space browser: Make the whole space card header and body clickable
-- Enh #7329: Add a new "Manage All Content" Group Permission (see [migration guide](https://github.com/humhub/humhub/blob/develop/MIGRATE-DEV.md#version-117-unreleased) for details)
+- Enh #7329: Add a new "Manage All Content" Group Permission (see [migration guide](https://github.com/humhub/humhub/blob/master/docs/develop/module-migrate-1.17.md#version-117-january-2024) for details)
 - Enh #7325: Add missing IDs in the modal login forms
 - Enh #7333: Improved Yii alias handling and added ENV support
 - Enh #7334: New safe method to rename a database column

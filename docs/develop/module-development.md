@@ -4,7 +4,7 @@ A HumHub module is a [Yii 2 module](https://www.yiiframework.com/doc/guide/2.0/e
 
 Familiarity with Yii 2 is assumed: [application structure](https://www.yiiframework.com/doc/guide/2.0/en/structure-overview), [controllers](https://www.yiiframework.com/doc/guide/2.0/en/structure-controllers), [models](https://www.yiiframework.com/doc/guide/2.0/en/structure-models), [views](https://www.yiiframework.com/doc/guide/2.0/en/structure-views), [assets](https://www.yiiframework.com/doc/guide/2.0/en/structure-assets).
 
-Follow the [coding standards](intro-coding-standards.md) and keep an eye on [`MIGRATE-DEV.md`](https://github.com/humhub/humhub/blob/develop/MIGRATE-DEV.md) for breaking changes between core versions.
+Follow the [coding standards](intro-coding-standards.md) and keep an eye on the [module migration guide](module-migrate.md) for breaking changes between core versions.
 
 ## Before you start
 

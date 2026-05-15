@@ -235,4 +235,4 @@ Source-owning auth clients (e.g. `Password` and `LdapAuth`) do not write `user_a
 | `AuthClientUserService::canChangeEmail()` etc. | `UserSourceService::getForUser($user)->canChangeEmail()` etc. |
 | `user.auth_mode` / `user.authclient_id` columns | `user.user_source` (string ID) |
 
-See `MIGRATE-DEV.md` for the complete list of removed/renamed symbols.
+See the `Unreleased` section of [module-migrate.md](module-migrate.md) for the complete list of removed/renamed symbols.
