@@ -69,7 +69,6 @@ use yii\web\IdentityInterface;
  */
 class User extends ContentContainerActiveRecord implements IdentityInterface
 {
-
     /**
      * User Status Flags
      */
