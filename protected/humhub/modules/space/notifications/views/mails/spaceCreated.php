@@ -6,28 +6,22 @@
  * @license https://www.humhub.com/licences
  */
 
-/* @var $this yii\web\View */
-/* @var $viewable humhub\modules\user\notifications\Followed */
-/* @var $url string */
-/* @var $date string */
-/* @var $isNew bool */
-/* @var $isNew bool */
-/* @var $originator \humhub\modules\user\models\User */
-/* @var source yii\db\ActiveRecord */
-/* @var contentContainer \humhub\modules\content\components\ContentContainerActiveRecord */
-/* @var space humhub\modules\space\models\Space */
-/* @var record \humhub\modules\notification\models\Notification */
-/* @var html string */
-
-/* @var text string */
-
+use humhub\components\View;
 use humhub\helpers\MailStyleHelper;
+use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
+use humhub\modules\user\notifications\Followed;
 use humhub\widgets\mails\MailButtonList;
 use humhub\widgets\mails\MailContentContainerImage;
 
+/* @var $this View */
+/* @var $viewable Followed */
+/* @var $url string */
+/* @var $isNew bool */
+/* @var $originator User */
+/* @var $space Space */
 ?>
-
-<?php $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>
+<?php $this->beginContent('@notification/views/layouts/mail.php') ?>
     <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
         <tr>
             <td style="font-size: 14px; line-height: 22px; font-family:<?= MailStyleHelper::getFontFamily() ?>; color:<?= MailStyleHelper::getTextColorHighlight() ?>; font-weight:300; text-align:left;">
