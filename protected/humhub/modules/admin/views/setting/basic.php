@@ -37,6 +37,7 @@ use humhub\widgets\form\ActiveForm;
     <?= $form->beginCollapsibleFields(Yii::t('AdminModule.settings', 'Dashboard')) ?>
     <?= $form->field($model, 'tour')->checkbox() ?>
     <?= $form->field($model, 'dashboardShowProfilePostForm')->checkbox() ?>
+    <?= $form->field($model, 'dashboardShowTopicSidebar')->checkbox() ?>
     <?= $form->endCollapsibleFields() ?>
 
     <?= $form->beginCollapsibleFields(Yii::t('AdminModule.settings', 'Friendship')) ?>

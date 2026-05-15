@@ -34,6 +34,7 @@ HumHub Changelog
 - Fix #8143: Fix updating of Space memberships for existing members
 - Fix #8145: Preserve login return URL for PJAX requests
 - Fix #8144: Restrict file view action
+- Enh #8150: Topic sidebar widget
 
 1.18.2 (March 22, 2026)
 -----------------------

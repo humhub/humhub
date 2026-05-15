@@ -70,6 +70,11 @@ class AdvancedSettings extends Model
     public $hideFollowers = false;
 
     /**
+     * @var bool
+     */
+    public $showTopicSidebar = false;
+
+    /**
      * @var int
      */
     public $sortOrder;
@@ -84,7 +89,7 @@ class AdvancedSettings extends Model
             [['sortOrder'], 'integer'],
             [['indexUrl', 'indexGuestUrl', 'defaultStreamSort'], 'string'],
             ['defaultStreamSort', 'in', 'range' => array_keys(SpaceSettingsForm::defaultStreamSortOptions())],
-            [['hideMembers', 'hideActivities', 'hideAbout', 'hideFollowers'], 'boolean'],
+            [['hideMembers', 'hideActivities', 'hideAbout', 'hideFollowers', 'showTopicSidebar'], 'boolean'],
             ['url', UrlValidator::class, 'space' => $this->space],
         ];
     }
@@ -103,6 +108,7 @@ class AdvancedSettings extends Model
             'hideActivities' => Yii::t('SpaceModule.base', 'Hide Activity Sidebar Widget'),
             'hideAbout' => Yii::t('SpaceModule.base', 'Hide About Page'),
             'hideFollowers' => Yii::t('SpaceModule.base', 'Hide Followers'),
+            'showTopicSidebar' => Yii::t('SpaceModule.base', 'Show topic widget in Stream sidebar'),
         ];
     }
 
@@ -135,6 +141,7 @@ class AdvancedSettings extends Model
         $this->hideAbout = $settings->get('hideAbout', $defaultSettings->defaultHideAbout);
         $this->hideActivities = $settings->get('hideActivities', $defaultSettings->defaultHideActivities);
         $this->hideFollowers = $settings->get('hideFollowers', $defaultSettings->defaultHideFollowers);
+        $this->showTopicSidebar = $settings->get('showTopicSidebar', $defaultSettings->defaultShowTopicSidebar);
         $this->sortOrder = $this->space->sort_order;
     }
 
@@ -191,6 +198,7 @@ class AdvancedSettings extends Model
         $settings->set('hideAbout', (bool)$this->hideAbout);
         $settings->set('hideActivities', (bool)$this->hideActivities);
         $settings->set('hideFollowers', (bool)$this->hideFollowers);
+        $settings->set('showTopicSidebar', (bool)$this->showTopicSidebar);
 
         return true;
     }

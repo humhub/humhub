@@ -34,6 +34,7 @@ use yii\helpers\Url;
         <?= $form->field($model, 'hideAbout')->checkbox(); ?>
         <?= $form->field($model, 'hideActivities')->checkbox(); ?>
         <?= $form->field($model, 'hideFollowers')->checkbox(); ?>
+        <?= $form->field($model, 'showTopicSidebar')->checkbox() ?>
         <?= $form->field($model, 'indexUrl')->dropDownList($indexModuleSelection) ?>
         <?= $form->field($model, 'indexGuestUrl')->dropDownList($indexModuleSelection) ?>
         <?= $form->field($model, 'defaultStreamSort')->dropDownList(SpaceSettingsForm::defaultStreamSortOptions()) ?>

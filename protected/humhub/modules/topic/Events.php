@@ -11,9 +11,12 @@ namespace humhub\modules\topic;
 
 use humhub\helpers\ControllerHelper;
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\dashboard\widgets\Sidebar as DashboardSidebar;
+use humhub\modules\space\widgets\Sidebar as SpaceSidebar;
 use humhub\modules\topic\permissions\ManageTopics;
 use humhub\modules\topic\widgets\ContentTopicButton;
 use humhub\modules\topic\widgets\TopicPicker;
+use humhub\modules\topic\widgets\TopicSidebar;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\widgets\AccountMenu;
 use Yii;
@@ -67,5 +70,23 @@ class Events extends BaseObject
         if (ControllerHelper::isActivePath('topic', 'manage')) {
             AccountMenu::markAsActive('account-settings-settings');
         }
+    }
+
+    public static function onDashboardSidebarInit($event)
+    {
+        /* @var DashboardSidebar $sidebar */
+        $sidebar = $event->sender;
+        $sidebar->addWidget(TopicSidebar::class, [], ['sortOrder' => 100]);
+    }
+
+    public static function onSpaceSidebarInit($event)
+    {
+        /* @var SpaceSidebar $sidebar */
+        $sidebar = $event->sender;
+        $sidebar->addWidget(
+            TopicSidebar::class,
+            ['contentContainer' => $sidebar->space],
+            ['sortOrder' => 100],
+        );
     }
 }
