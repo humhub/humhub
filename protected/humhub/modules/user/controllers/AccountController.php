@@ -14,7 +14,6 @@ use humhub\compat\HForm;
 use humhub\modules\content\widgets\ContainerTagPicker;
 use humhub\modules\space\helpers\MembershipHelper;
 use humhub\modules\user\authclient\BaseFormClient;
-use humhub\modules\user\authclient\interfaces\PrimaryClient;
 use humhub\modules\user\components\BaseAccountController;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\forms\AccountChangeEmail;
@@ -228,7 +227,7 @@ class AccountController extends BaseAccountController
         }
         $clients = [];
         foreach (Yii::$app->get('authClientCollection')->getClients() as $client) {
-            if (!$client instanceof BaseFormClient && !$client instanceof PrimaryClient) {
+            if (!$client instanceof BaseFormClient) {
                 $clients[] = $client;
             }
         }

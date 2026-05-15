@@ -9,7 +9,6 @@
 namespace humhub\modules\user\services;
 
 use humhub\modules\user\authclient\Collection;
-use humhub\modules\user\authclient\interfaces\ApprovalBypass;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\Auth;
 use humhub\modules\user\models\User;
@@ -205,12 +204,6 @@ class AuthClientService
         // allowedAuthClientIds) are considered trusted providers and may always
         // auto-register users, independent of the anonymousRegistration setting.
         if (UserSourceService::getCollection()->isAuthClientClaimed($this->authClient->getId())) {
-            return true;
-        }
-
-        // Backwards-compatibility: legacy auth clients still implementing
-        // ApprovalBypass are trusted. Deprecated since 1.19.
-        if ($this->authClient instanceof ApprovalBypass) {
             return true;
         }
 

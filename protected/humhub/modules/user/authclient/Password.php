@@ -13,7 +13,7 @@ namespace humhub\modules\user\authclient;
  *
  * @since 1.1
  */
-class Password extends BaseFormClient implements interfaces\PrimaryClient
+class Password extends BaseFormClient
 {
     /**
      * @inheritdoc

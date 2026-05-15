@@ -10,6 +10,8 @@ namespace humhub\modules\user\authclient\interfaces;
 
 /**
  * @deprecated since 1.16 — use UserSourceInterface::getManagedAttributes() instead.
+ *   The interface is kept as an empty marker so modules still implementing it
+ *   don't fatal-error; core no longer reads it.
  */
 interface SyncAttributes
 {

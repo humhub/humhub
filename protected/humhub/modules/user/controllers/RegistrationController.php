@@ -11,7 +11,6 @@ namespace humhub\modules\user\controllers;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\modules\space\models\Space;
-use humhub\modules\user\authclient\interfaces\ApprovalBypass;
 use humhub\modules\user\models\forms\Registration;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\User;
@@ -213,12 +212,6 @@ class RegistrationController extends Controller
 
         $userSource = UserSourceService::getCollection()->findUserSourceForAuthClient($authClient->getId(), $attributes);
         $registration->enableUserApproval = $userSource->requiresApproval($authClient->getId());
-
-        // Backwards-compatibility: legacy auth clients still implementing
-        // ApprovalBypass force-skip approval. Deprecated since 1.19.
-        if ($authClient instanceof ApprovalBypass) {
-            $registration->enableUserApproval = false;
-        }
 
         // do not store id attribute
         unset($attributes['id']);

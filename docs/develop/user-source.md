@@ -227,7 +227,7 @@ Source-owning auth clients (e.g. `Password` and `LdapAuth`) do not write `user_a
 | Old API | New API |
 |---|---|
 | `extends BaseClient` (humhub) | `extends \yii\authclient\BaseClient` (or `BaseFormClient`) |
-| `implements ApprovalBypass` | Set `$trustedAuthClientIds` on the responsible UserSource — or leave `$approval = false` (default). Interface deprecated but still works as fallback. |
+| `implements ApprovalBypass` | Set `$trustedAuthClientIds` on the responsible UserSource — or leave `$approval = false` (default). Interface kept as empty marker only — core no longer reads it. |
 | `implements SyncAttributes` + `getSyncAttributes()` | Configure `LocalUserSource::$allowedAuthClientIds` and `$managedAttributes` (or ship a dedicated `UserSource`) |
 | `implements PrimaryClient` | Register a `UserSource` whose ID matches the AuthClient ID |
 | `BaseClient::EVENT_CREATE_USER` | `Event::on(UserSourceService::class, UserSourceService::EVENT_AFTER_CREATE, ...)` |

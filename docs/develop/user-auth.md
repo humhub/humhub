@@ -188,8 +188,8 @@ After authentication succeeds, `AuthClientService::createUser()` (for new users)
 | `$authAction->controller->enableCsrfValidation = false` | `Yii::$app->controller->enableCsrfValidation = false` |
 | `return $authAction->authSuccess($this)` | `return null` (AuthAction does it automatically) |
 | `BaseFormClient::auth()` returning `bool`, with `$client->login` set as side input | `BaseFormClient::authenticate(string $username, string $password): bool` — credentials passed in explicitly; user lookup happens downstream in `AuthClientService::getUser()` |
-| `implements ApprovalBypass` | Configure the responsible UserSource: `'approval' => true, 'trustedAuthClientIds' => ['<client-id>']` (or `$approval = false` to skip approval entirely). Interface deprecated but still works as a fallback marker. |
-| `implements SyncAttributes` + `getSyncAttributes()` | Configure `LocalUserSource::$allowedAuthClientIds` and `$managedAttributes`, or ship a dedicated UserSource. Interface deprecated. |
+| `implements ApprovalBypass` | Configure the responsible UserSource: `'approval' => true, 'trustedAuthClientIds' => ['<client-id>']` (or `$approval = false` to skip approval entirely). Interface kept as an empty marker so existing modules don't fatal-error — core no longer reads it. |
+| `implements SyncAttributes` + `getSyncAttributes()` | Configure `LocalUserSource::$allowedAuthClientIds` and `$managedAttributes`, or ship a dedicated UserSource. Interface kept as empty marker only. |
 | `BaseClient::beforeSerialize()` (built-in hook) | No longer needed — AuthClients aren't stored in the session. See *Crossing the request boundary* above. |
 | `BaseClient::EVENT_CREATE_USER` | `Event::on(UserSourceService::class, UserSourceService::EVENT_AFTER_CREATE, …)` |
 | `BaseClient::EVENT_UPDATE_USER` | `Event::on(UserSourceService::class, UserSourceService::EVENT_AFTER_UPDATE, …)` |
