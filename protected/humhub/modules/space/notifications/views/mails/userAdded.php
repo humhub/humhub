@@ -19,7 +19,6 @@
 /* @var $record Notification */
 /* @var $html string */
 /* @var $text string */
-/* @var $_params_ array */
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\notification\models\Notification;
@@ -30,7 +29,7 @@ use humhub\widgets\mails\MailContentContainerInfoBox;
 
 ?>
 
-<?php $this->beginContent('@notification/views/layouts/mail.php', $_params_) ?>
+<?php $this->beginContent('@notification/views/layouts/mail.php') ?>
 
     <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
         <tr>

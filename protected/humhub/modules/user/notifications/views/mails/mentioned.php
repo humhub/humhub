@@ -16,7 +16,7 @@ use humhub\modules\notification\models\Notification;
 use humhub\widgets\mails\MailButtonList;
 
 ?>
-<?php $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>
+<?php $this->beginContent('@notification/views/layouts/mail.php') ?>
     <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
         <tr>
             <td>

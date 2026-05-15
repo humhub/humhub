@@ -53,16 +53,52 @@ abstract class DirectoryFilters extends Widget
     {
         $this->initDefaultFilters();
 
-        $this->addFilter('reset', [
-            'type' => 'info',
-            'wrapperClass' => 'col-lg-2 form-search-without-info',
-            'info' => Html::a(Yii::t('UiModule.base', 'Reset filters'), [$this->pageUrl], ['class' => 'form-search-reset']),
-            'sortOrder' => 10000,
-        ]);
-
         parent::init();
 
+        // Init actions only after all filters are added by the EVENT_INIT
+        $this->initActions();
+
         ArrayHelper::multisort($this->filters, 'sortOrder');
+    }
+
+    public function initActions(): void
+    {
+        // Find min sort to put the actions after the first filter
+        $minSortOrder = null;
+        foreach ($this->filters as $data) {
+            if (isset($data['sortOrder']) && ($minSortOrder === null || $minSortOrder > $data['sortOrder'])) {
+                $minSortOrder = $data['sortOrder'];
+            }
+        }
+
+        if (count($this->filters) > 1) {
+            // Display it only to hide more filters
+            $this->addFilter('toggle-more', [
+                'type' => 'info',
+                'wrapperClass' => 'form-search-action form-search-action-toggle-more',
+                'info' => Button::light()
+                    ->icon('filter')
+                    ->options([
+                        'data-bs-toggle' => 'collapse',
+                        'data-bs-target' => '.card-filter-' . $this->id,
+                    ])
+                    ->loader(false),
+                'sortOrder' => ++$minSortOrder,
+            ]);
+        }
+
+        if (isset($this->data['action-url']) || $this->isFiltered()) {
+            $this->addFilter('reset', [
+                'type' => 'info',
+                'wrapperClass' => 'form-search-action form-search-action-reset'
+                    . ($this->isFiltered() ? '' : ' d-none'),
+                'info' => Button::danger()
+                    ->icon('times')
+                    ->link([$this->pageUrl])
+                    ->tooltip(Yii::t('UiModule.base', 'Reset filters')),
+                'sortOrder' => ++$minSortOrder,
+            ]);
+        }
     }
 
     abstract protected function initDefaultFilters();
@@ -94,6 +130,10 @@ abstract class DirectoryFilters extends Widget
         $filtersHtml = '';
         foreach ($this->filters as $filter => $data) {
             $data = array_merge(self::getDefaultFilterData(), $data);
+            if ($filtersHtml !== '' && !str_contains($data['wrapperClass'], 'form-search-action')) {
+                // Add styles for filters collapsing by Bootstrap (except of the first filter)
+                $data['wrapperClass'] .= ' collapse show card-filter-' . $this->id;
+            }
             $filterInput = $this->renderFilterInput($filter, $data);
 
             if ($filterInput !== $data['beforeInput'] . $data['afterInput']) {
@@ -109,7 +149,7 @@ abstract class DirectoryFilters extends Widget
     public static function getDefaultFilterData(): array
     {
         return [
-            'wrapperClass' => 'col-lg-2',
+            'wrapperClass' => 'flex-fill',
             'titleClass' => 'form-search-field-info',
             'inputClass' => 'form-control',
             'beforeInput' => '',
@@ -225,6 +265,17 @@ abstract class DirectoryFilters extends Widget
         }
 
         return Yii::$app->request->get($filter, $defaultValue);
+    }
+
+    public function isFiltered(): bool
+    {
+        foreach (Yii::$app->request->getQueryParams() as $key => $value) {
+            if (!in_array($key, ['page', '_pjax', '_']) && static::getValue($key) !== static::getDefaultValue($key)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

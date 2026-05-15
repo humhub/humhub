@@ -23,10 +23,18 @@ humhub.module('oembed', function(module, require, $) {
             });
 
             client.post(module.config.loadUrl, {data: {urls: requestUrls}}).then(function(response) {
-                $.extend(cache, response.data);
-                const resolveUrls = $.extend(result, response.data);
+                const fetchedUrls = {};
+                const brokenUrls = [];
+                $.each(response.data, function(url, oembed) {
+                    if (oembed) {
+                        fetchedUrls[url] = oembed;
+                    } else {
+                        brokenUrls.push(url);
+                    }
+                });
 
-                const brokenUrls = urls.filter(url => !resolveUrls.hasOwnProperty(url));
+                $.extend(cache, fetchedUrls);
+                const resolveUrls = $.extend(result, fetchedUrls);
                 if (brokenUrls.length > 0) {
                     status.warn(module.text('brokenUrl').replace('{urls}',  brokenUrls.join(', ')));
                 }

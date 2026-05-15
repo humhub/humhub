@@ -89,6 +89,11 @@ class ContentCreated extends BaseNotification
             'contentInfo' => $contentInfo]);
     }
 
+    public function isBlockedForUser(User $user): bool
+    {
+        return parent::isBlockedForUser($user) || !$this->getContent()->canView($user);
+    }
+
     protected function isExplicitNotifyUser(User $user)
     {
         $content = $this->getContent();
