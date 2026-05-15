@@ -21,7 +21,6 @@ use yii\bootstrap5\Html;
  * ```
  * <?= Tabs::widget([
  *   'viewPath' => '@myModule/views/common',
- *   'params' => $_params_,
  *   'items' => [
  *     [
  *       'label' => 'One',

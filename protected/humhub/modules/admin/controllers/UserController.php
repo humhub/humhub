@@ -367,9 +367,8 @@ class UserController extends Controller
         $this->forcePostRequest();
 
         $user = User::findOne(['id' => $id]);
-        if ($user === null) {
-            throw new HttpException(404);
-        }
+
+        $this->checkUserAccess($user);
 
         $user->status = User::STATUS_ENABLED;
         $user->save();

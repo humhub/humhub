@@ -32,6 +32,31 @@ HumHub Changelog
 - Fix #8090: Show only visible groups on the profile field "Group memberships"
 - Fix #8091: Bypass `StreamViewer::$showFilters` when `topics` query param is present
 - Fix #8093: Fix Yii2 debug panel
+- Enh #8095: Improve authorization checks
+- Fix #8099: Validate content visibility before switching content notifications
+- Enh #8098: Improve notification authorization checks
+- Enh #8088: Improve people/space filters
+- Enh #8105: Fix adding of new individual user and space topics
+- Fix #8107: Hide option "Update Space memberships" on administrative group edit form
+- Enh #8106: Ensure migrations are run after reinstallation of enabled modules
+- Enh #8114: Fix old theme updating migration
+- Enh #8120: Allow using filter toggling in modals
+- Fix #8118: Keep list start number on RichText rendering
+- Enh #8113: Optimize user space membership lookups
+- Enh #8114: Fix old theme updating migration
+- Enh #8122: Update PHPspreadsheet
+- Enh #8112: Update Mobile-Detect library to 4.10.0
+- Fix #8125: Show oEmbed warning only for supported embed URLs
+- Fix #8134: Revert "Improve `<p>` style in RichText editor"
+- Fix #8133: Rebuild search index after file updating
+- Fix #8132: Improve RichText styles in email message
+- Fix #8135: Missing border around profile pictures in Spaces overview
+- Fix #8136: Missing vertical paddings in Followers / Following snippets
+- Enh #8140: Preserve selected profile columns in pending approvals
+- Fix #8143: Fix updating of Space memberships for existing members
+- Fix #8145: Preserve login return URL for PJAX requests
+- Fix #8144: Restrict file view action
+- Fix #8148: Yii2 2.0.55 compatibility
 
 1.18.2 (March 22, 2026)
 -----------------------
