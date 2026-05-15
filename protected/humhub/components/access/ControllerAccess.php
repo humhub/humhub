@@ -538,7 +538,7 @@ class ControllerAccess extends BaseObject
         return !Yii::$app->settings->get('maintenanceMode')
             || $this->isAdmin()
             || ($this->owner->id == 'i18n' && $this->owner->action->id == 'translations')
-            || ($this->owner->module->id == 'user' && $this->owner->id == 'auth' && in_array($this->owner->action->id, ['login', 'external']));
+            || ($this->owner->module->id == 'user' && $this->owner->id == 'auth' && in_array($this->owner->action->id, ['login', 'password', 'external']));
     }
 
     /**

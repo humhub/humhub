@@ -12,6 +12,7 @@
  * @var $errorMessage string
  * @var $model LdapSettings
  * @var $userCount string
+ * @var $authClientOptions array
  */
 
 use humhub\helpers\Html;
@@ -55,6 +56,8 @@ use yii\web\View;
         ]
     ]) ?>
 
+    <?= $form->errorSummary($model) ?>
+
     <?= $form->field($model, 'enabled')->checkbox() ?>
     <hr>
 
@@ -74,9 +77,14 @@ use yii\web\View;
 
     <?= $form->field($model, 'refreshUsers')->checkbox() ?>
 
-    <?= $form->beginCollapsibleFields(Yii::t('AdminModule.base', 'Advanced settings')); ?>
+    <?php if (!empty($authClientOptions)): ?>
+    <?= $form->field($model, 'allowedAuthClientIds')->checkboxList(
+        $authClientOptions,
+        ['hint' => Yii::t('LdapModule.base', 'Select the authentication methods LDAP users may use. Unchecking "LDAP" disables direct LDAP password login and forces users through the other selected methods (e.g. SAML, OpenID Connect).')]
+    ) ?>
+    <?php endif; ?>
+
     <?= $form->field($model, 'ignoredDNs')->textarea(['style' => 'white-space:nowrap;']) ?>
-    <?= $form->endCollapsibleFields(); ?>
 
     <hr>
 

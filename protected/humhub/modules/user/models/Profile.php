@@ -10,7 +10,7 @@ namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
 use humhub\modules\user\Module;
-use humhub\modules\user\services\AuthClientUserService;
+use humhub\modules\user\services\UserSourceService;
 use Yii;
 use yii\base\Exception;
 
@@ -105,20 +105,29 @@ class Profile extends ActiveRecord
         // Get synced attributes if user is set
         $syncAttributes = [];
         if ($this->user !== null) {
-            $syncAttributes = (new AuthClientUserService($this->user))->getSyncAttributes();
+            $syncAttributes = UserSourceService::getForUser($this->user)->getManagedAttributes();
         }
 
         foreach (static::getValidProfileFields() as $profileField) {
             // Some fields consist of multiple field definitions (e.g. Birthday)
             foreach ($profileField->fieldType->getFieldFormDefinition($this->user) as $fieldName => $definition) {
-                // Skip automatically synced attributes (readonly)
-                if (in_array($profileField->internal_name, $syncAttributes)) {
+                $isManaged = in_array($profileField->internal_name, $syncAttributes);
+
+                // Source-managed fields are never editable — exclude from EDIT scenarios.
+                // BUT keep them in the REGISTRATION scenario (when show_at_registration
+                // is set) so the required-rule still fires: a required attribute the
+                // source did not provide must block account creation rather than
+                // silently saving an empty value (the next sync would overwrite anyway).
+                if ($isManaged) {
+                    if ($profileField->show_at_registration) {
+                        $scenarios[self::SCENARIO_REGISTRATION][] = $fieldName;
+                    }
                     continue;
                 }
 
                 $scenarios[self::SCENARIO_EDIT_ADMIN][] = $fieldName;
 
-                if ($profileField->editable && !in_array($profileField->internal_name, $syncAttributes)) {
+                if ($profileField->editable) {
                     $scenarios[self::SCENARIO_EDIT_PROFILE][] = $fieldName;
                 }
 
@@ -210,7 +219,7 @@ class Profile extends ActiveRecord
 
         $syncAttributes = [];
         if ($this->user !== null) {
-            $syncAttributes = (new AuthClientUserService($this->user))->getSyncAttributes();
+            $syncAttributes = UserSourceService::getForUser($this->user)->getManagedAttributes();
         }
 
         $safeAttributes = $this->safeAttributes();

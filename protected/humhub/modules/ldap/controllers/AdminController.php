@@ -12,7 +12,7 @@ use Exception;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\ldap\models\LdapSettings;
-use humhub\modules\ldap\services\LdapService;
+use humhub\modules\ldap\Module;
 use Yii;
 
 /**
@@ -59,11 +59,17 @@ class AdminController extends Controller
         $userCount = 0;
         $errorMessage = "";
 
-        if ($settings->enabled) {
+        // Registry is populated from the DB-backed LdapSettings. If the model
+        // is "enabled" (checkbox checked, possibly only in POST after a failed
+        // save) but DB isn't yet, the 'ldap' connection isn't registered —
+        // skip the status box silently so the user just sees the form errors.
+        /** @var Module $module */
+        $module = Yii::$app->getModule('ldap');
+        $registry = $module->getConnectionRegistry();
+        if ($settings->enabled && $registry->has('ldap')) {
             $enabled = true;
-
             try {
-                $userCount = LdapService::create()->countUsers();
+                $userCount = $registry->getService('ldap')->countUsers();
             } catch (Exception $ex) {
                 $errorMessage = $ex->getMessage();
             }
@@ -74,6 +80,7 @@ class AdminController extends Controller
             'enabled' => $enabled,
             'userCount' => $userCount,
             'errorMessage' => $errorMessage,
+            'authClientOptions' => $settings->getAuthClientOptions(),
         ]);
     }
 }

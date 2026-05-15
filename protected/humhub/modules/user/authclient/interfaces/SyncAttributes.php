@@ -9,20 +9,10 @@
 namespace humhub\modules\user\authclient\interfaces;
 
 /**
- * SyncAttributes interface allows the possiblitz to specify user attributes which will be automatically
- * updated on login or by daily cronjob if AutoSyncUsers is enabled.
- *
- * These attributes are also not writable by user.
- *
- * @since 1.1
- * @author luke
+ * @deprecated since 1.16 — use UserSourceInterface::getManagedAttributes() instead.
+ *   The interface is kept as an empty marker so modules still implementing it
+ *   don't fatal-error; core no longer reads it.
  */
 interface SyncAttributes
 {
-    /**
-     * Returns attribute names which should be synced on login
-     *
-     * @return array attribute names to be synced
-     */
-    public function getSyncAttributes();
 }

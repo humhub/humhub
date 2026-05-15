@@ -2,49 +2,45 @@
 
 namespace humhub\modules\ldap\services;
 
-use humhub\modules\ldap\authclient\LdapAuth;
+use humhub\modules\ldap\connection\LdapConnectionConfig;
 use humhub\modules\ldap\helpers\LdapHelper;
 use humhub\modules\ldap\Module;
 use LdapRecord\Connection;
 use Yii;
-use yii\base\InvalidArgumentException;
 
+/**
+ * LdapService is the connection and query layer for a single LDAP connection.
+ *
+ * Stateless w.r.t. AuthClients or UserSources — receives all parameters via
+ * LdapConnectionConfig. Obtain instances from {@see LdapConnectionRegistry}.
+ *
+ * @since 1.19 the constructor takes LdapConnectionConfig (was LdapAuth before)
+ */
 class LdapService
 {
     public Connection $connection;
 
-    public function __construct(public readonly LdapAuth $authClient)
+    public function __construct(public readonly LdapConnectionConfig $config)
     {
         $this->ldapConnect();
     }
 
-    public static function create(string $authClientId = 'ldap'): self
-    {
-        /** @var LdapAuth $authClient */
-        $authClient = Yii::$app->authClientCollection->getClient($authClientId);
-
-        if (!$authClient instanceof LdapAuth) {
-            throw new InvalidArgumentException("The specified ID does not match to a LDAP AuthClient");
-        }
-
-        return new self($authClient);
-    }
-
-    private function ldapConnect()
+    private function ldapConnect(): void
     {
         $this->connection = new Connection([
-            'hosts' => [$this->authClient->hostname],
-            'port' => $this->authClient->port,
-            'username' => $this->authClient->bindUsername,
-            'password' => $this->authClient->bindPassword,
-            'base_dn' => $this->authClient->baseDn,
-            'use_tls' => $this->authClient->useSsl,
-            'use_starttls' => $this->authClient->useStartTls,
+            'hosts' => [$this->config->hostname],
+            'port' => $this->config->port,
+            'username' => $this->config->bindUsername,
+            'password' => $this->config->bindPassword,
+            'base_dn' => $this->config->baseDn,
+            'use_tls' => $this->config->useSsl,
+            'use_starttls' => $this->config->useStartTls,
             'use_sasl' => false,
-            'timeout' => $this->authClient->networkTimeout,
+            'timeout' => $this->config->networkTimeout,
             'options' => [
-                LDAP_OPT_X_TLS_REQUIRE_CERT => ($this->authClient->disableCertificateChecking)
-                    ? LDAP_OPT_X_TLS_NEVER : LDAP_OPT_X_TLS_DEMAND,
+                LDAP_OPT_X_TLS_REQUIRE_CERT => $this->config->disableCertificateChecking
+                    ? LDAP_OPT_X_TLS_NEVER
+                    : LDAP_OPT_X_TLS_DEMAND,
             ],
         ]);
         $this->connection->connect();
@@ -57,7 +53,7 @@ class LdapService
             return null;
         }
 
-        // Reconnect Ldap with Bind user
+        // Reconnect with the bind user after a successful user auth
         $this->ldapConnect();
 
         return $userDn;
@@ -65,8 +61,9 @@ class LdapService
 
     public function countUsers(): int
     {
-        $query = $this->connection->query()->select('dn')
-            ->rawFilter($this->authClient->userFilter);
+        $query = $this->connection->query()
+            ->select('dn')
+            ->rawFilter($this->config->userFilter);
 
         return count($query->paginate($this->getPageSize()));
     }
@@ -75,74 +72,42 @@ class LdapService
     {
         $result = $this->connection->query()
             ->select('dn')
-            ->rawFilter($this->authClient->userFilter)
+            ->rawFilter($this->config->userFilter)
             ->orFilter(function ($query) use ($usernameOrEmail): void {
-                $query->where($this->authClient->usernameAttribute, '=', $usernameOrEmail)
-                    ->where($this->authClient->emailAttribute, '=', $usernameOrEmail);
+                $query->where($this->config->usernameAttribute, '=', $usernameOrEmail)
+                    ->where($this->config->emailAttribute, '=', $usernameOrEmail);
             })
             ->first();
 
         return $result['dn'] ?? null;
     }
 
-    private function getAllUsersAttributes(): array
+    /**
+     * Returns all LDAP user entries (cleaned, without DN suppression).
+     * Caller is responsible for normalisation into HumHub user attribute maps.
+     *
+     * @return array<array{dn: string, ...}> raw entries, one per user
+     */
+    public function getAllUserEntries(): array
     {
         $query = $this->connection->query()
-            ->in($this->authClient->baseDn)
-            ->rawFilter($this->authClient->userFilter)
+            ->in($this->config->baseDn)
+            ->rawFilter($this->config->userFilter)
             ->select($this->getQueriedAttributes());
 
-        $users = [];
+        $entries = [];
         foreach ($query->paginate($this->getPageSize()) as $entity) {
             $dn = strtolower((string)$entity['dn']);
-            foreach ($this->authClient->ignoredDNs as $ignoredDN) {
+            foreach ($this->config->ignoredDNs as $ignoredDN) {
                 if (!empty($ignoredDN) && str_starts_with($dn, strtolower($ignoredDN))) {
                     continue 2;
                 }
             }
 
-            $users[] = LdapHelper::cleanLdapResponse($entity);
+            $entries[] = LdapHelper::cleanLdapResponse($entity);
         }
 
-        return $users;
-    }
-
-    private function getQueriedAttributes(): array
-    {
-        /** @var Module $module */
-        $module = Yii::$app->getModule('ldap');
-
-        return array_merge(['*', 'dn'], $module->queriedAttributes);
-    }
-
-    /**
-     * @return LdapAuth[]
-     */
-    public function getAuthClients(): array
-    {
-        $authClients = [];
-
-        foreach ($this->getAllUsersAttributes() as $ldapEntry) {
-            $authClient = clone $this->authClient;
-            $authClient->init();
-            $authClient->setUserAttributes($ldapEntry);
-
-            // Init
-            $authClient->getUserAttributes();
-            $authClient->ldapService = $this;
-
-            $authClients[$ldapEntry['dn']] = $authClient;
-        }
-
-        return $authClients;
-    }
-
-    private function getPageSize(): int
-    {
-        /** @var Module $module */
-        $module = Yii::$app->getModule('ldap');
-
-        return $module->pageSize;
+        return $entries;
     }
 
     public function getEntry(string $dn, ?array $attributes = null): ?array
@@ -160,7 +125,8 @@ class LdapService
     public function getDnList(string $searchQuery): array
     {
         $results = [];
-        $query = $this->connection->query()->select('dn')
+        $query = $this->connection->query()
+            ->select('dn')
             ->rawFilter($searchQuery);
 
         foreach ($query->paginate($this->getPageSize()) as $entity) {
@@ -168,5 +134,24 @@ class LdapService
         }
 
         return $results;
+    }
+
+    private function getQueriedAttributes(): array
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('ldap');
+        $extra = $this->config->queriedAttributes ?? $module->queriedAttributes;
+
+        return array_merge(['*', 'dn'], $extra);
+    }
+
+    private function getPageSize(): int
+    {
+        if ($this->config->pageSize !== null) {
+            return $this->config->pageSize;
+        }
+        /** @var Module $module */
+        $module = Yii::$app->getModule('ldap');
+        return $module->pageSize;
     }
 }

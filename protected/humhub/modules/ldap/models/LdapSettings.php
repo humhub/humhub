@@ -9,7 +9,8 @@
 namespace humhub\modules\ldap\models;
 
 use humhub\components\SettingsManager;
-use humhub\modules\ldap\authclient\LdapAuth;
+use humhub\modules\ldap\connection\LdapConnectionConfig;
+use humhub\modules\user\authclient\Collection;
 use Yii;
 use yii\base\Model;
 
@@ -99,6 +100,14 @@ class LdapSettings extends Model
     public $idAttribute;
 
     /**
+     * @var string[] auth clients allowed for LDAP-sourced users. Defaults to
+     * `['ldap']` for fresh installs — i.e. LDAP password login is enabled out
+     * of the box. Unchecking 'ldap' disables direct LDAP password login and
+     * forces users to sign in via one of the other selected methods (SSO).
+     */
+    public $allowedAuthClientIds = [];
+
+    /**
      * @var array
      */
     public $encryptionTypes = [
@@ -124,8 +133,11 @@ class LdapSettings extends Model
         return [
             [['enabled', 'refreshUsers', 'usernameAttribute', 'emailAttribute', 'username', 'passwordField', 'hostname', 'port', 'idAttribute', 'disableCertificateChecking'], 'string', 'max' => 255],
             [['baseDn', 'userFilter', 'ignoredDNs'], 'string'],
+            [['hostname', 'port', 'baseDn', 'userFilter', 'usernameAttribute', 'emailAttribute', 'idAttribute', 'username'], 'trim'],
             [['usernameAttribute', 'username', 'passwordField', 'hostname', 'port', 'baseDn', 'userFilter', 'idAttribute'], 'required'],
             ['encryption', 'in', 'range' => ['', 'ssl', 'tls']],
+            ['allowedAuthClientIds', 'filter', 'filter' => fn($v) => is_array($v) && $v !== [] ? $v : ['ldap']],
+            ['allowedAuthClientIds', 'each', 'rule' => ['in', 'range' => array_keys($this->getAuthClientOptions())]],
         ];
     }
 
@@ -149,6 +161,7 @@ class LdapSettings extends Model
             'emailAttribute' => Yii::t('LdapModule.base', 'E-Mail Address Attribute'),
             'idAttribute' => Yii::t('LdapModule.base', 'ID Attribute'),
             'ignoredDNs' => Yii::t('LdapModule.base', 'Ignored LDAP entries'),
+            'allowedAuthClientIds' => Yii::t('LdapModule.base', 'Allowed Authentication Methods'),
         ];
     }
 
@@ -203,6 +216,15 @@ class LdapSettings extends Model
 
         $this->ignoredDNs = $settings->get('ignoredDNs');
         $this->refreshUsers = $settings->get('refreshUsers');
+
+        // Fresh installs get LDAP password login pre-enabled. Existing installs
+        // upgrade transparently because the previous save() always wrote
+        // 'ldap' into the stored list. An empty stored list is also normalised
+        // back to ['ldap'] so the system always has at least one usable login
+        // path for LDAP users.
+        $saved = $settings->get('allowedAuthClientIds');
+        $decoded = $saved !== null ? (json_decode($saved, true) ?? []) : [];
+        $this->allowedAuthClientIds = $decoded !== [] ? $decoded : ['ldap'];
     }
 
 
@@ -232,37 +254,65 @@ class LdapSettings extends Model
         $settings->set('ignoredDNs', $this->ignoredDNs);
         $settings->set('idAttribute', $this->idAttribute);
         $settings->set('refreshUsers', $this->refreshUsers);
+        $settings->set('allowedAuthClientIds', json_encode(
+            array_values(array_unique($this->allowedAuthClientIds)),
+        ));
 
         return true;
     }
 
 
     /**
-     * Returns a configured LdapAuth class definition
+     * Returns an LdapConnectionConfig populated from the saved settings.
+     * The default 'ldap' connection in {@see LdapConnectionRegistry} is built
+     * from this config.
      *
-     * @return array the LDAP Auth definition
+     * @since 1.19
      */
-    public function getLdapAuthDefinition()
+    public function getConnectionConfig(): LdapConnectionConfig
     {
-        $this->ignoredDNs = str_replace("\r", '', $this->ignoredDNs);
+        $ignoredDNs = explode("\n", strtolower(str_replace("\r", '', $this->ignoredDNs ?? '')));
 
-        return [
-            'class' => LdapAuth::class,
-            'hostname' => $this->hostname,
-            'port' => $this->port,
-            'bindUsername' => $this->username,
-            'bindPassword' => $this->password,
+        return new LdapConnectionConfig([
+            'title' => 'LDAP',
+            'hostname' => (string)$this->hostname,
+            'port' => (int)$this->port,
             'useSsl' => ($this->encryption === 'ssl'),
             'useStartTls' => ($this->encryption === 'tls'),
-            'disableCertificateChecking' => $this->disableCertificateChecking,
-            'baseDn' => $this->baseDn,
-            'userFilter' => $this->userFilter,
+            'disableCertificateChecking' => (bool)$this->disableCertificateChecking,
+            'bindUsername' => (string)$this->username,
+            'bindPassword' => (string)$this->password,
+            'baseDn' => (string)$this->baseDn,
+            'userFilter' => (string)$this->userFilter,
             'autoRefreshUsers' => (bool)$this->refreshUsers,
-            'emailAttribute' => $this->emailAttribute,
-            'usernameAttribute' => $this->usernameAttribute,
-            'idAttribute' => $this->idAttribute,
-            'ignoredDNs' => explode("\n", strtolower($this->ignoredDNs)),
-        ];
+            'emailAttribute' => $this->emailAttribute ?: 'mail',
+            'usernameAttribute' => $this->usernameAttribute ?: 'samaccountname',
+            'idAttribute' => $this->idAttribute ?: null,
+            'ignoredDNs' => $ignoredDNs,
+        ]);
+    }
+
+    /**
+     * Returns auth client options available for LDAP users. Always includes
+     * 'ldap' (LDAP password login) as a first-class checkbox entry — even on
+     * fresh installs where the LdapAuth client has not been registered yet
+     * because LDAP itself is still disabled. Excludes 'local' — local password
+     * login for LDAP users is not exposed here.
+     * Keys are client IDs, values are display titles.
+     *
+     * @return array<string, string>
+     */
+    public function getAuthClientOptions(): array
+    {
+        /** @var Collection $collection */
+        $collection = Yii::$app->authClientCollection;
+        $options = ['ldap' => Yii::t('LdapModule.base', 'LDAP')];
+        foreach ($collection->getClients() as $id => $client) {
+            if ($id !== 'local' && $id !== 'ldap') {
+                $options[$id] = $client->getTitle();
+            }
+        }
+        return $options;
     }
 
     /**

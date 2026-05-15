@@ -11,8 +11,7 @@ namespace humhub\modules\user\widgets;
 use humhub\helpers\ControllerHelper;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\TabMenu;
-use humhub\modules\user\authclient\BaseFormAuth;
-use humhub\modules\user\authclient\interfaces\PrimaryClient;
+use humhub\modules\user\authclient\BaseFormClient;
 use Yii;
 use yii\authclient\ClientInterface;
 use yii\base\InvalidConfigException;
@@ -58,7 +57,7 @@ class AccountSettingsMenu extends TabMenu
     {
         $clients = [];
         foreach (Yii::$app->get('authClientCollection')->getClients() as $client) {
-            if (!$client instanceof BaseFormAuth && !$client instanceof PrimaryClient) {
+            if (!$client instanceof BaseFormClient) {
                 $clients[] = $client;
             }
         }

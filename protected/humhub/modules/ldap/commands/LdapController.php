@@ -11,19 +11,20 @@ namespace humhub\modules\ldap\commands;
 use Exception;
 use humhub\modules\ldap\authclient\LdapAuth;
 use humhub\modules\ldap\helpers\LdapHelper;
-use humhub\modules\ldap\services\LdapService;
+use humhub\modules\ldap\Module;
+use humhub\modules\ldap\source\LdapUserSource;
+use humhub\modules\user\models\Auth;
 use humhub\modules\user\models\User;
+use humhub\modules\user\services\UserSourceService;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\console\Controller;
 use yii\console\ExitCode;
 use yii\console\widgets\Table;
-use yii\db\Expression;
 use yii\helpers\Console;
 
 /**
- * Console tools for manage Ldap
- * @method updateAttributes(array $array)
+ * Console tools for managing LDAP
  */
 class LdapController extends Controller
 {
@@ -33,79 +34,75 @@ class LdapController extends Controller
     public $defaultAction = 'list';
 
     /**
-     * Lists configured LDAP auth clients
-     *
-     * @return int the exit code
+     * Lists configured LDAP connections / auth clients
      */
     public function actionList()
     {
-        $this->stdout("*** Configured LDAP AuthClients \n\n");
+        $this->stdout("*** Configured LDAP Connections \n\n");
 
-        $clients = [];
-        foreach (Yii::$app->authClientCollection->getClients(true) as $id => $client) {
-            if ($client instanceof LdapAuth) {
-                /** @var LdapAuth $client */
-                $clients[] = [$id, $client->getName() . ' (' . $client->getId() . ')', $client->hostname, $client->port, $client->baseDn];
-            }
+        $registry = $this->getModule()->getConnectionRegistry();
+        $rows = [];
+        foreach ($registry->getIds() as $id) {
+            $config = $registry->getConfig($id);
+            $rows[] = [$id, $config->title, $config->hostname, $config->port, $config->baseDn];
         }
 
         try {
-            echo Table::widget(['headers' => ['AuthClient ID', 'Name (ClientId)', 'Host', 'Port', 'Base DN'], 'rows' => $clients]);
+            echo Table::widget(['headers' => ['ID', 'Title', 'Host', 'Port', 'Base DN'], 'rows' => $rows]);
         } catch (Exception $e) {
             $this->stderr("Error: " . $e->getMessage() . "\n\n");
             return ExitCode::UNSPECIFIED_ERROR;
         }
 
         print "\n\n";
+        return ExitCode::OK;
     }
 
     /**
      * Returns status information
      *
-     * @param string $id the auth client id (default: ldap)
-     * @return int status code
+     * @param string $id the connection id (default: ldap)
      */
     public function actionStatus($id = 'ldap')
     {
-        $this->stdout("*** LDAP Status for AuthClient ID: " . $id . "\n\n");
+        $this->stdout("*** LDAP Status for connection: " . $id . "\n\n");
 
         try {
-            $ldapService = LdapService::create($id);
+            $config = $this->getModule()->getConnectionRegistry()->getConfig($id);
+            $service = $this->getModule()->getConnectionRegistry()->getService($id);
         } catch (Exception $ex) {
             $this->stderr("Error: " . $ex->getMessage() . "\n\n");
             return ExitCode::UNSPECIFIED_ERROR;
         }
 
-        $this->stdout("Host:\t\t" . $ldapService->authClient->hostname . "\n");
-        $this->stdout("Port:\t\t" . $ldapService->authClient->port . "\n");
-        $this->stdout("BaseDN:\t\t" . $ldapService->authClient->baseDn . "\n\n");
+        $this->stdout("Host:\t\t" . $config->hostname . "\n");
+        $this->stdout("Port:\t\t" . $config->port . "\n");
+        $this->stdout("BaseDN:\t\t" . $config->baseDn . "\n\n");
 
         $this->stdout("LDAP connection successful!\n\n", Console::FG_GREEN);
 
-        $activeUserCount = User::find()->andWhere(['auth_mode' => $ldapService->authClient->getId(), 'status' => User::STATUS_ENABLED])->count();
-        $disabledUserCount = User::find()->andWhere(['auth_mode' => $ldapService->authClient->getId(), 'status' => User::STATUS_DISABLED])->count();
+        $activeUserCount = User::find()->andWhere(['user_source' => $id, 'status' => User::STATUS_ENABLED])->count();
+        $disabledUserCount = User::find()->andWhere(['user_source' => $id, 'status' => User::STATUS_DISABLED])->count();
 
-        $this->stdout("LDAP user count:\t\t" . $ldapService->countUsers() . " users.\n");
+        $this->stdout("LDAP user count:\t\t" . $service->countUsers() . " users.\n");
         $this->stdout("HumHub user count (active):\t" . $activeUserCount . " users.\n");
         $this->stdout("HumHub user count (disabled):\t" . $disabledUserCount . " users.\n\n");
 
         return ExitCode::OK;
     }
 
-
     /**
-     * Synchronizes all ldap users (if autoRefresh is enabled)
+     * Synchronizes all LDAP users for a given connection.
      *
-     * @param string $id the auth client id (default: ldap)
-     * @return int status code
+     * @param string $id the connection id (default: ldap)
      */
     public function actionSync($id = 'ldap')
     {
-        $this->stdout("*** LDAP Sync for AuthClient ID: " . $id . "\n\n");
+        $this->stdout("*** LDAP Sync for connection: " . $id . "\n\n");
 
         try {
-            $ldapAuthClient = $this->getAuthClient($id);
-            $ldapAuthClient->syncUsers();
+            $source = $this->getUserSource($id);
+            $source->syncUsers();
         } catch (Exception $ex) {
             $this->stderr("Error: " . $ex->getMessage() . "\n\n");
             return ExitCode::UNSPECIFIED_ERROR;
@@ -116,30 +113,29 @@ class LdapController extends Controller
         return ExitCode::OK;
     }
 
-
     /**
-     * Lists all users found in the LDAP server
-     *
-     * @param string $id the auth client id (default: ldap)
-     * @return int status code
+     * Lists all users found in the LDAP directory for the given connection.
      */
     public function actionListUsers($id = 'ldap')
     {
-
-        $this->stdout("*** LDAP User List for AuthClient ID: " . $id . "\n\n");
+        $this->stdout("*** LDAP User List for connection: " . $id . "\n\n");
 
         try {
-            $ldapService = LdapService::create($id);
+            $authClient = $this->getAuthClient($id);
+            $service = $this->getModule()->getConnectionRegistry()->getService($id);
 
             $users = [];
-            foreach ($ldapService->getAuthClients() as $authClient) {
-                $attributes = $authClient->getUserAttributes();
+            foreach ($service->getAllUserEntries() as $entry) {
+                $client = clone $authClient;
+                $client->init();
+                $client->setUserAttributes($entry);
+                $attributes = $client->getUserAttributes();
 
-                $username = ($attributes['username'] ?? '---');
-                $id = ($attributes['id'] ?? '---');
-                $email = ($attributes['email'] ?? '---');
-
-                $users[] = [$id, $username, $email];
+                $users[] = [
+                    $attributes['id'] ?? '---',
+                    $attributes['username'] ?? '---',
+                    $attributes['email'] ?? '---',
+                ];
             }
 
             echo Table::widget(['headers' => ['ID', 'Username', 'E-Mail'], 'rows' => $users]);
@@ -151,86 +147,85 @@ class LdapController extends Controller
         return ExitCode::OK;
     }
 
-
     /**
-     * Resets the LDAP mapping of all or a certain account.
-     *
-     * @param string $id the auth client id (default: ldap)
-     * @param string $userName UserName, if set, the assignment will be deleted for this user only.
-     * @return int status code
+     * Clears the LDAP user_auth mappings for a given connection.
      */
     public function actionMappingClear($id = 'ldap', $userName = null)
     {
-        $this->stdout("*** LDAP Flush user id mappings for AuthClient ID: " . $id . "\n\n");
+        $this->stdout("*** LDAP Clear user_auth mappings for connection: " . $id . "\n\n");
 
         if ($userName === null) {
-            User::updateAll(['authclient_id' => new Expression('NULL')], ['auth_mode' => $id]);
+            $deleted = Auth::deleteAll(['source' => $id]);
         } else {
-            User::updateAll(['authclient_id' => new Expression('NULL')], ['auth_mode' => $id, 'username' => $userName]);
+            $user = User::findOne(['username' => $userName, 'user_source' => $id]);
+            if ($user === null) {
+                $this->stderr("Error: User \"" . $userName . "\" not found.\n\n");
+                return ExitCode::UNSPECIFIED_ERROR;
+            }
+            $deleted = Auth::deleteAll(['source' => $id, 'user_id' => $user->id]);
         }
 
-        $this->stdout("Mapping(s) cleared!\n");
+        $this->stdout("Cleared " . $deleted . " mapping(s)!\n");
         return ExitCode::OK;
     }
 
-
     /**
-     * Rebuilds the authclient_id and auth_mode mappings in the user table
-     *
-     * @param string $id the auth client id (default: ldap)
-     * @return int status code
+     * Rebuilds the user_auth mappings by matching LDAP users to HumHub accounts
+     * via email or username.
      */
     public function actionMappingRebuild($id = 'ldap')
     {
-        $this->stdout("*** LDAP ReMap Users for AuthClient ID: " . $id . "\n\n");
+        $this->stdout("*** LDAP Rebuild user_auth mappings for connection: " . $id . "\n\n");
 
-        $i = 0;
-        $m = 0;
-        $d = 0;
+        $checked = 0;
+        $created = 0;
 
         try {
-            $ldapService = LdapService::create($id);
+            $authClient = $this->getAuthClient($id);
+            $service = $this->getModule()->getConnectionRegistry()->getService($id);
 
-            // Loop over users of this authclient
-            foreach ($ldapService->getAuthClients() as $authClient) {
-                $i++;
-                $attributes = $authClient->getUserAttributes();
+            foreach ($service->getAllUserEntries() as $entry) {
+                $checked++;
+
+                $client = clone $authClient;
+                $client->init();
+                $client->setUserAttributes($entry);
+                $attributes = $client->getUserAttributes();
 
                 if (!isset($attributes['id'])) {
-                    print "Skipped - No ID for: " . $attributes['dn'] . "\n";
+                    $this->stdout("Skipped - No ID for: " . ($attributes['dn'] ?? '?') . "\n");
                     continue;
                 }
 
-                // Fix empty 'authclient_id' by e-mail
+                $ldapId = (string)$attributes['id'];
+
+                if (Auth::find()->where(['source' => $id, 'source_id' => $ldapId])->exists()) {
+                    continue;
+                }
+
+                $user = null;
                 if (isset($attributes['email'])) {
-                    $user = User::find()->where(['email' => $attributes['email']])->andWhere(['IS', 'authclient_id', new Expression('NULL')])->one();
-                    if ($user !== null && User::findOne(['authclient_id' => $attributes['id']]) === null) {
-                        $user->updateAttributes(['authclient_id' => $attributes['id']]);
-                        $d++;
-                    }
+                    $user = User::findOne(['email' => $attributes['email']]);
+                }
+                if ($user === null && isset($attributes['username'])) {
+                    $user = User::findOne(['username' => $attributes['username']]);
                 }
 
-                // Fix empty 'authclient_id' by username
-                if (isset($attributes['username'])) {
-                    $user = User::find()->where(['username' => $attributes['username']])->andWhere(['IS', 'authclient_id', new Expression('NULL')])->one();
-                    if ($user !== null && User::findOne(['authclient_id' => $attributes['id']]) === null) {
-                        $user->updateAttributes(['authclient_id' => $attributes['id']]);
-                        $d++;
+                if ($user !== null) {
+                    $auth = new Auth([
+                        'user_id' => $user->id,
+                        'source' => $id,
+                        'source_id' => $ldapId,
+                    ]);
+                    if ($auth->save()) {
+                        $created++;
+                        $this->stdout("Created mapping for user: " . $user->username . " → " . $ldapId . "\n");
                     }
-                }
-
-                // Fix wrong/missing 'auth_mode' by authclient_id
-                $user = User::findOne(['authclient_id' => $attributes['id']]);
-                if ($user !== null && $user->auth_mode != $authClient->getId()) {
-                    $user->updateAttributes(['auth_mode' => $authClient->getId()]);
-                    $m++;
                 }
             }
 
-
-            $this->stdout("Checked:\t" . $i . " users.\n");
-            $this->stdout("Remapped 'authclient_id' value:\t" . $d . " users.\n");
-            $this->stdout("Remapped 'auth_mode' value:\t" . $m . " users.\n");
+            $this->stdout("\nChecked:\t" . $checked . " LDAP users.\n");
+            $this->stdout("Created:\t" . $created . " new mappings.\n");
         } catch (Exception $ex) {
             $this->stderr("Error: " . $ex->getMessage() . "\n\n");
             return ExitCode::UNSPECIFIED_ERROR;
@@ -239,30 +234,24 @@ class LdapController extends Controller
         return ExitCode::OK;
     }
 
-
     /**
-     * Shows all returned user attributes provided by the LDAP connection.
-     *
-     * @param string $user the username
-     * @param string $id the auth client id (default: ldap)
-     * @return int status code
-     * @since 1.8
+     * Shows all returned LDAP attributes for a given username.
      */
     public function actionShowUser($user, $id = 'ldap')
     {
-        $this->stdout("*** LDAP User Details for \"" . $user . "\" for AuthClient ID: " . $id . "\n\n");
+        $this->stdout("*** LDAP User Details for \"" . $user . "\" - connection: " . $id . "\n\n");
 
         try {
-            $ldapService = LdapService::create($id);
+            $service = $this->getModule()->getConnectionRegistry()->getService($id);
 
-            $dn = $ldapService->getUserDn($user);
+            $dn = $service->getUserDn($user);
             if ($dn === null) {
                 $this->stderr("Error: User or Email not found!\n\n");
                 return ExitCode::UNSPECIFIED_ERROR;
             }
 
             $rows = [];
-            foreach ($ldapService->getEntry($dn) as $name => $value) {
+            foreach ($service->getEntry($dn) as $name => $value) {
                 if (!is_array($value) && LdapHelper::isBinary($value)) {
                     $value = '-Binary-';
                 }
@@ -278,20 +267,33 @@ class LdapController extends Controller
         return ExitCode::OK;
     }
 
-
-    /**
-     * @param $id
-     * @return LdapAuth
-     */
-    protected function getAuthClient($id)
+    private function getModule(): Module
     {
-        /** @var LdapAuth $ldapAuthClient */
-        $ldapAuthClient = Yii::$app->authClientCollection->getClient($id, true);
+        /** @var Module $module */
+        $module = Yii::$app->getModule('ldap');
+        return $module;
+    }
 
-        if (!$ldapAuthClient instanceof LdapAuth) {
-            throw new InvalidArgumentException("The specified ID does not match to a LDAP AuthClient");
+    private function getAuthClient(string $id): LdapAuth
+    {
+        /** @var LdapAuth $client */
+        $client = Yii::$app->authClientCollection->getClient($id, true);
+        if (!$client instanceof LdapAuth) {
+            throw new InvalidArgumentException("The specified ID does not match an LDAP AuthClient");
         }
+        return $client;
+    }
 
-        return $ldapAuthClient;
+    private function getUserSource(string $id): LdapUserSource
+    {
+        $collection = UserSourceService::getCollection();
+        if (!$collection->hasUserSource($id)) {
+            throw new InvalidArgumentException("Unknown LDAP UserSource: '{$id}'");
+        }
+        $source = $collection->getUserSource($id);
+        if (!$source instanceof LdapUserSource) {
+            throw new InvalidArgumentException("UserSource '{$id}' is not an LDAP source");
+        }
+        return $source;
     }
 }

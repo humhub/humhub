@@ -8,23 +8,12 @@
 
 namespace humhub\modules\user\authclient\interfaces;
 
-use humhub\modules\user\models\User;
-
 /**
- * PrimaryClient authclient interface
- *
- * It's not possible to have two primary auth clients at the same time.
- * E.g. LDAP and Password
- *
- * @author luke
+ * @deprecated since 1.16 — register a UserSource with matching ID instead and
+ *   use the user_auth table for non-source-owning auth clients. The interface
+ *   is kept as an empty marker so modules still implementing it don't
+ *   fatal-error; core no longer reads it.
  */
 interface PrimaryClient
 {
-    /**
-     * Returns the user model of this auth client
-     *
-     * @return User
-     * @since 1.2.2
-     */
-    public function getUser();
 }

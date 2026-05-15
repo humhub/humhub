@@ -8,14 +8,12 @@
 
 namespace humhub\modules\user\authclient;
 
-use humhub\modules\user\models\User;
-
 /**
- * Standard password authentication client
+ * Standard password authentication client.
  *
  * @since 1.1
  */
-class Password extends BaseFormAuth implements interfaces\PrimaryClient
+class Password extends BaseFormClient
 {
     /**
      * @inheritdoc
@@ -44,27 +42,16 @@ class Password extends BaseFormAuth implements interfaces\PrimaryClient
     /**
      * @inheritdoc
      */
-    public function auth()
+    public function authenticate(string $username, string $password): bool
     {
         $user = $this->getUserByLogin();
 
-        if ($user !== null && $user->currentPassword !== null && $user->currentPassword->validatePassword($this->login->password)) {
+        if ($user !== null && $user->currentPassword !== null && $user->currentPassword->validatePassword($password)) {
             $this->setUserAttributes(['id' => $user->id]);
             return true;
-        } else {
-            $this->countFailedLoginAttempts();
         }
 
+        $this->countFailedLoginAttempts();
         return false;
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function getUser()
-    {
-        $attributes = $this->getUserAttributes();
-        return User::findOne(['id' => $attributes['id'], 'auth_mode' => $this->getId()]);
-    }
-
 }

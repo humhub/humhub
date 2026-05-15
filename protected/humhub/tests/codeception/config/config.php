@@ -45,11 +45,11 @@ $default = [
 ];
 
 $ldap = [
-    'components' => [
-        'authClientCollection' => [
-            'clients' => [
+    'modules' => [
+        'ldap' => [
+            'connections' => [
                 'ldap' => [
-                    'class' => \humhub\modules\ldap\authclient\LdapAuth::class,
+                    'class' => \humhub\modules\ldap\connection\LdapConnectionConfig::class,
                     'hostname' => getenv('LDAP_TEST_HOST') ?: 'localhost',
                     'port' => (int)(getenv('LDAP_TEST_PORT') ?: 389),
                     'bindUsername' => getenv('LDAP_TEST_BIND_DN') ?: 'cn=admin,dc=example,dc=org',

@@ -4,13 +4,20 @@ namespace humhub\modules\user\models\forms;
 
 use humhub\helpers\DeviceDetectorHelper;
 use humhub\modules\user\assets\UserAsset;
-use humhub\modules\user\authclient\BaseClient;
-use humhub\modules\user\authclient\BaseFormAuth;
+use humhub\modules\user\authclient\BaseFormClient;
 use Yii;
 use yii\base\Model;
 
 /**
- * LoginForm is the model behind the login form.
+ * Single-shot login form — username + password validated together.
+ *
+ * Used by:
+ *  - {@see LoginPassword} (Step 2 of the interactive web flow, via inheritance)
+ *  - third-party integrations that authenticate a user from username + password
+ *    in one call (e.g. CalDAV `HttpBasicAuth` backend, REST `auth/AuthController`)
+ *
+ * The interactive web flow does not instantiate this class directly — it uses
+ * {@see LoginIdentity} (Step 1) and {@see LoginPassword} (Step 2).
  */
 class Login extends Model
 {
@@ -35,7 +42,15 @@ class Login extends Model
     public $hideRememberMe = false;
 
     /**
-     * @var BaseClient auth client used to authenticate
+     * @var bool whether to remember the entered username/email in a cookie so
+     * the user lands directly on Step 2 on the next visit. Only applies to the
+     * Step-2 form (LoginPassword); the base BC-Login does not surface it.
+     * @since 1.19
+     */
+    public $rememberUsername = false;
+
+    /**
+     * @var BaseFormClient auth client used to authenticate
      */
     public $authClient = null;
 
@@ -69,19 +84,22 @@ class Login extends Model
         return [
             'username' => Yii::t('UserModule.auth', 'Username or Email'),
             'password' => Yii::t('UserModule.auth', 'Password'),
-            'rememberMe' => Yii::t('UserModule.auth', 'Remember me'),
+            'rememberMe' => Yii::t('UserModule.auth', 'Keep me signed in'),
+            'rememberUsername' => Yii::t('UserModule.auth', 'Remember username'),
         ];
     }
 
     /**
-     * Validation
+     * Iterates over the configured form-based auth clients and tries each one.
+     * Sets {@see $authClient} on the first successful auth. Adds a generic
+     * "User or Password incorrect" error otherwise — never reveals which side
+     * (username vs password) failed.
      */
     public function afterValidate()
     {
-        // Loop over enabled authclients
         $authClientDelayed = null;
         foreach (Yii::$app->authClientCollection->getClients() as $authClient) {
-            if ($authClient instanceof BaseFormAuth) {
+            if ($authClient instanceof BaseFormClient) {
                 $authClient->login = $this;
 
                 if ($authClient->isDelayedLoginAction()) {
@@ -90,7 +108,7 @@ class Login extends Model
                     break;
                 }
 
-                if ($authClient->auth()) {
+                if ($authClient->authenticate($this->username, $this->password)) {
                     $this->authClient = $authClient;
 
                     // Delete password after successful auth
@@ -104,7 +122,6 @@ class Login extends Model
                 if ($authClient->isDelayedLoginAction()) {
                     $authClientDelayed = $authClient;
                 }
-
             }
         }
 
@@ -125,5 +142,4 @@ class Login extends Model
 
         parent::afterValidate();
     }
-
 }

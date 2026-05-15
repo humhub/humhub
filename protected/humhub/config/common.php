@@ -211,6 +211,10 @@ $config = [
             'class' => \humhub\modules\user\authclient\Collection::class,
             'clients' => [],
         ],
+        'userSourceCollection' => [
+            'class' => \humhub\modules\user\source\UserSourceCollection::class,
+            'userSources' => [],
+        ],
         'queue' => [
             'class' => \humhub\modules\queue\driver\MySQL::class,
         ],

@@ -9,11 +9,11 @@
 namespace humhub\modules\user\authclient\interfaces;
 
 /**
- * ApprovalBypass interface allow automatic user approvals of an authclient.
- * If registration is disabled, users can register via this authclient anyway.
- *
  * @since 1.1
- * @author luke
+ * @deprecated since 1.19 — configure on the UserSource via `$approval` / `$trustedAuthClientIds`
+ *   and have the UserSource list the client in `$allowedAuthClientIds` for trusted
+ *   self-registration. The interface is kept as an empty marker so modules still
+ *   implementing it don't fatal-error; core no longer reads it.
  */
 interface ApprovalBypass
 {

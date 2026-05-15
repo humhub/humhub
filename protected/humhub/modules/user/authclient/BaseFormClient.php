@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\authclient;
 
+use humhub\modules\user\authclient\interfaces\PasswordAuth;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use Yii;
@@ -15,11 +16,15 @@ use yii\base\NotSupportedException;
 use humhub\modules\user\models\forms\Login;
 
 /**
- * BaseFormAuth is a base class for AuthClients using the Login Form
+ * Base class for AuthClients using the Login Form.
+ *
+ * Implements {@see PasswordAuth} so the form path can identify password
+ * clients via a stable marker (rather than the historical class hierarchy).
  *
  * @since 1.1
+ * @since 1.19 — renamed from BaseFormAuth.
  */
-class BaseFormAuth extends BaseClient
+class BaseFormClient extends \yii\authclient\BaseClient implements PasswordAuth
 {
     /**
      * @var Login the login form model
@@ -32,11 +37,18 @@ class BaseFormAuth extends BaseClient
     private $loginUser = null;
 
     /**
-     * Authenticate the user using the login form.
-     *
-     * @throws NotSupportedException
+     * @inheritdoc
      */
-    public function auth()
+    protected function initUserAttributes()
+    {
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * Default throws — concrete subclasses (Password, LdapAuth, …) override.
+     */
+    public function authenticate(string $username, string $password): bool
     {
         throw new NotSupportedException('Method "' . static::class . '::' . __FUNCTION__ . '" not implemented.');
     }
@@ -53,7 +65,7 @@ class BaseFormAuth extends BaseClient
                 ? User::find()
                     ->where(['username' => $this->login->username])
                     ->orWhere(['email' => $this->login->username])
-                    ->andWhere(['auth_mode' => $this->id])
+                    ->andWhere(['user_source' => $this->id])
                     ->one()
                 : null;
         }

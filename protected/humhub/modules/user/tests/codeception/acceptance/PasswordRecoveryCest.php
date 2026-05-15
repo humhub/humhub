@@ -12,7 +12,8 @@ class PasswordRecoveryCest
         $I->wantTo('ensure that password recovery works');
 
         $I->amGoingTo('request a recovery mail for an invalid user email and wrong captcha');
-        LoginPage::openBy($I);
+        $loginPage = LoginPage::openBy($I);
+        $loginPage->openPasswordStep('admin');
         $I->wait(3);
         $I->waitForText('Forgot your password?');
         $I->jsClick('#password-recovery-link');
@@ -33,7 +34,8 @@ class PasswordRecoveryCest
         $I->see('If a user account associated with this email address exists, further instructions will be sent to you by email shortly.');
 
         $I->amGoingTo('request a recovery mail with valid data');
-        LoginPage::openBy($I);
+        $loginPage = LoginPage::openBy($I);
+        $loginPage->openPasswordStep('admin');
         $I->wait(3);
         $I->waitForText('Forgot your password?');
         $I->jsClick('#password-recovery-link');
