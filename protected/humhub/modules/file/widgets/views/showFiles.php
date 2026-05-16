@@ -47,6 +47,8 @@ if ($nbFiles === 2) {
 }
 $fullWidthColumnClass = 'col-media col-12';
 $galleryColumnClass = 'col-media col-' . $bsColumns . ' col-lg-' . $bsColumnsMd . ' col-xl-' . $bsColumnsLg;
+$postFilesClass = 'post-files d-flex flex-wrap' . (!empty($videos) ? ' post-files-video' : '');
+$videoColumnClass = 'col-media col-video';
 ?>
 
 <?php if ($nbFiles > 0): ?>
@@ -54,7 +56,7 @@ $galleryColumnClass = 'col-media col-' . $bsColumns . ' col-lg-' . $bsColumnsMd 
     <div class="hideOnEdit">
         <!-- Show Images as Thumbnails -->
         <?php if ($showPreview): ?>
-            <div class="post-files d-flex flex-wrap" id="post-files-<?= $object->getUniqueId() ?>">
+            <div class="<?= $postFilesClass ?>" id="post-files-<?= $object->getUniqueId() ?>">
                 <?php if (!empty($audios)): ?>
                     <div class="<?= $fullWidthColumnClass ?>">
                         <?= JPlayerPlaylistWidget::widget(['playlist' => $audios]) ?>
@@ -63,7 +65,7 @@ $galleryColumnClass = 'col-media col-' . $bsColumns . ' col-lg-' . $bsColumnsMd 
 
                 <?php foreach ($videos as $video): ?>
                     <?php if (FileHelper::getExtension($video->file_name) === 'webm'): ?>
-                        <div class="<?= $fullWidthColumnClass ?>">
+                        <div class="<?= $videoColumnClass ?>">
                             <a data-ui-gallery="<?= 'gallery-' . $object->getUniqueId() ?>"
                                href="<?= $video->getUrl(); ?>#.webm" title="<?= Html::encode($video->file_name) ?>">
                                 <video src="<?= $video->getUrl() ?>#t=0.001" type="video/webm" controls
@@ -71,7 +73,7 @@ $galleryColumnClass = 'col-media col-' . $bsColumns . ' col-lg-' . $bsColumnsMd 
                             </a>
                         </div>
                     <?php elseif (FileHelper::getExtension($video->file_name) === 'mp4'): ?>
-                        <div class="<?= $fullWidthColumnClass ?>">
+                        <div class="<?= $videoColumnClass ?>">
                             <a data-ui-gallery="<?= 'gallery-' . $object->getUniqueId() ?>"
                                href="<?= $video->getUrl(); ?>#.mp4" title="<?= Html::encode($video->file_name) ?>">
                                 <video src="<?= $video->getUrl() ?>#t=0.001" type="video/mp4" controls
@@ -79,7 +81,7 @@ $galleryColumnClass = 'col-media col-' . $bsColumns . ' col-lg-' . $bsColumnsMd 
                             </a>
                         </div>
                     <?php elseif (FileHelper::getExtension($video->file_name) === 'ogv'): ?>
-                        <div class="<?= $fullWidthColumnClass ?>">
+                        <div class="<?= $videoColumnClass ?>">
                             <a data-ui-gallery="<?= 'gallery-' . $object->getUniqueId() ?>"
                                href="<?= $video->getUrl(); ?>#.ogv" title="<?= Html::encode($video->file_name) ?>">
                                 <video src="<?= $video->getUrl() ?>#t=0.001" type="video/ogg" controls
@@ -87,7 +89,7 @@ $galleryColumnClass = 'col-media col-' . $bsColumns . ' col-lg-' . $bsColumnsMd 
                             </a>
                         </div>
                     <?php elseif (FileHelper::getExtension($video->file_name) === 'mov'): ?>
-                        <div class="<?= $fullWidthColumnClass ?>">
+                        <div class="<?= $videoColumnClass ?>">
                             <a data-ui-gallery="<?= 'gallery-' . $object->getUniqueId() ?>"
                                href="<?= $video->getUrl(); ?>#.mov" title="<?= Html::encode($video->file_name) ?>">
                                 <video src="<?= $video->getUrl() ?>#t=0.001" type="video/quicktime" controls
