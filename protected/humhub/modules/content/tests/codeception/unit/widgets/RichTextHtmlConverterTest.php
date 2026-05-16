@@ -250,6 +250,82 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
     }
 
     /*
+     * Videos
+     */
+
+    public function testConvertVideoToHtml()
+    {
+        $this->assertConversionResult(
+            'Test ![Video title](https://www.humhub.com/static/sample.mp4 video)',
+            '<p>Test <video src="https://www.humhub.com/static/sample.mp4" title="Video title"></video></p>',
+        );
+    }
+
+    public function testConvertVideoAsLink()
+    {
+        $this->assertConversionResult(
+            'Test ![Video title](https://www.humhub.com/static/sample.mp4 video)',
+            '<p>Test <a href="https://www.humhub.com/static/sample.mp4" target="_blank" rel="nofollow noreferrer noopener">Video title</a></p>',
+            [BaseRichTextConverter::OPTION_IMAGE_AS_LINK => true],
+        );
+    }
+
+    public function testConvertVideoAsText()
+    {
+        $this->assertConversionResult(
+            'Test ![Video title](https://www.humhub.com/static/sample.mp4 video)',
+            '<p>Test Video title</p>',
+            [BaseRichTextConverter::OPTION_IMAGE_AS_LINK => true, BaseRichTextConverter::OPTION_LINK_AS_TEXT => true],
+        );
+    }
+
+    public function testConvertVideoWithAllOptions()
+    {
+        $this->assertConversionResult(
+            'Test ![Video title><](http://localhost/static/sample.mp4 video controls autoplay muted loop =320x240)',
+            '<p>Test <video class="d-block mx-auto" src="http://localhost/static/sample.mp4" width="320" height="240" title="Video title" controls autoplay muted loop></video></p>',
+        );
+    }
+
+    /*
+     * Audios
+     */
+
+    public function testConvertAudioToHtml()
+    {
+        $this->assertConversionResult(
+            'Test ![Audio title](https://www.humhub.com/static/sample.mp3 audio)',
+            '<p>Test <audio src="https://www.humhub.com/static/sample.mp3" title="Audio title"></audio></p>',
+        );
+    }
+
+    public function testConvertAudioAsLink()
+    {
+        $this->assertConversionResult(
+            'Test ![Audio title](https://www.humhub.com/static/sample.mp3 audio)',
+            '<p>Test <a href="https://www.humhub.com/static/sample.mp3" target="_blank" rel="nofollow noreferrer noopener">Audio title</a></p>',
+            [BaseRichTextConverter::OPTION_IMAGE_AS_LINK => true],
+        );
+    }
+
+    public function testConvertAudioAsText()
+    {
+        $this->assertConversionResult(
+            'Test ![Audio title](https://www.humhub.com/static/sample.mp3 audio)',
+            '<p>Test Audio title</p>',
+            [BaseRichTextConverter::OPTION_IMAGE_AS_LINK => true, BaseRichTextConverter::OPTION_LINK_AS_TEXT => true],
+        );
+    }
+
+    public function testConvertAudioWithAllOptions()
+    {
+        $this->assertConversionResult(
+            'Test ![Audio title><](http://localhost/static/sample.mp3 audio controls autoplay muted loop)',
+            '<p>Test <audio class="d-block mx-auto" src="http://localhost/static/sample.mp3" title="Audio title" controls autoplay muted loop></audio></p>',
+        );
+    }
+
+    /*
      * Emoji
      */
 

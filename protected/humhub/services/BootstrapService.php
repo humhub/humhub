@@ -42,6 +42,10 @@ final class BootstrapService
 
     public function getConfig($mode = 'web'): array
     {
+        $appClass = $mode === 'console'
+            ? \humhub\components\console\Application::class
+            : \humhub\components\Application::class;
+
         $humhubConfig = [
             require($this->humhubPath . '/config/common.php'),
             require($this->humhubPath . '/config/' . $mode . '.php'),
@@ -49,7 +53,6 @@ final class BootstrapService
 
         $commonConfig = [
             require($this->configPath . '/common.php'),
-            require($this->configPath . '/' . $mode . '.php'),
             require($this->configPath . '/' . $mode . '.php'),
         ];
 
@@ -60,7 +63,7 @@ final class BootstrapService
             ->setHumhub(...$humhubConfig)
             ->setDynamic($dynamicConfig)
             ->setCommon(...$commonConfig)
-            ->setEnv(EnvHelper::toConfig($_ENV, \humhub\components\console\Application::class))
+            ->setEnv(EnvHelper::toConfig($_ENV, $appClass))
             ->toArray();
     }
 
