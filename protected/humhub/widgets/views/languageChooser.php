@@ -7,7 +7,6 @@ use humhub\models\forms\ChooseLanguage;
  * @var $languages array
  * @var $model ChooseLanguage
  * @var $vertical bool
- * @var $hideLabel bool
  */
 
 if (count($languages) <= 1) {
@@ -29,9 +28,6 @@ $wrapperClasses = $vertical ? 'd-flex justify-content-center w-100' : 'd-inline-
            data-bs-auto-close="outside"
            data-bs-display="static"
            aria-expanded="false">
-            <?php if (!$hideLabel): ?>
-                <span class="me-1"><?= Yii::t('base', 'Choose language:') ?></span>
-            <?php endif; ?>
             <i class="fa fa-globe" aria-hidden="true"></i>
             <span class="language-chooser-current"><?= Html::encode($currentLabel) ?></span>
         </a>

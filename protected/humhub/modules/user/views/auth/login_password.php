@@ -98,7 +98,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 
     <br>
 
-    <?= LanguageChooser::widget(['vertical' => true, 'hideLabel' => true]) ?>
+    <?= LanguageChooser::widget(['vertical' => true]) ?>
 </div>
 
 <script <?= Html::nonce() ?>>
