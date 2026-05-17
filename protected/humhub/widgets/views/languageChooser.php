@@ -27,6 +27,7 @@ $wrapperClasses = $vertical ? 'd-flex justify-content-center w-100' : 'd-inline-
            role="button"
            data-bs-toggle="dropdown"
            data-bs-auto-close="outside"
+           data-bs-display="static"
            aria-expanded="false">
             <?php if (!$hideLabel): ?>
                 <span class="me-1"><?= Yii::t('base', 'Choose language:') ?></span>
@@ -73,6 +74,31 @@ $wrapperClasses = $vertical ? 'd-flex justify-content-center w-100' : 'd-inline-
         var search = wrapper.querySelector('.language-chooser-search');
         var items = wrapper.querySelectorAll('.language-chooser-item');
         var empty = wrapper.querySelector('.language-chooser-empty');
+
+        var menuEl = wrapper.querySelector('.language-chooser-menu');
+
+        wrapper.addEventListener('show.bs.dropdown', function () {
+            // Flip up when there isn't enough space below the toggle.
+            wrapper.classList.remove('dropup');
+            if (!menuEl) {
+                return;
+            }
+            var toggle = wrapper.querySelector('.language-chooser-toggle');
+            if (!toggle) {
+                return;
+            }
+            var rect = toggle.getBoundingClientRect();
+            // Measure menu height by briefly rendering it off-screen.
+            menuEl.style.visibility = 'hidden';
+            menuEl.style.display = 'block';
+            var menuHeight = menuEl.offsetHeight;
+            menuEl.style.display = '';
+            menuEl.style.visibility = '';
+            var spaceBelow = window.innerHeight - rect.bottom;
+            if (spaceBelow < menuHeight && rect.top > spaceBelow) {
+                wrapper.classList.add('dropup');
+            }
+        });
 
         wrapper.addEventListener('shown.bs.dropdown', function () {
             if (search) {

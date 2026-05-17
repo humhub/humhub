@@ -112,9 +112,16 @@
 }
 
 .language-chooser {
+    .dropdown {
+        position: relative;
+    }
+
     .language-chooser-menu {
         width: 280px;
         max-width: calc(100vw - 30px);
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
 
         .language-chooser-list {
             max-height: 240px;
