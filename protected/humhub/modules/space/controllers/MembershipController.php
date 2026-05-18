@@ -308,7 +308,7 @@ class MembershipController extends ContentContainerController
      */
     public function actionMembersList()
     {
-        if (!$this->canViewMembers()) {
+        if (!$this->space->canViewMembers()) {
             throw new HttpException(403);
         }
 
@@ -345,15 +345,5 @@ class MembershipController extends ContentContainerController
         }
 
         return $this->redirect($this->request->getReferrer());
-    }
-
-    private function canViewMembers(): bool
-    {
-        if ($this->space->getAdvancedSettings()->hideMembers) {
-            $membership = $this->space->getMembership();
-            return $membership->isPrivileged() ?? false;
-        }
-
-        return true;
     }
 }
