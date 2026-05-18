@@ -22,6 +22,7 @@ HumHub Changelog
 - Fix: SingleLogout — always clear the local Yii identity in `AuthController::actionLogout()`, even when the AuthClient short-circuits with an SLO redirect. The user is now locally logged out at the moment they leave HumHub, regardless of whether the IdP ever redirects back (e.g. front-channel iframe SLO setups).
 - Enh #8147: Sort modules alphabetically in admin module list
 - Fix: Auto-flush cache when database schema is missing (recovers from dev DB wipes that left a stale `InstallationState=INSTALLED` cache entry)
+- Enh: View overrides via `components.view.theme.pathMap` in `common.php` — per-file (`.php` key) and directory entries supported; mapping survives runtime theme switches
 
 1.18.3 (TBD)
 ------------

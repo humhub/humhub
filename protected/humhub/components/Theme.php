@@ -12,6 +12,7 @@ use humhub\assets\CoreBundleAsset;
 use humhub\helpers\ThemeHelper;
 use Yii;
 use yii\base\Theme as BaseTheme;
+use yii\helpers\FileHelper;
 
 /**
  * Theme represents a HumHub theme.
@@ -77,6 +78,11 @@ class Theme extends BaseTheme
      * @var Theme[] the parent themes
      */
     protected $parents;
+
+    /**
+     * @var bool
+     */
+    private bool $pathMapInitialized = false;
 
 
     /**
@@ -163,10 +169,32 @@ class Theme extends BaseTheme
 
     /**
      * @inheritdoc
+     *
+     * In addition to the standard Yii2 directory-based [[pathMap]] entries, this
+     * implementation also accepts per-file overrides. Any [[pathMap]] key ending
+     * in `.php` is treated as an exact source-file path; the value (or values,
+     * if an array) is the override file used in its place. Both keys and values
+     * may use Yii path aliases.
+     *
+     * Example:
+     *
+     * ```php
+     * 'pathMap' => [
+     *     // per-file override
+     *     '@humhub/modules/user/views/auth/login.php' => '@config/views/login.php',
+     *     // directory override (Yii2 default behaviour)
+     *     '@humhub/modules/space/widgets/views' => '@config/views/space-widgets',
+     * ],
+     * ```
      */
     public function applyTo($path)
     {
         $this->initPathMap();
+
+        $resolved = $this->resolveFromPathMap($path);
+        if ($resolved !== null) {
+            return $resolved;
+        }
 
         $translated = $this->views->translate($path);
         if ($translated !== null) {
@@ -181,21 +209,81 @@ class Theme extends BaseTheme
             }
         }
 
-        return parent::applyTo($path);
+        return $path;
     }
 
     /**
-     * Initialize the default view path map including all parent themes
+     * Resolves a view file through [[pathMap]], supporting both per-file
+     * (`.php` keys, exact match) and directory-prefix entries in the same map.
+     * Returns the override file path if one matches and exists, otherwise null.
+     *
+     * @since 1.19
+     */
+    protected function resolveFromPathMap(string $path): ?string
+    {
+        if (empty($this->pathMap)) {
+            return null;
+        }
+
+        $normalized = FileHelper::normalizePath($path);
+
+        foreach ($this->pathMap as $from => $tos) {
+            $fromResolved = FileHelper::normalizePath(Yii::getAlias($from));
+
+            // Per-file entry: keyed by an exact .php path
+            if (str_ends_with($fromResolved, '.php')) {
+                if ($fromResolved !== $normalized) {
+                    continue;
+                }
+                foreach ((array) $tos as $to) {
+                    $resolved = Yii::getAlias($to);
+                    if (is_file($resolved)) {
+                        return $resolved;
+                    }
+                }
+                continue;
+            }
+
+            // Directory entry: prefix substitution (Yii2 default behaviour)
+            $fromDir = $fromResolved . DIRECTORY_SEPARATOR;
+            if (strpos($normalized, $fromDir) !== 0) {
+                continue;
+            }
+            $rest = substr($normalized, strlen($fromDir));
+            foreach ((array) $tos as $to) {
+                $file = FileHelper::normalizePath(Yii::getAlias($to)) . DIRECTORY_SEPARATOR . $rest;
+                if (is_file($file)) {
+                    return $file;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Ensures the default `@humhub/views` mapping is present in [[pathMap]],
+     * merging with any user-supplied entries so that explicit overrides take
+     * precedence over the active theme's view directory.
      */
     protected function initPathMap()
     {
-        if ($this->pathMap === null) {
-            $this->pathMap = ['@humhub/views' => [$this->getBasePath() . '/views']];
-
-            foreach ($this->getParents() as $theme) {
-                $this->pathMap['@humhub/views'][] = $theme->getBasePath() . '/views';
-            }
+        if ($this->pathMapInitialized) {
+            return;
         }
+        $this->pathMapInitialized = true;
+
+        if ($this->pathMap === null) {
+            $this->pathMap = [];
+        }
+
+        $defaultViewPaths = [$this->getBasePath() . '/views'];
+        foreach ($this->getParents() as $theme) {
+            $defaultViewPaths[] = $theme->getBasePath() . '/views';
+        }
+
+        $existing = (array) ($this->pathMap['@humhub/views'] ?? []);
+        $this->pathMap['@humhub/views'] = array_merge($existing, $defaultViewPaths);
     }
 
     /**
