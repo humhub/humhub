@@ -14,7 +14,12 @@ use humhub\widgets\JPlayerPlaylistWidget;
 /* @var  $excludeMediaFilesPreview bool */
 /* @var  $showPreview bool */
 
-$videoExtensions = ['webm', 'mp4', 'ogv', 'mov'];
+$videoTypes = [
+    'webm' => 'video/webm',
+    'mp4' => 'video/mp4',
+    'ogv' => 'video/ogg',
+    'mov' => 'video/quicktime',
+];
 $images = [];
 $videos = [];
 $audios = [];
@@ -22,7 +27,7 @@ $audios = [];
 foreach ($files as $file) {
     if ($previewImage->applyFile($file)) {
         $images[] = $file;
-    } elseif (in_array(FileHelper::getExtension($file->file_name), $videoExtensions, true)) {
+    } elseif (array_key_exists(FileHelper::getExtension($file->file_name), $videoTypes)) {
         $videos[] = $file;
     } elseif (FileHelper::getExtension($file->file_name) === 'mp3') {
         $audios[] = $file;
@@ -55,15 +60,6 @@ $getColumnClass = static function (int $nbFiles, bool $enlarge = false) use ($is
 
     return 'col-media col-' . $bsColumns . ' col-lg-' . $bsColumnsMd . ' col-xl-' . $bsColumnsLg;
 };
-
-
-
-$videoTypes = [
-    'webm' => 'video/webm',
-    'mp4' => 'video/mp4',
-    'ogv' => 'video/ogg',
-    'mov' => 'video/quicktime',
-];
 ?>
 
 <?php if ($files): ?>
