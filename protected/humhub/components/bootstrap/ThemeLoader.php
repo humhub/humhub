@@ -43,7 +43,7 @@ class ThemeLoader implements BootstrapInterface
                 $theme = ThemeHelper::getThemeByPath($themePath);
 
                 if ($theme !== null) {
-                    self::inheritUserConfig($app->view->theme, $theme);
+                    self::mergeConfiguredPathMap($app->view->theme, $theme);
                     $app->view->theme = $theme;
                     $app->mailer->view->theme = $theme;
                 }
@@ -61,14 +61,14 @@ class ThemeLoader implements BootstrapInterface
     }
 
     /**
-     * Carries the user-configured `pathMap` from the statically configured
-     * theme (e.g. `components.view.theme.pathMap` in `common.php`) over to the
-     * dynamically loaded active theme, so explicit view overrides survive the
-     * runtime theme switch.
+     * Carries the `pathMap` from the statically configured theme (e.g.
+     * `components.view.theme.pathMap` in `common.php`) over to the dynamically
+     * loaded active theme, so explicit view overrides survive the runtime
+     * theme switch.
      *
      * @since 1.19
      */
-    private static function inheritUserConfig(?BaseTheme $configured, BaseTheme $active): void
+    private static function mergeConfiguredPathMap(?BaseTheme $configured, BaseTheme $active): void
     {
         if ($configured === null || empty($configured->pathMap)) {
             return;

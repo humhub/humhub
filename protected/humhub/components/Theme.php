@@ -219,7 +219,7 @@ class Theme extends BaseTheme
      *
      * @since 1.19
      */
-    protected function resolveFromPathMap(string $path): ?string
+    private function resolveFromPathMap(string $path): ?string
     {
         if (empty($this->pathMap)) {
             return null;
