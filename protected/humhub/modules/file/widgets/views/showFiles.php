@@ -36,9 +36,6 @@ $isFluid = ThemeHelper::isFluid();
 $bsColumns = 6;
 $bsColumnsMd = $isFluid ? 4 : 6;
 $bsColumnsLg = $isFluid ? 3 : 4;
-if ($videos) {
-    $bsColumnsLg = $isFluid ? 4 : 6;
-}
 if ($nbFiles === 1) {
     $bsColumns = 12;
     $bsColumnsMd = $isFluid ? 6 : 12;
@@ -47,6 +44,13 @@ if ($nbFiles === 1) {
 if ($nbFiles === 2) {
     $bsColumnsMd = 6;
     $bsColumnsLg = $isFluid ? 4 : 6;
+}
+if ($videos) {
+    // When media contains videos, make the previews bigger
+    $bsColumnsLg = $isFluid ? 4 : 6;
+    if ($nbFiles === 1) {
+        $bsColumnsLg = 12;
+    }
 }
 $fullWidthColumnClass = 'col-media col-12';
 $galleryColumnClass = 'col-media col-' . $bsColumns . ' col-lg-' . $bsColumnsMd . ' col-xl-' . $bsColumnsLg;
