@@ -36,6 +36,7 @@ HumHub Changelog
 - Fix #8145: Preserve login return URL for PJAX requests
 - Fix #8144: Restrict file view action
 - Fix #8148: Yii2 2.0.55 compatibility
+- Fix #8163: Fix remove all space members permission
 
 1.18.2 (March 22, 2026)
 -----------------------
