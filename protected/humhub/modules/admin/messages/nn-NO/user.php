@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'Disabled' => 'Funksjonshemmet',
+    'Deactivated' => 'Funksjonshemmet',
     'Last login' => 'Siste innlogging',
     'Settings' => 'Innstillinger',
     '<strong>Information</strong>' => '',
@@ -83,7 +83,7 @@ return [
     'Deleted invitation' => '',
     'Deleted users' => '',
     'Disable' => '',
-    'Disabled users' => '',
+    'Deactivated users' => '',
     'Do not change placeholders like {displayName} if you want them to be automatically filled by the system. To reset the email content fields with the system default, leave them empty.' => '',
     'Do you really want to delete pending registrations?' => '',
     'Do you really want to re-send the invitations to pending registration users?' => '',

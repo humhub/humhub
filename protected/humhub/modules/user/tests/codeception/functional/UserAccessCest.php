@@ -22,7 +22,7 @@ class UserAccessCest
         $I->amGoingTo('to deactivate the current user');
 
         $user = User::findOne(3);
-        $user->status = User::STATUS_DISABLED;
+        $user->status = User::STATUS_DEACTIVATED;
         $user->save();
 
         $I->amOnRoute('/dashboard/dashboard');

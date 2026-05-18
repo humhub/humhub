@@ -171,7 +171,7 @@ class LdapSyncTest extends HumHubDbTestCase
 
         $ghostUser->refresh();
         $this->assertSame(
-            User::STATUS_DISABLED,
+            User::STATUS_DEACTIVATED,
             $ghostUser->status,
             'User with no matching LDAP entry should be disabled after sync.',
         );
@@ -189,9 +189,9 @@ class LdapSyncTest extends HumHubDbTestCase
         $john = User::findOne(['email' => 'john@example.org']);
         $this->assertNotNull($john);
 
-        $john->status = User::STATUS_DISABLED;
+        $john->status = User::STATUS_DEACTIVATED;
         $john->save(false);
-        $this->assertSame(User::STATUS_DISABLED, $john->status);
+        $this->assertSame(User::STATUS_DEACTIVATED, $john->status);
 
         $this->ldapUserSource->syncUsers();
 
