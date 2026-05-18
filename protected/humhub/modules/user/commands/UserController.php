@@ -162,7 +162,7 @@ class UserController extends Controller
 
     public function actionDeleteDisabled(array $exceptUserIds = [])
     {
-        $query = User::find()->where(['status' => User::STATUS_DISABLED])->andWhere(['not in', 'id', $exceptUserIds]);
+        $query = User::find()->where(['status' => User::STATUS_DEACTIVATED])->andWhere(['not in', 'id', $exceptUserIds]);
         $users = array_map(fn($user) => ['id' => $user->id, 'username' => $user->username, 'email' => $user->email], $query->all());
 
         if (count($users) === 0) {

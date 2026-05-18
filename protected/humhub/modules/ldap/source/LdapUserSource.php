@@ -472,7 +472,7 @@ class LdapUserSource extends BaseUserSource
 
             $foundInLdap = $ldapId !== null && in_array($ldapId, $ldapIds, true);
 
-            if ($foundInLdap && $user->status === User::STATUS_DISABLED) {
+            if ($foundInLdap && $user->status === User::STATUS_DEACTIVATED) {
                 $this->enableUser($user);
                 Yii::info(
                     'Enabled user: ' . $user->username . ' (' . $user->id . ') - Found in LDAP!',
