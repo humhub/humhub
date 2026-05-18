@@ -9,7 +9,7 @@
 namespace humhub\modules\user\grid;
 
 use humhub\helpers\Html;
-use humhub\modules\user\authclient\Collection;
+use humhub\modules\user\source\UserSourceCollection;
 use Yii;
 
 /**
@@ -44,10 +44,10 @@ class DisplayNameColumn extends BaseColumn
 
         $badge = '';
         if ($user->user_source !== 'local' && Yii::$app->user->isAdmin()) {
-            /** @var Collection $collection */
-            $collection = Yii::$app->authClientCollection;
-            $title = $collection->hasClient($user->user_source)
-                ? $collection->getClient($user->user_source)->getTitle()
+            /** @var UserSourceCollection $collection */
+            $collection = Yii::$app->userSourceCollection;
+            $title = $collection->hasUserSource($user->user_source)
+                ? $collection->getUserSource($user->user_source)->getTitle()
                 : $user->user_source;
             $badge = '&nbsp;<span class="badge">' . Html::encode($title) . '</span>';
         }
