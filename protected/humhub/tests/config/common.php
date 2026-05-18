@@ -40,7 +40,7 @@ return [
         ],
         'cache' => [
             'class' => \yii\caching\FileCache::class,
-            'cachePath' => '@runtime/cache/tests',
+            'cachePath' => '@runtime/cache-tests',
         ],
     ],
     'params' => [
