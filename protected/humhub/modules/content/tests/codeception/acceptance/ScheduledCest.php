@@ -63,6 +63,7 @@ class ScheduledCest
         $I->waitForText('Scheduling Options', 10, '#globalModal');
         if ($datetime instanceof DateTime) {
             $I->checkOption('#scheduleoptionsform-enabled');
+            $I->waitForJS("return !$('input[name=\"ScheduleOptionsForm[date]\"]').prop('readonly');", 5);
             $I->fillField('ScheduleOptionsForm[date]', Yii::$app->formatter->asDate($datetime, self::DATE_FORMAT));
             $I->fillField('ScheduleOptionsForm[time]', Yii::$app->formatter->asTime($datetime, self::DATE_FORMAT));
             $I->click('.field-scheduleoptionsform-time');// to unfocus a datepicker in order to make the "Save" button visible
