@@ -79,7 +79,7 @@ return [
   'Deleted invitation' => '',
   'Deleted users' => '',
   'Disable' => '비활성화',
-  'Deactivated' => '장애가있는',
+  'Deactivated' => '',
   'Deactivated users' => '',
   'Do not change placeholders like {displayName} if you want them to be automatically filled by the system. To reset the email content fields with the system default, leave them empty.' => '',
   'Do you really want to delete pending registrations?' => '',

@@ -3,7 +3,7 @@
 return [
     'Allow' => 'Otorize',
     'Default' => 'Defo',
-    'Deactivated' => 'Andikape',
+    'Deactivated' => '',
     'Last login' => 'Dènye koneksyon',
     'Save' => 'Sere',
     'Settings' => 'Anviwònman',

@@ -8,7 +8,7 @@ return [
     'Default' => 'ברירת מחדל',
     'Delete' => 'מחק',
     'Disable' => 'בטל',
-    'Deactivated' => 'נָכֶה',
+    'Deactivated' => '',
     'Edit' => 'עריכה',
     'Enable' => 'פעיל',
     'Enabled' => 'הופעל',

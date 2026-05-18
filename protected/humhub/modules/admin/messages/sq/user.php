@@ -5,7 +5,7 @@ return [
     'Default' => 'E paracaktuar',
     'Delete' => 'Fshij',
     'Disable' => 'Çaktivizo',
-    'Deactivated' => 'me aftësi të kufizuara',
+    'Deactivated' => '',
     'Edit' => 'Ndrysho',
     'Enable' => 'Aktivizoni',
     'Groups' => 'Grupet',

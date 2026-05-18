@@ -14,7 +14,7 @@ return [
     'Default' => 'Bawaan',
     'Delete' => 'Hapus',
     'Disable' => 'Matikan',
-    'Deactivated' => 'Dengan disabilitas',
+    'Deactivated' => '',
     'Edit' => 'Ubah',
     'Enable' => 'Aktifkan',
     'Groups' => 'Grup',

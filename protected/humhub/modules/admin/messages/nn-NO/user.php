@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'Deactivated' => 'Funksjonshemmet',
+    'Deactivated' => '',
     'Last login' => 'Siste innlogging',
     'Settings' => 'Innstillinger',
     '<strong>Information</strong>' => '',
