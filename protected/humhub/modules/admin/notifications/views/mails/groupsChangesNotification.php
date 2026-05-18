@@ -14,9 +14,8 @@ use humhub\widgets\mails\MailButtonList;
 /* @var $this View */
 /* @var $viewable BaseNotification */
 /* @var $url string */
-/* @var $_params_ array */
 ?>
-<?php $this->beginContent('@notification/views/layouts/mail.php', $_params_) ?>
+<?php $this->beginContent('@notification/views/layouts/mail.php') ?>
     <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
         <tr>
             <td style="font-size: 14px; line-height: 22px; font-family:<?= MailStyleHelper::getFontFamily() ?>; color:<?= MailStyleHelper::getTextColorMain() ?>; font-weight:300; text-align:center">

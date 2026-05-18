@@ -25,6 +25,7 @@ HumHub Changelog
 - Enh #8122: Update PHPspreadsheet
 - Enh #8112: Update Mobile-Detect library to 4.10.0
 - Fix #8125: Show oEmbed warning only for supported embed URLs
+- Enh #8131: Support video and audio tags by RichText converters
 - Fix #8134: Revert "Improve `<p>` style in RichText editor"
 - Fix #8133: Rebuild search index after file updating
 - Fix #8132: Improve RichText styles in email message
@@ -35,6 +36,9 @@ HumHub Changelog
 - Fix #8145: Preserve login return URL for PJAX requests
 - Fix #8144: Restrict file view action
 - Enh #8156: Enhance behavior for vertical videos and multiple video attachments
+- Fix #8148: Yii2 2.0.55 compatibility
+- Fix #8163: Fix remove all space members permission
+- Fix #8164: Fix space members list visibility
 
 1.18.2 (March 22, 2026)
 -----------------------
