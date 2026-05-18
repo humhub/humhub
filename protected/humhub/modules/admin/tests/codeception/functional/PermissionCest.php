@@ -106,12 +106,12 @@ class PermissionCest
         $I->setGroupPermission(3, new ManageUsers());
 
         $admin = User::findOne(['username' => 'Admin']);
-        $admin->status = User::STATUS_DISABLED;
+        $admin->status = User::STATUS_DEACTIVATED;
         $admin->save(false);
 
         $I->sendAjaxPostRequest(Url::toRoute(['/admin/user/enable', 'id' => $admin->id]));
         $I->seeResponseCodeIs(403);
-        $I->seeRecord(User::class, ['id' => $admin->id, 'status' => User::STATUS_DISABLED]);
+        $I->seeRecord(User::class, ['id' => $admin->id, 'status' => User::STATUS_DEACTIVATED]);
     }
 
     public function testManageUsersCanEnableDisabledNonAdminUser(FunctionalTester $I)
@@ -122,7 +122,7 @@ class PermissionCest
         $I->setGroupPermission(3, new ManageUsers());
 
         $user = User::findOne(['username' => 'User1']);
-        $user->status = User::STATUS_DISABLED;
+        $user->status = User::STATUS_DEACTIVATED;
         $user->save(false);
 
         $I->sendAjaxPostRequest(Url::toRoute(['/admin/user/enable', 'id' => $user->id]));

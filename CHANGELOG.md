@@ -23,6 +23,7 @@ HumHub Changelog
 - Enh #8147: Sort modules alphabetically in admin module list
 - Fix: Auto-flush cache when database schema is missing (recovers from dev DB wipes that left a stale `InstallationState=INSTALLED` cache entry)
 - Enh: View overrides via `components.view.theme.pathMap` in `common.php` — per-file (`.php` key) and directory entries supported; mapping survives runtime theme switches
+- Enh #8165: Rename `User::STATUS_DISABLED` to `STATUS_DEACTIVATED` (deprecated alias kept); i18n labels `Disabled` / `Disabled users` renamed accordingly
 
 1.18.3 (TBD)
 ------------

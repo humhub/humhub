@@ -59,7 +59,7 @@ trait HumHubHelperTrait
     protected static function flushCache(?string $caller = null)
     {
         codecept_debug(sprintf('[%s] Flushing cache', $caller ?? __METHOD__));
-        $cachePath = Yii::getAlias('@runtime/cache');
+        $cachePath = Yii::$app->cache->cachePath;
         if ($cachePath && is_dir($cachePath)) {
             FileHelper::removeDirectory($cachePath);
             FileHelper::createDirectory($cachePath);

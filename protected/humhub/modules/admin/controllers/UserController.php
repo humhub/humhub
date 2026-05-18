@@ -384,7 +384,7 @@ class UserController extends Controller
 
         $this->checkUserAccess($user);
 
-        $user->status = User::STATUS_DISABLED;
+        $user->status = User::STATUS_DEACTIVATED;
         $user->save();
 
         return $this->redirect(['list']);

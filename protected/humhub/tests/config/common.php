@@ -38,6 +38,10 @@ return [
         'captcha' => [
             'class' => \humhub\components\captcha\YiiCaptcha::class,
         ],
+        'cache' => [
+            'class' => \yii\caching\FileCache::class,
+            'cachePath' => '@runtime/cache-tests',
+        ],
     ],
     'params' => [
         'installed' => true,

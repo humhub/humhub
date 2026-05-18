@@ -260,7 +260,7 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
     public function testUserDoesNotSeeContentOfDisabledProfileWithIncludeAll()
     {
         $this->enableAutoIncludeProfilePostsAll();
-        $this->assertUserDoesNotSeeProfileContent(User::VISIBILITY_ALL, Content::VISIBILITY_PUBLIC, null, User::STATUS_DISABLED);
+        $this->assertUserDoesNotSeeProfileContent(User::VISIBILITY_ALL, Content::VISIBILITY_PUBLIC, null, User::STATUS_DEACTIVATED);
     }
 
 
@@ -318,7 +318,7 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
     public function testAdminDoesNotSeeContentOnDisabledProfileWithIncludeAdminOnly()
     {
         $this->enableAutoIncludeProfilePostsAdmin();
-        $this->assertUserDoesNotSeeProfileContent(User::VISIBILITY_ALL, Content::VISIBILITY_PUBLIC, User::findOne(['id' => 1]), User::STATUS_DISABLED);
+        $this->assertUserDoesNotSeeProfileContent(User::VISIBILITY_ALL, Content::VISIBILITY_PUBLIC, User::findOne(['id' => 1]), User::STATUS_DEACTIVATED);
     }
 
     private function assertUserDoesSeeProfileContent($userVisibility, $contentVisibility, $user = null, $status = User::STATUS_ENABLED)
@@ -371,7 +371,7 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
 
     public function testFollowingUserDoesNotSeeContentOfDisabledProfile()
     {
-        $this->assertFollowingUserDoesNotSeeProfileContent(User::VISIBILITY_ALL, Content::VISIBILITY_PUBLIC, User::STATUS_DISABLED);
+        $this->assertFollowingUserDoesNotSeeProfileContent(User::VISIBILITY_ALL, Content::VISIBILITY_PUBLIC, User::STATUS_DEACTIVATED);
     }
 
     private function assertFollowingUserDoesSeeProfileContent($userVisibility, $contentVisibility, $status = User::STATUS_ENABLED)
@@ -422,7 +422,7 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
 
     public function testFriendUserDoesNotSeeContentOfDisabledProfile()
     {
-        $this->assertFriendUserDoesNotSeeProfileContent(Content::VISIBILITY_PUBLIC, false, User::STATUS_DISABLED);
+        $this->assertFriendUserDoesNotSeeProfileContent(Content::VISIBILITY_PUBLIC, false, User::STATUS_DEACTIVATED);
     }
 
     public function testFriendRequestedUserDoesSeePublicContent()

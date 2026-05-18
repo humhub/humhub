@@ -69,14 +69,18 @@ use yii\web\IdentityInterface;
  */
 class User extends ContentContainerActiveRecord implements IdentityInterface
 {
-
     /**
      * User Status Flags
      */
-    public const STATUS_DISABLED = 0;
+    public const STATUS_DEACTIVATED = 0;
     public const STATUS_ENABLED = 1;
     public const STATUS_NEED_APPROVAL = 2;
     public const STATUS_SOFT_DELETED = 3;
+
+    /**
+     * @deprecated since 1.19, use {@see self::STATUS_DEACTIVATED} instead.
+     */
+    public const STATUS_DISABLED = self::STATUS_DEACTIVATED;
 
     /**
      * Visibility Modes
@@ -983,7 +987,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     {
         $options = [
             self::STATUS_ENABLED => Yii::t('AdminModule.user', 'Enabled'),
-            self::STATUS_DISABLED => Yii::t('AdminModule.user', 'Disabled'),
+            self::STATUS_DEACTIVATED => Yii::t('AdminModule.user', 'Deactivated'),
             self::STATUS_NEED_APPROVAL => Yii::t('AdminModule.user', 'Unapproved'),
         ];
 
