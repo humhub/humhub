@@ -36,6 +36,9 @@ $isFluid = ThemeHelper::isFluid();
 $bsColumns = 6;
 $bsColumnsMd = $isFluid ? 4 : 6;
 $bsColumnsLg = $isFluid ? 3 : 4;
+if ($videos) {
+    $bsColumnsLg = $isFluid ? 4 : 6;
+}
 if ($nbFiles === 1) {
     $bsColumns = 12;
     $bsColumnsMd = $isFluid ? 6 : 12;
@@ -47,56 +50,43 @@ if ($nbFiles === 2) {
 }
 $fullWidthColumnClass = 'col-media col-12';
 $galleryColumnClass = 'col-media col-' . $bsColumns . ' col-lg-' . $bsColumnsMd . ' col-xl-' . $bsColumnsLg;
-$postFilesClass = 'post-files d-flex flex-wrap' . (!empty($videos) ? ' post-files-video' : '');
-$videoColumnClass = 'col-media col-video';
+
+$videoTypes = [
+    'webm' => 'video/webm',
+    'mp4'  => 'video/mp4',
+    'ogv'  => 'video/ogg',
+    'mov'  => 'video/quicktime',
+];
 ?>
 
 <?php if ($nbFiles > 0): ?>
     <!-- hideOnEdit mandatory since 1.2 -->
     <div class="hideOnEdit">
-        <!-- Show Images as Thumbnails -->
+        <!-- Show Medias as Thumbnails -->
         <?php if ($showPreview): ?>
-            <div class="<?= $postFilesClass ?>" id="post-files-<?= $object->getUniqueId() ?>">
+            <div class="post-files d-flex flex-wrap justify-content-center" id="post-files-<?= $object->getUniqueId() ?>">
                 <?php if (!empty($audios)): ?>
                     <div class="<?= $fullWidthColumnClass ?>">
                         <?= JPlayerPlaylistWidget::widget(['playlist' => $audios]) ?>
                     </div>
                 <?php endif; ?>
 
-                <?php foreach ($videos as $video): ?>
-                    <?php if (FileHelper::getExtension($video->file_name) === 'webm'): ?>
-                        <div class="<?= $videoColumnClass ?>">
-                            <a data-ui-gallery="<?= 'gallery-' . $object->getUniqueId() ?>"
-                               href="<?= $video->getUrl(); ?>#.webm" title="<?= Html::encode($video->file_name) ?>">
-                                <video src="<?= $video->getUrl() ?>#t=0.001" type="video/webm" controls
-                                       preload="metadata" height="130"></video>
-                            </a>
-                        </div>
-                    <?php elseif (FileHelper::getExtension($video->file_name) === 'mp4'): ?>
-                        <div class="<?= $videoColumnClass ?>">
-                            <a data-ui-gallery="<?= 'gallery-' . $object->getUniqueId() ?>"
-                               href="<?= $video->getUrl(); ?>#.mp4" title="<?= Html::encode($video->file_name) ?>">
-                                <video src="<?= $video->getUrl() ?>#t=0.001" type="video/mp4" controls
-                                       preload="metadata" height="130"></video>
-                            </a>
-                        </div>
-                    <?php elseif (FileHelper::getExtension($video->file_name) === 'ogv'): ?>
-                        <div class="<?= $videoColumnClass ?>">
-                            <a data-ui-gallery="<?= 'gallery-' . $object->getUniqueId() ?>"
-                               href="<?= $video->getUrl(); ?>#.ogv" title="<?= Html::encode($video->file_name) ?>">
-                                <video src="<?= $video->getUrl() ?>#t=0.001" type="video/ogg" controls
-                                       preload="metadata" height="130"></video>
-                            </a>
-                        </div>
-                    <?php elseif (FileHelper::getExtension($video->file_name) === 'mov'): ?>
-                        <div class="<?= $videoColumnClass ?>">
-                            <a data-ui-gallery="<?= 'gallery-' . $object->getUniqueId() ?>"
-                               href="<?= $video->getUrl(); ?>#.mov" title="<?= Html::encode($video->file_name) ?>">
-                                <video src="<?= $video->getUrl() ?>#t=0.001" type="video/quicktime" controls
-                                       preload="metadata" height="130"></video>
-                            </a>
-                        </div>
-                    <?php endif; ?>
+                <?php foreach ($videos as $video):
+                    $ext = FileHelper::getExtension($video->file_name);
+                    if (!isset($videoTypes[$ext])) {
+                        continue;
+                    } ?>
+                    <div class="<?= $galleryColumnClass ?>">
+                        <a data-ui-gallery="<?= 'gallery-' . $object->getUniqueId() ?>"
+                           href="<?= $video->getUrl() ?>#.<?= $ext ?>"
+                           title="<?= Html::encode($video->file_name) ?>"
+                           class="d-flex align-items-center justify-content-center h-100 w-100"
+                        >
+                            <video src="<?= $video->getUrl() ?>#t=0.001"
+                                   type="<?= $videoTypes[$ext] ?>"
+                                   controls preload="metadata" height="130"></video>
+                        </a>
+                    </div>
                 <?php endforeach ?>
 
                 <?php foreach ($images as $image): ?>
