@@ -35,6 +35,7 @@ HumHub Changelog
 - Fix #8143: Fix updating of Space memberships for existing members
 - Fix #8145: Preserve login return URL for PJAX requests
 - Fix #8144: Restrict file view action
+- Enh #8156: Enhance behavior for vertical videos and multiple video attachments
 - Fix #8148: Yii2 2.0.55 compatibility
 - Fix #8163: Fix remove all space members permission
 - Fix #8164: Fix space members list visibility
