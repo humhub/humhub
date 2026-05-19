@@ -307,29 +307,6 @@ class Migration extends \yii\db\Migration
     }
 
     /**
-     * Check if the foreign index already exists in the table
-     *
-     * @param string $index
-     * @param string $table
-     *
-     * @return bool
-     * @throws Exception
-     * @since 1.9.1
-     */
-    protected function foreignIndexExists(string $index, string $table): bool
-    {
-        // Resolve `{{%table_name}}` to `table_name`
-        $rawTableName = $this->db->getSchema()->getRawTableName($table);
-
-        return (bool) $this->db->createCommand('SELECT * FROM information_schema.key_column_usage
-            WHERE REFERENCED_TABLE_NAME IS NOT NULL
-              AND TABLE_NAME = ' . $this->db->quoteValue($rawTableName) . '
-              AND TABLE_SCHEMA = ' . $this->db->quoteValue($this->getDsnAttribute('dbname')) . '
-              AND CONSTRAINT_NAME = ' . $this->db->quoteValue($index))
-            ->queryOne();
-    }
-
-    /**
      * Create an index if it doesn't exist yet
      *
      * @param string $index
@@ -457,16 +434,16 @@ class Migration extends \yii\db\Migration
      */
     protected function safeAddForeignKey(string $index, string $table, $columns, string $refTable, $refColumns, ?string $delete = null, ?string $update = null)
     {
-        if (!$this->foreignIndexExists($index, $table)) {
+        try {
             $this->addForeignKey($index, $table, $columns, $refTable, $refColumns, $delete, $update);
             return true;
+        } catch (\Exception $e) {
+            if (!$this->compact) {
+                echo "    > skipped create foreign index $index in the table $table, probably foreign index already exists ...\n";
+            }
+            $this->logWarning("Tried to create a foreign index '$index' on table '$table'. Reason: " . $e->getMessage());
+            return false;
         }
-
-        if (!$this->compact) {
-            echo "    > skipped create foreign index $index in the table $table, foreign index already exists ...\n";
-        }
-        $this->logWarning("Tried to create an already existing foreign index '$index' on table '$table'");
-        return false;
     }
 
     /**
@@ -483,16 +460,16 @@ class Migration extends \yii\db\Migration
      */
     protected function safeDropForeignKey(string $index, string $table)
     {
-        if ($this->foreignIndexExists($index, $table)) {
+        try {
             $this->dropForeignKey($index, $table);
             return true;
+        } catch (\Exception $e) {
+            if (!$this->compact) {
+                echo "    > skipped drop foreign index $index from the table $table, probably foreign index does not exist ...\n";
+            }
+            $this->logWarning("Tried to drop a foreign index '$index' from table '$table'. Reason: " . $e->getMessage());
+            return false;
         }
-
-        if (!$this->compact) {
-            echo "    > skipped drop foreign index $index from the table $table, foreign index does not exist ...\n";
-        }
-        $this->logWarning("Tried to drop a non existing foreign index '$index' from table '$table'");
-        return false;
     }
 
     /**
