@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.18.4 (Unreleased)
+---------------------
+- Enh #8170: Handle controllers with using external modules
+
 1.18.3 (May 18, 2026)
 ---------------------
 - Fix #8079: Hide wall entry topics container when no topics
