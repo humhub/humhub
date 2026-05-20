@@ -20,7 +20,7 @@ class HelpController extends \yii\console\controllers\HelpController
         try {
             return parent::validateControllerClass($controllerClass);
         } catch (\Throwable $e) {
-            Yii::warning('File: '. $e->getFile() . ', Error: ' . $e->getMessage(), 'console');
+            Yii::warning('File: ' . $e->getFile() . ', Error: ' . $e->getMessage(), 'console');
             return false;
         }
     }
