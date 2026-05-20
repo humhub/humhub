@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.18.4 (Unreleased)
+---------------------
+- Enh #8167: Improve safe migration methods
+
 1.18.3 (May 18, 2026)
 ---------------------
 - Fix #8079: Hide wall entry topics container when no topics

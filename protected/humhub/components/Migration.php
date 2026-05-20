@@ -139,16 +139,13 @@ class Migration extends \yii\db\Migration
      */
     protected function safeCreateTable(string $table, $columns, ?string $options = null)
     {
-        if (!$this->db->getTableSchema($table, true)) {
+        try {
             $this->createTable($table, $columns, $options);
             return true;
+        } catch (\Exception $e) {
+            $this->safeSkipCommand("Tried to create a table '$table'", $e);
+            return false;
         }
-
-        if (!$this->compact) {
-            echo "    > skipped create table $table, table does already exist ...\n";
-        }
-        $this->logWarning("Tried to create an already existing existing table '$table'");
-        return false;
     }
 
     /**
@@ -161,16 +158,13 @@ class Migration extends \yii\db\Migration
      */
     protected function safeDropTable(string $table)
     {
-        if ($this->db->getTableSchema($table, true)) {
+        try {
             $this->dropTable($table);
             return true;
+        } catch (\Exception $e) {
+            $this->safeSkipCommand("Tried to drop a table '$table'", $e);
+            return false;
         }
-
-        if (!$this->compact) {
-            echo "    > skipped drop table $table, table does not exist ...\n";
-        }
-        $this->logWarning("Tried to drop a non existing table '$table'");
-        return false;
     }
 
     /**
@@ -194,16 +188,13 @@ class Migration extends \yii\db\Migration
      */
     protected function safeDropColumn(string $table, string $column)
     {
-        if ($this->columnExists($column, $table)) {
+        try {
             $this->dropColumn($table, $column);
             return true;
+        } catch (\Exception $e) {
+            $this->safeSkipCommand("Tried to drop a column '$column' from table '$table'", $e);
+            return false;
         }
-
-        if (!$this->compact) {
-            echo "    > skipped drop column $column from table $table, column does not exist ...\n";
-        }
-        $this->logWarning("Tried to drop a non existing column '$column' from table '$table'");
-        return false;
     }
 
     /**
@@ -217,16 +208,13 @@ class Migration extends \yii\db\Migration
      */
     protected function safeAddColumn(string $table, string $column, $type)
     {
-        if (!$this->columnExists($column, $table)) {
+        try {
             $this->addColumn($table, $column, $type);
             return true;
+        } catch (\Exception $e) {
+            $this->safeSkipCommand("Tried to add a column '$column' on table '$table'", $e);
+            return false;
         }
-
-        if (!$this->compact) {
-            echo "    > skipped add column $column from table $table, column does already exist ...\n";
-        }
-        $this->logWarning("Tried to add an already existing column '$column' on table '$table'");
-        return false;
     }
 
     /**
@@ -243,24 +231,13 @@ class Migration extends \yii\db\Migration
      */
     protected function safeRenameColumn(string $table, string $name, string $newName): bool
     {
-        if (!$this->columnExists($name, $table)) {
-            if (!$this->compact) {
-                echo "    > skipped rename column from $name to $newName in table $table, column $name doesn't exist ...\n";
-            }
-            $this->logWarning("Tried to rename a not existing column '$name' to '$newName' in table '$table'");
+        try {
+            $this->renameColumn($table, $name, $newName);
+            return true;
+        } catch (\Exception $e) {
+            $this->safeSkipCommand("Tried to rename a column '$name' to '$newName' in table '$table'", $e);
             return false;
         }
-
-        if ($this->columnExists($newName, $table)) {
-            if (!$this->compact) {
-                echo "    > skipped rename column from $name to $newName in table $table, column $newName already exists ...\n";
-            }
-            $this->logWarning("Tried to rename to already existing column '$newName' from '$name' in table '$table'");
-            return false;
-        }
-
-        $this->renameColumn($table, $name, $newName);
-        return true;
     }
 
     /**
@@ -277,16 +254,13 @@ class Migration extends \yii\db\Migration
      */
     protected function safeAlterColumn(string $table, string $column, string $type): bool
     {
-        if (!$this->columnExists($column, $table)) {
-            if (!$this->compact) {
-                echo "    > skipped alter column $column to type $type in table $table, column $column doesn't exist ...\n";
-            }
-            $this->logWarning("Tried to alter a not existing column '$column' to type '$type' in table '$table'");
+        try {
+            $this->alterColumn($table, $column, $type);
+            return true;
+        } catch (\Exception $e) {
+            $this->safeSkipCommand("Tried to alter a column '$column' to type '$type' in table '$table'", $e);
             return false;
         }
-
-        $this->alterColumn($table, $column, $type);
-        return true;
     }
 
     /**
@@ -322,16 +296,13 @@ class Migration extends \yii\db\Migration
      */
     protected function safeCreateIndex(string $index, string $table, $columns, bool $unique = false)
     {
-        if (!$this->indexExists($index, $table)) {
+        try {
             $this->createIndex($index, $table, $columns, $unique);
             return true;
+        } catch (\Exception $e) {
+            $this->safeSkipCommand("Tried to create an index '$index' on table '$table'", $e);
+            return false;
         }
-
-        if (!$this->compact) {
-            echo "    > skipped create index $index in the table $table, index already exists ...\n";
-        }
-        $this->logWarning("Tried to create an already existing index '$index' on table '$table'");
-        return false;
     }
 
     /**
@@ -341,7 +312,6 @@ class Migration extends \yii\db\Migration
      * @param string $table
      *
      * @return bool indicates if the index has been dropped
-     * @throws Exception
      * @since 1.9.1
      * @see static::dropIndex()
      * @noinspection PhpUnused
@@ -349,16 +319,13 @@ class Migration extends \yii\db\Migration
      */
     protected function safeDropIndex(string $index, string $table)
     {
-        if ($this->indexExists($index, $table)) {
+        try {
             $this->dropIndex($index, $table);
             return true;
+        } catch (\Exception $e) {
+            $this->safeSkipCommand("Tried to drop an index '$index' from table '$table'", $e);
+            return false;
         }
-
-        if (!$this->compact) {
-            echo "    > skipped drop index $index from the table $table, index does not exist ...\n";
-        }
-        $this->logWarning("Tried to drop a non existing index '$index' from table '$table'");
-        return false;
     }
 
     /**
@@ -369,23 +336,19 @@ class Migration extends \yii\db\Migration
      * @param string|array $columns
      *
      * @return bool indicates if key has been added
-     * @throws Exception
      * @since 1.9.1
      * @see static::addPrimaryKey()
      * @noinspection PhpMissingReturnTypeInspection
      */
     protected function safeAddPrimaryKey(string $index, string $table, $columns)
     {
-        if (!$this->indexExists('PRIMARY', $table)) {
+        try {
             $this->addPrimaryKey($index, $table, $columns);
             return true;
+        } catch (\Exception $e) {
+            $this->safeSkipCommand("Tried to create a primary index '$index' on table '$table'", $e);
+            return false;
         }
-
-        if (!$this->compact) {
-            echo "    > skipped create primary index $index in the table $table, primary index already exists ...\n";
-        }
-        $this->logWarning("Tried to create an already existing primary index '$index' on table '$table'");
-        return false;
     }
 
     /**
@@ -395,7 +358,6 @@ class Migration extends \yii\db\Migration
      * @param string $table
      *
      * @return bool indicates if key has been added
-     * @throws Exception
      * @since 1.9.1
      * @see static::dropPrimaryKey()
      * @noinspection PhpUnused
@@ -403,16 +365,13 @@ class Migration extends \yii\db\Migration
      */
     protected function safeDropPrimaryKey(string $index, string $table)
     {
-        if ($this->indexExists('PRIMARY', $table)) {
+        try {
             $this->dropPrimaryKey($index, $table);
             return true;
+        } catch (\Exception $e) {
+            $this->safeSkipCommand("Tried to drop a primary index '$index' from table '$table'", $e);
+            return false;
         }
-
-        if (!$this->compact) {
-            echo "    > skipped drop primary index $index from the table $table, primary index does not exist ...\n";
-        }
-        $this->logWarning("Tried to drop a non existing primary index '$index' from table '$table'");
-        return false;
     }
 
     /**
@@ -427,7 +386,6 @@ class Migration extends \yii\db\Migration
      * @param string|null $update
      *
      * @return bool indicates if key has been added
-     * @throws Exception
      * @since 1.9.1
      * @see static::addForeignKey()
      * @noinspection PhpMissingReturnTypeInspection
@@ -438,10 +396,7 @@ class Migration extends \yii\db\Migration
             $this->addForeignKey($index, $table, $columns, $refTable, $refColumns, $delete, $update);
             return true;
         } catch (\Exception $e) {
-            if (!$this->compact) {
-                echo "    > skipped create foreign index $index in the table $table, probably foreign index already exists ...\n";
-            }
-            $this->logWarning("Tried to create a foreign index '$index' on table '$table'. Reason: " . $e->getMessage());
+            $this->safeSkipCommand("Tried to create a foreign index '$index' on table '$table'", $e);
             return false;
         }
     }
@@ -453,7 +408,6 @@ class Migration extends \yii\db\Migration
      * @param string $table
      *
      * @return bool indicates if key has been dropped
-     * @throws Exception
      * @since 1.9.1
      * @noinspection PhpUnused
      * @noinspection PhpMissingReturnTypeInspection
@@ -464,10 +418,7 @@ class Migration extends \yii\db\Migration
             $this->dropForeignKey($index, $table);
             return true;
         } catch (\Exception $e) {
-            if (!$this->compact) {
-                echo "    > skipped drop foreign index $index from the table $table, probably foreign index does not exist ...\n";
-            }
-            $this->logWarning("Tried to drop a foreign index '$index' from table '$table'. Reason: " . $e->getMessage());
+            $this->safeSkipCommand("Tried to drop a foreign index '$index' from table '$table'", $e);
             return false;
         }
     }
@@ -738,7 +689,7 @@ class Migration extends \yii\db\Migration
         }
 
         // enclose keys in curly brackets
-        $params = array_combine(array_map(static fn($key) => "{{$key}}", $params), $params);
+        $params = array_combine(array_map(static fn($key) => "{{$key}}", array_keys($params)), $params);
 
         // replace "{key}" with "value"
         return strtr($message, $params);
@@ -783,5 +734,16 @@ class Migration extends \yii\db\Migration
     public function getLastException(): ?Throwable
     {
         return $this->lastException;
+    }
+
+    protected function safeSkipCommand(string $log, ?\Exception $exception = null): void
+    {
+        if (!$this->compact) {
+            echo "\n" . '      - Skipped'
+                . ($exception instanceof Exception && isset($exception->errorInfo[2]) ? ': ' . $exception->errorInfo[2] : '')
+                . "\n";
+        }
+
+        $this->logWarning($log . ($exception instanceof \Exception ? '. Error: ' . $exception->getMessage() : ''));
     }
 }
