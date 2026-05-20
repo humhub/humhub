@@ -189,6 +189,9 @@ class AssetManager extends \yii\web\AssetManager
     public function fileWrite($file, $content)
     {
         try {
+            if (str_starts_with($file, $this->basePath)) {
+                $file = substr($file, strlen($this->basePath));
+            }
             $this->fs->write($file, $content, $this->filesystemOptions);
         } catch (FilesystemException $e) {
             print $e->getMessage();
