@@ -1,6 +1,12 @@
 Module Migration Guide
 ======================
 
+Version 1.18.3
+------------
+
+### Changed
+- `$_params_` variable is no longer available in views of email notification templates ([see PR #8148](https://github.com/humhub/humhub/pull/8148))
+
 Version 1.18.1
 ------------
 
@@ -45,25 +51,25 @@ Updated minimum required PHP version to 8.2.
 
 - The following Mailer settings keys have been renamed to work with `.env`:
 
-| Old Key                          | New Key                        |
-|----------------------------------|--------------------------------|
-| `mailer.transportType`           | `mailerTransportType`          |
-| `mailer.dsn`                     | `mailerDsn`                    |
-| `mailer.hostname`                | `mailerHostname`               |
-| `mailer.username`                | `mailerUsername`               |
-| `mailer.password`                | `mailerPassword`               |
-| `mailer.useSmtps`                | `mailerUseSmtps`               |
-| `mailer.port`                    | `mailerPort`                   |
-| `mailer.encryption`              | `mailerEncryption`             |
-| `mailer.allowSelfSignedCerts`    | `mailerAllowSelfSignedCerts`   |
-| `mailer.systemEmailAddress`      | `mailerSystemEmailAddress`     |
-| `mailer.systemEmailName`         | `mailerSystemEmailName`        |
-| `mailer.systemEmailReplyTo`      | `mailerSystemEmailReplyTo`     |
-| `proxy.*`                        | `proxy*`     |
+| Old Key                       | New Key                      |
+|-------------------------------|------------------------------|
+| `mailer.transportType`        | `mailerTransportType`        |
+| `mailer.dsn`                  | `mailerDsn`                  |
+| `mailer.hostname`             | `mailerHostname`             |
+| `mailer.username`             | `mailerUsername`             |
+| `mailer.password`             | `mailerPassword`             |
+| `mailer.useSmtps`             | `mailerUseSmtps`             |
+| `mailer.port`                 | `mailerPort`                 |
+| `mailer.encryption`           | `mailerEncryption`           |
+| `mailer.allowSelfSignedCerts` | `mailerAllowSelfSignedCerts` |
+| `mailer.systemEmailAddress`   | `mailerSystemEmailAddress`   |
+| `mailer.systemEmailName`      | `mailerSystemEmailName`      |
+| `mailer.systemEmailReplyTo`   | `mailerSystemEmailReplyTo`   |
+| `proxy.*`                     | `proxy*`                     |
 
 - `tour` module:
-  - Library [bootstrap-tour](https://github.com/sorich87/bootstrap-tour/) replaced Wwith [driver.js](https://driverjs.com/)
-  - Widget view files rewritten
+    - Library [bootstrap-tour](https://github.com/sorich87/bootstrap-tour/) replaced Wwith [driver.js](https://driverjs.com/)
+    - Widget view files rewritten
 
 ### Removed deprecations
 - Widget class `\humhub\widgets\DataSaved`, the related code `Yii::$app->getSession()->setFlash('data-saved', Yii::t('base', 'Saved'));` must be replaced with `$this->view->saved();` on controllers
@@ -72,11 +78,11 @@ Updated minimum required PHP version to 8.2.
 - Update the file `tests/codeception.yml`: `log: codeception/_output` => `output: codeception/_output`
 - Update files `tests/codeception/*.suite.yml`: `class_name: *Tester` => `actor: *Tester`
 - `$I->waitFor*('Text', null)` => `$I->waitFor*('Text', 10)`, the second param can be only integer for the methods:
-  - `waitForText()`
-  - `waitForElement()`
-  - `waitForElementVisible()`
-  - `waitForElementNotVisible()`
-  - `waitForElementClickable()`
+    - `waitForText()`
+    - `waitForElement()`
+    - `waitForElementVisible()`
+    - `waitForElementNotVisible()`
+    - `waitForElementClickable()`
 - Functional tests: `$I->amOnPage(['/some/page/url', 'id' => 1])` => `$I->amOnRoute('/some/page/url', ['id' => 1])`
 
 Version 1.17.3
@@ -84,16 +90,14 @@ Version 1.17.3
 ### Deprecated
 - `\humhub\modules\user\Module::$invitesTimeToLiveInDays` use `\humhub\modules\admin\Module::$cleanupPendingRegistrationInterval` instead
 
-
 Version 1.17.2
 ---------------
 
 ### Behaviour change
 
-- Method signature changed - `humhub\modules\user\models\fieldtype\BaseType::getUserValue(User $user, bool $raw = true, bool $encode = true): ?string`  
+- Method signature changed - `humhub\modules\user\models\fieldtype\BaseType::getUserValue(User $user, bool $raw = true, bool $encode = true): ?string`
 
 - Constructor changed - `humhub\modules\user\models\forms\Registration` and properties (`$enablePasswordForm`, `$enableMustChangePassword`, `$enableEmailField`) are now private
-
 
 Version 1.17 (January 2024)
 -------------------------
