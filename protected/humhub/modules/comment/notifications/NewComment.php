@@ -95,7 +95,7 @@ class NewComment extends BaseNotification
             return '';
         }
 
-        $contentInfo = $this->getContentInfo($contentRecord);
+        $contentInfo = Html::decode($this->getContentInfo($contentRecord));
 
         if ($user->is($contentRecord->owner)) {
             if ($space) {
@@ -136,7 +136,7 @@ class NewComment extends BaseNotification
             return '';
         }
 
-        $contentInfo = $this->getContentInfo($contentRecord);
+        $contentInfo = Html::decode($this->getContentInfo($contentRecord));
 
         if ($user->is($contentRecord->owner)) {
             if ($space) {

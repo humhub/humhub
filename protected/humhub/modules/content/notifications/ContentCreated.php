@@ -62,7 +62,7 @@ class ContentCreated extends BaseNotification
     public function getMailSubject()
     {
         $user = $this->record->user;
-        $contentInfo = $this->getContentInfo();
+        $contentInfo = Html::decode($this->getContentInfo());
         $space = $this->getSpace();
         if ($space) {
             if ($this->isExplicitNotifyUser($user)) {

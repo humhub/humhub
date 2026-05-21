@@ -60,7 +60,7 @@ class Mentioned extends BaseNotification
             return;
         }
 
-        return parent::send($user);
+        parent::send($user);
     }
 
     /**
@@ -71,7 +71,7 @@ class Mentioned extends BaseNotification
         return Yii::t('UserModule.notification', "{displayName} just mentioned you in {contentTitle} \"{preview}\"", [
             'displayName' => $this->originator->displayName,
             'contentTitle' => $this->getContentName(),
-            'preview' => $this->getContentInfo(),
+            'preview' => Html::decode($this->getContentInfo(null, false)),
         ]);
     }
 
