@@ -48,6 +48,7 @@ humhub.module('content.form', function (module, require, $) {
 
                 if (!this.isModal) {
                     this.$.find('.contentForm_options').fadeIn();
+                    this.expandFields();
                 }
             }.bind(this));
         } else {
@@ -64,6 +65,20 @@ humhub.module('content.form', function (module, require, $) {
         }
         this.menu.show();
     }
+
+    /**
+     * Reveals additional content form fields hidden until the user starts
+     * interacting with the form (e.g. the post title) and focuses the first one.
+     */
+    CreateForm.prototype.expandFields = function () {
+        var $fields = this.$.find('[data-content-form-expand]:hidden');
+        if (!$fields.length) {
+            return;
+        }
+
+        $fields.fadeIn();
+        $fields.find('input, textarea').first().trigger('focus');
+    };
 
     CreateForm.prototype.submit = function (evt) {
         this.$.find('.nav-pills, .fileinput-button').hide();
@@ -108,6 +123,7 @@ humhub.module('content.form', function (module, require, $) {
     CreateForm.prototype.resetForm = function () {
         // Reset Form (Empty State)
         this.$.find('.contentForm_options').hide();
+        this.$.find('[data-content-form-expand]').hide();
         var $contentForm = this.$.find('.contentForm');
         $contentForm.filter(':text').val('');
         $contentForm.filter('textarea').val('').trigger('autosize.resize');

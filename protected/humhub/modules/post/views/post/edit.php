@@ -8,6 +8,7 @@ use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
 use humhub\modules\file\widgets\UploadProgress;
 use humhub\modules\post\models\forms\PostEditForm;
+use humhub\modules\post\Module;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 
@@ -15,9 +16,20 @@ use humhub\widgets\form\ActiveForm;
 /* @var $submitUrl string */
 /* @var $fileHandlers BaseFileHandler[] */
 /* @var $viewContext string */
+
+$titleMode = Yii::$app->getModule('post')->getTitleMode();
 ?>
 <div class="content content_edit" id="post_edit_<?= $model->post->id; ?>">
     <?php $form = ActiveForm::begin(['id' => 'post-edit-form_' . $model->post->id]); ?>
+
+    <?php if ($titleMode !== Module::TITLE_MODE_OFF || !empty($model->post->title)): ?>
+    <div style="margin-bottom:35px">
+        <?= $form->field($model->post, 'title')->textInput([
+            'placeholder' => Yii::t('PostModule.base', 'Title'),
+            'maxlength' => true,
+        ])->label(false) ?>
+    </div>
+    <?php endif; ?>
 
     <div class="richtext-create-input-group">
         <?= $form->field($model->post, 'message')->widget(RichTextField::class, [

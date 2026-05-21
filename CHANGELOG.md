@@ -24,6 +24,7 @@ HumHub Changelog
 - Fix: Auto-flush cache when database schema is missing (recovers from dev DB wipes that left a stale `InstallationState=INSTALLED` cache entry)
 - Enh #8165: Rename `User::STATUS_DISABLED` to `STATUS_DEACTIVATED` (deprecated alias kept); i18n labels `Disabled` / `Disabled users` renamed accordingly
 - Enh #8168: Improve safe migration methods
+- Enh: Added optional post title (off / optional / required, configurable under Admin → Design); shown as a heading above the post content
 
 1.18.3 (TBD)
 ------------
