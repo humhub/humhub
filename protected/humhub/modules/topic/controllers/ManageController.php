@@ -64,10 +64,12 @@ class ManageController extends ContentContainerController
             $this->view->error($model->getFirstError('name'));
         }
 
-        $topicSettings = new TopicSettingsForm(['contentContainer' => $this->contentContainer]);
-        if ($topicSettings->load(Yii::$app->request->post()) && $topicSettings->save()) {
-            $this->view->saved();
-            $this->redirect('manage');
+        if ($this->contentContainer instanceof Space) {
+            $topicSettings = new TopicSettingsForm(['contentContainer' => $this->contentContainer]);
+            if ($topicSettings->load(Yii::$app->request->post()) && $topicSettings->save()) {
+                $this->view->saved();
+                $this->redirect('manage');
+            }
         }
 
         $title = $this->contentContainer instanceof User
@@ -78,7 +80,7 @@ class ManageController extends ContentContainerController
             'contentContainer' => $this->contentContainer,
             'dataProvider' => $this->getTopicProvider(),
             'addModel' => new Topic(),
-            'topicSettings' => $topicSettings,
+            'topicSettings' => $topicSettings ?? null,
             'title' => $title,
         ]);
     }
