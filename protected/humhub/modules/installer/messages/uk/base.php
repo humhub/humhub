@@ -28,7 +28,7 @@ return [
     'Default Language' => '',
     'Default Timezone' => '',
     'Downloading & Installing Modules...' => '',
-    'Ensure the following rule is present in your configuration: <strong>try_files $uri $uri/ /index.php?$args;</strong>.' => '',
+    'Ensure the following rule is present in your configuration: <strong>try_files $uri $uri/ /index.php$is_args$args;</strong>.' => '',
     'External users can register (show registration form on login)' => '',
     'For more information on this topic, please refer to our <a href="{link}" target="_blank">documentation</a>.' => '',
     'Here you can decide how new, unregistered users can access HumHub.' => '',

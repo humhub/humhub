@@ -52,6 +52,7 @@ class ContainerProfileHeader extends JsWidget
     {
         parent::init();
 
+        // HTML encode here and not in the view: https://github.com/humhub/humhub/issues/6952
         $this->title = Html::encode($this->container->getDisplayName());
         $this->subTitle = Html::encode($this->container->getDisplayNameSub());
 

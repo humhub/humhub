@@ -147,7 +147,6 @@ class Events extends BaseObject
      */
     public static function onHourlyCron($event)
     {
-        Yii::$app->queue->push(new jobs\SyncUsers());
         Yii::$app->queue->push(new jobs\DeleteExpiredSessions());
     }
 

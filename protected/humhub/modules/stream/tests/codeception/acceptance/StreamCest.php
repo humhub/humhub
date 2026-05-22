@@ -393,7 +393,7 @@ class StreamCest
         $I->see('User 2 Space 2 Post Public');
 
         $user2 = User::findOne(['id' => 2]);
-        $user2->status = User::STATUS_DISABLED;
+        $user2->status = User::STATUS_DEACTIVATED;
         $user2->save();
 
         $I->amOnSpace2();

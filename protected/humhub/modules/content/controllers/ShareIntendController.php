@@ -14,7 +14,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\content\models\forms\ShareIntendTargetForm;
 use humhub\modules\space\helpers\CreateContentPermissionHelper;
-use humhub\modules\user\widgets\UserPicker;
+use humhub\modules\user\models\UserPicker;
 use Yii;
 use yii\web\HttpException;
 
@@ -93,7 +93,7 @@ abstract class ShareIntendController extends Controller
         );
 
         if (ShareIntendTargetForm::canPostInOwnProfile()) {
-            $currentUser = UserPicker::createJSONUserInfo(Yii::$app->user->identity);
+            $currentUser = UserPicker::asJSON(Yii::$app->user->identity);
             $currentUser['text'] = Yii::t('base', 'My Profile');
             array_unshift($containers, $currentUser);
         }

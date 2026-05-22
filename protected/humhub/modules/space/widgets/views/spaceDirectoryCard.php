@@ -20,7 +20,7 @@ use yii\web\View;
 
 <div class="card-panel<?= $space->isArchived() ? ' card-archived' : '' ?>" data-space-id="<?= $space->id ?>" data-space-guid="<?= $space->guid ?>">
     <div
-        class="card-bg-image"<?= $space->getProfileBannerImage()->hasImage() ? ' style="background-image: url(\'' . $space->getProfileBannerImage()->getUrl() . '\')"' : '' ?>></div>
+        class="card-bg-image"<?= $space->bannerImage->exists() ? ' style="background-image: url(\'' . $space->bannerImage . '\')"' : '' ?>></div>
     <div class="card-header">
         <a href="<?= $space->getUrl() ?>" class="card-space-link">
             <?= Image::widget([

@@ -77,18 +77,6 @@ class BrowseController extends Controller
     /**
      * Enables a module after installation
      *
-     * @throws NotFoundHttpException
-     * @see static::actionEnable()
-     * @deprecated since v1.16; use static::actionEnable()
-     */
-    public function actionActivate(): string
-    {
-        return $this->actionEnable();
-    }
-
-    /**
-     * Enables a module after installation
-     *
      * @throws HttpException
      */
     public function actionEnable(): string

@@ -140,9 +140,7 @@ class m260108_115053_new_structure extends Migration
                     );
                 } else {
                     Yii::warning(
-                        'Content Provider ' . get_class(
-                            $contentProvider,
-                        ) . ' with id ' . $contentProvider->id . ' has no content!',
+                        'Content Provider ' . $contentProvider::class . ' with id ' . $contentProvider->id . ' has no content!',
                         'activity',
                     );
                 }

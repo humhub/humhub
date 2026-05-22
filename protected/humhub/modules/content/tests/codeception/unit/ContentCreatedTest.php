@@ -3,6 +3,8 @@
 namespace tests\codeception\unit;
 
 use humhub\modules\content\models\Content;
+use humhub\modules\content\notifications\ContentCreated as ContentCreatedNotification;
+use humhub\modules\notification\models\Notification;
 use humhub\modules\notification\models\forms\NotificationSettings;
 use humhub\modules\post\models\Post;
 use Yii;
@@ -118,6 +120,54 @@ class ContentCreatedTest extends HumHubDbTestCase
 
         // We only one notification
         $this->assertMailSent(1);
+    }
+
+    /**
+     * Check that unauthorized explicit notify users are excluded for private profile content.
+     */
+    public function testExcludeUnauthorizedExplicitNotifyUserOnPrivateProfileContent()
+    {
+        $this->becomeUser('Admin');
+
+        $post = new Post(['message' => 'MyTestContent']);
+        $post->content->setContainer(User::findOne(['id' => 1]));
+        $post->content->visibility = Content::VISIBILITY_PRIVATE;
+        $post->content->notifyUsersOfNewContent = [User::findOne(['id' => 4])];
+        $this->assertTrue($post->save());
+
+        $this->assertMailSent(0);
+        $this->assertEquals(0, Notification::find()->where([
+            'class' => ContentCreatedNotification::class,
+            'user_id' => 4,
+            'source_class' => Post::class,
+            'source_pk' => $post->id,
+        ])->count());
+    }
+
+    /**
+     * Check that notification preview is suppressed for unauthorized recipients.
+     */
+    public function testSuppressPreviewForUnauthorizedRecipient()
+    {
+        $this->becomeUser('Admin');
+
+        $post = new Post(['message' => 'MyTestContent']);
+        $post->content->setContainer(User::findOne(['id' => 1]));
+        $post->content->visibility = Content::VISIBILITY_PRIVATE;
+        $this->assertTrue($post->save());
+
+        $recipient = User::findOne(['id' => 4]);
+        $notification = ContentCreatedNotification::instance()->from(User::findOne(['id' => 1]))->about($post);
+
+        $this->assertTrue($notification->isBlockedForUser($recipient));
+        $notification->send($recipient);
+
+        $this->assertNull(Notification::find()->where([
+            'class' => ContentCreatedNotification::class,
+            'user_id' => $recipient->id,
+            'source_class' => Post::class,
+            'source_pk' => $post->id,
+        ])->one());
     }
 
     /**

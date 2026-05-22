@@ -90,7 +90,10 @@ $mailerTransportTypeIsFixed = $settings->isFixed('mailerTransportType');
         <li>Sendgrid <code>sendgrid+smtp://KEY@default</code>, <code>sendgrid+api://KEY@default</code></li>
         <li>Sendinblue <code>sendinblue+smtp://USERNAME:PASSWORD@default</code>,
             <code>sendinblue+api://KEY@default</code></li>
-        <li>OhMySMTP <code>ohmysmtp+smtp://API_TOKEN@default</code></li>
+        <li>
+            MailPace <code>mailpace+smtp://API_TOKEN@default</code>
+            (<?= Yii::t('AdminModule.settings', 'Replaced {mailService}', ['mailService' => 'OhMySMTP']) ?> <code>ohmysmtp+smtp://API_TOKEN@default</code>)
+        </li>
     </ul>
 
     <?= Yii::t('AdminModule.settings', 'You can find more configuration options here:') ?> <a

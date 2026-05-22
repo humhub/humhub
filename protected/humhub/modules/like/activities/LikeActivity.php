@@ -13,7 +13,7 @@ use yii\base\InvalidValueException;
 
 class LikeActivity extends BaseContentActivity implements ConfigurableActivityInterface
 {
-    private Like $like;
+    private readonly Like $like;
 
     public function __construct(Activity $record, $config = [])
     {
@@ -49,14 +49,25 @@ class LikeActivity extends BaseContentActivity implements ConfigurableActivityIn
         }
     }
 
-    protected function getMessageParamsText(): array
+    protected function getMessageParamsWeb(): array
     {
-        return array_merge(
-            parent::getMessageParamsText(),
-            [
-                'content' => ContentHelper::getContentInfo($this->like->getContentOwnerObject()),
-            ],
-        );
+        return array_merge(parent::getMessageParamsWeb(), [
+            'content' => ContentHelper::getContentInfo($this->like->getContentOwnerObject(), true, $this->webContentLength),
+        ]);
+    }
+
+    protected function getMessageParamsMailText(): array
+    {
+        return array_merge(parent::getMessageParamsMailText(), [
+            'content' => ContentHelper::getContentInfo($this->like->getContentOwnerObject(), true, $this->mailContentLength),
+        ]);
+    }
+
+    protected function getMessageParamsMailHtml(): array
+    {
+        return array_merge(parent::getMessageParamsMailHtml(), [
+            'content' => ContentHelper::getContentInfo($this->like->getContentOwnerObject(), true, $this->mailContentLength),
+        ]);
     }
 
     public function getGroupingQuery(): ?ActiveQueryActivity

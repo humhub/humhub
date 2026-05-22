@@ -14,7 +14,8 @@ humhub.module('content.container', function (module, require, $) {
             if (response.success) {
                 additions.switchButtons(evt.$trigger, $('[data-content-container-id="' + containerId + '"].unfollowButton'));
                 if (response.space) {
-                    require('space.chooser').SpaceChooser.instance($('#space-menu-dropdown')).appendItem(response.space);
+                    var followChooser = require('space.chooser').SpaceChooser.instance($('#space-menu-dropdown'));
+                    if (followChooser) { followChooser.appendItem(response.space); }
                 }
             }
         }).catch(function (e) {
@@ -28,7 +29,8 @@ humhub.module('content.container', function (module, require, $) {
             if (response.success) {
                 additions.switchButtons(evt.$trigger, $('[data-content-container-id="' + containerId + '"].followButton'));
                 if (response.space) {
-                    require('space.chooser').SpaceChooser.instance($('#space-menu-dropdown')).removeItem(response.space);
+                    var unfollowChooser = require('space.chooser').SpaceChooser.instance($('#space-menu-dropdown'));
+                    if (unfollowChooser) { unfollowChooser.removeItem(response.space); }
                 }
             }
         }).catch(function (e) {

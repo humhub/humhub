@@ -570,24 +570,6 @@ abstract class BaseNotification extends SocialActivity
     }
 
     /**
-     * Use text() instead
-     * @deprecated since version 1.2
-     */
-    public function getAsText()
-    {
-        return $this->text();
-    }
-
-    /**
-     * Use html() instead
-     * @deprecated since version 1.2
-     */
-    public function getAsHtml()
-    {
-        return null;
-    }
-
-    /**
      * This method is invoked right before a mail will be send for this notificatoin
      *
      * @param MessageInterface $message

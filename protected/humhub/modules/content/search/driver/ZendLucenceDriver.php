@@ -263,12 +263,15 @@ class ZendLucenceDriver extends AbstractDriver
                 $privateSpaceContentQuery->addSubquery(new TermQuery(new Term(Space::class, 'container_class')), true);
 
                 $privateSpacesListQuery = new MultiTerm();
-                $membershipSpaces = Membership::getUserSpaces();
-                if (empty($membershipSpaces)) {
+                $membershipSpaceGuids = Space::find()
+                    ->select('guid')
+                    ->where(['id' => Membership::getUserSpaceIds()])
+                    ->column();
+                if (empty($membershipSpaceGuids)) {
                     $privateSpacesListQuery->addTerm(new Term('no-membership-spaces', 'container_guid'));
                 } else {
-                    foreach ($membershipSpaces as $space) {
-                        $privateSpacesListQuery->addTerm(new Term($space->guid, 'container_guid'));
+                    foreach ($membershipSpaceGuids as $guid) {
+                        $privateSpacesListQuery->addTerm(new Term($guid, 'container_guid'));
                     }
                 }
                 $privateSpaceContentQuery->addSubquery($privateSpacesListQuery, true);

@@ -9,6 +9,7 @@
 
 namespace humhub\modules\topic\models;
 
+use humhub\helpers\ArrayHelper;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\models\Content;
@@ -66,7 +67,12 @@ class Topic extends ContentTag
      */
     public function getUrl(?ContentContainerActiveRecord $contentContainer = null, array $options = [])
     {
-        return StreamHelper::createUrl($contentContainer ?: $this->container, array_merge($options, ['topics[]' => $this->id]));
+        $contentContainer ??= $this->container;
+        $options = ArrayHelper::merge($options, ['topics[]' => $this->id]);
+
+        return $contentContainer
+            ? StreamHelper::createUrl($contentContainer, $options)
+            : StreamHelper::createDashboardUrl($options);
     }
 
     /**
@@ -160,16 +166,18 @@ class Topic extends ContentTag
         }
     }
 
-    public static function isAllowedToCreate(ContentContainerActiveRecord $contentContainer)
+    public static function isAllowedToCreate(?ContentContainerActiveRecord $contentContainer = null): bool
     {
-        return (
-            $contentContainer instanceof Space
-            && Yii::$app->getModule('space')->settings->get('allowSpaceTopics', true)
-            && $contentContainer->can(AddTopic::class)
-        )
-        || (
-            $contentContainer instanceof User
-            && Yii::$app->getModule('user')->settings->get('auth.allowUserTopics', true)
-        );
+        if ($contentContainer instanceof Space) {
+            return Yii::$app->getModule('space')->settings->get('allowSpaceTopics', true)
+                && $contentContainer->can(AddTopic::class);
+        }
+
+        if ($contentContainer instanceof User) {
+            return Yii::$app->getModule('user')->settings->get('auth.allowUserTopics', true);
+        }
+
+        // Global Topics can be created only in Administration
+        return false;
     }
 }

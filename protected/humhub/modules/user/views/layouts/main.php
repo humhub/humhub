@@ -2,7 +2,6 @@
 
 use humhub\assets\AppAsset;
 use humhub\helpers\Html;
-use humhub\modules\user\helpers\LoginBackgroundImageHelper;
 use humhub\widgets\FooterMenu;
 use yii\web\View;
 
@@ -11,18 +10,18 @@ use yii\web\View;
 
 AppAsset::register($this);
 
-if (LoginBackgroundImageHelper::hasImage()) {
+if (Yii::$app->img->loginBackground->exists()) {
     $this->registerCss(
-        '.login-container { background-image: url("' . LoginBackgroundImageHelper::getUrl() . '"); }'
+        '.login-container { background-image: url("' . Yii::$app->img->loginBackground->getUrl() . '"); }'
     );
 }
 
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
-<html lang="<?= Yii::$app->language ?>" class="<?= LoginBackgroundImageHelper::hasImage() ? 'login-layout-background' : '' ?>">
+<html lang="<?= Yii::$app->language ?>" class="<?= Yii::$app->img->loginBackground->exists() ? 'login-layout-background' : '' ?>">
 <head>
-    <title><?= Html::encode($this->pageTitle); ?></title>
+    <title><?= Html::encode($this->pageTitle) ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <?php $this->head() ?>
     <?= $this->render('@humhub/views/layouts/head'); ?>

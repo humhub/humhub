@@ -78,7 +78,7 @@ class TextArea extends BaseType
     public function getUserValue(User $user, bool $raw = true, bool $encode = true): ?string
     {
         $value = parent::getUserValue($user, $raw, $encode);
-        return $encode ? nl2br($value) : $value;
+        return $encode ? nl2br((string) $value) : $value;
     }
 
 }

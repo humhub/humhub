@@ -11,11 +11,22 @@ return [
                 PDO::ATTR_PERSISTENT => true,
             ],
         ],
+        'fs' => [
+            'mounts' => [
+                'assets' => [
+                    'path' => '@webroot/assets/tests',
+                    'baseUrl' => '@web/assets/tests',
+                ],
+                'data' => [
+                    'path' => '@webroot/uploads/tests',
+                ],
+            ],
+        ],
         'view' => [
             'theme'
             => [
                 'name' => \humhub\components\Theme::CORE_THEME_NAME,
-                'basePath' => '@webroot/themes/' . \humhub\components\Theme::CORE_THEME_NAME,
+                'basePath' => '@themes/' . \humhub\components\Theme::CORE_THEME_NAME,
             ],
         ],
         'queue' => [
@@ -26,6 +37,10 @@ return [
         ],
         'captcha' => [
             'class' => \humhub\components\captcha\YiiCaptcha::class,
+        ],
+        'cache' => [
+            'class' => \yii\caching\FileCache::class,
+            'cachePath' => '@runtime/tests/cache',
         ],
     ],
     'params' => [

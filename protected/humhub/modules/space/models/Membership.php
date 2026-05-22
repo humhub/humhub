@@ -204,32 +204,32 @@ class Membership extends ActiveRecord
      */
     public static function getUserSpaces($userId = '', $cached = true)
     {
-        if ($userId === '') {
-            $userId = Yii::$app->user->id;
+        $spaceIds = static::getUserSpaceIds($userId, $cached);
+        if (empty($spaceIds)) {
+            return [];
         }
 
-        $cacheId = self::USER_SPACES_CACHE_KEY . $userId;
+        $spaces = Space::find()->where(['id' => $spaceIds])->indexBy('id')->all();
+        $result = [];
 
-        $spaces = Yii::$app->cache->get($cacheId);
-        if ($spaces === false || !$cached) {
-            $spaces = [];
-            foreach (static::getMembershipQuery($userId)->all() as $membership) {
-                $spaces[] = $membership->space;
+        foreach ($spaceIds as $spaceId) {
+            if (isset($spaces[$spaceId])) {
+                $result[] = $spaces[$spaceId];
             }
-            Yii::$app->cache->set($cacheId, $spaces);
         }
 
-        return $spaces;
+        return $result;
     }
 
     /**
      * Returns a list of all spaces' ids of the given userId
      *
-     * @param int $userId
+     * @param int|string $userId the user id or empty for current user
+     * @param bool $cached use cached result if available
      * @return array|mixed
      * @since 1.2.5
      */
-    public static function getUserSpaceIds($userId = '')
+    public static function getUserSpaceIds($userId = '', $cached = true)
     {
         if ($userId === '') {
             $userId = Yii::$app->user->id;
@@ -238,7 +238,7 @@ class Membership extends ActiveRecord
         $cacheId = self::USER_SPACEIDS_CACHE_KEY . $userId;
 
         $spaceIds = Yii::$app->cache->get($cacheId);
-        if ($spaceIds === false) {
+        if ($spaceIds === false || !$cached) {
             $spaceIds = static::getMembershipQuery($userId)->select('space_id')->column();
             Yii::$app->cache->set($cacheId, $spaceIds);
         }

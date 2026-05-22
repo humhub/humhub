@@ -37,11 +37,6 @@ class PanelMenu extends Widget
     public ?string $collapseId = null;
 
     /**
-     * @deprecated since 1.18
-     */
-    public ?string $id = null;
-
-    /**
      * Workaround to inject menu items to PanelMenu
      *
      * @deprecated since version 0.9

@@ -12,7 +12,7 @@ use yii\helpers\Url;
 $this->pageTitle = Yii::t('UserModule.auth', 'Almost there!');
 ?>
 
-<div id="user-auth-register-success" class="container">
+<div id="user-auth-register-success" class="container container-registration">
     <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br>
     <div class="panel panel-default">

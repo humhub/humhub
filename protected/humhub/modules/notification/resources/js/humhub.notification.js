@@ -12,11 +12,13 @@ humhub.module('notification', function (module, require, $) {
     var client = require('client');
     var view = require('ui.view');
     var user = require('user');
+    var i18n = require('i18n');
 
     var notificationIds = [];
     var notificationGroups = [];
 
     module.initOnPjaxLoad = true;
+    module.requiredI18nCategories = ['NotificationModule.base'];
 
     var NotificationDropDown = function (node, options) {
         Widget.call(this, node, options);
@@ -133,7 +135,7 @@ humhub.module('notification', function (module, require, $) {
 
     NotificationDropDown.prototype.handleResult = function (response) {
         if (!response.counter) {
-            this.$entryList.append(string.template(module.templates.info, {'text': module.text('info')}));
+            this.$entryList.append(string.template(module.templates.info, {'text': i18n.t('NotificationModule.base', 'There are no notifications yet.')}));
         } else {
             this.lastEntryId = response.lastEntryId;
             this.$entryList.append(response.output);

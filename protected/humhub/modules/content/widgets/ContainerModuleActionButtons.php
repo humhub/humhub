@@ -13,6 +13,7 @@ use humhub\components\Widget;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
 use Yii;
 
 /**
@@ -37,7 +38,7 @@ class ContainerModuleActionButtons extends Widget
         $isEnabled = $this->contentContainer->moduleManager->isEnabled($this->module->id);
 
         if ($this->module->getContentContainerConfigUrl($this->contentContainer) && $isEnabled) {
-            $this->buttons[] = Button::asLink(Yii::t('ContentModule.base', 'Configure'), $this->module->getContentContainerConfigUrl($this->contentContainer))
+            $this->buttons[] = Link::to(Yii::t('ContentModule.base', 'Configure'), $this->module->getContentContainerConfigUrl($this->contentContainer))
                 ->cssClass('btn btn-sm btn-accent configure-module-' . $this->module->id);
         }
 

@@ -13,8 +13,11 @@ humhub.module('content.form', function (module, require, $) {
     var Widget = require('ui.widget').Widget;
     var loader = require('ui.loader');
     var modal = require('ui.modal');
+    var i18n = require('i18n');
 
     var instance;
+
+    module.requiredI18nCategories = ['ContentModule.base'];
 
     var CreateForm = function (node) {
         Widget.call(this, node);
@@ -188,13 +191,13 @@ humhub.module('content.form', function (module, require, $) {
 
     CreateForm.prototype.setPublicVisibility = function () {
         this.$.find('.contentForm_visibility').prop("checked", true);
-        this.$.find('.contentForm_visibility_entry').html('<i class="fa fa-lock"></i>' + module.text(['makePrivate']));
+        this.$.find('.contentForm_visibility_entry').html('<i class="fa fa-lock"></i>' + i18n.t('ContentModule.base', 'Change to "Private"'));
         this.$.find('.badge-public').removeClass('d-none');
     };
 
     CreateForm.prototype.setPrivateVisibility = function () {
         this.$.find('.contentForm_visibility').prop("checked", false);
-        this.$.find('.contentForm_visibility_entry').html('<i class="fa fa-unlock"></i>' + module.text(['makePublic']));
+        this.$.find('.contentForm_visibility_entry').html('<i class="fa fa-unlock"></i>' + i18n.t('ContentModule.base', 'Change to "Public"'));
         this.$.find('.badge-public').addClass('d-none');
     };
 

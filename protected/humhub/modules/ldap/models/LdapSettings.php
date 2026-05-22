@@ -9,7 +9,8 @@
 namespace humhub\modules\ldap\models;
 
 use humhub\components\SettingsManager;
-use humhub\modules\ldap\authclient\LdapAuth;
+use humhub\modules\ldap\connection\LdapConnectionConfig;
+use humhub\modules\user\authclient\Collection;
 use Yii;
 use yii\base\Model;
 
@@ -76,11 +77,6 @@ class LdapSettings extends Model
     /**
      * @var string
      */
-    public $loginFilter;
-
-    /**
-     * @var string
-     */
     public $userFilter;
 
     /**
@@ -102,6 +98,14 @@ class LdapSettings extends Model
      * @var string
      */
     public $idAttribute;
+
+    /**
+     * @var string[] auth clients allowed for LDAP-sourced users. Defaults to
+     * `['ldap']` for fresh installs — i.e. LDAP password login is enabled out
+     * of the box. Unchecking 'ldap' disables direct LDAP password login and
+     * forces users to sign in via one of the other selected methods (SSO).
+     */
+    public $allowedAuthClientIds = [];
 
     /**
      * @var array
@@ -128,9 +132,12 @@ class LdapSettings extends Model
     {
         return [
             [['enabled', 'refreshUsers', 'usernameAttribute', 'emailAttribute', 'username', 'passwordField', 'hostname', 'port', 'idAttribute', 'disableCertificateChecking'], 'string', 'max' => 255],
-            [['baseDn', 'loginFilter', 'userFilter', 'ignoredDNs'], 'string'],
-            [['usernameAttribute', 'username', 'passwordField', 'hostname', 'port', 'baseDn', 'loginFilter', 'userFilter', 'idAttribute'], 'required'],
+            [['baseDn', 'userFilter', 'ignoredDNs'], 'string'],
+            [['hostname', 'port', 'baseDn', 'userFilter', 'usernameAttribute', 'emailAttribute', 'idAttribute', 'username'], 'trim'],
+            [['usernameAttribute', 'username', 'passwordField', 'hostname', 'port', 'baseDn', 'userFilter', 'idAttribute'], 'required'],
             ['encryption', 'in', 'range' => ['', 'ssl', 'tls']],
+            ['allowedAuthClientIds', 'filter', 'filter' => fn($v) => is_array($v) && $v !== [] ? $v : ['ldap']],
+            ['allowedAuthClientIds', 'each', 'rule' => ['in', 'range' => array_keys($this->getAuthClientOptions())]],
         ];
     }
 
@@ -149,12 +156,12 @@ class LdapSettings extends Model
             'hostname' => Yii::t('LdapModule.base', 'Hostname'),
             'port' => Yii::t('LdapModule.base', 'Port'),
             'baseDn' => Yii::t('LdapModule.base', 'Base DN'),
-            'loginFilter' => Yii::t('LdapModule.base', 'Login Filter'),
             'userFilter' => Yii::t('LdapModule.base', 'User Filter'),
             'usernameAttribute' => Yii::t('LdapModule.base', 'Username Attribute'),
             'emailAttribute' => Yii::t('LdapModule.base', 'E-Mail Address Attribute'),
             'idAttribute' => Yii::t('LdapModule.base', 'ID Attribute'),
             'ignoredDNs' => Yii::t('LdapModule.base', 'Ignored LDAP entries'),
+            'allowedAuthClientIds' => Yii::t('LdapModule.base', 'Allowed Authentication Methods'),
         ];
     }
 
@@ -167,7 +174,6 @@ class LdapSettings extends Model
             'username' => Yii::t('LdapModule.base', 'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.'),
             'passwordField' => Yii::t('LdapModule.base', 'The default credentials password (used only with username above).'),
             'baseDn' => Yii::t('LdapModule.base', 'The default base DN used for searching for accounts.'),
-            'loginFilter' => Yii::t('LdapModule.base', 'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;'),
             'usernameAttribute' => Yii::t('LdapModule.base', 'LDAP Attribute for Username. Example: &quot;uid&quot; or &quot;sAMAccountName&quot;'),
             'emailAttribute' => Yii::t('LdapModule.base', 'LDAP Attribute for E-Mail Address. Default: &quot;mail&quot;'),
             'idAttribute' => Yii::t('LdapModule.base', 'Not changeable LDAP attribute to unambiguously identify the user in the directory. If empty the user will be determined automatically by e-mail address or username. Examples: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)'),
@@ -202,7 +208,6 @@ class LdapSettings extends Model
         $this->disableCertificateChecking = $settings->get('disableCertificateChecking');
         $this->baseDn = $settings->get('baseDn');
 
-        $this->loginFilter = $settings->get('loginFilter');
         $this->userFilter = $settings->get('userFilter');
 
         $this->usernameAttribute = $settings->get('usernameAttribute');
@@ -211,6 +216,15 @@ class LdapSettings extends Model
 
         $this->ignoredDNs = $settings->get('ignoredDNs');
         $this->refreshUsers = $settings->get('refreshUsers');
+
+        // Fresh installs get LDAP password login pre-enabled. Existing installs
+        // upgrade transparently because the previous save() always wrote
+        // 'ldap' into the stored list. An empty stored list is also normalised
+        // back to ['ldap'] so the system always has at least one usable login
+        // path for LDAP users.
+        $saved = $settings->get('allowedAuthClientIds');
+        $decoded = $saved !== null ? (json_decode($saved, true) ?? []) : [];
+        $this->allowedAuthClientIds = $decoded !== [] ? $decoded : ['ldap'];
     }
 
 
@@ -234,45 +248,71 @@ class LdapSettings extends Model
             $settings->set('password', $this->passwordField);
         }
         $settings->set('baseDn', $this->baseDn);
-        $settings->set('loginFilter', $this->loginFilter);
         $settings->set('userFilter', $this->userFilter);
         $settings->set('usernameAttribute', $this->usernameAttribute);
         $settings->set('emailAttribute', $this->emailAttribute);
         $settings->set('ignoredDNs', $this->ignoredDNs);
         $settings->set('idAttribute', $this->idAttribute);
         $settings->set('refreshUsers', $this->refreshUsers);
+        $settings->set('allowedAuthClientIds', json_encode(
+            array_values(array_unique($this->allowedAuthClientIds)),
+        ));
 
         return true;
     }
 
 
     /**
-     * Returns a configured LdapAuth class definition
+     * Returns an LdapConnectionConfig populated from the saved settings.
+     * The default 'ldap' connection in {@see LdapConnectionRegistry} is built
+     * from this config.
      *
-     * @return array the LDAP Auth definition
+     * @since 1.19
      */
-    public function getLdapAuthDefinition()
+    public function getConnectionConfig(): LdapConnectionConfig
     {
-        $this->ignoredDNs = str_replace("\r", '', $this->ignoredDNs);
+        $ignoredDNs = explode("\n", strtolower(str_replace("\r", '', $this->ignoredDNs ?? '')));
 
-        return [
-            'class' => LdapAuth::class,
-            'hostname' => $this->hostname,
-            'port' => $this->port,
-            'bindUsername' => $this->username,
-            'bindPassword' => $this->password,
+        return new LdapConnectionConfig([
+            'title' => 'LDAP',
+            'hostname' => (string)$this->hostname,
+            'port' => (int)$this->port,
             'useSsl' => ($this->encryption === 'ssl'),
             'useStartTls' => ($this->encryption === 'tls'),
-            'disableCertificateChecking' => $this->disableCertificateChecking,
-            'baseDn' => $this->baseDn,
-            'loginFilter' => $this->loginFilter,
-            'userFilter' => $this->userFilter,
+            'disableCertificateChecking' => (bool)$this->disableCertificateChecking,
+            'bindUsername' => (string)$this->username,
+            'bindPassword' => (string)$this->password,
+            'baseDn' => (string)$this->baseDn,
+            'userFilter' => (string)$this->userFilter,
             'autoRefreshUsers' => (bool)$this->refreshUsers,
-            'emailAttribute' => $this->emailAttribute,
-            'usernameAttribute' => $this->usernameAttribute,
-            'idAttribute' => $this->idAttribute,
-            'ignoredDNs' => explode("\n", strtolower($this->ignoredDNs)),
-        ];
+            'emailAttribute' => $this->emailAttribute ?: 'mail',
+            'usernameAttribute' => $this->usernameAttribute ?: 'samaccountname',
+            'idAttribute' => $this->idAttribute ?: null,
+            'ignoredDNs' => $ignoredDNs,
+        ]);
+    }
+
+    /**
+     * Returns auth client options available for LDAP users. Always includes
+     * 'ldap' (LDAP password login) as a first-class checkbox entry — even on
+     * fresh installs where the LdapAuth client has not been registered yet
+     * because LDAP itself is still disabled. Excludes 'local' — local password
+     * login for LDAP users is not exposed here.
+     * Keys are client IDs, values are display titles.
+     *
+     * @return array<string, string>
+     */
+    public function getAuthClientOptions(): array
+    {
+        /** @var Collection $collection */
+        $collection = Yii::$app->authClientCollection;
+        $options = ['ldap' => Yii::t('LdapModule.base', 'LDAP')];
+        foreach ($collection->getClients() as $id => $client) {
+            if ($id !== 'local' && $id !== 'ldap') {
+                $options[$id] = $client->getTitle();
+            }
+        }
+        return $options;
     }
 
     /**

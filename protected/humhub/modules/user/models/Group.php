@@ -91,6 +91,7 @@ class Group extends ActiveRecord
         if ($this->is_admin_group) {
             $this->removeScenarioAttributes($scenarios, [
                 'defaultSpaceGuid',
+                'updateSpaceMemberships',
                 'managerGuids',
                 'show_at_registration',
                 'is_default_group',
@@ -333,6 +334,26 @@ class Group extends ActiveRecord
     public function getGroupUsers()
     {
         return $this->hasMany(GroupUser::class, ['group_id' => 'id']);
+    }
+
+    /**
+     * Get Active Query of all GroupUser relations of this group including its subgroups
+     * @return ActiveQuery
+     * @since 1.18.3
+     */
+    public function getAllGroupUsers(): ActiveQuery
+    {
+        if ($this->parent_group_id === null) {
+            // Get GroupUser relations of this Parent Group and all Sub-Groups
+            return GroupUser::find()
+                ->where(['OR',
+                    ['group_id' => $this->id],
+                    ['group_id' => $this->getSubGroups()->select('id')],
+                ]);
+        }
+
+        // Get GroupUser relations only of this Sub-Group
+        return $this->getGroupUsers();
     }
 
     public function getSubGroups(): ActiveQuery

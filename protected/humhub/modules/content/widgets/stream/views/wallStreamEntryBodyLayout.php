@@ -21,11 +21,13 @@ use humhub\modules\topic\widgets\TopicBadge;
         </div>
 
         <div class="wall-entry-body">
-            <div class="topic-label-list d-flex gap-1 flex-wrap">
-                <?php foreach ($topics as $topic) : ?>
-                    <?= TopicBadge::forTopic($topic, $model->content) ?>
-                <?php endforeach; ?>
-            </div>
+            <?php if ($topics !== []) : ?>
+                <div class="topic-label-list d-flex gap-1 flex-wrap">
+                    <?php foreach ($topics as $topic) : ?>
+                        <?= TopicBadge::forTopic($topic, $model->content) ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
 
             <div class="wall-entry-content content" id="wall_content_<?= $model->getUniqueId() ?>">
                 <?= $content ?>

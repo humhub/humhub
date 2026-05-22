@@ -75,7 +75,7 @@ return [
     'Your first sample space to discover the platform.' => 'Twoja pierwsza, przykładowa strefa do odkrywania platformy.',
     '<strong>Apache</strong> web server detected.' => '',
     '<strong>Nginx</strong> web server detected.' => '',
-    'Ensure the following rule is present in your configuration: <strong>try_files $uri $uri/ /index.php?$args;</strong>.' => '',
+    'Ensure the following rule is present in your configuration: <strong>try_files $uri $uri/ /index.php$is_args$args;</strong>.' => '',
     'In the installation folder, locate the <strong>.env.example</strong> file and copy its contents into the <strong>.env</strong> file. Next, find the <strong>Pretty URLs</strong> block and uncomment it by removing the <strong>#</strong> symbol.' => '',
     'Pretty URLs may not work correctly.' => '',
     'Pretty URLs should work correctly.' => '',

@@ -21,10 +21,9 @@ use yii\helpers\Url;
 /* @var $url string */
 /* @var $originator User */
 /* @var $space Space */
-/* @var $_params_ array */
 ?>
 
-<?php $this->beginContent('@notification/views/layouts/mail.php', $_params_) ?>
+<?php $this->beginContent('@notification/views/layouts/mail.php') ?>
     <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
         <tr>
             <td style="font-size: 14px; line-height: 22px; font-family:<?= MailStyleHelper::getFontFamily() ?>; color:<?= MailStyleHelper::getTextColorMain() ?>; font-weight:300; text-align:left">
@@ -44,7 +43,7 @@ use yii\helpers\Url;
                         <td width="109"></td>
                         <td width="50"><?= MailContentContainerImage::widget(['container' => $originator]) ?></td>
                         <td width="109"></td>
-                        <td width="25"><img src="<?= Url::to('@web-static/img/mail_ico_check.png', true) ?>"/></td>
+                        <td width="25"><img src="<?= Url::to(Yii::$app->assetManager->getPublishedUrl('@humhub/resources') . '/img/mail_ico_check.png', true) ?>"/></td>
                         <td width="109"></td>
                         <td width="50"><?= MailContentContainerImage::widget(['container' => $space]) ?></td>
                         <td></td>

@@ -80,9 +80,17 @@ class FileHelper extends \yii\helpers\FileHelper
      */
     public static function createLink(File $file, $options = [], $htmlOptions = [])
     {
-        $label = $htmlOptions['label'] ?? Html::encode($file->fileName);
+        $label = $htmlOptions['label'] ?? Html::encode($file->file_name);
 
-        $fileHandlers = FileHandlerCollection::getByType([FileHandlerCollection::TYPE_VIEW, FileHandlerCollection::TYPE_EXPORT, FileHandlerCollection::TYPE_EDIT, FileHandlerCollection::TYPE_IMPORT], $file);
+        $fileHandlers = FileHandlerCollection::getByType(
+            [
+                FileHandlerCollection::TYPE_VIEW,
+                FileHandlerCollection::TYPE_EXPORT,
+                FileHandlerCollection::TYPE_EDIT,
+                FileHandlerCollection::TYPE_IMPORT,
+            ],
+            $file,
+        );
         if (count($fileHandlers) === 1 && $fileHandlers[0] instanceof DownloadFileHandler) {
             $htmlOptions['target'] = '_blank';
             $htmlOptions = array_merge($htmlOptions, FileDownload::getFileDataAttributes($file));
@@ -164,6 +172,14 @@ class FileHelper extends \yii\helpers\FileHelper
         }
 
         return $extensionsByMimeType;
+    }
+
+    public static function getTempFile()
+    {
+        $tempDir = Yii::getAlias('@runtime/temp');
+        FileHelper::createDirectory($tempDir);
+
+        return tempnam($tempDir, 'tmf');
     }
 
 }

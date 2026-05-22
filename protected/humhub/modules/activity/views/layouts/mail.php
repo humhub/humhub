@@ -53,7 +53,7 @@ use humhub\helpers\MailStyleHelper;
                                                         <!-- START: USER IMAGE -->
                                                         <a href="<?= $user->createUrl('/user/profile', [], true) ?>">
                                                             <img
-                                                                src="<?= $user->getProfileImage()->getUrl('', true) ?>"
+                                                                src="<?= $user->image->getUrl(null, true) ?>"
                                                                 width="50"
                                                                 alt=""
                                                                 style="max-width:50px; display:block !important; border-radius: 4px;"

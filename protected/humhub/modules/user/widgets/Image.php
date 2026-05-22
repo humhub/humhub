@@ -66,7 +66,7 @@ class Image extends BaseImage
         $this->imageOptions['data-contentcontainer-id'] = $this->user->contentcontainer_id;
 
         $this->imageOptions['alt'] = Yii::t('base', 'Profile picture of {displayName}', ['displayName' => Html::encode($this->user->displayName)]);
-        $html = Html::img($this->user->getProfileImage()->getUrl(), $this->imageOptions);
+        $html = Html::img($this->user->image, $this->imageOptions);
 
         $isOnlineService = new IsOnlineService($this->user);
         if (

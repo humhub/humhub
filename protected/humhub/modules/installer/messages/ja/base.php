@@ -77,7 +77,7 @@ return [
     'Your first sample space to discover the platform.' => 'プラットフォームを発見するための最初のサンプルスペース。',
     '<strong>Apache</strong> web server detected.' => '',
     '<strong>Nginx</strong> web server detected.' => '',
-    'Ensure the following rule is present in your configuration: <strong>try_files $uri $uri/ /index.php?$args;</strong>.' => '',
+    'Ensure the following rule is present in your configuration: <strong>try_files $uri $uri/ /index.php$is_args$args;</strong>.' => '',
     'Make sure that the following file is writable: thi' => '',
     'Pretty URLs may not work correctly.' => '',
     'Pretty URLs should work correctly.' => '',

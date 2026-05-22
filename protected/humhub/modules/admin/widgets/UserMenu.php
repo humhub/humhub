@@ -58,6 +58,7 @@ class UserMenu extends TabMenu
                     . ($approvalCount > 0
                         ? Badge::danger((string)$approvalCount)
                         : Badge::light((string)$approvalCount)),
+                'encodeLabel' => false,
                 'url' => ['/admin/approval'],
                 'sortOrder' => 300,
                 'isActive' => ControllerHelper::isActivePath('admin', 'approval'),

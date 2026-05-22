@@ -34,7 +34,6 @@ use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\content\services\ContentStateService;
-use humhub\modules\content\services\ContentTagService;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\PermissionManager;
@@ -143,12 +142,6 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      * @var ContentContainerActiveRecord the Container (e.g. Space or User) where this content belongs to.
      */
     protected $_container = null;
-
-    /**
-     * @var bool flag to disable the creation of default social activities like activity and notifications in afterSave() at content creation.
-     * @deprecated since v1.2.3 use ContentActiveRecord::silentContentCreation instead.
-     */
-    public $muteDefaultSocialActivities = false;
 
     /**
      * @event Event is used when a Content state is changed.
@@ -390,34 +383,20 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      * Marks this content for deletion (soft delete).
      * Use `hardDelete()` method to delete a content immediately.
      *
-     * @return bool
      * @inheritdoc
+     * @deprecated since 1.19 (will throw error in future)
      */
     public function delete()
     {
         return $this->softDelete();
+        // TODO: since 1.20
+        // throw new Exception('Forbidden Content->delete()! Use Content->getPolymorphicRelation()->delete() instead!');
     }
 
     /**
      * @inheritdoc
-     */
-    public function afterDelete()
-    {
-        // Try to delete the underlying object (Post, Question, Task, ...)
-        $this->resetPolymorphicRelation();
-
-        /** @var ContentActiveRecord $record */
-        $record = $this->getPolymorphicRelation();
-
-        if ($record) {
-            $record->hardDelete();
-        }
-
-        parent::afterDelete();
-    }
-
-    /**
-     * @inheritdoc
+     * @deprecated since 1.19
+     * @hint Use event ContentActiveRecord::EVENT_BEFORE_SOFT_DELETE instead
      */
     public function beforeSoftDelete(): bool
     {
@@ -429,28 +408,35 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
 
     /**
      * @inheritdoc
+     * @deprecated since 1.19 Use ContentActiveRecord::softDelete() instead
      */
     public function softDelete(): bool
     {
-        if (!$this->beforeSoftDelete()) {
-            return false;
-        }
+        $record = $this->getPolymorphicRelation();
+        return $record instanceof ContentActiveRecord ? $record->softDelete() : false;
+    }
 
+    /**
+     * Marks the Content as deleted.
+     * (It must be called only from ContentActiveRecord)
+     *
+     * @return bool
+     * @since 1.19
+     */
+    public function softDeleteInternal(): bool
+    {
         Notification::deleteAll([
             'source_class' => PolymorphicRelation::getObjectModel($this),
             'source_pk' => $this->getPrimaryKey(),
         ]);
 
-        if (!$this->getStateService()->delete()) {
-            return false;
-        }
-
-        $this->afterSoftDelete();
-        return true;
+        return $this->getStateService()->delete();
     }
 
     /**
      * @inheritdoc
+     * @deprecated since 1.19
+     * @hint Use event ContentActiveRecord::EVENT_AFTER_SOFT_DELETE instead
      */
     public function afterSoftDelete()
     {
@@ -464,9 +450,24 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      * @throws Throwable
      * @throws StaleObjectException
      * @since 1.14
+     * @deprecated since 1.19 ContentActiveRecord::hardDelete() instead
      */
     public function hardDelete(): bool
     {
+        return $this->hardDeleteInternal();
+    }
+
+    /**
+     * Deletes this content immediately and permanently.
+     * (It must be called only from ContentActiveRecord)
+     *
+     * @return bool
+     * @since 1.19
+     */
+    public function hardDeleteInternal(): bool
+    {
+        Activity::deleteAll(['content_id' => $this->id]);
+
         return parent::delete() !== false;
     }
 
@@ -862,29 +863,6 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     }
 
     /**
-     * Adds a new ContentTagRelation for this content and the given $tag instance.
-     *
-     * @param ContentTag $tag
-     * @return bool if the provided tag is part of another ContentContainer
-     * @deprecated since 1.15
-     */
-    public function addTag(ContentTag $tag)
-    {
-        return (new ContentTagService($this))->addTag($tag);
-    }
-
-    /**
-     * Adds the given ContentTag array to this content.
-     *
-     * @param $tags ContentTag[]
-     * @deprecated since 1.15
-     */
-    public function addTags($tags)
-    {
-        (new ContentTagService($this))->addTags($tags);
-    }
-
-    /**
      * Checks if the given user can edit/create this content.
      *
      * A user can edit a content if one of the following conditions are met:
@@ -1115,17 +1093,4 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     {
         return new ContentStateService(['content' => $this]);
     }
-
-    /**
-     * @param int|string|null $state
-     * @param array $options Additional options depending on state
-     * @since 1.14
-     * @deprecated Use $this->getStateService()->set(). It will be deleted in v1.15.
-     */
-    public function setState($state, array $options = [])
-    {
-        $this->getStateService()->set($state, $options);
-    }
-
-
 }

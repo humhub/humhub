@@ -30,8 +30,9 @@ class Yii
  * @property \humhub\components\SettingsManager $settings
  * @property \humhub\modules\notification\components\NotificationManager $notification
  * @property \humhub\components\i18n\Formatter
- * @property \humhub\components\AssetManager $assetManager
+ * @property \humhub\components\assets\AssetManager $assetManager
  * @property \humhub\modules\user\authclient\Collection $authClientCollection
+ * @property \humhub\modules\user\source\UserSourceCollection $userSourceCollection
  * @property \yii\queue\Queue $queue
  * @property \humhub\components\Request $request
  * @property \humhub\components\UrlManager $urlManager
@@ -39,7 +40,11 @@ class Yii
  * @property \yii\mutex\Mutex $mutex
  * @property \yii\web\User|__WebUser $user
  * @property \yii\caching\ArrayCache $runtimeCache
+ * @property \humhub\components\assets\AssetImageRegistry $img
  * @property \humhub\components\InstallationState $installationState
+ * @property \humhub\components\bootstrap\SystemRevision $systemRevision
+ * @property \humhub\components\fs\FilesystemManager $fs
+ * @property \humhub\components\bootstrap\SystemRevision $systemRevision
  */
 class __Application
 {

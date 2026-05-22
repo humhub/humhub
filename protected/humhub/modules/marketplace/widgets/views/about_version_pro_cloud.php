@@ -13,7 +13,7 @@ use humhub\modules\marketplace\models\Licence;
 ?>
 <div class="d-flex flex-wrap">
     <div class="pe-3 mb-3">
-        <?= Html::img('@web-static/img/hh_professional.png', ['class' => 'hh-about-logo rounded-1']) ?>
+        <?= Html::img(Yii::$app->assetManager->getPublishedUrl('@humhub/resources') . '/img/hh_professional.png', ['class' => 'hh-about-logo rounded-1']) ?>
     </div>
     <div class="mb-3 flex-grow-1">
         <h4>HumHub Professional Edition - SaaS</h4>

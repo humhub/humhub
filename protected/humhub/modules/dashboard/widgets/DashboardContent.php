@@ -36,7 +36,8 @@ class DashboardContent extends Widget
             'options' => ['class' => 'dashboard-wall-stream'],
             'streamAction' => '//dashboard/dashboard/stream',
             'showFilters' => (bool) Yii::$app->getModule('dashboard')->settings->get('showProfilePostForm')
-                || (!is_null(Yii::$app->request->getQueryParam('filters_visible')) && !empty(Yii::$app->request->getQueryParam('includes'))),
+                || (!is_null(Yii::$app->request->getQueryParam('filters_visible')) && !empty(Yii::$app->request->getQueryParam('includes')))
+                || !empty(Yii::$app->request->getQueryParam('topics')),
             'messageStreamEmpty' => $messageStreamEmpty,
         ]);
     }

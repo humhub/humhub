@@ -28,19 +28,31 @@ class MembershipHelper
      * @param bool $useCache use cached result if available
      * @return Space[] the list of spaces
      */
-    public static function getOwnSpaces(?User $user = null, $useCache = true)
+    public static function getOwnSpaces(?User $user = null, bool $useCache = true)
     {
         if ($user === null) {
             $user = Yii::$app->user->getIdentity();
         }
 
-        $spaces = [];
-        foreach (Membership::GetUserSpaces($user->id, $useCache) as $space) {
-            if ($space->isSpaceOwner($user->id)) {
-                $spaces[] = $space;
+        $spaceIds = Membership::getUserSpaceIds($user->id, $useCache);
+        if (empty($spaceIds)) {
+            return [];
+        }
+
+        $spaces = Space::find()
+            ->where(['id' => $spaceIds, 'created_by' => $user->id])
+            ->indexBy('id')
+            ->all();
+
+        $result = [];
+        // keep original ordering from Membership::getUserSpaceIds
+        foreach ($spaceIds as $spaceId) {
+            if (isset($spaces[$spaceId])) {
+                $result[] = $spaces[$spaceId];
             }
         }
-        return $spaces;
+
+        return $result;
     }
 
 }

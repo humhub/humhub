@@ -310,8 +310,8 @@ class Space extends ContentContainerActiveRecord
             $this->moduleManager->disable($module);
         }
 
-        $this->getProfileImage()->delete();
-        $this->getProfileBannerImage()->delete();
+        $this->image->delete();
+        $this->bannerImage->delete();
 
         Follow::deleteAll(['object_id' => $this->id, 'object_model' => static::class]);
 
@@ -467,6 +467,7 @@ class Space extends ContentContainerActiveRecord
 
     /**
      * @inheritDoc
+     * @deprecated since 1.19
      */
     public function getProfileImage()
     {
@@ -664,15 +665,6 @@ class Space extends ContentContainerActiveRecord
     public function getGroupSpaces()
     {
         return $this->hasMany(GroupSpace::class, ['space_id' => 'id']);
-    }
-
-    /**
-     * @return bool
-     * @deprecated
-     */
-    public function isModuleEnabled($id)
-    {
-        return $this->moduleManager->isEnabled($id);
     }
 
     /**

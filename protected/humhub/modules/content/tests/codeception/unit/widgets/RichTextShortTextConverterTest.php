@@ -160,14 +160,6 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
      * Images
      */
 
-    public function testConvertImageAsLink()
-    {
-        $this->assertConversionResult(
-            'Test ![Alt Text](https://www.humhub.com/static/img/logo.png)',
-            'Test [Image]',
-        );
-    }
-
     /**
      * @throws InvalidConfigException
      */
@@ -279,6 +271,46 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     }
 
     /*
+     * Videos
+     */
+
+    public function testConvertVideoToShortText()
+    {
+        $this->assertConversionResult(
+            'Test ![Video Title](https://www.humhub.com/static/sample.mp4 video)',
+            'Test [Video]',
+        );
+    }
+
+    public function testConvertVideoWithAllOptionsToShortText()
+    {
+        $this->assertConversionResult(
+            'Test ![Video Title><](https://www.humhub.com/static/sample.mp4 video controls autoplay muted loop =300x200)',
+            'Test [Video]',
+        );
+    }
+
+    /*
+     * Audios
+     */
+
+    public function testConvertAudioToShortText()
+    {
+        $this->assertConversionResult(
+            'Test ![Audio Title](https://www.humhub.com/static/sample.mp3 audio)',
+            'Test [Audio]',
+        );
+    }
+
+    public function testConvertAudioWithAllOptionsToShortText()
+    {
+        $this->assertConversionResult(
+            'Test ![Audio Title><](https://www.humhub.com/static/sample.mp3 audio controls autoplay muted loop)',
+            'Test [Audio]',
+        );
+    }
+
+    /*
      * Paragraph
      */
 
@@ -326,7 +358,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     public function testMentionInActiveUser()
     {
         $user = User::findOne(['id' => 2]);
-        $user->updateAttributes(['status' => User::STATUS_DISABLED]);
+        $user->updateAttributes(['status' => User::STATUS_DEACTIVATED]);
 
         $this->assertConversionResult(
             'Test mention ' . MentioningExtension::buildMentioning($user),

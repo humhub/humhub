@@ -17,10 +17,10 @@ class ThemeHelperTest extends HumHubDbTestCase
 
         // Clear the assets folder
         Yii::$app->assetManager->clear();
-        $this->assertFileNotExists($this->getThemeCssPath($theme));
+        $this->assertFalse(Yii::$app->assetManager->fileExists($this->getThemeCssPath($theme)));
 
         $this->assertTrue(ThemeHelper::buildCss($theme));
-        $this->assertFileExists($this->getThemeCssPath($theme));
+        $this->assertTrue(Yii::$app->assetManager->fileExists($this->getThemeCssPath($theme)));
     }
 
     public function testBuildCssForChildTheme()
@@ -32,14 +32,14 @@ class ThemeHelperTest extends HumHubDbTestCase
     {
         $this->assertInstanceOf(Theme::class, $theme);
         $this->assertTrue(ThemeHelper::buildCss($theme));
-        $this->assertFileExists($this->getThemeCssPath($theme));
+        $this->assertTrue(Yii::$app->assetManager->fileExists($this->getThemeCssPath($theme)));
         $this->assertEquals('#435f6f', $theme->variable('primary'));
     }
 
     private function createTheme(string $newThemeName): ?Theme
     {
         $sourceThemeDir = ThemeHelper::getThemeByName(Theme::CORE_THEME_NAME)->getBasePath();
-        $newThemeDir = Yii::getAlias('@webroot/themes') . '/' . $newThemeName;
+        $newThemeDir = Yii::getAlias('@runtime') . '/tests/themes/' . $newThemeName;
 
         FileHelper::removeDirectory($newThemeDir);
         FileHelper::copyDirectory($sourceThemeDir, $newThemeDir, ['recursive' => true]);

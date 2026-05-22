@@ -14,18 +14,27 @@ class LoginCest
 
         $loginPage = LoginPage::openBy($I);
 
-        $I->amGoingTo('try to login with empty credentials');
+        $I->amGoingTo('try to continue with an empty username on Step 1');
         $loginPage->login('', '');
-        $I->expectTo('see validations errors');
+        $I->expectTo('see Step 1 validation error');
         $I->waitForText('Username or Email cannot be blank.');
-        $I->see('Password cannot be blank.');
+
+        $I->amGoingTo('try to submit Step 2 with an empty password');
+        $loginPage->openPasswordStep('User1');
+        $I->click('#login-button');
+        $I->waitForText('Password cannot be blank.');
 
         $I->amGoingTo('try to login with wrong credentials');
+        // Reset to Step 1 — the previous assertion left us on Step 2, where
+        // LoginPage::login() can't fill the username field.
+        $loginPage = LoginPage::openBy($I);
         $loginPage->login('User1', 'wrong');
         $I->expectTo('see validations errors');
         $I->waitForText('User or Password incorrect.');
 
         $I->amGoingTo('try to login with correct credentials');
+        // Wrong-credentials POST left us on Step 2 — start over from Step 1.
+        $loginPage = LoginPage::openBy($I);
         $loginPage->login('User1', 'user^humhub@PASS%worD!');
         $I->expectTo('see dashboard');
         $I->waitForText('User 2 Space 2 Post Public');
@@ -84,15 +93,13 @@ class LoginCest
         $loginPage->login('User3', 'user^humhub@PASS%worD!');
 
         $I->expectTo('see password change dialog');
-        $I->waitForText('Due to security reasons');
-        $I->fillField('#password-currentpassword', 'user^humhub@PASS%worD!');
-        $I->fillField('#password-newpassword', '321QW12e');
-        $I->fillField('#password-newpasswordconfirm', '321QW12e');
-        $I->click('Confirm');
+        $I->waitForElement('//input[@name="Password[currentPassword]"]', 20);
+        $I->seeInCurrentUrl('/must-change-password');
 
-        $I->expectTo('see dashboard');
-        $I->waitForText('Password changed');
-        $I->see('Latest activities');
+        $I->amGoingTo('open the dashboard before changing password');
+        $I->amOnRoute(['/dashboard/dashboard']);
+        $I->waitForElement('//input[@name="Password[currentPassword]"]', 20);
+        $I->seeInCurrentUrl('/must-change-password');
     }
 
     //Login by email

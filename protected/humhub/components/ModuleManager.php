@@ -651,7 +651,10 @@ class ModuleManager extends Component
         $this->trigger(static::EVENT_BEFORE_MODULE_ENABLE, new ModuleEvent(['module' => $module]));
 
         if (!ModuleEnabled::findOne(['module_id' => $module->id])) {
-            (new ModuleEnabled(['module_id' => $module->id]))->save();
+            (new ModuleEnabled([
+                'module_id' => $module->id,
+                'version' => $module->version,
+            ]))->save();
         }
 
         $this->enabledModules[] = $module->id;

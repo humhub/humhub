@@ -98,13 +98,11 @@ class ApprovalController extends Controller
             ->all();
 
         // Get or set screen options
-        $screenProfileFieldsId = null;
-
         /** @var Module $module */
         $module = Yii::$app->getModule('admin');
-        $module->settings->user()->getSerialized(self::USER_SETTINGS_SCREEN_KEY, []);
-        if (Yii::$app->request->post('screenProfileFieldsId')) {
-            $screenProfileFieldsId = Yii::$app->request->post('screenProfileFieldsId');
+        $screenProfileFieldsId = $module->settings->user()->getSerialized(self::USER_SETTINGS_SCREEN_KEY, []);
+        if (Yii::$app->request->isPost) {
+            $screenProfileFieldsId = Yii::$app->request->post('screenProfileFieldsId', []);
             $module->settings->user()->setSerialized(self::USER_SETTINGS_SCREEN_KEY, $screenProfileFieldsId);
         }
         $profileFieldsColumns = !$screenProfileFieldsId ? [] : ProfileField::find()

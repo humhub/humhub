@@ -10,15 +10,12 @@ use Yii;
 
 final class BootstrapService
 {
-    private bool $debug;
     private string $humhubPath = __DIR__ . '/..';
     private string $configPath = __DIR__ . '/../../config';
     private string $vendorPath = __DIR__ . '/../../vendor';
 
-    public function __construct(bool $debug = false)
+    public function __construct(private readonly bool $debug = false)
     {
-        $this->debug = $debug;
-
         if (!empty($_ENV['HUMHUB_ALIASES__HUMHUB'])) {
             $this->humhubPath = $_ENV['HUMHUB_ALIASES__HUMHUB'];
         }
@@ -43,8 +40,12 @@ final class BootstrapService
         Yii::setAlias('@humhub', $this->humhubPath);
     }
 
-    private function getConfig($mode = 'web'): array
+    public function getConfig($mode = 'web'): array
     {
+        $appClass = $mode === 'console'
+            ? \humhub\components\console\Application::class
+            : \humhub\components\Application::class;
+
         $humhubConfig = [
             require($this->humhubPath . '/config/common.php'),
             require($this->humhubPath . '/config/' . $mode . '.php'),
@@ -52,7 +53,6 @@ final class BootstrapService
 
         $commonConfig = [
             require($this->configPath . '/common.php'),
-            require($this->configPath . '/' . $mode . '.php'),
             require($this->configPath . '/' . $mode . '.php'),
         ];
 
@@ -63,7 +63,7 @@ final class BootstrapService
             ->setHumhub(...$humhubConfig)
             ->setDynamic($dynamicConfig)
             ->setCommon(...$commonConfig)
-            ->setEnv(EnvHelper::toConfig($_ENV, \humhub\components\console\Application::class))
+            ->setEnv(EnvHelper::toConfig($_ENV, $appClass))
             ->toArray();
     }
 

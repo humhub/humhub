@@ -10,7 +10,6 @@ namespace humhub\commands;
 
 use humhub\components\Module;
 use humhub\helpers\DatabaseHelper;
-use humhub\services\MigrationService;
 use Yii;
 use yii\console\controllers\BaseMigrateController;
 use yii\console\Exception;
@@ -215,46 +214,6 @@ class MigrateController extends \yii\console\controllers\MigrateController
         }
 
         return $migrationPaths;
-    }
-
-    /**
-     * Executes all pending migrations
-     *
-     * @param string $action 'up' or 'new'
-     * @param \yii\base\Module|null $module Module to get the migrations from, or Null for Application
-     *
-     * @return string output
-     * @deprecated since 1.16; use MigrationService::migrateUp()
-     * @see MigrationService::migrateUp()
-     */
-    public static function webMigrateAll(string $action = 'up', ?\yii\base\Module $module = null): string
-    {
-        return $action === 'up'
-            ? MigrationService::create($module)->migrateUp()
-            : MigrationService::create($module)->migrateNew();
-    }
-
-    /**
-     * Executes migrations in a specific folder
-     *
-     * @param string $migrationPath
-     *
-     * @return string output
-     * @deprecated since 1.16; use MigrationService::create($module)->migrateUp()
-     * @see MigrationService::create()
-     * @see MigrationService::migrateUp()
-     */
-    public static function webMigrateUp(string $migrationPath): ?string
-    {
-        ob_start();
-        $controller = new self('migrate', Yii::$app);
-        $controller->db = Yii::$app->db;
-        $controller->interactive = false;
-        $controller->migrationPath = $migrationPath;
-        $controller->color = false;
-        $controller->runAction('up');
-
-        return ob_get_clean() ?: null;
     }
 
     /**

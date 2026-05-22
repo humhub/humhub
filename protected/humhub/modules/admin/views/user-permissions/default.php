@@ -15,21 +15,6 @@ use yii\helpers\Url;
 
 AdminAsset::register($this);
 
-$this->registerJsConfig('admin', $adminSettingsJsConfig = ['text' => [
-    'enableProfilePermissions.header' => Yii::t('AdminModule.user', '<strong>Profile</strong> Permissions'),
-    'enableProfilePermissions.question.enable' => Yii::t('AdminModule.user', 'Allow users to set individual permissions for their own profile?'),
-    'enableProfilePermissions.button.enable' => Yii::t('AdminModule.user', 'Allow'),
-
-    'enableProfilePermissions.question.disable' => Yii::t(
-            'AdminModule.user',
-            'Deactivate individual profile permissions?'
-        ) . '<br><br>' .
-        '<div class="alert alert-danger">' .
-        Yii::t('AdminModule.user', '<strong>Warning:</strong> All individual profile permission settings are reset to the default values!') .
-        '</div>',
-    'enableProfilePermissions.button.disable' => Yii::t('AdminModule.user', 'Disable'),
-]]);
-
 /** @var Module $userModule */
 $userModule = Yii::$app->getModule('user');
 $enabledProfilePermissions = (bool)$userModule->settings->get('enableProfilePermissions', false);
@@ -48,9 +33,13 @@ $enabledProfilePermissions = (bool)$userModule->settings->get('enableProfilePerm
                 'id' => 'switchPermissionChkId',
                 'data-action-click' => 'admin.changeIndividualProfilePermissions',
                 'data-action-url' => Url::to(['/admin/user-permissions/switch-individual-profile-permissions']),
-                'data-action-confirm-header' => $adminSettingsJsConfig['text']['enableProfilePermissions.header'],
-                'data-action-confirm' => $adminSettingsJsConfig['text']['enableProfilePermissions.question.' . ($enabledProfilePermissions ? 'disable' : 'enable')],
-                'data-action-confirm-text' => $adminSettingsJsConfig['text']['enableProfilePermissions.button.' . ($enabledProfilePermissions ? 'disable' : 'enable')],
+                'data-action-confirm-header' => Yii::t('AdminModule.user', '<strong>Profile</strong> Permissions'),
+                'data-action-confirm' => $enabledProfilePermissions
+                    ? Yii::t('AdminModule.user', 'Deactivate individual profile permissions?') . '<br><br><div class="alert alert-danger">' . Yii::t('AdminModule.user', '<strong>Warning:</strong> All individual profile permission settings are reset to the default values!') . '</div>'
+                    : Yii::t('AdminModule.user', 'Allow users to set individual permissions for their own profile?'),
+                'data-action-confirm-text' => $enabledProfilePermissions
+                    ? Yii::t('AdminModule.user', 'Disable')
+                    : Yii::t('AdminModule.user', 'Allow'),
             ]); ?>
             <?= Yii::t('AdminModule.user', 'Enable individual profile permissions'); ?>
         </label>

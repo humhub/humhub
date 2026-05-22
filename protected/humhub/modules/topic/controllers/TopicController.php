@@ -31,8 +31,6 @@ class TopicController extends ContentContainerController
 
     public function actionSearch($keyword)
     {
-        return $this->contentContainer
-            ? TopicPicker::searchByContainer($keyword, $this->contentContainer)
-            : TopicPicker::search($keyword);
+        return TopicPicker::searchByContainer($keyword, $this->contentContainer);
     }
 }

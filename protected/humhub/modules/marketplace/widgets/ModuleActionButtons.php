@@ -49,7 +49,8 @@ class ModuleActionButtons extends Widget
         $licence = $marketplaceModule->getLicence();
 
         if ($this->module->isProFeature() && $licence->type === Licence::LICENCE_TYPE_CE) {
-            $html .= Button::primary(Icon::get('info-circle') . '&nbsp;&nbsp;' . Yii::t('MarketplaceModule.base', 'Learn more'))
+            $html .= Button::primary(Yii::t('MarketplaceModule.base', 'Learn more'))
+                ->icon('info-circle')
                 ->link('https://www.humhub.com/en/professional-edition')
                 ->options(['target' => '_blank'])
                 ->sm()
@@ -61,7 +62,7 @@ class ModuleActionButtons extends Widget
                 ->options(['target' => '_blank'])
                 ->loader(false);
         } elseif (!empty($this->module->price_eur) && !$this->module->purchased) {
-            $html .= Button::primary(Yii::t('MarketplaceModule.base', 'Buy (%price%)', ['%price%' => $this->module->price_eur . '&euro;']))
+            $html .= Button::primary(Yii::t('MarketplaceModule.base', 'Buy (%price%)', ['%price%' => $this->module->price_eur . '€']))
                 ->link($this->module->checkoutUrl)
                 ->sm()
                 ->options(['target' => '_blank'])

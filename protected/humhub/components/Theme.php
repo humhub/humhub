@@ -40,6 +40,8 @@ use yii\base\Theme as BaseTheme;
  */
 class Theme extends BaseTheme
 {
+    public const EVENT_AFTER_THEME_ACTIVATE = 'afterThemeActivate';
+
     /**
      * @since 1.18
      */
@@ -83,7 +85,7 @@ class Theme extends BaseTheme
     public function init()
     {
         if ($this->getBasePath() == '') {
-            $this->setBasePath('@webroot/themes/' . $this->name);
+            $this->setBasePath('@themes/' . $this->name);
         }
 
         $this->variables = new ThemeVariables(['theme' => $this]);
@@ -117,8 +119,8 @@ class Theme extends BaseTheme
         $baseUrl = $this->getBaseUrl();
 
         // Build CSS if not already done
-        $cssFile = $this->publishedResourcesPath . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'theme.css';
-        if (!file_exists($cssFile)) {
+        $cssFile = $this->getPublishedResourcesPath() . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'theme.css';
+        if (!Yii::$app->assetManager->fileExists($cssFile)) {
             $buildResult = ThemeHelper::buildCss();
             // If SCSS error in a Child Theme or Custom SCSS
             if ($buildResult !== true) {
@@ -145,6 +147,8 @@ class Theme extends BaseTheme
 
         // Publish resources to assets (the CSS will be automatically generated on layout rendering)
         $this->publishResources(true);
+
+        $this->trigger(static::EVENT_AFTER_THEME_ACTIVATE, new Event());
     }
 
     /**
@@ -211,16 +215,11 @@ class Theme extends BaseTheme
     /**
      * Published theme assets (e.g. images or css)
      *
-     * @param bool|null $force
-     *
+     * @param bool $force publish of resources
      * @return string URL of published resources
      */
-    public function publishResources($force = null)
+    public function publishResources(bool $force = false)
     {
-        if ($force === null) {
-            $force = YII_DEBUG;
-        }
-
         $published = Yii::$app->assetManager->publish(
             $this->getBasePath(),
             ['forceCopy' => $force, 'except' => ['views/', 'scss/']],

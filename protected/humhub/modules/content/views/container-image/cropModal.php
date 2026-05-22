@@ -1,11 +1,11 @@
 <?php
 
+use humhub\components\assets\AssetImage;
 use humhub\components\View;
 use humhub\helpers\Html;
-use humhub\libs\ProfileBannerImage;
-use humhub\libs\ProfileImage;
 use humhub\models\forms\CropProfileImage;
 use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\content\controllers\ContainerImageController;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\widgets\CropImage;
 use humhub\widgets\modal\Modal;
@@ -13,27 +13,31 @@ use humhub\widgets\modal\ModalButton;
 use yii\helpers\Json;
 
 /* @var $this View */
-/* @var $profileImage ProfileImage */
+/* @var $assetImage AssetImage */
 /* @var $model CropProfileImage */
+/* @var $imageType string */
 /* @var $container ContentContainerController */
 /* @var $submitUrl string */
 
-if ($profileImage instanceof ProfileBannerImage) {
+
+$aspectRatio = $assetImage->defaultOptions['width'] / $assetImage->defaultOptions['height'];
+
+if ($imageType === ContainerImageController::TYPE_PROFILE_BANNER_IMAGE) {
     $model->aspectRatio = ($container instanceof Space)
-        ? $this->theme->variable('space-profile-banner-ratio', $profileImage->getAspectRatio())
-        : $this->theme->variable('user-profile-banner-ratio', $profileImage->getAspectRatio());
+        ? $this->theme->variable('space-profile-banner-ratio', $aspectRatio)
+        : $this->theme->variable('user-profile-banner-ratio', $aspectRatio);
 
     $cropSelect = ($container instanceof Space)
-        ? $this->theme->variable('space-profile-banner-crop', '0, 0, ' . $profileImage->width() . ', ' . $profileImage->height())
-        : $this->theme->variable('user-profile-banner-crop', '0, 0, ' . $profileImage->width() . ', ' . $profileImage->height());
+        ? $this->theme->variable('space-profile-banner-crop', '0, 0, ' . $assetImage->defaultOptions['width'] . ', ' . $assetImage->defaultOptions['height'])
+        : $this->theme->variable('user-profile-banner-crop', '0, 0, ' . $assetImage->defaultOptions['width'] . ', ' . $assetImage->defaultOptions['height']);
 } else {
     $model->aspectRatio = ($container instanceof Space)
-        ? $this->theme->variable('space-profile-image-ratio', $profileImage->getAspectRatio())
-        : $this->theme->variable('user-profile-image-ratio', $profileImage->getAspectRatio());
+        ? $this->theme->variable('space-profile-image-ratio', $aspectRatio)
+        : $this->theme->variable('user-profile-image-ratio', $aspectRatio);
 
     $cropSelect = ($container instanceof Space)
-        ? $this->theme->variable('space-profile-image-crop', '0, 0, ' . $profileImage->width() . ', ' . $profileImage->height())
-        : $this->theme->variable('user-profile-image-crop', '0, 0, ' . $profileImage->width() . ', ' . $profileImage->height());
+        ? $this->theme->variable('space-profile-image-crop', '0, 0, ' . $assetImage->defaultOptions['width'] . ', ' . $assetImage->defaultOptions['height'])
+        : $this->theme->variable('user-profile-image-crop', '0, 0, ' . $assetImage->defaultOptions['width'] . ', ' . $assetImage->defaultOptions['height']);
 }
 
 $model->cropSetSelect = Json::decode('[' . $cropSelect . ']');
@@ -70,7 +74,7 @@ $model->cropSetSelect = Json::decode('[' . $cropSelect . ']');
     <?= $form->field($model, 'cropH')->hiddenInput(['id' => 'cropH'])->label(false) ?>
 
     <div id="cropimage" style="overflow:hidden;">
-        <?= Html::img($profileImage->getUrl('_org'), ['id' => 'crop-profile-image']) ?>
+        <?= Html::img($assetImage->getUrl([]), ['id' => 'crop-profile-image']) ?>
 
         <?= CropImage::widget(['selector' => '#crop-profile-image',
             'pluginOptions' => $model->getPluginOptions(),]); ?>

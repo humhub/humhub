@@ -8,14 +8,19 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\WebStaticAssetBundle;
+use humhub\components\assets\AssetBundle;
 use yii\web\View;
 
 /**
  * HumHub Core Api Asset
  */
-class CoreApiAsset extends WebStaticAssetBundle
+class CoreApiAsset extends AssetBundle
 {
+    /**
+     * @inheritdoc
+     */
+    public $sourcePath = '@humhub/resources';
+
     /**
      * @inheritdoc
      */
@@ -48,6 +53,11 @@ class CoreApiAsset extends WebStaticAssetBundle
         'js/humhub/humhub.ui.navigation.js', // Required here since we set the active navigation on each call
         'js/humhub/humhub.ui.modal.js', // Should be moved to CoreModuleScriptAssets later
         'js/humhub/humhub.ui.progress.js',
+        'js/humhub/humhub.i18n.js',
+    ];
+
+    public $depends = [
+        IntlMessageFormatAsset::class,
     ];
 
 }

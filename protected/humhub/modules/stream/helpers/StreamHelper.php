@@ -16,6 +16,11 @@ use yii\helpers\Url;
 
 class StreamHelper
 {
+    public static function createDashboardUrl(array $options = []): string
+    {
+        return Url::to(['/dashboard/dashboard'] + $options);
+    }
+
     /**
      * @param ContentContainerActiveRecord $container
      * @param array $options

@@ -31,16 +31,16 @@ abstract class BaseSpaceActivity extends BaseActivity
             && Yii::$app->controller->contentContainer !== null;
     }
 
-    protected function getMessageParamsText(): array
+    protected function getMessageParamsMailText(): array
     {
-        return array_merge(parent::getMessageParamsText(), [
+        return array_merge(parent::getMessageParamsMailText(), [
             'spaceName' => $this->space->name,
         ]);
     }
 
-    protected function getMessageParamsHtml(): array
+    protected function getMessageParamsWeb(): array
     {
-        return array_merge(parent::getMessageParamsHtml(), [
+        return array_merge(parent::getMessageParamsWeb(), [
             'spaceName' => Html::strong(Html::encode($this->space->name)),
         ]);
     }

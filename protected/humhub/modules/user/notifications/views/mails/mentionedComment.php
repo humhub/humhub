@@ -11,7 +11,7 @@ use humhub\helpers\MailStyleHelper;
 use humhub\widgets\mails\MailButtonList;
 
 ?>
-<?php $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>
+<?php $this->beginContent('@notification/views/layouts/mail.php') ?>
 
 <?php $comment = $viewable->source; ?>
 <?php $contentRecord = $comment->content->getPolymorphicRelation() ?>

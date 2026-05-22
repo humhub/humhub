@@ -8,42 +8,42 @@ use Yii;
 
 class RenderService
 {
-    private BaseActivity $activity;
+    private readonly BaseActivity $activity;
 
     public function __construct(Activity $record)
     {
         $this->activity = ActivityManager::load($record);
     }
 
-    public function getWeb(): ?string
+    public function getWeb(): string
     {
         return Yii::$app->getView()->renderFile(
             '@activity/views/layouts/web.php',
             array_merge(
                 $this->getViewParams(),
-                ['message' => $this->activity->asHtml()],
+                ['message' => $this->activity->asWeb()],
             ),
         );
     }
 
-    public function getPlaintext()
+    public function getMailText(): string
     {
         return Yii::$app->getView()->renderFile(
             '@activity/views/layouts/mail_plaintext.php',
             array_merge(
                 $this->getViewParams(),
-                ['message' => $this->activity->asText(), 'url' => $this->activity->getUrl(true)],
+                ['message' => $this->activity->asMailText(), 'url' => $this->activity->getUrl(true)],
             ),
         );
     }
 
-    public function getMail()
+    public function getMailHtml(): string
     {
         return Yii::$app->getView()->renderFile(
             '@activity/views/layouts/mail.php',
             array_merge(
                 $this->getViewParams(),
-                ['message' => $this->activity->asHtmlMail(), 'url' => $this->activity->getUrl(true)],
+                ['message' => $this->activity->asMailHtml(), 'url' => $this->activity->getUrl(true)],
             ),
         );
     }

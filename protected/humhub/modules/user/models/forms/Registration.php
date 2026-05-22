@@ -9,17 +9,17 @@
 namespace humhub\modules\user\models\forms;
 
 use humhub\compat\HForm;
-use humhub\modules\user\authclient\BaseClient;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
 use humhub\modules\user\services\AuthClientUserService;
+use humhub\modules\user\services\UserSourceService;
 use Yii;
 use yii\authclient\ClientInterface;
 use yii\helpers\ArrayHelper;
-use yii\web\UserEvent;
+use humhub\modules\user\events\UserEvent;
 
 /**
  * Description of Registration
@@ -29,7 +29,12 @@ use yii\web\UserEvent;
 class Registration extends HForm
 {
     /**
-     * @event \yii\web\UserEvent triggered after successful registration.
+     * @event UserEvent triggered after successful registration via the form flow.
+     * Fires only for users created through `Registration::register()` (UI self-registration
+     * or AuthClient-driven auto-registration via LocalUserSource / LdapUserSource).
+     *
+     * For a generic "user was created by any UserSource" hook (covering SCIM and
+     * config-driven sources too), use `UserSourceService::EVENT_AFTER_CREATE`.
      */
     public const EVENT_AFTER_REGISTRATION = 'afterRegistration';
     public const EVENT_AFTER_SET_FORM = 'afterSetForm';
@@ -132,10 +137,13 @@ class Registration extends HForm
             'elements' => [],
         ];
 
+        $managed = $this->getManagedAttributes();
+
         $form['elements']['username'] = [
             'type' => 'text',
             'class' => 'form-control',
             'maxlength' => 25,
+            'readonly' => in_array('username', $managed, true),
         ];
         $form['elements']['time_zone'] = [
             'type' => 'hidden',
@@ -145,10 +153,32 @@ class Registration extends HForm
             $form['elements']['email'] = [
                 'type' => 'text',
                 'class' => 'form-control',
+                'readonly' => in_array('email', $managed, true),
             ];
         }
 
         return $form;
+    }
+
+    /**
+     * Managed attributes from the UserSource that owns the new user (LDAP, SCIM…).
+     * Empty when the user has no source yet — i.e. anonymous self-registration
+     * via the form. Used to render source-owned fields (username, email) as
+     * readonly so the user can see what was pre-filled without overriding it.
+     */
+    private function getManagedAttributes(): array
+    {
+        $sourceId = $this->getUser()->user_source;
+        if (!is_string($sourceId) || $sourceId === '') {
+            return [];
+        }
+
+        $collection = Yii::$app->userSourceCollection ?? null;
+        if ($collection === null || !$collection->hasUserSource($sourceId)) {
+            return [];
+        }
+
+        return $collection->getUserSource($sourceId)->getManagedAttributes();
     }
 
     /**
@@ -293,13 +323,10 @@ class Registration extends HForm
 
             if ($authClient !== null) {
                 (new AuthClientUserService($this->models['User']))->add($authClient);
-                $authClient->trigger(
-                    BaseClient::EVENT_CREATE_USER,
-                    new UserEvent(['identity' => $this->models['User']]),
-                );
             }
 
-            $this->trigger(self::EVENT_AFTER_REGISTRATION, new UserEvent(['identity' => $this->models['User']]));
+            UserSourceService::triggerAfterCreate($this->models['User']);
+            $this->trigger(self::EVENT_AFTER_REGISTRATION, new UserEvent(['user' => $this->models['User']]));
 
             return true;
         }
@@ -336,6 +363,12 @@ class Registration extends HForm
         if ($this->_profile === null) {
             $this->_profile = $this->getUser()->profile;
             $this->_profile->scenario = 'registration';
+            // Inverse-populate the user relation. Without this, Profile->user
+            // resolves via the hasOne(user_id) query and returns null for a
+            // not-yet-saved user — Profile::scenarios() / getFormDefinition()
+            // would then never see the UserSource and treat every managed
+            // attribute (LDAP firstname, etc.) as a writable registration field.
+            $this->_profile->populateRelation('user', $this->getUser());
         }
 
         return $this->_profile;

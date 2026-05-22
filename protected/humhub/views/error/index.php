@@ -24,7 +24,7 @@ $this->pageTitle = Yii::t('base', 'Error');
             </div>
 
             <hr>
-            <?= Button::primary($buttonLabel)->link($buttonHref); ?>
+            <?= Button::primary($buttonLabel)->link($buttonHref, false); ?>
         </div>
     </div>
 

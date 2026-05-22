@@ -16,13 +16,13 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
  */
 
 ?>
-<div id="user-password-recovery" class="container">
+<div id="user-password-recovery" class="container container-password">
     <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br>
 
     <div id="password-recovery-form" class="panel panel-default animated bounceIn">
         <div class="panel-heading">
-            <?= Yii::t('UserModule.auth', '<strong>Password</strong> recovery') ?>
+            <?= Yii::t('UserModule.auth', 'Password recovery') ?>
         </div>
         <div class="panel-body">
             <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
@@ -32,11 +32,13 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
             <?= $form->field($model, 'email')->textInput(['class' => 'form-control', 'id' => 'email_txt', 'placeholder' => Yii::t('UserModule.auth', 'Your email')])->label(false) ?>
 
             <div class="mb-3">
-                <?= $form->field($model, 'captcha')->widget(CaptchaField::class)->label(false) ?>
+                <?= $form->field($model, 'captcha')
+                    ->widget(CaptchaField::class, ['showOnFocusElement' => '#email_txt'])
+                    ->label(false) ?>
             </div>
 
-            <?= Button::light(Yii::t('UserModule.auth', 'Back'))->link(Url::home())->pjax(false) ?>
-            <?= Html::submitButton(Yii::t('UserModule.auth', 'Reset password'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+            <?= Html::submitButton(Yii::t('UserModule.auth', 'Reset password'), ['class' => 'btn btn-primary w-100', 'data-ui-loader' => ""]); ?>
+            <?= Button::light(Yii::t('UserModule.auth', 'Back'))->link(Url::home())->cssClass('w-100 mt-2')->pjax(false) ?>
 
             <?php ActiveForm::end(); ?>
         </div>

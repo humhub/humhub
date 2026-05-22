@@ -40,9 +40,7 @@ class m260106_175102_like_record_map extends Migration
                     );
                 } else {
                     Yii::warning(
-                        'Content Provider ' . get_class(
-                            $contentProvider,
-                        ) . ' with id ' . $contentProvider->id . ' has no content!',
+                        'Content Provider ' . $contentProvider::class . ' with id ' . $contentProvider->id . ' has no content!',
                         'like',
                     );
                 }

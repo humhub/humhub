@@ -19,8 +19,8 @@ use yii\helpers\Url;
 
 class Form extends Widget
 {
-    public ?Content $content;
-    public ?CommentModel $parentComment;
+    public ?Content $content = null;
+    public ?CommentModel $parentComment = null;
 
     /**
      * @var Comment|null can be provided if comment validation failed, otherwise a dummy model will be created

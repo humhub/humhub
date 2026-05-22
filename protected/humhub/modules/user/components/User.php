@@ -12,13 +12,13 @@ use humhub\helpers\DeviceDetectorHelper;
 use humhub\helpers\MobileAppHelper;
 use humhub\libs\BasePermission;
 use humhub\modules\user\events\UserEvent;
-use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User as UserModel;
 use humhub\modules\user\services\AuthClientUserService;
 use Throwable;
 use Yii;
 use yii\authclient\ClientInterface;
 use yii\base\InvalidConfigException;
+use yii\helpers\Url;
 
 /**
  * Description of User
@@ -171,17 +171,6 @@ class User extends \yii\web\User
     }
 
     /**
-     * Checks if the system configuration allows access for guests
-     *
-     * @return bool is guest access enabled and allowed
-     * @deprecated since 1.4
-     */
-    public static function isGuestAccessEnabled()
-    {
-        return AuthHelper::isGuestAccessEnabled();
-    }
-
-    /**
      * @inheritdoc
      */
     public function switchIdentity($identity, $duration = 0)
@@ -195,15 +184,6 @@ class User extends \yii\web\User
         }
 
         parent::switchIdentity($identity, $duration);
-    }
-
-    /**
-     * @return bool
-     * @deprecated since 1.14
-     */
-    public function canDeleteAccount()
-    {
-        return ($this->getAuthClientUserService())->canDeleteAccount();
     }
 
     /**
@@ -238,6 +218,24 @@ class User extends \yii\web\User
             return Yii::$app->getResponse();
         }
 
+        if (
+            $this->enableSession
+            && Yii::$app->request->isPjax
+            && Yii::$app->request->isGet
+            && (!$checkAcceptHeader || $this->checkRedirectAcceptable())
+        ) {
+            $queryParams = Yii::$app->request->getQueryParams();
+            unset($queryParams['_pjax'], $queryParams['_']);
+
+            $returnUrl = '/' . Yii::$app->request->getPathInfo();
+            if (!empty($queryParams)) {
+                $returnUrl .= '?' . http_build_query($queryParams);
+            }
+
+            $this->setReturnUrl(Url::to($returnUrl, true));
+            $checkAjax = true;
+        }
+
         return parent::loginRequired($checkAjax, $checkAcceptHeader);
     }
 
@@ -249,4 +247,5 @@ class User extends \yii\web\User
 
         return $this->authClientUserService;
     }
+
 }

@@ -26,7 +26,7 @@ class FileHistoryTest extends HumHubDbTestCase
 
         // Test History creation
         $this->assertEquals(2, count($file->historyFiles));
-        $this->assertSame('V3', file_get_contents($file->store->get()));
+        $this->assertSame('V3', $file->store->getContent());
     }
 
     public function testRollback()
@@ -43,7 +43,7 @@ class FileHistoryTest extends HumHubDbTestCase
 
         // Test Rollback
         $file->setStoredFile($previousVersion->getFileStorePath());
-        $this->assertSame('V2', file_get_contents($file->store->get()));
+        $this->assertSame('V2', $file->store->getContent());
     }
 
 
@@ -56,7 +56,7 @@ class FileHistoryTest extends HumHubDbTestCase
         $file->setStoredFileContent('V3');
 
         $this->assertEquals(0, count($file->historyFiles));
-        $this->assertSame('V3', file_get_contents($file->store->get()));
+        $this->assertSame('V3', $file->store->getContent());
     }
 
 

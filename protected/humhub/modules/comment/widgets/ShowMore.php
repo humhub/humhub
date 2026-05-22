@@ -20,12 +20,12 @@ use yii\helpers\Url;
  */
 class ShowMore extends Widget
 {
-    public ?Content $content;
-    public ?CommentModel $parentComment;
+    public ?Content $content = null;
+    public ?CommentModel $parentComment = null;
 
     public int $pageSize = 5;
     public string $direction;
-    public ?int $commentId;
+    public ?int $commentId = null;
     private ?int $_count = null;
 
     public function run()

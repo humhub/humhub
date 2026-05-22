@@ -34,7 +34,7 @@ class UserActionColumn extends ActionColumn
 
             if (Yii::$app->user->isAdmin() || !$model->isSystemAdmin()) {
                 $actions[] = '---';
-                if ($model->status == User::STATUS_DISABLED) {
+                if ($model->status == User::STATUS_DEACTIVATED) {
                     $actions[Yii::t('AdminModule.user', 'Enable')] = ['enable', 'linkOptions' => ['data-method' => 'post', 'data-confirm' => Yii::t('AdminModule.user', 'Are you really sure that you want to enable this user?')]];
                 } elseif ($model->status == User::STATUS_ENABLED) {
                     $actions[Yii::t('AdminModule.user', 'Disable')] = ['disable', 'linkOptions' => ['data-method' => 'post', 'data-confirm' => Yii::t('AdminModule.user', 'Are you really sure that you want to disable this user?')]];

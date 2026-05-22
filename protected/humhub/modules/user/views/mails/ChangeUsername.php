@@ -37,7 +37,6 @@ use humhub\modules\user\models\User;
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
                                     <tr>
                                         <td valign="top" width="auto" align="center">
-                                            <!-- start button -->
                                             <table border="0" align="center" cellpadding="0" cellspacing="0">
                                                 <tr>
                                                     <td width="auto" align="center" valign="middle" height="28"
@@ -50,7 +49,6 @@ use humhub\modules\user\models\User;
                                                     </td>
                                                 </tr>
                                             </table>
-                                            <!-- end button -->
                                         </td>
                                     </tr>
 

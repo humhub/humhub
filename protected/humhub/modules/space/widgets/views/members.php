@@ -17,7 +17,7 @@ use humhub\widgets\PanelMenu;
 ?>
 <div class="panel panel-default members" id="space-members-panel">
     <?= PanelMenu::widget([
-        'extraMenus' => Html::tag('li', Link::asLink(Yii::t('SpaceModule.base', 'Show as List'))->icon('list')->options($showListOptions)),
+        'extraMenus' => Html::tag('li', Link::to(Yii::t('SpaceModule.base', 'Show as List'))->icon('list')->options($showListOptions)),
     ]) ?>
     <div class="panel-heading"<?= Html::renderTagAttributes($showListOptions + ['style' => 'cursor:pointer']) ?>>
         <?= Yii::t('SpaceModule.base', '<strong>Space</strong> members'); ?> (<?= $totalMemberCount ?>)

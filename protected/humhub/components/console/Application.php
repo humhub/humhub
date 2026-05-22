@@ -47,12 +47,6 @@ class Application extends \yii\console\Application implements ApplicationInterfa
                 if (Yii::getAlias('@web', false) === false) {
                     Yii::setAlias('@web', $baseUrl);
                 }
-                if (Yii::getAlias('@web-static', false) === false) {
-                    Yii::setAlias('@web-static', '@web/static');
-                }
-                if (Yii::getAlias('@webroot-static', false) === false) {
-                    Yii::setAlias('@webroot-static', '@webroot/static');
-                }
             }
         }
 

@@ -55,7 +55,7 @@ return [
     'Below you have to enter your database connection details. If you’re not sure about these, please contact your system administrator.' => '',
     'Calvin Klein – Between love and madness lies obsession.' => '',
     'Default Language' => '',
-    'Ensure the following rule is present in your configuration: <strong>try_files $uri $uri/ /index.php?$args;</strong>.' => '',
+    'Ensure the following rule is present in your configuration: <strong>try_files $uri $uri/ /index.php$is_args$args;</strong>.' => '',
     'For more information on this topic, please refer to our <a href="{link}" target="_blank">documentation</a>.' => '',
     'Here you can decide how new, unregistered users can access HumHub.' => '',
     'HumHub is very flexible and can be adjusted and/or expanded for various different applications thanks to its’ different modules.  The following modules are just a few examples and the ones we thought are most important for your chosen application.<br><br>You can always install or remove modules later. You can find more available modules after installation in the admin area.' => '',
