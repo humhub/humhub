@@ -4,6 +4,7 @@ HumHub Changelog
 1.18.4 (Unreleased)
 ---------------------
 - Enh #8170: Handle controllers with using external modules
+- Enh #8176: Upgrade Twig package to v3.26.0
 
 1.18.3 (May 18, 2026)
 ---------------------
