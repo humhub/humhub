@@ -8,11 +8,12 @@ Most appearance changes don't need a theme. *Administration → Settings → App
 
 A dedicated theme module makes sense when you need:
 
-- To override view templates (HTML structure of a page, a widget, or a mail layout)
 - To ship multiple coordinated changes as a single package — e.g. for an Enterprise rollout or the marketplace
 - To extend the default SCSS with more than a few rules (mixins, variable overrides, partials)
 
 If your change fits in the Appearance UI, stay there — themes are a heavier tool with an upgrade cost.
+
+> **Just want to override a single view?** Since 1.19 you can map individual view files in `protected/config/common.php` without authoring a theme — see [View and mail overrides → Overrides via configuration](theme-views.md#overrides-via-configuration).
 
 ## Lifecycle
 
