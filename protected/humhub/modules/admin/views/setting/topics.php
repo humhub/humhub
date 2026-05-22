@@ -60,8 +60,8 @@ if ($suggestGlobalConversion) {
 ActiveForm::end();
 
 $form = ActiveForm::begin(['options' => ['data-pjax' => true]]);
-    echo $form->field($topicSettings, 'topicInputBehavior')
-        ->dropDownList($topicSettings->getTopicInputBehaviorOptions(), ['data-action-change' => 'ui.form.submit']);
+    echo $form->field($topicSettings, 'pickerVisibility')
+        ->dropDownList($topicSettings->getPickerVisibilityOptions(), ['data-action-change' => 'ui.form.submit']);
 ActiveForm::end();
 
 echo GridView::widget([

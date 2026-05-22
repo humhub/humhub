@@ -55,8 +55,8 @@ use yii\grid\ActionColumn;
             <?php ActiveForm::end(); ?>
 
             <?php $form = ActiveForm::begin() ?>
-                <?= $form->field($topicSettings, 'topicInputBehavior')
-                    ->dropDownList($topicSettings->getTopicInputBehaviorOptions(), ['data-action-change' => 'ui.form.submit']) ?>
+                <?= $form->field($topicSettings, 'pickerVisibility')
+                    ->dropDownList($topicSettings->getPickerVisibilityOptions(), ['data-action-change' => 'ui.form.submit']) ?>
             <?php ActiveForm::end() ?>
         <?php endif; ?>
 

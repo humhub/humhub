@@ -9,19 +9,18 @@ namespace humhub\modules\topic\models\forms;
 
 use humhub\libs\BaseSettingsManager;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\space\models\Space;
+use humhub\modules\topic\services\TopicService;
 use Yii;
 use yii\base\Model;
 
 /**
  * Topic settings form
  *
- * @property string $topicInputBehavior
- * @since 1.18.3
+ * @since 1.18.4
  */
 class TopicSettingsForm extends Model
 {
-    public ?string $topicInputBehavior = null;
+    public ?string $pickerVisibility = null;
     public ?ContentContainerActiveRecord $contentContainer = null;
     private ?BaseSettingsManager $settings = null;
 
@@ -32,7 +31,9 @@ class TopicSettingsForm extends Model
     {
         $this->settings = $this->isGlobal() ? Yii::$app->settings : $this->contentContainer->settings;
 
-        $this->topicInputBehavior = $this->settings->get('topicInputBehavior', $this->isGlobal() ? 'visible' : 'default');
+        $this->pickerVisibility = $this->settings->get('topicPickerVisibility', $this->isGlobal()
+            ? TopicService::PICKER_VISIBILITY_HIDDEN
+            : TopicService::PICKER_VISIBILITY_DEFAULT);
 
         parent::init();
     }
@@ -43,7 +44,7 @@ class TopicSettingsForm extends Model
     public function rules(): array
     {
         return [
-            [['topicInputBehavior'], 'in', 'range' => array_keys($this->getTopicInputBehaviorOptions())],
+            [['pickerVisibility'], 'in', 'range' => array_keys($this->getPickerVisibilityOptions())],
         ];
     }
 
@@ -53,9 +54,9 @@ class TopicSettingsForm extends Model
     public function attributeLabels(): array
     {
         return [
-            'topicInputBehavior' => $this->isGlobal()
-                ? Yii::t('TopicModule.base', 'Default topic input behavior')
-                : Yii::t('TopicModule.base', 'Topic field behavior'),
+            'pickerVisibility' => $this->isGlobal()
+                ? Yii::t('TopicModule.base', 'Default topic picker visibility')
+                : Yii::t('TopicModule.base', 'Topic picker visibility'),
         ];
     }
 
@@ -65,11 +66,7 @@ class TopicSettingsForm extends Model
     public function attributeHints(): array
     {
         return [
-            'topicInputBehavior' => $this->isGlobal()
-                ? Yii::t('TopicModule.base', 'Defines how the topic field is displayed by default. Space admins can override this setting.')
-                : ($this->contentContainer instanceof Space
-                    ? Yii::t('TopicModule.base', 'Controls how the topic field appears when creating content in this space.')
-                    : Yii::t('TopicModule.base', 'Controls how the topic field appears when creating content in this user.')),
+            'pickerVisibility' => Yii::t('TopicModule.base', 'Controls how the topic picker appears in content creation forms above the stream.'),
         ];
     }
 
@@ -79,27 +76,14 @@ class TopicSettingsForm extends Model
             return false;
         }
 
-        $this->settings->set('topicInputBehavior', $this->topicInputBehavior);
+        $this->settings->set('topicPickerVisibility', $this->pickerVisibility);
 
         return true;
     }
 
-    public function getTopicInputBehaviorOptions(): array
+    public function getPickerVisibilityOptions(): array
     {
-        $options = [
-            'hidden' => Yii::t('TopicModule.base', 'Hidden'),
-            'visible' => Yii::t('TopicModule.base', 'Always visible'),
-            'required' => Yii::t('TopicModule.base', 'Required'),
-        ];
-
-        if (!$this->isGlobal()) {
-            $options = array_merge([
-                'default' => Yii::t('TopicModule.base', 'Use global default')
-                    . ' (' . $options[(new self())->topicInputBehavior] . ')',
-            ], $options);
-        }
-
-        return $options;
+        return TopicService::instance($this->contentContainer)->getPickerVisibilityOptions();
     }
 
     public function isGlobal(): bool
