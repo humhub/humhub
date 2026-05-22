@@ -218,7 +218,9 @@ class ViewMeta extends BaseObject
         }
 
         if (count($this->images) > 0) {
-            $this->view->registerMetaTag(['name' => 'og:image', 'content' => $this->images[0]]);
+            if (!isset($this->view->metaTags['og:image'])) {
+                $this->view->registerMetaTag(['property' => 'og:image', 'content' => $this->images[0]], "og:image");
+            }
         }
     }
 
