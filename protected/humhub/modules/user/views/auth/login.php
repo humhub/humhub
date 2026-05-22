@@ -24,9 +24,9 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 
     <div class="panel panel-default animated bounceIn" id="login-form">
 
-        <div class="panel-heading"><?= Yii::t('UserModule.auth', 'Please sign in') ?></div>
+        <div class="panel-heading"><?= Yii::t('UserModule.auth', 'Sign In') ?></div>
 
-        <div class="panel-body">
+        <div class="panel-body pt-0">
 
             <?php if (Yii::$app->session->hasFlash('error')): ?>
                 <div class="alert alert-danger" role="alert">
@@ -35,12 +35,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
             <?php endif; ?>
 
             <?php if ($showLoginForm): ?>
-                <?php if ($signUpAllowed): ?>
-                    <p><?= Yii::t('UserModule.auth', "If you're already a member, please login with your username/email and password.") ?></p>
-                <?php else: ?>
-                    <p><?= Yii::t('UserModule.auth', "Please login with your username/email and password.") ?></p>
-                <?php endif; ?>
-
+                <p class="mb-2"><?= $model->getAttributeLabel('username') ?></p>
                 <?php $form = ActiveForm::begin(['id' => 'account-login-form', 'enableClientValidation' => false]) ?>
                     <?= $form->field($model, 'username')->textInput([
                         'id' => 'login_username',

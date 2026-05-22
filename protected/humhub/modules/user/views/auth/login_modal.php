@@ -15,7 +15,7 @@ use humhub\widgets\modal\ModalButton;
 
 <?php Modal::beginDialog([
     'id' => 'user-auth-login-modal',
-    'title' => Yii::t('UserModule.auth', 'Please sign in'),
+    'title' => Yii::t('UserModule.auth', 'Sign In'),
 ]) ?>
 
     <?php if (Yii::$app->session->hasFlash('error')): ?>
@@ -25,12 +25,6 @@ use humhub\widgets\modal\ModalButton;
     <?php endif; ?>
 
     <?php if ($showLoginForm): ?>
-        <?php if ($signUpAllowed): ?>
-            <p><?= Yii::t('UserModule.auth', "If you're already a member, please login with your username/email and password.") ?></p>
-        <?php else: ?>
-            <p><?= Yii::t('UserModule.auth', "Please login with your username/email and password.") ?></p>
-        <?php endif; ?>
-
         <?php $form = ActiveForm::begin(['id' => 'account-login-form-modal', 'enableClientValidation' => false]) ?>
             <?= $form->field($model, 'username')->textInput([
                 'id' => 'login_username',

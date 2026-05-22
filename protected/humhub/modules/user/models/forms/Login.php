@@ -84,7 +84,7 @@ class Login extends Model
         return [
             'username' => Yii::t('UserModule.auth', 'Username or Email'),
             'password' => Yii::t('UserModule.auth', 'Password'),
-            'rememberMe' => Yii::t('UserModule.auth', 'Keep me signed in'),
+            'rememberMe' => Yii::t('UserModule.auth', 'Keep me Signed In'),
             'rememberUsername' => Yii::t('UserModule.auth', 'Remember username'),
         ];
     }

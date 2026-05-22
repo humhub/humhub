@@ -40,7 +40,7 @@ class LoginIdentity extends Model
     public function attributeLabels()
     {
         return [
-            'username' => Yii::t('UserModule.auth', 'Username or Email'),
+            'username' => Yii::t('UserModule.auth', 'Email or Username'),
         ];
     }
 

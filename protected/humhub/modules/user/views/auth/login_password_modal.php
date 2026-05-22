@@ -2,6 +2,7 @@
 
 use humhub\helpers\Html;
 use humhub\modules\user\models\forms\LoginPassword;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
@@ -16,23 +17,8 @@ use yii\helpers\Url;
 
 <?php Modal::beginDialog([
     'id' => 'user-auth-login-modal',
-    'title' => Yii::t('UserModule.auth', 'Please sign in'),
+    'title' => Yii::t('UserModule.auth', 'Sign In'),
 ]) ?>
-
-    <div id="login-identity-modal" class="d-flex align-items-center justify-content-between mb-3 p-2 border rounded">
-        <div class="d-flex align-items-center">
-            <a href="#"
-               id="login-back-modal"
-               class="me-2 link-accent"
-               data-action-click="ui.modal.load"
-               data-action-url="<?= Url::to(['/user/auth/login', 'forget' => 1]) ?>"
-               aria-label="<?= Html::encode(Yii::t('UserModule.auth', 'Use a different account')) ?>"
-               title="<?= Html::encode(Yii::t('UserModule.auth', 'Use a different account')) ?>">
-                <i class="fa fa-arrow-left" aria-hidden="true"></i>
-            </a>
-            <span><?= Html::encode($model->username) ?></span>
-        </div>
-    </div>
 
     <?php $form = ActiveForm::begin(['id' => 'account-login-form-modal', 'enableClientValidation' => false]) ?>
         <?= $form->field($model, 'password')->passwordInput([
@@ -45,28 +31,36 @@ use yii\helpers\Url;
 
         <div class="modal-body-footer">
             <div class="d-flex flex-column align-center-end w-100">
-                <?= ModalButton::save(Yii::t('UserModule.auth', 'Sign in'))
-                    ->submit(['/user/auth/password'])
-                    ->id('login-button')
-                    ->cssClass('w-100') ?>
+                <div class="row g-3">
+                    <div class="col-6">
+                        <?= Button::light(Yii::t('UserModule.auth', 'Back'))
+                            ->link(['/user/auth/login', 'forget' => 1])
+                            ->cssClass('w-100')
+                            ->pjax(false) ?>
+                    </div>
+                    <div class="col-6">
+                        <?= ModalButton::save(Yii::t('UserModule.auth', 'Sign In'))
+                            ->submit(['/user/auth/password'])
+                            ->id('login-button')
+                            ->cssClass('w-100') ?>
+                    </div>
+                </div>
 
                 <?php if ($passwordRecoveryRoute): ?>
-                    <small>
-                        <?= Html::a(
-                            Html::tag('br') . Yii::t('UserModule.auth', 'Forgot your password?'),
-                            $passwordRecoveryRoute,
-                            ArrayHelper::merge([
-                                'id' => 'recoverPasswordBtn',
-                            ], is_array($passwordRecoveryRoute) ? [
-                                'data' => [
-                                    'action-click' => 'ui.modal.load',
-                                    'action-url' => Url::to($passwordRecoveryRoute),
-                                ],
-                            ] : [
-                                'target' => '_blank',
-                            ]),
-                        ) ?>
-                    </small>
+                    <?= Html::a(
+                        Html::tag('br') . Yii::t('UserModule.auth', 'Forgot your password?'),
+                        $passwordRecoveryRoute,
+                        ArrayHelper::merge([
+                            'id' => 'recoverPasswordBtn',
+                        ], is_array($passwordRecoveryRoute) ? [
+                            'data' => [
+                                'action-click' => 'ui.modal.load',
+                                'action-url' => Url::to($passwordRecoveryRoute),
+                            ],
+                        ] : [
+                            'target' => '_blank',
+                        ]),
+                    ) ?>
                 <?php endif; ?>
 
                 <?php if ($signUpAllowed && $model->hasErrors()): ?>
@@ -74,7 +68,7 @@ use yii\helpers\Url;
                         <br>
                         <?= Yii::t('UserModule.auth', "Don't have an account?") ?>
                         <?= Html::a(
-                            Yii::t('UserModule.auth', 'Sign up'),
+                            Yii::t('UserModule.auth', 'Sign Up'),
                             ['/user/auth/register'],
                             [
                                 'id' => 'register-link-modal',

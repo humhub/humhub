@@ -2,6 +2,7 @@
 
 use humhub\helpers\Html;
 use humhub\modules\user\models\forms\LoginPassword;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\LanguageChooser;
 use humhub\widgets\SiteLogo;
@@ -22,25 +23,12 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 
     <div class="panel panel-default animated bounceIn" id="login-form">
 
-        <div class="panel-heading"><?= Yii::t('UserModule.auth', 'Please sign in') ?></div>
+        <div class="panel-heading"><?= Yii::t('UserModule.auth', 'Sign In') ?></div>
 
-        <div class="panel-body">
-
-            <div id="login-identity" class="d-flex align-items-center justify-content-between mb-3 p-2 border rounded">
-                <div class="d-flex align-items-center">
-                    <a href="<?= Url::to(['/user/auth/login', 'forget' => 1]) ?>"
-                       id="login-back"
-                       class="me-2 link-accent"
-                       data-pjax-prevent
-                       aria-label="<?= Html::encode(Yii::t('UserModule.auth', 'Use a different account')) ?>"
-                       title="<?= Html::encode(Yii::t('UserModule.auth', 'Use a different account')) ?>">
-                        <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                    </a>
-                    <span><?= Html::encode($model->username) ?></span>
-                </div>
-            </div>
+        <div class="panel-body pt-0">
 
             <?php $form = ActiveForm::begin(['id' => 'account-login-form', 'enableClientValidation' => false]) ?>
+                <p class="mb-2"><?= $model->getAttributeLabel('password') ?></p>
                 <?= $form->field($model, 'password')->passwordInput([
                     'id' => 'login_password',
                     'placeholder' => $model->getAttributeLabel('password'),
@@ -52,27 +40,35 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
                 <?= $model->hideRememberMe ? '' : $form->field($model, 'rememberMe')->checkbox() ?>
                 <?= $form->field($model, 'rememberUsername')->checkbox() ?>
 
-                <?= Html::submitButton(
-                    Yii::t('UserModule.auth', 'Sign in'),
-                    ['id' => 'login-button', 'data-ui-loader' => '', 'class' => 'btn btn-large btn-primary w-100'],
-                ) ?>
+                <div class="row g-3">
+                    <div class="col-6">
+                        <?= Button::light(Yii::t('UserModule.auth', 'Back'))
+                            ->link(['/user/auth/login', 'forget' => 1])
+                            ->cssClass('w-100')
+                            ->pjax(false) ?>
+                    </div>
+                    <div class="col-6">
+                        <?= Button::save(Yii::t('UserModule.auth', 'Sign In'))
+                            ->id('login-button')
+                            ->submit()
+                            ->cssClass('w-100') ?>
+                    </div>
+                </div>
 
                 <?php if ($passwordRecoveryRoute) : ?>
-                    <div class="text-center mt-2">
-                        <small>
-                            <?= Html::a(
-                                Yii::t('UserModule.auth', 'Forgot your password?'),
-                                $passwordRecoveryRoute,
-                                [
-                                    'id' => 'password-recovery-link',
-                                    'class' => 'link-accent',
-                                    'target' => is_array($passwordRecoveryRoute) ? '_self' : '_blank',
-                                    'data' => [
-                                        'pjax-prevent' => true,
-                                    ],
+                    <div class="text-center mt-3">
+                        <?= Html::a(
+                            Yii::t('UserModule.auth', 'Forgot password?'),
+                            $passwordRecoveryRoute,
+                            [
+                                'id' => 'password-recovery-link',
+                                'class' => 'link-accent',
+                                'target' => is_array($passwordRecoveryRoute) ? '_self' : '_blank',
+                                'data' => [
+                                    'pjax-prevent' => true,
                                 ],
-                            ) ?>
-                        </small>
+                            ],
+                        ) ?>
                     </div>
                 <?php endif; ?>
 
@@ -81,7 +77,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
                         <small>
                             <?= Yii::t('UserModule.auth', "Don't have an account?") ?>
                             <?= Html::a(
-                                Yii::t('UserModule.auth', 'Sign up'),
+                                Yii::t('UserModule.auth', 'Sign Up'),
                                 Url::to(['/user/auth/register']),
                                 [
                                     'id' => 'register-link',

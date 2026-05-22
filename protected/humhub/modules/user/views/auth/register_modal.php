@@ -13,10 +13,10 @@ use humhub\widgets\modal\ModalButton;
 
 <?php Modal::beginDialog([
     'id' => 'user-auth-register-modal',
-    'title' => Yii::t('UserModule.auth', 'Sign up'),
+    'title' => Yii::t('UserModule.auth', 'Sign Up'),
 ]) ?>
 
-    <p><?= Yii::t('UserModule.auth', 'To Sign Up, enter your email and we will send you a sign up link.') ?></p>
+    <p><?= Yii::t('UserModule.auth', 'Enter your email address and click Send. We will email you a sign-up link to create your account.') ?></p>
 
     <?php $form = ActiveForm::begin(['id' => 'invite-form-modal', 'enableClientValidation' => false]) ?>
 
