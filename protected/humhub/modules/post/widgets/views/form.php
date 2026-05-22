@@ -14,16 +14,39 @@ use humhub\widgets\form\ActiveForm;
 
 $titleMode = Yii::$app->getModule('post')->getTitleMode();
 
-$this->registerCss('
+// The message field uses a fixed (non-floating) toolbar. While the non-modal
+// create form is still collapsed the toolbar is hidden and the editor shrinks to
+// a single line; both are restored once the form expands on focus (the
+// `contentForm-expanded` class, see content.form.js).
+$css = '
     #contentFormBody .ProseMirror,
     #contentFormBodyModal .ProseMirror {
         min-height: 4.5em;
     }
-');
+    #contentFormBody:not(.contentForm-expanded) #contentForm_message .ProseMirror-menubar {
+        display: none;
+    }
+    #contentFormBody:not(.contentForm-expanded) #contentForm_message .ProseMirror {
+        min-height: 36px;
+        border-top-left-radius: 4px !important;
+        border-top-right-radius: 4px !important;
+    }
+';
+
+if ($titleMode !== Module::TITLE_MODE_OFF) {
+    // `.content-form-body .mb-3` resets all field margins, so restore a normal gap below the title.
+    $css .= '
+    .content-form-body [data-content-form-expand] {
+        margin-bottom: 15px;
+    }
+    ';
+}
+
+$this->registerCss($css);
 ?>
 
 <?php if ($titleMode !== Module::TITLE_MODE_OFF): ?>
-<div data-content-form-expand style="<?= $wallCreateContentForm->isModal ? '' : 'display:none;' ?>margin-bottom:35px">
+<div data-content-form-expand<?= $wallCreateContentForm->isModal ? '' : ' style="display:none;"' ?>>
     <?= $form->field($post, 'title')->textInput([
         'class' => 'form-control contentForm',
         'placeholder' => Yii::t('PostModule.base', 'Title'),
@@ -35,7 +58,7 @@ $this->registerCss('
 <?= $form->field($post, 'message')->widget(RichTextField::class, [
     'id' => 'contentForm_message' . ($wallCreateContentForm->isModal ? 'Modal' : ''),
     'form' => $form,
-    'layout' => $wallCreateContentForm->isModal ? RichTextField::LAYOUT_BLOCK : RichTextField::LAYOUT_INLINE,
+    'layout' => RichTextField::LAYOUT_BLOCK,
     'pluginOptions' => ['maxHeight' => '300px'],
     'placeholder' => Yii::t("PostModule.base", "What's on your mind?"),
     'name' => 'message',

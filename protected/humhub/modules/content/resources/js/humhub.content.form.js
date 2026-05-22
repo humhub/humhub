@@ -67,10 +67,13 @@ humhub.module('content.form', function (module, require, $) {
     }
 
     /**
-     * Reveals additional content form fields hidden until the user starts
-     * interacting with the form (e.g. the post title) and focuses the first one.
+     * Expands the create form: marks it as expanded (which reveals the fixed
+     * editor toolbar, see post form.php) and reveals additional fields hidden
+     * until the user starts interacting with the form (e.g. the post title).
      */
     CreateForm.prototype.expandFields = function () {
+        this.$.addClass('contentForm-expanded');
+
         var $fields = this.$.find('[data-content-form-expand]:hidden');
         if (!$fields.length) {
             return;
@@ -122,6 +125,7 @@ humhub.module('content.form', function (module, require, $) {
      */
     CreateForm.prototype.resetForm = function () {
         // Reset Form (Empty State)
+        this.$.removeClass('contentForm-expanded');
         this.$.find('.contentForm_options').hide();
         this.$.find('[data-content-form-expand]').hide();
         var $contentForm = this.$.find('.contentForm');
