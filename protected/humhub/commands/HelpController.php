@@ -20,7 +20,9 @@ class HelpController extends \yii\console\controllers\HelpController
         try {
             return parent::validateControllerClass($controllerClass);
         } catch (\Throwable $e) {
-            Yii::warning('File: '. $e->getFile() . ', Error: ' . $e->getMessage(), 'console');
+            if (!preg_match('/Class "' . preg_quote('humhub\\modules\\rest\\') . '.+?" not found/', $e->getMessage())) {
+                Yii::warning('File: ' . $e->getFile() . ', Error: ' . $e->getMessage(), 'console');
+            }
             return false;
         }
     }
