@@ -3,8 +3,9 @@ HumHub Changelog
 
 1.19 (TBD)
 ----------
-- Enh: Do not override meta tags set by modules with proper key
-- Enh: Use property instead of name for `og:image`
+- Enh #8179: Do not override meta tags set by modules with proper key
+- Enh #8179: Use property instead of name for `og:image`
+- Fix #8179: Allow to set image URL strings in `ViewMeta::setImages()`
 - Enh #8011: Added `AssetImage` as replacement for `ProfileImage`, `SiteIcon`, `LogoImage`, `LoginBackground`, `MailHeader`
 - Enh #8011: Added `AssetManager` FlySystem support
 - Enh #7980: Remove deprecations
