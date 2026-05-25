@@ -53,5 +53,5 @@ $customInfo = trim((string)Yii::$app->settings->get('maintenanceModeInfo', ''));
 
     <br>
 
-    <?= LanguageChooser::widget(['vertical' => true, 'hideLabel' => true]) ?>
+    <?= LanguageChooser::widget(['vertical' => true]) ?>
 </div>
