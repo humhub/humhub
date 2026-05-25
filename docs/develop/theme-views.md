@@ -33,6 +33,40 @@ Copy the file into `themes/<theme>/views/`, keeping the same path *relative to t
 
 After saving a new override, flush the cache to make the theme component re-scan the file system.
 
+## Overrides via configuration
+
+Since 1.19 view overrides can also be declared directly in `protected/config/common.php`, without creating a theme. This is convenient for small, one-off overrides — the override file can live anywhere on disk.
+
+```php
+return [
+    'components' => [
+        'view' => [
+            'theme' => [
+                'pathMap' => [
+                    // per-file override (key must end in .php)
+                    '@humhub/modules/user/views/auth/login.php' => '@config/views/login.php',
+
+                    // directory override (Yii2 default semantics)
+                    '@humhub/modules/space/widgets/views' => '@config/views/space-widgets',
+
+                    // multiple fallbacks per source, first existing file wins
+                    '@humhub/views/error/index.php' => [
+                        '@config/views/error-tenant-a.php',
+                        '@config/views/error-default.php',
+                    ],
+                ],
+            ],
+        ],
+    ],
+];
+```
+
+Notes:
+
+- Keys ending in `.php` are matched as exact source-file paths. Any other key is treated as a directory prefix and behaves like Yii2's native [pathMap](https://www.yiiframework.com/doc/api/2.0/yii-base-theme#$pathMap-detail).
+- Entries from `pathMap` take precedence over the active theme. The active theme is consulted only if no `pathMap` entry resolves to an existing file.
+- The mapping survives runtime theme switches — `pathMap` from `common.php` is merged into whichever theme the admin activates in the UI.
+
 ## Mail layouts
 
 Mail templates live in `protected/humhub/views/mail/layouts/`. Override them at `themes/mytheme/views/mail/layouts/`.
