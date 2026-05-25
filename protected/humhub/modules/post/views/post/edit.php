@@ -34,7 +34,7 @@ $titleMode = Yii::$app->getModule('post')->getTitleMode();
     <div class="richtext-create-input-group">
         <?= $form->field($model->post, 'message')->widget(RichTextField::class, [
             'id' => 'post_input_' . $model->post->id,
-            'layout' => RichTextField::LAYOUT_INLINE,
+            'layout' => RichTextField::LAYOUT_BLOCK,
             'focus' => true,
             'pluginOptions' => ['maxHeight' => '300px'],
             'placeholder' => Yii::t('PostModule.base', 'Edit your post...'),
