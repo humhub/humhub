@@ -25,6 +25,7 @@ HumHub Changelog
 - Enh: View overrides via `components.view.theme.pathMap` in `common.php` — per-file (`.php` key) and directory entries supported; mapping survives runtime theme switches
 - Enh #8165: Rename `User::STATUS_DISABLED` to `STATUS_DEACTIVATED` (deprecated alias kept); i18n labels `Disabled` / `Disabled users` renamed accordingly
 - Enh #8168: Improve safe migration methods
+- Enh: Added optional post title (off / optional / required, configurable under Admin → Design); shown as a heading above the post content
 - Fix #8005: Remove space followers on change to private visibility
 
 1.18.3 (TBD)
