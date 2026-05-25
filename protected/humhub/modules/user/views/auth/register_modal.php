@@ -8,7 +8,6 @@ use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
 
 /* @var $invite Invite */
-
 ?>
 
 <?php Modal::beginDialog([
@@ -22,9 +21,9 @@ use humhub\widgets\modal\ModalButton;
 
         <?= $form->field($invite, 'email')->input('email', [
             'id' => 'register-email',
-            'placeholder' => $invite->getAttributeLabel('email'),
+            'placeholder' => 'example@example.com',
             'autocomplete' => 'email',
-        ]) ?>
+        ])->label(false) ?>
 
         <?php if ($invite->showCaptureInRegisterForm()): ?>
             <?= $form->field($invite, 'captcha')
@@ -32,14 +31,15 @@ use humhub\widgets\modal\ModalButton;
                 ->label(false) ?>
         <?php endif; ?>
 
-        <div class="modal-body-footer">
-            <div class="d-flex flex-column w-100 gap-2">
+        <div class="row g-3">
+            <div class="col-6">
+                <?= ModalButton::light(Yii::t('UserModule.auth', 'Back'))
+                    ->load(['/user/auth/login', 'forget' => 1])
+                    ->cssClass('w-100') ?>
+            </div>
+            <div class="col-6">
                 <?= ModalButton::save(Yii::t('UserModule.auth', 'Send'))
                     ->submit(['/user/auth/register'])
-                    ->cssClass('w-100') ?>
-
-                <?= ModalButton::light(Yii::t('UserModule.auth', 'Back'))
-                    ->load(['/user/auth/login'])
                     ->cssClass('w-100') ?>
             </div>
         </div>

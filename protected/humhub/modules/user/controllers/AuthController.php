@@ -190,7 +190,9 @@ class AuthController extends Controller
         if (Yii::$app->request->get('forget') !== null) {
             Yii::$app->session->remove(self::SESSION_KEY_STEP1_USERNAME);
             Yii::$app->response->cookies->remove(self::COOKIE_REMEMBER_USERNAME);
-            return $this->redirect(['/user/auth/login']);
+            if (!Yii::$app->request->isAjax) {
+                return $this->redirect(['/user/auth/login']);
+            }
         }
 
         // Maintenance mode gate: render dedicated view unless the request

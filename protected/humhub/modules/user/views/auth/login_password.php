@@ -1,16 +1,17 @@
 <?php
 
+use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\user\models\forms\LoginPassword;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\LanguageChooser;
 use humhub\widgets\SiteLogo;
-use yii\helpers\Url;
 
-$this->pageTitle = Yii::t('UserModule.auth', 'Login');
+$this->pageTitle = Yii::t('UserModule.auth', 'Sign In');
 
-/* @var $this \humhub\components\View */
+/* @var $this View */
 /* @var $model LoginPassword */
 /* @var $passwordRecoveryRoute string|array|null */
 /* @var $signUpAllowed bool */
@@ -21,12 +22,11 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
     <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br>
 
-    <div class="panel panel-default animated bounceIn" id="login-form">
-
-        <div class="panel-heading"><?= Yii::t('UserModule.auth', 'Sign In') ?></div>
-
+    <div class="panel panel-default mb-4 animated bounceIn" id="login-form">
+        <div class="panel-heading">
+            <strong class="fw-bolder"><?= Yii::t('UserModule.auth', 'Sign In') ?></strong>
+        </div>
         <div class="panel-body pt-0">
-
             <?php $form = ActiveForm::begin(['id' => 'account-login-form', 'enableClientValidation' => false]) ?>
                 <p class="mb-2"><?= $model->getAttributeLabel('password') ?></p>
                 <?= $form->field($model, 'password')->passwordInput([
@@ -57,18 +57,11 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 
                 <?php if ($passwordRecoveryRoute) : ?>
                     <div class="text-center mt-3">
-                        <?= Html::a(
-                            Yii::t('UserModule.auth', 'Forgot password?'),
-                            $passwordRecoveryRoute,
-                            [
-                                'id' => 'password-recovery-link',
-                                'class' => 'link-accent',
-                                'target' => is_array($passwordRecoveryRoute) ? '_self' : '_blank',
-                                'data' => [
-                                    'pjax-prevent' => true,
-                                ],
-                            ],
-                        ) ?>
+                        <?= Link::to(Yii::t('UserModule.auth', 'Forgot password?'), $passwordRecoveryRoute)
+                            ->id('password-recovery-link')
+                            ->target(is_array($passwordRecoveryRoute) ? '_self' : '_blank')
+                            ->cssClass('link-accent')
+                            ->pjax(false) ?>
                     </div>
                 <?php endif; ?>
 
@@ -76,23 +69,16 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
                     <div class="text-center mt-2">
                         <small>
                             <?= Yii::t('UserModule.auth', "Don't have an account?") ?>
-                            <?= Html::a(
-                                Yii::t('UserModule.auth', 'Sign Up'),
-                                Url::to(['/user/auth/register']),
-                                [
-                                    'id' => 'register-link',
-                                    'class' => 'link-accent',
-                                    'data' => ['pjax-prevent' => true],
-                                ],
-                            ) ?>
+                            <?= Link::to(Yii::t('UserModule.auth', 'Sign Up'), ['/user/auth/register'])
+                                ->id('register-link')
+                                ->cssClass('link-accent')
+                                ->pjax(false) ?>
                         </small>
                     </div>
                 <?php endif; ?>
             <?php ActiveForm::end(); ?>
         </div>
     </div>
-
-    <br>
 
     <?= LanguageChooser::widget(['vertical' => true, 'hideLabel' => true]) ?>
 </div>

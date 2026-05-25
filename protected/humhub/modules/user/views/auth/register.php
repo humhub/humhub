@@ -1,7 +1,9 @@
 <?php
 
+use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\user\models\Invite;
+use humhub\widgets\bootstrap\Alert;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\form\CaptchaField;
@@ -11,7 +13,7 @@ use yii\helpers\Url;
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Sign Up');
 
-/* @var $this \humhub\components\View */
+/* @var $this View */
 /* @var $invite Invite */
 
 ?>
@@ -20,21 +22,16 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Sign Up');
     <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br>
 
-    <div class="panel panel-default animated bounceIn" id="register-form">
-
-        <div class="panel-heading"><?= Yii::t('UserModule.auth', 'Sign Up') ?></div>
-
+    <div class="panel panel-default mb-4 animated bounceIn" id="register-form">
+        <div class="panel-heading">
+            <strong class="fw-bolder"><?= Yii::t('UserModule.auth', 'Sign Up') ?></strong>
+        </div>
         <div class="panel-body pt-0">
-
             <?php if (Yii::$app->session->hasFlash('error')): ?>
-                <div class="alert alert-danger" role="alert">
-                    <?= Yii::$app->session->getFlash('error') ?>
-                </div>
+                <?= Alert::danger(Yii::$app->session->getFlash('error'))->closeButton(false) ?>
             <?php endif; ?>
 
-            <p class="text-">
-                <?= Yii::t('UserModule.auth', 'Enter your email address and click Send. We will email you a sign-up link to create your account.') ?>
-            </p>
+            <p><?= Yii::t('UserModule.auth', 'Enter your email address and click Send. We will email you a sign-up link to create your account.') ?></p>
 
             <?php $form = ActiveForm::begin(['id' => 'invite-form']) ?>
                 <?= $form->field($invite, 'email')->input('email', [
@@ -68,8 +65,6 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Sign Up');
             <?php ActiveForm::end(); ?>
         </div>
     </div>
-
-    <br>
 
     <?= LanguageChooser::widget(['vertical' => true, 'hideLabel' => true]) ?>
 </div>

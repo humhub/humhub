@@ -1,17 +1,19 @@
 <?php
 
+use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\user\models\forms\LoginIdentity;
 use humhub\modules\user\widgets\AuthChoice;
+use humhub\widgets\bootstrap\Alert;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\LanguageChooser;
 use humhub\widgets\SiteLogo;
 use yii\helpers\Url;
 
-$this->pageTitle = Yii::t('UserModule.auth', 'Login');
+$this->pageTitle = Yii::t('UserModule.auth', 'Sign In');
 
-/* @var $this \humhub\components\View */
+/* @var $this View */
 /* @var $model LoginIdentity */
 /* @var $signUpAllowed bool */
 /* @var $showLoginForm bool */
@@ -22,16 +24,13 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
     <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br>
 
-    <div class="panel panel-default animated bounceIn" id="login-form">
-
-        <div class="panel-heading"><?= Yii::t('UserModule.auth', 'Sign In') ?></div>
-
+    <div class="panel panel-default mb-4 animated bounceIn" id="login-form">
+        <div class="panel-heading">
+            <strong class="fw-bolder"><?= Yii::t('UserModule.auth', 'Sign In') ?></strong>
+        </div>
         <div class="panel-body pt-0">
-
             <?php if (Yii::$app->session->hasFlash('error')): ?>
-                <div class="alert alert-danger" role="alert">
-                    <?= Yii::$app->session->getFlash('error') ?>
-                </div>
+                <?= Alert::danger(Yii::$app->session->getFlash('error'))->closeButton(false) ?>
             <?php endif; ?>
 
             <?php if ($showLoginForm): ?>
@@ -57,14 +56,13 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
                             ->id('register-button')
                             ->pjax(false) ?>
                     <?php endif; ?>
-                <?php ActiveForm::end(); ?>
+                <?php ActiveForm::end() ?>
             <?php endif; ?>
         </div>
     </div>
 
     <?php if (AuthChoice::hasClients()): ?>
-        <br>
-        <div class="panel panel-default animated bounceIn" id="auth-choice-panel">
+        <div class="panel panel-default mb-4 animated bounceIn" id="auth-choice-panel">
             <div class="panel-body">
                 <p class="text-center mb-2">
                     <?= Yii::t('UserModule.auth', 'Or continue with') ?>
@@ -73,8 +71,6 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
             </div>
         </div>
     <?php endif; ?>
-
-    <br>
 
     <?= LanguageChooser::widget(['vertical' => true, 'hideLabel' => true]) ?>
 </div>
