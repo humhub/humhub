@@ -147,7 +147,7 @@ humhub.module('content.form', function (module, require, $) {
     CreateForm.prototype.resetSettingInputs = function () {
         this.$.find('.notifyUserContainer').hide();
         Widget.instance('#notifyUserInput' + (this.isModal ? 'Modal' : '')).reset();
-        $('#postTopicContainer' + (this.isModal ? 'Modal' : '')).hide();
+        $('#postTopicContainer' + (this.isModal ? 'Modal' : '') + '[data-default-hidden]').hide();
 
         var topicPicker = Widget.instance('#postTopicInput' + (this.isModal ? 'Modal' : ''));
         if (topicPicker) {
@@ -181,7 +181,7 @@ humhub.module('content.form', function (module, require, $) {
                 var fieldSelector = '.field-' + model + '-' + fieldName;
                 var inputSelector = '.field-contentForm_' + fieldName;
                 var multiInputSelector = '[name="' + fieldName + '[]"]';
-                that.$.find(fieldSelector + ' .form-control,' + inputSelector + '_input, ' + multiInputSelector)
+                that.$.find(fieldSelector + ' .form-control,' + inputSelector + '_input, ' + inputSelector + ' .select2-selection, ' + multiInputSelector)
                     .addClass('is-invalid');
                 that.$.find(fieldSelector + ', ' + inputSelector + ', ' + inputSelector + '_input, ' + multiInputSelector)
                     .find('.invalid-feedback:first').html(errorMessages.join('<br>'));

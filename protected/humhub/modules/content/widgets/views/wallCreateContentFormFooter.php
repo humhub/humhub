@@ -29,6 +29,7 @@ use humhub\widgets\bootstrap\Link;
 /* @var $isModal bool */
 /* @var $pickerUrl string */
 /* @var $scheduleUrl string */
+/* @var $isTopicInputHidden bool */
 ?>
 
 <div class="notifyUserContainer my-3 d-none">
@@ -42,12 +43,13 @@ use humhub\widgets\bootstrap\Link;
     ]) ?>
 </div>
 
-<div id="postTopicContainer<?= $isModal ? 'Modal' : '' ?>" class="my-3 d-none">
+<div id="postTopicContainer<?= $isModal ? 'Modal' : '' ?>" class="my-3 field-contentForm_postTopicInput<?= $isTopicInputHidden ? ' d-none' : '' ?>"<?= $isTopicInputHidden ? ' data-default-hidden' : '' ?>>
     <?= TopicPicker::widget([
         'id' => 'postTopicInput' . ($isModal ? 'Modal' : ''),
         'name' => 'postTopicInput',
         'contentContainer' => $contentContainer,
     ]) ?>
+    <div class="invalid-feedback"></div>
 </div>
 
 <?= Html::hiddenInput('containerGuid', $contentContainer->guid) ?>
