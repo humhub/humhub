@@ -27,6 +27,7 @@ HumHub Changelog
 - Enh #8168: Improve safe migration methods
 - Enh: Added optional post title (off / optional / required, configurable under Admin → Design); shown as a heading above the post content
 - Fix #8005: Remove space followers on change to private visibility
+- Enh #8180: Topic picker handling
 
 1.18.3 (TBD)
 ------------
