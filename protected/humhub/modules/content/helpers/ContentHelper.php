@@ -5,7 +5,7 @@ namespace humhub\modules\content\helpers;
 use humhub\helpers\Html;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
-use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
+use humhub\modules\content\widgets\richtext\converter\RichTextToShortHtmlConverter;
 use Yii;
 
 final class ContentHelper
@@ -42,9 +42,9 @@ final class ContentHelper
      */
     public static function getContentPreview(ContentOwner $content, int $maxLength = 60): string
     {
-        return RichTextToShortTextConverter::process($content->getContentDescription(), [
-            RichTextToShortTextConverter::OPTION_MAX_LENGTH => $maxLength,
-            RichTextToShortTextConverter::OPTION_CACHE_KEY => RichTextToShortTextConverter::buildCacheKeyForContent($content),
+        return RichTextToShortHtmlConverter::process($content->getContentDescription(), [
+            RichTextToShortHtmlConverter::OPTION_MAX_LENGTH => $maxLength,
+            RichTextToShortHtmlConverter::OPTION_CACHE_KEY => RichTextToShortHtmlConverter::buildCacheKeyForContent($content),
         ]);
     }
 

@@ -22,6 +22,7 @@ use humhub\modules\activity\models\Activity;
 use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToMarkdownConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
+use humhub\modules\content\widgets\richtext\converter\RichTextToShortHtmlConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use humhub\modules\notification\models\Notification;
 use PHPUnit\Framework\Constraint\LogicalNot;
@@ -67,6 +68,7 @@ trait HumHubHelperTrait
         Yii::$app->cache->flush();
         Yii::$app->runtimeCache->flush();
         RichTextToShortTextConverter::flushCache();
+        RichTextToShortHtmlConverter::flushCache();
         RichTextToHtmlConverter::flushCache();
         RichTextToPlainTextConverter::flushCache();
         RichTextToMarkdownConverter::flushCache();
