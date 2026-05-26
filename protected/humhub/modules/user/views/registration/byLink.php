@@ -51,7 +51,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
         </div>
     </div>
 
-    <?= humhub\widgets\LanguageChooser::widget(['vertical' => true, 'hideLabel' => true]); ?>
+    <?= humhub\widgets\LanguageChooser::widget(['vertical' => true]); ?>
 </div>
 
 <script <?= Html::nonce() ?>>

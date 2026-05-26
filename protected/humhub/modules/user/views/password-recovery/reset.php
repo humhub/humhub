@@ -43,7 +43,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password reset');
         </div>
     </div>
 
-    <?= LanguageChooser::widget(['vertical' => true, 'hideLabel' => true]) ?>
+    <?= LanguageChooser::widget(['vertical' => true]) ?>
 </div>
 
 <script <?= Html::nonce() ?>>
