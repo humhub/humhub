@@ -127,8 +127,12 @@ class ViewMeta extends BaseObject
     {
         $previewImage = new PreviewImage();
         foreach ($images as $image) {
-            if ($previewImage->applyFile($image)) {
-                $this->images[] = $image->getUrl();
+            if ($image instanceof File) {
+                if ($previewImage->applyFile($image)) {
+                    $this->images[] = $image->getUrl();
+                }
+            } else if (is_string($image)) {
+                $this->images[] = $image;
             }
         }
     }
@@ -191,7 +195,7 @@ class ViewMeta extends BaseObject
     {
         $this->view->registerLinkTag(['rel' => 'canonical', 'href' => $this->url]);
 
-        if (!empty($this->description)) {
+        if (!empty($this->description) && !isset($this->view->metaTags['description'])) {
             $this->view->registerMetaTag([
                 'name' => 'description',
                 'content' => str_replace("\n", '', StringHelper::truncate($this->description, 255)),
@@ -206,19 +210,25 @@ class ViewMeta extends BaseObject
      */
     private function registerOpenGraphMetaTags()
     {
-        $this->view->registerMetaTag(['property' => 'og:url', 'content' => $this->url]);
-        $this->view->registerMetaTag(['property' => 'og:site_name', 'content' => Yii::$app->name]);
-        $this->view->registerMetaTag(['property' => 'og:type', 'content' => $this->contentType]);
+        if (!isset($this->view->metaTags['og:url'])) {
+            $this->view->registerMetaTag(['property' => 'og:url', 'content' => $this->url]);
+        }
+        if (!isset($this->view->metaTags['og:site_name'])) {
+            $this->view->registerMetaTag(['property' => 'og:site_name', 'content' => Yii::$app->name]);
+        }
+        if (!isset($this->view->metaTags['og:type'])) {
+            $this->view->registerMetaTag(['property' => 'og:type', 'content' => $this->contentType]);
+        }
 
-        if (!empty($this->title)) {
+        if (!empty($this->title) && !isset($this->view->metaTags['og:title'])) {
             $this->view->registerMetaTag(['property' => 'og:title', 'content' => StringHelper::truncate($this->title, 70)]);
         }
-        if (!empty($this->description)) {
+        if (!empty($this->description) && !isset($this->view->metaTags['og:description'])) {
             $this->view->registerMetaTag(['property' => 'og:description', 'content' => StringHelper::truncate($this->description, 200)]);
         }
 
-        if (count($this->images) > 0) {
-            $this->view->registerMetaTag(['name' => 'og:image', 'content' => $this->images[0]]);
+        if (count($this->images) > 0 && !isset($this->view->metaTags['og:image'])) {
+            $this->view->registerMetaTag(['property' => 'og:image', 'content' => $this->images[0]]);
         }
     }
 
@@ -229,19 +239,25 @@ class ViewMeta extends BaseObject
      */
     private function registerTwitterMetaTags()
     {
-        $this->view->registerMetaTag(['property' => 'twitter:url', 'content' => $this->url]);
-        $this->view->registerMetaTag(['property' => 'twitter:site', 'content' => Yii::$app->name]);
-        $this->view->registerMetaTag(['property' => 'twitter:type', 'content' => $this->contentType]);
+        if (!isset($this->view->metaTags['twitter:url'])) {
+            $this->view->registerMetaTag(['property' => 'twitter:url', 'content' => $this->url]);
+        }
+        if (!isset($this->view->metaTags['twitter:site'])) {
+            $this->view->registerMetaTag(['property' => 'twitter:site', 'content' => Yii::$app->name]);
+        }
+        if (!isset($this->view->metaTags['twitter:type'])) {
+            $this->view->registerMetaTag(['property' => 'twitter:type', 'content' => $this->contentType]);
+        }
 
-        if (!empty($this->title)) {
+        if (!empty($this->title) && !isset($this->view->metaTags['twitter:title'])) {
             $this->view->registerMetaTag(['property' => 'twitter:title', 'content' => StringHelper::truncate($this->title, 70)]);
         }
-        if (!empty($this->description)) {
+        if (!empty($this->description) && !isset($this->view->metaTags['twitter:description'])) {
             $this->view->registerMetaTag([
                 'property' => 'twitter:description',
                 'content' => StringHelper::truncate($this->description, 200)]);
         }
-        if (count($this->images) > 0) {
+        if (count($this->images) > 0 && !isset($this->view->metaTags['twitter:image'])) {
             $this->view->registerMetaTag(['name' => 'twitter:image', 'content' => $this->images[0]]);
         }
     }
