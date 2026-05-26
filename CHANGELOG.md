@@ -3,7 +3,7 @@ HumHub Changelog
 
 1.19 (TBD)
 ----------
-- Fix humhub-internal#1188: Decode HTML entities in notification mail subjects; split `RichTextToShortTextConverter` into a plain text variant and a new `RichTextToShortHtmlConverter` (HTML encoded)
+- Fix #8181: Encoded HTML entities in notification mail subjects
 - Enh #8179: Do not override meta tags set by modules with proper key
 - Enh #8179: Use property instead of name for `og:image`
 - Fix #8179: Allow to set image URL strings in `ViewMeta::setImages()`
