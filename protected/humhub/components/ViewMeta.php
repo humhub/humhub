@@ -131,7 +131,7 @@ class ViewMeta extends BaseObject
                 if ($previewImage->applyFile($image)) {
                     $this->images[] = $image->getUrl();
                 }
-            } else if (is_string($image)) {
+            } elseif (is_string($image)) {
                 $this->images[] = $image;
             }
         }
