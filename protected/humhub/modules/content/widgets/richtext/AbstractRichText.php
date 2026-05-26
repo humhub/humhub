@@ -80,8 +80,23 @@ abstract class AbstractRichText extends JsWidget
     public const FORMAT_PLAINTEXT = 'plaintext';
 
     /**
+     * Short, unencoded plain text format used for example in mail subjects.
+     * @since 1.19
+     */
+    public const FORMAT_SHORT_TEXT = 'short_text';
+
+    /**
+     * Short, HTML encoded format used in previews as notifications and activities.
+     * @since 1.19
+     */
+    public const FORMAT_SHORT_HTML = 'short_html';
+
+    /**
      * Short text format used in previews as notifications and activities.
      * @since 1.8
+     * @deprecated since 1.19, use [[FORMAT_SHORT_HTML]] for encoded HTML previews or
+     *     [[FORMAT_SHORT_TEXT]] for unencoded plain text. This constant currently maps
+     *     to [[FORMAT_SHORT_HTML]] for backward compatibility.
      */
     public const FORMAT_SHORTTEXT = 'shorttext';
 
@@ -330,7 +345,8 @@ abstract class AbstractRichText extends JsWidget
             static::FORMAT_HTML => $converter->convertToHtml($content, $options),
             static::FORMAT_MARKDOWN => $converter->convertToMarkdown($content, $options),
             static::FORMAT_PLAINTEXT => $converter->convertToPlaintext($content, $options),
-            static::FORMAT_SHORTTEXT => $converter->convertToShortText($content, $options),
+            static::FORMAT_SHORT_TEXT => $converter->convertToShortText($content, $options),
+            static::FORMAT_SHORT_HTML, static::FORMAT_SHORTTEXT => $converter->convertToShortHtml($content, $options),
             default => Html::encode($converter->convertToPlaintext($content, $options)),
         };
     }
@@ -351,6 +367,6 @@ abstract class AbstractRichText extends JsWidget
         if (!empty($maxLength)) {
             $config['maxLength'] = $maxLength;
         }
-        return static::convert($text, static::FORMAT_SHORTTEXT, $config);
+        return static::convert($text, static::FORMAT_SHORT_HTML, $config);
     }
 }

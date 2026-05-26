@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.19 (TBD)
 ----------
+- Fix humhub-internal#1188: Decode HTML entities in notification mail subjects; split `RichTextToShortTextConverter` into a plain text variant and a new `RichTextToShortHtmlConverter` (HTML encoded)
 - Enh #8011: Added `AssetImage` as replacement for `ProfileImage`, `SiteIcon`, `LogoImage`, `LoginBackground`, `MailHeader`
 - Enh #8011: Added `AssetManager` FlySystem support
 - Enh #7980: Remove deprecations
