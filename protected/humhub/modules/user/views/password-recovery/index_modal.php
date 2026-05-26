@@ -6,10 +6,7 @@ use humhub\widgets\form\CaptchaField;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
 
-/**
- * @var $model AccountRecoverPassword
- */
-
+/* @var $model AccountRecoverPassword */
 ?>
 
 <?php $form = Modal::beginFormDialog([
@@ -21,6 +18,7 @@ use humhub\widgets\modal\ModalButton;
         ->textInput([
             'id' => 'email_txt',
             'placeholder' => Yii::t('UserModule.auth', 'Your email'),
+            'autofocus' => true,
         ])
         ->label(false) ?>
     <?= $form->field($model, 'captcha')

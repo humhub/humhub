@@ -1,6 +1,5 @@
 <?php
 
-use humhub\helpers\Html;
 use humhub\modules\user\models\Invite;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\form\CaptchaField;
@@ -23,6 +22,7 @@ use humhub\widgets\modal\ModalButton;
             'id' => 'register-email',
             'placeholder' => 'example@example.com',
             'autocomplete' => 'email',
+            'autofocus' => true,
         ])->label(false) ?>
 
         <?php if ($invite->showCaptureInRegisterForm()): ?>
@@ -47,9 +47,3 @@ use humhub\widgets\modal\ModalButton;
     <?php ActiveForm::end(); ?>
 
 <?php Modal::endDialog() ?>
-
-<script <?= Html::nonce() ?>>
-    $(document).on('humhub:ready', function () {
-        $('#register-email').focus();
-    });
-</script>

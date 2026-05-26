@@ -1,13 +1,10 @@
 <?php
 
-use humhub\helpers\Html;
 use humhub\modules\user\models\forms\LoginPassword;
 use humhub\widgets\bootstrap\Link;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Url;
 
 /* @var $model LoginPassword */
 /* @var $passwordRecoveryRoute string|array|null */
@@ -26,6 +23,7 @@ use yii\helpers\Url;
             'id' => 'login_password',
             'placeholder' => $model->getAttributeLabel('password'),
             'autocomplete' => 'current-password',
+            'autofocus' => true,
         ])->label(false) ?>
         <?= $model->hideRememberMe ? '' : $form->field($model, 'rememberMe')->checkbox() ?>
 
@@ -67,9 +65,3 @@ use yii\helpers\Url;
     <?php ActiveForm::end() ?>
 
 <?php Modal::endDialog() ?>
-
-<script <?= Html::nonce() ?>>
-    $(document).on('humhub:ready', function () {
-        $('#login_password').focus();
-    });
-</script>

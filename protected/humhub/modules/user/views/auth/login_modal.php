@@ -1,6 +1,5 @@
 <?php
 
-use humhub\helpers\Html;
 use humhub\modules\user\models\forms\LoginIdentity;
 use humhub\modules\user\widgets\AuthChoice;
 use humhub\widgets\bootstrap\Alert;
@@ -30,6 +29,7 @@ use humhub\widgets\modal\ModalButton;
                 'id' => 'login_username',
                 'placeholder' => $model->getAttributeLabel('username'),
                 'autocomplete' => 'username',
+                'autofocus' => true,
             ])->label(false) ?>
 
             <?= ModalButton::save(Yii::t('UserModule.auth', 'Continue'))
@@ -58,9 +58,3 @@ use humhub\widgets\modal\ModalButton;
     <?php endif; ?>
 
 <?php Modal::endDialog() ?>
-
-<script <?= Html::nonce() ?>>
-    $(document).on('humhub:ready', function () {
-        $('#login_username').focus();
-    });
-</script>
