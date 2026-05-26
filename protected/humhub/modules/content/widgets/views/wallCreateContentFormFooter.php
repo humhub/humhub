@@ -43,7 +43,7 @@ use humhub\widgets\bootstrap\Link;
     ]) ?>
 </div>
 
-<div id="postTopicContainer<?= $isModal ? 'Modal' : '' ?>" class="my-3 field-contentForm_postTopicInput<?= $isTopicInputHidden ? ' d-none' : '' ?>"<?= $isTopicInputHidden ? ' data-default-hidden' : '' ?>>
+<div id="postTopicContainer<?= $isModal ? 'Modal' : '' ?>" class="my-3 field-contentForm_postTopicInput d-none"<?= $isTopicInputHidden ? '' : ' data-content-form-expand' ?>>
     <?= TopicPicker::widget([
         'id' => 'postTopicInput' . ($isModal ? 'Modal' : ''),
         'name' => 'postTopicInput',

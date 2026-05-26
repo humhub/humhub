@@ -147,7 +147,7 @@ humhub.module('content.form', function (module, require, $) {
     CreateForm.prototype.resetSettingInputs = function () {
         this.$.find('.notifyUserContainer').hide();
         Widget.instance('#notifyUserInput' + (this.isModal ? 'Modal' : '')).reset();
-        $('#postTopicContainer' + (this.isModal ? 'Modal' : '') + '[data-default-hidden]').hide();
+        $('#postTopicContainer' + (this.isModal ? 'Modal' : '')).hide();
 
         var topicPicker = Widget.instance('#postTopicInput' + (this.isModal ? 'Modal' : ''));
         if (topicPicker) {

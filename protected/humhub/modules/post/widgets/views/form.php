@@ -46,7 +46,7 @@ $this->registerCss($css);
 ?>
 
 <?php if ($titleMode !== Module::TITLE_MODE_OFF): ?>
-<div data-content-form-expand<?= $wallCreateContentForm->isModal ? '' : ' style="display:none;"' ?>>
+<div data-content-form-expand<?= $wallCreateContentForm->isModal ? '' : ' class="d-none"' ?>>
     <?= $form->field($post, 'title')->textInput([
         'class' => 'form-control contentForm',
         'placeholder' => Yii::t('PostModule.base', 'Title'),
