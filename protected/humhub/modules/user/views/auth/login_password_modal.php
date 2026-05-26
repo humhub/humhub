@@ -28,7 +28,6 @@ use yii\helpers\Url;
             'autocomplete' => 'current-password',
         ])->label(false) ?>
         <?= $model->hideRememberMe ? '' : $form->field($model, 'rememberMe')->checkbox() ?>
-        <?= $form->field($model, 'rememberUsername')->checkbox() ?>
 
         <div class="row g-3">
             <div class="col-6">
@@ -72,24 +71,5 @@ use yii\helpers\Url;
 <script <?= Html::nonce() ?>>
     $(document).on('humhub:ready', function () {
         $('#login_password').focus();
-
-        // "Remember username" is redundant when "Keep me signed in" is on
-        // (the long-lived session cookie covers both), so hide+uncheck it then.
-        // Yii ActiveForm renders a sibling hidden input with the same name to
-        // submit "0" for unchecked — must filter to the checkbox specifically.
-        var $modal = $('#user-auth-login-modal');
-        var $rm = $modal.find('input[type="checkbox"][name="Login[rememberMe]"]');
-        var $ru = $modal.find('input[type="checkbox"][name="Login[rememberUsername]"]');
-        var $ruWrap = $modal.find('.field-login-rememberusername');
-        var sync = function () {
-            if ($rm.prop('checked')) {
-                $ru.prop('checked', false);
-                $ruWrap.hide();
-            } else {
-                $ruWrap.show();
-            }
-        };
-        $rm.on('change', sync);
-        sync();
     });
 </script>

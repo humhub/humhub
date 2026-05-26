@@ -22,7 +22,7 @@ use yii\base\Model;
 class Login extends Model
 {
     /**
-     * @var string user's username or email address
+     * @var string user's email or username address
      */
     public $username;
 
@@ -40,14 +40,6 @@ class Login extends Model
      * @var bool hide "Remember me" form field in the view
      */
     public $hideRememberMe = false;
-
-    /**
-     * @var bool whether to remember the entered username/email in a cookie so
-     * the user lands directly on Step 2 on the next visit. Only applies to the
-     * Step-2 form (LoginPassword); the base BC-Login does not surface it.
-     * @since 1.19
-     */
-    public $rememberUsername = false;
 
     /**
      * @var BaseFormClient auth client used to authenticate
@@ -82,10 +74,9 @@ class Login extends Model
     public function attributeLabels()
     {
         return [
-            'username' => Yii::t('UserModule.auth', 'Username or Email'),
+            'username' => Yii::t('UserModule.auth', 'Email or Username'),
             'password' => Yii::t('UserModule.auth', 'Password'),
             'rememberMe' => Yii::t('UserModule.auth', 'Keep me Signed In'),
-            'rememberUsername' => Yii::t('UserModule.auth', 'Remember username'),
         ];
     }
 

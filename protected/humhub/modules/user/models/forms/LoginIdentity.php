@@ -20,7 +20,7 @@ use yii\base\Model;
 class LoginIdentity extends Model
 {
     /**
-     * @var string user's username or email address
+     * @var string user's email or username address
      */
     public $username;
 

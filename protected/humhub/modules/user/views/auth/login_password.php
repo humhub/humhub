@@ -38,7 +38,6 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Sign In');
                 ])->label(false) ?>
 
                 <?= $model->hideRememberMe ? '' : $form->field($model, 'rememberMe')->checkbox() ?>
-                <?= $form->field($model, 'rememberUsername')->checkbox() ?>
 
                 <div class="row g-3">
                     <div class="col-6">
@@ -86,24 +85,6 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Sign In');
 <script <?= Html::nonce() ?>>
     $(function () {
         $('#login_password').focus();
-
-        // "Remember username" is redundant when "Keep me signed in" is on
-        // (the long-lived session cookie covers both), so hide+uncheck it then.
-        // Yii ActiveForm renders a sibling hidden input with the same name to
-        // submit "0" for unchecked — must filter to the checkbox specifically.
-        var $rm = $('input[type="checkbox"][name="Login[rememberMe]"]');
-        var $ru = $('input[type="checkbox"][name="Login[rememberUsername]"]');
-        var $ruWrap = $('.field-login-rememberusername');
-        var sync = function () {
-            if ($rm.prop('checked')) {
-                $ru.prop('checked', false);
-                $ruWrap.hide();
-            } else {
-                $ruWrap.show();
-            }
-        };
-        $rm.on('change', sync);
-        sync();
     });
 
     <?php if ($model->hasErrors()) { ?>
