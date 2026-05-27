@@ -42,7 +42,10 @@ class ThemeHelper
             return static::$_themes;
         }
 
-        $themes = self::getThemesByPath(Yii::getAlias('@themes'));
+        $themes = array_merge(
+            self::getThemesByPath(Yii::getAlias('@humhub/themes')),
+            self::getThemesByPath(Yii::getAlias('@themes')),
+        );
 
         // Collect themes provided by modules
         foreach (Yii::$app->getModules() as $id => $module) {

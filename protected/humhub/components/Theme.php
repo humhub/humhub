@@ -11,6 +11,7 @@ namespace humhub\components;
 use humhub\assets\CoreBundleAsset;
 use humhub\helpers\ThemeHelper;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\base\Theme as BaseTheme;
 use yii\helpers\FileHelper;
 
@@ -90,8 +91,8 @@ class Theme extends BaseTheme
      */
     public function init()
     {
-        if ($this->getBasePath() == '') {
-            $this->setBasePath('@themes/' . $this->name);
+        if (empty($this->getBasePath())) {
+            throw new InvalidConfigException('The "basePath" property must be set.');
         }
 
         $this->variables = new ThemeVariables(['theme' => $this]);
