@@ -188,22 +188,28 @@ class Registration extends HForm
     {
         $groupModels = Group::getRegistrationGroups($this->getUser());
 
-        $groupFieldType = (Yii::$app->getModule('user')->settings->get('auth.showRegistrationUserGroup') && count(
-            $groupModels,
-        ) > 1)
+        $isDropdown = Yii::$app->getModule('user')->settings->get('auth.showRegistrationUserGroup') && count($groupModels) > 1;
+        $groupFieldType = $isDropdown
             ? 'dropdownlist'
             : 'hidden'; // TODO: Completely hide the element instead of current <input type="hidden">
+
+        $groupIdDefinition = [
+            'label' => Yii::t('UserModule.auth', 'Group'),
+            'type' => $groupFieldType,
+            'class' => 'form-control',
+            'items' => ArrayHelper::map($groupModels, 'id', 'name'),
+        ];
+
+        if ($isDropdown) {
+            $groupIdDefinition['prompt'] = Yii::t('UserModule.auth', 'Select');
+        } else {
+            $groupIdDefinition['value'] = Yii::$app->getModule('user')->getDefaultGroupId();
+        }
 
         return [
             'type' => 'form',
             'elements' => [
-                'group_id' => [
-                    'label' => Yii::t('UserModule.auth', 'Group'),
-                    'type' => $groupFieldType,
-                    'class' => 'form-control',
-                    'items' => ArrayHelper::map($groupModels, 'id', 'name'),
-                    'value' => Yii::$app->getModule('user')->getDefaultGroupId(),
-                ],
+                'group_id' => $groupIdDefinition,
             ],
         ];
     }
