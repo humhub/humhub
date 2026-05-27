@@ -11,12 +11,11 @@ use humhub\widgets\bootstrap\Link;
 
 /* @var $space Space */
 /* @var $membersCount int */
-/* @var $canViewMembers bool */
 
 $text = ' <span>' . $membersCount . '</span>';
 $class = 'fa fa-users';
 ?>
-<?php if ($canViewMembers) : ?>
+<?php if ($space->canViewMembers()) : ?>
     <?= Link::withAction($text, 'ui.modal.load', $space->createUrl('/space/membership/members-list'))
         ->encodeLabel(false)
         ->cssClass($class) ?>

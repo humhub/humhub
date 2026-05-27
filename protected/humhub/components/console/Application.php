@@ -62,7 +62,7 @@ class Application extends \yii\console\Application implements ApplicationInterfa
     public function coreCommands()
     {
         return [
-            'help' => 'yii\console\controllers\HelpController',
+            'help' => 'humhub\commands\HelpController',
             'cache' => 'yii\console\controllers\CacheController',
             'asset' => 'yii\console\controllers\AssetController',
             'fixture' => 'yii\console\controllers\FixtureController',
