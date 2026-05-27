@@ -35,7 +35,14 @@ class MemberController extends Controller
         return [
             ['login'],
             [ContentContainerControllerAccess::RULE_USER_GROUP_ONLY => [Space::USERGROUP_ADMIN], 'actions' => [
-                'index', 'pending-invitations', 'pending-approvals', 'reject-applicant', 'approve-applicant', 'remove']],
+                'index',
+                'pending-invitations',
+                'pending-approvals',
+                'reject-applicant',
+                'approve-applicant',
+                'remove',
+                'remove-all',
+            ]],
             [ContentContainerControllerAccess::RULE_USER_GROUP_ONLY => [Space::USERGROUP_OWNER], 'actions' => ['change-owner']],
         ];
     }

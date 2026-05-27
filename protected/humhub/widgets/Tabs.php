@@ -17,7 +17,6 @@ namespace humhub\widgets;
  * <?=
  * Tabs::widget([
  *  'viewPath' => '@myModule/views/common',
- *  'params' => $_params_,
  *  'items' => [
  *    [
  *      'label' => 'One',
