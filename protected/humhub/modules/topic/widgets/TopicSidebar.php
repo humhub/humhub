@@ -54,7 +54,7 @@ class TopicSidebar extends Widget
         }
 
         if ($this->contentContainer instanceof Space) {
-            return $this->contentContainer->getAdvancedSettings()->showTopicSidebar;
+            return (bool) $this->contentContainer->getAdvancedSettings()->showTopicSidebar;
         }
 
         return false;
