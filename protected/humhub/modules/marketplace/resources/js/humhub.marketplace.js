@@ -137,6 +137,13 @@ humhub.module('marketplace', function (module, require, $) {
         });
     }
 
+    const buy = function (evt) {
+        const url = evt.$trigger.data('action-click-url');
+        if (url) {
+            window.open(url, '_blank', 'noopener,noreferrer');
+        }
+    }
+
     const install = function (evt) {
         const installButton = evt.$trigger;
         const moduleId = installButton.data('module-id');
@@ -173,11 +180,55 @@ humhub.module('marketplace', function (module, require, $) {
         });
     }
 
+    const toggleCommunity = function (evt) {
+        const checkbox = evt.$trigger;
+        const enabled = checkbox.is(':checked');
+        const url = checkbox.data('action-change-url');
+
+        const persistIfAjax = function () {
+            if (!url) {
+                return;
+            }
+            client.post(url, {data: {value: enabled ? 1 : 0}}).then(function () {
+                window.location.reload();
+            }).catch(function (e) {
+                module.log.error(e, true);
+                checkbox.prop('checked', !enabled);
+            });
+        };
+
+        if (!enabled) {
+            persistIfAjax();
+            return;
+        }
+
+        modal.confirm({
+            header: checkbox.data('confirm-header'),
+            body: checkbox.data('confirm-body'),
+            confirmText: checkbox.data('confirm-text'),
+            cancelText: checkbox.data('cancel-text'),
+        }).then(function (confirmed) {
+            if (confirmed) {
+                persistIfAjax();
+            } else {
+                checkbox.prop('checked', false);
+            }
+        });
+
+        const $confirmModal = $('#globalModalConfirm');
+        const $confirmBtn = $confirmModal.find('[data-modal-confirm]').prop('disabled', true).addClass('disabled');
+        $confirmModal.find('#community-risk-accepted').off('change.communityRisk').on('change.communityRisk', function () {
+            $confirmBtn.prop('disabled', !this.checked).toggleClass('disabled', !this.checked);
+        });
+    }
+
     module.export({
         update,
         updateAll,
         registerLicenceKey,
+        buy,
         install,
-        enable
+        enable,
+        toggleCommunity,
     });
 });

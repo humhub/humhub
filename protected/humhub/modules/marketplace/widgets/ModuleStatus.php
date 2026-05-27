@@ -63,6 +63,8 @@ class ModuleStatus extends Widget
             $this->_status = 'partner';
         } elseif ($this->module->isDeprecated) {
             $this->_status = 'deprecated';
+        } elseif ($this->module->isCommunity) {
+            $this->_status = 'community';
         } else {
             $this->_status = 'none';
         }
@@ -79,6 +81,7 @@ class ModuleStatus extends Widget
             'official' => Yii::t('MarketplaceModule.base', 'Official'),
             'partner' => Yii::t('MarketplaceModule.base', 'Partner'),
             'deprecated' => Yii::t('MarketplaceModule.base', 'Deprecated'),
+            'community' => Yii::t('MarketplaceModule.base', 'Community'),
             'new' => Yii::t('MarketplaceModule.base', 'New'),
             default => '',
         };
