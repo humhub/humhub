@@ -15,7 +15,7 @@ use humhub\widgets\PanelMenu;
 <div class="panel panel-default panel-topic-sidebar" id="panel-topic-sidebar">
     <?= PanelMenu::widget(['id' => 'panel-topic-sidebar']) ?>
     <div class="panel-heading">
-        <?= Icon::get('star') . ' ' . Yii::t('NewsModule.base', '<strong>Topics</strong>') ?>
+        <?= Icon::get('star') . ' ' . Yii::t('NewsModule.base', '<strong>Popular</strong> topics') ?>
     </div>
 
     <div class="panel-body">
