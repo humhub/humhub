@@ -236,10 +236,16 @@ class Registration extends HForm
      */
     public function validate()
     {
-        // Remove optional group assignment before validation
-        // GroupUser assignment is optional and will be validated on save
         $groupUser = $this->models['GroupUser'];
-        unset($this->models['GroupUser']);
+
+        // Only skip group validation when the selector is not shown as a dropdown.
+        // When a dropdown is visible, the user must actively select a group.
+        $groupFieldType = $this->definition['elements']['GroupUser']['elements']['group_id']['type'] ?? 'hidden';
+        if ($groupFieldType !== 'dropdownlist') {
+            // Group assignment is optional when not shown as a dropdown
+            unset($this->models['GroupUser']);
+        }
+
         $status = parent::validate();
         $this->models['GroupUser'] = $groupUser;
 
