@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.19 (TBD)
 ----------
+- Enh: Improved community module handling in the marketplace — admins can opt in via a new "Include community modules" option to show modules contributed by the community
 - Fix #8181: Encoded HTML entities in notification mail subjects
 - Enh #8179: Do not override meta tags set by modules with proper key
 - Enh #8179: Use property instead of name for `og:image`
