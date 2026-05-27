@@ -80,7 +80,7 @@ humhub.module('content.form', function (module, require, $) {
         }
 
         $fields.fadeIn();
-        $fields.find('input, textarea').first().trigger('focus');
+        this.$.find('input[type=text], textarea').first().trigger('focus');
     };
 
     CreateForm.prototype.submit = function (evt) {
@@ -181,7 +181,7 @@ humhub.module('content.form', function (module, require, $) {
                 var fieldSelector = '.field-' + model + '-' + fieldName;
                 var inputSelector = '.field-contentForm_' + fieldName;
                 var multiInputSelector = '[name="' + fieldName + '[]"]';
-                that.$.find(fieldSelector + ' .form-control,' + inputSelector + '_input, ' + multiInputSelector)
+                that.$.find(fieldSelector + ' .form-control,' + inputSelector + '_input, ' + inputSelector + ' .select2-selection, ' + multiInputSelector)
                     .addClass('is-invalid');
                 that.$.find(fieldSelector + ', ' + inputSelector + ', ' + inputSelector + '_input, ' + multiInputSelector)
                     .find('.invalid-feedback:first').html(errorMessages.join('<br>'));

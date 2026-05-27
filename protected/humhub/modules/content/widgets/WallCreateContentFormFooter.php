@@ -13,6 +13,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\file\handler\FileHandlerCollection;
 use humhub\modules\space\models\Space;
+use humhub\modules\topic\services\TopicService;
 use Yii;
 use yii\web\HttpException;
 
@@ -78,6 +79,7 @@ class WallCreateContentFormFooter extends Widget
             'fileHandlers' => FileHandlerCollection::getByType([FileHandlerCollection::TYPE_IMPORT, FileHandlerCollection::TYPE_CREATE]),
             'pickerUrl' => $this->contentContainer instanceof Space ? $this->contentContainer->createUrl('/space/membership/search') : null,
             'scheduleUrl' => $this->contentContainer->createUrl('/content/content/schedule-options'),
+            'isTopicInputHidden' => TopicService::instance($this->contentContainer)->isHidden(),
         ]);
     }
 }
