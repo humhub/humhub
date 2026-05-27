@@ -1,6 +1,9 @@
 assets/*
 !assets/.gitignore
 
+themes/*
+!themes/.gitkeep
+
 protected/runtime/*
 .env
 .test-env
