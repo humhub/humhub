@@ -80,7 +80,7 @@ humhub.module('content.form', function (module, require, $) {
         }
 
         $fields.fadeIn();
-        $fields.find('input, textarea').first().trigger('focus');
+        this.$.find('input[type=text], textarea').first().trigger('focus');
     };
 
     CreateForm.prototype.submit = function (evt) {
