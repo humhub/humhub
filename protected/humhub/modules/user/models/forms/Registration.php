@@ -270,7 +270,7 @@ class Registration extends HForm
             $this->models['User']->registrationGroupId = $this->models['GroupUser']->group_id;
         }
 
-        if ($this->models['GroupUser']->group_id !== null) {
+        if (!empty($this->models['GroupUser']->group_id)) {
             // Skip adding of the user to a default group if some group is already selected on the registration form
             $this->models['User']->allowAssignDefaultGroup(false);
         }
