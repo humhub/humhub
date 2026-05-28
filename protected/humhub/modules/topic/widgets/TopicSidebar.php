@@ -75,7 +75,7 @@ class TopicSidebar extends Widget
                 ->limit($this->limit);
 
             // Sort topics by usage count in the container or globally
-            $query->leftJoin('content_tag_relation', 'content_tag_relation.tag_id = content_tag.id')
+            $query->innerJoin('content_tag_relation', 'content_tag_relation.tag_id = content_tag.id')
                 ->groupBy('content_tag.id')
                 ->orderBy([
                     'usages_count' => SORT_DESC,
