@@ -6,6 +6,7 @@ HumHub Changelog
 - Enh #8170: Handle controllers with using external modules
 - Enh #8176: Upgrade Twig package to v3.26.0
 - Enh #8187: Update composer package symfony/mime
+- Fix: AutoContrast and Sign In Footer Links
 
 1.18.3 (May 18, 2026)
 ---------------------
@@ -67,7 +68,7 @@ HumHub Changelog
 ----------------------
 
 > This release also fixes a [security](https://github.com/humhub/humhub/security/advisories/GHSA-qxjh-478x-23gm) issue.
- 
+
 - Fix #8003: `Migration::foreignIndexExists()` doesn't find tables in braces
 - Fix #8002: Comment dropdowns truncated (e.g. to select a title)
 - Fix #8007: Fix unsaved changes warning on Profile Edit page
@@ -155,7 +156,7 @@ HumHub Changelog
 - Fix #7873: Fix `required` validator
 - Fix #7875: Fix theme color default settings after initial installation
 - Fix #7876: Support for .mjs (ES modules)
-- Chg #7878: Registration form definitions now requires to use the `EVENT_AFTER_SET_FORM` instead of `EVENT_AFTER_INIT` 
+- Chg #7878: Registration form definitions now requires to use the `EVENT_AFTER_SET_FORM` instead of `EVENT_AFTER_INIT`
 - Enh #7883: Allow CheckboxList Profile Field Type to be used "as Directory filter"
 - Fix #7884: On small screen, the modal box is not centered
 - Fix #7885: Layout padding on small screens
