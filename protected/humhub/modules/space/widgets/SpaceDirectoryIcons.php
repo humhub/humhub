@@ -28,21 +28,23 @@ class SpaceDirectoryIcons extends Widget
     /**
      * @inheritdoc
      */
+    public function beforeRun()
+    {
+        return parent::beforeRun()
+            && !$this->space->getAdvancedSettings()->hideMembers;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function run()
     {
-        if ($this->space->getAdvancedSettings()->hideMembers) {
-            return '';
-        }
-
-        $membership = $this->space->getMembership();
-
         $membersCountQuery = $this->space->getMemberListService()->getReadableQuery();
         $membersCount = Yii::$app->runtimeCache->getOrSet(__METHOD__ . Yii::$app->user->id . '-' . $this->space->id, fn() => $membersCountQuery->count());
 
         return $this->render('spaceDirectoryIcons', [
             'space' => $this->space,
             'membersCount' => Yii::$app->formatter->asShortInteger($membersCount),
-            'canViewMembers' => $membership && $membership->isPrivileged(),
         ]);
     }
 

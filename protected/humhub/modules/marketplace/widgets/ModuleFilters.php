@@ -59,6 +59,16 @@ class ModuleFilters extends DirectoryFilters
             ]);
         }
 
+        $this->addFilter('includeCommunityModules', [
+            'type' => 'info',
+            'wrapperClass' => 'w-100 form-search-filter-include-community',
+            'info' => '<div class="d-flex gap-2">'
+                . '<div style="flex: 1 1 0; min-width: 200px;"></div>'
+                . '<div style="flex: 1 1 0; min-width: 200px;">' . $this->renderIncludeCommunityCheckbox($marketplaceModule) . '</div>'
+                . '</div>',
+            'sortOrder' => 300,
+        ]);
+
         $this->addFilter('tags', [
             'title' => Yii::t('MarketplaceModule.base', 'Tags'),
             'type' => 'tags',
@@ -75,6 +85,49 @@ class ModuleFilters extends DirectoryFilters
             'wrapperClass' => 'w-100 form-search-filter-tags',
             'sortOrder' => 20000,
         ]);
+    }
+
+    private function renderIncludeCommunityCheckbox(Module $marketplaceModule): string
+    {
+        $checked = (bool) $marketplaceModule->settings->get('includeCommunityModules', false);
+
+        $warning = Yii::t('MarketplaceModule.base', 'Community modules are developed by third parties and are <strong>not tested or maintained by the HumHub team</strong>.<br><br>They may not be compatible with your HumHub version, can cause <strong>instability or unexpected behavior</strong>, and may stop working after future updates. Their long-term maintenance is not guaranteed.<br><br>Only enable this option if you understand the risks and trust the source of the module you intend to install.');
+
+        $ackCheckbox = Html::tag(
+            'div',
+            Html::checkbox('communityRiskAccepted', false, [
+                'id' => 'community-risk-accepted',
+                'class' => 'form-check-input',
+            ])
+            . ' '
+            . Html::label(
+                Yii::t('MarketplaceModule.base', 'I understand the risk and want to continue.'),
+                'community-risk-accepted',
+                ['class' => 'form-check-label'],
+            ),
+            ['class' => 'form-check mt-3'],
+        );
+
+        $confirmBody = $warning . $ackCheckbox;
+
+        $checkbox = Html::checkbox('includeCommunityModules', $checked, [
+            'id' => 'marketplace-include-community',
+            'class' => 'form-check-input',
+            'data-action-change' => 'marketplace.toggleCommunity',
+            'data-action-change-url' => Url::to(['/marketplace/browse/toggle-community']),
+            'data-confirm-header' => Yii::t('MarketplaceModule.base', 'Include unverified community modules?'),
+            'data-confirm-body' => $confirmBody,
+            'data-confirm-text' => Yii::t('MarketplaceModule.base', 'Yes, show community modules'),
+            'data-cancel-text' => Yii::t('MarketplaceModule.base', 'Cancel'),
+        ]);
+
+        $label = Html::label(
+            Yii::t('MarketplaceModule.base', 'Include community modules'),
+            'marketplace-include-community',
+            ['class' => 'form-check-label'],
+        );
+
+        return Html::tag('div', $checkbox . ' ' . $label, ['class' => 'form-check']);
     }
 
     public static function getDefaultValue(string $filter): string

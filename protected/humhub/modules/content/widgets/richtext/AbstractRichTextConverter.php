@@ -66,10 +66,11 @@ abstract class AbstractRichTextConverter extends BaseObject
     abstract public function convertToPlaintext(string $content, array $options = []): string;
 
     /**
-     * Converts the given rich-text content to html encoded short text preview. The short text should not contain any
-     * html elements.
+     * Converts the given rich-text content to an unencoded short plain text preview.
      *
-     * A proper implementation of this function is mandatory.
+     * The result is **not** HTML encoded and must not be rendered directly in HTML
+     * views without further escaping. Typical use cases are mail subjects and other
+     * plain text contexts.
      *
      * The $options array may be used to manipulate the result. This converter should support a `maxLength` option
      * in order to cut the result. This is used for example in previews of a rich text.
@@ -79,4 +80,21 @@ abstract class AbstractRichTextConverter extends BaseObject
      * @return mixed
      */
     abstract public function convertToShortText(string $content, array $options = []): string;
+
+    /**
+     * Converts the given rich-text content to an HTML encoded short preview. The short
+     * text should not contain any html elements other than `<br>` (when the `nl2br`
+     * option is enabled).
+     *
+     * A proper implementation of this function is mandatory.
+     *
+     * The $options array may be used to manipulate the result. This converter should support a `maxLength` option
+     * in order to cut the result. This is used for example in previews of a rich text.
+     *
+     * @param string $content
+     * @param array $options
+     * @return mixed
+     * @since 1.19
+     */
+    abstract public function convertToShortHtml(string $content, array $options = []): string;
 }

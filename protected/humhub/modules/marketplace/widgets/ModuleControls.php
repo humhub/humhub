@@ -55,7 +55,7 @@ class ModuleControls extends Menu
             $this->addEntry(new MenuLink([
                 'id' => 'marketplace-third-party',
                 'label' => Yii::t('MarketplaceModule.base', 'Third-party')
-                    . ($this->module->isCommunity ? ' - ' . Yii::t('MarketplaceModule.base', 'Community') : ''),
+                    . ($this->module->isCommunity ? ' - ' . Yii::t('MarketplaceModule.base', 'Unverified Community') : ''),
                 'url' => ['/marketplace/browse/thirdparty-disclaimer'],
                 'htmlOptions' => ['data-bs-target' => '#globalModal'],
                 'icon' => 'info-circle',

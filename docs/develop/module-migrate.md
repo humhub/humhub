@@ -6,6 +6,27 @@ Each minor release line has its own file with the breaking changes, new APIs and
 
 ## Unreleased
 
+- Split rich text short converters by output safety
+  - Added `humhub\modules\content\widgets\richtext\converter\RichTextToShortHtmlConverter`
+    producing HTML encoded short previews (with the `nl2br` option). Use this whenever
+    the result will be rendered inside an HTML view.
+  - `humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter`
+    now returns **unencoded** plain text and no longer supports the `nl2br` option.
+    Use this for plain text contexts such as mail subjects.
+    **Modules rendering its result in HTML views must switch to
+    `RichTextToShortHtmlConverter` or wrap the output with `Html::encode()`** to
+    avoid XSS. Direct callers of `convertToShortText()` are affected in the same
+    way — use the new `convertToShortHtml()` for HTML rendering.
+  - Added `convertToShortHtml()` on `AbstractRichTextConverter` and corresponding
+    `RichText::FORMAT_SHORT_HTML` / `RichText::FORMAT_SHORT_TEXT` format constants.
+    `RichText::FORMAT_SHORTTEXT` is deprecated and aliased to `FORMAT_SHORT_HTML`
+    for backward compatibility. `RichText::preview()` internally uses `FORMAT_SHORT_HTML`.
+  - `SocialActivity::getContentPreview()` / `ContentHelper::getContentPreview()` now
+    use `RichTextToShortHtmlConverter` to keep their previous (HTML encoded) output.
+  - Mail subjects are now decoded centrally in
+    `humhub\modules\notification\targets\MailTarget::handle()` and in
+    `BaseNotification::asArray()`. Per-notification `Html::decode()` workarounds in
+    `getMailSubject()` overrides should be removed.
 - Refactored `ContentAddons`
   - Improved `humhub\modules\content\components\ContentAddonActiveRecord`, now required `content_id` attribute
     - Removed `user` relation, use `createdBy` instead.

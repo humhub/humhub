@@ -600,4 +600,13 @@ class SpaceModelMembership extends Behavior
         }
     }
 
+    public function canViewMembers($userId = null): bool
+    {
+        if ($this->owner->getAdvancedSettings()->hideMembers) {
+            return $this->getMembership($userId)?->isPrivileged() ?? false;
+        }
+
+        return true;
+    }
+
 }

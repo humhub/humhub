@@ -3,6 +3,11 @@ HumHub Changelog
 
 1.19 (TBD)
 ----------
+- Enh: Improved community module handling in the marketplace — admins can opt in via a new "Include community modules" option to show modules contributed by the community
+- Fix #8181: Encoded HTML entities in notification mail subjects
+- Enh #8179: Do not override meta tags set by modules with proper key
+- Enh #8179: Use property instead of name for `og:image`
+- Fix #8179: Allow to set image URL strings in `ViewMeta::setImages()`
 - Enh #8011: Added `AssetImage` as replacement for `ProfileImage`, `SiteIcon`, `LogoImage`, `LoginBackground`, `MailHeader`
 - Enh #8011: Added `AssetManager` FlySystem support
 - Enh #7980: Remove deprecations
@@ -27,10 +32,19 @@ HumHub Changelog
 - Enh #8168: Improve safe migration methods
 - Enh: Added optional post title (off / optional / required, configurable under Admin → Design); shown as a heading above the post content
 - Fix #8005: Remove space followers on change to private visibility
+<<<<<<< enh/1184-new-sign-in-sign-up
 - Enh #8178: New sign in & sign up flow
+=======
+- Enh #8180: Topic picker handling
+>>>>>>> develop
 
-1.18.3 (TBD)
-------------
+1.18.4 (Unreleased)
+---------------------
+- Enh #8170: Handle controllers with using external modules
+- Enh #8176: Upgrade Twig package to v3.26.0
+
+1.18.3 (May 18, 2026)
+---------------------
 - Fix #8079: Hide wall entry topics container when no topics
 - Fix #8075: Filtering by Global Topic in Dashboard
 - Fix #8081: Adds null check for removeItem and appendItem.
@@ -68,10 +82,10 @@ HumHub Changelog
 1.18.2 (March 22, 2026)
 -----------------------
 - Fix #8046: Profile Header Title HTML encoded twice since 1.18.1
-- Fix #8043: User display name bottom truncated in top bar
 - Fix #8050: Fix page title on PJAX request
+- Fix #8043: User display name bottom truncated in top bar
 - Fix #8051: Registration - Display Captcha field if invalid after form submit via keyboard
-- Enh #8051: Add `AltchaCaptchaInput::$showOnFocusElement` and `YiiCaptchaInput::$showOnFocusElement` (see [migration guide](https://github.com/humhub/humhub/blob/master/docs/develop/module-migrate-1.18.md#version-1181) for details)
+- Enh #8051: Add `AltchaCaptchaInput::$showOnFocusElement` and `YiiCaptchaInput::$showOnFocusElement` (see [migration guide](https://github.com/humhub/humhub/blob/master/MIGRATE-DEV.md#version-1181) for details)
 - Fix #8054: Login layout widths (Default: Bootstrap width, Registration: 500px, Login & Password: 300px, Login with multiple SSO buttons: 500px)
 - Enh #8044: Update package `firebase/php-jwt` to v7
 - Fix #8056: Fix linked badge icon
@@ -99,7 +113,7 @@ HumHub Changelog
 - Fix #8027: Cannot register if `showRegistrationForm` is disabled
 - Enh #8029: Display and cache virtual profile field in the user name subtitle
 - Fix #8030: Fix abandoned composer packages
-- Fix #8039: Encode `Button`, `Link`, `Badge` and `DropdownMenu` labels by default to fix potential XSS security issue (see [migration guide](https://github.com/humhub/humhub/blob/master/docs/develop/module-migrate-1.18.md#version-1181) for details)
+- Fix #8039: Encode `Button`, `Link`, `Badge` and `DropdownMenu` labels by default to fix potential XSS security issue (see [migration guide](https://github.com/humhub/humhub/blob/master/MIGRATE-DEV.md#version-1181) for details)
 - Fix #8038: Improve paragraph and image styles in RichText content
 - Enh #7978: Show `DisplayNameSub` in UserPicker
 
@@ -110,7 +124,7 @@ HumHub Changelog
 
 > Info: The minimum PHP version is now `PHP 8.2`!
 
-> Bootstrap 5 is the default CSS framework, which may require migration of custom modules or themes. See [MIGRATE-BS5.md](https://github.com/humhub/humhub/blob/v1.18.0/MIGRATE-BS5.md)
+> Bootstrap 5 is the default CSS framework, which may require migration of custom modules or themes.
 
 > Caching must now be configured via the [configuration file](https://docs.humhub.org/docs/admin/performance), with `FileCache` as the default.
 
@@ -148,7 +162,6 @@ HumHub Changelog
 - Enh #7991: On medium size, don't display the Space statistics under the Space image in the banner
 - Fix #7989: Fix site icon on installer pages
 - Fix #7994: Opening Modals indents top bars
-
 
 1.18.0-beta.6 (January 8, 2026)
 -------------------------------
@@ -441,7 +454,7 @@ Info: The minimum PHP version is now `PHP 8.1`!
 - Fix #454: Profile about page missing left and right margin on mobile screen
 - Fix #7316: Fix formatter default time zone
 - Enh #7317: Space browser: Make the whole space card header and body clickable
-- Enh #7329: Add a new "Manage All Content" Group Permission (see [migration guide](https://github.com/humhub/humhub/blob/master/docs/develop/module-migrate-1.17.md#version-117-january-2024) for details)
+- Enh #7329: Add a new "Manage All Content" Group Permission (see [migration guide](https://github.com/humhub/humhub/blob/develop/MIGRATE-DEV.md#version-117-unreleased) for details)
 - Enh #7325: Add missing IDs in the modal login forms
 - Enh #7333: Improved Yii alias handling and added ENV support
 - Enh #7334: New safe method to rename a database column

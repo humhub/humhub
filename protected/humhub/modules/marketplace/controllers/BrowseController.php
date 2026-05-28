@@ -112,6 +112,23 @@ class BrowseController extends Controller
         ]);
     }
 
+    /**
+     * Toggles the marketplace setting that controls whether unverified community
+     * modules are included in the marketplace listing.
+     *
+     * @since 1.19
+     */
+    public function actionToggleCommunity()
+    {
+        $this->forcePostRequest();
+
+        $value = (bool) Yii::$app->request->post('value');
+        $this->module->settings->set('includeCommunityModules', $value);
+        Yii::$app->cache->delete('marketplace-categories');
+
+        return $this->asJson(['success' => true, 'enabled' => $value]);
+    }
+
     private function getModuleService(): ModuleService
     {
         return new ModuleService(Yii::$app->request->post('moduleId'));

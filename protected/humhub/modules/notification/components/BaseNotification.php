@@ -555,7 +555,7 @@ abstract class BaseNotification extends SocialActivity
     public function asArray(User $user)
     {
         $result = parent::asArray($user);
-        $result['mailSubject'] = $this->getMailSubject();
+        $result['mailSubject'] = Html::decode($this->getMailSubject());
         return $result;
     }
 
