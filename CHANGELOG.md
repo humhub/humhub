@@ -6,7 +6,7 @@ HumHub Changelog
 - Enh #8170: Handle controllers with using external modules
 - Enh #8176: Upgrade Twig package to v3.26.0
 - Enh #8187: Update composer package symfony/mime
-- Fix: AutoContrast and Sign In Footer Links
+- Fix #8188: AutoContrast and Sign In Footer Links
 
 1.18.3 (May 18, 2026)
 ---------------------
