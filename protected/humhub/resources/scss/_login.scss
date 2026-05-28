@@ -57,6 +57,8 @@
             &.container-login,
             &.container-password {
                 max-width: 500px;
+                padding-left: 7px;
+                padding-right: 7px;
             }
 
             .panel, #language-chooser {
