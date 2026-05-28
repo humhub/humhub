@@ -5,6 +5,7 @@ HumHub Changelog
 ---------------------
 - Enh #8170: Handle controllers with using external modules
 - Enh #8176: Upgrade Twig package to v3.26.0
+- Enh #8187: Update composer package symfony/mime
 
 1.18.3 (May 18, 2026)
 ---------------------
