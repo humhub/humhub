@@ -11,25 +11,18 @@ use humhub\components\Widget;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\topic\models\Topic;
-use humhub\widgets\bootstrap\Button;
 use Yii;
 use yii\db\Expression;
-use yii\helpers\Url;
 
 class TopicSidebar extends Widget
 {
-    public const MODE_TOP = 'top'; // Get first most popular topics limited by $limit
-    public const MODE_MORE = 'more'; // Get more rest topics after the first limited
-
     public ?ContentContainerActiveRecord $contentContainer = null;
     public int $limit = 10;
-    public string $mode = self::MODE_TOP;
 
     /**
      * @var Topic[]
      */
     private ?array $_topics = null;
-    private ?int $_count = null;
 
     /**
      * @inheritdoc
@@ -46,7 +39,6 @@ class TopicSidebar extends Widget
     {
         return $this->render('topic-sidebar', [
             'topics' => $this->getTopics(),
-            'showMoreUrl' => $this->getShowMoreUrl(),
         ]);
     }
 
@@ -70,12 +62,7 @@ class TopicSidebar extends Widget
 
     public function hasTopics(): bool
     {
-        return $this->getCount() > 0;
-    }
-
-    public function canShowMore(): bool
-    {
-        return $this->isVisible() && $this->getCount() > $this->limit;
+        return $this->getTopics() !== [];
     }
 
     /**
@@ -104,63 +91,9 @@ class TopicSidebar extends Widget
                     ]);
             }
 
-            $this->_count = $query->count();
-
-            $this->mode === self::MODE_MORE
-                ? $query->offset($this->limit)
-                : $query->limit($this->limit);
-
-            $this->_topics = $query->all();
+            $this->_topics = $query->limit($this->limit)->all();
         }
 
         return $this->_topics;
-    }
-
-    public function getCount(): int
-    {
-        if ($this->_count === null) {
-            $this->getTopics();
-        }
-
-        return $this->_count;
-    }
-
-    public function getShowMoreUrl(): ?string
-    {
-        if (!$this->canShowMore()) {
-            return null;
-        }
-
-        $showMoreRoute = '/topic/topic/sidebar-show-more';
-
-        return $this->contentContainer === null
-            ? Url::to([$showMoreRoute])
-            : $this->contentContainer->createUrl($showMoreRoute);
-    }
-
-    public function getMoreTopicsData(): array
-    {
-        $topics = '';
-        $button = '';
-
-        if ($this->canShowMore()) {
-            foreach ($this->getTopics() as $topic) {
-                $badge = TopicBadge::forTopic($topic);
-                $badge->link->cssClass('link-topic-more');
-                $topics .= $badge . ' ';
-            }
-
-            $button = Button::light(Yii::t('TopicModule.base', 'Show less'))
-                ->action('showLess')
-                ->cssClass('w-100')
-                ->sm()
-                ->loader(false)
-                ->asString();
-        }
-
-        return [
-            'topics' => $topics,
-            'button' => $button,
-        ];
     }
 }
