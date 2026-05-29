@@ -13,6 +13,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\topic\models\Topic;
 use Yii;
 use yii\db\Expression;
+use yii\helpers\Url;
 
 class TopicSidebar extends Widget
 {
@@ -44,8 +45,7 @@ class TopicSidebar extends Widget
     {
         return $this->render('topic-sidebar', [
             'topics' => $this->getTopics(),
-            'contentContainer' => $this->contentContainer,
-            'hasMoreTopics' => $this->hasMoreTopics(),
+            'showMoreUrl' => $this->getShowMoreUrl(),
         ]);
     }
 
@@ -72,9 +72,9 @@ class TopicSidebar extends Widget
         return $this->getCount() > 0;
     }
 
-    public function hasMoreTopics(): bool
+    public function canShowMore(): bool
     {
-        return $this->getCount() > $this->limit;
+        return $this->isVisible() && $this->getCount() > $this->limit;
     }
 
     /**
@@ -122,5 +122,18 @@ class TopicSidebar extends Widget
         }
 
         return $this->_count;
+    }
+
+    public function getShowMoreUrl(): ?string
+    {
+        if (!$this->canShowMore()) {
+            return null;
+        }
+
+        $showMoreRoute = '/topic/topic/sidebar-show-more';
+
+        return $this->contentContainer === null
+            ? Url::to([$showMoreRoute])
+            : $this->contentContainer->createUrl($showMoreRoute);
     }
 }

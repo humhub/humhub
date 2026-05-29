@@ -10,7 +10,6 @@
 namespace humhub\modules\topic\controllers;
 
 use humhub\modules\content\components\ContentContainerController;
-use humhub\modules\content\models\ContentContainer;
 use humhub\modules\custom_pages\helpers\Html;
 use humhub\modules\topic\widgets\TopicBadge;
 use humhub\modules\topic\widgets\TopicPicker;
@@ -42,18 +41,16 @@ class TopicController extends ContentContainerController
 
     public function actionSidebarShowMore()
     {
-        $contentContainerGuid = Yii::$app->request->get('contentContainerGuid');
-
         /* @var TopicSidebar $sidebar */
         $sidebar = Yii::createObject([
             'class' => TopicSidebar::class,
-            'contentContainer' => empty($contentContainerGuid) ? null : ContentContainer::findRecord($contentContainerGuid),
+            'contentContainer' => $this->contentContainer,
             'mode' => TopicSidebar::MODE_MORE,
         ]);
 
         $topics = '';
         $button = '';
-        if ($sidebar->isVisible() && $sidebar->hasMoreTopics()) {
+        if ($sidebar->canShowMore()) {
             foreach ($sidebar->getTopics() as $topic) {
                 $topics .= TopicBadge::forTopic($topic) . ' ';
             }
