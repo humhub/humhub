@@ -5,7 +5,6 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicBadge;
 use humhub\modules\ui\icon\widgets\Icon;
@@ -13,8 +12,7 @@ use humhub\widgets\bootstrap\Button;
 use humhub\widgets\PanelMenu;
 
 /* @var Topic[] $topics */
-/* @var ContentContainerActiveRecord|null $contentContainer */
-/* @var bool $hasMoreTopics */
+/* @var string $showMoreUrl */
 ?>
 <div class="panel panel-default panel-topic-sidebar" id="panel-topic-sidebar" data-ui-widget="topic.sidebar.Sidebar" data-ui-init>
     <?= PanelMenu::widget(['id' => 'panel-topic-sidebar']) ?>
@@ -27,9 +25,9 @@ use humhub\widgets\PanelMenu;
             <?= TopicBadge::forTopic($topic) ?>
         <?php endforeach ?>
 
-        <?php if ($hasMoreTopics) : ?>
+        <?php if ($showMoreUrl) : ?>
             <?= Button::light(Yii::t('TopicModule.base', 'Show more'))
-                ->action('showMore', ['/topic/topic/sidebar-show-more', 'contentContainerGuid' => $contentContainer?->guid])
+                ->action('showMore', $showMoreUrl)
                 ->cssClass('w-100 mt-3')
                 ->sm() ?>
         <?php endif ?>
