@@ -16,13 +16,18 @@ use yii\db\Expression;
 
 class TopicSidebar extends Widget
 {
+    public const MODE_TOP = 'top'; // Get first most popular topics limited by $limit
+    public const MODE_MORE = 'more'; // Get more rest topics after the first limited
+
     public ?ContentContainerActiveRecord $contentContainer = null;
-    public int $limit = 20;
+    public int $limit = 10;
+    public string $mode = self::MODE_TOP;
 
     /**
      * @var Topic[]
      */
     private ?array $_topics = null;
+    private ?int $_count = null;
 
     /**
      * @inheritdoc
@@ -39,6 +44,8 @@ class TopicSidebar extends Widget
     {
         return $this->render('topic-sidebar', [
             'topics' => $this->getTopics(),
+            'contentContainer' => $this->contentContainer,
+            'hasMoreTopics' => $this->hasMoreTopics(),
         ]);
     }
 
@@ -47,7 +54,7 @@ class TopicSidebar extends Widget
         return $this->contentContainer === null;
     }
 
-    protected function isVisible(): bool
+    public function isVisible(): bool
     {
         if ($this->isGlobal()) {
             return (bool) Yii::$app->getModule('dashboard')->settings->get('showTopicSidebar');
@@ -60,19 +67,23 @@ class TopicSidebar extends Widget
         return false;
     }
 
-    protected function hasTopics(): bool
+    public function hasTopics(): bool
     {
-        return $this->getTopics() !== [];
+        return $this->getCount() > 0;
+    }
+
+    public function hasMoreTopics(): bool
+    {
+        return $this->getCount() > $this->limit;
     }
 
     /**
      * @return Topic[]
      */
-    protected function getTopics(): array
+    public function getTopics(): array
     {
         if ($this->_topics === null) {
-            $query = Topic::findByContainer($this->contentContainer, true)
-                ->limit($this->limit);
+            $query = Topic::findByContainer($this->contentContainer, true);
 
             // Sort topics by usage count in the container or globally
             $query->innerJoin('content_tag_relation', 'content_tag_relation.tag_id = content_tag.id')
@@ -92,9 +103,24 @@ class TopicSidebar extends Widget
                     ]);
             }
 
+            $this->_count = $query->count();
+
+            $this->mode === self::MODE_MORE
+                ? $query->offset($this->limit)
+                : $query->limit($this->limit);
+
             $this->_topics = $query->all();
         }
 
         return $this->_topics;
+    }
+
+    public function getCount(): int
+    {
+        if ($this->_count === null) {
+            $this->getTopics();
+        }
+
+        return $this->_count;
     }
 }
