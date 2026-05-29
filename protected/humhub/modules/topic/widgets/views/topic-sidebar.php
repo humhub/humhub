@@ -5,14 +5,18 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicBadge;
 use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\PanelMenu;
 
 /* @var Topic[] $topics */
+/* @var ContentContainerActiveRecord|null $contentContainer */
+/* @var bool $hasMoreTopics */
 ?>
-<div class="panel panel-default panel-topic-sidebar" id="panel-topic-sidebar">
+<div class="panel panel-default panel-topic-sidebar" id="panel-topic-sidebar" data-ui-widget="topic.sidebar.Sidebar" data-ui-init>
     <?= PanelMenu::widget(['id' => 'panel-topic-sidebar']) ?>
     <div class="panel-heading">
         <?= Icon::get('star') . ' ' . Yii::t('TopicModule.base', '<strong>Popular</strong> topics') ?>
@@ -22,5 +26,12 @@ use humhub\widgets\PanelMenu;
         <?php foreach ($topics as $topic) : ?>
             <?= TopicBadge::forTopic($topic) ?>
         <?php endforeach ?>
+
+        <?php if ($hasMoreTopics) : ?>
+            <?= Button::light(Yii::t('TopicModule.base', 'Show more'))
+                ->action('showMore', ['/topic/topic/sidebar-show-more', 'contentContainerGuid' => $contentContainer?->guid])
+                ->cssClass('w-100 mt-3')
+                ->sm() ?>
+        <?php endif ?>
     </div>
 </div>
