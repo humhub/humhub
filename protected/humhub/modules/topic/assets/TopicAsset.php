@@ -23,6 +23,5 @@ class TopicAsset extends AssetBundle
      */
     public $js = [
         'js/humhub.topic.js',
-        'js/humhub.topic.sidebar.js',
     ];
 }
