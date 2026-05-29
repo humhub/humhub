@@ -91,6 +91,12 @@ class Module extends \humhub\components\Module
     public $hideFollowers = false;
 
     /**
+     * @var bool Show topic widget in Stream sidebar (default value for advanced settings page)
+     * @since 1.18.3
+     */
+    public $showTopicSidebar = false;
+
+    /**
      * @var SpaceSettingsForm|null
      */
     private ?SpaceSettingsForm $defaultSettings = null;

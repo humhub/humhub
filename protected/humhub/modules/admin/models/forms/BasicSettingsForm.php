@@ -17,6 +17,7 @@ class BasicSettingsForm extends Model
     public $tour;
     public $defaultTimeZone;
     public $dashboardShowProfilePostForm;
+    public $dashboardShowTopicSidebar;
     public $enableFriendshipModule;
     public $maintenanceMode;
     public $maintenanceModeInfo;
@@ -36,6 +37,7 @@ class BasicSettingsForm extends Model
         $this->maintenanceModeInfo = Yii::$app->settings->get('maintenanceModeInfo');
 
         $this->dashboardShowProfilePostForm = Yii::$app->getModule('dashboard')->settings->get('showProfilePostForm');
+        $this->dashboardShowTopicSidebar = Yii::$app->getModule('dashboard')->settings->get('showTopicSidebar');
         $this->tour = Yii::$app->getModule('tour')->settings->get('enable');
         $this->enableFriendshipModule = Yii::$app->getModule('friendship')->settings->get('enable');
     }
@@ -50,7 +52,7 @@ class BasicSettingsForm extends Model
             ['name', 'string', 'max' => 150],
             ['defaultLanguage', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages())],
             [['defaultTimeZone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
-            [['tour', 'dashboardShowProfilePostForm', 'enableFriendshipModule', 'maintenanceMode'], 'in', 'range' => [0, 1]],
+            [['tour', 'dashboardShowProfilePostForm', 'dashboardShowTopicSidebar', 'enableFriendshipModule', 'maintenanceMode'], 'in', 'range' => [0, 1]],
             [['baseUrl'], 'url', 'pattern' => '/^{schemes}:\/\/([A-Z0-9][A-Z0-9_\-\.]*)+(?::\d{1,5})?(?:$|[?\/#])/i'],
             [['baseUrl'], 'trim'],
             ['maintenanceModeInfo', 'safe'],
@@ -69,6 +71,7 @@ class BasicSettingsForm extends Model
             'defaultTimeZone' => Yii::t('AdminModule.settings', 'Default Timezone'),
             'tour' => Yii::t('AdminModule.settings', 'Show introduction tour for new users'),
             'dashboardShowProfilePostForm' => Yii::t('AdminModule.settings', 'Show user profile post form on dashboard'),
+            'dashboardShowTopicSidebar' => Yii::t('AdminModule.settings', 'Show topic widget in Dashboard sidebar'),
             'enableFriendshipModule' => Yii::t('AdminModule.settings', 'Enable user friendship system'),
             'defaultStreamSort' => Yii::t('AdminModule.settings', 'Default stream content order'),
             'maintenanceMode' => Yii::t('AdminModule.settings', 'Enable maintenance mode'),
@@ -100,6 +103,7 @@ class BasicSettingsForm extends Model
         Yii::$app->settings->set('maintenanceModeInfo', $this->maintenanceModeInfo);
 
         Yii::$app->getModule('dashboard')->settings->set('showProfilePostForm', $this->dashboardShowProfilePostForm);
+        Yii::$app->getModule('dashboard')->settings->set('showTopicSidebar', $this->dashboardShowTopicSidebar);
         Yii::$app->getModule('tour')->settings->set('enable', $this->tour);
         Yii::$app->getModule('friendship')->settings->set('enable', $this->enableFriendshipModule);
 
