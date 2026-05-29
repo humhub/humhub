@@ -34,7 +34,8 @@ class LikeLink extends Widget
         /* @var Module $module */
         $module = Yii::$app->getModule('like');
 
-        if (!$module->canLike($this->object)) {
+        $guestHideComments = Yii::$app->getModule('comment')->guestHideComments;
+        if (!(Yii::$app->user->isGuest && $guestHideComments) && !$module->canLike($this->object)) {
             return false;
         }
 

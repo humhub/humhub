@@ -63,6 +63,10 @@ class Comments extends Widget
      */
     public function run()
     {
+        if (Yii::$app->user->isGuest && $this->module->guestHideComments) {
+            return '';
+        }
+
         $objectModel = PolymorphicRelation::getObjectModel($this->object);
         $objectId = $this->object->getPrimaryKey();
         $currentCommentId = $this->getCurrentCommentId();

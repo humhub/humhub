@@ -8,8 +8,9 @@ use humhub\modules\post\models\Post;
 /* @var $renderOptions WallStreamEntryOptions */
 /* @var $enableDynamicFontSize bool */
 /* @var $collapsedPostHeight int */
+/* @var $guestExpandPosts bool */
 
-$isDetailView = $renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTEXT_DETAIL);
+$isDetailView = $renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTEXT_DETAIL) || $guestExpandPosts;
 
 ?>
 <div data-ui-widget="post.Post" <?php if (!$isDetailView): ?>data-state="collapsed"<?php endif; ?>

@@ -38,6 +38,12 @@ class Module extends ContentContainerModule
     public int $collapsedPostHeight = 300;
 
     /**
+     * @since 1.17
+     * @var bool If true, posts are always fully expanded for guest users.
+     */
+    public bool $guestExpandPosts = false;
+
+    /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)

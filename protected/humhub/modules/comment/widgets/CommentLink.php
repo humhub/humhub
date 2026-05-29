@@ -50,7 +50,11 @@ class CommentLink extends Widget
         /** @var Module $module */
         $module = Yii::$app->getModule('comment');
 
-        if (
+        if (Yii::$app->user->isGuest && $module->guestHideComments) {
+            if (CommentModel::isSubComment($this->object)) {
+                return '';
+            }
+        } elseif (
             !$module->canComment($this->object)
             || (
                 CommentModel::isSubComment($this->object)
