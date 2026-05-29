@@ -94,7 +94,7 @@ class Events extends Component
         /** @var Module $module */
         $module = Yii::$app->getModule('comment');
 
-        if ($module->canComment($event->sender->object)) {
+        if ((Yii::$app->user->isGuest && $module->guestHideComments) || $module->canComment($event->sender->object)) {
             $event->sender->addWidget(widgets\CommentLink::class, ['object' => $event->sender->object], ['sortOrder' => 10]);
         }
     }

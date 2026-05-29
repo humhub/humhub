@@ -98,7 +98,8 @@ class Events extends BaseObject
         /** @var Module $module */
         $module = Yii::$app->getModule('like');
 
-        if ($module->canLike($event->sender->object)) {
+        $guestHideComments = Yii::$app->getModule('comment')->guestHideComments;
+        if ((Yii::$app->user->isGuest && $guestHideComments) || $module->canLike($event->sender->object)) {
             $event->sender->addWidget(widgets\LikeLink::class, ['object' => $event->sender->object], ['sortOrder' => 20]);
         }
     }
