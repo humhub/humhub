@@ -12,11 +12,11 @@ humhub.module('topic.sidebar', function (module, require, $) {
     const Sidebar = Widget.extend();
 
     Sidebar.prototype.showMore = function (evt) {
+        const that = this;
         const showMoreButton = evt.$trigger;
-        const moreTopicsBlock = this.getMoreTopicsBlock();
 
-        if (moreTopicsBlock.length) {
-            moreTopicsBlock.show();
+        if (this.getShowLessButton().length) {
+            this.getMoreTopics().show();
             this.getShowLessButton().show();
             showMoreButton.hide();
             evt.finish();
@@ -24,11 +24,9 @@ humhub.module('topic.sidebar', function (module, require, $) {
         }
 
         client.get(evt).then(function (response) {
-            showMoreButton.before(response.topics)
-                .after(response.button)
-                .hide()
-                .removeAttr('data-ui-loader');
-            loader.remove(showMoreButton);
+            that.getTopicsList().append(response.topics);
+            showMoreButton.hide().after(response.button);
+            loader.remove(showMoreButton.removeAttr('data-ui-loader'));
         }).catch(function (e) {
             module.log.error(e, true);
         }).finally(function () {
@@ -38,12 +36,16 @@ humhub.module('topic.sidebar', function (module, require, $) {
 
     Sidebar.prototype.showLess = function (evt) {
         evt.$trigger.hide();
-        this.getMoreTopicsBlock().hide();
+        this.getMoreTopics().hide();
         this.getShowMoreButton().show();
     }
 
-    Sidebar.prototype.getMoreTopicsBlock = function (evt) {
-        return this.$.find('.topic-sidebar-more-topics');
+    Sidebar.prototype.getTopicsList = function (evt) {
+        return this.$.find('.topic-label-list');
+    }
+
+    Sidebar.prototype.getMoreTopics = function (evt) {
+        return this.getTopicsList().find('.link-topic-more');
     }
 
     Sidebar.prototype.getShowMoreButton = function (evt) {

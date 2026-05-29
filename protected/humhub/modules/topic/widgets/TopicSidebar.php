@@ -11,6 +11,7 @@ use humhub\components\Widget;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\topic\models\Topic;
+use humhub\widgets\bootstrap\Button;
 use Yii;
 use yii\db\Expression;
 use yii\helpers\Url;
@@ -135,5 +136,31 @@ class TopicSidebar extends Widget
         return $this->contentContainer === null
             ? Url::to([$showMoreRoute])
             : $this->contentContainer->createUrl($showMoreRoute);
+    }
+
+    public function getMoreTopicsData(): array
+    {
+        $topics = '';
+        $button = '';
+
+        if ($this->canShowMore()) {
+            foreach ($this->getTopics() as $topic) {
+                $badge = TopicBadge::forTopic($topic);
+                $badge->link->cssClass('link-topic-more');
+                $topics .= $badge . ' ';
+            }
+
+            $button = Button::light(Yii::t('TopicModule.base', 'Show less'))
+                ->action('showLess')
+                ->cssClass('w-100')
+                ->sm()
+                ->loader(false)
+                ->asString();
+        }
+
+        return [
+            'topics' => $topics,
+            'button' => $button,
+        ];
     }
 }

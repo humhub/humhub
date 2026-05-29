@@ -21,14 +21,16 @@ use humhub\widgets\PanelMenu;
     </div>
 
     <div class="panel-body">
-        <?php foreach ($topics as $topic) : ?>
-            <?= TopicBadge::forTopic($topic) ?>
-        <?php endforeach ?>
+        <div class="topic-label-list d-flex gap-1 flex-wrap">
+            <?php foreach ($topics as $topic) : ?>
+                <?= TopicBadge::forTopic($topic) ?>
+            <?php endforeach ?>
+        </div>
 
         <?php if ($showMoreUrl) : ?>
             <?= Button::light(Yii::t('TopicModule.base', 'Show more'))
                 ->action('showMore', $showMoreUrl)
-                ->cssClass('w-100 mt-3')
+                ->cssClass('w-100')
                 ->sm() ?>
         <?php endif ?>
     </div>

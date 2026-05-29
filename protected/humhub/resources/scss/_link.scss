@@ -3,9 +3,12 @@
 // --------------------------------------------------
 
 @if not $prev-link {
-    a.link:not(.link-icon-only) {
-        i.fa {
+    a.link {
+        &:not(.link-icon-only) i.fa {
             margin-right: 0.4rem;
+        }
+        &.link-topic i.fa {
+            margin-right: 0.2rem;
         }
     }
 
