@@ -64,15 +64,6 @@ class AuthController extends Controller
     private const SESSION_KEY_STEP1_USERNAME = 'auth.login.step1.username';
 
     /**
-     * Cookie holding the username/email when the user opted into "Remember
-     * login name" on Step 2. Drives the auto-skip-to-Step-2 behaviour on the
-     * next visit. 30 days lifetime; cleared by the back arrow on Step 2 (via
-     * ?forget=1) or when the user opts out on the next successful sign-in.
-     */
-    private const COOKIE_REMEMBER_USERNAME = 'auth.login.rememberUsername';
-    private const COOKIE_REMEMBER_USERNAME_LIFETIME = 2592000;
-
-    /**
      * @inheritdoc
      */
     public $layout = '@humhub/modules/user/views/layouts/main';
@@ -189,8 +180,9 @@ class AuthController extends Controller
         // so the user lands on a fresh Step 1.
         if (Yii::$app->request->get('forget') !== null) {
             Yii::$app->session->remove(self::SESSION_KEY_STEP1_USERNAME);
-            Yii::$app->response->cookies->remove(self::COOKIE_REMEMBER_USERNAME);
-            return $this->redirect(['/user/auth/login']);
+            if (!Yii::$app->request->isAjax) {
+                return $this->redirect(['/user/auth/login']);
+            }
         }
 
         // Maintenance mode gate: render dedicated view unless the request
@@ -202,19 +194,6 @@ class AuthController extends Controller
             && !Yii::$app->request->get('maintenanceAdmin')) {
             Yii::$app->session->remove(self::SESSION_KEY_STEP1_USERNAME);
             return $this->render('maintenance');
-        }
-
-        // Auto-skip Step 1 when the user previously opted into "Remember
-        // login name". Only on a fresh GET (POST means they're submitting
-        // Step 1 explicitly with an entered username — respect that).
-        // Maintenance gate above already short-circuited; the cookie only
-        // matters once the platform is open again.
-        if (Yii::$app->request->isGet) {
-            $rememberedUsername = Yii::$app->request->cookies->getValue(self::COOKIE_REMEMBER_USERNAME);
-            if (is_string($rememberedUsername) && $rememberedUsername !== '') {
-                Yii::$app->session->set(self::SESSION_KEY_STEP1_USERNAME, $rememberedUsername);
-                return $this->redirect(['/user/auth/password']);
-            }
         }
 
         $loginParams = [
@@ -302,31 +281,11 @@ class AuthController extends Controller
 
             if ($login->validate()) {
                 Yii::$app->session->remove(self::SESSION_KEY_STEP1_USERNAME);
-                $this->updateRememberUsernameCookie($username, (bool)$login->rememberUsername);
                 return $this->onAuthSuccess($login->authClient);
             }
         }
 
         return $this->renderPasswordStep($login);
-    }
-
-    /**
-     * Write or remove the "Remember login name" cookie based on the user's
-     * Step-2 checkbox choice. The cookie holds only the literal text the user
-     * typed on Step 1 (username or email) — no auth credentials.
-     */
-    private function updateRememberUsernameCookie(string $username, bool $remember): void
-    {
-        if ($remember && $username !== '') {
-            Yii::$app->response->cookies->add(new Cookie([
-                'name' => self::COOKIE_REMEMBER_USERNAME,
-                'value' => $username,
-                'expire' => time() + self::COOKIE_REMEMBER_USERNAME_LIFETIME,
-                'httpOnly' => true,
-            ]));
-        } else {
-            Yii::$app->response->cookies->remove(self::COOKIE_REMEMBER_USERNAME);
-        }
     }
 
     /**
@@ -340,11 +299,6 @@ class AuthController extends Controller
         if ($login === null) {
             $login = new LoginPassword();
             $login->username = (string)Yii::$app->session->get(self::SESSION_KEY_STEP1_USERNAME, '');
-            // Pre-check "Remember login name" when the user already opted in
-            // previously, so unchecking it on the next sign-in actually
-            // forgets them instead of leaving the cookie behind.
-            $cookieUsername = Yii::$app->request->cookies->getValue(self::COOKIE_REMEMBER_USERNAME);
-            $login->rememberUsername = is_string($cookieUsername) && $cookieUsername !== '';
         }
 
         $params = [

@@ -1,9 +1,9 @@
 <?php
 
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\SiteLogo;
-use yii\helpers\Url;
 
-$this->pageTitle = Yii::t('UserModule.auth', 'Password reset');
+$this->pageTitle = Yii::t('UserModule.auth', 'Password changed!');
 ?>
 <div id="user-password-recovery-reset-success" class="container container-password">
     <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
@@ -11,12 +11,15 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password reset');
 
     <div class="panel panel-default animated fadeIn">
         <div class="panel-heading">
-            <?= Yii::t('UserModule.auth', '<strong>Password</strong> changed!') ?>
+            <strong class="fw-bolder"><?= Yii::t('UserModule.auth', 'Password changed!') ?></strong>
         </div>
         <div class="panel-body">
-            <p><?= Yii::t('UserModule.auth', "Your password has been successfully changed!"); ?></p><br/>
-            <a href="<?= Url::home() ?>" data-ui-loader data-pjax-prevent
-               class="btn btn-primary"><?= Yii::t('UserModule.auth', 'Login') ?></a>
+            <p><?= Yii::t('UserModule.auth', 'Your password has been successfully changed!') ?></p>
+            <br>
+            <?= Button::primary(Yii::t('UserModule.auth', 'Sign In'))
+                ->link(['/user/auth/login'])
+                ->cssClass('w-100')
+                ->pjax(false) ?>
         </div>
     </div>
 </div>

@@ -40,10 +40,6 @@
                 padding: 15px;
             }
 
-            .panel-body p {
-                text-wrap: balance;
-            }
-
             h1,
             h2 {
                 color: var(--hh-text-color-main) !important;
@@ -61,6 +57,8 @@
             &.container-login,
             &.container-password {
                 max-width: 500px;
+                padding-left: 7px;
+                padding-right: 7px;
             }
 
             .panel {

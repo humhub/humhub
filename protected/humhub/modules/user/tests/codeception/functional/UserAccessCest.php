@@ -26,7 +26,7 @@ class UserAccessCest
         $user->save();
 
         $I->amOnRoute('/dashboard/dashboard');
-        $I->see('Please sign in');
+        $I->see('Sign In');
     }
 
     public function testNeedApprovalUserAccess(FunctionalTester $I)
@@ -41,6 +41,6 @@ class UserAccessCest
         $user->save();
 
         $I->amOnRoute('/dashboard/dashboard');
-        $I->see('Please sign in');
+        $I->see('Sign In');
     }
 }

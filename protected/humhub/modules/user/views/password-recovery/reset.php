@@ -15,7 +15,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password reset');
 
     <div id="password-recovery-form" class="panel panel-default animated bounceIn">
         <div class="panel-heading">
-            <?= Yii::t('UserModule.auth', 'Change your password') ?>
+            <strong class="fw-bolder"><?= Yii::t('UserModule.auth', 'Change your password') ?></strong>
         </div>
         <div class="panel-body">
 
@@ -25,8 +25,19 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password reset');
 
             <?= $form->field($model, 'newPasswordConfirm')->passwordInput(['class' => 'form-control', 'maxlength' => 255, 'value' => '']) ?>
 
-            <?= Html::submitButton(Yii::t('UserModule.auth', 'Change password'), ['class' => 'btn btn-primary w-100', 'data-ui-loader' => '']); ?>
-            <?= Button::light(Yii::t('UserModule.auth', 'Back'))->link(Url::home())->cssClass('w-100 mt-2')->pjax(false) ?>
+            <div class="row g-3">
+                <div class="col-6">
+                    <?= Button::light(Yii::t('UserModule.auth', 'Back'))
+                        ->link(Url::home())
+                        ->cssClass('w-100')
+                        ->pjax(false) ?>
+                </div>
+                <div class="col-6">
+                    <?= Button::save(Yii::t('UserModule.auth', 'Change password'))
+                        ->submit()
+                        ->cssClass('w-100') ?>
+                </div>
+            </div>
 
             <?php ActiveForm::end(); ?>
         </div>

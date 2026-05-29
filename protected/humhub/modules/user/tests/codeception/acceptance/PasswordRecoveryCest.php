@@ -15,7 +15,7 @@ class PasswordRecoveryCest
         $loginPage = LoginPage::openBy($I);
         $loginPage->openPasswordStep('admin');
         $I->wait(3);
-        $I->waitForText('Forgot your password?');
+        $I->waitForText('Forgot password?');
         $I->jsClick('#password-recovery-link');
         $I->waitForText('Password recovery');
         $I->fillField('#email_txt', 'wrong@mail.de');
@@ -30,14 +30,14 @@ class PasswordRecoveryCest
         $I->click('Reset password');
         $I->wait(3);
         $I->expectTo('see confirm messages even with wrong email for safe reason');
-        $I->see('Password recovery!');
+        $I->see('Password recovery');
         $I->see('If a user account associated with this email address exists, further instructions will be sent to you by email shortly.');
 
         $I->amGoingTo('request a recovery mail with valid data');
         $loginPage = LoginPage::openBy($I);
         $loginPage->openPasswordStep('admin');
         $I->wait(3);
-        $I->waitForText('Forgot your password?');
+        $I->waitForText('Forgot password?');
         $I->jsClick('#password-recovery-link');
         $I->waitForText('Password recovery');
         $I->fillField('#email_txt', 'user1@example.com');
@@ -45,7 +45,7 @@ class PasswordRecoveryCest
         $I->click('Reset password');
         $I->wait(3);
         $I->expectTo('see confirm messages');
-        $I->see('Password recovery!');
+        $I->see('Password recovery');
         $I->see('If a user account associated with this email address exists, further instructions will be sent to you by email shortly.');
     }
 }

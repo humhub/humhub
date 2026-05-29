@@ -98,6 +98,8 @@ humhub.module('ui.modal', function (module, require, $) {
             that.close();
         }).on('click', '[data-modal-clear-error]', function () {
             that.clearErrorMessage();
+        }).on('shown.bs.modal', function () {
+            that.focus();
         });
 
         this.set(options);
@@ -486,9 +488,12 @@ humhub.module('ui.modal', function (module, require, $) {
     };
 
     Modal.prototype.focus = function () {
-        var that = this;
+        const that = this;
         setTimeout(function () {
-            var $input = that.$.find('select[autofocus]:visible:not(:disabled), input[autofocus][type="text"]:visible:not(:disabled), textarea[autofocus]:visible:not(:disabled), [contenteditable="true"][autofocus]:visible:not(:disabled)').first();
+            const $input = that.$.find('select[autofocus]:visible:not(:disabled), '
+                + 'input[autofocus]:visible:not(:disabled), '
+                + 'textarea[autofocus]:visible:not(:disabled), '
+                + '[contenteditable="true"][autofocus]:visible:not(:disabled)').first();
 
             if ($input.data('select2')) {
                 $input.select2('focus');
