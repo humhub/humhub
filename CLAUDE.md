@@ -80,7 +80,13 @@ When doing impact analysis:
 | `develop` | Next version — primary development branch |
 | `next` | Version after next |
 
+**Target branch for PRs:** new features and enhancements go into `develop`, never directly into `master`. Only bugfixes for the current stable release are committed to `master`. Base every PR on the branch that matches the type of change.
+
 External modules follow the same convention. A module's `develop` branch targets the upcoming core version. Verify by checking `humhub.minVersion` in the module's `module.json` on that branch.
+
+## Changelog
+
+Every PR must include a changelog entry. In this core repo the changelog is `CHANGELOG.md` at the repository **root** (external modules use `docs/CHANGELOG.md`). Add a bullet under the topmost `X.Y.Z (Unreleased)` section in the form `- <Tag> #<PR>: <description>`, where `<Tag>` is `Enh`, `Fix`, etc. — match the existing entries. Do not bump the version for unreleased changes; the version is only bumped when a release is cut.
 
 ## Running Tests
 
