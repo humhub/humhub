@@ -34,7 +34,6 @@ return [
     'Installation Example:' => 'Przykładowa instalacja:',
     'Language and timezone are automatically set according to the user\'s browser settings. If that is not possible, the default settings are used.' => 'Język i strefa czasowa są aplikowane z automatu na bazie ustawień przeglądarki. W innym razie stosowane jest ustawienie domyślne.',
     'Localisation' => 'Lokalizacja',
-    'Make sure that the following file is writable: thi' => 'Upewnij się, że ten plik można nadpisać: thi',
     'My club' => 'Mój klub',
     'My community' => 'Moja społeczność',
     'My company (Social Intranet / Project management)' => 'Moja firma (Intranet / Zarządzanie projektami)',

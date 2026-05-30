@@ -8,4 +8,6 @@ return [
     'You' => '',
     'You like this.' => '',
     'and {count} more like this.' => '',
+    '{displayNames} like {content}.' => '',
+    '{displayName} likes {content}.' => '',
 ];

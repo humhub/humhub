@@ -2,14 +2,12 @@
 
 return [
     'Base DN' => 'Base DN',
-    'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'Nastavení filtrů, které se mají aplikovat při pokusu o přihlášení. %s nahrazuje uživatelské jméno. Např.: &quot;(sAMAccountName=%s)&quot; nebo &quot;(uid=%s)&quot;',
     'E-Mail Address Attribute' => 'Atributy emailu',
     'Enable LDAP Support' => 'Povolit podporu LDAP',
     'Encryption' => 'Šifrování',
     'Fetch/Update Users Automatically' => 'Přenést/Aktualizovat uživatele automaticky',
     'Hostname' => 'Hostname',
     'LDAP' => 'LDAP',
-    'Login Filter' => 'Filtr Loginů',
     'Password' => 'Heslo',
     'Port' => 'Port',
     'Specify your LDAP-backend used to fetch user accounts.' => 'Zadejte zálohu LDAP použitou pro načtení uživatelských účtů.',
@@ -22,6 +20,8 @@ return [
     'User Filter' => 'Uživatelský filtr',
     'Username' => 'Uživatelské jméno',
     'Username Attribute' => 'Atributy uživatelského jména',
+    'Allowed Authentication Methods' => '',
+    'Disable Certificate Checking' => '',
     'ID Attribute' => '',
     'Ignored LDAP entries' => '',
     'LDAP Attribute for E-Mail Address. Default: &quot;mail&quot;' => '',
@@ -29,4 +29,5 @@ return [
     'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => '',
     'Not changeable LDAP attribute to unambiguously identify the user in the directory. If empty the user will be determined automatically by e-mail address or username. Examples: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)' => '',
     'One DN per line which should not be imported automatically.' => '',
+    'Select the authentication methods LDAP users may use. Unchecking "LDAP" disables direct LDAP password login and forces users through the other selected methods (e.g. SAML, OpenID Connect).' => '',
 ];

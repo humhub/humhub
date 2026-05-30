@@ -6,7 +6,6 @@ return [
     'Cancel' => 'ยกเลิก',
     'Cancel Edit' => 'ยกเลิกการแก้ไข',
     'Comment' => 'ความคิดเห็น',
-    'Comment could not be saved!' => 'ไม่สามารถบันทึกความคิดเห็นได้!',
     'Comment has been deleted' => 'ความคิดเห็นถูกลบ',
     'Comment of blocked user.' => 'ความคิดเห็นของผู้ถูกบล็อค',
     'Comments' => 'ความคิดเห็น',
@@ -26,8 +25,8 @@ return [
     'Write a new comment...' => 'เขียนความคิดเห็นใหม่...',
     'Write a new reply...' => 'ตอบกลับใหม่...',
     'comment' => 'ความคิดเห็น',
-    '{displayName} wrote a new comment ' => '{displayName} เขียนความคิดเห็นใหม่',
     '<strong>Permalink</strong> to this comment' => '',
     'Show next {count} comments' => '',
     'Show previous {count} comments' => '',
+    '{displayName} wrote a new comment {comment}.' => '',
 ];

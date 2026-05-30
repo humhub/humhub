@@ -18,10 +18,8 @@ return [
     'Whenever a new comment was written.' => 'Oricând un comentariu a fost scris.',
     'Write a new comment...' => 'Scrie un comentariu nou...',
     'comment' => 'comentariu',
-    '{displayName} wrote a new comment ' => '{displayName} a scris un comentariu nou',
     '<strong>Delete</strong> comment?' => '',
     '<strong>Permalink</strong> to this comment' => '',
-    'Comment could not be saved!' => '',
     'Comment of blocked user.' => '',
     'Reason' => '',
     'Reply' => '',
@@ -30,4 +28,5 @@ return [
     'Show next {count} comments' => '',
     'Show previous {count} comments' => '',
     'Write a new reply...' => '',
+    '{displayName} wrote a new comment {comment}.' => '',
 ];

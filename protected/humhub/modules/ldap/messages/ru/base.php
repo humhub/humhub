@@ -1,19 +1,20 @@
-<?php /* Translated by Paul (https://paul.bid) www.paul.bid@gmail.com */
+<?php
+
 return [
     'Base DN' => 'База поиска (Base DN)',
-    'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'Определяет фильтр, который будет применяться при попытке входа в систему. %s заменяет имя пользователя во время входа в систему.<br>Пример: &quot;(sAMAccountName=%s)&quot; или &quot;(uid=%s)&quot;',
     'E-Mail Address Attribute' => 'Атрибут Email-адреса',
     'Enable LDAP Support' => 'Включить поддержку LDAP',
     'Encryption' => 'Шифрование',
     'Fetch/Update Users Automatically' => 'Выбор/Обновление пользователей автоматически',
     'Hostname' => 'Имя хоста',
     'ID Attribute' => 'ID Атрибут',
+    'Ignored LDAP entries' => 'Игнорируемые записи LDAP',
     'LDAP' => 'LDAP',
     'LDAP Attribute for E-Mail Address. Default: &quot;mail&quot;' => 'Атрибут LDAP для адреса электронной почты. По умолчанию: &quot;mail&quot;',
     'LDAP Attribute for Username. Example: &quot;uid&quot; or &quot;sAMAccountName&quot;' => 'Атрибут LDAP для имени пользователя.<br>Пример: &quot;uid&quot; или &quot;sAMAccountName&quot;',
     'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'Ограничить доступ пользователям, отвечающим этим условиям.<br>Пример: quot;(objectClass=posixAccount)&quot; или &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;',
-    'Login Filter' => 'Фильтр логинов',
     'Not changeable LDAP attribute to unambiguously identify the user in the directory. If empty the user will be determined automatically by e-mail address or username. Examples: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)' => 'Неизменяемый атрибут LDAP для однозначной идентификации пользователя в каталоге. Если поле пусто, пользователь будет автоматически определяться по адресу электронной почты или имени пользователя.<br>Примеры: objectguid (ActiveDirectory) или uidNumber (OpenLDAP)',
+    'One DN per line which should not be imported automatically.' => 'По одному DN на строку, которые не должны импортироваться автоматически.',
     'Password' => 'Пароль',
     'Port' => 'Порт',
     'Specify your LDAP-backend used to fetch user accounts.' => 'Укажите настройки своего LDAP-сервера, который будет использоваться для получения учётных записей пользователей.',
@@ -26,6 +27,7 @@ return [
     'User Filter' => 'Пользовательский фильтр',
     'Username' => 'Имя пользователя',
     'Username Attribute' => 'Пользовательские данные',
-    'Ignored LDAP entries' => 'Игнорируемые записи LDAP',
-    'One DN per line which should not be imported automatically.' => 'По одному DN на строку, которые не должны импортироваться автоматически.',
+    'Allowed Authentication Methods' => '',
+    'Disable Certificate Checking' => '',
+    'Select the authentication methods LDAP users may use. Unchecking "LDAP" disables direct LDAP password login and forces users through the other selected methods (e.g. SAML, OpenID Connect).' => '',
 ];

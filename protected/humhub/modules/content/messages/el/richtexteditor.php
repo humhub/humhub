@@ -49,7 +49,6 @@ return [
     'Wrap in bullet list' => 'Τυλίξτε στην λίστα κουκκίδων',
     'Wrap in ordered list' => 'Τυλίξτε σε ταξινομημένη λίστα',
     '[Code Block]' => '[Μπλοκ Κώδικα]',
-    '[Image]' => '[Εικόνα]',
     '[Invalid file]' => '[Μη Έγκυρο Αρχείο]',
     '[Table]' => '[Πίνακας]',
     'Switch editor mode' => '',

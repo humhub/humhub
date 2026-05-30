@@ -51,6 +51,5 @@ return [
     '[Invalid file]' => '[Invalid file]',
     'Switch editor mode' => '',
     '[Code Block]' => '',
-    '[Image]' => '',
     '[Table]' => '',
 ];

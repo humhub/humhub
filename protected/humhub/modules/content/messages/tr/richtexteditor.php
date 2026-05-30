@@ -35,7 +35,6 @@ return [
     'Upload File' => 'Dosya yükle',
     'Width' => 'Genişlik',
     '[Code Block]' => '[Kod Bloğu]',
-    '[Image]' => '[Resim]',
     '[Invalid file]' => '[Geçersiz dosya]',
     '[Table]' => '[Tablo]',
     'Insert column after' => '',

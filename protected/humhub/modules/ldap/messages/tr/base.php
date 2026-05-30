@@ -2,7 +2,6 @@
 
 return [
     'Base DN' => 'DN Temeli',
-    'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'Giriş denendiğinde, uygulamak için filtreyi tanımlar. % uid giriş eylem adı değiştirir. Örnek: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;',
     'E-Mail Address Attribute' => 'E-posta adres özelliği',
     'Enable LDAP Support' => 'LDAP desteği aktif',
     'Encryption' => 'Şifreleme',
@@ -10,7 +9,6 @@ return [
     'Hostname' => 'Host adı (Örnek: localhost)',
     'ID Attribute' => 'ID Özellik',
     'LDAP' => 'LDAP',
-    'Login Filter' => 'Giriş filtresi',
     'Not changeable LDAP attribute to unambiguously identify the user in the directory. If empty the user will be determined automatically by e-mail address or username. Examples: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)' => 'Dizindeki kullanıcıyı açıkça tanımlamak için değiştirilemeyen LDAP özelliği. Boşsa, kullanıcı e-posta adresi veya kullanıcı adı ile otomatik olarak belirlenir. Örnekler: objectguid (ActiveDirectory) veya uidNumber (OpenLDAP)',
     'Password' => 'Şifre',
     'Port' => 'Port',
@@ -24,9 +22,12 @@ return [
     'User Filter' => 'Kullanıcı filtresi',
     'Username' => 'Kullanıcı adı',
     'Username Attribute' => 'Kullanıcı niteliği',
+    'Allowed Authentication Methods' => '',
+    'Disable Certificate Checking' => '',
     'Ignored LDAP entries' => '',
     'LDAP Attribute for E-Mail Address. Default: &quot;mail&quot;' => '',
     'LDAP Attribute for Username. Example: &quot;uid&quot; or &quot;sAMAccountName&quot;' => '',
     'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => '',
     'One DN per line which should not be imported automatically.' => '',
+    'Select the authentication methods LDAP users may use. Unchecking "LDAP" disables direct LDAP password login and forces users through the other selected methods (e.g. SAML, OpenID Connect).' => '',
 ];

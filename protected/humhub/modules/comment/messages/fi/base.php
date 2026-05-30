@@ -19,10 +19,8 @@ return [
     'Whenever a new comment was written.' => 'Aina kun uusi kommentti kirjoitettaan.',
     'Write a new comment...' => 'Kirjoita uusi kommentti...',
     'comment' => 'Kommentti',
-    '{displayName} wrote a new comment ' => '{displayName} kirjoittaa uutta komenttia',
     '<strong>Delete</strong> comment?' => '',
     '<strong>Permalink</strong> to this comment' => '',
-    'Comment could not be saved!' => '',
     'Comment of blocked user.' => '',
     'Reply' => '',
     'Send a notification to author' => '',
@@ -30,4 +28,5 @@ return [
     'Show next {count} comments' => '',
     'Show previous {count} comments' => '',
     'Write a new reply...' => '',
+    '{displayName} wrote a new comment {comment}.' => '',
 ];

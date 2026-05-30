@@ -62,7 +62,6 @@ return [
     'In the installation folder, locate the <strong>.env.example</strong> file and copy its contents into the <strong>.env</strong> file. Next, find the <strong>Pretty URLs</strong> block and uncomment it by removing the <strong>#</strong> symbol.' => '',
     'Language and timezone are automatically set according to the user\'s browser settings. If that is not possible, the default settings are used.' => '',
     'Localisation' => '',
-    'Make sure that the following file is writable: thi' => '',
     'Name of your network' => '',
     'Nike – Just buy it. :wink:' => '',
     'Of course, your new social network needs a name. Please change the default name with one you like. (For example the name of your company, organization or club)' => '',

@@ -1,19 +1,19 @@
 <?php
-return array (
-  'Any' => '',
-  'Author' => 'نویسنده',
-  'Best' => '',
-  'Content type' => '',
-  'Date From' => '',
-  'Date To' => '',
-  'Find Content based on keywords' => '',
-  'Newest first' => '',
-  'No results found!' => '',
-  'Results ({count})' => '',
-  'Search' => 'جستجو',
-  'Search...' => '',
-  'Sorting' => 'مرتب‌سازی',
-  'Space' => 'انجمن',
-  'Topic' => 'جستار',
-  'Try other keywords or remove filters.' => '',
-);
+
+return [
+    'Author' => 'نویسنده',
+    'Search' => 'جستجو',
+    'Sorting' => 'مرتب‌سازی',
+    'Space' => 'انجمن',
+    'Topic' => 'جستار',
+    'Any' => '',
+    'Best' => '',
+    'Content type' => '',
+    'Contents, Comments, Tags...' => '',
+    'Date From' => '',
+    'Date To' => '',
+    'Newest first' => '',
+    'No results found!' => '',
+    'Results ({count})' => '',
+    'Try other keywords or remove filters.' => '',
+];
