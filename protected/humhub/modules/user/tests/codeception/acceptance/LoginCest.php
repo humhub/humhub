@@ -17,7 +17,7 @@ class LoginCest
         $I->amGoingTo('try to continue with an empty username on Step 1');
         $loginPage->login('', '');
         $I->expectTo('see Step 1 validation error');
-        $I->waitForText('Username or Email cannot be blank.');
+        $I->waitForText('Email or Username cannot be blank.');
 
         $I->amGoingTo('try to submit Step 2 with an empty password');
         $loginPage->openPasswordStep('User1');

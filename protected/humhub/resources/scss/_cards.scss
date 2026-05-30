@@ -233,6 +233,13 @@
                 &.card-status-new {
                     background: #21A1B3;
                 }
+
+                &.card-status-community {
+                    background: transparent;
+                    color: var(--bs-secondary-color);
+                    border: 1px solid var(--bs-border-color);
+                    box-sizing: border-box;
+                }
             }
 
             .card-header {

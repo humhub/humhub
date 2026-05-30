@@ -23,4 +23,6 @@ use yii\helpers\Url;
 
 </div>
 
-<?php echo humhub\widgets\LanguageChooser::widget(); ?>
+<div class="text-center">
+    <?php echo humhub\widgets\LanguageChooser::widget(); ?>
+</div>

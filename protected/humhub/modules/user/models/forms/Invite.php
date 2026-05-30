@@ -35,7 +35,7 @@ class Invite extends Model
     public string $target = LinkRegistrationService::TARGET_PEOPLE;
 
     /**
-     * @var string user's username or email address
+     * @var string user's email or username address
      */
     public $emails;
 

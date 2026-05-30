@@ -40,10 +40,6 @@
                 padding: 15px;
             }
 
-            .panel-body p {
-                text-wrap: balance;
-            }
-
             h1,
             h2 {
                 color: var(--hh-text-color-main) !important;
@@ -61,6 +57,8 @@
             &.container-login,
             &.container-password {
                 max-width: 500px;
+                padding-left: 7px;
+                padding-right: 7px;
             }
 
             .panel {
@@ -83,6 +81,80 @@
     #account-login-form {
         .mb-3 {
             margin-bottom: 10px;
+        }
+    }
+
+    .login-container .language-chooser {
+        margin-top: 15px;
+
+        .language-chooser-toggle {
+            color: var(--hh-primary-contrast);
+            opacity: 0.8;
+
+            &:hover,
+            &:focus,
+            &[aria-expanded="true"] {
+                opacity: 1;
+                background-color: color-mix(in srgb, var(--hh-primary-contrast) 8%, transparent);
+            }
+        }
+    }
+}
+
+.language-chooser {
+    .dropdown {
+        position: relative;
+    }
+
+    .language-chooser-toggle {
+        color: var(--bs-link-color);
+        text-decoration: none;
+        font-size: 12px;
+        padding: 4px 8px;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+
+        &:hover,
+        &:focus,
+        &[aria-expanded="true"] {
+            background-color: color-mix(in srgb, var(--bs-link-color) 8%, transparent);
+        }
+
+        .fa-globe {
+            margin-right: 4px;
+        }
+    }
+
+    .language-chooser-menu {
+        width: 280px;
+        max-width: calc(100vw - 30px);
+        margin-top: 8px;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+
+        .language-chooser-list {
+            max-height: 240px;
+            overflow-y: auto;
+        }
+
+        .language-chooser-item {
+            padding: 6px 12px;
+            font-size: 13px;
+            border-left: 3px solid transparent;
+
+            &.active {
+                background-color: transparent;
+                color: var(--hh-text-color-main);
+                border-left-color: var(--bs-primary);
+                font-weight: 500;
+            }
+
+            &:hover:not(.active),
+            &:focus:not(.active) {
+                background-color: color-mix(in srgb, var(--bs-link-color) 8%, transparent);
+                color: var(--hh-text-color-main);
+            }
         }
     }
 }

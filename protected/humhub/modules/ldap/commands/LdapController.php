@@ -82,7 +82,7 @@ class LdapController extends Controller
         $this->stdout("LDAP connection successful!\n\n", Console::FG_GREEN);
 
         $activeUserCount = User::find()->andWhere(['user_source' => $id, 'status' => User::STATUS_ENABLED])->count();
-        $disabledUserCount = User::find()->andWhere(['user_source' => $id, 'status' => User::STATUS_DISABLED])->count();
+        $disabledUserCount = User::find()->andWhere(['user_source' => $id, 'status' => User::STATUS_DEACTIVATED])->count();
 
         $this->stdout("LDAP user count:\t\t" . $service->countUsers() . " users.\n");
         $this->stdout("HumHub user count (active):\t" . $activeUserCount . " users.\n");

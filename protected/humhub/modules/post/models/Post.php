@@ -10,6 +10,7 @@ namespace humhub\modules\post\models;
 
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\widgets\richtext\RichText;
+use humhub\modules\post\Module;
 use humhub\modules\post\permissions\CreatePost;
 use humhub\modules\post\widgets\WallEntry;
 use Yii;
@@ -19,6 +20,7 @@ use yii\helpers\Url;
  * This is the model class for table "post".
  *
  * @property int $id
+ * @property string|null $title
  * @property string $message
  * @property string $url
  * @property string $created_at
@@ -71,11 +73,18 @@ class Post extends ContentActiveRecord
      */
     public function rules()
     {
-        return [
+        $rules = [
             [['message'], 'required', 'except' => [self::SCENARIO_AJAX_VALIDATION, self::SCENARIO_HAS_FILES]],
             [['message'], 'string'],
+            [['title'], 'string', 'max' => 255],
             [['url'], 'string', 'max' => 255],
         ];
+
+        if (Yii::$app->getModule('post')->getTitleMode() === Module::TITLE_MODE_REQUIRED) {
+            $rules[] = [['title'], 'required'];
+        }
+
+        return $rules;
     }
 
     /**
@@ -130,7 +139,7 @@ class Post extends ContentActiveRecord
      */
     public function getContentDescription()
     {
-        return $this->message;
+        return !empty($this->title) ? $this->title : $this->message;
     }
 
     /**

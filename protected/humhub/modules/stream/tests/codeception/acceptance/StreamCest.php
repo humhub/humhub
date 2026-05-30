@@ -271,6 +271,7 @@ class StreamCest
         $I->click('Comment', $postSelector);
         $I->waitForElementVisible($postSelector . ' .comment-container');
         $I->fillField($postSelector . ' .comment_create .humhub-ui-richtext', 'My Comment');
+        $I->wait(1);
         $I->click('[data-action-click=submit]', $postSelector . ' .comment_create');
         $I->waitForText('My Comment', 10, $postSelector . ' .comment');
 
@@ -393,7 +394,7 @@ class StreamCest
         $I->see('User 2 Space 2 Post Public');
 
         $user2 = User::findOne(['id' => 2]);
-        $user2->status = User::STATUS_DISABLED;
+        $user2->status = User::STATUS_DEACTIVATED;
         $user2->save();
 
         $I->amOnSpace2();

@@ -172,7 +172,10 @@ $config = [
         'assetManager' => [
             'class' => \humhub\components\assets\AssetManager::class,
             'appendTimestamp' => true,
-            'bundles' => require(__DIR__ . '/' . (YII_ENV_PROD || YII_ENV_TEST ? 'assets-prod.php' : 'assets-dev.php')),
+            'bundles' => (function () {
+                $file = __DIR__ . '/' . (YII_ENV_PROD || YII_ENV_TEST ? 'assets-prod.php' : 'assets-dev.php');
+                return file_exists($file) ? require $file : [];
+            })(),
         ],
         'img' => [
             'class' => 'humhub\components\assets\AssetImageRegistry',

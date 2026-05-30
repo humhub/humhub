@@ -189,7 +189,7 @@ class AssetManager extends \yii\web\AssetManager
     public function fileWrite($file, $content)
     {
         try {
-            $this->fs->write($file, $content, $this->filesystemOptions);
+            $this->fs->write($this->normalizePath($file), $content, $this->filesystemOptions);
         } catch (FilesystemException $e) {
             print $e->getMessage();
             die();
@@ -199,10 +199,17 @@ class AssetManager extends \yii\web\AssetManager
     public function fileExists($file)
     {
         try {
-            return $this->fs->has($file);
+            return $this->fs->has($this->normalizePath($file));
         } catch (FilesystemException $e) {
             print $e->getMessage();
             die();
         }
+    }
+
+    public function normalizePath(string $path): string
+    {
+        return str_starts_with($path, $this->basePath)
+            ? substr($path, strlen($this->basePath))
+            : $path;
     }
 }

@@ -1,7 +1,9 @@
 <?php
 
+use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\user\models\Invite;
+use humhub\widgets\bootstrap\Alert;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\form\CaptchaField;
@@ -11,7 +13,7 @@ use yii\helpers\Url;
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Sign Up');
 
-/* @var $this \humhub\components\View */
+/* @var $this View */
 /* @var $invite Invite */
 
 ?>
@@ -20,26 +22,21 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Sign Up');
     <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br>
 
-    <div class="panel panel-default animated bounceIn" id="register-form">
-
-        <div class="panel-heading"><?= Yii::t('UserModule.auth', 'Sign up') ?></div>
-
-        <div class="panel-body">
-
+    <div class="panel panel-default mb-4 animated bounceIn" id="register-form">
+        <div class="panel-heading">
+            <strong class="fw-bolder"><?= Yii::t('UserModule.auth', 'Sign Up') ?></strong>
+        </div>
+        <div class="panel-body pt-0">
             <?php if (Yii::$app->session->hasFlash('error')): ?>
-                <div class="alert alert-danger" role="alert">
-                    <?= Yii::$app->session->getFlash('error') ?>
-                </div>
+                <?= Alert::danger(Yii::$app->session->getFlash('error'))->closeButton(false) ?>
             <?php endif; ?>
 
-            <p>
-                <?= Yii::t('UserModule.auth', 'To Sign Up, enter your email and we will send you a sign up link.') ?>
-            </p>
+            <p><?= Yii::t('UserModule.auth', 'Enter your email address and click Send. We will email you a sign-up link to create your account.') ?></p>
 
             <?php $form = ActiveForm::begin(['id' => 'invite-form']) ?>
                 <?= $form->field($invite, 'email')->input('email', [
                     'id' => 'register-email',
-                    'placeholder' => $invite->getAttributeLabel('email'),
+                    'placeholder' => 'example@example.com',
                     'aria-label' => $invite->getAttributeLabel('email'),
                     'autocomplete' => 'email',
                     'autofocus' => true,
@@ -51,22 +48,25 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Sign Up');
                         ->label(false) ?>
                 <?php endif; ?>
 
-                <?= Html::submitButton(
-                    Yii::t('UserModule.auth', 'Send'),
-                    ['class' => 'btn btn-primary w-100', 'data-ui-loader' => ''],
-                ) ?>
+                <div class="row g-3">
+                    <div class="col-6">
+                        <?= Button::light(Yii::t('UserModule.auth', 'Back'))
+                            ->link(Url::to(['/user/auth/login']))
+                            ->cssClass('w-100')
+                            ->pjax(false) ?>
+                    </div>
+                    <div class="col-6">
+                        <?= Button::save(Yii::t('UserModule.auth', 'Send'))
+                            ->submit()
+                            ->cssClass('w-100') ?>
+                    </div>
+                </div>
 
-                <?= Button::light(Yii::t('UserModule.auth', 'Back'))
-                    ->link(Url::to(['/user/auth/login']))
-                    ->cssClass('w-100 mt-2')
-                    ->pjax(false) ?>
             <?php ActiveForm::end(); ?>
         </div>
     </div>
 
-    <br>
-
-    <?= LanguageChooser::widget(['vertical' => true, 'hideLabel' => true]) ?>
+    <?= LanguageChooser::widget(['vertical' => true]) ?>
 </div>
 
 <script <?= Html::nonce() ?>>

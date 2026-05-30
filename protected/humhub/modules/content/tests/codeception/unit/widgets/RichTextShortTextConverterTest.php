@@ -11,6 +11,7 @@ namespace tests\codeception\unit\modules\content\widgets;
 
 use humhub\libs\EmojiMap;
 use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
+use humhub\modules\content\widgets\richtext\converter\RichTextToShortHtmlConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use humhub\modules\content\widgets\richtext\extensions\mentioning\MentioningExtension;
 use humhub\modules\content\widgets\richtext\RichText;
@@ -358,7 +359,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     public function testMentionInActiveUser()
     {
         $user = User::findOne(['id' => 2]);
-        $user->updateAttributes(['status' => User::STATUS_DISABLED]);
+        $user->updateAttributes(['status' => User::STATUS_DEACTIVATED]);
 
         $this->assertConversionResult(
             'Test mention ' . MentioningExtension::buildMentioning($user),
@@ -802,7 +803,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
             "Test<br>\nBreak",
             [
                 RichTextToShortTextConverter::OPTION_PRESERVE_SPACES => true,
-                RichTextToShortTextConverter::OPTION_NL2BR => true,
+                RichTextToShortHtmlConverter::OPTION_NL2BR => true,
             ],
         );
     }

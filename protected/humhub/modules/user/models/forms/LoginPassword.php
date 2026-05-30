@@ -23,7 +23,7 @@ class LoginPassword extends Login
     {
         return [
             ['password', 'required'],
-            [['rememberMe', 'rememberUsername'], 'boolean'],
+            [['rememberMe'], 'boolean'],
         ];
     }
 

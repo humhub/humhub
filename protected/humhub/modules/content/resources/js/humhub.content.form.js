@@ -48,6 +48,7 @@ humhub.module('content.form', function (module, require, $) {
 
                 if (!this.isModal) {
                     this.$.find('.contentForm_options').fadeIn();
+                    this.expandFields();
                 }
             }.bind(this));
         } else {
@@ -64,6 +65,23 @@ humhub.module('content.form', function (module, require, $) {
         }
         this.menu.show();
     }
+
+    /**
+     * Expands the create form: marks it as expanded (which reveals the fixed
+     * editor toolbar, see post form.php) and reveals additional fields hidden
+     * until the user starts interacting with the form (e.g. the post title).
+     */
+    CreateForm.prototype.expandFields = function () {
+        this.$.addClass('contentForm-expanded');
+
+        var $fields = this.$.find('[data-content-form-expand]:hidden');
+        if (!$fields.length) {
+            return;
+        }
+
+        $fields.fadeIn();
+        this.$.find('input[type=text], textarea').first().trigger('focus');
+    };
 
     CreateForm.prototype.submit = function (evt) {
         this.$.find('.nav-pills, .fileinput-button').hide();
@@ -107,7 +125,9 @@ humhub.module('content.form', function (module, require, $) {
      */
     CreateForm.prototype.resetForm = function () {
         // Reset Form (Empty State)
+        this.$.removeClass('contentForm-expanded');
         this.$.find('.contentForm_options').hide();
+        this.$.find('[data-content-form-expand]').hide();
         var $contentForm = this.$.find('.contentForm');
         $contentForm.filter(':text').val('');
         $contentForm.filter('textarea').val('').trigger('autosize.resize');
@@ -161,7 +181,7 @@ humhub.module('content.form', function (module, require, $) {
                 var fieldSelector = '.field-' + model + '-' + fieldName;
                 var inputSelector = '.field-contentForm_' + fieldName;
                 var multiInputSelector = '[name="' + fieldName + '[]"]';
-                that.$.find(fieldSelector + ' .form-control,' + inputSelector + '_input, ' + multiInputSelector)
+                that.$.find(fieldSelector + ' .form-control,' + inputSelector + '_input, ' + inputSelector + ' .select2-selection, ' + multiInputSelector)
                     .addClass('is-invalid');
                 that.$.find(fieldSelector + ', ' + inputSelector + ', ' + inputSelector + '_input, ' + multiInputSelector)
                     .find('.invalid-feedback:first').html(errorMessages.join('<br>'));

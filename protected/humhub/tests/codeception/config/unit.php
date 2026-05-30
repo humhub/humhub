@@ -7,9 +7,6 @@ $testConfig = [
     'class' => 'humhub\components\Application',
     'timeZone' => 'UTC',
     'components' => [
-        'cache' => [
-            'class' => \yii\caching\FileCache::class,
-        ],
         'session' => [
             'class' => \yii\web\CacheSession::class,
         ],

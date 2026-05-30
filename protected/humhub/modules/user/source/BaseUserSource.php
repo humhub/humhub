@@ -139,7 +139,7 @@ abstract class BaseUserSource extends Component implements UserSourceInterface
      */
     public function deleteUser(User $user): bool
     {
-        $user->status = User::STATUS_DISABLED;
+        $user->status = User::STATUS_DEACTIVATED;
         return $user->save();
     }
 

@@ -72,7 +72,7 @@ class ProfileController extends Behavior
      */
     public function beforeAction($action)
     {
-        if ($this->user->status == User::STATUS_DISABLED) {
+        if ($this->user->status == User::STATUS_DEACTIVATED) {
             throw new HttpException(404, Yii::t('UserModule.profile', 'This profile is disabled!'));
         }
 

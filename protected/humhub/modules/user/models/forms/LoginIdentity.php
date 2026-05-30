@@ -20,7 +20,7 @@ use yii\base\Model;
 class LoginIdentity extends Model
 {
     /**
-     * @var string user's username or email address
+     * @var string user's email or username address
      */
     public $username;
 
@@ -40,7 +40,7 @@ class LoginIdentity extends Model
     public function attributeLabels()
     {
         return [
-            'username' => Yii::t('UserModule.auth', 'Username or Email'),
+            'username' => Yii::t('UserModule.auth', 'Email or Username'),
         ];
     }
 
