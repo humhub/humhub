@@ -11,6 +11,11 @@ namespace humhub\modules\live\controllers;
 use humhub\components\Controller;
 use humhub\modules\content\models\Content;
 use humhub\modules\live\components\LiveEvent;
+use humhub\modules\comment\live\NewComment;
+use humhub\modules\content\live\NewContent;
+use humhub\modules\notification\live\NewNotification;
+use humhub\modules\live\live\LegitimationChanged;
+use humhub\modules\live\live\PreventPjaxOnNextClick;
 use humhub\modules\live\driver\Poll;
 use humhub\modules\live\models\Live;
 use humhub\modules\user\services\IsOnlineService;
@@ -119,7 +124,13 @@ class PollController extends Controller
     {
         try {
             /* @var $liveEvent LiveEvent */
-            $liveEvent = unserialize($serializedEvent);
+            $liveEvent = unserialize($serializedEvent, ['allowed_classes' => [
+                NewComment::class,
+                NewContent::class,
+                NewNotification::class,
+                LegitimationChanged::class,
+                PreventPjaxOnNextClick::class,
+            ]]);
 
             if (!$liveEvent instanceof LiveEvent) {
                 throw new Exception('Invalid live event class after unserialize!');
