@@ -12,7 +12,6 @@ use humhub\components\console\Application as ConsoleApplication;
 use humhub\components\InstallationState;
 use humhub\components\Theme;
 use humhub\helpers\ThemeHelper;
-use humhub\modules\installer\libs\EnvironmentChecker;
 use Yii;
 use yii\base\BootstrapInterface;
 use yii\base\Theme as BaseTheme;
@@ -20,10 +19,9 @@ use yii\helpers\ArrayHelper;
 
 /**
  * ThemeLoader is used during the application bootstrap process
- * to load the actual theme specifed in the SettingsManager.
+ * to load the actual theme specified in the SettingsManager.
  *
  * @since 1.3
- * @package humhub\modules\ui\view\bootstrap
  */
 class ThemeLoader implements BootstrapInterface
 {
