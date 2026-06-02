@@ -8,6 +8,7 @@ HumHub Changelog
 - Fix #8189: Scroll to highlighted comment when navigating from Last Activities
 - Enh #8187: Update composer package symfony/mime
 - Fix #8188: AutoContrast and Sign In Footer Links
+- Fix #8196: Fix whitespace between notification bar items
 
 1.18.3 (May 18, 2026)
 ---------------------
