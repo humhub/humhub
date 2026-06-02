@@ -34,6 +34,7 @@ HumHub Changelog
 - Fix #8005: Remove space followers on change to private visibility
 - Enh #8178: New sign in & sign up flow
 - Enh #8180: Topic picker handling
+- Fix #8201: [Security] Restrict live event `unserialize()` to `LiveEvent` subclasses to prevent PHP object injection
 
 1.18.4 (Unreleased)
 ---------------------
