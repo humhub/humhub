@@ -15,7 +15,7 @@ class m260105_094333_like_contentid extends Migration
 
         $this->execute(
             'UPDATE `like`
-         LEFT JOIN `content` ON like.object_id = like.object_id AND content.object_model=like.object_model
+         LEFT JOIN `content` ON like.object_id = content.object_id AND content.object_model=like.object_model
          SET like.content_id=content.id, like.object_model=NULL, like.object_id=NULL
          WHERE content.object_model IS NOT NULL',
         );
