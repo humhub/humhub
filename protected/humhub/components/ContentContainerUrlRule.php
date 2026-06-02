@@ -9,8 +9,10 @@
 namespace humhub\components;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\components\ContentContainerController;
 use Yii;
 use yii\base\BaseObject;
+use yii\base\Module;
 use yii\web\UrlRule;
 use yii\web\UrlRuleInterface;
 
@@ -41,6 +43,11 @@ abstract class ContentContainerUrlRule extends BaseObject implements UrlRuleInte
      * @var array map with Content Container guid/url pairs
      */
     public static $containerUrlMap;
+
+    /**
+     * @var bool[] map with route/container controller checks
+     */
+    private static array $contentContainerControllerRouteMap = [];
 
     /**
      * Get Content Container by URL
@@ -95,13 +102,19 @@ abstract class ContentContainerUrlRule extends BaseObject implements UrlRuleInte
             $route = '';
         }
 
+        $isExplicitContainerRoute = false;
         foreach ($manager->rules as $rule) {
             if ($result = $this->createUrlByClass($rule, $manager, $url, $route, $params)) {
                 return $result;
             }
             if ($result = $this->createUrlByRule($rule, $route, $params)) {
                 [$route, $params] = $result;
+                $isExplicitContainerRoute = true;
             }
+        }
+
+        if (!$isExplicitContainerRoute && !static::isContentContainerControllerRoute($route ?: $this->defaultRoute)) {
+            return false;
         }
 
         $url .= '/' . $route;
@@ -210,6 +223,10 @@ abstract class ContentContainerUrlRule extends BaseObject implements UrlRuleInte
             }
         }
 
+        if (!static::isContentContainerControllerRoute($parts[2])) {
+            return false;
+        }
+
         return [$parts[2], $params];
     }
 
@@ -267,6 +284,100 @@ abstract class ContentContainerUrlRule extends BaseObject implements UrlRuleInte
         }
 
         return [$rule->route, array_merge($urlParams, $ruleParams)];
+    }
+
+    /**
+     * Checks if the route points to a controller which can handle content container URLs.
+     */
+    public static function isContentContainerControllerRoute(string $route): bool
+    {
+        $route = trim($route, '/');
+        if ($route === '') {
+            return false;
+        }
+
+        if (!array_key_exists($route, self::$contentContainerControllerRouteMap)) {
+            $controllerClass = self::getControllerClassByRoute(Yii::$app, $route);
+            self::$contentContainerControllerRouteMap[$route] = $controllerClass !== null
+                && is_subclass_of($controllerClass, ContentContainerController::class);
+        }
+
+        return self::$contentContainerControllerRouteMap[$route];
+    }
+
+    /**
+     * Resolves a controller class without creating a controller instance.
+     */
+    private static function getControllerClassByRoute(Module $module, string $route): ?string
+    {
+        if ($route === '') {
+            $route = $module->defaultRoute;
+        }
+
+        $route = trim($route, '/');
+        if ($route === '' || str_contains($route, '//')) {
+            return null;
+        }
+
+        if (str_contains($route, '/')) {
+            [$id, $route] = explode('/', $route, 2);
+        } else {
+            $id = $route;
+            $route = '';
+        }
+
+        if (isset($module->controllerMap[$id])) {
+            return self::getControllerClassByMap($module->controllerMap[$id]);
+        }
+
+        $subModule = $module->getModule($id);
+        if ($subModule !== null) {
+            return self::getControllerClassByRoute($subModule, $route);
+        }
+
+        if (($pos = strrpos($route, '/')) !== false) {
+            $id .= '/' . substr($route, 0, $pos);
+            $route = substr($route, $pos + 1);
+        }
+
+        return self::getControllerClassById($module, $id)
+            ?? ($route !== '' ? self::getControllerClassById($module, $id . '/' . $route) : null);
+    }
+
+    private static function getControllerClassByMap(mixed $controllerMap): ?string
+    {
+        if (is_string($controllerMap)) {
+            return $controllerMap;
+        }
+
+        return is_array($controllerMap) && isset($controllerMap['class']) && is_string($controllerMap['class'])
+            ? $controllerMap['class']
+            : null;
+    }
+
+    private static function getControllerClassById(Module $module, string $id): ?string
+    {
+        $pos = strrpos($id, '/');
+        if ($pos === false) {
+            $prefix = '';
+            $className = $id;
+        } else {
+            $prefix = substr($id, 0, $pos + 1);
+            $className = substr($id, $pos + 1);
+        }
+
+        if (!preg_match('%^[a-z][a-z0-9\-_]*$%', $className)
+            || ($prefix !== '' && !preg_match('%^[a-z0-9_/]+$%i', $prefix))
+        ) {
+            return null;
+        }
+
+        $className = preg_replace_callback('%-([a-z0-9_])%i', static function ($matches) {
+            return ucfirst($matches[1]);
+        }, ucfirst($className)) . 'Controller';
+        $className = ltrim($module->controllerNamespace . '\\' . str_replace('/', '\\', $prefix) . $className, '\\');
+
+        return str_contains($className, '-') || !class_exists($className) ? null : $className;
     }
 
     /**

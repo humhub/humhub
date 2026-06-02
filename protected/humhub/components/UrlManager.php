@@ -38,6 +38,8 @@ class UrlManager extends \yii\web\UrlManager
     public function createUrl($params)
     {
         $params = (array)$params;
+        $route = isset($params[0]) ? trim($params[0], '/') : '';
+        $usesContentContainer = false;
 
         if (isset($params['container']) && $params['container'] instanceof ContentContainerActiveRecord) {
             $params['contentContainer'] = $params['container'];
@@ -48,8 +50,34 @@ class UrlManager extends \yii\web\UrlManager
             $params['cguid'] = $params['contentContainer']->guid;
             static::$cachedLastContainerRecord = $params['contentContainer'];
             unset($params['contentContainer']);
+            $usesContentContainer = true;
         }
 
-        return parent::createUrl($params);
+        $url = parent::createUrl($params);
+
+        return $usesContentContainer && !ContentContainerUrlRule::isContentContainerControllerRoute($route)
+            ? $this->removeUrlParam($url, 'cguid')
+            : $url;
+    }
+
+    private function removeUrlParam(string $url, string $param): string
+    {
+        $parts = parse_url($url);
+        if (empty($parts['query'])) {
+            return $url;
+        }
+
+        parse_str($parts['query'], $query);
+        if (!array_key_exists($param, $query)) {
+            return $url;
+        }
+
+        unset($query[$param]);
+
+        $baseUrl = strstr($url, '?', true);
+        $query = http_build_query($query);
+        $fragment = isset($parts['fragment']) ? '#' . $parts['fragment'] : '';
+
+        return $baseUrl . ($query === '' ? '' : '?' . $query) . $fragment;
     }
 }

@@ -39,6 +39,7 @@ HumHub Changelog
 ---------------------
 - Enh #8170: Handle controllers with using external modules
 - Enh #8176: Upgrade Twig package to v3.26.0
+- Fix #8200: Restrict content container URL fallback to container controllers
 
 1.18.3 (May 18, 2026)
 ---------------------
