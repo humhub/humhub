@@ -1,38 +1,57 @@
 <?php
 
 use humhub\helpers\Html;
-use yii\helpers\Url;
+use humhub\modules\user\authclient\BaseFormAuth;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
 
+/* @var BaseFormAuth[] $authClients */
+/* @var string $currentAuthProviderId */
+/* @var string[] $activeAuthClientIds */
 ?>
 
 <?php $this->beginContent('@user/views/account/_userSettingsLayout.php') ?>
 <div class="text-body-secondary">
-    <?php echo Yii::t('UserModule.base', 'Here you can connect to external service provider for using external services like a single sign on authentication.'); ?>
+    <?= Yii::t('UserModule.base', 'Here you can connect to external service provider for using external services like a single sign on authentication.') ?>
 </div>
-<table class="table table-hover">
+<table class="table table-hover" aria-label="<?= Html::encode(Yii::t('UserModule.base', 'Connected accounts')) ?>">
+    <caption class="visually-hidden"><?= Yii::t('UserModule.base', 'Connected accounts') ?></caption>
+    <thead>
+        <tr>
+            <th scope="col" colspan="2"><?= Yii::t('UserModule.base', 'Provider') ?></th>
+            <th scope="col" class="text-center" style="width:50px"><?= Yii::t('UserModule.base', 'Action') ?></th>
+        </tr>
+    </thead>
+    <tbody>
     <?php foreach ($authClients as $client) : ?>
         <tr>
-            <td width='10'>
-                <?php $viewOptions = $client->getViewOptions(); ?>
-                <?php $iconClass = $viewOptions['cssIcon'] ?? ''; ?>
-
-                <div class='<?= $iconClass; ?> float-start' style='font-size:200%'></div>
+            <td aria-hidden="true" style="width:10px">
+                <div class="<?= $client->getViewOptions()['cssIcon'] ?? '' ?> float-start" style="font-size:200%"></div>
             </td>
-
-            <td style='vertical-align: middle;'>
-                <strong><?php echo $client->getTitle(); ?></strong>
+            <td class="align-middle">
+                <strong><?= $client->getTitle() ?></strong>
             </td>
-
-            <td class="text-end">
+            <td class="text-center">
                 <?php if ($client->getId() == $currentAuthProviderId): ?>
-                    <?php echo Html::a(Yii::t('UserModule.base', 'Currently in use'), '#', ['class' => 'btn btn-light btn-sm', 'data-method' => 'POST', 'disabled' => 'disabled']); ?>
+                    <?= Button::light(Yii::t('UserModule.base', 'Currently in use'))
+                        ->disabled()
+                        ->sm() ?>
                 <?php elseif (in_array($client->getId(), $activeAuthClientIds)) : ?>
-                    <?php echo Html::a(Yii::t('UserModule.base', 'Disconnect account'), ['connected-accounts', 'disconnect' => $client->getId()], ['class' => 'btn btn-danger btn-sm', 'data-method' => 'POST']); ?>
+                    <?= Link::danger(Yii::t('UserModule.base', 'Disconnect account'))
+                        ->post(['connected-accounts', 'disconnect' => $client->getId()])
+                        ->confirm()
+                        ->options(['aria-label' => Yii::t('UserModule.base', 'Disconnect {provider} account', ['provider' => $client->getTitle()])])
+                        ->sm() ?>
                 <?php else: ?>
-                    <?php echo Html::a(Yii::t('UserModule.base', 'Connect account'), Url::to(['/user/auth/external', 'authclient' => $client->getId()]), ['class' => 'btn btn-success  btn-sm', 'data-pjax-prevent' => ""]); ?>
-                <?php endif; ?>
+                    <?= Button::success(Yii::t('UserModule.base', 'Connect account'))
+                        ->link(['/user/auth/external', 'authclient' => $client->getId()])
+                        ->options(['aria-label' => Yii::t('UserModule.base', 'Connect {provider} account', ['provider' => $client->getTitle()])])
+                        ->sm()
+                        ->pjax(false) ?>
+                <?php endif ?>
             </td>
         </tr>
-    <?php endforeach; ?>
+    <?php endforeach ?>
+    </tbody>
 </table>
-<?php $this->endContent(); ?>
+<?php $this->endContent() ?>
