@@ -14,6 +14,7 @@ class ActivityBox extends Widget
 {
     public ?ContentContainerActiveRecord $contentContainer = null;
     public int $initLimit = 5;
+    public int $maxPagesNumber = 10;
 
     public function run()
     {
@@ -50,6 +51,7 @@ class ActivityBox extends Widget
             'ui-widget' => 'activity.ActivityBox',
             'ui-init' => true,
             'box-url' => Url::to(['/activity/activity-box/load', 'contentContainer' => $this->contentContainer]),
+            'max-pages-number' => $this->maxPagesNumber,
         ];
     }
 }

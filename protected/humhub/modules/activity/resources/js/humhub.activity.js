@@ -41,6 +41,9 @@ humhub.module('activity', function (module, require, $) {
             return;
         }
 
+        this.currentPage = 1;
+        this.maxPagesNumber = this.$.data('max-pages-number') || 0;
+
         const observer = new IntersectionObserver(function (entries) {
             if (that.isLoading()) {
                 return;
@@ -55,6 +58,7 @@ humhub.module('activity', function (module, require, $) {
     }
 
     ActivityBox.prototype.loadMore = function () {
+        const that = this;
         const endIndicator = this.getEndIndicator();
         const lastActivity = endIndicator.prev('[data-activity-id]');
 
@@ -72,10 +76,12 @@ humhub.module('activity', function (module, require, $) {
                 endIndicator.before(response.activities[id]);
             }
 
-            if (response.isLast) {
-                // Remove the end indicator because no more activities to load
+            if (response.isLast || (that.maxPagesNumber > 0 && that.currentPage >= that.maxPagesNumber)) {
+                // Remove the end indicator because no more activities to load, or it is a max allowed page
                 endIndicator.remove();
             }
+
+            that.currentPage++;
         }).catch(function(err) {
             module.log.error(err, true);
         }).finally(function() {
