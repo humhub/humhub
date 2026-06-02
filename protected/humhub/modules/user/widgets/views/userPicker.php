@@ -28,7 +28,7 @@ foreach (explode(",", (string) $currentValue) as $guid) {
     if ($user != null) {
         $imageUrl = $user->getProfileImage()->getUrl();
         $name = Html::encode($user->displayName);
-        $newValue .= '<li class="userInput" id="' . $user->guid . '"><img class="rounded" alt="24x24" data-src="holder.js/24x24" style="width: 24px; height: 24px;" src="' . $imageUrl . '" alt="' . $name . 'r" width="24" height="24">' . $name . '<i class="fa fa-times-circle"></i></li>';
+        $newValue .= '<li class="userInput" id="' . $user->guid . '"><img class="rounded" data-src="holder.js/24x24" style="width: 24px; height: 24px;" src="' . $imageUrl . '" alt="' . $name . 'r" width="24" height="24">' . $name . '<i class="fa fa-times-circle"></i></li>';
     }
 }
 ?>
