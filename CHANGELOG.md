@@ -11,6 +11,7 @@ HumHub Changelog
 - Fix #8193: Fix rendering of the widget `AuthChoice`
 - Fix #8195: Improve permalink error handling for guest users
 - Fix #8196: Fix whitespace between notification bar items
+- Fix #8205: Fix permission filter alignment
 
 1.18.3 (May 18, 2026)
 ---------------------
