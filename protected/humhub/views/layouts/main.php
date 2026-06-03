@@ -22,12 +22,13 @@ AppAsset::register($this);
     <head>
         <title><?= Html::encode($this->pageTitle) ?></title>
         <meta charset="<?= Yii::$app->charset ?>">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <?php $this->head() ?>
         <?= $this->render('head') ?>
     </head>
 
     <?= Html::beginTag('body', ['class' => DeviceDetectorHelper::getBodyClasses()]) ?>
+        <?= Html::a(Yii::t('base', 'Skip to main content'), '#main-content', ['class' => 'visually-hidden-focusable']) ?>
         <?php $this->beginBody() ?>
 
         <!-- start: first top navigation bar -->
@@ -67,7 +68,9 @@ AppAsset::register($this);
         </div>
         <!-- end: second top navigation bar -->
 
-        <?= $content ?>
+        <main id="main-content">
+            <?= $content ?>
+        </main>
 
         <?php $this->endBody() ?>
     <?= Html::endTag('body') ?>

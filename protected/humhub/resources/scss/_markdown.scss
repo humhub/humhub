@@ -15,7 +15,7 @@
 
     .markdown-render, [data-ui-markdown], [data-ui-richtext] {
         line-height: 1.57;
-        overflow: hidden;
+        overflow-x: hidden; // only clip horizontal if truly needed
         overflow-wrap: break-word;
 
         h1, h2, h3, h4, h5, h6 {

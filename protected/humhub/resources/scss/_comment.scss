@@ -34,7 +34,7 @@
                 }
 
                 .comment-message {
-                    overflow: hidden;
+                    overflow-x: hidden; // only clip horizontal if truly needed
                     @include text-break();
                 }
 

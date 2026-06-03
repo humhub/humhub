@@ -217,7 +217,7 @@ class Button extends \yii\bootstrap5\Button
         }
 
         if ($this->label === null && $this->icon !== null) {
-            $this->cssClass('btn-icon-only');
+            $this->cssClass('btn-icon-only')->ariaLabel();
         }
 
         $text = $this->icon . ($this->encodeLabel ? Html::encode($this->label) : $this->label);

@@ -242,4 +242,30 @@ trait BootstrapVariationsTrait
         }
         return $this;
     }
+
+    /**
+     * @param string|null $ariaLabel NULL - to auto generate label from provided data
+     * @return static
+     * @since 1.19
+     */
+    public function ariaLabel(?string $ariaLabel = null): static
+    {
+        if (!isset($this->options['aria-label']) && $ariaLabel === null) {
+            if (!empty($this->options['title'])) {
+                $ariaLabel = $this->options['title'];
+            } elseif (!empty($this->options['data-bs-title'])) {
+                $ariaLabel = $this->options['data-bs-title'];
+            } elseif (!empty($this->options['data-action-click'])) {
+                $ariaLabel = ucwords(str_replace('.', ' ', $this->options['data-action-click']));
+            } elseif (!empty($this->icon->name)) {
+                $ariaLabel = ucwords(str_replace('-', ' ', $this->icon->name));
+            }
+        }
+
+        if ($ariaLabel !== null) {
+            $this->options(['aria-label' => $ariaLabel]);
+        }
+
+        return $this;
+    }
 }
