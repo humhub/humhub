@@ -34,7 +34,6 @@ HumHub Changelog
 - Fix #8005: Remove space followers on change to private visibility
 - Enh #8178: New sign in & sign up flow
 - Enh #8180: Topic picker handling
-- Enh #8194: Limit activity list widget with max pages number
 
 1.18.4 (Unreleased)
 ---------------------
