@@ -8,7 +8,9 @@ HumHub Changelog
 - Fix #8189: Scroll to highlighted comment when navigating from Last Activities
 - Enh #8187: Update composer package symfony/mime
 - Fix #8188: AutoContrast and Sign In Footer Links
-- Fix #8197: Don't use the setting "Allow individual topics" for user and space tags 
+- Fix #8195: Improve permalink error handling for guest users
+- Fix #8196: Fix whitespace between notification bar items
+- Fix #8197: Don't use the setting "Allow individual topics" for user and space tags
 
 1.18.3 (May 18, 2026)
 ---------------------
