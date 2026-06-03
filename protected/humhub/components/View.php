@@ -420,6 +420,7 @@ class View extends \yii\web\View
 
     protected function registerPreload($url, $as)
     {
+        $url = Yii::getAlias($url);
         if (!in_array($url, static::$preloaded, true)) {
             $this->registerLinkTag((['rel' => 'preload', 'as' => $as, 'href' => $url]));
             static::$preloaded[] = $url;

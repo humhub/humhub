@@ -67,7 +67,7 @@ final class ContentCreatedActivity extends BaseContentActivity implements Config
     public function getGroupingQuery(): ?ActiveQueryActivity
     {
         return Activity::find()
-            ->andWhere(['activity.class' => static::class])
+            ->andWhere(['activity.class' => self::class])
             ->andWhere(['activity.contentcontainer_id' => $this->contentContainer->id])
             ->andWhere(['activity.created_by' => $this->user->id])
             ->andWhere(['content.object_model' => $this->record->content->object_model])

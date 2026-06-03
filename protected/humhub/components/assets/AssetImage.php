@@ -30,7 +30,7 @@ use yii\web\UploadedFile;
  *
  * @since v1.19
  */
-class AssetImage extends Component
+class AssetImage extends Component implements \Stringable
 {
     /**
      * @var string File with path to the AssetImage
@@ -53,7 +53,7 @@ class AssetImage extends Component
         'directory_visibility' => Visibility::PUBLIC,
     ];
     public string $path;
-    private string $fileName;
+    private readonly string $fileName;
     public FileSystem $fs;
     public TrackableArray $cachePublish;
     public ?bool $fileExists = null;
@@ -131,7 +131,7 @@ class AssetImage extends Component
 
     private function getFileNameWithOptions(array $options): string
     {
-        $fileName = ($this->exists()) ? $this->fileName : basename($this->defaultFile);
+        $fileName = ($this->exists()) ? $this->fileName : basename((string) $this->defaultFile);
 
         ksort($options);
         $checksum = hash('xxh32', json_encode($options));

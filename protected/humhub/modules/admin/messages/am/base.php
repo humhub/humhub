@@ -51,7 +51,6 @@ return [
     'Active Modules' => '',
     'Add more modules' => '',
     'Administrators' => '',
-    'Advanced settings' => '',
     'All' => '',
     'Appearance' => '',
     'Default group for administrators of this HumHub Installation' => '',

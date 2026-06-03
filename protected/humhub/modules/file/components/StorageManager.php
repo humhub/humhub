@@ -60,7 +60,7 @@ class StorageManager extends Component implements StorageManagerInterface
     {
         try {
             return $this->fs->mimeType($this->get($variant));
-        } catch (\Exception $ex) {
+        } catch (\Exception) {
             return (!empty($this->file->mime_type))
                 ? $this->file->mime_type
                 : FileHelper::getMimeTypeByExtension($this->file->file_name);
@@ -134,7 +134,7 @@ class StorageManager extends Component implements StorageManagerInterface
                 fn(StorageAttributes $attribute) => empty(
                     array_filter(
                         $cleanedExcept,
-                        fn($e) => str_contains(basename($attribute->path()), $e),
+                        fn($e) => str_contains(basename($attribute->path()), (string) $e),
                     )
                 ),
             )

@@ -38,7 +38,6 @@ return [
     'Active Modules' => '',
     'Add more modules' => '',
     'Administrators' => '',
-    'Advanced settings' => '',
     'All' => '',
     'Appearance' => '',
     'Back to user overview' => '',

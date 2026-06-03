@@ -8,8 +8,8 @@
 
 namespace humhub\assets;
 
+use humhub\components\assets\AssetBundle;
 use yii\helpers\Url;
-use yii\web\AssetBundle;
 use yii\web\View;
 
 /**
@@ -20,10 +20,12 @@ class SearchAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $jsOptions = ['position' => View::POS_END];
+    public $sourcePath = '@humhub/resources';
 
-    public $basePath = '@webroot-static';
-    public $baseUrl = '@web-static';
+    /**
+     * @inheritdoc
+     */
+    public $jsOptions = ['position' => View::POS_END];
 
     /**
      * @inheritdoc

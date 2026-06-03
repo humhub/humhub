@@ -73,7 +73,6 @@ return [
     'Installation Example:' => '',
     'Language and timezone are automatically set according to the user\'s browser settings. If that is not possible, the default settings are used.' => '',
     'Localisation' => '',
-    'Make sure that the following file is writable: thi' => '',
     'Open the crontab of HumHub/PHP process user e.g. <code>{user}</code>.' => '',
     'Pretty URLs may not work correctly.' => '',
     'Pretty URLs should work correctly.' => '',

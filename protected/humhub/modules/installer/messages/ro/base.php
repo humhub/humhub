@@ -43,7 +43,6 @@ return [
     'Installation Example:' => '',
     'Language and timezone are automatically set according to the user\'s browser settings. If that is not possible, the default settings are used.' => '',
     'Localisation' => '',
-    'Make sure that the following file is writable: thi' => '',
     'My club' => '',
     'My community' => '',
     'My company (Social Intranet / Project management)' => '',

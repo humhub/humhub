@@ -24,7 +24,8 @@ use yii\web\View;
         <?= Image::widget([
             'user' => $user,
             'htmlOptions' => ['class' => 'card-image-wrapper'],
-            'linkOptions' => ['data-contentcontainer-id' => $user->contentcontainer_id, 'class' => 'card-image-link'],
+            'linkOptions' => ['data-contentcontainer-id' => $user->contentcontainer_id],
+            'imageOptions' => ['class' => 'profile-user-photo'],
             'width' => 94,
             'showSelfOnlineStatus' => true,
         ]); ?>

@@ -5,7 +5,6 @@ return [
     'Cancel' => 'Отказ',
     'Cancel Edit' => 'Отказ за редакция',
     'Comment' => 'Коментиране',
-    'Comment could not be saved!' => 'Коментарът не можа да бъде запазен!',
     'Comment has been deleted' => 'Коментарът беше изтрит',
     'Comments' => 'Коментари',
     'Confirm' => 'Потвърждение',
@@ -22,7 +21,6 @@ return [
     'Write a new comment...' => 'Напишете нов коментар...',
     'Write a new reply...' => 'Напишете нов отговор...',
     'comment' => 'коментар',
-    '{displayName} wrote a new comment ' => '{displayName} написа нов коментар',
     '<strong>Delete</strong> comment?' => '',
     '<strong>Permalink</strong> to this comment' => '',
     'Comment of blocked user.' => '',
@@ -30,4 +28,5 @@ return [
     'Show' => '',
     'Show next {count} comments' => '',
     'Show previous {count} comments' => '',
+    '{displayName} wrote a new comment {comment}.' => '',
 ];

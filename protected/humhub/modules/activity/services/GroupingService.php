@@ -16,7 +16,7 @@ final class GroupingService
 
     public ?ActiveQueryActivity $groupQuery;
 
-    public function __construct(private BaseActivity $activity)
+    public function __construct(private readonly BaseActivity $activity)
     {
         $this->groupQuery = $this->activity->getGroupingQuery();
         if ($this->groupQuery) {

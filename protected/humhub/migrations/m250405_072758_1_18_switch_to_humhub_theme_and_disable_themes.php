@@ -12,6 +12,11 @@ class m250405_072758_1_18_switch_to_humhub_theme_and_disable_themes extends Migr
      */
     public function safeUp()
     {
+        if (!Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
+            // Skip this migration on install a new instance because it needs only to update old themes
+            return;
+        }
+
         $settingsManager = Yii::$app->settings;
 
         // Copy Login Background image
@@ -41,52 +46,50 @@ class m250405_072758_1_18_switch_to_humhub_theme_and_disable_themes extends Migr
             $accentDefault = '#21A1B3';
         }
 
-        if (Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
-            // Copy Theme colors vars to the Settings manager
-            $themeVariables = Yii::$app->view->theme->variables;
+        // Copy Theme colors vars to the Settings manager
+        $themeVariables = Yii::$app->view->theme->variables;
 
-            $currentPrimary = $themeVariables->get('primary');
-            $settingsManager->set('themePrimaryColor', $currentPrimary);
-            $settingsManager->set(
-                'useDefaultThemePrimaryColor',
-                ($currentPrimary && strcasecmp((string) $currentPrimary, $primaryDefault) == 0) ? 1 : 0,
-            );
+        $currentPrimary = $themeVariables->get('primary');
+        $settingsManager->set('themePrimaryColor', $currentPrimary);
+        $settingsManager->set(
+            'useDefaultThemePrimaryColor',
+            ($currentPrimary && strcasecmp((string) $currentPrimary, $primaryDefault) == 0) ? 1 : 0,
+        );
 
-            $currentInfo = $themeVariables->get('info');
-            $settingsManager->set('themeAccentColor', $currentInfo);
-            $settingsManager->set(
-                'useDefaultThemeAccentColor',
-                ($currentInfo && strcasecmp((string) $currentInfo, $accentDefault) == 0) ? 1 : 0,
-            );
+        $currentInfo = $themeVariables->get('info');
+        $settingsManager->set('themeAccentColor', $currentInfo);
+        $settingsManager->set(
+            'useDefaultThemeAccentColor',
+            ($currentInfo && strcasecmp((string) $currentInfo, $accentDefault) == 0) ? 1 : 0,
+        );
 
-            $currentSuccess = $themeVariables->get('success');
-            $settingsManager->set('themeSuccessColor', $currentSuccess);
-            $settingsManager->set(
-                'useDefaultThemeSuccessColor',
-                ($currentSuccess && strcasecmp((string) $currentSuccess, '#97d271') == 0) ? 1 : 0,
-            );
+        $currentSuccess = $themeVariables->get('success');
+        $settingsManager->set('themeSuccessColor', $currentSuccess);
+        $settingsManager->set(
+            'useDefaultThemeSuccessColor',
+            ($currentSuccess && strcasecmp((string) $currentSuccess, '#97d271') == 0) ? 1 : 0,
+        );
 
-            $currentDanger = $themeVariables->get('danger');
-            $settingsManager->set('themeDangerColor', $currentDanger);
-            $settingsManager->set(
-                'useDefaultThemeDangerColor',
-                ($currentDanger && strcasecmp((string) $currentDanger, '#FC4A64') == 0) ? 1 : 0,
-            );
+        $currentDanger = $themeVariables->get('danger');
+        $settingsManager->set('themeDangerColor', $currentDanger);
+        $settingsManager->set(
+            'useDefaultThemeDangerColor',
+            ($currentDanger && strcasecmp((string) $currentDanger, '#FC4A64') == 0) ? 1 : 0,
+        );
 
-            $currentWarning = $themeVariables->get('warning');
-            $settingsManager->set('themeWarningColor', $currentWarning);
-            $settingsManager->set(
-                'useDefaultThemeWarningColor',
-                ($currentWarning && strcasecmp((string) $currentWarning, '#FFC107') == 0) ? 1 : 0,
-            );
+        $currentWarning = $themeVariables->get('warning');
+        $settingsManager->set('themeWarningColor', $currentWarning);
+        $settingsManager->set(
+            'useDefaultThemeWarningColor',
+            ($currentWarning && strcasecmp((string) $currentWarning, '#FFC107') == 0) ? 1 : 0,
+        );
 
-            $currentLight = $themeVariables->get('default');
-            $settingsManager->set('themeLightColor', $currentLight);
-            $settingsManager->set(
-                'useDefaultThemeLightColor',
-                ($currentLight && strcasecmp((string) $currentLight, '#e7e7e7') == 0) ? 1 : 0,
-            );
-        }
+        $currentLight = $themeVariables->get('default');
+        $settingsManager->set('themeLightColor', $currentLight);
+        $settingsManager->set(
+            'useDefaultThemeLightColor',
+            ($currentLight && strcasecmp((string) $currentLight, '#e7e7e7') == 0) ? 1 : 0,
+        );
 
         $hhTheme = ThemeHelper::getThemeByName($themeAfterMigration);
         if ($hhTheme === null) {

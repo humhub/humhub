@@ -14,7 +14,6 @@ return [
     'Administrative group' => '',
     'Administrators' => '',
     'Advanced' => '',
-    'Advanced settings' => '',
     'All' => '',
     'Appearance' => '',
     'Approval' => '',

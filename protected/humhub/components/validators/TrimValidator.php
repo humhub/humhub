@@ -12,7 +12,7 @@ class TrimValidator extends \yii\validators\TrimValidator
      */
     protected function trimValue($value)
     {
-        return $this->isEmpty($value) ? '' : trim(preg_replace('/^[\p{Z}\s]+|[\p{Z}\s]+$/u', ' ', $value));
+        return $this->isEmpty($value) ? '' : trim((string) preg_replace('/^[\p{Z}\s]+|[\p{Z}\s]+$/u', ' ', (string) $value));
     }
 
     /**

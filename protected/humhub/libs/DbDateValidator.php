@@ -122,7 +122,7 @@ class DbDateValidator extends DateValidator
 
             try {
                 $timeValue = (new \DateTimeImmutable($timeValue, new \DateTimeZone('UTC')))->format('H:i:s');
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 return false;
             }
 

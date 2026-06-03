@@ -6,6 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\space\controllers\SpaceController;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
@@ -15,12 +16,29 @@ use humhub\widgets\bootstrap\Link;
 // Get Space to run Tour in
 $tourSpace = null;
 
-// Loop over all spaces where the user is member
-foreach (Membership::getUserSpaces() as $tourSpace) {
-    if ($tourSpace->isAdmin() && !$tourSpace->isArchived()) {
-        // If user is admin on this space, it´s the perfect match
-        break;
+$user = Yii::$app->user->getIdentity();
+if ($user !== null) {
+    $tourSpaceQuery = Space::find()
+        ->innerJoin(Membership::tableName(), Membership::tableName() . '.space_id = ' . Space::tableName() . '.id')
+        ->where([
+            Membership::tableName() . '.user_id' => $user->id,
+            Membership::tableName() . '.status' => Membership::STATUS_MEMBER,
+            Space::tableName() . '.status' => Space::STATUS_ENABLED,
+        ]);
+
+    if (!Yii::$app->user->can(ManageSpaces::class)) {
+        $tourSpaceQuery->andWhere([
+            'OR',
+            [Space::tableName() . '.created_by' => $user->id],
+            [Membership::tableName() . '.group_id' => Space::USERGROUP_ADMIN],
+        ]);
     }
+
+    $tourSpaceQuery->orderBy(Yii::$app->getModule('space')->settings->get('spaceOrder') == 0
+        ? [Space::tableName() . '.name' => SORT_ASC]
+        : [Membership::tableName() . '.last_visit' => SORT_DESC]);
+
+    $tourSpace = $tourSpaceQuery->limit(1)->one();
 }
 
 if ($tourSpace === null) {

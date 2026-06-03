@@ -10,7 +10,6 @@ namespace humhub\components;
 
 use Exception;
 use humhub\interfaces\ApplicationInterface;
-use Yii;
 
 /**
  * Description of Application
@@ -41,24 +40,6 @@ class Application extends \yii\web\Application implements ApplicationInterface
 
         parent::init();
         $this->trigger(self::EVENT_ON_INIT);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function bootstrap()
-    {
-        $request = $this->getRequest();
-
-        if (Yii::getAlias('@web-static', false) === false) {
-            Yii::setAlias('@web-static', $request->getBaseUrl() . '/static');
-        }
-
-        if (Yii::getAlias('@webroot-static', false) === false) {
-            Yii::setAlias('@webroot-static', '@webroot/static');
-        }
-
-        parent::bootstrap();
     }
 
     /**

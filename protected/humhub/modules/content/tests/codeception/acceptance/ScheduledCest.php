@@ -62,7 +62,9 @@ class ScheduledCest
         $I->jsClick('.dropdown-menu.show [data-action-click=scheduleOptions]');
         $I->waitForText('Scheduling Options', 10, '#globalModal');
         if ($datetime instanceof DateTime) {
+            $I->wait(1); // let modal fade-in settle so checkOption clicks land
             $I->checkOption('#scheduleoptionsform-enabled');
+            $I->waitForJS("return $('#scheduleoptionsform-enabled').is(':checked') && !$('input[name=\"ScheduleOptionsForm[date]\"]').prop('disabled');", 5);
             $I->fillField('ScheduleOptionsForm[date]', Yii::$app->formatter->asDate($datetime, self::DATE_FORMAT));
             $I->fillField('ScheduleOptionsForm[time]', Yii::$app->formatter->asTime($datetime, self::DATE_FORMAT));
             $I->click('.field-scheduleoptionsform-time');// to unfocus a datepicker in order to make the "Save" button visible

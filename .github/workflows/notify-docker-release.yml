@@ -1,0 +1,34 @@
+# This file originates from humhub/docker at:
+#   docs/notify-docker-release.yml
+#
+# Prerequisites:
+#   A GitHub App installed on humhub/docker with Actions: read and write permission.
+#   Store the following as secrets in humhub/humhub:
+#     APP_ID          — the GitHub App's numeric App ID
+#     APP_PRIVATE_KEY — the GitHub App's private key (.pem contents)
+name: Notify Docker Repo on Release
+on:
+  release:
+    types: [published]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Generate GitHub App token
+      id: app-token
+      uses: actions/create-github-app-token@v2
+      with:
+        app-id: ${{ secrets.APP_ID }}
+        private-key: ${{ secrets.APP_PRIVATE_KEY }}
+        owner: humhub
+        repositories: docker
+
+    - name: Send repository_dispatch to humhub/docker
+      run: |
+        curl --fail --show-error -X POST \
+          -H "Authorization: Bearer ${{ steps.app-token.outputs.token }}" \
+          -H "Accept: application/vnd.github+json" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          "https://api.github.com/repos/humhub/docker/dispatches" \
+          -d '{"event_type":"humhub-release","client_payload":{"tag":"${{ github.event.release.tag_name }}","target_commitish":"${{ github.event.release.target_commitish }}"}}'

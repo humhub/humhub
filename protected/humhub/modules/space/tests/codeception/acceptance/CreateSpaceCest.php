@@ -27,6 +27,7 @@ class CreateSpaceCest
         $I->fillField('Space[name]', 'Space 1');
         $I->fillField('Space[description]', 'SpaceDescription');
 
+        $I->wait(1); // let modal fade-in settle so the collapse toggle click registers
         $I->click('#access-settings-link');
         $I->waitForElementVisible('.field-space-join_policy');
 

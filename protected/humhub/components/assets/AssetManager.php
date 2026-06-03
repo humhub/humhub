@@ -46,7 +46,7 @@ class AssetManager extends \yii\web\AssetManager
         if ($this->enableCache) {
             $this->_published = new TrackableArray(Yii::$app->cache->get('assetManagerPublished') ?: []);
 
-            Yii::$app->on(Application::EVENT_AFTER_REQUEST, function ($event) {
+            Yii::$app->on(Application::EVENT_AFTER_REQUEST, function ($event): void {
                 if ($this->_published->hasChanged() && !Yii::$app->request->isConsoleRequest) {
                     Yii::$app->cache->set('assetManagerPublished', $this->_published->toArray());
                 }
@@ -85,7 +85,7 @@ class AssetManager extends \yii\web\AssetManager
         }
 
         if ($this->appendTimestamp && ($timestamp = $this->fs->lastModified($dstFile)) > 0) {
-            $fileName = $fileName . "?v=$timestamp";
+            $fileName .= "?v=$timestamp";
         }
 
         return [$dstFile, $this->baseUrl . "/$dir/$fileName"];
@@ -113,9 +113,9 @@ class AssetManager extends \yii\web\AssetManager
             }
             */
 
-            $files = FileHelper::findFiles($src);
+            $files = FileHelper::findFiles($src, $options);
             foreach ($files as $file) {
-                $dstFile = substr($file, $currentLength);
+                $dstFile = substr((string) $file, $currentLength);
                 $this->fs->writeStream($dstDir . $dstFile, fopen($file, 'r'), $this->filesystemOptions);
             }
         }
@@ -189,7 +189,7 @@ class AssetManager extends \yii\web\AssetManager
     public function fileWrite($file, $content)
     {
         try {
-            $this->fs->write($file, $content, $this->filesystemOptions);
+            $this->fs->write($this->normalizePath($file), $content, $this->filesystemOptions);
         } catch (FilesystemException $e) {
             print $e->getMessage();
             die();
@@ -199,10 +199,17 @@ class AssetManager extends \yii\web\AssetManager
     public function fileExists($file)
     {
         try {
-            return $this->fs->has($file);
+            return $this->fs->has($this->normalizePath($file));
         } catch (FilesystemException $e) {
             print $e->getMessage();
             die();
         }
+    }
+
+    public function normalizePath(string $path): string
+    {
+        return str_starts_with($path, $this->basePath)
+            ? substr($path, strlen($this->basePath))
+            : $path;
     }
 }

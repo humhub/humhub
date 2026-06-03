@@ -16,6 +16,7 @@ use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\space\models\Space;
 use humhub\modules\stream\actions\StreamEntryResponse;
 use humhub\modules\topic\models\Topic;
+use humhub\modules\topic\services\TopicService;
 use humhub\modules\user\models\User;
 use humhub\widgets\form\ActiveForm;
 use Yii;
@@ -128,19 +129,21 @@ abstract class WallCreateContentForm extends Widget
         ]);
 
         // Handle Notify User Features of ContentFormWidget
-        // ToDo: Check permissions of user guids
-        $userGuids = Yii::$app->request->post('notifyUserInput');
-        if (!empty($userGuids)) {
-            foreach ($userGuids as $guid) {
-                $user = User::findOne(['guid' => trim((string) $guid)]);
-                if ($user) {
-                    $record->content->notifyUsersOfNewContent[] = $user;
-                }
+        $userGuids = array_unique((array) Yii::$app->request->post('notifyUserInput', []));
+        foreach (User::find()->where(['guid' => $userGuids])->all() as $user) {
+            if ($record->content->canView($user)) {
+                $record->content->notifyUsersOfNewContent[] = $user;
             }
         }
 
-        if ($record->save()) {
-            $topics = Yii::$app->request->post('postTopicInput');
+        $record->validate();
+
+        $topics = Yii::$app->request->post('postTopicInput');
+        if (empty($topics) && TopicService::instance($contentContainer)->isRequired()) {
+            $record->addError('postTopicInput', Yii::t('ContentModule.base', 'Please select at least one topic.'));
+        }
+
+        if (!$record->hasErrors() && $record->save()) {
             if (!empty($topics)) {
                 Topic::attach($record->content, $topics);
             }

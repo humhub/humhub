@@ -11,13 +11,14 @@ namespace humhub\modules\user\controllers;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\modules\space\models\Space;
-use humhub\modules\user\authclient\interfaces\ApprovalBypass;
 use humhub\modules\user\models\forms\Registration;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use humhub\modules\user\services\InviteRegistrationService;
 use humhub\modules\user\services\LinkRegistrationService;
+use humhub\modules\user\services\PendingAuthService;
+use humhub\modules\user\services\UserSourceService;
 use Throwable;
 use Yii;
 use yii\authclient\BaseClient;
@@ -83,6 +84,7 @@ class RegistrationController extends Controller
          * @var BaseClient
          */
         $authClient = null;
+        $pendingAuth = new PendingAuthService();
 
         if (Yii::$app->request->get('token')) {
             $inviteRegistrationService = new InviteRegistrationService(Yii::$app->request->get('token'));
@@ -90,11 +92,11 @@ class RegistrationController extends Controller
                 throw new HttpException(404, 'Invalid registration token!');
             }
             $inviteRegistrationService->populateRegistration($registration);
-        } elseif (Yii::$app->session->has('authClient')) {
-            $authClient = Yii::$app->session->get('authClient');
+        } elseif ($pendingAuth->hasPending()) {
+            $authClient = $pendingAuth->restore();
             $registration = $this->createRegistrationByAuthClient($authClient);
         } else {
-            Yii::warning('Registration failed: No token (query) or authclient (session) found!', 'user');
+            Yii::warning('Registration failed: No token (query) or pending auth (session) found!', 'user');
             Yii::$app->session->setFlash('error', 'Registration failed.');
             return $this->redirect(['/user/auth/login']);
         }
@@ -102,7 +104,7 @@ class RegistrationController extends Controller
         $registration->setForm();
 
         if ($registration->submitted('save') && $registration->register($authClient)) {
-            Yii::$app->session->remove('authClient');
+            $pendingAuth->clear();
 
             // Autologin when user is enabled (no approval required)
             if ($registration->getUser()->status === User::STATUS_ENABLED) {
@@ -126,6 +128,27 @@ class RegistrationController extends Controller
         ]);
     }
 
+
+    /**
+     * Renders the registration success view for users whose account was just
+     * created via an auth client (SSO) and is awaiting admin approval.
+     *
+     * The auth flow ({@see AuthController::register()}) redirects here instead
+     * of attempting to log the user in immediately, which would bounce them
+     * back to the login form with a bare "not approved yet" flash error.
+     *
+     * @since 1.19
+     */
+    public function actionPending()
+    {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        return $this->render('success', [
+            'needApproval' => true,
+        ]);
+    }
 
     /**
      * Invitation by link
@@ -187,15 +210,19 @@ class RegistrationController extends Controller
 
         $registration = new Registration(enablePasswordForm: false);
 
-        if ($authClient instanceof ApprovalBypass) {
-            $registration->enableUserApproval = false;
-        }
+        $userSource = UserSourceService::getCollection()->findUserSourceForAuthClient($authClient->getId(), $attributes);
+        $registration->enableUserApproval = $userSource->requiresApproval($authClient->getId());
 
         // do not store id attribute
         unset($attributes['id']);
 
         $registration->getUser()->setAttributes($attributes, false);
         $registration->getProfile()->setAttributes($attributes, false);
+
+        // Pin user_source to the dispatching source. Otherwise User::beforeSave()
+        // falls back to 'local' and a user that should have been provisioned via
+        // LdapUserSource ends up as a local user — breaking later LDAP login/sync.
+        $registration->getUser()->user_source = $userSource->getId();
 
         return $registration;
     }

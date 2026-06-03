@@ -49,7 +49,6 @@ return [
     'Wrap in bullet list' => 'Envolver em lista de marcadores',
     'Wrap in ordered list' => 'Envolver em lista ordenada',
     '[Code Block]' => '[Bloco de Código]',
-    '[Image]' => '[Imagem]',
     '[Invalid file]' => '[Ficheiro inválido]',
     '[Table]' => '[Tabela]',
     'Switch editor mode' => '',

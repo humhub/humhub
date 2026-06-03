@@ -15,7 +15,7 @@ use humhub\modules\comment\models\Comment;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\models\Content;
-use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
+use humhub\modules\content\widgets\richtext\converter\RichTextToShortHtmlConverter;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
@@ -368,9 +368,9 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
             $content = $this->source;
         }
 
-        return RichTextToShortTextConverter::process($content->getContentDescription(), [
-            RichTextToShortTextConverter::OPTION_MAX_LENGTH => $maxLength,
-            RichTextToShortTextConverter::OPTION_CACHE_KEY => RichTextToShortTextConverter::buildCacheKeyForContent($content),
+        return RichTextToShortHtmlConverter::process($content->getContentDescription(), [
+            RichTextToShortHtmlConverter::OPTION_MAX_LENGTH => $maxLength,
+            RichTextToShortHtmlConverter::OPTION_CACHE_KEY => RichTextToShortHtmlConverter::buildCacheKeyForContent($content),
         ]);
     }
 

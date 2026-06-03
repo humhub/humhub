@@ -17,10 +17,8 @@ return [
     'Whenever a new comment was written.' => 'Quan un comentario s\'ha publicau.',
     'Write a new comment...' => 'Escribir un nuevo comentario...',
     'comment' => 'Comentar',
-    '{displayName} wrote a new comment ' => '{displayName} escribió un nuevo comentario.',
     '<strong>Delete</strong> comment?' => '',
     '<strong>Permalink</strong> to this comment' => '',
-    'Comment could not be saved!' => '',
     'Comment of blocked user.' => '',
     'Reason' => '',
     'Reply' => '',
@@ -30,4 +28,5 @@ return [
     'Show previous {count} comments' => '',
     'The comment must not be empty!' => '',
     'Write a new reply...' => '',
+    '{displayName} wrote a new comment {comment}.' => '',
 ];

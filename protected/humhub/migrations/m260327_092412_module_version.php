@@ -10,12 +10,12 @@ class m260327_092412_module_version extends Migration
      */
     public function safeUp()
     {
-        $this->safeAddColumn('module_enabled', 'version', $this->string(16)->notNull());
+        $this->safeAddColumn('module_enabled', 'version', $this->string(16)->notNull()->defaultValue(''));
 
         foreach (ModuleEnabled::find()->each() as $moduleEnabled) {
             /* @var ModuleEnabled $moduleEnabled */
-            $moduleEnabled->version = Yii::$app->getModule($moduleEnabled->module_id)?->version;
-            $moduleEnabled->save();
+            $version = Yii::$app->getModule($moduleEnabled->module_id)?->version ?? '';
+            $this->updateSilent('module_enabled', ['version' => $version], ['module_id' => $moduleEnabled->module_id]);
         }
     }
 

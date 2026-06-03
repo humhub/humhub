@@ -18,6 +18,7 @@ use Throwable;
 use Yii;
 use yii\authclient\ClientInterface;
 use yii\base\InvalidConfigException;
+use yii\helpers\Url;
 
 /**
  * Description of User
@@ -217,6 +218,24 @@ class User extends \yii\web\User
             return Yii::$app->getResponse();
         }
 
+        if (
+            $this->enableSession
+            && Yii::$app->request->isPjax
+            && Yii::$app->request->isGet
+            && (!$checkAcceptHeader || $this->checkRedirectAcceptable())
+        ) {
+            $queryParams = Yii::$app->request->getQueryParams();
+            unset($queryParams['_pjax'], $queryParams['_']);
+
+            $returnUrl = '/' . Yii::$app->request->getPathInfo();
+            if (!empty($queryParams)) {
+                $returnUrl .= '?' . http_build_query($queryParams);
+            }
+
+            $this->setReturnUrl(Url::to($returnUrl, true));
+            $checkAjax = true;
+        }
+
         return parent::loginRequired($checkAjax, $checkAcceptHeader);
     }
 
@@ -228,4 +247,5 @@ class User extends \yii\web\User
 
         return $this->authClientUserService;
     }
+
 }

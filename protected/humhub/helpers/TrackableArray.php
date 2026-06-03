@@ -8,12 +8,10 @@ namespace humhub\helpers;
  */
 class TrackableArray implements \ArrayAccess, \Countable, \IteratorAggregate
 {
-    private array $data = [];
     private bool $isDirty = false;
 
-    public function __construct(array $initialData = [])
+    public function __construct(private array $data = [])
     {
-        $this->data = $initialData;
     }
 
     public function hasChanged(): bool

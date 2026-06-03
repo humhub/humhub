@@ -7,7 +7,6 @@ return [
     'Cancel' => 'Cancel·la',
     'Cancel Edit' => 'Cancel·lar edició',
     'Comment' => 'Comenta',
-    'Comment could not be saved!' => 'El comentari no s\'ha pogut desar!',
     'Comment has been deleted' => 'El comentari ha sigut eliminat',
     'Comment of blocked user.' => 'Commenta o bloqueja l\'usuari.',
     'Comments' => 'Comentaris',
@@ -27,7 +26,7 @@ return [
     'Write a new comment...' => 'Escriu un nou comentari...',
     'Write a new reply...' => 'Escriu una nova resposta',
     'comment' => 'el comentari',
-    '{displayName} wrote a new comment ' => '{displayName} ha comentat',
     'Show next {count} comments' => '',
     'Show previous {count} comments' => '',
+    '{displayName} wrote a new comment {comment}.' => '',
 ];

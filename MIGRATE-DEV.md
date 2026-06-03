@@ -1,107 +1,20 @@
 Module Migration Guide
 ======================
 
-Version 1.19 (Unreleased)
--------------------------
+This file moved to [`docs/develop/module-migrate.md`](docs/develop/module-migrate.md) — the migration notes are now split per minor release line under `docs/develop/`.
 
-- Refactored `ContentAddons`
-  - Improved `humhub\modules\content\components\ContentAddonActiveRecord`, now required `content_id` attribute
-    - Removed `user` relation, use `createdBy` instead.
-  - Removed `humhub\modules\content\components\ContentAddonController`
-  - Introduced `ContentProvider` interface (May change!)
-- Added `RecordMap` to improve polymorphic models relations
-- Refactored `comment` module
-  - Replaced Polymorphic Relations with `comment.content_id` and `comment.parent_comment_id`
-  - Introduced `CommentListService`
-  - Removed `CommentForm`
-- Refactored `like` module
-  - Introduced `LikeService` and added `like.content_id`
-  - Used `RecordMap` for ContentAddon relations
-- Removed methods `getContentPlainTextInfo()` and `getContentPlainTextPreview()` from the class `SocialActivity`(`BaseNotification`)
-  - Replace them with `getContentInfo()` and `getContentPreview()` in all extended classes, especially inside the method `getMailSubject()`
-- Replaced classes:
-  - `humhub\widgets\BaseMenu` => `humhub\modules\ui\menu\widgets\Menu`
-  - `humhub\widgets\Button` => `humhub\widgets\bootstrap\Button`
-  - `humhub\widgets\Label` => `humhub\widgets\bootstrap\Badge`
-  - `humhub\widgets\ContentTagDropDown` => `humhub\modules\content\widgets\ContentTagDropDown`
-  - `humhub\widgets\DatePicker` => `humhub\modules\ui\form\widgets\DatePicker`
-  - `humhub\widgets\DurationPicker` => `humhub\modules\ui\form\widgets\DurationPicker`
-  - `humhub\widgets\GlobalConfirmModal` => `humhub\widgets\modal\GlobalConfirmModal`
-  - `humhub\widgets\GlobalModal` => `humhub\widgets\modal\GlobalModal`
-  - `humhub\widgets\Link` => `humhub\widgets\bootstrap\Link`
-  - `humhub\widgets\LinkPager` => `humhub\widgets\bootstrap\LinkPager`
-  - `humhub\widgets\Modal` => `humhub\widgets\modal\Modal`
-  - `humhub\widgets\ModalButton` => `humhub\widgets\modal\ModalButton`
-  - `humhub\widgets\ModalClose` => `humhub\widgets\modal\ModalClose`
-  - `humhub\widgets\ModalDialog` => `humhub\widgets\modal\Modal`
-  - `humhub\widgets\Tabs` => `humhub\widgets\bootstrap\Tabs`
-  - `humhub\widgets\TimePicker` => `humhub\modules\ui\form\widgets\TimePicker`
-  - `humhub\modules\search\interfaces\Searchable` => `humhub\modules\content\interfaces\Searchable`
-  - `humhub\components\queue` => `humhub\modules\queue\ActiveJob`
-  - `humhub\libs\Html` => `humhub\helpers\Html`
-  - `humhub\libs\ThemeHelper` => `humhub\helpers\ThemeHelper`
-  - `humhub\modules\activity\widgets\Stream` => `humhub\modules\activity\widgets\ActivityStreamViewer`
-  - `humhub\modules\content\components\actions\ContentContainerStream` => `humhub\modules\stream\actions\ContentContainerStream`
-  - `humhub\modules\content\widgets\WallEntry` => `humhub\modules\content\widgets\stream\WallStreamEntryWidget`
-  - `humhub\modules\space\modules\manage\widgets\Menu` => `humhub\modules\space\widgets\HeaderControlsMenu`
-  - `humhub\modules\topic\widgets\TopicLabel` => `humhub\modules\topic\widgets\TopicBadge`
-  - `humhub\modules\ui\form\widgets\ActiveField` => `humhub\widgets\form\ActiveField`
-  - `humhub\modules\ui\form\widgets\ActiveForm` => `humhub\widgets\form\ActiveForm`
-  - `humhub\modules\ui\form\widgets\ContentHiddenCheckbox` => `humhub\widgets\form\ContentHiddenCheckbox`
-  - `humhub\modules\ui\form\widgets\ContentVisibilitySelect` => `humhub\widgets\form\ContentVisibilitySelect`
-  - `humhub\modules\ui\form\widgets\FormTabs` => `humhub\widgets\bootstrap\FormTabs`
-  - `humhub\modules\ui\form\widgets\SortOrderField` => `humhub\widgets\form\SortOrderField`
-  - `humhub\modules\ui\mail\DefaultMailStyle` => `humhub\helpers\MailStyleHelper`
-  - `humhub\modules\ui\view\components\View` => `humhub\components\View`
-  - `humhub\modules\ui\view\helpers` => `humhub\helpers\ThemeHelper`
-  - `humhub\modules\user\components\ProfileStream` => `humhub\modules\user\actions\ProfileStreamAction`
-  - `humhub\modules\user\widgets\UserPicker` => `humhub\modules\user\widgets\UserPickerField` for rendering, `humhub\modules\user\models\UserPicker` for searching
-- Removed classes:
-  - `humhub\widgets\BootstrapComponent`
-  - `humhub\assets\Select2BootstrapAsset`
-  - `humhub\modules\search\events\SearchAddEvent`
-  - `humhub\libs\DynamicConfig`
-  - `humhub\modules\content\widgets\LegacyWallEntryControlLink`
-  - `humhub\modules\content\widgets\Stream`
-  - `humhub\modules\directory\Module`
-  - `humhub\modules\file\widgets\FileUploadButton`
-  - `humhub\modules\file\widgets\FileUploadList`
-  - `humhub\modules\queue\driver\MySQLCommand`
-  - `humhub\modules\user\authclient\AuthClientHelpers`
-  - `humhub\modules\user\authclient\Facebook`
-  - `humhub\modules\user\authclient\GitHub`
-  - `humhub\modules\user\authclient\Google`
-  - `humhub\modules\user\authclient\LinkedIn`
-  - `humhub\modules\user\authclient\Live`
-  - `humhub\modules\user\authclient\Twitter`
-  - `humhub\modules\user\authclient\ZendLdapClient`
-- Replaced methods:
-  - `humhub\widgets\bootstrap\Link::asLink()` => `humhub\widgets\bootstrap\Link::to()`
-  - `humhub\widgets\bootstrap\Button::asLink()` => `humhub\widgets\bootstrap\Link::to()`
-  - `humhub\widgets\bootstrap\ModalButton::asLink()` => `humhub\widgets\bootstrap\Link::modal()`(new since v1.19)
-  - `humhub\modules\ui\menu\widgets\Menu->addItem([...])` => `humhub\modules\ui\menu\widgets\Menu->addEntry(new MenuLink([...]))`(used in module files `Events.php` as `$event->sender->addItem([...])`)
-  - `humhub\widgets\bootstrap\Link::userPickerSelfSelect()` => `humhub\modules\user\widgets\UserPickerField::selfSelect()` or use new option `UserPickerField->selfSelect`
-  - `humhub\modules\content\models\Content->delete()` => `humhub\modules\content\models\Content->getPolymorphicRelation()->delete()`
-  - `humhub\modules\content\models\Content->hardDelete()` => `humhub\modules\content\models\Content->getPolymorphicRelation()->hardDelete()`
-- Refactored `Activities`
-  - Make sure Content related Activities are now extended from `BaseContentActivity`
-  - `getTitle` and `getDescription` are now `static`.
-  - Instead of View files you need to implement a `getMessage()` method which returns the Activity text.
-  - Use following code to create a Activity `ActivityManager::dispatch(TaskCompletedActivity::class, $this->task, $user)`
-- `MigrateController::$includeModuleMigrations` is now `true` by default
-- SiteIcon: Remove support for manually uploaded `@web/uploads/icon/` icons
-- New `AssetImage` class
-  - `LogoImage`, `SiteIcon`, `LoginBackground`, `MailHeader`, `ProfileImage`, `ProfileBannerImage` are now deprecated or removed.
-    - `Space|User::getProfileImage()` => `Space|User::image()`, `Space|User::profileImage` => `Space|User::image`
-    - `Space|User::getProfileBannerImage()` => `Space|User::bannerImage()`, `Space|User::profileBannerImage` => `Space|User::bannerImage`
-    - `SiteLogo|SiteIcon|LoginBackground|MailHeader::getUrl()` => `Yii::$app->img->logo|icon|loginBackground|mailHeader->getUrl()`
-- `AssetManager::forcePublish()` removed
-- Removed `@filestore` Alias
-- Removed `AssetManager::$preventDefer` option
-- New Flysystem Filesystem Wrapper - Migrate all file access for assets and uploads to the Flysystem wrapper (`Yii::$app->fs->getDataMount()` or `Yii::$app->fs->getAssetsMount()`). Read more: https://flysystem.thephpleague.com/docs/usage/filesystem-api/
+- **Current development cycle** — the `Unreleased` section of [`docs/develop/module-migrate.md`](docs/develop/module-migrate.md). PRs with breaking changes add entries there.
+- **Released versions** — `docs/develop/module-migrate-1.X.md`, e.g. [1.18](docs/develop/module-migrate-1.18.md), [1.17](docs/develop/module-migrate-1.17.md), [1.16](docs/develop/module-migrate-1.16.md), [1.15](docs/develop/module-migrate-1.15.md).
+- **Pre-1.15** — [`docs/develop/module-migrate-legacy.md`](docs/develop/module-migrate-legacy.md).
+
+Version 1.18.3
+------------
+
+### Changed
+- `$_params_` variable is no longer available in views of email notification templates ([see PR #8148](https://github.com/humhub/humhub/pull/8148))
 
 Version 1.18.1
---------------
+------------
 
 ## New
 - `AltchaCaptchaInput::$showOnFocusElement` and `YiiCaptchaInput::$showOnFocusElement` allowing hiding the Captcha input until a form field is focused
@@ -144,25 +57,25 @@ Updated minimum required PHP version to 8.2.
 
 - The following Mailer settings keys have been renamed to work with `.env`:
 
-| Old Key                          | New Key                        |
-|----------------------------------|--------------------------------|
-| `mailer.transportType`           | `mailerTransportType`          |
-| `mailer.dsn`                     | `mailerDsn`                    |
-| `mailer.hostname`                | `mailerHostname`               |
-| `mailer.username`                | `mailerUsername`               |
-| `mailer.password`                | `mailerPassword`               |
-| `mailer.useSmtps`                | `mailerUseSmtps`               |
-| `mailer.port`                    | `mailerPort`                   |
-| `mailer.encryption`              | `mailerEncryption`             |
-| `mailer.allowSelfSignedCerts`    | `mailerAllowSelfSignedCerts`   |
-| `mailer.systemEmailAddress`      | `mailerSystemEmailAddress`     |
-| `mailer.systemEmailName`         | `mailerSystemEmailName`        |
-| `mailer.systemEmailReplyTo`      | `mailerSystemEmailReplyTo`     |
-| `proxy.*`                        | `proxy*`     |
+| Old Key                       | New Key                      |
+|-------------------------------|------------------------------|
+| `mailer.transportType`        | `mailerTransportType`        |
+| `mailer.dsn`                  | `mailerDsn`                  |
+| `mailer.hostname`             | `mailerHostname`             |
+| `mailer.username`             | `mailerUsername`             |
+| `mailer.password`             | `mailerPassword`             |
+| `mailer.useSmtps`             | `mailerUseSmtps`             |
+| `mailer.port`                 | `mailerPort`                 |
+| `mailer.encryption`           | `mailerEncryption`           |
+| `mailer.allowSelfSignedCerts` | `mailerAllowSelfSignedCerts` |
+| `mailer.systemEmailAddress`   | `mailerSystemEmailAddress`   |
+| `mailer.systemEmailName`      | `mailerSystemEmailName`      |
+| `mailer.systemEmailReplyTo`   | `mailerSystemEmailReplyTo`   |
+| `proxy.*`                     | `proxy*`                     |
 
 - `tour` module:
-  - Library [bootstrap-tour](https://github.com/sorich87/bootstrap-tour/) replaced Wwith [driver.js](https://driverjs.com/)
-  - Widget view files rewritten
+    - Library [bootstrap-tour](https://github.com/sorich87/bootstrap-tour/) replaced Wwith [driver.js](https://driverjs.com/)
+    - Widget view files rewritten
 
 ### Removed deprecations
 - Widget class `\humhub\widgets\DataSaved`, the related code `Yii::$app->getSession()->setFlash('data-saved', Yii::t('base', 'Saved'));` must be replaced with `$this->view->saved();` on controllers
@@ -171,11 +84,11 @@ Updated minimum required PHP version to 8.2.
 - Update the file `tests/codeception.yml`: `log: codeception/_output` => `output: codeception/_output`
 - Update files `tests/codeception/*.suite.yml`: `class_name: *Tester` => `actor: *Tester`
 - `$I->waitFor*('Text', null)` => `$I->waitFor*('Text', 10)`, the second param can be only integer for the methods:
-  - `waitForText()`
-  - `waitForElement()`
-  - `waitForElementVisible()`
-  - `waitForElementNotVisible()`
-  - `waitForElementClickable()`
+    - `waitForText()`
+    - `waitForElement()`
+    - `waitForElementVisible()`
+    - `waitForElementNotVisible()`
+    - `waitForElementClickable()`
 - Functional tests: `$I->amOnPage(['/some/page/url', 'id' => 1])` => `$I->amOnRoute('/some/page/url', ['id' => 1])`
 
 Version 1.17.3
@@ -183,16 +96,14 @@ Version 1.17.3
 ### Deprecated
 - `\humhub\modules\user\Module::$invitesTimeToLiveInDays` use `\humhub\modules\admin\Module::$cleanupPendingRegistrationInterval` instead
 
-
 Version 1.17.2
 ---------------
 
 ### Behaviour change
 
-- Method signature changed - `humhub\modules\user\models\fieldtype\BaseType::getUserValue(User $user, bool $raw = true, bool $encode = true): ?string`  
+- Method signature changed - `humhub\modules\user\models\fieldtype\BaseType::getUserValue(User $user, bool $raw = true, bool $encode = true): ?string`
 
 - Constructor changed - `humhub\modules\user\models\forms\Registration` and properties (`$enablePasswordForm`, `$enableMustChangePassword`, `$enableEmailField`) are now private
-
 
 Version 1.17 (January 2024)
 -------------------------

@@ -8,13 +8,18 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\WebStaticAssetBundle;
+use humhub\components\assets\AssetBundle;
 
 /**
  * Search Input Placeholder plugin for Select2
  */
-class Select2SearchInputPlaceholderAsset extends WebStaticAssetBundle
+class Select2SearchInputPlaceholderAsset extends AssetBundle
 {
+    /**
+     * @inheritdoc
+     */
+    public $sourcePath = '@humhub/resources';
+
     /**
      * @inheritdoc
      */

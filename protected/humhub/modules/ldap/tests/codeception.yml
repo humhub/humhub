@@ -1,0 +1,27 @@
+actor: Tester
+namespace: ldap
+bootstrap: _bootstrap.php
+coverage:
+    c3_url: 'http://localhost:8080/index-test.php'
+    enabled: true
+    remote: false
+    include:
+        - ../authclient/*
+        - ../helpers/*
+        - ../models/*
+        - ../services/*
+        - ../Module.php
+settings:
+    colors: true
+    shuffle: false
+    memory_limit: 1024M
+    log: true
+    backup_globals: true
+paths:
+    tests: codeception
+    output: codeception/_output
+    data: codeception/_data
+    helpers: codeception/_support
+    envs: ../../../tests/config/env
+config:
+    test_entry_url: http://localhost:8080/index-test.php

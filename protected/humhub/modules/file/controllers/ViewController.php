@@ -44,6 +44,10 @@ class ViewController extends Controller
             throw new HttpException(404, Yii::t('FileModule.base', 'Could not find requested file!'));
         }
 
+        if (!$file->canView()) {
+            throw new HttpException(401, Yii::t('FileModule.base', 'Insufficient permissions!'));
+        }
+
         $viewHandler = FileHandlerCollection::getByType(FileHandlerCollection::TYPE_VIEW, $file);
         $exportHandler = FileHandlerCollection::getByType(FileHandlerCollection::TYPE_EXPORT, $file);
 

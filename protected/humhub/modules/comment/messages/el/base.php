@@ -5,7 +5,6 @@ return [
     'Cancel' => 'Ακύρωση',
     'Cancel Edit' => 'Ακύρωση επεξεργασίας',
     'Comment' => 'Σχόλιο',
-    'Comment could not be saved!' => 'Το σχόλιο δεν καταγράφηκε!',
     'Comment has been deleted' => 'Το σχόλιο διαγράφηκε',
     'Comments' => 'Σχόλια',
     'Confirm' => 'Επιβεβαίωση',
@@ -21,7 +20,6 @@ return [
     'Write a new comment...' => 'Γράψτε νέο σχόλιο ...',
     'Write a new reply...' => 'Γράψτε μια νέα απάντηση...',
     'comment' => 'Σχόλιο',
-    '{displayName} wrote a new comment ' => 'Ο/Η {displayName} έγραψε ένα νέο σχόλιο',
     '<strong>Delete</strong> comment?' => '',
     '<strong>Permalink</strong> to this comment' => '',
     'Comment of blocked user.' => '',
@@ -30,4 +28,5 @@ return [
     'Show' => '',
     'Show next {count} comments' => '',
     'Show previous {count} comments' => '',
+    '{displayName} wrote a new comment {comment}.' => '',
 ];

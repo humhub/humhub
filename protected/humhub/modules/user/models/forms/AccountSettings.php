@@ -30,6 +30,8 @@ class AccountSettings extends Model
     public $timeZone;
     public $blockedUsers;
 
+    public ?User $user = null;
+
     /**
      * @inheritdoc
      */
@@ -77,7 +79,7 @@ class AccountSettings extends Model
 
     public function isHiddenUser(): bool
     {
-        return Yii::$app->user->getIdentity()->visibility == User::VISIBILITY_HIDDEN;
+        return $this->user->visibility == User::VISIBILITY_HIDDEN;
     }
 
     public function isVisibilityViewable(): bool

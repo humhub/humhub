@@ -22,12 +22,7 @@ class DatePickerRussianLanguageAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $basePath = '@webroot-static';
-
-    /**
-     * @inheritdoc
-     */
-    public $baseUrl = '@web-static';
+    public $sourcePath = '@humhub/resources';
 
     /**
      * @inheritdoc

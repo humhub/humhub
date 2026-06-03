@@ -34,6 +34,7 @@ return [
     'Paragraph' => 'Paragraf',
     'People' => 'Ljudi',
     'Rows' => 'Redovi',
+    'Switch editor mode' => 'Menjaj editor mode',
     'Symbols' => 'Simboli',
     'Title' => 'Naziv',
     'Toggle code font' => 'Uključi / isključi font',
@@ -48,9 +49,7 @@ return [
     'Wrap in block quote' => 'Zamotajte u blok citat',
     'Wrap in bullet list' => 'Zamotajte u bullet listu',
     'Wrap in ordered list' => 'Zamotajte u uredjenu listu',
-    '[Invalid file]' => '[Invalid file]',
-    'Switch editor mode' => 'Menjaj editor mode',
     '[Code Block]' => 'Blok koda',
-    '[Image]' => '[Slika]',
+    '[Invalid file]' => '[Invalid file]',
     '[Table]' => '[Tabela]',
 ];

@@ -57,6 +57,7 @@ $config = [
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
     'bootstrap' => [
         'log',
+        'systemRevision',
         'humhub\components\bootstrap\ModuleAutoLoader',
         'humhub\components\bootstrap\ComponentLoader',
         'queue',
@@ -150,6 +151,9 @@ $config = [
         'cache' => [
             'class' => \yii\caching\FileCache::class,
         ],
+        'systemRevision' => [
+            'class' => \humhub\components\bootstrap\SystemRevision::class,
+        ],
         'runtimeCache' => [
             'class' => \yii\caching\ArrayCache::class,
             'serializer' => false,
@@ -162,13 +166,17 @@ $config = [
                 'theme' => [
                     'class' => \humhub\components\Theme::class,
                     'name' => 'HumHub',
+                    'basePath' => '@humhub/themes/Humhub',
                 ],
             ],
         ],
         'assetManager' => [
             'class' => \humhub\components\assets\AssetManager::class,
             'appendTimestamp' => true,
-            'bundles' => require(__DIR__ . '/' . (YII_ENV_PROD || YII_ENV_TEST ? 'assets-prod.php' : 'assets-dev.php')),
+            'bundles' => (function () {
+                $file = __DIR__ . '/' . (YII_ENV_PROD || YII_ENV_TEST ? 'assets-prod.php' : 'assets-dev.php');
+                return file_exists($file) ? require $file : [];
+            })(),
         ],
         'img' => [
             'class' => 'humhub\components\assets\AssetImageRegistry',
@@ -176,7 +184,7 @@ $config = [
                 'logo' => ['file' => '/logo_image/logo.png'],
                 'icon' => [
                     'file' => '/icon/icon.png',
-                    'defaultFile' => '@webroot-static/img/default_icon.png',
+                    'defaultFile' => '@humhub/resources/img/default_icon.png',
                 ],
                 'loginBackground' => ['file' => '/login-bg/background.png'],
                 'mailHeader' => ['file' => '/icon/icon.png'],
@@ -187,6 +195,7 @@ $config = [
             'theme' => [
                 'class' => \humhub\components\Theme::class,
                 'name' => \humhub\components\Theme::CORE_THEME_NAME,
+                'basePath' => '@humhub/themes/' . \humhub\components\Theme::CORE_THEME_NAME,
             ],
         ],
         'db' => [
@@ -206,6 +215,10 @@ $config = [
         'authClientCollection' => [
             'class' => \humhub\modules\user\authclient\Collection::class,
             'clients' => [],
+        ],
+        'userSourceCollection' => [
+            'class' => \humhub\modules\user\source\UserSourceCollection::class,
+            'userSources' => [],
         ],
         'queue' => [
             'class' => \humhub\modules\queue\driver\MySQL::class,
@@ -321,7 +334,7 @@ $config = [
             'class' => \humhub\modules\content\widgets\richtext\ProsemirrorRichText::class,
         ],
         'twemoji' => [
-            'path' => '@web-static/img/twemoji/',
+            'path' => null,
             'size' => '72x72',
         ],
         'enablePjax' => true,

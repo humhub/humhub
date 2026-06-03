@@ -121,7 +121,7 @@ class DownloadAction extends Action
             } else {
                 Yii::error(
                     'XSendfile is only supported by ' . LocalMountConfig::class . ' mounts. '
-                    . get_class($dataMountConfig) . ' given.',
+                    . $dataMountConfig::class . ' given.',
                 );
             }
         } elseif ($dataMountConfig->useTemporaryUrls()) {

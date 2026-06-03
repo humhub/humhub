@@ -272,6 +272,14 @@ class OnlineModuleManager extends Component
             Yii::$app->cache->set('onlineModuleManager_modules', $this->_modules, Yii::$app->settings->get('cacheExpireTime'));
         }
 
+        if (!(bool)$module->settings->get('includeCommunityModules', false)) {
+            foreach ($this->_modules as $id => $info) {
+                if (!empty($info['isCommunity']) && !Yii::$app->moduleManager->hasModule($id)) {
+                    unset($this->_modules[$id]);
+                }
+            }
+        }
+
         return $this->_modules;
     }
 

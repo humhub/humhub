@@ -3,6 +3,9 @@ humhub.module('admin', function (module, require, $) {
     var modal = require('ui.modal');
     var additions = require('ui.additions');
     var status = require('ui.status');
+    var i18n = require('i18n');
+
+    module.requiredI18nCategories = ['AdminModule.settings', 'AdminModule.user', 'UserModule.account', 'base'];
 
     /**
      * Action will delete the current page logo.
@@ -15,9 +18,9 @@ humhub.module('admin', function (module, require, $) {
         evt.finish();
 
         var options = {
-            'header': module.text('confirm.deleteLogo.header'),
-            'body': module.text('confirm.deleteLogo.body'),
-            'confirmText': module.text('confirm.deleteLogo.confirm')
+            'header': i18n.t('AdminModule.settings', '<strong>Confirm</strong> image deletion'),
+            'body': i18n.t('UserModule.account', 'Do you really want to delete your logo image?'),
+            'confirmText': i18n.t('AdminModule.settings', 'Delete')
         };
 
         modal.confirm(options).then(function ($confirmed) {
@@ -66,9 +69,9 @@ humhub.module('admin', function (module, require, $) {
         evt.finish();
 
         var options = {
-            'header': module.text('confirm.deleteIcon.header'),
-            'body': module.text('confirm.deleteIcon.body'),
-            'confirmText': module.text('confirm.deleteIcon.confirm')
+            'header': i18n.t('AdminModule.settings', '<strong>Confirm</strong> icon deletion'),
+            'body': i18n.t('UserModule.account', 'Do you really want to delete your icon image?'),
+            'confirmText': i18n.t('AdminModule.settings', 'Delete')
         };
 
         modal.confirm(options).then(function ($confirmed) {
@@ -109,9 +112,9 @@ humhub.module('admin', function (module, require, $) {
         evt.finish();
 
         var options = {
-            'header': module.text('confirm.deleteLoginBg.header'),
-            'body': module.text('confirm.deleteLoginBg.body'),
-            'confirmText': module.text('confirm.deleteLoginBg.confirm')
+            'header': i18n.t('AdminModule.settings', '<strong>Confirm</strong> image deletion'),
+            'body': i18n.t('UserModule.account', 'Do you really want to delete your login background image?'),
+            'confirmText': i18n.t('AdminModule.settings', 'Delete')
         };
 
         modal.confirm(options).then(function ($confirmed) {
@@ -133,9 +136,9 @@ humhub.module('admin', function (module, require, $) {
         evt.finish();
 
         var options = {
-            'header': module.text('confirm.deleteMailHeader.header'),
-            'body': module.text('confirm.deleteMailHeader.body'),
-            'confirmText': module.text('confirm.deleteMailHeader.confirm')
+            'header': i18n.t('AdminModule.settings', '<strong>Confirm</strong> image deletion'),
+            'body': i18n.t('UserModule.account', 'Do you really want to delete your mail header image?'),
+            'confirmText': i18n.t('AdminModule.settings', 'Delete')
         };
 
         modal.confirm(options).then(function ($confirmed) {
@@ -216,8 +219,12 @@ humhub.module('admin', function (module, require, $) {
     var changeIndividualProfilePermissions = function (evt) {
         evt.finish();
         evt.$trigger.prop('checked', !evt.$trigger.prop('checked'));
-        evt.$trigger.data('action-confirm', module.text('enableProfilePermissions.question.' + (evt.$trigger.prop('checked') ? 'disable' : 'enable')));
-        evt.$trigger.data('action-confirm-text', module.text('enableProfilePermissions.button.' + (evt.$trigger.prop('checked') ? 'disable' : 'enable')));
+        evt.$trigger.data('action-confirm', evt.$trigger.prop('checked')
+            ? i18n.t('AdminModule.user', 'Deactivate individual profile permissions?') + '<br><br><div class="alert alert-danger">' + i18n.t('AdminModule.user', '<strong>Warning:</strong> All individual profile permission settings are reset to the default values!') + '</div>'
+            : i18n.t('AdminModule.user', 'Allow users to set individual permissions for their own profile?'));
+        evt.$trigger.data('action-confirm-text', evt.$trigger.prop('checked')
+            ? i18n.t('AdminModule.user', 'Disable')
+            : i18n.t('AdminModule.user', 'Allow'));
         $.ajax({
             url: evt.$trigger.data('action-url'),
             type: "POST",
@@ -231,7 +238,7 @@ humhub.module('admin', function (module, require, $) {
         modal.footerLoader(event);
         client.submit(event).then(function (response) {
             modal.global.setDialog(response.data);
-            status.success(module.require('log').config.text['success.saved']);
+            status.success(i18n.t('base', 'Saved'));
         });
     };
 

@@ -12,16 +12,16 @@ use humhub\components\console\Application as ConsoleApplication;
 use humhub\components\InstallationState;
 use humhub\components\Theme;
 use humhub\helpers\ThemeHelper;
-use humhub\modules\installer\libs\EnvironmentChecker;
 use Yii;
 use yii\base\BootstrapInterface;
+use yii\base\Theme as BaseTheme;
+use yii\helpers\ArrayHelper;
 
 /**
  * ThemeLoader is used during the application bootstrap process
- * to load the actual theme specifed in the SettingsManager.
+ * to load the actual theme specified in the SettingsManager.
  *
  * @since 1.3
- * @package humhub\modules\ui\view\bootstrap
  */
 class ThemeLoader implements BootstrapInterface
 {
@@ -41,6 +41,7 @@ class ThemeLoader implements BootstrapInterface
                 $theme = ThemeHelper::getThemeByPath($themePath);
 
                 if ($theme !== null) {
+                    self::mergeConfiguredPathMap($app->view->theme, $theme);
                     $app->view->theme = $theme;
                     $app->mailer->view->theme = $theme;
                 }
@@ -55,5 +56,25 @@ class ThemeLoader implements BootstrapInterface
             // Register the theme (e.g. add core js/css header)
             $app->view->theme->register();
         }
+    }
+
+    /**
+     * Carries the `pathMap` from the statically configured theme (e.g.
+     * `components.view.theme.pathMap` in `common.php`) over to the dynamically
+     * loaded active theme, so explicit view overrides survive the runtime
+     * theme switch.
+     *
+     * @since 1.19
+     */
+    private static function mergeConfiguredPathMap(?BaseTheme $configured, BaseTheme $active): void
+    {
+        if ($configured === null || empty($configured->pathMap)) {
+            return;
+        }
+
+        $active->pathMap = ArrayHelper::merge(
+            $active->pathMap ?? [],
+            $configured->pathMap,
+        );
     }
 }

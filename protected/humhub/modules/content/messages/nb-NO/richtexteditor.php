@@ -50,7 +50,6 @@ return [
     'Wrap in ordered list' => 'legg inn sortert liste',
     'Switch editor mode' => '',
     '[Code Block]' => '',
-    '[Image]' => '',
     '[Invalid file]' => '',
     '[Table]' => '',
 ];

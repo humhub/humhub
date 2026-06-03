@@ -51,6 +51,5 @@ return [
     'Wrap in bullet list' => '',
     'Wrap in ordered list' => '',
     '[Code Block]' => '',
-    '[Image]' => '',
     '[Table]' => '',
 ];

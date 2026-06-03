@@ -8,43 +8,33 @@
 
 namespace humhub\modules\user\authclient;
 
-use humhub\modules\user\authclient\interfaces\StandaloneAuthClient;
-use Yii;
+use humhub\modules\user\authclient\interfaces\CustomAuth;
 use yii\web\Response;
 
 /**
- * Extended version of AuthAction with AuthClient support which are not handled
- * by AuthAction directly
+ * HumHub AuthAction extends Yii's authclient dispatcher with support for
+ * AuthClients that don't fit the OAuth1/OAuth2/OpenId families.
+ *
+ * Dispatch priority:
+ *  1. {@see CustomAuth} — self-dispatching clients (SAML, JWT, Passkey,
+ *     …). Calls $client->handleAuthRequest(); a returned Response
+ *     short-circuits, null signals completion and triggers authSuccess().
+ *  2. OAuth1/OAuth2/OpenId — delegated to Yii's parent::auth().
  *
  * @since 1.1.2
- * @author Luke
  */
 class AuthAction extends \yii\authclient\AuthAction
 {
     /**
      * @inheritdoc
-     *
-     * @param StandaloneAuthClient $client
-     * @return Response response instance.
      */
     public function auth($client, $authUrlParams = [])
     {
-        $rememberMe = (bool)Yii::$app->request->get('rememberMe');
-        Yii::$app->session->set('loginRememberMe', $rememberMe);
-
-        if ($client instanceof StandaloneAuthClient) {
-            return $client->authAction($this);
+        if ($client instanceof CustomAuth) {
+            $result = $client->handleAuthRequest();
+            return $result instanceof Response ? $result : $this->authSuccess($client);
         }
 
         return parent::auth($client, $authUrlParams);
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function authSuccess($client)
-    {
-        return parent::authSuccess($client);
-    }
-
 }

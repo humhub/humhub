@@ -13,6 +13,7 @@ use humhub\components\Theme;
 use humhub\helpers\ScssHelper;
 use humhub\helpers\ThemeHelper;
 use humhub\modules\file\validators\ImageSquareValidator;
+use humhub\modules\post\Module as PostModule;
 use humhub\modules\stream\actions\Stream;
 use humhub\modules\user\models\ProfileField;
 use RuntimeException;
@@ -59,6 +60,7 @@ class DesignSettingsForm extends Model
     public $mailHeaderImage;
     public $dateInputDisplayFormat;
     public $defaultStreamSort;
+    public $postTitleMode;
     public $themePrimaryColor;
     public $useDefaultThemePrimaryColor;
     public $themeAccentColor;
@@ -102,6 +104,7 @@ class DesignSettingsForm extends Model
         $this->spaceOrder = Yii::$app->getModule('space')->settings->get('spaceOrder');
         $this->dateInputDisplayFormat = Yii::$app->getModule('admin')->settings->get('defaultDateInputFormat');
         $this->defaultStreamSort = Yii::$app->getModule('stream')->settings->get('defaultSort');
+        $this->postTitleMode = Yii::$app->getModule('post')->settings->get('titleMode', PostModule::TITLE_MODE_OFF);
 
         $this->themePrimaryColor = $settingsManager->get('themePrimaryColor', $themeVariables->get('primary'));
         $this->useDefaultThemePrimaryColor = (bool)$settingsManager->get('useDefaultThemePrimaryColor', true);
@@ -137,6 +140,7 @@ class DesignSettingsForm extends Model
             [['displayNameFormat', 'displayNameSubFormat', 'spaceOrder'], 'safe'],
             ['logo', 'image', 'extensions' => 'png, jpg, jpeg', 'minWidth' => static::LOGO_MIN_WIDTH, 'minHeight' => static::LOGO_MIN_WIDTH],
             [['defaultStreamSort'], 'in', 'range' => array_keys($this->getDefaultStreamSortOptions())],
+            [['postTitleMode'], 'in', 'range' => array_keys($this->getPostTitleModeOptions())],
             ['icon', 'image', 'extensions' => 'png, jpg, jpeg', 'minWidth' => static::ICON_MIN_WIDTH, 'minHeight' => static::ICON_MIN_HEIGHT],
             ['icon', ImageSquareValidator::class],
             ['loginBackgroundImage', 'image', 'extensions' => 'png, jpg, jpeg', 'minWidth' => static::LOGIN_BG_MIN_WIDTH, 'minHeight' => static::LOGIN_BG_MIN_HEIGHT],
@@ -239,7 +243,7 @@ class DesignSettingsForm extends Model
             $compiler = new Compiler();
 
             // Block any @import or @use on direct files
-            $compiler->addImportPath(function () {
+            $compiler->addImportPath(function (): void {
                 throw new RuntimeException("Import blocked: only external URLs are allowed");
             });
 
@@ -269,6 +273,7 @@ class DesignSettingsForm extends Model
             'loginBackgroundImage' => Yii::t('AdminModule.settings', 'Login Background'),
             'mailHeaderImage' => Yii::t('AdminModule.settings', 'Email Header Image'),
             'dateInputDisplayFormat' => Yii::t('AdminModule.settings', 'Date input format'),
+            'postTitleMode' => Yii::t('AdminModule.settings', 'Post title'),
             'themePrimaryColor' => Yii::t('AdminModule.settings', 'Primary color'),
             'useDefaultThemePrimaryColor' => Yii::t('AdminModule.settings', 'Default'),
             'themeAccentColor' => Yii::t('AdminModule.settings', 'Accent color'),
@@ -302,6 +307,7 @@ class DesignSettingsForm extends Model
                 'Custom sort order can be defined in the Space advanced settings.',
             ),
             'themeCustomScss' => Yii::t('AdminModule.settings', 'Use Sassy CSS syntax (SCSS)'),
+            'postTitleMode' => Yii::t('AdminModule.settings', 'Allows posts to have an additional title shown above the content.'),
             'logo' => Yii::t('AdminModule.settings', 'Recommended minimum height: {recommendedMinHeight}px (minimum {minWidth} x {minHeight} px).', [
                 'recommendedMinHeight' => static::LOGO_RECOMMENDED_MIN_HEIGHT,
                 'minWidth' => static::LOGO_MIN_WIDTH,
@@ -386,7 +392,8 @@ class DesignSettingsForm extends Model
         $theme = ThemeHelper::getThemeByName($this->theme);
         if ($theme !== null) {
             $theme->activate();
-            Yii::$app->view->theme = new Theme($theme); // Force new theme immediately, e.g. to rebuild the CSS files
+            // Force new theme immediately, e.g. to rebuild the CSS files
+            Yii::$app->view->theme = $theme;
         }
 
         $settingsManager->set('paginationSize', $this->paginationSize);
@@ -396,6 +403,7 @@ class DesignSettingsForm extends Model
         Yii::$app->getModule('admin')->settings->set('defaultDateInputFormat', $this->dateInputDisplayFormat);
 
         Yii::$app->getModule('stream')->settings->set('defaultSort', $this->defaultStreamSort);
+        Yii::$app->getModule('post')->settings->set('titleMode', $this->postTitleMode);
 
         if ($this->logo) {
             Yii::$app->img->logo->setUploadedFile($this->logo);
@@ -461,6 +469,19 @@ class DesignSettingsForm extends Model
         return [
             Stream::SORT_CREATED_AT => Yii::t('AdminModule.settings', 'Sort by creation date'),
             Stream::SORT_UPDATED_AT => Yii::t('AdminModule.settings', 'Sort by update date'),
+        ];
+    }
+
+    /**
+     * Returns available options for the postTitleMode attribute
+     * @return array
+     */
+    public function getPostTitleModeOptions()
+    {
+        return [
+            PostModule::TITLE_MODE_OFF => Yii::t('AdminModule.settings', 'Off'),
+            PostModule::TITLE_MODE_OPTIONAL => Yii::t('AdminModule.settings', 'Optional'),
+            PostModule::TITLE_MODE_REQUIRED => Yii::t('AdminModule.settings', 'Required'),
         ];
     }
 

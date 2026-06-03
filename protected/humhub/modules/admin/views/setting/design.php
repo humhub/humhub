@@ -90,6 +90,8 @@ $themeVariables = Yii::$app->view->theme->variables;
 
     <?= $form->field($model, 'defaultStreamSort')->dropDownList($model->getDefaultStreamSortOptions()) ?>
 
+    <?= $form->field($model, 'postTitleMode')->dropDownList($model->getPostTitleModeOptions()) ?>
+
     <?= $form->field($model, 'dateInputDisplayFormat')->dropDownList([
         '' => Yii::t(
             'AdminModule.settings',

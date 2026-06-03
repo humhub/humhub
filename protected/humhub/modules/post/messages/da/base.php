@@ -8,6 +8,7 @@ return [
   'Post could not be saved!' => 'Indlægget kunne ikke reddes!',
   'The post must not be empty!' => 'Indlægget må ikke være tom!',
   'This space is archived.' => 'Dette rum er arkiveret.',
+  'Title' => 'Titel',
   'What\'s on your mind?' => 'Hvad har du på hjertet?',
   'post' => 'indlæg',
 ];

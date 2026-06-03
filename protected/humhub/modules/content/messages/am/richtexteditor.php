@@ -50,7 +50,6 @@ return [
     'Wrap in ordered list' => 'በቅደም ተከተላዊ ዝርዝር አጠቃል',
     'Switch editor mode' => '',
     '[Code Block]' => '',
-    '[Image]' => '',
     '[Invalid file]' => '',
     '[Table]' => '',
 ];

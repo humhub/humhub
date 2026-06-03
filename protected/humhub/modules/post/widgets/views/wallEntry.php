@@ -1,5 +1,6 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use humhub\modules\post\models\Post;
@@ -14,6 +15,9 @@ $isDetailView = $renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTE
 ?>
 <div data-ui-widget="post.Post" <?php if (!$isDetailView): ?>data-state="collapsed"<?php endif; ?>
      data-dynamic-font-size="<?= intval($enableDynamicFontSize) ?>" data-ui-init id="post-content-<?= $post->id ?>">
+    <?php if (!empty($post->title)): ?>
+        <h1 class="post-title"><?= Html::encode($post->title) ?></h1>
+    <?php endif; ?>
     <div
         data-ui-markdown
         <?php if (!$isDetailView): ?>

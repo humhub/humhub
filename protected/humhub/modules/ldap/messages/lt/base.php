@@ -2,13 +2,11 @@
 
 return [
     'Base DN' => 'DN bazė',
-    'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'Nurodo filtrą, kai bandoma prisijungti. %s pakeičia vartotojo vardą į prisijungimo veiksmą. Pavyzdys &quot;(sAMAccountName=%s)&quot; ar &quot;(uid=%s)&quot;',
     'Enable LDAP Support' => 'Leisti LDAP palaikymą',
     'Encryption' => 'kodavimas',
     'Fetch/Update Users Automatically' => 'Atnaujinti vartotojus automatiškai',
     'Hostname' => 'Pagrindinis kompiuteris',
     'LDAP' => 'LDAP',
-    'Login Filter' => 'Prisijungimo filtras',
     'Password' => 'Slaptažodis',
     'Port' => 'Langas',
     'Status: Error! (Message: {message})' => 'Statusas: Klaida! (žinutė: {message})',
@@ -19,6 +17,8 @@ return [
     'User Filter' => 'Vartotojo filtras',
     'Username' => 'Vartotojo vardas',
     'Username Attribute' => 'Vartotojo savybė',
+    'Allowed Authentication Methods' => '',
+    'Disable Certificate Checking' => '',
     'E-Mail Address Attribute' => '',
     'ID Attribute' => '',
     'Ignored LDAP entries' => '',
@@ -27,6 +27,7 @@ return [
     'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => '',
     'Not changeable LDAP attribute to unambiguously identify the user in the directory. If empty the user will be determined automatically by e-mail address or username. Examples: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)' => '',
     'One DN per line which should not be imported automatically.' => '',
+    'Select the authentication methods LDAP users may use. Unchecking "LDAP" disables direct LDAP password login and forces users through the other selected methods (e.g. SAML, OpenID Connect).' => '',
     'Specify your LDAP-backend used to fetch user accounts.' => '',
     'Status: Warning! (No users found using the ldap user filter!)' => '',
 ];

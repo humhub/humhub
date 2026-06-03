@@ -50,7 +50,6 @@ return [
     'Wrap in ordered list' => 'Kääri tilattuun luetteloon',
     'Switch editor mode' => '',
     '[Code Block]' => '',
-    '[Image]' => '',
     '[Invalid file]' => '',
     '[Table]' => '',
 ];

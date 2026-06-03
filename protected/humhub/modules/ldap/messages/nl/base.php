@@ -2,7 +2,6 @@
 
 return [
     'Base DN' => 'Base DN',
-    'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'Definieert het filter dat moet worden toegepast, wanneer wordt geprobeerd aan te melden. %s vervangt de gebruikersnaam in de inlogactie. Voorbeeld: "(sAMAccountName=%s)" or "(uid=%s)"',
     'E-Mail Address Attribute' => 'E-mail adres Attribute',
     'Enable LDAP Support' => 'LDAP-ondersteuning inschakelen',
     'Encryption' => 'Encryptie',
@@ -14,7 +13,6 @@ return [
     'LDAP Attribute for E-Mail Address. Default: &quot;mail&quot;' => 'LDAP-kenmerk voor e-mailadres. Standaard: "mail"',
     'LDAP Attribute for Username. Example: &quot;uid&quot; or &quot;sAMAccountName&quot;' => 'LDAP-kenmerk voor gebruikersnaam. Voorbeeld: "uid" of " sAMAccountName"',
     'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'Beperk de toegang tot gebruikers die aan deze criteria voldoen. Voorbeeld: "(objectClass = posixAccount)" of "(&amp; (objectClass = person) (memberOf = CN = Workers, CN = Users, DC = myDomain, DC = com))"',
-    'Login Filter' => 'Aanmeldfilter',
     'Not changeable LDAP attribute to unambiguously identify the user in the directory. If empty the user will be determined automatically by e-mail address or username. Examples: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)' => 'Niet-veranderbaar LDAP-attribuut om de gebruiker ondubbelzinnig in de directory te identificeren. Indien leeg, wordt de gebruiker automatisch bepaald op basis van het e-mailadres of de gebruikersnaam. Voorbeelden: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)',
     'One DN per line which should not be imported automatically.' => 'Eén DN per regel die niet automatisch moet worden geïmporteerd.',
     'Password' => 'Wachtwoord',
@@ -29,4 +27,7 @@ return [
     'User Filter' => 'Gebruikersfiler',
     'Username' => 'Gebruikersnaam',
     'Username Attribute' => 'Gebruikersnaam Attribute',
+    'Allowed Authentication Methods' => '',
+    'Disable Certificate Checking' => '',
+    'Select the authentication methods LDAP users may use. Unchecking "LDAP" disables direct LDAP password login and forces users through the other selected methods (e.g. SAML, OpenID Connect).' => '',
 ];

@@ -45,11 +45,10 @@ use yii\web\IdentityInterface;
  * @property int $status
  * @property string $username
  * @property string $email
- * @property string $auth_mode
+ * @property string $user_source
  * @property string $language
  * @property string $time_zone
  * @property string $last_login
- * @property string $authclient_id
  * @property string $auth_key
  * @property-read string $authKey
  * @property Auth[] $auths
@@ -73,10 +72,15 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     /**
      * User Status Flags
      */
-    public const STATUS_DISABLED = 0;
+    public const STATUS_DEACTIVATED = 0;
     public const STATUS_ENABLED = 1;
     public const STATUS_NEED_APPROVAL = 2;
     public const STATUS_SOFT_DELETED = 3;
+
+    /**
+     * @deprecated since 1.19, use {@see self::STATUS_DEACTIVATED} instead.
+     */
+    public const STATUS_DISABLED = self::STATUS_DEACTIVATED;
 
     /**
      * Visibility Modes
@@ -181,7 +185,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
             [['guid'], UUIDValidator::class],
             [['guid'], 'unique'],
             [['time_zone'], 'validateTimeZone'],
-            [['auth_mode'], 'string', 'max' => 10],
+            [['user_source'], 'string', 'max' => 50],
             [['language'], 'string', 'max' => 20],
             ['language', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages()), 'except' => self::SCENARIO_APPROVE],
             [['email'], 'unique'],
@@ -338,7 +342,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
             'email' => Yii::t('UserModule.base', 'Email'),
             'profile.firstname' => Yii::t('UserModule.profile', 'First name'),
             'profile.lastname' => Yii::t('UserModule.profile', 'Last name'),
-            'auth_mode' => Yii::t('UserModule.base', 'Auth Mode'),
+            'user_source' => Yii::t('UserModule.base', 'User Source'),
             'tags' => Yii::t('UserModule.base', 'Tags'),
             'language' => Yii::t('UserModule.base', 'Language'),
             'created_at' => Yii::t('UserModule.base', 'Created at'),
@@ -556,7 +560,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
             'email' => new Expression('NULL'),
             'username' => 'deleted-' . $this->id,
             'status' => User::STATUS_SOFT_DELETED,
-            'authclient_id' => new Expression('NULL'),
         ]);
 
         return true;
@@ -571,9 +574,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     public function beforeSave($insert)
     {
         if ($insert) {
-            if ($this->auth_mode == '') {
-                $passwordAuth = new PasswordAuth();
-                $this->auth_mode = $passwordAuth->getId();
+            if (empty($this->user_source)) {
+                $this->user_source = (new PasswordAuth())->getId();
             }
 
             if (AuthHelper::isGuestAccessEnabled()) {
@@ -985,7 +987,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     {
         $options = [
             self::STATUS_ENABLED => Yii::t('AdminModule.user', 'Enabled'),
-            self::STATUS_DISABLED => Yii::t('AdminModule.user', 'Disabled'),
+            self::STATUS_DEACTIVATED => Yii::t('AdminModule.user', 'Deactivated'),
             self::STATUS_NEED_APPROVAL => Yii::t('AdminModule.user', 'Unapproved'),
         ];
 
@@ -1017,4 +1019,5 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     {
         return new PasswordRecoveryService($this);
     }
+
 }

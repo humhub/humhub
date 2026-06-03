@@ -23,9 +23,8 @@ use humhub\widgets\mails\MailContentEntry;
 /* @var $originator User */
 /* @var $space Space */
 /* @var $record Notification */
-/* @var $_params_ array */
 ?>
-<?php $this->beginContent('@notification/views/layouts/mail.php', $_params_) ?>
+<?php $this->beginContent('@notification/views/layouts/mail.php') ?>
 
     <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
         <tr>

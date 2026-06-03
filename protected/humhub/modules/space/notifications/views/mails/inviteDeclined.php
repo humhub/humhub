@@ -16,10 +16,9 @@ use humhub\widgets\mails\MailButtonList;
 /* @var $url string */
 /* @var $originator \humhub\modules\user\models\User */
 /* @var $space humhub\modules\space\models\Space */
-/* @var $_params_ array */
 ?>
 
-<?php $this->beginContent('@notification/views/layouts/mail.php', $_params_) ?>
+<?php $this->beginContent('@notification/views/layouts/mail.php') ?>
     <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
         <tr>
             <td style="font-size: 14px; line-height: 22px; font-family:<?= MailStyleHelper::getFontFamily() ?>; color:<?= MailStyleHelper::getTextColorMain() ?>; font-weight:300; text-align:center">
@@ -51,7 +50,7 @@ use humhub\widgets\mails\MailButtonList;
                         <td width="109"></td>
                         <td width="50"><?= \humhub\modules\notification\widgets\MailContentContainerImage::widget(['container' => $originator])?></td>
                         <td width="109"></td>
-                        <td width="25"><img src="<?= \yii\helpers\Url::to('@web-static/img/mail_ico_no.png', true) ?>" /></td>
+                        <td width="25"><img src="<?= \yii\helpers\Url::to(Yii::$app->assetManager->getPublishedUrl('@humhub/resources') . '/img/mail_ico_no.png', true) ?>" /></td>
                         <td width="109"></td>
                         <td width="50"><?= \humhub\modules\notification\widgets\MailContentContainerImage::widget(['container' => $space])?></td>
                         <td></td>

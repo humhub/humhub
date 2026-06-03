@@ -131,7 +131,7 @@ class GroupingTest extends HumHubDbTestCase
         $this->assertEquals(2, $query->count());
 
         $activity = ActivityManager::load($query->one());
-        $this->assertEquals('Sara Tester created a new post "D" and 3 more.', $activity->asText());
+        $this->assertEquals('Sara Tester created a new post "D" and 3 more.', $activity->asMailText());
     }
 
     public function testLikeGrouping()
@@ -149,13 +149,13 @@ class GroupingTest extends HumHubDbTestCase
 
         $this->assertEquals(
             'Sara Tester likes post "Hello World!".',
-            $this->getActivityForContent($post)->asText(),
+            $this->getActivityForContent($post)->asMailText(),
         );
 
         $this->becomeUser('Admin'); // Admin
         $this->assertEquals(
             'Andreas Tester and Sara Tester like post "Hello World!".',
-            $this->getActivityForContent($post)->asText(),
+            $this->getActivityForContent($post)->asMailText(),
         );
 
         $this->becomeUser('User1'); // Peter Tester
@@ -164,18 +164,18 @@ class GroupingTest extends HumHubDbTestCase
         $this->becomeUser('Admin'); // Admin
         $this->assertEquals(
             'Peter Tester, Andreas Tester and 1 more like post "Hello World!".',
-            $this->getActivityForContent($post)->asText(),
+            $this->getActivityForContent($post)->asMailText(),
         );
 
         $this->becomeUser('User1'); // Peter Tester
         $this->assertEquals(
             'Andreas Tester and Sara Tester like post "Hello World!".',
-            $this->getActivityForContent($post)->asText(),
+            $this->getActivityForContent($post)->asMailText(),
         );
         (new LikeService($post))->unlike();
         $this->assertEquals(
             'Andreas Tester and Sara Tester like post "Hello World!".',
-            $this->getActivityForContent($post)->asText(),
+            $this->getActivityForContent($post)->asMailText(),
         );
     }
 
@@ -200,7 +200,7 @@ class GroupingTest extends HumHubDbTestCase
         $this->becomeUser('Admin');
         $this->assertEquals(
             'Sara Tester likes comment "Test comment!".',
-            $this->getActivityForContent($post, LikeActivity::class)->asText(),
+            $this->getActivityForContent($post, LikeActivity::class)->asMailText(),
         );
 
         $this->becomeUser('User1'); // Peter Tester
@@ -209,7 +209,7 @@ class GroupingTest extends HumHubDbTestCase
         $this->becomeUser('Admin');
         $this->assertEquals(
             'Peter Tester and Sara Tester like comment "Test comment!".',
-            $this->getActivityForContent($post, LikeActivity::class)->asText(),
+            $this->getActivityForContent($post, LikeActivity::class)->asMailText(),
         );
 
         $this->becomeUser('User3'); // Andreas Tester
@@ -218,7 +218,7 @@ class GroupingTest extends HumHubDbTestCase
         $this->becomeUser('Admin');
         $this->assertEquals(
             'Andreas Tester, Peter Tester and 1 more like comment "Test comment!".',
-            $this->getActivityForContent($post, LikeActivity::class)->asText(),
+            $this->getActivityForContent($post, LikeActivity::class)->asMailText(),
         );
 
         $this->becomeUser('User1'); // Peter Tester
@@ -227,7 +227,7 @@ class GroupingTest extends HumHubDbTestCase
         $this->becomeUser('Admin');
         $this->assertEquals(
             'Andreas Tester and Sara Tester like comment "Test comment!".',
-            $this->getActivityForContent($post, LikeActivity::class)->asText(),
+            $this->getActivityForContent($post, LikeActivity::class)->asMailText(),
         );
     }
 

@@ -1,19 +1,19 @@
 <?php
-return array (
-  'Any' => 'Будь-який',
-  'Author' => '',
-  'Best' => '',
-  'Content type' => '',
-  'Date From' => '',
-  'Date To' => '',
-  'Find Content based on keywords' => '',
-  'Newest first' => '',
-  'No results found!' => 'Нічого не знайдено!',
-  'Results ({count})' => '',
-  'Search' => 'Пошук',
-  'Search...' => 'Пошук...',
-  'Sorting' => '',
-  'Space' => '',
-  'Topic' => 'Тема',
-  'Try other keywords or remove filters.' => 'Спробуйте інші ключові слова або змініть фільтри.',
-);
+
+return [
+    'Any' => 'Будь-який',
+    'No results found!' => 'Нічого не знайдено!',
+    'Search' => 'Пошук',
+    'Topic' => 'Тема',
+    'Try other keywords or remove filters.' => 'Спробуйте інші ключові слова або змініть фільтри.',
+    'Author' => '',
+    'Best' => '',
+    'Content type' => '',
+    'Contents, Comments, Tags...' => '',
+    'Date From' => '',
+    'Date To' => '',
+    'Newest first' => '',
+    'Results ({count})' => '',
+    'Sorting' => '',
+    'Space' => '',
+];

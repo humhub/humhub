@@ -13,7 +13,12 @@ use yii\base\InvalidValueException;
 
 final class NewCommentActivity extends BaseContentActivity implements ConfigurableActivityInterface
 {
-    private Comment $comment;
+    private readonly Comment $comment;
+
+    /**
+     * @inerhitdoc
+     */
+    public int $webContentLength = 100;
 
     public function __construct(Activity $record, $config = [])
     {
@@ -45,23 +50,26 @@ final class NewCommentActivity extends BaseContentActivity implements Configurab
         return Yii::t('CommentModule.base', '{displayName} wrote a new comment {comment}.', $params);
     }
 
-    protected function getMessageParamsText(): array
+    protected function getMessageParamsWeb(): array
     {
-        return array_merge(
-            parent::getMessageParamsText(),
-            [
-                'comment' => "\n" . '"' . RichTextToPlainTextConverter::process($this->comment->message) . '"',
-            ],
-        );
+        return array_merge(parent::getMessageParamsWeb(), [
+            'comment' => '"' . RichText::preview($this->comment->message, $this->webContentLength) . '"',
+        ]);
     }
 
-    protected function getMessageParamsHtml(): array
+    protected function getMessageParamsMailText(): array
     {
-        return array_merge(
-            parent::getMessageParamsHtml(),
-            [
-                'comment' => '"' . RichText::preview($this->comment->message, 100) . '"',
-            ],
-        );
+        return array_merge(parent::getMessageParamsMailText(), [
+            'comment' => "\n" . '"' . RichTextToPlainTextConverter::process($this->comment->message, [
+                RichTextToPlainTextConverter::OPTION_MAX_LENGTH => $this->mailContentLength,
+            ]) . '"',
+        ]);
+    }
+
+    protected function getMessageParamsMailHtml(): array
+    {
+        return array_merge(parent::getMessageParamsMailHtml(), [
+            'comment' => '"' . RichText::preview($this->comment->message, $this->mailContentLength) . '"',
+        ]);
     }
 }

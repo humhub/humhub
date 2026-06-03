@@ -3,6 +3,11 @@ HumHub Changelog
 
 1.19 (TBD)
 ----------
+- Enh: Improved community module handling in the marketplace — admins can opt in via a new "Include community modules" option to show modules contributed by the community
+- Fix #8181: Encoded HTML entities in notification mail subjects
+- Enh #8179: Do not override meta tags set by modules with proper key
+- Enh #8179: Use property instead of name for `og:image`
+- Fix #8179: Allow to set image URL strings in `ViewMeta::setImages()`
 - Enh #8011: Added `AssetImage` as replacement for `ProfileImage`, `SiteIcon`, `LogoImage`, `LoginBackground`, `MailHeader`
 - Enh #8011: Added `AssetManager` FlySystem support
 - Enh #7980: Remove deprecations
@@ -14,9 +19,29 @@ HumHub Changelog
 - Fix #8071: Fix button link with icon only
 - Enh #8083: Store module version in DB
 - Enh #5141: Added CLI command to delete disabled or soft deleted users
+- Enh #8100: Move `static` and `themes` into `protected/humhub`
+- Enh #8128: Exact search for user id in admin user search
+- Enh #8129: Limit activity content length
+- Enh #8139: Update rector rules
+- Fix: Auto-flush cache when database schema is missing (recovers from dev DB wipes that left a stale `InstallationState=INSTALLED` cache entry)
+- Fix: SingleLogout — always clear the local Yii identity in `AuthController::actionLogout()`, even when the AuthClient short-circuits with an SLO redirect. The user is now locally logged out at the moment they leave HumHub, regardless of whether the IdP ever redirects back (e.g. front-channel iframe SLO setups).
+- Enh #8147: Sort modules alphabetically in admin module list
+- Fix: Auto-flush cache when database schema is missing (recovers from dev DB wipes that left a stale `InstallationState=INSTALLED` cache entry)
+- Enh: View overrides via `components.view.theme.pathMap` in `common.php` — per-file (`.php` key) and directory entries supported; mapping survives runtime theme switches
+- Enh #8165: Rename `User::STATUS_DISABLED` to `STATUS_DEACTIVATED` (deprecated alias kept); i18n labels `Disabled` / `Disabled users` renamed accordingly
+- Enh #8168: Improve safe migration methods
+- Enh: Added optional post title (off / optional / required, configurable under Admin → Design); shown as a heading above the post content
+- Fix #8005: Remove space followers on change to private visibility
+- Enh #8178: New sign in & sign up flow
+- Enh #8180: Topic picker handling
 
-1.18.3 (TBD)
-------------
+1.18.4 (Unreleased)
+---------------------
+- Enh #8170: Handle controllers with using external modules
+- Enh #8176: Upgrade Twig package to v3.26.0
+
+1.18.3 (May 18, 2026)
+---------------------
 - Fix #8079: Hide wall entry topics container when no topics
 - Fix #8075: Filtering by Global Topic in Dashboard
 - Fix #8081: Adds null check for removeItem and appendItem.
@@ -24,12 +49,38 @@ HumHub Changelog
 - Fix #8090: Show only visible groups on the profile field "Group memberships"
 - Fix #8091: Bypass `StreamViewer::$showFilters` when `topics` query param is present
 - Fix #8093: Fix Yii2 debug panel
+- Enh #8095: Improve authorization checks
+- Fix #8099: Validate content visibility before switching content notifications
+- Enh #8098: Improve notification authorization checks
+- Enh #8088: Improve people/space filters
+- Enh #8105: Fix adding of new individual user and space topics
+- Fix #8107: Hide option "Update Space memberships" on administrative group edit form
+- Enh #8106: Ensure migrations are run after reinstallation of enabled modules
+- Enh #8114: Fix old theme updating migration
+- Enh #8120: Allow using filter toggling in modals
+- Fix #8118: Keep list start number on RichText rendering
+- Enh #8113: Optimize user space membership lookups
+- Enh #8114: Fix old theme updating migration
+- Enh #8122: Update PHPspreadsheet
+- Enh #8112: Update Mobile-Detect library to 4.10.0
+- Fix #8125: Show oEmbed warning only for supported embed URLs
+- Enh #8131: Support video and audio tags by RichText converters
+- Fix #8134: Revert "Improve `<p>` style in RichText editor"
+- Fix #8133: Rebuild search index after file updating
+- Fix #8132: Improve RichText styles in email message
+- Fix #8135: Missing border around profile pictures in Spaces overview
+- Fix #8136: Missing vertical paddings in Followers / Following snippets
+- Enh #8140: Preserve selected profile columns in pending approvals
+- Fix #8143: Fix updating of Space memberships for existing members
+- Fix #8145: Preserve login return URL for PJAX requests
+- Fix #8144: Restrict file view action
+- Fix #8148: Yii2 2.0.55 compatibility
 
 1.18.2 (March 22, 2026)
 -----------------------
 - Fix #8046: Profile Header Title HTML encoded twice since 1.18.1
-- Fix #8043: User display name bottom truncated in top bar
 - Fix #8050: Fix page title on PJAX request
+- Fix #8043: User display name bottom truncated in top bar
 - Fix #8051: Registration - Display Captcha field if invalid after form submit via keyboard
 - Enh #8051: Add `AltchaCaptchaInput::$showOnFocusElement` and `YiiCaptchaInput::$showOnFocusElement` (see [migration guide](https://github.com/humhub/humhub/blob/master/MIGRATE-DEV.md#version-1181) for details)
 - Fix #8054: Login layout widths (Default: Bootstrap width, Registration: 500px, Login & Password: 300px, Login with multiple SSO buttons: 500px)
@@ -70,7 +121,7 @@ HumHub Changelog
 
 > Info: The minimum PHP version is now `PHP 8.2`!
 
-> Bootstrap 5 is the default CSS framework, which may require migration of custom modules or themes. See [MIGRATE-BS5.md](https://github.com/humhub/humhub/blob/v1.18.0/MIGRATE-BS5.md)
+> Bootstrap 5 is the default CSS framework, which may require migration of custom modules or themes.
 
 > Caching must now be configured via the [configuration file](https://docs.humhub.org/docs/admin/performance), with `FileCache` as the default.
 
@@ -108,7 +159,6 @@ HumHub Changelog
 - Enh #7991: On medium size, don't display the Space statistics under the Space image in the banner
 - Fix #7989: Fix site icon on installer pages
 - Fix #7994: Opening Modals indents top bars
-
 
 1.18.0-beta.6 (January 8, 2026)
 -------------------------------

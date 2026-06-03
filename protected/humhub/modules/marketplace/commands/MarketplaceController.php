@@ -199,6 +199,11 @@ class MarketplaceController extends Controller
                 // Try force re-install
                 try {
                     $onlineModuleManager->install($moduleId);
+                    // Run pending migrations introduced by the reinstalled version, as install() does not call update()
+                    $reinstalledModule = Yii::$app->moduleManager->getModule($moduleId);
+                    if ($reinstalledModule !== null) {
+                        $reinstalledModule->update();
+                    }
                     print "Reinstalled: " . $moduleId . "\n";
                 } catch (\Exception) {
                 }

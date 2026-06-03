@@ -17,10 +17,8 @@ return [
     'Whenever a new comment was written.' => '每当一个新的评论被书写',
     'Write a new comment...' => '写新评论...',
     'comment' => '评论',
-    '{displayName} wrote a new comment ' => '{displayName} 发表了一条新评论 ',
     '<strong>Delete</strong> comment?' => '',
     '<strong>Permalink</strong> to this comment' => '',
-    'Comment could not be saved!' => '',
     'Comment of blocked user.' => '',
     'Reason' => '',
     'Reply' => '',
@@ -30,4 +28,5 @@ return [
     'Show previous {count} comments' => '',
     'The comment must not be empty!' => '',
     'Write a new reply...' => '',
+    '{displayName} wrote a new comment {comment}.' => '',
 ];

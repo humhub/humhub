@@ -46,7 +46,7 @@ use humhub\widgets\modal\ModalButton;
 <?php Modal::endFormDialog(); ?>
 
 <script <?= Html::nonce() ?>>
-    $('#scheduleoptionsform-enabled').click(function () {
+    $('#scheduleoptionsform-enabled').on('change', function () {
         const checked = $(this).is(':checked');
         $(this).closest('form').find('input[type=text]')
             .prop('disabled', !checked)

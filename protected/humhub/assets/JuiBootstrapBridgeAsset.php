@@ -8,7 +8,7 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\WebStaticAssetBundle;
+use humhub\components\assets\AssetBundle;
 use humhub\components\View;
 use yii\jui\JuiAsset;
 
@@ -17,8 +17,13 @@ use yii\jui\JuiAsset;
  *
  * @author buddha
  */
-class JuiBootstrapBridgeAsset extends WebStaticAssetBundle
+class JuiBootstrapBridgeAsset extends AssetBundle
 {
+    /**
+     * @inheritdoc
+     */
+    public $sourcePath = '@humhub/resources';
+
     /**
      * @inheritdoc
      */

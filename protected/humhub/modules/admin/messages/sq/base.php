@@ -10,7 +10,6 @@ return [
     'Administrative group' => 'Grupi administrativ',
     'Administrators' => 'Administratorët',
     'Advanced' => 'E avancuar',
-    'Advanced settings' => 'Cilësimet e avancuara',
     'Appearance' => 'Pamja e jashtme',
     'Approval' => 'Miratimi',
     'Authentication' => 'Autentifikimi',

@@ -1,8 +1,6 @@
 <?php
 
 return [
-    'Title' => 'Заголовок',
-    'Type' => 'Тип',
     'Activity' => 'Активність',
     'Add or remove link' => 'Додати або видалити посилання',
     'Animals & Nature' => 'Тварини та Природа',
@@ -32,17 +30,19 @@ return [
     'Insert table' => 'Вставити таблицю',
     'Link target' => 'Ціль посилання',
     'Location' => 'Розташування',
-    'Objects' => "Об'єкти",
+    'Objects' => 'Об\'єкти',
     'Paragraph' => 'Параграф',
     'People' => 'Люди',
     'Rows' => 'Рядки',
     'Switch editor mode' => 'Перемкнути режим редактора',
     'Symbols' => 'Символи',
+    'Title' => 'Заголовок',
     'Toggle code font' => 'Стиль коду',
     'Toggle emphasis' => 'Курсив',
     'Toggle strikethrough' => 'Закреслений',
     'Toggle strong style' => 'Напівжирний',
     'Travel & Places' => 'Подорожі та Місця',
+    'Type' => 'Тип',
     'Upload File' => 'Завантажити Файл',
     'Upload and include a File' => 'Завантажити та вставити Файл',
     'Width' => 'Ширина',
@@ -50,7 +50,6 @@ return [
     'Wrap in bullet list' => 'Маркований список',
     'Wrap in ordered list' => 'Упорядкований список',
     '[Code Block]' => '',
-    '[Image]' => '',
     '[Invalid file]' => '',
     '[Table]' => '',
 ];

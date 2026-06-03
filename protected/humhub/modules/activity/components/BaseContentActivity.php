@@ -31,6 +31,16 @@ abstract class BaseContentActivity extends BaseActivity
 
     protected ?ContentProvider $contentAddon = null;
 
+    /**
+     * @var int Max length of the activity content in Web view
+     */
+    public int $webContentLength = 60;
+
+    /**
+     * @var int Max length of the activity content in Mail messages
+     */
+    public int $mailContentLength = 300;
+
     public function __construct(Activity $record, $config = [])
     {
         parent::__construct($record, $config);
@@ -42,9 +52,7 @@ abstract class BaseContentActivity extends BaseActivity
 
         if (!$this->content->polymorphicRelation instanceof $this->contentActiveRecordClass) {
             throw new InvalidValueException(
-                'Content must be type of ' . $this->contentActiveRecordClass . ', ' . get_class(
-                    $this->content->polymorphicRelation,
-                ) . ' given.',
+                'Content must be type of ' . $this->contentActiveRecordClass . ', ' . ($this->content->polymorphicRelation !== null ? $this->content->polymorphicRelation::class : self::class) . ' given.',
             );
         }
         /** @noinspection PhpFieldAssignmentTypeMismatchInspection */
@@ -64,18 +72,27 @@ abstract class BaseContentActivity extends BaseActivity
         return $this->content->getUrl($scheme);
     }
 
-    protected function getMessageParamsText(): array
+    protected function getMessageParamsWeb(): array
     {
-        return array_merge(parent::getMessageParamsText(), [
-            'content' => ContentHelper::getContentInfo($this->content),
-            'contentTitle' => ContentHelper::getContentInfo($this->content, false),
+        return array_merge(parent::getMessageParamsWeb(), [
+            'content' => ContentHelper::getContentInfo($this->content, true, $this->webContentLength),
+            'contentTitle' => ContentHelper::getContentInfo($this->content, false, $this->webContentLength),
         ]);
     }
 
-    protected function getMessageParamsHtmlMail(): array
+    protected function getMessageParamsMailText(): array
     {
-        return array_merge(parent::getMessageParamsHtmlMail(), [
-            'content' => Html::strong(ContentHelper::getContentInfo($this->content)),
+        return array_merge(parent::getMessageParamsMailText(), [
+            'content' => ContentHelper::getContentInfo($this->content, true, $this->mailContentLength),
+            'contentTitle' => ContentHelper::getContentInfo($this->content, false, $this->mailContentLength),
+        ]);
+    }
+
+    protected function getMessageParamsMailHtml(): array
+    {
+        return array_merge(parent::getMessageParamsMailHtml(), [
+            'content' => Html::strong(ContentHelper::getContentInfo($this->content, true, $this->mailContentLength)),
+            'contentTitle' => ContentHelper::getContentInfo($this->content, false, $this->mailContentLength),
         ]);
     }
 }

@@ -11,6 +11,7 @@ namespace tests\codeception\unit\modules\content\widgets;
 
 use humhub\libs\EmojiMap;
 use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
+use humhub\modules\content\widgets\richtext\converter\RichTextToShortHtmlConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use humhub\modules\content\widgets\richtext\extensions\mentioning\MentioningExtension;
 use humhub\modules\content\widgets\richtext\RichText;
@@ -160,14 +161,6 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
      * Images
      */
 
-    public function testConvertImageAsLink()
-    {
-        $this->assertConversionResult(
-            'Test ![Alt Text](https://www.humhub.com/static/img/logo.png)',
-            'Test [Image]',
-        );
-    }
-
     /**
      * @throws InvalidConfigException
      */
@@ -279,6 +272,46 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     }
 
     /*
+     * Videos
+     */
+
+    public function testConvertVideoToShortText()
+    {
+        $this->assertConversionResult(
+            'Test ![Video Title](https://www.humhub.com/static/sample.mp4 video)',
+            'Test [Video]',
+        );
+    }
+
+    public function testConvertVideoWithAllOptionsToShortText()
+    {
+        $this->assertConversionResult(
+            'Test ![Video Title><](https://www.humhub.com/static/sample.mp4 video controls autoplay muted loop =300x200)',
+            'Test [Video]',
+        );
+    }
+
+    /*
+     * Audios
+     */
+
+    public function testConvertAudioToShortText()
+    {
+        $this->assertConversionResult(
+            'Test ![Audio Title](https://www.humhub.com/static/sample.mp3 audio)',
+            'Test [Audio]',
+        );
+    }
+
+    public function testConvertAudioWithAllOptionsToShortText()
+    {
+        $this->assertConversionResult(
+            'Test ![Audio Title><](https://www.humhub.com/static/sample.mp3 audio controls autoplay muted loop)',
+            'Test [Audio]',
+        );
+    }
+
+    /*
      * Paragraph
      */
 
@@ -326,7 +359,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     public function testMentionInActiveUser()
     {
         $user = User::findOne(['id' => 2]);
-        $user->updateAttributes(['status' => User::STATUS_DISABLED]);
+        $user->updateAttributes(['status' => User::STATUS_DEACTIVATED]);
 
         $this->assertConversionResult(
             'Test mention ' . MentioningExtension::buildMentioning($user),
@@ -770,7 +803,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
             "Test<br>\nBreak",
             [
                 RichTextToShortTextConverter::OPTION_PRESERVE_SPACES => true,
-                RichTextToShortTextConverter::OPTION_NL2BR => true,
+                RichTextToShortHtmlConverter::OPTION_NL2BR => true,
             ],
         );
     }

@@ -7,7 +7,6 @@ use humhub\widgets\form\ActiveForm;
 use humhub\widgets\form\CaptchaField;
 use humhub\widgets\LanguageChooser;
 use humhub\widgets\SiteLogo;
-use yii\helpers\Url;
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
 
@@ -20,9 +19,9 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
     <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br>
 
-    <div id="password-recovery-form" class="panel panel-default animated bounceIn">
+    <div id="password-recovery-form" class="panel panel-default mb-4 animated bounceIn">
         <div class="panel-heading">
-            <?= Yii::t('UserModule.auth', '<strong>Password</strong> recovery') ?>
+            <strong class="fw-bolder"><?= Yii::t('UserModule.auth', 'Password recovery') ?></strong>
         </div>
         <div class="panel-body">
             <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
@@ -37,14 +36,25 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
                     ->label(false) ?>
             </div>
 
-            <?= Button::light(Yii::t('UserModule.auth', 'Back'))->link(Url::home())->pjax(false) ?>
-            <?= Html::submitButton(Yii::t('UserModule.auth', 'Reset password'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+            <div class="row g-3">
+                <div class="col-6">
+                    <?= Button::light(Yii::t('UserModule.auth', 'Back'))
+                        ->link(['/user/auth/password'])
+                        ->cssClass('w-100')
+                        ->pjax(false) ?>
+                </div>
+                <div class="col-6">
+                    <?= Button::save(Yii::t('UserModule.auth', 'Reset password'))
+                        ->submit()
+                        ->cssClass('w-100') ?>
+                </div>
+            </div>
 
-            <?php ActiveForm::end(); ?>
+            <?php ActiveForm::end() ?>
         </div>
     </div>
 
-    <?= LanguageChooser::widget(['vertical' => true, 'hideLabel' => true]) ?>
+    <?= LanguageChooser::widget(['vertical' => true]) ?>
 </div>
 
 <script <?= Html::nonce() ?>>

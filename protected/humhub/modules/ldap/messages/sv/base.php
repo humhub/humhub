@@ -2,7 +2,6 @@
 
 return [
     'Base DN' => 'Bas DN',
-    'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'Definierar filtret som ska tillämpas när inloggningsförsök görs. %s ersätter användarnamnet i inloggningsåtgärden. Exempel: "(sAMAccountName=%s)" eller "(uid=%s)"',
     'E-Mail Address Attribute' => 'E-postadressattribut',
     'Enable LDAP Support' => 'Aktivera LDAP-stöd',
     'Encryption' => 'Krypering',
@@ -14,7 +13,6 @@ return [
     'LDAP Attribute for E-Mail Address. Default: &quot;mail&quot;' => 'LDAP-attribut för e-postadress. Standard: "mail"',
     'LDAP Attribute for Username. Example: &quot;uid&quot; or &quot;sAMAccountName&quot;' => 'LDAP-attribut för användarnamn. Exempel: "uid" eller "sAMAccountName"',
     'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'Begränsa åtkomst till användare som uppfyller dessa kriterier. Exempel: "(objectClass=posixAccount)" eller "(&amp;(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))"',
-    'Login Filter' => 'Inloggningsfilter',
     'Not changeable LDAP attribute to unambiguously identify the user in the directory. If empty the user will be determined automatically by e-mail address or username. Examples: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)' => 'Ej föränderligt LDAP-attribut för att entydigt identifiera användaren i katalogen. Om den är tom kommer användaren att avgöras automatiskt av e-postadress eller användarnamn. Exempel: objectguid (ActiveDirectory) eller uidNumber (OpenLDAP)',
     'One DN per line which should not be imported automatically.' => 'En DN per rad som inte ska importeras automatiskt.',
     'Password' => 'Lösenord',
@@ -29,4 +27,7 @@ return [
     'User Filter' => 'Användarfilter',
     'Username' => 'Användarnamn',
     'Username Attribute' => 'Attribut för användarnamn',
+    'Allowed Authentication Methods' => '',
+    'Disable Certificate Checking' => '',
+    'Select the authentication methods LDAP users may use. Unchecking "LDAP" disables direct LDAP password login and forces users through the other selected methods (e.g. SAML, OpenID Connect).' => '',
 ];
