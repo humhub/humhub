@@ -120,6 +120,9 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
     public function init()
     {
         if (count($this->getClients()) > 0) {
+            // Capture output content from `parent::init()` in order to don't run it directly here before call
+            // the method `beforeRun()`, because if it returns `false`, then this widget must be not rendered,
+            // we must start to render content only in the method `run()` which is called when `beforeRun() === true`
             ob_start();
             parent::init();
             $this->_initOutput = ob_get_clean();
