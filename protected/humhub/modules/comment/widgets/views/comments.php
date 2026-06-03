@@ -50,7 +50,4 @@ use humhub\modules\content\models\Content;
         // make comments visible at this point to fixing autoresizing issue for textareas in Firefox
         $('#comment_<?= $id ?>').show();
     <?php endif; ?>
-    <?php if (!empty($highlightCommentId)) : ?>
-        $('#comment_<?= $highlightCommentId ?>').get(0).scrollIntoView();
-    <?php endif; ?>
 </script>
