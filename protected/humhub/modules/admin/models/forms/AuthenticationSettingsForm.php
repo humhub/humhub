@@ -96,7 +96,7 @@ class AuthenticationSettingsForm extends Model
             'registrationSendMessageMailContent' => Yii::t('AdminModule.user', 'Default content of the email when sending a message to the user'),
             'registrationApprovalMailContent' => Yii::t('AdminModule.user', 'Default content of the registration approval email'),
             'registrationDenialMailContent' => Yii::t('AdminModule.user', 'Default content of the registration denial email'),
-            'allowUserTopics' => Yii::t('AdminModule.user', 'Allow individual topics on profiles'),
+            'allowUserTopics' => Yii::t('AdminModule.user', 'Allow individual topics on profile content'),
         ];
     }
 
