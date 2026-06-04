@@ -114,4 +114,5 @@ return [
     'You do not have the permission to move this content.' => 'Você não tem permissão para mover este conteúdo.',
     'in' => 'em',
     'Please select at least one topic.' => '',
+    'You need to login to view this content!' => '',
 ];
