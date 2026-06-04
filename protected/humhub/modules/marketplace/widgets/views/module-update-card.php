@@ -21,8 +21,8 @@ Assets::register($this);
         <?= Html::img($module->image, [
             'class' => 'rounded',
             'data-src' => 'holder.js/60x60',
-            'alt' => '60x60',
             'style' => 'width:60px;height:60px',
+            'role' => 'presentation',
         ]) ?>
     </div>
     <div class="card-body">
