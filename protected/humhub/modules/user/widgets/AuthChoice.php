@@ -45,6 +45,11 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
     private $_clients;
 
     /**
+     * @var string Output content from parent::init()
+     */
+    private string $_initOutput = '';
+
+    /**
      * @param ClientInterface[] $clients auth providers
      */
     public function setClients(array $clients)
@@ -115,7 +120,12 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
     public function init()
     {
         if (count($this->getClients()) > 0) {
+            // Capture output content from `parent::init()` in order to don't run it directly here before call
+            // the method `beforeRun()`, because if it returns `false`, then this widget must be not rendered,
+            // we must start to render content only in the method `run()` which is called when `beforeRun() === true`
+            ob_start();
             parent::init();
+            $this->_initOutput = ob_get_clean();
         }
     }
 
@@ -130,6 +140,14 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
     }
 
     /**
+     * @inheritdoc
+     */
+    public function run()
+    {
+        return $this->_initOutput . parent::run();
+    }
+
+    /**
      * Renders the main content, which includes all external services links.
      */
     protected function renderMainContent()
@@ -137,13 +155,9 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
         $clients = $this->getClients();
         $clientCount = count($clients);
 
-        if ($clientCount == 0) {
-            return;
-        }
-
         $this->view->registerCssFile(Yii::$app->assetManager->getPublishedUrl('@humhub/resources') . '/resources/user/authChoice.css');
 
-        echo Html::beginTag('div', ['class' => 'authChoice row g-3']);
+        $result = Html::beginTag('div', ['class' => 'authChoice row g-3']);
 
         $clients = array_values($clients); // Reindex array keys
         foreach ($clients as $i => $client) {
@@ -164,18 +178,20 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
                 // If either button in the pair is long, both get col-12
                 $colClass = ($currentIsLong || $pairedIsLong) ? 'col-12' : 'col-6';
             }
-            echo Html::tag(
+            $result .= Html::tag(
                 'div',
                 $this->clientLink($client),
                 ['class' => $colClass],
             );
         }
 
-        echo Html::endTag('div');
+        $result .= Html::endTag('div');
 
         if ($this->showOrDivider) {
-            echo Html::tag('div', Html::tag('hr') . Html::tag('div', Yii::t('UserModule.base', 'or')), ['class' => 'or-container']);
+            $result .= Html::tag('div', Html::tag('hr') . Html::tag('div', Yii::t('UserModule.base', 'or')), ['class' => 'or-container']);
         }
+
+        return $result;
     }
 
     /**

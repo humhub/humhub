@@ -96,7 +96,7 @@
 
     .powered,
     .powered a {
-        color: #b8c7d3 !important;
+        color: color-mix(in srgb, var(--hh-primary-contrast) 80%, transparent) !important;
     }
 
     [data-ui-show-more] {

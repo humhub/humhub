@@ -39,7 +39,7 @@ class ActivityBox extends Widget
     {
         return [
             'id' => 'activity-box-content',
-            'class' => 'hh-list activities',
+            'class' => 'hh-list pb-2 activities',
             'data' => $this->getData(),
         ];
     }

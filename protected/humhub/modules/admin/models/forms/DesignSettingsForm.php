@@ -392,7 +392,8 @@ class DesignSettingsForm extends Model
         $theme = ThemeHelper::getThemeByName($this->theme);
         if ($theme !== null) {
             $theme->activate();
-            Yii::$app->view->theme = new Theme($theme); // Force new theme immediately, e.g. to rebuild the CSS files
+            // Force new theme immediately, e.g. to rebuild the CSS files
+            Yii::$app->view->theme = $theme;
         }
 
         $settingsManager->set('paginationSize', $this->paginationSize);
