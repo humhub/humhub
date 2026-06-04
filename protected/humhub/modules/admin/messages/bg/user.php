@@ -147,7 +147,7 @@ return [
     'Add Subgroup(s)' => '',
     'All existing Profile Topics will be converted to Global Topics.' => '',
     'All open registration invitations were successfully re-sent.' => '',
-    'Allow individual topics on profiles' => '',
+    'Allow individual topics on profile content' => '',
     'Allow users to block each other' => '',
     'Apply' => '',
     'Approve all selected' => '',

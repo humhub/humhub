@@ -113,5 +113,6 @@ return [
     'Share' => '',
     'Topic already exists globally.' => '',
     'Topic already in use in Spaces or on Profiles.' => '',
+    'You need to login to view this content!' => '',
     'in' => '',
 ];

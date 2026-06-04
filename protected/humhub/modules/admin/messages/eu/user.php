@@ -215,7 +215,7 @@ Kind Regards
     'Add Subgroup(s)' => '',
     'All existing Profile Topics will be converted to Global Topics.' => '',
     'All open registration invitations were successfully re-sent.' => '',
-    'Allow individual topics on profiles' => '',
+    'Allow individual topics on profile content' => '',
     'Cannot resend invitation email!' => '',
     'Convert' => '',
     'Convert Profile Topics' => '',
