@@ -27,7 +27,6 @@ return [
     'All open registration invitations were successfully re-sent.' => 'Alle offenen Einladungen zur Registrierung wurden erfolgreich erneut versendet.',
     'All the personal data of this user will be irrevocably deleted.' => 'Alle persönlichen Daten dieses Benutzers werden unwiderruflich gelöscht.',
     'Allow' => 'Erlauben',
-    'Allow individual topics on profiles' => 'Erlaube individuelle Themen in Profilen',
     'Allow users to block each other' => 'Gegenseitiges Blockieren von Nutzern zulassen',
     'Allow users to set individual permissions for their own profile?' => 'Erlaube Benutzern individuelle Berechtigungen für ihr eigenes Profil zu setzen?',
     'Allow visitors limited access to content without an account (Adds visibility: "Guest")' => 'Erlaube limitierten Zugriff auf Inhalte ohne Benutzerkonto (Zusätzliche Sichtbarkeitseinstellung: "Gast")',
@@ -249,5 +248,6 @@ Mit freundlichen Grüßen
     'You cannot delete yourself!' => 'Du kannst nicht dich selber löschen!',
     'never' => 'Nie',
     '{nbMsgSent} already sent' => '{nbMsgSent} bereits gesendet',
+    'Allow individual topics on profile content' => '',
     'Search by name, email, username or exact id.' => '',
 ];

@@ -224,7 +224,7 @@ Kind Regards
     'Add Parent Group' => '',
     'Add Subgroup(s)' => '',
     'All existing Profile Topics will be converted to Global Topics.' => '',
-    'Allow individual topics on profiles' => '',
+    'Allow individual topics on profile content' => '',
     'Cannot resend invitation email!' => '',
     'Convert' => '',
     'Convert Profile Topics' => '',

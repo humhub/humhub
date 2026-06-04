@@ -133,7 +133,7 @@ return [
     'All existing Profile Topics will be converted to Global Topics.' => '',
     'All open registration invitations were successfully deleted.' => '',
     'All open registration invitations were successfully re-sent.' => '',
-    'Allow individual topics on profiles' => '',
+    'Allow individual topics on profile content' => '',
     'Allow users to block each other' => '',
     'Allow users to set individual permissions for their own profile?' => '',
     'Applied to new or existing users without any other group membership.' => '',

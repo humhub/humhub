@@ -1,23 +1,28 @@
 <?php
 
 use humhub\helpers\Html;
+use humhub\modules\user\models\forms\AccountChangeEmail;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 
+/* @var AccountChangeEmail $model */
 ?>
 
 <?php $this->beginContent('@user/views/account/_userProfileLayout.php') ?>
 <div class="text-body-secondary">
-    <?php echo Yii::t('UserModule.account', 'Your current E-mail address is <b>{email}</b>. You can change your current E-mail address here.', ['email' => Html::encode(Yii::$app->user->getIdentity()->email)]); ?>
+    <?= Yii::t('UserModule.account', 'Your current E-mail address is <b>{email}</b>. You can change your current E-mail address here.', [
+        'email' => Html::encode(Yii::$app->user->getIdentity()->email),
+    ]) ?>
 </div>
-<?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
+<?php $form = ActiveForm::begin(['acknowledge' => true]) ?>
 
 <?php if ($model->isAttributeRequired('currentPassword')): ?>
-    <?php echo $form->field($model, 'currentPassword')->passwordInput(['maxlength' => 45]); ?>
-<?php endif; ?>
+    <?= $form->field($model, 'currentPassword')->passwordInput(['maxlength' => 45, 'autocomplete' => 'current-password']) ?>
+<?php endif ?>
 
-<?php echo $form->field($model, 'newEmail')->textInput(['maxlength' => 150]); ?>
+<?= $form->field($model, 'newEmail')->input('email', ['maxlength' => 150, 'autocomplete' => 'email']) ?>
 
-<?php echo Html::submitButton(Yii::t('UserModule.account', 'Save'), ['name' => 'save', 'class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
+<?= Button::save()->submit() ?>
 
-<?php ActiveForm::end(); ?>
-<?php $this->endContent(); ?>
+<?php ActiveForm::end() ?>
+<?php $this->endContent() ?>

@@ -114,4 +114,5 @@ return [
     'Select target Space.' => '',
     'Select target Space/Profile.' => '',
     'Share' => '',
+    'You need to login to view this content!' => '',
 ];

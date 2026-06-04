@@ -114,4 +114,5 @@ return [
     'Topic already exists globally.' => '',
     'Topic already in use in Spaces or on Profiles.' => '',
     'You cannot block the user of the same container!' => '',
+    'You need to login to view this content!' => '',
 ];

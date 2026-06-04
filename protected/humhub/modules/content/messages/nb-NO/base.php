@@ -114,4 +114,5 @@ return [
     'You cannot block the space owner!' => '',
     'You cannot block the user of the same container!' => '',
     'You cannot block yourself!' => '',
+    'You need to login to view this content!' => '',
 ];
