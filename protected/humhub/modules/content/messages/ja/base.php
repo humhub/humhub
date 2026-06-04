@@ -114,4 +114,5 @@ return [
     'You do not have the permission to move this content.' => 'このコンテンツを移動する権限がありません',
     'in' => 'in',
     'Please select at least one topic.' => '',
+    'You need to login to view this content!' => '',
 ];

@@ -27,7 +27,6 @@ return [
     'All open registration invitations were successfully re-sent.' => 'Toutes les invitations pour les inscriptions encore en attente ont été réenvoyées avec succès.',
     'All the personal data of this user will be irrevocably deleted.' => 'Toutes les données de cet utilisateur seront irrévocablement supprimées.',
     'Allow' => 'Autoriser',
-    'Allow individual topics on profiles' => 'Autoriser les sujets individuels dans les profils utilisateurs',
     'Allow users to block each other' => 'Permettre aux utilisateurs de se bloquer mutuellement',
     'Allow users to set individual permissions for their own profile?' => 'Permettre aux utilisateurs de définir des autorisations individuelles pour leur propre profil ?',
     'Allow visitors limited access to content without an account (Adds visibility: "Guest")' => 'Autoriser un accès limité pour les utilisateurs non identifiés (visiteurs)',
@@ -236,5 +235,6 @@ Kind Regards
     'You cannot delete yourself!' => 'Vous ne pouvez vous supprimer vous même !',
     'never' => 'jamais',
     '{nbMsgSent} already sent' => '{nbMsgSent} déjà envoyés',
+    'Allow individual topics on profile content' => '',
     'Search by name, email, username or exact id.' => '',
 ];

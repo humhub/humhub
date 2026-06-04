@@ -27,7 +27,6 @@ return [
     'All open registration invitations were successfully re-sent.' => 'Alle openstaande registratie-uitnodigingen zijn opnieuw verzonden.',
     'All the personal data of this user will be irrevocably deleted.' => 'Alle persoonlijke gegevens van deze gebruiker worden definitief verwijderd.',
     'Allow' => 'Allow',
-    'Allow individual topics on profiles' => 'Individuele rubrieken op profielen toestaan',
     'Allow users to block each other' => 'Sta gebruikers toe elkaar te blokkeren',
     'Allow users to set individual permissions for their own profile?' => 'Gebruikers toestaan individuele rechten voor hun eigen profiel in te stellen?',
     'Allow visitors limited access to content without an account (Adds visibility: "Guest")' => 'Sta beperkte toegang voor niet-ingelogde gebruikers  (gasten) toe',
@@ -236,5 +235,6 @@ Kind Regards
     'You cannot delete yourself!' => 'U kunt uzelf niet verwijderen!',
     'never' => 'Nooit',
     '{nbMsgSent} already sent' => '{nbMsgSent} is al verzonden',
+    'Allow individual topics on profile content' => '',
     'Search by name, email, username or exact id.' => '',
 ];

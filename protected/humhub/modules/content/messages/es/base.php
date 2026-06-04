@@ -114,4 +114,5 @@ return [
     'Please select at least one topic.' => '',
     'Select target Space.' => '',
     'Select target Space/Profile.' => '',
+    'You need to login to view this content!' => '',
 ];
