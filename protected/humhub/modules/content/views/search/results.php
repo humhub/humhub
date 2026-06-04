@@ -9,12 +9,14 @@
 /* @var $totalCount int */
 ?>
 <?php if ($results === '') : ?>
-    <div class="row cards">
+    <div class="row cards" aria-live="polite" aria-atomic="false">
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <strong><?= Yii::t('ContentModule.search', 'No results found!'); ?></strong><br/>
-                    <?= Yii::t('ContentModule.search', 'Try other keywords or remove filters.'); ?>
+                    <p role="status" aria-live="polite" class="m-0">
+                        <strong><?= Yii::t('ContentModule.search', 'No results found!') ?></strong><br>
+                        <?= Yii::t('ContentModule.search', 'Try other keywords or remove filters.') ?>
+                    </p>
                 </div>
             </div>
         </div>
