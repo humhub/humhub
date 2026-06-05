@@ -6,6 +6,10 @@ Each minor release line has its own file with the breaking changes, new APIs and
 
 ## Unreleased
 
+- Icon-only `Button` widgets (no visible label, only an icon) now automatically set `aria-label` from
+  the tooltip text. Module developers should always call `->tooltip('...')` on icon-only buttons —
+  omitting it logs a `Yii::warning()` in `YII_DEBUG` mode.
+  Explicit `aria-label` via `->options(['aria-label' => '...'])` always takes precedence.
 - Split rich text short converters by output safety
   - Added `humhub\modules\content\widgets\richtext\converter\RichTextToShortHtmlConverter`
     producing HTML encoded short previews (with the `nl2br` option). Use this whenever
