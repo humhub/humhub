@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.19 (TBD)
 ----------
+- Enh: Icon-only `Button` automatically derives `aria-label` from tooltip; logs a warning in `YII_DEBUG` mode when neither is set
 - Enh: Improved community module handling in the marketplace — admins can opt in via a new "Include community modules" option to show modules contributed by the community
 - Fix #8181: Encoded HTML entities in notification mail subjects
 - Enh #8179: Do not override meta tags set by modules with proper key
