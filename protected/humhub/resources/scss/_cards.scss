@@ -187,9 +187,11 @@
                 }
             }
 
-            .card-icons .fa {
+            .card-icons > * {
                 color: var(--bs-accent);
-
+                .fa {
+                    margin-right: .4rem;
+                }
                 span {
                     font: 12px 'Open Sans', sans-serif;
                     font-weight: 600;
