@@ -184,27 +184,32 @@ class m260108_115053_new_structure extends Migration
                     continue;
                 }
 
-                // Model is not a ContentProvider (e.g. a ContentActiveRecord like
-                // ContainerSnippet, or a class that no longer exists). Its activities
-                // were already handled by the content-JOIN UPDATEs in Phase 2 above.
-                // Any that still have content_id=NULL here have no resolvable parent
-                // (deleted content, removed module) and must be cleaned up so they
-                // do not violate future NOT NULL constraints on content_id.
+                // Not a ContentProvider (e.g. leftover Follow records): drop bogus
+                // FollowActivity rows and their record_map entries, warn otherwise.
                 $orphanRecordMapIds = (new Query())
                     ->select('content_addon_record_id')
                     ->distinct()
                     ->from(Activity::tableName())
-                    ->where(['content_id' => null, 'object_model' => $model])
+                    ->where([
+                        'content_id' => null,
+                        'object_model' => $model,
+                        'class' => \humhub\modules\user\activities\FollowActivity::class,
+                    ])
                     ->andWhere('content_addon_record_id IS NOT NULL')
                     ->column();
 
                 if ($orphanRecordMapIds !== []) {
-                    Yii::warning(
-                        'Deleting ' . count($orphanRecordMapIds) . ' unresolvable activity record(s) for model: ' . $model,
-                        'activity',
-                    );
                     $this->delete('activity', ['content_addon_record_id' => $orphanRecordMapIds]);
                     $this->delete('record_map', ['id' => $orphanRecordMapIds]);
+                }
+
+                $hasRemaining = (new Query())
+                    ->from(Activity::tableName())
+                    ->where(['content_id' => null, 'object_model' => $model])
+                    ->andWhere('content_addon_record_id IS NOT NULL')
+                    ->exists();
+                if ($hasRemaining) {
+                    Yii::warning('Unresolved activity content_addon_record for model: ' . $model, 'activity');
                 }
             }
         }
