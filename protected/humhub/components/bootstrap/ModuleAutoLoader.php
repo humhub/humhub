@@ -28,7 +28,7 @@ use yii\helpers\FileHelper;
  *
  * **Console commands without module dependencies** ({@see WithoutModuleAutoload}):
  * Console controllers annotated with `#[WithoutModuleAutoload]` skip module loading entirely.
- * Use this for lightweight utility commands (e.g. `settings/set`) that must
+ * Use this for lightweight utility commands (e.g. `settings/set`, `cache/flush-all`) that must
  * run cleanly at any point in the application lifecycle, including during upgrades when external
  * module configs may reference removed core classes.
  *
@@ -65,9 +65,17 @@ class ModuleAutoLoader implements BootstrapInterface
     /**
      * Returns true if the current console command's controller class is annotated
      * with {@see WithoutModuleAutoload}, indicating it does not require modules.
+     *
+     * Module loading is only skipped when the database is available — broken module
+     * configs can only occur on an installed system, not during initial setup or CI
+     * environments where the database has not yet been created.
      */
     private static function hasWithoutModuleAutoloadAttribute(): bool
     {
+        if (!Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
+            return false;
+        }
+
         $route = $_SERVER['argv'][1] ?? '';
         $controllerId = explode('/', $route)[0];
 
