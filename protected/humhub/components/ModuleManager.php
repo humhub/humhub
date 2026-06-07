@@ -30,7 +30,22 @@ use yii\helpers\FileHelper;
 use yii\web\ServerErrorHttpException;
 
 /**
- * ModuleManager handles all installed modules.
+ * ModuleManager handles registration, enabling, and disabling of modules.
+ *
+ * During bootstrap, {@see ModuleAutoLoader} discovers all module directories and calls
+ * {@see registerBulk()} with their configurations. Each config.php must declare at minimum
+ * an `id` and a `class` key. The manager then:
+ * - registers Yii aliases for the module namespace and base path
+ * - sets up the Yii module in the application container
+ * - registers event handlers declared in the config's `events` array
+ * - adds console controller mappings for CLI commands
+ *
+ * Only core modules and currently enabled modules are fully activated. Disabled modules
+ * are tracked but remain dormant until explicitly enabled via {@see enable()}.
+ *
+ * Event handler registration is intentionally lenient by default: invalid handlers (missing
+ * class or method) emit a warning and are skipped rather than throwing an exception. Modules
+ * can opt into strict validation by setting `'strict' => true` in their config.php.
  *
  * @author luke
  */

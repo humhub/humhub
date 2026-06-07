@@ -8,7 +8,7 @@
 
 namespace humhub\modules\queue;
 
-use Expection;
+use Exception;
 use Yii;
 use yii\base\BaseObject;
 use yii\base\Event;
@@ -43,7 +43,7 @@ class Events extends BaseObject
      */
     public static function onQueueError(ExecEvent $event)
     {
-        /* @var $exception Expection */
+        /* @var $exception Exception */
         $exception = $event->error;
         Yii::error(
             'Could not execute queued job! Message: ' . $exception->getMessage(
