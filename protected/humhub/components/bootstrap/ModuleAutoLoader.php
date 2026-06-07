@@ -9,6 +9,7 @@
 namespace humhub\components\bootstrap;
 
 use humhub\components\Application;
+use humhub\components\console\WithoutModuleAutoload;
 use humhub\components\InstallationState;
 use humhub\modules\installer\libs\EnvironmentChecker;
 use Yii;
@@ -19,7 +20,17 @@ use yii\base\InvalidConfigException;
 use yii\helpers\FileHelper;
 
 /**
- * ModuleAutoLoader automatically searches for config.php files in module folder an executes them.
+ * ModuleAutoLoader discovers and registers all available modules during application bootstrap.
+ *
+ * It scans all paths listed in the `moduleAutoloadPaths` application parameter for directories
+ * containing a `config.php` file and passes the resulting configurations to
+ * {@see \humhub\components\ModuleManager::registerBulk()}.
+ *
+ * **Console commands without module dependencies** ({@see WithoutModuleAutoload}):
+ * Console controllers annotated with `#[WithoutModuleAutoload]` skip module loading entirely.
+ * Use this for lightweight utility commands (e.g. `settings/set`, `cache/flush-all`) that must
+ * run cleanly at any point in the application lifecycle, including during upgrades when external
+ * module configs may reference removed core classes.
  *
  * @author luke
  */
@@ -43,8 +54,37 @@ class ModuleAutoLoader implements BootstrapInterface
             EnvironmentChecker::preInstallChecks();
         }
 
+        if ($app->request->isConsoleRequest && self::hasWithoutModuleAutoloadAttribute()) {
+            return;
+        }
+
         $modules = self::locateModules();
         Yii::$app->moduleManager->registerBulk($modules);
+    }
+
+    /**
+     * Returns true if the current console command's controller class is annotated
+     * with {@see WithoutModuleAutoload}, indicating it does not require modules.
+     */
+    private static function hasWithoutModuleAutoloadAttribute(): bool
+    {
+        $route = $_SERVER['argv'][1] ?? '';
+        $controllerId = explode('/', $route)[0];
+
+        if (empty($controllerId)) {
+            return false;
+        }
+
+        $map = Yii::$app->controllerMap[$controllerId] ?? null;
+        $controllerClass = is_array($map)
+            ? ($map['class'] ?? null)
+            : ($map ?? (Yii::$app->controllerNamespace . '\\' . ucfirst($controllerId) . 'Controller'));
+
+        if ($controllerClass === null || !class_exists($controllerClass)) {
+            return false;
+        }
+
+        return !empty((new \ReflectionClass($controllerClass))->getAttributes(WithoutModuleAutoload::class));
     }
 
     /**
