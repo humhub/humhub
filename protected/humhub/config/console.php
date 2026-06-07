@@ -13,7 +13,6 @@ return [
     'controllerNamespace' => 'humhub\commands',
     'controllerMap' => [
         'asset' => \humhub\commands\AssetController::class,
-        'cache' => \humhub\commands\CacheController::class,
     ],
     'components' => [
         'user' => [

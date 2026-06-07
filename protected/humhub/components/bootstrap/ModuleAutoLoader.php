@@ -28,7 +28,7 @@ use yii\helpers\FileHelper;
  *
  * **Console commands without module dependencies** ({@see WithoutModuleAutoload}):
  * Console controllers annotated with `#[WithoutModuleAutoload]` skip module loading entirely.
- * Use this for lightweight utility commands (e.g. `settings/set`, `cache/flush-all`) that must
+ * Use this for lightweight utility commands (e.g. `settings/set`) that must
  * run cleanly at any point in the application lifecycle, including during upgrades when external
  * module configs may reference removed core classes.
  *
