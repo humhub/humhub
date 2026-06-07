@@ -12,6 +12,7 @@ use humhub\components\Application;
 use humhub\components\console\WithoutModuleAutoload;
 use humhub\components\InstallationState;
 use humhub\modules\installer\libs\EnvironmentChecker;
+use ReflectionClass;
 use Yii;
 use yii\base\BootstrapInterface;
 use yii\base\ErrorException;
@@ -27,7 +28,8 @@ use yii\helpers\FileHelper;
  * {@see \humhub\components\ModuleManager::registerBulk()}.
  *
  * **Console commands without module dependencies** ({@see WithoutModuleAutoload}):
- * Console controllers annotated with `#[WithoutModuleAutoload]` skip module loading entirely.
+ * Console controllers annotated with `#[WithoutModuleAutoload]` skip loading external modules
+ * from `moduleAutoloadPaths`. Core modules under {@see CORE_MODULE_PATH} are always registered.
  * Use this for lightweight utility commands (e.g. `settings/set`, `cache/flush-all`) that must
  * run cleanly at any point in the application lifecycle, including during upgrades when external
  * module configs may reference removed core classes.
@@ -38,6 +40,7 @@ class ModuleAutoLoader implements BootstrapInterface
 {
     public const CACHE_ID = 'module_configs';
     public const CONFIGURATION_FILE = 'config.php';
+    public const CORE_MODULE_PATH = '@humhub/modules';
 
     /**
      * Bootstrap method to be called during application bootstrap stage.
@@ -55,6 +58,8 @@ class ModuleAutoLoader implements BootstrapInterface
         }
 
         if ($app->request->isConsoleRequest && self::hasWithoutModuleAutoloadAttribute()) {
+            $modules = self::findModules([self::CORE_MODULE_PATH]);
+            Yii::$app->moduleManager->registerBulk($modules);
             return;
         }
 
@@ -92,7 +97,7 @@ class ModuleAutoLoader implements BootstrapInterface
             return false;
         }
 
-        return !empty((new \ReflectionClass($controllerClass))->getAttributes(WithoutModuleAutoload::class));
+        return !empty((new ReflectionClass($controllerClass))->getAttributes(WithoutModuleAutoload::class));
     }
 
     /**
