@@ -9,8 +9,8 @@
 namespace humhub\modules\marketplace\commands;
 
 use humhub\components\Module;
-use humhub\models\ModuleEnabled;
 use humhub\modules\admin\libs\HumHubAPI;
+use humhub\services\ModuleService;
 use Yii;
 use yii\base\ErrorException;
 use yii\base\Exception;
@@ -127,7 +127,7 @@ class MarketplaceController extends Controller
             return;
         }
 
-        Yii::$app->moduleManager->removeModule($module->id);
+        (new ModuleService($module))->remove();
 
         print "\nModule " . $moduleId . " successfully uninstalled!\n";
     }
