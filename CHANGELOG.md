@@ -12,6 +12,7 @@ HumHub Changelog
 - Fix #8195: Improve permalink error handling for guest users
 - Fix #8196: Fix whitespace between notification bar items
 - Fix #8205: Fix permission filter alignment
+- Fix #8197: Don't use the setting "Allow individual topics" for user and space tags
 
 1.18.3 (May 18, 2026)
 ---------------------
