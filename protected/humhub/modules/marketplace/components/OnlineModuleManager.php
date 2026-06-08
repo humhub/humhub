@@ -205,7 +205,7 @@ class OnlineModuleManager extends Component
      */
     public function update($moduleId)
     {
-        $this->trigger(static::EVENT_BEFORE_UPDATE, new ModuleEvent(['module' => Yii::$app->moduleManager->getModule($moduleId)]));
+        $this->trigger(static::EVENT_BEFORE_UPDATE, new ModuleEvent(['module' => Yii::$app->moduleManager->getModule($moduleId, false)]));
 
         $moduleZipFile = $this->downloadModule($moduleId);
         $this->checkRequirements($moduleId, $moduleZipFile);
@@ -278,8 +278,11 @@ class OnlineModuleManager extends Component
         }
 
         if (!(bool)$module->settings->get('includeCommunityModules', false)) {
+            $installed = ModuleDiscoveryService::findInstalledModules();
             foreach ($this->_modules as $id => $info) {
-                if (!empty($info['isCommunity']) && !Yii::$app->moduleManager->hasModule($id)) {
+                if (!empty($info['isCommunity'])
+                    && !Yii::$app->moduleManager->hasModule($id)
+                    && !array_key_exists($id, $installed)) {
                     unset($this->_modules[$id]);
                 }
             }

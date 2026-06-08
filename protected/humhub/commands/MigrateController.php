@@ -8,8 +8,10 @@
 
 namespace humhub\commands;
 
+use humhub\components\console\WithoutModuleAutoload;
 use humhub\components\Module;
 use humhub\helpers\DatabaseHelper;
+use humhub\services\ModuleDiscoveryService;
 use Yii;
 use yii\console\controllers\BaseMigrateController;
 use yii\console\Exception;
@@ -57,6 +59,7 @@ use yii\web\Application;
  * @property-read string[] $newMigrations
  * @property-read string[] $migrationPaths
  */
+#[WithoutModuleAutoload]
 class MigrateController extends \yii\console\controllers\MigrateController
 {
     /**
@@ -66,9 +69,25 @@ class MigrateController extends \yii\console\controllers\MigrateController
     public $migrationPath = '@humhub/migrations';
 
     /**
-     * @var bool also include migration paths of all enabled modules
+     * Whether to include migration paths of all enabled modules (1=yes, 0=no).
+     *
+     * Use 0/1 on the CLI — Yii2 coerces CLI values via settype(), so the string
+     * "false" becomes bool true. Both --includeModuleMigrations=0 and
+     * --includeModuleMigrations=false map to falsy with an int property.
+     *
+     * @var int
      */
-    public bool $includeModuleMigrations = true;
+    public int $includeModuleMigrations = 1;
+
+    /**
+     * When set, only migrations for the specified module are applied.
+     * Mutually exclusive with --includeModuleMigrations=false.
+     *
+     * Example: yii migrate/up --moduleId=calendar
+     *
+     * @var string|null
+     */
+    public ?string $moduleId = null;
 
     /**
      * When includeModuleMigrations is enabled, this maps migrations to the
@@ -115,7 +134,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
     public function options($actionID): array
     {
         if ($actionID === 'up') {
-            return array_merge(parent::options($actionID), ['includeModuleMigrations']);
+            return array_merge(parent::options($actionID), ['includeModuleMigrations', 'moduleId']);
         }
 
         return parent::options($actionID);
@@ -128,10 +147,6 @@ class MigrateController extends \yii\console\controllers\MigrateController
      */
     protected function getNewMigrations(): array
     {
-        if (!$this->includeModuleMigrations) {
-            return parent::getNewMigrations();
-        }
-
         $this->migrationPathMap = [];
         $migrations = [];
         foreach ($this->getMigrationPaths() as $migrationPath) {
@@ -155,9 +170,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
      */
     protected function createMigration($class): MigrationInterface
     {
-        if ($this->includeModuleMigrations) {
-            $this->migrationPath = $this->getMigrationPath($class);
-        }
+        $this->migrationPath = $this->getMigrationPath($class);
 
         /**
          * Storing the last executed migration
@@ -195,9 +208,57 @@ class MigrateController extends \yii\console\controllers\MigrateController
      */
     protected function getMigrationPaths(): array
     {
+        // Single-module mode: run migrations only for one specific module.
+        // Intended to be called after core migrations have already run (e.g. from module/update-all).
+        if ($this->moduleId !== null) {
+            // Module is normally registered at bootstrap. Fall back to manual registration if
+            // it was skipped (e.g. its config.php threw during the initial bootstrap scan).
+            $module = Yii::$app->moduleManager->getModule($this->moduleId, false);
+            if ($module !== null) {
+                $migrationsPath = $module->getBasePath() . DIRECTORY_SEPARATOR . 'migrations';
+                return is_dir($migrationsPath) ? [$this->moduleId => $migrationsPath] : [];
+            }
+
+            $basePath = ModuleDiscoveryService::findModuleBasePath($this->moduleId);
+            if ($basePath === null) {
+                return [];
+            }
+
+            try {
+                Yii::$app->moduleManager->register($basePath);
+            } catch (\Throwable $e) {
+                Yii::error('Cannot load module config for "' . $this->moduleId . '": ' . $e->getMessage());
+                return [];
+            }
+
+            $migrationsPath = $basePath . DIRECTORY_SEPARATOR . 'migrations';
+            return is_dir($migrationsPath) ? [$this->moduleId => $migrationsPath] : [];
+        }
+
+        // Base path + core module migrations are always included.
+        // Third-party modules are only added when includeModuleMigrations is set — with
+        // #[WithoutModuleAutoload] they are not registered at bootstrap to avoid stale
+        // configs executing against a newer core during upgrades.
+        // locateModuleConfigs() is used without registerBulk() to avoid contaminating a
+        // mock ModuleManager injected by tests via Yii::$app->set('moduleManager').
         $migrationPaths = ['base' => $this->migrationPath];
 
-        foreach (($this->module ?? Yii::$app)->getModules() as $id => $config) {
+        if ($this->includeModuleMigrations) {
+            foreach (ModuleDiscoveryService::locateModuleConfigs() as $basePath => $config) {
+                $migrationsPath = $basePath . DIRECTORY_SEPARATOR . 'migrations';
+                if (is_dir($migrationsPath)) {
+                    $migrationPaths[$config['id']] = $migrationsPath;
+                }
+            }
+        }
+
+        // Core modules are always registered at bootstrap even with #[WithoutModuleAutoload].
+        // Use reflection to find their migration directories.
+        foreach (Yii::$app->getModules() as $id => $config) {
+            if (isset($migrationPaths[$id])) {
+                continue;
+            }
+
             $class = null;
             if (is_array($config) && isset($config['class'])) {
                 $class = $config['class'];
@@ -206,10 +267,14 @@ class MigrateController extends \yii\console\controllers\MigrateController
             }
 
             if ($class !== null) {
-                $reflector = new \ReflectionClass($class);
-                $path = dirname($reflector->getFileName()) . '/migrations';
-                if (is_dir($path)) {
-                    $migrationPaths[$id] = $path;
+                try {
+                    $reflector = new \ReflectionClass($class);
+                    $path = dirname($reflector->getFileName()) . '/migrations';
+                    if (is_dir($path)) {
+                        $migrationPaths[$id] = $path;
+                    }
+                } catch (\Throwable) {
+                    // module class not loadable — skip
                 }
             }
         }
