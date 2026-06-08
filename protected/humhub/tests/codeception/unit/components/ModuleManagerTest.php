@@ -10,13 +10,13 @@
 
 namespace humhub\tests\codeception\unit\components;
 
-use humhub\components\bootstrap\ModuleAutoLoader;
 use humhub\components\InstallationState;
 use humhub\components\ModuleEvent;
 use humhub\components\ModuleManager;
 use humhub\exceptions\InvalidArgumentTypeException;
 use humhub\models\ModuleEnabled;
 use humhub\modules\admin\events\ModulesEvent;
+use humhub\services\ModuleDiscoveryService;
 use humhub\services\ModuleService;
 use humhub\tests\codeception\unit\ModuleAutoLoaderTest;
 use Some\Name\Space\module1\Module as Module1;
@@ -487,6 +487,9 @@ class ModuleManagerTest extends HumHubDbTestCase
     {
         $this->skipIfMarketplaceNotEnabled();
 
+        $oldMM = Yii::$app->moduleManager;
+        Yii::$app->set('moduleManager', $this->moduleManager);
+
         [$basePath, $config] = $this->getModuleConfig(static::$testModuleRoot . '/module1');
 
         $module = $this->registerModuleAsEnabled($basePath, $config);
@@ -513,6 +516,8 @@ class ModuleManagerTest extends HumHubDbTestCase
         static::assertDirectoryExists($tmp);
 
         FileHelper::removeDirectory($tmp);
+
+        Yii::$app->set('moduleManager', $oldMM);
     }
 
     /**
@@ -526,6 +531,9 @@ class ModuleManagerTest extends HumHubDbTestCase
      */
     public function testEnableAndDisableModules()
     {
+        $oldMM = Yii::$app->moduleManager;
+        Yii::$app->set('moduleManager', $this->moduleManager);
+
         $this->moduleManager->on(ModuleManager::EVENT_BEFORE_MODULE_ENABLE, $this->handleEvent(...));
         $this->moduleManager->on(ModuleManager::EVENT_AFTER_MODULE_ENABLE, $this->handleEvent(...));
         $this->moduleManager->on(ModuleManager::EVENT_BEFORE_MODULE_DISABLE, $this->handleEvent(...));
@@ -588,6 +596,8 @@ class ModuleManagerTest extends HumHubDbTestCase
                 'module' => ['module1' => Module1::class],
             ],
         ]);
+
+        Yii::$app->set('moduleManager', $oldMM);
     }
 
     /**
@@ -889,13 +899,13 @@ class ModuleManagerTest extends HumHubDbTestCase
         Yii::$app->set('cache', new ArrayCache());
         static::assertInstanceOf(ArrayCache::class, $cache = Yii::$app->cache);
 
-        static::assertFalse($cache->get(ModuleAutoLoader::CACHE_ID));
-        Yii::$app->cache->set(ModuleAutoLoader::CACHE_ID, ['foo' => 'bar']);
-        static::assertEquals(['foo' => 'bar'], $cache->get(ModuleAutoLoader::CACHE_ID));
+        static::assertFalse($cache->get(ModuleDiscoveryService::CACHE_ID));
+        Yii::$app->cache->set(ModuleDiscoveryService::CACHE_ID, ['foo' => 'bar']);
+        static::assertEquals(['foo' => 'bar'], $cache->get(ModuleDiscoveryService::CACHE_ID));
 
         $this->moduleManager->flushCache();
 
-        static::assertFalse($cache->get(ModuleAutoLoader::CACHE_ID));
+        static::assertFalse($cache->get(ModuleDiscoveryService::CACHE_ID));
 
         Yii::$app->set('cache', $oldCache);
     }
