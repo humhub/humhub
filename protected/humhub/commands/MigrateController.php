@@ -228,14 +228,29 @@ class MigrateController extends \yii\console\controllers\MigrateController
             return is_dir($migrationsPath) ? [$this->moduleId => $migrationsPath] : [];
         }
 
-        // All-modules mode: load every third-party module explicitly (since #[WithoutModuleAutoload]
-        // skipped them at bootstrap) and collect their migration paths.
-        $configs = ModuleDiscoveryService::locateModuleConfigs();
-        Yii::$app->moduleManager->registerBulk($configs);
-
+        // All-modules mode: collect migration paths from two sources without mutating the module manager.
+        //
+        // 1. Third-party modules: read migration paths directly from locateModuleConfigs() output.
+        //    We intentionally do NOT call registerBulk() here — registering all modules as a side
+        //    effect of getMigrationPaths() would corrupt test isolation and contaminate any
+        //    ModuleManager instance that callers have injected via Yii::$app->set('moduleManager').
+        //
+        // 2. Core modules: already registered at bootstrap (#[WithoutModuleAutoload] still loads
+        //    @humhub/modules), so we can resolve their paths via ReflectionClass.
         $migrationPaths = ['base' => $this->migrationPath];
 
+        foreach (ModuleDiscoveryService::locateModuleConfigs() as $basePath => $config) {
+            $migrationsPath = $basePath . DIRECTORY_SEPARATOR . 'migrations';
+            if (is_dir($migrationsPath)) {
+                $migrationPaths[$config['id']] = $migrationsPath;
+            }
+        }
+
         foreach (Yii::$app->getModules() as $id => $config) {
+            if (isset($migrationPaths[$id])) {
+                continue;
+            }
+
             $class = null;
             if (is_array($config) && isset($config['class'])) {
                 $class = $config['class'];
