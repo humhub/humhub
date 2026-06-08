@@ -9,6 +9,7 @@
 namespace humhub\modules\marketplace\commands;
 
 use humhub\components\Module;
+use humhub\models\ModuleEnabled;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\services\ModuleService;
 use Yii;
