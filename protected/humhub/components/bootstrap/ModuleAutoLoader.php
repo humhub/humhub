@@ -49,14 +49,31 @@ class ModuleAutoLoader implements BootstrapInterface
             EnvironmentChecker::preInstallChecks();
         }
 
-        if ($app->request->isConsoleRequest && self::hasWithoutModuleAutoloadAttribute()) {
-            $modules = ModuleDiscoveryService::loadModuleConfigs([ModuleDiscoveryService::CORE_MODULE_PATH]);
+        if (!$app->request->isConsoleRequest) {
+            $modules = ModuleDiscoveryService::locateModuleConfigs();
             Yii::$app->moduleManager->registerBulk($modules);
             return;
         }
 
-        $modules = ModuleDiscoveryService::locateModuleConfigs();
-        Yii::$app->moduleManager->registerBulk($modules);
+        // Console: always register core modules first so their consoleControllerMap entries
+        // land in Yii::$app->controllerMap before hasWithoutModuleAutoloadAttribute() reads it
+        $coreModules = ModuleDiscoveryService::loadModuleConfigs([ModuleDiscoveryService::CORE_MODULE_PATH]);
+        Yii::$app->moduleManager->registerBulk($coreModules);
+
+        if (self::hasWithoutModuleAutoloadAttribute()) {
+            return;
+        }
+
+        // Normal console command: also load third-party modules
+        $thirdPartyPaths = array_values(array_filter(
+            Yii::$app->params['moduleAutoloadPaths'] ?? [],
+            fn($path) => $path !== ModuleDiscoveryService::CORE_MODULE_PATH,
+        ));
+
+        if (!empty($thirdPartyPaths)) {
+            $thirdPartyModules = ModuleDiscoveryService::loadModuleConfigs($thirdPartyPaths);
+            Yii::$app->moduleManager->registerBulk($thirdPartyModules);
+        }
     }
 
     /**
