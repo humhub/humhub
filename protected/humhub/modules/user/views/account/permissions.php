@@ -21,7 +21,9 @@ use yii\helpers\Url;
     </div>
 
     <div class="clearfix">
-        <?= PermisionGridModuleFilter::widget() ?>
+        <div class="float-end me-2 mb-2">
+            <?= PermisionGridModuleFilter::widget() ?>
+        </div>
     </div>
 
     <?php if ($multipleGroups) : ?>
