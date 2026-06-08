@@ -8,7 +8,6 @@
 
 namespace humhub\commands;
 
-use humhub\components\console\WithoutModuleAutoload;
 use humhub\components\Module;
 use humhub\helpers\DatabaseHelper;
 use humhub\services\ModuleDiscoveryService;
@@ -59,7 +58,6 @@ use yii\web\Application;
  * @property-read string[] $newMigrations
  * @property-read string[] $migrationPaths
  */
-#[WithoutModuleAutoload]
 class MigrateController extends \yii\console\controllers\MigrateController
 {
     /**
@@ -69,9 +67,15 @@ class MigrateController extends \yii\console\controllers\MigrateController
     public $migrationPath = '@humhub/migrations';
 
     /**
-     * @var bool also include migration paths of all enabled modules
+     * Whether to include migration paths of all enabled modules (1=yes, 0=no).
+     *
+     * Use 0/1 on the CLI — Yii2 coerces CLI values via settype(), so the string
+     * "false" becomes bool true. Both --includeModuleMigrations=0 and
+     * --includeModuleMigrations=false map to falsy with an int property.
+     *
+     * @var int
      */
-    public bool $includeModuleMigrations = true;
+    public int $includeModuleMigrations = 1;
 
     /**
      * When set, only migrations for the specified module are applied.
@@ -209,9 +213,17 @@ class MigrateController extends \yii\console\controllers\MigrateController
      */
     protected function getMigrationPaths(): array
     {
-        // Single-module mode: load just that module and return only its migration path.
-        // Does not include core — intended to be called after core migrations have already run.
+        // Single-module mode: run migrations only for one specific module.
+        // Intended to be called after core migrations have already run (e.g. from module/update-all).
         if ($this->moduleId !== null) {
+            // Module is normally registered at bootstrap. Fall back to manual registration if
+            // it was skipped (e.g. its config.php threw during the initial bootstrap scan).
+            $module = Yii::$app->moduleManager->getModule($this->moduleId, false);
+            if ($module !== null) {
+                $migrationsPath = $module->getBasePath() . DIRECTORY_SEPARATOR . 'migrations';
+                return is_dir($migrationsPath) ? [$this->moduleId => $migrationsPath] : [];
+            }
+
             $basePath = ModuleDiscoveryService::findModuleBasePath($this->moduleId);
             if ($basePath === null) {
                 return [];
@@ -228,23 +240,11 @@ class MigrateController extends \yii\console\controllers\MigrateController
             return is_dir($migrationsPath) ? [$this->moduleId => $migrationsPath] : [];
         }
 
-        // All-modules mode: collect migration paths from two sources without mutating the module manager.
-        //
-        // 1. Third-party modules: read migration paths directly from locateModuleConfigs() output.
-        //    We intentionally do NOT call registerBulk() here — registering all modules as a side
-        //    effect of getMigrationPaths() would corrupt test isolation and contaminate any
-        //    ModuleManager instance that callers have injected via Yii::$app->set('moduleManager').
-        //
-        // 2. Core modules: already registered at bootstrap (#[WithoutModuleAutoload] still loads
-        //    @humhub/modules), so we can resolve their paths via ReflectionClass.
+        // All-modules mode: all modules are already registered at bootstrap by ModuleAutoLoader.
+        // Yii::$app->getModules() has both core and third-party modules; resolve paths via reflection.
+        // We intentionally do NOT call registerBulk() here — that would contaminate any
+        // ModuleManager injected by tests via Yii::$app->set('moduleManager').
         $migrationPaths = ['base' => $this->migrationPath];
-
-        foreach (ModuleDiscoveryService::locateModuleConfigs() as $basePath => $config) {
-            $migrationsPath = $basePath . DIRECTORY_SEPARATOR . 'migrations';
-            if (is_dir($migrationsPath)) {
-                $migrationPaths[$config['id']] = $migrationsPath;
-            }
-        }
 
         foreach (Yii::$app->getModules() as $id => $config) {
             if (isset($migrationPaths[$id])) {
