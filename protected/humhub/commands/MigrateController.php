@@ -242,31 +242,11 @@ class MigrateController extends \yii\console\controllers\MigrateController
             return is_dir($migrationsPath) ? [$this->moduleId => $migrationsPath] : [];
         }
 
-        // All-modules mode: #[WithoutModuleAutoload] means third-party modules are NOT registered
-        // at bootstrap (to avoid old module configs executing against a newer core during upgrades).
-        //
-        // We still need two things from those modules:
-        //   1. Their migration paths — read directly from locateModuleConfigs() output.
-        //   2. PHP class autoloading for migration files that reference module models.
-        //      Yii resolves classes via aliases set in ModuleManager::register(). We replicate
-        //      only the alias setup here — intentionally skipping the full register()/registerBulk()
-        //      to avoid (a) bootstrap side-effects and (b) contaminating a mock ModuleManager
-        //      injected by tests via Yii::$app->set('moduleManager').
+        // All-modules mode: third-party modules are not registered at bootstrap
+        // (#[WithoutModuleAutoload] skips them to avoid stale configs running against a new core).
+        // Read migration paths directly from locateModuleConfigs() — no registerBulk() needed,
+        // which would contaminate a mock ModuleManager injected by tests.
         $configs = ModuleDiscoveryService::locateModuleConfigs();
-
-        foreach ($configs as $basePath => $config) {
-            if (!empty($config['namespace'])) {
-                Yii::setAlias('@' . str_replace('\\', '/', $config['namespace']), $basePath);
-            }
-            if (!empty($config['id'])) {
-                Yii::setAlias('@' . $config['id'], $basePath);
-            }
-            if (!empty($config['aliases']) && is_array($config['aliases'])) {
-                foreach ($config['aliases'] as $name => $value) {
-                    Yii::setAlias($name, $value);
-                }
-            }
-        }
 
         $migrationPaths = ['base' => $this->migrationPath];
 
