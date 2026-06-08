@@ -11,6 +11,8 @@ namespace humhub\modules\marketplace\components;
 use humhub\components\ModuleEvent;
 use humhub\models\ModuleEnabled;
 use humhub\modules\admin\libs\HumHubAPI;
+use humhub\services\ModuleDiscoveryService;
+use humhub\services\ModuleService;
 use humhub\modules\marketplace\models\Module as ModelModule;
 use humhub\modules\marketplace\Module;
 use humhub\modules\marketplace\services\MarketplaceService;
@@ -213,7 +215,10 @@ class OnlineModuleManager extends Component
             Yii::$app->setModule($moduleId, null);
         }
 
-        Yii::$app->moduleManager->removeModule($moduleId, false);
+        $moduleToRemove = Yii::$app->moduleManager->getModule($moduleId, false);
+        if ($moduleToRemove !== null) {
+            (new ModuleService($moduleToRemove))->remove(false);
+        }
 
         $this->install($moduleId);
 
@@ -335,22 +340,40 @@ class OnlineModuleManager extends Component
         $updates = [];
 
         foreach ($this->getModules($cached) as $moduleId => $moduleInfo) {
+            if (!isset($moduleInfo['latestCompatibleVersion'])) {
+                continue;
+            }
 
-            if (isset($moduleInfo['latestCompatibleVersion']) && Yii::$app->moduleManager->hasModule($moduleId)) {
+            $installedVersion = $this->getInstalledVersion($moduleId);
+            if ($installedVersion === null) {
+                continue;
+            }
 
-                $module = Yii::$app->moduleManager->getModule($moduleId);
-
-                if ($module !== null) {
-                    if (version_compare($moduleInfo['latestCompatibleVersion'], $module->getVersion(), 'gt')) {
-                        $updates[$moduleId] = $moduleInfo;
-                    }
-                } else {
-                    Yii::error('Could not load module: ' . $moduleId . ' to get updates');
-                }
+            if (version_compare($moduleInfo['latestCompatibleVersion'], $installedVersion, 'gt')) {
+                $updates[$moduleId] = $moduleInfo;
             }
         }
 
         return $updates;
+    }
+
+    /**
+     * Returns the installed version of a module.
+     *
+     * Prefers the loaded module instance for accuracy; falls back to reading module.json
+     * from the filesystem when the module could not be loaded (e.g. during upgrades when
+     * the module config references a removed core class).
+     */
+    private function getInstalledVersion(string $moduleId): ?string
+    {
+        if (Yii::$app->moduleManager->hasModule($moduleId)) {
+            $module = Yii::$app->moduleManager->getModule($moduleId, false);
+            if ($module !== null) {
+                return $module->getVersion();
+            }
+        }
+
+        return ModuleDiscoveryService::findInstalledVersion($moduleId);
     }
 
     /**

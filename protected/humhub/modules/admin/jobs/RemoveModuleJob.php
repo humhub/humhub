@@ -10,6 +10,7 @@ namespace humhub\modules\admin\jobs;
 
 use humhub\modules\queue\ActiveJob;
 use humhub\modules\queue\interfaces\ExclusiveJobInterface;
+use humhub\services\ModuleService;
 use Yii;
 
 class RemoveModuleJob extends ActiveJob implements ExclusiveJobInterface
@@ -24,6 +25,7 @@ class RemoveModuleJob extends ActiveJob implements ExclusiveJobInterface
 
     public function run()
     {
-        Yii::$app->moduleManager->removeModule($this->moduleId);
+        $module = Yii::$app->moduleManager->getModule($this->moduleId);
+        (new ModuleService($module))->remove();
     }
 }

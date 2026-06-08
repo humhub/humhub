@@ -189,13 +189,14 @@ class MigrateController extends \yii\console\controllers\MigrateController
     }
 
     /**
-     * Returns the migration paths of all enabled modules
+     * Returns the migration paths of all enabled modules.
      *
      * @return string[]
      */
     protected function getMigrationPaths(): array
     {
         $migrationPaths = ['base' => $this->migrationPath];
+
         foreach (($this->module ?? Yii::$app)->getModules() as $id => $config) {
             $class = null;
             if (is_array($config) && isset($config['class'])) {

@@ -91,7 +91,9 @@ class HumHubDbTestCase extends Unit
         $cfg = Configuration::config();
 
         if (!empty($cfg['humhub_modules'])) {
-            Yii::$app->moduleManager->enableModules($cfg['humhub_modules']);
+            foreach ($cfg['humhub_modules'] as $moduleId) {
+                Yii::$app->moduleManager->getModule($moduleId)->enable();
+            }
         }
     }
 
