@@ -16,6 +16,7 @@ use yii\web\View;
 
 /* @var $this View */
 /* @var $space Space */
+/* @var $spaceStatus string|null */
 ?>
 
 <div class="card-panel<?= $space->isArchived() ? ' card-archived' : '' ?>" data-space-id="<?= $space->id ?>" data-space-guid="<?= $space->guid ?>">
@@ -34,8 +35,8 @@ use yii\web\View;
         </div>
     </div>
     <div class="card-body">
-        <a href="<?= $space->getUrl() ?>" class="card-space-link" aria-label="<?= Html::encode($space->name) ?>">
-            <strong class="card-title"><?= Html::encode($space->name) ?></strong>
+        <a href="<?= $space->getUrl() ?>" class="card-space-link" aria-label="<?= Html::encode($space->name . ($spaceStatus ? ' - ' . $spaceStatus : '')) ?>">
+            <h3 class="card-title"><?= Html::encode($space->name) ?></h3>
             <?php if (trim((string) $space->description) !== '') : ?>
                 <div class="card-details"><?= Html::encode($space->description) ?></div>
             <?php endif; ?>
