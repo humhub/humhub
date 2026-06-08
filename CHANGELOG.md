@@ -5,6 +5,7 @@ HumHub Changelog
 ----------
 - Enh: Added `#[WithoutModuleAutoload]` attribute for console controllers that do not require module loading (e.g. `settings/*`, `cache/*`)
 - Enh #8214: Introduced `ModuleDiscoveryService` centralising all module filesystem discovery and `ModuleService` encapsulating per-module lifecycle operations (enable, disable, remove); slimmed down `ModuleAutoLoader` and `ModuleManager`
+- Enh: Refactored `MarketplaceController` CLI — skips third-party module autoloading at bootstrap (`#[WithoutModuleAutoload]`), loads each module on demand, and runs `update-all` sub-updates in isolated subprocesses
 - Enh: Icon-only `Button` automatically derives `aria-label` from tooltip; logs a warning in `YII_DEBUG` mode when neither is set
 - Enh: Improved community module handling in the marketplace — admins can opt in via a new "Include community modules" option to show modules contributed by the community
 - Fix #8181: Encoded HTML entities in notification mail subjects

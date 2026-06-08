@@ -278,8 +278,9 @@ class OnlineModuleManager extends Component
         }
 
         if (!(bool)$module->settings->get('includeCommunityModules', false)) {
+            $installed = ModuleDiscoveryService::findInstalledModules();
             foreach ($this->_modules as $id => $info) {
-                if (!empty($info['isCommunity']) && !Yii::$app->moduleManager->hasModule($id)) {
+                if (!empty($info['isCommunity']) && !array_key_exists($id, $installed)) {
                     unset($this->_modules[$id]);
                 }
             }
