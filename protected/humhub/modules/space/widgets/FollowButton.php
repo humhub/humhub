@@ -122,6 +122,11 @@ class FollowButton extends Widget
             '{spaceName}' => '<strong>' . Html::encode($this->space->getDisplayName()) . '</strong>',
         ]);
 
+        if ($this->space->isFollowedByUser()) {
+            $this->unfollowOptions['aria-pressed'] = 'true';
+            $this->followOptions['aria-pressed'] = 'false';
+        }
+
         $module = Yii::$app->getModule('space');
 
         // still enable unfollow if following was disabled afterwards.

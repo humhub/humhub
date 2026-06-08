@@ -117,6 +117,11 @@ class UserFollowButton extends Widget
             '{userName}' => '<strong>' . Html::encode($this->user->getDisplayName()) . '</strong>',
         ]);
 
+        if ($this->user->isFollowedByUser()) {
+            $this->unfollowOptions['aria-pressed'] = 'true';
+            $this->followOptions['aria-pressed'] = 'false';
+        }
+
         $module = Yii::$app->getModule('user');
 
         // still enable unfollow if following was disabled afterwards.
