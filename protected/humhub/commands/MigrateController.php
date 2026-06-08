@@ -147,11 +147,6 @@ class MigrateController extends \yii\console\controllers\MigrateController
      */
     protected function getNewMigrations(): array
     {
-        // Core-only mode: use parent directly with the base migrationPath.
-        if (!$this->includeModuleMigrations && $this->moduleId === null) {
-            return parent::getNewMigrations();
-        }
-
         $this->migrationPathMap = [];
         $migrations = [];
         foreach ($this->getMigrationPaths() as $migrationPath) {
@@ -175,9 +170,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
      */
     protected function createMigration($class): MigrationInterface
     {
-        if ($this->includeModuleMigrations) {
-            $this->migrationPath = $this->getMigrationPath($class);
-        }
+        $this->migrationPath = $this->getMigrationPath($class);
 
         /**
          * Storing the last executed migration
@@ -242,22 +235,24 @@ class MigrateController extends \yii\console\controllers\MigrateController
             return is_dir($migrationsPath) ? [$this->moduleId => $migrationsPath] : [];
         }
 
-        // All-modules mode: third-party modules are not registered at bootstrap
-        // (#[WithoutModuleAutoload] skips them to avoid stale configs running against a new core).
-        // Read migration paths directly from locateModuleConfigs() — no registerBulk() needed,
-        // which would contaminate a mock ModuleManager injected by tests.
-        $configs = ModuleDiscoveryService::locateModuleConfigs();
-
+        // Base path + core module migrations are always included.
+        // Third-party modules are only added when includeModuleMigrations is set — with
+        // #[WithoutModuleAutoload] they are not registered at bootstrap to avoid stale
+        // configs executing against a newer core during upgrades.
+        // locateModuleConfigs() is used without registerBulk() to avoid contaminating a
+        // mock ModuleManager injected by tests via Yii::$app->set('moduleManager').
         $migrationPaths = ['base' => $this->migrationPath];
 
-        foreach ($configs as $basePath => $config) {
-            $migrationsPath = $basePath . DIRECTORY_SEPARATOR . 'migrations';
-            if (is_dir($migrationsPath)) {
-                $migrationPaths[$config['id']] = $migrationsPath;
+        if ($this->includeModuleMigrations) {
+            foreach (ModuleDiscoveryService::locateModuleConfigs() as $basePath => $config) {
+                $migrationsPath = $basePath . DIRECTORY_SEPARATOR . 'migrations';
+                if (is_dir($migrationsPath)) {
+                    $migrationPaths[$config['id']] = $migrationsPath;
+                }
             }
         }
 
-        // Core modules are registered at bootstrap even with #[WithoutModuleAutoload].
+        // Core modules are always registered at bootstrap even with #[WithoutModuleAutoload].
         // Use reflection to find their migration directories.
         foreach (Yii::$app->getModules() as $id => $config) {
             if (isset($migrationPaths[$id])) {
