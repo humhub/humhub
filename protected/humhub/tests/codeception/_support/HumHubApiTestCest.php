@@ -48,7 +48,7 @@ class HumHubApiTestCest
             $recordModelClass = $this->recordModelClass;
         }
 
-        $record = $recordModelClass::findOne(['id' => $id]);
+        $record = $recordModelClass::findOne([$recordModelClass::tableName() . '.id' => $id]);
 
         return ($record ? call_user_func($this->recordDefinitionFunction, $record) : []);
     }
@@ -63,7 +63,7 @@ class HumHubApiTestCest
             $recordDefinitionFunction = $this->recordDefinitionFunction;
         }
 
-        $recordsQuery = $recordModelClass::find()->where(['IN', 'id', $ids]);
+        $recordsQuery = $recordModelClass::find()->where(['IN', $recordModelClass::tableName() . '.id', $ids]);
 
         $records = [];
         foreach ($recordsQuery->all() as $record) {

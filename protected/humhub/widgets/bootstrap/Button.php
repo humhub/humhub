@@ -217,7 +217,19 @@ class Button extends \yii\bootstrap5\Button
         }
 
         if ($this->label === null && $this->icon !== null) {
-            $this->cssClass('btn-icon-only')->ariaLabel();
+            $this->cssClass('btn-icon-only');
+
+            if (!isset($this->options['aria-label'])) {
+                $tooltip = $this->options['data-bs-title'] ?? null;
+                if ($tooltip) {
+                    $this->options['aria-label'] = $tooltip;
+                } elseif (YII_DEBUG) {
+                    Yii::warning(
+                        'Icon-only button rendered without tooltip/aria-label (icon: ' . $this->icon->name . ')',
+                        'accessibility',
+                    );
+                }
+            }
         }
 
         $text = $this->icon . ($this->encodeLabel ? Html::encode($this->label) : $this->label);

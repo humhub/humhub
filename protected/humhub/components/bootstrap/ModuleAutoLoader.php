@@ -9,8 +9,10 @@
 namespace humhub\components\bootstrap;
 
 use humhub\components\Application;
+use humhub\components\console\WithoutModuleAutoload;
 use humhub\components\InstallationState;
 use humhub\modules\installer\libs\EnvironmentChecker;
+use ReflectionClass;
 use Yii;
 use yii\base\BootstrapInterface;
 use yii\base\ErrorException;
@@ -19,7 +21,18 @@ use yii\base\InvalidConfigException;
 use yii\helpers\FileHelper;
 
 /**
- * ModuleAutoLoader automatically searches for config.php files in module folder an executes them.
+ * ModuleAutoLoader discovers and registers all available modules during application bootstrap.
+ *
+ * It scans all paths listed in the `moduleAutoloadPaths` application parameter for directories
+ * containing a `config.php` file and passes the resulting configurations to
+ * {@see \humhub\components\ModuleManager::registerBulk()}.
+ *
+ * **Console commands without module dependencies** ({@see WithoutModuleAutoload}):
+ * Console controllers annotated with `#[WithoutModuleAutoload]` skip loading external modules
+ * from `moduleAutoloadPaths`. Core modules under {@see CORE_MODULE_PATH} are always registered.
+ * Use this for lightweight utility commands (e.g. `settings/set`, `cache/flush-all`) that must
+ * run cleanly at any point in the application lifecycle, including during upgrades when external
+ * module configs may reference removed core classes.
  *
  * @author luke
  */
@@ -27,6 +40,7 @@ class ModuleAutoLoader implements BootstrapInterface
 {
     public const CACHE_ID = 'module_configs';
     public const CONFIGURATION_FILE = 'config.php';
+    public const CORE_MODULE_PATH = '@humhub/modules';
 
     /**
      * Bootstrap method to be called during application bootstrap stage.
@@ -43,8 +57,47 @@ class ModuleAutoLoader implements BootstrapInterface
             EnvironmentChecker::preInstallChecks();
         }
 
+        if ($app->request->isConsoleRequest && self::hasWithoutModuleAutoloadAttribute()) {
+            $modules = self::findModules([self::CORE_MODULE_PATH]);
+            Yii::$app->moduleManager->registerBulk($modules);
+            return;
+        }
+
         $modules = self::locateModules();
         Yii::$app->moduleManager->registerBulk($modules);
+    }
+
+    /**
+     * Returns true if the current console command's controller class is annotated
+     * with {@see WithoutModuleAutoload}, indicating it does not require modules.
+     *
+     * Module loading is only skipped when the database is available — broken module
+     * configs can only occur on an installed system, not during initial setup or CI
+     * environments where the database has not yet been created.
+     */
+    private static function hasWithoutModuleAutoloadAttribute(): bool
+    {
+        if (!Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
+            return false;
+        }
+
+        $route = $_SERVER['argv'][1] ?? '';
+        $controllerId = explode('/', $route)[0];
+
+        if (empty($controllerId)) {
+            return false;
+        }
+
+        $map = Yii::$app->controllerMap[$controllerId] ?? null;
+        $controllerClass = is_array($map)
+            ? ($map['class'] ?? null)
+            : ($map ?? (Yii::$app->controllerNamespace . '\\' . ucfirst($controllerId) . 'Controller'));
+
+        if ($controllerClass === null || !class_exists($controllerClass)) {
+            return false;
+        }
+
+        return !empty((new ReflectionClass($controllerClass))->getAttributes(WithoutModuleAutoload::class));
     }
 
     /**

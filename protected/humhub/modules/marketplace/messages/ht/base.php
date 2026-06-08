@@ -111,6 +111,7 @@ The license was successfully removed!
 ' => '',
     'Module not found!
 ' => '',
+    'Module options' => '',
     'More info' => '',
     'New' => '',
     'No compatible module version found!' => '',
