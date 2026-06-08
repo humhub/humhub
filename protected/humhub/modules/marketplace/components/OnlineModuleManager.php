@@ -205,7 +205,7 @@ class OnlineModuleManager extends Component
      */
     public function update($moduleId)
     {
-        $this->trigger(static::EVENT_BEFORE_UPDATE, new ModuleEvent(['module' => Yii::$app->moduleManager->getModule($moduleId)]));
+        $this->trigger(static::EVENT_BEFORE_UPDATE, new ModuleEvent(['module' => Yii::$app->moduleManager->getModule($moduleId, false)]));
 
         $moduleZipFile = $this->downloadModule($moduleId);
         $this->checkRequirements($moduleId, $moduleZipFile);
