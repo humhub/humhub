@@ -36,5 +36,13 @@ abstract class LeftNavigation extends Menu
         ];
     }
 
-
+    /**
+     * @inheritdoc
+     */
+    protected function getOptions()
+    {
+        return array_merge(parent::getOptions(), [
+            'aria-label' => strip_tags($this->panelTitle),
+        ]);
+    }
 }

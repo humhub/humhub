@@ -28,7 +28,7 @@ class HumHubApiTestCest
             return;
         }
 
-        Yii::$app->moduleManager->enableModules(['rest']);
+        Yii::$app->moduleManager->getModule('rest')->enable();
 
         /* @var Module $module */
         $module = Yii::$app->moduleManager->getModule('rest');

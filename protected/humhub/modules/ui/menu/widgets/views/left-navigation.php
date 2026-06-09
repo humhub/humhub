@@ -11,9 +11,9 @@ use humhub\modules\ui\menu\widgets\LeftNavigation;
 /* @var $options [] */
 ?>
 
-<?= Html::beginTag('div', $options) ?>
+<?= Html::beginTag('nav', $options) ?>
 <?php if (!empty($menu->panelTitle)) : ?>
-    <div class="panel-heading"><?= $menu->panelTitle; ?></div>
+    <h2 class="panel-heading"><?= $menu->panelTitle ?></h2>
 <?php endif; ?>
 
 <div class="list-group list-group-horizontal list-group-vertical-lg">
@@ -21,4 +21,4 @@ use humhub\modules\ui\menu\widgets\LeftNavigation;
         <?= $entry->render(['class' => 'list-group-item']) ?>
     <?php endforeach; ?>
 </div>
-<?= Html::endTag('div') ?>
+<?= Html::endTag('nav') ?>

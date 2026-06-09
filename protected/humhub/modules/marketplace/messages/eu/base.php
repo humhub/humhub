@@ -2,12 +2,6 @@
 
 return [
     '
-Module successfully disabled!
-' => 'Modulua desaktibatuta dago!',
-    '
-Module successfully enabled!
-' => 'Moduluak arrakasta izan du!',
-    '
 No active Professional Edition license found!
 ' => 'Ez dago Argitalpen Profesionalerako lizentzia aktiborik!',
     '
@@ -21,12 +15,6 @@ The license was successfully activated!
 The license was successfully removed!
 
 ' => 'Lizentzia arrakastaz kendu dute!',
-    '--- Disable module: {moduleId} ---
-
-' => '--- Modulua desaktibatzea: {moduleId} ---',
-    '--- Enable module: {moduleId} ---
-
-' => '--- Gaitu modulua: {moduleId} ---',
     '<strong>Activate</strong> your Professional Edition' => '<strong>Aktibatu</strong> zure edizio profesionala',
     '<strong>General</strong> Settings' => 'Parametro <strong>orokorrak</strong>',
     'A new update is available (HumHub %version%)!' => 'Beste eguneratze bat dago (HumHub %version%)!',
@@ -46,8 +34,6 @@ The license was successfully removed!
     'Community' => 'Komunitate',
     'Configure' => 'Konfiguratu',
     'Could not connect to HumHub API!' => 'Ezin naiz HumHubeko APIra konektatu!',
-    'Could not connect to HumHub API!
-' => 'Ezin naiz HumHubeko APIra konektatu!',
     'Could not connect to license server!' => 'Ezin zen lizentzien zerbitzariarekin konektatu!',
     'Could not extract module!' => 'Ezin izan dut modulua atera!',
     'Could not find requested module!' => 'Ezin izan da aurkitu eskatutako modulua!',
@@ -67,8 +53,6 @@ The license was successfully removed!
     'Install' => 'Instalatu',
     'Installed' => 'Instalatua',
     'Invalid module license key!' => 'Modulu-lizentziaren gakoa ez da baliozkoa!',
-    'Invalid module license key!
-' => 'Modulu-lizentziaren gakoa ez da baliozkoa!',
     'Latest version:' => 'Azken bertsioa:',
     'Learn more' => 'Gehiago ikasi.',
     'License Key:' => 'Key lizentzia:',
@@ -88,14 +72,6 @@ The license was successfully removed!
     'Module download failed! (%error%)' => 'Moduluaren deskargak huts egin du! (%error%)',
     'Module is <strong>installing...</strong>' => 'Modulua <strong>instalatzen</strong> ari da...',
     'Module license added!' => 'Lizentzia erantsiaren modulua!',
-    'Module license added!
-' => 'Lizentzia erantsiaren modulua!',
-    'Module license key cannot be empty!
-' => 'Moduluko lizentziaren giltza ezin da hutsik egon!',
-    'Module not found or enabled!
-' => 'Modulua ez da aurkitu edo ez dago gaituta!',
-    'Module not found!
-' => 'Modulua ez da aurkitu!',
     'More info' => 'Informazio gehiago',
     'New' => 'Berria',
     'No compatible module version found!' => 'Ez da modulu bateragarriaren bertsiorik aurkitu !',

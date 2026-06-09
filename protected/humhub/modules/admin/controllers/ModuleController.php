@@ -142,14 +142,10 @@ class ModuleController extends Controller
 
         $moduleId = Yii::$app->request->get('moduleId');
 
-        if (Yii::$app->moduleManager->hasModule($moduleId) && Yii::$app->moduleManager->canRemoveModule($moduleId)) {
-            /* @var Module $module */
-            $module = Yii::$app->moduleManager->getModule($moduleId);
+        /* @var Module $module */
+        $module = Yii::$app->moduleManager->getModule($moduleId, false);
 
-            if ($module == null) {
-                throw new HttpException(500, Yii::t('AdminModule.modules', 'Could not find requested module!'));
-            }
-
+        if ($module !== null && $module->getModuleService()->canRemove()) {
             if (!is_writable(realpath($module->getBasePath()))) {
                 throw new HttpException(500, Yii::t('AdminModule.modules', 'Module path %path% is not writeable!', ['%path%' => $module->getBasePath()]));
             }

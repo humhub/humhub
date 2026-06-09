@@ -2,12 +2,6 @@
 
 return [
     '
-Module successfully disabled!
-' => 'Modul je uspešno onemogućen!',
-    '
-Module successfully enabled!
-' => 'Modul je uspešno omogućen!',
-    '
 No active Professional Edition license found!
 ' => 'Nije pronadjena aktivna licenca za profesionalno izdanje',
     '
@@ -21,12 +15,6 @@ The license was successfully activated!
 The license was successfully removed!
 
 ' => 'Licenca je uspešno uklonjena',
-    '--- Disable module: {moduleId} ---
-
-' => '--- Onemogući modul: {moduleId} ---',
-    '--- Enable module: {moduleId} ---
-
-' => '--- Omogući modul: {moduleId} ---',
     '<strong>Activate</strong> your Professional Edition' => '<strong>Aktiviraj</strong> vašu profesionalnu verziju',
     '<strong>General</strong> Settings' => 'Generalna podešavanja',
     'A new update is available (HumHub %version%)!' => 'Novo ažuriranje je dostupno',
@@ -80,8 +68,6 @@ The license was successfully removed!
     'Module download failed! (%error%)' => 'Preuzimanje modula nije uspjelo! (%error%)',
     'Module is <strong>installing...</strong>' => 'Module se <strong>instalira...</strong>',
     'Module license added!' => 'Dodata je licenca modula',
-    'Module not found!
-' => 'Modul nije pronađen!',
     'More info' => 'Više info',
     'New' => 'Novi',
     'No compatible module version found!' => 'Nisu pronađene kompatibilne verzije modula!',
@@ -121,8 +107,6 @@ The license was successfully removed!
     'Buy unverified community module?' => '',
     'Community modules are developed by third parties and are <strong>not tested or maintained by the HumHub team</strong>.<br><br>They may not be compatible with your HumHub version, can cause <strong>instability or unexpected behavior</strong>, and may stop working after future updates. Their long-term maintenance is not guaranteed.<br><br>Only enable this option if you understand the risks and trust the source of the module you intend to install.' => '',
     'Continue to checkout' => '',
-    'Could not connect to HumHub API!
-' => '',
     'Description, Name, Keywords...' => '',
     'Edit License' => '',
     'Enable now' => '',
@@ -132,16 +116,8 @@ The license was successfully removed!
     'Include unverified community modules?' => '',
     'Install anyway' => '',
     'Install unverified community module?' => '',
-    'Invalid module license key!
-' => '',
     'Module <strong>enabled</strong>' => '',
     'Module Administration' => '',
-    'Module license added!
-' => '',
-    'Module license key cannot be empty!
-' => '',
-    'Module not found or enabled!
-' => '',
     'Module options' => '',
     'No, thank you!' => '',
     'Unverified Community' => '',

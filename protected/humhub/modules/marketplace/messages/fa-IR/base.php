@@ -23,8 +23,6 @@ return [
     'Max. users:' => 'بیشینه کاربران:',
     'Module directory %modulePath% is not writeable!' => 'پوشه‌ی ماژول %modulePath% نوشتنی نیست!',
     'Module download failed! (%error%)' => 'بارگیری ماژول ناموفق بود! (%error%)',
-    'Module not found!
-' => 'ماژول پیدا نشد!',
     'More info' => 'اطلاعات بیشتر',
     'New' => 'جدید',
     'No compatible module version found!' => 'هیچ نسخه‌ی ماژول سازگاری یافت نشد!',
@@ -40,12 +38,6 @@ return [
     'Update' => 'به‌روزرسانی',
     'Version:' => 'نسخه:',
     '
-Module successfully disabled!
-' => '',
-    '
-Module successfully enabled!
-' => '',
-    '
 No active Professional Edition license found!
 ' => '',
     '
@@ -57,12 +49,6 @@ The license was successfully activated!
 ' => '',
     '
 The license was successfully removed!
-
-' => '',
-    '--- Disable module: {moduleId} ---
-
-' => '',
-    '--- Enable module: {moduleId} ---
 
 ' => '',
     '<strong>Activate</strong> your Professional Edition' => '',
@@ -84,8 +70,6 @@ The license was successfully removed!
     'Community modules are developed by third parties and are <strong>not tested or maintained by the HumHub team</strong>.<br><br>They may not be compatible with your HumHub version, can cause <strong>instability or unexpected behavior</strong>, and may stop working after future updates. Their long-term maintenance is not guaranteed.<br><br>Only enable this option if you understand the risks and trust the source of the module you intend to install.' => '',
     'Continue to checkout' => '',
     'Could not connect to HumHub API!' => '',
-    'Could not connect to HumHub API!
-' => '',
     'Could not connect to license server!' => '',
     'Could not find the requested module!' => '',
     'Could not remove old module path!' => '',
@@ -104,8 +88,6 @@ The license was successfully removed!
     'Install anyway' => '',
     'Install unverified community module?' => '',
     'Invalid module license key!' => '',
-    'Invalid module license key!
-' => '',
     'Learn more' => '',
     'License not found or expired. Please contact the module publisher.' => '',
     'Licensed for max. {number} users.' => '',
@@ -117,12 +99,6 @@ The license was successfully removed!
     'Module configuration' => '',
     'Module is <strong>installing...</strong>' => '',
     'Module license added!' => '',
-    'Module license added!
-' => '',
-    'Module license key cannot be empty!
-' => '',
-    'Module not found or enabled!
-' => '',
     'Module options' => '',
     'No license key? Find out more about the {pro} or contact us.' => '',
     'No modules found.' => '',

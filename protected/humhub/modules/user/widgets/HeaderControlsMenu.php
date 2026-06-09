@@ -127,4 +127,18 @@ class HeaderControlsMenu extends DropdownMenu
             ]));
         }
     }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getOptions()
+    {
+        $options = parent::getOptions();
+
+        if (!$this->label) {
+            $options['aria-label'] = Yii::t('UserModule.base', 'User actions');
+        }
+
+        return $options;
+    }
 }

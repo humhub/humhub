@@ -88,6 +88,9 @@ class Image extends BaseImage
             $userIsOnline = $isOnlineService->getStatus();
             $html .= Html::tag('span', '', [
                 'class' => ['tt user-online-status', $userIsOnline ? 'user-is-online' : 'user-is-offline'],
+                'aria-label' => $userIsOnline
+                    ? Yii::t('UserModule.base', 'Online')
+                    : Yii::t('UserModule.base', 'Offline'),
                 'title' => $userIsOnline
                     ? Yii::t('UserModule.base', 'Online')
                     : Yii::t('UserModule.base', 'Offline'),

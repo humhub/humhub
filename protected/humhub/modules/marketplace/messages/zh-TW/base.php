@@ -1,18 +1,6 @@
 <?php
 
 return [
-    '
-Module successfully disabled!
-' => '模組停用成功!',
-    '
-Module successfully enabled!
-' => '模組啟用成功!',
-    '--- Disable module: {moduleId} ---
-
-' => '--- 停用模組: {moduleId} ---',
-    '--- Enable module: {moduleId} ---
-
-' => '--- 啟用模組: {moduleId} ---',
     'Add License Key' => '添加授權碼',
     'All' => '所有結果',
     'Cancel' => '取消',
@@ -21,8 +9,6 @@ Module successfully enabled!
     'Enabled' => '已啟用',
     'General Settings' => '一般設定',
     'Installed' => '已安裝',
-    'Module not found!
-' => '找不到模組!',
     'New' => '新建',
     'Not Installed' => '尚未安裝',
     'Register' => '註冊',
@@ -73,8 +59,6 @@ The license was successfully removed!
     'Community modules are developed by third parties and are <strong>not tested or maintained by the HumHub team</strong>.<br><br>They may not be compatible with your HumHub version, can cause <strong>instability or unexpected behavior</strong>, and may stop working after future updates. Their long-term maintenance is not guaranteed.<br><br>Only enable this option if you understand the risks and trust the source of the module you intend to install.' => '',
     'Continue to checkout' => '',
     'Could not connect to HumHub API!' => '',
-    'Could not connect to HumHub API!
-' => '',
     'Could not connect to license server!' => '',
     'Could not extract module!' => '',
     'Could not find requested module!' => '',
@@ -98,8 +82,6 @@ The license was successfully removed!
     'Install anyway' => '',
     'Install unverified community module?' => '',
     'Invalid module license key!' => '',
-    'Invalid module license key!
-' => '',
     'Latest version:' => '',
     'Learn more' => '',
     'License Key:' => '',
@@ -119,12 +101,6 @@ The license was successfully removed!
     'Module download failed! (%error%)' => '',
     'Module is <strong>installing...</strong>' => '',
     'Module license added!' => '',
-    'Module license added!
-' => '',
-    'Module license key cannot be empty!
-' => '',
-    'Module not found or enabled!
-' => '',
     'Module options' => '',
     'More info' => '',
     'No compatible module version found!' => '',

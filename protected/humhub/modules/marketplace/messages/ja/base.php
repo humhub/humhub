@@ -2,12 +2,6 @@
 
 return [
     '
-Module successfully disabled!
-' => 'モジュールの無効化が成功しました。',
-    '
-Module successfully enabled!
-' => 'モジュールの有効化が成功しました。',
-    '
 No active Professional Edition license found!
 ' => 'アクティブな Professional Edition ライセンスが見つかりません',
     '
@@ -21,12 +15,6 @@ The license was successfully activated!
 The license was successfully removed!
 
 ' => 'ライセンスが正常に削除されました。',
-    '--- Disable module: {moduleId} ---
-
-' => '--- モジュールを無効にしました: {moduleId} ---',
-    '--- Enable module: {moduleId} ---
-
-' => '--- モジュールを有効にしました: {moduleId} ---',
     '<strong>Activate</strong> your Professional Edition' => 'プロフェッショナル エディションを<strong>有効化</strong>してください',
     '<strong>General</strong> Settings' => '<strong>一般</strong> の設定',
     'A new update is available (HumHub %version%)!' => '新しいアップデートが利用可能です (HumHub %version%)',
@@ -47,8 +35,6 @@ The license was successfully removed!
     'Community' => 'コミュニティ',
     'Configure' => '設定',
     'Could not connect to HumHub API!' => 'HumHub API に接続できませんでした！',
-    'Could not connect to HumHub API!
-' => 'HumHub API に接続できませんでした',
     'Could not connect to license server!' => 'ライセンス サーバーに接続できませんでした',
     'Could not extract module!' => 'モジュールを抽出できませんでした！',
     'Could not find requested module!' => '要求されたモジュールが見つかりませんでした。',
@@ -68,8 +54,6 @@ The license was successfully removed!
     'Install' => 'インストール',
     'Installed' => 'インストール済',
     'Invalid module license key!' => 'モジュールのライセンス キーが無効です！',
-    'Invalid module license key!
-' => 'モジュールのライセンスキーが無効です！',
     'Latest version:' => '最新バージョン：',
     'Learn more' => 'もっと詳しく知る',
     'License Key:' => 'ライセンスキー：',
@@ -89,14 +73,6 @@ The license was successfully removed!
     'Module download failed! (%error%)' => 'モジュールのダウンロードに失敗しました！（%error%）',
     'Module is <strong>installing...</strong>' => 'モジュールを<strong>インストール中...</strong>',
     'Module license added!' => 'モジュールライセンスが追加されました！',
-    'Module license added!
-' => 'モジュールライセンス追加',
-    'Module license key cannot be empty!
-' => 'モジュールのライセンス キーを空にすることはできません',
-    'Module not found or enabled!
-' => 'モジュールが見つからないか有効になっていません！',
-    'Module not found!
-' => 'モジュールが見つかりません',
     'More info' => '詳細情報',
     'New' => '新規',
     'No compatible module version found!' => '互換性があるモジュールのバージョンが見つかりません！',

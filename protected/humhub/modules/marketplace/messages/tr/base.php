@@ -2,12 +2,6 @@
 
 return [
     '
-Module successfully disabled!
-' => 'Modül başarıyla devre dışı bırakıldı!',
-    '
-Module successfully enabled!
-' => 'Modül başarıyla etkinleştirildi!',
-    '
 No active Professional Edition license found!
 ' => 'Etkin Profesyonel Sürüm lisansı bulunamadı!',
     '
@@ -21,12 +15,6 @@ The license was successfully activated!
 The license was successfully removed!
 
 ' => 'Lisans başarıyla kaldırıldı!',
-    '--- Disable module: {moduleId} ---
-
-' => '--- Modülü devre dışı bırak: {moduleId} ---',
-    '--- Enable module: {moduleId} ---
-
-' => '--- Modülü etkinleştir: {moduleId} ---',
     '<strong>Activate</strong> your Professional Edition' => 'Profesyonel Sürümünüzü <strong>etkinleştirin</strong>',
     '<strong>General</strong> Settings' => '<strong>Genel</strong> Ayarlar',
     'A new update is available (HumHub %version%)!' => 'Yeni bir güncelleme mevcut (HumHub %version%)!',
@@ -45,8 +33,6 @@ The license was successfully removed!
     'Community' => 'Toplum',
     'Configure' => 'Yapılandırma',
     'Could not connect to HumHub API!' => 'HumHub API\'sine bağlanılamadı!',
-    'Could not connect to HumHub API!
-' => 'HumHub API\'sine bağlanılamadı!',
     'Could not connect to license server!' => 'Lisans sunucusuna bağlanılamadı!',
     'Could not extract module!' => 'Modül çıkarılamadı!',
     'Could not find requested module!' => 'İstenen modül bulunamadı!',
@@ -66,8 +52,6 @@ The license was successfully removed!
     'Install' => 'Yükle',
     'Installed' => 'Yüklendi',
     'Invalid module license key!' => 'Geçersiz modül lisans anahtarı!',
-    'Invalid module license key!
-' => 'Geçersiz modül lisans anahtarı!',
     'Latest version:' => 'Son versiyon:',
     'Learn more' => 'Daha fazla bilgi edin',
     'License Key:' => 'Lisans Anahtarı:',
@@ -82,8 +66,6 @@ The license was successfully removed!
     'Module <strong>enabled</strong>' => 'Modül <strong>etkinleştirildi</strong>',
     'Module directory %modulePath% is not writeable!' => 'Modül yolu %modulePath% yazılabilir değil!',
     'Module download failed! (%error%)' => 'Modül indirme başarısız! %error%',
-    'Module not found!
-' => 'Modül bulunamadı!',
     'More info' => 'Daha fazla bilgi',
     'New' => 'Yeni',
     'No compatible module version found!' => 'Hiçbir uyumlu modül sürümü bulundu!',
@@ -117,12 +99,6 @@ The license was successfully removed!
     'Module configuration' => '',
     'Module is <strong>installing...</strong>' => '',
     'Module license added!' => '',
-    'Module license added!
-' => '',
-    'Module license key cannot be empty!
-' => '',
-    'Module not found or enabled!
-' => '',
     'Module options' => '',
     'No license key? Find out more about the {pro} or contact us.' => '',
     'No modules found.' => '',

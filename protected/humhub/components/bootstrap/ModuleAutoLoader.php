@@ -12,43 +12,35 @@ use humhub\components\Application;
 use humhub\components\console\WithoutModuleAutoload;
 use humhub\components\InstallationState;
 use humhub\modules\installer\libs\EnvironmentChecker;
+use humhub\services\ModuleDiscoveryService;
 use ReflectionClass;
 use Yii;
 use yii\base\BootstrapInterface;
 use yii\base\ErrorException;
-use yii\base\InvalidArgumentException;
 use yii\base\InvalidConfigException;
-use yii\helpers\FileHelper;
 
 /**
- * ModuleAutoLoader discovers and registers all available modules during application bootstrap.
- *
- * It scans all paths listed in the `moduleAutoloadPaths` application parameter for directories
- * containing a `config.php` file and passes the resulting configurations to
- * {@see \humhub\components\ModuleManager::registerBulk()}.
+ * ModuleAutoLoader bootstraps the module system by delegating discovery to
+ * {@see ModuleDiscoveryService} and registration to {@see \humhub\components\ModuleManager}.
  *
  * **Console commands without module dependencies** ({@see WithoutModuleAutoload}):
- * Console controllers annotated with `#[WithoutModuleAutoload]` skip loading external modules
- * from `moduleAutoloadPaths`. Core modules under {@see CORE_MODULE_PATH} are always registered.
- * Use this for lightweight utility commands (e.g. `settings/set`, `cache/flush-all`) that must
- * run cleanly at any point in the application lifecycle, including during upgrades when external
- * module configs may reference removed core classes.
+ * Controllers annotated with `#[WithoutModuleAutoload]` only load core modules, skipping
+ * third-party module configs. Use for commands that must run cleanly during upgrades when
+ * external module configs may reference removed core classes (e.g. `migrate/up`, `settings/*`).
  *
  * @author luke
  */
 class ModuleAutoLoader implements BootstrapInterface
 {
-    public const CACHE_ID = 'module_configs';
-    public const CONFIGURATION_FILE = 'config.php';
-    public const CORE_MODULE_PATH = '@humhub/modules';
+    /**
+     * @deprecated since 1.19 — use {@see ModuleDiscoveryService::CONFIGURATION_FILE}
+     */
+    public const CONFIGURATION_FILE = ModuleDiscoveryService::CONFIGURATION_FILE;
 
     /**
-     * Bootstrap method to be called during application bootstrap stage.
-     *
      * @param Application $app the application currently running
-     *
-     * @throws InvalidConfigException Module a configuration does not have both an id and class attribute
-     * @throws ErrorException On invalid module autoload path
+     * @throws InvalidConfigException
+     * @throws ErrorException
      */
     public function bootstrap($app)
     {
@@ -57,23 +49,39 @@ class ModuleAutoLoader implements BootstrapInterface
             EnvironmentChecker::preInstallChecks();
         }
 
-        if ($app->request->isConsoleRequest && self::hasWithoutModuleAutoloadAttribute()) {
-            $modules = self::findModules([self::CORE_MODULE_PATH]);
+        if (!$app->request->isConsoleRequest) {
+            $modules = ModuleDiscoveryService::locateModuleConfigs();
             Yii::$app->moduleManager->registerBulk($modules);
             return;
         }
 
-        $modules = self::locateModules();
-        Yii::$app->moduleManager->registerBulk($modules);
+        // Console: always register core modules first so their consoleControllerMap entries
+        // land in Yii::$app->controllerMap before hasWithoutModuleAutoloadAttribute() reads it
+        $coreModules = ModuleDiscoveryService::loadModuleConfigs([ModuleDiscoveryService::CORE_MODULE_PATH]);
+        Yii::$app->moduleManager->registerBulk($coreModules);
+
+        if (self::hasWithoutModuleAutoloadAttribute()) {
+            return;
+        }
+
+        // Normal console command: also load third-party modules
+        $thirdPartyPaths = array_values(array_filter(
+            Yii::$app->params['moduleAutoloadPaths'] ?? [],
+            fn($path) => $path !== ModuleDiscoveryService::CORE_MODULE_PATH,
+        ));
+
+        if (!empty($thirdPartyPaths)) {
+            $thirdPartyModules = ModuleDiscoveryService::loadModuleConfigs($thirdPartyPaths);
+            Yii::$app->moduleManager->registerBulk($thirdPartyModules);
+        }
     }
 
     /**
      * Returns true if the current console command's controller class is annotated
-     * with {@see WithoutModuleAutoload}, indicating it does not require modules.
+     * with {@see WithoutModuleAutoload}.
      *
-     * Module loading is only skipped when the database is available — broken module
-     * configs can only occur on an installed system, not during initial setup or CI
-     * environments where the database has not yet been created.
+     * Only returns true when the database exists — broken module configs can only
+     * occur on an installed system, not during initial setup or CI.
      */
     private static function hasWithoutModuleAutoloadAttribute(): bool
     {
@@ -98,112 +106,5 @@ class ModuleAutoLoader implements BootstrapInterface
         }
 
         return !empty((new ReflectionClass($controllerClass))->getAttributes(WithoutModuleAutoload::class));
-    }
-
-    /**
-     * Find available modules
-     *
-     * @return array[] Array of module configurations with module ID as index.
-     *          Read from cache if available and YII_DEBUG is disabled
-     * @throws ErrorException On invalid module autoload path
-     */
-    public static function locateModules(): array
-    {
-        $modules = Yii::$app->cache->get(self::CACHE_ID);
-
-        if ($modules === false || YII_DEBUG) {
-            $modules = static::findModules(Yii::$app->params['moduleAutoloadPaths']);
-            Yii::$app->cache->set(self::CACHE_ID, $modules);
-        }
-
-        return $modules;
-    }
-
-    /**
-     * Find all modules with configured paths
-     *
-     * @param string[] $paths
-     *
-     * @return array[] Array of module configurations with module ID as index
-     * @throws ErrorException On invalid module autoload path
-     */
-    private static function findModules(iterable $paths): array
-    {
-        $folders = [];
-        foreach ($paths as $path) {
-            try {
-                $folders = array_merge($folders, self::findModulesByPath($path));
-            } catch (InvalidArgumentException) {
-                throw new ErrorException('Invalid module autoload path: ' . $path);
-            }
-        }
-
-        $modules = [];
-        $moduleIdFolders = [];
-        $preventDuplicatedModules = Yii::$app->moduleManager->preventDuplicatedModules;
-
-        foreach ($folders as $folder) {
-            try {
-                $moduleConfig = static::getModuleConfigByPath($folder);
-                if ($preventDuplicatedModules && isset($moduleIdFolders[$moduleConfig['id']])) {
-                    Yii::error(
-                        'Duplicated module "' . $moduleConfig['id'] . '"(' . $folder . ') is already loaded from the folder "' . $moduleIdFolders[$moduleConfig['id']] . '"',
-                    );
-                } else {
-                    $modules[$folder] = $moduleConfig;
-                    $moduleIdFolders[$moduleConfig['id']] = $folder;
-                }
-            } catch (\Throwable $e) {
-                Yii::error($e);
-            }
-        }
-
-        if ($preventDuplicatedModules) {
-            // Overwrite module paths from config
-            foreach (Yii::$app->moduleManager->overwriteModuleBasePath as $overwriteModuleId => $overwriteModulePath) {
-                if (isset($moduleIdFolders[$overwriteModuleId]) && $moduleIdFolders[$overwriteModuleId] !== $overwriteModulePath) {
-                    try {
-                        $moduleConfig = static::getModuleConfigByPath($overwriteModulePath);
-
-                        Yii::info(
-                            'Overwrite path of the module "' . $overwriteModuleId . '" to the folder "' . $overwriteModulePath . '"',
-                        );
-                        // Remove original config
-                        unset($modules[$moduleIdFolders[$overwriteModuleId]]);
-                        // Use config from the overwritten path
-                        $modules[$overwriteModulePath] = $moduleConfig;
-                        $moduleIdFolders[$overwriteModuleId] = $overwriteModulePath;
-                    } catch (\Throwable $e) {
-                        Yii::error($e);
-                    }
-                }
-            }
-        }
-
-        return $modules;
-    }
-
-    private static function getModuleConfigByPath(string $modulePath): array
-    {
-        return include $modulePath . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE;
-    }
-
-
-    /**
-     * Find all directories with a configuration file inside
-     *
-     * @param string $path
-     *
-     * @return string[]
-     * @throws InvalidArgumentException
-     */
-    private static function findModulesByPath(string $path): array
-    {
-        $hasConfigurationFile = (static fn($path) => is_file($path . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE));
-
-        return FileHelper::findDirectories(
-            Yii::getAlias($path, true),
-            ['filter' => $hasConfigurationFile, 'recursive' => false],
-        );
     }
 }

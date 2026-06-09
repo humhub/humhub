@@ -2,12 +2,6 @@
 
 return [
     '
-Module successfully disabled!
-' => 'ปิดการใช้งานโมดูลสำเร็จแล้ว',
-    '
-Module successfully enabled!
-' => 'เปิดใช้งานโมดูลสำเร็จแล้ว',
-    '
 No active Professional Edition license found!
 ' => 'ไม่พบใบอนุญาต Professional Edition ที่ใช้งานอยู่',
     '
@@ -21,12 +15,6 @@ The license was successfully activated!
 The license was successfully removed!
 
 ' => 'ใบอนุญาตถูกลบออกเรียบร้อยแล้ว',
-    '--- Disable module: {moduleId} ---
-
-' => '--- ปิดการใช้งานโมดูล: {moduleId} ---',
-    '--- Enable module: {moduleId} ---
-
-' => '--- เปิดใช้งานโมดูล: {moduleId} ---',
     '<strong>Activate</strong> your Professional Edition' => '<strong>เปิดใช้งาน</strong> Professional Edition ของคุณ',
     'Add purchased module by license key' => 'เพิ่มโมดูลที่ซื้อด้วยรหัสใบอนุญาต',
     'All' => 'ทั้งหมด',
@@ -35,8 +23,6 @@ The license was successfully removed!
     'Buy (%price%)' => 'ซื้อ (%ราคา%)',
     'Cancel' => 'ยกเลิก',
     'Configure' => 'กำหนดค่า',
-    'Could not connect to HumHub API!
-' => 'ไม่สามารถเชื่อมต่อกับ HumHub API!',
     'Could not connect to license server!' => 'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ใบอนุญาต',
     'Could not extract module!' => 'ไม่สามารถแยกโมดูลได้',
     'Could not find requested module!' => 'ไม่พบโมดูลที่ร้องขอ!',
@@ -49,8 +35,6 @@ The license was successfully removed!
     'Information' => 'ข้อมูล',
     'Install' => 'ติดตั้ง',
     'Installed' => 'ติดตั้งแล้ว',
-    'Invalid module license key!
-' => 'รหัสใบอนุญาตโมดูลไม่ถูกต้อง',
     'Latest version:' => 'รุ่นล่าสุด:',
     'License Key:' => 'รหัสใบอนุญาต:',
     'License key' => 'รหัสใบอนุญาต',
@@ -61,12 +45,6 @@ The license was successfully removed!
     'Max. users:' => 'แม็กซ์ ผู้ใช้:',
     'Module directory %modulePath% is not writeable!' => 'ไดเรกทอรีโมดูล %modulePath% ไม่สามารถเขียนได้',
     'Module download failed! (%error%)' => 'การดาวน์โหลดโมดูลล้มเหลว! (%ผิดพลาด%)',
-    'Module license added!
-' => 'เพิ่มใบอนุญาตโมดูลแล้ว',
-    'Module license key cannot be empty!
-' => 'รหัสใบอนุญาตของโมดูลไม่สามารถเว้นว่างได้',
-    'Module not found!
-' => 'ไม่พบโมดูล',
     'More info' => 'ข้อมูลเพิ่มเติม',
     'New' => 'ใหม่',
     'No compatible module version found!' => 'ไม่พบเวอร์ชันโมดูลที่เข้ากันได้!',
@@ -129,8 +107,6 @@ The license was successfully removed!
     'Module configuration' => '',
     'Module is <strong>installing...</strong>' => '',
     'Module license added!' => '',
-    'Module not found or enabled!
-' => '',
     'Module options' => '',
     'No modules found.' => '',
     'No, thank you!' => '',
