@@ -192,13 +192,19 @@ class MigrationService extends Component
         $module = $this->getModule();
 
         ob_start();
-        $controller = new MigrateController('migrate', $module, [
+        $controllerConfig = [
             'db' => Yii::$app->db,
             'interactive' => false,
             'color' => false,
             'migrationPath' => $this->getPath(),
-            'includeModuleMigrations' => true,
-        ]);
+        ];
+        if ($module instanceof Module) {
+            // moduleId mode: only scans this module's migrations, skips locateModuleConfigs()
+            $controllerConfig['moduleId'] = $module->id;
+        } else {
+            $controllerConfig['includeModuleMigrations'] = true;
+        }
+        $controller = new MigrateController('migrate', $module, $controllerConfig);
 
         /** @noinspection PhpUnhandledExceptionInspection */
         $controller->runAction($action);
