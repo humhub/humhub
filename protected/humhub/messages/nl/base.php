@@ -73,7 +73,7 @@ return [
   'Switch network' => 'Kies een ander netwerk',
   'Text could not be copied to clipboard' => 'De tekst kon niet worden gekopieerd naar het klembord.',
   'Text has been copied to clipboard' => 'De tekst is naar het klembord gekopieerd.',
-  'The URLs cannot be embedded: {urls}' => '',
+  'The URLs cannot be embedded: {urls}' => 'De URL\'s kunnen niet worden ingesloten: {urls}',
   'The date has to be in the past.' => 'De datum moet in het verleden liggen.',
   'The file has been deleted.' => 'Het bestand is verwijderd.',
   'The requested resource could not be found.' => 'De gevraagde hulpbron kan niet worden gevonden.',
