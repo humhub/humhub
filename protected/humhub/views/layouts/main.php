@@ -28,7 +28,6 @@ AppAsset::register($this);
     </head>
 
     <?= Html::beginTag('body', ['class' => DeviceDetectorHelper::getBodyClasses()]) ?>
-        <?= Html::a(Yii::t('base', 'Skip to main content'), '#main-content', ['class' => 'visually-hidden-focusable']) ?>
         <?php $this->beginBody() ?>
 
         <!-- start: first top navigation bar -->
