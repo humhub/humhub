@@ -54,7 +54,7 @@ class AuthenticationSettingsForm extends Model
         $this->showRegistrationUserGroup = $settingsManager->get('auth.showRegistrationUserGroup');
         $this->blockUsers = $module->allowBlockUsers();
         $this->hideOnlineStatus = $settingsManager->get('auth.hideOnlineStatus');
-        $this->defaultUserIdleTimeoutSec = $settingsManager->get('auth.defaultUserIdleTimeoutSec');
+        $this->defaultUserIdleTimeoutSec = $settingsManager->get('auth.defaultUserIdleTimeoutSec', 14400); // 4 hours by default
         $this->allowGuestAccess = $settingsManager->get('auth.allowGuestAccess');
         $this->defaultUserProfileVisibility = $settingsManager->get('auth.defaultUserProfileVisibility');
         $this->registrationSendMessageMailContent = $settingsManager->get('auth.registrationSendMessageMailContent', ApproveUserForm::getDefaultSendMessageMailContent());
