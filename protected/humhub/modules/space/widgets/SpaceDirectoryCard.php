@@ -10,6 +10,7 @@ namespace humhub\modules\space\widgets;
 
 use humhub\components\Widget;
 use humhub\modules\space\models\Space;
+use Yii;
 
 /**
  * SpaceDirectoryCard shows a space on spaces directory
@@ -36,6 +37,7 @@ class SpaceDirectoryCard extends Widget
     {
         $card = $this->render('spaceDirectoryCard', [
             'space' => $this->space,
+            'spaceStatus' => $this->space->isArchived() ? Yii::t('SpaceModule.base', 'Archived') : null,
         ]);
 
         return str_replace('{card}', $card, $this->template);
