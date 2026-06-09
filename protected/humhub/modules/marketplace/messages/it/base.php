@@ -2,12 +2,6 @@
 
 return [
     '
-Module successfully disabled!
-' => 'Il modulo è stato disattivato!',
-    '
-Module successfully enabled!
-' => 'Il modulo è stato attivato!',
-    '
 No active Professional Edition license found!
 ' => 'Nessuna licenza Professional Edition attiva trovata!',
     '
@@ -21,12 +15,6 @@ The license was successfully activated!
 The license was successfully removed!
 
 ' => 'La licenza è stata rimossa con successo!',
-    '--- Disable module: {moduleId} ---
-
-' => '--- Disattiva modulo: {moduleId} ---',
-    '--- Enable module: {moduleId} ---
-
-' => '--- Attiva modulo: {moduleId} ---',
     '<strong>Activate</strong> your Professional Edition' => '<strong> Attiva </strong> la tua Professional Edition',
     '<strong>General</strong> Settings' => '<strong>Generale</strong> Impostazioni',
     'A new update is available (HumHub %version%)!' => 'È disponibile un nuovo aggiornamento (HumHub %version%)!',
@@ -45,8 +33,6 @@ The license was successfully removed!
     'Community' => 'Comunità',
     'Configure' => 'Configura',
     'Could not connect to HumHub API!' => 'Impossibile connettersi all\'API di HumHub!',
-    'Could not connect to HumHub API!
-' => 'Impossibile connettersi all\'API HumHub!',
     'Could not connect to license server!' => 'Impossibile connettersi al server delle licenze!',
     'Could not extract module!' => 'Non posso estrarre il modulo!',
     'Could not find requested module!' => 'Non posso trovare il modulo richiesto!',
@@ -66,8 +52,6 @@ The license was successfully removed!
     'Install' => 'Installa',
     'Installed' => 'Installato',
     'Invalid module license key!' => 'Chiave di licenza del modulo non valida!',
-    'Invalid module license key!
-' => 'Chiave di licenza del modulo non valida!',
     'Latest version:' => 'Ultima versione:',
     'Learn more' => 'Per saperne di più',
     'License Key:' => 'Chiave licenza:',
@@ -87,12 +71,6 @@ The license was successfully removed!
     'Module download failed! (%error%)' => 'Scaricamento del modulo fallito! (%error%)',
     'Module is <strong>installing...</strong>' => 'Il modulo si sta <strong>installando...</strong>',
     'Module license added!' => 'Aggiunta della licenza del modulo!',
-    'Module license added!
-' => 'Licenza modulo aggiunta!',
-    'Module license key cannot be empty!
-' => 'La chiave di licenza del modulo non può essere vuota!',
-    'Module not found!
-' => 'Modulo non trovato!',
     'More info' => 'Più informazioni',
     'New' => 'Nuovo',
     'No compatible module version found!' => 'Non è stata trovata nessuna versione compatibile del modulo!',
@@ -142,8 +120,6 @@ The license was successfully removed!
     'Include unverified community modules?' => '',
     'Install anyway' => '',
     'Install unverified community module?' => '',
-    'Module not found or enabled!
-' => '',
     'Module options' => '',
     'No, thank you!' => '',
     'Unverified Community' => '',

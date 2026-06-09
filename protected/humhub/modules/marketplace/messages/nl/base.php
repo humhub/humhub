@@ -2,12 +2,6 @@
 
 return [
     '
-Module successfully disabled!
-' => 'Module succesvol uitgeschakeld!',
-    '
-Module successfully enabled!
-' => 'Module succesvol ingeschakeld!',
-    '
 No active Professional Edition license found!
 ' => 'Geen actieve Professional Edition-licentie gevonden!',
     '
@@ -21,12 +15,6 @@ The license was successfully activated!
 The license was successfully removed!
 
 ' => 'De licentie is succesvol verwijderd!',
-    '--- Disable module: {moduleId} ---
-
-' => '---  Schakel module: {moduleId}  uit ---',
-    '--- Enable module: {moduleId} ---
-
-' => '---  Schakel module: {moduleId}  in ---',
     '<strong>Activate</strong> your Professional Edition' => '<strong>Activeer</strong> uw Professional-editie',
     '<strong>General</strong> Settings' => '<strong>Algemene</strong> instellingen',
     'A new update is available (HumHub %version%)!' => 'Er is een nieuwe versie beschikbaar (HumHub %version%)!',
@@ -48,8 +36,6 @@ The license was successfully removed!
     'Community' => 'Gemeenschap',
     'Configure' => 'Configureren',
     'Could not connect to HumHub API!' => 'Kan geen verbinding maken met de HumHub API!',
-    'Could not connect to HumHub API!
-' => 'Kan geen verbinding maken met HumHub API!',
     'Could not connect to license server!' => 'Kan geen verbinding maken met de licentieserver!',
     'Could not extract module!' => 'Kon module niet uitpakken!',
     'Could not find requested module!' => 'Kon de gevraagde module niet vinden!',
@@ -70,8 +56,6 @@ The license was successfully removed!
     'Install' => 'Installeren',
     'Installed' => 'Geïnstalleerd',
     'Invalid module license key!' => 'Ongeldige modulelicentiesleutel!',
-    'Invalid module license key!
-' => 'Ongeldige modulelicentiesleutel!',
     'Latest version:' => 'Nieuwste versie:',
     'Learn more' => 'Leer meer',
     'License Key:' => 'Licentie code:',
@@ -91,14 +75,6 @@ The license was successfully removed!
     'Module download failed! (%error%)' => 'Download van module mislukt! (%error%)',
     'Module is <strong>installing...</strong>' => 'Module wordt <strong>geïnstalleerd...</strong>',
     'Module license added!' => 'Modulelicentie toegevoegd!',
-    'Module license added!
-' => 'Modulelicentie toegevoegd!',
-    'Module license key cannot be empty!
-' => 'Modulelicentiesleutel mag niet leeg zijn!',
-    'Module not found or enabled!
-' => 'Module niet gevonden of niet ingeschakeld!',
-    'Module not found!
-' => 'Module niet gevonden',
     'More info' => 'Meer info',
     'New' => 'Nieuw',
     'No compatible module version found!' => 'Geen compatibele moduleversie gevonden!',

@@ -2,12 +2,6 @@
 
 return [
     '
-Module successfully disabled!
-' => 'Модуль успешно отключен!',
-    '
-Module successfully enabled!
-' => 'Модуль успешно подключен!',
-    '
 No active Professional Edition license found!
 ' => 'Активная лицензия Professional Edition не найдена!',
     '
@@ -21,12 +15,6 @@ The license was successfully activated!
 The license was successfully removed!
 
 ' => 'Лицензия успешно удалена!',
-    '--- Disable module: {moduleId} ---
-
-' => '--- Отключение модуля: {moduleId} ---',
-    '--- Enable module: {moduleId} ---
-
-' => '--- Включение модуля: {moduleId} ---',
     '<strong>Activate</strong> your Professional Edition' => '<strong>Активируйте</strong> свою Профессиональную версию HumHub',
     '<strong>General</strong> Settings' => '<strong>Основные</strong> настройки',
     'A new update is available (HumHub %version%)!' => 'Доступно новое обновление: HumHub %version%!',
@@ -47,8 +35,6 @@ The license was successfully removed!
     'Community' => 'От сообщества',
     'Configure' => 'Настройки',
     'Could not connect to HumHub API!' => 'Не удалось подключиться к HumHub API!',
-    'Could not connect to HumHub API!
-' => 'Не удалось подключиться к API HumHub!',
     'Could not connect to license server!' => 'Не удалось подключиться к серверу лицензий!',
     'Could not extract module!' => 'Не удалось извлечь модуль!',
     'Could not find requested module!' => 'Не удалось найти запрошенный модуль!',
@@ -68,8 +54,6 @@ The license was successfully removed!
     'Install' => 'Установить',
     'Installed' => 'Установленные',
     'Invalid module license key!' => 'Лицензионный ключ модуля недействительный!',
-    'Invalid module license key!
-' => 'Неверный лицензионный ключ модуля!',
     'Latest version:' => 'Последняя версия:',
     'Learn more' => 'Подробнее',
     'License Key:' => 'Лицензионный ключ:',
@@ -89,14 +73,6 @@ The license was successfully removed!
     'Module download failed! (%error%)' => 'Не удалось загрузить модуль! (%error%)',
     'Module is <strong>installing...</strong>' => 'Модуль <strong>устанавливается</strong>...',
     'Module license added!' => 'Лицензия на модуль добавлена!',
-    'Module license added!
-' => 'Добавлена ​​лицензия на модуль!',
-    'Module license key cannot be empty!
-' => 'Лицензионный ключ модуля не может быть пустым!',
-    'Module not found or enabled!
-' => 'Модуль не найден или не включён!',
-    'Module not found!
-' => 'Модуль не найден!',
     'More info' => 'Дополнительная информация',
     'New' => 'Новое',
     'No compatible module version found!' => 'Не найдено версий модуля, совместимых с вашей установкой HumHub!',

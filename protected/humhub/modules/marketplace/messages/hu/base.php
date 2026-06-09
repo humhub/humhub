@@ -2,12 +2,6 @@
 
 return [
     '
-Module successfully disabled!
-' => 'A modul sikeresen deaktiválva!',
-    '
-Module successfully enabled!
-' => 'A modul sikeresen aktiválva!',
-    '
 No active Professional Edition license found!
 ' => 'Nem található aktív Professional Edition licenc!',
     '
@@ -21,12 +15,6 @@ The license was successfully activated!
 The license was successfully removed!
 
 ' => 'A licenc sikeresen eltávolítva!',
-    '--- Disable module: {moduleId} ---
-
-' => '--- {moduleId} modul kikapcsolása ---',
-    '--- Enable module: {moduleId} ---
-
-' => '--- {moduleId} modul bekapcsolása ---',
     '<strong>Activate</strong> your Professional Edition' => '<strong>Aktiválja</strong> a Professional Edition-t',
     '<strong>General</strong> Settings' => '<strong>Általános</strong> beállítások',
     'A new update is available (HumHub %version%)!' => 'Új frissítés érhető el (HumHub %version%)!',
@@ -46,8 +34,6 @@ The license was successfully removed!
     'Community' => 'Közösség',
     'Configure' => 'Konfiguráció',
     'Could not connect to HumHub API!' => 'Nem sikerült csatlakozni a HumHub API-hoz!',
-    'Could not connect to HumHub API!
-' => 'Nem tudott csatlakozni a HumHub API-hoz!',
     'Could not connect to license server!' => 'Nem sikerült csatlakozni a licenckiszolgálóhoz!',
     'Could not extract module!' => 'Modul kibontása sikertelen!',
     'Could not find requested module!' => 'A kért modul nem található!',
@@ -67,8 +53,6 @@ The license was successfully removed!
     'Install' => 'Telepítés',
     'Installed' => 'Telepítve',
     'Invalid module license key!' => 'Érvénytelen modul licenckulcs!',
-    'Invalid module license key!
-' => 'Érvénytelen modul licenckulcs!',
     'Latest version:' => 'Legújabb verzió:',
     'Learn more' => 'Tudj meg többet',
     'License Key:' => 'Termékkulcs:',
@@ -88,14 +72,6 @@ The license was successfully removed!
     'Module download failed! (%error%)' => 'Modul letöltése sikertelen! (%error%)',
     'Module is <strong>installing...</strong>' => 'A modul <strong>telepítése...</strong>',
     'Module license added!' => 'Modullicenc hozzáadva!',
-    'Module license added!
-' => 'Modul licenc hozzáadva!',
-    'Module license key cannot be empty!
-' => 'A modul licenckulcsa nem lehet üres!',
-    'Module not found or enabled!
-' => 'A modul nem található vagy nincs engedélyezve!',
-    'Module not found!
-' => 'A modul nem található!',
     'More info' => 'További információ',
     'New' => 'Új',
     'No compatible module version found!' => 'Nem találtam kompatibilis modulverziót!',

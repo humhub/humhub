@@ -2,12 +2,6 @@
 
 return [
     '
-Module successfully disabled!
-' => 'Модулът е успешно деактивиран!',
-    '
-Module successfully enabled!
-' => 'Модулът е успешно активиран!',
-    '
 No active Professional Edition license found!
 ' => 'Не е намерен активен лиценз за професионално издание!',
     '
@@ -21,12 +15,6 @@ The license was successfully activated!
 The license was successfully removed!
 
 ' => 'Лицензът беше премахнат успешно!',
-    '--- Disable module: {moduleId} ---
-
-' => '--- Деактивиране на модул: {moduleId} ---',
-    '--- Enable module: {moduleId} ---
-
-' => '--- Активиране на модул: {moduleId} ---',
     '<strong>Activate</strong> your Professional Edition' => '<strong> Активирайте </strong> вашата Професионална Версия',
     'Add purchased module by license key' => 'Добавете закупения модул чрез лицензен ключ',
     'All' => 'Всички',
@@ -56,8 +44,6 @@ The license was successfully removed!
     'Max. users:' => 'Макс. потребители:',
     'Module directory %modulePath% is not writeable!' => 'В модулна директория %modulePath% не може да се записва!',
     'Module download failed! (%error%)' => 'Изтеглянето на модула не бе успешно! (%error%)',
-    'Module not found!
-' => 'Модулът не е намерен!',
     'More info' => 'Повече информация',
     'New' => 'Нов',
     'No compatible module version found!' => 'Не е намерена съвместима версия на модула!',
@@ -95,8 +81,6 @@ The license was successfully removed!
     'Community modules are developed by third parties and are <strong>not tested or maintained by the HumHub team</strong>.<br><br>They may not be compatible with your HumHub version, can cause <strong>instability or unexpected behavior</strong>, and may stop working after future updates. Their long-term maintenance is not guaranteed.<br><br>Only enable this option if you understand the risks and trust the source of the module you intend to install.' => '',
     'Continue to checkout' => '',
     'Could not connect to HumHub API!' => '',
-    'Could not connect to HumHub API!
-' => '',
     'Could not find the requested module!' => '',
     'Deprecated' => '',
     'Description, Name, Keywords...' => '',
@@ -112,8 +96,6 @@ The license was successfully removed!
     'Install anyway' => '',
     'Install unverified community module?' => '',
     'Invalid module license key!' => '',
-    'Invalid module license key!
-' => '',
     'Learn more' => '',
     'License not found or expired. Please contact the module publisher.' => '',
     'Marketplace is disabled.' => '',
@@ -124,12 +106,6 @@ The license was successfully removed!
     'Module configuration' => '',
     'Module is <strong>installing...</strong>' => '',
     'Module license added!' => '',
-    'Module license added!
-' => '',
-    'Module license key cannot be empty!
-' => '',
-    'Module not found or enabled!
-' => '',
     'Module options' => '',
     'No modules found.' => '',
     'No, thank you!' => '',

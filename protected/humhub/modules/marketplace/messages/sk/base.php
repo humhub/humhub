@@ -2,12 +2,6 @@
 
 return [
     '
-Module successfully disabled!
-' => 'Modul bol úspešne deaktivovaný!',
-    '
-Module successfully enabled!
-' => 'Modul bol úspešne aktivovaný!',
-    '
 No active Professional Edition license found!
 ' => 'Nenašla sa žiadna aktívna licencia Professional Edition!',
     '
@@ -21,12 +15,6 @@ The license was successfully activated!
 The license was successfully removed!
 
 ' => 'Licencia bola úspešne odstránená!',
-    '--- Disable module: {moduleId} ---
-
-' => '--- Deaktivovať modul: {moduleId} ---',
-    '--- Enable module: {moduleId} ---
-
-' => '--- Aktivovať modul: {moduleId} ---',
     '<strong>Activate</strong> your Professional Edition' => '<strong>Aktivujte</strong> svoju Profesionálnu verziu',
     '<strong>General</strong> Settings' => '<strong>Všeobecné</strong> nastavenia',
     'A new update is available (HumHub %version%)!' => 'K dispozícii je nová aktualizácia (HumHub %version%)!',
@@ -47,8 +35,6 @@ The license was successfully removed!
     'Community' => 'Komunita',
     'Configure' => 'Nastaviť',
     'Could not connect to HumHub API!' => 'Nepodarilo sa pripojiť k HumHub API!',
-    'Could not connect to HumHub API!
-' => 'Nepodarilo sa pripojiť k HumHub API!',
     'Could not connect to license server!' => 'Nepodarilo sa pripojiť k licenčnému serveru!',
     'Could not extract module!' => 'Modul sa nepodarilo extrahovať!',
     'Could not find requested module!' => 'Požadovaný modul sa nepodarilo nájsť!',
@@ -68,8 +54,6 @@ The license was successfully removed!
     'Install' => 'Inštalácia',
     'Installed' => 'Nainštalované',
     'Invalid module license key!' => 'Neplatný licenčný kľúč modulu!',
-    'Invalid module license key!
-' => 'Neplatný licenčný kľúč modulu!',
     'Latest version:' => 'Najnovšia verzia:',
     'Learn more' => 'Učiť sa viac',
     'License Key:' => 'Licenčný kľúč:',
@@ -89,14 +73,6 @@ The license was successfully removed!
     'Module download failed! (%error%)' => 'Sťahovanie modulu zlyhalo!  (%chyba%)',
     'Module is <strong>installing...</strong>' => 'Modul sa <strong>inštaluje...</strong>',
     'Module license added!' => 'Licencia modulu bola pridaná!',
-    'Module license added!
-' => 'Licencia modulu bola pridaná!',
-    'Module license key cannot be empty!
-' => 'Licenčný kľúč modulu nemôže byť prázdny!',
-    'Module not found or enabled!
-' => 'Modul nebol nájdený alebo povolený!',
-    'Module not found!
-' => 'Modul sa nenašiel!',
     'More info' => 'Viac informácií',
     'New' => 'Nový',
     'No compatible module version found!' => 'Nenašla sa žiadna kompatibilná verzia modulu!',

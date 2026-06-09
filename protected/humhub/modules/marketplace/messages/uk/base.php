@@ -9,12 +9,6 @@ return [
     'Tags' => 'Теги',
     'Try other keywords or remove filters.' => 'Спробуйте інші ключові слова або змініть фільтри.',
     '
-Module successfully disabled!
-' => '',
-    '
-Module successfully enabled!
-' => '',
-    '
 No active Professional Edition license found!
 ' => '',
     '
@@ -26,12 +20,6 @@ The license was successfully activated!
 ' => '',
     '
 The license was successfully removed!
-
-' => '',
-    '--- Disable module: {moduleId} ---
-
-' => '',
-    '--- Enable module: {moduleId} ---
 
 ' => '',
     '<strong>Activate</strong> your Professional Edition' => '',
@@ -56,8 +44,6 @@ The license was successfully removed!
     'Configure' => '',
     'Continue to checkout' => '',
     'Could not connect to HumHub API!' => '',
-    'Could not connect to HumHub API!
-' => '',
     'Could not connect to license server!' => '',
     'Could not extract module!' => '',
     'Could not find requested module!' => '',
@@ -84,8 +70,6 @@ The license was successfully removed!
     'Install unverified community module?' => '',
     'Installed' => '',
     'Invalid module license key!' => '',
-    'Invalid module license key!
-' => '',
     'Latest version:' => '',
     'Learn more' => '',
     'License Key:' => '',
@@ -105,14 +89,6 @@ The license was successfully removed!
     'Module download failed! (%error%)' => '',
     'Module is <strong>installing...</strong>' => '',
     'Module license added!' => '',
-    'Module license added!
-' => '',
-    'Module license key cannot be empty!
-' => '',
-    'Module not found or enabled!
-' => '',
-    'Module not found!
-' => '',
     'Module options' => '',
     'More info' => '',
     'New' => '',

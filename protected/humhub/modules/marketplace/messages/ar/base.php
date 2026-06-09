@@ -2,12 +2,6 @@
 
 return [
     '
-Module successfully disabled!
-' => 'تم تعطيل الموديول بنجاح!',
-    '
-Module successfully enabled!
-' => 'تم تفعيل الموديول بنجاح!',
-    '
 No active Professional Edition license found!
 ' => 'لم يتم العثور على ترخيص إصدار احترافي نشط!',
     '
@@ -21,12 +15,6 @@ The license was successfully activated!
 The license was successfully removed!
 
 ' => 'تمت إزالة الترخيص بنجاح!',
-    '--- Disable module: {moduleId} ---
-
-' => '--- تعطيل الوحدة (الموديول): {moduleId} ---',
-    '--- Enable module: {moduleId} ---
-
-' => '--- تمكين الوحدة (الموديول): {moduleId} ---',
     '<strong>Activate</strong> your Professional Edition' => '<strong> تنشيط </strong> الإصدار الاحترافي الخاص بك',
     '<strong>General</strong> Settings' => 'الإعدادات <strong>العام</strong>',
     'A new update is available (HumHub %version%)!' => 'يتوفر تحديث جديد (HumHub %version%)!',
@@ -47,8 +35,6 @@ The license was successfully removed!
     'Community' => 'المجتمع',
     'Configure' => 'إعدادات',
     'Could not connect to HumHub API!' => 'تعذر الاتصال بـ HumHub API!',
-    'Could not connect to HumHub API!
-' => 'تعذر الاتصال بـ HumHub API!',
     'Could not connect to license server!' => 'تعذر الاتصال بخادم الترخيص!',
     'Could not extract module!' => 'تعذر استخراج الموديول!',
     'Could not find requested module!' => 'لم يتم ايجاد الموديول المطلوب!',
@@ -68,8 +54,6 @@ The license was successfully removed!
     'Install' => 'تثبيت',
     'Installed' => 'تم التثبيت',
     'Invalid module license key!' => 'مفتاح ترخيص الوحدة غير صالح!',
-    'Invalid module license key!
-' => 'مفتاح ترخيص الوحدة غير صالح!',
     'Latest version:' => 'احدث اصدار:',
     'Learn more' => 'تعلم المزيد',
     'License Key:' => 'مفتاح الترخيص:',
@@ -89,14 +73,6 @@ The license was successfully removed!
     'Module download failed! (%error%)' => 'فشل تحميل الموديول! (%error%)',
     'Module is <strong>installing...</strong>' => 'الموديول <strong>قيد التثبيت...</strong>',
     'Module license added!' => 'تمت إضافة ترخيص الموديول!',
-    'Module license added!
-' => 'تمت إضافة ترخيص الموديول!',
-    'Module license key cannot be empty!
-' => 'ترخيص الموديول لا يمكن أن يكون فارغاً!',
-    'Module not found or enabled!
-' => 'الموديول غير موجودة أو مفعلة!',
-    'Module not found!
-' => 'الموديول غير موجودة!',
     'More info' => 'المزيد من المعلومات',
     'New' => 'جديد',
     'No compatible module version found!' => 'لا توجد نسخة مناسبة للموديول!',

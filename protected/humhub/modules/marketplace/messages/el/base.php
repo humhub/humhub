@@ -1,18 +1,6 @@
 <?php
 
 return [
-    '
-Module successfully disabled!
-' => 'Η ενότητα απενεργοποιήθηκε με επιτυχία!',
-    '
-Module successfully enabled!
-' => 'Η ενότητα ενεργοποιήθηκε με επιτυχία!',
-    '--- Disable module: {moduleId} ---
-
-' => '--- Απενεργοποίηση μονάδας: {moduleId} ---',
-    '--- Enable module: {moduleId} ---
-
-' => '--- Ενεργοποίηση μονάδας: {moduleId} ---',
     'All' => 'Όλα',
     'Cancel' => 'Ακύρωση',
     'Configure' => 'Ρύθμιση',
@@ -23,8 +11,6 @@ Module successfully enabled!
     'Information' => 'Πληροφορίες',
     'Installed' => 'Εγκατεστημένο',
     'License not found or expired. Please contact the module publisher.' => 'Η άδεια δεν βρέθηκε ή έχει λήξει. Παρακαλούμε επικοινωνήστε με τον εκδότη της μονάδας.',
-    'Module not found!
-' => 'Η ενότητα δεν βρέθηκε!',
     'More info' => 'Περισσότερες πληροφορίες',
     'New' => 'Νέα',
     'No modules installed yet. Install some to enhance the functionality!' => 'Δεν έχουν εγκατασταθεί ακόμα μονάδες. Εγκαταστήστε μερικές για να βελτιώσετε τη λειτουργικότητα!',
@@ -67,8 +53,6 @@ The license was successfully removed!
     'Community modules are developed by third parties and are <strong>not tested or maintained by the HumHub team</strong>.<br><br>They may not be compatible with your HumHub version, can cause <strong>instability or unexpected behavior</strong>, and may stop working after future updates. Their long-term maintenance is not guaranteed.<br><br>Only enable this option if you understand the risks and trust the source of the module you intend to install.' => '',
     'Continue to checkout' => '',
     'Could not connect to HumHub API!' => '',
-    'Could not connect to HumHub API!
-' => '',
     'Could not connect to license server!' => '',
     'Could not extract module!' => '',
     'Could not find the requested module!' => '',
@@ -90,8 +74,6 @@ The license was successfully removed!
     'Install anyway' => '',
     'Install unverified community module?' => '',
     'Invalid module license key!' => '',
-    'Invalid module license key!
-' => '',
     'Latest version:' => '',
     'Learn more' => '',
     'License Key:' => '',
@@ -110,12 +92,6 @@ The license was successfully removed!
     'Module download failed! (%error%)' => '',
     'Module is <strong>installing...</strong>' => '',
     'Module license added!' => '',
-    'Module license added!
-' => '',
-    'Module license key cannot be empty!
-' => '',
-    'Module not found or enabled!
-' => '',
     'Module options' => '',
     'No compatible module version found!' => '',
     'No license key? Find out more about the {pro} or contact us.' => '',

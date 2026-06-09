@@ -2,12 +2,6 @@
 
 return [
     '
-Module successfully disabled!
-' => 'Modulet er blevet deaktiveret!',
-    '
-Module successfully enabled!
-' => 'Modulet er aktiveret.',
-    '
 No active Professional Edition license found!
 ' => 'Ingen aktiv Professional Edition-licens fundet!',
     '
@@ -21,12 +15,6 @@ The license was successfully activated!
 The license was successfully removed!
 
 ' => 'Licensen blev fjernet.',
-    '--- Disable module: {moduleId} ---
-
-' => '--- Deaktiver modulet: {moduleId} ---.',
-    '--- Enable module: {moduleId} ---
-
-' => '--- Aktiver modul: {moduleId} ---.',
     '<strong>Activate</strong> your Professional Edition' => '<strong>Aktivér</strong> din Professional Edition',
     '<strong>General</strong> Settings' => '<strong>Generelle</strong> indstillinger',
     'A new update is available (HumHub %version%)!' => 'En ny opdatering er tilgængelig (HumHub %version%)!',
@@ -47,8 +35,6 @@ The license was successfully removed!
     'Community' => 'Fællesskabet',
     'Configure' => 'Konfigurer',
     'Could not connect to HumHub API!' => 'Kunne ikke oprette forbindelse til HumHub API!',
-    'Could not connect to HumHub API!
-' => 'Kunne ikke oprette forbindelse til HumHub API!',
     'Could not connect to license server!' => 'Kunne ikke oprette forbindelse til licensserveren!',
     'Could not extract module!' => 'Kunne ikke udpakke modulet!',
     'Could not find requested module!' => 'Kunne ikke finde det ønskede modul!',
@@ -68,8 +54,6 @@ The license was successfully removed!
     'Install' => 'Installér',
     'Installed' => 'Installeret',
     'Invalid module license key!' => 'Ugyldig modul-licensnøgle!',
-    'Invalid module license key!
-' => 'Ugyldig modul-licensnøgle!',
     'Latest version:' => 'Seneste version:',
     'Learn more' => 'Få mere at vide',
     'License Key:' => 'Licensnøgle:',
@@ -89,14 +73,6 @@ The license was successfully removed!
     'Module download failed! (%error%)' => 'Download af modul mislykkedes! (%error%)',
     'Module is <strong>installing...</strong>' => 'Modulet <strong>installeres...</strong>.',
     'Module license added!' => 'Modullicens tilføjet!',
-    'Module license added!
-' => 'Modullicens tilføjet!',
-    'Module license key cannot be empty!
-' => 'Modulets licensnøgle må ikke være tom!',
-    'Module not found or enabled!
-' => 'Modulet er ikke fundet eller aktiveret!',
-    'Module not found!
-' => 'Modulet blev ikke fundet!',
     'More info' => 'Mere info',
     'New' => 'Ny',
     'No compatible module version found!' => 'Ingen kompatibel modulversion fundet!',

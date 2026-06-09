@@ -2,12 +2,6 @@
 
 return [
     '
-Module successfully disabled!
-' => 'Módulo desativado com sucesso!',
-    '
-Module successfully enabled!
-' => 'Módulo habilitado com sucesso!',
-    '
 No active Professional Edition license found!
 ' => 'Nenhuma licença da Edição Professional ativa encontrada!',
     '
@@ -21,12 +15,6 @@ The license was successfully activated!
 The license was successfully removed!
 
 ' => 'A licença foi removida com sucesso!',
-    '--- Disable module: {moduleId} ---
-
-' => '--- Desativar módulo: {moduleId} ---',
-    '--- Enable module: {moduleId} ---
-
-' => '--- Ativar módulo: {moduleId} ---',
     '<strong>Activate</strong> your Professional Edition' => '<strong>Ative</strong>sua Professional Edition',
     '<strong>General</strong> Settings' => 'Configurações <strong>Gerais</strong>',
     'A new update is available (HumHub %version%)!' => 'Uma nova atualização está disponível (HumHub %version%)!',
@@ -48,8 +36,6 @@ The license was successfully removed!
     'Community' => 'Comunidade',
     'Configure' => 'Configurar',
     'Could not connect to HumHub API!' => 'Não foi possível conectar à API do HumHub!',
-    'Could not connect to HumHub API!
-' => 'Não foi possível conectar à API HumHub!',
     'Could not connect to license server!' => 'Comprar (% price%)',
     'Could not extract module!' => 'Não foi possível extrair módulo!',
     'Could not find requested module!' => 'Não foi possível encontrar o módulo requisitado!',
@@ -70,8 +56,6 @@ The license was successfully removed!
     'Install' => 'Instalar',
     'Installed' => 'Instalado',
     'Invalid module license key!' => 'Chave de licença do módulo inválida!',
-    'Invalid module license key!
-' => 'Chave de licença de módulo inválida!',
     'Latest version:' => 'Última versão',
     'Learn more' => 'Saber mais',
     'License Key:' => 'Chave de Licença:',
@@ -91,14 +75,6 @@ The license was successfully removed!
     'Module download failed! (%error%)' => 'Módulo de download falhou!  (%error%)',
     'Module is <strong>installing...</strong>' => 'O módulo está sendo <strong>instalado...</strong>',
     'Module license added!' => 'Licença de módulo adicionada!',
-    'Module license added!
-' => 'Licença de módulo adicionada!',
-    'Module license key cannot be empty!
-' => 'A chave de licença do módulo não pode estar vazia!',
-    'Module not found or enabled!
-' => 'Módulo não encontrado ou habilitado!',
-    'Module not found!
-' => 'Módulo não encontrado!',
     'More info' => 'Mais informações',
     'New' => 'Novo',
     'No compatible module version found!' => 'Nenhuma versão compatível do módulo encontrado!',
