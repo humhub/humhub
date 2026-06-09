@@ -28,12 +28,6 @@ class UserEmail extends BaseTypeVirtual
             return '';
         }
 
-        $value = $encode ? Html::encode($user->email) : $user->email;
-
-        if (!$raw) {
-            return Html::a($value, 'mailto:' . $user->email);
-        }
-
-        return $value;
+        return $encode ? Html::encode($user->email) : $user->email;
     }
 }
