@@ -114,16 +114,19 @@ class PeopleQuery extends ActiveQueryUser
 
             $fieldType = $filteredField->getFieldType();
             if ($fieldType instanceof CheckboxList) {
-                $condition = 'REGEXP';
+                $operator = [
+                    'REGEXP', // Search in multi value separated with delimiter "\n"
+                    ['=', 'field_suffix' => '_other_selection'], // Search in "Other:" field
+                ];
             } elseif ($fieldType instanceof Select) {
-                $condition = '=';
+                $operator = '=';
             } else {
-                $condition = 'LIKE';
+                $operator = 'LIKE';
             }
 
             $checkedFilteredFields[$filteredField->internal_name] = [
                 'value' => $fields[$filteredField->internal_name],
-                'condition' => $condition,
+                'operator' => $operator,
             ];
         }
 
@@ -134,12 +137,26 @@ class PeopleQuery extends ActiveQueryUser
         $this->joinWith('profile');
 
         foreach ($checkedFilteredFields as $field => $data) {
-            $condition = $data['condition'];
-            $value = $data['value'];
-            $search = ($condition === 'REGEXP')
-                ? '(^|\\n)' . preg_quote($value, '/') . '(\\n|$)' // Search if match a line, i.e. a key of the available options of the Checkbox List
-                : $value;
-            $this->andWhere([$condition, 'profile.' . $field, $search]);
+            $search = ($data['operator'] === 'REGEXP')
+                ? '(^|\\n)' . preg_quote($data['value'], '/') . '(\\n|$)' // Search if match a line, i.e. a key of the available options of the Checkbox List
+                : $data['value'];
+
+            if (is_array($data['operator'])) {
+                $condition = ['OR'];
+                foreach ($data['operator'] as $operator) {
+                    if (is_array($operator)) {
+                        $field_suffix = $operator['field_suffix'] ?? '';
+                        $operator = $operator[0];
+                    } else {
+                        $field_suffix = '';
+                    }
+                    $condition[] = [$operator, 'profile.' . $field . $field_suffix, $search];
+                }
+            } else {
+                $condition = [$data['operator'], 'profile.' . $field, $search];
+            }
+
+            $this->andWhere($condition);
         }
 
         return $this;
