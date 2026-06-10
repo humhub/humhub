@@ -15,6 +15,8 @@ use yii\web\View;
 
 /* @var $this View */
 /* @var $user User */
+
+$userDisplayNameSub = $user->getDisplayNameSub(true);
 ?>
 
 <div class="card-panel">
@@ -35,8 +37,8 @@ use yii\web\View;
     </div>
     <div class="card-body">
         <strong class="card-title"><?= Html::containerLink($user); ?></strong>
-        <?php if (!empty($user->displayNameSub)) : ?>
-            <div><?= Html::encode($user->displayNameSub); ?></div>
+        <?php if (!empty($userDisplayNameSub)) : ?>
+            <div><?= $userDisplayNameSub ?></div>
         <?php endif; ?>
         <?= PeopleDetails::widget([
             'user' => $user,

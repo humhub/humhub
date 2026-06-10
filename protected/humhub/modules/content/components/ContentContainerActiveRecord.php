@@ -113,10 +113,11 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     /**
      * Returns a descriptive sub title of this container used in the frontend.
      *
+     * @param bool $encode whether to encode the output @since 1.18.4
      * @return mixed
      * @since 1.4
      */
-    abstract public function getDisplayNameSub(): string;
+    abstract public function getDisplayNameSub(bool $encode = false): string;
 
     /**
      * Returns the Profile Image Object for this Content Base

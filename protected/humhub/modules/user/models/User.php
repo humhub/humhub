@@ -730,19 +730,20 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
      * Returns the users display name sub text.
      * Per default as sub text the 'title' profile attribute is used
      *
-     * @return string the display name sub text
+     * @inheritdoc
+     * Note: When $encode = true: Email and URL profile fields may be rendered as HTML link
      */
-    public function getDisplayNameSub(): string
+    public function getDisplayNameSub(bool $encode = false): string
     {
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
 
         if ($module->displayNameSubCallback !== null) {
-            return call_user_func($module->displayNameSubCallback, $this);
+            return call_user_func($module->displayNameSubCallback, $this, $encode);
         }
 
         if ($this->profile !== null) {
-            return $this->profile->getFieldValue(Yii::$app->settings->get('displayNameSubFormat', ''), false, false) ?? '';
+            return $this->profile->getFieldValue(Yii::$app->settings->get('displayNameSubFormat', ''), false, $encode) ?? '';
         }
 
         return '';
