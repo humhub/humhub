@@ -68,6 +68,7 @@ return [
   'Show all results' => 'Visa alla resultat',
   'Show less' => 'Visa mindre',
   'Show more' => 'Visa mer',
+  'Sidebar' => 'Sidovyn',
   'Some files could not be uploaded:' => 'Vissa filer kunde inte laddas upp:',
   'Stop impersonation' => 'Avsluta imitation av en person',
   'Switch network' => '',

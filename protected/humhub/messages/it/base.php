@@ -68,6 +68,7 @@ return [
   'Show all results' => '',
   'Show less' => 'Mostra meno',
   'Show more' => 'Mostra altro',
+  'Sidebar' => 'Barra laterale',
   'Some files could not be uploaded:' => 'Alcuni file non possono essere caricati:',
   'Stop impersonation' => 'Concludi impersonificazione',
   'Switch network' => '',

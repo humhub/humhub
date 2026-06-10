@@ -98,5 +98,6 @@ return [
     '{nFormatted}M' => '{nFormatted}M',
     'Back to login' => '',
     'No results found.' => '',
+    'Sidebar' => '',
     'The URLs cannot be embedded: {urls}' => '',
 ];

@@ -68,6 +68,7 @@ return [
   'Show all results' => 'Pokaż wszystkie wyniki',
   'Show less' => 'Pokaż mniej',
   'Show more' => 'Pokaż więcej',
+  'Sidebar' => 'Panel Boczny',
   'Some files could not be uploaded:' => 'Niektóre pliki nie mogą zostać przesłane:',
   'Stop impersonation' => 'Zatrzymaj podszywanie się',
   'Switch network' => 'Przełącz sieć',

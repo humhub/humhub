@@ -69,6 +69,7 @@ return [
   'Show all results' => 'Az összes eredmény megjelenítése',
   'Show less' => 'Kevesebb mutatása',
   'Show more' => 'Több mutatása',
+  'Sidebar' => 'Oldalmenü',
   'Some files could not be uploaded:' => 'Néhány fájlt nem sikerült feltölteni:',
   'Stop impersonation' => 'Hagyd abba a személyeskedést!',
   'Switch network' => '',

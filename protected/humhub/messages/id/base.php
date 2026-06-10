@@ -88,6 +88,7 @@ return [
     'Enter security code above' => '',
     'I\'m not a robot' => '',
     'No results found.' => '',
+    'Sidebar' => '',
     'Switch network' => '',
     'The URLs cannot be embedded: {urls}' => '',
     'Verified' => '',

@@ -68,6 +68,7 @@ return [
   'Show all results' => 'すべての結果',
   'Show less' => '少なく表示',
   'Show more' => 'もっと見る',
+  'Sidebar' => 'サイドバー',
   'Some files could not be uploaded:' => '一部のファイルをアップロードできませんでした：',
   'Stop impersonation' => 'なりすましを止める',
   'Switch network' => 'スイッチネットワーク',

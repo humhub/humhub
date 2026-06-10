@@ -69,6 +69,7 @@ return [
     'Show all results' => '',
     'Show less' => '',
     'Show more' => '',
+    'Sidebar' => '',
     'Some files could not be uploaded:' => '',
     'Stop impersonation' => '',
     'Switch network' => '',

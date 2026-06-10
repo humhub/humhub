@@ -92,6 +92,7 @@ return [
     'No results' => '',
     'No results found.' => '',
     'Show all results' => '',
+    'Sidebar' => '',
     'Switch network' => '',
     'The URLs cannot be embedded: {urls}' => '',
     'Verified' => '',

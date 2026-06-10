@@ -68,6 +68,7 @@ return [
   'Show all results' => 'Zeige alle Ergebnisse',
   'Show less' => 'Weniger anzeigen',
   'Show more' => 'Mehr anzeigen',
+  'Sidebar' => 'Seitenleiste',
   'Some files could not be uploaded:' => 'Einige Dateien konnten nicht hochgeladen werden:',
   'Stop impersonation' => 'Benutzerübernahme beenden',
   'Switch network' => 'Wechsle das Netzwerk',

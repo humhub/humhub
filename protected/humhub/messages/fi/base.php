@@ -88,6 +88,7 @@ return [
     'No results found.' => '',
     'Search...' => '',
     'Show all results' => '',
+    'Sidebar' => '',
     'Switch network' => '',
     'The URLs cannot be embedded: {urls}' => '',
     'Verified' => '',

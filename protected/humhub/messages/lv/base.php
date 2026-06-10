@@ -83,6 +83,7 @@ return [
     'Search...' => '',
     'Select Me' => '',
     'Show all results' => '',
+    'Sidebar' => '',
     'Stop impersonation' => '',
     'Switch network' => '',
     'Text could not be copied to clipboard' => '',

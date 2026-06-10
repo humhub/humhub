@@ -68,6 +68,7 @@ return [
   'Show all results' => 'Zobraziť všetky výsledky',
   'Show less' => 'Zobraziť menejText sa nepodarilo skopírovať do schránky',
   'Show more' => 'Zobraziť viac',
+  'Sidebar' => 'Bočný panel',
   'Some files could not be uploaded:' => 'Niektoré súbory sa nepodarilo nahrať:',
   'Stop impersonation' => 'Zastavte odcudzenie identity',
   'Switch network' => '',

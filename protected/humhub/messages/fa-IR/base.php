@@ -81,6 +81,7 @@ return [
     'Search...' => '',
     'Select Me' => '',
     'Show all results' => '',
+    'Sidebar' => '',
     'Stop impersonation' => '',
     'Switch network' => '',
     'The URLs cannot be embedded: {urls}' => '',

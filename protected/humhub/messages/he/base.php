@@ -87,6 +87,7 @@ return [
     'Powered by {name}' => '',
     'Search...' => '',
     'Show all results' => '',
+    'Sidebar' => '',
     'Stop impersonation' => '',
     'Switch network' => '',
     'The URLs cannot be embedded: {urls}' => '',

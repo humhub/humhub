@@ -68,6 +68,7 @@ return [
   'Show all results' => 'Toon alle resultaten',
   'Show less' => 'Toon minder',
   'Show more' => 'Toon meer',
+  'Sidebar' => 'Zijblak',
   'Some files could not be uploaded:' => 'Enkele bestanden zijn niet geüpload.',
   'Stop impersonation' => 'Nabootsing van identiteit stoppen',
   'Switch network' => 'Kies een ander netwerk',

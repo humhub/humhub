@@ -68,6 +68,7 @@ return [
   'Show all results' => '',
   'Show less' => 'Prikaži manje',
   'Show more' => 'Prikaži više',
+  'Sidebar' => 'Bočna traka',
   'Some files could not be uploaded:' => 'Neke datoteke nisu prenesene:',
   'Stop impersonation' => '',
   'Switch network' => '',

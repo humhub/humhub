@@ -71,6 +71,7 @@ return [
     'Select Me' => '',
     'Show all results' => '',
     'Show less' => '',
+    'Sidebar' => '',
     'Some files could not be uploaded:' => '',
     'Stop impersonation' => '',
     'Switch network' => '',

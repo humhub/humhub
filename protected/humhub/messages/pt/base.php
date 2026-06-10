@@ -68,6 +68,7 @@ return [
   'Show all results' => '',
   'Show less' => 'Mostrar menos',
   'Show more' => 'Mostrar mais',
+  'Sidebar' => 'Barra lateral',
   'Some files could not be uploaded:' => 'Não foi possível enviar alguns ficheiros:',
   'Stop impersonation' => 'Para personificação',
   'Switch network' => '',
