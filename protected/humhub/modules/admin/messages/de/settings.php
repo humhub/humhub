@@ -120,7 +120,7 @@ return [
   'Replaced {mailService}' => '',
   'Required' => 'Erforderlich',
   'Save' => 'Speichern',
-  'Save & Test' => 'Speichern &amp; Testen',
+  'Save & Test' => 'Speichern & Testen',
   'Saved and sent test email to: {address}' => 'Gespeichert und Test E-Mail verschickt: {address}',
   'Secondary color' => 'Sekundärfarbe',
   'Server' => 'Server',
