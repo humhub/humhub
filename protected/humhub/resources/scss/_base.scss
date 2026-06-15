@@ -119,9 +119,11 @@
         }
     }
 
-    // Fix Safari issues
+    // Fix system blue outline issues:
+    // - Safari: When the top account menu is focused on mouse click
+    // - Chrome(and other browsers): When a link is focused on press "Tab" key
     :focus-visible {
-        outline: none; // User account menu blue outline when active
+        outline: none;
     }
 
     button.ProseMirror-icon {

@@ -13,6 +13,7 @@ use humhub\assets\CoreBundleAsset;
 use humhub\components\assets\AssetBundle;
 use humhub\helpers\Html;
 use humhub\modules\web\pwa\widgets\LayoutHeader;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\CoreJsConfig;
 use humhub\widgets\LayoutAddons;
 use Yii;
@@ -277,6 +278,16 @@ class View extends \yii\web\View
     protected function renderBodyBeginHtml()
     {
         $lines = [];
+
+        if (!Yii::$app->request->isAjax) {
+            $lines[] = Button::primary(Yii::t('base', 'Skip to main content'))
+                ->link('#main-content')
+                ->cssClass('visually-hidden-focusable position-absolute start-50 translate-middle-x')
+                ->style('z-index:100000')
+                ->sm()
+                ->loader(false);
+        }
+
         if (!empty($this->js[self::POS_BEGIN])) {
             $lines[] = Html::script(implode("\n", $this->js[self::POS_BEGIN]));
         }
