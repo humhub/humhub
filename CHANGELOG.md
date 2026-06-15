@@ -3,7 +3,7 @@ HumHub Changelog
 
 1.19 (TBD)
 ----------
-- Fix: Clear cache no longer fails with "Permission denied" when the assets mount directory is not deletable (e.g. on Docker); only its contents are removed
+- Fix #8227: Clear cache no longer fails with "Permission denied" when the assets mount directory is not deletable (e.g. on Docker); only its contents are removed
 - Enh: Added `#[WithoutModuleAutoload]` attribute for console controllers that do not require module loading (e.g. `settings/*`, `cache/*`)
 - Enh #8214: Introduced `ModuleDiscoveryService` centralising all module filesystem discovery and `ModuleService` encapsulating per-module lifecycle operations (enable, disable, remove); slimmed down `ModuleAutoLoader` and `ModuleManager`
 - Enh: Refactored `MarketplaceController` CLI — skips third-party module autoloading at bootstrap (`#[WithoutModuleAutoload]`), loads each module on demand, and runs `update-all` sub-updates in isolated subprocesses
