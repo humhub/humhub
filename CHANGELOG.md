@@ -38,6 +38,7 @@ HumHub Changelog
 - Fix #8005: Remove space followers on change to private visibility
 - Enh #8178: New sign in & sign up flow
 - Enh #8180: Topic picker handling
+- Enh #8223: Define default user idle timeout to 4 hours
 
 1.18.4 (Unreleased)
 ---------------------
