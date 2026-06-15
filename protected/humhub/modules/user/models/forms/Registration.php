@@ -188,22 +188,28 @@ class Registration extends HForm
     {
         $groupModels = Group::getRegistrationGroups($this->getUser());
 
-        $groupFieldType = (Yii::$app->getModule('user')->settings->get('auth.showRegistrationUserGroup') && count(
-            $groupModels,
-        ) > 1)
+        $isDropdown = Yii::$app->getModule('user')->settings->get('auth.showRegistrationUserGroup') && count($groupModels) > 1;
+        $groupFieldType = $isDropdown
             ? 'dropdownlist'
             : 'hidden'; // TODO: Completely hide the element instead of current <input type="hidden">
+
+        $groupIdDefinition = [
+            'label' => Yii::t('UserModule.auth', 'Group'),
+            'type' => $groupFieldType,
+            'class' => 'form-control',
+            'items' => ArrayHelper::map($groupModels, 'id', 'name'),
+        ];
+
+        if ($isDropdown) {
+            $groupIdDefinition['prompt'] = Yii::t('UserModule.auth', 'Select');
+        } else {
+            $groupIdDefinition['value'] = Yii::$app->getModule('user')->getDefaultGroupId();
+        }
 
         return [
             'type' => 'form',
             'elements' => [
-                'group_id' => [
-                    'label' => Yii::t('UserModule.auth', 'Group'),
-                    'type' => $groupFieldType,
-                    'class' => 'form-control',
-                    'items' => ArrayHelper::map($groupModels, 'id', 'name'),
-                    'value' => Yii::$app->getModule('user')->getDefaultGroupId(),
-                ],
+                'group_id' => $groupIdDefinition,
             ],
         ];
     }
@@ -230,10 +236,16 @@ class Registration extends HForm
      */
     public function validate()
     {
-        // Remove optional group assignment before validation
-        // GroupUser assignment is optional and will be validated on save
         $groupUser = $this->models['GroupUser'];
-        unset($this->models['GroupUser']);
+
+        // Only skip group validation when the selector is not shown as a dropdown.
+        // When a dropdown is visible, the user must actively select a group.
+        $groupFieldType = $this->definition['elements']['GroupUser']['elements']['group_id']['type'] ?? 'hidden';
+        if ($groupFieldType !== 'dropdownlist') {
+            // Group assignment is optional when not shown as a dropdown
+            unset($this->models['GroupUser']);
+        }
+
         $status = parent::validate();
         $this->models['GroupUser'] = $groupUser;
 
@@ -264,7 +276,7 @@ class Registration extends HForm
             $this->models['User']->registrationGroupId = $this->models['GroupUser']->group_id;
         }
 
-        if ($this->models['GroupUser']->group_id !== null) {
+        if (!empty($this->models['GroupUser']->group_id)) {
             // Skip adding of the user to a default group if some group is already selected on the registration form
             $this->models['User']->allowAssignDefaultGroup(false);
         }
