@@ -22,15 +22,17 @@ use humhub\modules\marketplace\widgets\ModuleCard;
 <?php endif; ?>
 
 <div class="container<?= ThemeHelper::isFluid() ? '-fluid' : '' ?> gx-0 overflow-x-hidden">
-    <div class="row cards">
+    <div class="row cards" aria-live="polite" aria-atomic="false">
         <?php if (empty($modules)) : ?>
             <div class="col-lg-12 cards-no-results">
+                <p role="status" aria-live="polite" class="m-0">
                 <?php if ($count) : ?>
-                    <strong><?= Yii::t('MarketplaceModule.base', 'No modules found.') ?></strong><br/>
+                    <strong><?= Yii::t('MarketplaceModule.base', 'No modules found.') ?></strong><br>
                     <?= Yii::t('MarketplaceModule.base', 'Try other keywords or remove filters.') ?>
                 <?php elseif (isset($noModulesMessage)) : ?>
                     <strong><?= $noModulesMessage ?></strong>
                 <?php endif; ?>
+                </p>
             </div>
         <?php endif; ?>
 
