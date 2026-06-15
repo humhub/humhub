@@ -9,6 +9,7 @@
 namespace humhub\modules\space\models;
 
 use humhub\components\behaviors\GUID;
+use humhub\helpers\Html;
 use humhub\libs\UUIDValidator;
 use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -462,9 +463,9 @@ class Space extends ContentContainerActiveRecord
     /**
      * @inheritdoc
      */
-    public function getDisplayNameSub(): string
+    public function getDisplayNameSub(bool $encode = false): string
     {
-        return $this->description;
+        return $encode ? Html::encode($this->description) : $this->description;
     }
 
     /**

@@ -30,7 +30,8 @@ class UserEmail extends BaseTypeVirtual
 
         $value = $encode ? Html::encode($user->email) : $user->email;
 
-        if (!$raw) {
+        if (!$raw && $encode) {
+            // Render as HTML link only when the value is encoded
             return Html::a($value, 'mailto:' . $user->email);
         }
 

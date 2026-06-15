@@ -353,7 +353,7 @@ class BaseType extends Model
      *
      * @param User $user
      * @param bool $raw
-     * @param bool $encode
+     * @param bool $encode NOTE: Allow rendering of HTML tags only when $encode == true
      * @return string|null
      */
     public function getUserValue(User $user, bool $raw = true, bool $encode = true): ?string

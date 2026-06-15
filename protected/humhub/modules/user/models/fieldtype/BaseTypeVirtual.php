@@ -96,7 +96,7 @@ abstract class BaseTypeVirtual extends BaseType
      *
      * @param User $user
      * @param bool $raw
-     * @param bool $encode
+     * @param bool $encode NOTE: Allow rendering of HTML tags only when $encode == true
      * @return string
      */
     abstract protected function getVirtualUserValue(User $user, bool $raw = true, bool $encode = true): string;

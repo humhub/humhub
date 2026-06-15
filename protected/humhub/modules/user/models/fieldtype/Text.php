@@ -220,7 +220,8 @@ class Text extends BaseType
         $value = $user->profile->$internalName ?? '';
         $valueFormatted = $encode ? Html::encode($value) : $value;
 
-        if (!$raw && (in_array($this->validator, [self::VALIDATOR_EMAIL, self::VALIDATOR_URL]) || !empty($this->linkPrefix))) {
+        // Render as HTML link only when the value is encoded
+        if (!$raw && $encode && (in_array($this->validator, [self::VALIDATOR_EMAIL, self::VALIDATOR_URL]) || !empty($this->linkPrefix))) {
             $url = ($this->validator === self::VALIDATOR_EMAIL) ? 'mailto:' . $value : $value;
             return Html::a($valueFormatted, $url);
         }
