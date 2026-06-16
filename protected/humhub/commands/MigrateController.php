@@ -244,6 +244,16 @@ class MigrateController extends \yii\console\controllers\MigrateController
         $migrationPaths = ['base' => $this->migrationPath];
 
         if ($this->includeModuleMigrations) {
+            // Register namespace aliases for all installed modules so their classes are
+            // autoloadable during migration execution. Reads only module.json — no config.php
+            // is executed, so broken configs cannot interfere.
+            foreach (ModuleDiscoveryService::findInstalledModules() as $moduleId => $info) {
+                Yii::setAlias('@humhub/modules/' . $moduleId, $info['basePath']);
+                if (Yii::getAlias('@' . $moduleId, false) === false) {
+                    Yii::setAlias('@' . $moduleId, $info['basePath']);
+                }
+            }
+
             foreach (ModuleDiscoveryService::locateModuleConfigs() as $basePath => $config) {
                 $migrationsPath = $basePath . DIRECTORY_SEPARATOR . 'migrations';
                 if (is_dir($migrationsPath)) {
