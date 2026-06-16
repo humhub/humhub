@@ -55,6 +55,39 @@ grunt migrate-up
 
 Missing migrations are also executed when accessing `Administration -> Information -> Database`.
 
+## Migrations run without your module loaded
+
+Migrations execute via the console (`migrate/up`), where your module is **not
+bootstrapped** — its `config.php` and `Module::init()` never run. Keep every
+migration self-contained:
+
+- Your module's **classes are autoloadable** (core registers an
+  `@humhub/modules/<id>` alias before running migrations), so referencing a model
+  or a class constant from a migration is fine.
+- But `Yii::$app->getModule('<id>')` returns **`null`**. Do not call `->settings`,
+  `->getConfig()`, or any code that reaches through `getModule()` — including a
+  settings model whose `init()` does so. It fatals with
+  `Attempt to read property "settings" on null`.
+- Read and write settings with plain DB operations on the `setting` table:
+
+  ```php
+  // Instead of: Yii::$app->getModule('mymodule')->settings->set('foo', $value);
+  $this->upsert('setting',
+      ['module_id' => 'mymodule', 'name' => 'foo', 'value' => $value],
+      ['value' => $value]);
+
+  // Instead of: Yii::$app->getModule('mymodule')->settings->delete('foo');
+  $this->delete('setting',
+      ['module_id' => 'mymodule', 'name' => 'foo', 'contentcontainer_id' => null]);
+  ```
+
+- Prefer literal values over runtime constants
+  (e.g. `defaultValue(1)` rather than `defaultValue(MyModel::STATUS_OPEN)`).
+
+This applies to your `uninstall.php` migration too — `Module::disable()` already
+clears your module's global and container settings (see [Settings](concept-settings.md)),
+so an uninstall migration only needs to drop tables and columns.
+
 ## Uninstall Migration
 
 Your module should also provide an `uninstall.php` file.
