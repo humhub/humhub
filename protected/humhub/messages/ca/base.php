@@ -98,6 +98,8 @@ return [
     '{nFormatted}K' => '{nFormatted}K',
     '{nFormatted}M' => '{nFormatted}M',
     'Sidebar' => '',
+    'Skip to main content' => '',
     'The URLs cannot be embedded: {urls}' => '',
+    'Toggle panel' => '',
     '{attribute} must be an UUID or null. UUID has the format "{{XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX}}", where X = [a-fA-F0-9] and both curly brackets and delimiting dashes are optional.' => '',
 ];

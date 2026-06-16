@@ -126,6 +126,7 @@ return [
     'Empty password cannot be saved!' => '',
     'Group Manager(s)' => '',
     'Invited by {userName}' => '',
+    'Loading more people' => '',
     'Provider' => '',
     'The Group Manager can approve pending registrations of this group.' => '',
     'This login method is not allowed for your account.' => '',

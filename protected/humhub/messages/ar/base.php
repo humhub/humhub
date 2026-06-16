@@ -96,8 +96,10 @@ return [
     'Back to login' => '',
     'I\'m not a robot' => '',
     'Sidebar' => '',
+    'Skip to main content' => '',
     'Switch network' => '',
     'The URLs cannot be embedded: {urls}' => '',
+    'Toggle panel' => '',
     'Verified' => '',
     'We couldn\'t verify that you\'re human. Please check the box again.' => '',
 ];

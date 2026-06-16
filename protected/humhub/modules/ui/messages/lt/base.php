@@ -6,4 +6,5 @@ return [
     'Reset filters' => 'Panaikinti filtrus',
     'User Interface' => 'Vartotojo sąsaja',
     'Select' => '',
+    'Toggle filters' => '',
 ];

@@ -158,6 +158,7 @@ return [
     'Do you really want to delete the space image?' => '',
     'Do you really want to delete the space title image?' => '',
     'Incorrect name, try again.' => '',
+    'Loading more spaces' => '',
     'Neither..nor' => '',
     'Order of content in stream' => '',
     'Shown on About Page.' => '',

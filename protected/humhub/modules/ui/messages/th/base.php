@@ -6,4 +6,5 @@ return [
     'Reset filters' => 'รีเซ็ตตัวกรอง',
     'User Interface' => 'หน้าจอผู้ใช้',
     'Select' => '',
+    'Toggle filters' => '',
 ];

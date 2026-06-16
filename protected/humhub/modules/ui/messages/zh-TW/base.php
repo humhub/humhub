@@ -6,4 +6,5 @@ return [
     'Reset filters' => '重設篩選條件',
     'User Interface' => '使用者介面',
     'Select' => '',
+    'Toggle filters' => '',
 ];

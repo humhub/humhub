@@ -127,6 +127,7 @@ return [
     'Connect {provider} account' => '',
     'Description, Name, Tags...' => '',
     'Disconnect {provider} account' => '',
+    'Loading more people' => '',
     'Provider' => '',
     'This login method is not allowed for your account.' => '',
     'User Source' => '',

@@ -135,6 +135,7 @@ return [
     'Invite by link' => '',
     'Invite link' => '',
     'Join' => '',
+    'Loading more spaces' => '',
     'Max. 100 characters.' => '',
     'Member' => '',
     'Moderator' => '',

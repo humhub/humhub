@@ -121,6 +121,7 @@ return [
     'Empty password cannot be saved!' => '',
     'Group Manager(s)' => '',
     'Invited by {userName}' => '',
+    'Loading more people' => '',
     'Local' => '',
     'Mentioning' => '',
     'Provider' => '',

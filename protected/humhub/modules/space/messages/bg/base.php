@@ -142,6 +142,7 @@ return [
     'Incorrect name, try again.' => '',
     'Invite by link' => '',
     'Invite link' => '',
+    'Loading more spaces' => '',
     'Member' => '',
     'Name / Sort order' => '',
     'Neither..nor' => '',

@@ -143,6 +143,7 @@ return [
     'Incorrect name, try again.' => '',
     'Invite link' => '',
     'Join' => '',
+    'Loading more spaces' => '',
     'Member' => '',
     'Name / Sort order' => '',
     'Neither..nor' => '',

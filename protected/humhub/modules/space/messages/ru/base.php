@@ -161,6 +161,7 @@ return [
     'Description, Name, Tags...' => '',
     'Do you really want to delete the space image?' => '',
     'Do you really want to delete the space title image?' => '',
+    'Loading more spaces' => '',
     'Order of content in stream' => '',
     'Space actions' => '',
     'View space image of {name}' => '',

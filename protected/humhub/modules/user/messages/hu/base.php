@@ -126,6 +126,7 @@ return [
     'Disconnect {provider} account' => '',
     'Empty password cannot be saved!' => '',
     'Invited by {userName}' => '',
+    'Loading more people' => '',
     'Local' => '',
     'Provider' => '',
     'This login method is not allowed for your account.' => '',

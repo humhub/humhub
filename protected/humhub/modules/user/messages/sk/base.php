@@ -126,6 +126,7 @@ return [
     'Description, Name, Tags...' => '',
     'Disconnect {provider} account' => '',
     'Invited by {userName}' => '',
+    'Loading more people' => '',
     'Local' => '',
     'Provider' => '',
     'This login method is not allowed for your account.' => '',

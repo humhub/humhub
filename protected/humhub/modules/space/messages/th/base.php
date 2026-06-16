@@ -151,6 +151,7 @@ return [
     'Incorrect name, try again.' => '',
     'Invite by link' => '',
     'Invite link' => '',
+    'Loading more spaces' => '',
     'Name / Sort order' => '',
     'Order of content in stream' => '',
     'Please note that any links you have previously created will become invalid as soon as you create a new one. Would you like to proceed?' => '',

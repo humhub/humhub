@@ -68,6 +68,7 @@ return [
   'Save scheduling' => 'Bewaar planning',
   'Schedule publication' => 'Plan publicatie',
   'Scheduled for {dateTime}' => 'Gepland voor {dateTime}',
+  'Search' => 'Zoek',
   'Select target Space.' => 'Selecteer doelruimte.',
   'Select target Space/Profile.' => 'Selecteer doelruimte/profiel.',
   'Select type...' => 'Selecteer type...',

@@ -84,6 +84,7 @@ return [
     'Invited by {userName}' => '',
     'It looks like you clicked on an invalid password reset link. Please try again.' => '',
     'Last Login' => '',
+    'Loading more people' => '',
     'Mentioning' => '',
     'Missing E-Mail Attribute from AuthClient.' => '',
     'Missing ID AuthClient Attribute from AuthClient.' => '',

@@ -118,6 +118,7 @@ return [
     'Invite new people' => '',
     'Invited by {userName}' => '',
     'It looks like you clicked on an invalid password reset link. Please try again.' => '',
+    'Loading more people' => '',
     'Offline' => '',
     'Online' => '',
     'Provider' => '',

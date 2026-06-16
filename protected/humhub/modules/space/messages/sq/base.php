@@ -83,6 +83,7 @@ return [
     'Join Policy' => '',
     'Last Visit' => '',
     'Leave' => '',
+    'Loading more spaces' => '',
     'Max. 100 characters.' => '',
     'Member' => '',
     'Member since' => '',

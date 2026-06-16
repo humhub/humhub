@@ -124,6 +124,7 @@ return [
     'Hide Activity Sidebar Widget' => '',
     'Incorrect name, try again.' => '',
     'Invite and request' => '',
+    'Loading more spaces' => '',
     'Moderator' => '',
     'Moderator:' => '',
     'Moderators' => '',

@@ -59,6 +59,7 @@ return [
     'It looks like you clicked on an invalid password reset link. Please try again.' => '',
     'Language' => '',
     'Last Login' => '',
+    'Loading more people' => '',
     'Local' => '',
     'Mentioning' => '',
     'Missing E-Mail Attribute from AuthClient.' => '',
