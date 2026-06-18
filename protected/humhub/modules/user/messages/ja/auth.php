@@ -48,6 +48,7 @@ return [
   'Register' => '登録',
   'Reset Password' => 'パスワードのリセット',
   'Reset password' => 'パスワードのリセット',
+  'Select' => '選択',
   'Send' => '送信',
   'Sign In' => '',
   'Sign Up' => '',

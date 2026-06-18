@@ -56,6 +56,7 @@ return [
     'Only administrators can sign in during maintenance mode.' => '',
     'Or continue with' => '',
     'Password changed!' => '',
+    'Select' => '',
     'Send' => '',
     'Sign In' => '',
     'Sign Up' => '',

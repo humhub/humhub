@@ -48,6 +48,7 @@ return [
   'Register' => 'Registrovať',
   'Reset Password' => 'Obnoviť Heslo',
   'Reset password' => 'Obnoviť heslo',
+  'Select' => 'Vybrať',
   'Send' => 'Odoslať',
   'Sign In' => '',
   'Sign Up' => '',

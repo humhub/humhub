@@ -48,6 +48,7 @@ return [
   'Register' => 'Registreren',
   'Reset Password' => 'Wachtwoord opnieuw instellen',
   'Reset password' => 'Reset wachtwoord',
+  'Select' => 'Kies',
   'Send' => 'Versturen',
   'Sign In' => 'Inloggen',
   'Sign Up' => 'Aanmelden',

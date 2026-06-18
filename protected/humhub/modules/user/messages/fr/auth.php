@@ -48,6 +48,7 @@ return [
   'Register' => 'S\'enregistrer',
   'Reset Password' => 'Réinitialiser votre mot de passe',
   'Reset password' => 'Envoyer',
+  'Select' => 'Sélectionner',
   'Send' => 'Envoyer',
   'Sign In' => '',
   'Sign Up' => '',

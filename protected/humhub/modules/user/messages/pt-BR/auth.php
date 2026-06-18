@@ -48,6 +48,7 @@ return [
   'Register' => 'Cadastrar',
   'Reset Password' => 'Resetar Senha',
   'Reset password' => 'Resetar senha',
+  'Select' => 'Selecione',
   'Send' => 'Enviar',
   'Sign In' => '',
   'Sign Up' => '',

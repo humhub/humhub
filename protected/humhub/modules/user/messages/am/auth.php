@@ -49,6 +49,7 @@ return [
     'Please wait' => '',
     'Reset Password' => '',
     'Reset password' => '',
+    'Select' => '',
     'Send' => '',
     'Sign In' => '',
     'Sign Up' => '',
