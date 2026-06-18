@@ -783,7 +783,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     {
         try {
             if (method_exists($this->getPolymorphicRelation(), 'getUrl')) {
-                return $this->getPolymorphicRelation()->getUrl($scheme);
+                return Url::to($this->getPolymorphicRelation()->getUrl(), $scheme);
             }
         } catch (IntegrityException $e) {
             Yii::error($e->getMessage(), 'content');

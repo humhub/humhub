@@ -42,6 +42,7 @@ HumHub Changelog
 - Enh #8178: New sign in & sign up flow
 - Enh #8180: Topic picker handling
 - Enh #8223: Define default user idle timeout to 4 hours
+- Enh #8232: Fix absolute URLs in mail summary
 
 1.18.4 (Unreleased)
 ---------------------
