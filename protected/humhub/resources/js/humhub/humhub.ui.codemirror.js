@@ -24,7 +24,18 @@ humhub.module('ui.codemirror', function(module, require, $) {
                             mode: $(this).data('codemirror'),
                             lineNumbers: true,
                             autoRefresh: true,
-                            extraKeys: {'Ctrl-Space': 'autocomplete'}
+                            extraKeys: {
+                                'Ctrl-Space': 'autocomplete',
+                                'Ctrl-F': 'find',
+                                'Cmd-F': 'find',
+                                'Ctrl-G': 'findNext',
+                                'Cmd-G': 'findNext',
+                                'Shift-Ctrl-G': 'findPrev',
+                                'Shift-Cmd-G': 'findPrev',
+                                'Shift-Ctrl-F': 'replace',
+                                'Shift-Cmd-F': 'replace',
+                                'Alt-F': 'replace'
+                            }
                         });
                         $(this).data('codemirror-instance', codeMirrorInstance);
                     });
