@@ -55,7 +55,9 @@ $enabledProfilePermissions = (bool)$userModule->settings->get('enableProfilePerm
     <br/>
 
     <div class="clearfix">
-        <?= PermisionGridModuleFilter::widget() ?>
+        <div class="float-end me-4 mb-2">
+            <?= PermisionGridModuleFilter::widget() ?>
+        </div>
     </div>
 
     <ul id="tabs" class="nav nav-tabs tab-sub-menu permission-group-tabs">

@@ -20,7 +20,7 @@ use humhub\modules\user\widgets\PermissionGridEditor;
     </div>
 
     <div class="clearfix">
-        <div class="float-end" style="margin-right:20px">
+        <div class="float-end me-4 mb-2">
             <?= PermisionGridModuleFilter::widget() ?>
         </div>
     </div>
