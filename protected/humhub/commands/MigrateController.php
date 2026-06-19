@@ -9,8 +9,10 @@
 namespace humhub\commands;
 
 use humhub\components\console\WithoutModuleAutoload;
+use humhub\components\InstallationState;
 use humhub\components\Module;
 use humhub\helpers\DatabaseHelper;
+use humhub\models\ModuleEnabled;
 use humhub\services\ModuleDiscoveryService;
 use Yii;
 use yii\console\controllers\BaseMigrateController;
@@ -252,11 +254,27 @@ class MigrateController extends \yii\console\controllers\MigrateController
                 }
             }
 
+            // Only enabled (and core) modules: a module that is merely present in the
+            // modules directory but never enabled must not have its migrations applied — its
+            // tables are created when it is enabled (see Module::enable()). This mirrors
+            // ModuleManager::register(), which never registers a disabled non-core module as a
+            // Yii application module. Reading the enabled ids straight from the database keeps
+            // this working under #[WithoutModuleAutoload], where modules are not bootstrapped.
+            $enabledModuleIds = Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)
+                ? ModuleEnabled::getEnabledIds()
+                : [];
+
             foreach (ModuleDiscoveryService::locateModuleConfigs() as $basePath => $config) {
                 $migrationsPath = $basePath . DIRECTORY_SEPARATOR . 'migrations';
-                if (is_dir($migrationsPath)) {
-                    $migrationPaths[$config['id']] = $migrationsPath;
+                if (!is_dir($migrationsPath)) {
+                    continue;
                 }
+
+                if (empty($config['isCoreModule']) && !in_array($config['id'], $enabledModuleIds, true)) {
+                    continue;
+                }
+
+                $migrationPaths[$config['id']] = $migrationsPath;
             }
         }
 
