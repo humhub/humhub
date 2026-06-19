@@ -5,6 +5,7 @@ HumHub Changelog
 ----------
 - Fix #8230: Activity summary mails could grow oversized and fail to send ("552 message too large") when a user's last summary date was far in the past — the activity refactoring had dropped the per-mail activity cap, so the entire backlog since the last successful summary was rendered into a single mail; re-applied the cap in `MailSummary::getActivities()`
 - Fix: `migrate/up --includeModuleMigrations=1` now registers Yii namespace aliases for all installed modules before scanning migration paths, so module classes (e.g. in old migrations) are autoloadable even when `#[WithoutModuleAutoload]` skipped their bootstrap registration
+- Fix: The application-wide migration scan (`migrate/up`, admin "Database", installer) again applies only enabled (and core) module migrations; the `ModuleDiscoveryService` refactoring had made it apply migrations of every module present in the modules directory, creating tables for modules that were never enabled
 - Fix #8227: Clear cache no longer fails with "Permission denied" when the assets mount directory is not deletable (e.g. on Docker); only its contents are removed
 - Enh: Added `#[WithoutModuleAutoload]` attribute for console controllers that do not require module loading (e.g. `settings/*`, `cache/*`)
 - Enh #8214: Introduced `ModuleDiscoveryService` centralising all module filesystem discovery and `ModuleService` encapsulating per-module lifecycle operations (enable, disable, remove); slimmed down `ModuleAutoLoader` and `ModuleManager`
