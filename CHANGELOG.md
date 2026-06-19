@@ -14,6 +14,7 @@ HumHub Changelog
 - Fix #8205: Fix permission filter alignment
 - Fix #8197: Don't use the setting "Allow individual topics" for user and space tags
 - Enh #8231: Activate a search dialog for CodeMirror fields
+- Enh #8235: Allow symfony/mailer ^7.0 and widen all mailer bridge constraints to unblock symfony/event-dispatcher 7.x
 
 1.18.3 (May 18, 2026)
 ---------------------
