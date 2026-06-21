@@ -783,7 +783,18 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     {
         try {
             if (method_exists($this->getPolymorphicRelation(), 'getUrl')) {
-                return Url::to($this->getPolymorphicRelation()->getUrl(), $scheme);
+                $url = $this->getPolymorphicRelation()->getUrl($scheme);
+
+                // getUrl() is an open extension point; most implementations
+                // (e.g. Post) currently ignore $scheme and return a relative URL.
+                // Enforce an absolute URL when a scheme was requested, unless the
+                // implementation already returned one. Once the models honor
+                // $scheme themselves, this becomes a no-op.
+                if ($scheme && !str_starts_with($url, 'http')) {
+                    $url = Url::to($url, $scheme);
+                }
+
+                return $url;
             }
         } catch (IntegrityException $e) {
             Yii::error($e->getMessage(), 'content');
