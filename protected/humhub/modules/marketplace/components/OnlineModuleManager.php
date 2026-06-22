@@ -79,6 +79,10 @@ class OnlineModuleManager extends Component
             );
         }
 
+        if (function_exists('opcache_reset')) {
+            @opcache_reset();
+        }
+
         Yii::$app->moduleManager->flushCache();
         Yii::$app->moduleManager->register($modulesPath . DIRECTORY_SEPARATOR . $moduleId);
     }
