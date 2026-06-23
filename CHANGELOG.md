@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.19 (TBD)
 ----------
+- Enh: A `UserSource` can declare email optional via `UserSourceInterface::isEmailRequired()` (default `true`); `User::isEmailRequired()` now consults the user's source (through `UserSourceService`), so sources for external/federated users can provision accounts without an email address
 - Fix #8230: Activity summary mails could grow oversized and fail to send ("552 message too large") when a user's last summary date was far in the past — the activity refactoring had dropped the per-mail activity cap, so the entire backlog since the last successful summary was rendered into a single mail; re-applied the cap in `MailSummary::getActivities()`
 - Fix: `migrate/up --includeModuleMigrations=1` now registers Yii namespace aliases for all installed modules before scanning migration paths, so module classes (e.g. in old migrations) are autoloadable even when `#[WithoutModuleAutoload]` skipped their bootstrap registration
 - Fix: The application-wide migration scan (`migrate/up`, admin "Database", installer) again applies only enabled (and core) module migrations; the `ModuleDiscoveryService` refactoring had made it apply migrations of every module present in the modules directory, creating tables for modules that were never enabled

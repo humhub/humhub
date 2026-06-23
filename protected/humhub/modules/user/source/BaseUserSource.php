@@ -129,6 +129,11 @@ abstract class BaseUserSource extends Component implements UserSourceInterface
         return $this->deleteAccount;
     }
 
+    public function isEmailRequired(): bool
+    {
+        return true;
+    }
+
     public function getUsernameStrategy(): string
     {
         return $this->usernameStrategy;
