@@ -73,9 +73,18 @@ class UserEmailRequiredTest extends HumHubDbTestCase
         $userModule->emailRequired = true; // global says required, source overrides
 
         $stub = new class extends BaseUserSource {
-            public function getId(): string { return 'test-optional'; }
-            public function createUser(array $attributes): ?User { return null; }
-            public function isEmailRequired(): bool { return false; }
+            public function getId(): string
+            {
+                return 'test-optional';
+            }
+            public function createUser(array $attributes): ?User
+            {
+                return null;
+            }
+            public function isEmailRequired(): bool
+            {
+                return false;
+            }
         };
 
         Yii::$app->userSourceCollection->setUserSource('test-optional', $stub);
@@ -93,9 +102,18 @@ class UserEmailRequiredTest extends HumHubDbTestCase
         $userModule->emailRequired = false;
 
         $stub = new class extends BaseUserSource {
-            public function getId(): string { return 'test-optional-2'; }
-            public function createUser(array $attributes): ?User { return null; }
-            public function isEmailRequired(): bool { return false; }
+            public function getId(): string
+            {
+                return 'test-optional-2';
+            }
+            public function createUser(array $attributes): ?User
+            {
+                return null;
+            }
+            public function isEmailRequired(): bool
+            {
+                return false;
+            }
         };
 
         Yii::$app->userSourceCollection->setUserSource('test-optional-2', $stub);
@@ -120,8 +138,14 @@ class UserEmailRequiredTest extends HumHubDbTestCase
         $userModule->emailRequired = true;
 
         $stub = new class extends BaseUserSource {
-            public function getId(): string { return 'test-default'; }
-            public function createUser(array $attributes): ?User { return null; }
+            public function getId(): string
+            {
+                return 'test-default';
+            }
+            public function createUser(array $attributes): ?User
+            {
+                return null;
+            }
             // isEmailRequired() NOT overridden — must inherit true from BaseUserSource
         };
 
