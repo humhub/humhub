@@ -27,7 +27,7 @@ class MailHeaderImage extends Widget
         // Get relative image URL
         $imgUrl = null;
         if ($hasMailHeaderImage) {
-            $imgUrl = Yii::$app->img->logo->getUrl(
+            $imgUrl = Yii::$app->img->mailHeader->getUrl(
                 ['maxHeight' => MailHeaderImage::MAX_HEIGHT, 'maxWidth' => MailHeaderImage::MAX_WIDTH],
             );
         } elseif ($hasLogoImage && !$showNameInsteadOfLogo) {

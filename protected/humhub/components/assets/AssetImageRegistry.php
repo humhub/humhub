@@ -39,7 +39,7 @@ class AssetImageRegistry extends Component
                     $this->_cache[$name]['published'] = $assetImage->cachePublish->toArray();
                     $modified = true;
                 }
-                if (!isset($this->_cache[$name]['fileExists']) ?? $this->_cache[$name]['fileExists'] !== $assetImage->fileExists) {
+                if (!isset($this->_cache[$name]['fileExists']) || $this->_cache[$name]['fileExists'] !== $assetImage->fileExists) {
                     $this->_cache[$name]['fileExists'] = $assetImage->fileExists;
                     $modified = true;
                 }
