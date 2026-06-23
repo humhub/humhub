@@ -134,6 +134,13 @@ interface UserSourceInterface
      */
     public function canDeleteAccount(): bool;
 
+    /**
+     * Whether users provisioned by this source must have an email address.
+     * When false, {@see User::isEmailRequired()} returns false for such users
+     * regardless of the global `user` module `emailRequired` setting.
+     */
+    public function isEmailRequired(): bool;
+
     // --- Username Strategy ---
 
     /**
