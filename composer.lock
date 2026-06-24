@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cc68d451c3acfee4e334031ee0f5de88",
+    "content-hash": "031551ce7df56ed8d88c315de3f1fc91",
     "packages": [
         {
             "name": "altcha-org/altcha",
@@ -4729,10 +4729,10 @@
         },
         {
             "name": "npm-asset/select2",
-            "version": "4.1.0",
+            "version": "4.0.13",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/select2/-/select2-4.1.0.tgz"
+                "url": "https://registry.npmjs.org/select2/-/select2-4.0.13.tgz"
             },
             "type": "npm-asset",
             "license": [
