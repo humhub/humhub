@@ -125,10 +125,11 @@ $themeVariables = Yii::$app->view->theme->variables;
                  style="max-height: 40px;<?= Yii::$app->img->logo->exists() ? '' : 'display:none' ?>">
 
             <div class="image-upload-buttons" id="logo-upload-buttons" style="display: block;">
-                <?= Button::accent()->icon('cloud-upload')->id('admin-logo-upload-button')->sm()->loader(false) ?>
+                <?= Button::accent()->icon('cloud-upload')->options(['aria-label' => Yii::t('AdminModule.settings', 'Upload')])->id('admin-logo-upload-button')->sm()->loader(false) ?>
 
                 <?= Button::danger()->id('admin-delete-logo-image')
                     ->action('admin.deletePageLogo', Url::to(['/admin/setting/delete-logo-image']))
+                    ->options(['aria-label' => Yii::t('AdminModule.settings', 'Remove')])
                     ->style(Yii::$app->img->logo->exists() ? '' : 'display:none')->icon('remove')->sm()->loader(
                         false
                     ) ?>
@@ -154,10 +155,11 @@ $themeVariables = Yii::$app->view->theme->variables;
                  style="max-height: 40px;">
 
             <div class="image-upload-buttons" id="icon-upload-buttons" style="display: block;">
-                <?= Button::accent()->icon('cloud-upload')->id('admin-icon-upload-button')->sm()->loader(false) ?>
+                <?= Button::accent()->icon('cloud-upload')->options(['aria-label' => Yii::t('AdminModule.settings', 'Upload')])->id('admin-icon-upload-button')->sm()->loader(false) ?>
 
                 <?= Button::danger()->id('admin-delete-icon-image')
                     ->action('admin.deletePageIcon', Url::to(['/admin/setting/delete-icon-image']))
+                    ->options(['aria-label' => Yii::t('AdminModule.settings', 'Remove')])
                     ->style(Yii::$app->img->icon->exists() ? '' : 'display:none')->icon('remove')->sm()->loader(
                         false
                     ) ?>
@@ -179,10 +181,11 @@ $themeVariables = Yii::$app->view->theme->variables;
             <img class="rounded" id="loginBg-image" src="<?= $loginBgUrl ?>" style="max-height: 40px;">
 
             <div class="image-upload-buttons" id="loginBg-upload-buttons" style="display: block;">
-                <?= Button::accent()->icon('cloud-upload')->id('admin-loginBg-upload-button')->sm()->loader(false) ?>
+                <?= Button::accent()->icon('cloud-upload')->options(['aria-label' => Yii::t('AdminModule.settings', 'Upload')])->id('admin-loginBg-upload-button')->sm()->loader(false) ?>
 
                 <?= Button::danger()->id('admin-delete-loginBg-image')
                     ->action('admin.deleteLoginBg', Url::to(['/admin/setting/delete-login-background-image']))
+                    ->options(['aria-label' => Yii::t('AdminModule.settings', 'Remove')])
                     ->style(Yii::$app->img->loginBackground->exists() ? '' : 'display:none')->icon('remove')->sm(
                     )->loader(false) ?>
             </div>
@@ -203,10 +206,11 @@ $themeVariables = Yii::$app->view->theme->variables;
             <img class="rounded" id="mailHeader-image" src="<?= $mailHeaderUrl ?>" style="max-height: 40px;">
 
             <div class="image-upload-buttons" id="mailHeader-upload-buttons" style="display: block;">
-                <?= Button::accent()->icon('cloud-upload')->id('admin-mailHeader-upload-button')->sm()->loader(false) ?>
+                <?= Button::accent()->icon('cloud-upload')->options(['aria-label' => Yii::t('AdminModule.settings', 'Upload')])->id('admin-mailHeader-upload-button')->sm()->loader(false) ?>
 
                 <?= Button::danger()->id('admin-delete-mailHeader-image')
                     ->action('admin.deleteMailHeader', Url::to(['/admin/setting/delete-mail-header-image']))
+                    ->options(['aria-label' => Yii::t('AdminModule.settings', 'Remove')])
                     ->style(Yii::$app->img->mailHeader->exists() ? '' : 'display:none')->icon('remove')->sm()->loader(
                         false
                     ) ?>

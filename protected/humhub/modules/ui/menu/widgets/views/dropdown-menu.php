@@ -17,7 +17,10 @@ use humhub\widgets\bootstrap\Button;
         ->encodeLabel($menu->encodeLabel)
         ->icon($menu->icon)
         ->cssClass('dropdown-toggle')
-        ->options(['data-bs-toggle' => 'dropdown'])
+        ->options([
+            'data-bs-toggle' => 'dropdown',
+            'aria-label' => $menu->label ?? Yii::t('base', 'Actions'),
+        ])
         ->loader(false) ?>
 
     <ul class="dropdown-menu dropdown-menu-end">
