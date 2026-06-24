@@ -49,6 +49,19 @@ class MemberRemovedActivity extends BaseSpaceActivity implements ConfigurableAct
         };
     }
 
+    public function getUrl(bool $scheme = true): ?string
+    {
+        // Inside the space the space link is redundant, so a single membership
+        // change links to the member's profile. Grouped entries reference
+        // multiple members, and outside the space the entry highlights the
+        // space ("left the Space {spaceName}") — both keep the space link.
+        if ($this->groupCount > 1 || !$this->inSpaceContext()) {
+            return parent::getUrl($scheme);
+        }
+
+        return $this->user->getUrl($scheme);
+    }
+
     public function getGroupingQuery(): ActiveQueryActivity
     {
         return Activity::find()
