@@ -76,10 +76,10 @@ class AssetImage extends Component implements \Stringable
 
     /**
      * @param array|null $options use `null` use default options, `[]` get unmodified file. All available options in class header
-     * @param $scheme
+     * @param bool $scheme
      * @return string the URL
      */
-    public function getUrl(?array $options = null, $scheme = false): string
+    public function getUrl(?array $options = null, bool $scheme = false): string
     {
         if ($options === null) {
             $options = $this->defaultOptions;
@@ -95,7 +95,7 @@ class AssetImage extends Component implements \Stringable
             //Yii::debug("AssetImage: Check file exists: " . $scaledFileName);
 
             if (!$this->exists() && empty($this->defaultFile)) {
-                throw new InvalidValueException('File and DefaultFile cannot be empty.');
+                return '';
             }
 
             if (!$this->fs->fileExists($scaledFileName)) {
@@ -131,7 +131,14 @@ class AssetImage extends Component implements \Stringable
 
     private function getFileNameWithOptions(array $options): string
     {
-        $fileName = ($this->exists()) ? $this->fileName : basename((string) $this->defaultFile);
+        if ($this->exists()) {
+            $fileName = $this->fileName;
+        } else {
+            if (!$this->defaultFile) {
+                return '';
+            }
+            $fileName = basename((string) $this->defaultFile);
+        }
 
         ksort($options);
         $checksum = hash('xxh32', json_encode($options));
