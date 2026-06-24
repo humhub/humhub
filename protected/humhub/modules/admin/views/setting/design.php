@@ -41,7 +41,7 @@ $this->registerJsConfig('admin', [
 ]);
 
 $logoUrl = (Yii::$app->img->logo->exists()) ? Yii::$app->img->logo->getUrl() : '';
-$iconUrl = (Yii::$app->img->icon->exists()) ? Yii::$app->img->icon->getUrl(['square' => 140]) : '';
+$iconUrl = (Yii::$app->img->icon->exists() || Yii::$app->img->icon->defaultFile) ? Yii::$app->img->icon->getUrl(['square' => 140]) : '';
 $loginBgUrl = (Yii::$app->img->loginBackground->exists()) ? Yii::$app->img->loginBackground->getUrl() : '';
 $mailHeaderUrl = (Yii::$app->img->mailHeader->exists()) ? Yii::$app->img->mailHeader->getUrl(
     ['maxHeight' => MailHeaderImage::MAX_HEIGHT, 'maxWidth' => MailHeaderImage::MAX_WIDTH]

@@ -8,6 +8,12 @@ use yii\base\Application;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
 
+/**
+ * @property-read AssetImage $logo
+ * @property-read AssetImage $icon
+ * @property-read AssetImage $loginBackground
+ * @property-read AssetImage $mailHeader
+ */
 class AssetImageRegistry extends Component
 {
     public array $definitions = [];
