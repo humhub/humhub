@@ -47,7 +47,10 @@ AdminGroupAsset::register($this);
                         'focus' => true,
                     ]) ?>
                     <?= Html::activeHiddenInput($addGroupMemberForm, 'groupId', ['value' => $group->id]) ?>
-                    <?= Button::primary()->submit()->icon('add') ?>
+                    <?= Button::primary()
+                        ->submit()
+                        ->icon('add')
+                        ->options(['aria-label' => Yii::t('AdminModule.user', 'Add new members...')]) ?>
                 </div>
                 <?php ActiveForm::end(); ?>
             </div>
@@ -56,7 +59,10 @@ AdminGroupAsset::register($this);
                 <?php $form = ActiveForm::begin(['method' => 'get']); ?>
                 <div class="input-group">
                     <?= Html::activeTextInput($searchModel, 'freeText', ['class' => 'form-control', 'placeholder' => Yii::t('AdminModule.user', 'Search by name, email or id.')]); ?>
-                    <button class="btn btn-light" type="submit"><i class="fa fa-search"></i></button>
+                    <?= Button::light()
+                        ->submit()
+                        ->icon('search')
+                        ->options(['aria-label' => Yii::t('AdminModule.user', 'Search by name, email or id.')]) ?>
                 </div>
                 <?php ActiveForm::end(); ?>
             </div>

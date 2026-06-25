@@ -34,13 +34,11 @@ use yii\grid\ActionColumn;
 <div class="panel panel-default">
     <div class="panel-heading"><?= $title ?></div>
 
-    <?php
-    if ($contentContainer instanceof Space) {
+    <?php if ($contentContainer instanceof Space) {
         echo DefaultMenu::widget(['space' => $contentContainer]);
     } elseif ($contentContainer instanceof User) {
         echo AccountSettingsMenu::widget();
-    }
-    ?>
+    } ?>
 
     <div class="panel-body">
         <?php if (Topic::isAllowedToCreate($contentContainer)) : ?>
@@ -49,7 +47,10 @@ use yii\grid\ActionColumn;
             <div class="mb-3">
                 <div class="input-group">
                     <?= Html::activeTextInput($addModel, 'name', ['class' => 'form-control', 'placeholder' => Yii::t('TopicModule.base', 'Add Topic')]) ?>
-                    <?= Button::light()->icon('add')->loader()->submit() ?>
+                    <?= Button::light()
+                        ->icon('add')
+                        ->options(['aria-label' => Yii::t('TopicModule.base', 'Add Topic')])
+                        ->submit() ?>
                 </div>
             </div>
             <?php ActiveForm::end(); ?>
@@ -73,22 +74,31 @@ use yii\grid\ActionColumn;
                     'class' => ActionColumn::class,
                     'options' => ['width' => '100px'],
                     'buttons' => [
-                        'update' => fn($url, $model) =>
-                            /* @var $model Topic */
-                            ModalButton::primary()->load($contentContainer->createUrl('edit', ['id' => $model->id]))->icon('edit')->sm()->loader(false),
-                        'view' => fn($url, $model) =>
-                            /* @var $model Topic */
-                            Button::primary()->link($model->getUrl())->icon('fa-filter')->sm()->loader(false),
-                        'delete' => fn($url, $model) =>
-                            /* @var $model Topic */
-                            Button::danger()->icon('delete')->action('topic.removeOverviewTopic', $contentContainer->createUrl('delete', ['id' => $model->id]))->confirm(
-                            Yii::t('TopicModule.base', '<strong>Confirm</strong> topic deletion'),
-                            Yii::t('TopicModule.base', 'Do you really want to delete this topic?'),
-                            Yii::t('base', 'Delete')
-                        )->sm()->loader(false),
+                        'update' => fn($url, Topic $model) => ModalButton::primary()
+                            ->load($contentContainer->createUrl('edit', ['id' => $model->id]))
+                            ->icon('edit')
+                            ->options(['aria-label' => Yii::t('base', 'Edit')])
+                            ->sm()
+                            ->loader(false),
+                        'view' => fn($url, Topic $model) => Button::primary()
+                            ->link($model->getUrl())
+                            ->icon('filter')
+                            ->options(['aria-label' => Yii::t('base', 'View')])
+                            ->sm()
+                            ->loader(false),
+                        'delete' => fn($url, Topic $model) => Button::danger()
+                            ->icon('delete')
+                            ->options(['aria-label' => Yii::t('base', 'Delete')])
+                            ->action('topic.removeOverviewTopic', $contentContainer->createUrl('delete', ['id' => $model->id]))
+                            ->confirm(
+                                Yii::t('TopicModule.base', '<strong>Confirm</strong> topic deletion'),
+                                Yii::t('TopicModule.base', 'Do you really want to delete this topic?'),
+                                Yii::t('base', 'Delete'),
+                            )
+                            ->sm()
+                            ->loader(false),
                     ],
                 ],
-            ]]);
-        ?>
+            ]]) ?>
     </div>
 </div>
