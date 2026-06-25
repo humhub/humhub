@@ -1,7 +1,6 @@
 <?php
 
 use humhub\components\View;
-use humhub\helpers\Html;
 use humhub\modules\content\Module;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\file\handler\BaseFileHandler;
@@ -55,6 +54,7 @@ $contentModule = Yii::$app->getModule('content');
             ]);
             echo Button::accent()
                 ->icon('send')
+                ->options(['aria-label' => Yii::t('base', 'Save')])
                 ->cssClass('btn-comment-submit')->sm()
                 ->action('editSubmit', $submitUrl)->submit();
             ?>

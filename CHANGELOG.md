@@ -48,7 +48,8 @@ HumHub Changelog
 - Enh #8232: Fix absolute URLs in mail summary
 - Enh #8237: Allow symfony/mailer ^7.0 and widen all mailer bridge constraints to unblock symfony/event-dispatcher 7.x
 - Enh #8244: Log progress of the queued search index rebuild (`SearchRebuildIndex`) — start, interim item count, completion, and failures/skips, each prefixed with the worker process ID — via the `search-indexing` log category
-
+- Fix #8246: Add aria-label attribute for icon-only buttons
+ 
 1.18.4 (Unreleased)
 ---------------------
 - Enh #8170: Handle controllers with using external modules

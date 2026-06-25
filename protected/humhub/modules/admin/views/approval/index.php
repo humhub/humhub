@@ -106,7 +106,10 @@ $columns[] = [
             <?= Button::light()
                 ->icon('cog')
                 ->loader(false)
-                ->options(['data-bs-toggle' => 'dropdown']) ?>
+                ->options([
+                    'aria-label' => Yii::t('AdminModule.user', 'Select the profile fields you want to add as columns'),
+                    'data-bs-toggle' => 'dropdown',
+                ]) ?>
         <?php endif; ?>
 
         <?= Html::beginForm('#', 'post', [
@@ -121,7 +124,7 @@ $columns[] = [
         <div><hr class="dropdown-divider"></div>
         <div style="padding: 0 15px;">
             <?php foreach ($availableProfileFields as $field): ?>
-                <?= Html::checkbox('screenProfileFieldsId[]', array_key_exists($field->id, $profileFieldsColumns), ['id' => 'profile-select-' . $field->id, 'value' => $field->id, 'label' => Yii::t($field->getTranslationCategory(), $field->title)]) ?>
+                <?= Html::checkbox('screenProfileFieldsId[]', array_key_exists($field->id, $profileFieldsColumns), ['id' => 'profile-select-' . $field->id, 'value' => $field->id, 'label' => Yii::t($field->getTranslationCategory(), $field->title)]) ?><br>
             <?php endforeach; ?>
             <br>
             <?= Html::saveButton(Yii::t('AdminModule.user', 'Apply')) ?>
