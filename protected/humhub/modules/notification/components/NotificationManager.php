@@ -388,6 +388,10 @@ class NotificationManager
      */
     public function setSpaceSetting(User $user, Space $space, $follow = true)
     {
+        /* @var Module $module */
+        $module = Yii::$app->getModule('notification');
+        $module->settings->user($user)?->set(self::IS_TOUCHED_SETTINGS, true);
+
         /* @var $membership Membership */
         $membership = $space->getMembership($user->id);
         if ($membership) {
