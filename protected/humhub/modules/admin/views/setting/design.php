@@ -123,6 +123,7 @@ $themeVariables = Yii::$app->view->theme->variables;
                 <?= Button::accent()
                     ->id('admin-logo-upload-button')
                     ->icon('cloud-upload')
+                    ->options(['aria-label' => Yii::t('AdminModule.settings', 'Upload')])
                     ->sm()
                     ->loader(false) ?>
 
@@ -130,6 +131,7 @@ $themeVariables = Yii::$app->view->theme->variables;
                     ->id('admin-delete-logo-image')
                     ->icon('remove')
                     ->action('admin.deletePageLogo', ['/admin/setting/delete-logo-image'])
+                    ->options(['aria-label' => Yii::t('AdminModule.settings', 'Remove')])
                     ->cssClass(Yii::$app->img->logo->exists() ? '' : 'd-none')
                     ->sm()
                     ->loader(false) ?>
@@ -155,6 +157,7 @@ $themeVariables = Yii::$app->view->theme->variables;
                 <?= Button::accent()
                     ->id('admin-icon-upload-button')
                     ->icon('cloud-upload')
+                    ->options(['aria-label' => Yii::t('AdminModule.settings', 'Upload')])
                     ->sm()
                     ->loader(false) ?>
 
@@ -162,6 +165,7 @@ $themeVariables = Yii::$app->view->theme->variables;
                     ->id('admin-delete-icon-image')
                     ->icon('remove')
                     ->action('admin.deletePageIcon', ['/admin/setting/delete-icon-image'])
+                    ->options(['aria-label' => Yii::t('AdminModule.settings', 'Remove')])
                     ->cssClass(Yii::$app->img->icon->exists() ? '' : 'd-none')
                     ->sm()
                     ->loader(false) ?>
@@ -187,6 +191,7 @@ $themeVariables = Yii::$app->view->theme->variables;
                 <?= Button::accent()
                     ->id('admin-loginBg-upload-button')
                     ->icon('cloud-upload')
+                    ->options(['aria-label' => Yii::t('AdminModule.settings', 'Upload')])
                     ->sm()
                     ->loader(false) ?>
 
@@ -194,6 +199,7 @@ $themeVariables = Yii::$app->view->theme->variables;
                     ->id('admin-delete-loginBg-image')
                     ->icon('remove')
                     ->action('admin.deleteLoginBg', ['/admin/setting/delete-login-background-image'])
+                    ->options(['aria-label' => Yii::t('AdminModule.settings', 'Remove')])
                     ->cssClass(Yii::$app->img->loginBackground->exists() ? '' : 'd-none')
                     ->sm()
                     ->loader(false) ?>
@@ -219,6 +225,7 @@ $themeVariables = Yii::$app->view->theme->variables;
                 <?= Button::accent()
                     ->id('admin-mailHeader-upload-button')
                     ->icon('cloud-upload')
+                    ->options(['aria-label' => Yii::t('AdminModule.settings', 'Upload')])
                     ->sm()
                     ->loader(false) ?>
 
@@ -226,6 +233,7 @@ $themeVariables = Yii::$app->view->theme->variables;
                     ->id('admin-delete-mailHeader-image')
                     ->icon('remove')
                     ->action('admin.deleteMailHeader', ['/admin/setting/delete-mail-header-image'])
+                    ->options(['aria-label' => Yii::t('AdminModule.settings', 'Remove')])
                     ->cssClass(Yii::$app->img->mailHeader->exists() ? '' : 'd-none')
                     ->sm()
                     ->loader(false) ?>

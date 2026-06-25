@@ -5,7 +5,6 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\menu\MenuEntry;
 use humhub\widgets\bootstrap\Button;
 
@@ -13,7 +12,10 @@ use humhub\widgets\bootstrap\Button;
 ?>
 <?= Button::light()
     ->icon('cog')
-    ->options(['data-bs-toggle' => 'dropdown'])
+    ->options([
+        'data-bs-toggle' => 'dropdown',
+        'aria-label' => Yii::t('AdminModule.base', 'Actions'),
+    ])
     ->sm()
     ->cssClass('dropdown-toggle')
     ->loader(false) ?>

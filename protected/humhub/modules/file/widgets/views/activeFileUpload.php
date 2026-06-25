@@ -17,12 +17,14 @@ use humhub\widgets\bootstrap\Button;
     <?= Button::danger()
         ->sm()
         ->icon('times')
+        ->options(['aria-label' => Yii::t('FileModule.base', 'Delete')])
         ->cssClass(['img-uploader-remove', 'd-none'])
         ->action('delete')
         ->loader(false) ?>
     <?= Button::accent()
         ->sm()
-        ->icon('cloud-upload ')
+        ->icon('cloud-upload')
+        ->options(['aria-label' => Yii::t('FileModule.base', 'Upload')])
         ->cssClass(['img-uploader-upload'])
         ->action('upload')
         ->loader(false) ?>
