@@ -46,6 +46,7 @@ HumHub Changelog
 - Enh #8223: Define default user idle timeout to 4 hours
 - Enh #8232: Fix absolute URLs in mail summary
 - Enh #8237: Allow symfony/mailer ^7.0 and widen all mailer bridge constraints to unblock symfony/event-dispatcher 7.x
+- Fix #8246: Add aria-label attribute for icon-only buttons
 
 1.18.4 (Unreleased)
 ---------------------
