@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\services;
 
+use humhub\modules\content\jobs\SearchRebuildIndex;
 use Yii;
 
 class SearchJobService
@@ -19,14 +20,16 @@ class SearchJobService
     public function run(callable $callable): bool
     {
         if (!Yii::$app->mutex->acquire(self::MUTEX_ID, $this->retryDelayInSeconds)) {
+            Yii::warning(sprintf('Search index rebuild [PID %s] skipped: another rebuild process is already running.', getmypid() ?: 'unknown'), SearchRebuildIndex::LOG_CATEGORY);
             return false;
         }
 
         try {
             call_user_func($callable);
             Yii::$app->mutex->release(self::MUTEX_ID);
-        } catch (\Exception) {
+        } catch (\Exception $e) {
             Yii::$app->mutex->release(self::MUTEX_ID);
+            Yii::warning(sprintf('Search index rebuild [PID %s] failed: %s', getmypid() ?: 'unknown', $e->getMessage()), SearchRebuildIndex::LOG_CATEGORY);
             return false;
         }
 

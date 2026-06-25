@@ -76,6 +76,7 @@ $placeholder = ($isNestedComment)
             ]) ?>
             <?= Button::accent()
                 ->icon('send')
+                ->options(['aria-label' => Yii::t('ContentModule.base', 'Submit')])
                 ->cssClass('btn-comment-submit')->sm()
                 ->action('submit', $submitUrl)->submit() ?>
         </div>

@@ -4,6 +4,7 @@ HumHub Changelog
 1.19 (TBD)
 ----------
 - Fix: Unfollowing a user threw `Key "object_model" is not a column name` — `Follow::beforeDelete()` still queried the `activity.object_model`/`object_id` columns that the activity restructuring dropped; it now removes the `FollowActivity` via its `class`/`contentcontainer_id`/`created_by`
+- Fix #8242: Within a space, "member joined"/"left" activities now link to the member's profile instead of the (redundant) space; in the global/dashboard stream and for grouped entries (multiple members) they keep linking to the space
 - Enh: A `UserSource` can declare email optional via `UserSourceInterface::isEmailRequired()` (default `true`); `User::isEmailRequired()` now consults the user's source (through `UserSourceService`), so sources for external/federated users can provision accounts without an email address
 - Fix #8230: Activity summary mails could grow oversized and fail to send ("552 message too large") when a user's last summary date was far in the past — the activity refactoring had dropped the per-mail activity cap, so the entire backlog since the last successful summary was rendered into a single mail; re-applied the cap in `MailSummary::getActivities()`
 - Fix: `migrate/up --includeModuleMigrations=1` now registers Yii namespace aliases for all installed modules before scanning migration paths, so module classes (e.g. in old migrations) are autoloadable even when `#[WithoutModuleAutoload]` skipped their bootstrap registration
@@ -47,7 +48,9 @@ HumHub Changelog
 - Enh #8223: Define default user idle timeout to 4 hours
 - Enh #8232: Fix absolute URLs in mail summary
 - Enh #8237: Allow symfony/mailer ^7.0 and widen all mailer bridge constraints to unblock symfony/event-dispatcher 7.x
-
+- Enh #8244: Log progress of the queued search index rebuild (`SearchRebuildIndex`) — start, interim item count, completion, and failures/skips, each prefixed with the worker process ID — via the `search-indexing` log category
+- Fix #8246: Add aria-label attribute for icon-only buttons
+ 
 1.18.4 (Unreleased)
 ---------------------
 - Enh #8170: Handle controllers with using external modules
