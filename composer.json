@@ -61,7 +61,7 @@
         "npm-asset/jquery.cookie": "^1.4.1",
         "npm-asset/kbw.timeentry": "^2.0",
         "npm-asset/nprogress": "^0.2",
-        "npm-asset/select2": "^4.0.13",
+        "npm-asset/select2": "4.0.13",
         "npm-asset/socket.io-client": "^2.0",
         "npm-asset/swiped-events": "^1.0.9",
         "npm-asset/timeago": "^1.6.3",
