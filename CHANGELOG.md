@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.19 (TBD)
 ----------
+- Fix #8252: Unfollowing a user still crashed with an ambiguous-column SQL error and never removed the follow — the `FollowActivity` lookup in `Follow::beforeDelete()` did not qualify the columns shared by the `content`/`user` tables that `ActiveQueryActivity` left-joins, and `Followable::follow()`/`unfollow()` did not invalidate the cached follow record, so a follow + unfollow within the same request left the record in place (follow-up to #8249)
 - Fix: Mercure live driver could not deliver updates when the hub is co-located with the app but the public address is not reachable over loopback (e.g. the Docker image with a non-`localhost` `SERVER_NAME`) — the single `hubUrl` was used for both server-side publishing and browser subscribing. Added `MercurePushDriver::$internalHubUrl` (defaults to `hubUrl`): the server now publishes via `internalHubUrl` while the browser keeps subscribing via the public `hubUrl`
 - Fix: Unfollowing a user threw `Key "object_model" is not a column name` — `Follow::beforeDelete()` still queried the `activity.object_model`/`object_id` columns that the activity restructuring dropped; it now removes the `FollowActivity` via its `class`/`contentcontainer_id`/`created_by`
 - Fix #8242: Within a space, "member joined"/"left" activities now link to the member's profile instead of the (redundant) space; in the global/dashboard stream and for grouped entries (multiple members) they keep linking to the space
