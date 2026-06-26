@@ -245,10 +245,10 @@ class NotificationManager
         return $query;
     }
 
-    private function isDefaultNotificationSpace($container)
+    private function isDefaultNotificationSpace($container): bool
     {
         $defaultSpaces = Yii::$app->getModule('notification')->settings->getSerialized('sendNotificationSpaces');
-        return (empty($defaultSpaces)) ? false : in_array($container->guid, $defaultSpaces);
+        return !empty($defaultSpaces) && in_array($container->guid, $defaultSpaces);
     }
 
     private function findFollowers($container, $isDefault = false)
@@ -275,6 +275,25 @@ class NotificationManager
     }
 
     /**
+     * Get default notification spaces for the given user.
+     *
+     * @param User|null $user NULL - to don't filter by user
+     * @return Space[]
+     */
+    public function getDefaultNotificationSpaces(?User $user = null): array
+    {
+        $spaces = Space::find()
+            ->where(['guid' => Yii::$app->getModule('notification')->settings->getSerialized('sendNotificationSpaces')]);
+
+        if ($user) {
+            $spaces->visible($user)
+                ->filterBlockedSpaces($user);
+        }
+
+        return $spaces->all();
+    }
+
+    /**
      * Returns all spaces this user is following (including member spaces) with sent_notification setting.
      *
      * @param User $user
@@ -288,11 +307,7 @@ class NotificationManager
         $result = array_merge($memberSpaces, $followSpaces);
 
         if (!static::isTouchedSettings($user)) {
-            $result = array_merge($result, Space::find()
-                ->where(['guid' => Yii::$app->getModule('notification')->settings->getSerialized('sendNotificationSpaces')])
-                ->visible($user)
-                ->filterBlockedSpaces($user)
-                ->all());
+            $result = array_merge($result, $this->getDefaultNotificationSpaces($user));
         }
 
         return $result;
@@ -388,22 +403,27 @@ class NotificationManager
      */
     public function setSpaceSetting(User $user, Space $space, $follow = true)
     {
-        /* @var Module $module */
-        $module = Yii::$app->getModule('notification');
-        $module->settings->user($user)?->set(self::IS_TOUCHED_SETTINGS, true);
+        if (!static::isTouchedSettings($user)) {
+            // If the user didn't touch the notification settings yet,
+            // we need to set the default/global notification spaces for the given user,
+            // and mark the user's notification settings as touched.
+            // It is required after a new installation or when the notification settings
+            // have been reset for all users by admin or for the user himself.
+            /* @var Module $module */
+            $module = Yii::$app->getModule('notification');
+            $module->settings->user($user)?->set(self::IS_TOUCHED_SETTINGS, true);
 
-        /* @var $membership Membership */
+            foreach (Yii::$app->notification->getDefaultNotificationSpaces($user) as $defaultNotifiedSpace) {
+                if (!$defaultNotifiedSpace->is($space)) {
+                    Yii::$app->notification->setSpaceSetting($user, $defaultNotifiedSpace, true);
+                }
+            }
+        }
+
         $membership = $space->getMembership($user->id);
         if ($membership) {
             $membership->send_notifications = $follow;
             $membership->save();
-            return;
-        }
-
-        $followed = $space->getFollowRecord($user);
-        if ($followed) {
-            $followed->send_notifications = $follow;
-            $followed->save();
             return;
         }
 
