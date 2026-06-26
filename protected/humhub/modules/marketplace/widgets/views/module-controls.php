@@ -16,10 +16,16 @@ use humhub\widgets\bootstrap\Button;
 <?= Html::beginTag('ul', $options) ?>
 <li class="nav-item dropdown">
     <?= Button::light()
-        ->options(['data-bs-toggle' => 'dropdown'])
-        ->sm()
-        ->cssClass('nav-link dropdown-toggle')
-        ->loader(false) ?>
+            ->icon('ellipsis-h')
+            ->options([
+                'data-bs-toggle' => 'dropdown',
+                'aria-label' => Yii::t('MarketplaceModule.base', 'Module options'),
+                'aria-haspopup' => 'true',
+                'aria-expanded' => 'false',
+            ])
+            ->sm()
+            ->cssClass('nav-link dropdown-toggle')
+            ->loader(false) ?>
     <ul class="dropdown-menu dropdown-menu-end">
         <?php foreach ($entries as $entry) : ?>
             <li>

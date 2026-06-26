@@ -26,13 +26,15 @@ CardsAsset::register($this);
 
 </div>
 
-<div class="row cards">
+<div class="row cards" aria-live="polite" aria-atomic="false">
     <?php if (!$people->exists()): ?>
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <strong><?= Yii::t('UserModule.base', 'No results found!'); ?></strong><br/>
-                    <?= Yii::t('UserModule.base', 'Try other keywords or remove filters.'); ?>
+                    <p role="status" aria-live="polite" class="m-0">
+                        <strong><?= Yii::t('UserModule.base', 'No results found!') ?></strong><br>
+                        <?= Yii::t('UserModule.base', 'Try other keywords or remove filters.') ?>
+                    </p>
                 </div>
             </div>
         </div>
@@ -46,6 +48,9 @@ CardsAsset::register($this);
 <?php if (!$people->isLastPage()) : ?>
     <?= Html::tag('div', '', [
         'class' => 'cards-end',
+        'role' => 'status',
+        'aria-label' => Yii::t('UserModule.base', 'Loading more people'),
+        'aria-live' => 'polite',
         'data-current-page' => $people->pagination->getPage() + 1,
         'data-total-pages' => $people->pagination->getPageCount(),
         'data-ui-loader' => '',

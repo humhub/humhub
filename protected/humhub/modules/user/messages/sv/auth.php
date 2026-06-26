@@ -48,6 +48,7 @@ return [
   'Register' => 'Registrera',
   'Reset Password' => 'Återställ lösenord',
   'Reset password' => 'Återställ lösenord',
+  'Select' => 'Välj',
   'Send' => 'Skicka',
   'Sign In' => '',
   'Sign Up' => '',

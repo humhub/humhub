@@ -10,6 +10,7 @@ return [
   'Could not find requested file!' => 'Ni bilo mogoče najti zahtevane datoteke!',
   'Could not upload File:' => 'Ne morem naložiti datoteke:',
   'Created by:' => 'Ustvaril:',
+  'Delete' => 'Briši',
   'Double file extensions are not allowed!' => 'Dvojne razširitve datotek niso dovoljene!',
   'Download' => 'Prenos',
   'File {fileName} could not be uploaded!' => 'Datoteka {fileName} ni bilo mogoče naložiti!',
@@ -23,5 +24,6 @@ return [
   'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => 'Oprostite, naložite lahko samo do {n,plural,=1{# file} other{# files}} na enkrat.',
   'The uploaded image is not a squared.' => 'Naložena slika ni kvadratna.',
   'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Naložite lahko minimalno {n,plural,=1{# file} other{# files}}.',
+  'Upload' => 'Naloži',
   'Upload files' => 'Naloži datoteke',
 ];

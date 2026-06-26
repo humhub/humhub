@@ -189,6 +189,10 @@
                 vertical-align: middle;
                 border: none; // Remove the BS caret
             }
+            // Use a provided icon instead of the default from :after
+            &:has(i)::after {
+                display: none;
+            }
 
             &.show {
                 color: var(--hh-primary-contrast);

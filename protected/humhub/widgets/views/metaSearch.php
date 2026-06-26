@@ -25,7 +25,10 @@ SearchAsset::register($this);
     ->icon('search')
     ->id('search-menu')
     ->action('menu')
-    ->options(['data-bs-toggle' => 'dropdown'])
+    ->options([
+        'data-bs-toggle' => 'dropdown',
+        'aria-label' => Yii::t('base', 'Search'),
+    ])
     ->cssClass('nav-link dropdown-toggle') ?>
 <div id="dropdown-search" class="dropdown-menu">
     <div>
@@ -39,6 +42,7 @@ SearchAsset::register($this);
         <?= Button::light()
             ->icon('search')
             ->action('search')
+            ->options(['aria-label' => Yii::t('base', 'Search')])
             ->cssClass('dropdown-search-button')
             ->loader(false) ?>
         <?= Html::input('text', 'keyword', '', [

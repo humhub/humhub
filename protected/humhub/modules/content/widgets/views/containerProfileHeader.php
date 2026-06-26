@@ -26,6 +26,7 @@ use humhub\helpers\Html;
 use humhub\modules\content\assets\ContainerHeaderAsset;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\file\widgets\Upload;
+use humhub\modules\space\models\Space;
 use humhub\widgets\bootstrap\Link;
 
 ContainerHeaderAsset::register($this);
@@ -68,7 +69,9 @@ $profileImageHeight = $container->image->defaultOptions['height'];
                 'cropUrl' => $coverCropUrl,
                 'deleteUrl' => $coverDeleteUrl,
                 'dropZone' => '.profile-banner-image-container',
-                'confirmBody' => Yii::t('SpaceModule.base', 'Do you really want to delete your title image?'),
+                'confirmBody' => $container instanceof Space
+                    ? Yii::t('SpaceModule.base', 'Do you really want to delete the space title image?')
+                    : Yii::t('SpaceModule.base', 'Do you really want to delete your title image?'),
             ]) ?>
         <?php endif; ?>
     </div>
@@ -77,8 +80,16 @@ $profileImageHeight = $container->image->defaultOptions['height'];
          style="width: <?= $profileImageWidth ?>px; height: <?= $profileImageHeight ?>px;">
 
         <?php if ($container->image->exists()) : ?>
-            <a data-ui-gallery="spaceHeader" href="<?= $container->image->getUrl([]) ?>">
-                <?= $container->getProfileImage()->render($profileImageWidth - 10, ['class' => 'img-profile-header-background profile-user-photo', 'link' => false, 'showSelfOnlineStatus' => true]) ?>
+            <a data-ui-gallery="spaceHeader"
+               href="<?= $container->image->getUrl([]) ?>"
+               aria-label="<?= Html::encode($container instanceof Space
+                       ? Yii::t('SpaceModule.base', 'View space image of {name}', ['name' => $container->displayName])
+                       : Yii::t('UserModule.base', 'View profile image of {name}', ['name' => $container->displayName])) ?>">
+                <?= $container->getProfileImage()->render($profileImageWidth - 10, [
+                    'class' => 'img-profile-header-background profile-user-photo',
+                    'link' => false,
+                    'showSelfOnlineStatus' => true,
+                ]) ?>
             </a>
         <?php else : ?>
             <?= $container->getProfileImage()->render($profileImageHeight - 10, ['class' => 'img-profile-header-background profile-user-photo']) ?>
@@ -95,7 +106,9 @@ $profileImageHeight = $container->image->defaultOptions['height'];
                 'deleteUrl' => $imageDeleteUrl,
                 'cropUrl' => $imageCropUrl,
                 'dropZone' => '.profile-user-photo-container',
-                'confirmBody' => Yii::t('SpaceModule.base', 'Do you really want to delete your profile image?'),
+                'confirmBody' => $container instanceof Space
+                    ? Yii::t('SpaceModule.base', 'Do you really want to delete the space image?')
+                    : Yii::t('SpaceModule.base', 'Do you really want to delete your profile image?'),
             ]) ?>
         <?php endif; ?>
 

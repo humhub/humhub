@@ -195,8 +195,15 @@ class MyUserSource extends BaseUserSource
 
     // updateUser() inherited from BaseUserSource — writes $managedAttributes
     // present in $attributes onto User and Profile.
+
+    public function isEmailRequired(): bool
+    {
+        return false; // external/federated source whose users may have no email
+    }
 }
 ```
+
+`isEmailRequired()` defaults to `true` in `BaseUserSource`. Return `false` for sources whose users need no email address (e.g. federated/Fediverse users); `User::isEmailRequired()` then skips the email requirement for those users regardless of the global `user` module `emailRequired` setting.
 
 For config-only sources without custom code, use `GenericUserSource` and configure entirely via `userSourceCollection`.
 

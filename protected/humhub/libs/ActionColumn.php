@@ -10,6 +10,7 @@ namespace humhub\libs;
 
 use humhub\helpers\Html;
 use humhub\widgets\bootstrap\Button;
+use Yii;
 use yii\base\Event;
 use yii\base\Model;
 use yii\grid\Column;
@@ -56,8 +57,14 @@ class ActionColumn extends Column
         }
 
         $html = Html::beginTag('div', ['class' => 'btn-group dropdown']);
-        $html .= Button::light()->cssClass('dropdown-toggle')
-            ->options(['data-bs-toggle' => 'dropdown'])->icon('controls')->loader(false);
+        $html .= Button::light()
+            ->cssClass('dropdown-toggle')
+            ->options([
+                'aria-label' => Yii::t('base', 'Actions'),
+                'data-bs-toggle' => 'dropdown',
+            ])
+            ->icon('controls')
+            ->loader(false);
         $html .= Html::beginTag('ul', ['class' => 'dropdown-menu dropdown-menu-end']);
         foreach ($actions as $title => $url) {
             if ($url === '---') {

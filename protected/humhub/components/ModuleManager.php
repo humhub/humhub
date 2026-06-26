@@ -11,26 +11,35 @@
 namespace humhub\components;
 
 use ArrayAccess;
-use humhub\components\bootstrap\ModuleAutoLoader;
+use humhub\services\ModuleDiscoveryService;
 use humhub\components\console\Application as ConsoleApplication;
 use humhub\exceptions\InvalidArgumentTypeException;
 use humhub\models\ModuleEnabled;
 use humhub\modules\admin\events\ModulesEvent;
-use humhub\modules\marketplace\Module as ModuleMarketplace;
-use Throwable;
 use Yii;
 use yii\base\Component;
-use yii\base\ErrorException;
 use yii\base\Event;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
-use yii\db\StaleObjectException;
 use yii\helpers\ArrayHelper;
-use yii\helpers\FileHelper;
-use yii\web\ServerErrorHttpException;
 
 /**
- * ModuleManager handles all installed modules.
+ * ModuleManager handles registration, enabling, and disabling of modules.
+ *
+ * During bootstrap, {@see ModuleAutoLoader} discovers all module directories and calls
+ * {@see registerBulk()} with their configurations. Each config.php must declare at minimum
+ * an `id` and a `class` key. The manager then:
+ * - registers Yii aliases for the module namespace and base path
+ * - sets up the Yii module in the application container
+ * - registers event handlers declared in the config's `events` array
+ * - adds console controller mappings for CLI commands
+ *
+ * Only core modules and currently enabled modules are fully activated. Disabled modules
+ * are tracked but remain dormant until explicitly enabled via {@see Module::enable()}.
+ *
+ * Event handler registration is intentionally lenient by default: invalid handlers (missing
+ * class or method) emit a warning and are skipped rather than throwing an exception. Modules
+ * can opt into strict validation by setting `'strict' => true` in their config.php.
  *
  * @author luke
  */
@@ -556,187 +565,33 @@ class ModuleManager extends Component
      */
     public function flushCache()
     {
-        Yii::$app->cache->delete(ModuleAutoLoader::CACHE_ID);
+        Yii::$app->cache->delete(ModuleDiscoveryService::CACHE_ID);
     }
 
     /**
-     * Checks if the module can be removed
+     * Marks a module ID as enabled in the in-memory list.
      *
-     * @param string $moduleId
-     *
-     * @noinspection PhpDocMissingThrowsInspection
-     * */
-    public function canRemoveModule($moduleId): bool
-    {
-        /** @noinspection PhpUnhandledExceptionInspection */
-        $module = $this->getModule($moduleId, false);
-
-        if ($module === null) {
-            return false;
-        }
-
-        // Check is in dynamic/marketplace module folder
-        /** @var ModuleMarketplace $marketplaceModule */
-        $marketplaceModule = Yii::$app->getModule('marketplace');
-        if ($marketplaceModule !== null) {
-            // Normalize paths before comparing in order to fix issues like Windows path separators `\`
-            // Realpath is required when the modules path is a symlinked
-            $modulePath = FileHelper::normalizePath($module->getBasePath());
-            $aliasPath = FileHelper::normalizePath(realpath(Yii::getAlias($marketplaceModule->modulesPath)));
-            if (str_contains($modulePath, $aliasPath)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Removes a module
-     *
-     * @param string $moduleId
-     * @param bool $disableBeforeRemove
-     *
-     * @throws Exception
-     * @throws ErrorException
+     * @internal used by {@see \humhub\services\ModuleService}
+     * @since 1.19
      */
-    public function removeModule($moduleId, $disableBeforeRemove = true): ?string
+    public function markAsEnabled(string $moduleId): void
     {
-        $module = $this->getModule($moduleId);
-
-        if ($module === null) {
-            throw new Exception('Could not load module to remove!');
-        }
-
-        /**
-         * Disable Module
-         */
-        if ($disableBeforeRemove && Yii::$app->hasModule($moduleId)) {
-            $module->disable();
-        }
-
-        /**
-         * Remove Folder
-         */
-        if ($this->createBackup) {
-            $moduleBackupFolder = Yii::getAlias('@runtime/module_backups');
-            FileHelper::createDirectory($moduleBackupFolder);
-
-            $backupFolderName = $moduleBackupFolder . DIRECTORY_SEPARATOR . $moduleId . '_' . time();
-            $moduleBasePath = $module->getBasePath();
-            FileHelper::copyDirectory($moduleBasePath, $backupFolderName);
-            FileHelper::removeDirectory($moduleBasePath);
-        } else {
-            $backupFolderName = null;
-            //TODO: Delete directory
-        }
-
-        $this->flushCache();
-
-        return $backupFolderName;
-    }
-
-    /**
-     * Enables a module
-     *
-     * @param Module $module
-     *
-     * @throws InvalidConfigException
-     * @since 1.1
-     */
-    public function enable(Module $module)
-    {
-        $this->checkRequirements($module);
-
-        $this->trigger(static::EVENT_BEFORE_MODULE_ENABLE, new ModuleEvent(['module' => $module]));
-
-        if (!ModuleEnabled::findOne(['module_id' => $module->id])) {
-            (new ModuleEnabled([
-                'module_id' => $module->id,
-                'version' => $module->version,
-            ]))->save();
-        }
-
-        $this->enabledModules[] = $module->id;
-        $this->register($module->getBasePath());
-        $this->flushCache();
-
-        $this->trigger(static::EVENT_AFTER_MODULE_ENABLE, new ModuleEvent(['module' => $module]));
-    }
-
-    public function enableModules($modules = [])
-    {
-        foreach ($modules as $module) {
-            $module = $this->getModule($module);
-            if ($module != null) {
-                $module->enable();
-            }
+        if (!in_array($moduleId, $this->enabledModules, true)) {
+            $this->enabledModules[] = $moduleId;
         }
     }
 
     /**
-     * Disables a module
+     * Marks a module ID as disabled in the in-memory list.
      *
-     * @param Module $module
-     *
-     * @throws Throwable
-     * @throws StaleObjectException
-     * @since 1.1
+     * @internal used by {@see \humhub\services\ModuleService}
+     * @since 1.19
      */
-    public function disable(Module $module)
+    public function markAsDisabled(string $moduleId): void
     {
-        $this->trigger(static::EVENT_BEFORE_MODULE_DISABLE, new ModuleEvent(['module' => $module]));
-
-        $moduleEnabled = ModuleEnabled::findOne(['module_id' => $module->id]);
-        if ($moduleEnabled !== null) {
-            $moduleEnabled->delete();
-        }
-
-        if (($key = array_search($module->id, $this->enabledModules, true)) !== false) {
+        if (($key = array_search($moduleId, $this->enabledModules, true)) !== false) {
             unset($this->enabledModules[$key]);
         }
-
-        Yii::$app->setModule($module->id, null);
-
-        $this->flushCache();
-
-        $this->trigger(static::EVENT_AFTER_MODULE_DISABLE, new ModuleEvent(['module' => $module]));
     }
 
-    /**
-     * @param array $modules
-     *
-     * @throws Exception
-     */
-    public function disableModules($modules = [])
-    {
-        foreach ($modules as $module) {
-            $module = $this->getModule($module);
-            if ($module !== null) {
-                $module->disable();
-            }
-        }
-    }
-
-    /**
-     * Check module requirements
-     *
-     * @param Module $module
-     * @throws ServerErrorHttpException
-     * @since 1.16
-     */
-    private function checkRequirements(Module $module)
-    {
-        $requirementsPath = $module->getBasePath() . DIRECTORY_SEPARATOR . 'requirements.php';
-        if (!file_exists($requirementsPath)) {
-            return;
-        }
-
-        $requirementCheckResult = include($requirementsPath);
-
-        if (is_string($requirementCheckResult)) {
-            Yii::error('Error enabling the "' . $module->id . '" module: ' . $requirementCheckResult, 'module');
-            throw new ServerErrorHttpException($requirementCheckResult);
-        }
-    }
 }

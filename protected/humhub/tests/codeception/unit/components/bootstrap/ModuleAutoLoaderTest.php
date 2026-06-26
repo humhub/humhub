@@ -9,7 +9,7 @@
 namespace humhub\tests\codeception\unit;
 
 use Codeception\Test\Unit;
-use humhub\components\bootstrap\ModuleAutoLoader;
+use humhub\services\ModuleDiscoveryService;
 use Yii;
 
 /**
@@ -54,7 +54,7 @@ class ModuleAutoLoaderTest extends Unit
     public function testCoreModuleLoading()
     {
         $modules = array_column(
-            ModuleAutoLoader::locateModules(),
+            ModuleDiscoveryService::locateModuleConfigs(),
             'id',
         );
 
@@ -63,17 +63,14 @@ class ModuleAutoLoaderTest extends Unit
     }
 
     /**
-     * Test that an invalid path for module loading leads to an exception
+     * Test that an invalid path for module loading is silently skipped
      */
     public function testInvalidModulePath()
     {
         array_push(Yii::$app->params['moduleAutoloadPaths'], '/dev/null');
 
-        try {
-            ModuleAutoLoader::locateModules();
-            $this->fail('no expection when invalid path for moduleAutoloadPaths');
-        } catch (\ErrorException) {
-        }
+        $modules = ModuleDiscoveryService::locateModuleConfigs();
+        static::assertIsArray($modules);
 
         array_pop(Yii::$app->params['moduleAutoloadPaths']);
     }

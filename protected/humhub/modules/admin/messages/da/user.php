@@ -27,7 +27,6 @@ return [
     'All open registration invitations were successfully re-sent.' => 'Alle åbne registreringsinvitationer blev sendt igen.',
     'All the personal data of this user will be irrevocably deleted.' => 'Alle denne brugers personlige data slettes uigenkaldeligt.',
     'Allow' => 'Tillad',
-    'Allow individual topics on profiles' => 'Tillad individuelle emner på profiler',
     'Allow users to block each other' => 'Tillad brugere at blokere hinanden',
     'Allow users to set individual permissions for their own profile?' => 'Tillade brugere at indstille individuelle tilladelser til deres egen profil?',
     'Allow visitors limited access to content without an account (Adds visibility: "Guest")' => 'Tillad begrænset adgang for ikke-autentificeret brugere (gæster)',
@@ -255,5 +254,8 @@ Med venlig hilsen
     'You cannot delete yourself!' => 'Du kan ikke slette dig selv!',
     'never' => 'aldrig',
     '{nbMsgSent} already sent' => '{nbMsgSent} allerede sendt',
+    'Allow individual topics on profile content' => '',
+    'Edit field' => '',
+    'Resend' => '',
     'Search by name, email, username or exact id.' => '',
 ];

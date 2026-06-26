@@ -69,6 +69,7 @@ return [
     'Save scheduling' => '',
     'Schedule publication' => '',
     'Scheduled for {dateTime}' => '',
+    'Search' => '',
     'Select target Space.' => '',
     'Select target Space/Profile.' => '',
     'Select type...' => '',
@@ -113,5 +114,6 @@ return [
     'You cannot block yourself!' => '',
     'You do not have the permission to move this content to the given space.' => '',
     'You do not have the permission to move this content.' => '',
+    'You need to login to view this content!' => '',
     'in' => '',
 ];

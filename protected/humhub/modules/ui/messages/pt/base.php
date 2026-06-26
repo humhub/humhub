@@ -6,4 +6,5 @@ return [
     'Reset filters' => 'Redefinir filtros',
     'User Interface' => 'Interface de Utilizador',
     'Select' => '',
+    'Toggle filters' => '',
 ];

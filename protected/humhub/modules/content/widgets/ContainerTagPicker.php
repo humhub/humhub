@@ -11,7 +11,6 @@ namespace humhub\modules\content\widgets;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\ContentContainerTag;
 use humhub\modules\space\models\Space;
-use humhub\modules\topic\models\Topic;
 use humhub\modules\ui\form\widgets\BasePicker;
 use humhub\modules\user\models\forms\AccountSettings;
 use humhub\modules\user\models\User;
@@ -51,20 +50,9 @@ class ContainerTagPicker extends BasePicker
         $contentContainer = $this->getContentContainer();
         if ($contentContainer instanceof Space) {
             $this->url = Url::to(['/space/browse/search-tags-json', 'guid' => $contentContainer->guid]);
-            ;
         } elseif ($contentContainer instanceof User) {
             $this->url = Url::to(['/user/account/search-tags-json', 'guid' => $contentContainer->guid]);
         }
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function getAttributes()
-    {
-        return array_merge(parent::getAttributes(), [
-            'data-tags' => Topic::isAllowedToCreate($this->getContentContainer()) ? 'true' : 'false',
-        ]);
     }
 
     /**
@@ -134,7 +122,6 @@ class ContainerTagPicker extends BasePicker
         return static::searchTagsByContainerClass(
             get_class($contentContainer),
             $keyword,
-            Topic::isAllowedToCreate($contentContainer),
         );
     }
 

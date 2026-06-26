@@ -19,12 +19,16 @@ $categories = $user->profile->getProfileFieldCategories();
     <div class="panel-body">
         <?php $isFirst = true; ?>
         <?php if (count($categories) > 1): ?>
-            <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+            <ul id="tabs" class="nav nav-tabs" data-tabs="tabs" role="tablist">
                 <?php foreach ($categories as $category): ?>
-                    <li class="nav-item">
+                    <li class="nav-item" role="presentation">
                         <a href="#profile-category-<?= $category->id ?>"
-                             class="nav-link<?= $isFirst ? ' active' : '' ?>"
-                             data-bs-toggle="tab"><?= Html::encode(Yii::t($category->getTranslationCategory(), $category->title)) ?></a>
+                           id="profile-category-tab-<?= $category->id ?>"
+                           class="nav-link<?= $isFirst ? ' active' : '' ?>"
+                           role="tab"
+                           aria-selected="<?= $isFirst ? 'true' : 'false' ?>"
+                           aria-controls="profile-category-<?= $category->id ?>"
+                           data-bs-toggle="tab"><?= Html::encode(Yii::t($category->getTranslationCategory(), $category->title)) ?></a>
                     </li>
                     <?php $isFirst = false; ?>
                 <?php endforeach; ?>
@@ -34,12 +38,15 @@ $categories = $user->profile->getProfileFieldCategories();
         <div class="tab-content">
             <?php $isFirst = true; ?>
             <?php foreach ($categories as $category): ?>
-                <div class="tab-pane <?= $isFirst ? ' active' : '' ?> container gx-0 overflow-x-hidden" id="profile-category-<?= $category->id ?>">
+                <div class="tab-pane <?= $isFirst ? ' active' : '' ?> container gx-0 overflow-x-hidden"
+                     id="profile-category-<?= $category->id ?>"
+                     role="tabpanel"
+                     aria-labelledby="profile-category-tab-<?= $category->id ?>">
                     <?php foreach ($user->profile->getProfileFields($category) as $field) : ?>
                         <div class="profile-item row mt-3" data-profile-field-internal-name="<?= $field->internal_name ?>">
-                            <label class="col-md-3 field-title text-lg-end">
+                            <dt class="col-md-3 field-title text-lg-end">
                                 <?= Html::encode(Yii::t($field->getTranslationCategory(), $field->title)) ?>
-                            </label>
+                            </dt>
                             <div class="col-md-9 field-value">
                                 <?= ($field->field_type_class === MarkdownEditor::class) ?
                                     RichText::output($field->getUserValue($user, true, false)) :

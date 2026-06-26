@@ -84,19 +84,15 @@ use yii\helpers\Url;
             'header' => '&nbsp;',
             'class' => ActionColumn::class,
             'options' => ['style' => 'width:56px;'],
-            'contentOptions' => ['style' => 'text-align:center'],
-            'headerOptions' => ['style' => 'text-align:center'],
+            'contentOptions' => ['class' => 'text-center'],
+            'template' => '{update}',
             'buttons' => [
-                'view' => function (): void {
-                    return;
-                },
-                'delete' => function ($url, $model): void {
-                    return;
-                },
-                'update' => fn($url, $category) =>
-                    /* @var $model ProfileField */
-                    Button::primary()->icon('edit')->link(Url::to(['edit-field', 'id' => $category->id]))->sm(),
+                'update' => fn($url, $category) => Button::primary()
+                    ->icon('edit')
+                    ->link(['edit-field', 'id' => $category->id])
+                    ->options(['aria-label' => Yii::t('AdminModule.user', 'Edit field')])
+                    ->sm(),
             ],
         ],
-    ]
+    ],
 ]);

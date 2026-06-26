@@ -3,7 +3,6 @@
 namespace user\acceptance;
 
 use user\AcceptanceTester;
-use tests\codeception\_pages\AccountSettingsPage;
 
 class ChangeEmailCest
 {
@@ -27,7 +26,7 @@ class ChangeEmailCest
         $I->fillField('#accountchangeemail-currentpassword', '');
 
         $I->scrollToBottom();
-        $I->click('save');
+        $I->click('Save');
         $I->wait(1);
         $I->expectTo('see an error');
         $I->see('Current password cannot be blank.');
@@ -37,17 +36,18 @@ class ChangeEmailCest
         $I->fillField('#accountchangeemail-currentpassword', 'user^humhub@PASS%worD!');
 
         $I->scrollToBottom();
-        $I->click('save');
+        $I->click('Save');
         $I->wait(1);
-        $I->expectTo('see an error');
-        $I->see('New E-Mail address is not a valid email address.');
+        $I->expectTo('see an error from browser side, because email is not valid and form cannot be submitted');
+        $isValidForm = $I->executeJS('return document.querySelector("#accountchangeemail-newemail").checkValidity();');
+        \PHPUnit\Framework\Assert::assertFalse($isValidForm);
 
         $I->amGoingTo('fill all required fields with valid data');
         $I->fillField('#accountchangeemail-newemail', 'new@email.com');
         $I->fillField('#accountchangeemail-currentpassword', 'user^humhub@PASS%worD!');
 
         $I->scrollToBottom();
-        $I->click('save');
+        $I->click('Save');
         $I->wait(1);
         $I->expectTo('see no errors after saving');
         $I->dontSee('Current password cannot be blank.');

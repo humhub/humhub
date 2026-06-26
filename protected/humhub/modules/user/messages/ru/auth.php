@@ -48,6 +48,7 @@ return [
   'Register' => 'Регистрация',
   'Reset Password' => 'Сбросить пароль',
   'Reset password' => 'Сброс пароля',
+  'Select' => 'Выбрать',
   'Send' => 'Отправить',
   'Sign In' => '',
   'Sign Up' => '',

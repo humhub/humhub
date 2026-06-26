@@ -27,7 +27,6 @@ return [
     'All open registration invitations were successfully re-sent.' => 'すべての登録招待状が正常に再送信されました。',
     'All the personal data of this user will be irrevocably deleted.' => 'このユーザーのすべての情報を削除します。戻すことは出来ません。',
     'Allow' => '許可する',
-    'Allow individual topics on profiles' => 'プロフィールに個別のトピックを許可する',
     'Allow users to block each other' => 'ユーザーどうしでブロックすることを許す',
     'Allow users to set individual permissions for their own profile?' => 'ユーザーが自分のプロフィールに個別のアクセス許可を設定できるようにしますか？',
     'Allow visitors limited access to content without an account (Adds visibility: "Guest")' => '登録メンバーではない人（匿名ゲスト）にも閲覧を許可する',
@@ -236,5 +235,8 @@ Kind Regards
     'You cannot delete yourself!' => '自分自身を削除することはできません！',
     'never' => 'なし',
     '{nbMsgSent} already sent' => '{nbMsgSent} はすでに送信済みです',
+    'Allow individual topics on profile content' => '',
+    'Edit field' => '',
+    'Resend' => '',
     'Search by name, email, username or exact id.' => '',
 ];

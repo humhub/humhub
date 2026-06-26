@@ -143,6 +143,11 @@ class UserSourceService
         return $this->getUserSource()->canDeleteAccount();
     }
 
+    public function isEmailRequired(): bool
+    {
+        return $this->getUserSource()->isEmailRequired();
+    }
+
     /**
      * Returns whether a given auth client is permitted for this user's source.
      * An empty allowed list means all clients are permitted.

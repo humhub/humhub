@@ -10,6 +10,7 @@ return [
     '<strong>Module</strong> administration' => '',
     '<strong>Warning</strong> incomplete setup!' => '',
     'About' => '',
+    'Actions' => '',
     'Active Modules' => '',
     'Add more modules' => '',
     'Admin' => '',

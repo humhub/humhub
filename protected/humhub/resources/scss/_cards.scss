@@ -69,6 +69,7 @@
             }
 
             .form-search-field-info {
+                display: block;
                 font-weight: 500;
                 white-space: nowrap;
                 overflow: hidden;
@@ -187,9 +188,11 @@
                 }
             }
 
-            .card-icons .fa {
+            .card-icons > * {
                 color: var(--bs-accent);
-
+                .fa {
+                    margin-right: .4rem;
+                }
                 span {
                     font: 12px 'Open Sans', sans-serif;
                     font-weight: 600;
@@ -210,7 +213,6 @@
                 font-weight: bold;
                 padding: 5px 12px;
                 color: #FFF;
-                min-height: 30px;
                 max-height: 30px;
 
                 &.card-status-professional {

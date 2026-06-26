@@ -6,4 +6,5 @@ return [
     'Reset filters' => 'Szűrés törlése',
     'User Interface' => 'Felhasználói felület',
     'Select' => '',
+    'Toggle filters' => '',
 ];

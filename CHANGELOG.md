@@ -3,6 +3,18 @@ HumHub Changelog
 
 1.19 (TBD)
 ----------
+- Fix: Mercure live driver could not deliver updates when the hub is co-located with the app but the public address is not reachable over loopback (e.g. the Docker image with a non-`localhost` `SERVER_NAME`) — the single `hubUrl` was used for both server-side publishing and browser subscribing. Added `MercurePushDriver::$internalHubUrl` (defaults to `hubUrl`): the server now publishes via `internalHubUrl` while the browser keeps subscribing via the public `hubUrl`
+- Fix: Unfollowing a user threw `Key "object_model" is not a column name` — `Follow::beforeDelete()` still queried the `activity.object_model`/`object_id` columns that the activity restructuring dropped; it now removes the `FollowActivity` via its `class`/`contentcontainer_id`/`created_by`
+- Fix #8242: Within a space, "member joined"/"left" activities now link to the member's profile instead of the (redundant) space; in the global/dashboard stream and for grouped entries (multiple members) they keep linking to the space
+- Enh: A `UserSource` can declare email optional via `UserSourceInterface::isEmailRequired()` (default `true`); `User::isEmailRequired()` now consults the user's source (through `UserSourceService`), so sources for external/federated users can provision accounts without an email address
+- Fix #8230: Activity summary mails could grow oversized and fail to send ("552 message too large") when a user's last summary date was far in the past — the activity refactoring had dropped the per-mail activity cap, so the entire backlog since the last successful summary was rendered into a single mail; re-applied the cap in `MailSummary::getActivities()`
+- Fix: `migrate/up --includeModuleMigrations=1` now registers Yii namespace aliases for all installed modules before scanning migration paths, so module classes (e.g. in old migrations) are autoloadable even when `#[WithoutModuleAutoload]` skipped their bootstrap registration
+- Fix: The application-wide migration scan (`migrate/up`, admin "Database", installer) again applies only enabled (and core) module migrations; the `ModuleDiscoveryService` refactoring had made it apply migrations of every module present in the modules directory, creating tables for modules that were never enabled
+- Fix #8227: Clear cache no longer fails with "Permission denied" when the assets mount directory is not deletable (e.g. on Docker); only its contents are removed
+- Enh: Added `#[WithoutModuleAutoload]` attribute for console controllers that do not require module loading (e.g. `settings/*`, `cache/*`)
+- Enh #8214: Introduced `ModuleDiscoveryService` centralising all module filesystem discovery and `ModuleService` encapsulating per-module lifecycle operations (enable, disable, remove); slimmed down `ModuleAutoLoader` and `ModuleManager`
+- Enh: Refactored `MarketplaceController` CLI — skips third-party module autoloading at bootstrap (`#[WithoutModuleAutoload]`), loads each module on demand, and runs `update-all` sub-updates in isolated subprocesses
+- Enh: Icon-only `Button` automatically derives `aria-label` from tooltip; logs a warning in `YII_DEBUG` mode when neither is set
 - Enh: Improved community module handling in the marketplace — admins can opt in via a new "Include community modules" option to show modules contributed by the community
 - Fix #8181: Encoded HTML entities in notification mail subjects
 - Enh #8179: Do not override meta tags set by modules with proper key
@@ -35,11 +47,25 @@ HumHub Changelog
 - Enh #8178: New sign in & sign up flow
 - Enh #8180: Topic picker handling
 - Fix #8201: [Security] Restrict live event `unserialize()` to `LiveEvent` subclasses to prevent PHP object injection
-
+- Enh #8223: Define default user idle timeout to 4 hours
+- Enh #8232: Fix absolute URLs in mail summary
+- Enh #8237: Allow symfony/mailer ^7.0 and widen all mailer bridge constraints to unblock symfony/event-dispatcher 7.x
+- Enh #8244: Log progress of the queued search index rebuild (`SearchRebuildIndex`) — start, interim item count, completion, and failures/skips, each prefixed with the worker process ID — via the `search-indexing` log category
+- Fix #8246: Add aria-label attribute for icon-only buttons
+ 
 1.18.4 (Unreleased)
 ---------------------
 - Enh #8170: Handle controllers with using external modules
 - Enh #8176: Upgrade Twig package to v3.26.0
+- Fix #8189: Scroll to highlighted comment when navigating from Last Activities
+- Enh #8187: Update composer package symfony/mime
+- Fix #8188: AutoContrast and Sign In Footer Links
+- Fix #8193: Fix rendering of the widget `AuthChoice`
+- Fix #8195: Improve permalink error handling for guest users
+- Fix #8196: Fix whitespace between notification bar items
+- Fix #8205: Fix permission filter alignment
+- Fix #8197: Don't use the setting "Allow individual topics" for user and space tags
+- Enh #8231: Activate a search dialog for CodeMirror fields
 
 1.18.3 (May 18, 2026)
 ---------------------
@@ -98,7 +124,7 @@ HumHub Changelog
 ----------------------
 
 > This release also fixes a [security](https://github.com/humhub/humhub/security/advisories/GHSA-qxjh-478x-23gm) issue.
- 
+
 - Fix #8003: `Migration::foreignIndexExists()` doesn't find tables in braces
 - Fix #8002: Comment dropdowns truncated (e.g. to select a title)
 - Fix #8007: Fix unsaved changes warning on Profile Edit page
@@ -186,7 +212,7 @@ HumHub Changelog
 - Fix #7873: Fix `required` validator
 - Fix #7875: Fix theme color default settings after initial installation
 - Fix #7876: Support for .mjs (ES modules)
-- Chg #7878: Registration form definitions now requires to use the `EVENT_AFTER_SET_FORM` instead of `EVENT_AFTER_INIT` 
+- Chg #7878: Registration form definitions now requires to use the `EVENT_AFTER_SET_FORM` instead of `EVENT_AFTER_INIT`
 - Enh #7883: Allow CheckboxList Profile Field Type to be used "as Directory filter"
 - Fix #7884: On small screen, the modal box is not centered
 - Fix #7885: Layout padding on small screens

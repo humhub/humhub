@@ -32,6 +32,7 @@ use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\fieldtype\BaseTypeVirtual;
 use humhub\modules\user\Module;
 use humhub\modules\user\services\PasswordRecoveryService;
+use humhub\modules\user\services\UserSourceService;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
@@ -206,6 +207,12 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
      */
     public function isEmailRequired(): bool
     {
+        // A UserSource may declare email optional (e.g. federated users). The
+        // service resolves the source safely (falls back to LocalUserSource for
+        // an unknown/misconfigured source), so this never breaks a user save.
+        if (!UserSourceService::getForUser($this)->isEmailRequired()) {
+            return false;
+        }
         /* @var $userModule Module */
         $userModule = Yii::$app->getModule('user');
         return $userModule->emailRequired;

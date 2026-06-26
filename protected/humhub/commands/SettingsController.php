@@ -8,6 +8,7 @@
 
 namespace humhub\commands;
 
+use humhub\components\console\WithoutModuleAutoload;
 use humhub\components\SettingsManager;
 use humhub\models\Setting;
 use yii\console\Controller;
@@ -21,6 +22,7 @@ use yii\helpers\Console;
  * @since 1.4
  * @author Luke
  */
+#[WithoutModuleAutoload]
 class SettingsController extends Controller
 {
     /**

@@ -98,5 +98,9 @@ return [
     '{nFormatted}M' => '{nFormatted}M',
     'Back to login' => '',
     'No results found.' => '',
+    'Sidebar' => '',
+    'Skip to main content' => '',
     'The URLs cannot be embedded: {urls}' => '',
+    'Toggle panel' => '',
+    'View' => '',
 ];

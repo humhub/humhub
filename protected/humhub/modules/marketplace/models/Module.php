@@ -8,8 +8,10 @@
 
 namespace humhub\modules\marketplace\models;
 
+use humhub\helpers\Html;
 use humhub\modules\marketplace\Module as MarketplaceModule;
 use humhub\modules\marketplace\services\FilterService;
+use humhub\modules\ui\icon\widgets\Icon;
 use humhub\widgets\bootstrap\Link;
 use Yii;
 use yii\base\Model;
@@ -227,5 +229,32 @@ class Module extends Model
         return Link::to($text, $this->marketplaceUrl)
             ->encodeLabel(false)
             ->blank();
+    }
+
+    public function marketplaceImage(): Link
+    {
+        return $this->marketplaceLink(Html::img($this->image, [
+            'class' => 'rounded',
+            'data-src' => 'holder.js/94x94',
+            'style' => 'width:94px;height:94px',
+            'role' => 'presentation',
+        ]))->options([
+            'aria-hidden' => true,
+            'tabindex' => -1,
+        ]);
+    }
+
+    public function marketplaceName(): Link
+    {
+        $name = $this->name;
+        $label = $this->name;
+
+        if ($this->featured) {
+            $name .= ' ' . Html::tag('span', Icon::get('star')->color('info'), ['aria-hidden' => true]);
+            $label .= ' — ' . Yii::t('MarketplaceModule.base', 'Featured');
+        }
+
+        return $this->marketplaceLink($name)
+            ->options(['aria-label' => $label]);
     }
 }

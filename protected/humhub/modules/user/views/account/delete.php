@@ -1,31 +1,40 @@
 <?php
 
+use humhub\modules\user\models\forms\AccountDelete;
+use humhub\widgets\bootstrap\Alert;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 
+/* @var AccountDelete $model */
 ?>
 <?php $this->beginContent('@user/views/account/_userProfileLayout.php') ?>
 
-<strong><?= Yii::t('UserModule.account', 'Are you sure that you want to delete your account?'); ?></strong>
-<br/>
-<br/>
-<div
-    class="alert alert-danger"><?= Yii::t('UserModule.account', 'All your personal data will be irrevocably deleted.'); ?></div>
+<strong><?= Yii::t('UserModule.account', 'Are you sure that you want to delete your account?') ?></strong>
+<br>
+<br>
+<?= Alert::danger(Yii::t('UserModule.account', 'All your personal data will be irrevocably deleted.'))->closeButton(false) ?>
 
-<?php $form = ActiveForm::begin(); ?>
+<?php $form = ActiveForm::begin() ?>
 
 <?php if ($model->isAttributeRequired('currentPassword')): ?>
-    <?= $form->field($model, 'currentPassword')->passwordInput(['maxlength' => 45, 'placeholder' => Yii::t('UserModule.account', 'Enter your password to continue')]); ?>
+    <?= $form->field($model, 'currentPassword')->passwordInput([
+        'maxlength' => 45,
+        'placeholder' => Yii::t('UserModule.account', 'Enter your password to continue'),
+        'autocomplete' => 'current-password',
+    ]) ?>
 <?php else: ?>
     <?= $form->field($model, 'currentPassword')->hiddenInput()->label(false); ?>
-<?php endif; ?>
+<?php endif ?>
 
-<br/>
+<br>
 
 <?= Button::danger(Yii::t('UserModule.account', 'Delete account'))
-    ->confirm(Yii::t('UserModule.account', 'Are you sure that you want to delete your account?'), Yii::t('UserModule.account', 'All your personal data will be irrevocably deleted.'))
+    ->confirm(
+        Yii::t('UserModule.account', 'Are you sure that you want to delete your account?'),
+        Yii::t('UserModule.account', 'All your personal data will be irrevocably deleted.'),
+    )
     ->submit() ?>
 
-<?php ActiveForm::end(); ?>
+<?php ActiveForm::end() ?>
 
-<?php $this->endContent(); ?>
+<?php $this->endContent() ?>

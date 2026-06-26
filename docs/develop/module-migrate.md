@@ -6,6 +6,10 @@ Each minor release line has its own file with the breaking changes, new APIs and
 
 ## Unreleased
 
+- Icon-only `Button` widgets (no visible label, only an icon) now automatically set `aria-label` from
+  the tooltip text. Module developers should always call `->tooltip('...')` on icon-only buttons —
+  omitting it logs a `Yii::warning()` in `YII_DEBUG` mode.
+  Explicit `aria-label` via `->options(['aria-label' => '...'])` always takes precedence.
 - Split rich text short converters by output safety
   - Added `humhub\modules\content\widgets\richtext\converter\RichTextToShortHtmlConverter`
     producing HTML encoded short previews (with the `nl2br` option). Use this whenever
@@ -216,6 +220,7 @@ Each minor release line has its own file with the breaking changes, new APIs and
   - `LdapAuth::$connectionId` and `LdapUserSource::$connectionId` are now required (no default `'ldap'` fallback) — instantiating either class without a connection ID throws `InvalidConfigException`. The bootstrap registers them per connection ID from the registry.
   - The LDAP UserSource is now registered via its own event hook on `UserSourceCollection::EVENT_BEFORE_USER_SOURCES_SET` (`Events::onUserSourceCollectionSet`), separate from the AuthClient registration on `Collection::EVENT_BEFORE_CLIENTS_SET`. The two collections are no longer coupled through a single event handler.
 - `MigrateController::$includeModuleMigrations` is now `true` by default
+- **Modules are no longer bootstrapped during `migrate/up`** — `Yii::$app->getModule('<id>')` is `null` inside migrations, so they must not access `->settings` / `->getConfig()` (module classes remain autoloadable). See [Migrations run without your module loaded](concept-models.md#migrations-run-without-your-module-loaded).
 - SiteIcon: Remove support for manually uploaded `@web/uploads/icon/` icons
 - New `AssetImage` class
   - `LogoImage`, `SiteIcon`, `LoginBackground`, `MailHeader`, `ProfileImage`, `ProfileBannerImage` are now deprecated or removed.

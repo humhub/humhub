@@ -91,7 +91,7 @@ class BaseStack extends Widget
                     $content .= $this->seperator;
                 }
                 $hasContent = true;
-                $content .= $out;
+                $content .= trim($out);
             }
         }
 

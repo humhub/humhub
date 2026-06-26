@@ -96,7 +96,7 @@
 
     .powered,
     .powered a {
-        color: #b8c7d3 !important;
+        color: color-mix(in srgb, var(--hh-primary-contrast) 80%, transparent) !important;
     }
 
     [data-ui-show-more] {
@@ -119,9 +119,11 @@
         }
     }
 
-    // Fix Safari issues
+    // Fix system blue outline issues:
+    // - Safari: When the top account menu is focused on mouse click
+    // - Chrome(and other browsers): When a link is focused on press "Tab" key
     :focus-visible {
-        outline: none; // User account menu blue outline when active
+        outline: none;
     }
 
     button.ProseMirror-icon {
