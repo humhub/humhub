@@ -427,7 +427,7 @@ class NotificationManager
             return;
         }
 
-         $space->follow($user, $follow);
+        $space->follow($user, $follow);
     }
 
     /**
