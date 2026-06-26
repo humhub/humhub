@@ -10,6 +10,7 @@ return [
   'Could not find requested file!' => '要求されたファイルが見つかりませんでした！',
   'Could not upload File:' => 'ファイルをアップロードできません：',
   'Created by:' => '作成者：',
+  'Delete' => '削除',
   'Double file extensions are not allowed!' => '二重ファイルは許可されていません！',
   'Download' => 'ダウンロード',
   'File {fileName} could not be uploaded!' => 'ファイル{fileName} がアップロードできません!',
@@ -23,5 +24,6 @@ return [
   'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => 'もうしわけありませんが、{n} 個までのファイルしか一度にアップロードできません。',
   'The uploaded image is not a squared.' => 'アップロード画像が四角ではありません。',
   'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => '{n} 個までのファイルしかこのアップロードに指定できません。',
+  'Upload' => 'アップロード',
   'Upload files' => 'ファイルをアップロード',
 ];

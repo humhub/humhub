@@ -93,6 +93,7 @@ return [
     'Upload' => '',
     'Upload file' => '',
     'Verified' => '',
+    'View' => '',
     'We couldn\'t verify that you\'re human. Please check the box again.' => '',
     'You are not allowed to run this action.' => '',
     'verify your upload_max_filesize and post_max_size php settings.' => '',

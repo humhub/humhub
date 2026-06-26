@@ -10,6 +10,7 @@ return [
   'Could not find requested file!' => 'Požadovaný súbor sa nepodarilo nájsť!',
   'Could not upload File:' => 'Nepodarilo sa nahrať súbor:',
   'Created by:' => 'Vytvoril:',
+  'Delete' => 'Odstrániť',
   'Double file extensions are not allowed!' => 'Dvojité prípony súborov nie sú povolené!',
   'Download' => 'Stiahnuť',
   'File {fileName} could not be uploaded!' => 'Súbor {fileName} sa nepodarilo nahrať!',
@@ -25,5 +26,6 @@ return [
   'The uploaded image is not a squared.' => 'Nahraný obrázok nie je štvorcový.',
   'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Toto pole nahrávania povoľuje maximálne {n,plural,=1{# súbor} =2{# súbori}
  =3{# súbori} =3{# súbori} =4{# súbori} other{# súborov}}.',
+  'Upload' => 'Nahrať',
   'Upload files' => 'Nahrať súbory',
 ];

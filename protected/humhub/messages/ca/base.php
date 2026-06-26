@@ -101,5 +101,6 @@ return [
     'Skip to main content' => '',
     'The URLs cannot be embedded: {urls}' => '',
     'Toggle panel' => '',
+    'View' => '',
     '{attribute} must be an UUID or null. UUID has the format "{{XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX}}", where X = [a-fA-F0-9] and both curly brackets and delimiting dashes are optional.' => '',
 ];

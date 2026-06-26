@@ -249,5 +249,7 @@ Mit freundlichen Grüßen
     'never' => 'Nie',
     '{nbMsgSent} already sent' => '{nbMsgSent} bereits gesendet',
     'Allow individual topics on profile content' => '',
+    'Edit field' => '',
+    'Resend' => '',
     'Search by name, email, username or exact id.' => '',
 ];

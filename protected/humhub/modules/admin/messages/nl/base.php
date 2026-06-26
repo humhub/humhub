@@ -5,6 +5,7 @@ return [
   '<strong>Module</strong> administration' => '<strong>Module</strong> beheer',
   '<strong>Warning</strong> incomplete setup!' => '<strong>Waarschuwing</strong> onvolledige installatie!',
   'About' => 'Over',
+  'Actions' => 'Acties',
   'Active Modules' => 'Actieve modules',
   'Add more modules' => 'Voeg meer modules toe',
   'Admin' => 'Beheerder',

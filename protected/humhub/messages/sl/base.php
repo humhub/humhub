@@ -102,4 +102,5 @@ return [
     'Skip to main content' => '',
     'The URLs cannot be embedded: {urls}' => '',
     'Toggle panel' => '',
+    'View' => '',
 ];

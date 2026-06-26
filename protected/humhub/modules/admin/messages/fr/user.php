@@ -236,5 +236,7 @@ Kind Regards
     'never' => 'jamais',
     '{nbMsgSent} already sent' => '{nbMsgSent} déjà envoyés',
     'Allow individual topics on profile content' => '',
+    'Edit field' => '',
+    'Resend' => '',
     'Search by name, email, username or exact id.' => '',
 ];
