@@ -130,11 +130,13 @@ class Follow extends ActiveRecord
                 // The FollowActivity is stored against the followed user's content
                 // container (see ActivityManager::dispatch); the activity table no
                 // longer has the polymorphic object_model/object_id columns.
+                // Columns are qualified because ActiveQueryActivity left-joins the
+                // content and user tables, which share these column names.
                 foreach (
                     Activity::findAll([
-                        'class' => FollowActivity::class,
-                        'contentcontainer_id' => $target->contentcontainer_id,
-                        'created_by' => $this->user_id,
+                        'activity.class' => FollowActivity::class,
+                        'activity.contentcontainer_id' => $target->contentcontainer_id,
+                        'activity.created_by' => $this->user_id,
                     ]) as $activity
                 ) {
                     $activity->delete();
