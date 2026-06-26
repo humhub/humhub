@@ -46,6 +46,7 @@ HumHub Changelog
 - Fix #8005: Remove space followers on change to private visibility
 - Enh #8178: New sign in & sign up flow
 - Enh #8180: Topic picker handling
+- Fix #8201: [Security] Restrict live event `unserialize()` to `LiveEvent` subclasses to prevent PHP object injection
 - Enh #8223: Define default user idle timeout to 4 hours
 - Enh #8232: Fix absolute URLs in mail summary
 - Enh #8237: Allow symfony/mailer ^7.0 and widen all mailer bridge constraints to unblock symfony/event-dispatcher 7.x
