@@ -34,11 +34,13 @@ class FollowTest extends HumHubDbTestCase
         $this->assertTrue($user->follow());
 
         // Following a user creates a FollowActivity on the followed user's
-        // content container, authored by the follower.
+        // content container, authored by the follower. Columns are qualified
+        // because ActiveQueryActivity left-joins the content and user tables,
+        // which share these column names.
         $activity = Activity::findOne([
-            'class' => FollowActivity::class,
-            'contentcontainer_id' => $user->contentcontainer_id,
-            'created_by' => Yii::$app->user->id,
+            'activity.class' => FollowActivity::class,
+            'activity.contentcontainer_id' => $user->contentcontainer_id,
+            'activity.created_by' => Yii::$app->user->id,
         ]);
         $this->assertNotNull($activity);
 
@@ -48,6 +50,6 @@ class FollowTest extends HumHubDbTestCase
         $this->assertTrue($user->unfollow());
 
         $this->assertNull(Follow::findOne(['object_model' => User::class, 'object_id' => 1, 'user_id' => 2]));
-        $this->assertNull(Activity::findOne(['id' => $activity->id]));
+        $this->assertNull(Activity::findOne(['activity.id' => $activity->id]));
     }
 }

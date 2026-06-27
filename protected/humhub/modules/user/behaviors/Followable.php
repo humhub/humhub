@@ -43,12 +43,35 @@ class Followable extends Behavior
     public function getFollowRecord($userId)
     {
         $userId = ($userId instanceof User) ? $userId->id : $userId;
-        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->owner->getPrimaryKey() . '-' . $userId, fn() => Follow::find()
+        return Yii::$app->runtimeCache->getOrSet($this->getFollowRecordCacheKey($userId), fn() => Follow::find()
             ->where([
                 'object_model' => $this->owner::class,
                 'object_id' => $this->owner->getPrimaryKey(),
                 'user_id' => $userId,
             ])->one());
+    }
+
+    /**
+     * Builds the runtime cache key used by {@see getFollowRecord()}.
+     *
+     * @param int $userId
+     * @return string
+     */
+    private function getFollowRecordCacheKey($userId): string
+    {
+        $userId = ($userId instanceof User) ? $userId->id : $userId;
+        return self::class . '::getFollowRecord' . $this->owner->getPrimaryKey() . '-' . $userId;
+    }
+
+    /**
+     * Invalidates the cached follow record for the given user, so a follow or
+     * unfollow within the same request is reflected by later lookups.
+     *
+     * @param int $userId
+     */
+    private function invalidateFollowRecordCache($userId): void
+    {
+        Yii::$app->runtimeCache->delete($this->getFollowRecordCacheKey($userId));
     }
 
     /**
@@ -85,6 +108,10 @@ class Followable extends Behavior
             return false;
         }
 
+        // getFollowRecord() above cached the (then missing) record; refresh it
+        // so a subsequent lookup in the same request sees the new follow.
+        $this->invalidateFollowRecordCache($userId);
+
         return true;
     }
 
@@ -105,6 +132,7 @@ class Followable extends Behavior
         $record = $this->getFollowRecord($userId);
         if ($record !== null) {
             if ($record->delete()) {
+                $this->invalidateFollowRecordCache($userId);
                 return true;
             }
         } else {
