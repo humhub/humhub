@@ -16,7 +16,7 @@ HumHub Changelog
 - Enh #8231: Activate a search dialog for CodeMirror fields
 - Enh #8238: Reset OPcache after update a module
 - Enh #8248: Fix updating of space notification state per user after reset for all users
-- Enh: Allow reading content in State mode for owner
+- Enh #8254: Allow reading content in State mode for owner
 
 1.18.3 (May 18, 2026)
 ---------------------
