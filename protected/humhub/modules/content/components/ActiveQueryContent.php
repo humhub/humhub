@@ -42,7 +42,8 @@ class ActiveQueryContent extends ActiveQuery
     public const USER_RELATED_SCOPE_OWN_PROFILE = 5;
 
     /**
-     * State filter that is used for queries. By default, only Published content is returned.
+     * State filter that is used for queries.
+     * By default, only Published content is returned, or Draft content if owned by the user.
      *
      * Example to include drafts:
      * ```
@@ -52,9 +53,8 @@ class ActiveQueryContent extends ActiveQuery
      * ```
      *
      * @since 1.14
-     * @var array
      */
-    public $stateFilterCondition = ['OR', ['content.state' => Content::STATE_PUBLISHED]];
+    public ?array $stateFilterCondition = null;
 
     /**
      * Only returns user readable records
@@ -69,6 +69,16 @@ class ActiveQueryContent extends ActiveQuery
             $user = Yii::$app->user->getIdentity();
         }
 
+        if ($this->stateFilterCondition === null) {
+            $this->stateFilterCondition = ['OR', ['content.state' => Content::STATE_PUBLISHED]];
+            if ($user !== null) {
+                $this->stateFilterCondition[] = [
+                    'AND',
+                    ['content.state' => Content::STATE_DRAFT],
+                    ['content.created_by' => $user->id],
+                ];
+            }
+        }
         $this->andWhere($this->stateFilterCondition);
 
         $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
