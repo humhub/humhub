@@ -53,6 +53,7 @@ HumHub Changelog
 - Enh #8237: Allow symfony/mailer ^7.0 and widen all mailer bridge constraints to unblock symfony/event-dispatcher 7.x
 - Enh #8244: Log progress of the queued search index rebuild (`SearchRebuildIndex`) — start, interim item count, completion, and failures/skips, each prefixed with the worker process ID — via the `search-indexing` log category
 - Fix #8246: Add aria-label attribute for icon-only buttons
+- Enh: CI tests now support a database engine selector (MariaDB/MySQL); per-push runs use MariaDB 11.8, plus a weekly DB-compatibility sweep across MariaDB and MySQL versions
  
 1.18.4 (Unreleased)
 ---------------------
