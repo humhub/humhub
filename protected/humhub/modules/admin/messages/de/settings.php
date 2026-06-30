@@ -143,7 +143,7 @@ return [
   'URL to the file {fileNameLink}' => 'URL der Datei {fileNameLink}',
   'Upload' => 'Hochladen',
   'Url Pattern' => 'URL Schema',
-  'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Benutze %url% als Platzhalter für die URL. Als Format muss JSON zurückgegeben werden. (z. B. http://www.youtube.de/oembed?url=%url%&amp;format=json)',
+  'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Benutze %url% als Platzhalter für die URL. Als Format muss JSON zurückgegeben werden. (z. B. http://www.youtube.de/oembed?url=%url%&format=json)',
   'Use SMTPS' => 'Nutze SMTPS',
   'Use Sassy CSS syntax (SCSS)' => 'Sassy-CSS-Syntax (SCSS) verwenden',
   'Use X-Sendfile for File Downloads' => 'Benutze X-Sendfile für Datei Downloads',

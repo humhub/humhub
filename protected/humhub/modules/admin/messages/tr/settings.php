@@ -143,7 +143,7 @@ return [
   'URL to the file {fileNameLink}' => '',
   'Upload' => 'Yükle',
   'Url Pattern' => '',
-  'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Url için %url% yer tutucusunu kullanın.  Url biçimi JSON olmalıdır. (Örnek: http://www.youtube.com/oembed?url=%url%&amp;format=json)',
+  'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Url için %url% yer tutucusunu kullanın.  Url biçimi JSON olmalıdır. (Örnek: http://www.youtube.com/oembed?url=%url%&format=json)',
   'Use SMTPS' => '',
   'Use Sassy CSS syntax (SCSS)' => '',
   'Use X-Sendfile for File Downloads' => 'Dosya indirmek için X-Sendfile kullan',

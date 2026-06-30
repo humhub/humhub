@@ -81,7 +81,7 @@ return [
     'Private' => 'เอกชน',
     'Private (Invisible)' => 'ส่วนตัว (ล่องหน)',
     'Public' => 'สาธารณะ',
-    'Public (Members & Guests)' => 'สาธารณะ (สมาชิก &amp; แขก)',
+    'Public (Members & Guests)' => 'สาธารณะ (สมาชิก & แขก)',
     'Public (Members only)' => 'สาธารณะ (เฉพาะสมาชิก)',
     'Public (Registered users only)' => 'สาธารณะ (ผู้ใช้ที่ลงทะเบียนเท่านั้น)',
     'Request Message' => 'ขอข้อความ',

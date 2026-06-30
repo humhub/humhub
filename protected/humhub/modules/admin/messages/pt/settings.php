@@ -143,7 +143,7 @@ return [
   'URL to the file {fileNameLink}' => '',
   'Upload' => 'Carregar',
   'Url Pattern' => '',
-  'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Usar %url% em vez do URL. O formato deve ser JSON. (por exemplo http://www.youtube.com/oembed?url=%url%&amp;format=json)',
+  'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Usar %url% em vez do URL. O formato deve ser JSON. (por exemplo http://www.youtube.com/oembed?url=%url%&format=json)',
   'Use SMTPS' => '',
   'Use Sassy CSS syntax (SCSS)' => '',
   'Use X-Sendfile for File Downloads' => 'Usar X-Sendfile para descargas de ficheiros',
