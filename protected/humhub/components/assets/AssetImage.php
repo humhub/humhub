@@ -77,7 +77,7 @@ class AssetImage extends Component implements \Stringable
     /**
      * @param array|null $options use `null` use default options, `[]` get unmodified file. All available options in class header
      * @param bool $scheme
-     * @return string the URL
+     * @return string the URL, or an empty string if neither an uploaded image nor a `defaultFile` is set
      */
     public function getUrl(?array $options = null, bool $scheme = false): string
     {
