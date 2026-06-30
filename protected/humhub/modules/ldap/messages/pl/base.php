@@ -12,7 +12,7 @@ return [
     'LDAP' => 'LDAP',
     'LDAP Attribute for E-Mail Address. Default: &quot;mail&quot;' => 'Atrybut LADP dla adresu E-Mail. Domyślny "mail"',
     'LDAP Attribute for Username. Example: &quot;uid&quot; or &quot;sAMAccountName&quot;' => 'Atrybut LADP dla Użytkownika. Przykład: "uid" lub "sAMAccountName"',
-    'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'Ogranicz dostęp do użytkowników spełniających te kryteria. Przykład: "(objectClass=posixAccount)" lub "(&amp;(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))"',
+    'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'Ogranicz dostęp do użytkowników spełniających te kryteria. Przykład: "(objectClass=posixAccount)" lub "(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))"',
     'Not changeable LDAP attribute to unambiguously identify the user in the directory. If empty the user will be determined automatically by e-mail address or username. Examples: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)' => 'Niezmienny atrybut LDAP do jednoznacznego identyfikowania użytkowników w katalogu. Jeżeli puste użytkownik ozstanie zidentyfikowany automatycznie prze adres e-mail lub nazwę użytkownika. Przykład: objectguid (ActiveDirectory) lub uidNumber (OpenLDAP)',
     'One DN per line which should not be imported automatically.' => 'Jedno DN w linii które nie powinno zostać zaimportowane automatycznie.',
     'Password' => 'Hasło',

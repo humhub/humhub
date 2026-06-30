@@ -143,7 +143,7 @@ return [
   'URL to the file {fileNameLink}' => '',
   'Upload' => 'ที่อัพโหลด',
   'Url Pattern' => '',
-  'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'ใช้ %url% เป็นตัวยึดตำแหน่งสำหรับ URL รูปแบบต้องเป็น JSON (เช่น http://www.youtube.com/oembed?url=%url%&amp;format=json)',
+  'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'ใช้ %url% เป็นตัวยึดตำแหน่งสำหรับ URL รูปแบบต้องเป็น JSON (เช่น http://www.youtube.com/oembed?url=%url%&format=json)',
   'Use SMTPS' => '',
   'Use Sassy CSS syntax (SCSS)' => '',
   'Use X-Sendfile for File Downloads' => 'ใช้ X-Sendfile สำหรับการดาวน์โหลดไฟล์',

@@ -144,7 +144,7 @@ return [
   'URL to the file {fileNameLink}' => 'ファイルへの URL {fileNameLink}',
   'Upload' => 'アップロード',
   'Url Pattern' => 'URL パターン',
-  'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'URLのプレースホルダに %url% を使用します。書式はJSONである必要があります。（例：http://www.youtube.com/oembed?url=%url%&amp;format=json）',
+  'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'URLのプレースホルダに %url% を使用します。書式はJSONである必要があります。（例：http://www.youtube.com/oembed?url=%url%&format=json）',
   'Use SMTPS' => 'SMTPSを使う',
   'Use Sassy CSS syntax (SCSS)' => '',
   'Use X-Sendfile for File Downloads' => 'ファイルダウンロードのためにX-Sendfileを使用する',

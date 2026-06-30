@@ -112,7 +112,7 @@ return [
     'Select Groups' => 'Seleccionar Grupos',
     'Send' => 'Enviar',
     'Send & decline' => 'Enviar e recusar',
-    'Send & save' => 'Guardar &amp; Enviar',
+    'Send & save' => 'Guardar & Enviar',
     'Send invitation email' => 'Enviar email de convite',
     'Send invitation email again?' => 'Enviar email de convite outra vez?',
     'Send notifications to users when added to or removed from the group.' => 'Enviar notificações a contas quando adicionadas ou removidas do grupo.',

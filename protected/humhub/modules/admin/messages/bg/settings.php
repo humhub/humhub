@@ -143,7 +143,7 @@ return [
   'URL to the file {fileNameLink}' => '',
   'Upload' => 'Качване',
   'Url Pattern' => '',
-  'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Използвай %url% като маркер за URL. Форматът трябва да бъде JSON. (напр. http://www.youtube.com/oembed?url=%url%&amp;format=json)',
+  'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Използвай %url% като маркер за URL. Форматът трябва да бъде JSON. (напр. http://www.youtube.com/oembed?url=%url%&format=json)',
   'Use SMTPS' => '',
   'Use Sassy CSS syntax (SCSS)' => '',
   'Use X-Sendfile for File Downloads' => 'Използвай X-Sendfile за изтегляне на файлове',

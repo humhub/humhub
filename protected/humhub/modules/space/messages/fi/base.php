@@ -100,7 +100,7 @@ return [
     'Users' => 'Käyttäjät',
     'Users has been invited.' => 'Käyttäjät on kutsuttu.',
     'Visibility' => 'Näkyvyys',
-    'Visible for all (members and guests)' => 'Näkyvä kaikkille (jäsenet &amp; vieraat)',
+    'Visible for all (members and guests)' => 'Näkyvä kaikkille (jäsenet & vieraat)',
     'You are not allowed to join this space!' => 'Sinä et voi liityä tälle sivulle!',
     'You cannot create private visible spaces!' => 'Et voi luoda yksityistä sivua!',
     'You cannot create public visible spaces!' => 'Et voi luoda julkista sivua!',
