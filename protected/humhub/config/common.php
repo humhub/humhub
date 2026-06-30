@@ -187,7 +187,7 @@ $config = [
                     'defaultFile' => '@humhub/resources/img/default_icon.png',
                 ],
                 'loginBackground' => ['file' => '/login-bg/background.png'],
-                'mailHeader' => ['file' => '/icon/icon.png'],
+                'mailHeader' => ['file' => '/mail-header/header.png'],
             ],
         ],
         'view' => [

@@ -8,6 +8,12 @@ use yii\base\Application;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
 
+/**
+ * @property-read AssetImage $logo
+ * @property-read AssetImage $icon
+ * @property-read AssetImage $loginBackground
+ * @property-read AssetImage $mailHeader
+ */
 class AssetImageRegistry extends Component
 {
     public array $definitions = [];
@@ -39,7 +45,7 @@ class AssetImageRegistry extends Component
                     $this->_cache[$name]['published'] = $assetImage->cachePublish->toArray();
                     $modified = true;
                 }
-                if (!isset($this->_cache[$name]['fileExists']) ?? $this->_cache[$name]['fileExists'] !== $assetImage->fileExists) {
+                if (!isset($this->_cache[$name]['fileExists']) || $this->_cache[$name]['fileExists'] !== $assetImage->fileExists) {
                     $this->_cache[$name]['fileExists'] = $assetImage->fileExists;
                     $modified = true;
                 }

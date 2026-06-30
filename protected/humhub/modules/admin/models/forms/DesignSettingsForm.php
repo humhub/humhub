@@ -9,7 +9,6 @@
 namespace humhub\modules\admin\models\forms;
 
 use humhub\components\InstallationState;
-use humhub\components\Theme;
 use humhub\helpers\ScssHelper;
 use humhub\helpers\ThemeHelper;
 use humhub\modules\file\validators\ImageSquareValidator;
@@ -405,11 +404,11 @@ class DesignSettingsForm extends Model
         Yii::$app->getModule('stream')->settings->set('defaultSort', $this->defaultStreamSort);
         Yii::$app->getModule('post')->settings->set('titleMode', $this->postTitleMode);
 
-        if ($this->logo) {
+        if ($this->logo instanceof UploadedFile) {
             Yii::$app->img->logo->setUploadedFile($this->logo);
         }
 
-        if ($this->icon) {
+        if ($this->icon instanceof UploadedFile) {
             Yii::$app->img->icon->setUploadedFile($this->icon);
         }
 
