@@ -38,7 +38,6 @@ return [
     'Installation Example:' => 'Installationsbeispiel:',
     'Language and timezone are automatically set according to the user\'s browser settings. If that is not possible, the default settings are used.' => 'Sprache und Zeitzone werden automatisch gemäß den Browsereinstellungen des Benutzers gesetzt. Ist dies nicht möglich, werden die Standardeinstellungen verwendet.',
     'Localisation' => 'Lokalisierung',
-    'Make sure that the following file is writable: thi' => 'Vergewissere dich, dass die folgende Datei beschreibbar ist: thi',
     'My club' => 'Mein Club / Verein',
     'My community' => 'Meine Community',
     'My company (Social Intranet / Project management)' => 'Meine Firma (Social Intranet / Projektmanagement)',
@@ -84,5 +83,4 @@ return [
     'Your MySQL password.' => 'Dein MySQL Passwort',
     'Your MySQL username' => 'Dein MySQL Benutzername',
     'Your first sample space to discover the platform.' => 'Dein erstes Beispiel, um die Plattform zu entdecken',
-    'Ensure the following rule is present in your configuration: <strong>try_files $uri $uri/ /index.php?$args;</strong>.' => '',
 ];
