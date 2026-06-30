@@ -6,6 +6,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Header;
 use humhub\modules\space\widgets\Menu;
 use humhub\modules\space\widgets\SpaceContent;
+use humhub\modules\space\widgets\TopicList;
 use humhub\widgets\FooterMenu;
 
 /**
@@ -28,6 +29,7 @@ $space = $context->contentContainer;
     <div class="row space-content">
         <div class="col-lg-2 layout-nav-container">
             <?= Menu::widget(['space' => $space]); ?>
+            <?= TopicList::widget(['space' => $space]); ?>
         </div>
         <div class="col-lg-<?= ($this->hasSidebar()) ? '7' : '10' ?> layout-content-container">
             <?= SpaceContent::widget(['contentContainer' => $space, 'content' => $content]) ?>
