@@ -101,5 +101,6 @@ return [
     'The URLs cannot be embedded: {urls}' => '',
     'Toggle panel' => '',
     'Verified' => '',
+    'View' => '',
     'We couldn\'t verify that you\'re human. Please check the box again.' => '',
 ];

@@ -65,7 +65,7 @@ return [
     'Private' => 'Privat',
     'Private (Invisible)' => 'Privat (Skjult)',
     'Public' => 'Offentlig',
-    'Public (Members & Guests)' => 'Offentlig (Medlemmer &amp; Gjester)',
+    'Public (Members & Guests)' => 'Offentlig (Medlemmer & Gjester)',
     'Public (Members only)' => 'Offentlig (Kun medlemmer)',
     'Public (Registered users only)' => 'Offentlig (Kun registrerte brukere)',
     'Request Message' => 'Forespør melding',

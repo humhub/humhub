@@ -255,5 +255,7 @@ Med venlig hilsen
     'never' => 'aldrig',
     '{nbMsgSent} already sent' => '{nbMsgSent} allerede sendt',
     'Allow individual topics on profile content' => '',
+    'Edit field' => '',
+    'Resend' => '',
     'Search by name, email, username or exact id.' => '',
 ];

@@ -1,5 +1,8 @@
 name: PHP Codeception Tests
 
+# Lean per-push / per-PR run: full PHP matrix against the recommended
+# database only (MariaDB 11.8). Broader engine/version coverage runs in
+# the weekly DB-compat sweep (php-test-db-compat.yml).
 on:
     workflow_dispatch:
     push:
@@ -26,156 +29,7 @@ permissions:
 
 jobs:
     tests:
-        name: PHP ${{ matrix.php-version }}-mysql-${{ matrix.mysql-version }}
-        env:
-            extensions: curl, intl, pdo, pdo_mysql, zip, exif, fileinfo, mbstring, gd, ldap
-            key: cache-v2
-            LDAP_TEST_HOST: 127.0.0.1
-            LDAP_TEST_PORT: 389
-            LDAP_TEST_BASE_DN: dc=example,dc=org
-            LDAP_TEST_BIND_DN: cn=admin,dc=example,dc=org
-            LDAP_TEST_BIND_PASSWORD: adminpassword
-            LDAP_TEST_USER_FILTER: "(objectClass=inetOrgPerson)"
-            LDAP_TEST_USERNAME_ATTRIBUTE: uid
-
-        runs-on: ${{ matrix.os }}
-
-        strategy:
-            matrix:
-                os:
-                    - ubuntu-latest
-
-                php-version:
-                    - "8.2"
-                    - "8.3"
-                    - "8.4"
-
-                mysql-version:
-                    - "5.7"
-
-        services:
-            mysql:
-                image: mysql:${{ matrix.mysql-version }}
-                env:
-                    MYSQL_DATABASE: humhub_test
-                    MYSQL_ROOT_PASSWORD: root
-                ports:
-                    - 3306:3306
-                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
-        steps:
-            - name: Start Selenium
-              run: |
-                docker run --detach --net=host --shm-size="2g" selenium/standalone-chrome:108.0-20250123
-
-            - name: Start OpenLDAP
-              run: |
-                docker run --detach \
-                  --name openldap \
-                  -p 389:389 \
-                  -e LDAP_ORGANISATION="HumHub Test" \
-                  -e LDAP_DOMAIN="example.org" \
-                  -e LDAP_ADMIN_PASSWORD="adminpassword" \
-                  -e LDAP_TLS=false \
-                  osixia/openldap:1.5.0 --copy-service
-
-            - uses: actions/checkout@v4
-            - uses: actions/setup-node@v4
-
-#            - name: Setup cache environment
-#              id: cache-env
-#              uses: shivammathur/cache-extensions@v1
-#              with:
-#                php-version: ${{ matrix.php-version }}
-#                extensions: ${{ env.extensions }}
-#                key: ${{ env.key }}
-
-#            - name: Cache extensions
-#              uses: actions/cache@v4
-#              with:
-#                path: ${{ steps.cache-env.outputs.dir }}
-#                key: ${{ steps.cache-env.outputs.key }}
-#                restore-keys: ${{ steps.cache-env.outputs.key }}
-
-            - name: Install PHP with extensions
-              uses: shivammathur/setup-php@v2
-              with:
-                  php-version: ${{ matrix.php-version }}
-                  extensions: ${{ env.extensions }}
-                  ini-values: date.timezone='UTC'
-
-            - name: Determine composer cache directory
-              if: matrix.os == 'ubuntu-latest'
-              run: echo "COMPOSER_CACHE_DIR=$(composer config cache-dir)" >> $GITHUB_ENV
-
-            - name: Validate composer.json and composer.lock
-              run: composer validate
-
-            - name: Cache dependencies installed with composer
-              uses: actions/cache@v4
-              with:
-                path: ${{ env.COMPOSER_CACHE_DIR }}
-                key: php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
-                restore-keys: |
-                            php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-
-
-            - name: Install dependencies with composer
-              run: composer install --prefer-dist --no-interaction --no-progress --optimize-autoloader --ansi
-
-#            - name: Verify MySQL connection from host
-#              run: |
-#                sudo apt-get update && sudo apt-get install -y mysql-client-8.0 mysql-common
-#                mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -proot -e "SHOW DATABASES"
-
-            - name: Install npm dependencies
-              run: npm install
-
-            - name: Build production assets
-              run: grunt build-assets
-
-            - name: Run migrations
-              run: php protected/humhub/tests/codeception/bin/yii migrate/up --includeModuleMigrations=1 --interactive=0
-
-            - name: Run installer
-              run: php protected/humhub/tests/codeception/bin/yii installer/auto
-
-            - name: Rebuild search index
-              run: php protected/humhub/tests/codeception/bin/yii content-search/rebuild
-
-            - name: Load LDAP test data
-              run: |
-                sudo apt-get install -y ldap-utils -q
-                echo "Waiting for OpenLDAP..."
-                for i in $(seq 1 30); do
-                  ldapsearch -x -H ldap://127.0.0.1:389 \
-                    -D "cn=admin,dc=example,dc=org" -w adminpassword \
-                    -b "dc=example,dc=org" "(objectClass=*)" dn &>/dev/null && break
-                  echo "  attempt $i/30 – retrying in 2s..."
-                  sleep 2
-                done
-                ldapadd -x -H ldap://127.0.0.1:389 \
-                  -D "cn=admin,dc=example,dc=org" -w adminpassword \
-                  -f protected/humhub/modules/ldap/tests/codeception/_data/init.ldif
-
-            - name: Run test server
-              run: php --server 127.0.0.1:8080 index-test.php &>/tmp/phpserver.log &
-
-#            - name: Setup chromedriver
-#              run: chromedriver --url-base=/wd/hub &
-
-            - name: Valdiate test server
-              run: sleep 5 && curl --fail --head http://127.0.0.1:8080/index-test.php
-
-            - name: Run test suite
-              run: grunt test -build -env=github
-
-            - name: Upload Codeception Output
-              if: failure()
-              uses: actions/upload-artifact@v4
-              with:
-                name: codeception-output
-                path: |
-                  protected/humhub/tests/codeception/_output/*
-                  protected/humhub/modules/*/tests/codeception/_output/*
-                  protected/runtime/logs/*
-                  /tmp/phpserver.log
+        uses: ./.github/workflows/php-test-base.yml
+        with:
+            php: '["8.2", "8.3", "8.4"]'
+            databases: '[{"engine": "mariadb", "version": "11.8"}]'

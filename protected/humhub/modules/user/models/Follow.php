@@ -121,11 +121,24 @@ class Follow extends ActiveRecord
 
             // ToDo: Handle this via event of User Module
             if ($this->object_model === User::class) {
+                $target = $this->getTarget();
+
                 $notification = new Followed();
                 $notification->originator = $this->user;
-                $notification->delete($this->getTarget());
+                $notification->delete($target);
 
-                foreach (Activity::findAll(['object_model' => static::class, 'object_id' => $this->id]) as $activity) {
+                // The FollowActivity is stored against the followed user's content
+                // container (see ActivityManager::dispatch); the activity table no
+                // longer has the polymorphic object_model/object_id columns.
+                // Columns are qualified because ActiveQueryActivity left-joins the
+                // content and user tables, which share these column names.
+                foreach (
+                    Activity::findAll([
+                        'activity.class' => FollowActivity::class,
+                        'activity.contentcontainer_id' => $target->contentcontainer_id,
+                        'activity.created_by' => $this->user_id,
+                    ]) as $activity
+                ) {
                     $activity->delete();
                 }
             }

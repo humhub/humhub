@@ -10,6 +10,7 @@ return [
   'Could not find requested file!' => 'Konnte Datei nicht finden!',
   'Could not upload File:' => 'Konnte Datei nicht hochladen:',
   'Created by:' => 'Erstellt von:',
+  'Delete' => 'Löschen',
   'Double file extensions are not allowed!' => 'Doppelte Dateiendungen sind nicht erlaubt!',
   'Download' => 'Herunterladen',
   'File {fileName} could not be uploaded!' => 'Datei {fileName} konnte nicht hochgeladen werden!',
@@ -23,5 +24,6 @@ return [
   'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => 'Sorry, du kannst nur bis zu {n,plural,=1{# file} other{# files}} auf einmal hochladen.',
   'The uploaded image is not a squared.' => 'Das hochgeladene Bild ist nicht quadratisch.',
   'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Dieses Feld erlaubt nur das Hochladen von maximal {n,plural,=1{# file} other{# files}}.',
+  'Upload' => 'Hochladen',
   'Upload files' => 'Dateien hochladen',
 ];

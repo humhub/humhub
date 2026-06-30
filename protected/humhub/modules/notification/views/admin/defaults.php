@@ -1,14 +1,16 @@
 <?php
 
-use humhub\helpers\Html;
 use humhub\modules\notification\models\forms\NotificationSettings;
+use humhub\modules\notification\widgets\NotificationSettingsForm;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
 use humhub\widgets\form\ActiveForm;
 
 /* @var $model NotificationSettings */
 ?>
 
 <div class="panel-body">
-    <h4><?= Yii::t('AdminModule.settings', 'Notification Settings'); ?></h4>
+    <h4><?= Yii::t('AdminModule.settings', 'Notification Settings') ?></h4>
     <div class="text-body-secondary">
         <?= Yii::t('NotificationModule.base', 'Notifications are sent directly to your users to inform them about new activities in your network.'); ?>
         <br/>
@@ -16,21 +18,21 @@ use humhub\widgets\form\ActiveForm;
         <br/>
     </div>
     <?php $form = ActiveForm::begin(['acknowledge' => true]) ?>
-    <?= humhub\modules\notification\widgets\NotificationSettingsForm::widget([
+    <?= NotificationSettingsForm::widget([
         'model' => $model,
         'form' => $form,
-        'showSpaces' => true
+        'showSpaces' => true,
     ]) ?>
-    <br/>
-    <?= Html::submitButton(Yii::t('base', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+    <br>
+
+    <?= Button::save()->submit() ?>
 
     <?php if ($model->canResetAllUsers()): ?>
-        <?= Html::a(Yii::t('NotificationModule.base', 'Reset for all users'), ['reset-all-users'], [
-            'data-confirm' => Yii::t('NotificationModule.base', 'Do you want to reset the settings concerning notifications for all users?'),
-            'class' => 'btn btn-danger float-end',
-            'data-method' => 'POST',
-        ]) ?>
-    <?php endif; ?>
+        <?= Link::danger(Yii::t('NotificationModule.base', 'Reset for all users'))
+            ->post(['reset-all-users'])
+            ->confirm(null, Yii::t('NotificationModule.base', 'Do you want to reset the settings concerning notifications for all users?'))
+            ->right() ?>
+    <?php endif ?>
 
-    <?php ActiveForm::end(); ?>
+    <?php ActiveForm::end() ?>
 </div>

@@ -10,6 +10,7 @@ return [
   'Could not find requested file!' => 'Kunne ikke finde den ønskede fil!',
   'Could not upload File:' => 'Kunne ikke uploade filen:',
   'Created by:' => 'Oprettet af:',
+  'Delete' => 'Slet',
   'Double file extensions are not allowed!' => 'Dobbelte filendelser er ikke tilladt!',
   'Download' => 'Download',
   'File {fileName} could not be uploaded!' => 'Filen {fileName} kunne ikke uploades!',
@@ -23,5 +24,6 @@ return [
   'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => 'Beklager, du kan kun uploade op til {n,plural,=1{# filw} other{# files}} på én gang.',
   'The uploaded image is not a squared.' => 'Det uploadede billede er ikke kvadratisk.',
   'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Dette uploadfelt tillader kun maksimalt {n,plural,=1{# file} other{# files}}.',
+  'Upload' => 'Upload',
   'Upload files' => 'Upload filer',
 ];

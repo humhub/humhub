@@ -12,7 +12,7 @@ return [
     'LDAP' => 'LDAP',
     'LDAP Attribute for E-Mail Address. Default: &quot;mail&quot;' => 'Atribút LDAP pre e-mailovú adresu. Predvolená hodnota: "mail"',
     'LDAP Attribute for Username. Example: &quot;uid&quot; or &quot;sAMAccountName&quot;' => 'Atribút LDAP pre používateľské meno. Príklad: "uid" alebo "sAMAccountName"',
-    'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'Obmedziť prístup na používateľov, ktorí spĺňajú tieto kritériá. Príklad: "(objectClass=posixAccount)" alebo "(&amp;(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))"',
+    'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'Obmedziť prístup na používateľov, ktorí spĺňajú tieto kritériá. Príklad: "(objectClass=posixAccount)" alebo "(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))"',
     'Not changeable LDAP attribute to unambiguously identify the user in the directory. If empty the user will be determined automatically by e-mail address or username. Examples: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)' => 'Nezmeniteľný atribút LDAP na jednoznačnú identifikáciu používateľa v adresári. Ak je prázdne, používateľ bude určený automaticky podľa e-mailovej adresy alebo používateľského mena. Príklady: objectguid (ActiveDirectory) alebo uidNumber (OpenLDAP)',
     'One DN per line which should not be imported automatically.' => 'Jedno DN na riadok, ktoré by sa nemalo importovať automaticky.',
     'Password' => 'Heslo',

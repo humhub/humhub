@@ -12,7 +12,7 @@ return [
     'Click on this button to update your profile and account settings. You can also add more information to your profile.' => 'Click nút này để cập nhật profile và thiết lập tài khoản của bạn. Bạn có thể bổ sung thêm thông tin cho profile của mình.',
     'Each profile has its own pin board. Your posts will also appear on the dashboards of those users who are following you.' => 'Mỗi profile gồm 1 bảng ghim riêng. Bài post của bạn sẽ xuất hiện trên trang chính của những user theo dõi bạn.',
     'This is your public user profile, which can be seen by any registered user.' => 'Đây là hồ sơ cá nhân công cộng của bạn, thông tin hồ sơ có thể đươc xem bởi mọi người dùng đã đăng ký tham gia hệ thống.',
-    'Upload a new profile photo by simply clicking here or by drag&drop. Do just the same for updating your cover photo.' => 'Upload ảnh đại diện mới bằng cách click vào đây hoặc kéo &amp; thả ảnh.',
+    'Upload a new profile photo by simply clicking here or by drag&drop. Do just the same for updating your cover photo.' => 'Upload ảnh đại diện mới bằng cách click vào đây hoặc kéo & thả ảnh.',
     'You\'ve completed the user profile guide!' => 'Bạn đã hoàn thành khóa hướng dẫn về hồ sơ cá nhân!',
     'You\'ve completed the user profile guide!<br><br>To carry on with the administration guide, click here:<br /><br />' => 'Bạn đã hoàn thành khóa hướng dẫn về hồ sơ cá nhân! <br /><br />Để tiếp tục khóa hướng dẫn về quản trị hệ thống, vui lòng click vào đây: <br /><br />',
     'Just like in the space, the user profile can be personalized with various modules.<br><br>You can see which modules are available for your profile by looking them in "Modules" in the account settings menu.' => '',

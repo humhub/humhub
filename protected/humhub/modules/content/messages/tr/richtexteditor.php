@@ -3,7 +3,7 @@
 return [
     'Activity' => 'Aktivite',
     'Add or remove link' => 'Bağlantı ekle veya kaldır',
-    'Animals & Nature' => 'Hayvanlar &amp; Doğa',
+    'Animals & Nature' => 'Hayvanlar & Doğa',
     'Change to code block' => 'Kod bloğuna dönüştür',
     'Change to heading' => 'Başlığı değiştir',
     'Change to paragraph' => 'Paragrafa dönüştür',
@@ -15,7 +15,7 @@ return [
     'Delete row' => 'Sırayı sil',
     'Delete table' => 'Tabloyu sil',
     'Flags' => 'Bayraklar',
-    'Food & Drink' => 'Yiyecek &amp; İçecek',
+    'Food & Drink' => 'Yiyecek & İçecek',
     'Heading' => 'Başlık',
     'Height' => 'Yükseklik',
     'Horizontal rule' => 'Yatay kural',

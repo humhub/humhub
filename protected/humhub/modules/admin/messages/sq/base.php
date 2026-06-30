@@ -60,6 +60,7 @@ return [
     'Userprofiles' => 'Profilet e përdoruesve',
     'Users' => 'Përdoruesit',
     '<strong>Module</strong> administration' => '',
+    'Actions' => '',
     'Active Modules' => '',
     'Add more modules' => '',
     'All' => '',

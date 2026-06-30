@@ -63,7 +63,7 @@ return [
     'Private' => 'Özel',
     'Private (Invisible)' => 'Gizli (Görünmez)',
     'Public' => 'Herkes',
-    'Public (Members & Guests)' => 'Genel (Üyeler &amp; Misafirler)',
+    'Public (Members & Guests)' => 'Genel (Üyeler & Misafirler)',
     'Public (Members only)' => 'Genel (Yalnızca üyeler)',
     'Public (Registered users only)' => 'Genel (Yalnızca kayıtlı kullanıcılar)',
     'Request Message' => 'İstek Mesajı',

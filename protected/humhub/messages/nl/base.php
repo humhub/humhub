@@ -92,6 +92,7 @@ return [
   'Upload' => 'Upload',
   'Upload file' => 'Upload bestand',
   'Verified' => 'Geverifieerd',
+  'View' => 'Weergave',
   'We couldn\'t verify that you\'re human. Please check the box again.' => 'We konden niet verifiëren dat u een mens bent. Vink het vakje opnieuw aan.',
   'You are not allowed to run this action.' => 'U mag deze actie niet uitvoeren.',
   'verify your upload_max_filesize and post_max_size php settings.' => 'Verifieer je upload_max_filesize en post_max_size php instellingen.',
