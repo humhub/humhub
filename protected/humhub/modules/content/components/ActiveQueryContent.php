@@ -56,29 +56,30 @@ class ActiveQueryContent extends ActiveQuery
      */
     public ?array $stateFilterCondition = null;
 
-    /**
-     * Only returns user readable records
-     *
-     * @param User $user
-     * @return ActiveQueryContent
-     * @throws Throwable
-     */
-    public function readable($user = null)
+    public function init()
     {
-        if ($user === null && !Yii::$app->user->isGuest) {
-            $user = Yii::$app->user->getIdentity();
-        }
-
         if ($this->stateFilterCondition === null) {
             $this->stateFilterCondition = ['OR', ['content.state' => Content::STATE_PUBLISHED]];
-            if ($user !== null) {
+            if (!Yii::$app->user->isGuest) {
                 $this->stateFilterCondition[] = [
                     'AND',
                     ['content.state' => Content::STATE_DRAFT],
-                    ['content.created_by' => $user->id],
+                    ['content.created_by' => Yii::$app->user->id],
                 ];
             }
         }
+
+        parent::init();
+    }
+
+    /**
+     * Only returns user readable records
+     *
+     * @return ActiveQueryContent
+     * @throws Throwable
+     */
+    public function readable()
+    {
         $this->andWhere($this->stateFilterCondition);
 
         $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
@@ -89,6 +90,7 @@ class ActiveQueryContent extends ActiveQuery
             $this->andWhere(['user.status' => User::STATUS_ENABLED]);
         }
 
+        $user = Yii::$app->user->getIdentity();
         if ($user !== null) {
             $this->leftJoin('space_membership', 'contentcontainer.pk=space_membership.space_id AND contentcontainer.class=:spaceClass AND space_membership.user_id=:userId', [':userId' => $user->id, ':spaceClass' => Space::class]);
 
