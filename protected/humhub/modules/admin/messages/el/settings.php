@@ -71,7 +71,7 @@ return [
     'These settings refer to the appearance of your social network.' => 'Αυτές οι ρυθμίσεις αφορούν την εμφάνιση του κοινωνικού σας δικτύου.',
     'Topic has been deleted!' => 'Το θέμα διαγράφηκε!',
     'Topics' => 'Θέματα',
-    'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Χρησιμοποιήστε %url% ως σύμβολο κράτησης θέσης για τη διεύθυνση URL. Η μορφή πρέπει να είναι JSON. (π.χ. http://www.youtube.com/oembed?url=%url%&amp;format=json)',
+    'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Χρησιμοποιήστε %url% ως σύμβολο κράτησης θέσης για τη διεύθυνση URL. Η μορφή πρέπει να είναι JSON. (π.χ. http://www.youtube.com/oembed?url=%url%&format=json)',
     'Use X-Sendfile for File Downloads' => 'Χρησιμοποιήστε το X-Sendfile για λήψη αρχείων',
     'User' => 'Χρήστης',
     'User Settings' => 'Ρυθμίσεις χρήστη',

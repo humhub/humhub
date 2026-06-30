@@ -13,7 +13,7 @@ return [
     'LDAP' => 'LDAP',
     'LDAP Attribute for E-Mail Address. Default: &quot;mail&quot;' => 'LDAP attribútum az e-mail címhez. Alapértelmezés: "mail"',
     'LDAP Attribute for Username. Example: &quot;uid&quot; or &quot;sAMAccountName&quot;' => 'LDAP attribútum a felhasználónévhez. Példa: "uid" or "sAMAccountName"',
-    'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'Korlátozza az e feltételeknek megfelelő felhasználók hozzáférését. Példa: "(objectClass=posixAccount)" or "(&amp;(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))"',
+    'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'Korlátozza az e feltételeknek megfelelő felhasználók hozzáférését. Példa: "(objectClass=posixAccount)" or "(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))"',
     'Login Filter' => 'Bejelentkezés szűrő',
     'Not changeable LDAP attribute to unambiguously identify the user in the directory. If empty the user will be determined automatically by e-mail address or username. Examples: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)' => 'Nem változtatható LDAP attribútum, amely azonosítja a felhasználót a könyvtárban. Ha üres, akkor a felhasználó automatikusan email címmel vagy felhasználónévvel lesz meghatározva. Példák: objectguid (ActiveDirectory) vagy uidNumber (OpenLDAP)',
     'One DN per line which should not be imported automatically.' => 'Soronként egy DN, amelyet nem szabad automatikusan importálni.',

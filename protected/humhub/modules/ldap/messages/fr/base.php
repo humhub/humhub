@@ -13,7 +13,7 @@ return [
     'LDAP' => 'LDAP',
     'LDAP Attribute for E-Mail Address. Default: &quot;mail&quot;' => 'Attribut LDAP pour l\'adresse e-mail. Par défaut: "mail"',
     'LDAP Attribute for Username. Example: &quot;uid&quot; or &quot;sAMAccountName&quot;' => 'Attribut LDAP pour le nom d\'utilisateur. Exemple: "uid" ou "sAMAccountName"',
-    'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'Limiter l\'accès aux utilisateurs correspondants à ce critère. Exemple: "(objectClass=posixAccount)" ou "(&amp;(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))"',
+    'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'Limiter l\'accès aux utilisateurs correspondants à ce critère. Exemple: "(objectClass=posixAccount)" ou "(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))"',
     'Login Filter' => 'Filtre Login',
     'Not changeable LDAP attribute to unambiguously identify the user in the directory. If empty the user will be determined automatically by e-mail address or username. Examples: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)' => 'Attribut LDAP non modifiable pour identifier sans ambiguïté un utilisateur dans l\'annuaire. Si ce champ est vide, l\'utilisateur sera identifié par son adresse e-mail ou son nom d\'utilisateur. Exemples : objectguid (ActiveDirectory) ou uidNumber (OpenLDAP)',
     'One DN per line which should not be imported automatically.' => 'Un DN par ligne qui ne doit pas être automatiquement importé.',

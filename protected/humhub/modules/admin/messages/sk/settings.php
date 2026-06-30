@@ -106,7 +106,7 @@ return [
     'Topics' => 'Témy',
     'URL to the file {fileNameLink}' => 'URL k súboru {fileNameLink}',
     'Url Pattern' => 'Vzor adresy URL',
-    'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Použite %url% ako zástupný symbol pre URL. Formát musí byť JSON. (napr. http://www.youtube.com/oembed?url=%url%&amp;format=json)',
+    'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Použite %url% ako zástupný symbol pre URL. Formát musí byť JSON. (napr. http://www.youtube.com/oembed?url=%url%&format=json)',
     'Use SMTPS' => 'Použiť SMTPS',
     'Use X-Sendfile for File Downloads' => 'Na sťahovanie súborov použite X-Sendfile',
     'User' => 'Užívateľ',

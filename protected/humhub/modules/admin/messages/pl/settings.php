@@ -110,7 +110,7 @@ return [
     'Topics' => 'Tematy',
     'URL to the file {fileNameLink}' => 'URL do pliku {fileNameLink}',
     'Url Pattern' => 'Wzór URL',
-    'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Użyj zastępczego %url% dla URL. Formatem musi być JSON. (np. http://www.youtube.com/oembed?url=%url%&amp;format=json)',
+    'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Użyj zastępczego %url% dla URL. Formatem musi być JSON. (np. http://www.youtube.com/oembed?url=%url%&format=json)',
     'Use SMTPS' => 'Użyj SMPTS',
     'Use X-Sendfile for File Downloads' => 'Użyj X-Sendfile przy pobieraniu plików',
     'User' => 'Użytkownik',

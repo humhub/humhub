@@ -82,7 +82,7 @@ return [
     'These settings refer to the appearance of your social network.' => 'การตั้งค่าเหล่านี้อ้างอิงถึงลักษณะที่ปรากฏของเครือข่ายโซเชียลของคุณ',
     'Topic has been deleted!' => 'หัวข้อถูกลบ',
     'Topics' => 'หัวข้อ',
-    'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'ใช้ %url% เป็นตัวยึดตำแหน่งสำหรับ URL รูปแบบต้องเป็น JSON (เช่น http://www.youtube.com/oembed?url=%url%&amp;format=json)',
+    'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'ใช้ %url% เป็นตัวยึดตำแหน่งสำหรับ URL รูปแบบต้องเป็น JSON (เช่น http://www.youtube.com/oembed?url=%url%&format=json)',
     'Use X-Sendfile for File Downloads' => 'ใช้ X-Sendfile สำหรับการดาวน์โหลดไฟล์',
     'User' => 'ผู้ใช้',
     'User Settings' => 'การตั้งค่าผู้ใช้',

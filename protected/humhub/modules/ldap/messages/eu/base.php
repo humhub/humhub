@@ -12,7 +12,7 @@ return array (
   'LDAP' => 'LDAP',
   'LDAP Attribute for E-Mail Address. Default: &quot;mail&quot;' => 'LDAP Attribute for E-Mail Address. Default: "mail"',
   'LDAP Attribute for Username. Example: &quot;uid&quot; or &quot;sAMAccountName&quot;' => 'Erabiltzaile izenaren LDAP atributua. Adibidea: "uid" or "sAMAccountName"',
-  'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'Irizpide hori betetzen duten erabiltzaileei sarbidea mugatzea. Adibidea: "(objectClass=posixAccount)" or "(&amp;(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))"',
+  'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'Irizpide hori betetzen duten erabiltzaileei sarbidea mugatzea. Adibidea: "(objectClass=posixAccount)" or "(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))"',
   'Login Filter' => 'erabiltzaile-iragazki',
   'Not changeable LDAP attribute to unambiguously identify the user in the directory. If empty the user will be determined automatically by e-mail address or username. Examples: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)' => 'LDAP ezin da aldatu direktorioko erabiltzailea identifikatzeko. Hutsik badago, erabiltzailea automatikoki zehaztuko da helbide elektroniko bidez edo erabiltzaile-izen bidez. Adibideak: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)',
   'One DN per line which should not be imported automatically.' => 'Lerro bakoitzeko DN bat, automatikoki inportatu behar ez dena.',

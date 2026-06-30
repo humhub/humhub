@@ -189,7 +189,7 @@ Kind Regards
   'Select which user information should be displayed in the \'People\' overview. You can select any profile fields, even those you have created individually. ' => '',
   'Send' => 'Enviar',
   'Send & decline' => 'Enviar e recusar',
-  'Send & save' => 'Guardar &amp; Enviar',
+  'Send & save' => 'Guardar & Enviar',
   'Send a message' => '',
   'Send a message to <strong>{displayName}</strong> ' => '',
   'Send invitation email' => 'Enviar email de convite',

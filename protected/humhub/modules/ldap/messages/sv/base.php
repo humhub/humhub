@@ -13,7 +13,7 @@ return [
     'LDAP' => 'LDAP',
     'LDAP Attribute for E-Mail Address. Default: &quot;mail&quot;' => 'LDAP-attribut för e-postadress. Standard: "mail"',
     'LDAP Attribute for Username. Example: &quot;uid&quot; or &quot;sAMAccountName&quot;' => 'LDAP-attribut för användarnamn. Exempel: "uid" eller "sAMAccountName"',
-    'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'Begränsa åtkomst till användare som uppfyller dessa kriterier. Exempel: "(objectClass=posixAccount)" eller "(&amp;(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))"',
+    'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'Begränsa åtkomst till användare som uppfyller dessa kriterier. Exempel: "(objectClass=posixAccount)" eller "(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))"',
     'Login Filter' => 'Inloggningsfilter',
     'Not changeable LDAP attribute to unambiguously identify the user in the directory. If empty the user will be determined automatically by e-mail address or username. Examples: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)' => 'Ej föränderligt LDAP-attribut för att entydigt identifiera användaren i katalogen. Om den är tom kommer användaren att avgöras automatiskt av e-postadress eller användarnamn. Exempel: objectguid (ActiveDirectory) eller uidNumber (OpenLDAP)',
     'One DN per line which should not be imported automatically.' => 'En DN per rad som inte ska importeras automatiskt.',

@@ -81,7 +81,7 @@ return [
     'These settings refer to the appearance of your social network.' => 'Тези настройки се отнасят до облика на вашата социална мрежа.',
     'Topic has been deleted!' => 'Темата е изтрита!',
     'Topics' => 'Теми',
-    'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Използвай %url% като маркер за URL. Форматът трябва да бъде JSON. (напр. http://www.youtube.com/oembed?url=%url%&amp;format=json)',
+    'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Използвай %url% като маркер за URL. Форматът трябва да бъде JSON. (напр. http://www.youtube.com/oembed?url=%url%&format=json)',
     'Use X-Sendfile for File Downloads' => 'Използвай X-Sendfile за изтегляне на файлове',
     'User' => 'Потребител',
     'User Settings' => 'Настройки на потребител',

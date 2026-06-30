@@ -71,7 +71,7 @@ return [
     'These settings refer to the appearance of your social network.' => 'Những cấu hình này hướng đến phần giao diện hiển thị của mạng xã hội của bạn.',
     'Topic has been deleted!' => 'Chủ đề đã xóa!',
     'Topics' => 'Chủ đề',
-    'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&amp;format=json)',
+    'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)',
     'Use X-Sendfile for File Downloads' => 'Use X-Sendfile for File Downloads',
     'User' => 'Người dùng',
     'User Settings' => 'Thiết lập người dùng',

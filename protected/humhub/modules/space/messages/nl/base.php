@@ -103,7 +103,7 @@ return [
   'Private' => 'Privé',
   'Private (Invisible)' => 'Privaat (Onzichtbaar)',
   'Public' => 'Publiek',
-  'Public (Members & Guests)' => 'Publiek (Leden &amp; Gasten)',
+  'Public (Members & Guests)' => 'Publiek (Leden & Gasten)',
   'Public (Members only)' => 'Publiek (Alleen leden)',
   'Public (Registered users only)' => 'Publiek (Alleen geregistreerde gebruikers)',
   'Request Message' => 'Verzoek bericht',

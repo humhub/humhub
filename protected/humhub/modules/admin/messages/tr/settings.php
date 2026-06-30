@@ -74,7 +74,7 @@ return [
     'These settings refer to the appearance of your social network.' => 'Bu ayarlar sosyal ağınızın görünümüne atıfta bulunmaktadır.',
     'Topic has been deleted!' => 'Konu silindi!',
     'Topics' => 'Konular',
-    'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Url için %url% yer tutucusunu kullanın.  Url biçimi JSON olmalıdır. (Örnek: http://www.youtube.com/oembed?url=%url%&amp;format=json)',
+    'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Url için %url% yer tutucusunu kullanın.  Url biçimi JSON olmalıdır. (Örnek: http://www.youtube.com/oembed?url=%url%&format=json)',
     'Use X-Sendfile for File Downloads' => 'Dosya indirmek için X-Sendfile kullan',
     'User' => 'Kullanıcı',
     'User Settings' => 'Kullanıcı Ayarları',

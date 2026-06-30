@@ -102,7 +102,7 @@ return [
     'Topic has been deleted!' => 'Gaia ezabatu dute!',
     'Topics' => 'Gaiak',
     'Url Pattern' => 'URLaren patroia',
-    'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Erabili %url% URL-n markatzaile gisa. Formatuak JSON izan behar du. (adibidez: http://www.youtube.com/oembed?url=%url%&amp;format=json)',
+    'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Erabili %url% URL-n markatzaile gisa. Formatuak JSON izan behar du. (adibidez: http://www.youtube.com/oembed?url=%url%&format=json)',
     'Use SMTPS' => 'Erabili SMTPS',
     'Use X-Sendfile for File Downloads' => 'Erabili X-Sendfile fitxategiak deskargatzeko',
     'User' => 'Erabiltzailea',

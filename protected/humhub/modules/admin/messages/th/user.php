@@ -188,7 +188,7 @@ Kind Regards
   'Select the profile fields you want to add as columns' => '',
   'Select which user information should be displayed in the \'People\' overview. You can select any profile fields, even those you have created individually. ' => 'เลือกข้อมูลผู้ใช้ที่ควรแสดงในภาพรวม "บุคคล" คุณสามารถเลือกฟิลด์โปรไฟล์ใดก็ได้ แม้แต่ฟิลด์ที่คุณสร้างขึ้นเอง',
   'Send' => 'ส่ง',
-  'Send & decline' => 'ส่ง &amp; ปฏิเสธ',
+  'Send & decline' => 'ส่ง & ปฏิเสธ',
   'Send & save' => 'ส่งและบันทึก',
   'Send a message' => '',
   'Send a message to <strong>{displayName}</strong> ' => '',

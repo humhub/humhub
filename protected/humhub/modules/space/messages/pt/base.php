@@ -88,7 +88,7 @@ return [
     'Private' => 'Privado',
     'Private (Invisible)' => 'Privado (Invisível)',
     'Public' => 'Público',
-    'Public (Members & Guests)' => 'Público (Membros &amp; Visitantes)',
+    'Public (Members & Guests)' => 'Público (Membros & Visitantes)',
     'Public (Members only)' => 'Público (só Membros)',
     'Public (Registered users only)' => 'Público (só utilizadores registados)',
     'Request Message' => 'Mensagem de pedido',

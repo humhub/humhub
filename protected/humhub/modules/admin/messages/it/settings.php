@@ -100,7 +100,7 @@ return [
     'Topic has been deleted!' => 'L\'argomento è stato eliminato!',
     'Topics' => 'Argomenti',
     'Url Pattern' => 'Modello dell\'URL',
-    'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Applica %url% come placeholder per gli URL. Il formato deve essere JSON. (es. http://www.youtube.com/oembed?url=%url%&amp;format=json)',
+    'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Applica %url% come placeholder per gli URL. Il formato deve essere JSON. (es. http://www.youtube.com/oembed?url=%url%&format=json)',
     'Use SMTPS' => 'Usa SMTP',
     'Use X-Sendfile for File Downloads' => 'Usa X-Sendfile per scaricare i file',
     'User' => 'Utente',

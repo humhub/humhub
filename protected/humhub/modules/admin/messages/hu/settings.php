@@ -103,7 +103,7 @@ return [
     'Topics' => 'Témák',
     'URL to the file {fileNameLink}' => 'URL a(z) {fileNameLink} fájlhoz',
     'Url Pattern' => 'URL-minta',
-    'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Használja a %url% címet helykitöltőnek az URL-hez. A formátumnak a következőnek kell lennie: JSON. (pl. http://www.youtube.com/oembed?url=%url%&amp;format=json))',
+    'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Használja a %url% címet helykitöltőnek az URL-hez. A formátumnak a következőnek kell lennie: JSON. (pl. http://www.youtube.com/oembed?url=%url%&format=json))',
     'Use SMTPS' => 'SMTPS használata',
     'Use X-Sendfile for File Downloads' => 'Az X-Sendfile használata fájlok letöltéséhez',
     'User' => 'Felhasználó',

@@ -89,7 +89,7 @@ return [
     'These settings refer to the appearance of your social network.' => 'Ove se postavke odnose na izgled vaše društvene mreže.',
     'Topic has been deleted!' => 'Tema je izbrisana!',
     'Topics' => 'Teme',
-    'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&amp;format=json)',
+    'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)',
     'Use X-Sendfile for File Downloads' => 'Koristite X-Sendfile za preuzimanje fajlova',
     'User' => 'Korisnik',
     'User Display Name' => 'Prikazano ime korisnika',

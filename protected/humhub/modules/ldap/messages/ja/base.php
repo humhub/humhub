@@ -12,7 +12,7 @@ return array (
   'LDAP' => 'LDAP',
   'LDAP Attribute for E-Mail Address. Default: &quot;mail&quot;' => '電子メールアドレスのLDAP属性。デフォルト：メール',
   'LDAP Attribute for Username. Example: &quot;uid&quot; or &quot;sAMAccountName&quot;' => 'ユーザー名のLDAP属性。例：uid または sAMAccountName',
-  'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'この基準を満たすユーザーへのアクセスを制限します。例：(objectClass=posixAccount) または (&amp;(objectClass=person)(memberOf=CN= Workers,CN=Users,DC=myDomain,DC=com))',
+  'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'この基準を満たすユーザーへのアクセスを制限します。例：(objectClass=posixAccount) または (&(objectClass=person)(memberOf=CN= Workers,CN=Users,DC=myDomain,DC=com))',
   'Login Filter' => 'ログインフィルター',
   'Not changeable LDAP attribute to unambiguously identify the user in the directory. If empty the user will be determined automatically by e-mail address or username. Examples: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)' => 'ディレクトリ内のユーザーを明確に識別するための変更不可能なLDAP属性。空の場合、ユーザーは電子メールアドレスまたはユーザー名によって自動的に決定されます。例： objectguid(ActiveDirectory) または uidNumber (OpenLDAP)',
   'One DN per line which should not be imported automatically.' => '自動的にインポートされるべきではない行ごとに1つのDN',

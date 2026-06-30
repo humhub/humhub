@@ -13,7 +13,7 @@ return [
     'LDAP' => 'LDAP',
     'LDAP Attribute for E-Mail Address. Default: &quot;mail&quot;' => 'แอตทริบิวต์ LDAP สำหรับที่อยู่อีเมล ค่าเริ่มต้น: "เมล"',
     'LDAP Attribute for Username. Example: &quot;uid&quot; or &quot;sAMAccountName&quot;' => 'แอตทริบิวต์ LDAP สำหรับชื่อผู้ใช้ ตัวอย่าง: "uid" หรือ "sAMAccountName"',
-    'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'จำกัดการเข้าถึงสำหรับผู้ใช้ที่ตรงตามเกณฑ์นี้ ตัวอย่าง: "(objectClass=posixAccount)" หรือ "(&amp;(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))"',
+    'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'จำกัดการเข้าถึงสำหรับผู้ใช้ที่ตรงตามเกณฑ์นี้ ตัวอย่าง: "(objectClass=posixAccount)" หรือ "(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))"',
     'Login Filter' => 'เข้าสู่ระบบกรอง',
     'Not changeable LDAP attribute to unambiguously identify the user in the directory. If empty the user will be determined automatically by e-mail address or username. Examples: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)' => 'แอตทริบิวต์ LDAP ที่เปลี่ยนแปลงไม่ได้เพื่อระบุผู้ใช้ในไดเรกทอรีอย่างชัดเจน หากว่างเปล่า ผู้ใช้จะถูกกำหนดโดยอัตโนมัติด้วยที่อยู่อีเมลหรือชื่อผู้ใช้ ตัวอย่าง: objectguid (ActiveDirectory) หรือ uidNumber (OpenLDAP)',
     'One DN per line which should not be imported automatically.' => 'หนึ่ง DN ต่อบรรทัดซึ่งไม่ควรนำเข้าโดยอัตโนมัติ',
