@@ -21,7 +21,7 @@ return [
     'Create the database if it doesn\'t exist yet.' => 'Erstelle die Datenbank, wenn sie noch nicht existiert.',
     'Default Language' => 'Standardsprache',
     'Default Timezone' => 'Standard Zeitzone',
-    'Downloading & Installing Modules...' => 'Module herunterladen &amp; installieren ...',
+    'Downloading & Installing Modules...' => 'Module herunterladen & installieren ...',
     'External users can register (show registration form on login)' => 'Externe Benutzer können sich registrieren (Registrierungsformular beim Login anzeigen)',
     'For more information on this topic, please refer to our <a href="{link}" target="_blank">documentation</a>.' => 'Für weitere Informationen zu diesem Thema siehe unsere <a href="{link}" target="_blank">Dokumentation</a>.',
     'Here you can decide how new, unregistered users can access HumHub.' => 'Hier kannst du entscheiden, wie neue, nicht registrierte Benutzer auf HumHub zugreifen können.',

@@ -114,7 +114,7 @@ return [
   'Recommended size: {recommendedWidth} × {recommendedHeight}px (minimum {minWidth} x {minHeight} px).' => 'Empfohlene Größe: {recommendedWidth} × {recommendedHeight}px (mindestens {minWidth} x {minHeight} px).',
   'Regular expression by which the link match will be checked.' => 'Regulärer Ausdruck zur Suche nach einem Link Muster.',
   'Save' => 'Speichern',
-  'Save & Test' => 'Speichern &amp; Testen',
+  'Save & Test' => 'Speichern & Testen',
   'Saved and sent test email to: {address}' => 'Gespeichert und Test E-Mail verschickt: {address}',
   'Secondary color' => 'Sekundärfarbe',
   'Server' => 'Server',
