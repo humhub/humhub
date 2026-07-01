@@ -81,6 +81,10 @@ class ActiveForm extends \yii\bootstrap5\ActiveForm
                     'class' => 'form-collapsible-fields-label' . ($isClosed ? ' collapsed' : ''),
                     'data-bs-toggle' => 'collapse',
                     'data-bs-target' => '#collapsibleFields-' . ($fieldsetId = (new Widget())->id),
+                    'tabindex' => '0',
+                    'role' => 'button',
+                    'aria-expanded' => $isClosed ? 'false' : 'true',
+                    'aria-controls' => 'collapsibleFields-' . $fieldsetId,
                 ],
             )
             . Html::beginTag('fieldset', [

@@ -16,6 +16,7 @@ HumHub Changelog
 - Enh #8231: Activate a search dialog for CodeMirror fields
 - Enh #8238: Reset OPcache after update a module
 - Enh #8248: Fix updating of space notification state per user after reset for all users
+- Enh #8260: Make form fieldset focusable and expanded via keyboard
 
 1.18.3 (May 18, 2026)
 ---------------------
