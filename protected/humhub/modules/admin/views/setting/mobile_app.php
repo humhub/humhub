@@ -11,6 +11,7 @@ use humhub\modules\ui\icon\widgets\Icon;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\modal\ModalButton;
+use kartik\widgets\Select2;
 use yii\web\View;
 
 /* @var $this View */
@@ -24,7 +25,7 @@ use yii\web\View;
 
 <?= $form->field($model, 'enableLinkService')->checkbox() ?>
 
-<?= $form->field($model, 'whiteListedUrls')->widget(\kartik\widgets\Select2::class, [
+<?= $form->field($model, 'whiteListedUrls')->widget(Select2::class, [
     'options' => ['multiple' => true],
     'pluginOptions' => [
         'tags' => true,
