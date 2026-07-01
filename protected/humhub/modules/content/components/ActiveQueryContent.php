@@ -45,7 +45,7 @@ class ActiveQueryContent extends ActiveQuery
      * State filter that is used for queries.
      * By default, only Published content is returned, or Draft content if owned by the user.
      *
-     * Example to include drafts:
+     * Example to include all drafts:
      * ```
      * $query = Post::find();
      * $query->stateFilterCondition[] = ['content.state' => Content::STATE_DRAFT];
@@ -54,22 +54,19 @@ class ActiveQueryContent extends ActiveQuery
      *
      * @since 1.14
      */
-    public ?array $stateFilterCondition = null;
+    public array $stateFilterCondition = ['OR', ['content.state' => Content::STATE_PUBLISHED]];
 
-    public function init()
+    public function __construct($modelClass, $config = [])
     {
-        if ($this->stateFilterCondition === null) {
-            $this->stateFilterCondition = ['OR', ['content.state' => Content::STATE_PUBLISHED]];
-            if (!Yii::$app->user->isGuest) {
-                $this->stateFilterCondition[] = [
-                    'AND',
-                    ['content.state' => Content::STATE_DRAFT],
-                    ['content.created_by' => Yii::$app->user->id],
-                ];
-            }
+        if (!Yii::$app->user->isGuest) {
+            $this->stateFilterCondition[] = [
+                'AND',
+                ['content.state' => Content::STATE_DRAFT],
+                ['content.created_by' => Yii::$app->user->id],
+            ];
         }
 
-        parent::init();
+        parent::__construct($modelClass, $config);
     }
 
     /**
@@ -80,7 +77,7 @@ class ActiveQueryContent extends ActiveQuery
      */
     public function readable()
     {
-        if ($this->stateFilterCondition !== null) {
+        if ($this->stateFilterCondition) {
             $this->andWhere($this->stateFilterCondition);
         }
 
