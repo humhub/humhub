@@ -159,8 +159,6 @@ return [
     'Well-known files' => '',
     'You can add a statistic code snippet (HTML) - which will be added to all rendered pages.' => '',
     'You can find more configuration options here:' => '',
-    'You\'re using no icon at the moment. Upload your logo now.' => '',
-    'You\'re using no logo at the moment. Upload your logo now.' => '',
     'e.g. 25 (for SMTP) or 465 (for SMTPS)' => '',
     'e.g. localhost' => '',
     'e.g. smtps://user:pass@smtp.example.com:port' => '',
