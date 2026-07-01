@@ -56,6 +56,7 @@ HumHub Changelog
 - Enh #8244: Log progress of the queued search index rebuild (`SearchRebuildIndex`) — start, interim item count, completion, and failures/skips, each prefixed with the worker process ID — via the `search-indexing` log category
 - Fix #8246: Add aria-label attribute for icon-only buttons
 - Enh #8255: CI tests now support a database engine selector (MariaDB/MySQL); per-push runs use MariaDB 11.8, plus a weekly DB-compatibility sweep across MariaDB and MySQL versions
+- Enh: In the mobile app settings, change Whitelist domains to URLs, and add SSO URLs to the list for the mobile app to open all of them in the in-app browser instead of the external one
  
 1.18.4 (Unreleased)
 ---------------------

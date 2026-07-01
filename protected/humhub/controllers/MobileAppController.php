@@ -57,7 +57,7 @@ class MobileAppController extends Controller
                 'imageMaxProcessingMP' => $module->imageMaxProcessingMP,
                 'denyDoubleFileExtensions' => $module->denyDoubleFileExtensions,
             ],
-            'whiteListedDomains' => $mobileSettingsForm->getWhiteListedDomainsArray(),
+            'whiteListedUrls' => $mobileSettingsForm->getWhiteListedUrlsWithSso(),
         ];
 
         return $this->asJson($settings);
