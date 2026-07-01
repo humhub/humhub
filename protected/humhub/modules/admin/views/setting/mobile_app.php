@@ -27,6 +27,7 @@ use yii\web\View;
 
 <?= $form->field($model, 'whiteListedUrls')->widget(Select2::class, [
     'options' => ['multiple' => true],
+    'theme' => Select2::THEME_CLASSIC,
     'pluginOptions' => [
         'tags' => true,
         'tokenSeparators' => [','],
