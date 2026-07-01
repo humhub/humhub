@@ -77,10 +77,7 @@ class ActiveQueryContent extends ActiveQuery
      */
     public function readable()
     {
-        if ($this->stateFilterCondition) {
-            $this->andWhere($this->stateFilterCondition);
-        }
-
+        $this->andWhere($this->stateFilterCondition);
         $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
         $this->leftJoin('space', 'contentcontainer.pk=space.id AND contentcontainer.class=:spaceClass', [':spaceClass' => Space::class]);
         $this->leftJoin('user cuser', 'contentcontainer.pk=cuser.id AND contentcontainer.class=:userClass', [':userClass' => User::class]);
