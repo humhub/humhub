@@ -35,19 +35,4 @@ class m260701_111824_move_mobile_whitelisted_domains_to_urls extends Migration
 
         return false;
     }
-
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m260701_111824_move_mobile_whitelisted_domains_to_urls cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }
