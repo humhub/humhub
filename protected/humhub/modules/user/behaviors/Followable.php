@@ -81,11 +81,7 @@ class Followable extends Behavior
 
         $follow->send_notifications = $withNotifications;
 
-        if (!$follow->save()) {
-            return false;
-        }
-
-        return true;
+        return $follow->save();
     }
 
     /**
