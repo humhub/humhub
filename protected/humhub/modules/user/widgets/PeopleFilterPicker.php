@@ -4,11 +4,13 @@ namespace humhub\modules\user\widgets;
 
 use humhub\modules\ui\form\widgets\BasePicker;
 use humhub\modules\user\components\PeopleQuery;
+use humhub\modules\user\models\fieldtype\CheckboxList;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\InvalidConfigException;
+use yii\db\ActiveQuery;
 use yii\db\Expression;
 use yii\helpers\Url;
 
@@ -31,6 +33,8 @@ class PeopleFilterPicker extends BasePicker
 
     protected ?array $cachedDefaultResultData = null;
 
+    protected ?ProfileField $_profileField = null;
+
     /**
      * @inheritdoc
      */
@@ -41,15 +45,27 @@ class PeopleFilterPicker extends BasePicker
 
         parent::init();
 
-        $profileField = ProfileField::findOne(['internal_name' => $this->itemKey, 'directory_filter' => 1]);
-        if ($profileField === null) {
+        $this->_profileField = ProfileField::findOne(['internal_name' => $this->itemKey, 'directory_filter' => 1]);
+        if ($this->_profileField === null) {
             throw new InvalidConfigException('Invalid filter key');
         }
-        if (empty($this->defaultResults) && $profileField->internal_name != 'country') {
-            $definition = $profileField->fieldType->getFieldFormDefinition();
-            $type = $definition[$profileField->internal_name]['type'] ?? null;
+
+        if (empty($this->defaultResults) && $this->_profileField->internal_name != 'country') {
+            $definition = $this->_profileField->fieldType->getFieldFormDefinition();
+            $type = $definition[$this->_profileField->internal_name]['type'] ?? null;
             if (in_array($type, ['dropdownlist', 'checkboxlist'], true)) {
-                $this->defaultResults = $definition[$profileField->internal_name]['items'];
+                $this->defaultResults = $definition[$this->_profileField->internal_name]['items'];
+            }
+
+            // Append all "Other:" values entered by users to the default options list
+            if (!empty($this->_profileField->fieldType->allowOther) && isset($this->defaultResults['other'])) {
+                unset($this->defaultResults['other']);
+                $otherValues = $this->getFilteredProfileFieldValues($this->itemKey);
+                foreach ($otherValues as $otherValue) {
+                    if (!isset($this->defaultResults[$otherValue]) && $otherValue !== '' && $otherValue !== 'other') {
+                        $this->defaultResults[$otherValue] = $otherValue;
+                    }
+                }
             }
         }
     }
@@ -216,7 +232,7 @@ class PeopleFilterPicker extends BasePicker
         return $this->cachedDefaultResultData;
     }
 
-    protected function getFilteredProfileFieldValues(string $field): array
+    protected function getFilteredProfileFieldValuesQuery(string $field): ActiveQuery
     {
         $query = clone $this->query;
 
@@ -226,7 +242,38 @@ class PeopleFilterPicker extends BasePicker
             ->andWhere(['IS NOT', 'fp.' . $field, new Expression('NULL')])
             ->limit(100)
             ->offset(null)
-            ->orderBy('fp.' . $field)
-            ->column();
+            ->orderBy('fp.' . $field);
+    }
+
+    protected function getFilteredProfileFieldValues(string $field): array
+    {
+        $values = $this->getFilteredProfileFieldValuesQuery($field)->column();
+
+        if ($this->_profileField->fieldType instanceof CheckboxList) {
+            $checkboxListValues = [];
+            foreach ($values as $value) {
+                if (str_contains($value, $this->_profileField->fieldType->multiValueDelimiter)) {
+                    // Split multi value string into array
+                    $checkboxListValues = array_merge(
+                        $checkboxListValues,
+                        explode($this->_profileField->fieldType->multiValueDelimiter, $value),
+                    );
+                } else {
+                    $checkboxListValues[] = $value;
+                }
+            }
+
+            if ($this->_profileField->fieldType->allowOther) {
+                // Append all "Other:" values entered by users
+                $values = array_merge(
+                    $checkboxListValues,
+                    $this->getFilteredProfileFieldValuesQuery($field . '_other_selection')->column(),
+                );
+            } else {
+                $values = $checkboxListValues;
+            }
+        }
+
+        return $values;
     }
 }

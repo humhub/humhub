@@ -52,6 +52,12 @@ class CheckboxList extends BaseType
     public $other;
 
     /**
+     * @var string delimiter for multi values
+     * @since 1.18.4
+     */
+    public string $multiValueDelimiter = "\n";
+
+    /**
      * @inheritdoc
      */
     public function rules()
@@ -128,7 +134,7 @@ class CheckboxList extends BaseType
     public function getFieldFormDefinition(?User $user = null, array $options = []): array
     {
         $result = parent::getFieldFormDefinition($user, array_merge([
-            'delimiter' => "\n",
+            'delimiter' => $this->multiValueDelimiter,
             'items' => $this->getSelectItems(),
         ], $options));
 
@@ -147,7 +153,7 @@ class CheckboxList extends BaseType
     public function beforeProfileSave($values)
     {
         if (is_array($values)) {
-            return implode("\n", $values);
+            return implode($this->multiValueDelimiter, $values);
         }
         return $values;
     }
@@ -179,7 +185,7 @@ class CheckboxList extends BaseType
             $options = $this->getSelectItems();
             $translatedValues = [];
             if (is_string($value)) {
-                $value = explode("\n", $value);
+                $value = explode($this->multiValueDelimiter, $value);
             }
             foreach ($value as $v) {
                 if ($v === 'other' && !empty($user->profile->$internalNameOther)) {
