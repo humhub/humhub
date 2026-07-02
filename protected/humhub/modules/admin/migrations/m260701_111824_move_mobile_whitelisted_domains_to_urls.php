@@ -1,0 +1,43 @@
+<?php
+
+use yii\db\Migration;
+
+class m260701_111824_move_mobile_whitelisted_domains_to_urls extends Migration
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function safeUp()
+    {
+        $settingsManager = Yii::$app->settings;
+
+        // Get the old whiteListedDomains setting, split it into an array and delete the old setting
+        $domains = $settingsManager->get('whiteListedDomains');
+        $domainsArray = array_filter(
+            array_map(
+                'trim',
+                explode(',', (string)$domains),
+            ),
+            'strlen', // Remove empty values
+        );
+        $settingsManager->delete('whiteListedDomains');
+
+        // Convert the domains to URLs with wildcards and save them in the new whiteListedUrls setting
+        $urls = [];
+        foreach ($domainsArray as $domain) {
+            // Add a wildcard to the domain to match any path
+            $urls[] = (rtrim($domain, '/') . '/') . '*';
+        }
+        $settingsManager->setSerialized('whiteListedUrls', $urls);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function safeDown()
+    {
+        echo "m260701_111824_move_mobile_whitelisted_domains_to_urls cannot be reverted.\n";
+
+        return false;
+    }
+}

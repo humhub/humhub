@@ -8,9 +8,13 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use humhub\modules\user\widgets\AuthChoice;
 use humhub\services\WellKnownService;
 use humhub\widgets\bootstrap\Link;
 use Yii;
+use yii\authclient\OAuth1;
+use yii\authclient\OAuth2;
+use yii\authclient\OpenId;
 use yii\base\Model;
 
 /**
@@ -23,7 +27,7 @@ class MobileSettingsForm extends Model
     public $enableLinkService;
     public $fileAssetLinks;
     public $fileAppleAssociation;
-    public $whiteListedDomains;
+    public $whiteListedUrls;
 
     /**
      * @inheritdoc
@@ -36,7 +40,7 @@ class MobileSettingsForm extends Model
         $this->enableLinkService = $settingsManager->get('mailerLinkService');
         $this->fileAssetLinks = $settingsManager->get('fileAssetLinks');
         $this->fileAppleAssociation = $settingsManager->get('fileAppleAssociation');
-        $this->whiteListedDomains = $settingsManager->get('whiteListedDomains');
+        $this->whiteListedUrls = $settingsManager->getSerialized('whiteListedUrls');
     }
 
     /**
@@ -46,8 +50,8 @@ class MobileSettingsForm extends Model
     {
         return [
             [['enableLinkService'], 'boolean'],
-            [['fileAssetLinks', 'fileAppleAssociation', 'whiteListedDomains'], 'string'],
-            [['whiteListedDomains'], 'validateWhiteListedDomains'],
+            [['fileAssetLinks', 'fileAppleAssociation'], 'string'],
+            [['whiteListedUrls'], 'validateWhiteListedDomains'],
         ];
     }
 
@@ -57,26 +61,32 @@ class MobileSettingsForm extends Model
             return;
         }
 
-        foreach ($this->getWhiteListedDomainsArray() as $domain) {
-            if (!$domain) {
-                continue;
-            }
-            if (!filter_var($domain, FILTER_VALIDATE_URL)) {
-                $this->addError($attribute, Yii::t('AdminModule.settings', 'Invalid URL format: {domain}', ['domain' => $domain]));
+        foreach ($this->whiteListedUrls as $url) {
+            if (!filter_var($url, FILTER_VALIDATE_URL)) {
+                $this->addError($attribute, Yii::t('AdminModule.settings', 'Invalid URL format: {url}', ['url' => $url]));
                 return;
             }
         }
     }
 
-    public function getWhiteListedDomainsArray(): array
+    public function getWhiteListedUrlsWithSso(): array
     {
-        return array_filter(
-            array_map(
-                'trim',
-                explode(',', (string)$this->whiteListedDomains),
-            ),
-            'strlen', // Remove empty values
-        );
+        $urls = $this->whiteListedUrls;
+
+        // Add SSO service provider domains to the whitelist if they are not already present
+        $clients = (new AuthChoice())->getClients();
+        foreach ($clients as $client) {
+            if (!method_exists($client, 'buildAuthUrl')) { // OAuth2, OAuth1 and OpenId clients
+                continue;
+            }
+            // Remove URL params
+            $parts = parse_url($client->buildAuthUrl());
+            $urls[] = $parts['scheme'] . '://' . $parts['host']
+                . (isset($parts['port']) ? ':' . $parts['port'] : '')
+                . ($parts['path'] ?? '');
+        }
+
+        return array_unique($urls);
     }
 
     /**
@@ -92,7 +102,7 @@ class MobileSettingsForm extends Model
             'fileAppleAssociation' => Yii::t('AdminModule.settings', 'Well-known file {fileName}', [
                 'fileName' => '"' . WellKnownService::getFileName('fileAppleAssociation') . '"',
             ]),
-            'whiteListedDomains' => Yii::t('AdminModule.settings', 'Domain URLs to whitelist, separated by comma'),
+            'whiteListedUrls' => Yii::t('AdminModule.settings', 'URLs to whitelist'),
         ];
     }
 
@@ -115,7 +125,7 @@ class MobileSettingsForm extends Model
                     WellKnownService::getFileRoute('fileAppleAssociation'),
                 )->target('_blank'),
             ]),
-            'whiteListedDomains' => Yii::t('AdminModule.settings', 'E.g. URLs of the SSO service providers'),
+            'whiteListedUrls' => Yii::t('AdminModule.settings', 'List of URLs that should be opened in the mobile in-app browser instead of the external one, and to be recognized as part of the HumHub ecosystem by the mobile app. Add * to the end of the URL to match all sub-paths. Example: https://example.com/*'),
         ];
     }
 
@@ -125,13 +135,11 @@ class MobileSettingsForm extends Model
             return false;
         }
 
-        $this->whiteListedDomains = implode(',', $this->getWhiteListedDomainsArray());
-
         $settingsManager = Yii::$app->settings;
         $settingsManager->set('mailerLinkService', $this->enableLinkService);
         $settingsManager->set('fileAssetLinks', $this->fileAssetLinks);
         $settingsManager->set('fileAppleAssociation', $this->fileAppleAssociation);
-        $settingsManager->set('whiteListedDomains', $this->whiteListedDomains);
+        $settingsManager->setSerialized('whiteListedUrls', $this->whiteListedUrls);
 
         return true;
     }
