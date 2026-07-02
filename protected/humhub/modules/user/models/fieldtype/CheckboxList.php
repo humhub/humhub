@@ -53,6 +53,7 @@ class CheckboxList extends BaseType
 
     /**
      * @var string delimiter for multi values
+     * @since 1.18.4
      */
     public string $multiValueDelimiter = "\n";
 
