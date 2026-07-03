@@ -1,0 +1,6 @@
+{
+  "id": "auth-mismatch",
+  "version": "1.0",
+  "name": "Namespace Mismatch Test Module",
+  "description": "Module whose id (auth-mismatch) does not match its PHP namespace, like e.g. auth-keycloak."
+}
