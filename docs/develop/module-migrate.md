@@ -6,6 +6,12 @@ Each minor release line has its own file with the breaking changes, new APIs and
 
 ## Unreleased
 
+- `humhub\modules\content\components\ActiveQueryContent::readable()` and `::userRelated()` no
+  longer accept a `$user` parameter. The user is now resolved once, in the constructor — either
+  the current session user (`Yii::$app->user->getIdentity()`) or an explicit user passed as the
+  second constructor argument: `new ActiveQueryContent($modelClass, $user)`. Modules calling
+  `->readable($user)` or `->userRelated($scopes, $user)` must switch to constructing the query
+  with that user instead.
 - Icon-only `Button` widgets (no visible label, only an icon) now automatically set `aria-label` from
   the tooltip text. Module developers should always call `->tooltip('...')` on icon-only buttons —
   omitting it logs a `Yii::warning()` in `YII_DEBUG` mode.
@@ -220,7 +226,7 @@ Each minor release line has its own file with the breaking changes, new APIs and
   - `LdapAuth::$connectionId` and `LdapUserSource::$connectionId` are now required (no default `'ldap'` fallback) — instantiating either class without a connection ID throws `InvalidConfigException`. The bootstrap registers them per connection ID from the registry.
   - The LDAP UserSource is now registered via its own event hook on `UserSourceCollection::EVENT_BEFORE_USER_SOURCES_SET` (`Events::onUserSourceCollectionSet`), separate from the AuthClient registration on `Collection::EVENT_BEFORE_CLIENTS_SET`. The two collections are no longer coupled through a single event handler.
 - `MigrateController::$includeModuleMigrations` is now `true` by default
-- **Modules are no longer bootstrapped during `migrate/up`** — `Yii::$app->getModule('<id>')` is `null` inside migrations, so they must not access `->settings` / `->getConfig()` (module classes remain autoloadable). See [Migrations run without your module loaded](concept-models.md#migrations-run-without-your-module-loaded).
+- **Module migrations run with the module registered** — `migrate/up` fully registers each enabled module before applying its migrations (namespace alias from `config.php`, module instance via `Yii::$app->getModule('<id>')`), matching the web-based migration. A module that fails to register (e.g. still referencing removed core classes during an upgrade) is skipped with a warning; its migrations run when the module itself is updated. See [Migrations and module context](concept-models.md#migrations-and-module-context).
 - SiteIcon: Remove support for manually uploaded `@web/uploads/icon/` icons
 - New `AssetImage` class
   - `LogoImage`, `SiteIcon`, `LoginBackground`, `MailHeader`, `ProfileImage`, `ProfileBannerImage` are now deprecated or removed.

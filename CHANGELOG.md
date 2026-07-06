@@ -11,7 +11,7 @@ HumHub Changelog
 - Fix #8242: Within a space, "member joined"/"left" activities now link to the member's profile instead of the (redundant) space; in the global/dashboard stream and for grouped entries (multiple members) they keep linking to the space
 - Enh: A `UserSource` can declare email optional via `UserSourceInterface::isEmailRequired()` (default `true`); `User::isEmailRequired()` now consults the user's source (through `UserSourceService`), so sources for external/federated users can provision accounts without an email address
 - Fix #8230: Activity summary mails could grow oversized and fail to send ("552 message too large") when a user's last summary date was far in the past — the activity refactoring had dropped the per-mail activity cap, so the entire backlog since the last successful summary was rendered into a single mail; re-applied the cap in `MailSummary::getActivities()`
-- Fix: `migrate/up --includeModuleMigrations=1` now registers Yii namespace aliases for all installed modules before scanning migration paths, so module classes (e.g. in old migrations) are autoloadable even when `#[WithoutModuleAutoload]` skipped their bootstrap registration
+- Fix: `migrate/up --includeModuleMigrations=1` now fully registers each enabled module before applying its migrations (namespace alias from `config.php`, module instance available via `Yii::$app->getModule()`), matching the web-based migration — id-derived aliases alone could not autoload classes of modules whose id differs from their namespace (e.g. `auth-keycloak` vs. `humhub\modules\authKeycloak`); a module that fails to register (e.g. a stale module during a core upgrade) is skipped with a warning and migrated when the module itself is updated
 - Fix: The application-wide migration scan (`migrate/up`, admin "Database", installer) again applies only enabled (and core) module migrations; the `ModuleDiscoveryService` refactoring had made it apply migrations of every module present in the modules directory, creating tables for modules that were never enabled
 - Fix #8227: Clear cache no longer fails with "Permission denied" when the assets mount directory is not deletable (e.g. on Docker); only its contents are removed
 - Enh: Added `#[WithoutModuleAutoload]` attribute for console controllers that do not require module loading (e.g. `settings/*`, `cache/*`)
@@ -57,6 +57,7 @@ HumHub Changelog
 - Fix #8246: Add aria-label attribute for icon-only buttons
 - Enh #8255: CI tests now support a database engine selector (MariaDB/MySQL); per-push runs use MariaDB 11.8, plus a weekly DB-compatibility sweep across MariaDB and MySQL versions
 - Enh #8261: In the mobile app settings, change Whitelist domains to URLs, and also send auth client (SSO) URLs to the mobile app to open all of them in the in-app browser instead of the external one
+- Enh #8254: Allow reading content in State mode for owner
  
 1.18.4 (Unreleased)
 ---------------------
