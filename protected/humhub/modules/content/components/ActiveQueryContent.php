@@ -60,7 +60,7 @@ class ActiveQueryContent extends ActiveQuery
 
     public function __construct($modelClass, ?User $user = null, $config = [])
     {
-        $this->user = $user ?? (!Yii::$app->user->isGuest ? Yii::$app->user->getIdentity() : null);
+        $this->user = $user ?? Yii::$app->user->getIdentity();
 
         if ($this->user !== null) {
             $this->stateFilterCondition[] = [
