@@ -8,13 +8,9 @@
 
 namespace humhub\modules\admin\models\forms;
 
-use humhub\modules\user\widgets\AuthChoice;
 use humhub\services\WellKnownService;
 use humhub\widgets\bootstrap\Link;
 use Yii;
-use yii\authclient\OAuth1;
-use yii\authclient\OAuth2;
-use yii\authclient\OpenId;
 use yii\base\Model;
 
 /**
