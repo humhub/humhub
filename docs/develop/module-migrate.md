@@ -6,11 +6,12 @@ Each minor release line has its own file with the breaking changes, new APIs and
 
 ## Unreleased
 
-- `humhub\modules\content\components\ActiveQueryContent::readable()` no longer accepts a `$user`
-  parameter. The user is now resolved once, in the constructor — either the current session user
-  (`Yii::$app->user->getIdentity()`) or an explicit user passed as the second constructor argument:
-  `new ActiveQueryContent($modelClass, $user)`. Modules calling `->readable($user)` must switch to
-  constructing the query with that user instead.
+- `humhub\modules\content\components\ActiveQueryContent::readable()` and `::userRelated()` no
+  longer accept a `$user` parameter. The user is now resolved once, in the constructor — either
+  the current session user (`Yii::$app->user->getIdentity()`) or an explicit user passed as the
+  second constructor argument: `new ActiveQueryContent($modelClass, $user)`. Modules calling
+  `->readable($user)` or `->userRelated($scopes, $user)` must switch to constructing the query
+  with that user instead.
 - Icon-only `Button` widgets (no visible label, only an icon) now automatically set `aria-label` from
   the tooltip text. Module developers should always call `->tooltip('...')` on icon-only buttons —
   omitting it logs a `Yii::warning()` in `YII_DEBUG` mode.

@@ -206,19 +206,16 @@ class ActiveQueryContent extends ActiveQuery
      * All available scopes: ActiveQueryContent::USER_RELATED_SCOPE_*
      *
      * @param array $scopes
-     * @param User $user
      * @return ActiveQueryContent
      * @throws Throwable
      */
-    public function userRelated($scopes = [], $user = null)
+    public function userRelated($scopes = [])
     {
-        if ($user === null) {
-            if (Yii::$app->user->isGuest) {
-                return $this->andWhere('false');
-            }
-
-            $user = Yii::$app->user->getIdentity();
+        if ($this->user === null) {
+            return $this->andWhere('false');
         }
+
+        $user = $this->user;
 
         $this->joinWith(['content', 'content.contentContainer']);
 
