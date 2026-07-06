@@ -18,6 +18,7 @@ HumHub Changelog
 - Enh #8248: Fix updating of space notification state per user after reset for all users
 - Enh #8260: Make form fieldset focusable and expanded via keyboard
 - Fix #8253: Fix Select2 dropdown flickering/closing when it doesn't fit the viewport at browser zoom > 100%
+- Fix #8264: Update Twig to 3.28.0 (GHSA-529h-vh3j-85hq / CVE-2026-46636 - sandbox allow-list bypass on cached templates)
 
 1.18.3 (May 18, 2026)
 ---------------------
