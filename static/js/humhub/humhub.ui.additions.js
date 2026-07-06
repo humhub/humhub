@@ -196,6 +196,7 @@ humhub.module('ui.additions', function (module, require, $) {
                     templateResult: templateItem,
                     templateSelection: templateItem,
                     dropdownAutoWidth: true,
+                    scrollAfterSelect: true,
                 });
             });
         });

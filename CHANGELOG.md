@@ -17,6 +17,7 @@ HumHub Changelog
 - Enh #8238: Reset OPcache after update a module
 - Enh #8248: Fix updating of space notification state per user after reset for all users
 - Enh #8260: Make form fieldset focusable and expanded via keyboard
+- Fix #8253: Fix Select2 dropdown flickering/closing when it doesn't fit the viewport at browser zoom > 100%
 
 1.18.3 (May 18, 2026)
 ---------------------
