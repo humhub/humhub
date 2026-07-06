@@ -87,23 +87,21 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
      */
     public static function getClientUrls(): array
     {
-        return Yii::$app->cache->getOrSet(Collection::CACHE_KEY_CLIENT_URLS, function () {
-            $urls = [];
-            $clients = Yii::$app->get(self::$authclientCollection)->getClients();
+        $urls = [];
+        $clients = Yii::$app->get(self::$authclientCollection)->getClients();
 
-            foreach ($clients as $client) {
-                if (!method_exists($client, 'buildAuthUrl')) { // OAuth2, OAuth1 and OpenId clients
-                    continue;
-                }
-                // Remove URL params
-                $parts = parse_url($client->buildAuthUrl());
-                $urls[] = $parts['scheme'] . '://' . $parts['host']
-                    . (isset($parts['port']) ? ':' . $parts['port'] : '')
-                    . ($parts['path'] ?? '');
+        foreach ($clients as $client) {
+            if (!method_exists($client, 'buildAuthUrl')) { // OAuth2, OAuth1 and OpenId clients
+                continue;
             }
+            // Remove URL params
+            $parts = parse_url($client->buildAuthUrl());
+            $urls[] = $parts['scheme'] . '://' . $parts['host']
+                . (isset($parts['port']) ? ':' . $parts['port'] : '')
+                . ($parts['path'] ?? '');
+        }
 
-            return array_unique($urls);
-        });
+        return array_unique($urls);
     }
 
     public static function hasClients(): bool

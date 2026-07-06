@@ -34,13 +34,6 @@ class Collection extends Component
     public const EVENT_AFTER_CLIENTS_SET = 'client_set';
 
     /**
-     * Cache key used by {@see \humhub\modules\user\widgets\AuthChoice::getClientUrls()}.
-     *
-     * @since 1.19
-     */
-    public const CACHE_KEY_CLIENT_URLS = 'AuthChoiceClientUrls';
-
-    /**
      * @var array list of Auth clients with their configuration in format: 'clientId' => [...]
      */
     private $_clients = [];
@@ -53,7 +46,6 @@ class Collection extends Component
         $this->trigger(self::EVENT_BEFORE_CLIENTS_SET, new ParameterEvent(['clients' => $clients]));
         $this->_clients = array_merge($this->getDefaultClients(), $clients, $this->_clients);
         $this->trigger(self::EVENT_AFTER_CLIENTS_SET);
-        Yii::$app->cache->delete(self::CACHE_KEY_CLIENT_URLS);
     }
 
     /**
@@ -106,7 +98,6 @@ class Collection extends Component
     public function setClient($id, $config)
     {
         $this->_clients[$id] = $config;
-        Yii::$app->cache->delete(self::CACHE_KEY_CLIENT_URLS);
     }
 
     /**
@@ -117,7 +108,6 @@ class Collection extends Component
     public function removeClient($id)
     {
         unset($this->_clients[$id]);
-        Yii::$app->cache->delete(self::CACHE_KEY_CLIENT_URLS);
     }
 
     /**
