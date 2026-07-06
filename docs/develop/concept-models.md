@@ -55,38 +55,42 @@ grunt migrate-up
 
 Missing migrations are also executed when accessing `Administration -> Information -> Database`.
 
-## Migrations run without your module loaded
+## Migrations and module context
 
-Migrations execute via the console (`migrate/up`), where your module is **not
-bootstrapped** — its `config.php` and `Module::init()` never run. Keep every
-migration self-contained:
+Migrations run with your module **registered**: the namespace alias from your
+`config.php` is set (so your module's classes are autoloadable, even when the
+module id differs from the namespace), and `Yii::$app->getModule('<id>')`
+returns your module instance — settings access works. This applies to all
+migration entry points alike: `migrate/up` on the console, the web-based
+migration (`Administration -> Information -> Database`), module activation and
+`marketplace/update-all`.
 
-- Your module's **classes are autoloadable** (core registers an
-  `@humhub/modules/<id>` alias before running migrations), so referencing a model
-  or a class constant from a migration is fine.
-- But `Yii::$app->getModule('<id>')` returns **`null`**. Do not call `->settings`,
-  `->getConfig()`, or any code that reaches through `getModule()` — including a
-  settings model whose `init()` does so. It fatals with
-  `Attempt to read property "settings" on null`.
-- Read and write settings with plain DB operations on the `setting` table:
+One caveat: when the console migration scan cannot **register** your module —
+typically during a core upgrade, while the installed module version still
+references core classes that were removed — the module is skipped with a
+warning and its migrations are deferred until the module itself is updated.
+Migrations of disabled modules never run; they are applied when the module is
+enabled.
+
+To keep migrations robust across all situations:
+
+- Prefer plain DB operations over reaching through services where practical —
+  e.g. write settings directly to the `setting` table instead of
+  `Yii::$app->getModule('<id>')->settings` when the migration is part of an
+  upgrade path that may run against a newer core:
 
   ```php
-  // Instead of: Yii::$app->getModule('mymodule')->settings->set('foo', $value);
   $this->upsert('setting',
       ['module_id' => 'mymodule', 'name' => 'foo', 'value' => $value],
       ['value' => $value]);
-
-  // Instead of: Yii::$app->getModule('mymodule')->settings->delete('foo');
-  $this->delete('setting',
-      ['module_id' => 'mymodule', 'name' => 'foo', 'contentcontainer_id' => null]);
   ```
 
-- Prefer literal values over runtime constants
-  (e.g. `defaultValue(1)` rather than `defaultValue(MyModel::STATUS_OPEN)`).
+- Never assume classes of *other* modules are available in your migration.
 
-This applies to your `uninstall.php` migration too — `Module::disable()` already
-clears your module's global and container settings (see [Settings](concept-settings.md)),
-so an uninstall migration only needs to drop tables and columns.
+Your `uninstall.php` migration runs while your module is still registered.
+`Module::disable()` already clears your module's global and container settings
+(see [Settings](concept-settings.md)), so an uninstall migration only needs to
+drop tables and columns.
 
 ## Uninstall Migration
 

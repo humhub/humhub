@@ -241,25 +241,14 @@ class MigrateController extends \yii\console\controllers\MigrateController
         // Third-party modules are only added when includeModuleMigrations is set — with
         // #[WithoutModuleAutoload] they are not registered at bootstrap to avoid stale
         // configs executing against a newer core during upgrades.
-        // locateModuleConfigs() is used without registerBulk() to avoid contaminating a
-        // mock ModuleManager injected by tests via Yii::$app->set('moduleManager').
         $migrationPaths = ['base' => $this->migrationPath];
 
         if ($this->includeModuleMigrations) {
-            // Aliases make module classes autoloadable without executing config.php
-            foreach (ModuleDiscoveryService::findInstalledModules() as $moduleId => $info) {
-                Yii::setAlias('@humhub/modules/' . $moduleId, $info['basePath']);
-                if (Yii::getAlias('@' . $moduleId, false) === false) {
-                    Yii::setAlias('@' . $moduleId, $info['basePath']);
-                }
-            }
-
             // Only enabled (and core) modules: a module that is merely present in the
             // modules directory but never enabled must not have its migrations applied — its
-            // tables are created when it is enabled (see Module::enable()). This mirrors
-            // ModuleManager::register(), which never registers a disabled non-core module as a
-            // Yii application module. Reading the enabled ids straight from the database keeps
-            // this working under #[WithoutModuleAutoload], where modules are not bootstrapped.
+            // tables are created when it is enabled (see Module::enable()). Reading the
+            // enabled ids straight from the database keeps this working under
+            // #[WithoutModuleAutoload], where modules are not bootstrapped.
             $enabledModuleIds = Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)
                 ? ModuleEnabled::getEnabledIds()
                 : [];
@@ -270,11 +259,37 @@ class MigrateController extends \yii\console\controllers\MigrateController
                     continue;
                 }
 
-                if (empty($config['isCoreModule']) && !in_array($config['id'], $enabledModuleIds, true)) {
+                $moduleId = $config['id'] ?? null;
+                if ($moduleId === null) {
                     continue;
                 }
 
-                $migrationPaths[$config['id']] = $migrationsPath;
+                if (empty($config['isCoreModule']) && !in_array($moduleId, $enabledModuleIds, true)) {
+                    continue;
+                }
+
+                // Fully register the module so its migrations run with the same context as
+                // in the web application: namespace aliases from config.php (the module id
+                // may differ from the namespace, e.g. "auth-keycloak" vs.
+                // humhub\modules\authKeycloak) and a module instance via Yii::$app->getModule()
+                // for settings access. In the web application (and for core modules) the
+                // module is already registered at bootstrap — hasModule() makes this a no-op
+                // there and avoids duplicate event handler registration.
+                if (!Yii::$app->moduleManager->hasModule($moduleId)) {
+                    try {
+                        Yii::$app->moduleManager->register($basePath, $config);
+                    } catch (\Throwable $e) {
+                        // Typically a stale module still referencing core classes removed by
+                        // this upgrade. Its migrations run when the module itself is updated.
+                        Yii::warning(
+                            'Skipping migrations of module "' . $moduleId . '" — module could not be registered: ' . $e->getMessage(),
+                            'migration',
+                        );
+                        continue;
+                    }
+                }
+
+                $migrationPaths[$moduleId] = $migrationsPath;
             }
         }
 
