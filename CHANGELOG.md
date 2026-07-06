@@ -56,6 +56,7 @@ HumHub Changelog
 - Enh #8244: Log progress of the queued search index rebuild (`SearchRebuildIndex`) — start, interim item count, completion, and failures/skips, each prefixed with the worker process ID — via the `search-indexing` log category
 - Fix #8246: Add aria-label attribute for icon-only buttons
 - Enh #8255: CI tests now support a database engine selector (MariaDB/MySQL); per-push runs use MariaDB 11.8, plus a weekly DB-compatibility sweep across MariaDB and MySQL versions
+- Enh #8254: Allow reading content in State mode for owner
  
 1.18.4 (Unreleased)
 ---------------------
@@ -72,7 +73,6 @@ HumHub Changelog
 - Enh #8231: Activate a search dialog for CodeMirror fields
 - Enh #8238: Reset OPcache after update a module
 - Enh #8248: Fix updating of space notification state per user after reset for all users
-- Enh #8254: Allow reading content in State mode for owner
 
 1.18.3 (May 18, 2026)
 ---------------------
