@@ -373,6 +373,10 @@
         margin-bottom: 0;
         padding: 12px;
         cursor: pointer;
+        &:focus-visible {
+            border-left: 3px solid var(--bs-accent);
+            margin-left: -3px;
+        }
 
         label {
             margin-bottom: 0;

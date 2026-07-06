@@ -278,10 +278,18 @@
 
         /**
          * Limit the dropdown height.
+         *
+         * Fix for browser zoom > 100%:
+         * The height is also capped relative to the viewport (vh) so the
+         * options list always fits above or below the field - even when
+         * the browser zoom level is above 100%, which shrinks the
+         * effective viewport height in CSS pixels. Without this, Select2
+         * can end up unable to find enough room in either direction and
+         * flip its position back and forth on every scroll/resize event,
+         * making the dropdown flicker open and immediately close.
          */
-
         .select2-results > .select2-results__options {
-            max-height: 400px;
+            max-height: min(400px, 40vh);
             overflow-y: auto;
         }
 
