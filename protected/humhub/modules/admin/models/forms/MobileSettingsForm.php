@@ -69,26 +69,6 @@ class MobileSettingsForm extends Model
         }
     }
 
-    public function getWhiteListedUrlsWithSso(): array
-    {
-        $urls = $this->whiteListedUrls;
-
-        // Add SSO service provider domains to the whitelist if they are not already present
-        $clients = (new AuthChoice())->getClients();
-        foreach ($clients as $client) {
-            if (!method_exists($client, 'buildAuthUrl')) { // OAuth2, OAuth1 and OpenId clients
-                continue;
-            }
-            // Remove URL params
-            $parts = parse_url($client->buildAuthUrl());
-            $urls[] = $parts['scheme'] . '://' . $parts['host']
-                . (isset($parts['port']) ? ':' . $parts['port'] : '')
-                . ($parts['path'] ?? '');
-        }
-
-        return array_unique($urls);
-    }
-
     /**
      * @inheritdoc
      */

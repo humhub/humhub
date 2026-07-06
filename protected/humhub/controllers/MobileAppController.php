@@ -14,6 +14,7 @@ use humhub\helpers\DeviceDetectorHelper;
 use humhub\helpers\MobileAppHelper;
 use humhub\modules\admin\models\forms\MobileSettingsForm;
 use humhub\modules\file\Module;
+use humhub\modules\user\widgets\AuthChoice;
 use Yii;
 use yii\helpers\Url;
 
@@ -57,7 +58,8 @@ class MobileAppController extends Controller
                 'imageMaxProcessingMP' => $module->imageMaxProcessingMP,
                 'denyDoubleFileExtensions' => $module->denyDoubleFileExtensions,
             ],
-            'whiteListedUrls' => $mobileSettingsForm->getWhiteListedUrlsWithSso(),
+            'whiteListedUrls' => $mobileSettingsForm->whiteListedUrls,
+            'authClientUrls' => AuthChoice::getClientUrls(),
         ];
 
         return $this->asJson($settings);
