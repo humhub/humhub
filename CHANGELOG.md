@@ -13,6 +13,7 @@ HumHub Changelog
 - Fix #8196: Fix whitespace between notification bar items
 - Fix #8205: Fix permission filter alignment
 - Fix #8197: Don't use the setting "Allow individual topics" for user and space tags
+- Fix #8222: Fix filter people page by checkbox list field
 - Enh #8231: Activate a search dialog for CodeMirror fields
 - Enh #8238: Reset OPcache after update a module
 - Enh #8248: Fix updating of space notification state per user after reset for all users
