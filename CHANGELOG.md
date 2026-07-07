@@ -19,6 +19,7 @@ HumHub Changelog
 - Enh #8260: Make form fieldset focusable and expanded via keyboard
 - Fix #8253: Fix Select2 dropdown flickering/closing when it doesn't fit the viewport at browser zoom > 100%
 - Fix #8264: Update Twig to 3.28.0 (GHSA-529h-vh3j-85hq / CVE-2026-46636 - sandbox allow-list bypass on cached templates)
+- Fix #8268: Fix dropdown menu hidden behind topbar when flipped upward
 
 1.18.3 (May 18, 2026)
 ---------------------
