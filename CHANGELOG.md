@@ -58,6 +58,7 @@ HumHub Changelog
 - Enh #8255: CI tests now support a database engine selector (MariaDB/MySQL); per-push runs use MariaDB 11.8, plus a weekly DB-compatibility sweep across MariaDB and MySQL versions
 - Enh #8261: In the mobile app settings, change Whitelist domains to URLs, and also send auth client (SSO) URLs to the mobile app to open all of them in the in-app browser instead of the external one
 - Enh #8254: Allow reading content in State mode for owner
+- Fix: Delete `\humhub\widgets\PageAddonStack` unused class
  
 1.18.4 (Unreleased)
 ---------------------
