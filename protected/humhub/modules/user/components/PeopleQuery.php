@@ -104,58 +104,47 @@ class PeopleQuery extends ActiveQueryUser
             ->where(['directory_filter' => 1])
             ->andWhere(['IN', 'internal_name', array_keys($fields)])
             ->all();
-        $checkedFilteredFields = [];
+
+        $conditions = [];
         foreach ($filteredProfileFields as $filteredField) {
             /* @var $filteredField ProfileField */
-            if (!isset($fields[$filteredField->internal_name])) {
+            $fieldName = $filteredField->internal_name;
+            if (!isset($fields[$fieldName])) {
                 // Skip unknown field
                 continue;
             }
 
+            $value = $fields[$fieldName];
             $fieldType = $filteredField->getFieldType();
+
             if ($fieldType instanceof CheckboxList) {
-                $operator = [
-                    'REGEXP', // Search in multi value separated with delimiter "\n"
-                    ['=', 'field_suffix' => '_other_selection'], // Search in "Other:" field
+                $delimiter = preg_quote(CheckboxList::MULTI_VALUE_DELIMITER, '/');
+                $condition = ['OR',
+                    // Search if match a line, i.e. a key of the available options of the Checkbox List,
+                    // in the multi value string separated with CheckboxList::MULTI_VALUE_DELIMITER
+                    ['REGEXP', 'profile.' . $fieldName, '(^|' . $delimiter . ')' . preg_quote($value, '/') . '(' . $delimiter . '|$)'],
                 ];
+                if ($fieldType->allowOther) {
+                    // Search in "Other:" field, only relevant while the option is enabled -
+                    // if disabled, the column may still hold stale values that must not match.
+                    $condition[] = ['=', 'profile.' . CheckboxList::getOtherColumnName($fieldName), $value];
+                }
             } elseif ($fieldType instanceof Select) {
-                $operator = '=';
+                $condition = ['=', 'profile.' . $fieldName, $value];
             } else {
-                $operator = 'LIKE';
+                $condition = ['LIKE', 'profile.' . $fieldName, $value];
             }
 
-            $checkedFilteredFields[$filteredField->internal_name] = [
-                'value' => $fields[$filteredField->internal_name],
-                'operator' => $operator,
-            ];
+            $conditions[] = $condition;
         }
 
-        if (empty($checkedFilteredFields)) {
+        if (empty($conditions)) {
             return $this;
         }
 
         $this->joinWith('profile');
 
-        foreach ($checkedFilteredFields as $field => $data) {
-            $search = ($data['operator'] === 'REGEXP')
-                ? '(^|\\n)' . preg_quote($data['value'], '/') . '(\\n|$)' // Search if match a line, i.e. a key of the available options of the Checkbox List
-                : $data['value'];
-
-            if (is_array($data['operator'])) {
-                $condition = ['OR'];
-                foreach ($data['operator'] as $operator) {
-                    if (is_array($operator)) {
-                        $field_suffix = $operator['field_suffix'] ?? '';
-                        $operator = $operator[0];
-                    } else {
-                        $field_suffix = '';
-                    }
-                    $condition[] = [$operator, 'profile.' . $field . $field_suffix, $search];
-                }
-            } else {
-                $condition = [$data['operator'], 'profile.' . $field, $search];
-            }
-
+        foreach ($conditions as $condition) {
             $this->andWhere($condition);
         }
 

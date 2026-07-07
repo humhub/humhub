@@ -52,10 +52,25 @@ class CheckboxList extends BaseType
     public $other;
 
     /**
-     * @var string delimiter for multi values
+     * Delimiter used to join/split multi values when stored in the profile column.
+     *
+     * This is intentionally a class constant, not a configurable property: nothing in
+     * the admin UI exposes changing it, there is no migration path for already stored
+     * values if it were changed, and other consumers (e.g. {@see \humhub\modules\user\components\PeopleQuery})
+     * rely on it being fixed.
+     *
      * @since 1.18.4
      */
-    public string $multiValueDelimiter = "\n";
+    public const MULTI_VALUE_DELIMITER = "\n";
+
+    /**
+     * Returns the name of the profile column that stores the "Other:" value entered by
+     * users for a CheckboxList field with the given internal name.
+     */
+    public static function getOtherColumnName(string $internalName): string
+    {
+        return $internalName . '_other_selection';
+    }
 
     /**
      * @inheritdoc
@@ -104,7 +119,7 @@ class CheckboxList extends BaseType
     {
         $columnName = $this->profileField->internal_name;
         if (!Profile::columnExists($columnName)) {
-            $query = Yii::$app->db->getQueryBuilder()->addColumn(Profile::tableName(), $columnName . '_other_selection', 'VARCHAR(255)');
+            $query = Yii::$app->db->getQueryBuilder()->addColumn(Profile::tableName(), self::getOtherColumnName($columnName), 'VARCHAR(255)');
             Yii::$app->db->createCommand($query)->execute();
 
             $query = Yii::$app->db->getQueryBuilder()->addColumn(Profile::tableName(), $columnName, 'TEXT');
@@ -118,7 +133,7 @@ class CheckboxList extends BaseType
     {
         // Try create column name
         if (Profile::columnExists($this->profileField->internal_name)) {
-            $sql = "ALTER TABLE profile DROP `" . $this->profileField->internal_name . "_other_selection`;";
+            $sql = "ALTER TABLE profile DROP `" . self::getOtherColumnName($this->profileField->internal_name) . "`;";
             Yii::$app->db->createCommand($sql)->execute();
 
             $sql = "ALTER TABLE profile DROP `" . $this->profileField->internal_name . "`;";
@@ -134,12 +149,12 @@ class CheckboxList extends BaseType
     public function getFieldFormDefinition(?User $user = null, array $options = []): array
     {
         $result = parent::getFieldFormDefinition($user, array_merge([
-            'delimiter' => $this->multiValueDelimiter,
+            'delimiter' => self::MULTI_VALUE_DELIMITER,
             'items' => $this->getSelectItems(),
         ], $options));
 
         if ($this->allowOther) {
-            $result[$this->profileField->internal_name . '_other_selection'] = [
+            $result[self::getOtherColumnName($this->profileField->internal_name)] = [
                 'type' => 'text',
                 'class' => 'form-control',
                 'label' => false,
@@ -153,7 +168,7 @@ class CheckboxList extends BaseType
     public function beforeProfileSave($values)
     {
         if (is_array($values)) {
-            return implode($this->multiValueDelimiter, $values);
+            return implode(self::MULTI_VALUE_DELIMITER, $values);
         }
         return $values;
     }
@@ -178,14 +193,14 @@ class CheckboxList extends BaseType
     public function getUserValue(User $user, bool $raw = true, bool $encode = true): ?string
     {
         $internalName = $this->profileField->internal_name;
-        $internalNameOther = $internalName . '_other_selection';
+        $internalNameOther = self::getOtherColumnName($internalName);
 
         $value = $user->profile->$internalName;
         if (!$raw && $value !== null) {
             $options = $this->getSelectItems();
             $translatedValues = [];
             if (is_string($value)) {
-                $value = explode($this->multiValueDelimiter, $value);
+                $value = explode(self::MULTI_VALUE_DELIMITER, $value);
             }
             foreach ($value as $v) {
                 if ($v === 'other' && !empty($user->profile->$internalNameOther)) {

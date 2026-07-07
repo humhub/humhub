@@ -36,6 +36,17 @@ class PeopleFilterPicker extends BasePicker
     protected ?ProfileField $_profileField = null;
 
     /**
+     * Whether "Other:" values still need to be merged into {@see $defaultResults}.
+     * Deferred so the underlying queries only run when suggestions are actually built.
+     */
+    protected bool $_pendingOtherValuesMerge = false;
+
+    /**
+     * Per-request memoization of {@see getFilteredProfileFieldValues()}, keyed by field name.
+     */
+    protected array $_filteredProfileFieldValuesCache = [];
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -57,15 +68,31 @@ class PeopleFilterPicker extends BasePicker
                 $this->defaultResults = $definition[$this->_profileField->internal_name]['items'];
             }
 
-            // Append all "Other:" values entered by users to the default options list
+            // "Other:" values are merged lazily in mergeOtherValuesIntoDefaultResults(),
+            // the first time suggestions are actually requested, to avoid running the
+            // extra queries on every render regardless of whether they're needed.
             if (!empty($this->_profileField->fieldType->allowOther) && isset($this->defaultResults['other'])) {
                 unset($this->defaultResults['other']);
-                $otherValues = $this->getFilteredProfileFieldValues($this->itemKey);
-                foreach ($otherValues as $otherValue) {
-                    if (!isset($this->defaultResults[$otherValue]) && $otherValue !== '' && $otherValue !== 'other') {
-                        $this->defaultResults[$otherValue] = $otherValue;
-                    }
-                }
+                $this->_pendingOtherValuesMerge = true;
+            }
+        }
+    }
+
+    /**
+     * Merges all "Other:" values entered by users into the default options list.
+     * No-op after the first call (guarded by {@see $_pendingOtherValuesMerge}).
+     */
+    protected function mergeOtherValuesIntoDefaultResults(): void
+    {
+        if (!$this->_pendingOtherValuesMerge) {
+            return;
+        }
+        $this->_pendingOtherValuesMerge = false;
+
+        $otherValues = $this->getFilteredProfileFieldValues($this->itemKey);
+        foreach ($otherValues as $otherValue) {
+            if (!isset($this->defaultResults[$otherValue]) && $otherValue !== '' && $otherValue !== 'other') {
+                $this->defaultResults[$otherValue] = $otherValue;
             }
         }
     }
@@ -174,6 +201,8 @@ class PeopleFilterPicker extends BasePicker
      */
     public function getSuggestions($keyword = ''): array
     {
+        $this->mergeOtherValuesIntoDefaultResults();
+
         if (empty($this->defaultResults)) {
             if ($this->query instanceof PeopleQuery && $this->query->isFiltered()) {
                 $filteredValues = $this->getFilteredProfileFieldValues($this->itemKey);
@@ -234,7 +263,7 @@ class PeopleFilterPicker extends BasePicker
 
     protected function getFilteredProfileFieldValuesQuery(string $field): ActiveQuery
     {
-        $query = clone $this->query;
+        $query = $this->query instanceof PeopleQuery ? clone $this->query : new PeopleQuery();
 
         return $query->select('fp.' . $field)
             ->distinct('fp.' . $field)
@@ -247,33 +276,31 @@ class PeopleFilterPicker extends BasePicker
 
     protected function getFilteredProfileFieldValues(string $field): array
     {
+        if (array_key_exists($field, $this->_filteredProfileFieldValuesCache)) {
+            return $this->_filteredProfileFieldValuesCache[$field];
+        }
+
         $values = $this->getFilteredProfileFieldValuesQuery($field)->column();
 
         if ($this->_profileField->fieldType instanceof CheckboxList) {
-            $checkboxListValues = [];
-            foreach ($values as $value) {
-                if (str_contains($value, $this->_profileField->fieldType->multiValueDelimiter)) {
-                    // Split multi value string into array
-                    $checkboxListValues = array_merge(
-                        $checkboxListValues,
-                        explode($this->_profileField->fieldType->multiValueDelimiter, $value),
-                    );
-                } else {
-                    $checkboxListValues[] = $value;
-                }
-            }
+            // Split multi value strings into their individual values; explode() already
+            // returns [$value] unchanged when the delimiter is absent, so no branch is needed.
+            $checkboxListValues = array_merge([], ...array_map(
+                static fn($value) => explode(CheckboxList::MULTI_VALUE_DELIMITER, $value),
+                $values,
+            ));
 
             if ($this->_profileField->fieldType->allowOther) {
                 // Append all "Other:" values entered by users
-                $values = array_merge(
+                $checkboxListValues = array_merge(
                     $checkboxListValues,
-                    $this->getFilteredProfileFieldValuesQuery($field . '_other_selection')->column(),
+                    $this->getFilteredProfileFieldValuesQuery(CheckboxList::getOtherColumnName($field))->column(),
                 );
-            } else {
-                $values = $checkboxListValues;
             }
+
+            $values = array_values(array_unique($checkboxListValues));
         }
 
-        return $values;
+        return $this->_filteredProfileFieldValuesCache[$field] = $values;
     }
 }
