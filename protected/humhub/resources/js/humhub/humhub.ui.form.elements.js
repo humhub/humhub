@@ -78,6 +78,13 @@ humhub.module('ui.form.elements', function (module, require, $) {
     object.inherits(FormFieldsCollapsible, Widget);
 
     FormFieldsCollapsible.prototype.init = function () {
+        this.$.find('[data-bs-toggle=collapse]').on('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                $(this).click();
+            }
+        });
+
         if (this.$.find('.error, .is-invalid').length > 0) {
             this.$.find('.form-collapsible-fields-label').removeClass('collapsed');
             this.$.find('fieldset').addClass('show');

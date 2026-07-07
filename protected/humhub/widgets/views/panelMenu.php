@@ -25,11 +25,12 @@ use humhub\helpers\Html;
         <ul class="dropdown-menu dropdown-menu-end">
             <?php if ($enableCollapseOption): ?>
                 <li>
-                    <?= Html::a('', '#' . $collapseId, [
+                    <?= Html::a(Html::tag('span', Yii::t('base', 'Toggle panel'), ['class' => 'visually-hidden']), '#' . $collapseId, [
                         'class' => ['dropdown-item', 'panel-collapse'],
                         'data-bs-toggle' => 'collapse',
                         'aria-controls' => $collapseId,
                         'aria-expanded' => 'false',
+                        'aria-label' => Yii::t('base', 'Toggle panel'),
                     ]) ?>
                 </li>
             <?php endif; ?>

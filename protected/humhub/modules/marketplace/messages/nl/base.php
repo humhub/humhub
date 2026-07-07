@@ -1,12 +1,6 @@
 <?php
 return [
   '
-Module successfully disabled!
-' => 'Module succesvol uitgeschakeld!',
-  '
-Module successfully enabled!
-' => 'Module succesvol ingeschakeld!',
-  '
 No active Professional Edition license found!
 ' => 'Geen actieve Professional Edition-licentie gevonden!',
   '
@@ -20,18 +14,12 @@ The license was successfully activated!
 The license was successfully removed!
 
 ' => 'De licentie is succesvol verwijderd!',
-  '--- Disable module: {moduleId} ---
-
-' => '---  Schakel module: {moduleId}  uit ---',
-  '--- Enable module: {moduleId} ---
-
-' => '---  Schakel module: {moduleId}  in ---',
   '<strong>Activate</strong> your Professional Edition' => '<strong>Activeer</strong> uw Professional-editie',
   '<strong>General</strong> Settings' => '<strong>Algemene</strong> instellingen',
   'A new update is available (HumHub %version%)!' => 'Er is een nieuwe versie beschikbaar (HumHub %version%)!',
   'Add License' => 'Licentie toevoegen',
   'Add License Key' => 'Licentiesleutel toevoegen',
-  'Add purchased module by license key' => 'Aangeschafte module toevoegen met de licentie code',
+  'Add purchased module by license key' => 'Aangeschafte module toevoegen met de licentiecode',
   'Advanced Module Search' => 'Geavanceerd zoeken naar modules',
   'After installing the required module, all you have to do is activate it. After that you can instantly start using the module or function. Please note that some modules need to be configured before use.' => 'Na het installeren van de benodigde module hoeft u deze alleen nog maar te activeren. Daarna kunt u direct ermee aan de slag. Houd er rekening mee dat sommige modules voor gebruik moeten worden geconfigureerd.',
   'All' => 'Alle',
@@ -41,17 +29,15 @@ The license was successfully removed!
   'Available Updates' => 'Beschikbare versies',
   'Buy' => 'Kopen',
   'Buy (%price%)' => 'Koop (%price%)',
-  'Buy unverified community module?' => '',
+  'Buy unverified community module?' => 'Een niet-geverifieerde communitymodule kopen?',
   'Cancel' => 'Annuleren',
   'Categories' => 'Categorieën',
   'Changelog' => 'Wijzigingslog',
-  'Community' => 'Gemeenschap',
-  'Community modules are developed by third parties and are <strong>not tested or maintained by the HumHub team</strong>.<br><br>They may not be compatible with your HumHub version, can cause <strong>instability or unexpected behavior</strong>, and may stop working after future updates. Their long-term maintenance is not guaranteed.<br><br>Only enable this option if you understand the risks and trust the source of the module you intend to install.' => '',
+  'Community' => 'Community',
+  'Community modules are developed by third parties and are <strong>not tested or maintained by the HumHub team</strong>.<br><br>They may not be compatible with your HumHub version, can cause <strong>instability or unexpected behavior</strong>, and may stop working after future updates. Their long-term maintenance is not guaranteed.<br><br>Only enable this option if you understand the risks and trust the source of the module you intend to install.' => 'Communitymodules worden ontwikkeld door derden en worden <strong>niet getest of onderhouden door het HumHub-team</strong>.<br><br>Ze zijn mogelijk niet compatibel met uw HumHub-versie, kunnen <strong>instabiliteit of onverwacht gedrag</strong> veroorzaken en kunnen na toekomstige updates stoppen met werken. Langdurig onderhoud is niet gegarandeerd.<br><br>Schakel deze optie alleen in als u de risico\'s begrijpt en de bron van de module die u wilt installeren vertrouwt.',
   'Configure' => 'Configureren',
-  'Continue to checkout' => '',
+  'Continue to checkout' => 'Ga verder naar de afrekenpagina',
   'Could not connect to HumHub API!' => 'Kan geen verbinding maken met de HumHub API!',
-  'Could not connect to HumHub API!
-' => 'Kan geen verbinding maken met HumHub API!',
   'Could not connect to license server!' => 'Kan geen verbinding maken met de licentieserver!',
   'Could not extract module!' => 'Kon module niet uitpakken!',
   'Could not find requested module!' => 'Kon de gevraagde module niet vinden!',
@@ -59,7 +45,7 @@ The license was successfully removed!
   'Could not remove old module path!' => 'Kan het oude modulepad niet verwijderen!',
   'Could not update license. Error: ' => 'Kan de licentie niet updaten. Fout:',
   'Deprecated' => 'Verouderd',
-  'Description, Name, Keywords...' => '',
+  'Description, Name, Keywords...' => 'Omschrijving, naam, trefwoorden...',
   'Download of module failed!' => 'Download van module mislukt!',
   'Edit License' => 'Licentie bewerken',
   'Enable' => 'Activeren',
@@ -69,18 +55,16 @@ The license was successfully removed!
   'Find all the modules you can add to your network in our HumHub Marketplace. Discover numerous add-ons and features that customize the software and give you the possibility to configure your network to your needs.' => 'Vind alle modules die u aan uw website kunt toevoegen in onze HumHub Marketplace. Ontdek talloze add-ons en functies die de software aanpassen en u de mogelijkheid geven om uw netwerk naar uw behoeften te configureren.',
   'General Settings' => 'Algemene instellingen',
   'Great!' => 'Geweldig!',
-  'I understand the risk and want to continue.' => '',
-  'If this Module is additionally marked as <strong>"Unverified Community"</strong> it is neither tested nor maintained by the HumHub project team. It may cause instability or stop working after future updates.' => '',
-  'Include community modules' => '',
-  'Include unverified community modules?' => '',
+  'I understand the risk and want to continue.' => 'Ik begrijp het risico en wil doorgaan.',
+  'If this Module is additionally marked as <strong>"Unverified Community"</strong> it is neither tested nor maintained by the HumHub project team. It may cause instability or stop working after future updates.' => 'Als deze module bovendien is gemarkeerd als <strong>"Niet-geverifieerde community"</strong>, dan is deze niet getest of wordt niet onderhouden door het HumHub-projectteam. Dit kan instabiliteit veroorzaken of ervoor zorgen dat de module na toekomstige updates niet meer werkt.',
+  'Include community modules' => 'Voeg communitymodules toe',
+  'Include unverified community modules?' => 'Niet-geverifieerde communitymodules meenemen?',
   'Information' => 'Informatie',
   'Install' => 'Installeren',
-  'Install anyway' => '',
-  'Install unverified community module?' => '',
+  'Install anyway' => 'Toch installeren',
+  'Install unverified community module?' => 'Een niet-geverifieerde communitymodule installeren?',
   'Installed' => 'Geïnstalleerd',
   'Invalid module license key!' => 'Ongeldige modulelicentiesleutel!',
-  'Invalid module license key!
-' => 'Ongeldige modulelicentiesleutel!',
   'Latest version:' => 'Nieuwste versie:',
   'Learn more' => 'Leer meer',
   'License Key:' => 'Licentie code:',
@@ -100,14 +84,7 @@ The license was successfully removed!
   'Module download failed! (%error%)' => 'Download van module mislukt! (%error%)',
   'Module is <strong>installing...</strong>' => 'Module wordt <strong>geïnstalleerd...</strong>',
   'Module license added!' => 'Modulelicentie toegevoegd!',
-  'Module license added!
-' => 'Modulelicentie toegevoegd!',
-  'Module license key cannot be empty!
-' => 'Modulelicentiesleutel mag niet leeg zijn!',
-  'Module not found or enabled!
-' => 'Module niet gevonden of niet ingeschakeld!',
-  'Module not found!
-' => 'Module niet gevonden',
+  'Module options' => 'Moduleopties',
   'More info' => 'Meer info',
   'New' => 'Nieuw',
   'No compatible module version found!' => 'Geen compatibele moduleversie gevonden!',
@@ -135,7 +112,7 @@ The license was successfully removed!
   'Third-party disclaimer' => 'Derde partij disclamer',
   'This Module was developed by a third-party.' => 'Deze module is ontwikkeld door een derde partij.',
   'Try other keywords or remove filters.' => 'Probeer andere zoekwoorden of verwijder filters.',
-  'Unverified Community' => '',
+  'Unverified Community' => 'Niet-geverifieerde community module',
   'Update' => 'Bijwerken',
   'Update all' => 'Werk alles bij',
   'Update successful' => 'De nieuwe versie is succesvol geïnstalleerd.',
@@ -145,8 +122,8 @@ The license was successfully removed!
   'Well done! You have successfully installed and enabled the module!' => 'Goed gedaan! U heeft de module succesvol geïnstalleerd en geactiveerd!',
   'Without category' => 'Zonder categorie',
   'Would you like to jump straight to it?' => 'Wilt u er meteen naartoe?',
-  'Yes, show community modules' => '',
-  'You are about to install <strong>{moduleName}</strong>, an unverified community module.<br><br>This module is provided by a third party and has not been reviewed or tested by the HumHub team. It may behave unexpectedly, conflict with other modules, or stop working with future HumHub releases.<br><br>Make sure you trust the source before continuing.' => '',
-  'You are about to purchase <strong>{moduleName}</strong>, an unverified community module.<br><br>This module is provided by a third party and has not been reviewed or tested by the HumHub team. It may behave unexpectedly, conflict with other modules, or stop working with future HumHub releases.<br><br>Make sure you trust the source before continuing.' => '',
+  'Yes, show community modules' => 'Ja, toon communitymodules',
+  'You are about to install <strong>{moduleName}</strong>, an unverified community module.<br><br>This module is provided by a third party and has not been reviewed or tested by the HumHub team. It may behave unexpectedly, conflict with other modules, or stop working with future HumHub releases.<br><br>Make sure you trust the source before continuing.' => 'U staat op het punt <strong>{moduleName}</strong> te installeren, een niet-geverifieerde communitymodule.<br><br>Deze module wordt geleverd door een derde partij en is niet beoordeeld of getest door het HumHub-team. De module kan zich onverwacht gedragen, conflicteren met andere modules of niet meer werken met toekomstige HumHub-releases.<br><br>Zorg ervoor dat u de bron vertrouwt voordat u verdergaat.',
+  'You are about to purchase <strong>{moduleName}</strong>, an unverified community module.<br><br>This module is provided by a third party and has not been reviewed or tested by the HumHub team. It may behave unexpectedly, conflict with other modules, or stop working with future HumHub releases.<br><br>Make sure you trust the source before continuing.' => 'U staat op het punt <strong>{moduleName}</strong> aan te schaffen, een niet-geverifieerde communitymodule.<br><br>Deze module wordt geleverd door een derde partij en is niet beoordeeld of getest door het HumHub-team. De module kan zich onverwacht gedragen, conflicteren met andere modules of niet meer werken met toekomstige HumHub-releases.<br><br>Zorg ervoor dat u de bron vertrouwt voordat u verdergaat.',
   'Your HumHub installation is up to date!' => 'Uw HumHub-software is geheel bijgewerkt.',
 ];

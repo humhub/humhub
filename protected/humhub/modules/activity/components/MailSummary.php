@@ -123,6 +123,7 @@ class MailSummary extends Component
         $query->subscribedContentContainers($this->user);
         $query->mailLimitContentContainer($this->user);
         $query->mailLimitTypes($this->user);
+        $query->limit($this->maxActivityCount);
 
         return $query->all();
     }

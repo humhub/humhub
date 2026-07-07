@@ -48,6 +48,7 @@ return [
   'Register' => 'الاشتراك',
   'Reset Password' => 'إعادة تعيين كلمة المرور',
   'Reset password' => 'إعادة تعيين كلمة المرور',
+  'Select' => 'اختيار',
   'Send' => 'إرسال',
   'Sign In' => '',
   'Sign Up' => '',

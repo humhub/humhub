@@ -13,7 +13,7 @@ use humhub\widgets\FooterMenu;
     <div class="col-lg-8 layout-content-container">
         <?= DashboardContent::widget(); ?>
     </div>
-    <div class="col-lg-4 layout-sidebar-container">
+    <aside class="col-lg-4 layout-sidebar-container" aria-label="<?= Html::encode(Yii::t('base', 'Sidebar')) ?>">
         <?= Sidebar::widget([
             'widgets' => [
                 [
@@ -25,6 +25,6 @@ use humhub\widgets\FooterMenu;
         ]);
         ?>
         <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_SIDEBAR]); ?>
-    </div>
+    </aside>
 </div>
 <?= Html::endContainer(); ?>

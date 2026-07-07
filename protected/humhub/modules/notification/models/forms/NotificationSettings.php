@@ -149,7 +149,6 @@ class NotificationSettings extends Model
             return false;
         }
 
-        $this->saveSpaceSettings();
         Yii::$app->notification->setSpaces($this->spaceGuids, $this->user);
 
         $settings = $this->getSettings();
@@ -182,29 +181,6 @@ class NotificationSettings extends Model
         }
 
         return true;
-    }
-
-    /**
-     * Saves the Notificaton Space settings for the given user.
-     * This is skipped if no user is selected (global settings).
-     *
-     * If the user is already a member of this space this function activates the sending of notifications for
-     * his membership.
-     *
-     * If the user is already following the space this function activates the sendinf of notification for his follow record.
-     *
-     * Otherwise a new follow record is created.
-     *
-     * @return type
-     */
-    private function saveSpaceSettings()
-    {
-        // There is no global space setting right now.
-        if (!$this->user) {
-            return;
-        }
-
-        Yii::$app->notification->setSpaces($this->spaceGuids, $this->user);
     }
 
     public function getSettings()

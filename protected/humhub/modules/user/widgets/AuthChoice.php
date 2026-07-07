@@ -11,6 +11,7 @@ namespace humhub\modules\user\widgets;
 use humhub\helpers\DeviceDetectorHelper;
 use humhub\helpers\Html;
 use humhub\modules\user\authclient\BaseFormClient;
+use humhub\modules\user\authclient\Collection;
 use Yii;
 use yii\authclient\ClientInterface;
 
@@ -77,6 +78,30 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
         $clients = Yii::$app->get(self::$authclientCollection)->getClients();
         $filteredClients = self::filterClients($clients);
         return (int)count($filteredClients);
+    }
+
+    /**
+     *  Returns the list of client URLs for all auth clients having the method `buildAuthUrl()`.
+     *
+     * @since 1.19.0
+     */
+    public static function getClientUrls(): array
+    {
+        $urls = [];
+        $clients = Yii::$app->get(self::$authclientCollection)->getClients();
+
+        foreach ($clients as $client) {
+            if (!method_exists($client, 'buildAuthUrl')) { // OAuth2, OAuth1 and OpenId clients
+                continue;
+            }
+            // Remove URL params
+            $parts = parse_url($client->buildAuthUrl());
+            $urls[] = $parts['scheme'] . '://' . $parts['host']
+                . (isset($parts['port']) ? ':' . $parts['port'] : '')
+                . ($parts['path'] ?? '');
+        }
+
+        return array_unique($urls);
     }
 
     public static function hasClients(): bool

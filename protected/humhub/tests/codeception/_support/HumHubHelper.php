@@ -91,7 +91,9 @@ class HumHubHelper extends Module
     {
         $modules = array_map(fn(Module $module) => $module->id, Yii::$app->moduleManager->getModules());
 
-        Yii::$app->moduleManager->disableModules($modules);
+        foreach ($modules as $moduleId) {
+            Yii::$app->moduleManager->getModule($moduleId)?->disable();
+        }
 
         if (!empty($this->config['modules'])) {
             foreach ($this->config['modules'] as $moduleId) {

@@ -1,6 +1,7 @@
 <?php
 
 use humhub\components\View;
+use humhub\helpers\Html;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Header;
@@ -26,17 +27,17 @@ $space = $context->contentContainer;
         </div>
     </div>
     <div class="row space-content">
-        <div class="col-lg-2 layout-nav-container">
+        <aside class="col-lg-2 layout-nav-container" aria-label="<?= Html::encode(Yii::t('base', 'Sidebar')) ?>">
             <?= Menu::widget(['space' => $space]); ?>
-        </div>
+        </aside>
         <div class="col-lg-<?= ($this->hasSidebar()) ? '7' : '10' ?> layout-content-container">
             <?= SpaceContent::widget(['contentContainer' => $space, 'content' => $content]) ?>
         </div>
         <?php if ($this->hasSidebar()): ?>
-            <div class="col-lg-3 layout-sidebar-container">
+            <aside class="col-lg-3 layout-sidebar-container" aria-label="<?= Html::encode(Yii::t('base', 'Sidebar')) ?>">
                 <?= $this->getSidebar() ?>
                 <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_SIDEBAR]); ?>
-            </div>
+            </aside>
         <?php endif; ?>
     </div>
 

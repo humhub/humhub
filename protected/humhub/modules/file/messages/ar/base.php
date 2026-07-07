@@ -10,6 +10,7 @@ return [
   'Could not find requested file!' => 'لم يتم ايجاد الملف المطلوب',
   'Could not upload File:' => 'لم استطع رفع الملف',
   'Created by:' => 'انشأ من قبل:',
+  'Delete' => 'حذف',
   'Double file extensions are not allowed!' => 'ملحقات الملفات المزدوجة غير مسموح بها!',
   'Download' => 'تنزيل',
   'File {fileName} could not be uploaded!' => 'لا يمكن رفع الملف {fileName}!',
@@ -23,5 +24,6 @@ return [
   'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => 'عذرًا، يمكنك تحميل ملف واحد فقط {n,plural,=1{# ملف} other{# ملفات}} في وقت واحد.',
   'The uploaded image is not a squared.' => 'الصورة التي تم تحميلها ليست مربعة.',
   'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'هذا الحقل يسمح فقط بملف واحد {n,plural,=1{# ملف} other{# ملفات}} بحد أقصى.',
+  'Upload' => 'رفع',
   'Upload files' => 'رفع ملفات',
 ];

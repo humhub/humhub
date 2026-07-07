@@ -16,7 +16,7 @@ return [
     'Congratulations! Everything is ok and ready to start over!' => 'Parabéns! Está tudo bem e pronto para recomeçar!',
     'Create Admin Account' => 'Criar Conta de Administração',
     'Create the database if it doesn\'t exist yet.' => 'Criar a base de dados se esta ainda não existir.',
-    'Downloading & Installing Modules...' => 'A descarregar &amp; a instalar Módulos...',
+    'Downloading & Installing Modules...' => 'A descarregar & a instalar Módulos...',
     'External users can register (show registration form on login)' => 'Utilizadores externos podem registar-se (mostrar formulário no registo)',
     'Here you can decide how new, unregistered users can access HumHub.' => 'Aqui podes decidir como os novos utilizadores sem registo podem aceder ao HumHub.',
     'Hostname' => 'Hostname',

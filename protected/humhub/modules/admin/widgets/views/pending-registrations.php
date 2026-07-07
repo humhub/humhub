@@ -6,7 +6,6 @@ use humhub\modules\admin\models\PendingRegistrationSearch;
 use humhub\modules\admin\widgets\ExportButton;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\GridView;
-use yii\helpers\Url;
 
 /** @var $searchModel PendingRegistrationSearch */
 /** @var $dataProvider yii\data\ActiveDataProvider */
@@ -34,14 +33,14 @@ AdminPendingRegistrationsAsset::register($this);
         <?php if ($dataProvider->totalCount > 0): ?>
             <?= Button::primary(Yii::t('AdminModule.user', 'Re-send to all'))
                 ->icon('paper-plane')
-                ->action('resendAll', Url::toRoute(['/admin/pending-registrations/resend-all']))
-                ->cssClass('resend-all btn-sm')->
-                confirm(Yii::t('AdminModule.user', 'Resend invitations?'), Yii::t('AdminModule.user', 'Do you really want to re-send the invitations to pending registration users?')) ?>
+                ->action('resendAll', ['/admin/pending-registrations/resend-all'])
+                ->cssClass('resend-all btn-sm')
+                ->confirm(Yii::t('AdminModule.user', 'Resend invitations?'), Yii::t('AdminModule.user', 'Do you really want to re-send the invitations to pending registration users?')) ?>
             <?= Button::danger(Yii::t('AdminModule.user', 'Delete All'))
                 ->icon('trash')
-                ->action('deleteAll', Url::toRoute(['/admin/pending-registrations/delete-all']))
-                ->cssClass('delete-all btn-sm')->
-                confirm(Yii::t('AdminModule.user', 'Delete pending registrations?'), Yii::t('AdminModule.user', 'Do you really want to delete pending registrations?')) ?>
+                ->action('deleteAll', ['/admin/pending-registrations/delete-all'])
+                ->cssClass('delete-all btn-sm')
+                ->confirm(Yii::t('AdminModule.user', 'Delete pending registrations?'), Yii::t('AdminModule.user', 'Do you really want to delete pending registrations?')) ?>
         <?php endif; ?>
         <?= ExportButton::widget(['filter' => 'PendingRegistrationSearch']) ?>
     </div>
@@ -81,13 +80,15 @@ AdminPendingRegistrationsAsset::register($this);
             'template' => '{resend} {delete}',
             'buttons' => [
                 'resend' => fn($url, $model, $key) => Button::primary()
-                    ->action('client.post', Url::to(['resend', 'id' => $model->id]))
+                    ->action('client.post', ['resend', 'id' => $model->id])
                     ->icon('paper-plane')
+                    ->options(['aria-label' => Yii::t('AdminModule.user', 'Resend')])
                     ->confirm(Yii::t('AdminModule.user', 'Resend invitation?'))
                     ->sm(),
                 'delete' => fn($url, $model, $key) => Button::danger()
-                    ->action('client.post', Url::to(['delete', 'id' => $model->id]))
+                    ->action('client.post', ['delete', 'id' => $model->id])
                     ->icon('trash')
+                    ->options(['aria-label' => Yii::t('AdminModule.user', 'Delete')])
                     ->confirm(Yii::t('AdminModule.user', 'Delete pending registrations?'))
                     ->sm(),
             ],

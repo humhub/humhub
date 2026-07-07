@@ -4,6 +4,7 @@ namespace humhub\components\bootstrap;
 
 use humhub\components\InstallationState;
 use humhub\components\mail\Mailer;
+use humhub\modules\admin\models\forms\AuthenticationSettingsForm;
 use humhub\modules\admin\models\forms\MailingSettingsForm;
 use yii\base\BootstrapInterface;
 use yii\helpers\ArrayHelper;
@@ -117,7 +118,7 @@ class ComponentLoader implements BootstrapInterface
                 $definition = [];
             }
 
-            if ($authTimeout = $app->getModule('user')->settings->get('auth.defaultUserIdleTimeoutSec')) {
+            if ($authTimeout = AuthenticationSettingsForm::instance()->defaultUserIdleTimeoutSec) {
                 $definition['authTimeout'] = $authTimeout;
             }
             $this->updateComponentDefinition($app, 'user', $definition);

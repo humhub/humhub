@@ -178,9 +178,21 @@ class AssetManager extends \yii\web\AssetManager
     public function clear()
     {
         $this->enableCache = false;
+
+        // Only remove the contents of the assets mount, not the mount directory itself.
+        // Deleting the root would call rmdir() on the mount, which requires write permission
+        // on its parent directory - not granted in some setups (e.g. Docker), causing the
+        // clear cache action to fail with a "Permission denied" error.
+        foreach ($this->fs->listContents('.')->toArray() as $item) {
+            if ($item->isDir()) {
+                $this->fs->deleteDirectory($item->path());
+            } else {
+                $this->fs->delete($item->path());
+            }
+        }
+
         Yii::$app->cache->delete('assetManagerPublished');
 
-        $this->fs->deleteDirectory('.');
     }
 
     /**

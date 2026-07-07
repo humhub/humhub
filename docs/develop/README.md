@@ -59,6 +59,12 @@ Widgets, menus, theming, and the HumHub JavaScript layer.
 - [JavaScript stream](ui-js-stream.md)
 - [JavaScript client](ui-js-client.md) — REST/AJAX wrapper
 
+## Accessibility (WCAG)
+
+Guidelines and widget conventions for meeting WCAG 2.1 AA conformance.
+
+- [Icon-only buttons: accessible name via tooltip](wcag/button-icon-aria-label.md) — `aria-label` derivation, tooltip requirement, dev-mode warning
+
 ## Theming
 
 Most appearance changes are handled in *Administration → Settings → Appearance* (colours, logo, custom SCSS). A dedicated theme is only needed when you want to override view templates or ship a coordinated style as a module.

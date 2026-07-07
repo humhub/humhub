@@ -238,5 +238,7 @@ Atenciosamente, {AdminName}',
     'never' => 'nunca',
     '{nbMsgSent} already sent' => '{nbMsgSent} já enviado',
     'Allow individual topics on profile content' => '',
+    'Edit field' => '',
+    'Resend' => '',
     'Search by name, email, username or exact id.' => '',
 ];

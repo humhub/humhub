@@ -236,5 +236,7 @@ Kind Regards
     'never' => 'なし',
     '{nbMsgSent} already sent' => '{nbMsgSent} はすでに送信済みです',
     'Allow individual topics on profile content' => '',
+    'Edit field' => '',
+    'Resend' => '',
     'Search by name, email, username or exact id.' => '',
 ];

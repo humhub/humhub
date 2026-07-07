@@ -189,7 +189,7 @@ Kind Regards
     'Select which user information should be displayed in the \'People\' overview. You can select any profile fields, even those you have created individually. ' => 'Sélectionnez les informations relatives à l\'utilisateur qui doivent être affichées dans la vue d\'ensemble "Membres". Vous pouvez sélectionner tous les champs de profil, même ceux que vous avez créés individuellement.',
     'Send' => 'Envoyer',
     'Send & decline' => 'Envoyer et refuser',
-    'Send & save' => 'Enregistrer &amp; Envoyer',
+    'Send & save' => 'Enregistrer & Envoyer',
     'Send a message' => 'Envoyer un message',
     'Send a message to <strong>{displayName}</strong> ' => 'Envoyer un message à <strong>{displayName}</strong>',
     'Send invitation email' => 'Envoyer l\'invitation par e-mail',
@@ -236,5 +236,7 @@ Kind Regards
     'never' => 'jamais',
     '{nbMsgSent} already sent' => '{nbMsgSent} déjà envoyés',
     'Allow individual topics on profile content' => '',
+    'Edit field' => '',
+    'Resend' => '',
     'Search by name, email, username or exact id.' => '',
 ];

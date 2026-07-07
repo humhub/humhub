@@ -32,7 +32,24 @@ use yii\helpers\Url;
  */
 class MercurePushDriver extends BaseDriver
 {
+    /**
+     * @var string Public hub URL the browser uses to subscribe (SSE).
+     * Defaults to the public site address (`/.well-known/mercure`).
+     */
     public string $hubUrl = '';
+
+    /**
+     * @var string Internal hub URL the server uses to publish updates (PHP -> hub).
+     * Use this when the hub is co-located with the application and must be reached
+     * over loopback instead of the public address — e.g. the official Docker image
+     * runs an embedded hub, where this should point to `http://localhost/.well-known/mercure`
+     * while {@see $hubUrl} keeps deriving from the (public) `SERVER_NAME` for the browser.
+     * Defaults to {@see $hubUrl} when not set (single-URL setups behave as before).
+     *
+     * @since 1.19
+     */
+    public string $internalHubUrl = '';
+
     public string $jwtKeySubscriber = '';
     public string $jwtKeyPublisher = '';
     public string $topicPrefix = '/humhub/live/';
@@ -51,6 +68,10 @@ class MercurePushDriver extends BaseDriver
             $this->hubUrl = Url::to('/.well-known/mercure', true);
         }
 
+        if (empty($this->internalHubUrl)) {
+            $this->internalHubUrl = $this->hubUrl;
+        }
+
         if (empty($this->jwtKeyPublisher) || empty($this->jwtKeySubscriber)) {
             throw new InvalidConfigException('Mercure driver JWT keys are not specified.');
         }
@@ -66,7 +87,7 @@ class MercurePushDriver extends BaseDriver
                 'verify_host' => false,
             ]);
 
-        $this->hub = new Hub($this->hubUrl, $provider, null, null, $client);
+        $this->hub = new Hub($this->internalHubUrl, $provider, null, null, $client);
     }
 
     /**

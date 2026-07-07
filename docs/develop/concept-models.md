@@ -55,6 +55,43 @@ grunt migrate-up
 
 Missing migrations are also executed when accessing `Administration -> Information -> Database`.
 
+## Migrations and module context
+
+Migrations run with your module **registered**: the namespace alias from your
+`config.php` is set (so your module's classes are autoloadable, even when the
+module id differs from the namespace), and `Yii::$app->getModule('<id>')`
+returns your module instance — settings access works. This applies to all
+migration entry points alike: `migrate/up` on the console, the web-based
+migration (`Administration -> Information -> Database`), module activation and
+`marketplace/update-all`.
+
+One caveat: when the console migration scan cannot **register** your module —
+typically during a core upgrade, while the installed module version still
+references core classes that were removed — the module is skipped with a
+warning and its migrations are deferred until the module itself is updated.
+Migrations of disabled modules never run; they are applied when the module is
+enabled.
+
+To keep migrations robust across all situations:
+
+- Prefer plain DB operations over reaching through services where practical —
+  e.g. write settings directly to the `setting` table instead of
+  `Yii::$app->getModule('<id>')->settings` when the migration is part of an
+  upgrade path that may run against a newer core:
+
+  ```php
+  $this->upsert('setting',
+      ['module_id' => 'mymodule', 'name' => 'foo', 'value' => $value],
+      ['value' => $value]);
+  ```
+
+- Never assume classes of *other* modules are available in your migration.
+
+Your `uninstall.php` migration runs while your module is still registered.
+`Module::disable()` already clears your module's global and container settings
+(see [Settings](concept-settings.md)), so an uninstall migration only needs to
+drop tables and columns.
+
 ## Uninstall Migration
 
 Your module should also provide an `uninstall.php` file.

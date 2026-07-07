@@ -147,4 +147,18 @@ class HeaderControlsMenu extends DropdownMenu
             }
         }
     }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getOptions()
+    {
+        $options = parent::getOptions();
+
+        if (!$this->label) {
+            $options['aria-label'] = Yii::t('SpaceModule.base', 'Space actions');
+        }
+
+        return $options;
+    }
 }

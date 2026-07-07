@@ -62,6 +62,7 @@ trait ApplicationTrait
         return InstallationState::instance();
     }
 
+
     private function initLocales(): void
     {
         if ($this->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {

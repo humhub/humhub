@@ -58,6 +58,7 @@ $titleMode = Yii::$app->getModule('post')->getTitleMode();
             ]) ?>
             <?= Button::accent()
                 ->icon('send')
+                ->options(['aria-label' => Yii::t('base', 'Save')])
                 ->action('editSubmit', $submitUrl)
                 ->cssClass(' btn-comment-submit')->sm()
                 ->submit() ?>

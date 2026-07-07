@@ -78,7 +78,7 @@ class InstalledModuleControls extends Menu
             ]));
         }
 
-        if (Yii::$app->moduleManager->canRemoveModule($this->module->id)) {
+        if ($this->module->getModuleService()->canRemove()) {
             $this->addEntry(new MenuLink([
                 'id' => 'uninstall',
                 'label' => Yii::t('AdminModule.base', 'Uninstall'),

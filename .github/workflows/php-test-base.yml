@@ -1,0 +1,156 @@
+name: PHP Codeception Tests (base)
+
+# Reusable base workflow. Runs the full Codeception suite once per
+# PHP x database matrix entry. Callers pass the PHP versions and the
+# databases to test. engine: mariadb | mysql.
+on:
+    workflow_call:
+        inputs:
+            php:
+                description: PHP versions to test, JSON list.
+                default: |-
+                    ["8.2", "8.3", "8.4"]
+                type: string
+            databases:
+                description: >-
+                    Databases to test, JSON list of {engine, version} objects.
+                    engine: mariadb | mysql. Default runs MariaDB 11.8 only;
+                    broader coverage lives in the weekly DB-compat sweep.
+                default: |-
+                    [{"engine": "mariadb", "version": "11.8"}]
+                type: string
+
+permissions:
+  contents: read
+
+jobs:
+    tests:
+        name: PHP ${{ matrix.php }}-${{ matrix.db.engine }}-${{ matrix.db.version }}
+        env:
+            extensions: curl, intl, pdo, pdo_mysql, zip, exif, fileinfo, mbstring, gd, ldap
+            key: cache-v2
+            LDAP_TEST_HOST: 127.0.0.1
+            LDAP_TEST_PORT: 389
+            LDAP_TEST_BASE_DN: dc=example,dc=org
+            LDAP_TEST_BIND_DN: cn=admin,dc=example,dc=org
+            LDAP_TEST_BIND_PASSWORD: adminpassword
+            LDAP_TEST_USER_FILTER: "(objectClass=inetOrgPerson)"
+            LDAP_TEST_USERNAME_ATTRIBUTE: uid
+
+        runs-on: ${{ matrix.os }}
+
+        strategy:
+            fail-fast: false
+            matrix:
+                os:
+                    - ubuntu-latest
+
+                php: ${{ fromJson(inputs.php) }}
+
+                db: ${{ fromJson(inputs.databases) }}
+
+        services:
+            db:
+                image: ${{ matrix.db.engine == 'mariadb' && format('mariadb:{0}', matrix.db.version) || format('mysql:{0}', matrix.db.version) }}
+                env:
+                    MYSQL_DATABASE: humhub_test
+                    MYSQL_ROOT_PASSWORD: root
+                ports:
+                    - 3306:3306
+                options: >-
+                    --health-cmd="${{ matrix.db.engine == 'mariadb' && 'healthcheck.sh --connect --innodb_initialized' || 'mysqladmin ping' }}"
+                    --health-interval=10s --health-timeout=5s --health-retries=3
+
+        steps:
+            - name: Start Selenium
+              run: |
+                docker run --detach --net=host --shm-size="2g" selenium/standalone-chrome:108.0-20250123
+
+            - name: Start OpenLDAP
+              run: |
+                docker run --detach \
+                  --name openldap \
+                  -p 389:389 \
+                  -e LDAP_ORGANISATION="HumHub Test" \
+                  -e LDAP_DOMAIN="example.org" \
+                  -e LDAP_ADMIN_PASSWORD="adminpassword" \
+                  -e LDAP_TLS=false \
+                  osixia/openldap:1.5.0 --copy-service
+
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+
+            - name: Install PHP with extensions
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php }}
+                  extensions: ${{ env.extensions }}
+                  ini-values: date.timezone='UTC'
+
+            - name: Determine composer cache directory
+              if: matrix.os == 'ubuntu-latest'
+              run: echo "COMPOSER_CACHE_DIR=$(composer config cache-dir)" >> $GITHUB_ENV
+
+            - name: Validate composer.json and composer.lock
+              run: composer validate
+
+            - name: Cache dependencies installed with composer
+              uses: actions/cache@v4
+              with:
+                path: ${{ env.COMPOSER_CACHE_DIR }}
+                key: php${{ matrix.php }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
+                restore-keys: |
+                            php${{ matrix.php }}-composer-${{ matrix.dependencies }}-
+
+            - name: Install dependencies with composer
+              run: composer install --prefer-dist --no-interaction --no-progress --optimize-autoloader --ansi
+
+            - name: Install npm dependencies
+              run: npm install
+
+            - name: Build production assets
+              run: grunt build-assets
+
+            - name: Run migrations
+              run: php protected/humhub/tests/codeception/bin/yii migrate/up --includeModuleMigrations=1 --interactive=0
+
+            - name: Run installer
+              run: php protected/humhub/tests/codeception/bin/yii installer/auto
+
+            - name: Rebuild search index
+              run: php protected/humhub/tests/codeception/bin/yii content-search/rebuild
+
+            - name: Load LDAP test data
+              run: |
+                sudo apt-get install -y ldap-utils -q
+                echo "Waiting for OpenLDAP..."
+                for i in $(seq 1 30); do
+                  ldapsearch -x -H ldap://127.0.0.1:389 \
+                    -D "cn=admin,dc=example,dc=org" -w adminpassword \
+                    -b "dc=example,dc=org" "(objectClass=*)" dn &>/dev/null && break
+                  echo "  attempt $i/30 – retrying in 2s..."
+                  sleep 2
+                done
+                ldapadd -x -H ldap://127.0.0.1:389 \
+                  -D "cn=admin,dc=example,dc=org" -w adminpassword \
+                  -f protected/humhub/modules/ldap/tests/codeception/_data/init.ldif
+
+            - name: Run test server
+              run: php --server 127.0.0.1:8080 index-test.php &>/tmp/phpserver.log &
+
+            - name: Valdiate test server
+              run: sleep 5 && curl --fail --head http://127.0.0.1:8080/index-test.php
+
+            - name: Run test suite
+              run: grunt test -build -env=github
+
+            - name: Upload Codeception Output
+              if: failure()
+              uses: actions/upload-artifact@v4
+              with:
+                name: codeception-output-php${{ matrix.php }}-${{ matrix.db.engine }}-${{ matrix.db.version }}
+                path: |
+                  protected/humhub/tests/codeception/_output/*
+                  protected/humhub/modules/*/tests/codeception/_output/*
+                  protected/runtime/logs/*
+                  /tmp/phpserver.log

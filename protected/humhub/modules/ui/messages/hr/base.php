@@ -6,4 +6,5 @@ return [
     'User Interface' => 'Korisničko sučelje',
     'Reset filters' => '',
     'Select' => '',
+    'Toggle filters' => '',
 ];

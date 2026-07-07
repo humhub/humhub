@@ -5,13 +5,17 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\helpers\Html;
+
 /* @var $data array */
 /* @var $filterInput string */
 ?>
-
 <div class="<?= $data['wrapperClass'] ?>">
     <?php if (isset($data['title'])) : ?>
-        <div class="<?= $data['titleClass'] ?>"><?= $data['title'] ?></div>
-    <?php endif; ?>
+        <?= Html::tag('label', Html::encode($data['title']), [
+            'for' => $data['inputId'],
+            'class' => $data['titleClass'],
+        ]) ?>
+    <?php endif ?>
     <?= $filterInput ?>
 </div>

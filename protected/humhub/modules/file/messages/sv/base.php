@@ -10,6 +10,7 @@ return [
   'Could not find requested file!' => 'Den begärda filen hittades inte!',
   'Could not upload File:' => 'Kunde inte ladda upp filen:',
   'Created by:' => 'Skapad av:',
+  'Delete' => 'Ta bort',
   'Double file extensions are not allowed!' => 'Dubbla filtillägg är inte tillåtet!',
   'Download' => 'Ladda ner',
   'File {fileName} could not be uploaded!' => 'Filen {fileName} kunde inte laddas upp!',
@@ -23,5 +24,6 @@ return [
   'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => 'Tyvärr, du kan endast ladda upp {n,plural,=1{# file} other{# files}} på samma gång.',
   'The uploaded image is not a squared.' => 'Den uppladdade bilden är inte en kvadrerad bild.',
   'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Det här uppladdningsfältet tillåter endast uppladdning av maximalt {n,plural,=1{# file} other{# files}}.',
+  'Upload' => 'Ladda upp',
   'Upload files' => 'Ladda upp filer',
 ];

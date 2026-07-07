@@ -69,6 +69,7 @@ return [
     'Save scheduling' => '',
     'Schedule publication' => '',
     'Scheduled for {dateTime}' => '',
+    'Search' => '',
     'Select target Space.' => '',
     'Select target Space/Profile.' => '',
     'Select type...' => '',
