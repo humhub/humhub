@@ -58,6 +58,7 @@ HumHub Changelog
 - Enh #8255: CI tests now support a database engine selector (MariaDB/MySQL); per-push runs use MariaDB 11.8, plus a weekly DB-compatibility sweep across MariaDB and MySQL versions
 - Enh #8261: In the mobile app settings, change Whitelist domains to URLs, and also send auth client (SSO) URLs to the mobile app to open all of them in the in-app browser instead of the external one
 - Enh #8254: Allow reading content in State mode for owner
+- Fix #8267: Delete `\humhub\widgets\PageAddonStack` unused class
  
 1.18.4 (Unreleased)
 ---------------------
@@ -71,12 +72,14 @@ HumHub Changelog
 - Fix #8196: Fix whitespace between notification bar items
 - Fix #8205: Fix permission filter alignment
 - Fix #8197: Don't use the setting "Allow individual topics" for user and space tags
+- Fix #8222: Fix filter people page by checkbox list field
 - Enh #8231: Activate a search dialog for CodeMirror fields
 - Enh #8238: Reset OPcache after update a module
 - Enh #8248: Fix updating of space notification state per user after reset for all users
 - Enh #8260: Make form fieldset focusable and expanded via keyboard
 - Fix #8253: Fix Select2 dropdown flickering/closing when it doesn't fit the viewport at browser zoom > 100%
 - Fix #8264: Update Twig to 3.28.0 (GHSA-529h-vh3j-85hq / CVE-2026-46636 - sandbox allow-list bypass on cached templates)
+- Fix #8268: Fix dropdown menu hidden behind topbar when flipped upward
 
 1.18.3 (May 18, 2026)
 ---------------------
