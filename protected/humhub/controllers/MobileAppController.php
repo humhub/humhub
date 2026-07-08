@@ -58,10 +58,26 @@ class MobileAppController extends Controller
                 'imageMaxProcessingMP' => $module->imageMaxProcessingMP,
                 'denyDoubleFileExtensions' => $module->denyDoubleFileExtensions,
             ],
-            'whiteListedUrls' => $mobileSettingsForm->whiteListedUrls,
-            'authClientUrls' => AuthChoice::getClientUrls(),
+            'whiteListedUrls' => $mobileSettingsForm->whiteListedUrls, // @since app v1.2.67
+            'authClientUrls' => AuthChoice::getClientUrls(), // @since app v1.2.67
+            'whiteListedDomains' => $this->getDomainsFromUrls($mobileSettingsForm->whiteListedUrls), // TODO remove when app v1.2.66 not supported anymore
         ];
 
         return $this->asJson($settings);
+    }
+
+    private function getDomainsFromUrls(array $urls): array
+    {
+        $domains = [];
+
+        foreach ($urls as $url) {
+            $scheme = parse_url($url, PHP_URL_SCHEME) ?: 'https';
+            $host   = parse_url($url, PHP_URL_HOST);
+            if ($host) {
+                $domains[] = $scheme . '://' . $host;
+            }
+        }
+
+        return array_values(array_unique($domains));
     }
 }
