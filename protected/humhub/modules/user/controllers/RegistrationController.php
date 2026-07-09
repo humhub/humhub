@@ -10,7 +10,9 @@ namespace humhub\modules\user\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
+use humhub\components\Response;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\authclient\BaseFormAuth;
 use humhub\modules\user\authclient\interfaces\ApprovalBypass;
 use humhub\modules\user\models\forms\Registration;
 use humhub\modules\user\models\Invite;
@@ -37,9 +39,17 @@ use yii\web\HttpException;
 class RegistrationController extends Controller
 {
     /**
+     * Session key used to carry an invite token across an enforced external
+     * auth client login round trip triggered from an invite link.
+     *
+     * @see redirectToForcedAuthClient()
+     */
+    private const SESSION_INVITE_TOKEN = self::class . '::inviteToken';
+
+    /**
      * @inheritdoc
      */
-    public $layout = "@humhub/modules/user/views/layouts/main";
+    public $layout = '@humhub/modules/user/views/layouts/main';
 
     /**
      * Allow guest access independently from guest mode setting.
@@ -84,15 +94,34 @@ class RegistrationController extends Controller
          */
         $authClient = null;
 
-        if (Yii::$app->request->get('token')) {
-            $inviteRegistrationService = new InviteRegistrationService(Yii::$app->request->get('token'));
+        $token = Yii::$app->request->get('token');
+        if ($token) {
+            $inviteRegistrationService = new InviteRegistrationService($token);
             if (!$inviteRegistrationService->isValid()) {
                 throw new HttpException(404, 'Invalid registration token!');
             }
+
+            // If local login/registration is disabled and exactly one external auth
+            // client remains, send invited users directly into that
+            // auth client's flow instead of showing the local password form.
+            if (($response = $this->redirectToForcedAuthClient($token)) !== null) {
+                return $response;
+            }
+
             $inviteRegistrationService->populateRegistration($registration);
         } elseif (Yii::$app->session->has('authClient')) {
             $authClient = Yii::$app->session->get('authClient');
             $registration = $this->createRegistrationByAuthClient($authClient);
+
+            // Restore invite data (e.g. e-mail/language) after the user was redirected
+            // through an enforced external auth client login triggered by an invite link.
+            if ($pendingInviteToken = Yii::$app->session->get(self::SESSION_INVITE_TOKEN)) {
+                Yii::$app->session->remove(self::SESSION_INVITE_TOKEN);
+                $pendingInviteRegistrationService = new InviteRegistrationService($pendingInviteToken);
+                if ($pendingInviteRegistrationService->isValid()) {
+                    $pendingInviteRegistrationService->populateRegistration($registration);
+                }
+            }
         } else {
             Yii::warning('Registration failed: No token (query) or authclient (session) found!', 'user');
             Yii::$app->session->setFlash('error', 'Registration failed.');
@@ -168,6 +197,41 @@ class RegistrationController extends Controller
             'showRegistrationForm' => $this->module->showRegistrationForm,
             'showAuthClients' => true,
         ]);
+    }
+
+    /**
+     * When the local registration/login form is disabled (e.g. "Force SAML" setups
+     * with only an SSO provider enabled), an invite link should not fall back to the
+     * local password registration form. Instead, redirect straight into the sole
+     * remaining external auth client's flow, mirroring what happens for direct logins.
+     *
+     * Returns `null` if the local form should still be rendered (e.g. because it is
+     * not disabled, or there isn't exactly one unambiguous external auth client).
+     *
+     * @param string $token the invite token, kept in session so it can be restored
+     *  once the auth client flow redirects back to this controller
+     */
+    private function redirectToForcedAuthClient(string $token): ?Response
+    {
+        if ($this->module->showRegistrationForm) {
+            return null;
+        }
+
+        $externalClients = array_filter(
+            Yii::$app->get('authClientCollection')->getClients(),
+            static fn ($client) => !$client instanceof BaseFormAuth,
+        );
+
+        if (count($externalClients) !== 1) {
+            return null;
+        }
+
+        /** @var BaseClient $externalClient */
+        $externalClient = reset($externalClients);
+
+        Yii::$app->session->set(self::SESSION_INVITE_TOKEN, $token);
+
+        return $this->redirect(['/user/auth/external', 'authclient' => $externalClient->getId()]);
     }
 
     /**
