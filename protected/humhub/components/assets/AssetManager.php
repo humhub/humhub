@@ -2,6 +2,7 @@
 
 namespace humhub\components\assets;
 
+use humhub\components\fs\LocalMountConfig;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\Visibility;
@@ -13,6 +14,19 @@ use yii\helpers\FileHelper;
 class AssetManager extends \yii\web\AssetManager
 {
     public $appendTimestamp = true;
+
+    /**
+     * @var bool|null whether publish states are cached in `Yii::$app->cache`.
+     *
+     * Without the cache, every publish call verifies the published copy against the
+     * filesystem (existence + modification time) — cheap for local mounts and fully
+     * self-healing. For remote mounts (e.g. S3) these lookups are expensive, so
+     * publish states are cached and invalidated explicitly instead.
+     *
+     * `null` (default) enables the cache only when the assets or data mount is
+     * not a {@see \humhub\components\fs\LocalMountConfig}.
+     */
+    public ?bool $cachePublishState = null;
 
     /**
      * Cache key holding the current publish-state generation. `clear()` bumps the
@@ -44,6 +58,9 @@ class AssetManager extends \yii\web\AssetManager
 
         $this->fs = Yii::$app->fs->getAssetsMount();
         $this->baseUrl = Yii::$app->fs->getAssetsMountConfig()->getBaseUrl();
+
+        $this->cachePublishState ??= !(Yii::$app->fs->getAssetsMountConfig() instanceof LocalMountConfig)
+            || !(Yii::$app->fs->getDataMountConfig() instanceof LocalMountConfig);
 
         if (empty($this->baseUrl)) {
             throw new InvalidArgumentException('Base URL must be set.');
@@ -149,25 +166,37 @@ class AssetManager extends \yii\web\AssetManager
         $dstDir = '_/' . hash('xxh32', $assetImage->path);
         $dstFile = $dstDir . DIRECTORY_SEPARATOR . basename($fileNameWithOptions);
 
-        $shouldWrite = true;
+        // Timestamp of an up-to-date published copy; `null` means it has to be (re)written.
+        $timestamp = null;
         try {
-            if ($this->fs->fileExists($dstFile)
-                && $this->fs->lastModified($dstFile) >= $assetImage->fs->lastModified($fileNameWithOptions)) {
-                $shouldWrite = false;
+            if ($this->fs->fileExists($dstFile)) {
+                $dstModified = $this->fs->lastModified($dstFile);
+                if ($dstModified >= $assetImage->fs->lastModified($fileNameWithOptions)) {
+                    $timestamp = $dstModified;
+                }
             }
-        } catch (\League\Flysystem\FilesystemException $e) {
+        } catch (FilesystemException $e) {
             Yii::error($e->getMessage());
         }
 
-        if ($shouldWrite) {
+        if ($timestamp === null) {
             $this->fs->writeStream(
                 $dstFile,
                 $assetImage->fs->readStream($fileNameWithOptions),
                 $this->filesystemOptions,
             );
+
+            try {
+                $timestamp = $this->fs->lastModified($dstFile);
+            } catch (FilesystemException $e) {
+                $timestamp = time();
+            }
         }
 
-        return $this->setPublished($fileNameWithOptions, [$dstFile, $this->baseUrl . '/' . $dstFile . '?t=' . time()]);
+        // The file's own modification time keeps the URL stable across requests
+        // (important without the publish-state cache) while still busting browser
+        // caches whenever the published copy is rewritten.
+        return $this->setPublished($fileNameWithOptions, [$dstFile, $this->baseUrl . '/' . $dstFile . '?t=' . $timestamp]);
     }
 
 
@@ -198,15 +227,22 @@ class AssetManager extends \yii\web\AssetManager
             }
         }
 
-        $this->_cacheVersion = $this->getCacheVersion() + 1;
-        Yii::$app->cache->set(self::CACHE_VERSION_KEY, $this->_cacheVersion);
         $this->_published = [];
+
+        if ($this->cachePublishState) {
+            $this->_cacheVersion = $this->getCacheVersion() + 1;
+            Yii::$app->cache->set(self::CACHE_VERSION_KEY, $this->_cacheVersion);
+        }
     }
 
     private function getPublished(string $key): mixed
     {
         if (array_key_exists($key, $this->_published)) {
             return $this->_published[$key];
+        }
+
+        if (!$this->cachePublishState) {
+            return null;
         }
 
         $published = Yii::$app->cache->get($this->buildCacheKey($key));
@@ -216,7 +252,9 @@ class AssetManager extends \yii\web\AssetManager
 
     private function setPublished(string $key, mixed $value): mixed
     {
-        Yii::$app->cache->set($this->buildCacheKey($key), $value);
+        if ($this->cachePublishState) {
+            Yii::$app->cache->set($this->buildCacheKey($key), $value);
+        }
 
         return $this->_published[$key] = $value;
     }
@@ -224,7 +262,10 @@ class AssetManager extends \yii\web\AssetManager
     private function removePublished(string $key): void
     {
         unset($this->_published[$key]);
-        Yii::$app->cache->delete($this->buildCacheKey($key));
+
+        if ($this->cachePublishState) {
+            Yii::$app->cache->delete($this->buildCacheKey($key));
+        }
     }
 
     private function buildCacheKey(string $key): array

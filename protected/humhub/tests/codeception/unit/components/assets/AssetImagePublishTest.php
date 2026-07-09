@@ -14,12 +14,17 @@ use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
 
 /**
- * Verifies that the publish state of AssetImages is shared through the cache and
- * invalidated immediately, so that changes made in one process (e.g. a queue worker
- * updating a profile image) are visible to all other processes.
+ * Verifies the publish state handling of AssetImages in both modes of
+ * `AssetManager::$cachePublishState`:
+ *
+ * - With the cache (remote mounts), publish states must be shared through the cache
+ *   and invalidated immediately, so that changes made in one process (e.g. a queue
+ *   worker updating a profile image) are visible to all other processes.
+ * - Without the cache (local mounts, the default), every publish call verifies the
+ *   published copy against the filesystem, making the state fully self-healing.
  *
  * Each `freshAssetManager()` call simulates a new process: a manager instance with
- * an empty request-local memo that only knows the shared cache.
+ * an empty request-local memo.
  */
 class AssetImagePublishTest extends HumHubDbTestCase
 {
@@ -31,6 +36,7 @@ class AssetImagePublishTest extends HumHubDbTestCase
         parent::_before();
 
         // Remove leftovers of previous runs (files, published copies and cache entries)
+        Yii::$app->cache->flush();
         $this->createAssetImage()->delete();
     }
 
@@ -39,12 +45,13 @@ class AssetImagePublishTest extends HumHubDbTestCase
         $scaledFileName = $this->getScaledFileName();
 
         // "Process A" (web): upload an image and render its URL
+        $this->freshAssetManager(true);
         $imageA = $this->createAssetImage();
         $imageA->setByFile($this->createTempImage('default_user.jpg'));
         $this->assertNotEmpty($imageA->getUrl());
 
         // "Process B" (e.g. queue worker): sees the publish state without publishing again
-        $managerB = $this->freshAssetManager();
+        $managerB = $this->freshAssetManager(true);
         $published = $managerB->getPublishedAssetImage($scaledFileName);
         $this->assertNotNull($published);
         $this->assertTrue(Yii::$app->fs->getAssetsMount()->fileExists($published[0]));
@@ -54,7 +61,7 @@ class AssetImagePublishTest extends HumHubDbTestCase
         $this->assertFalse(Yii::$app->fs->getAssetsMount()->fileExists($published[0]));
 
         // "Process C" (web): must not serve the stale publish state, but republish
-        $managerC = $this->freshAssetManager();
+        $managerC = $this->freshAssetManager(true);
         $this->assertNull($managerC->getPublishedAssetImage($scaledFileName));
 
         $this->assertNotEmpty($this->createAssetImage()->getUrl());
@@ -67,25 +74,59 @@ class AssetImagePublishTest extends HumHubDbTestCase
     {
         $scaledFileName = $this->getScaledFileName();
 
+        $manager = $this->freshAssetManager(true);
         $image = $this->createAssetImage();
         $image->setByFile($this->createTempImage('default_user.jpg'));
         $this->assertNotEmpty($image->getUrl());
 
-        $published = Yii::$app->assetManager->getPublishedAssetImage($scaledFileName);
+        $published = $manager->getPublishedAssetImage($scaledFileName);
         $this->assertNotNull($published);
 
-        Yii::$app->assetManager->clear();
+        $manager->clear();
 
         $this->assertFalse(Yii::$app->fs->getAssetsMount()->fileExists($published[0]));
         // The same instance and other processes no longer see the publish state
-        $this->assertNull(Yii::$app->assetManager->getPublishedAssetImage($scaledFileName));
-        $this->assertNull($this->freshAssetManager()->getPublishedAssetImage($scaledFileName));
+        $this->assertNull($manager->getPublishedAssetImage($scaledFileName));
+        $this->assertNull($this->freshAssetManager(true)->getPublishedAssetImage($scaledFileName));
 
         // A new render republishes the image
         $this->assertNotEmpty($this->createAssetImage()->getUrl());
         $republished = Yii::$app->assetManager->getPublishedAssetImage($scaledFileName);
         $this->assertNotNull($republished);
         $this->assertTrue(Yii::$app->fs->getAssetsMount()->fileExists($republished[0]));
+    }
+
+    public function testLocalMountsSelfHealWithoutCache()
+    {
+        // Local mounts in the test environment: the publish-state cache is off by default (auto-detected)
+        $autoConfigured = new AssetManager(['basePath' => Yii::$app->assetManager->basePath]);
+        $this->assertFalse($autoConfigured->cachePublishState);
+
+        $this->freshAssetManager(false);
+        $image = $this->createAssetImage();
+        $image->setByFile($this->createTempImage('default_user.jpg'));
+        $url = $image->getUrl();
+        $this->assertNotEmpty($url);
+
+        // The URL must be stable across processes (`?t=` derives from the file, not the request)
+        $this->freshAssetManager(false);
+        $this->assertSame($url, $this->createAssetImage()->getUrl());
+
+        // Replacing the image in another process requires no invalidation:
+        // the next render verifies against the filesystem and republishes
+        $this->createAssetImage()->setByFile($this->createTempImage('default_space.jpg'));
+
+        $this->freshAssetManager(false);
+        $urlAfterReplace = $this->createAssetImage()->getUrl();
+        $this->assertNotEmpty($urlAfterReplace);
+        $published = Yii::$app->assetManager->getPublishedAssetImage($this->getScaledFileName());
+        $this->assertTrue(Yii::$app->fs->getAssetsMount()->fileExists($published[0]));
+
+        // Even a published copy deleted out-of-band is restored on the next render
+        Yii::$app->fs->getAssetsMount()->delete($published[0]);
+        $this->freshAssetManager(false);
+        $this->assertNotEmpty($this->createAssetImage()->getUrl());
+        $this->assertTrue(Yii::$app->fs->getAssetsMount()->fileExists($published[0]));
     }
 
     public function testUrlWithoutImageFallsBackToDefaultFileOrEmptyString()
@@ -118,11 +159,12 @@ class AssetImagePublishTest extends HumHubDbTestCase
             . 'test-image_' . hash('xxh32', json_encode($options)) . '.jpg';
     }
 
-    private function freshAssetManager(): AssetManager
+    private function freshAssetManager(bool $cachePublishState): AssetManager
     {
         Yii::$app->set('assetManager', [
             'class' => AssetManager::class,
             'basePath' => Yii::$app->assetManager->basePath,
+            'cachePublishState' => $cachePublishState,
         ]);
 
         return Yii::$app->assetManager;
