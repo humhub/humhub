@@ -81,7 +81,8 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
     }
 
     /**
-     *  Returns the list of client URLs for all auth clients having the method `buildAuthUrl()`.
+     *  Returns the list of client URLs for all auth clients having the method `buildAuthUrl()`
+     *  (OAuth2, OAuth1 and OpenId clients), or a public `singleSignOnServiceUrl` property
      *
      * @since 1.19.0
      */
@@ -91,11 +92,21 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
         $clients = Yii::$app->get(self::$authclientCollection)->getClients();
 
         foreach ($clients as $client) {
-            if (!method_exists($client, 'buildAuthUrl')) { // OAuth2, OAuth1 and OpenId clients
+            if (method_exists($client, 'buildAuthUrl')) { // OAuth2, OAuth1 and OpenId clients
+                $url = $client->buildAuthUrl();
+            } elseif (property_exists($client, 'singleSignOnServiceUrl') && !empty($client->singleSignOnServiceUrl)) {
+                // e.g. SAML, which redirects to a fixed IdP URL rather than building one on the fly
+                $url = $client->singleSignOnServiceUrl;
+            } else {
                 continue;
             }
+
             // Remove URL params
-            $parts = parse_url($client->buildAuthUrl());
+            $parts = parse_url($url);
+            if (empty($parts['host'])) {
+                continue;
+            }
+
             $urls[] = $parts['scheme'] . '://' . $parts['host']
                 . (isset($parts['port']) ? ':' . $parts['port'] : '')
                 . ($parts['path'] ?? '');
