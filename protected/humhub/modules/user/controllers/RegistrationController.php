@@ -158,9 +158,9 @@ class RegistrationController extends Controller
 
     /**
      * Invitation by link
-     * @param null $token
-     * @param null $spaceId
-     * @return string
+     *
+     * @param string|null $token
+     * @param int|null $spaceId
      * @throws HttpException
      * @throws Throwable
      * @throws StaleObjectException
@@ -178,6 +178,15 @@ class RegistrationController extends Controller
         }
 
         $linkRegistrationService->storeInSession();
+
+        // If local login/registration is disabled and exactly one external auth
+        // client (e.g. SAML) remains, send the user directly into that auth client's
+        // flow instead of showing the "invite by link" landing page. The space
+        // invite itself survives the round trip via LinkRegistrationService's
+        // session state (see storeInSession() above).
+        if (($response = $this->redirectToForcedAuthClient()) !== null) {
+            return $response;
+        }
 
         $form = new Invite([
             'source' => Invite::SOURCE_INVITE_BY_LINK,
@@ -201,17 +210,21 @@ class RegistrationController extends Controller
 
     /**
      * When the local registration/login form is disabled (e.g. "Force SAML" setups
-     * with only an SSO provider enabled), an invite link should not fall back to the
-     * local password registration form. Instead, redirect straight into the sole
-     * remaining external auth client's flow, mirroring what happens for direct logins.
+     * with only an SSO provider enabled), invite links (by e-mail token or by shared
+     * link) should not fall back to the local password registration form. Instead,
+     * redirect straight into the sole remaining external auth client's flow,
+     * mirroring what happens for direct logins.
      *
      * Returns `null` if the local form should still be rendered (e.g. because it is
-     * not disabled, or there isn't exactly one unambiguous external auth client).
+     * not disabled, the request has `?showRegistrationForm=1`, or there isn't exactly
+     * one unambiguous external auth client).
      *
-     * @param string $token the invite token, kept in session so it can be restored
-     *  once the auth client flow redirects back to this controller
+     * @param string|null $inviteToken the e-mail invite token (from actionIndex()), kept
+     *  in session so it can be restored once the auth client flow redirects back to this
+     *  controller. Not needed for the "invite by link" flow (actionByLink()), since that
+     *  already persists its own state via LinkRegistrationService::storeInSession().
      */
-    private function redirectToForcedAuthClient(string $token): ?Response
+    private function redirectToForcedAuthClient(?string $inviteToken = null): ?Response
     {
         if ($this->module->showRegistrationForm) {
             return null;
@@ -229,7 +242,9 @@ class RegistrationController extends Controller
         /** @var BaseClient $externalClient */
         $externalClient = reset($externalClients);
 
-        Yii::$app->session->set(self::SESSION_INVITE_TOKEN, $token);
+        if ($inviteToken !== null) {
+            Yii::$app->session->set(self::SESSION_INVITE_TOKEN, $inviteToken);
+        }
 
         return $this->redirect(['/user/auth/external', 'authclient' => $externalClient->getId()]);
     }
