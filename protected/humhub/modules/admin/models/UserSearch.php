@@ -104,7 +104,7 @@ class UserSearch extends User
         if (!empty($this->freeText)) {
             $query->andWhere([
                 'OR',
-                ['like', 'user.id', $this->freeText],
+                ['=', 'user.id', $this->freeText],
                 ['like', 'user.username', $this->freeText],
                 ['like', 'user.email', $this->freeText],
                 ['like', 'profile.firstname', $this->freeText],
@@ -113,7 +113,7 @@ class UserSearch extends User
                 ['like', 'concat(profile.lastname, " ", profile.firstname)', $this->freeText],
             ]);
 
-            if (isset($this->status) && in_array($this->status, [User::STATUS_ENABLED, User::STATUS_DISABLED, User::STATUS_SOFT_DELETED])) {
+            if (isset($this->status) && in_array($this->status, [User::STATUS_ENABLED, User::STATUS_DEACTIVATED, User::STATUS_SOFT_DELETED])) {
                 $query->andFilterWhere(['user.status' => $this->status]);
             }
             return $dataProvider;
@@ -148,12 +148,12 @@ class UserSearch extends User
     public function getStatusAttributes(): array
     {
         $countActive = User::find()->where(['user.status' => User::STATUS_ENABLED])->count();
-        $countDisabled = User::find()->where(['user.status' => User::STATUS_DISABLED])->count();
+        $countDeactivated = User::find()->where(['user.status' => User::STATUS_DEACTIVATED])->count();
         $countSoftDeleted = User::find()->where(['user.status' => User::STATUS_SOFT_DELETED])->count();
 
         return [
             User::STATUS_ENABLED => Yii::t('AdminModule.user', 'Active users') . ' (' . $countActive . ')',
-            User::STATUS_DISABLED => Yii::t('AdminModule.user', 'Disabled users') . ' (' . $countDisabled . ')',
+            User::STATUS_DEACTIVATED => Yii::t('AdminModule.user', 'Deactivated users') . ' (' . $countDeactivated . ')',
             User::STATUS_SOFT_DELETED => Yii::t('AdminModule.user', 'Deleted users') . ' (' . $countSoftDeleted . ')',
         ];
     }

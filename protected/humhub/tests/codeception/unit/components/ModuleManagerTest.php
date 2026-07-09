@@ -10,13 +10,14 @@
 
 namespace humhub\tests\codeception\unit\components;
 
-use humhub\components\bootstrap\ModuleAutoLoader;
 use humhub\components\InstallationState;
 use humhub\components\ModuleEvent;
 use humhub\components\ModuleManager;
 use humhub\exceptions\InvalidArgumentTypeException;
 use humhub\models\ModuleEnabled;
 use humhub\modules\admin\events\ModulesEvent;
+use humhub\services\ModuleDiscoveryService;
+use humhub\services\ModuleService;
 use humhub\tests\codeception\unit\ModuleAutoLoaderTest;
 use Some\Name\Space\module1\Module as Module1;
 use Some\Name\Space\module2\Module as Module2;
@@ -434,10 +435,9 @@ class ModuleManagerTest extends HumHubDbTestCase
         // Workaround for internal SaaS core module
         unset($modules['hostinginfo']);
 
-        $locallyEnabledModules = array_intersect_key(static::$moduleDirList, array_flip(array_column(
-            static::dbSelect('module_enabled', 'module_id'),
-            'module_id',
-        )));
+        $locallyEnabledModules = array_intersect_key(static::$moduleDirList, array_flip(
+            ModuleEnabled::find()->select('module_id')->column(),
+        ));
 
         $expected = array_merge(
             [],
@@ -466,16 +466,16 @@ class ModuleManagerTest extends HumHubDbTestCase
         [$basePath, $config] = $this->getModuleConfig(static::$testModuleRoot . '/module1');
 
         // cannot be removed, since it does not exist
-        static::assertFalse($this->moduleManager->canRemoveModule($this->moduleId));
+        static::assertFalse($this->moduleManager->getModule($this->moduleId, false)?->getModuleService()->canRemove() ?? false);
 
         $module = $this->registerModuleAsEnabled($basePath, $config);
 
-        static::assertTrue($this->moduleManager->canRemoveModule($this->moduleId));
+        static::assertTrue($module->getModuleService()->canRemove());
 
         $module->setBasePath(static::$coreModuleRoot . "/admin");
 
         // cannot be removed, since it does not exist within the marketplace dir
-        static::assertFalse($this->moduleManager->canRemoveModule($this->moduleId));
+        static::assertFalse($module->getModuleService()->canRemove());
     }
 
     /**
@@ -487,6 +487,9 @@ class ModuleManagerTest extends HumHubDbTestCase
     {
         $this->skipIfMarketplaceNotEnabled();
 
+        $oldMM = Yii::$app->moduleManager;
+        Yii::$app->set('moduleManager', $this->moduleManager);
+
         [$basePath, $config] = $this->getModuleConfig(static::$testModuleRoot . '/module1');
 
         $module = $this->registerModuleAsEnabled($basePath, $config);
@@ -495,7 +498,7 @@ class ModuleManagerTest extends HumHubDbTestCase
         $module->setBasePath($tmp);
 
         static::assertTrue($this->moduleManager->createBackup);
-        $backup = $this->moduleManager->removeModule($this->moduleId, false);
+        $backup = (new ModuleService($module))->remove(false);
 
         static::assertDirectoryDoesNotExist($tmp);
         static::assertDirectoryExists($backup);
@@ -507,12 +510,14 @@ class ModuleManagerTest extends HumHubDbTestCase
         $tmp = $this->createTempDir();
         $module->setBasePath($tmp);
 
-        $backup = $this->moduleManager->removeModule($this->moduleId, false);
+        $backup = (new ModuleService($module))->remove(false);
 
         static::assertNull($backup);
         static::assertDirectoryExists($tmp);
 
         FileHelper::removeDirectory($tmp);
+
+        Yii::$app->set('moduleManager', $oldMM);
     }
 
     /**
@@ -526,6 +531,9 @@ class ModuleManagerTest extends HumHubDbTestCase
      */
     public function testEnableAndDisableModules()
     {
+        $oldMM = Yii::$app->moduleManager;
+        Yii::$app->set('moduleManager', $this->moduleManager);
+
         $this->moduleManager->on(ModuleManager::EVENT_BEFORE_MODULE_ENABLE, $this->handleEvent(...));
         $this->moduleManager->on(ModuleManager::EVENT_AFTER_MODULE_ENABLE, $this->handleEvent(...));
         $this->moduleManager->on(ModuleManager::EVENT_BEFORE_MODULE_DISABLE, $this->handleEvent(...));
@@ -539,7 +547,7 @@ class ModuleManagerTest extends HumHubDbTestCase
 
         static::assertRecordCount(0, ModuleEnabled::tableName(), ['module_id' => $this->moduleId]);
 
-        $this->moduleManager->enable($module);
+        $module->getModuleService()->enable();
 
         static::assertRecordCount(1, ModuleEnabled::tableName(), ['module_id' => $this->moduleId]);
 
@@ -563,7 +571,7 @@ class ModuleManagerTest extends HumHubDbTestCase
             ],
         ]);
 
-        $this->moduleManager->disable($module);
+        $module->getModuleService()->disable();
 
         static::assertCount(count(static::$moduleEnabledList), $this->moduleManager->myEnabledModules());
         static::assertRecordCount(0, ModuleEnabled::tableName(), ['module_id' => $this->moduleId]);
@@ -588,6 +596,8 @@ class ModuleManagerTest extends HumHubDbTestCase
                 'module' => ['module1' => Module1::class],
             ],
         ]);
+
+        Yii::$app->set('moduleManager', $oldMM);
     }
 
     /**
@@ -620,7 +630,8 @@ class ModuleManagerTest extends HumHubDbTestCase
 
         static::logInitialize();
 
-        $this->moduleManager->enableModules([$module, static::$testModuleRoot . '/module2']);
+        $module->enable();
+        $this->moduleManager->getModule(static::$testModuleRoot . '/module2')->enable();
 
         Yii::$app->set('moduleManager', $oldMM);
 
@@ -673,7 +684,7 @@ class ModuleManagerTest extends HumHubDbTestCase
             'Could not find/load requested module: ' . static::$testModuleRoot . '/non-existing-module',
         );
 
-        $this->moduleManager->enableModules([static::$testModuleRoot . '/non-existing-module']);
+        $this->moduleManager->getModule(static::$testModuleRoot . '/non-existing-module');
     }
 
     /**
@@ -758,10 +769,8 @@ class ModuleManagerTest extends HumHubDbTestCase
     {
         Yii::$app->set('moduleManager', $this->moduleManager);
 
-        $this->moduleManager->enableModules([
-            static::$testModuleRoot . '/module1',
-            static::$testModuleRoot . '/module2',
-        ]);
+        $this->moduleManager->getModule(static::$testModuleRoot . '/module1')->enable();
+        $this->moduleManager->getModule(static::$testModuleRoot . '/module2')->enable();
 
         static::assertEquals(
             ['module1' => Module1::class, 'module2' => Module2::class],
@@ -890,13 +899,13 @@ class ModuleManagerTest extends HumHubDbTestCase
         Yii::$app->set('cache', new ArrayCache());
         static::assertInstanceOf(ArrayCache::class, $cache = Yii::$app->cache);
 
-        static::assertFalse($cache->get(ModuleAutoLoader::CACHE_ID));
-        Yii::$app->cache->set(ModuleAutoLoader::CACHE_ID, ['foo' => 'bar']);
-        static::assertEquals(['foo' => 'bar'], $cache->get(ModuleAutoLoader::CACHE_ID));
+        static::assertFalse($cache->get(ModuleDiscoveryService::CACHE_ID));
+        Yii::$app->cache->set(ModuleDiscoveryService::CACHE_ID, ['foo' => 'bar']);
+        static::assertEquals(['foo' => 'bar'], $cache->get(ModuleDiscoveryService::CACHE_ID));
 
         $this->moduleManager->flushCache();
 
-        static::assertFalse($cache->get(ModuleAutoLoader::CACHE_ID));
+        static::assertFalse($cache->get(ModuleDiscoveryService::CACHE_ID));
 
         Yii::$app->set('cache', $oldCache);
     }
@@ -1128,7 +1137,7 @@ class ModuleManagerTest extends HumHubDbTestCase
 
         $this->firedEvents = [];
 
-        static::dbDelete(ModuleEnabled::tableName(), [
+        ModuleEnabled::deleteAll([
             'module_id' => [
                 'module1',
                 'module2',
@@ -1142,10 +1151,7 @@ class ModuleManagerTest extends HumHubDbTestCase
         ]);
 
         if (Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
-            static::$moduleEnabledList ??= array_column(
-                static::dbSelect('module_enabled', 'module_id'),
-                'module_id',
-            );
+            static::$moduleEnabledList ??= ModuleEnabled::find()->select('module_id')->column();
         } else {
             static::$moduleEnabledList ??= [];
         }

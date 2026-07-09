@@ -15,8 +15,7 @@ use humhub\modules\comment\models\Comment;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\models\Content;
-use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
-use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
+use humhub\modules\content\widgets\richtext\converter\RichTextToShortHtmlConverter;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
@@ -369,78 +368,11 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
             $content = $this->source;
         }
 
-        return RichTextToShortTextConverter::process($content->getContentDescription(), [
-            RichTextToShortTextConverter::OPTION_MAX_LENGTH => $maxLength,
-            RichTextToShortTextConverter::OPTION_CACHE_KEY => RichTextToShortTextConverter::buildCacheKeyForContent($content),
+        return RichTextToShortHtmlConverter::process($content->getContentDescription(), [
+            RichTextToShortHtmlConverter::OPTION_MAX_LENGTH => $maxLength,
+            RichTextToShortHtmlConverter::OPTION_CACHE_KEY => RichTextToShortHtmlConverter::buildCacheKeyForContent($content),
         ]);
     }
-
-    /**
-     * Builds plain text info text about a given content
-     *
-     * This is a combination of the type of the content with a short preview
-     * of it.
-     *
-     * Note: This should only be used for mail subjects and other plain text
-     *
-     * If no $content is provided the contentInfo of $source is returned.
-     *
-     * @param Content $content
-     * @return string|null
-     * @throws Exception
-     * @since 1.4
-     */
-    public function getContentPlainTextInfo(?ContentOwner $content = null, $withContentName = true)
-    {
-        if (!$this->hasContent() && !$content) {
-            return null;
-        }
-
-        if (!$content) {
-            $content = $this->source;
-        }
-
-        $info = $this->getContentPlainTextPreview($content);
-
-        return ($withContentName) ? $content->getContentName() . ' "' . $info . '"' : $info;
-    }
-
-    /**
-     * Returns a short preview text of the content in plain text. The max length can be defined by setting
-     * $maxLength (60 by default).
-     *
-     *  If no $content is provided the contentPreview of $source is returned.
-     *
-     * Note: This should only be used for mail subjects and other plain text
-     *
-     * @param ContentOwner $content
-     * @param int $maxLength
-     * @return string|null
-     * @throws Exception
-     * @since 1.4
-     */
-    public function getContentPlainTextPreview(?ContentOwner $content = null, $maxLength = 60)
-    {
-        if (!$this->hasContent() && !$content) {
-            return null;
-        }
-
-        if (!$content) {
-            $content = $this->source;
-        }
-
-        try {
-            return RichTextToPlainTextConverter::process($content->getContentDescription(), [
-                RichTextToPlainTextConverter::OPTION_MAX_LENGTH => $maxLength,
-                RichTextToPlainTextConverter::OPTION_CACHE_KEY => RichTextToPlainTextConverter::buildCacheKeyForContent($content),
-            ]);
-        } catch (\Exception $e) {
-            Yii::error($e);
-        }
-
-        return '';
-    }
-
 
     /**
      * Returns the content name of $content or if not $content is provided of the

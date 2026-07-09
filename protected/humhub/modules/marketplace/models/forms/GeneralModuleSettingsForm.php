@@ -30,12 +30,19 @@ class GeneralModuleSettingsForm extends Model
      */
     public $includeBetaUpdates;
 
+    /**
+     * @var bool
+     * @since 1.19
+     */
+    public $includeCommunityModules;
+
     public function init()
     {
         parent::init();
 
         $this->marketplaceModule = Yii::$app->getModule('marketplace');
         $this->includeBetaUpdates = (bool)$this->marketplaceModule->settings->get('includeBetaUpdates', false);
+        $this->includeCommunityModules = (bool)$this->marketplaceModule->settings->get('includeCommunityModules', false);
     }
 
     /**
@@ -44,7 +51,7 @@ class GeneralModuleSettingsForm extends Model
     public function rules()
     {
         return [
-            [['includeBetaUpdates'], 'boolean'],
+            [['includeBetaUpdates', 'includeCommunityModules'], 'boolean'],
         ];
     }
 
@@ -55,6 +62,7 @@ class GeneralModuleSettingsForm extends Model
     {
         return [
             'includeBetaUpdates' => Yii::t('MarketplaceModule.base', 'Allow module versions in beta status'),
+            'includeCommunityModules' => Yii::t('MarketplaceModule.base', 'Include community modules'),
         ];
     }
 
@@ -69,6 +77,8 @@ class GeneralModuleSettingsForm extends Model
 
         if ($this->marketplaceModule) {
             $this->marketplaceModule->settings->set('includeBetaUpdates', $this->includeBetaUpdates);
+            $this->marketplaceModule->settings->set('includeCommunityModules', $this->includeCommunityModules);
+            Yii::$app->cache->delete('marketplace-categories');
         }
 
         return true;

@@ -2,13 +2,11 @@
 
 return [
     'Base DN' => '基于DN',
-    'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => '定义过滤器应用，当尝试登录。 ％的uid替换登录操作的用户名。例如：＆QUOT;（sAMAccountName赋=％S）和QUOT;或QUOT;（UID =％S）和QUOT',
     'E-Mail Address Attribute' => '邮件属性',
     'Enable LDAP Support' => '生效LDAP支持',
     'Encryption' => '加密',
     'Fetch/Update Users Automatically' => '自动拉取/更新 用户',
     'Hostname' => '主机名',
-    'Login Filter' => '登录过滤',
     'Password' => '密码',
     'Port' => '端口',
     'Status: Error! (Message: {message})' => '状态：错误！(信息：{message})',
@@ -19,6 +17,8 @@ return [
     'User Filter' => '用户过滤',
     'Username' => '用户名',
     'Username Attribute' => '用户属性',
+    'Allowed Authentication Methods' => '',
+    'Disable Certificate Checking' => '',
     'ID Attribute' => '',
     'Ignored LDAP entries' => '',
     'LDAP' => '',
@@ -27,6 +27,7 @@ return [
     'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => '',
     'Not changeable LDAP attribute to unambiguously identify the user in the directory. If empty the user will be determined automatically by e-mail address or username. Examples: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)' => '',
     'One DN per line which should not be imported automatically.' => '',
+    'Select the authentication methods LDAP users may use. Unchecking "LDAP" disables direct LDAP password login and forces users through the other selected methods (e.g. SAML, OpenID Connect).' => '',
     'Specify your LDAP-backend used to fetch user accounts.' => '',
     'Status: Warning! (No users found using the ldap user filter!)' => '',
 ];

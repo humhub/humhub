@@ -34,5 +34,5 @@ return [
     'Allow individual topics in Spaces' => '',
     'Convert' => '',
     'Convert Space Topics' => '',
-    'Default Stream Sort' => '',
+    'Default Content Sort Order' => '',
 ];

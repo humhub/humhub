@@ -208,6 +208,15 @@ humhub.module('stream.Stream', function (module, require, $) {
 
     Stream.prototype.triggerInitEvent = function (response) {
         this.trigger(EVENT_INITIALIZED, this);
+
+        var commentId = this.$.data(DATA_STREAM_COMMENTID);
+        if (commentId) {
+            var $comment = $('#comment_' + commentId);
+            if ($comment.length) {
+                $comment[0].scrollIntoView({block: 'center'});
+            }
+        }
+
         return response;
     };
 

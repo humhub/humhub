@@ -1,11 +1,5 @@
 <?php
 
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
-
 namespace humhub\modules\comment;
 
 use humhub\modules\content\components\ContentActiveRecord;
@@ -15,34 +9,19 @@ use Yii;
 use yii\base\Component;
 use yii\base\Event;
 
-/**
- * Events provides callbacks to handle events.
- *
- * @author luke
- */
 class Events extends Component
 {
-    /**
-     * On content deletion make sure to delete all its comments
-     *
-     * @param Event $event
-     */
-    public static function onContentDelete($event)
+    public static function onContentDelete(Event $event)
     {
-        /** @var Comment|ContentActiveRecord $sender */
+        /** @var ContentActiveRecord $sender */
         $sender = $event->sender;
 
-        foreach (Comment::find()->where(['object_model' => $sender::class, 'object_id' => $sender->getPrimaryKey()])->all() as $comment) {
+        foreach (Comment::find()->where(['content_id' => $sender->content->id])->all() as $comment) {
             $comment->delete();
         }
     }
 
-    /**
-     * On User delete, also delete all comments
-     *
-     * @param Event $event
-     */
-    public static function onUserDelete($event)
+    public static function onUserDelete(Event $event)
     {
         foreach (Comment::findAll(['created_by' => $event->sender->id]) as $comment) {
             $comment->delete();
@@ -51,31 +30,29 @@ class Events extends Component
         return true;
     }
 
-    /**
-     * Callback to validate module database records.
-     *
-     * @param Event $event
-     */
-    public static function onIntegrityCheck($event)
+    public static function onIntegrityCheck(Event $event)
     {
         $integrityController = $event->sender;
         $integrityController->showTestHeadline('Comment Module (' . Comment::find()->count() . ' entries)');
 
         // Loop over all comments
+        /** @var Comment $c */
         foreach (Comment::find()->each() as $c) {
 
             // Check underlying record exists
-            if ($c->source === null) {
-                if ($integrityController->showFix('Deleting comment id ' . $c->id . ' without existing target!')) {
-                    $c->delete();
-                }
+            if (
+                !$c->getContent()->exists()
+                && $integrityController->showFix('Deleting comment id ' . $c->id . ' without existing target!')
+            ) {
+                $c->delete();
             }
 
             // User exists
-            if ($c->user === null) {
-                if ($integrityController->showFix('Deleting comment id ' . $c->id . ' without existing user!')) {
-                    $c->delete();
-                }
+            if (
+                !$c->getCreatedBy()->exists()
+                && $integrityController->showFix('Deleting comment id ' . $c->id . ' without existing user!')
+            ) {
+                $c->delete();
             }
         }
     }
@@ -91,11 +68,13 @@ class Events extends Component
             return;
         }
 
+        $content = $event->sender->object->content;
+
         /** @var Module $module */
         $module = Yii::$app->getModule('comment');
 
-        if ((Yii::$app->user->isGuest && $module->guestHideComments) || $module->canComment($event->sender->object)) {
-            $event->sender->addWidget(widgets\CommentLink::class, ['object' => $event->sender->object], ['sortOrder' => 10]);
+        if ((Yii::$app->user->isGuest && $module->guestHideComments) || $module->canComment($content)) {
+            $event->sender->addWidget(widgets\CommentLink::class, ['content' => $content], ['sortOrder' => 10]);
         }
     }
 
@@ -110,7 +89,7 @@ class Events extends Component
         $wallEntryAddons = $event->sender;
 
         $wallEntryAddons->addWidget(widgets\Comments::class, [
-            'object' => $wallEntryAddons->object,
+            'content' => $wallEntryAddons->object->content,
             'renderOptions' => $wallEntryAddons->renderOptions,
         ], ['sortOrder' => 30]);
     }

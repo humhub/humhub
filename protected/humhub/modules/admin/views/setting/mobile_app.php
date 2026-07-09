@@ -11,6 +11,7 @@ use humhub\modules\ui\icon\widgets\Icon;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\modal\ModalButton;
+use kartik\widgets\Select2;
 use yii\web\View;
 
 /* @var $this View */
@@ -24,7 +25,14 @@ use yii\web\View;
 
 <?= $form->field($model, 'enableLinkService')->checkbox() ?>
 
-<?= $form->field($model, 'whiteListedDomains')->textInput() ?>
+<?= $form->field($model, 'whiteListedUrls')->widget(Select2::class, [
+    'options' => ['multiple' => true],
+    'theme' => Select2::THEME_CLASSIC,
+    'pluginOptions' => [
+        'tags' => true,
+        'tokenSeparators' => [','],
+    ],
+]) ?>
 
 <?= $form->beginCollapsibleFields(Yii::t('AdminModule.settings', 'Well-known files')) ?>
 <div class="form-text"><?= Yii::t('AdminModule.settings', 'Allow establishing verified connections with the mobile app to enable Android app links and iOS universal links and redirect web content to the mobile app.') ?></div>

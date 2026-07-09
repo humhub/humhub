@@ -291,4 +291,9 @@ class Html extends \yii\bootstrap5\Html
         return parent::activeLabel($model, $attribute, $options);
     }
 
+    public static function strong($text): string
+    {
+        return parent::tag('strong', $text);
+    }
+
 }

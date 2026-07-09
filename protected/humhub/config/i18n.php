@@ -77,7 +77,7 @@ return [
     // array, list of patterns that specify which files (not directories) should be processed.
     // If empty or not set, all files will be processed.
     // Please refer to "except" for details about the patterns.
-    'only' => ['*.php'],
+    'only' => ['*.php', '*.js', '*.jsx'],
     // array, list of patterns that specify which files/directories should NOT be processed.
     // If empty or not set, all files/directories will be processed.
     // A path matches a pattern if it contains the pattern string at its end. For example,

@@ -77,18 +77,6 @@ class BrowseController extends Controller
     /**
      * Enables a module after installation
      *
-     * @throws NotFoundHttpException
-     * @see static::actionEnable()
-     * @deprecated since v1.16; use static::actionEnable()
-     */
-    public function actionActivate(): string
-    {
-        return $this->actionEnable();
-    }
-
-    /**
-     * Enables a module after installation
-     *
      * @throws HttpException
      */
     public function actionEnable(): string
@@ -122,6 +110,23 @@ class BrowseController extends Controller
         return $this->renderAjax('moduleSettings', [
             'settings' => $moduleSettingsForm,
         ]);
+    }
+
+    /**
+     * Toggles the marketplace setting that controls whether unverified community
+     * modules are included in the marketplace listing.
+     *
+     * @since 1.19
+     */
+    public function actionToggleCommunity()
+    {
+        $this->forcePostRequest();
+
+        $value = (bool) Yii::$app->request->post('value');
+        $this->module->settings->set('includeCommunityModules', $value);
+        Yii::$app->cache->delete('marketplace-categories');
+
+        return $this->asJson(['success' => true, 'enabled' => $value]);
     }
 
     private function getModuleService(): ModuleService

@@ -1,136 +1,100 @@
 /**
- * Core module for managing Streams and StreamItems
- * @type Function
+ * Core module for managing Activities
  */
 humhub.module('activity', function (module, require, $) {
+    const Widget = require('ui.widget').Widget;
+    const client = require('client');
+    const loader = require('ui.loader');
 
-    var util = require('util');
-    var stream = require('stream');
-    var Widget = require('ui.widget').Widget;
-    var container = require('content.container');
-    var user = require('user');
-    var view = require('ui.view');
+    const ActivityBox = Widget.extend();
 
-    /**
-     * Number of initial stream enteis loaded when stream is initialized.
-     * @type Number
-     */
-    var STREAM_INIT_COUNT = 10;
+    ActivityBox.prototype.init = function () {
+        this.initLoadMore();
 
-    /**
-     * Number of stream entries loaded with each request (except initial request)
-     * @type Number
-     */
-    var STREAM_LOAD_COUNT = 10;
-
-    /**
-     * Number of stream entries loaded with each request (except initial request)
-     * @type string
-     */
-    var ACTIVITY_STREAM_SELECTOR = '#activityStream';
-
-    /**
-     * ActivityStream instance;
-     * @type ActivityStream
-     */
-    var instance;
-
-
-    var ActivityStreamEntry = stream.StreamEntry.extend();
-
-    ActivityStreamEntry.prototype.delete = function () {/* Not implemented */
-    };
-    ActivityStreamEntry.prototype.edit = function () {/* Not implemented */
-    };
-
-    /**
-     * ActivityStream implementation.
-     *
-     * @param {type} container id or jQuery object of the stream container
-     * @returns {undefined}
-     */
-    var ActivityStream = stream.Stream.extend(function (container, options) {
-        stream.Stream.call(this, container, {
-            scrollSupport: true,
-            scrollOptions: {rootMargin: "30px"},
-            initLoadCount: STREAM_INIT_COUNT,
-            loadCount: STREAM_LOAD_COUNT,
-            autoUpdate: true,
-            streamEntryClass: ActivityStreamEntry,
+        this.$.niceScroll({
+            cursorwidth: "7",
+            cursorborder: "",
+            cursorcolor: "#555",
+            cursoropacitymax: "0.2",
+            nativeparentscrolling: false,
+            railpadding: {top: 0, right: 3, left: 0, bottom: 0}
         });
-    });
+    }
 
-    ActivityStream.prototype.initEvents = function (events) {
-        var that = this;
-        this.on('humhub:stream:afterAddEntries', function () {
-            if (view.isLarge() && !that.$content.getNiceScroll().length) {
-                that.$content.niceScroll({
-                    cursorwidth: "7",
-                    cursorborder: "",
-                    cursorcolor: "#555",
-                    cursoropacitymax: "0.2",
-                    nativeparentscrolling: false,
-                    railpadding: {top: 0, right: 3, left: 0, bottom: 0}
-                });
-            } else {
-                that.$content.getNiceScroll().resize();
-            }
-        });
-    };
+    ActivityBox.prototype.getEndIndicator = function () {
+        return this.$.find('.stream-end');
+    }
 
-    ActivityStream.prototype.isUpdateAvailable = function (events) {
-        var that = this;
+    ActivityBox.prototype.isLoading = function () {
+        return this.getEndIndicator().length
+            && this.getEndIndicator().data('isLoading');
+    }
 
-        var updatesAvailable = false;
-        events.forEach(function (event) {
-            if (that.entry(event.data.contentId)) {
-                return;
-            }
-
-            if (event.data.streamChannel !== 'activity') {
-                return;
-            }
-
-            if (event.data.originator === user.guid()) {
-                return;
-            }
-
-            if (container.guid() === event.data.sguid || container.guid() === event.data.uguid) {
-                updatesAvailable = true;
-            }
-        });
-
-        return updatesAvailable;
-    };
-
-    ActivityStream.templates = {
-        streamMessage: '<div class="streamMessage activity"><div class="panel-body">{message}</div></div>'
-    };
-
-    var getStream = function () {
-        instance = instance || Widget.instance(ACTIVITY_STREAM_SELECTOR);
-
-        if (!instance.$.length) {
+    ActivityBox.prototype.initLoadMore = function () {
+        if (!window.IntersectionObserver) {
             return;
         }
 
-        return instance;
-    };
+        const that = this;
 
-
-    var unload = function () {
-        // Cleanup nicescroll rails from dom
-        if (instance && instance.$) {
-            instance.$content.getNiceScroll().remove();
-            instance.$content.css('overflow', 'hidden');
+        if (!that.getEndIndicator().length) {
+            return;
         }
-        instance = undefined;
-    };
+
+        const observer = new IntersectionObserver(function (entries) {
+            if (that.isLoading()) {
+                return;
+            }
+
+            if (entries.length && entries[0].isIntersecting) {
+                that.loadMore();
+            }
+        }, {rootMargin: '1px'});
+
+        observer.observe(that.getEndIndicator()[0]);
+    }
+
+    ActivityBox.prototype.loadMore = function () {
+        const endIndicator = this.getEndIndicator();
+        const lastActivity = endIndicator.prev('[data-activity-id]');
+
+        if (lastActivity.length === 0) {
+            return;
+        }
+
+        endIndicator.data('isLoading', true);
+        loader.append(endIndicator);
+
+        const data = {lastActivityId: lastActivity.data('activity-id')};
+
+        client.get(this.$.data('box-url'), {data}).then(function (response) {
+            for (const id in response.activities) {
+                endIndicator.before(response.activities[id]);
+            }
+
+            if (response.isLast) {
+                // Remove the end indicator because no more activities to load
+                endIndicator.remove();
+            }
+        }).catch(function(err) {
+            module.log.error(err, true);
+        }).finally(function() {
+            loader.reset(endIndicator);
+            endIndicator.data('isLoading', false);
+        });
+    }
+
+    const unload = function () {
+        const activityBox = Widget.instance('[data-ui-widget="activity.ActivityBox"]');
+        if (activityBox && activityBox.$) {
+            // Cleanup nicescroll rails from dom
+            activityBox.$.getNiceScroll().remove();
+        }
+    }
 
     module.export({
-        ActivityStream: ActivityStream,
-        getStream: getStream,
         initOnPjaxLoad: true,
-        unload: unload
+        ActivityBox,
+        unload,
     });
 });

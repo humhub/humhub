@@ -53,7 +53,7 @@ class AltchaCaptchaValidator extends Validator
             Yii::error(sprintf(
                 'AltchaCaptcha verification error: %s (Model: %s, Attribute: %s, Value length: %d)',
                 $errorMessage,
-                get_class($model),
+                $model::class,
                 $attribute,
                 strlen((string)$model->$attribute),
             ));

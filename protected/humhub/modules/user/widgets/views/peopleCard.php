@@ -19,12 +19,16 @@ use yii\web\View;
 
 <div class="card-panel">
     <div
-        class="card-bg-image"<?php if ($user->getProfileBannerImage()->hasImage()) : ?> style="background-image: url('<?= $user->getProfileBannerImage()->getUrl() ?>')"<?php endif; ?>></div>
+        class="card-bg-image"<?php if ($user->bannerImage->exists()) : ?> style="background-image: url('<?= $user->bannerImage ?>')"<?php endif; ?>></div>
     <div class="card-header">
         <?= Image::widget([
             'user' => $user,
             'htmlOptions' => ['class' => 'card-image-wrapper'],
-            'linkOptions' => ['data-contentcontainer-id' => $user->contentcontainer_id],
+            'linkOptions' => [
+                'data-contentcontainer-id' => $user->contentcontainer_id,
+                'aria-hidden' => 'true',
+                'tabindex' => '-1',
+            ],
             'imageOptions' => ['class' => 'profile-user-photo'],
             'width' => 94,
             'showSelfOnlineStatus' => true,
@@ -34,7 +38,7 @@ use yii\web\View;
         </div> */ ?>
     </div>
     <div class="card-body">
-        <strong class="card-title"><?= Html::containerLink($user); ?></strong>
+        <h3 class="card-title"><?= Html::containerLink($user, ['aria-label' => $user->displayName]) ?></h3>
         <?php if (!empty($user->displayNameSub)) : ?>
             <div><?= Html::encode($user->displayNameSub); ?></div>
         <?php endif; ?>

@@ -54,7 +54,7 @@ class AuthenticationSettingsForm extends Model
         $this->showRegistrationUserGroup = $settingsManager->get('auth.showRegistrationUserGroup');
         $this->blockUsers = $module->allowBlockUsers();
         $this->hideOnlineStatus = $settingsManager->get('auth.hideOnlineStatus');
-        $this->defaultUserIdleTimeoutSec = $settingsManager->get('auth.defaultUserIdleTimeoutSec');
+        $this->defaultUserIdleTimeoutSec = $settingsManager->get('auth.defaultUserIdleTimeoutSec', 14400); // 4 hours by default
         $this->allowGuestAccess = $settingsManager->get('auth.allowGuestAccess');
         $this->defaultUserProfileVisibility = $settingsManager->get('auth.defaultUserProfileVisibility');
         $this->registrationSendMessageMailContent = $settingsManager->get('auth.registrationSendMessageMailContent', ApproveUserForm::getDefaultSendMessageMailContent());
@@ -96,7 +96,7 @@ class AuthenticationSettingsForm extends Model
             'registrationSendMessageMailContent' => Yii::t('AdminModule.user', 'Default content of the email when sending a message to the user'),
             'registrationApprovalMailContent' => Yii::t('AdminModule.user', 'Default content of the registration approval email'),
             'registrationDenialMailContent' => Yii::t('AdminModule.user', 'Default content of the registration denial email'),
-            'allowUserTopics' => Yii::t('AdminModule.user', 'Allow individual topics on profiles'),
+            'allowUserTopics' => Yii::t('AdminModule.user', 'Allow individual topics on profile content'),
         ];
     }
 

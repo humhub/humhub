@@ -86,13 +86,7 @@ class DashboardStreamTest extends HumHubDbTestCase
 
     protected function fetchDashboardContent($user = null, $limit = 4)
     {
-        $query = new DashboardStreamQuery(['user' => $user, 'limit' => $limit, 'activity' => false]);
-        return $query->all();
-    }
-
-    protected function fetchActivityDashboardContent($user = null, $limit = 4)
-    {
-        $query = new DashboardStreamQuery(['user' => $user, 'limit' => $limit, 'activity' => true]);
+        $query = new DashboardStreamQuery(['user' => $user, 'limit' => $limit]);
         return $query->all();
     }
 }

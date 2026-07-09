@@ -66,8 +66,8 @@ class InvisibleUserCest
     {
         $I->wantTo('test profile visibilities on guest mode');
         $I->amOnUser1Profile();
-        $I->waitForText('Please sign in');
-        $I->see('If you\'re already a member, please login with your username/email and password.');
+        $I->waitForText('Sign In');
+        $I->see('Sign Up');
 
         $I->amGoingTo('enable guest mode');
         $I->amAdmin();

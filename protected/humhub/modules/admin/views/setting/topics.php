@@ -3,6 +3,7 @@
 use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\admin\assets\AdminTopicAsset;
+use humhub\modules\topic\models\forms\TopicSettingsForm;
 use humhub\modules\topic\models\Topic;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
@@ -17,6 +18,7 @@ use yii\widgets\Pjax;
  * @var ActiveDataProvider $dataProvider
  * @var Topic $addModel
  * @var bool $suggestGlobalConversion
+ * @var TopicSettingsForm $topicSettings
  */
 
 AdminTopicAsset::register($this);
@@ -33,7 +35,7 @@ echo $form->field($addModel, 'name', [
     'template' => '
 <div class="input-group">
     {input}
-    ' . Button::light()->icon('add')->loader()->submit() . '
+    ' . Button::light()->icon('add')->options(['aria-label' => Yii::t('AdminModule.settings', 'Add Topic')])->loader()->submit() . '
 </div>
 {error}
 {hint}',
@@ -57,6 +59,11 @@ if ($suggestGlobalConversion) {
 
 ActiveForm::end();
 
+$form = ActiveForm::begin(['options' => ['data-pjax' => true]]);
+    echo $form->field($topicSettings, 'pickerVisibility')
+        ->dropDownList($topicSettings->getPickerVisibilityOptions(), ['data-action-change' => 'ui.form.submit']);
+ActiveForm::end();
+
 echo GridView::widget([
     'dataProvider' => $dataProvider,
     'tableOptions' => ['class' => 'table table-hover'],
@@ -69,16 +76,23 @@ echo GridView::widget([
             'options' => ['width' => '80px'],
             'template' => '{update} {delete}',
             'buttons' => [
-                'update' => fn($url, $model) =>
-                    /* @var $model Topic */
-                    ModalButton::primary()->load(['edit-topic', 'id' => $model->id])->icon('edit')->sm()->loader(false),
-                'delete' => fn($url, $model) =>
-                    /* @var $model Topic */
-                    Button::danger()->icon('delete')->action('admin.topic.removeTopic', ['delete-topic', 'id' => $model->id])->confirm(
-                    Yii::t('AdminModule.settings', '<strong>Confirm</strong> topic deletion'),
-                    Yii::t('AdminModule.settings', 'Do you really want to delete this topic?'),
-                    Yii::t('base', 'Delete'),
-                )->sm()->loader(false),
+                'update' => fn($url, $model) => ModalButton::primary()
+                    ->load(['edit-topic', 'id' => $model->id])
+                    ->icon('edit')
+                    ->options(['aria-label' => Yii::t('AdminModule.settings', 'Edit Topic')])
+                    ->sm()
+                    ->loader(false),
+                'delete' => fn($url, $model) => Button::danger()
+                    ->icon('delete')
+                    ->action('admin.topic.removeTopic', ['delete-topic', 'id' => $model->id])
+                    ->options(['aria-label' => Yii::t('AdminModule.settings', 'Delete Topic')])
+                    ->confirm(
+                        Yii::t('AdminModule.settings', '<strong>Confirm</strong> topic deletion'),
+                        Yii::t('AdminModule.settings', 'Do you really want to delete this topic?'),
+                        Yii::t('base', 'Delete'),
+                    )
+                    ->sm()
+                    ->loader(false),
             ],
         ],
     ]]);

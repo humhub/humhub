@@ -35,11 +35,15 @@ class CodeMirrorAssetBundle extends AssetBundle
         'mode/javascript/javascript.js',
         'mode/css/css.js',
         'mode/htmlmixed/htmlmixed.js',
+        'addon/dialog/dialog.js',
+        'addon/search/searchcursor.js',
+        'addon/search/search.js',
     ];
 
     public $css = [
         'lib/codemirror.css',
         'addon/hint/show-hint.css',
+        'addon/dialog/dialog.css',
     ];
 
 }

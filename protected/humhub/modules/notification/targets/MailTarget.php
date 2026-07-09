@@ -9,6 +9,7 @@
 namespace humhub\modules\notification\targets;
 
 use humhub\components\InstallationState;
+use humhub\helpers\Html;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\user\models\User;
 use Yii;
@@ -71,7 +72,7 @@ class MailTarget extends BaseTarget
 
         $mail = Yii::$app->mailer->compose($this->view, $viewParams)
             ->setTo($recipient->email)
-            ->setSubject(str_replace("\n", " ", trim($notification->getMailSubject())));
+            ->setSubject(str_replace("\n", " ", trim(Html::decode($notification->getMailSubject()))));
         if ($replyTo = Yii::$app->settings->get('mailerSystemEmailReplyTo')) {
             $mail->setReplyTo($replyTo);
         }

@@ -19,10 +19,8 @@ return [
     'Whenever a new comment was written.' => 'Bất kể khi nào một comment mới được viết',
     'Write a new comment...' => 'Viết bình luận mới...',
     'comment' => 'bình luận',
-    '{displayName} wrote a new comment ' => '{displayName} đã viết bình luận mới',
     '<strong>Delete</strong> comment?' => '',
     '<strong>Permalink</strong> to this comment' => '',
-    'Comment could not be saved!' => '',
     'Comment of blocked user.' => '',
     'Reply' => '',
     'Send a notification to author' => '',
@@ -30,4 +28,5 @@ return [
     'Show next {count} comments' => '',
     'Show previous {count} comments' => '',
     'Write a new reply...' => '',
+    '{displayName} wrote a new comment {comment}.' => '',
 ];

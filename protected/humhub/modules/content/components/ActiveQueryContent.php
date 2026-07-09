@@ -42,9 +42,10 @@ class ActiveQueryContent extends ActiveQuery
     public const USER_RELATED_SCOPE_OWN_PROFILE = 5;
 
     /**
-     * State filter that is used for queries. By default, only Published content is returned.
+     * State filter that is used for queries.
+     * By default, only Published content is returned, or Draft content if owned by the user.
      *
-     * Example to include drafts:
+     * Example to include all drafts:
      * ```
      * $query = Post::find();
      * $query->stateFilterCondition[] = ['content.state' => Content::STATE_DRAFT];
@@ -52,25 +53,35 @@ class ActiveQueryContent extends ActiveQuery
      * ```
      *
      * @since 1.14
-     * @var array
      */
-    public $stateFilterCondition = ['OR', ['content.state' => Content::STATE_PUBLISHED]];
+    public array $stateFilterCondition = ['OR', ['content.state' => Content::STATE_PUBLISHED]];
+
+    private ?User $user = null;
+
+    public function __construct($modelClass, ?User $user = null, $config = [])
+    {
+        $this->user = $user ?? Yii::$app->user->getIdentity();
+
+        if ($this->user !== null) {
+            $this->stateFilterCondition[] = [
+                'AND',
+                ['content.state' => Content::STATE_DRAFT],
+                ['content.created_by' => $this->user->id],
+            ];
+        }
+
+        parent::__construct($modelClass, $config);
+    }
 
     /**
      * Only returns user readable records
      *
-     * @param User $user
      * @return ActiveQueryContent
      * @throws Throwable
      */
-    public function readable($user = null)
+    public function readable()
     {
-        if ($user === null && !Yii::$app->user->isGuest) {
-            $user = Yii::$app->user->getIdentity();
-        }
-
         $this->andWhere($this->stateFilterCondition);
-
         $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
         $this->leftJoin('space', 'contentcontainer.pk=space.id AND contentcontainer.class=:spaceClass', [':spaceClass' => Space::class]);
         $this->leftJoin('user cuser', 'contentcontainer.pk=cuser.id AND contentcontainer.class=:userClass', [':userClass' => User::class]);
@@ -79,6 +90,7 @@ class ActiveQueryContent extends ActiveQuery
             $this->andWhere(['user.status' => User::STATUS_ENABLED]);
         }
 
+        $user = $this->user;
         if ($user !== null) {
             $this->leftJoin('space_membership', 'contentcontainer.pk=space_membership.space_id AND contentcontainer.class=:spaceClass AND space_membership.user_id=:userId', [':userId' => $user->id, ':spaceClass' => Space::class]);
 
@@ -194,19 +206,16 @@ class ActiveQueryContent extends ActiveQuery
      * All available scopes: ActiveQueryContent::USER_RELATED_SCOPE_*
      *
      * @param array $scopes
-     * @param User $user
      * @return ActiveQueryContent
      * @throws Throwable
      */
-    public function userRelated($scopes = [], $user = null)
+    public function userRelated($scopes = [])
     {
-        if ($user === null) {
-            if (Yii::$app->user->isGuest) {
-                return $this->andWhere('false');
-            }
-
-            $user = Yii::$app->user->getIdentity();
+        if ($this->user === null) {
+            return $this->andWhere('false');
         }
+
+        $user = $this->user;
 
         $this->joinWith(['content', 'content.contentContainer']);
 

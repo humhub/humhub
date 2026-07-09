@@ -1,19 +1,19 @@
 <?php
-return array (
-  'Any' => '',
-  'Author' => 'Автор',
-  'Best' => '',
-  'Content type' => '',
-  'Date From' => '',
-  'Date To' => '',
-  'Find Content based on keywords' => '',
-  'Newest first' => '',
-  'No results found!' => 'Няма намерени резултати!',
-  'Results ({count})' => '',
-  'Search' => 'Търсене',
-  'Search...' => '',
-  'Sorting' => 'Сортиране',
-  'Space' => 'Раздел',
-  'Topic' => 'Тема',
-  'Try other keywords or remove filters.' => '',
-);
+
+return [
+    'Author' => 'Автор',
+    'No results found!' => 'Няма намерени резултати!',
+    'Search' => 'Търсене',
+    'Sorting' => 'Сортиране',
+    'Space' => 'Раздел',
+    'Topic' => 'Тема',
+    'Any' => '',
+    'Best' => '',
+    'Content type' => '',
+    'Contents, Comments, Tags...' => '',
+    'Date From' => '',
+    'Date To' => '',
+    'Newest first' => '',
+    'Results ({count})' => '',
+    'Try other keywords or remove filters.' => '',
+];

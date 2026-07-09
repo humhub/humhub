@@ -2,12 +2,6 @@
 
 return [
     '
-Module successfully disabled!
-' => 'モジュールの無効化が成功しました。',
-    '
-Module successfully enabled!
-' => 'モジュールの有効化が成功しました。',
-    '
 No active Professional Edition license found!
 ' => 'アクティブな Professional Edition ライセンスが見つかりません',
     '
@@ -21,12 +15,6 @@ The license was successfully activated!
 The license was successfully removed!
 
 ' => 'ライセンスが正常に削除されました。',
-    '--- Disable module: {moduleId} ---
-
-' => '--- モジュールを無効にしました: {moduleId} ---',
-    '--- Enable module: {moduleId} ---
-
-' => '--- モジュールを有効にしました: {moduleId} ---',
     '<strong>Activate</strong> your Professional Edition' => 'プロフェッショナル エディションを<strong>有効化</strong>してください',
     '<strong>General</strong> Settings' => '<strong>一般</strong> の設定',
     'A new update is available (HumHub %version%)!' => '新しいアップデートが利用可能です (HumHub %version%)',
@@ -41,13 +29,12 @@ The license was successfully removed!
     'Available Updates' => '利用可能なアップデート',
     'Buy' => '購入',
     'Buy (%price%)' => '購入 (%price%)',
+    'Cancel' => 'キャンセル',
     'Categories' => 'カテゴリ',
     'Changelog' => '変更ログ',
     'Community' => 'コミュニティ',
     'Configure' => '設定',
     'Could not connect to HumHub API!' => 'HumHub API に接続できませんでした！',
-    'Could not connect to HumHub API!
-' => 'HumHub API に接続できませんでした',
     'Could not connect to license server!' => 'ライセンス サーバーに接続できませんでした',
     'Could not extract module!' => 'モジュールを抽出できませんでした！',
     'Could not find requested module!' => '要求されたモジュールが見つかりませんでした。',
@@ -63,13 +50,10 @@ The license was successfully removed!
     'Find all the modules you can add to your network in our HumHub Marketplace. Discover numerous add-ons and features that customize the software and give you the possibility to configure your network to your needs.' => 'HumHub マーケットプレイスでネットワークに追加できるすべてのモジュールを見つけてください。ソフトウェアをカスタマイズしニーズに合わせてネットワークを構成できる多数のアドオンと機能を見つけてください。',
     'General Settings' => '基本設定',
     'Great!' => '素晴らしい！',
-    'If this Module is additionally marked as <strong>"Community"</strong> it is neither tested nor monitored by the HumHub project team.' => 'このモジュールが更に <strong>"Community%"</strong> としてマークされている場合、HumHub プロジェクト チームによってテストも監視もされていません。',
     'Information' => 'インフォメーション',
     'Install' => 'インストール',
     'Installed' => 'インストール済',
     'Invalid module license key!' => 'モジュールのライセンス キーが無効です！',
-    'Invalid module license key!
-' => 'モジュールのライセンスキーが無効です！',
     'Latest version:' => '最新バージョン：',
     'Learn more' => 'もっと詳しく知る',
     'License Key:' => 'ライセンスキー：',
@@ -89,14 +73,6 @@ The license was successfully removed!
     'Module download failed! (%error%)' => 'モジュールのダウンロードに失敗しました！（%error%）',
     'Module is <strong>installing...</strong>' => 'モジュールを<strong>インストール中...</strong>',
     'Module license added!' => 'モジュールライセンスが追加されました！',
-    'Module license added!
-' => 'モジュールライセンス追加',
-    'Module license key cannot be empty!
-' => 'モジュールのライセンス キーを空にすることはできません',
-    'Module not found or enabled!
-' => 'モジュールが見つからないか有効になっていません！',
-    'Module not found!
-' => 'モジュールが見つかりません',
     'More info' => '詳細情報',
     'New' => '新規',
     'No compatible module version found!' => '互換性があるモジュールのバージョンが見つかりません！',
@@ -116,7 +92,6 @@ The license was successfully removed!
     'Remove license key' => 'ライセンスキーを削除',
     'Save and update' => '保存して更新',
     'Search' => '検索',
-    'Search...' => '探す...',
     'Stop updating' => '更新を止める',
     'Tags' => 'タグ',
     'The HumHub project does not guarantee the functionality, quality or the continuous development of this Module.' => 'HumHub プロジェクトは、このモジュールの機能、品質、または継続的な開発を保証しません。',
@@ -136,5 +111,20 @@ The license was successfully removed!
     'Would you like to jump straight to it?' => 'すぐにジャンプしますか？',
     'Your HumHub installation is up to date!' => 'HumHub のインストールは最新です。',
     'Add License' => '',
+    'Buy unverified community module?' => '',
+    'Community modules are developed by third parties and are <strong>not tested or maintained by the HumHub team</strong>.<br><br>They may not be compatible with your HumHub version, can cause <strong>instability or unexpected behavior</strong>, and may stop working after future updates. Their long-term maintenance is not guaranteed.<br><br>Only enable this option if you understand the risks and trust the source of the module you intend to install.' => '',
+    'Continue to checkout' => '',
+    'Description, Name, Keywords...' => '',
     'Edit License' => '',
+    'I understand the risk and want to continue.' => '',
+    'If this Module is additionally marked as <strong>"Unverified Community"</strong> it is neither tested nor maintained by the HumHub project team. It may cause instability or stop working after future updates.' => '',
+    'Include community modules' => '',
+    'Include unverified community modules?' => '',
+    'Install anyway' => '',
+    'Install unverified community module?' => '',
+    'Module options' => '',
+    'Unverified Community' => '',
+    'Yes, show community modules' => '',
+    'You are about to install <strong>{moduleName}</strong>, an unverified community module.<br><br>This module is provided by a third party and has not been reviewed or tested by the HumHub team. It may behave unexpectedly, conflict with other modules, or stop working with future HumHub releases.<br><br>Make sure you trust the source before continuing.' => '',
+    'You are about to purchase <strong>{moduleName}</strong>, an unverified community module.<br><br>This module is provided by a third party and has not been reviewed or tested by the HumHub team. It may behave unexpectedly, conflict with other modules, or stop working with future HumHub releases.<br><br>Make sure you trust the source before continuing.' => '',
 ];

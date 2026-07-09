@@ -5,7 +5,6 @@ return [
     'Cancel' => 'Anulo',
     'Cancel Edit' => 'Anulo ndryshimin',
     'Comment' => 'Komento',
-    'Comment could not be saved!' => 'Komenti nuk mundej të ruhet!',
     'Comment has been deleted' => 'Komenti është fshirë',
     'Comments' => 'Komentet',
     'Delete' => 'Fshij',
@@ -19,7 +18,6 @@ return [
     'Write a new comment...' => 'Shkruaj një koment të ri...',
     'Write a new reply...' => 'Shkruaj një përgjigje të re...',
     'comment' => 'komenti',
-    '{displayName} wrote a new comment ' => '{displayName} shkroi një koment të ri',
     '<strong>Delete</strong> comment?' => '',
     '<strong>Permalink</strong> to this comment' => '',
     'Comment of blocked user.' => '',
@@ -30,4 +28,5 @@ return [
     'Show' => '',
     'Show next {count} comments' => '',
     'Show previous {count} comments' => '',
+    '{displayName} wrote a new comment {comment}.' => '',
 ];

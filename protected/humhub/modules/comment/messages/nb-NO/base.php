@@ -18,10 +18,8 @@ return [
     'Whenever a new comment was written.' => 'når noen skriver en kommentar i en av dine grupper',
     'Write a new comment...' => 'Skriv en ny kommentar...',
     'comment' => 'kommentar',
-    '{displayName} wrote a new comment ' => '{displayName} skrev en ny kommentar',
     '<strong>Delete</strong> comment?' => '',
     '<strong>Permalink</strong> to this comment' => '',
-    'Comment could not be saved!' => '',
     'Comment of blocked user.' => '',
     'Reason' => '',
     'Reply' => '',
@@ -30,4 +28,5 @@ return [
     'Show next {count} comments' => '',
     'Show previous {count} comments' => '',
     'Write a new reply...' => '',
+    '{displayName} wrote a new comment {comment}.' => '',
 ];

@@ -8,8 +8,10 @@
 
 namespace humhub\modules\marketplace\models;
 
+use humhub\helpers\Html;
 use humhub\modules\marketplace\Module as MarketplaceModule;
 use humhub\modules\marketplace\services\FilterService;
+use humhub\modules\ui\icon\widgets\Icon;
 use humhub\widgets\bootstrap\Link;
 use Yii;
 use yii\base\Model;
@@ -23,7 +25,7 @@ use yii\helpers\Url;
  * @property-read string $image
  * @property-read string $checkoutUrl
  * @property-read bool $isNonFree
- * @property-read bool $isActivated
+ * @property-read bool $isEnabled
  *
  * @since 1.11
  */
@@ -176,7 +178,7 @@ class Module extends Model
     public function getImage(): string
     {
         return empty($this->moduleImageUrl)
-            ? Yii::getAlias('@web-static/img/default_module.jpg')
+            ? Yii::$app->assetManager->getPublishedUrl('@humhub/resources') . '/img/default_module.jpg'
             : $this->moduleImageUrl;
     }
 
@@ -192,15 +194,6 @@ class Module extends Model
 
         return $this->latestCompatibleVersion
             && !($this->isDeprecated && $marketplaceModule->hideLegacyModules);
-    }
-
-    /**
-     * @deprecated since v1.16; use self::getIsEnabled()
-     * @see self::getIsEnabled()
-     */
-    public function getIsActivated(): bool
-    {
-        return $this->getIsEnabled();
     }
 
     /**
@@ -221,15 +214,6 @@ class Module extends Model
         return !empty($this->professional_only);
     }
 
-    /**
-     * @return bool
-     * @deprecated since 1.17 Use isProFeature()
-     */
-    public function isProOnly(): bool
-    {
-        return $this->isProFeature();
-    }
-
     public function getCheckoutUrl(): string
     {
         return str_replace('-returnToUrl-', Url::to(['/marketplace/purchase/list'], true), $this->checkoutUrl);
@@ -242,8 +226,35 @@ class Module extends Model
 
     public function marketplaceLink(string $text): Link
     {
-        return Link::asLink($text, $this->marketplaceUrl)
+        return Link::to($text, $this->marketplaceUrl)
             ->encodeLabel(false)
             ->blank();
+    }
+
+    public function marketplaceImage(): Link
+    {
+        return $this->marketplaceLink(Html::img($this->image, [
+            'class' => 'rounded',
+            'data-src' => 'holder.js/94x94',
+            'style' => 'width:94px;height:94px',
+            'role' => 'presentation',
+        ]))->options([
+            'aria-hidden' => true,
+            'tabindex' => -1,
+        ]);
+    }
+
+    public function marketplaceName(): Link
+    {
+        $name = $this->name;
+        $label = $this->name;
+
+        if ($this->featured) {
+            $name .= ' ' . Html::tag('span', Icon::get('star')->color('info'), ['aria-hidden' => true]);
+            $label .= ' — ' . Yii::t('MarketplaceModule.base', 'Featured');
+        }
+
+        return $this->marketplaceLink($name)
+            ->options(['aria-label' => $label]);
     }
 }

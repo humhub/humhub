@@ -32,11 +32,14 @@ if (!isset($confirmBody)) {
 
     <?= ModalButton::accent()
         ->sm()
-        ->load($cropUrl)->icon('edit')
+        ->load($cropUrl)
+        ->icon('edit')
+        ->options(['aria-label' => Yii::t('base', 'Edit')])
         ->cssClass('profile-image-edit profile-image-crop' . ($hasImage ? '' : ' d-none')) ?>
 
     <?= Button::danger()
         ->icon('remove')
+        ->options(['aria-label' => Yii::t('base', 'Delete')])
         ->action('delete', $deleteUrl)
         ->sm()
         ->loader(false)

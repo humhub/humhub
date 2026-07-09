@@ -209,12 +209,6 @@ class Module extends \humhub\components\Module
     public $enableRegistrationFormCaptcha = true;
 
     /**
-     * @deprecated
-     * @see \humhub\modules\admin\Module::$cleanupPendingRegistrationInterval
-     */
-    public int $invitesTimeToLiveInDays;
-
-    /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)

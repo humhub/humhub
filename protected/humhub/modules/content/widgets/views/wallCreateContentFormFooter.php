@@ -29,25 +29,27 @@ use humhub\widgets\bootstrap\Link;
 /* @var $isModal bool */
 /* @var $pickerUrl string */
 /* @var $scheduleUrl string */
+/* @var $isTopicInputHidden bool */
 ?>
 
 <div class="notifyUserContainer my-3 d-none">
     <?= UserPickerField::widget([
         'id' => 'notifyUserInput' . ($isModal ? 'Modal' : ''),
         'url' => $pickerUrl,
-        'formName' => 'notifyUserInput',
+        'name' => 'notifyUserInput',
         'maxSelection' => 10,
         'disabledItems' => [Yii::$app->user->guid],
         'placeholder' => Yii::t('ContentModule.base', 'Add a member to notify'),
     ]) ?>
 </div>
 
-<div id="postTopicContainer<?= $isModal ? 'Modal' : '' ?>" class="my-3 d-none">
+<div id="postTopicContainer<?= $isModal ? 'Modal' : '' ?>" class="my-3 field-contentForm_postTopicInput d-none"<?= $isTopicInputHidden ? '' : ' data-content-form-expand' ?>>
     <?= TopicPicker::widget([
         'id' => 'postTopicInput' . ($isModal ? 'Modal' : ''),
         'name' => 'postTopicInput',
         'contentContainer' => $contentContainer,
     ]) ?>
+    <div class="invalid-feedback"></div>
 </div>
 
 <?= Html::hiddenInput('containerGuid', $contentContainer->guid) ?>

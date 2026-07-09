@@ -92,10 +92,10 @@ class ApprovalCest
 
     private function register(FunctionalTester $I)
     {
-        $I->amOnRoute('/user/auth/login');
+        $I->amOnRoute('/user/auth/register');
         $I->see('Sign up');
         $I->fillField('#register-email', 'approvalTest@test.de');
-        $I->click('Register');
+        $I->click('Send');
         $I->see('Almost there!');
 
         $invte = Invite::find()->all()[0];

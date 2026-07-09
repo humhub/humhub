@@ -31,20 +31,6 @@ class Module extends \humhub\components\Module
 
     /**
      * @since 1.1
-     * @deprecated since 1.17 use $enableManageAllContentPermission form the admin module
-     * @var bool global admin can see all content
-     */
-    public $adminCanViewAllContent = false;
-
-    /**
-     * @since 1.1
-     * @deprecated since 1.17 use $enableManageAllContentPermission form the admin module
-     * @var bool global admin can edit/delete all content
-     */
-    public $adminCanEditAllContent = true;
-
-    /**
-     * @since 1.1
      * @var string Custom e-mail subject for hourly update mails - default: Latest news
      */
     public $emailSubjectHourlyUpdate = null;

@@ -8,6 +8,7 @@ return [
   'Post could not be saved!' => 'Objave ni bilo mogoče shraniti!',
   'The post must not be empty!' => 'Objava ne sme biti prazna!',
   'This space is archived.' => 'Ta prostor je arhiviran.',
+  'Title' => 'Naslov',
   'What\'s on your mind?' => 'Kaj si misliš?',
   'post' => 'objava',
 ];

@@ -6,4 +6,5 @@ return [
     'Read more' => '',
     'Reset filters' => '',
     'Select' => '',
+    'Toggle filters' => '',
 ];

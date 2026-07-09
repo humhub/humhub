@@ -1,19 +1,19 @@
 <?php
-return array (
-  'Any' => '',
-  'Author' => '',
-  'Best' => '',
-  'Content type' => '',
-  'Date From' => '',
-  'Date To' => '',
-  'Find Content based on keywords' => '',
-  'Newest first' => '',
-  'No results found!' => '',
-  'Results ({count})' => '',
-  'Search' => 'Meklēt',
-  'Search...' => '',
-  'Sorting' => '',
-  'Space' => 'Vieta',
-  'Topic' => '',
-  'Try other keywords or remove filters.' => '',
-);
+
+return [
+    'Search' => 'Meklēt',
+    'Space' => 'Vieta',
+    'Any' => '',
+    'Author' => '',
+    'Best' => '',
+    'Content type' => '',
+    'Contents, Comments, Tags...' => '',
+    'Date From' => '',
+    'Date To' => '',
+    'Newest first' => '',
+    'No results found!' => '',
+    'Results ({count})' => '',
+    'Sorting' => '',
+    'Topic' => '',
+    'Try other keywords or remove filters.' => '',
+];

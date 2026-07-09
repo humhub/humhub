@@ -9,7 +9,10 @@
 namespace humhub\modules\marketplace\components;
 
 use humhub\components\ModuleEvent;
+use humhub\models\ModuleEnabled;
 use humhub\modules\admin\libs\HumHubAPI;
+use humhub\services\ModuleDiscoveryService;
+use humhub\services\ModuleService;
 use humhub\modules\marketplace\models\Module as ModelModule;
 use humhub\modules\marketplace\Module;
 use humhub\modules\marketplace\services\MarketplaceService;
@@ -79,8 +82,13 @@ class OnlineModuleManager extends Component
             );
         }
 
+        if (function_exists('opcache_reset')) {
+            @opcache_reset();
+        }
+
         Yii::$app->moduleManager->flushCache();
         Yii::$app->moduleManager->register($modulesPath . DIRECTORY_SEPARATOR . $moduleId);
+        $this->refreshMarketplaceLastChange();
     }
 
 
@@ -201,7 +209,7 @@ class OnlineModuleManager extends Component
      */
     public function update($moduleId)
     {
-        $this->trigger(static::EVENT_BEFORE_UPDATE, new ModuleEvent(['module' => Yii::$app->moduleManager->getModule($moduleId)]));
+        $this->trigger(static::EVENT_BEFORE_UPDATE, new ModuleEvent(['module' => Yii::$app->moduleManager->getModule($moduleId, false)]));
 
         $moduleZipFile = $this->downloadModule($moduleId);
         $this->checkRequirements($moduleId, $moduleZipFile);
@@ -211,7 +219,10 @@ class OnlineModuleManager extends Component
             Yii::$app->setModule($moduleId, null);
         }
 
-        Yii::$app->moduleManager->removeModule($moduleId, false);
+        $moduleToRemove = Yii::$app->moduleManager->getModule($moduleId, false);
+        if ($moduleToRemove !== null) {
+            (new ModuleService($moduleToRemove))->remove(false);
+        }
 
         $this->install($moduleId);
 
@@ -219,6 +230,14 @@ class OnlineModuleManager extends Component
         $updatedModule->update();
 
         (new MarketplaceService())->refreshPendingModuleUpdateCount();
+
+        $moduleEnabled = ModuleEnabled::findOne(['module_id' => $updatedModule->id]);
+        if ($moduleEnabled) {
+            $moduleEnabled->version = $updatedModule->version;
+            $moduleEnabled->save();
+        }
+
+        $this->refreshMarketplaceLastChange();
 
         $this->trigger(static::EVENT_AFTER_UPDATE, new ModuleEvent(['module' => $updatedModule]));
     }
@@ -260,6 +279,17 @@ class OnlineModuleManager extends Component
             }
 
             Yii::$app->cache->set('onlineModuleManager_modules', $this->_modules, Yii::$app->settings->get('cacheExpireTime'));
+        }
+
+        if (!(bool)$module->settings->get('includeCommunityModules', false)) {
+            $installed = ModuleDiscoveryService::findInstalledModules();
+            foreach ($this->_modules as $id => $info) {
+                if (!empty($info['isCommunity'])
+                    && !Yii::$app->moduleManager->hasModule($id)
+                    && !array_key_exists($id, $installed)) {
+                    unset($this->_modules[$id]);
+                }
+            }
         }
 
         return $this->_modules;
@@ -317,22 +347,40 @@ class OnlineModuleManager extends Component
         $updates = [];
 
         foreach ($this->getModules($cached) as $moduleId => $moduleInfo) {
+            if (!isset($moduleInfo['latestCompatibleVersion'])) {
+                continue;
+            }
 
-            if (isset($moduleInfo['latestCompatibleVersion']) && Yii::$app->moduleManager->hasModule($moduleId)) {
+            $installedVersion = $this->getInstalledVersion($moduleId);
+            if ($installedVersion === null) {
+                continue;
+            }
 
-                $module = Yii::$app->moduleManager->getModule($moduleId);
-
-                if ($module !== null) {
-                    if (version_compare($moduleInfo['latestCompatibleVersion'], $module->getVersion(), 'gt')) {
-                        $updates[$moduleId] = $moduleInfo;
-                    }
-                } else {
-                    Yii::error('Could not load module: ' . $moduleId . ' to get updates');
-                }
+            if (version_compare($moduleInfo['latestCompatibleVersion'], $installedVersion, 'gt')) {
+                $updates[$moduleId] = $moduleInfo;
             }
         }
 
         return $updates;
+    }
+
+    /**
+     * Returns the installed version of a module.
+     *
+     * Prefers the loaded module instance for accuracy; falls back to reading module.json
+     * from the filesystem when the module could not be loaded (e.g. during upgrades when
+     * the module config references a removed core class).
+     */
+    private function getInstalledVersion(string $moduleId): ?string
+    {
+        if (Yii::$app->moduleManager->hasModule($moduleId)) {
+            $module = Yii::$app->moduleManager->getModule($moduleId, false);
+            if ($module !== null) {
+                return $module->getVersion();
+            }
+        }
+
+        return ModuleDiscoveryService::findInstalledVersion($moduleId);
     }
 
     /**
@@ -446,6 +494,11 @@ class OnlineModuleManager extends Component
     {
         Yii::error('Error installing or updating the "' . $moduleId . '" module: ' . $errorMsg, 'marketplace');
         throw new ServerErrorHttpException($displayedErrorMsg ?? $errorMsg);
+    }
+
+    public function refreshMarketplaceLastChange(): void
+    {
+        Yii::$app->settings->set('marketplaceLastChange', time());
     }
 
 }

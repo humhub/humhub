@@ -1,7 +1,6 @@
 <?php
 
 use humhub\components\View;
-use humhub\helpers\Html;
 use humhub\modules\content\Module;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\file\handler\BaseFileHandler;
@@ -12,8 +11,6 @@ use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 
 /* @var $this View */
-/* @var $objectModel string */
-/* @var $objectId int */
 /* @var $comment \humhub\modules\comment\models\Comment */
 /* @var $submitUrl string */
 /* @var $fileHandlers BaseFileHandler[] */
@@ -24,8 +21,6 @@ $contentModule = Yii::$app->getModule('content');
 ?>
 <div class="content_edit input-container" id="comment_edit_<?= $comment->id; ?>">
     <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
-    <?= Html::hiddenInput('objectModel', $objectModel); ?>
-    <?= Html::hiddenInput('objectId', $objectId); ?>
 
     <div class="richtext-create-input-group">
         <?= $form->field($comment, 'message')->widget(RichTextField::class, [
@@ -59,6 +54,7 @@ $contentModule = Yii::$app->getModule('content');
             ]);
             echo Button::accent()
                 ->icon('send')
+                ->options(['aria-label' => Yii::t('base', 'Save')])
                 ->cssClass('btn-comment-submit')->sm()
                 ->action('editSubmit', $submitUrl)->submit();
             ?>

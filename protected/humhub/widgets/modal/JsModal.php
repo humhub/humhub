@@ -35,11 +35,6 @@ class JsModal extends JsWidget
     public $title;
 
     /**
-     * @deprecated since 1.18.0 use [[title]] instead
-     */
-    public $header;
-
-    /**
      * Modal content
      * @var string
      */
@@ -96,21 +91,6 @@ class JsModal extends JsWidget
     public $show = false;
 
     /**
-     * @deprecated since 1.18.0 (all modal boxes are opened with the fade animation)
-     */
-    public $animation;
-
-    /**
-     * @deprecated since 1.18.0 use [[Modal::closeButton]] instead
-     */
-    public $showClose;
-
-    /**
-     * @deprecated since 1.18.0
-     */
-    public $centerText = false;
-
-    /**
      * Can be set to false if the modal body should not be initialized with an
      * loader animation. Default is true, if no body is provided.
      *
@@ -130,7 +110,6 @@ class JsModal extends JsWidget
             'backdrop' => $this->backdrop,
             'keyboard' => $this->keyboard,
             'show' => $this->show,
-            'showClose' => $this->showClose,
             'initialLoader' => $this->initialLoader,
         ]);
     }

@@ -69,7 +69,7 @@ class AdminDeleteContentForm extends Model
         $contentDeleted = ContentDeleted::instance()
             ->from(Yii::$app->user->getIdentity())
             ->payload([
-                'contentTitle' => (new ContentDeleted())->getContentPlainTextInfo($this->content),
+                'contentTitle' => (new ContentDeleted())->getContentInfo($this->content),
                 'reason' => $this->message,
             ]);
         if (!$contentDeleted->saveRecord($this->content->createdBy)) {

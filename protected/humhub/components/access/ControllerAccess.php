@@ -494,7 +494,7 @@ class ControllerAccess extends BaseObject
     public function validateDisabledUser()
     {
         return $this->isGuest()
-            || ($this->user->status !== User::STATUS_DISABLED
+            || ($this->user->status !== User::STATUS_DEACTIVATED
                 && $this->user->status !== User::STATUS_SOFT_DELETED);
     }
 
@@ -537,7 +537,8 @@ class ControllerAccess extends BaseObject
     {
         return !Yii::$app->settings->get('maintenanceMode')
             || $this->isAdmin()
-            || ($this->owner->module->id == 'user' && $this->owner->id == 'auth' && in_array($this->owner->action->id, ['login', 'external']));
+            || ($this->owner->id == 'i18n' && $this->owner->action->id == 'translations')
+            || ($this->owner->module->id == 'user' && $this->owner->id == 'auth' && in_array($this->owner->action->id, ['login', 'password', 'external']));
     }
 
     /**

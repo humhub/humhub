@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   'Allow others to create new posts on your profile page' => 'Zezwól innym tworzyć nowe wpisy na Twoim profilu.',
   'Allows the user to create posts' => 'Zezwól użytkownikom tworzenie wpisów',
   'Create post' => 'Utwórz wpis',
@@ -8,6 +8,7 @@ return array (
   'Post could not be saved!' => 'Nie udało się zapisać postu!',
   'The post must not be empty!' => 'Post nie może być pusty!',
   'This space is archived.' => 'Ta strefa jest zarchiwizowana.',
+  'Title' => 'Tytuł',
   'What\'s on your mind?' => 'Co ci chodzi po głowie?',
   'post' => 'post',
-);
+];

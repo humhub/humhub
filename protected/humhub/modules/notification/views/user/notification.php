@@ -2,39 +2,44 @@
 
 use humhub\components\View;
 use humhub\modules\notification\models\forms\NotificationSettings;
+use humhub\modules\notification\widgets\NotificationSettingsForm;
 use humhub\modules\notification\widgets\UserInfoWidget;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
 use humhub\widgets\form\ActiveForm;
-use yii\helpers\Url;
 
 /* @var $this View */
 /* @var $model NotificationSettings */
 ?>
 
 <div class="panel-heading">
-    <?= Yii::t('NotificationModule.base', '<strong>Notification</strong> Settings'); ?>
+    <?= Yii::t('NotificationModule.base', '<strong>Notification</strong> Settings') ?>
 </div>
 <div class="panel-body">
     <div class="text-body-secondary">
-        <?= Yii::t('NotificationModule.base', 'Notifications are sent instantly to you to inform you about new activities in your network.'); ?>
-        <br/>
-        <?= Yii::t('NotificationModule.base', 'This view allows you to configure your notification settings by selecting the desired targets for the given notification categories.'); ?>
+        <?= Yii::t('NotificationModule.base', 'Notifications are sent instantly to you to inform you about new activities in your network.') ?>
+        <br>
+        <?= Yii::t('NotificationModule.base', 'This view allows you to configure your notification settings by selecting the desired targets for the given notification categories.') ?>
     </div>
 
     <?= UserInfoWidget::widget() ?>
 
-    <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
+    <?php $form = ActiveForm::begin(['acknowledge' => true]) ?>
 
-    <?= humhub\modules\notification\widgets\NotificationSettingsForm::widget([
+    <?= NotificationSettingsForm::widget([
         'model' => $model,
-        'form' => $form
+        'form' => $form,
     ]) ?>
 
-    <br/>
-    <button type="submit" class="btn btn-primary" data-ui-loader><?= Yii::t('base', 'Save'); ?></button>
+    <br>
+    <?= Button::save()->submit() ?>
+
     <?php if ($model->isTouchedSettings()): ?>
-        <a href="#" class="btn btn-light float-end" data-action-click="post"
-           data-action-url="<?= Url::to(['reset']) ?>"
-           data-ui-loader><?= Yii::t('ActivityModule.base', 'Reset to defaults') ?></a>
-    <?php endif; ?>
-    <?php ActiveForm::end(); ?>
+        <?= Link::light(Yii::t('ActivityModule.base', 'Reset to defaults'))
+            ->post(['reset'])
+            ->confirm()
+            ->right() ?>
+    <?php endif ?>
+
+    <?php ActiveForm::end() ?>
 </div>

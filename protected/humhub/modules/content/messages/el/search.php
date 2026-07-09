@@ -1,19 +1,19 @@
 <?php
-return array (
-  'Any' => '',
-  'Author' => 'Συντάκτης',
-  'Best' => '',
-  'Content type' => '',
-  'Date From' => '',
-  'Date To' => '',
-  'Find Content based on keywords' => '',
-  'Newest first' => '',
-  'No results found!' => '',
-  'Results ({count})' => '',
-  'Search' => 'Αναζήτηση',
-  'Search...' => '',
-  'Sorting' => 'Ταξινόμηση',
-  'Space' => '',
-  'Topic' => 'Θέμα',
-  'Try other keywords or remove filters.' => '',
-);
+
+return [
+    'Author' => 'Συντάκτης',
+    'Search' => 'Αναζήτηση',
+    'Sorting' => 'Ταξινόμηση',
+    'Topic' => 'Θέμα',
+    'Any' => '',
+    'Best' => '',
+    'Content type' => '',
+    'Contents, Comments, Tags...' => '',
+    'Date From' => '',
+    'Date To' => '',
+    'Newest first' => '',
+    'No results found!' => '',
+    'Results ({count})' => '',
+    'Space' => '',
+    'Try other keywords or remove filters.' => '',
+];

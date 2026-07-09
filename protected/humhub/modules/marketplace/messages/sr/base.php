@@ -2,12 +2,6 @@
 
 return [
     '
-Module successfully disabled!
-' => 'Modul je uspešno onemogućen!',
-    '
-Module successfully enabled!
-' => 'Modul je uspešno omogućen!',
-    '
 No active Professional Edition license found!
 ' => 'Nije pronadjena aktivna licenca za profesionalno izdanje',
     '
@@ -21,12 +15,6 @@ The license was successfully activated!
 The license was successfully removed!
 
 ' => 'Licenca je uspešno uklonjena',
-    '--- Disable module: {moduleId} ---
-
-' => '--- Onemogući modul: {moduleId} ---',
-    '--- Enable module: {moduleId} ---
-
-' => '--- Omogući modul: {moduleId} ---',
     '<strong>Activate</strong> your Professional Edition' => '<strong>Aktiviraj</strong> vašu profesionalnu verziju',
     '<strong>General</strong> Settings' => 'Generalna podešavanja',
     'A new update is available (HumHub %version%)!' => 'Novo ažuriranje je dostupno',
@@ -39,6 +27,7 @@ The license was successfully removed!
     'Available Updates' => 'Dostupna ažuriranja',
     'Buy' => 'Kupi',
     'Buy (%price%)' => 'Kupi (%price%)',
+    'Cancel' => 'Poništi',
     'Categories' => 'Categorije',
     'Changelog' => 'Changelog',
     'Community' => 'Zajednica',
@@ -58,7 +47,6 @@ The license was successfully removed!
     'Find all the modules you can add to your network in our HumHub Marketplace. Discover numerous add-ons and features that customize the software and give you the possibility to configure your network to your needs.' => 'Nadji sve module koje možeš da dodaš tvojoj mreži u našoj prodavnici. Otkrij brojne dodatke i funkcionalnosti koje prilagodjavaju softver i daju ti mogućnost da konfigurišeš tvoju mrežu tvojim potrebama',
     'General Settings' => 'Opšte postavke',
     'Great!' => 'Odlično',
-    'If this Module is additionally marked as <strong>"Community"</strong> it is neither tested nor monitored by the HumHub project team.' => 'Ako je ovaj modul dodatno označen kao <strong>"Zajednica" </strong> projektni tim HumHub niti ga testira niti nadgleda.',
     'Information' => 'Informacija',
     'Install' => 'Instaliraj',
     'Installed' => 'Instalirano',
@@ -80,8 +68,6 @@ The license was successfully removed!
     'Module download failed! (%error%)' => 'Preuzimanje modula nije uspjelo! (%error%)',
     'Module is <strong>installing...</strong>' => 'Module se <strong>instalira...</strong>',
     'Module license added!' => 'Dodata je licenca modula',
-    'Module not found!
-' => 'Modul nije pronađen!',
     'More info' => 'Više info',
     'New' => 'Novi',
     'No compatible module version found!' => 'Nisu pronađene kompatibilne verzije modula!',
@@ -100,7 +86,6 @@ The license was successfully removed!
     'Remove license key' => 'Uklonite ključ licence',
     'Save and update' => 'Spremi i ažuriraj',
     'Search' => 'Pretraži',
-    'Search...' => 'Pretraga...',
     'Stop updating' => 'Prestani da osvežavaš',
     'Tags' => 'Tagovi',
     'The HumHub project does not guarantee the functionality, quality or the continuous development of this Module.' => 'Projekt HumHub ne garantuje funkcionalnost, kvalitet ili kontinuirani razvoj ovog modula.',
@@ -119,22 +104,27 @@ The license was successfully removed!
     'Add License' => '',
     'Advanced Module Search' => '',
     'All modules' => '',
-    'Could not connect to HumHub API!
-' => '',
+    'Buy unverified community module?' => '',
+    'Community modules are developed by third parties and are <strong>not tested or maintained by the HumHub team</strong>.<br><br>They may not be compatible with your HumHub version, can cause <strong>instability or unexpected behavior</strong>, and may stop working after future updates. Their long-term maintenance is not guaranteed.<br><br>Only enable this option if you understand the risks and trust the source of the module you intend to install.' => '',
+    'Continue to checkout' => '',
+    'Description, Name, Keywords...' => '',
     'Edit License' => '',
     'Enable now' => '',
-    'Invalid module license key!
-' => '',
+    'I understand the risk and want to continue.' => '',
+    'If this Module is additionally marked as <strong>"Unverified Community"</strong> it is neither tested nor maintained by the HumHub project team. It may cause instability or stop working after future updates.' => '',
+    'Include community modules' => '',
+    'Include unverified community modules?' => '',
+    'Install anyway' => '',
+    'Install unverified community module?' => '',
     'Module <strong>enabled</strong>' => '',
     'Module Administration' => '',
-    'Module license added!
-' => '',
-    'Module license key cannot be empty!
-' => '',
-    'Module not found or enabled!
-' => '',
+    'Module options' => '',
     'No, thank you!' => '',
+    'Unverified Community' => '',
     'Well done! To make the module available within your network, you will also need to enable it. Do you want to enable it now?' => '',
     'Well done! You have successfully installed and enabled the module!' => '',
     'Without category' => '',
+    'Yes, show community modules' => '',
+    'You are about to install <strong>{moduleName}</strong>, an unverified community module.<br><br>This module is provided by a third party and has not been reviewed or tested by the HumHub team. It may behave unexpectedly, conflict with other modules, or stop working with future HumHub releases.<br><br>Make sure you trust the source before continuing.' => '',
+    'You are about to purchase <strong>{moduleName}</strong>, an unverified community module.<br><br>This module is provided by a third party and has not been reviewed or tested by the HumHub team. It may behave unexpectedly, conflict with other modules, or stop working with future HumHub releases.<br><br>Make sure you trust the source before continuing.' => '',
 ];

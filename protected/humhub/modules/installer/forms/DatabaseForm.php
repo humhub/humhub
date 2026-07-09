@@ -116,17 +116,17 @@ class DatabaseForm extends Model
 
         $dsn = ArrayHelper::getValue($dbConfig, 'dsn', '');
 
-        if (preg_match('/host=([^;]+)/', $dsn ?: '', $matches)) {
+        if (preg_match('/host=([^;]+)/', (string) $dsn ?: '', $matches)) {
             $this->hostname = $matches[1];
             $this->fixedAttributes[] = 'hostname';
         }
 
-        if (preg_match('/port=([^;]+)/', $dsn ?: '', $matches)) {
+        if (preg_match('/port=([^;]+)/', (string) $dsn ?: '', $matches)) {
             $this->port = $matches[1];
             $this->fixedAttributes[] = 'port';
         }
 
-        if (preg_match('/dbname=([^;]+)/', $dsn ?: '', $matches)) {
+        if (preg_match('/dbname=([^;]+)/', (string) $dsn ?: '', $matches)) {
             $this->database = $matches[1];
             $this->create = true;
             $this->fixedAttributes[] = 'database';

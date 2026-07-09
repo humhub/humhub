@@ -1,5 +1,6 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\user\widgets\ProfileHeader;
 use humhub\modules\user\widgets\ProfileMenu;
 use humhub\widgets\FooterMenu;
@@ -14,9 +15,9 @@ $user = $this->context->contentContainer;
         </div>
     </div>
     <div class="row profile-content">
-        <div class="col-lg-2 layout-nav-container">
+        <aside class="col-lg-2 layout-nav-container" aria-label="<?= Html::encode(Yii::t('base', 'Sidebar')) ?>">
             <?= ProfileMenu::widget(['user' => $user]); ?>
-        </div>
+        </aside>
         <div class="col-lg-<?= ($this->hasSidebar()) ? '7' : '10' ?> layout-content-container">
             <?= $content; ?>
             <?php if (!$this->hasSidebar()): ?>
@@ -24,10 +25,10 @@ $user = $this->context->contentContainer;
             <?php endif; ?>
         </div>
         <?php if ($this->hasSidebar()): ?>
-            <div class="col-lg-3 layout-sidebar-container">
+            <aside class="col-lg-3 layout-sidebar-container" aria-label="<?= Html::encode(Yii::t('base', 'Sidebar')) ?>">
                 <?= $this->getSidebar() ?>
                 <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_SIDEBAR]); ?>
-            </div>
+            </aside>
         <?php endif; ?>
     </div>
 </div>

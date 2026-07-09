@@ -1,9 +1,5 @@
 <?php
-/**
- * Message translations.
- *
- * @author: Yaro (https://yaro.info) glodov@gmail.com
- */
+
 return [
     '<strong>Confirm</strong> topic deletion' => '<strong>Підтвердити</strong> видалення теми',
     '<strong>Edit</strong> Topic' => '<strong>Редагування</strong> Теми',
@@ -18,4 +14,11 @@ return [
     'Topic' => 'Тема',
     'Topic has been deleted!' => 'Тема видалена!',
     'Topics' => 'Теми',
+    'Always show' => '',
+    'Controls how the topic picker appears in content creation forms above the stream.' => '',
+    'Default topic picker visibility' => '',
+    'Hidden' => '',
+    'Topic picker visibility' => '',
+    'Topics required' => '',
+    'Use global default' => '',
 ];

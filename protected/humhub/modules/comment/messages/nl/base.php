@@ -1,12 +1,11 @@
 <?php
-return array (
+return [
   '<strong>Confirm</strong> comment deleting' => '<strong>Bevestig</strong> reactie verwijderen',
   '<strong>Delete</strong> comment?' => 'Reactie <strong>verwijderen</strong>?',
   '<strong>Permalink</strong> to this comment' => '<strong>Permalink</strong> naar deze reactie',
   'Cancel' => 'Annuleer',
   'Cancel Edit' => 'Annuleer bewerking',
   'Comment' => 'Reactie',
-  'Comment could not be saved!' => 'De reactie kon niet worden opgeslagen!',
   'Comment has been deleted' => 'De reactie is verwijderd',
   'Comment of blocked user.' => 'Reactie van een geblokkeerde gebruiker.',
   'Comments' => 'Reacties',
@@ -28,5 +27,5 @@ return array (
   'Write a new comment...' => 'Schrijf een nieuwe reactie...',
   'Write a new reply...' => 'Schrijf een nieuw antwoord ...',
   'comment' => 'Reactie',
-  '{displayName} wrote a new comment ' => '{displayName} schreef een nieuwe reactie',
-);
+  '{displayName} wrote a new comment {comment}.' => '{displayName} heeft een nieuwe reactie geschreven {comment}.',
+];

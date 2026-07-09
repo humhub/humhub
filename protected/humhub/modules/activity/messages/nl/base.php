@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>E-Mail</strong> Summaries' => '<strong>E-Mail</strong> samenvattingen',
   '<strong>Latest</strong> activities' => '<strong>Laatste</strong> activiteiten',
   'Activities' => 'Activiteiten',
@@ -27,13 +27,8 @@ return array (
   'Your weekly summary' => 'Uw wekelijkse samenvatting',
   'see online' => 'Bekijk online',
   'via' => 'via',
-  '{displayName} created the new space {spaceName}' => '{displayName} heeft de nieuwe ruimte {spaceName} aangemaakt',
-  '{displayName} created this space.' => '{displayName} heeft deze ruimte aangemaakt.',
-  '{displayName} joined the space {spaceName}' => '{displayName} is lid geworden van ruimte {spaceName}.',
-  '{displayName} joined this space.' => '{displayName} is van deze ruimte lid geworden.',
-  '{displayName} left the space {spaceName}' => '{displayName} heeft de ruimte {spaceName} verlaten',
-  '{displayName} left this space.' => '{displayName} heeft deze ruimte verlaten.',
-  '{spaceName} has been archived' => '{spaceName} is gearchiveerd.',
-  '{spaceName} has been unarchived' => '{spaceName} is uit het archief gehaald.',
-  '{user1} now follows {user2}.' => '{user1} volgt nu {user2}.',
-);
+  '{displayName1} and {displayName2}' => '{displayName1} en {displayName2}',
+  '{displayName1}, {displayName2} and {count} more' => '{displayName1}, {displayName2} en {count} meer',
+  '{displayNames} now follow {followedDisplayName}.' => '{displayNames} volgen nu {followedDisplayName}.',
+  '{displayName} now follows {followedDisplayName}.' => '{displayName} volgt nu {followedDisplayName}.',
+];

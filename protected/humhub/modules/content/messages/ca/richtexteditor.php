@@ -46,7 +46,6 @@ return [
     'Wrap in bullet list' => 'Embolcalla en una llista de punts',
     'Wrap in ordered list' => 'Embolcalla en una llista endreçada',
     '[Code Block]' => '[Bloc de codi]',
-    '[Image]' => '[Imatge]',
     '[Invalid file]' => '[Arxiu invàlid]',
     '[Table]' => '[Taula]',
     'Switch editor mode' => '',

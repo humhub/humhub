@@ -1,8 +1,10 @@
-<?php /* Translated by Paul (https://paul.bid) www.paul.bid@gmail.com */
+<?php
+
 return [
-  'Collapse' => 'Свернуть',
-  'Read more' => 'Развернуть',
-  'Reset filters' => 'Сбросить фильтры',
-  'Select' => 'Выбрать',
-  'User Interface' => 'Интерфейс Пользователя',
+    'Collapse' => 'Свернуть',
+    'Read more' => 'Развернуть',
+    'Reset filters' => 'Сбросить фильтры',
+    'Select' => 'Выбрать',
+    'User Interface' => 'Интерфейс Пользователя',
+    'Toggle filters' => '',
 ];

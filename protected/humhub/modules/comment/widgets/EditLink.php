@@ -32,17 +32,8 @@ class EditLink extends WidgetMenuEntry
      */
     public function renderEntry($extraHtmlOptions = [])
     {
-        $editUrl = Url::to(['/comment/comment/edit',
-            'objectModel' => $this->comment->object_model,
-            'objectId' => $this->comment->object_id,
-            'id' => $this->comment->id,
-        ]);
-
-        $loadUrl = Url::to(['/comment/comment/load',
-            'objectModel' => $this->comment->object_model,
-            'objectId' => $this->comment->object_id,
-            'id' => $this->comment->id,
-        ]);
+        $editUrl = Url::to(['/comment/comment/edit',  'id' => $this->comment->id]);
+        $loadUrl = Url::to(['/comment/comment/load', 'id' => $this->comment->id]);
 
         return Html::a(
             Icon::get('edit') . Yii::t('CommentModule.base', 'Edit'),

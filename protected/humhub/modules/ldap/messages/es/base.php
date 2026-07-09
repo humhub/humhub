@@ -2,7 +2,6 @@
 
 return [
     'Base DN' => 'DN de base',
-    'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'Define el filtro que aplicar cuando se intenta iniciar sesión. %s reemplaza el nombre de usuario en la acción de iniciar sesión. Ejemplo: quot;(sAMAccountName=%s)&quot; o &quot;(uid=%s)&quot;',
     'E-Mail Address Attribute' => 'Atributo de dirección de correo electrónico',
     'Enable LDAP Support' => 'Activar soporte LDAP',
     'Encryption' => 'Cifrado',
@@ -13,8 +12,7 @@ return [
     'LDAP' => 'LDAP',
     'LDAP Attribute for E-Mail Address. Default: &quot;mail&quot;' => 'Atributo LDAP para la dirección de correo electrónico. Predeterminado: "mail"',
     'LDAP Attribute for Username. Example: &quot;uid&quot; or &quot;sAMAccountName&quot;' => 'Atributo LDAP para nombre de usuario. Ejemplo: "uid" o "sAMAccountName"',
-    'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'Limite el acceso a los usuarios que cumplan con este criterio. Ejemplo: "(objectClass=posixAccount)" or "(&amp;(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))"',
-    'Login Filter' => 'Filtro de inicio de sesión',
+    'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'Limite el acceso a los usuarios que cumplan con este criterio. Ejemplo: "(objectClass=posixAccount)" or "(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))"',
     'Not changeable LDAP attribute to unambiguously identify the user in the directory. If empty the user will be determined automatically by e-mail address or username. Examples: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)' => 'Atributo LDAP no modificable para identificar inequívocamente a un usuario. Si está vacío el usuario se determinará automáticamente mediante su dirección de correo electrónico o su nombre de usuario. Ejemplos: objectguid (ActiveDirectory) o uidNumber (OpenLDAP)',
     'One DN per line which should not be imported automatically.' => 'Una DN por línea que no debe ser importada automáticamente.',
     'Password' => 'Contraseña',
@@ -29,4 +27,7 @@ return [
     'User Filter' => 'Filtro de usuario',
     'Username' => 'Nombre de usuario',
     'Username Attribute' => 'Atributo del nombre de usuario',
+    'Allowed Authentication Methods' => '',
+    'Disable Certificate Checking' => '',
+    'Select the authentication methods LDAP users may use. Unchecking "LDAP" disables direct LDAP password login and forces users through the other selected methods (e.g. SAML, OpenID Connect).' => '',
 ];

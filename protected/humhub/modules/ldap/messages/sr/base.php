@@ -2,7 +2,6 @@
 
 return [
     'Base DN' => 'Osnovni DN',
-    'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'Određuje filtar koji se primjenjuje kod pokušajaj prijave. %s zamjenjuje korisničko ime u akciji za prijavu. Primjer: "(sAMAccountName=%s)" ili "(uid=%s)"',
     'E-Mail Address Attribute' => 'Atribut E-mail adrese',
     'Enable LDAP Support' => 'Omogući LDAP podršku',
     'Encryption' => 'Enkripcija',
@@ -12,8 +11,7 @@ return [
     'LDAP' => 'LDAP',
     'LDAP Attribute for E-Mail Address. Default: &quot;mail&quot;' => 'LDAP Attribute for E-Mail Address. Default: "mail"',
     'LDAP Attribute for Username. Example: &quot;uid&quot; or &quot;sAMAccountName&quot;' => 'LDAP Attribute for Username. Example: "uid" or "sAMAccountName"',
-    'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'Limit access to users meeting this criteria. Example: "(objectClass=posixAccount)" or "(&amp;(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))"',
-    'Login Filter' => 'Filter za prijavu',
+    'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'Limit access to users meeting this criteria. Example: "(objectClass=posixAccount)" or "(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))"',
     'Not changeable LDAP attribute to unambiguously identify the user in the directory. If empty the user will be determined automatically by e-mail address or username. Examples: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)' => 'Not changeable LDAP attribute to unambiguously identify the user in the directory. If empty the user will be determined automatically by e-mail address or username. Examples: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)',
     'Password' => 'Lozinka',
     'Port' => 'Port',
@@ -27,6 +25,9 @@ return [
     'User Filter' => 'Korisnički filter',
     'Username' => 'Korisničko ime',
     'Username Attribute' => 'Atribut korisničkog imena',
+    'Allowed Authentication Methods' => '',
+    'Disable Certificate Checking' => '',
     'Ignored LDAP entries' => '',
     'One DN per line which should not be imported automatically.' => '',
+    'Select the authentication methods LDAP users may use. Unchecking "LDAP" disables direct LDAP password login and forces users through the other selected methods (e.g. SAML, OpenID Connect).' => '',
 ];

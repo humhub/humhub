@@ -25,8 +25,11 @@ humhub.module('stream.wall', function (module, require, $) {
     var loader = require('ui.loader');
     var container = require('content.container');
     var user = require('user');
+    var i18n = require('i18n');
 
     var DATA_STREAM_TOPIC = 'stream-topic';
+
+    module.requiredI18nCategories = ['ContentModule.base'];
 
     /**
      * Stream implementation for main wall streams.
@@ -176,7 +179,7 @@ humhub.module('stream.wall', function (module, require, $) {
         var that = this;
         var appendToStreamTimeout;
 
-        var $badge = $(string.template(WallStream.template.updateBadge, {text: module.config.updatesAvailable}));
+        var $badge = $(string.template(WallStream.template.updateBadge, {text: i18n.t('ContentModule.base', 'New Updates Available!')}));
 
         $('body').append($badge);
 

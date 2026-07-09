@@ -676,12 +676,6 @@ class Icon extends Widget implements \Stringable
     public $border = false;
 
     /**
-     * Set this to true if the icon is only used for decoration and is not required for navigating your site.
-     * @var bool used for accessibility, set this to true if the icon is just used as decoration and
-     */
-    public $ariaHidden = false;
-
-    /**
      * @var string aria-label
      * @var since 1.7
      */
@@ -915,16 +909,6 @@ class Icon extends Widget implements \Stringable
         }
 
         $this->left = $active;
-        return $this;
-    }
-
-    /**
-     * @param bool $active
-     * @deprecated since 1.7 this is automatically set since 1.7
-     */
-    public function ariaHidden($active = true)
-    {
-        $this->ariaHidden = $active;
         return $this;
     }
 

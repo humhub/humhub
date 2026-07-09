@@ -16,11 +16,13 @@ use Codeception\Exception\ModuleException;
 use Codeception\Module\Yii2;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\libs\UUID;
+use humhub\models\RecordMap;
 use humhub\models\UrlOembed;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToMarkdownConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
+use humhub\modules\content\widgets\richtext\converter\RichTextToShortHtmlConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use humhub\modules\notification\models\Notification;
 use PHPUnit\Framework\Constraint\LogicalNot;
@@ -31,7 +33,6 @@ use yii\base\ErrorException;
 use yii\base\Event;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
-use yii\db\Command;
 use yii\db\ExpressionInterface;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
@@ -59,7 +60,7 @@ trait HumHubHelperTrait
     protected static function flushCache(?string $caller = null)
     {
         codecept_debug(sprintf('[%s] Flushing cache', $caller ?? __METHOD__));
-        $cachePath = Yii::getAlias('@runtime/cache');
+        $cachePath = Yii::$app->cache->cachePath;
         if ($cachePath && is_dir($cachePath)) {
             FileHelper::removeDirectory($cachePath);
             FileHelper::createDirectory($cachePath);
@@ -67,6 +68,7 @@ trait HumHubHelperTrait
         Yii::$app->cache->flush();
         Yii::$app->runtimeCache->flush();
         RichTextToShortTextConverter::flushCache();
+        RichTextToShortHtmlConverter::flushCache();
         RichTextToHtmlConverter::flushCache();
         RichTextToPlainTextConverter::flushCache();
         RichTextToMarkdownConverter::flushCache();
@@ -149,8 +151,7 @@ trait HumHubHelperTrait
     {
         $activity = Activity::findOne([
             'class' => $class,
-            'object_model' => PolymorphicRelation::getObjectModel($source),
-            'object_id' => $source->getPrimaryKey(),
+            'content_addon_record_id' => RecordMap::getId($source),
         ]);
 
         static::assertNotNull($activity, $msg);
@@ -476,7 +477,10 @@ trait HumHubHelperTrait
      */
     public static function assertRecordCount(?int $expected, $tables, $condition = null, ?array $params = [], string $message = ''): void
     {
-        $count = static::dbCount($tables, $condition, $params ?? []);
+        $count = (new Query())
+            ->from($tables)
+            ->where($condition, $params ?? [])
+            ->count();
 
         if ($expected === null) {
             static::assertGreaterThan(0, $count, $message);
@@ -540,7 +544,11 @@ trait HumHubHelperTrait
      */
     public static function assertRecordValue($expected, string $column, $tables, $condition = null, ?array $params = [], string $message = ''): void
     {
-        $value = self::dbQuery($tables, $condition, $params, 1)->select($column)->scalar();
+        $value = (new Query())
+            ->select($column)
+            ->from($tables)
+            ->where($condition, $params ?? [])
+            ->scalar();
         static::assertEquals($expected, $value, $message);
     }
 
@@ -789,125 +797,5 @@ trait HumHubHelperTrait
     public static function logFilterMessageTexts($levels = null, ?array $categories = null, ?array $exceptCategories = null): array
     {
         return array_column(static::logFilterMessages($levels, $categories, $exceptCategories), 0);
-    }
-
-    /**
-     * @see \yii\db\Connection::createCommand()
-     * @since 1.15
-     * @deprecated since 1.15
-     * @internal
-     */
-    public static function dbCommand($sql = null, $params = []): Command
-    {
-        return Yii::$app->getDb()->createCommand($sql, $params);
-    }
-
-    /**
-     * @param Command $cmd
-     * @param bool $execute
-     *
-     * @return Command
-     * @throws \yii\db\Exception
-     * @since 1.15
-     * @deprecated since 1.15
-     * @internal
-     */
-    protected static function dbCommandExecute(Command $cmd, bool $execute = true): Command
-    {
-        if ($execute) {
-            $cmd->execute();
-        }
-
-        return $cmd;
-    }
-
-    /**
-     * @see Query
-     * @since 1.15
-     * @deprecated since 1.15
-     * @internal
-     */
-    public static function dbQuery($tables, $condition, $params = [], $limit = 10): Query
-    {
-        return (new Query())
-            ->from($tables)
-            ->where($condition, $params)
-            ->limit($limit);
-    }
-
-    /**
-     * @see Command::insert
-     * @since 1.15
-     * @deprecated since 1.15
-     * @internal
-     */
-    public static function dbInsert($table, $columns, bool $execute = true): Command
-    {
-        return static::dbCommandExecute(static::dbCommand()->insert($table, $columns), $execute);
-    }
-
-    /**
-     * @see Command::update
-     * @since 1.15
-     * @deprecated since 1.15
-     * @internal
-     */
-    public static function dbUpdate($table, $columns, $condition = '', $params = [], bool $execute = true): Command
-    {
-        return static::dbCommandExecute(static::dbCommand()->update($table, $columns, $condition, $params), $execute);
-    }
-
-    /**
-     * @see Command::upsert
-     * @since 1.15
-     * @deprecated since 1.15
-     * @internal
-     */
-    public static function dbUpsert($table, $insertColumns, $updateColumns = true, $params = [], bool $execute = true): Command
-    {
-        return static::dbCommandExecute(
-            static::dbCommand()->upsert($table, $insertColumns, $updateColumns, $params),
-            $execute,
-        );
-    }
-
-    /**
-     * @see Command::delete()
-     * @since 1.15
-     * @deprecated since 1.15
-     * @internal
-     */
-    public static function dbDelete($table, $condition = '', $params = [], bool $execute = true): Command
-    {
-        return static::dbCommandExecute(static::dbCommand()->delete($table, $condition, $params), $execute);
-    }
-
-    /**
-     * @see Query::select
-     * @see Query::from
-     * @see Query::where
-     * @see \yii\db\QueryTrait::limit()
-     * @since 1.15
-     * @deprecated since 1.15
-     * @internal
-     */
-    public static function dbSelect($tables, $columns, $condition = '', $params = [], $limit = 10, $selectOption = null): array
-    {
-        return static::dbQuery($tables, $condition, $params, $limit)
-            ->select($columns, $selectOption)
-            ->all();
-    }
-
-    /**
-     * @see Command::delete()
-     * @since 1.15
-     * @deprecated since 1.15
-     * @internal
-     */
-    public static function dbCount($tables, $condition = '', $params = [])
-    {
-        return static::dbQuery($tables, $condition, $params)
-            ->select("count(*)")
-            ->scalar();
     }
 }

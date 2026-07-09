@@ -134,8 +134,8 @@ class MailSummaryForm extends Model
     {
         $contents = [];
 
-        foreach (Module::getConfigurableActivities() as $activity) {
-            $contents[$activity::class] = $activity->getTitle() . ' - ' . $activity->getDescription();
+        foreach (Module::getConfigurableActivities() as $activityClass) {
+            $contents[$activityClass] = $activityClass::getTitle() . ' - ' . $activityClass::getDescription();
         }
 
         return $contents;
@@ -222,7 +222,7 @@ class MailSummaryForm extends Model
      *
      * @throws Exception
      */
-    public function resetUserSettings()
+    public function resetUserSettings(): void
     {
         if ($this->user === null) {
             throw new Exception('Could not reset settings when no user is set!');

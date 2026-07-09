@@ -52,5 +52,4 @@ return [
     '[Invalid file]' => '[Невалиден файл]',
     '[Table]' => '[Таблица]',
     'Switch editor mode' => '',
-    '[Image]' => '',
 ];

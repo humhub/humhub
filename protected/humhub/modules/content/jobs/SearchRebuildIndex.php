@@ -13,9 +13,20 @@ use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\content\services\SearchJobService;
 use humhub\modules\queue\interfaces\ExclusiveJobInterface;
 use humhub\modules\queue\LongRunningActiveJob;
+use Yii;
 
 class SearchRebuildIndex extends LongRunningActiveJob implements ExclusiveJobInterface
 {
+    /**
+     * Number of processed items between interim progress log messages.
+     */
+    public const LOG_PROGRESS_INTERVAL = 100;
+
+    /**
+     * Log category used for all search index rebuild messages.
+     */
+    public const LOG_CATEGORY = 'search-indexing';
+
     /**
      * @inhertidoc
      */
@@ -30,11 +41,22 @@ class SearchRebuildIndex extends LongRunningActiveJob implements ExclusiveJobInt
     public function run()
     {
         return $this->getService()->run(function (): void {
+            $pid = getmypid() ?: 'unknown';
+
+            Yii::warning(sprintf('Search index rebuild [PID %s] started.', $pid), self::LOG_CATEGORY);
+
+            $processed = 0;
             foreach (Content::find()->each() as $content) {
                 (new ContentSearchService($content))->update(false);
+
+                if (++$processed % self::LOG_PROGRESS_INTERVAL === 0) {
+                    Yii::warning(sprintf('Search index rebuild [PID %s] processed: %d items.', $pid, $processed), self::LOG_CATEGORY);
+                }
             }
 
             ContentSearchService::flushCache();
+
+            Yii::warning(sprintf('Search index rebuild [PID %s] finished. %d items indexed.', $pid, $processed), self::LOG_CATEGORY);
         });
     }
 

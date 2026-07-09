@@ -12,14 +12,6 @@ use humhub\widgets\form\ActiveForm;
 
 AdminUserAsset::register($this);
 
-$this->registerJsConfig('admin.space', [
-    'text' => [
-        'confirm.header' => Yii::t('AdminModule.user', 'Convert Profile Topics'),
-        'confirm.body' => Yii::t('AdminModule.user', 'All existing Profile Topics will be converted to Global Topics.'),
-        'confirm.confirmText' => Yii::t('AdminModule.user', 'Convert'),
-    ],
-]);
-
 /* @var Module $userModule */
 $userModule = Yii::$app->getModule('user');
 

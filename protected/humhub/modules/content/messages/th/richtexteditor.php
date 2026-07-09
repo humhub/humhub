@@ -49,7 +49,6 @@ return [
     'Wrap in bullet list' => 'ห่อในรายการหัวข้อย่อย',
     'Wrap in ordered list' => 'ห่อในรายการสั่งซื้อ',
     '[Code Block]' => '[รหัสบล็อก]',
-    '[Image]' => '[ภาพ]',
     '[Invalid file]' => '[ไฟล์ไม่ถูกต้อง]',
     '[Table]' => '[โต๊ะ]',
     'Switch editor mode' => '',

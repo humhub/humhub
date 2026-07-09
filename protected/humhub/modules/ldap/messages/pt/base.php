@@ -2,7 +2,6 @@
 
 return [
     'Base DN' => 'Base DN',
-    'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'Define o filtro a aplicar quando registo é tentado. %s substitui pessoa na acção de registo. Exemplo: "(sAMAccountName=%s)" or "(uid=%s)"',
     'E-Mail Address Attribute' => 'Atributo de E-Mail',
     'Enable LDAP Support' => 'Ativar o Suporte LDAP',
     'Encryption' => 'Encriptação',
@@ -13,8 +12,7 @@ return [
     'LDAP' => 'LDAP',
     'LDAP Attribute for E-Mail Address. Default: &quot;mail&quot;' => 'Atributo LDAP para E-Mail. Padrão: "mail"',
     'LDAP Attribute for Username. Example: &quot;uid&quot; or &quot;sAMAccountName&quot;' => 'Atributo LDAP para Nome de Utilizador. Exemplo: "uid" or "sAMAccountName"',
-    'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'Acesso limitado a pessoas com este critério. Exemplo: "(objectClass=posixAccount)" or "(&amp;(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))"',
-    'Login Filter' => 'Filtro de Login',
+    'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => 'Acesso limitado a pessoas com este critério. Exemplo: "(objectClass=posixAccount)" or "(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))"',
     'Not changeable LDAP attribute to unambiguously identify the user in the directory. If empty the user will be determined automatically by e-mail address or username. Examples: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)' => 'Atributo LDAP não permutável (a proteger) que identifica de forma desambigua uma pessoa na lista. Se não preenchido a pessoa será automaticamente determinada pelo E-Mail ou Nome da Pessoa. Exemplos: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)',
     'One DN per line which should not be imported automatically.' => 'Uma DN por linha que não deve ser importada automaticamente.',
     'Password' => 'Palavra-passe',
@@ -29,4 +27,7 @@ return [
     'User Filter' => 'Filtro da Pessoa',
     'Username' => 'Nome de Utilizador',
     'Username Attribute' => 'Atributo de Nome de Utilizador',
+    'Allowed Authentication Methods' => '',
+    'Disable Certificate Checking' => '',
+    'Select the authentication methods LDAP users may use. Unchecking "LDAP" disables direct LDAP password login and forces users through the other selected methods (e.g. SAML, OpenID Connect).' => '',
 ];

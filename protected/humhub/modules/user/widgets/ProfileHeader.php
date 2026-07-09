@@ -10,7 +10,6 @@ namespace humhub\modules\user\widgets;
 
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
-use humhub\modules\user\controllers\ImageController;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Widget;
@@ -57,14 +56,9 @@ class ProfileHeader extends Widget
      */
     public function run()
     {
-        $canEditProfileImage = ImageController::canEditProfileImage($this->user);
-
         return $this->render('profileHeader', [
             'user' => $this->user,
             'isProfileOwner' => $this->isProfileOwner,
-            // Deprecated variables below (will removed in future versions)
-            'allowModifyProfileImage' => $canEditProfileImage, // @deprecated since 1.4 only in use for legacy themes
-            'allowModifyProfileBanner' => $canEditProfileImage, // @deprecated since 1.4 only in use for legacy themes
             'friendshipsEnabled' => Yii::$app->getModule('friendship')->isFriendshipEnabled(),
             'followingEnabled' => !Yii::$app->getModule('user')->disableFollow,
             'countFriends' => -1,

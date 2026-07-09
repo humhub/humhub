@@ -3,7 +3,7 @@
 return [
     'Activity' => 'Toiminta',
     'Add or remove link' => 'Lisää tai poista linkki',
-    'Animals & Nature' => 'Eläimet &amp; Luonto',
+    'Animals & Nature' => 'Eläimet & Luonto',
     'Change to code block' => 'Muokkaa koodia',
     'Change to heading' => 'Muokkaa otsikkoa',
     'Change to paragraph' => 'Muokkaa virkettä',
@@ -15,7 +15,7 @@ return [
     'Delete row' => 'Poista rivi',
     'Delete table' => 'Poista lista',
     'Flags' => 'Liput',
-    'Food & Drink' => 'Ruoka &amp; Juoma',
+    'Food & Drink' => 'Ruoka & Juoma',
     'Heading' => 'Otsikko',
     'Height' => 'Korkeus',
     'Horizontal rule' => 'Horisontaalinen sääntö',
@@ -50,7 +50,6 @@ return [
     'Wrap in ordered list' => 'Kääri tilattuun luetteloon',
     'Switch editor mode' => '',
     '[Code Block]' => '',
-    '[Image]' => '',
     '[Invalid file]' => '',
     '[Table]' => '',
 ];

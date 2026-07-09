@@ -240,7 +240,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
     public function testMentionInActiveUser()
     {
         $user = User::findOne(['id' => 2]);
-        $user->updateAttributes(['status' => User::STATUS_DISABLED]);
+        $user->updateAttributes(['status' => User::STATUS_DEACTIVATED]);
 
         $this->assertConversionResult(
             'Test mention ' . MentioningExtension::buildMentioning($user),

@@ -555,7 +555,7 @@ abstract class BaseNotification extends SocialActivity
     public function asArray(User $user)
     {
         $result = parent::asArray($user);
-        $result['mailSubject'] = $this->getMailSubject();
+        $result['mailSubject'] = Html::decode($this->getMailSubject());
         return $result;
     }
 
@@ -567,24 +567,6 @@ abstract class BaseNotification extends SocialActivity
     {
         // Only for backward compatibility.
         return $this->getAsHtml();
-    }
-
-    /**
-     * Use text() instead
-     * @deprecated since version 1.2
-     */
-    public function getAsText()
-    {
-        return $this->text();
-    }
-
-    /**
-     * Use html() instead
-     * @deprecated since version 1.2
-     */
-    public function getAsHtml()
-    {
-        return null;
     }
 
     /**

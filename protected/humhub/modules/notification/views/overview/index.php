@@ -5,6 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\helpers\Html;
 use humhub\modules\notification\models\forms\FilterForm;
 use humhub\widgets\bootstrap\Button;
 use humhub\modules\notification\widgets\NotificationFilterForm;
@@ -38,7 +39,7 @@ use humhub\modules\notification\widgets\NotificationFilterForm;
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 layout-sidebar-container">
+        <aside class="col-lg-3 layout-sidebar-container" aria-label="<?= Html::encode(Yii::t('base', 'Sidebar')) ?>">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <strong><?= Yii::t('NotificationModule.base', 'Filter') ?></strong>
@@ -48,6 +49,6 @@ use humhub\modules\notification\widgets\NotificationFilterForm;
                     <?= NotificationFilterForm::widget(['filterForm' => $filterForm]) ?>
                 </div>
             </div>
-        </div>
+        </aside>
     </div>
 </div>

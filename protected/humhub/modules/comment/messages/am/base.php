@@ -11,7 +11,6 @@ return [
     '<strong>Delete</strong> comment?' => '',
     '<strong>Permalink</strong> to this comment' => '',
     'Comment' => '',
-    'Comment could not be saved!' => '',
     'Comment has been deleted' => '',
     'Comment of blocked user.' => '',
     'Comments' => '',
@@ -29,5 +28,5 @@ return [
     'Write a new comment...' => '',
     'Write a new reply...' => '',
     'comment' => '',
-    '{displayName} wrote a new comment ' => '',
+    '{displayName} wrote a new comment {comment}.' => '',
 ];

@@ -20,7 +20,6 @@ use humhub\widgets\bootstrap\Button;
             <?= Html::img($module->getImage(), [
                 'class' => 'rounded',
                 'data-src' => 'holder.js/34x34',
-                'alt' => '34x34',
                 'style' => 'width:34px;height:34px',
             ]) ?>
         </div>

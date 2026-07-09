@@ -27,6 +27,7 @@ use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
+use humhub\modules\user\services\UserSourceService;
 use humhub\modules\user\services\LinkRegistrationService;
 use Yii;
 use yii\base\Exception;
@@ -176,13 +177,13 @@ class UserController extends Controller
                     'type' => 'text',
                     'class' => 'form-control',
                     'maxlength' => 25,
-                    'readonly' => !$user->getAuthClientUserService()->canChangeUsername(),
+                    'readonly' => !UserSourceService::getForUser($user)->canChangeUsername(),
                 ],
                 'email' => [
                     'type' => 'text',
                     'class' => 'form-control',
                     'maxlength' => 100,
-                    'readonly' => !$user->getAuthClientUserService()->canChangeEmail(),
+                    'readonly' => !UserSourceService::getForUser($user)->canChangeEmail(),
                 ],
                 'groupSelection' => [
                     'id' => 'user_edit_groups',
@@ -383,7 +384,7 @@ class UserController extends Controller
 
         $this->checkUserAccess($user);
 
-        $user->status = User::STATUS_DISABLED;
+        $user->status = User::STATUS_DEACTIVATED;
         $user->save();
 
         return $this->redirect(['list']);
@@ -448,7 +449,7 @@ class UserController extends Controller
             'status',
             'username',
             'email',
-            'auth_mode',
+            'user_source',
             [
                 'class' => ArrayColumn::class,
                 'attribute' => 'tags',
@@ -469,7 +470,6 @@ class UserController extends Controller
                 'class' => DateTimeColumn::class,
                 'attribute' => 'last_login',
             ],
-            'authclient_id',
             'visibility',
         ];
 

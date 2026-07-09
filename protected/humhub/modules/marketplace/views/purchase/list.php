@@ -55,9 +55,13 @@ Assets::register($this);
             <hr>
             <div class="d-flex">
                 <div class="flex-shrink-0 me-2">
-                    <img class="rounded me-3" data-src="holder.js/64x64" alt="64x64"
-                         style="width: 64px; height: 64px;"
-                         src="<?= empty($module['moduleImageUrl']) ? Yii::getAlias('@web-static/img/default_module.jpg') : $module['moduleImageUrl'] ?>">
+                    <?= Html::img(empty($module['moduleImageUrl'])
+                        ? Yii::getAlias(Yii::$app->assetManager->getPublishedUrl('@humhub/resources') . '/img/default_module.jpg')
+                        : $module['moduleImageUrl'], [
+                            'class' => 'rounded me-3',
+                            'data-src' => 'holder.js/64x64',
+                            'style' => 'width:64px;height:64px',
+                        ]) ?>
                 </div>
 
                 <div class="flex-grow-1">
@@ -73,7 +77,7 @@ Assets::register($this);
 
                     <div class="module-controls">
                         <?php if (!Yii::$app->moduleManager->hasModule($module['id'])): ?>
-                            <strong><?= Link::asLink(Yii::t('MarketplaceModule.base', 'Install'))
+                            <strong><?= Link::to(Yii::t('MarketplaceModule.base', 'Install'))
                                     ->action('marketplace.install', ['/marketplace/browse/install'])
                                     ->options(['data-module-id' => $module['id']]) ?></strong>
                             &middot;

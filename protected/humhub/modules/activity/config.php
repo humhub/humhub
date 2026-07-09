@@ -1,19 +1,16 @@
 <?php
 
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
-
 use humhub\commands\CronController;
+use humhub\models\RecordMap;
 use humhub\modules\activity\Events;
-use humhub\components\ActiveRecord;
 use humhub\commands\IntegrityController;
 use humhub\modules\activity\Module;
 use humhub\modules\admin\widgets\SettingsMenu;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\AccountMenu;
-use humhub\modules\content\models\Content;
+use yii\db\BaseActiveRecord;
 
 /** @noinspection MissedFieldInspection */
 return [
@@ -21,12 +18,18 @@ return [
     'class' => Module::class,
     'isCoreModule' => true,
     'events' => [
-        ['class' => ActiveRecord::class, 'event' => ActiveRecord::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onActiveRecordDelete']],
-        ['class' => IntegrityController::class, 'event' => IntegrityController::EVENT_ON_RUN, 'callback' => [Events::class, 'onIntegrityCheck']],
-        ['class' => CronController::class, 'event' => CronController::EVENT_ON_HOURLY_RUN, 'callback' => [Events::class, 'onCronHourlyRun']],
-        ['class' => CronController::class, 'event' => CronController::EVENT_ON_DAILY_RUN, 'callback' => [Events::class, 'onCronDailyRun']],
-        ['class' => AccountMenu::class, 'event' => AccountMenu::EVENT_INIT, 'callback' => [Events::class, 'onAccountMenuInit']],
-        ['class' => SettingsMenu::class, 'event' => SettingsMenu::EVENT_INIT, 'callback' => [Events::class, 'onSettingsMenuInit']],
-        ['class' => Content::class, 'event' => Content::EVENT_AFTER_UPDATE, 'callback' => [Events::class, 'onContentAfterUpdate']],
+        [IntegrityController::class, IntegrityController::EVENT_ON_RUN, [Events::class, 'onIntegrityCheck']],
+        [CronController::class, CronController::EVENT_ON_HOURLY_RUN, [Events::class, 'onCronHourlyRun']],
+        [CronController::class, CronController::EVENT_ON_DAILY_RUN, [Events::class, 'onCronDailyRun']],
+        [AccountMenu::class, AccountMenu::EVENT_INIT, [Events::class, 'onAccountMenuInit']],
+        [SettingsMenu::class, BaseActiveRecord::EVENT_INIT, [Events::class, 'onSettingsMenuInit']],
+        [RecordMap::class, BaseActiveRecord::EVENT_BEFORE_DELETE, [Events::class, 'onBeforeRecordMapDelete']],
+        [User::class, BaseActiveRecord::EVENT_BEFORE_DELETE, [Events::class, 'onBeforeUserDelete']],
+        [
+            ContentContainerActiveRecord::class,
+            BaseActiveRecord::EVENT_BEFORE_DELETE,
+            [Events::class, 'onBeforeContentContainerDelete'],
+        ],
+        [ContentActiveRecord::class, BaseActiveRecord::EVENT_BEFORE_DELETE, [Events::class, 'onBeforeContentRecordDelete']],
     ],
 ];

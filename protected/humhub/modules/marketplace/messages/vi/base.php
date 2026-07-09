@@ -1,19 +1,8 @@
 <?php
 
 return [
-    '
-Module successfully disabled!
-' => 'Module đã được ngừng kích hoạt!',
-    '
-Module successfully enabled!
-' => 'Module đã được kích hoạt!',
-    '--- Disable module: {moduleId} ---
-
-' => '--- Ngừng kích hoạt module: {moduleId} ---',
-    '--- Enable module: {moduleId} ---
-
-' => '--- Kích hoạt module: {moduleId} ---',
     'All' => 'Tất cả',
+    'Cancel' => 'Hủy',
     'Configure' => 'Cấu hình',
     'Could not find requested module!' => 'Không thể tìm thấy module!',
     'Enable' => 'Kích hoạt',
@@ -21,8 +10,6 @@ Module successfully enabled!
     'General Settings' => 'Cài đặt chung',
     'Information' => 'Thông tin',
     'Installed' => 'Đã cài đặt',
-    'Module not found!
-' => 'Không tìm thấy module!',
     'More info' => 'Thông tin thêm',
     'New' => 'Mới',
     'No modules installed yet. Install some to enhance the functionality!' => 'Chưa modules nào được cài đặt. Hãy cài thêm module bạn cần.',
@@ -60,29 +47,34 @@ The license was successfully removed!
     'Available Updates' => '',
     'Buy' => '',
     'Buy (%price%)' => '',
+    'Buy unverified community module?' => '',
     'Categories' => '',
     'Changelog' => '',
     'Community' => '',
+    'Community modules are developed by third parties and are <strong>not tested or maintained by the HumHub team</strong>.<br><br>They may not be compatible with your HumHub version, can cause <strong>instability or unexpected behavior</strong>, and may stop working after future updates. Their long-term maintenance is not guaranteed.<br><br>Only enable this option if you understand the risks and trust the source of the module you intend to install.' => '',
+    'Continue to checkout' => '',
     'Could not connect to HumHub API!' => '',
-    'Could not connect to HumHub API!
-' => '',
     'Could not connect to license server!' => '',
     'Could not extract module!' => '',
     'Could not find the requested module!' => '',
     'Could not remove old module path!' => '',
     'Could not update license. Error: ' => '',
     'Deprecated' => '',
+    'Description, Name, Keywords...' => '',
     'Download of module failed!' => '',
     'Edit License' => '',
     'Enable now' => '',
     'Featured' => '',
     'Find all the modules you can add to your network in our HumHub Marketplace. Discover numerous add-ons and features that customize the software and give you the possibility to configure your network to your needs.' => '',
     'Great!' => '',
-    'If this Module is additionally marked as <strong>"Community"</strong> it is neither tested nor monitored by the HumHub project team.' => '',
+    'I understand the risk and want to continue.' => '',
+    'If this Module is additionally marked as <strong>"Unverified Community"</strong> it is neither tested nor maintained by the HumHub project team. It may cause instability or stop working after future updates.' => '',
+    'Include community modules' => '',
+    'Include unverified community modules?' => '',
     'Install' => '',
+    'Install anyway' => '',
+    'Install unverified community module?' => '',
     'Invalid module license key!' => '',
-    'Invalid module license key!
-' => '',
     'Latest version:' => '',
     'Learn more' => '',
     'License Key:' => '',
@@ -102,12 +94,7 @@ The license was successfully removed!
     'Module download failed! (%error%)' => '',
     'Module is <strong>installing...</strong>' => '',
     'Module license added!' => '',
-    'Module license added!
-' => '',
-    'Module license key cannot be empty!
-' => '',
-    'Module not found or enabled!
-' => '',
+    'Module options' => '',
     'No compatible module version found!' => '',
     'No license key? Find out more about the {pro} or contact us.' => '',
     'No modules found.' => '',
@@ -121,7 +108,6 @@ The license was successfully removed!
     'Professional Edition is activated!' => '',
     'Remove license key' => '',
     'Save and update' => '',
-    'Search...' => '',
     'Stop updating' => '',
     'The HumHub project does not guarantee the functionality, quality or the continuous development of this Module.' => '',
     'Third-party' => '',
@@ -129,6 +115,7 @@ The license was successfully removed!
     'Third-party disclaimer' => '',
     'This Module was developed by a third-party.' => '',
     'Try other keywords or remove filters.' => '',
+    'Unverified Community' => '',
     'Update all' => '',
     'Update successful' => '',
     'We are almost there! As a final step, we recommend that you take a look at the module configuration, where you will find numerous configuration options, some of which are required.' => '',
@@ -136,5 +123,8 @@ The license was successfully removed!
     'Well done! You have successfully installed and enabled the module!' => '',
     'Without category' => '',
     'Would you like to jump straight to it?' => '',
+    'Yes, show community modules' => '',
+    'You are about to install <strong>{moduleName}</strong>, an unverified community module.<br><br>This module is provided by a third party and has not been reviewed or tested by the HumHub team. It may behave unexpectedly, conflict with other modules, or stop working with future HumHub releases.<br><br>Make sure you trust the source before continuing.' => '',
+    'You are about to purchase <strong>{moduleName}</strong>, an unverified community module.<br><br>This module is provided by a third party and has not been reviewed or tested by the HumHub team. It may behave unexpectedly, conflict with other modules, or stop working with future HumHub releases.<br><br>Make sure you trust the source before continuing.' => '',
     'Your HumHub installation is up to date!' => '',
 ];

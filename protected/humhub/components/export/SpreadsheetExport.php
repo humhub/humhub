@@ -229,7 +229,7 @@ class SpreadsheetExport extends Component
             'class' => DataColumn::class,
             'grid' => $this,
             'attribute' => $matches[1],
-            'format' => $matches[3] ?? fn($value) => $this->sanitizeValue($value),
+            'format' => $matches[3] ?? $this->sanitizeValue(...),
             'label' => $matches[5] ?? null,
         ]);
 

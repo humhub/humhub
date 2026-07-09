@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   'Allow others to create new posts on your profile page' => 'Permitir a atros fer publicacions en a tuya pachina de perfil',
   'Allows the user to create posts' => '',
   'Create post' => 'Creyar publicación',
@@ -8,6 +8,7 @@ return array (
   'Post could not be saved!' => '',
   'The post must not be empty!' => '',
   'This space is archived.' => 'Iste espacio ye archivau.',
+  'Title' => 'Titulek',
   'What\'s on your mind?' => 'En que yes pensando?',
   'post' => 'publicación',
-);
+];

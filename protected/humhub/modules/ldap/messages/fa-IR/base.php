@@ -2,14 +2,12 @@
 
 return [
     'Base DN' => 'DN پایه',
-    'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;',
     'E-Mail Address Attribute' => 'صفات آدرس پست الكترونيكي',
     'Enable LDAP Support' => 'فعال‌‌سازی پشتیبانی LDAP',
     'Encryption' => 'رمزگذاری',
     'Fetch/Update Users Automatically' => 'گرفتن/به‌روز‌رسانی اتوماتیک کاربران',
     'Hostname' => 'نام میزبان',
     'LDAP' => 'LDAP',
-    'Login Filter' => 'فیلتر ورود',
     'Password' => 'گذرواژه',
     'Port' => 'درگاه',
     'Status: Error! (Message: {message})' => 'وضعیت: خطا! (پیغام: {message} )',
@@ -20,6 +18,8 @@ return [
     'User Filter' => 'فیلتر کاربر',
     'Username' => 'نام کاربری',
     'Username Attribute' => 'صفت نام کاربری',
+    'Allowed Authentication Methods' => '',
+    'Disable Certificate Checking' => '',
     'ID Attribute' => '',
     'Ignored LDAP entries' => '',
     'LDAP Attribute for E-Mail Address. Default: &quot;mail&quot;' => '',
@@ -27,6 +27,7 @@ return [
     'Limit access to users meeting this criteria. Example: &quot;(objectClass=posixAccount)&quot; or &quot;(&(objectClass=person)(memberOf=CN=Workers,CN=Users,DC=myDomain,DC=com))&quot;' => '',
     'Not changeable LDAP attribute to unambiguously identify the user in the directory. If empty the user will be determined automatically by e-mail address or username. Examples: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)' => '',
     'One DN per line which should not be imported automatically.' => '',
+    'Select the authentication methods LDAP users may use. Unchecking "LDAP" disables direct LDAP password login and forces users through the other selected methods (e.g. SAML, OpenID Connect).' => '',
     'Specify your LDAP-backend used to fetch user accounts.' => '',
     'Status: Warning! (No users found using the ldap user filter!)' => '',
 ];

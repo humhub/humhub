@@ -13,8 +13,7 @@ use Exception;
 use humhub\compat\HForm;
 use humhub\modules\content\widgets\ContainerTagPicker;
 use humhub\modules\space\helpers\MembershipHelper;
-use humhub\modules\user\authclient\BaseFormAuth;
-use humhub\modules\user\authclient\interfaces\PrimaryClient;
+use humhub\modules\user\authclient\BaseFormClient;
 use humhub\modules\user\components\BaseAccountController;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\forms\AccountChangeEmail;
@@ -24,6 +23,7 @@ use humhub\modules\user\models\forms\AccountSettings;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
+use humhub\modules\user\services\UserSourceService;
 use Throwable;
 use Yii;
 use yii\web\HttpException;
@@ -231,7 +231,7 @@ class AccountController extends BaseAccountController
         }
         $clients = [];
         foreach (Yii::$app->get('authClientCollection')->getClients() as $client) {
-            if (!$client instanceof BaseFormAuth && !$client instanceof PrimaryClient) {
+            if (!$client instanceof BaseFormClient) {
                 $clients[] = $client;
             }
         }
@@ -319,7 +319,7 @@ class AccountController extends BaseAccountController
      */
     public function actionDelete()
     {
-        if (!Yii::$app->user->getAuthClientUserService()->canDeleteAccount()) {
+        if (!UserSourceService::getForUser()->canDeleteAccount()) {
             throw new HttpException(500, 'Account deletion not allowed!');
         }
 
@@ -343,7 +343,7 @@ class AccountController extends BaseAccountController
      */
     public function actionChangeUsername()
     {
-        if (!Yii::$app->user->getAuthClientUserService()->canChangeUsername()) {
+        if (!UserSourceService::getForUser()->canChangeUsername()) {
             throw new HttpException(500, 'Change Username is not allowed');
         }
 
@@ -362,7 +362,7 @@ class AccountController extends BaseAccountController
      */
     public function actionChangeEmail()
     {
-        if (!Yii::$app->user->getAuthClientUserService()->canChangeEmail()) {
+        if (!UserSourceService::getForUser()->canChangeEmail()) {
             throw new HttpException(500, 'Change E-Mail is not allowed');
         }
 
@@ -381,7 +381,7 @@ class AccountController extends BaseAccountController
      */
     public function actionChangeEmailValidate()
     {
-        if (!Yii::$app->user->getAuthClientUserService()->canChangeEmail()) {
+        if (!UserSourceService::getForUser()->canChangeEmail()) {
             throw new HttpException(500, 'Change E-Mail is not allowed');
         }
 
@@ -412,7 +412,7 @@ class AccountController extends BaseAccountController
      */
     public function actionChangePassword()
     {
-        if (!Yii::$app->user->getAuthClientUserService()->canChangePassword()) {
+        if (!UserSourceService::getForUser()->canChangePassword()) {
             throw new HttpException(500, 'Password change is not allowed');
         }
 
@@ -428,61 +428,6 @@ class AccountController extends BaseAccountController
         }
 
         return $this->render('changePassword', ['model' => $userPassword]);
-    }
-
-    /**
-     * Crops the banner image of the user
-     * @deprecated since version 1.2
-     */
-    public function actionCropBannerImage()
-    {
-        return Yii::$app->runAction('/user/image/crop', ['type' => ImageController::TYPE_PROFILE_BANNER_IMAGE]);
-    }
-
-    /**
-     * Handle the banner image upload
-     *
-     * @deprecated since version 1.2
-     */
-    public function actionBannerImageUpload()
-    {
-        // Ensure view file backward compatibility prior 1.2
-        if (isset($_FILES['bannerfiles'])) {
-            $_FILES['images'] = $_FILES['bannerfiles'];
-        }
-        return Yii::$app->runAction('/user/image/upload', ['type' => ImageController::TYPE_PROFILE_BANNER_IMAGE]);
-    }
-
-    /**
-     * Handle the profile image upload
-     *
-     * @deprecated since version 1.2
-     */
-    public function actionProfileImageUpload()
-    {
-        // Ensure view file backward compatibility prior 1.2
-        if (isset($_FILES['profilefiles'])) {
-            $_FILES['images'] = $_FILES['profilefiles'];
-        }
-        return Yii::$app->runAction('/user/image/upload', ['type' => ImageController::TYPE_PROFILE_IMAGE]);
-    }
-
-    /**
-     * Crops the profile image of the user
-     * @deprecated since version 1.2
-     */
-    public function actionCropProfileImage()
-    {
-        return Yii::$app->runAction('/user/image/crop', ['type' => ImageController::TYPE_PROFILE_IMAGE]);
-    }
-
-    /**
-     * Deletes the profile image or profile banner
-     * @deprecated since version 1.2
-     */
-    public function actionDeleteProfileImage()
-    {
-        return Yii::$app->runAction('/user/image/delete', ['type' => (Yii::$app->request->get('type', 'profile') == 'profile') ? ImageController::TYPE_PROFILE_IMAGE : ImageController::TYPE_PROFILE_BANNER_IMAGE]);
     }
 
     /**

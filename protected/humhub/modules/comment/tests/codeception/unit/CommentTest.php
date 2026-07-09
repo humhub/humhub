@@ -2,7 +2,9 @@
 
 namespace tests\codeception\unit\modules\comment\components;
 
+use humhub\models\RecordMap;
 use humhub\modules\activity\models\Activity;
+use humhub\modules\comment\services\CommentListService;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
@@ -20,8 +22,7 @@ class CommentTest extends HumHubDbTestCase
 
         $comment = new Comment([
             'message' => 'User2 comment!',
-            'object_model' => Post::class,
-            'object_id' => 11,
+            'content_id' => 11,
         ]);
 
         $comment->save();
@@ -31,7 +32,7 @@ class CommentTest extends HumHubDbTestCase
         $this->assertNotEmpty($comment->id);
         $this->assertNotEmpty($comment->content->getPolymorphicRelation()->getFollowersWithNotificationQuery());
 
-        $this->assertNotNull(Activity::findOne(['object_model' => Comment::class, 'object_id' => $comment->id]));
+        $this->assertNotNull(Activity::findOne(['content_addon_record_id' => RecordMap::getId($comment)]));
         $this->assertNotNull(Notification::findOne(['source_class' => Comment::class, 'source_pk' => $comment->id]));
     }
 
@@ -41,8 +42,7 @@ class CommentTest extends HumHubDbTestCase
 
         $comment = new Comment([
             'message' => 'User2 comment!',
-            'object_model' => Post::class,
-            'object_id' => 11,
+            'content_id' => 11,
         ]);
 
         $comment->save();
@@ -59,8 +59,7 @@ class CommentTest extends HumHubDbTestCase
 
         $comment = new Comment([
             'message' => 'User2 comment!',
-            'object_model' => Post::class,
-            'object_id' => 11,
+            'content_id' => 11,
         ]);
 
         $comment->save();
@@ -77,23 +76,20 @@ class CommentTest extends HumHubDbTestCase
 
         (new Comment([
             'message' => 'Test comment1',
-            'object_model' => Post::class,
-            'object_id' => 11,
+            'content_id' => 11,
         ]))->save();
 
         (new Comment([
             'message' => 'Test comment2',
-            'object_model' => Post::class,
-            'object_id' => 11,
+            'content_id' => 11,
         ]))->save();
 
         (new Comment([
             'message' => 'Test comment3',
-            'object_model' => Post::class,
-            'object_id' => 11,
+            'content_id' => 11,
         ]))->save();
 
-        $comments = Comment::GetCommentsLimited(Post::class, 11, 2);
+        $comments = CommentListService::create(Post::findOne(['id' => 11]))->getLimited(2);
         $this->assertCount(2, $comments);
         $this->assertEquals('Test comment2', $comments[0]->message);
         $this->assertEquals('Test comment3', $comments[1]->message);
@@ -104,31 +100,39 @@ class CommentTest extends HumHubDbTestCase
     {
         $this->becomeUser('User2');
 
-        $count = Comment::GetCommentCount(Post::class, 11);
+        $count = CommentListService::create(Post::findOne(['id' => 11]))->getCount();
         $this->assertEquals(0, $count);
-
-        Comment::flushCommentCache(Post::class, 11);
 
         (new Comment([
             'message' => 'Test comment1',
-            'object_model' => Post::class,
-            'object_id' => 11,
+            'content_id' => 11,
         ]))->save();
 
-        (new Comment([
+        ($comment2 = new Comment([
             'message' => 'Test comment2',
-            'object_model' => Post::class,
-            'object_id' => 11,
+            'content_id' => 11,
+        ]))->save();
+
+        $count = CommentListService::create(Post::findOne(['id' => 11]))->getCount();
+        $this->assertEquals(2, $count);
+
+        (new Comment([
+            'message' => 'Test comment2b',
+            'content_id' => 11,
+            'parent_comment_id' => $comment2->id,
         ]))->save();
 
         (new Comment([
             'message' => 'Test comment3',
-            'object_model' => Post::class,
-            'object_id' => 11,
+            'content_id' => 11,
         ]))->save();
 
-        $count = Comment::GetCommentCount(Post::class, 11);
+        $count = CommentListService::create(Post::findOne(['id' => 11]))->getCount();
         $this->assertEquals(3, $count);
+
+        $count = CommentListService::create($comment2)->getCount();
+        $this->assertEquals(1, $count);
+
     }
 
 }

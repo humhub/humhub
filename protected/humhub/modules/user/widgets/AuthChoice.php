@@ -10,7 +10,8 @@ namespace humhub\modules\user\widgets;
 
 use humhub\helpers\DeviceDetectorHelper;
 use humhub\helpers\Html;
-use humhub\modules\user\authclient\BaseFormAuth;
+use humhub\modules\user\authclient\BaseFormClient;
+use humhub\modules\user\authclient\Collection;
 use Yii;
 use yii\authclient\ClientInterface;
 
@@ -45,6 +46,11 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
     private $_clients;
 
     /**
+     * @var string Output content from parent::init()
+     */
+    private string $_initOutput = '';
+
+    /**
      * @param ClientInterface[] $clients auth providers
      */
     public function setClients(array $clients)
@@ -74,6 +80,30 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
         return (int)count($filteredClients);
     }
 
+    /**
+     *  Returns the list of client URLs for all auth clients having the method `buildAuthUrl()`.
+     *
+     * @since 1.19.0
+     */
+    public static function getClientUrls(): array
+    {
+        $urls = [];
+        $clients = Yii::$app->get(self::$authclientCollection)->getClients();
+
+        foreach ($clients as $client) {
+            if (!method_exists($client, 'buildAuthUrl')) { // OAuth2, OAuth1 and OpenId clients
+                continue;
+            }
+            // Remove URL params
+            $parts = parse_url($client->buildAuthUrl());
+            $urls[] = $parts['scheme'] . '://' . $parts['host']
+                . (isset($parts['port']) ? ':' . $parts['port'] : '')
+                . ($parts['path'] ?? '');
+        }
+
+        return array_unique($urls);
+    }
+
     public static function hasClients(): bool
     {
         return static::getClientsCount() > 0;
@@ -82,7 +112,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
     /**
      * Filters out clients which need login form
      * @param $clients
-     * @return BaseFormAuth[]
+     * @return BaseFormClient[]
      */
     private static function filterClients($clients)
     {
@@ -90,7 +120,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
         foreach ($clients as $client) {
 
             // Don't show clients which need login form
-            if (!$client instanceof BaseFormAuth) {
+            if (!$client instanceof BaseFormClient) {
                 $result[] = $client;
             }
         }
@@ -115,7 +145,12 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
     public function init()
     {
         if (count($this->getClients()) > 0) {
+            // Capture output content from `parent::init()` in order to don't run it directly here before call
+            // the method `beforeRun()`, because if it returns `false`, then this widget must be not rendered,
+            // we must start to render content only in the method `run()` which is called when `beforeRun() === true`
+            ob_start();
             parent::init();
+            $this->_initOutput = ob_get_clean();
         }
     }
 
@@ -130,6 +165,14 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
     }
 
     /**
+     * @inheritdoc
+     */
+    public function run()
+    {
+        return $this->_initOutput . parent::run();
+    }
+
+    /**
      * Renders the main content, which includes all external services links.
      */
     protected function renderMainContent()
@@ -137,13 +180,9 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
         $clients = $this->getClients();
         $clientCount = count($clients);
 
-        if ($clientCount == 0) {
-            return;
-        }
+        $this->view->registerCssFile(Yii::$app->assetManager->getPublishedUrl('@humhub/resources') . '/resources/user/authChoice.css');
 
-        $this->view->registerCssFile('@web-static/resources/user/authChoice.css');
-
-        echo Html::beginTag('div', ['class' => 'authChoice row g-3']);
+        $result = Html::beginTag('div', ['class' => 'authChoice row g-3']);
 
         $clients = array_values($clients); // Reindex array keys
         foreach ($clients as $i => $client) {
@@ -164,18 +203,20 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
                 // If either button in the pair is long, both get col-12
                 $colClass = ($currentIsLong || $pairedIsLong) ? 'col-12' : 'col-6';
             }
-            echo Html::tag(
+            $result .= Html::tag(
                 'div',
                 $this->clientLink($client),
                 ['class' => $colClass],
             );
         }
 
-        echo Html::endTag('div');
+        $result .= Html::endTag('div');
 
         if ($this->showOrDivider) {
-            echo Html::tag('div', Html::tag('hr') . Html::tag('div', Yii::t('UserModule.base', 'or')), ['class' => 'or-container']);
+            $result .= Html::tag('div', Html::tag('hr') . Html::tag('div', Yii::t('UserModule.base', 'or')), ['class' => 'or-container']);
         }
+
+        return $result;
     }
 
     /**

@@ -30,8 +30,9 @@ use humhub\widgets\PoweredBy;
         <?php endforeach; ?>
 
         <?= PoweredBy::widget() ?>
-
-        <?= LanguageChooser::widget() ?>
     </small>
+</div>
+<div class="text-center">
+    <?= LanguageChooser::widget() ?>
 </div>
 <br/>

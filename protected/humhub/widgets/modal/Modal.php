@@ -78,26 +78,6 @@ class Modal extends \yii\bootstrap5\Modal
     public bool $show = false;
 
     /**
-     * @deprecated since 1.18.0 use [[closeButton]] instead
-     */
-    public $showClose;
-
-    /**
-     * @deprecated since 1.18.0 use [[title]] instead
-     */
-    public $header;
-
-    /**
-     * @deprecated since 1.18.0 (all modal boxes are opened with the fade animation)
-     */
-    public $animation;
-
-    /**
-     * @deprecated since 1.18.0
-     */
-    public $centerText;
-
-    /**
      * @var string Body text, useful when this widget is called as Modal::widget(['body' => '...'])
      */
     public string $body = '';
@@ -127,10 +107,6 @@ class Modal extends \yii\bootstrap5\Modal
         }
 
         // TODO: remove in later version
-        $this->title = $this->title ?: $this->header;
-        if ($this->showClose === false) {
-            $this->closeButton = false;
-        }
         // Convert size from deprecated values to new ones
         if ($this->size === 'extra-small') {
             $this->size = static::SIZE_SMALL;

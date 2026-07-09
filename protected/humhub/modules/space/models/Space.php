@@ -10,11 +10,12 @@ namespace humhub\modules\space\models;
 
 use humhub\components\behaviors\GUID;
 use humhub\libs\UUIDValidator;
+use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\content\models\Content;
-use humhub\modules\space\activities\Created;
+use humhub\modules\space\activities\SpaceCreatedActivity;
 use humhub\modules\space\behaviors\SpaceController;
 use humhub\modules\space\behaviors\SpaceModelMembership;
 use humhub\modules\space\components\ActiveQuerySpace;
@@ -263,10 +264,7 @@ class Space extends ContentContainerActiveRecord
             // Auto add creator as admin
             $this->addMember($user->id, 1, true, self::USERGROUP_ADMIN);
 
-            $activity = new Created();
-            $activity->source = $this;
-            $activity->originator = $user;
-            $activity->create();
+            ActivityManager::dispatch(SpaceCreatedActivity::class, $this, $user);
 
             // If the space creator is not allowed to manage spaces, notify space managers
             if (!(new PermissionManager(['subject' => $user]))->can(ManageSpaces::class)) {
@@ -312,8 +310,8 @@ class Space extends ContentContainerActiveRecord
             $this->moduleManager->disable($module);
         }
 
-        $this->getProfileImage()->delete();
-        $this->getProfileBannerImage()->delete();
+        $this->image->delete();
+        $this->bannerImage->delete();
 
         Follow::deleteAll(['object_id' => $this->id, 'object_model' => static::class]);
 
@@ -469,6 +467,7 @@ class Space extends ContentContainerActiveRecord
 
     /**
      * @inheritDoc
+     * @deprecated since 1.19
      */
     public function getProfileImage()
     {
@@ -666,15 +665,6 @@ class Space extends ContentContainerActiveRecord
     public function getGroupSpaces()
     {
         return $this->hasMany(GroupSpace::class, ['space_id' => 'id']);
-    }
-
-    /**
-     * @return bool
-     * @deprecated
-     */
-    public function isModuleEnabled($id)
-    {
-        return $this->moduleManager->isEnabled($id);
     }
 
     /**

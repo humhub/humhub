@@ -1,19 +1,19 @@
 <?php
-return array (
-  'Any' => '',
-  'Author' => 'Autor',
-  'Best' => '',
-  'Content type' => '',
-  'Date From' => '',
-  'Date To' => '',
-  'Find Content based on keywords' => '',
-  'Newest first' => '',
-  'No results found!' => '',
-  'Results ({count})' => '',
-  'Search' => 'Buscar',
-  'Search...' => '',
-  'Sorting' => 'Ordenación',
-  'Space' => 'Espacio',
-  'Topic' => 'Tema',
-  'Try other keywords or remove filters.' => '',
-);
+
+return [
+    'Author' => 'Autor',
+    'Search' => 'Buscar',
+    'Sorting' => 'Ordenación',
+    'Space' => 'Espacio',
+    'Topic' => 'Tema',
+    'Any' => '',
+    'Best' => '',
+    'Content type' => '',
+    'Contents, Comments, Tags...' => '',
+    'Date From' => '',
+    'Date To' => '',
+    'Newest first' => '',
+    'No results found!' => '',
+    'Results ({count})' => '',
+    'Try other keywords or remove filters.' => '',
+];

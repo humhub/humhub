@@ -28,11 +28,11 @@ return [
     'Default "Hide Activity Sidebar Widget"' => '',
     'Default "Hide Followers"' => '',
     'Default "Hide Members"' => '',
+    'Default Content Sort Order' => '',
     'Default Homepage' => '',
     'Default Homepage (Non-members)' => '',
     'Default Space Permissions' => '',
     'Default Space(s)' => '',
-    'Default Stream Sort' => '',
     'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.' => '',
     'Update Space memberships also for existing members.' => '',
 ];

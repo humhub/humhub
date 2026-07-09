@@ -14,6 +14,7 @@ use humhub\modules\user\models\forms\AccountRecoverPassword;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module as UserModule;
+use humhub\modules\user\services\UserSourceService;
 use Yii;
 use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
@@ -86,8 +87,7 @@ class PasswordRecoveryController extends Controller
 
         // Checks if we can recover users password.
         // This may not possible on e.g. LDAP accounts.
-        $passwordAuth = new \humhub\modules\user\authclient\Password();
-        if ($user->auth_mode !== $passwordAuth->getId()) {
+        if (!UserSourceService::getForUser($user)->canChangePassword()) {
             throw new ForbiddenHttpException(Yii::t('UserModule.account', 'Password recovery disabled. Please contact your system administrator.'));
         }
 

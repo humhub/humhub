@@ -2,12 +2,6 @@
 
 return [
     '
-Module successfully disabled!
-' => 'Módulo deshabilitado con éxito.',
-    '
-Module successfully enabled!
-' => 'Módulo habilitado con éxito.',
-    '
 No active Professional Edition license found!
 ' => '¡No se encontró ninguna licencia de Professional Edition activa!',
     '
@@ -21,12 +15,6 @@ The license was successfully activated!
 The license was successfully removed!
 
 ' => '¡La licencia fue eliminada con éxito!',
-    '--- Disable module: {moduleId} ---
-
-' => '--- Deshabilitar módulo: {moduleId} ---',
-    '--- Enable module: {moduleId} ---
-
-' => '--- Habilitar módulo: {moduleId} ---',
     '<strong>Activate</strong> your Professional Edition' => '<strong>Activa</strong> tu edición profesional',
     '<strong>General</strong> Settings' => 'Configuración <strong>general</strong>',
     'A new update is available (HumHub %version%)!' => 'Hay una nueva actualización disponible (HumHub %version%).',
@@ -41,13 +29,12 @@ The license was successfully removed!
     'Available Updates' => 'Actualizaciones disponibles',
     'Buy' => 'Comprar',
     'Buy (%price%)' => 'Comprar (%price%)',
+    'Cancel' => 'Cancelar',
     'Categories' => 'Categorías',
     'Changelog' => 'Registro de cambios',
     'Community' => 'Comunidad',
     'Configure' => 'Configurar',
     'Could not connect to HumHub API!' => '¡No puedo conectar a la API de HumHub!',
-    'Could not connect to HumHub API!
-' => '¡No se ha podido conectar a la API de HumHub!',
     'Could not connect to license server!' => '¡No se pudo conectar al servidor de licencias!',
     'Could not extract module!' => '¡No se pudo extraer el módulo!',
     'Could not find requested module!' => '¡No se pudo encontrar el módulo solicitado!',
@@ -63,13 +50,10 @@ The license was successfully removed!
     'Find all the modules you can add to your network in our HumHub Marketplace. Discover numerous add-ons and features that customize the software and give you the possibility to configure your network to your needs.' => 'Encuentre todos los módulos que puede añadir a su red en la tienda de aplicaciones de HumHub. Descubra los numerosos complementos y capacidades que le permiten personalizar el software y configurar su red de acuerdo a sus propias necesidades.',
     'General Settings' => 'Ajustes generales',
     'Great!' => '¡Estupendo!',
-    'If this Module is additionally marked as <strong>"Community"</strong> it is neither tested nor monitored by the HumHub project team.' => 'Si este módulo es adicionalmente marcado como <strong>"Communitario"</strong> quiere decir que no es probado ni monitoreado por el equipo de Humhub.',
     'Information' => 'Información',
     'Install' => 'Instalar',
     'Installed' => 'Instalado',
     'Invalid module license key!' => '¡La clave de licencia del módulo es inválida!',
-    'Invalid module license key!
-' => '¡Clave de licencia de módulo no válida!',
     'Latest version:' => 'Última versión:',
     'Learn more' => 'Saber más',
     'License Key:' => 'Número de licencia:',
@@ -89,14 +73,6 @@ The license was successfully removed!
     'Module download failed! (%error%)' => '¡Falló la descarga del módulo! (%error%)',
     'Module is <strong>installing...</strong>' => 'Se está <strong>instalando</strong> el módulo...',
     'Module license added!' => '¡Se ha añadido la licencia del módulo!',
-    'Module license added!
-' => '¡Se ha añadido la licencia de módulo!',
-    'Module license key cannot be empty!
-' => '¡La clave de licencia de módulo no puede estar vacía!',
-    'Module not found or enabled!
-' => '¡No se ha encontrado el módulo o no está activado!',
-    'Module not found!
-' => 'El módulo no se ha encontrado.',
     'More info' => 'Más información',
     'New' => 'Nuevo',
     'No compatible module version found!' => '¡No se encontró una versión compatible del módulo!',
@@ -116,7 +92,6 @@ The license was successfully removed!
     'Remove license key' => 'Eliminar clave de licencia',
     'Save and update' => 'Guardar y actualizar',
     'Search' => 'Buscar',
-    'Search...' => 'Buscar...',
     'Stop updating' => 'Dejar de actualizar',
     'Tags' => 'Etiquetas',
     'The HumHub project does not guarantee the functionality, quality or the continuous development of this Module.' => 'El equipo de HumHub no garantiza el funcionamiento, calidad o el contínuo desarrollo de este módulo.',
@@ -136,5 +111,20 @@ The license was successfully removed!
     'Would you like to jump straight to it?' => '¿Quiere ir directamente allí?',
     'Your HumHub installation is up to date!' => 'Tu instalación de HumHub está actualizada.',
     'Add License' => '',
+    'Buy unverified community module?' => '',
+    'Community modules are developed by third parties and are <strong>not tested or maintained by the HumHub team</strong>.<br><br>They may not be compatible with your HumHub version, can cause <strong>instability or unexpected behavior</strong>, and may stop working after future updates. Their long-term maintenance is not guaranteed.<br><br>Only enable this option if you understand the risks and trust the source of the module you intend to install.' => '',
+    'Continue to checkout' => '',
+    'Description, Name, Keywords...' => '',
     'Edit License' => '',
+    'I understand the risk and want to continue.' => '',
+    'If this Module is additionally marked as <strong>"Unverified Community"</strong> it is neither tested nor maintained by the HumHub project team. It may cause instability or stop working after future updates.' => '',
+    'Include community modules' => '',
+    'Include unverified community modules?' => '',
+    'Install anyway' => '',
+    'Install unverified community module?' => '',
+    'Module options' => '',
+    'Unverified Community' => '',
+    'Yes, show community modules' => '',
+    'You are about to install <strong>{moduleName}</strong>, an unverified community module.<br><br>This module is provided by a third party and has not been reviewed or tested by the HumHub team. It may behave unexpectedly, conflict with other modules, or stop working with future HumHub releases.<br><br>Make sure you trust the source before continuing.' => '',
+    'You are about to purchase <strong>{moduleName}</strong>, an unverified community module.<br><br>This module is provided by a third party and has not been reviewed or tested by the HumHub team. It may behave unexpectedly, conflict with other modules, or stop working with future HumHub releases.<br><br>Make sure you trust the source before continuing.' => '',
 ];

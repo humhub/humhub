@@ -12,8 +12,6 @@ use humhub\modules\space\models\Space;
  * @var $link bool
  * @var $isDefaultImage bool
  */
-
-$imageUrl = $space->getProfileImage()->getUrl();
 ?>
 
 <?php if ($link): ?>
@@ -23,7 +21,7 @@ $imageUrl = $space->getProfileImage()->getUrl();
 <?= Html::beginTag('div', $acronymHtmlOptions) ?>
     <span><?= $acronym ?></span>
 <?= Html::endTag('div') ?>
-<?= Html::img($imageUrl, $imageHtmlOptions) ?>
+<?= Html::img($space->image->getUrl(), $imageHtmlOptions) ?>
 
 <?php if ($link): ?>
     <?= Html::endTag('a') ?>

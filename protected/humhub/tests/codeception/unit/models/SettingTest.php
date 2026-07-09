@@ -10,7 +10,6 @@ namespace humhub\tests\codeception\unit\models;
 
 use humhub\models\Setting;
 use humhub\tests\codeception\unit\components\SettingActiveRecordTest;
-use yii\base\Exception;
 
 class SettingTest extends SettingActiveRecordTest
 {
@@ -37,34 +36,5 @@ class SettingTest extends SettingActiveRecordTest
 
         $settingAfter = Setting::findAll(['module_id' => 'base', 'name' => 'testSetting']);
         $this->assertCount(0, $settingAfter, "Setting 'testSetting' for 'base' was not deleted.");
-    }
-
-    public function testDeprecatedFixKey()
-    {
-        $this->assertEquals('foo', Setting::fixDeprecatedSettingKeys('foo'), "Translation messed things up!");
-
-        $this->assertEquals(
-            'mailerTransportType',
-            Setting::fixDeprecatedSettingKeys('mailer.transportType'),
-            "Translation messed things up!",
-        );
-    }
-
-    public function testDeprecatedGetValidSetting()
-    {
-        $this->assertEquals('Test Setting for Base', Setting::get('testSetting', 'base'), "Invalid value returned!");
-    }
-
-    public function testDeprecatedGetSettingFromInvalidModule()
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Could not find module: this module does not exist');
-
-        Setting::get('testSetting', 'this module does not exist');
-    }
-
-    public function testDeprecatedGetInvalidSetting()
-    {
-        $this->assertNull(Setting::get('testSetting_', 'base'), "Invalid value returned!");
     }
 }

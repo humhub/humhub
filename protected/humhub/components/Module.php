@@ -8,6 +8,7 @@
 
 namespace humhub\components;
 
+use humhub\components\assets\AssetManager;
 use humhub\helpers\ThemeHelper;
 use humhub\models\Setting;
 use humhub\modules\activity\components\BaseActivity;
@@ -19,11 +20,13 @@ use humhub\modules\marketplace\models\Module as OnlineModelModule;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\queue\helpers\QueueHelper;
 use humhub\services\MigrationService;
+use humhub\services\ModuleService;
 use Throwable;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\db\StaleObjectException;
 use yii\helpers\Json;
+use yii\helpers\Url;
 use yii\web\AssetBundle;
 
 /**
@@ -104,7 +107,7 @@ class Module extends \yii\base\Module
         $url = $this->getPublishedUrl('/module_image.png');
 
         if ($url == null) {
-            $url = Yii::getAlias("@web-static/img/default_module.jpg");
+            $url = Yii::$app->assetManager->getPublishedUrl('@humhub/resources') . '/img/default_module.jpg';
         }
 
         return $url;
@@ -160,19 +163,18 @@ class Module extends \yii\base\Module
      *
      * @return string Image Url
      */
-    public function getAssetsUrl()
+    public function getAssetsUrl(): string
     {
-        if (($published = $this->publishAssets()) != null) {
-            return $published[1];
-        }
+        $published = $this->publishAssets();
+        return $published && isset($published[1]) ? Url::to($published[1]) : '';
     }
 
     /**
      * Publishes the basePath/resourcesPath (assets) module directory if existing.
      * @param bool $all whether or not to publish sub assets within the `assets` directory
-     * @return array
+     * @return array|null
      */
-    public function publishAssets($all = false)
+    public function publishAssets(bool $all = false): ?array
     {
         /** @var $assetBundle AssetBundle */
         /** @var $manager AssetManager */
@@ -180,14 +182,14 @@ class Module extends \yii\base\Module
         if ($all) {
             foreach ($this->getAssetClasses() as $assetClass) {
                 $assetBundle = new $assetClass();
-                $manager = Yii::$app->getAssetManager();
-                $manager->forcePublish($assetBundle);
+                $assetBundle->publishOptions['forceCopy'] = true;
+                $assetBundle->publish(Yii::$app->assetManager);
             }
         }
 
-        if ($this->hasAssets()) {
-            return Yii::$app->assetManager->publish($this->getAssetPath(), ['forceCopy' => true]);
-        }
+        return $this->hasAssets()
+            ? Yii::$app->assetManager->publish($this->getAssetPath(), ['forceCopy' => true])
+            : null;
     }
 
     /**
@@ -221,28 +223,34 @@ class Module extends \yii\base\Module
     }
 
     /**
-     * @see          static::getIsEnabled()
-     * @deprecated since 1.16; use static::getIsEnabled() instead.
-     * @noinspection PhpUnused
-     */
-    public function getIsActivated(): bool
-    {
-        return $this->getIsEnabled();
-    }
-
-    /**
-     * Enables this module
+     * Enables this module.
      *
-     * @return bool|null Result of migration or null if beforeEnable() returned false (since v1.16)
+     * Override this method to run custom logic when the module is enabled. Call
+     * `parent::enable()` **before** your custom code so the module is already
+     * registered and active when your code runs:
+     *
+     * ```php
+     * public function enable()
+     * {
+     *     parent::enable();
+     *     // custom enable logic here
+     * }
+     * ```
+     *
+     * The base implementation delegates the registration step to {@see ModuleService::enable()}
+     * and then runs pending database migrations via {@see MigrationService::migrateUp()}.
+     * If migrations fail, the registration is rolled back automatically.
+     *
+     * @return bool|null migration result, or false if migrations failed
      * @throws InvalidConfigException
      */
     public function enable()
     {
-        Yii::$app->moduleManager->enable($this);
+        $this->getModuleService()->enable();
         $result = $this->getMigrationService()->migrateUp();
 
         if ($result === false) {
-            Yii::$app->moduleManager->disable($this);
+            $this->getModuleService()->disable();
             Yii::error('Could not enable module. Database Migration failed! See previous error for result.', $this->id);
             return false;
         }
@@ -280,23 +288,22 @@ class Module extends \yii\base\Module
             $result = false;
         }
 
-        Yii::$app->moduleManager->disable($this);
+        $this->getModuleService()->disable();
 
         return $result;
-    }
-
-    /**
-     * Execute all not applied module migrations
-     * @deprecated since v1.16; use static::getMigrationService()->migrateUp()
-     */
-    public function migrate()
-    {
-        return $this->getMigrationService()->migrateUp();
     }
 
     public function getMigrationService(): MigrationService
     {
         return new MigrationService($this);
+    }
+
+    /**
+     * @since 1.19
+     */
+    public function getModuleService(): ModuleService
+    {
+        return new ModuleService($this);
     }
 
     /**
@@ -338,29 +345,6 @@ class Module extends \yii\base\Module
                 }
             }
         }
-    }
-
-    /**
-     * Called right before the module is updated.
-     *
-     * The update will cancel if this function does return false;
-     *
-     * @return bool
-     * @deprecated since v1.15.3
-     *
-     */
-    public function beforeUpdate()
-    {
-        return true;
-    }
-
-    /**
-     * Called right after the module update.
-     *
-     * @deprecated since v1.15.3
-     */
-    public function afterUpdate()
-    {
     }
 
     /**

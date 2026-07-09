@@ -52,13 +52,12 @@ class ContentSearchService
 
     public function getCommentsAsText(): string
     {
+        // ToDo: Add related files
+        // ToDo: Add comments in correct order (add parents below
+
         $result = '';
-        foreach (Comment::findAll(['object_model' => $this->content->object_model, 'object_id' => $this->content->object_id]) as $comment) {
+        foreach (Comment::findAll(['content_id' => $this->content->id]) as $comment) {
             $result .= "\n\n" . $comment->message . "\n\n";
-            foreach (Comment::findAll(['object_model' => Comment::class, 'object_id' => $comment->id]) as $subComment) {
-                $result .= "\n\n" . $subComment->message . "\n\n";
-            }
-            // ToDo: Add related files
         }
         return $result;
     }

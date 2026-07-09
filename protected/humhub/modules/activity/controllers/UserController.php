@@ -1,11 +1,5 @@
 <?php
 
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
-
 namespace humhub\modules\activity\controllers;
 
 use humhub\modules\activity\models\MailSummaryForm;
@@ -17,20 +11,14 @@ use yii\web\NotFoundHttpException;
 /**
  * UserController allows users to modify the E-Mail summary settings.
  *
+ * @property-read Module $module
  * @since 1.2
- * @author Luke
  */
 class UserController extends BaseAccountController
 {
-    /**
-     * @return string
-     * @throws NotFoundHttpException
-     */
     public function actionIndex()
     {
-        /** @var Module $module */
-        $module = Yii::$app->getModule('activity');
-        if (!$module->enableMailSummaries) {
+        if (!$this->module->enableMailSummaries) {
             throw new NotFoundHttpException('Mail summaries are not enabled.');
         }
 
@@ -56,7 +44,7 @@ class UserController extends BaseAccountController
         $model->user = $this->getUser();
         $model->resetUserSettings();
 
-        $this->redirect(['index']);
+        return $this->redirect(['index']);
     }
 
 }

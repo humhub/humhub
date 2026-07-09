@@ -186,7 +186,7 @@ class ScssHelper
     private static function isMap(string $content): bool
     {
         // Maps are always multi-line in SCSS
-        if (strpos($content, "\n") === false) {
+        if (!str_contains($content, "\n")) {
             return false;
         }
 
@@ -238,7 +238,7 @@ class ScssHelper
             $content[] = $line;
 
             // Parse each character
-            for ($j = 0; $j < strlen($line); $j++) {
+            for ($j = 0; $j < strlen((string) $line); $j++) {
                 $char = $line[$j];
 
                 // Handle string delimiters
@@ -269,7 +269,7 @@ class ScssHelper
             }
 
             // Statement complete when parentheses balanced and semicolon found
-            if ($parenLevel === 0 && strpos($line, ';') !== false) {
+            if ($parenLevel === 0 && str_contains((string) $line, ';')) {
                 return [
                     'content' => implode("\n", $content),
                     'nextIndex' => $i + 1,
@@ -360,7 +360,7 @@ class ScssHelper
             return null;
         }
 
-        $hex = ltrim($color, '#');
+        $hex = ltrim((string) $color, '#');
         $r = hexdec(substr($hex, 0, 2)) / 255;
         $g = hexdec(substr($hex, 2, 2)) / 255;
         $b = hexdec(substr($hex, 4, 2)) / 255;
