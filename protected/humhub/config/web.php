@@ -17,12 +17,32 @@ $config = [
                 // Override obsolete @bower packages to @npm
                 'yii\web\JqueryAsset' => [
                     'sourcePath' => '@npm/jquery/dist',
+                    'publishOptions' => [
+                        'only' => [
+                            'jquery.js',
+                        ],
+                    ],
                 ],
                 'yii\jui\JuiAsset' => [
                     'sourcePath' => '@npm/jquery-ui/dist',
+                    'publishOptions' => [
+                        'only' => [
+                            'jquery-ui.js',
+                            'themes/smoothness/*',
+                            'themes/smoothness/images/*',
+                        ],
+                    ],
                 ],
                 'yii\jui\DatePickerLanguageAsset' => [
                     'sourcePath' => '@npm/jquery-ui',
+                    // Must stay identical to humhub\assets\JqueryWidgetAsset::$publishOptions,
+                    // both bundles publish the same source path.
+                    'publishOptions' => [
+                        'only' => [
+                            'ui/widget.js',
+                            'ui/i18n/*',
+                        ],
+                    ],
                 ],
             ],
         ],

@@ -25,6 +25,16 @@ class FontAwesomeAsset extends AssetBundle
     /**
      * @inheritdoc
      */
+    public $publishOptions = [
+        'only' => [
+            'css/font-awesome.min.css',
+            'fonts/*',
+        ],
+    ];
+
+    /**
+     * @inheritdoc
+     */
     public $css = ['css/font-awesome.min.css'];
 
 }

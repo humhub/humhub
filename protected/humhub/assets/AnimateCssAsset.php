@@ -30,6 +30,15 @@ class AnimateCssAsset extends AssetBundle
     /**
      * @inheritdoc
      */
+    public $publishOptions = [
+        'only' => [
+            'animate.min.css',
+        ],
+    ];
+
+    /**
+     * @inheritdoc
+     */
     public $css = ['animate.min.css'];
 
 }
