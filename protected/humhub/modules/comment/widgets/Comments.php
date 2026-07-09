@@ -49,6 +49,10 @@ class Comments extends Widget
 
     public function run()
     {
+        if (Yii::$app->user->isGuest && $this->module->guestHideComments) {
+            return '';
+        }
+
         $commentListService = new CommentListService($this->content, $this->parentComment);
         $comments = $commentListService->getLimited($this->limit, $this->getHighlightCommentId(true));
 
