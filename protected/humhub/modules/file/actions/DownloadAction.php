@@ -111,19 +111,12 @@ class DownloadAction extends Action
         ];
 
         $dataMountConfig = Yii::$app->fs->getDataMountConfig();
-        if ($this->getModule()->settings->get('useXSendfile')) {
-            if ($dataMountConfig instanceof LocalMountConfig) {
-                Yii::$app->response->xSendFile(
-                    Yii::getAlias($dataMountConfig->path) . DIRECTORY_SEPARATOR . $this->file->store->get($this->variant),
-                    $fileName,
-                    $options,
-                );
-            } else {
-                Yii::error(
-                    'XSendfile is only supported by ' . LocalMountConfig::class . ' mounts. '
-                    . $dataMountConfig::class . ' given.',
-                );
-            }
+        if ($this->getModule()->settings->get('useXSendfile') && $dataMountConfig instanceof LocalMountConfig) {
+            Yii::$app->response->xSendFile(
+                Yii::getAlias($dataMountConfig->path) . DIRECTORY_SEPARATOR . $this->file->store->get($this->variant),
+                $fileName,
+                $options,
+            );
         } elseif ($dataMountConfig->useTemporaryUrls()) {
             $url = Yii::$app->fs->getDataMount()->temporaryUrl(
                 $this->file->store->get($this->variant),
