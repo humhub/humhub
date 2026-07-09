@@ -2,7 +2,6 @@
 
 namespace humhub\components\assets;
 
-use humhub\helpers\TrackableArray;
 use humhub\modules\file\libs\ImageHelper;
 use Imagine\Image\Box;
 use Imagine\Image\Format;
@@ -55,8 +54,7 @@ class AssetImage extends Component implements \Stringable
     public string $path;
     private readonly string $fileName;
     public FileSystem $fs;
-    public TrackableArray $cachePublish;
-    public ?bool $fileExists = null;
+    private ?bool $fileExists = null;
 
     public function __construct($config = [])
     {
@@ -71,7 +69,6 @@ class AssetImage extends Component implements \Stringable
         $this->fileName = basename($this->file);
         $this->path = dirname($this->file);
         $this->defaultFile = Yii::getAlias($this->defaultFile);
-        $this->cachePublish ??= new TrackableArray();
     }
 
     /**
@@ -85,25 +82,21 @@ class AssetImage extends Component implements \Stringable
             $options = $this->defaultOptions;
         }
 
-        $scaledFileName = $this->path . DIRECTORY_SEPARATOR . $this->getFileNameWithOptions($options);
+        $fileNameWithOptions = $this->getFileNameWithOptions($options);
+        if ($fileNameWithOptions === '') {
+            // Neither an uploaded image nor a defaultFile
+            return '';
+        }
 
-        if (isset($this->cachePublish[$scaledFileName])) {
-            //Yii::debug("AssetImage: Use Cached: " . $scaledFileName);
+        $scaledFileName = $this->path . DIRECTORY_SEPARATOR . $fileNameWithOptions;
 
-            $published = $this->cachePublish[$scaledFileName];
-        } else {
-            //Yii::debug("AssetImage: Check file exists: " . $scaledFileName);
-
-            if (!$this->exists() && empty($this->defaultFile)) {
-                return '';
-            }
-
+        $published = Yii::$app->assetManager->getPublishedAssetImage($scaledFileName);
+        if ($published === null) {
             if (!$this->fs->fileExists($scaledFileName)) {
                 $this->convert($scaledFileName, $options);
             }
 
             $published = Yii::$app->assetManager->publishAssetImage($this, $scaledFileName);
-            $this->cachePublish[$scaledFileName] = $published;
         }
 
         return Url::to($published[1], $scheme);
@@ -183,8 +176,6 @@ class AssetImage extends Component implements \Stringable
 
     public function delete(): void
     {
-        $this->cachePublish->clear();
-
         try {
             if ($this->fs->fileExists($this->file)) {
                 $this->fs->delete($this->file);
