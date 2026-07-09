@@ -35,6 +35,19 @@ class JqueryTimeAgoAsset extends AssetBundle
 
     /**
      * @inheritdoc
+     *
+     * Must stay identical to `JqueryTimeAgoLocaleAsset::$publishOptions` as both
+     * bundles publish the same source path.
+     */
+    public $publishOptions = [
+        'only' => [
+            'jquery.timeago.js',
+            'locales/*',
+        ],
+    ];
+
+    /**
+     * @inheritdoc
      */
     public $sourcePath = '@npm/timeago';
 

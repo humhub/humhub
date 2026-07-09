@@ -24,6 +24,18 @@ class Select2Asset extends AssetBundle
 
     /**
      * @inheritdoc
+     *
+     * The i18n files are loaded by select2 at runtime depending on the language.
+     */
+    public $publishOptions = [
+        'only' => [
+            'select2.full.min.js',
+            'i18n/*',
+        ],
+    ];
+
+    /**
+     * @inheritdoc
      */
     public $js = ['select2.full.min.js'];
 

@@ -25,6 +25,15 @@ class JqueryCookieAsset extends AssetBundle
     /**
      * @inheritdoc
      */
+    public $publishOptions = [
+        'only' => [
+            'jquery.cookie.js',
+        ],
+    ];
+
+    /**
+     * @inheritdoc
+     */
     public $js = ['jquery.cookie.js'];
 
 }

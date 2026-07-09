@@ -38,16 +38,6 @@ class AppAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $publishOptions = [
-        'except' => [
-            'scss/',
-            '.gitignore',
-        ],
-    ];
-
-    /**
-     * @inheritdoc
-     */
     public $defer = false;
 
     /**
