@@ -2,12 +2,10 @@
 
 namespace humhub\components\assets;
 
-use humhub\helpers\TrackableArray;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\Visibility;
 use Yii;
-use yii\base\Application;
 use yii\base\InvalidArgumentException;
 use yii\base\InvalidConfigException;
 use yii\helpers\FileHelper;
@@ -16,6 +14,14 @@ class AssetManager extends \yii\web\AssetManager
 {
     public $appendTimestamp = true;
 
+    /**
+     * Cache key holding the current publish-state generation. `clear()` bumps the
+     * generation, which invalidates all published entries at once without having
+     * to enumerate them.
+     */
+    private const CACHE_VERSION_KEY = 'assetManager.published.version';
+    private const CACHE_KEY_PREFIX = 'assetManager.published';
+
     private array $filesystemOptions = [
         'visibility' => Visibility::PUBLIC,
         'directory_visibility' => Visibility::PUBLIC,
@@ -23,9 +29,14 @@ class AssetManager extends \yii\web\AssetManager
 
     private FileSystem $fs;
 
-    public bool $enableCache = true;
+    /**
+     * Request-local memo of publish states. The authoritative state lives in
+     * `Yii::$app->cache` as one entry per published path, so publishing and
+     * unpublishing take effect immediately across web and console processes.
+     */
+    private array $_published = [];
 
-    private TrackableArray $_published;
+    private ?int $_cacheVersion = null;
 
     public function init(): void
     {
@@ -41,33 +52,20 @@ class AssetManager extends \yii\web\AssetManager
         if ($this->linkAssets) {
             throw new InvalidConfigException('Linking assets is not supported.');
         }
-
-
-        if ($this->enableCache) {
-            $this->_published = new TrackableArray(Yii::$app->cache->get('assetManagerPublished') ?: []);
-
-            Yii::$app->on(Application::EVENT_AFTER_REQUEST, function ($event): void {
-                if ($this->_published->hasChanged() && !Yii::$app->request->isConsoleRequest) {
-                    Yii::$app->cache->set('assetManagerPublished', $this->_published->toArray());
-                }
-            });
-        } else {
-            $this->_published = new TrackableArray();
-        }
     }
 
     public function publish($path, $options = [])
     {
         $path = Yii::getAlias($path);
 
-        if (isset($this->_published[$path]) && empty($options['forceCopy'])) {
+        if (empty($options['forceCopy']) && ($published = $this->getPublished($path)) !== null) {
             //Yii::debug("Cached asset '{$path}'", __METHOD__);
-            return $this->_published[$path];
+            return $published;
         }
 
         Yii::debug("Publishing asset '{$path}'", __METHOD__);
 
-        return $this->_published[$path] = parent::publish($path, $options);
+        return $this->setPublished($path, parent::publish($path, $options));
     }
 
     protected function publishFile($src)
@@ -124,14 +122,25 @@ class AssetManager extends \yii\web\AssetManager
     }
 
     /**
+     * Returns the publish state of an AssetImage variant without any filesystem access,
+     * or `null` if the variant has not been published yet.
+     *
+     * @return array|null [$dstFile, $url] as returned by `publishAssetImage()`
+     */
+    public function getPublishedAssetImage(string $fileNameWithOptions): ?array
+    {
+        return $this->getPublished($fileNameWithOptions);
+    }
+
+    /**
      * Publishes an AssetImage
      * We need a separate method here, because AssetImages may located in another FlySystem.
      */
     public function publishAssetImage(AssetImage $assetImage, string $fileNameWithOptions): array
     {
-        if (isset($this->_published[$fileNameWithOptions])) {
+        if (($published = $this->getPublished($fileNameWithOptions)) !== null) {
             //Yii::debug("Cached asset image '{$fileNameWithOptions}'", __METHOD__);
-            return $this->_published[$fileNameWithOptions];
+            return $published;
         }
 
         //Yii::debug("Published asset image '{$fileNameWithOptions}'", __METHOD__);
@@ -158,7 +167,7 @@ class AssetManager extends \yii\web\AssetManager
             );
         }
 
-        return $this->_published[$fileNameWithOptions] = [$dstFile, $this->baseUrl . '/' . $dstFile . '?t=' . time()];
+        return $this->setPublished($fileNameWithOptions, [$dstFile, $this->baseUrl . '/' . $dstFile . '?t=' . time()]);
     }
 
 
@@ -172,13 +181,11 @@ class AssetManager extends \yii\web\AssetManager
             $this->fs->delete($dstFile);
         }
 
-        unset($this->_published[$fileNameWithOptions]);
+        $this->removePublished($fileNameWithOptions);
     }
 
     public function clear()
     {
-        $this->enableCache = false;
-
         // Only remove the contents of the assets mount, not the mount directory itself.
         // Deleting the root would call rmdir() on the mount, which requires write permission
         // on its parent directory - not granted in some setups (e.g. Docker), causing the
@@ -191,8 +198,43 @@ class AssetManager extends \yii\web\AssetManager
             }
         }
 
-        Yii::$app->cache->delete('assetManagerPublished');
+        $this->_cacheVersion = $this->getCacheVersion() + 1;
+        Yii::$app->cache->set(self::CACHE_VERSION_KEY, $this->_cacheVersion);
+        $this->_published = [];
+    }
 
+    private function getPublished(string $key): mixed
+    {
+        if (array_key_exists($key, $this->_published)) {
+            return $this->_published[$key];
+        }
+
+        $published = Yii::$app->cache->get($this->buildCacheKey($key));
+
+        return $this->_published[$key] = ($published === false ? null : $published);
+    }
+
+    private function setPublished(string $key, mixed $value): mixed
+    {
+        Yii::$app->cache->set($this->buildCacheKey($key), $value);
+
+        return $this->_published[$key] = $value;
+    }
+
+    private function removePublished(string $key): void
+    {
+        unset($this->_published[$key]);
+        Yii::$app->cache->delete($this->buildCacheKey($key));
+    }
+
+    private function buildCacheKey(string $key): array
+    {
+        return [self::CACHE_KEY_PREFIX, $this->getCacheVersion(), $key];
+    }
+
+    private function getCacheVersion(): int
+    {
+        return $this->_cacheVersion ??= (int) (Yii::$app->cache->get(self::CACHE_VERSION_KEY) ?: 1);
     }
 
     /**
