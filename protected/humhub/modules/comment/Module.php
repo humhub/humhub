@@ -38,7 +38,7 @@ class Module extends \humhub\components\Module
     public $commentsPreviewMaxViewMode = 25;
 
     /**
-     * @since 1.18
+     * @since 1.19
      * @var bool If true, comments are not shown to guest users at all.
      */
     public bool $guestHideComments = false;
