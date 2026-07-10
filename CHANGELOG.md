@@ -22,6 +22,7 @@ HumHub Changelog
 - Fix #8264: Update Twig to 3.28.0 (GHSA-529h-vh3j-85hq / CVE-2026-46636 - sandbox allow-list bypass on cached templates)
 - Fix #8268: Fix dropdown menu hidden behind topbar when flipped upward
 - Fix #8273: Fix confirm modal getting stuck open forever when closed while still transitioning in
+- Fix #8282: Fix confirm modal closing itself on next open after being closed during its hide transition
 
 1.18.3 (May 18, 2026)
 ---------------------
