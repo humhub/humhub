@@ -64,6 +64,7 @@ HumHub Changelog
 - Enh #8261: In the mobile app settings, change Whitelist domains to URLs, and also send auth client (SSO) URLs to the mobile app to open all of them in the in-app browser instead of the external one
 - Enh #8254: Allow reading content in State mode for owner
 - Fix #8267: Delete `\humhub\widgets\PageAddonStack` unused class
+- Fix #8283: Redirect invite links to the external single auth client instead of the local registration form when local registration is disabled
  
 1.18.4 (Unreleased)
 ---------------------
