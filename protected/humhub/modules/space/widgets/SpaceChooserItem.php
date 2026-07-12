@@ -35,7 +35,7 @@ class SpaceChooserItem extends Widget
 
     /**
      * If true the item will be marked as a member space
-     * @var string
+     * @var bool
      */
     public $isMember = false;
 
