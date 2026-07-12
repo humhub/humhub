@@ -137,7 +137,10 @@ class AssetImage extends Component implements \Stringable
         $checksum = hash('xxh32', json_encode($options));
 
         $info = pathinfo($fileName);
-        return $info['filename'] . '_' . $checksum . '.' . $info['extension'];
+        // The source file may have no extension (e.g. a HumHub File is stored as `file`);
+        // fall back to the resolved image format so the variant still gets a valid extension.
+        $extension = $info['extension'] ?? $this->getFileFormat();
+        return $info['filename'] . '_' . $checksum . '.' . $extension;
     }
 
     private function convert(string $newFileName, array $options = []): bool

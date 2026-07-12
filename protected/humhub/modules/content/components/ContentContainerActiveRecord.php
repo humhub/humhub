@@ -11,6 +11,7 @@ namespace humhub\modules\content\components;
 use humhub\components\ActiveRecord;
 use humhub\components\assets\AssetImage;
 use humhub\libs\BasePermission;
+use humhub\components\Event;
 use humhub\libs\ProfileImage;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
@@ -55,6 +56,20 @@ use yii\web\IdentityInterface;
  */
 abstract class ContentContainerActiveRecord extends ActiveRecord
 {
+    /**
+     * @event Event triggered when the profile image ({@see getImage()}) of the container is created.
+     * A handler may replace `$event->result` (the {@see AssetImage}) with a different image,
+     * @since 1.19
+     */
+    public const EVENT_CREATE_PROFILE_IMAGE = 'createProfileImage';
+
+    /**
+     * @event Event triggered when the banner image ({@see getBannerImage()}) of the container is created.
+     * A handler may replace `$event->result` (the {@see AssetImage}) with a different image,
+     * @since 1.19
+     */
+    public const EVENT_CREATE_BANNER_IMAGE = 'createBannerImage';
+
     /**
      * @var ContentContainerPermissionManager
      */
@@ -116,7 +131,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     public function getImage(): AssetImage
     {
         if ($this->_image === null) {
-            $this->_image = new AssetImage([
+            $image = new AssetImage([
                 'file' => '/profile_image/' . $this->guid . '.jpg',
                 'defaultOptions' => [
                     'width' => 150,
@@ -130,6 +145,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
                     ? '@humhub/resources/img/default_space.jpg'
                     : '@humhub/resources/img/default_user.jpg',
             ]);
+            $this->_image = $this->triggerCreateImageEvent($image, self::EVENT_CREATE_PROFILE_IMAGE);
         }
         return $this->_image;
     }
@@ -137,7 +153,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     public function getBannerImage(): AssetImage
     {
         if ($this->_bannerImage === null) {
-            $this->_bannerImage = new AssetImage([
+            $image = new AssetImage([
                 'file' => '/profile_image/banner/' . $this->guid . '.jpg',
                 'defaultOptions' => [
                     'width' => 1134,
@@ -149,8 +165,23 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
                 ],
                 'defaultFile' => '@humhub/resources/img/default_banner.jpg',
             ]);
+            $this->_bannerImage = $this->triggerCreateImageEvent($image, self::EVENT_CREATE_BANNER_IMAGE);
         }
         return $this->_bannerImage;
+    }
+
+    /**
+     * Triggers the given create-image event ({@see EVENT_CREATE_PROFILE_IMAGE} or
+     * {@see EVENT_CREATE_BANNER_IMAGE}), letting modules replace the container's {@see AssetImage}
+     * via `$event->result`, and returns the resulting image.
+     *
+     * @since 1.19
+     */
+    protected function triggerCreateImageEvent(AssetImage $image, string $eventName): AssetImage
+    {
+        $event = new Event(['result' => $image]);
+        $this->trigger($eventName, $event);
+        return $event->result;
     }
 
 

@@ -237,6 +237,8 @@ Each minor release line has its own file with the breaking changes, new APIs and
 - Removed `@filestore` Alias
 - Removed `AssetManager::$preventDefer` option
 - New Flysystem Filesystem Wrapper - Migrate all file access for assets and uploads to the Flysystem wrapper (`Yii::$app->fs->getDataMount()` or `Yii::$app->fs->getAssetsMount()`). Read more: https://flysystem.thephpleague.com/docs/usage/filesystem-api/
+- Added `humhub\modules\content\components\ContentContainerActiveRecord::EVENT_CREATE_PROFILE_IMAGE`
+  and `EVENT_CREATE_BANNER_IMAGE`.
 
 ## Released versions
 
