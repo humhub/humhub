@@ -65,6 +65,8 @@ HumHub Changelog
 - Enh #8261: In the mobile app settings, change Whitelist domains to URLs, and also send auth client (SSO) URLs to the mobile app to open all of them in the in-app browser instead of the external one
 - Enh #8254: Allow reading content in State mode for owner
 - Fix #8267: Delete `\humhub\widgets\PageAddonStack` unused class
+- Enh #8287: Add `ContentContainerActiveRecord::EVENT_INIT_PROFILE_IMAGE` and `EVENT_INIT_BANNER_IMAGE`
+- Fix #8287: `AssetImage::getUrl()` for a source file without an extension (e.g. a HumHub `File`, stored as `file`)
  
 1.18.4 (Unreleased)
 ---------------------
