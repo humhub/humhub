@@ -104,12 +104,20 @@ class AuthController extends Controller
      * (e.g. SSO-only deployments where SAML/OIDC may auto-register but no
      * public form is offered).
      *
+     * The `showRegistrationForm` toggle is a UI nudge, not a security boundary —
+     * {@see Module::$showRegistrationForm}'s escape hatch (`?showRegistrationForm=1`,
+     * mirroring `?showLoginForm=1`) can reveal the form again for troubleshooting
+     * a misconfigured IdP. It never overrides {@see isSelfRegistrationEnabled()}:
+     * when self-registration is genuinely off (or in maintenance mode), this stays
+     * false regardless of the query param.
+     *
      * @since 1.19
      */
     public static function isSelfRegistrationFormVisible(): bool
     {
         return self::isSelfRegistrationEnabled()
-            && Yii::$app->getModule('user')->showRegistrationForm;
+            && (Yii::$app->getModule('user')->showRegistrationForm
+                || Yii::$app->request->get('showRegistrationForm', false));
     }
 
     /**

@@ -10,7 +10,9 @@ namespace humhub\modules\user\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
+use humhub\components\Response;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\authclient\BaseFormClient;
 use humhub\modules\user\models\forms\Registration;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\User;
@@ -91,6 +93,13 @@ class RegistrationController extends Controller
             if (!$inviteRegistrationService->isValid()) {
                 throw new HttpException(404, 'Invalid registration token!');
             }
+
+            // Invite links shouldn't fall back to the local form when it's not
+            // meant to be shown (see redirectToExternalAuthClient()).
+            if (($response = $this->redirectToExternalAuthClient()) !== null) {
+                return $response;
+            }
+
             $inviteRegistrationService->populateRegistration($registration);
         } elseif ($pendingAuth->hasPending()) {
             $authClient = $pendingAuth->restore();
@@ -124,6 +133,7 @@ class RegistrationController extends Controller
 
         return $this->render('index', [
             'hForm' => $registration,
+            'showRegistrationForm' => AuthController::isSelfRegistrationFormVisible(),
             'hasAuthClient' => $authClient !== null,
         ]);
     }
@@ -173,6 +183,15 @@ class RegistrationController extends Controller
 
         $linkRegistrationService->storeInSession();
 
+        // If local registration is disabled and exactly one external auth
+        // client remains, send the user directly into that auth client's
+        // flow instead of showing the "invite by link" landing page. The
+        // space invite survives the round trip via LinkRegistrationService's
+        // session state (see storeInSession() above).
+        if (($response = $this->redirectToExternalAuthClient()) !== null) {
+            return $response;
+        }
+
         $form = new Invite([
             'source' => Invite::SOURCE_INVITE_BY_LINK,
             'scenario' => Invite::SCENARIO_INVITE_BY_LINK_FORM,
@@ -188,9 +207,81 @@ class RegistrationController extends Controller
 
         return $this->render('byLink', [
             'invite' => $form,
-            'showRegistrationForm' => $this->module->showRegistrationForm,
+            'showRegistrationForm' => AuthController::isSelfRegistrationFormVisible(),
             'showAuthClients' => true,
         ]);
+    }
+
+    /**
+     * When the local registration form isn't meant to be shown — see
+     * {@see AuthController::isSelfRegistrationFormVisible()} — invite links
+     * (by e-mail token or by shared link) shouldn't fall back to it either.
+     * Instead, send the invitee straight into the sole applicable external
+     * auth client's flow, the pre-login counterpart of
+     * {@see \humhub\modules\user\models\forms\LoginIdentity::getStep1Redirect()}.
+     *
+     * There's no existing User yet to resolve a UserSource from, so instead
+     * of {@see UserSourceService::getForUser()} this looks at
+     * {@see \humhub\modules\user\source\LocalUserSource}, the source new
+     * invitees are provisioned into.
+     *
+     * The invite itself survives the round trip without any extra state:
+     * for e-mail invites, {@see InviteRegistrationService::createFromRequestOrEmail()}
+     * re-resolves the token by matching the IdP-returned e-mail once the user
+     * comes back through {@see AuthController::register()}; for link invites,
+     * {@see LinkRegistrationService::storeInSession()} (already called by
+     * actionByLink() before this runs) keeps the space association in session.
+     *
+     * Returns `null` when the local form should still be rendered — because
+     * it's visible, or because no single unambiguous external client could
+     * be determined.
+     */
+    private function redirectToExternalAuthClient(): ?Response
+    {
+        if (AuthController::isSelfRegistrationFormVisible()) {
+            return null;
+        }
+
+        $authClientId = $this->findSoleExternalAuthClientId();
+
+        return $authClientId === null
+            ? null
+            : $this->redirect(['/user/auth/external', 'authclient' => $authClientId]);
+    }
+
+    /**
+     * Preference 1 (mirrors LoginIdentity::getStep1Redirect()): an explicit
+     * allow-list configured on LocalUserSource names the IdP directly — e.g.
+     * an SSO-only deployment that wired `LocalUserSource::$allowedAuthClientIds`.
+     *
+     * Preference 2 — the common case where no such allow-list was configured
+     * (an empty list means "all clients allowed", see
+     * {@see \humhub\modules\user\source\BaseUserSource::$allowedAuthClientIds}):
+     * fall back to "exactly one non-form auth client is configured at all",
+     * e.g. a bare SSO module install that only adds one AuthClient.
+     *
+     * Returns `null` when neither preference yields a single unambiguous
+     * external client.
+     */
+    private function findSoleExternalAuthClientId(): ?string
+    {
+        $collection = Yii::$app->authClientCollection;
+        $allowedAuthClientIds = UserSourceService::getCollection()->getLocalUserSource()->getAllowedAuthClientIds();
+
+        if (!empty($allowedAuthClientIds)) {
+            $firstId = reset($allowedAuthClientIds);
+            if ($collection->hasClient($firstId) && !($collection->getClient($firstId) instanceof BaseFormClient)) {
+                return $firstId;
+            }
+            return null;
+        }
+
+        $externalClients = array_filter(
+            $collection->getClients(),
+            static fn ($client) => !$client instanceof BaseFormClient,
+        );
+
+        return count($externalClients) === 1 ? reset($externalClients)->getId() : null;
     }
 
     /**
