@@ -32,6 +32,11 @@ use yii\web\UploadedFile;
 class AssetImage extends Component implements \Stringable
 {
     /**
+     * Cache key prefix for the data-mount existence lookup, see {@see exists()}.
+     */
+    private const EXISTS_CACHE_KEY = 'assetImage.exists';
+
+    /**
      * @var string File with path to the AssetImage
      */
     public string $file;
@@ -116,6 +121,7 @@ class AssetImage extends Component implements \Stringable
         $this->fs->write($this->file, $image->get($this->getFileFormat()), $this->filesystemOptions);
 
         $this->fileExists = true;
+        $this->setCachedExists(true);
 
         if (!empty($this->masterOptions)) {
             $this->convert($this->file, $this->masterOptions);
@@ -185,6 +191,7 @@ class AssetImage extends Component implements \Stringable
         }
 
         $this->fileExists = false;
+        $this->setCachedExists(false);
         $this->deleteWithOptions();
     }
 
@@ -198,13 +205,52 @@ class AssetImage extends Component implements \Stringable
         $this->deleteWithOptions();
     }
 
+    /**
+     * Checks whether an uploaded image exists on the data mount.
+     *
+     * On remote (e.g. S3) mounts this lookup is a network round trip per rendered
+     * image, so the result is cached in `Yii::$app->cache` and updated explicitly
+     * by {@see setByFile()} and {@see delete()}. Whether the cache is used follows
+     * {@see AssetManager::$cachePublishState}; on local mounts every call verifies
+     * against the filesystem and stays fully self-healing.
+     */
     public function exists(): bool
     {
         if ($this->fileExists === null) {
+            $this->fileExists = $this->getCachedExists();
+        }
+
+        if ($this->fileExists === null) {
             $this->fileExists = $this->fs->fileExists($this->file);
+            $this->setCachedExists($this->fileExists);
         }
 
         return $this->fileExists;
+    }
+
+    private function getCachedExists(): ?bool
+    {
+        if (!$this->isExistsCacheEnabled()) {
+            return null;
+        }
+
+        $cached = Yii::$app->cache->get([self::EXISTS_CACHE_KEY, $this->file]);
+
+        return is_bool($cached) ? $cached : null;
+    }
+
+    private function setCachedExists(bool $exists): void
+    {
+        if ($this->isExistsCacheEnabled()) {
+            Yii::$app->cache->set([self::EXISTS_CACHE_KEY, $this->file], $exists);
+        }
+    }
+
+    private function isExistsCacheEnabled(): bool
+    {
+        $assetManager = Yii::$app->assetManager;
+
+        return $assetManager instanceof AssetManager && $assetManager->cachePublishState;
     }
 
     private function deleteWithOptions(): void
