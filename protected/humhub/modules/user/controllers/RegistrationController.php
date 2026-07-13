@@ -278,7 +278,7 @@ class RegistrationController extends Controller
 
         $externalClients = array_filter(
             $collection->getClients(),
-            static fn ($client) => !$client instanceof BaseFormClient,
+            static fn($client) => !$client instanceof BaseFormClient,
         );
 
         return count($externalClients) === 1 ? reset($externalClients)->getId() : null;
