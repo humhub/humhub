@@ -58,23 +58,23 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
 {
     /**
      * @event ContentContainerImageEvent triggered when the profile image ({@see getImage()}) of the
-     * container is created. This happens once per record instance, on first access; the result is
+     * container is initialized. This happens once per record instance, on first access; the result is
      * cached afterwards. A handler may modify `$event->image` (e.g. set another `defaultFile`) or
      * replace it with a different {@see AssetImage} — `$event->config` holds the configuration the
      * image was created with.
      * @since 1.19
      */
-    public const EVENT_CREATE_PROFILE_IMAGE = 'createProfileImage';
+    public const EVENT_INIT_PROFILE_IMAGE = 'initProfileImage';
 
     /**
      * @event ContentContainerImageEvent triggered when the banner image ({@see getBannerImage()}) of the
-     * container is created. This happens once per record instance, on first access; the result is
+     * container is initialized. This happens once per record instance, on first access; the result is
      * cached afterwards. A handler may modify `$event->image` (e.g. set another `defaultFile`) or
      * replace it with a different {@see AssetImage} — `$event->config` holds the configuration the
      * image was created with.
      * @since 1.19
      */
-    public const EVENT_CREATE_BANNER_IMAGE = 'createBannerImage';
+    public const EVENT_INIT_BANNER_IMAGE = 'initBannerImage';
 
     /**
      * @var ContentContainerPermissionManager
@@ -137,7 +137,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     public function getImage(): AssetImage
     {
         if ($this->_image === null) {
-            $this->_image = $this->triggerCreateImageEvent(self::EVENT_CREATE_PROFILE_IMAGE, [
+            $this->_image = $this->triggerInitImageEvent(self::EVENT_INIT_PROFILE_IMAGE, [
                 'file' => '/profile_image/' . $this->guid . '.jpg',
                 'defaultOptions' => [
                     'width' => 150,
@@ -158,7 +158,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     public function getBannerImage(): AssetImage
     {
         if ($this->_bannerImage === null) {
-            $this->_bannerImage = $this->triggerCreateImageEvent(self::EVENT_CREATE_BANNER_IMAGE, [
+            $this->_bannerImage = $this->triggerInitImageEvent(self::EVENT_INIT_BANNER_IMAGE, [
                 'file' => '/profile_image/banner/' . $this->guid . '.jpg',
                 'defaultOptions' => [
                     'width' => 1134,
@@ -175,13 +175,13 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     }
 
     /**
-     * Triggers the given create-image event ({@see EVENT_CREATE_PROFILE_IMAGE} or
-     * {@see EVENT_CREATE_BANNER_IMAGE}), letting modules customize or replace the container's
+     * Triggers the given init-image event ({@see EVENT_INIT_PROFILE_IMAGE} or
+     * {@see EVENT_INIT_BANNER_IMAGE}), letting modules customize or replace the container's
      * {@see AssetImage}, and returns the resulting image.
      *
      * @since 1.19
      */
-    protected function triggerCreateImageEvent(string $eventName, array $config): AssetImage
+    private function triggerInitImageEvent(string $eventName, array $config): AssetImage
     {
         $event = new ContentContainerImageEvent([
             'image' => new AssetImage($config),

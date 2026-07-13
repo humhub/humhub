@@ -14,10 +14,10 @@ use yii\base\Event;
 
 /**
  * ContentContainerImageEvent is triggered when the profile or banner image of a
- * container is created, letting modules customize or replace the {@see AssetImage}.
+ * container is initialized, letting modules customize or replace the {@see AssetImage}.
  *
- * @see \humhub\modules\content\components\ContentContainerActiveRecord::EVENT_CREATE_PROFILE_IMAGE
- * @see \humhub\modules\content\components\ContentContainerActiveRecord::EVENT_CREATE_BANNER_IMAGE
+ * @see \humhub\modules\content\components\ContentContainerActiveRecord::EVENT_INIT_PROFILE_IMAGE
+ * @see \humhub\modules\content\components\ContentContainerActiveRecord::EVENT_INIT_BANNER_IMAGE
  * @since 1.19
  */
 class ContentContainerImageEvent extends Event

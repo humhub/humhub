@@ -22,14 +22,14 @@ class ContentContainerImageEventTest extends HumHubDbTestCase
 {
     protected function _after()
     {
-        Event::off(Space::class, ContentContainerActiveRecord::EVENT_CREATE_PROFILE_IMAGE);
-        Event::off(Space::class, ContentContainerActiveRecord::EVENT_CREATE_BANNER_IMAGE);
+        Event::off(Space::class, ContentContainerActiveRecord::EVENT_INIT_PROFILE_IMAGE);
+        Event::off(Space::class, ContentContainerActiveRecord::EVENT_INIT_BANNER_IMAGE);
         parent::_after();
     }
 
     public function testProfileImageCanBeReplacedByEvent()
     {
-        Event::on(Space::class, ContentContainerActiveRecord::EVENT_CREATE_PROFILE_IMAGE, function (ContentContainerImageEvent $event) {
+        Event::on(Space::class, ContentContainerActiveRecord::EVENT_INIT_PROFILE_IMAGE, function (ContentContainerImageEvent $event) {
             $event->image = new AssetImage(['file' => '/tests/custom-profile.png'] + $event->config);
         });
 
@@ -46,7 +46,7 @@ class ContentContainerImageEventTest extends HumHubDbTestCase
 
     public function testBannerImageCanBeCustomizedByEvent()
     {
-        Event::on(Space::class, ContentContainerActiveRecord::EVENT_CREATE_BANNER_IMAGE, function (ContentContainerImageEvent $event) {
+        Event::on(Space::class, ContentContainerActiveRecord::EVENT_INIT_BANNER_IMAGE, function (ContentContainerImageEvent $event) {
             $event->image->defaultFile = Yii::getAlias('@humhub/resources/img/default_space.jpg');
         });
 
@@ -54,10 +54,10 @@ class ContentContainerImageEventTest extends HumHubDbTestCase
         $this->assertStringEndsWith('default_space.jpg', $space->getBannerImage()->defaultFile);
     }
 
-    public function testCreateImageEventIsTriggeredOncePerRecord()
+    public function testInitImageEventIsTriggeredOncePerRecord()
     {
         $calls = 0;
-        Event::on(Space::class, ContentContainerActiveRecord::EVENT_CREATE_PROFILE_IMAGE, function () use (&$calls) {
+        Event::on(Space::class, ContentContainerActiveRecord::EVENT_INIT_PROFILE_IMAGE, function () use (&$calls) {
             $calls++;
         });
 
