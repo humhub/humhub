@@ -11,8 +11,8 @@ namespace humhub\modules\content\components;
 use humhub\components\ActiveRecord;
 use humhub\components\assets\AssetImage;
 use humhub\libs\BasePermission;
-use humhub\components\Event;
 use humhub\libs\ProfileImage;
+use humhub\modules\content\events\ContentContainerImageEvent;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\content\models\ContentContainerBlockedUsers;
@@ -57,15 +57,21 @@ use yii\web\IdentityInterface;
 abstract class ContentContainerActiveRecord extends ActiveRecord
 {
     /**
-     * @event Event triggered when the profile image ({@see getImage()}) of the container is created.
-     * A handler may replace `$event->result` (the {@see AssetImage}) with a different image,
+     * @event ContentContainerImageEvent triggered when the profile image ({@see getImage()}) of the
+     * container is created. This happens once per record instance, on first access; the result is
+     * cached afterwards. A handler may modify `$event->image` (e.g. set another `defaultFile`) or
+     * replace it with a different {@see AssetImage} — `$event->config` holds the configuration the
+     * image was created with.
      * @since 1.19
      */
     public const EVENT_CREATE_PROFILE_IMAGE = 'createProfileImage';
 
     /**
-     * @event Event triggered when the banner image ({@see getBannerImage()}) of the container is created.
-     * A handler may replace `$event->result` (the {@see AssetImage}) with a different image,
+     * @event ContentContainerImageEvent triggered when the banner image ({@see getBannerImage()}) of the
+     * container is created. This happens once per record instance, on first access; the result is
+     * cached afterwards. A handler may modify `$event->image` (e.g. set another `defaultFile`) or
+     * replace it with a different {@see AssetImage} — `$event->config` holds the configuration the
+     * image was created with.
      * @since 1.19
      */
     public const EVENT_CREATE_BANNER_IMAGE = 'createBannerImage';
@@ -131,7 +137,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     public function getImage(): AssetImage
     {
         if ($this->_image === null) {
-            $image = new AssetImage([
+            $this->_image = $this->triggerCreateImageEvent(self::EVENT_CREATE_PROFILE_IMAGE, [
                 'file' => '/profile_image/' . $this->guid . '.jpg',
                 'defaultOptions' => [
                     'width' => 150,
@@ -145,7 +151,6 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
                     ? '@humhub/resources/img/default_space.jpg'
                     : '@humhub/resources/img/default_user.jpg',
             ]);
-            $this->_image = $this->triggerCreateImageEvent($image, self::EVENT_CREATE_PROFILE_IMAGE);
         }
         return $this->_image;
     }
@@ -153,7 +158,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     public function getBannerImage(): AssetImage
     {
         if ($this->_bannerImage === null) {
-            $image = new AssetImage([
+            $this->_bannerImage = $this->triggerCreateImageEvent(self::EVENT_CREATE_BANNER_IMAGE, [
                 'file' => '/profile_image/banner/' . $this->guid . '.jpg',
                 'defaultOptions' => [
                     'width' => 1134,
@@ -165,25 +170,27 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
                 ],
                 'defaultFile' => '@humhub/resources/img/default_banner.jpg',
             ]);
-            $this->_bannerImage = $this->triggerCreateImageEvent($image, self::EVENT_CREATE_BANNER_IMAGE);
         }
         return $this->_bannerImage;
     }
 
     /**
      * Triggers the given create-image event ({@see EVENT_CREATE_PROFILE_IMAGE} or
-     * {@see EVENT_CREATE_BANNER_IMAGE}), letting modules replace the container's {@see AssetImage}
-     * via `$event->result`, and returns the resulting image.
+     * {@see EVENT_CREATE_BANNER_IMAGE}), letting modules customize or replace the container's
+     * {@see AssetImage}, and returns the resulting image.
      *
      * @since 1.19
      */
-    protected function triggerCreateImageEvent(AssetImage $image, string $eventName): AssetImage
+    protected function triggerCreateImageEvent(string $eventName, array $config): AssetImage
     {
-        $event = new Event(['result' => $image]);
+        $event = new ContentContainerImageEvent([
+            'image' => new AssetImage($config),
+            'config' => $config,
+        ]);
         $this->trigger($eventName, $event);
-        return $event->result;
-    }
 
+        return $event->image;
+    }
 
     /**
      * @return ProfileImage
