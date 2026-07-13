@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.19 (TBD)
 ----------
+- Enh #8284: Cache the `AssetImage::exists()` data-mount lookup on remote (e.g. S3) mounts — previously every rendered avatar, banner, logo and favicon paid one `fileExists()` round trip against the data mount per request (a people directory with 35 avatars spent ~1s per request on these probes); the cached state is updated by `setByFile()`/`delete()` and follows `AssetManager::$cachePublishState`, so local mounts stay uncached and self-healing
 - Fix: Module images (and other on-demand published module assets such as Custom Pages' `loader.gif`) could 404 on a remote assets mount (e.g. S3): `Module::getPublishedUrl()`/`isPublished()` decided whether an asset was published via a local `is_file()` check against the *published* location, which is meaningless for a remote mount — a leftover local copy made HumHub emit a URL to an object that was never (re)written to the mount. Publishing is now driven by the cached, `clear()`-invalidated `AssetManager` publish state, and file existence is checked against the module's local resources directory, so no per-request existence check hits the remote mount
 - Fix: ALTCHA captcha failed (`SecurityError: Failed to construct 'Worker'`) when assets were served from a cross-origin mount (e.g. S3/CDN): the widget derived the worker script URL from altcha.js' own (cross-origin) location, which the `Worker` constructor rejects. The worker is now served same-origin via `captcha/worker` and referenced through the widget's `workerurl` (absolute application URL)
 - Fix: File downloads returned an empty response (broken image, no redirect) when `useXSendfile` was enabled together with a non-local data mount (e.g. S3) — X-Sendfile is now applied only to `LocalMountConfig` mounts; other mounts fall through to the temporary-URL redirect / stream instead of only logging an error
@@ -65,6 +66,8 @@ HumHub Changelog
 - Enh #8254: Allow reading content in State mode for owner
 - Fix #8267: Delete `\humhub\widgets\PageAddonStack` unused class
 - Fix #8283: Redirect invite links to the external single auth client instead of the local registration form when local registration is disabled
+- Enh #8287: Add `ContentContainerActiveRecord::EVENT_INIT_PROFILE_IMAGE` and `EVENT_INIT_BANNER_IMAGE`
+- Fix #8287: `AssetImage::getUrl()` for a source file without an extension (e.g. a HumHub `File`, stored as `file`)
  
 1.18.4 (Unreleased)
 ---------------------
