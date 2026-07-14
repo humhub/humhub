@@ -148,8 +148,6 @@ class ActiveQueryActivity extends ActiveQuery
                 $user,
             ) == MailSummaryForm::LIMIT_MODE_INCLUDE) ? 'IN' : 'NOT IN';
             $this->andWhere([$mode, 'activity.contentcontainer_id', $limitContainer]);
-
-            codecept_debug($limitContainer);
         }
 
 

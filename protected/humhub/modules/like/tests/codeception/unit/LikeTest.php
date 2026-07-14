@@ -32,4 +32,18 @@ class LikeTest extends HumHubDbTestCase
         $this->assertHasActivity(LikeActivity::class, Like::findOne(['content_id' => 1, 'created_by' => 3]));
     }
 
+    public function testDeleteLikesOnContentHardDelete()
+    {
+        $this->becomeUser('User2');
+
+        $post = Post::findOne(['id' => 1]);
+        $likeService = new LikeService($post);
+
+        $this->assertTrue($likeService->like());
+        $this->assertNotNull(Like::findOne(['content_id' => $post->content->id]));
+
+        $this->assertTrue($post->hardDelete());
+        $this->assertNull(Like::findOne(['content_id' => $post->content->id]));
+    }
+
 }

@@ -560,16 +560,6 @@ abstract class BaseNotification extends SocialActivity
     }
 
     /**
-     * Should be overwritten by subclasses for a html representation of the notification.
-     * @return string
-     */
-    public function html()
-    {
-        // Only for backward compatibility.
-        return $this->getAsHtml();
-    }
-
-    /**
      * This method is invoked right before a mail will be send for this notificatoin
      *
      * @param MessageInterface $message

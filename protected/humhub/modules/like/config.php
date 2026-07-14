@@ -2,6 +2,7 @@
 
 use humhub\commands\IntegrityController;
 use humhub\models\RecordMap;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\user\models\User;
 use humhub\modules\content\widgets\WallEntryLinks;
 
@@ -12,6 +13,7 @@ return [
     'events' => [
         ['class' => User::class, 'event' => User::EVENT_BEFORE_DELETE, 'callback' => ['humhub\modules\like\Events', 'onUserDelete']],
         ['class' => RecordMap::class, 'event' => RecordMap::EVENT_BEFORE_DELETE, 'callback' => ['humhub\modules\like\Events', 'onRecordMapDelete']],
+        ['class' => ContentActiveRecord::class, 'event' => ContentActiveRecord::EVENT_BEFORE_DELETE, 'callback' => ['humhub\modules\like\Events', 'onContentDelete']],
         ['class' => IntegrityController::class, 'event' => IntegrityController::EVENT_ON_RUN, 'callback' => ['humhub\modules\like\Events', 'onIntegrityCheck']],
         ['class' => WallEntryLinks::class, 'event' => WallEntryLinks::EVENT_INIT, 'callback' => ['humhub\modules\like\Events', 'onWallEntryLinksInit']],
     ],

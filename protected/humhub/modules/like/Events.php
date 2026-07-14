@@ -44,6 +44,23 @@ class Events extends BaseObject
     }
 
     /**
+     * On hard delete of a content, delete all its likes
+     *
+     * @param Event $event
+     * @return bool
+     * @throws Throwable
+     * @throws StaleObjectException
+     */
+    public static function onContentDelete($event)
+    {
+        foreach (Like::findAll(['content_id' => $event->sender->content->id]) as $like) {
+            $like->delete();
+        }
+
+        return true;
+    }
+
+    /**
      * Callback to validate module database records.
      *
      * @param Event $event
