@@ -31,7 +31,7 @@ class GateFilterRequestClassTest extends HumHubDbTestCase
         }
         Yii::$app->set('request', $request);
 
-        $filter = new class () extends GateFilter {
+        $filter = new class extends GateFilter {
             public function classify(): RequestClass
             {
                 return $this->getRequestClass();
