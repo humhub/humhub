@@ -12,6 +12,7 @@ use humhub\components\access\ControllerAccess;
 use humhub\components\InstallationState;
 use Yii;
 use yii\base\ActionFilter;
+use yii\base\InvalidConfigException;
 use yii\web\HttpException;
 
 /**
@@ -148,14 +149,14 @@ class AccessControl extends ActionFilter
         $this->controllerAccess = $this->getControllerAccess($this->rules);
 
         if (!$this->controllerAccess->run()) {
-            if (
-                isset($this->controllerAccess->codeCallback)
-                && method_exists($this, $this->controllerAccess->codeCallback)
-            ) {
-                // Call a specific function for current action filter,
-                // may be used to filter a logged in user for some restriction e.g. "must change password"
-                call_user_func([$this, $this->controllerAccess->codeCallback]);
-            } elseif ($this->controllerAccess->code == 401) {
+            // Tripwire: the codeCallback mechanism was removed in 1.19 (replaced by user
+            // gates). Fail loudly if a custom ControllerAccess still sets one instead of
+            // silently skipping the enforcement action it expects to be invoked.
+            if (isset($this->controllerAccess->codeCallback)) {
+                throw new InvalidConfigException('The ControllerAccess codeCallback mechanism was removed in HumHub 1.19 — implement the enforcement as a user gate instead (see docs/develop/user-gates.md).');
+            }
+
+            if ($this->controllerAccess->code == 401) {
                 $this->loginRequired();
             } else {
                 $this->forbidden();
@@ -229,31 +230,4 @@ class AccessControl extends ActionFilter
         Yii::$app->user->loginRequired();
     }
 
-    /**
-     * Force user to redirect to change password
-     *
-     * @since 1.8
-     */
-    protected function forceChangePassword()
-    {
-        if (!Yii::$app->user->isMustChangePasswordUrl()) {
-            Yii::$app->getResponse()->redirect([Yii::$app->user->mustChangePasswordRoute]);
-        }
-    }
-
-    /**
-     * Log out all non admin users when maintenance mode is active
-     *
-     * @since 1.8
-     */
-    protected function checkMaintenanceMode()
-    {
-        if (Yii::$app->settings->get('maintenanceMode')) {
-            if (!Yii::$app->user->isGuest) {
-                Yii::$app->user->logout();
-                Yii::$app->getView()->warn(Yii::t('error', 'Maintenance mode activated: You have been automatically logged out and will no longer have access the platform until the maintenance has been completed.'));
-            }
-            Yii::$app->getResponse()->redirect(['/user/auth/login']);
-        }
-    }
 }
