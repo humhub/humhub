@@ -162,6 +162,9 @@ Gates are enforced by a single `ActionFilter` on `humhub\components\Controller`,
 
 - console requests, installer state, guests (per gate via `isOpen()`)
 - request classification (see below)
+- infrastructure routes every page depends on to render (`i18n/translations`) — they are
+  never intercepted by any gate, since a gate's own page requests them too and would
+  otherwise reload itself in an endless loop
 - returnUrl bookkeeping, so the user lands on the originally requested page after the funnel
 - session caching of gate state (see "Caching")
 - **at most one redirect per request**

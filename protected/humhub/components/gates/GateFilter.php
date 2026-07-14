@@ -36,6 +36,14 @@ use yii\web\Response;
 class GateFilter extends ActionFilter
 {
     /**
+     * Routes every page depends on to render — including a gate's own page. They deliver
+     * no user content and are therefore never intercepted by any gate: a gate page
+     * requesting them would otherwise be answered with a redirect to itself and reload
+     * in an endless loop (yii.js navigates on the X-Redirect header).
+     */
+    private const INFRASTRUCTURE_ROUTES = ['i18n/translations'];
+
+    /**
      * @inheritdoc
      */
     public function beforeAction($action)
@@ -45,6 +53,10 @@ class GateFilter extends ActionFilter
         }
 
         if (!Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
+            return true;
+        }
+
+        if (in_array($action->controller->route, self::INFRASTRUCTURE_ROUTES, true)) {
             return true;
         }
 

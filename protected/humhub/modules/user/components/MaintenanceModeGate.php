@@ -74,14 +74,13 @@ class MaintenanceModeGate extends UserGate
     }
 
     /**
-     * The login flow must stay reachable so admins can sign in during maintenance;
-     * `i18n/translations` serves the JS translations every page depends on.
+     * The login flow must stay reachable so admins can sign in during maintenance.
      *
      * @inheritdoc
      */
     public function getAllowedRoutes(): array
     {
-        return ['user/auth/password', 'user/auth/external', 'i18n/translations'];
+        return ['user/auth/password', 'user/auth/external'];
     }
 
     /**

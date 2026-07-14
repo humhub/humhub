@@ -41,6 +41,21 @@ class MustChangePasswordCest
         $I->see('must-change-password');
     }
 
+    public function testTranslationsStayReachable(FunctionalTester $I)
+    {
+        $I->wantTo('ensure the translations endpoint stays reachable while the password gate is open');
+
+        $I->amUser1();
+        User::findOne(2)->setMustChangePassword(true);
+
+        // The gate's own page loads its JS translations via this AJAX endpoint — if the
+        // gate intercepts it, yii.js navigates back to the gate page in an endless
+        // reload loop (X-Redirect on every translations request)
+        $I->sendAjaxGetRequest('/index-test.php?r=i18n%2Ftranslations&category=base');
+
+        $I->seeResponseCodeIs(200);
+    }
+
     public function testLogoutStaysReachable(FunctionalTester $I)
     {
         $I->wantTo('ensure that logout stays reachable while the password gate is open');
