@@ -5,7 +5,10 @@ namespace humhub\modules\user;
 use Exception;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Event;
+use humhub\components\gates\GateInitEvent;
 use humhub\helpers\ControllerHelper;
+use humhub\modules\user\components\MaintenanceModeGate;
+use humhub\modules\user\components\MustChangePasswordGate;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\ui\menu\MenuLink;
@@ -26,6 +29,17 @@ use yii\base\BaseObject;
  */
 class Events extends BaseObject
 {
+    /**
+     * Registers the user gates of this module (see docs/develop/user-gates.md).
+     *
+     * @since 1.19
+     */
+    public static function onGateInit(GateInitEvent $event): void
+    {
+        $event->manager->register(new MaintenanceModeGate());
+        $event->manager->register(new MustChangePasswordGate());
+    }
+
     /**
      * On delete of a Content or ContentAddon
      *

@@ -14,6 +14,7 @@ use humhub\components\Response;
 use humhub\helpers\DeviceDetectorHelper;
 use humhub\modules\user\authclient\AuthAction;
 use humhub\modules\user\authclient\BaseFormClient;
+use humhub\modules\user\components\MaintenanceModeGate;
 use humhub\modules\user\authclient\interfaces\SingleLogout;
 use humhub\modules\user\services\PendingAuthService;
 use humhub\modules\user\events\UserEvent;
@@ -93,7 +94,7 @@ class AuthController extends Controller
      */
     public static function isSelfRegistrationEnabled(): bool
     {
-        return !Yii::$app->settings->get('maintenanceMode')
+        return !MaintenanceModeGate::isActive()
             && (bool)Yii::$app->getModule('user')->settings->get('auth.anonymousRegistration');
     }
 
@@ -198,7 +199,7 @@ class AuthController extends Controller
         // The actual admin-only enforcement happens post-auth in
         // {@see onAuthSuccess()} — the param only controls which view we
         // render here, it grants no privilege.
-        if (Yii::$app->settings->get('maintenanceMode')
+        if (MaintenanceModeGate::isActive()
             && !Yii::$app->request->get('maintenanceAdmin')) {
             Yii::$app->session->remove(self::SESSION_KEY_STEP1_USERNAME);
             return $this->render('maintenance');
@@ -246,7 +247,7 @@ class AuthController extends Controller
             Yii::$app->session->remove(self::SESSION_KEY_STEP1_USERNAME);
         }
 
-        if (Yii::$app->settings->get('maintenanceMode')) {
+        if (MaintenanceModeGate::isActive()) {
             Yii::$app->session->setFlash('error', Yii::t('UserModule.auth', 'Maintenance mode is active.'));
         }
 
@@ -387,7 +388,7 @@ class AuthController extends Controller
         // Maintenance gate — applies to all auth flows (form login, OAuth,
         // SAML, …). Non-admins are bounced before any session is created and
         // land on the maintenance view via the /user/auth/login redirect.
-        if (Yii::$app->settings->get('maintenanceMode') && !($user && $user->isSystemAdmin())) {
+        if (MaintenanceModeGate::isActive() && !($user && $user->isSystemAdmin())) {
             Yii::$app->session->setFlash(
                 'error',
                 Yii::t('UserModule.auth', 'Only administrators can sign in during maintenance mode.'),

@@ -76,6 +76,9 @@ $config = [
         'moduleManager' => [
             'class' => \humhub\components\ModuleManager::class,
         ],
+        'gateManager' => [
+            'class' => \humhub\components\gates\GateManager::class,
+        ],
         'notification' => [
             'class' => \humhub\modules\notification\components\NotificationManager::class,
             'targets' => [

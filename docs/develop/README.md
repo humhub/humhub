@@ -79,6 +79,7 @@ How user accounts, authentication and provisioning fit together.
 
 - [Authentication](user-auth.md) — AuthClient families, login flow
 - [UserSource](user-source.md) — provisioning model, attribute sync, LDAP/SCIM
+- [User Gates](user-gates.md) — action interception: 2FA check, terms, wizards
 
 ## Advanced topics
 
