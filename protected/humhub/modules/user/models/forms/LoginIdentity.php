@@ -5,6 +5,7 @@ namespace humhub\modules\user\models\forms;
 use humhub\modules\user\authclient\BaseFormClient;
 use humhub\modules\user\models\Auth;
 use humhub\modules\user\models\User;
+use humhub\modules\user\services\LoginHintService;
 use humhub\modules\user\services\UserSourceService;
 use Yii;
 use yii\base\Model;
@@ -91,6 +92,10 @@ class LoginIdentity extends Model
      * the unknown-user case (account-enumeration protection: an unknown user
      * looks identical to a password user from outside).
      *
+     * When a redirect is returned, the user's e-mail address is additionally
+     * stored as a one-shot login hint ({@see LoginHintService}) for the
+     * external auth client to forward to the IdP.
+     *
      * @return array|null redirect target for {@see \yii\web\Controller::redirect()}, or null
      */
     public function getStep1Redirect(): ?array
@@ -113,7 +118,7 @@ class LoginIdentity extends Model
         if (!empty($allowedIds)) {
             $firstClientId = reset($allowedIds);
             if ($collection->hasClient($firstClientId)) {
-                return ['/user/auth/external', 'authclient' => $firstClientId];
+                return $this->externalRedirect($user, $firstClientId);
             }
         }
 
@@ -130,11 +135,24 @@ class LoginIdentity extends Model
                 continue;
             }
             if (!$collection->getClient($auth->source) instanceof BaseFormClient) {
-                return ['/user/auth/external', 'authclient' => $auth->source];
+                return $this->externalRedirect($user, $auth->source);
             }
         }
 
         return null;
+    }
+
+    /**
+     * Builds the redirect to an external auth client and stashes the user's
+     * e-mail address as a one-shot login hint in the session, so the auth
+     * client can forward it to the IdP and the IdP can pre-fill its login
+     * mask ({@see LoginHintService}).
+     */
+    private function externalRedirect(User $user, string $clientId): array
+    {
+        (new LoginHintService())->set((string)$user->email);
+
+        return ['/user/auth/external', 'authclient' => $clientId];
     }
 
     /**

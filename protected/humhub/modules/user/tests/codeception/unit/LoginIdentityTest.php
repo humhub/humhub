@@ -14,6 +14,7 @@ use humhub\modules\user\models\Auth;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\forms\LoginIdentity;
+use humhub\modules\user\services\LoginHintService;
 use humhub\modules\user\source\GenericUserSource;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
@@ -168,6 +169,37 @@ class LoginIdentityTest extends HumHubDbTestCase
         $login = new LoginIdentity(['username' => 'User1']);
 
         $this->assertNull($login->getStep1Redirect());
+    }
+
+    public function testStep1RedirectStoresLoginHint(): void
+    {
+        $this->registerAuthClient('saml', new ExternalAuthClientStub());
+        Yii::$app->userSourceCollection->setUserSource(
+            'saml-source',
+            new GenericUserSource([
+                'id' => 'saml-source',
+                'allowedAuthClientIds' => ['saml'],
+            ]),
+        );
+
+        $user = User::findOne(['username' => 'User1']);
+        $user->user_source = 'saml-source';
+        $user->save(false);
+
+        $login = new LoginIdentity(['username' => 'User1']);
+
+        $this->assertNotNull($login->getStep1Redirect());
+        $this->assertSame($user->email, (new LoginHintService())->consume());
+    }
+
+    public function testNoRedirectLeavesNoLoginHint(): void
+    {
+        // User1 has a local password → password screen, no external redirect.
+        (new LoginHintService())->clear();
+        $login = new LoginIdentity(['username' => 'User1']);
+
+        $this->assertNull($login->getStep1Redirect());
+        $this->assertNull((new LoginHintService())->consume());
     }
 
     private function registerAuthClient(string $id, BaseClient $client): void
