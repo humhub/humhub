@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.19 (TBD)
 ----------
+- Enh #8292: The installer "Modules" step no longer downloads a recommended module from the marketplace when it is already available locally (e.g. via `moduleAutoloadPaths`) — the local module is enabled instead
 - Enh: Added the central user gate system (`humhub\components\gates`) for modules that intercept requests to route the user through a mandatory flow (2FA check, terms acceptance, wizards) — gates register via `GateManager::EVENT_INIT_GATES`, are evaluated in a deterministic order with at most one redirect per request, answer AJAX/API requests with machine-readable responses instead of HTML redirects, and cache the all-closed state per session; the must-change-password and maintenance-mode enforcement were migrated from `ControllerAccess` fixed rules to the first core gates, and the unused legacy `codeCallback` mechanism was removed (see `docs/develop/user-gates.md` and the migration guide)
 - Enh #8284: Cache the `AssetImage::exists()` data-mount lookup on remote (e.g. S3) mounts — previously every rendered avatar, banner, logo and favicon paid one `fileExists()` round trip against the data mount per request (a people directory with 35 avatars spent ~1s per request on these probes); the cached state is updated by `setByFile()`/`delete()` and follows `AssetManager::$cachePublishState`, so local mounts stay uncached and self-healing
 - Fix: Module images (and other on-demand published module assets such as Custom Pages' `loader.gif`) could 404 on a remote assets mount (e.g. S3): `Module::getPublishedUrl()`/`isPublished()` decided whether an asset was published via a local `is_file()` check against the *published* location, which is meaningless for a remote mount — a leftover local copy made HumHub emit a URL to an object that was never (re)written to the mount. Publishing is now driven by the cached, `clear()`-invalidated `AssetManager` publish state, and file existence is checked against the module's local resources directory, so no per-request existence check hits the remote mount
@@ -90,6 +91,9 @@ HumHub Changelog
 - Fix #8253: Fix Select2 dropdown flickering/closing when it doesn't fit the viewport at browser zoom > 100%
 - Fix #8264: Update Twig to 3.28.0 (GHSA-529h-vh3j-85hq / CVE-2026-46636 - sandbox allow-list bypass on cached templates)
 - Fix #8268: Fix dropdown menu hidden behind topbar when flipped upward
+- Fix #8273: Fix confirm modal getting stuck open forever when closed while still transitioning in
+- Fix #8282: Fix confirm modal closing itself on next open after being closed during its hide transition
+- Enh #8286: Display a success toast when a module is enabled
 
 1.18.3 (May 18, 2026)
 ---------------------

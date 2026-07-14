@@ -247,7 +247,11 @@ class ConfigController extends Controller
             $enableModules = Yii::$app->request->post('enableModules');
             if (is_array($enableModules)) {
                 foreach (array_keys($enableModules) as $moduleId) {
-                    $marketplaceModule->onlineModuleManager->install($moduleId);
+                    // Skip the marketplace download when the module is already available
+                    // locally, e.g. via `moduleAutoloadPaths`
+                    if (!Yii::$app->moduleManager->hasModule($moduleId)) {
+                        $marketplaceModule->onlineModuleManager->install($moduleId);
+                    }
                     $module = Yii::$app->moduleManager->getModule($moduleId);
                     if ($module !== null) {
                         $module->enable();
