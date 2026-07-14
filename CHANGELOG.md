@@ -3,6 +3,9 @@ HumHub Changelog
 
 1.19 (TBD)
 ----------
+- Fix #8294: Removed a leftover `codecept_debug()` call in `ActiveQueryActivity::mailLimitContentContainer()` — on production installs (without dev dependencies) the function does not exist, so the summary mail job crashed for every user with a space-limited mail summary; a new core test now guards against dev-only function calls in production code
+- Fix #8294: `BaseNotification::html()` still called `getAsHtml()`, which was removed in #7980 — any notification not overriding `html()` (typical for module-provided notifications) crashed on rendering; the obsolete override was removed so the `SocialActivity` default (`null`, the pre-1.19 behaviour) applies again
+- Fix #8294: Likes on top-level content were never deleted when the content was hard-deleted — the `fk_like_content` constraint (`ON DELETE RESTRICT`) then aborted the deletion with an integrity error and the `PurgeDeletedContents` job could never purge liked content; the like module now deletes a content's likes on `ContentActiveRecord::EVENT_BEFORE_DELETE` (matching the comment module)
 - Enh: Removed the now-unused `Controller::$doNotInterceptActionIds` flag and `Controller::isNotInterceptedAction()` — action interception is handled by the user gate system (see `docs/develop/user-gates.md`); see the migration guide
 - Enh: When Step 1 of the two-step login form redirects to an external auth client, the resolved user's e-mail address is now stored as a one-shot login hint (`LoginHintService`) — external auth clients (SAML, OIDC) can consume it and forward it to the IdP so its login mask is pre-filled with the identity the user already typed
 - Enh #8292: The installer "Modules" step no longer downloads a recommended module from the marketplace when it is already available locally (e.g. via `moduleAutoloadPaths`) — the local module is enabled instead
