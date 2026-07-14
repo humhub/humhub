@@ -21,6 +21,13 @@ class AltchaCaptchaInput extends InputWidget
 {
     public string $captchaAction = '/captcha/altcha';
     /**
+     * The controller route serving the ALTCHA Web Worker. It must resolve to an
+     * absolute, same-origin URL (see {@see run()}), because the `Worker`
+     * constructor cannot load a script from a cross-origin assets mount (S3/CDN).
+     * @since 1.19
+     */
+    public string $workerAction = '/captcha/worker';
+    /**
      * The form input HTML element (e.g. #my-text-field) that needs to be focused to show the Captcha input
      * If empty, the Captcha input is always displayed
      * @since 1.18.1
@@ -65,6 +72,11 @@ class AltchaCaptchaInput extends InputWidget
 
         return Html::tag('altcha-widget', '', array_merge([
             'challengeurl' => Url::to([$this->captchaAction]),
+            // ALTCHA resolves the worker URL against altcha.js' own location,
+            // which may be a cross-origin assets mount (S3/CDN). The Worker
+            // constructor only accepts a same-origin script, so force an
+            // absolute URL on the application origin.
+            'workerurl' => Url::to([$this->workerAction], true),
             'name' => Html::getInputName($this->model, $this->attribute),
             'hidefooter' => true,
             'strings' => json_encode([

@@ -48,12 +48,15 @@ class WallEntry extends WallStreamEntryWidget
         /** @var Module $module */
         $module = Yii::$app->getModule('post');
 
+        $guestExpandPosts = $module->guestExpandPosts && Yii::$app->user->isGuest;
+
         return $this->render('wallEntry', [
             'post' => $this->model,
             'justEdited' => $this->renderOptions->isJustEdited(), // compatibility for themed legacy views
             'renderOptions' => $this->renderOptions,
             'enableDynamicFontSize' => $module->enableDynamicFontSize,
-            'collapsedPostHeight' => $module->collapsedPostHeight,
+            'collapsedPostHeight' => $guestExpandPosts ? 0 : $module->collapsedPostHeight,
+            'guestExpandPosts' => $guestExpandPosts,
         ]);
     }
 }

@@ -41,5 +41,14 @@ class BluebirdAsset extends AssetBundle
     /**
      * @inheritdoc
      */
+    public $publishOptions = [
+        'only' => [
+            'js/browser/bluebird.min.js',
+        ],
+    ];
+
+    /**
+     * @inheritdoc
+     */
     public $js = ['js/browser/bluebird.min.js'];
 }

@@ -57,6 +57,24 @@ use yii\web\AssetBundle as BaseAssetBundle;
 class AssetBundle extends BaseAssetBundle
 {
     /**
+     * Default publish options for all bundles publishing the whole `@humhub/resources`
+     * tree. The AssetManager keys the published copy by source path, so every bundle
+     * sharing this sourcePath must publish with identical options — whichever bundle
+     * publishes first defines the copied file set.
+     *
+     * `build/` holds the pre-built production bundles, which are only published through
+     * the compressed asset configuration (see `config/assets.php`); `scss/` only
+     * contains sources. Neither is referenced at runtime outside a production build.
+     */
+    public const HUMHUB_RESOURCES_PUBLISH_OPTIONS = [
+        'except' => [
+            'build/',
+            'scss/',
+            '.gitignore',
+        ],
+    ];
+
+    /**
      * @var bool can be used to force production asset usage while testing
      */
     protected static $forceProductionAssets = false;
@@ -133,6 +151,14 @@ class AssetBundle extends BaseAssetBundle
         }
 
         $this->jsOptions['position'] = $this->getJsPosition();
+
+        if (
+            $this->sourcePath === '@humhub/resources'
+            && !isset($this->publishOptions['only'])
+            && !isset($this->publishOptions['except'])
+        ) {
+            $this->publishOptions += self::HUMHUB_RESOURCES_PUBLISH_OPTIONS;
+        }
 
         if (!$useProdAssets && $this->forceCopy && !isset($this->publishOptions['forceCopy'])) {
             $this->publishOptions['forceCopy'] = true;

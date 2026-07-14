@@ -2,6 +2,7 @@
 
 use humhub\commands\CronController;
 use humhub\commands\IntegrityController;
+use humhub\components\gates\GateManager;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\user\Events;
@@ -27,5 +28,6 @@ return [
         ['class' => IntegrityController::class, 'event' => IntegrityController::EVENT_ON_RUN, 'callback' => [Events::class, 'onIntegrityCheck']],
         ['class' => CronController::class, 'event' => CronController::EVENT_ON_HOURLY_RUN, 'callback' => [Events::class, 'onHourlyCron']],
         ['class' => TopMenu::class, 'event' => TopMenu::EVENT_INIT, 'callback' => [Events::class, 'onTopMenuInit']],
+        ['class' => GateManager::class, 'event' => GateManager::EVENT_INIT_GATES, 'callback' => [Events::class, 'onGateInit']],
     ],
 ];

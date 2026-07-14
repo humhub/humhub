@@ -2,6 +2,7 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use humhub\modules\user\components\MaintenanceModeGate;
 use Yii;
 use yii\base\Model;
 
@@ -32,7 +33,7 @@ class BasicSettingsForm extends Model
         $this->baseUrl = Yii::$app->settings->get('baseUrl');
         $this->defaultLanguage = Yii::$app->settings->get('defaultLanguage');
         $this->defaultTimeZone = Yii::$app->settings->get('defaultTimeZone');
-        $this->maintenanceMode = Yii::$app->settings->get('maintenanceMode');
+        $this->maintenanceMode = Yii::$app->settings->get(MaintenanceModeGate::SETTING_MAINTENANCE_MODE);
         $this->maintenanceModeInfo = Yii::$app->settings->get('maintenanceModeInfo');
 
         $this->dashboardShowProfilePostForm = Yii::$app->getModule('dashboard')->settings->get('showProfilePostForm');
@@ -96,7 +97,7 @@ class BasicSettingsForm extends Model
         Yii::$app->settings->set('baseUrl', $this->baseUrl);
         Yii::$app->settings->set('defaultLanguage', $this->defaultLanguage);
         Yii::$app->settings->set('defaultTimeZone', $this->defaultTimeZone);
-        Yii::$app->settings->set('maintenanceMode', $this->maintenanceMode);
+        Yii::$app->settings->set(MaintenanceModeGate::SETTING_MAINTENANCE_MODE, $this->maintenanceMode);
         Yii::$app->settings->set('maintenanceModeInfo', $this->maintenanceModeInfo);
 
         Yii::$app->getModule('dashboard')->settings->set('showProfilePostForm', $this->dashboardShowProfilePostForm);

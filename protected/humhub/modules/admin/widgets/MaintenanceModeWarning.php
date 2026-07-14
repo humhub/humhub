@@ -9,7 +9,7 @@
 namespace humhub\modules\admin\widgets;
 
 use humhub\components\Widget;
-use Yii;
+use humhub\modules\user\components\MaintenanceModeGate;
 
 /**
  * MaintenanceModeWarning shows a snippet in the dashboard
@@ -24,7 +24,7 @@ class MaintenanceModeWarning extends Widget
      */
     public function run()
     {
-        if (!Yii::$app->settings->get('maintenanceMode')) {
+        if (!MaintenanceModeGate::isActive()) {
             return;
         }
 

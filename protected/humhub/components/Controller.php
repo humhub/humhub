@@ -11,6 +11,7 @@ namespace humhub\components;
 use humhub\components\access\ControllerAccess;
 use humhub\components\access\StrictAccess;
 use humhub\components\behaviors\AccessControl;
+use humhub\components\gates\GateFilter;
 use humhub\modules\user\services\IsOnlineService;
 use Yii;
 use yii\helpers\Html;
@@ -94,6 +95,12 @@ class Controller extends \yii\web\Controller
     public function init()
     {
         parent::init();
+
+        // Attached here instead of behaviors() so that controllers overriding behaviors()
+        // without merging the parent cannot accidentally disable gate enforcement.
+        // Declared behaviors (e.g. 'acl') are attached first, so gates run after access control.
+        $this->attachBehavior('gates', ['class' => GateFilter::class]);
+
         $this->trigger(self::EVENT_INIT);
     }
 

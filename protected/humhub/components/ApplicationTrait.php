@@ -8,6 +8,7 @@
 
 namespace humhub\components;
 
+use humhub\components\gates\GateManager;
 use humhub\helpers\EnvHelper;
 use humhub\interfaces\MailerInterface;
 use humhub\libs\SelfTest;
@@ -18,6 +19,7 @@ use yii\i18n\Formatter;
 
 /**
  * @property-read InstallationState $installationState
+ * @property-read GateManager $gateManager
  */
 trait ApplicationTrait
 {

@@ -185,8 +185,8 @@ class Module extends \humhub\components\Module
     public $showLoginForm = true;
 
     /**
-     * Should the login form be displayed. This can be deactivated, e.g. to display only SSO providers.
-     * With the parameter `?showLoginForm=1` the login form can still be displayed as a fallback.
+     * Should the registration form be displayed. This can be deactivated, e.g. to display only SSO providers.
+     * With the parameter `?showRegistrationForm=1` the registration form can still be displayed as a fallback.
      *
      * @since 1.16
      * @var bool

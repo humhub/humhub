@@ -6,6 +6,7 @@ use humhub\models\RecordMap;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\like\services\LikeService;
+use Yii;
 use yii\base\Widget;
 use yii\helpers\Url;
 
@@ -19,7 +20,8 @@ class LikeLink extends Widget
     {
         $this->likeService = new LikeService($this->object);
 
-        if (!$this->likeService->canLike()) {
+        $guestHideComments = Yii::$app->getModule('comment')->guestHideComments;
+        if (!(Yii::$app->user->isGuest && $guestHideComments) && !$this->likeService->canLike()) {
             return false;
         }
 

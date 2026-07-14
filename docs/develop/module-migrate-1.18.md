@@ -1,5 +1,7 @@
 # Module Migration — Version 1.18
 
+See also [module-migrate-1.18-bs5.md](module-migrate-1.18-bs5.md)
+
 ## Version 1.18.1
 
 ### New

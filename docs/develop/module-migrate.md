@@ -6,6 +6,26 @@ Each minor release line has its own file with the breaking changes, new APIs and
 
 ## Unreleased
 
+- Added the central **user gate** system for modules that intercept requests to route the user
+  through a mandatory flow (2FA check, terms acceptance, first-use wizards) — see
+  `docs/develop/user-gates.md`. Modules using `Controller::EVENT_BEFORE_ACTION` for this purpose
+  should migrate to a `UserGate` registered via `GateManager::EVENT_INIT_GATES` and bump
+  `humhub.minVersion` to `1.19`. Until migrated, legacy interceptors keep working but should
+  guard against double interception with
+  `if (!$event->isValid || Yii::$app->response->getIsRedirection()) { return; }`.
+  - **Removed** (unused by any known module): `ControllerAccess::RULE_MUST_CHANGE_PASSWORD` and
+    `ControllerAccess::RULE_MAINTENANCE_MODE` (incl. their validators
+    `validateMustChangePassword()` / `validateMaintenanceMode()`),
+    `AccessControl::forceChangePassword()` / `checkMaintenanceMode()`, and the `codeCallback`
+    mechanism on `ControllerAccess`/`DelegateAccessValidator`/`AccessControl`. A custom
+    `ControllerAccess`/validator that still declares and sets a `codeCallback` now fails with an
+    `InvalidConfigException` instead of the callback being silently ignored. Enforcement moved to
+    `humhub\modules\user\components\MustChangePasswordGate` and
+    `humhub\modules\user\components\MaintenanceModeGate`; the forced logout of non-admins
+    during maintenance now happens in the gate's `onIntercept()` hook.
+  - Requests classified as AJAX/PJAX now receive `401` + JSON `{gate, url}` (plus an
+    `X-Redirect` header handled by `yii.js`) instead of a `302` to an HTML page when a gate
+    intercepts; API requests (content negotiation without `text/html`) receive `403` + JSON.
 - `humhub\modules\content\components\ActiveQueryContent::readable()` and `::userRelated()` no
   longer accept a `$user` parameter. The user is now resolved once, in the constructor — either
   the current session user (`Yii::$app->user->getIdentity()`) or an explicit user passed as the
@@ -237,6 +257,10 @@ Each minor release line has its own file with the breaking changes, new APIs and
 - Removed `@filestore` Alias
 - Removed `AssetManager::$preventDefer` option
 - New Flysystem Filesystem Wrapper - Migrate all file access for assets and uploads to the Flysystem wrapper (`Yii::$app->fs->getDataMount()` or `Yii::$app->fs->getAssetsMount()`). Read more: https://flysystem.thephpleague.com/docs/usage/filesystem-api/
+- Added `humhub\modules\content\components\ContentContainerActiveRecord::EVENT_INIT_PROFILE_IMAGE`
+  and `EVENT_INIT_BANNER_IMAGE` (`humhub\modules\content\events\ContentContainerImageEvent`) to customize
+  or replace a container's profile/banner `AssetImage`. Use these instead of overriding `$profileImageClass`,
+  which only affects the deprecated `ProfileImage` path.
 
 ## Released versions
 
