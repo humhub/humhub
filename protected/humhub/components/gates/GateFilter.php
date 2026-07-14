@@ -92,8 +92,10 @@ class GateFilter extends ActionFilter
     /**
      * Classifies the current request (see [[RequestClass]]).
      *
-     * Requests that do not negotiate an HTML (or wildcard) response and are not
-     * XHR/PJAX are treated as API requests.
+     * Only requests explicitly negotiating an HTML response are browser navigations —
+     * everything else (wildcard or JSON accept headers: service worker and manifest
+     * fetches, API clients, curl) must never be answered with a redirect, and especially
+     * must not poison the returnUrl that full-page interception stores.
      */
     protected function getRequestClass(): RequestClass
     {
@@ -103,13 +105,14 @@ class GateFilter extends ActionFilter
             return RequestClass::Ajax;
         }
 
+        // No Accept header at all = no preference expressed; treat as navigation.
         $acceptableContentTypes = $request->getAcceptableContentTypes();
         if (empty($acceptableContentTypes)) {
             return RequestClass::FullPage;
         }
 
         foreach ($acceptableContentTypes as $type => $params) {
-            if (in_array($type, ['text/html', 'application/xhtml+xml', '*/*'], true)) {
+            if (in_array($type, ['text/html', 'application/xhtml+xml'], true)) {
                 return RequestClass::FullPage;
             }
         }

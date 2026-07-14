@@ -50,6 +50,21 @@ class MaintenanceModeCest
         $I->see('Dashboard');
     }
 
+    public function testServiceWorkerRequestIsNotRedirected(FunctionalTester $I)
+    {
+        $I->wantTo('ensure that non-HTML requests are answered with 403 instead of a redirect during maintenance');
+
+        Yii::$app->settings->set(MaintenanceModeGate::SETTING_MAINTENANCE_MODE, 1);
+
+        // A service worker fetch negotiates `Accept: */*` — it must never be redirected,
+        // and especially must not poison the returnUrl for the next login (the browser
+        // would be sent to the service worker source instead of the dashboard).
+        $I->haveHttpHeader('Accept', '*/*');
+        $I->amOnPage('/index-test.php?r=web%2Fpwa-service-worker%2Findex');
+
+        $I->seeResponseCodeIs(403);
+    }
+
     public function testAjaxRequestReceivesGateResponse(FunctionalTester $I)
     {
         $I->wantTo('ensure that AJAX requests receive a machine-readable gate response during maintenance');
