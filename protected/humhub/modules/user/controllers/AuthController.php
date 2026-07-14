@@ -78,11 +78,6 @@ class AuthController extends Controller
     public $access = ControllerAccess::class;
 
     /**
-     * @inheritdoc
-     */
-    protected $doNotInterceptActionIds = ['*'];
-
-    /**
      * Whether self-registration is currently permitted at all — false in
      * maintenance mode or when the admin has disabled anonymous registration.
      * Covers the back-end gate: blocks AuthClient-driven auto-registration and
