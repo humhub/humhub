@@ -25,7 +25,15 @@ Each minor release line has its own file with the breaking changes, new APIs and
     during maintenance now happens in the gate's `onIntercept()` hook.
   - Requests classified as AJAX/PJAX now receive `401` + JSON `{gate, url}` (plus an
     `X-Redirect` header handled by `yii.js`) instead of a `302` to an HTML page when a gate
-    intercepts; API requests (content negotiation without `text/html`) receive `403` + JSON.
+    intercepts; token-authenticated API requests (server-side, `enableSession = false`)
+    receive `403` + JSON.
+  - **Removed** `Controller::$doNotInterceptActionIds` and `Controller::isNotInterceptedAction()`
+    (`@since 1.9`, unused by the gate system and uncalled by any known module). The flag was a
+    controller's way to opt individual actions out of interception; that is now handled by the
+    gates themselves (`UserGateInterface::appliesTo()` / `getAllowedRoutes()`), and stateless
+    API endpoints are exempt via the request classification. A module controller that still
+    declares the property keeps working (it becomes an unused own property) but the declaration
+    can be removed.
 - `humhub\modules\content\components\ActiveQueryContent::readable()` and `::userRelated()` no
   longer accept a `$user` parameter. The user is now resolved once, in the constructor — either
   the current session user (`Yii::$app->user->getIdentity()`) or an explicit user passed as the
