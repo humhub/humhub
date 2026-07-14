@@ -33,6 +33,7 @@ nbproject
 .php-cs-fixer.cache
 .php_cs.cache
 .DS_Store
+.playwright-mcp/
 
 themes/*
 !themes/HumHub
