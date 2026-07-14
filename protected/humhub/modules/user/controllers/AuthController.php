@@ -28,6 +28,7 @@ use humhub\modules\user\services\AuthClientService;
 use humhub\modules\user\services\AutoMapResult;
 use humhub\modules\user\services\InviteRegistrationService;
 use humhub\modules\user\services\LinkRegistrationService;
+use humhub\modules\user\services\LoginHintService;
 use humhub\modules\user\services\UserSourceService;
 use Throwable;
 use Yii;
@@ -75,11 +76,6 @@ class AuthController extends Controller
      * @var string
      */
     public $access = ControllerAccess::class;
-
-    /**
-     * @inheritdoc
-     */
-    protected $doNotInterceptActionIds = ['*'];
 
     /**
      * Whether self-registration is currently permitted at all — false in
@@ -189,6 +185,7 @@ class AuthController extends Controller
         // so the user lands on a fresh Step 1.
         if (Yii::$app->request->get('forget') !== null) {
             Yii::$app->session->remove(self::SESSION_KEY_STEP1_USERNAME);
+            (new LoginHintService())->clear();
             if (!Yii::$app->request->isAjax) {
                 return $this->redirect(['/user/auth/login']);
             }
@@ -245,6 +242,7 @@ class AuthController extends Controller
         // anyway — there is nothing to preserve.)
         if (!Yii::$app->request->isPost) {
             Yii::$app->session->remove(self::SESSION_KEY_STEP1_USERNAME);
+            (new LoginHintService())->clear();
         }
 
         if (MaintenanceModeGate::isActive()) {
