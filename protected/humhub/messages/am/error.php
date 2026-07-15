@@ -14,5 +14,4 @@ return [
     'Maintenance mode is active. Only Administrators can access the platform.' => '',
     'The module {moduleId} is present in the HumHub configuration file even though this module is disabled. Please remove it from the configuration.' => '',
     'The specified URL cannot be called directly.' => '',
-    'You must change password.' => '',
 ];
