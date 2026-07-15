@@ -33,6 +33,18 @@ class MobileAppHelper
         self::sendFlutterMessage($message);
     }
 
+    public static function registerHideOpenerScript(): void
+    {
+        if (!DeviceDetectorHelper::isAppRequest()) {
+            return;
+        }
+
+        $json = ['type' => 'hideOpener'];
+        $message = Json::encode($json);
+
+        self::sendFlutterMessage($message);
+    }
+
     /**
      * @deprecated Remove in 1.19
      */
