@@ -220,6 +220,11 @@ class AssetManager extends \yii\web\AssetManager
         // on its parent directory - not granted in some setups (e.g. Docker), causing the
         // clear cache action to fail with a "Permission denied" error.
         foreach ($this->fs->listContents('.')->toArray() as $item) {
+            // Keep dot files such as the shipped `assets/.gitignore` - published assets never start with a dot.
+            if (str_starts_with(basename($item->path()), '.')) {
+                continue;
+            }
+
             if ($item->isDir()) {
                 $this->fs->deleteDirectory($item->path());
             } else {
