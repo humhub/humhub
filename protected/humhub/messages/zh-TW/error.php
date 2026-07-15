@@ -10,7 +10,6 @@ return [
     'The specified URL cannot be called directly.' => '無法直接調用特定的URL。',
     'You are not allowed to perform this action.' => '您尚未被允許執行此操作。',
     'You are not permitted to access this section.' => '您沒有存取此區域的權限。',
-    'You must change password.' => '您必須變更密碼。',
     'You need admin permissions to access this section.' => '您需要管理者權限以便存取此區域。',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => '您的使用者帳戶目前尚未被核准，請稍候再嘗試，或者與系統管理員聯繫。',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => '您的使用者帳戶目前被停用，請改用其他已啟用的帳戶，或者與系統管理員聯繫。',

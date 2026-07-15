@@ -10,7 +10,6 @@ return [
     'The specified URL cannot be called directly.' => 'A URL especificada não pode ser chamada diretamente.',
     'You are not allowed to perform this action.' => 'Não podes fazer esta ação.',
     'You are not permitted to access this section.' => 'Não podes aceder a esta secção.',
-    'You must change password.' => 'Tens de alterar a palavra-passe.',
     'You need admin permissions to access this section.' => 'Precisas de permissões de administração para aceder a esta secção.',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => 'A tua conta ainda não foi aprovada. Por favor tenta mais tarde, ou contacta a administração.',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'A tua conta está inativa, por favor entra com uma conta ativa ou contacta a administração.',

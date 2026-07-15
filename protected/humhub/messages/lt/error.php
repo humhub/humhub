@@ -10,7 +10,6 @@ return [
     'The specified URL cannot be called directly.' => 'Su nurodytu URL adreso negalima susisiekti tiesiogiai.',
     'You are not allowed to perform this action.' => 'Neturite prieigos šiam veiksmui atlikti.',
     'You are not permitted to access this section.' => 'Neturite prieigos šiam puslapiui.',
-    'You must change password.' => 'Turite pasikeisti slaptažodį.',
     'You need admin permissions to access this section.' => 'Norint pasiekti šį puslapį, reikalingos administratoriaus teises.',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => 'Jūsų naudotojo paskyra dar nepatvirtinta, bandykite vėliau arba kreipkitės į tinklo administratorių.',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'Jūsų naudotojo paskyra neaktyvi, prisijunkite su aktyvia paskyra arba kreipkitės į tinklo administratorių.',

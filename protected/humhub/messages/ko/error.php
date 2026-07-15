@@ -11,7 +11,6 @@ return [
     'The module {moduleId} is present in the HumHub configuration file even though this module is disabled. Please remove it from the configuration.' => '',
     'The specified URL cannot be called directly.' => '',
     'You are not permitted to access this section.' => '',
-    'You must change password.' => '',
     'You need admin permissions to access this section.' => '',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => '',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => '',
