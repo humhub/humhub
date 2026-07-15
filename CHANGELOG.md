@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.19 (TBD)
 ----------
+- Fix #8303: Pinned `npm-asset/intl-messageformat` (11.1.2) and `npm-asset/socket.io-client` (2.5.0) — the newer mirror packages ship an "iife" file that is actually an ES module (its top-level `export` broke the combined `humhub-app.js` entirely) resp. no longer contain the `dist/` files referenced by `SocketIoAsset`
 - Fix #8302: "Flush cache" deleted the `assets/.gitignore` shipped with the installation — `AssetManager::clear()` now skips dot files at the assets mount root, matching the pre-1.19 behavior
 - Fix #8294: Removed a leftover `codecept_debug()` call in `ActiveQueryActivity::mailLimitContentContainer()` — on production installs (without dev dependencies) the function does not exist, so the summary mail job crashed for every user with a space-limited mail summary; a new core test now guards against dev-only function calls in production code
 - Fix #8294: `BaseNotification::html()` still called `getAsHtml()`, which was removed in #7980 — any notification not overriding `html()` (typical for module-provided notifications) crashed on rendering; the obsolete override was removed so the `SocialActivity` default (`null`, the pre-1.19 behaviour) applies again
