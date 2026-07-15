@@ -24,6 +24,7 @@ HumHub Changelog
 - Fix #8273: Fix confirm modal getting stuck open forever when closed while still transitioning in
 - Fix #8282: Fix confirm modal closing itself on next open after being closed during its hide transition
 - Enh #8286: Display a success toast when a module is enabled
+- Enh #8300: Update composer package web-token/jwt-library to 4.1.7 (GHSA-3prj-6hqw-cm82, GHSA-jc38-x7x8-2xc8)
 
 1.18.3 (May 18, 2026)
 ---------------------
