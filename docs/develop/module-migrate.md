@@ -265,6 +265,12 @@ Each minor release line has its own file with the breaking changes, new APIs and
 - Removed `@filestore` Alias
 - Removed `AssetManager::$preventDefer` option
 - New Flysystem Filesystem Wrapper - Migrate all file access for assets and uploads to the Flysystem wrapper (`Yii::$app->fs->getDataMount()` or `Yii::$app->fs->getAssetsMount()`). Read more: https://flysystem.thephpleague.com/docs/usage/filesystem-api/
+  - **`StorageManager::get()` (`$file->store->get()`) now returns a path relative to the data mount, no longer an absolute local filesystem path.** The same applies to `FileHistory::getFileStorePath()`. Any code treating the return value as a local path — `is_file()`, `file_exists()`, `file_get_contents()`, `filesize()`, `hash_file()`, `fopen()`, `Imagine::open()`, `Response::sendFile()`/`xSendFile()`, archive/scanner APIs — silently breaks (checks return `false`, reads fail) and must be migrated:
+    - Read/write through the store API: `$file->store->getContent()`, `getContentStream()`, `setContent()`, `has()`, `fileSize()`, `mimeType()` — or use the Flysystem instance `$file->store->fs` directly. These work with any mount (local or remote/S3).
+    - Image processing: `Image::getImagine()->load($file->store->getContent())` instead of `open()`; persist with `$file->store->setContent($image->get($format, $options))` instead of `$image->save()` (see `humhub\modules\file\libs\ImageHelper`).
+    - `exif_read_data()` accepts a stream: pass `$file->store->getContentStream()`.
+    - Only when serving a file via a web-server mechanism that requires a real local path (e.g. X-Sendfile): verify `Yii::$app->fs->getDataMountConfig() instanceof LocalMountConfig` and prefix `Yii::getAlias($dataMountConfig->path)` (see `humhub\modules\file\actions\DownloadAction`); otherwise fall back to `sendStreamAsFile()`.
+  - `File::setStoredFile()` with a string argument now expects a **data-mount-relative** path (it is read via Flysystem). Passing an absolute local path (e.g. a temp file) now throws `Invalid parameter type.` — use `setStoredFileContent(file_get_contents($localPath))` or an `UploadedFile` instead.
 - Added `humhub\modules\content\components\ContentContainerActiveRecord::EVENT_INIT_PROFILE_IMAGE`
   and `EVENT_INIT_BANNER_IMAGE` (`humhub\modules\content\events\ContentContainerImageEvent`) to customize
   or replace a container's profile/banner `AssetImage`. Use these instead of overriding `$profileImageClass`,
