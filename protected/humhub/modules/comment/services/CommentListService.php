@@ -105,12 +105,18 @@ class CommentListService
         $this->addScopeQueryCondition($query);
 
         if ($sortOrder === self::LIST_DIR_NEXT) {
-            $query->andWhere(['>', 'id', $commentId])->orderBy('created_at ASC');
+            $query->orderBy(['created_at' => SORT_ASC, 'id' => SORT_ASC]);
+            if ($commentId) {
+                $query->andWhere(['>', 'id', $commentId]);
+            }
             return $query->all();
-        } else {
-            $query->andWhere(['<', 'id', $commentId])->orderBy('created_at DESC');
-            return array_reverse($query->all());
         }
+
+        $query->orderBy(['created_at' => SORT_DESC, 'id' => SORT_DESC]);
+        if ($commentId) {
+            $query->andWhere(['<', 'id', $commentId]);
+        }
+        return array_reverse($query->all());
     }
 
     private function getSiblingIds(int $commentId, int $limit = 5, string $sortOrder = self::LIST_DIR_PREV): array
