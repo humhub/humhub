@@ -14,15 +14,15 @@ use yii\db\ActiveQuery;
  *
  * @property int $id
  * @property string $class
- * @property int $contentcontainer_id
+ * @property int|null $contentcontainer_id
  * @property int $content_id
  * @property int $content_addon_record_id
  * @property string $grouping_key
  * @property int $created_by
  * @property string $created_at
  *
- * @property-read Content $content
- * @property-read ContentContainer $contentContainer
+ * @property-read Content|null $content
+ * @property-read ContentContainer|null $contentContainer
  */
 class Activity extends \humhub\components\ActiveRecord
 {

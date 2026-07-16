@@ -16,7 +16,7 @@ use yii\base\BaseObject;
 abstract class BaseActivity extends BaseObject
 {
     public readonly ActivityRecord $record;
-    public readonly ContentContainer $contentContainer;
+    public readonly ?ContentContainer $contentContainer;
     public readonly User $user;
     public readonly string $createdAt;
     public readonly int $groupCount;
@@ -57,7 +57,7 @@ abstract class BaseActivity extends BaseObject
 
     public function getUrl(bool $scheme = true): ?string
     {
-        return $this->contentContainer->polymorphicRelation->getUrl($scheme);
+        return $this->contentContainer?->polymorphicRelation?->getUrl($scheme);
     }
 
     protected function getMessageParamsMailText(): array

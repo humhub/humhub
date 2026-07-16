@@ -5,7 +5,10 @@ namespace humhub\modules\activity\tests\codeception\unit;
 use Codeception\Specify;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\activity\services\ActivityManager;
+use humhub\modules\activity\services\RenderService;
 use humhub\modules\activity\tests\codeception\activities\TestActivity;
+use humhub\modules\comment\activities\NewCommentActivity;
+use humhub\modules\comment\models\Comment;
 use humhub\modules\post\models\Post;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
@@ -30,6 +33,34 @@ class ActivityTest extends HumHubDbTestCase
         $this->assertEquals(TestActivity::class, $testActivity::class);
         $this->assertEquals($record->content->polymorphicRelation->id, $post->id);
         $this->assertEquals($record->contentcontainer_id, $post->content->contentcontainer_id);
+    }
+
+    public function testCreateActivityOnGlobalContent()
+    {
+        $this->becomeUser('User2');
+
+        $post = new Post(['message' => 'Global content']);
+        $this->assertTrue($post->save());
+        $this->assertNull($post->content->contentcontainer_id);
+
+        // Commenting on global content dispatches NewCommentActivity without a container
+        $comment = new Comment([
+            'message' => 'Comment on global content',
+            'content_id' => $post->content->id,
+        ]);
+        $this->assertTrue($comment->save());
+
+        $record = Activity::findOne(['class' => NewCommentActivity::class]);
+        $this->assertNotNull($record, 'Activity record persisted');
+        $this->assertNull($record->contentcontainer_id);
+
+        $activity = ActivityManager::load($record);
+        $this->assertNull($activity->contentContainer);
+
+        $renderService = new RenderService($record);
+        $this->assertNotEmpty($renderService->getWeb());
+        $this->assertNotEmpty($renderService->getMailText());
+        $this->assertNotEmpty($renderService->getMailHtml());
     }
 
     public function testDeleteRecord()
