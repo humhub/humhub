@@ -25,7 +25,7 @@ use yii\helpers\Url;
             <?= $user->getProfileImage()->render(32, ['link' => false]) ?>
 
             <!-- Show space image, if you are outside from a space -->
-            <?php if (!Yii::$app->controller instanceof ContentContainerController && $contentContainer->polymorphicRelation instanceof Space) : ?>
+            <?php if (!Yii::$app->controller instanceof ContentContainerController && $contentContainer?->polymorphicRelation instanceof Space) : ?>
                 <?= Image::widget([
                     'space' => $contentContainer->polymorphicRelation,
                     'width' => 20,
