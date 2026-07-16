@@ -162,5 +162,6 @@ return [
     'List of URLs that should be opened in the mobile in-app browser instead of the external one, and to be recognized as part of the HumHub ecosystem by the mobile app. Add * to the end of the URL to match all sub-paths. Example: https://example.com/*' => '',
     'Post title' => '',
     'Replaced {mailService}' => '',
+    'Show topic widget in Dashboard sidebar' => '',
     'URLs to whitelist' => '',
 ];

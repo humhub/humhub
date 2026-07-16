@@ -55,6 +55,7 @@ class TopicBadge extends Badge
                 'data-topic-id' => $topic->id,
                 'data-topic-url' => $topic->getUrl($contentContainer, $urlParams),
             ])
+            ->cssClass('link-topic')
             ->encodeLabel(false),
         );
 

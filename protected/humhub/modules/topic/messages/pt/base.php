@@ -14,6 +14,7 @@ return [
     'Topic' => 'Tópico',
     'Topic has been deleted!' => 'O tópico foi eliminado!',
     'Topics' => 'Tópicos',
+    '<strong>Popular</strong> topics' => '',
     'Always show' => '',
     'Controls how the topic picker appears in content creation forms above the stream.' => '',
     'Default topic picker visibility' => '',

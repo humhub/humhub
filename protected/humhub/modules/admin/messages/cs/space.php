@@ -32,6 +32,7 @@ return [
     'Allow individual topics in Spaces' => '',
     'Convert' => '',
     'Convert Space Topics' => '',
+    'Default "Show topic widget in Stream sidebar"' => '',
     'Default Content Sort Order' => '',
     'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.' => '',
     'Update Space memberships also for existing members.' => '',

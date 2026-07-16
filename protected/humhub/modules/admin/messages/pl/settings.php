@@ -158,6 +158,7 @@ return [
     'Replaced {mailService}' => '',
     'Secondary color' => '',
     'Show network name instead of logo in email header' => '',
+    'Show topic widget in Dashboard sidebar' => '',
     'Success color' => '',
     'Theme customization' => '',
     'URLs to whitelist' => '',

@@ -34,5 +34,6 @@ return [
     'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.' => 'これらのオプションを使用すると、すべてのスペースにデフォルトのアクセス許可を設定できます。 許可されたユーザーは、スペースごとにこれらをパーソナライズできます。 新しいモジュールをインストールすると、さらにエントリが追加されます。',
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'このスペース一覧でスペースの閲覧・編集・削除ができます。',
     'Update Space memberships also for existing members.' => '既存のメンバーのスペースメンバーシップを更新します。',
+    'Default "Show topic widget in Stream sidebar"' => '',
     'Default Content Sort Order' => '',
 ];

@@ -21,6 +21,7 @@ return [
     'Default "Hide Activity Sidebar Widget"' => '',
     'Default "Hide Followers"' => '',
     'Default "Hide Members"' => '',
+    'Default "Show topic widget in Stream sidebar"' => '',
     'Default Content Sort Order' => '',
     'Default Homepage' => '',
     'Default Homepage (Non-members)' => '',

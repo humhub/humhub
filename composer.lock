@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "031551ce7df56ed8d88c315de3f1fc91",
+    "content-hash": "1e78ca14a0465241526eec99282a8ed1",
     "packages": [
         {
             "name": "altcha-org/altcha",
@@ -4038,22 +4038,6 @@
             "time": "2026-07-04T14:30:18+00:00"
         },
         {
-            "name": "npm-asset/accepts",
-            "version": "1.3.8",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/accepts/-/accepts-1.3.8.tgz"
-            },
-            "require": {
-                "npm-asset/mime-types": "~2.1.34",
-                "npm-asset/negotiator": "0.6.3"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
             "name": "npm-asset/after",
             "version": "0.8.2",
             "dist": {
@@ -4117,6 +4101,18 @@
             ]
         },
         {
+            "name": "npm-asset/backo2",
+            "version": "1.0.2",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/backo2/-/backo2-1.0.2.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
             "name": "npm-asset/base64-arraybuffer",
             "version": "0.1.4",
             "dist": {
@@ -4124,18 +4120,6 @@
                 "url": "https://registry.npmjs.org/base64-arraybuffer/-/base64-arraybuffer-0.1.4.tgz"
             },
             "type": "npm-asset"
-        },
-        {
-            "name": "npm-asset/base64id",
-            "version": "2.0.0",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/base64id/-/base64id-2.0.0.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
         },
         {
             "name": "npm-asset/blob",
@@ -4251,11 +4235,20 @@
             ]
         },
         {
-            "name": "npm-asset/component-emitter",
-            "version": "1.2.1",
+            "name": "npm-asset/component-bind",
+            "version": "1.0.0",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/component-emitter/-/component-emitter-1.2.1.tgz"
+                "url": "https://registry.npmjs.org/component-bind/-/component-bind-1.0.0.tgz"
+            },
+            "type": "npm-asset"
+        },
+        {
+            "name": "npm-asset/component-emitter",
+            "version": "1.3.1",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/component-emitter/-/component-emitter-1.3.1.tgz"
             },
             "type": "npm-asset",
             "license": [
@@ -4263,26 +4256,35 @@
             ]
         },
         {
-            "name": "npm-asset/cookie",
-            "version": "0.4.2",
+            "name": "npm-asset/component-inherit",
+            "version": "0.0.3",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/cookie/-/cookie-0.4.2.tgz"
+                "url": "https://registry.npmjs.org/component-inherit/-/component-inherit-0.0.3.tgz"
             },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
+            "type": "npm-asset"
         },
         {
             "name": "npm-asset/debug",
-            "version": "4.1.1",
+            "version": "3.1.0",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/debug/-/debug-4.1.1.tgz"
+                "url": "https://registry.npmjs.org/debug/-/debug-3.1.0.tgz"
             },
             "require": {
-                "npm-asset/ms": ">=2.1.1,<3.0.0"
+                "npm-asset/ms": "2.0.0"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/decimal.js",
+            "version": "10.6.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/decimal.js/-/decimal.js-10.6.0.tgz"
             },
             "type": "npm-asset",
             "license": [
@@ -4302,19 +4304,24 @@
             ]
         },
         {
-            "name": "npm-asset/engine.io",
-            "version": "3.6.2",
+            "name": "npm-asset/engine.io-client",
+            "version": "3.5.6",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/engine.io/-/engine.io-3.6.2.tgz"
+                "url": "https://registry.npmjs.org/engine.io-client/-/engine.io-client-3.5.6.tgz"
             },
             "require": {
-                "npm-asset/accepts": "~1.3.4",
-                "npm-asset/base64id": "2.0.0",
-                "npm-asset/cookie": "~0.4.1",
-                "npm-asset/debug": "~4.1.0",
+                "npm-asset/component-emitter": "~1.3.0",
+                "npm-asset/component-inherit": "0.0.3",
+                "npm-asset/debug": "~3.1.0",
                 "npm-asset/engine.io-parser": "~2.2.0",
-                "npm-asset/ws": "~7.5.10"
+                "npm-asset/has-cors": "1.1.0",
+                "npm-asset/indexof": "0.0.1",
+                "npm-asset/parseqs": "0.0.6",
+                "npm-asset/parseuri": "0.0.6",
+                "npm-asset/ws": "~7.5.10",
+                "npm-asset/xmlhttprequest-ssl": "~1.6.2",
+                "npm-asset/yeast": "0.1.2"
             },
             "type": "npm-asset",
             "license": [
@@ -4377,11 +4384,32 @@
             ]
         },
         {
-            "name": "npm-asset/formatjs--fast-memoize",
-            "version": "3.1.6",
+            "name": "npm-asset/formatjs--ecma402-abstract",
+            "version": "3.1.1",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/@formatjs/fast-memoize/-/fast-memoize-3.1.6.tgz"
+                "url": "https://registry.npmjs.org/@formatjs/ecma402-abstract/-/ecma402-abstract-3.1.1.tgz"
+            },
+            "require": {
+                "npm-asset/decimal.js": ">=10.6.0,<11.0.0",
+                "npm-asset/formatjs--fast-memoize": "3.1.0",
+                "npm-asset/formatjs--intl-localematcher": "0.8.1",
+                "npm-asset/tslib": ">=2.8.1,<3.0.0"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/formatjs--fast-memoize",
+            "version": "3.1.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/@formatjs/fast-memoize/-/fast-memoize-3.1.0.tgz"
+            },
+            "require": {
+                "npm-asset/tslib": ">=2.8.1,<3.0.0"
             },
             "type": "npm-asset",
             "license": [
@@ -4390,13 +4418,15 @@
         },
         {
             "name": "npm-asset/formatjs--icu-messageformat-parser",
-            "version": "3.5.13",
+            "version": "3.5.1",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/@formatjs/icu-messageformat-parser/-/icu-messageformat-parser-3.5.13.tgz"
+                "url": "https://registry.npmjs.org/@formatjs/icu-messageformat-parser/-/icu-messageformat-parser-3.5.1.tgz"
             },
             "require": {
-                "npm-asset/formatjs--icu-skeleton-parser": "2.1.10"
+                "npm-asset/formatjs--ecma402-abstract": "3.1.1",
+                "npm-asset/formatjs--icu-skeleton-parser": "2.1.1",
+                "npm-asset/tslib": ">=2.8.1,<3.0.0"
             },
             "type": "npm-asset",
             "license": [
@@ -4405,10 +4435,30 @@
         },
         {
             "name": "npm-asset/formatjs--icu-skeleton-parser",
-            "version": "2.1.10",
+            "version": "2.1.1",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/@formatjs/icu-skeleton-parser/-/icu-skeleton-parser-2.1.10.tgz"
+                "url": "https://registry.npmjs.org/@formatjs/icu-skeleton-parser/-/icu-skeleton-parser-2.1.1.tgz"
+            },
+            "require": {
+                "npm-asset/formatjs--ecma402-abstract": "3.1.1",
+                "npm-asset/tslib": ">=2.8.1,<3.0.0"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/formatjs--intl-localematcher",
+            "version": "0.8.1",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/@formatjs/intl-localematcher/-/intl-localematcher-0.8.1.tgz"
+            },
+            "require": {
+                "npm-asset/formatjs--fast-memoize": "3.1.0",
+                "npm-asset/tslib": ">=2.8.1,<3.0.0"
             },
             "type": "npm-asset",
             "license": [
@@ -4424,6 +4474,18 @@
             },
             "require": {
                 "npm-asset/isarray": "2.0.1"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/has-cors",
+            "version": "1.1.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/has-cors/-/has-cors-1.1.0.tgz"
             },
             "type": "npm-asset",
             "license": [
@@ -4458,6 +4520,15 @@
             ]
         },
         {
+            "name": "npm-asset/indexof",
+            "version": "0.0.1",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/indexof/-/indexof-0.0.1.tgz"
+            },
+            "type": "npm-asset"
+        },
+        {
             "name": "npm-asset/intersection-observer",
             "version": "0.7.0",
             "dist": {
@@ -4471,14 +4542,16 @@
         },
         {
             "name": "npm-asset/intl-messageformat",
-            "version": "11.2.10",
+            "version": "11.1.2",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/intl-messageformat/-/intl-messageformat-11.2.10.tgz"
+                "url": "https://registry.npmjs.org/intl-messageformat/-/intl-messageformat-11.1.2.tgz"
             },
             "require": {
-                "npm-asset/formatjs--fast-memoize": "3.1.6",
-                "npm-asset/formatjs--icu-messageformat-parser": "3.5.13"
+                "npm-asset/formatjs--ecma402-abstract": "3.1.1",
+                "npm-asset/formatjs--fast-memoize": "3.1.0",
+                "npm-asset/formatjs--icu-messageformat-parser": "3.5.1",
+                "npm-asset/tslib": ">=2.8.1,<3.0.0"
             },
             "type": "npm-asset",
             "license": [
@@ -4606,50 +4679,11 @@
             "type": "npm-asset"
         },
         {
-            "name": "npm-asset/mime-db",
-            "version": "1.52.0",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/mime-db/-/mime-db-1.52.0.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/mime-types",
-            "version": "2.1.35",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/mime-types/-/mime-types-2.1.35.tgz"
-            },
-            "require": {
-                "npm-asset/mime-db": "1.52.0"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
             "name": "npm-asset/ms",
-            "version": "2.1.3",
+            "version": "2.0.0",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/ms/-/ms-2.1.3.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/negotiator",
-            "version": "0.6.3",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/negotiator/-/negotiator-0.6.3.tgz"
+                "url": "https://registry.npmjs.org/ms/-/ms-2.0.0.tgz"
             },
             "type": "npm-asset",
             "license": [
@@ -4669,6 +4703,30 @@
             ]
         },
         {
+            "name": "npm-asset/parseqs",
+            "version": "0.0.6",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/parseqs/-/parseqs-0.0.6.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/parseuri",
+            "version": "0.0.6",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/parseuri/-/parseuri-0.0.6.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
             "name": "npm-asset/select2",
             "version": "4.0.13",
             "dist": {
@@ -4681,36 +4739,24 @@
             ]
         },
         {
-            "name": "npm-asset/socket.io-adapter",
-            "version": "1.1.2",
+            "name": "npm-asset/socket.io-client",
+            "version": "2.5.0",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/socket.io-adapter/-/socket.io-adapter-1.1.2.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/socket.io-client",
-            "version": "2.5.1",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:socketio/socket.io.git",
-                "reference": "88b2cdb6abd38d6466fa4360748f2f67d8837ad4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/socketio/socket.io/zipball/88b2cdb6abd38d6466fa4360748f2f67d8837ad4",
-                "reference": "88b2cdb6abd38d6466fa4360748f2f67d8837ad4"
+                "url": "https://registry.npmjs.org/socket.io-client/-/socket.io-client-2.5.0.tgz"
             },
             "require": {
-                "npm-asset/debug": "~4.1.0",
-                "npm-asset/engine.io": "~3.6.0",
+                "npm-asset/backo2": "1.0.2",
+                "npm-asset/component-bind": "1.0.0",
+                "npm-asset/component-emitter": "~1.3.0",
+                "npm-asset/debug": "~3.1.0",
+                "npm-asset/engine.io-client": "~3.5.0",
                 "npm-asset/has-binary2": "~1.0.2",
-                "npm-asset/socket.io-adapter": "~1.1.0",
-                "npm-asset/socket.io-parser": "~3.4.0"
+                "npm-asset/indexof": "0.0.1",
+                "npm-asset/parseqs": "0.0.6",
+                "npm-asset/parseuri": "0.0.6",
+                "npm-asset/socket.io-parser": "~3.3.0",
+                "npm-asset/to-array": "0.1.4"
             },
             "type": "npm-asset",
             "license": [
@@ -4719,14 +4765,14 @@
         },
         {
             "name": "npm-asset/socket.io-parser",
-            "version": "3.4.4",
+            "version": "3.3.5",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/socket.io-parser/-/socket.io-parser-3.4.4.tgz"
+                "url": "https://registry.npmjs.org/socket.io-parser/-/socket.io-parser-3.3.5.tgz"
             },
             "require": {
-                "npm-asset/component-emitter": "1.2.1",
-                "npm-asset/debug": "~4.1.0",
+                "npm-asset/component-emitter": "~1.3.0",
+                "npm-asset/debug": "~3.1.0",
                 "npm-asset/isarray": "2.0.1"
             },
             "type": "npm-asset",
@@ -4759,6 +4805,27 @@
             "type": "npm-asset"
         },
         {
+            "name": "npm-asset/to-array",
+            "version": "0.1.4",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/to-array/-/to-array-0.1.4.tgz"
+            },
+            "type": "npm-asset"
+        },
+        {
+            "name": "npm-asset/tslib",
+            "version": "2.8.1",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/tslib/-/tslib-2.8.1.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "0BSD"
+            ]
+        },
+        {
             "name": "npm-asset/unicode-emoji-json",
             "version": "0.5.0",
             "dist": {
@@ -4776,6 +4843,27 @@
             "dist": {
                 "type": "tar",
                 "url": "https://registry.npmjs.org/ws/-/ws-7.5.11.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/xmlhttprequest-ssl",
+            "version": "1.6.3",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/xmlhttprequest-ssl/-/xmlhttprequest-ssl-1.6.3.tgz"
+            },
+            "type": "npm-asset"
+        },
+        {
+            "name": "npm-asset/yeast",
+            "version": "0.1.2",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/yeast/-/yeast-0.1.2.tgz"
             },
             "type": "npm-asset",
             "license": [

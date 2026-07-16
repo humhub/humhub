@@ -148,6 +148,7 @@ return [
     'Send the link via email' => '',
     'Settings could not be saved!' => '',
     'Show as List' => '',
+    'Show topic widget in Stream sidebar' => '',
     'Shown on About Page.' => '',
     'Space Name' => '',
     'Space Visibility' => '',

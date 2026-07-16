@@ -34,5 +34,6 @@ return [
     'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.' => 'Disse indstillinger giver dig mulighed for at indstille standardtilladelserne for alle Rum. Autoriserede brugere kan individualisere disse for hvert Rum. Yderligere indlæg tilføjes ved installation af nye moduler.',
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'Denne oversigt indeholder en liste over hvert rum med handlinger til at se, redigere og slette rum.',
     'Update Space memberships also for existing members.' => 'Opdatering af Rum-medlemskaber, også for eksisterende medlemmer.',
+    'Default "Show topic widget in Stream sidebar"' => '',
     'Default Content Sort Order' => '',
 ];

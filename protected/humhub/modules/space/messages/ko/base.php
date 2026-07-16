@@ -161,6 +161,7 @@ return [
     'Leave' => '',
     'Loading more spaces' => '',
     'Order of content in stream' => '',
+    'Show topic widget in Stream sidebar' => '',
     'Space Name' => '',
     'Space actions' => '',
     'Updated by' => '',
