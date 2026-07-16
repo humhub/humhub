@@ -119,7 +119,7 @@ class DownloadAction extends Action
     /**
      * Loads the file by given guid
      *
-     * @param string $guid
+     * @param string|null $guid
      * @param string|null $token
      *
      * @throws HttpException
@@ -132,13 +132,12 @@ class DownloadAction extends Action
             throw new HttpException(404, Yii::t('FileModule.base', 'Could not find requested file!'));
         }
 
-        $user = null;
-        if ($token !== null) {
-            $user = static::getUserByDownloadToken($token, $file);
-        }
+        $user = $token
+            ? static::getUserByDownloadToken($token, $file)
+            : Yii::$app->user->identity;
 
         // File is not assigned to any database record (yet)
-        if (empty($file->object_model) && (Yii::$app->user->isGuest || $file->created_by != Yii::$app->user->id)) {
+        if (empty($file->object_model) && (!$user || $file->created_by != $user->id)) {
             throw new HttpException(401, Yii::t('FileModule.base', 'Insufficient permissions!'));
         }
 

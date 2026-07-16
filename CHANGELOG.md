@@ -26,6 +26,7 @@ HumHub Changelog
 - Enh #8286: Display a success toast when a module is enabled
 - Enh #8300: Update composer package web-token/jwt-library to 4.1.7 (GHSA-3prj-6hqw-cm82, GHSA-jc38-x7x8-2xc8)
 - Fix #8301: Revert missed `MobileAppHelper::registerHideOpenerScript()`
+- Fix #8306: Extend PolymorphicRelation for File, fix downloading of file without object by token
 
 1.18.3 (May 18, 2026)
 ---------------------
