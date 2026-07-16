@@ -14,6 +14,7 @@ return [
     'Topic' => 'Тема',
     'Topic has been deleted!' => 'Тема видалена!',
     'Topics' => 'Теми',
+    '<strong>Popular</strong> topics' => '',
     'Always show' => '',
     'Controls how the topic picker appears in content creation forms above the stream.' => '',
     'Default topic picker visibility' => '',

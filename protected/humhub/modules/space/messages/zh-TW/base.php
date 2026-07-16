@@ -136,6 +136,7 @@ return [
     'Originator User ID' => '',
     'Please note that any links you have previously created will become invalid as soon as you create a new one. Would you like to proceed?' => '',
     'Request Message' => '',
+    'Show topic widget in Stream sidebar' => '',
     'Sorry, you are not allowed to leave this space!' => '',
     'Space Name' => '',
     'Space actions' => '',

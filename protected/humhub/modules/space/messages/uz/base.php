@@ -119,6 +119,7 @@ return [
     'Settings could not be saved!' => '',
     'Show all' => '',
     'Show as List' => '',
+    'Show topic widget in Stream sidebar' => '',
     'Shown on About Page.' => '',
     'Sorry, you are not allowed to leave this space!' => '',
     'Sorting' => '',

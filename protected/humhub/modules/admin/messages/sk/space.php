@@ -34,5 +34,6 @@ return [
     'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.' => 'Tieto možnosti vám umožňujú nastaviť predvolené povolenia pre všetky Priestory. Autorizovaní používatelia ich môžu individualizovať pre každý Priestor. Ďalšie položky sa pridávajú inštaláciou nových modulov.',
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'Tento prehľad obsahuje zoznam každého priestoru s akciami na zobrazenie, úpravu a odstránenie priestorov.',
     'Update Space memberships also for existing members.' => 'Aktualizujte členstvo v Priestore aj pre existujúcich členov.',
+    'Default "Show topic widget in Stream sidebar"' => '',
     'Default Content Sort Order' => '',
 ];

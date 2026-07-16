@@ -162,6 +162,7 @@ return [
     'Loading more spaces' => '',
     'Neither..nor' => '',
     'Order of content in stream' => '',
+    'Show topic widget in Stream sidebar' => '',
     'Space Name' => '',
     'Space actions' => '',
     'View space image of {name}' => '',

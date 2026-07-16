@@ -14,6 +14,7 @@ return [
     'Topic' => '主題',
     'Topic has been deleted!' => '主題已經被刪除!',
     'Topics' => '主題',
+    '<strong>Popular</strong> topics' => '',
     'Always show' => '',
     'Controls how the topic picker appears in content creation forms above the stream.' => '',
     'Default topic picker visibility' => '',

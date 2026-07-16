@@ -34,5 +34,6 @@ return [
     'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.' => 'Эти опции позволяют вам установить разрешения по умолчанию для всех сообществ. Авторизованные пользователи могут индивидуализировать их для каждого сообщества в отдельности. Дальнейшие записи добавляются при установке новых модулей.',
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'Содержит список сообществ с возможностью их просмотра, редактирования и удаления.',
     'Update Space memberships also for existing members.' => 'Обновление членств в сообществах также для существующих членов сообществ.',
+    'Default "Show topic widget in Stream sidebar"' => '',
     'Default Content Sort Order' => '',
 ];
