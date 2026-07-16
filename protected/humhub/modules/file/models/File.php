@@ -40,6 +40,9 @@ use yii\web\UploadedFile;
  * @property int $id
  * @property string $guid
  * @property int $state
+ * @property int $public whether the file is viewable by everyone, including guests (since 1.18.4)
+ * @property int $standalone whether the file may exist without an attached record; the owning code
+ *      holds the reference (e.g. by file id or guid), keeps it alive and is responsible for deleting it (since 1.18.4)
  * @property int|null $category Note, categories are still experimental. Expect changes in v1.16 (ToDo)
  * @property string $file_name
  * @property string $title
@@ -278,6 +281,16 @@ class File extends ActiveRecord implements ViewableInterface
      */
     public function canView($user = null): bool
     {
+        if ($this->public) {
+            return true;
+        }
+
+        // File is not attached to any record: only viewable by its creator
+        if (empty($this->object_model)) {
+            $user = UserHelper::getUserByParam($user);
+            return $user !== null && $this->created_by == $user->id;
+        }
+
         $object = $this->getPolymorphicRelation();
 
         if ($object instanceof ViewableInterface) {
@@ -307,6 +320,12 @@ class File extends ActiveRecord implements ViewableInterface
      */
     public function canDelete($user = null): bool
     {
+        // Standalone files are managed by the code that created them and cannot
+        // be deleted through the generic file API
+        if ($this->standalone) {
+            return false;
+        }
+
         $user = UserHelper::getUserByParam($user);
 
         $object = $this->getPolymorphicRelation();
