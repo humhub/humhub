@@ -3,6 +3,8 @@ HumHub Changelog
 
 1.19 (TBD)
 ----------
+- Fix #8303: Pinned `npm-asset/intl-messageformat` (11.1.2) and `npm-asset/socket.io-client` (2.5.0) — the newer mirror packages ship an "iife" file that is actually an ES module (its top-level `export` broke the combined `humhub-app.js` entirely) resp. no longer contain the `dist/` files referenced by `SocketIoAsset`
+- Fix #8302: "Flush cache" deleted the `assets/.gitignore` shipped with the installation — `AssetManager::clear()` now skips dot files at the assets mount root, matching the pre-1.19 behavior
 - Fix #8294: Removed a leftover `codecept_debug()` call in `ActiveQueryActivity::mailLimitContentContainer()` — on production installs (without dev dependencies) the function does not exist, so the summary mail job crashed for every user with a space-limited mail summary; a new core test now guards against dev-only function calls in production code
 - Fix #8294: `BaseNotification::html()` still called `getAsHtml()`, which was removed in #7980 — any notification not overriding `html()` (typical for module-provided notifications) crashed on rendering; the obsolete override was removed so the `SocialActivity` default (`null`, the pre-1.19 behaviour) applies again
 - Fix #8294: Likes on top-level content were never deleted when the content was hard-deleted — the `fk_like_content` constraint (`ON DELETE RESTRICT`) then aborted the deletion with an integrity error and the `PurgeDeletedContents` job could never purge liked content; the like module now deletes a content's likes on `ContentActiveRecord::EVENT_BEFORE_DELETE` (matching the comment module)
@@ -75,6 +77,7 @@ HumHub Changelog
 - Fix #8283: Redirect invite links to the external single auth client instead of the local registration form when local registration is disabled
 - Enh #8287: Add `ContentContainerActiveRecord::EVENT_INIT_PROFILE_IMAGE` and `EVENT_INIT_BANNER_IMAGE`
 - Fix #8287: `AssetImage::getUrl()` for a source file without an extension (e.g. a HumHub `File`, stored as `file`)
+- Enh #8150: Topic sidebar widget
  
 1.18.4 (Unreleased)
 ---------------------
@@ -99,6 +102,8 @@ HumHub Changelog
 - Fix #8273: Fix confirm modal getting stuck open forever when closed while still transitioning in
 - Fix #8282: Fix confirm modal closing itself on next open after being closed during its hide transition
 - Enh #8286: Display a success toast when a module is enabled
+- Enh #8300: Update composer package web-token/jwt-library to 4.1.7 (GHSA-3prj-6hqw-cm82, GHSA-jc38-x7x8-2xc8)
+- Fix #8301: Revert missed `MobileAppHelper::registerHideOpenerScript()`
 
 1.18.3 (May 18, 2026)
 ---------------------
