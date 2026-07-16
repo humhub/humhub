@@ -34,15 +34,24 @@ class ImageHelper
      */
     public static function fixJpegOrientation($image, $file)
     {
-        $mimeType = '';
         if ($file instanceof File) {
-            $mimeType = $file->mime_type;
-            $file = $file->store->get();
+            if ($file->mime_type !== 'image/jpeg') {
+                return;
+            }
+            try {
+                $file = $file->store->getContentStream();
+            } catch (\Exception) {
+                return;
+            }
         } elseif (is_string($file) && file_exists($file)) {
-            $mimeType = FileHelper::getMimeType($file);
+            if (FileHelper::getMimeType($file) !== 'image/jpeg') {
+                return;
+            }
+        } else {
+            return;
         }
 
-        if ($mimeType === 'image/jpeg' && function_exists('exif_read_data')) {
+        if (function_exists('exif_read_data')) {
             $exif = @exif_read_data($file);
             if (!empty($exif['Orientation'])) {
                 switch ($exif['Orientation']) {
@@ -62,6 +71,10 @@ class ImageHelper
                     $image->getImagick()->setImageOrientation(1);
                 }
             }
+        }
+
+        if (is_resource($file)) {
+            fclose($file);
         }
     }
 
@@ -102,7 +115,7 @@ class ImageHelper
                 $imagineOptions['webp_quality'] = $module->imageWebpQuality;
                 $isModified = true;
             }
-            $imagineOptions = ['format' => 'webp'];
+            $imagineOptions['format'] = 'webp';
         } elseif ($file->mime_type === 'image/gif') {
             $imagineOptions = ['format' => 'gif'];
         } else {
@@ -110,7 +123,7 @@ class ImageHelper
         }
 
         try {
-            $image = Image::getImagine()->open($file->store->get());
+            $image = Image::getImagine()->load($file->store->getContent());
         } catch (\Exception $ex) {
             Yii::error('Could not open image ' . $file->store->get() . '. Error: ' . $ex->getMessage(), 'file');
             return;
@@ -136,7 +149,7 @@ class ImageHelper
         }
 
         if ($isModified) {
-            $image->save($file->store->get(), $imagineOptions);
+            $file->store->setContent($image->get($imagineOptions['format'], $imagineOptions));
             $file->updateAttributes(['size' => $file->store->fileSize()]);
         }
 
