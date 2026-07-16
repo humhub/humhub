@@ -18,7 +18,7 @@ abstract class BaseSpaceActivity extends BaseActivity
     {
         parent::__construct($record, $config);
 
-        if (!$record->contentContainer->polymorphicRelation instanceof Space) {
+        if (!$record->contentContainer?->polymorphicRelation instanceof Space) {
             throw new InvalidValueException('Space activity content container must implement space');
         }
 

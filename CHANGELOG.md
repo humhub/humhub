@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.19 (TBD)
 ----------
+- Fix #8308: Activities on global content (content without a container) crashed with a `TypeError` — e.g. commenting on a global content was impossible; `BaseActivity::$contentContainer` is now nullable, matching the nullable `activity.contentcontainer_id` column, and the activity layouts handle the missing container (regression from #7933)
 - Fix #8303: Pinned `npm-asset/intl-messageformat` (11.1.2) and `npm-asset/socket.io-client` (2.5.0) — the newer mirror packages ship an "iife" file that is actually an ES module (its top-level `export` broke the combined `humhub-app.js` entirely) resp. no longer contain the `dist/` files referenced by `SocketIoAsset`
 - Fix #8302: "Flush cache" deleted the `assets/.gitignore` shipped with the installation — `AssetManager::clear()` now skips dot files at the assets mount root, matching the pre-1.19 behavior
 - Fix #8294: Removed a leftover `codecept_debug()` call in `ActiveQueryActivity::mailLimitContentContainer()` — on production installs (without dev dependencies) the function does not exist, so the summary mail job crashed for every user with a space-limited mail summary; a new core test now guards against dev-only function calls in production code
