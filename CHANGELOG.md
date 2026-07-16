@@ -78,7 +78,7 @@ HumHub Changelog
 - Enh #8287: Add `ContentContainerActiveRecord::EVENT_INIT_PROFILE_IMAGE` and `EVENT_INIT_BANNER_IMAGE`
 - Fix #8287: `AssetImage::getUrl()` for a source file without an extension (e.g. a HumHub `File`, stored as `file`)
 - Enh #8150: Topic sidebar widget
-- Fix: The new CommentListService::getSiblings() doesn't find the content comments
+- Fix #8309: The new CommentListService::getSiblings() doesn't find the content comments
  
 1.18.4 (Unreleased)
 ---------------------
