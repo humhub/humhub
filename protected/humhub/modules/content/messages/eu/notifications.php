@@ -7,7 +7,7 @@ return array (
   '{displayName} created {contentTitle}.' => '{displayName} erabiltzaileak {contentTitle} izeneko edukia sortu du.',
   '{displayName} posted on your profile {contentTitle}.' => '{displayName}-k {contentTitle} izeneko edukia argitaratu du zure profilean.',
   '{originator} just wrote {contentInfo}' => '{originator}-k {contentInfo} izeneko edukia idatzi berri du',
-  '{originator} just wrote {contentInfo} in space {space}' => '{originator}-k {contentInfo} izeneko edukia idatzi berri du {space} espazioan',
+  '{originator} just wrote {contentInfo} in Space {space}' => '{originator}-k {contentInfo} izeneko edukia idatzi berri du {space} espazioan',
   '{originator} notifies you about {contentInfo}' => '{originator}-k {contentInfo} izeneko edukia jakinarazten dizu',
   '{originator} notifies you about {contentInfo} in {space}' => '{originator}-k {contentInfo} izeneko edukia jakinarazten dizu {space} espazioan',
 );

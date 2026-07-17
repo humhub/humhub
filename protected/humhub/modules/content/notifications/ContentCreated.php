@@ -72,7 +72,7 @@ class ContentCreated extends BaseNotification
                     'contentInfo' => $contentInfo]);
             }
 
-            return Yii::t('ContentModule.notifications', '{originator} just wrote {contentInfo} in space {space}', [
+            return Yii::t('ContentModule.notifications', '{originator} just wrote {contentInfo} in Space {space}', [
                 'originator' => $this->originator->displayName,
                 'space' => $space->displayName,
                 'contentInfo' => $contentInfo]);

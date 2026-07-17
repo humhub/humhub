@@ -7,7 +7,7 @@ return array (
   '{displayName} created {contentTitle}.' => '{displayName}님이 {contentTitle}을 작성했습니다.',
   '{displayName} posted on your profile {contentTitle}.' => '',
   '{originator} just wrote {contentInfo}' => '{originator}님이 방금 {contentInfo}을(를) 작성했습니다.',
-  '{originator} just wrote {contentInfo} in space {space}' => '{originator}님이 {space}에 {contentInfo}을(를) 썼습니다.',
+  '{originator} just wrote {contentInfo} in Space {space}' => '{originator}님이 {space}에 {contentInfo}을(를) 썼습니다.',
   '{originator} notifies you about {contentInfo}' => '{originator}님이 {contentInfo}에 대해 알립니다.',
   '{originator} notifies you about {contentInfo} in {space}' => '{originator}님이 {space}에 있는 {contentInfo}에 대해 알려줍니다.',
 );

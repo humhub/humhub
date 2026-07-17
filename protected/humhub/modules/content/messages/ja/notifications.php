@@ -7,7 +7,7 @@ return array (
   '{displayName} created {contentTitle}.' => '{displayName} さんが {contentTitle} を作成しました。',
   '{displayName} posted on your profile {contentTitle}.' => '{displayName} があなたのプロフィール {contentTitle} に投稿しました。',
   '{originator} just wrote {contentInfo}' => '{originator} が {contentInfo} を書きました',
-  '{originator} just wrote {contentInfo} in space {space}' => '{originator} はスペース {space} に {contentInfo} を書き込みました',
+  '{originator} just wrote {contentInfo} in Space {space}' => '{originator} はスペース {space} に {contentInfo} を書き込みました',
   '{originator} notifies you about {contentInfo}' => '{originator} が {contentInfo} について通知します',
   '{originator} notifies you about {contentInfo} in {space}' => '{originator} が {space} の {contentInfo} について通知します',
 );
