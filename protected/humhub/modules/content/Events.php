@@ -92,8 +92,9 @@ class Events extends BaseObject
                 !$content->getCreatedBy()->exists()
                 && $integrityController->showFix('Deleting content id ' . $content->id . ' of type ' . $content->object_model . ' without valid user!')
             ) {
-                $content->getPolymorphicRelation()->hardDelete();
+                $content->getPolymorphicRelation()?->hardDelete();
             }
+
             if (
                 $content->getPolymorphicRelation() === null
                 && $integrityController->showFix('Deleting content id ' . $content->id . ' of type ' . $content->object_model . ' without valid content object!')

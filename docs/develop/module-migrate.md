@@ -6,6 +6,15 @@ Each minor release line has its own file with the breaking changes, new APIs and
 
 ## Unreleased
 
+- Added `humhub\modules\content\models\Content::EVENT_BEFORE_HARD_DELETE` (`ContentEvent`),
+  triggered from `Content::hardDeleteInternal()` right before a `Content` record is physically
+  removed. Modules that store rows referencing `content_id` with a restrictive (non-cascading)
+  foreign key — like Comment and Like — must clean those rows up on this event, **in addition**
+  to `ContentActiveRecord::EVENT_BEFORE_DELETE`. The latter only fires while deleting the
+  polymorphic content object itself (e.g. a `Post`); when a `Content` record is hard-deleted
+  directly because its polymorphic object no longer exists (e.g. by `IntegrityController`),
+  `ContentActiveRecord::EVENT_BEFORE_DELETE` never fires and addon rows were left behind,
+  causing foreign key constraint violations during `integrity/run`.
 - Added the central **user gate** system for modules that intercept requests to route the user
   through a mandatory flow (2FA check, terms acceptance, first-use wizards) — see
   `docs/develop/user-gates.md`. Modules using `Controller::EVENT_BEFORE_ACTION` for this purpose

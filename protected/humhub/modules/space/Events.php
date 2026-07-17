@@ -80,6 +80,7 @@ class Events extends BaseObject
             if ($membership->space == null) {
                 if ($integrityController->showFix("Deleting space membership " . $membership->space_id . " without existing space!")) {
                     $membership->delete();
+                    continue;
                 }
             }
             if ($membership->user == null) {

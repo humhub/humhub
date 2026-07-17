@@ -82,6 +82,7 @@ HumHub Changelog
 - Fix #8287: `AssetImage::getUrl()` for a source file without an extension (e.g. a HumHub `File`, stored as `file`)
 - Enh #8150: Topic sidebar widget
 - Fix #8309: The new CommentListService::getSiblings() doesn't find the content comments
+- Fix #8312: Fix Integrity Checks on cleaning up orphaned content, like, comment, activity data
  
 1.18.4 (Unreleased)
 ---------------------
