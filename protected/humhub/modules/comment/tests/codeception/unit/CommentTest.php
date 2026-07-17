@@ -4,6 +4,7 @@ namespace tests\codeception\unit\modules\comment\components;
 
 use humhub\models\RecordMap;
 use humhub\modules\activity\models\Activity;
+use humhub\modules\comment\notifications\NewComment;
 use humhub\modules\comment\services\CommentListService;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\user\models\User;
@@ -28,7 +29,7 @@ class CommentTest extends HumHubDbTestCase
         $comment->save();
 
         $this->assertMailSent(1);
-        $this->assertEqualsLastEmailSubject('Sara Tester commented post "User 2 Space 2 Post Private" in space Space 2');
+        $this->assertEqualsLastEmailSubject('Sara Tester commented post "User 2 Space 2 Post Private" in Space Space 2');
         $this->assertNotEmpty($comment->id);
         $this->assertNotEmpty($comment->content->getPolymorphicRelation()->getFollowersWithNotificationQuery());
 
@@ -68,6 +69,44 @@ class CommentTest extends HumHubDbTestCase
         $post->hardDelete();
 
         $this->assertNull(Comment::findOne(['id' => $comment->id]));
+    }
+
+    public function testNotificationHtmlForPostWithoutText()
+    {
+        $this->becomeUser('User2');
+
+        $post = Post::findOne(['id' => 11]);
+        $post->updateAttributes(['message' => '']);
+
+        $comment = new Comment([
+            'message' => 'User2 comment!',
+            'content_id' => 11,
+        ]);
+        $comment->save();
+
+        $html = NewComment::instance()->from(User::findOne(['id' => 3]))->about($comment)->html();
+
+        $this->assertStringNotContainsString('[Deleted]', $html);
+        $this->assertStringEndsWith('commented post.', $html);
+    }
+
+    public function testNotificationHtmlForDeletedRecord()
+    {
+        $this->becomeUser('User2');
+
+        $comment = new Comment([
+            'message' => 'User2 comment!',
+            'content_id' => 11,
+        ]);
+        $comment->save();
+
+        // Simulate an orphaned content record by removing the underlying post without cleanup
+        Post::deleteAll(['id' => 11]);
+        $comment = Comment::findOne(['id' => $comment->id]);
+
+        $html = NewComment::instance()->from(User::findOne(['id' => 3]))->about($comment)->html();
+
+        $this->assertStringContainsString('[Deleted]', $html);
     }
 
     public function testGetCommentLimited()

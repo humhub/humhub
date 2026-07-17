@@ -7,7 +7,7 @@ return array (
   '{displayName} created {contentTitle}.' => '{displayName} skapade {contentTitle}.',
   '{displayName} posted on your profile {contentTitle}.' => '{displayName} postade på din profil {contentTitle}.',
   '{originator} just wrote {contentInfo}' => '{originator} skrev precis {contentInfo}',
-  '{originator} just wrote {contentInfo} in space {space}' => '{originator} skrev precis {contentInfo} i forumet {space}',
+  '{originator} just wrote {contentInfo} in Space {space}' => '{originator} skrev precis {contentInfo} i forumet {space}',
   '{originator} notifies you about {contentInfo}' => '{originator} notifierar dig om {contentInfo}',
   '{originator} notifies you about {contentInfo} in {space}' => '{originator} notifierar dig om {contentInfo} i {space}',
 );

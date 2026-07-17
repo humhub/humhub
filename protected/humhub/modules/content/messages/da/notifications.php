@@ -7,7 +7,7 @@ return [
   '{displayName} created {contentTitle}.' => '{displayName} oprettet {contentTitle}.',
   '{displayName} posted on your profile {contentTitle}.' => '{displayName} skrev på din profil {contentTitle}.',
   '{originator} just wrote {contentInfo}' => '{originator} har lige skrevet {contentInfo}.',
-  '{originator} just wrote {contentInfo} in space {space}' => '{originator} har lige skrevet {contentInfo} i rummet {space}.',
+  '{originator} just wrote {contentInfo} in Space {space}' => '{originator} har lige skrevet {contentInfo} i rummet {space}.',
   '{originator} notifies you about {contentInfo}' => '{originator} giver dig besked om {contentInfo}.',
   '{originator} notifies you about {contentInfo} in {space}' => '{originator} giver dig besked om {contentInfo} i {space}.',
 ];
