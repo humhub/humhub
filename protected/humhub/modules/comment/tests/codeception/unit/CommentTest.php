@@ -135,6 +135,35 @@ class CommentTest extends HumHubDbTestCase
 
     }
 
+    public function testGetCommentLimitedWithHighlightedComment()
+    {
+        $this->becomeUser('User2');
+
+        ($commentA = new Comment([
+            'message' => 'Test comment A',
+            'content_id' => 11,
+        ]))->save();
+
+        ($commentB = new Comment([
+            'message' => 'Test comment B',
+            'content_id' => 11,
+        ]))->save();
+
+        $post = Post::findOne(['id' => 11]);
+
+        // Permalink of the older comment A must also include the newer comment B
+        $comments = CommentListService::create($post)->getLimited(2, $commentA->id);
+        $this->assertCount(2, $comments);
+        $this->assertEquals('Test comment A', $comments[0]->message);
+        $this->assertEquals('Test comment B', $comments[1]->message);
+
+        // Permalink of the newest comment B must also include the older comment A
+        $comments = CommentListService::create($post)->getLimited(2, $commentB->id);
+        $this->assertCount(2, $comments);
+        $this->assertEquals('Test comment A', $comments[0]->message);
+        $this->assertEquals('Test comment B', $comments[1]->message);
+    }
+
     public function testGetCommentCount()
     {
         $this->becomeUser('User2');
