@@ -12,6 +12,7 @@ use humhub\modules\file\components\FileManager;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\InvalidConfigException;
+use yii\db\ActiveQuery;
 use yii\db\ColumnSchema;
 use yii\db\Expression;
 use yii\validators\Validator;
@@ -96,25 +97,21 @@ class ActiveRecord extends \yii\db\ActiveRecord
     /**
      * Relation to User defined in created_by attribute
      *
-     * @return User|null
+     * @return ActiveQuery
      */
     public function getCreatedBy()
     {
-        return $this->hasOne(User::class, [
-            'id' => 'created_by',
-        ]);
+        return $this->hasOne(User::class, ['id' => 'created_by']);
     }
 
     /**
      * Relation to User defined in updated_by attribute
      *
-     * @return User|null
+     * @return ActiveQuery
      */
     public function getUpdatedBy()
     {
-        return $this->hasOne(User::class, [
-            'id' => 'updated_by',
-        ]);
+        return $this->hasOne(User::class, ['id' => 'updated_by']);
     }
 
     /**
