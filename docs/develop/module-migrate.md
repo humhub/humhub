@@ -84,6 +84,7 @@ Each minor release line has its own file with the breaking changes, new APIs and
   - Replaced Polymorphic Relations with `comment.content_id` and `comment.parent_comment_id`
   - Introduced `CommentListService`
   - Removed `CommentForm`
+  - `Comment::getUrl()` default for `$scheme` changed from `true` to `false` (aligned with `ContentAddonActiveRecord::getUrl()`) — pass `getUrl(true)` where an absolute URL is required
 - Refactored `like` module
   - Introduced `LikeService` and added `like.content_id`
   - Used `RecordMap` for ContentAddon relations
