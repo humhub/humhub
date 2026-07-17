@@ -54,6 +54,18 @@ class AssetImageExistsCacheTest extends HumHubDbTestCase
         $this->assertFalse($this->createAssetImage()->exists());
     }
 
+    public function testCacheMissFallsBackToLiveProbe()
+    {
+        $this->freshAssetManager(true);
+
+        $this->createAssetImage()->setByFile($this->createTempImage());
+
+        // A cache miss (fresh cache after deploy/flush) must not be mistaken
+        // for a cached "does not exist" - it has to fall through to a live probe
+        Yii::$app->cache->flush();
+        $this->assertTrue($this->createAssetImage()->exists());
+    }
+
     public function testSetByFileAndDeleteUpdateTheCachedState()
     {
         $this->freshAssetManager(true);
