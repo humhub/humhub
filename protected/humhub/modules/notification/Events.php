@@ -84,6 +84,7 @@ class Events extends BaseObject
                 if ($space === null) {
                     if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " workspace seems to no longer exist!")) {
                         $notification->delete();
+                        continue;
                     }
                 }
             }
@@ -93,12 +94,14 @@ class Events extends BaseObject
                 if ($notification->source_class != "" && $notification->getSourceObject() == null) {
                     if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " source class set but seems to no longer exist!")) {
                         $notification->delete();
+                        continue;
                     }
                 }
             } catch (Exception) {
                 // Handles errors for getSourceObject() calls
                 if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " source class set but seems to no longer exist!")) {
                     $notification->delete();
+                    continue;
                 }
             }
 
@@ -106,6 +109,7 @@ class Events extends BaseObject
             if ($notification->user == null) {
                 if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " target user seems to no longer exist!")) {
                     $notification->delete();
+                    continue;
                 }
             }
 
@@ -113,6 +117,7 @@ class Events extends BaseObject
             if (!class_exists($notification->class)) {
                 if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " without valid class!")) {
                     $notification->delete();
+                    continue;
                 }
             }
 
@@ -120,6 +125,7 @@ class Events extends BaseObject
             if ($notification->module == "") {
                 if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " without valid module!")) {
                     $notification->delete();
+                    continue;
                 }
             }
 

@@ -48,7 +48,7 @@ class CommentControls extends Menu
             'url' => '#',
             'htmlOptions' => [
                 'data-action-click' => 'content.permalink',
-                'data-content-permalink' => $this->comment->url,
+                'data-content-permalink' => $this->comment->getUrl(true),
                 'data-content-permalink-title' => Yii::t('CommentModule.base', '<strong>Permalink</strong> to this comment'),
 
             ],

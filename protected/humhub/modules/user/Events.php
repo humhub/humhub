@@ -110,6 +110,7 @@ class Events extends BaseObject
             if ($mentioning->user == null) {
                 if ($integrityController->showFix('Deleting mentioning ' . $mentioning->id . ' of non existing user!')) {
                     $mentioning->delete();
+                    continue;
                 }
             }
             if ($mentioning->getPolymorphicRelation() == null) {
@@ -124,6 +125,7 @@ class Events extends BaseObject
             if ($follow->user === null) {
                 if ($integrityController->showFix('Deleting follow ' . $follow->id . ' of non existing user #' . $follow->user_id . '!')) {
                     $follow->delete();
+                    continue;
                 }
             }
 

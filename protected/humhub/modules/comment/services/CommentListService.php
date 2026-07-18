@@ -54,9 +54,9 @@ class CommentListService
                 return [];
             }
             $commentIds = array_merge(
-                $this->getSiblingIds($showComment->id, $limit, SORT_DESC),
+                $this->getSiblingIds($showComment->id, $limit, self::LIST_DIR_PREV),
                 [$showComment->id],
-                $this->getSiblingIds($showComment->id, 1, SORT_ASC),
+                $this->getSiblingIds($showComment->id, 1, self::LIST_DIR_NEXT),
             );
             $query->where(['IN', 'id', $commentIds]);
             $query->limit(count($commentIds));

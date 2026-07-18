@@ -7,7 +7,7 @@ return [
     '{displayName} created {contentTitle}.' => '{displayName} đã tạo {contentTitle}.',
     '{displayName} posted on your profile {contentTitle}.' => '{displayName} đã post trên trang cá nhân của bạn {contentTitle}.',
     '{originator} just wrote {contentInfo}' => '{originator} vừa mới viết {contentInfo}',
-    '{originator} just wrote {contentInfo} in space {space}' => '{originator} vừa mới viết {contentInfo} trong diễn đàn {space}',
+    '{originator} just wrote {contentInfo} in Space {space}' => '{originator} vừa mới viết {contentInfo} trong diễn đàn {space}',
     '{originator} notifies you about {contentInfo}' => '{originator} thông báo tới bạn về {contentInfo}',
     '{originator} notifies you about {contentInfo} in {space}' => '{originator} thông báo tới bạn về {contentInfo} trong diễn đàn {space}',
     'Your {contentTitle} has been deleted by {displayName} for \'{reason}\'' => '',

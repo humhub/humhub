@@ -99,7 +99,7 @@ class NewComment extends BaseNotification
 
         if ($user->is($contentRecord->owner)) {
             if ($space) {
-                return Yii::t('CommentModule.notification', "{displayName} just commented your {contentTitle} in space {space}", [
+                return Yii::t('CommentModule.notification', "{displayName} just commented your {contentTitle} in Space {space}", [
                     'displayName' => $this->originator->displayName,
                     'contentTitle' => $contentInfo,
                     'space' => $space->displayName,
@@ -113,7 +113,7 @@ class NewComment extends BaseNotification
         }
 
         if ($space) {
-            return Yii::t('CommentModule.notification', "{displayName} commented {contentTitle} in space {space}", [
+            return Yii::t('CommentModule.notification', "{displayName} commented {contentTitle} in Space {space}", [
                 'displayName' => $this->originator->displayName,
                 'contentTitle' => $contentInfo,
                 'space' => $space->displayName,
@@ -140,7 +140,7 @@ class NewComment extends BaseNotification
 
         if ($user->is($contentRecord->owner)) {
             if ($space) {
-                return Yii::t('CommentModule.notification', "{displayNames} just commented your {contentTitle} in space {space}", [
+                return Yii::t('CommentModule.notification', "{displayNames} just commented your {contentTitle} in Space {space}", [
                     'displayNames' => $this->getGroupUserDisplayNames(false),
                     'contentTitle' => $contentInfo,
                     'space' => $space->displayName,
@@ -154,7 +154,7 @@ class NewComment extends BaseNotification
         }
 
         if ($space) {
-            return Yii::t('CommentModule.notification', "{displayNames} commented {contentTitle} in space {space}", [
+            return Yii::t('CommentModule.notification', "{displayNames} commented {contentTitle} in Space {space}", [
                 'displayNames' => $this->getGroupUserDisplayNames(false),
                 'contentTitle' => $contentInfo,
                 'space' => $space->displayName,
@@ -172,11 +172,11 @@ class NewComment extends BaseNotification
      */
     public function html()
     {
-        $contentInfo = $this->getContentInfo($this->getCommentedRecord(), true);
+        $contentRecord = $this->getCommentedRecord();
 
-        if (!$contentInfo) {
-            $contentInfo = Yii::t('CommentModule.notification', "[Deleted]");
-        }
+        $contentInfo = $contentRecord
+            ? $this->getContentInfo($contentRecord, true)
+            : Yii::t('CommentModule.notification', "[Deleted]");
 
         if ($this->groupCount > 1) {
             return Yii::t('CommentModule.notification', "{displayNames} commented {contentTitle}.", [
@@ -193,7 +193,7 @@ class NewComment extends BaseNotification
     /**
      * The commented record e.g. a Post
      *
-     * @return ContentActiveRecord
+     * @return ContentActiveRecord|null
      */
     public function getCommentedRecord()
     {

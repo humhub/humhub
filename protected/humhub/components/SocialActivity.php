@@ -341,7 +341,8 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
         $info = $this->getContentPreview($content, 60);
 
         if (empty($info)) {
-            return null;
+            // e.g. content without any text, like a post containing only an image
+            return Html::encode($content->getContentName());
         }
 
         return ($withContentName) ? Html::encode($content->getContentName()) . ' "' . $info . '"' : $info;

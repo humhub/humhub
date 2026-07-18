@@ -237,15 +237,17 @@ class AssetImage extends Component implements \Stringable
             return null;
         }
 
+        // The state is stored as int (0/1): Yii's cache returns `false` on a miss,
+        // so a cached boolean would be indistinguishable from "not cached yet".
         $cached = Yii::$app->cache->get([self::EXISTS_CACHE_KEY, $this->file]);
 
-        return is_bool($cached) ? $cached : null;
+        return is_int($cached) ? (bool) $cached : null;
     }
 
     private function setCachedExists(bool $exists): void
     {
         if ($this->isExistsCacheEnabled()) {
-            Yii::$app->cache->set([self::EXISTS_CACHE_KEY, $this->file], $exists);
+            Yii::$app->cache->set([self::EXISTS_CACHE_KEY, $this->file], (int) $exists);
         }
     }
 

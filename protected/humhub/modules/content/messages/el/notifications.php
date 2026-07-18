@@ -7,7 +7,7 @@ return [
     '{displayName} created {contentTitle}.' => '{displayName} δημιούργησε {contentTitle}.',
     '{displayName} posted on your profile {contentTitle}.' => '{displayName} δημοσιεύτηκε στο προφίλ σας {contentTitle}.',
     '{originator} just wrote {contentInfo}' => '{originator} μόλις έγραψε {contentInfo}',
-    '{originator} just wrote {contentInfo} in space {space}' => '{originator} μόλις έγραψε {contentInfo} στον Χώρο {space}',
+    '{originator} just wrote {contentInfo} in Space {space}' => '{originator} μόλις έγραψε {contentInfo} στον Χώρο {space}',
     '{originator} notifies you about {contentInfo}' => '{originator} σας ειδοποιεί για {contentInfo}',
     '{originator} notifies you about {contentInfo} in {space}' => 'Ο {originator} σας ειδοποιεί για {contentInfo} στο {space}',
     'Your {contentTitle} has been deleted by {displayName} for \'{reason}\'' => '',

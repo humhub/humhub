@@ -3,6 +3,11 @@ HumHub Changelog
 
 1.19 (TBD)
 ----------
+- Fix #8315: Opening a comment permalink hid all sibling comments newer than the permalinked one — `CommentListService::getLimited()` passed PHP's `SORT_DESC`/`SORT_ASC` constants as sibling direction where the strictly compared `'previous'`/`'next'` strings were expected, so the "next siblings" lookup silently ran in the previous direction and returned nothing (regression from #7917)
+- Fix #8314: The comment permalink dialog showed a relative URL without scheme and host — `CommentControls` relied on `Comment::getUrl()`, whose default for `$scheme` changed from `true` to `false` in the activities refactoring; the widget now explicitly requests an absolute URL, like the content permalink does (regression from #7933)
+- Fix #8313: Notifications, activities and mail subjects for content without text (e.g. a post containing only an image) rendered broken sentences like "Sam likes ." or "Sam just commented your in Space Misc" — the content preview (`SocialActivity::getContentInfo()` / `ContentHelper::getContentInfo()`) now falls back to the content name ("Sam likes post."); the `NewComment` notification showed the misleading "[Deleted]" placeholder for such content and, for actually deleted records, leaked the comment text as preview — "[Deleted]" is now shown if and only if the commented record no longer exists
+- Fix #8313: Capitalized "Space" in the "commented … in Space {space}" / "just wrote … in Space {space}" notification mail subjects (translation keys renamed accordingly, existing translations were preserved)
+- Fix: All users showed the default profile image (and containers the default banner/logo) on installations with a remote (e.g. S3) mount — `AssetImage::getCachedExists()` mistook a cache miss for a cached "image does not exist", because Yii's cache returns `false` on a miss and the state was stored as a plain boolean; the state is now stored as int, a miss falls through to a live probe again and affected installations self-heal without a manual cache flush (regression from #8284)
 - Fix #8310: Uploaded images were no longer downscaled, quality-compressed or EXIF-orientation-fixed, and every image upload logged `Could not open image file/...` — `ImageHelper` (and the `file/index` console statistics) still treated `StorageManager::get()` as a local filesystem path, which #8011 changed to a data-mount-relative path; image processing now reads and writes through the Flysystem store, which also makes it work on remote (e.g. S3) mounts, and the previously discarded `imageWebpQuality` option is now applied (regression from #8011)
 - Fix #8308: Activities on global content (content without a container) crashed with a `TypeError` — e.g. commenting on a global content was impossible; `BaseActivity::$contentContainer` is now nullable, matching the nullable `activity.contentcontainer_id` column, and the activity layouts handle the missing container (regression from #7933)
 - Fix #8303: Pinned `npm-asset/intl-messageformat` (11.1.2) and `npm-asset/socket.io-client` (2.5.0) — the newer mirror packages ship an "iife" file that is actually an ES module (its top-level `export` broke the combined `humhub-app.js` entirely) resp. no longer contain the `dist/` files referenced by `SocketIoAsset`
@@ -81,6 +86,7 @@ HumHub Changelog
 - Fix #8287: `AssetImage::getUrl()` for a source file without an extension (e.g. a HumHub `File`, stored as `file`)
 - Enh #8150: Topic sidebar widget
 - Fix #8309: The new CommentListService::getSiblings() doesn't find the content comments
+- Fix #8312: Fix Integrity Checks on cleaning up orphaned content, like, comment, activity data
  
 1.18.4 (Unreleased)
 ---------------------

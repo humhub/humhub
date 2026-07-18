@@ -3,6 +3,7 @@
 namespace humhub\modules\comment;
 
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\events\ContentEvent;
 use humhub\modules\content\widgets\WallEntryAddons;
 use humhub\modules\comment\models\Comment;
 use Yii;
@@ -17,6 +18,17 @@ class Events extends Component
         $sender = $event->sender;
 
         foreach (Comment::find()->where(['content_id' => $sender->content->id])->all() as $comment) {
+            $comment->delete();
+        }
+    }
+
+    /**
+     * On hard delete of a Content record without a polymorphic content object
+     * (e.g. cleaned up by the IntegrityController), delete all its comments too.
+     */
+    public static function onContentHardDelete(ContentEvent $event)
+    {
+        foreach (Comment::findAll(['content_id' => $event->content->id]) as $comment) {
             $comment->delete();
         }
     }
@@ -45,6 +57,7 @@ class Events extends Component
                 && $integrityController->showFix('Deleting comment id ' . $c->id . ' without existing target!')
             ) {
                 $c->delete();
+                continue;
             }
 
             // User exists
