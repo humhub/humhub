@@ -362,9 +362,9 @@ public static function onUserQueryVisible(ActiveQueryEvent $event)
 
 The `humhub\modules\user\models\forms\Registration` class provides events raised within the registration process:
 
-| Event                                    | Class               | Description                          |    
-|------------------------------------------|---------------------|--------------------------------------|
-| `Registration::EVENT_AFTER_REGISTRATION` | `yii\web\UserEvent` | Raised after successful registration |
+| Event                                    | Class                                  | Description                          |    
+|------------------------------------------|----------------------------------------|--------------------------------------|
+| `Registration::EVENT_AFTER_REGISTRATION` | `humhub\modules\user\events\UserEvent` | Raised after successful registration |
 
 The following example shows how to synchronize the registration process with an external crm service.
 
