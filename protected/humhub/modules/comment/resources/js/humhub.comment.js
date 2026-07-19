@@ -255,6 +255,14 @@ humhub.module('comment', function (module, require, $) {
             evt.$trigger.closest('.showMore').remove();
             additions.applyTo($html);
 
+            // The focused link was just removed, move the focus to the loaded
+            // continuation link or the first loaded comment instead
+            var $focus = $html.filter('.showMore').find('a').first();
+            if (!$focus.length) {
+                $focus = $html.filter('.single-comment').first().attr('tabindex', '-1');
+            }
+            $focus.trigger('focus');
+
             // Highlight currently searching keywords in the loaded comments
             const contentSearchKeyword = $('.container-contents .form-search input[name=keyword]');
             if (contentSearchKeyword.length) {
