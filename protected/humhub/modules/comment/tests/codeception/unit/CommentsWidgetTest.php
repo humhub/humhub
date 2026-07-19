@@ -76,4 +76,23 @@ class CommentsWidgetTest extends HumHubDbTestCase
         $this->assertStringContainsString('Show previous', $html);
         $this->assertStringContainsString('Show next', $html);
     }
+
+    public function testShowMoreCountsAllRemainingComments()
+    {
+        $this->becomeUser('User2');
+
+        for ($i = 1; $i <= 9; $i++) {
+            (new Comment([
+                'message' => 'Root comment ' . $i,
+                'content_id' => 11,
+            ]))->save();
+        }
+
+        // Compact list shows the last 2 comments; the "Show previous" link must
+        // count all 7 remaining comments, not just the next loadable page
+        $html = Comments::widget(['content' => Post::findOne(['id' => 11])->content]);
+
+        $this->assertStringContainsString('Root comment 8', $html);
+        $this->assertStringContainsString('Show previous 7 comments', $html);
+    }
 }

@@ -119,6 +119,18 @@ class CommentListService
         return array_reverse($query->all());
     }
 
+    public function getSiblingsCount(int $commentId, string $sortOrder = self::LIST_DIR_PREV): int
+    {
+        $query = Comment::find();
+        $this->addScopeQueryCondition($query);
+
+        if ($commentId) {
+            $query->andWhere([$sortOrder === self::LIST_DIR_NEXT ? '>' : '<', 'id', $commentId]);
+        }
+
+        return (int)$query->count();
+    }
+
     private function getSiblingIds(int $commentId, int $limit = 5, string $sortOrder = self::LIST_DIR_PREV): array
     {
         return array_map(

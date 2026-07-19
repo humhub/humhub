@@ -59,15 +59,11 @@ class ShowMore extends Widget
     public function getCount(): int
     {
         if ($this->_count === null) {
-            $this->_count = count(
-                (new CommentListService($this->content, $this->parentComment))->getSiblings(
-                    $this->commentId,
-                    $this->pageSize,
-                    $this->direction,
-                ),
+            $this->_count = (new CommentListService($this->content, $this->parentComment))->getSiblingsCount(
+                $this->commentId,
+                $this->direction,
             );
         }
-
 
         return $this->_count;
     }
