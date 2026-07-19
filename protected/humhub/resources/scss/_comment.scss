@@ -160,10 +160,12 @@
         hr {
             margin: 10px 0;
             border-top: 1px solid var(--hh-background-color-secondary);
+        }
 
-            &.comment-separator:first-of-type {
-                display: none !important;
-            }
+        // Hide the separator of the first list entry, but not the separator
+        // inside a "Show next" .showMore box
+        .comment > hr.comment-separator:first-of-type {
+            display: none !important;
         }
 
         @include media-breakpoint-down(md) {

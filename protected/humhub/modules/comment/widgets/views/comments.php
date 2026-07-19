@@ -11,7 +11,8 @@ use humhub\modules\content\models\Content;
 /* @var $content Content */
 /* @var $parentComment ?CommentModel */
 /* @var $comments CommentModel[] */
-/* @var $highlightCommentId int */
+/* @var $anchorCommentId ?int comment id the list was built around, not necessarily on this level (see CommentListService::getLimited()) */
+/* @var $highlightCommentId ?int comment id to highlight, only set when the comment is on this level */
 /* @var $id string unique object id */
 ?>
 
@@ -32,7 +33,7 @@ use humhub\modules\content\models\Content;
             ]); ?>
         <?php endforeach ?>
 
-        <?php if ($highlightCommentId && count($comments) > 1) : ?>
+        <?php if ($anchorCommentId && count($comments) > 1) : ?>
             <?= ShowMore::widget([
                 'content' => $content,
                 'parentComment' => $parentComment,
