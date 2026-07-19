@@ -195,8 +195,9 @@ class CommentTest extends HumHubDbTestCase
             'content_id' => 11,
         ]))->save();
 
+        // The content count includes the sub comment
         $count = CommentListService::create(Post::findOne(['id' => 11]))->getCount();
-        $this->assertEquals(3, $count);
+        $this->assertEquals(4, $count);
 
         $count = CommentListService::create($comment2)->getCount();
         $this->assertEquals(1, $count);

@@ -27,12 +27,19 @@ class CommentListService
         );
     }
 
+    /**
+     * Returns the number of comments of the content, including sub comments.
+     * With a parent comment given, only its sub comments are counted.
+     */
     public function getCount(): int
     {
-        $query = Comment::find();
-        $this->addScopeQueryCondition($query);
+        $query = Comment::find()->andWhere(['content_id' => $this->content->id]);
 
-        return $query->count();
+        if ($this->parentComment) {
+            $query->andWhere(['parent_comment_id' => $this->parentComment->id]);
+        }
+
+        return (int)$query->count();
     }
 
     public function getLimited(?int $limit, ?int $highlightCommentId = null): array
