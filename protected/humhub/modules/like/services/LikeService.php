@@ -35,9 +35,7 @@ class LikeService
             $this->contentAddon = $object;
         }
 
-        if ($user === null) {
-            $this->user = Yii::$app->getUser()->identity ?? null;
-        }
+        $this->user = $user ?? Yii::$app->getUser()->identity ?? null;
     }
 
     public function canLike(): bool
