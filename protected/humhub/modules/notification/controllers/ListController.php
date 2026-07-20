@@ -82,7 +82,9 @@ class ListController extends Controller
 
         $count = Notification::updateAll(['seen' => 1], ['user_id' => Yii::$app->user->id]);
 
-        UnreadCountChangedEvent::triggerChanged(Yii::$app->user->getIdentity());
+        if ($count > 0) {
+            UnreadCountChangedEvent::triggerChanged(Yii::$app->user->getIdentity());
+        }
 
         return $this->asJson([
             'success' => true,
