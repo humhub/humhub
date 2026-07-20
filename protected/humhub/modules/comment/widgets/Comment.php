@@ -59,8 +59,6 @@ class Comment extends Widget
     private function renderBlockedComment(): string
     {
         $loadBlockedCommentUrl = Url::to(['/comment/comment/load',
-            'objectModel' => $this->comment->object_model,
-            'objectId' => $this->comment->object_id,
             'id' => $this->comment->id,
             'showBlocked' => true,
         ]);
