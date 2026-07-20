@@ -7,7 +7,7 @@ return array (
   '{displayName} created {contentTitle}.' => '{displayName} criou {contentTitle}.',
   '{displayName} posted on your profile {contentTitle}.' => '{displayName} publicou {contentTitle} no teu perfil.',
   '{originator} just wrote {contentInfo}' => '{originator} acabou de escrever {contentInfo}',
-  '{originator} just wrote {contentInfo} in space {space}' => '{originator} acabou de escrever {contentInfo} no espaço {space}',
+  '{originator} just wrote {contentInfo} in Space {space}' => '{originator} acabou de escrever {contentInfo} no espaço {space}',
   '{originator} notifies you about {contentInfo}' => '{originator} notifica-te sobre {contentInfo}',
   '{originator} notifies you about {contentInfo} in {space}' => '{originator} notifica-te sobre {contentInfo} em {space}',
 );

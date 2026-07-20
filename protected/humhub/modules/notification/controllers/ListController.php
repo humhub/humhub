@@ -11,6 +11,7 @@ namespace humhub\modules\notification\controllers;
 use Exception;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
+use humhub\modules\notification\events\UnreadCountChangedEvent;
 use humhub\modules\notification\models\Notification;
 use Throwable;
 use Yii;
@@ -80,6 +81,10 @@ class ListController extends Controller
         $this->forcePostRequest();
 
         $count = Notification::updateAll(['seen' => 1], ['user_id' => Yii::$app->user->id]);
+
+        if ($count > 0) {
+            UnreadCountChangedEvent::triggerChanged(Yii::$app->user->getIdentity());
+        }
 
         return $this->asJson([
             'success' => true,

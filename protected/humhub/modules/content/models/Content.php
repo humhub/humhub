@@ -149,6 +149,22 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     public const EVENT_STATE_CHANGED = 'changedState';
 
     /**
+     * @event ContentEvent triggered right before a Content record is hard deleted.
+     *
+     * Content addon modules (e.g. Comment, Like) that reference `content_id` with a
+     * restrictive foreign key must clean up their records on this event. This is
+     * required in addition to `ContentActiveRecord::EVENT_BEFORE_DELETE`, because that
+     * event is only triggered while deleting the polymorphic content object itself
+     * (e.g. a Post). When a Content record is hard deleted directly - e.g. because its
+     * polymorphic content object no longer exists (see IntegrityController) -
+     * `ContentActiveRecord::EVENT_BEFORE_DELETE` never fires and addon cleanup would
+     * otherwise be skipped, causing foreign key constraint violations.
+     *
+     * @since 1.19
+     */
+    public const EVENT_BEFORE_HARD_DELETE = 'beforeHardDelete';
+
+    /**
      * @inheritdoc
      */
     public function behaviors()
@@ -466,6 +482,8 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      */
     public function hardDeleteInternal(): bool
     {
+        $this->trigger(self::EVENT_BEFORE_HARD_DELETE, new ContentEvent(['content' => $this]));
+
         Activity::deleteAll(['content_id' => $this->id]);
 
         return parent::delete() !== false;

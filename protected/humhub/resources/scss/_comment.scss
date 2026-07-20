@@ -138,6 +138,7 @@
 
             .showMore {
                 padding-bottom: 1rem;
+                text-align: center;
             }
 
             .jp-progress {
@@ -157,13 +158,31 @@
             overflow: visible;
         }
 
+        // Show the upload/submit buttons only once the input is focused or
+        // already has content (e.g. a prefilled mention); before the richtext
+        // is initialized (no .ProseMirror yet) they stay hidden
+        .comment_create {
+            .richtext-create-buttons {
+                display: none;
+            }
+
+            &:focus-within,
+            &:has(.ProseMirror):not(:has(.atwho-placeholder)) {
+                .richtext-create-buttons {
+                    display: block;
+                }
+            }
+        }
+
         hr {
             margin: 10px 0;
             border-top: 1px solid var(--hh-background-color-secondary);
+        }
 
-            &.comment-separator:first-of-type {
-                display: none !important;
-            }
+        // Hide the separator of the first list entry, but not the separator
+        // inside a "Show next" .showMore box
+        .comment > hr.comment-separator:first-of-type {
+            display: none !important;
         }
 
         @include media-breakpoint-down(md) {

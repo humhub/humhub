@@ -117,6 +117,7 @@ return [
   'Settings could not be saved!' => 'De instellingen kunnen niet worden opgeslagen!',
   'Show all' => 'Alles weergeven',
   'Show as List' => 'Weergeven als lijst',
+  'Show topic widget in Stream sidebar' => 'Toon de widget voor rubrieken in de zijbalk van de nieuwsberichten',
   'Shown on About Page.' => 'Weergegeven op de Over-pagina.',
   'Sorry, you are not allowed to leave this space!' => 'Sorry,  u kunt deze ruimte niet verlaten!',
   'Sorting' => 'Sortering',

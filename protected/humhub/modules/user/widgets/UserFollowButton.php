@@ -38,7 +38,7 @@ class UserFollowButton extends Widget
     public $unfollowLabel = null;
 
     /**
-     * @var string options for follow button
+     * @var array options for follow button
      */
     public $followOptions = ['class' => 'btn btn-primary'];
 

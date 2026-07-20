@@ -6,6 +6,43 @@ Each minor release line has its own file with the breaking changes, new APIs and
 
 ## Unreleased
 
+- Added `humhub\modules\content\models\Content::EVENT_BEFORE_HARD_DELETE` (`ContentEvent`),
+  triggered from `Content::hardDeleteInternal()` right before a `Content` record is physically
+  removed. Modules that store rows referencing `content_id` with a restrictive (non-cascading)
+  foreign key — like Comment and Like — must clean those rows up on this event, **in addition**
+  to `ContentActiveRecord::EVENT_BEFORE_DELETE`. The latter only fires while deleting the
+  polymorphic content object itself (e.g. a `Post`); when a `Content` record is hard-deleted
+  directly because its polymorphic object no longer exists (e.g. by `IntegrityController`),
+  `ContentActiveRecord::EVENT_BEFORE_DELETE` never fires and addon rows were left behind,
+  causing foreign key constraint violations during `integrity/run`.
+- Added the central **user gate** system for modules that intercept requests to route the user
+  through a mandatory flow (2FA check, terms acceptance, first-use wizards) — see
+  `docs/develop/user-gates.md`. Modules using `Controller::EVENT_BEFORE_ACTION` for this purpose
+  should migrate to a `UserGate` registered via `GateManager::EVENT_INIT_GATES` and bump
+  `humhub.minVersion` to `1.19`. Until migrated, legacy interceptors keep working but should
+  guard against double interception with
+  `if (!$event->isValid || Yii::$app->response->getIsRedirection()) { return; }`.
+  - **Removed** (unused by any known module): `ControllerAccess::RULE_MUST_CHANGE_PASSWORD` and
+    `ControllerAccess::RULE_MAINTENANCE_MODE` (incl. their validators
+    `validateMustChangePassword()` / `validateMaintenanceMode()`),
+    `AccessControl::forceChangePassword()` / `checkMaintenanceMode()`, and the `codeCallback`
+    mechanism on `ControllerAccess`/`DelegateAccessValidator`/`AccessControl`. A custom
+    `ControllerAccess`/validator that still declares and sets a `codeCallback` now fails with an
+    `InvalidConfigException` instead of the callback being silently ignored. Enforcement moved to
+    `humhub\modules\user\components\MustChangePasswordGate` and
+    `humhub\modules\user\components\MaintenanceModeGate`; the forced logout of non-admins
+    during maintenance now happens in the gate's `onIntercept()` hook.
+  - Requests classified as AJAX/PJAX now receive `401` + JSON `{gate, url}` (plus an
+    `X-Redirect` header handled by `yii.js`) instead of a `302` to an HTML page when a gate
+    intercepts; token-authenticated API requests (server-side, `enableSession = false`)
+    receive `403` + JSON.
+  - **Removed** `Controller::$doNotInterceptActionIds` and `Controller::isNotInterceptedAction()`
+    (`@since 1.9`, unused by the gate system and uncalled by any known module). The flag was a
+    controller's way to opt individual actions out of interception; that is now handled by the
+    gates themselves (`UserGateInterface::appliesTo()` / `getAllowedRoutes()`), and stateless
+    API endpoints are exempt via the request classification. A module controller that still
+    declares the property keeps working (it becomes an unused own property) but the declaration
+    can be removed.
 - `humhub\modules\content\components\ActiveQueryContent::readable()` and `::userRelated()` no
   longer accept a `$user` parameter. The user is now resolved once, in the constructor — either
   the current session user (`Yii::$app->user->getIdentity()`) or an explicit user passed as the
@@ -47,6 +84,7 @@ Each minor release line has its own file with the breaking changes, new APIs and
   - Replaced Polymorphic Relations with `comment.content_id` and `comment.parent_comment_id`
   - Introduced `CommentListService`
   - Removed `CommentForm`
+  - `Comment::getUrl()` default for `$scheme` changed from `true` to `false` (aligned with `ContentAddonActiveRecord::getUrl()`) — pass `getUrl(true)` where an absolute URL is required
 - Refactored `like` module
   - Introduced `LikeService` and added `like.content_id`
   - Used `RecordMap` for ContentAddon relations
@@ -237,6 +275,16 @@ Each minor release line has its own file with the breaking changes, new APIs and
 - Removed `@filestore` Alias
 - Removed `AssetManager::$preventDefer` option
 - New Flysystem Filesystem Wrapper - Migrate all file access for assets and uploads to the Flysystem wrapper (`Yii::$app->fs->getDataMount()` or `Yii::$app->fs->getAssetsMount()`). Read more: https://flysystem.thephpleague.com/docs/usage/filesystem-api/
+  - **`StorageManager::get()` (`$file->store->get()`) now returns a path relative to the data mount, no longer an absolute local filesystem path.** The same applies to `FileHistory::getFileStorePath()`. Any code treating the return value as a local path — `is_file()`, `file_exists()`, `file_get_contents()`, `filesize()`, `hash_file()`, `fopen()`, `Imagine::open()`, `Response::sendFile()`/`xSendFile()`, archive/scanner APIs — silently breaks (checks return `false`, reads fail) and must be migrated:
+    - Read/write through the store API: `$file->store->getContent()`, `getContentStream()`, `setContent()`, `has()`, `fileSize()`, `mimeType()` — or use the Flysystem instance `$file->store->fs` directly. These work with any mount (local or remote/S3).
+    - Image processing: `Image::getImagine()->load($file->store->getContent())` instead of `open()`; persist with `$file->store->setContent($image->get($format, $options))` instead of `$image->save()` (see `humhub\modules\file\libs\ImageHelper`).
+    - `exif_read_data()` accepts a stream: pass `$file->store->getContentStream()`.
+    - Only when serving a file via a web-server mechanism that requires a real local path (e.g. X-Sendfile): verify `Yii::$app->fs->getDataMountConfig() instanceof LocalMountConfig` and prefix `Yii::getAlias($dataMountConfig->path)` (see `humhub\modules\file\actions\DownloadAction`); otherwise fall back to `sendStreamAsFile()`.
+  - `File::setStoredFile()` with a string argument now expects a **data-mount-relative** path (it is read via Flysystem). Passing an absolute local path (e.g. a temp file) now throws `Invalid parameter type.` — use `setStoredFileContent(file_get_contents($localPath))` or an `UploadedFile` instead.
+- Added `humhub\modules\content\components\ContentContainerActiveRecord::EVENT_INIT_PROFILE_IMAGE`
+  and `EVENT_INIT_BANNER_IMAGE` (`humhub\modules\content\events\ContentContainerImageEvent`) to customize
+  or replace a container's profile/banner `AssetImage`. Use these instead of overriding `$profileImageClass`,
+  which only affects the deprecated `ProfileImage` path.
 
 ## Released versions
 

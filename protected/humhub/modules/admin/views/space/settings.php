@@ -49,6 +49,8 @@ AdminSpaceAsset::register($this);
 
 <?= $form->field($model, 'defaultHideFollowers')->checkbox() ?>
 
+<?= $form->field($model, 'defaultShowTopicSidebar')->checkbox() ?>
+
 <?= $form->field($model, 'allowSpaceTopics')->checkbox(['data' => ['action-change' => 'admin.space.restrictTopicCreation']]) ?>
 
 <?= Button::primary(Yii::t('base', 'Save'))->submit(); ?>

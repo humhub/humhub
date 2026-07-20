@@ -6,6 +6,7 @@ use humhub\modules\like\activities\LikeActivity;
 use humhub\modules\like\notifications\NewLike;
 use humhub\modules\like\services\LikeService;
 use humhub\modules\post\models\Post;
+use humhub\modules\space\models\Space;
 use Yii;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
@@ -30,6 +31,38 @@ class LikeTest extends HumHubDbTestCase
         $this->assertMailSent(1);
         $this->assertHasNotification(NewLike::class, Like::findOne(['content_id' => 1, 'created_by' => 3]));
         $this->assertHasActivity(LikeActivity::class, Like::findOne(['content_id' => 1, 'created_by' => 3]));
+    }
+
+    public function testNotificationHtmlForPostWithoutText()
+    {
+        $this->becomeUser('User2');
+
+        $post = new Post(['scenario' => Post::SCENARIO_HAS_FILES, 'message' => '']);
+        $post->silentContentCreation = true;
+        $post->content->setContainer(Space::findOne(['id' => 2]));
+        $post->save();
+
+        $likeService = new LikeService($post);
+        $this->assertTrue($likeService->like());
+
+        $like = Like::findOne(['content_id' => $post->content->id, 'created_by' => 3]);
+        $html = NewLike::instance()->from(User::findOne(['id' => 3]))->about($like)->html();
+
+        $this->assertStringEndsWith('likes post.', $html);
+    }
+
+    public function testDeleteLikesOnContentHardDelete()
+    {
+        $this->becomeUser('User2');
+
+        $post = Post::findOne(['id' => 1]);
+        $likeService = new LikeService($post);
+
+        $this->assertTrue($likeService->like());
+        $this->assertNotNull(Like::findOne(['content_id' => $post->content->id]));
+
+        $this->assertTrue($post->hardDelete());
+        $this->assertNull(Like::findOne(['content_id' => $post->content->id]));
     }
 
 }

@@ -126,9 +126,44 @@ The core bundles the [Yii Imagine extension](https://www.yiiframework.com/extens
 Attached files inherit visibility from the record they're attached to. Polymorphic relations carry the access rules:
 
 - File attached to a `Content` → enforces the content's `visibility`, container membership, and content permissions.
-- File attached to a freestanding ActiveRecord → access is whatever the record's class declares; if your record exposes files via a controller action, that action is responsible for the access check.
+- File attached to a freestanding ActiveRecord → access is whatever the record's class declares (e.g. via `ViewableInterface`); if your record exposes files via a controller action, that action is responsible for the access check.
+- File without any attached record → only viewable by its creator. Regular uploads are in this state between upload and attach; the daily cron deletes files that stay unattached for more than a day.
 
-There is no separate ACL on the file itself — the access path is *always* through the parent record.
+Apart from the `public` flag (below) there is no separate ACL on the file itself — the access path is through the parent record.
+
+### Public and standalone files (since 1.18.4)
+
+Two flags on the `File` record cover files that are *module configuration* rather than user content — a default cover image, a fallback banner, etc.:
+
+- `public` — the file is viewable by **everyone including guests**. This is an explicit declaration and wins over any record-based access rule.
+- `standalone` — the file may exist **without an attached record**. The owning module holds the reference itself (by guid or id, e.g. in a module setting) and manages the file's lifecycle: the daily cleanup cron skips standalone files, and `File::canDelete()` always returns `false` — the generic `file/file/delete` endpoint refuses them, deleting via `$file->delete()` is the owning module's job.
+
+Typical usage for a module-configured default image:
+
+```php
+$this->settings->set('defaultCoverImageGuid', $file->guid);
+$file->updateAttributes(['public' => 1, 'standalone' => 1]);
+```
+
+Do **not** attach such files to `Setting` records or other storage internals to work around access checks — declare them `public` + `standalone` instead.
+
+### Standalone files with custom access rules
+
+A standalone file that is not `public` is only readable by its creator. If a module needs its own access logic, it can serve the file through a subclassed download action — inheriting variant handling, HTTP caching and delivery (X-Sendfile, temporary URLs, streaming):
+
+```php
+use humhub\modules\file\actions\DownloadAction;
+use humhub\modules\file\models\File;
+use humhub\modules\user\models\User;
+
+class MyDownloadAction extends DownloadAction
+{
+    protected function checkAccess(File $file, ?User $user): bool
+    {
+        return $user !== null && MyModuleAccess::check($user);
+    }
+}
+```
 
 ## Storage backend
 

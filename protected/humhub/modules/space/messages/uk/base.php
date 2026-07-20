@@ -127,6 +127,7 @@ return [
     'Send the link via email' => '',
     'Settings could not be saved!' => '',
     'Show as List' => '',
+    'Show topic widget in Stream sidebar' => '',
     'Shown on About Page.' => '',
     'Sorry, you are not allowed to leave this space!' => '',
     'Sorting' => '',

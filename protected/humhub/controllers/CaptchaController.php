@@ -42,4 +42,25 @@ class CaptchaController extends Controller
             ];
         }
     }
+
+    /**
+     * Serves the ALTCHA Web Worker from the application origin.
+     *
+     * The `Worker` constructor is bound by the same-origin policy, so the worker
+     * script cannot be loaded from a cross-origin assets mount (e.g. an S3/CDN
+     * assets mount). Serving it here - and pointing the widget's `workerurl` at
+     * this action - keeps the worker same-origin regardless of where assets are
+     * published.
+     *
+     * @see \humhub\components\captcha\AltchaCaptchaInput
+     * @since 1.19
+     */
+    public function actionWorker()
+    {
+        return Yii::$app->response->sendFile(
+            Yii::getAlias('@npm/altcha/dist_external/worker.js'),
+            'altcha-worker.js',
+            ['mimeType' => 'text/javascript', 'inline' => true],
+        );
+    }
 }

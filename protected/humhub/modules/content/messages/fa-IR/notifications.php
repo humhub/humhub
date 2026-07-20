@@ -10,5 +10,5 @@ return [
     '{originator} notifies you about {contentInfo} in {space}' => '{originator} شما را از {contentInfo} در {space} آگاه کرد',
     'Your {contentTitle} has been deleted by {displayName} for \'{reason}\'' => '',
     '{originator} just wrote {contentInfo}' => '',
-    '{originator} just wrote {contentInfo} in space {space}' => '',
+    '{originator} just wrote {contentInfo} in Space {space}' => '',
 ];

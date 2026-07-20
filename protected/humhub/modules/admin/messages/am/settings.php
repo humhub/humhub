@@ -142,6 +142,7 @@ return [
     'Saved and sent test email to: {address}' => '',
     'Secondary color' => '',
     'Show network name instead of logo in email header' => '',
+    'Show topic widget in Dashboard sidebar' => '',
     'Success color' => '',
     'Test message' => '',
     'Theme customization' => '',

@@ -11,6 +11,7 @@ namespace humhub\components;
 use humhub\components\access\ControllerAccess;
 use humhub\components\access\StrictAccess;
 use humhub\components\behaviors\AccessControl;
+use humhub\components\gates\GateFilter;
 use humhub\modules\user\services\IsOnlineService;
 use Yii;
 use yii\helpers\Html;
@@ -60,12 +61,6 @@ class Controller extends \yii\web\Controller
     protected $access = StrictAccess::class;
 
     /**
-     * @var string[] List of action ids which should not be intercepted by another actions. Use '*' for all action ids.
-     * @since 1.9
-     */
-    protected $doNotInterceptActionIds = [];
-
-    /**
      * Returns access rules for the standard access control behavior.
      *
      * @return array the access permissions
@@ -94,6 +89,12 @@ class Controller extends \yii\web\Controller
     public function init()
     {
         parent::init();
+
+        // Attached here instead of behaviors() so that controllers overriding behaviors()
+        // without merging the parent cannot accidentally disable gate enforcement.
+        // Declared behaviors (e.g. 'acl') are attached first, so gates run after access control.
+        $this->attachBehavior('gates', ['class' => GateFilter::class]);
+
         $this->trigger(self::EVENT_INIT);
     }
 
@@ -303,32 +304,5 @@ class Controller extends \yii\web\Controller
     {
         $moduleId = (Yii::$app->controller->module) ? Yii::$app->controller->module->id : '';
         $this->view->registerJs('humhub.modules.ui.view.setState("' . $moduleId . '", "' . Yii::$app->controller->id . '", "' . Yii::$app->controller->action->id . '");', \yii\web\View::POS_BEGIN);
-    }
-
-    /**
-     * Check if action cannot be intercepted
-     *
-     * @param string|null $actionId , NULL - to use current action
-     *
-     * @return bool
-     * @since 1.9
-     */
-    public function isNotInterceptedAction(?string $actionId = null): bool
-    {
-        if ($actionId === null) {
-            if (isset($this->action->id)) {
-                $actionId = $this->action->id;
-            } else {
-                return false;
-            }
-        }
-
-        foreach ($this->doNotInterceptActionIds as $doNotInterceptActionId) {
-            if ($doNotInterceptActionId === '*' || $doNotInterceptActionId === $actionId) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

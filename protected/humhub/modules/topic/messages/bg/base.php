@@ -13,6 +13,7 @@ return [
     'Topic' => 'Тема',
     'Topic has been deleted!' => 'Темата е изтрита!',
     'Topics' => 'Теми',
+    '<strong>Popular</strong> topics' => '',
     'Add topics that you will use in your posts. Topics can be personal interests or general terms. When posting, you can select them by choosing "Topics" and it will be easier for other users to find your posts related to that topic.' => '',
     'Always show' => '',
     'Controls how the topic picker appears in content creation forms above the stream.' => '',

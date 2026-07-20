@@ -153,6 +153,7 @@ return [
     'Please note that any links you have previously created will become invalid as soon as you create a new one. Would you like to proceed?' => '',
     'Send the link via email' => '',
     'Show as List' => '',
+    'Show topic widget in Stream sidebar' => '',
     'Space Name' => '',
     'Space actions' => '',
     'The default homepage for members of this Space' => '',

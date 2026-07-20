@@ -13,6 +13,7 @@ use humhub\components\SocialActivity;
 use humhub\helpers\Html;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\notification\events\UnreadCountChangedEvent;
 use humhub\modules\notification\jobs\SendBulkNotification;
 use humhub\modules\notification\jobs\SendNotification;
 use humhub\modules\notification\models\Notification;
@@ -448,6 +449,10 @@ abstract class BaseNotification extends SocialActivity
             /* @var $notification Notification */
             $notification->getBaseModel()->markAsSeen();
         }
+
+        if ($this->record->user) {
+            UnreadCountChangedEvent::triggerChanged($this->record->user);
+        }
     }
 
     /**
@@ -557,16 +562,6 @@ abstract class BaseNotification extends SocialActivity
         $result = parent::asArray($user);
         $result['mailSubject'] = Html::decode($this->getMailSubject());
         return $result;
-    }
-
-    /**
-     * Should be overwritten by subclasses for a html representation of the notification.
-     * @return string
-     */
-    public function html()
-    {
-        // Only for backward compatibility.
-        return $this->getAsHtml();
     }
 
     /**

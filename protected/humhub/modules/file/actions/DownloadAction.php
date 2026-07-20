@@ -111,19 +111,12 @@ class DownloadAction extends Action
         ];
 
         $dataMountConfig = Yii::$app->fs->getDataMountConfig();
-        if ($this->getModule()->settings->get('useXSendfile')) {
-            if ($dataMountConfig instanceof LocalMountConfig) {
-                Yii::$app->response->xSendFile(
-                    Yii::getAlias($dataMountConfig->path) . DIRECTORY_SEPARATOR . $this->file->store->get($this->variant),
-                    $fileName,
-                    $options,
-                );
-            } else {
-                Yii::error(
-                    'XSendfile is only supported by ' . LocalMountConfig::class . ' mounts. '
-                    . $dataMountConfig::class . ' given.',
-                );
-            }
+        if ($this->getModule()->settings->get('useXSendfile') && $dataMountConfig instanceof LocalMountConfig) {
+            Yii::$app->response->xSendFile(
+                Yii::getAlias($dataMountConfig->path) . DIRECTORY_SEPARATOR . $this->file->store->get($this->variant),
+                $fileName,
+                $options,
+            );
         } elseif ($dataMountConfig->useTemporaryUrls()) {
             $url = Yii::$app->fs->getDataMount()->temporaryUrl(
                 $this->file->store->get($this->variant),
@@ -156,21 +149,28 @@ class DownloadAction extends Action
             throw new HttpException(404, Yii::t('FileModule.base', 'Could not find requested file!'));
         }
 
-        $user = null;
-        if ($token !== null) {
-            $user = static::getUserByDownloadToken($token, $file);
-        }
+        $user = $token !== null
+            ? static::getUserByDownloadToken($token, $file)
+            : Yii::$app->user->identity;
 
-        // File is not assigned to any database record (yet)
-        if (empty($file->object_model) && (Yii::$app->user->isGuest || $file->created_by != Yii::$app->user->id)) {
-            throw new HttpException(401, Yii::t('FileModule.base', 'Insufficient permissions!'));
-        }
-
-        if (!$file->canView($user)) {
+        if (!$this->checkAccess($file, $user)) {
             throw new HttpException(401, Yii::t('FileModule.base', 'Insufficient permissions!'));
         }
 
         $this->file = $file;
+    }
+
+    /**
+     * Checks if the given user may download the file.
+     *
+     * Modules serving standalone files with custom access rules can subclass
+     * this action and override this method.
+     *
+     * @since 1.18.4
+     */
+    protected function checkAccess(File $file, ?User $user): bool
+    {
+        return $file->canView($user);
     }
 
 

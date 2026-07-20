@@ -14,6 +14,7 @@ use Yii;
 use humhub\modules\user\models\User;
 use yii\base\InvalidArgumentException;
 use yii\base\BaseObject;
+use yii\base\InvalidConfigException;
 use yii\web\Controller;
 
 /**
@@ -150,17 +151,6 @@ class ControllerAccess extends BaseObject
     public const RULE_UNAPPROVED_USER = 'unapprovedUser';
 
     /**
-     * Check guest if user must change password
-     * @since 1.8
-     */
-    public const RULE_MUST_CHANGE_PASSWORD = 'mustChangePassword';
-
-    /**
-     * Maintenance mode is active
-     */
-    public const RULE_MAINTENANCE_MODE = 'maintenance';
-
-    /**
      * Check guest if request method is post
      */
     public const RULE_POST = 'post';
@@ -181,8 +171,6 @@ class ControllerAccess extends BaseObject
     protected $fixedRules = [
         [self::RULE_DISABLED_USER],
         [self::RULE_UNAPPROVED_USER],
-        [self::RULE_MUST_CHANGE_PASSWORD],
-        [self::RULE_MAINTENANCE_MODE],
     ];
 
     /**
@@ -214,12 +202,6 @@ class ControllerAccess extends BaseObject
      * @var int http code, can be changed in verify checks for specific error codes
      */
     public $code;
-
-    /**
-     * @var string Name of callback method to run after failed validation
-     * @since 1.8
-     */
-    public $codeCallback;
 
     /**
      * @var Controller owner object of this ControllerAccess the owner is mainly used to find custom validation handler
@@ -257,19 +239,6 @@ class ControllerAccess extends BaseObject
             'reason' => Yii::t('error', 'Login required for this section.'),
             'code' => 401,
         ]);
-        $this->registerValidator([
-            self::RULE_MAINTENANCE_MODE => 'validateMaintenanceMode',
-            'reason' => ControllerAccess::getMaintenanceModeWarningText(),
-            'code' => 403,
-            'codeCallback' => 'checkMaintenanceMode',
-        ]);
-        $this->registerValidator([
-            self::RULE_MUST_CHANGE_PASSWORD => 'validateMustChangePassword',
-            'reason' => Yii::t('error', 'You must change password.'),
-            'code' => 403,
-            'codeCallback' => 'forceChangePassword',
-        ]);
-
         // We don't set code 401 since we want to show an error instead of redirecting to login
         $this->registerValidator(GuestAccessValidator::class);
         $this->registerValidator([
@@ -372,11 +341,15 @@ class ControllerAccess extends BaseObject
             $validator = $this->findValidator($ruleName);
 
             if (!$validator->run()) {
+                // Tripwire: the codeCallback mechanism was removed in 1.19 (replaced by
+                // user gates). Fail loudly instead of silently skipping the enforcement
+                // action a legacy validator still expects to be invoked.
+                if (isset($validator->codeCallback)) {
+                    throw new InvalidConfigException('The ControllerAccess codeCallback mechanism was removed in HumHub 1.19 — implement the enforcement as a user gate instead (see docs/develop/user-gates.md).');
+                }
+
                 $this->reason = (!$this->reason) ? $validator->getReason() : $this->reason;
                 $this->code = (!$this->code) ? $validator->getCode() : $this->code;
-                if (isset($validator->codeCallback)) {
-                    $this->codeCallback = $validator->codeCallback;
-                }
                 return false;
             }
         }
@@ -517,28 +490,6 @@ class ControllerAccess extends BaseObject
     public function isAdmin()
     {
         return !$this->isGuest() && $this->user->isSystemAdmin();
-    }
-
-    /**
-     * @return bool checks if the current user must change password
-     * @since 1.8
-     */
-    public function validateMustChangePassword()
-    {
-        return $this->isGuest() || Yii::$app->user->isMustChangePasswordUrl() || !$this->user->mustChangePassword()
-            || ($this->owner->module->id == 'user' && $this->owner->id == 'auth' && $this->owner->action->id == 'logout');
-    }
-
-    /**
-     * @return bool makes sure the current user has an access on maintenance mode
-     * @since 1.8
-     */
-    public function validateMaintenanceMode()
-    {
-        return !Yii::$app->settings->get('maintenanceMode')
-            || $this->isAdmin()
-            || ($this->owner->id == 'i18n' && $this->owner->action->id == 'translations')
-            || ($this->owner->module->id == 'user' && $this->owner->id == 'auth' && in_array($this->owner->action->id, ['login', 'password', 'external']));
     }
 
     /**

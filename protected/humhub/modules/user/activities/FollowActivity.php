@@ -19,7 +19,7 @@ final class FollowActivity extends BaseActivity implements ConfigurableActivityI
     {
         parent::__construct($record, $config);
 
-        if (!$this->contentContainer->polymorphicRelation instanceof User) {
+        if (!$this->contentContainer?->polymorphicRelation instanceof User) {
             throw new InvalidValueException('Invalid user record!');
         }
 

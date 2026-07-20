@@ -7,7 +7,7 @@ return [
     '{displayName} created {contentTitle}.' => '{displayName} a creat {contentTitle}.',
     '{displayName} posted on your profile {contentTitle}.' => '{displayName} a postat pe profilul tău {contentTitle}.',
     '{originator} just wrote {contentInfo}' => '{originator} tocmai a scris {contentInfo}',
-    '{originator} just wrote {contentInfo} in space {space}' => '{originator} tocmai a scris {contentInfo} în spațiul {space}',
+    '{originator} just wrote {contentInfo} in Space {space}' => '{originator} tocmai a scris {contentInfo} în spațiul {space}',
     '{originator} notifies you about {contentInfo}' => '{originator} te atenționează despre {contentInfo}',
     '{originator} notifies you about {contentInfo} in {space}' => '{originator} te atenționează despre {contentInfo} în {space}',
     'Your {contentTitle} has been deleted by {displayName} for \'{reason}\'' => '',

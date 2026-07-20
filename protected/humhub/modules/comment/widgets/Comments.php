@@ -49,8 +49,16 @@ class Comments extends Widget
 
     public function run()
     {
+        if (Yii::$app->user->isGuest && $this->module->guestHideComments) {
+            return '';
+        }
+
         $commentListService = new CommentListService($this->content, $this->parentComment);
-        $comments = $commentListService->getLimited($this->limit, $this->getHighlightCommentId(true));
+        $anchorCommentId = $this->getHighlightCommentId(true);
+        // Keep an anchored list focused around the anchor: a small window of previous
+        // comments instead of up to the full view mode limit without pagination
+        $limit = $anchorCommentId ? $this->module->commentsPreviewMax : $this->limit;
+        $comments = $commentListService->getLimited($limit, $anchorCommentId);
 
         $this->view->registerJsVar('comments_collapsed', $this->limit == 0);
 
@@ -58,6 +66,7 @@ class Comments extends Widget
             'content' => $this->content,
             'parentComment' => $this->parentComment,
             'comments' => $comments,
+            'anchorCommentId' => $anchorCommentId,
             'highlightCommentId' => $this->getHighlightCommentId(false),
             'id' => IdHelper::getId($this->content, $this->parentComment),
         ]);

@@ -124,38 +124,43 @@ class Module extends \yii\base\Module
     }
 
     /**
-     * Returns the url of an asset file and publishes all module assets if
-     * the file is not published yet.
+     * Returns the url of a published module asset file (publishing the module's
+     * assets on demand), or `null` if the module does not ship the given file.
      *
-     * @param string $relativePath relative file path e.g. /module_image.jpg
-     * @return string
+     * Whether the module ships the file is checked against its own - always
+     * local - resources directory. Whether the assets are already published is
+     * handled by {@see \humhub\components\assets\AssetManager::publish()}, whose
+     * result is cached and invalidated on cache clear. This avoids probing the
+     * published location, which may live on a remote (e.g. S3) mount, on every
+     * call.
+     *
+     * @param string $relativePath relative file path e.g. /module_image.png
+     * @return string|null
      */
     public function getPublishedUrl($relativePath)
     {
-        $path = $this->getAssetPath();
-
-        // If the file has not been published yet we publish the module assets
         if (!$this->isPublished($relativePath)) {
-            $this->publishAssets();
+            return null;
         }
 
-        // If its still not published the file does not exist
-        if ($this->isPublished($relativePath)) {
-            return Yii::$app->assetManager->getPublishedUrl($path) . $relativePath;
-        }
+        $published = Yii::$app->assetManager->publish($this->getAssetPath());
+
+        return isset($published[1]) ? $published[1] . $relativePath : null;
     }
 
     /**
-     * Checks if a specific asset file has already been published
-     * @param string $relativePath
-     * @return string
+     * Checks whether the module ships the given asset file in its (local)
+     * resources directory. The published copy is created on demand by
+     * {@see getPublishedUrl()}, so this deliberately checks the source and not
+     * the published location, which may live on a remote (e.g. S3) mount.
+     *
+     * @param string $relativePath relative file path e.g. /module_image.png
+     * @return bool
      */
     public function isPublished($relativePath)
     {
-        $path = $this->getAssetPath();
-        $publishedPath = Yii::$app->assetManager->getPublishedPath($path);
-
-        return $publishedPath !== false && is_file($publishedPath . $relativePath);
+        return $this->hasAssets()
+            && is_file(Yii::getAlias($this->getAssetPath()) . $relativePath);
     }
 
     /**

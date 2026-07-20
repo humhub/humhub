@@ -12,6 +12,7 @@ return [
   'Default "Hide Activity Sidebar Widget"' => 'Standaard "Activiteiten zijbalk widget verbergen"',
   'Default "Hide Followers"' => 'Standaard "Volgers verbergen"',
   'Default "Hide Members"' => 'Standaard "Leden verbergen"',
+  'Default "Show topic widget in Stream sidebar"' => 'Toon de widget voor de rubrieken in de zijbalk van nieuwsberichten.',
   'Default Content Sort Order' => 'Standaard sorteervolgorde',
   'Default Content Visiblity' => 'Standaard zichtbaarheid inhoud',
   'Default Homepage' => 'Standaard startpagina',

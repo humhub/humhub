@@ -68,7 +68,7 @@ final class ContentCreatedActivity extends BaseContentActivity implements Config
     {
         return Activity::find()
             ->andWhere(['activity.class' => self::class])
-            ->andWhere(['activity.contentcontainer_id' => $this->contentContainer->id])
+            ->andWhere(['activity.contentcontainer_id' => $this->contentContainer?->id])
             ->andWhere(['activity.created_by' => $this->user->id])
             ->andWhere(['content.object_model' => $this->record->content->object_model])
             ->andWhere(['content.visibility' => $this->record->content->visibility])

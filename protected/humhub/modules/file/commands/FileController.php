@@ -33,7 +33,7 @@ class FileController extends Controller
         $fileSizes = [];
         /** @var File $file */
         foreach (File::find()->each() as $file) {
-            if (!is_file($file->store->get())) {
+            if (!$file->store->has()) {
                 continue;
             }
 

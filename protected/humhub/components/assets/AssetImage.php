@@ -2,7 +2,6 @@
 
 namespace humhub\components\assets;
 
-use humhub\helpers\TrackableArray;
 use humhub\modules\file\libs\ImageHelper;
 use Imagine\Image\Box;
 use Imagine\Image\Format;
@@ -33,6 +32,11 @@ use yii\web\UploadedFile;
 class AssetImage extends Component implements \Stringable
 {
     /**
+     * Cache key prefix for the data-mount existence lookup, see {@see exists()}.
+     */
+    private const EXISTS_CACHE_KEY = 'assetImage.exists';
+
+    /**
      * @var string File with path to the AssetImage
      */
     public string $file;
@@ -55,8 +59,7 @@ class AssetImage extends Component implements \Stringable
     public string $path;
     private readonly string $fileName;
     public FileSystem $fs;
-    public TrackableArray $cachePublish;
-    public ?bool $fileExists = null;
+    private ?bool $fileExists = null;
 
     public function __construct($config = [])
     {
@@ -71,7 +74,6 @@ class AssetImage extends Component implements \Stringable
         $this->fileName = basename($this->file);
         $this->path = dirname($this->file);
         $this->defaultFile = Yii::getAlias($this->defaultFile);
-        $this->cachePublish ??= new TrackableArray();
     }
 
     /**
@@ -85,25 +87,21 @@ class AssetImage extends Component implements \Stringable
             $options = $this->defaultOptions;
         }
 
-        $scaledFileName = $this->path . DIRECTORY_SEPARATOR . $this->getFileNameWithOptions($options);
+        $fileNameWithOptions = $this->getFileNameWithOptions($options);
+        if ($fileNameWithOptions === '') {
+            // Neither an uploaded image nor a defaultFile
+            return '';
+        }
 
-        if (isset($this->cachePublish[$scaledFileName])) {
-            //Yii::debug("AssetImage: Use Cached: " . $scaledFileName);
+        $scaledFileName = $this->path . DIRECTORY_SEPARATOR . $fileNameWithOptions;
 
-            $published = $this->cachePublish[$scaledFileName];
-        } else {
-            //Yii::debug("AssetImage: Check file exists: " . $scaledFileName);
-
-            if (!$this->exists() && empty($this->defaultFile)) {
-                return '';
-            }
-
+        $published = Yii::$app->assetManager->getPublishedAssetImage($scaledFileName);
+        if ($published === null) {
             if (!$this->fs->fileExists($scaledFileName)) {
                 $this->convert($scaledFileName, $options);
             }
 
             $published = Yii::$app->assetManager->publishAssetImage($this, $scaledFileName);
-            $this->cachePublish[$scaledFileName] = $published;
         }
 
         return Url::to($published[1], $scheme);
@@ -123,6 +121,7 @@ class AssetImage extends Component implements \Stringable
         $this->fs->write($this->file, $image->get($this->getFileFormat()), $this->filesystemOptions);
 
         $this->fileExists = true;
+        $this->setCachedExists(true);
 
         if (!empty($this->masterOptions)) {
             $this->convert($this->file, $this->masterOptions);
@@ -144,7 +143,10 @@ class AssetImage extends Component implements \Stringable
         $checksum = hash('xxh32', json_encode($options));
 
         $info = pathinfo($fileName);
-        return $info['filename'] . '_' . $checksum . '.' . $info['extension'];
+        // The source file may have no extension (e.g. a HumHub File is stored as `file`);
+        // fall back to the resolved image format so the variant still gets a valid extension.
+        $extension = $info['extension'] ?? $this->getFileFormat();
+        return $info['filename'] . '_' . $checksum . '.' . $extension;
     }
 
     private function convert(string $newFileName, array $options = []): bool
@@ -183,8 +185,6 @@ class AssetImage extends Component implements \Stringable
 
     public function delete(): void
     {
-        $this->cachePublish->clear();
-
         try {
             if ($this->fs->fileExists($this->file)) {
                 $this->fs->delete($this->file);
@@ -194,6 +194,7 @@ class AssetImage extends Component implements \Stringable
         }
 
         $this->fileExists = false;
+        $this->setCachedExists(false);
         $this->deleteWithOptions();
     }
 
@@ -207,13 +208,54 @@ class AssetImage extends Component implements \Stringable
         $this->deleteWithOptions();
     }
 
+    /**
+     * Checks whether an uploaded image exists on the data mount.
+     *
+     * On remote (e.g. S3) mounts this lookup is a network round trip per rendered
+     * image, so the result is cached in `Yii::$app->cache` and updated explicitly
+     * by {@see setByFile()} and {@see delete()}. Whether the cache is used follows
+     * {@see AssetManager::$cachePublishState}; on local mounts every call verifies
+     * against the filesystem and stays fully self-healing.
+     */
     public function exists(): bool
     {
         if ($this->fileExists === null) {
+            $this->fileExists = $this->getCachedExists();
+        }
+
+        if ($this->fileExists === null) {
             $this->fileExists = $this->fs->fileExists($this->file);
+            $this->setCachedExists($this->fileExists);
         }
 
         return $this->fileExists;
+    }
+
+    private function getCachedExists(): ?bool
+    {
+        if (!$this->isExistsCacheEnabled()) {
+            return null;
+        }
+
+        // The state is stored as int (0/1): Yii's cache returns `false` on a miss,
+        // so a cached boolean would be indistinguishable from "not cached yet".
+        $cached = Yii::$app->cache->get([self::EXISTS_CACHE_KEY, $this->file]);
+
+        return is_int($cached) ? (bool) $cached : null;
+    }
+
+    private function setCachedExists(bool $exists): void
+    {
+        if ($this->isExistsCacheEnabled()) {
+            Yii::$app->cache->set([self::EXISTS_CACHE_KEY, $this->file], (int) $exists);
+        }
+    }
+
+    private function isExistsCacheEnabled(): bool
+    {
+        $assetManager = Yii::$app->assetManager;
+
+        return $assetManager instanceof AssetManager && $assetManager->cachePublishState;
     }
 
     private function deleteWithOptions(): void
