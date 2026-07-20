@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.19 (TBD)
 ----------
+- Fix #8327: The 1.19 upgrade aborted with a foreign key violation in the comment `content_id` migration when the database contained a reply whose parent comment (or a comment whose content) was already gone — such orphaned comments are now deleted before the RESTRICT foreign keys are created
 - Fix #8329: `LikeService` crashed with a fatal error when a user was explicitly passed to the constructor — the typed property was only assigned in the fallback branch
 - Fix #8325: Rendering a comment written by a blocked author crashed the whole wall entry — the blocked-comment fallback still read the dropped `object_model`/`object_id` columns and the removed `user` relation (regression from #7917)
 - Fix #8330: `ProfileImage::getUrl()` (deprecated shim) crashed with a fatal error for GUID-constructed instances — the container is now resolved lazily and unknown GUIDs return an empty string, consistent with `render()`
