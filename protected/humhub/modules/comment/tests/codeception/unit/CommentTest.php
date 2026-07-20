@@ -128,10 +128,23 @@ class CommentTest extends HumHubDbTestCase
             'content_id' => 11,
         ]))->save();
 
+        // A single comment beyond the limit is included directly instead of
+        // being hidden behind a "Show previous 1 comments" link
+        $comments = CommentListService::create(Post::findOne(['id' => 11]))->getLimited(2);
+        $this->assertCount(3, $comments);
+        $this->assertEquals('Test comment1', $comments[0]->message);
+        $this->assertEquals('Test comment3', $comments[2]->message);
+
+        (new Comment([
+            'message' => 'Test comment4',
+            'content_id' => 11,
+        ]))->save();
+
+        // With two comments beyond the limit the list is cut to the limit
         $comments = CommentListService::create(Post::findOne(['id' => 11]))->getLimited(2);
         $this->assertCount(2, $comments);
-        $this->assertEquals('Test comment2', $comments[0]->message);
-        $this->assertEquals('Test comment3', $comments[1]->message);
+        $this->assertEquals('Test comment3', $comments[0]->message);
+        $this->assertEquals('Test comment4', $comments[1]->message);
 
     }
 

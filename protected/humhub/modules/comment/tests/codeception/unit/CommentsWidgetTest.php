@@ -15,7 +15,7 @@ class CommentsWidgetTest extends HumHubDbTestCase
         $this->becomeUser('User2');
 
         $roots = [];
-        for ($i = 1; $i <= 4; $i++) {
+        for ($i = 1; $i <= 5; $i++) {
             ($roots[$i] = new Comment([
                 'message' => 'Root comment ' . $i,
                 'content_id' => 11,
@@ -44,7 +44,7 @@ class CommentsWidgetTest extends HumHubDbTestCase
         $this->becomeUser('User2');
 
         $roots = [];
-        for ($i = 1; $i <= 7; $i++) {
+        for ($i = 1; $i <= 8; $i++) {
             ($roots[$i] = new Comment([
                 'message' => 'Root comment ' . $i,
                 'content_id' => 11,
