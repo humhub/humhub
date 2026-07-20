@@ -27,6 +27,7 @@ HumHub Changelog
 - Enh #8300: Update composer package web-token/jwt-library to 4.1.7 (GHSA-3prj-6hqw-cm82, GHSA-jc38-x7x8-2xc8)
 - Fix #8301: Revert missed `MobileAppHelper::registerHideOpenerScript()`
 - Enh #8307: Add `public` and `standalone` file flags for module-managed files (e.g. config images) with explicit access semantics
+- Fix #8324: Fix `ActiveFileUpload` remove button for standalone files (new `standalone` widget option)
 
 1.18.3 (May 18, 2026)
 ---------------------

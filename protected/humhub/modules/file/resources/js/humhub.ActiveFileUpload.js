@@ -39,6 +39,16 @@ humhub.module('ActiveFileUpload', function (module, require, $) {
     Upload.prototype.delete = function (event) {
         event.preventDefault()
 
+        if (this.options.standalone) {
+            // Standalone files are refused by the generic file/delete endpoint —
+            // only clear the input, the owning form deletes the record on submit.
+            const name = this.uploadWidget.options.uploadSubmitName || 'fileList[]';
+            this.uploadWidget.$form.find('input[name="' + name + '"]').val('');
+            this.$.find('.img-uploader-remove').hide();
+            this.previewWidget.reset();
+            return;
+        }
+
         this.uploadWidget.delete({guid: this.previewWidget.$.find('.file-preview-item').first().attr('data-guid')});
         this.previewWidget.reset();
     };
