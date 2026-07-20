@@ -18,8 +18,6 @@ use humhub\widgets\bootstrap\Link;
 <div class="d-flex comment-blocked-user" id="comment_<?= $comment->id ?>"
      data-action-component="comment.Comment">
 
-    <hr class="comment-separator">
-
     <div class="flex-shrink-0 me-2">
         <?= UserImage::widget(['user' => $comment->user, 'width' => 25, 'htmlOptions' => ['data-contentcontainer-id' => $comment->user->contentcontainer_id]]); ?>
     </div>

@@ -59,28 +59,21 @@ humhub.module('comment', function (module, require, $) {
 
     Form.prototype.incrementCommentCount = function (count) {
         try {
-            // First check if this is a sub comment form
-            var $root = this.$.closest('[data-action-component="comment.Comment"]');
-            if (!$root.length) {
-                $root = this.$.closest('.stream-entry-addons');
-            }
+            // Update the reply counter of the parent comment (for sub comments)
+            // and the total comment counter of the wall entry
+            var $roots = this.$.closest('[data-action-component="comment.Comment"]')
+                .add(this.$.closest('.stream-entry-addons'));
 
-            if (!$root.length) {
-                return;
-            }
+            $roots.each(function () {
+                var $commentCount = $(this).find('.wall-entry-controls:first .comment-count');
+                if (!$commentCount.length) {
+                    return;
+                }
 
-            var $controls = $root.find('.wall-entry-controls:first');
-            if (!$controls.length) {
-                return;
-            }
-
-            var $commentCount = $controls.find('.comment-count');
-            if ($commentCount.length) {
-                var currentCount = $commentCount.data('count');
-                currentCount += count;
+                var currentCount = $commentCount.data('count') + count;
                 $commentCount.text(' (' + currentCount + ')').show();
                 $commentCount.data('count', currentCount);
-            }
+            });
         } catch (e) {
             module.log.error(e, false);
         }
@@ -127,6 +120,11 @@ humhub.module('comment', function (module, require, $) {
         var form = Widget.instance(this.$.parent().siblings('.comment_create'));
         var hideHr = !this.isNestedComment() && form.$.length && !this.$.siblings('.single-comment').length;
 
+        // Deleting a comment also removes its sub comments from the total count
+        var subComments = this.isNestedComment()
+            ? 0
+            : (this.$.find('.wall-entry-controls:first .comment-count').data('count') || 0);
+
         this.$.data('content-delete-url', evt.$trigger.data('content-delete-url'));
 
         this.super('delete', {modal: {
@@ -138,7 +136,7 @@ humhub.module('comment', function (module, require, $) {
             if ($confirm) {
                 module.log.success(i18n.t('CommentModule.base', 'Comment has been deleted'));
                 hideHr && form.$.find('hr').css('display', 'none');
-                form.incrementCommentCount(-1);
+                form.incrementCommentCount(-1 - subComments);
             }
         }).catch(function (err) {
             module.log.error(err, true);
@@ -254,6 +252,14 @@ humhub.module('comment', function (module, require, $) {
                 : $container.append($html);
             evt.$trigger.closest('.showMore').remove();
             additions.applyTo($html);
+
+            // The focused link was just removed, move the focus to the loaded
+            // continuation link or the first loaded comment instead
+            var $focus = $html.filter('.showMore').find('a').first();
+            if (!$focus.length) {
+                $focus = $html.filter('.single-comment').first().attr('tabindex', '-1');
+            }
+            $focus.trigger('focus');
 
             // Highlight currently searching keywords in the loaded comments
             const contentSearchKeyword = $('.container-contents .form-search input[name=keyword]');

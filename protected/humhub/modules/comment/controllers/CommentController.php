@@ -4,6 +4,7 @@ namespace humhub\modules\comment\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
+use humhub\helpers\Html;
 use humhub\modules\comment\helpers\IdHelper;
 use humhub\modules\comment\models\AdminDeleteCommentForm;
 use humhub\modules\comment\models\Comment;
@@ -97,7 +98,7 @@ class CommentController extends Controller
             ]);
         }
         foreach ($comments as $comment) {
-            $output .= CommentWidget::widget(['comment' => $comment]);
+            $output .= $this->renderCommentWithSeparator($comment);
         }
         if ($direction === CommentListService::LIST_DIR_NEXT && count($comments) > 1) {
             $output .= ShowMore::widget([
@@ -134,7 +135,7 @@ class CommentController extends Controller
         $model->parent_comment_id = $this->parentComment?->id;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->renderAjaxContent(CommentWidget::widget(['comment' => $model]));
+            return $this->renderAjaxContent($this->renderCommentWithSeparator($model));
         }
 
         Yii::$app->response->statusCode = 400;
@@ -254,6 +255,17 @@ class CommentController extends Controller
             'confirmText' => Yii::t('CommentModule.base', 'Confirm'),
             'cancelText' => Yii::t('CommentModule.base', 'Cancel'),
         ];
+    }
+
+    /**
+     * Renders a comment prefixed with the same separator the comment list places
+     * between entries (see comments.php), so comments inserted via AJAX keep the
+     * spacing. CSS hides the separator when it ends up first in the list.
+     */
+    private function renderCommentWithSeparator(Comment $comment): string
+    {
+        return Html::tag('hr', '', ['class' => 'comment-separator'])
+            . CommentWidget::widget(['comment' => $comment]);
     }
 
 }

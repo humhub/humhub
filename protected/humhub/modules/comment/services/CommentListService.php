@@ -27,12 +27,19 @@ class CommentListService
         );
     }
 
+    /**
+     * Returns the number of comments of the content, including sub comments.
+     * With a parent comment given, only its sub comments are counted.
+     */
     public function getCount(): int
     {
-        $query = Comment::find();
-        $this->addScopeQueryCondition($query);
+        $query = Comment::find()->andWhere(['content_id' => $this->content->id]);
 
-        return $query->count();
+        if ($this->parentComment) {
+            $query->andWhere(['parent_comment_id' => $this->parentComment->id]);
+        }
+
+        return (int)$query->count();
     }
 
     public function getLimited(?int $limit, ?int $highlightCommentId = null): array
@@ -117,6 +124,18 @@ class CommentListService
             $query->andWhere(['<', 'id', $commentId]);
         }
         return array_reverse($query->all());
+    }
+
+    public function getSiblingsCount(int $commentId, string $sortOrder = self::LIST_DIR_PREV): int
+    {
+        $query = Comment::find();
+        $this->addScopeQueryCondition($query);
+
+        if ($commentId) {
+            $query->andWhere([$sortOrder === self::LIST_DIR_NEXT ? '>' : '<', 'id', $commentId]);
+        }
+
+        return (int)$query->count();
     }
 
     private function getSiblingIds(int $commentId, int $limit = 5, string $sortOrder = self::LIST_DIR_PREV): array

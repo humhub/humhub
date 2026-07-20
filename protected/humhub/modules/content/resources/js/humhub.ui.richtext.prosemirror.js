@@ -145,6 +145,13 @@ humhub.module('ui.richtext.prosemirror', function (module, require, $) {
         const backup = this.getBackup();
 
         if (typeof backup[inputId] === 'string' && backup[inputId] !== '') {
+            // Sync the restored content to the input right away — the form can be
+            // submitted without the editor ever gaining focus, and the input is
+            // otherwise only updated on focusout. Marking it as the backuped value
+            // lets resetBackup() clear the stored entry even before the first
+            // backup interval tick (e.g. submitting right after the reload)
+            this.getInput().val(backup[inputId]);
+            this.backupedValue = backup[inputId];
             return backup[inputId];
         }
 

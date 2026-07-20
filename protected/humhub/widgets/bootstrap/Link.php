@@ -44,7 +44,9 @@ class Link extends Button
 
     public static function withAction(?string $text, string $action, $url = null, $target = null): static
     {
-        return static::none($text)->action($action, $url, $target);
+        // The href makes the anchor keyboard focusable and styled as a link (cursor);
+        // the action framework prevents the default, so the fragment is never followed
+        return static::none($text)->link('#')->action($action, $url, $target);
     }
 
     /**
