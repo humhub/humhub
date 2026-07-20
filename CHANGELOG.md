@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.19 (TBD)
 ----------
+- Fix #8325: Rendering a comment written by a blocked author crashed the whole wall entry — the blocked-comment fallback still read the dropped `object_model`/`object_id` columns and the removed `user` relation (regression from #7917)
 - Enh #8321: Add the `UnreadCountChangedEvent`, triggered whenever a user's unseen notification count changes or by modules such as Messenger
 - Fix: JS console warning `Required a non initialized module: i18n` on every full page load — `humhub.i18n.js` was registered last in `CoreApiAsset`, after core modules (`ui.additions`, `action`, `ui.widget`, `client`, `ui.modal`, ...) that `require('i18n')` at definition time, so the first of them created an empty namespace stub; it is now loaded directly after `humhub.core.js` (regression from #8078)
 - Fix #8322: On iOS (Safari & Chrome), programmatically focusing a field (e.g. opening a comment reply form) only showed the keyboard without scrolling the field into view until the first keystroke — a just-focused input, textarea or richtext editor that ends up hidden behind the keyboard is now scrolled into view once the keyboard has settled, network-wide
