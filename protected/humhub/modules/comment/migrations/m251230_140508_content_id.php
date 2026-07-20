@@ -37,6 +37,13 @@ class m251230_140508_content_id extends Migration
          WHERE comment.parent_comment_id IS NOT NULL AND comment.content_id IS NULL AND parent.id IS NOT NULL',
         );
 
+        // Comments that could not be linked above — the commented content or
+        // the parent comment was already gone — would abort the RESTRICT
+        // foreign key creation below, so delete these orphaned records
+        $orphaned = $this->db->createCommand('DELETE FROM `comment` WHERE `content_id` IS NULL')->execute();
+        if ($orphaned > 0) {
+            echo "    > deleted $orphaned orphaned comment records without an existing content or parent comment\n";
+        }
 
         $this->safeAddForeignKey('fk_comment_content', 'comment', 'content_id', 'content', 'id', 'RESTRICT', 'CASCADE');
         $this->safeAddForeignKey(
