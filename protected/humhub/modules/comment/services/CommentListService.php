@@ -51,23 +51,26 @@ class CommentListService
             $highlightCommentId = null;
         }
 
-        $query = $this->getQuery()->limit($limit);
+        if ($highlightCommentId === null) {
+            return $this->getSiblings(0, $limit);
+        }
 
         // Force a specific comment in the results
-        if ($highlightCommentId !== null) {
-            $showComment = $this->getComment($highlightCommentId);
-            if ($showComment === null) {
-                Yii::error("Show comment with id $highlightCommentId not found", 'comment');
-                return [];
-            }
-            $commentIds = array_merge(
-                $this->getSiblingIds($showComment->id, $limit, self::LIST_DIR_PREV),
-                [$showComment->id],
-                $this->getSiblingIds($showComment->id, 1, self::LIST_DIR_NEXT),
-            );
-            $query->where(['IN', 'id', $commentIds]);
-            $query->limit(count($commentIds));
+        $showComment = $this->getComment($highlightCommentId);
+        if ($showComment === null) {
+            Yii::error("Show comment with id $highlightCommentId not found", 'comment');
+            return [];
         }
+
+        $commentIds = array_merge(
+            $this->getSiblingIds($showComment->id, $limit, self::LIST_DIR_PREV),
+            [$showComment->id],
+            $this->getSiblingIds($showComment->id, 1, self::LIST_DIR_NEXT),
+        );
+
+        $query = $this->getQuery();
+        $query->where(['IN', 'id', $commentIds]);
+        $query->limit(count($commentIds));
 
         return array_reverse($query->all());
     }
@@ -106,8 +109,10 @@ class CommentListService
 
     public function getSiblings(int $commentId, int $limit = 5, string $sortOrder = self::LIST_DIR_PREV): array
     {
+        // Fetch two more than requested to detect whether exactly one comment
+        // remains beyond the limit (see applyLimit())
         $query = Comment::find()
-            ->limit($limit);
+            ->limit($limit + 2);
 
         $this->addScopeQueryCondition($query);
 
@@ -116,14 +121,26 @@ class CommentListService
             if ($commentId) {
                 $query->andWhere(['>', 'id', $commentId]);
             }
-            return $query->all();
+            return self::applyLimit($query->all(), $limit);
         }
 
         $query->orderBy(['created_at' => SORT_DESC, 'id' => SORT_DESC]);
         if ($commentId) {
             $query->andWhere(['<', 'id', $commentId]);
         }
-        return array_reverse($query->all());
+        return array_reverse(self::applyLimit($query->all(), $limit));
+    }
+
+    /**
+     * Cuts the result down to the limit, but keeps a single comment beyond it:
+     * one remaining comment is shown directly instead of being hidden behind a
+     * "Show previous/next 1 comments" pagination link.
+     */
+    private static function applyLimit(array $comments, int $limit): array
+    {
+        return $limit === 0 || count($comments) > $limit + 1
+            ? array_slice($comments, 0, $limit)
+            : $comments;
     }
 
     public function getSiblingsCount(int $commentId, string $sortOrder = self::LIST_DIR_PREV): int
