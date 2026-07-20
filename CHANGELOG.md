@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.19 (TBD)
 ----------
+- Enh #8321: Add the `UnreadCountChangedEvent`, triggered whenever a user's unseen notification count changes or by modules such as Messenger
 - Fix: JS console warning `Required a non initialized module: i18n` on every full page load — `humhub.i18n.js` was registered last in `CoreApiAsset`, after core modules (`ui.additions`, `action`, `ui.widget`, `client`, `ui.modal`, ...) that `require('i18n')` at definition time, so the first of them created an empty namespace stub; it is now loaded directly after `humhub.core.js` (regression from #8078)
 - Fix #8322: On iOS (Safari & Chrome), programmatically focusing a field (e.g. opening a comment reply form) only showed the keyboard without scrolling the field into view until the first keystroke — a just-focused input, textarea or richtext editor that ends up hidden behind the keyboard is now scrolled into view once the keyboard has settled, network-wide
 - Fix #8318: Comments inserted via AJAX (a newly posted comment, "Show previous/next comments", the comments popup) were missing the separator line and spacing towards the preceding comment — most visibly a new comment sticking directly to the highlighted comment on a comment permalink view; the BS5 refactoring (#7902) moved the separator out of the comment view into the list views, so the `comment/post` and `comment/show` responses no longer contained it (regression from #7902)
