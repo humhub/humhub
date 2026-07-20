@@ -138,6 +138,27 @@ humhub.module('ui.additions', function (module, require, $) {
             module.applyTo($('body'));
         });
 
+        // Unlike other browsers (and unlike a real tap, which it scrolls
+        // itself), iOS opens the keyboard on a programmatic focus without
+        // scrolling the field into view until the first keystroke. Once the
+        // keyboard has settled, scroll a just-focused field into view if it
+        // ended up hidden behind it. Network-wide, browser and in-app webview.
+        if (window.visualViewport && $('body').is('[class*=device-ios]')) {
+            document.addEventListener('focusin', function (e) {
+                var el = e.target;
+                if (!el.matches || !el.matches('input, textarea, [contenteditable="true"], [contenteditable=""]')) {
+                    return;
+                }
+                setTimeout(function () {
+                    var vv = window.visualViewport;
+                    var rect = el.getBoundingClientRect();
+                    if (document.activeElement === el && (rect.top < vv.offsetTop || rect.bottom > vv.offsetTop + vv.height)) {
+                        el.scrollIntoView({block: 'center', behavior: 'smooth'});
+                    }
+                }, 400); // Wait for the keyboard opening animation to finish
+            });
+        }
+
         require('action').registerHandler('copyToClipboard', function (evt) {
             clipboard.writeText(evt.$target.text()).then(function () {
                 require('ui.status').success(i18n.t('base', 'Text has been copied to clipboard'));
