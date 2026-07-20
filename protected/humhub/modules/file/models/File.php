@@ -16,11 +16,9 @@ use humhub\libs\StdClass;
 use humhub\libs\UUIDValidator;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
-use humhub\modules\content\models\ContentContainerSetting;
 use humhub\modules\file\components\StorageManager;
 use humhub\modules\file\components\StorageManagerInterface;
 use humhub\modules\file\libs\Metadata;
-use humhub\modules\space\models\Space;
 use humhub\modules\user\helpers\UserHelper;
 use humhub\modules\user\models\User;
 use Throwable;
@@ -160,7 +158,11 @@ class File extends FileCompat implements ViewableInterface
         return [
             [
                 'class' => PolymorphicRelation::class,
-                'mustBeInstanceOf' => [\yii\db\ActiveRecord::class],
+                'mustBeInstanceOf' => [
+                    ActiveRecord::class,
+                    SettingFile::class,
+                    ContainerSettingFile::class,
+                ],
             ],
             [
                 'class' => GUID::class,
@@ -353,20 +355,8 @@ class File extends FileCompat implements ViewableInterface
             return $object->canEdit($user);
         }
 
-        if ($user->isSystemAdmin()) {
-            // Allow system admins to delete any file,
-            // for example, when the File is linked to a Setting(global or container) object
-            return true;
-        }
-
-        if ($object instanceof ContentContainerSetting) {
-            $container = $object->contentcontainer?->getPolymorphicRelation();
-            if ($container instanceof Space) {
-                return $container->isAdmin($user);
-            }
-            if ($container instanceof User) {
-                return $container->is($user);
-            }
+        if ($object instanceof SettingFile || $object instanceof ContainerSettingFile) {
+            return $object->canEdit($user);
         }
 
         return false;
