@@ -41,6 +41,7 @@ class CoreApiAsset extends AssetBundle
      */
     public $js = [
         'js/humhub/humhub.core.js',
+        'js/humhub/humhub.i18n.js', // Must be registered before all modules that require('i18n') at definition time
         'js/humhub/humhub.util.js',
         'js/humhub/humhub.log.js',
         'js/humhub/humhub.ui.additions.js',
@@ -53,7 +54,6 @@ class CoreApiAsset extends AssetBundle
         'js/humhub/humhub.ui.navigation.js', // Required here since we set the active navigation on each call
         'js/humhub/humhub.ui.modal.js', // Should be moved to CoreModuleScriptAssets later
         'js/humhub/humhub.ui.progress.js',
-        'js/humhub/humhub.i18n.js',
     ];
 
     public $depends = [
