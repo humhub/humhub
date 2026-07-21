@@ -28,6 +28,32 @@ class ThemeHelperTest extends HumHubDbTestCase
         $this->testTheme($this->createTheme('Test'));
     }
 
+    public function testGetThemeByPathIgnoresThemeWithoutVariablesFile()
+    {
+        // An empty/incomplete theme directory (e.g. a `themes/HumHub` skeleton left
+        // behind by an update) must not be loaded as a theme.
+        $incompleteThemeDir = Yii::getAlias('@runtime') . '/tests/themes/Incomplete';
+        FileHelper::removeDirectory($incompleteThemeDir);
+        FileHelper::createDirectory($incompleteThemeDir . '/scss');
+
+        $this->assertNull(ThemeHelper::getThemeByPath($incompleteThemeDir));
+
+        FileHelper::removeDirectory($incompleteThemeDir);
+    }
+
+    public function testGetThemesByPathSkipsIncompleteTheme()
+    {
+        // A leftover `HumHub` skeleton (no scss/variables.scss) in the themes directory
+        // must not be listed as a theme - otherwise it would shadow the real core theme.
+        $themesDir = Yii::getAlias('@runtime') . '/tests/themes-scan';
+        FileHelper::removeDirectory($themesDir);
+        FileHelper::createDirectory($themesDir . '/HumHub/scss');
+
+        $this->assertArrayNotHasKey('HumHub', ThemeHelper::getThemesByPath($themesDir));
+
+        FileHelper::removeDirectory($themesDir);
+    }
+
     private function testTheme(?Theme $theme)
     {
         $this->assertInstanceOf(Theme::class, $theme);

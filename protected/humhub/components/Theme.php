@@ -131,11 +131,19 @@ class Theme extends BaseTheme
             $buildResult = ThemeHelper::buildCss();
             // If SCSS error in a Child Theme or Custom SCSS
             if ($buildResult !== true) {
-                // Fallback to HumHub theme with no Custom SCSS for a minimal working styling
+                // Fallback to the core HumHub theme with no Custom SCSS for a minimal
+                // working styling. Only switch and refresh when the core theme is a
+                // different, buildable theme - otherwise (e.g. the core theme itself
+                // fails to build, or is already active) refreshing would loop forever.
                 $coreTheme = ThemeHelper::getThemeByName(self::CORE_THEME_NAME);
-                ThemeHelper::buildCss($coreTheme, false);
-                $coreTheme->activate();
-                Yii::$app->response->refresh();
+                if (
+                    $coreTheme !== null
+                    && $coreTheme->getBasePath() !== $this->getBasePath()
+                    && ThemeHelper::buildCss($coreTheme, false) === true
+                ) {
+                    $coreTheme->activate();
+                    Yii::$app->response->refresh();
+                }
             }
         }
 
