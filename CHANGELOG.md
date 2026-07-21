@@ -4,6 +4,7 @@ HumHub Changelog
 1.19 (TBD)
 ----------
 - Enh #8332: Add test coverage for the unencoded short text converter (`FORMAT_SHORT_TEXT`) — the existing test exercises the encoded legacy `FORMAT_SHORTTEXT` path only
+- Fix #8331: The deprecated `Content::hardDelete()` left the underlying record and its files orphaned — it now delegates to the record's `hardDelete()` and runs the complete deletion path as in 1.18
 - Fix #8326: Deleting a user or running the `PurgeDeletedContents` job crashed with a fatal error when hitting a content entry whose underlying record no longer exists — orphaned entries are now removed directly, matching the integrity check (#8312)
 - Fix #8327: The 1.19 upgrade aborted with a foreign key violation in the comment `content_id` migration when the database contained a reply whose parent comment (or a comment whose content) was already gone — such orphaned comments are now deleted before the RESTRICT foreign keys are created
 - Fix #8329: `LikeService` crashed with a fatal error when a user was explicitly passed to the constructor — the typed property was only assigned in the fallback branch
