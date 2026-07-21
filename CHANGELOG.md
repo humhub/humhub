@@ -1,7 +1,7 @@
 HumHub Changelog
 ================
 
-1.19 (July 21, 2026)
+1.19.0-beta.1 (July 21, 2026)
 --------------------
 - Fix #8334: The module administration showed a "Configure" button on disabled modules to users holding `ManageSettings` but not `ManageModules` — a disabled module now only offers the "Enable" action; the `ManageSettings` permission description now also mentions module settings, since module config controllers are guarded by this permission
 - Enh #8332: Add test coverage for the unencoded short text converter (`FORMAT_SHORT_TEXT`) — the existing test exercises the encoded legacy `FORMAT_SHORTTEXT` path only
