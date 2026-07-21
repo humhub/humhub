@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.18.4 (Unreleased)
----------------------
+1.18.4 (July 21, 2026)
+----------------------
 - Enh #8170: Handle controllers with using external modules
 - Enh #8176: Upgrade Twig package to v3.26.0
 - Fix #8189: Scroll to highlighted comment when navigating from Last Activities
