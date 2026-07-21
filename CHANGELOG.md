@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.19 (TBD)
-----------
+1.19 (July 21, 2026)
+--------------------
 - Fix #8334: The module administration showed a "Configure" button on disabled modules to users holding `ManageSettings` but not `ManageModules` — a disabled module now only offers the "Enable" action; the `ManageSettings` permission description now also mentions module settings, since module config controllers are guarded by this permission
 - Enh #8332: Add test coverage for the unencoded short text converter (`FORMAT_SHORT_TEXT`) — the existing test exercises the encoded legacy `FORMAT_SHORTTEXT` path only
 - Fix #8326: Deleting a user or running the `PurgeDeletedContents` job crashed with a fatal error when hitting a content entry whose underlying record no longer exists — orphaned entries are now removed directly, matching the integrity check (#8312)
