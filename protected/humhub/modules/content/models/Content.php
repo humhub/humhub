@@ -461,6 +461,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
 
     /**
      * Deletes this content immediately and permanently
+     * including the underlying record and its files.
      *
      * @return bool
      * @throws Throwable
@@ -470,7 +471,9 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      */
     public function hardDelete(): bool
     {
-        return $this->hardDeleteInternal();
+        $record = $this->getPolymorphicRelation();
+
+        return $record === null ? $this->hardDeleteInternal() : $record->hardDelete();
     }
 
     /**
