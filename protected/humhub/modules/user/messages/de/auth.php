@@ -13,7 +13,7 @@ return [
   'Change password' => 'Passwort ändern',
   'Change your password' => '',
   'Confirm' => 'Bestätigen',
-  'Continue' => '',
+  'Continue' => 'Weiter',
   'Create Account' => 'Benutzerkonto anlegen',
   'Create account' => 'Benutzerkonto erstellen',
   'Don\'t have an account?' => '',
