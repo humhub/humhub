@@ -49,6 +49,10 @@ Each minor release line has its own file with the breaking changes, new APIs and
   second constructor argument: `new ActiveQueryContent($modelClass, $user)`. Modules calling
   `->readable($user)` or `->userRelated($scopes, $user)` must switch to constructing the query
   with that user instead.
+  **Warning:** PHP silently ignores the extra argument, so an unmigrated call does not fail —
+  it evaluates access for the **session** user instead of the passed one: over-broad results
+  for admins, empty results in console/queue jobs. Audit every `readable(...)`/`userRelated(...)`
+  call that passes a user.
 - Icon-only `Button` widgets (no visible label, only an icon) now automatically set `aria-label` from
   the tooltip text. Module developers should always call `->tooltip('...')` on icon-only buttons —
   omitting it logs a `Yii::warning()` in `YII_DEBUG` mode.
@@ -154,11 +158,18 @@ Each minor release line has its own file with the breaking changes, new APIs and
   - `humhub\widgets\bootstrap\Link::userPickerSelfSelect()` => `humhub\modules\user\widgets\UserPickerField::selfSelect()` or use new option `UserPickerField->selfSelect`
   - `humhub\modules\content\models\Content->delete()` => `humhub\modules\content\models\Content->getPolymorphicRelation()->delete()`
   - `humhub\modules\content\models\Content->hardDelete()` => `humhub\modules\content\models\Content->getPolymorphicRelation()->hardDelete()`
+  - `humhub\modules\notification\components\BaseNotification->getAsText()` => `text()` — the shims were deprecated since 1.2 and are now removed
+  - `humhub\modules\notification\components\BaseNotification->getAsHtml()` => `html()`
+  - `humhub\modules\user\models\User->canViewAllContent()` => `humhub\modules\user\models\User->canManageAllContent()` — now permission-based: requires the new `ManageAllContent` permission and the admin module setting `enableManageAllContentPermission`; the semantics changed from viewing to managing all content
+  - `humhub\modules\user\models\User->canApproveUsers()` => `humhub\modules\user\models\User->canManageUsers()`
+  - `humhub\modules\space\models\Space->isModuleEnabled($id)` => `$container->moduleManager->isEnabled($id)` — was deprecated; the module manager is available on any `ContentContainerActiveRecord`
 - Refactored `Activities`
   - Make sure Content related Activities are now extended from `BaseContentActivity`
   - `getTitle` and `getDescription` are now `static`.
   - Instead of View files you need to implement a `getMessage()` method which returns the Activity text.
   - Use following code to create a Activity `ActivityManager::dispatch(TaskCompletedActivity::class, $this->task, $user)`
+  - Database: the `activity` table's polymorphic `object_model`/`object_id` columns were replaced by `contentcontainer_id`, `content_id` and `content_addon_record_id` foreign keys — modules querying the table directly must migrate.
+  - **Upgrade note:** the activity restructure migration (`m260108_115053_new_structure`) is irreversible (no `down()`), rewrites the whole table with multi-table UPDATEs and permanently deletes activities that cannot be resolved to existing content (logged). Take a database backup before upgrading and plan a maintenance window on installations with a large `activity` table.
 - Introduced **UserSource architecture** — separates user provisioning (who owns the user) from authentication (how the user logs in)
   - New `humhub\modules\user\source\UserSourceInterface` — contract for user provisioning sources
   - New `humhub\modules\user\source\BaseUserSource` — abstract base with sensible defaults; provides a default `updateUser()` that applies attributes listed in `$managedAttributes`
@@ -173,6 +184,7 @@ Each minor release line has its own file with the breaking changes, new APIs and
   - New `humhub\modules\ldap\source\LdapUserSource` — extracted from `LdapAuth`; handles LDAP user lifecycle
   - Database: `user.auth_mode` + `user.authclient_id` replaced by `user.user_source` (string source ID)
   - Database: LDAP identity now stored in `user_auth` table (`source='ldap'`, `source_id=<idAttribute value>`) — consistent with OAuth
+  - **Upgrade note — external auth identities:** the migration only moves `auth_mode = 'ldap'` into `user_auth`. For every other value (e.g. `saml`, `jwt`, spd-login) the `auth_mode`/`authclient_id` columns are dropped **without** a data move — affected users end up as `user_source = 'local'` and lose their external identity mapping. Until the SSO modules ship their own pre-drop migrations, update those modules first (once available) or back up the `user.auth_mode` / `user.authclient_id` columns before upgrading so the identities can be restored into `user_auth` afterwards.
   - New class-level lifecycle events on `UserSourceService` — listen via `Event::on(UserSourceService::class, ...)`:
     - `UserSourceService::EVENT_AFTER_CREATE` (`'afterUserSourceCreate'`) — fired after a UserSource creates a user
     - `UserSourceService::EVENT_AFTER_UPDATE` (`'afterUserSourceUpdate'`) — fired after a UserSource updates a user
@@ -268,12 +280,14 @@ Each minor release line has its own file with the breaking changes, new APIs and
 - SiteIcon: Remove support for manually uploaded `@web/uploads/icon/` icons
 - New `AssetImage` class
   - `LogoImage`, `SiteIcon`, `LoginBackground`, `MailHeader`, `ProfileImage`, `ProfileBannerImage` are now deprecated or removed.
-    - `Space|User::getProfileImage()` => `Space|User::image()`, `Space|User::profileImage` => `Space|User::image`
-    - `Space|User::getProfileBannerImage()` => `Space|User::bannerImage()`, `Space|User::profileBannerImage` => `Space|User::bannerImage`
+    - `Space|User::getProfileImage()` => `Space|User::getImage()` / `$container->image` (returns `AssetImage`); `getProfileImage()` itself remains as a deprecated shim returning `humhub\libs\ProfileImage`
+    - `Space|User::getProfileBannerImage()` => `Space|User::getBannerImage()` / `$container->bannerImage` — **removed without a shim**: `getProfileBannerImage()`, the `profileBannerImage` property and the `humhub\libs\ProfileBannerImage` class no longer exist; modules using them fatal until migrated
     - `SiteLogo|SiteIcon|LoginBackground|MailHeader::getUrl()` => `Yii::$app->img->logo|icon|loginBackground|mailHeader->getUrl()`
 - `AssetManager::forcePublish()` removed
 - Removed `@filestore` Alias
 - Removed `AssetManager::$preventDefer` option
+- Removed the webroot `static/` asset tree — core static resources moved to `protected/humhub/resources` and are published through the asset manager (#8102). Core themes moved from the webroot `themes/` directory to `protected/humhub/themes`; custom themes in `@webroot/themes` keep working, the `@themes` alias is unchanged.
+  - Removed the aliases `@web-static` / `@webroot-static` and the `humhub\components\assets\WebStaticAssetBundle` class. Asset bundles configuring `basePath = '@webroot-static'` / `baseUrl = '@web-static'` must switch to publishing via `$sourcePath` instead (e.g. `'@humhub/resources'` like the core bundles, or the module's own `resources/` directory).
 - New Flysystem Filesystem Wrapper - Migrate all file access for assets and uploads to the Flysystem wrapper (`Yii::$app->fs->getDataMount()` or `Yii::$app->fs->getAssetsMount()`). Read more: https://flysystem.thephpleague.com/docs/usage/filesystem-api/
   - **`StorageManager::get()` (`$file->store->get()`) now returns a path relative to the data mount, no longer an absolute local filesystem path.** The same applies to `FileHistory::getFileStorePath()`. Any code treating the return value as a local path — `is_file()`, `file_exists()`, `file_get_contents()`, `filesize()`, `hash_file()`, `fopen()`, `Imagine::open()`, `Response::sendFile()`/`xSendFile()`, archive/scanner APIs — silently breaks (checks return `false`, reads fail) and must be migrated:
     - Read/write through the store API: `$file->store->getContent()`, `getContentStream()`, `setContent()`, `has()`, `fileSize()`, `mimeType()` — or use the Flysystem instance `$file->store->fs` directly. These work with any mount (local or remote/S3).
@@ -281,6 +295,7 @@ Each minor release line has its own file with the breaking changes, new APIs and
     - `exif_read_data()` accepts a stream: pass `$file->store->getContentStream()`.
     - Only when serving a file via a web-server mechanism that requires a real local path (e.g. X-Sendfile): verify `Yii::$app->fs->getDataMountConfig() instanceof LocalMountConfig` and prefix `Yii::getAlias($dataMountConfig->path)` (see `humhub\modules\file\actions\DownloadAction`); otherwise fall back to `sendStreamAsFile()`.
   - `File::setStoredFile()` with a string argument now expects a **data-mount-relative** path (it is read via Flysystem). Passing an absolute local path (e.g. a temp file) now throws `Invalid parameter type.` — use `setStoredFileContent(file_get_contents($localPath))` or an `UploadedFile` instead.
+  - `humhub\modules\file\components\StorageManagerInterface` was extended and strictly typed: new required methods `getContent()`, `getContentStream()`, `checksum()` and `mimeType()`, plus parameter/return types on all existing methods. A custom storage manager (configured via the file module's `$storageManagerClass`) fails on load until it implements the new methods with matching signatures.
 - Added `humhub\modules\content\components\ContentContainerActiveRecord::EVENT_INIT_PROFILE_IMAGE`
   and `EVENT_INIT_BANNER_IMAGE` (`humhub\modules\content\events\ContentContainerImageEvent`) to customize
   or replace a container's profile/banner `AssetImage`. Use these instead of overriding `$profileImageClass`,
