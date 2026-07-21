@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.19 (TBD)
+----------
+- Fix #8335: An update that moves the theme out of the webroot (the 1.19 move of `static`/`themes` into `protected/humhub`, #8102) could leave an empty `themes/HumHub` skeleton behind while the stored active theme still pointed at it — every request then failed with a fatal SCSS build error ("Can't find stylesheet to import") and the fallback looped forever because the empty skeleton shadowed the real core theme by name; a theme directory without its `scss/variables.scss` is now ignored when resolving themes (so the stale path no longer loads and no longer shadows the core theme and affected installations self-heal), the theme CSS fallback only switches to and refreshes for a different, buildable core theme instead of risking an endless redirect loop, and a theme's `variables` import is skipped when the file is missing
+
 1.19.0-beta.1 (July 21, 2026)
 --------------------
 - Fix #8334: The module administration showed a "Configure" button on disabled modules to users holding `ManageSettings` but not `ManageModules` — a disabled module now only offers the "Enable" action; the `ManageSettings` permission description now also mentions module settings, since module config controllers are guarded by this permission
