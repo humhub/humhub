@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.19 (TBD)
 ----------
+- Enh #8339: The tour navigation buttons (Next/Previous/Done) and progress text are now translatable
 - Fix #8335: The mailer view theme pointed at `@humhub/themes/Humhub` (lowercase `h`), a dead path on case-sensitive filesystems since the directory is `HumHub` — it now uses the `Theme::CORE_THEME_NAME` constant like the main view theme
 - Fix #8335: An update that moves the theme out of the webroot (the 1.19 move of `static`/`themes` into `protected/humhub`, #8102) could leave an empty `themes/HumHub` skeleton behind while the stored active theme still pointed at it — every request then failed with a fatal SCSS build error ("Can't find stylesheet to import") and the fallback looped forever because the empty skeleton shadowed the real core theme by name; a theme directory without its `scss/variables.scss` is now ignored when resolving themes (so the stale path no longer loads and no longer shadows the core theme and affected installations self-heal), the theme CSS fallback only switches to and refreshes for a different, buildable core theme instead of risking an endless redirect loop, and a theme's `variables` import is skipped when the file is missing
 

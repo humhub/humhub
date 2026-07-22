@@ -49,6 +49,23 @@ class Module extends \humhub\components\Module
     ];
 
     /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        // Add translatable button labels without overriding configured options.
+        // {{current}} and {{total}} are driver.js placeholders and must be preserved.
+        $this->driverJsOptions += [
+            'nextBtnText' => Yii::t('TourModule.base', 'Next &rarr;'),
+            'prevBtnText' => Yii::t('TourModule.base', '&larr; Previous'),
+            'doneBtnText' => Yii::t('TourModule.base', 'Done'),
+            'progressText' => Yii::t('TourModule.base', '{{current}} of {{total}}'),
+        ];
+    }
+
+    /**
      * Check if the welcome tour window should be displayed automatically
      *
      * @param User|null $user
