@@ -16,6 +16,7 @@ use humhub\modules\marketplace\services\MarketplaceService;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Yii;
+use yii\base\Application;
 use yii\base\Component;
 use yii\base\ErrorException;
 use yii\base\Exception;
@@ -79,8 +80,14 @@ class OnlineModuleManager extends Component
             );
         }
 
+        // Reset the OPcache so the updated module files are recompiled on the following requests.
+        // This is deferred to the end of the request: in worker runtimes (e.g. FrankenPHP) opcache_reset()
+        // restarts the worker, which would otherwise interrupt the still running update (cache flush,
+        // registration and database migrations) and leave the module in a half-updated state.
         if (function_exists('opcache_reset')) {
-            @opcache_reset();
+            Yii::$app->on(Application::EVENT_AFTER_REQUEST, static function () {
+                @opcache_reset();
+            });
         }
 
         Yii::$app->moduleManager->flushCache();
