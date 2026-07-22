@@ -120,6 +120,15 @@ class ThemeHelper
             return null;
         }
 
+        // A theme directory without its SCSS variables file is not a usable theme
+        // (e.g. an empty `themes/HumHub` skeleton left behind by an update that moved
+        // the theme into `protected/humhub`). Loading it would break the SCSS build and,
+        // worse, shadow the real core theme in getThemes() since both share the name.
+        if (!is_file(ScssHelper::getVariableFile($theme))) {
+            Yii::warning('Ignoring invalid theme without SCSS variables file: ' . $path, 'ui');
+            return null;
+        }
+
         return $theme;
     }
 
@@ -271,7 +280,10 @@ class ThemeHelper
 
         // Import variables child theme first, because they have the !default flag
         foreach ($treeThemes as $treeTheme) {
-            $imports[] = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'variables';
+            $variablesFile = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'variables';
+            if (file_exists($variablesFile . '.scss')) {
+                $imports[] = $variablesFile;
+            }
         }
         $imports[] = Yii::getAlias('@humhub/resources/scss/variables');
         $imports[] = Yii::getAlias('@vendor/twbs/bootstrap/scss/variables');

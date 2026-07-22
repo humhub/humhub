@@ -28,7 +28,7 @@ class ManageSettings extends BaseAdminPermission
         parent::__construct($config);
 
         $this->title = Yii::t('AdminModule.permissions', 'Manage Settings');
-        $this->description = Yii::t('AdminModule.permissions', 'Can manage general settings.');
+        $this->description = Yii::t('AdminModule.permissions', 'Can manage general settings and module settings.');
     }
 
 }

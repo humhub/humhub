@@ -51,7 +51,7 @@ $logTargetConfig = [
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.19.0-dev',
+    'version' => '1.19.0-beta.1',
     'minRecommendedPhpVersion' => '8.2',
     'minSupportedPhpVersion' => '8.2',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
@@ -168,8 +168,8 @@ $config = [
                 'class' => \yii\web\View::class,
                 'theme' => [
                     'class' => \humhub\components\Theme::class,
-                    'name' => 'HumHub',
-                    'basePath' => '@humhub/themes/Humhub',
+                    'name' => \humhub\components\Theme::CORE_THEME_NAME,
+                    'basePath' => '@humhub/themes/' . \humhub\components\Theme::CORE_THEME_NAME,
                 ],
             ],
         ],
