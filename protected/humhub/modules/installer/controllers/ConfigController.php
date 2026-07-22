@@ -17,6 +17,7 @@ use humhub\modules\comment\models\Comment;
 use humhub\modules\content\models\Content;
 use humhub\modules\installer\forms\ConfigBasicForm;
 use humhub\modules\installer\forms\LocalisationForm;
+use humhub\modules\installer\forms\MailingSettingsForm;
 use humhub\modules\installer\forms\SampleDataForm;
 use humhub\modules\installer\forms\SecurityForm;
 use humhub\modules\installer\forms\UseCaseForm;
@@ -32,6 +33,7 @@ use humhub\modules\user\models\User;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\web\HttpException;
+use yii\web\Response;
 
 /**
  * ConfigController allows inital configuration of humhub.
@@ -122,6 +124,131 @@ class ConfigController extends Controller
         }
 
         return $this->render('basic', ['model' => $form]);
+    }
+
+    /**
+     * Mail (SMTP) transport configuration.
+     *
+     * Persists to the DB SettingsManager via the reused
+     * {@link MailingSettingsForm}; saved values are applied on the next request
+     * by ComponentLoader::setMailerConfig(). Delivery can be verified in-place
+     * via {@link actionMailTest()} without leaving the step. Continuing never
+     * blocks on the mail configuration.
+     */
+    public function actionMail()
+    {
+        // Skip the interactive step when there is nothing for the admin to
+        // decide: during automated / CLI installs (mirroring actionDatabase()
+        // and actionCron() in SetupController), or when the mail transport is
+        // pinned via static config. The latter is the managed-hosting case
+        // (HUMHUB_FIXED_SETTINGS__BASE__MAILER_*), where SetupController is
+        // likewise skipped and mail delivery is provided centrally.
+        if ($this->module->enableAutoSetup || Yii::$app->settings->isFixed('mailerTransportType')) {
+            return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
+        }
+
+        $form = new MailingSettingsForm();
+
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            $form->save();
+            return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
+        }
+
+        return $this->render('mail', [
+            'model' => $form,
+            'settings' => Yii::$app->settings,
+        ]);
+    }
+
+    /**
+     * Sends a test email using the transport values currently entered in the
+     * mail step, without persisting them. Called via AJAX by the "Test" button
+     * so the admin can verify delivery before continuing. Returns JSON
+     * {success: bool, message: string}.
+     */
+    public function actionMailTest()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $form = new MailingSettingsForm();
+        $form->load(Yii::$app->request->post());
+
+        if (!$form->validate()) {
+            return ['success' => false, 'message' => implode(' ', $form->getFirstErrors())];
+        }
+
+        if (empty($form->testEmail)) {
+            return ['success' => false, 'message' => Yii::t('InstallerModule.base', 'Please enter an email address to send the test message to.')];
+        }
+
+        try {
+            $this->applyTestTransport($form);
+
+            $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], [
+                'message' => Yii::t('InstallerModule.base', 'Test message'),
+            ]);
+            $mail->setFrom([$form->systemEmailAddress => $form->systemEmailName]);
+            if (!empty($form->systemEmailReplyTo)) {
+                $mail->setReplyTo($form->systemEmailReplyTo);
+            }
+            $mail->setTo($form->testEmail);
+            $mail->setSubject(Yii::t('InstallerModule.base', 'Test message'));
+
+            if ($mail->send()) {
+                return [
+                    'success' => true,
+                    'message' => Yii::t('InstallerModule.base', 'Test email successfully sent to: {address}', ['address' => $form->testEmail]),
+                ];
+            }
+
+            return ['success' => false, 'message' => Yii::t('InstallerModule.base', 'Could not send the test email.')];
+        } catch (\Throwable $e) {
+            return ['success' => false, 'message' => Yii::t('InstallerModule.base', 'Could not send the test email.') . ' ' . $e->getMessage()];
+        }
+    }
+
+    /**
+     * Configures the application mailer with the (unsaved) transport values from
+     * the given form for the duration of this request, mirroring the branches in
+     * ComponentLoader::setMailerConfig(). This is a throwaway override used only
+     * for the in-installer test send and is never persisted.
+     */
+    private function applyTestTransport(MailingSettingsForm $form): void
+    {
+        switch ($form->transportType) {
+            case MailingSettingsForm::TRANSPORT_SMTP:
+                $transport = [
+                    'scheme' => empty($form->useSmtps) ? 'smtp' : 'smtps',
+                    'host' => $form->hostname,
+                    'port' => (int)($form->port ?: 25),
+                ];
+                if ($form->username !== null && $form->username !== '') {
+                    $transport['username'] = $form->username;
+                }
+                // The password field renders empty; fall back to a previously
+                // stored password when the placeholder is submitted unchanged.
+                $password = $form->password === '---invisible---'
+                    ? Yii::$app->settings->get('mailerPassword')
+                    : $form->password;
+                if ($password !== null && $password !== '') {
+                    $transport['password'] = $password;
+                }
+                if (!empty($form->useSmtps) && !empty($form->allowSelfSignedCerts)) {
+                    $transport['options'] = ['verify_peer' => false];
+                }
+                Yii::$app->mailer->setTransport($transport);
+                break;
+            case MailingSettingsForm::TRANSPORT_DSN:
+                Yii::$app->mailer->setTransport(['dsn' => $form->dsn]);
+                break;
+            case MailingSettingsForm::TRANSPORT_PHP:
+                Yii::$app->mailer->setTransport(['dsn' => 'native://default']);
+                break;
+            case MailingSettingsForm::TRANSPORT_FILE:
+                Yii::$app->mailer->useFileTransport = true;
+                break;
+            // TRANSPORT_CONFIG: leave the mailer as configured via the config file.
+        }
     }
 
     /**
