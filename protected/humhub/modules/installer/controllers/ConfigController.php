@@ -247,7 +247,7 @@ class ConfigController extends Controller
             case MailingSettingsForm::TRANSPORT_FILE:
                 Yii::$app->mailer->useFileTransport = true;
                 break;
-            // TRANSPORT_CONFIG: leave the mailer as configured via the config file.
+                // TRANSPORT_CONFIG: leave the mailer as configured via the config file.
         }
     }
 
