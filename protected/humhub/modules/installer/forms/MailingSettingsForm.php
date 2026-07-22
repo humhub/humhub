@@ -61,23 +61,4 @@ class MailingSettingsForm extends BaseMailingSettingsForm
             'testEmail' => Yii::t('InstallerModule.base', 'Send a test email to'),
         ]);
     }
-
-    /**
-     * @inheritdoc
-     *
-     * The `php` transport (native mail()/sendmail) is not offered under Docker,
-     * where containers ship no local MTA. As the base `rules()` derives the
-     * allowed transport range from this method, removing it here also rejects
-     * `php` in server-side validation, not just in the dropdown.
-     */
-    public function getTransportTypes(): array
-    {
-        $types = parent::getTransportTypes();
-
-        if (filter_var($_ENV['HUMHUB_DOCKER'] ?? false, FILTER_VALIDATE_BOOLEAN)) {
-            unset($types[self::TRANSPORT_PHP]);
-        }
-
-        return $types;
-    }
 }
