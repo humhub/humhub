@@ -147,13 +147,23 @@ class MailingSettingsForm extends Model
 
     public function getTransportTypes(): array
     {
-        return [
+        $types = [
             self::TRANSPORT_FILE => Yii::t('AdminModule.settings', 'No Delivery (Debug Mode, Save as file)'),
             self::TRANSPORT_PHP => Yii::t('AdminModule.settings', 'PHP (Use settings of php.ini file)'),
             self::TRANSPORT_SMTP => 'SMTP/SMTPS',
             self::TRANSPORT_DSN => Yii::t('AdminModule.settings', 'Custom DSN'),
             self::TRANSPORT_CONFIG => Yii::t('AdminModule.settings', 'Configuration (Use settings from configuration file)'),
         ];
+
+        // The php transport (native mail()/sendmail) is not offered under Docker,
+        // where containers ship no local MTA. As rules() derives the allowed
+        // transport range from this method, removing it here also rejects php in
+        // validation, not just in the dropdown.
+        if (filter_var($_ENV['HUMHUB_DOCKER'] ?? false, FILTER_VALIDATE_BOOLEAN)) {
+            unset($types[self::TRANSPORT_PHP]);
+        }
+
+        return $types;
     }
 
 }

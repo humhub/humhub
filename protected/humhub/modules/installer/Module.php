@@ -119,6 +119,15 @@ class Module extends \humhub\components\Module
         ];
 
         /**
+         * Step: Mail (SMTP) transport configuration
+         */
+        $this->configSteps['mail'] = [
+            'sort' => 120,
+            'url' => Url::to(['/installer/config/mail']),
+            'isCurrent' => fn() => Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'mail',
+        ];
+
+        /**
          * Step: Localisation
          */
         $this->configSteps['localisation'] = [
