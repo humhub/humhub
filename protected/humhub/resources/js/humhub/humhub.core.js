@@ -200,6 +200,64 @@ var humhub = humhub || (function ($) {
         } else { // Init modules added asynchronously (ajax/pjax)
             addModuleLogger(instance);
             initModule(instance);
+            initPendingWidgets(instance);
+        }
+    };
+
+    /**
+     * Initializes [data-ui-init] widget nodes that belong to the just registered
+     * module but could not be initialized earlier.
+     *
+     * When a module's asset bundle is served from a different origin (e.g. an S3
+     * bucket or CDN via the `assets` mount), the `<script src>` injected with an
+     * ajax/pjax response (modal, stream, …) is executed *asynchronously* — jQuery
+     * silently ignores `async: false` for cross-domain scripts. The surrounding
+     * `applyAdditions()`/`applyTo()` pass that processes `[data-ui-init]` nodes
+     * therefore runs *before* this module registered, the widget namespace
+     * resolves to an empty stub ("Required a non initialized module: …") and the
+     * widget stays uninitialized until the next load.
+     *
+     * Now that the module is present we re-run the widget addition for the nodes
+     * that map to it. Nodes that were already initialized are skipped by the
+     * component instance guard (Component._getInstance), so this is idempotent.
+     *
+     * @param {object} instance the module instance that was just registered
+     * @returns {undefined}
+     */
+    var initPendingWidgets = function (instance) {
+        try {
+            // Resolve without init so a missing module never creates a stub or warns.
+            var additions = resolveNameSpace('ui.additions', false);
+            var action = resolveNameSpace('action', false);
+
+            if (!additions || !additions.applyTo || !action || !action.Component) {
+                return;
+            }
+
+            var moduleSuffix = _cutModulePrefix(instance.id);
+
+            var $nodes = $('[data-ui-init]').filter(function () {
+                var ns = action.Component.getNameSpace(this);
+                if (!ns) {
+                    return false;
+                }
+
+                // The node's widget class must be this module or live under it …
+                var nsSuffix = _cutModulePrefix(ns);
+                if (nsSuffix !== moduleSuffix && nsSuffix.indexOf(moduleSuffix + '.') !== 0) {
+                    return false;
+                }
+
+                // … and its namespace must actually resolve now (init = false does
+                // not create a stub or log a warning for still-missing modules).
+                return resolveNameSpace(ns, false) !== undefined;
+            });
+
+            if ($nodes.length) {
+                additions.applyTo($nodes, {include: ['ui.widget']});
+            }
+        } catch (e) {
+            require('log').error('Could not initialize pending widgets for module: ' + instance.id, e);
         }
     };
 

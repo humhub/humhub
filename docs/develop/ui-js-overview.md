@@ -152,6 +152,8 @@ You will also need to specify the list of URLs for which the ajax page must call
     }
 ```
 
+> Info: When a module is registered **asynchronously** — its asset bundle is loaded inside an ajax response (e.g. a modal) or via [Pjax](ui-js-client.md) — HumHub re-applies the `ui.widget` addition to the module's own `[data-ui-init]` nodes right after registering it. This matters when assets are served from a **different origin** than the HumHub site (an S3 bucket or CDN via the `assets` mount): the browser executes cross-origin `<script src>` tags asynchronously — jQuery cannot load them synchronously — so the widget-initialization pass around the inserted content may run *before* the module's script executed. The late re-init makes eager `[data-ui-init]` widgets resilient to this ordering, so they no longer silently fail on the first modal/ajax open. Already initialized widgets are skipped, so it is idempotent.
+
 ### Module Unload
 
 For the purpose of cleaning up module related dom nodes etc. there is also an `unload` function which is called before each Pjax page load. This function is mainly used to remove obsolete dom nodes, prevent memory leaks, remove obsolete dom listeners or clear some module data.  
