@@ -42,7 +42,6 @@ return [
     'Keep me Signed In' => '',
     'Log out' => '',
     'Maintenance mode' => '',
-    'Maintenance mode is active' => '',
     'Maintenance mode is active.' => '',
     'New user needs approval' => '',
     'Only administrators can access the platform during maintenance.' => '',
