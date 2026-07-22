@@ -36,7 +36,6 @@ return [
     'Just enter your e-mail address. We\'ll send you recovery instructions!' => '',
     'Keep me Signed In' => '',
     'Log out' => '',
-    'Maintenance mode is active' => '',
     'Maintenance mode is active.' => '',
     'New user needs approval' => '',
     'Only administrators can access the platform during maintenance.' => '',

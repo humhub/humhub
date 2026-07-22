@@ -51,7 +51,6 @@ return [
     'If a user account associated with this email address exists, further instructions will be sent to you by email shortly.' => '',
     'If you don\'t see the email, please check your spam folder.' => '',
     'Keep me Signed In' => '',
-    'Maintenance mode is active' => '',
     'Maintenance mode is active.' => '',
     'Only administrators can access the platform during maintenance.' => '',
     'Only administrators can sign in during maintenance mode.' => '',

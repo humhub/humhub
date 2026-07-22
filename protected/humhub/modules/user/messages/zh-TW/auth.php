@@ -48,7 +48,6 @@ return [
     'If you don\'t use this link within 24 hours, it will expire.' => '',
     'Just enter your e-mail address. We\'ll send you recovery instructions!' => '',
     'Keep me Signed In' => '',
-    'Maintenance mode is active' => '',
     'Maintenance mode is active.' => '',
     'Only administrators can access the platform during maintenance.' => '',
     'Only administrators can sign in during maintenance mode.' => '',
