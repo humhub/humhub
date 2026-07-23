@@ -3,7 +3,8 @@ HumHub Changelog
 
 1.19.0-beta.2 (TBD)
 -------------------
-- Enh #8337: Added a mail (SMTP) delivery configuration step to the web installer (after the basic step) reusing the admin mailing settings form, with an inline "Test" button that verifies the entered settings via AJAX; configuring mail never blocks completion, and the step is skipped on automated/managed-hosting installs (fixed mail config)
+- Fix #8343: The new installer mail step (#8337) did not appear under Docker, where the auto-setup flag only automates the technical setup while the config wizard still runs interactively — the step is now only skipped when the mail transport is pinned via static config
+- Enh #8337: Added a mail (SMTP) delivery configuration step to the web installer (after the basic step) reusing the admin mailing settings form, with an inline "Test" button that verifies the entered settings via AJAX; configuring mail never blocks completion, and the step is skipped on managed-hosting installs (fixed mail config)
 - Enh #8337: The `php` mail transport (native mail()/sendmail) is no longer offered under Docker (`HUMHUB_DOCKER`) — hidden in the mailing settings form and rejected in validation, since containers ship no local MTA
 - Enh #8336: Unified the two near-identical `UserModule.auth` translation keys for the maintenance mode message that differed only by a trailing period — the maintenance page heading now reuses the punctuated key, so the sentence no longer has to be translated twice
 - Enh #8339: The tour navigation buttons (Next/Previous/Done) and progress text are now translatable
