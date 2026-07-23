@@ -4,6 +4,7 @@ HumHub Changelog
 1.18.5 (Unreleased)
 -------------------
 - Fix #8340: Defer module update `opcache_reset()` to the end of the request to avoid interrupting the update in worker runtimes (e.g. FrankenPHP)
+- Enh #8346: Force Select2 dropdowns to always open below the field instead of flipping above when there's not enough space
 
 1.18.4 (July 21, 2026)
 ----------------------
