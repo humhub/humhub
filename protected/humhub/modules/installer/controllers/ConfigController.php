@@ -137,13 +137,14 @@ class ConfigController extends Controller
      */
     public function actionMail()
     {
-        // Skip the interactive step when there is nothing for the admin to
-        // decide: during automated / CLI installs (mirroring actionDatabase()
-        // and actionCron() in SetupController), or when the mail transport is
-        // pinned via static config. The latter is the managed-hosting case
-        // (HUMHUB_FIXED_SETTINGS__BASE__MAILER_*), where SetupController is
-        // likewise skipped and mail delivery is provided centrally.
-        if ($this->module->enableAutoSetup || Yii::$app->settings->isFixed('mailerTransportType')) {
+        // Skip the interactive step only when the mail transport is pinned via
+        // static config (HUMHUB_FIXED_SETTINGS__BASE__MAILER_*) — the
+        // managed-hosting case where mail delivery is provided centrally.
+        // Deliberately not gated on enableAutoSetup: that flag only automates
+        // the technical setup phase (SetupController); the config wizard still
+        // runs interactively, e.g. under Docker where the entrypoint enables
+        // it whenever DB credentials are passed via environment.
+        if (Yii::$app->settings->isFixed('mailerTransportType')) {
             return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
         }
 
