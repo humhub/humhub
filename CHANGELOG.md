@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.19.0-beta.2 (TBD)
 -------------------
+- Fix #8345: A widget whose `init()` threw an exception stayed permanently broken on its DOM node — the component instance is cached on the node before `init()` runs, so every later initialization pass resolved the broken cached instance instead of retrying; a failed construction now removes the cached instance, letting the next pass initialize the widget again
 - Enh #8337: Added a mail (SMTP) delivery configuration step to the web installer (after the basic step) reusing the admin mailing settings form, with an inline "Test" button that verifies the entered settings via AJAX; configuring mail never blocks completion, and the step is skipped on automated/managed-hosting installs (fixed mail config)
 - Enh #8337: The `php` mail transport (native mail()/sendmail) is no longer offered under Docker (`HUMHUB_DOCKER`) — hidden in the mailing settings form and rejected in validation, since containers ship no local MTA
 - Enh #8336: Unified the two near-identical `UserModule.auth` translation keys for the maintenance mode message that differed only by a trailing period — the maintenance page heading now reuses the punctuated key, so the sentence no longer has to be translated twice
