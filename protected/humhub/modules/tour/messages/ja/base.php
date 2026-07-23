@@ -1,6 +1,7 @@
 <?php
 return [
   ' Remove panel' => 'ガイドはもう読まない',
+  '&larr; Previous' => '',
   '<strong>Account</strong> Menu' => '<strong>アカウント</strong> メニュー',
   '<strong>Getting</strong> Started' => '<strong>スタートアップ</strong>',
   '<strong>Guide:</strong> Administration (Modules)' => '<strong>ガイド：</strong> 管理（モジュール）',
@@ -13,10 +14,12 @@ return [
   '<strong>Start</strong> space guide' => 'スペースのガイドを<strong>開始</strong>',
   'Cancel' => 'キャンセル',
   'Don\'t lose track of things!<br /><br />This icon will keep you informed of activities and posts that concern you directly.' => '物事を見失わないように!！<br><br>このアイコンは、あなたが気になる活動や投稿を直接お知らせします。',
+  'Done' => '実行',
   'Drag a photo here or click to browse your files' => '写真をここにドラッグするか、クリックしてファイルを選択してください',
   'Get to know your way around the site\'s most important features with the following guides:' => '以下のガイドを参考にして、サイトの最も重要な機能を理解してください：',
   'Hide my year of birth' => '私の生まれた年を隠す',
   'Howdy <strong>%firstname%</strong>, thank you for using %community%.' => '<strong>%firstname%</strong>さん、%community%をご利用いただきありがとうございます。',
+  'Next &rarr;' => '',
   'Ok' => 'はい',
   'Save and close' => '保存して閉じる',
   'The account menu gives you access to your private settings and allows you to manage your public profile.' => 'アカウントメニューでは、プライベート設定にアクセスしたり、公開プロフィールを管理したりすることができます。',
@@ -29,4 +32,5 @@ return [
   'Your phone number at work' => 'あなたの勤務先の電話番号',
   'Your skills, knowledge and experience' => 'あなたのスキル、知識、経験',
   'Your title or position' => 'あなたの肩書きまたは役職',
+  '{{current}} of {{total}}' => '',
 ];
