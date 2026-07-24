@@ -48,6 +48,7 @@ class CoreJsConfig extends Widget
                     'baseUrl' => Yii::$app->settings->get('baseUrl'),
                     'reloadableScripts' => CacheHelper::getReloadableScriptUrls(),
                     'cspViolationReloadInterval' => Security::CSP_VIOLATION_RELOAD_INTERVAL,
+                    'syncScriptOrigins' => $this->getAssetOrigins(),
                 ],
                 'core' => [
                     'debug' => YII_DEBUG,
@@ -187,5 +188,30 @@ class CoreJsConfig extends Widget
                 ],
             ],
         );
+    }
+
+    /**
+     * Returns the origins assets are published to when they differ from the
+     * site origin (e.g. an S3 bucket or CDN configured for the `assets`
+     * mount). Announced to the client so module scripts injected with
+     * ajax/pjax responses can be loaded synchronously from these hosts (see
+     * humhub.client.js) — the hosts have to answer with CORS headers for
+     * this to work.
+     */
+    private function getAssetOrigins(): array
+    {
+        $origins = [];
+
+        foreach ([Yii::$app->assetManager->baseUrl] as $url) {
+            $parts = parse_url((string) $url);
+            if (empty($parts['host'])) {
+                continue; // relative URL, assets are served same-origin
+            }
+
+            $origins[] = ($parts['scheme'] ?? 'https') . '://' . $parts['host']
+                . (isset($parts['port']) ? ':' . $parts['port'] : '');
+        }
+
+        return array_values(array_unique($origins));
     }
 }
