@@ -63,7 +63,7 @@ class TourController extends Controller
         $user = Yii::$app->user->getIdentity();
 
         if (
-            $user->id === 1
+            Yii::$app->getModule('tour')->settings->user($user)->get('showWelcome')
             && $user->load(Yii::$app->request->post())
             && $user->save(true, ['tagsField'])
             && ($profile = $user->profile)

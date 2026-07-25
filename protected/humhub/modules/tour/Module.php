@@ -62,7 +62,7 @@ class Module extends \humhub\components\Module
 
         return
             $user instanceof User
-            && $user->id === 1
+            && $this->settings->user($user)->get('showWelcome')
             && !Yii::$app->getModule('installer')->settings->get('sampleData')
             && !$this->settings->user($user)->get('welcome');
     }
