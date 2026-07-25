@@ -421,7 +421,7 @@ class ConfigController extends Controller
             if (Yii::$app->getModule('installer')->settings->get('sampleData')) {
                 // Add sample image to admin
                 /** @var User $admin */
-                $admin = User::find()->where(['id' => 1])->one();
+                $admin = Group::getAdminGroup()->getUsers()->one();
                 $admin->image->setByFile(Yii::getAlias("@humhub/resources/resources/installer/user_male_1.jpg"));
 
                 $usersGroup = Group::findOne(['name' => 'Users']);
@@ -493,11 +493,10 @@ class ConfigController extends Controller
                 }
 
                 // Switch Identity
-                $user = User::find()->where(['id' => 1])->one();
-                Yii::$app->user->switchIdentity($user);
+                Yii::$app->user->switchIdentity($admin);
 
 
-                $space = Space::find()->where(['id' => 1])->one();
+                $space = Space::find()->orderBy(['id' => SORT_ASC])->one();
 
                 // Create a sample post
                 $post = new Post();
@@ -638,8 +637,14 @@ class ConfigController extends Controller
             Group::getAdminGroup()->addUser($form->models['User']);
 
 
-            // Reload User
-            $adminUser = User::findOne(['id' => 1]);
+            // Use the freshly created admin account. Do not assume the
+            // auto-increment id is 1 - e.g. on a Galera cluster the first
+            // inserted row can get a different id.
+            $adminUser = $form->models['User'];
+
+            // Auto-start the one-time welcome tour for the initial admin account.
+            // Flagging the account explicitly avoids assuming it has the id 1.
+            Yii::$app->getModule('tour')->settings->user($adminUser)->set('showWelcome', true);
 
 
             // Switch Identity
