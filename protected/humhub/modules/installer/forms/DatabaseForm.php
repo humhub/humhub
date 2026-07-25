@@ -53,6 +53,14 @@ class DatabaseForm extends Model
     private $fixedAttributes = [];
 
     /**
+     * @var array Additional db component configuration that is not represented
+     *            by the form fields (e.g. PDO `attributes` for SSL connections),
+     *            preserved from the existing configuration so it survives the
+     *            temporary connections built during setup.
+     */
+    private array $extraDbConfig = [];
+
+    /**
      * @inheritdoc
      */
     public function rules()
@@ -104,6 +112,14 @@ class DatabaseForm extends Model
     {
         $dbConfig = ConfigHelper::instance()->get('components.db', ConfigHelper::SET_COMMON | ConfigHelper::SET_ENV);
 
+        // Preserve additional db configuration (e.g. PDO `attributes` for SSL)
+        // that is not covered by the form fields, so it is not dropped from the
+        // temporary connections built during setup.
+        $this->extraDbConfig = array_diff_key(
+            is_array($dbConfig) ? $dbConfig : [],
+            array_flip(['class', 'dsn', 'username', 'password']),
+        );
+
         if (!empty($username = ArrayHelper::getValue($dbConfig, 'username'))) {
             $this->username = $username;
             $this->fixedAttributes[] = 'username';
@@ -148,13 +164,16 @@ class DatabaseForm extends Model
 
     public function getDbConfigAsArray(bool $includeDatabaseName = true): array
     {
-        return [
-            'class' => 'yii\db\Connection',
-            'dsn' => $this->getDsn($includeDatabaseName),
-            'username' => $this->username,
-            'password' => $this->password,
-            'charset' => 'utf8',
-        ];
+        return ArrayHelper::merge(
+            $this->extraDbConfig,
+            [
+                'class' => 'yii\db\Connection',
+                'dsn' => $this->getDsn($includeDatabaseName),
+                'username' => $this->username,
+                'password' => $this->password,
+                'charset' => $this->extraDbConfig['charset'] ?? 'utf8',
+            ],
+        );
     }
 
     public function isFixed($attribute): bool
