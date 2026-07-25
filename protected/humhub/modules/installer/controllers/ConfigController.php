@@ -637,10 +637,13 @@ class ConfigController extends Controller
             Group::getAdminGroup()->addUser($form->models['User']);
 
 
-            // Use the freshly created admin account. Do not assume the
-            // auto-increment id is 1 - e.g. on a Galera cluster the first
-            // inserted row can get a different id.
-            $adminUser = $form->models['User'];
+            // Reload the admin as a fresh instance - by its real id, not a
+            // hardcoded 1 (which is null on a Galera cluster). The reload is
+            // required: the group membership added above is not visible to
+            // isSystemAdmin() on the existing instance, which reuses the user's
+            // already-populated (empty) groups relation, so the admin would not
+            // be allowed to create the public welcome space below.
+            $adminUser = User::findOne(['id' => $userId]);
 
             // Auto-start the one-time welcome tour for the initial admin account.
             // Flagging the account explicitly avoids assuming it has the id 1.
