@@ -38,6 +38,7 @@ use yii\helpers\FileHelper;
  * @since 1.3
  * @inheritdoc
  *
+ * @property-read string $publishedBasePath
  * @property-read string $publishedResourcesPath
  */
 class Theme extends BaseTheme
@@ -58,7 +59,6 @@ class Theme extends BaseTheme
      * @inheritdoc
      */
     private $_baseUrl = null;
-    private $_basePath = null;
 
     /**
      * @var bool indicates that resources should be published via assetManager
@@ -296,17 +296,28 @@ class Theme extends BaseTheme
     }
 
     /**
+     * Returns the published theme directory, the counterpart of [[getBaseUrl()]].
+     * [[getBasePath()]] stays the source directory, which since 1.19 may live outside the webroot.
+     *
+     * The path is relative to the assets mount, so use it with the asset manager or
+     * `Yii::$app->fs->getAssetsMount()` - the mount may be remote (e.g. S3).
+     *
+     * @return string published theme path, relative to the assets mount
+     * @since 1.19
+     */
+    public function getPublishedBasePath(): string
+    {
+        return $this->publish()[0];
+    }
+
+    /**
      * @return string Path of published resources
      *
      * @since 1.18
      */
     public function getPublishedResourcesPath(): string
     {
-        if (!$this->_basePath) {
-            $publishedPath = Yii::$app->assetManager->getPublishedPath($this->getBasePath());
-            $this->_basePath = $publishedPath . '/resources';
-        }
-        return $this->_basePath;
+        return $this->getPublishedBasePath() . '/resources';
     }
 
     /**
@@ -317,12 +328,31 @@ class Theme extends BaseTheme
      */
     public function publishResources(bool $force = false)
     {
-        $published = Yii::$app->assetManager->publish(
+        return $this->publish($force)[1];
+    }
+
+    /**
+     * Publishes the theme, excluding the parts it is only built from (`views/` and `scss/`).
+     *
+     * [[getPublishedBasePath()]] and [[publishResources()]] both resolve through this single
+     * call, so path and URL cannot drift apart - the published directory name depends on the
+     * modification time of the source directory.
+     *
+     * @return array `[path, url]`, or `['', '']` if the theme directory does not exist
+     * @since 1.19
+     */
+    private function publish(bool $force = false): array
+    {
+        // Never fatal on a stale theme path, so that [[register()]] can fall back to the core theme
+        if (!is_dir((string) $this->getBasePath())) {
+            Yii::error('Could not publish theme resources, theme directory does not exist: ' . $this->getBasePath(), 'ui');
+            return ['', ''];
+        }
+
+        return Yii::$app->assetManager->publish(
             $this->getBasePath(),
             ['forceCopy' => $force, 'except' => ['views/', 'scss/']],
         );
-
-        return $published[1];
     }
 
     /**
