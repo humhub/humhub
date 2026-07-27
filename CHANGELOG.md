@@ -96,6 +96,10 @@ HumHub Changelog
 - Enh #8150: Topic sidebar widget
 - Fix #8312: Fix Integrity Checks on cleaning up orphaned content, like, comment, activity data
  
+1.18.5 (Unreleased)
+-------------------
+- Fix #8340: Defer module update `opcache_reset()` to the end of the request to avoid interrupting the update in worker runtimes (e.g. FrankenPHP)
+
 1.18.4 (July 21, 2026)
 ----------------------
 - Enh #8170: Handle controllers with using external modules
