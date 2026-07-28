@@ -126,6 +126,6 @@ class ComponentLoader implements BootstrapInterface
 
     protected function setParams($app)
     {
-        $app->name = $app->settings->get('name');
+        $app->name = (string) $app->settings->get('name');
     }
 }
