@@ -4,7 +4,7 @@ HumHub Changelog
 1.18.5 (Unreleased)
 -------------------
 - Fix #8340: Defer module update `opcache_reset()` to the end of the request to avoid interrupting the update in worker runtimes (e.g. FrankenPHP)
-- Fix: Cast app name to string (This fixes the issue of instances with names consisting of numbers not being able to be added to the mobile app)
+- Fix #8357: Cast app name to string (This fixes the issue of instances with names consisting of numbers not being able to be added to the mobile app)
 
 1.18.4 (July 21, 2026)
 ----------------------
