@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\tests\codeception\functional;
 
+use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\User;
 use user\FunctionalTester;
 use Yii;
@@ -68,6 +69,46 @@ class RegistrationCest
         $I->seeRecord(User::class, [
             'email' => 'mytestmail@test.de',
             'username' => 'RegistrationUser',
+        ]);
+    }
+
+    /**
+     * A validated invite token is an authorization independent of the global
+     * "New users can register" (auth.anonymousRegistration) setting — the
+     * registration form fields must still be rendered for it.
+     *
+     * Regression test for https://github.com/humhub/humhub/pull/8283:
+     * disabling anonymousRegistration used to also hide the form on an
+     * otherwise valid invite-by-e-mail link.
+     *
+     * @param FunctionalTester $I
+     */
+    public function testRegisterWithInviteTokenWhenSelfRegistrationDisabled(FunctionalTester $I)
+    {
+        Yii::$app->getModule('user')->settings->set('auth.anonymousRegistration', 0);
+
+        $invite = new Invite([
+            'email' => 'invited-user@test.de',
+            'source' => Invite::SOURCE_INVITE,
+        ]);
+        $invite->save(false);
+
+        $I->amOnRoute('/user/registration', ['token' => $invite->token]);
+
+        $I->see('Account registration');
+        $I->seeElement('#user-username');
+        $I->seeElement('#password-newpassword');
+
+        $I->fillField('#user-username', 'InvitedUser');
+        $I->fillField('#password-newpassword', 'MyPassword');
+        $I->fillField('#password-newpasswordconfirm', 'MyPassword');
+        $I->fillField('#profile-firstname', 'Invited');
+        $I->fillField('#profile-lastname', 'User');
+
+        $I->click('.btn-primary', '#create-account-form');
+        $I->seeRecord(User::class, [
+            'email' => 'invited-user@test.de',
+            'username' => 'InvitedUser',
         ]);
     }
 }
