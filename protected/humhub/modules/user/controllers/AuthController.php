@@ -95,6 +95,29 @@ class AuthController extends Controller
     }
 
     /**
+     * Whether the form-based Sign-Up UI is enabled at all, independent of the
+     * broader {@see isSelfRegistrationEnabled()} gate. Reflects only
+     * {@see Module::$showRegistrationForm} (or its `?showRegistrationForm=1`
+     * escape hatch) — e.g. an SSO-only deployment that wants to hide the local
+     * form and only offer SAML/OIDC entry points.
+     *
+     * Use this (instead of {@see isSelfRegistrationFormVisible()}) for
+     * registration entry points that are already gated independently — most
+     * notably an invite token/link validated by
+     * {@see \humhub\modules\user\services\InviteRegistrationService} or
+     * {@see \humhub\modules\user\services\LinkRegistrationService}. Those flows
+     * must not be blocked by the global `auth.anonymousRegistration` setting,
+     * which governs *public, unsolicited* self-registration only.
+     *
+     * @since 1.19
+     */
+    public static function isRegistrationFormEnabled(): bool
+    {
+        return Yii::$app->getModule('user')->showRegistrationForm
+            || Yii::$app->request->get('showRegistrationForm', false);
+    }
+
+    /**
      * Whether the public Sign-Up email form / Sign-Up entry-points should be
      * rendered. False when self-registration is globally off, or when the admin
      * disabled the form-based public sign-up via {@see Module::$showRegistrationForm}
@@ -108,13 +131,14 @@ class AuthController extends Controller
      * when self-registration is genuinely off (or in maintenance mode), this stays
      * false regardless of the query param.
      *
+     * Not suitable for gating an invite-token/invite-link flow — see
+     * {@see isRegistrationFormEnabled()} for that case.
+     *
      * @since 1.19
      */
     public static function isSelfRegistrationFormVisible(): bool
     {
-        return self::isSelfRegistrationEnabled()
-            && (Yii::$app->getModule('user')->showRegistrationForm
-                || Yii::$app->request->get('showRegistrationForm', false));
+        return self::isSelfRegistrationEnabled() && self::isRegistrationFormEnabled();
     }
 
     /**

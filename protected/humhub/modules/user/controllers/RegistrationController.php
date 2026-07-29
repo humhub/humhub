@@ -87,6 +87,7 @@ class RegistrationController extends Controller
          */
         $authClient = null;
         $pendingAuth = new PendingAuthService();
+        $hasValidInviteToken = false;
 
         if (Yii::$app->request->get('token')) {
             $inviteRegistrationService = new InviteRegistrationService(Yii::$app->request->get('token'));
@@ -101,6 +102,7 @@ class RegistrationController extends Controller
             }
 
             $inviteRegistrationService->populateRegistration($registration);
+            $hasValidInviteToken = true;
         } elseif ($pendingAuth->hasPending()) {
             $authClient = $pendingAuth->restore();
             $registration = $this->createRegistrationByAuthClient($authClient);
@@ -133,7 +135,12 @@ class RegistrationController extends Controller
 
         return $this->render('index', [
             'hForm' => $registration,
-            'showRegistrationForm' => AuthController::isSelfRegistrationFormVisible(),
+            // A validated invite token is an independent authorization for this
+            // specific registration — it must not be hidden by the global
+            // auth.anonymousRegistration setting (see isRegistrationFormEnabled()).
+            'showRegistrationForm' => $hasValidInviteToken
+                ? AuthController::isRegistrationFormEnabled()
+                : AuthController::isSelfRegistrationFormVisible(),
             'hasAuthClient' => $authClient !== null,
         ]);
     }
@@ -207,18 +214,27 @@ class RegistrationController extends Controller
 
         return $this->render('byLink', [
             'invite' => $form,
-            'showRegistrationForm' => AuthController::isSelfRegistrationFormVisible(),
+            // $linkRegistrationService->isValid() above already authorizes this
+            // specific request independently of auth.anonymousRegistration.
+            'showRegistrationForm' => AuthController::isRegistrationFormEnabled(),
             'showAuthClients' => true,
         ]);
     }
 
     /**
      * When the local registration form isn't meant to be shown — see
-     * {@see AuthController::isSelfRegistrationFormVisible()} — invite links
+     * {@see AuthController::isRegistrationFormEnabled()} — invite links
      * (by e-mail token or by shared link) shouldn't fall back to it either.
      * Instead, send the invitee straight into the sole applicable external
      * auth client's flow, the pre-login counterpart of
      * {@see \humhub\modules\user\models\forms\LoginIdentity::getStep1Redirect()}.
+     *
+     * Both call sites (actionIndex()'s token branch, actionByLink()) already
+     * validated the invite independently, so this deliberately checks
+     * {@see AuthController::isRegistrationFormEnabled()} rather than
+     * {@see AuthController::isSelfRegistrationFormVisible()} — the global
+     * `auth.anonymousRegistration` setting must not affect an already-authorized
+     * invite.
      *
      * There's no existing User yet to resolve a UserSource from, so instead
      * of {@see UserSourceService::getForUser()} this looks at
@@ -233,12 +249,12 @@ class RegistrationController extends Controller
      * actionByLink() before this runs) keeps the space association in session.
      *
      * Returns `null` when the local form should still be rendered — because
-     * it's visible, or because no single unambiguous external client could
+     * it's enabled, or because no single unambiguous external client could
      * be determined.
      */
     private function redirectToExternalAuthClient(): ?Response
     {
-        if (AuthController::isSelfRegistrationFormVisible()) {
+        if (AuthController::isRegistrationFormEnabled()) {
             return null;
         }
 
