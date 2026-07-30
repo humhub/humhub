@@ -73,6 +73,47 @@ class FileAccessTest extends HumHubDbTestCase
         $this->assertTrue($file->canDelete(User::findOne(2)));
     }
 
+    public function testUnassignedFileCannotBeDeletedByNonCreator()
+    {
+        $file = $this->createFile(['created_by' => 2]);
+
+        $this->assertFalse($file->canDelete(User::findOne(3)));
+        $this->assertFalse($file->canDelete());
+    }
+
+    public function testUnassignedFileCannotBeAttachedByNonCreator()
+    {
+        self::becomeUser('Admin');
+        $post = new Post(Space::findOne(5), Content::VISIBILITY_PRIVATE, ['message' => 'Attach IDOR test']);
+        $this->assertTrue($post->save());
+        self::logout();
+
+        // File was created/uploaded by User 2, but a different user (User 3) tries to attach it
+        self::becomeUser(User::findOne(3)->username);
+        $file = $this->createFile(['created_by' => 2]);
+        $post->fileManager->attach($file);
+        self::logout();
+
+        $file->refresh();
+        $this->assertTrue(empty($file->object_model));
+        $this->assertFalse($file->isAssigned());
+    }
+
+    public function testUnassignedFileCanBeAttachedByCreator()
+    {
+        self::becomeUser('Admin');
+        $post = new Post(Space::findOne(5), Content::VISIBILITY_PRIVATE, ['message' => 'Attach by creator test']);
+        $this->assertTrue($post->save());
+
+        $file = $this->createFile();
+        $post->fileManager->attach($file);
+        self::logout();
+
+        $file->refresh();
+        $this->assertTrue($file->isAssigned());
+        $this->assertEquals($post->id, $file->object_id);
+    }
+
     public function testCronCleanupKeepsStandaloneFiles()
     {
         $standalone = $this->createFile(['standalone' => 1]);
