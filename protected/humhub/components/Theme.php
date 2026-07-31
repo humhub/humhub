@@ -137,16 +137,24 @@ class Theme extends BaseTheme
             return;
         }
 
-        // Build CSS if not already done
+        // The published path is relative to the assets mount, so it has to be resolved
+        // through the asset manager - the mount may be remote (e.g. S3), where every
+        // metadata lookup is a network round trip, so the modification time (which is
+        // needed as a cache buster below) doubles as the "is the CSS built?" check.
         $cssFile = $this->getPublishedResourcesPath() . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'theme.css';
-        if (!Yii::$app->assetManager->fileExists($cssFile) && ThemeHelper::buildCss() !== true) {
-            // SCSS error in a Child Theme or Custom SCSS - keep registering the (possibly
-            // outdated) CSS below in case the fallback cannot be applied.
-            $this->fallbackToCoreTheme();
-        }
+        $mtime = Yii::$app->assetManager->fileLastModified($cssFile);
 
-        $mtime = file_exists($cssFile) ? filemtime($cssFile) : '';
-        Yii::$app->view->registerCssFile($baseUrl . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'theme.css?v=' . $mtime, ['depends' => CoreBundleAsset::class]);
+        // Build CSS if not already done
+        if ($mtime === null) {
+            if (ThemeHelper::buildCss() !== true) {
+                // SCSS error in a Child Theme or Custom SCSS - keep registering the (possibly
+                // outdated) CSS below in case the fallback cannot be applied.
+                $this->fallbackToCoreTheme();
+            }
+
+            $mtime = Yii::$app->assetManager->fileLastModified($cssFile);
+        }
+        Yii::$app->view->registerCssFile($baseUrl . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'theme.css?v=' . ($mtime ?? ''), ['depends' => CoreBundleAsset::class]);
     }
 
     /**

@@ -62,6 +62,34 @@ class ThemeTest extends HumHubDbTestCase
     }
 
     /**
+     * The theme CSS is rebuilt inside an unchanged published directory, so without the
+     * modification time in the URL a changed theme never reaches a browser that has
+     * already cached it.
+     */
+    public function testRegisterAddsModificationTimeToThemeCssUrl()
+    {
+        $theme = ThemeHelper::getThemeByName(Theme::CORE_THEME_NAME);
+        $this->assertTrue(ThemeHelper::buildCss($theme, false));
+
+        $previousTheme = Yii::$app->view->theme;
+        Yii::$app->view->theme = $theme;
+
+        try {
+            $theme->register();
+
+            $cssUrls = array_values(array_filter(
+                array_keys(Yii::$app->view->assetBundles),
+                fn(string $key) => str_contains($key, 'theme.css'),
+            ));
+
+            $this->assertCount(1, $cssUrls);
+            $this->assertMatchesRegularExpression('/theme\.css\?v=\d+$/', $cssUrls[0]);
+        } finally {
+            Yii::$app->view->theme = $previousTheme;
+        }
+    }
+
+    /**
      * Returns a valid theme whose directory is removed right after it has been resolved,
      * e.g. an update moving the theme or a stale stored theme path.
      */
