@@ -1,13 +1,11 @@
 <?php
 
 use humhub\helpers\Html;
+use humhub\modules\ui\icon\widgets\Icon;
 
 /* @var $label string */
 /* @var $input string */
-
+/* @var $options array */
 ?>
-
-<?= Html::beginTag('span', $options) ?>
-<i class="fa fa-cloud-upload" aria-hidden="true"></i> <?= $label ?>
+<?= Html::tag('button', Icon::get('cloud-upload') . ' ' . Html::encode($label), $options) ?>
 <?= $input ?>
-<?= Html::endTag('span') ?>
