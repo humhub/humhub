@@ -39,6 +39,8 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
 
     private ?int $state = null;
 
+    private ?\Throwable $databaseConnectionError = null;
+
     public function init()
     {
         if (!$this->isDatabaseConfigured()) {
@@ -79,6 +81,30 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
         return $this->getState() >= $state;
     }
 
+    /**
+     * Whether the database is configured but currently not reachable.
+     *
+     * When this is true the real installation state cannot be determined, so the
+     * caller must not fall back to a lower state that would present the installer
+     * (which would offer to set up an already installed instance during a
+     * transient database outage).
+     *
+     * @since 1.19
+     */
+    public function isDatabaseUnreachable(): bool
+    {
+        return $this->databaseConnectionError !== null;
+    }
+
+    /**
+     * @return \Throwable|null the exception raised while connecting to the configured database, if any
+     * @since 1.19
+     */
+    public function getDatabaseConnectionError(): ?\Throwable
+    {
+        return $this->databaseConnectionError;
+    }
+
     public function setInstalled(): void
     {
         $this->setState(self::STATE_INSTALLED);
@@ -99,7 +125,8 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
     {
         try {
             Yii::$app->db->open();
-        } catch (\Exception) {
+        } catch (\Exception $e) {
+            $this->databaseConnectionError = $e;
             return false;
         }
 
