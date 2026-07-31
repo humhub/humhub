@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.19.0-beta.2 (TBD)
 -------------------
+- Fix #8349: Adding a user to (or removing from) a group left stale cached group relations and system-admin/group-manager flags on the passed user instance, so a following isSystemAdmin()/permission check in the same request used outdated data
 - Fix #8348: The installer, the admin welcome tour and the content-search CLI looked up the admin user (and welcome space) by the hardcoded id 1, which is null on a Galera/MariaDB cluster where the first inserted row does not get id 1 — the installer crashed on the final step
 - Fix #8347: The web installer dropped custom PDO `attributes` (e.g. SSL options) from the db config when testing/creating the database, so installs against a server that requires SSL failed with "SSL is required"
 - Fix #8345: A widget whose `init()` threw an exception stayed permanently broken on its DOM node — the component instance is cached on the node before `init()` runs, so every later initialization pass resolved the broken cached instance instead of retrying; a failed construction now removes the cached instance, letting the next pass initialize the widget again
