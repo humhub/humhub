@@ -61,6 +61,11 @@ class Theme extends BaseTheme
     private $_baseUrl = null;
 
     /**
+     * @var array|null memoized `[path, url]` of [[publish()]]
+     */
+    private ?array $_published = null;
+
+    /**
      * @var bool indicates that resources should be published via assetManager
      */
     public $publishResources = true;
@@ -125,30 +130,49 @@ class Theme extends BaseTheme
         // Get bas URL and make sure resources are published
         $baseUrl = $this->getBaseUrl();
 
+        // The theme directory is gone, so there is nothing to publish and nothing to
+        // build from - registering the CSS would point at the domain root instead.
+        if ($baseUrl === '') {
+            $this->fallbackToCoreTheme();
+            return;
+        }
+
         // Build CSS if not already done
         $cssFile = $this->getPublishedResourcesPath() . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'theme.css';
-        if (!Yii::$app->assetManager->fileExists($cssFile)) {
-            $buildResult = ThemeHelper::buildCss();
-            // If SCSS error in a Child Theme or Custom SCSS
-            if ($buildResult !== true) {
-                // Fallback to the core HumHub theme with no Custom SCSS for a minimal
-                // working styling. Only switch and refresh when the core theme is a
-                // different, buildable theme - otherwise (e.g. the core theme itself
-                // fails to build, or is already active) refreshing would loop forever.
-                $coreTheme = ThemeHelper::getThemeByName(self::CORE_THEME_NAME);
-                if (
-                    $coreTheme !== null
-                    && $coreTheme->getBasePath() !== $this->getBasePath()
-                    && ThemeHelper::buildCss($coreTheme, false) === true
-                ) {
-                    $coreTheme->activate();
-                    Yii::$app->response->refresh();
-                }
-            }
+        if (!Yii::$app->assetManager->fileExists($cssFile) && ThemeHelper::buildCss() !== true) {
+            // SCSS error in a Child Theme or Custom SCSS - keep registering the (possibly
+            // outdated) CSS below in case the fallback cannot be applied.
+            $this->fallbackToCoreTheme();
         }
 
         $mtime = file_exists($cssFile) ? filemtime($cssFile) : '';
         Yii::$app->view->registerCssFile($baseUrl . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'theme.css?v=' . $mtime, ['depends' => CoreBundleAsset::class]);
+    }
+
+    /**
+     * Falls back to the core HumHub theme with no Custom SCSS, for a minimal working styling.
+     *
+     * Only switches and refreshes when the core theme is a different, buildable theme -
+     * otherwise (e.g. the core theme itself fails to build, or is already active)
+     * refreshing would loop forever.
+     *
+     * @since 1.19
+     */
+    private function fallbackToCoreTheme(): void
+    {
+        $coreTheme = ThemeHelper::getThemeByName(self::CORE_THEME_NAME);
+
+        if (
+            $coreTheme === null
+            || $coreTheme->getBasePath() === $this->getBasePath()
+            || ThemeHelper::buildCss($coreTheme, false) !== true
+        ) {
+            Yii::error('Could not fall back to the core theme from theme: ' . $this->name, 'ui');
+            return;
+        }
+
+        $coreTheme->activate();
+        Yii::$app->response->refresh();
     }
 
 
@@ -343,13 +367,17 @@ class Theme extends BaseTheme
      */
     private function publish(bool $force = false): array
     {
+        if ($this->_published !== null && !$force) {
+            return $this->_published;
+        }
+
         // Never fatal on a stale theme path, so that [[register()]] can fall back to the core theme
         if (!is_dir((string) $this->getBasePath())) {
             Yii::error('Could not publish theme resources, theme directory does not exist: ' . $this->getBasePath(), 'ui');
-            return ['', ''];
+            return $this->_published = ['', ''];
         }
 
-        return Yii::$app->assetManager->publish(
+        return $this->_published = Yii::$app->assetManager->publish(
             $this->getBasePath(),
             ['forceCopy' => $force, 'except' => ['views/', 'scss/']],
         );
