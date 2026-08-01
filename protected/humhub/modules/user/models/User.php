@@ -783,6 +783,11 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
             return false;
         }
 
+        // Private content is hidden while impersonating a user, see AdminModule::$impersonateMode
+        if ($user->isCurrentUser() && Yii::$app->user->isPrivateContentRestricted) {
+            return false;
+        }
+
         // Self
         if ($user->is($this)) {
             return true;

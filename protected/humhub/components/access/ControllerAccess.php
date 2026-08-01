@@ -166,6 +166,16 @@ class ControllerAccess extends BaseObject
     public const RULE_AJAX_ONLY = 'ajax';
 
     /**
+     * Marks actions which give access to private content e.g.: ['privateContentAccess' => ['action1']].
+     * Such actions are denied while the current user is impersonated by an admin and the impersonation mode
+     * restricts the access to private content.
+     *
+     * @see \humhub\modules\admin\Module::$impersonateMode
+     * @since 1.19
+     */
+    public const RULE_PRIVATE_CONTENT_ACCESS = 'privateContentAccess';
+
+    /**
      * @var array fixed rules will always be added to the current rule set
      */
     protected $fixedRules = [
@@ -257,6 +267,10 @@ class ControllerAccess extends BaseObject
             self::RULE_AJAX_ONLY => 'validateAjaxOnlyRequest',
             'reason' => Yii::t('error', 'The specified URL cannot be called directly.'),
             'code' => 405,
+        ]);
+        $this->registerValidator([
+            self::RULE_PRIVATE_CONTENT_ACCESS => 'validatePrivateContentAccess',
+            'reason' => Yii::t('error', 'Access to private content is not allowed while impersonating a user.'),
         ]);
     }
 
@@ -425,6 +439,15 @@ class ControllerAccess extends BaseObject
     public function validateAdminOnly()
     {
         return $this->isAdmin();
+    }
+
+    /**
+     * @return bool checks if the current session is allowed to access private content
+     * @since 1.19
+     */
+    public function validatePrivateContentAccess()
+    {
+        return !Yii::$app->user->isPrivateContentRestricted;
     }
 
     /**

@@ -1021,6 +1021,11 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
             return true;
         }
 
+        // Private content is hidden while impersonating a user, see AdminModule::$impersonateMode
+        if (!$this->isPublic() && $user->isCurrentUser() && Yii::$app->user->isPrivateContentRestricted) {
+            return false;
+        }
+
         // User can access own content
         if ($this->created_by === $user->id) {
             return true;

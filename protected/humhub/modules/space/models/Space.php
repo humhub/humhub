@@ -485,6 +485,11 @@ class Space extends ContentContainerActiveRecord
             return false;
         }
 
+        // Private content is hidden while impersonating a user, see AdminModule::$impersonateMode
+        if ($user->isCurrentUser() && Yii::$app->user->isPrivateContentRestricted) {
+            return false;
+        }
+
         /** @var Module $module */
         $module = Yii::$app->getModule('space');
         if ($module->globalAdminCanAccessPrivateContent && $user->isSystemAdmin()) {

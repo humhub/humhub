@@ -19,6 +19,32 @@ use Yii;
 class Module extends \humhub\components\Module
 {
     /**
+     * Impersonation mode: the impersonating user has access to everything, including private content.
+     * @since 1.19
+     */
+    public const IMPERSONATE_MODE_FULL_ACCESS = 'fullAccess';
+
+    /**
+     * Impersonation mode: same as [[IMPERSONATE_MODE_FULL_ACCESS]], but each impersonation is written to the log.
+     * @since 1.19
+     */
+    public const IMPERSONATE_MODE_FULL_ACCESS_LOGGED = 'fullAccessLogged';
+
+    /**
+     * Impersonation mode: access to private content is
+     * denied while impersonating.
+     * @since 1.19
+     */
+    public const IMPERSONATE_MODE_DENY_PRIVATE_CONTENT = 'denyPrivateContent';
+
+    /**
+     * Impersonation mode: same as [[IMPERSONATE_MODE_DENY_PRIVATE_CONTENT]], but each impersonation is written to
+     * the log.
+     * @since 1.19
+     */
+    public const IMPERSONATE_MODE_DENY_PRIVATE_CONTENT_LOGGED = 'denyPrivateContentLogged';
+
+    /**
      * @inheritdoc
      */
     public $controllerNamespace = 'humhub\modules\admin\controllers';
@@ -47,6 +73,13 @@ class Module extends \humhub\components\Module
      * @var bool allow admins to impersonate other users
      */
     public $allowUserImpersonate = true;
+
+    /**
+     * @var string Defines what an impersonating user is allowed to see and whether impersonations are logged,
+     *      see the `IMPERSONATE_MODE_*` constants.
+     * @since 1.19
+     */
+    public string $impersonateMode = self::IMPERSONATE_MODE_DENY_PRIVATE_CONTENT_LOGGED;
 
     /**
      * @since 1.3.2
@@ -91,6 +124,30 @@ class Module extends \humhub\components\Module
     public function getName()
     {
         return Yii::t('AdminModule.base', 'Admin');
+    }
+
+    /**
+     * @return bool Whether access to private content must be denied while impersonating a user
+     * @since 1.19
+     */
+    public function isImpersonatePrivateContentDenied(): bool
+    {
+        return in_array($this->impersonateMode, [
+            self::IMPERSONATE_MODE_DENY_PRIVATE_CONTENT,
+            self::IMPERSONATE_MODE_DENY_PRIVATE_CONTENT_LOGGED,
+        ], true);
+    }
+
+    /**
+     * @return bool Whether each impersonation must be written to the log
+     * @since 1.19
+     */
+    public function isImpersonateLogged(): bool
+    {
+        return in_array($this->impersonateMode, [
+            self::IMPERSONATE_MODE_FULL_ACCESS_LOGGED,
+            self::IMPERSONATE_MODE_DENY_PRIVATE_CONTENT_LOGGED,
+        ], true);
     }
 
     /**

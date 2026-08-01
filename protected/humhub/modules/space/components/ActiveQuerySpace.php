@@ -50,6 +50,11 @@ class ActiveQuerySpace extends AbstractActiveQueryContentContainer
         }
 
         if ($user !== null) {
+            // Private spaces are hidden while impersonating a user, see AdminModule::$impersonateMode
+            if ($user->isCurrentUser() && Yii::$app->user->isPrivateContentRestricted) {
+                return $this->andWhere(['!=', 'space.visibility', Space::VISIBILITY_NONE]);
+            }
+
             if ($user->can(ManageSpaces::class)) {
                 return $this;
             }
