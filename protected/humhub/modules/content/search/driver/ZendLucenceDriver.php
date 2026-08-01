@@ -244,6 +244,14 @@ class ZendLucenceDriver extends AbstractDriver
     {
         $permissionQuery = new Boolean();
 
+        // Private content is hidden while impersonating a user, see AdminModule::$impersonateMode
+        if (Yii::$app->user->isPrivateContentRestricted) {
+            $permissionQuery->addSubquery(new TermQuery(new Term(Content::VISIBILITY_PUBLIC, 'visibility')), true);
+            $query->addSubquery($permissionQuery, true);
+
+            return $query;
+        }
+
         if (!Yii::$app->user->isGuest) {
             $user = Yii::$app->user->getIdentity();
 

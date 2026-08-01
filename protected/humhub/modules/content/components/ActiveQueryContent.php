@@ -94,6 +94,14 @@ class ActiveQueryContent extends ActiveQuery
         if ($user !== null) {
             $this->leftJoin('space_membership', 'contentcontainer.pk=space_membership.space_id AND contentcontainer.class=:spaceClass AND space_membership.user_id=:userId', [':userId' => $user->id, ':spaceClass' => Space::class]);
 
+            // Private content is hidden while impersonating a user, see AdminModule::$impersonateMode
+            if ($user->isCurrentUser() && Yii::$app->user->isPrivateContentRestricted) {
+                $this->andWhere(['OR',
+                    ['content.visibility' => Content::VISIBILITY_PUBLIC],
+                    ['content.contentcontainer_id' => null],
+                ]);
+            }
+
             if ($user->canManageAllContent()) {
                 // Don't restrict if user can view all content:
                 $conditionSpaceMembershipRestriction = '';

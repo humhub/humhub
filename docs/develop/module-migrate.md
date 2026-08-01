@@ -304,6 +304,31 @@ Each minor release line has its own file with the breaking changes, new APIs and
   and `EVENT_INIT_BANNER_IMAGE` (`humhub\modules\content\events\ContentContainerImageEvent`) to customize
   or replace a container's profile/banner `AssetImage`. Use these instead of overriding `$profileImageClass`,
   which only affects the deprecated `ProfileImage` path.
+- **Impersonation no longer grants access to private content.** Until now an admin impersonating a user
+  saw everything that user sees. The new `humhub\modules\admin\Module::$impersonateMode` option controls
+  this, with these values: `IMPERSONATE_MODE_FULL_ACCESS` (the previous behavior),
+  `IMPERSONATE_MODE_FULL_ACCESS_LOGGED`, `IMPERSONATE_MODE_DENY_PRIVATE_CONTENT` and
+  `IMPERSONATE_MODE_DENY_PRIVATE_CONTENT_LOGGED` (**the new default**). The `*_LOGGED` modes write a
+  warning naming the impersonating and the impersonated user to the log (category `user`) on each
+  impersonation.
+  - Added `Yii::$app->user->isPrivateContentRestricted` (`humhub\modules\user\components\Impersonator`),
+    `true` while the current session is an impersonation that must not access private content. Core
+    evaluates it in `Content::canView()`, `ActiveQueryContent::readable()`, `StreamQuery::setupQuery()`,
+    `Space::canAccessPrivateContent()`, `User::canAccessPrivateContent()`, `ActiveQuerySpace::visible()`,
+    the space controller behavior and both content search drivers — so content and spaces a module lists
+    through those APIs are already covered. A module running **its own** visibility SQL (a stream filter
+    or search backend that does not go through `ActiveQueryContent`/`StreamQuery`) must check the flag
+    itself and restrict its query to `Content::VISIBILITY_PUBLIC`.
+  - Added the `ControllerAccess::RULE_PRIVATE_CONTENT_ACCESS` access rule. A module whose controller
+    exposes private content that is not `Content`-based (private messages, private files, …) should add
+    `[ControllerAccess::RULE_PRIVATE_CONTENT_ACCESS]` to its `getAccessRules()` — the action is then
+    denied while private content is restricted. Menu entries and widgets pointing at such a controller
+    should be hidden by checking `Yii::$app->user->isPrivateContentRestricted` in their event handler.
+    See the Messenger (`mail`) module, which applies both.
+  - Modules relying on the old behavior (e.g. support tooling that reads private content while
+    impersonating) must document that the administrator has to set
+    `'impersonateMode' => Module::IMPERSONATE_MODE_FULL_ACCESS` for the `admin` module in the
+    configuration file.
 
 ## Released versions
 

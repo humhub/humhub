@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\components;
 
+use humhub\modules\admin\Module as AdminModule;
 use humhub\modules\user\models\User as UserModel;
 use Yii;
 use yii\base\Behavior;
@@ -18,6 +19,7 @@ use yii\base\Behavior;
  * @since 1.10
  * @property-read UserModel|null $impersonator Admin user who impersonate the current User
  * @property bool $isImpersonated Whether this user is impersonated by admin currently.
+ * @property-read bool $isPrivateContentRestricted Whether private content must be hidden from the current session.
  * @author luke
  */
 class Impersonator extends Behavior
@@ -28,6 +30,28 @@ class Impersonator extends Behavior
     public $owner;
 
     protected bool $impersonated = false;
+
+    private ?bool $privateContentRestricted = null;
+
+    /**
+     * @inheritdoc
+     */
+    public function events()
+    {
+        return [
+            User::EVENT_BEFORE_SWITCH_IDENTITY => 'onBeforeSwitchIdentity',
+        ];
+    }
+
+    /**
+     * Resets the memoized [[getIsPrivateContentRestricted()]] result whenever the identity changes.
+     *
+     * @since 1.19
+     */
+    public function onBeforeSwitchIdentity()
+    {
+        $this->privateContentRestricted = null;
+    }
 
     /**
      * Determines if the current user can impersonate the given user.
@@ -55,6 +79,28 @@ class Impersonator extends Behavior
     public function setIsImpersonated($impersonated)
     {
         $this->impersonated = $impersonated;
+        $this->privateContentRestricted = null;
+    }
+
+    /**
+     * Determines if the current session is an impersonation which must not have access to private content,
+     * see [[AdminModule::$impersonateMode]].
+     *
+     * @return bool
+     * @since 1.19
+     */
+    public function getIsPrivateContentRestricted(): bool
+    {
+        if ($this->privateContentRestricted === null) {
+            /* @var AdminModule $adminModule */
+            $adminModule = Yii::$app->getModule('admin');
+            // The `session` component is only available in web applications, impersonation is session based
+            $this->privateContentRestricted = Yii::$app->has('session')
+                && $this->getIsImpersonated()
+                && $adminModule->isImpersonatePrivateContentDenied();
+        }
+
+        return $this->privateContentRestricted;
     }
 
     /**
@@ -93,8 +139,22 @@ class Impersonator extends Behavior
             return false;
         }
 
-        Yii::$app->session->set('impersonator', $this->owner->getIdentity());
-        $this->impersonated = true;
+        $impersonator = $this->owner->getIdentity();
+
+        /* @var AdminModule $adminModule */
+        $adminModule = Yii::$app->getModule('admin');
+        if ($adminModule->isImpersonateLogged()) {
+            Yii::warning(sprintf(
+                'User "%s" (ID: %d) impersonates user "%s" (ID: %d).',
+                $impersonator->displayName,
+                $impersonator->id,
+                $user->displayName,
+                $user->id,
+            ), 'user');
+        }
+
+        Yii::$app->session->set('impersonator', $impersonator);
+        $this->setIsImpersonated(true);
         $this->owner->switchIdentity($user);
 
         return true;
@@ -112,7 +172,7 @@ class Impersonator extends Behavior
         }
 
         Yii::$app->session->remove('impersonator');
-        $this->impersonated = false;
+        $this->setIsImpersonated(false);
         $this->owner->switchIdentity($impersonator);
 
         return true;

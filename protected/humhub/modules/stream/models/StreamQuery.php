@@ -450,6 +450,14 @@ class StreamQuery extends Model
 
         $this->_query->andWhere($this->stateFilterCondition);
 
+        // Private content is hidden while impersonating a user, see AdminModule::$impersonateMode
+        if ($this->user !== null && $this->user->isCurrentUser() && Yii::$app->user->isPrivateContentRestricted) {
+            $this->_query->andWhere(['OR',
+                ['content.visibility' => Content::VISIBILITY_PUBLIC],
+                ['content.contentcontainer_id' => null],
+            ]);
+        }
+
         if (!empty($this->channel)) {
             $this->channel($this->channel);
         }
