@@ -95,6 +95,28 @@ class Module extends \humhub\components\Module
     public string $searchOrderBy = SearchRequest::ORDER_BY_SCORE;
 
     /**
+     * Content record classes which should never announce their creation, as if
+     * [[ContentActiveRecord::$silentContentCreation]] was set on every instance: no content created
+     * notification, no activity and no new content marker in the space chooser.
+     *
+     * The class names are matched against `content.object_model`, same as the stream module's
+     * `streamExcludes` option.
+     *
+     * Example:
+     *
+     * ```php
+     * 'silentContentCreationTypes' => [
+     *     \humhub\modules\cfiles\models\File::class,
+     *     \humhub\modules\gallery\models\Media::class,
+     * ],
+     * ```
+     *
+     * @var string[]
+     * @since 1.19
+     */
+    public array $silentContentCreationTypes = [];
+
+    /**
      * @inheritdoc
      */
     public function init()

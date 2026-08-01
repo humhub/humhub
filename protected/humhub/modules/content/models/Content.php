@@ -368,7 +368,9 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      */
     private function isMuted()
     {
-        return $this->getPolymorphicRelation()->silentContentCreation || $this->getModel()->silentContentCreation || !$this->container;
+        return !$this->container
+            || $this->getPolymorphicRelation()->silentContentCreation
+            || in_array($this->object_model, Yii::$app->getModule('content')->silentContentCreationTypes, true);
     }
 
     /**

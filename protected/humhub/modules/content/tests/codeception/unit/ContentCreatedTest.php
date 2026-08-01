@@ -2,6 +2,7 @@
 
 namespace tests\codeception\unit;
 
+use humhub\modules\activity\models\Activity;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\notifications\ContentCreated as ContentCreatedNotification;
 use humhub\modules\notification\models\Notification;
@@ -45,6 +46,26 @@ class ContentCreatedTest extends HumHubDbTestCase
 
         // Note Admin is following Space2 so we expect one notification mail.
         $this->assertMailSent(0);
+    }
+
+    /**
+     * Test the `silentContentCreationTypes` content module option, which mutes the content creation
+     * notification and activity for all records of the configured classes.
+     */
+    public function testSilentContentCreationTypes()
+    {
+        Yii::$app->getModule('content')->silentContentCreationTypes = [Post::class];
+
+        $this->becomeUser('User2');
+
+        $post = new Post(['message' => 'MyTestContent']);
+        $post->content->setContainer(Space::findOne(['id' => 2]));
+        $post->content->visibility = Content::VISIBILITY_PUBLIC;
+        $post->save();
+
+        // Note Admin is following Space2, so without the option one notification mail would be sent.
+        $this->assertMailSent(0);
+        $this->assertEmpty(Activity::find()->where(['content_id' => $post->content->id])->all());
     }
 
     /**

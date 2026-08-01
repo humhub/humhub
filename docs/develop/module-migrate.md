@@ -304,6 +304,22 @@ Each minor release line has its own file with the breaking changes, new APIs and
   and `EVENT_INIT_BANNER_IMAGE` (`humhub\modules\content\events\ContentContainerImageEvent`) to customize
   or replace a container's profile/banner `AssetImage`. Use these instead of overriding `$profileImageClass`,
   which only affects the deprecated `ProfileImage` path.
+- Added the content module option `silentContentCreationTypes` — a list of content record classes that
+  never announce their creation, as if `ContentActiveRecord::$silentContentCreation` was set on every
+  instance. Configure it in `protected/config/common.php`:
+  ```php
+  'modules' => [
+      'content' => [
+          'silentContentCreationTypes' => [
+              \humhub\modules\cfiles\models\File::class,
+              \humhub\modules\gallery\models\Media::class,
+          ],
+      ],
+  ],
+  ```
+  The class names are matched against `content.object_model`, so the same list can be reused for the
+  stream module's `streamExcludes`. This is an administrator-facing option and needs no module change —
+  a module opting out for individual records still does so via `ContentActiveRecord::$silentContentCreation`.
 
 ## Released versions
 
