@@ -23,6 +23,7 @@ HumHub Changelog
 - Fix #8351: SSO buttons can overflow on login page
 - Fix #8360: A config file still setting the removed `modules.content.adminCanViewAllContent`/`adminCanEditAllContent` options (replaced in 1.17 by `modules.admin.enableManageAllContentPermission`) crashed every request with an `UnknownPropertyException` instead of a graceful warning — these keys are now stripped from the loaded config like other legacy settings and flagged on the Administration → Information page
 - Fix #8364: The comment/reply "Attach Files" trigger is a non-focusable `<span>`; clicking it dropped focus without moving it anywhere, which instantly hid the upload/submit button row again since it is only shown via `:focus-within`/`:has()` (#8318) — before the click's own action could run, so opening the file picker either did nothing or made the row disappear while its dialog was open. The trigger now gets focus like the adjacent handler dropdown-toggle button via `tabindex`/`role="button"`, and is keyboard-operable via Enter/Space; the button row also stays visible once a file has been attached, not just once the message has text
+- Fix #8371: Fix mixed param type nullable by default in `ForceExplicitNullableParamRector`
 
 1.19.0-beta.1 (July 21, 2026)
 --------------------

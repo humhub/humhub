@@ -29,7 +29,7 @@ class ContentContainerImageEventTest extends HumHubDbTestCase
 
     public function testProfileImageCanBeReplacedByEvent()
     {
-        Event::on(Space::class, ContentContainerActiveRecord::EVENT_INIT_PROFILE_IMAGE, function (ContentContainerImageEvent $event) {
+        Event::on(Space::class, ContentContainerActiveRecord::EVENT_INIT_PROFILE_IMAGE, function (ContentContainerImageEvent $event): void {
             $event->image = new AssetImage(['file' => '/tests/custom-profile.png'] + $event->config);
         });
 
@@ -46,7 +46,7 @@ class ContentContainerImageEventTest extends HumHubDbTestCase
 
     public function testBannerImageCanBeCustomizedByEvent()
     {
-        Event::on(Space::class, ContentContainerActiveRecord::EVENT_INIT_BANNER_IMAGE, function (ContentContainerImageEvent $event) {
+        Event::on(Space::class, ContentContainerActiveRecord::EVENT_INIT_BANNER_IMAGE, function (ContentContainerImageEvent $event): void {
             $event->image->defaultFile = Yii::getAlias('@humhub/resources/img/default_space.jpg');
         });
 
@@ -57,7 +57,7 @@ class ContentContainerImageEventTest extends HumHubDbTestCase
     public function testInitImageEventIsTriggeredOncePerRecord()
     {
         $calls = 0;
-        Event::on(Space::class, ContentContainerActiveRecord::EVENT_INIT_PROFILE_IMAGE, function () use (&$calls) {
+        Event::on(Space::class, ContentContainerActiveRecord::EVENT_INIT_PROFILE_IMAGE, function () use (&$calls): void {
             $calls++;
         });
 
