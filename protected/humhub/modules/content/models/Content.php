@@ -1021,6 +1021,10 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
             return true;
         }
 
+        if (!$this->isPublic() && $user->isCurrentUser() && !Yii::$app->user->impersonation->canAccessPrivateContent()) {
+            return false;
+        }
+
         // User can access own content
         if ($this->created_by === $user->id) {
             return true;

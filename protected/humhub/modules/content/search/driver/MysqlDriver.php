@@ -174,6 +174,13 @@ class MysqlDriver extends AbstractDriver
         $query->leftJoin('space', 'contentcontainer . pk = space . id and contentcontainer .class=:spaceClass', [':spaceClass' => Space::class]);
         $query->leftJoin('user cuser', 'contentcontainer . pk = cuser . id and contentcontainer .class=:userClass', [':userClass' => User::class]);
 
+        if (!Yii::$app->user->impersonation->canAccessPrivateContent()) {
+            $query->andWhere(['OR',
+                ['content.visibility' => Content::VISIBILITY_PUBLIC],
+                ['content.contentcontainer_id' => null],
+            ]);
+        }
+
         if (!Yii::$app->user->isGuest) {
             $user = Yii::$app->user->getIdentity();
 
