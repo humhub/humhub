@@ -287,7 +287,7 @@ class Theme extends BaseTheme
 
             // Directory entry: prefix substitution (Yii2 default behaviour)
             $fromDir = $fromResolved . DIRECTORY_SEPARATOR;
-            if (strpos($normalized, $fromDir) !== 0) {
+            if (!str_starts_with($normalized, $fromDir)) {
                 continue;
             }
             $rest = substr($normalized, strlen($fromDir));

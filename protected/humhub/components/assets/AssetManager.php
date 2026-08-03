@@ -188,7 +188,7 @@ class AssetManager extends \yii\web\AssetManager
 
             try {
                 $timestamp = $this->fs->lastModified($dstFile);
-            } catch (FilesystemException $e) {
+            } catch (FilesystemException) {
                 $timestamp = time();
             }
         }
@@ -321,7 +321,7 @@ class AssetManager extends \yii\web\AssetManager
     {
         try {
             return $this->fs->lastModified($this->normalizePath($file));
-        } catch (FilesystemException $e) {
+        } catch (FilesystemException) {
             return null;
         }
     }

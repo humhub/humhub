@@ -120,7 +120,7 @@ class ContainerTagPicker extends BasePicker
     public static function searchTagsByContainer(ContentContainerActiveRecord $contentContainer, ?string $keyword): array
     {
         return static::searchTagsByContainerClass(
-            get_class($contentContainer),
+            $contentContainer::class,
             $keyword,
         );
     }

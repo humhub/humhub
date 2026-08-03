@@ -88,7 +88,7 @@ class OnlineModuleManager extends Component
         // restarts the worker, which would otherwise interrupt the still running update (cache flush,
         // registration and database migrations) and leave the module in a half-updated state.
         if (function_exists('opcache_reset')) {
-            Yii::$app->on(Application::EVENT_AFTER_REQUEST, static function () {
+            Yii::$app->on(Application::EVENT_AFTER_REQUEST, static function (): void {
                 @opcache_reset();
             });
         }

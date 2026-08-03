@@ -12,6 +12,6 @@
 // from the id alone cannot resolve the module's classes.
 return [
     'id' => 'auth-mismatch',
-    'class' => 'Some\Name\Space\mismatch\Module',
+    'class' => \Some\Name\Space\mismatch\Module::class,
     'namespace' => 'Some\Name\Space\mismatch',
 ];
