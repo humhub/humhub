@@ -8,6 +8,7 @@ HumHub Changelog
 - Enh #8346: Force Select2 dropdowns to always open below the field instead of flipping above when there's not enough space
 - Fix #8359: Display user sub name on invite after space creating
 - Fix #8365: Encode deletion reason in comment and content deletion notifications
+- Fix #8373: Ensure the oEmbed consent prompt encodes the requested URL so embedded markup stays inert
 
 1.18.4 (July 21, 2026)
 ----------------------
