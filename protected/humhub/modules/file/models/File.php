@@ -350,9 +350,10 @@ class File extends FileCompat implements ViewableInterface
 
         $object = $this->getPolymorphicRelation();
 
-        // File is not bound to an object
+        // File is not bound to an object: only its creator may delete it,
+        // matching the ownership check enforced by canView()
         if ($object === null) {
-            return true;
+            return $user !== null && $this->created_by == $user->id;
         }
 
         if ($object instanceof ContentAddonActiveRecord) {
