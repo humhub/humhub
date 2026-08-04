@@ -43,7 +43,8 @@ humhub.module('notification', function (module, require, $) {
     NotificationDropDown.prototype.init = function (update) {
         this.isOpen = false;
         this.lastEntryLoaded = false;
-        this.lastEntryId = 0;
+        this.hasEntries = false;
+        this.cursor = null;
         this.originalTitle = document.title;
         this.initDropdown();
         this.handleResult(update);
@@ -105,7 +106,8 @@ humhub.module('notification', function (module, require, $) {
     NotificationDropDown.prototype.toggle = function () {
         // Always reset the loading settings so we reload the whole dropdown.
         this.lastEntryLoaded = false;
-        this.lastEntryId = 0;
+        this.hasEntries = false;
+        this.cursor = null;
 
         // Since the handler will be called before the bootstrap trigger, isOpen is true if the dropdown is shown
         this.isOpen = this.$dropdown.hasClass('show');
@@ -119,10 +121,24 @@ humhub.module('notification', function (module, require, $) {
         if (this.loading) {
             return;
         }
+        // Must be set synchronously (before the async request starts), not
+        // just cleared in .finally() below. Otherwise this guard never
+        // actually blocks anything: a burst of rapid scroll events (e.g. one
+        // fast mouse-wheel swipe fires many 'scroll' events) would all pass
+        // the check above, each sending the request with the same
+        // not-yet-updated cursor, and each one loading the same page again.
+        this.loading = true;
+
+        var data = {};
+        if (this.cursor) {
+            data.cursorSeen = this.cursor.seen;
+            data.cursorCreatedAt = this.cursor.createdAt;
+            data.cursorLastId = this.cursor.lastId;
+        }
 
         var that = this;
         this.loader();
-        client.get(module.config.loadEntriesUrl, {data: {from: this.lastEntryId}})
+        client.get(module.config.loadEntriesUrl, {data: data})
             .then($.proxy(this.handleResult, this))
             .catch(_errorHandler)
             .finally(function () {
@@ -133,9 +149,16 @@ humhub.module('notification', function (module, require, $) {
 
     NotificationDropDown.prototype.handleResult = function (response) {
         if (!response.counter) {
-            this.$entryList.append(string.template(module.templates.info, {'text': module.text('info')}));
+            // Only show the empty-state message if the list is actually
+            // empty. Without this check, reaching the end of pagination
+            // (which also returns counter: 0) would append "no notifications
+            // yet" below entries that are already displayed.
+            if (!this.hasEntries) {
+                this.$entryList.append(string.template(module.templates.info, {'text': module.text('info')}));
+            }
         } else {
-            this.lastEntryId = response.lastEntryId;
+            this.hasEntries = true;
+            this.cursor = response.cursor;
             this.$entryList.append(response.output);
 
             $('span.time').timeago();
