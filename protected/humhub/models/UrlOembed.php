@@ -159,11 +159,14 @@ class UrlOembed extends ActiveRecord
 
             if (static::hasOEmbedSupport($url)) {
                 if (!$forceAllowedDomain && !self::isAllowedDomain($url)) {
-                    $result = self::confirmationContent($url);
-                } else {
-                    $urlOembed = static::findExistingOembed($url);
-                    $result = $urlOembed ? $urlOembed->preview : self::loadUrl($url);
+                    // The confirmation prompt is built from the (untrusted) requested url and must
+                    // never be run through the script reconstruction below, which would grant any
+                    // embedded markup a valid CSP nonce. Return it as-is (already safely encoded).
+                    return trim((string) preg_replace('/\s+/', ' ', self::confirmationContent($url)));
                 }
+
+                $urlOembed = static::findExistingOembed($url);
+                $result = $urlOembed ? $urlOembed->preview : self::loadUrl($url);
 
                 if (!empty($result)) {
                     // Fix to run the appended scripts after ajax/pjax loading
@@ -341,7 +344,7 @@ class UrlOembed extends ActiveRecord
 
         $html = Html::tag('strong', Yii::t('base', 'Allow content from external source'))
             . Html::tag('br')
-            . Yii::t('base', 'Do you want to enable content from \'{urlPrefix}\'?', ['urlPrefix' => Html::tag('strong', $urlPrefix)])
+            . Yii::t('base', 'Do you want to enable content from \'{urlPrefix}\'?', ['urlPrefix' => Html::tag('strong', Html::encode($urlPrefix))])
             . Html::tag('br')
             . Html::tag('label', '<input type="checkbox"> ' . Yii::t('base', 'Always allow content from this provider!'))
             . Html::tag('br')
