@@ -22,13 +22,13 @@ use humhub\modules\ui\icon\widgets\Icon;
             'data-src' => 'holder.js/94x94',
             'alt' => '94x94',
             'style' => 'width:94px;height:94px',
-        ])) ?>
+        ]), false) ?>
         <?= ModuleControls::widget(['module' => $module]) ?>
     </div>
     <div class="card-body">
         <div
             class="card-title"><?= $module->marketplaceLink($module->name) . ($module->featured ? ' ' . Icon::get('star')->color('info') : '') ?></div>
-        <div><?= $module->latestVersion ?></div>
+        <div><?= Html::encode($module->latestVersion) ?></div>
         <div><?= $module->marketplaceLink($module->description) ?></div>
     </div>
     <?= ModuleActionButtons::widget(['module' => $module]) ?>
