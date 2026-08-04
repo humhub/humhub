@@ -103,6 +103,14 @@ The production AssetManager swaps Yii's local filesystem operations for HumHub's
 
 `clear()` empties the mount on cache flush. There's no special-casing: a fresh publish on the next page request rebuilds everything.
 
+#### Cross-origin assets and script execution order
+
+When the assets mount serves from a different origin than the site (an S3 bucket or CDN `baseUrl`), one browser behavior changes: cross-origin `<script src>` tags injected with ajax/pjax responses execute **asynchronously and in download-completion order** — jQuery silently ignores `async: false` for cross-domain script requests. Content processing (`[data-ui-init]` widget initialization) would then run before the response's module scripts executed, and a module script could run before a library it depends on.
+
+To restore same-origin semantics, `humhub.client.js` registers a jQuery ajax transport that loads scripts from the announced asset origins (`client.syncScriptOrigins`, see `CoreJsConfig`) through a synchronous XHR instead — exactly what jQuery does for same-origin scripts.
+
+**Requirement: the asset host must answer with CORS headers** (`Access-Control-Allow-Origin` covering the site origin, or `*`) for `.js` files, and the site's CSP `connect-src` must allow the asset host. Without CORS headers the transport logs a warning and falls back to an in-order-executing script element — scripts then still run asynchronously (widgets in the response may not initialize on first load), but at least in document order.
+
 ### `humhub\components\assets\BuildAssetManager` (build only)
 
 Plugged in via `assets.php`'s `'assetManager' => ['class' => BuildAssetManager::class, ...]`. Solves a chicken-and-egg problem during the build:

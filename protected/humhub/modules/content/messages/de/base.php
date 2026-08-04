@@ -60,7 +60,7 @@ return [
   'Permalink' => 'Permalink',
   'Pin to top' => 'Oben anheften',
   'Pinned' => 'Angeheftet',
-  'Please select at least one topic.' => '',
+  'Please select at least one topic.' => 'Bitte wähle mindestens ein Thema aus.',
   'Private' => 'Privat',
   'Public' => 'Öffentlich',
   'Publish draft' => 'Entwurf veröffentlichen',
@@ -113,6 +113,6 @@ return [
   'You cannot block yourself!' => 'Du kannst dich nicht selbst blockieren.',
   'You do not have the permission to move this content to the given space.' => 'Du hast keine Berechtigung, den Inhalt in den ausgewählten Space zu verschieben.',
   'You do not have the permission to move this content.' => 'Du hast keine Berechtigung diesen Inhalt zu verschieben.',
-  'You need to login to view this content!' => '',
+  'You need to login to view this content!' => 'Du musst dich anmelden, um diesen Inhalt anzuzeigen!',
   'in' => 'in',
 ];

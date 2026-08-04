@@ -42,10 +42,10 @@ class ThemeHelper
             return static::$_themes;
         }
 
-        $themes = array_merge(
-            self::getThemesByPath(Yii::getAlias('@humhub/themes')),
-            self::getThemesByPath(Yii::getAlias('@themes')),
-        );
+        // Keyed by name, first one wins: a leftover webroot `themes/HumHub` (#8102) must not
+        // shadow the core theme wherever it is resolved by name, e.g. in the parent lookup.
+        $themes = self::getThemesByPath(Yii::getAlias('@humhub/themes'))
+            + self::getThemesByPath(Yii::getAlias('@themes'));
 
         // Collect themes provided by modules
         foreach (Yii::$app->getModules() as $id => $module) {
@@ -63,10 +63,7 @@ class ThemeHelper
 
             $moduleThemePath = $module->getBasePath() . DIRECTORY_SEPARATOR . 'themes';
             if (is_dir($moduleThemePath)) {
-                $themes = ArrayHelper::merge(
-                    $themes,
-                    self::getThemesByPath($moduleThemePath),
-                );
+                $themes += self::getThemesByPath($moduleThemePath);
             }
         }
 
@@ -86,7 +83,7 @@ class ThemeHelper
         $themes = [];
         $path = realpath($path);
         foreach (scandir($path) as $file) {
-            if ($file == "." || $file == ".." || !is_dir($path . DIRECTORY_SEPARATOR . $file)) {
+            if ($file === '.' || $file === '..' || !is_dir($path . DIRECTORY_SEPARATOR . $file)) {
                 continue;
             }
 
@@ -117,6 +114,15 @@ class ThemeHelper
             ], $options));
         } catch (InvalidConfigException $e) {
             Yii::error('Could not get theme by path "' . $path . '" - Error: ' . $e->getMessage());
+            return null;
+        }
+
+        // A theme directory without its SCSS variables file is not a usable theme
+        // (e.g. an empty `themes/HumHub` skeleton left behind by an update that moved
+        // the theme into `protected/humhub`). Loading it would break the SCSS build and,
+        // worse, shadow the real core theme in getThemes() since both share the name.
+        if (!is_file(ScssHelper::getVariableFile($theme))) {
+            Yii::warning('Ignoring invalid theme without SCSS variables file: ' . $path, 'ui');
             return null;
         }
 
@@ -271,7 +277,10 @@ class ThemeHelper
 
         // Import variables child theme first, because they have the !default flag
         foreach ($treeThemes as $treeTheme) {
-            $imports[] = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'variables';
+            $variablesFile = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'variables';
+            if (file_exists($variablesFile . '.scss')) {
+                $imports[] = $variablesFile;
+            }
         }
         $imports[] = Yii::getAlias('@humhub/resources/scss/variables');
         $imports[] = Yii::getAlias('@vendor/twbs/bootstrap/scss/variables');

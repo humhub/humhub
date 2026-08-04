@@ -74,6 +74,13 @@ class UploadButton extends UploadInput
         $defaultButtonOptions = [
             'class' => trim($classPrefix . ' ' . $this->cssButtonClass . ' fileinput-button'),
             'title' => ($this->tooltip === true) ? Yii::t('FileModule.base', 'Upload files') : $this->tooltip,
+            // Rendered as a <span>, which cannot receive focus or be operated via
+            // keyboard (Enter/Space) by default, unlike a real <button> (e.g. the
+            // adjacent dropdown-toggle). tabindex makes it focusable/reachable via
+            // Tab, role announces it correctly to assistive tech, and
+            // humhub.file.js adds the matching Enter/Space -> click handling.
+            'tabindex' => '0',
+            'role' => 'button',
             'data' => [
                 'placement' => $this->tooltipPosition,
                 'action-click' => "file.upload",

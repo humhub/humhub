@@ -2,6 +2,7 @@
 
 return [
     ' Remove panel' => '',
+    '&larr; Previous' => '',
     '<strong>Account</strong> Menu' => '',
     '<strong>Getting</strong> Started' => '',
     '<strong>Guide:</strong> Administration (Modules)' => '',
@@ -14,10 +15,12 @@ return [
     '<strong>Start</strong> space guide' => '',
     'Cancel' => '',
     'Don\'t lose track of things!<br /><br />This icon will keep you informed of activities and posts that concern you directly.' => '',
+    'Done' => '',
     'Drag a photo here or click to browse your files' => '',
     'Get to know your way around the site\'s most important features with the following guides:' => '',
     'Hide my year of birth' => '',
     'Howdy <strong>%firstname%</strong>, thank you for using %community%.' => '',
+    'Next &rarr;' => '',
     'Ok' => '',
     'Save and close' => '',
     'The account menu gives you access to your private settings and allows you to manage your public profile.' => '',
@@ -30,4 +33,5 @@ return [
     'Your phone number at work' => '',
     'Your skills, knowledge and experience' => '',
     'Your title or position' => '',
+    '{{current}} of {{total}}' => '',
 ];

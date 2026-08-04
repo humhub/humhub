@@ -16,5 +16,5 @@ jobs:
     tests:
         uses: ./.github/workflows/php-test-base.yml
         with:
-            php: '["8.4"]'
+            php: '["8.5"]'
             databases: '[{"engine": "mariadb", "version": "10.11"}, {"engine": "mariadb", "version": "11.8"}, {"engine": "mariadb", "version": "12.3"}, {"engine": "mysql", "version": "8.0"}, {"engine": "mysql", "version": "8.4"}, {"engine": "mysql", "version": "9.7"}]'

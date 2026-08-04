@@ -9,7 +9,7 @@ on:
             php:
                 description: PHP versions to test, JSON list.
                 default: |-
-                    ["8.2", "8.3", "8.4"]
+                    ["8.2", "8.3", "8.4", "8.5"]
                 type: string
             databases:
                 description: >-

@@ -485,6 +485,10 @@ class Space extends ContentContainerActiveRecord
             return false;
         }
 
+        if ($user->isCurrentUser() && !Yii::$app->user->impersonation->canAccessPrivateContent()) {
+            return false;
+        }
+
         /** @var Module $module */
         $module = Yii::$app->getModule('space');
         if ($module->globalAdminCanAccessPrivateContent && $user->isSystemAdmin()) {

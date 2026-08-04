@@ -57,11 +57,22 @@ class TourAsset extends AssetBundle
         /** @var Module $module */
         $module = Yii::$app->getModule('tour');
 
+        // Add translatable button labels without overriding configured options.
+        // {{current}} and {{total}} are driver.js placeholders and must be preserved.
+        // Don't move to Module::init() because Yii::t() would resolve the
+        // module's message source and re-instantiate the module (infinite loop).
+        $driverJsOptions = $module->driverJsOptions + [
+            'nextBtnText' => Yii::t('TourModule.base', 'Next &rarr;'),
+            'prevBtnText' => Yii::t('TourModule.base', '&larr; Previous'),
+            'doneBtnText' => Yii::t('TourModule.base', 'Done'),
+            'progressText' => Yii::t('TourModule.base', '{{current}} of {{total}}'),
+        ];
+
         $view->registerJsConfig('tour', [
             'dashboardUrl' => Url::to(['/dashboard/dashboard']),
             'dashboardTourId' => TourConfig::TOUR_ID_DASHBOARD,
             'completedUrl' => Url::to(['/tour/tour/tour-completed']),
-            'driverJsOptions' => $module->driverJsOptions,
+            'driverJsOptions' => $driverJsOptions,
         ]);
 
         return parent::register($view);

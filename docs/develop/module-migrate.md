@@ -287,6 +287,10 @@ Each minor release line has its own file with the breaking changes, new APIs and
 - Removed `@filestore` Alias
 - Removed `AssetManager::$preventDefer` option
 - Removed the webroot `static/` asset tree — core static resources moved to `protected/humhub/resources` and are published through the asset manager (#8102). Core themes moved from the webroot `themes/` directory to `protected/humhub/themes`; custom themes in `@webroot/themes` keep working, the `@themes` alias is unchanged.
+  - `Theme::getBasePath()` keeps pointing at the theme *source* directory — `@humhub/themes` for the core theme, `<module>/themes` for module provided themes, `@themes` (webroot) for custom themes. `views/` and `scss/` are built from there and are excluded from publishing, so anything served to the browser is only reachable below the new `Theme::getPublishedBasePath()`, the published counterpart of `getBasePath()` (alongside the existing `Theme::getPublishedResourcesPath()`).
+    - `getPublishedBasePath()` and `getPublishedResourcesPath()` return a path **relative to the assets mount**, to be used with `Yii::$app->assetManager` or `Yii::$app->fs->getAssetsMount()` — not with native filesystem functions such as `is_file()` or `file_get_contents()`, since the assets mount may be remote (e.g. S3). Use `AssetManager::fileExists()`, `fileWrite()` and the new `AssetManager::fileLastModified()` (the counterpart of `filemtime()`) instead. `getPublishedResourcesPath()` previously returned an absolute path or a relative one depending on whether the theme had already been published in the same request.
+    - `Theme::getPath()` is **not** overridden and still resolves against the theme source directory, per its Yii2 contract of returning an absolute local filesystem path — which published assets cannot satisfy on a remote mount. Use `getPublishedBasePath()` with the asset manager for published files, or `Theme::getUrl()` for a browser-facing URL.
+    - Theme resources are **not** inherited from parent themes: `publishResources()` publishes only the theme's own directory and `getBaseUrl()`/`getPublishedBasePath()` only ever point at it, so a child theme has to ship every resource it references (unlike `views/`, which do fall back through the theme tree).
   - Removed the aliases `@web-static` / `@webroot-static` and the `humhub\components\assets\WebStaticAssetBundle` class. Asset bundles configuring `basePath = '@webroot-static'` / `baseUrl = '@web-static'` must switch to publishing via `$sourcePath` instead (e.g. `'@humhub/resources'` like the core bundles, or the module's own `resources/` directory).
 - New Flysystem Filesystem Wrapper - Migrate all file access for assets and uploads to the Flysystem wrapper (`Yii::$app->fs->getDataMount()` or `Yii::$app->fs->getAssetsMount()`). Read more: https://flysystem.thephpleague.com/docs/usage/filesystem-api/
   - **`StorageManager::get()` (`$file->store->get()`) now returns a path relative to the data mount, no longer an absolute local filesystem path.** The same applies to `FileHistory::getFileStorePath()`. Any code treating the return value as a local path — `is_file()`, `file_exists()`, `file_get_contents()`, `filesize()`, `hash_file()`, `fopen()`, `Imagine::open()`, `Response::sendFile()`/`xSendFile()`, archive/scanner APIs — silently breaks (checks return `false`, reads fail) and must be migrated:
@@ -300,6 +304,45 @@ Each minor release line has its own file with the breaking changes, new APIs and
   and `EVENT_INIT_BANNER_IMAGE` (`humhub\modules\content\events\ContentContainerImageEvent`) to customize
   or replace a container's profile/banner `AssetImage`. Use these instead of overriding `$profileImageClass`,
   which only affects the deprecated `ProfileImage` path.
+- **Impersonation no longer grants access to private content.** Until now an admin impersonating a user saw
+  everything that user sees. Private content and private spaces are now hidden while impersonating, and each
+  impersonation is written to the log (category `user`). Both are configurable via the new
+  `humhub\modules\user\components\Impersonation` component (`Yii::$app->user->impersonation`):
+
+  ```php
+  'components' => [
+      'user' => [
+          'impersonation' => [
+              'allowPrivateContentAccess' => true, // pre-1.19 behavior
+              'log' => false,
+          ],
+      ],
+  ],
+  ```
+
+  - Core enforces the restriction in `Content::canView()`, `ActiveQueryContent::readable()`,
+    `StreamQuery::setupQuery()`, `Space::canAccessPrivateContent()`, `User::canAccessPrivateContent()`,
+    `ActiveQuerySpace::visible()`, the space controller behavior and both content search drivers — content
+    and spaces a module lists through those APIs are already covered. A module running **its own** visibility
+    SQL (a stream filter or search backend that does not go through `ActiveQueryContent`/`StreamQuery`) must
+    check `Yii::$app->user->impersonation->canAccessPrivateContent()` itself and restrict its query to
+    `Content::VISIBILITY_PUBLIC`.
+  - Added the `ControllerAccess::RULE_DENY_IMPERSONATED` access rule. A module whose controller exposes
+    private data that is not `Content`-based (private messages, private files, …) should add
+    `[ControllerAccess::RULE_DENY_IMPERSONATED]` to its `getAccessRules()` — the action is then denied
+    while the impersonation restriction applies. Menu entries and widgets pointing at such a controller
+    should be hidden by checking `Yii::$app->user->impersonation->canAccessPrivateContent()` in their
+    event handler. See the Messenger (`mail`) module, which applies both.
+  - The `humhub\modules\user\components\Impersonator` behavior of the user component was **removed**
+    (no known module usage): `Yii::$app->user->impersonate($user)` → `Yii::$app->user->impersonation->start($user)`,
+    `restoreImpersonator()` → `impersonation->stop()`, `isImpersonated` → `impersonation->isActive()`,
+    `getImpersonator()` → `impersonation->getImpersonator()`, `canImpersonate($user)` → `impersonation->canStart($user)`.
+    The model method `humhub\modules\user\models\User::canImpersonate()` was removed as well, its logic
+    now lives in `Impersonation::canStart()`.
+  - The impersonation state is bound to the session and fails closed: the impersonated identity never
+    receives an auto-login cookie, only the impersonator's user id is stored in the session (no serialized
+    record anymore), and ending an impersonation whose impersonator can no longer be resolved logs the
+    session out instead of silently continuing as the impersonated user.
 
 ## Released versions
 

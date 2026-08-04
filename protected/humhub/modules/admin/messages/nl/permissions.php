@@ -4,7 +4,7 @@ return [
   'Can access the \'Administration -> Information\' section.' => 'Toegang tot Beheer-&gt;informatie',
   'Can manage (e.g. edit or delete) all content (even private)' => 'Kan alle inhoud (zelfs privé) beheren (bijvoorbeeld bewerken of verwijderen)',
   'Can manage Spaces within the \'Administration -> Spaces\' section.' => 'Toegang tot beheer ruimtes  (maken, wijzigen, verwijderen).',
-  'Can manage general settings.' => 'Toegang tot beheer gebruiker->ruimte en algemene instellingen.',
+  'Can manage general settings and module settings.' => 'Hiermee kunt u algemene instellingen en module-instellingen beheren.',
   'Can manage modules within the \'Administration ->  Modules\' section.' => 'Toegang  tot beheer modules.',
   'Can manage users and groups' => 'Toegang tot beheer gebruikers en groepen',
   'Can manage users and user profiles.' => 'Toegang tot beheer gebruikers en gebruikergegevens',

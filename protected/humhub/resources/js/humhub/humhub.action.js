@@ -316,7 +316,18 @@ humhub.module('action', function(module, require, $) {
         } else if($node.data(ComponentClass.component)) {
             return $node.data(ComponentClass.component);
         } else {
-            return ComponentClass.createInstance(ComponentClass, $node, options);
+            try {
+                return ComponentClass.createInstance(ComponentClass, $node, options);
+            } catch(e) {
+                // The Component constructor caches the instance on the node before
+                // the widget's init() runs. A failed construction must not leave
+                // that broken instance behind — every later initialization pass
+                // would resolve it instead of retrying, leaving the widget
+                // permanently dead on this node. Remove it and rethrow, so a later
+                // pass (e.g. applyAdditions) can initialize the widget again.
+                $node.removeData(ComponentClass.component);
+                throw e;
+            }
         }
     };
 

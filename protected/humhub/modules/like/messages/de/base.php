@@ -1,13 +1,12 @@
 <?php
-
 return [
-    ' likes this.' => ' gefällt das.',
-    '<strong>Users</strong> who like this' => '<strong>Benutzer</strong>, denen das gefällt',
-    'Like' => 'Gefällt mir',
-    'Unlike' => 'Gefällt mir nicht mehr',
-    'You' => 'Du',
-    'You like this.' => 'Dir gefällt das.',
-    'and {count} more like this.' => 'und {count} anderen gefällt das.',
-    '{displayNames} like {content}.' => '',
-    '{displayName} likes {content}.' => '',
+  ' likes this.' => 'gefällt das.',
+  '<strong>Users</strong> who like this' => '<strong>Benutzer</strong>, denen das gefällt',
+  'Like' => 'Gefällt mir',
+  'Unlike' => 'Gefällt mir nicht mehr',
+  'You' => 'Du',
+  'You like this.' => 'Dir gefällt das.',
+  'and {count} more like this.' => 'und {count} anderen gefällt das.',
+  '{displayNames} like {content}.' => '{displayNames} gefällt {content}.',
+  '{displayName} likes {content}.' => '{displayName} gefällt {content}.',
 ];

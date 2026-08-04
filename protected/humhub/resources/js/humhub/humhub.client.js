@@ -466,6 +466,86 @@ humhub.module('client', function (module, require, $) {
         $(document).off('pjax:beforeSend.humhub_client');
     };
 
+    /**
+     * Published assets may be served from a different origin than the site
+     * (e.g. an S3 bucket or CDN configured for the `assets` mount). jQuery
+     * cannot load cross-domain `<script src>` tags synchronously — its script
+     * transport silently ignores `async: false` — so the scripts of an
+     * ajax/pjax response execute in download-completion order instead of
+     * document order, and only after the inserted content was already
+     * processed: widgets initialize before their module registered
+     * ("Required a non initialized module") or a module executes before a
+     * library it depends on (e.g. FullCalendar).
+     *
+     * For the asset origins announced by the backend (`syncScriptOrigins`,
+     * see CoreJsConfig — these hosts are expected to answer with CORS
+     * headers) this transport restores the exact same-origin semantics:
+     * the script is fetched through a synchronous XHR and evaluated in
+     * place by jQuery. It only engages for the synchronous cross-domain
+     * script requests jQuery issues for injected script tags
+     * (jQuery._evalUrl); JSONP and explicitly asynchronous script loads
+     * are not affected.
+     *
+     * If the asset host does not answer with CORS headers, the transport
+     * falls back to an in-order-executing script element: execution then
+     * stays asynchronous (as without this transport), but at least in
+     * document order.
+     */
+    $.ajaxTransport('+script', function (s) {
+        if (!s.crossDomain || s.async !== false || !isSyncScriptOrigin(s.url)) {
+            return; // fall through to jQuery's default script transport
+        }
+
+        return {
+            send: function (headers, complete) {
+                var xhr = new XMLHttpRequest();
+
+                try {
+                    // Synchronous on purpose: this mirrors the blocking XHR jQuery
+                    // itself uses for same-origin script tags inserted into the DOM.
+                    xhr.open('GET', s.url, false);
+                    xhr.send(null);
+                } catch (e) { // Sync XHR throws on network/CORS failure
+                    xhr = null;
+                }
+
+                if (xhr && xhr.status >= 200 && xhr.status < 300) {
+                    complete(200, 'success', {text: xhr.responseText});
+                    return;
+                }
+
+                module.log.warn('Could not load asset synchronously, falling back to asynchronous ' +
+                    'execution. Are CORS headers configured on the asset host? ' + s.url);
+
+                var script = document.createElement('script');
+                script.src = s.url;
+                script.async = false; // keep document order among fallback-loaded scripts
+                script.onload = script.onerror = function (evt) {
+                    script.remove();
+                    complete(evt.type === 'error' ? 404 : 200, evt.type);
+                };
+                document.head.appendChild(script);
+            },
+            abort: function () {
+                // A synchronous request cannot be aborted; nothing to do.
+            }
+        };
+    });
+
+    var isSyncScriptOrigin = function (url) {
+        var origins = module.config.syncScriptOrigins;
+
+        if (!origins || !origins.length) {
+            return false;
+        }
+
+        try {
+            return origins.indexOf(new URL(url, document.baseURI).origin) >= 0;
+        } catch (e) {
+            return false;
+        }
+    };
+
     module.initOnPjaxLoad = true;
 
     var init = function (isPjax) {

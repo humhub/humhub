@@ -4,7 +4,6 @@ return [
     'Access Admin Information' => 'Informação de Administração de Acessos',
     'Can access the \'Administration -> Information\' section.' => 'Poder aceder à secção \'Administração -&gt; Informação\'.',
     'Can manage Spaces within the \'Administration -> Spaces\' section.' => 'Poder gerir espaços (criar/editar/apagar) dentro da secção \'Administração -&gt; Espaços\'.',
-    'Can manage general settings.' => 'Poder gerir definições gerais, de utilização, e de espaço.',
     'Can manage modules within the \'Administration ->  Modules\' section.' => 'Poder gerir módulos dentro da secção \'Administração -&gt; Módulos\'.',
     'Can manage users and groups' => 'Poder gerir pessoas e grupos',
     'Can manage users and user profiles.' => 'Poder gerir pessoas e perfis.',
@@ -14,5 +13,6 @@ return [
     'Manage Spaces' => 'Gerir Espaços',
     'Manage Users' => 'Gerir Pessoas',
     'Can manage (e.g. edit or delete) all content (even private)' => '',
+    'Can manage general settings and module settings.' => '',
     'Manage All Content' => '',
 ];
