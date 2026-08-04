@@ -9,7 +9,7 @@ HumHub Changelog
 - Fix #8359: Display user sub name on invite after space creating
 - Fix #8361: Prevent non-creators from attaching or deleting another user's unassigned file
 - Fix #8365: Encode deletion reason in comment and content deletion notifications
-- Fix #XXXX: Ensure marketplace module metadata is rendered as encoded text in the administration views
+- Fix #8378: Ensure marketplace module metadata is rendered as encoded text in the administration views
 
 1.18.4 (July 21, 2026)
 ----------------------
