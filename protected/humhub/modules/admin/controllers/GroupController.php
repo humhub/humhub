@@ -286,8 +286,12 @@ class GroupController extends Controller
         }
 
         $form = new AddGroupMemberForm();
+        $form->load(Yii::$app->request->post());
 
-        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+        // Ensure the current user is allowed to manage the group the members are added to
+        $this->checkGroupAccess($form->getGroup());
+
+        if ($form->validate()) {
             $form->save();
         }
 
