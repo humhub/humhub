@@ -304,6 +304,45 @@ Each minor release line has its own file with the breaking changes, new APIs and
   and `EVENT_INIT_BANNER_IMAGE` (`humhub\modules\content\events\ContentContainerImageEvent`) to customize
   or replace a container's profile/banner `AssetImage`. Use these instead of overriding `$profileImageClass`,
   which only affects the deprecated `ProfileImage` path.
+- **Impersonation no longer grants access to private content.** Until now an admin impersonating a user saw
+  everything that user sees. Private content and private spaces are now hidden while impersonating, and each
+  impersonation is written to the log (category `user`). Both are configurable via the new
+  `humhub\modules\user\components\Impersonation` component (`Yii::$app->user->impersonation`):
+
+  ```php
+  'components' => [
+      'user' => [
+          'impersonation' => [
+              'allowPrivateContentAccess' => true, // pre-1.19 behavior
+              'log' => false,
+          ],
+      ],
+  ],
+  ```
+
+  - Core enforces the restriction in `Content::canView()`, `ActiveQueryContent::readable()`,
+    `StreamQuery::setupQuery()`, `Space::canAccessPrivateContent()`, `User::canAccessPrivateContent()`,
+    `ActiveQuerySpace::visible()`, the space controller behavior and both content search drivers — content
+    and spaces a module lists through those APIs are already covered. A module running **its own** visibility
+    SQL (a stream filter or search backend that does not go through `ActiveQueryContent`/`StreamQuery`) must
+    check `Yii::$app->user->impersonation->canAccessPrivateContent()` itself and restrict its query to
+    `Content::VISIBILITY_PUBLIC`.
+  - Added the `ControllerAccess::RULE_DENY_IMPERSONATED` access rule. A module whose controller exposes
+    private data that is not `Content`-based (private messages, private files, …) should add
+    `[ControllerAccess::RULE_DENY_IMPERSONATED]` to its `getAccessRules()` — the action is then denied
+    while the impersonation restriction applies. Menu entries and widgets pointing at such a controller
+    should be hidden by checking `Yii::$app->user->impersonation->canAccessPrivateContent()` in their
+    event handler. See the Messenger (`mail`) module, which applies both.
+  - The `humhub\modules\user\components\Impersonator` behavior of the user component was **removed**
+    (no known module usage): `Yii::$app->user->impersonate($user)` → `Yii::$app->user->impersonation->start($user)`,
+    `restoreImpersonator()` → `impersonation->stop()`, `isImpersonated` → `impersonation->isActive()`,
+    `getImpersonator()` → `impersonation->getImpersonator()`, `canImpersonate($user)` → `impersonation->canStart($user)`.
+    The model method `humhub\modules\user\models\User::canImpersonate()` was removed as well, its logic
+    now lives in `Impersonation::canStart()`.
+  - The impersonation state is bound to the session and fails closed: the impersonated identity never
+    receives an auto-login cookie, only the impersonator's user id is stored in the session (no serialized
+    record anymore), and ending an impersonation whose impersonator can no longer be resolved logs the
+    session out instead of silently continuing as the impersonated user.
 
 ## Released versions
 

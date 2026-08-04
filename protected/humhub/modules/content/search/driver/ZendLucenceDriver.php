@@ -244,6 +244,13 @@ class ZendLucenceDriver extends AbstractDriver
     {
         $permissionQuery = new Boolean();
 
+        if (!Yii::$app->user->impersonation->canAccessPrivateContent()) {
+            $permissionQuery->addSubquery(new TermQuery(new Term(Content::VISIBILITY_PUBLIC, 'visibility')), true);
+            $query->addSubquery($permissionQuery, true);
+
+            return $query;
+        }
+
         if (!Yii::$app->user->isGuest) {
             $user = Yii::$app->user->getIdentity();
 
