@@ -5,8 +5,8 @@ Version 1.18.5
 ------------
 
 ### Changed
-- `Space::getUserGroup()` reports memberships whose stored group is not one of `admin`, `moderator` or `member` as `member` ([see PR #8375](https://github.com/humhub/humhub/pull/8375))
-- User groups not known to the content container no longer satisfy non-strict `userGroup` access rules in `UserGroupAccessValidator`. Custom content containers defining additional user groups have to extend `$spaceGroupLevel` / `$profileGroupLevel` ([see PR #8375](https://github.com/humhub/humhub/pull/8375))
+- `Space::getUserGroup()` reports memberships whose stored group is not one of `admin`, `moderator` or `member` as `member` ([see PR #8376](https://github.com/humhub/humhub/pull/8376))
+- User groups not known to the content container no longer satisfy non-strict `userGroup` access rules in `UserGroupAccessValidator`. Custom content containers defining additional user groups have to extend `$spaceGroupLevel` / `$profileGroupLevel` ([see PR #8376](https://github.com/humhub/humhub/pull/8376))
 
 ### New
 - `Membership::SCENARIO_EDIT_ROLE` limiting mass assignment to `group_id` when editing the role of an existing space membership
