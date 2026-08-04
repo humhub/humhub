@@ -38,7 +38,7 @@ class GateManagerTest extends HumHubDbTestCase
 
     public function testGatesAreCollectedViaInitEventAndSorted()
     {
-        Event::on(GateManager::class, GateManager::EVENT_INIT_GATES, function (GateInitEvent $event) {
+        Event::on(GateManager::class, GateManager::EVENT_INIT_GATES, function (GateInitEvent $event): void {
             $event->manager->register(new FakeGate(['id' => 'late', 'sortOrder' => 300]));
             $event->manager->register(new FakeGate(['id' => 'early', 'sortOrder' => 100]));
         });

@@ -811,7 +811,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
                 // Enforce an absolute URL when a scheme was requested, unless the
                 // implementation already returned one. Once the models honor
                 // $scheme themselves, this becomes a no-op.
-                if ($scheme && !str_starts_with($url, 'http')) {
+                if ($scheme && !str_starts_with((string) $url, 'http')) {
                     $url = Url::to($url, $scheme);
                 }
 

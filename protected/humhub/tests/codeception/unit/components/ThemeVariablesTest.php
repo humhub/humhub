@@ -60,7 +60,6 @@ class ThemeVariablesTest extends HumHubDbTestCase
         $theme = new Theme(['name' => static::THEME_NAME, 'basePath' => $this->themeBase]);
 
         $parents = new ReflectionProperty(Theme::class, 'parents');
-        $parents->setAccessible(true);
         $parents->setValue($theme, []);
 
         return new ThemeVariablesMock(['theme' => $theme]);

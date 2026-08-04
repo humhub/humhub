@@ -179,7 +179,7 @@ class SettingsManagerTest extends HumHubDbTestCase
         $this->assertRecordNotExists($table, ['name' => $setting, 'module_id' => $module]);
 
         // Simulate a concurrent request inserting the same setting between find() and save()
-        Event::on(Setting::class, Setting::EVENT_BEFORE_INSERT, function () use ($table, $setting, $module) {
+        Event::on(Setting::class, Setting::EVENT_BEFORE_INSERT, function () use ($table, $setting, $module): void {
             Event::off(Setting::class, Setting::EVENT_BEFORE_INSERT);
             Yii::$app->db->createCommand()->insert($table, [
                 'module_id' => $module,
