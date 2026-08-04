@@ -109,6 +109,13 @@ HumHub Changelog
 1.18.5 (Unreleased)
 -------------------
 - Fix #8340: Defer module update `opcache_reset()` to the end of the request to avoid interrupting the update in worker runtimes (e.g. FrankenPHP)
+- Fix #8357: Cast app name to string (This fixes the issue of instances with names consisting of numbers not being able to be added to the mobile app)
+- Enh #8346: Force Select2 dropdowns to always open below the field instead of flipping above when there's not enough space
+- Fix #8359: Display user sub name on invite after space creating
+- Fix #8361: Prevent non-creators from attaching or deleting another user's unassigned file
+- Fix #8365: Encode deletion reason in comment and content deletion notifications
+- Fix #8374: Ensure adding group members is restricted to groups the current user manages
+- Fix #8373: Ensure the oEmbed consent prompt encodes the requested URL so embedded markup stays inert
 
 1.18.4 (July 21, 2026)
 ----------------------
