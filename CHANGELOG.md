@@ -10,6 +10,8 @@ HumHub Changelog
 - Fix #8361: Prevent non-creators from attaching or deleting another user's unassigned file
 - Fix #8365: Encode deletion reason in comment and content deletion notifications
 - Fix #8370: Fix notification dropdown pagination duplicating/skipping entries by switching to keyset pagination, fix a request race condition in `loadEntries()`, and load more entries automatically when the list doesn't overflow its container (so infinite scroll no longer gets stuck when the first page of short entries never becomes scrollable)
+- Fix #8374: Ensure adding group members is restricted to groups the current user manages
+- Fix #8373: Ensure the oEmbed consent prompt encodes the requested URL so embedded markup stays inert
 
 1.18.4 (July 21, 2026)
 ----------------------
