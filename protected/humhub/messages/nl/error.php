@@ -14,4 +14,5 @@ return [
     'You need admin permissions to access this section.' => 'U hebt beheerdersrechten nodig voor dit onderdeel.',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => 'Uw gebruikersaccount is nog niet goedgekeurd, probeer het later opnieuw of neem contact op met de beheerder.',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'Uw gebruikersaccount is inactief, log in met een actief account of neem contact op met de beheerder.',
+    'Access to private content is not allowed while impersonating a user.' => '',
 ];
