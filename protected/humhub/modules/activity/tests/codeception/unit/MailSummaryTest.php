@@ -12,6 +12,7 @@ use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\comment\activities\NewCommentActivity;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\activities\ContentCreatedActivity;
+use humhub\modules\content\models\Content;
 use humhub\modules\post\models\Post;
 use humhub\modules\space\activities\MemberAddedActivity;
 use humhub\modules\space\models\Space;
@@ -446,6 +447,34 @@ class MailSummaryTest extends HumHubDbTestCase
         $this->assertEmpty($user3Activities);
     }
 
+
+    public function testSummaryExcludesContentOfPendingSpaceInvite()
+    {
+        $space5 = Space::findOne(['id' => 5]);
+        $space5->inviteMember(4, 1, false);
+
+        $this->becomeUser('Admin');
+        $post = new Post($space5, Content::VISIBILITY_PRIVATE, ['message' => 'Private space content']);
+        $this->assertTrue($post->save());
+
+        // User3 is only invited to the private space and therefore must not receive its activities
+        $summaryUser3 = $this->createSummary(User::findOne(['id' => 4]), MailSummary::INTERVAL_DAILY);
+        $this->assertEmpty($summaryUser3->getActivities());
+    }
+
+    public function testSummaryExcludesContentOfPendingMembershipRequest()
+    {
+        $space5 = Space::findOne(['id' => 5]);
+        $space5->requestMembership(4);
+
+        $this->becomeUser('Admin');
+        $post = new Post($space5, Content::VISIBILITY_PRIVATE, ['message' => 'Private space content']);
+        $this->assertTrue($post->save());
+
+        // User3 only applied for membership and therefore must not receive the space activities
+        $summaryUser3 = $this->createSummary(User::findOne(['id' => 4]), MailSummary::INTERVAL_DAILY);
+        $this->assertEmpty($summaryUser3->getActivities());
+    }
 
     private function assertContainsActivity($activityClass, $activities, $message = null)
     {

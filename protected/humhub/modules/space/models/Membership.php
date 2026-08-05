@@ -382,6 +382,7 @@ class Membership extends ActiveRecord
             ->innerJoin('space_membership sm', 'space.id = sm.space_id')
             ->where('sm.user_id = :userId', [':userId' => $user->id])
             ->indexBy('id')
+            ->andWhere('sm.status = :membershipStatusMember', [':membershipStatusMember' => self::STATUS_MEMBER])
             ->andWhere('space.status = :spaceStatusEnabled', [':spaceStatusEnabled' => Space::STATUS_ENABLED]);
     }
 
