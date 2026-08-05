@@ -144,6 +144,13 @@ humhub.module('notification', function (module, require, $) {
             .finally(function () {
                 that.loader(false);
                 that.loading = false;
+
+                // Must happen here, after `loading` is reset - not from
+                // within handleResult() (which runs inside the `.then()`
+                // above, before this `.finally()`). Calling loadEntries()
+                // again while `loading` is still true would be silently
+                // swallowed by its own re-entrancy guard.
+                that.loadMoreIfNotScrollable();
             });
     };
 
@@ -168,6 +175,24 @@ humhub.module('notification', function (module, require, $) {
         this.updateCount(parseInt(response.newNotifications));
         this.lastEntryLoaded = (response.counter < 6);
         this.$entryList.fadeIn('fast');
+    };
+
+    NotificationDropDown.prototype.loadMoreIfNotScrollable = function () {
+        if (this.lastEntryLoaded) {
+            return;
+        }
+
+        var containerHeight = this.$entryList.height();
+        var scrollHeight = this.$entryList.prop('scrollHeight');
+
+        // Same +1 tolerance as the scroll handler above: height() can return
+        // a fractional CSS pixel value (e.g. 349.5) that is slightly less
+        // than the integer scrollHeight (350) even with zero real overflow,
+        // which would otherwise falsely count as "still scrollable" and skip
+        // the extra load.
+        if (scrollHeight <= containerHeight + 1) {
+            this.loadEntries();
+        }
     };
 
     NotificationDropDown.prototype.parseNotifications = function () {

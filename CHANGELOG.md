@@ -9,7 +9,7 @@ HumHub Changelog
 - Fix #8359: Display user sub name on invite after space creating
 - Fix #8361: Prevent non-creators from attaching or deleting another user's unassigned file
 - Fix #8365: Encode deletion reason in comment and content deletion notifications
-- Fix #8370: Fix notification dropdown pagination duplicating/skipping entries by switching to keyset pagination and fixing a request race condition in `loadEntries()`
+- Fix #8370: Fix notification dropdown pagination duplicating/skipping entries by switching to keyset pagination, fix a request race condition in `loadEntries()`, and load more entries automatically when the list doesn't overflow its container (so infinite scroll no longer gets stuck when the first page of short entries never becomes scrollable)
 
 1.18.4 (July 21, 2026)
 ----------------------
