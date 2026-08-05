@@ -40,14 +40,7 @@ class SpaceDirectoryActionButtons extends Widget
 
         $html .= MembershipButton::widget([
             'space' => $this->space,
-            'options' => [
-                'requestMembership' => ['attrs' => ['class' => 'btn btn-accent btn-sm']],
-                'becomeMember' => ['attrs' => ['class' => 'btn btn-accent btn-sm']],
-                'acceptInvite' => ['attrs' => ['class' => 'btn btn-accent btn-sm'], 'togglerClass' => 'btn btn-accent btn-sm'],
-                'cancelPendingMembership' => ['attrs' => ['class' => 'btn btn-sm btn-outline-accent']],
-                'cancelMembership' => ['visible' => true, 'attrs' => ['class' => 'btn btn-sm btn-outline-accent']],
-                'cannotCancelMembership' => ['visible' => true, 'attrs' => ['class' => 'btn btn-sm btn-outline-accent']],
-            ],
+            'variant' => MembershipButton::VARIANT_DIRECTORY,
         ]);
 
         if (trim($html) === '') {

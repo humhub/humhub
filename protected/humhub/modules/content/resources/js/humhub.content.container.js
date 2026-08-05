@@ -40,9 +40,9 @@ humhub.module('content.container', function (module, require, $) {
 
     var relationship = function (evt) {
         var postOptions = {};
-        var buttonOptions = evt.$trigger.data('button-options');
-        if (buttonOptions) {
-            postOptions.data = {options: buttonOptions};
+        var buttonVariant = evt.$trigger.data('button-variant');
+        if (buttonVariant) {
+            postOptions.data = {variant: buttonVariant};
         }
         client.post(evt, postOptions).then(function (response) {
             var oldButton = evt.$trigger;

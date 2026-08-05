@@ -24,7 +24,6 @@ use humhub\widgets\modal\ModalClose;
 use Throwable;
 use Yii;
 use yii\base\InvalidConfigException;
-use yii\helpers\Json;
 use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
 use yii\web\Response;
@@ -137,12 +136,12 @@ class MembershipController extends ContentContainerController
                 'spaceId' => $space->id,
                 'newMembershipButton' => MembershipButton::widget([
                     'space' => $space,
-                    'options' => empty($model->options) ? [] : Json::decode($model->options),
+                    'variant' => $model->variant,
                 ]),
             ]);
         }
 
-        $model->options = $this->request->get('options');
+        $model->variant = MembershipButton::resolveVariant($this->request->get('variant'));
 
         return $this->renderAjax('requestMembership', ['model' => $model, 'space' => $space]);
     }
@@ -328,7 +327,7 @@ class MembershipController extends ContentContainerController
     protected function getActionResult(Space $space)
     {
         if ($this->request->isAjax && !Yii::$app->request->get('redirect', false)) {
-            $options = $this->request->post('options', []);
+            $options = [];
 
             // Show/Hide the "Follow"/"Unfollow" buttons depending on updated membership state after AJAX action
             if ($space->isMember()) {
@@ -340,6 +339,7 @@ class MembershipController extends ContentContainerController
 
             return MembershipButton::widget([
                 'space' => $space,
+                'variant' => MembershipButton::resolveVariant($this->request->post('variant')),
                 'options' => $options,
             ]);
         }

@@ -31,7 +31,7 @@ SpaceAsset::register($this);
     <br/>
     <br/>
 
-    <?= $form->field($model, 'options')->hiddenInput()->label(false) ?>
+    <?= $form->field($model, 'variant')->hiddenInput()->label(false) ?>
     <?= $form->field($model, 'message')->textarea([
         'id' => 'request-message',
         'placeholder' => Yii::t('SpaceModule.base', 'I want to become a member because...'),

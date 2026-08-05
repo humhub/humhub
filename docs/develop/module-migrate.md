@@ -343,6 +343,33 @@ Each minor release line has its own file with the breaking changes, new APIs and
     receives an auto-login cookie, only the impersonator's user id is stored in the session (no serialized
     record anymore), and ending an impersonation whose impersonator can no longer be resolved logs the
     session out instead of silently continuing as the impersonated user.
+- `humhub\modules\space\widgets\MembershipButton` and `humhub\modules\friendship\widgets\FriendshipButton`
+  no longer round trip their `options` through the client. Both buttons are re-rendered by the server after
+  a membership/friendship change, and the option array — including button titles, urls and arbitrary HTML
+  attributes — used to be emitted as `data-button-options`, posted back by
+  `content.container.relationship` and merged into the widget unfiltered.
+  - The `data-button-options` attribute was replaced by `data-button-variant`, which carries only the name
+    of a **server side** option set. `MembershipController::actionRequestMembershipForm()` accordingly
+    takes a `variant` parameter instead of an `options` JSON string, and
+    `humhub\modules\space\models\forms\RequestMembershipForm::$options` was replaced by `$variant`.
+  - Added `MembershipButton::$variant` / `FriendshipButton::$variant` plus
+    `registerVariant()`, `resolveVariant()`, `getVariantOptions()` and `getVariantNames()`.
+    Core variants: `MembershipButton::VARIANT_DEFAULT`, `VARIANT_HEADER` (space header),
+    `VARIANT_DIRECTORY` (space directory), and `FriendshipButton::VARIANT_DEFAULT`,
+    `VARIANT_DIRECTORY` (people directory). Unknown names resolve to the default variant.
+  - **Passing `options` to either widget still works and is unchanged for server side callers.** Only the
+    round trip is gone: options that a module needs to survive the re-render after an AJAX action must be
+    registered as a variant and selected by name instead:
+    ```php
+    MembershipButton::registerVariant('my-module', [
+        'becomeMember' => ['attrs' => ['class' => 'btn btn-accent btn-sm']],
+    ]);
+
+    MembershipButton::widget(['space' => $space, 'variant' => 'my-module']);
+    ```
+  - Themes and modules styling the buttons globally via `MembershipButton::EVENT_INIT` and
+    `setDefaultOptions()` are unaffected. The variant is merged **below** that hook, so the effective
+    precedence is `defaults < variant < setDefaultOptions() < $options`.
 
 ## Released versions
 

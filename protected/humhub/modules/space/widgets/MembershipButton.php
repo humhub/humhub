@@ -14,7 +14,6 @@ use humhub\modules\space\models\Space;
 use humhub\modules\ui\icon\widgets\Icon;
 use Yii;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Json;
 
 /**
  * MembershipButton shows various membership related buttons in space header.
@@ -25,21 +24,120 @@ use yii\helpers\Json;
 class MembershipButton extends Widget
 {
     /**
+     * Presentation variant used by the space header.
+     */
+    public const VARIANT_HEADER = 'header';
+
+    /**
+     * Presentation variant used by the space directory.
+     */
+    public const VARIANT_DIRECTORY = 'directory';
+
+    /**
+     * Presentation variant used when no variant is given.
+     */
+    public const VARIANT_DEFAULT = 'default';
+
+    /**
+     * Option sets which may be selected by name. Since the button is re-rendered after
+     * a membership change, the client only passes the variant name back to the server,
+     * which keeps the actual option values under server control.
+     *
+     * @var array<string, array>
+     * @see registerVariant()
+     */
+    private static $variants = [
+        self::VARIANT_DEFAULT => [],
+        self::VARIANT_HEADER => [
+            'becomeMember' => ['mode' => 'link'],
+            'acceptInvite' => ['mode' => 'link'],
+        ],
+        self::VARIANT_DIRECTORY => [
+            'requestMembership' => ['attrs' => ['class' => 'btn btn-accent btn-sm']],
+            'becomeMember' => ['attrs' => ['class' => 'btn btn-accent btn-sm']],
+            'acceptInvite' => ['attrs' => ['class' => 'btn btn-accent btn-sm'], 'togglerClass' => 'btn btn-accent btn-sm'],
+            'cancelPendingMembership' => ['attrs' => ['class' => 'btn btn-sm btn-outline-accent']],
+            'cancelMembership' => ['visible' => true, 'attrs' => ['class' => 'btn btn-sm btn-outline-accent']],
+            'cannotCancelMembership' => ['visible' => true, 'attrs' => ['class' => 'btn btn-sm btn-outline-accent']],
+        ],
+    ];
+
+    /**
      * @var Space
      */
     public $space;
+
+    /**
+     * @var string Name of the presentation variant, see [[registerVariant()]]. Unknown
+     * names fall back to [[VARIANT_DEFAULT]].
+     * @since 1.19
+     */
+    public $variant = self::VARIANT_DEFAULT;
 
     /**
      * @var array Options buttons
      */
     public $options = [];
 
+    /**
+     * Registers an option set which can be selected by name through [[$variant]].
+     *
+     * Use this instead of passing options which have to survive the re-render after a
+     * membership change, since options are no longer round tripped through the client.
+     *
+     * @since 1.19
+     */
+    public static function registerVariant(string $name, array $options): void
+    {
+        self::$variants[$name] = $options;
+    }
+
+    /**
+     * @return string[] names of all registered variants
+     * @since 1.19
+     */
+    public static function getVariantNames(): array
+    {
+        return array_keys(self::$variants);
+    }
+
+    /**
+     * Maps a variant name to a registered variant. Unknown or malformed values, e.g. when
+     * supplied by a request, resolve to [[VARIANT_DEFAULT]].
+     *
+     * @param mixed $variant
+     * @since 1.19
+     */
+    public static function resolveVariant($variant): string
+    {
+        return is_string($variant) && isset(self::$variants[$variant]) ? $variant : self::VARIANT_DEFAULT;
+    }
+
+    /**
+     * @return array the options of the given variant
+     * @since 1.19
+     */
+    public static function getVariantOptions($variant): array
+    {
+        return self::$variants[static::resolveVariant($variant)];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        $this->variant = static::resolveVariant($this->variant);
+
+        parent::init();
+    }
+
     private function getDefaultOptions()
     {
         return [
             'requestMembership' => [
                 'title' => Yii::t('SpaceModule.base', 'Join'),
-                'url' => $this->space->createUrl('/space/membership/request-membership-form', empty($this->options) ? [] : ['options' => Json::encode($this->options)]),
+                'url' => $this->space->createUrl('/space/membership/request-membership-form', $this->variant === self::VARIANT_DEFAULT ? [] : ['variant' => $this->variant]),
                 'attrs' => [
                     'class' => 'btn btn-accent',
                     'data-space-request-membership' => $this->space->id,
@@ -52,7 +150,7 @@ class MembershipButton extends Widget
                 'attrs' => [
                     'data-action-click' => 'content.container.relationship',
                     'data-action-url' => $this->space->createUrl('/space/membership/request-membership'),
-                    'data-button-options' => Json::encode($this->options),
+                    'data-button-variant' => $this->variant,
                     'data-ui-loader' => '',
                     'class' => 'btn btn-accent',
                     'data-space-request-membership' => $this->space->id,
@@ -64,7 +162,7 @@ class MembershipButton extends Widget
                 'attrs' => [
                     'data-action-click' => 'content.container.relationship',
                     'data-action-url' => $this->space->createUrl('/space/membership/invite-accept'),
-                    'data-button-options' => Json::encode($this->options),
+                    'data-button-variant' => $this->variant,
                     'data-ui-loader' => '',
                     'class' => 'btn btn-accent',
                 ],
@@ -77,7 +175,7 @@ class MembershipButton extends Widget
                 'attrs' => [
                     'data-action-click' => 'content.container.relationship',
                     'data-action-url' => $this->space->createUrl('/space/membership/revoke-membership'),
-                    'data-button-options' => Json::encode($this->options),
+                    'data-button-variant' => $this->variant,
                     'data-ui-loader' => '',
                 ],
             ],
@@ -88,7 +186,7 @@ class MembershipButton extends Widget
                     'data-action-click' => 'content.container.relationship',
                     'data-action-url' => $this->space->createUrl('/space/membership/revoke-membership'),
                     'data-action-confirm' => Yii::t('SpaceModule.base', 'Would you like to withdraw your request to join Space {spaceName}?', ['{spaceName}' => '<strong>' . Html::encode($this->space->getDisplayName()) . '</strong>']),
-                    'data-button-options' => Json::encode($this->options),
+                    'data-button-variant' => $this->variant,
                     'data-ui-loader' => '',
                     'class' => 'btn btn-accent active',
                 ],
@@ -103,7 +201,7 @@ class MembershipButton extends Widget
                     'data-action-confirm-header' => Yii::t('SpaceModule.base', '<strong>Leave</strong> Space'),
                     'data-action-confirm' => Yii::t('SpaceModule.base', 'Would you like to end your membership in Space {spaceName}?', ['{spaceName}' => '<strong>' . Html::encode($this->space->getDisplayName()) . '</strong>']),
                     'data-action-confirm-text' => Yii::t('SpaceModule.base', 'Leave'),
-                    'data-button-options' => Json::encode($this->options),
+                    'data-button-variant' => $this->variant,
                     'data-ui-loader' => '',
                     'class' => 'btn btn-accent active',
                 ],
@@ -125,7 +223,11 @@ class MembershipButton extends Widget
     public function getOptions(?array $defaultOptions = null): array
     {
         if ($defaultOptions === null) {
-            $defaultOptions = $this->getDefaultOptions();
+            // Effective precedence: defaults < variant < setDefaultOptions() < $this->options
+            $defaultOptions = ArrayHelper::merge(
+                $this->getDefaultOptions(),
+                static::getVariantOptions($this->variant),
+            );
         }
 
         return $this->prepareButtonOptions(ArrayHelper::merge($defaultOptions, $this->options));
@@ -157,7 +259,7 @@ class MembershipButton extends Widget
                 $button['attrs']['data-method'] = $button['mode_method'] ?? 'POST';
                 unset($button['attrs']['data-action-click']);
                 unset($button['attrs']['data-action-url']);
-                unset($button['attrs']['data-button-options']);
+                unset($button['attrs']['data-button-variant']);
                 $options[$b] = $button;
             }
         }
