@@ -11,7 +11,7 @@ HumHub Changelog
 - Fix #8365: Encode deletion reason in comment and content deletion notifications
 - Fix #8374: Ensure adding group members is restricted to groups the current user manages
 - Fix #8373: Ensure the oEmbed consent prompt encodes the requested URL so embedded markup stays inert
-- Fix #XXXX: Ensure membership button options supplied by the request are limited to presentation values and safely encoded in the response
+- Fix #8379: Ensure membership button options supplied by the request are limited to presentation values and safely encoded in the response
 
 1.18.4 (July 21, 2026)
 ----------------------
