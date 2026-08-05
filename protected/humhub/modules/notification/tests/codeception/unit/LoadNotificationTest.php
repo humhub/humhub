@@ -15,6 +15,10 @@ class LoadNotificationTest extends HumHubDbTestCase
     {
         $this->becomeUser('User1');
 
+        // loadMore() uses keyset pagination: each next page is requested
+        // using the cursor of the last loaded group, not an offset or a
+        // plain notification id, since results are ordered by aggregate
+        // columns that have no fixed relation to either of those.
         $notifications = Notification::loadMore();
         $this->assertEquals(6, count($notifications));
 
@@ -22,14 +26,16 @@ class LoadNotificationTest extends HumHubDbTestCase
         $this->assertEquals(18, max($ids));
         $this->assertEquals(13, min($ids));
 
-        $notifications = Notification::loadMore(13);
+        $cursor = end($notifications)->getPagingCursor();
+        $notifications = Notification::loadMore($cursor);
         $this->assertEquals(6, count($notifications));
 
         $ids = array_map(static fn($o) => $o->id, $notifications);
         $this->assertEquals(12, max($ids));
         $this->assertEquals(7, min($ids));
 
-        $notifications = Notification::loadMore(7);
+        $cursor = end($notifications)->getPagingCursor();
+        $notifications = Notification::loadMore($cursor);
         $this->assertEquals(6, count($notifications));
 
         $ids = array_map(static fn($o) => $o->id, $notifications);
