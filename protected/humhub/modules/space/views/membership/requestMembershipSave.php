@@ -3,6 +3,7 @@
 use humhub\helpers\Html;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
+use yii\helpers\Json;
 
 /* @var $spaceId int */
 /* @var $newMembershipButton string */
@@ -18,5 +19,5 @@ use humhub\widgets\modal\ModalButton;
 <?php Modal::endDialog() ?>
 
 <script <?= Html::nonce() ?>>
-    $('[data-space-request-membership=<?= $spaceId ?>]').replaceWith('<?= $newMembershipButton ?>');
+    $('[data-space-request-membership=<?= (int)$spaceId ?>]').replaceWith(<?= Json::htmlEncode($newMembershipButton) ?>);
 </script>
