@@ -66,8 +66,9 @@ class AddGroupMemberForm extends Model
             throw new HttpException(404, Yii::t('AdminModule.user', 'Group not found!'));
         }
 
-        if ($group->is_admin_group && !Yii::$app->user->isAdmin()) {
-            throw new HttpException(403);
+        // Ensure the current user is allowed to manage this specific group
+        if (!$group->canManage()) {
+            throw new HttpException(403, 'No permission to manage this group.');
         }
 
         foreach ($this->userGuids as $userGuid) {
