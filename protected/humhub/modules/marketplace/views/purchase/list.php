@@ -57,19 +57,19 @@ Assets::register($this);
                 <div class="flex-shrink-0 me-2">
                     <img class="rounded me-3" data-src="holder.js/64x64" alt="64x64"
                          style="width: 64px; height: 64px;"
-                         src="<?= empty($module['moduleImageUrl']) ? Yii::getAlias('@web-static/img/default_module.jpg') : $module['moduleImageUrl'] ?>">
+                         src="<?= Html::encode(empty($module['moduleImageUrl']) ? Yii::getAlias('@web-static/img/default_module.jpg') : $module['moduleImageUrl']) ?>">
                 </div>
 
                 <div class="flex-grow-1">
                     <h5 class="mt-0">
                         <strong>
-                            <?= $module['name'] ?>
+                            <?= Html::encode($module['name']) ?>
                             <?php if (Yii::$app->moduleManager->hasModule($module['id'])): ?>
                                 <small><?= Badge::info(Yii::t('MarketplaceModule.base', 'Installed')) ?></small>
                             <?php endif; ?>
                         </strong>
                     </h5>
-                    <p><?= $module['description']; ?></p>
+                    <p><?= Html::encode($module['description']); ?></p>
 
                     <div class="module-controls">
                         <?php if (!Yii::$app->moduleManager->hasModule($module['id'])): ?>
@@ -79,8 +79,8 @@ Assets::register($this);
                             &middot;
                         <?php endif; ?>
                         <?= Html::a(Yii::t('MarketplaceModule.base', 'More info'), $module['marketplaceUrl'], ['target' => '_blank']); ?>
-                        &middot; <?= Yii::t('MarketplaceModule.base', 'Latest version:'); ?> <?= $module['latestVersion']; ?>
-                        &middot; <?= Yii::t('MarketplaceModule.base', 'License Key:'); ?> <?= $module['licence_key']; ?>
+                        &middot; <?= Yii::t('MarketplaceModule.base', 'Latest version:'); ?> <?= Html::encode($module['latestVersion']); ?>
+                        &middot; <?= Yii::t('MarketplaceModule.base', 'License Key:'); ?> <?= Html::encode($module['licence_key']); ?>
                     </div>
                 </div>
             </div>
