@@ -343,6 +343,16 @@ Each minor release line has its own file with the breaking changes, new APIs and
     receives an auto-login cookie, only the impersonator's user id is stored in the session (no serialized
     record anymore), and ending an impersonation whose impersonator can no longer be resolved logs the
     session out instead of silently continuing as the impersonated user.
+- Removed the unreachable `ContentContainerControllerAccess::RULE_CONTAINER_ACCESS`
+  (`'containerAccess'`) rule and its validator `validateContainerAccess()`, along with the
+  private helpers it alone used (`canAccessSpace()`, `getSpaceMembership()`, `canAccessUser()`,
+  the `$_membership` property). The rule was registered but never added to any
+  `getAccessRules()`/`getFixedRules()`, so it never ran — the space and profile visibility
+  checks it duplicated are already enforced unconditionally by `space\behaviors\SpaceController`
+  and `user\behaviors\ProfileController` on `EVENT_BEFORE_ACTION`. No known module referenced
+  the rule. A module that added `[ContentContainerControllerAccess::RULE_CONTAINER_ACCESS]` to
+  its own `getAccessRules()` must remove it; the behaviors already provide equivalent
+  enforcement.
 
 ## Released versions
 
