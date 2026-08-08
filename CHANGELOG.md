@@ -12,6 +12,8 @@ HumHub Changelog
 - Fix #8374: Ensure adding group members is restricted to groups the current user manages
 - Fix #8373: Ensure the oEmbed consent prompt encodes the requested URL so embedded markup stays inert
 - Fix #8378: Ensure marketplace module metadata is rendered as encoded text in the administration views
+- Fix #8375: The My Spaces dropdown could open before its JS widget initialized, staying empty until reopened — now it loads immediately once ready
+
 
 1.18.4 (July 21, 2026)
 ----------------------
