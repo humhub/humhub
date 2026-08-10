@@ -4,6 +4,7 @@ return [
     '<strong>Login</strong> required' => '<strong>必须</strong> 登录',
     'An internal server error occurred.' => '发生了一个内部错误。',
     'You are not allowed to perform this action.' => '你没有权限执行此操作。',
+    'Access to private content is not allowed while impersonating a user.' => '',
     'Guest mode not active, please login first.' => '',
     'Login required for this section.' => '',
     'Maintenance mode activated: You have been automatically logged out and will no longer have access the platform until the maintenance has been completed.' => '',

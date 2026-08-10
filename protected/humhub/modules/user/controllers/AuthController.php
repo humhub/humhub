@@ -647,7 +647,7 @@ class AuthController extends Controller
     {
         $this->forcePostRequest();
 
-        if (Yii::$app->user->restoreImpersonator()) {
+        if (Yii::$app->user->impersonation->stop()) {
             return $this->redirect(['/admin/user/list']);
         }
 

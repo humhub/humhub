@@ -133,7 +133,7 @@ abstract class DirectoryFilters extends Widget
         $filtersHtml = '';
         foreach ($this->filters as $filter => $data) {
             $data = array_merge(self::getDefaultFilterData(), $data);
-            if ($filtersHtml !== '' && !str_contains($data['wrapperClass'], 'form-search-action')) {
+            if ($filtersHtml !== '' && !str_contains((string) $data['wrapperClass'], 'form-search-action')) {
                 // Add styles for filters collapsing by Bootstrap (except of the first filter)
                 $data['wrapperClass'] .= ' collapse show card-filter-' . $this->id;
             }

@@ -4,6 +4,7 @@ return [
     '<strong>Login</strong> required' => 'Nepieciešama <strong>autorizācija</strong>',
     'An internal server error occurred.' => 'Notika iekšēja servera kļūda.',
     'You are not allowed to perform this action.' => 'Tev nav tiesību izpildīt šo darbību.',
+    'Access to private content is not allowed while impersonating a user.' => '',
     'Guest mode not active, please login first.' => '',
     'Login required for this section.' => '',
     'Maintenance mode activated: You have been automatically logged out and will no longer have access the platform until the maintenance has been completed.' => '',

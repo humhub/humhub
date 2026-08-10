@@ -102,7 +102,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
             }
 
             // Remove URL params
-            $parts = parse_url($url);
+            $parts = parse_url((string) $url);
             if (empty($parts['host'])) {
                 continue;
             }
@@ -194,7 +194,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
         $result = Html::beginTag('div', ['class' => 'authChoice d-flex flex-wrap gap-3']);
 
         $clients = array_values($clients); // Reindex array keys
-        foreach ($clients as $i => $client) {
+        foreach ($clients as $client) {
             $result .= $this->clientLink($client);
         }
 

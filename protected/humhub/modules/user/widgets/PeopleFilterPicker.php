@@ -286,7 +286,7 @@ class PeopleFilterPicker extends BasePicker
             // Split multi value strings into their individual values; explode() already
             // returns [$value] unchanged when the delimiter is absent, so no branch is needed.
             $checkboxListValues = array_merge([], ...array_map(
-                static fn($value) => explode(CheckboxList::MULTI_VALUE_DELIMITER, $value),
+                static fn($value) => explode(CheckboxList::MULTI_VALUE_DELIMITER, (string) $value),
                 $values,
             ));
 

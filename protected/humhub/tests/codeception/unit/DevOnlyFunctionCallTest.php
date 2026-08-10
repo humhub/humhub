@@ -31,11 +31,11 @@ class DevOnlyFunctionCallTest extends Unit
         $hits = [];
         foreach ($iterator as $file) {
             $path = $file->getPathname();
-            if (strpos($path, DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR) !== false) {
+            if (str_contains((string) $path, DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR)) {
                 continue;
             }
-            if (strpos(file_get_contents($path), 'codecept_debug(') !== false) {
-                $hits[] = substr($path, strlen($root) + 1);
+            if (str_contains(file_get_contents($path), 'codecept_debug(')) {
+                $hits[] = substr((string) $path, strlen($root) + 1);
             }
         }
 
