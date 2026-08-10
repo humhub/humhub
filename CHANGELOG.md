@@ -27,6 +27,7 @@ HumHub Changelog
 - Enh #8372: Private content and private spaces are now hidden while impersonating a user, and each impersonation is logged — both configurable via the new `Yii::$app->user->impersonation` component; the impersonation state now fails closed (no auto-login cookie for the impersonated identity, only the impersonator's id in the session)
 - Fix #8371: Fix mixed param type nullable by default in `ForceExplicitNullableParamRector`
 - Fix #8383: Removed the unreachable `ContentContainerControllerAccess::RULE_CONTAINER_ACCESS` validator (`validateContainerAccess()`, `canAccessSpace()`, `getSpaceMembership()`, `canAccessUser()`) — the rule was never added to any access rule set, so it never ran; the space/profile visibility checks it duplicated are already enforced by the container controller behaviors
+- Fix #8388: Fix styles of the widget "Latest activities"
 
 1.19.0-beta.1 (July 21, 2026)
 --------------------
