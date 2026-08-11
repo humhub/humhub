@@ -14,12 +14,12 @@ use humhub\widgets\PanelMenu;
 
 ActivityAsset::register($this);
 ?>
-<div class="panel panel-default panel-activities overflow-hidden" id="panel-activities">
+<div class="panel panel-default panel-activities" id="panel-activities">
     <?= PanelMenu::widget() ?>
     <div class="panel-heading">
         <?= Yii::t('ActivityModule.base', '<strong>Latest</strong> activities') ?>
     </div>
-    <div class="panel-body p-0">
+    <div class="panel-body p-0 pb-1">
     <?= Html::beginTag('div', $options) ?>
         <hr class="m-0">
         <?php if (empty($activities)) : ?>
