@@ -65,65 +65,46 @@ class AdminMenu extends LeftNavigation
     {
         $this->panelTitle = Yii::t('AdminModule.base', '<strong>Administration</strong> menu');
 
-        $this->addEntry(new MenuLink([
-            'id' => 'user',
-            'label' => Yii::t('AdminModule.base', 'Users'),
-            'url' => ['/admin/user'],
-            'icon' => 'user',
-            'sortOrder' => 200,
-            'isActive' => ControllerHelper::isActivePath('admin', ['user', 'group', 'approval', 'authentication', 'user-profile', 'pending-registrations', 'user-permissions', 'user-people'])
-                || ControllerHelper::isActivePath('ldap', 'admin'),
-            'isVisible' => Yii::$app->user->can([
-                ManageUsers::class,
-                ManageSettings::class,
-                ManageGroups::class,
-            ]) || Yii::$app->user->isGroupManager(),
-        ]));
+        $this->addEntry(MenuLink::instance(Yii::t('AdminModule.base', 'Users'), ['/admin/user'])
+            ->id('user')
+            ->icon('user')
+            ->sortOrder(200)
+            ->active(ControllerHelper::isActivePath('admin', ['user', 'group', 'approval', 'authentication', 'user-profile', 'pending-registrations', 'user-permissions', 'user-people'])
+                || ControllerHelper::isActivePath('ldap', 'admin'))
+            ->visible(Yii::$app->user->can([ManageUsers::class, ManageSettings::class, ManageGroups::class])
+                || Yii::$app->user->isGroupManager()));
 
-        $this->addEntry(new MenuLink([
-            'id' => 'spaces',
-            'label' => Yii::t('AdminModule.base', 'Spaces'),
-            'url' => ['/admin/space'],
-            'icon' => 'dot-circle-o',
-            'sortOrder' => 400,
-            'isActive' => ControllerHelper::isActivePath('admin', 'space'),
-            'isVisible' => Yii::$app->user->can([
-                ManageSpaces::class,
-                ManageSettings::class,
-            ]),
-        ]));
+        $this->addEntry(MenuLink::instance(Yii::t('AdminModule.base', 'Spaces'), ['/admin/space'])
+            ->id('spaces')
+            ->icon('dot-circle-o')
+            ->sortOrder(400)
+            ->active('admin', 'space')
+            ->visible(Yii::$app->user->can([ManageSpaces::class, ManageSettings::class])));
 
-        $this->addEntry(new MenuLink([
-            'id' => 'modules',
-            'label' => Html::encode(Yii::t('AdminModule.base', 'Modules')) . $this->getMarketplaceUpdatesBadge(),
-            'encodeLabel' => false,
-            'url' => ['/admin/module'],
-            'icon' => 'rocket',
-            'sortOrder' => 500,
-            'htmlOptions' => ['class' => 'modules'],
-            'isActive' => ControllerHelper::isActivePath('admin', 'module'),
-            'isVisible' => Yii::$app->user->can(ManageModules::class) || Yii::$app->user->can(ManageSettings::class),
-        ]));
+        $this->addEntry(MenuLink::instance(Yii::t('AdminModule.base', 'Modules') . $this->getMarketplaceUpdatesBadge())
+            ->url(['/admin/module'])
+            ->encodeLabel(false)
+            ->id('modules')
+            ->icon('rocket')
+            ->sortOrder(500)
+            ->cssClass('modules')
+            ->active('admin', 'module')
+            ->visible(Yii::$app->user->can(ManageModules::class)
+                || Yii::$app->user->can(ManageSettings::class)));
 
-        $this->addEntry(new MenuLink([
-            'id' => 'settings',
-            'label' => Yii::t('AdminModule.base', 'Settings'),
-            'url' => ['/admin/setting'],
-            'icon' => 'gears',
-            'sortOrder' => 600,
-            'isActive' => ControllerHelper::isActivePath('admin', 'setting'),
-            'isVisible' => Yii::$app->user->can(ManageSettings::class),
-        ]));
+        $this->addEntry(MenuLink::instance(Yii::t('AdminModule.base', 'Settings'), ['/admin/setting'])
+            ->id('settings')
+            ->icon('gears')
+            ->sortOrder(600)
+            ->active('admin', 'setting')
+            ->visible(Yii::$app->user->can(ManageSettings::class)));
 
-        $this->addEntry(new MenuLink([
-            'id' => 'information',
-            'label' => Yii::t('AdminModule.base', 'Information'),
-            'url' => ['/admin/information'],
-            'icon' => 'info-circle',
-            'sortOrder' => 1000,
-            'isActive' => ControllerHelper::isActivePath('admin', ['information', 'logging']),
-            'isVisible' => Yii::$app->user->can(SeeAdminInformation::class),
-        ]));
+        $this->addEntry(MenuLink::instance(Yii::t('AdminModule.base', 'Information'), ['/admin/information'])
+            ->id('information')
+            ->icon('info-circle')
+            ->sortOrder(1000)
+            ->active('admin', ['information', 'logging'])
+            ->visible(Yii::$app->user->can(SeeAdminInformation::class)));
 
         parent::init();
     }
