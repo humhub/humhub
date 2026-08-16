@@ -3,7 +3,8 @@ HumHub Changelog
 
 1.19.0-beta.2 (TBD)
 -------------------
-- Enh #TBD: Removed the unused `$right` parameter from `BootstrapVariationsTrait::icon()` (`Button`/`Badge`/`Link`/`Alert`) and from `MenuLink::setIcon()` — `$options` is now the second parameter of `icon()` instead of the third, see `docs/develop/module-migrate.md`
+- Enh #8389: Removed the unused `$right` parameter from `BootstrapVariationsTrait::icon()` (`Button`/`Badge`/`Link`/`Alert`) and from `MenuLink::setIcon()` — `$options` is now the second parameter of `icon()` instead of the third, see `docs/develop/module-migrate.md`
+- Enh #8389: Buttons styling by using flex and gap instead of a right margin on the icon
 - Fix #8380: Activities of private spaces leaked into the activity summary mail and dashboard activity box of users with a pending space invite or join request
 - Fix #8366: Duplicate key error when concurrent requests stored the same setting, e.g. theme variables after a theme switch
 - Enh #8363: A download served by a redirect to a temporary storage URL (a mount whose `useTemporaryUrls()` returns true, e.g. the S3 module) arrived in the browser named `file` and without a usable content type — uploads are stored under an object key ending in `file` and the redirect target carries no `Content-Disposition`, so the browser derived both from the URL path; `DownloadAction` now passes the file name and mime type to `temporaryUrl()` via the new storage-neutral `MountConfigInterface::CONFIG_CONTENT_DISPOSITION` and `CONFIG_CONTENT_TYPE` config keys, which backends able to override response headers on a temporary URL (S3's `response-content-disposition`) honor and others ignore. Added `FileHelper::getContentDispositionHeaderValue()` for the header value, since `Response::getDispositionHeaderValue()` builds the same thing but is protected
