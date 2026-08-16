@@ -353,6 +353,23 @@ Each minor release line has its own file with the breaking changes, new APIs and
   the rule. A module that added `[ContentContainerControllerAccess::RULE_CONTAINER_ACCESS]` to
   its own `getAccessRules()` must remove it; the behaviors already provide equivalent
   enforcement.
+- Removed the `$right` parameter from `humhub\widgets\bootstrap\BootstrapVariationsTrait::icon()`
+  (used by `Button`, `Badge`, `Link` and `Alert`). The parameter was never read by the method —
+  right-aligning an icon already goes through the separate `->right()` method — so this only
+  changes the signature: `icon(string|Icon|null $icon, $options = [])`, `$options` is now the
+  **second** parameter instead of the third.
+  **Warning:** PHP silently ignores extra arguments, so a call like `->icon('user', true)` made
+  for the old `$right` flag does not fail — `true` is now passed as `$options` to `Icon::get()`,
+  which fatals with "Cannot use a scalar value as an array". Audit every `->icon(...)` call that
+  passes a second argument and drop it, or move a third-argument `$options` array into the second
+  position.
+  - `humhub\modules\ui\menu\MenuLink::setIcon()` also dropped its `$right` parameter for the same
+    reason (it only forwarded into `icon()`, and `right()` on the underlying `Button`/`Badge` is
+    the correct way to align an icon). `setIcon($icon, $right)` → `setIcon($icon)`.
+    **Warning:** PHP silently ignores the now-unused second argument instead of erroring, so a
+    call like `$menuLink->setIcon('user', true)` keeps "succeeding" but the icon is no longer
+    right-aligned — audit every `->setIcon(...)` call that passes a second argument and call
+    `->getLink()->right()` explicitly if right-alignment is still needed.
 
 ## Released versions
 
