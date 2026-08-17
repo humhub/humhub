@@ -13,5 +13,6 @@ return [
     'You need admin permissions to access this section.' => 'Χρειάζεστε δικαιώματα διαχειριστή για να αποκτήσετε πρόσβαση σε αυτήν την ενότητα.',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => 'Ο λογαριασμός χρήστη σας δεν έχει εγκριθεί ακόμη, δοκιμάστε ξανά αργότερα ή επικοινωνήστε με έναν διαχειριστή δικτύου.',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'Ο λογαριασμός χρήστη είναι ανενεργός, συνδεθείτε με έναν ενεργό λογαριασμό ή επικοινωνήστε με έναν διαχειριστή δικτύου.',
+    'Access to private content is not allowed while impersonating a user.' => '',
     'The module {moduleId} is present in the HumHub configuration file even though this module is disabled. Please remove it from the configuration.' => '',
 ];

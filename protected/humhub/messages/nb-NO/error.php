@@ -10,6 +10,7 @@ return [
     'You need admin permissions to access this section.' => 'Du trenger administrator tilgang for denne seksjonen',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => 'Din brukerkonto er ikke godkjent enda, prøv igjen senere eller kontakt administrator.',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'Brukerkontoen din er inaktiv. Logg på med en aktiv konto eller kontakt administrator.',
+    'Access to private content is not allowed while impersonating a user.' => '',
     'Maintenance mode activated: You have been automatically logged out and will no longer have access the platform until the maintenance has been completed.' => '',
     'Maintenance mode is active. Only Administrators can access the platform.' => '',
     'The module {moduleId} is present in the HumHub configuration file even though this module is disabled. Please remove it from the configuration.' => '',

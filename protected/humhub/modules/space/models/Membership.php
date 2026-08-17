@@ -60,6 +60,13 @@ class Membership extends ActiveRecord
     public const STATUS_APPLICANT = 2;
     public const STATUS_MEMBER = 3;
 
+    /**
+     * Scenario used when only the space user group (role) of an existing membership is edited.
+     *
+     * @since 1.18.5
+     */
+    public const SCENARIO_EDIT_ROLE = 'editRole';
+
     public const USER_SPACES_CACHE_KEY = 'userSpaces_';
     public const USER_SPACEIDS_CACHE_KEY = 'userSpaceIds_';
 
@@ -73,6 +80,25 @@ class Membership extends ActiveRecord
     }
 
     /**
+     * Returns the space user groups a membership can be assigned to.
+     *
+     * The owner group is not included on purpose: it is derived from the space creator and can
+     * only be changed through the dedicated change owner workflow. The guest and user groups
+     * describe non members and are therefore not assignable either.
+     *
+     * @return string[]
+     * @since 1.18.5
+     */
+    public static function getAssignableUserGroups(): array
+    {
+        return [
+            Space::USERGROUP_ADMIN,
+            Space::USERGROUP_MODERATOR,
+            Space::USERGROUP_MEMBER,
+        ];
+    }
+
+    /**
      * @inheritdoc
      */
     public function rules()
@@ -82,7 +108,21 @@ class Membership extends ActiveRecord
             [['space_id', 'user_id', 'originator_user_id', 'status', 'created_by', 'updated_by'], 'integer'],
             [['request_message'], 'string'],
             [['last_visit', 'created_at', 'group_id', 'updated_at'], 'safe'],
+            [['group_id'], 'in', 'range' => static::getAssignableUserGroups(), 'on' => self::SCENARIO_EDIT_ROLE],
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+
+        // Only the role itself may be set when editing the role of an existing membership.
+        $scenarios[self::SCENARIO_EDIT_ROLE] = ['group_id'];
+
+        return $scenarios;
     }
 
     /**
@@ -382,6 +422,7 @@ class Membership extends ActiveRecord
             ->innerJoin('space_membership sm', 'space.id = sm.space_id')
             ->where('sm.user_id = :userId', [':userId' => $user->id])
             ->indexBy('id')
+            ->andWhere('sm.status = :membershipStatusMember', [':membershipStatusMember' => self::STATUS_MEMBER])
             ->andWhere('space.status = :spaceStatusEnabled', [':spaceStatusEnabled' => Space::STATUS_ENABLED]);
     }
 

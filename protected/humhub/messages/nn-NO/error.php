@@ -2,6 +2,7 @@
 
 return [
     '<strong>Login</strong> required' => '',
+    'Access to private content is not allowed while impersonating a user.' => '',
     'An internal server error occurred.' => '',
     'Guest mode not active, please login first.' => '',
     'Login required for this section.' => '',

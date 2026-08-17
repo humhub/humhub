@@ -224,10 +224,17 @@ class Module extends Model
         return new FilterService($this);
     }
 
-    public function marketplaceLink(string $text): Link
+    /**
+     * Builds a link to the module's marketplace page.
+     *
+     * Module metadata originates from the remote marketplace API and is therefore
+     * untrusted. The label is encoded by default; pass $encode = false only when
+     * $text is already safe markup generated locally (e.g. Html::img()).
+     */
+    public function marketplaceLink(string $text, bool $encode = true): Link
     {
         return Link::to($text, $this->marketplaceUrl)
-            ->encodeLabel(false)
+            ->encodeLabel($encode)
             ->blank();
     }
 
@@ -238,7 +245,7 @@ class Module extends Model
             'data-src' => 'holder.js/94x94',
             'style' => 'width:94px;height:94px',
             'role' => 'presentation',
-        ]))->options([
+        ]), false)->options([
             'aria-hidden' => true,
             'tabindex' => -1,
         ]);
@@ -246,7 +253,7 @@ class Module extends Model
 
     public function marketplaceName(): Link
     {
-        $name = $this->name;
+        $name = Html::encode($this->name);
         $label = $this->name;
 
         if ($this->featured) {
@@ -254,7 +261,7 @@ class Module extends Model
             $label .= ' — ' . Yii::t('MarketplaceModule.base', 'Featured');
         }
 
-        return $this->marketplaceLink($name)
+        return $this->marketplaceLink($name, false)
             ->options(['aria-label' => $label]);
     }
 }
