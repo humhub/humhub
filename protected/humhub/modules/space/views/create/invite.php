@@ -15,5 +15,6 @@ use yii\helpers\Url;
     'model' => $model,
     'submitText' => Yii::t('SpaceModule.base', 'Done'),
     'submitAction' => Url::to(['/space/create/invite', 'spaceId' => $space->id]),
+    'searchUrl' => $space->createUrl('/space/membership/search-invite'),
     'allowAddAsDefaultSpace' => !$space->isVisibleFor(Space::VISIBILITY_NONE),
 ]); ?>

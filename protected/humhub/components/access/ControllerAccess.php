@@ -166,6 +166,17 @@ class ControllerAccess extends BaseObject
     public const RULE_AJAX_ONLY = 'ajax';
 
     /**
+     * Marks actions which are denied while the current user is impersonated by an administrator and
+     * the impersonation must not access private content, e.g.: ['denyImpersonated' => ['action1']].
+     * Modules whose actions expose private data that is not `Content`-based (private messages,
+     * private files, …) should add this rule.
+     *
+     * @see \humhub\modules\user\components\Impersonation::$allowPrivateContentAccess
+     * @since 1.19
+     */
+    public const RULE_DENY_IMPERSONATED = 'denyImpersonated';
+
+    /**
      * @var array fixed rules will always be added to the current rule set
      */
     protected $fixedRules = [
@@ -257,6 +268,10 @@ class ControllerAccess extends BaseObject
             self::RULE_AJAX_ONLY => 'validateAjaxOnlyRequest',
             'reason' => Yii::t('error', 'The specified URL cannot be called directly.'),
             'code' => 405,
+        ]);
+        $this->registerValidator([
+            self::RULE_DENY_IMPERSONATED => 'validateDenyImpersonated',
+            'reason' => Yii::t('error', 'Access to private content is not allowed while impersonating a user.'),
         ]);
     }
 
@@ -425,6 +440,15 @@ class ControllerAccess extends BaseObject
     public function validateAdminOnly()
     {
         return $this->isAdmin();
+    }
+
+    /**
+     * @return bool checks if the current session may run actions with the [[RULE_DENY_IMPERSONATED]] rule
+     * @since 1.19
+     */
+    public function validateDenyImpersonated()
+    {
+        return Yii::$app->user->impersonation->canAccessPrivateContent();
     }
 
     /**

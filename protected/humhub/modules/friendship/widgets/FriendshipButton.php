@@ -12,6 +12,7 @@ use humhub\modules\friendship\models\Friendship;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\base\InvalidArgumentException;
 use yii\base\Widget;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
@@ -25,6 +26,24 @@ use yii\helpers\Url;
 class FriendshipButton extends Widget
 {
     /**
+     * Buttons which may be addressed by request supplied options.
+     */
+    private const REQUEST_BUTTONS = [
+        'friends',
+        'addFriend',
+        'acceptFriendRequest',
+        'denyFriendRequest',
+        'cancelFriendRequest',
+    ];
+
+    /**
+     * Presentation only options which may be supplied by the request. Everything else —
+     * titles and all `data-action-*` attributes — is server generated and must not be
+     * overridable, since the rendered button is inserted as markup by the client.
+     */
+    private const REQUEST_OPTIONS = ['groupClass', 'togglerClass'];
+
+    /**
      * @var User the target user
      */
     public $user;
@@ -33,6 +52,57 @@ class FriendshipButton extends Widget
      * @var array Options buttons
      */
     public $options = [];
+
+    /**
+     * Reduces request supplied button options to a set of harmless presentation options.
+     *
+     * The button is re-rendered after a friendship change and has to keep the presentation of
+     * the context it was rendered in, so the options make a round trip through the client.
+     * Only the presentation state that actually needs to survive that round trip is accepted.
+     *
+     * @param mixed $options JSON encoded or already decoded button options
+     * @return array the sanitized options
+     * @since 1.18.5
+     */
+    public static function sanitizeRequestOptions($options): array
+    {
+        if (is_string($options)) {
+            try {
+                $options = Json::decode($options);
+            } catch (InvalidArgumentException $e) {
+                return [];
+            }
+        }
+
+        if (!is_array($options)) {
+            return [];
+        }
+
+        $sanitized = [];
+
+        foreach ($options as $button => $config) {
+            if (!in_array($button, self::REQUEST_BUTTONS, true) || !is_array($config)) {
+                continue;
+            }
+
+            foreach ($config as $option => $value) {
+                if (in_array($option, self::REQUEST_OPTIONS, true)) {
+                    $sanitized[$button][$option] = static::sanitizeCssClass($value);
+                }
+            }
+
+            if (isset($config['attrs']['class'])) {
+                $sanitized[$button]['attrs']['class'] = static::sanitizeCssClass($config['attrs']['class']);
+            }
+        }
+
+        return $sanitized;
+    }
+
+    private static function sanitizeCssClass($value): string
+    {
+        return is_string($value) ? preg_replace('/[^\w \-]/', '', $value) : '';
+    }
 
     private function getDefaultOptions()
     {

@@ -4,6 +4,15 @@ HumHub Changelog
 1.19.0-beta.2 (TBD)
 -------------------
 - Fix #8350: A configured but unreachable database presented the web installer — offering to re-setup an already installed instance during a transient outage — instead of an error; such requests now return a 503
+- Enh #8390: Removed the redundant My Spaces dropdown click handler — the lazy space list is already loaded on open, and the case where the dropdown was opened before its widget initialized is covered by the init-time check from #8384
+- Enh #8389: Removed the unused `$right` parameter from `BootstrapVariationsTrait::icon()` (`Button`/`Badge`/`Link`/`Alert`) and from `MenuLink::setIcon()` — `$options` is now the second parameter of `icon()` instead of the third, see `docs/develop/module-migrate.md`
+- Enh #8389: Buttons styling by using flex and gap instead of a right margin on the icon
+- Fix #8380: Activities of private spaces leaked into the activity summary mail and dashboard activity box of users with a pending space invite or join request
+- Fix #8366: Duplicate key error when concurrent requests stored the same setting, e.g. theme variables after a theme switch
+- Enh #8363: A download served by a redirect to a temporary storage URL (a mount whose `useTemporaryUrls()` returns true, e.g. the S3 module) arrived in the browser named `file` and without a usable content type — uploads are stored under an object key ending in `file` and the redirect target carries no `Content-Disposition`, so the browser derived both from the URL path; `DownloadAction` now passes the file name and mime type to `temporaryUrl()` via the new storage-neutral `MountConfigInterface::CONFIG_CONTENT_DISPOSITION` and `CONFIG_CONTENT_TYPE` config keys, which backends able to override response headers on a temporary URL (S3's `response-content-disposition`) honor and others ignore. Added `FileHelper::getContentDispositionHeaderValue()` for the header value, since `Response::getDispositionHeaderValue()` builds the same thing but is protected
+- Fix #8352: A `themes/HumHub` directory left behind in the webroot by the 1.19 move of the core theme into `protected/humhub/themes` (#8102) shadowed the real core theme whenever a theme was resolved by name — `ThemeHelper::getThemes()` keys themes by name and merged the webroot themes over the core ones, so the SCSS build looked for `themes/HumHub/scss/variables.scss` and the CSS could not be compiled; core themes now win on a name collision. This also affected the theme parent lookup, so a child theme in `themes/` or in `<module>/themes/` inherited from the stale directory. Unlike #8335 this also covers a leftover directory that still contains its `scss/variables.scss` and therefore loads as a valid theme
+- Fix #8352: A theme whose source directory no longer exists (e.g. a stale stored theme path) made `Theme::publishResources()` and `Theme::getBaseUrl()` throw, aborting the request in `Theme::register()` before the #8335 fallback to the core theme could run — publishing such a theme is now logged and skipped instead
+- Fix #8352: Added `Theme::getPublishedBasePath()`, the published counterpart of `Theme::getBasePath()` — since the 1.19 move of the core theme into `protected/humhub/themes` (#8102) the theme source directory is outside the webroot, so anything served to the browser is only reachable below the published path. `getPublishedBasePath()` and `publishResources()` now resolve through a single asset manager `publish()` call, so the published path and the published URL can no longer refer to different published copies — the published directory name is derived from the modification time of the theme source directory, so resolving the path independently (via `getPublishedPath()`, as `getPublishedResourcesPath()` did) could return a stale directory, and returned an absolute path or a mount-relative one depending on whether the theme had already been published in the same request
 - Fix #8348: The installer, the admin welcome tour and the content-search CLI looked up the admin user (and welcome space) by the hardcoded id 1, which is null on a Galera/MariaDB cluster where the first inserted row does not get id 1 — the installer crashed on the final step
 - Fix #8347: The web installer dropped custom PDO `attributes` (e.g. SSL options) from the db config when testing/creating the database, so installs against a server that requires SSL failed with "SSL is required"
 - Fix #8345: A widget whose `init()` threw an exception stayed permanently broken on its DOM node — the component instance is cached on the node before `init()` runs, so every later initialization pass resolved the broken cached instance instead of retrying; a failed construction now removes the cached instance, letting the next pass initialize the widget again
@@ -16,6 +25,14 @@ HumHub Changelog
 - Enh #8339: The tour navigation buttons (Next/Previous/Done) and progress text are now translatable
 - Fix #8335: The mailer view theme pointed at `@humhub/themes/Humhub` (lowercase `h`), a dead path on case-sensitive filesystems since the directory is `HumHub` — it now uses the `Theme::CORE_THEME_NAME` constant like the main view theme
 - Fix #8335: An update that moves the theme out of the webroot (the 1.19 move of `static`/`themes` into `protected/humhub`, #8102) could leave an empty `themes/HumHub` skeleton behind while the stored active theme still pointed at it — every request then failed with a fatal SCSS build error ("Can't find stylesheet to import") and the fallback looped forever because the empty skeleton shadowed the real core theme by name; a theme directory without its `scss/variables.scss` is now ignored when resolving themes (so the stale path no longer loads and no longer shadows the core theme and affected installations self-heal), the theme CSS fallback only switches to and refreshes for a different, buildable core theme instead of risking an endless redirect loop, and a theme's `variables` import is skipped when the file is missing
+- Fix #8351: SSO buttons can overflow on login page
+- Fix #8360: A config file still setting the removed `modules.content.adminCanViewAllContent`/`adminCanEditAllContent` options (replaced in 1.17 by `modules.admin.enableManageAllContentPermission`) crashed every request with an `UnknownPropertyException` instead of a graceful warning — these keys are now stripped from the loaded config like other legacy settings and flagged on the Administration → Information page
+- Enh #7551: Add a "Create Space" button in the space directory page
+- Fix #8364: The comment/reply "Attach Files" trigger is a non-focusable `<span>`; clicking it dropped focus without moving it anywhere, which instantly hid the upload/submit button row again since it is only shown via `:focus-within`/`:has()` (#8318) — before the click's own action could run, so opening the file picker either did nothing or made the row disappear while its dialog was open. The trigger now gets focus like the adjacent handler dropdown-toggle button via `tabindex`/`role="button"`, and is keyboard-operable via Enter/Space; the button row also stays visible once a file has been attached, not just once the message has text
+- Enh #8372: Private content and private spaces are now hidden while impersonating a user, and each impersonation is logged — both configurable via the new `Yii::$app->user->impersonation` component; the impersonation state now fails closed (no auto-login cookie for the impersonated identity, only the impersonator's id in the session)
+- Fix #8371: Fix mixed param type nullable by default in `ForceExplicitNullableParamRector`
+- Fix #8383: Removed the unreachable `ContentContainerControllerAccess::RULE_CONTAINER_ACCESS` validator (`validateContainerAccess()`, `canAccessSpace()`, `getSpaceMembership()`, `canAccessUser()`) — the rule was never added to any access rule set, so it never ran; the space/profile visibility checks it duplicated are already enforced by the container controller behaviors
+- Fix #8388: Fix styles of the widget "Latest activities"
 
 1.19.0-beta.1 (July 21, 2026)
 --------------------
@@ -97,6 +114,24 @@ HumHub Changelog
 - Enh #8150: Topic sidebar widget
 - Fix #8312: Fix Integrity Checks on cleaning up orphaned content, like, comment, activity data
  
+1.18.5 (Unreleased)
+-------------------
+- Fix #8340: Defer module update `opcache_reset()` to the end of the request to avoid interrupting the update in worker runtimes (e.g. FrankenPHP)
+- Fix #8357: Cast app name to string (This fixes the issue of instances with names consisting of numbers not being able to be added to the mobile app)
+- Enh #8346: Force Select2 dropdowns to always open below the field instead of flipping above when there's not enough space
+- Fix #8359: Display user sub name on invite after space creating
+- Fix #8361: Prevent non-creators from attaching or deleting another user's unassigned file
+- Fix #8365: Encode deletion reason in comment and content deletion notifications
+- Fix #8374: Ensure adding group members is restricted to groups the current user manages
+- Fix #8373: Ensure the oEmbed consent prompt encodes the requested URL so embedded markup stays inert
+- Fix #8381: Limit request supplied membership and friendship button options to presentation values, so titles, urls and action attributes stay server generated, and encode the membership button markup in the membership request response so it cannot break out of the script context
+- Fix #8376: Ensure space member role changes are limited to assignable roles
+- Fix #8378: Ensure marketplace module metadata is rendered as encoded text in the administration views
+- Fix #8375: The My Spaces dropdown could open before its JS widget initialized, staying empty until reopened — now it loads immediately once ready
+- Fix #8386: Fix collapsing of the widget "Member of these Spaces"
+- Fix #8391: Harden pagination cursor validation in Comments and Notifications against loose-type comparisons
+- Fix #8392: Wait for the comment submit button to become clickable in the stream acceptance tests, which intermittently failed on CI
+
 1.18.4 (July 21, 2026)
 ----------------------
 - Enh #8170: Handle controllers with using external modules

@@ -14,4 +14,5 @@ return [
     'You need admin permissions to access this section.' => 'تحتاج إلى أذونات المسؤول للوصول إلى هذا القسم.',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => 'لم تتم الموافقة على حساب المستخدم الخاص بك بعد، يرجى المحاولة مرة أخرى لاحقًا أو الاتصال بمسؤول الشبكة.',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'حساب المستخدم الخاص بك غير نشط، يرجى تسجيل الدخول باستخدام حساب نشط أو الاتصال بمسؤول الشبكة.',
+    'Access to private content is not allowed while impersonating a user.' => '',
 ];

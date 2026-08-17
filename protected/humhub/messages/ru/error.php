@@ -14,4 +14,5 @@ return [
     'You need admin permissions to access this section.' => 'Для доступа к этому разделу требуются права администратора.',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => 'Ваша учётная запись ещё не подтверждена, повторите попытку позже или обратитесь к администратору сайта.',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'Ваша учётная запись не активна, пожалуйста войдите используя активную учётную запись или свяжитесь с администратором сайта.',
+    'Access to private content is not allowed while impersonating a user.' => '',
 ];

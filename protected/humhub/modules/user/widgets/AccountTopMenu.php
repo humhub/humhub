@@ -107,7 +107,7 @@ class AccountTopMenu extends Menu
             'sortOrder' => 700,
         ]));
 
-        if (Yii::$app->user->isImpersonated) {
+        if (Yii::$app->user->impersonation->isActive()) {
             $this->addEntry(new MenuLink([
                 'label' => Yii::t('base', 'Stop impersonation'),
                 'id' => 'account-login',

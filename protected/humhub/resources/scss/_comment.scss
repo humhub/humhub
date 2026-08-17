@@ -158,15 +158,16 @@
             overflow: visible;
         }
 
-        // Show the upload/submit buttons only once the input is focused or
-        // already has content (e.g. a prefilled mention); before the richtext
-        // is initialized (no .ProseMirror yet) they stay hidden
+        // Show the upload/submit buttons only once the input is focused, already
+        // has content (e.g. a prefilled mention), or has an attached file; before
+        // the richtext is initialized (no .ProseMirror yet) they stay hidden.
         .comment_create {
             .richtext-create-buttons {
                 display: none;
             }
 
             &:focus-within,
+            &:has(.file-preview-item),
             &:has(.ProseMirror):not(:has(.atwho-placeholder)) {
                 .richtext-create-buttons {
                     display: block;

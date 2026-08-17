@@ -1,7 +1,7 @@
 <?php
 return [
   ' Remove panel' => 'Panel entfernen',
-  '&larr; Previous' => '',
+  '&larr; Previous' => '&larr; Zurück',
   '<strong>Account</strong> Menu' => '<strong>Benutzerkonto</strong>-Menü',
   '<strong>Getting</strong> Started' => '<strong>Erste</strong> Schritte',
   '<strong>Guide:</strong> Administration (Modules)' => '<strong>Anleitung:</strong> Administration (Module)',
@@ -19,7 +19,7 @@ return [
   'Get to know your way around the site\'s most important features with the following guides:' => 'Erhalte mit Hilfe der folgenden Anleitungen einen Überblick über die wichtigsten Funktionen der Seite:',
   'Hide my year of birth' => 'Verstecke mein Geburtsjahr',
   'Howdy <strong>%firstname%</strong>, thank you for using %community%.' => 'Howdy <strong>%firstname%</strong>, danke, dass du %community% benutzt.',
-  'Next &rarr;' => '',
+  'Next &rarr;' => 'Weiter &rarr;',
   'Ok' => 'Ok',
   'Save and close' => 'Speichern und schließen',
   'The account menu gives you access to your private settings and allows you to manage your public profile.' => 'Das Benutzerkonto-Menü gibt dir die Möglichkeit deine persönlichen Einstellungen zu ändern und dein öffentliches Profil zu verwalten.',
@@ -32,5 +32,5 @@ return [
   'Your phone number at work' => 'Deine Geschäftsnummer',
   'Your skills, knowledge and experience' => 'Deine Fähigkeiten, Kenntnisse und Erfahrung',
   'Your title or position' => 'Dein Titel oder Funktion',
-  '{{current}} of {{total}}' => '',
+  '{{current}} of {{total}}' => '{{current}} von {{total}}',
 ];

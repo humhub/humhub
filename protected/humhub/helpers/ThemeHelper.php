@@ -42,10 +42,10 @@ class ThemeHelper
             return static::$_themes;
         }
 
-        $themes = array_merge(
-            self::getThemesByPath(Yii::getAlias('@humhub/themes')),
-            self::getThemesByPath(Yii::getAlias('@themes')),
-        );
+        // Keyed by name, first one wins: a leftover webroot `themes/HumHub` (#8102) must not
+        // shadow the core theme wherever it is resolved by name, e.g. in the parent lookup.
+        $themes = self::getThemesByPath(Yii::getAlias('@humhub/themes'))
+            + self::getThemesByPath(Yii::getAlias('@themes'));
 
         // Collect themes provided by modules
         foreach (Yii::$app->getModules() as $id => $module) {
@@ -63,10 +63,7 @@ class ThemeHelper
 
             $moduleThemePath = $module->getBasePath() . DIRECTORY_SEPARATOR . 'themes';
             if (is_dir($moduleThemePath)) {
-                $themes = ArrayHelper::merge(
-                    $themes,
-                    self::getThemesByPath($moduleThemePath),
-                );
+                $themes += self::getThemesByPath($moduleThemePath);
             }
         }
 
@@ -86,7 +83,7 @@ class ThemeHelper
         $themes = [];
         $path = realpath($path);
         foreach (scandir($path) as $file) {
-            if ($file == "." || $file == ".." || !is_dir($path . DIRECTORY_SEPARATOR . $file)) {
+            if ($file === '.' || $file === '..' || !is_dir($path . DIRECTORY_SEPARATOR . $file)) {
                 continue;
             }
 

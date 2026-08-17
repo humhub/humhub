@@ -14,4 +14,5 @@ return [
     'You need admin permissions to access this section.' => 'Du behöver administratörsbehörighet för att komma åt den här ytan.',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => 'Ditt användarkonto har inte godkänts än, försök igen senare eller kontakta en administratör.',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'Ditt användarkonto är inaktivt, logga in med ett aktivt konto eller kontakta en administratör.',
+    'Access to private content is not allowed while impersonating a user.' => '',
 ];

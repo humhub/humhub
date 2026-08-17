@@ -11,15 +11,13 @@
         --bs-btn-padding-y: 0.5rem;
         --bs-btn-font-weight: 600;
         --bs-btn-border-radius: 3px;
+        --hh-btn-gap: 0.6rem;
 
         white-space: nowrap;
         transition: color 0.3s, background-color 0.3s, border-color 0.3s;
-
-        &:not(.btn-icon-only) {
-            i.fa {
-                margin-right: 0.6rem;
-            }
-        }
+        display: inline-flex;
+        align-items: center;
+        gap: var(--hh-btn-gap);
 
         &.input {
             outline: none;
@@ -29,24 +27,14 @@
     .btn-sm, .btn-group-sm > .btn {
         --bs-btn-padding-x: 0.5rem;
         --bs-btn-padding-y: 0.2rem;
-
-        &:not(.btn-icon-only) {
-            i.fa {
-                margin-right: 0.4rem;
-            }
-        }
+        --hh-btn-gap: 0.4rem;
     }
 
     .btn-lg, .btn-group-lg > .btn {
         --bs-btn-padding-x: 1.75rem;
         --bs-btn-padding-y: 0.9rem;
         --bs-btn-font-size: 1.1rem;
-
-        &:not(.btn-icon-only) {
-            i.fa {
-                margin-right: 0.8rem;
-            }
-        }
+        --hh-btn-gap: 0.8rem;
     }
 
     .btn-group > .btn {
