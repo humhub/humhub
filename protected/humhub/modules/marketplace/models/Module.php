@@ -240,10 +240,17 @@ class Module extends Model
         return new FilterService($this);
     }
 
-    public function marketplaceLink(string $text): Link
+    /**
+     * Builds a link to the module's marketplace page.
+     *
+     * Module metadata originates from the remote marketplace API and is therefore
+     * untrusted. The label is encoded by default; pass $encode = false only when
+     * $text is already safe markup generated locally (e.g. Html::img()).
+     */
+    public function marketplaceLink(string $text, bool $encode = true): Link
     {
         return Link::asLink($text, $this->marketplaceUrl)
-            ->encodeLabel(false)
+            ->encodeLabel($encode)
             ->blank();
     }
 }
