@@ -99,6 +99,15 @@ humhub.module('space.chooser', function (module, require, $) {
             }, 0);
         });
 
+        // The dropdown toggle is plain Bootstrap markup and can be opened by the user
+        // before this widget has finished initializing (e.g. while the page/assets are
+        // still loading). In that case shown.bs.dropdown already fired with no listener
+        // attached yet, so the lazy space list never gets requested and the dropdown is
+        // left empty. Detect that state here and kick off the load immediately.
+        if (this.lazyLoad && this.$.hasClass('show')) {
+            this.triggerRemoteSearch('');
+        }
+
         if (!pjax.isActive()) {
             return;
         }

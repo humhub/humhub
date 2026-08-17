@@ -95,7 +95,7 @@ class RequestController extends Controller
     protected function getActionResult(User $user)
     {
         if ($this->request->isAjax) {
-            $options = $this->request->post('options', []);
+            $options = FriendshipButton::sanitizeRequestOptions($this->request->post('options', []));
 
             // Show/Hide the "Follow"/"Unfollow" buttons depending on updated friendship state after AJAX action
             $options['cancelFriendRequest']['attrs']['data-show-buttons'] = $user->isFollowedByUser() ? '.unfollowButton' : '.followButton';

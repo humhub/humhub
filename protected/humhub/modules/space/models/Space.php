@@ -598,6 +598,13 @@ class Space extends ContentContainerActiveRecord
             if ($this->isSpaceOwner($user->id)) {
                 return self::USERGROUP_OWNER;
             }
+
+            // A stored role which is not assignable must not grant more than a plain member,
+            // so that legacy or manipulated records cannot pass elevated role checks.
+            if (!in_array($membership->group_id, Membership::getAssignableUserGroups(), true)) {
+                return self::USERGROUP_MEMBER;
+            }
+
             return $membership->group_id;
         } else {
             return self::USERGROUP_USER;
