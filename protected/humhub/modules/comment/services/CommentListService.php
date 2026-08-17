@@ -116,16 +116,21 @@ class CommentListService
 
         $this->addScopeQueryCondition($query);
 
+        // Only a strictly positive integer is a valid cursor (comment ids start at 1).
+        // A plain `if ($commentId)` would also treat 0 as "no cursor", which happens
+        // to be correct here, but it's fragile - be explicit instead.
+        $hasCursor = $commentId > 0;
+
         if ($sortOrder === self::LIST_DIR_NEXT) {
             $query->orderBy(['created_at' => SORT_ASC, 'id' => SORT_ASC]);
-            if ($commentId) {
+            if ($hasCursor) {
                 $query->andWhere(['>', 'id', $commentId]);
             }
             return self::applyLimit($query->all(), $limit);
         }
 
         $query->orderBy(['created_at' => SORT_DESC, 'id' => SORT_DESC]);
-        if ($commentId) {
+        if ($hasCursor) {
             $query->andWhere(['<', 'id', $commentId]);
         }
         return array_reverse(self::applyLimit($query->all(), $limit));
@@ -148,7 +153,7 @@ class CommentListService
         $query = Comment::find();
         $this->addScopeQueryCondition($query);
 
-        if ($commentId) {
+        if ($commentId > 0) {
             $query->andWhere([$sortOrder === self::LIST_DIR_NEXT ? '>' : '<', 'id', $commentId]);
         }
 
