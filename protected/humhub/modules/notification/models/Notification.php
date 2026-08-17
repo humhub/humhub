@@ -225,7 +225,12 @@ class Notification extends ActiveRecord
     {
         $query = Notification::findGrouped();
 
-        if ($from != 0) {
+        // Normalize $from: only a strictly positive integer counts as a valid cursor.
+        // Avoids relying on loose comparison (e.g. non-numeric strings, "0") to decide
+        // whether a cursor was actually given.
+        $from = is_numeric($from) ? (int) $from : 0;
+
+        if ($from > 0) {
             $query->andWhere(['<', 'notification.id', $from]);
         }
 
