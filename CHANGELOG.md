@@ -11,6 +11,7 @@ HumHub Changelog
 - Fix #8365: Encode deletion reason in comment and content deletion notifications
 - Fix #8374: Ensure adding group members is restricted to groups the current user manages
 - Fix #8373: Ensure the oEmbed consent prompt encodes the requested URL so embedded markup stays inert
+- Fix #8381: Limit request supplied membership and friendship button options to presentation values, so titles, urls and action attributes stay server generated, and encode the membership button markup in the membership request response so it cannot break out of the script context
 - Fix #8376: Ensure space member role changes are limited to assignable roles
 - Fix #8378: Ensure marketplace module metadata is rendered as encoded text in the administration views
 - Fix #8375: The My Spaces dropdown could open before its JS widget initialized, staying empty until reopened — now it loads immediately once ready
