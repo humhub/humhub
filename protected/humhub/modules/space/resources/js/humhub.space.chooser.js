@@ -81,24 +81,6 @@ humhub.module('space.chooser', function (module, require, $) {
             that.clearSelection();
         });
 
-        this.$menu.on('click', function () {
-            setTimeout(function () {
-                if (!that.lazyLoad) {
-                    return;
-                }
-
-                if (!that.$.hasClass('show')) {
-                    return;
-                }
-
-                if (that.$remoteSearch.children().length) {
-                    return;
-                }
-
-                that.triggerRemoteSearch('');
-            }, 0);
-        });
-
         // The dropdown toggle is plain Bootstrap markup and can be opened by the user
         // before this widget has finished initializing (e.g. while the page/assets are
         // still loading). In that case shown.bs.dropdown already fired with no listener

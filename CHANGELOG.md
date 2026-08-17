@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.19.0-beta.2 (TBD)
 -------------------
+- Enh #8390: Removed the redundant My Spaces dropdown click handler — the lazy space list is already loaded on open, and the case where the dropdown was opened before its widget initialized is covered by the init-time check from #8384
 - Enh #8389: Removed the unused `$right` parameter from `BootstrapVariationsTrait::icon()` (`Button`/`Badge`/`Link`/`Alert`) and from `MenuLink::setIcon()` — `$options` is now the second parameter of `icon()` instead of the third, see `docs/develop/module-migrate.md`
 - Enh #8389: Buttons styling by using flex and gap instead of a right margin on the icon
 - Fix #8380: Activities of private spaces leaked into the activity summary mail and dashboard activity box of users with a pending space invite or join request
@@ -127,6 +128,8 @@ HumHub Changelog
 - Fix #8378: Ensure marketplace module metadata is rendered as encoded text in the administration views
 - Fix #8375: The My Spaces dropdown could open before its JS widget initialized, staying empty until reopened — now it loads immediately once ready
 - Fix #8386: Fix collapsing of the widget "Member of these Spaces"
+- Fix #8391: Harden pagination cursor validation in Comments and Notifications against loose-type comparisons
+- Fix #8392: Wait for the comment submit button to become clickable in the stream acceptance tests, which intermittently failed on CI
 
 1.18.4 (July 21, 2026)
 ----------------------
