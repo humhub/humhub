@@ -17,6 +17,7 @@ HumHub Changelog
 - Fix #8375: The My Spaces dropdown could open before its JS widget initialized, staying empty until reopened — now it loads immediately once ready
 - Fix #8386: Fix collapsing of the widget "Member of these Spaces"
 - Fix #8391: Harden pagination cursor validation in Comments and Notifications against loose-type comparisons
+- Fix #8392: Wait for the comment submit button to become clickable in the stream acceptance tests, which intermittently failed on CI
 
 1.18.4 (July 21, 2026)
 ----------------------
