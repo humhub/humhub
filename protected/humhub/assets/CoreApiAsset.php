@@ -58,6 +58,7 @@ class CoreApiAsset extends AssetBundle
 
     public $depends = [
         IntlMessageFormatAsset::class,
+        VueAsset::class,
     ];
 
 }

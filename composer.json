@@ -66,6 +66,7 @@
         "npm-asset/swiped-events": "^1.0.9",
         "npm-asset/timeago": "^1.6.3",
         "npm-asset/unicode-emoji-json": "^0.5.0",
+        "npm-asset/vue": "~3.5.13",
         "phpoffice/phpspreadsheet": "^5.0",
         "raoul2000/yii2-jcrop-widget": "^1.0",
         "scssphp/scssphp": "^2.0.1",
