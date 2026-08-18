@@ -111,7 +111,13 @@ humhub.module('vue', function (module, require, $) {
         }
 
         if (components[name]) {
-            log.error('Vue component "' + name + '" is already registered');
+            // Module artifacts re-execute on every ajax response that re-emits
+            // their <script> tag — yii only dedups STATIC_DEPENDS bundles, so a
+            // Vue component's own bundle (loaded via a regular asset bundle,
+            // not STATIC_DEPENDS) runs its register() call again on every pjax
+            // navigation, modal open, stream load-more, etc. That is normal
+            // and expected, not an error — log it at debug level only.
+            log.debug('Vue component "' + name + '" is already registered — skipping re-registration');
             return;
         }
 

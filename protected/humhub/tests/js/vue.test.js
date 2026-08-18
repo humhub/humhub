@@ -17,6 +17,7 @@ describe('humhub.vue', () => {
         document.body.replaceChildren();
         globalThis.humhubStubs.logCalls.error.length = 0;
         globalThis.humhubStubs.logCalls.warn.length = 0;
+        globalThis.humhubStubs.logCalls.debug.length = 0;
     });
 
     it('mounts a registered component on its kebab-case tag and coerces props', async () => {
@@ -68,11 +69,13 @@ describe('humhub.vue', () => {
         expect(el.querySelector('i').textContent).toBe('attr');
     });
 
-    it('rejects duplicate component names and keeps the first registration', async () => {
+    it('ignores duplicate component names at debug level and keeps the first registration', async () => {
         vueModule.register('TestBadgeGamma', { render: () => Vue.h('i') });
         globalThis.humhubStubs.logCalls.error.length = 0;
+        globalThis.humhubStubs.logCalls.debug.length = 0;
         vueModule.register('TestBadgeGamma', { render: () => Vue.h('b') });
-        expect(globalThis.humhubStubs.logCalls.error.length).toBe(1);
+        expect(globalThis.humhubStubs.logCalls.error.length).toBe(0);
+        expect(globalThis.humhubStubs.logCalls.debug.length).toBe(1);
 
         const el = createTag('test-badge-gamma');
         await vueModule.mountElement(el);

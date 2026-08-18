@@ -95,6 +95,9 @@ module.exports = function (grunt) {
             buildVue: {
                 command: function () {
                     let moduleName = grunt.option('module') || grunt.option('m');
+                    if (!moduleName) {
+                        return 'echo "Usage: grunt build-vue --module=<id>" && exit 1';
+                    }
                     let watch = grunt.option('watch') ? ' --watch' : '';
                     let minify = grunt.option('minify') ? ' --minify' : '';
                     return `node vue.build.mjs --module ${moduleName}${watch}${minify}`;

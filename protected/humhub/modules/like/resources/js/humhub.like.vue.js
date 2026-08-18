@@ -8,14 +8,18 @@
     return target;
   };
   const _sfc_main = {
-    i18nCategories: ["LikeModule.base"],
     props: {
       likeUrl: { type: String, required: true },
       unlikeUrl: { type: String, required: true },
       userListUrl: { type: String, required: true },
       likeCount: { type: Number, default: 0 },
       currentUserLiked: { type: Boolean, default: false },
-      title: { type: String, default: "" }
+      title: { type: String, default: "" },
+      // Server-rendered translations: avoids a cold-cache i18n XHR round trip
+      // before the island can render its labels (FOUC). Both messages remain
+      // PHP-extractable via Yii::t('LikeModule.base', ...) in likeLink.php.
+      likeLabel: { type: String, required: true },
+      unlikeLabel: { type: String, required: true }
     },
     data() {
       return {
@@ -23,14 +27,6 @@
         count: this.likeCount,
         busy: false
       };
-    },
-    computed: {
-      labels() {
-        return {
-          like: vue$1.i18n.t("LikeModule.base", "Like"),
-          unlike: vue$1.i18n.t("LikeModule.base", "Unlike")
-        };
-      }
     },
     methods: {
       toggle(url) {
@@ -65,7 +61,7 @@
           class: "like likeAnchor",
           onClick: _cache[0] || (_cache[0] = vue.withModifiers(($event) => $options.toggle($props.likeUrl), ["prevent"]))
         },
-        vue.toDisplayString($options.labels.like),
+        vue.toDisplayString($props.likeLabel),
         1
         /* TEXT */
       )) : (vue.openBlock(), vue.createElementBlock(
@@ -76,7 +72,7 @@
           class: "unlike likeAnchor",
           onClick: _cache[1] || (_cache[1] = vue.withModifiers(($event) => $options.toggle($props.unlikeUrl), ["prevent"]))
         },
-        vue.toDisplayString($options.labels.unlike),
+        vue.toDisplayString($props.unlikeLabel),
         1
         /* TEXT */
       )),

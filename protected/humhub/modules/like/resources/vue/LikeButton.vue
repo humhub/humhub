@@ -1,7 +1,7 @@
 <template>
     <span class="likeLinkContainer">
-        <a v-if="!liked" href="#" class="like likeAnchor" @click.prevent="toggle(likeUrl)">{{ labels.like }}</a>
-        <a v-else href="#" class="unlike likeAnchor" @click.prevent="toggle(unlikeUrl)">{{ labels.unlike }}</a>
+        <a v-if="!liked" href="#" class="like likeAnchor" @click.prevent="toggle(likeUrl)">{{ likeLabel }}</a>
+        <a v-else href="#" class="unlike likeAnchor" @click.prevent="toggle(unlikeUrl)">{{ unlikeLabel }}</a>
         <a v-if="count > 0" :href="userListUrl" data-bs-target="#globalModal">
             <span class="likeCount" :title="title">({{ count }})</span>
         </a>
@@ -9,10 +9,9 @@
 </template>
 
 <script>
-import { client, i18n, log } from '@humhub/vue';
+import { client, log } from '@humhub/vue';
 
 export default {
-    i18nCategories: ['LikeModule.base'],
     props: {
         likeUrl: { type: String, required: true },
         unlikeUrl: { type: String, required: true },
@@ -20,6 +19,11 @@ export default {
         likeCount: { type: Number, default: 0 },
         currentUserLiked: { type: Boolean, default: false },
         title: { type: String, default: '' },
+        // Server-rendered translations: avoids a cold-cache i18n XHR round trip
+        // before the island can render its labels (FOUC). Both messages remain
+        // PHP-extractable via Yii::t('LikeModule.base', ...) in likeLink.php.
+        likeLabel: { type: String, required: true },
+        unlikeLabel: { type: String, required: true },
     },
     data() {
         return {
@@ -27,15 +31,6 @@ export default {
             count: this.likeCount,
             busy: false,
         };
-    },
-    computed: {
-        labels() {
-            // Full i18n.t('Category', 'Message') form — required by message extraction
-            return {
-                like: i18n.t('LikeModule.base', 'Like'),
-                unlike: i18n.t('LikeModule.base', 'Unlike'),
-            };
-        },
     },
     methods: {
         toggle(url) {

@@ -33,6 +33,8 @@ use humhub\modules\ui\vue\widgets\VueComponent;
             'likeCount' => $likeCount,
             'currentUserLiked' => $currentUserLiked,
             'title' => $title,
+            'likeLabel' => Yii::t('LikeModule.base', 'Like'),
+            'unlikeLabel' => Yii::t('LikeModule.base', 'Unlike'),
         ],
     ]) ?>
 <?php endif; ?>

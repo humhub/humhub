@@ -8,6 +8,7 @@
 
 namespace humhub\modules\like\assets;
 
+use humhub\assets\CoreApiAsset;
 use humhub\components\assets\AssetBundle;
 
 /**
@@ -30,5 +31,12 @@ class LikeVueAsset extends AssetBundle
      */
     public $js = [
         'js/humhub.like.vue.js',
+    ];
+
+    /**
+     * @inheritdoc
+     */
+    public $depends = [
+        CoreApiAsset::class,
     ];
 }

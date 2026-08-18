@@ -11,6 +11,8 @@ const defaultProps = {
     likeCount: 2,
     currentUserLiked: false,
     title: 'User1',
+    likeLabel: 'Like',
+    unlikeLabel: 'Unlike',
 };
 
 describe('LikeButton', () => {
