@@ -70,6 +70,7 @@ class AssetBundle extends BaseAssetBundle
     public const HUMHUB_RESOURCES_PUBLISH_OPTIONS = [
         'except' => [
             'scss/',
+            '/vue/', // Vue SFC compile-time sources, see docs/develop/ui-js-vuejs.md
             '.gitignore',
         ],
     ];
@@ -161,6 +162,15 @@ class AssetBundle extends BaseAssetBundle
             && !isset($this->publishOptions['except'])
         ) {
             $this->publishOptions += self::HUMHUB_RESOURCES_PUBLISH_OPTIONS;
+        } elseif (
+            $this->sourcePath !== null
+            && !isset($this->publishOptions['only'])
+            && !isset($this->publishOptions['except'])
+        ) {
+            // Vue SFC sources are compile-time input only, never published
+            // (see docs/develop/ui-js-vuejs.md). Applied uniformly so bundles
+            // sharing a sourcePath keep identical publish options.
+            $this->publishOptions['except'] = ['/vue/'];
         }
 
         if (!$useProdAssets && $this->forceCopy && !isset($this->publishOptions['forceCopy'])) {
