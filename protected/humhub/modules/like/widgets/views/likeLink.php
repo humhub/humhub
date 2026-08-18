@@ -4,13 +4,9 @@ use humhub\helpers\Html;
 use humhub\modules\like\assets\LikeVueAsset;
 use humhub\widgets\VueComponent;
 
+/* @var $recordId int */
 /* @var $likeCount int */
-/* @var $userListUrl string */
-/* @var $likeUrl string */
-/* @var $unlikeUrl string */
 /* @var $currentUserLiked bool */
-/* @var $id string */
-/* @var $title string */
 ?>
 
 <?php if (Yii::$app->user->isGuest): ?>
@@ -25,16 +21,10 @@ use humhub\widgets\VueComponent;
     <?= VueComponent::widget([
         'name' => 'LikeButton',
         'assetBundle' => LikeVueAsset::class,
-        'options' => ['id' => 'likeLinkContainer_' . $id],
         'props' => [
-            'likeUrl' => $likeUrl,
-            'unlikeUrl' => $unlikeUrl,
-            'userListUrl' => $userListUrl,
+            'recordId' => $recordId,
             'likeCount' => $likeCount,
             'currentUserLiked' => $currentUserLiked,
-            'title' => $title,
-            'likeLabel' => Yii::t('LikeModule.base', 'Like'),
-            'unlikeLabel' => Yii::t('LikeModule.base', 'Unlike'),
         ],
     ]) ?>
 <?php endif; ?>

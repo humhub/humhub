@@ -1,75 +1,87 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import LikeButton from '../../modules/like/vue/LikeButton.vue';
 
 await import('../../resources/js/humhub/humhub.vue.js');
 
-const defaultProps = {
-    likeUrl: '/like/like/like?recordId=7',
-    unlikeUrl: '/like/like/unlike?recordId=7',
-    userListUrl: '/like/like/user-list?recordId=7',
-    likeCount: 2,
-    currentUserLiked: false,
-    title: 'User1',
-    likeLabel: 'Like',
-    unlikeLabel: 'Unlike',
-};
+const vueModule = globalThis.humhub.modules.vue;
 
 describe('LikeButton', () => {
     beforeEach(() => {
+        vueModule.config('vue').urlTemplate = '/__route__';
+        globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({}));
         globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve({ currentUserLiked: true, likeCounter: 3 }));
+        globalThis.humhubStubs.logCalls.error.length = 0;
     });
 
-    it('renders the like state from its props', () => {
-        const wrapper = mount(LikeButton, { props: defaultProps });
+    afterEach(() => {
+        delete vueModule.config('vue').urlTemplate;
+    });
+
+    it('renders from provided initial state without fetching', () => {
+        const wrapper = mount(LikeButton, {
+            props: { recordId: 7, likeCount: 2, currentUserLiked: false },
+        });
+
         expect(wrapper.find('a.like').exists()).toBe(true);
         expect(wrapper.find('a.unlike').exists()).toBe(false);
         expect(wrapper.find('.likeCount').text()).toBe('(2)');
-        expect(wrapper.find('a[data-bs-target="#globalModal"]').attributes('href')).toBe(defaultProps.userListUrl);
+        expect(wrapper.find('a[data-bs-target="#globalModal"]').attributes('href')).toBe(
+            '/like/like/user-list?recordId=7',
+        );
+        expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalled();
     });
 
-    it('posts to likeUrl and switches to unlike on click', async () => {
-        const wrapper = mount(LikeButton, { props: defaultProps });
+    it('fetches state from the info endpoint when initial props are omitted', async () => {
+        let resolveGet;
+        globalThis.humhubStubs.client.get = vi.fn(() => new Promise((resolve) => { resolveGet = resolve; }));
+
+        const wrapper = mount(LikeButton, { props: { recordId: 7 } });
+
+        expect(wrapper.find('.likeLinkContainer').exists()).toBe(false);
+        expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(1);
+        expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/like/like/info?recordId=7');
+
+        resolveGet({ currentUserLiked: true, likeCounter: 5 });
+        await vi.waitFor(() => expect(wrapper.find('.likeLinkContainer').exists()).toBe(true));
+
+        expect(wrapper.find('a.unlike').exists()).toBe(true);
+        expect(wrapper.find('.likeCount').text()).toBe('(5)');
+    });
+
+    it('posts to the like url and switches state on click', async () => {
+        const wrapper = mount(LikeButton, {
+            props: { recordId: 7, likeCount: 2, currentUserLiked: false },
+        });
+
         await wrapper.find('a.like').trigger('click');
         await vi.waitFor(() => expect(wrapper.find('a.unlike').exists()).toBe(true));
-        expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith(defaultProps.likeUrl);
+
+        expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith('/like/like/like?recordId=7');
         expect(wrapper.find('.likeCount').text()).toBe('(3)');
     });
 
-    it('posts to unlikeUrl when already liked', async () => {
+    it('posts to the unlike url when already liked', async () => {
         globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve({ currentUserLiked: false, likeCounter: 1 }));
-        const wrapper = mount(LikeButton, { props: { ...defaultProps, currentUserLiked: true } });
+
+        const wrapper = mount(LikeButton, {
+            props: { recordId: 7, likeCount: 2, currentUserLiked: true },
+        });
+
         await wrapper.find('a.unlike').trigger('click');
         await vi.waitFor(() => expect(wrapper.find('a.like').exists()).toBe(true));
-        expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith(defaultProps.unlikeUrl);
+
+        expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith('/like/like/unlike?recordId=7');
+        expect(wrapper.find('.likeCount').text()).toBe('(1)');
     });
 
-    it('hides the counter link when the count is zero', () => {
-        const wrapper = mount(LikeButton, { props: { ...defaultProps, likeCount: 0 } });
-        expect(wrapper.find('.likeCount').exists()).toBe(false);
-    });
-
-    it('fires the legacy humhub:like:liked event on like', async () => {
-        const container = document.createElement('div');
-        document.body.appendChild(container);
-        const wrapper = mount(LikeButton, { props: defaultProps, attachTo: container });
-
-        const liked = vi.fn();
-        jQuery(document).on('humhub:like:liked', liked);
-
-        await wrapper.find('a.like').trigger('click');
-        await vi.waitFor(() => expect(liked).toHaveBeenCalled());
-
-        jQuery(document).off('humhub:like:liked', liked);
-        wrapper.unmount();
-        container.remove();
-    });
-
-    it('ignores clicks while a request is in flight', async () => {
+    it('ignores clicks while a request is in flight and releases the guard after settle', async () => {
         let resolvePost;
         globalThis.humhubStubs.client.post = vi.fn(() => new Promise((resolve) => { resolvePost = resolve; }));
 
-        const wrapper = mount(LikeButton, { props: defaultProps });
+        const wrapper = mount(LikeButton, {
+            props: { recordId: 7, likeCount: 2, currentUserLiked: false },
+        });
 
         await wrapper.find('a.like').trigger('click');
         await wrapper.find('a.like').trigger('click');
@@ -82,16 +94,37 @@ describe('LikeButton', () => {
         expect(globalThis.humhubStubs.client.post).toHaveBeenCalledTimes(2);
     });
 
-    it('keeps its state and logs when the request fails', async () => {
-        globalThis.humhubStubs.logCalls.error.length = 0;
+    it('keeps its state and logs when the toggle request fails', async () => {
         globalThis.humhubStubs.client.post = vi.fn(() => Promise.reject(new Error('network error')));
 
-        const wrapper = mount(LikeButton, { props: defaultProps });
+        const wrapper = mount(LikeButton, {
+            props: { recordId: 7, likeCount: 2, currentUserLiked: false },
+        });
+
         await wrapper.find('a.like').trigger('click');
         await vi.waitFor(() => expect(globalThis.humhubStubs.logCalls.error.length).toBeGreaterThan(0));
 
         expect(wrapper.find('a.like').exists()).toBe(true);
         expect(wrapper.find('.likeCount').text()).toBe('(2)');
+    });
+
+    it('fires the legacy humhub:like:liked event on like, not on unlike', async () => {
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+        const wrapper = mount(LikeButton, {
+            props: { recordId: 7, likeCount: 2, currentUserLiked: false },
+            attachTo: container,
+        });
+
+        const liked = vi.fn();
+        jQuery(document).on('humhub:like:liked', liked);
+
+        await wrapper.find('a.like').trigger('click');
+        await vi.waitFor(() => expect(liked).toHaveBeenCalled());
+
+        jQuery(document).off('humhub:like:liked', liked);
+        wrapper.unmount();
+        container.remove();
     });
 
     it('does not fire humhub:like:liked on unlike', async () => {
@@ -100,7 +133,7 @@ describe('LikeButton', () => {
         const container = document.createElement('div');
         document.body.appendChild(container);
         const wrapper = mount(LikeButton, {
-            props: { ...defaultProps, currentUserLiked: true },
+            props: { recordId: 7, likeCount: 2, currentUserLiked: true },
             attachTo: container,
         });
 
@@ -115,5 +148,13 @@ describe('LikeButton', () => {
         jQuery(document).off('humhub:like:liked', liked);
         wrapper.unmount();
         container.remove();
+    });
+
+    it('hides the counter link when the count is zero', () => {
+        const wrapper = mount(LikeButton, {
+            props: { recordId: 7, likeCount: 0, currentUserLiked: false },
+        });
+
+        expect(wrapper.find('.likeCount').exists()).toBe(false);
     });
 });
