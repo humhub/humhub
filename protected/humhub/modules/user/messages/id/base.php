@@ -92,6 +92,7 @@ return [
     'Provider' => '',
     'Register now and participate!' => '',
     'Show At Registration' => '',
+    'Show all' => '',
     'Show all content' => '',
     'Sign in' => '',
     'Sign in / up' => '',

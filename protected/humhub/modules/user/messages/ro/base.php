@@ -100,6 +100,7 @@ return [
     'Provider' => '',
     'Register now and participate!' => '',
     'Show At Registration' => '',
+    'Show all' => '',
     'Show all content' => '',
     'Sign up now' => '',
     'Sort order' => '',

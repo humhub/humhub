@@ -106,6 +106,7 @@ return [
     'Profile posts only' => '',
     'Provider' => '',
     'Show At Registration' => '',
+    'Show all' => '',
     'Show all content' => '',
     'Sort order' => '',
     'Source' => '',
