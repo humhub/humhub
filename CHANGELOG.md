@@ -4,6 +4,7 @@ HumHub Changelog
 1.19.0-beta.2 (TBD)
 -------------------
 - Fix #8350: A configured but unreachable database presented the web installer — offering to re-setup an already installed instance during a transient outage — instead of an error; such requests now return a 503
+- Fix #8393: A fresh install with a reachable DB server but a not-yet-created database (e.g. Docker, MySQL 1049) wrongly returned a 503 from #8350 instead of the installer; only a truly unreachable server now returns a 503
 - Enh #8390: Removed the redundant My Spaces dropdown click handler — the lazy space list is already loaded on open, and the case where the dropdown was opened before its widget initialized is covered by the init-time check from #8384
 - Enh #8389: Removed the unused `$right` parameter from `BootstrapVariationsTrait::icon()` (`Button`/`Badge`/`Link`/`Alert`) and from `MenuLink::setIcon()` — `$options` is now the second parameter of `icon()` instead of the third, see `docs/develop/module-migrate.md`
 - Enh #8389: Buttons styling by using flex and gap instead of a right margin on the icon
