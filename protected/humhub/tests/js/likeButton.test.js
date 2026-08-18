@@ -6,16 +6,31 @@ await import('../../resources/js/humhub/humhub.vue.js');
 
 const vueModule = globalThis.humhub.modules.vue;
 
+// Registered once at file scope (the registry is shared/global per test
+// file — a second register() call would just be a no-op debug log) so the
+// registry+attribute-parsing integration test below can mount via the real
+// <like-button> tag instead of @vue/test-utils' direct component mount.
+vueModule.register('LikeButton', LikeButton);
+
+// DOM fixture helper: build elements without HTML-string parsing (copied
+// from vue.test.js).
+const createTag = (tag, attributes = {}, parent = document.body) => {
+    const el = document.createElement(tag);
+    Object.entries(attributes).forEach(([name, value]) => el.setAttribute(name, value));
+    parent.appendChild(el);
+    return el;
+};
+
 describe('LikeButton', () => {
     beforeEach(() => {
-        vueModule.config('vue').urlTemplate = '/__route__';
+        vueModule.config.urlTemplate = '/__route__';
         globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({}));
         globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve({ currentUserLiked: true, likeCounter: 3 }));
         globalThis.humhubStubs.logCalls.error.length = 0;
     });
 
     afterEach(() => {
-        delete vueModule.config('vue').urlTemplate;
+        delete vueModule.config.urlTemplate;
     });
 
     it('renders from provided initial state without fetching', () => {
@@ -47,6 +62,19 @@ describe('LikeButton', () => {
 
         expect(wrapper.find('a.unlike').exists()).toBe(true);
         expect(wrapper.find('.likeCount').text()).toBe('(5)');
+    });
+
+    it('falls back to a visible, un-liked state when the info fetch fails', async () => {
+        globalThis.humhubStubs.client.get = vi.fn(() => Promise.reject(new Error('network error')));
+
+        const wrapper = mount(LikeButton, { props: { recordId: 7 } });
+
+        await vi.waitFor(() => expect(wrapper.find('.likeLinkContainer').exists()).toBe(true));
+
+        expect(globalThis.humhubStubs.logCalls.error.length).toBeGreaterThan(0);
+        expect(wrapper.find('a.like').exists()).toBe(true);
+        expect(wrapper.find('a.unlike').exists()).toBe(false);
+        expect(wrapper.find('.likeCount').exists()).toBe(false);
     });
 
     it('posts to the like url and switches state on click', async () => {
@@ -155,6 +183,29 @@ describe('LikeButton', () => {
             props: { recordId: 7, likeCount: 0, currentUserLiked: false },
         });
 
+        expect(wrapper.find('.likeLinkContainer').exists()).toBe(true);
         expect(wrapper.find('.likeCount').exists()).toBe(false);
+        expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalled();
+    });
+
+    it('mounts through the registry, coercing "false"/"0" attributes as ready state and fetching for bare ones', async () => {
+        const readyEl = createTag('like-button', {
+            'record-id': '7',
+            'like-count': '0',
+            'current-user-liked': 'false',
+        });
+
+        await vueModule.mountElement(readyEl);
+
+        expect(jQuery(readyEl).find('a.like').length).toBe(1);
+        expect(jQuery(readyEl).find('.likeCount').length).toBe(0);
+        expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalled();
+
+        const fetchEl = createTag('like-button', { 'record-id': '8' });
+
+        await vueModule.mountElement(fetchEl);
+
+        expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(1);
+        expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/like/like/info?recordId=8');
     });
 });

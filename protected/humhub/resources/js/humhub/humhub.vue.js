@@ -297,7 +297,14 @@ humhub.module('vue', function (module, require, $) {
         return isMountedApp(app) ? app : null;
     };
 
-    var config = function (moduleId) {
+    // Named getConfig (not `config`) so it cannot collide with module.config
+    // itself once exported below — module.export() does $.extend(instance,
+    // exports), and module IS the instance the core already set .config on
+    // (createModule(): instance.config = require('config').module(instance),
+    // consumed e.g. by instance.text() via instance.config['text']). An
+    // export literally named `config` would silently clobber that property
+    // for every consumer of this module, not just url() below.
+    var getConfig = function (moduleId) {
         return humhub.config.module(moduleId);
     };
 
@@ -306,20 +313,23 @@ humhub.module('vue', function (module, require, $) {
     // CoreJsConfig via Url::to(['/__route__'])) — the only client-side URL
     // builder the Vue bridge offers; it does not implement routing rules of
     // its own, just fills in the template the server already resolved.
-    //
-    // Deliberately reads config('vue') here rather than module.config: this
-    // module's own module.export() call below re-exports `config` under that
-    // same key, so $.extend(instance, exports) (see humhub.core.js
-    // createModule/instance.export) overwrites instance.config — i.e.
-    // module.config, since module IS that instance — with this accessor
-    // function, discarding the settings object instance.config originally
-    // pointed to. Going through the accessor instead of the (by-then
-    // clobbered) property reaches the real, still-live per-module store.
     var url = function (route, params) {
-        var template = (config('vue') || {}).urlTemplate || '/index.php?r=__route__';
         var normalized = String(route).replace(/^\/+/, '');
-        var isQueryRouteFormat = template.indexOf('?r=__route__') !== -1;
-        var result = template.replace('__route__', isQueryRouteFormat ? encodeURIComponent(normalized) : normalized);
+        var template = module.config.urlTemplate;
+        var result;
+
+        if (!template) {
+            // No CoreJsConfig template reached the client (e.g. a stray
+            // island mounted before ready, or a broken jsConfig pipeline) —
+            // a hardcoded '/index.php?r=' guess would be wrong for
+            // subdirectory installs, so fall back to a root-relative URL
+            // instead and surface the misconfiguration.
+            log.error('humhub.vue: missing urlTemplate config — using a root-relative fallback URL');
+            result = '/' + normalized;
+        } else {
+            var isQueryRouteFormat = template.indexOf('?r=__route__') !== -1;
+            result = template.replace('__route__', isQueryRouteFormat ? encodeURIComponent(normalized) : normalized);
+        }
 
         if (params) {
             var query = $.param(params);
@@ -371,7 +381,7 @@ humhub.module('vue', function (module, require, $) {
         client: client,
         i18n: i18n,
         log: log,
-        config: config,
+        getConfig: getConfig,
         url: url,
     });
 });

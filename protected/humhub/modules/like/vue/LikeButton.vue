@@ -52,6 +52,11 @@ export default {
                 this.count = response.likeCounter;
             }).catch((e) => {
                 log.error(e, true);
+                // Without this the island stays invisible forever (ready()
+                // never turns true) — fall back to a plain, un-liked state so
+                // the button still renders; a later toggle() just posts.
+                this.liked = false;
+                this.count = 0;
             });
         },
         toggle() {

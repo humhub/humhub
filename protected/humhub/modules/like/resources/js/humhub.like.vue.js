@@ -52,6 +52,8 @@
           this.count = response.likeCounter;
         }).catch((e) => {
           vue$1.log.error(e, true);
+          this.liked = false;
+          this.count = 0;
         });
       },
       toggle() {

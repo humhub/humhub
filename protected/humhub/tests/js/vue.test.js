@@ -354,33 +354,35 @@ describe('humhub.vue', () => {
     });
 
     describe('url()', () => {
-        // vueModule.config is the exported config(moduleId) accessor (see the
-        // module.export() call in humhub.vue.js), not a plain settings object
-        // — module.export() overwrites instance.config with it. Fetching the
-        // vue module's own store this way is exactly what url() itself does
-        // internally, and matches how CoreJsConfig's registerJsConfig output
-        // actually reaches the client.
+        // vueModule.config is the real per-module jsConfig object (as set by
+        // CoreJsConfig via registerJsConfig) — getConfig() is a separate,
+        // differently-named accessor precisely so it does not collide with
+        // and overwrite this property (see humhub.vue.js).
         afterEach(() => {
-            delete vueModule.config('vue').urlTemplate;
+            delete vueModule.config.urlTemplate;
         });
 
         it('fills a pretty-URL template and appends params', () => {
-            vueModule.config('vue').urlTemplate = '/__route__';
+            vueModule.config.urlTemplate = '/__route__';
             expect(vueModule.url('/like/like/like', { recordId: 7 })).toBe('/like/like/like?recordId=7');
         });
 
         it('encodes the route and appends params to a query-string template', () => {
-            vueModule.config('vue').urlTemplate = '/index.php?r=__route__';
+            vueModule.config.urlTemplate = '/index.php?r=__route__';
             expect(vueModule.url('like/like/unlike', { recordId: 7 })).toBe('/index.php?r=like%2Flike%2Funlike&recordId=7');
         });
 
         it('omits the trailing separator when there are no params', () => {
-            vueModule.config('vue').urlTemplate = '/__route__';
+            vueModule.config.urlTemplate = '/__route__';
             expect(vueModule.url('/like/like/like')).toBe('/like/like/like');
         });
 
-        it('falls back to the query-route default template when none is configured', () => {
-            expect(vueModule.url('like/like/like')).toBe('/index.php?r=like%2Flike%2Flike');
+        it('falls back to a root-relative URL and logs once when no template is configured', () => {
+            delete vueModule.config.urlTemplate;
+            globalThis.humhubStubs.logCalls.error.length = 0;
+
+            expect(vueModule.url('/a/b', { x: 1 })).toBe('/a/b?x=1');
+            expect(globalThis.humhubStubs.logCalls.error.length).toBe(1);
         });
     });
 });

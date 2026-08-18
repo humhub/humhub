@@ -21,6 +21,8 @@ Each minor release line has its own file with the breaking changes, new APIs and
     covers the same "who liked this" info the old title tooltip provided. Known affected: a CSS
     selector on `data-action-click="like.toggleLike"` in `cuzy-app/clean-theme` (dead selector,
     cosmetic only — see module-search results in the implementing PR).
+  - **Removed**: `humhub\modules\like\services\LikeService::generateLikeTitleText()` — it built the
+    old title-tooltip text, which the Vue-island like link no longer renders; no known callers.
 - Added `humhub\modules\content\models\Content::EVENT_BEFORE_HARD_DELETE` (`ContentEvent`),
   triggered from `Content::hardDeleteInternal()` right before a `Content` record is physically
   removed. Modules that store rows referencing `content_id` with a restrictive (non-cascading)
