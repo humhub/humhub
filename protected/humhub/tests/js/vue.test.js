@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 await import('../../resources/js/humhub/humhub.vue.js');
 
@@ -351,5 +351,36 @@ describe('humhub.vue', () => {
         } finally {
             globalThis.humhub.initialized = true;
         }
+    });
+
+    describe('url()', () => {
+        // vueModule.config is the exported config(moduleId) accessor (see the
+        // module.export() call in humhub.vue.js), not a plain settings object
+        // — module.export() overwrites instance.config with it. Fetching the
+        // vue module's own store this way is exactly what url() itself does
+        // internally, and matches how CoreJsConfig's registerJsConfig output
+        // actually reaches the client.
+        afterEach(() => {
+            delete vueModule.config('vue').urlTemplate;
+        });
+
+        it('fills a pretty-URL template and appends params', () => {
+            vueModule.config('vue').urlTemplate = '/__route__';
+            expect(vueModule.url('/like/like/like', { recordId: 7 })).toBe('/like/like/like?recordId=7');
+        });
+
+        it('encodes the route and appends params to a query-string template', () => {
+            vueModule.config('vue').urlTemplate = '/index.php?r=__route__';
+            expect(vueModule.url('like/like/unlike', { recordId: 7 })).toBe('/index.php?r=like%2Flike%2Funlike&recordId=7');
+        });
+
+        it('omits the trailing separator when there are no params', () => {
+            vueModule.config('vue').urlTemplate = '/__route__';
+            expect(vueModule.url('/like/like/like')).toBe('/like/like/like');
+        });
+
+        it('falls back to the query-route default template when none is configured', () => {
+            expect(vueModule.url('like/like/like')).toBe('/index.php?r=like%2Flike%2Flike');
+        });
     });
 });

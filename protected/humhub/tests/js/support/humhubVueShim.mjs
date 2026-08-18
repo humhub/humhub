@@ -8,6 +8,7 @@ const vueModule = () => globalThis.humhub.modules.vue;
 export const register = (...args) => vueModule().register(...args);
 export const mountElement = (...args) => vueModule().mountElement(...args);
 export const config = (...args) => vueModule().config(...args);
+export const url = (...args) => vueModule().url(...args);
 
 export const client = {
     post: (...args) => vueModule().client.post(...args),

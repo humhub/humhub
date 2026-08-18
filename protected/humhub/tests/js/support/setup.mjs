@@ -89,11 +89,13 @@ const stubs = {
 
 globalThis.humhubStubs = stubs;
 
+const moduleConfigs = {}; // id -> shared config object, so tests can mutate e.g. humhub.modules.vue.config
+
 globalThis.humhub = {
     modules: {},
     initialized: true,
     config: {
-        module: () => ({}),
+        module: (id) => (moduleConfigs[id] = moduleConfigs[id] || {}),
         get: () => null,
         is: () => false,
     },

@@ -301,6 +301,36 @@ humhub.module('vue', function (module, require, $) {
         return humhub.config.module(moduleId);
     };
 
+    // Builds a URL from a default-routed module endpoint against the
+    // server-provided template (this module's own urlTemplate config, set by
+    // CoreJsConfig via Url::to(['/__route__'])) — the only client-side URL
+    // builder the Vue bridge offers; it does not implement routing rules of
+    // its own, just fills in the template the server already resolved.
+    //
+    // Deliberately reads config('vue') here rather than module.config: this
+    // module's own module.export() call below re-exports `config` under that
+    // same key, so $.extend(instance, exports) (see humhub.core.js
+    // createModule/instance.export) overwrites instance.config — i.e.
+    // module.config, since module IS that instance — with this accessor
+    // function, discarding the settings object instance.config originally
+    // pointed to. Going through the accessor instead of the (by-then
+    // clobbered) property reaches the real, still-live per-module store.
+    var url = function (route, params) {
+        var template = (config('vue') || {}).urlTemplate || '/index.php?r=__route__';
+        var normalized = String(route).replace(/^\/+/, '');
+        var isQueryRouteFormat = template.indexOf('?r=__route__') !== -1;
+        var result = template.replace('__route__', isQueryRouteFormat ? encodeURIComponent(normalized) : normalized);
+
+        if (params) {
+            var query = $.param(params);
+            if (query) {
+                result += (result.indexOf('?') !== -1 ? '&' : '?') + query;
+            }
+        }
+
+        return result;
+    };
+
     module.init = function () {
         // Safety net: unmount islands whose root left the DOM (closed modal,
         // deleted stream entry) to release watchers and listeners.
@@ -342,5 +372,6 @@ humhub.module('vue', function (module, require, $) {
         i18n: i18n,
         log: log,
         config: config,
+        url: url,
     });
 });
