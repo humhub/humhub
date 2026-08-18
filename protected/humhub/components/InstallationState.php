@@ -126,10 +126,30 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
         try {
             Yii::$app->db->open();
         } catch (\Exception $e) {
-            $this->databaseConnectionError = $e;
+            // A reachable server that merely lacks the configured database
+            // (fresh install, schema not created yet) is a not-yet-installed
+            // state, not an outage — only a genuinely unreachable server is
+            // recorded so the caller keeps redirecting to the installer here.
+            if (!$this->isMissingDatabaseError($e)) {
+                $this->databaseConnectionError = $e;
+            }
             return false;
         }
 
         return in_array('setting', Yii::$app->db->schema->getTableNames());
+    }
+
+    /**
+     * Whether a database connection error means the configured database does
+     * not exist (or is not accessible) rather than the server being unreachable.
+     * The server responded in this case, so it is reachable — e.g. a fresh
+     * Docker install whose database has not been created yet.
+     */
+    private function isMissingDatabaseError(\Throwable $e): bool
+    {
+        // MySQL: 1049 = unknown database, 1044 = access denied for the database.
+        $code = $e instanceof \yii\db\Exception ? ($e->errorInfo[1] ?? $e->getCode()) : $e->getCode();
+
+        return in_array((int)$code, [1049, 1044], true);
     }
 }

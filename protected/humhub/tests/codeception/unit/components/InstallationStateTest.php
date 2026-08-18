@@ -71,4 +71,44 @@ class InstallationStateTest extends HumHubDbTestCase
             InstallationState::instance(true);
         }
     }
+
+    /**
+     * A configured database whose SERVER is reachable but whose database/schema
+     * does not exist yet (e.g. a fresh Docker install, MySQL error 1049) is a
+     * not-yet-installed state, NOT an outage. It must keep redirecting to the
+     * installer (which creates the database), not return a 503.
+     */
+    public function testConfiguredButMissingDatabaseIsNotUnreachable()
+    {
+        $originalDb = Yii::$app->get('db');
+        $originalCache = Yii::$app->get('cache');
+        $originalSettings = Yii::$app->get('settings');
+
+        try {
+            Yii::$app->set('cache', ['class' => DummyCache::class]);
+            // Reuse the real (reachable) server credentials but point at a
+            // database that does not exist -> the server responds with 1049.
+            $missingDsn = preg_replace('/dbname=[^;]*/', 'dbname=humhub_missing_db_test', $originalDb->dsn);
+            $this->assertNotSame($originalDb->dsn, $missingDsn, 'test DSN must carry a dbname');
+            Yii::$app->set('db', [
+                'class' => Connection::class,
+                'dsn' => $missingDsn,
+                'username' => $originalDb->username,
+                'password' => $originalDb->password,
+                'charset' => $originalDb->charset,
+            ]);
+            Yii::$app->set('settings', ['class' => SettingsManager::class, 'moduleId' => 'base']);
+
+            $state = InstallationState::instance(true);
+
+            $this->assertFalse($state->isDatabaseUnreachable(), 'A missing database is not an outage');
+            $this->assertNull($state->getDatabaseConnectionError());
+            $this->assertFalse($state->hasState(InstallationState::STATE_INSTALLED));
+        } finally {
+            Yii::$app->set('db', $originalDb);
+            Yii::$app->set('cache', $originalCache);
+            Yii::$app->set('settings', $originalSettings);
+            InstallationState::instance(true);
+        }
+    }
 }
