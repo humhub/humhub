@@ -1,6 +1,6 @@
 # Vue.js Integration (Concept)
 
-> **Status: concept draft.** Nothing described here is implemented yet. This document defines the target architecture for integrating Vue.js into HumHub as an island framework on top of the existing JavaScript layer ([overview](ui-js-overview.md)).
+> **Status: concept — Phase 1 implemented** (Vue runtime, `humhub.vue` registry/mounter, build tooling, `VueComponent` widget, LikeButton pilot). Later phases (extension slots, base component library, dynamic imports, CI enforcement) are still design-level. This document defines the target architecture for integrating Vue.js into HumHub as an island framework on top of the existing JavaScript layer ([overview](ui-js-overview.md)).
 
 ## Motivation
 
@@ -78,10 +78,10 @@ import LikeButton from './LikeButton.vue';
 register('LikeButton', LikeButton);
 ```
 
-- **Names are platform-wide unique**, PascalCase — analogous to PHP class names sharing one autoloader. Registering a name twice logs an error and keeps the first registration.
+- **Names are platform-wide unique**, PascalCase with a dashed tag form (`LikeButton` → `<like-button>`, `HButton` → `<h-button>`, `PDFViewer` → `<pdf-viewer>`) — analogous to PHP class names sharing one autoloader. Registering the same name twice is a debug-level no-op (artifact scripts legitimately re-execute with every ajax response that includes them); two different names deriving the same tag is an error, and the first registration wins.
 - Every registered component is made available **globally in every island app**. That is what enables cross-module nesting: the comment section's template uses `<LikeButton :content-id="..."/>` without importing or even knowing the like module.
 - A tag for an **unregistered** component (module disabled, artifact not loaded) renders as an inert placeholder instead of an error — modules stay optional. In debug mode a console warning identifies the missing component.
-- **Late registration is safe:** when a component registers after the page initialized (script injected with a PJAX/AJAX response), the registry immediately mounts any placeholder tags already waiting in the DOM. "HTML first, script afterwards" ordering is therefore uncritical.
+- **Late registration is safe:** when a component registers after the page initialized (script injected with a PJAX/AJAX response), the registry immediately mounts any placeholder tags already waiting in the DOM. "HTML first, script afterwards" ordering is therefore uncritical. Late-registered components also become *resolvable* inside already-mounted islands — but an island that has already rendered a missing child only picks it up on its next reactive re-render.
 
 ## Mounting and lifecycle
 
@@ -136,7 +136,9 @@ Two equivalent ways:
 ]) ?>
 ```
 
-`VueComponent::widget()` renders the tag form, JSON-encodes non-scalar props, and registers the owning module's Vue asset bundle. No inline `<script>` per instance is ever emitted — props live in attributes, which keeps CSP nonces and PJAX re-execution out of the picture.
+`VueComponent::widget()` renders the tag form, JSON-encodes non-scalar props, and registers the asset bundle passed via `assetBundle`. No inline `<script>` per instance is ever emitted — props live in attributes, which keeps CSP nonces and PJAX re-execution out of the picture.
+
+**Reserved prop names:** the client-side registry never reads the attributes `class`, `id`, `style`, `props` or anything starting with `data-` as props — `VueComponent` therefore throws when a prop maps onto one of them, or when a prop collides with an entry in `options`. Prop keys must be static, developer-controlled strings.
 
 **Migration mechanism:** existing PHP widgets keep their public API and simply render an island internally. `LikeLink::widget(['object' => $post])` continues to work in every theme and module — its view just emits `<like-button ...>` instead of server-rendered markup. Callers never notice the switch.
 
@@ -172,9 +174,9 @@ External modules use the identical layout relative to their module root.
 
 Core ships a zero-config build command (esbuild-based with the Vue SFC plugin; exact tool pinned by core so output stays deterministic). Module developers never write build configuration.
 
-- `build` compiles `resources/vue/index.js` → `resources/js/humhub.<module>.vue.js` (IIFE, Vue and `@humhub/vue` as externals), unminified with a sourcemap. Production minification happens where it happens today: `grunt build-assets` for core modules; external modules may pass `--minify` for releases.
+- `build` compiles `resources/vue/index.js` → `resources/js/humhub.<module>.vue.js` (IIFE, Vue and `@humhub/vue` as externals), unminified with a sourcemap. Artifacts are served as standalone published files (they are not part of the compiled core bundles), so they ship unminified by default — `--minify` is available; folding core-module artifacts into the production bundle pipeline is a follow-up decision.
 - `watch` recompiles on save (~tens of milliseconds) — the one extra step for developers actively working on `.vue` files.
-- `<style>` blocks of SFCs are **extracted into a CSS artifact** (`resources/css/humhub.<module>.vue.css`, listed in the same asset bundle) instead of runtime style injection — themable, cacheable, and no CSP `style-src` relaxation needed.
+- `<style>` blocks of SFCs are **extracted into a CSS artifact** (`resources/js/humhub.<module>.vue.css`, listed in the same asset bundle) instead of runtime style injection — themable, cacheable, and no CSP `style-src` relaxation needed.
 - **Artifacts are committed.** Installing or running HumHub — and reviewing a module PR — requires no npm. A CI check rebuilds and fails on diff, guarding against stale or hand-edited artifacts.
 - `resources/vue/` is excluded from asset publishing centrally (in the base `AssetBundle` publish options), following the `scss/` precedent.
 
@@ -193,6 +195,10 @@ Vue components reach platform services through composables that delegate to the 
 Errors thrown in components hit a global Vue `errorHandler` wired to `humhub.log` and the existing status bar — one consistent error UX.
 
 URLs are generated server-side and passed as props or config, as today. There is deliberately no client-side URL builder or router — that would be the SPA path this concept excludes.
+
+**Message extraction convention.** `php yii message/extract-module` parses `.vue` files, but only the full call form `i18n.t('Category', 'Message')` (typically in computed properties or methods) is recognized — category-bound helpers hide the category from the extractor. Templates should reference those computed labels instead of calling `t()` inline.
+
+**Preloading vs. server labels.** Declared `i18nCategories` are loaded *before* mount — on a cold cache (and always in debug mode) that delays the island behind a translation request. For small leaf components, prefer passing server-rendered labels as props (as the LikeButton pilot does) and reserve client-side i18n for components with many or dynamic messages.
 
 **Base component library.** A gradually growing set of platform components in HumHub markup and theme styling: `HButton`, `HDropdown`, form components (`HForm`, inputs with server-side validation error display), `HTimeAgo`, `HUserImage`, … Phase 1 contains only what the pilot components need; the library grows with real usage instead of being designed up front.
 
