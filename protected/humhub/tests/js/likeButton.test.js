@@ -25,6 +25,8 @@ const createTag = (tag, attributes = {}, parent = document.body) => {
 describe('LikeButton', () => {
     beforeEach(() => {
         globalThis.humhub.modules.url.config.template = '/__route__';
+        globalThis.humhub.config.module('user').isGuest = false;
+        globalThis.humhub.config.module('user').loginUrl = '/user/auth/login';
         globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({}));
         globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve({ currentUserLiked: true, likeCounter: 3 }));
         globalThis.humhubStubs.logCalls.error.length = 0;
@@ -32,6 +34,8 @@ describe('LikeButton', () => {
 
     afterEach(() => {
         delete globalThis.humhub.modules.url.config.template;
+        delete globalThis.humhub.config.module('user').isGuest;
+        delete globalThis.humhub.config.module('user').loginUrl;
     });
 
     it('renders from provided initial state without fetching', () => {
@@ -187,6 +191,58 @@ describe('LikeButton', () => {
         expect(wrapper.find('.likeLinkContainer').exists()).toBe(true);
         expect(wrapper.find('.likeCount').exists()).toBe(false);
         expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalled();
+    });
+
+    it('renders a login link and a non-interactive count for guests', () => {
+        globalThis.humhub.config.module('user').isGuest = true;
+
+        const wrapper = mount(LikeButton, {
+            props: { recordId: 7, likeCount: 2, currentUserLiked: false },
+        });
+
+        const loginLink = wrapper.find('a[data-bs-target="#globalModal"]');
+        expect(loginLink.exists()).toBe(true);
+        expect(loginLink.attributes('href')).toBe('/user/auth/login');
+        expect(loginLink.text()).toBe('Like');
+
+        expect(wrapper.find('.likeCount').exists()).toBe(true);
+        expect(wrapper.find('.likeCount').text()).toBe('(2)');
+        expect(wrapper.find('.likeCount').element.tagName).not.toBe('A');
+
+        expect(wrapper.find('a.like').exists()).toBe(false);
+        expect(wrapper.find('a.unlike').exists()).toBe(false);
+        expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalled();
+        expect(globalThis.humhubStubs.client.post).not.toHaveBeenCalled();
+    });
+
+    it('renders only the login link for guests when the count is zero', () => {
+        globalThis.humhub.config.module('user').isGuest = true;
+
+        const wrapper = mount(LikeButton, {
+            props: { recordId: 7, likeCount: 0, currentUserLiked: false },
+        });
+
+        expect(wrapper.find('a[data-bs-target="#globalModal"]').exists()).toBe(true);
+        expect(wrapper.find('.likeCount').exists()).toBe(false);
+        expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalled();
+        expect(globalThis.humhubStubs.client.post).not.toHaveBeenCalled();
+    });
+
+    it('fetches the count for guests when no initial state is provided', async () => {
+        globalThis.humhub.config.module('user').isGuest = true;
+        globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({ currentUserLiked: false, likeCounter: 4 }));
+
+        const wrapper = mount(LikeButton, { props: { recordId: 7 } });
+
+        expect(wrapper.find('.likeLinkContainer').exists()).toBe(false);
+        expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(1);
+        expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/like/like/info?recordId=7');
+
+        await vi.waitFor(() => expect(wrapper.find('.likeLinkContainer').exists()).toBe(true));
+
+        expect(wrapper.find('a[data-bs-target="#globalModal"]').exists()).toBe(true);
+        expect(wrapper.find('.likeCount').text()).toBe('(4)');
+        expect(globalThis.humhubStubs.client.post).not.toHaveBeenCalled();
     });
 
     it('mounts through the registry, coercing "false"/"0" attributes as ready state and fetching for bare ones', async () => {

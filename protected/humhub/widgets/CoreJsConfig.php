@@ -36,6 +36,7 @@ class CoreJsConfig extends Widget
             $userConfig = ['isGuest' => true];
         }
         $userConfig['locale'] = Yii::$app->formatter->locale;
+        $userConfig['loginUrl'] = Url::to(Yii::$app->user->loginUrl);
 
         $this->getView()->registerJsConfig(
             [

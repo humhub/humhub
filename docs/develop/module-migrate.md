@@ -26,6 +26,16 @@ Each minor release line has its own file with the breaking changes, new APIs and
     cosmetic only — see module-search results in the implementing PR).
   - **Removed**: `humhub\modules\like\services\LikeService::generateLikeTitleText()` — it built the
     old title-tooltip text, which the Vue-island like link no longer renders; no known callers.
+  - **Removed**: the `humhub\modules\like\widgets\views\likeLink.php` view file —
+    `humhub\modules\like\widgets\LikeLink::run()` now returns the `LikeButton` island directly with
+    no PHP view in between. Theme overrides of `like/widgets/views/likeLink.php` no longer apply;
+    override the `LikeLink` widget or the `LikeButton` Vue component instead. Guests now see the
+    like **count** again (non-interactive, no like/unlike controls) — restoring the pre-Vue
+    behavior that an earlier iteration of this island had temporarily dropped; guest state
+    (login-modal link vs. count) is driven client-side via the `isGuest`/`loginUrl` keys of the
+    `user` `registerJsConfig` section (see `docs/develop/ui-js-vuejs.md`). `/like/like/info` is now
+    guest-accessible (`guestAllowedActions`); content visibility is still enforced by
+    `Content::canView()` in `LikeController::beforeAction()`.
 - Added `humhub\modules\content\models\Content::EVENT_BEFORE_HARD_DELETE` (`ContentEvent`),
   triggered from `Content::hardDeleteInternal()` right before a `Content` record is physically
   removed. Modules that store rows referencing `content_id` with a restrictive (non-cascading)

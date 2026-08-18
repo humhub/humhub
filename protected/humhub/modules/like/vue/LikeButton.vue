@@ -1,15 +1,21 @@
 <template>
     <span v-if="ready" class="likeLinkContainer">
-        <a v-if="!liked" href="#" class="like likeAnchor" @click.prevent="toggle()">{{ likeLabel }}</a>
-        <a v-else href="#" class="unlike likeAnchor" @click.prevent="toggle()">{{ unlikeLabel }}</a>
-        <a v-if="count > 0" :href="userListUrl" data-bs-target="#globalModal">
-            <span class="likeCount">({{ count }})</span>
-        </a>
+        <template v-if="guest">
+            <a :href="loginUrl" data-bs-target="#globalModal">{{ likeLabel }}</a>
+            <span v-if="count > 0" class="likeCount">({{ count }})</span>
+        </template>
+        <template v-else>
+            <a v-if="!liked" href="#" class="like likeAnchor" @click.prevent="toggle()">{{ likeLabel }}</a>
+            <a v-else href="#" class="unlike likeAnchor" @click.prevent="toggle()">{{ unlikeLabel }}</a>
+            <a v-if="count > 0" :href="userListUrl" data-bs-target="#globalModal">
+                <span class="likeCount">({{ count }})</span>
+            </a>
+        </template>
     </span>
 </template>
 
 <script>
-import { client, i18n, log, url } from '@humhub/vue';
+import { client, getConfig, i18n, log, url } from '@humhub/vue';
 
 export default {
     i18nCategories: ['LikeModule.base'],
@@ -26,8 +32,17 @@ export default {
         };
     },
     computed: {
+        // Guests never get a liked state from the server (LikeLink always sends
+        // `currentUserLiked: false` for them) — the like/unlike anchors and the
+        // user-list link are member-only, so ready() must not wait on `liked`.
         ready() {
-            return this.liked !== null && this.count !== null;
+            return this.guest ? this.count !== null : (this.liked !== null && this.count !== null);
+        },
+        guest() {
+            return getConfig('user').isGuest === true;
+        },
+        loginUrl() {
+            return getConfig('user').loginUrl;
         },
         likeLabel() {
             // Full i18n.t('Category', 'Message') form — required by message extraction

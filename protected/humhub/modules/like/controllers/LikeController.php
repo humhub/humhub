@@ -39,6 +39,7 @@ class LikeController extends Controller
         return [
             'acl' => [
                 'class' => AccessControl::class,
+                'guestAllowedActions' => ['info'],
             ],
         ];
     }
