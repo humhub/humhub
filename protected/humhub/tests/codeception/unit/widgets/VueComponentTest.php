@@ -6,11 +6,11 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace tests\codeception\unit;
+namespace humhub\tests\codeception\unit\widgets;
 
 use humhub\helpers\Html;
 use humhub\modules\like\assets\LikeAsset;
-use humhub\modules\ui\vue\widgets\VueComponent;
+use humhub\widgets\VueComponent;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
 use yii\base\InvalidConfigException;

@@ -2,7 +2,7 @@
 
 use humhub\helpers\Html;
 use humhub\modules\like\assets\LikeVueAsset;
-use humhub\modules\ui\vue\widgets\VueComponent;
+use humhub\widgets\VueComponent;
 
 /* @var $likeCount int */
 /* @var $userListUrl string */

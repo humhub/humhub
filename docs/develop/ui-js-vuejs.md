@@ -239,4 +239,3 @@ After the pilots, the working rule is: **new interactive UI is built in Vue; exi
 
 - Exact SFC build tool (esbuild + Vue plugin vs. Vite/Rollup library mode) — decided during implementation of the build command; the committed-artifact contract is independent of it.
 - Distribution of the build command to external module developers (npm package vs. invocation from a core checkout).
-- Whether `VueComponent` and the PHP-side classes live under `humhub\modules\ui\vue` or `humhub\widgets`.

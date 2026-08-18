@@ -6,7 +6,7 @@ Each minor release line has its own file with the breaking changes, new APIs and
 
 ## Unreleased
 
-- Added the **Vue.js island layer** (`humhub.vue` client registry/mounter, `humhub\modules\ui\vue\widgets\VueComponent`,
+- Added the **Vue.js island layer** (`humhub.vue` client registry/mounter, `humhub\widgets\VueComponent`,
   `grunt build-vue` tooling) — see `docs/develop/ui-js-vuejs.md`. Purely additive; the existing
   `humhub.module` JS system is unaffected.
   - The publish excludes for `@humhub/resources` bundles (`scss/`, `.gitignore` — introduced

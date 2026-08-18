@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\ui\vue\widgets;
+namespace humhub\widgets;
 
 use humhub\helpers\Html;
 use yii\base\InvalidConfigException;
