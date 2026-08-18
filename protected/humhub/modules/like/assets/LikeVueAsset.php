@@ -14,7 +14,7 @@ use humhub\components\assets\AssetBundle;
 /**
  * Compiled Vue components of the like module.
  *
- * Source: `resources/vue/`, built via `grunt build-vue --module=like`.
+ * Source: `vue/`, built via `grunt build-vue --module=like`.
  * The artifact is committed — see docs/develop/ui-js-vuejs.md.
  *
  * @since 1.19

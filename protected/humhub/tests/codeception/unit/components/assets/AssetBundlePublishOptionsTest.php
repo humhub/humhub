@@ -15,16 +15,16 @@ use tests\codeception\_support\HumHubDbTestCase;
 
 class AssetBundlePublishOptionsTest extends HumHubDbTestCase
 {
-    public function testModuleBundleExcludesVueSources()
+    public function testModuleBundlesGetNoDefaultPublishOptions()
     {
         $bundle = new LikeAsset();
-        $this->assertSame(['/vue/'], $bundle->publishOptions['except']);
+        $this->assertArrayNotHasKey('except', $bundle->publishOptions);
+        $this->assertArrayNotHasKey('only', $bundle->publishOptions);
     }
 
     public function testCoreResourceBundleKeepsDefaultExcludes()
     {
         $bundle = new CoreApiAsset();
-        $this->assertContains('/vue/', $bundle->publishOptions['except']);
         $this->assertContains('scss/', $bundle->publishOptions['except']);
         $this->assertNotContains('build/', $bundle->publishOptions['except']);
     }

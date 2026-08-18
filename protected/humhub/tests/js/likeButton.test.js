@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
-import LikeButton from '../../modules/like/resources/vue/LikeButton.vue';
+import LikeButton from '../../modules/like/vue/LikeButton.vue';
 
 await import('../../resources/js/humhub/humhub.vue.js');
 

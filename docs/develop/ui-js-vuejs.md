@@ -148,16 +148,16 @@ Two equivalent ways:
 protected/humhub/modules/like/
 ├── assets/
 │   └── LikeVueAsset.php              # AssetBundle → js/humhub.like.vue.js
+├── vue/                              # sources — plain source code like views/, never published
+│   ├── index.js                      # entry: imports SFCs, registers components
+│   └── LikeButton.vue
 └── resources/
-    ├── vue/                          # sources — excluded from asset publishing (like scss/)
-    │   ├── index.js                  # entry: imports SFCs, registers components
-    │   └── LikeButton.vue
     └── js/
         ├── humhub.like.vue.js        # committed build artifact
         └── humhub.like.vue.js.map
 ```
 
-`resources/vue/index.js` is the single build entry per module:
+`vue/index.js` is the single build entry per module:
 
 ```js
 import { register } from '@humhub/vue';
@@ -174,11 +174,11 @@ External modules use the identical layout relative to their module root.
 
 Core ships a zero-config build command (esbuild-based with the Vue SFC plugin; exact tool pinned by core so output stays deterministic). Module developers never write build configuration.
 
-- `build` compiles `resources/vue/index.js` → `resources/js/humhub.<module>.vue.js` (IIFE, Vue and `@humhub/vue` as externals), unminified with a sourcemap. Artifacts are served as standalone published files (they are not part of the compiled core bundles), so they ship unminified by default — `--minify` is available; folding core-module artifacts into the production bundle pipeline is a follow-up decision.
+- `build` compiles `vue/index.js` → `resources/js/humhub.<module>.vue.js` (IIFE, Vue and `@humhub/vue` as externals), unminified with a sourcemap. Artifacts are served as standalone published files (they are not part of the compiled core bundles), so they ship unminified by default — `--minify` is available; folding core-module artifacts into the production bundle pipeline is a follow-up decision.
 - `watch` recompiles on save (~tens of milliseconds) — the one extra step for developers actively working on `.vue` files.
 - `<style>` blocks of SFCs are **extracted into a CSS artifact** (`resources/js/humhub.<module>.vue.css`, listed in the same asset bundle) instead of runtime style injection — themable, cacheable, and no CSP `style-src` relaxation needed.
 - **Artifacts are committed.** Installing or running HumHub — and reviewing a module PR — requires no npm. A CI check rebuilds and fails on diff, guarding against stale or hand-edited artifacts.
-- `resources/vue/` is excluded from asset publishing centrally (in the base `AssetBundle` publish options), following the `scss/` precedent.
+- Vue sources live at the module root (`vue/`), outside the published `resources/` tree — they can never end up in the web-accessible assets directory, no publish exclusions needed.
 
 ## Bridge layer: composables
 

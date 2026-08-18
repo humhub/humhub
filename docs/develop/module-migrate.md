@@ -9,11 +9,6 @@ Each minor release line has its own file with the breaking changes, new APIs and
 - Added the **Vue.js island layer** (`humhub.vue` client registry/mounter, `humhub\modules\ui\vue\widgets\VueComponent`,
   `grunt build-vue` tooling) — see `docs/develop/ui-js-vuejs.md`. Purely additive; the existing
   `humhub.module` JS system is unaffected.
-  - Module asset bundles extending `humhub\components\assets\AssetBundle` that define neither
-    `publishOptions['only']` nor `publishOptions['except']` now publish with
-    `except: ['/vue/']` by default: a root-level `resources/vue/` directory (Vue SFC sources)
-    is no longer copied to the web-accessible assets directory. No known module ships such a
-    directory today; set explicit `publishOptions` to opt out.
   - The publish excludes for `@humhub/resources` bundles (`scss/`, `.gitignore` — introduced
     with #8277) were never applied at runtime due to an alias comparison bug and are now
     active; `build/` is deliberately **not** excluded because the compiled `humhub-app.css`

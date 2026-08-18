@@ -1,7 +1,7 @@
 /**
  * Zero-config Vue SFC build for HumHub modules.
  *
- * Compiles <module>/resources/vue/index.js into a committed IIFE artifact
+ * Compiles <module>/vue/index.js into a committed IIFE artifact
  * <module>/resources/js/humhub.<id>.vue.js (+ sourcemap). Vue and @humhub/vue
  * are externals mapped onto the globals provided by core asset bundles, so
  * nothing is bundled twice. See docs/develop/ui-js-vuejs.md.
@@ -37,7 +37,7 @@ if (!moduleArg) {
 const coreModulePath = resolve(root, 'protected/humhub/modules', moduleArg);
 const modulePath = existsSync(coreModulePath) ? coreModulePath : resolve(moduleArg);
 const moduleId = modulePath.split(/[\\/]/).filter(Boolean).pop();
-const entry = resolve(modulePath, 'resources/vue/index.js');
+const entry = resolve(modulePath, 'vue/index.js');
 
 if (!existsSync(entry)) {
     console.error(`Entry not found: ${entry}`);
