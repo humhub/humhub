@@ -71,6 +71,19 @@ class LikeController extends Controller
         ]);
     }
 
+    /**
+     * Returns the current like state of the record.
+     *
+     * @since 1.19
+     */
+    public function actionInfo()
+    {
+        return $this->asJson([
+            'currentUserLiked' => $this->likeService->hasLiked(),
+            'likeCounter' => $this->likeService->getCount(),
+        ]);
+    }
+
     public function actionUserList()
     {
         $title = Yii::t('LikeModule.base', "<strong>Users</strong> who like this");
