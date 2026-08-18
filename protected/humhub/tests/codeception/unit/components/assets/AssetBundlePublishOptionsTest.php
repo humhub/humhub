@@ -10,14 +10,14 @@ namespace humhub\tests\codeception\unit\components\assets;
 
 use humhub\assets\CoreApiAsset;
 use humhub\assets\IntlMessageFormatAsset;
-use humhub\modules\like\assets\LikeAsset;
+use humhub\modules\like\assets\LikeVueAsset;
 use tests\codeception\_support\HumHubDbTestCase;
 
 class AssetBundlePublishOptionsTest extends HumHubDbTestCase
 {
     public function testModuleBundlesGetNoDefaultPublishOptions()
     {
-        $bundle = new LikeAsset();
+        $bundle = new LikeVueAsset();
         $this->assertArrayNotHasKey('except', $bundle->publishOptions);
         $this->assertArrayNotHasKey('only', $bundle->publishOptions);
     }

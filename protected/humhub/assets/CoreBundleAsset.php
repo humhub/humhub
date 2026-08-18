@@ -7,7 +7,6 @@ use humhub\modules\activity\assets\ActivityAsset;
 use humhub\modules\comment\assets\CommentAsset;
 use humhub\modules\content\assets\ContentContainerAsset;
 use humhub\modules\content\assets\ProseMirrorRichTextAsset;
-use humhub\modules\like\assets\LikeAsset;
 use humhub\modules\live\assets\LiveAsset;
 use humhub\modules\notification\assets\NotificationAsset;
 use humhub\modules\post\assets\PostAsset;
@@ -67,7 +66,6 @@ class CoreBundleAsset extends AssetBundle
         TopicAsset::class,
         FilterAsset::class,
         CommentAsset::class,
-        LikeAsset::class,
         StreamAsset::class,
         ActivityAsset::class,
         SpaceChooserAsset::class,

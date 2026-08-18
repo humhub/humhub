@@ -9,7 +9,7 @@
 namespace humhub\tests\codeception\unit\widgets;
 
 use humhub\helpers\Html;
-use humhub\modules\like\assets\LikeAsset;
+use humhub\modules\like\assets\LikeVueAsset;
 use humhub\widgets\VueComponent;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
@@ -82,10 +82,10 @@ class VueComponentTest extends HumHubDbTestCase
     {
         VueComponent::widget([
             'name' => 'LikeButton',
-            'assetBundle' => LikeAsset::class,
+            'assetBundle' => LikeVueAsset::class,
         ]);
 
-        $this->assertArrayHasKey(LikeAsset::class, Yii::$app->view->assetBundles);
+        $this->assertArrayHasKey(LikeVueAsset::class, Yii::$app->view->assetBundles);
     }
 
     public function testSingleWordNameThrows()
