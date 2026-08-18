@@ -62,13 +62,13 @@ class AssetBundle extends BaseAssetBundle
      * sharing this sourcePath must publish with identical options — whichever bundle
      * publishes first defines the copied file set.
      *
-     * `build/` holds the pre-built production bundles, which are only published through
-     * the compressed asset configuration (see `config/assets.php`); `scss/` only
-     * contains sources. Neither is referenced at runtime outside a production build.
+     * `build/` is deliberately NOT excluded here: the compiled `css/humhub-app.css`
+     * references its contents at runtime via relative `url(../build/<hash>/...)`
+     * (e.g. FontAwesome, OpenSans, jplayer), so it must always be published alongside
+     * the rest of the tree. `scss/` only contains sources, never referenced at runtime.
      */
     public const HUMHUB_RESOURCES_PUBLISH_OPTIONS = [
         'except' => [
-            'build/',
             'scss/',
             '.gitignore',
         ],
@@ -153,7 +153,10 @@ class AssetBundle extends BaseAssetBundle
         $this->jsOptions['position'] = $this->getJsPosition();
 
         if (
-            $this->sourcePath === '@humhub/resources'
+            // `parent::init()` above already resolved `sourcePath` from its alias
+            // to an absolute path, so it must be compared against the resolved
+            // alias rather than the literal `@humhub/resources` string.
+            $this->sourcePath === rtrim(Yii::getAlias('@humhub/resources'), '/\\')
             && !isset($this->publishOptions['only'])
             && !isset($this->publishOptions['except'])
         ) {
