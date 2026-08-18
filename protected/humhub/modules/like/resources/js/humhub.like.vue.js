@@ -1,3 +1,8 @@
+/*!
+ * AUTO-GENERATED FILE — do not edit.
+ * Compiled from like/vue/ via `grunt build-vue --module=like`.
+ * See docs/develop/ui-js-vuejs.md
+ */
 (function(vue$1, vue) {
   "use strict";
   const _export_sfc = (sfc, props) => {
@@ -88,7 +93,7 @@
       ], 8, _hoisted_2)) : vue.createCommentVNode("v-if", true)
     ]);
   }
-  const LikeButton = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
-  vue$1.register("LikeButton", LikeButton);
+  const C0 = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
+  vue$1.register("LikeButton", C0);
 })(humhub.modules.vue, Vue);
 //# sourceMappingURL=humhub.like.vue.js.map

@@ -69,7 +69,7 @@ Consequence: **compiled artifacts are committed** (see [Build tooling](#build-to
 
 ## Component registry
 
-Modules register components by name:
+At the core, every component is registered by name through a small API:
 
 ```js
 import { register } from '@humhub/vue';
@@ -77,6 +77,8 @@ import LikeButton from './LikeButton.vue';
 
 register('LikeButton', LikeButton);
 ```
+
+Modules normally never write this code themselves — the filename convention (see [Module file layout](#module-file-layout)) generates it for every top-level component. The explicit `register()` call remains the underlying API for two cases: a `vue/index.js` with custom registration logic, and registering components at runtime (e.g. `registerSlotComponent`, see [Extension slots](#extension-slots)).
 
 - **Names are platform-wide unique**, PascalCase with a dashed tag form (`LikeButton` → `<like-button>`, `HButton` → `<h-button>`, `PDFViewer` → `<pdf-viewer>`) — analogous to PHP class names sharing one autoloader. Registering the same name twice is a debug-level no-op (artifact scripts legitimately re-execute with every ajax response that includes them); two different names deriving the same tag is an error, and the first registration wins.
 - Every registered component is made available **globally in every island app**. That is what enables cross-module nesting: the comment section's template uses `<LikeButton :content-id="..."/>` without importing or even knowing the like module.
@@ -149,15 +151,16 @@ protected/humhub/modules/like/
 ├── assets/
 │   └── LikeVueAsset.php              # AssetBundle → js/humhub.like.vue.js
 ├── vue/                              # sources — plain source code like views/, never published
-│   ├── index.js                      # entry: imports SFCs, registers components
-│   └── LikeButton.vue
+│   └── LikeButton.vue                # auto-registered under its filename
 └── resources/
     └── js/
         ├── humhub.like.vue.js        # committed build artifact
         └── humhub.like.vue.js.map
 ```
 
-`vue/index.js` is the single build entry per module:
+Every top-level `.vue` file directly inside `vue/` is registered under its filename — `LikeButton.vue` becomes `register('LikeButton', ...)`, no code required. The filename is therefore a component name in the same sense as a registered name below: PascalCase with a dashed tag form, enforced at build time (a violating filename fails the build with a message naming the offending file). Files inside subdirectories of `vue/` are internal building blocks — imported by the public, top-level components but never registered themselves.
+
+An optional `vue/index.js` replaces the generated entry when a module needs custom registration logic; when present it is used verbatim and the filename convention above does not apply. That is where explicit `register()` calls against `@humhub/vue` go:
 
 ```js
 import { register } from '@humhub/vue';
@@ -172,9 +175,9 @@ External modules use the identical layout relative to their module root.
 
 ## Build tooling
 
-Core ships a zero-config build command (esbuild-based with the Vue SFC plugin; exact tool pinned by core so output stays deterministic). Module developers never write build configuration.
+Core ships a zero-config build command (Vite library mode with the official Vue SFC plugin; versions are pinned through the repo lockfile so output stays deterministic). Module developers never write build configuration.
 
-- `build` compiles `vue/index.js` → `resources/js/humhub.<module>.vue.js` (IIFE, Vue and `@humhub/vue` as externals), unminified with a sourcemap. Artifacts are served as standalone published files (they are not part of the compiled core bundles), so they ship unminified by default — `--minify` is available; folding core-module artifacts into the production bundle pipeline is a follow-up decision.
+- `build` compiles a module's `vue/` sources → `resources/js/humhub.<module>.vue.js` (IIFE, Vue and `@humhub/vue` as externals), unminified with a sourcemap. The entry is generated from the filename convention above unless `vue/index.js` exists, in which case that file is used verbatim. Artifacts are served as standalone published files (they are not part of the compiled core bundles), so they ship unminified by default — `--minify` is available; folding core-module artifacts into the production bundle pipeline is a follow-up decision.
 - `watch` recompiles on save (~tens of milliseconds) — the one extra step for developers actively working on `.vue` files.
 - `<style>` blocks of SFCs are **extracted into a CSS artifact** (`resources/js/humhub.<module>.vue.css`, listed in the same asset bundle) instead of runtime style injection — themable, cacheable, and no CSP `style-src` relaxation needed.
 - **Artifacts are committed.** Installing or running HumHub — and reviewing a module PR — requires no npm. A CI check rebuilds and fails on diff, guarding against stale or hand-edited artifacts.
@@ -237,5 +240,4 @@ After the pilots, the working rule is: **new interactive UI is built in Vue; exi
 
 ## Open questions
 
-- Exact SFC build tool (esbuild + Vue plugin vs. Vite/Rollup library mode) — decided during implementation of the build command; the committed-artifact contract is independent of it.
 - Distribution of the build command to external module developers (npm package vs. invocation from a core checkout).
