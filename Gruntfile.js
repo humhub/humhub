@@ -91,6 +91,17 @@ module.exports = function (grunt) {
                     let sep = cmdSep();
                     return `cd protected ${sep} php yii migrate/up --includeModuleMigrations=${includeModuleMigrations}`;
                 }
+            },
+            buildVue: {
+                command: function () {
+                    let moduleName = grunt.option('module') || grunt.option('m');
+                    let watch = grunt.option('watch') ? ' --watch' : '';
+                    let minify = grunt.option('minify') ? ' --minify' : '';
+                    return `node vue.build.mjs --module ${moduleName}${watch}${minify}`;
+                }
+            },
+            testJs: {
+                command: "npx vitest run"
             }
 
         },
@@ -129,4 +140,12 @@ module.exports = function (grunt) {
     grunt.registerTask('migrate-create', ['shell:migrateCreate']);
     grunt.registerTask('test-server', ['shell:testServer']);
     grunt.registerTask('test', ['shell:testRun']);
+
+    /**
+     * Compiles a module's Vue single-file components into its committed artifact
+     *
+     * > grunt build-vue --module=like [--watch] [--minify]
+     */
+    grunt.registerTask('build-vue', ['shell:buildVue']);
+    grunt.registerTask('test-js', ['shell:testJs']);
 };
