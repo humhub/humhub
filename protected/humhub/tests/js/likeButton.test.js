@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import LikeButton from '../../modules/like/vue/LikeButton.vue';
 
+await import('../../resources/js/humhub/humhub.url.js');
 await import('../../resources/js/humhub/humhub.vue.js');
 
 const vueModule = globalThis.humhub.modules.vue;
@@ -23,14 +24,14 @@ const createTag = (tag, attributes = {}, parent = document.body) => {
 
 describe('LikeButton', () => {
     beforeEach(() => {
-        vueModule.config.urlTemplate = '/__route__';
+        globalThis.humhub.modules.url.config.template = '/__route__';
         globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({}));
         globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve({ currentUserLiked: true, likeCounter: 3 }));
         globalThis.humhubStubs.logCalls.error.length = 0;
     });
 
     afterEach(() => {
-        delete vueModule.config.urlTemplate;
+        delete globalThis.humhub.modules.url.config.template;
     });
 
     it('renders from provided initial state without fetching', () => {

@@ -112,7 +112,7 @@ globalThis.humhub = {
             i18n: stubs.i18n,
             client: stubs.client,
             event: stubs.event,
-        })[name] || {};
+        })[name] || globalThis.humhub.modules[name] || {};
 
         moduleFunction(instance, req, jQuery);
         instance.log = makeLog();

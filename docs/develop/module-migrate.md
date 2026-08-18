@@ -9,6 +9,9 @@ Each minor release line has its own file with the breaking changes, new APIs and
 - Added the **Vue.js island layer** (`humhub.vue` client registry/mounter, `humhub\widgets\VueComponent`,
   `grunt build-vue` tooling) — see `docs/develop/ui-js-vuejs.md`. Purely additive; the existing
   `humhub.module` JS system is unaffected.
+  - Also added the standalone core JS module `url` (`humhub.url.js`) — the client-side counterpart
+    of `yii\helpers\Url::to()` for default-routed endpoints, usable from any `humhub.module()` via
+    `require('url').to(route, params)`. Purely additive; `@humhub/vue`'s `url()` now delegates to it.
   - The publish excludes for `@humhub/resources` bundles (`scss/`, `.gitignore` — introduced
     with #8277) were never applied at runtime due to an alias comparison bug and are now
     active; `build/` is deliberately **not** excluded because the compiled `humhub-app.css`

@@ -186,8 +186,8 @@ class CoreJsConfig extends Widget
                 'stream' => [
                     'defaultSort' => Yii::$app->getModule('stream')->settings->get('defaultSort', 'c'),
                 ],
-                'vue' => [
-                    'urlTemplate' => Url::to(['/__route__']),
+                'url' => [
+                    'template' => Url::to(['/__route__']),
                 ],
             ],
         );

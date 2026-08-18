@@ -1,5 +1,6 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+await import('../../resources/js/humhub/humhub.url.js');
 await import('../../resources/js/humhub/humhub.vue.js');
 
 const vueModule = globalThis.humhub.modules.vue;
@@ -353,36 +354,9 @@ describe('humhub.vue', () => {
         }
     });
 
-    describe('url()', () => {
-        // vueModule.config is the real per-module jsConfig object (as set by
-        // CoreJsConfig via registerJsConfig) — getConfig() is a separate,
-        // differently-named accessor precisely so it does not collide with
-        // and overwrite this property (see humhub.vue.js).
-        afterEach(() => {
-            delete vueModule.config.urlTemplate;
-        });
-
-        it('fills a pretty-URL template and appends params', () => {
-            vueModule.config.urlTemplate = '/__route__';
-            expect(vueModule.url('/like/like/like', { recordId: 7 })).toBe('/like/like/like?recordId=7');
-        });
-
-        it('encodes the route and appends params to a query-string template', () => {
-            vueModule.config.urlTemplate = '/index.php?r=__route__';
-            expect(vueModule.url('like/like/unlike', { recordId: 7 })).toBe('/index.php?r=like%2Flike%2Funlike&recordId=7');
-        });
-
-        it('omits the trailing separator when there are no params', () => {
-            vueModule.config.urlTemplate = '/__route__';
-            expect(vueModule.url('/like/like/like')).toBe('/like/like/like');
-        });
-
-        it('falls back to a root-relative URL and logs once when no template is configured', () => {
-            delete vueModule.config.urlTemplate;
-            globalThis.humhubStubs.logCalls.error.length = 0;
-
-            expect(vueModule.url('/a/b', { x: 1 })).toBe('/a/b?x=1');
-            expect(globalThis.humhubStubs.logCalls.error.length).toBe(1);
-        });
+    it('delegates url() to the core url module', () => {
+        globalThis.humhub.modules.url.config.template = '/__route__';
+        expect(vueModule.url('/a/b', { x: 1 })).toBe('/a/b?x=1');
+        delete globalThis.humhub.modules.url.config.template;
     });
 });

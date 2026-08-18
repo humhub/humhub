@@ -13,6 +13,7 @@ humhub.module('vue', function (module, require, $) {
     var additions = require('ui.additions');
     var i18n = require('i18n');
     var client = require('client');
+    var urlModule = require('url');
 
     // PascalCase, e.g. LikeButton, HButton, PDFViewer — validated further below
     // against the tag toTagName() derives from it (must contain a dash).
@@ -303,42 +304,9 @@ humhub.module('vue', function (module, require, $) {
     // (createModule(): instance.config = require('config').module(instance),
     // consumed e.g. by instance.text() via instance.config['text']). An
     // export literally named `config` would silently clobber that property
-    // for every consumer of this module, not just url() below.
+    // for every consumer of this module.
     var getConfig = function (moduleId) {
         return humhub.config.module(moduleId);
-    };
-
-    // Builds a URL from a default-routed module endpoint against the
-    // server-provided template (this module's own urlTemplate config, set by
-    // CoreJsConfig via Url::to(['/__route__'])) — the only client-side URL
-    // builder the Vue bridge offers; it does not implement routing rules of
-    // its own, just fills in the template the server already resolved.
-    var url = function (route, params) {
-        var normalized = String(route).replace(/^\/+/, '');
-        var template = module.config.urlTemplate;
-        var result;
-
-        if (!template) {
-            // No CoreJsConfig template reached the client (e.g. a stray
-            // island mounted before ready, or a broken jsConfig pipeline) —
-            // a hardcoded '/index.php?r=' guess would be wrong for
-            // subdirectory installs, so fall back to a root-relative URL
-            // instead and surface the misconfiguration.
-            log.error('humhub.vue: missing urlTemplate config — using a root-relative fallback URL');
-            result = '/' + normalized;
-        } else {
-            var isQueryRouteFormat = template.indexOf('?r=__route__') !== -1;
-            result = template.replace('__route__', isQueryRouteFormat ? encodeURIComponent(normalized) : normalized);
-        }
-
-        if (params) {
-            var query = $.param(params);
-            if (query) {
-                result += (result.indexOf('?') !== -1 ? '&' : '?') + query;
-            }
-        }
-
-        return result;
     };
 
     module.init = function () {
@@ -382,6 +350,8 @@ humhub.module('vue', function (module, require, $) {
         i18n: i18n,
         log: log,
         getConfig: getConfig,
-        url: url,
+        url: function (route, params) {
+            return urlModule.to(route, params);
+        },
     });
 });
