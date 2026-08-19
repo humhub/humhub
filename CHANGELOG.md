@@ -18,6 +18,7 @@ HumHub Changelog
 - Fix #8386: Fix collapsing of the widget "Member of these Spaces"
 - Fix #8391: Harden pagination cursor validation in Comments and Notifications against loose-type comparisons
 - Fix #8392: Wait for the comment submit button to become clickable in the stream acceptance tests, which intermittently failed on CI
+- Fix #8395: Update composer package phpoffice/phpspreadsheet to fix a Gnumeric reader unbounded gzip expansion causes memory exhaustion
 
 1.18.4 (July 21, 2026)
 ----------------------
