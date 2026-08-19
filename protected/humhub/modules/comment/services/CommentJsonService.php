@@ -17,6 +17,7 @@ use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\file\widgets\ShowFiles;
 use humhub\modules\like\services\LikeService;
 use humhub\modules\user\models\User;
+use humhub\modules\user\services\IsOnlineService;
 use Yii;
 use yii\web\ForbiddenHttpException;
 
@@ -132,6 +133,9 @@ class CommentJsonService
             'recordId' => RecordMap::getId($comment),
             'createdAt' => date(DATE_ATOM, strtotime($comment->created_at)),
             'isEdited' => $comment->isUpdated(),
+            // Mirrors UpdatedIcon::getByDated($comment->updated_at)'s tooltip - only
+            // meaningful once isEdited is true (same instant as createdAt otherwise).
+            'updatedAt' => $comment->isUpdated() ? date(DATE_ATOM, strtotime($comment->updated_at)) : null,
             'author' => $blocked ? null : $this->serializeAuthor($comment->createdBy),
             'blocked' => $blocked,
             'messageOutput' => $blocked ? null : RichText::output($comment->message, ['record' => $comment]),
@@ -168,6 +172,14 @@ class CommentJsonService
         ];
     }
 
+    /**
+     * Mirrors the parts of `user\widgets\Image::run()` and `Html::containerLink()` the
+     * island's avatar/author-link need for popover-card and online-status parity:
+     * `contentContainerId` drives the user popover card on both the avatar and the name
+     * link (`data-contentcontainer-id`), `guid` (already present) additionally goes on
+     * the name link (`data-guid` - `Html::containerLink()` sets both), and `imageAlt` is
+     * the exact `Image::run()` alt text so the avatar's accessible name matches legacy.
+     */
     private function serializeAuthor(User $user): array
     {
         return [
@@ -175,7 +187,29 @@ class CommentJsonService
             'displayName' => $user->displayName,
             'url' => $user->getUrl(),
             'imageUrl' => $user->getProfileImage()->getUrl(),
+            'contentContainerId' => $user->contentcontainer_id,
+            'imageAlt' => Yii::t('base', 'Profile picture of {displayName}', ['displayName' => $user->displayName]),
+            'online' => $this->serializeOnlineStatus($user),
         ];
+    }
+
+    /**
+     * Mirrors `user\widgets\Image::run()`'s online-status gate (with the widget's
+     * defaults, `hideOnlineStatus`/`showSelfOnlineStatus` both false, as used by the
+     * legacy `comment.php` view): `null` when the viewer is looking at their own
+     * comment or the feature is disabled (hidden by admin/user setting), a real status
+     * otherwise - `CommentEntry.vue` only renders the online-status overlay when this
+     * is non-null.
+     */
+    private function serializeOnlineStatus(User $user): ?bool
+    {
+        if ($user->id === Yii::$app->user->id) {
+            return null;
+        }
+
+        $isOnlineService = new IsOnlineService($user);
+
+        return $isOnlineService->isEnabled() ? $isOnlineService->getStatus() : null;
     }
 
     /**

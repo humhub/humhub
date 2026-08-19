@@ -21,12 +21,18 @@
  * The generated entry is a virtual module (never written to disk), so
  * sourcemaps stay free of machine-specific temp paths.
  *
+ * Dev-mode publish caching: after every successful build (and every rebuild in
+ * `--watch` mode), the module's `resources/` and `resources/js/` directories have
+ * their mtime bumped to now - see `touchResourcesDirs()` below for why this is needed
+ * (Yii's published-asset hash is keyed off the source directory's mtime, not its
+ * files' bytes, so a plain artifact rewrite is otherwise served stale forever).
+ *
  * Usage:
  *   node vue.build.mjs --module <core-module-id | path-to-module> [--watch] [--minify]
  */
 import { build } from 'vite';
 import vue from '@vitejs/plugin-vue';
-import { existsSync, readdirSync } from 'node:fs';
+import { existsSync, readdirSync, utimesSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -133,8 +139,30 @@ if (existsSync(indexPath)) {
     extraPlugins = [virtualEntryPlugin(entryCode)];
 }
 
+/**
+ * Root-causes a dev-mode DX trap (see module header): Yii's published-asset hash is
+ * derived from the source DIRECTORY's path + mtime, not from the bytes of the files
+ * inside it - rebuilding just the artifact FILES never changes the directory's own
+ * mtime, so `AssetManager` keeps serving the stale already-published copy forever,
+ * even though the on-disk artifact is fresh. Touching the directory's mtime after
+ * every successful build makes the next request publish a fresh hash directory
+ * automatically. Purely a metadata write - the artifact bytes (and therefore
+ * `grunt build-vue`'s byte-reproducibility guarantee) are untouched.
+ */
+function touchResourcesDirs() {
+    const now = new Date();
+    for (const dir of [resolve(modulePath, 'resources'), resolve(modulePath, 'resources/js')]) {
+        try {
+            utimesSync(dir, now, now);
+        } catch (error) {
+            // Nothing to touch yet (e.g. a from-scratch build whose resources/js the
+            // build call below is about to create for the first time) - not fatal.
+        }
+    }
+}
+
 try {
-    await build({
+    const result = await build({
         configFile: false,
         root: modulePath,
         logLevel: 'info',
@@ -186,6 +214,21 @@ try {
             },
         },
     });
+
+    if (args.includes('--watch')) {
+        // In watch mode `build()` resolves immediately with a RollupWatcher, well before
+        // the first bundle is even written - 'event' with code 'END' fires once per
+        // completed build (the initial one AND every rebuild on save), which is exactly
+        // when a republish should happen. See touchResourcesDirs()'s own docblock for why
+        // this matters in watch mode just as much as (arguably more than) a one-shot build.
+        result.on('event', (event) => {
+            if (event.code === 'END') {
+                touchResourcesDirs();
+            }
+        });
+    } else {
+        touchResourcesDirs();
+    }
 } catch (error) {
     console.error(error.message);
     process.exit(1);

@@ -118,8 +118,10 @@ export default {
     // CommentForm, which isn't a directly-mounted island and so has no
     // i18nCategories of its own) for CommentForm's submit button label - see
     // that component's own docblock for why it reuses this category instead
-    // of a CommentModule.base key.
-    i18nCategories: ['CommentModule.base', 'ContentModule.base'],
+    // of a CommentModule.base key. 'UserModule.base' is preloaded the same
+    // way for CommentEntry's online-status overlay label (`onlineLabel`),
+    // matching the exact keys `user\widgets\Image::run()` uses.
+    i18nCategories: ['CommentModule.base', 'ContentModule.base', 'UserModule.base'],
     components: { CommentList, CommentForm },
     props: {
         contentId: { type: Number, required: true },

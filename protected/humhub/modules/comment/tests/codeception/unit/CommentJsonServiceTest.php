@@ -15,6 +15,7 @@ use humhub\modules\like\services\LikeService;
 use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
+use humhub\modules\user\services\IsOnlineService;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
 use yii\web\ForbiddenHttpException;
@@ -38,12 +39,19 @@ class CommentJsonServiceTest extends HumHubDbTestCase
             $data['createdAt'],
         );
         $this->assertFalse($data['isEdited']);
+        $this->assertNull($data['updatedAt']);
         $this->assertFalse($data['blocked']);
         $this->assertSame($comment->createdBy->displayName, $data['author']['displayName']);
         $this->assertSame($comment->createdBy->guid, $data['author']['guid']);
         $this->assertNotEmpty($data['author']['guid']);
         $this->assertNotEmpty($data['author']['url']);
         $this->assertNotEmpty($data['author']['imageUrl']);
+        $this->assertSame($comment->createdBy->contentcontainer_id, $data['author']['contentContainerId']);
+        $this->assertSame(
+            'Profile picture of ' . $comment->createdBy->displayName,
+            $data['author']['imageAlt'],
+        );
+        $this->assertArrayHasKey('online', $data['author']);
         $this->assertStringContainsString('Hello world', $data['messageOutput']);
         $this->assertIsString($data['attachmentsHtml']);
         $this->assertTrue($data['canEdit']);
@@ -74,6 +82,7 @@ class CommentJsonServiceTest extends HumHubDbTestCase
 
         $data = CommentJsonService::create($comment)->serializeComment($comment);
         $this->assertFalse($data['isEdited']);
+        $this->assertNull($data['updatedAt']);
 
         // Wait a second so created_at != updated_at (same-second updates are not
         // detected, see Comment::isUpdated()).
@@ -84,6 +93,8 @@ class CommentJsonServiceTest extends HumHubDbTestCase
 
         $data = CommentJsonService::create($comment)->serializeComment($comment);
         $this->assertTrue($data['isEdited']);
+        // Mirrors UpdatedIcon::getByDated($comment->updated_at)'s tooltip source value.
+        $this->assertSame(date(DATE_ATOM, strtotime($comment->updated_at)), $data['updatedAt']);
     }
 
     public function testBlockedAuthorMasksAuthorMessageAndAttachments()
@@ -307,6 +318,55 @@ class CommentJsonServiceTest extends HumHubDbTestCase
         $data = CommentJsonService::create($comment)->serializeComment($comment);
 
         $this->assertSame(date(DATE_ATOM, strtotime($comment->created_at)), $data['createdAt']);
+    }
+
+    /**
+     * Mirrors `user\widgets\Image::run()`'s own gate: no self online-status is shown for
+     * the viewer's own comment, even when the feature is otherwise enabled.
+     */
+    public function testOnlineStatusNullForViewersOwnComment()
+    {
+        $this->becomeUser('User2');
+        $comment = $this->createComment('My own comment');
+
+        $data = CommentJsonService::create($comment)->serializeComment($comment);
+
+        $this->assertNull($data['author']['online']);
+    }
+
+    public function testOnlineStatusReflectsIsOnlineServiceForOtherUsersComment()
+    {
+        $this->becomeUser('User1');
+        $comment = $this->createComment('Other user comment');
+        $author = $comment->createdBy;
+
+        $this->becomeUser('User2');
+        $data = CommentJsonService::create($comment)->serializeComment($comment);
+        $this->assertFalse($data['author']['online']);
+
+        (new IsOnlineService($author))->updateStatus();
+
+        $data = CommentJsonService::create($comment)->serializeComment($comment);
+        $this->assertTrue($data['author']['online']);
+    }
+
+    public function testOnlineStatusNullWhenFeatureDisabledByAdminSetting()
+    {
+        $this->becomeUser('User1');
+        $comment = $this->createComment('Other user comment, feature disabled');
+        $author = $comment->createdBy;
+        (new IsOnlineService($author))->updateStatus();
+
+        $userModule = Yii::$app->getModule('user');
+        $userModule->settings->set('auth.hideOnlineStatus', true);
+
+        try {
+            $this->becomeUser('User2');
+            $data = CommentJsonService::create($comment)->serializeComment($comment);
+            $this->assertNull($data['author']['online']);
+        } finally {
+            $userModule->settings->set('auth.hideOnlineStatus', false);
+        }
     }
 
     public function testCanAdminDeleteTrueForSpaceAdminOnOthersComment()

@@ -33,8 +33,12 @@ const mountOptions = () => ({
 
 // Synthetic __VUEFORM__ shell (see LegacyFormWrapper's own docblock and
 // commentInterop.test.js): a <form> to attach the native submit interceptor
-// to, and a `.humhub-ui-richtext` node the auto-boot handler below attaches
-// a fake editor to, exactly like a real richtext widget boot would.
+// to, a `.humhub-ui-richtext` node the auto-boot handler below attaches a
+// fake editor to (exactly like a real richtext widget boot would), and a
+// `.richtext-create-buttons` container - the REAL production shell's button
+// group (see commentFormShell.php), which is where CommentForm's own
+// Vue-rendered submit button now Teleports itself into (see its "Submit
+// button placement" docblock section) - this is the PRIMARY, tested path.
 //
 // Deliberately has NO `.btn-comment-submit` button of its own (matching the
 // REAL production shell, see CommentForm's "Submit button" docblock section)
@@ -44,6 +48,7 @@ const buildShell = () => `
     <div id="comment_create_form___VUEFORM__" class="comment_create content_create">
         <form id="w___VUEFORM__" action="/comment/comment/post" method="post">
             <div data-ui-widget="ui.richtext.prosemirror.RichTextEditor" class="humhub-ui-richtext" id="newCommentForm___VUEFORM__"></div>
+            <div class="richtext-create-buttons"></div>
         </form>
     </div>
 `;
@@ -74,6 +79,9 @@ const makeAuthor = (overrides = {}) => ({
     displayName: 'Alice',
     url: '/user/alice',
     imageUrl: '/uploads/alice.jpg',
+    contentContainerId: 5,
+    imageAlt: 'Profile picture of Alice',
+    online: null,
     ...overrides,
 });
 
@@ -84,6 +92,7 @@ const makeComment = (overrides = {}) => ({
     recordId: 100,
     createdAt: '2026-08-01T10:00:00+00:00',
     isEdited: false,
+    updatedAt: null,
     author: makeAuthor(),
     blocked: false,
     messageOutput: '<div class="richtext-output">Hello world</div>',
@@ -298,6 +307,50 @@ describe('Comment mutations + live updates', () => {
             await wrapper.vm.$nextTick();
 
             expect(wrapper.find('.nested-comments-root .btn-comment-submit .fa-send').exists()).toBe(true);
+        });
+    });
+
+    describe('submit button placement (item 1 - Teleport into the shell button group)', () => {
+        // Primary path: the real production shell (commentFormShell.php) always carries
+        // `.richtext-create-buttons` (the upload dropdown's button group) - buildShell()
+        // above now includes it, so this is the shell every other test in this file already
+        // mounts CommentForm/CommentSection with.
+        it('teleports the submit button into the shell\'s .richtext-create-buttons container', async () => {
+            const wrapper = mount(CommentForm, {
+                ...mountOptions(),
+                props: { shellHtml: buildShell(), contentId: 42 },
+            });
+
+            // teleportTarget is only resolved in mounted() (the ref isn't populated any
+            // earlier - see CommentForm's own "Submit button placement" docblock section),
+            // so the Teleport itself only picks it up on the reactive update this triggers -
+            // one tick after the initial (fallback, in-place) render.
+            await wrapper.vm.$nextTick();
+
+            const group = wrapper.find('.richtext-create-buttons');
+            expect(group.exists()).toBe(true);
+            expect(group.find('.btn-comment-submit').exists()).toBe(true);
+        });
+
+        // Fallback path: a shell without the container (e.g. a caller that hasn't wired up
+        // the full production markup) must still get a working, visible button - Teleport's
+        // own `disabled` prop renders it in place instead of warning/vanishing.
+        it('falls back to rendering the button in place when the shell has no button-group container', () => {
+            const shellWithoutButtonGroup = `
+                <div id="comment_create_form___VUEFORM__" class="comment_create content_create">
+                    <form id="w___VUEFORM__" action="/comment/comment/post" method="post">
+                        <div data-ui-widget="ui.richtext.prosemirror.RichTextEditor" class="humhub-ui-richtext" id="newCommentForm___VUEFORM__"></div>
+                    </form>
+                </div>
+            `;
+
+            const wrapper = mount(CommentForm, {
+                ...mountOptions(),
+                props: { shellHtml: shellWithoutButtonGroup, contentId: 42 },
+            });
+
+            expect(wrapper.find('.richtext-create-buttons').exists()).toBe(false);
+            expect(wrapper.find('.btn-comment-submit').exists()).toBe(true);
         });
     });
 

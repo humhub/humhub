@@ -252,7 +252,11 @@
     data() {
       return {
         busy: false,
-        errors: {}
+        errors: {},
+        // Resolved once in mounted() - see the "Submit button placement" docblock
+        // section above. `null` until then/if the shell has no button-group
+        // container, which Teleport's `disabled` prop treats as "render in place".
+        teleportTarget: null
       };
     },
     computed: {
@@ -275,6 +279,7 @@
       if (this.formEl) {
         this.formEl.addEventListener("submit", this.onSubmit);
       }
+      this.teleportTarget = this.$refs.wrapper.$el.querySelector(".richtext-create-buttons");
       if (this.initialMessage !== null) {
         this.$nextTick(() => {
           if (this.$refs.wrapper) {
@@ -360,30 +365,35 @@
           ref: "wrapper",
           "shell-html": $props.shellHtml
         }, null, 8, ["shell-html"]),
-        vue.createElementVNode("button", {
-          type: "button",
-          class: vue.normalizeClass(["btn btn-accent btn-comment-submit btn-sm", { "btn-icon-only": $props.submitIconHtml }]),
-          "aria-label": $options.sendLabel,
-          disabled: $data.busy,
-          onClick: _cache[0] || (_cache[0] = (...args) => $options.onSubmit && $options.onSubmit(...args))
+        (vue.openBlock(), vue.createBlock(vue.Teleport, {
+          to: $data.teleportTarget,
+          disabled: !$data.teleportTarget
         }, [
-          $props.submitIconHtml ? (vue.openBlock(), vue.createElementBlock("span", {
-            key: 0,
-            innerHTML: $props.submitIconHtml
-          }, null, 8, _hoisted_2$2)) : (vue.openBlock(), vue.createElementBlock(
-            vue.Fragment,
-            { key: 1 },
-            [
-              vue.createTextVNode(
-                vue.toDisplayString($options.sendLabel),
-                1
-                /* TEXT */
-              )
-            ],
-            64
-            /* STABLE_FRAGMENT */
-          ))
-        ], 10, _hoisted_1$2),
+          vue.createElementVNode("button", {
+            type: "button",
+            class: vue.normalizeClass(["btn btn-accent btn-comment-submit btn-sm", { "btn-icon-only": $props.submitIconHtml }]),
+            "aria-label": $options.sendLabel,
+            disabled: $data.busy,
+            onClick: _cache[0] || (_cache[0] = (...args) => $options.onSubmit && $options.onSubmit(...args))
+          }, [
+            $props.submitIconHtml ? (vue.openBlock(), vue.createElementBlock("span", {
+              key: 0,
+              innerHTML: $props.submitIconHtml
+            }, null, 8, _hoisted_2$2)) : (vue.openBlock(), vue.createElementBlock(
+              vue.Fragment,
+              { key: 1 },
+              [
+                vue.createTextVNode(
+                  vue.toDisplayString($options.sendLabel),
+                  1
+                  /* TEXT */
+                )
+              ],
+              64
+              /* STABLE_FRAGMENT */
+            ))
+          ], 10, _hoisted_1$2)
+        ], 8, ["to", "disabled"])),
         $options.hasErrors ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_3$2, [
           (vue.openBlock(true), vue.createElementBlock(
             vue.Fragment,
@@ -498,6 +508,30 @@
       // which immediately overwrites it with a live relative time.
       absoluteTime() {
         return new Date(this.comment.createdAt).toLocaleString();
+      },
+      // Same client-side-formatting choice as `absoluteTime` above (no server-formatted
+      // string in the payload - see CommentJsonService's own `updatedAt` docblock note),
+      // for the same documented parity gap vs. UpdatedIcon::getByDated()'s server/profile-
+      // timezone-formatted tooltip. `null` (no `title` attribute) whenever the comment
+      // isn't edited, since `updatedAt` is only ever set in that case.
+      updatedAtTitle() {
+        return this.comment.updatedAt ? new Date(this.comment.updatedAt).toLocaleString() : null;
+      },
+      // Normalizes a missing `online` field (e.g. a fixture predating this field) to the
+      // same "no overlay" null the server sends when the online-status feature is
+      // disabled or the viewer is looking at their own comment - see
+      // CommentJsonService::serializeOnlineStatus().
+      isOnline() {
+        const online = this.comment.author && this.comment.author.online;
+        return online === true || online === false ? online : null;
+      },
+      // Mirrors user\widgets\Image::run()'s aria-label/title pair for the online-status
+      // overlay span - same 'UserModule.base' keys, preloaded by CommentSection.
+      onlineLabel() {
+        if (this.isOnline === null) {
+          return null;
+        }
+        return this.isOnline ? vue$1.i18n.t("UserModule.base", "Online") : vue$1.i18n.t("UserModule.base", "Offline");
       }
     },
     mounted() {
@@ -657,22 +691,23 @@
   const _hoisted_3$1 = ["id"];
   const _hoisted_4 = { class: "flex-shrink-0 comment-header-image" };
   const _hoisted_5 = ["href"];
-  const _hoisted_6 = ["src", "alt"];
-  const _hoisted_7 = { class: "flex-grow-1" };
-  const _hoisted_8 = { class: "comment-heading" };
-  const _hoisted_9 = ["href"];
-  const _hoisted_10 = ["datetime", "title"];
-  const _hoisted_11 = ["id"];
-  const _hoisted_12 = ["data-read-more-text"];
-  const _hoisted_13 = ["innerHTML"];
-  const _hoisted_14 = { class: "wall-entry-controls" };
-  const _hoisted_15 = ["data-count"];
-  const _hoisted_16 = {
+  const _hoisted_6 = ["src", "alt", "data-contentcontainer-id"];
+  const _hoisted_7 = ["aria-label", "title"];
+  const _hoisted_8 = { class: "flex-grow-1" };
+  const _hoisted_9 = { class: "comment-heading" };
+  const _hoisted_10 = ["href", "data-contentcontainer-id", "data-guid"];
+  const _hoisted_11 = ["datetime", "title"];
+  const _hoisted_12 = ["title"];
+  const _hoisted_13 = ["id"];
+  const _hoisted_14 = ["innerHTML"];
+  const _hoisted_15 = { class: "wall-entry-controls" };
+  const _hoisted_16 = ["data-count"];
+  const _hoisted_17 = {
     key: 0,
     class: "nested-comments-root"
   };
-  const _hoisted_17 = { class: "comment" };
-  const _hoisted_18 = {
+  const _hoisted_18 = { class: "comment" };
+  const _hoisted_19 = {
     key: 0,
     class: "showMore"
   };
@@ -729,23 +764,33 @@
       }, null, 8, ["permalink", "can-edit", "can-delete", "can-admin-delete", "onEdit", "onDelete", "onAdminDelete"]),
       vue.createElementVNode("div", _hoisted_4, [
         vue.createElementVNode("a", {
-          href: $props.comment.author.url
+          href: $props.comment.author.url,
+          class: vue.normalizeClass({ "has-online-status img-size-small": $options.isOnline !== null })
         }, [
           vue.createElementVNode("img", {
             class: "rounded",
             style: { "width": "25px", "height": "25px" },
             src: $props.comment.author.imageUrl,
-            alt: $props.comment.author.displayName
-          }, null, 8, _hoisted_6)
-        ], 8, _hoisted_5)
+            alt: $props.comment.author.imageAlt,
+            "data-contentcontainer-id": $props.comment.author.contentContainerId
+          }, null, 8, _hoisted_6),
+          $options.isOnline !== null ? (vue.openBlock(), vue.createElementBlock("span", {
+            key: 0,
+            class: vue.normalizeClass(["tt user-online-status", $options.isOnline ? "user-is-online" : "user-is-offline"]),
+            "aria-label": $options.onlineLabel,
+            title: $options.onlineLabel
+          }, null, 10, _hoisted_7)) : vue.createCommentVNode("v-if", true)
+        ], 10, _hoisted_5)
       ]),
-      vue.createElementVNode("div", _hoisted_7, [
-        vue.createElementVNode("h4", _hoisted_8, [
+      vue.createElementVNode("div", _hoisted_8, [
+        vue.createElementVNode("h4", _hoisted_9, [
           vue.createElementVNode("a", {
-            href: $props.comment.author.url
-          }, vue.toDisplayString($props.comment.author.displayName), 9, _hoisted_9),
+            href: $props.comment.author.url,
+            "data-contentcontainer-id": $props.comment.author.contentContainerId,
+            "data-guid": $props.comment.author.guid
+          }, vue.toDisplayString($props.comment.author.displayName), 9, _hoisted_10),
           vue.createElementVNode("small", null, [
-            _cache[7] || (_cache[7] = vue.createTextVNode(
+            _cache[6] || (_cache[6] = vue.createTextVNode(
               " · ",
               -1
               /* CACHED */
@@ -755,7 +800,7 @@
               "data-ui-addition": "timeago",
               datetime: $props.comment.createdAt,
               title: $options.absoluteTime
-            }, vue.toDisplayString($options.absoluteTime), 9, _hoisted_10),
+            }, vue.toDisplayString($options.absoluteTime), 9, _hoisted_11),
             $props.comment.isEdited ? (vue.openBlock(), vue.createElementBlock(
               vue.Fragment,
               { key: 0 },
@@ -765,16 +810,11 @@
                   -1
                   /* CACHED */
                 )),
-                _cache[6] || (_cache[6] = vue.createElementVNode(
-                  "i",
-                  {
-                    class: "fa fa-clock-o text-body-secondary",
-                    "aria-hidden": "true"
-                  },
-                  null,
-                  -1
-                  /* CACHED */
-                ))
+                vue.createElementVNode("i", {
+                  class: "tt fa fa-clock-o text-body-secondary",
+                  title: $options.updatedAtTitle,
+                  "aria-hidden": "true"
+                }, null, 8, _hoisted_12)
               ],
               64
               /* STABLE_FRAGMENT */
@@ -817,62 +857,57 @@
             vue.Fragment,
             { key: 1 },
             [
-              vue.createElementVNode("div", {
+              vue.createVNode(_component_RichTextOutput, {
                 class: "comment-message",
+                "data-ui-markdown": "",
                 "data-ui-show-more": "",
-                "data-read-more-text": $options.readMoreLabel
-              }, [
-                vue.createVNode(_component_RichTextOutput, {
-                  output: $props.comment.messageOutput
-                }, null, 8, ["output"])
-              ], 8, _hoisted_12),
+                "data-read-more-text": $options.readMoreLabel,
+                output: $props.comment.messageOutput
+              }, null, 8, ["data-read-more-text", "output"]),
               $props.comment.attachmentsHtml ? (vue.openBlock(), vue.createElementBlock("div", {
                 key: 0,
                 innerHTML: $props.comment.attachmentsHtml
-              }, null, 8, _hoisted_13)) : vue.createCommentVNode("v-if", true)
+              }, null, 8, _hoisted_14)) : vue.createCommentVNode("v-if", true)
             ],
             64
             /* STABLE_FRAGMENT */
           ))
-        ], 8, _hoisted_11),
-        vue.createElementVNode("div", _hoisted_14, [
-          $props.comment.likes ? (vue.openBlock(), vue.createBlock(_component_LikeButton, {
+        ], 8, _hoisted_13),
+        vue.createElementVNode("div", _hoisted_15, [
+          $options.showReplyToggle ? (vue.openBlock(), vue.createElementBlock("a", {
             key: 0,
-            "record-id": $props.comment.recordId,
-            "like-count": $props.comment.likes.count,
-            "current-user-liked": $props.comment.likes.liked
-          }, null, 8, ["record-id", "like-count", "current-user-liked"])) : vue.createCommentVNode("v-if", true),
-          $options.showReplyToggle ? (vue.openBlock(), vue.createElementBlock(
+            href: "#",
+            onClick: _cache[2] || (_cache[2] = vue.withModifiers((...args) => $options.toggleReply && $options.toggleReply(...args), ["prevent"]))
+          }, [
+            vue.createTextVNode(
+              vue.toDisplayString($options.replyLabel),
+              1
+              /* TEXT */
+            ),
+            vue.createElementVNode("span", {
+              class: "comment-count",
+              "data-count": $data.childTotal,
+              style: vue.normalizeStyle($data.childTotal > 0 ? null : "display:none")
+            }, " (" + vue.toDisplayString($data.childTotal) + ")", 13, _hoisted_16)
+          ])) : vue.createCommentVNode("v-if", true),
+          $options.showReplyToggle && $props.comment.likes ? (vue.openBlock(), vue.createElementBlock(
             vue.Fragment,
             { key: 1 },
             [
-              _cache[8] || (_cache[8] = vue.createTextVNode(
-                " · ",
-                -1
-                /* CACHED */
-              )),
-              vue.createElementVNode("a", {
-                href: "#",
-                onClick: _cache[2] || (_cache[2] = vue.withModifiers((...args) => $options.toggleReply && $options.toggleReply(...args), ["prevent"]))
-              }, [
-                vue.createTextVNode(
-                  vue.toDisplayString($options.replyLabel),
-                  1
-                  /* TEXT */
-                ),
-                vue.createElementVNode("span", {
-                  class: "comment-count",
-                  "data-count": $data.childTotal,
-                  style: vue.normalizeStyle($data.childTotal > 0 ? null : "display:none")
-                }, " (" + vue.toDisplayString($data.childTotal) + ")", 13, _hoisted_15)
-              ])
+              vue.createTextVNode(" · ")
             ],
             64
             /* STABLE_FRAGMENT */
-          )) : vue.createCommentVNode("v-if", true)
+          )) : vue.createCommentVNode("v-if", true),
+          $props.comment.likes ? (vue.openBlock(), vue.createBlock(_component_LikeButton, {
+            key: 2,
+            "record-id": $props.comment.recordId,
+            "like-count": $props.comment.likes.count,
+            "current-user-liked": $props.comment.likes.liked
+          }, null, 8, ["record-id", "like-count", "current-user-liked"])) : vue.createCommentVNode("v-if", true)
         ]),
-        $props.comment.children ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_16, [
-          vue.createElementVNode("div", _hoisted_17, [
+        $props.comment.children ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_17, [
+          vue.createElementVNode("div", _hoisted_18, [
             (vue.openBlock(true), vue.createElementBlock(
               vue.Fragment,
               null,
@@ -883,7 +918,7 @@
                     key: $options.revisionKey(child)
                   },
                   [
-                    _cache[9] || (_cache[9] = vue.createElementVNode(
+                    _cache[7] || (_cache[7] = vue.createElementVNode(
                       "hr",
                       { class: "comment-separator" },
                       null,
@@ -908,8 +943,8 @@
               128
               /* KEYED_FRAGMENT */
             )),
-            $data.childHasMore ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_18, [
-              _cache[10] || (_cache[10] = vue.createElementVNode(
+            $data.childHasMore ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_19, [
+              _cache[8] || (_cache[8] = vue.createElementVNode(
                 "hr",
                 { class: "comment-separator" },
                 null,
@@ -1176,8 +1211,10 @@
     // CommentForm, which isn't a directly-mounted island and so has no
     // i18nCategories of its own) for CommentForm's submit button label - see
     // that component's own docblock for why it reuses this category instead
-    // of a CommentModule.base key.
-    i18nCategories: ["CommentModule.base", "ContentModule.base"],
+    // of a CommentModule.base key. 'UserModule.base' is preloaded the same
+    // way for CommentEntry's online-status overlay label (`onlineLabel`),
+    // matching the exact keys `user\widgets\Image::run()` uses.
+    i18nCategories: ["CommentModule.base", "ContentModule.base", "UserModule.base"],
     components: { CommentList, CommentForm },
     props: {
       contentId: { type: Number, required: true },

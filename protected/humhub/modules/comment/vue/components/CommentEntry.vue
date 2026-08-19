@@ -29,19 +29,32 @@
         />
 
         <div class="flex-shrink-0 comment-header-image">
-            <a :href="comment.author.url">
-                <img class="rounded" style="width: 25px; height: 25px" :src="comment.author.imageUrl" :alt="comment.author.displayName">
+            <a :href="comment.author.url" :class="{ 'has-online-status img-size-small': isOnline !== null }">
+                <img
+                    class="rounded"
+                    style="width: 25px; height: 25px"
+                    :src="comment.author.imageUrl"
+                    :alt="comment.author.imageAlt"
+                    :data-contentcontainer-id="comment.author.contentContainerId"
+                >
+                <span
+                    v-if="isOnline !== null"
+                    class="tt user-online-status"
+                    :class="isOnline ? 'user-is-online' : 'user-is-offline'"
+                    :aria-label="onlineLabel"
+                    :title="onlineLabel"
+                ></span>
             </a>
         </div>
 
         <div class="flex-grow-1">
             <h4 class="comment-heading">
-                <a :href="comment.author.url">{{ comment.author.displayName }}</a>
+                <a :href="comment.author.url" :data-contentcontainer-id="comment.author.contentContainerId" :data-guid="comment.author.guid">{{ comment.author.displayName }}</a>
                 <small>
                     &middot;
                     <time class="tt time timeago" data-ui-addition="timeago" :datetime="comment.createdAt" :title="absoluteTime">{{ absoluteTime }}</time>
                     <template v-if="comment.isEdited">
-                        &middot; <i class="fa fa-clock-o text-body-secondary" aria-hidden="true"></i>
+                        &middot; <i class="tt fa fa-clock-o text-body-secondary" :title="updatedAtTitle" aria-hidden="true"></i>
                     </template>
                 </small>
             </h4>
@@ -61,28 +74,34 @@
                     <a href="#" class="comment-cancel-edit-link" @click.prevent="cancelEdit">{{ cancelEditLabel }}</a>
                 </template>
                 <template v-else>
-                    <div class="comment-message" data-ui-show-more :data-read-more-text="readMoreLabel">
-                        <RichTextOutput :output="comment.messageOutput" />
-                    </div>
+                    <RichTextOutput
+                        class="comment-message"
+                        data-ui-markdown
+                        data-ui-show-more
+                        :data-read-more-text="readMoreLabel"
+                        :output="comment.messageOutput"
+                    />
                     <div v-if="comment.attachmentsHtml" v-html="comment.attachmentsHtml"></div>
                 </template>
             </div>
 
             <div class="wall-entry-controls">
-                <LikeButton
-                    v-if="comment.likes"
-                    :record-id="comment.recordId"
-                    :like-count="comment.likes.count"
-                    :current-user-liked="comment.likes.liked"
-                />
                 <template v-if="showReplyToggle">
-                    &middot;
                     <a href="#" @click.prevent="toggleReply">{{ replyLabel }}<span
                         class="comment-count"
                         :data-count="childTotal"
                         :style="childTotal > 0 ? null : 'display:none'"
                     > ({{ childTotal }})</span></a>
                 </template>
+                <template v-if="showReplyToggle && comment.likes">
+                    &middot;
+                </template>
+                <LikeButton
+                    v-if="comment.likes"
+                    :record-id="comment.recordId"
+                    :like-count="comment.likes.count"
+                    :current-user-liked="comment.likes.liked"
+                />
             </div>
 
             <div v-if="comment.children" class="nested-comments-root">
@@ -132,6 +151,37 @@
  * is set explicitly so <CommentEntry> can resolve itself recursively (Vue's
  * resolveComponent() self-reference check keys off the component's own
  * `name` option).
+ *
+ * ## Visual parity fixes (browser-verified against the legacy UI)
+ *
+ * - Entry links render Reply before Like (`CommentEntryLinks`' sort order:
+ *   `CommentLink` 100, `LikeLink` 200 - see `widgets\BaseStack::run()`), with
+ *   the `&middot;` separator only between the two when BOTH are rendered,
+ *   mirroring `BaseStack`'s own "join non-empty widgets only" behavior.
+ * - The avatar (`img`) and author-name link both carry
+ *   `data-contentcontainer-id` (drives the user popover card, see
+ *   `user\widgets\Image::run()` / `Html::containerLink()`); the name link
+ *   additionally carries `data-guid` (also from `containerLink()`). The
+ *   avatar's `alt` is the server-built `imageAlt` (same
+ *   `Yii::t('base', 'Profile picture of {displayName}')` string Image::run()
+ *   uses), not the raw display name.
+ * - The avatar shows the SAME online-status overlay markup/classes
+ *   `user\widgets\Image::run()` appends for the `img-size-small` bucket
+ *   (width < 28, here 25px) when `comment.author.online` is non-null - see
+ *   `isOnline`/`onlineLabel` below and `CommentJsonService::serializeOnlineStatus()`.
+ * - The edited marker (`comment.isEdited`) gets a real tooltip (`.tt` +
+ *   `title`, the same mechanism `absoluteTime`'s time tag already uses -
+ *   see `updatedAtTitle` below) with the edit time, mirroring
+ *   `UpdatedIcon::getByDated($comment->updated_at)` - client-formatted like
+ *   `absoluteTime`, the same documented parity gap vs. the server/profile-
+ *   timezone-formatted legacy tooltip text.
+ * - `RichTextOutput` now receives `comment-message`/`data-ui-markdown`/
+ *   `data-ui-show-more`/`data-read-more-text` directly (Vue attribute
+ *   fallthrough onto its own template root) instead of via an extra
+ *   wrapping `<div>` this component used to render around it - the legacy
+ *   markup has no such extra div between `.comment-message` and the
+ *   richtext envelope, and the extra level broke `.comment-message > ...`
+ *   child-combinator theme CSS.
  *
  * ## Mutation surface (P2-5)
  *
@@ -260,6 +310,30 @@ export default {
         // which immediately overwrites it with a live relative time.
         absoluteTime() {
             return new Date(this.comment.createdAt).toLocaleString();
+        },
+        // Same client-side-formatting choice as `absoluteTime` above (no server-formatted
+        // string in the payload - see CommentJsonService's own `updatedAt` docblock note),
+        // for the same documented parity gap vs. UpdatedIcon::getByDated()'s server/profile-
+        // timezone-formatted tooltip. `null` (no `title` attribute) whenever the comment
+        // isn't edited, since `updatedAt` is only ever set in that case.
+        updatedAtTitle() {
+            return this.comment.updatedAt ? new Date(this.comment.updatedAt).toLocaleString() : null;
+        },
+        // Normalizes a missing `online` field (e.g. a fixture predating this field) to the
+        // same "no overlay" null the server sends when the online-status feature is
+        // disabled or the viewer is looking at their own comment - see
+        // CommentJsonService::serializeOnlineStatus().
+        isOnline() {
+            const online = this.comment.author && this.comment.author.online;
+            return online === true || online === false ? online : null;
+        },
+        // Mirrors user\widgets\Image::run()'s aria-label/title pair for the online-status
+        // overlay span - same 'UserModule.base' keys, preloaded by CommentSection.
+        onlineLabel() {
+            if (this.isOnline === null) {
+                return null;
+            }
+            return this.isOnline ? i18n.t('UserModule.base', 'Online') : i18n.t('UserModule.base', 'Offline');
         },
     },
     mounted() {

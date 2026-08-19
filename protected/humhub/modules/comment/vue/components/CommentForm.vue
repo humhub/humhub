@@ -1,13 +1,15 @@
 <template>
     <LegacyFormWrapper ref="wrapper" :shell-html="shellHtml" />
-    <button
-        type="button"
-        class="btn btn-accent btn-comment-submit btn-sm"
-        :class="{ 'btn-icon-only': submitIconHtml }"
-        :aria-label="sendLabel"
-        :disabled="busy"
-        @click="onSubmit"
-    ><span v-if="submitIconHtml" v-html="submitIconHtml"></span><template v-else>{{ sendLabel }}</template></button>
+    <Teleport :to="teleportTarget" :disabled="!teleportTarget">
+        <button
+            type="button"
+            class="btn btn-accent btn-comment-submit btn-sm"
+            :class="{ 'btn-icon-only': submitIconHtml }"
+            :aria-label="sendLabel"
+            :disabled="busy"
+            @click="onSubmit"
+        ><span v-if="submitIconHtml" v-html="submitIconHtml"></span><template v-else>{{ sendLabel }}</template></button>
+    </Teleport>
     <div v-if="hasErrors" class="invalid-feedback d-block">
         <div v-for="(message, index) in errorMessages" :key="index">{{ message }}</div>
     </div>
@@ -74,12 +76,36 @@
  * protected/humhub/modules/{content,comment}/messages/de/base.php).
  *
  * A native `<button type="submit">` only works because it lives INSIDE the
- * `<form>` the legacy widget rendered server-side; the Vue-owned button
- * below is rendered as a SIBLING of LegacyFormWrapper's root (outside that
- * `<form>` element, since it isn't part of the `__VUEFORM__` shell string),
- * so it MUST be `type="button"` with an explicit `@click="onSubmit"` instead
- * of relying on native form submission - a `type="submit"` here would just
- * be an inert button with no form to submit.
+ * `<form>` the legacy widget rendered server-side; the Vue-owned button is
+ * never part of the `__VUEFORM__` shell string itself, so it MUST be
+ * `type="button"` with an explicit `@click="onSubmit"` instead of relying on
+ * native form submission - a `type="submit"` here would just be an inert
+ * button wherever it ends up with no form to submit.
+ *
+ * ## Submit button placement (Teleport into the shell's button group)
+ *
+ * Browser-verified visual parity gap: legacy (`comment/widgets/views/form.php`,
+ * now `commentFormShell.php`) always rendered its submit button INSIDE
+ * `.richtext-create-buttons`, next to the upload dropdown, i.e. bottom-right
+ * of the input. Simply rendering the button as a plain sibling of
+ * `LegacyFormWrapper` (as an earlier revision of this component did) lands it
+ * bottom-LEFT instead - wrong position, and no shared button group with the
+ * upload dropdown.
+ *
+ * `mounted()` resolves `.richtext-create-buttons` inside the just-mounted
+ * shell (`this.$refs.wrapper.$el.querySelector(...)`) into `teleportTarget`.
+ * A `<Teleport :to="teleportTarget" :disabled="!teleportTarget">` then moves
+ * the button there when found - Vue's `disabled` prop renders the teleport's
+ * children IN PLACE (right where the `<Teleport>` tag sits, i.e. the old
+ * sibling-of-LegacyFormWrapper position) without even evaluating `to`, so a
+ * shell that doesn't carry the container (a minimal synthetic test shell, or
+ * a hypothetical future caller) still gets a working, visible button instead
+ * of a Teleport mount warning. The real, `commentFormShell.php`-derived shell
+ * always carries the container (see that file's `<div
+ * class="richtext-create-buttons">`, holding the upload dropdown - the
+ * submit button stays exclusively Vue-owned, never rendered there
+ * server-side), so this fallback only matters for tests that don't bother
+ * wiring up the full shell markup.
  *
  * `submitIconHtml` (from `Comments::widget()` → `CommentSection` → down
  * through `CommentList`/`CommentEntry` — see their own docblocks) is the
@@ -152,6 +178,10 @@ export default {
         return {
             busy: false,
             errors: {},
+            // Resolved once in mounted() - see the "Submit button placement" docblock
+            // section above. `null` until then/if the shell has no button-group
+            // container, which Teleport's `disabled` prop treats as "render in place".
+            teleportTarget: null,
         };
     },
     computed: {
@@ -174,6 +204,10 @@ export default {
         if (this.formEl) {
             this.formEl.addEventListener('submit', this.onSubmit);
         }
+        // See the "Submit button placement" docblock section above - absent on a
+        // shell without the container, in which case the button just renders where
+        // the <Teleport> tag sits (Teleport's own `disabled` fallback).
+        this.teleportTarget = this.$refs.wrapper.$el.querySelector('.richtext-create-buttons');
         if (this.initialMessage !== null) {
             this.$nextTick(() => {
                 if (this.$refs.wrapper) {

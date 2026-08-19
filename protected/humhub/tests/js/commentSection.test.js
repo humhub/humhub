@@ -45,6 +45,11 @@ const makeAuthor = (overrides = {}) => ({
     displayName: 'Alice',
     url: '/user/alice',
     imageUrl: '/uploads/alice.jpg',
+    contentContainerId: 5,
+    imageAlt: 'Profile picture of Alice',
+    // null (no overlay) by default - matches CommentJsonService::serializeOnlineStatus()'s
+    // own default for the online-status feature disabled/self-comment case.
+    online: null,
     ...overrides,
 });
 
@@ -55,6 +60,7 @@ const makeComment = (overrides = {}) => ({
     recordId: 100,
     createdAt: '2026-08-01T10:00:00+00:00',
     isEdited: false,
+    updatedAt: null,
     author: makeAuthor(),
     blocked: false,
     messageOutput: '<div class="richtext-output">Hello world</div>',
@@ -530,6 +536,153 @@ describe('CommentSection', () => {
             const items = wrapper.findAll('.dropdown-item').map((item) => item.text());
             expect(items).not.toContain('Edit');
             expect(items).not.toContain('Delete');
+        });
+    });
+
+    // Items 2-7 below: visual-parity gaps found via live browser comparison against the
+    // legacy UI (see CommentEntry's own "Visual parity fixes" docblock section).
+    describe('entry links order (item 2)', () => {
+        it('renders Reply before Like, with a separator only when both are present', () => {
+            const comment = makeComment({ likes: { count: 2, liked: false } });
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 }, canComment: true },
+            });
+
+            const controls = wrapper.find('.wall-entry-controls').element;
+            const replyLink = [...controls.querySelectorAll('a')].find((a) => a.textContent.startsWith('Reply'));
+            const likeContainer = controls.querySelector('.likeLinkContainer');
+
+            expect(replyLink).toBeTruthy();
+            expect(likeContainer).toBeTruthy();
+            // CommentEntryLinks: CommentLink sortOrder 100 before LikeLink sortOrder 200.
+            // eslint-disable-next-line no-bitwise
+            expect(replyLink.compareDocumentPosition(likeContainer) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+            expect(controls.textContent).toContain(' · ');
+        });
+
+        it('renders Reply with no separator when likes are unavailable', () => {
+            const comment = makeComment({ likes: null });
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 }, canComment: true },
+            });
+
+            expect(wrapper.find('.wall-entry-controls').text()).not.toContain('·');
+        });
+    });
+
+    describe('avatar + author-link parity (item 3, popovers)', () => {
+        it('carries data-contentcontainer-id/imageAlt on the avatar and data-contentcontainer-id/data-guid on the author link', () => {
+            const comment = makeComment({
+                author: makeAuthor({ contentContainerId: 7, guid: 'user-guid-7', imageAlt: 'Profile picture of Alice' }),
+            });
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 } },
+            });
+
+            const img = wrapper.find('.comment-header-image img');
+            expect(img.attributes('data-contentcontainer-id')).toBe('7');
+            expect(img.attributes('alt')).toBe('Profile picture of Alice');
+
+            const authorLink = wrapper.find('.comment-heading a');
+            expect(authorLink.attributes('data-contentcontainer-id')).toBe('7');
+            expect(authorLink.attributes('data-guid')).toBe('user-guid-7');
+        });
+    });
+
+    describe('online-status overlay (item 4)', () => {
+        it('renders the online overlay for another online user', () => {
+            const comment = makeComment({ author: makeAuthor({ online: true }) });
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 } },
+            });
+
+            const overlay = wrapper.find('.comment-header-image .user-online-status');
+            expect(overlay.exists()).toBe(true);
+            expect(overlay.classes()).toContain('user-is-online');
+            expect(wrapper.find('.comment-header-image a').classes()).toEqual(
+                expect.arrayContaining(['has-online-status', 'img-size-small']),
+            );
+        });
+
+        it('renders the offline overlay variant', () => {
+            const comment = makeComment({ author: makeAuthor({ online: false }) });
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 } },
+            });
+
+            const overlay = wrapper.find('.comment-header-image .user-online-status');
+            expect(overlay.exists()).toBe(true);
+            expect(overlay.classes()).toContain('user-is-offline');
+        });
+
+        it('renders no overlay when the online status is null (disabled or own comment)', () => {
+            const comment = makeComment({ author: makeAuthor({ online: null }) });
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 } },
+            });
+
+            expect(wrapper.find('.comment-header-image .user-online-status').exists()).toBe(false);
+            expect(wrapper.find('.comment-header-image a').classes()).not.toContain('has-online-status');
+        });
+    });
+
+    describe('data-ui-markdown + flattened RichTextOutput wrapper (items 5 and 7)', () => {
+        it('renders .comment-message as the RichTextOutput root with data-ui-markdown and no intermediate div', () => {
+            const comment = makeComment({ messageOutput: '<div data-ui-richtext>Hello world</div>' });
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 } },
+            });
+
+            const message = wrapper.find('.comment-message').element;
+            expect(message.hasAttribute('data-ui-markdown')).toBe(true);
+            expect(message.hasAttribute('data-ui-show-more')).toBe(true);
+            expect(message.getAttribute('data-read-more-text')).toBe('Read full comment...');
+
+            // Direct child, not nested one level deeper behind an extra RichTextOutput-owned div.
+            expect(message.children.length).toBe(1);
+            expect(message.children[0].hasAttribute('data-ui-richtext')).toBe(true);
+            expect(wrapper.find('.comment-message > div > [data-ui-richtext]').exists()).toBe(false);
+        });
+    });
+
+    describe('edited marker parity (item 6)', () => {
+        it('shows a tooltipped edited marker with the localized update time when isEdited', () => {
+            const comment = makeComment({ isEdited: true, updatedAt: '2026-08-10T12:30:00+00:00' });
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 } },
+            });
+
+            const icon = wrapper.find('.comment-heading .fa-clock-o');
+            expect(icon.exists()).toBe(true);
+            expect(icon.classes()).toContain('tt');
+            expect(icon.attributes('title')).toBe(new Date('2026-08-10T12:30:00+00:00').toLocaleString());
+        });
+
+        it('renders no edited marker when the comment was never edited', () => {
+            const comment = makeComment({ isEdited: false, updatedAt: null });
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 } },
+            });
+
+            expect(wrapper.find('.comment-heading .fa-clock-o').exists()).toBe(false);
         });
     });
 });
