@@ -14,6 +14,10 @@ humhub.module('vue', function (module, require, $) {
     var i18n = require('i18n');
     var client = require('client');
     var urlModule = require('url');
+    // Built directly into humhub.core.js (not a separate humhub.module()),
+    // so it is always available by the time this module's factory runs —
+    // unlike ui.modal below, no ordering caveat applies here.
+    var event = require('event');
 
     // PascalCase, e.g. LikeButton, HButton, PDFViewer — validated further below
     // against the tag toTagName() derives from it (must contain a dash).
@@ -262,6 +266,32 @@ humhub.module('vue', function (module, require, $) {
                 app.component(name, component);
             });
 
+            // Hands a Vue-rendered subtree to the legacy ui.additions enhancer
+            // pipeline (richtext output, gallery previews, tooltips, widget
+            // auto-init via [data-ui-init], ...) — the same interop every
+            // server-rendered fragment gets on pjax nav, modal open and stream
+            // reloads. Applied on both `mounted` and `updated`:
+            //  - Re-applying is safe for the additions that matter here: widget
+            //    instantiation is cached per node (Component._getInstance() in
+            //    humhub.action.js returns the existing instance instead of
+            //    re-creating it). Bootstrap tooltips are unaffected either
+            //    way: they are not part of the applyTo() pipeline but created
+            //    lazily by a document-level mouseover listener in
+            //    humhub.ui.additions.js, guarded by Tooltip.getInstance().
+            //  - Re-applying on `updated` is also what makes genuinely changed
+            //    content (e.g. an edited comment's re-rendered richtext output)
+            //    pick the enhancers up again — that is the whole point of the
+            //    hook, not just a safety margin.
+            //  - A couple of additions (select2, highlightCode) are not
+            //    demonstrably idempotent on repeat calls, but aren't expected
+            //    on island-rendered content, and already carry the same
+            //    repeat-apply exposure today wherever legacy code reloads DOM
+            //    via ui.additions (e.g. Widget.prototype.replace()).
+            app.directive('additions', {
+                mounted: function (el) { additions.applyTo($(el)); },
+                updated: function (el) { additions.applyTo($(el)); },
+            });
+
             app.config.errorHandler = function (err, instance, info) {
                 log.error('Vue component error in "' + resolved.name + '" (' + info + ')', err);
             };
@@ -341,6 +371,44 @@ humhub.module('vue', function (module, require, $) {
     // this module uses internally. The core replaces `module.log` with the
     // real logger at the ready sweep (see the top-of-file comment on `log`
     // above) — this wrapper only matters in the window before that happens.
+
+    // ui.modal is registered AFTER this module within CoreApiAsset
+    // (humhub.vue.js runs before humhub.ui.modal.js — see
+    // CoreApiAsset::$js), so a module-scope `require('ui.modal')` captured
+    // here at definition time would only ever see an empty placeholder.
+    // Resolve it lazily, fresh on every call — the same call-site pattern
+    // humhub.action.js itself uses (`require('ui.modal').confirm(...)`
+    // inline in its click handlers) — since by the time a component
+    // actually invokes confirm()/load(), the page has long finished loading
+    // and ui.modal is fully registered.
+    var modal = {
+        confirm: function (options) {
+            // ConfirmModal.prototype.open() is already Promise-based when
+            // given a plain options object (as opposed to a DOM event): it
+            // resolves(true) on confirm and resolves(false) on cancel/close,
+            // and never rejects — no promisification needed.
+            return require('ui.modal').confirm(options);
+        },
+        load: function (url) {
+            // module.global is the singleton Modal bound to #globalModal
+            // (see ui.modal.js init()); its .load() shows the loading state,
+            // fetches the url and swaps in the response — the same path the
+            // delegated a[data-bs-target="#globalModal"] click handler uses.
+            return require('ui.modal').global.load(url);
+        },
+    };
+
+    // Thin passthrough to the core `event` bus (a jQuery-backed pub/sub, see
+    // humhub.core.js) so islands can subscribe to legacy events — e.g. live
+    // update notifications — without importing jQuery directly. Components
+    // MUST unsubscribe their own handler in `unmounted()`: this bus lives
+    // for the page lifetime, not the component's.
+    var events = {
+        on: function (type, handler) { event.on(type, handler); },
+        off: function (type, handler) { event.off(type, handler); },
+        trigger: function (type, data) { event.trigger(type, data); },
+    };
+
     module.export({
         register: register,
         mountElement: mountElement,
@@ -353,5 +421,7 @@ humhub.module('vue', function (module, require, $) {
         url: function (route, params) {
             return urlModule.to(route, params);
         },
+        modal: modal,
+        events: events,
     });
 });

@@ -73,6 +73,55 @@ const additions = {
     },
 };
 
+// Real minimal pub/sub, mirroring the core `event` module's shape (see
+// humhub.core.js) closely enough for bridge tests to drive it: `trigger`
+// calls every handler with a stub event-like object first, then `data`
+// spread as extra arguments when it is an array, or as a single extra
+// argument otherwise — matching jQuery's own .trigger(type, extraParameters)
+// semantics that the real bus is built on.
+const event = {
+    _handlers: new Map(), // type -> Set of handler fns
+    on(type, handler) {
+        if (!this._handlers.has(type)) {
+            this._handlers.set(type, new Set());
+        }
+        this._handlers.get(type).add(handler);
+    },
+    off(type, handler) {
+        const handlers = this._handlers.get(type);
+        if (handlers) {
+            handlers.delete(handler);
+        }
+    },
+    one(type, handler) {
+        const wrapped = (...args) => {
+            this.off(type, wrapped);
+            handler(...args);
+        };
+        this.on(type, wrapped);
+    },
+    trigger(type, data) {
+        const handlers = this._handlers.get(type);
+        if (!handlers) {
+            return;
+        }
+        const extra = data === undefined ? [] : (Array.isArray(data) ? data : [data]);
+        Array.from(handlers).forEach((handler) => handler({ type }, ...extra));
+    },
+};
+
+// Mirrors the real ui.modal API surface the `modal` bridge in humhub.vue.js
+// delegates to: ConfirmModal.prototype.open() already resolves a boolean
+// (true = confirmed, false = cancelled/closed — it never rejects) when given
+// a plain options object, and module.global is the singleton Modal bound to
+// #globalModal, exposing its own .load(url).
+const modal = {
+    confirm: () => Promise.resolve(true),
+    global: {
+        load: () => Promise.resolve(),
+    },
+};
+
 const stubs = {
     additions,
     i18n: {
@@ -83,7 +132,8 @@ const stubs = {
         post: () => Promise.resolve({}),
         get: () => Promise.resolve({}),
     },
-    event: { on() {}, off() {}, one() {}, trigger() {} },
+    event,
+    modal,
     logCalls,
 };
 
@@ -109,6 +159,7 @@ globalThis.humhub = {
         };
         const req = (name) => ({
             'ui.additions': stubs.additions,
+            'ui.modal': stubs.modal,
             i18n: stubs.i18n,
             client: stubs.client,
             event: stubs.event,

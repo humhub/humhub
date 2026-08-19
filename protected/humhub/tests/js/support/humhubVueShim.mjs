@@ -26,3 +26,14 @@ export const log = {
     info: (...args) => vueModule().log.info(...args),
     debug: (...args) => vueModule().log.debug(...args),
 };
+
+export const modal = {
+    confirm: (...args) => vueModule().modal.confirm(...args),
+    load: (...args) => vueModule().modal.load(...args),
+};
+
+export const events = {
+    on: (...args) => vueModule().events.on(...args),
+    off: (...args) => vueModule().events.off(...args),
+    trigger: (...args) => vueModule().events.trigger(...args),
+};
