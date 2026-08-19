@@ -10,7 +10,7 @@ await import('../../resources/js/humhub/humhub.vue.js');
 const vueModule = globalThis.humhub.modules.vue;
 
 const LIVE_NEW_COMMENT = 'humhub:modules:comment:live:NewComment';
-const RICHTEXT_SELECTOR = '.humhub-ui-richtext';
+const RICHTEXT_SELECTOR = '[data-ui-widget="ui.richtext.prosemirror.RichTextEditor"]';
 
 // v-additions is registered per Vue *app* by humhub.vue.js's island mounter,
 // not globally on the Vue runtime - mirrors commentSection.test.js's stand-in
@@ -43,7 +43,7 @@ const mountOptions = () => ({
 const buildShell = () => `
     <div id="comment_create_form___VUEFORM__" class="comment_create content_create">
         <form id="w___VUEFORM__" action="/comment/comment/post" method="post">
-            <div class="humhub-ui-richtext" id="newCommentForm___VUEFORM__"></div>
+            <div data-ui-widget="ui.richtext.prosemirror.RichTextEditor" class="humhub-ui-richtext" id="newCommentForm___VUEFORM__"></div>
         </form>
     </div>
 `;

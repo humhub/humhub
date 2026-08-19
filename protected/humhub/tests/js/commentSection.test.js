@@ -34,7 +34,7 @@ const mountOptions = () => ({
 const buildShell = () => `
     <div id="comment_create_form___VUEFORM__" class="comment_create content_create">
         <form id="w___VUEFORM__" action="/comment/comment/post" method="post">
-            <div class="humhub-ui-richtext" id="newCommentForm___VUEFORM__"></div>
+            <div data-ui-widget="ui.richtext.prosemirror.RichTextEditor" class="humhub-ui-richtext" id="newCommentForm___VUEFORM__"></div>
             <button type="submit" class="btn-comment-submit">Send</button>
         </form>
     </div>

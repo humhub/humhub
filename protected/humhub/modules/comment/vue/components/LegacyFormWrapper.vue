@@ -46,7 +46,11 @@
  * own `.component` static, e.g. `RichTextEditor.component =
  * 'humhub-ui-richtexteditor'`, `Upload.component = 'humhub-file-upload'`).
  * This wrapper reads those two real keys directly off the shell's richtext
- * (`.humhub-ui-richtext`) and upload (`.main_comment_upload`) root nodes —
+ * (the `[data-ui-widget="ui.richtext.prosemirror.RichTextEditor"]` root —
+ * NOT `.humhub-ui-richtext`: browser-verified, that class only lands on the
+ * INNER ProseMirror contenteditable, while the instance is cached on the
+ * widget root carrying the data-ui-widget attribute) and upload
+ * (`.main_comment_upload`) root nodes —
  * looser coupling than `require('ui.widget')`/`require('file')`, and
  * correct where the plan's originally-assumed `'humhub-widget'` key was not.
  *
@@ -87,7 +91,7 @@
  */
 
 const FORM_TOKEN = '__VUEFORM__';
-const RICHTEXT_SELECTOR = '.humhub-ui-richtext';
+const RICHTEXT_SELECTOR = '[data-ui-widget="ui.richtext.prosemirror.RichTextEditor"]';
 const RICHTEXT_COMPONENT_DATA = 'humhub-ui-richtexteditor';
 const UPLOAD_SELECTOR = '.main_comment_upload';
 const UPLOAD_COMPONENT_DATA = 'humhub-file-upload';

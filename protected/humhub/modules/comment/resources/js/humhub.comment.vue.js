@@ -139,7 +139,7 @@
   }
   const CommentControls = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$5]]);
   const FORM_TOKEN = "__VUEFORM__";
-  const RICHTEXT_SELECTOR = ".humhub-ui-richtext";
+  const RICHTEXT_SELECTOR = '[data-ui-widget="ui.richtext.prosemirror.RichTextEditor"]';
   const RICHTEXT_COMPONENT_DATA = "humhub-ui-richtexteditor";
   const UPLOAD_SELECTOR = ".main_comment_upload";
   const UPLOAD_COMPONENT_DATA = "humhub-file-upload";
