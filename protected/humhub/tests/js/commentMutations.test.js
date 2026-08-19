@@ -242,6 +242,65 @@ describe('Comment mutations + live updates', () => {
         });
     });
 
+    describe('submit button icon parity (F1)', () => {
+        // The legacy button was icon-only (Button::accent()->icon('send'), no visible
+        // label) - see Comments.php's `submitIconHtml` prop and CommentForm.vue's own
+        // "Submit button" docblock section for the exact evidence trail.
+        const ICON_HTML = '<i class="fa fa-send" aria-hidden="true"></i>';
+
+        it('renders the server-provided icon html, aria-label and btn-icon-only when submitIconHtml is given', () => {
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: {
+                    contentId: 42,
+                    initial: emptyWindow(),
+                    canComment: true,
+                    formShellHtml: buildShell(),
+                    submitIconHtml: ICON_HTML,
+                },
+            });
+
+            const button = wrapper.find('.btn-comment-submit');
+            expect(button.exists()).toBe(true);
+            expect(button.classes()).toContain('btn-icon-only');
+            expect(button.attributes('aria-label')).toBe('Submit');
+            expect(button.find('.fa-send').exists()).toBe(true);
+            expect(button.text()).toBe(''); // icon-only - no visible text label
+        });
+
+        it('falls back to a visible text label (no btn-icon-only) when submitIconHtml is not provided', () => {
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: emptyWindow(), canComment: true, formShellHtml: buildShell() },
+            });
+
+            const button = wrapper.find('.btn-comment-submit');
+            expect(button.classes()).not.toContain('btn-icon-only');
+            expect(button.attributes('aria-label')).toBe('Submit');
+            expect(button.text()).toBe('Submit');
+        });
+
+        it('threads submitIconHtml down to a reply form too', async () => {
+            const comment = makeComment({ id: 1, children: { total: 0, items: [], hasMore: false } });
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: {
+                    contentId: 42,
+                    initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 },
+                    canComment: true,
+                    formShellHtml: buildShell(),
+                    submitIconHtml: ICON_HTML,
+                },
+            });
+
+            const replyLink = wrapper.findAll('.wall-entry-controls a').find((a) => a.text().startsWith('Reply'));
+            await replyLink.trigger('click');
+            await wrapper.vm.$nextTick();
+
+            expect(wrapper.find('.nested-comments-root .btn-comment-submit .fa-send').exists()).toBe(true);
+        });
+    });
+
     describe('create (reply form)', () => {
         it('appends the reply under its parent and bumps both child and section totals', async () => {
             const root = makeComment({ id: 1, children: { total: 0, items: [], hasMore: false } });
@@ -464,6 +523,62 @@ describe('Comment mutations + live updates', () => {
             expect(wrapper.find('#comment_editarea_1 form').exists()).toBe(false);
             expect(wrapper.text()).toContain('original');
             expect(globalThis.humhubStubs.client.post).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('discarding a form resets its unsaved-changes guard (F2)', () => {
+        it('resets the edit form\'s acknowledgeForm baseline before it unmounts on cancel', async () => {
+            const comment = makeComment({ id: 1, canEdit: true });
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({ message: 'raw markdown' }));
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: {
+                    contentId: 42,
+                    initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 },
+                    formShellHtml: buildShell(),
+                },
+            });
+
+            const editItem = wrapper.findAll('.dropdown-item').find((item) => item.text() === 'Edit');
+            await editItem.trigger('click');
+            await vi.waitFor(() => expect(wrapper.find('#comment_editarea_1 form').exists()).toBe(true));
+
+            const formEl = wrapper.find('#comment_editarea_1 form').element;
+            // Simulates onBeforeLoad()'s own baseline capture at boot time.
+            jQuery(formEl).data('state', 'message=typed+but+discarded');
+
+            await wrapper.find('.comment-cancel-edit-link').trigger('click');
+
+            // The node is gone from the wrapper's DOM by now (Vue unmounted it) -
+            // jQuery's data cache is keyed by the node object itself, still held
+            // here, so it stays inspectable regardless.
+            expect(jQuery(formEl).data('state')).toBeNull();
+        });
+
+        it('resets the reply form\'s acknowledgeForm baseline before it unmounts on close', async () => {
+            const comment = makeComment({ id: 1, children: { total: 0, items: [], hasMore: false } });
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: {
+                    contentId: 42,
+                    initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 },
+                    canComment: true,
+                    formShellHtml: buildShell(),
+                },
+            });
+
+            const replyLink = wrapper.findAll('.wall-entry-controls a').find((a) => a.text().startsWith('Reply'));
+            await replyLink.trigger('click');
+            await wrapper.vm.$nextTick();
+
+            const formEl = wrapper.find('.nested-comments-root form').element;
+            jQuery(formEl).data('state', 'message=typed+but+discarded');
+
+            await replyLink.trigger('click'); // toggles the reply form closed again
+
+            expect(jQuery(formEl).data('state')).toBeNull();
         });
     });
 

@@ -152,6 +152,30 @@ class CommentsWidgetTest extends HumHubDbTestCase
     }
 
     /**
+     * `submitIconHtml` reproduces the legacy `Button::accent()->icon('send')` markup for
+     * CommentForm.vue's submit button (see that component's own docblock) - only worth
+     * sending down when the viewer can comment at all. Like `formShellHtml`, it is a scalar
+     * (string) prop, so `VueComponent::run()` renders it as an individual `submit-icon-html`
+     * attribute rather than folding it into the JSON `props` blob - and, like the `null`
+     * `anchorCommentId` case above, a `null` value is omitted entirely rather than rendered.
+     */
+    public function testSubmitIconHtmlOnlyPresentWhenCommentingIsAllowed()
+    {
+        $this->becomeUser('User2');
+
+        $props = $this->islandProps(Comments::widget(['content' => Post::findOne(['id' => 11])->content]));
+        $this->assertSame('true', $props['can-comment']);
+        $this->assertStringContainsString('fa-send', $props['submit-icon-html']);
+
+        self::allowGuestAccess(true);
+        $this->logout();
+
+        $props = $this->islandProps(Comments::widget(['content' => Post::findOne(['id' => 11])->content]));
+        $this->assertSame('false', $props['can-comment']);
+        $this->assertArrayNotHasKey('submit-icon-html', $props);
+    }
+
+    /**
      * @return string[] plain-text messages of the comments in a serialized window, in order
      */
     private function plainMessages(array $window): array

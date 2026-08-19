@@ -55,6 +55,7 @@
                         :content-id="comment.contentId"
                         :edit-comment-id="comment.id"
                         :initial-message="editMessage"
+                        :submit-icon-html="submitIconHtml"
                         @updated="onEditSaved"
                     />
                     <a href="#" class="comment-cancel-edit-link" @click.prevent="cancelEdit">{{ cancelEditLabel }}</a>
@@ -93,6 +94,7 @@
                             :is-nested="true"
                             :can-comment="canComment"
                             :form-shell-html="formShellHtml"
+                            :submit-icon-html="submitIconHtml"
                             :page-size="pageSize"
                             @entry-removed="onChildRemoved"
                             @entry-updated="onChildUpdated"
@@ -111,6 +113,7 @@
                     :shell-html="formShellHtml"
                     :content-id="comment.contentId"
                     :parent-comment-id="comment.id"
+                    :submit-icon-html="submitIconHtml"
                     @created="onReplyCreated"
                 />
             </div>
@@ -183,6 +186,7 @@ export default {
         comment: { type: Object, required: true },
         canComment: { type: Boolean, default: false },
         formShellHtml: { type: String, default: null },
+        submitIconHtml: { type: String, default: null },
         pageSize: { type: Number, default: 10 },
         // A reply (one level deep) never gets its own reply toggle or further
         // nesting - the server enforces at most one level (see
@@ -301,6 +305,13 @@ export default {
                 });
         },
         cancelEdit() {
+            // Discard before unmounting - see CommentForm.vue's/LegacyFormWrapper.vue's
+            // "Unsaved-changes guard" docblock section (P2-7 fix): a form the user walks
+            // away from without submitting must not leave a stale acknowledgeForm/backup
+            // baseline armed for a later, unrelated pjax navigation to trip over.
+            if (this.$refs.editForm) {
+                this.$refs.editForm.clear();
+            }
             this.editing = false;
             this.editMessage = null;
         },
@@ -436,14 +447,23 @@ export default {
             });
         },
         toggleReply() {
-            this.replyOpen = !this.replyOpen;
             if (this.replyOpen) {
-                this.$nextTick(() => {
-                    if (this.$refs.replyForm) {
-                        this.$refs.replyForm.focus();
-                    }
-                });
+                // Closing without submitting - discard so a stale unsaved-changes
+                // guard never fires for content the user is walking away from
+                // (see CommentForm.vue's "Unsaved-changes guard" docblock section).
+                if (this.$refs.replyForm) {
+                    this.$refs.replyForm.clear();
+                }
+                this.replyOpen = false;
+                return;
             }
+
+            this.replyOpen = true;
+            this.$nextTick(() => {
+                if (this.$refs.replyForm) {
+                    this.$refs.replyForm.focus();
+                }
+            });
         },
     },
 };

@@ -77,6 +77,24 @@
  *    `Comment[fileList][]`); used to collect attached guids without
  *    hardcoding the model/attribute naming.
  *
+ * ## Unsaved-changes guard (P2-7 fix, see CommentForm.vue's own docblock
+ * section of the same name for the full root-cause writeup)
+ *
+ * `ActiveForm::begin(['acknowledge' => true])` (see commentFormShell.php)
+ * sets `data-ui-addition="acknowledgeForm"` on the shell's `<form>`, which
+ * `humhub.client.js` boots into a GLOBAL `beforeunload`/`pjax:beforeSend`
+ * guard: it snapshots `$form.serialize()` once at boot
+ * (`$form.data('state', snapshot)`) and, on every later navigation attempt,
+ * compares the CURRENT serialization against that snapshot
+ * (`formStateChanged()`) - a mismatch triggers the "Unsaved changes will be
+ * lost" confirm. The only thing that ever clears the snapshot
+ * (`resetChanges()`: `$form.data('state', null)`) is a native `submit` event
+ * on the form or a click on a `[type=submit]` INSIDE it - this shell has
+ * neither (see CommentForm.vue). `resetChanges()` itself is a closure-local
+ * function with no exposed API, but its ENTIRE effect is a write to the
+ * PUBLIC jQuery `.data()` store the guard also reads from - `resetAcknowledge()`
+ * below reproduces it directly instead of trying to reach the private closure.
+ *
  * ## Teardown
  * No `unmounted()` teardown is implemented: neither widget exposes a
  * destroy/dispose method (grep confirms none exists in either resource
@@ -144,6 +162,21 @@ export default {
             const upload = this.getUploadInstance();
             if (upload) {
                 upload.reset();
+            }
+            this.resetAcknowledge();
+        },
+        /**
+         * Neutralizes humhub.client.js's acknowledgeForm unsaved-changes baseline for this
+         * instance's `<form>` - see the class docblock's "Unsaved-changes guard" section.
+         * `.data('state')` is the exact (and only) thing `resetChanges()` itself touches;
+         * writing `null` through the same public jQuery `.data()` store makes
+         * `formStateChanged()` short-circuit to "unchanged" on its very next check,
+         * regardless of what the form's serialized content actually looks like.
+         */
+        resetAcknowledge() {
+            const form = this.$el.querySelector('form');
+            if (form) {
+                jQuery(form).data('state', null);
             }
         },
         /** Focuses the richtext editor (e.g. on reply). */

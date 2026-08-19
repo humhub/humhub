@@ -1,6 +1,13 @@
 <template>
     <LegacyFormWrapper ref="wrapper" :shell-html="shellHtml" />
-    <button type="button" class="btn btn-accent btn-comment-submit btn-sm" :disabled="busy" @click="onSubmit">{{ sendLabel }}</button>
+    <button
+        type="button"
+        class="btn btn-accent btn-comment-submit btn-sm"
+        :class="{ 'btn-icon-only': submitIconHtml }"
+        :aria-label="sendLabel"
+        :disabled="busy"
+        @click="onSubmit"
+    ><span v-if="submitIconHtml" v-html="submitIconHtml"></span><template v-else>{{ sendLabel }}</template></button>
     <div v-if="hasErrors" class="invalid-feedback d-block">
         <div v-for="(message, index) in errorMessages" :key="index">{{ message }}</div>
     </div>
@@ -74,22 +81,55 @@
  * of relying on native form submission - a `type="submit"` here would just
  * be an inert button with no form to submit.
  *
- * Rendered as a visible LABELED button (`{{ sendLabel }}`, reusing the exact
- * `ContentModule.base` / 'Submit' key found above) rather than reproducing
- * the legacy icon-only rendering: the 'send' icon glyph is rendered through
- * `Icon::get()` → a pluggable `IconProvider` (FontAwesome today, but
- * swappable) with no client-side equivalent available to this component -
- * hardcoding an icon font class here would silently break if the provider
- * ever changes. `btn-icon-only` is deliberately NOT included for the same
- * reason: it assumes no visible text, which this button has. The other
- * legacy classes (`btn`, `btn-accent`, `btn-comment-submit`, `btn-sm`) ARE
- * reproduced so existing theme CSS targeting `.btn-comment-submit` still
- * applies.
+ * `submitIconHtml` (from `Comments::widget()` → `CommentSection` → down
+ * through `CommentList`/`CommentEntry` — see their own docblocks) is the
+ * server-rendered `Icon::get('send')->asString()` markup: exact icon parity
+ * without hardcoding an icon-font class client-side, since the icon
+ * provider (FontAwesome by default) is a pluggable `IconProvider` - this
+ * component only ever `v-html`s whatever HTML the server decided to render
+ * for that icon name. When present, `btn-icon-only` is restored (matching
+ * legacy exactly) and the button's accessible name comes from `aria-label`
+ * alone. When absent (tests that don't bother wiring the prop, or a
+ * hypothetical future caller that legitimately has no icon to give),
+ * `sendLabel` renders as VISIBLE text instead - a Submit button must never
+ * end up with neither a label nor an icon.
  *
  * The native `submit` listener (see `mounted()`) stays wired too — harmless,
  * and still catches a programmatic/synthetic `submit()` call on the form
  * (e.g. an autofill or a browser extension) even though nothing in this
  * shell can trigger one through user interaction anymore.
+ *
+ * ## Unsaved-changes guard (P2-7 fix)
+ *
+ * Browser-verified: submitting a comment (or cancelling an edit/reply) could
+ * leave a STALE "Unsaved changes will be lost" confirm armed for a LATER,
+ * unrelated pjax navigation. Root cause, in `humhub.client.js`: the shell's
+ * `<form>` carries `data-ui-addition="acknowledgeForm"` (from
+ * `ActiveForm::begin(['acknowledge' => true])`, see
+ * `commentFormShell.php`), which snapshots the form's serialized state once
+ * at boot and arms GLOBAL `beforeunload`/`pjax:beforeSend` listeners
+ * (bound to `window`/`document`, NOT scoped to this specific form) that
+ * compare the CURRENT state against that snapshot forever. The only way
+ * `onBeforeLoad()` ever clears that baseline (`resetChanges()`, itself a
+ * closure-private function with no public API) is a native `submit` event
+ * on the form OR a click on a `[type=submit]` element INSIDE it - neither
+ * ever happens here: submission is JSON via `client.post()`, and this
+ * component's own button is `type="button"` outside the `<form>` (see
+ * above). Left unset, a form whose content still differs from its boot-time
+ * snapshot for ANY reason (most reliably: a reply/edit form that gets
+ * DISCARDED - closed/cancelled without submitting, so `clear()` never runs
+ * at all - but its global listeners, closing over that now-detached `$form`
+ * node, stay armed) trips the guard on the next pjax navigation regardless
+ * of who's mounted at that point.
+ *
+ * Fix: `LegacyFormWrapper.clear()` now also resets that baseline
+ * (`resetAcknowledge()` - see its own docblock, `$form.data('state', null)`
+ * via the PUBLIC jQuery `.data()` store `onBeforeLoad()`/
+ * `formStateChanged()` both already read/write, not the private closure).
+ * `clear()` already ran on every successful create/reply submit; this
+ * component's own `clear()` passthrough additionally lets CommentEntry call
+ * it when a reply/edit form is discarded (see its `cancelEdit()`/
+ * `toggleReply()`), covering the case that never called `clear()` before.
  */
 import { client, i18n, log, url } from '@humhub/vue';
 import LegacyFormWrapper from './LegacyFormWrapper.vue';
@@ -104,6 +144,8 @@ export default {
         editCommentId: { type: Number, default: null },
         // Edit mode only: the raw markdown to prefill the editor with once booted.
         initialMessage: { type: String, default: null },
+        // Server-rendered submit-icon HTML (see "Submit button" docblock section above).
+        submitIconHtml: { type: String, default: null },
     },
     emits: ['created', 'updated'],
     data() {
@@ -177,7 +219,7 @@ export default {
             }).then((comment) => {
                 this.busy = false;
                 if (!isEdit) {
-                    this.$refs.wrapper.clear();
+                    this.clear();
                 }
                 this.$emit(isEdit ? 'updated' : 'created', comment);
             }).catch((response) => {
@@ -194,6 +236,17 @@ export default {
         focus() {
             if (this.$refs.wrapper) {
                 this.$refs.wrapper.focus();
+            }
+        },
+        /**
+         * Proxies to the wrapper's clear() - blanks the editor/uploads AND resets the
+         * unsaved-changes guard baseline (see this component's own "Unsaved-changes guard"
+         * docblock section). Called both on a successful create/reply submit (below) and by
+         * CommentEntry when a reply/edit form is discarded without submitting.
+         */
+        clear() {
+            if (this.$refs.wrapper) {
+                this.$refs.wrapper.clear();
             }
         },
     },

@@ -12,6 +12,7 @@ use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
+use humhub\modules\ui\icon\widgets\Icon;
 use humhub\widgets\VueComponent;
 use Yii;
 
@@ -95,6 +96,11 @@ class Comments extends Widget
                 'initial' => $initial,
                 'canComment' => $canComment,
                 'formShellHtml' => $canComment ? CommentFormShell::widget(['content' => $this->content]) : null,
+                // Server-rendered icon HTML for CommentForm.vue's submit button, reproducing
+                // the legacy `Button::accent()->icon('send')` markup (see that component's own
+                // docblock) - rendered here rather than hardcoded client-side since the icon
+                // provider (FontAwesome by default) is pluggable/configurable.
+                'submitIconHtml' => $canComment ? Icon::get('send')->asString() : null,
                 'pageSize' => $this->getPageSize(),
                 'anchorCommentId' => $this->getHighlightCommentId(false),
                 // Mirrors comments.php's `d-none` class, only lifted (inline `.show()`)

@@ -10,6 +10,7 @@
             :page-size="pageSize"
             :can-comment="showForm"
             :form-shell-html="formShellHtml"
+            :submit-icon-html="submitIconHtml"
             :anchor-comment-id="anchorCommentId"
         />
         <CommentForm
@@ -17,6 +18,7 @@
             ref="form"
             :shell-html="formShellHtml"
             :content-id="contentId"
+            :submit-icon-html="submitIconHtml"
             @created="onMainCreated"
         />
     </div>
@@ -126,6 +128,8 @@ export default {
         canComment: { type: Boolean, default: false },
         // __VUEFORM__ shell token template, see LegacyFormWrapper.vue
         formShellHtml: { type: String, default: null },
+        // Server-rendered submit-button icon HTML - see CommentForm.vue's own docblock.
+        submitIconHtml: { type: String, default: null },
         pageSize: { type: Number, default: 10 },
         // permalink highlight target
         anchorCommentId: { type: Number, default: null },

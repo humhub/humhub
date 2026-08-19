@@ -230,6 +230,36 @@ describe('LegacyFormWrapper', () => {
             expect(fakeUpload.reset).toHaveBeenCalledTimes(1);
         });
 
+        // P2-7 fix: humhub.client.js's acknowledgeForm guard (armed by
+        // `ActiveForm::begin(['acknowledge' => true])`, see this component's own
+        // "Unsaved-changes guard" docblock section) never learns a submit happened
+        // here (no native form submit, no `[type=submit]` click) — clear() must
+        // reset its `$form.data('state')` baseline itself, via the same public
+        // jQuery `.data()` store `humhub.client.js`'s `formStateChanged()` reads.
+        describe('unsaved-changes guard reset', () => {
+            let form;
+
+            beforeEach(() => {
+                form = wrapper.find('form').element;
+                // Simulates onBeforeLoad()'s own baseline capture at boot time.
+                jQuery(form).data('state', 'contentId=1&message=old+draft');
+            });
+
+            it('clear() also resets the acknowledgeForm baseline', () => {
+                wrapper.vm.clear();
+
+                expect(jQuery(form).data('state')).toBeNull();
+            });
+
+            it('resetAcknowledge() resets the baseline without touching editor/upload content', () => {
+                wrapper.vm.resetAcknowledge();
+
+                expect(jQuery(form).data('state')).toBeNull();
+                expect(fakeEditor.editor.init).not.toHaveBeenCalled();
+                expect(fakeUpload.reset).not.toHaveBeenCalled();
+            });
+        });
+
         it('getFileGuids() reads guids from hidden inputs named after uploadSubmitName', () => {
             expect(wrapper.vm.getFileGuids()).toEqual(['guid-1', 'guid-2']);
         });

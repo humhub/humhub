@@ -64,7 +64,7 @@
   };
   const _hoisted_1$4 = { class: "nav nav-pills preferences" };
   const _hoisted_2$3 = { class: "nav-item dropdown" };
-  const _hoisted_3$2 = ["aria-label"];
+  const _hoisted_3$3 = ["aria-label"];
   const _hoisted_4$1 = { class: "dropdown-menu dropdown-menu-end" };
   const _hoisted_5$1 = ["data-content-permalink", "data-content-permalink-title"];
   const _hoisted_6$1 = { key: 0 };
@@ -91,7 +91,7 @@
               "aria-haspopup": "true",
               "aria-expanded": "false",
               role: "button"
-            }, null, 8, _hoisted_3$2),
+            }, null, 8, _hoisted_3$3),
             vue.createElementVNode("ul", _hoisted_4$1, [
               vue.createElementVNode("li", null, [
                 vue.createCommentVNode('\n                        Plain anchor reusing the exact legacy attributes\n                        (data-action-click="content.permalink" + the two\n                        data-content-permalink* values) instead of a\n                        Vue-owned click handler: humhub.action.js binds the\n                        [data-action-click] delegate on `document` itself\n                        (see bindAction(document, \'click\', ...) in\n                        humhub.action.js), so it already fires for anchors\n                        injected anywhere in the DOM, Vue-rendered islands\n                        included, with zero extra wiring. The `content`\n                        module (ui.content) is always loaded page-wide\n                        wherever comments can appear, so this "just works".\n                    '),
@@ -191,6 +191,21 @@
         if (upload) {
           upload.reset();
         }
+        this.resetAcknowledge();
+      },
+      /**
+       * Neutralizes humhub.client.js's acknowledgeForm unsaved-changes baseline for this
+       * instance's `<form>` - see the class docblock's "Unsaved-changes guard" section.
+       * `.data('state')` is the exact (and only) thing `resetChanges()` itself touches;
+       * writing `null` through the same public jQuery `.data()` store makes
+       * `formStateChanged()` short-circuit to "unchanged" on its very next check,
+       * regardless of what the form's serialized content actually looks like.
+       */
+      resetAcknowledge() {
+        const form = this.$el.querySelector("form");
+        if (form) {
+          jQuery(form).data("state", null);
+        }
       },
       /** Focuses the richtext editor (e.g. on reply). */
       focus() {
@@ -229,7 +244,9 @@
       // When set, this form edits an existing comment instead of creating one.
       editCommentId: { type: Number, default: null },
       // Edit mode only: the raw markdown to prefill the editor with once booted.
-      initialMessage: { type: String, default: null }
+      initialMessage: { type: String, default: null },
+      // Server-rendered submit-icon HTML (see "Submit button" docblock section above).
+      submitIconHtml: { type: String, default: null }
     },
     emits: ["created", "updated"],
     data() {
@@ -295,7 +312,7 @@
         }).then((comment) => {
           this.busy = false;
           if (!isEdit) {
-            this.$refs.wrapper.clear();
+            this.clear();
           }
           this.$emit(isEdit ? "updated" : "created", comment);
         }).catch((response) => {
@@ -313,11 +330,23 @@
         if (this.$refs.wrapper) {
           this.$refs.wrapper.focus();
         }
+      },
+      /**
+       * Proxies to the wrapper's clear() - blanks the editor/uploads AND resets the
+       * unsaved-changes guard baseline (see this component's own "Unsaved-changes guard"
+       * docblock section). Called both on a successful create/reply submit (below) and by
+       * CommentEntry when a reply/edit form is discarded without submitting.
+       */
+      clear() {
+        if (this.$refs.wrapper) {
+          this.$refs.wrapper.clear();
+        }
       }
     }
   };
-  const _hoisted_1$2 = ["disabled"];
-  const _hoisted_2$2 = {
+  const _hoisted_1$2 = ["aria-label", "disabled"];
+  const _hoisted_2$2 = ["innerHTML"];
+  const _hoisted_3$2 = {
     key: 0,
     class: "invalid-feedback d-block"
   };
@@ -333,11 +362,29 @@
         }, null, 8, ["shell-html"]),
         vue.createElementVNode("button", {
           type: "button",
-          class: "btn btn-accent btn-comment-submit btn-sm",
+          class: vue.normalizeClass(["btn btn-accent btn-comment-submit btn-sm", { "btn-icon-only": $props.submitIconHtml }]),
+          "aria-label": $options.sendLabel,
           disabled: $data.busy,
           onClick: _cache[0] || (_cache[0] = (...args) => $options.onSubmit && $options.onSubmit(...args))
-        }, vue.toDisplayString($options.sendLabel), 9, _hoisted_1$2),
-        $options.hasErrors ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$2, [
+        }, [
+          $props.submitIconHtml ? (vue.openBlock(), vue.createElementBlock("span", {
+            key: 0,
+            innerHTML: $props.submitIconHtml
+          }, null, 8, _hoisted_2$2)) : (vue.openBlock(), vue.createElementBlock(
+            vue.Fragment,
+            { key: 1 },
+            [
+              vue.createTextVNode(
+                vue.toDisplayString($options.sendLabel),
+                1
+                /* TEXT */
+              )
+            ],
+            64
+            /* STABLE_FRAGMENT */
+          ))
+        ], 10, _hoisted_1$2),
+        $options.hasErrors ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_3$2, [
           (vue.openBlock(true), vue.createElementBlock(
             vue.Fragment,
             null,
@@ -379,6 +426,7 @@
       comment: { type: Object, required: true },
       canComment: { type: Boolean, default: false },
       formShellHtml: { type: String, default: null },
+      submitIconHtml: { type: String, default: null },
       pageSize: { type: Number, default: 10 },
       // A reply (one level deep) never gets its own reply toggle or further
       // nesting - the server enforces at most one level (see
@@ -489,6 +537,9 @@
         });
       },
       cancelEdit() {
+        if (this.$refs.editForm) {
+          this.$refs.editForm.clear();
+        }
         this.editing = false;
         this.editMessage = null;
       },
@@ -585,14 +636,19 @@
         });
       },
       toggleReply() {
-        this.replyOpen = !this.replyOpen;
         if (this.replyOpen) {
-          this.$nextTick(() => {
-            if (this.$refs.replyForm) {
-              this.$refs.replyForm.focus();
-            }
-          });
+          if (this.$refs.replyForm) {
+            this.$refs.replyForm.clear();
+          }
+          this.replyOpen = false;
+          return;
         }
+        this.replyOpen = true;
+        this.$nextTick(() => {
+          if (this.$refs.replyForm) {
+            this.$refs.replyForm.focus();
+          }
+        });
       }
     }
   };
@@ -740,8 +796,9 @@
                 "content-id": $props.comment.contentId,
                 "edit-comment-id": $props.comment.id,
                 "initial-message": $data.editMessage,
+                "submit-icon-html": $props.submitIconHtml,
                 onUpdated: $options.onEditSaved
-              }, null, 8, ["shell-html", "content-id", "edit-comment-id", "initial-message", "onUpdated"]),
+              }, null, 8, ["shell-html", "content-id", "edit-comment-id", "initial-message", "submit-icon-html", "onUpdated"]),
               vue.createElementVNode(
                 "a",
                 {
@@ -838,10 +895,11 @@
                       "is-nested": true,
                       "can-comment": $props.canComment,
                       "form-shell-html": $props.formShellHtml,
+                      "submit-icon-html": $props.submitIconHtml,
                       "page-size": $props.pageSize,
                       onEntryRemoved: $options.onChildRemoved,
                       onEntryUpdated: $options.onChildUpdated
-                    }, null, 8, ["comment", "can-comment", "form-shell-html", "page-size", "onEntryRemoved", "onEntryUpdated"])
+                    }, null, 8, ["comment", "can-comment", "form-shell-html", "submit-icon-html", "page-size", "onEntryRemoved", "onEntryUpdated"])
                   ],
                   64
                   /* STABLE_FRAGMENT */
@@ -877,8 +935,9 @@
             "shell-html": $props.formShellHtml,
             "content-id": $props.comment.contentId,
             "parent-comment-id": $props.comment.id,
+            "submit-icon-html": $props.submitIconHtml,
             onCreated: $options.onReplyCreated
-          }, null, 8, ["shell-html", "content-id", "parent-comment-id", "onCreated"])) : vue.createCommentVNode("v-if", true)
+          }, null, 8, ["shell-html", "content-id", "parent-comment-id", "submit-icon-html", "onCreated"])) : vue.createCommentVNode("v-if", true)
         ])) : vue.createCommentVNode("v-if", true)
       ])
     ], 10, _hoisted_3$1)), [
@@ -904,6 +963,7 @@
       pageSize: { type: Number, default: 10 },
       canComment: { type: Boolean, default: false },
       formShellHtml: { type: String, default: null },
+      submitIconHtml: { type: String, default: null },
       anchorCommentId: { type: Number, default: null }
     },
     data() {
@@ -1063,11 +1123,12 @@
                 comment,
                 "can-comment": $props.canComment,
                 "form-shell-html": $props.formShellHtml,
+                "submit-icon-html": $props.submitIconHtml,
                 "page-size": $props.pageSize,
                 highlighted: $props.anchorCommentId !== null && comment.id === $props.anchorCommentId,
                 onEntryRemoved: $options.removeRoot,
                 onEntryUpdated: $options.onEntryUpdated
-              }, null, 8, ["comment", "can-comment", "form-shell-html", "page-size", "highlighted", "onEntryRemoved", "onEntryUpdated"])
+              }, null, 8, ["comment", "can-comment", "form-shell-html", "submit-icon-html", "page-size", "highlighted", "onEntryRemoved", "onEntryUpdated"])
             ],
             64
             /* STABLE_FRAGMENT */
@@ -1125,6 +1186,8 @@
       canComment: { type: Boolean, default: false },
       // __VUEFORM__ shell token template, see LegacyFormWrapper.vue
       formShellHtml: { type: String, default: null },
+      // Server-rendered submit-button icon HTML - see CommentForm.vue's own docblock.
+      submitIconHtml: { type: String, default: null },
       pageSize: { type: Number, default: 10 },
       // permalink highlight target
       anchorCommentId: { type: Number, default: null },
@@ -1334,15 +1397,17 @@
           "page-size": $props.pageSize,
           "can-comment": $options.showForm,
           "form-shell-html": $props.formShellHtml,
+          "submit-icon-html": $props.submitIconHtml,
           "anchor-comment-id": $props.anchorCommentId
-        }, null, 8, ["content-id", "comments", "prev-count", "next-count", "page-size", "can-comment", "form-shell-html", "anchor-comment-id"])) : vue.createCommentVNode("v-if", true),
+        }, null, 8, ["content-id", "comments", "prev-count", "next-count", "page-size", "can-comment", "form-shell-html", "submit-icon-html", "anchor-comment-id"])) : vue.createCommentVNode("v-if", true),
         $options.showForm && $props.formShellHtml ? (vue.openBlock(), vue.createBlock(_component_CommentForm, {
           key: 1,
           ref: "form",
           "shell-html": $props.formShellHtml,
           "content-id": $props.contentId,
+          "submit-icon-html": $props.submitIconHtml,
           onCreated: $options.onMainCreated
-        }, null, 8, ["shell-html", "content-id", "onCreated"])) : vue.createCommentVNode("v-if", true)
+        }, null, 8, ["shell-html", "content-id", "submit-icon-html", "onCreated"])) : vue.createCommentVNode("v-if", true)
       ],
       2
       /* CLASS */

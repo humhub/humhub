@@ -10,6 +10,7 @@
                 :comment="comment"
                 :can-comment="canComment"
                 :form-shell-html="formShellHtml"
+                :submit-icon-html="submitIconHtml"
                 :page-size="pageSize"
                 :highlighted="anchorCommentId !== null && comment.id === anchorCommentId"
                 @entry-removed="removeRoot"
@@ -65,6 +66,7 @@ export default {
         pageSize: { type: Number, default: 10 },
         canComment: { type: Boolean, default: false },
         formShellHtml: { type: String, default: null },
+        submitIconHtml: { type: String, default: null },
         anchorCommentId: { type: Number, default: null },
     },
     data() {
