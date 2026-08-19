@@ -46,14 +46,11 @@
       }
     }
   };
-  const _hoisted_1$3 = { class: "nav nav-pills preferences" };
-  const _hoisted_2$3 = { class: "nav-item dropdown" };
-  const _hoisted_3$3 = ["aria-label"];
-  const _hoisted_4$1 = { class: "dropdown-menu dropdown-menu-end" };
-  const _hoisted_5$1 = ["data-content-permalink", "data-content-permalink-title"];
-  const _hoisted_6$1 = { key: 0 };
-  const _hoisted_7$1 = { key: 1 };
+  const _hoisted_1$3 = ["data-content-permalink", "data-content-permalink-title"];
+  const _hoisted_2$3 = { key: 0 };
+  const _hoisted_3$3 = { key: 1 };
   function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_DropdownMenu = vue$1.resolveComponent("DropdownMenu");
     return vue$1.openBlock(), vue$1.createElementBlock(
       vue$1.Fragment,
       null,
@@ -65,57 +62,48 @@
           -1
           /* CACHED */
         )),
-        vue$1.createElementVNode("ul", _hoisted_1$3, [
-          vue$1.createElementVNode("li", _hoisted_2$3, [
-            vue$1.createElementVNode("a", {
-              href: "#",
-              class: "nav-link dropdown-toggle",
-              "data-bs-toggle": "dropdown",
-              "aria-label": $options.toggleMenuLabel,
-              "aria-haspopup": "true",
-              "aria-expanded": "false",
-              role: "button"
-            }, null, 8, _hoisted_3$3),
-            vue$1.createElementVNode("ul", _hoisted_4$1, [
-              vue$1.createElementVNode("li", null, [
-                vue$1.createCommentVNode('\n                        Plain anchor reusing the exact legacy attributes\n                        (data-action-click="content.permalink" + the two\n                        data-content-permalink* values) instead of a\n                        Vue-owned click handler: humhub.action.js binds the\n                        [data-action-click] delegate on `document` itself\n                        (see bindAction(document, \'click\', ...) in\n                        humhub.action.js), so it already fires for anchors\n                        injected anywhere in the DOM, Vue-rendered islands\n                        included, with zero extra wiring. The `content`\n                        module (ui.content) is always loaded page-wide\n                        wherever comments can appear, so this "just works".\n                    '),
-                vue$1.createElementVNode("a", {
+        vue$1.createVNode(_component_DropdownMenu, { "toggle-aria-label": $options.toggleMenuLabel }, {
+          default: vue$1.withCtx(() => [
+            vue$1.createElementVNode("li", null, [
+              vue$1.createCommentVNode('\n                Plain anchor reusing the exact legacy attributes\n                (data-action-click="content.permalink" + the two\n                data-content-permalink* values) instead of a\n                Vue-owned click handler: humhub.action.js binds the\n                [data-action-click] delegate on `document` itself\n                (see bindAction(document, \'click\', ...) in\n                humhub.action.js), so it already fires for anchors\n                injected anywhere in the DOM, Vue-rendered islands\n                included, with zero extra wiring. The `content`\n                module (ui.content) is always loaded page-wide\n                wherever comments can appear, so this "just works".\n            '),
+              vue$1.createElementVNode("a", {
+                href: "#",
+                class: "dropdown-item",
+                "data-action-click": "content.permalink",
+                "data-content-permalink": $props.permalink,
+                "data-content-permalink-title": $options.permalinkTitle
+              }, vue$1.toDisplayString($options.permalinkLabel), 9, _hoisted_1$3)
+            ]),
+            $props.canEdit ? (vue$1.openBlock(), vue$1.createElementBlock("li", _hoisted_2$3, [
+              vue$1.createElementVNode(
+                "a",
+                {
                   href: "#",
                   class: "dropdown-item",
-                  "data-action-click": "content.permalink",
-                  "data-content-permalink": $props.permalink,
-                  "data-content-permalink-title": $options.permalinkTitle
-                }, vue$1.toDisplayString($options.permalinkLabel), 9, _hoisted_5$1)
-              ]),
-              $props.canEdit ? (vue$1.openBlock(), vue$1.createElementBlock("li", _hoisted_6$1, [
-                vue$1.createElementVNode(
-                  "a",
-                  {
-                    href: "#",
-                    class: "dropdown-item",
-                    onClick: _cache[0] || (_cache[0] = vue$1.withModifiers((...args) => $options.onEdit && $options.onEdit(...args), ["prevent"]))
-                  },
-                  vue$1.toDisplayString($options.editLabel),
-                  1
-                  /* TEXT */
-                )
-              ])) : vue$1.createCommentVNode("v-if", true),
-              $props.canDelete ? (vue$1.openBlock(), vue$1.createElementBlock("li", _hoisted_7$1, [
-                vue$1.createElementVNode(
-                  "a",
-                  {
-                    href: "#",
-                    class: "dropdown-item",
-                    onClick: _cache[1] || (_cache[1] = vue$1.withModifiers((...args) => $options.onDelete && $options.onDelete(...args), ["prevent"]))
-                  },
-                  vue$1.toDisplayString($options.deleteLabel),
-                  1
-                  /* TEXT */
-                )
-              ])) : vue$1.createCommentVNode("v-if", true)
-            ])
-          ])
-        ])
+                  onClick: _cache[0] || (_cache[0] = vue$1.withModifiers((...args) => $options.onEdit && $options.onEdit(...args), ["prevent"]))
+                },
+                vue$1.toDisplayString($options.editLabel),
+                1
+                /* TEXT */
+              )
+            ])) : vue$1.createCommentVNode("v-if", true),
+            $props.canDelete ? (vue$1.openBlock(), vue$1.createElementBlock("li", _hoisted_3$3, [
+              vue$1.createElementVNode(
+                "a",
+                {
+                  href: "#",
+                  class: "dropdown-item",
+                  onClick: _cache[1] || (_cache[1] = vue$1.withModifiers((...args) => $options.onDelete && $options.onDelete(...args), ["prevent"]))
+                },
+                vue$1.toDisplayString($options.deleteLabel),
+                1
+                /* TEXT */
+              )
+            ])) : vue$1.createCommentVNode("v-if", true)
+          ]),
+          _: 1
+          /* STABLE */
+        }, 8, ["toggle-aria-label"])
       ],
       64
       /* STABLE_FRAGMENT */

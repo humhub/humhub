@@ -12,6 +12,43 @@
     }
     return target;
   };
+  const _sfc_main$2 = {
+    props: {
+      toggleAriaLabel: { type: String, required: true },
+      alignEnd: { type: Boolean, default: true },
+      toggleClass: { type: String, default: "nav-link dropdown-toggle" }
+    }
+  };
+  const _hoisted_1$2 = { class: "nav nav-pills preferences" };
+  const _hoisted_2 = { class: "nav-item dropdown" };
+  const _hoisted_3 = ["aria-label"];
+  function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
+    return vue.openBlock(), vue.createElementBlock("ul", _hoisted_1$2, [
+      vue.createElementVNode("li", _hoisted_2, [
+        vue.createElementVNode("a", {
+          href: "#",
+          class: vue.normalizeClass($props.toggleClass),
+          "data-bs-toggle": "dropdown",
+          role: "button",
+          "aria-haspopup": "true",
+          "aria-expanded": "false",
+          "aria-label": $props.toggleAriaLabel
+        }, null, 10, _hoisted_3),
+        vue.createElementVNode(
+          "ul",
+          {
+            class: vue.normalizeClass(["dropdown-menu", { "dropdown-menu-end": $props.alignEnd }])
+          },
+          [
+            vue.renderSlot(_ctx.$slots, "default")
+          ],
+          2
+          /* CLASS */
+        )
+      ])
+    ]);
+  }
+  const C0 = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
   const FORM_TOKEN = "__VUEFORM__";
   const RICHTEXT_SELECTOR = '[data-ui-widget="ui.richtext.prosemirror.RichTextEditor"]';
   const RICHTEXT_COMPONENT_DATA = "humhub-ui-richtexteditor";
@@ -108,7 +145,7 @@
       [_directive_additions]
     ]);
   }
-  const C0 = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1]]);
+  const C1 = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1]]);
   const _sfc_main = {
     props: {
       output: { type: String, default: null }
@@ -124,8 +161,9 @@
       [_directive_additions]
     ]) : vue.createCommentVNode("v-if", true);
   }
-  const C1 = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
-  vue$1.register("LegacyFormWrapper", C0);
-  vue$1.register("RichTextOutput", C1);
+  const C2 = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
+  vue$1.register("DropdownMenu", C0);
+  vue$1.register("LegacyFormWrapper", C1);
+  vue$1.register("RichTextOutput", C2);
 })(humhub.modules.vue, Vue);
 //# sourceMappingURL=humhub.core.vue.js.map
