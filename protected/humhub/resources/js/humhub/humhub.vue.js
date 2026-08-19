@@ -282,7 +282,13 @@ humhub.module('vue', function (module, require, $) {
             //    content (e.g. an edited comment's re-rendered richtext output)
             //    pick the enhancers up again — that is the whole point of the
             //    hook, not just a safety margin.
-            //  - A couple of additions (select2, highlightCode) are not
+            //  - showMore (humhub.ui.showMore.js) used to stack a duplicate,
+            //    un-namespaced click handler on every re-apply to the same
+            //    "Read more" button; fixed there (namespaced + unbound before
+            //    rebound) to be re-apply-safe like the additions above,
+            //    since comment entries are exactly the kind of Vue-rendered,
+            //    repeatedly-`updated` content this hook targets.
+            //  - A couple of additions (select2, highlightCode) are still not
             //    demonstrably idempotent on repeat calls, but aren't expected
             //    on island-rendered content, and already carry the same
             //    repeat-apply exposure today wherever legacy code reloads DOM
