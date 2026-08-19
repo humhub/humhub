@@ -1,8 +1,10 @@
 HumHub Changelog
 ================
 
-1.19.0-beta.2 (TBD)
--------------------
+1.19.0-beta.2 (August 19, 2026)
+-------------------------------
+- Fix #8350: A configured but unreachable database presented the web installer — offering to re-setup an already installed instance during a transient outage — instead of an error; such requests now return a 503
+- Fix #8393: #8350 returned a 503 for any database error, so a fresh or incompletely configured install (server reachable but the database missing, credentials wrong, or the DSN lacking a database name) was blocked instead of shown the installer; a 503 is now returned only when the database server itself is unreachable
 - Enh #8390: Removed the redundant My Spaces dropdown click handler — the lazy space list is already loaded on open, and the case where the dropdown was opened before its widget initialized is covered by the init-time check from #8384
 - Enh #8389: Removed the unused `$right` parameter from `BootstrapVariationsTrait::icon()` (`Button`/`Badge`/`Link`/`Alert`) and from `MenuLink::setIcon()` — `$options` is now the second parameter of `icon()` instead of the third, see `docs/develop/module-migrate.md`
 - Enh #8389: Buttons styling by using flex and gap instead of a right margin on the icon
@@ -113,8 +115,11 @@ HumHub Changelog
 - Enh #8150: Topic sidebar widget
 - Fix #8312: Fix Integrity Checks on cleaning up orphaned content, like, comment, activity data
  
-1.18.5 (Unreleased)
--------------------
+1.18.5 (August 19, 2026)
+------------------------
+
+> This release also fixes [security](https://github.com/humhub/humhub/security/advisories) issues.
+
 - Fix #8340: Defer module update `opcache_reset()` to the end of the request to avoid interrupting the update in worker runtimes (e.g. FrankenPHP)
 - Fix #8357: Cast app name to string (This fixes the issue of instances with names consisting of numbers not being able to be added to the mobile app)
 - Enh #8346: Force Select2 dropdowns to always open below the field instead of flipping above when there's not enough space
@@ -130,6 +135,7 @@ HumHub Changelog
 - Fix #8386: Fix collapsing of the widget "Member of these Spaces"
 - Fix #8391: Harden pagination cursor validation in Comments and Notifications against loose-type comparisons
 - Fix #8392: Wait for the comment submit button to become clickable in the stream acceptance tests, which intermittently failed on CI
+- Fix #8395: Update composer package phpoffice/phpspreadsheet to fix a Gnumeric reader unbounded gzip expansion causes memory exhaustion
 
 1.18.4 (July 21, 2026)
 ----------------------
@@ -193,7 +199,10 @@ HumHub Changelog
 - Fix #8143: Fix updating of Space memberships for existing members
 - Fix #8145: Preserve login return URL for PJAX requests
 - Fix #8144: Restrict file view action
+- Enh #8156: Enhance behavior for vertical videos and multiple video attachments
 - Fix #8148: Yii2 2.0.55 compatibility
+- Fix #8163: Fix remove all space members permission
+- Fix #8164: Fix space members list visibility
 
 1.18.2 (March 22, 2026)
 -----------------------

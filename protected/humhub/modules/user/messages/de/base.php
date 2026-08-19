@@ -87,6 +87,7 @@ return [
   'Security' => 'Sicherheit',
   'Settings' => 'Einstellungen',
   'Show At Registration' => 'Bei Registrierung anzeigen',
+  'Show all' => 'Alle anzeigen',
   'Show all content' => 'Zeige alle Inhalte',
   'Sign in' => 'Einloggen',
   'Sign in / up' => 'Einloggen | Registrieren',

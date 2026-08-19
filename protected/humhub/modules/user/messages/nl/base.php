@@ -87,6 +87,7 @@ return [
   'Security' => 'Veiligheid',
   'Settings' => 'Instellingen',
   'Show At Registration' => 'Weergeven bij registratie',
+  'Show all' => 'Toon alles',
   'Show all content' => 'Laat alle inhoud zien',
   'Sign in' => 'Aanmelden',
   'Sign in / up' => 'Aanmelden / Registeren',
