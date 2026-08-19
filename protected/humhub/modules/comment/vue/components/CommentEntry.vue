@@ -1,6 +1,6 @@
 <template>
     <div
-        v-if="effective.blocked"
+        v-if="comment.blocked"
         :id="'comment_' + comment.id"
         class="d-flex comment-blocked-user"
     >
@@ -19,24 +19,24 @@
         v-additions
     >
         <CommentControls
-            :permalink="effective.permalink"
-            :can-edit="effective.canEdit"
-            :can-delete="effective.canDelete"
-            :can-admin-delete="effective.canAdminDelete"
+            :permalink="comment.permalink"
+            :can-edit="comment.canEdit"
+            :can-delete="comment.canDelete"
+            :can-admin-delete="comment.canAdminDelete"
             @edit="onEdit"
             @delete="onDelete"
             @admin-delete="onAdminDelete"
         />
 
         <div class="flex-shrink-0 comment-header-image">
-            <a :href="effective.author.url">
-                <img class="rounded" style="width: 25px; height: 25px" :src="effective.author.imageUrl" :alt="effective.author.displayName">
+            <a :href="comment.author.url">
+                <img class="rounded" style="width: 25px; height: 25px" :src="comment.author.imageUrl" :alt="comment.author.displayName">
             </a>
         </div>
 
         <div class="flex-grow-1">
             <h4 class="comment-heading">
-                <a :href="effective.author.url">{{ effective.author.displayName }}</a>
+                <a :href="comment.author.url">{{ comment.author.displayName }}</a>
                 <small>
                     &middot;
                     <time class="tt time timeago" data-ui-addition="timeago" :datetime="comment.createdAt" :title="absoluteTime">{{ absoluteTime }}</time>
@@ -48,28 +48,45 @@
 
             <!-- class comment_edit_content required since v1.2 -->
             <div class="content comment_edit_content" :id="'comment_editarea_' + comment.id">
-                <div class="comment-message" data-ui-show-more :data-read-more-text="readMoreLabel">
-                    <RichTextOutput :output="effective.messageOutput" />
-                </div>
-                <div v-if="effective.attachmentsHtml" v-html="effective.attachmentsHtml"></div>
+                <template v-if="editing && formShellHtml">
+                    <CommentForm
+                        ref="editForm"
+                        :shell-html="formShellHtml"
+                        :content-id="comment.contentId"
+                        :edit-comment-id="comment.id"
+                        :initial-message="editMessage"
+                        @updated="onEditSaved"
+                    />
+                    <a href="#" class="comment-cancel-edit-link" @click.prevent="cancelEdit">{{ cancelEditLabel }}</a>
+                </template>
+                <template v-else>
+                    <div class="comment-message" data-ui-show-more :data-read-more-text="readMoreLabel">
+                        <RichTextOutput :output="comment.messageOutput" />
+                    </div>
+                    <div v-if="comment.attachmentsHtml" v-html="comment.attachmentsHtml"></div>
+                </template>
             </div>
 
             <div class="wall-entry-controls">
                 <LikeButton
-                    v-if="effective.likes"
-                    :record-id="effective.recordId"
-                    :like-count="effective.likes.count"
-                    :current-user-liked="effective.likes.liked"
+                    v-if="comment.likes"
+                    :record-id="comment.recordId"
+                    :like-count="comment.likes.count"
+                    :current-user-liked="comment.likes.liked"
                 />
                 <template v-if="showReplyToggle">
                     &middot;
-                    <a href="#" @click.prevent="toggleReply">{{ replyLabel }}</a>
+                    <a href="#" @click.prevent="toggleReply">{{ replyLabel }}<span
+                        class="comment-count"
+                        :data-count="childTotal"
+                        :style="childTotal > 0 ? null : 'display:none'"
+                    > ({{ childTotal }})</span></a>
                 </template>
             </div>
 
             <div v-if="comment.children" class="nested-comments-root">
                 <div class="comment">
-                    <template v-for="child in childItems" :key="child.id">
+                    <template v-for="child in childItems" :key="revisionKey(child)">
                         <hr class="comment-separator">
                         <CommentEntry
                             :comment="child"
@@ -77,6 +94,8 @@
                             :can-comment="canComment"
                             :form-shell-html="formShellHtml"
                             :page-size="pageSize"
+                            @entry-removed="onChildRemoved"
+                            @entry-updated="onChildUpdated"
                         />
                     </template>
 
@@ -92,6 +111,7 @@
                     :shell-html="formShellHtml"
                     :content-id="comment.contentId"
                     :parent-comment-id="comment.id"
+                    @created="onReplyCreated"
                 />
             </div>
         </div>
@@ -109,8 +129,41 @@
  * is set explicitly so <CommentEntry> can resolve itself recursively (Vue's
  * resolveComponent() self-reference check keys off the component's own
  * `name` option).
+ *
+ * ## Mutation surface (P2-5)
+ *
+ * `comment` is read directly everywhere (no more local `revealed`/`effective`
+ * override): reveal(), edit-save() and a parent's live-update reply-append
+ * all swap the entry OBJECT in whichever array owns it (CommentList's
+ * `items` for a root entry, the parent CommentEntry's `childItems` for a
+ * reply) and bump a shared `commentRevisions[id]` counter (injected from
+ * CommentSection) that feeds the `:key` both CommentList and this component
+ * use for their `v-for` - see the CommentSection docblock. That forces a full
+ * remount with the fresh `comment` prop, so `childItems`/`childTotal`/
+ * `replyOpen`/etc (all seeded once in `data()`, see the P2-4 review note this
+ * task retrofits) re-initialize correctly instead of going stale.
+ *
+ * Two bubbling events carry this upward, consumed by whichever direct parent
+ * owns this entry's array (CommentList for a root entry, the parent
+ * CommentEntry for a reply):
+ *  - `entry-removed(id)` - this entry's own delete/admin-delete succeeded.
+ *  - `entry-updated({id, comment})` - this entry's own reveal/edit succeeded.
+ *
+ * Total-count bookkeeping (`adjustTotal`), the revision map
+ * (`bumpCommentRevision`/`pruneCommentRevision`) and live-update dedup
+ * (`registerKnownId`/`isKnownId`) are injected straight from CommentSection
+ * instead of bubbling through CommentList as a third event: only the entry
+ * itself knows its own delta (`-(1 + childTotal)` for a root delete, `-1`
+ * for a reply, `+1` for an accepted reply) at the moment it happens, and
+ * calling the section directly avoids a `CommentList` passthrough that would
+ * otherwise exist for no reason other than forwarding a number.
+ * `onReplyCreated()` also uses `isKnownId()` to guard the same own-create-
+ * vs-live race `CommentSection.onMainCreated()` guards for the root form.
+ *
+ * Every injection carries a safe no-op/empty default so this component
+ * tolerates being mounted without a providing ancestor (e.g. in isolation).
  */
-import { client, i18n, log, url } from '@humhub/vue';
+import { client, i18n, log, modal, url } from '@humhub/vue';
 import RichTextOutput from './RichTextOutput.vue';
 import CommentControls from './CommentControls.vue';
 import CommentForm from './CommentForm.vue';
@@ -118,6 +171,14 @@ import CommentForm from './CommentForm.vue';
 export default {
     name: 'CommentEntry',
     components: { RichTextOutput, CommentControls, CommentForm },
+    inject: {
+        commentRevisions: { default: () => ({}) },
+        bumpCommentRevision: { default: () => () => {} },
+        pruneCommentRevision: { default: () => () => {} },
+        adjustTotal: { default: () => () => {} },
+        registerKnownId: { default: () => () => {} },
+        isKnownId: { default: () => () => false },
+    },
     props: {
         comment: { type: Object, required: true },
         canComment: { type: Boolean, default: false },
@@ -135,13 +196,12 @@ export default {
         // is an edit-flow concern, out of scope until P2-5 wires editing.
         highlighted: { type: Boolean, default: false },
     },
+    emits: ['entry-removed', 'entry-updated'],
     data() {
         return {
-            // Reveal-blocked result replaces the masked comment locally; the
-            // array item CommentList/CommentEntry-parent holds stays
-            // untouched (revealing doesn't change any count).
-            revealed: null,
             replyOpen: false,
+            editing: false,
+            editMessage: null,
             childItems: this.comment.children ? [...this.comment.children.items] : [],
             childTotal: this.comment.children ? this.comment.children.total : 0,
             childRemainingNext: this.comment.children
@@ -154,12 +214,11 @@ export default {
             // create/delete between requests can't leave a stale gate.
             childHasMore: this.comment.children ? this.comment.children.hasMore : false,
             busyReplies: false,
+            busyReveal: false,
+            busyEdit: false,
         };
     },
     computed: {
-        effective() {
-            return this.revealed || this.comment;
-        },
         showReplyToggle() {
             return !this.isNested && this.canComment;
         },
@@ -174,6 +233,9 @@ export default {
         },
         replyLabel() {
             return i18n.t('CommentModule.base', 'Reply');
+        },
+        cancelEditLabel() {
+            return i18n.t('CommentModule.base', 'Cancel Edit');
         },
         // Same wording/category/placeholder as CommentList's own "show next"
         // link: the legacy nested Comments::widget() reused the exact same
@@ -202,10 +264,144 @@ export default {
         }
     },
     methods: {
+        revisionKey(comment) {
+            return comment.id + ':' + (this.commentRevisions[comment.id] || 0);
+        },
         reveal() {
+            if (this.busyReveal) {
+                return;
+            }
+            this.busyReveal = true;
             client.get(url('/comment/comment/info', { id: this.comment.id, showBlocked: 1 }))
+                .then((comment) => {
+                    this.$emit('entry-updated', { id: this.comment.id, comment });
+                })
+                .catch((e) => {
+                    log.error(e, true);
+                })
+                .finally(() => {
+                    this.busyReveal = false;
+                });
+        },
+        onEdit() {
+            if (this.busyEdit) {
+                return;
+            }
+            this.busyEdit = true;
+            client.get(url('/comment/comment/update', { id: this.comment.id }))
                 .then((response) => {
-                    this.revealed = response;
+                    this.editMessage = response.message;
+                    this.editing = true;
+                })
+                .catch((e) => {
+                    log.error(e, true);
+                })
+                .finally(() => {
+                    this.busyEdit = false;
+                });
+        },
+        cancelEdit() {
+            this.editing = false;
+            this.editMessage = null;
+        },
+        onEditSaved(comment) {
+            this.editing = false;
+            this.editMessage = null;
+            this.$emit('entry-updated', { id: this.comment.id, comment });
+        },
+        onReplyCreated(comment) {
+            // Guards the same own-create-vs-live race CommentSection's own
+            // onMainCreated() guards for the root form: a slow reply POST can
+            // resolve after the live poller already delivered (and appended)
+            // the same comment under this same parent.
+            if (this.isKnownId(comment.id)) {
+                return;
+            }
+            this.childItems.push(comment);
+            this.childTotal += 1;
+            this.childHasMore = this.childTotal > this.childItems.length;
+            this.adjustTotal(1);
+            this.registerKnownId(comment.id);
+        },
+        onChildRemoved(id) {
+            this.childItems = this.childItems.filter((child) => child.id !== id);
+            this.childTotal = Math.max(0, this.childTotal - 1);
+            this.childHasMore = this.childTotal > this.childItems.length;
+            this.pruneCommentRevision(id);
+        },
+        onChildUpdated({ id, comment }) {
+            const index = this.childItems.findIndex((child) => child.id === id);
+            if (index !== -1) {
+                this.childItems.splice(index, 1, comment);
+            }
+            this.bumpCommentRevision(id);
+        },
+        onDelete() {
+            modal.confirm({
+                header: i18n.t('CommentModule.base', '<strong>Confirm</strong> comment deleting'),
+                body: i18n.t('CommentModule.base', 'Do you really want to delete this comment?'),
+                confirmText: i18n.t('CommentModule.base', 'Delete'),
+                cancelText: i18n.t('CommentModule.base', 'Cancel'),
+            }).then((confirmed) => {
+                if (confirmed) {
+                    return this.performDelete();
+                }
+            }).catch((e) => {
+                log.error(e, true);
+            });
+        },
+        onAdminDelete() {
+            client.get(url('/comment/comment/get-admin-delete-modal', { id: this.comment.id }))
+                .then((response) => modal.confirm(response).then((confirmed) => {
+                    if (!confirmed) {
+                        return;
+                    }
+
+                    // The confirm modal's own footer buttons drive resolve/reject
+                    // (see Content.prototype.adminDelete in humhub.content.js) -
+                    // there is no "modal submit" action to hook into. Legacy reads
+                    // the admin-delete reason/notify fields the same way, straight
+                    // off the fixed #globalModalConfirm singleton's own form
+                    // (`modal.globalConfirm.$.find('form')[0]`), since that is the
+                    // one DOM node AdminDeleteModal::widget() just rendered `body`
+                    // into. Not exposed via the `modal` bridge (only
+                    // confirm()/load() are) - jQuery is already a documented
+                    // direct dependency of this component tree (see
+                    // LegacyFormWrapper), so reading the fixed singleton id
+                    // directly here mirrors the legacy call site 1:1.
+                    const fields = {};
+                    jQuery('#globalModalConfirm form').serializeArray().forEach(({ name, value }) => {
+                        fields[name] = value;
+                    });
+
+                    return this.performDelete(fields);
+                }))
+                .catch((e) => {
+                    log.error(e, true);
+                });
+        },
+        performDelete(extraFields) {
+            const cfg = extraFields ? { data: extraFields } : undefined;
+
+            return client.post(url('/comment/comment/delete', { id: this.comment.id }), cfg)
+                .then((response) => {
+                    if (!response || !response.success) {
+                        // Distinct from the catch() below (a transport/HTTP
+                        // failure): the request succeeded but the server
+                        // reported `{success: false}` - same
+                        // log.error(_, true) mechanism as everywhere else in
+                        // this file for the visible status side effect, with
+                        // a message specific enough to tell the two apart.
+                        log.error('Comment delete failed', response, true);
+                        return;
+                    }
+
+                    // Mirrors Form.prototype.incrementCommentCount's
+                    // `-1 - subComments` in humhub.comment.js: a reply can't have
+                    // its own children (server enforces one nesting level), so
+                    // only a root entry's own current reply count is subtracted.
+                    this.adjustTotal(-(1 + (this.isNested ? 0 : this.childTotal)));
+                    this.$emit('entry-removed', this.comment.id);
                 })
                 .catch((e) => {
                     log.error(e, true);
@@ -248,15 +444,6 @@ export default {
                     }
                 });
             }
-        },
-        onEdit() {
-            log.warn('TODO(P2-5): edit comment', this.comment.id);
-        },
-        onDelete() {
-            log.warn('TODO(P2-5): delete comment', this.comment.id);
-        },
-        onAdminDelete() {
-            log.warn('TODO(P2-5): admin-delete comment', this.comment.id);
         },
     },
 };

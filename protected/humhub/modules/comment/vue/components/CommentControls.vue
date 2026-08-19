@@ -52,12 +52,12 @@
  * comment/widgets/views/commentControls.php so existing theme CSS applies
  * unchanged.
  *
- * Edit/delete are read-path stubs for this task (P2-4): they emit upward and
- * log a TODO instead of doing anything, since actual mutation handling
- * (validation, modal confirm, DELETE request, ...) is P2-5. Permalink is
- * fully functional today - see the template comment above.
+ * Edit/delete/admin-delete are purely emitted upward - CommentEntry owns the
+ * actual mutation handling (edit mode, modal confirm, delete request, ...).
+ * Permalink is fully functional here already - see the template comment
+ * above.
  */
-import { i18n, log } from '@humhub/vue';
+import { i18n } from '@humhub/vue';
 
 export default {
     props: {
@@ -86,15 +86,9 @@ export default {
     },
     methods: {
         onEdit() {
-            // TODO(P2-5): fetch GET /comment/comment/update for the raw
-            // markdown and open an edit form in place.
-            log.warn('Comment edit is not implemented yet (P2-5)');
             this.$emit('edit');
         },
         onDelete() {
-            // TODO(P2-5): confirm via the modal bridge, then POST
-            // /comment/comment/delete (admin-delete uses the get-admin-delete-modal flow instead).
-            log.warn('Comment delete is not implemented yet (P2-5)');
             this.$emit(this.canAdminDelete ? 'admin-delete' : 'delete');
         },
     },

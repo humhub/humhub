@@ -465,27 +465,10 @@ describe('CommentSection', () => {
         });
     });
 
-    describe('edit/delete stubs', () => {
-        it('logs a TODO and does not throw when edit/delete are clicked, hidden behind the permission flags', async () => {
-            const comment = makeComment({ canEdit: true, canDelete: true, canAdminDelete: true });
-
-            const wrapper = mount(CommentSection, {
-                ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 } },
-            });
-
-            const items = wrapper.findAll('.dropdown-item');
-            const editItem = items.find((item) => item.text() === 'Edit');
-            const deleteItem = items.find((item) => item.text() === 'Delete');
-            expect(editItem).toBeDefined();
-            expect(deleteItem).toBeDefined();
-
-            await editItem.trigger('click');
-            await deleteItem.trigger('click');
-
-            expect(globalThis.humhubStubs.logCalls.warn.length).toBeGreaterThanOrEqual(2);
-        });
-
+    describe('edit/delete menu visibility', () => {
+        // Actual edit/delete/admin-delete/live-update mutation behavior is
+        // covered in commentMutations.test.js — this file stays focused on
+        // the read path per docs/superpowers/plans/2026-08-19-vuejs-comments.md.
         it('hides edit/delete menu items when their flags are false', () => {
             const comment = makeComment({ canEdit: false, canDelete: false });
 

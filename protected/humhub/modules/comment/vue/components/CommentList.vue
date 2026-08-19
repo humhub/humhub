@@ -4,7 +4,7 @@
             <a href="#" :class="{ disabled: busyPrev }" @click.prevent="loadPrev">{{ prevLabel }}</a>
         </div>
 
-        <template v-for="comment in items" :key="comment.id">
+        <template v-for="comment in items" :key="revisionKey(comment)">
             <hr class="comment-separator">
             <CommentEntry
                 :comment="comment"
@@ -12,6 +12,8 @@
                 :form-shell-html="formShellHtml"
                 :page-size="pageSize"
                 :highlighted="anchorCommentId !== null && comment.id === anchorCommentId"
+                @entry-removed="removeRoot"
+                @entry-updated="onEntryUpdated"
             />
         </template>
 
@@ -30,6 +32,19 @@
  * window so show-more prepend/append never mutates the parent's props array
  * directly - total count is unaffected by paging, so nothing needs to be
  * emitted upward for it.
+ *
+ * Also owns the root-level slice of the mutation surface (create/delete/edit/
+ * live-append all resolve here for top-level comments): `appendRoot()`/
+ * `removeRoot()`/`replaceRoot()`/`findRoot()` are called directly via
+ * `ref` by CommentSection, while `entry-removed`/`entry-updated` bubble up
+ * from each root `<CommentEntry>` for delete and edit/reveal respectively.
+ *
+ * `commentRevisions`/`bumpCommentRevision`/`pruneCommentRevision` are
+ * injected from CommentSection - see its own docblock for the
+ * `id + ':' + revision` remount-on-swap mechanism this and CommentEntry
+ * share. Defaults are provided for every injection so this component
+ * survives being mounted in isolation (e.g. a future standalone unit test)
+ * without a providing ancestor.
  */
 import { client, getConfig, i18n, log, url } from '@humhub/vue';
 import CommentEntry from './CommentEntry.vue';
@@ -37,6 +52,11 @@ import { getId } from './commentIdHelper.js';
 
 export default {
     components: { CommentEntry },
+    inject: {
+        commentRevisions: { default: () => ({}) },
+        bumpCommentRevision: { default: () => () => {} },
+        pruneCommentRevision: { default: () => () => {} },
+    },
     props: {
         contentId: { type: Number, required: true },
         comments: { type: Array, required: true },
@@ -89,6 +109,30 @@ export default {
         },
     },
     methods: {
+        revisionKey(comment) {
+            return comment.id + ':' + (this.commentRevisions[comment.id] || 0);
+        },
+        /** Appended at the end, mirroring the legacy Form.prototype.addComment placement. */
+        appendRoot(comment) {
+            this.items.push(comment);
+        },
+        removeRoot(id) {
+            this.items = this.items.filter((comment) => comment.id !== id);
+            this.pruneCommentRevision(id);
+        },
+        replaceRoot(id, comment) {
+            const index = this.items.findIndex((item) => item.id === id);
+            if (index !== -1) {
+                this.items.splice(index, 1, comment);
+            }
+        },
+        findRoot(id) {
+            return this.items.find((comment) => comment.id === id) || null;
+        },
+        onEntryUpdated({ id, comment }) {
+            this.replaceRoot(id, comment);
+            this.bumpCommentRevision(id);
+        },
         loadPrev() {
             if (this.busyPrev || this.items.length === 0) {
                 return;
