@@ -19,7 +19,7 @@ use yii\helpers\Url;
 /**
  * Renders the reusable comment form SHELL (richtext editor + upload widgets, mirroring
  * `comment\widgets\Form`'s former markup) once per {@see \humhub\modules\comment\widgets\Comments}
- * island. The client (`comment/vue/components/LegacyFormWrapper.vue`) clones the resulting HTML
+ * island. The client (`humhub\vue\LegacyFormWrapper.vue`, core-shared) clones the resulting HTML
  * string for every form instance it needs on the page (the main create form, an open reply form
  * per comment, an edit form) by replacing the literal token {@see self::TOKEN} - which every
  * element id in the shell is built from - with a unique per-instance id.

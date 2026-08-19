@@ -217,13 +217,17 @@
  * tolerates being mounted without a providing ancestor (e.g. in isolation).
  */
 import { client, i18n, log, modal, url } from '@humhub/vue';
-import RichTextOutput from './RichTextOutput.vue';
 import CommentControls from './CommentControls.vue';
 import CommentForm from './CommentForm.vue';
 
+// RichTextOutput is NOT imported here — it now lives at protected/humhub/vue/ (see
+// docs/develop/ui-js-vuejs.md) and resolves through the global Vue component registry
+// (every registered component is available in every island, see humhub.vue.js's
+// register()). CoreVueAsset must register before this island's own script runs — enforced
+// via CommentVueAsset::$depends, not by import order here.
 export default {
     name: 'CommentEntry',
-    components: { RichTextOutput, CommentControls, CommentForm },
+    components: { CommentControls, CommentForm },
     inject: {
         commentRevisions: { default: () => ({}) },
         bumpCommentRevision: { default: () => () => {} },

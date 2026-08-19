@@ -3,6 +3,8 @@ import { mount } from '@vue/test-utils';
 import CommentSection from '../../modules/comment/vue/CommentSection.vue';
 import CommentForm from '../../modules/comment/vue/components/CommentForm.vue';
 import LikeButton from '../../modules/like/vue/LikeButton.vue';
+import RichTextOutput from '../../vue/RichTextOutput.vue';
+import LegacyFormWrapper from '../../vue/LegacyFormWrapper.vue';
 
 await import('../../resources/js/humhub/humhub.url.js');
 await import('../../resources/js/humhub/humhub.vue.js');
@@ -24,15 +26,19 @@ const additionsDirective = {
     },
 };
 
+// CommentEntry/CommentForm no longer import RichTextOutput/LegacyFormWrapper directly
+// (they now resolve through the global Vue component registry - see their own
+// docblocks) - @vue/test-utils' `global.components` stands in for that registry here,
+// the same way it already does for LikeButton below.
 const mountOptions = () => ({
     global: {
         directives: { additions: additionsDirective },
-        components: { LikeButton },
+        components: { LikeButton, RichTextOutput, LegacyFormWrapper },
     },
 });
 
 // Synthetic __VUEFORM__ shell (see LegacyFormWrapper's own docblock and
-// commentInterop.test.js): a <form> to attach the native submit interceptor
+// coreInterop.test.js): a <form> to attach the native submit interceptor
 // to, a `.humhub-ui-richtext` node the auto-boot handler below attaches a
 // fake editor to (exactly like a real richtext widget boot would), and a
 // `.richtext-create-buttons` container - the REAL production shell's button

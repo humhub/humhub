@@ -3,7 +3,7 @@
  * Compiled from comment/vue/ via `grunt build-vue --module=comment`.
  * See docs/develop/ui-js-vuejs.md
  */
-(function(vue$1, vue) {
+(function(vue, vue$1) {
   "use strict";
   const _export_sfc = (sfc, props) => {
     const target = sfc.__vccOpts || sfc;
@@ -12,23 +12,7 @@
     }
     return target;
   };
-  const _sfc_main$6 = {
-    props: {
-      output: { type: String, default: null }
-    }
-  };
-  const _hoisted_1$5 = ["innerHTML"];
-  function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
-    const _directive_additions = vue.resolveDirective("additions");
-    return $props.output ? vue.withDirectives((vue.openBlock(), vue.createElementBlock("div", {
-      key: 0,
-      innerHTML: $props.output
-    }, null, 8, _hoisted_1$5)), [
-      [_directive_additions]
-    ]) : vue.createCommentVNode("v-if", true);
-  }
-  const RichTextOutput = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$6]]);
-  const _sfc_main$5 = {
+  const _sfc_main$4 = {
     props: {
       permalink: { type: String, required: true },
       canEdit: { type: Boolean, default: false },
@@ -38,19 +22,19 @@
     emits: ["edit", "delete", "admin-delete"],
     computed: {
       toggleMenuLabel() {
-        return vue$1.i18n.t("base", "Toggle comment menu");
+        return vue.i18n.t("base", "Toggle comment menu");
       },
       permalinkLabel() {
-        return vue$1.i18n.t("CommentModule.base", "Permalink");
+        return vue.i18n.t("CommentModule.base", "Permalink");
       },
       permalinkTitle() {
-        return vue$1.i18n.t("CommentModule.base", "<strong>Permalink</strong> to this comment");
+        return vue.i18n.t("CommentModule.base", "<strong>Permalink</strong> to this comment");
       },
       editLabel() {
-        return vue$1.i18n.t("CommentModule.base", "Edit");
+        return vue.i18n.t("CommentModule.base", "Edit");
       },
       deleteLabel() {
-        return vue$1.i18n.t("CommentModule.base", "Delete");
+        return vue.i18n.t("CommentModule.base", "Delete");
       }
     },
     methods: {
@@ -62,28 +46,28 @@
       }
     }
   };
-  const _hoisted_1$4 = { class: "nav nav-pills preferences" };
+  const _hoisted_1$3 = { class: "nav nav-pills preferences" };
   const _hoisted_2$3 = { class: "nav-item dropdown" };
   const _hoisted_3$3 = ["aria-label"];
   const _hoisted_4$1 = { class: "dropdown-menu dropdown-menu-end" };
   const _hoisted_5$1 = ["data-content-permalink", "data-content-permalink-title"];
   const _hoisted_6$1 = { key: 0 };
   const _hoisted_7$1 = { key: 1 };
-  function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
-    return vue.openBlock(), vue.createElementBlock(
-      vue.Fragment,
+  function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
+    return vue$1.openBlock(), vue$1.createElementBlock(
+      vue$1.Fragment,
       null,
       [
-        _cache[2] || (_cache[2] = vue.createElementVNode(
+        _cache[2] || (_cache[2] = vue$1.createElementVNode(
           "div",
           { class: "comment-entry-loader float-end" },
           null,
           -1
           /* CACHED */
         )),
-        vue.createElementVNode("ul", _hoisted_1$4, [
-          vue.createElementVNode("li", _hoisted_2$3, [
-            vue.createElementVNode("a", {
+        vue$1.createElementVNode("ul", _hoisted_1$3, [
+          vue$1.createElementVNode("li", _hoisted_2$3, [
+            vue$1.createElementVNode("a", {
               href: "#",
               class: "nav-link dropdown-toggle",
               "data-bs-toggle": "dropdown",
@@ -92,43 +76,43 @@
               "aria-expanded": "false",
               role: "button"
             }, null, 8, _hoisted_3$3),
-            vue.createElementVNode("ul", _hoisted_4$1, [
-              vue.createElementVNode("li", null, [
-                vue.createCommentVNode('\n                        Plain anchor reusing the exact legacy attributes\n                        (data-action-click="content.permalink" + the two\n                        data-content-permalink* values) instead of a\n                        Vue-owned click handler: humhub.action.js binds the\n                        [data-action-click] delegate on `document` itself\n                        (see bindAction(document, \'click\', ...) in\n                        humhub.action.js), so it already fires for anchors\n                        injected anywhere in the DOM, Vue-rendered islands\n                        included, with zero extra wiring. The `content`\n                        module (ui.content) is always loaded page-wide\n                        wherever comments can appear, so this "just works".\n                    '),
-                vue.createElementVNode("a", {
+            vue$1.createElementVNode("ul", _hoisted_4$1, [
+              vue$1.createElementVNode("li", null, [
+                vue$1.createCommentVNode('\n                        Plain anchor reusing the exact legacy attributes\n                        (data-action-click="content.permalink" + the two\n                        data-content-permalink* values) instead of a\n                        Vue-owned click handler: humhub.action.js binds the\n                        [data-action-click] delegate on `document` itself\n                        (see bindAction(document, \'click\', ...) in\n                        humhub.action.js), so it already fires for anchors\n                        injected anywhere in the DOM, Vue-rendered islands\n                        included, with zero extra wiring. The `content`\n                        module (ui.content) is always loaded page-wide\n                        wherever comments can appear, so this "just works".\n                    '),
+                vue$1.createElementVNode("a", {
                   href: "#",
                   class: "dropdown-item",
                   "data-action-click": "content.permalink",
                   "data-content-permalink": $props.permalink,
                   "data-content-permalink-title": $options.permalinkTitle
-                }, vue.toDisplayString($options.permalinkLabel), 9, _hoisted_5$1)
+                }, vue$1.toDisplayString($options.permalinkLabel), 9, _hoisted_5$1)
               ]),
-              $props.canEdit ? (vue.openBlock(), vue.createElementBlock("li", _hoisted_6$1, [
-                vue.createElementVNode(
+              $props.canEdit ? (vue$1.openBlock(), vue$1.createElementBlock("li", _hoisted_6$1, [
+                vue$1.createElementVNode(
                   "a",
                   {
                     href: "#",
                     class: "dropdown-item",
-                    onClick: _cache[0] || (_cache[0] = vue.withModifiers((...args) => $options.onEdit && $options.onEdit(...args), ["prevent"]))
+                    onClick: _cache[0] || (_cache[0] = vue$1.withModifiers((...args) => $options.onEdit && $options.onEdit(...args), ["prevent"]))
                   },
-                  vue.toDisplayString($options.editLabel),
+                  vue$1.toDisplayString($options.editLabel),
                   1
                   /* TEXT */
                 )
-              ])) : vue.createCommentVNode("v-if", true),
-              $props.canDelete ? (vue.openBlock(), vue.createElementBlock("li", _hoisted_7$1, [
-                vue.createElementVNode(
+              ])) : vue$1.createCommentVNode("v-if", true),
+              $props.canDelete ? (vue$1.openBlock(), vue$1.createElementBlock("li", _hoisted_7$1, [
+                vue$1.createElementVNode(
                   "a",
                   {
                     href: "#",
                     class: "dropdown-item",
-                    onClick: _cache[1] || (_cache[1] = vue.withModifiers((...args) => $options.onDelete && $options.onDelete(...args), ["prevent"]))
+                    onClick: _cache[1] || (_cache[1] = vue$1.withModifiers((...args) => $options.onDelete && $options.onDelete(...args), ["prevent"]))
                   },
-                  vue.toDisplayString($options.deleteLabel),
+                  vue$1.toDisplayString($options.deleteLabel),
                   1
                   /* TEXT */
                 )
-              ])) : vue.createCommentVNode("v-if", true)
+              ])) : vue$1.createCommentVNode("v-if", true)
             ])
           ])
         ])
@@ -137,106 +121,8 @@
       /* STABLE_FRAGMENT */
     );
   }
-  const CommentControls = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$5]]);
-  const FORM_TOKEN = "__VUEFORM__";
-  const RICHTEXT_SELECTOR = '[data-ui-widget="ui.richtext.prosemirror.RichTextEditor"]';
-  const RICHTEXT_COMPONENT_DATA = "humhub-ui-richtexteditor";
-  const UPLOAD_SELECTOR = ".main_comment_upload";
-  const UPLOAD_COMPONENT_DATA = "humhub-file-upload";
-  let instanceCounter = 0;
-  const _sfc_main$4 = {
-    props: {
-      shellHtml: { type: String, required: true }
-    },
-    data() {
-      return {
-        // Module-scope counter (not Math.random()) so builds/output stay
-        // deterministic; unique per mounted instance on the page.
-        instanceId: "vueform-" + ++instanceCounter
-      };
-    },
-    computed: {
-      processedShell() {
-        return this.shellHtml.split(FORM_TOKEN).join(this.instanceId);
-      }
-    },
-    methods: {
-      getEditorInstance() {
-        const node = this.$el.querySelector(RICHTEXT_SELECTOR);
-        return node ? jQuery(node).data(RICHTEXT_COMPONENT_DATA) : null;
-      },
-      getUploadInstance() {
-        const node = this.$el.querySelector(UPLOAD_SELECTOR);
-        return node ? jQuery(node).data(UPLOAD_COMPONENT_DATA) : null;
-      },
-      /** @returns {string} the current markdown value of the richtext editor. */
-      getValue() {
-        const editor = this.getEditorInstance();
-        return editor ? editor.editor.serialize() : "";
-      },
-      /** Prefills the editor with markdown (e.g. for edit mode). */
-      setValue(markdown) {
-        const editor = this.getEditorInstance();
-        if (editor) {
-          editor.editor.init(markdown || "");
-        }
-      },
-      /** Empties the editor and resets the upload preview/file inputs. */
-      clear() {
-        const editor = this.getEditorInstance();
-        if (editor) {
-          editor.$.trigger("clear");
-        }
-        const upload = this.getUploadInstance();
-        if (upload) {
-          upload.reset();
-        }
-        this.resetAcknowledge();
-      },
-      /**
-       * Neutralizes humhub.client.js's acknowledgeForm unsaved-changes baseline for this
-       * instance's `<form>` - see the class docblock's "Unsaved-changes guard" section.
-       * `.data('state')` is the exact (and only) thing `resetChanges()` itself touches;
-       * writing `null` through the same public jQuery `.data()` store makes
-       * `formStateChanged()` short-circuit to "unchanged" on its very next check,
-       * regardless of what the form's serialized content actually looks like.
-       */
-      resetAcknowledge() {
-        const form = this.$el.querySelector("form");
-        if (form) {
-          jQuery(form).data("state", null);
-        }
-      },
-      /** Focuses the richtext editor (e.g. on reply). */
-      focus() {
-        const editor = this.getEditorInstance();
-        if (editor) {
-          editor.focus();
-        }
-      },
-      /** @returns {string[]} guids of files currently attached via the upload widget. */
-      getFileGuids() {
-        const upload = this.getUploadInstance();
-        if (!upload) {
-          return [];
-        }
-        const name = upload.options.uploadSubmitName;
-        return jQuery(this.$el).find('input[name="' + name + '"]').map(function() {
-          return this.value;
-        }).get();
-      }
-    }
-  };
-  const _hoisted_1$3 = ["innerHTML"];
-  function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
-    const _directive_additions = vue.resolveDirective("additions");
-    return vue.withDirectives((vue.openBlock(), vue.createElementBlock("div", { innerHTML: $options.processedShell }, null, 8, _hoisted_1$3)), [
-      [_directive_additions]
-    ]);
-  }
-  const LegacyFormWrapper = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$4]]);
+  const CommentControls = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$4]]);
   const _sfc_main$3 = {
-    components: { LegacyFormWrapper },
     props: {
       shellHtml: { type: String, required: true },
       contentId: { type: Number, required: true },
@@ -271,7 +157,7 @@
       // key. CommentSection preloads 'ContentModule.base' alongside its
       // own category for exactly this.
       sendLabel() {
-        return vue$1.i18n.t("ContentModule.base", "Submit");
+        return vue.i18n.t("ContentModule.base", "Submit");
       }
     },
     mounted() {
@@ -309,7 +195,7 @@
         }
         this.busy = true;
         this.errors = {};
-        vue$1.client.post(vue$1.url(endpoint, params), {
+        vue.client.post(vue.url(endpoint, params), {
           data: {
             message: this.$refs.wrapper.getValue(),
             fileList: this.$refs.wrapper.getFileGuids()
@@ -326,7 +212,7 @@
           if (response && response.status === 422 && errors) {
             this.errors = errors;
           } else {
-            vue$1.log.error(response, true);
+            vue.log.error(response, true);
           }
         });
       },
@@ -356,35 +242,35 @@
     class: "invalid-feedback d-block"
   };
   function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_LegacyFormWrapper = vue.resolveComponent("LegacyFormWrapper");
-    return vue.openBlock(), vue.createElementBlock(
-      vue.Fragment,
+    const _component_LegacyFormWrapper = vue$1.resolveComponent("LegacyFormWrapper");
+    return vue$1.openBlock(), vue$1.createElementBlock(
+      vue$1.Fragment,
       null,
       [
-        vue.createVNode(_component_LegacyFormWrapper, {
+        vue$1.createVNode(_component_LegacyFormWrapper, {
           ref: "wrapper",
           "shell-html": $props.shellHtml
         }, null, 8, ["shell-html"]),
-        (vue.openBlock(), vue.createBlock(vue.Teleport, {
+        (vue$1.openBlock(), vue$1.createBlock(vue$1.Teleport, {
           to: $data.teleportTarget,
           disabled: !$data.teleportTarget
         }, [
-          vue.createElementVNode("button", {
+          vue$1.createElementVNode("button", {
             type: "button",
-            class: vue.normalizeClass(["btn btn-accent btn-comment-submit btn-sm", { "btn-icon-only": $props.submitIconHtml }]),
+            class: vue$1.normalizeClass(["btn btn-accent btn-comment-submit btn-sm", { "btn-icon-only": $props.submitIconHtml }]),
             "aria-label": $options.sendLabel,
             disabled: $data.busy,
             onClick: _cache[0] || (_cache[0] = (...args) => $options.onSubmit && $options.onSubmit(...args))
           }, [
-            $props.submitIconHtml ? (vue.openBlock(), vue.createElementBlock("span", {
+            $props.submitIconHtml ? (vue$1.openBlock(), vue$1.createElementBlock("span", {
               key: 0,
               innerHTML: $props.submitIconHtml
-            }, null, 8, _hoisted_2$2)) : (vue.openBlock(), vue.createElementBlock(
-              vue.Fragment,
+            }, null, 8, _hoisted_2$2)) : (vue$1.openBlock(), vue$1.createElementBlock(
+              vue$1.Fragment,
               { key: 1 },
               [
-                vue.createTextVNode(
-                  vue.toDisplayString($options.sendLabel),
+                vue$1.createTextVNode(
+                  vue$1.toDisplayString($options.sendLabel),
                   1
                   /* TEXT */
                 )
@@ -394,15 +280,15 @@
             ))
           ], 10, _hoisted_1$2)
         ], 8, ["to", "disabled"])),
-        $options.hasErrors ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_3$2, [
-          (vue.openBlock(true), vue.createElementBlock(
-            vue.Fragment,
+        $options.hasErrors ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_3$2, [
+          (vue$1.openBlock(true), vue$1.createElementBlock(
+            vue$1.Fragment,
             null,
-            vue.renderList($options.errorMessages, (message, index) => {
-              return vue.openBlock(), vue.createElementBlock(
+            vue$1.renderList($options.errorMessages, (message, index) => {
+              return vue$1.openBlock(), vue$1.createElementBlock(
                 "div",
                 { key: index },
-                vue.toDisplayString(message),
+                vue$1.toDisplayString(message),
                 1
                 /* TEXT */
               );
@@ -410,7 +296,7 @@
             128
             /* KEYED_FRAGMENT */
           ))
-        ])) : vue.createCommentVNode("v-if", true)
+        ])) : vue$1.createCommentVNode("v-if", true)
       ],
       64
       /* STABLE_FRAGMENT */
@@ -419,7 +305,7 @@
   const CommentForm = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3]]);
   const _sfc_main$2 = {
     name: "CommentEntry",
-    components: { RichTextOutput, CommentControls, CommentForm },
+    components: { CommentControls, CommentForm },
     inject: {
       commentRevisions: { default: () => ({}) },
       bumpCommentRevision: { default: () => () => {
@@ -475,26 +361,26 @@
         return !this.isNested && this.canComment;
       },
       blockedLabel() {
-        return vue$1.i18n.t("CommentModule.base", "Comment of blocked user.");
+        return vue.i18n.t("CommentModule.base", "Comment of blocked user.");
       },
       showLabel() {
-        return vue$1.i18n.t("CommentModule.base", "Show");
+        return vue.i18n.t("CommentModule.base", "Show");
       },
       readMoreLabel() {
-        return vue$1.i18n.t("CommentModule.base", "Read full comment...");
+        return vue.i18n.t("CommentModule.base", "Read full comment...");
       },
       replyLabel() {
-        return vue$1.i18n.t("CommentModule.base", "Reply");
+        return vue.i18n.t("CommentModule.base", "Reply");
       },
       cancelEditLabel() {
-        return vue$1.i18n.t("CommentModule.base", "Cancel Edit");
+        return vue.i18n.t("CommentModule.base", "Cancel Edit");
       },
       // Same wording/category/placeholder as CommentList's own "show next"
       // link: the legacy nested Comments::widget() reused the exact same
       // ShowMore strings for children, there never was a distinct
       // "replies" message key.
       moreRepliesLabel() {
-        return vue$1.i18n.t("CommentModule.base", "Show next {count} comments", { count: this.childRemainingNext });
+        return vue.i18n.t("CommentModule.base", "Show next {count} comments", { count: this.childRemainingNext });
       },
       // No server-formatted absolute time in the JSON payload (only ISO
       // `createdAt` - see plan §"Timestamps") - formatted client-side via
@@ -531,7 +417,7 @@
         if (this.isOnline === null) {
           return null;
         }
-        return this.isOnline ? vue$1.i18n.t("UserModule.base", "Online") : vue$1.i18n.t("UserModule.base", "Offline");
+        return this.isOnline ? vue.i18n.t("UserModule.base", "Online") : vue.i18n.t("UserModule.base", "Offline");
       }
     },
     mounted() {
@@ -548,10 +434,10 @@
           return;
         }
         this.busyReveal = true;
-        vue$1.client.get(vue$1.url("/comment/comment/info", { id: this.comment.id, showBlocked: 1 })).then((comment) => {
+        vue.client.get(vue.url("/comment/comment/info", { id: this.comment.id, showBlocked: 1 })).then((comment) => {
           this.$emit("entry-updated", { id: this.comment.id, comment });
         }).catch((e) => {
-          vue$1.log.error(e, true);
+          vue.log.error(e, true);
         }).finally(() => {
           this.busyReveal = false;
         });
@@ -561,11 +447,11 @@
           return;
         }
         this.busyEdit = true;
-        vue$1.client.get(vue$1.url("/comment/comment/update", { id: this.comment.id })).then((response) => {
+        vue.client.get(vue.url("/comment/comment/update", { id: this.comment.id })).then((response) => {
           this.editMessage = response.message;
           this.editing = true;
         }).catch((e) => {
-          vue$1.log.error(e, true);
+          vue.log.error(e, true);
         }).finally(() => {
           this.busyEdit = false;
         });
@@ -606,21 +492,21 @@
         this.bumpCommentRevision(id);
       },
       onDelete() {
-        vue$1.modal.confirm({
-          header: vue$1.i18n.t("CommentModule.base", "<strong>Confirm</strong> comment deleting"),
-          body: vue$1.i18n.t("CommentModule.base", "Do you really want to delete this comment?"),
-          confirmText: vue$1.i18n.t("CommentModule.base", "Delete"),
-          cancelText: vue$1.i18n.t("CommentModule.base", "Cancel")
+        vue.modal.confirm({
+          header: vue.i18n.t("CommentModule.base", "<strong>Confirm</strong> comment deleting"),
+          body: vue.i18n.t("CommentModule.base", "Do you really want to delete this comment?"),
+          confirmText: vue.i18n.t("CommentModule.base", "Delete"),
+          cancelText: vue.i18n.t("CommentModule.base", "Cancel")
         }).then((confirmed) => {
           if (confirmed) {
             return this.performDelete();
           }
         }).catch((e) => {
-          vue$1.log.error(e, true);
+          vue.log.error(e, true);
         });
       },
       onAdminDelete() {
-        vue$1.client.get(vue$1.url("/comment/comment/get-admin-delete-modal", { id: this.comment.id })).then((response) => vue$1.modal.confirm(response).then((confirmed) => {
+        vue.client.get(vue.url("/comment/comment/get-admin-delete-modal", { id: this.comment.id })).then((response) => vue.modal.confirm(response).then((confirmed) => {
           if (!confirmed) {
             return;
           }
@@ -630,20 +516,20 @@
           });
           return this.performDelete(fields);
         })).catch((e) => {
-          vue$1.log.error(e, true);
+          vue.log.error(e, true);
         });
       },
       performDelete(extraFields) {
         const cfg = extraFields ? { data: extraFields } : void 0;
-        return vue$1.client.post(vue$1.url("/comment/comment/delete", { id: this.comment.id }), cfg).then((response) => {
+        return vue.client.post(vue.url("/comment/comment/delete", { id: this.comment.id }), cfg).then((response) => {
           if (!response || !response.success) {
-            vue$1.log.error("Comment delete failed", response, true);
+            vue.log.error("Comment delete failed", response, true);
             return;
           }
           this.adjustTotal(-(1 + (this.isNested ? 0 : this.childTotal)));
           this.$emit("entry-removed", this.comment.id);
         }).catch((e) => {
-          vue$1.log.error(e, true);
+          vue.log.error(e, true);
         });
       },
       loadMoreReplies() {
@@ -652,7 +538,7 @@
         }
         this.busyReplies = true;
         const cursor = this.childItems[this.childItems.length - 1].id;
-        vue$1.client.get(vue$1.url("/comment/comment/list", {
+        vue.client.get(vue.url("/comment/comment/list", {
           contentId: this.comment.contentId,
           parentCommentId: this.comment.id,
           commentId: cursor,
@@ -664,7 +550,7 @@
           this.childRemainingNext = response.nextCount;
           this.childHasMore = this.childTotal > this.childItems.length;
         }).catch((e) => {
-          vue$1.log.error(e, true);
+          vue.log.error(e, true);
         }).finally(() => {
           this.busyReplies = false;
         });
@@ -712,48 +598,48 @@
     class: "showMore"
   };
   function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_CommentControls = vue.resolveComponent("CommentControls");
-    const _component_CommentForm = vue.resolveComponent("CommentForm");
-    const _component_RichTextOutput = vue.resolveComponent("RichTextOutput");
-    const _component_LikeButton = vue.resolveComponent("LikeButton");
-    const _component_CommentEntry = vue.resolveComponent("CommentEntry", true);
-    const _directive_additions = vue.resolveDirective("additions");
-    return $props.comment.blocked ? (vue.openBlock(), vue.createElementBlock("div", {
+    const _component_CommentControls = vue$1.resolveComponent("CommentControls");
+    const _component_CommentForm = vue$1.resolveComponent("CommentForm");
+    const _component_RichTextOutput = vue$1.resolveComponent("RichTextOutput");
+    const _component_LikeButton = vue$1.resolveComponent("LikeButton");
+    const _component_CommentEntry = vue$1.resolveComponent("CommentEntry", true);
+    const _directive_additions = vue$1.resolveDirective("additions");
+    return $props.comment.blocked ? (vue$1.openBlock(), vue$1.createElementBlock("div", {
       key: 0,
       id: "comment_" + $props.comment.id,
       class: "d-flex comment-blocked-user"
     }, [
-      _cache[4] || (_cache[4] = vue.createElementVNode(
+      _cache[4] || (_cache[4] = vue$1.createElementVNode(
         "div",
         { class: "flex-shrink-0 me-2" },
         null,
         -1
         /* CACHED */
       )),
-      vue.createElementVNode("div", _hoisted_2$1, [
-        vue.createTextVNode(
-          vue.toDisplayString($options.blockedLabel) + " ",
+      vue$1.createElementVNode("div", _hoisted_2$1, [
+        vue$1.createTextVNode(
+          vue$1.toDisplayString($options.blockedLabel) + " ",
           1
           /* TEXT */
         ),
-        vue.createElementVNode(
+        vue$1.createElementVNode(
           "a",
           {
             href: "#",
             class: "text-primary",
-            onClick: _cache[0] || (_cache[0] = vue.withModifiers((...args) => $options.reveal && $options.reveal(...args), ["prevent"]))
+            onClick: _cache[0] || (_cache[0] = vue$1.withModifiers((...args) => $options.reveal && $options.reveal(...args), ["prevent"]))
           },
-          vue.toDisplayString($options.showLabel),
+          vue$1.toDisplayString($options.showLabel),
           1
           /* TEXT */
         )
       ])
-    ], 8, _hoisted_1$1)) : vue.withDirectives((vue.openBlock(), vue.createElementBlock("div", {
+    ], 8, _hoisted_1$1)) : vue$1.withDirectives((vue$1.openBlock(), vue$1.createElementBlock("div", {
       key: 1,
       id: "comment_" + $props.comment.id,
-      class: vue.normalizeClass(["single-comment d-flex p-2", { "comment-current": $props.highlighted }])
+      class: vue$1.normalizeClass(["single-comment d-flex p-2", { "comment-current": $props.highlighted }])
     }, [
-      vue.createVNode(_component_CommentControls, {
+      vue$1.createVNode(_component_CommentControls, {
         permalink: $props.comment.permalink,
         "can-edit": $props.comment.canEdit,
         "can-delete": $props.comment.canDelete,
@@ -762,55 +648,55 @@
         onDelete: $options.onDelete,
         onAdminDelete: $options.onAdminDelete
       }, null, 8, ["permalink", "can-edit", "can-delete", "can-admin-delete", "onEdit", "onDelete", "onAdminDelete"]),
-      vue.createElementVNode("div", _hoisted_4, [
-        vue.createElementVNode("a", {
+      vue$1.createElementVNode("div", _hoisted_4, [
+        vue$1.createElementVNode("a", {
           href: $props.comment.author.url,
-          class: vue.normalizeClass({ "has-online-status img-size-small": $options.isOnline !== null })
+          class: vue$1.normalizeClass({ "has-online-status img-size-small": $options.isOnline !== null })
         }, [
-          vue.createElementVNode("img", {
+          vue$1.createElementVNode("img", {
             class: "rounded",
             style: { "width": "25px", "height": "25px" },
             src: $props.comment.author.imageUrl,
             alt: $props.comment.author.imageAlt,
             "data-contentcontainer-id": $props.comment.author.contentContainerId
           }, null, 8, _hoisted_6),
-          $options.isOnline !== null ? (vue.openBlock(), vue.createElementBlock("span", {
+          $options.isOnline !== null ? (vue$1.openBlock(), vue$1.createElementBlock("span", {
             key: 0,
-            class: vue.normalizeClass(["tt user-online-status", $options.isOnline ? "user-is-online" : "user-is-offline"]),
+            class: vue$1.normalizeClass(["tt user-online-status", $options.isOnline ? "user-is-online" : "user-is-offline"]),
             "aria-label": $options.onlineLabel,
             title: $options.onlineLabel
-          }, null, 10, _hoisted_7)) : vue.createCommentVNode("v-if", true)
+          }, null, 10, _hoisted_7)) : vue$1.createCommentVNode("v-if", true)
         ], 10, _hoisted_5)
       ]),
-      vue.createElementVNode("div", _hoisted_8, [
-        vue.createElementVNode("h4", _hoisted_9, [
-          vue.createElementVNode("a", {
+      vue$1.createElementVNode("div", _hoisted_8, [
+        vue$1.createElementVNode("h4", _hoisted_9, [
+          vue$1.createElementVNode("a", {
             href: $props.comment.author.url,
             "data-contentcontainer-id": $props.comment.author.contentContainerId,
             "data-guid": $props.comment.author.guid
-          }, vue.toDisplayString($props.comment.author.displayName), 9, _hoisted_10),
-          vue.createElementVNode("small", null, [
-            _cache[6] || (_cache[6] = vue.createTextVNode(
+          }, vue$1.toDisplayString($props.comment.author.displayName), 9, _hoisted_10),
+          vue$1.createElementVNode("small", null, [
+            _cache[6] || (_cache[6] = vue$1.createTextVNode(
               " · ",
               -1
               /* CACHED */
             )),
-            vue.createElementVNode("time", {
+            vue$1.createElementVNode("time", {
               class: "tt time timeago",
               "data-ui-addition": "timeago",
               datetime: $props.comment.createdAt,
               title: $options.absoluteTime
-            }, vue.toDisplayString($options.absoluteTime), 9, _hoisted_11),
-            $props.comment.isEdited ? (vue.openBlock(), vue.createElementBlock(
-              vue.Fragment,
+            }, vue$1.toDisplayString($options.absoluteTime), 9, _hoisted_11),
+            $props.comment.isEdited ? (vue$1.openBlock(), vue$1.createElementBlock(
+              vue$1.Fragment,
               { key: 0 },
               [
-                _cache[5] || (_cache[5] = vue.createTextVNode(
+                _cache[5] || (_cache[5] = vue$1.createTextVNode(
                   " · ",
                   -1
                   /* CACHED */
                 )),
-                vue.createElementVNode("i", {
+                vue$1.createElementVNode("i", {
                   class: "tt fa fa-clock-o text-body-secondary",
                   title: $options.updatedAtTitle,
                   "aria-hidden": "true"
@@ -818,19 +704,19 @@
               ],
               64
               /* STABLE_FRAGMENT */
-            )) : vue.createCommentVNode("v-if", true)
+            )) : vue$1.createCommentVNode("v-if", true)
           ])
         ]),
-        vue.createCommentVNode(" class comment_edit_content required since v1.2 "),
-        vue.createElementVNode("div", {
+        vue$1.createCommentVNode(" class comment_edit_content required since v1.2 "),
+        vue$1.createElementVNode("div", {
           class: "content comment_edit_content",
           id: "comment_editarea_" + $props.comment.id
         }, [
-          $data.editing && $props.formShellHtml ? (vue.openBlock(), vue.createElementBlock(
-            vue.Fragment,
+          $data.editing && $props.formShellHtml ? (vue$1.openBlock(), vue$1.createElementBlock(
+            vue$1.Fragment,
             { key: 0 },
             [
-              vue.createVNode(_component_CommentForm, {
+              vue$1.createVNode(_component_CommentForm, {
                 ref: "editForm",
                 "shell-html": $props.formShellHtml,
                 "content-id": $props.comment.contentId,
@@ -839,93 +725,93 @@
                 "submit-icon-html": $props.submitIconHtml,
                 onUpdated: $options.onEditSaved
               }, null, 8, ["shell-html", "content-id", "edit-comment-id", "initial-message", "submit-icon-html", "onUpdated"]),
-              vue.createElementVNode(
+              vue$1.createElementVNode(
                 "a",
                 {
                   href: "#",
                   class: "comment-cancel-edit-link",
-                  onClick: _cache[1] || (_cache[1] = vue.withModifiers((...args) => $options.cancelEdit && $options.cancelEdit(...args), ["prevent"]))
+                  onClick: _cache[1] || (_cache[1] = vue$1.withModifiers((...args) => $options.cancelEdit && $options.cancelEdit(...args), ["prevent"]))
                 },
-                vue.toDisplayString($options.cancelEditLabel),
+                vue$1.toDisplayString($options.cancelEditLabel),
                 1
                 /* TEXT */
               )
             ],
             64
             /* STABLE_FRAGMENT */
-          )) : (vue.openBlock(), vue.createElementBlock(
-            vue.Fragment,
+          )) : (vue$1.openBlock(), vue$1.createElementBlock(
+            vue$1.Fragment,
             { key: 1 },
             [
-              vue.createVNode(_component_RichTextOutput, {
+              vue$1.createVNode(_component_RichTextOutput, {
                 class: "comment-message",
                 "data-ui-markdown": "",
                 "data-ui-show-more": "",
                 "data-read-more-text": $options.readMoreLabel,
                 output: $props.comment.messageOutput
               }, null, 8, ["data-read-more-text", "output"]),
-              $props.comment.attachmentsHtml ? (vue.openBlock(), vue.createElementBlock("div", {
+              $props.comment.attachmentsHtml ? (vue$1.openBlock(), vue$1.createElementBlock("div", {
                 key: 0,
                 innerHTML: $props.comment.attachmentsHtml
-              }, null, 8, _hoisted_14)) : vue.createCommentVNode("v-if", true)
+              }, null, 8, _hoisted_14)) : vue$1.createCommentVNode("v-if", true)
             ],
             64
             /* STABLE_FRAGMENT */
           ))
         ], 8, _hoisted_13),
-        vue.createElementVNode("div", _hoisted_15, [
-          $options.showReplyToggle ? (vue.openBlock(), vue.createElementBlock("a", {
+        vue$1.createElementVNode("div", _hoisted_15, [
+          $options.showReplyToggle ? (vue$1.openBlock(), vue$1.createElementBlock("a", {
             key: 0,
             href: "#",
-            onClick: _cache[2] || (_cache[2] = vue.withModifiers((...args) => $options.toggleReply && $options.toggleReply(...args), ["prevent"]))
+            onClick: _cache[2] || (_cache[2] = vue$1.withModifiers((...args) => $options.toggleReply && $options.toggleReply(...args), ["prevent"]))
           }, [
-            vue.createTextVNode(
-              vue.toDisplayString($options.replyLabel),
+            vue$1.createTextVNode(
+              vue$1.toDisplayString($options.replyLabel),
               1
               /* TEXT */
             ),
-            vue.createElementVNode("span", {
+            vue$1.createElementVNode("span", {
               class: "comment-count",
               "data-count": $data.childTotal,
-              style: vue.normalizeStyle($data.childTotal > 0 ? null : "display:none")
-            }, " (" + vue.toDisplayString($data.childTotal) + ")", 13, _hoisted_16)
-          ])) : vue.createCommentVNode("v-if", true),
-          $options.showReplyToggle && $props.comment.likes ? (vue.openBlock(), vue.createElementBlock(
-            vue.Fragment,
+              style: vue$1.normalizeStyle($data.childTotal > 0 ? null : "display:none")
+            }, " (" + vue$1.toDisplayString($data.childTotal) + ")", 13, _hoisted_16)
+          ])) : vue$1.createCommentVNode("v-if", true),
+          $options.showReplyToggle && $props.comment.likes ? (vue$1.openBlock(), vue$1.createElementBlock(
+            vue$1.Fragment,
             { key: 1 },
             [
-              vue.createTextVNode(" · ")
+              vue$1.createTextVNode(" · ")
             ],
             64
             /* STABLE_FRAGMENT */
-          )) : vue.createCommentVNode("v-if", true),
-          $props.comment.likes ? (vue.openBlock(), vue.createBlock(_component_LikeButton, {
+          )) : vue$1.createCommentVNode("v-if", true),
+          $props.comment.likes ? (vue$1.openBlock(), vue$1.createBlock(_component_LikeButton, {
             key: 2,
             "record-id": $props.comment.recordId,
             "like-count": $props.comment.likes.count,
             "current-user-liked": $props.comment.likes.liked
-          }, null, 8, ["record-id", "like-count", "current-user-liked"])) : vue.createCommentVNode("v-if", true)
+          }, null, 8, ["record-id", "like-count", "current-user-liked"])) : vue$1.createCommentVNode("v-if", true)
         ]),
-        $props.comment.children ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_17, [
-          vue.createElementVNode("div", _hoisted_18, [
-            (vue.openBlock(true), vue.createElementBlock(
-              vue.Fragment,
+        $props.comment.children ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_17, [
+          vue$1.createElementVNode("div", _hoisted_18, [
+            (vue$1.openBlock(true), vue$1.createElementBlock(
+              vue$1.Fragment,
               null,
-              vue.renderList($data.childItems, (child) => {
-                return vue.openBlock(), vue.createElementBlock(
-                  vue.Fragment,
+              vue$1.renderList($data.childItems, (child) => {
+                return vue$1.openBlock(), vue$1.createElementBlock(
+                  vue$1.Fragment,
                   {
                     key: $options.revisionKey(child)
                   },
                   [
-                    _cache[7] || (_cache[7] = vue.createElementVNode(
+                    _cache[7] || (_cache[7] = vue$1.createElementVNode(
                       "hr",
                       { class: "comment-separator" },
                       null,
                       -1
                       /* CACHED */
                     )),
-                    vue.createVNode(_component_CommentEntry, {
+                    vue$1.createVNode(_component_CommentEntry, {
                       comment: child,
                       "is-nested": true,
                       "can-comment": $props.canComment,
@@ -943,28 +829,28 @@
               128
               /* KEYED_FRAGMENT */
             )),
-            $data.childHasMore ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_19, [
-              _cache[8] || (_cache[8] = vue.createElementVNode(
+            $data.childHasMore ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_19, [
+              _cache[8] || (_cache[8] = vue$1.createElementVNode(
                 "hr",
                 { class: "comment-separator" },
                 null,
                 -1
                 /* CACHED */
               )),
-              vue.createElementVNode(
+              vue$1.createElementVNode(
                 "a",
                 {
                   href: "#",
-                  class: vue.normalizeClass({ disabled: $data.busyReplies }),
-                  onClick: _cache[3] || (_cache[3] = vue.withModifiers((...args) => $options.loadMoreReplies && $options.loadMoreReplies(...args), ["prevent"]))
+                  class: vue$1.normalizeClass({ disabled: $data.busyReplies }),
+                  onClick: _cache[3] || (_cache[3] = vue$1.withModifiers((...args) => $options.loadMoreReplies && $options.loadMoreReplies(...args), ["prevent"]))
                 },
-                vue.toDisplayString($options.moreRepliesLabel),
+                vue$1.toDisplayString($options.moreRepliesLabel),
                 3
                 /* TEXT, CLASS */
               )
-            ])) : vue.createCommentVNode("v-if", true)
+            ])) : vue$1.createCommentVNode("v-if", true)
           ]),
-          $data.replyOpen && $props.formShellHtml ? (vue.openBlock(), vue.createBlock(_component_CommentForm, {
+          $data.replyOpen && $props.formShellHtml ? (vue$1.openBlock(), vue$1.createBlock(_component_CommentForm, {
             key: 0,
             ref: "replyForm",
             "shell-html": $props.formShellHtml,
@@ -972,8 +858,8 @@
             "parent-comment-id": $props.comment.id,
             "submit-icon-html": $props.submitIconHtml,
             onCreated: $options.onReplyCreated
-          }, null, 8, ["shell-html", "content-id", "parent-comment-id", "submit-icon-html", "onCreated"])) : vue.createCommentVNode("v-if", true)
-        ])) : vue.createCommentVNode("v-if", true)
+          }, null, 8, ["shell-html", "content-id", "parent-comment-id", "submit-icon-html", "onCreated"])) : vue$1.createCommentVNode("v-if", true)
+        ])) : vue$1.createCommentVNode("v-if", true)
       ])
     ], 10, _hoisted_3$1)), [
       [_directive_additions]
@@ -1016,16 +902,16 @@
       // existing theme CSS (`&.guest-mode` in _comment.scss) keeps
       // applying and P2-6's PHP-rendered id contract still resolves.
       guest() {
-        return vue$1.getConfig("user").isGuest === true;
+        return vue.getConfig("user").isGuest === true;
       },
       commentsAreaId() {
         return "comments_area_" + getId(this.contentId);
       },
       prevLabel() {
-        return vue$1.i18n.t("CommentModule.base", "Show previous {count} comments", { count: this.remainingPrev });
+        return vue.i18n.t("CommentModule.base", "Show previous {count} comments", { count: this.remainingPrev });
       },
       nextLabel() {
-        return vue$1.i18n.t("CommentModule.base", "Show next {count} comments", { count: this.remainingNext });
+        return vue.i18n.t("CommentModule.base", "Show next {count} comments", { count: this.remainingNext });
       }
     },
     watch: {
@@ -1073,7 +959,7 @@
         }
         this.busyPrev = true;
         const cursor = this.items[0].id;
-        vue$1.client.get(vue$1.url("/comment/comment/list", {
+        vue.client.get(vue.url("/comment/comment/list", {
           contentId: this.contentId,
           commentId: cursor,
           direction: "previous",
@@ -1082,7 +968,7 @@
           this.items = [...response.comments, ...this.items];
           this.remainingPrev = response.prevCount;
         }).catch((e) => {
-          vue$1.log.error(e, true);
+          vue.log.error(e, true);
         }).finally(() => {
           this.busyPrev = false;
         });
@@ -1093,7 +979,7 @@
         }
         this.busyNext = true;
         const cursor = this.items[this.items.length - 1].id;
-        vue$1.client.get(vue$1.url("/comment/comment/list", {
+        vue.client.get(vue.url("/comment/comment/list", {
           contentId: this.contentId,
           commentId: cursor,
           direction: "next",
@@ -1102,7 +988,7 @@
           this.items = [...this.items, ...response.comments];
           this.remainingNext = response.nextCount;
         }).catch((e) => {
-          vue$1.log.error(e, true);
+          vue.log.error(e, true);
         }).finally(() => {
           this.busyNext = false;
         });
@@ -1119,42 +1005,42 @@
     class: "showMore"
   };
   function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_CommentEntry = vue.resolveComponent("CommentEntry");
-    return vue.openBlock(), vue.createElementBlock("div", {
-      class: vue.normalizeClass(["comment", { "guest-mode": $options.guest }]),
+    const _component_CommentEntry = vue$1.resolveComponent("CommentEntry");
+    return vue$1.openBlock(), vue$1.createElementBlock("div", {
+      class: vue$1.normalizeClass(["comment", { "guest-mode": $options.guest }]),
       id: $options.commentsAreaId
     }, [
-      $data.remainingPrev > 0 && $data.items.length > 0 ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2, [
-        vue.createElementVNode(
+      $data.remainingPrev > 0 && $data.items.length > 0 ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_2, [
+        vue$1.createElementVNode(
           "a",
           {
             href: "#",
-            class: vue.normalizeClass({ disabled: $data.busyPrev }),
-            onClick: _cache[0] || (_cache[0] = vue.withModifiers((...args) => $options.loadPrev && $options.loadPrev(...args), ["prevent"]))
+            class: vue$1.normalizeClass({ disabled: $data.busyPrev }),
+            onClick: _cache[0] || (_cache[0] = vue$1.withModifiers((...args) => $options.loadPrev && $options.loadPrev(...args), ["prevent"]))
           },
-          vue.toDisplayString($options.prevLabel),
+          vue$1.toDisplayString($options.prevLabel),
           3
           /* TEXT, CLASS */
         )
-      ])) : vue.createCommentVNode("v-if", true),
-      (vue.openBlock(true), vue.createElementBlock(
-        vue.Fragment,
+      ])) : vue$1.createCommentVNode("v-if", true),
+      (vue$1.openBlock(true), vue$1.createElementBlock(
+        vue$1.Fragment,
         null,
-        vue.renderList($data.items, (comment) => {
-          return vue.openBlock(), vue.createElementBlock(
-            vue.Fragment,
+        vue$1.renderList($data.items, (comment) => {
+          return vue$1.openBlock(), vue$1.createElementBlock(
+            vue$1.Fragment,
             {
               key: $options.revisionKey(comment)
             },
             [
-              _cache[2] || (_cache[2] = vue.createElementVNode(
+              _cache[2] || (_cache[2] = vue$1.createElementVNode(
                 "hr",
                 { class: "comment-separator" },
                 null,
                 -1
                 /* CACHED */
               )),
-              vue.createVNode(_component_CommentEntry, {
+              vue$1.createVNode(_component_CommentEntry, {
                 comment,
                 "can-comment": $props.canComment,
                 "form-shell-html": $props.formShellHtml,
@@ -1172,26 +1058,26 @@
         128
         /* KEYED_FRAGMENT */
       )),
-      $data.remainingNext > 0 && $data.items.length > 0 ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_3, [
-        _cache[3] || (_cache[3] = vue.createElementVNode(
+      $data.remainingNext > 0 && $data.items.length > 0 ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_3, [
+        _cache[3] || (_cache[3] = vue$1.createElementVNode(
           "hr",
           { class: "comment-separator" },
           null,
           -1
           /* CACHED */
         )),
-        vue.createElementVNode(
+        vue$1.createElementVNode(
           "a",
           {
             href: "#",
-            class: vue.normalizeClass({ disabled: $data.busyNext }),
-            onClick: _cache[1] || (_cache[1] = vue.withModifiers((...args) => $options.loadNext && $options.loadNext(...args), ["prevent"]))
+            class: vue$1.normalizeClass({ disabled: $data.busyNext }),
+            onClick: _cache[1] || (_cache[1] = vue$1.withModifiers((...args) => $options.loadNext && $options.loadNext(...args), ["prevent"]))
           },
-          vue.toDisplayString($options.nextLabel),
+          vue$1.toDisplayString($options.nextLabel),
           3
           /* TEXT, CLASS */
         )
-      ])) : vue.createCommentVNode("v-if", true)
+      ])) : vue$1.createCommentVNode("v-if", true)
     ], 10, _hoisted_1);
   }
   const CommentList = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1]]);
@@ -1264,7 +1150,7 @@
     },
     computed: {
       guest() {
-        return vue$1.getConfig("user").isGuest === true;
+        return vue.getConfig("user").isGuest === true;
       },
       showForm() {
         return this.canComment && !this.guest;
@@ -1288,17 +1174,17 @@
       if (this.mountEl) {
         this.mountEl.addEventListener("humhub:comment:toggle", this.onToggle);
       }
-      vue$1.events.on(LIVE_NEW_COMMENT, this.onLiveNewComment);
+      vue.events.on(LIVE_NEW_COMMENT, this.onLiveNewComment);
     },
     unmounted() {
       if (this.mountEl) {
         this.mountEl.removeEventListener("humhub:comment:toggle", this.onToggle);
       }
-      vue$1.events.off(LIVE_NEW_COMMENT, this.onLiveNewComment);
+      vue.events.off(LIVE_NEW_COMMENT, this.onLiveNewComment);
     },
     methods: {
       fetchInitial() {
-        vue$1.client.get(vue$1.url("/comment/comment/list", { contentId: this.contentId, pageSize: this.pageSize })).then((response) => {
+        vue.client.get(vue.url("/comment/comment/list", { contentId: this.contentId, pageSize: this.pageSize })).then((response) => {
           this.comments = response.comments;
           this.prevCount = response.prevCount;
           this.nextCount = response.nextCount;
@@ -1306,7 +1192,7 @@
           this.knownIds = new Set(collectKnownIds(response.comments));
           this.loaded = true;
         }).catch((e) => {
-          vue$1.log.error(e, true);
+          vue.log.error(e, true);
           this.loaded = true;
         });
       },
@@ -1314,14 +1200,14 @@
         this.isCollapsed = false;
         if (this.comments.length === 0 && this.total > 0 && !this.expandingBusy) {
           this.expandingBusy = true;
-          vue$1.client.get(vue$1.url("/comment/comment/list", { contentId: this.contentId, pageSize: this.pageSize })).then((response) => {
+          vue.client.get(vue.url("/comment/comment/list", { contentId: this.contentId, pageSize: this.pageSize })).then((response) => {
             this.comments = response.comments;
             this.prevCount = response.prevCount;
             this.nextCount = response.nextCount;
             this.total = response.total;
             collectKnownIds(response.comments).forEach((id) => this.knownIds.add(id));
           }).catch((e) => {
-            vue$1.log.error(e, true);
+            vue.log.error(e, true);
           }).finally(() => {
             this.expandingBusy = false;
           });
@@ -1384,8 +1270,8 @@
         if (this.isKnownId(commentId)) {
           return;
         }
-        vue$1.client.get(vue$1.url("/comment/comment/info", { id: commentId })).then((comment) => this.appendLiveComment(comment)).catch((e) => {
-          vue$1.log.error(e, true);
+        vue.client.get(vue.url("/comment/comment/info", { id: commentId })).then((comment) => this.appendLiveComment(comment)).catch((e) => {
+          vue.log.error(e, true);
         });
       },
       appendLiveComment(comment) {
@@ -1416,15 +1302,15 @@
     }
   };
   function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_CommentList = vue.resolveComponent("CommentList");
-    const _component_CommentForm = vue.resolveComponent("CommentForm");
-    return vue.openBlock(), vue.createElementBlock(
+    const _component_CommentList = vue$1.resolveComponent("CommentList");
+    const _component_CommentForm = vue$1.resolveComponent("CommentForm");
+    return vue$1.openBlock(), vue$1.createElementBlock(
       "div",
       {
-        class: vue.normalizeClass(["bg-light p-2 mt-3 comment-container", { "d-none": $data.isCollapsed }])
+        class: vue$1.normalizeClass(["bg-light p-2 mt-3 comment-container", { "d-none": $data.isCollapsed }])
       },
       [
-        $data.loaded ? (vue.openBlock(), vue.createBlock(_component_CommentList, {
+        $data.loaded ? (vue$1.openBlock(), vue$1.createBlock(_component_CommentList, {
           key: 0,
           ref: "list",
           "content-id": $props.contentId,
@@ -1436,21 +1322,21 @@
           "form-shell-html": $props.formShellHtml,
           "submit-icon-html": $props.submitIconHtml,
           "anchor-comment-id": $props.anchorCommentId
-        }, null, 8, ["content-id", "comments", "prev-count", "next-count", "page-size", "can-comment", "form-shell-html", "submit-icon-html", "anchor-comment-id"])) : vue.createCommentVNode("v-if", true),
-        $options.showForm && $props.formShellHtml ? (vue.openBlock(), vue.createBlock(_component_CommentForm, {
+        }, null, 8, ["content-id", "comments", "prev-count", "next-count", "page-size", "can-comment", "form-shell-html", "submit-icon-html", "anchor-comment-id"])) : vue$1.createCommentVNode("v-if", true),
+        $options.showForm && $props.formShellHtml ? (vue$1.openBlock(), vue$1.createBlock(_component_CommentForm, {
           key: 1,
           ref: "form",
           "shell-html": $props.formShellHtml,
           "content-id": $props.contentId,
           "submit-icon-html": $props.submitIconHtml,
           onCreated: $options.onMainCreated
-        }, null, 8, ["shell-html", "content-id", "submit-icon-html", "onCreated"])) : vue.createCommentVNode("v-if", true)
+        }, null, 8, ["shell-html", "content-id", "submit-icon-html", "onCreated"])) : vue$1.createCommentVNode("v-if", true)
       ],
       2
       /* CLASS */
     );
   }
   const C0 = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
-  vue$1.register("CommentSection", C0);
+  vue.register("CommentSection", C0);
 })(humhub.modules.vue, Vue);
 //# sourceMappingURL=humhub.comment.vue.js.map

@@ -3,12 +3,14 @@ import { mount } from '@vue/test-utils';
 import CommentSection from '../../modules/comment/vue/CommentSection.vue';
 import CommentForm from '../../modules/comment/vue/components/CommentForm.vue';
 import LikeButton from '../../modules/like/vue/LikeButton.vue';
+import RichTextOutput from '../../vue/RichTextOutput.vue';
+import LegacyFormWrapper from '../../vue/LegacyFormWrapper.vue';
 
 await import('../../resources/js/humhub/humhub.url.js');
 await import('../../resources/js/humhub/humhub.vue.js');
 
 // v-additions is registered per Vue *app* by humhub.vue.js's island mounter,
-// not globally on the Vue runtime - mirrors commentInterop.test.js's stand-in
+// not globally on the Vue runtime - mirrors coreInterop.test.js's stand-in
 // verbatim so spying on it observes exactly what production wiring calls.
 const additionsDirective = {
     mounted(el) {
@@ -19,16 +21,20 @@ const additionsDirective = {
     },
 };
 
+// CommentEntry/CommentForm no longer import RichTextOutput/LegacyFormWrapper directly
+// (they now resolve through the global Vue component registry - see their own
+// docblocks) - @vue/test-utils' `global.components` stands in for that registry here,
+// the same way it already does for LikeButton below.
 const mountOptions = () => ({
     global: {
         directives: { additions: additionsDirective },
-        components: { LikeButton },
+        components: { LikeButton, RichTextOutput, LegacyFormWrapper },
     },
 });
 
 // Synthetic __VUEFORM__ shell: a minimal stand-in for the real
 // comment/widgets/views/form.php contract (see LegacyFormWrapper's own
-// docblock and commentInterop.test.js) - only what CommentForm itself
+// docblock and coreInterop.test.js) - only what CommentForm itself
 // touches (a <form> to attach the submit listener to, a `.humhub-ui-richtext`
 // node so LegacyFormWrapper.focus()/getValue() have something to look up).
 const buildShell = () => `

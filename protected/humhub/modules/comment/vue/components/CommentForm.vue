@@ -158,10 +158,13 @@
  * `toggleReply()`), covering the case that never called `clear()` before.
  */
 import { client, i18n, log, url } from '@humhub/vue';
-import LegacyFormWrapper from './LegacyFormWrapper.vue';
 
+// LegacyFormWrapper is NOT imported here — it now lives at protected/humhub/vue/ (see
+// docs/develop/ui-js-vuejs.md) and resolves through the global Vue component registry
+// (every registered component is available in every island, see humhub.vue.js's
+// register()). CoreVueAsset must register before this island's own script runs — enforced
+// via CommentVueAsset::$depends, not by import order here.
 export default {
-    components: { LegacyFormWrapper },
     props: {
         shellHtml: { type: String, required: true },
         contentId: { type: Number, required: true },

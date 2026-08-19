@@ -39,6 +39,7 @@ class CoreBundleAsset extends AssetBundle
 
     public const STATIC_DEPENDS = [
         AppAsset::class,
+        CoreVueAsset::class,
         JqueryHighlightAsset::class,
         JqueryAutosizeAsset::class,
         Select2Asset::class,

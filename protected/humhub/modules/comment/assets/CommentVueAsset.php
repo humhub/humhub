@@ -9,6 +9,7 @@
 namespace humhub\modules\comment\assets;
 
 use humhub\assets\CoreApiAsset;
+use humhub\assets\CoreVueAsset;
 use humhub\components\assets\AssetBundle;
 use humhub\modules\like\assets\LikeVueAsset;
 
@@ -39,6 +40,11 @@ class CommentVueAsset extends AssetBundle
      */
     public $depends = [
         CoreApiAsset::class,
+        // CommentEntry.vue/CommentForm.vue reference <RichTextOutput>/<LegacyFormWrapper> by
+        // tag only (they moved to core - see docs/develop/ui-js-vuejs.md) - CoreVueAsset must
+        // register them before this bundle's own script runs, or the first render warns
+        // "Failed to resolve component" and silently skips them.
+        CoreVueAsset::class,
         // CommentEntry.vue references <LikeButton> by tag only - LikeVueAsset must register
         // it before this bundle's own script runs, or the first render warns "Failed to
         // resolve component" and silently skips the like button (see the P2-4 review note in

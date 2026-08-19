@@ -4,33 +4,35 @@
 
 <script>
 /**
- * Hosts the server-rendered comment form SHELL (RichTextField + UploadButton
- * + FilePreview markup, see comment/widgets/views/form.php) inside a Vue
- * island and exposes a small, clean API to the surrounding Vue form
- * (CommentForm, P2-4/5) so it never has to touch jQuery/legacy widgets
- * itself.
+ * Hosts a server-rendered legacy widget SHELL (e.g. a rich text editor +
+ * upload widget + file preview markup) inside a Vue island and exposes a
+ * small, clean API to the surrounding Vue component so it never has to
+ * touch jQuery/legacy widgets itself. Generic core interop component — the
+ * comment form (`CommentForm.vue`, backed by
+ * `comment/widgets/views/commentFormShell.php`) is the reference consumer,
+ * but the contract below applies to any module wrapping a deep, not-yet-Vue
+ * legacy widget shell this way.
  *
- * ## Unique-id contract (binding for P2-6)
+ * ## Unique-id contract
  *
- * A comment page can host many instances of this shell at once (the main
- * form, one open reply form per commented-on entry, an edit form) that are
- * all clones of the SAME server-rendered template (`formShellHtml` in the
- * initial props) — the shell is fetched/rendered once, not once per form.
- * form.php's markup bakes element ids into itself (the RichTextField's
- * `id`/`id + '_input'`, the UploadButton input's `id`, and CSS-id-selector
- * references to those ids in `data-upload-drop-zone` / `data-upload-preview`
- * / `data-upload-progress` / `data-action-target` attributes) — if two
- * instances rendered the same ids verbatim, the second would silently steal
- * DOM lookups (`document.getElementById`, `$('#...')`) from the first.
+ * A page can host many instances of the SAME shell at once (e.g. the
+ * comment section's main form, one open reply form per commented-on entry,
+ * and an edit form) that are all clones of the SAME server-rendered
+ * template (`shellHtml` prop) — the shell is fetched/rendered once, not
+ * once per form. The server-rendered markup bakes element ids into itself
+ * (an input's `id`/`id + '_input'`, a button's `id`, and CSS-id-selector
+ * references to those ids in `data-*` attributes) — if two instances
+ * rendered the same ids verbatim, the second would silently steal DOM
+ * lookups (`document.getElementById`, `$('#...')`) from the first.
  *
- * The contract: P2-6 emits the shell with the literal token `__VUEFORM__`
- * everywhere an id is declared OR referenced (`id`, `for`, and any `data-*`
- * attribute value that embeds an id, including CSS-id-selector fragments
- * like `#comment_create_form___VUEFORM__`) — not just in `id="..."`
- * attributes themselves. This wrapper replaces every occurrence of that
- * token with a unique-per-instance id (a module-scope counter, not
- * `Math.random()`, so vue.build's output stays deterministic) before
- * binding the result via `v-html`.
+ * The contract: the server-rendered shell carries the literal token
+ * `__VUEFORM__` everywhere an id is declared OR referenced (`id`, `for`,
+ * and any `data-*` attribute value that embeds an id, including
+ * CSS-id-selector fragments like `#comment_create_form___VUEFORM__`) — not
+ * just in `id="..."` attributes themselves. This wrapper replaces every
+ * occurrence of that token with a unique-per-instance id (a module-scope
+ * counter, not `Math.random()`, so vue.build's output stays deterministic)
+ * before binding the result via `v-html`.
  *
  * ## Widget interop
  *
@@ -50,9 +52,10 @@
  * NOT `.humhub-ui-richtext`: browser-verified, that class only lands on the
  * INNER ProseMirror contenteditable, while the instance is cached on the
  * widget root carrying the data-ui-widget attribute) and upload
- * (`.main_comment_upload`) root nodes —
- * looser coupling than `require('ui.widget')`/`require('file')`, and
- * correct where the plan's originally-assumed `'humhub-widget'` key was not.
+ * (`UPLOAD_SELECTOR` below — today `.main_comment_upload`, the comment
+ * module's own upload dropzone class; a future non-comment consumer needs
+ * its own selector here) root nodes — looser coupling than
+ * `require('ui.widget')`/`require('file')`.
  *
  * ## Editor API relied on (`ui.richtext.prosemirror.RichTextEditor`)
  *  - `editor.serialize()` — current markdown; the exact call the legacy
@@ -61,8 +64,7 @@
  *    used post-boot by legacy code itself (`toggleCommentHandler` in
  *    humhub.comment.js re-primes the mention text on an already-booted
  *    editor this same way), so it is the documented `setValue()` mechanism
- *    here too — no need for the `initialValue`-prop-before-boot fallback the
- *    plan flagged as a possibility.
+ *    here too — no separate `initialValue`-prop-before-boot path needed.
  *  - `focus()` — prototype method, focuses the ProseMirror view.
  *  - `$.trigger('clear')` — the widget's own `'clear'` DOM event handler
  *    calls `editor.clear()`, blanks the hidden textarea and resets the
@@ -77,11 +79,12 @@
  *    `Comment[fileList][]`); used to collect attached guids without
  *    hardcoding the model/attribute naming.
  *
- * ## Unsaved-changes guard (P2-7 fix, see CommentForm.vue's own docblock
- * section of the same name for the full root-cause writeup)
+ * ## Unsaved-changes guard (see CommentForm.vue's own docblock section of
+ * the same name for the full root-cause writeup, comment-consumer-specific)
  *
- * `ActiveForm::begin(['acknowledge' => true])` (see commentFormShell.php)
- * sets `data-ui-addition="acknowledgeForm"` on the shell's `<form>`, which
+ * `ActiveForm::begin(['acknowledge' => true])` (see commentFormShell.php,
+ * today's only consumer) sets `data-ui-addition="acknowledgeForm"` on the
+ * shell's `<form>`, which
  * `humhub.client.js` boots into a GLOBAL `beforeunload`/`pjax:beforeSend`
  * guard: it snapshots `$form.serialize()` once at boot
  * (`$form.data('state', snapshot)`) and, on every later navigation attempt,

@@ -27,8 +27,13 @@
  * (Yii's published-asset hash is keyed off the source directory's mtime, not its
  * files' bytes, so a plain artifact rewrite is otherwise served stale forever).
  *
+ * Special case: `--module core` builds the core framework itself (shared, platform-wide
+ * components — see docs/develop/ui-js-vuejs.md) from `protected/humhub/vue/` into
+ * `protected/humhub/resources/js/humhub.core.vue.js`, rather than a module under
+ * `protected/humhub/modules/`.
+ *
  * Usage:
- *   node vue.build.mjs --module <core-module-id | path-to-module> [--watch] [--minify]
+ *   node vue.build.mjs --module <core | core-module-id | path-to-module> [--watch] [--minify]
  */
 import { build } from 'vite';
 import vue from '@vitejs/plugin-vue';
@@ -51,13 +56,20 @@ const getArg = (name) => {
 
 const moduleArg = getArg('--module');
 if (!moduleArg) {
-    console.error('Usage: node vue.build.mjs --module <core-module-id | path-to-module> [--watch] [--minify]');
+    console.error('Usage: node vue.build.mjs --module <core | core-module-id | path-to-module> [--watch] [--minify]');
     process.exit(1);
 }
 
+// `core` is not a core MODULE (there is no protected/humhub/modules/core/) — it is the core
+// framework itself, hosting components shared platform-wide (see docs/develop/ui-js-vuejs.md).
+// Special-cased to protected/humhub/ rather than falling through to the generic
+// path-or-core-module resolution below.
+const isCore = moduleArg === 'core';
 const coreModulePath = resolve(root, 'protected/humhub/modules', moduleArg);
-const modulePath = existsSync(coreModulePath) ? coreModulePath : resolve(moduleArg);
-const moduleId = modulePath.split(/[\\/]/).filter(Boolean).pop();
+const modulePath = isCore
+    ? resolve(root, 'protected/humhub')
+    : (existsSync(coreModulePath) ? coreModulePath : resolve(moduleArg));
+const moduleId = isCore ? 'core' : modulePath.split(/[\\/]/).filter(Boolean).pop();
 const vueDir = resolve(modulePath, 'vue');
 const indexPath = resolve(vueDir, 'index.js');
 

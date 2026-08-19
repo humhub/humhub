@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
-import RichTextOutput from '../../modules/comment/vue/components/RichTextOutput.vue';
-import LegacyFormWrapper from '../../modules/comment/vue/components/LegacyFormWrapper.vue';
+import RichTextOutput from '../../vue/RichTextOutput.vue';
+import LegacyFormWrapper from '../../vue/LegacyFormWrapper.vue';
 
 // v-additions is registered per Vue *app* by humhub.vue.js's island mounter
 // (`app.directive('additions', { mounted, updated })`), not globally on the
