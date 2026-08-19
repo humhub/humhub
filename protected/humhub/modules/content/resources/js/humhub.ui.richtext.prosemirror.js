@@ -234,6 +234,7 @@ humhub.module('ui.richtext.prosemirror', function (module, require, $) {
             this.options.edit = false;
             this.editor = new MarkdownEditor(this.$, this.options);
             this.$.html(this.editor.render());
+            this.$.attr('data-ui-richtext-rendered', '');
             additions.applyTo(this.$, {filter: ['highlightCode']});
             this.$.find('table').wrap('<div class="table-responsive"></div>');
             this.$.trigger('afterRender');
