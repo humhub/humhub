@@ -19,6 +19,7 @@
         v-additions
     >
         <CommentControls
+            :comment="comment"
             :permalink="comment.permalink"
             :can-edit="comment.canEdit"
             :can-delete="comment.canDelete"
@@ -102,6 +103,7 @@
                     :like-count="comment.likes.count"
                     :current-user-liked="comment.likes.liked"
                 />
+                <ExtensionSlot name="comment.links" :context="{ comment }" />
             </div>
 
             <div v-if="comment.children" class="nested-comments-root">
@@ -151,6 +153,12 @@
  * is set explicitly so <CommentEntry> can resolve itself recursively (Vue's
  * resolveComponent() self-reference check keys off the component's own
  * `name` option).
+ *
+ * `<ExtensionSlot name="comment.links">` at the end of `.wall-entry-controls` lets a
+ * module add its own entry link (e.g. a reaction/report action) alongside the core
+ * Reply/Like links above, without forking this template - see docs/develop/ui-js-vuejs.md,
+ * "Extension slots". `CommentControls` (the `⋮` dropdown) has its own `comment.controls`
+ * slot for menu-style extensions - see its own docblock.
  *
  * ## Visual parity fixes (browser-verified against the legacy UI)
  *

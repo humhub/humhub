@@ -6,6 +6,7 @@ import LikeButton from '../../modules/like/vue/LikeButton.vue';
 import RichTextOutput from '../../vue/RichTextOutput.vue';
 import LegacyFormWrapper from '../../vue/LegacyFormWrapper.vue';
 import DropdownMenu from '../../vue/DropdownMenu.vue';
+import ExtensionSlot from '../../vue/ExtensionSlot.vue';
 
 await import('../../resources/js/humhub/humhub.url.js');
 await import('../../resources/js/humhub/humhub.vue.js');
@@ -28,13 +29,14 @@ const additionsDirective = {
 };
 
 // CommentEntry/CommentForm/CommentControls no longer import RichTextOutput/
-// LegacyFormWrapper/DropdownMenu directly (they now resolve through the global Vue
-// component registry - see their own docblocks) - @vue/test-utils' `global.components`
-// stands in for that registry here, the same way it already does for LikeButton below.
+// LegacyFormWrapper/DropdownMenu/ExtensionSlot directly (they now resolve through the
+// global Vue component registry - see their own docblocks) - @vue/test-utils'
+// `global.components` stands in for that registry here, the same way it already does for
+// LikeButton below.
 const mountOptions = () => ({
     global: {
         directives: { additions: additionsDirective },
-        components: { LikeButton, RichTextOutput, LegacyFormWrapper, DropdownMenu },
+        components: { LikeButton, RichTextOutput, LegacyFormWrapper, DropdownMenu, ExtensionSlot },
     },
 });
 

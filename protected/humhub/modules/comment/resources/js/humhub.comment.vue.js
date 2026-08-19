@@ -14,6 +14,10 @@
   };
   const _sfc_main$4 = {
     props: {
+      // Full serialized comment (see CommentJsonService::serialize()) - added purely so
+      // ExtensionSlot's context can expose it; the core items above keep reading their
+      // own discrete props unchanged, to avoid churning them.
+      comment: { type: Object, required: true },
       permalink: { type: String, required: true },
       canEdit: { type: Boolean, default: false },
       canDelete: { type: Boolean, default: false },
@@ -50,6 +54,7 @@
   const _hoisted_2$3 = { key: 0 };
   const _hoisted_3$3 = { key: 1 };
   function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_ExtensionSlot = vue$1.resolveComponent("ExtensionSlot");
     const _component_DropdownMenu = vue$1.resolveComponent("DropdownMenu");
     return vue$1.openBlock(), vue$1.createElementBlock(
       vue$1.Fragment,
@@ -99,7 +104,11 @@
                 1
                 /* TEXT */
               )
-            ])) : vue$1.createCommentVNode("v-if", true)
+            ])) : vue$1.createCommentVNode("v-if", true),
+            vue$1.createVNode(_component_ExtensionSlot, {
+              name: "comment.controls",
+              context: { comment: $props.comment }
+            }, null, 8, ["context"])
           ]),
           _: 1
           /* STABLE */
@@ -590,6 +599,7 @@
     const _component_CommentForm = vue$1.resolveComponent("CommentForm");
     const _component_RichTextOutput = vue$1.resolveComponent("RichTextOutput");
     const _component_LikeButton = vue$1.resolveComponent("LikeButton");
+    const _component_ExtensionSlot = vue$1.resolveComponent("ExtensionSlot");
     const _component_CommentEntry = vue$1.resolveComponent("CommentEntry", true);
     const _directive_additions = vue$1.resolveDirective("additions");
     return $props.comment.blocked ? (vue$1.openBlock(), vue$1.createElementBlock("div", {
@@ -628,6 +638,7 @@
       class: vue$1.normalizeClass(["single-comment d-flex p-2", { "comment-current": $props.highlighted }])
     }, [
       vue$1.createVNode(_component_CommentControls, {
+        comment: $props.comment,
         permalink: $props.comment.permalink,
         "can-edit": $props.comment.canEdit,
         "can-delete": $props.comment.canDelete,
@@ -635,7 +646,7 @@
         onEdit: $options.onEdit,
         onDelete: $options.onDelete,
         onAdminDelete: $options.onAdminDelete
-      }, null, 8, ["permalink", "can-edit", "can-delete", "can-admin-delete", "onEdit", "onDelete", "onAdminDelete"]),
+      }, null, 8, ["comment", "permalink", "can-edit", "can-delete", "can-admin-delete", "onEdit", "onDelete", "onAdminDelete"]),
       vue$1.createElementVNode("div", _hoisted_4, [
         vue$1.createElementVNode("a", {
           href: $props.comment.author.url,
@@ -778,7 +789,11 @@
             "record-id": $props.comment.recordId,
             "like-count": $props.comment.likes.count,
             "current-user-liked": $props.comment.likes.liked
-          }, null, 8, ["record-id", "like-count", "current-user-liked"])) : vue$1.createCommentVNode("v-if", true)
+          }, null, 8, ["record-id", "like-count", "current-user-liked"])) : vue$1.createCommentVNode("v-if", true),
+          vue$1.createVNode(_component_ExtensionSlot, {
+            name: "comment.links",
+            context: { comment: $props.comment }
+          }, null, 8, ["context"])
         ]),
         $props.comment.children ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_17, [
           vue$1.createElementVNode("div", _hoisted_18, [

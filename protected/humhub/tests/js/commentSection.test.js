@@ -6,9 +6,12 @@ import LikeButton from '../../modules/like/vue/LikeButton.vue';
 import RichTextOutput from '../../vue/RichTextOutput.vue';
 import LegacyFormWrapper from '../../vue/LegacyFormWrapper.vue';
 import DropdownMenu from '../../vue/DropdownMenu.vue';
+import ExtensionSlot from '../../vue/ExtensionSlot.vue';
 
 await import('../../resources/js/humhub/humhub.url.js');
 await import('../../resources/js/humhub/humhub.vue.js');
+
+const vueModule = globalThis.humhub.modules.vue;
 
 // v-additions is registered per Vue *app* by humhub.vue.js's island mounter,
 // not globally on the Vue runtime - mirrors coreInterop.test.js's stand-in
@@ -23,13 +26,14 @@ const additionsDirective = {
 };
 
 // CommentEntry/CommentForm/CommentControls no longer import RichTextOutput/
-// LegacyFormWrapper/DropdownMenu directly (they now resolve through the global Vue
-// component registry - see their own docblocks) - @vue/test-utils' `global.components`
-// stands in for that registry here, the same way it already does for LikeButton below.
+// LegacyFormWrapper/DropdownMenu/ExtensionSlot directly (they now resolve through the
+// global Vue component registry - see their own docblocks) - @vue/test-utils'
+// `global.components` stands in for that registry here, the same way it already does for
+// LikeButton below.
 const mountOptions = () => ({
     global: {
         directives: { additions: additionsDirective },
-        components: { LikeButton, RichTextOutput, LegacyFormWrapper, DropdownMenu },
+        components: { LikeButton, RichTextOutput, LegacyFormWrapper, DropdownMenu, ExtensionSlot },
     },
 });
 
@@ -690,6 +694,91 @@ describe('CommentSection', () => {
             });
 
             expect(wrapper.find('.comment-heading .fa-clock-o').exists()).toBe(false);
+        });
+    });
+
+    describe('extension slots', () => {
+        // Registers `probeDef` on the real humhub.vue registry (so ExtensionSlot's own
+        // isRegistered() filter — see its docblock — finds it) AND into this mount()'s
+        // isolated test app via global.components (so `<component :is="'Name'">` actually
+        // resolves inside it) — the same two-registration shape ExtensionSlot's production
+        // usage collapses into one, since a real island shares a single registry for both.
+        const mountWithProbe = (name, probeDef, mountProps) => {
+            const options = mountOptions();
+            options.global.components[name] = probeDef;
+            vueModule.register(name, probeDef);
+
+            return mount(CommentSection, { ...options, props: mountProps });
+        };
+
+        it('renders a probe component registered for comment.controls, passing the comment via context', () => {
+            const comment = makeComment();
+            const probeDef = {
+                props: { comment: { type: Object, required: true } },
+                render() {
+                    return Vue.h('li', [
+                        Vue.h('a', { class: 'dropdown-item probe-controls-item' }, 'Probe #' + this.comment.id),
+                    ]);
+                },
+            };
+            vueModule.registerSlotComponent('comment.controls', 'ProbeCommentControlsItem');
+
+            const wrapper = mountWithProbe('ProbeCommentControlsItem', probeDef, {
+                contentId: 42,
+                initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 },
+            });
+
+            const probe = wrapper.find('.probe-controls-item');
+            expect(probe.exists()).toBe(true);
+            expect(probe.text()).toBe('Probe #' + comment.id);
+            // Rendered inside the same <DropdownMenu> as the core edit/delete items, after them.
+            const items = wrapper.findAll('.dropdown-menu > li');
+            expect(items[items.length - 1].find('.probe-controls-item').exists()).toBe(true);
+        });
+
+        it('renders a probe component registered for comment.links, at the end of .wall-entry-controls', () => {
+            const comment = makeComment();
+            const probeDef = {
+                props: { comment: { type: Object, required: true } },
+                render() {
+                    return Vue.h('a', { class: 'probe-links-item', href: '#' }, 'Probe link #' + this.comment.id);
+                },
+            };
+            vueModule.registerSlotComponent('comment.links', 'ProbeCommentLinksItem');
+
+            const wrapper = mountWithProbe('ProbeCommentLinksItem', probeDef, {
+                contentId: 42,
+                initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 },
+            });
+
+            const controls = wrapper.find('.wall-entry-controls');
+            const probe = controls.find('.probe-links-item');
+            expect(probe.exists()).toBe(true);
+            expect(probe.text()).toBe('Probe link #' + comment.id);
+            // Last child of .wall-entry-controls, i.e. after the core Reply/Like links.
+            expect(controls.element.lastElementChild).toBe(probe.element);
+        });
+
+        it('exposes a comment\'s extensions data to a comment.links slot component via context.comment.extensions', () => {
+            const comment = makeComment({ extensions: { reportcontent: { reported: true } } });
+            const probeDef = {
+                props: { comment: { type: Object, required: true } },
+                render() {
+                    return Vue.h(
+                        'span',
+                        { class: 'probe-extensions-item' },
+                        this.comment.extensions.reportcontent.reported ? 'reported' : 'clean',
+                    );
+                },
+            };
+            vueModule.registerSlotComponent('comment.links', 'ProbeExtensionsLinksItem');
+
+            const wrapper = mountWithProbe('ProbeExtensionsLinksItem', probeDef, {
+                contentId: 42,
+                initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 },
+            });
+
+            expect(wrapper.find('.probe-extensions-item').text()).toBe('reported');
         });
     });
 });

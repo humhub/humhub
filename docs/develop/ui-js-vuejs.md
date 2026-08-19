@@ -1,6 +1,6 @@
 # Vue.js Integration (Concept)
 
-> **Status: concept — Phase 1 and 2 implemented** (Vue runtime, `humhub.vue` registry/mounter, build tooling, `VueComponent` widget, LikeButton pilot; comment section island with legacy-widget form interop and live updates). Later phases (extension slots, base component library, dynamic imports, CI enforcement) are still design-level. This document defines the target architecture for integrating Vue.js into HumHub as an island framework on top of the existing JavaScript layer ([overview](ui-js-overview.md)).
+> **Status: concept — Phase 1 and 2 implemented** (Vue runtime, `humhub.vue` registry/mounter, build tooling, `VueComponent` widget, LikeButton pilot; comment section island with legacy-widget form interop and live updates; extension slots, wired into the comment island's `comment.controls`/`comment.links`). Later phases (base component library, dynamic imports, CI enforcement) are still design-level. This document defines the target architecture for integrating Vue.js into HumHub as an island framework on top of the existing JavaScript layer ([overview](ui-js-overview.md)).
 
 ## Motivation
 
@@ -212,19 +212,59 @@ Errors thrown in components hit a global Vue `errorHandler` wired to `humhub.log
 
 ## Extension slots
 
-The Vue analog of PHP widget stacks: components render named extension points, other modules hook into them without forking templates.
+The Vue analog of PHP widget stacks: a host component renders a named extension point via `<ExtensionSlot>`, and other modules hook into it by name without forking the host's template — the same relationship `\humhub\widgets\BaseStack` subclasses have to the widgets they stack, translated to islands.
 
 ```html
 <!-- inside CommentEntry.vue -->
-<ExtensionSlot name="comment.actions" :context="{ comment }" />
+<ExtensionSlot name="comment.links" :context="{ comment }" />
 ```
 
 ```js
-// another module's entry file
-humhub.vue.registerSlotComponent('comment.actions', 'LikeButton');
+// another module's own vue/index.js (see "Module file layout" above)
+import { register, registerSlotComponent } from '@humhub/vue';
+import ReactionLink from './ReactionLink.vue';
+
+register('ReactionLink', ReactionLink);
+registerSlotComponent('comment.links', 'ReactionLink', { sortOrder: 150 });
 ```
 
-`ExtensionSlot` renders all components registered for its name, passing the context as props. Registration order defines render order, with an optional `sortOrder`.
+`ExtensionSlot` renders every component registered for its name (via `registerSlotComponent(slotName, componentName, {sortOrder})`), passing `context` down as props to each. Entries render in `sortOrder` order (default `100`), then registration order for ties. Slot names follow the same `<module>.<region>` convention as the two the comment island exposes today: `comment.controls` (inside the entry's `⋮` dropdown — a registered component owns its own `<li><a class="dropdown-item">…` markup, the same contract the dropdown's core items follow) and `comment.links` (appended after the core Reply/Like links in `.wall-entry-controls`).
+
+**Registration order is unconstrained** — `registerSlotComponent()` does not require `componentName` to be registered yet, and `register()` does not require any slot referencing it to exist yet. Whichever half arrives second, `ExtensionSlot` picks it up reactively (no remount). A slot with nothing registered — or nothing *currently registered* — renders nothing: no placeholder, no warning; modules stay entirely optional.
+
+**Passing data other than props down through context.** A component reached through a slot commonly needs data the host itself doesn't otherwise expose — the comment island solves this on the serializer side with a matching extension point, `CommentJsonService::EVENT_SERIALIZE_COMMENTS` (a `SerializeCommentsEvent`, fired once per serialized batch — a window of comments, or a single create/update/info response). A module attaches in its `config.php` and reads the result back out of `context.comment.extensions` on the JS side:
+
+```php
+// a module's config.php
+'events' => [
+    [CommentJsonService::class, CommentJsonService::EVENT_SERIALIZE_COMMENTS, [Events::class, 'onSerializeComments']],
+],
+```
+
+```php
+// the module's Events.php
+public static function onSerializeComments(SerializeCommentsEvent $event): void
+{
+    foreach ($event->comments as $comment) {
+        $event->addData($comment->id, 'reportcontent', ['reported' => ReportContent::isReported($comment)]);
+    }
+}
+```
+
+```vue
+<!-- ReactionLink.vue -->
+<template>
+    <a href="#" @click.prevent="onClick">{{ label }}<span v-if="comment.extensions.reportcontent?.reported"> (reported)</span></a>
+</template>
+<script>
+export default {
+    props: { comment: { type: Object, required: true } },
+    /* ... */
+};
+</script>
+```
+
+Each serialized comment carries the accumulated result under its own `extensions` key, namespaced by the attaching module (`{}` when nothing attached anything) — one query for the whole batch rather than one per comment.
 
 ## Development mode
 

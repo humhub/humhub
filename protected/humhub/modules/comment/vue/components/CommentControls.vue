@@ -29,6 +29,7 @@
         <li v-if="canDelete">
             <a href="#" class="dropdown-item" @click.prevent="onDelete">{{ deleteLabel }}</a>
         </li>
+        <ExtensionSlot name="comment.controls" :context="{ comment }" />
     </DropdownMenu>
 </template>
 
@@ -48,11 +49,24 @@
  * actual mutation handling (edit mode, modal confirm, delete request, ...).
  * Permalink is fully functional here already - see the template comment
  * above.
+ *
+ * `<ExtensionSlot name="comment.controls">` renders after the core items, inside the same
+ * `<DropdownMenu>` default slot - a module registering into this slot owns its full item
+ * markup (`<li><a class="dropdown-item">...`), the same contract every core item above
+ * follows, not a wrapper this component provides. `comment` is passed as `context` (the
+ * full serialized comment, not the discrete props below) so a slot component can read
+ * anything about the comment, including its own namespaced `comment.extensions` entry -
+ * see docs/develop/ui-js-vuejs.md, "Extension slots" and CommentJsonService's
+ * EVENT_SERIALIZE_COMMENTS.
  */
 import { i18n } from '@humhub/vue';
 
 export default {
     props: {
+        // Full serialized comment (see CommentJsonService::serialize()) - added purely so
+        // ExtensionSlot's context can expose it; the core items above keep reading their
+        // own discrete props unchanged, to avoid churning them.
+        comment: { type: Object, required: true },
         permalink: { type: String, required: true },
         canEdit: { type: Boolean, default: false },
         canDelete: { type: Boolean, default: false },
