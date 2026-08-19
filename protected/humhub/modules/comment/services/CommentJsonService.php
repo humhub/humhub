@@ -69,7 +69,10 @@ class CommentJsonService
      * A `$direction` of `previous`/`next` pages from `$commentId` via
      * {@see CommentListService::getSiblings()} (real "show more" pagination).
      * Without a direction, `$commentId` is treated as a permalink anchor (or
-     * omitted for the newest window) via {@see CommentListService::getLimited()}.
+     * omitted for the newest window) via {@see CommentListService::getLimited()},
+     * sized to `$limit` (defaulting to `commentsPreviewMax` - the widget passes
+     * the view-mode-aware size for the initial, non-anchored window, see
+     * `widgets\Comments::getLimit()`).
      *
      * @throws ForbiddenHttpException if comments are hidden from the current guest
      */
@@ -77,6 +80,7 @@ class CommentJsonService
         ?int $commentId = null,
         ?string $direction = null,
         ?int $pageSize = null,
+        ?int $limit = null,
     ): array {
         $this->assertGuestAllowed();
 
@@ -89,7 +93,7 @@ class CommentJsonService
                 $direction,
             );
         } else {
-            $comments = $listService->getLimited($this->getModule()->commentsPreviewMax, $commentId);
+            $comments = $listService->getLimited($limit ?? $this->getModule()->commentsPreviewMax, $commentId);
         }
 
         $firstId = $comments[0]->id ?? null;

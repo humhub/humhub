@@ -401,6 +401,56 @@ describe('CommentSection', () => {
             expect(focusSpy).toHaveBeenCalledTimes(1);
         });
 
+        it('fetches and renders the default window on expand when previewMax=0 shipped an empty-but-nonzero window', async () => {
+            const response = { comments: [makeComment({ id: 5 }), makeComment({ id: 6 })], prevCount: 2, nextCount: 0, total: 4 };
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(response));
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: emptyWindow({ total: 4 }), pageSize: 2, collapsed: true },
+            });
+
+            expect(wrapper.find('.single-comment').exists()).toBe(false);
+
+            wrapper.element.parentElement.dispatchEvent(new CustomEvent('humhub:comment:toggle'));
+
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/comment/comment/list?contentId=42&pageSize=2');
+
+            await vi.waitFor(() => {
+                const ids = wrapper.findAll('.single-comment').map((entry) => entry.attributes('id'));
+                expect(ids).toEqual(['comment_5', 'comment_6']);
+            });
+            expect(wrapper.vm.prevCount).toBe(2);
+        });
+
+        it('does not re-fetch on a second toggle while the expand fetch is still in flight', async () => {
+            let resolveGet;
+            globalThis.humhubStubs.client.get = vi.fn(() => new Promise((resolve) => { resolveGet = resolve; }));
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: emptyWindow({ total: 4 }), collapsed: true },
+            });
+
+            wrapper.element.parentElement.dispatchEvent(new CustomEvent('humhub:comment:toggle'));
+            wrapper.element.parentElement.dispatchEvent(new CustomEvent('humhub:comment:toggle'));
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(1);
+
+            resolveGet({ comments: [makeComment({ id: 1 })], prevCount: 0, nextCount: 0, total: 4 });
+            await vi.waitFor(() => expect(wrapper.find('.single-comment').exists()).toBe(true));
+        });
+
+        it('does not fetch on expand when the window is genuinely empty (total 0)', () => {
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: emptyWindow(), collapsed: true },
+            });
+
+            wrapper.element.parentElement.dispatchEvent(new CustomEvent('humhub:comment:toggle'));
+
+            expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalled();
+        });
+
         it('stops listening for toggle after unmount', () => {
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),

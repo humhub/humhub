@@ -4,21 +4,13 @@ namespace humhub\modules\comment\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
-use humhub\helpers\Html;
-use humhub\modules\comment\helpers\IdHelper;
 use humhub\modules\comment\models\AdminDeleteCommentForm;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\notifications\CommentDeleted;
 use humhub\modules\comment\services\CommentJsonService;
-use humhub\modules\comment\services\CommentListService;
 use humhub\modules\comment\widgets\AdminDeleteModal;
-use humhub\modules\comment\widgets\Comment as CommentWidget;
-use humhub\modules\comment\widgets\Form;
-use humhub\modules\comment\widgets\ShowMore;
 use humhub\modules\content\models\Content;
-use humhub\modules\file\handler\FileHandlerCollection;
 use Yii;
-use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
@@ -33,8 +25,8 @@ class CommentController extends Controller
     protected function getAccessRules()
     {
         return [
-            [ControllerAccess::RULE_LOGGED_IN_ONLY => ['post', 'edit', 'delete', 'create', 'update']],
-            [ControllerAccess::RULE_POST => ['post', 'create']],
+            [ControllerAccess::RULE_LOGGED_IN_ONLY => ['delete', 'create', 'update']],
+            [ControllerAccess::RULE_POST => ['create']],
             [ControllerAccess::RULE_JSON => ['list', 'create', 'update', 'info']],
         ];
     }
@@ -74,80 +66,25 @@ class CommentController extends Controller
         return true;
     }
 
+    /**
+     * Renders the comment section (see {@see \humhub\modules\comment\widgets\Comments}) inside
+     * a modal - the only remaining mode of this action, used by
+     * {@see \humhub\modules\content\widgets\ContentObjectLinks}'s `CommentLink::MODE_POPUP`.
+     * The comment island itself now owns listing/pagination via the JSON API, so this only
+     * needs to set up the modal chrome around it. `renderAjax()` (no site layout, but still
+     * the ajax asset/CSRF envelope - see `humhub\components\View::renderAjax()`) is what lets
+     * the island's own asset bundle flow with this response, same as before.
+     */
     public function actionShow()
     {
-        $commentId = (int)Yii::$app->request->get('commentId');
-        $direction = Yii::$app->request->get('direction', CommentListService::LIST_DIR_PREV);
-        $pageSize = (int)Yii::$app->request->get('pageSize', $this->module->commentsBlockLoadSize);
-        if ($pageSize > $this->module->commentsBlockLoadSize) {
-            $pageSize = $this->module->commentsBlockLoadSize;
+        if (Yii::$app->request->get('mode') !== 'popup') {
+            throw new NotFoundHttpException();
         }
 
-        $comments = (new CommentListService($this->content, $this->parentComment))->getSiblings(
-            $commentId,
-            $pageSize,
-            $direction,
-        );
-
-        $output = '';
-        if ($direction === CommentListService::LIST_DIR_PREV) {
-            $output .= ShowMore::widget([
-                'content' => $this->content,
-                'parentComment' => $this->parentComment,
-                'pageSize' => $pageSize,
-                'commentId' => isset($comments[0]) ? $comments[0]->id : null,
-                'direction' => $direction,
-            ]);
-        }
-        foreach ($comments as $comment) {
-            $output .= $this->renderCommentWithSeparator($comment);
-        }
-        if ($direction === CommentListService::LIST_DIR_NEXT && count($comments) > 1) {
-            $output .= ShowMore::widget([
-                'content' => $this->content,
-                'parentComment' => $this->parentComment,
-                'pageSize' => $pageSize,
-                'commentId' => $comments[count($comments) - 1]->id,
-                'direction' => $direction,
-            ]);
-        }
-
-        if (Yii::$app->request->get('mode') === 'popup') {
-            return $this->renderAjax(
-                'showPopup',
-                [
-                    'content' => $this->content,
-                    'output' => $output,
-                    'id' => IdHelper::getId($this->content, $this->parentComment),
-                ],
-            );
-        } else {
-            return $this->renderAjaxContent($output);
-        }
-    }
-
-    public function actionPost()
-    {
-        if (!$this->module->canComment($this->content)) {
-            throw new ForbiddenHttpException();
-        }
-
-        $model = new Comment();
-        $model->content_id = $this->content->id;
-        $model->parent_comment_id = $this->parentComment?->id;
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->renderAjaxContent($this->renderCommentWithSeparator($model));
-        }
-
-        Yii::$app->response->statusCode = 400;
-
-        return $this->renderAjaxContent(Form::widget([
+        return $this->renderAjax('showPopup', [
             'content' => $this->content,
             'parentComment' => $this->parentComment,
-            'model' => $model,
-            'isHidden' => false,
-        ]));
+        ]);
     }
 
     /**
@@ -261,52 +198,6 @@ class CommentController extends Controller
         );
     }
 
-    public function actionEdit()
-    {
-        if ($this->comment === null) {
-            throw new NotFoundHttpException();
-        }
-
-        if (!$this->comment->canEdit()) {
-            throw new ForbiddenHttpException();
-        }
-
-        if ($this->comment->load(Yii::$app->request->post()) && $this->comment->save()) {
-            return $this->renderAjaxContent(CommentWidget::widget([
-                'comment' => $this->comment,
-                'justEdited' => true,
-            ]));
-        }
-
-        if (Yii::$app->request->post()) {
-            Yii::$app->response->statusCode = 400;
-        }
-
-        return $this->renderAjax('edit', [
-            'comment' => $this->comment,
-            'submitUrl' => Url::to(['/comment/comment/edit', 'id' => $this->comment->id]),
-            'fileHandlers' => FileHandlerCollection::getByType(
-                [FileHandlerCollection::TYPE_IMPORT, FileHandlerCollection::TYPE_CREATE],
-            ),
-        ]);
-    }
-
-    public function actionLoad()
-    {
-        if ($this->comment === null) {
-            throw new NotFoundHttpException();
-        }
-
-        if (!$this->comment->canView()) {
-            throw new ForbiddenHttpException();
-        }
-
-        return $this->renderAjaxContent(CommentWidget::widget([
-            'comment' => $this->comment,
-            'showBlocked' => Yii::$app->request->get('showBlocked'),
-        ]));
-    }
-
     public function actionDelete()
     {
         $this->forcePostRequest();
@@ -368,16 +259,4 @@ class CommentController extends Controller
             'cancelText' => Yii::t('CommentModule.base', 'Cancel'),
         ];
     }
-
-    /**
-     * Renders a comment prefixed with the same separator the comment list places
-     * between entries (see comments.php), so comments inserted via AJAX keep the
-     * spacing. CSS hides the separator when it ends up first in the list.
-     */
-    private function renderCommentWithSeparator(Comment $comment): string
-    {
-        return Html::tag('hr', '', ['class' => 'comment-separator'])
-            . CommentWidget::widget(['comment' => $comment]);
-    }
-
 }

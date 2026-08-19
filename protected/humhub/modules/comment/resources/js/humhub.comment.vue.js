@@ -1125,7 +1125,10 @@
         // Dedup set for own-create-vs-live races and live-update replay —
         // append-only by design, see the class docblock's "Live updates"
         // section for why entries are never removed on delete.
-        knownIds: new Set(this.initial ? collectKnownIds(this.initial.comments) : [])
+        knownIds: new Set(this.initial ? collectKnownIds(this.initial.comments) : []),
+        // Guards the on-expand fetch in onToggle() against overlapping
+        // requests from repeated toggle events (see its own comment).
+        expandingBusy: false
       };
     },
     provide() {
@@ -1188,6 +1191,20 @@
       },
       onToggle() {
         this.isCollapsed = false;
+        if (this.comments.length === 0 && this.total > 0 && !this.expandingBusy) {
+          this.expandingBusy = true;
+          vue$1.client.get(vue$1.url("/comment/comment/list", { contentId: this.contentId, pageSize: this.pageSize })).then((response) => {
+            this.comments = response.comments;
+            this.prevCount = response.prevCount;
+            this.nextCount = response.nextCount;
+            this.total = response.total;
+            collectKnownIds(response.comments).forEach((id) => this.knownIds.add(id));
+          }).catch((e) => {
+            vue$1.log.error(e, true);
+          }).finally(() => {
+            this.expandingBusy = false;
+          });
+        }
         this.$nextTick(() => {
           if (this.$refs.form) {
             this.$refs.form.focus();

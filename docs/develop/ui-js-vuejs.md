@@ -1,6 +1,6 @@
 # Vue.js Integration (Concept)
 
-> **Status: concept — Phase 1 implemented** (Vue runtime, `humhub.vue` registry/mounter, build tooling, `VueComponent` widget, LikeButton pilot). Later phases (extension slots, base component library, dynamic imports, CI enforcement) are still design-level. This document defines the target architecture for integrating Vue.js into HumHub as an island framework on top of the existing JavaScript layer ([overview](ui-js-overview.md)).
+> **Status: concept — Phase 1 and 2 implemented** (Vue runtime, `humhub.vue` registry/mounter, build tooling, `VueComponent` widget, LikeButton pilot; comment section island with legacy-widget form interop and live updates). Later phases (extension slots, base component library, dynamic imports, CI enforcement) are still design-level. This document defines the target architecture for integrating Vue.js into HumHub as an island framework on top of the existing JavaScript layer ([overview](ui-js-overview.md)).
 
 ## Motivation
 
@@ -238,9 +238,47 @@ Hot module replacement is out of scope initially — `watch` + browser reload ke
 ## Pilots and migration path
 
 1. **`LikeButton`** — the minimal leaf. Proves registry, tag mounting, `useClient`, `useI18n`, and the PJAX lifecycle end to end, in a component small enough to review in one sitting.
-2. **Comment section** — the flagship. Nesting across modules (`LikeButton` inside), forms, modals, extension slots, list state (show-more, collapsed replies).
+2. **Comment section** — the flagship, implemented. `humhub\modules\comment\widgets\Comments`
+   renders a `<comment-section>` island (`CommentVueAsset`, depending on `LikeVueAsset` so
+   `<LikeButton>` nesting resolves) fed by `CommentJsonService`'s serialized window - no
+   comment HTML is server-rendered anymore. It exercises every piece of the architecture
+   this document describes: cross-module nesting (`<LikeButton>` inside `CommentEntry.vue`),
+   list state (show-more both directions with real counts, one level of collapsed replies),
+   the `modal`/`events` bridges (delete confirm, admin-delete, live updates via
+   `humhub:modules:comment:live:NewComment`), and a form. The form is the interesting case:
+   the richtext editor and file upload are deep jQuery widgets, not rewritten in Vue - see
+   "Legacy-widget interop" below for the pattern that makes them work inside an island
+   without server-rendering a form per instance. `CommentLink` (the "Comment (n)" link/count
+   badge in a wall entry) intentionally stays a plain PHP widget with a tiny
+   `humhub.comment.js` bridge (`toggleComment` dispatches a DOM CustomEvent the island
+   listens for) - islandizing it too is a possible future step, not required for the pattern
+   to hold.
 
 After the pilots, the working rule is: **new interactive UI is built in Vue; existing server-rendered widgets are migrated opportunistically** — the PHP widget API stays, its internals become an island. Data flows keep using existing controllers (returning JSON), so backends rarely change.
+
+## Legacy-widget interop (form shells)
+
+Some server-rendered widgets are too deep to rewrite in Vue in one pass (rich text editors,
+file uploaders with drag/drop, progress and previews). The comment form is the reference
+example for wrapping one inside an island instead:
+
+1. A PHP widget (`humhub\modules\comment\widgets\CommentFormShell`) renders the widget
+   markup exactly as before, but every element id it declares or references (`id`, `for`,
+   and CSS-id-selector fragments embedded in `data-*` attribute values) is built from one
+   literal placeholder token instead of a real id.
+2. That HTML string travels once in the island's initial props (e.g. `formShellHtml`).
+3. A small wrapper component (`LegacyFormWrapper.vue`) binds it with `v-html` plus
+   `v-additions` (booting the legacy widgets the same way any other injected fragment does),
+   after replacing every occurrence of the token with a unique id from a module-scope
+   counter - so the SAME shell can be cloned as many times on the page as needed (a create
+   form, several open reply forms, an edit form) without id collisions.
+4. The wrapper exposes a small, typed API (`getValue()`/`setValue()`/`clear()`/`focus()`/
+   `getFileGuids()`) that reads the booted widget instances directly off their own cached
+   jQuery data (`Component.prototype.init`'s `this.$.data(this.static('component'), this)`
+   key) instead of exporting jQuery/legacy globals to the rest of the Vue tree.
+
+This keeps the deep interactive editing surface exactly as-is while the surrounding
+list/state/mutation logic is plain, testable Vue.
 
 ## Open questions
 

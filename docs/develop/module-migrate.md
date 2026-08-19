@@ -36,6 +36,59 @@ Each minor release line has its own file with the breaking changes, new APIs and
     `user` `registerJsConfig` section (see `docs/develop/ui-js-vuejs.md`). `/like/like/info` is now
     guest-accessible (`guestAllowedActions`); content visibility is still enforced by
     `Content::canView()` in `LikeController::beforeAction()`.
+  - **Comment module rendered as a Vue island** (`<comment-section>`,
+    `humhub\modules\comment\assets\CommentVueAsset`) — comments render entirely client-side
+    from JSON now, fed by a new `humhub\modules\comment\services\CommentJsonService` and JSON
+    actions on `CommentController`: `list` (window/cursor pagination, replaces the HTML `show`
+    action), `create`/`update` (replace `post`/`edit`), `info` (single comment, `showBlocked=1`
+    reveal). The server now enforces at most one nesting level on `create` (previously
+    JS-only). `humhub\modules\comment\widgets\Comments`'s public API is unchanged
+    (`Comments::widget(['content' => $content])`, `parentComment`, `renderOptions`,
+    `viewMode`) — the legacy `object` param (`Comments::widget(['object' => $x])`, the API
+    before #7917 replaced polymorphic `object` relations with `content_id`/
+    `parent_comment_id`) keeps working too, restored as a compatibility mapping onto
+    `content`/`parentComment` since module-search found 10 external modules still using it
+    (`CommentLink::widget(['object' => $x])` likewise - 2 known callers, also kept working).
+  - **Removed**: `humhub\modules\comment\widgets\Comment`, `ShowMore`, `Form`, `EditLink`,
+    `CommentControls` (+ their view files, `widgets/views/comments.php`,
+    `views/comment/edit.php`) and the HTML branches of `CommentController::actionShow()`
+    (only the `mode=popup` branch remains, now rendering the island via `Comments::widget()`)
+    / `actionPost()` / `actionEdit()` / `actionLoad()`. `humhub.comment.js` shrinks from a
+    full jQuery widget module to a ~90-line bridge: `toggleComment` (same
+    `data-action-click="comment.toggleComment"` target in `comment/widgets/views/link.php`,
+    now dispatching a `humhub:comment:toggle` CustomEvent on the island's mount element) and
+    `scrollActive`/`scrollInactive` (still wired into the comment form's `RichTextField`, see
+    `CommentFormShell` below) are all that remain callable from markup; a new
+    `humhub:comment:countChanged` listener keeps the wall entry's "Comment (n)" badge
+    (rendered by `CommentLink`, unchanged) in sync with the island. Every other export
+    (`Comment`, `Form`, `showMore`) and their prototypes are gone. `CommentAsset` (the bridge)
+    stays part of `CoreBundleAsset`; the new `CommentVueAsset` (depends on `LikeVueAsset` +
+    `CoreApiAsset` - `LikeVueAsset` must register first so `<LikeButton>` resolves inside
+    `CommentEntry.vue`) is registered on demand by the widget. `CommentLink`,
+    `CommentEntryLinks` and `AdminDeleteModal` (+ their views) are unchanged/kept -
+    islandizing `CommentLink` itself is a documented follow-up, not part of this change.
+  - **Breaking for known external modules**, found via module-search while preparing this
+    change (recorded here since they were not caught by an earlier "zero external consumers"
+    pass that had gated the removal - module owners should audit before upgrading to 1.19):
+    `humhub/reportcontent` and the private `cuzy-app/reaction` module hook
+    `CommentControls::EVENT_INIT` / `CommentEntryLinks::EVENT_BEFORE_RUN` respectively to
+    inject a menu entry/reaction picker into each comment's controls row. Both classes are
+    kept (so they still exist/autoload - no fatal error), but neither is instantiated anymore
+    (comment entries render from JSON in `CommentEntry.vue`, there is no more per-comment PHP
+    widget pass to hook into), so both integrations silently stop firing. The private
+    `cuzy-app/external-websites` module's `FirstCommentForm` widget `extends Form` directly -
+    this **does** fatal (class no longer exists) and needs a follow-up fix before that module
+    can run against 1.19. Separately, the `cuzy-app/saas` theme's override of
+    `comment/widgets/views/comments.php` (`require`s the core file) breaks since that view is
+    removed - override the `Comments` widget or the new `CommentSection.vue` component
+    instead.
+  - New interop pattern for wrapping deep jQuery form widgets inside a Vue island without
+    server-rendering per instance (see `docs/develop/ui-js-vuejs.md`):
+    `humhub\modules\comment\widgets\CommentFormShell` renders the comment form's
+    `RichTextField`/`UploadButton` markup ONCE, with every element id built from the literal
+    token `__VUEFORM__`; the client (`LegacyFormWrapper.vue`) clones the shell per form
+    instance (main form, an open reply form per comment, an edit form) by replacing the token
+    with a unique id before mounting.
 - Added `humhub\modules\content\models\Content::EVENT_BEFORE_HARD_DELETE` (`ContentEvent`),
   triggered from `Content::hardDeleteInternal()` right before a `Content` record is physically
   removed. Modules that store rows referencing `content_id` with a restrictive (non-cascading)

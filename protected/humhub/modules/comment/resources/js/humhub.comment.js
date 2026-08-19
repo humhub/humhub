@@ -1,326 +1,37 @@
+/**
+ * Thin legacy bridge for the comment section Vue island (`comment/vue/CommentSection.vue`).
+ *
+ * Comments themselves render entirely client-side from JSON now (see
+ * `humhub\modules\comment\widgets\Comments`) - this module only keeps the handful of
+ * `data-action-*` hooks still reachable from plain server-rendered markup that never goes
+ * through the island's own Vue template:
+ *
+ *  - `toggleComment` - bound via `data-action-click="comment.toggleComment"` in
+ *    `comment/widgets/views/link.php` (the "Comment (3)"/"Reply" link rendered by
+ *    `CommentLink`, which stays a plain PHP widget - see the plan's non-goal on islandizing
+ *    it). Dispatches a `humhub:comment:toggle` CustomEvent on the resolved island mount
+ *    element; `CommentSection.vue` listens for it (see its own `mounted()`) to lift the
+ *    `d-none` collapse and focus the form.
+ *  - `scrollActive`/`scrollInactive` - bound via the `events` option of the `RichTextField`
+ *    rendered into the comment form shell (see `comment/widgets/views/commentFormShell.php`);
+ *    toggles the scroll-shadow class on the editor's wrapper exactly like the pre-Vue form did.
+ *
+ * Count bookkeeping used to be this module's own job (`Form.prototype.incrementCommentCount`
+ * walking up to the nearest `.stream-entry-addons`/`[data-action-component="comment.Comment"]`
+ * ancestor). A reply's own badge is now owned entirely by `CommentEntry.vue` (reactive
+ * `childTotal`), so the only remaining DOM outside the island is the wall entry's overall
+ * "Comment (n)" link rendered by `CommentLink` - `onCountChanged()` below updates that badge
+ * when the island dispatches `humhub:comment:countChanged` (bubbling `{contentId, total}`).
+ */
 humhub.module('comment', function (module, require, $) {
-    var Content = require('content').Content;
-    var Widget = require('ui.widget').Widget;
-    var client = require('client');
-    var loader = require('ui.loader');
-    var additions = require('ui.additions');
-    var i18n = require('i18n');
 
-    module.requiredI18nCategories = ['CommentModule.base'];
-
-    var Form = Widget.extend();
-
-    Form.prototype.submit = function (evt) {
-        var that = this;
-        client.submit(evt, {dataType: 'html'}).status({
-            200: function (response) {
-                var richText = that.getRichtext();
-                that.addComment(response.html);
-                that.getInput().val('').trigger('autosize.resize');
-                richText.$.trigger('clear');
-                that.getUpload().reset();
-                that.$.find('.is-invalid').removeClass('is-invalid');
-                that.$.find('.invalid-feedback').html('');
-            },
-            400: function (response) {
-                that.replace(response.html);
-            }
-        }).catch(function (e) {
-            module.log.error(e, true);
-        });
-    };
-
-    Form.prototype.getRichtext = function () {
-        return Widget.closest(this.$.find('div.humhub-ui-richtext'));
-    };
-
-    Form.prototype.addComment = function (html) {
-        var $html = $(html);
-
-        // Filter out all script/links and text nodes
-        var $elements = $html.not('script, link').filter(function () {
-            return this.nodeType === 1; // filter out text nodes
-        });
-
-        // We use opacity because some additions require the actual size of the elements.
-        $elements.css('opacity', 0);
-
-        // call insert callback
-        this.getCommentsContainer().append($html);
-        this.incrementCommentCount(1);
-
-        // apply additions to elements and fade them in.
-        additions.applyTo($elements);
-
-        $elements.hide().css('opacity', 1).fadeIn('fast');
-
-        this.$.find('hr').css('display', 'inherit');
-    };
-
-    Form.prototype.incrementCommentCount = function (count) {
-        try {
-            // Update the reply counter of the parent comment (for sub comments)
-            // and the total comment counter of the wall entry
-            var $roots = this.$.closest('[data-action-component="comment.Comment"]')
-                .add(this.$.closest('.stream-entry-addons'));
-
-            $roots.each(function () {
-                var $commentCount = $(this).find('.wall-entry-controls:first .comment-count');
-                if (!$commentCount.length) {
-                    return;
-                }
-
-                var currentCount = $commentCount.data('count') + count;
-                $commentCount.text(' (' + currentCount + ')').show();
-                $commentCount.data('count', currentCount);
-            });
-        } catch (e) {
-            module.log.error(e, false);
-        }
-    };
-
-    Form.prototype.getUpload = function () {
-        return Widget.instance(this.$.find('.main_comment_upload'));
-    };
-
-    Form.prototype.getCommentsContainer = function () {
-        return this.$.siblings('.comment');
-    };
-
-    Form.prototype.getInput = function () {
-        return this.$.find('textarea');
-    };
-
-    var Comment = Content.extend(function (node) {
-        Content.call(this, node);
-        additions.observe(this.$);
-    });
-
-    Comment.prototype.edit = function (evt) {
-        this.loader();
-        var that = this;
-        client.post(evt, {dataType: 'html'}).then(function (response) {
-            that.setEditContent(response.html);
-        }).finally(function () {
-            that.loader(false);
-        });
-    };
-
-    Comment.prototype.setEditContent = function (html) {
-        this.$.find('.comment_edit_content:first,.content_edit:first').replaceWith(html);
-        this.$.find('.comment-cancel-edit-link:first').show();
-        this.$.find('.comment-edit-link:first').hide();
-    };
-
-    Comment.prototype.getRichtext = function () {
-        return Widget.instance(this.$.find('div.humhub-ui-richtext:first'));
-    };
-
-    Comment.prototype.delete = function (evt) {
-        var form = Widget.instance(this.$.parent().siblings('.comment_create'));
-        var hideHr = !this.isNestedComment() && form.$.length && !this.$.siblings('.single-comment').length;
-
-        // Deleting a comment also removes its sub comments from the total count
-        var subComments = this.isNestedComment()
-            ? 0
-            : (this.$.find('.wall-entry-controls:first .comment-count').data('count') || 0);
-
-        this.$.data('content-delete-url', evt.$trigger.data('content-delete-url'));
-
-        this.super('delete', {modal: {
-            header: i18n.t('CommentModule.base', '<strong>Confirm</strong> comment deleting'),
-            body: i18n.t('CommentModule.base', 'Do you really want to delete this comment?'),
-            confirmText: i18n.t('CommentModule.base', 'Delete'),
-            cancelText: i18n.t('CommentModule.base', 'Cancel')
-        }}).then(function ($confirm) {
-            if ($confirm) {
-                module.log.success(i18n.t('CommentModule.base', 'Comment has been deleted'));
-                hideHr && form.$.find('hr').css('display', 'none');
-                form.incrementCommentCount(-1 - subComments);
-            }
-        }).catch(function (err) {
-            module.log.error(err, true);
-        });
-    };
-
-    Comment.prototype.adminDelete = function (evt) {
-        var $form = this.$.parent().siblings('.comment_create');
-        var hideHr = !this.isNestedComment() && $form.length && !this.$.siblings('.single-comment').length;
-
-        this.$.data('content-delete-url', evt.$trigger.data('content-delete-url'));
-        this.$.data('admin-delete-modal-url', evt.$trigger.data('admin-delete-modal-url'));
-
-        this.super('adminDelete').then(function ($confirm) {
-            if ($confirm) {
-                module.log.success(i18n.t('CommentModule.base', 'Comment has been deleted'));
-                if (hideHr) {
-                    $form.find('hr').css('display', 'none');
-                }
-            }
-        }).catch(function (err) {
-            module.log.error(err, true);
-        });
-    }
-
-    Comment.prototype.isNestedComment = function () {
-        return this.$.closest('.nested-comments-root').length !== 0;
-    };
-
-    Comment.prototype.editSubmit = function (evt) {
-        var that = this;
-        client.submit(evt, {dataType: 'html'}).status({
-            200: function (response) {
-                that.replace(response.html);
-                that.highlight();
-                that.$.find('.comment-cancel-edit-link:first').hide();
-                that.$.find('.comment-edit-link:first').show();
-            },
-            400: function (response) {
-                that.setEditContent(response.html);
-            }
-        }).catch(function (e) {
-            module.log.error(e, true);
-        });
-    };
-
-    Comment.prototype.replace = function (content) {
-        var id = this.$.attr('id');
-        this.$.replaceWith(content);
-        this.$ = $('#' + id);
-        additions.observe(this.$, true);
-    };
-
-    Comment.prototype.cancelEdit = function (evt) {
-        var that = this;
-        this.loader();
-        client.html(evt).then(function (response) {
-            that.replace(response.html);
-            that.$.find('.comment-cancel-edit-link:first').hide();
-            that.$.find('.comment-edit-link:first').show();
-        }).catch(function (err) {
-            module.log.error(err, true);
-        }).finally(function () {
-            that.loader(false);
-        });
-    };
-
-    Comment.prototype.highlight = function () {
-        additions.highlight(this.$.find('.comment-message:first'));
-    };
-
-    Comment.prototype.loader = function ($show) {
-        var $loader = this.$.find('.comment-entry-loader:first');
-        if ($show === false) {
-            loader.reset($loader);
+    var toggleComment = function (evt) {
+        var target = evt.$target && evt.$target.get(0);
+        if (!target) {
             return;
         }
 
-        loader.set($loader, {
-            'size': '8px',
-            'css': {
-                padding: '2px',
-                width: '60px'
-            }
-        });
-    };
-
-    Comment.prototype.showBlocked = function (evt) {
-        var that = this;
-        that.loader();
-        client.html(evt).then(function (response) {
-            that.replace(response.html);
-        }).catch(function (err) {
-            module.log.error(err, true);
-        }).finally(function () {
-            that.loader(false);
-        });
-    };
-
-    var showMore = function (evt) {
-        loader.set(evt.$trigger, {
-            'size': '8px',
-            'css': {
-                padding: '2px',
-                width: '60px'
-            }
-        });
-        client.post(evt, {dataType: 'html'}).then(function (response) {
-            var $container = evt.$trigger.closest('.comment');
-            var $html = $(response.html);
-            evt.$trigger.data('direction') === 'previous'
-                ? $container.prepend($html)
-                : $container.append($html);
-            evt.$trigger.closest('.showMore').remove();
-            additions.applyTo($html);
-
-            // The focused link was just removed, move the focus to the loaded
-            // continuation link or the first loaded comment instead
-            var $focus = $html.filter('.showMore').find('a').first();
-            if (!$focus.length) {
-                $focus = $html.filter('.single-comment').first().attr('tabindex', '-1');
-            }
-            $focus.trigger('focus');
-
-            // Highlight currently searching keywords in the loaded comments
-            const contentSearchKeyword = $('.container-contents .form-search input[name=keyword]');
-            if (contentSearchKeyword.length) {
-                additions.highlightWords($html, contentSearchKeyword.val());
-            }
-        }).catch(function (err) {
-            module.log.error(err, true);
-            loader.unset(evt.$trigger);
-        });
-    };
-
-    function toggleComment(target, isSlideToggle) {
-        var visible = target.is(':visible');
-
-        // Comments are shown but form is not visible yet --> Toggle form only
-        if (visible && !target.children('.comment_create').is(':visible')) {
-            target.children('.comment_create').slideToggle(undefined, function () {
-                target.find('.humhub-ui-richtext').trigger('focus');
-            });
-            return;
-        }
-
-        var $form = target.children('.comment_create');
-
-        if (!target.find('.comment .single-comment').length && !target.closest('[data-action-component="comment.Comment"]').length) {
-            $form.find('hr').css('display', 'none');
-        }
-
-        $form.show();
-
-        if (isSlideToggle) {
-            target.slideToggle();
-        }
-
-        if (!visible && !window.comments_collapsed) {
-            target.find('.humhub-ui-richtext').trigger('focus');
-        }
-
-        if (!visible && window.comments_collapsed && !target.find('.comment > .single-comment').length) {
-            target.find('[data-action-click="comment.showMore"]').trigger('click');
-        }
-    }
-
-    var toggleCommentHandler = function (evt) {
-        var target;
-
-        // Only one level of subcomments allowed. If Replay button is pressed under second level of comments then toggle parent first level.
-        if (evt.$target.parents('.nested-comments-root').length < 2) {
-            //toggle child comment
-            target = evt.$target;
-            toggleComment(target, true);
-        } else {
-            //toggle parent comment
-            target = evt.$target.closest('.comment').closest('.comment-container');
-            toggleComment(target, false);
-            var richtext = Widget.instance(target.find('.comment_create:last .ProsemirrorEditor:first'));
-            var mentioning = require('ui.richtext.prosemirror').buildMentioning(evt.$target.closest('.single-comment').find('.comment-heading a'));
-            richtext.editor.init(mentioning);
-            richtext.$.trigger('focus');
-        }
+        target.dispatchEvent(new CustomEvent('humhub:comment:toggle', {bubbles: true}));
     };
 
     var scrollActive = function (evt) {
@@ -331,12 +42,50 @@ humhub.module('comment', function (module, require, $) {
         evt.$trigger.closest('.richtext-create-input-group').removeClass('scrollActive');
     };
 
+    /**
+     * Updates the `.comment-count` badge of the `CommentLink` rendered alongside the island
+     * that dispatched the event - i.e. the "Comment (n)" link inside the same wall entry's
+     * `.stream-entry-addons` (see `content/widgets/views/wallEntry.php` -
+     * `WallEntryAddons::widget()` renders both `WallEntryLinks` - which carries the badge -
+     * and `Comments` - the island - as siblings). No-op when the island isn't inside a wall
+     * entry (e.g. a standalone `Comments::widget()` embed) or carries no such badge.
+     */
+    var onCountChanged = function (evt) {
+        var addons = evt.target.closest && evt.target.closest('.stream-entry-addons');
+        if (!addons) {
+            return;
+        }
+
+        var $commentCount = $(addons).find('.wall-entry-controls:first .comment-count');
+        if (!$commentCount.length) {
+            return;
+        }
+
+        var total = evt.detail.total;
+        $commentCount
+            .text(' (' + total + ')')
+            .attr('data-count', total)
+            .data('count', total)
+            .toggle(total > 0);
+    };
+
+    module.init = function () {
+        // `document` is never replaced by pjax (only `#layout-content` is - see
+        // humhub.vue.js `module.unload`), so a single document-level listener keeps
+        // receiving the bubbling event from every island for the lifetime of the page.
+        // Guarded so re-running init() (defensive - this module does not set
+        // `initOnPjaxLoad`, so the core only calls it once) never double-binds.
+        if (module._countChangedBound) {
+            return;
+        }
+        module._countChangedBound = true;
+
+        document.addEventListener('humhub:comment:countChanged', onCountChanged);
+    };
+
     module.export({
-        Comment: Comment,
-        Form: Form,
+        toggleComment: toggleComment,
         scrollActive: scrollActive,
-        scrollInactive: scrollInactive,
-        showMore: showMore,
-        toggleComment: toggleCommentHandler
+        scrollInactive: scrollInactive
     });
 });

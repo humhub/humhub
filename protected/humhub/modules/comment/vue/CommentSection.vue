@@ -143,6 +143,9 @@ export default {
             // append-only by design, see the class docblock's "Live updates"
             // section for why entries are never removed on delete.
             knownIds: new Set(this.initial ? collectKnownIds(this.initial.comments) : []),
+            // Guards the on-expand fetch in onToggle() against overlapping
+            // requests from repeated toggle events (see its own comment).
+            expandingBusy: false,
         };
     },
     provide() {
@@ -222,6 +225,32 @@ export default {
         },
         onToggle() {
             this.isCollapsed = false;
+
+            // `commentsPreviewMax = 0` (see Comments::getLimit()) ships an initial window
+            // with zero comments but a real `total` - the legacy behavior for this config
+            // was to lazily load the default window on first expand (an auto "show more"
+            // click, see the old humhub.comment.js toggleComment()) rather than never
+            // showing anything at all. Reproduced here: an empty-but-nonzero window fetches
+            // the default (unanchored) window exactly like fetchInitial() does, the moment
+            // the section is actually opened instead of on mount.
+            if (this.comments.length === 0 && this.total > 0 && !this.expandingBusy) {
+                this.expandingBusy = true;
+                client.get(url('/comment/comment/list', { contentId: this.contentId, pageSize: this.pageSize }))
+                    .then((response) => {
+                        this.comments = response.comments;
+                        this.prevCount = response.prevCount;
+                        this.nextCount = response.nextCount;
+                        this.total = response.total;
+                        collectKnownIds(response.comments).forEach((id) => this.knownIds.add(id));
+                    })
+                    .catch((e) => {
+                        log.error(e, true);
+                    })
+                    .finally(() => {
+                        this.expandingBusy = false;
+                    });
+            }
+
             this.$nextTick(() => {
                 if (this.$refs.form) {
                     this.$refs.form.focus();
