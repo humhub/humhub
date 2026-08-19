@@ -35,11 +35,15 @@ const mountOptions = () => ({
 // commentInterop.test.js): a <form> to attach the native submit interceptor
 // to, and a `.humhub-ui-richtext` node the auto-boot handler below attaches
 // a fake editor to, exactly like a real richtext widget boot would.
+//
+// Deliberately has NO `.btn-comment-submit` button of its own (matching the
+// REAL production shell, see CommentForm's "Submit button" docblock section)
+// - only CommentForm's own Vue-rendered button carries that class, so tests
+// can select it unambiguously.
 const buildShell = () => `
     <div id="comment_create_form___VUEFORM__" class="comment_create content_create">
         <form id="w___VUEFORM__" action="/comment/comment/post" method="post">
             <div class="humhub-ui-richtext" id="newCommentForm___VUEFORM__"></div>
-            <button type="submit" class="btn-comment-submit">Send</button>
         </form>
     </div>
 `;
@@ -134,6 +138,12 @@ describe('Comment mutations + live updates', () => {
     });
 
     describe('create (main form)', () => {
+        // Regression guard for the P2-7 finding: the __VUEFORM__ shell has no
+        // submit button of its own (see CommentForm's own "Submit button"
+        // docblock section) — the ONLY way a real user can submit is the
+        // Vue-owned button rendered alongside it. Clicking that button here,
+        // rather than dispatching a synthetic native 'submit' event, is what
+        // would have caught this gap.
         it('posts message+fileList, appends at the end, clears the editor and bumps the count', async () => {
             const initial = { comments: [makeComment({ id: 1 })], prevCount: 0, nextCount: 0, total: 1 };
             let resolvePost;
@@ -151,15 +161,21 @@ describe('Comment mutations + live updates', () => {
             const clearHandler = vi.fn();
             editor.$.on('clear', clearHandler);
 
-            await wrapper.find('form').trigger('submit');
+            const submitButton = wrapper.find('.btn-comment-submit');
+            expect(submitButton.exists()).toBe(true);
+            expect(submitButton.attributes('disabled')).toBeUndefined();
+
+            await submitButton.trigger('click');
 
             expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith(
                 '/comment/comment/create?contentId=42',
                 { data: { message: 'hello', fileList: [] } },
             );
 
-            // Busy guard: a second submit while the first is still in flight is a no-op.
-            await wrapper.find('form').trigger('submit');
+            // Busy guard: the button is disabled while the request is in
+            // flight, and a second click is a no-op regardless.
+            expect(wrapper.find('.btn-comment-submit').attributes('disabled')).toBeDefined();
+            await wrapper.find('.btn-comment-submit').trigger('click');
             expect(globalThis.humhubStubs.client.post).toHaveBeenCalledTimes(1);
 
             resolvePost(makeComment({ id: 2, messageOutput: '<div>new comment</div>' }));
@@ -172,13 +188,18 @@ describe('Comment mutations + live updates', () => {
             expect(countHandler).toHaveBeenCalledTimes(1);
             expect(countHandler.mock.calls[0][0].detail).toEqual({ contentId: 42, total: 2 });
 
-            // Busy guard released — a further submit now goes through.
+            // Busy guard released — the button is re-enabled and a further click goes through.
+            expect(wrapper.find('.btn-comment-submit').attributes('disabled')).toBeUndefined();
             globalThis.humhubStubs.client.post.mockClear();
-            await wrapper.find('form').trigger('submit');
+            await wrapper.find('.btn-comment-submit').trigger('click');
             expect(globalThis.humhubStubs.client.post).toHaveBeenCalledTimes(1);
         });
 
-        it('renders field errors on 422 without clearing the editor or the list', async () => {
+        // The ONE retained synthetic-submit test: the native 'submit'
+        // listener (see CommentForm's mounted()) stays wired for a
+        // programmatic/synthetic submit() call, even though nothing in the
+        // rendered shell can trigger one through user interaction anymore.
+        it('renders field errors on 422 without clearing the editor or the list (native submit path)', async () => {
             globalThis.humhubStubs.client.post = vi.fn(() => Promise.reject({
                 status: 422,
                 errors: { message: ['Message cannot be blank.'] },
@@ -214,7 +235,7 @@ describe('Comment mutations + live updates', () => {
                 props: { contentId: 42, initial: emptyWindow(), canComment: true, formShellHtml: buildShell() },
             });
 
-            await wrapper.find('form').trigger('submit');
+            await wrapper.find('.btn-comment-submit').trigger('click');
             await vi.waitFor(() => expect(globalThis.humhubStubs.logCalls.error.length).toBeGreaterThan(0));
 
             expect(wrapper.find('.invalid-feedback').exists()).toBe(false);
@@ -248,7 +269,12 @@ describe('Comment mutations + live updates', () => {
             await replyLink.trigger('click');
             await wrapper.vm.$nextTick();
 
-            await wrapper.find('.nested-comments-root form').trigger('submit');
+            // The reply form is the SAME CommentForm component as the main
+            // form - it renders its own submit button too (#5: verify both
+            // reply and edit modes get one, not just the root create form).
+            const replySubmit = wrapper.find('.nested-comments-root .btn-comment-submit');
+            expect(replySubmit.exists()).toBe(true);
+            await replySubmit.trigger('click');
 
             expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith(
                 '/comment/comment/create?contentId=42&parentCommentId=1',
@@ -277,7 +303,7 @@ describe('Comment mutations + live updates', () => {
                 props: { contentId: 42, initial: emptyWindow(), canComment: true, formShellHtml: buildShell() },
             });
 
-            await wrapper.find('form').trigger('submit'); // create POST now in flight, unresolved
+            await wrapper.find('.btn-comment-submit').trigger('click'); // create POST now in flight, unresolved
 
             // The live poller delivers (and this component fetches+appends)
             // the same comment before the slow create POST above resolves.
@@ -317,7 +343,7 @@ describe('Comment mutations + live updates', () => {
             const replyLink = wrapper.findAll('.wall-entry-controls a').find((a) => a.text().startsWith('Reply'));
             await replyLink.trigger('click');
             await wrapper.vm.$nextTick();
-            await wrapper.find('.nested-comments-root form').trigger('submit'); // reply POST now in flight
+            await wrapper.find('.nested-comments-root .btn-comment-submit').trigger('click'); // reply POST now in flight
 
             vueModule.events.trigger(LIVE_NEW_COMMENT, [
                 [{ type: 'humhub.modules.comment.live.NewComment', data: { commentId: 88, contentId: 42 } }],
@@ -389,11 +415,16 @@ describe('Comment mutations + live updates', () => {
                 .data('humhub-ui-richtexteditor');
             expect(editor.editor.init).toHaveBeenCalledWith('raw **markdown**');
 
+            // #5: the edit form is the same CommentForm component and also
+            // gets its own submit button (the shell it hosts has none).
+            const editSubmit = wrapper.find('#comment_editarea_1 .btn-comment-submit');
+            expect(editSubmit.exists()).toBe(true);
+
             globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve(
                 makeComment({ id: 1, canEdit: true, messageOutput: '<div>after</div>' }),
             ));
 
-            await wrapper.find('#comment_editarea_1 form').trigger('submit');
+            await editSubmit.trigger('click');
 
             expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith(
                 '/comment/comment/update?id=1',

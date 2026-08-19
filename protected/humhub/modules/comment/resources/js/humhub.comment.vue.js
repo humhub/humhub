@@ -63,7 +63,7 @@
     }
   };
   const _hoisted_1$4 = { class: "nav nav-pills preferences" };
-  const _hoisted_2$2 = { class: "nav-item dropdown" };
+  const _hoisted_2$3 = { class: "nav-item dropdown" };
   const _hoisted_3$2 = ["aria-label"];
   const _hoisted_4$1 = { class: "dropdown-menu dropdown-menu-end" };
   const _hoisted_5$1 = ["data-content-permalink", "data-content-permalink-title"];
@@ -82,7 +82,7 @@
           /* CACHED */
         )),
         vue.createElementVNode("ul", _hoisted_1$4, [
-          vue.createElementVNode("li", _hoisted_2$2, [
+          vue.createElementVNode("li", _hoisted_2$3, [
             vue.createElementVNode("a", {
               href: "#",
               class: "nav-link dropdown-toggle",
@@ -244,6 +244,13 @@
       },
       errorMessages() {
         return Object.values(this.errors).flat();
+      },
+      // Same key the legacy submit button's aria-label used (see the
+      // "Submit button" docblock section above) - NOT a CommentModule.base
+      // key. CommentSection preloads 'ContentModule.base' alongside its
+      // own category for exactly this.
+      sendLabel() {
+        return vue$1.i18n.t("ContentModule.base", "Submit");
       }
     },
     mounted() {
@@ -266,7 +273,9 @@
     },
     methods: {
       onSubmit(event) {
-        event.preventDefault();
+        if (event) {
+          event.preventDefault();
+        }
         if (this.busy) {
           return;
         }
@@ -307,7 +316,8 @@
       }
     }
   };
-  const _hoisted_1$2 = {
+  const _hoisted_1$2 = ["disabled"];
+  const _hoisted_2$2 = {
     key: 0,
     class: "invalid-feedback d-block"
   };
@@ -321,7 +331,13 @@
           ref: "wrapper",
           "shell-html": $props.shellHtml
         }, null, 8, ["shell-html"]),
-        $options.hasErrors ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$2, [
+        vue.createElementVNode("button", {
+          type: "button",
+          class: "btn btn-accent btn-comment-submit btn-sm",
+          disabled: $data.busy,
+          onClick: _cache[0] || (_cache[0] = (...args) => $options.onSubmit && $options.onSubmit(...args))
+        }, vue.toDisplayString($options.sendLabel), 9, _hoisted_1$2),
+        $options.hasErrors ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$2, [
           (vue.openBlock(true), vue.createElementBlock(
             vue.Fragment,
             null,
@@ -1095,7 +1111,12 @@
     return ids;
   };
   const _sfc_main = {
-    i18nCategories: ["CommentModule.base"],
+    // 'ContentModule.base' is preloaded here (rather than declared again on
+    // CommentForm, which isn't a directly-mounted island and so has no
+    // i18nCategories of its own) for CommentForm's submit button label - see
+    // that component's own docblock for why it reuses this category instead
+    // of a CommentModule.base key.
+    i18nCategories: ["CommentModule.base", "ContentModule.base"],
     components: { CommentList, CommentForm },
     props: {
       contentId: { type: Number, required: true },

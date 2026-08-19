@@ -1,5 +1,6 @@
 <template>
     <LegacyFormWrapper ref="wrapper" :shell-html="shellHtml" />
+    <button type="button" class="btn btn-accent btn-comment-submit btn-sm" :disabled="busy" @click="onSubmit">{{ sendLabel }}</button>
     <div v-if="hasErrors" class="invalid-feedback d-block">
         <div v-for="(message, index) in errorMessages" :key="index">{{ message }}</div>
     </div>
@@ -51,8 +52,46 @@
  * skip the constructor's `$.extend()` merge and leave the body reachable
  * only via `.setError()`'s OWN (string-input-only) `JSON.parse()` instead -
  * i.e. under `.error`, not flattened to the top level.
+ *
+ * ## Submit button (P2-7 fix)
+ *
+ * The `__VUEFORM__` shell (comment/widgets/views/form.php, now removed - see
+ * git history at the P2-6 removal commit) deliberately never had a native
+ * SUBMIT trigger a Vue re-render would need to intercept declaratively: its
+ * own button was `Button::accent()->icon('send')->cssClass('btn-comment-submit')
+ * ->sm()->action('submit', $submitUrl)->submit()` - `type="submit"`, classes
+ * `btn btn-accent btn-comment-submit btn-icon-only btn-sm` (icon-only per
+ * `Button::run()`, since no `label` was set), with an `aria-label` of
+ * `Yii::t('ContentModule.base', 'Submit')` — NOT a `CommentModule.base` key;
+ * that category has no 'Send'/'Submit' string at all (verified against
+ * protected/humhub/modules/{content,comment}/messages/de/base.php).
+ *
+ * A native `<button type="submit">` only works because it lives INSIDE the
+ * `<form>` the legacy widget rendered server-side; the Vue-owned button
+ * below is rendered as a SIBLING of LegacyFormWrapper's root (outside that
+ * `<form>` element, since it isn't part of the `__VUEFORM__` shell string),
+ * so it MUST be `type="button"` with an explicit `@click="onSubmit"` instead
+ * of relying on native form submission - a `type="submit"` here would just
+ * be an inert button with no form to submit.
+ *
+ * Rendered as a visible LABELED button (`{{ sendLabel }}`, reusing the exact
+ * `ContentModule.base` / 'Submit' key found above) rather than reproducing
+ * the legacy icon-only rendering: the 'send' icon glyph is rendered through
+ * `Icon::get()` → a pluggable `IconProvider` (FontAwesome today, but
+ * swappable) with no client-side equivalent available to this component -
+ * hardcoding an icon font class here would silently break if the provider
+ * ever changes. `btn-icon-only` is deliberately NOT included for the same
+ * reason: it assumes no visible text, which this button has. The other
+ * legacy classes (`btn`, `btn-accent`, `btn-comment-submit`, `btn-sm`) ARE
+ * reproduced so existing theme CSS targeting `.btn-comment-submit` still
+ * applies.
+ *
+ * The native `submit` listener (see `mounted()`) stays wired too — harmless,
+ * and still catches a programmatic/synthetic `submit()` call on the form
+ * (e.g. an autofill or a browser extension) even though nothing in this
+ * shell can trigger one through user interaction anymore.
  */
-import { client, log, url } from '@humhub/vue';
+import { client, i18n, log, url } from '@humhub/vue';
 import LegacyFormWrapper from './LegacyFormWrapper.vue';
 
 export default {
@@ -80,6 +119,13 @@ export default {
         errorMessages() {
             return Object.values(this.errors).flat();
         },
+        // Same key the legacy submit button's aria-label used (see the
+        // "Submit button" docblock section above) - NOT a CommentModule.base
+        // key. CommentSection preloads 'ContentModule.base' alongside its
+        // own category for exactly this.
+        sendLabel() {
+            return i18n.t('ContentModule.base', 'Submit');
+        },
     },
     mounted() {
         this.formEl = this.$refs.wrapper.$el.querySelector('form');
@@ -101,7 +147,13 @@ export default {
     },
     methods: {
         onSubmit(event) {
-            event.preventDefault();
+            // Called both as a native 'submit' listener (an Event is always
+            // given) and directly from the rendered button's @click (Vue
+            // passes the click MouseEvent there too, but tolerate a bare
+            // call with none - e.g. a future programmatic caller).
+            if (event) {
+                event.preventDefault();
+            }
 
             if (this.busy) {
                 return;

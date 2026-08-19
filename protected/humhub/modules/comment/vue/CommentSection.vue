@@ -112,7 +112,12 @@ const collectKnownIds = (comments) => {
 };
 
 export default {
-    i18nCategories: ['CommentModule.base'],
+    // 'ContentModule.base' is preloaded here (rather than declared again on
+    // CommentForm, which isn't a directly-mounted island and so has no
+    // i18nCategories of its own) for CommentForm's submit button label - see
+    // that component's own docblock for why it reuses this category instead
+    // of a CommentModule.base key.
+    i18nCategories: ['CommentModule.base', 'ContentModule.base'],
     components: { CommentList, CommentForm },
     props: {
         contentId: { type: Number, required: true },
