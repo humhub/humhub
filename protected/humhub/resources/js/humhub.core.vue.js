@@ -12,7 +12,7 @@
     }
     return target;
   };
-  const _sfc_main$2 = {
+  const _sfc_main$3 = {
     props: {
       toggleAriaLabel: { type: String, required: true },
       alignEnd: { type: Boolean, default: true },
@@ -22,7 +22,7 @@
   const _hoisted_1$2 = { class: "nav nav-pills preferences" };
   const _hoisted_2 = { class: "nav-item dropdown" };
   const _hoisted_3 = ["aria-label"];
-  function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("ul", _hoisted_1$2, [
       vue.createElementVNode("li", _hoisted_2, [
         vue.createElementVNode("a", {
@@ -48,7 +48,39 @@
       ])
     ]);
   }
-  const C0 = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
+  const C0 = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3]]);
+  const _sfc_main$2 = {
+    name: "ExtensionSlot",
+    props: {
+      name: { type: String, required: true },
+      context: { type: Object, default: () => ({}) }
+    },
+    computed: {
+      visibleEntries() {
+        return vue$1.getSlotComponents(this.name).filter((entry) => vue$1.isRegistered(entry.component));
+      }
+    }
+  };
+  function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
+    return vue.openBlock(true), vue.createElementBlock(
+      vue.Fragment,
+      null,
+      vue.renderList($options.visibleEntries, (entry) => {
+        return vue.openBlock(), vue.createBlock(
+          vue.resolveDynamicComponent(entry.component),
+          vue.mergeProps({
+            key: entry.component
+          }, { ref_for: true }, $props.context),
+          null,
+          16
+          /* FULL_PROPS */
+        );
+      }),
+      128
+      /* KEYED_FRAGMENT */
+    );
+  }
+  const C1 = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
   const FORM_TOKEN = "__VUEFORM__";
   const RICHTEXT_SELECTOR = '[data-ui-widget="ui.richtext.prosemirror.RichTextEditor"]';
   const RICHTEXT_COMPONENT_DATA = "humhub-ui-richtexteditor";
@@ -145,7 +177,7 @@
       [_directive_additions]
     ]);
   }
-  const C1 = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1]]);
+  const C2 = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1]]);
   const _sfc_main = {
     props: {
       output: { type: String, default: null }
@@ -161,9 +193,10 @@
       [_directive_additions]
     ]) : vue.createCommentVNode("v-if", true);
   }
-  const C2 = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
+  const C3 = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
   vue$1.register("DropdownMenu", C0);
-  vue$1.register("LegacyFormWrapper", C1);
-  vue$1.register("RichTextOutput", C2);
+  vue$1.register("ExtensionSlot", C1);
+  vue$1.register("LegacyFormWrapper", C2);
+  vue$1.register("RichTextOutput", C3);
 })(humhub.modules.vue, Vue);
 //# sourceMappingURL=humhub.core.vue.js.map

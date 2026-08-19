@@ -6,6 +6,9 @@
 const vueModule = () => globalThis.humhub.modules.vue;
 
 export const register = (...args) => vueModule().register(...args);
+export const isRegistered = (...args) => vueModule().isRegistered(...args);
+export const registerSlotComponent = (...args) => vueModule().registerSlotComponent(...args);
+export const getSlotComponents = (...args) => vueModule().getSlotComponents(...args);
 export const mountElement = (...args) => vueModule().mountElement(...args);
 export const getConfig = (...args) => vueModule().getConfig(...args);
 export const url = (...args) => vueModule().url(...args);

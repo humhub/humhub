@@ -28,6 +28,23 @@ humhub.module('vue', function (module, require, $) {
     var apps = new Map(); // root element -> mounted Vue app, or a unique reservation token while mounting
     var pending = new Map(); // root element -> in-flight mount promise
 
+    // `components` above is a plain object, not reactive — a Vue computed() reading
+    // isRegistered() (see below) would otherwise never know a component it once found
+    // missing has since registered. Bumped once per successful register() call; reading
+    // `.count` from inside isRegistered() is what lets a computed track it as a
+    // dependency, the same trick used for `slots` below. See ExtensionSlot.vue's
+    // "components registry itself is NOT reactive" docblock note for the full picture.
+    var componentsGeneration = Vue.reactive({ count: 0 });
+
+    // slotName -> [{component, sortOrder}] in registration order (see registerSlotComponent()).
+    // A genuine Vue.reactive() store (not just a generation counter like the one above):
+    // ExtensionSlot.vue reads getSlotComponents() from inside a computed(), and this needs
+    // to re-evaluate not only when an existing slot gains/loses entries but also the very
+    // first time a brand new slot name is ever registered — plain-object property adds are
+    // exactly what Vue 3's reactive() proxy tracks (unlike Vue 2).
+    var slots = Vue.reactive({});
+    var slotRegistrationSeq = 0; // registration order tiebreaker, see getSlotComponents()
+
     // A reservation token (see mountElement) is a plain {} — only a real
     // mounted Vue app instance has an `unmount` function. Used everywhere an
     // `apps` entry needs to be treated as "not actually mounted yet".
@@ -144,6 +161,81 @@ humhub.module('vue', function (module, require, $) {
         });
 
         registerMountPoint(tag, name);
+
+        // See componentsGeneration's own declaration comment above.
+        componentsGeneration.count++;
+    };
+
+    var isRegistered = function (name) {
+        // Read for dependency tracking only — see componentsGeneration's declaration
+        // comment above. `components` itself is a plain object and is never read here.
+        void componentsGeneration.count;
+
+        return !!components[name];
+    };
+
+    /**
+     * Registers `componentName` (by its registered NAME, not the component object itself —
+     * it does NOT need to be registered yet, see below) to render inside every
+     * `<ExtensionSlot name="slotName">` for the given `slotName`.
+     *
+     * - `options.sortOrder` (default 100) controls render order within the slot, lowest
+     *   first; entries sharing a sortOrder render in registration order.
+     * - The component does not need to be registered (via `register()`) at the time this
+     *   is called — module artifacts can load, and therefore register slot entries, in any
+     *   order relative to the component's own artifact. `ExtensionSlot` only renders entries
+     *   whose component is currently registered (see `isRegistered()`/`getSlotComponents()`
+     *   below and ExtensionSlot.vue), and picks up the rest reactively once they do register.
+     * - Registering the same (slotName, componentName) pair twice is a debug-level no-op,
+     *   keeping the first registration's sortOrder — the same "artifact scripts legitimately
+     *   re-execute" case documented on `register()` above applies here too.
+     */
+    var registerSlotComponent = function (slotName, componentName, options) {
+        if (typeof slotName !== 'string' || !slotName) {
+            log.error('Invalid extension slot name "' + slotName + '" — must be a non-empty string');
+            return;
+        }
+
+        if (!NAME_PATTERN.test(componentName)) {
+            log.error('Invalid Vue component name "' + componentName + '" for extension slot "' + slotName + '" — PascalCase required');
+            return;
+        }
+
+        var entries = slots[slotName] || (slots[slotName] = []);
+        var alreadyRegistered = entries.some(function (entry) {
+            return entry.component === componentName;
+        });
+        if (alreadyRegistered) {
+            log.debug('Component "' + componentName + '" is already registered for extension slot "' + slotName + '" — skipping duplicate registration');
+            return;
+        }
+
+        if (!components[componentName]) {
+            log.debug('Component "' + componentName + '" registered for extension slot "' + slotName + '" is not a registered Vue component (yet) — it will appear once it registers');
+        }
+
+        var sortOrder = (options && typeof options.sortOrder === 'number') ? options.sortOrder : 100;
+        entries.push({ component: componentName, sortOrder: sortOrder, order: slotRegistrationSeq++ });
+    };
+
+    /**
+     * Returns the entries registered for `slotName` (see `registerSlotComponent()`), sorted
+     * by sortOrder then registration order — `{component, sortOrder}` pairs, in render order.
+     * Called from ExtensionSlot.vue's computed, so a reactive effect (e.g. a mounted
+     * island's render) that calls this re-runs on every future `registerSlotComponent()`
+     * call for this slot, including the very first one for a slot name with none yet.
+     */
+    var getSlotComponents = function (slotName) {
+        var entries = slots[slotName] || [];
+
+        return entries
+            .slice()
+            .sort(function (a, b) {
+                return a.sortOrder - b.sortOrder || a.order - b.order;
+            })
+            .map(function (entry) {
+                return { component: entry.component, sortOrder: entry.sortOrder };
+            });
     };
 
     var componentFor = function (element) {
@@ -417,6 +509,9 @@ humhub.module('vue', function (module, require, $) {
 
     module.export({
         register: register,
+        isRegistered: isRegistered,
+        registerSlotComponent: registerSlotComponent,
+        getSlotComponents: getSlotComponents,
         mountElement: mountElement,
         unmountElement: unmountElement,
         getApp: getApp,
