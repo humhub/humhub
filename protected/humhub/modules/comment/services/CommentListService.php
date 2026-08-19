@@ -88,6 +88,9 @@ class CommentListService
     private function addScopeQueryCondition(ActiveQuery $query): void
     {
         $query->addSelect('*, (select count(*) from comment sc where sc.parent_comment_id=comment.id) as child_count');
+        // Eager-load the author: every consumer (widgets, CommentJsonService) reads
+        // $comment->createdBy, so this avoids a lazy-loaded query per returned comment.
+        $query->with('createdBy');
         $query->orderBy('created_at DESC, id DESC');
 
         $query->andWhere(['content_id' => $this->content->id]);

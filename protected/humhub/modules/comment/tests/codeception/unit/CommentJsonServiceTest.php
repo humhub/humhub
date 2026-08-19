@@ -1,0 +1,439 @@
+<?php
+
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2026 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
+namespace tests\codeception\unit\modules\comment\services;
+
+use humhub\modules\comment\models\Comment;
+use humhub\modules\comment\services\CommentJsonService;
+use humhub\modules\content\models\Content;
+use humhub\modules\like\services\LikeService;
+use humhub\modules\post\models\Post;
+use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
+use tests\codeception\_support\HumHubDbTestCase;
+use Yii;
+use yii\web\ForbiddenHttpException;
+
+class CommentJsonServiceTest extends HumHubDbTestCase
+{
+    public function testSerializeCommentShape()
+    {
+        $this->becomeUser('User2');
+
+        $comment = $this->createComment('Hello world');
+
+        $data = CommentJsonService::create($comment)->serializeComment($comment);
+
+        $this->assertSame($comment->id, $data['id']);
+        $this->assertSame($comment->content_id, $data['contentId']);
+        $this->assertNull($data['parentCommentId']);
+        $this->assertIsInt($data['recordId']);
+        $this->assertMatchesRegularExpression(
+            '/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}$/',
+            $data['createdAt'],
+        );
+        $this->assertFalse($data['isEdited']);
+        $this->assertFalse($data['blocked']);
+        $this->assertSame($comment->createdBy->displayName, $data['author']['displayName']);
+        $this->assertSame($comment->createdBy->guid, $data['author']['guid']);
+        $this->assertNotEmpty($data['author']['guid']);
+        $this->assertNotEmpty($data['author']['url']);
+        $this->assertNotEmpty($data['author']['imageUrl']);
+        $this->assertStringContainsString('Hello world', $data['messageOutput']);
+        $this->assertIsString($data['attachmentsHtml']);
+        $this->assertTrue($data['canEdit']);
+        $this->assertTrue($data['canDelete']);
+        $this->assertFalse($data['canAdminDelete']);
+        $this->assertStringContainsString('http', $data['permalink']);
+        $this->assertSame(['total' => 0, 'items' => [], 'hasMore' => false], $data['children']);
+    }
+
+    public function testLikesShapeAvailableAndReflectsLikeState()
+    {
+        $this->becomeUser('User2');
+        $comment = $this->createComment('Likeable comment');
+
+        $data = CommentJsonService::create($comment)->serializeComment($comment);
+        $this->assertSame(['count' => 0, 'liked' => false], $data['likes']);
+
+        (new LikeService($comment))->like();
+
+        $data = CommentJsonService::create($comment)->serializeComment($comment);
+        $this->assertSame(['count' => 1, 'liked' => true], $data['likes']);
+    }
+
+    public function testIsEditedFlagReflectsUpdate()
+    {
+        $this->becomeUser('User2');
+        $comment = $this->createComment('Original message');
+
+        $data = CommentJsonService::create($comment)->serializeComment($comment);
+        $this->assertFalse($data['isEdited']);
+
+        // Wait a second so created_at != updated_at (same-second updates are not
+        // detected, see Comment::isUpdated()).
+        sleep(1);
+        $comment->message = 'Updated message';
+        $this->assertTrue($comment->save());
+        $comment->refresh();
+
+        $data = CommentJsonService::create($comment)->serializeComment($comment);
+        $this->assertTrue($data['isEdited']);
+    }
+
+    public function testBlockedAuthorMasksAuthorMessageAndAttachments()
+    {
+        $this->becomeUser('User1');
+        $comment = $this->createComment('Message of blocked author');
+
+        $this->becomeUser('User2');
+        $comment->createdBy->blockForUser(Yii::$app->user->getIdentity());
+
+        $data = CommentJsonService::create($comment)->serializeComment($comment);
+
+        $this->assertTrue($data['blocked']);
+        $this->assertNull($data['author']);
+        $this->assertNull($data['messageOutput']);
+        $this->assertNull($data['attachmentsHtml']);
+        // Not masked by the blocked-author rule:
+        $this->assertNotNull($data['permalink']);
+    }
+
+    public function testShowBlockedRevealsMaskedFields()
+    {
+        $this->becomeUser('User1');
+        $comment = $this->createComment('Message of blocked author');
+
+        $this->becomeUser('User2');
+        $comment->createdBy->blockForUser(Yii::$app->user->getIdentity());
+
+        $data = CommentJsonService::create($comment)->serializeComment($comment, showBlocked: true);
+
+        $this->assertFalse($data['blocked']);
+        $this->assertNotNull($data['author']);
+        $this->assertStringContainsString('Message of blocked author', $data['messageOutput']);
+    }
+
+    public function testChildrenPreviewKeepsSingleLeftoverComment()
+    {
+        $this->becomeUser('User2');
+        $root = $this->createComment('Root comment');
+        $this->createComment('Reply 1', $root);
+        $this->createComment('Reply 2', $root);
+        $this->createComment('Reply 3', $root);
+
+        // Default commentsPreviewMax is 2, but with exactly one comment beyond the
+        // limit all 3 are shown directly instead of behind a "show more" link.
+        $data = CommentJsonService::create($root)->serializeComment($root);
+
+        $this->assertSame(3, $data['children']['total']);
+        $this->assertCount(3, $data['children']['items']);
+        $this->assertFalse($data['children']['hasMore']);
+    }
+
+    public function testChildrenPreviewReportsHasMoreBeyondLeftoverRule()
+    {
+        $this->becomeUser('User2');
+        $root = $this->createComment('Root comment');
+        for ($i = 1; $i <= 4; $i++) {
+            $this->createComment("Reply $i", $root);
+        }
+
+        $data = CommentJsonService::create($root)->serializeComment($root);
+
+        $this->assertSame(4, $data['children']['total']);
+        $this->assertCount(2, $data['children']['items']);
+        $this->assertTrue($data['children']['hasMore']);
+    }
+
+    public function testChildCommentHasNullChildren()
+    {
+        $this->becomeUser('User2');
+        $root = $this->createComment('Root comment');
+        $reply = $this->createComment('Reply', $root);
+
+        $data = CommentJsonService::create($reply)->serializeComment($reply);
+
+        $this->assertNull($data['children']);
+        $this->assertSame($root->id, $data['parentCommentId']);
+    }
+
+    public function testWindowKeepsSingleLeftoverComment()
+    {
+        $this->becomeUser('User2');
+        $this->createComment('Test comment1');
+        $this->createComment('Test comment2');
+        $this->createComment('Test comment3');
+
+        $window = CommentJsonService::create($this->post())->serializeWindow();
+        $this->assertCount(3, $window['comments']);
+        $this->assertSame(3, $window['total']);
+        $this->assertSame(0, $window['prevCount']);
+        $this->assertSame(0, $window['nextCount']);
+
+        $this->createComment('Test comment4');
+
+        // A second comment beyond the limit cuts the window down to the limit (2)
+        // instead of keeping the leftover.
+        $window = CommentJsonService::create($this->post())->serializeWindow();
+        $this->assertCount(2, $window['comments']);
+        $this->assertSame(['Test comment3', 'Test comment4'], $this->plainMessages($window));
+        $this->assertSame(4, $window['total']);
+        $this->assertSame(2, $window['prevCount']);
+        $this->assertSame(0, $window['nextCount']);
+    }
+
+    public function testWindowAnchoredAroundPermalinkedComment()
+    {
+        $this->becomeUser('User2');
+
+        $roots = [];
+        for ($i = 1; $i <= 8; $i++) {
+            $roots[$i] = $this->createComment('Root comment ' . $i);
+        }
+
+        // Anchored window stays focused around the anchor (commentsPreviewMax
+        // previous comments + the anchor + 1 next) instead of loading everything.
+        $window = CommentJsonService::create($this->post())->serializeWindow(commentId: $roots[5]->id);
+
+        $messages = $this->plainMessages($window);
+        $this->assertSame(
+            ['Root comment 3', 'Root comment 4', 'Root comment 5', 'Root comment 6'],
+            $messages,
+        );
+        $this->assertSame(2, $window['prevCount']);
+        $this->assertSame(2, $window['nextCount']);
+        $this->assertSame(8, $window['total']);
+    }
+
+    public function testWindowCursorPaginationBothDirections()
+    {
+        $this->becomeUser('User2');
+
+        $roots = [];
+        for ($i = 1; $i <= 5; $i++) {
+            $roots[$i] = $this->createComment('Root comment ' . $i);
+        }
+
+        // Initial (compact) window: last 2 comments, 3 remaining before them.
+        $window = CommentJsonService::create($this->post())->serializeWindow();
+        $this->assertSame(['Root comment 4', 'Root comment 5'], $this->plainMessages($window));
+        $this->assertSame(3, $window['prevCount']);
+
+        // "Show previous" from the oldest loaded comment (4): only one comment
+        // remains beyond the requested page size (2), so it's included directly.
+        $firstLoadedId = $window['comments'][0]['id'];
+        $prevWindow = CommentJsonService::create($this->post())->serializeWindow(
+            commentId: $firstLoadedId,
+            direction: 'previous',
+            pageSize: 2,
+        );
+        $this->assertSame(['Root comment 1', 'Root comment 2', 'Root comment 3'], $this->plainMessages($prevWindow));
+
+        // "Show next" from the oldest comment (1) pages forward.
+        $nextWindow = CommentJsonService::create($this->post())->serializeWindow(
+            commentId: $roots[1]->id,
+            direction: 'next',
+            pageSize: 2,
+        );
+        $this->assertSame(['Root comment 2', 'Root comment 3'], $this->plainMessages($nextWindow));
+        $this->assertSame(1, $nextWindow['prevCount']);
+        $this->assertSame(2, $nextWindow['nextCount']);
+    }
+
+    public function testWindowPageSizeIsClampedToModuleMax()
+    {
+        $this->becomeUser('User2');
+        for ($i = 1; $i <= 3; $i++) {
+            $this->createComment('Root comment ' . $i);
+        }
+
+        $module = Yii::$app->getModule('comment');
+        $originalMax = $module->commentsBlockLoadSize;
+        $module->commentsBlockLoadSize = 1;
+
+        try {
+            $window = CommentJsonService::create($this->post())->serializeWindow(
+                commentId: 0,
+                direction: 'next',
+                pageSize: 100,
+            );
+            $this->assertCount(1, $window['comments']);
+        } finally {
+            $module->commentsBlockLoadSize = $originalMax;
+        }
+    }
+
+    /**
+     * A non-positive pageSize must never reach CommentListService::getSiblings() as-is:
+     * yii's QueryBuilder drops the `LIMIT` clause entirely for values <= 0, which would
+     * fetch every comment of the thread in one guest-reachable request instead of a
+     * bounded page.
+     */
+    public function testWindowPageSizeIsClampedToAtLeastOneForNonPositiveValues()
+    {
+        $this->becomeUser('User2');
+
+        $roots = [];
+        for ($i = 1; $i <= 6; $i++) {
+            $roots[$i] = $this->createComment('Root comment ' . $i);
+        }
+
+        foreach ([-3, 0] as $pageSize) {
+            $window = CommentJsonService::create($this->post())->serializeWindow(
+                commentId: 0,
+                direction: 'next',
+                pageSize: $pageSize,
+            );
+
+            $this->assertCount(1, $window['comments'], "pageSize=$pageSize must clamp to exactly 1 item");
+            $this->assertSame('Root comment 1', $this->plainMessages($window)[0]);
+            $this->assertSame(0, $window['prevCount']);
+            $this->assertSame(5, $window['nextCount']);
+            $this->assertSame(6, $window['total']);
+        }
+    }
+
+    public function testCreatedAtMatchesExactInstant()
+    {
+        $this->becomeUser('User2');
+        $comment = $this->createComment('Timestamp check');
+
+        $data = CommentJsonService::create($comment)->serializeComment($comment);
+
+        $this->assertSame(date(DATE_ATOM, strtotime($comment->created_at)), $data['createdAt']);
+    }
+
+    public function testCanAdminDeleteTrueForSpaceAdminOnOthersComment()
+    {
+        $this->becomeUser('Admin');
+        $space = new Space(['name' => 'Space admin delete test']);
+        $this->assertTrue($space->save());
+
+        $author = User::findOne(['username' => 'User2']);
+        $spaceAdmin = User::findOne(['username' => 'User3']);
+        $space->addMember($author->id);
+        $space->addMember($spaceAdmin->id, groupId: Space::USERGROUP_ADMIN);
+
+        $this->becomeUser('User2');
+        $post = new Post();
+        $post->message = 'Post in admin-managed space';
+        $post->content->setContainer($space);
+        $post->content->visibility = Content::VISIBILITY_PUBLIC;
+        $this->assertTrue($post->save());
+
+        $comment = $this->createComment('Comment by author', null, $post);
+
+        // A space admin can delete (and thus admin-delete) another member's comment, but
+        // has no general edit right over it (see ContentAddonActiveRecord::canEdit()).
+        $this->becomeUser('User3');
+        $data = CommentJsonService::create($comment)->serializeComment($comment);
+
+        $this->assertTrue($data['canDelete']);
+        $this->assertTrue($data['canAdminDelete']);
+        $this->assertFalse($data['canEdit']);
+    }
+
+    public function testLikesNullWhenContentArchived()
+    {
+        $this->becomeUser('User2');
+        $comment = $this->createComment('Archived thread comment');
+        $comment->content->archive();
+
+        $data = CommentJsonService::create($comment)->serializeComment($comment);
+
+        $this->assertNull($data['likes']);
+    }
+
+    public function testGuestIsRejectedWhenGuestHideCommentsEnabled()
+    {
+        $post = $this->publicGuestViewablePost();
+        $this->becomeUser('User2');
+        $this->createComment('Visible to guests?', null, $post);
+
+        $module = Yii::$app->getModule('comment');
+        $module->guestHideComments = true;
+        self::allowGuestAccess(true);
+        $this->logout();
+
+        try {
+            $this->expectException(ForbiddenHttpException::class);
+            CommentJsonService::create($post)->serializeWindow();
+        } finally {
+            $module->guestHideComments = false;
+        }
+    }
+
+    public function testGuestCanReadCommentsWhenGuestHideCommentsDisabled()
+    {
+        $post = $this->publicGuestViewablePost();
+        $this->becomeUser('User2');
+        $comment = $this->createComment('Visible to guests', null, $post);
+
+        self::allowGuestAccess(true);
+        $this->logout();
+
+        $window = CommentJsonService::create($post)->serializeWindow();
+        $this->assertCount(1, $window['comments']);
+        $this->assertNotNull($window['comments'][0]['author']);
+        // Guests can never like (no identity), and guestHideComments is disabled here.
+        $this->assertNull($window['comments'][0]['likes']);
+
+        $data = CommentJsonService::create($comment)->serializeComment($comment);
+        $this->assertFalse($data['blocked']);
+    }
+
+    /**
+     * @return string[] plain-text messages of the comments in a window, in order
+     */
+    private function plainMessages(array $window): array
+    {
+        return array_map(
+            fn(array $comment) => strip_tags((string)$comment['messageOutput']),
+            $window['comments'],
+        );
+    }
+
+    private function createComment(string $message, ?Comment $parent = null, ?Post $post = null): Comment
+    {
+        $comment = new Comment([
+            'message' => $message,
+            'content_id' => ($post ?? $this->post())->content->id,
+            'parent_comment_id' => $parent?->id,
+        ]);
+        $this->assertTrue($comment->save(), 'Could not save comment: ' . json_encode($comment->errors));
+
+        return $comment;
+    }
+
+    private function post(): Post
+    {
+        return Post::findOne(['id' => 11]);
+    }
+
+    /**
+     * Creates a fresh public post in a fully open space, so it can be read by guests.
+     */
+    private function publicGuestViewablePost(): Post
+    {
+        $this->becomeUser('Admin');
+
+        $space = new Space();
+        $space->name = 'Guest visible space';
+        $space->visibility = Space::VISIBILITY_ALL;
+        $this->assertTrue($space->save());
+
+        $post = new Post();
+        $post->message = 'Guest visible post';
+        $post->content->setContainer($space);
+        $post->content->visibility = Content::VISIBILITY_PUBLIC;
+        $this->assertTrue($post->save());
+
+        return $post;
+    }
+}
