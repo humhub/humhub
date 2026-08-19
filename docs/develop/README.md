@@ -59,6 +59,10 @@ Widgets, menus, theming, and the HumHub JavaScript layer.
 - [JavaScript stream](ui-js-stream.md)
 - [JavaScript client](ui-js-client.md) — REST/AJAX wrapper
 - [Vue.js integration](ui-js-vuejs.md) — island components on server-rendered pages (concept draft)
+- [Vue.js components](ui-js-vuejs-components.md) — authoring and using components, registry, mounting
+- [Vue.js build tooling](ui-js-vuejs-build.md) — grunt build-vue, committed artifacts, vitest
+- [Vue.js extensions](ui-js-vuejs-extensions.md) — extension slots, serializer events, domain events
+- [Vue.js legacy interop](ui-js-vuejs-interop.md) — v-additions, RichTextOutput, LegacyFormWrapper, form shells
 
 ## Accessibility (WCAG)
 
