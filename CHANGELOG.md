@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.19.0-beta.2 (TBD)
--------------------
+1.19.0-beta.2 (August 19, 2026)
+-------------------------------
 - Fix #8350: A configured but unreachable database presented the web installer — offering to re-setup an already installed instance during a transient outage — instead of an error; such requests now return a 503
 - Fix #8393: #8350 returned a 503 for any database error, so a fresh or incompletely configured install (server reachable but the database missing, credentials wrong, or the DSN lacking a database name) was blocked instead of shown the installer; a 503 is now returned only when the database server itself is unreachable
 - Enh #8390: Removed the redundant My Spaces dropdown click handler — the lazy space list is already loaded on open, and the case where the dropdown was opened before its widget initialized is covered by the init-time check from #8384
