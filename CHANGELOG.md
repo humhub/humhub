@@ -18,6 +18,7 @@ HumHub Changelog
 - Fix #8386: Fix collapsing of the widget "Member of these Spaces"
 - Fix #8391: Harden pagination cursor validation in Comments and Notifications against loose-type comparisons
 - Fix #8392: Wait for the comment submit button to become clickable in the stream acceptance tests, which intermittently failed on CI
+- Enh #8394: Show a loading spinner on RichText content until the Markdown source has been rendered to HTML client side
 
 1.18.4 (July 21, 2026)
 ----------------------
