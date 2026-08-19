@@ -34,6 +34,7 @@ HumHub Changelog
 - Fix #8371: Fix mixed param type nullable by default in `ForceExplicitNullableParamRector`
 - Fix #8383: Removed the unreachable `ContentContainerControllerAccess::RULE_CONTAINER_ACCESS` validator (`validateContainerAccess()`, `canAccessSpace()`, `getSpaceMembership()`, `canAccessUser()`) — the rule was never added to any access rule set, so it never ran; the space/profile visibility checks it duplicated are already enforced by the container controller behaviors
 - Fix #8388: Fix styles of the widget "Latest activities"
+- Enh #8396: Show a loading spinner on RichText content until the Markdown source has been rendered to HTML client side
 
 1.19.0-beta.1 (July 21, 2026)
 --------------------
