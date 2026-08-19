@@ -9,6 +9,7 @@
 namespace humhub\modules\comment\services;
 
 use humhub\models\RecordMap;
+use humhub\modules\comment\components\SerializeCommentsEvent;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\Module;
 use humhub\modules\content\components\ContentActiveRecord;
@@ -19,6 +20,7 @@ use humhub\modules\like\services\LikeService;
 use humhub\modules\user\models\User;
 use humhub\modules\user\services\IsOnlineService;
 use Yii;
+use yii\base\Event;
 use yii\web\ForbiddenHttpException;
 
 /**
@@ -34,6 +36,11 @@ use yii\web\ForbiddenHttpException;
  */
 class CommentJsonService
 {
+    /**
+     * @see SerializeCommentsEvent
+     */
+    public const EVENT_SERIALIZE_COMMENTS = 'serializeComments';
+
     public function __construct(
         private readonly Content $content,
         private readonly ?Comment $parentComment = null,
@@ -61,7 +68,13 @@ class CommentJsonService
     {
         $this->assertGuestAllowed();
 
-        return $this->serialize($comment, $showBlocked);
+        // A root comment's own loaded child previews are batched into the same single
+        // event firing as the comment itself (see EVENT_SERIALIZE_COMMENTS' own docblock) -
+        // there is no second, separate firing once serializeChildren() gets to them below.
+        $childItems = $comment->parent_comment_id === null ? $this->getChildPreviewItems($comment) : null;
+        $extensionData = $this->fireSerializeCommentsEvent(array_merge([$comment], $childItems ?? []));
+
+        return $this->serialize($comment, $showBlocked, $extensionData, $childItems);
     }
 
     /**
@@ -100,10 +113,28 @@ class CommentJsonService
         $firstId = $comments[0]->id ?? null;
         $lastId = $comments[array_key_last($comments)]->id ?? null;
 
+        // Every root's loaded child previews are fetched up front and folded into the SAME
+        // batch as the roots, so the whole window - roots and previewed replies alike -
+        // fires EVENT_SERIALIZE_COMMENTS exactly once (see its own docblock), instead of
+        // once per root the way a naive per-comment implementation would.
+        $childItemsByRoot = [];
+        $allComments = $comments;
+        foreach ($comments as $comment) {
+            if ($comment->parent_comment_id === null) {
+                $childItemsByRoot[$comment->id] = $this->getChildPreviewItems($comment);
+                $allComments = array_merge($allComments, $childItemsByRoot[$comment->id]);
+            }
+        }
+
+        $extensionData = $this->fireSerializeCommentsEvent($allComments);
+
         return [
             // Blocked-author reveal is only ever exposed per-comment (actionInfo's
             // showBlocked=1); a list window is never reachable with it from HTTP.
-            'comments' => array_map(fn(Comment $c) => $this->serialize($c, false), $comments),
+            'comments' => array_map(
+                fn(Comment $c) => $this->serialize($c, false, $extensionData, $childItemsByRoot[$c->id] ?? null),
+                $comments,
+            ),
             'prevCount' => $firstId !== null ? $listService->getSiblingsCount($firstId, CommentListService::LIST_DIR_PREV) : 0,
             'nextCount' => $lastId !== null ? $listService->getSiblingsCount($lastId, CommentListService::LIST_DIR_NEXT) : 0,
             'total' => $listService->getCount(),
@@ -121,10 +152,18 @@ class CommentJsonService
         return max(1, min($pageSize, $this->getModule()->commentsBlockLoadSize));
     }
 
-    private function serialize(Comment $comment, bool $showBlocked): array
+    /**
+     * @param array<int, array<string, array>> $extensionData commentId => namespace => data,
+     *        as returned by {@see self::fireSerializeCommentsEvent()}
+     * @param Comment[]|null $childItems this comment's already-fetched child previews (root
+     *        comments only), so {@see self::serializeChildren()} does not re-query them -
+     *        `null` lets it fetch them itself, for callers that never batched them up front
+     */
+    private function serialize(Comment $comment, bool $showBlocked, array $extensionData, ?array $childItems = null): array
     {
         $blocked = $this->isBlockedAuthor($comment, $showBlocked);
         $canDelete = $comment->canDelete();
+        $extensions = $extensionData[$comment->id] ?? [];
 
         return [
             'id' => $comment->id,
@@ -145,7 +184,13 @@ class CommentJsonService
             'canDelete' => $canDelete,
             'canAdminDelete' => $canDelete && $comment->created_by !== Yii::$app->user->id,
             'permalink' => $comment->getUrl(true),
-            'children' => $comment->parent_comment_id === null ? $this->serializeChildren($comment) : null,
+            'children' => $comment->parent_comment_id === null
+                ? $this->serializeChildren($comment, $extensionData, $childItems)
+                : null,
+            // (object) forces `{}` on the wire for the common no-extension case, instead of
+            // the `[]` an empty PHP array would otherwise serialize to - see
+            // SerializeCommentsEvent's own docblock for the module-facing contract.
+            'extensions' => $extensions === [] ? (object)[] : $extensions,
         ];
     }
 
@@ -159,17 +204,58 @@ class CommentJsonService
      * `CommentListService::addScopeQueryCondition()`), so this is normally free - it only
      * falls back to its own query when `$comment` didn't come from such a query (e.g. a
      * just-created/updated comment returned from `actionCreate`/`actionUpdate`).
+     *
+     * @param array<int, array<string, array>> $extensionData see {@see self::serialize()}
+     * @param Comment[]|null $items already-fetched child previews, see {@see self::serialize()}
      */
-    private function serializeChildren(Comment $comment): array
+    private function serializeChildren(Comment $comment, array $extensionData, ?array $items = null): array
     {
-        $items = (new CommentListService($this->content, $comment))->getLimited($this->getModule()->commentsPreviewMax);
+        $items ??= $this->getChildPreviewItems($comment);
         $total = $comment->getChildCount();
 
         return [
             'total' => $total,
-            'items' => array_map(fn(Comment $c) => $this->serialize($c, false), $items),
+            'items' => array_map(fn(Comment $c) => $this->serialize($c, false, $extensionData), $items),
             'hasMore' => $total > count($items),
         ];
+    }
+
+    /**
+     * @return Comment[]
+     */
+    private function getChildPreviewItems(Comment $comment): array
+    {
+        return (new CommentListService($this->content, $comment))->getLimited($this->getModule()->commentsPreviewMax);
+    }
+
+    /**
+     * Fires {@see self::EVENT_SERIALIZE_COMMENTS} once for the given batch and collapses its
+     * accumulated {@see SerializeCommentsEvent::addData()} calls into a plain `commentId =>
+     * namespace => data` map for {@see self::serialize()} to read from.
+     *
+     * `CommentJsonService` instances are plain `new self(...)` objects (see
+     * {@see self::create()}), not {@see \yii\base\Component} instances, so there is no
+     * instance-level `$this->trigger()` to call here. The static {@see Event::trigger()}
+     * still fires every handler attached via `Event::on(CommentJsonService::class,
+     * self::EVENT_SERIALIZE_COMMENTS, ...)` regardless: class-level event handlers are
+     * looked up by class name at trigger time, independently of how (or whether) any
+     * particular instance was constructed.
+     *
+     * @param Comment[] $comments
+     * @return array<int, array<string, array>> commentId => namespace => data
+     */
+    private function fireSerializeCommentsEvent(array $comments): array
+    {
+        $event = new SerializeCommentsEvent();
+        $event->comments = $comments;
+        Event::trigger(self::class, self::EVENT_SERIALIZE_COMMENTS, $event);
+
+        $data = [];
+        foreach ($comments as $comment) {
+            $data[$comment->id] = $event->getData($comment->id);
+        }
+
+        return $data;
     }
 
     /**

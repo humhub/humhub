@@ -8,6 +8,7 @@
 
 namespace tests\codeception\unit\modules\comment\services;
 
+use humhub\modules\comment\components\SerializeCommentsEvent;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\services\CommentJsonService;
 use humhub\modules\content\models\Content;
@@ -18,10 +19,17 @@ use humhub\modules\user\models\User;
 use humhub\modules\user\services\IsOnlineService;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
+use yii\base\Event;
 use yii\web\ForbiddenHttpException;
 
 class CommentJsonServiceTest extends HumHubDbTestCase
 {
+    protected function _after()
+    {
+        Event::off(CommentJsonService::class, CommentJsonService::EVENT_SERIALIZE_COMMENTS);
+        parent::_after();
+    }
+
     public function testSerializeCommentShape()
     {
         $this->becomeUser('User2');
@@ -59,6 +67,9 @@ class CommentJsonServiceTest extends HumHubDbTestCase
         $this->assertFalse($data['canAdminDelete']);
         $this->assertStringContainsString('http', $data['permalink']);
         $this->assertSame(['total' => 0, 'items' => [], 'hasMore' => false], $data['children']);
+        // No SerializeCommentsEvent handler attached in this test - default shape is an
+        // empty object (not an empty array) on the wire, see testExtensions* below.
+        $this->assertEquals((object)[], $data['extensions']);
     }
 
     public function testLikesShapeAvailableAndReflectsLikeState()
@@ -446,6 +457,157 @@ class CommentJsonServiceTest extends HumHubDbTestCase
 
         $data = CommentJsonService::create($comment)->serializeComment($comment);
         $this->assertFalse($data['blocked']);
+    }
+
+    public function testExtensionsAreEmptyObjectWithoutAHandler()
+    {
+        $this->becomeUser('User2');
+        $comment = $this->createComment('No extensions here');
+
+        $data = CommentJsonService::create($comment)->serializeComment($comment);
+
+        $this->assertEquals((object)[], $data['extensions']);
+    }
+
+    public function testExtensionsAppearUnderTheHandlersNamespace()
+    {
+        $this->becomeUser('User2');
+        $comment = $this->createComment('Extend me');
+
+        Event::on(
+            CommentJsonService::class,
+            CommentJsonService::EVENT_SERIALIZE_COMMENTS,
+            function (SerializeCommentsEvent $event) {
+                foreach ($event->comments as $eventComment) {
+                    $event->addData($eventComment->id, 'reportcontent', ['reported' => true]);
+                }
+            },
+        );
+
+        $data = CommentJsonService::create($comment)->serializeComment($comment);
+
+        $this->assertSame(['reportcontent' => ['reported' => true]], $data['extensions']);
+    }
+
+    public function testExtensionsOnlyAttachToTheTargetedCommentLeavingOthersEmpty()
+    {
+        $this->becomeUser('User2');
+        $targeted = $this->createComment('Targeted comment');
+        $untouched = $this->createComment('Untouched comment');
+
+        Event::on(
+            CommentJsonService::class,
+            CommentJsonService::EVENT_SERIALIZE_COMMENTS,
+            function (SerializeCommentsEvent $event) use ($targeted) {
+                foreach ($event->comments as $eventComment) {
+                    if ($eventComment->id === $targeted->id) {
+                        $event->addData($eventComment->id, 'reportcontent', ['reported' => true]);
+                    }
+                }
+            },
+        );
+
+        $window = CommentJsonService::create($this->post())->serializeWindow();
+        $byId = [];
+        foreach ($window['comments'] as $serialized) {
+            $byId[$serialized['id']] = $serialized;
+        }
+
+        $this->assertSame(['reportcontent' => ['reported' => true]], $byId[$targeted->id]['extensions']);
+        $this->assertEquals((object)[], $byId[$untouched->id]['extensions']);
+    }
+
+    public function testSerializeWindowFiresTheBatchEventExactlyOnce()
+    {
+        $this->becomeUser('User2');
+        $root = $this->createComment('Root with replies');
+        $this->createComment('Reply 1', $root);
+        $this->createComment('Reply 2', $root);
+        $this->createComment('Standalone root');
+
+        $fireCount = 0;
+        Event::on(
+            CommentJsonService::class,
+            CommentJsonService::EVENT_SERIALIZE_COMMENTS,
+            function () use (&$fireCount) {
+                $fireCount++;
+            },
+        );
+
+        CommentJsonService::create($this->post())->serializeWindow();
+
+        $this->assertSame(1, $fireCount);
+    }
+
+    public function testSerializeWindowBatchIncludesLoadedChildPreviews()
+    {
+        $this->becomeUser('User2');
+        $root = $this->createComment('Root with replies');
+        $reply1 = $this->createComment('Reply 1', $root);
+        $reply2 = $this->createComment('Reply 2', $root);
+
+        $batchIds = [];
+        Event::on(
+            CommentJsonService::class,
+            CommentJsonService::EVENT_SERIALIZE_COMMENTS,
+            function (SerializeCommentsEvent $event) use (&$batchIds) {
+                foreach ($event->comments as $eventComment) {
+                    $batchIds[] = $eventComment->id;
+                }
+            },
+        );
+
+        CommentJsonService::create($this->post())->serializeWindow();
+
+        // Roots AND their loaded child-preview replies are all part of the single batch.
+        $this->assertContains($root->id, $batchIds);
+        $this->assertContains($reply1->id, $batchIds);
+        $this->assertContains($reply2->id, $batchIds);
+    }
+
+    public function testSerializeCommentFiresTheBatchEventExactlyOnce()
+    {
+        $this->becomeUser('User2');
+        $comment = $this->createComment('Single comment path');
+
+        $fireCount = 0;
+        Event::on(
+            CommentJsonService::class,
+            CommentJsonService::EVENT_SERIALIZE_COMMENTS,
+            function () use (&$fireCount) {
+                $fireCount++;
+            },
+        );
+
+        CommentJsonService::create($comment)->serializeComment($comment);
+
+        $this->assertSame(1, $fireCount);
+    }
+
+    public function testSerializeCommentOfRootAlsoBatchesItsChildPreviewsInOneEvent()
+    {
+        $this->becomeUser('User2');
+        $root = $this->createComment('Root with a reply');
+        $reply = $this->createComment('A reply', $root);
+
+        $fireCount = 0;
+        $batchIds = [];
+        Event::on(
+            CommentJsonService::class,
+            CommentJsonService::EVENT_SERIALIZE_COMMENTS,
+            function (SerializeCommentsEvent $event) use (&$fireCount, &$batchIds) {
+                $fireCount++;
+                foreach ($event->comments as $eventComment) {
+                    $batchIds[] = $eventComment->id;
+                }
+            },
+        );
+
+        CommentJsonService::create($root)->serializeComment($root);
+
+        $this->assertSame(1, $fireCount);
+        $this->assertContains($root->id, $batchIds);
+        $this->assertContains($reply->id, $batchIds);
     }
 
     /**
