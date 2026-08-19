@@ -107,36 +107,38 @@
             </div>
 
             <div v-if="comment.children" class="nested-comments-root">
-                <div class="comment">
-                    <template v-for="child in childItems" :key="revisionKey(child)">
-                        <hr class="comment-separator">
-                        <CommentEntry
-                            :comment="child"
-                            :is-nested="true"
-                            :can-comment="canComment"
-                            :form-shell-html="formShellHtml"
-                            :submit-icon-html="submitIconHtml"
-                            :page-size="pageSize"
-                            @entry-removed="onChildRemoved"
-                            @entry-updated="onChildUpdated"
-                        />
-                    </template>
+                <div class="bg-light p-2 mt-3 comment-container" :class="{ 'd-none': !childItems.length && !replyOpen }">
+                    <div class="comment">
+                        <template v-for="child in childItems" :key="revisionKey(child)">
+                            <hr class="comment-separator">
+                            <CommentEntry
+                                :comment="child"
+                                :is-nested="true"
+                                :can-comment="canComment"
+                                :form-shell-html="formShellHtml"
+                                :submit-icon-html="submitIconHtml"
+                                :page-size="pageSize"
+                                @entry-removed="onChildRemoved"
+                                @entry-updated="onChildUpdated"
+                            />
+                        </template>
 
-                    <div v-if="childHasMore" class="showMore">
-                        <hr class="comment-separator">
-                        <a href="#" :class="{ disabled: busyReplies }" @click.prevent="loadMoreReplies">{{ moreRepliesLabel }}</a>
+                        <div v-if="childHasMore" class="showMore">
+                            <hr class="comment-separator">
+                            <a href="#" :class="{ disabled: busyReplies }" @click.prevent="loadMoreReplies">{{ moreRepliesLabel }}</a>
+                        </div>
                     </div>
-                </div>
 
-                <CommentForm
-                    v-if="replyOpen && formShellHtml"
-                    ref="replyForm"
-                    :shell-html="formShellHtml"
-                    :content-id="comment.contentId"
-                    :parent-comment-id="comment.id"
-                    :submit-icon-html="submitIconHtml"
-                    @created="onReplyCreated"
-                />
+                    <CommentForm
+                        v-if="replyOpen && formShellHtml"
+                        ref="replyForm"
+                        :shell-html="formShellHtml"
+                        :content-id="comment.contentId"
+                        :parent-comment-id="comment.id"
+                        :submit-icon-html="submitIconHtml"
+                        @created="onReplyCreated"
+                    />
+                </div>
             </div>
         </div>
     </div>
@@ -190,6 +192,17 @@
  *   markup has no such extra div between `.comment-message` and the
  *   richtext envelope, and the extra level broke `.comment-message > ...`
  *   child-combinator theme CSS.
+ * - The nested reply list + reply form are wrapped in a
+ *   `.bg-light.p-2.mt-3.comment-container` div (`d-none` while there's
+ *   nothing to show), matching the `.comment-container` the legacy
+ *   `Comments::widget()` template (`comments.php`) renders around the exact
+ *   same content at every nesting level, including this one - dropped
+ *   during the initial island port (P2-6), which cost the nested block its
+ *   padding/background AND left `_comment.scss`'s own
+ *   `.nested-comments-root .comment-container .showMore` rule dead code.
+ *   `CommentSection.vue` already reproduces this same legacy wrapper one
+ *   level up (its `isCollapsed`-driven `.comment-container`), just not this
+ *   nested one.
  *
  * ## Mutation surface (P2-5)
  *

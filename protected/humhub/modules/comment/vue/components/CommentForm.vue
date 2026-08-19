@@ -2,7 +2,7 @@
     <LegacyFormWrapper ref="wrapper" :shell-html="shellHtml" />
     <Teleport :to="teleportTarget" :disabled="!teleportTarget">
         <button
-            type="button"
+            type="submit"
             class="btn btn-accent btn-comment-submit btn-sm"
             :class="{ 'btn-icon-only': submitIconHtml }"
             :aria-label="sendLabel"
@@ -76,11 +76,26 @@
  * protected/humhub/modules/{content,comment}/messages/de/base.php).
  *
  * A native `<button type="submit">` only works because it lives INSIDE the
- * `<form>` the legacy widget rendered server-side; the Vue-owned button is
- * never part of the `__VUEFORM__` shell string itself, so it MUST be
- * `type="button"` with an explicit `@click="onSubmit"` instead of relying on
- * native form submission - a `type="submit"` here would just be an inert
- * button wherever it ends up with no form to submit.
+ * `<form>` the legacy widget rendered server-side; the Vue-owned button was
+ * therefore made `type="button"` with an explicit `@click="onSubmit"`
+ * instead of relying on native form submission - `type="submit"` looked
+ * pointless while the button was a plain sibling of `LegacyFormWrapper`,
+ * outside the `<form>` entirely.
+ *
+ * **Update (Ctrl+S bridge fix):** that premise stopped holding the moment
+ * "Submit button placement" below started Teleporting the button INTO
+ * `.richtext-create-buttons` - which is itself INSIDE the shell's `<form>`
+ * (see `commentFormShell.php`). The button is now `type="submit"` again
+ * (with `@click="onSubmit"` still attached - see the note at the bottom of
+ * this section for why both stay). Root cause this fixes: the legacy
+ * richtext editor's Ctrl+S/STRG+S shortcut (`humhub-prosemirror-richtext`'s
+ * `src/editor/core/plugins/save/plugin.js`, bundled into
+ * `dist/humhub-editor.js` - core's own `humhub.ui.richtext.prosemirror.js`
+ * never sets `keySubmit: false`, so it's always active) does exactly
+ * `context.editor.$.closest('form').find('[type="submit"]').trigger('click')`
+ * on `event.ctrlKey && event.key === 's'` - with `type="button"`, that
+ * `[type="submit"]` lookup came up empty and the shortcut silently did
+ * nothing.
  *
  * ## Submit button placement (Teleport into the shell's button group)
  *
@@ -120,10 +135,19 @@
  * `sendLabel` renders as VISIBLE text instead - a Submit button must never
  * end up with neither a label nor an icon.
  *
- * The native `submit` listener (see `mounted()`) stays wired too — harmless,
- * and still catches a programmatic/synthetic `submit()` call on the form
- * (e.g. an autofill or a browser extension) even though nothing in this
- * shell can trigger one through user interaction anymore.
+ * The native `submit` listener (see `mounted()`) stays wired too - it still
+ * catches a programmatic/synthetic `submit()` call on the form (e.g. an
+ * autofill or a browser extension), and it's the reason the Ctrl+S chain
+ * above needed no separate wiring: the button's own `@click="onSubmit"`
+ * calls `event.preventDefault()` on the CLICK first, which cancels the
+ * button's pending form-submission activation before it can dispatch a
+ * `submit` event - so a real user click OR the plugin's `.trigger('click')`
+ * both still resolve to exactly one `onSubmit()` call, never two. `@click`
+ * is kept explicit (rather than relying solely on this listener) because
+ * jsdom-based tests drive the button via a plain synthetic `dispatchEvent`
+ * that never runs a `type="submit"` button's native activation behavior at
+ * all - see commentMutations.test.js's "keyboard submit (Ctrl+S bridge)"
+ * describe block for the real-jQuery-`.trigger()` regression test.
  *
  * ## Unsaved-changes guard (P2-7 fix)
  *

@@ -25,7 +25,15 @@
                     }
                 }
 
-                &:hover > .nav-pills.preferences  > .dropdown > .dropdown-toggle {
+                // :hover matches every ancestor of the hovered element (that's
+                // how the pseudo-class works, regardless of DOM nesting depth in
+                // between) - a nested reply's .single-comment is also a descendant
+                // of its parent .single-comment, so hovering the reply would reveal
+                // the PARENT's own dropdown-toggle too without the :not(:has(...))
+                // guard below. That guard keeps only the innermost hovered
+                // .single-comment "active"; replies never nest further (one level
+                // only, see CommentEntry.vue), so a single :has() check suffices.
+                &:hover:not(:has(.single-comment:hover)) > .nav-pills.preferences > .dropdown > .dropdown-toggle {
                     visibility: visible;
                 }
 

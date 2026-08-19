@@ -215,8 +215,11 @@ describe('Comment mutations + live updates', () => {
 
         // The ONE retained synthetic-submit test: the native 'submit'
         // listener (see CommentForm's mounted()) stays wired for a
-        // programmatic/synthetic submit() call, even though nothing in the
-        // rendered shell can trigger one through user interaction anymore.
+        // programmatic/synthetic submit() call (e.g. autofill, a browser
+        // extension, or - see the "keyboard submit" describe block below -
+        // the legacy richtext editor's own Ctrl+S handler clicking the
+        // button directly, which a real click.preventDefault() keeps from
+        // ALSO firing this event).
         it('renders field errors on 422 without clearing the editor or the list (native submit path)', async () => {
             globalThis.humhubStubs.client.post = vi.fn(() => Promise.reject({
                 status: 422,
@@ -257,6 +260,74 @@ describe('Comment mutations + live updates', () => {
             await vi.waitFor(() => expect(globalThis.humhubStubs.logCalls.error.length).toBeGreaterThan(0));
 
             expect(wrapper.find('.invalid-feedback').exists()).toBe(false);
+        });
+    });
+
+    // Bug: Ctrl+S (STRG+S) in the richtext editor stopped submitting the
+    // comment form after the Vue island port. The legacy keyboard chain
+    // lives in the vendored `humhub-prosemirror-richtext` package
+    // (src/editor/core/plugins/save/plugin.js, bundled into
+    // dist/humhub-editor.js) - its `handleKeyDown` intercepts a bare Ctrl+S
+    // (`event.ctrlKey && event.key === 's'`), then does exactly:
+    //   context.editor.$.closest('form').find('[type="submit"]').trigger('click')
+    // (`context.editor.$` is the richtext widget's own root element, the
+    // same node RICHTEXT_SELECTOR finds below). The Vue-owned submit button
+    // used to be `type="button"` (see CommentForm's "Submit button"
+    // docblock section, P2-7) so that `[type="submit"]` lookup came up
+    // empty and the shortcut silently did nothing - even though, since
+    // CommentForm.vue's own "Submit button placement" docblock section
+    // (P2-7), the button had ALREADY started Teleporting into
+    // `.richtext-create-buttons`, which is INSIDE the shell's `<form>`
+    // (see commentFormShell.php) - `closest('form')` would have found it
+    // fine, only the type attribute was wrong.
+    //
+    // jsdom can't load the real ProseMirror plugin bundle, so this
+    // reproduces its exact DOM contract with real jQuery (the same library
+    // and the same `.trigger()` the plugin itself calls) instead of
+    // @vue/test-utils' own `.trigger()` (a plain jsdom `dispatchEvent()`
+    // that, unlike jQuery's, never falls back to the element's native
+    // `.click()` method and so never reaches a `type="submit"` button's
+    // form-submission activation behavior at all here).
+    describe('keyboard submit (Ctrl+S bridge)', () => {
+        it('reaches the submit button via closest(form).find([type="submit"]).trigger("click"), same as the legacy keymap plugin', async () => {
+            // A realistic resolved comment, not the default {} stub - CommentSection
+            // renders whatever comes back as a fresh CommentEntry, which needs a real
+            // `author` etc.; unrelated to what this test actually verifies.
+            globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve(makeComment({ id: 2 })));
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: emptyWindow(), canComment: true, formShellHtml: buildShell() },
+            });
+
+            // The button Teleports into .richtext-create-buttons (INSIDE the shell's
+            // <form>) only from the tick after mount (see CommentForm's own "Submit
+            // button placement" docblock section / the dedicated Teleport-target test
+            // above) - before that it renders disabled/in-place, still findable by
+            // class but not yet a descendant of <form>.
+            await wrapper.vm.$nextTick();
+
+            const editor = jQuery(wrapper.find(RICHTEXT_SELECTOR).element).data('humhub-ui-richtexteditor');
+
+            // Exactly the two-step lookup save/plugin.js's handleKeyDown performs on Ctrl+S.
+            const $form = editor.$.closest('form');
+            expect($form.length).toBe(1);
+            const $submit = $form.find('[type="submit"]');
+            expect($submit.length).toBe(1);
+            expect($submit.hasClass('btn-comment-submit')).toBe(true);
+
+            $submit.trigger('click');
+
+            await vi.waitFor(() => expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith(
+                '/comment/comment/create?contentId=42',
+                { data: { message: 'hello', fileList: [] } },
+            ));
+            // A real click on a type="submit" button would, if not cancelled,
+            // ALSO fire a native 'submit' event that CommentForm listens for
+            // (see mounted()) - onSubmit()'s own event.preventDefault() (run
+            // for the click first) heads that off, so this fires exactly
+            // once rather than double-posting.
+            expect(globalThis.humhubStubs.client.post).toHaveBeenCalledTimes(1);
         });
     });
 

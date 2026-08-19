@@ -343,6 +343,97 @@ describe('CommentSection', () => {
             const nestedControls = wrapper.find('.nested-comments-root .single-comment .wall-entry-controls');
             expect(nestedControls.text()).not.toContain('Reply');
         });
+
+        // Bug: the nested reply list rendered with no padding/background at all -
+        // CommentEntry.vue's nested block (`.nested-comments-root > .comment > ...`)
+        // dropped the `.bg-light.p-2.mt-3.comment-container` wrapper the legacy
+        // `Comments::widget()` template (`comments.php`) renders around the exact same
+        // content at EVERY nesting level, root included - CommentSection.vue already
+        // reproduces that same wrapper one level up (see its own "legacy comment-container
+        // classes" test above), just not this nested one.
+        describe('nested .comment-container wrapper (padding/background parity)', () => {
+            it('wraps an existing reply list in the legacy classes, visible (no d-none)', () => {
+                const root = makeComment({
+                    id: 1,
+                    children: { total: 1, items: [makeComment({ id: 10, parentCommentId: 1, children: null })], hasMore: false },
+                });
+
+                const wrapper = mount(CommentSection, {
+                    ...mountOptions(),
+                    props: { contentId: 42, initial: { comments: [root], prevCount: 0, nextCount: 0, total: 1 } },
+                });
+
+                // .nested-comments-root > .comment-container > .comment > .single-comment
+                const nestedContainer = wrapper.find('.nested-comments-root > .comment-container');
+                expect(nestedContainer.exists()).toBe(true);
+                expect(nestedContainer.classes()).toEqual(expect.arrayContaining(['bg-light', 'p-2', 'mt-3', 'comment-container']));
+                expect(nestedContainer.classes()).not.toContain('d-none');
+                expect(nestedContainer.find('.comment .single-comment').exists()).toBe(true);
+            });
+
+            it('keeps the wrapper d-none (no padding/background) with no replies and the reply form closed, then reveals it once the reply form opens', async () => {
+                const root = makeComment({ id: 1, children: { total: 0, items: [], hasMore: false } });
+
+                const wrapper = mount(CommentSection, {
+                    ...mountOptions(),
+                    props: {
+                        contentId: 42,
+                        initial: { comments: [root], prevCount: 0, nextCount: 0, total: 1 },
+                        canComment: true,
+                        formShellHtml: buildShell(),
+                    },
+                });
+
+                const nestedContainer = () => wrapper.find('.nested-comments-root > .comment-container');
+                expect(nestedContainer().classes()).toContain('d-none');
+
+                await wrapper.find('.single-comment .wall-entry-controls a').trigger('click'); // "Reply"
+
+                expect(nestedContainer().classes()).not.toContain('d-none');
+            });
+        });
+
+        // Bug: hovering a REPLY also revealed the PARENT comment's own `⋮` controls
+        // dropdown (browser-verified with Playwright against the compiled hover rule -
+        // jsdom can't evaluate `:hover`, hence the structural assertions below instead).
+        //
+        // Root cause: `:hover` matches every ANCESTOR of the hovered element, not just
+        // the element itself - a nested reply's `.single-comment` is a DESCENDANT of its
+        // parent's `.single-comment` (this is true of both the legacy DOM and this one -
+        // restoring the `.comment-container` wrapper above does NOT change that), so
+        // `.single-comment:hover > .nav-pills.preferences > .dropdown > .dropdown-toggle`
+        // (_comment.scss) matched for the PARENT too whenever a reply was hovered, since
+        // the parent's own `.nav-pills.preferences` (rendered by CommentControls, the
+        // FIRST child of `.single-comment` - see below) is just as much a direct child of
+        // a now-`:hover`-matching `.single-comment` as the reply's own is of its.
+        //
+        // Fix (_comment.scss): `&:hover:not(:has(.single-comment:hover)) > .nav-pills...`
+        // - the `:not(:has(...))` guard keeps only the INNERMOST hovered `.single-comment`
+        // "active" (replies never nest further, so one `:has()` check suffices). That CSS
+        // fix depends on `.nav-pills.preferences` being a DIRECT CHILD of `.single-comment`
+        // at every nesting level, which these assertions confirm structurally.
+        it('renders CommentControls\' .nav-pills.preferences as a direct child of .single-comment at both nesting levels (precondition for the hover-scoping CSS fix)', () => {
+            const root = makeComment({
+                id: 1,
+                children: { total: 1, items: [makeComment({ id: 10, parentCommentId: 1, children: null })], hasMore: false },
+            });
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { comments: [root], prevCount: 0, nextCount: 0, total: 1 } },
+            });
+
+            const rootComment = wrapper.find('#comment_1');
+            expect(rootComment.element.querySelector(':scope > .nav-pills.preferences')).not.toBeNull();
+
+            const replyComment = wrapper.find('#comment_10');
+            expect(replyComment.element.querySelector(':scope > .nav-pills.preferences')).not.toBeNull();
+
+            // ... and the reply IS a descendant of the root's .single-comment box (via
+            // .flex-grow-1 > .nested-comments-root > .comment-container > .comment), which
+            // is exactly why hovering it also matches `.single-comment:hover` for the root.
+            expect(rootComment.element.contains(replyComment.element)).toBe(true);
+        });
     });
 
     describe('blocked authors', () => {

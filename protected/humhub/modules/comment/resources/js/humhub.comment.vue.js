@@ -253,7 +253,7 @@
           disabled: !$data.teleportTarget
         }, [
           vue$1.createElementVNode("button", {
-            type: "button",
+            type: "submit",
             class: vue$1.normalizeClass(["btn btn-accent btn-comment-submit btn-sm", { "btn-icon-only": $props.submitIconHtml }]),
             "aria-label": $options.sendLabel,
             disabled: $data.busy,
@@ -796,72 +796,82 @@
           }, null, 8, ["context"])
         ]),
         $props.comment.children ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_17, [
-          vue$1.createElementVNode("div", _hoisted_18, [
-            (vue$1.openBlock(true), vue$1.createElementBlock(
-              vue$1.Fragment,
-              null,
-              vue$1.renderList($data.childItems, (child) => {
-                return vue$1.openBlock(), vue$1.createElementBlock(
+          vue$1.createElementVNode(
+            "div",
+            {
+              class: vue$1.normalizeClass(["bg-light p-2 mt-3 comment-container", { "d-none": !$data.childItems.length && !$data.replyOpen }])
+            },
+            [
+              vue$1.createElementVNode("div", _hoisted_18, [
+                (vue$1.openBlock(true), vue$1.createElementBlock(
                   vue$1.Fragment,
-                  {
-                    key: $options.revisionKey(child)
-                  },
-                  [
-                    _cache[7] || (_cache[7] = vue$1.createElementVNode(
-                      "hr",
-                      { class: "comment-separator" },
-                      null,
-                      -1
-                      /* CACHED */
-                    )),
-                    vue$1.createVNode(_component_CommentEntry, {
-                      comment: child,
-                      "is-nested": true,
-                      "can-comment": $props.canComment,
-                      "form-shell-html": $props.formShellHtml,
-                      "submit-icon-html": $props.submitIconHtml,
-                      "page-size": $props.pageSize,
-                      onEntryRemoved: $options.onChildRemoved,
-                      onEntryUpdated: $options.onChildUpdated
-                    }, null, 8, ["comment", "can-comment", "form-shell-html", "submit-icon-html", "page-size", "onEntryRemoved", "onEntryUpdated"])
-                  ],
-                  64
-                  /* STABLE_FRAGMENT */
-                );
-              }),
-              128
-              /* KEYED_FRAGMENT */
-            )),
-            $data.childHasMore ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_19, [
-              _cache[8] || (_cache[8] = vue$1.createElementVNode(
-                "hr",
-                { class: "comment-separator" },
-                null,
-                -1
-                /* CACHED */
-              )),
-              vue$1.createElementVNode(
-                "a",
-                {
-                  href: "#",
-                  class: vue$1.normalizeClass({ disabled: $data.busyReplies }),
-                  onClick: _cache[3] || (_cache[3] = vue$1.withModifiers((...args) => $options.loadMoreReplies && $options.loadMoreReplies(...args), ["prevent"]))
-                },
-                vue$1.toDisplayString($options.moreRepliesLabel),
-                3
-                /* TEXT, CLASS */
-              )
-            ])) : vue$1.createCommentVNode("v-if", true)
-          ]),
-          $data.replyOpen && $props.formShellHtml ? (vue$1.openBlock(), vue$1.createBlock(_component_CommentForm, {
-            key: 0,
-            ref: "replyForm",
-            "shell-html": $props.formShellHtml,
-            "content-id": $props.comment.contentId,
-            "parent-comment-id": $props.comment.id,
-            "submit-icon-html": $props.submitIconHtml,
-            onCreated: $options.onReplyCreated
-          }, null, 8, ["shell-html", "content-id", "parent-comment-id", "submit-icon-html", "onCreated"])) : vue$1.createCommentVNode("v-if", true)
+                  null,
+                  vue$1.renderList($data.childItems, (child) => {
+                    return vue$1.openBlock(), vue$1.createElementBlock(
+                      vue$1.Fragment,
+                      {
+                        key: $options.revisionKey(child)
+                      },
+                      [
+                        _cache[7] || (_cache[7] = vue$1.createElementVNode(
+                          "hr",
+                          { class: "comment-separator" },
+                          null,
+                          -1
+                          /* CACHED */
+                        )),
+                        vue$1.createVNode(_component_CommentEntry, {
+                          comment: child,
+                          "is-nested": true,
+                          "can-comment": $props.canComment,
+                          "form-shell-html": $props.formShellHtml,
+                          "submit-icon-html": $props.submitIconHtml,
+                          "page-size": $props.pageSize,
+                          onEntryRemoved: $options.onChildRemoved,
+                          onEntryUpdated: $options.onChildUpdated
+                        }, null, 8, ["comment", "can-comment", "form-shell-html", "submit-icon-html", "page-size", "onEntryRemoved", "onEntryUpdated"])
+                      ],
+                      64
+                      /* STABLE_FRAGMENT */
+                    );
+                  }),
+                  128
+                  /* KEYED_FRAGMENT */
+                )),
+                $data.childHasMore ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_19, [
+                  _cache[8] || (_cache[8] = vue$1.createElementVNode(
+                    "hr",
+                    { class: "comment-separator" },
+                    null,
+                    -1
+                    /* CACHED */
+                  )),
+                  vue$1.createElementVNode(
+                    "a",
+                    {
+                      href: "#",
+                      class: vue$1.normalizeClass({ disabled: $data.busyReplies }),
+                      onClick: _cache[3] || (_cache[3] = vue$1.withModifiers((...args) => $options.loadMoreReplies && $options.loadMoreReplies(...args), ["prevent"]))
+                    },
+                    vue$1.toDisplayString($options.moreRepliesLabel),
+                    3
+                    /* TEXT, CLASS */
+                  )
+                ])) : vue$1.createCommentVNode("v-if", true)
+              ]),
+              $data.replyOpen && $props.formShellHtml ? (vue$1.openBlock(), vue$1.createBlock(_component_CommentForm, {
+                key: 0,
+                ref: "replyForm",
+                "shell-html": $props.formShellHtml,
+                "content-id": $props.comment.contentId,
+                "parent-comment-id": $props.comment.id,
+                "submit-icon-html": $props.submitIconHtml,
+                onCreated: $options.onReplyCreated
+              }, null, 8, ["shell-html", "content-id", "parent-comment-id", "submit-icon-html", "onCreated"])) : vue$1.createCommentVNode("v-if", true)
+            ],
+            2
+            /* CLASS */
+          )
         ])) : vue$1.createCommentVNode("v-if", true)
       ])
     ], 10, _hoisted_3$1)), [
