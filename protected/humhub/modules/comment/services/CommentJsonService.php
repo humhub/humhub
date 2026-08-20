@@ -177,7 +177,7 @@ class CommentJsonService
             'updatedAt' => $comment->isUpdated() ? date(DATE_ATOM, strtotime($comment->updated_at)) : null,
             'author' => $blocked ? null : $this->serializeAuthor($comment->createdBy),
             'blocked' => $blocked,
-            'messageOutput' => $blocked ? null : RichText::output($comment->message, ['record' => $comment]),
+            ...$this->serializeMessage($comment, $blocked),
             'attachmentsHtml' => $blocked ? null : ShowFiles::widget(['object' => $comment]),
             'likes' => $this->serializeLikes($comment),
             'canEdit' => $comment->canEdit(),
@@ -256,6 +256,26 @@ class CommentJsonService
         }
 
         return $data;
+    }
+
+    /**
+     * `message`/`messageRenderOptions`: raw markdown plus the client-render options needed to
+     * reproduce, entirely client-side, the exact envelope `RichText::output()`'s HTML string used
+     * to carry - see `RichText::outputMarkdownAndRenderOptions()` and
+     * `docs/develop/ui-js-vuejs-interop.md`, "RichTextOutput". Both null when the author is
+     * blocked, same masking as every other message-derived field.
+     *
+     * @return array{message: string|null, messageRenderOptions: array|null}
+     */
+    private function serializeMessage(Comment $comment, bool $blocked): array
+    {
+        if ($blocked) {
+            return ['message' => null, 'messageRenderOptions' => null];
+        }
+
+        $result = RichText::outputMarkdownAndRenderOptions($comment->message, ['record' => $comment]);
+
+        return ['message' => $result['markdown'], 'messageRenderOptions' => (object)$result['options']];
     }
 
     /**

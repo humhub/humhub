@@ -181,7 +181,7 @@ class CommentsWidgetTest extends HumHubDbTestCase
     private function plainMessages(array $window): array
     {
         return array_map(
-            fn(array $comment) => strip_tags((string)$comment['messageOutput']),
+            fn(array $comment) => (string)$comment['message'],
             $window['comments'],
         );
     }

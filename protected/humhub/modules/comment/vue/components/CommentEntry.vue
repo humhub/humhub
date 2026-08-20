@@ -65,7 +65,8 @@
                         data-ui-markdown
                         data-ui-show-more
                         :data-read-more-text="readMoreLabel"
-                        :output="comment.messageOutput"
+                        :message="comment.message"
+                        :render-options="comment.messageRenderOptions"
                     />
                     <div v-if="comment.attachmentsHtml" v-html="comment.attachmentsHtml"></div>
                 </template>

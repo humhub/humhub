@@ -718,8 +718,9 @@
                 "data-ui-markdown": "",
                 "data-ui-show-more": "",
                 "data-read-more-text": $options.readMoreLabel,
-                output: $props.comment.messageOutput
-              }, null, 8, ["data-read-more-text", "output"]),
+                message: $props.comment.message,
+                "render-options": $props.comment.messageRenderOptions
+              }, null, 8, ["data-read-more-text", "message", "render-options"]),
               $props.comment.attachmentsHtml ? (vue$1.openBlock(), vue$1.createElementBlock("div", {
                 key: 0,
                 innerHTML: $props.comment.attachmentsHtml

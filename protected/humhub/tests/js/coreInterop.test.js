@@ -27,26 +27,186 @@ const mountWithAdditions = (component, props) => mount(component, {
 });
 
 describe('RichTextOutput', () => {
-    it('renders the output html when set', () => {
-        const wrapper = mountWithAdditions(RichTextOutput, {
-            output: '<div class="richtext-output" data-ui-markdown>**hi**</div>',
-        });
-
-        expect(wrapper.find('.richtext-output').exists()).toBe(true);
-        expect(wrapper.html()).toContain('data-ui-markdown');
-    });
-
-    it('renders nothing when output is null', () => {
-        const wrapper = mountWithAdditions(RichTextOutput, { output: null });
+    it('renders nothing when message is null (e.g. a blocked comment)', () => {
+        const wrapper = mountWithAdditions(RichTextOutput, { message: null });
 
         expect(wrapper.find('div').exists()).toBe(false);
+    });
+
+    it('renders nothing when message is an empty string', () => {
+        const wrapper = mountWithAdditions(RichTextOutput, { message: '' });
+
+        expect(wrapper.find('div').exists()).toBe(false);
+    });
+
+    describe('envelope construction (data-* attrs mirroring RichText::output())', () => {
+        it('renders the markdown text as a direct child div carrying the render-options as data-* attrs', () => {
+            const wrapper = mountWithAdditions(RichTextOutput, {
+                message: 'hello world',
+                renderOptions: {
+                    exclude: [],
+                    include: [],
+                    'plugin-options': [],
+                    edit: false,
+                    'ui-richtext': true,
+                    'ui-widget': 'ui.richtext.prosemirror.RichText',
+                    'ui-init': true,
+                },
+            });
+
+            // Root is RichTextOutput's own element (receives attribute fallthrough from the
+            // caller - class/data-ui-markdown/etc, see the "attribute fallthrough" describe
+            // block below); the envelope is a direct CHILD, not the root itself, matching
+            // today's DOM shape one level up (v-html'd envelope nested inside the caller's
+            // own class="comment-message" root) - see commentSection.test.js's own
+            // "flattened RichTextOutput wrapper" regression test.
+            expect(wrapper.element.children.length).toBe(1);
+            const envelope = wrapper.element.children[0];
+
+            expect(envelope.textContent).toBe('hello world');
+            expect(envelope.getAttribute('data-exclude')).toBe('[]');
+            expect(envelope.getAttribute('data-include')).toBe('[]');
+            expect(envelope.getAttribute('data-plugin-options')).toBe('[]');
+            expect(envelope.getAttribute('data-ui-widget')).toBe('ui.richtext.prosemirror.RichText');
+            // Yii's own Html::renderTagAttributes() convention (boolean true -> valueless
+            // attribute, boolean false -> omitted entirely) - v-bind reproduces it natively.
+            expect(envelope.hasAttribute('data-ui-richtext')).toBe(true);
+            expect(envelope.getAttribute('data-ui-richtext')).toBe('');
+            expect(envelope.hasAttribute('data-ui-init')).toBe(true);
+            expect(envelope.hasAttribute('data-edit')).toBe(false);
+        });
+
+        it('omits an absent preset entirely, matching getData()\'s own conditional inclusion', () => {
+            const wrapper = mountWithAdditions(RichTextOutput, {
+                message: 'hi',
+                renderOptions: { 'ui-richtext': true },
+            });
+
+            expect(wrapper.element.children[0].hasAttribute('data-preset')).toBe(false);
+        });
+
+        it('renders a provided preset as a plain string attribute', () => {
+            const wrapper = mountWithAdditions(RichTextOutput, {
+                message: 'hi',
+                renderOptions: { 'ui-richtext': true, preset: 'myPreset' },
+            });
+
+            expect(wrapper.element.children[0].getAttribute('data-preset')).toBe('myPreset');
+        });
+
+        it('defaults to an empty render-options object when none is provided', () => {
+            const wrapper = mountWithAdditions(RichTextOutput, { message: 'hi' });
+
+            const envelope = wrapper.element.children[0];
+            expect(envelope.textContent).toBe('hi');
+            expect(envelope.attributes.length).toBe(0);
+        });
+    });
+
+    describe('XSS: message is text, never raw HTML', () => {
+        it('renders a literal <script> tag as inert escaped text, never as a real element', () => {
+            const wrapper = mountWithAdditions(RichTextOutput, {
+                message: '<script>window.__pwned = true;</script>',
+                renderOptions: { 'ui-richtext': true },
+            });
+
+            expect(wrapper.find('script').exists()).toBe(false);
+            expect(globalThis.__pwned).toBeUndefined();
+            expect(wrapper.element.children[0].textContent).toBe('<script>window.__pwned = true;</script>');
+        });
+
+        it('never uses v-html for the message itself (only trusted oembed fragments may)', () => {
+            const wrapper = mountWithAdditions(RichTextOutput, {
+                message: '<img src=x onerror="window.__pwned = true">',
+                renderOptions: { 'ui-richtext': true },
+            });
+
+            expect(wrapper.find('img').exists()).toBe(false);
+            expect(globalThis.__pwned).toBeUndefined();
+        });
+    });
+
+    describe('oembed previews (options.oembeds)', () => {
+        it('renders no oembed container when there are no oembeds', () => {
+            const wrapper = mountWithAdditions(RichTextOutput, {
+                message: 'hi',
+                renderOptions: { 'ui-richtext': true },
+            });
+
+            expect(wrapper.find('.richtext-oembed-container').exists()).toBe(false);
+        });
+
+        it('rebuilds the hidden .richtext-oembed-container sibling from the oembeds map, keyed by url', () => {
+            const wrapper = mountWithAdditions(RichTextOutput, {
+                message: '[https://example.com/v](oembed:https://example.com/v)',
+                renderOptions: {
+                    'ui-richtext': true,
+                    oembeds: { 'https://example.com/v': '<iframe src="https://example.com/embed"></iframe>' },
+                },
+            });
+
+            const container = wrapper.find('.richtext-oembed-container');
+            expect(container.exists()).toBe(true);
+            expect(container.attributes('style')).toContain('display: none');
+
+            const fragment = container.find('[data-oembed="https://example.com/v"]');
+            expect(fragment.exists()).toBe(true);
+            // Trusted, server-fetched oembed markup - the one deliberate v-html use in this
+            // component (see its own docblock on the trust boundary).
+            expect(fragment.find('iframe').attributes('src')).toBe('https://example.com/embed');
+
+            // Sibling of the envelope, both direct children of RichTextOutput's own root -
+            // matches today's DOM shape (both were part of the same server-rendered string).
+            expect(wrapper.element.children.length).toBe(2);
+        });
+
+        it('renders one fragment per oembed url', () => {
+            const wrapper = mountWithAdditions(RichTextOutput, {
+                message: 'two links',
+                renderOptions: {
+                    'ui-richtext': true,
+                    oembeds: {
+                        'https://example.com/a': '<div>a</div>',
+                        'https://example.com/b': '<div>b</div>',
+                    },
+                },
+            });
+
+            expect(wrapper.findAll('.richtext-oembed-container > [data-oembed]').length).toBe(2);
+        });
+
+        it('does not leak the oembeds map itself onto the envelope as a data-oembeds attribute', () => {
+            const wrapper = mountWithAdditions(RichTextOutput, {
+                message: 'hi',
+                renderOptions: { 'ui-richtext': true, oembeds: { 'https://example.com/v': '<div></div>' } },
+            });
+
+            expect(wrapper.element.children[0].hasAttribute('data-oembeds')).toBe(false);
+        });
+    });
+
+    describe('attribute fallthrough (caller-owned layout/styling)', () => {
+        it('lands class/data-ui-markdown/data-ui-show-more on the root, one level above the envelope', () => {
+            const wrapper = mount(RichTextOutput, {
+                props: { message: 'hi', renderOptions: { 'ui-richtext': true } },
+                attrs: { class: 'comment-message', 'data-ui-markdown': '', 'data-ui-show-more': '', 'data-read-more-text': 'Read more...' },
+                global: { directives: { additions: additionsDirective } },
+            });
+
+            expect(wrapper.classes()).toContain('comment-message');
+            expect(wrapper.attributes('data-ui-markdown')).toBe('');
+            expect(wrapper.attributes('data-read-more-text')).toBe('Read more...');
+            // Not duplicated onto the inner envelope.
+            expect(wrapper.element.children[0].hasAttribute('data-ui-markdown')).toBe(false);
+        });
     });
 
     it('applies ui.additions to the rendered envelope on mount', () => {
         const applyTo = vi.spyOn(globalThis.humhubStubs.additions, 'applyTo');
 
         const wrapper = mountWithAdditions(RichTextOutput, {
-            output: '<div class="richtext-output">hi</div>',
+            message: 'hi',
+            renderOptions: { 'ui-richtext': true },
         });
 
         expect(applyTo).toHaveBeenCalledTimes(1);
@@ -58,20 +218,21 @@ describe('RichTextOutput', () => {
     it('does not apply ui.additions when there is nothing rendered', () => {
         const applyTo = vi.spyOn(globalThis.humhubStubs.additions, 'applyTo');
 
-        mountWithAdditions(RichTextOutput, { output: null });
+        mountWithAdditions(RichTextOutput, { message: null });
 
         expect(applyTo).not.toHaveBeenCalled();
 
         applyTo.mockRestore();
     });
 
-    it('re-applies ui.additions after the output prop changes (updated hook)', async () => {
+    it('re-applies ui.additions after the message prop changes (updated hook)', async () => {
         const wrapper = mountWithAdditions(RichTextOutput, {
-            output: '<div class="richtext-output">before</div>',
+            message: 'before',
+            renderOptions: { 'ui-richtext': true },
         });
 
         const applyTo = vi.spyOn(globalThis.humhubStubs.additions, 'applyTo');
-        await wrapper.setProps({ output: '<div class="richtext-output">after</div>' });
+        await wrapper.setProps({ message: 'after' });
 
         expect(applyTo).toHaveBeenCalledTimes(1);
         expect(wrapper.text()).toBe('after');

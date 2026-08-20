@@ -93,6 +93,25 @@ Each minor release line has its own file with the breaking changes, new APIs and
     token `__VUEFORM__`; the client (`LegacyFormWrapper.vue`) clones the shell per form
     instance (main form, an open reply form per comment, an edit form) by replacing the token
     with a unique id before mounting.
+  - `CommentJsonService`'s serialized comment shape (introduced earlier in this same
+    Unreleased cycle, never part of a stable release) replaced the `messageOutput` HTML
+    envelope string with raw markdown (`message`) plus an explicitly-typed
+    `messageRenderOptions` object — see `RichText::outputMarkdownAndRenderOptions()` and
+    `docs/develop/ui-js-vuejs-interop.md`, "RichTextOutput". `RichTextOutput.vue` now takes
+    `message`/`render-options` props instead of a single `output` HTML-string prop.
+- **Breaking**: `humhub\modules\content\widgets\richtext\extensions\RichTextExtension` gained a
+  new interface method, `getRenderOptions(): array`, needed for
+  `ProsemirrorRichText::getMarkdownAndRenderOptions()` (the client-render counterpart of
+  `RichText::output()` backing the comment payload change above) to let an extension
+  contribute per-record data — e.g. `OembedExtension`'s server-fetched preview HTML — that a
+  client cannot derive from the processed markdown text alone. A custom `RichTextExtension`
+  implementation registered via `AbstractRichText::addExtension()` must add this method
+  (return `[]` if it has nothing to contribute — true for the overwhelming majority of
+  extensions, whose entire contribution already lives in the markdown text their
+  `onBeforeOutput()` returns). Module-search found zero external implementers of this
+  interface as of this writing; extending `RichTextContentExtension`/`RichTextLinkExtension`
+  (the base classes every core extension uses) already provides the new method as a no-op
+  default, so most custom extensions need no change at all.
 - Added `humhub\modules\content\models\Content::EVENT_BEFORE_HARD_DELETE` (`ContentEvent`),
   triggered from `Content::hardDeleteInternal()` right before a `Content` record is physically
   removed. Modules that store rows referencing `content_id` with a restrictive (non-cascading)

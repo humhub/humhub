@@ -20,11 +20,11 @@
     }
   };
   const _hoisted_1$3 = { class: "nav nav-pills preferences" };
-  const _hoisted_2$1 = { class: "nav-item dropdown" };
-  const _hoisted_3 = ["aria-label"];
+  const _hoisted_2$2 = { class: "nav-item dropdown" };
+  const _hoisted_3$1 = ["aria-label"];
   function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("ul", _hoisted_1$3, [
-      vue.createElementVNode("li", _hoisted_2$1, [
+      vue.createElementVNode("li", _hoisted_2$2, [
         vue.createElementVNode("a", {
           href: "#",
           class: vue.normalizeClass($props.toggleClass),
@@ -33,7 +33,7 @@
           "aria-haspopup": "true",
           "aria-expanded": "false",
           "aria-label": $props.toggleAriaLabel
-        }, null, 10, _hoisted_3),
+        }, null, 10, _hoisted_3$1),
         vue.createElementVNode(
           "ul",
           {
@@ -180,16 +180,65 @@
   const C2 = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
   const _sfc_main$1 = {
     props: {
-      output: { type: String, default: null }
+      message: { type: String, default: null },
+      renderOptions: { type: Object, default: () => ({}) }
+    },
+    computed: {
+      envelopeAttrs() {
+        const attrs = {};
+        Object.entries(this.renderOptions || {}).forEach(([key, value]) => {
+          if (key === "oembeds" || value === false || value === null || value === void 0) {
+            return;
+          }
+          if (value === true) {
+            attrs["data-" + key] = "";
+            return;
+          }
+          attrs["data-" + key] = typeof value === "object" ? JSON.stringify(value) : value;
+        });
+        return attrs;
+      },
+      oembeds() {
+        return this.renderOptions && this.renderOptions.oembeds || {};
+      },
+      hasOembeds() {
+        return Object.keys(this.oembeds).length > 0;
+      }
     }
   };
-  const _hoisted_1$1 = ["innerHTML"];
+  const _hoisted_1$1 = { key: 0 };
+  const _hoisted_2$1 = {
+    key: 0,
+    class: "richtext-oembed-container",
+    style: { "display": "none" }
+  };
+  const _hoisted_3 = ["data-oembed", "innerHTML"];
   function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
     const _directive_additions = vue.resolveDirective("additions");
-    return $props.output ? vue.withDirectives((vue.openBlock(), vue.createElementBlock("div", {
-      key: 0,
-      innerHTML: $props.output
-    }, null, 8, _hoisted_1$1)), [
+    return $props.message ? vue.withDirectives((vue.openBlock(), vue.createElementBlock("div", _hoisted_1$1, [
+      vue.createElementVNode(
+        "div",
+        vue.normalizeProps(vue.guardReactiveProps($options.envelopeAttrs)),
+        vue.toDisplayString($props.message),
+        17
+        /* TEXT, FULL_PROPS */
+      ),
+      $options.hasOembeds ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$1, [
+        (vue.openBlock(true), vue.createElementBlock(
+          vue.Fragment,
+          null,
+          vue.renderList($options.oembeds, (html, url) => {
+            return vue.openBlock(), vue.createElementBlock("div", {
+              key: url,
+              "data-oembed": url,
+              innerHTML: html
+            }, null, 8, _hoisted_3);
+          }),
+          128
+          /* KEYED_FRAGMENT */
+        ))
+      ])) : vue.createCommentVNode("v-if", true)
+    ])), [
       [_directive_additions]
     ]) : vue.createCommentVNode("v-if", true);
   }

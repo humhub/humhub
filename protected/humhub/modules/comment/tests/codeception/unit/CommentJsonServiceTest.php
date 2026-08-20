@@ -60,7 +60,14 @@ class CommentJsonServiceTest extends HumHubDbTestCase
             $data['author']['imageAlt'],
         );
         $this->assertArrayHasKey('online', $data['author']);
-        $this->assertStringContainsString('Hello world', $data['messageOutput']);
+        $this->assertSame('Hello world', $data['message']);
+        // Static config bucket (identical for every comment, no exclude/include/preset
+        // configured for this call site) plus the marker/widget attributes the client's
+        // display widget auto-boots from - see RichText::outputMarkdownAndRenderOptions().
+        $this->assertSame([], $data['messageRenderOptions']->exclude);
+        $this->assertSame([], $data['messageRenderOptions']->include);
+        $this->assertTrue($data['messageRenderOptions']->{'ui-richtext'});
+        $this->assertSame('ui.richtext.prosemirror.RichText', $data['messageRenderOptions']->{'ui-widget'});
         $this->assertIsString($data['attachmentsHtml']);
         $this->assertTrue($data['canEdit']);
         $this->assertTrue($data['canDelete']);
@@ -120,7 +127,8 @@ class CommentJsonServiceTest extends HumHubDbTestCase
 
         $this->assertTrue($data['blocked']);
         $this->assertNull($data['author']);
-        $this->assertNull($data['messageOutput']);
+        $this->assertNull($data['message']);
+        $this->assertNull($data['messageRenderOptions']);
         $this->assertNull($data['attachmentsHtml']);
         // Not masked by the blocked-author rule:
         $this->assertNotNull($data['permalink']);
@@ -138,7 +146,8 @@ class CommentJsonServiceTest extends HumHubDbTestCase
 
         $this->assertFalse($data['blocked']);
         $this->assertNotNull($data['author']);
-        $this->assertStringContainsString('Message of blocked author', $data['messageOutput']);
+        $this->assertSame('Message of blocked author', $data['message']);
+        $this->assertNotNull($data['messageRenderOptions']);
     }
 
     public function testChildrenPreviewKeepsSingleLeftoverComment()
@@ -616,7 +625,7 @@ class CommentJsonServiceTest extends HumHubDbTestCase
     private function plainMessages(array $window): array
     {
         return array_map(
-            fn(array $comment) => strip_tags((string)$comment['messageOutput']),
+            fn(array $comment) => (string)$comment['message'],
             $window['comments'],
         );
     }

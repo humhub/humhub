@@ -75,7 +75,8 @@ const makeComment = (overrides = {}) => ({
     updatedAt: null,
     author: makeAuthor(),
     blocked: false,
-    messageOutput: '<div class="richtext-output">Hello world</div>',
+    message: 'Hello world',
+    messageRenderOptions: { 'ui-richtext': true, 'ui-widget': 'ui.richtext.prosemirror.RichText' },
     attachmentsHtml: null,
     likes: { count: 0, liked: false },
     canEdit: false,
@@ -443,7 +444,8 @@ describe('CommentSection', () => {
                 id: 9,
                 blocked: true,
                 author: null,
-                messageOutput: null,
+                message: null,
+                messageRenderOptions: null,
                 attachmentsHtml: null,
                 likes: null,
             });
@@ -743,7 +745,7 @@ describe('CommentSection', () => {
 
     describe('data-ui-markdown + flattened RichTextOutput wrapper (items 5 and 7)', () => {
         it('renders .comment-message as the RichTextOutput root with data-ui-markdown and no intermediate div', () => {
-            const comment = makeComment({ messageOutput: '<div data-ui-richtext>Hello world</div>' });
+            const comment = makeComment({ message: 'Hello world', messageRenderOptions: { 'ui-richtext': true } });
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),

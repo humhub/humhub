@@ -105,7 +105,8 @@ const makeComment = (overrides = {}) => ({
     updatedAt: null,
     author: makeAuthor(),
     blocked: false,
-    messageOutput: '<div class="richtext-output">Hello world</div>',
+    message: 'Hello world',
+    messageRenderOptions: { 'ui-richtext': true, 'ui-widget': 'ui.richtext.prosemirror.RichText' },
     attachmentsHtml: null,
     likes: { count: 0, liked: false },
     canEdit: false,
@@ -197,7 +198,7 @@ describe('Comment mutations + live updates', () => {
             await wrapper.find('.btn-comment-submit').trigger('click');
             expect(globalThis.humhubStubs.client.post).toHaveBeenCalledTimes(1);
 
-            resolvePost(makeComment({ id: 2, messageOutput: '<div>new comment</div>' }));
+            resolvePost(makeComment({ id: 2, message: 'new comment' }));
             await vi.waitFor(() => expect(wrapper.findAll('.single-comment').length).toBe(2));
 
             const ids = wrapper.findAll('.single-comment').map((entry) => entry.attributes('id'));
@@ -439,7 +440,7 @@ describe('Comment mutations + live updates', () => {
         it('appends the reply under its parent and bumps both child and section totals', async () => {
             const root = makeComment({ id: 1, children: { total: 0, items: [], hasMore: false } });
             globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve(
-                makeComment({ id: 10, parentCommentId: 1, children: null, messageOutput: '<div>a reply</div>' }),
+                makeComment({ id: 10, parentCommentId: 1, children: null, message: 'a reply' }),
             ));
 
             const wrapper = mount(CommentSection, {
@@ -488,7 +489,7 @@ describe('Comment mutations + live updates', () => {
         it('does not duplicate an entry when a live event and its own slow create response resolve for the same id', async () => {
             let resolvePost;
             globalThis.humhubStubs.client.post = vi.fn(() => new Promise((resolve) => { resolvePost = resolve; }));
-            const racedComment = makeComment({ id: 77, parentCommentId: null, messageOutput: '<div>raced comment</div>' });
+            const racedComment = makeComment({ id: 77, parentCommentId: null, message: 'raced comment' });
             globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(racedComment));
 
             const wrapper = mount(CommentSection, {
@@ -520,7 +521,7 @@ describe('Comment mutations + live updates', () => {
             const root = makeComment({ id: 1, children: { total: 0, items: [], hasMore: false } });
             let resolvePost;
             globalThis.humhubStubs.client.post = vi.fn(() => new Promise((resolve) => { resolvePost = resolve; }));
-            const racedReply = makeComment({ id: 88, parentCommentId: 1, children: null, messageOutput: '<div>raced reply</div>' });
+            const racedReply = makeComment({ id: 88, parentCommentId: 1, children: null, message: 'raced reply' });
             globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(racedReply));
 
             const wrapper = mount(CommentSection, {
@@ -560,7 +561,7 @@ describe('Comment mutations + live updates', () => {
         // too, since the parent CommentEntry's `onChildUpdated` handler is a
         // separate code path from CommentList's `onEntryUpdated`.
         it('reveals a blocked reply nested under a root comment, remounting just that entry', async () => {
-            const blockedChild = makeComment({ id: 10, parentCommentId: 1, children: null, blocked: true, author: null, messageOutput: null, likes: null });
+            const blockedChild = makeComment({ id: 10, parentCommentId: 1, children: null, blocked: true, author: null, message: null, messageRenderOptions: null, likes: null });
             const root = makeComment({ id: 1, children: { total: 1, items: [blockedChild], hasMore: false } });
 
             const wrapper = mount(CommentSection, {
@@ -570,7 +571,7 @@ describe('Comment mutations + live updates', () => {
 
             expect(wrapper.find('.nested-comments-root .comment-blocked-user').exists()).toBe(true);
 
-            const revealed = makeComment({ id: 10, parentCommentId: 1, children: null, messageOutput: '<div>revealed reply</div>' });
+            const revealed = makeComment({ id: 10, parentCommentId: 1, children: null, message: 'revealed reply' });
             globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(revealed));
 
             await wrapper.find('.nested-comments-root .comment-blocked-user a').trigger('click');
@@ -584,7 +585,7 @@ describe('Comment mutations + live updates', () => {
 
     describe('edit', () => {
         it('fetches the raw message, prefills the booted editor, and swaps the entry (with a key bump) on save', async () => {
-            const comment = makeComment({ id: 1, canEdit: true, messageOutput: '<div>before</div>' });
+            const comment = makeComment({ id: 1, canEdit: true, message: 'before' });
             globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({ message: 'raw **markdown**' }));
 
             const wrapper = mount(CommentSection, {
@@ -614,7 +615,7 @@ describe('Comment mutations + live updates', () => {
             expect(editSubmit.exists()).toBe(true);
 
             globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve(
-                makeComment({ id: 1, canEdit: true, messageOutput: '<div>after</div>' }),
+                makeComment({ id: 1, canEdit: true, message: 'after' }),
             ));
 
             await editSubmit.trigger('click');
@@ -636,7 +637,7 @@ describe('Comment mutations + live updates', () => {
         });
 
         it('discards the fetched message and leaves the entry untouched on cancel', async () => {
-            const comment = makeComment({ id: 1, canEdit: true, messageOutput: '<div>original</div>' });
+            const comment = makeComment({ id: 1, canEdit: true, message: 'original' });
             globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({ message: 'raw markdown' }));
 
             const wrapper = mount(CommentSection, {
@@ -839,7 +840,7 @@ describe('Comment mutations + live updates', () => {
     describe('live updates', () => {
         it('appends a matching root-level event and bumps the count', async () => {
             globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(
-                makeComment({ id: 5, parentCommentId: null, messageOutput: '<div>live comment</div>' }),
+                makeComment({ id: 5, parentCommentId: null, message: 'live comment' }),
             ));
 
             const wrapper = mount(CommentSection, {
@@ -860,7 +861,7 @@ describe('Comment mutations + live updates', () => {
         it('appends a matching reply event under its already-loaded parent', async () => {
             const root = makeComment({ id: 1, children: { total: 0, items: [], hasMore: false } });
             globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(
-                makeComment({ id: 20, parentCommentId: 1, children: null, messageOutput: '<div>live reply</div>' }),
+                makeComment({ id: 20, parentCommentId: 1, children: null, message: 'live reply' }),
             ));
 
             const wrapper = mount(CommentSection, {

@@ -1,32 +1,90 @@
 <template>
-    <div v-if="output" v-html="output" v-additions></div>
+    <div v-if="message" v-additions>
+        <div v-bind="envelopeAttrs">{{ message }}</div>
+        <div v-if="hasOembeds" class="richtext-oembed-container" style="display:none">
+            <div v-for="(html, url) in oembeds" :key="url" :data-oembed="url" v-html="html"></div>
+        </div>
+    </div>
 </template>
 
 <script>
 /**
- * Renders a server-generated RichText envelope inside a Vue island. Generic
- * core interop component — any module's island can embed it wherever it
- * would otherwise `v-html` a `RichText::output()` string (the comment
- * section is the reference consumer, see CommentEntry.vue).
+ * Renders a rich text message inside a Vue island, reconstructing client-side the exact
+ * envelope `RichText::output()` used to build server-side - generic core interop component
+ * (any module's island can embed it wherever it would otherwise render a richtext message;
+ * the comment section, `CommentEntry.vue`, is the reference consumer).
  *
- * `output` MUST be trusted, server-generated HTML produced by
- * `RichText::output()` (see AbstractRichTextEditor::editOutput()) — NEVER
- * raw/untrusted user input. It is bound with `v-html`, and the envelope's
- * markdown source (carried in `data-*` attributes inside it) is rendered to
- * HTML entirely client-side by the legacy richtext addition, exactly as it
- * is today for server-rendered content.
+ * `message` is the RAW, PROCESSED MARKDOWN text (`RichText::outputMarkdownAndRenderOptions()`'s
+ * `markdown` - already run through every extension's `onBeforeOutput()`, e.g. mention
+ * resolution, but crucially NOT HTML-encoded) - it is bound via `{{ message }}` text
+ * interpolation, never `v-html`, so it always lands as an escaped DOM TEXT node: a literal
+ * `<script>` in a message renders as inert text, exactly as `Html::encode($output)` +
+ * `parent::run()` used to guarantee server-side (see `ProsemirrorRichText::run()`), just
+ * enforced client-side instead. `v-additions` (below) boots the legacy richtext DISPLAY
+ * addition on the resulting envelope div, which reads that same text content and renders it
+ * to HTML via markdown-it - the actual markdown -> HTML step has always been client-side, this
+ * only removes the server's now-redundant HTML-encode-and-wrap step from the wire payload.
  *
- * `v-additions` (see humhub.vue.js) boots that addition — and any other
- * legacy enhancer targeting this subtree (timeago, mentions, oembed, ...) —
- * on mount, and re-runs it on update so a re-rendered envelope (e.g. after
- * editing the content) is picked up again.
+ * `renderOptions` mirrors `ProsemirrorRichText::getMarkdownAndRenderOptions()`'s `options`
+ * bucket - the SAME `data-*` attributes (`exclude`/`include`/`plugin-options`/`preset`/`edit`/
+ * `ui-richtext`/`ui-widget`/`ui-init`) `RichText::output()`'s envelope div carried via
+ * `AbstractRichText::getData()` + `JsWidget::setDefaultOptions()`, applied to the envelope
+ * generically (`v-bind="envelopeAttrs"`) so this component never needs updating when a new
+ * plugin option is added server-side. Every key becomes `data-<key>`; `true`/`false`/array
+ * values are normalized to the same wire representation Yii's `Html::renderTagAttributes()`
+ * already used server-side (`true` -> valueless attribute, `false` -> omitted entirely,
+ * array/object -> a JSON-encoded string) - see `envelopeAttrs` below. The envelope's own
+ * auto-generated widget `id` is deliberately never reconstructed: it was always a meaningless
+ * per-render DOM-uniqueness counter (nothing client or theme-CSS-side ever read it - the
+ * `[data-ui-richtext]` selector, not an id, is what locates richtext content).
  *
- * Deliberately classless: the caller owns layout and styling of the
- * rendered output.
+ * **`oembeds` - the one trusted `v-html` in this component.** `OembedExtension` is the one
+ * richtext extension that genuinely needs server participation (a third-party HTTP fetch a
+ * client cannot perform for itself) - see `docs/develop/ui-js-vuejs-interop.md`, "RichTextOutput".
+ * Its server-fetched preview fragments travel in `renderOptions.oembeds` (a plain `{url:
+ * html}` map, the SAME trusted, server-built markup `OembedExtension::buildOembedOutput()`
+ * used to append directly into the old HTML envelope string) and are rendered here via
+ * `v-html`, rebuilding the exact same hidden `.richtext-oembed-container` sibling structure -
+ * trusted because it is server-controlled HTML from `UrlOembed::getOEmbed()`, never raw user
+ * input (unlike `message`, which is ALWAYS escaped text, never `v-html`, precisely because it
+ * IS user input). `oembeds` itself is excluded from `envelopeAttrs` (it is not a `data-*`
+ * attribute, just the one nested config value with its own dedicated rendering).
+ *
+ * Deliberately classless beyond what `renderOptions`/`oembeds` dictate: the caller owns
+ * layout and styling of the rendered output via normal Vue attribute fallthrough onto this
+ * component's own root (`class`, `data-ui-markdown`, `data-ui-show-more`, ... - see
+ * `CommentEntry.vue`), landing one level ABOVE the envelope div, exactly as today.
  */
 export default {
     props: {
-        output: { type: String, default: null },
+        message: { type: String, default: null },
+        renderOptions: { type: Object, default: () => ({}) },
+    },
+    computed: {
+        envelopeAttrs() {
+            const attrs = {};
+
+            Object.entries(this.renderOptions || {}).forEach(([key, value]) => {
+                if (key === 'oembeds' || value === false || value === null || value === undefined) {
+                    return;
+                }
+
+                if (value === true) {
+                    attrs['data-' + key] = '';
+                    return;
+                }
+
+                attrs['data-' + key] = (typeof value === 'object') ? JSON.stringify(value) : value;
+            });
+
+            return attrs;
+        },
+        oembeds() {
+            return (this.renderOptions && this.renderOptions.oembeds) || {};
+        },
+        hasOembeds() {
+            return Object.keys(this.oembeds).length > 0;
+        },
     },
 };
 </script>

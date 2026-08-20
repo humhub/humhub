@@ -104,7 +104,7 @@ class CommentControllerJsonTest extends HumHubDbTestCase
 
         $this->assertSame(200, Yii::$app->response->statusCode);
         $this->assertSame($comment->id, $response->data['id']);
-        $this->assertStringContainsString('Changed', $response->data['messageOutput']);
+        $this->assertStringContainsString('Changed', $response->data['message']);
     }
 
     public function testActionUpdateForbiddenForNonOwner()
