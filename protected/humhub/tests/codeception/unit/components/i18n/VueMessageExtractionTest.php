@@ -46,4 +46,11 @@ VUE);
 
         $this->assertSame(['Hello Vue'], $messages['TestModule.base']);
     }
+
+    public function testFileDiscoveryIncludesVueFiles()
+    {
+        $config = require Yii::getAlias('@humhub/config/i18n.php');
+
+        $this->assertContains('*.vue', $config['only']);
+    }
 }
