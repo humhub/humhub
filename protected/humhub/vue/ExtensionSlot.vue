@@ -26,8 +26,11 @@
  *
  * ## Naming convention
  *
- * Slot names follow `<module>.<region>` (e.g. `comment.controls`, `comment.links`) — the
- * same "who owns this extension point" convention PHP stack widget names already use.
+ * Slot names follow `<module>.<region>` (e.g. `comment.links`) — the same "who owns this
+ * extension point" convention PHP stack widget names already use. A named extension point
+ * that is an array of orderable, removable items (e.g. `CommentControls`' `comment.controls`
+ * menu) is a `DropdownMenu` `menuId` via `registerMenuEntry()`/`removeMenuEntry()` instead —
+ * see docs/develop/ui-js-vuejs-extensions.md, "Menu entries vs. extension slots".
  *
  * ## Silent when empty
  *

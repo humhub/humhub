@@ -16,12 +16,54 @@
     props: {
       toggleAriaLabel: { type: String, required: true },
       alignEnd: { type: Boolean, default: true },
-      toggleClass: { type: String, default: "nav-link dropdown-toggle" }
+      toggleClass: { type: String, default: "nav-link dropdown-toggle" },
+      menuId: { type: String, default: null },
+      entries: { type: Array, default: () => [] },
+      context: { type: Object, default: () => ({}) }
+    },
+    computed: {
+      resolvedEntries() {
+        if (!this.menuId) {
+          return [];
+        }
+        const registry = vue$1.getMenuEntries(this.menuId);
+        const registryById = new Map(registry.entries.map((entry) => [entry.id, entry]));
+        const usedRegistryIds = /* @__PURE__ */ new Set();
+        const merged = this.entries.map((entry) => {
+          const override = registryById.get(entry.id);
+          if (override) {
+            usedRegistryIds.add(entry.id);
+            return override;
+          }
+          return entry;
+        });
+        registry.entries.forEach((entry) => {
+          if (!usedRegistryIds.has(entry.id)) {
+            merged.push(entry);
+          }
+        });
+        const removed = registry.removed;
+        const context = this.context;
+        const sortOrderOf = (entry) => typeof entry.sortOrder === "number" ? entry.sortOrder : 1e3;
+        return merged.filter((entry) => removed.indexOf(entry.id) === -1 && (!entry.condition || entry.condition(context)) && (!entry.component || vue$1.isRegistered(entry.component))).map((entry, index) => ({ entry, index })).sort((a, b) => sortOrderOf(a.entry) - sortOrderOf(b.entry) || a.index - b.index).map((wrapped) => wrapped.entry);
+      }
+    },
+    methods: {
+      resolveLabel(entry) {
+        return typeof entry.label === "function" ? entry.label(this.context) : entry.label;
+      },
+      onEntryClick(entry) {
+        if (typeof entry.onClick === "function") {
+          entry.onClick(this.context);
+        }
+      }
     }
   };
   const _hoisted_1$2 = { class: "nav nav-pills preferences" };
   const _hoisted_2$1 = { class: "nav-item dropdown" };
   const _hoisted_3 = ["aria-label"];
+  const _hoisted_4 = ["onClick"];
+  const _hoisted_5 = ["onClick"];
   function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("ul", _hoisted_1$2, [
       vue.createElementVNode("li", _hoisted_2$1, [
@@ -40,7 +82,49 @@
             class: vue.normalizeClass(["dropdown-menu", { "dropdown-menu-end": $props.alignEnd }])
           },
           [
-            vue.renderSlot(_ctx.$slots, "default")
+            vue.renderSlot(_ctx.$slots, "default"),
+            (vue.openBlock(true), vue.createElementBlock(
+              vue.Fragment,
+              null,
+              vue.renderList($options.resolvedEntries, (entry) => {
+                return vue.openBlock(), vue.createElementBlock("li", {
+                  key: entry.id
+                }, [
+                  entry.component ? (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(entry.component), {
+                    key: 0,
+                    context: $props.context
+                  }, null, 8, ["context"])) : entry.icon ? (vue.openBlock(), vue.createElementBlock("a", {
+                    key: 1,
+                    href: "#",
+                    class: "dropdown-item d-flex align-items-center gap-2",
+                    onClick: vue.withModifiers(($event) => $options.onEntryClick(entry), ["prevent"])
+                  }, [
+                    vue.createElementVNode(
+                      "i",
+                      {
+                        class: vue.normalizeClass("fa fa-" + entry.icon),
+                        "aria-hidden": "true"
+                      },
+                      null,
+                      2
+                      /* CLASS */
+                    ),
+                    vue.createTextVNode(
+                      vue.toDisplayString($options.resolveLabel(entry)),
+                      1
+                      /* TEXT */
+                    )
+                  ], 8, _hoisted_4)) : (vue.openBlock(), vue.createElementBlock("a", {
+                    key: 2,
+                    href: "#",
+                    class: "dropdown-item",
+                    onClick: vue.withModifiers(($event) => $options.onEntryClick(entry), ["prevent"])
+                  }, vue.toDisplayString($options.resolveLabel(entry)), 9, _hoisted_5))
+                ]);
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            ))
           ],
           2
           /* CLASS */

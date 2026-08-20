@@ -45,6 +45,18 @@ humhub.module('vue', function (module, require, $) {
     var slots = Vue.reactive({});
     var slotRegistrationSeq = 0; // registration order tiebreaker, see getSlotComponents()
 
+    // menuId -> [entry, ...] in registration order (see registerMenuEntry()) — a genuine
+    // Vue.reactive() store, same reasoning as `slots` above (DropdownMenu.vue reads
+    // getMenuEntries() from inside a computed, and a brand new menuId's first entry must be
+    // picked up just like a brand new slot name's first entry is).
+    var menuEntries = Vue.reactive({});
+    // menuId -> [entryId, ...] ids removed via removeMenuEntry() — kept separate from
+    // `menuEntries` itself (rather than deleting from it) because a removal must also
+    // suppress a caller's own BUILT-IN entry (passed to DropdownMenu's `entries` prop, never
+    // registered here at all) and must keep suppressing an entry re-registered under the same
+    // id afterwards — see registerMenuEntry()'s and removeMenuEntry()'s own docblocks.
+    var menuRemovals = Vue.reactive({});
+
     // A reservation token (see mountElement) is a plain {} — only a real
     // mounted Vue app instance has an `unmount` function. Used everywhere an
     // `apps` entry needs to be treated as "not actually mounted yet".
@@ -236,6 +248,142 @@ humhub.module('vue', function (module, require, $) {
             .map(function (entry) {
                 return { component: entry.component, sortOrder: entry.sortOrder };
             });
+    };
+
+    /**
+     * Registers (or overrides) one entry of a data-driven menu — the array-of-entries
+     * counterpart to `registerSlotComponent()`'s free-form slots, modeled on the server-side
+     * `humhub\modules\ui\menu\widgets\Menu` API (`addEntry()`/`removeEntry()`, entries with an
+     * `id` and a `sortOrder`) module devs already know. `DropdownMenu.vue`'s `menuId`/`entries`
+     * props read this registry (see `getMenuEntries()` below) to resolve what a given menu
+     * actually renders. See docs/develop/ui-js-vuejs-extensions.md, "Menu entries".
+     *
+     * `entry` shape:
+     *  - `id` (required) — unique per `menuId`. Registering the same (menuId, id) pair again
+     *    REPLACES the existing entry in place (same position, for sort-tie purposes) — this is
+     *    the supported override mechanism, unlike `registerSlotComponent()`'s "first
+     *    registration wins" rule. A module intentionally replacing another module's (or core's
+     *    own) entry registers under that same id.
+     *  - `label` (string, or `(context) => string`) — required unless `component` is given.
+     *  - `icon` (string, optional) — an icon name in the same namespace
+     *    `humhub\modules\ui\icon\widgets\Icon::get()` uses (e.g. `'pencil'`), rendered as
+     *    `<i class="fa fa-<icon>">` — the plain Font Awesome class the rest of the app's
+     *    hand-authored (non-`Button`-widget) markup already uses for icons (see
+     *    `CommentEntry.vue`'s edited-marker icon).
+     *  - `sortOrder` (number, default `1000`) — ascending, like PHP menu entries.
+     *  - `condition` (`(context) => boolean`, optional) — omit to always show.
+     *  - `onClick` (`(context) => void`, optional) — ignored when `component` is set.
+     *  - `component` (string, optional) — a name registered via `register()`; when set, this
+     *    entry renders that component instead of the built-in `<a class="dropdown-item">`,
+     *    passed a single `context` prop (not spread, unlike `ExtensionSlot`'s `v-bind`) —
+     *    `label`/`icon`/`onClick` are ignored. Required unless `label` is given.
+     *
+     * Validation failures (missing `menuId`, missing/non-unique-shaped `entry.id`, or neither
+     * `label` nor `component` given) log at error level and register nothing — the same
+     * "malformed call is a bug in the caller, not tolerable input" stance `register()` and
+     * `registerSlotComponent()` take on their own required arguments.
+     */
+    var registerMenuEntry = function (menuId, entry) {
+        if (typeof menuId !== 'string' || !menuId) {
+            log.error('Invalid menu id "' + menuId + '" — must be a non-empty string');
+            return;
+        }
+
+        if (!entry || typeof entry !== 'object') {
+            log.error('Invalid menu entry for menu "' + menuId + '" — an entry object is required');
+            return;
+        }
+
+        if (typeof entry.id !== 'string' || !entry.id) {
+            log.error('Invalid menu entry id for menu "' + menuId + '" — entry.id must be a non-empty string');
+            return;
+        }
+
+        var hasLabel = typeof entry.label === 'string' || typeof entry.label === 'function';
+        var hasComponent = typeof entry.component === 'string' && entry.component !== '';
+        if (!hasLabel && !hasComponent) {
+            log.error('Invalid menu entry "' + entry.id + '" for menu "' + menuId + '" — either label or component is required');
+            return;
+        }
+
+        var resolved = {
+            id: entry.id,
+            label: entry.label,
+            icon: entry.icon || null,
+            sortOrder: typeof entry.sortOrder === 'number' ? entry.sortOrder : 1000,
+            condition: typeof entry.condition === 'function' ? entry.condition : null,
+            onClick: typeof entry.onClick === 'function' ? entry.onClick : null,
+            component: hasComponent ? entry.component : null,
+        };
+
+        var entries = menuEntries[menuId] || (menuEntries[menuId] = []);
+        var existingIndex = entries.findIndex(function (e) { return e.id === entry.id; });
+        if (existingIndex === -1) {
+            entries.push(resolved);
+        } else {
+            // In-place replace (not remove + push) — keeps this id's position among entries
+            // sharing a sortOrder stable across an override, instead of bumping it to the back.
+            entries.splice(existingIndex, 1, resolved);
+        }
+    };
+
+    /**
+     * Records that `entryId` of menu `menuId` must not render, regardless of whether it came
+     * from a `registerMenuEntry()` call or is one of the consuming component's own BUILT-IN
+     * entries (passed via `DropdownMenu`'s `entries` prop, never registered here at all) —
+     * `DropdownMenu`'s resolution pipeline cross-references both against this same removal set
+     * by id. See `getMenuEntries()` and docs/develop/ui-js-vuejs-extensions.md, "Menu entries".
+     *
+     * Removals are permanent and win over later registrations of the same id: there is no
+     * "un-remove". A module that decides an id should never appear again does not have to race
+     * load order against a module that might (re-)register it afterwards — whichever order the
+     * two calls happen in, the removal wins. Modules that need a *toggleable* presence should
+     * use `condition` on their own entry instead of remove/re-register.
+     */
+    var removeMenuEntry = function (menuId, entryId) {
+        if (typeof menuId !== 'string' || !menuId) {
+            log.error('Invalid menu id "' + menuId + '" — must be a non-empty string');
+            return;
+        }
+
+        if (typeof entryId !== 'string' || !entryId) {
+            log.error('Invalid menu entry id to remove from menu "' + menuId + '" — must be a non-empty string');
+            return;
+        }
+
+        var removed = menuRemovals[menuId] || (menuRemovals[menuId] = []);
+        if (removed.indexOf(entryId) === -1) {
+            removed.push(entryId);
+        }
+    };
+
+    /**
+     * Returns `{entries, removed}` for `menuId` — `entries` are the RAW entries registered via
+     * `registerMenuEntry()` (registration order, not merged with any caller's built-ins and not
+     * sorted — that is `DropdownMenu`'s own resolution job), `removed` is the list of ids
+     * `removeMenuEntry()` recorded. Both are plain arrays read from the reactive `menuEntries`/
+     * `menuRemovals` stores, so a computed reading this (directly, or through `DropdownMenu`)
+     * re-evaluates on every future registration/removal for this `menuId`, including the very
+     * first one — same reactivity guarantee as `getSlotComponents()`.
+     */
+    var getMenuEntries = function (menuId) {
+        var entries = menuEntries[menuId] || [];
+        var removed = menuRemovals[menuId] || [];
+
+        return {
+            entries: entries.map(function (entry) {
+                return {
+                    id: entry.id,
+                    label: entry.label,
+                    icon: entry.icon,
+                    sortOrder: entry.sortOrder,
+                    condition: entry.condition,
+                    onClick: entry.onClick,
+                    component: entry.component,
+                };
+            }),
+            removed: removed.slice(),
+        };
     };
 
     var componentFor = function (element) {
@@ -512,6 +660,9 @@ humhub.module('vue', function (module, require, $) {
         isRegistered: isRegistered,
         registerSlotComponent: registerSlotComponent,
         getSlotComponents: getSlotComponents,
+        registerMenuEntry: registerMenuEntry,
+        removeMenuEntry: removeMenuEntry,
+        getMenuEntries: getMenuEntries,
         mountElement: mountElement,
         unmountElement: unmountElement,
         getApp: getApp,
