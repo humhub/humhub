@@ -76,10 +76,11 @@ describe('UiModal', () => {
         expect(wrapper.emitted('update:show')).toEqual([[false]]);
     });
 
-    it('closes on a backdrop click (clicking the .modal root itself)', async () => {
+    it('closes on a backdrop click (mousedown AND click both targeting the .modal root)', async () => {
         mountModal({ props: { show: true, title: 'T' } });
         await flushPromises();
 
+        dialog().dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
         dialog().dispatchEvent(new MouseEvent('click', { bubbles: true }));
 
         expect(wrapper.emitted('update:show')).toEqual([[false]]);
@@ -89,13 +90,40 @@ describe('UiModal', () => {
         mountModal({ props: { show: true, title: 'T' } });
         await flushPromises();
 
-        dialog().querySelector('.modal-body').dispatchEvent(new MouseEvent('click', { bubbles: true }));
+        const body = dialog().querySelector('.modal-body');
+        body.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+        body.dispatchEvent(new MouseEvent('click', { bubbles: true }));
 
         expect(wrapper.emitted('update:show')).toBeUndefined();
     });
 
     it('does not close on a backdrop click when backdropClose is false', async () => {
         mountModal({ props: { show: true, title: 'T', backdropClose: false } });
+        await flushPromises();
+
+        dialog().dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+        dialog().dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+        expect(wrapper.emitted('update:show')).toBeUndefined();
+    });
+
+    // Text-selection drag: mousedown starts inside the dialog content, the selection is
+    // dragged out and released over the backdrop - the browser resolves the resulting
+    // `click`'s target from the mouseup point, so it fires on the `.modal` root (passing
+    // `.self`) even though the interaction was never a backdrop click. See the "Backdrop"
+    // docblock section on UiModal.vue for the mousedown+click gating this guards against.
+    it('does not close when mousedown starts inside the dialog but the click ends on the root', async () => {
+        mountModal({ props: { show: true, title: 'T' } });
+        await flushPromises();
+
+        dialog().querySelector('.modal-body').dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+        dialog().dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+        expect(wrapper.emitted('update:show')).toBeUndefined();
+    });
+
+    it('does not close on a backdrop click with no preceding mousedown at all', async () => {
+        mountModal({ props: { show: true, title: 'T' } });
         await flushPromises();
 
         dialog().dispatchEvent(new MouseEvent('click', { bubbles: true }));

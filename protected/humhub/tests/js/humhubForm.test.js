@@ -46,6 +46,56 @@ describe('HumHubForm', () => {
             wrapper.vm.setErrors({ body: ['second'] });
             expect(wrapper.vm.errors).toEqual({ body: ['second'] });
         });
+
+        it('clears (rather than corrupts) the error map when given a non-object payload, once unwrapped', () => {
+            const wrapper = mountForm({}, []);
+            wrapper.vm.setErrors({ title: ['first'] });
+            wrapper.vm.setErrors('oops');
+            expect(wrapper.vm.errors).toEqual({});
+        });
+
+        it('also clears on an array or null payload (same non-plain-object guard)', () => {
+            const wrapper = mountForm({}, []);
+            wrapper.vm.setErrors({ title: ['first'] });
+            wrapper.vm.setErrors(['oops']);
+            expect(wrapper.vm.errors).toEqual({});
+
+            wrapper.vm.setErrors({ title: ['first'] });
+            wrapper.vm.setErrors(null);
+            expect(wrapper.vm.errors).toEqual({});
+        });
+    });
+
+    describe('form-level error summary (unowned errors)', () => {
+        it('renders the message of an attribute with no registered field', async () => {
+            const wrapper = mountForm({}, []);
+            wrapper.vm.setErrors({ phantom: ['nope'] });
+            await wrapper.vm.$nextTick();
+
+            const summary = wrapper.find('.error-summary');
+            expect(summary.exists()).toBe(true);
+            expect(summary.text()).toContain('nope');
+        });
+
+        it('does not duplicate a registered field\'s error into the summary', async () => {
+            const wrapper = mountForm({}, [h(TextField, { attribute: 'title', modelValue: '' })]);
+            wrapper.vm.setErrors({ title: ['Title cannot be blank.'] });
+            await wrapper.vm.$nextTick();
+
+            expect(wrapper.find('.error-summary').exists()).toBe(false);
+            expect(wrapper.find('.invalid-feedback').exists()).toBe(true);
+        });
+
+        it('renders only the unowned message when both an owned and an unowned attribute are in error', async () => {
+            const wrapper = mountForm({}, [h(TextField, { attribute: 'title', modelValue: '' })]);
+            wrapper.vm.setErrors({ title: ['Title cannot be blank.'], phantom: ['nope'] });
+            await wrapper.vm.$nextTick();
+
+            const summary = wrapper.find('.error-summary');
+            expect(summary.exists()).toBe(true);
+            expect(summary.text()).toContain('nope');
+            expect(summary.text()).not.toContain('Title cannot be blank.');
+        });
     });
 
     describe('clearErrors()', () => {

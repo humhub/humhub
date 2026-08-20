@@ -123,7 +123,7 @@
       }
     }
   };
-  const _hoisted_1$9 = { class: "form-check" };
+  const _hoisted_1$a = { class: "form-check" };
   const _hoisted_2$7 = ["id", "name", "disabled", "aria-required", "aria-invalid", "aria-describedby"];
   const _hoisted_3$6 = ["for"];
   const _hoisted_4$5 = ["id"];
@@ -135,7 +135,7 @@
         class: vue.normalizeClass(["mb-3", [`field-${_ctx.fieldId}`, { required: _ctx.required }]])
       },
       [
-        vue.createElementVNode("div", _hoisted_1$9, [
+        vue.createElementVNode("div", _hoisted_1$a, [
           vue.withDirectives(vue.createElementVNode("input", {
             ref: "input",
             id: _ctx.fieldId,
@@ -236,13 +236,13 @@
       }
     }
   };
-  const _hoisted_1$8 = { class: "nav nav-pills preferences" };
+  const _hoisted_1$9 = { class: "nav nav-pills preferences" };
   const _hoisted_2$6 = { class: "nav-item dropdown" };
   const _hoisted_3$5 = ["aria-label"];
   const _hoisted_4$4 = ["onClick"];
   const _hoisted_5$2 = ["onClick"];
   function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
-    return vue.openBlock(), vue.createElementBlock("ul", _hoisted_1$8, [
+    return vue.openBlock(), vue.createElementBlock("ul", _hoisted_1$9, [
       vue.createElementVNode("li", _hoisted_2$6, [
         vue.createElementVNode("a", {
           href: "#",
@@ -370,6 +370,27 @@
     created() {
       this._fields = [];
     },
+    computed: {
+      // Messages for attributes that currently have an error but no registered field to
+      // show it on — see the class docblock's "Form-level fallback for unowned errors"
+      // section. Excludes every attribute `this._fields` (registerField()/unregisterField(),
+      // see `form/fieldMixin.js`) knows about, so a field's own inline `invalid-feedback`
+      // never gets a duplicate here.
+      unownedErrorMessages() {
+        const ownedAttributes = new Set(this._fields.map((field) => field.attribute));
+        const messages = [];
+        Object.keys(this.errors).forEach((attribute) => {
+          if (ownedAttributes.has(attribute)) {
+            return;
+          }
+          const attributeMessages = this.errors[attribute];
+          if (Array.isArray(attributeMessages)) {
+            messages.push(...attributeMessages);
+          }
+        });
+        return messages;
+      }
+    },
     methods: {
       onSubmit() {
         this.$emit("submit");
@@ -383,6 +404,9 @@
           unwrapped = source.error.errors;
         }
         this.clearErrors();
+        if (!unwrapped || typeof unwrapped !== "object" || Array.isArray(unwrapped)) {
+          return;
+        }
         Object.assign(this.errors, unwrapped);
       },
       clearErrors() {
@@ -415,6 +439,10 @@
       }
     }
   };
+  const _hoisted_1$8 = {
+    key: 0,
+    class: "alert alert-danger error-summary"
+  };
   function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock(
       "form",
@@ -422,6 +450,25 @@
         onSubmit: _cache[0] || (_cache[0] = vue.withModifiers((...args) => $options.onSubmit && $options.onSubmit(...args), ["prevent"]))
       },
       [
+        $options.unownedErrorMessages.length ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$8, [
+          vue.createElementVNode("ul", null, [
+            (vue.openBlock(true), vue.createElementBlock(
+              vue.Fragment,
+              null,
+              vue.renderList($options.unownedErrorMessages, (message, index) => {
+                return vue.openBlock(), vue.createElementBlock(
+                  "li",
+                  { key: index },
+                  vue.toDisplayString(message),
+                  1
+                  /* TEXT */
+                );
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            ))
+          ])
+        ])) : vue.createCommentVNode("v-if", true),
         vue.renderSlot(_ctx.$slots, "default")
       ],
       32
@@ -449,9 +496,35 @@
     computed: {
       processedShell() {
         return this.shellHtml.split(FORM_TOKEN).join(this.instanceId);
+      },
+      // Cheap proxy for "the parsed shell is supposed to contain a <form>" — see the
+      // class docblock's "Nested <form> via v-html" section. Tested against the RAW
+      // prop rather than `processedShell` since the token substitution never touches
+      // the tag itself.
+      expectsForm() {
+        return /<form[\s>]/i.test(this.shellHtml);
       }
     },
+    mounted() {
+      this.checkFormPresence();
+    },
+    updated() {
+      this.checkFormPresence();
+    },
     methods: {
+      /**
+       * See the class docblock's "Nested <form> via v-html" section — logs a clear,
+       * loud error instead of letting a dropped inner `<form>` fail silently the next
+       * time `resetAcknowledge()`/`getFileGuids()` (or `onSubmit`'s own native
+       * `'submit'` listener in `CommentForm.vue`) quietly finds nothing to act on.
+       */
+      checkFormPresence() {
+        if (this.expectsForm && !this.$el.querySelector("form")) {
+          vue$1.log.error(
+            `LegacyFormWrapper: the rendered shell was expected to contain a <form> (the shellHtml prop has one) but none was found in the DOM — the browser's HTML fragment parser may have silently dropped it because this component's root was already attached to the document when its markup was (re-)parsed; see this component's own docblock, "Nested <form> via v-html".`
+          );
+        }
+      },
       getEditorInstance() {
         const node = this.$el.querySelector(RICHTEXT_SELECTOR);
         return node ? jQuery(node).data(RICHTEXT_COMPONENT_DATA) : null;
@@ -1064,7 +1137,11 @@
       return {
         visible: false,
         titleId: `ui-modal-title-${++uidSeq}`,
-        previouslyFocused: null
+        previouslyFocused: null,
+        // Set by `onBackdropMousedown` on every mousedown targeting the `.modal` root,
+        // cleared on any mousedown that doesn't - see the "Backdrop" docblock section
+        // above and Bootstrap's own `_addEventListeners()` for the mechanism this mirrors.
+        mousedownOnBackdrop: false
       };
     },
     computed: {
@@ -1125,8 +1202,13 @@
           this.requestClose();
         }
       },
+      onBackdropMousedown(event) {
+        this.mousedownOnBackdrop = event.target === event.currentTarget;
+      },
       onBackdropClick() {
-        if (this.backdropClose) {
+        const mousedownWasOnBackdrop = this.mousedownOnBackdrop;
+        this.mousedownOnBackdrop = false;
+        if (this.backdropClose && mousedownWasOnBackdrop) {
           this.requestClose();
         }
       },
@@ -1155,7 +1237,8 @@
         role: "dialog",
         "aria-modal": "true",
         "aria-labelledby": $data.titleId,
-        onClick: _cache[1] || (_cache[1] = vue.withModifiers((...args) => $options.onBackdropClick && $options.onBackdropClick(...args), ["self"]))
+        onMousedown: _cache[1] || (_cache[1] = (...args) => $options.onBackdropMousedown && $options.onBackdropMousedown(...args)),
+        onClick: _cache[2] || (_cache[2] = vue.withModifiers((...args) => $options.onBackdropClick && $options.onBackdropClick(...args), ["self"]))
       }, [
         vue.createElementVNode(
           "div",
@@ -1189,7 +1272,7 @@
           2
           /* CLASS */
         )
-      ], 10, _hoisted_1)) : vue.createCommentVNode("v-if", true),
+      ], 42, _hoisted_1)) : vue.createCommentVNode("v-if", true),
       $props.show ? (vue.openBlock(), vue.createElementBlock(
         "div",
         {

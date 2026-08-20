@@ -3,9 +3,9 @@
         <p v-if="!busy && !error && users.length === 0">{{ emptyLabel }}</p>
 
         <div v-if="users.length" class="hh-list">
-            <a v-for="user in users" :key="user.guid" :href="user.url" class="d-flex">
+            <a v-for="user in users" :key="user.guid" :href="user.url" class="d-flex" @click="$emit('user-click', user)">
                 <div class="flex-shrink-0 me-2">
-                    <UserImage v-bind="user" :size="50" :link="false" />
+                    <UserImage v-bind="user" :size="50" :link="false" class="m-0" />
                 </div>
                 <div class="flex-grow-1">
                     <h4 class="mt-0">{{ user.displayName }}</h4>
@@ -53,11 +53,27 @@ import { client, i18n, log } from '@humhub/vue';
  */
 export default {
     name: 'UserList',
+    // INERT for every consumer of this component today: the mounter (humhub.vue.js's
+    // mountElement()) only ever reads `i18nCategories` off the TOP-LEVEL component it
+    // mounts as an island, and `UserList` is always nested (e.g. inside `LikeButton`'s
+    // user-list modal) rather than mounted directly - see
+    // docs/develop/ui-js-vuejs-components.md, "Mounting and lifecycle", "i18n
+    // preloading". Left declared (rather than removed) because it becomes live and
+    // correct the moment some future caller mounts `<user-list>` directly as its own
+    // island; until then, every current top-level consumer must declare
+    // `UserModule.base` itself (`LikeButton.vue` does, alongside `base` for the same
+    // reason - see its own `i18nCategories` comment).
     i18nCategories: ['UserModule.base'],
     props: {
         url: { type: String, required: true },
         pageSize: { type: Number, default: null },
     },
+    // `user-click`: fired on every row click (in addition to, not instead of, that row's
+    // own native navigation - the `<a href>` is never `preventDefault()`-ed here), with the
+    // clicked user as payload. Mirrors legacy `UserListBox`'s `data-modal-close="1"` rows
+    // (`userListBox.php`) closing whatever modal hosts the list on click - `LikeButton.vue`
+    // listens for this to close its own `UiModal` the same way.
+    emits: ['user-click'],
     data() {
         return {
             users: [],
@@ -73,10 +89,17 @@ export default {
             return i18n.t('UserModule.base', 'No users found.');
         },
         errorLabel() {
+            // Own message, not an existing core string - stays in this component's own
+            // module category (extractable: MessageController routes .vue files to the
+            // JsMessageExtractor via this exact `i18n.t('Category', 'Message')` call form).
             return i18n.t('UserModule.base', 'Could not load the user list.');
         },
         loadMoreLabel() {
-            return i18n.t('UserModule.base', 'Show more');
+            // Reuses the existing core `base` translation (verified against
+            // protected/humhub/messages/de/base.php) instead of duplicating it under
+            // `UserModule.base` - the same key `CoreJsConfig`'s legacy stream "Show more"
+            // button already ships (`Yii::t('base', 'Show more')`).
+            return i18n.t('base', 'Show more');
         },
     },
     created() {

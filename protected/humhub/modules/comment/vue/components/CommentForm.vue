@@ -164,10 +164,15 @@
  * by `LegacyFormWrapper` inside `RichTextField`), not to `HumHubForm`'s own
  * outer `<form>` — see `HumHubForm.vue`'s own docblock, "A note on
  * legacy-citizen fields and nested `<form>`", for why the two are different
- * elements here and why `HumHubForm`'s own `submit` emission (wired via
- * `@submit="onSubmit"` above, same handler) stays effectively dormant for
- * this component: the Teleported button's native submit-activation target is
- * always the shell's inner form, never `HumHubForm`'s outer one.
+ * elements here. That does NOT make `HumHubForm`'s own `submit` emission
+ * (wired via `@submit="onSubmit"` above, same handler) dormant, though: a
+ * native `submit` event dispatched on the inner form BUBBLES, like any DOM
+ * event, through every ancestor up to and including `HumHubForm`'s own outer
+ * `<form>` (the two are nested, not siblings — see above) — whose own
+ * `@submit.prevent` listener re-emits `submit` and invokes this exact same
+ * `onSubmit` a SECOND time. `onSubmit`'s own `if (this.busy) return;` guard
+ * (see below) is the only thing that keeps that redundant second call from
+ * double-posting; there is no dormancy on `HumHubForm`'s side to rely on.
  *
  * ## Unsaved-changes guard (P2-7 fix)
  *
@@ -276,6 +281,13 @@ export default {
                 event.preventDefault();
             }
 
+            // Load-bearing, not just a courtesy re-entrancy guard: a native submit on the
+            // shell's INNER (legacy) <form> — e.g. the Ctrl+S bridge, see this class's own
+            // "Submit button placement" docblock section — bubbles up to HumHubForm's outer
+            // <form>, whose own `@submit.prevent="onSubmit"` (see the template above) fires
+            // this SAME handler a second time. Nothing upstream de-duplicates that second
+            // call; this synchronous check is the only thing standing between one Ctrl+S and
+            // two POSTs.
             if (this.busy) {
                 return;
             }

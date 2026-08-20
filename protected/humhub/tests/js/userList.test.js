@@ -51,6 +51,23 @@ describe('UserList', () => {
         expect(rows[0].attributes('href')).toBe('/user/alice');
         expect(rows[0].find('h4').text()).toBe('Alice');
         expect(rows[0].find('img').attributes('src')).toBe('/uploads/alice.jpg');
+        // `m-0` - removes the online-status icon's bottom margin, matching legacy
+        // userListBox.php's `Image::widget(['htmlOptions' => ['class' => 'm-0']])`.
+        expect(rows[0].findComponent(UserImage).classes()).toContain('m-0');
+    });
+
+    it('emits user-click with the clicked user on row click, without preventing navigation', async () => {
+        const wrapper = mount(UserList, { ...mountOptions(), props: { url: '/x' } });
+        await flushPromises();
+
+        const row = wrapper.find('.hh-list > a');
+        const event = new MouseEvent('click', { bubbles: true, cancelable: true });
+        row.element.dispatchEvent(event);
+        await flushPromises();
+
+        expect(event.defaultPrevented).toBe(false); // the row's own <a href> navigation is left alone
+        expect(wrapper.emitted('user-click')).toHaveLength(1);
+        expect(wrapper.emitted('user-click')[0][0]).toMatchObject({ guid: 'user-guid-1', displayName: 'Alice' });
     });
 
     it('appends the query string with a plain ? when the url has none', async () => {

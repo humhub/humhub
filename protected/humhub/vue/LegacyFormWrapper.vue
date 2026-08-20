@@ -102,6 +102,25 @@
  * PUBLIC jQuery `.data()` store the guard also reads from - `resetAcknowledge()`
  * below reproduces it directly instead of trying to reach the private closure.
  *
+ * ## Nested `<form>` via `v-html` — and its post-mount safety net
+ *
+ * The shell markup this component `v-html`s is typically ITSELF a `<form>` (see
+ * `humhub\widgets\VueFormShell`), nested inside the host `HumHubForm`'s own outer
+ * `<form>` (or, for a caller outside that suite, potentially any other live-document
+ * `<form>`) — see `HumHubForm.vue`'s own docblock, "A note on legacy-citizen fields
+ * and nested `<form>`", for the full mechanism: it survives only because this
+ * component's root element is still detached and parentless the very first time
+ * `v-html` parses it. `checkFormPresence()` (called from `mounted()` and `updated()`)
+ * is the safety net for the failure mode that same section describes — a LATER
+ * re-render reassigning `innerHTML` while `$el` is already attached would have the
+ * browser silently drop the inner `<form>` instead, and every method here that
+ * resolves `this.$el.querySelector('form')` (`resetAcknowledge()`, `getFileGuids()`)
+ * would then just silently no-op rather than throw. `expectsForm` (a plain substring
+ * test against the RAW `shellHtml` prop, before token substitution) is a cheap enough
+ * proxy for "this shell is supposed to have one" that a shell with no `<form>` at all
+ * (a module wrapping some other legacy widget through this same generic component)
+ * never trips it.
+ *
  * ## Teardown
  * No `unmounted()` teardown is implemented: neither widget exposes a
  * destroy/dispose method (grep confirms none exists in either resource
@@ -114,6 +133,7 @@
  * `module.init`) only concerns itself with whole-island cleanup, which is
  * orthogonal to this inner, non-island component.
  */
+import { log } from '@humhub/vue';
 
 // Mirrors humhub\widgets\VueFormShell::TOKEN (PHP) — keep both literals in sync.
 const FORM_TOKEN = '__VUEFORM__';
@@ -141,8 +161,38 @@ export default {
         processedShell() {
             return this.shellHtml.split(FORM_TOKEN).join(this.instanceId);
         },
+        // Cheap proxy for "the parsed shell is supposed to contain a <form>" — see the
+        // class docblock's "Nested <form> via v-html" section. Tested against the RAW
+        // prop rather than `processedShell` since the token substitution never touches
+        // the tag itself.
+        expectsForm() {
+            return /<form[\s>]/i.test(this.shellHtml);
+        },
+    },
+    mounted() {
+        this.checkFormPresence();
+    },
+    updated() {
+        this.checkFormPresence();
     },
     methods: {
+        /**
+         * See the class docblock's "Nested <form> via v-html" section — logs a clear,
+         * loud error instead of letting a dropped inner `<form>` fail silently the next
+         * time `resetAcknowledge()`/`getFileGuids()` (or `onSubmit`'s own native
+         * `'submit'` listener in `CommentForm.vue`) quietly finds nothing to act on.
+         */
+        checkFormPresence() {
+            if (this.expectsForm && !this.$el.querySelector('form')) {
+                log.error(
+                    'LegacyFormWrapper: the rendered shell was expected to contain a <form> ' +
+                    '(the shellHtml prop has one) but none was found in the DOM — the browser\'s ' +
+                    'HTML fragment parser may have silently dropped it because this component\'s ' +
+                    'root was already attached to the document when its markup was (re-)parsed; ' +
+                    'see this component\'s own docblock, "Nested <form> via v-html".',
+                );
+            }
+        },
         getEditorInstance() {
             const node = this.$el.querySelector(RICHTEXT_SELECTOR);
             return node ? jQuery(node).data(RICHTEXT_COMPONENT_DATA) : null;

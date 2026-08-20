@@ -10,6 +10,7 @@
             role="dialog"
             aria-modal="true"
             :aria-labelledby="titleId"
+            @mousedown="onBackdropMousedown"
             @click.self="onBackdropClick"
         >
             <div class="modal-dialog" :class="sizeClass">
@@ -84,11 +85,18 @@ let uidSeq = 0;
  * ## Backdrop / keyboard / focus / scroll-lock
  *
  * - `backdropClose` (default `true`): clicking the dimmed area outside `.modal-dialog`
- *   requests a close. Implemented via `@click.self` on the `.modal` root itself (fires
- *   only when the click target IS that root, not a descendant) - the same effective
- *   semantics as Bootstrap's own backdrop-click detection, without needing a pointer
- *   listener on the separate `.modal-backdrop` element (which sits behind the
- *   full-viewport `.modal` root and never actually receives the click).
+ *   requests a close. `@click.self` alone is not enough: a text-selection drag that
+ *   starts inside `.modal-dialog` and is released outside it still fires a `click`
+ *   whose target is the `.modal` root (the browser resolves click target from the
+ *   `mouseup` point, not the `mousedown` point), which `.self` cannot tell apart from
+ *   a genuine backdrop click. Mirrors Bootstrap's own guard for the exact same problem
+ *   (`vendor/twbs/bootstrap/js/src/modal.js`'s `_addEventListeners()`): `@mousedown` on
+ *   the root records whether THAT event's target was the root itself
+ *   (`onBackdropMousedown`), and `onBackdropClick` only requests a close when the
+ *   `click`'s target is ALSO the root AND that recorded flag is still set - i.e. both
+ *   the press and the release targeted the backdrop, not just the release. The flag is
+ *   consumed (reset) on every `mousedown`, so a stale `true` from an earlier backdrop
+ *   click can never leak into a later, unrelated click.
  * - `keyboard` (default `true`): Escape requests a close. The listener is added to
  *   `document` only while `show` is true and removed the moment it becomes false (or
  *   the component unmounts) - never a lingering global listener.
@@ -130,6 +138,10 @@ export default {
             visible: false,
             titleId: `ui-modal-title-${++uidSeq}`,
             previouslyFocused: null,
+            // Set by `onBackdropMousedown` on every mousedown targeting the `.modal` root,
+            // cleared on any mousedown that doesn't - see the "Backdrop" docblock section
+            // above and Bootstrap's own `_addEventListeners()` for the mechanism this mirrors.
+            mousedownOnBackdrop: false,
         };
     },
     computed: {
@@ -200,8 +212,24 @@ export default {
                 this.requestClose();
             }
         },
+        onBackdropMousedown(event) {
+            // event.currentTarget is always the `.modal` root itself (that's where this
+            // listener is bound); event.target is whichever descendant (or the root
+            // itself) the press actually landed on.
+            this.mousedownOnBackdrop = event.target === event.currentTarget;
+        },
         onBackdropClick() {
-            if (this.backdropClose) {
+            // `@click.self` already guarantees the CLICK's own target is the root; this
+            // additionally requires the preceding MOUSEDOWN to have targeted the root too
+            // - see the "Backdrop" docblock section above for why both are needed (a
+            // text-selection drag started inside `.modal-dialog` and released outside it
+            // otherwise fires a self-targeted click here without ever being a backdrop
+            // click). Consume the flag either way so a later, unrelated click can never
+            // reuse a stale `true`.
+            const mousedownWasOnBackdrop = this.mousedownOnBackdrop;
+            this.mousedownOnBackdrop = false;
+
+            if (this.backdropClose && mousedownWasOnBackdrop) {
                 this.requestClose();
             }
         },

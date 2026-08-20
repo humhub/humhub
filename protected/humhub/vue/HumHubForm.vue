@@ -1,5 +1,10 @@
 <template>
     <form @submit.prevent="onSubmit">
+        <div v-if="unownedErrorMessages.length" class="alert alert-danger error-summary">
+            <ul>
+                <li v-for="(message, index) in unownedErrorMessages" :key="index">{{ message }}</li>
+            </ul>
+        </div>
         <slot />
     </form>
 </template>
@@ -53,13 +58,36 @@
  *   shapes around it: `{errors: {...}}` and `{error: {errors: {...}}}` — the exact
  *   three shapes `CommentForm.vue` already handled by hand before this suite existed
  *   (see its own docblock's "Error shapes" section for where the second and third
- *   come from: a response whose `Content-Type` wasn't sniffed as JSON).
+ *   come from: a response whose `Content-Type` wasn't sniffed as JSON). Once those
+ *   three shapes have had their chance to unwrap it, whatever remains must itself be a
+ *   plain, non-array object — anything else (a bare string/number, an array, `null`)
+ *   leaves the error map simply cleared instead of being copied into it verbatim, which
+ *   would otherwise hand every consumer (`fieldMixin.js`'s `errorMessages`, the
+ *   form-level summary below) a non-array value where they assume one.
  * - `clearErrors()` — empties the error map (call before a fresh submit attempt).
  * - `focusFirstError()` — focuses the first-registered field (template/registration
  *   order, not object-key order of `errors` — the server's 422 payload has no
  *   guaranteed key order) whose `attribute` currently has an error. A no-op if no
  *   registered field is in error, or the erroring field's own component exposes no
  *   `focus()` method.
+ *
+ * ## Form-level fallback for unowned errors
+ *
+ * A 422 payload can legitimately carry an attribute no `TextField`/`TextareaField`/
+ * etc. inside this form ever registered for — e.g. a module hooks
+ * `Model::EVENT_BEFORE_VALIDATE` to add a rule against an attribute the form's
+ * author never modeled as a field at all. Before this section existed, such an
+ * error landed in `this.errors` (so `focusFirstError()` and `hasError` bookkeeping
+ * both saw it) but was never rendered anywhere — a submit that failed validation for
+ * exactly that attribute looked, from the user's seat, like it silently did nothing.
+ * `unownedErrorMessages` (computed) collects the messages of every attribute currently
+ * in `errors` that has no entry in `this._fields`, and the template renders them in a
+ * `.alert.alert-danger.error-summary` block (mirroring the canonical classes/structure
+ * of `yii\bootstrap5\ActiveForm::$errorSummaryCssClass` +
+ * `yii\helpers\BaseHtml::errorSummary()`'s own `<ul><li>` markup) right before the
+ * default slot. An attribute WITH a registered field is excluded here even while it
+ * has an error, so its message keeps rendering exactly once — inline via that field's
+ * own `invalid-feedback`, never duplicated into this summary too.
  *
  * ## Reactivity note (Options API `provide()`)
  *
@@ -80,20 +108,32 @@
  * `RichTextField` (see its own docblock) embeds `LegacyFormWrapper`, which `v-html`s
  * a server-rendered shell that is ITSELF a `<form>` (see
  * `humhub\widgets\VueFormShell`). Nesting that inside `HumHubForm`'s own `<form>`
- * therefore puts a `<form>` inside a `<form>` — invalid per the HTML5 content model,
- * but harmless in practice here: the inner shell reaches the DOM via `v-html`
- * (fragment parsing, which resets the parser's form-pointer state independently of
- * the live document) rather than the browser's normal document parser, so nothing
- * ever enforces the "no nested form" authoring rule against it. The PRACTICAL
- * consequence (documented on `CommentForm.vue` itself, which is the one component
- * that hits this): any element physically inside that inner shell — including a
- * `SubmitButton` `Teleport`ed into it — resolves its native form-submission activation
- * against the INNER (legacy) form, never against this component's own outer one.
- * `HumHubForm`'s own `submit` emission is therefore effectively dormant for such a
- * field; the consumer wires its submit handler directly on the `SubmitButton`
- * instead (`@click`), exactly as it already did before this suite existed. Every
- * *native* field (`TextField` and friends) has no such inner form, so `submit`
- * fires normally for them (including native Enter-to-submit inside a `TextField`).
+ * therefore puts a `<form>` inside a `<form>` — invalid per the HTML5 content model.
+ * That the inner `<form>` actually survives is NOT, as an earlier version of this
+ * note claimed, some general property of `v-html`/fragment parsing being independent
+ * of the live document — it depends on one narrow, fragile timing fact (verified in
+ * Chromium): the fragment-parsing algorithm `innerHTML`/`v-html` runs seeds its
+ * internal "form element pointer" from the context element's ANCESTORS, and at the
+ * moment Vue's mount patch first assigns `LegacyFormWrapper`'s shell markup to its
+ * root element, that element is still DETACHED and PARENTLESS — Vue builds a
+ * component's DOM off-document and only inserts the whole finished subtree into the
+ * live document in one step afterwards. A parentless element has no ancestors, so the
+ * parser never sees this outer `<form>` and lets the inner `<form>` start tag through
+ * untouched. A LATER re-render that reassigns that same element's `innerHTML` while it
+ * is already attached inside this outer `<form>` would have the parser find the outer
+ * form as an ancestor instead and silently DROP the inner `<form>` start tag — its
+ * attributes lost, its children hoisted straight into `LegacyFormWrapper`'s own root,
+ * no thrown error — see `LegacyFormWrapper.vue`'s own `checkFormPresence()` for the
+ * safety net that detects exactly this failure mode. The PRACTICAL consequence
+ * (documented on `CommentForm.vue` itself, which is the one component that hits
+ * this): any element physically inside that inner shell — including a `SubmitButton`
+ * `Teleport`ed into it — resolves its native form-submission activation against the
+ * INNER (legacy) form, never against this component's own outer one. `HumHubForm`'s
+ * own `submit` emission is therefore effectively dormant for such a field; the
+ * consumer wires its submit handler directly on the `SubmitButton` instead
+ * (`@click`), exactly as it already did before this suite existed. Every *native*
+ * field (`TextField` and friends) has no such inner form, so `submit` fires normally
+ * for them (including native Enter-to-submit inside a `TextField`).
  *
  * @since 1.19
  */
@@ -130,6 +170,27 @@ export default {
         // `focusFirstError()`'s own iteration, never rendered/watched.
         this._fields = [];
     },
+    computed: {
+        // Messages for attributes that currently have an error but no registered field to
+        // show it on — see the class docblock's "Form-level fallback for unowned errors"
+        // section. Excludes every attribute `this._fields` (registerField()/unregisterField(),
+        // see `form/fieldMixin.js`) knows about, so a field's own inline `invalid-feedback`
+        // never gets a duplicate here.
+        unownedErrorMessages() {
+            const ownedAttributes = new Set(this._fields.map((field) => field.attribute));
+            const messages = [];
+            Object.keys(this.errors).forEach((attribute) => {
+                if (ownedAttributes.has(attribute)) {
+                    return;
+                }
+                const attributeMessages = this.errors[attribute];
+                if (Array.isArray(attributeMessages)) {
+                    messages.push(...attributeMessages);
+                }
+            });
+            return messages;
+        },
+    },
     methods: {
         onSubmit() {
             this.$emit('submit');
@@ -142,7 +203,20 @@ export default {
             } else if (source.error && source.error.errors && typeof source.error.errors === 'object') {
                 unwrapped = source.error.errors;
             }
+
             this.clearErrors();
+
+            // Guard AFTER the three envelope shapes above have had their chance to unwrap
+            // `unwrapped` into the actual `{attribute: [messages]}` map — a caller passing
+            // something that isn't one even once unwrapped (a bare string, a number, an
+            // array, `null`) leaves the form simply cleared rather than corrupting `errors`
+            // with non-array-of-strings values `Object.assign` would otherwise copy in
+            // verbatim (every consumer, e.g. `fieldMixin.js`'s `errorMessages`, assumes an
+            // array per attribute).
+            if (!unwrapped || typeof unwrapped !== 'object' || Array.isArray(unwrapped)) {
+                return;
+            }
+
             Object.assign(this.errors, unwrapped);
         },
         clearErrors() {

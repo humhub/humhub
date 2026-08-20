@@ -316,7 +316,18 @@ humhub.module('vue', function (module, require, $) {
             component: hasComponent ? entry.component : null,
         };
 
-        var entries = menuEntries[menuId] || (menuEntries[menuId] = []);
+        // Not `menuEntries[menuId] || (menuEntries[menuId] = [])`: that assignment
+        // expression evaluates to the RAW array literal on its right-hand side, not
+        // the reactive proxy `menuEntries`' own `get` trap would hand back on a
+        // subsequent read — Vue only wraps a freshly-assigned plain array reactively
+        // the next time it is READ off the reactive object, not at assignment time.
+        // The first `.push()` for a brand new `menuId` would otherwise land on that
+        // raw array, invisible to any synchronous watcher/computed already tracking
+        // `menuEntries[menuId]`.
+        if (!menuEntries[menuId]) {
+            menuEntries[menuId] = [];
+        }
+        var entries = menuEntries[menuId];
         var existingIndex = entries.findIndex(function (e) { return e.id === entry.id; });
         if (existingIndex === -1) {
             entries.push(resolved);
@@ -351,7 +362,12 @@ humhub.module('vue', function (module, require, $) {
             return;
         }
 
-        var removed = menuRemovals[menuId] || (menuRemovals[menuId] = []);
+        // Same raw-array-escapes-the-proxy hazard as `registerMenuEntry()` above —
+        // see its own comment on the equivalent line.
+        if (!menuRemovals[menuId]) {
+            menuRemovals[menuId] = [];
+        }
+        var removed = menuRemovals[menuId];
         if (removed.indexOf(entryId) === -1) {
             removed.push(entryId);
         }
@@ -384,6 +400,28 @@ humhub.module('vue', function (module, require, $) {
             }),
             removed: removed.slice(),
         };
+    };
+
+    /**
+     * TEST-ONLY seam: wipes every `registerMenuEntry()`/`removeMenuEntry()` registration for
+     * every `menuId`, restoring the registry to its pristine, nothing-ever-registered state.
+     * Removals are otherwise permanent by design (see `removeMenuEntry()`'s own docblock) —
+     * fine for production, where a `menuId` is never reused across unrelated lifetimes, but a
+     * problem for a test suite that reuses a PRODUCTION `menuId` across many `it()`s (e.g.
+     * `comment.controls`, shared with `CommentControls.vue`'s own built-in Edit/Delete
+     * entries — see `commentSection.test.js`). Without this, such a suite has to rely on
+     * registration/removal ORDER across tests (a later removal call permanently suppressing an
+     * earlier test's entry) instead of each test starting clean. Not part of the public
+     * `module.export()` surface below on purpose — call only from a test's `beforeEach`/
+     * `afterEach`, never from application code.
+     */
+    var resetMenuRegistry = function () {
+        Object.keys(menuEntries).forEach(function (menuId) {
+            delete menuEntries[menuId];
+        });
+        Object.keys(menuRemovals).forEach(function (menuId) {
+            delete menuRemovals[menuId];
+        });
     };
 
     var componentFor = function (element) {
@@ -663,6 +701,11 @@ humhub.module('vue', function (module, require, $) {
         registerMenuEntry: registerMenuEntry,
         removeMenuEntry: removeMenuEntry,
         getMenuEntries: getMenuEntries,
+        // TEST-ONLY — see its own docblock above. Exported so test files can reach it the
+        // same way they reach every other registry function, not because it belongs to the
+        // documented public API surface (docs/develop/ui-js-vuejs-extensions.md's "Menu
+        // entries" section deliberately does not mention it).
+        resetMenuRegistry: resetMenuRegistry,
         mountElement: mountElement,
         unmountElement: unmountElement,
         getApp: getApp,

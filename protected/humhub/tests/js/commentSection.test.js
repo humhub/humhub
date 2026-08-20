@@ -872,19 +872,19 @@ describe('CommentSection', () => {
 
     // `comment.controls` is a data-driven DropdownMenu menu (registerMenuEntry()/
     // removeMenuEntry()), not an ExtensionSlot — see CommentControls.vue's own docblock and
-    // docs/develop/ui-js-vuejs-extensions.md, "Menu entries". Kept as its own describe block,
-    // deliberately placed LAST in this file: `removeMenuEntry('comment.controls', 'edit')`
-    // below is permanent for the remainder of this file's module registry (there is no
-    // "un-remove", see humhub.vue.js's own docblock) — any test relying on the built-in Edit
-    // entry must run before it.
+    // docs/develop/ui-js-vuejs-extensions.md, "Menu entries". It is also the same menuId
+    // CommentControls.vue's own built-in Edit/Delete entries are keyed under, so every test
+    // below shares that one production id.
     describe('menu entries (comment.controls)', () => {
-        // registerMenuEntry() has no "unregister" — only removeMenuEntry() can make an id stop
-        // rendering, and that removal is itself permanent (see humhub.vue.js's docblock). Every
-        // entry a test below registers on the shared 'comment.controls' id is therefore
-        // explicitly removed again at the end of THAT SAME test (not a blanket afterEach for
-        // every id used in this block — removeMenuEntry-ing an id before a later test
-        // registers it would permanently suppress that later test's own entry too, since
-        // removal wins regardless of order), so it does not leak into a later test's mount.
+        // resetMenuRegistry() is a TEST-ONLY seam (see its own docblock in humhub.vue.js) that
+        // wipes every registerMenuEntry()/removeMenuEntry() call — including the otherwise
+        // PERMANENT removals a test below makes (there is no "un-remove", see
+        // removeMenuEntry()'s own docblock) — so each test starts from a clean registry
+        // instead of depending on running order relative to the others in this block.
+        beforeEach(() => {
+            vueModule.resetMenuRegistry();
+        });
+
         it('renders a registered component entry, passing the comment via context', () => {
             const comment = makeComment();
             const probeDef = {
@@ -912,8 +912,6 @@ describe('CommentSection', () => {
             // first, see DropdownMenu.vue's resolution pipeline docblock).
             const items = wrapper.findAll('.dropdown-menu > li');
             expect(items[items.length - 1].find('.probe-controls-item').exists()).toBe(true);
-
-            vueModule.removeMenuEntry('comment.controls', 'probeComponentEntry'); // see describe()'s own note
         });
 
         it('positions a registered entry among the built-in edit/delete items according to sortOrder', () => {
@@ -931,8 +929,6 @@ describe('CommentSection', () => {
 
             const items = wrapper.findAll('.dropdown-menu > li').map((li) => li.text());
             expect(items).toEqual(['Permalink', 'Probe Sort Order', 'Edit', 'Delete']);
-
-            vueModule.removeMenuEntry('comment.controls', 'probeSortOrderEntry'); // see describe()'s own note
         });
 
         it('removeMenuEntry(\'comment.controls\', \'edit\') hides the built-in Edit entry', () => {

@@ -68,6 +68,10 @@ describe('LikeButton', () => {
         expect(countLink.getAttribute('data-bs-target')).toBeNull();
         expect(countLink.getAttribute('href')).toBe('#');
         expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalled();
+        // Legacy `likeLink.php` had a real (collapsed-whitespace) space between the
+        // like/unlike anchor and the counter - assert it survives Vue's whitespace
+        // condensing instead of rendering "Like(2)".
+        expect(wrapper.text()).toMatch(/Like \(\d+\)/);
     });
 
     it('fetches state from the info endpoint when initial props are omitted', async () => {
@@ -306,6 +310,9 @@ describe('LikeButton', () => {
         expect(wrapper.find('a.unlike').exists()).toBe(false);
         expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalled();
         expect(globalThis.humhubStubs.client.post).not.toHaveBeenCalled();
+        // Same whitespace-survives-condensing assertion as the member-state test above,
+        // for the guest branch's own (separately templated) space + counter.
+        expect(wrapper.text()).toMatch(/Like \(\d+\)/);
     });
 
     it('renders only the login link for guests when the count is zero', () => {

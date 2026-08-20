@@ -3,6 +3,12 @@ import { mount } from '@vue/test-utils';
 import RichTextOutput from '../../vue/RichTextOutput.vue';
 import LegacyFormWrapper from '../../vue/LegacyFormWrapper.vue';
 
+// LegacyFormWrapper's checkFormPresence() safety net (see its own docblock, "Nested
+// <form> via v-html") reads `log` from `@humhub/vue` - needs the real humhub.vue.js
+// module registered so the shim (support/humhubVueShim.mjs) has something to delegate
+// to, mirroring humhubForm.test.js's own setup for the same reason.
+await import('../../resources/js/humhub/humhub.vue.js');
+
 // v-additions is registered per Vue *app* by humhub.vue.js's island mounter
 // (`app.directive('additions', { mounted, updated })`), not globally on the
 // Vue runtime — a bare @vue/test-utils mount() of an internal component
@@ -406,6 +412,39 @@ describe('LegacyFormWrapper', () => {
         expect(applyTo.mock.calls[0][0][0]).toBe(wrapper.element);
 
         applyTo.mockRestore();
+    });
+
+    describe('checkFormPresence() safety net', () => {
+        beforeEach(() => {
+            globalThis.humhubStubs.logCalls.error.length = 0;
+        });
+
+        it('logs nothing when the shell has a <form> and it is present in the DOM', () => {
+            mountWithAdditions(LegacyFormWrapper, { shellHtml: buildShell() });
+            expect(globalThis.humhubStubs.logCalls.error).toHaveLength(0);
+        });
+
+        it('logs an error when the shell was supposed to have a <form> but none is found in the DOM', async () => {
+            // Simulates the failure mode itself (a later re-render dropping the inner
+            // <form> because $el is by then attached — see the docblock) rather than
+            // trying to reproduce the exact browser timing: stub querySelector('form')
+            // to report "not found" the way it would if the parser had actually
+            // dropped the tag, then force the same re-render check the real 'updated'
+            // hook runs.
+            const wrapper = mountWithAdditions(LegacyFormWrapper, { shellHtml: buildShell() });
+            expect(globalThis.humhubStubs.logCalls.error).toHaveLength(0); // clean on initial mount
+
+            vi.spyOn(wrapper.vm.$el, 'querySelector').mockReturnValue(null);
+            wrapper.vm.checkFormPresence();
+
+            expect(globalThis.humhubStubs.logCalls.error).toHaveLength(1);
+            expect(globalThis.humhubStubs.logCalls.error[0][0]).toContain('LegacyFormWrapper');
+        });
+
+        it('logs nothing for a shell that never claimed to have a <form> in the first place', () => {
+            mountWithAdditions(LegacyFormWrapper, { shellHtml: '<div id="__VUEFORM__">no form here</div>' });
+            expect(globalThis.humhubStubs.logCalls.error).toHaveLength(0);
+        });
     });
 
     describe('editor + upload interop', () => {

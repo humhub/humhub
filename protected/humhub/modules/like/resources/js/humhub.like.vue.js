@@ -13,7 +13,14 @@
     return target;
   };
   const _sfc_main = {
-    i18nCategories: ["LikeModule.base"],
+    // `UserModule.base` and `base` are needed here, not just `LikeModule.base`, because the
+    // mounter (humhub.vue.js's mountElement()) only preloads `i18nCategories` off the
+    // TOP-LEVEL island component - this one. `UserList` (nested inside the modal below, see
+    // its own `i18nCategories`) and `UiModal`'s implicit reliance on `closeLabel` never get a
+    // preload of their own; declaring both categories here is what keeps their strings out of
+    // the English fallback on a cold cache. See CommentSection.vue's own `i18nCategories` for
+    // the same pattern (a top-level island preloading categories its nested children need).
+    i18nCategories: ["LikeModule.base", "UserModule.base", "base"],
     props: {
       recordId: { type: Number, required: true },
       likeCount: { type: Number, default: null },
@@ -58,11 +65,9 @@
       userListTitle() {
         return vue$1.i18n.t("LikeModule.base", "<strong>Users</strong> who like this");
       },
-      // 'base' is not declared in `i18nCategories` above (only `LikeModule.base` is) -
-      // an accepted, established gap: UserImage.vue's `onlineLabel` reads
-      // `UserModule.base` the same uncovered way, see its own docblock. Falls back to
-      // the English source text until some other page load happens to warm the
-      // `base` category's translation cache.
+      // Used for both the header close button's aria-label and the footer Close
+      // button's visible label below - 'base' is preloaded via `i18nCategories`
+      // above precisely so this reads translated on a cold cache too.
       closeLabel() {
         return vue$1.i18n.t("base", "Close");
       }
@@ -107,10 +112,7 @@
     class: "likeLinkContainer"
   };
   const _hoisted_2 = ["href"];
-  const _hoisted_3 = {
-    key: 0,
-    class: "likeCount"
-  };
+  const _hoisted_3 = { class: "likeCount" };
   const _hoisted_4 = { class: "likeCount" };
   const _hoisted_5 = ["id", "innerHTML"];
   const _hoisted_6 = ["aria-label"];
@@ -126,12 +128,26 @@
             href: $options.loginUrl,
             "data-bs-target": "#globalModal"
           }, vue.toDisplayString($options.likeLabel), 9, _hoisted_2),
+          vue.createCommentVNode("\n                The `{{ ' ' }}` interpolation is load-bearing, not decorative: legacy\n                `likeLink.php` had this as whitespace (a newline+indent) BETWEEN the anchor\n                and this span, which the browser collapses to a single rendered space. Vue's\n                template compiler (`whitespace: 'condense'`, the default) strips a purely\n                static whitespace-only text node containing a newline entirely rather than\n                collapsing it — an interpolation is not static text, so it survives condensing\n                and keeps rendering \"Like (2)\" instead of \"Like(2)\".\n            "),
           $data.count > 0 ? (vue.openBlock(), vue.createElementBlock(
-            "span",
-            _hoisted_3,
-            "(" + vue.toDisplayString($data.count) + ")",
-            1
-            /* TEXT */
+            vue.Fragment,
+            { key: 0 },
+            [
+              _cache[7] || (_cache[7] = vue.createTextVNode(
+                vue.toDisplayString(" "),
+                -1
+                /* CACHED */
+              )),
+              vue.createElementVNode(
+                "span",
+                _hoisted_3,
+                "(" + vue.toDisplayString($data.count) + ")",
+                1
+                /* TEXT */
+              )
+            ],
+            64
+            /* STABLE_FRAGMENT */
           )) : vue.createCommentVNode("v-if", true)
         ],
         64
@@ -163,26 +179,39 @@
             1
             /* TEXT */
           )),
-          $data.count > 0 ? (vue.openBlock(), vue.createElementBlock("a", {
-            key: 2,
-            href: "#",
-            onClick: _cache[2] || (_cache[2] = vue.withModifiers(($event) => $data.showUserList = true, ["prevent"]))
-          }, [
-            vue.createElementVNode(
-              "span",
-              _hoisted_4,
-              "(" + vue.toDisplayString($data.count) + ")",
-              1
-              /* TEXT */
-            )
-          ])) : vue.createCommentVNode("v-if", true)
+          vue.createCommentVNode(" See the guest branch's own comment above on the `{{ ' ' }}` interpolation. "),
+          $data.count > 0 ? (vue.openBlock(), vue.createElementBlock(
+            vue.Fragment,
+            { key: 2 },
+            [
+              _cache[8] || (_cache[8] = vue.createTextVNode(
+                vue.toDisplayString(" "),
+                -1
+                /* CACHED */
+              )),
+              vue.createElementVNode("a", {
+                href: "#",
+                onClick: _cache[2] || (_cache[2] = vue.withModifiers(($event) => $data.showUserList = true, ["prevent"]))
+              }, [
+                vue.createElementVNode(
+                  "span",
+                  _hoisted_4,
+                  "(" + vue.toDisplayString($data.count) + ")",
+                  1
+                  /* TEXT */
+                )
+              ])
+            ],
+            64
+            /* STABLE_FRAGMENT */
+          )) : vue.createCommentVNode("v-if", true)
         ],
         64
         /* STABLE_FRAGMENT */
       )),
       vue.createVNode(_component_UiModal, {
         show: $data.showUserList,
-        "onUpdate:show": _cache[4] || (_cache[4] = ($event) => $data.showUserList = $event)
+        "onUpdate:show": _cache[6] || (_cache[6] = ($event) => $data.showUserList = $event)
       }, {
         header: vue.withCtx(({ titleId }) => [
           vue.createElementVNode("h5", {
@@ -197,10 +226,24 @@
             onClick: _cache[3] || (_cache[3] = ($event) => $data.showUserList = false)
           }, null, 8, _hoisted_6)
         ]),
+        footer: vue.withCtx(() => [
+          vue.createElementVNode(
+            "button",
+            {
+              type: "button",
+              class: "btn btn-light",
+              onClick: _cache[5] || (_cache[5] = ($event) => $data.showUserList = false)
+            },
+            vue.toDisplayString($options.closeLabel),
+            1
+            /* TEXT */
+          )
+        ]),
         default: vue.withCtx(() => [
           $data.showUserList ? (vue.openBlock(), vue.createBlock(_component_UserList, {
             key: 0,
-            url: $options.userListUrl
+            url: $options.userListUrl,
+            onUserClick: _cache[4] || (_cache[4] = ($event) => $data.showUserList = false)
           }, null, 8, ["url"])) : vue.createCommentVNode("v-if", true)
         ]),
         _: 1

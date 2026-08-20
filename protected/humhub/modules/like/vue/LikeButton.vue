@@ -2,14 +2,24 @@
     <span v-if="ready" class="likeLinkContainer">
         <template v-if="guest">
             <a :href="loginUrl" data-bs-target="#globalModal">{{ likeLabel }}</a>
-            <span v-if="count > 0" class="likeCount">({{ count }})</span>
+            <!--
+                The `{{ ' ' }}` interpolation is load-bearing, not decorative: legacy
+                `likeLink.php` had this as whitespace (a newline+indent) BETWEEN the anchor
+                and this span, which the browser collapses to a single rendered space. Vue's
+                template compiler (`whitespace: 'condense'`, the default) strips a purely
+                static whitespace-only text node containing a newline entirely rather than
+                collapsing it — an interpolation is not static text, so it survives condensing
+                and keeps rendering "Like (2)" instead of "Like(2)".
+            -->
+            <template v-if="count > 0">{{ ' ' }}<span class="likeCount">({{ count }})</span></template>
         </template>
         <template v-else>
             <a v-if="!liked" href="#" class="like likeAnchor" @click.prevent="toggle()">{{ likeLabel }}</a>
             <a v-else href="#" class="unlike likeAnchor" @click.prevent="toggle()">{{ unlikeLabel }}</a>
-            <a v-if="count > 0" href="#" @click.prevent="showUserList = true">
+            <!-- See the guest branch's own comment above on the `{{ ' ' }}` interpolation. -->
+            <template v-if="count > 0">{{ ' ' }}<a href="#" @click.prevent="showUserList = true">
                 <span class="likeCount">({{ count }})</span>
-            </a>
+            </a></template>
         </template>
 
         <UiModal v-model:show="showUserList">
@@ -17,7 +27,10 @@
                 <h5 class="modal-title" :id="titleId" v-html="userListTitle"></h5>
                 <button type="button" class="btn-close" :aria-label="closeLabel" @click="showUserList = false"></button>
             </template>
-            <UserList v-if="showUserList" :url="userListUrl" />
+            <UserList v-if="showUserList" :url="userListUrl" @user-click="showUserList = false" />
+            <template #footer>
+                <button type="button" class="btn btn-light" @click="showUserList = false">{{ closeLabel }}</button>
+            </template>
         </UiModal>
     </span>
 </template>
@@ -26,7 +39,14 @@
 import { client, getConfig, i18n, log, url } from '@humhub/vue';
 
 export default {
-    i18nCategories: ['LikeModule.base'],
+    // `UserModule.base` and `base` are needed here, not just `LikeModule.base`, because the
+    // mounter (humhub.vue.js's mountElement()) only preloads `i18nCategories` off the
+    // TOP-LEVEL island component - this one. `UserList` (nested inside the modal below, see
+    // its own `i18nCategories`) and `UiModal`'s implicit reliance on `closeLabel` never get a
+    // preload of their own; declaring both categories here is what keeps their strings out of
+    // the English fallback on a cold cache. See CommentSection.vue's own `i18nCategories` for
+    // the same pattern (a top-level island preloading categories its nested children need).
+    i18nCategories: ['LikeModule.base', 'UserModule.base', 'base'],
     props: {
         recordId: { type: Number, required: true },
         likeCount: { type: Number, default: null },
@@ -72,11 +92,9 @@ export default {
         userListTitle() {
             return i18n.t('LikeModule.base', '<strong>Users</strong> who like this');
         },
-        // 'base' is not declared in `i18nCategories` above (only `LikeModule.base` is) -
-        // an accepted, established gap: UserImage.vue's `onlineLabel` reads
-        // `UserModule.base` the same uncovered way, see its own docblock. Falls back to
-        // the English source text until some other page load happens to warm the
-        // `base` category's translation cache.
+        // Used for both the header close button's aria-label and the footer Close
+        // button's visible label below - 'base' is preloaded via `i18nCategories`
+        // above precisely so this reads translated on a cold cache too.
         closeLabel() {
             return i18n.t('base', 'Close');
         },

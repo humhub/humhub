@@ -83,11 +83,27 @@
   const C0 = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1]]);
   const _sfc_main = {
     name: "UserList",
+    // INERT for every consumer of this component today: the mounter (humhub.vue.js's
+    // mountElement()) only ever reads `i18nCategories` off the TOP-LEVEL component it
+    // mounts as an island, and `UserList` is always nested (e.g. inside `LikeButton`'s
+    // user-list modal) rather than mounted directly - see
+    // docs/develop/ui-js-vuejs-components.md, "Mounting and lifecycle", "i18n
+    // preloading". Left declared (rather than removed) because it becomes live and
+    // correct the moment some future caller mounts `<user-list>` directly as its own
+    // island; until then, every current top-level consumer must declare
+    // `UserModule.base` itself (`LikeButton.vue` does, alongside `base` for the same
+    // reason - see its own `i18nCategories` comment).
     i18nCategories: ["UserModule.base"],
     props: {
       url: { type: String, required: true },
       pageSize: { type: Number, default: null }
     },
+    // `user-click`: fired on every row click (in addition to, not instead of, that row's
+    // own native navigation - the `<a href>` is never `preventDefault()`-ed here), with the
+    // clicked user as payload. Mirrors legacy `UserListBox`'s `data-modal-close="1"` rows
+    // (`userListBox.php`) closing whatever modal hosts the list on click - `LikeButton.vue`
+    // listens for this to close its own `UiModal` the same way.
+    emits: ["user-click"],
     data() {
       return {
         users: [],
@@ -106,7 +122,7 @@
         return vue$1.i18n.t("UserModule.base", "Could not load the user list.");
       },
       loadMoreLabel() {
-        return vue$1.i18n.t("UserModule.base", "Show more");
+        return vue$1.i18n.t("base", "Show more");
       }
     },
     created() {
@@ -152,7 +168,7 @@
     key: 1,
     class: "hh-list"
   };
-  const _hoisted_4 = ["href"];
+  const _hoisted_4 = ["href", "onClick"];
   const _hoisted_5 = { class: "flex-shrink-0 me-2" };
   const _hoisted_6 = { class: "flex-grow-1" };
   const _hoisted_7 = { class: "mt-0" };
@@ -182,14 +198,16 @@
             return vue.openBlock(), vue.createElementBlock("a", {
               key: user.guid,
               href: user.url,
-              class: "d-flex"
+              class: "d-flex",
+              onClick: ($event) => _ctx.$emit("user-click", user)
             }, [
               vue.createElementVNode("div", _hoisted_5, [
                 vue.createVNode(
                   _component_UserImage,
                   vue.mergeProps({ ref_for: true }, user, {
                     size: 50,
-                    link: false
+                    link: false,
+                    class: "m-0"
                   }),
                   null,
                   16
