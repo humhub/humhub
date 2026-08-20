@@ -63,6 +63,7 @@ Widgets, menus, theming, and the HumHub JavaScript layer.
 - [Vue.js build tooling](ui-js-vuejs-build.md) — grunt build-vue, committed artifacts, vitest
 - [Vue.js extensions](ui-js-vuejs-extensions.md) — extension slots, serializer events, domain events
 - [Vue.js legacy interop](ui-js-vuejs-interop.md) — v-additions, RichTextOutput, LegacyFormWrapper, form shells
+- [Vue.js form suite](ui-js-vuejs-forms.md) — HumHubForm, native field components, SubmitButton, error contract
 
 ## Accessibility (WCAG)
 

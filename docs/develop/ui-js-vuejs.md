@@ -1,6 +1,6 @@
 # Vue.js Integration (Concept)
 
-> **Status: concept — Phase 1 and 2 implemented** (Vue runtime, `humhub.vue` registry/mounter, build tooling, `VueComponent` widget, LikeButton pilot; comment section island with legacy-widget form interop and live updates; extension slots and menu entries, wired into the comment island's `comment.links` slot and `comment.controls` menu respectively). Later phases (base component library, dynamic imports, CI enforcement) are still design-level. This document defines the target architecture for integrating Vue.js into HumHub as an island framework on top of the existing JavaScript layer ([overview](ui-js-overview.md)).
+> **Status: concept — Phase 1 and 2 implemented** (Vue runtime, `humhub.vue` registry/mounter, build tooling, `VueComponent` widget, LikeButton pilot; comment section island with legacy-widget form interop and live updates; extension slots and menu entries, wired into the comment island's `comment.links` slot and `comment.controls` menu respectively; a native `HumHubForm` component suite — see [Form suite](ui-js-vuejs-forms.md) — with the comment section's own form migrated onto it as the reference consumer). Later phases (dynamic imports, CI enforcement) are still design-level. This document defines the target architecture for integrating Vue.js into HumHub as an island framework on top of the existing JavaScript layer ([overview](ui-js-overview.md)).
 
 ## Chapters
 
@@ -10,6 +10,7 @@ This document covers motivation, goals, constraints and the overall architecture
 - [Build tooling](ui-js-vuejs-build.md) — `grunt build-vue`/`watch`/`minify`, the committed-artifact contract, development mode, and the vitest test infrastructure.
 - [Extending islands](ui-js-vuejs-extensions.md) — extension slots, menu entries, the serializer extension event pattern, domain events, and migrating a legacy widget-stack extension.
 - [Legacy interop](ui-js-vuejs-interop.md) — `v-additions`, `RichTextOutput`, `LegacyFormWrapper`, the form-shell pattern, and other patterns for bridging into pre-existing jQuery widgets.
+- [Form suite](ui-js-vuejs-forms.md) — `HumHubForm`, native field components, `SubmitButton`, the Yii-parity markup/naming convention, the error contract, and `RichTextField` as a legacy-citizen field.
 
 ## Motivation
 
@@ -79,10 +80,12 @@ Consequence: **compiled artifacts are committed** (see [Build tooling](ui-js-vue
    this document describes: cross-module nesting (`<LikeButton>` inside `CommentEntry.vue`),
    list state (show-more both directions with real counts, one level of collapsed replies),
    the `modal`/`events` bridges (delete confirm, admin-delete, live updates via
-   `humhub:modules:comment:live:NewComment`), and a form. The form is the interesting case:
-   the richtext editor and file upload are deep jQuery widgets, not rewritten in Vue - see
+   `humhub:modules:comment:live:NewComment`), and a form. The form is built on the
+   [`HumHubForm` suite](ui-js-vuejs-forms.md), with the richtext editor and file upload —
+   deep jQuery widgets, not rewritten in Vue — embedded as a `RichTextField` suite citizen;
+   see [Form suite: legacy fields](ui-js-vuejs-forms.md#legacy-fields) and
    [Legacy interop: the form-shell pattern](ui-js-vuejs-interop.md#form-shell-pattern-vueformshell)
-   for the pattern that makes them work inside an island
+   for the mechanism underneath that makes them work inside an island
    without server-rendering a form per instance. `CommentLink` (the "Comment (n)" link/count
    badge in a wall entry) intentionally stays a plain PHP widget with a tiny
    `humhub.comment.js` bridge (`toggleComment` dispatches a DOM CustomEvent the island

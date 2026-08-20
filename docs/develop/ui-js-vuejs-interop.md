@@ -49,6 +49,12 @@ It is a generic core interop component — any module's island can embed it wher
 
 ## Form-shell pattern: VueFormShell
 
+> As of the [Form suite](ui-js-vuejs-forms.md), a module building a Vue island form should
+> reach for `HumHubForm` + its native field components first, and only fall back to the
+> pattern below (via `RichTextField`, the suite's own legacy-citizen field) for widgets too
+> deep to rewrite in Vue — this section documents that underlying mechanism, which
+> `RichTextField` embeds unchanged rather than duplicates.
+
 Some server-rendered widgets are too deep to rewrite in Vue in one pass (rich text editors, file uploaders with drag/drop, progress and previews). `humhub\widgets\VueFormShell` is the reusable core mechanism for wrapping one inside an island without server-rendering a form per instance:
 
 1. `VueFormShell::widget(['content' => function (ActiveForm $form) { ... }])` renders a bare `ActiveForm` shell: the widget owns `ActiveForm::begin()`/`::end()` and its own conventions (`action => '#'`, CSRF input disabled, `acknowledge => true`), while the `content` closure renders whatever fields the caller needs, using the `ActiveForm` instance the widget already began. Every id the closure declares or references (`id`, `for`, and CSS-id-selector fragments embedded in `data-*` attribute values) is built from one literal placeholder token via the `VueFormShell::id('suffix')` static helper, instead of a real id.
@@ -70,7 +76,7 @@ See [LegacyFormWrapper](#legacyformwrapper) below for how the client turns that 
 
 ## LegacyFormWrapper
 
-`LegacyFormWrapper` (see [Components: core component set](ui-js-vuejs-components.md#core-component-set)) is the client half of the form-shell pattern: a small wrapper component that hosts a [`VueFormShell`](#form-shell-pattern-vueformshell)-rendered server shell inside an island and exposes a small, clean API to the surrounding Vue component so it never has to touch jQuery/legacy widgets itself.
+`LegacyFormWrapper` (see [Components: core component set](ui-js-vuejs-components.md#core-component-set)) is the client half of the form-shell pattern: a small wrapper component that hosts a [`VueFormShell`](#form-shell-pattern-vueformshell)-rendered server shell inside an island and exposes a small, clean API to the surrounding Vue component so it never has to touch jQuery/legacy widgets itself. The [Form suite](ui-js-vuejs-forms.md)'s `RichTextField` is built directly on top of this component (see its own "Legacy fields" section) rather than duplicating its logic — this section remains the authoritative reference for what `LegacyFormWrapper` itself does.
 
 **`__VUEFORM__` token contract.** The server-rendered shell carries the literal token `__VUEFORM__` (`VueFormShell::TOKEN` server-side) everywhere an id is declared *or* referenced (`id`, `for`, and any `data-*` attribute value that embeds an id, including CSS-id-selector fragments like `#__VUEFORM___comment_create_form`, from `VueFormShell::id('comment_create_form')`) — not just in `id="..."` attributes themselves. Note the token is a **prefix** (`VueFormShell::id()` returns `TOKEN . '_' . $suffix`), not a suffix. `LegacyFormWrapper` binds the shell with `v-html` plus `v-additions` (booting the legacy widgets the same way any other injected fragment does), after replacing every occurrence of the token with a unique id from a module-scope counter (not `Math.random()`, so `vue.build`'s output stays deterministic) — so the SAME shell can be cloned as many times on the page as needed (a create form, several open reply forms, an edit form) without id collisions. The literal token is a mirrored pair across languages: `VueFormShell::TOKEN` (PHP) and `LegacyFormWrapper.vue`'s own `FORM_TOKEN` constant must always agree.
 
