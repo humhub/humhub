@@ -6,7 +6,7 @@
             :content-id="contentId"
             :comments="comments"
             :prev-count="prevCount"
-            :next-count="nextCount"
+            :total="total"
             :page-size="pageSize"
             :can-comment="showForm"
             :form-shell-html="formShellHtml"
@@ -142,6 +142,11 @@ export default {
         return {
             comments: this.initial ? this.initial.comments : [],
             prevCount: this.initial ? this.initial.prevCount : 0,
+            // Mirrors the raw server payload shape for API completeness, but is no longer
+            // read for gating - CommentList derives its own "next" remaining count from
+            // `total`/`items.length`/`remainingPrev` instead, see its own docblock ("Next-
+            // pagination gap fix") for why the server's per-request `nextCount` alone isn't
+            // enough once own/live appends can move the pagination cursor past a real gap.
             nextCount: this.initial ? this.initial.nextCount : 0,
             total: this.initial ? this.initial.total : 0,
             loaded: !!this.initial,

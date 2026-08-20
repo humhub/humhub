@@ -243,7 +243,12 @@ describe('CommentSection', () => {
                 nextCount: 3,
                 total: 5,
             };
-            const response = { comments: [makeComment({ id: 7 })], prevCount: 0, nextCount: 0, total: 5 };
+            // total: 3 (not 5) - the response confirms comment 7 is the LAST one that exists
+            // (nextCount: 0), so the true total is 3 (5,6,7), not the stale 5 the hydration
+            // payload guessed - see CommentList's own "Next-pagination gap fix" docblock
+            // section for why `remainingNext` is now derived from `total`, refreshed from
+            // this same response, rather than trusted directly off `nextCount`.
+            const response = { comments: [makeComment({ id: 7 })], prevCount: 0, nextCount: 0, total: 3 };
             globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(response));
 
             const wrapper = mount(CommentSection, { ...mountOptions(), props: { contentId: 42, initial, pageSize: 2 } });
@@ -272,7 +277,12 @@ describe('CommentSection', () => {
             await wrapper.find('.showMore a').trigger('click');
             expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(1);
 
-            resolveGet({ comments: [], prevCount: 0, nextCount: 0, total: 3 });
+            // total: 1 (not 3) - the response confirms nothing remains before item 5 in
+            // either direction (empty comments, prevCount 0), so the true total is just
+            // the one already-loaded item, not the stale 3 the hydration payload guessed -
+            // see CommentList's own "Next-pagination gap fix" docblock section for why
+            // `remainingNext` is now derived from `total`, refreshed from every response.
+            resolveGet({ comments: [], prevCount: 0, nextCount: 0, total: 1 });
             await vi.waitFor(() => expect(wrapper.findAll('.showMore').length).toBe(0));
         });
 

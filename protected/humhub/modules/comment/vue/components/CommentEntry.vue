@@ -221,6 +221,30 @@
  *
  * Every injection carries a safe no-op/empty default so this component
  * tolerates being mounted without a providing ancestor (e.g. in isolation).
+ *
+ * ## Next-pagination gap fix ("Show next 0 comments")
+ *
+ * `onReplyCreated()` pushes the viewer's own newly-created reply straight onto the tail of
+ * `childItems` without a real `/comment/comment/list` fetch. Before this fix,
+ * `loadMoreReplies()` used that tail item as its pagination cursor, the label
+ * (`childRemainingNext`) and the gate (`childHasMore`) were two independently-mutated
+ * fields, and `onReplyCreated()`/`onChildRemoved()` only ever updated the latter - so after
+ * an own-reply append, the label kept showing whatever count was last fetched (stale) while
+ * the gate correctly stayed open. Clicking it then paged forward from the just-appended
+ * reply instead of from the last comment the server actually confirmed as loaded, skipping
+ * over the real gap: the server returned zero matching replies (`nextCount: 0`), which got
+ * written straight into the label, producing a permanent "Show next 0 comments" dead link
+ * (the gate stayed open too, since `childTotal` still exceeded `childItems.length`).
+ *
+ * Fixed the same way as CommentList's own root-level pagination (see its docblock, same
+ * section header, for the shared reasoning):
+ *  - `childRemaining`/`childHasMore` are now ONE derived computed pair (`childTotal -
+ *    childItems.length`) instead of two independently-mutated fields.
+ *  - `childLastCursorId` tracks the last SERVER-confirmed reply separately from
+ *    `childItems`' tail, updated only by a real `loadMoreReplies()` response.
+ *  - A `loadMoreReplies()` response may re-return a reply already present in `childItems`
+ *    (deduped via `isKnownId()`/`registerKnownId()`), with genuinely new ones spliced in
+ *    right before the first item newer than the cursor rather than appended past it again.
  */
 import { client, i18n, log, modal, url } from '@humhub/vue';
 import CommentControls from './CommentControls.vue';
@@ -268,15 +292,12 @@ export default {
             editMessage: null,
             childItems: this.comment.children ? [...this.comment.children.items] : [],
             childTotal: this.comment.children ? this.comment.children.total : 0,
-            childRemainingNext: this.comment.children
-                ? this.comment.children.total - this.comment.children.items.length
-                : 0,
-            // Initial value trusts the server's own preview flag verbatim
-            // (CommentJsonService::serializeChildren()'s `total > count($items)`);
-            // recomputed with the same formula after each load-more below,
-            // rather than solely trusting `nextCount`, so a concurrent
-            // create/delete between requests can't leave a stale gate.
-            childHasMore: this.comment.children ? this.comment.children.hasMore : false,
+            // Id of the last item of the last SERVER-PAGINATED reply window (initial
+            // hydration or a loadMoreReplies() response) - deliberately never touched by
+            // onReplyCreated()'s own/live append, see "Next-pagination gap fix" below.
+            childLastCursorId: this.comment.children && this.comment.children.items.length
+                ? this.comment.children.items[this.comment.children.items.length - 1].id
+                : null,
             busyReplies: false,
             busyReveal: false,
             busyEdit: false,
@@ -301,12 +322,23 @@ export default {
         cancelEditLabel() {
             return i18n.t('CommentModule.base', 'Cancel Edit');
         },
+        // Single derived count driving BOTH the `v-if="childHasMore"` gate and this label's
+        // `{count}` (previously two independently-mutated fields that could desync - see
+        // "Next-pagination gap fix" below) - `childTotal` is kept correct by every mutation
+        // (onReplyCreated/onChildRemoved/loadMoreReplies), so this can never show a nonzero
+        // gate with a stale/zero label or vice versa.
+        childRemaining() {
+            return Math.max(0, this.childTotal - this.childItems.length);
+        },
+        childHasMore() {
+            return this.childRemaining > 0;
+        },
         // Same wording/category/placeholder as CommentList's own "show next"
         // link: the legacy nested Comments::widget() reused the exact same
         // ShowMore strings for children, there never was a distinct
         // "replies" message key.
         moreRepliesLabel() {
-            return i18n.t('CommentModule.base', 'Show next {count} comments', { count: this.childRemainingNext });
+            return i18n.t('CommentModule.base', 'Show next {count} comments', { count: this.childRemaining });
         },
         // No server-formatted absolute time in the JSON payload (only ISO
         // `createdAt` - see plan §"Timestamps") - formatted client-side via
@@ -398,14 +430,12 @@ export default {
             }
             this.childItems.push(comment);
             this.childTotal += 1;
-            this.childHasMore = this.childTotal > this.childItems.length;
             this.adjustTotal(1);
             this.registerKnownId(comment.id);
         },
         onChildRemoved(id) {
             this.childItems = this.childItems.filter((child) => child.id !== id);
             this.childTotal = Math.max(0, this.childTotal - 1);
-            this.childHasMore = this.childTotal > this.childItems.length;
             this.pruneCommentRevision(id);
         },
         onChildUpdated({ id, comment }) {
@@ -486,12 +516,19 @@ export default {
                     log.error(e, true);
                 });
         },
+        // See this component's own docblock, "Next-pagination gap fix": cursors from
+        // `childLastCursorId` (the last SERVER-confirmed reply), never from the tail of
+        // `childItems` (which may be an own-appended reply past an unloaded gap). The
+        // response can therefore legitimately re-return a reply already present in
+        // `childItems` - deduped via the shared `isKnownId()`/`registerKnownId()` mechanism -
+        // with genuinely new ones spliced in right before the first item newer than the
+        // cursor, i.e. before that appended tail, preserving chronological order.
         loadMoreReplies() {
-            if (this.busyReplies || this.childItems.length === 0) {
+            if (this.busyReplies || this.childItems.length === 0 || this.childLastCursorId === null) {
                 return;
             }
             this.busyReplies = true;
-            const cursor = this.childItems[this.childItems.length - 1].id;
+            const cursor = this.childLastCursorId;
 
             client.get(url('/comment/comment/list', {
                 contentId: this.comment.contentId,
@@ -500,14 +537,19 @@ export default {
                 direction: 'next',
                 pageSize: this.pageSize,
             })).then((response) => {
-                this.childItems = [...this.childItems, ...response.comments];
+                const newComments = response.comments.filter((comment) => !this.isKnownId(comment.id));
+                newComments.forEach((comment) => this.registerKnownId(comment.id));
+
+                let insertIndex = this.childItems.findIndex((item) => item.id > cursor);
+                if (insertIndex === -1) {
+                    insertIndex = this.childItems.length;
+                }
+                this.childItems.splice(insertIndex, 0, ...newComments);
+
+                if (response.comments.length > 0) {
+                    this.childLastCursorId = response.comments[response.comments.length - 1].id;
+                }
                 this.childTotal = response.total;
-                this.childRemainingNext = response.nextCount;
-                // Same shape as the server's own preview formula (`total >
-                // count($items)`), recomputed with the freshly returned
-                // total rather than the one captured at initial hydration -
-                // see the childHasMore comment in data() above.
-                this.childHasMore = this.childTotal > this.childItems.length;
             }).catch((e) => {
                 log.error(e, true);
             }).finally(() => {

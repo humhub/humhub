@@ -485,6 +485,150 @@ describe('Comment mutations + live updates', () => {
         });
     });
 
+    // Regression coverage for the "Show next 0 comments" bug: an own/live-appended
+    // comment used to become the pagination cursor for the NEXT "show more" click,
+    // skipping over whatever real gap existed and permanently stranding it - see
+    // CommentList.vue's and CommentEntry.vue's own "Next-pagination gap fix" docblock
+    // sections for the full root-cause writeup this covers.
+    describe('replies/root pagination gap fix (Show next 0 comments)', () => {
+        it('renders no show-more link after an own reply is appended to an already fully-loaded reply list', async () => {
+            const replyA = makeComment({ id: 10, parentCommentId: 1, children: null, message: 'reply a' });
+            const replyB = makeComment({ id: 11, parentCommentId: 1, children: null, message: 'reply b' });
+            const root = makeComment({ id: 1, children: { total: 2, items: [replyA, replyB], hasMore: false } });
+            globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve(
+                makeComment({ id: 20, parentCommentId: 1, children: null, message: 'own reply' }),
+            ));
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: {
+                    contentId: 42,
+                    initial: { comments: [root], prevCount: 0, nextCount: 0, total: 3 },
+                    canComment: true,
+                    formShellHtml: buildShell(),
+                },
+            });
+
+            expect(wrapper.find('.nested-comments-root .showMore').exists()).toBe(false);
+
+            const replyLink = wrapper.findAll('.wall-entry-controls a').find((a) => a.text().startsWith('Reply'));
+            await replyLink.trigger('click');
+            await wrapper.vm.$nextTick();
+            await wrapper.find('.nested-comments-root .btn-comment-submit').trigger('click');
+
+            await vi.waitFor(() => expect(wrapper.findAll('.nested-comments-root .single-comment').length).toBe(3));
+            // The gate (`childHasMore`) and the label it would carry are now the SAME
+            // derived value - an append can never leave one stale while the other updates.
+            expect(wrapper.find('.nested-comments-root .showMore').exists()).toBe(false);
+        });
+
+        it('inserts a previously-hidden reply before an own-appended reply, dedupes the appended one, and clears the link once caught up (children)', async () => {
+            const replyA = makeComment({ id: 10, parentCommentId: 1, children: null, message: 'reply a' });
+            const replyB = makeComment({ id: 11, parentCommentId: 1, children: null, message: 'reply b' });
+            const root = makeComment({ id: 1, children: { total: 3, items: [replyA, replyB], hasMore: true } });
+            const ownReply = makeComment({ id: 20, parentCommentId: 1, children: null, message: 'own reply' });
+            globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve(ownReply));
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: {
+                    contentId: 42,
+                    initial: { comments: [root], prevCount: 0, nextCount: 0, total: 4 },
+                    canComment: true,
+                    formShellHtml: buildShell(),
+                    pageSize: 5,
+                },
+            });
+
+            // Preview shows 2 of 3 replies before anything is appended.
+            expect(wrapper.find('.nested-comments-root .showMore').exists()).toBe(true);
+
+            const replyLink = wrapper.findAll('.wall-entry-controls a').find((a) => a.text().startsWith('Reply'));
+            await replyLink.trigger('click');
+            await wrapper.vm.$nextTick();
+            await wrapper.find('.nested-comments-root .btn-comment-submit').trigger('click');
+            await vi.waitFor(() => expect(wrapper.findAll('.nested-comments-root .single-comment').length).toBe(3));
+
+            // Still open (never a stale-zero gate) right after the append - the
+            // pre-existing hidden reply hasn't been fetched yet, so the derived count
+            // (`childTotal - childItems.length`, still 1) is unchanged.
+            expect(wrapper.find('.nested-comments-root .showMore').exists()).toBe(true);
+
+            const hiddenReply = makeComment({ id: 15, parentCommentId: 1, children: null, message: 'hidden reply' });
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({
+                // Real "next" pagination from the pre-append cursor (11) legitimately
+                // re-returns the already-known own reply (20) too, alongside the
+                // genuinely new, previously-hidden one (15).
+                comments: [hiddenReply, ownReply],
+                prevCount: 0,
+                nextCount: 0,
+                total: 4,
+            }));
+
+            await wrapper.find('.nested-comments-root .showMore a').trigger('click');
+
+            // The cursor is the pre-append last loaded reply (11), never the
+            // own-appended one (20) that is now the array's tail.
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith(
+                '/comment/comment/list?contentId=42&parentCommentId=1&commentId=11&direction=next&pageSize=5',
+            );
+
+            await vi.waitFor(() => {
+                const ids = wrapper.findAll('.nested-comments-root .single-comment').map((entry) => entry.attributes('id'));
+                // The previously-hidden reply (15) lands BEFORE the own-appended one
+                // (20), and the duplicate (20) from the response was deduped, not
+                // inserted a second time.
+                expect(ids).toEqual(['comment_10', 'comment_11', 'comment_15', 'comment_20']);
+            });
+            expect(wrapper.find('.nested-comments-root .showMore').exists()).toBe(false);
+        });
+
+        it('inserts a previously-hidden root comment before an own-appended one, dedupes the appended one, and clears the link once caught up (root list)', async () => {
+            const commentA = makeComment({ id: 5, message: 'comment a' });
+            const commentB = makeComment({ id: 6, message: 'comment b' });
+            const ownComment = makeComment({ id: 10, message: 'own comment' });
+            globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve(ownComment));
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: {
+                    contentId: 42,
+                    initial: { comments: [commentA, commentB], prevCount: 0, nextCount: 1, total: 3 },
+                    canComment: true,
+                    formShellHtml: buildShell(),
+                    pageSize: 5,
+                },
+            });
+
+            expect(wrapper.find('.showMore').exists()).toBe(true);
+
+            await wrapper.find('.btn-comment-submit').trigger('click');
+            await vi.waitFor(() => expect(wrapper.findAll('.single-comment').length).toBe(3));
+
+            const hiddenComment = makeComment({ id: 8, message: 'hidden comment' });
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({
+                comments: [hiddenComment, ownComment],
+                prevCount: 0,
+                nextCount: 0,
+                total: 4,
+            }));
+
+            await wrapper.find('.showMore a').trigger('click');
+
+            // The cursor is the pre-append last loaded comment (6), never the
+            // own-appended one (10) that is now items' tail.
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith(
+                '/comment/comment/list?contentId=42&commentId=6&direction=next&pageSize=5',
+            );
+
+            await vi.waitFor(() => {
+                const ids = wrapper.findAll('.single-comment').map((entry) => entry.attributes('id'));
+                expect(ids).toEqual(['comment_5', 'comment_6', 'comment_8', 'comment_10']);
+            });
+            expect(wrapper.find('.showMore').exists()).toBe(false);
+        });
+    });
+
     describe('own-create vs live race (I1)', () => {
         it('does not duplicate an entry when a live event and its own slow create response resolve for the same id', async () => {
             let resolvePost;

@@ -46,6 +46,33 @@
  * share. Defaults are provided for every injection so this component
  * survives being mounted in isolation (e.g. a future standalone unit test)
  * without a providing ancestor.
+ *
+ * ## Next-pagination gap fix ("Show next 0 comments")
+ *
+ * `appendRoot()` (own create, called by CommentSection's `onMainCreated()`) and the
+ * root-append branch of CommentSection's own live-update handler both push straight onto
+ * the tail of `items` without going through a real `/comment/comment/list` fetch. Before
+ * this fix, `loadNext()` used that tail item as its pagination cursor - once such an
+ * append had happened, the cursor was the just-appended comment itself, so a "next"
+ * request paged forward from THERE instead of from the last comment the server actually
+ * confirmed as loaded, skipping over whatever the true gap was. The server dutifully
+ * returned zero matching comments (`nextCount: 0`) while `total` (bumped by the append)
+ * still exceeded `items.length`, leaving a permanent, dead "Show next 0 comments" link.
+ *
+ * Fixed by:
+ *  - Deriving `remainingNext` (gate AND label, one value) from `total - items.length -
+ *    remainingPrev` instead of trusting the server's per-request `nextCount` directly -
+ *    `total` is kept correct by every mutation (CommentSection's `adjustTotal()`), so this
+ *    can never desync the way two independently-updated fields could.
+ *  - Tracking `lastCursorId` separately from `items`' tail: seeded from the initial window
+ *    and updated ONLY by a real `loadNext()` response, never by `appendRoot()`/
+ *    `replaceRoot()`. `loadNext()` always cursors from `lastCursorId`.
+ *  - Since the cursor no longer moves past an appended tail, a `loadNext()` response can
+ *    legitimately include comments already present in `items` (that same appended tail,
+ *    now confirmed by the server too) - deduped via the shared `isKnownId()`/
+ *    `registerKnownId()` mechanism (see CommentSection's "Live updates" docblock section),
+ *    with the genuinely new ones spliced in right before the first item newer than the
+ *    cursor, preserving chronological order instead of appending past the tail again.
  */
 import { client, getConfig, i18n, log, url } from '@humhub/vue';
 import CommentEntry from './CommentEntry.vue';
@@ -57,12 +84,18 @@ export default {
         commentRevisions: { default: () => ({}) },
         bumpCommentRevision: { default: () => () => {} },
         pruneCommentRevision: { default: () => () => {} },
+        adjustTotal: { default: () => () => {} },
+        registerKnownId: { default: () => () => {} },
+        isKnownId: { default: () => () => false },
     },
     props: {
         contentId: { type: Number, required: true },
         comments: { type: Array, required: true },
         prevCount: { type: Number, required: true },
-        nextCount: { type: Number, required: true },
+        // Authoritative root-comment count (CommentSection's own `total`) - drives the
+        // `remainingNext` computed below instead of the server's per-request `nextCount`,
+        // see this component's own docblock, "Next-pagination gap fix".
+        total: { type: Number, required: true },
         pageSize: { type: Number, default: 10 },
         canComment: { type: Boolean, default: false },
         formShellHtml: { type: String, default: null },
@@ -73,7 +106,10 @@ export default {
         return {
             items: [...this.comments],
             remainingPrev: this.prevCount,
-            remainingNext: this.nextCount,
+            // Id of the last item of the last SERVER-PAGINATED window (initial hydration or a
+            // loadNext() response) - deliberately never touched by appendRoot()/replaceRoot()
+            // (own/live creates), see the docblock below.
+            lastCursorId: this.comments.length ? this.comments[this.comments.length - 1].id : null,
             busyPrev: false,
             busyNext: false,
         };
@@ -92,6 +128,15 @@ export default {
         prevLabel() {
             return i18n.t('CommentModule.base', 'Show previous {count} comments', { count: this.remainingPrev });
         },
+        // Single derived count (see this component's own docblock) instead of a second,
+        // independently-mutated `remainingNext` field: `total` already accounts for every
+        // create/delete/live mutation (CommentSection's `adjustTotal()`), so subtracting the
+        // hidden-before (`remainingPrev`) and loaded (`items.length`) counts always yields the
+        // true hidden-after count, with no separate bookkeeping that can drift out of sync with
+        // the "show more" gate.
+        remainingNext() {
+            return Math.max(0, this.total - this.items.length - this.remainingPrev);
+        },
         nextLabel() {
             return i18n.t('CommentModule.base', 'Show next {count} comments', { count: this.remainingNext });
         },
@@ -102,12 +147,10 @@ export default {
         // ever touches the local copies above.
         comments(value) {
             this.items = [...value];
+            this.lastCursorId = value.length ? value[value.length - 1].id : null;
         },
         prevCount(value) {
             this.remainingPrev = value;
-        },
-        nextCount(value) {
-            this.remainingNext = value;
         },
     },
     methods: {
@@ -150,18 +193,26 @@ export default {
             })).then((response) => {
                 this.items = [...response.comments, ...this.items];
                 this.remainingPrev = response.prevCount;
+                this.adjustTotal(response.total - this.total);
             }).catch((e) => {
                 log.error(e, true);
             }).finally(() => {
                 this.busyPrev = false;
             });
         },
+        // See this component's own docblock, "Next-pagination gap fix": the cursor is the
+        // last known-good SERVER cursor (`lastCursorId`), never the tail of `items` (which may
+        // be an own/live-appended comment past an unloaded gap). The response can therefore
+        // re-return comments already present in `items` (that same appended tail) - deduped via
+        // the shared `isKnownId()`/`registerKnownId()` mechanism - and genuinely new ones are
+        // spliced in right before the first item newer than the cursor, i.e. before that
+        // appended tail, not blindly at the end.
         loadNext() {
-            if (this.busyNext || this.items.length === 0) {
+            if (this.busyNext || this.items.length === 0 || this.lastCursorId === null) {
                 return;
             }
             this.busyNext = true;
-            const cursor = this.items[this.items.length - 1].id;
+            const cursor = this.lastCursorId;
 
             client.get(url('/comment/comment/list', {
                 contentId: this.contentId,
@@ -169,8 +220,19 @@ export default {
                 direction: 'next',
                 pageSize: this.pageSize,
             })).then((response) => {
-                this.items = [...this.items, ...response.comments];
-                this.remainingNext = response.nextCount;
+                const newComments = response.comments.filter((comment) => !this.isKnownId(comment.id));
+                newComments.forEach((comment) => this.registerKnownId(comment.id));
+
+                let insertIndex = this.items.findIndex((item) => item.id > cursor);
+                if (insertIndex === -1) {
+                    insertIndex = this.items.length;
+                }
+                this.items.splice(insertIndex, 0, ...newComments);
+
+                if (response.comments.length > 0) {
+                    this.lastCursorId = response.comments[response.comments.length - 1].id;
+                }
+                this.adjustTotal(response.total - this.total);
             }).catch((e) => {
                 log.error(e, true);
             }).finally(() => {

@@ -341,13 +341,10 @@
         editMessage: null,
         childItems: this.comment.children ? [...this.comment.children.items] : [],
         childTotal: this.comment.children ? this.comment.children.total : 0,
-        childRemainingNext: this.comment.children ? this.comment.children.total - this.comment.children.items.length : 0,
-        // Initial value trusts the server's own preview flag verbatim
-        // (CommentJsonService::serializeChildren()'s `total > count($items)`);
-        // recomputed with the same formula after each load-more below,
-        // rather than solely trusting `nextCount`, so a concurrent
-        // create/delete between requests can't leave a stale gate.
-        childHasMore: this.comment.children ? this.comment.children.hasMore : false,
+        // Id of the last item of the last SERVER-PAGINATED reply window (initial
+        // hydration or a loadMoreReplies() response) - deliberately never touched by
+        // onReplyCreated()'s own/live append, see "Next-pagination gap fix" below.
+        childLastCursorId: this.comment.children && this.comment.children.items.length ? this.comment.children.items[this.comment.children.items.length - 1].id : null,
         busyReplies: false,
         busyReveal: false,
         busyEdit: false
@@ -372,12 +369,23 @@
       cancelEditLabel() {
         return vue.i18n.t("CommentModule.base", "Cancel Edit");
       },
+      // Single derived count driving BOTH the `v-if="childHasMore"` gate and this label's
+      // `{count}` (previously two independently-mutated fields that could desync - see
+      // "Next-pagination gap fix" below) - `childTotal` is kept correct by every mutation
+      // (onReplyCreated/onChildRemoved/loadMoreReplies), so this can never show a nonzero
+      // gate with a stale/zero label or vice versa.
+      childRemaining() {
+        return Math.max(0, this.childTotal - this.childItems.length);
+      },
+      childHasMore() {
+        return this.childRemaining > 0;
+      },
       // Same wording/category/placeholder as CommentList's own "show next"
       // link: the legacy nested Comments::widget() reused the exact same
       // ShowMore strings for children, there never was a distinct
       // "replies" message key.
       moreRepliesLabel() {
-        return vue.i18n.t("CommentModule.base", "Show next {count} comments", { count: this.childRemainingNext });
+        return vue.i18n.t("CommentModule.base", "Show next {count} comments", { count: this.childRemaining });
       },
       // No server-formatted absolute time in the JSON payload (only ISO
       // `createdAt` - see plan §"Timestamps") - formatted client-side via
@@ -455,14 +463,12 @@
         }
         this.childItems.push(comment);
         this.childTotal += 1;
-        this.childHasMore = this.childTotal > this.childItems.length;
         this.adjustTotal(1);
         this.registerKnownId(comment.id);
       },
       onChildRemoved(id) {
         this.childItems = this.childItems.filter((child) => child.id !== id);
         this.childTotal = Math.max(0, this.childTotal - 1);
-        this.childHasMore = this.childTotal > this.childItems.length;
         this.pruneCommentRevision(id);
       },
       onChildUpdated({ id, comment }) {
@@ -513,12 +519,19 @@
           vue.log.error(e, true);
         });
       },
+      // See this component's own docblock, "Next-pagination gap fix": cursors from
+      // `childLastCursorId` (the last SERVER-confirmed reply), never from the tail of
+      // `childItems` (which may be an own-appended reply past an unloaded gap). The
+      // response can therefore legitimately re-return a reply already present in
+      // `childItems` - deduped via the shared `isKnownId()`/`registerKnownId()` mechanism -
+      // with genuinely new ones spliced in right before the first item newer than the
+      // cursor, i.e. before that appended tail, preserving chronological order.
       loadMoreReplies() {
-        if (this.busyReplies || this.childItems.length === 0) {
+        if (this.busyReplies || this.childItems.length === 0 || this.childLastCursorId === null) {
           return;
         }
         this.busyReplies = true;
-        const cursor = this.childItems[this.childItems.length - 1].id;
+        const cursor = this.childLastCursorId;
         vue.client.get(vue.url("/comment/comment/list", {
           contentId: this.comment.contentId,
           parentCommentId: this.comment.id,
@@ -526,10 +539,17 @@
           direction: "next",
           pageSize: this.pageSize
         })).then((response) => {
-          this.childItems = [...this.childItems, ...response.comments];
+          const newComments = response.comments.filter((comment) => !this.isKnownId(comment.id));
+          newComments.forEach((comment) => this.registerKnownId(comment.id));
+          let insertIndex = this.childItems.findIndex((item) => item.id > cursor);
+          if (insertIndex === -1) {
+            insertIndex = this.childItems.length;
+          }
+          this.childItems.splice(insertIndex, 0, ...newComments);
+          if (response.comments.length > 0) {
+            this.childLastCursorId = response.comments[response.comments.length - 1].id;
+          }
           this.childTotal = response.total;
-          this.childRemainingNext = response.nextCount;
-          this.childHasMore = this.childTotal > this.childItems.length;
         }).catch((e) => {
           vue.log.error(e, true);
         }).finally(() => {
@@ -810,7 +830,7 @@
                   128
                   /* KEYED_FRAGMENT */
                 )),
-                $data.childHasMore ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_16, [
+                $options.childHasMore ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_16, [
                   _cache[8] || (_cache[8] = vue$1.createElementVNode(
                     "hr",
                     { class: "comment-separator" },
@@ -859,13 +879,21 @@
       bumpCommentRevision: { default: () => () => {
       } },
       pruneCommentRevision: { default: () => () => {
-      } }
+      } },
+      adjustTotal: { default: () => () => {
+      } },
+      registerKnownId: { default: () => () => {
+      } },
+      isKnownId: { default: () => () => false }
     },
     props: {
       contentId: { type: Number, required: true },
       comments: { type: Array, required: true },
       prevCount: { type: Number, required: true },
-      nextCount: { type: Number, required: true },
+      // Authoritative root-comment count (CommentSection's own `total`) - drives the
+      // `remainingNext` computed below instead of the server's per-request `nextCount`,
+      // see this component's own docblock, "Next-pagination gap fix".
+      total: { type: Number, required: true },
       pageSize: { type: Number, default: 10 },
       canComment: { type: Boolean, default: false },
       formShellHtml: { type: String, default: null },
@@ -876,7 +904,10 @@
       return {
         items: [...this.comments],
         remainingPrev: this.prevCount,
-        remainingNext: this.nextCount,
+        // Id of the last item of the last SERVER-PAGINATED window (initial hydration or a
+        // loadNext() response) - deliberately never touched by appendRoot()/replaceRoot()
+        // (own/live creates), see the docblock below.
+        lastCursorId: this.comments.length ? this.comments[this.comments.length - 1].id : null,
         busyPrev: false,
         busyNext: false
       };
@@ -895,6 +926,15 @@
       prevLabel() {
         return vue.i18n.t("CommentModule.base", "Show previous {count} comments", { count: this.remainingPrev });
       },
+      // Single derived count (see this component's own docblock) instead of a second,
+      // independently-mutated `remainingNext` field: `total` already accounts for every
+      // create/delete/live mutation (CommentSection's `adjustTotal()`), so subtracting the
+      // hidden-before (`remainingPrev`) and loaded (`items.length`) counts always yields the
+      // true hidden-after count, with no separate bookkeeping that can drift out of sync with
+      // the "show more" gate.
+      remainingNext() {
+        return Math.max(0, this.total - this.items.length - this.remainingPrev);
+      },
       nextLabel() {
         return vue.i18n.t("CommentModule.base", "Show next {count} comments", { count: this.remainingNext });
       }
@@ -905,12 +945,10 @@
       // ever touches the local copies above.
       comments(value) {
         this.items = [...value];
+        this.lastCursorId = value.length ? value[value.length - 1].id : null;
       },
       prevCount(value) {
         this.remainingPrev = value;
-      },
-      nextCount(value) {
-        this.remainingNext = value;
       }
     },
     methods: {
@@ -952,26 +990,43 @@
         })).then((response) => {
           this.items = [...response.comments, ...this.items];
           this.remainingPrev = response.prevCount;
+          this.adjustTotal(response.total - this.total);
         }).catch((e) => {
           vue.log.error(e, true);
         }).finally(() => {
           this.busyPrev = false;
         });
       },
+      // See this component's own docblock, "Next-pagination gap fix": the cursor is the
+      // last known-good SERVER cursor (`lastCursorId`), never the tail of `items` (which may
+      // be an own/live-appended comment past an unloaded gap). The response can therefore
+      // re-return comments already present in `items` (that same appended tail) - deduped via
+      // the shared `isKnownId()`/`registerKnownId()` mechanism - and genuinely new ones are
+      // spliced in right before the first item newer than the cursor, i.e. before that
+      // appended tail, not blindly at the end.
       loadNext() {
-        if (this.busyNext || this.items.length === 0) {
+        if (this.busyNext || this.items.length === 0 || this.lastCursorId === null) {
           return;
         }
         this.busyNext = true;
-        const cursor = this.items[this.items.length - 1].id;
+        const cursor = this.lastCursorId;
         vue.client.get(vue.url("/comment/comment/list", {
           contentId: this.contentId,
           commentId: cursor,
           direction: "next",
           pageSize: this.pageSize
         })).then((response) => {
-          this.items = [...this.items, ...response.comments];
-          this.remainingNext = response.nextCount;
+          const newComments = response.comments.filter((comment) => !this.isKnownId(comment.id));
+          newComments.forEach((comment) => this.registerKnownId(comment.id));
+          let insertIndex = this.items.findIndex((item) => item.id > cursor);
+          if (insertIndex === -1) {
+            insertIndex = this.items.length;
+          }
+          this.items.splice(insertIndex, 0, ...newComments);
+          if (response.comments.length > 0) {
+            this.lastCursorId = response.comments[response.comments.length - 1].id;
+          }
+          this.adjustTotal(response.total - this.total);
         }).catch((e) => {
           vue.log.error(e, true);
         }).finally(() => {
@@ -1043,7 +1098,7 @@
         128
         /* KEYED_FRAGMENT */
       )),
-      $data.remainingNext > 0 && $data.items.length > 0 ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_3, [
+      $options.remainingNext > 0 && $data.items.length > 0 ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_3, [
         _cache[3] || (_cache[3] = vue$1.createElementVNode(
           "hr",
           { class: "comment-separator" },
@@ -1106,6 +1161,11 @@
       return {
         comments: this.initial ? this.initial.comments : [],
         prevCount: this.initial ? this.initial.prevCount : 0,
+        // Mirrors the raw server payload shape for API completeness, but is no longer
+        // read for gating - CommentList derives its own "next" remaining count from
+        // `total`/`items.length`/`remainingPrev` instead, see its own docblock ("Next-
+        // pagination gap fix") for why the server's per-request `nextCount` alone isn't
+        // enough once own/live appends can move the pagination cursor past a real gap.
         nextCount: this.initial ? this.initial.nextCount : 0,
         total: this.initial ? this.initial.total : 0,
         loaded: !!this.initial,
@@ -1301,13 +1361,13 @@
           "content-id": $props.contentId,
           comments: $data.comments,
           "prev-count": $data.prevCount,
-          "next-count": $data.nextCount,
+          total: $data.total,
           "page-size": $props.pageSize,
           "can-comment": $options.showForm,
           "form-shell-html": $props.formShellHtml,
           "submit-icon-html": $props.submitIconHtml,
           "anchor-comment-id": $props.anchorCommentId
-        }, null, 8, ["content-id", "comments", "prev-count", "next-count", "page-size", "can-comment", "form-shell-html", "submit-icon-html", "anchor-comment-id"])) : vue$1.createCommentVNode("v-if", true),
+        }, null, 8, ["content-id", "comments", "prev-count", "total", "page-size", "can-comment", "form-shell-html", "submit-icon-html", "anchor-comment-id"])) : vue$1.createCommentVNode("v-if", true),
         $options.showForm && $props.formShellHtml ? (vue$1.openBlock(), vue$1.createBlock(_component_CommentForm, {
           key: 1,
           ref: "form",
