@@ -12,19 +12,19 @@
     }
     return target;
   };
-  const _sfc_main$3 = {
+  const _sfc_main$4 = {
     props: {
       toggleAriaLabel: { type: String, required: true },
       alignEnd: { type: Boolean, default: true },
       toggleClass: { type: String, default: "nav-link dropdown-toggle" }
     }
   };
-  const _hoisted_1$2 = { class: "nav nav-pills preferences" };
-  const _hoisted_2 = { class: "nav-item dropdown" };
+  const _hoisted_1$3 = { class: "nav nav-pills preferences" };
+  const _hoisted_2$1 = { class: "nav-item dropdown" };
   const _hoisted_3 = ["aria-label"];
-  function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
-    return vue.openBlock(), vue.createElementBlock("ul", _hoisted_1$2, [
-      vue.createElementVNode("li", _hoisted_2, [
+  function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
+    return vue.openBlock(), vue.createElementBlock("ul", _hoisted_1$3, [
+      vue.createElementVNode("li", _hoisted_2$1, [
         vue.createElementVNode("a", {
           href: "#",
           class: vue.normalizeClass($props.toggleClass),
@@ -48,8 +48,8 @@
       ])
     ]);
   }
-  const C0 = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3]]);
-  const _sfc_main$2 = {
+  const C0 = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$4]]);
+  const _sfc_main$3 = {
     name: "ExtensionSlot",
     props: {
       name: { type: String, required: true },
@@ -61,7 +61,7 @@
       }
     }
   };
-  function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(true), vue.createElementBlock(
       vue.Fragment,
       null,
@@ -80,14 +80,14 @@
       /* KEYED_FRAGMENT */
     );
   }
-  const C1 = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
+  const C1 = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3]]);
   const FORM_TOKEN = "__VUEFORM__";
   const RICHTEXT_SELECTOR = '[data-ui-widget="ui.richtext.prosemirror.RichTextEditor"]';
   const RICHTEXT_COMPONENT_DATA = "humhub-ui-richtexteditor";
   const UPLOAD_SELECTOR = ".main_comment_upload";
   const UPLOAD_COMPONENT_DATA = "humhub-file-upload";
   let instanceCounter = 0;
-  const _sfc_main$1 = {
+  const _sfc_main$2 = {
     props: {
       shellHtml: { type: String, required: true }
     },
@@ -170,33 +170,103 @@
       }
     }
   };
-  const _hoisted_1$1 = ["innerHTML"];
-  function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
+  const _hoisted_1$2 = ["innerHTML"];
+  function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
     const _directive_additions = vue.resolveDirective("additions");
-    return vue.withDirectives((vue.openBlock(), vue.createElementBlock("div", { innerHTML: $options.processedShell }, null, 8, _hoisted_1$1)), [
+    return vue.withDirectives((vue.openBlock(), vue.createElementBlock("div", { innerHTML: $options.processedShell }, null, 8, _hoisted_1$2)), [
       [_directive_additions]
     ]);
   }
-  const C2 = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1]]);
-  const _sfc_main = {
+  const C2 = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
+  const _sfc_main$1 = {
     props: {
       output: { type: String, default: null }
     }
   };
-  const _hoisted_1 = ["innerHTML"];
-  function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+  const _hoisted_1$1 = ["innerHTML"];
+  function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
     const _directive_additions = vue.resolveDirective("additions");
     return $props.output ? vue.withDirectives((vue.openBlock(), vue.createElementBlock("div", {
       key: 0,
       innerHTML: $props.output
-    }, null, 8, _hoisted_1)), [
+    }, null, 8, _hoisted_1$1)), [
       [_directive_additions]
     ]) : vue.createCommentVNode("v-if", true);
   }
-  const C3 = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
+  const C3 = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1]]);
+  const _sfc_main = {
+    props: {
+      guid: { type: String, required: true },
+      displayName: { type: String, required: true },
+      url: { type: String, required: true },
+      imageUrl: { type: String, required: true },
+      imageAlt: { type: String, default: null },
+      contentContainerId: { type: Number, default: null },
+      // Tri-state: null (default) renders no online-status indicator at all -
+      // distinct from `false` (renders the "offline" variant).
+      online: { type: Boolean, default: null },
+      size: { type: Number, default: 25 },
+      link: { type: Boolean, default: true }
+    },
+    computed: {
+      resolvedAlt() {
+        return this.imageAlt || this.displayName;
+      },
+      imageStyle() {
+        return `width: ${this.size}px; height: ${this.size}px`;
+      },
+      hasOnlineIndicator() {
+        return this.online !== null;
+      },
+      sizeBucketClass() {
+        if (this.size < 28) {
+          return "img-size-small";
+        }
+        if (this.size > 48) {
+          return "img-size-large";
+        }
+        return "img-size-medium";
+      },
+      onlineLabel() {
+        if (this.online === null) {
+          return null;
+        }
+        return this.online ? vue$1.i18n.t("UserModule.base", "Online") : vue$1.i18n.t("UserModule.base", "Offline");
+      }
+    }
+  };
+  const _hoisted_1 = ["src", "alt", "data-contentcontainer-id", "data-guid"];
+  const _hoisted_2 = ["aria-label", "title"];
+  function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+    return vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent($props.link ? "a" : "span"), {
+      href: $props.link ? $props.url : void 0,
+      class: vue.normalizeClass({ "has-online-status": $options.hasOnlineIndicator, [$options.sizeBucketClass]: $options.hasOnlineIndicator })
+    }, {
+      default: vue.withCtx(() => [
+        vue.createElementVNode("img", {
+          class: "rounded",
+          style: vue.normalizeStyle($options.imageStyle),
+          src: $props.imageUrl,
+          alt: $options.resolvedAlt,
+          "data-contentcontainer-id": $props.contentContainerId,
+          "data-guid": $props.guid
+        }, null, 12, _hoisted_1),
+        $options.hasOnlineIndicator ? (vue.openBlock(), vue.createElementBlock("span", {
+          key: 0,
+          class: vue.normalizeClass(["tt user-online-status", $props.online ? "user-is-online" : "user-is-offline"]),
+          "aria-label": $options.onlineLabel,
+          title: $options.onlineLabel
+        }, null, 10, _hoisted_2)) : vue.createCommentVNode("v-if", true)
+      ]),
+      _: 1
+      /* STABLE */
+    }, 8, ["href", "class"]);
+  }
+  const C4 = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
   vue$1.register("DropdownMenu", C0);
   vue$1.register("ExtensionSlot", C1);
   vue$1.register("LegacyFormWrapper", C2);
   vue$1.register("RichTextOutput", C3);
+  vue$1.register("UserImage", C4);
 })(humhub.modules.vue, Vue);
 //# sourceMappingURL=humhub.core.vue.js.map

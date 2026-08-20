@@ -399,22 +399,6 @@
       // isn't edited, since `updatedAt` is only ever set in that case.
       updatedAtTitle() {
         return this.comment.updatedAt ? new Date(this.comment.updatedAt).toLocaleString() : null;
-      },
-      // Normalizes a missing `online` field (e.g. a fixture predating this field) to the
-      // same "no overlay" null the server sends when the online-status feature is
-      // disabled or the viewer is looking at their own comment - see
-      // CommentJsonService::serializeOnlineStatus().
-      isOnline() {
-        const online = this.comment.author && this.comment.author.online;
-        return online === true || online === false ? online : null;
-      },
-      // Mirrors user\widgets\Image::run()'s aria-label/title pair for the online-status
-      // overlay span - same 'UserModule.base' keys, preloaded by CommentSection.
-      onlineLabel() {
-        if (this.isOnline === null) {
-          return null;
-        }
-        return this.isOnline ? vue.i18n.t("UserModule.base", "Online") : vue.i18n.t("UserModule.base", "Offline");
       }
     },
     mounted() {
@@ -573,29 +557,27 @@
   const _hoisted_2$1 = { class: "flex-grow-1 overflow-hidden" };
   const _hoisted_3$1 = ["id"];
   const _hoisted_4 = { class: "flex-shrink-0 comment-header-image" };
-  const _hoisted_5 = ["href"];
-  const _hoisted_6 = ["src", "alt", "data-contentcontainer-id"];
-  const _hoisted_7 = ["aria-label", "title"];
-  const _hoisted_8 = { class: "flex-grow-1" };
-  const _hoisted_9 = { class: "comment-heading" };
-  const _hoisted_10 = ["href", "data-contentcontainer-id", "data-guid"];
-  const _hoisted_11 = ["datetime", "title"];
-  const _hoisted_12 = ["title"];
-  const _hoisted_13 = ["id"];
-  const _hoisted_14 = ["innerHTML"];
-  const _hoisted_15 = { class: "wall-entry-controls" };
-  const _hoisted_16 = ["data-count"];
-  const _hoisted_17 = {
+  const _hoisted_5 = { class: "flex-grow-1" };
+  const _hoisted_6 = { class: "comment-heading" };
+  const _hoisted_7 = ["href", "data-contentcontainer-id", "data-guid"];
+  const _hoisted_8 = ["datetime", "title"];
+  const _hoisted_9 = ["title"];
+  const _hoisted_10 = ["id"];
+  const _hoisted_11 = ["innerHTML"];
+  const _hoisted_12 = { class: "wall-entry-controls" };
+  const _hoisted_13 = ["data-count"];
+  const _hoisted_14 = {
     key: 0,
     class: "nested-comments-root"
   };
-  const _hoisted_18 = { class: "comment" };
-  const _hoisted_19 = {
+  const _hoisted_15 = { class: "comment" };
+  const _hoisted_16 = {
     key: 0,
     class: "showMore"
   };
   function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_CommentControls = vue$1.resolveComponent("CommentControls");
+    const _component_UserImage = vue$1.resolveComponent("UserImage");
     const _component_CommentForm = vue$1.resolveComponent("CommentForm");
     const _component_RichTextOutput = vue$1.resolveComponent("RichTextOutput");
     const _component_LikeButton = vue$1.resolveComponent("LikeButton");
@@ -648,32 +630,21 @@
         onAdminDelete: $options.onAdminDelete
       }, null, 8, ["comment", "permalink", "can-edit", "can-delete", "can-admin-delete", "onEdit", "onDelete", "onAdminDelete"]),
       vue$1.createElementVNode("div", _hoisted_4, [
-        vue$1.createElementVNode("a", {
-          href: $props.comment.author.url,
-          class: vue$1.normalizeClass({ "has-online-status img-size-small": $options.isOnline !== null })
-        }, [
-          vue$1.createElementVNode("img", {
-            class: "rounded",
-            style: { "width": "25px", "height": "25px" },
-            src: $props.comment.author.imageUrl,
-            alt: $props.comment.author.imageAlt,
-            "data-contentcontainer-id": $props.comment.author.contentContainerId
-          }, null, 8, _hoisted_6),
-          $options.isOnline !== null ? (vue$1.openBlock(), vue$1.createElementBlock("span", {
-            key: 0,
-            class: vue$1.normalizeClass(["tt user-online-status", $options.isOnline ? "user-is-online" : "user-is-offline"]),
-            "aria-label": $options.onlineLabel,
-            title: $options.onlineLabel
-          }, null, 10, _hoisted_7)) : vue$1.createCommentVNode("v-if", true)
-        ], 10, _hoisted_5)
+        vue$1.createVNode(
+          _component_UserImage,
+          vue$1.mergeProps($props.comment.author, { size: 25 }),
+          null,
+          16
+          /* FULL_PROPS */
+        )
       ]),
-      vue$1.createElementVNode("div", _hoisted_8, [
-        vue$1.createElementVNode("h4", _hoisted_9, [
+      vue$1.createElementVNode("div", _hoisted_5, [
+        vue$1.createElementVNode("h4", _hoisted_6, [
           vue$1.createElementVNode("a", {
             href: $props.comment.author.url,
             "data-contentcontainer-id": $props.comment.author.contentContainerId,
             "data-guid": $props.comment.author.guid
-          }, vue$1.toDisplayString($props.comment.author.displayName), 9, _hoisted_10),
+          }, vue$1.toDisplayString($props.comment.author.displayName), 9, _hoisted_7),
           vue$1.createElementVNode("small", null, [
             _cache[6] || (_cache[6] = vue$1.createTextVNode(
               " · ",
@@ -685,7 +656,7 @@
               "data-ui-addition": "timeago",
               datetime: $props.comment.createdAt,
               title: $options.absoluteTime
-            }, vue$1.toDisplayString($options.absoluteTime), 9, _hoisted_11),
+            }, vue$1.toDisplayString($options.absoluteTime), 9, _hoisted_8),
             $props.comment.isEdited ? (vue$1.openBlock(), vue$1.createElementBlock(
               vue$1.Fragment,
               { key: 0 },
@@ -699,7 +670,7 @@
                   class: "tt fa fa-clock-o text-body-secondary",
                   title: $options.updatedAtTitle,
                   "aria-hidden": "true"
-                }, null, 8, _hoisted_12)
+                }, null, 8, _hoisted_9)
               ],
               64
               /* STABLE_FRAGMENT */
@@ -752,13 +723,13 @@
               $props.comment.attachmentsHtml ? (vue$1.openBlock(), vue$1.createElementBlock("div", {
                 key: 0,
                 innerHTML: $props.comment.attachmentsHtml
-              }, null, 8, _hoisted_14)) : vue$1.createCommentVNode("v-if", true)
+              }, null, 8, _hoisted_11)) : vue$1.createCommentVNode("v-if", true)
             ],
             64
             /* STABLE_FRAGMENT */
           ))
-        ], 8, _hoisted_13),
-        vue$1.createElementVNode("div", _hoisted_15, [
+        ], 8, _hoisted_10),
+        vue$1.createElementVNode("div", _hoisted_12, [
           $options.showReplyToggle ? (vue$1.openBlock(), vue$1.createElementBlock("a", {
             key: 0,
             href: "#",
@@ -773,7 +744,7 @@
               class: "comment-count",
               "data-count": $data.childTotal,
               style: vue$1.normalizeStyle($data.childTotal > 0 ? null : "display:none")
-            }, " (" + vue$1.toDisplayString($data.childTotal) + ")", 13, _hoisted_16)
+            }, " (" + vue$1.toDisplayString($data.childTotal) + ")", 13, _hoisted_13)
           ])) : vue$1.createCommentVNode("v-if", true),
           $options.showReplyToggle && $props.comment.likes ? (vue$1.openBlock(), vue$1.createElementBlock(
             vue$1.Fragment,
@@ -795,14 +766,14 @@
             context: { comment: $props.comment }
           }, null, 8, ["context"])
         ]),
-        $props.comment.children ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_17, [
+        $props.comment.children ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_14, [
           vue$1.createElementVNode(
             "div",
             {
               class: vue$1.normalizeClass(["bg-light p-2 mt-3 comment-container", { "d-none": !$data.childItems.length && !$data.replyOpen }])
             },
             [
-              vue$1.createElementVNode("div", _hoisted_18, [
+              vue$1.createElementVNode("div", _hoisted_15, [
                 (vue$1.openBlock(true), vue$1.createElementBlock(
                   vue$1.Fragment,
                   null,
@@ -838,7 +809,7 @@
                   128
                   /* KEYED_FRAGMENT */
                 )),
-                $data.childHasMore ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_19, [
+                $data.childHasMore ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_16, [
                   _cache[8] || (_cache[8] = vue$1.createElementVNode(
                     "hr",
                     { class: "comment-separator" },

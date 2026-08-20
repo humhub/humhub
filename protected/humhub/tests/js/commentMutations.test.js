@@ -7,6 +7,7 @@ import RichTextOutput from '../../vue/RichTextOutput.vue';
 import LegacyFormWrapper from '../../vue/LegacyFormWrapper.vue';
 import DropdownMenu from '../../vue/DropdownMenu.vue';
 import ExtensionSlot from '../../vue/ExtensionSlot.vue';
+import UserImage from '../../vue/UserImage.vue';
 
 await import('../../resources/js/humhub/humhub.url.js');
 await import('../../resources/js/humhub/humhub.vue.js');
@@ -36,7 +37,7 @@ const additionsDirective = {
 const mountOptions = () => ({
     global: {
         directives: { additions: additionsDirective },
-        components: { LikeButton, RichTextOutput, LegacyFormWrapper, DropdownMenu, ExtensionSlot },
+        components: { LikeButton, RichTextOutput, LegacyFormWrapper, DropdownMenu, ExtensionSlot, UserImage },
     },
 });
 

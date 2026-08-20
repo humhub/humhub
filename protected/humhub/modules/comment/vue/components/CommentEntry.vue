@@ -30,22 +30,7 @@
         />
 
         <div class="flex-shrink-0 comment-header-image">
-            <a :href="comment.author.url" :class="{ 'has-online-status img-size-small': isOnline !== null }">
-                <img
-                    class="rounded"
-                    style="width: 25px; height: 25px"
-                    :src="comment.author.imageUrl"
-                    :alt="comment.author.imageAlt"
-                    :data-contentcontainer-id="comment.author.contentContainerId"
-                >
-                <span
-                    v-if="isOnline !== null"
-                    class="tt user-online-status"
-                    :class="isOnline ? 'user-is-online' : 'user-is-offline'"
-                    :aria-label="onlineLabel"
-                    :title="onlineLabel"
-                ></span>
-            </a>
+            <UserImage v-bind="comment.author" :size="25" />
         </div>
 
         <div class="flex-grow-1">
@@ -168,17 +153,16 @@
  *   `CommentLink` 100, `LikeLink` 200 - see `widgets\BaseStack::run()`), with
  *   the `&middot;` separator only between the two when BOTH are rendered,
  *   mirroring `BaseStack`'s own "join non-empty widgets only" behavior.
- * - The avatar (`img`) and author-name link both carry
- *   `data-contentcontainer-id` (drives the user popover card, see
- *   `user\widgets\Image::run()` / `Html::containerLink()`); the name link
- *   additionally carries `data-guid` (also from `containerLink()`). The
- *   avatar's `alt` is the server-built `imageAlt` (same
- *   `Yii::t('base', 'Profile picture of {displayName}')` string Image::run()
- *   uses), not the raw display name.
- * - The avatar shows the SAME online-status overlay markup/classes
- *   `user\widgets\Image::run()` appends for the `img-size-small` bucket
- *   (width < 28, here 25px) when `comment.author.online` is non-null - see
- *   `isOnline`/`onlineLabel` below and `CommentJsonService::serializeOnlineStatus()`.
+ * - The avatar is a `<UserImage v-bind="comment.author" :size="25" />` (see
+ *   `protected/humhub/vue/UserImage.vue` - core component set, resolved
+ *   through the global registry the same way `RichTextOutput` is, not
+ *   imported here) rather than hand-rolled markup: it owns the
+ *   `data-contentcontainer-id` popover hook, the `imageAlt` fallback and the
+ *   online-status overlay parity with `user\widgets\Image::run()` that used
+ *   to live inline in this file. The author-name link below is separate and
+ *   still hand-rolled here - it additionally carries `data-guid` (mirroring
+ *   `Html::containerLink()`, which sets both attributes on the NAME link,
+ *   never on the avatar image itself).
  * - The edited marker (`comment.isEdited`) gets a real tooltip (`.tt` +
  *   `title`, the same mechanism `absoluteTime`'s time tag already uses -
  *   see `updatedAtTitle` below) with the edit time, mirroring
@@ -241,8 +225,8 @@ import { client, i18n, log, modal, url } from '@humhub/vue';
 import CommentControls from './CommentControls.vue';
 import CommentForm from './CommentForm.vue';
 
-// RichTextOutput is NOT imported here — it now lives at protected/humhub/vue/ (see
-// docs/develop/ui-js-vuejs.md) and resolves through the global Vue component registry
+// RichTextOutput/UserImage are NOT imported here — they live at protected/humhub/vue/ (see
+// docs/develop/ui-js-vuejs.md) and resolve through the global Vue component registry
 // (every registered component is available in every island, see humhub.vue.js's
 // register()). CoreVueAsset must register before this island's own script runs — enforced
 // via CommentVueAsset::$depends, not by import order here.
@@ -343,22 +327,6 @@ export default {
         // isn't edited, since `updatedAt` is only ever set in that case.
         updatedAtTitle() {
             return this.comment.updatedAt ? new Date(this.comment.updatedAt).toLocaleString() : null;
-        },
-        // Normalizes a missing `online` field (e.g. a fixture predating this field) to the
-        // same "no overlay" null the server sends when the online-status feature is
-        // disabled or the viewer is looking at their own comment - see
-        // CommentJsonService::serializeOnlineStatus().
-        isOnline() {
-            const online = this.comment.author && this.comment.author.online;
-            return online === true || online === false ? online : null;
-        },
-        // Mirrors user\widgets\Image::run()'s aria-label/title pair for the online-status
-        // overlay span - same 'UserModule.base' keys, preloaded by CommentSection.
-        onlineLabel() {
-            if (this.isOnline === null) {
-                return null;
-            }
-            return this.isOnline ? i18n.t('UserModule.base', 'Online') : i18n.t('UserModule.base', 'Offline');
         },
     },
     mounted() {
