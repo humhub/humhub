@@ -8,6 +8,9 @@ import LegacyFormWrapper from '../../vue/LegacyFormWrapper.vue';
 import DropdownMenu from '../../vue/DropdownMenu.vue';
 import ExtensionSlot from '../../vue/ExtensionSlot.vue';
 import UserImage from '../../modules/user/vue/UserImage.vue';
+import HumHubForm from '../../vue/HumHubForm.vue';
+import RichTextField from '../../vue/RichTextField.vue';
+import SubmitButton from '../../vue/SubmitButton.vue';
 
 await import('../../resources/js/humhub/humhub.url.js');
 await import('../../resources/js/humhub/humhub.vue.js');
@@ -30,14 +33,17 @@ const additionsDirective = {
 };
 
 // CommentEntry/CommentForm/CommentControls no longer import RichTextOutput/
-// LegacyFormWrapper/DropdownMenu/ExtensionSlot directly (they now resolve through the
-// global Vue component registry - see their own docblocks) - @vue/test-utils'
-// `global.components` stands in for that registry here, the same way it already does for
-// LikeButton below.
+// LegacyFormWrapper/DropdownMenu/ExtensionSlot/HumHubForm/RichTextField/SubmitButton
+// directly (they now resolve through the global Vue component registry - see their own
+// docblocks) - @vue/test-utils' `global.components` stands in for that registry here, the
+// same way it already does for LikeButton below.
 const mountOptions = () => ({
     global: {
         directives: { additions: additionsDirective },
-        components: { LikeButton, RichTextOutput, LegacyFormWrapper, DropdownMenu, ExtensionSlot, UserImage },
+        components: {
+            LikeButton, RichTextOutput, LegacyFormWrapper, DropdownMenu, ExtensionSlot, UserImage,
+            HumHubForm, RichTextField, SubmitButton,
+        },
     },
 });
 
@@ -244,6 +250,29 @@ describe('Comment mutations + live updates', () => {
             expect(editor.editor.serialize()).toBe('hello'); // input kept
             expect(wrapper.findAll('.single-comment').length).toBe(0);
             expect(globalThis.humhubStubs.logCalls.error.length).toBe(0); // 422 is rendered, not logged
+        });
+
+        // CommentForm is now built on the HumHubForm suite (see its own docblock's "Built
+        // on HumHubForm" section) - the test above already proves the rendered TEXT still
+        // shows up, which the pre-migration hand-rolled `errors` object would have produced
+        // too. This one inspects the HumHubForm ref's own `errors` state directly, proving
+        // the NEW plumbing (`this.$refs.form.setErrors(response)`) is what actually drives
+        // it, not a leftover local field.
+        it('routes a 422 message error through HumHubForm.setErrors, inspectable on the form ref itself', async () => {
+            globalThis.humhubStubs.client.post = vi.fn(() => Promise.reject({
+                status: 422,
+                errors: { message: ['Message cannot be blank.'] },
+            }));
+
+            const wrapper = mount(CommentForm, {
+                ...mountOptions(),
+                props: { shellHtml: buildShell(), contentId: 42 },
+            });
+
+            await wrapper.find('.btn-comment-submit').trigger('click');
+            await vi.waitFor(() => expect(wrapper.vm.$refs.form.errors).toEqual({ message: ['Message cannot be blank.'] }));
+
+            expect(wrapper.find('.invalid-feedback').text()).toBe('Message cannot be blank.');
         });
 
         it('logs via status instead of rendering field errors for a Yii framework error response (403/404 shape)', async () => {
@@ -823,7 +852,14 @@ describe('Comment mutations + live updates', () => {
             await editItem.trigger('click');
             await vi.waitFor(() => expect(wrapper.find('#comment_editarea_1 form').exists()).toBe(true));
 
-            const formEl = wrapper.find('#comment_editarea_1 form').element;
+            // `#comment_editarea_1 form` now also matches HumHubForm's own outer <form>
+            // (CommentForm is built on the suite - see its own docblock's "Built on
+            // HumHubForm" section) - resolving via the richtext editor node's
+            // closest('form') unambiguously reaches the INNER, legacy-shell-rendered
+            // form `resetAcknowledge()` actually operates on (see RichTextField.vue's/
+            // LegacyFormWrapper.vue's own docblocks), same as the production code and
+            // the "keyboard submit" test above already do.
+            const formEl = wrapper.find(`#comment_editarea_1 ${RICHTEXT_SELECTOR}`).element.closest('form');
             // Simulates onBeforeLoad()'s own baseline capture at boot time.
             jQuery(formEl).data('state', 'message=typed+but+discarded');
 
@@ -852,7 +888,9 @@ describe('Comment mutations + live updates', () => {
             await replyLink.trigger('click');
             await wrapper.vm.$nextTick();
 
-            const formEl = wrapper.find('.nested-comments-root form').element;
+            // See the edit-form test above for why this resolves via the richtext
+            // editor node's closest('form') rather than a plain 'form' selector.
+            const formEl = wrapper.find(`.nested-comments-root ${RICHTEXT_SELECTOR}`).element.closest('form');
             jQuery(formEl).data('state', 'message=typed+but+discarded');
 
             await replyLink.trigger('click'); // toggles the reply form closed again

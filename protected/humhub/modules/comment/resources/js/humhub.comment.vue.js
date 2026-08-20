@@ -121,7 +121,6 @@
     data() {
       return {
         busy: false,
-        errors: {},
         // Resolved once in mounted() - see the "Submit button placement" docblock
         // section above. `null` until then/if the shell has no button-group
         // container, which Teleport's `disabled` prop treats as "render in place".
@@ -129,12 +128,6 @@
       };
     },
     computed: {
-      hasErrors() {
-        return Object.keys(this.errors).length > 0;
-      },
-      errorMessages() {
-        return Object.values(this.errors).flat();
-      },
       // Same key the legacy submit button's aria-label used (see the
       // "Submit button" docblock section above) - NOT a CommentModule.base
       // key. CommentSection preloads 'ContentModule.base' alongside its
@@ -144,15 +137,16 @@
       }
     },
     mounted() {
-      this.formEl = this.$refs.wrapper.$el.querySelector("form");
+      const shellEl = this.$refs.richtext.getShellElement();
+      this.formEl = shellEl.querySelector("form");
       if (this.formEl) {
         this.formEl.addEventListener("submit", this.onSubmit);
       }
-      this.teleportTarget = this.$refs.wrapper.$el.querySelector(".richtext-create-buttons");
+      this.teleportTarget = shellEl.querySelector(".richtext-create-buttons");
       if (this.initialMessage !== null) {
         this.$nextTick(() => {
-          if (this.$refs.wrapper) {
-            this.$refs.wrapper.setValue(this.initialMessage);
+          if (this.$refs.richtext) {
+            this.$refs.richtext.setValue(this.initialMessage);
           }
         });
       }
@@ -177,11 +171,11 @@
           params.parentCommentId = this.parentCommentId;
         }
         this.busy = true;
-        this.errors = {};
+        this.$refs.form.clearErrors();
         vue.client.post(vue.url(endpoint, params), {
           data: {
-            message: this.$refs.wrapper.getValue(),
-            fileList: this.$refs.wrapper.getFileGuids()
+            message: this.$refs.richtext.getValue(),
+            fileList: this.$refs.richtext.getFileGuids()
           }
         }).then((comment) => {
           this.busy = false;
@@ -191,99 +185,86 @@
           this.$emit(isEdit ? "updated" : "created", comment);
         }).catch((response) => {
           this.busy = false;
-          const errors = response && (response.errors || response.error && response.error.errors);
-          if (response && response.status === 422 && errors) {
-            this.errors = errors;
+          const hasFieldErrors = response && (response.errors || response.error && response.error.errors);
+          if (response && response.status === 422 && hasFieldErrors) {
+            this.$refs.form.setErrors(response);
           } else {
             vue.log.error(response, true);
           }
         });
       },
-      /** Proxies to the wrapper so callers (reply toggle, section toggle) don't touch jQuery/legacy widgets. */
+      /** Proxies to the richtext field so callers (reply toggle, section toggle) don't touch jQuery/legacy widgets. */
       focus() {
-        if (this.$refs.wrapper) {
-          this.$refs.wrapper.focus();
+        if (this.$refs.richtext) {
+          this.$refs.richtext.focus();
         }
       },
       /**
-       * Proxies to the wrapper's clear() - blanks the editor/uploads AND resets the
+       * Proxies to RichTextField's clear() - blanks the editor/uploads AND resets the
        * unsaved-changes guard baseline (see this component's own "Unsaved-changes guard"
        * docblock section). Called both on a successful create/reply submit (below) and by
        * CommentEntry when a reply/edit form is discarded without submitting.
        */
       clear() {
-        if (this.$refs.wrapper) {
-          this.$refs.wrapper.clear();
+        if (this.$refs.richtext) {
+          this.$refs.richtext.clear();
         }
       }
     }
   };
-  const _hoisted_1$2 = ["aria-label", "disabled"];
-  const _hoisted_2$2 = ["innerHTML"];
-  const _hoisted_3$2 = {
-    key: 0,
-    class: "invalid-feedback d-block"
-  };
+  const _hoisted_1$2 = ["innerHTML"];
   function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_LegacyFormWrapper = vue$1.resolveComponent("LegacyFormWrapper");
-    return vue$1.openBlock(), vue$1.createElementBlock(
-      vue$1.Fragment,
-      null,
-      [
-        vue$1.createVNode(_component_LegacyFormWrapper, {
-          ref: "wrapper",
+    const _component_RichTextField = vue$1.resolveComponent("RichTextField");
+    const _component_SubmitButton = vue$1.resolveComponent("SubmitButton");
+    const _component_HumHubForm = vue$1.resolveComponent("HumHubForm");
+    return vue$1.openBlock(), vue$1.createBlock(_component_HumHubForm, {
+      ref: "form",
+      "model-name": "Comment",
+      busy: $data.busy,
+      onSubmit: $options.onSubmit
+    }, {
+      default: vue$1.withCtx(() => [
+        vue$1.createVNode(_component_RichTextField, {
+          ref: "richtext",
+          attribute: "message",
           "shell-html": $props.shellHtml
         }, null, 8, ["shell-html"]),
         (vue$1.openBlock(), vue$1.createBlock(vue$1.Teleport, {
           to: $data.teleportTarget,
           disabled: !$data.teleportTarget
         }, [
-          vue$1.createElementVNode("button", {
-            type: "submit",
+          vue$1.createVNode(_component_SubmitButton, {
+            loader: false,
             class: vue$1.normalizeClass(["btn btn-accent btn-comment-submit btn-sm", { "btn-icon-only": $props.submitIconHtml }]),
             "aria-label": $options.sendLabel,
-            disabled: $data.busy,
-            onClick: _cache[0] || (_cache[0] = (...args) => $options.onSubmit && $options.onSubmit(...args))
-          }, [
-            $props.submitIconHtml ? (vue$1.openBlock(), vue$1.createElementBlock("span", {
-              key: 0,
-              innerHTML: $props.submitIconHtml
-            }, null, 8, _hoisted_2$2)) : (vue$1.openBlock(), vue$1.createElementBlock(
-              vue$1.Fragment,
-              { key: 1 },
-              [
-                vue$1.createTextVNode(
-                  vue$1.toDisplayString($options.sendLabel),
-                  1
-                  /* TEXT */
-                )
-              ],
-              64
-              /* STABLE_FRAGMENT */
-            ))
-          ], 10, _hoisted_1$2)
-        ], 8, ["to", "disabled"])),
-        $options.hasErrors ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_3$2, [
-          (vue$1.openBlock(true), vue$1.createElementBlock(
-            vue$1.Fragment,
-            null,
-            vue$1.renderList($options.errorMessages, (message, index) => {
-              return vue$1.openBlock(), vue$1.createElementBlock(
-                "div",
-                { key: index },
-                vue$1.toDisplayString(message),
-                1
-                /* TEXT */
-              );
-            }),
-            128
-            /* KEYED_FRAGMENT */
-          ))
-        ])) : vue$1.createCommentVNode("v-if", true)
-      ],
-      64
-      /* STABLE_FRAGMENT */
-    );
+            onClick: $options.onSubmit
+          }, {
+            default: vue$1.withCtx(() => [
+              $props.submitIconHtml ? (vue$1.openBlock(), vue$1.createElementBlock("span", {
+                key: 0,
+                innerHTML: $props.submitIconHtml
+              }, null, 8, _hoisted_1$2)) : (vue$1.openBlock(), vue$1.createElementBlock(
+                vue$1.Fragment,
+                { key: 1 },
+                [
+                  vue$1.createTextVNode(
+                    vue$1.toDisplayString($options.sendLabel),
+                    1
+                    /* TEXT */
+                  )
+                ],
+                64
+                /* STABLE_FRAGMENT */
+              ))
+            ]),
+            _: 1
+            /* STABLE */
+          }, 8, ["class", "aria-label", "onClick"])
+        ], 8, ["to", "disabled"]))
+      ]),
+      _: 1
+      /* STABLE */
+    }, 8, ["busy", "onSubmit"]);
   }
   const CommentForm = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3]]);
   const _sfc_main$2 = {
