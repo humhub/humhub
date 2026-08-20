@@ -155,8 +155,8 @@
  *   the `&middot;` separator only between the two when BOTH are rendered,
  *   mirroring `BaseStack`'s own "join non-empty widgets only" behavior.
  * - The avatar is a `<UserImage v-bind="comment.author" :size="25" />` (see
- *   `protected/humhub/vue/UserImage.vue` - core component set, resolved
- *   through the global registry the same way `RichTextOutput` is, not
+ *   `protected/humhub/modules/user/vue/UserImage.vue` - provided by the user module,
+ *   resolved through the global registry the same way `RichTextOutput` is, not
  *   imported here) rather than hand-rolled markup: it owns the
  *   `data-contentcontainer-id` popover hook, the `imageAlt` fallback and the
  *   online-status overlay parity with `user\widgets\Image::run()` that used
@@ -250,11 +250,13 @@ import { client, i18n, log, modal, url } from '@humhub/vue';
 import CommentControls from './CommentControls.vue';
 import CommentForm from './CommentForm.vue';
 
-// RichTextOutput/UserImage are NOT imported here — they live at protected/humhub/vue/ (see
-// docs/develop/ui-js-vuejs.md) and resolve through the global Vue component registry
-// (every registered component is available in every island, see humhub.vue.js's
-// register()). CoreVueAsset must register before this island's own script runs — enforced
-// via CommentVueAsset::$depends, not by import order here.
+// RichTextOutput/UserImage are NOT imported here — RichTextOutput lives at
+// protected/humhub/vue/ (core component set) and UserImage at
+// protected/humhub/modules/user/vue/ (see docs/develop/ui-js-vuejs.md) — both resolve
+// through the global Vue component registry (every registered component is available in
+// every island, see humhub.vue.js's register()). CoreVueAsset/UserVueAsset must each
+// register before this island's own script runs — enforced via CommentVueAsset::$depends,
+// not by import order here.
 export default {
     name: 'CommentEntry',
     components: { CommentControls, CommentForm },

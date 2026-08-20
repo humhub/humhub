@@ -24,10 +24,13 @@ Each minor release line has its own file with the breaking changes, new APIs and
     covers the same "who liked this" info the old title tooltip provided. Known affected: a CSS
     selector on `data-action-click="like.toggleLike"` in `cuzy-app/clean-theme` (dead selector,
     cosmetic only — see module-search results in the implementing PR).
-  - Added `UserImage` (`<user-image>`) to the core Vue component set (`protected/humhub/vue/`,
-    see `docs/develop/ui-js-vuejs-components.md`) — a user's profile image, the Vue analog of
+  - Added `UserImage` (`<user-image>`) to the user module's Vue component set
+    (`protected/humhub/modules/user/vue/`, `humhub\modules\user\assets\UserVueAsset`, see
+    `docs/develop/ui-js-vuejs-components.md`) — a user's profile image, the Vue analog of
     `user\widgets\Image`. Purely additive; `CommentEntry.vue`'s hand-rolled avatar markup
-    (img + online-status overlay) now uses it (`<UserImage v-bind="comment.author" />`).
+    (img + online-status overlay) now uses it (`<UserImage v-bind="comment.author" />`),
+    depending on `UserVueAsset` the same way it already depends on `LikeVueAsset` for
+    `<LikeButton>`.
   - **Removed**: `humhub\modules\like\services\LikeService::generateLikeTitleText()` — it built the
     old title-tooltip text, which the Vue-island like link no longer renders; no known callers.
   - **Removed**: the `humhub\modules\like\widgets\views\likeLink.php` view file —

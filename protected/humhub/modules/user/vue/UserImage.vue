@@ -26,11 +26,15 @@
 import { i18n } from '@humhub/vue';
 
 /**
- * Renders a user's profile image - core component, `<user-image>` -
- * available globally in every island (see docs/develop/ui-js-vuejs-components.md,
- * "Core component set"). Extracted from `CommentEntry.vue`'s hand-rolled
- * avatar markup, the reference consumer (its own docblock previously carried
- * these parity notes; they now live here since the markup does).
+ * Renders a user's profile image - `<user-image>`, provided by the user module
+ * (`humhub\modules\user\assets\UserVueAsset`) but, like every registered Vue component,
+ * available globally in every island by tag name (see
+ * docs/develop/ui-js-vuejs-components.md, "Module-provided shared components") - a module
+ * outside `user` that nests it (e.g. the comment island below) just needs `UserVueAsset`
+ * in its own asset bundle's `$depends`, the same way it already depends on `LikeVueAsset`
+ * for `<LikeButton>`. Extracted from `CommentEntry.vue`'s hand-rolled avatar markup, the
+ * reference consumer (its own docblock previously carried these parity notes; they now
+ * live here since the markup does).
  *
  * Props are modeled on the SERIALIZED author shape
  * (`CommentJsonService::serializeAuthor()`) plus a few display options, so a
@@ -105,10 +109,12 @@ import { i18n } from '@humhub/vue';
  *   either option today.
  * - **`UserModule.base` i18n category.** `onlineLabel` calls `i18n.t('UserModule.base', ...)`
  *   without preloading that category itself (unlike, e.g., a component with an
- *   `i18nCategories` island-level declaration - see `docs/develop/ui-js-vuejs.md`). Consumers
- *   outside the comment section (where the category is already preloaded page-wide for other
- *   reasons) must ensure `UserModule.base` is preloaded themselves or accept the English
- *   fallback `i18n.t()` returns for an unloaded category.
+ *   `i18nCategories` island-level declaration - see `docs/develop/ui-js-vuejs.md`) - this now
+ *   reads naturally (the component ships with the module that owns the category), but the gap
+ *   is unchanged in practice: nothing here preloads it either, so a consumer outside the
+ *   comment section (where the category is already preloaded page-wide for other reasons)
+ *   must still ensure `UserModule.base` is preloaded itself or accept the English fallback
+ *   `i18n.t()` returns for an unloaded category.
  */
 export default {
     props: {

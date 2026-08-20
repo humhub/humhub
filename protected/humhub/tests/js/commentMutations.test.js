@@ -7,7 +7,7 @@ import RichTextOutput from '../../vue/RichTextOutput.vue';
 import LegacyFormWrapper from '../../vue/LegacyFormWrapper.vue';
 import DropdownMenu from '../../vue/DropdownMenu.vue';
 import ExtensionSlot from '../../vue/ExtensionSlot.vue';
-import UserImage from '../../vue/UserImage.vue';
+import UserImage from '../../modules/user/vue/UserImage.vue';
 
 await import('../../resources/js/humhub/humhub.url.js');
 await import('../../resources/js/humhub/humhub.vue.js');

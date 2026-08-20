@@ -12,6 +12,7 @@ use humhub\assets\CoreApiAsset;
 use humhub\assets\CoreVueAsset;
 use humhub\components\assets\AssetBundle;
 use humhub\modules\like\assets\LikeVueAsset;
+use humhub\modules\user\assets\UserVueAsset;
 
 /**
  * Compiled Vue components of the comment module.
@@ -50,5 +51,10 @@ class CommentVueAsset extends AssetBundle
         // resolve component" and silently skips the like button (see the P2-4 review note in
         // docs/superpowers/plans/2026-08-19-vuejs-comments.md).
         LikeVueAsset::class,
+        // CommentEntry.vue references <UserImage> by tag only - it moved to the user module
+        // (which owns the user-domain concern and the `UserModule.base` i18n category its
+        // online-status label reads from) - UserVueAsset must register it before this
+        // bundle's own script runs, same reasoning as CoreVueAsset/LikeVueAsset above.
+        UserVueAsset::class,
     ];
 }

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { mount } from '@vue/test-utils';
-import UserImage from '../../vue/UserImage.vue';
+import UserImage from '../../modules/user/vue/UserImage.vue';
 
 // UserImage reads `i18n` from `@humhub/vue` for the online-status
 // aria-label/title (the same 'UserModule.base' strings CommentEntry.vue used
