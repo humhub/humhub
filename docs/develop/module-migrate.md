@@ -105,6 +105,25 @@ Each minor release line has its own file with the breaking changes, new APIs and
     `messageRenderOptions` object — see `RichText::outputMarkdownAndRenderOptions()` and
     `docs/develop/ui-js-vuejs-interop.md`, "RichTextOutput". `RichTextOutput.vue` now takes
     `message`/`render-options` props instead of a single `output` HTML-string prop.
+  - **Breaking**: because that path never builds an HTML string to append anything to,
+    `AbstractRichText::EVENT_AFTER_RUN` (inherited from `yii\base\Widget::EVENT_AFTER_RUN`) and
+    `AbstractRichText::EVENT_AFTER_OUTPUT` never fire for a comment message serialized via
+    `RichText::outputMarkdownAndRenderOptions()`/`CommentJsonService` (they still fire normally
+    for every other `RichText::output()`/`RichText::widget()` call elsewhere in core, and
+    `AbstractRichText::EVENT_BEFORE_OUTPUT` still fires on this path too, since
+    `getMarkdown()`'s `onBeforeOutput()` extension pipeline still runs — only the two AFTER
+    hooks, whose entire purpose is appending markup to an HTML string, are skipped). This is a
+    deliberate, accepted consequence of rendering comments client-side from JSON, not a bug to
+    be fixed by re-firing them. Known affected modules: `humhub/legal`'s consent wrapper
+    (`onAfterRunRichText`, hooking `EVENT_AFTER_RUN`), `humhub/linkpreview`'s `Viewer` widget
+    (hooking `EVENT_AFTER_OUTPUT`), `humhub/translator`'s translate button (hooking
+    `EVENT_AFTER_RUN`), and comment-related forks in the private `cuzy-app` modules. A module
+    that appended markup to richtext output this way must migrate to the Vue extension
+    mechanism instead: `CommentJsonService::EVENT_SERIALIZE_COMMENTS`
+    (`SerializeCommentsEvent`) to contribute payload data per comment, and
+    `registerSlotComponent`/`ExtensionSlot` (or a plain registered Vue component reading that
+    payload) to render UI from it — see `docs/develop/ui-js-vuejs-interop.md` and
+    `docs/develop/ui-js-vuejs-components.md`.
 - **Breaking**: `humhub\modules\content\widgets\richtext\extensions\RichTextExtension` gained a
   new interface method, `getRenderOptions(): array`, needed for
   `ProsemirrorRichText::getMarkdownAndRenderOptions()` (the client-render counterpart of

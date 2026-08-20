@@ -115,11 +115,26 @@ class VueFormShell extends Widget
             'acknowledge' => true,
         ], $this->formOptions);
 
+        // try/finally so a throwing content closure can't leave a dangling output-buffer level
+        // or an unbalanced ActiveForm::begin()/end() widget stack behind it for the rest of the
+        // request - both `ob_start()` and `ActiveForm::begin()` push onto global stacks that
+        // only their matching `ob_get_clean()`/`ActiveForm::end()` pop. `$began` guards the
+        // `ActiveForm::end()` call itself: if `ActiveForm::begin()` never succeeded, the widget
+        // was never pushed, and calling `end()` anyway would throw its own "no matching begin()"
+        // exception, masking whatever actually went wrong.
+        $began = false;
         ob_start();
-        $form = ActiveForm::begin($options);
-        echo ($this->content)($form);
-        ActiveForm::end();
+        try {
+            $form = ActiveForm::begin($options);
+            $began = true;
+            echo ($this->content)($form);
+        } finally {
+            if ($began) {
+                ActiveForm::end();
+            }
+            $output = ob_get_clean();
+        }
 
-        return ob_get_clean();
+        return $output;
     }
 }

@@ -21,7 +21,7 @@
   };
   const _hoisted_1$3 = { class: "nav nav-pills preferences" };
   const _hoisted_2$2 = { class: "nav-item dropdown" };
-  const _hoisted_3$1 = ["aria-label"];
+  const _hoisted_3 = ["aria-label"];
   function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("ul", _hoisted_1$3, [
       vue.createElementVNode("li", _hoisted_2$2, [
@@ -33,7 +33,7 @@
           "aria-haspopup": "true",
           "aria-expanded": "false",
           "aria-label": $props.toggleAriaLabel
-        }, null, 10, _hoisted_3$1),
+        }, null, 10, _hoisted_3),
         vue.createElementVNode(
           "ul",
           {
@@ -178,6 +178,7 @@
     ]);
   }
   const C2 = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
+  const OEMBED_URL_ENTITY_MAP = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
   const _sfc_main$1 = {
     props: {
       message: { type: String, default: null },
@@ -203,36 +204,71 @@
       },
       hasOembeds() {
         return Object.keys(this.oembeds).length > 0;
+      },
+      /**
+       * Serialized `renderOptions`, reused as (part of) the `:key`s described in the class
+       * docblock's "`:key`-forced remount on content change" section above.
+       */
+      renderOptionsKey() {
+        return JSON.stringify(this.renderOptions || {});
+      },
+      /**
+       * @see the class docblock's "`:key`-forced remount on content change" section above.
+       * NUL-separated rather than plain concatenation: `message` is free-form user text, and
+       * a plain join could otherwise collide across the message/renderOptions boundary (two
+       * different (message, renderOptions) pairs producing the same joined string). A NUL
+       * byte cannot occur in `message` (always a JSON string round-tripped from the server).
+       */
+      envelopeKey() {
+        return this.message + "\0" + this.renderOptionsKey;
+      }
+    },
+    methods: {
+      /**
+       * Mirrors `util.string.escapeHtml(value, true)` in
+       * `protected/humhub/resources/js/humhub/humhub.util.js` byte-for-byte (its "simple"
+       * variant - second arg `true` - which escapes only `& < > " '`, leaving backtick/`=`/`/`
+       * alone). `humhub.oembed.js`'s `findSnippetByUrl()` locates this fragment by querying
+       * `[data-oembed="' + $.escapeSelector(util.string.escapeHtml(url, true)) + '"]` - so the
+       * `data-oembed` attribute rendered here MUST equal that exact escaped string, not the
+       * raw url, or the lookup silently fails for any url containing one of those five
+       * characters (a `&` in a query string being the common case) and the embed degrades to
+       * a plain link with no live preview/lazy-load behavior. Kept as a tiny local function -
+       * rather than reaching into `@humhub/vue`/`humhub.modules.util` - because it is a pure,
+       * dependency-free string transform and no sibling island component reaches into legacy
+       * modules directly either.
+       */
+      escapeOembedUrl(url) {
+        return String(url).replace(/[&<>"']/g, (char) => OEMBED_URL_ENTITY_MAP[char]);
       }
     }
   };
   const _hoisted_1$1 = { key: 0 };
-  const _hoisted_2$1 = {
-    key: 0,
-    class: "richtext-oembed-container",
-    style: { "display": "none" }
-  };
-  const _hoisted_3 = ["data-oembed", "innerHTML"];
+  const _hoisted_2$1 = ["data-oembed", "innerHTML"];
   function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
     const _directive_additions = vue.resolveDirective("additions");
     return $props.message ? vue.withDirectives((vue.openBlock(), vue.createElementBlock("div", _hoisted_1$1, [
-      vue.createElementVNode(
+      (vue.openBlock(), vue.createElementBlock(
         "div",
-        vue.normalizeProps(vue.guardReactiveProps($options.envelopeAttrs)),
+        vue.mergeProps({ key: $options.envelopeKey }, $options.envelopeAttrs),
         vue.toDisplayString($props.message),
         17
         /* TEXT, FULL_PROPS */
-      ),
-      $options.hasOembeds ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$1, [
+      )),
+      $options.hasOembeds ? (vue.openBlock(), vue.createElementBlock("div", {
+        key: $options.renderOptionsKey,
+        class: "richtext-oembed-container",
+        style: { "display": "none" }
+      }, [
         (vue.openBlock(true), vue.createElementBlock(
           vue.Fragment,
           null,
           vue.renderList($options.oembeds, (html, url) => {
             return vue.openBlock(), vue.createElementBlock("div", {
               key: url,
-              "data-oembed": url,
+              "data-oembed": $options.escapeOembedUrl(url),
               innerHTML: html
-            }, null, 8, _hoisted_3);
+            }, null, 8, _hoisted_2$1);
           }),
           128
           /* KEYED_FRAGMENT */

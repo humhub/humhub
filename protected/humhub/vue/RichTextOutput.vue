@@ -1,8 +1,8 @@
 <template>
     <div v-if="message" v-additions>
-        <div v-bind="envelopeAttrs">{{ message }}</div>
-        <div v-if="hasOembeds" class="richtext-oembed-container" style="display:none">
-            <div v-for="(html, url) in oembeds" :key="url" :data-oembed="url" v-html="html"></div>
+        <div :key="envelopeKey" v-bind="envelopeAttrs">{{ message }}</div>
+        <div v-if="hasOembeds" :key="renderOptionsKey" class="richtext-oembed-container" style="display:none">
+            <div v-for="(html, url) in oembeds" :key="url" :data-oembed="escapeOembedUrl(url)" v-html="html"></div>
         </div>
     </div>
 </template>
@@ -54,7 +54,31 @@
  * layout and styling of the rendered output via normal Vue attribute fallthrough onto this
  * component's own root (`class`, `data-ui-markdown`, `data-ui-show-more`, ... - see
  * `CommentEntry.vue`), landing one level ABOVE the envelope div, exactly as today.
+ *
+ * **`:key`-forced remount on content change.** The envelope div is otherwise a PERSISTENT
+ * element across a `message`/`renderOptions` update: Vue's patcher has no reason to replace a
+ * same-position, same-tag child, so an in-place update would normally just swap its text
+ * content and re-run `v-bind="envelopeAttrs"` on the SAME DOM node. That silently breaks the
+ * legacy richtext DISPLAY addition `v-additions` boots on it: once booted, the addition caches
+ * its widget instance in jQuery `.data()` on that exact node (see
+ * `docs/develop/ui-js-vuejs-interop.md`, "RichTextOutput"), and legacy widget init is a
+ * once-per-node guard - re-running `v-additions` against an already-initialized node is a
+ * no-op, so a genuinely new markdown string would never get re-rendered to HTML; the user
+ * would see the raw markdown text `{{ message }}` just wrote into the DOM. `envelopeKey`
+ * (below) - a cheap, deterministic string combining `message` and the serialized
+ * `renderOptions` - forces Vue to unmount the OLD envelope node and mount a genuinely NEW one
+ * on any real change, so the addition's jQuery-data cache can never survive onto content it
+ * never actually processed. Same reasoning for the oembed container's own `:key`
+ * (`renderOptionsKey`): keyed so a `renderOptions.oembeds` change (a different set of preview
+ * fragments) remounts the container instead of patching in place - the per-url `:key="url"` on
+ * each fragment `div` already handles fine-grained add/remove within it either way, this is
+ * belt-and-suspenders for the container itself.
  */
+
+// Mirrors humhub.util.js's own `entityMap` for the `escapeHtml(value, true)` ("simple") variant -
+// see `escapeOembedUrl()` below.
+const OEMBED_URL_ENTITY_MAP = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+
 export default {
     props: {
         message: { type: String, default: null },
@@ -84,6 +108,42 @@ export default {
         },
         hasOembeds() {
             return Object.keys(this.oembeds).length > 0;
+        },
+        /**
+         * Serialized `renderOptions`, reused as (part of) the `:key`s described in the class
+         * docblock's "`:key`-forced remount on content change" section above.
+         */
+        renderOptionsKey() {
+            return JSON.stringify(this.renderOptions || {});
+        },
+        /**
+         * @see the class docblock's "`:key`-forced remount on content change" section above.
+         * NUL-separated rather than plain concatenation: `message` is free-form user text, and
+         * a plain join could otherwise collide across the message/renderOptions boundary (two
+         * different (message, renderOptions) pairs producing the same joined string). A NUL
+         * byte cannot occur in `message` (always a JSON string round-tripped from the server).
+         */
+        envelopeKey() {
+            return this.message + '\u0000' + this.renderOptionsKey;
+        },
+    },
+    methods: {
+        /**
+         * Mirrors `util.string.escapeHtml(value, true)` in
+         * `protected/humhub/resources/js/humhub/humhub.util.js` byte-for-byte (its "simple"
+         * variant - second arg `true` - which escapes only `& < > " '`, leaving backtick/`=`/`/`
+         * alone). `humhub.oembed.js`'s `findSnippetByUrl()` locates this fragment by querying
+         * `[data-oembed="' + $.escapeSelector(util.string.escapeHtml(url, true)) + '"]` - so the
+         * `data-oembed` attribute rendered here MUST equal that exact escaped string, not the
+         * raw url, or the lookup silently fails for any url containing one of those five
+         * characters (a `&` in a query string being the common case) and the embed degrades to
+         * a plain link with no live preview/lazy-load behavior. Kept as a tiny local function -
+         * rather than reaching into `@humhub/vue`/`humhub.modules.util` - because it is a pure,
+         * dependency-free string transform and no sibling island component reaches into legacy
+         * modules directly either.
+         */
+        escapeOembedUrl(url) {
+            return String(url).replace(/[&<>"']/g, (char) => OEMBED_URL_ENTITY_MAP[char]);
         },
     },
 };

@@ -30,11 +30,12 @@
  * The contract: the server-rendered shell carries the literal token
  * `__VUEFORM__` everywhere an id is declared OR referenced (`id`, `for`,
  * and any `data-*` attribute value that embeds an id, including
- * CSS-id-selector fragments like `#comment_create_form___VUEFORM__`) — not
- * just in `id="..."` attributes themselves. This wrapper replaces every
- * occurrence of that token with a unique-per-instance id (a module-scope
- * counter, not `Math.random()`, so vue.build's output stays deterministic)
- * before binding the result via `v-html`.
+ * CSS-id-selector fragments like `#__VUEFORM___comment_create_form`, from
+ * `VueFormShell::id('comment_create_form')` — the token is a PREFIX, not a
+ * suffix) — not just in `id="..."` attributes themselves. This wrapper
+ * replaces every occurrence of that token with a unique-per-instance id (a
+ * module-scope counter, not `Math.random()`, so vue.build's output stays
+ * deterministic) before binding the result via `v-html`.
  *
  * ## Widget interop
  *

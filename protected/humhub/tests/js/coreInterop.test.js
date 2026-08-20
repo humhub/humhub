@@ -183,6 +183,50 @@ describe('RichTextOutput', () => {
 
             expect(wrapper.element.children[0].hasAttribute('data-oembeds')).toBe(false);
         });
+
+        // humhub.oembed.js's findSnippetByUrl() looks up this fragment via
+        // `[data-oembed="' + $.escapeSelector(util.string.escapeHtml(url, true)) + '"]` - the
+        // legacy server markup produced that exact escaped string in the DOM attribute (source
+        // double-encodes via Html::encode($url) + Html::tag()'s own attribute encoding, which a
+        // single HTML-parse round-trip collapses back down to one escape). Binding the RAW url
+        // here would silently break the lookup for any url containing one of & < > " '.
+        describe('data-oembed carries the HTML-escaped url, matching humhub.oembed.js\'s lookup', () => {
+            it('escapes an & in the url (e.g. a query string) before binding data-oembed', () => {
+                const rawUrl = 'https://youtube.com/watch?v=abc&t=30s';
+                const escapedUrl = 'https://youtube.com/watch?v=abc&amp;t=30s';
+
+                const wrapper = mountWithAdditions(RichTextOutput, {
+                    message: '[link](oembed:' + rawUrl + ')',
+                    renderOptions: {
+                        'ui-richtext': true,
+                        oembeds: { [rawUrl]: '<iframe src="https://youtube.com/embed/abc"></iframe>' },
+                    },
+                });
+
+                const fragment = wrapper.find('.richtext-oembed-container > [data-oembed]');
+                expect(fragment.exists()).toBe(true);
+                expect(fragment.element.getAttribute('data-oembed')).toBe(escapedUrl);
+                expect(fragment.find('iframe').attributes('src')).toBe('https://youtube.com/embed/abc');
+            });
+
+            it('escapes quotes and angle brackets in the url the same way', () => {
+                const rawUrl = 'https://example.com/a"b<c>d\'e';
+                const escapedUrl = 'https://example.com/a&quot;b&lt;c&gt;d&#39;e';
+
+                const wrapper = mountWithAdditions(RichTextOutput, {
+                    message: 'weird url',
+                    renderOptions: {
+                        'ui-richtext': true,
+                        oembeds: { [rawUrl]: '<div class="preview">p</div>' },
+                    },
+                });
+
+                const fragment = wrapper.find('.richtext-oembed-container > [data-oembed]');
+                expect(fragment.exists()).toBe(true);
+                expect(fragment.element.getAttribute('data-oembed')).toBe(escapedUrl);
+                expect(fragment.find('.preview').exists()).toBe(true);
+            });
+        });
     });
 
     describe('attribute fallthrough (caller-owned layout/styling)', () => {
@@ -238,6 +282,48 @@ describe('RichTextOutput', () => {
         expect(wrapper.text()).toBe('after');
 
         applyTo.mockRestore();
+    });
+
+    // The legacy richtext DISPLAY addition caches its booted widget instance in jQuery
+    // `.data()` on the envelope DOM node itself; widget init is a once-per-node guard, so an
+    // in-place text swap on the SAME node (Vue's default behavior for a same-position,
+    // same-tag child with no key) would leave that cache in place and the addition would never
+    // re-render the new markdown - the user would see raw markdown text. The `:key` on the
+    // envelope (see the component's own docblock) forces Vue to destroy the old node and mount
+    // a genuinely new one instead.
+    it('recreates the envelope element itself (not just its text) when the message changes', async () => {
+        const wrapper = mountWithAdditions(RichTextOutput, {
+            message: 'first markdown',
+            renderOptions: { 'ui-richtext': true },
+        });
+
+        const oldEnvelope = wrapper.element.children[0];
+
+        await wrapper.setProps({ message: 'second markdown' });
+
+        const newEnvelope = wrapper.element.children[0];
+
+        expect(newEnvelope).not.toBe(oldEnvelope);
+        // The old node was actually removed from the tree, not just superseded in our local
+        // reference to it.
+        expect(oldEnvelope.parentNode).toBeNull();
+        expect(newEnvelope.textContent).toBe('second markdown');
+    });
+
+    it('also recreates the envelope element when only renderOptions changes (message unchanged)', async () => {
+        const wrapper = mountWithAdditions(RichTextOutput, {
+            message: 'same markdown',
+            renderOptions: { 'ui-richtext': true, preset: 'a' },
+        });
+
+        const oldEnvelope = wrapper.element.children[0];
+
+        await wrapper.setProps({ renderOptions: { 'ui-richtext': true, preset: 'b' } });
+
+        const newEnvelope = wrapper.element.children[0];
+
+        expect(newEnvelope).not.toBe(oldEnvelope);
+        expect(newEnvelope.getAttribute('data-preset')).toBe('b');
     });
 });
 

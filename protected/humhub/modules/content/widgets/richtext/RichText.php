@@ -67,7 +67,7 @@ abstract class RichText extends AbstractRichText
 
     /**
      * @see AbstractRichText::outputMarkdownAndRenderOptions()
-     * @return array{markdown: string, options: array}
+     * @return array{markdown: string|null, options: array}
      * @since 1.19
      */
     public static function outputMarkdownAndRenderOptions($text, $config = []): array

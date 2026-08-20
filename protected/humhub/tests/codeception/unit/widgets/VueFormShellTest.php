@@ -126,4 +126,49 @@ class VueFormShellTest extends HumHubDbTestCase
 
         VueFormShell::widget(['content' => 'not-a-closure']);
     }
+
+    /**
+     * `run()` wraps `ob_start()` plus `ActiveForm::begin()`/`::end()` in try/finally
+     * specifically so a throwing `content` closure can't leak an open output-buffer level or
+     * an unbalanced `ActiveForm` widget stack entry into the rest of the request/test run -
+     * both would otherwise silently corrupt whatever renders next.
+     */
+    public function testThrowingContentClosurePropagatesWithoutLeakingTheOutputBuffer()
+    {
+        $obLevelBefore = ob_get_level();
+
+        try {
+            VueFormShell::widget([
+                'content' => function (ActiveForm $form) {
+                    throw new \RuntimeException('boom');
+                },
+            ]);
+            $this->fail('Expected RuntimeException was not thrown.');
+        } catch (\RuntimeException $e) {
+            $this->assertSame('boom', $e->getMessage());
+        }
+
+        $this->assertSame($obLevelBefore, ob_get_level());
+    }
+
+    /**
+     * Pins the contract: a caller-supplied `formOptions.options` (e.g. an extra CSS class)
+     * merges over the widget's own conventions rather than replacing the whole `options`
+     * sub-array - the token-bearing `id` and the disabled `csrf` flag must both survive
+     * alongside it (see `testFormOptionsAreMergedOverTheDefaultConventions` /
+     * `testHasNoCsrfInputByDefault` above for each half individually).
+     */
+    public function testFormOptionsMergeKeepsTheTokenAndOmitsCsrf()
+    {
+        $html = VueFormShell::widget([
+            'content' => fn(ActiveForm $form) => '',
+            'formOptions' => ['options' => ['class' => 'x']],
+        ]);
+
+        $this->assertMatchesRegularExpression(
+            '/<form[^>]*\bid="[^"]*' . preg_quote(VueFormShell::TOKEN, '/') . '[^"]*"/',
+            $html,
+        );
+        $this->assertStringNotContainsString('_csrf', $html);
+    }
 }

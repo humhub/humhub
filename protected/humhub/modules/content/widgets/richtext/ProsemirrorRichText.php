@@ -206,7 +206,17 @@ class ProsemirrorRichText extends AbstractRichText
      * client's own `[data-ui-richtext]` selector, not an id, is what locates richtext content - see
      * `humhub.ui.richtext.prosemirror.js`), so the client is free to mint its own.
      *
-     * @return array{markdown: string, options: array}
+     * Two more things {@see \humhub\widgets\JsWidget::getOptions()} folds into `run()`'s envelope are
+     * ALSO deliberately excluded here, both caller/mode-driven rather than per-record extension data:
+     * a caller-supplied {@see \humhub\widgets\JsWidget::$options} array (arbitrary extra html
+     * attributes {@see \humhub\widgets\JsWidget::getOptions()} merges over the widget's own, via
+     * `ArrayHelper::merge()`) has no equivalent bucket here at all; and the `style="display:none"`
+     * {@see \humhub\widgets\JsWidget::getOptions()} adds whenever `$this->visible` is `false` (which
+     * {@see self::init()} sets whenever `$this->edit` is `true`) is likewise never added to `options`.
+     * Neither omission matters for the one real caller today (`CommentJsonService`, which sets
+     * neither `$options` nor `$edit`), but a future caller relying on either would see a silent gap.
+     *
+     * @return array{markdown: string|null, options: array}
      * @since 1.19
      */
     public function getMarkdownAndRenderOptions(): array

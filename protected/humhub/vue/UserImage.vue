@@ -89,6 +89,26 @@ import { i18n } from '@humhub/vue';
  * fallback is a defensive default for a bare `v-bind="comment.author"`
  * spread missing the field (e.g. an older/foreign shape), not a path any
  * shipped consumer exercises today.
+ *
+ * ## Other known deviations from `user\widgets\Image::run()`
+ *
+ * - **No soft-deleted-user handling.** `Image::run()` forces `$this->link = false` when
+ *   `$this->user->status === User::STATUS_SOFT_DELETED`; this component has no notion of user
+ *   status at all and always honors `link` as given. A caller rendering a possibly
+ *   soft-deleted user must pass `link: false` itself - `CommentJsonService::serializeAuthor()`
+ *   does not currently do this, so this is a real (if narrow) parity gap for that call site,
+ *   not just a documentation note.
+ * - **No `showTooltip`/`tooltipText` support.** `Image::run()` optionally adds a Bootstrap
+ *   tooltip (`data-bs-toggle`/`data-bs-placement`/`data-bs-html`/`data-bs-title`) to the
+ *   `<img>` when either option is set; this component never renders those attributes and has
+ *   no equivalent props. Not reproduced because no core call site (the comment island) uses
+ *   either option today.
+ * - **`UserModule.base` i18n category.** `onlineLabel` calls `i18n.t('UserModule.base', ...)`
+ *   without preloading that category itself (unlike, e.g., a component with an
+ *   `i18nCategories` island-level declaration - see `docs/develop/ui-js-vuejs.md`). Consumers
+ *   outside the comment section (where the category is already preloaded page-wide for other
+ *   reasons) must ensure `UserModule.base` is preloaded themselves or accept the English
+ *   fallback `i18n.t()` returns for an unloaded category.
  */
 export default {
     props: {

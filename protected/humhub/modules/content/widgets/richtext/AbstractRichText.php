@@ -326,7 +326,7 @@ abstract class AbstractRichText extends JsWidget
      *
      * @param $text string rich text content
      * @param array $config rich text widget options
-     * @return array{markdown: string, options: array}
+     * @return array{markdown: string|null, options: array}
      * @throws Exception
      * @since 1.19
      */
@@ -341,7 +341,7 @@ abstract class AbstractRichText extends JsWidget
 
     /**
      * @see self::outputMarkdownAndRenderOptions()
-     * @return array{markdown: string, options: array}
+     * @return array{markdown: string|null, options: array}
      * @since 1.19
      */
     public function getMarkdownAndRenderOptions(): array
