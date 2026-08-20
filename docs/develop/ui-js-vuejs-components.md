@@ -40,12 +40,36 @@ Core ships its own components at `protected/humhub/vue/`, built via `grunt build
 - **`DropdownMenu`** — a generic dropdown-toggle menu, the Vue analog of the `nav nav-pills preferences` / `.dropdown-toggle` + `.dropdown-menu` markup pattern PHP widgets render throughout the app (e.g. `humhub\widgets\PanelMenu`, `content\widgets\WallEntryControls`). Any island's template can reach for `<DropdownMenu>` instead of hand-rolling this structure again; its default slot holds free-form menu items, and an optional `menuId`/`entries` mode renders a data-driven, `registerMenuEntry()`/`removeMenuEntry()`-extensible item list after the slot — see [Extending islands: menu entries](ui-js-vuejs-extensions.md#menu-entries). Toggling, closing (click-away/Escape) and keyboard navigation are handled entirely by Bootstrap's own dropdown JS via `data-bs-toggle="dropdown"` — nothing here is Vue-owned, so Vue-rendered markup behaves identically to server-rendered markup.
 - **`ExtensionSlot`** — the Vue analog of PHP widget stacks. See [Extending islands: extension slots](ui-js-vuejs-extensions.md#extension-slots) for the full contract.
 - **The `HumHubForm` suite** (`HumHubForm`, `TextField`, `TextareaField`, `CheckboxField`, `SelectField`, `SubmitButton`, `RichTextField`) — a native form layer with `yii\bootstrap5\ActiveField` markup/naming parity and a shared server-side-422 error contract, plus `RichTextField` embedding `LegacyFormWrapper` as a legacy-citizen field for the rich text editor/upload widget. See [Form suite](ui-js-vuejs-forms.md) for the full component/props reference and a worked example — the comment section's own form (`CommentForm.vue`) is the reference consumer.
+- **`UiModal`** (`<ui-modal>`, `protected/humhub/vue/UiModal.vue`) — the first native, Vue-owned modal: reuses the exact Bootstrap 5 markup/CSS classes the legacy `humhub.ui.modal.js` bridge renders (`.modal.fade`, `.modal-dialog`, `.modal-content`, `.modal-header`/`.modal-title`/`.btn-close`, `.modal-body`, `.modal-footer`, `.modal-backdrop`) but owns open/close/backdrop/keyboard/focus/scroll-lock itself instead of wrapping `bootstrap.Modal`.
+
+  | Prop | Type / default | |
+  |---|---|---|
+  | `show` | `Boolean`, `false` | `v-model:show` — fully controlled visibility, the component never closes itself |
+  | `title` | `String`, `null` | rendered by the fallback header (ignored when the `header` slot is used) |
+  | `size` | `'small'` \| `'normal'` \| `'large'`, `'normal'` | → `modal-sm` / no class / `modal-lg` |
+  | `backdropClose` | `Boolean`, `true` | clicking the dimmed area outside the dialog requests a close |
+  | `keyboard` | `Boolean`, `true` | Escape requests a close (listener only attached while open) |
+
+  | Slot | | Event | |
+  |---|---|---|---|
+  | default | the modal body | `update:show` | close requests (backdrop/Escape/close button) |
+  | `header` | replaces the fallback title + close button; receives `{ titleId }` so a custom heading can wire itself to `aria-labelledby` | `opened` | fires once the dialog finishes mounting and is focused |
+  | `footer` | omitted entirely (no `.modal-footer` element) when not provided | `closed` | fires once focus has been restored to whatever had it before opening |
+
+  ```html
+  <UiModal v-model:show="showUserList" title="Users who like this">
+      <UserList :url="userListUrl" />
+  </UiModal>
+  ```
+
+  `LikeButton.vue`'s user-list modal (below) is the reference consumer. Stacking two modals (a second `UiModal`, or a legacy `#globalModal`) open at the same time is out of scope — see the component's own docblock.
 
 ## Module-provided shared components
 
-Core's own component set above is one instance of a more general pattern: **any** module can expose a component for other modules to nest, the same way `LikeButton` (the `like` module) and `UserImage` (the `user` module) already do — nothing beyond the ordinary [module file layout](#module-file-layout) and [component registry](#component-registry) is required. The consuming module's own asset bundle just adds the providing module's `*VueAsset` to its `$depends`, so the provided component is guaranteed to be registered before the consumer's own bundle script runs (see [Loading and bundling](#loading-and-bundling)) — a plain dependency edge between two asset bundles, no different from any other cross-module PHP dependency.
+Core's own component set above is one instance of a more general pattern: **any** module can expose a component for other modules to nest, the same way `LikeButton` (the `like` module) and `UserImage`/`UserList` (the `user` module) already do — nothing beyond the ordinary [module file layout](#module-file-layout) and [component registry](#component-registry) is required. The consuming module's own asset bundle just adds the providing module's `*VueAsset` to its `$depends`, so the provided component is guaranteed to be registered before the consumer's own bundle script runs (see [Loading and bundling](#loading-and-bundling)) — a plain dependency edge between two asset bundles, no different from any other cross-module PHP dependency.
 
 - **`UserImage`** (`<user-image>`, `humhub\modules\user\vue\UserImage.vue`, `UserVueAsset`) — a user's profile image, the Vue analog of `user\widgets\Image`/`ui\widgets\BaseImage`: props modeled on the serialized author shape (`guid`, `displayName`, `url`, `imageUrl`, `imageAlt`, `contentContainerId`) plus display options (`online`, `size`, `link`). Reproduces `Image::run()`'s `rounded` sizing, `data-contentcontainer-id` popover hook and online-status overlay (`has-online-status` + the `img-size-small`/`medium`/`large` bucket classes) so existing theme CSS applies unchanged — see its own docblock for the one deliberate deviation (no extra wrapping `<span>`). The comment island's `CommentVueAsset` depends on `UserVueAsset` for exactly this reason: `CommentEntry.vue` nests `<UserImage v-bind="comment.author" />` without importing it.
+- **`UserList`** (`<user-list>`, `humhub\modules\user\vue\UserList.vue`, `UserVueAsset`) — the Vue analog of `user\widgets\UserListBox`: loads and renders a page of users (avatar + linked display name, `.hh-list` row styling) from any endpoint, then a "Show more" link for the next page. **Generic by design** — it is not tied to the like module: point `:url` at any endpoint returning `{ total, users, hasMore, nextPage }`, where each entry of `users` is the same serialized author/user shape `UserImage`'s props are modeled on (`humhub\modules\user\services\UserJsonService::serialize()`). Props: `url` (required), `pageSize` (optional — sent as the `limit` query param). The like module's user-list modal (`LikeButton.vue`, `like/like/user-list`) is the reference consumer — see its own docblock for the deliberate deviations from `UserListBox`'s legacy view (no display-name subtitle line; "Show more" appends in place instead of replacing the whole modal per page).
 
 ## Loading and bundling
 
@@ -141,7 +165,7 @@ Vue components reach platform services through composables that delegate to the 
 |---|---|
 | `useI18n('LikeModule.base')` | `humhub.i18n` — ICU MessageFormat, localStorage cache; the message extractor learns to parse `.vue` files |
 | `useClient()` | `humhub.client` — CSRF, status handling, redirects |
-| `useModal()` | the existing global modal system (open/close); a native `<HModal>` follows later |
+| `useModal()` | the existing global modal system (`modal.confirm()`/`modal.load()`) — still the bridge for LEGACY flows (e.g. comment delete); Vue-native UI reaches for `<UiModal>` (see [Core component set](#core-component-set)) instead |
 | `useConfig('like')` | values passed via `registerJsConfig` |
 | `useEvents()` | the global `humhub.event` bus, with automatic unsubscribe on unmount — communication between islands and with legacy JS |
 

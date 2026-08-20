@@ -148,7 +148,12 @@ class LikeService
         $query = User::find();
         $query->leftJoin('like', 'like.created_by=user.id');
         $this->addScopeQueryCondition($query);
-        $query->orderBy('like.created_at DESC');
+        // `like.id DESC` is a tiebreaker for likes sharing the same `created_at` (its
+        // datetime column only has one-second resolution) - without it, offset/limit
+        // pagination over ties has no stable order and can show the same liker twice
+        // or skip one across two pages (see the like module's user-list JSON endpoint,
+        // `LikeController::actionUserList()`).
+        $query->orderBy('like.created_at DESC, like.id DESC');
 
         return $query;
     }

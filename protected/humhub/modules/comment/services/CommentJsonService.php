@@ -18,7 +18,7 @@ use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\file\widgets\ShowFiles;
 use humhub\modules\like\services\LikeService;
 use humhub\modules\user\models\User;
-use humhub\modules\user\services\IsOnlineService;
+use humhub\modules\user\services\UserJsonService;
 use Yii;
 use yii\base\Event;
 use yii\web\ForbiddenHttpException;
@@ -285,37 +285,14 @@ class CommentJsonService
      * link (`data-contentcontainer-id`), `guid` (already present) additionally goes on
      * the name link (`data-guid` - `Html::containerLink()` sets both), and `imageAlt` is
      * the exact `Image::run()` alt text so the avatar's accessible name matches legacy.
+     *
+     * Delegates to {@see UserJsonService}, which owns this shape - shared verbatim with
+     * every other caller that needs to describe a user to a Vue island (e.g. the like
+     * module's user-list endpoint), not comment-specific.
      */
     private function serializeAuthor(User $user): array
     {
-        return [
-            'guid' => $user->guid,
-            'displayName' => $user->displayName,
-            'url' => $user->getUrl(),
-            'imageUrl' => $user->getProfileImage()->getUrl(),
-            'contentContainerId' => $user->contentcontainer_id,
-            'imageAlt' => Yii::t('base', 'Profile picture of {displayName}', ['displayName' => $user->displayName]),
-            'online' => $this->serializeOnlineStatus($user),
-        ];
-    }
-
-    /**
-     * Mirrors `user\widgets\Image::run()`'s online-status gate (with the widget's
-     * defaults, `hideOnlineStatus`/`showSelfOnlineStatus` both false, as used by the
-     * legacy `comment.php` view): `null` when the viewer is looking at their own
-     * comment or the feature is disabled (hidden by admin/user setting), a real status
-     * otherwise - `CommentEntry.vue` only renders the online-status overlay when this
-     * is non-null.
-     */
-    private function serializeOnlineStatus(User $user): ?bool
-    {
-        if ($user->id === Yii::$app->user->id) {
-            return null;
-        }
-
-        $isOnlineService = new IsOnlineService($user);
-
-        return $isOnlineService->isEnabled() ? $isOnlineService->getStatus() : null;
+        return (new UserJsonService())->serialize($user);
     }
 
     /**

@@ -43,6 +43,32 @@ Each minor release line has its own file with the breaking changes, new APIs and
     `user` `registerJsConfig` section (see `docs/develop/ui-js-vuejs.md`). `/like/like/info` is now
     guest-accessible (`guestAllowedActions`); content visibility is still enforced by
     `Content::canView()` in `LikeController::beforeAction()`.
+  - Added core `UiModal` (`<ui-modal>`, `protected/humhub/vue/UiModal.vue`) — the first
+    native, Vue-owned modal (reuses the legacy `.modal`/`.modal-dialog`/`.modal-backdrop`
+    Bootstrap 5 markup/CSS so it looks identical, but owns open/close/backdrop/keyboard/
+    focus/scroll-lock itself instead of wrapping `bootstrap.Modal`); see
+    `docs/develop/ui-js-vuejs-components.md`. The legacy `modal.confirm()`/`modal.load()`
+    bridge to `#globalModal` is unaffected and stays the mechanism for legacy (non-Vue)
+    flows, e.g. the comment delete confirm dialog.
+  - Added `UserList` (`<user-list>`) to the user module's Vue component set
+    (`protected/humhub/modules/user/vue/`, `UserVueAsset`) — a generic paginated user-list
+    island (any endpoint returning `{ total, users, hasMore, nextPage }`), and extracted
+    `humhub\modules\user\services\UserJsonService::serialize()` (the exact shape
+    `CommentJsonService::serializeAuthor()` used to build; that method now delegates here,
+    payload unchanged) so both share one implementation.
+  - **Replaced**: the like module's user-list modal is now Vue-native. `LikeController::actionUserList()`
+    (route `like/like/user-list`) now returns the JSON `{ total, users, hasMore, nextPage }`
+    shape instead of rendering `humhub\modules\user\widgets\UserListBox` into the global
+    modal — module-search found no external usage of this route (the `UserListBox` widget
+    itself is unaffected and still used directly by several external modules, e.g.
+    `humhub/mail`, `humhub/polls`, for their own unrelated user lists). `LikeButton.vue`'s
+    like-count link now opens a `<UiModal>` containing `<UserList>` instead of delegating to
+    `#globalModal`; `LikeVueAsset` gained `CoreVueAsset`/`UserVueAsset` dependencies for
+    `<UiModal>`/`<UserList>`. Guest access is unchanged (`user-list` was never in
+    `guestAllowedActions`, only `info` was). `LikeService::getUserQuery()`'s ordering gained a
+    `like.id DESC` tiebreaker after `like.created_at DESC` — the datetime column's
+    one-second resolution otherwise made offset/limit pagination over ties non-deterministic
+    (a liker could appear twice, or be skipped, across two "Show more" pages).
   - **Comment module rendered as a Vue island** (`<comment-section>`,
     `humhub\modules\comment\assets\CommentVueAsset`) — comments render entirely client-side
     from JSON now, fed by a new `humhub\modules\comment\services\CommentJsonService` and JSON

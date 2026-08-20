@@ -1,17 +1,31 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { mount } from '@vue/test-utils';
+import { flushPromises, mount } from '@vue/test-utils';
 import LikeButton from '../../modules/like/vue/LikeButton.vue';
+import UiModal from '../../vue/UiModal.vue';
+import UserList from '../../modules/user/vue/UserList.vue';
+import UserImage from '../../modules/user/vue/UserImage.vue';
 
 await import('../../resources/js/humhub/humhub.url.js');
 await import('../../resources/js/humhub/humhub.vue.js');
 
 const vueModule = globalThis.humhub.modules.vue;
 
+// LikeButton's user-list modal references <UiModal>/<UserList> by tag only (resolved
+// through the global Vue component registry in production, per LikeVueAsset's
+// dependency on CoreVueAsset/UserVueAsset — see LikeButton.vue's own template), and
+// UserList itself references <UserImage> the same way; @vue/test-utils'
+// `global.components` stands in for that registry here, the same pattern
+// commentSection.test.js already uses for its own cross-module tags.
+const mountOptions = () => ({ global: { components: { UiModal, UserList, UserImage } } });
+
 // Registered once at file scope (the registry is shared/global per test
 // file — a second register() call would just be a no-op debug log) so the
 // registry+attribute-parsing integration test below can mount via the real
 // <like-button> tag instead of @vue/test-utils' direct component mount.
 vueModule.register('LikeButton', LikeButton);
+vueModule.register('UiModal', UiModal);
+vueModule.register('UserList', UserList);
+vueModule.register('UserImage', UserImage);
 
 // DOM fixture helper: build elements without HTML-string parsing (copied
 // from vue.test.js).
@@ -40,15 +54,19 @@ describe('LikeButton', () => {
 
     it('renders from provided initial state without fetching', () => {
         const wrapper = mount(LikeButton, {
+            ...mountOptions(),
             props: { recordId: 7, likeCount: 2, currentUserLiked: false },
         });
 
         expect(wrapper.find('a.like').exists()).toBe(true);
         expect(wrapper.find('a.unlike').exists()).toBe(false);
         expect(wrapper.find('.likeCount').text()).toBe('(2)');
-        expect(wrapper.find('a[data-bs-target="#globalModal"]').attributes('href')).toBe(
-            '/like/like/user-list?recordId=7',
-        );
+        // The count link no longer navigates/delegates to the legacy #globalModal - it
+        // opens the Vue-native UiModal locally (see the "user-list modal" describe block
+        // below).
+        const countLink = wrapper.find('.likeCount').element.closest('a');
+        expect(countLink.getAttribute('data-bs-target')).toBeNull();
+        expect(countLink.getAttribute('href')).toBe('#');
         expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalled();
     });
 
@@ -56,7 +74,7 @@ describe('LikeButton', () => {
         let resolveGet;
         globalThis.humhubStubs.client.get = vi.fn(() => new Promise((resolve) => { resolveGet = resolve; }));
 
-        const wrapper = mount(LikeButton, { props: { recordId: 7 } });
+        const wrapper = mount(LikeButton, { ...mountOptions(), props: { recordId: 7 } });
 
         expect(wrapper.find('.likeLinkContainer').exists()).toBe(false);
         expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(1);
@@ -72,7 +90,7 @@ describe('LikeButton', () => {
     it('falls back to a visible, un-liked state when the info fetch fails', async () => {
         globalThis.humhubStubs.client.get = vi.fn(() => Promise.reject(new Error('network error')));
 
-        const wrapper = mount(LikeButton, { props: { recordId: 7 } });
+        const wrapper = mount(LikeButton, { ...mountOptions(), props: { recordId: 7 } });
 
         await vi.waitFor(() => expect(wrapper.find('.likeLinkContainer').exists()).toBe(true));
 
@@ -84,6 +102,7 @@ describe('LikeButton', () => {
 
     it('posts to the like url and switches state on click', async () => {
         const wrapper = mount(LikeButton, {
+            ...mountOptions(),
             props: { recordId: 7, likeCount: 2, currentUserLiked: false },
         });
 
@@ -98,6 +117,7 @@ describe('LikeButton', () => {
         globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve({ currentUserLiked: false, likeCounter: 1 }));
 
         const wrapper = mount(LikeButton, {
+            ...mountOptions(),
             props: { recordId: 7, likeCount: 2, currentUserLiked: true },
         });
 
@@ -113,6 +133,7 @@ describe('LikeButton', () => {
         globalThis.humhubStubs.client.post = vi.fn(() => new Promise((resolve) => { resolvePost = resolve; }));
 
         const wrapper = mount(LikeButton, {
+            ...mountOptions(),
             props: { recordId: 7, likeCount: 2, currentUserLiked: false },
         });
 
@@ -131,6 +152,7 @@ describe('LikeButton', () => {
         globalThis.humhubStubs.client.post = vi.fn(() => Promise.reject(new Error('network error')));
 
         const wrapper = mount(LikeButton, {
+            ...mountOptions(),
             props: { recordId: 7, likeCount: 2, currentUserLiked: false },
         });
 
@@ -145,6 +167,7 @@ describe('LikeButton', () => {
         const container = document.createElement('div');
         document.body.appendChild(container);
         const wrapper = mount(LikeButton, {
+            ...mountOptions(),
             props: { recordId: 7, likeCount: 2, currentUserLiked: false },
             attachTo: container,
         });
@@ -166,6 +189,7 @@ describe('LikeButton', () => {
         const container = document.createElement('div');
         document.body.appendChild(container);
         const wrapper = mount(LikeButton, {
+            ...mountOptions(),
             props: { recordId: 7, likeCount: 2, currentUserLiked: true },
             attachTo: container,
         });
@@ -185,6 +209,7 @@ describe('LikeButton', () => {
 
     it('hides the counter link when the count is zero', () => {
         const wrapper = mount(LikeButton, {
+            ...mountOptions(),
             props: { recordId: 7, likeCount: 0, currentUserLiked: false },
         });
 
@@ -193,10 +218,78 @@ describe('LikeButton', () => {
         expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalled();
     });
 
+    describe('user-list modal', () => {
+        const userListResponse = () => ({
+            total: 1,
+            users: [{
+                guid: 'g1',
+                displayName: 'Alice',
+                url: '/user/alice',
+                imageUrl: '/uploads/alice.jpg',
+                contentContainerId: 5,
+                online: null,
+            }],
+            hasMore: false,
+            nextPage: null,
+        });
+
+        it('does not mount UserList until the count is clicked (lazy mount)', () => {
+            mount(LikeButton, {
+                ...mountOptions(),
+                props: { recordId: 7, likeCount: 2, currentUserLiked: false },
+            });
+
+            expect(document.body.querySelector('.modal')).toBeNull();
+            expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalled();
+        });
+
+        it('opens UiModal and loads the same user-list route on count click', async () => {
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(userListResponse()));
+
+            const wrapper = mount(LikeButton, {
+                ...mountOptions(),
+                props: { recordId: 7, likeCount: 2, currentUserLiked: false },
+            });
+
+            await wrapper.find('.likeCount').trigger('click');
+            await flushPromises();
+
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/like/like/user-list?recordId=7&page=1');
+
+            const dialog = document.body.querySelector('.modal[role="dialog"]');
+            expect(dialog).not.toBeNull();
+            expect(dialog.querySelector('.modal-title strong').textContent).toBe('Users');
+            expect(dialog.textContent).toContain('Alice');
+
+            wrapper.unmount();
+        });
+
+        it('closes the modal via the header close button', async () => {
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(userListResponse()));
+
+            const wrapper = mount(LikeButton, {
+                ...mountOptions(),
+                props: { recordId: 7, likeCount: 2, currentUserLiked: false },
+            });
+
+            await wrapper.find('.likeCount').trigger('click');
+            await flushPromises();
+            expect(document.body.querySelector('.modal')).not.toBeNull();
+
+            document.body.querySelector('.modal .btn-close').dispatchEvent(new MouseEvent('click', { bubbles: true }));
+            await flushPromises();
+
+            expect(document.body.querySelector('.modal')).toBeNull();
+
+            wrapper.unmount();
+        });
+    });
+
     it('renders a login link and a non-interactive count for guests', () => {
         globalThis.humhub.config.module('user').isGuest = true;
 
         const wrapper = mount(LikeButton, {
+            ...mountOptions(),
             props: { recordId: 7, likeCount: 2, currentUserLiked: false },
         });
 
@@ -219,6 +312,7 @@ describe('LikeButton', () => {
         globalThis.humhub.config.module('user').isGuest = true;
 
         const wrapper = mount(LikeButton, {
+            ...mountOptions(),
             props: { recordId: 7, likeCount: 0, currentUserLiked: false },
         });
 
@@ -232,7 +326,7 @@ describe('LikeButton', () => {
         globalThis.humhub.config.module('user').isGuest = true;
         globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({ currentUserLiked: false, likeCounter: 4 }));
 
-        const wrapper = mount(LikeButton, { props: { recordId: 7 } });
+        const wrapper = mount(LikeButton, { ...mountOptions(), props: { recordId: 7 } });
 
         expect(wrapper.find('.likeLinkContainer').exists()).toBe(false);
         expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(1);

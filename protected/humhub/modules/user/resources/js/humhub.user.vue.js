@@ -12,7 +12,7 @@
     }
     return target;
   };
-  const _sfc_main = {
+  const _sfc_main$1 = {
     props: {
       guid: { type: String, required: true },
       displayName: { type: String, required: true },
@@ -53,9 +53,9 @@
       }
     }
   };
-  const _hoisted_1 = ["src", "alt", "data-contentcontainer-id", "data-guid"];
-  const _hoisted_2 = ["aria-label", "title"];
-  function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+  const _hoisted_1$1 = ["src", "alt", "data-contentcontainer-id", "data-guid"];
+  const _hoisted_2$1 = ["aria-label", "title"];
+  function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent($props.link ? "a" : "span"), {
       href: $props.link ? $props.url : void 0,
       class: vue.normalizeClass({ "has-online-status": $options.hasOnlineIndicator, [$options.sizeBucketClass]: $options.hasOnlineIndicator })
@@ -68,19 +68,173 @@
           alt: $options.resolvedAlt,
           "data-contentcontainer-id": $props.contentContainerId,
           "data-guid": $props.guid
-        }, null, 12, _hoisted_1),
+        }, null, 12, _hoisted_1$1),
         $options.hasOnlineIndicator ? (vue.openBlock(), vue.createElementBlock("span", {
           key: 0,
           class: vue.normalizeClass(["tt user-online-status", $props.online ? "user-is-online" : "user-is-offline"]),
           "aria-label": $options.onlineLabel,
           title: $options.onlineLabel
-        }, null, 10, _hoisted_2)) : vue.createCommentVNode("v-if", true)
+        }, null, 10, _hoisted_2$1)) : vue.createCommentVNode("v-if", true)
       ]),
       _: 1
       /* STABLE */
     }, 8, ["href", "class"]);
   }
-  const C0 = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
+  const C0 = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1]]);
+  const _sfc_main = {
+    name: "UserList",
+    i18nCategories: ["UserModule.base"],
+    props: {
+      url: { type: String, required: true },
+      pageSize: { type: Number, default: null }
+    },
+    data() {
+      return {
+        users: [],
+        total: 0,
+        hasMore: false,
+        nextPage: null,
+        busy: false,
+        error: false
+      };
+    },
+    computed: {
+      emptyLabel() {
+        return vue$1.i18n.t("UserModule.base", "No users found.");
+      },
+      errorLabel() {
+        return vue$1.i18n.t("UserModule.base", "Could not load the user list.");
+      },
+      loadMoreLabel() {
+        return vue$1.i18n.t("UserModule.base", "Show more");
+      }
+    },
+    created() {
+      this.load(1);
+    },
+    methods: {
+      requestUrl(page) {
+        const params = [`page=${page}`];
+        if (this.pageSize) {
+          params.push(`limit=${this.pageSize}`);
+        }
+        const separator = this.url.includes("?") ? "&" : "?";
+        return `${this.url}${separator}${params.join("&")}`;
+      },
+      async load(page) {
+        this.busy = true;
+        this.error = false;
+        try {
+          const response = await vue$1.client.get(this.requestUrl(page));
+          const users = response.users ?? [];
+          this.users = page === 1 ? users : this.users.concat(users);
+          this.total = response.total ?? this.users.length;
+          this.hasMore = !!response.hasMore;
+          this.nextPage = response.nextPage ?? null;
+        } catch (e) {
+          this.error = true;
+          vue$1.log.error(e);
+        } finally {
+          this.busy = false;
+        }
+      },
+      loadMore() {
+        if (this.busy || !this.hasMore || !this.nextPage) {
+          return;
+        }
+        this.load(this.nextPage);
+      }
+    }
+  };
+  const _hoisted_1 = { class: "user-list" };
+  const _hoisted_2 = { key: 0 };
+  const _hoisted_3 = {
+    key: 1,
+    class: "hh-list"
+  };
+  const _hoisted_4 = ["href"];
+  const _hoisted_5 = { class: "flex-shrink-0 me-2" };
+  const _hoisted_6 = { class: "flex-grow-1" };
+  const _hoisted_7 = { class: "mt-0" };
+  const _hoisted_8 = {
+    key: 2,
+    class: "text-danger"
+  };
+  const _hoisted_9 = {
+    key: 3,
+    class: "pagination-container text-center"
+  };
+  function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_UserImage = vue.resolveComponent("UserImage");
+    return vue.openBlock(), vue.createElementBlock("div", _hoisted_1, [
+      !$data.busy && !$data.error && $data.users.length === 0 ? (vue.openBlock(), vue.createElementBlock(
+        "p",
+        _hoisted_2,
+        vue.toDisplayString($options.emptyLabel),
+        1
+        /* TEXT */
+      )) : vue.createCommentVNode("v-if", true),
+      $data.users.length ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_3, [
+        (vue.openBlock(true), vue.createElementBlock(
+          vue.Fragment,
+          null,
+          vue.renderList($data.users, (user) => {
+            return vue.openBlock(), vue.createElementBlock("a", {
+              key: user.guid,
+              href: user.url,
+              class: "d-flex"
+            }, [
+              vue.createElementVNode("div", _hoisted_5, [
+                vue.createVNode(
+                  _component_UserImage,
+                  vue.mergeProps({ ref_for: true }, user, {
+                    size: 50,
+                    link: false
+                  }),
+                  null,
+                  16
+                  /* FULL_PROPS */
+                )
+              ]),
+              vue.createElementVNode("div", _hoisted_6, [
+                vue.createElementVNode(
+                  "h4",
+                  _hoisted_7,
+                  vue.toDisplayString(user.displayName),
+                  1
+                  /* TEXT */
+                )
+              ])
+            ], 8, _hoisted_4);
+          }),
+          128
+          /* KEYED_FRAGMENT */
+        ))
+      ])) : vue.createCommentVNode("v-if", true),
+      $data.error ? (vue.openBlock(), vue.createElementBlock(
+        "p",
+        _hoisted_8,
+        vue.toDisplayString($options.errorLabel),
+        1
+        /* TEXT */
+      )) : vue.createCommentVNode("v-if", true),
+      $data.hasMore ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_9, [
+        vue.createElementVNode(
+          "a",
+          {
+            href: "#",
+            class: vue.normalizeClass({ disabled: $data.busy }),
+            onClick: _cache[0] || (_cache[0] = vue.withModifiers((...args) => $options.loadMore && $options.loadMore(...args), ["prevent"]))
+          },
+          vue.toDisplayString($options.loadMoreLabel),
+          3
+          /* TEXT, CLASS */
+        )
+      ])) : vue.createCommentVNode("v-if", true)
+    ]);
+  }
+  const C1 = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
   vue$1.register("UserImage", C0);
+  vue$1.register("UserList", C1);
 })(humhub.modules.vue, Vue);
 //# sourceMappingURL=humhub.user.vue.js.map

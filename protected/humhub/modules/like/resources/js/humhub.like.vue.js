@@ -23,7 +23,8 @@
       return {
         liked: this.currentUserLiked,
         count: this.likeCount,
-        busy: false
+        busy: false,
+        showUserList: false
       };
     },
     computed: {
@@ -47,6 +48,23 @@
       },
       userListUrl() {
         return vue$1.url("/like/like/user-list", { recordId: this.recordId });
+      },
+      // Same message key the legacy HTML user-list action used for the modal title
+      // (`Yii::t('LikeModule.base', "<strong>Users</strong> who like this")`) - kept
+      // as trusted, translator-authored markup (rendered via v-html in the template,
+      // same trust boundary the legacy `Modal::beginDialog(['title' => $title])` call
+      // already had for this exact string - see `humhub\widgets\modal\Modal`'s "not
+      // html encoded!" docblock on `$title`), not user input.
+      userListTitle() {
+        return vue$1.i18n.t("LikeModule.base", "<strong>Users</strong> who like this");
+      },
+      // 'base' is not declared in `i18nCategories` above (only `LikeModule.base` is) -
+      // an accepted, established gap: UserImage.vue's `onlineLabel` reads
+      // `UserModule.base` the same uncovered way, see its own docblock. Falls back to
+      // the English source text until some other page load happens to warm the
+      // `base` category's translation cache.
+      closeLabel() {
+        return vue$1.i18n.t("base", "Close");
       }
     },
     created() {
@@ -93,9 +111,12 @@
     key: 0,
     class: "likeCount"
   };
-  const _hoisted_4 = ["href"];
-  const _hoisted_5 = { class: "likeCount" };
+  const _hoisted_4 = { class: "likeCount" };
+  const _hoisted_5 = ["id", "innerHTML"];
+  const _hoisted_6 = ["aria-label"];
   function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_UserList = vue.resolveComponent("UserList");
+    const _component_UiModal = vue.resolveComponent("UiModal");
     return $options.ready ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_1, [
       $options.guest ? (vue.openBlock(), vue.createElementBlock(
         vue.Fragment,
@@ -144,21 +165,47 @@
           )),
           $data.count > 0 ? (vue.openBlock(), vue.createElementBlock("a", {
             key: 2,
-            href: $options.userListUrl,
-            "data-bs-target": "#globalModal"
+            href: "#",
+            onClick: _cache[2] || (_cache[2] = vue.withModifiers(($event) => $data.showUserList = true, ["prevent"]))
           }, [
             vue.createElementVNode(
               "span",
-              _hoisted_5,
+              _hoisted_4,
               "(" + vue.toDisplayString($data.count) + ")",
               1
               /* TEXT */
             )
-          ], 8, _hoisted_4)) : vue.createCommentVNode("v-if", true)
+          ])) : vue.createCommentVNode("v-if", true)
         ],
         64
         /* STABLE_FRAGMENT */
-      ))
+      )),
+      vue.createVNode(_component_UiModal, {
+        show: $data.showUserList,
+        "onUpdate:show": _cache[4] || (_cache[4] = ($event) => $data.showUserList = $event)
+      }, {
+        header: vue.withCtx(({ titleId }) => [
+          vue.createElementVNode("h5", {
+            class: "modal-title",
+            id: titleId,
+            innerHTML: $options.userListTitle
+          }, null, 8, _hoisted_5),
+          vue.createElementVNode("button", {
+            type: "button",
+            class: "btn-close",
+            "aria-label": $options.closeLabel,
+            onClick: _cache[3] || (_cache[3] = ($event) => $data.showUserList = false)
+          }, null, 8, _hoisted_6)
+        ]),
+        default: vue.withCtx(() => [
+          $data.showUserList ? (vue.openBlock(), vue.createBlock(_component_UserList, {
+            key: 0,
+            url: $options.userListUrl
+          }, null, 8, ["url"])) : vue.createCommentVNode("v-if", true)
+        ]),
+        _: 1
+        /* STABLE */
+      }, 8, ["show"])
     ])) : vue.createCommentVNode("v-if", true);
   }
   const C0 = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);

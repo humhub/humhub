@@ -11,6 +11,8 @@ import UserImage from '../../modules/user/vue/UserImage.vue';
 import HumHubForm from '../../vue/HumHubForm.vue';
 import RichTextField from '../../vue/RichTextField.vue';
 import SubmitButton from '../../vue/SubmitButton.vue';
+import UiModal from '../../vue/UiModal.vue';
+import UserList from '../../modules/user/vue/UserList.vue';
 
 await import('../../resources/js/humhub/humhub.url.js');
 await import('../../resources/js/humhub/humhub.vue.js');
@@ -33,13 +35,14 @@ const additionsDirective = {
 // LegacyFormWrapper/DropdownMenu/ExtensionSlot/HumHubForm/RichTextField/SubmitButton
 // directly (they now resolve through the global Vue component registry - see their own
 // docblocks) - @vue/test-utils' `global.components` stands in for that registry here, the
-// same way it already does for LikeButton below.
+// same way it already does for LikeButton below. UiModal/UserList are needed too - nested
+// two levels down, inside LikeButton's own (always-rendered) user-list modal.
 const mountOptions = () => ({
     global: {
         directives: { additions: additionsDirective },
         components: {
             LikeButton, RichTextOutput, LegacyFormWrapper, DropdownMenu, ExtensionSlot, UserImage,
-            HumHubForm, RichTextField, SubmitButton,
+            HumHubForm, RichTextField, SubmitButton, UiModal, UserList,
         },
     },
 });
