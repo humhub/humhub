@@ -258,7 +258,7 @@ describe('LegacyFormWrapper', () => {
                     <textarea id="newCommentForm___VUEFORM___input" name="Comment[message]" style="display:none;"></textarea>
                     <div class="richtext-create-buttons">
                         <span class="btn btn-light fileinput-button" data-action-target="#comment_create_upload___VUEFORM__">
-                            <input type="file" id="comment_create_upload___VUEFORM__" class="main_comment_upload" multiple
+                            <input type="file" id="comment_create_upload___VUEFORM__" class="vueform-upload" multiple
                                    data-ui-widget="file.Upload" data-ui-init="1"
                                    data-upload-drop-zone="#comment_create_form___VUEFORM__"
                                    data-upload-preview="#comment_create_upload_preview___VUEFORM__"

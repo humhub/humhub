@@ -10,13 +10,15 @@ namespace tests\codeception\unit\modules\comment\widgets;
 
 use humhub\modules\comment\widgets\CommentFormShell;
 use humhub\modules\post\models\Post;
+use humhub\widgets\VueFormShell;
 use tests\codeception\_support\HumHubDbTestCase;
 
 /**
- * Pins the `__VUEFORM__` token contract `LegacyFormWrapper.vue` relies on (see
- * `CommentFormShell`'s own class docblock): the shell is rendered ONCE and cloned per form
- * instance client-side by string-replacing the token, so every id the shell declares OR
- * references must carry it - otherwise two clones on the same page would collide.
+ * Pins the comment-specific field composition (richtext editor + upload stack) on top of the
+ * generic {@see VueFormShell} mechanism: the shell is rendered ONCE and cloned per form instance
+ * client-side by string-replacing the `__VUEFORM__` token (see `VueFormShell`'s own class
+ * docblock for the general contract), so every id the shell declares OR references must carry
+ * it - otherwise two clones on the same page would collide.
  */
 class CommentFormShellTest extends HumHubDbTestCase
 {
@@ -28,7 +30,7 @@ class CommentFormShellTest extends HumHubDbTestCase
 
         foreach ($matches[1] as $value) {
             $this->assertStringContainsString(
-                CommentFormShell::TOKEN,
+                VueFormShell::TOKEN,
                 $value,
                 'id/for attribute "' . $value . '" does not carry the shell token',
             );
@@ -43,7 +45,7 @@ class CommentFormShellTest extends HumHubDbTestCase
 
         foreach ($matches[1] as $value) {
             $this->assertStringContainsString(
-                CommentFormShell::TOKEN,
+                VueFormShell::TOKEN,
                 $value,
                 'CSS-id-selector data attribute "' . $value . '" does not carry the shell token',
             );
@@ -55,6 +57,15 @@ class CommentFormShellTest extends HumHubDbTestCase
         $html = $this->renderShell();
 
         $this->assertStringContainsString('data-upload-submit-name="Comment[fileList][]"', $html);
+    }
+
+    public function testUploadFieldCarriesTheGenericVueformUploadClass()
+    {
+        $html = $this->renderShell();
+
+        // `LegacyFormWrapper.vue`'s UPLOAD_SELECTOR queries this generic convention class,
+        // not a comment-specific one - see that file's class docblock.
+        $this->assertMatchesRegularExpression('/class="[^"]*\bvueform-upload\b[^"]*"/', $html);
     }
 
     public function testHasNoSubmitButton()

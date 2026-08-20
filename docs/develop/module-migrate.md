@@ -86,13 +86,19 @@ Each minor release line has its own file with the breaking changes, new APIs and
     `comment/widgets/views/comments.php` (`require`s the core file) breaks since that view is
     removed - override the `Comments` widget or the new `CommentSection.vue` component
     instead.
-  - New interop pattern for wrapping deep jQuery form widgets inside a Vue island without
-    server-rendering per instance (see `docs/develop/ui-js-vuejs.md`):
-    `humhub\modules\comment\widgets\CommentFormShell` renders the comment form's
-    `RichTextField`/`UploadButton` markup ONCE, with every element id built from the literal
-    token `__VUEFORM__`; the client (`LegacyFormWrapper.vue`) clones the shell per form
-    instance (main form, an open reply form per comment, an edit form) by replacing the token
-    with a unique id before mounting.
+  - New reusable **`humhub\widgets\VueFormShell`** mechanism for wrapping deep jQuery form
+    widgets inside a Vue island without server-rendering per instance (see
+    `docs/develop/ui-js-vuejs-interop.md`, "Form-shell pattern"): the widget owns a bare
+    `ActiveForm` shell (`action => '#'`, CSRF disabled, `acknowledge => true`) and a `content`
+    closure supplies whatever fields the caller needs, with every element id built from the
+    literal token `__VUEFORM__` (via the `VueFormShell::id()` helper); the client
+    (`LegacyFormWrapper.vue`) clones the shell per form instance (main form, an open reply form
+    per comment, an edit form) by replacing the token with a unique id before mounting. The
+    comment form's `humhub\modules\comment\widgets\CommentFormShell` is the reference
+    composition (`RichTextField`/`UploadButton` markup) on top of this mechanism; its upload
+    field now carries the generic `vueform-upload` class (the former comment-only
+    `main_comment_upload` class was dropped - no known theme/module CSS targeted it) that
+    `LegacyFormWrapper.vue`'s upload lookup queries.
   - `CommentJsonService`'s serialized comment shape (introduced earlier in this same
     Unreleased cycle, never part of a stable release) replaced the `messageOutput` HTML
     envelope string with raw markdown (`message`) plus an explicitly-typed

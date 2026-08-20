@@ -47,22 +47,34 @@ It is a generic core interop component — any module's island can embed it wher
 
 `v-additions` boots the legacy richtext DISPLAY addition on the reconstructed envelope div — and any other legacy enhancer targeting the subtree (`timeago`, mentions, oembed lookup, ...) — on mount, and re-runs it on update so a re-rendered message (e.g. after editing a comment) is picked up again; that addition reads the envelope's text content and `data-*` attributes exactly as it always has; only the server-side step that used to pre-build the whole string is gone. The component is deliberately classless beyond what `renderOptions`/`oembeds` dictate: the caller owns layout and styling of the rendered output.
 
-## Form-shell pattern: CommentFormShell
+## Form-shell pattern: VueFormShell
 
-Some server-rendered widgets are too deep to rewrite in Vue in one pass (rich text editors, file uploaders with drag/drop, progress and previews). The comment form is the reference example for wrapping one inside an island without server-rendering a form per instance:
+Some server-rendered widgets are too deep to rewrite in Vue in one pass (rich text editors, file uploaders with drag/drop, progress and previews). `humhub\widgets\VueFormShell` is the reusable core mechanism for wrapping one inside an island without server-rendering a form per instance:
 
-1. A PHP widget (`humhub\modules\comment\widgets\CommentFormShell`) renders the widget markup exactly as before, but every element id it declares or references (`id`, `for`, and CSS-id-selector fragments embedded in `data-*` attribute values) is built from one literal placeholder token instead of a real id.
-2. That HTML string travels once in the island's initial props (e.g. `formShellHtml`) — the shell is rendered once, not once per form instance, even though a page can host many instances of it at once (the main comment form, one open reply form per commented-on entry, an edit form).
+1. `VueFormShell::widget(['content' => function (ActiveForm $form) { ... }])` renders a bare `ActiveForm` shell: the widget owns `ActiveForm::begin()`/`::end()` and its own conventions (`action => '#'`, CSRF input disabled, `acknowledge => true`), while the `content` closure renders whatever fields the caller needs, using the `ActiveForm` instance the widget already began. Every id the closure declares or references (`id`, `for`, and CSS-id-selector fragments embedded in `data-*` attribute values) is built from one literal placeholder token via the `VueFormShell::id('suffix')` static helper, instead of a real id.
+2. That HTML string travels once in the island's initial props (e.g. `formShellHtml`) — the shell is rendered once, not once per form instance, even though a page can host many instances of it at once (a create form, one open reply form per commented-on entry, an edit form).
+
+```php
+echo VueFormShell::widget([
+    'content' => function (ActiveForm $form) use ($model) {
+        return $form->field($model, 'title', [
+            'options' => ['id' => VueFormShell::id('title-group')],
+        ])->textInput(['id' => VueFormShell::id('title')])->label(false);
+    },
+]);
+```
+
+The comment form (`humhub\modules\comment\widgets\CommentFormShell`, backed by `comment/widgets/views/commentFormShell.php`) is the reference composition on top of this mechanism: it wraps `VueFormShell::widget()`'s output in its own comment-specific markup (a drop-zone container, `<hr>`) and supplies a `content` closure rendering the richtext editor + file upload stack — everything comment-specific stays in that widget/view; `VueFormShell` itself knows nothing about comments.
 
 See [LegacyFormWrapper](#legacyformwrapper) below for how the client turns that one shell into as many independent, collision-free form instances as needed.
 
 ## LegacyFormWrapper
 
-`LegacyFormWrapper` (see [Components: core component set](ui-js-vuejs-components.md#core-component-set)) is the client half of the form-shell pattern: a small wrapper component that hosts a [`CommentFormShell`](#form-shell-pattern-commentformshell)-style server-rendered shell inside an island and exposes a small, clean API to the surrounding Vue component so it never has to touch jQuery/legacy widgets itself.
+`LegacyFormWrapper` (see [Components: core component set](ui-js-vuejs-components.md#core-component-set)) is the client half of the form-shell pattern: a small wrapper component that hosts a [`VueFormShell`](#form-shell-pattern-vueformshell)-rendered server shell inside an island and exposes a small, clean API to the surrounding Vue component so it never has to touch jQuery/legacy widgets itself.
 
-**`__VUEFORM__` token contract.** The server-rendered shell carries the literal token `__VUEFORM__` everywhere an id is declared *or* referenced (`id`, `for`, and any `data-*` attribute value that embeds an id, including CSS-id-selector fragments like `#comment_create_form___VUEFORM__`) — not just in `id="..."` attributes themselves. `LegacyFormWrapper` binds the shell with `v-html` plus `v-additions` (booting the legacy widgets the same way any other injected fragment does), after replacing every occurrence of the token with a unique id from a module-scope counter (not `Math.random()`, so `vue.build`'s output stays deterministic) — so the SAME shell can be cloned as many times on the page as needed (a create form, several open reply forms, an edit form) without id collisions.
+**`__VUEFORM__` token contract.** The server-rendered shell carries the literal token `__VUEFORM__` (`VueFormShell::TOKEN` server-side) everywhere an id is declared *or* referenced (`id`, `for`, and any `data-*` attribute value that embeds an id, including CSS-id-selector fragments like `#comment_create_form___VUEFORM__`) — not just in `id="..."` attributes themselves. `LegacyFormWrapper` binds the shell with `v-html` plus `v-additions` (booting the legacy widgets the same way any other injected fragment does), after replacing every occurrence of the token with a unique id from a module-scope counter (not `Math.random()`, so `vue.build`'s output stays deterministic) — so the SAME shell can be cloned as many times on the page as needed (a create form, several open reply forms, an edit form) without id collisions. The literal token is a mirrored pair across languages: `VueFormShell::TOKEN` (PHP) and `LegacyFormWrapper.vue`'s own `FORM_TOKEN` constant must always agree.
 
-**Widget-instance APIs used.** The wrapper exposes a small, typed API (`getValue()`/`setValue()`/`clear()`/`focus()`/`getFileGuids()`) that reads the booted widget instances directly off their own cached jQuery data (`Component.prototype.init`'s `this.$.data(this.static('component'), this)` key) instead of exporting jQuery/legacy globals to the rest of the Vue tree.
+**Widget-instance APIs used.** The wrapper exposes a small, typed API (`getValue()`/`setValue()`/`clear()`/`focus()`/`getFileGuids()`) that reads the booted widget instances directly off their own cached jQuery data (`Component.prototype.init`'s `this.$.data(this.static('component'), this)` key) instead of exporting jQuery/legacy globals to the rest of the Vue tree. The upload widget is located via the generic `.vueform-upload` convention class — any `VueFormShell`-based shell's upload field should carry it (see the comment shell's `UploadButton` options for the reference usage) — not a module-specific class.
 
 This keeps the deep interactive editing surface exactly as-is while the surrounding list/state/mutation logic is plain, testable Vue.
 

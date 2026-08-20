@@ -7,11 +7,13 @@
  * Hosts a server-rendered legacy widget SHELL (e.g. a rich text editor +
  * upload widget + file preview markup) inside a Vue island and exposes a
  * small, clean API to the surrounding Vue component so it never has to
- * touch jQuery/legacy widgets itself. Generic core interop component — the
- * comment form (`CommentForm.vue`, backed by
- * `comment/widgets/views/commentFormShell.php`) is the reference consumer,
- * but the contract below applies to any module wrapping a deep, not-yet-Vue
- * legacy widget shell this way.
+ * touch jQuery/legacy widgets itself. Generic core interop component,
+ * pairing with the PHP-side `humhub\widgets\VueFormShell` widget that
+ * renders the server half of the contract below — the comment form
+ * (`CommentForm.vue`, backed by
+ * `comment/widgets/views/commentFormShell.php`, itself built on
+ * `VueFormShell`) is the reference consumer, but both halves are generic:
+ * any module can wrap a deep, not-yet-Vue legacy widget shell this way.
  *
  * ## Unique-id contract
  *
@@ -52,9 +54,9 @@
  * NOT `.humhub-ui-richtext`: browser-verified, that class only lands on the
  * INNER ProseMirror contenteditable, while the instance is cached on the
  * widget root carrying the data-ui-widget attribute) and upload
- * (`UPLOAD_SELECTOR` below — today `.main_comment_upload`, the comment
- * module's own upload dropzone class; a future non-comment consumer needs
- * its own selector here) root nodes — looser coupling than
+ * (`UPLOAD_SELECTOR` below — the generic `.vueform-upload` convention class
+ * any `VueFormShell`-based shell's upload field carries, not a
+ * comment-specific one) root nodes — looser coupling than
  * `require('ui.widget')`/`require('file')`.
  *
  * ## Editor API relied on (`ui.richtext.prosemirror.RichTextEditor`)
@@ -82,7 +84,8 @@
  * ## Unsaved-changes guard (see CommentForm.vue's own docblock section of
  * the same name for the full root-cause writeup, comment-consumer-specific)
  *
- * `ActiveForm::begin(['acknowledge' => true])` (see commentFormShell.php,
+ * `ActiveForm::begin(['acknowledge' => true])` (baked into every
+ * `VueFormShell`-rendered form by default — see `commentFormShell.php`,
  * today's only consumer) sets `data-ui-addition="acknowledgeForm"` on the
  * shell's `<form>`, which
  * `humhub.client.js` boots into a GLOBAL `beforeunload`/`pjax:beforeSend`
@@ -111,10 +114,13 @@
  * orthogonal to this inner, non-island component.
  */
 
+// Mirrors humhub\widgets\VueFormShell::TOKEN (PHP) — keep both literals in sync.
 const FORM_TOKEN = '__VUEFORM__';
 const RICHTEXT_SELECTOR = '[data-ui-widget="ui.richtext.prosemirror.RichTextEditor"]';
 const RICHTEXT_COMPONENT_DATA = 'humhub-ui-richtexteditor';
-const UPLOAD_SELECTOR = '.main_comment_upload';
+// Generic convention class any VueFormShell-based shell's upload field carries — not
+// comment-specific (see the class docblock's "Widget interop" section above).
+const UPLOAD_SELECTOR = '.vueform-upload';
 const UPLOAD_COMPONENT_DATA = 'humhub-file-upload';
 
 let instanceCounter = 0;

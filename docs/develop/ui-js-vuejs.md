@@ -81,7 +81,7 @@ Consequence: **compiled artifacts are committed** (see [Build tooling](ui-js-vue
    the `modal`/`events` bridges (delete confirm, admin-delete, live updates via
    `humhub:modules:comment:live:NewComment`), and a form. The form is the interesting case:
    the richtext editor and file upload are deep jQuery widgets, not rewritten in Vue - see
-   [Legacy interop: the form-shell pattern](ui-js-vuejs-interop.md#form-shell-pattern-commentformshell)
+   [Legacy interop: the form-shell pattern](ui-js-vuejs-interop.md#form-shell-pattern-vueformshell)
    for the pattern that makes them work inside an island
    without server-rendering a form per instance. `CommentLink` (the "Comment (n)" link/count
    badge in a wall entry) intentionally stays a plain PHP widget with a tiny

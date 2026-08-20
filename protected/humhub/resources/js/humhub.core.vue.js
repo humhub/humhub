@@ -84,7 +84,7 @@
   const FORM_TOKEN = "__VUEFORM__";
   const RICHTEXT_SELECTOR = '[data-ui-widget="ui.richtext.prosemirror.RichTextEditor"]';
   const RICHTEXT_COMPONENT_DATA = "humhub-ui-richtexteditor";
-  const UPLOAD_SELECTOR = ".main_comment_upload";
+  const UPLOAD_SELECTOR = ".vueform-upload";
   const UPLOAD_COMPONENT_DATA = "humhub-file-upload";
   let instanceCounter = 0;
   const _sfc_main$2 = {
