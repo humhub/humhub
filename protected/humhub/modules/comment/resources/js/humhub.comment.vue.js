@@ -15,7 +15,7 @@
   const _sfc_main$4 = {
     props: {
       // Full serialized comment (see CommentJsonService::serialize()) - added purely so
-      // ExtensionSlot's context can expose it; the core items above keep reading their
+      // this menu's `context` can expose it; the core entries below keep reading their
       // own discrete props unchanged, to avoid churning them.
       comment: { type: Object, required: true },
       permalink: { type: String, required: true },
@@ -34,11 +34,25 @@
       permalinkTitle() {
         return vue.i18n.t("CommentModule.base", "<strong>Permalink</strong> to this comment");
       },
-      editLabel() {
-        return vue.i18n.t("CommentModule.base", "Edit");
-      },
-      deleteLabel() {
-        return vue.i18n.t("CommentModule.base", "Delete");
+      // This menu's built-in entries (see the class docblock, "comment.controls menu
+      // entries") - `condition`/`onClick` ignore the `context` argument DropdownMenu passes
+      // them since this component already has `this.canEdit`/`this.onEdit` etc. directly;
+      // only a module's own registered entry needs to read `context.comment`.
+      entries() {
+        return [
+          {
+            id: "edit",
+            label: vue.i18n.t("CommentModule.base", "Edit"),
+            condition: () => this.canEdit,
+            onClick: () => this.onEdit()
+          },
+          {
+            id: "delete",
+            label: vue.i18n.t("CommentModule.base", "Delete"),
+            condition: () => this.canDelete,
+            onClick: () => this.onDelete()
+          }
+        ];
       }
     },
     methods: {
@@ -51,26 +65,28 @@
     }
   };
   const _hoisted_1$3 = ["data-content-permalink", "data-content-permalink-title"];
-  const _hoisted_2$3 = { key: 0 };
-  const _hoisted_3$3 = { key: 1 };
   function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_ExtensionSlot = vue$1.resolveComponent("ExtensionSlot");
     const _component_DropdownMenu = vue$1.resolveComponent("DropdownMenu");
     return vue$1.openBlock(), vue$1.createElementBlock(
       vue$1.Fragment,
       null,
       [
-        _cache[2] || (_cache[2] = vue$1.createElementVNode(
+        _cache[0] || (_cache[0] = vue$1.createElementVNode(
           "div",
           { class: "comment-entry-loader float-end" },
           null,
           -1
           /* CACHED */
         )),
-        vue$1.createVNode(_component_DropdownMenu, { "toggle-aria-label": $options.toggleMenuLabel }, {
+        vue$1.createVNode(_component_DropdownMenu, {
+          "toggle-aria-label": $options.toggleMenuLabel,
+          "menu-id": "comment.controls",
+          entries: $options.entries,
+          context: { comment: $props.comment }
+        }, {
           default: vue$1.withCtx(() => [
             vue$1.createElementVNode("li", null, [
-              vue$1.createCommentVNode('\n                Plain anchor reusing the exact legacy attributes\n                (data-action-click="content.permalink" + the two\n                data-content-permalink* values) instead of a\n                Vue-owned click handler: humhub.action.js binds the\n                [data-action-click] delegate on `document` itself\n                (see bindAction(document, \'click\', ...) in\n                humhub.action.js), so it already fires for anchors\n                injected anywhere in the DOM, Vue-rendered islands\n                included, with zero extra wiring. The `content`\n                module (ui.content) is always loaded page-wide\n                wherever comments can appear, so this "just works".\n            '),
+              vue$1.createCommentVNode('\n                Plain anchor reusing the exact legacy attributes\n                (data-action-click="content.permalink" + the two\n                data-content-permalink* values) instead of a\n                Vue-owned click handler: humhub.action.js binds the\n                [data-action-click] delegate on `document` itself\n                (see bindAction(document, \'click\', ...) in\n                humhub.action.js), so it already fires for anchors\n                injected anywhere in the DOM, Vue-rendered islands\n                included, with zero extra wiring. The `content`\n                module (ui.content) is always loaded page-wide\n                wherever comments can appear, so this "just works".\n                Not a `menu-id`/`entries` entry: that descriptor shape has\n                no room for these legacy data attributes - see\n                DropdownMenu.vue\'s own "Slot contract" docblock note.\n            '),
               vue$1.createElementVNode("a", {
                 href: "#",
                 class: "dropdown-item",
@@ -78,41 +94,11 @@
                 "data-content-permalink": $props.permalink,
                 "data-content-permalink-title": $options.permalinkTitle
               }, vue$1.toDisplayString($options.permalinkLabel), 9, _hoisted_1$3)
-            ]),
-            $props.canEdit ? (vue$1.openBlock(), vue$1.createElementBlock("li", _hoisted_2$3, [
-              vue$1.createElementVNode(
-                "a",
-                {
-                  href: "#",
-                  class: "dropdown-item",
-                  onClick: _cache[0] || (_cache[0] = vue$1.withModifiers((...args) => $options.onEdit && $options.onEdit(...args), ["prevent"]))
-                },
-                vue$1.toDisplayString($options.editLabel),
-                1
-                /* TEXT */
-              )
-            ])) : vue$1.createCommentVNode("v-if", true),
-            $props.canDelete ? (vue$1.openBlock(), vue$1.createElementBlock("li", _hoisted_3$3, [
-              vue$1.createElementVNode(
-                "a",
-                {
-                  href: "#",
-                  class: "dropdown-item",
-                  onClick: _cache[1] || (_cache[1] = vue$1.withModifiers((...args) => $options.onDelete && $options.onDelete(...args), ["prevent"]))
-                },
-                vue$1.toDisplayString($options.deleteLabel),
-                1
-                /* TEXT */
-              )
-            ])) : vue$1.createCommentVNode("v-if", true),
-            vue$1.createVNode(_component_ExtensionSlot, {
-              name: "comment.controls",
-              context: { comment: $props.comment }
-            }, null, 8, ["context"])
+            ])
           ]),
           _: 1
           /* STABLE */
-        }, 8, ["toggle-aria-label"])
+        }, 8, ["toggle-aria-label", "entries", "context"])
       ],
       64
       /* STABLE_FRAGMENT */

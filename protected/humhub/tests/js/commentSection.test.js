@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import CommentSection from '../../modules/comment/vue/CommentSection.vue';
 import CommentForm from '../../modules/comment/vue/components/CommentForm.vue';
@@ -815,31 +815,6 @@ describe('CommentSection', () => {
             return mount(CommentSection, { ...options, props: mountProps });
         };
 
-        it('renders a probe component registered for comment.controls, passing the comment via context', () => {
-            const comment = makeComment();
-            const probeDef = {
-                props: { comment: { type: Object, required: true } },
-                render() {
-                    return Vue.h('li', [
-                        Vue.h('a', { class: 'dropdown-item probe-controls-item' }, 'Probe #' + this.comment.id),
-                    ]);
-                },
-            };
-            vueModule.registerSlotComponent('comment.controls', 'ProbeCommentControlsItem');
-
-            const wrapper = mountWithProbe('ProbeCommentControlsItem', probeDef, {
-                contentId: 42,
-                initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 },
-            });
-
-            const probe = wrapper.find('.probe-controls-item');
-            expect(probe.exists()).toBe(true);
-            expect(probe.text()).toBe('Probe #' + comment.id);
-            // Rendered inside the same <DropdownMenu> as the core edit/delete items, after them.
-            const items = wrapper.findAll('.dropdown-menu > li');
-            expect(items[items.length - 1].find('.probe-controls-item').exists()).toBe(true);
-        });
-
         it('renders a probe component registered for comment.links, at the end of .wall-entry-controls', () => {
             const comment = makeComment();
             const probeDef = {
@@ -883,6 +858,87 @@ describe('CommentSection', () => {
             });
 
             expect(wrapper.find('.probe-extensions-item').text()).toBe('reported');
+        });
+    });
+
+    // `comment.controls` is a data-driven DropdownMenu menu (registerMenuEntry()/
+    // removeMenuEntry()), not an ExtensionSlot — see CommentControls.vue's own docblock and
+    // docs/develop/ui-js-vuejs-extensions.md, "Menu entries". Kept as its own describe block,
+    // deliberately placed LAST in this file: `removeMenuEntry('comment.controls', 'edit')`
+    // below is permanent for the remainder of this file's module registry (there is no
+    // "un-remove", see humhub.vue.js's own docblock) — any test relying on the built-in Edit
+    // entry must run before it.
+    describe('menu entries (comment.controls)', () => {
+        // registerMenuEntry() has no "unregister" — only removeMenuEntry() can make an id stop
+        // rendering, and that removal is itself permanent (see humhub.vue.js's docblock). Every
+        // entry a test below registers on the shared 'comment.controls' id is therefore
+        // explicitly removed again at the end of THAT SAME test (not a blanket afterEach for
+        // every id used in this block — removeMenuEntry-ing an id before a later test
+        // registers it would permanently suppress that later test's own entry too, since
+        // removal wins regardless of order), so it does not leak into a later test's mount.
+        it('renders a registered component entry, passing the comment via context', () => {
+            const comment = makeComment();
+            const probeDef = {
+                props: { context: { type: Object, required: true } },
+                render() {
+                    return Vue.h('a', { class: 'dropdown-item probe-controls-item', href: '#' }, 'Probe #' + this.context.comment.id);
+                },
+            };
+            vueModule.register('ProbeCommentControlsComponent', probeDef);
+            vueModule.registerMenuEntry('comment.controls', { id: 'probeComponentEntry', component: 'ProbeCommentControlsComponent' });
+
+            const options = mountOptions();
+            options.global.components.ProbeCommentControlsComponent = probeDef;
+
+            const wrapper = mount(CommentSection, {
+                ...options,
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 } },
+            });
+
+            const probe = wrapper.find('.probe-controls-item');
+            expect(probe.exists()).toBe(true);
+            expect(probe.text()).toBe('Probe #' + comment.id);
+            // Rendered inside the same <DropdownMenu> as the core edit/delete items, after them
+            // (default sortOrder 1000 on both sides ties in registration/prop order — built-ins
+            // first, see DropdownMenu.vue's resolution pipeline docblock).
+            const items = wrapper.findAll('.dropdown-menu > li');
+            expect(items[items.length - 1].find('.probe-controls-item').exists()).toBe(true);
+
+            vueModule.removeMenuEntry('comment.controls', 'probeComponentEntry'); // see describe()'s own note
+        });
+
+        it('positions a registered entry among the built-in edit/delete items according to sortOrder', () => {
+            const comment = makeComment({ canEdit: true, canDelete: true });
+            vueModule.registerMenuEntry('comment.controls', {
+                id: 'probeSortOrderEntry',
+                label: 'Probe Sort Order',
+                sortOrder: 1, // ahead of edit/delete, which both default to sortOrder 1000
+            });
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 } },
+            });
+
+            const items = wrapper.findAll('.dropdown-menu > li').map((li) => li.text());
+            expect(items).toEqual(['Permalink', 'Probe Sort Order', 'Edit', 'Delete']);
+
+            vueModule.removeMenuEntry('comment.controls', 'probeSortOrderEntry'); // see describe()'s own note
+        });
+
+        it('removeMenuEntry(\'comment.controls\', \'edit\') hides the built-in Edit entry', () => {
+            const comment = makeComment({ canEdit: true, canDelete: true });
+            vueModule.removeMenuEntry('comment.controls', 'edit');
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 } },
+            });
+
+            const items = wrapper.findAll('.dropdown-item').map((item) => item.text());
+            expect(items).not.toContain('Edit');
+            // Delete (a different id) is unaffected by removing 'edit'.
+            expect(items).toContain('Delete');
         });
     });
 });

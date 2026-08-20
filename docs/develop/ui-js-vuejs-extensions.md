@@ -1,6 +1,6 @@
 # Extending Vue.js Islands
 
-> Part of the [Vue.js integration](ui-js-vuejs.md) documentation. This chapter covers how a module extends another module's island from the outside: extension slots, the serializer extension event pattern, domain events on the bus, and the (planned) component override mechanism. For motivation, goals, constraints and the overall architecture, see the [overview](ui-js-vuejs.md).
+> Part of the [Vue.js integration](ui-js-vuejs.md) documentation. This chapter covers how a module extends another module's island from the outside: extension slots, menu entries, the serializer extension event pattern, domain events on the bus, and the (planned) component override mechanism. For motivation, goals, constraints and the overall architecture, see the [overview](ui-js-vuejs.md).
 
 ## Extension slots
 
@@ -20,9 +20,77 @@ register('ReactionLink', ReactionLink);
 registerSlotComponent('comment.links', 'ReactionLink', { sortOrder: 150 });
 ```
 
-`ExtensionSlot` renders every component registered for its name (via `registerSlotComponent(slotName, componentName, {sortOrder})`), passing `context` down as props to each. Entries render in `sortOrder` order (default `100`), then registration order for ties. Slot names follow the same `<module>.<region>` convention as the two the comment island exposes today: `comment.controls` (inside the entry's `⋮` dropdown — a registered component owns its own `<li><a class="dropdown-item">…` markup, the same contract the dropdown's core items follow) and `comment.links` (appended after the core Reply/Like links in `.wall-entry-controls`).
+`ExtensionSlot` renders every component registered for its name (via `registerSlotComponent(slotName, componentName, {sortOrder})`), passing `context` down as props to each. Entries render in `sortOrder` order (default `100`), then registration order for ties. Slot names follow the same `<module>.<region>` convention already used elsewhere: `comment.links`, appended after the core Reply/Like links in `.wall-entry-controls`.
 
 **Registration order is unconstrained** — `registerSlotComponent()` does not require `componentName` to be registered yet, and `register()` does not require any slot referencing it to exist yet. Whichever half arrives second, `ExtensionSlot` picks it up reactively (no remount). A slot with nothing registered — or nothing *currently registered* — renders nothing: no placeholder, no warning; modules stay entirely optional.
+
+## Menu entries
+
+The array-of-entries counterpart to the free-form slot above, modeled on the server-side `humhub\modules\ui\menu\widgets\Menu` API module devs already know (`addEntry()`/`removeEntry()`, entries with an `id` and a `sortOrder`). `DropdownMenu` (see [Components: core component set](ui-js-vuejs-components.md#core-component-set)) grows a `menuId`/`entries` mode: a menu identifies itself with a `menuId`, contributes its own built-in items as `entries`, and other modules add, override or remove items by `id` through the registry — instead of forking the host's markup, the same relationship `ExtensionSlot` has to a slot, but for an *ordered, removable list of items* rather than a free-form fragment.
+
+```html
+<!-- inside CommentControls.vue -->
+<DropdownMenu :toggle-aria-label="label" menu-id="comment.controls" :entries="entries" :context="{ comment }" />
+```
+
+```js
+// another module's own vue/index.js
+import { registerMenuEntry, removeMenuEntry } from '@humhub/vue';
+
+registerMenuEntry('comment.controls', {
+    id: 'report',
+    label: 'Report',
+    icon: 'flag',
+    sortOrder: 150,
+    condition: (context) => !context.comment.extensions.reportcontent?.reported,
+    onClick: (context) => reportComment(context.comment.id),
+});
+
+// removeMenuEntry('comment.controls', 'edit'); // suppresses a built-in or another module's entry by id
+```
+
+**Entry shape** (the second argument to `registerMenuEntry()`, and what a menu's own `entries` prop holds):
+
+| Field | Type | Required | Notes |
+|---|---|---|---|
+| `id` | `string` | yes | Unique per menu. Registering the same `(menuId, id)` again **replaces** the existing entry in place — the supported override mechanism (unlike `registerSlotComponent()`'s "first registration wins"). |
+| `label` | `string` \| `(context) => string` | unless `component` given | Static or context-derived text. |
+| `icon` | `string` | no | An `Icon::get()`-style icon name (e.g. `'pencil'`), rendered as `<i class="fa fa-<icon>">`. |
+| `sortOrder` | `number` | no (default `1000`) | Ascending, like PHP menu entries. |
+| `condition` | `(context) => boolean` | no | Omit to always show. |
+| `onClick` | `(context) => void` | no | Ignored when `component` is set. |
+| `component` | `string` | unless `label` given | A name registered via `register()` — an escape hatch for fully custom rendering; the component receives a single `context` prop (not spread, unlike `ExtensionSlot`'s `v-bind`). When set, `label`/`icon`/`onClick` are ignored. |
+
+**Resolution** (recomputed reactively whenever anything registers/removes, so a currently-mounted menu updates without remounting):
+
+1. Start from the menu's own `entries` (built-ins, in their given order), then append registry entries for `menuId` that don't share an `id` with a built-in.
+2. A registry entry whose `id` matches a built-in's `id` **overrides** it, in the built-in's own position (not moved to the end).
+3. Drop any entry — built-in or registry — whose `id` was passed to `removeMenuEntry(menuId, id)`.
+4. Drop entries whose `condition(context)` is falsy.
+5. Drop `component` entries whose component is not (yet) registered (same "stay optional" rule `ExtensionSlot` follows).
+6. Sort by `sortOrder` ascending; entries sharing a `sortOrder` keep their step-1/2 order — **built-ins before registry entries**.
+
+**Removals are permanent and win over later registrations of the same id** — there is no "un-remove". A module that decides an id should never appear again does not have to race load order against a module that might (re-)register it afterwards, in either direction. A module that needs a *toggleable* presence should use `condition` on its own entry instead of removing and re-registering.
+
+### `comment.controls`
+
+`CommentControls.vue` (the comment entry's `⋮` dropdown) exposes this menu id. Built-in entries:
+
+| id | Shown while | Behavior |
+|---|---|---|
+| `edit` | `canEdit` | Opens inline edit. |
+| `delete` | `canDelete` | Deletes the comment; if `canAdminDelete` is also set, opens the admin-delete reason modal instead of the plain confirm — one entry covers both, since the server never reports `canAdminDelete` without `canDelete`. |
+
+The permalink item is **not** part of this menu — it carries legacy `data-action-click`/`data-content-permalink*` attributes for a delegated document click handler rather than a Vue click handler, which the entry descriptor shape has no room for; it stays a hand-rendered `<li>` in `CommentControls.vue`'s default slot, rendered ahead of the resolved `comment.controls` entries.
+
+### Menu entries vs. extension slots
+
+Both let a module hook into a host component without forking its template, but they solve different problems:
+
+- **Menu entries** (`DropdownMenu`'s `menuId`/`entries`) — a *data-driven, orderable, removable list of items with a stable identity per item*: a dropdown/context menu, a toolbar. Reach for this when the extension point is "one more action alongside these other actions" — a module can inject, override, or remove a specific item by id.
+- **Extension slots** (`ExtensionSlot`) — a *free-form UI fragment* with no inherent structure beyond "render here": a link in a row of links, a badge, a panel. There is no override/removal by id — only "is this component currently registered for this slot".
+
+`comment.controls` (a menu — Edit/Delete plus whatever a module injects) and `comment.links` (a slot — Reply/Like plus whatever a module appends) on the very same comment entry illustrate the split: the `⋮` menu is a list of discrete actions a module might want to reorder, replace or suppress; the inline links row is just "append your own link here".
 
 ## Serializer extension events
 
@@ -70,8 +138,8 @@ Beyond named extension points, islands can react to domain-specific occurrences 
 
 ## Migrating a legacy widget-stack extension
 
-`humhub/reportcontent` is the real, documented case this pattern replaces: it used to hook `humhub\modules\comment\widgets\CommentControls::EVENT_INIT` to inject a "Report" entry into each comment's `⋮` menu — a PHP widget stack extension point. Since comment entries no longer render through a per-comment PHP widget pass (`CommentEntry.vue` renders straight from JSON), that hook stopped firing (see the `Unreleased` section of [the module migration guide](module-migrate.md) for the full breaking-change record). Migrating a module like it to the Vue island means combining the two mechanisms above:
+`humhub/reportcontent` is the real, documented case this pattern replaces: it used to hook `humhub\modules\comment\widgets\CommentControls::EVENT_INIT` to inject a "Report" entry into each comment's `⋮` menu — a PHP widget stack extension point. Since comment entries no longer render through a per-comment PHP widget pass (`CommentEntry.vue` renders straight from JSON), that hook stopped firing (see the `Unreleased` section of [the module migration guide](module-migrate.md) for the full breaking-change record). Migrating a module like it to the Vue island means combining [menu entries](#menu-entries) above with a serializer event:
 
-1. Ship a `ReportLink.vue`-shaped component and register it into the menu's slot: `registerSlotComponent('comment.controls', 'ReportLink', { sortOrder: 150 })` (see [Extension slots](#extension-slots) above) — this alone gets the module's own `<li><a class="dropdown-item">` entry rendering again.
-2. If the component needs data beyond what `context` already carries (here: whether the comment is already reported), attach `CommentJsonService::EVENT_SERIALIZE_COMMENTS` in `config.php` and add it under a namespaced key via `$event->addData(...)` (see [Serializer extension events](#serializer-extension-events) above).
-3. Read that data back out of `context.comment.extensions.reportcontent` inside the component — no other change to the module's controller or business logic is needed; only the injection point moves from a PHP widget-stack event to a slot registration plus (optionally) a serializer event.
+1. Register a `comment.controls` menu entry: `registerMenuEntry('comment.controls', { id: 'report', label: 'Report', sortOrder: 150, onClick: (context) => reportComment(context.comment.id) })` (see [Menu entries](#menu-entries) above) — this alone gets the module's own item rendering again, in the right place. A plain `label`/`onClick` entry is enough here; reach for the `component` escape hatch only if the item needs markup the descriptor can't express (an icon plus a "(reported)" suffix, say, still fits `label` as a function of `context`).
+2. If the item needs data beyond what `context` already carries (here: whether the comment is already reported), attach `CommentJsonService::EVENT_SERIALIZE_COMMENTS` in `config.php` and add it under a namespaced key via `$event->addData(...)` (see [Serializer extension events](#serializer-extension-events) below).
+3. Read that data back out of `context.comment.extensions.reportcontent` inside the entry's `label`/`condition`/`onClick` (or a `component` entry's own props) — no other change to the module's controller or business logic is needed; only the injection point moves from a PHP widget-stack event to a menu-entry registration plus (optionally) a serializer event.

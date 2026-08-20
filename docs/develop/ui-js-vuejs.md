@@ -1,6 +1,6 @@
 # Vue.js Integration (Concept)
 
-> **Status: concept — Phase 1 and 2 implemented** (Vue runtime, `humhub.vue` registry/mounter, build tooling, `VueComponent` widget, LikeButton pilot; comment section island with legacy-widget form interop and live updates; extension slots, wired into the comment island's `comment.controls`/`comment.links`). Later phases (base component library, dynamic imports, CI enforcement) are still design-level. This document defines the target architecture for integrating Vue.js into HumHub as an island framework on top of the existing JavaScript layer ([overview](ui-js-overview.md)).
+> **Status: concept — Phase 1 and 2 implemented** (Vue runtime, `humhub.vue` registry/mounter, build tooling, `VueComponent` widget, LikeButton pilot; comment section island with legacy-widget form interop and live updates; extension slots and menu entries, wired into the comment island's `comment.links` slot and `comment.controls` menu respectively). Later phases (base component library, dynamic imports, CI enforcement) are still design-level. This document defines the target architecture for integrating Vue.js into HumHub as an island framework on top of the existing JavaScript layer ([overview](ui-js-overview.md)).
 
 ## Chapters
 
@@ -8,7 +8,7 @@ This document covers motivation, goals, constraints and the overall architecture
 
 - [Components](ui-js-vuejs-components.md) — authoring and using components: module file layout, the core component set, the registry, mounting, the `VueComponent` PHP widget, and the composable bridge into existing platform services.
 - [Build tooling](ui-js-vuejs-build.md) — `grunt build-vue`/`watch`/`minify`, the committed-artifact contract, development mode, and the vitest test infrastructure.
-- [Extending islands](ui-js-vuejs-extensions.md) — extension slots, the serializer extension event pattern, domain events, and migrating a legacy widget-stack extension.
+- [Extending islands](ui-js-vuejs-extensions.md) — extension slots, menu entries, the serializer extension event pattern, domain events, and migrating a legacy widget-stack extension.
 - [Legacy interop](ui-js-vuejs-interop.md) — `v-additions`, `RichTextOutput`, `LegacyFormWrapper`, the form-shell pattern, and other patterns for bridging into pre-existing jQuery widgets.
 
 ## Motivation
