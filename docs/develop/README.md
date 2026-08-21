@@ -64,6 +64,7 @@ Widgets, menus, theming, and the HumHub JavaScript layer.
 - [Vue.js extensions](ui-js-vuejs-extensions.md) — extension slots, serializer events, domain events
 - [Vue.js legacy interop](ui-js-vuejs-interop.md) — v-additions, RichTextOutput, LegacyFormWrapper, form shells
 - [Vue.js form suite](ui-js-vuejs-forms.md) — HumHubForm, native field components, SubmitButton, error contract
+- [Vue.js status & roadmap](ui-js-vuejs-roadmap.md) — current state, REST API convergence plan, backlog
 
 ## Accessibility (WCAG)
 

@@ -11,6 +11,7 @@ This document covers motivation, goals, constraints and the overall architecture
 - [Extending islands](ui-js-vuejs-extensions.md) — extension slots, menu entries, the serializer extension event pattern, domain events, and migrating a legacy widget-stack extension.
 - [Legacy interop](ui-js-vuejs-interop.md) — `v-additions`, `RichTextOutput`, `LegacyFormWrapper`, the form-shell pattern, and other patterns for bridging into pre-existing jQuery widgets.
 - [Form suite](ui-js-vuejs-forms.md) — `HumHubForm`, native field components, `SubmitButton`, the Yii-parity markup/naming convention, the error contract, and `RichTextField` as a legacy-citizen field.
+- [Status & roadmap](ui-js-vuejs-roadmap.md) — where the initiative stands, the REST API convergence plan, and the backlog.
 
 ## Motivation
 
