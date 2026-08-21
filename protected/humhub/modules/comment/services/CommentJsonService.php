@@ -137,7 +137,14 @@ class CommentJsonService
             ),
             'prevCount' => $firstId !== null ? $listService->getSiblingsCount($firstId, CommentListService::LIST_DIR_PREV) : 0,
             'nextCount' => $lastId !== null ? $listService->getSiblingsCount($lastId, CommentListService::LIST_DIR_NEXT) : 0,
+            // `total` counts ALL comments of the content INCLUDING replies (it doubles as
+            // the comment-count badge, matching what the legacy widget counted) - `items`/
+            // `prevCount`/`nextCount` above cover ROOT comments only, so a root list can't
+            // derive its own "remaining" count from `total` without a thread with replies
+            // producing a phantom "show more" link. `rootTotal` is the root-only complement
+            // the client's root list uses instead - see CommentList.vue's own docblock.
             'total' => $listService->getCount(),
+            'rootTotal' => $listService->getRootCount(),
         ];
     }
 

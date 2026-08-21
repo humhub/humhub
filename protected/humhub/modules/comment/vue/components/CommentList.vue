@@ -60,10 +60,10 @@
  * still exceeded `items.length`, leaving a permanent, dead "Show next 0 comments" link.
  *
  * Fixed by:
- *  - Deriving `remainingNext` (gate AND label, one value) from `total - items.length -
+ *  - Deriving `remainingNext` (gate AND label, one value) from `rootTotal - items.length -
  *    remainingPrev` instead of trusting the server's per-request `nextCount` directly -
- *    `total` is kept correct by every mutation (CommentSection's `adjustTotal()`), so this
- *    can never desync the way two independently-updated fields could.
+ *    `rootTotal` is kept correct by every mutation (CommentSection's `adjustRootTotal()`),
+ *    so this can never desync the way two independently-updated fields could.
  *  - Tracking `lastCursorId` separately from `items`' tail: seeded from the initial window
  *    and updated ONLY by a real `loadNext()` response, never by `appendRoot()`/
  *    `replaceRoot()`. `loadNext()` always cursors from `lastCursorId`.
@@ -73,6 +73,18 @@
  *    `registerKnownId()` mechanism (see CommentSection's "Live updates" docblock section),
  *    with the genuinely new ones spliced in right before the first item newer than the
  *    cursor, preserving chronological order instead of appending past the tail again.
+ *
+ * ## Root-vs-all total ("phantom show-next-N-replies" fix)
+ *
+ * `remainingNext` originally keyed off `total` (the badge count, counting ALL comments of
+ * the content INCLUDING replies - see `CommentJsonService::serializeWindow()`'s own
+ * docblock note). `items`/`remainingPrev` here only ever cover ROOT comments, so on any
+ * thread with replies `total - items.length - remainingPrev` overcounted by exactly the
+ * reply count, rendering a permanently-dead "Show next N comments" link (N = reply count,
+ * since the "next" fetch from the true last root cursor legitimately returns nothing).
+ * Fixed by keying `remainingNext` off `rootTotal` (see CommentSection's own docblock,
+ * "Root-only remaining count") instead - a prop refreshed the same way `total` already was,
+ * via `adjustRootTotal()`.
  */
 import { client, getConfig, i18n, log, url } from '@humhub/vue';
 import CommentEntry from './CommentEntry.vue';
@@ -85,6 +97,7 @@ export default {
         bumpCommentRevision: { default: () => () => {} },
         pruneCommentRevision: { default: () => () => {} },
         adjustTotal: { default: () => () => {} },
+        adjustRootTotal: { default: () => () => {} },
         registerKnownId: { default: () => () => {} },
         isKnownId: { default: () => () => false },
     },
@@ -92,10 +105,16 @@ export default {
         contentId: { type: Number, required: true },
         comments: { type: Array, required: true },
         prevCount: { type: Number, required: true },
-        // Authoritative root-comment count (CommentSection's own `total`) - drives the
-        // `remainingNext` computed below instead of the server's per-request `nextCount`,
-        // see this component's own docblock, "Next-pagination gap fix".
+        // Badge count (CommentSection's own `total`, ALL comments including replies) - only
+        // used here to keep that badge in sync on a real fetch (see loadPrev()/loadNext()),
+        // NOT for `remainingNext` (see `rootTotal` below and this component's own docblock,
+        // "Root-vs-all total" section).
         total: { type: Number, required: true },
+        // Authoritative ROOT-comment count (CommentSection's own `rootTotal`) - drives the
+        // `remainingNext` computed below instead of the server's per-request `nextCount` or
+        // the all-comments `total`, see this component's own docblock, "Next-pagination gap
+        // fix" and "Root-vs-all total".
+        rootTotal: { type: Number, required: true },
         pageSize: { type: Number, default: 10 },
         canComment: { type: Boolean, default: false },
         formShellHtml: { type: String, default: null },
@@ -129,13 +148,15 @@ export default {
             return i18n.t('CommentModule.base', 'Show previous {count} comments', { count: this.remainingPrev });
         },
         // Single derived count (see this component's own docblock) instead of a second,
-        // independently-mutated `remainingNext` field: `total` already accounts for every
-        // create/delete/live mutation (CommentSection's `adjustTotal()`), so subtracting the
-        // hidden-before (`remainingPrev`) and loaded (`items.length`) counts always yields the
-        // true hidden-after count, with no separate bookkeeping that can drift out of sync with
-        // the "show more" gate.
+        // independently-mutated `remainingNext` field: `rootTotal` already accounts for
+        // every ROOT create/delete/live mutation (CommentSection's `adjustRootTotal()`), so
+        // subtracting the hidden-before (`remainingPrev`) and loaded (`items.length`) counts
+        // always yields the true hidden-after count, with no separate bookkeeping that can
+        // drift out of sync with the "show more" gate. Deliberately `rootTotal`, not `total`
+        // (all comments including replies) - see this component's own docblock, "Root-vs-all
+        // total".
         remainingNext() {
-            return Math.max(0, this.total - this.items.length - this.remainingPrev);
+            return Math.max(0, this.rootTotal - this.items.length - this.remainingPrev);
         },
         nextLabel() {
             return i18n.t('CommentModule.base', 'Show next {count} comments', { count: this.remainingNext });
@@ -194,6 +215,10 @@ export default {
                 this.items = [...response.comments, ...this.items];
                 this.remainingPrev = response.prevCount;
                 this.adjustTotal(response.total - this.total);
+                // Refreshes the ROOT-only counterpart the same way, falling back to
+                // `response.total` for a caller/fixture that predates `rootTotal` - see
+                // CommentSection's own docblock, "Root-only remaining count".
+                this.adjustRootTotal((response.rootTotal ?? response.total) - this.rootTotal);
             }).catch((e) => {
                 log.error(e, true);
             }).finally(() => {
@@ -233,6 +258,8 @@ export default {
                     this.lastCursorId = response.comments[response.comments.length - 1].id;
                 }
                 this.adjustTotal(response.total - this.total);
+                // See loadPrev()'s own comment above for the `?? response.total` fallback.
+                this.adjustRootTotal((response.rootTotal ?? response.total) - this.rootTotal);
             }).catch((e) => {
                 log.error(e, true);
             }).finally(() => {

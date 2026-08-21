@@ -297,6 +297,8 @@
       } },
       adjustTotal: { default: () => () => {
       } },
+      adjustRootTotal: { default: () => () => {
+      } },
       registerKnownId: { default: () => () => {
       } },
       isKnownId: { default: () => () => false }
@@ -500,6 +502,9 @@
             return;
           }
           this.adjustTotal(-(1 + (this.isNested ? 0 : this.childTotal)));
+          if (!this.isNested) {
+            this.adjustRootTotal(-1);
+          }
           this.$emit("entry-removed", this.comment.id);
         }).catch((e) => {
           vue.log.error(e, true);
@@ -868,6 +873,8 @@
       } },
       adjustTotal: { default: () => () => {
       } },
+      adjustRootTotal: { default: () => () => {
+      } },
       registerKnownId: { default: () => () => {
       } },
       isKnownId: { default: () => () => false }
@@ -876,10 +883,16 @@
       contentId: { type: Number, required: true },
       comments: { type: Array, required: true },
       prevCount: { type: Number, required: true },
-      // Authoritative root-comment count (CommentSection's own `total`) - drives the
-      // `remainingNext` computed below instead of the server's per-request `nextCount`,
-      // see this component's own docblock, "Next-pagination gap fix".
+      // Badge count (CommentSection's own `total`, ALL comments including replies) - only
+      // used here to keep that badge in sync on a real fetch (see loadPrev()/loadNext()),
+      // NOT for `remainingNext` (see `rootTotal` below and this component's own docblock,
+      // "Root-vs-all total" section).
       total: { type: Number, required: true },
+      // Authoritative ROOT-comment count (CommentSection's own `rootTotal`) - drives the
+      // `remainingNext` computed below instead of the server's per-request `nextCount` or
+      // the all-comments `total`, see this component's own docblock, "Next-pagination gap
+      // fix" and "Root-vs-all total".
+      rootTotal: { type: Number, required: true },
       pageSize: { type: Number, default: 10 },
       canComment: { type: Boolean, default: false },
       formShellHtml: { type: String, default: null },
@@ -913,13 +926,15 @@
         return vue.i18n.t("CommentModule.base", "Show previous {count} comments", { count: this.remainingPrev });
       },
       // Single derived count (see this component's own docblock) instead of a second,
-      // independently-mutated `remainingNext` field: `total` already accounts for every
-      // create/delete/live mutation (CommentSection's `adjustTotal()`), so subtracting the
-      // hidden-before (`remainingPrev`) and loaded (`items.length`) counts always yields the
-      // true hidden-after count, with no separate bookkeeping that can drift out of sync with
-      // the "show more" gate.
+      // independently-mutated `remainingNext` field: `rootTotal` already accounts for
+      // every ROOT create/delete/live mutation (CommentSection's `adjustRootTotal()`), so
+      // subtracting the hidden-before (`remainingPrev`) and loaded (`items.length`) counts
+      // always yields the true hidden-after count, with no separate bookkeeping that can
+      // drift out of sync with the "show more" gate. Deliberately `rootTotal`, not `total`
+      // (all comments including replies) - see this component's own docblock, "Root-vs-all
+      // total".
       remainingNext() {
-        return Math.max(0, this.total - this.items.length - this.remainingPrev);
+        return Math.max(0, this.rootTotal - this.items.length - this.remainingPrev);
       },
       nextLabel() {
         return vue.i18n.t("CommentModule.base", "Show next {count} comments", { count: this.remainingNext });
@@ -977,6 +992,7 @@
           this.items = [...response.comments, ...this.items];
           this.remainingPrev = response.prevCount;
           this.adjustTotal(response.total - this.total);
+          this.adjustRootTotal((response.rootTotal ?? response.total) - this.rootTotal);
         }).catch((e) => {
           vue.log.error(e, true);
         }).finally(() => {
@@ -1013,6 +1029,7 @@
             this.lastCursorId = response.comments[response.comments.length - 1].id;
           }
           this.adjustTotal(response.total - this.total);
+          this.adjustRootTotal((response.rootTotal ?? response.total) - this.rootTotal);
         }).catch((e) => {
           vue.log.error(e, true);
         }).finally(() => {
@@ -1130,7 +1147,7 @@
     components: { CommentList, CommentForm },
     props: {
       contentId: { type: Number, required: true },
-      // serializeWindow() payload: {comments, prevCount, nextCount, total}
+      // serializeWindow() payload: {comments, prevCount, nextCount, total, rootTotal}
       initial: { type: Object, default: null },
       canComment: { type: Boolean, default: false },
       // __VUEFORM__ shell token template, see LegacyFormWrapper.vue
@@ -1154,6 +1171,11 @@
         // enough once own/live appends can move the pagination cursor past a real gap.
         nextCount: this.initial ? this.initial.nextCount : 0,
         total: this.initial ? this.initial.total : 0,
+        // Root-only counterpart of `total` (see the class docblock's "Root-only
+        // remaining count" section) - falls back to `total` itself when a caller/fixture
+        // predates this field, i.e. the OLD (buggy-for-threads-with-replies) formula
+        // rather than 0, so an unmigrated payload degrades no worse than before this fix.
+        rootTotal: this.initial ? this.initial.rootTotal ?? this.initial.total : 0,
         loaded: !!this.initial,
         isCollapsed: this.collapsed,
         // id -> revision counter, bumped whenever an entry object is
@@ -1175,6 +1197,7 @@
         bumpCommentRevision: this.bumpCommentRevision,
         pruneCommentRevision: this.pruneCommentRevision,
         adjustTotal: this.adjustTotal,
+        adjustRootTotal: this.adjustRootTotal,
         registerKnownId: this.registerKnownId,
         isKnownId: this.isKnownId
       };
@@ -1220,6 +1243,7 @@
           this.prevCount = response.prevCount;
           this.nextCount = response.nextCount;
           this.total = response.total;
+          this.rootTotal = response.rootTotal ?? response.total;
           this.knownIds = new Set(collectKnownIds(response.comments));
           this.loaded = true;
         }).catch((e) => {
@@ -1236,6 +1260,7 @@
             this.prevCount = response.prevCount;
             this.nextCount = response.nextCount;
             this.total = response.total;
+            this.rootTotal = response.rootTotal ?? response.total;
             collectKnownIds(response.comments).forEach((id) => this.knownIds.add(id));
           }).catch((e) => {
             vue.log.error(e, true);
@@ -1273,6 +1298,12 @@
       adjustTotal(delta) {
         this.total += delta;
       },
+      // Root-only counterpart of adjustTotal() - see the class docblock's "Root-only
+      // remaining count" section for the full mutation matrix (root create/delete only,
+      // never a reply).
+      adjustRootTotal(delta) {
+        this.rootTotal += delta;
+      },
       registerKnownId(id) {
         this.knownIds.add(id);
       },
@@ -1285,6 +1316,7 @@
         }
         this.registerKnownId(comment.id);
         this.total += 1;
+        this.rootTotal += 1;
         if (this.$refs.list) {
           this.$refs.list.appendRoot(comment);
         }
@@ -1311,10 +1343,14 @@
         }
         this.registerKnownId(comment.id);
         this.total += 1;
+        const isRoot = comment.parentCommentId === null || comment.parentCommentId === void 0;
+        if (isRoot) {
+          this.rootTotal += 1;
+        }
         if (!this.$refs.list) {
           return;
         }
-        if (comment.parentCommentId === null || comment.parentCommentId === void 0) {
+        if (isRoot) {
           this.$refs.list.appendRoot(comment);
           return;
         }
@@ -1348,12 +1384,13 @@
           comments: $data.comments,
           "prev-count": $data.prevCount,
           total: $data.total,
+          "root-total": $data.rootTotal,
           "page-size": $props.pageSize,
           "can-comment": $options.showForm,
           "form-shell-html": $props.formShellHtml,
           "submit-icon-html": $props.submitIconHtml,
           "anchor-comment-id": $props.anchorCommentId
-        }, null, 8, ["content-id", "comments", "prev-count", "total", "page-size", "can-comment", "form-shell-html", "submit-icon-html", "anchor-comment-id"])) : vue$1.createCommentVNode("v-if", true),
+        }, null, 8, ["content-id", "comments", "prev-count", "total", "root-total", "page-size", "can-comment", "form-shell-html", "submit-icon-html", "anchor-comment-id"])) : vue$1.createCommentVNode("v-if", true),
         $options.showForm && $props.formShellHtml ? (vue$1.openBlock(), vue$1.createBlock(_component_CommentForm, {
           key: 1,
           ref: "form",

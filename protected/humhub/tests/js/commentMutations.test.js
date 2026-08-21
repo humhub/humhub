@@ -126,11 +126,16 @@ const makeComment = (overrides = {}) => ({
     ...overrides,
 });
 
+// `rootTotal` defaults to whatever `total` ends up being (via `overrides`) rather than a
+// fixed 0 - every existing caller uses this for a no-replies scenario, where the two are
+// always equal (see CommentJsonService::serializeWindow()'s own docblock on `total` vs.
+// `rootTotal`) - unless `overrides` supplies its own `rootTotal` explicitly.
 const emptyWindow = (overrides = {}) => ({
     comments: [],
     prevCount: 0,
     nextCount: 0,
     total: 0,
+    rootTotal: overrides.total ?? 0,
     ...overrides,
 });
 
@@ -174,7 +179,7 @@ describe('Comment mutations + live updates', () => {
         // rather than dispatching a synthetic native 'submit' event, is what
         // would have caught this gap.
         it('posts message+fileList, appends at the end, clears the editor and bumps the count', async () => {
-            const initial = { comments: [makeComment({ id: 1 })], prevCount: 0, nextCount: 0, total: 1 };
+            const initial = { comments: [makeComment({ id: 1 })], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 };
             let resolvePost;
             globalThis.humhubStubs.client.post = vi.fn(() => new Promise((resolve) => { resolvePost = resolve; }));
 
@@ -438,7 +443,7 @@ describe('Comment mutations + live updates', () => {
                 ...mountOptions(),
                 props: {
                     contentId: 42,
-                    initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 },
+                    initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
                     canComment: true,
                     formShellHtml: buildShell(),
                     submitIconHtml: ICON_HTML,
@@ -508,7 +513,7 @@ describe('Comment mutations + live updates', () => {
                 ...mountOptions(),
                 props: {
                     contentId: 42,
-                    initial: { comments: [root], prevCount: 0, nextCount: 0, total: 1 },
+                    initial: { comments: [root], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
                     canComment: true,
                     formShellHtml: buildShell(),
                 },
@@ -564,7 +569,10 @@ describe('Comment mutations + live updates', () => {
                 ...mountOptions(),
                 props: {
                     contentId: 42,
-                    initial: { comments: [root], prevCount: 0, nextCount: 0, total: 3 },
+                    // total: 3 (1 root + 2 replies), rootTotal: 1 (just the one root) -
+                    // shape-realistic per CommentJsonService::serializeWindow()'s own
+                    // docblock note on `total` vs. `rootTotal`.
+                    initial: { comments: [root], prevCount: 0, nextCount: 0, total: 3, rootTotal: 1 },
                     canComment: true,
                     formShellHtml: buildShell(),
                 },
@@ -594,7 +602,8 @@ describe('Comment mutations + live updates', () => {
                 ...mountOptions(),
                 props: {
                     contentId: 42,
-                    initial: { comments: [root], prevCount: 0, nextCount: 0, total: 4 },
+                    // total: 4 (1 root + 3 replies), rootTotal: 1 (just the one root).
+                    initial: { comments: [root], prevCount: 0, nextCount: 0, total: 4, rootTotal: 1 },
                     canComment: true,
                     formShellHtml: buildShell(),
                     pageSize: 5,
@@ -624,6 +633,7 @@ describe('Comment mutations + live updates', () => {
                 prevCount: 0,
                 nextCount: 0,
                 total: 4,
+                rootTotal: 1,
             }));
 
             await wrapper.find('.nested-comments-root .showMore a').trigger('click');
@@ -654,7 +664,8 @@ describe('Comment mutations + live updates', () => {
                 ...mountOptions(),
                 props: {
                     contentId: 42,
-                    initial: { comments: [commentA, commentB], prevCount: 0, nextCount: 1, total: 3 },
+                    // No replies in this scenario - total and rootTotal coincide.
+                    initial: { comments: [commentA, commentB], prevCount: 0, nextCount: 1, total: 3, rootTotal: 3 },
                     canComment: true,
                     formShellHtml: buildShell(),
                     pageSize: 5,
@@ -672,6 +683,7 @@ describe('Comment mutations + live updates', () => {
                 prevCount: 0,
                 nextCount: 0,
                 total: 4,
+                rootTotal: 4,
             }));
 
             await wrapper.find('.showMore a').trigger('click');
@@ -687,6 +699,68 @@ describe('Comment mutations + live updates', () => {
                 expect(ids).toEqual(['comment_5', 'comment_6', 'comment_8', 'comment_10']);
             });
             expect(wrapper.find('.showMore').exists()).toBe(false);
+        });
+    });
+
+    // Regression coverage for the phantom "Show next N comments" bug (N = the thread's
+    // reply count) - see CommentJsonService::serializeWindow()'s and CommentList's own
+    // docblocks ("Root-vs-all total") for the full root-cause writeup. This block pins the
+    // mutation side: `rootTotal` must move in lockstep with a ROOT create/delete only,
+    // never a reply.
+    describe('phantom "show next N replies" fix (rootTotal mutations)', () => {
+        it('bumps rootTotal (not just the badge total) on an own root create, without opening a phantom next link', async () => {
+            const initial = {
+                comments: [makeComment({ id: 9 })],
+                prevCount: 8,
+                nextCount: 0,
+                total: 23,
+                rootTotal: 9,
+            };
+            globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve(makeComment({ id: 30, message: 'new root' })));
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial, canComment: true, formShellHtml: buildShell() },
+            });
+
+            await wrapper.find('.btn-comment-submit').trigger('click');
+            await vi.waitFor(() => expect(wrapper.findAll('.single-comment').length).toBe(2));
+
+            expect(wrapper.vm.rootTotal).toBe(10); // 9 + 1, not the badge total's 24
+            expect(wrapper.vm.total).toBe(24);
+            // Still just the "previous" link - the own append must not open a phantom next.
+            expect(wrapper.findAll('.showMore').length).toBe(1);
+        });
+
+        it('does not bump rootTotal, and does not open a phantom next link on the root list, when a reply is created', async () => {
+            const root = makeComment({ id: 1, children: { total: 0, items: [], hasMore: false } });
+            globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve(
+                makeComment({ id: 40, parentCommentId: 1, children: null, message: 'a reply' }),
+            ));
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: {
+                    contentId: 42,
+                    // Exactly 1 root known, nothing hidden either side - a reply create
+                    // wrongly bumping rootTotal would flip remainingNext from 0 to 1,
+                    // opening a phantom root-level "show next" link.
+                    initial: { comments: [root], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
+                    canComment: true,
+                    formShellHtml: buildShell(),
+                },
+            });
+
+            const replyLink = wrapper.findAll('.wall-entry-controls a').find((a) => a.text().startsWith('Reply'));
+            await replyLink.trigger('click');
+            await wrapper.vm.$nextTick();
+            await wrapper.find('.nested-comments-root .btn-comment-submit').trigger('click');
+
+            await vi.waitFor(() => expect(wrapper.find('.nested-comments-root .single-comment').exists()).toBe(true));
+
+            expect(wrapper.vm.total).toBe(2); // the badge does bump
+            expect(wrapper.vm.rootTotal).toBe(1); // rootTotal does not
+            expect(wrapper.find('.showMore').exists()).toBe(false); // no phantom root-level link
         });
     });
 
@@ -733,7 +807,7 @@ describe('Comment mutations + live updates', () => {
                 ...mountOptions(),
                 props: {
                     contentId: 42,
-                    initial: { comments: [root], prevCount: 0, nextCount: 0, total: 1 },
+                    initial: { comments: [root], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
                     canComment: true,
                     formShellHtml: buildShell(),
                 },
@@ -771,7 +845,7 @@ describe('Comment mutations + live updates', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [root], prevCount: 0, nextCount: 0, total: 2 } },
+                props: { contentId: 42, initial: { comments: [root], prevCount: 0, nextCount: 0, total: 2, rootTotal: 1 } },
             });
 
             expect(wrapper.find('.nested-comments-root .comment-blocked-user').exists()).toBe(true);
@@ -797,7 +871,7 @@ describe('Comment mutations + live updates', () => {
                 ...mountOptions(),
                 props: {
                     contentId: 42,
-                    initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 },
+                    initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
                     formShellHtml: buildShell(),
                 },
             });
@@ -849,7 +923,7 @@ describe('Comment mutations + live updates', () => {
                 ...mountOptions(),
                 props: {
                     contentId: 42,
-                    initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 },
+                    initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
                     formShellHtml: buildShell(),
                 },
             });
@@ -875,7 +949,7 @@ describe('Comment mutations + live updates', () => {
                 ...mountOptions(),
                 props: {
                     contentId: 42,
-                    initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 },
+                    initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
                     formShellHtml: buildShell(),
                 },
             });
@@ -922,7 +996,7 @@ describe('Comment mutations + live updates', () => {
                 ...mountOptions(),
                 props: {
                     contentId: 42,
-                    initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 },
+                    initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
                     formShellHtml: buildShell(),
                 },
             });
@@ -951,7 +1025,7 @@ describe('Comment mutations + live updates', () => {
                 ...mountOptions(),
                 props: {
                     contentId: 42,
-                    initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 },
+                    initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
                     canComment: true,
                     formShellHtml: buildShell(),
                 },
@@ -990,7 +1064,7 @@ describe('Comment mutations + live updates', () => {
                 ...mountOptions(),
                 props: {
                     contentId: 42,
-                    initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 },
+                    initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
                     canComment: true,
                     formShellHtml: buildShell(),
                 },
@@ -1019,7 +1093,8 @@ describe('Comment mutations + live updates', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 3 } },
+                // total: 3 (1 root + 2 replies), rootTotal: 1 (just the one root).
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 3, rootTotal: 1 } },
             });
 
             const deleteItem = wrapper.findAll('.dropdown-item').find((item) => item.text() === 'Delete');
@@ -1039,6 +1114,10 @@ describe('Comment mutations + live updates', () => {
 
             await vi.waitFor(() => expect(wrapper.find('#comment_1').exists()).toBe(false));
             expect(wrapper.vm.total).toBe(0); // 3 - (1 + 2 children)
+            // A ROOT delete adjusts rootTotal by -1 (never -(1 + childTotal), unlike the
+            // badge `total` above) - see CommentSection's own docblock, "Root-only remaining
+            // count".
+            expect(wrapper.vm.rootTotal).toBe(0);
         });
 
         it('decrements the parent reply badge (and total) when a child reply is deleted', async () => {
@@ -1048,7 +1127,12 @@ describe('Comment mutations + live updates', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, canComment: true, initial: { comments: [root], prevCount: 0, nextCount: 0, total: 2 } },
+                // total: 2 (1 root + 1 reply), rootTotal: 1 (just the one root).
+                props: {
+                    contentId: 42,
+                    canComment: true,
+                    initial: { comments: [root], prevCount: 0, nextCount: 0, total: 2, rootTotal: 1 },
+                },
             });
 
             expect(wrapper.find('.comment-count').attributes('data-count')).toBe('1');
@@ -1059,6 +1143,8 @@ describe('Comment mutations + live updates', () => {
 
             await vi.waitFor(() => expect(wrapper.find('#comment_10').exists()).toBe(false));
             expect(wrapper.vm.total).toBe(1); // 2 - 1 (a reply can't have its own children)
+            // A reply delete never touches rootTotal - only ROOT deletes do.
+            expect(wrapper.vm.rootTotal).toBe(1);
 
             const badge = wrapper.find('.comment-count');
             expect(badge.attributes('data-count')).toBe('0');
@@ -1071,7 +1157,7 @@ describe('Comment mutations + live updates', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 } },
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
 
             const deleteItem = wrapper.findAll('.dropdown-item').find((item) => item.text() === 'Delete');
@@ -1113,7 +1199,7 @@ describe('Comment mutations + live updates', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 } },
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
 
             const deleteItem = wrapper.findAll('.dropdown-item').find((item) => item.text() === 'Delete');
@@ -1140,7 +1226,7 @@ describe('Comment mutations + live updates', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [makeComment({ id: 1 })], prevCount: 0, nextCount: 0, total: 1 } },
+                props: { contentId: 42, initial: { comments: [makeComment({ id: 1 })], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
 
             vueModule.events.trigger(LIVE_NEW_COMMENT, [
@@ -1161,7 +1247,7 @@ describe('Comment mutations + live updates', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [root], prevCount: 0, nextCount: 0, total: 1 } },
+                props: { contentId: 42, initial: { comments: [root], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
 
             vueModule.events.trigger(LIVE_NEW_COMMENT, [
@@ -1176,7 +1262,7 @@ describe('Comment mutations + live updates', () => {
         it('ignores an event for a comment id that is already known (covers own just-created posts)', async () => {
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [makeComment({ id: 1 })], prevCount: 0, nextCount: 0, total: 1 } },
+                props: { contentId: 42, initial: { comments: [makeComment({ id: 1 })], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
             globalThis.humhubStubs.client.get.mockClear();
 
@@ -1193,7 +1279,7 @@ describe('Comment mutations + live updates', () => {
         it('ignores an event for a foreign contentId', async () => {
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [makeComment({ id: 1 })], prevCount: 0, nextCount: 0, total: 1 } },
+                props: { contentId: 42, initial: { comments: [makeComment({ id: 1 })], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
             globalThis.humhubStubs.client.get.mockClear();
 
@@ -1210,7 +1296,7 @@ describe('Comment mutations + live updates', () => {
         it('unsubscribes on unmount', async () => {
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [makeComment({ id: 1 })], prevCount: 0, nextCount: 0, total: 1 } },
+                props: { contentId: 42, initial: { comments: [makeComment({ id: 1 })], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
 
             wrapper.unmount();

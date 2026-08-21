@@ -42,6 +42,22 @@ class CommentListService
         return (int)$query->count();
     }
 
+    /**
+     * Returns the number of ROOT (top-level) comments of the content - unlike
+     * {@see self::getCount()}, this always counts `parent_comment_id IS NULL` rows only,
+     * regardless of {@see $parentComment} scoping. This is the root-list-only complement to
+     * {@see self::getCount()}'s "all comments including replies" total, which the
+     * comment-count badge relies on (see {@see \humhub\modules\comment\services\CommentJsonService::serializeWindow()}'s
+     * `rootTotal` vs. `total`).
+     */
+    public function getRootCount(): int
+    {
+        return (int)Comment::find()
+            ->andWhere(['content_id' => $this->content->id])
+            ->andWhere('parent_comment_id is null')
+            ->count();
+    }
+
     public function getLimited(?int $limit, ?int $highlightCommentId = null): array
     {
         $limit ??= $this->getModule()->commentsPreviewMax;

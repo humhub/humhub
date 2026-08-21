@@ -96,11 +96,16 @@ const makeComment = (overrides = {}) => ({
     ...overrides,
 });
 
+// `rootTotal` defaults to whatever `total` ends up being (via `overrides`) rather than a
+// fixed 0 - every existing caller uses this for a no-replies scenario, where the two are
+// always equal (see CommentJsonService::serializeWindow()'s own docblock on `total` vs.
+// `rootTotal`) - unless `overrides` supplies its own `rootTotal` explicitly.
 const emptyWindow = (overrides = {}) => ({
     comments: [],
     prevCount: 0,
     nextCount: 0,
     total: 0,
+    rootTotal: overrides.total ?? 0,
     ...overrides,
 });
 
@@ -117,7 +122,7 @@ describe('CommentSection', () => {
 
     describe('hydration', () => {
         it('renders from the initial payload without fetching', () => {
-            const initial = { comments: [makeComment()], prevCount: 0, nextCount: 0, total: 1 };
+            const initial = { comments: [makeComment()], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 };
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
@@ -130,7 +135,7 @@ describe('CommentSection', () => {
         });
 
         it('self-fetches the default window when initial is null', async () => {
-            const response = { comments: [makeComment()], prevCount: 0, nextCount: 0, total: 1 };
+            const response = { comments: [makeComment()], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 };
             globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(response));
 
             const wrapper = mount(CommentSection, {
@@ -225,8 +230,15 @@ describe('CommentSection', () => {
                 prevCount: 3,
                 nextCount: 0,
                 total: 5,
+                rootTotal: 5,
             };
-            const response = { comments: [makeComment({ id: 3 }), makeComment({ id: 4 })], prevCount: 1, nextCount: 0, total: 5 };
+            const response = {
+                comments: [makeComment({ id: 3 }), makeComment({ id: 4 })],
+                prevCount: 1,
+                nextCount: 0,
+                total: 5,
+                rootTotal: 5,
+            };
             globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(response));
 
             const wrapper = mount(CommentSection, { ...mountOptions(), props: { contentId: 42, initial, pageSize: 2 } });
@@ -251,13 +263,14 @@ describe('CommentSection', () => {
                 prevCount: 0,
                 nextCount: 3,
                 total: 5,
+                rootTotal: 5,
             };
-            // total: 3 (not 5) - the response confirms comment 7 is the LAST one that exists
-            // (nextCount: 0), so the true total is 3 (5,6,7), not the stale 5 the hydration
-            // payload guessed - see CommentList's own "Next-pagination gap fix" docblock
-            // section for why `remainingNext` is now derived from `total`, refreshed from
-            // this same response, rather than trusted directly off `nextCount`.
-            const response = { comments: [makeComment({ id: 7 })], prevCount: 0, nextCount: 0, total: 3 };
+            // total/rootTotal: 3 (not 5) - the response confirms comment 7 is the LAST one
+            // that exists (nextCount: 0), so the true total is 3 (5,6,7), not the stale 5 the
+            // hydration payload guessed - see CommentList's own "Next-pagination gap fix"
+            // docblock section for why `remainingNext` is now derived from `rootTotal`,
+            // refreshed from this same response, rather than trusted directly off `nextCount`.
+            const response = { comments: [makeComment({ id: 7 })], prevCount: 0, nextCount: 0, total: 3, rootTotal: 3 };
             globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(response));
 
             const wrapper = mount(CommentSection, { ...mountOptions(), props: { contentId: 42, initial, pageSize: 2 } });
@@ -278,7 +291,7 @@ describe('CommentSection', () => {
         it('guards against concurrent show-more clicks while a request is in flight', async () => {
             let resolveGet;
             globalThis.humhubStubs.client.get = vi.fn(() => new Promise((resolve) => { resolveGet = resolve; }));
-            const initial = { comments: [makeComment({ id: 5 })], prevCount: 2, nextCount: 0, total: 3 };
+            const initial = { comments: [makeComment({ id: 5 })], prevCount: 2, nextCount: 0, total: 3, rootTotal: 3 };
 
             const wrapper = mount(CommentSection, { ...mountOptions(), props: { contentId: 42, initial } });
 
@@ -291,7 +304,7 @@ describe('CommentSection', () => {
             // the one already-loaded item, not the stale 3 the hydration payload guessed -
             // see CommentList's own "Next-pagination gap fix" docblock section for why
             // `remainingNext` is now derived from `total`, refreshed from every response.
-            resolveGet({ comments: [], prevCount: 0, nextCount: 0, total: 1 });
+            resolveGet({ comments: [], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 });
             await vi.waitFor(() => expect(wrapper.findAll('.showMore').length).toBe(0));
         });
 
@@ -300,10 +313,70 @@ describe('CommentSection', () => {
             // guard (`items.length === 0` no-ops the handler) so a stray
             // prevCount/nextCount without a loaded window never renders a
             // dead link.
-            const initial = { comments: [], prevCount: 3, nextCount: 2, total: 5 };
+            const initial = { comments: [], prevCount: 3, nextCount: 2, total: 5, rootTotal: 5 };
 
             const wrapper = mount(CommentSection, { ...mountOptions(), props: { contentId: 42, initial } });
 
+            expect(wrapper.find('.showMore').exists()).toBe(false);
+        });
+    });
+
+    // Regression coverage for the phantom "Show next N comments" bug (N = the thread's
+    // reply count): the root list's own "show next" gate used to be derived from the badge
+    // `total` (ALL comments of the content INCLUDING replies - see
+    // CommentJsonService::serializeWindow()'s own docblock note), while `items`/`prevCount`
+    // only ever cover ROOT comments - so any thread with replies overcounted by exactly the
+    // reply count, rendering a permanently-dead link whose "next" fetch legitimately came
+    // back empty. Fixed by deriving it from `rootTotal` instead - see CommentList's own
+    // docblock, "Root-vs-all total".
+    describe('phantom "show next N replies" fix (rootTotal)', () => {
+        it('renders no show-next link for the owner-reported scenario (9 roots + 14 replies, one root loaded)', () => {
+            // Exact browser-verified data point: content with 23 comments = 9 roots + 14
+            // replies. The UI showed "Show previous 8 comments" AND a dead "Show next 14
+            // comments" - clicking the latter fetched an always-empty next page.
+            const initial = {
+                comments: [makeComment({ id: 9 })],
+                prevCount: 8,
+                nextCount: 0,
+                total: 23,
+                rootTotal: 9,
+            };
+
+            const wrapper = mount(CommentSection, { ...mountOptions(), props: { contentId: 42, initial } });
+
+            // Only the "previous" link renders - no phantom "next" link (previously a
+            // dead "Show next 14 comments", N being the reply count).
+            expect(wrapper.findAll('.showMore').length).toBe(1);
+        });
+
+        it('refreshes rootTotal independently of the badge total on a real "show next" response', async () => {
+            // rootTotal (10) is a stale guess here, same as the existing "loads and appends
+            // next comments" test does for `total` above - the response corrects it down to
+            // the real count (3), completely independently of the badge `total` (which stays
+            // inflated by replies elsewhere in the thread and follows its own trajectory).
+            const initial = {
+                comments: [makeComment({ id: 5 }), makeComment({ id: 6 })],
+                prevCount: 0,
+                nextCount: 3,
+                total: 19,
+                rootTotal: 5,
+            };
+            const response = {
+                comments: [makeComment({ id: 7 })],
+                prevCount: 0,
+                nextCount: 0,
+                total: 17,
+                rootTotal: 3,
+            };
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(response));
+
+            const wrapper = mount(CommentSection, { ...mountOptions(), props: { contentId: 42, initial, pageSize: 2 } });
+
+            await wrapper.find('.showMore a').trigger('click');
+
+            await vi.waitFor(() => expect(wrapper.findAll('.single-comment').length).toBe(3));
+            expect(wrapper.vm.rootTotal).toBe(3);
+            expect(wrapper.vm.total).toBe(17);
             expect(wrapper.find('.showMore').exists()).toBe(false);
         });
     });
@@ -323,12 +396,21 @@ describe('CommentSection', () => {
             // the server derives it for previews (`total > count(items)`),
             // so an inconsistent total here would make the assertion below
             // fail regardless of nextCount.
-            const response = { comments: [makeComment({ id: 11, parentCommentId: 1, children: null })], prevCount: 0, nextCount: 0, total: 2 };
+            // rootTotal: 1 - a reply window's response is only ever read for `total` (the
+            // reply count, see CommentEntry's loadMoreReplies()) - included here purely for
+            // shape realism with the real endpoint, which always returns both fields.
+            const response = {
+                comments: [makeComment({ id: 11, parentCommentId: 1, children: null })],
+                prevCount: 0,
+                nextCount: 0,
+                total: 2,
+                rootTotal: 1,
+            };
             globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(response));
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [root], prevCount: 0, nextCount: 0, total: 1 }, pageSize: 5 },
+                props: { contentId: 42, initial: { comments: [root], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 }, pageSize: 5 },
             });
 
             expect(wrapper.find('.nested-comments-root .single-comment').exists()).toBe(true);
@@ -355,7 +437,7 @@ describe('CommentSection', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [root], prevCount: 0, nextCount: 0, total: 1 }, canComment: true, formShellHtml: buildShell() },
+                props: { contentId: 42, initial: { comments: [root], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 }, canComment: true, formShellHtml: buildShell() },
             });
 
             const rootControls = wrapper.find('.single-comment').find('.wall-entry-controls');
@@ -381,7 +463,7 @@ describe('CommentSection', () => {
 
                 const wrapper = mount(CommentSection, {
                     ...mountOptions(),
-                    props: { contentId: 42, initial: { comments: [root], prevCount: 0, nextCount: 0, total: 1 } },
+                    props: { contentId: 42, initial: { comments: [root], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
                 });
 
                 // .nested-comments-root > .comment-container > .comment > .single-comment
@@ -399,7 +481,7 @@ describe('CommentSection', () => {
                     ...mountOptions(),
                     props: {
                         contentId: 42,
-                        initial: { comments: [root], prevCount: 0, nextCount: 0, total: 1 },
+                        initial: { comments: [root], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
                         canComment: true,
                         formShellHtml: buildShell(),
                     },
@@ -441,7 +523,7 @@ describe('CommentSection', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [root], prevCount: 0, nextCount: 0, total: 1 } },
+                props: { contentId: 42, initial: { comments: [root], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
 
             const rootComment = wrapper.find('#comment_1');
@@ -471,7 +553,7 @@ describe('CommentSection', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [blocked], prevCount: 0, nextCount: 0, total: 1 } },
+                props: { contentId: 42, initial: { comments: [blocked], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
 
             expect(wrapper.find('.comment-blocked-user').exists()).toBe(true);
@@ -498,7 +580,7 @@ describe('CommentSection', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments, prevCount: 0, nextCount: 0, total: 2 }, anchorCommentId: 2 },
+                props: { contentId: 42, initial: { comments, prevCount: 0, nextCount: 0, total: 2, rootTotal: 2 }, anchorCommentId: 2 },
             });
 
             expect(wrapper.find('#comment_1').classes()).not.toContain('comment-current');
@@ -532,7 +614,13 @@ describe('CommentSection', () => {
         });
 
         it('fetches and renders the default window on expand when previewMax=0 shipped an empty-but-nonzero window', async () => {
-            const response = { comments: [makeComment({ id: 5 }), makeComment({ id: 6 })], prevCount: 2, nextCount: 0, total: 4 };
+            const response = {
+                comments: [makeComment({ id: 5 }), makeComment({ id: 6 })],
+                prevCount: 2,
+                nextCount: 0,
+                total: 4,
+                rootTotal: 4,
+            };
             globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(response));
 
             const wrapper = mount(CommentSection, {
@@ -566,7 +654,7 @@ describe('CommentSection', () => {
             wrapper.element.parentElement.dispatchEvent(new CustomEvent('humhub:comment:toggle'));
             expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(1);
 
-            resolveGet({ comments: [makeComment({ id: 1 })], prevCount: 0, nextCount: 0, total: 4 });
+            resolveGet({ comments: [makeComment({ id: 1 })], prevCount: 0, nextCount: 0, total: 4, rootTotal: 4 });
             await vi.waitFor(() => expect(wrapper.find('.single-comment').exists()).toBe(true));
         });
 
@@ -593,7 +681,9 @@ describe('CommentSection', () => {
         });
 
         it('dispatches humhub:comment:countChanged on the mount element when total changes', async () => {
-            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({ comments: [], prevCount: 0, nextCount: 0, total: 5 }));
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(
+                { comments: [], prevCount: 0, nextCount: 0, total: 5, rootTotal: 5 },
+            ));
 
             const wrapper = mount(CommentSection, { ...mountOptions(), props: { contentId: 42 } });
 
@@ -609,7 +699,7 @@ describe('CommentSection', () => {
         it('does not dispatch countChanged for the initial hydration value', async () => {
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [], prevCount: 0, nextCount: 0, total: 3 } },
+                props: { contentId: 42, initial: { comments: [], prevCount: 0, nextCount: 0, total: 3, rootTotal: 3 } },
             });
 
             const handler = vi.fn();
@@ -626,7 +716,7 @@ describe('CommentSection', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 } },
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
 
             expect(wrapper.find('a.unlike').exists()).toBe(true);
@@ -638,7 +728,7 @@ describe('CommentSection', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 } },
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
 
             expect(wrapper.find('.likeLinkContainer').exists()).toBe(false);
@@ -654,7 +744,7 @@ describe('CommentSection', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 } },
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
 
             const items = wrapper.findAll('.dropdown-item').map((item) => item.text());
@@ -671,7 +761,7 @@ describe('CommentSection', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 }, canComment: true },
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 }, canComment: true },
             });
 
             const controls = wrapper.find('.wall-entry-controls').element;
@@ -691,7 +781,7 @@ describe('CommentSection', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 }, canComment: true },
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 }, canComment: true },
             });
 
             expect(wrapper.find('.wall-entry-controls').text()).not.toContain('·');
@@ -706,7 +796,7 @@ describe('CommentSection', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 } },
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
 
             const img = wrapper.find('.comment-header-image img');
@@ -725,7 +815,7 @@ describe('CommentSection', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 } },
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
 
             const overlay = wrapper.find('.comment-header-image .user-online-status');
@@ -741,7 +831,7 @@ describe('CommentSection', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 } },
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
 
             const overlay = wrapper.find('.comment-header-image .user-online-status');
@@ -754,7 +844,7 @@ describe('CommentSection', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 } },
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
 
             expect(wrapper.find('.comment-header-image .user-online-status').exists()).toBe(false);
@@ -768,7 +858,7 @@ describe('CommentSection', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 } },
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
 
             const message = wrapper.find('.comment-message').element;
@@ -789,7 +879,7 @@ describe('CommentSection', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 } },
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
 
             const icon = wrapper.find('.comment-heading .fa-clock-o');
@@ -803,7 +893,7 @@ describe('CommentSection', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 } },
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
 
             expect(wrapper.find('.comment-heading .fa-clock-o').exists()).toBe(false);
@@ -836,7 +926,7 @@ describe('CommentSection', () => {
 
             const wrapper = mountWithProbe('ProbeCommentLinksItem', probeDef, {
                 contentId: 42,
-                initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 },
+                initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
             });
 
             const controls = wrapper.find('.wall-entry-controls');
@@ -863,7 +953,7 @@ describe('CommentSection', () => {
 
             const wrapper = mountWithProbe('ProbeExtensionsLinksItem', probeDef, {
                 contentId: 42,
-                initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 },
+                initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
             });
 
             expect(wrapper.find('.probe-extensions-item').text()).toBe('reported');
@@ -901,7 +991,7 @@ describe('CommentSection', () => {
 
             const wrapper = mount(CommentSection, {
                 ...options,
-                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 } },
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
 
             const probe = wrapper.find('.probe-controls-item');
@@ -924,7 +1014,7 @@ describe('CommentSection', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 } },
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
 
             const items = wrapper.findAll('.dropdown-menu > li').map((li) => li.text());
@@ -937,7 +1027,7 @@ describe('CommentSection', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 } },
+                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
 
             const items = wrapper.findAll('.dropdown-item').map((item) => item.text());

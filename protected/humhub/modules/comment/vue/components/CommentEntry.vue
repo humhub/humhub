@@ -210,14 +210,18 @@
  *  - `entry-removed(id)` - this entry's own delete/admin-delete succeeded.
  *  - `entry-updated({id, comment})` - this entry's own reveal/edit succeeded.
  *
- * Total-count bookkeeping (`adjustTotal`), the revision map
+ * Total-count bookkeeping (`adjustTotal`, `adjustRootTotal`), the revision map
  * (`bumpCommentRevision`/`pruneCommentRevision`) and live-update dedup
  * (`registerKnownId`/`isKnownId`) are injected straight from CommentSection
  * instead of bubbling through CommentList as a third event: only the entry
  * itself knows its own delta (`-(1 + childTotal)` for a root delete, `-1`
  * for a reply, `+1` for an accepted reply) at the moment it happens, and
  * calling the section directly avoids a `CommentList` passthrough that would
- * otherwise exist for no reason other than forwarding a number.
+ * otherwise exist for no reason other than forwarding a number. `adjustRootTotal`
+ * additionally only ever fires for a ROOT delete (`!isNested`, delta always `-1`,
+ * never `-(1 + childTotal)`) - see CommentSection's own docblock, "Root-only
+ * remaining count": replies are never part of `rootTotal` in the first place, on
+ * either side of a delete.
  * `onReplyCreated()` also uses `isKnownId()` to guard the same own-create-
  * vs-live race `CommentSection.onMainCreated()` guards for the root form.
  *
@@ -267,6 +271,7 @@ export default {
         bumpCommentRevision: { default: () => () => {} },
         pruneCommentRevision: { default: () => () => {} },
         adjustTotal: { default: () => () => {} },
+        adjustRootTotal: { default: () => () => {} },
         registerKnownId: { default: () => () => {} },
         isKnownId: { default: () => () => false },
     },
@@ -514,6 +519,11 @@ export default {
                     // its own children (server enforces one nesting level), so
                     // only a root entry's own current reply count is subtracted.
                     this.adjustTotal(-(1 + (this.isNested ? 0 : this.childTotal)));
+                    // rootTotal only ever counts roots - a reply delete leaves it alone (see
+                    // CommentSection's own docblock, "Root-only remaining count").
+                    if (!this.isNested) {
+                        this.adjustRootTotal(-1);
+                    }
                     this.$emit('entry-removed', this.comment.id);
                 })
                 .catch((e) => {

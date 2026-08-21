@@ -7,6 +7,7 @@
             :comments="comments"
             :prev-count="prevCount"
             :total="total"
+            :root-total="rootTotal"
             :page-size="pageSize"
             :can-comment="showForm"
             :form-shell-html="formShellHtml"
@@ -47,11 +48,34 @@
  * see `CommentList.removeRoot()`/`CommentEntry.onChildRemoved()` - so the map
  * does not grow forever across a long-lived session), so any descendant can
  * force its own or a sibling's remount without prop/event-drilling a map
- * through every intermediate level. `adjustTotal()`, `registerKnownId()` and
- * `isKnownId()` are provided the same way and for the same reason:
- * CommentEntry is the only place that knows a delete/reply-create's count
- * delta or a newly-seen comment id at the moment it happens, several levels
- * below this component.
+ * through every intermediate level. `adjustTotal()`, `adjustRootTotal()`,
+ * `registerKnownId()` and `isKnownId()` are provided the same way and for the
+ * same reason: CommentEntry is the only place that knows a delete/reply-create's
+ * count delta or a newly-seen comment id at the moment it happens, several
+ * levels below this component.
+ *
+ * ## Root-only remaining count (`rootTotal`)
+ *
+ * `total` (this component's own field, driving the badge/`countChanged` event) counts
+ * EVERY comment of the content, replies included - it doubles as the comment-count badge,
+ * matching what the legacy widget counted (see `CommentJsonService::serializeWindow()`'s own
+ * docblock note on `total` vs. `rootTotal`). The root list's own "show next" gate must not
+ * use it directly: `items`/`prevCount`/`nextCount` in that same window only ever cover ROOT
+ * comments, so any thread with replies would make `total - items.length - remainingPrev`
+ * (CommentList's `remainingNext`) overcount by exactly the reply count, rendering a
+ * permanently-dead "Show next N comments" link (N = reply count) - the bug this field fixes.
+ *
+ * `rootTotal` is this component's separately-tracked root-only counterpart, seeded from
+ * `initial.rootTotal` (falling back to `initial.total` if a caller/fixture predates this
+ * field - see the field's `data()` comment for why that fallback is deliberately the OLD,
+ * possibly-buggy formula rather than e.g. 0), refreshed from every list response
+ * (`fetchInitial()`/the expand fetch in `onToggle()`, same `?? total` fallback), and passed
+ * down to CommentList as its own prop for `remainingNext` to key off instead of `total`.
+ * Mutated in lockstep with a ROOT-level create/delete only: `+1` in `onMainCreated()` and the
+ * root branch of `appendLiveComment()`, `-1` via `adjustRootTotal()` called from
+ * CommentEntry's `performDelete()` when `!isNested`. A reply create/delete never touches it
+ * (`onReplyCreated()`/`onChildRemoved()` only ever adjust the per-parent `childTotal` and,
+ * for creates, the badge `total` - never `rootTotal`).
  *
  * ## Live updates (P2-5)
  *
@@ -125,7 +149,7 @@ export default {
     components: { CommentList, CommentForm },
     props: {
         contentId: { type: Number, required: true },
-        // serializeWindow() payload: {comments, prevCount, nextCount, total}
+        // serializeWindow() payload: {comments, prevCount, nextCount, total, rootTotal}
         initial: { type: Object, default: null },
         canComment: { type: Boolean, default: false },
         // __VUEFORM__ shell token template, see LegacyFormWrapper.vue
@@ -149,6 +173,11 @@ export default {
             // enough once own/live appends can move the pagination cursor past a real gap.
             nextCount: this.initial ? this.initial.nextCount : 0,
             total: this.initial ? this.initial.total : 0,
+            // Root-only counterpart of `total` (see the class docblock's "Root-only
+            // remaining count" section) - falls back to `total` itself when a caller/fixture
+            // predates this field, i.e. the OLD (buggy-for-threads-with-replies) formula
+            // rather than 0, so an unmigrated payload degrades no worse than before this fix.
+            rootTotal: this.initial ? (this.initial.rootTotal ?? this.initial.total) : 0,
             loaded: !!this.initial,
             isCollapsed: this.collapsed,
             // id -> revision counter, bumped whenever an entry object is
@@ -170,6 +199,7 @@ export default {
             bumpCommentRevision: this.bumpCommentRevision,
             pruneCommentRevision: this.pruneCommentRevision,
             adjustTotal: this.adjustTotal,
+            adjustRootTotal: this.adjustRootTotal,
             registerKnownId: this.registerKnownId,
             isKnownId: this.isKnownId,
         };
@@ -228,6 +258,7 @@ export default {
                     this.prevCount = response.prevCount;
                     this.nextCount = response.nextCount;
                     this.total = response.total;
+                    this.rootTotal = response.rootTotal ?? response.total;
                     this.knownIds = new Set(collectKnownIds(response.comments));
                     this.loaded = true;
                 })
@@ -257,6 +288,7 @@ export default {
                         this.prevCount = response.prevCount;
                         this.nextCount = response.nextCount;
                         this.total = response.total;
+                        this.rootTotal = response.rootTotal ?? response.total;
                         collectKnownIds(response.comments).forEach((id) => this.knownIds.add(id));
                     })
                     .catch((e) => {
@@ -297,6 +329,12 @@ export default {
         adjustTotal(delta) {
             this.total += delta;
         },
+        // Root-only counterpart of adjustTotal() - see the class docblock's "Root-only
+        // remaining count" section for the full mutation matrix (root create/delete only,
+        // never a reply).
+        adjustRootTotal(delta) {
+            this.rootTotal += delta;
+        },
         registerKnownId(id) {
             this.knownIds.add(id);
         },
@@ -312,6 +350,9 @@ export default {
             }
             this.registerKnownId(comment.id);
             this.total += 1;
+            // The main form only ever creates a ROOT comment - see the class docblock's
+            // "Root-only remaining count" section for why this stays separate from `total`.
+            this.rootTotal += 1;
             if (this.$refs.list) {
                 this.$refs.list.appendRoot(comment);
             }
@@ -346,11 +387,19 @@ export default {
             this.registerKnownId(comment.id);
             this.total += 1;
 
+            // Determined before the ref check below so `rootTotal` bumps in lockstep with
+            // `total` above regardless of whether the list is currently mounted - see the
+            // class docblock's "Root-only remaining count" section.
+            const isRoot = comment.parentCommentId === null || comment.parentCommentId === undefined;
+            if (isRoot) {
+                this.rootTotal += 1;
+            }
+
             if (!this.$refs.list) {
                 return;
             }
 
-            if (comment.parentCommentId === null || comment.parentCommentId === undefined) {
+            if (isRoot) {
                 this.$refs.list.appendRoot(comment);
                 return;
             }

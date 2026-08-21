@@ -219,6 +219,28 @@ class CommentJsonServiceTest extends HumHubDbTestCase
         $this->assertSame(0, $window['nextCount']);
     }
 
+    /**
+     * `total` counts ALL comments of the content (roots and replies alike, same as the
+     * comment-count badge) - `rootTotal` is the root-list-only complement the client's own
+     * "show next" pagination gate keys off instead (see CommentList.vue's own docblock,
+     * "Root-vs-all total" - this discrepancy, unhandled client-side, used to render a
+     * permanently-dead "Show next <reply count> comments" link on any thread with replies).
+     */
+    public function testWindowRootTotalCountsOnlyRootCommentsWhileTotalCountsAll()
+    {
+        $this->becomeUser('User2');
+        $root1 = $this->createComment('Root 1');
+        $root2 = $this->createComment('Root 2');
+        $this->createComment('Reply 1', $root1);
+        $this->createComment('Reply 2', $root1);
+        $this->createComment('Reply 3', $root2);
+
+        $window = CommentJsonService::create($this->post())->serializeWindow();
+
+        $this->assertSame(5, $window['total']);
+        $this->assertSame(2, $window['rootTotal']);
+    }
+
     public function testWindowAnchoredAroundPermalinkedComment()
     {
         $this->becomeUser('User2');
@@ -463,6 +485,8 @@ class CommentJsonServiceTest extends HumHubDbTestCase
         $this->assertNotNull($window['comments'][0]['author']);
         // Guests can never like (no identity), and guestHideComments is disabled here.
         $this->assertNull($window['comments'][0]['likes']);
+        // rootTotal is unaffected by the guest path - same single root comment either way.
+        $this->assertSame(1, $window['rootTotal']);
 
         $data = CommentJsonService::create($comment)->serializeComment($comment);
         $this->assertFalse($data['blocked']);
