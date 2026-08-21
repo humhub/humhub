@@ -484,13 +484,19 @@
   let instanceCounter = 0;
   const _sfc_main$7 = {
     props: {
-      shellHtml: { type: String, required: true }
+      shellHtml: { type: String, required: true },
+      // Deterministic identity for this instance's DOM ids — see the class
+      // docblock's "Unique-id contract" section for the uniqueness/stability
+      // contract a caller-supplied key must satisfy (and why callers whose
+      // shell hosts a backup-enabled richtext editor must pass one).
+      instanceKey: { type: String, default: null }
     },
     data() {
       return {
-        // Module-scope counter (not Math.random()) so builds/output stay
-        // deterministic; unique per mounted instance on the page.
-        instanceId: "vueform-" + ++instanceCounter
+        // From instanceKey when given (stable across page loads); from the
+        // module-scope counter otherwise (unique per page load only — and a
+        // counter, not Math.random(), so builds/output stay deterministic).
+        instanceId: this.instanceKey ? "vueform-" + this.instanceKey.replace(/[^A-Za-z0-9_-]/g, "-") : "vueform-" + ++instanceCounter
       };
     },
     computed: {
@@ -602,7 +608,18 @@
   const _sfc_main$6 = {
     mixins: [fieldMixin],
     props: {
-      shellHtml: { type: String, required: true }
+      shellHtml: { type: String, required: true },
+      // Passed through to LegacyFormWrapper — see ITS "Unique-id contract"
+      // docblock section for the uniqueness/stability contract (and why a
+      // caller whose shell hosts the backup-enabled richtext editor — i.e.
+      // every caller of THIS field — should pass one).
+      instanceKey: { type: String, default: null }
+    },
+    mounted() {
+      this.$refs.wrapper.$el.addEventListener("input", this.clearOwnError);
+    },
+    beforeUnmount() {
+      this.$refs.wrapper.$el.removeEventListener("input", this.clearOwnError);
     },
     methods: {
       getValue() {
@@ -638,8 +655,9 @@
       [
         vue.createVNode(_component_LegacyFormWrapper, {
           ref: "wrapper",
-          "shell-html": $props.shellHtml
-        }, null, 8, ["shell-html"]),
+          "shell-html": $props.shellHtml,
+          "instance-key": $props.instanceKey
+        }, null, 8, ["shell-html", "instance-key"]),
         _ctx.hasError ? (vue.openBlock(), vue.createElementBlock("div", {
           key: 0,
           id: _ctx.errorId,

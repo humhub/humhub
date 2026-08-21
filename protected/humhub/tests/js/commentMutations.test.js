@@ -278,6 +278,35 @@ describe('Comment mutations + live updates', () => {
             expect(wrapper.find('.invalid-feedback').text()).toBe('Message cannot be blank.');
         });
 
+        // Clear-on-input parity with the native fields (browser-verified gap):
+        // the legacy ProseMirror editor never routes its input through a Vue
+        // binding, so without RichTextField's own `input` bridge (see its
+        // mounted()) a rendered 422 message stuck around even while the user
+        // was already fixing the value. Typing into the real editor's
+        // contenteditable emits native, bubbling `input` events — dispatching
+        // one from the editor node here exercises the exact event path the
+        // bridge listens on (a delegated listener on the wrapper's root).
+        it('clears the rendered 422 error as soon as the user edits the richtext content again', async () => {
+            globalThis.humhubStubs.client.post = vi.fn(() => Promise.reject({
+                status: 422,
+                errors: { message: ['Message cannot be blank.'] },
+            }));
+
+            const wrapper = mount(CommentForm, {
+                ...mountOptions(),
+                props: { shellHtml: buildShell(), contentId: 42 },
+            });
+
+            await wrapper.find('.btn-comment-submit').trigger('click');
+            await vi.waitFor(() => expect(wrapper.find('.invalid-feedback').exists()).toBe(true));
+
+            wrapper.find(RICHTEXT_SELECTOR).element.dispatchEvent(new Event('input', { bubbles: true }));
+            await wrapper.vm.$nextTick();
+
+            expect(wrapper.find('.invalid-feedback').exists()).toBe(false);
+            expect(wrapper.vm.$refs.form.errors).toEqual({});
+        });
+
         it('logs via status instead of rendering field errors for a Yii framework error response (403/404 shape)', async () => {
             globalThis.humhubStubs.client.post = vi.fn(() => Promise.reject({
                 status: 403,
@@ -874,6 +903,47 @@ describe('Comment mutations + live updates', () => {
             expect(jQuery(formEl).data('state')).toBeNull();
         });
 
+        // The save twin of the cancel test above (browser-verified gap): the
+        // edit form is discarded on success too, but the discard only removes
+        // DOM — the acknowledgeForm baseline and the richtext editor's
+        // sessionStorage draft backup both outlive the unmount, resurfacing
+        // the just-saved text as a phantom draft/"unsaved changes" confirm
+        // later. CommentForm therefore clear()s on edit success as well: the
+        // editor 'clear' DOM event is what the real widget's own handler runs
+        // resetBackup() on (see humhub.ui.richtext.prosemirror.js).
+        it('resets the edit form\'s acknowledgeForm baseline and triggers the editor backup clear on save', async () => {
+            const comment = makeComment({ id: 1, canEdit: true });
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({ message: 'raw markdown' }));
+            globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve(
+                makeComment({ id: 1, canEdit: true, message: 'after' }),
+            ));
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: {
+                    contentId: 42,
+                    initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 },
+                    formShellHtml: buildShell(),
+                },
+            });
+
+            const editItem = wrapper.findAll('.dropdown-item').find((item) => item.text() === 'Edit');
+            await editItem.trigger('click');
+            await vi.waitFor(() => expect(wrapper.find('#comment_editarea_1 form').exists()).toBe(true));
+
+            const editorNode = wrapper.find(`#comment_editarea_1 ${RICHTEXT_SELECTOR}`).element;
+            const clearHandler = vi.fn();
+            jQuery(editorNode).on('clear', clearHandler);
+            const formEl = editorNode.closest('form');
+            jQuery(formEl).data('state', 'message=typed+then+saved');
+
+            await wrapper.find('#comment_editarea_1 .btn-comment-submit').trigger('click');
+            await vi.waitFor(() => expect(wrapper.find('#comment_editarea_1 form').exists()).toBe(false));
+
+            expect(clearHandler).toHaveBeenCalledTimes(1);
+            expect(jQuery(formEl).data('state')).toBeNull();
+        });
+
         it('resets the reply form\'s acknowledgeForm baseline before it unmounts on close', async () => {
             const comment = makeComment({ id: 1, children: { total: 0, items: [], hasMore: false } });
 
@@ -899,6 +969,46 @@ describe('Comment mutations + live updates', () => {
             await replyLink.trigger('click'); // toggles the reply form closed again
 
             expect(jQuery(formEl).data('state')).toBeNull();
+        });
+    });
+
+    // Browser-verified bug: LegacyFormWrapper's per-page-load counter fallback
+    // produced `vueform-1` on EVERY page, so the richtext editor's
+    // sessionStorage draft backup (keyed by the hidden input's id, see
+    // humhub.ui.richtext.prosemirror.js) collided across pages — drafts of
+    // unrelated contents merged into one entry and armed phantom
+    // "unsaved changes" confirms. CommentForm now derives a key from its mount
+    // context instead (see its `formInstanceKey` computed): stable across page
+    // loads for the same logical form, and distinct between the main create
+    // form, each reply form and each edit form.
+    describe('stable per-form instance ids (richtext draft backup key contract)', () => {
+        it('derives main/reply/edit form ids from contentId/parent/comment id, not the page counter', async () => {
+            const comment = makeComment({ id: 7, canEdit: true });
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({ message: 'raw' }));
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: {
+                    contentId: 42,
+                    initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1 },
+                    canComment: true,
+                    formShellHtml: buildShell(),
+                },
+            });
+
+            // Main create form: keyed by content id alone.
+            expect(wrapper.find('#newCommentForm_vueform-c42').exists()).toBe(true);
+
+            // Reply form: additionally keyed by the parent comment id.
+            const replyLink = wrapper.findAll('.wall-entry-controls a').find((a) => a.text().startsWith('Reply'));
+            await replyLink.trigger('click');
+            await wrapper.vm.$nextTick();
+            expect(wrapper.find('#newCommentForm_vueform-c42-r7').exists()).toBe(true);
+
+            // Edit form: keyed by the edited comment's own id.
+            const editItem = wrapper.findAll('.dropdown-item').find((item) => item.text() === 'Edit');
+            await editItem.trigger('click');
+            await vi.waitFor(() => expect(wrapper.find('#newCommentForm_vueform-c42-e7').exists()).toBe(true));
         });
     });
 

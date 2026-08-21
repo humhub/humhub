@@ -125,10 +125,7 @@ Each match becomes its own `createApp()` instance sharing a common plugin set (r
 - **Initial state travels with the HTML.** A like button receives its current count and liked-state as props — no extra request on page load, no flash of empty content.
 - Any markup inside the tag acts as a loading placeholder and is replaced on mount.
 
-**Unmounting** is double-secured:
-
-- On PJAX navigation the existing `unload()` lifecycle unmounts all apps rooted inside `#layout-content`.
-- A `MutationObserver` safety net unmounts any app whose root node leaves the DOM (modal closed, stream entry deleted).
+**Unmounting** is owned by a `MutationObserver`: any app whose root node leaves the DOM is unmounted — the PJAX navigation swapping `#layout-content`'s content wholesale, a closed modal, a deleted stream entry. The runtime deliberately does **not** hook the module-lifecycle `unload()` signal: that fires when a navigation *starts* (before the DOM swap — which a canceled unsaved-changes confirm, or an aborted request, may prevent entirely), and eagerly unmounting on it killed every island on the still-visible page.
 
 No leaked apps, no zombie state, no work for component authors.
 

@@ -193,7 +193,7 @@ describe('humhub.vue', () => {
         const el = createTag('test-cancel-mu', {}, layout);
 
         const mountPromise = vueModule.mountElement(el);
-        vueModule.unload();
+        vueModule.unmountElement(el);
         resolvePreload();
 
         const app = await mountPromise;
@@ -225,7 +225,7 @@ describe('humhub.vue', () => {
         const el = createTag('test-drain-pi', {}, layout);
 
         const firstMount = vueModule.mountElement(el);
-        vueModule.unload(); // cancels — never remounted before this settles
+        vueModule.unmountElement(el); // cancels — never remounted before this settles
         resolvePreload();
 
         expect(await firstMount).toBeNull();
@@ -288,7 +288,15 @@ describe('humhub.vue', () => {
         expect(el.textContent).toBe('placeholder');
     });
 
-    it('unmounts islands inside #layout-content on unload()', async () => {
+    // The pjax-navigation cleanup contract: jquery.pjax swaps #layout-content's
+    // CONTENT wholesale on success (context.html(...)), and the MutationObserver
+    // unmounts every island whose root left the document with it. There is
+    // deliberately NO eager module.unload() sweep doing this at navigation-start
+    // anymore — that signal also fired for navigations that never happened
+    // (canceled acknowledgeForm confirm), unmounting every island on the still-
+    // visible page. See module.init()'s own comment in humhub.vue.js; the
+    // assertion on module.unload below pins that contract.
+    it('unmounts islands via the observer when the pjax container content is swapped', async () => {
         let unmounted = false;
         vueModule.register('TestUnloadZeta', {
             unmounted() {
@@ -302,8 +310,10 @@ describe('humhub.vue', () => {
         await vueModule.mountElement(el);
         expect(vueModule.getApp(el)).not.toBeNull();
 
-        vueModule.unload();
-        expect(unmounted).toBe(true);
+        expect(vueModule.unload).toBeUndefined();
+
+        layout.replaceChildren(); // what context.html(newContents) does to the old islands
+        await vi.waitFor(() => expect(unmounted).toBe(true));
         expect(vueModule.getApp(el)).toBeNull();
     });
 

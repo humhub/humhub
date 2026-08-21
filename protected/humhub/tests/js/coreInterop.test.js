@@ -401,6 +401,38 @@ describe('LegacyFormWrapper', () => {
             expect(wrapperA.find('.humhub-ui-richtext').attributes('id'))
                 .not.toBe(wrapperB.find('.humhub-ui-richtext').attributes('id'));
         });
+
+        // The counter fallback above is only unique per page load — features
+        // keyed off these ids in storage that outlives the page (the richtext
+        // editor's sessionStorage draft backup keys off the hidden input's id)
+        // need the caller-supplied instanceKey instead: deterministic, so the
+        // SAME logical form gets the SAME ids on every page it is mounted on.
+        // See the class docblock's "Unique-id contract" section.
+        it('derives a deterministic id from instanceKey, stable across mounts', () => {
+            const shellHtml = buildShell();
+            const wrapperA = mountWithAdditions(LegacyFormWrapper, { shellHtml, instanceKey: 'c42-e7' });
+
+            expect(wrapperA.find('.comment_create').attributes('id')).toBe('comment_create_form_vueform-c42-e7');
+            expect(wrapperA.find('textarea').attributes('id')).toBe('newCommentForm_vueform-c42-e7_input');
+            expect(wrapperA.find('input[type="file"]').attributes('data-upload-drop-zone'))
+                .toBe('#comment_create_form_vueform-c42-e7');
+
+            // Stability contract: a remount of the same logical form (e.g. the
+            // same content's create form after a pjax navigation) reproduces
+            // the exact same ids — that is what keys the draft backup right.
+            wrapperA.unmount();
+            const wrapperB = mountWithAdditions(LegacyFormWrapper, { shellHtml, instanceKey: 'c42-e7' });
+            expect(wrapperB.find('.comment_create').attributes('id')).toBe('comment_create_form_vueform-c42-e7');
+        });
+
+        it('sanitizes instanceKey to characters safe inside the shell\'s CSS-id-selector references', () => {
+            const wrapper = mountWithAdditions(LegacyFormWrapper, {
+                shellHtml: buildShell(),
+                instanceKey: 'c42:e/7 x',
+            });
+
+            expect(wrapper.find('.comment_create').attributes('id')).toBe('comment_create_form_vueform-c42-e-7-x');
+        });
     });
 
     it('applies ui.additions to the shell on mount', () => {

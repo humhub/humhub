@@ -134,6 +134,26 @@
       // own category for exactly this.
       sendLabel() {
         return vue.i18n.t("ContentModule.base", "Submit");
+      },
+      // Deterministic identity for the shell's DOM ids, threaded down to
+      // LegacyFormWrapper (see ITS "Unique-id contract" docblock section for
+      // the full contract this scheme satisfies): unique among every comment
+      // form that can be mounted at once — the main create form (`c<contentId>`),
+      // one reply form per commented-on entry (`-r<parentCommentId>`), one edit
+      // form per comment (`-e<editCommentId>`) — AND stable across page loads
+      // for the same logical form. Stability is what keys the richtext
+      // editor's sessionStorage draft backup correctly: the wrapper's own
+      // per-page-load counter fallback produced `vueform-1` on EVERY page,
+      // merging drafts of unrelated contents across navigations
+      // (browser-verified) and arming phantom unsaved-changes confirms.
+      formInstanceKey() {
+        if (this.editCommentId !== null) {
+          return "c" + this.contentId + "-e" + this.editCommentId;
+        }
+        if (this.parentCommentId !== null) {
+          return "c" + this.contentId + "-r" + this.parentCommentId;
+        }
+        return "c" + this.contentId;
       }
     },
     mounted() {
@@ -179,9 +199,7 @@
           }
         }).then((comment) => {
           this.busy = false;
-          if (!isEdit) {
-            this.clear();
-          }
+          this.clear();
           this.$emit(isEdit ? "updated" : "created", comment);
         }).catch((response) => {
           this.busy = false;
@@ -227,8 +245,9 @@
         vue$1.createVNode(_component_RichTextField, {
           ref: "richtext",
           attribute: "message",
-          "shell-html": $props.shellHtml
-        }, null, 8, ["shell-html"]),
+          "shell-html": $props.shellHtml,
+          "instance-key": $options.formInstanceKey
+        }, null, 8, ["shell-html", "instance-key"]),
         (vue$1.openBlock(), vue$1.createBlock(vue$1.Teleport, {
           to: $data.teleportTarget,
           disabled: !$data.teleportTarget

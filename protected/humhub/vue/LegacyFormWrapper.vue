@@ -33,9 +33,31 @@
  * CSS-id-selector fragments like `#__VUEFORM___comment_create_form`, from
  * `VueFormShell::id('comment_create_form')` — the token is a PREFIX, not a
  * suffix) — not just in `id="..."` attributes themselves. This wrapper
- * replaces every occurrence of that token with a unique-per-instance id (a
- * module-scope counter, not `Math.random()`, so vue.build's output stays
- * deterministic) before binding the result via `v-html`.
+ * replaces every occurrence of that token with a unique-per-instance id
+ * before binding the result via `v-html`.
+ *
+ * That id comes from the `instanceKey` prop when given — sanitized and
+ * prefixed to `vueform-<key>` — and from a module-scope counter otherwise
+ * (`vueform-<n>`; a counter rather than `Math.random()` so vue.build's
+ * output stays deterministic). The two differ in one property that MATTERS
+ * beyond DOM-uniqueness: the counter restarts on every page load, so a
+ * counter-derived id is only unique WITHIN one page's lifetime — any
+ * feature the booted legacy widgets key off that id in storage that
+ * OUTLIVES the page silently collides across pages. Browser-verified
+ * concrete case: the richtext editor's draft backup
+ * (`RichTextEditor.prototype.backup()` in
+ * humhub.ui.richtext.prosemirror.js) keys `sessionStorage` entries by the
+ * hidden input's id — with counter ids, `vueform-1_..._input` on one page
+ * picked up (and merged with) a DIFFERENT page's `vueform-1` draft, and
+ * armed phantom "unsaved changes" confirms for content the user never
+ * typed there. Callers whose shell hosts such a widget MUST therefore pass
+ * an `instanceKey` that is (a) unique among simultaneously mounted
+ * instances on the page and (b) stable across page loads for the same
+ * logical form — see `CommentForm.vue`'s `formInstanceKey` for the
+ * reference scheme (`c<contentId>[-r<parentId>|-e<commentId>]`), which as
+ * a bonus makes draft restore survive navigation. Keys are sanitized to
+ * `[A-Za-z0-9_-]` so the resulting ids stay safe inside the CSS-id-selector
+ * fragments (`#vueform-...`) the shell's `data-*` attributes embed.
  *
  * ## Widget interop
  *
@@ -149,12 +171,20 @@ let instanceCounter = 0;
 export default {
     props: {
         shellHtml: { type: String, required: true },
+        // Deterministic identity for this instance's DOM ids — see the class
+        // docblock's "Unique-id contract" section for the uniqueness/stability
+        // contract a caller-supplied key must satisfy (and why callers whose
+        // shell hosts a backup-enabled richtext editor must pass one).
+        instanceKey: { type: String, default: null },
     },
     data() {
         return {
-            // Module-scope counter (not Math.random()) so builds/output stay
-            // deterministic; unique per mounted instance on the page.
-            instanceId: 'vueform-' + (++instanceCounter),
+            // From instanceKey when given (stable across page loads); from the
+            // module-scope counter otherwise (unique per page load only — and a
+            // counter, not Math.random(), so builds/output stay deterministic).
+            instanceId: this.instanceKey
+                ? 'vueform-' + this.instanceKey.replace(/[^A-Za-z0-9_-]/g, '-')
+                : 'vueform-' + (++instanceCounter),
         };
     },
     computed: {

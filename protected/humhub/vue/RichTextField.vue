@@ -1,5 +1,5 @@
 <template>
-    <LegacyFormWrapper ref="wrapper" :shell-html="shellHtml" />
+    <LegacyFormWrapper ref="wrapper" :shell-html="shellHtml" :instance-key="instanceKey" />
     <div v-if="hasError" :id="errorId" class="invalid-feedback d-block">
         <div v-for="(message, index) in errorMessages" :key="index">{{ message }}</div>
     </div>
@@ -73,6 +73,27 @@ export default {
     mixins: [fieldMixin],
     props: {
         shellHtml: { type: String, required: true },
+        // Passed through to LegacyFormWrapper — see ITS "Unique-id contract"
+        // docblock section for the uniqueness/stability contract (and why a
+        // caller whose shell hosts the backup-enabled richtext editor — i.e.
+        // every caller of THIS field — should pass one).
+        instanceKey: { type: String, default: null },
+    },
+    mounted() {
+        // Clear-error-on-input parity with the native fields: their
+        // `internalValue` setters call `clearOwnError()` on every write (see
+        // e.g. TextField.vue), but the legacy ProseMirror editor inside the
+        // shell never routes its input through any Vue binding, so a 422
+        // message rendered by this field used to stick even while the user
+        // was already fixing the value (browser-verified). The editor's
+        // contenteditable emits native `input` events that bubble through the
+        // shell — one delegated listener on the wrapper root is the whole
+        // bridge. Runs alongside fieldMixin's own mounted() (Vue merges mixin
+        // and component hooks; both run).
+        this.$refs.wrapper.$el.addEventListener('input', this.clearOwnError);
+    },
+    beforeUnmount() {
+        this.$refs.wrapper.$el.removeEventListener('input', this.clearOwnError);
     },
     methods: {
         getValue() {

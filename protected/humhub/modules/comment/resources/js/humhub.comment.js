@@ -70,8 +70,8 @@ humhub.module('comment', function (module, require, $) {
     };
 
     module.init = function () {
-        // `document` is never replaced by pjax (only `#layout-content` is - see
-        // humhub.vue.js `module.unload`), so a single document-level listener keeps
+        // `document` is never replaced by pjax (only `#layout-content`'s content is -
+        // see humhub.vue.js's island MutationObserver), so a single document-level listener keeps
         // receiving the bubbling event from every island for the lifetime of the page.
         // Guarded so re-running init() (defensive - this module does not set
         // `initOnPjaxLoad`, so the core only calls it once) never double-binds.

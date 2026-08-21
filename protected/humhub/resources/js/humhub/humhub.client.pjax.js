@@ -33,7 +33,24 @@ humhub.module('client.pjax', function (module, require, $) {
             if ($(event.relatedTarget).data('target')) {
                 return false;
             }
+        });
 
+        // The module-lifecycle unload signal (humhub.core.js unloads EVERY
+        // module on it, e.g. humhub.vue.js used to unmount all of its islands)
+        // is bound to pjax:send, not pjax:beforeSend: pjax:send only fires once
+        // the request was actually dispatched (jquery.pjax.js only fires it for
+        // xhr.readyState > 0), i.e. after every pjax:beforeSend handler allowed
+        // the navigation. A pjax:beforeSend handler that cancels the navigation
+        // — most importantly humhub.client.js's acknowledgeForm "Unsaved
+        // changes will be lost" confirm — aborts the request before it is ever
+        // sent, and no module may be unloaded for a navigation that never
+        // happens: modules are only re-initialized on pjax:success, so a
+        // beforeSend-triggered unload left the CURRENT page half-unloaded
+        // (all Vue islands unmounted, document-level listeners gone) whenever
+        // the user canceled that confirm. The humhub-level event keeps its
+        // established name — it still marks "a pjax navigation is leaving this
+        // page", just only for navigations that are actually happening.
+        $(document).on("pjax:send", function (evt, xhr, options) {
             event.trigger('humhub:modules:client:pjax:beforeSend', {
                 'originalEvent': evt,
                 'xhr': xhr,

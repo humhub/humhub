@@ -624,8 +624,25 @@ humhub.module('vue', function (module, require, $) {
     };
 
     module.init = function () {
-        // Safety net: unmount islands whose root left the DOM (closed modal,
-        // deleted stream entry) to release watchers and listeners.
+        // Owns ALL island cleanup: unmount islands whose root left the DOM —
+        // the pjax navigation swapping #layout-content's content wholesale, a
+        // closed modal, a deleted stream entry — to release watchers and
+        // listeners. Sweeping `apps` also cancels still-in-flight mount
+        // reservations whose element was removed while their i18n preload was
+        // pending (see mountElement()'s stale-continuation guard).
+        //
+        // Deliberately no `module.unload` counterpart: the module-lifecycle
+        // unload signal fires when a pjax navigation STARTS (see
+        // humhub.client.pjax.js — since the send-time fix there, at least only
+        // for navigations that actually dispatch a request), which is always
+        // BEFORE the response arrives and the DOM swap happens — and the swap
+        // may never happen at all (aborted/superseded request). An eager
+        // unmount sweep on that signal blanked every island on the CURRENT,
+        // still-visible page; a canceled acknowledgeForm confirm used to leave
+        // the page permanently dead that way (islands unmounted, nothing ever
+        // re-mounts them because pjax:success never fires). Unmounting must
+        // track the islands' ACTUAL removal from the document, which is
+        // exactly what this observer does.
         var observer = new MutationObserver(function (mutations) {
             for (var i = 0; i < mutations.length; i++) {
                 if (mutations[i].removedNodes.length) {
@@ -639,16 +656,6 @@ humhub.module('vue', function (module, require, $) {
             }
         });
         observer.observe(document.body, { childList: true, subtree: true });
-    };
-
-    module.unload = function () {
-        // Pjax replaces #layout-content wholesale; unmount all islands inside it.
-        var layout = document.getElementById('layout-content');
-        apps.forEach(function (app, element) {
-            if (!element.isConnected || (layout && layout.contains(element))) {
-                unmountElement(element);
-            }
-        });
     };
 
     // `log` is exported for callers that want the same pre-ready-safe wrapper

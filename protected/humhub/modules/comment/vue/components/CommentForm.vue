@@ -1,6 +1,6 @@
 <template>
     <HumHubForm ref="form" model-name="Comment" :busy="busy" @submit="onSubmit">
-        <RichTextField ref="richtext" attribute="message" :shell-html="shellHtml" />
+        <RichTextField ref="richtext" attribute="message" :shell-html="shellHtml" :instance-key="formInstanceKey" />
         <Teleport :to="teleportTarget" :disabled="!teleportTarget">
             <SubmitButton
                 :loader="false"
@@ -28,10 +28,12 @@
  *  - create (default): POSTs to `/comment/comment/create` with `contentId`
  *    (+ `parentCommentId` for a reply), clears the editor/upload widgets on
  *    success and emits `created` with the new comment JSON.
- *  - edit: POSTs to `/comment/comment/update?id=<editCommentId>` instead,
- *    does NOT clear the editor (there is nothing to clear back to - the
- *    caller discards this component on success/cancel) and emits `updated`
- *    with the updated comment JSON.
+ *  - edit: POSTs to `/comment/comment/update?id=<editCommentId>` instead and
+ *    emits `updated` with the updated comment JSON. The caller discards this
+ *    component on success/cancel, but it still clear()s first — the richtext
+ *    draft backup (sessionStorage) and the acknowledgeForm baseline both
+ *    outlive the unmount (see the success handler's own comment in
+ *    onSubmit(), and cancelEdit() in CommentEntry for the discard twin).
  *
  * `initialMessage` (edit mode only) is applied via `RichTextField.setValue()`
  * once THIS component's own `mounted()` runs. Vue mounts children before
@@ -245,6 +247,26 @@ export default {
         sendLabel() {
             return i18n.t('ContentModule.base', 'Submit');
         },
+        // Deterministic identity for the shell's DOM ids, threaded down to
+        // LegacyFormWrapper (see ITS "Unique-id contract" docblock section for
+        // the full contract this scheme satisfies): unique among every comment
+        // form that can be mounted at once — the main create form (`c<contentId>`),
+        // one reply form per commented-on entry (`-r<parentCommentId>`), one edit
+        // form per comment (`-e<editCommentId>`) — AND stable across page loads
+        // for the same logical form. Stability is what keys the richtext
+        // editor's sessionStorage draft backup correctly: the wrapper's own
+        // per-page-load counter fallback produced `vueform-1` on EVERY page,
+        // merging drafts of unrelated contents across navigations
+        // (browser-verified) and arming phantom unsaved-changes confirms.
+        formInstanceKey() {
+            if (this.editCommentId !== null) {
+                return 'c' + this.contentId + '-e' + this.editCommentId;
+            }
+            if (this.parentCommentId !== null) {
+                return 'c' + this.contentId + '-r' + this.parentCommentId;
+            }
+            return 'c' + this.contentId;
+        },
     },
     mounted() {
         const shellEl = this.$refs.richtext.getShellElement();
@@ -309,9 +331,15 @@ export default {
                 },
             }).then((comment) => {
                 this.busy = false;
-                if (!isEdit) {
-                    this.clear();
-                }
+                // Edit mode clears too, even though the caller discards this
+                // component on `updated`: the discard only removes DOM — the
+                // richtext editor's sessionStorage draft backup and the
+                // acknowledgeForm baseline both OUTLIVE the unmount, and left
+                // unset they resurface the just-saved text as a phantom draft/
+                // "unsaved changes" confirm later (browser-verified; the exact
+                // reason cancelEdit() already clear()s on discard — see the
+                // class docblock's "Unsaved-changes guard" section).
+                this.clear();
                 this.$emit(isEdit ? 'updated' : 'created', comment);
             }).catch((response) => {
                 this.busy = false;
