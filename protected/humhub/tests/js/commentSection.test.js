@@ -382,49 +382,69 @@ describe('CommentSection', () => {
     });
 
     describe('replies (one level)', () => {
-        it('renders the preview and loads more replies with parentCommentId + cursor', async () => {
+        // EXACT browser-verified scenario (the "Show next N comments" nested-reply bug):
+        // comment id 4 (contentId 2) has 4 replies (ids 13,14,15,16); the preview shows the
+        // NEWEST 2 (15,16 - see CommentListService::getSiblings()'s default LIST_DIR_PREV),
+        // and the old code rendered a "Show next 2 comments" link BELOW the replies whose
+        // click fetched `direction=next&commentId=16` - the server correctly returned an
+        // empty window (nothing is newer than 16), so the link stayed dead forever. See
+        // CommentEntry's own "Previous-direction pagination fix" docblock section for the
+        // root cause and fix this pins.
+        it('renders "Show previous N" ABOVE the replies, and loads older replies with direction=previous cursored from the oldest SHOWN reply', async () => {
+            const reply15 = makeComment({ id: 15, parentCommentId: 4, children: null, message: 'reply 15' });
+            const reply16 = makeComment({ id: 16, parentCommentId: 4, children: null, message: 'reply 16' });
             const root = makeComment({
-                id: 1,
-                children: {
-                    total: 2,
-                    items: [makeComment({ id: 10, parentCommentId: 1, children: null })],
-                    hasMore: true,
-                },
+                id: 4,
+                contentId: 2,
+                children: { total: 4, items: [reply15, reply16], hasMore: true },
             });
-            // total: 2 matches the 2 replies that ever exist across both
-            // responses (10, then 11) - childHasMore is derived the same way
-            // the server derives it for previews (`total > count(items)`),
-            // so an inconsistent total here would make the assertion below
-            // fail regardless of nextCount.
-            // rootTotal: 1 - a reply window's response is only ever read for `total` (the
-            // reply count, see CommentEntry's loadMoreReplies()) - included here purely for
-            // shape realism with the real endpoint, which always returns both fields.
-            const response = {
-                comments: [makeComment({ id: 11, parentCommentId: 1, children: null })],
-                prevCount: 0,
-                nextCount: 0,
-                total: 2,
-                rootTotal: 1,
-            };
+            const reply13 = makeComment({ id: 13, parentCommentId: 4, children: null, message: 'reply 13' });
+            const reply14 = makeComment({ id: 14, parentCommentId: 4, children: null, message: 'reply 14' });
+            // total/rootTotal here are content-global (1 root + 4 replies / 1 root) and, per
+            // CommentEntry's own docblock, are deliberately never read by loadMoreReplies() -
+            // included purely for shape realism with the real endpoint.
+            const response = { comments: [reply13, reply14], prevCount: 0, nextCount: 0, total: 5, rootTotal: 1 };
             globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(response));
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [root], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 }, pageSize: 5 },
+                props: {
+                    contentId: 2,
+                    initial: { comments: [root], prevCount: 0, nextCount: 0, total: 5, rootTotal: 1 },
+                    pageSize: 10,
+                },
             });
 
-            expect(wrapper.find('.nested-comments-root .single-comment').exists()).toBe(true);
-            expect(wrapper.find('.nested-comments-root .showMore').exists()).toBe(true);
+            const nested = wrapper.find('.nested-comments-root');
+            expect(nested.find('.single-comment').exists()).toBe(true);
+            expect(nested.find('.showMore').exists()).toBe(true);
+            // The i18n test stub (see support/setup.mjs) returns the raw message key
+            // un-interpolated - `{count}` is never substituted in this harness (matching
+            // every other i18n-driven label assertion in this suite) - so what's actually
+            // being pinned here is the KEY itself: "previous", not "next".
+            expect(nested.find('.showMore a').text()).toBe('Show previous {count} comments');
 
-            await wrapper.find('.nested-comments-root .showMore a').trigger('click');
+            // The link is the FIRST child of `.comment` - i.e. rendered ABOVE the replies
+            // (chronologically correct: older, hidden replies belong above the newest-first
+            // preview) - not after them the way the old next-direction UI had it.
+            const commentChildren = [...nested.find('.comment').element.children];
+            const showMoreIndex = commentChildren.findIndex((el) => el.classList.contains('showMore'));
+            const firstReplyIndex = commentChildren.findIndex((el) => el.id === 'comment_15');
+            expect(showMoreIndex).toBe(0);
+            expect(showMoreIndex).toBeLessThan(firstReplyIndex);
 
+            await nested.find('.showMore a').trigger('click');
+
+            // Both params asserted: direction=previous (not next), cursored from 15 - the
+            // oldest currently-SHOWN reply, not 16 (the newest).
             expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith(
-                '/comment/comment/list?contentId=42&parentCommentId=1&commentId=10&direction=next&pageSize=5',
+                '/comment/comment/list?contentId=2&parentCommentId=4&commentId=15&direction=previous&pageSize=10',
             );
 
             await vi.waitFor(() => {
                 const ids = wrapper.findAll('.nested-comments-root .single-comment').map((entry) => entry.attributes('id'));
-                expect(ids).toEqual(['comment_10', 'comment_11']);
+                // Prepended in correct chronological order: [13,14,15,16].
+                expect(ids).toEqual(['comment_13', 'comment_14', 'comment_15', 'comment_16']);
             });
             expect(wrapper.find('.nested-comments-root .showMore').exists()).toBe(false);
         });

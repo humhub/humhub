@@ -95,6 +95,10 @@
             <div v-if="comment.children" class="nested-comments-root">
                 <div class="bg-light p-2 mt-3 comment-container" :class="{ 'd-none': !childItems.length && !replyOpen }">
                     <div class="comment">
+                        <div v-if="childHasMore" class="showMore">
+                            <a href="#" :class="{ disabled: busyReplies }" @click.prevent="loadMoreReplies">{{ moreRepliesLabel }}</a>
+                        </div>
+
                         <template v-for="child in childItems" :key="revisionKey(child)">
                             <hr class="comment-separator">
                             <CommentEntry
@@ -108,11 +112,6 @@
                                 @entry-updated="onChildUpdated"
                             />
                         </template>
-
-                        <div v-if="childHasMore" class="showMore">
-                            <hr class="comment-separator">
-                            <a href="#" :class="{ disabled: busyReplies }" @click.prevent="loadMoreReplies">{{ moreRepliesLabel }}</a>
-                        </div>
                     </div>
 
                     <CommentForm
@@ -228,29 +227,55 @@
  * Every injection carries a safe no-op/empty default so this component
  * tolerates being mounted without a providing ancestor (e.g. in isolation).
  *
- * ## Next-pagination gap fix ("Show next 0 comments")
+ * ## Previous-direction pagination fix ("Show next N comments" that never advances)
  *
- * `onReplyCreated()` pushes the viewer's own newly-created reply straight onto the tail of
- * `childItems` without a real `/comment/comment/list` fetch. Before this fix,
- * `loadMoreReplies()` used that tail item as its pagination cursor, the label
- * (`childRemainingNext`) and the gate (`childHasMore`) were two independently-mutated
- * fields, and `onReplyCreated()`/`onChildRemoved()` only ever updated the latter - so after
- * an own-reply append, the label kept showing whatever count was last fetched (stale) while
- * the gate correctly stayed open. Clicking it then paged forward from the just-appended
- * reply instead of from the last comment the server actually confirmed as loaded, skipping
- * over the real gap: the server returned zero matching replies (`nextCount: 0`), which got
- * written straight into the label, producing a permanent "Show next 0 comments" dead link
- * (the gate stayed open too, since `childTotal` still exceeded `childItems.length`).
+ * The child preview (`comment.children.items`, from
+ * `CommentJsonService::getChildPreviewItems()` -> `CommentListService::getLimited()` ->
+ * `getSiblings(0, limit)` with the default `LIST_DIR_PREV`) always shows the NEWEST `limit`
+ * replies. The hidden replies are therefore always the OLDER ones - but `loadMoreReplies()`
+ * used to paginate with `direction=next` from the newest loaded reply's id, a dead end by
+ * construction: there is never anything newer than the newest loaded reply, so the server
+ * always returned an empty window and the link ("Show next N comments") stayed dead forever,
+ * no matter how many older replies remained hidden (browser-verified: comment id 4 with 4
+ * replies, preview showing the newest 2 (ids 15/16), "Show next 2 comments" that did nothing
+ * on click). The legacy nested widget avoided this by rendering its ShowMore ABOVE the reply
+ * list with `LIST_DIR_PREV` semantics (see `ShowMore.php`/`comments.php`) - the same
+ * "Show previous/next {count} comments" message keys were always reused for both directions
+ * and both nesting levels, so the mismatch was purely a client wiring bug, not a message-key
+ * gap.
  *
- * Fixed the same way as CommentList's own root-level pagination (see its docblock, same
- * section header, for the shared reasoning):
- *  - `childRemaining`/`childHasMore` are now ONE derived computed pair (`childTotal -
- *    childItems.length`) instead of two independently-mutated fields.
- *  - `childLastCursorId` tracks the last SERVER-confirmed reply separately from
- *    `childItems`' tail, updated only by a real `loadMoreReplies()` response.
- *  - A `loadMoreReplies()` response may re-return a reply already present in `childItems`
- *    (deduped via `isKnownId()`/`registerKnownId()`), with genuinely new ones spliced in
- *    right before the first item newer than the cursor rather than appended past it again.
+ * Fixed by mirroring CommentList's own root-level `loadPrev()` exactly, instead of its
+ * `loadNext()` (which this used to copy):
+ *  - `direction: 'previous'`, cursored from `childFirstCursorId` - the id of the FIRST
+ *    (oldest) item of the last SERVER-PAGINATED window (initial hydration or a
+ *    `loadMoreReplies()` response), deliberately never touched by `onReplyCreated()`'s
+ *    own/live append or by `onChildRemoved()` (an append always adds at the TAIL - see
+ *    `onReplyCreated()` - and a delete only ever removes an existing entry, never shifts the
+ *    window backwards).
+ *  - The response is PREPENDED (`[...response.comments, ...this.childItems]`), same as
+ *    `loadPrev()`: `response.comments` for `direction=previous` already comes back ascending
+ *    by id/`created_at` (`CommentListService::getSiblings()`'s own `array_reverse()`), so
+ *    this is a straight, order-correct prepend - no splice-by-cursor-position logic needed.
+ *  - No `isKnownId()`/`registerKnownId()` dedup, same as `loadPrev()`: the cursor is the
+ *    HEAD of `childItems` and only ever moves further back, while every append (own or live)
+ *    only ever happens at the TAIL (past the head) - so a `direction=previous` fetch can
+ *    structurally never re-return an id already present in `childItems`, unlike the old
+ *    `direction=next` scheme this replaces.
+ *  - `childTotal` is deliberately NOT resynced from the response here (unlike `loadPrev()`/
+ *    `loadNext()` resyncing `total`/`rootTotal`): `serializeWindow()`'s `total`/`rootTotal`
+ *    are content-global, not scoped to this one parent's replies, so there is no reply-scoped
+ *    total in the response to resync from - and none is needed anyway, since revealing
+ *    already-existing hidden replies never changes how many replies exist for this parent;
+ *    the value `onReplyCreated()`/`onChildRemoved()` already maintain stays correct through a
+ *    load-more.
+ *  - The show-more link moved ABOVE the child list in the template (chronologically correct:
+ *    older replies belong above the newest-loaded preview) and now shares the "Show previous
+ *    {count} comments" key with the root list's own `prevLabel`, matching the legacy widget's
+ *    placement/wording for a `LIST_DIR_PREV` ShowMore.
+ *
+ * `childRemaining`/`childHasMore` stay the single derived computed pair (`childTotal -
+ * childItems.length`) introduced for the childRemaining/gate desync this same click used to
+ * also cause - see `childRemaining`'s own comment below.
  */
 import { client, i18n, log, modal, url } from '@humhub/vue';
 import CommentControls from './CommentControls.vue';
@@ -301,11 +326,11 @@ export default {
             editMessage: null,
             childItems: this.comment.children ? [...this.comment.children.items] : [],
             childTotal: this.comment.children ? this.comment.children.total : 0,
-            // Id of the last item of the last SERVER-PAGINATED reply window (initial
+            // Id of the FIRST (oldest) item of the last SERVER-PAGINATED reply window (initial
             // hydration or a loadMoreReplies() response) - deliberately never touched by
-            // onReplyCreated()'s own/live append, see "Next-pagination gap fix" below.
-            childLastCursorId: this.comment.children && this.comment.children.items.length
-                ? this.comment.children.items[this.comment.children.items.length - 1].id
+            // onReplyCreated()'s own/live append, see "Previous-direction pagination fix" below.
+            childFirstCursorId: this.comment.children && this.comment.children.items.length
+                ? this.comment.children.items[0].id
                 : null,
             busyReplies: false,
             busyReveal: false,
@@ -332,22 +357,23 @@ export default {
             return i18n.t('CommentModule.base', 'Cancel Edit');
         },
         // Single derived count driving BOTH the `v-if="childHasMore"` gate and this label's
-        // `{count}` (previously two independently-mutated fields that could desync - see
-        // "Next-pagination gap fix" below) - `childTotal` is kept correct by every mutation
-        // (onReplyCreated/onChildRemoved/loadMoreReplies), so this can never show a nonzero
-        // gate with a stale/zero label or vice versa.
+        // `{count}` (previously two independently-mutated fields that could desync) -
+        // `childTotal` is kept correct by every mutation (onReplyCreated/onChildRemoved),
+        // so this can never show a nonzero gate with a stale/zero label or vice versa.
         childRemaining() {
             return Math.max(0, this.childTotal - this.childItems.length);
         },
         childHasMore() {
             return this.childRemaining > 0;
         },
-        // Same wording/category/placeholder as CommentList's own "show next"
-        // link: the legacy nested Comments::widget() reused the exact same
-        // ShowMore strings for children, there never was a distinct
-        // "replies" message key.
+        // Same wording/category/key as CommentList's own "show previous" link
+        // (`prevLabel`), not "show next": the hidden replies are always the OLDER ones (the
+        // preview shows the NEWEST N, see "Previous-direction pagination fix" above), so this
+        // is symmetric with the root list's own loadPrev()/prevLabel, not loadNext()/
+        // nextLabel. The legacy nested Comments::widget() reused these exact same ShowMore
+        // strings for children too - there never was a distinct "replies" message key.
         moreRepliesLabel() {
-            return i18n.t('CommentModule.base', 'Show next {count} comments', { count: this.childRemaining });
+            return i18n.t('CommentModule.base', 'Show previous {count} comments', { count: this.childRemaining });
         },
         // No server-formatted absolute time in the JSON payload (only ISO
         // `createdAt` - see plan §"Timestamps") - formatted client-side via
@@ -530,40 +556,28 @@ export default {
                     log.error(e, true);
                 });
         },
-        // See this component's own docblock, "Next-pagination gap fix": cursors from
-        // `childLastCursorId` (the last SERVER-confirmed reply), never from the tail of
-        // `childItems` (which may be an own-appended reply past an unloaded gap). The
-        // response can therefore legitimately re-return a reply already present in
-        // `childItems` - deduped via the shared `isKnownId()`/`registerKnownId()` mechanism -
-        // with genuinely new ones spliced in right before the first item newer than the
-        // cursor, i.e. before that appended tail, preserving chronological order.
+        // See this component's own docblock, "Previous-direction pagination fix": cursors
+        // from `childFirstCursorId` (the HEAD of the last SERVER-PAGINATED window), mirroring
+        // CommentList's own loadPrev() exactly - a straight prepend, no dedup, no total
+        // resync (see the docblock for why none of those are needed here).
         loadMoreReplies() {
-            if (this.busyReplies || this.childItems.length === 0 || this.childLastCursorId === null) {
+            if (this.busyReplies || this.childItems.length === 0 || this.childFirstCursorId === null) {
                 return;
             }
             this.busyReplies = true;
-            const cursor = this.childLastCursorId;
+            const cursor = this.childFirstCursorId;
 
             client.get(url('/comment/comment/list', {
                 contentId: this.comment.contentId,
                 parentCommentId: this.comment.id,
                 commentId: cursor,
-                direction: 'next',
+                direction: 'previous',
                 pageSize: this.pageSize,
             })).then((response) => {
-                const newComments = response.comments.filter((comment) => !this.isKnownId(comment.id));
-                newComments.forEach((comment) => this.registerKnownId(comment.id));
-
-                let insertIndex = this.childItems.findIndex((item) => item.id > cursor);
-                if (insertIndex === -1) {
-                    insertIndex = this.childItems.length;
-                }
-                this.childItems.splice(insertIndex, 0, ...newComments);
-
+                this.childItems = [...response.comments, ...this.childItems];
                 if (response.comments.length > 0) {
-                    this.childLastCursorId = response.comments[response.comments.length - 1].id;
+                    this.childFirstCursorId = response.comments[0].id;
                 }
-                this.childTotal = response.total;
             }).catch((e) => {
                 log.error(e, true);
             }).finally(() => {

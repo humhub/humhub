@@ -329,10 +329,10 @@
         editMessage: null,
         childItems: this.comment.children ? [...this.comment.children.items] : [],
         childTotal: this.comment.children ? this.comment.children.total : 0,
-        // Id of the last item of the last SERVER-PAGINATED reply window (initial
+        // Id of the FIRST (oldest) item of the last SERVER-PAGINATED reply window (initial
         // hydration or a loadMoreReplies() response) - deliberately never touched by
-        // onReplyCreated()'s own/live append, see "Next-pagination gap fix" below.
-        childLastCursorId: this.comment.children && this.comment.children.items.length ? this.comment.children.items[this.comment.children.items.length - 1].id : null,
+        // onReplyCreated()'s own/live append, see "Previous-direction pagination fix" below.
+        childFirstCursorId: this.comment.children && this.comment.children.items.length ? this.comment.children.items[0].id : null,
         busyReplies: false,
         busyReveal: false,
         busyEdit: false
@@ -358,22 +358,23 @@
         return vue.i18n.t("CommentModule.base", "Cancel Edit");
       },
       // Single derived count driving BOTH the `v-if="childHasMore"` gate and this label's
-      // `{count}` (previously two independently-mutated fields that could desync - see
-      // "Next-pagination gap fix" below) - `childTotal` is kept correct by every mutation
-      // (onReplyCreated/onChildRemoved/loadMoreReplies), so this can never show a nonzero
-      // gate with a stale/zero label or vice versa.
+      // `{count}` (previously two independently-mutated fields that could desync) -
+      // `childTotal` is kept correct by every mutation (onReplyCreated/onChildRemoved),
+      // so this can never show a nonzero gate with a stale/zero label or vice versa.
       childRemaining() {
         return Math.max(0, this.childTotal - this.childItems.length);
       },
       childHasMore() {
         return this.childRemaining > 0;
       },
-      // Same wording/category/placeholder as CommentList's own "show next"
-      // link: the legacy nested Comments::widget() reused the exact same
-      // ShowMore strings for children, there never was a distinct
-      // "replies" message key.
+      // Same wording/category/key as CommentList's own "show previous" link
+      // (`prevLabel`), not "show next": the hidden replies are always the OLDER ones (the
+      // preview shows the NEWEST N, see "Previous-direction pagination fix" above), so this
+      // is symmetric with the root list's own loadPrev()/prevLabel, not loadNext()/
+      // nextLabel. The legacy nested Comments::widget() reused these exact same ShowMore
+      // strings for children too - there never was a distinct "replies" message key.
       moreRepliesLabel() {
-        return vue.i18n.t("CommentModule.base", "Show next {count} comments", { count: this.childRemaining });
+        return vue.i18n.t("CommentModule.base", "Show previous {count} comments", { count: this.childRemaining });
       },
       // No server-formatted absolute time in the JSON payload (only ISO
       // `createdAt` - see plan §"Timestamps") - formatted client-side via
@@ -510,37 +511,27 @@
           vue.log.error(e, true);
         });
       },
-      // See this component's own docblock, "Next-pagination gap fix": cursors from
-      // `childLastCursorId` (the last SERVER-confirmed reply), never from the tail of
-      // `childItems` (which may be an own-appended reply past an unloaded gap). The
-      // response can therefore legitimately re-return a reply already present in
-      // `childItems` - deduped via the shared `isKnownId()`/`registerKnownId()` mechanism -
-      // with genuinely new ones spliced in right before the first item newer than the
-      // cursor, i.e. before that appended tail, preserving chronological order.
+      // See this component's own docblock, "Previous-direction pagination fix": cursors
+      // from `childFirstCursorId` (the HEAD of the last SERVER-PAGINATED window), mirroring
+      // CommentList's own loadPrev() exactly - a straight prepend, no dedup, no total
+      // resync (see the docblock for why none of those are needed here).
       loadMoreReplies() {
-        if (this.busyReplies || this.childItems.length === 0 || this.childLastCursorId === null) {
+        if (this.busyReplies || this.childItems.length === 0 || this.childFirstCursorId === null) {
           return;
         }
         this.busyReplies = true;
-        const cursor = this.childLastCursorId;
+        const cursor = this.childFirstCursorId;
         vue.client.get(vue.url("/comment/comment/list", {
           contentId: this.comment.contentId,
           parentCommentId: this.comment.id,
           commentId: cursor,
-          direction: "next",
+          direction: "previous",
           pageSize: this.pageSize
         })).then((response) => {
-          const newComments = response.comments.filter((comment) => !this.isKnownId(comment.id));
-          newComments.forEach((comment) => this.registerKnownId(comment.id));
-          let insertIndex = this.childItems.findIndex((item) => item.id > cursor);
-          if (insertIndex === -1) {
-            insertIndex = this.childItems.length;
-          }
-          this.childItems.splice(insertIndex, 0, ...newComments);
+          this.childItems = [...response.comments, ...this.childItems];
           if (response.comments.length > 0) {
-            this.childLastCursorId = response.comments[response.comments.length - 1].id;
+            this.childFirstCursorId = response.comments[0].id;
           }
-          this.childTotal = response.total;
         }).catch((e) => {
           vue.log.error(e, true);
         }).finally(() => {
@@ -786,6 +777,19 @@
             },
             [
               vue$1.createElementVNode("div", _hoisted_15, [
+                $options.childHasMore ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_16, [
+                  vue$1.createElementVNode(
+                    "a",
+                    {
+                      href: "#",
+                      class: vue$1.normalizeClass({ disabled: $data.busyReplies }),
+                      onClick: _cache[3] || (_cache[3] = vue$1.withModifiers((...args) => $options.loadMoreReplies && $options.loadMoreReplies(...args), ["prevent"]))
+                    },
+                    vue$1.toDisplayString($options.moreRepliesLabel),
+                    3
+                    /* TEXT, CLASS */
+                  )
+                ])) : vue$1.createCommentVNode("v-if", true),
                 (vue$1.openBlock(true), vue$1.createElementBlock(
                   vue$1.Fragment,
                   null,
@@ -820,27 +824,7 @@
                   }),
                   128
                   /* KEYED_FRAGMENT */
-                )),
-                $options.childHasMore ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_16, [
-                  _cache[8] || (_cache[8] = vue$1.createElementVNode(
-                    "hr",
-                    { class: "comment-separator" },
-                    null,
-                    -1
-                    /* CACHED */
-                  )),
-                  vue$1.createElementVNode(
-                    "a",
-                    {
-                      href: "#",
-                      class: vue$1.normalizeClass({ disabled: $data.busyReplies }),
-                      onClick: _cache[3] || (_cache[3] = vue$1.withModifiers((...args) => $options.loadMoreReplies && $options.loadMoreReplies(...args), ["prevent"]))
-                    },
-                    vue$1.toDisplayString($options.moreRepliesLabel),
-                    3
-                    /* TEXT, CLASS */
-                  )
-                ])) : vue$1.createCommentVNode("v-if", true)
+                ))
               ]),
               $data.replyOpen && $props.formShellHtml ? (vue$1.openBlock(), vue$1.createBlock(_component_CommentForm, {
                 key: 0,

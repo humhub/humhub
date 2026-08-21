@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import CommentSection from '../../modules/comment/vue/CommentSection.vue';
 import CommentForm from '../../modules/comment/vue/components/CommentForm.vue';
+import CommentEntry from '../../modules/comment/vue/components/CommentEntry.vue';
 import LikeButton from '../../modules/like/vue/LikeButton.vue';
 import RichTextOutput from '../../vue/RichTextOutput.vue';
 import LegacyFormWrapper from '../../vue/LegacyFormWrapper.vue';
@@ -551,11 +552,15 @@ describe('Comment mutations + live updates', () => {
         });
     });
 
-    // Regression coverage for the "Show next 0 comments" bug: an own/live-appended
-    // comment used to become the pagination cursor for the NEXT "show more" click,
-    // skipping over whatever real gap existed and permanently stranding it - see
-    // CommentList.vue's and CommentEntry.vue's own "Next-pagination gap fix" docblock
-    // sections for the full root-cause writeup this covers.
+    // Regression coverage for the "Show next 0 comments" bug (root list): an own/live-
+    // appended comment used to become the pagination cursor for the NEXT "show more"
+    // click, skipping over whatever real gap existed and permanently stranding it - see
+    // CommentList.vue's own "Next-pagination gap fix" docblock section for the full
+    // root-cause writeup this covers. The reply/children equivalent below instead covers
+    // CommentEntry.vue's own "Previous-direction pagination fix" (a distinct bug: replies
+    // paginate backwards from the oldest SHOWN reply, never forwards from an appended one -
+    // see that docblock section for why children never needed the same next-direction
+    // dedupe/splice machinery root pagination does).
     describe('replies/root pagination gap fix (Show next 0 comments)', () => {
         it('renders no show-more link after an own reply is appended to an already fully-loaded reply list', async () => {
             const replyA = makeComment({ id: 10, parentCommentId: 1, children: null, message: 'reply a' });
@@ -591,26 +596,32 @@ describe('Comment mutations + live updates', () => {
             expect(wrapper.find('.nested-comments-root .showMore').exists()).toBe(false);
         });
 
-        it('inserts a previously-hidden reply before an own-appended reply, dedupes the appended one, and clears the link once caught up (children)', async () => {
-            const replyA = makeComment({ id: 10, parentCommentId: 1, children: null, message: 'reply a' });
-            const replyB = makeComment({ id: 11, parentCommentId: 1, children: null, message: 'reply b' });
-            const root = makeComment({ id: 1, children: { total: 3, items: [replyA, replyB], hasMore: true } });
-            const ownReply = makeComment({ id: 20, parentCommentId: 1, children: null, message: 'own reply' });
+        // Covers CommentEntry's own "Previous-direction pagination fix": an own-appended
+        // reply lands at the TAIL of `childItems`, never touching `childFirstCursorId` (the
+        // HEAD, seeded from the oldest SHOWN reply) - so a subsequent load-older still
+        // cursors from the true pre-append head, and (unlike root/next pagination) the
+        // response can never legitimately re-return an id already in `childItems`, since the
+        // fetch is strictly for ids older than that head.
+        it('own reply appended at the tail does not move the load-older cursor, produces no duplicates, and remaining reaches 0 once caught up', async () => {
+            const reply15 = makeComment({ id: 15, parentCommentId: 4, children: null, message: 'reply 15' });
+            const reply16 = makeComment({ id: 16, parentCommentId: 4, children: null, message: 'reply 16' });
+            const root = makeComment({ id: 4, contentId: 2, children: { total: 4, items: [reply15, reply16], hasMore: true } });
+            const ownReply = makeComment({ id: 20, parentCommentId: 4, contentId: 2, children: null, message: 'own reply' });
             globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve(ownReply));
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
                 props: {
-                    contentId: 42,
-                    // total: 4 (1 root + 3 replies), rootTotal: 1 (just the one root).
-                    initial: { comments: [root], prevCount: 0, nextCount: 0, total: 4, rootTotal: 1 },
+                    contentId: 2,
+                    // total: 5 (1 root + 4 replies), rootTotal: 1 (just the one root).
+                    initial: { comments: [root], prevCount: 0, nextCount: 0, total: 5, rootTotal: 1 },
                     canComment: true,
                     formShellHtml: buildShell(),
-                    pageSize: 5,
+                    pageSize: 10,
                 },
             });
 
-            // Preview shows 2 of 3 replies before anything is appended.
+            // Preview shows 2 of 4 replies before anything is appended.
             expect(wrapper.find('.nested-comments-root .showMore').exists()).toBe(true);
 
             const replyLink = wrapper.findAll('.wall-entry-controls a').find((a) => a.text().startsWith('Reply'));
@@ -619,39 +630,77 @@ describe('Comment mutations + live updates', () => {
             await wrapper.find('.nested-comments-root .btn-comment-submit').trigger('click');
             await vi.waitFor(() => expect(wrapper.findAll('.nested-comments-root .single-comment').length).toBe(3));
 
-            // Still open (never a stale-zero gate) right after the append - the
-            // pre-existing hidden reply hasn't been fetched yet, so the derived count
-            // (`childTotal - childItems.length`, still 1) is unchanged.
+            // Still open right after the append - childTotal (5) still exceeds
+            // childItems.length (3: 15, 16, 20).
             expect(wrapper.find('.nested-comments-root .showMore').exists()).toBe(true);
 
-            const hiddenReply = makeComment({ id: 15, parentCommentId: 1, children: null, message: 'hidden reply' });
+            const reply13 = makeComment({ id: 13, parentCommentId: 4, children: null, message: 'reply 13' });
+            const reply14 = makeComment({ id: 14, parentCommentId: 4, children: null, message: 'reply 14' });
             globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({
-                // Real "next" pagination from the pre-append cursor (11) legitimately
-                // re-returns the already-known own reply (20) too, alongside the
-                // genuinely new, previously-hidden one (15).
-                comments: [hiddenReply, ownReply],
+                comments: [reply13, reply14],
                 prevCount: 0,
                 nextCount: 0,
-                total: 4,
+                total: 5,
                 rootTotal: 1,
             }));
 
             await wrapper.find('.nested-comments-root .showMore a').trigger('click');
 
-            // The cursor is the pre-append last loaded reply (11), never the
-            // own-appended one (20) that is now the array's tail.
+            // The cursor is still 15 - the pre-append oldest SHOWN reply - never the
+            // own-appended one (20), which is now the array's tail.
             expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith(
-                '/comment/comment/list?contentId=42&parentCommentId=1&commentId=11&direction=next&pageSize=5',
+                '/comment/comment/list?contentId=2&parentCommentId=4&commentId=15&direction=previous&pageSize=10',
             );
 
             await vi.waitFor(() => {
                 const ids = wrapper.findAll('.nested-comments-root .single-comment').map((entry) => entry.attributes('id'));
-                // The previously-hidden reply (15) lands BEFORE the own-appended one
-                // (20), and the duplicate (20) from the response was deduped, not
-                // inserted a second time.
-                expect(ids).toEqual(['comment_10', 'comment_11', 'comment_15', 'comment_20']);
+                // No duplicates: the genuinely older replies (13, 14) prepend cleanly in
+                // front of the already-loaded window (15, 16, 20).
+                expect(ids).toEqual(['comment_13', 'comment_14', 'comment_15', 'comment_16', 'comment_20']);
             });
             expect(wrapper.find('.nested-comments-root .showMore').exists()).toBe(false);
+        });
+
+        // Covers the delete side: `onChildRemoved()` keeps `childTotal` and `childItems`
+        // moving together, so the single derived `childRemaining`/`childHasMore` pair (and
+        // the label reading off it) can never go stale/phantom around a delete - unlike the
+        // pre-round-3 two-independently-mutated-fields shape this replaced.
+        it('keeps the remaining count and label consistent (no phantom) after a loaded reply is deleted', async () => {
+            const reply15 = makeComment({ id: 15, parentCommentId: 4, children: null, message: 'reply 15' });
+            const reply16 = makeComment({ id: 16, parentCommentId: 4, children: null, message: 'reply 16', canDelete: true });
+            // total: 3 - 2 shown (15, 16), 1 still hidden/unfetched.
+            const root = makeComment({ id: 4, contentId: 2, children: { total: 3, items: [reply15, reply16], hasMore: true } });
+            globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve({ success: true }));
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: {
+                    contentId: 2,
+                    initial: { comments: [root], prevCount: 0, nextCount: 0, total: 4, rootTotal: 1 },
+                },
+            });
+
+            const showMoreLink = () => wrapper.find('.nested-comments-root .showMore a');
+            // The root CommentEntry (index 0 - see findAllComponents() order: the outer
+            // entry renders before its own recursively-nested reply entries) owns the
+            // childRemaining/childHasMore this parent's link is derived from.
+            const rootEntry = () => wrapper.findAllComponents(CommentEntry)[0].vm;
+
+            expect(showMoreLink().exists()).toBe(true);
+            expect(rootEntry().childHasMore).toBe(true);
+            expect(rootEntry().childRemaining).toBe(1);
+
+            // Only the reply has canDelete: true, so this is unambiguous.
+            const deleteItem = wrapper.findAll('.dropdown-item').find((item) => item.text() === 'Delete');
+            await deleteItem.trigger('click');
+
+            await vi.waitFor(() => expect(wrapper.find('#comment_16').exists()).toBe(false));
+            // childTotal (3 -> 2) and childItems.length (2 -> 1) moved together, so the
+            // derived remaining count is unchanged - never a stale/phantom 0 or 2 - and the
+            // gate/label (reading off the very same computed) stay just as consistent.
+            expect(showMoreLink().exists()).toBe(true);
+            expect(rootEntry().childHasMore).toBe(true);
+            expect(rootEntry().childRemaining).toBe(1);
         });
 
         it('inserts a previously-hidden root comment before an own-appended one, dedupes the appended one, and clears the link once caught up (root list)', async () => {
