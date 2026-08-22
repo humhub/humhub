@@ -3,7 +3,7 @@ HumHub Changelog
 
 1.19.0-beta.3 (Unreleased)
 -------------------------------
-- Fix: Button text horizontal centering (since 1.19.0-beta.2)
+- Fix #8400: Button text horizontal centering and spacing in People heading (since 1.19.0-beta.2)
 
 1.19.0-beta.2 (August 19, 2026)
 -------------------------------
