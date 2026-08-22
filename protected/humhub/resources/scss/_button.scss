@@ -18,6 +18,7 @@
         display: inline-flex;
         align-items: center;
         gap: var(--hh-btn-gap);
+        justify-content: center;
 
         &.input {
             outline: none;
