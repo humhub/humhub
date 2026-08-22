@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.19.0-beta.3 (Unreleased)
+-------------------------------
+- Fix: Module version migration crash when module versions cannot be determined
+
 1.19.0-beta.2 (August 19, 2026)
 -------------------------------
 - Fix #8350: A configured but unreachable database presented the web installer — offering to re-setup an already installed instance during a transient outage — instead of an error; such requests now return a 503
