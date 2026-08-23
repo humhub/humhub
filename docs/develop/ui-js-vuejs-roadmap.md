@@ -6,9 +6,10 @@ is intentionally brief.
 
 ## Status
 
-The work happens on the long-running branch `enh/vuejs-integration`, which stays
-independent of `develop` for now (deliberate decision: gather more real-world Vue
-experience before merging).
+The work happens on the long-running branch `enh/vuejs-integration`, open as draft
+[#8403](https://github.com/humhub/humhub/pull/8403) with the `rest` module companion
+[humhub/rest#249](https://github.com/humhub/rest/pull/249). It stays independent of `develop`
+for now (deliberate decision: gather more real-world Vue experience before merging).
 
 Done on that branch:
 
@@ -103,8 +104,6 @@ Everything parked or deferred lives here; the reasoning is in
 - `humhub.maxVersion` on the previous `rest` module line, so the marketplace stops offering a
   version without the core API stack for 1.19+. (0.13 requires 1.19 already; the released
   0.12.x additionally crashes on impersonate-token auth there, core #8372.)
-- Core `CHANGELOG.md` entries for this whole branch — deliberately not written yet, they need
-  the PR number.
 
 ### Islands & tooling
 
