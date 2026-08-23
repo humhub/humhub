@@ -3,6 +3,9 @@ HumHub Changelog
 
 1.19.0-beta.2 (TBD)
 -------------------
+- Enh #8403: Added the Vue.js island layer (`humhub.vue` runtime, core component set, form suite, extension APIs) with the like link and the comment section as the first islands
+- Enh #8403: Added the HTTP API framework in `humhub\components\api` and the first core endpoints under `/api/v2` (comment, like, account) — browser-session authentication is opt-in per controller, token methods come from the rest module, see `docs/develop/concept-api.md`
+- Enh #8403: Comment payloads are caller-neutral and cached server-side (`comment\services\CommentPayloadCache`); like state and edit/delete permissions have their own endpoints
 - Enh #8390: Removed the redundant My Spaces dropdown click handler — the lazy space list is already loaded on open, and the case where the dropdown was opened before its widget initialized is covered by the init-time check from #8384
 - Enh #8389: Removed the unused `$right` parameter from `BootstrapVariationsTrait::icon()` (`Button`/`Badge`/`Link`/`Alert`) and from `MenuLink::setIcon()` — `$options` is now the second parameter of `icon()` instead of the third, see `docs/develop/module-migrate.md`
 - Enh #8389: Buttons styling by using flex and gap instead of a right margin on the icon
