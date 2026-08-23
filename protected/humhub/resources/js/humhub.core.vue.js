@@ -196,9 +196,25 @@
       toggleClass: { type: String, default: "nav-link dropdown-toggle" },
       menuId: { type: String, default: null },
       entries: { type: Array, default: () => [] },
-      context: { type: Object, default: () => ({}) }
+      context: { type: Object, default: () => ({}) },
+      // Renders a disabled spinner item while the consumer is still resolving what belongs
+      // in this menu - see the `open` event below.
+      loading: { type: Boolean, default: false }
+    },
+    // `open` fires when the menu is actually opened (not on the closing click), so a consumer
+    // can load menu content on demand instead of up front - Bootstrap's own
+    // `show.bs.dropdown` is the signal, since toggling is Bootstrap-owned (see the docblock).
+    emits: ["open"],
+    mounted() {
+      this.$refs.toggle.addEventListener("show.bs.dropdown", this.onShow);
+    },
+    beforeUnmount() {
+      this.$refs.toggle.removeEventListener("show.bs.dropdown", this.onShow);
     },
     computed: {
+      loadingLabel() {
+        return vue$1.i18n.t("base", "Loading...");
+      },
       resolvedEntries() {
         if (!this.menuId) {
           return [];
@@ -226,6 +242,9 @@
       }
     },
     methods: {
+      onShow() {
+        this.$emit("open");
+      },
       resolveLabel(entry) {
         return typeof entry.label === "function" ? entry.label(this.context) : entry.label;
       },
@@ -239,12 +258,16 @@
   const _hoisted_1$9 = { class: "nav nav-pills preferences" };
   const _hoisted_2$6 = { class: "nav-item dropdown" };
   const _hoisted_3$5 = ["aria-label"];
-  const _hoisted_4$4 = ["onClick"];
-  const _hoisted_5$2 = ["onClick"];
+  const _hoisted_4$4 = { key: 0 };
+  const _hoisted_5$2 = { class: "dropdown-item disabled d-flex align-items-center gap-2" };
+  const _hoisted_6$2 = { role: "status" };
+  const _hoisted_7 = ["onClick"];
+  const _hoisted_8 = ["onClick"];
   function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("ul", _hoisted_1$9, [
       vue.createElementVNode("li", _hoisted_2$6, [
         vue.createElementVNode("a", {
+          ref: "toggle",
           href: "#",
           class: vue.normalizeClass($props.toggleClass),
           "data-bs-toggle": "dropdown",
@@ -260,6 +283,27 @@
           },
           [
             vue.renderSlot(_ctx.$slots, "default"),
+            $props.loading ? (vue.openBlock(), vue.createElementBlock("li", _hoisted_4$4, [
+              vue.createElementVNode("span", _hoisted_5$2, [
+                _cache[0] || (_cache[0] = vue.createElementVNode(
+                  "span",
+                  {
+                    class: "spinner-border spinner-border-sm",
+                    "aria-hidden": "true"
+                  },
+                  null,
+                  -1
+                  /* CACHED */
+                )),
+                vue.createElementVNode(
+                  "span",
+                  _hoisted_6$2,
+                  vue.toDisplayString($options.loadingLabel),
+                  1
+                  /* TEXT */
+                )
+              ])
+            ])) : vue.createCommentVNode("v-if", true),
             (vue.openBlock(true), vue.createElementBlock(
               vue.Fragment,
               null,
@@ -291,12 +335,12 @@
                       1
                       /* TEXT */
                     )
-                  ], 8, _hoisted_4$4)) : (vue.openBlock(), vue.createElementBlock("a", {
+                  ], 8, _hoisted_7)) : (vue.openBlock(), vue.createElementBlock("a", {
                     key: 2,
                     href: "#",
                     class: "dropdown-item",
                     onClick: vue.withModifiers(($event) => $options.onEntryClick(entry), ["prevent"])
-                  }, vue.toDisplayString($options.resolveLabel(entry)), 9, _hoisted_5$2))
+                  }, vue.toDisplayString($options.resolveLabel(entry)), 9, _hoisted_8))
                 ]);
               }),
               128

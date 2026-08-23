@@ -47,7 +47,7 @@ class CommentListService
      * {@see self::getCount()}, this always counts `parent_comment_id IS NULL` rows only,
      * regardless of {@see $parentComment} scoping. This is the root-list-only complement to
      * {@see self::getCount()}'s "all comments including replies" total, which the
-     * comment-count badge relies on (see {@see \humhub\modules\comment\services\CommentJsonService::serializeWindow()}'s
+     * comment-count badge relies on (see `humhub\modules\comment\serializers\CommentSerializer::window()`
      * `rootTotal` vs. `total`).
      */
     public function getRootCount(): int
@@ -104,7 +104,7 @@ class CommentListService
     private function addScopeQueryCondition(ActiveQuery $query): void
     {
         $query->addSelect('*, (select count(*) from comment sc where sc.parent_comment_id=comment.id) as child_count');
-        // Eager-load the author: every consumer (widgets, CommentJsonService) reads
+        // Eager-load the author: every consumer (widgets, rest CommentDefinitions) reads
         // $comment->createdBy, so this avoids a lazy-loaded query per returned comment.
         $query->with('createdBy');
         $query->orderBy('created_at DESC, id DESC');

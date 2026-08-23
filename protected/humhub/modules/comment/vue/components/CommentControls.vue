@@ -5,6 +5,8 @@
         menu-id="comment.controls"
         :entries="entries"
         :context="{ comment }"
+        :loading="loadingPermissions"
+        @open="$emit('open')"
     >
         <li>
             <!--
@@ -47,7 +49,7 @@
  * prop needs to be passed explicitly here.
  *
  * Edit/delete/admin-delete are purely emitted upward - CommentEntry owns the
- * actual mutation handling (edit mode, modal confirm, delete request, ...).
+ * actual mutation handling (edit mode, the delete modal, the delete request, ...).
  * Permalink is fully functional here already - see the template comment
  * above.
  *
@@ -62,8 +64,8 @@
  * `docs/develop/module-migrate.md`, Unreleased, for that migration). `comment` is passed as
  * this menu's `context` (the full serialized comment, not the discrete props below) so a
  * registered entry's `condition`/`onClick`/`component` can read anything about the comment,
- * including its own namespaced `comment.extensions` entry - see CommentJsonService's
- * EVENT_SERIALIZE_COMMENTS.
+ * including its own namespaced `comment.extensions` entry - see
+ * `humhub\components\api\SerializeEvent`.
  *
  * Built-in entry ids (stable, public - a module targets these with `registerMenuEntry()` to
  * override, or `removeMenuEntry('comment.controls', id)` to remove):
@@ -71,7 +73,7 @@
  *  - `delete` - shown while `canDelete`; emits `admin-delete` instead of `delete` on click
  *    when `canAdminDelete` is also set. One entry covers both - the server never reports
  *    `canAdminDelete` without `canDelete` (admin-delete is "delete someone else's comment as
- *    a moderator", not a separate action - see `CommentJsonService::serialize()`), so there is
+ *    a moderator", not a separate action - see commentApi.js's canAdminDelete derivation), so there is
  *    only ever one Delete item to show, exactly as before this migration.
  *
  * The permalink item is deliberately NOT one of these - see the template comment above.
@@ -85,7 +87,7 @@ import { i18n } from '@humhub/vue';
 
 export default {
     props: {
-        // Full serialized comment (see CommentJsonService::serialize()) - added purely so
+        // Full adapted comment (see commentApi.js's mapComment()) - added purely so
         // this menu's `context` can expose it; the core entries below keep reading their
         // own discrete props unchanged, to avoid churning them.
         comment: { type: Object, required: true },
@@ -93,8 +95,13 @@ export default {
         canEdit: { type: Boolean, default: false },
         canDelete: { type: Boolean, default: false },
         canAdminDelete: { type: Boolean, default: false },
+        // Edit/delete are not part of the comment payload (which is caller-neutral and
+        // therefore cacheable - see docs/develop/concept-api.md); the entry loads them when
+        // this menu opens and shows a spinner item until they arrive.
+        loadingPermissions: { type: Boolean, default: false },
     },
-    emits: ['edit', 'delete', 'admin-delete'],
+    // `open`: the menu was opened - the entry uses it to fetch the permissions once.
+    emits: ['edit', 'delete', 'admin-delete', 'open'],
     computed: {
         toggleMenuLabel() {
             return i18n.t('base', 'Toggle comment menu');

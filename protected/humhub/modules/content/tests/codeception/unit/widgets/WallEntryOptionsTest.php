@@ -109,10 +109,17 @@ class WallEntryOptionsTest extends HumHubDbTestCase
         $this->assertWallEntryNotContains('stream-entry-addons', (new WallStreamEntryOptions())->disableAddons());
     }
 
+    /**
+     * The comment addon renders the `<comment-section>` Vue island (see
+     * `humhub\modules\comment\widgets\Comments`) - asserting on its mount element
+     * instead of the `comment-container` class the pre-island widget used to emit
+     * server-side (that class now lives in `CommentSection.vue`'s own template and
+     * only ever exists client-side).
+     */
     public function testDisableCommentAddonsMenu()
     {
-        $this->assertWallEntryContains('comment-container', new WallStreamEntryOptions());
-        $this->assertWallEntryNotContains('comment-container', (new WallStreamEntryOptions())->disableCommentAddon());
+        $this->assertWallEntryContains('<comment-section', new WallStreamEntryOptions());
+        $this->assertWallEntryNotContains('<comment-section', (new WallStreamEntryOptions())->disableCommentAddon());
     }
 
     public function testDisableWallEntryLinksAddonsMenu()

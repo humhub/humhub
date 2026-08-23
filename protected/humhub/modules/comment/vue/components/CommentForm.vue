@@ -25,10 +25,11 @@
  * `errors` object.
  *
  * Two modes, selected by whether `editCommentId` is set:
- *  - create (default): POSTs to `/comment/comment/create` with `contentId`
- *    (+ `parentCommentId` for a reply), clears the editor/upload widgets on
- *    success and emits `created` with the new comment JSON.
- *  - edit: POSTs to `/comment/comment/update?id=<editCommentId>` instead and
+ *  - create (default): POSTs to the `comment` endpoint with `contentId`
+ *    (+ `parentCommentId` for a reply — see commentApi.js's createComment()),
+ *    clears the editor/upload widgets on success and emits `created` with the
+ *    new comment JSON.
+ *  - edit: PUTs to the `comment/<editCommentId>` endpoint instead and
  *    emits `updated` with the updated comment JSON. The caller discards this
  *    component on success/cancel, but it still clear()s first — the richtext
  *    draft backup (sessionStorage) and the acknowledgeForm baseline both
@@ -209,7 +210,8 @@
  * is discarded (see its `cancelEdit()`/`toggleReply()`), covering the case
  * that never called `clear()` before.
  */
-import { client, i18n, log, url } from '@humhub/vue';
+import { i18n, log } from '@humhub/vue';
+import { createComment, extractFieldErrors, updateComment } from './commentApi.js';
 
 // HumHubForm/RichTextField/SubmitButton (like LegacyFormWrapper before them) are NOT
 // imported here — they live at protected/humhub/vue/ (see docs/develop/ui-js-vuejs.md)
@@ -315,21 +317,23 @@ export default {
             }
 
             const isEdit = this.editCommentId !== null;
-            const endpoint = isEdit ? '/comment/comment/update' : '/comment/comment/create';
-            const params = isEdit ? { id: this.editCommentId } : { contentId: this.contentId };
-            if (!isEdit && this.parentCommentId !== null) {
-                params.parentCommentId = this.parentCommentId;
-            }
+            const payload = {
+                message: this.$refs.richtext.getValue(),
+                fileList: this.$refs.richtext.getFileGuids(),
+            };
 
             this.busy = true;
             this.$refs.form.clearErrors();
 
-            client.post(url(endpoint, params), {
-                data: {
-                    message: this.$refs.richtext.getValue(),
-                    fileList: this.$refs.richtext.getFileGuids(),
-                },
-            }).then((comment) => {
+            const request = isEdit
+                ? updateComment(this.editCommentId, payload)
+                : createComment({
+                    contentId: this.contentId,
+                    parentCommentId: this.parentCommentId,
+                    ...payload,
+                });
+
+            request.then((comment) => {
                 this.busy = false;
                 // Edit mode clears too, even though the caller discards this
                 // component on `updated`: the discard only removes DOM — the
@@ -343,9 +347,12 @@ export default {
                 this.$emit(isEdit ? 'updated' : 'created', comment);
             }).catch((response) => {
                 this.busy = false;
-                const hasFieldErrors = response && (response.errors || (response.error && response.error.errors));
-                if (response && response.status === 422 && hasFieldErrors) {
-                    this.$refs.form.setErrors(response);
+                // The API answers a validation failure with
+                // `422 {"errors": {attribute: [messages]}}`, flattened onto the rejected
+                // client.Response — see commentApi.js's extractFieldErrors().
+                const fieldErrors = extractFieldErrors(response);
+                if (response && response.status === 422 && fieldErrors) {
+                    this.$refs.form.setErrors({ errors: fieldErrors });
                 } else {
                     log.error(response, true);
                 }

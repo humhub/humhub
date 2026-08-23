@@ -126,11 +126,20 @@ const stubs = {
     additions,
     i18n: {
         preload: () => Promise.resolve(),
-        t: (category, message) => message,
+        // Mirrors humhub.i18n.t(category, message, params): untranslated source text
+        // with the ICU placeholders substituted, so a component building a phrase
+        // client-side is testable (see UserImage's alt text).
+        t: (category, message, params) => (params
+            ? String(message).replace(/\{(\w+)\}/g, (match, key) => (key in params ? params[key] : match))
+            : message),
     },
     client: {
         post: () => Promise.resolve({}),
         get: () => Promise.resolve({}),
+        // The vue bridge's put()/del() delegate to the core client's ajax()
+        // (see humhub.vue.js's restClient) — this is the seam tests mock for
+        // PUT/DELETE expectations (cfg.method carries the verb).
+        ajax: () => Promise.resolve({}),
     },
     event,
     modal,

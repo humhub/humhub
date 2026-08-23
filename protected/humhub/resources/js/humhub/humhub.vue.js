@@ -700,6 +700,49 @@ humhub.module('vue', function (module, require, $) {
         trigger: function (type, data) { event.trigger(type, data); },
     };
 
+    // --- HTTP API helpers -------------------------------------------------
+    // The islands are fed by the platform's HTTP API (/api/v2, see
+    // docs/develop/concept-api.md) — these helpers cover what the route-based
+    // `url()`/`client` bridge can't: pattern URLs and PUT/DELETE verbs.
+
+    // apiUrl('comment/content/5/window', {pageSize: 4})
+    //   → '<baseUrl>/api/v2/comment/content/5/window?pageSize=4'
+    // The base comes from CoreJsConfig (client.apiUrl); the root-relative
+    // fallback keeps a stray early island functional on standard installs.
+    var apiUrl = function (path, params) {
+        var base = humhub.config.get('client', 'apiUrl') || '/api/v2/';
+        var result = base.replace(/\/+$/, '') + '/' + String(path).replace(/^\/+/, '');
+        if (params) {
+            var query = $.param(params);
+            if (query) {
+                result += (result.indexOf('?') !== -1 ? '&' : '?') + query;
+            }
+        }
+        return result;
+    };
+
+    // The verb set the API needs. put()/del() mirror the core client's
+    // own post() (same cfg contract, same Response resolution); the core
+    // client module only ships get/post since the legacy routes never used
+    // other verbs. Yii's CSRF ajaxPrefilter applies to every method, so
+    // session-authenticated PUT/DELETE carry the X-CSRF-Token header too.
+    var restClient = {
+        // apply() keeps the caller's arity intact (a plain passthrough would
+        // append explicit `undefined` cfg/event arguments).
+        get: function () { return client.get.apply(client, arguments); },
+        post: function () { return client.post.apply(client, arguments); },
+        put: function (url, cfg) {
+            cfg = cfg || {};
+            cfg.type = cfg.method = 'PUT';
+            return client.ajax(url, cfg);
+        },
+        del: function (url, cfg) {
+            cfg = cfg || {};
+            cfg.type = cfg.method = 'DELETE';
+            return client.ajax(url, cfg);
+        },
+    };
+
     module.export({
         register: register,
         isRegistered: isRegistered,
@@ -716,13 +759,14 @@ humhub.module('vue', function (module, require, $) {
         mountElement: mountElement,
         unmountElement: unmountElement,
         getApp: getApp,
-        client: client,
+        client: restClient,
         i18n: i18n,
         log: log,
         getConfig: getConfig,
         url: function (route, params) {
             return urlModule.to(route, params);
         },
+        apiUrl: apiUrl,
         modal: modal,
         events: events,
     });

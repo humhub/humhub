@@ -11,7 +11,7 @@ This document covers motivation, goals, constraints and the overall architecture
 - [Extending islands](ui-js-vuejs-extensions.md) — extension slots, menu entries, the serializer extension event pattern, domain events, and migrating a legacy widget-stack extension.
 - [Legacy interop](ui-js-vuejs-interop.md) — `v-additions`, `RichTextOutput`, `LegacyFormWrapper`, the form-shell pattern, and other patterns for bridging into pre-existing jQuery widgets.
 - [Form suite](ui-js-vuejs-forms.md) — `HumHubForm`, native field components, `SubmitButton`, the Yii-parity markup/naming convention, the error contract, and `RichTextField` as a legacy-citizen field.
-- [Status & roadmap](ui-js-vuejs-roadmap.md) — where the initiative stands, the REST API convergence plan, and the backlog.
+- [Status & roadmap](ui-js-vuejs-roadmap.md) — where the initiative stands, how the islands consume the platform API, and the backlog.
 
 ## Motivation
 
@@ -76,11 +76,11 @@ Consequence: **compiled artifacts are committed** (see [Build tooling](ui-js-vue
 1. **`LikeButton`** — the minimal leaf. Proves registry, tag mounting, `useClient`, `useI18n`, and the PJAX lifecycle end to end, in a component small enough to review in one sitting.
 2. **Comment section** — the flagship, implemented. `humhub\modules\comment\widgets\Comments`
    renders a `<comment-section>` island (`CommentVueAsset`, depending on `LikeVueAsset` so
-   `<LikeButton>` nesting resolves) fed by `CommentJsonService`'s serialized window - no
+   `<LikeButton>` nesting resolves) fed by the API's serialized comment window (`comment\serializers\CommentSerializer`) - no
    comment HTML is server-rendered anymore. It exercises every piece of the architecture
    this document describes: cross-module nesting (`<LikeButton>` inside `CommentEntry.vue`),
    list state (show-more both directions with real counts, one level of collapsed replies),
-   the `modal`/`events` bridges (delete confirm, admin-delete, live updates via
+   the `events` bridge (live updates via
    `humhub:modules:comment:live:NewComment`), and a form. The form is built on the
    [`HumHubForm` suite](ui-js-vuejs-forms.md), with the richtext editor and file upload —
    deep jQuery widgets, not rewritten in Vue — embedded as a `RichTextField` suite citizen;

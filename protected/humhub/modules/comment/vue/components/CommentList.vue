@@ -29,7 +29,7 @@
 /**
  * Renders the root-level comment window and both "show more" directions
  * (real remaining counts from the list endpoint, see
- * CommentJsonService::serializeWindow()). Owns its own working copy of the
+ * the rest CommentDefinitions::getCommentWindow()). Owns its own working copy of the
  * window so show-more prepend/append never mutates the parent's props array
  * directly - total count is unaffected by paging, so nothing needs to be
  * emitted upward for it.
@@ -51,7 +51,7 @@
  *
  * `appendRoot()` (own create, called by CommentSection's `onMainCreated()`) and the
  * root-append branch of CommentSection's own live-update handler both push straight onto
- * the tail of `items` without going through a real `/comment/comment/list` fetch. Before
+ * the tail of `items` without going through a real window fetch. Before
  * this fix, `loadNext()` used that tail item as its pagination cursor - once such an
  * append had happened, the cursor was the just-appended comment itself, so a "next"
  * request paged forward from THERE instead of from the last comment the server actually
@@ -77,7 +77,7 @@
  * ## Root-vs-all total ("phantom show-next-N-replies" fix)
  *
  * `remainingNext` originally keyed off `total` (the badge count, counting ALL comments of
- * the content INCLUDING replies - see `CommentJsonService::serializeWindow()`'s own
+ * the content INCLUDING replies - see `the rest CommentDefinitions::getCommentWindow()`'s own
  * docblock note). `items`/`remainingPrev` here only ever cover ROOT comments, so on any
  * thread with replies `total - items.length - remainingPrev` overcounted by exactly the
  * reply count, rendering a permanently-dead "Show next N comments" link (N = reply count,
@@ -86,8 +86,9 @@
  * "Root-only remaining count") instead - a prop refreshed the same way `total` already was,
  * via `adjustRootTotal()`.
  */
-import { client, getConfig, i18n, log, url } from '@humhub/vue';
+import { getConfig, i18n, log } from '@humhub/vue';
 import CommentEntry from './CommentEntry.vue';
+import { fetchWindow } from './commentApi.js';
 import { getId } from './commentIdHelper.js';
 
 export default {
@@ -100,6 +101,9 @@ export default {
         adjustRootTotal: { default: () => () => {} },
         registerKnownId: { default: () => () => {} },
         isKnownId: { default: () => () => false },
+        // See CommentEntry's own inject block - the like state travels beside the comments,
+        // not inside them, and has to be loaded for every window this component pages in.
+        ensureLikeStates: { default: () => () => {} },
     },
     props: {
         contentId: { type: Number, required: true },
@@ -206,13 +210,14 @@ export default {
             this.busyPrev = true;
             const cursor = this.items[0].id;
 
-            client.get(url('/comment/comment/list', {
+            fetchWindow({
                 contentId: this.contentId,
                 commentId: cursor,
                 direction: 'previous',
                 pageSize: this.pageSize,
-            })).then((response) => {
-                this.items = [...response.comments, ...this.items];
+            }).then((response) => {
+                this.items = [...response.results, ...this.items];
+                this.ensureLikeStates(response.results);
                 this.remainingPrev = response.prevCount;
                 this.adjustTotal(response.total - this.total);
                 // Refreshes the ROOT-only counterpart the same way, falling back to
@@ -239,14 +244,15 @@ export default {
             this.busyNext = true;
             const cursor = this.lastCursorId;
 
-            client.get(url('/comment/comment/list', {
+            fetchWindow({
                 contentId: this.contentId,
                 commentId: cursor,
                 direction: 'next',
                 pageSize: this.pageSize,
-            })).then((response) => {
-                const newComments = response.comments.filter((comment) => !this.isKnownId(comment.id));
+            }).then((response) => {
+                const newComments = response.results.filter((comment) => !this.isKnownId(comment.id));
                 newComments.forEach((comment) => this.registerKnownId(comment.id));
+                this.ensureLikeStates(newComments);
 
                 let insertIndex = this.items.findIndex((item) => item.id > cursor);
                 if (insertIndex === -1) {
@@ -254,8 +260,8 @@ export default {
                 }
                 this.items.splice(insertIndex, 0, ...newComments);
 
-                if (response.comments.length > 0) {
-                    this.lastCursorId = response.comments[response.comments.length - 1].id;
+                if (response.results.length > 0) {
+                    this.lastCursorId = response.results[response.results.length - 1].id;
                 }
                 this.adjustTotal(response.total - this.total);
                 // See loadPrev()'s own comment above for the `?? response.total` fallback.

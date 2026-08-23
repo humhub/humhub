@@ -101,7 +101,7 @@ class RichTextOutputMarkdownAndRenderOptionsTest extends HumHubDbTestCase
     }
 
     /**
-     * Sanity check: the record-aware entry point CommentJsonService actually uses.
+     * Sanity check: the record-aware entry point CommentSerializer actually uses.
      */
     public function testAcceptsARecordConfigLikeOutputDoes()
     {

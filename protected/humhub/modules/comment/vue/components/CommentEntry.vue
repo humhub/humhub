@@ -1,13 +1,13 @@
 <template>
     <div
-        v-if="comment.blocked"
+        v-if="comment.blocked && !revealed"
         :id="'comment_' + comment.id"
         class="d-flex comment-blocked-user"
     >
         <div class="flex-shrink-0 me-2"></div>
         <div class="flex-grow-1 overflow-hidden">
             {{ blockedLabel }}
-            <a href="#" class="text-primary" @click.prevent="reveal">{{ showLabel }}</a>
+            <a href="#" class="text-primary" @click.prevent="revealed = true">{{ showLabel }}</a>
         </div>
     </div>
 
@@ -20,10 +20,12 @@
     >
         <CommentControls
             :comment="comment"
-            :permalink="comment.permalink"
-            :can-edit="comment.canEdit"
-            :can-delete="comment.canDelete"
-            :can-admin-delete="comment.canAdminDelete"
+            :permalink="comment.url"
+            :can-edit="permissions ? permissions.canEdit : false"
+            :can-delete="permissions ? permissions.canDelete : false"
+            :can-admin-delete="canAdminDelete"
+            :loading-permissions="permissionsBusy"
+            @open="loadPermissions"
             @edit="onEdit"
             @delete="onDelete"
             @admin-delete="onAdminDelete"
@@ -38,7 +40,7 @@
                 <a :href="comment.author.url" :data-contentcontainer-id="comment.author.contentContainerId" :data-guid="comment.author.guid">{{ comment.author.displayName }}</a>
                 <small>
                     &middot;
-                    <time class="tt time timeago" data-ui-addition="timeago" :datetime="comment.createdAt" :title="absoluteTime">{{ absoluteTime }}</time>
+                    <time class="tt time timeago" data-ui-addition="timeago" :datetime="createdAtIso" :title="absoluteTime">{{ absoluteTime }}</time>
                     <template v-if="comment.isEdited">
                         &middot; <i class="tt fa fa-clock-o text-body-secondary" :title="updatedAtTitle" aria-hidden="true"></i>
                     </template>
@@ -68,7 +70,7 @@
                         :message="comment.message"
                         :render-options="comment.messageRenderOptions"
                     />
-                    <div v-if="comment.attachmentsHtml" v-html="comment.attachmentsHtml"></div>
+                    <CommentAttachments v-if="comment.files.length" :files="comment.files" :context-id="comment.id" />
                 </template>
             </div>
 
@@ -80,19 +82,19 @@
                         :style="childTotal > 0 ? null : 'display:none'"
                     > ({{ childTotal }})</span></a>
                 </template>
-                <template v-if="showReplyToggle && comment.likes">
+                <template v-if="showReplyToggle && likeState && likeState.canLike">
                     &middot;
                 </template>
                 <LikeButton
-                    v-if="comment.likes"
+                    v-if="likeState && likeState.canLike"
                     :record-id="comment.recordId"
-                    :like-count="comment.likes.count"
-                    :current-user-liked="comment.likes.liked"
+                    :like-count="likeState.total"
+                    :current-user-liked="likeState.liked"
                 />
                 <ExtensionSlot name="comment.links" :context="{ comment }" />
             </div>
 
-            <div v-if="comment.children" class="nested-comments-root">
+            <div v-if="comment.replies" class="nested-comments-root">
                 <div class="bg-light p-2 mt-3 comment-container" :class="{ 'd-none': !childItems.length && !replyOpen }">
                     <div class="comment">
                         <div v-if="childHasMore" class="showMore">
@@ -125,6 +127,12 @@
                     />
                 </div>
             </div>
+
+            <CommentDeleteModal
+                v-model:show="deleteModalOpen"
+                :admin-mode="canAdminDelete"
+                @confirm="performDelete"
+            />
         </div>
     </div>
 </template>
@@ -132,8 +140,8 @@
 <script>
 /**
  * Renders one comment entry - root or one-level-nested reply, recursively
- * (though a reply's own `children` is always null server-side, so recursion
- * bottoms out after one level; see CommentJsonService::serialize()).
+ * (though a reply's own `replies` is always null server-side, so recursion
+ * bottoms out after one level; see `comment\serializers\CommentSerializer`).
  *
  * Markup mirrors comment/widgets/views/comment.php and
  * commentBlockedUser.php so existing theme CSS applies unchanged. `name`
@@ -229,8 +237,8 @@
  *
  * ## Previous-direction pagination fix ("Show next N comments" that never advances)
  *
- * The child preview (`comment.children.items`, from
- * `CommentJsonService::getChildPreviewItems()` -> `CommentListService::getLimited()` ->
+ * The reply preview (`comment.replies.items`, from
+ * `CommentSerializer::replyPreviewItems()` -> `CommentListService::getLimited()` ->
  * `getSiblings(0, limit)` with the default `LIST_DIR_PREV`) always shows the NEWEST `limit`
  * replies. The hidden replies are therefore always the OLDER ones - but `loadMoreReplies()`
  * used to paginate with `direction=next` from the newest loaded reply's id, a dead end by
@@ -252,8 +260,8 @@
  *    own/live append or by `onChildRemoved()` (an append always adds at the TAIL - see
  *    `onReplyCreated()` - and a delete only ever removes an existing entry, never shifts the
  *    window backwards).
- *  - The response is PREPENDED (`[...response.comments, ...this.childItems]`), same as
- *    `loadPrev()`: `response.comments` for `direction=previous` already comes back ascending
+ *  - The response is PREPENDED (`[...response.results, ...this.childItems]`), same as
+ *    `loadPrev()`: `response.results` for `direction=previous` already comes back ascending
  *    by id/`created_at` (`CommentListService::getSiblings()`'s own `array_reverse()`), so
  *    this is a straight, order-correct prepend - no splice-by-cursor-position logic needed.
  *  - No `isKnownId()`/`registerKnownId()` dedup, same as `loadPrev()`: the cursor is the
@@ -277,9 +285,12 @@
  * childItems.length`) introduced for the childRemaining/gate desync this same click used to
  * also cause - see `childRemaining`'s own comment below.
  */
-import { client, i18n, log, modal, url } from '@humhub/vue';
+import { getConfig, i18n, log } from '@humhub/vue';
+import CommentAttachments from './CommentAttachments.vue';
 import CommentControls from './CommentControls.vue';
+import CommentDeleteModal from './CommentDeleteModal.vue';
 import CommentForm from './CommentForm.vue';
+import { deleteComment, fetchComment, fetchCommentPermissions, fetchWindow, isAdminDelete } from './commentApi.js';
 
 // RichTextOutput/UserImage are NOT imported here — RichTextOutput lives at
 // protected/humhub/vue/ (core component set) and UserImage at
@@ -290,7 +301,7 @@ import CommentForm from './CommentForm.vue';
 // not by import order here.
 export default {
     name: 'CommentEntry',
-    components: { CommentControls, CommentForm },
+    components: { CommentAttachments, CommentControls, CommentDeleteModal, CommentForm },
     inject: {
         commentRevisions: { default: () => ({}) },
         bumpCommentRevision: { default: () => () => {} },
@@ -299,6 +310,13 @@ export default {
         adjustRootTotal: { default: () => () => {} },
         registerKnownId: { default: () => () => {} },
         isKnownId: { default: () => () => false },
+        // recordId => {total, liked, canLike} for every comment of this section, owned by
+        // CommentSection: the like state is the one per-record value that depends on WHO is
+        // asking, so it travels beside the (cacheable) comment payload rather than inside it
+        // (see docs/develop/concept-api.md). `ensureLikeStates` loads the states of comments
+        // that just entered the tree.
+        likeStates: { default: () => ({}) },
+        ensureLikeStates: { default: () => () => {} },
     },
     props: {
         comment: { type: Object, required: true },
@@ -324,22 +342,44 @@ export default {
             replyOpen: false,
             editing: false,
             editMessage: null,
-            childItems: this.comment.children ? [...this.comment.children.items] : [],
-            childTotal: this.comment.children ? this.comment.children.total : 0,
+            // Blocked-author masking is purely client-side (see commentApi.js's
+            // `blocked` derivation): revealing is a local display toggle, no refetch —
+            // the payload always carries the full comment.
+            revealed: false,
+            // `{canEdit, canDelete}` once the context menu was opened for the first time -
+            // fetched then rather than shipped with the comment (see loadPermissions()).
+            permissions: null,
+            permissionsBusy: false,
+            childItems: this.comment.replies ? [...this.comment.replies.items] : [],
+            childTotal: this.comment.replies ? this.comment.replies.total : 0,
             // Id of the FIRST (oldest) item of the last SERVER-PAGINATED reply window (initial
             // hydration or a loadMoreReplies() response) - deliberately never touched by
             // onReplyCreated()'s own/live append, see "Previous-direction pagination fix" below.
-            childFirstCursorId: this.comment.children && this.comment.children.items.length
-                ? this.comment.children.items[0].id
+            childFirstCursorId: this.comment.replies && this.comment.replies.items.length
+                ? this.comment.replies.items[0].id
                 : null,
             busyReplies: false,
-            busyReveal: false,
             busyEdit: false,
+            // Drives the native <CommentDeleteModal> (see its own docblock) — one modal
+            // serving both the plain confirm and the admin-delete (notify/reason) mode,
+            // selected by the adapted comment's canAdminDelete.
+            deleteModalOpen: false,
         };
     },
     computed: {
         showReplyToggle() {
             return !this.isNested && this.canComment;
+        },
+        // The like state of THIS entry, out of the section's map (see the `likeStates` prop).
+        // Absent until the section has it, which is why the like link renders conditionally.
+        likeState() {
+            return this.likeStates[this.comment.recordId] || null;
+        },
+        // Deleting someone else's comment is moderation — drives the delete modal's
+        // reason/notify mode. Derived from the fetched permissions, so `false` until the menu
+        // was opened; that is fine, since both delete paths start from that menu.
+        canAdminDelete() {
+            return isAdminDelete(this.comment, !!(this.permissions && this.permissions.canDelete));
         },
         blockedLabel() {
             return i18n.t('CommentModule.base', 'Comment of blocked user.');
@@ -375,26 +415,32 @@ export default {
         moreRepliesLabel() {
             return i18n.t('CommentModule.base', 'Show previous {count} comments', { count: this.childRemaining });
         },
-        // No server-formatted absolute time in the JSON payload (only ISO
-        // `createdAt` - see plan §"Timestamps") - formatted client-side via
-        // the browser locale/timezone (documented parity gap vs.
-        // TimeAgo::getFullDateTime(), which uses the HumHub profile
-        // timezone). This text is only ever visible for an instant: v-additions
+        // The adapted comment shape carries real `Date`s (DB-format wire timestamps
+        // parsed with the announced server timezone, see commentApi.js/
+        // parseServerDateTime). Formatted client-side via the browser locale/timezone
+        // (documented parity gap vs. TimeAgo::getFullDateTime(), which uses the HumHub
+        // profile timezone). This text is only ever visible for an instant: v-additions
         // runs the real `timeago` addition (registered selector-less in
         // humhub.ui.additions.js, dispatched per-element through the generic
         // `[data-ui-addition]` addition - see TimeAgo::renderTimeAgo()'s own
         // `data-ui-addition="timeago"` markup, reproduced above) on mount,
         // which immediately overwrites it with a live relative time.
         absoluteTime() {
-            return new Date(this.comment.createdAt).toLocaleString();
+            return this.comment.createdAt ? this.comment.createdAt.toLocaleString() : null;
         },
-        // Same client-side-formatting choice as `absoluteTime` above (no server-formatted
-        // string in the payload - see CommentJsonService's own `updatedAt` docblock note),
-        // for the same documented parity gap vs. UpdatedIcon::getByDated()'s server/profile-
-        // timezone-formatted tooltip. `null` (no `title` attribute) whenever the comment
-        // isn't edited, since `updatedAt` is only ever set in that case.
+        // The timeago addition needs a machine-readable instant on the `datetime`
+        // attribute — the adapted shape's Date serialized back to ISO.
+        createdAtIso() {
+            return this.comment.createdAt ? this.comment.createdAt.toISOString() : null;
+        },
+        // Same client-side-formatting choice as `absoluteTime` above, for the same
+        // documented parity gap vs. UpdatedIcon::getByDated()'s server/profile-
+        // timezone-formatted tooltip. `null` (no `title` attribute) whenever the
+        // comment isn't edited — the marker itself is gated on `isEdited`.
         updatedAtTitle() {
-            return this.comment.updatedAt ? new Date(this.comment.updatedAt).toLocaleString() : null;
+            return this.comment.isEdited && this.comment.updatedAt
+                ? this.comment.updatedAt.toLocaleString()
+                : null;
         },
     },
     mounted() {
@@ -406,30 +452,16 @@ export default {
         revisionKey(comment) {
             return comment.id + ':' + (this.commentRevisions[comment.id] || 0);
         },
-        reveal() {
-            if (this.busyReveal) {
-                return;
-            }
-            this.busyReveal = true;
-            client.get(url('/comment/comment/info', { id: this.comment.id, showBlocked: 1 }))
-                .then((comment) => {
-                    this.$emit('entry-updated', { id: this.comment.id, comment });
-                })
-                .catch((e) => {
-                    log.error(e, true);
-                })
-                .finally(() => {
-                    this.busyReveal = false;
-                });
-        },
         onEdit() {
             if (this.busyEdit) {
                 return;
             }
             this.busyEdit = true;
-            client.get(url('/comment/comment/update', { id: this.comment.id }))
-                .then((response) => {
-                    this.editMessage = response.message;
+            // The API shape already carries the raw markdown `message` —
+            // a fresh single fetch just guards against editing a stale copy.
+            fetchComment(this.comment.id)
+                .then((comment) => {
+                    this.editMessage = comment.message;
                     this.editing = true;
                 })
                 .catch((e) => {
@@ -467,6 +499,7 @@ export default {
             this.childTotal += 1;
             this.adjustTotal(1);
             this.registerKnownId(comment.id);
+            this.ensureLikeStates([comment]);
         },
         onChildRemoved(id) {
             this.childItems = this.childItems.filter((child) => child.id !== id);
@@ -480,65 +513,44 @@ export default {
             }
             this.bumpCommentRevision(id);
         },
-        onDelete() {
-            modal.confirm({
-                header: i18n.t('CommentModule.base', '<strong>Confirm</strong> comment deleting'),
-                body: i18n.t('CommentModule.base', 'Do you really want to delete this comment?'),
-                confirmText: i18n.t('CommentModule.base', 'Delete'),
-                cancelText: i18n.t('CommentModule.base', 'Cancel'),
-            }).then((confirmed) => {
-                if (confirmed) {
-                    return this.performDelete();
-                }
-            }).catch((e) => {
-                log.error(e, true);
-            });
-        },
-        onAdminDelete() {
-            client.get(url('/comment/comment/get-admin-delete-modal', { id: this.comment.id }))
-                .then((response) => modal.confirm(response).then((confirmed) => {
-                    if (!confirmed) {
-                        return;
-                    }
+        // Loads `{canEdit, canDelete}` the first time this entry's context menu opens. They
+        // are deliberately not part of the comment payload — see fetchCommentPermissions() and
+        // docs/develop/concept-api.md — and they are needed nowhere else, since both the edit
+        // and the delete flow start from this menu. Guests never have permissions, so they
+        // never trigger a request.
+        loadPermissions() {
+            if (this.permissions || this.permissionsBusy || getConfig('user').isGuest === true) {
+                return;
+            }
 
-                    // The confirm modal's own footer buttons drive resolve/reject
-                    // (see Content.prototype.adminDelete in humhub.content.js) -
-                    // there is no "modal submit" action to hook into. Legacy reads
-                    // the admin-delete reason/notify fields the same way, straight
-                    // off the fixed #globalModalConfirm singleton's own form
-                    // (`modal.globalConfirm.$.find('form')[0]`), since that is the
-                    // one DOM node AdminDeleteModal::widget() just rendered `body`
-                    // into. Not exposed via the `modal` bridge (only
-                    // confirm()/load() are) - jQuery is already a documented
-                    // direct dependency of this component tree (see
-                    // LegacyFormWrapper), so reading the fixed singleton id
-                    // directly here mirrors the legacy call site 1:1.
-                    const fields = {};
-                    jQuery('#globalModalConfirm form').serializeArray().forEach(({ name, value }) => {
-                        fields[name] = value;
-                    });
+            this.permissionsBusy = true;
 
-                    return this.performDelete(fields);
-                }))
+            return fetchCommentPermissions(this.comment.id)
+                .then((permissions) => {
+                    this.permissions = permissions;
+                })
                 .catch((e) => {
                     log.error(e, true);
+                })
+                .then(() => {
+                    this.permissionsBusy = false;
                 });
         },
+        // Both CommentControls events land here: the same native <CommentDeleteModal>
+        // serves the plain confirm and the admin-delete mode — its `adminMode` prop
+        // reads `canAdminDelete` directly, so no per-event branching is needed.
+        onDelete() {
+            this.deleteModalOpen = true;
+        },
+        onAdminDelete() {
+            this.deleteModalOpen = true;
+        },
         performDelete(extraFields) {
-            const cfg = extraFields ? { data: extraFields } : undefined;
-
-            return client.post(url('/comment/comment/delete', { id: this.comment.id }), cfg)
-                .then((response) => {
-                    if (!response || !response.success) {
-                        // Distinct from the catch() below (a transport/HTTP
-                        // failure): the request succeeded but the server
-                        // reported `{success: false}` - same
-                        // log.error(_, true) mechanism as everywhere else in
-                        // this file for the visible status side effect, with
-                        // a message specific enough to tell the two apart.
-                        log.error('Comment delete failed', response, true);
-                        return;
-                    }
+            this.deleteModalOpen = false;
+            return deleteComment(this.comment.id, extraFields)
+                .then(() => {
+                    // The endpoint answers 204 No Content — anything other than a
+                    // resolved promise arrives in the catch() below.
 
                     // Mirrors Form.prototype.incrementCommentCount's
                     // `-1 - subComments` in humhub.comment.js: a reply can't have
@@ -567,16 +579,17 @@ export default {
             this.busyReplies = true;
             const cursor = this.childFirstCursorId;
 
-            client.get(url('/comment/comment/list', {
+            fetchWindow({
                 contentId: this.comment.contentId,
                 parentCommentId: this.comment.id,
                 commentId: cursor,
                 direction: 'previous',
                 pageSize: this.pageSize,
-            })).then((response) => {
-                this.childItems = [...response.comments, ...this.childItems];
-                if (response.comments.length > 0) {
-                    this.childFirstCursorId = response.comments[0].id;
+            }).then((response) => {
+                this.childItems = [...response.results, ...this.childItems];
+                this.ensureLikeStates(response.results);
+                if (response.results.length > 0) {
+                    this.childFirstCursorId = response.results[0].id;
                 }
             }).catch((e) => {
                 log.error(e, true);

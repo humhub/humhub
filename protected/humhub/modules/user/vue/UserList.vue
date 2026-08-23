@@ -26,12 +26,18 @@ import { client, i18n, log } from '@humhub/vue';
 
 /**
  * Generic user-list island (`<user-list>`) - loads and renders a page of users from
- * any endpoint returning the `{ total, users, hasMore, nextPage }` shape (`users`
- * being an array of the serialized author/user shape `UserImage`'s props are modeled
- * on, see `humhub\modules\user\services\UserJsonService`). Not tied to any single
- * caller - the like module's user-list modal (`LikeButton.vue`) is the reference
- * consumer, feeding it `like/like/user-list`, but any module can point this at its
- * own JSON endpoint as long as the response shape matches.
+ * an endpoint returning either of two shapes:
+ *
+ * - the API's paginated list envelope (`{results, total, page, pageSize, pages}`,
+ *   see `docs/develop/concept-api.md`), whose rows are user shapes;
+ *   `hasMore`/`nextPage` derive from `page`/`pages`.
+ * - the legacy `{ total, users, hasMore, nextPage }` shape, for callers that predate
+ *   the API.
+ *
+ * Not tied to any single caller - the like module's user-list modal
+ * (`LikeButton.vue`) is the reference consumer, feeding it the `like/users`
+ * endpoint, but any module can point this at its own endpoint as long as the
+ * response matches one of the two shapes.
  *
  * The Vue analog of `user\widgets\UserListBox` for this call site: same avatar +
  * linked display-name row layout inside the shared `.hh-list` styling (row classes
@@ -42,8 +48,8 @@ import { client, i18n, log } from '@humhub/vue';
  *
  * - No `<h5>` subtitle line (`user\models\User::$displayNameSub`) - the shared
  *   author/user JSON shape this component is fed does not carry that field. Adding
- *   it would mean widening the shape every other consumer (`UserImage`,
- *   `CommentJsonService`) also spreads, for a single caller's cosmetic need.
+ *   it would mean widening the user-short shape every consumer spreads, for a
+ *   single caller's cosmetic need.
  * - "Load more" appends a next page in place (a real infinite-scroll-style action,
  *   driven by `hasMore`/`nextPage` from the response) instead of `UserListBox`'s
  *   `AjaxLinkPager`, which POSTs a page NUMBER and replaces the entire modal content
@@ -120,11 +126,25 @@ export default {
 
             try {
                 const response = await client.get(this.requestUrl(page));
-                const users = response.users ?? [];
+                let users;
+
+                if (response.results) {
+                    // The API's list envelope — rows are user shapes already
+                    // (see the class docblock).
+                    users = response.results;
+                    this.total = response.total ?? users.length;
+                    const currentPage = response.page ?? page;
+                    const pages = response.pages ?? currentPage;
+                    this.hasMore = currentPage < pages;
+                    this.nextPage = this.hasMore ? currentPage + 1 : null;
+                } else {
+                    users = response.users ?? [];
+                    this.total = response.total ?? users.length;
+                    this.hasMore = !!response.hasMore;
+                    this.nextPage = response.nextPage ?? null;
+                }
+
                 this.users = page === 1 ? users : this.users.concat(users);
-                this.total = response.total ?? this.users.length;
-                this.hasMore = !!response.hasMore;
-                this.nextPage = response.nextPage ?? null;
             } catch (e) {
                 this.error = true;
                 log.error(e);

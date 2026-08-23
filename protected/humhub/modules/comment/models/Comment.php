@@ -6,6 +6,7 @@ use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\comment\activities\NewCommentActivity as NewCommentActivity;
 use humhub\modules\comment\live\NewComment as NewCommentLive;
 use humhub\modules\comment\notifications\NewComment as NewCommentNotification;
+use humhub\modules\comment\services\CommentPayloadCache;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\services\ContentSearchService;
@@ -47,7 +48,30 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         return [
             [['message'], 'required', 'message' => Yii::t('CommentModule.base', 'The comment must not be empty!')],
             [['fileList'], 'safe'],
+            // `!` prefix: validated but NOT massively assignable — the parent id is always
+            // set programmatically by the controllers, never from a request body.
+            [['!parent_comment_id'], 'validateParentComment'],
         ];
+    }
+
+    /**
+     * Comments nest at most one level: a reply's parent must be a root comment of the
+     * same content. Enforced model-side so every write path (web, REST API, console)
+     * is guarded — previously only the JSON controller checked this.
+     *
+     * @since 1.19
+     */
+    public function validateParentComment(string $attribute): void
+    {
+        if (empty($this->parent_comment_id)) {
+            return;
+        }
+
+        $parent = static::findOne(['id' => $this->parent_comment_id, 'content_id' => $this->content_id]);
+
+        if ($parent === null || $parent->parent_comment_id !== null) {
+            $this->addError($attribute, Yii::t('CommentModule.base', 'Comments can only be nested one level deep.'));
+        }
     }
 
     public function beforeDelete()
@@ -62,6 +86,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
     public function afterDelete()
     {
         $this->updateContentSearch();
+        CommentPayloadCache::invalidateContent($this->content_id);
         parent::afterDelete();
     }
 
@@ -69,6 +94,11 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
     {
         // Update updated_at etc..
         $this->refresh();
+
+        // Retire the cached payloads of this content - a new, edited or deleted comment
+        // changes its own window AND, for a reply, its root comment's embedded preview.
+        // See CommentPayloadCache for what this does and does not cover.
+        CommentPayloadCache::invalidateContent($this->content_id);
 
         // Handle mentioned users
         // Execute before NewCommentNotification to avoid double notification when mentioned.

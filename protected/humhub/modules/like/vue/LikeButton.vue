@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { client, getConfig, i18n, log, url } from '@humhub/vue';
+import { apiUrl, client, getConfig, i18n, log } from '@humhub/vue';
 
 export default {
     // `UserModule.base` and `base` are needed here, not just `LikeModule.base`, because the
@@ -81,7 +81,9 @@ export default {
             return i18n.t('LikeModule.base', 'Unlike');
         },
         userListUrl() {
-            return url('/like/like/user-list', { recordId: this.recordId });
+            // The API's list endpoint answers `{results: [<user>], total, page, pages}` —
+            // exactly what UserList consumes.
+            return apiUrl('like/users', { recordId: this.recordId });
         },
         // Same message key the legacy HTML user-list action used for the modal title
         // (`Yii::t('LikeModule.base', "<strong>Users</strong> who like this")`) - kept
@@ -106,9 +108,9 @@ export default {
     },
     methods: {
         load() {
-            client.get(url('/like/like/info', { recordId: this.recordId })).then((response) => {
-                this.liked = response.currentUserLiked;
-                this.count = response.likeCounter;
+            client.get(apiUrl('like/state', { recordId: this.recordId })).then((response) => {
+                this.liked = response.liked;
+                this.count = response.total;
             }).catch((e) => {
                 log.error(e, true);
                 // Without this the island stays invisible forever (ready()
@@ -124,9 +126,14 @@ export default {
             }
             this.busy = true;
 
-            client.post(url(this.liked ? '/like/like/unlike' : '/like/like/like', { recordId: this.recordId })).then((response) => {
-                this.liked = response.currentUserLiked;
-                this.count = response.likeCounter;
+            // POST like / DELETE like — both return the {total, liked, canLike} state shape.
+            const request = this.liked
+                ? client.del(apiUrl('like', { recordId: this.recordId }))
+                : client.post(apiUrl('like', { recordId: this.recordId }));
+
+            request.then((response) => {
+                this.liked = response.liked;
+                this.count = response.total;
                 this.busy = false;
                 if (this.liked) {
                     // Legacy bridge: StreamEntry toggles its notification links on this event

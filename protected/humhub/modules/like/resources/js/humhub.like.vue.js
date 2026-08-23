@@ -54,7 +54,7 @@
         return vue$1.i18n.t("LikeModule.base", "Unlike");
       },
       userListUrl() {
-        return vue$1.url("/like/like/user-list", { recordId: this.recordId });
+        return vue$1.apiUrl("like/users", { recordId: this.recordId });
       },
       // Same message key the legacy HTML user-list action used for the modal title
       // (`Yii::t('LikeModule.base', "<strong>Users</strong> who like this")`) - kept
@@ -79,9 +79,9 @@
     },
     methods: {
       load() {
-        vue$1.client.get(vue$1.url("/like/like/info", { recordId: this.recordId })).then((response) => {
-          this.liked = response.currentUserLiked;
-          this.count = response.likeCounter;
+        vue$1.client.get(vue$1.apiUrl("like/state", { recordId: this.recordId })).then((response) => {
+          this.liked = response.liked;
+          this.count = response.total;
         }).catch((e) => {
           vue$1.log.error(e, true);
           this.liked = false;
@@ -93,9 +93,10 @@
           return;
         }
         this.busy = true;
-        vue$1.client.post(vue$1.url(this.liked ? "/like/like/unlike" : "/like/like/like", { recordId: this.recordId })).then((response) => {
-          this.liked = response.currentUserLiked;
-          this.count = response.likeCounter;
+        const request = this.liked ? vue$1.client.del(vue$1.apiUrl("like", { recordId: this.recordId })) : vue$1.client.post(vue$1.apiUrl("like", { recordId: this.recordId }));
+        request.then((response) => {
+          this.liked = response.liked;
+          this.count = response.total;
           this.busy = false;
           if (this.liked) {
             jQuery(this.$el).trigger("humhub:like:liked");

@@ -2,6 +2,7 @@
     <ul class="nav nav-pills preferences">
         <li class="nav-item dropdown">
             <a
+                ref="toggle"
                 href="#"
                 :class="toggleClass"
                 data-bs-toggle="dropdown"
@@ -13,6 +14,12 @@
 
             <ul class="dropdown-menu" :class="{ 'dropdown-menu-end': alignEnd }">
                 <slot />
+                <li v-if="loading">
+                    <span class="dropdown-item disabled d-flex align-items-center gap-2">
+                        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                        <span role="status">{{ loadingLabel }}</span>
+                    </span>
+                </li>
                 <li v-for="entry in resolvedEntries" :key="entry.id">
                     <component :is="entry.component" v-if="entry.component" :context="context" />
                     <a
@@ -146,7 +153,7 @@
  *
  * @since 1.19
  */
-import { getMenuEntries, isRegistered } from '@humhub/vue';
+import { getMenuEntries, i18n, isRegistered } from '@humhub/vue';
 
 export default {
     props: {
@@ -156,8 +163,24 @@ export default {
         menuId: { type: String, default: null },
         entries: { type: Array, default: () => [] },
         context: { type: Object, default: () => ({}) },
+        // Renders a disabled spinner item while the consumer is still resolving what belongs
+        // in this menu - see the `open` event below.
+        loading: { type: Boolean, default: false },
+    },
+    // `open` fires when the menu is actually opened (not on the closing click), so a consumer
+    // can load menu content on demand instead of up front - Bootstrap's own
+    // `show.bs.dropdown` is the signal, since toggling is Bootstrap-owned (see the docblock).
+    emits: ['open'],
+    mounted() {
+        this.$refs.toggle.addEventListener('show.bs.dropdown', this.onShow);
+    },
+    beforeUnmount() {
+        this.$refs.toggle.removeEventListener('show.bs.dropdown', this.onShow);
     },
     computed: {
+        loadingLabel() {
+            return i18n.t('base', 'Loading...');
+        },
         resolvedEntries() {
             if (!this.menuId) {
                 return [];
@@ -200,6 +223,9 @@ export default {
         },
     },
     methods: {
+        onShow() {
+            this.$emit('open');
+        },
         resolveLabel(entry) {
             return typeof entry.label === 'function' ? entry.label(this.context) : entry.label;
         },

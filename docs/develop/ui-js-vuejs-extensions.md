@@ -79,7 +79,7 @@ registerMenuEntry('comment.controls', {
 | id | Shown while | Behavior |
 |---|---|---|
 | `edit` | `canEdit` | Opens inline edit. |
-| `delete` | `canDelete` | Deletes the comment; if `canAdminDelete` is also set, opens the admin-delete reason modal instead of the plain confirm — one entry covers both, since the server never reports `canAdminDelete` without `canDelete`. |
+| `delete` | `canDelete` | Deletes the comment; opens `CommentDeleteModal` — in its admin mode (reason + notify-the-author fields) when `canAdminDelete` is also set, as the plain confirm otherwise. One entry covers both, since `canAdminDelete` is only ever derived on top of `canDelete`. |
 
 The permalink item is **not** part of this menu — it carries legacy `data-action-click`/`data-content-permalink*` attributes for a delegated document click handler rather than a Vue click handler, which the entry descriptor shape has no room for; it stays a hand-rendered `<li>` in `CommentControls.vue`'s default slot, rendered ahead of the resolved `comment.controls` entries.
 
@@ -94,20 +94,23 @@ Both let a module hook into a host component without forking its template, but t
 
 ## Serializer extension events
 
-A component reached through a slot commonly needs data the host itself doesn't otherwise expose. The comment island solves this on the serializer side with a matching extension point, `CommentJsonService::EVENT_SERIALIZE_COMMENTS` (a `SerializeCommentsEvent`, fired once per serialized batch — a window of comments, or a single create/update/info response). A module attaches in its `config.php` and reads the result back out of `context.comment.extensions` on the JS side:
+A component reached through a slot commonly needs data the host itself doesn't otherwise expose. Since the islands are fed by the platform's HTTP API (see [HTTP API framework](concept-api.md)), that extension point sits in the serialization layer: `humhub\components\api\SerializeEvent`, fired once per serialized batch of one record type — a window of comments (roots plus loaded reply previews), or a single create/update/view response. The event name is shared across record types, so a handler filters on `$event->type`. A module attaches in its `config.php` and reads the result back out of `context.comment.extensions` on the JS side:
 
 ```php
 // a module's config.php
 'events' => [
-    [CommentJsonService::class, CommentJsonService::EVENT_SERIALIZE_COMMENTS, [Events::class, 'onSerializeComments']],
+    [SerializeEvent::class, SerializeEvent::EVENT_SERIALIZE, [Events::class, 'onApiSerialize']],
 ],
 ```
 
 ```php
 // the module's Events.php
-public static function onSerializeComments(SerializeCommentsEvent $event): void
+public static function onApiSerialize(SerializeEvent $event): void
 {
-    foreach ($event->comments as $comment) {
+    if ($event->type !== Comment::class) {
+        return;
+    }
+    foreach ($event->records as $comment) {
         $event->addData($comment->id, 'reportcontent', ['reported' => ReportContent::isReported($comment)]);
     }
 }
@@ -128,6 +131,8 @@ export default {
 
 Each serialized comment carries the accumulated result under its own `extensions` key, namespaced by the attaching module (`{}` when nothing attached anything) — one query for the whole batch rather than one per comment.
 
+**Attach caller-neutral data only — and expect it to be cached.** The serialized payloads are cached server-side per content (`comment\services\CommentPayloadCache`), retired when a comment changes; data you attach lives in that cache with it, so anything that changes independently of the comment is stale until the TTL expires (default one hour).  The payload is identical for every reader who may see the content — that is what allows one serialization to be cached and served to all of them (see [HTTP API framework](concept-api.md), "Caller context is not part of a payload"). Data that depends on WHO is asking ("did *I* already report this?") would make the cached payload wrong for the next reader, so it does not belong here: fetch it from your own module's endpoint, in the menu entry's own component or in the `onClick` handler — the module needs an endpoint for the action itself anyway. Core does the same for the two caller-specific values its own UI needs (like state, edit/delete permissions).
+
 ## Domain events on the bus
 
 Beyond named extension points, islands can react to domain-specific occurrences that other islands (or legacy code) emit on the shared event bus, via `useEvents()` (see [Components: bridge layer](ui-js-vuejs-components.md#bridge-layer-composables)). The comment island, for example, fires `humhub:modules:comment:live:NewComment` when a live update inserts a comment (see the comment-section pilot in the [overview](ui-js-vuejs.md#pilots-and-migration-path)). Unlike `ExtensionSlot`, this is unstructured, ad hoc pub/sub: any island — or any legacy `humhub.module` — can listen, and the emitting component makes no registration-time guarantee about who's listening. Reach for a domain event when reacting to something happening elsewhere; reach for an extension slot when rendering *into* a specific place in another component's output.
@@ -141,5 +146,5 @@ Beyond named extension points, islands can react to domain-specific occurrences 
 `humhub/reportcontent` is the real, documented case this pattern replaces: it used to hook `humhub\modules\comment\widgets\CommentControls::EVENT_INIT` to inject a "Report" entry into each comment's `⋮` menu — a PHP widget stack extension point. Since comment entries no longer render through a per-comment PHP widget pass (`CommentEntry.vue` renders straight from JSON), that hook stopped firing (see the `Unreleased` section of [the module migration guide](module-migrate.md) for the full breaking-change record). Migrating a module like it to the Vue island means combining [menu entries](#menu-entries) above with a serializer event:
 
 1. Register a `comment.controls` menu entry: `registerMenuEntry('comment.controls', { id: 'report', label: 'Report', sortOrder: 150, onClick: (context) => reportComment(context.comment.id) })` (see [Menu entries](#menu-entries) above) — this alone gets the module's own item rendering again, in the right place. A plain `label`/`onClick` entry is enough here; reach for the `component` escape hatch only if the item needs markup the descriptor can't express (an icon plus a "(reported)" suffix, say, still fits `label` as a function of `context`).
-2. If the item needs data beyond what `context` already carries (here: whether the comment is already reported), attach `CommentJsonService::EVENT_SERIALIZE_COMMENTS` in `config.php` and add it under a namespaced key via `$event->addData(...)` (see [Serializer extension events](#serializer-extension-events) below).
+2. If the item needs data beyond what `context` already carries (here: whether the comment is already reported), attach `humhub\components\api\SerializeEvent` in `config.php` and add it under a namespaced key via `$event->addData(...)` (see [Serializer extension events](#serializer-extension-events) below).
 3. Read that data back out of `context.comment.extensions.reportcontent` inside the entry's `label`/`condition`/`onClick` (or a `component` entry's own props) — no other change to the module's controller or business logic is needed; only the injection point moves from a PHP widget-stack event to a menu-entry registration plus (optionally) a serializer event.

@@ -157,7 +157,7 @@ class ProsemirrorRichText extends AbstractRichText
      * has run (mention resolution, legacy-compat rewriting, ...) - i.e. exactly the text {@see self::run()}
      * itself HTML-encodes and wraps in the root div, extracted into its own method so
      * {@see self::getMarkdownAndRenderOptions()} (and any other caller needing the processed markdown
-     * without the HTML envelope - see `CommentJsonService`) shares this SAME extension pipeline instead of
+     * without the HTML envelope - see `comment\serializers\CommentSerializer`) shares this SAME extension pipeline instead of
      * re-implementing it, and can never drift from what {@see self::run()} itself renders.
      *
      * No return type declared (matching `$this->text`'s own undeclared, effectively nullable
@@ -213,7 +213,7 @@ class ProsemirrorRichText extends AbstractRichText
      * `ArrayHelper::merge()`) has no equivalent bucket here at all; and the `style="display:none"`
      * {@see \humhub\widgets\JsWidget::getOptions()} adds whenever `$this->visible` is `false` (which
      * {@see self::init()} sets whenever `$this->edit` is `true`) is likewise never added to `options`.
-     * Neither omission matters for the one real caller today (`CommentJsonService`, which sets
+     * Neither omission matters for the one real caller today (`comment\serializers\CommentSerializer`, which sets
      * neither `$options` nor `$edit`), but a future caller relying on either would see a silent gap.
      *
      * @return array{markdown: string|null, options: array}

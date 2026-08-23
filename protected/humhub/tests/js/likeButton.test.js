@@ -42,7 +42,9 @@ describe('LikeButton', () => {
         globalThis.humhub.config.module('user').isGuest = false;
         globalThis.humhub.config.module('user').loginUrl = '/user/auth/login';
         globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({}));
-        globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve({ currentUserLiked: true, likeCounter: 3 }));
+        globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve({ total: 3, liked: true, canLike: true }));
+        // DELETE like (unlike) goes through the vue bridge's del() → client.ajax()
+        globalThis.humhubStubs.client.ajax = vi.fn(() => Promise.resolve({ total: 1, liked: false, canLike: true }));
         globalThis.humhubStubs.logCalls.error.length = 0;
     });
 
@@ -82,9 +84,9 @@ describe('LikeButton', () => {
 
         expect(wrapper.find('.likeLinkContainer').exists()).toBe(false);
         expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(1);
-        expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/like/like/info?recordId=7');
+        expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/like/state?recordId=7');
 
-        resolveGet({ currentUserLiked: true, likeCounter: 5 });
+        resolveGet({ total: 5, liked: true, canLike: true });
         await vi.waitFor(() => expect(wrapper.find('.likeLinkContainer').exists()).toBe(true));
 
         expect(wrapper.find('a.unlike').exists()).toBe(true);
@@ -113,13 +115,11 @@ describe('LikeButton', () => {
         await wrapper.find('a.like').trigger('click');
         await vi.waitFor(() => expect(wrapper.find('a.unlike').exists()).toBe(true));
 
-        expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith('/like/like/like?recordId=7');
+        expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith('/api/v2/like?recordId=7');
         expect(wrapper.find('.likeCount').text()).toBe('(3)');
     });
 
-    it('posts to the unlike url when already liked', async () => {
-        globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve({ currentUserLiked: false, likeCounter: 1 }));
-
+    it('sends DELETE to the like url when already liked', async () => {
         const wrapper = mount(LikeButton, {
             ...mountOptions(),
             props: { recordId: 7, likeCount: 2, currentUserLiked: true },
@@ -128,7 +128,11 @@ describe('LikeButton', () => {
         await wrapper.find('a.unlike').trigger('click');
         await vi.waitFor(() => expect(wrapper.find('a.like').exists()).toBe(true));
 
-        expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith('/like/like/unlike?recordId=7');
+        expect(globalThis.humhubStubs.client.ajax).toHaveBeenCalledWith(
+            '/api/v2/like?recordId=7',
+            expect.objectContaining({ method: 'DELETE' }),
+        );
+        expect(globalThis.humhubStubs.client.post).not.toHaveBeenCalled();
         expect(wrapper.find('.likeCount').text()).toBe('(1)');
     });
 
@@ -145,11 +149,11 @@ describe('LikeButton', () => {
         await wrapper.find('a.like').trigger('click');
         expect(globalThis.humhubStubs.client.post).toHaveBeenCalledTimes(1);
 
-        resolvePost({ currentUserLiked: true, likeCounter: 3 });
+        resolvePost({ total: 3, liked: true, canLike: true });
         await vi.waitFor(() => expect(wrapper.find('a.unlike').exists()).toBe(true));
 
         await wrapper.find('a.unlike').trigger('click');
-        expect(globalThis.humhubStubs.client.post).toHaveBeenCalledTimes(2);
+        expect(globalThis.humhubStubs.client.ajax).toHaveBeenCalledTimes(1);
     });
 
     it('keeps its state and logs when the toggle request fails', async () => {
@@ -188,7 +192,6 @@ describe('LikeButton', () => {
     });
 
     it('does not fire humhub:like:liked on unlike', async () => {
-        globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve({ currentUserLiked: false, likeCounter: 1 }));
 
         const container = document.createElement('div');
         document.body.appendChild(container);
@@ -223,9 +226,15 @@ describe('LikeButton', () => {
     });
 
     describe('user-list modal', () => {
+        // The API's list envelope of GET /api/v2/like/users — rows are user shapes
+        // (see UserList.vue).
         const userListResponse = () => ({
             total: 1,
-            users: [{
+            page: 1,
+            pageSize: 25,
+            pages: 1,
+            results: [{
+                id: 9,
                 guid: 'g1',
                 displayName: 'Alice',
                 url: '/user/alice',
@@ -233,8 +242,6 @@ describe('LikeButton', () => {
                 contentContainerId: 5,
                 online: null,
             }],
-            hasMore: false,
-            nextPage: null,
         });
 
         it('does not mount UserList until the count is clicked (lazy mount)', () => {
@@ -258,7 +265,7 @@ describe('LikeButton', () => {
             await wrapper.find('.likeCount').trigger('click');
             await flushPromises();
 
-            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/like/like/user-list?recordId=7&page=1');
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/like/users?recordId=7&page=1');
 
             const dialog = document.body.querySelector('.modal[role="dialog"]');
             expect(dialog).not.toBeNull();
@@ -331,13 +338,13 @@ describe('LikeButton', () => {
 
     it('fetches the count for guests when no initial state is provided', async () => {
         globalThis.humhub.config.module('user').isGuest = true;
-        globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({ currentUserLiked: false, likeCounter: 4 }));
+        globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({ total: 4, liked: false, canLike: false }));
 
         const wrapper = mount(LikeButton, { ...mountOptions(), props: { recordId: 7 } });
 
         expect(wrapper.find('.likeLinkContainer').exists()).toBe(false);
         expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(1);
-        expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/like/like/info?recordId=7');
+        expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/like/state?recordId=7');
 
         await vi.waitFor(() => expect(wrapper.find('.likeLinkContainer').exists()).toBe(true));
 
@@ -364,6 +371,6 @@ describe('LikeButton', () => {
         await vueModule.mountElement(fetchEl);
 
         expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(1);
-        expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/like/like/info?recordId=8');
+        expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/like/state?recordId=8');
     });
 });

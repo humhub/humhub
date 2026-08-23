@@ -33,6 +33,26 @@ class Request extends \yii\web\Request
     public $autoEnsureSecureConnection = true;
 
     /**
+     * Whether this request was authenticated by the regular browser session rather than by
+     * an API credential — set by {@see \humhub\components\api\SessionAuth}.
+     *
+     * API requests run with a session-less user component (`enableSession = false`) so a
+     * token login can never write into the browser session. Consumers that need to tell
+     * "no session at all" (a machine client) from "authenticated by the browser's session"
+     * (the platform's own frontend calling the API) must therefore ask this flag instead of
+     * inferring it from `Yii::$app->user->enableSession`:
+     *
+     * - {@see \humhub\components\gates\GateFilter} — a session-authenticated request must
+     *   still pass the user gates a browser request passes (2FA, legal, onboarding).
+     * - {@see \humhub\modules\user\components\Impersonation} — the private-content
+     *   restriction of an active impersonation must apply to it too.
+     *
+     * @var bool
+     * @since 1.19
+     */
+    public bool $isSessionAuthenticated = false;
+
+    /**
      * @inheritdoc
      */
     public function init()

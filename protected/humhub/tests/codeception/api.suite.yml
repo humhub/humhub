@@ -1,6 +1,6 @@
 # Codeception Test Suite Configuration
 
-# suite for REST API tests.
+# suite for the core HTTP API (/api/v2, see docs/develop/concept-api.md).
 # RUN `build` COMMAND AFTER ADDING/REMOVING MODULES.
 
 actor: ApiTester
@@ -11,7 +11,7 @@ modules:
         - tests\codeception\_support\DynamicFixtureHelper
     config:
         REST:
-            url: 'http://localhost:8080/api/v1/'
+            url: 'http://localhost:8080/api/v2/'
             depends: Yii2
             part: Json
         Yii2:

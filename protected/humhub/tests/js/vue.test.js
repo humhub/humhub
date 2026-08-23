@@ -369,4 +369,49 @@ describe('humhub.vue', () => {
         expect(vueModule.url('/a/b', { x: 1 })).toBe('/a/b?x=1');
         delete globalThis.humhub.modules.url.config.template;
     });
+
+    describe('API helpers', () => {
+        // The setup stub's config.get() returns null — override it per test to
+        // simulate a real CoreJsConfig payload, restoring afterwards.
+        const withConfig = (values, fn) => {
+            const original = globalThis.humhub.config.get;
+            globalThis.humhub.config.get = (moduleId, key) => (values[moduleId] || {})[key] ?? null;
+            try {
+                fn();
+            } finally {
+                globalThis.humhub.config.get = original;
+            }
+        };
+
+        it('apiUrl() joins the configured base with path and params', () => {
+            withConfig({ client: { apiUrl: 'https://example.test/hh/api/v2/' } }, () => {
+                expect(vueModule.apiUrl('comment/content/5/window', { pageSize: 4 }))
+                    .toBe('https://example.test/hh/api/v2/comment/content/5/window?pageSize=4');
+                expect(vueModule.apiUrl('/like')).toBe('https://example.test/hh/api/v2/like');
+            });
+        });
+
+        it('apiUrl() falls back to a root-relative base without config', () => {
+            expect(vueModule.apiUrl('like/state', { recordId: 7 })).toBe('/api/v2/like/state?recordId=7');
+        });
+
+        it('client.put()/client.del() delegate to the core client\'s ajax() with the verb set', async () => {
+            const calls = [];
+            const originalAjax = globalThis.humhubStubs.client.ajax;
+            globalThis.humhubStubs.client.ajax = (url, cfg) => {
+                calls.push([url, cfg]);
+                return Promise.resolve({});
+            };
+            try {
+                await vueModule.client.put('/api/v2/comment/1', { data: { message: 'x' } });
+                await vueModule.client.del('/api/v2/comment/1');
+            } finally {
+                globalThis.humhubStubs.client.ajax = originalAjax;
+            }
+
+            expect(calls[0][0]).toBe('/api/v2/comment/1');
+            expect(calls[0][1]).toMatchObject({ method: 'PUT', type: 'PUT', data: { message: 'x' } });
+            expect(calls[1][1]).toMatchObject({ method: 'DELETE', type: 'DELETE' });
+        });
+    });
 });

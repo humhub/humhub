@@ -24,7 +24,6 @@ const user = (overrides = {}) => ({
     displayName: 'Alice',
     url: '/user/alice',
     imageUrl: '/uploads/alice.jpg',
-    imageAlt: 'Profile picture of Alice',
     contentContainerId: 5,
     online: null,
     ...overrides,
@@ -68,6 +67,60 @@ describe('UserList', () => {
         expect(event.defaultPrevented).toBe(false); // the row's own <a href> navigation is left alone
         expect(wrapper.emitted('user-click')).toHaveLength(1);
         expect(wrapper.emitted('user-click')[0][0]).toMatchObject({ guid: 'user-guid-1', displayName: 'Alice' });
+    });
+
+    it('consumes the API list envelope', async () => {
+        // GET /api/v2/like/users shape: rows are user shapes; hasMore/nextPage derive
+        // from page/pages.
+        globalThis.humhubStubs.client.get = vi.fn()
+            .mockResolvedValueOnce({
+                total: 2,
+                page: 1,
+                pages: 2,
+                results: [{
+                    id: 9,
+                    guid: 'api-g1',
+                    displayName: 'Api Alice',
+                    url: '/u/alice',
+                    imageUrl: '/uploads/api-alice.jpg',
+                    contentContainerId: 5,
+                    online: false,
+                }],
+            })
+            .mockResolvedValueOnce({
+                total: 2,
+                page: 2,
+                pages: 2,
+                results: [{
+                    id: 10,
+                    guid: 'api-g2',
+                    displayName: 'Api Bob',
+                    url: '/u/bob',
+                    imageUrl: '/uploads/api-bob.jpg',
+                    contentContainerId: 6,
+                    online: null,
+                }],
+            });
+
+        const wrapper = mount(UserList, { ...mountOptions(), props: { url: '/x' } });
+        await flushPromises();
+
+        let rows = wrapper.findAll('.hh-list > a');
+        expect(rows).toHaveLength(1);
+        expect(rows[0].find('h4').text()).toBe('Api Alice');
+        expect(rows[0].find('img').attributes('src')).toBe('/uploads/api-alice.jpg');
+
+        // page 1 of 2 → Show more visible, loads page 2, then disappears
+        const more = wrapper.find('.pagination-container a');
+        expect(more.exists()).toBe(true);
+        await more.trigger('click');
+        await flushPromises();
+
+        expect(globalThis.humhubStubs.client.get).toHaveBeenLastCalledWith('/x?page=2');
+        rows = wrapper.findAll('.hh-list > a');
+        expect(rows).toHaveLength(2);
+        expect(rows[1].find('h4').text()).toBe('Api Bob');
+        expect(wrapper.find('.pagination-container').exists()).toBe(false);
     });
 
     it('appends the query string with a plain ? when the url has none', async () => {

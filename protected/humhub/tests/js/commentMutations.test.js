@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { mount } from '@vue/test-utils';
+import { flushPromises, mount } from '@vue/test-utils';
 import CommentSection from '../../modules/comment/vue/CommentSection.vue';
 import CommentForm from '../../modules/comment/vue/components/CommentForm.vue';
 import CommentEntry from '../../modules/comment/vue/components/CommentEntry.vue';
@@ -14,6 +14,8 @@ import RichTextField from '../../vue/RichTextField.vue';
 import SubmitButton from '../../vue/SubmitButton.vue';
 import UiModal from '../../vue/UiModal.vue';
 import UserList from '../../modules/user/vue/UserList.vue';
+import TextareaField from '../../vue/TextareaField.vue';
+import CheckboxField from '../../vue/CheckboxField.vue';
 
 await import('../../resources/js/humhub/humhub.url.js');
 await import('../../resources/js/humhub/humhub.vue.js');
@@ -46,7 +48,7 @@ const mountOptions = () => ({
         directives: { additions: additionsDirective },
         components: {
             LikeButton, RichTextOutput, LegacyFormWrapper, DropdownMenu, ExtensionSlot, UserImage,
-            HumHubForm, RichTextField, SubmitButton, UiModal, UserList,
+            HumHubForm, RichTextField, SubmitButton, UiModal, UserList, TextareaField, CheckboxField,
         },
     },
 });
@@ -94,45 +96,41 @@ const attachFakeEditor = (node, initialValue = 'hello') => {
     return fake;
 };
 
+// API user shape (camelCase, see `user\serializers\UserSerializer::short()`).
 const makeAuthor = (overrides = {}) => ({
+    id: 9,
     guid: 'user-guid-1',
     displayName: 'Alice',
     url: '/user/alice',
     imageUrl: '/uploads/alice.jpg',
     contentContainerId: 5,
-    imageAlt: 'Profile picture of Alice',
-    online: null,
     ...overrides,
 });
 
+// RAW API comment shape (see `comment\serializers\CommentSerializer`).
 const makeComment = (overrides = {}) => ({
     id: 1,
+    message: 'Hello world',
+    messageRenderOptions: { 'ui-richtext': true, 'ui-widget': 'ui.richtext.prosemirror.RichText' },
     contentId: 42,
     parentCommentId: null,
     recordId: 100,
+    createdBy: makeAuthor(),
     createdAt: '2026-08-01T10:00:00+00:00',
-    isEdited: false,
-    updatedAt: null,
-    author: makeAuthor(),
-    blocked: false,
-    message: 'Hello world',
-    messageRenderOptions: { 'ui-richtext': true, 'ui-widget': 'ui.richtext.prosemirror.RichText' },
-    attachmentsHtml: null,
-    likes: { count: 0, liked: false },
-    canEdit: false,
-    canDelete: false,
-    canAdminDelete: false,
-    permalink: '/comment/perma/1',
-    children: { total: 0, items: [], hasMore: false },
+    updatedAt: '2026-08-01T10:00:00+00:00',
+    url: '/comment/perma?id=1',
+    files: [],
+    childCount: 0,
+    replies: { total: 0, items: [], hasMore: false },
+    extensions: {},
     ...overrides,
 });
 
 // `rootTotal` defaults to whatever `total` ends up being (via `overrides`) rather than a
 // fixed 0 - every existing caller uses this for a no-replies scenario, where the two are
-// always equal (see CommentJsonService::serializeWindow()'s own docblock on `total` vs.
-// `rootTotal`) - unless `overrides` supplies its own `rootTotal` explicitly.
+// always equal - unless `overrides` supplies its own `rootTotal` explicitly.
 const emptyWindow = (overrides = {}) => ({
-    comments: [],
+    results: [],
     prevCount: 0,
     nextCount: 0,
     total: 0,
@@ -140,13 +138,35 @@ const emptyWindow = (overrides = {}) => ({
     ...overrides,
 });
 
+/**
+ * Opens an entry's context menu the way Bootstrap does in production (`show.bs.dropdown`
+ * on the toggle, see DropdownMenu.vue) and settles the permissions request it triggers:
+ * `canEdit`/`canDelete` are not part of the comment payload — which is caller-neutral and
+ * therefore cacheable, see docs/develop/concept-api.md — but fetched when the menu opens.
+ * The stub delegates every other URL to whatever the test had installed.
+ */
+const openCommentMenu = async (wrapper, permissions = { canEdit: true, canDelete: true }, index = 0) => {
+    const inner = globalThis.humhubStubs.client.get;
+    globalThis.humhubStubs.client.get = vi.fn((url, ...rest) => (String(url).includes('/permissions')
+        ? Promise.resolve(permissions)
+        : inner(url, ...rest)));
+
+    wrapper.findAll('.dropdown-toggle')[index].element.dispatchEvent(new Event('show.bs.dropdown'));
+    await flushPromises();
+};
+
 describe('Comment mutations + live updates', () => {
     beforeEach(() => {
         globalThis.humhub.modules.url.config.template = '/__route__';
         globalThis.humhub.config.module('user').isGuest = false;
         globalThis.humhub.config.module('user').loginUrl = '/user/auth/login';
+        // The adapter derives canAdminDelete/blocked from these (see commentApi.js).
+        globalThis.humhub.config.module('user').id = 9;
+        globalThis.humhub.config.module('user').blockedUserIds = [];
         globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(emptyWindow()));
         globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve({}));
+        // PUT (edit save) and DELETE go through the vue bridge's put()/del() → client.ajax()
+        globalThis.humhubStubs.client.ajax = vi.fn(() => Promise.resolve({ code: 200 }));
         globalThis.humhubStubs.modal.confirm = vi.fn(() => Promise.resolve(true));
         globalThis.humhubStubs.logCalls.error.length = 0;
         globalThis.humhubStubs.logCalls.warn.length = 0;
@@ -156,6 +176,12 @@ describe('Comment mutations + live updates', () => {
         // does not auto-unmount between tests) instance would keep reacting
         // to events fired by a later test.
         globalThis.humhubStubs.event._handlers.clear();
+
+        // UiModal teleports its dialog to document.body, and vue-test-utils never
+        // auto-unmounts - a previous test's still-mounted island with an open modal
+        // would otherwise leave its dialog in the body and every
+        // `document.body.querySelector('.modal')` below would pick THAT one up.
+        document.body.querySelectorAll('.modal, .modal-backdrop').forEach((el) => el.remove());
 
         // Auto-boots a fake richtext editor on every `.humhub-ui-richtext`
         // node handed to ui.additions - mirrors the real widget's boot
@@ -180,7 +206,7 @@ describe('Comment mutations + live updates', () => {
         // rather than dispatching a synthetic native 'submit' event, is what
         // would have caught this gap.
         it('posts message+fileList, appends at the end, clears the editor and bumps the count', async () => {
-            const initial = { comments: [makeComment({ id: 1 })], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 };
+            const initial = { results: [makeComment({ id: 1 })], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 };
             let resolvePost;
             globalThis.humhubStubs.client.post = vi.fn(() => new Promise((resolve) => { resolvePost = resolve; }));
 
@@ -203,7 +229,7 @@ describe('Comment mutations + live updates', () => {
             await submitButton.trigger('click');
 
             expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith(
-                '/comment/comment/create?contentId=42',
+                '/api/v2/comment?contentId=42',
                 { data: { message: 'hello', fileList: [] } },
             );
 
@@ -237,7 +263,7 @@ describe('Comment mutations + live updates', () => {
         // the legacy richtext editor's own Ctrl+S handler clicking the
         // button directly, which a real click.preventDefault() keeps from
         // ALSO firing this event).
-        it('renders field errors on 422 without clearing the editor or the list (native submit path)', async () => {
+        it('renders field errors on a 422 response without clearing the editor or the list (native submit path)', async () => {
             globalThis.humhubStubs.client.post = vi.fn(() => Promise.reject({
                 status: 422,
                 errors: { message: ['Message cannot be blank.'] },
@@ -258,7 +284,7 @@ describe('Comment mutations + live updates', () => {
             expect(clearHandler).not.toHaveBeenCalled();
             expect(editor.editor.serialize()).toBe('hello'); // input kept
             expect(wrapper.findAll('.single-comment').length).toBe(0);
-            expect(globalThis.humhubStubs.logCalls.error.length).toBe(0); // 422 is rendered, not logged
+            expect(globalThis.humhubStubs.logCalls.error.length).toBe(0); // validation errors render, never log
         });
 
         // CommentForm is now built on the HumHubForm suite (see its own docblock's "Built
@@ -292,7 +318,7 @@ describe('Comment mutations + live updates', () => {
         // contenteditable emits native, bubbling `input` events — dispatching
         // one from the editor node here exercises the exact event path the
         // bridge listens on (a delegated listener on the wrapper's root).
-        it('clears the rendered 422 error as soon as the user edits the richtext content again', async () => {
+        it('clears the rendered validation error as soon as the user edits the richtext content again', async () => {
             globalThis.humhubStubs.client.post = vi.fn(() => Promise.reject({
                 status: 422,
                 errors: { message: ['Message cannot be blank.'] },
@@ -388,7 +414,7 @@ describe('Comment mutations + live updates', () => {
             $submit.trigger('click');
 
             await vi.waitFor(() => expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith(
-                '/comment/comment/create?contentId=42',
+                '/api/v2/comment?contentId=42',
                 { data: { message: 'hello', fileList: [] } },
             ));
             // A real click on a type="submit" button would, if not cancelled,
@@ -439,12 +465,12 @@ describe('Comment mutations + live updates', () => {
         });
 
         it('threads submitIconHtml down to a reply form too', async () => {
-            const comment = makeComment({ id: 1, children: { total: 0, items: [], hasMore: false } });
+            const comment = makeComment({ id: 1, replies: { total: 0, items: [], hasMore: false } });
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
                 props: {
                     contentId: 42,
-                    initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
+                    initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
                     canComment: true,
                     formShellHtml: buildShell(),
                     submitIconHtml: ICON_HTML,
@@ -505,16 +531,16 @@ describe('Comment mutations + live updates', () => {
 
     describe('create (reply form)', () => {
         it('appends the reply under its parent and bumps both child and section totals', async () => {
-            const root = makeComment({ id: 1, children: { total: 0, items: [], hasMore: false } });
+            const root = makeComment({ id: 1, replies: { total: 0, items: [], hasMore: false } });
             globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve(
-                makeComment({ id: 10, parentCommentId: 1, children: null, message: 'a reply' }),
+                makeComment({ id: 10, parentCommentId: 1, replies: null, message: 'a reply' }),
             ));
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
                 props: {
                     contentId: 42,
-                    initial: { comments: [root], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
+                    initial: { results: [root], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
                     canComment: true,
                     formShellHtml: buildShell(),
                 },
@@ -538,7 +564,7 @@ describe('Comment mutations + live updates', () => {
             await replySubmit.trigger('click');
 
             expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith(
-                '/comment/comment/create?contentId=42&parentCommentId=1',
+                '/api/v2/comment?contentId=42&parentCommentId=1',
                 { data: { message: 'hello', fileList: [] } },
             );
 
@@ -563,11 +589,11 @@ describe('Comment mutations + live updates', () => {
     // dedupe/splice machinery root pagination does).
     describe('replies/root pagination gap fix (Show next 0 comments)', () => {
         it('renders no show-more link after an own reply is appended to an already fully-loaded reply list', async () => {
-            const replyA = makeComment({ id: 10, parentCommentId: 1, children: null, message: 'reply a' });
-            const replyB = makeComment({ id: 11, parentCommentId: 1, children: null, message: 'reply b' });
-            const root = makeComment({ id: 1, children: { total: 2, items: [replyA, replyB], hasMore: false } });
+            const replyA = makeComment({ id: 10, parentCommentId: 1, replies: null, message: 'reply a' });
+            const replyB = makeComment({ id: 11, parentCommentId: 1, replies: null, message: 'reply b' });
+            const root = makeComment({ id: 1, replies: { total: 2, items: [replyA, replyB], hasMore: false } });
             globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve(
-                makeComment({ id: 20, parentCommentId: 1, children: null, message: 'own reply' }),
+                makeComment({ id: 20, parentCommentId: 1, replies: null, message: 'own reply' }),
             ));
 
             const wrapper = mount(CommentSection, {
@@ -577,7 +603,7 @@ describe('Comment mutations + live updates', () => {
                     // total: 3 (1 root + 2 replies), rootTotal: 1 (just the one root) -
                     // shape-realistic per CommentJsonService::serializeWindow()'s own
                     // docblock note on `total` vs. `rootTotal`.
-                    initial: { comments: [root], prevCount: 0, nextCount: 0, total: 3, rootTotal: 1 },
+                    initial: { results: [root], prevCount: 0, nextCount: 0, total: 3, rootTotal: 1 },
                     canComment: true,
                     formShellHtml: buildShell(),
                 },
@@ -603,10 +629,10 @@ describe('Comment mutations + live updates', () => {
         // response can never legitimately re-return an id already in `childItems`, since the
         // fetch is strictly for ids older than that head.
         it('own reply appended at the tail does not move the load-older cursor, produces no duplicates, and remaining reaches 0 once caught up', async () => {
-            const reply15 = makeComment({ id: 15, parentCommentId: 4, children: null, message: 'reply 15' });
-            const reply16 = makeComment({ id: 16, parentCommentId: 4, children: null, message: 'reply 16' });
-            const root = makeComment({ id: 4, contentId: 2, children: { total: 4, items: [reply15, reply16], hasMore: true } });
-            const ownReply = makeComment({ id: 20, parentCommentId: 4, contentId: 2, children: null, message: 'own reply' });
+            const reply15 = makeComment({ id: 15, parentCommentId: 4, replies: null, message: 'reply 15' });
+            const reply16 = makeComment({ id: 16, parentCommentId: 4, replies: null, message: 'reply 16' });
+            const root = makeComment({ id: 4, contentId: 2, replies: { total: 4, items: [reply15, reply16], hasMore: true } });
+            const ownReply = makeComment({ id: 20, parentCommentId: 4, contentId: 2, replies: null, message: 'own reply' });
             globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve(ownReply));
 
             const wrapper = mount(CommentSection, {
@@ -614,7 +640,7 @@ describe('Comment mutations + live updates', () => {
                 props: {
                     contentId: 2,
                     // total: 5 (1 root + 4 replies), rootTotal: 1 (just the one root).
-                    initial: { comments: [root], prevCount: 0, nextCount: 0, total: 5, rootTotal: 1 },
+                    initial: { results: [root], prevCount: 0, nextCount: 0, total: 5, rootTotal: 1 },
                     canComment: true,
                     formShellHtml: buildShell(),
                     pageSize: 10,
@@ -634,10 +660,10 @@ describe('Comment mutations + live updates', () => {
             // childItems.length (3: 15, 16, 20).
             expect(wrapper.find('.nested-comments-root .showMore').exists()).toBe(true);
 
-            const reply13 = makeComment({ id: 13, parentCommentId: 4, children: null, message: 'reply 13' });
-            const reply14 = makeComment({ id: 14, parentCommentId: 4, children: null, message: 'reply 14' });
+            const reply13 = makeComment({ id: 13, parentCommentId: 4, replies: null, message: 'reply 13' });
+            const reply14 = makeComment({ id: 14, parentCommentId: 4, replies: null, message: 'reply 14' });
             globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({
-                comments: [reply13, reply14],
+                results: [reply13, reply14],
                 prevCount: 0,
                 nextCount: 0,
                 total: 5,
@@ -649,7 +675,7 @@ describe('Comment mutations + live updates', () => {
             // The cursor is still 15 - the pre-append oldest SHOWN reply - never the
             // own-appended one (20), which is now the array's tail.
             expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith(
-                '/comment/comment/list?contentId=2&parentCommentId=4&commentId=15&direction=previous&pageSize=10',
+                '/api/v2/comment/parent/4/window?commentId=15&direction=previous&pageSize=10',
             );
 
             await vi.waitFor(() => {
@@ -666,17 +692,17 @@ describe('Comment mutations + live updates', () => {
         // the label reading off it) can never go stale/phantom around a delete - unlike the
         // pre-round-3 two-independently-mutated-fields shape this replaced.
         it('keeps the remaining count and label consistent (no phantom) after a loaded reply is deleted', async () => {
-            const reply15 = makeComment({ id: 15, parentCommentId: 4, children: null, message: 'reply 15' });
-            const reply16 = makeComment({ id: 16, parentCommentId: 4, children: null, message: 'reply 16', canDelete: true });
+            const reply15 = makeComment({ id: 15, parentCommentId: 4, replies: null, message: 'reply 15' });
+            const reply16 = makeComment({ id: 16, parentCommentId: 4, replies: null, message: 'reply 16' });
             // total: 3 - 2 shown (15, 16), 1 still hidden/unfetched.
-            const root = makeComment({ id: 4, contentId: 2, children: { total: 3, items: [reply15, reply16], hasMore: true } });
-            globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve({ success: true }));
+            const root = makeComment({ id: 4, contentId: 2, replies: { total: 3, items: [reply15, reply16], hasMore: true } });
+            globalThis.humhubStubs.client.ajax = vi.fn(() => Promise.resolve({ code: 200 }));
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
                 props: {
                     contentId: 2,
-                    initial: { comments: [root], prevCount: 0, nextCount: 0, total: 4, rootTotal: 1 },
+                    initial: { results: [root], prevCount: 0, nextCount: 0, total: 4, rootTotal: 1 },
                 },
             });
 
@@ -690,9 +716,14 @@ describe('Comment mutations + live updates', () => {
             expect(rootEntry().childHasMore).toBe(true);
             expect(rootEntry().childRemaining).toBe(1);
 
-            // Only the reply has canDelete: true, so this is unambiguous.
+            // Index 2 is the SECOND reply's menu (root first, then reply 15, then reply 16),
+            // so the single open menu makes the Delete item unambiguous.
+            await openCommentMenu(wrapper, { canEdit: true, canDelete: true }, 2);
             const deleteItem = wrapper.findAll('.dropdown-item').find((item) => item.text() === 'Delete');
             await deleteItem.trigger('click');
+            await wrapper.vm.$nextTick();
+            document.body.querySelector('.modal[role="dialog"] .btn-danger')
+                .dispatchEvent(new MouseEvent('click', { bubbles: true }));
 
             await vi.waitFor(() => expect(wrapper.find('#comment_16').exists()).toBe(false));
             // childTotal (3 -> 2) and childItems.length (2 -> 1) moved together, so the
@@ -714,7 +745,7 @@ describe('Comment mutations + live updates', () => {
                 props: {
                     contentId: 42,
                     // No replies in this scenario - total and rootTotal coincide.
-                    initial: { comments: [commentA, commentB], prevCount: 0, nextCount: 1, total: 3, rootTotal: 3 },
+                    initial: { results: [commentA, commentB], prevCount: 0, nextCount: 1, total: 3, rootTotal: 3 },
                     canComment: true,
                     formShellHtml: buildShell(),
                     pageSize: 5,
@@ -728,7 +759,7 @@ describe('Comment mutations + live updates', () => {
 
             const hiddenComment = makeComment({ id: 8, message: 'hidden comment' });
             globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({
-                comments: [hiddenComment, ownComment],
+                results: [hiddenComment, ownComment],
                 prevCount: 0,
                 nextCount: 0,
                 total: 4,
@@ -740,7 +771,7 @@ describe('Comment mutations + live updates', () => {
             // The cursor is the pre-append last loaded comment (6), never the
             // own-appended one (10) that is now items' tail.
             expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith(
-                '/comment/comment/list?contentId=42&commentId=6&direction=next&pageSize=5',
+                '/api/v2/comment/content/42/window?commentId=6&direction=next&pageSize=5',
             );
 
             await vi.waitFor(() => {
@@ -759,7 +790,7 @@ describe('Comment mutations + live updates', () => {
     describe('phantom "show next N replies" fix (rootTotal mutations)', () => {
         it('bumps rootTotal (not just the badge total) on an own root create, without opening a phantom next link', async () => {
             const initial = {
-                comments: [makeComment({ id: 9 })],
+                results: [makeComment({ id: 9 })],
                 prevCount: 8,
                 nextCount: 0,
                 total: 23,
@@ -782,9 +813,9 @@ describe('Comment mutations + live updates', () => {
         });
 
         it('does not bump rootTotal, and does not open a phantom next link on the root list, when a reply is created', async () => {
-            const root = makeComment({ id: 1, children: { total: 0, items: [], hasMore: false } });
+            const root = makeComment({ id: 1, replies: { total: 0, items: [], hasMore: false } });
             globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve(
-                makeComment({ id: 40, parentCommentId: 1, children: null, message: 'a reply' }),
+                makeComment({ id: 40, parentCommentId: 1, replies: null, message: 'a reply' }),
             ));
 
             const wrapper = mount(CommentSection, {
@@ -794,7 +825,7 @@ describe('Comment mutations + live updates', () => {
                     // Exactly 1 root known, nothing hidden either side - a reply create
                     // wrongly bumping rootTotal would flip remainingNext from 0 to 1,
                     // opening a phantom root-level "show next" link.
-                    initial: { comments: [root], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
+                    initial: { results: [root], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
                     canComment: true,
                     formShellHtml: buildShell(),
                 },
@@ -846,17 +877,17 @@ describe('Comment mutations + live updates', () => {
         });
 
         it('does not duplicate a reply when a live event and its own slow reply-create response resolve for the same id', async () => {
-            const root = makeComment({ id: 1, children: { total: 0, items: [], hasMore: false } });
+            const root = makeComment({ id: 1, replies: { total: 0, items: [], hasMore: false } });
             let resolvePost;
             globalThis.humhubStubs.client.post = vi.fn(() => new Promise((resolve) => { resolvePost = resolve; }));
-            const racedReply = makeComment({ id: 88, parentCommentId: 1, children: null, message: 'raced reply' });
+            const racedReply = makeComment({ id: 88, parentCommentId: 1, replies: null, message: 'raced reply' });
             globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(racedReply));
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
                 props: {
                     contentId: 42,
-                    initial: { comments: [root], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
+                    initial: { results: [root], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
                     canComment: true,
                     formShellHtml: buildShell(),
                 },
@@ -881,56 +912,56 @@ describe('Comment mutations + live updates', () => {
         });
     });
 
-    describe('blocked-author reveal retrofit (root and nested)', () => {
-        // P2-4 review note: reveal used to swap in a local `revealed` object
-        // without a key bump. This task retrofits it onto the same
-        // entry-object-swap + revision-bump mechanism edit/live-append use
-        // (see CommentEntry's own docblock) - covering a NESTED reply here
-        // too, since the parent CommentEntry's `onChildUpdated` handler is a
-        // separate code path from CommentList's `onEntryUpdated`.
-        it('reveals a blocked reply nested under a root comment, remounting just that entry', async () => {
-            const blockedChild = makeComment({ id: 10, parentCommentId: 1, children: null, blocked: true, author: null, message: null, messageRenderOptions: null, likes: null });
-            const root = makeComment({ id: 1, children: { total: 1, items: [blockedChild], hasMore: false } });
+    describe('blocked-author reveal (root and nested, client-side)', () => {
+        // Masking is derived client-side from the viewer's own block list and the
+        // reveal is a local display toggle with no request (see commentApi.js's
+        // `blocked` and CommentEntry's `revealed`) - covering a NESTED reply here
+        // since it renders through the parent entry's recursion, a separate path
+        // from the root list.
+        it('reveals a blocked reply nested under a root comment without a request', async () => {
+            globalThis.humhub.config.module('user').blockedUserIds = [66];
+            const blockedChild = makeComment({ id: 10, parentCommentId: 1, replies: null, createdBy: makeAuthor({ id: 66 }), message: 'hidden reply' });
+            const root = makeComment({ id: 1, replies: { total: 1, items: [blockedChild], hasMore: false } });
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [root], prevCount: 0, nextCount: 0, total: 2, rootTotal: 1 } },
+                props: { contentId: 42, initial: { results: [root], prevCount: 0, nextCount: 0, total: 2, rootTotal: 1 } },
             });
 
             expect(wrapper.find('.nested-comments-root .comment-blocked-user').exists()).toBe(true);
+            expect(wrapper.text()).not.toContain('hidden reply');
 
-            const revealed = makeComment({ id: 10, parentCommentId: 1, children: null, message: 'revealed reply' });
-            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(revealed));
-
+            globalThis.humhubStubs.client.get.mockClear();
             await wrapper.find('.nested-comments-root .comment-blocked-user a').trigger('click');
 
-            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/comment/comment/info?id=10&showBlocked=1');
+            expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalled();
             await vi.waitFor(() => expect(wrapper.find('.nested-comments-root .single-comment').exists()).toBe(true));
             expect(wrapper.find('.nested-comments-root .comment-blocked-user').exists()).toBe(false);
-            expect(wrapper.text()).toContain('revealed reply');
+            expect(wrapper.text()).toContain('hidden reply');
         });
     });
 
     describe('edit', () => {
         it('fetches the raw message, prefills the booted editor, and swaps the entry (with a key bump) on save', async () => {
-            const comment = makeComment({ id: 1, canEdit: true, message: 'before' });
-            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({ message: 'raw **markdown**' }));
+            const comment = makeComment({ id: 1, message: 'before' });
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(makeComment({ id: 1, message: 'raw **markdown**' })));
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
                 props: {
                     contentId: 42,
-                    initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
+                    initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
                     formShellHtml: buildShell(),
                 },
             });
 
             const beforeEl = wrapper.find('#comment_1').element;
 
+            await openCommentMenu(wrapper);
             const editItem = wrapper.findAll('.dropdown-item').find((item) => item.text() === 'Edit');
             await editItem.trigger('click');
 
-            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/comment/comment/update?id=1');
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/comment/1');
             await vi.waitFor(() => expect(wrapper.find('#comment_editarea_1 form').exists()).toBe(true));
 
             const editor = jQuery(wrapper.find('#comment_editarea_1 ' + RICHTEXT_SELECTOR).element)
@@ -942,15 +973,18 @@ describe('Comment mutations + live updates', () => {
             const editSubmit = wrapper.find('#comment_editarea_1 .btn-comment-submit');
             expect(editSubmit.exists()).toBe(true);
 
-            globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve(
-                makeComment({ id: 1, canEdit: true, message: 'after' }),
+            globalThis.humhubStubs.client.ajax = vi.fn(() => Promise.resolve(
+                makeComment({ id: 1, message: 'after' }),
             ));
 
             await editSubmit.trigger('click');
 
-            expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith(
-                '/comment/comment/update?id=1',
-                { data: { message: 'raw **markdown**', fileList: [] } },
+            expect(globalThis.humhubStubs.client.ajax).toHaveBeenCalledWith(
+                '/api/v2/comment/1',
+                expect.objectContaining({
+                    method: 'PUT',
+                    data: { message: 'raw **markdown**', fileList: [] },
+                }),
             );
 
             await vi.waitFor(() => expect(wrapper.text()).toContain('after'));
@@ -965,18 +999,19 @@ describe('Comment mutations + live updates', () => {
         });
 
         it('discards the fetched message and leaves the entry untouched on cancel', async () => {
-            const comment = makeComment({ id: 1, canEdit: true, message: 'original' });
-            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({ message: 'raw markdown' }));
+            const comment = makeComment({ id: 1, message: 'original' });
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(makeComment({ id: 1, message: 'raw markdown' })));
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
                 props: {
                     contentId: 42,
-                    initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
+                    initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
                     formShellHtml: buildShell(),
                 },
             });
 
+            await openCommentMenu(wrapper);
             const editItem = wrapper.findAll('.dropdown-item').find((item) => item.text() === 'Edit');
             await editItem.trigger('click');
             await vi.waitFor(() => expect(wrapper.find('#comment_editarea_1 form').exists()).toBe(true));
@@ -991,18 +1026,19 @@ describe('Comment mutations + live updates', () => {
 
     describe('discarding a form resets its unsaved-changes guard (F2)', () => {
         it('resets the edit form\'s acknowledgeForm baseline before it unmounts on cancel', async () => {
-            const comment = makeComment({ id: 1, canEdit: true });
-            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({ message: 'raw markdown' }));
+            const comment = makeComment({ id: 1 });
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(makeComment({ id: 1, message: 'raw markdown' })));
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
                 props: {
                     contentId: 42,
-                    initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
+                    initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
                     formShellHtml: buildShell(),
                 },
             });
 
+            await openCommentMenu(wrapper);
             const editItem = wrapper.findAll('.dropdown-item').find((item) => item.text() === 'Edit');
             await editItem.trigger('click');
             await vi.waitFor(() => expect(wrapper.find('#comment_editarea_1 form').exists()).toBe(true));
@@ -1035,21 +1071,22 @@ describe('Comment mutations + live updates', () => {
         // editor 'clear' DOM event is what the real widget's own handler runs
         // resetBackup() on (see humhub.ui.richtext.prosemirror.js).
         it('resets the edit form\'s acknowledgeForm baseline and triggers the editor backup clear on save', async () => {
-            const comment = makeComment({ id: 1, canEdit: true });
-            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({ message: 'raw markdown' }));
-            globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve(
-                makeComment({ id: 1, canEdit: true, message: 'after' }),
+            const comment = makeComment({ id: 1 });
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(makeComment({ id: 1, message: 'raw markdown' })));
+            globalThis.humhubStubs.client.ajax = vi.fn(() => Promise.resolve(
+                makeComment({ id: 1, message: 'after' }),
             ));
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
                 props: {
                     contentId: 42,
-                    initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
+                    initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
                     formShellHtml: buildShell(),
                 },
             });
 
+            await openCommentMenu(wrapper);
             const editItem = wrapper.findAll('.dropdown-item').find((item) => item.text() === 'Edit');
             await editItem.trigger('click');
             await vi.waitFor(() => expect(wrapper.find('#comment_editarea_1 form').exists()).toBe(true));
@@ -1068,13 +1105,13 @@ describe('Comment mutations + live updates', () => {
         });
 
         it('resets the reply form\'s acknowledgeForm baseline before it unmounts on close', async () => {
-            const comment = makeComment({ id: 1, children: { total: 0, items: [], hasMore: false } });
+            const comment = makeComment({ id: 1, replies: { total: 0, items: [], hasMore: false } });
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
                 props: {
                     contentId: 42,
-                    initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
+                    initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
                     canComment: true,
                     formShellHtml: buildShell(),
                 },
@@ -1106,14 +1143,14 @@ describe('Comment mutations + live updates', () => {
     // form, each reply form and each edit form.
     describe('stable per-form instance ids (richtext draft backup key contract)', () => {
         it('derives main/reply/edit form ids from contentId/parent/comment id, not the page counter', async () => {
-            const comment = makeComment({ id: 7, canEdit: true });
-            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({ message: 'raw' }));
+            const comment = makeComment({ id: 7 });
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(makeComment({ id: 7, message: 'raw' })));
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
                 props: {
                     contentId: 42,
-                    initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
+                    initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
                     canComment: true,
                     formShellHtml: buildShell(),
                 },
@@ -1129,6 +1166,7 @@ describe('Comment mutations + live updates', () => {
             expect(wrapper.find('#newCommentForm_vueform-c42-r7').exists()).toBe(true);
 
             // Edit form: keyed by the edited comment's own id.
+            await openCommentMenu(wrapper);
             const editItem = wrapper.findAll('.dropdown-item').find((item) => item.text() === 'Edit');
             await editItem.trigger('click');
             await vi.waitFor(() => expect(wrapper.find('#newCommentForm_vueform-c42-e7').exists()).toBe(true));
@@ -1137,28 +1175,32 @@ describe('Comment mutations + live updates', () => {
 
     describe('delete', () => {
         it('removes the entry and subtracts 1 + its current reply count from the total on confirm', async () => {
-            const comment = makeComment({ id: 1, canDelete: true, children: { total: 2, items: [], hasMore: false } });
-            globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve({ success: true }));
+            const comment = makeComment({ id: 1, replies: { total: 2, items: [], hasMore: false } });
+            globalThis.humhubStubs.client.ajax = vi.fn(() => Promise.resolve({ code: 200 }));
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
                 // total: 3 (1 root + 2 replies), rootTotal: 1 (just the one root).
-                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 3, rootTotal: 1 } },
+                props: { contentId: 42, initial: { results: [comment], prevCount: 0, nextCount: 0, total: 3, rootTotal: 1 } },
             });
 
+            await openCommentMenu(wrapper);
             const deleteItem = wrapper.findAll('.dropdown-item').find((item) => item.text() === 'Delete');
             await deleteItem.trigger('click');
+            await wrapper.vm.$nextTick();
 
-            expect(globalThis.humhubStubs.modal.confirm).toHaveBeenCalledWith({
-                header: '<strong>Confirm</strong> comment deleting',
-                body: 'Do you really want to delete this comment?',
-                confirmText: 'Delete',
-                cancelText: 'Cancel',
-            });
+            // The native CommentDeleteModal (UiModal, Teleported to body) in plain mode —
+            // no legacy modal.confirm bridge involved anymore.
+            const dialog = document.body.querySelector('.modal[role="dialog"]');
+            expect(dialog).not.toBeNull();
+            expect(dialog.textContent).toContain('Do you really want to delete this comment?');
+            expect(dialog.querySelector('textarea')).toBeNull(); // no admin fields in plain mode
 
-            await vi.waitFor(() => expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith(
-                '/comment/comment/delete?id=1',
-                undefined,
+            dialog.querySelector('.btn-danger').dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+            await vi.waitFor(() => expect(globalThis.humhubStubs.client.ajax).toHaveBeenCalledWith(
+                '/api/v2/comment/1',
+                expect.objectContaining({ method: 'DELETE' }),
             ));
 
             await vi.waitFor(() => expect(wrapper.find('#comment_1').exists()).toBe(false));
@@ -1167,12 +1209,14 @@ describe('Comment mutations + live updates', () => {
             // badge `total` above) - see CommentSection's own docblock, "Root-only remaining
             // count".
             expect(wrapper.vm.rootTotal).toBe(0);
+
+            wrapper.unmount();
         });
 
         it('decrements the parent reply badge (and total) when a child reply is deleted', async () => {
-            const child = makeComment({ id: 10, parentCommentId: 1, children: null, canDelete: true });
-            const root = makeComment({ id: 1, canDelete: false, children: { total: 1, items: [child], hasMore: false } });
-            globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve({ success: true }));
+            const child = makeComment({ id: 10, parentCommentId: 1, replies: null });
+            const root = makeComment({ id: 1, replies: { total: 1, items: [child], hasMore: false } });
+            globalThis.humhubStubs.client.ajax = vi.fn(() => Promise.resolve({ code: 200 }));
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
@@ -1180,15 +1224,20 @@ describe('Comment mutations + live updates', () => {
                 props: {
                     contentId: 42,
                     canComment: true,
-                    initial: { comments: [root], prevCount: 0, nextCount: 0, total: 2, rootTotal: 1 },
+                    initial: { results: [root], prevCount: 0, nextCount: 0, total: 2, rootTotal: 1 },
                 },
             });
 
             expect(wrapper.find('.comment-count').attributes('data-count')).toBe('1');
 
-            // Only the child has canDelete: true, so this is unambiguous.
+            // Index 1 is the CHILD's menu (the root renders its own controls first), so the
+            // single open menu makes the Delete item unambiguous.
+            await openCommentMenu(wrapper, { canEdit: true, canDelete: true }, 1);
             const deleteItem = wrapper.findAll('.dropdown-item').find((item) => item.text() === 'Delete');
             await deleteItem.trigger('click');
+            await wrapper.vm.$nextTick();
+            document.body.querySelector('.modal[role="dialog"] .btn-danger')
+                .dispatchEvent(new MouseEvent('click', { bubbles: true }));
 
             await vi.waitFor(() => expect(wrapper.find('#comment_10').exists()).toBe(false));
             expect(wrapper.vm.total).toBe(1); // 2 - 1 (a reply can't have its own children)
@@ -1198,72 +1247,126 @@ describe('Comment mutations + live updates', () => {
             const badge = wrapper.find('.comment-count');
             expect(badge.attributes('data-count')).toBe('0');
             expect(badge.attributes('style')).toBe('display: none;');
+
+            wrapper.unmount();
         });
 
         it('leaves the entry and total untouched when the confirm is declined', async () => {
-            globalThis.humhubStubs.modal.confirm = vi.fn(() => Promise.resolve(false));
-            const comment = makeComment({ id: 1, canDelete: true });
+            const comment = makeComment({ id: 1 });
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
+                props: { contentId: 42, initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
 
+            await openCommentMenu(wrapper);
             const deleteItem = wrapper.findAll('.dropdown-item').find((item) => item.text() === 'Delete');
             await deleteItem.trigger('click');
             await wrapper.vm.$nextTick();
 
-            expect(globalThis.humhubStubs.client.post).not.toHaveBeenCalled();
+            const dialog = document.body.querySelector('.modal[role="dialog"]');
+            expect(dialog).not.toBeNull();
+            dialog.querySelector('.btn-light').dispatchEvent(new MouseEvent('click', { bubbles: true }));
+            await wrapper.vm.$nextTick();
+
+            expect(document.body.querySelector('.modal[role="dialog"]')).toBeNull(); // closed again
+            expect(globalThis.humhubStubs.client.ajax).not.toHaveBeenCalled();
             expect(wrapper.find('#comment_1').exists()).toBe(true);
             expect(wrapper.vm.total).toBe(1);
+
+            wrapper.unmount();
         });
     });
 
-    describe('admin-delete', () => {
-        let $fixture;
-
-        beforeEach(() => {
-            $fixture = jQuery(
-                '<div id="globalModalConfirm"><form>'
-                + '<textarea name="message">Reason text</textarea>'
-                + '<input type="checkbox" name="notify" value="1" checked>'
-                + '</form></div>',
-            ).appendTo(document.body);
-        });
-
-        afterEach(() => {
-            $fixture.remove();
-        });
-
-        it('fetches the modal body, confirms via the modal bridge, then posts the delete with the form fields read from it', async () => {
-            const comment = makeComment({ id: 1, canDelete: true, canAdminDelete: true });
-            const modalResponse = {
-                header: '<strong>Delete</strong> comment?',
-                body: '<form>...</form>',
-                confirmText: 'Confirm',
-                cancelText: 'Cancel',
-            };
-            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(modalResponse));
-            globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve({ success: true }));
+    describe('admin-delete (native modal)', () => {
+        it('opens the reason/notify mode, gates Confirm on the reason, and deletes with the moderation fields', async () => {
+            // canAdminDelete is DERIVED: canDelete on someone ELSE's comment (author 66 ≠ caller 9).
+            const comment = makeComment({ id: 1, createdBy: makeAuthor({ id: 66 }) });
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
+                props: { contentId: 42, initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
 
+            await openCommentMenu(wrapper);
             const deleteItem = wrapper.findAll('.dropdown-item').find((item) => item.text() === 'Delete');
             await deleteItem.trigger('click');
+            await wrapper.vm.$nextTick();
 
-            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/comment/comment/get-admin-delete-modal?id=1');
-            await vi.waitFor(() => expect(globalThis.humhubStubs.modal.confirm).toHaveBeenCalledWith(modalResponse));
+            // Native CommentDeleteModal in admin mode: no server round trip for the DIALOG
+            // anymore (the get-admin-delete-modal route is gone), the legacy
+            // AdminDeleteCommentForm fields are a reason textarea + notify checkbox. The one
+            // GET this flow does make is the menu's own permissions call - see
+            // openCommentMenu() and docs/develop/concept-api.md.
+            expect(globalThis.humhubStubs.client.get.mock.calls.map(([url]) => url))
+                .toEqual(['/api/v2/comment/1/permissions']);
+            const dialog = document.body.querySelector('.modal[role="dialog"]');
+            expect(dialog).not.toBeNull();
+            expect(dialog.querySelector('.modal-title').innerHTML).toContain('<strong>Delete</strong> comment?');
 
-            await vi.waitFor(() => expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith(
-                '/comment/comment/delete?id=1',
-                { data: { message: 'Reason text', notify: '1' } },
+            const textarea = dialog.querySelector('textarea');
+            const checkbox = dialog.querySelector('input[type="checkbox"]');
+            const confirmButton = dialog.querySelector('.btn-danger');
+            expect(textarea).not.toBeNull();
+            // notify defaults to checked (legacy parity), reason enabled and empty →
+            // Confirm is gated until a reason is entered.
+            expect(checkbox.checked).toBe(true);
+            expect(textarea.disabled).toBe(false);
+            expect(confirmButton.disabled).toBe(true);
+
+            textarea.value = 'Against the rules';
+            textarea.dispatchEvent(new Event('input', { bubbles: true }));
+            await wrapper.vm.$nextTick();
+            expect(confirmButton.disabled).toBe(false);
+
+            confirmButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+            await vi.waitFor(() => expect(globalThis.humhubStubs.client.ajax).toHaveBeenCalledWith(
+                '/api/v2/comment/1',
+                expect.objectContaining({
+                    method: 'DELETE',
+                    data: { notify: 1, message: 'Against the rules' },
+                }),
             ));
 
             await vi.waitFor(() => expect(wrapper.find('#comment_1').exists()).toBe(false));
             expect(wrapper.vm.total).toBe(0);
+
+            wrapper.unmount();
+        });
+
+        it('unchecking notify disables the reason field and deletes without moderation fields', async () => {
+            const comment = makeComment({ id: 1, createdBy: makeAuthor({ id: 66 }) });
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
+            });
+
+            await openCommentMenu(wrapper);
+            const deleteItem = wrapper.findAll('.dropdown-item').find((item) => item.text() === 'Delete');
+            await deleteItem.trigger('click');
+            await wrapper.vm.$nextTick();
+
+            const dialog = document.body.querySelector('.modal[role="dialog"]');
+            const checkbox = dialog.querySelector('input[type="checkbox"]');
+            checkbox.checked = false;
+            checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+            await wrapper.vm.$nextTick();
+
+            expect(dialog.querySelector('textarea').disabled).toBe(true);
+            const confirmButton = dialog.querySelector('.btn-danger');
+            expect(confirmButton.disabled).toBe(false); // no reason required without notify
+
+            confirmButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+            // A plain DELETE — no notify/message payload at all.
+            await vi.waitFor(() => expect(globalThis.humhubStubs.client.ajax).toHaveBeenCalledWith(
+                '/api/v2/comment/1',
+                expect.not.objectContaining({ data: expect.anything() }),
+            ));
+
+            wrapper.unmount();
         });
     });
 
@@ -1275,7 +1378,7 @@ describe('Comment mutations + live updates', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [makeComment({ id: 1 })], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
+                props: { contentId: 42, initial: { results: [makeComment({ id: 1 })], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
 
             vueModule.events.trigger(LIVE_NEW_COMMENT, [
@@ -1283,20 +1386,20 @@ describe('Comment mutations + live updates', () => {
                 {},
             ]);
 
-            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/comment/comment/info?id=5');
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/comment/5');
             await vi.waitFor(() => expect(wrapper.find('#comment_5').exists()).toBe(true));
             expect(wrapper.vm.total).toBe(2);
         });
 
         it('appends a matching reply event under its already-loaded parent', async () => {
-            const root = makeComment({ id: 1, children: { total: 0, items: [], hasMore: false } });
+            const root = makeComment({ id: 1, replies: { total: 0, items: [], hasMore: false } });
             globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(
-                makeComment({ id: 20, parentCommentId: 1, children: null, message: 'live reply' }),
+                makeComment({ id: 20, parentCommentId: 1, replies: null, message: 'live reply' }),
             ));
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [root], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
+                props: { contentId: 42, initial: { results: [root], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
 
             vueModule.events.trigger(LIVE_NEW_COMMENT, [
@@ -1311,7 +1414,7 @@ describe('Comment mutations + live updates', () => {
         it('ignores an event for a comment id that is already known (covers own just-created posts)', async () => {
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [makeComment({ id: 1 })], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
+                props: { contentId: 42, initial: { results: [makeComment({ id: 1 })], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
             globalThis.humhubStubs.client.get.mockClear();
 
@@ -1328,7 +1431,7 @@ describe('Comment mutations + live updates', () => {
         it('ignores an event for a foreign contentId', async () => {
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [makeComment({ id: 1 })], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
+                props: { contentId: 42, initial: { results: [makeComment({ id: 1 })], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
             globalThis.humhubStubs.client.get.mockClear();
 
@@ -1345,7 +1448,7 @@ describe('Comment mutations + live updates', () => {
         it('unsubscribes on unmount', async () => {
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { comments: [makeComment({ id: 1 })], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
+                props: { contentId: 42, initial: { results: [makeComment({ id: 1 })], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
 
             wrapper.unmount();

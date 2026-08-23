@@ -37,7 +37,7 @@ import { i18n } from '@humhub/vue';
  * live here since the markup does).
  *
  * Props are modeled on the SERIALIZED author shape
- * (`CommentJsonService::serializeAuthor()`) plus a few display options, so a
+ * (`user\serializers\UserSerializer::short()`) plus a few display options, so a
  * caller normally just spreads it: `<UserImage v-bind="comment.author" />`.
  *
  * ## Parity with `user\widgets\Image::run()` / `BaseImage`
@@ -57,7 +57,7 @@ import { i18n } from '@humhub/vue';
  * - The online-status overlay (`.user-online-status` span + `.tt`
  *   tooltip-trigger class + `aria-label`/`title`) renders only when `online`
  *   is non-null (`null` is the server's own "feature disabled or viewer's own
- *   comment" signal - see `CommentJsonService::serializeOnlineStatus()`) and
+ *   comment" signal - see `UserSerializer::short()`) and
  *   carries the exact `user-is-online`/`user-is-offline` classes and
  *   `UserModule.base`/`Online`|`Offline` label `Image::run()` uses.
  * - `has-online-status` + the size bucket class (`img-size-small` width < 28,
@@ -83,23 +83,21 @@ import { i18n } from '@humhub/vue';
  * pointless DOM node, byte-identical otherwise to what `CommentEntry.vue`
  * rendered by hand before this component existed.
  *
- * `imageAlt`'s fallback to the raw `displayName` (not the translated
- * `Yii::t('base', 'Profile picture of {displayName}')` phrase
- * `CommentJsonService`/`Image::run()` build server-side) is deliberate: an
- * island building that ICU string client-side would need its own `base`
- * i18n-category preload for a component this generic, for a purely
- * cosmetic `alt`-text improvement. Every real core call site (the comment
- * island) already sends the server-built phrase as `imageAlt`, so the
- * fallback is a defensive default for a bare `v-bind="comment.author"`
- * spread missing the field (e.g. an older/foreign shape), not a path any
- * shipped consumer exercises today.
+ * The accessible name of the image is built HERE, from the same `base` message
+ * `user\widgets\Image::run()` uses (`Profile picture of {displayName}`), rather than
+ * being shipped by the API: a localized presentation string has no business in an API
+ * payload, and keeping it out is what makes those payloads language-independent. The
+ * hosting island therefore has to preload the `base` i18n category (`LikeButton` and
+ * `CommentSection` do) — without it the phrase falls back to its English source text,
+ * which is still better than the bare display name. An explicit `imageAlt` prop
+ * overrides it for callers that have a better phrase.
  *
  * ## Other known deviations from `user\widgets\Image::run()`
  *
  * - **No soft-deleted-user handling.** `Image::run()` forces `$this->link = false` when
  *   `$this->user->status === User::STATUS_SOFT_DELETED`; this component has no notion of user
  *   status at all and always honors `link` as given. A caller rendering a possibly
- *   soft-deleted user must pass `link: false` itself - `CommentJsonService::serializeAuthor()`
+ *   soft-deleted user must pass `link: false` itself - the user-short serialization
  *   does not currently do this, so this is a real (if narrow) parity gap for that call site,
  *   not just a documentation note.
  * - **No `showTooltip`/`tooltipText` support.** `Image::run()` optionally adds a Bootstrap
@@ -132,7 +130,7 @@ export default {
     },
     computed: {
         resolvedAlt() {
-            return this.imageAlt || this.displayName;
+            return this.imageAlt || i18n.t('base', 'Profile picture of {displayName}', { displayName: this.displayName });
         },
         imageStyle() {
             return `width: ${this.size}px; height: ${this.size}px`;

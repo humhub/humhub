@@ -49,7 +49,8 @@ Each minor release line has its own file with the breaking changes, new APIs and
     focus/scroll-lock itself instead of wrapping `bootstrap.Modal`); see
     `docs/develop/ui-js-vuejs-components.md`. The legacy `modal.confirm()`/`modal.load()`
     bridge to `#globalModal` is unaffected and stays the mechanism for legacy (non-Vue)
-    flows, e.g. the comment delete confirm dialog.
+    flows. (The comment island's own delete dialogs no longer use it — see the
+    REST-convergence entry below.)
   - Added `UserList` (`<user-list>`) to the user module's Vue component set
     (`protected/humhub/modules/user/vue/`, `UserVueAsset`) — a generic paginated user-list
     island (any endpoint returning `{ total, users, hasMore, nextPage }`), and extracted
@@ -98,7 +99,8 @@ Each minor release line has its own file with the breaking changes, new APIs and
     stays part of `CoreBundleAsset`; the new `CommentVueAsset` (depends on `LikeVueAsset` +
     `CoreApiAsset` - `LikeVueAsset` must register first so `<LikeButton>` resolves inside
     `CommentEntry.vue`) is registered on demand by the widget. `CommentLink`,
-    `CommentEntryLinks` and `AdminDeleteModal` (+ their views) are unchanged/kept -
+    `CommentEntryLinks` are unchanged/kept (`AdminDeleteModal` is removed later in this
+    same cycle, see the REST-convergence entry below) -
     islandizing `CommentLink` itself is a documented follow-up, not part of this change.
   - **Breaking for known external modules**, found via module-search while preparing this
     change (recorded here since they were not caught by an earlier "zero external consumers"
@@ -148,11 +150,101 @@ Each minor release line has its own file with the breaking changes, new APIs and
     (hooking `EVENT_AFTER_OUTPUT`), `humhub/translator`'s translate button (hooking
     `EVENT_AFTER_RUN`), and comment-related forks in the private `cuzy-app` modules. A module
     that appended markup to richtext output this way must migrate to the Vue extension
-    mechanism instead: `CommentJsonService::EVENT_SERIALIZE_COMMENTS`
-    (`SerializeCommentsEvent`) to contribute payload data per comment, and
+    mechanism instead: `humhub\components\api\SerializeEvent` to contribute payload data per
+    comment (surfaced as the serialized comment's `extensions` map), and
     `registerSlotComponent`/`ExtensionSlot` (or a plain registered Vue component reading that
     payload) to render UI from it — see `docs/develop/ui-js-vuejs-interop.md` and
     `docs/develop/ui-js-vuejs-components.md`.
+  - **The comment/like islands consume the platform's HTTP API** (`/api/v2`, shipped by core —
+    see the API framework entry below and `docs/develop/concept-api.md`) instead of
+    core-internal JSON controllers. Consequences in core:
+    - **Removed**: the JSON actions of `comment\controllers\CommentController` (`list`,
+      `info`, `create`, `update`, `delete` — all introduced earlier in this same Unreleased
+      cycle, never released). Only the HTML routes remain (`show` popup mode,
+      `perma`).
+    - **Removed**: `like\controllers\LikeController` entirely, including the pre-1.19 routes
+      `like/like/like`, `like/like/unlike` and the newer `like/like/info`/`like/like/user-list` —
+      use `POST /api/v2/like`, `DELETE /api/v2/like`, `GET /api/v2/like/state` and
+      `GET /api/v2/like/users` instead. The legacy `like.toggleLike` client had
+      already been removed earlier in this cycle (see above), so no core markup calls the
+      removed routes anymore.
+    - **Removed**: `comment\services\CommentJsonService`, `comment\components\SerializeCommentsEvent`
+      and `user\services\UserJsonService` (all unreleased artifacts of this cycle) — serialization
+      lives in the owning module's serializer (`comment\serializers\CommentSerializer`,
+      `user\serializers\UserSerializer`, `like\serializers\LikeSerializer`,
+      `file\serializers\FileSerializer`); the batch extension point is
+      `humhub\components\api\SerializeEvent` (same `addData()` accumulator API, plus a `type`
+      filter). Blocked-author masking moved fully client-side (the viewer's own block list
+      ships via `CoreJsConfig` `user.blockedUserIds`, also readable at
+      `GET /api/v2/account/blocked-users`).
+    - Added `comment\services\CommentDeleteService` (delete + optional author notification —
+      extracted from the controller, shared with the API endpoint) and a `Comment` model
+      validation rule enforcing the one-nesting-level constraint on every write path.
+    - **Removed**: `comment\widgets\AdminDeleteModal` (+ its view
+      `widgets/views/adminDeleteModal.php`), the `comment\models\AdminDeleteCommentForm`
+      model and the `comment/comment/get-admin-delete-modal` route. The comment delete
+      dialogs — the plain confirm AND the moderator "delete with reason + notify the
+      author" mode — are one native Vue modal now
+      (`comment\vue\components\CommentDeleteModal.vue`, built on `UiModal` + the
+      `HumHubForm` field components), feeding the REST delete endpoint's
+      `notify`/`message` parameters. That also drops the view's inline `<script>` (CSP
+      nonce) and the jQuery form-scraping off `#globalModalConfirm`, so the comment island
+      no longer touches the legacy modal bridge at all. Module-search found no external
+      users of any of the three removed symbols; theme overrides of
+      `comment/widgets/views/adminDeleteModal.php` no longer apply — override the
+      `CommentDeleteModal` Vue component instead. The unrelated
+      `content\widgets\AdminDeleteModal` (stream entries) is untouched.
+- Added the **HTTP API framework** in `humhub\components\api\` and the first core endpoints
+  under `/api/v2` — see `docs/develop/concept-api.md`. Purely additive for existing modules;
+  the `humhub/rest` module and the 13 modules extending its `BaseController` keep working
+  unchanged.
+  - `humhub\components\api\BaseController` is the base class of a core API controller
+    (`humhub\modules\<module>\controllers\api\`), `ApiRules::v2()` prefixes the rules a module
+    declares in its `config.php` `urlManagerRules`, `Format` holds the v2 value conventions
+    (ISO-8601 UTC timestamps, camelCase attribute names) and `SerializeEvent` is the batch
+    serializer extension point. Serializers live in `humhub\modules\<module>\serializers\`.
+  - Core endpoints in this release: comment window/CRUD (`comment`), like state/toggle/users
+    (`like`), the caller's account and block list (`user`).
+  - A module may contribute authentication methods to *every* API controller by handling
+    `BaseController::EVENT_COLLECT_AUTH_METHODS` (`AuthMethodsEvent`) — how the rest module
+    ≥ 0.13 makes token authentication apply to core endpoints. Browser-session authentication
+    ships in core (`humhub\components\api\SessionAuth`) and is opt-in **per controller**
+    (`BaseController::$enableSessionAuth`, default `false`), so a module's own token-oriented
+    endpoints never become reachable from a browser session.
+  - Added `humhub\components\Request::$isSessionAuthenticated`, set by `SessionAuth`.
+    `humhub\components\gates\GateFilter` no longer infers `RequestClass::Api` from
+    `Yii::$app->user->enableSession` alone, and `humhub\modules\user\components\Impersonation::isActive()`
+    no longer short-circuits on it: a session-authenticated API request passes the normal user
+    gates (2FA, legal, onboarding) and keeps the impersonation restrictions. A module that
+    implements its own API-style authentication should set the flag when it authenticates
+    someone by their browser session.
+  - **The API payloads are caller-neutral**: nothing in a comment or user shape depends on who
+    is asking, so one serialization serves every reader (and can be cached). Consequences for
+    a module reading these shapes or attaching to them:
+    - `comment\serializers\CommentSerializer` no longer emits `canEdit`, `canDelete` or
+      `likes`; `user\serializers\UserSerializer::short()` no longer emits `online` (nor the
+      localized `imageAlt`, which `user/vue/UserImage.vue` builds itself). The replacements are
+      `GET /api/v2/comment/<id>/permissions` (fetched when an entry's context menu opens) and
+      `GET /api/v2/like/states?recordIds=…` (one batched request per window, `{recordId:
+      {total, liked, canLike}}`).
+    - Data attached via `humhub\components\api\SerializeEvent` must be **caller-neutral**
+      too — caller-specific module state belongs in that module's own endpoint, see
+      `docs/develop/ui-js-vuejs-extensions.md`.
+    - Added `like\serializers\LikeSerializer::statesForRecords()`/`statesByRecordId()`,
+      `like\services\LikeService::countsForRecords()`/`likedRecordIds()`/`preloadState()`
+      and `humhub\models\RecordMap::getByIds()` — batched building blocks for the above,
+      reusable wherever many records are serialized at once (stream entries next).
+    - `humhub\vue\DropdownMenu` gained an `open` event (fired from Bootstrap's
+      `show.bs.dropdown`) and a `loading` prop, so a menu can load its content on demand.
+    - Because the payloads are caller-neutral they are now **cached server-side**:
+      `comment\services\CommentPayloadCache` wraps the serializer and is what the comment
+      widget and the API read. A comment create/edit/delete retires its content's entries
+      immediately (`Comment::afterSave()`/`afterDelete()`); the new `comment` module property
+      `payloadCacheTtl` (default `3600`, `0` disables) only bounds how long a payload may lag
+      behind data it embeds without owning — the author's display name and profile image, and
+      whatever a module attached through `SerializeEvent`. A module whose `SerializeEvent`
+      data can change independently of the comment should keep that in mind (or attach it
+      client-side instead).
 - **Breaking**: `humhub\modules\content\widgets\richtext\extensions\RichTextExtension` gained a
   new interface method, `getRenderOptions(): array`, needed for
   `ProsemirrorRichText::getMarkdownAndRenderOptions()` (the client-render counterpart of

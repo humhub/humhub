@@ -17,7 +17,7 @@ use yii\web\NotFoundHttpException;
  * `actionShow` only has one remaining mode: rendering the comment section (a `<comment-section>`
  * island, see `humhub\modules\comment\widgets\Comments`) inside a modal for
  * `CommentLink::MODE_POPUP` (used by `ContentObjectLinks`). Pagination/window semantics are
- * covered at the widget/service level by CommentsWidgetTest/CommentJsonServiceTest.
+ * covered at the widget level by CommentsWidgetTest and by the core api suite.
  */
 class CommentControllerShowTest extends HumHubDbTestCase
 {

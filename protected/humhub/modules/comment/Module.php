@@ -44,6 +44,18 @@ class Module extends \humhub\components\Module
     public bool $guestHideComments = false;
 
     /**
+     * @since 1.19
+     * @var int seconds a serialized comment or comment window stays cached
+     * ({@see \humhub\modules\comment\services\CommentPayloadCache}), `0` disables the
+     * cache entirely.
+     *
+     * Comment changes invalidate the affected content's entries immediately, so this only
+     * bounds how long the payload may lag behind data it embeds without owning: an author's
+     * display name and profile image, and whatever modules attach through `SerializeEvent`.
+     */
+    public int $payloadCacheTtl = 3600;
+
+    /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)

@@ -8,6 +8,7 @@
 
 namespace humhub\widgets;
 
+use humhub\components\api\ApiRules;
 use humhub\modules\admin\libs\CacheHelper;
 use humhub\modules\file\validators\FileValidator;
 use humhub\modules\ui\icon\widgets\Icon;
@@ -29,9 +30,15 @@ class CoreJsConfig extends Widget
     {
 
         if (!Yii::$app->user->isGuest) {
-            $userConfig = UserPicker::asJSON(Yii::$app->user->getIdentity());
+            $identity = Yii::$app->user->getIdentity();
+            $userConfig = UserPicker::asJSON($identity);
             $userConfig['isGuest'] = false;
-            $userConfig['email'] = Yii::$app->user->getIdentity()->email;
+            $userConfig['email'] = $identity->email;
+            $userConfig['id'] = $identity->id;
+            // The viewer's own block list — drives client-side blocked-author masking
+            // (e.g. the comment island; the API deliberately serves unmasked payloads, see
+            // docs/develop/concept-api.md). @since 1.19
+            $userConfig['blockedUserIds'] = array_map('intval', $identity->getBlockedUserIds());
         } else {
             $userConfig = ['isGuest' => true];
         }
@@ -47,6 +54,11 @@ class CoreJsConfig extends Widget
                 ],
                 'client' => [
                     'baseUrl' => Yii::$app->settings->get('baseUrl'),
+                    // Base of the HTTP API the Vue islands consume (see humhub.vue.js's
+                    // apiUrl() and docs/develop/concept-api.md). Built from the configured
+                    // base URL because the API is pattern-routed and requires pretty URLs.
+                    // @since 1.19
+                    'apiUrl' => rtrim((string)Yii::$app->settings->get('baseUrl'), '/') . '/' . ApiRules::PREFIX_V2,
                     'reloadableScripts' => CacheHelper::getReloadableScriptUrls(),
                     'cspViolationReloadInterval' => Security::CSP_VIOLATION_RELOAD_INTERVAL,
                     'syncScriptOrigins' => $this->getAssetOrigins(),

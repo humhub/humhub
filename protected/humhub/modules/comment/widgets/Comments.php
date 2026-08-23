@@ -7,11 +7,13 @@ use humhub\modules\comment\assets\CommentVueAsset;
 use humhub\modules\comment\helpers\IdHelper;
 use humhub\modules\comment\models\Comment as CommentModel;
 use humhub\modules\comment\Module;
-use humhub\modules\comment\services\CommentJsonService;
+use humhub\modules\comment\serializers\CommentSerializer;
+use humhub\modules\comment\services\CommentPayloadCache;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
+use humhub\modules\like\serializers\LikeSerializer;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\widgets\VueComponent;
 use Yii;
@@ -19,8 +21,9 @@ use Yii;
 /**
  * Renders the `<comment-section>` Vue island (see `comment/vue/CommentSection.vue`) for a
  * content's comment thread - comments are no longer rendered as server HTML, only the
- * initial data window (see {@see CommentJsonService::serializeWindow()}) and the reusable
- * form shell (see {@see CommentFormShell}) travel with the page.
+ * initial data window ({@see CommentPayloadCache::window()}, exactly what the island's own
+ * API fetches return) and the reusable form shell (see {@see CommentFormShell}) travel
+ * with the page.
  *
  * @property-read int $limit
  * @property-read int $pageSize
@@ -80,7 +83,13 @@ class Comments extends Widget
         // Anchored windows (permalinks) stay focused around the anchor with a small
         // window of previous comments; otherwise the view-mode-aware preview size
         // (see getLimit()) is used - exactly what the legacy HTML rendering did.
-        $initial = CommentJsonService::create($this->parentComment ?? $this->content)->serializeWindow(
+        //
+        // Serialized by the same code the island's own API calls go through
+        // (`CommentSerializer`), so embedding the first window here purely saves the
+        // island its initial request - shape and semantics are identical.
+        $initial = CommentPayloadCache::window(
+            $this->content,
+            $this->parentComment,
             commentId: $anchorCommentId,
             limit: $anchorCommentId ? $this->module->commentsPreviewMax : $this->getLimit(),
         );
@@ -94,6 +103,12 @@ class Comments extends Widget
             'props' => [
                 'contentId' => $this->content->id,
                 'initial' => $initial,
+                // The like states of the embedded window, inlined rather than fetched: the
+                // window payload itself is caller-neutral (and therefore cacheable, see
+                // `docs/develop/concept-api.md`), but THIS page render is per user anyway, so
+                // handing them over here saves the island its first `like/states` request and
+                // renders the like links complete on first paint.
+                'initialLikeStates' => LikeSerializer::statesByRecordId(CommentSerializer::recordIds($initial)),
                 'canComment' => $canComment,
                 'formShellHtml' => $canComment ? CommentFormShell::widget(['content' => $this->content]) : null,
                 // Server-rendered icon HTML for CommentForm.vue's submit button, reproducing
@@ -105,7 +120,7 @@ class Comments extends Widget
                 'anchorCommentId' => $this->getHighlightCommentId(false),
                 // Mirrors comments.php's `d-none` class, only lifted (inline `.show()`)
                 // when at least one comment is preloaded into the initial window.
-                'collapsed' => empty($initial['comments']),
+                'collapsed' => empty($initial['results']),
             ],
         ]);
     }

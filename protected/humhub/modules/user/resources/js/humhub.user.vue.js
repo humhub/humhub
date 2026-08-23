@@ -28,7 +28,7 @@
     },
     computed: {
       resolvedAlt() {
-        return this.imageAlt || this.displayName;
+        return this.imageAlt || vue$1.i18n.t("base", "Profile picture of {displayName}", { displayName: this.displayName });
       },
       imageStyle() {
         return `width: ${this.size}px; height: ${this.size}px`;
@@ -142,11 +142,21 @@
         this.error = false;
         try {
           const response = await vue$1.client.get(this.requestUrl(page));
-          const users = response.users ?? [];
+          let users;
+          if (response.results) {
+            users = response.results;
+            this.total = response.total ?? users.length;
+            const currentPage = response.page ?? page;
+            const pages = response.pages ?? currentPage;
+            this.hasMore = currentPage < pages;
+            this.nextPage = this.hasMore ? currentPage + 1 : null;
+          } else {
+            users = response.users ?? [];
+            this.total = response.total ?? users.length;
+            this.hasMore = !!response.hasMore;
+            this.nextPage = response.nextPage ?? null;
+          }
           this.users = page === 1 ? users : this.users.concat(users);
-          this.total = response.total ?? this.users.length;
-          this.hasMore = !!response.hasMore;
-          this.nextPage = response.nextPage ?? null;
         } catch (e) {
           this.error = true;
           vue$1.log.error(e);

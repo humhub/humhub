@@ -66,10 +66,10 @@ describe('UserImage', () => {
             expect(wrapper.find('img').attributes('alt')).toBe('Custom alt text');
         });
 
-        it('falls back to the raw displayName when imageAlt is not provided (no client-side i18n string building)', () => {
+        it('builds the alt phrase itself when no imageAlt is provided (the API ships no localized text)', () => {
             const wrapper = mount(UserImage, { props: author({ imageAlt: null }) });
 
-            expect(wrapper.find('img').attributes('alt')).toBe('Alice');
+            expect(wrapper.find('img').attributes('alt')).toBe('Profile picture of Alice');
         });
     });
 

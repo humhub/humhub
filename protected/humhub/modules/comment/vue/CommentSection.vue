@@ -58,8 +58,7 @@
  *
  * `total` (this component's own field, driving the badge/`countChanged` event) counts
  * EVERY comment of the content, replies included - it doubles as the comment-count badge,
- * matching what the legacy widget counted (see `CommentJsonService::serializeWindow()`'s own
- * docblock note on `total` vs. `rootTotal`). The root list's own "show next" gate must not
+ * matching what the legacy widget counted (see `CommentSerializer::window()`'s docblock note on `total` vs. `rootTotal`). The root list's own "show next" gate must not
  * use it directly: `items`/`prevCount`/`nextCount` in that same window only ever cover ROOT
  * comments, so any thread with replies would make `total - items.length - remainingPrev`
  * (CommentList's `remainingNext`) overcount by exactly the reply count, rendering a
@@ -117,9 +116,12 @@
  *
  * @since 1.19
  */
-import { client, events, getConfig, log, url } from '@humhub/vue';
+import { events, getConfig, log } from '@humhub/vue';
 import CommentList from './components/CommentList.vue';
 import CommentForm from './components/CommentForm.vue';
+import {
+    collectRecordIds, fetchComment, fetchLikeStates, fetchWindow, mapWindow,
+} from './components/commentApi.js';
 
 // The live event this component subscribes to for new comments/replies (see
 // the class docblock's "Live updates" section).
@@ -130,8 +132,8 @@ const collectKnownIds = (comments) => {
     const ids = [];
     (comments || []).forEach((comment) => {
         ids.push(comment.id);
-        if (comment.children && comment.children.items) {
-            comment.children.items.forEach((child) => ids.push(child.id));
+        if (comment.replies && comment.replies.items) {
+            comment.replies.items.forEach((reply) => ids.push(reply.id));
         }
     });
     return ids;
@@ -143,14 +145,22 @@ export default {
     // i18nCategories of its own) for CommentForm's submit button label - see
     // that component's own docblock for why it reuses this category instead
     // of a CommentModule.base key. 'UserModule.base' is preloaded the same
-    // way for CommentEntry's online-status overlay label (`onlineLabel`),
+    // way for CommentEntry's online-status overlay label (`onlineLabel`), and 'base'
+    // for the profile-image alt phrase `UserImage` builds itself (see its docblock),
     // matching the exact keys `user\widgets\Image::run()` uses.
-    i18nCategories: ['CommentModule.base', 'ContentModule.base', 'UserModule.base'],
+    i18nCategories: ['CommentModule.base', 'ContentModule.base', 'UserModule.base', 'base'],
     components: { CommentList, CommentForm },
     props: {
         contentId: { type: Number, required: true },
-        // serializeWindow() payload: {comments, prevCount, nextCount, total, rootTotal}
+        // RAW window payload ({results, prevCount, nextCount, total, rootTotal} — the
+        // shape of the comment window endpoint, exactly what this island's own fetches
+        // return), mapped once via mapWindow() below.
         initial: { type: Object, default: null },
+        // `recordId => {total, liked, canLike}` for the embedded initial window, handed over
+        // by the widget: the window payload itself is caller-neutral (and therefore
+        // cacheable, see docs/develop/concept-api.md) while THIS page render is per user
+        // anyway, so inlining them saves the island its first `like/states` request.
+        initialLikeStates: { type: Object, default: () => ({}) },
         canComment: { type: Boolean, default: false },
         // __VUEFORM__ shell token template, see LegacyFormWrapper.vue
         formShellHtml: { type: String, default: null },
@@ -163,31 +173,40 @@ export default {
         collapsed: { type: Boolean, default: false },
     },
     data() {
+        // The raw window payload is mapped ONCE here — everything below this
+        // component works with the adapted shape (see commentApi.js's mapComment()).
+        const initialWindow = this.initial ? mapWindow(this.initial) : null;
+
         return {
-            comments: this.initial ? this.initial.comments : [],
-            prevCount: this.initial ? this.initial.prevCount : 0,
+            comments: initialWindow ? initialWindow.results : [],
+            // recordId => like state, for the whole section (see `initialLikeStates`). The
+            // only per-record value that depends on who is asking, hence kept beside the
+            // comments rather than inside them; `ensureLikeStates()` fills it for comments
+            // that enter the tree later (paging, replies, own creates, live updates).
+            likeStates: { ...this.initialLikeStates },
+            prevCount: initialWindow ? initialWindow.prevCount : 0,
             // Mirrors the raw server payload shape for API completeness, but is no longer
             // read for gating - CommentList derives its own "next" remaining count from
             // `total`/`items.length`/`remainingPrev` instead, see its own docblock ("Next-
             // pagination gap fix") for why the server's per-request `nextCount` alone isn't
             // enough once own/live appends can move the pagination cursor past a real gap.
-            nextCount: this.initial ? this.initial.nextCount : 0,
-            total: this.initial ? this.initial.total : 0,
+            nextCount: initialWindow ? initialWindow.nextCount : 0,
+            total: initialWindow ? initialWindow.total : 0,
             // Root-only counterpart of `total` (see the class docblock's "Root-only
             // remaining count" section) - falls back to `total` itself when a caller/fixture
             // predates this field, i.e. the OLD (buggy-for-threads-with-replies) formula
             // rather than 0, so an unmigrated payload degrades no worse than before this fix.
-            rootTotal: this.initial ? (this.initial.rootTotal ?? this.initial.total) : 0,
-            loaded: !!this.initial,
+            rootTotal: initialWindow ? (initialWindow.rootTotal ?? initialWindow.total) : 0,
+            loaded: !!initialWindow,
             isCollapsed: this.collapsed,
             // id -> revision counter, bumped whenever an entry object is
-            // swapped in place under the same id (reveal/edit/live-append) —
+            // swapped in place under the same id (edit-save/live-append) —
             // see the class docblock's "Revision map" section.
             revisions: {},
             // Dedup set for own-create-vs-live races and live-update replay —
             // append-only by design, see the class docblock's "Live updates"
             // section for why entries are never removed on delete.
-            knownIds: new Set(this.initial ? collectKnownIds(this.initial.comments) : []),
+            knownIds: new Set(initialWindow ? collectKnownIds(initialWindow.results) : []),
             // Guards the on-expand fetch in onToggle() against overlapping
             // requests from repeated toggle events (see its own comment).
             expandingBusy: false,
@@ -202,6 +221,8 @@ export default {
             adjustRootTotal: this.adjustRootTotal,
             registerKnownId: this.registerKnownId,
             isKnownId: this.isKnownId,
+            likeStates: this.likeStates,
+            ensureLikeStates: this.ensureLikeStates,
         };
     },
     computed: {
@@ -223,7 +244,14 @@ export default {
     created() {
         if (!this.initial) {
             this.fetchInitial();
+            return;
         }
+
+        // Normally a no-op: the widget hands the embedded window's like states over as
+        // `initialLikeStates` (see that prop), so nothing is missing. A caller that embeds a
+        // window without them - any consumer that is not the PHP widget - gets them fetched
+        // instead of silently losing every like link.
+        this.ensureLikeStates(this.comments);
     },
     mounted() {
         // The island runtime (humhub.vue.js) mounts INSIDE the original mount
@@ -252,14 +280,17 @@ export default {
     },
     methods: {
         fetchInitial() {
-            client.get(url('/comment/comment/list', { contentId: this.contentId, pageSize: this.pageSize }))
+            // No explicit window size: the server defaults to `commentsPreviewMax`,
+            // exactly like the embedded initial window the widget ships.
+            fetchWindow({ contentId: this.contentId })
                 .then((response) => {
-                    this.comments = response.comments;
+                    this.comments = response.results;
                     this.prevCount = response.prevCount;
                     this.nextCount = response.nextCount;
                     this.total = response.total;
                     this.rootTotal = response.rootTotal ?? response.total;
-                    this.knownIds = new Set(collectKnownIds(response.comments));
+                    this.knownIds = new Set(collectKnownIds(response.results));
+                    this.ensureLikeStates(response.results);
                     this.loaded = true;
                 })
                 .catch((e) => {
@@ -282,14 +313,15 @@ export default {
             // the section is actually opened instead of on mount.
             if (this.comments.length === 0 && this.total > 0 && !this.expandingBusy) {
                 this.expandingBusy = true;
-                client.get(url('/comment/comment/list', { contentId: this.contentId, pageSize: this.pageSize }))
+                fetchWindow({ contentId: this.contentId })
                     .then((response) => {
-                        this.comments = response.comments;
+                        this.comments = response.results;
                         this.prevCount = response.prevCount;
                         this.nextCount = response.nextCount;
                         this.total = response.total;
                         this.rootTotal = response.rootTotal ?? response.total;
-                        collectKnownIds(response.comments).forEach((id) => this.knownIds.add(id));
+                        collectKnownIds(response.results).forEach((id) => this.knownIds.add(id));
+                        this.ensureLikeStates(response.results);
                     })
                     .catch((e) => {
                         log.error(e, true);
@@ -350,12 +382,36 @@ export default {
             }
             this.registerKnownId(comment.id);
             this.total += 1;
+            this.ensureLikeStates([comment]);
             // The main form only ever creates a ROOT comment - see the class docblock's
             // "Root-only remaining count" section for why this stays separate from `total`.
             this.rootTotal += 1;
             if (this.$refs.list) {
                 this.$refs.list.appendRoot(comment);
             }
+        },
+        /**
+         * Loads the like states of comments that just entered the tree, in ONE request for
+         * the whole batch, and only for records not already in the map (a re-render, an edit
+         * or a reveal never refetches). Failures are logged and leave the affected entries
+         * without a like link rather than breaking the list.
+         */
+        ensureLikeStates(comments) {
+            const missing = collectRecordIds(comments).filter((recordId) => !this.likeStates[recordId]);
+
+            if (missing.length === 0) {
+                return;
+            }
+
+            fetchLikeStates(missing)
+                .then((states) => {
+                    Object.keys(states).forEach((recordId) => {
+                        this.likeStates[recordId] = states[recordId];
+                    });
+                })
+                .catch((e) => {
+                    log.error(e, true);
+                });
         },
         onLiveNewComment(evt, liveEvents) {
             (liveEvents || []).forEach((liveEvent) => this.handleLiveEvent(liveEvent));
@@ -371,7 +427,7 @@ export default {
                 return;
             }
 
-            client.get(url('/comment/comment/info', { id: commentId }))
+            fetchComment(commentId)
                 .then((comment) => this.appendLiveComment(comment))
                 .catch((e) => {
                     log.error(e, true);
@@ -386,6 +442,7 @@ export default {
 
             this.registerKnownId(comment.id);
             this.total += 1;
+            this.ensureLikeStates([comment]);
 
             // Determined before the ref check below so `rootTotal` bumps in lockstep with
             // `total` above regardless of whether the list is currently mounted - see the
@@ -405,17 +462,17 @@ export default {
             }
 
             const parent = this.$refs.list.findRoot(comment.parentCommentId);
-            if (!parent || !parent.children) {
+            if (!parent || !parent.replies) {
                 // Parent not currently loaded in the window — nothing to
                 // preview into, the bumped total above is all that changes.
                 return;
             }
 
-            const items = [...parent.children.items, comment];
-            const total = parent.children.total + 1;
+            const items = [...parent.replies.items, comment];
+            const total = parent.replies.total + 1;
             this.$refs.list.replaceRoot(parent.id, {
                 ...parent,
-                children: { total, items, hasMore: total > items.length },
+                replies: { total, items, hasMore: total > items.length },
             });
             this.bumpCommentRevision(parent.id);
         },

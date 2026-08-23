@@ -10,12 +10,12 @@ use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
 
 /**
- * `Comments` renders a `<comment-section>` Vue island (see
- * `humhub\modules\comment\services\CommentJsonService`) instead of server-rendered comment
+ * `Comments` renders a `<comment-section>` Vue island instead of server-rendered comment
  * HTML - these tests assert on the mount element and its decoded props instead of on comment
- * text/"Show previous/next" link markup. The underlying window/pagination SEMANTICS these
- * cases pin (anchored windows, "keep one leftover" cut-off) are exercised in more detail at
- * the service level by `CommentJsonServiceTest`.
+ * text/"Show previous/next" link markup. The initial window prop is what the island's own
+ * API fetches return ({@see \humhub\modules\comment\serializers\CommentSerializer::window()});
+ * its window/pagination SEMANTICS are exercised in detail by `CommentSerializerTest` and the
+ * core api suite.
  */
 class CommentsWidgetTest extends HumHubDbTestCase
 {
@@ -133,7 +133,7 @@ class CommentsWidgetTest extends HumHubDbTestCase
 
             $props = $this->islandProps(Comments::widget(['content' => Post::findOne(['id' => 11])->content]));
 
-            $this->assertSame([], $props['initial']['comments']);
+            $this->assertSame([], $props['initial']['results']);
             $this->assertSame('true', $props['collapsed']);
         } finally {
             $module->commentsPreviewMax = $originalMax;
@@ -147,7 +147,7 @@ class CommentsWidgetTest extends HumHubDbTestCase
 
         $props = $this->islandProps(Comments::widget(['content' => Post::findOne(['id' => 11])->content]));
 
-        $this->assertNotEmpty($props['initial']['comments']);
+        $this->assertNotEmpty($props['initial']['results']);
         $this->assertSame('false', $props['collapsed']);
     }
 
@@ -182,7 +182,7 @@ class CommentsWidgetTest extends HumHubDbTestCase
     {
         return array_map(
             fn(array $comment) => (string)$comment['message'],
-            $window['comments'],
+            $window['results'],
         );
     }
 

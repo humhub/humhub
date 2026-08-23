@@ -126,6 +126,36 @@ class ImpersonationTest extends HumHubDbTestCase
         $this->assertFalse(Yii::$app->user->impersonation->canStart(User::findOne(['username' => 'User1'])));
     }
 
+    /**
+     * An API request authenticated by the browser session runs with a session-less user
+     * component, so `enableSession` alone would report "no impersonation" and the
+     * private-content restriction would silently not apply to the platform's own frontend
+     * calling the API while impersonating.
+     *
+     * @see \humhub\components\Request::$isSessionAuthenticated
+     * @see \humhub\components\api\SessionAuth
+     */
+    public function testIsActiveOnASessionAuthenticatedApiRequest()
+    {
+        $this->becomeUser('Admin');
+        $this->impersonate('User1');
+
+        // Mirrors what the API base controller pins for every API request
+        Yii::$app->user->enableSession = false;
+        $this->assertFalse(
+            Yii::$app->user->impersonation->isActive(),
+            'A stateless (token) API request must not count as an impersonating session',
+        );
+        $this->assertTrue(Yii::$app->user->impersonation->canAccessPrivateContent());
+
+        Yii::$app->request->isSessionAuthenticated = true;
+        $this->assertTrue(
+            Yii::$app->user->impersonation->isActive(),
+            'A session-authenticated API request is the browser session and must be restricted',
+        );
+        $this->assertFalse(Yii::$app->user->impersonation->canAccessPrivateContent());
+    }
+
     public function testOnlyTheUserIdIsStoredInTheSession()
     {
         $this->becomeUser('Admin');
