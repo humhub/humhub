@@ -105,6 +105,12 @@ module.exports = function (grunt) {
             },
             testJs: {
                 command: "npx vitest run"
+            },
+            buildApiDocs: {
+                command: function () {
+                    let document = grunt.option('document') || grunt.option('d') || '';
+                    return `bash docs/api/build.sh ${document}`.trim();
+                }
             }
 
         },
@@ -148,7 +154,16 @@ module.exports = function (grunt) {
      * Compiles a module's Vue single-file components into its committed artifact
      *
      * > grunt build-vue --module=like [--watch] [--minify]
+     * > grunt build-vue --module=all              # core + every module with Vue sources
      */
     grunt.registerTask('build-vue', ['shell:buildVue']);
     grunt.registerTask('test-js', ['shell:testJs']);
+
+    /**
+     * Renders the HTTP API reference (docs/api/src/*.yaml) into the committed HTML pages
+     * an installation serves at /docs/api/
+     *
+     * > grunt build-api-docs [--document=comment]
+     */
+    grunt.registerTask('build-api-docs', ['shell:buildApiDocs']);
 };

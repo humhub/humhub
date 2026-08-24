@@ -32,8 +32,13 @@
  * `protected/humhub/resources/js/humhub.core.vue.js`, rather than a module under
  * `protected/humhub/modules/`.
  *
+ * Special case: `--module all` builds core plus every core module that has Vue sources,
+ * in one run. That is what a change to a shared component (or to the core bridge) needs,
+ * and what CI rebuilds to verify the committed artifacts match their sources — see
+ * `.github/workflows/js-test.yml`. Incompatible with `--watch`.
+ *
  * Usage:
- *   node vue.build.mjs --module <core | core-module-id | path-to-module> [--watch] [--minify]
+ *   node vue.build.mjs --module <all | core | core-module-id | path-to-module> [--watch] [--minify]
  */
 import { build } from 'vite';
 import vue from '@vitejs/plugin-vue';
@@ -53,25 +58,6 @@ const getArg = (name) => {
     // (e.g. `--module --watch`) must not silently swallow that flag.
     return value === undefined || value.startsWith('--') ? null : value;
 };
-
-const moduleArg = getArg('--module');
-if (!moduleArg) {
-    console.error('Usage: node vue.build.mjs --module <core | core-module-id | path-to-module> [--watch] [--minify]');
-    process.exit(1);
-}
-
-// `core` is not a core MODULE (there is no protected/humhub/modules/core/) — it is the core
-// framework itself, hosting components shared platform-wide (see docs/develop/ui-js-vuejs.md).
-// Special-cased to protected/humhub/ rather than falling through to the generic
-// path-or-core-module resolution below.
-const isCore = moduleArg === 'core';
-const coreModulePath = resolve(root, 'protected/humhub/modules', moduleArg);
-const modulePath = isCore
-    ? resolve(root, 'protected/humhub')
-    : (existsSync(coreModulePath) ? coreModulePath : resolve(moduleArg));
-const moduleId = isCore ? 'core' : modulePath.split(/[\\/]/).filter(Boolean).pop();
-const vueDir = resolve(modulePath, 'vue');
-const indexPath = resolve(vueDir, 'index.js');
 
 // Mirrors toTagName()/NAME_PATTERN in protected/humhub/resources/js/humhub/humhub.vue.js
 // so a file that would fail registration at runtime is caught here instead.
@@ -98,57 +84,35 @@ function virtualEntryPlugin(code) {
     };
 }
 
-let entryInput;
-let extraPlugins = [];
+const topLevelVueFilesOf = (vueDir) => (existsSync(vueDir)
+    ? readdirSync(vueDir, { withFileTypes: true })
+        .filter((dirent) => dirent.isFile() && dirent.name.endsWith('.vue'))
+        .map((dirent) => dirent.name)
+        .sort()
+    : []);
 
-if (existsSync(indexPath)) {
-    entryInput = indexPath;
-} else {
-    const topLevelVueFiles = existsSync(vueDir)
-        ? readdirSync(vueDir, { withFileTypes: true })
-            .filter((dirent) => dirent.isFile() && dirent.name.endsWith('.vue'))
-            .map((dirent) => dirent.name)
-            .sort()
-        : [];
+const hasVueSources = (modulePath) => {
+    const vueDir = resolve(modulePath, 'vue');
 
-    if (topLevelVueFiles.length === 0) {
-        console.error(
-            `Nothing to build for module "${moduleId}": no vue/index.js and no top-level ` +
-            `.vue file in ${vueDir}`,
-        );
-        process.exit(1);
-    }
+    return existsSync(resolve(vueDir, 'index.js')) || topLevelVueFilesOf(vueDir).length > 0;
+};
 
-    const invalid = topLevelVueFiles
-        .map((fileName) => ({ fileName, name: fileName.slice(0, -'.vue'.length) }))
-        .filter(({ name }) => !NAME_PATTERN.test(name) || !toTagName(name).includes('-'));
+/**
+ * Everything `--module all` builds: the core framework first (its components are what the
+ * module islands nest), then every core module carrying Vue sources, alphabetically.
+ * Discovered rather than listed, so a new island's module is picked up by existing.
+ */
+function discoverBuildTargets() {
+    const modulesDir = resolve(root, 'protected/humhub/modules');
+    const moduleIds = readdirSync(modulesDir, { withFileTypes: true })
+        .filter((dirent) => dirent.isDirectory() && hasVueSources(resolve(modulesDir, dirent.name)))
+        .map((dirent) => dirent.name)
+        .sort();
 
-    if (invalid.length > 0) {
-        console.error(`Invalid top-level Vue component file name(s) in ${vueDir}:`);
-        for (const { fileName, name } of invalid) {
-            console.error(`  - ${fileName} (registers as "${name}" -> <${toTagName(name)}>)`);
-        }
-        console.error(
-            'Every top-level .vue file in vue/ is auto-registered under its filename, so the ' +
-            `name must be PascalCase (${NAME_PATTERN}) and its derived kebab-case tag must ` +
-            'contain a dash (e.g. LikeButton.vue -> "LikeButton" -> <like-button>). Move ' +
-            'internal-only components into a subdirectory of vue/, or add a vue/index.js to ' +
-            'opt out of auto-registration.',
-        );
-        process.exit(1);
-    }
-
-    const entryCode = [
-        "import { register } from '@humhub/vue';",
-        ...topLevelVueFiles.map((fileName, i) => {
-            const name = fileName.slice(0, -'.vue'.length);
-            const absPath = resolve(vueDir, fileName);
-            return `import C${i} from ${JSON.stringify(absPath)};\nregister(${JSON.stringify(name)}, C${i});`;
-        }),
-    ].join('\n');
-
-    entryInput = VIRTUAL_ENTRY_ID;
-    extraPlugins = [virtualEntryPlugin(entryCode)];
+    return [
+        ...(hasVueSources(resolve(root, 'protected/humhub')) ? ['core'] : []),
+        ...moduleIds,
+    ];
 }
 
 /**
@@ -161,7 +125,7 @@ if (existsSync(indexPath)) {
  * automatically. Purely a metadata write - the artifact bytes (and therefore
  * `grunt build-vue`'s byte-reproducibility guarantee) are untouched.
  */
-function touchResourcesDirs() {
+function touchResourcesDirs(modulePath) {
     const now = new Date();
     for (const dir of [resolve(modulePath, 'resources'), resolve(modulePath, 'resources/js')]) {
         try {
@@ -173,75 +137,160 @@ function touchResourcesDirs() {
     }
 }
 
-try {
-    const result = await build({
-        configFile: false,
-        root: modulePath,
-        logLevel: 'info',
-        plugins: [vue(), ...extraPlugins],
-        define: {
-            // Vue itself is external; this only affects dev-mode branches in
-            // compiled component code and small helper imports.
-            'process.env.NODE_ENV': JSON.stringify('production'),
-        },
-        build: {
-            outDir: resolve(modulePath, 'resources/js'),
-            emptyOutDir: false,
-            sourcemap: true,
-            minify: args.includes('--minify') ? 'esbuild' : false,
-            cssCodeSplit: false,
-            watch: args.includes('--watch') ? {} : null,
-            lib: {
-                // Never actually read: `rollupOptions.input` below takes
-                // precedence over `lib.entry` in Vite's own resolution, which
-                // is what lets a virtual module id serve as the real entry
-                // (Vite would otherwise path-resolve `lib.entry` itself and
-                // never call our resolveId hook). Kept as a real, existing
-                // path purely so nothing downstream trips over a bogus value.
-                entry: vueDir,
-                formats: ['iife'],
-                name: `humhubVue_${moduleId.replace(/[^A-Za-z0-9_]/g, '_')}`,
-                fileName: () => `humhub.${moduleId}.vue.js`,
+async function buildModule(target) {
+    // `core` is not a core MODULE (there is no protected/humhub/modules/core/) — it is the core
+    // framework itself, hosting components shared platform-wide (see docs/develop/ui-js-vuejs.md).
+    // Special-cased to protected/humhub/ rather than falling through to the generic
+    // path-or-core-module resolution below.
+    const isCore = target === 'core';
+    const coreModulePath = resolve(root, 'protected/humhub/modules', target);
+    const modulePath = isCore
+        ? resolve(root, 'protected/humhub')
+        : (existsSync(coreModulePath) ? coreModulePath : resolve(target));
+    const moduleId = isCore ? 'core' : modulePath.split(/[\\/]/).filter(Boolean).pop();
+    const vueDir = resolve(modulePath, 'vue');
+    const indexPath = resolve(vueDir, 'index.js');
+
+    let entryInput;
+    let extraPlugins = [];
+
+    if (existsSync(indexPath)) {
+        entryInput = indexPath;
+    } else {
+        const topLevelVueFiles = topLevelVueFilesOf(vueDir);
+
+        if (topLevelVueFiles.length === 0) {
+            console.error(
+                `Nothing to build for module "${moduleId}": no vue/index.js and no top-level ` +
+                `.vue file in ${vueDir}`,
+            );
+            process.exit(1);
+        }
+
+        const invalid = topLevelVueFiles
+            .map((fileName) => ({ fileName, name: fileName.slice(0, -'.vue'.length) }))
+            .filter(({ name }) => !NAME_PATTERN.test(name) || !toTagName(name).includes('-'));
+
+        if (invalid.length > 0) {
+            console.error(`Invalid top-level Vue component file name(s) in ${vueDir}:`);
+            for (const { fileName, name } of invalid) {
+                console.error(`  - ${fileName} (registers as "${name}" -> <${toTagName(name)}>)`);
+            }
+            console.error(
+                'Every top-level .vue file in vue/ is auto-registered under its filename, so the ' +
+                `name must be PascalCase (${NAME_PATTERN}) and its derived kebab-case tag must ` +
+                'contain a dash (e.g. LikeButton.vue -> "LikeButton" -> <like-button>). Move ' +
+                'internal-only components into a subdirectory of vue/, or add a vue/index.js to ' +
+                'opt out of auto-registration.',
+            );
+            process.exit(1);
+        }
+
+        const entryCode = [
+            "import { register } from '@humhub/vue';",
+            ...topLevelVueFiles.map((fileName, i) => {
+                const name = fileName.slice(0, -'.vue'.length);
+                const absPath = resolve(vueDir, fileName);
+                return `import C${i} from ${JSON.stringify(absPath)};\nregister(${JSON.stringify(name)}, C${i});`;
+            }),
+        ].join('\n');
+
+        entryInput = VIRTUAL_ENTRY_ID;
+        extraPlugins = [virtualEntryPlugin(entryCode)];
+    }
+
+    try {
+        const result = await build({
+            configFile: false,
+            root: modulePath,
+            logLevel: 'info',
+            plugins: [vue(), ...extraPlugins],
+            define: {
+                // Vue itself is external; this only affects dev-mode branches in
+                // compiled component code and small helper imports.
+                'process.env.NODE_ENV': JSON.stringify('production'),
             },
-            rollupOptions: {
-                input: entryInput,
-                external: ['vue', '@humhub/vue'],
-                output: {
-                    // `/*!` marks a "legal comment", which survives --minify
-                    // (esbuild) and the core uglify pipeline. Deliberately no
-                    // timestamp — the artifact must stay byte-reproducible.
-                    banner: [
-                        '/*!',
-                        ' * AUTO-GENERATED FILE — do not edit.',
-                        ` * Compiled from ${moduleId}/vue/ via \`grunt build-vue --module=${moduleId}\`.`,
-                        ' * See docs/develop/ui-js-vuejs.md',
-                        ' */',
-                    ].join('\n'),
-                    globals: {
-                        'vue': 'Vue',
-                        '@humhub/vue': 'humhub.modules.vue',
+            build: {
+                outDir: resolve(modulePath, 'resources/js'),
+                emptyOutDir: false,
+                sourcemap: true,
+                minify: args.includes('--minify') ? 'esbuild' : false,
+                cssCodeSplit: false,
+                watch: args.includes('--watch') ? {} : null,
+                lib: {
+                    // Never actually read: `rollupOptions.input` below takes
+                    // precedence over `lib.entry` in Vite's own resolution, which
+                    // is what lets a virtual module id serve as the real entry
+                    // (Vite would otherwise path-resolve `lib.entry` itself and
+                    // never call our resolveId hook). Kept as a real, existing
+                    // path purely so nothing downstream trips over a bogus value.
+                    entry: vueDir,
+                    formats: ['iife'],
+                    name: `humhubVue_${moduleId.replace(/[^A-Za-z0-9_]/g, '_')}`,
+                    fileName: () => `humhub.${moduleId}.vue.js`,
+                },
+                rollupOptions: {
+                    input: entryInput,
+                    external: ['vue', '@humhub/vue'],
+                    output: {
+                        // `/*!` marks a "legal comment", which survives --minify
+                        // (esbuild) and the core uglify pipeline. Deliberately no
+                        // timestamp — the artifact must stay byte-reproducible.
+                        banner: [
+                            '/*!',
+                            ' * AUTO-GENERATED FILE — do not edit.',
+                            ` * Compiled from ${moduleId}/vue/ via \`grunt build-vue --module=${moduleId}\`.`,
+                            ' * See docs/develop/ui-js-vuejs.md',
+                            ' */',
+                        ].join('\n'),
+                        globals: {
+                            'vue': 'Vue',
+                            '@humhub/vue': 'humhub.modules.vue',
+                        },
+                        assetFileNames: `humhub.${moduleId}.vue.[ext]`,
                     },
-                    assetFileNames: `humhub.${moduleId}.vue.[ext]`,
                 },
             },
-        },
-    });
-
-    if (args.includes('--watch')) {
-        // In watch mode `build()` resolves immediately with a RollupWatcher, well before
-        // the first bundle is even written - 'event' with code 'END' fires once per
-        // completed build (the initial one AND every rebuild on save), which is exactly
-        // when a republish should happen. See touchResourcesDirs()'s own docblock for why
-        // this matters in watch mode just as much as (arguably more than) a one-shot build.
-        result.on('event', (event) => {
-            if (event.code === 'END') {
-                touchResourcesDirs();
-            }
         });
-    } else {
-        touchResourcesDirs();
+
+        if (args.includes('--watch')) {
+            // In watch mode `build()` resolves immediately with a RollupWatcher, well before
+            // the first bundle is even written - 'event' with code 'END' fires once per
+            // completed build (the initial one AND every rebuild on save), which is exactly
+            // when a republish should happen. See touchResourcesDirs()'s own docblock for why
+            // this matters in watch mode just as much as (arguably more than) a one-shot build.
+            result.on('event', (event) => {
+                if (event.code === 'END') {
+                    touchResourcesDirs(modulePath);
+                }
+            });
+        } else {
+            touchResourcesDirs(modulePath);
+        }
+    } catch (error) {
+        console.error(error.message);
+        process.exit(1);
     }
-} catch (error) {
-    console.error(error.message);
+}
+
+const moduleArg = getArg('--module');
+if (!moduleArg) {
+    console.error('Usage: node vue.build.mjs --module <all | core | core-module-id | path-to-module> [--watch] [--minify]');
     process.exit(1);
+}
+
+if (moduleArg === 'all') {
+    if (args.includes('--watch')) {
+        console.error('--watch builds one module; run `--module all` once and then watch the module you are working on.');
+        process.exit(1);
+    }
+
+    const targets = discoverBuildTargets();
+    console.log(`Building ${targets.length} Vue artifact(s): ${targets.join(', ')}`);
+
+    for (const target of targets) {
+        await buildModule(target);
+    }
+} else {
+    await buildModule(moduleArg);
 }
