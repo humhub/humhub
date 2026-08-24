@@ -91,6 +91,7 @@ return [
     'Register now and participate!' => '',
     'Security' => '',
     'Show At Registration' => '',
+    'Show all' => '',
     'Show all content' => '',
     'Sign in' => '',
     'Sign in / up' => '',
