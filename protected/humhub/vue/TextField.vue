@@ -67,7 +67,7 @@
  * the first would silently drop information a live client round-trip actually has
  * available, unlike a same-request server render.
  *
- * @since 1.19
+ * @since 1.20
  */
 import fieldMixin from './form/fieldMixin.js';
 

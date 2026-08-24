@@ -59,7 +59,7 @@
  *   `isRegistered()` from inside this computed is what makes late component registration
  *   visible here too, not just late slot registration.
  *
- * @since 1.19
+ * @since 1.20
  */
 import { getSlotComponents, isRegistered } from '@humhub/vue';
 

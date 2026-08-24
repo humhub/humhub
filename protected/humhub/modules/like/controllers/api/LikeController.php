@@ -30,7 +30,7 @@ use yii\web\NotFoundHttpException;
  * actions answer the same state shape, so a client never has to derive one value from
  * another (see {@see LikeSerializer::state()}).
  *
- * @since 1.19
+ * @since 1.20
  */
 class LikeController extends BaseController
 {

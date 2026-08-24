@@ -167,7 +167,7 @@ class ProsemirrorRichText extends AbstractRichText
      * `''` and risking a behavior change for callers upstream of `run()`.
      *
      * @return string|null
-     * @since 1.19
+     * @since 1.20
      */
     public function getMarkdown()
     {
@@ -217,7 +217,7 @@ class ProsemirrorRichText extends AbstractRichText
      * neither `$options` nor `$edit`), but a future caller relying on either would see a silent gap.
      *
      * @return array{markdown: string|null, options: array}
-     * @since 1.19
+     * @since 1.20
      */
     public function getMarkdownAndRenderOptions(): array
     {

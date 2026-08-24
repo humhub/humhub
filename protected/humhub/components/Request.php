@@ -48,7 +48,7 @@ class Request extends \yii\web\Request
      *   restriction of an active impersonation must apply to it too.
      *
      * @var bool
-     * @since 1.19
+     * @since 1.20
      */
     public bool $isSessionAuthenticated = false;
 

@@ -44,7 +44,7 @@ use yii\base\Event;
  * `null` lets the next one try, a method that throws ends the request. Contributed methods
  * should throw only for a *malformed* credential, never for a missing one.
  *
- * @since 1.19
+ * @since 1.20
  */
 class AuthMethodsEvent extends Event
 {

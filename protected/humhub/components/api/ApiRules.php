@@ -28,7 +28,7 @@ namespace humhub\components\api;
  * ({@see \yii\base\Module::createController()}), so no `controllerMap` entry is needed and
  * the internal route shape stays invisible to clients.
  *
- * @since 1.19
+ * @since 1.20
  */
 class ApiRules
 {

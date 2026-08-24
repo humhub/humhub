@@ -49,7 +49,7 @@
  * busy → spinner swap this component ships for OTHER, non-legacy-parity consumers
  * would visibly change that button's content while a request is in flight.
  *
- * @since 1.19
+ * @since 1.20
  */
 import { i18n } from '@humhub/vue';
 import { FORM_CONTEXT_KEY } from './form/formContext.js';

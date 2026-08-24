@@ -32,7 +32,7 @@
  * all-messages-not-just-first deviation, ...) — the only difference is the `<input>`
  * tag itself, `Html::activeTextarea()`'s equivalent.
  *
- * @since 1.19
+ * @since 1.20
  */
 import fieldMixin from './form/fieldMixin.js';
 

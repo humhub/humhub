@@ -17,7 +17,7 @@ use yii\helpers\Inflector;
  * Value formatting shared by every API serializer, so the conventions of the current API
  * version live in one place (see `docs/develop/concept-api.md`).
  *
- * @since 1.19
+ * @since 1.20
  */
 class Format
 {

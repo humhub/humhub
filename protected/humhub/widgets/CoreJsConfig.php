@@ -37,7 +37,7 @@ class CoreJsConfig extends Widget
             $userConfig['id'] = $identity->id;
             // The viewer's own block list — drives client-side blocked-author masking
             // (e.g. the comment island; the API deliberately serves unmasked payloads, see
-            // docs/develop/concept-api.md). @since 1.19
+            // docs/develop/concept-api.md). @since 1.20
             $userConfig['blockedUserIds'] = array_map('intval', $identity->getBlockedUserIds());
         } else {
             $userConfig = ['isGuest' => true];
@@ -57,7 +57,7 @@ class CoreJsConfig extends Widget
                     // Base of the HTTP API the Vue islands consume (see humhub.vue.js's
                     // apiUrl() and docs/develop/concept-api.md). Built from the configured
                     // base URL because the API is pattern-routed and requires pretty URLs.
-                    // @since 1.19
+                    // @since 1.20
                     'apiUrl' => rtrim((string)Yii::$app->settings->get('baseUrl'), '/') . '/' . ApiRules::PREFIX_V2,
                     'reloadableScripts' => CacheHelper::getReloadableScriptUrls(),
                     'cspViolationReloadInterval' => Security::CSP_VIOLATION_RELOAD_INTERVAL,

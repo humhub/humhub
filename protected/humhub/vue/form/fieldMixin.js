@@ -30,7 +30,7 @@ import { FORM_CONTEXT_KEY, toInputId } from './formContext.js';
  * prefix on `name`, never busy, never in error, and register/unregister become
  * no-ops. This is a deliberate, documented degradation, not a misconfiguration guard.
  *
- * @since 1.19
+ * @since 1.20
  */
 export default {
     inject: {

@@ -43,7 +43,7 @@ use yii\web\User;
  *   {@see \humhub\components\gates\GateFilter::getRequestClass()} and
  *   {@see \humhub\modules\user\components\Impersonation::isActive()}. No special-casing here.
  *
- * @since 1.19
+ * @since 1.20
  */
 class SessionAuth extends AuthMethod
 {

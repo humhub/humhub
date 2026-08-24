@@ -62,7 +62,7 @@ use yii\base\InvalidConfigException;
  * looks like. See `humhub\modules\comment\widgets\CommentFormShell` for a full reference
  * composition (richtext editor + file upload stack) built on top of this widget.
  *
- * @since 1.19
+ * @since 1.20
  */
 class VueFormShell extends Widget
 {

@@ -328,7 +328,7 @@ abstract class AbstractRichText extends JsWidget
      * @param array $config rich text widget options
      * @return array{markdown: string|null, options: array}
      * @throws Exception
-     * @since 1.19
+     * @since 1.20
      */
     public static function outputMarkdownAndRenderOptions($text, $config = []): array
     {
@@ -342,7 +342,7 @@ abstract class AbstractRichText extends JsWidget
     /**
      * @see self::outputMarkdownAndRenderOptions()
      * @return array{markdown: string|null, options: array}
-     * @since 1.19
+     * @since 1.20
      */
     public function getMarkdownAndRenderOptions(): array
     {

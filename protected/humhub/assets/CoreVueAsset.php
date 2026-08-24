@@ -20,7 +20,7 @@ use humhub\components\assets\AssetBundle;
  * Listed in `CoreBundleAsset::STATIC_DEPENDS` so these components are always
  * available wherever any other module's island might nest them.
  *
- * @since 1.19
+ * @since 1.20
  */
 class CoreVueAsset extends AssetBundle
 {

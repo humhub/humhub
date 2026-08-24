@@ -42,7 +42,7 @@
  * (`ActiveField::render()` always calls `begin()`/`end()` around the template,
  * regardless of which template is active).
  *
- * @since 1.19
+ * @since 1.20
  */
 import fieldMixin from './form/fieldMixin.js';
 

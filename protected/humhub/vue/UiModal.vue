@@ -117,7 +117,7 @@ let uidSeq = 0;
  * insert-then-animate ordering `bootstrap.Modal` itself relies on, reproduced here
  * with `nextTick()` instead of a manual reflow + class toggle.
  *
- * @since 1.19
+ * @since 1.20
  */
 export default {
     name: 'UiModal',

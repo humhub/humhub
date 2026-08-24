@@ -20,7 +20,7 @@ use yii\web\UnauthorizedHttpException;
  * about the authenticated user themself, never about another user, so none of it is
  * guest-accessible.
  *
- * @since 1.19
+ * @since 1.20
  */
 class AccountController extends BaseController
 {

@@ -48,7 +48,7 @@ class LikeService
      *
      * @param array<int, ContentProvider> $records record id => record
      * @return array<int, int>
-     * @since 1.19
+     * @since 1.20
      */
     public static function countsForRecords(array $records): array
     {
@@ -82,7 +82,7 @@ class LikeService
      * @param array<int, ContentProvider> $records record id => record
      * @param User|null $user defaults to the current identity; a guest has liked nothing
      * @return int[] the record ids the user has liked
-     * @since 1.19
+     * @since 1.20
      */
     public static function likedRecordIds(array $records, ?User $user = null): array
     {
@@ -170,7 +170,7 @@ class LikeService
      * like row at all) then still comes from this one implementation instead of being
      * rebuilt at the call site.
      *
-     * @since 1.19
+     * @since 1.20
      */
     public function preloadState(int $count, bool $hasLiked): static
     {

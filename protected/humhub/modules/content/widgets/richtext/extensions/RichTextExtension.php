@@ -84,7 +84,7 @@ interface RichTextExtension
      * config to reproduce.
      *
      * @return array
-     * @since 1.19
+     * @since 1.20
      */
     public function getRenderOptions(): array;
 }

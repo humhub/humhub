@@ -81,7 +81,7 @@ class RecordMap extends ActiveRecord
      * @param class-string<T> $classType
      * @param string[] $with relations to eager-load
      * @return array<int, T> record id => record, in no particular order
-     * @since 1.19
+     * @since 1.20
      */
     public static function getByIds(array $recordIds, string $classType, array $with = []): array
     {

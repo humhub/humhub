@@ -47,7 +47,7 @@ use yii\base\Event;
  * The client-side counterpart is the Vue extension-slot mechanism, which renders components
  * from that data — see `docs/develop/ui-js-vuejs-extensions.md`.
  *
- * @since 1.19
+ * @since 1.20
  */
 class SerializeEvent extends Event
 {

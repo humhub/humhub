@@ -27,7 +27,7 @@ use yii\helpers\Url;
  * - **the online status**, because presence is volatile and depends on who is asking (nobody
  *   sees an indicator on their own records). A client resolves it separately.
  *
- * @since 1.19
+ * @since 1.20
  */
 class UserSerializer
 {

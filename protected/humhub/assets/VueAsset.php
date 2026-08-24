@@ -16,7 +16,7 @@ use yii\web\View;
  * shipped — it requires runtime code generation, which the CSP forbids. Templates
  * are precompiled at build time, see docs/develop/ui-js-vuejs.md.
  *
- * @since 1.19
+ * @since 1.20
  */
 class VueAsset extends AssetBundle
 {

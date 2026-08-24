@@ -55,7 +55,7 @@ import { client, i18n, log } from '@humhub/vue';
  *   `AjaxLinkPager`, which POSTs a page NUMBER and replaces the entire modal content
  *   (title, list and pager all re-rendered from scratch).
  *
- * @since 1.19
+ * @since 1.20
  */
 export default {
     name: 'UserList',

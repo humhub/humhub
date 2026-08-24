@@ -151,7 +151,7 @@
  *    `onClick`/`component`, and to every module-registered entry resolved
  *    for `menuId`.
  *
- * @since 1.19
+ * @since 1.20
  */
 import { getMenuEntries, i18n, isRegistered } from '@humhub/vue';
 

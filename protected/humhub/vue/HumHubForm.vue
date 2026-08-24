@@ -135,7 +135,7 @@
  * field (`TextField` and friends) has no such inner form, so `submit` fires normally
  * for them (including native Enter-to-submit inside a `TextField`).
  *
- * @since 1.19
+ * @since 1.20
  */
 import { computed } from 'vue';
 import { FORM_CONTEXT_KEY } from './form/formContext.js';

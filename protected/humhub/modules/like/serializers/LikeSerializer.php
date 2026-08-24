@@ -15,7 +15,7 @@ use humhub\modules\like\services\LikeService;
 /**
  * Serializes like state for the HTTP API (see `docs/develop/concept-api.md`).
  *
- * @since 1.19
+ * @since 1.20
  */
 class LikeSerializer
 {
@@ -53,7 +53,7 @@ class LikeSerializer
      *
      * @param array<int, ContentProvider> $records record id => record
      * @return array<int, array{total: int, liked: bool, canLike: bool}>
-     * @since 1.19
+     * @since 1.20
      */
     public static function statesForRecords(array $records): array
     {
@@ -80,7 +80,7 @@ class LikeSerializer
      *
      * @param int[] $recordIds
      * @return array<int, array{total: int, liked: bool, canLike: bool}>
-     * @since 1.19
+     * @since 1.20
      */
     public static function statesByRecordId(array $recordIds): array
     {

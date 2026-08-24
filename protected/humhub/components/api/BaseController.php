@@ -69,7 +69,7 @@ use yii\web\NotFoundHttpException;
  * Subclasses additionally constrain each action to its HTTP methods
  * ({@see \yii\filters\VerbFilter}), so a mutating action can never run on a safe method.
  *
- * @since 1.19
+ * @since 1.20
  */
 abstract class BaseController extends Controller
 {

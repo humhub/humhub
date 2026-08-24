@@ -49,7 +49,7 @@
  * `<option>` (`ActiveField::dropDownList()`'s own `prompt` option, e.g. "Please
  * select ...").
  *
- * @since 1.19
+ * @since 1.20
  */
 import fieldMixin from './form/fieldMixin.js';
 

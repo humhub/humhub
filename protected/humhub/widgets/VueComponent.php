@@ -25,7 +25,7 @@ use yii\helpers\Json;
  *
  * See docs/develop/ui-js-vuejs.md
  *
- * @since 1.19
+ * @since 1.20
  */
 class VueComponent extends Widget
 {

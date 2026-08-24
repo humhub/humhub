@@ -17,7 +17,7 @@ use humhub\components\assets\AssetBundle;
  * Source: `vue/`, built via `grunt build-vue --module=user`.
  * The artifact is committed — see docs/develop/ui-js-vuejs.md.
  *
- * @since 1.19
+ * @since 1.20
  */
 class UserVueAsset extends AssetBundle
 {
