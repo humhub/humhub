@@ -344,10 +344,15 @@ own API reference — reachable at `/docs/api/` — without a build step; `docs/
 (or `grunt build-api-docs`) re-renders them after a source change, and the result belongs in
 the same commit.
 
-One open point: a rendered page loads the Redoc bundle from `cdn.redocly.com`, so it stays
-empty without internet access (webfonts are already disabled, an installation's documentation
-should not send its readers to a third party). Vendoring that bundle into `docs/api/` would fix
-it at the cost of carrying ~1 MB of third-party JavaScript in the repository — not decided yet.
+A rendered page loads only from its own origin: webfonts are disabled, and the renderer's two
+Redocly CDN assets — the Redoc bundle itself and the "API docs by Redocly" badge the bundle
+requests at runtime — are vendored next to the pages (`redoc.standalone.js` ~1 MB,
+`redoc-logo-mini.svg`, plus the bundle's license notice). Without that, a page stays empty
+without internet access or behind a CSP that only allows its own origin, and every reader of an
+installation's own documentation would be announced to a third party. `build.sh` re-downloads
+the bundle whenever the renderer's Redoc version changes, verified against the integrity hash
+the renderer emits (recorded in `redoc.standalone.js.sha384`) before the one logo URL inside it
+is rewritten to the vendored SVG.
 
 The `rest` module documents its own `/api/v1` surface the same way, in its own repository.
 Two conventions of the v2 documents are worth knowing before reading them, because they

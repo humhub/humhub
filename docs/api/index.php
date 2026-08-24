@@ -96,8 +96,8 @@ ksort($documents);
 
     <footer>
         <p>
-            The references render with <a href="https://redocly.com/redoc/">Redoc</a>, which the
-            pages load from Redocly's CDN — a page stays empty without internet access.
+            The references render with <a href="https://redocly.com/redoc/">Redoc</a>, shipped
+            alongside them — the pages request nothing from the internet.
         </p>
         Token authentication for these endpoints comes from the
         <a href="https://github.com/humhub/rest">REST API module</a>, which also documents the
