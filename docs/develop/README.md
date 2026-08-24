@@ -43,7 +43,7 @@ The systems modules plug into. Read the ones relevant to what your module does.
 - [Live updates](concept-live.md)
 - [Search](concept-search.md)
 - [Internationalization](concept-i18n.md)
-- [HTTP API framework](concept-api.md) — `/api/v2`, the auth model, endpoint and serializer ownership
+- [HTTP API framework](concept-api.md) — `/api/v2`, the auth model, endpoint and serializer ownership (the endpoint reference itself lives in [`docs/api/`](../api/), served at `/docs/api/`)
 
 ## UI & frontend
 

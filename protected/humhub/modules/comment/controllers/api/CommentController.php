@@ -34,7 +34,7 @@ use yii\web\NotFoundHttpException;
  * enabled platform-wide, subject to the comment module's `guestHideComments` setting.
  * Mutations are authenticated-only.
  *
- * @since 1.19
+ * @since 1.20
  */
 class CommentController extends BaseController
 {

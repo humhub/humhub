@@ -11,6 +11,7 @@ import ExtensionSlot from '../../vue/ExtensionSlot.vue';
 import UserImage from '../../modules/user/vue/UserImage.vue';
 import HumHubForm from '../../vue/HumHubForm.vue';
 import RichTextField from '../../vue/RichTextField.vue';
+import UploadField from '../../vue/UploadField.vue';
 import SubmitButton from '../../vue/SubmitButton.vue';
 import UiModal from '../../vue/UiModal.vue';
 import UserList from '../../modules/user/vue/UserList.vue';
@@ -48,7 +49,7 @@ const mountOptions = () => ({
         directives: { additions: additionsDirective },
         components: {
             LikeButton, RichTextOutput, LegacyFormWrapper, DropdownMenu, ExtensionSlot, UserImage,
-            HumHubForm, RichTextField, SubmitButton, UiModal, UserList, TextareaField, CheckboxField,
+            HumHubForm, RichTextField, SubmitButton, UploadField, UiModal, UserList, TextareaField, CheckboxField,
         },
     },
 });

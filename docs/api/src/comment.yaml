@@ -1,0 +1,405 @@
+openapi: 3.0.0
+info:
+  description: |
+    Welcome to the HumHub comment API reference, v2.
+
+    These endpoints are part of **HumHub core** (1.20+). The optional
+    [REST API module](https://github.com/humhub/rest) contributes the token authentication
+    methods they accept and owns the older `/api/v1` surface, which is documented with that
+    module. For the design of this stack see `docs/develop/concept-api.md`.
+
+    Conventions of this API generation, differing from `/api/v1`:
+
+    - Timestamps are ISO-8601 with offset, in UTC (`2026-08-22T08:00:00+00:00`).
+    - Field names are camelCase throughout.
+    - Errors are plain HTTP status codes with a JSON body; there is no `{code, message}`
+      success/failure envelope. Validation failures answer `422` with
+      `{"errors": {"<field>": ["<message>"]}}`, a successful delete answers `204`.
+    - Comment lists are **cursor windows**, not offset pages (see the window endpoints).
+    - The comment shape is **caller-neutral**: identical for every reader who may see the
+      content. What depends on the caller has its own endpoints — `GET /comment/{id}/permissions`
+      for edit/delete, `GET /like/states` for like state.
+
+    Requests may authenticate with any token method the REST API module offers. HumHub's own
+    browser session is accepted too for these endpoints, which is what the platform's Vue UI
+    uses; state-changing session requests additionally require the CSRF token.
+  version: 2.0.0
+  title: HumHub - Comment API (v2)
+  contact:
+    email: info@humhub.com
+  license:
+    name: AGPLv2
+    url: https://www.humhub.org/en/licences
+servers:
+  - url: /api/v2
+security:
+  - Bearer: []
+  - BasicAuth: []
+  - SessionCookie: []
+paths:
+  "/comment/content/{id}/window":
+    get:
+      summary: Root-comment window of a content
+      description: |
+        A window of the content's root comments. Without any cursor the newest comments are
+        returned; `commentId` + `direction` pages from a comment ("show previous/next N
+        comments"), `commentId` alone focuses the window around a permalinked comment.
+
+        `total` counts all comments of the content **including replies** (what a comment
+        badge shows), while `results`, `prevCount` and `nextCount` describe the root level
+        only. `rootTotal` is the root-only total a root list needs to compute its own
+        remaining count.
+
+        Readable by guests for guest-visible content while guest access is enabled
+        platform-wide, unless the comment module hides comments from guests
+        (`guestHideComments`).
+      parameters:
+        - name: id
+          in: path
+          description: The primary key of the content
+          required: true
+          schema:
+            type: integer
+        - $ref: "#/components/parameters/commentIdParam"
+        - $ref: "#/components/parameters/directionParam"
+        - $ref: "#/components/parameters/windowPageSizeParam"
+        - $ref: "#/components/parameters/windowLimitParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommentWindow"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+  "/comment/parent/{id}/window":
+    get:
+      summary: Reply window of a comment thread
+      description: |
+        The same window semantics as the content window, for the replies of one root comment.
+        `total`/`rootTotal` still describe the whole content, so a client can keep its badge
+        and its root list consistent while paging replies.
+      parameters:
+        - name: id
+          in: path
+          description: The primary key of the root comment
+          required: true
+          schema:
+            type: integer
+        - $ref: "#/components/parameters/commentIdParam"
+        - $ref: "#/components/parameters/directionParam"
+        - $ref: "#/components/parameters/windowPageSizeParam"
+        - $ref: "#/components/parameters/windowLimitParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommentWindow"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+  "/comment":
+    post:
+      summary: Create a comment
+      description: |
+        Creates a comment on the given content. Replies pass their parent through
+        `parentCommentId`; comments nest at most one level, a deeper reply answers `422`.
+      parameters:
+        - name: contentId
+          in: query
+          description: The primary key of the content
+          required: true
+          schema:
+            type: integer
+        - name: parentCommentId
+          in: query
+          description: The primary key of the root comment this is a reply to
+          required: false
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommentWrite"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/comment/{id}/permissions":
+    get:
+      summary: What the caller may do with a comment
+      description: |
+        Deliberately not part of the comment shape: these are the only caller-dependent
+        values a comment needs, and only when its context menu is opened — keeping them out
+        is what makes the comment payload identical for every reader (and cacheable). The
+        same checks the update and delete endpoints enforce.
+
+        Authenticated callers only: a guest has no permissions to report.
+      parameters:
+        - $ref: "#/components/parameters/commentPathParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  canEdit:
+                    type: boolean
+                  canDelete:
+                    type: boolean
+                    description: |
+                      `true` on someone else's comment means moderation.
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+  "/comment/{id}":
+    get:
+      summary: A single comment
+      description: |
+        A root comment carries a preview of its newest replies under `replies`; a reply has
+        `replies: null`. Readable by guests under the same conditions as the windows.
+      parameters:
+        - $ref: "#/components/parameters/commentPathParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+    put:
+      summary: Update a comment
+      parameters:
+        - $ref: "#/components/parameters/commentPathParam"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommentWrite"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+    delete:
+      summary: Delete a comment
+      description: |
+        Deletes the comment. The optional body parameters trigger the moderation flow: with
+        `notify`, the author receives a notification carrying a preview of the removed text
+        and the given `message` as the reason.
+      parameters:
+        - $ref: "#/components/parameters/commentPathParam"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                notify:
+                  type: boolean
+                  description: Notify the author about the removal
+                message:
+                  type: string
+                  description: Reason shown to the author
+      responses:
+        "204":
+          description: Deleted, no content
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+components:
+  securitySchemes:
+    Bearer:
+      $ref: "common.yaml#/components/securitySchemes/Bearer"
+    BasicAuth:
+      $ref: "common.yaml#/components/securitySchemes/BasicAuth"
+    SessionCookie:
+      $ref: "common.yaml#/components/securitySchemes/SessionCookie"
+  parameters:
+    commentPathParam:
+      name: id
+      in: path
+      description: The primary key of the comment
+      required: true
+      schema:
+        type: integer
+    commentIdParam:
+      name: commentId
+      in: query
+      description: Cursor comment, or the anchor to focus the window around when no direction is given
+      required: false
+      schema:
+        type: integer
+    directionParam:
+      name: direction
+      in: query
+      description: Paging direction relative to `commentId`
+      required: false
+      schema:
+        type: string
+        enum:
+          - previous
+          - next
+    windowPageSizeParam:
+      name: pageSize
+      in: query
+      description: |
+        Comments per page while paging with `direction`. Clamped to the comment module's
+        configured block load size.
+      required: false
+      schema:
+        type: integer
+    windowLimitParam:
+      name: limit
+      in: query
+      description: |
+        Size of an initial (cursor-less) window. Clamped to the comment module's configured
+        block load size.
+      required: false
+      schema:
+        type: integer
+  schemas:
+    CommentWindow:
+      type: object
+      properties:
+        results:
+          type: array
+          description: The window's comments, oldest first
+          items:
+            $ref: "#/components/schemas/Comment"
+        total:
+          type: integer
+          description: All comments of the content, including replies
+        rootTotal:
+          type: integer
+          description: Root comments of the content only
+        prevCount:
+          type: integer
+          description: Comments of this level before the window
+        nextCount:
+          type: integer
+          description: Comments of this level after the window
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+        message:
+          type: string
+          description: The raw markdown message, not rendered HTML
+        messageRenderOptions:
+          type: object
+          description: |
+            Options a client needs to reproduce the platform's rich-text rendering of
+            `message` (mentions, oembed previews, …). `{}` when there is nothing to add.
+        contentId:
+          type: integer
+        parentCommentId:
+          type: integer
+          nullable: true
+        recordId:
+          type: integer
+          description: Platform-wide record id, e.g. for the like endpoints
+        createdBy:
+          $ref: "common.yaml#/components/schemas/UserShort"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: |
+            Equal to `createdAt` for an unedited comment — a client derives "edited" from the
+            two.
+        url:
+          type: string
+          description: Absolute permalink
+        files:
+          type: array
+          items:
+            $ref: "common.yaml#/components/schemas/File"
+        childCount:
+          type: integer
+          description: Number of replies
+        replies:
+          type: object
+          nullable: true
+          description: |
+            Preview of the newest replies of a root comment; `null` on a reply.
+          properties:
+            total:
+              type: integer
+            hasMore:
+              type: boolean
+            items:
+              type: array
+              items:
+                $ref: "#/components/schemas/Comment"
+        extensions:
+          type: object
+          description: |
+            Namespaced data modules attached to this record (`{}` when nothing did), see the
+            core serialize event.
+    CommentWrite:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Markdown message
+        fileList:
+          type: array
+          description: Guids of already uploaded files to attach
+          items:
+            type: string
+      required:
+        - message

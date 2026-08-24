@@ -700,6 +700,57 @@ humhub.module('vue', function (module, require, $) {
         trigger: function (type, data) { event.trigger(type, data); },
     };
 
+    // The page title as the platform itself tracks it: `ui.view`'s per-page state, set by the
+    // `setState()` snippet every page render emits and therefore correct after a pjax
+    // navigation too - unlike `document.title`, which a consumer may have decorated (the
+    // notification island prefixes it with the unread count). Resolved lazily for the same
+    // reason as `ui.modal` above (asset order).
+    var pageTitle = function () {
+        return require('ui.view').getTitle();
+    };
+
+    // --- Status messages --------------------------------------------------
+    // The user-feedback bar is a Vue island (StatusBar.vue in the core component
+    // set), but its callers are legacy: `humhub.ui.status` (18 modules use its
+    // exported API) and the inline `humhub.modules.ui.status.<type>(...)` snippet
+    // humhub\components\View::endBody() registers at POS_END for a session flash
+    // message. Both can fire BEFORE the core Vue artifact has run and mounted the
+    // island, so a message needs somewhere to wait — this queue is that place,
+    // and it replaces the `module.initState` hand-off the legacy module used to do
+    // internally. StatusBar.vue registers itself as the handler on mount and
+    // deregisters on unmount (a page without the island — e.g. the installer
+    // layout, which renders no LayoutAddons — therefore just accumulates messages
+    // that are never shown, exactly as the legacy module behaved without its
+    // markup present).
+
+    var statusHandler = null;
+    var statusQueue = [];
+
+    var status = function (level, message, details, closeAfter) {
+        var entry = { level: level, message: message, details: details, closeAfter: closeAfter };
+
+        if (statusHandler) {
+            statusHandler(entry);
+        } else {
+            statusQueue.push(entry);
+        }
+    };
+
+    var setStatusHandler = function (handler) {
+        statusHandler = handler || null;
+
+        if (statusHandler && statusQueue.length) {
+            // Swap the queue out before draining: a handler that itself triggers a
+            // status message (an error while rendering one, say) must not mutate the
+            // array being iterated.
+            var queued = statusQueue;
+            statusQueue = [];
+            queued.forEach(function (entry) {
+                statusHandler(entry);
+            });
+        }
+    };
+
     // --- HTTP API helpers -------------------------------------------------
     // The islands are fed by the platform's HTTP API (/api/v2, see
     // docs/develop/concept-api.md) — these helpers cover what the route-based
@@ -769,5 +820,8 @@ humhub.module('vue', function (module, require, $) {
         apiUrl: apiUrl,
         modal: modal,
         events: events,
+        status: status,
+        setStatusHandler: setStatusHandler,
+        pageTitle: pageTitle,
     });
 });

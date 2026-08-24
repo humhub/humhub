@@ -57,6 +57,7 @@
                         :edit-comment-id="comment.id"
                         :initial-message="editMessage"
                         :submit-icon-html="submitIconHtml"
+                        :upload-options="uploadOptions"
                         @updated="onEditSaved"
                     />
                     <a href="#" class="comment-cancel-edit-link" @click.prevent="cancelEdit">{{ cancelEditLabel }}</a>
@@ -109,6 +110,7 @@
                                 :can-comment="canComment"
                                 :form-shell-html="formShellHtml"
                                 :submit-icon-html="submitIconHtml"
+                                :upload-options="uploadOptions"
                                 :page-size="pageSize"
                                 @entry-removed="onChildRemoved"
                                 @entry-updated="onChildUpdated"
@@ -123,6 +125,7 @@
                         :content-id="comment.contentId"
                         :parent-comment-id="comment.id"
                         :submit-icon-html="submitIconHtml"
+                        :upload-options="uploadOptions"
                         @created="onReplyCreated"
                     />
                 </div>
@@ -323,6 +326,8 @@ export default {
         canComment: { type: Boolean, default: false },
         formShellHtml: { type: String, default: null },
         submitIconHtml: { type: String, default: null },
+        // Upload field settings, handed down to the reply/edit forms this entry can open.
+        uploadOptions: { type: Object, default: null },
         pageSize: { type: Number, default: 10 },
         // A reply (one level deep) never gets its own reply toggle or further
         // nesting - the server enforces at most one level (see

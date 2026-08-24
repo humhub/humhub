@@ -20,7 +20,7 @@ use humhub\modules\user\assets\UserVueAsset;
  * Source: `vue/`, built via `grunt build-vue --module=comment`.
  * The artifact is committed — see docs/develop/ui-js-vuejs.md.
  *
- * @since 1.19
+ * @since 1.20
  */
 class CommentVueAsset extends AssetBundle
 {

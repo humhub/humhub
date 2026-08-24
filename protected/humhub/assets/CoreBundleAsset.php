@@ -8,7 +8,6 @@ use humhub\modules\comment\assets\CommentAsset;
 use humhub\modules\content\assets\ContentContainerAsset;
 use humhub\modules\content\assets\ProseMirrorRichTextAsset;
 use humhub\modules\live\assets\LiveAsset;
-use humhub\modules\notification\assets\NotificationAsset;
 use humhub\modules\post\assets\PostAsset;
 use humhub\modules\space\assets\SpaceAsset;
 use humhub\modules\space\assets\SpaceChooserAsset;
@@ -59,7 +58,6 @@ class CoreBundleAsset extends AssetBundle
         JqueryCookieAsset::class,
         UserAsset::class,
         LiveAsset::class,
-        NotificationAsset::class,
         ContentContainerAsset::class,
         UserPickerAsset::class,
         PostAsset::class,

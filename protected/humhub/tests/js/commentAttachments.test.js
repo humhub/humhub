@@ -6,17 +6,18 @@ import CommentAttachments from '../../modules/comment/vue/components/CommentAtta
 const file = (overrides = {}) => ({
     id: 1,
     guid: 'file-guid-1',
-    mime_type: 'text/plain',
+    mimeType: 'text/plain',
     size: 2048,
-    file_name: 'notes.txt',
+    fileName: 'notes.txt',
+    mimeIcon: 'mime-file',
     url: '/file/file/download?guid=file-guid-1',
-    preview_url: null,
+    previewUrl: null,
     ...overrides,
 });
 
 describe('CommentAttachments', () => {
     it('renders images as a gallery-linked preview grid', () => {
-        const image = file({ guid: 'img-1', file_name: 'photo.jpg', mime_type: 'image/jpeg', preview_url: '/preview/img-1.jpg' });
+        const image = file({ guid: 'img-1', fileName: 'photo.jpg', mimeType: 'image/jpeg', previewUrl: '/preview/img-1.jpg' });
 
         const wrapper = mount(CommentAttachments, { props: { files: [image], contextId: 7 } });
 
@@ -32,8 +33,8 @@ describe('CommentAttachments', () => {
     });
 
     it('renders videos as native players and audio as native audio elements', () => {
-        const video = file({ guid: 'vid-1', file_name: 'clip.mp4', mime_type: 'video/mp4' });
-        const audio = file({ guid: 'aud-1', file_name: 'song.mp3', mime_type: 'audio/mpeg' });
+        const video = file({ guid: 'vid-1', fileName: 'clip.mp4', mimeType: 'video/mp4' });
+        const audio = file({ guid: 'aud-1', fileName: 'song.mp3', mimeType: 'audio/mpeg' });
 
         const wrapper = mount(CommentAttachments, { props: { files: [video, audio], contextId: 7 } });
 
@@ -60,9 +61,9 @@ describe('CommentAttachments', () => {
 
     it('splits a mixed set into the right buckets', () => {
         const files = [
-            file({ guid: 'img', file_name: 'a.png', preview_url: '/p/a.png' }),
-            file({ guid: 'vid', file_name: 'b.webm' }),
-            file({ guid: 'doc', file_name: 'c.pdf', mime_type: 'application/pdf' }),
+            file({ guid: 'img', fileName: 'a.png', previewUrl: '/p/a.png' }),
+            file({ guid: 'vid', fileName: 'b.webm' }),
+            file({ guid: 'doc', fileName: 'c.pdf', mimeType: 'application/pdf' }),
         ];
 
         const wrapper = mount(CommentAttachments, { props: { files, contextId: 3 } });

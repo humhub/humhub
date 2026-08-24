@@ -55,7 +55,7 @@ use Yii;
  * reply previews in one firing), so modules can attach namespaced `extensions` data without
  * running a query per comment.
  *
- * @since 1.19
+ * @since 1.20
  */
 class CommentSerializer
 {

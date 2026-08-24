@@ -14,7 +14,7 @@ use humhub\widgets\VueFormShell;
 use tests\codeception\_support\HumHubDbTestCase;
 
 /**
- * Pins the comment-specific field composition (richtext editor + upload stack) on top of the
+ * Pins the comment-specific field composition (the richtext editor) on top of the
  * generic {@see VueFormShell} mechanism: the shell is rendered ONCE and cloned per form instance
  * client-side by string-replacing the `__VUEFORM__` token (see `VueFormShell`'s own class
  * docblock for the general contract), so every id the shell declares OR references must carry
@@ -52,20 +52,27 @@ class CommentFormShellTest extends HumHubDbTestCase
         }
     }
 
-    public function testUploadSubmitNameMatchesCommentFileListModelBinding()
+    public function testHasNoServerRenderedUploadStack()
     {
         $html = $this->renderShell();
 
-        $this->assertStringContainsString('data-upload-submit-name="Comment[fileList][]"', $html);
+        // Uploads are a native field now (`UploadField.vue`, rendered by CommentForm.vue), so
+        // the shell carries neither the upload button, nor the file preview, nor the progress
+        // container it used to compose - only the richtext editor's own (hidden) upload input
+        // for in-editor image insertion remains, which is part of the RichTextField widget.
+        $this->assertStringNotContainsString('vueform-upload', $html);
+        $this->assertStringNotContainsString('data-upload-submit-name="Comment[fileList][]"', $html);
+        $this->assertStringNotContainsString('file-preview', $html);
     }
 
-    public function testUploadFieldCarriesTheGenericVueformUploadClass()
+    public function testRendersTheButtonRowTheIslandTeleportsInto()
     {
         $html = $this->renderShell();
 
-        // `LegacyFormWrapper.vue`'s UPLOAD_SELECTOR queries this generic convention class,
-        // not a comment-specific one - see that file's class docblock.
-        $this->assertMatchesRegularExpression('/class="[^"]*\bvueform-upload\b[^"]*"/', $html);
+        // CommentForm.vue moves the upload trigger and the submit button in here - an empty
+        // container in the server-rendered shell, but its absence would silently make both
+        // render at the wrong place (Teleport falls back to rendering in place).
+        $this->assertStringContainsString('class="richtext-create-buttons"', $html);
     }
 
     public function testHasNoSubmitButton()

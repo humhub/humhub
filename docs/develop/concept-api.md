@@ -1,13 +1,13 @@
 # HTTP API framework
 
-**Since 1.19.** The HTTP API *framework* lives in core (`humhub\components\api\`), so core
+**Since 1.20.** The HTTP API *framework* lives in core (`humhub\components\api\`), so core
 UI — the [Vue.js islands](ui-js-vuejs.md) — can depend on API endpoints being present. The
 optional [`humhub/rest`](https://github.com/humhub/rest) module keeps everything that is
 genuinely integration territory: token authentication, its admin UI, and the `/api/v1`
 surface.
 
 Core endpoints answer under `/api/v2`. The comment and like islands consume them (see the
-[Vue.js roadmap](ui-js-vuejs-roadmap.md)); before 1.19 they consumed the module's `/api/v1`
+[Vue.js roadmap](ui-js-vuejs-roadmap.md)); before 1.20 they consumed the module's `/api/v1`
 through browser-session authentication.
 
 ## Why
@@ -183,6 +183,11 @@ not, and each has its own place:
 | `canEdit`/`canDelete` | `GET comment/<id>/permissions`, on context-menu open | needed nowhere else, and the `⋮` trigger renders regardless, so nothing has to be known up front. Deliberately NOT derived client-side: the rule may grow (edit windows, module overrides) and a second implementation would drift |
 | the author's online status | a client concern, resolved separately | presence is volatile and per viewer (nobody sees an indicator on their own records) |
 
+Sometimes the caller context IS the resource: `GET space/<id>/membership` answers "what is my
+relationship to this space", so its shape is never embedded in a space payload and never
+cached — and it carries what the caller may do next (`canJoin`, `canLeave`) for the same
+reason `canEdit`/`canDelete` are not derived client-side.
+
 The same rule binds `SerializeEvent` handlers: `extensions` data must be caller-neutral.
 A module needing caller-specific state fetches it from its own endpoint, in its own Vue
 component or menu entry - it needs an endpoint for the action anyway. That is the same line
@@ -265,6 +270,25 @@ generation fixes are the ones collected in
   `422 {"errors": {attribute: [messages]}}`, a successful delete is `204` with no body.
 - **List responses** use one envelope: `{results, total, page, pageSize, pages}`.
 
+One list does not use that envelope: `GET /api/v2/notification` answers
+`{results, unseenCount, nextCursor}`. The notification list is ordered unseen-first and reorders
+as notifications arrive and are read, so it pages by cursor (`group_max_id`, the aggregate the
+grouped list is ordered by) — page numbers would skip or repeat entries. `unseenCount` rides
+along because every consumer of the list needs it for its badge.
+
+One documented exception exists, and it is about a batch rather than a field: `POST /api/v2/file`
+(the endpoint the Vue upload field posts to) carries any number of files in one request and
+answers per file —
+
+```json
+{ "results": [ <file>, … ], "errors": [ { "fileName": "big.pdf", "messages": ["…"] } ] }
+```
+
+— with `200` whenever the request carried at least one file, even if every single one was
+rejected. One invalid file among ten must not discard the nine the user picked alongside it, and
+a client rendering per-file errors takes the same code path either way. A request carrying no
+file at all IS a malformed request and answers the usual `422 {"errors": {"files": […]}}`.
+
 A concrete payoff: the islands' adapter layer
 (`comment/vue/components/commentApi.js`) used to parse DB timestamps against the announced
 server timezone and map snake_case user shapes. It now only adds what a client is *supposed*
@@ -289,7 +313,7 @@ signature-compatible, since third-party controllers override and call into it. L
 become a subclass of the core base controller is a follow-up that has to preserve exactly
 that surface, the `api/v1/` prefix guard and the module's error envelope.
 
-**The `rest` module.** Requires core 1.19 (`humhub.minVersion`), contributes its
+**The `rest` module.** Requires core 1.20 (`humhub.minVersion`), contributes its
 authentication methods to the core chain, and dropped its own session authentication (the
 `SessionAuth` class and the `enableSessionAuth` setting) — see the module's
 `docs/api-stack.md`. The old module line needs a `humhub.maxVersion` so an outdated version
@@ -303,14 +327,32 @@ entirely.
 
 ## Documentation
 
-The endpoint documentation lives as Swagger sources in the module — `/api/v1` as the flat
-files in `docs/swagger/`, the core endpoints under `docs/swagger/v2/` (one document per
-module, rendered to `docs/html/v2/`). That is acceptable while this is young, but not as a
-shipped state: a core-only installation would have no documentation for its own
-endpoints, and docs would sit in a different repository than the code they describe, with
-guaranteed drift. The target is core shipping the Swagger sources for its endpoints, the
-module for its own, and the documentation build merging both — the `v2/` directory in the
-module is deliberately shaped so that becomes a move, not a rewrite.
+Core documents its own endpoints, in the same repository as the code they describe:
+
+```
+docs/api/
+├── index.php          # landing page, served at /docs/api/
+├── build.sh           # renders src/*.yaml next to the index
+├── src/*.yaml         # OpenAPI sources, `common.yaml` holding the shared components
+└── *.html             # rendered references (committed)
+```
+
+One document per module owning endpoints (`comment`, `like`, `account`, `file`,
+`notification`, `space`, `friendship`), plus `src/common.yaml` for the shared schemas, parameters, error responses
+and security schemes. The rendered pages are **committed**, so every installation ships its
+own API reference — reachable at `/docs/api/` — without a build step; `docs/api/build.sh`
+(or `grunt build-api-docs`) re-renders them after a source change, and the result belongs in
+the same commit.
+
+One open point: a rendered page loads the Redoc bundle from `cdn.redocly.com`, so it stays
+empty without internet access (webfonts are already disabled, an installation's documentation
+should not send its readers to a third party). Vendoring that bundle into `docs/api/` would fix
+it at the cost of carrying ~1 MB of third-party JavaScript in the repository — not decided yet.
+
+The `rest` module documents its own `/api/v1` surface the same way, in its own repository.
+Two conventions of the v2 documents are worth knowing before reading them, because they
+deviate from the list/error contracts above: an upload is a batch and reports per file, and
+the notification list pages by cursor (see the sections above).
 
 ## Security invariants
 

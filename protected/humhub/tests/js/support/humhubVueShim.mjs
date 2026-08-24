@@ -17,6 +17,10 @@ export const getConfig = (...args) => vueModule().getConfig(...args);
 export const url = (...args) => vueModule().url(...args);
 export const apiUrl = (...args) => vueModule().apiUrl(...args);
 
+export const pageTitle = (...args) => vueModule().pageTitle(...args);
+export const status = (...args) => vueModule().status(...args);
+export const setStatusHandler = (...args) => vueModule().setStatusHandler(...args);
+
 export const client = {
     post: (...args) => vueModule().client.post(...args),
     get: (...args) => vueModule().client.get(...args),

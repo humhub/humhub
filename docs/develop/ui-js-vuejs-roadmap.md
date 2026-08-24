@@ -15,11 +15,13 @@ Done on that branch:
 
 - **Runtime & tooling** — `humhub.vue` island runtime (registry, mounter,
   PJAX/modal lifecycle via MutationObserver), committed build artifacts via
-  `grunt build-vue`, vitest test infrastructure, `.vue` message extraction.
+  `grunt build-vue` (`--module all` builds every one of them), vitest test
+  infrastructure, `.vue` message extraction, and a CI job running the suite plus an
+  artifact-freshness check.
 - **Core component set** (`protected/humhub/vue/`) — `RichTextOutput`,
-  `LegacyFormWrapper`, `DropdownMenu`, `ExtensionSlot`, `UiModal`, plus the form
-  suite (`HumHubForm`, `TextField`/`TextareaField`/`CheckboxField`/`SelectField`,
-  `SubmitButton`, `RichTextField`).
+  `LegacyFormWrapper`, `DropdownMenu`, `ExtensionSlot`, `UiModal`, `StatusBar`, plus the
+  form suite (`HumHubForm`, `TextField`/`TextareaField`/`CheckboxField`/`SelectField`,
+  `UploadField`, `SubmitButton`, `RichTextField`).
 - **Extension APIs** — reactive extension slots, the menu-entry registry
   (`registerMenuEntry`/`removeMenuEntry`), and the batch serializer event
   (`humhub\components\api\SerializeEvent`).
@@ -27,6 +29,30 @@ Done on that branch:
   the full comment section (client-rendered from JSON, live updates, editing,
   cursor-window pagination), plus `UserImage`/`UserList` as module-provided shared
   components in the user module.
+- **Status bar** — the platform's user-feedback bar is an island (`StatusBar`), driven
+  through a bridge-level queue so the legacy `ui.status` API and the `POS_END` flash-message
+  snippet keep working untouched. First infrastructure island: no props, no consumers, and
+  every caller stays where it is.
+- **Native file uploads** — `UploadField` (form suite) on the new `POST /api/v2/file` /
+  `DELETE /api/v2/file/<id>` endpoints, so a form shell carries only the richtext editor;
+  contributed file handlers keep working as server-rendered dropdown entries.
+- **Notifications** — the top-menu dropdown and the overview page are islands
+  (`NotificationMenu`, `NotificationOverview`) over `GET /api/v2/notification` and
+  `POST /api/v2/notification/mark-as-seen`, sharing one `NotificationList`. Entries render
+  client-side around the server's own sentence (`BaseNotification::html()`); the badge, the
+  document title and live arrivals are Vue state, and the `mail` module keeps its two legacy
+  events. `humhub.notification.js` is gone. `SpaceImage` joined the space module as a shared
+  component for the space badge.
+- **Space membership** — the membership button is an island (`MembershipButton`) over
+  `GET|POST|DELETE /api/v2/space/<id>/membership`, including its request-membership dialog
+  (native `UiModal` + form suite). Presentation moved from a per-button option array to
+  props, which retires the option round trip through the client that #8381/#8382 had to
+  harden: the server re-rendered the button after every transition, so the button's own
+  presentation had to be posted back to it.
+- **Friendship** — the friendship button is an island (`FriendshipButton`) over
+  `GET|POST|DELETE /api/v2/user/<id>/friendship`, built the same way. With it the option round
+  trip is gone from the platform entirely: `content.container.relationship` and its
+  `data-button-options` posting had no users left and were removed.
 
 ## Done: the islands run on the platform API
 
@@ -93,8 +119,6 @@ Everything parked or deferred lives here; the reasoning is in
   request volume from every logged-in browser. Decide before this leaves beta.
 - `/api/v1` over the core stack: the `rest` module's base controller becoming a subclass of
   the core one, its definitions a compatibility layer over the core serializers.
-- Core-shipped Swagger sources — the v2 documents currently live in the `rest` module under
-  `docs/swagger/v2/`, deliberately in their own directory so the move is a `git mv`.
 - Impersonate-token restriction: core 1.19 hides private content while impersonating, but
   that state is session-bound, so an impersonate **token** (rest module) still bypasses it.
   Parked by owner decision.
@@ -102,8 +126,9 @@ Everything parked or deferred lives here; the reasoning is in
 ### Release & housekeeping
 
 - `humhub.maxVersion` on the previous `rest` module line, so the marketplace stops offering a
-  version without the core API stack for 1.19+. (0.13 requires 1.19 already; the released
-  0.12.x additionally crashes on impersonate-token auth there, core #8372.)
+  version without the core API stack for 1.20+. (0.13 requires 1.20 for exactly that
+  reason; the released 0.12.x additionally crashes on impersonate-token auth on 1.19+,
+  core #8372.)
 
 ### Islands & tooling
 
@@ -111,11 +136,8 @@ Everything parked or deferred lives here; the reasoning is in
   model (markdown-it plugin extension API, client-side oembed fetch, unified
   render path for stream entries; currently `EVENT_AFTER_RUN`/`EVENT_AFTER_OUTPUT`
   do not fire on the JSON path — see `module-migrate.md`).
-- `UploadField` as a standalone form-suite field (requires splitting the
-  server-rendered form shell into per-field fragments).
 - Module migrations onto the new extension APIs: reportcontent, reaction
   (menu entries), legal, linkpreview, translator (richtext output events).
-- CI: vitest job + committed-artifact freshness check.
 - Core bug follow-ups discovered along the way (separate PRs): `AssetBundle`
   `defaultDepends` typo, `additions.extend()` applyOnInit string bug,
   selector-less timeago addition registration.

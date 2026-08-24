@@ -8,31 +8,26 @@
 
 use humhub\components\View;
 use humhub\modules\comment\models\Comment;
-use humhub\modules\content\Module as ContentModule;
 use humhub\modules\content\widgets\richtext\RichTextField;
-use humhub\modules\file\handler\BaseFileHandler;
-use humhub\modules\file\widgets\FileHandlerButtonDropdown;
-use humhub\modules\file\widgets\FilePreview;
-use humhub\modules\file\widgets\UploadButton;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\VueFormShell;
 
 /* @var $this View */
 /* @var $model Comment */
-/* @var $contentModule ContentModule */
 /* @var $mentioningUrl string */
-/* @var $fileHandlers BaseFileHandler[] */
 
 // The outer wrapper (this div + its `dropZone`-target id) is comment-specific markup around
 // the generic ActiveForm shell VueFormShell itself owns below - see that class's docblock for
 // the `__VUEFORM__` token contract every id here (via VueFormShell::id()) participates in.
+// `CommentForm.vue` also uses this element as the drop/paste zone of its upload field, the
+// same area the legacy upload widget's `dropZone` option pointed at.
 $dropZoneId = VueFormShell::id('comment_create_form');
 ?>
 <div id="<?= $dropZoneId ?>" class="comment_create content_create">
     <hr>
 
     <?= VueFormShell::widget([
-        'content' => function (ActiveForm $form) use ($model, $contentModule, $mentioningUrl, $fileHandlers, $dropZoneId) {
+        'content' => function (ActiveForm $form) use ($model, $mentioningUrl) {
             ob_start(); ?>
             <div class="richtext-create-input-group input-group">
                 <?= $form->field($model, 'message')->widget(RichTextField::class, [
@@ -48,39 +43,14 @@ $dropZoneId = VueFormShell::id('comment_create_form');
                     ],
                 ])->label(false) ?>
 
-                <div class="richtext-create-buttons">
-                    <?php $uploadButton = UploadButton::widget([
-                        'id' => VueFormShell::id('comment_create_upload'),
-                        'model' => $model,
-                        'attribute' => 'fileList',
-                        'tooltip' => Yii::t('ContentModule.base', 'Attach Files'),
-                        // `vueform-upload` is the generic convention LegacyFormWrapper.vue's
-                        // UPLOAD_SELECTOR queries (see its class docblock) - no SCSS targets
-                        // the former comment-only `main_comment_upload` class, so this is a
-                        // clean rename, not an addition.
-                        'options' => ['class' => 'vueform-upload'],
-                        'progress' => '#' . VueFormShell::id('comment_create_upload_progress'),
-                        'preview' => '#' . VueFormShell::id('comment_create_upload_preview'),
-                        'dropZone' => '#' . $dropZoneId,
-                        'max' => $contentModule->maxAttachedFiles,
-                    ]) ?>
-                    <?= FileHandlerButtonDropdown::widget([
-                        'primaryButton' => $uploadButton,
-                        'handlers' => $fileHandlers,
-                        'cssClass' => 'btn-group btn-group-sm',
-                        'cssButtonClass' => 'btn-light',
-                        'pullRight' => true,
-                    ]) ?>
-                </div>
+                <?php
+                // The button row the island teleports into: the upload field's trigger
+                // (`UploadField`, which replaced the former server-rendered UploadButton +
+                // FileHandlerButtonDropdown + UploadProgress + FilePreview composition) and
+                // the submit button - see CommentForm.vue.
+                ?>
+                <div class="richtext-create-buttons"></div>
             </div>
-
-            <div id="<?= VueFormShell::id('comment_create_upload_progress') ?>" style="display:none;margin:10px 0px;"></div>
-
-            <?= FilePreview::widget([
-                'id' => VueFormShell::id('comment_create_upload_preview'),
-                'options' => ['style' => 'margin-top:10px'],
-                'edit' => true,
-            ]) ?>
             <?php
             return ob_get_clean();
         },

@@ -85,7 +85,7 @@
  * global Vue component registry (CoreVueAsset — a `CommentVueAsset`
  * dependency), like every other core component this island nests.
  *
- * @since 1.19
+ * @since 1.20
  */
 import { i18n } from '@humhub/vue';
 

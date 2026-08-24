@@ -112,6 +112,35 @@ Some entry points are simplest left as plain legacy actions rather than new Vue-
 
 This works with zero extra wiring because `humhub.action.js` binds the `[data-action-click]` delegate on `document` itself, so it already fires for anchors injected anywhere in the DOM — Vue-rendered islands included — as long as the module owning the action (`content`/`ui.content` here) is already loaded page-wide wherever the island can appear, which it is for every page comments can render on. Reach for this pattern instead of a new Vue `@click` handler whenever an existing, page-wide-delegated legacy action already does exactly what's needed.
 
+## Status messages
+
+The user-feedback bar is a Vue island (`StatusBar`, see [Components: core component set](ui-js-vuejs-components.md#core-component-set)), but every one of its callers is legacy and stays that way:
+
+- `humhub.ui.status`'s exported `success`/`info`/`warn`/`error` (18 external modules call them), plus its `humhub:modules:log:setStatus` listener, which is how `humhub.log.*(msg, details, true)` surfaces.
+- the inline `humhub.modules.ui.status.<type>(…)` snippet `humhub\components\View::endBody()` registers at `POS_END` for a session flash message (`$this->view->success(…)`).
+
+`humhub.ui.status` is therefore a façade: it flattens the `details` argument (the shapes only legacy code can recognise — a `client.Response`, a jQuery-style `{error: Error}` envelope) into a plain string and forwards everything to the bridge:
+
+```js
+require('vue').status(level, message, details, closeAfter);
+```
+
+The bridge (`humhub.vue.js`) **queues** messages until an island registers itself as the handler:
+
+```js
+status(level, message, details, closeAfter)   // callers
+setStatusHandler(fn | null)                   // StatusBar.vue, on mount / unmount
+```
+
+That queue is what makes the flash-message path work at all: the inline snippet runs at `POS_END`, long before `ui.additions` sweeps the document and mounts the island. It replaces the `module.initState` hand-off the legacy module did internally. A page without the island (the installer layout renders no `LayoutAddons`) simply accumulates messages nobody shows — the same net effect the legacy module had without its markup present.
+
+Reach for this pattern — a bridge-level queue plus a handler an island registers — whenever an island has to receive imperative calls from legacy code that may run before it exists. Note the two conventions it follows: the legacy module keeps its public API (no caller changes), and the island's own contract stays declarative (no globals, no DOM lookups).
+
+Two deliberate consequences for callers:
+
+- **Messages render as text.** The bar interpolates the message (`{{ }}`), it no longer injects it as HTML. For the caller that pre-escaped its text — the common legacy case, since the jQuery bar used `.html()` — the façade decodes the entities `Html::encode()` produces, so those callers keep reading correctly. Markup a caller passes deliberately now shows up as text; see `docs/develop/module-migrate.md`.
+- **`View::endBody()` ships the raw message** as a JSON string literal. The former HTML-encode-and-interpolate path needed a `&quot;` strip to stay syntactically valid, which silently deleted every double quote from a flash message.
+
 ## Known caveats
 
 **Asset registration in JSON fragments.** `messageRenderOptions.oembeds` (server-fetched previews — see [RichTextOutput](#richtextoutput) above) is rendered server-side into plain HTML fragments returned from a JSON/API response, not through a full page render. (Comment attachments are no longer an HTML fragment at all — the API's `files` shape is rendered client-side by `CommentAttachments.vue`.) Any `AssetBundle::register($view)` call a widget makes while building that HTML has no effect: assets only reach the response when a layout is rendered (`View::head()`/`endBody()`), which never happens on a pure JSON action. Content that arrives this way therefore depends entirely on its script/style needs already being satisfied by a bundle the *containing page* loaded some other way — a module widget that assumes its own, not-already-page-wide `AssetBundle::register()` call will take effect cannot be embedded into a comment this way without first getting that asset onto the page through some other path.

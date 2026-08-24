@@ -19,7 +19,7 @@
                     <a
                         :data-ui-gallery="galleryId"
                         :href="file.url + '#.' + extension(file)"
-                        :title="file.file_name"
+                        :title="file.fileName"
                         class="d-flex align-items-center justify-content-center h-100 w-100"
                     >
                         <video :src="file.url + '#t=0.001'" controls preload="metadata" height="130"></video>
@@ -29,8 +29,8 @@
 
             <div v-if="images.length" class="post-files-images d-flex flex-wrap justify-content-center">
                 <div v-for="file in images" :key="file.guid" :class="columnClass(images.length)">
-                    <a :data-ui-gallery="galleryId" :href="file.url + '#.jpeg'" :title="file.file_name">
-                        <img class="animated fadeIn" :src="file.preview_url" :alt="file.file_name">
+                    <a :data-ui-gallery="galleryId" :href="file.url + '#.jpeg'" :title="file.fileName">
+                        <img class="animated fadeIn" :src="file.previewUrl" :alt="file.fileName">
                     </a>
                 </div>
             </div>
@@ -44,7 +44,7 @@
                 target="_blank"
                 rel="noopener"
                 class="d-block"
-            ><i class="fa fa-file-o" aria-hidden="true"></i> {{ file.file_name }} <small class="text-body-secondary">({{ humanSize(file.size) }})</small></a>
+            ><i class="fa fa-file-o" aria-hidden="true"></i> {{ file.fileName }} <small class="text-body-secondary">({{ humanSize(file.size) }})</small></a>
         </div>
     </div>
 </template>
@@ -52,9 +52,9 @@
 <script>
 /**
  * Renders a comment's attachments from the structured `files` shape
- * (`{id, guid, mime_type, size, file_name, url, preview_url}` — see the rest
- * module's `FileDefinitions::getFile()`), replacing the server-rendered
- * `ShowFiles` HTML the legacy island payload used to carry.
+ * (`{id, guid, mimeType, size, fileName, mimeIcon, url, previewUrl}` — see
+ * `humhub\modules\file\serializers\FileSerializer::file()`), replacing the
+ * server-rendered `ShowFiles` HTML the legacy island payload used to carry.
  *
  * Markup mirrors `file/widgets/views/showFiles.php` where it matters for theme
  * CSS (`.hideOnEdit`, `.post-files`, `.post-files-images/-videos/-audio`,
@@ -71,7 +71,7 @@
  *    theme layout check is server-side (`ThemeHelper::isFluid()`) and not
  *    worth a config roundtrip for comment-sized media grids.
  *
- * @since 1.19
+ * @since 1.20
  */
 const VIDEO_EXTENSIONS = { webm: 'video/webm', mp4: 'video/mp4', ogv: 'video/ogg', mov: 'video/quicktime' };
 
@@ -88,23 +88,23 @@ export default {
             return 'gallery-comment-' + this.contextId;
         },
         images() {
-            return this.files.filter((file) => !!file.preview_url);
+            return this.files.filter((file) => !!file.previewUrl);
         },
         videos() {
-            return this.files.filter((file) => !file.preview_url && VIDEO_EXTENSIONS[this.extension(file)]);
+            return this.files.filter((file) => !file.previewUrl && VIDEO_EXTENSIONS[this.extension(file)]);
         },
         audios() {
-            return this.files.filter((file) => !file.preview_url && this.extension(file) === 'mp3');
+            return this.files.filter((file) => !file.previewUrl && this.extension(file) === 'mp3');
         },
         others() {
             return this.files.filter(
-                (file) => !file.preview_url && !VIDEO_EXTENSIONS[this.extension(file)] && this.extension(file) !== 'mp3',
+                (file) => !file.previewUrl && !VIDEO_EXTENSIONS[this.extension(file)] && this.extension(file) !== 'mp3',
             );
         },
     },
     methods: {
         extension(file) {
-            const name = String(file.file_name || '');
+            const name = String(file.fileName || '');
             const dot = name.lastIndexOf('.');
             return dot === -1 ? '' : name.slice(dot + 1).toLowerCase();
         },

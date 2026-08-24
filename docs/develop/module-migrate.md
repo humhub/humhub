@@ -104,7 +104,7 @@ Each minor release line has its own file with the breaking changes, new APIs and
     islandizing `CommentLink` itself is a documented follow-up, not part of this change.
   - **Breaking for known external modules**, found via module-search while preparing this
     change (recorded here since they were not caught by an earlier "zero external consumers"
-    pass that had gated the removal - module owners should audit before upgrading to 1.19):
+    pass that had gated the removal - module owners should audit before upgrading to 1.20):
     `humhub/reportcontent` and the private `cuzy-app/reaction` module hook
     `CommentControls::EVENT_INIT` / `CommentEntryLinks::EVENT_BEFORE_RUN` respectively to
     inject a menu entry/reaction picker into each comment's controls row. Both classes are
@@ -113,7 +113,7 @@ Each minor release line has its own file with the breaking changes, new APIs and
     widget pass to hook into), so both integrations silently stop firing. The private
     `cuzy-app/external-websites` module's `FirstCommentForm` widget `extends Form` directly -
     this **does** fatal (class no longer exists) and needs a follow-up fix before that module
-    can run against 1.19. Separately, the `cuzy-app/saas` theme's override of
+    can run against 1.20. Separately, the `cuzy-app/saas` theme's override of
     `comment/widgets/views/comments.php` (`require`s the core file) breaks since that view is
     removed - override the `Comments` widget or the new `CommentSection.vue` component
     instead.
@@ -194,6 +194,187 @@ Each minor release line has its own file with the breaking changes, new APIs and
       `comment/widgets/views/adminDeleteModal.php` no longer apply — override the
       `CommentDeleteModal` Vue component instead. The unrelated
       `content\widgets\AdminDeleteModal` (stream entries) is untouched.
+  - **File uploads in Vue forms are native** (`UploadField`,
+    `protected/humhub/vue/UploadField.vue`, see
+    `docs/develop/ui-js-vuejs-forms.md`), fed by the new endpoints
+    `POST /api/v2/file` and `DELETE /api/v2/file/<id>`
+    (`humhub\modules\file\controllers\api\FileController`). The legacy
+    `file\widgets\Upload*` widgets and `humhub.file.js` are untouched and stay the
+    mechanism for server-rendered forms. Details:
+    - `comment\widgets\views\commentFormShell.php` no longer renders `UploadButton`,
+      `FileHandlerButtonDropdown`, `UploadProgress` or `FilePreview` — the shell is the
+      richtext editor plus the (empty) `.richtext-create-buttons` row the island
+      teleports its trigger and submit button into. A theme overriding that view must
+      drop the upload half accordingly.
+    - **Removed** from `humhub\vue\LegacyFormWrapper`: `getFileGuids()`, the upload
+      reset inside `clear()`, and the `.vueform-upload` convention class it queried;
+      `RichTextField` lost its `getFileGuids()` proxy with it. A shell now carries only
+      widgets that have no native counterpart.
+    - `file\widgets\FileHandlerButtonDropdown` gained `$itemsOnly`, which renders just
+      the handlers' `<li>` entries (for a client-side upload field that owns its own
+      trigger and dropdown).
+    - `file\serializers\FileSerializer::file()` gained `mimeIcon` (the same icon class
+      `FileHelper::getFileInfos()` ships to the legacy widgets). Purely additive.
+    - **Accepted break:** a `FileHandlerCollection::TYPE_CREATE` handler that
+      programmatically pushes a file into the legacy upload *widget instance* does
+      nothing inside a Vue form. Its entries are still rendered (their
+      `data-action-click` handlers still fire), core's own upload-by-type entries are
+      handled natively, and the documented replacement for "here is an already-uploaded
+      file" is a DOM event on the field:
+      `element.dispatchEvent(new CustomEvent('humhub:file:attach', {detail: {files: [fileShape]}}))`.
+  - **The notification dropdown and the overview page are Vue islands**
+    (`NotificationMenu`, `NotificationOverview` in
+    `protected/humhub/modules/notification/vue/`, `NotificationVueAsset`), fed by the new
+    endpoints `GET /api/v2/notification` and `POST /api/v2/notification/mark-as-seen`
+    (`notification\controllers\api\NotificationController`, shapes in
+    `notification\serializers\NotificationSerializer`). What a notification class
+    contributes is unchanged — the payload carries its own `html()` sentence, and the
+    entry markup around it is rendered client-side. Details:
+    - **Removed**: the client-side `notification` JS module (`humhub.notification.js`,
+      `notification.NotificationDropDown`, `notification.OverviewWidget`,
+      `notification.markAsSeen`) and `notification\assets\NotificationAsset` (with its
+      entry in `CoreBundleAsset::STATIC_DEPENDS`). Module-search found no external users
+      of any of it.
+    - **Removed**: `notification\controllers\ListController` (both
+      `/notification/list` and `/notification/list/mark-as-seen`),
+      `notification\widgets\OverviewWidget` (+ its view),
+      `notification\widgets\NotificationFilterForm` (+ its view),
+      `notification\models\Notification::loadMore()` and the
+      `widgets/views/overview.php` dropdown view. Zero external references to any of
+      them; the API endpoints above replace the two routes.
+    - `notification\widgets\Overview` (the top-menu widget) now renders the island and
+      keeps `#notification_widget.btn-group`; the ids inside it
+      (`#icon-notifications`, `#badge-notifications`, `#mark-seen-link`,
+      `#dropdown-notifications`, `#notification_overview_list`,
+      `#notification_overview_markseen`) are unchanged, so theme CSS and the product tour
+      still apply. Theme overrides of the removed views no longer do — override the Vue
+      components instead.
+    - **Kept as the compatibility surface**: `humhub:notification:updateCount` is still
+      triggered on every count change, `humhub:modules:notification:UpdateTitleNotificationCount`
+      is still listened to, and the document title still adds
+      `humhub.modules.mail.notification.getNewMessageCount()`. `humhub/mail` and its forks
+      need no change. New: `humhub:notification:setCount` pushes a count INTO the island —
+      that is how `UpdateNotificationCount` (the pjax layout addon) keeps the badge current.
+    - `Notification::findGrouped()` gained a `max(notification.id) as group_max_id`
+      aggregate and orders by it as the final tiebreaker, so cursor paging cannot return
+      overlapping pages (notifications created within the same second were previously
+      ordered arbitrarily). Existing callers only see a deterministic order.
+    - **Deliberate UI change**: the overview page pages with a "show more" button instead
+      of numbered pages (`LinkPager`), for the same reason the endpoint pages by cursor.
+    - The web-target renderer (`notification\renderer\WebRenderer`,
+      `@notification/views/default.php`, `layouts/web.php`) is untouched and still
+      renders a notification server-side for anyone calling it — the platform itself no
+      longer does.
+    - Added `space\serializers\SpaceSerializer` and `SpaceImage` (`<space-image>`,
+      `SpaceVueAsset`) as the space module's first Vue component, used for the space badge
+      of an entry. The Vue bridge gained `pageTitle()`, the platform's own per-page title
+      state (`ui.view`), which the island needs to prefix the document title without
+      accumulating its own count.
+  - **The status bar is a Vue island** (`StatusBar`, `protected/humhub/vue/StatusBar.vue`),
+    mounted by `humhub\widgets\StatusBar` as `<status-bar id="status-bar">`. The `ui.status`
+    JS module keeps its **public API unchanged** — `success`/`info`/`warn`/`error` with the
+    same signatures, plus the `humhub:modules:log:setStatus` listener — and forwards to the
+    island through the bridge (`humhub.vue.js`'s `status()`/`setStatusHandler()`, which
+    queues messages triggered before the island mounts). None of the 18 modules calling
+    `require('ui.status')` needs a change. Details:
+    - **Removed** from `humhub.ui.status.js`: the `StatusBar` class (and its `module.statusBar`
+      instance), `module.template` and `module.initState` — all internals of the jQuery
+      implementation, no external users found via module-search.
+    - **Messages render as text, not HTML.** The jQuery bar injected them with `.html()`.
+      Entities produced by `Html::encode()`/`htmlspecialchars(ENT_QUOTES)` are still decoded
+      by the façade, so a caller that pre-escapes its message text stays correct; a caller
+      that passes deliberate **markup** (`<strong>…</strong>`) now sees it as text.
+    - `humhub\components\View::endBody()` ships the flash message as a JSON string literal
+      instead of HTML-encoding it into a JS string. Its former `&quot;` strip — needed to
+      keep that literal valid — silently deleted every double quote from a flash message.
+    - `_user-feedback.scss` gained the slide transition (`.status-bar-body` hidden by
+      default, shown via `.status-bar-visible`) that jQuery used to animate, plus
+      `.status-bar-toggle` for the details-toggle cursor. A theme that replaces this block
+      (`$prev-user-feedback: true`) keeps working — the bar element only exists while a
+      message is shown — but its bar appears and disappears without the slide until it
+      adopts those two rules.
+  - **The space membership button is a Vue island** (`MembershipButton`,
+    `protected/humhub/modules/space/vue/`, `SpaceVueAsset`), fed by the new endpoints
+    `GET|POST|DELETE /api/v2/space/<id>/membership`
+    (`space\controllers\api\MembershipController`, shape in
+    `space\serializers\MembershipSerializer`). One `POST` covers joining, applying and
+    accepting an invite, one `DELETE` covers leaving, withdrawing and declining — which
+    one it is follows from the current state and the space's join policy, decided server
+    side. Both answer the new state, and the island renders every state itself, including
+    the request-membership dialog (a native `UiModal` + `HumHubForm`). Details:
+    - `space\widgets\MembershipButton` keeps its class, `$space` and
+      `EVENT_INIT`/`EVENT_CREATE`, and its presentation is now properties instead of a
+      per-button option array: `$buttonClass`, `$pendingClass`, `$memberClass`,
+      `$togglerClass`, `$groupClass`, `$showMemberState`, `$reloadOnJoin`. **`$options`,
+      `setDefaultOptions()` and `getOptions()` are removed** rather than deprecated — the
+      array carried titles, urls and `data-action-*` attributes for markup that no longer
+      exists. The properties are nullable, so an `EVENT_INIT` handler supplies a default
+      without overriding what the call site configured:
+
+      ```php
+      // before
+      $membershipButton->setDefaultOptions([
+          'requestMembership' => ['attrs' => ['class' => 'btn btn-accent btn-sm']],
+          'becomeMember' => ['attrs' => ['class' => 'btn btn-accent btn-sm']],
+          'acceptInvite' => ['attrs' => ['class' => 'btn btn-accent btn-sm'], 'togglerClass' => 'btn btn-accent btn-sm'],
+          'cancelPendingMembership' => ['attrs' => ['class' => 'btn btn-sm btn-outline-accent']],
+      ]);
+
+      // after
+      $membershipButton->buttonClass ??= 'btn btn-accent btn-sm';
+      $membershipButton->togglerClass ??= 'btn btn-accent btn-sm';
+      $membershipButton->pendingClass ??= 'btn btn-sm btn-outline-accent';
+      ```
+
+      Known affected: `humhub/enterprise-theme` (`Events::onInitSpaceMembershipButton()`) —
+      it sets classes only, so the above is the whole migration. `cuzy-app/category-group`
+      hooks `EVENT_CREATE` and subclasses the widget for its own `run()`; it touches
+      neither `$options` nor the removed methods and needs no change.
+    - **Removed**: `MembershipButton::sanitizeRequestOptions()` and the
+      `space/widgets/views/membershipButton.php` view; `space\controllers\MembershipController`
+      lost `actionRequestMembershipForm()` (`/space/membership/request-membership-form`)
+      with the `views/membership/requestMembership.php` and `requestMembershipSave.php`
+      views, `RequestMembershipForm::$options`, and the `requestMembershipSend()` function
+      of the `space` JS module. Zero external references to any of them (module-search).
+      Theme overrides of those views no longer apply — override the Vue component instead.
+    - `MembershipController::getActionResult()` (the web `request-membership`,
+      `invite-accept` and `revoke-membership` actions, all kept) always redirects now; an
+      AJAX request used to be answered with the re-rendered button. That answer is what
+      made the presentation options travel through the client, which #8381 had to harden.
+    - The sibling `FollowButton` (still a server-rendered widget) is toggled by the island
+      itself, by `data-content-container-id` + `.followButton`/`.unfollowButton` — the
+      server no longer sends `data-show-buttons`/`data-hide-buttons`.
+    - **A module restricting who may join a space must guard the API controller too.**
+      Membership transitions no longer go only through
+      `space\controllers\MembershipController`; a guard hooked onto its
+      `EVENT_BEFORE_ACTION` (as `cuzy-app/category-group` has) needs the same handler on
+      `space\controllers\api\MembershipController`.
+  - **The friendship button is a Vue island** (`FriendshipButton`,
+    `protected/humhub/modules/friendship/vue/`, `FriendshipVueAsset`), fed by the new
+    endpoints `GET|POST|DELETE /api/v2/user/<id>/friendship`
+    (`friendship\controllers\api\FriendshipController`, shape in
+    `friendship\serializers\FriendshipSerializer`) — the membership button's twin, built the
+    same way: one `POST` sends a request or accepts a received one, one `DELETE` withdraws,
+    denies or ends, both answer the new state. The endpoints answer `404` while the friendship
+    system is disabled, like the web controller. Details:
+    - `friendship\widgets\FriendshipButton` keeps its class, `$user`, `EVENT_INIT` and
+      `isVisibleForUser()`, and gained the presentation properties `$buttonClass`,
+      `$stateClass`, `$togglerClass`, `$groupClass`. **`$options`, `setDefaultOptions()`,
+      `getOptions()` and `sanitizeRequestOptions()` are removed** (with the
+      `widgets/views/friendshipButton.php` view and the request-options unit test) — the array
+      carried titles, urls and `data-action-*` attributes for markup that no longer exists.
+      Like the membership button the properties are nullable, so an `EVENT_INIT` handler can
+      set a default with `??=` without overriding the call site. The option array allowed a
+      separate class per button, the properties give the three state buttons (pending,
+      received request, friends) one look — which is what both core call sites always did.
+    - `RequestController::getActionResult()` (the web `request/add` and `request/delete`
+      actions, both kept) always redirects now.
+    - **Removed**: the `relationship` action of the `content.container` JS module
+      (`data-action-click="content.container.relationship"`) together with its
+      `data-button-options` posting and the `data-show-buttons`/`data-hide-buttons`
+      convention. It existed for the membership and friendship buttons only, both of which
+      are islands now; module-search found no external users of any of the three attributes.
+      `content.container.follow`/`unfollow` are untouched.
 - Added the **HTTP API framework** in `humhub\components\api\` and the first core endpoints
   under `/api/v2` — see `docs/develop/concept-api.md`. Purely additive for existing modules;
   the `humhub/rest` module and the 13 modules extending its `BaseController` keep working
@@ -204,7 +385,9 @@ Each minor release line has its own file with the breaking changes, new APIs and
     (ISO-8601 UTC timestamps, camelCase attribute names) and `SerializeEvent` is the batch
     serializer extension point. Serializers live in `humhub\modules\<module>\serializers\`.
   - Core endpoints in this release: comment window/CRUD (`comment`), like state/toggle/users
-    (`like`), the caller's account and block list (`user`).
+    (`like`), the caller's account and block list (`user`), file upload/delete (`file`),
+    the notification window (`notification`), the caller's space membership (`space`) and the
+    caller's friendship with a user (`friendship`).
   - A module may contribute authentication methods to *every* API controller by handling
     `BaseController::EVENT_COLLECT_AUTH_METHODS` (`AuthMethodsEvent`) — how the rest module
     ≥ 0.13 makes token authentication apply to core endpoints. Browser-session authentication

@@ -4,8 +4,8 @@
 
 <script>
 /**
- * Hosts a server-rendered legacy widget SHELL (e.g. a rich text editor +
- * upload widget + file preview markup) inside a Vue island and exposes a
+ * Hosts a server-rendered legacy widget SHELL (e.g. a rich text editor)
+ * inside a Vue island and exposes a
  * small, clean API to the surrounding Vue component so it never has to
  * touch jQuery/legacy widgets itself. Generic core interop component,
  * pairing with the PHP-side `humhub\widgets\VueFormShell` widget that
@@ -71,16 +71,13 @@
  * humhub.ui.widget.js, which is dead/unused (nothing ever reads it; the
  * actual cache key is `this.static('component')`, i.e. each widget class's
  * own `.component` static, e.g. `RichTextEditor.component =
- * 'humhub-ui-richtexteditor'`, `Upload.component = 'humhub-file-upload'`).
- * This wrapper reads those two real keys directly off the shell's richtext
- * (the `[data-ui-widget="ui.richtext.prosemirror.RichTextEditor"]` root —
+ * 'humhub-ui-richtexteditor'`).
+ * This wrapper reads that real key directly off the shell's richtext root
+ * (the `[data-ui-widget="ui.richtext.prosemirror.RichTextEditor"]` element —
  * NOT `.humhub-ui-richtext`: browser-verified, that class only lands on the
  * INNER ProseMirror contenteditable, while the instance is cached on the
- * widget root carrying the data-ui-widget attribute) and upload
- * (`UPLOAD_SELECTOR` below — the generic `.vueform-upload` convention class
- * any `VueFormShell`-based shell's upload field carries, not a
- * comment-specific one) root nodes — looser coupling than
- * `require('ui.widget')`/`require('file')`.
+ * widget root carrying the data-ui-widget attribute) — looser coupling than
+ * `require('ui.widget')`.
  *
  * ## Editor API relied on (`ui.richtext.prosemirror.RichTextEditor`)
  *  - `editor.serialize()` — current markdown; the exact call the legacy
@@ -96,13 +93,10 @@
  *    backup; this is the exact mechanism `humhub.comment.js`'s
  *    `Form.prototype.submit` uses after a successful post.
  *
- * ## Upload API relied on (`file.Upload`)
- *  - `reset()` — clears the fileCount, removes this instance's hidden guid
- *    inputs from its form, and resets the file preview list.
- *  - `options.uploadSubmitName` — the resolved hidden-input `name` attached
- *    files are posted under (`Model[attribute][]`, e.g.
- *    `Comment[fileList][]`); used to collect attached guids without
- *    hardcoding the model/attribute naming.
+ * File uploads are NOT part of this wrapper (anymore): they have a native
+ * counterpart, `UploadField.vue`, and a shell therefore only carries what has
+ * none — see that component's docblock and
+ * `docs/develop/ui-js-vuejs-forms.md`.
  *
  * ## Unsaved-changes guard (see CommentForm.vue's own docblock section of
  * the same name for the full root-cause writeup, comment-consumer-specific)
@@ -161,10 +155,6 @@ import { log } from '@humhub/vue';
 const FORM_TOKEN = '__VUEFORM__';
 const RICHTEXT_SELECTOR = '[data-ui-widget="ui.richtext.prosemirror.RichTextEditor"]';
 const RICHTEXT_COMPONENT_DATA = 'humhub-ui-richtexteditor';
-// Generic convention class any VueFormShell-based shell's upload field carries — not
-// comment-specific (see the class docblock's "Widget interop" section above).
-const UPLOAD_SELECTOR = '.vueform-upload';
-const UPLOAD_COMPONENT_DATA = 'humhub-file-upload';
 
 let instanceCounter = 0;
 
@@ -227,10 +217,6 @@ export default {
             const node = this.$el.querySelector(RICHTEXT_SELECTOR);
             return node ? jQuery(node).data(RICHTEXT_COMPONENT_DATA) : null;
         },
-        getUploadInstance() {
-            const node = this.$el.querySelector(UPLOAD_SELECTOR);
-            return node ? jQuery(node).data(UPLOAD_COMPONENT_DATA) : null;
-        },
         /** @returns {string} the current markdown value of the richtext editor. */
         getValue() {
             const editor = this.getEditorInstance();
@@ -243,15 +229,11 @@ export default {
                 editor.editor.init(markdown || '');
             }
         },
-        /** Empties the editor and resets the upload preview/file inputs. */
+        /** Empties the editor. */
         clear() {
             const editor = this.getEditorInstance();
             if (editor) {
                 editor.$.trigger('clear');
-            }
-            const upload = this.getUploadInstance();
-            if (upload) {
-                upload.reset();
             }
             this.resetAcknowledge();
         },
@@ -275,17 +257,6 @@ export default {
             if (editor) {
                 editor.focus();
             }
-        },
-        /** @returns {string[]} guids of files currently attached via the upload widget. */
-        getFileGuids() {
-            const upload = this.getUploadInstance();
-            if (!upload) {
-                return [];
-            }
-            const name = upload.options.uploadSubmitName;
-            return jQuery(this.$el).find('input[name="' + name + '"]').map(function () {
-                return this.value;
-            }).get();
         },
     },
 };

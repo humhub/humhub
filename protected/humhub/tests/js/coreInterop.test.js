@@ -348,21 +348,8 @@ describe('LegacyFormWrapper', () => {
                          class="atwho-input form-control humhub-ui-richtext ProsemirrorEditor focusMenu"
                          data-ui-widget="ui.richtext.prosemirror.RichTextEditor" data-ui-init="1">Hello</div>
                     <textarea id="newCommentForm___VUEFORM___input" name="Comment[message]" style="display:none;"></textarea>
-                    <div class="richtext-create-buttons">
-                        <span class="btn btn-light fileinput-button" data-action-target="#comment_create_upload___VUEFORM__">
-                            <input type="file" id="comment_create_upload___VUEFORM__" class="vueform-upload" multiple
-                                   data-ui-widget="file.Upload" data-ui-init="1"
-                                   data-upload-drop-zone="#comment_create_form___VUEFORM__"
-                                   data-upload-preview="#comment_create_upload_preview___VUEFORM__"
-                                   data-upload-progress="#comment_create_upload_progress___VUEFORM__"
-                                   data-upload-submit-name="Comment[fileList][]">
-                            <input type="hidden" name="Comment[fileList][]" value="guid-1">
-                            <input type="hidden" name="Comment[fileList][]" value="guid-2">
-                        </span>
-                    </div>
+                    <div class="richtext-create-buttons"></div>
                 </div>
-                <div id="comment_create_upload_progress___VUEFORM__" style="display:none;"></div>
-                <div id="comment_create_upload_preview___VUEFORM__"></div>
             </form>
         </div>
     `;
@@ -383,12 +370,6 @@ describe('LegacyFormWrapper', () => {
             expect(wrapper.find('form').attributes('id')).toBe('w0_' + suffix);
             expect(wrapper.find('.humhub-ui-richtext').attributes('id')).toBe('newCommentForm_' + suffix);
             expect(wrapper.find('textarea').attributes('id')).toBe('newCommentForm_' + suffix + '_input');
-            expect(wrapper.find('input[type="file"]').attributes('id')).toBe('comment_create_upload_' + suffix);
-            expect(wrapper.find('input[type="file"]').attributes('data-upload-drop-zone')).toBe('#' + rootId);
-            expect(wrapper.find('input[type="file"]').attributes('data-upload-preview'))
-                .toBe('#comment_create_upload_preview_' + suffix);
-            expect(wrapper.find('input[type="file"]').attributes('data-upload-progress'))
-                .toBe('#comment_create_upload_progress_' + suffix);
         });
 
         it('gives two mounted instances different ids', () => {
@@ -414,8 +395,6 @@ describe('LegacyFormWrapper', () => {
 
             expect(wrapperA.find('.comment_create').attributes('id')).toBe('comment_create_form_vueform-c42-e7');
             expect(wrapperA.find('textarea').attributes('id')).toBe('newCommentForm_vueform-c42-e7_input');
-            expect(wrapperA.find('input[type="file"]').attributes('data-upload-drop-zone'))
-                .toBe('#comment_create_form_vueform-c42-e7');
 
             // Stability contract: a remount of the same logical form (e.g. the
             // same content's create form after a pjax navigation) reproduces
@@ -479,12 +458,11 @@ describe('LegacyFormWrapper', () => {
         });
     });
 
-    describe('editor + upload interop', () => {
+    describe('editor interop', () => {
         // Fakes mirror the REAL widget API surfaces this wrapper relies on:
         //  - ui.richtext.prosemirror.RichTextEditor: `.editor.serialize()`,
         //    `.editor.init(markdown)`, `.focus()`, and the `.$` node the
         //    widget's own 'clear' DOM-event handler is bound to.
-        //  - file.Upload: `.options.uploadSubmitName` and `.reset()`.
         // Attached the same way the real widgets attach themselves once
         // v-additions boots them — jQuery `.data(<ComponentClass.component>,
         // instance)` on their own root node (see humhub.action.js
@@ -494,7 +472,6 @@ describe('LegacyFormWrapper', () => {
         // class's own `.component` static).
         let wrapper;
         let fakeEditor;
-        let fakeUpload;
 
         beforeEach(() => {
             wrapper = mountWithAdditions(LegacyFormWrapper, { shellHtml: buildShell() });
@@ -510,11 +487,6 @@ describe('LegacyFormWrapper', () => {
             };
             $richtext.data('humhub-ui-richtexteditor', fakeEditor);
 
-            fakeUpload = {
-                options: { uploadSubmitName: 'Comment[fileList][]' },
-                reset: vi.fn(),
-            };
-            jQuery(wrapper.find('input[type="file"]').element).data('humhub-file-upload', fakeUpload);
         });
 
         it('getValue() reads the current markdown via editor.serialize()', () => {
@@ -538,14 +510,13 @@ describe('LegacyFormWrapper', () => {
             expect(fakeEditor.focus).toHaveBeenCalledTimes(1);
         });
 
-        it('clear() triggers the editor\'s "clear" event and resets the upload widget', () => {
+        it('clear() triggers the editor\'s "clear" event', () => {
             const clearHandler = vi.fn();
             fakeEditor.$.on('clear', clearHandler);
 
             wrapper.vm.clear();
 
             expect(clearHandler).toHaveBeenCalledTimes(1);
-            expect(fakeUpload.reset).toHaveBeenCalledTimes(1);
         });
 
         // P2-7 fix: humhub.client.js's acknowledgeForm guard (armed by
@@ -569,22 +540,16 @@ describe('LegacyFormWrapper', () => {
                 expect(jQuery(form).data('state')).toBeNull();
             });
 
-            it('resetAcknowledge() resets the baseline without touching editor/upload content', () => {
+            it('resetAcknowledge() resets the baseline without touching the editor content', () => {
                 wrapper.vm.resetAcknowledge();
 
                 expect(jQuery(form).data('state')).toBeNull();
                 expect(fakeEditor.editor.init).not.toHaveBeenCalled();
-                expect(fakeUpload.reset).not.toHaveBeenCalled();
             });
         });
 
-        it('getFileGuids() reads guids from hidden inputs named after uploadSubmitName', () => {
-            expect(wrapper.vm.getFileGuids()).toEqual(['guid-1', 'guid-2']);
-        });
-
-        it('getFileGuids() returns an empty array when the upload widget is not booted yet', () => {
-            const freshWrapper = mountWithAdditions(LegacyFormWrapper, { shellHtml: buildShell() });
-            expect(freshWrapper.vm.getFileGuids()).toEqual([]);
+        it('exposes no file API anymore - uploads are a field of their own (UploadField)', () => {
+            expect(wrapper.vm.getFileGuids).toBeUndefined();
         });
     });
 });

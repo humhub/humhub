@@ -1,6 +1,16 @@
 <template>
-    <HumHubForm ref="form" model-name="Comment" :busy="busy" @submit="onSubmit">
+    <HumHubForm ref="form" model-name="Comment" :busy="busy || uploadBusy" @submit="onSubmit">
         <RichTextField ref="richtext" attribute="message" :shell-html="shellHtml" :instance-key="formInstanceKey" />
+        <UploadField
+            ref="upload"
+            attribute="fileList"
+            v-model="files"
+            :max="uploadMax"
+            :handlers-html="uploadHandlersHtml"
+            :title="attachLabel"
+            :trigger-target="teleportTarget"
+            @busy="uploadBusy = $event"
+        />
         <Teleport :to="teleportTarget" :disabled="!teleportTarget">
             <SubmitButton
                 :loader="false"
@@ -177,6 +187,26 @@
  * (see below) is the only thing that keeps that redundant second call from
  * double-posting; there is no dormancy on `HumHubForm`'s side to rely on.
  *
+ * ## Attachments
+ *
+ * The form's upload half is native (`UploadField`, see the core component set and
+ * `docs/develop/ui-js-vuejs-forms.md`) — the shell carries only the richtext editor
+ * now. This component owns the list of files attached in the current editing session
+ * (`files`), submits their guids as `fileList`, and clears it along with the editor.
+ * Its trigger is Teleported into the same `.richtext-create-buttons` row as the
+ * submit button (declared BEFORE it, so the order matches the legacy shell), while
+ * progress and the file list render below the editor. Drop and paste work on the
+ * whole comment box, matching the legacy widget's `dropZone`/`pasteZone` options —
+ * see `onZoneDrop()`.
+ *
+ * Two behaviours worth stating explicitly, both matching the pre-Vue form:
+ *  - In EDIT mode the field starts EMPTY and only newly added files are submitted.
+ *    `Comment::afterSave()` ATTACHES `fileList` and never detaches, so a comment's
+ *    existing attachments survive an edit untouched (and cannot be removed here —
+ *    the legacy edit form could not either).
+ *  - Removing an entry before submitting means it is never attached; the uploaded
+ *    file stays behind unattached and the file module's own cron job cleans it up.
+ *
  * ## Unsaved-changes guard (P2-7 fix)
  *
  * Browser-verified: submitting a comment (or cancelling an edit/reply) could
@@ -230,6 +260,9 @@ export default {
         initialMessage: { type: String, default: null },
         // Server-rendered submit-icon HTML (see "Submit button" docblock section above).
         submitIconHtml: { type: String, default: null },
+        // Upload field settings: `{max, handlersHtml}` (see the "Attachments" docblock
+        // section below), or null when the island rendered no form shell.
+        uploadOptions: { type: Object, default: null },
     },
     emits: ['created', 'updated'],
     data() {
@@ -239,6 +272,12 @@ export default {
             // section above. `null` until then/if the shell has no button-group
             // container, which Teleport's `disabled` prop treats as "render in place".
             teleportTarget: null,
+            // Files attached in THIS editing session (API file shapes, owned by the
+            // UploadField below) - see the "Attachments" docblock section.
+            files: [],
+            // True while the upload field has a request in flight, so the submit button
+            // stays disabled until the guids it would submit actually exist.
+            uploadBusy: false,
         };
     },
     computed: {
@@ -248,6 +287,17 @@ export default {
         // own category for exactly this.
         sendLabel() {
             return i18n.t('ContentModule.base', 'Submit');
+        },
+        // Same label the shell's server-rendered upload button carried before the field
+        // became Vue-native - again a ContentModule.base key CommentSection preloads.
+        attachLabel() {
+            return i18n.t('ContentModule.base', 'Attach Files');
+        },
+        uploadMax() {
+            return (this.uploadOptions && this.uploadOptions.max) || 0;
+        },
+        uploadHandlersHtml() {
+            return (this.uploadOptions && this.uploadOptions.handlersHtml) || '';
         },
         // Deterministic identity for the shell's DOM ids, threaded down to
         // LegacyFormWrapper (see ITS "Unique-id contract" docblock section for
@@ -280,6 +330,10 @@ export default {
         // shell without the container, in which case the button just renders where
         // the <Teleport> tag sits (Teleport's own `disabled` fallback).
         this.teleportTarget = shellEl.querySelector('.richtext-create-buttons');
+        this.zoneEl = shellEl;
+        this.zoneEl.addEventListener('drop', this.onZoneDrop);
+        this.zoneEl.addEventListener('dragover', this.onZoneDragOver);
+        this.zoneEl.addEventListener('paste', this.onZonePaste);
         if (this.initialMessage !== null) {
             this.$nextTick(() => {
                 if (this.$refs.richtext) {
@@ -291,6 +345,11 @@ export default {
     beforeUnmount() {
         if (this.formEl) {
             this.formEl.removeEventListener('submit', this.onSubmit);
+        }
+        if (this.zoneEl) {
+            this.zoneEl.removeEventListener('drop', this.onZoneDrop);
+            this.zoneEl.removeEventListener('dragover', this.onZoneDragOver);
+            this.zoneEl.removeEventListener('paste', this.onZonePaste);
         }
     },
     methods: {
@@ -319,7 +378,7 @@ export default {
             const isEdit = this.editCommentId !== null;
             const payload = {
                 message: this.$refs.richtext.getValue(),
-                fileList: this.$refs.richtext.getFileGuids(),
+                fileList: this.files.map((file) => file.guid),
             };
 
             this.busy = true;
@@ -365,15 +424,42 @@ export default {
             }
         },
         /**
-         * Proxies to RichTextField's clear() - blanks the editor/uploads AND resets the
-         * unsaved-changes guard baseline (see this component's own "Unsaved-changes guard"
-         * docblock section). Called both on a successful create/reply submit (below) and by
-         * CommentEntry when a reply/edit form is discarded without submitting.
+         * Empties the form: the editor (via RichTextField's clear(), which also resets the
+         * unsaved-changes guard baseline - see this component's own "Unsaved-changes guard"
+         * docblock section) and the attachment list. Called both on a successful create/reply
+         * submit (below) and by CommentEntry when a reply/edit form is discarded without
+         * submitting.
          */
         clear() {
             if (this.$refs.richtext) {
                 this.$refs.richtext.clear();
             }
+            if (this.$refs.upload) {
+                this.$refs.upload.clear();
+            }
+        },
+        /**
+         * Drop/paste anywhere in the comment box attaches files - the area the legacy upload
+         * widget pointed its `dropZone`/`pasteZone` options at (the shell's own root element,
+         * `#<token>_comment_create_form`). The upload field itself covers its own root; this
+         * extends the zone to the whole box, and both funnel into the same `addFiles()`.
+         */
+        onZoneDrop(event) {
+            const files = Array.from((event.dataTransfer && event.dataTransfer.files) || []);
+            if (files.length && this.$refs.upload) {
+                event.preventDefault();
+                this.$refs.upload.addFiles(files);
+            }
+        },
+        onZonePaste(event) {
+            const files = Array.from((event.clipboardData && event.clipboardData.files) || []);
+            if (files.length && this.$refs.upload) {
+                this.$refs.upload.addFiles(files);
+            }
+        },
+        onZoneDragOver(event) {
+            // Without this the browser navigates to the dropped file instead of firing `drop`.
+            event.preventDefault();
         },
     },
 };

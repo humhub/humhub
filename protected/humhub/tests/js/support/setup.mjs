@@ -122,8 +122,18 @@ const modal = {
     },
 };
 
+// Minimal `ui.view` stand-in: the bridge's pageTitle() reads the platform's per-page title
+// state from it (see humhub.vue.js).
+const view = {
+    title: 'HumHub',
+    getTitle() {
+        return this.title;
+    },
+};
+
 const stubs = {
     additions,
+    view,
     i18n: {
         preload: () => Promise.resolve(),
         // Mirrors humhub.i18n.t(category, message, params): untranslated source text
@@ -134,6 +144,19 @@ const stubs = {
             : message),
     },
     client: {
+        // Stand-in for the real client.Response class (humhub.client.js): only its
+        // identity and getLog() matter to consumers under test - `ui.status` flattens
+        // a Response into its log representation before handing details to the status
+        // island.
+        Response: class Response {
+            constructor(log) {
+                this._log = log || {};
+            }
+
+            getLog() {
+                return this._log;
+            }
+        },
         post: () => Promise.resolve({}),
         get: () => Promise.resolve({}),
         // The vue bridge's put()/del() delegate to the core client's ajax()
@@ -169,6 +192,7 @@ globalThis.humhub = {
         const req = (name) => ({
             'ui.additions': stubs.additions,
             'ui.modal': stubs.modal,
+            'ui.view': stubs.view,
             i18n: stubs.i18n,
             client: stubs.client,
             event: stubs.event,

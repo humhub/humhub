@@ -15,6 +15,24 @@
         bottom: 0px;
         display: block;
         line-height: 20px;
+
+        // The slide the jQuery status bar used to animate manually. StatusBar.vue
+        // renders the element hidden and adds `status-bar-visible` one frame later,
+        // then removes the class and keeps the element around for the duration of
+        // this transition - keep the 500ms in sync with TRANSITION_MS there.
+        opacity: 0;
+        transform: translateY(100%);
+        transition: transform 500ms, opacity 500ms;
+
+        &.status-bar-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    // The message text doubles as the details toggle when a message carries any.
+    .status-bar-content .status-bar-toggle {
+        cursor: pointer;
     }
 
     .status-bar-close {

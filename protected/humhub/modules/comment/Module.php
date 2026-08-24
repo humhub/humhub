@@ -44,7 +44,7 @@ class Module extends \humhub\components\Module
     public bool $guestHideComments = false;
 
     /**
-     * @since 1.19
+     * @since 1.20
      * @var int seconds a serialized comment or comment window stays cached
      * ({@see \humhub\modules\comment\services\CommentPayloadCache}), `0` disables the
      * cache entirely.

@@ -1,0 +1,152 @@
+openapi: 3.0.0
+info:
+  description: |
+    Welcome to the HumHub friendship API reference, v2.
+
+    These endpoints are part of **HumHub core** (1.20+), and exist only while the friendship
+    system is enabled — an administrator can switch it off, in which case they answer `404`.
+    The optional [REST API module](https://github.com/humhub/rest) contributes the token
+    authentication methods they accept and owns the older `/api/v1` surface, which is
+    documented with that module. For the design of this stack see
+    `docs/develop/concept-api.md`.
+
+    Conventions of this API generation, differing from `/api/v1`: camelCase field names,
+    ISO-8601 timestamps with offset, plain HTTP status codes instead of a
+    `{code, message}` envelope, and `{results, total, page, pageSize, pages}` for paginated
+    lists.
+
+    Requests may authenticate with any token method the REST API module offers. HumHub's own
+    browser session is accepted too for these endpoints, which is what the platform's Vue UI
+    uses; state-changing session requests additionally require the CSRF token.
+  version: 2.0.0
+  title: HumHub - Friendship API (v2)
+  contact:
+    email: info@humhub.com
+  license:
+    name: AGPLv2
+    url: https://www.humhub.org/en/licences
+servers:
+  - url: /api/v2
+security:
+  - Bearer: []
+  - BasicAuth: []
+  - SessionCookie: []
+paths:
+  "/user/{id}/friendship":
+    get:
+      summary: The caller's friendship with a user
+      description: |
+        Answers what the caller's relationship to this user is (see the `FriendshipState`
+        schema). `403` for the caller's own user — there is no friendship resource for
+        oneself.
+      parameters:
+        - $ref: "#/components/parameters/userIdParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FriendshipState"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+    post:
+      summary: Send a friendship request, or accept a received one
+      description: |
+        **Affirms** the friendship. Which of the two it is follows from the current state, and
+        is decided server-side rather than by the client:
+
+        - `none` — a request is sent to this user,
+        - `requestReceived` — the request this user sent is accepted, making the two friends.
+
+        Sending or accepting also makes the caller follow this user, which is why the answer
+        carries `isFollowing`.
+
+        Answers the new state, in the same shape `GET` returns. `403` when there is nothing to
+        affirm (already friends, or already waiting for an answer).
+      parameters:
+        - $ref: "#/components/parameters/userIdParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FriendshipState"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+    delete:
+      summary: Withdraw, deny or end a friendship
+      description: |
+        **Removes** the friendship, whichever of the three states it is in: withdrawing a
+        request the caller sent, denying one this user sent, or ending an existing friendship.
+        Answers the new state, like the other two verbs.
+
+        Removing what does not exist is a success (the answer is simply the `none` state).
+      parameters:
+        - $ref: "#/components/parameters/userIdParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FriendshipState"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+components:
+  parameters:
+    userIdParam:
+      name: id
+      in: path
+      description: Id of the other user
+      required: true
+      schema:
+        type: integer
+  schemas:
+    FriendshipState:
+      type: object
+      description: |
+        The caller's friendship with a user — the answer to "what is my relationship to this
+        user", and therefore never embedded in a user payload and never cached.
+
+        Unlike the space membership shape it carries no "what may I do next" fields: a
+        friendship has no policy to consult, and every state offers exactly one affirming and
+        one removing transition.
+      properties:
+        state:
+          type: string
+          enum: [none, requestSent, requestReceived, friends]
+          description: |
+            `none` — no friendship and no pending request ·
+            `requestSent` — the caller asked this user, waiting for their answer ·
+            `requestReceived` — this user asked the caller, waiting for the caller's answer ·
+            `friends` — mutual friendship
+        isFollowing:
+          type: boolean
+          description: |
+            Whether the caller follows this user. Not friendship state, but the state of the
+            sibling follow action the same UI offers: affirming a friendship follows the other
+            user, so a change flips it.
+      example:
+        state: requestSent
+        isFollowing: true
+  securitySchemes:
+    Bearer:
+      $ref: "common.yaml#/components/securitySchemes/Bearer"
+    BasicAuth:
+      $ref: "common.yaml#/components/securitySchemes/BasicAuth"
+    SessionCookie:
+      $ref: "common.yaml#/components/securitySchemes/SessionCookie"

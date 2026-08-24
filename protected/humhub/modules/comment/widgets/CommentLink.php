@@ -20,7 +20,7 @@ class CommentLink extends Widget
     public ?CommentModel $parentComment = null;
 
     /**
-     * @deprecated since 1.19, set {@see self::$content} instead. Kept for backward
+     * @deprecated since 1.20, set {@see self::$content} instead. Kept for backward
      * compatibility - some modules still call `CommentLink::widget(['object' => $x])` (the
      * API before #7917 replaced polymorphic `object` relations with `content_id`).
      * @var ContentActiveRecord|CommentModel|null

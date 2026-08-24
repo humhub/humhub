@@ -9,8 +9,10 @@
 namespace humhub\modules\file\serializers;
 
 use humhub\components\ActiveRecord;
+use humhub\libs\MimeHelper;
 use humhub\modules\content\models\Content;
 use humhub\modules\file\converter\PreviewImage;
+use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
 use yii\helpers\Url;
 
@@ -21,7 +23,7 @@ use yii\helpers\Url;
  * Clients render attachments themselves from this data; the API never ships rendered HTML
  * for them.
  *
- * @since 1.19
+ * @since 1.20
  */
 class FileSerializer
 {
@@ -46,6 +48,7 @@ class FileSerializer
      *     mimeType: string,
      *     size: int,
      *     fileName: string,
+     *     mimeIcon: string,
      *     url: string,
      *     previewUrl: string|null,
      * }
@@ -60,6 +63,11 @@ class FileSerializer
             'mimeType' => $file->mime_type,
             'size' => (int)$file->size,
             'fileName' => $file->file_name,
+            // The CSS class of the file-type icon (`mime-image`, `mime-pdf`, …) - the same
+            // value `FileHelper::getFileInfos()` ships to the legacy file widgets, so a client
+            // rendering a file list gets the platform's icon set without mapping mime types
+            // itself.
+            'mimeIcon' => MimeHelper::getMimeIconClassByExtension(FileHelper::getExtension($file->file_name)),
             'url' => $file->getUrl([], true),
             // Converted preview variant for image files (the same converter the web UI uses
             // for attachment thumbnails); `null` for anything that has no image preview.

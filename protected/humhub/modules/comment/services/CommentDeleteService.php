@@ -17,7 +17,7 @@ use Yii;
  * flow behind the admin-delete modal. Extracted from the comment controller so the
  * REST API (and any future caller) shares the exact same behavior.
  *
- * @since 1.19
+ * @since 1.20
  */
 class CommentDeleteService
 {

@@ -12,6 +12,7 @@
             :can-comment="showForm"
             :form-shell-html="formShellHtml"
             :submit-icon-html="submitIconHtml"
+            :upload-options="uploadOptions"
             :anchor-comment-id="anchorCommentId"
         />
         <CommentForm
@@ -20,6 +21,7 @@
             :shell-html="formShellHtml"
             :content-id="contentId"
             :submit-icon-html="submitIconHtml"
+            :upload-options="uploadOptions"
             @created="onMainCreated"
         />
     </div>
@@ -114,7 +116,7 @@
  * earlier draft of this comment assumed. `countChanged`'s `detail` is
  * `{contentId, total}`.
  *
- * @since 1.19
+ * @since 1.20
  */
 import { events, getConfig, log } from '@humhub/vue';
 import CommentList from './components/CommentList.vue';
@@ -166,6 +168,8 @@ export default {
         formShellHtml: { type: String, default: null },
         // Server-rendered submit-button icon HTML - see CommentForm.vue's own docblock.
         submitIconHtml: { type: String, default: null },
+        // Settings of the form's upload field ({max, handlersHtml}) - see UploadField.vue.
+        uploadOptions: { type: Object, default: null },
         pageSize: { type: Number, default: 10 },
         // permalink highlight target
         anchorCommentId: { type: Number, default: null },

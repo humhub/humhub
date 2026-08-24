@@ -13,6 +13,8 @@ use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
+use humhub\modules\file\handler\FileHandlerCollection;
+use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 use humhub\modules\like\serializers\LikeSerializer;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\widgets\VueComponent;
@@ -38,7 +40,7 @@ class Comments extends Widget
     public ?CommentModel $parentComment = null;
 
     /**
-     * @deprecated since 1.19, set {@see self::$content} (and {@see self::$parentComment} for
+     * @deprecated since 1.20, set {@see self::$content} (and {@see self::$parentComment} for
      * nested rendering) instead. Kept for backward compatibility - some modules still call
      * `Comments::widget(['object' => $x])` (the API before #7917 replaced polymorphic
      * `object` relations with `content_id`/`parent_comment_id`).
@@ -111,6 +113,20 @@ class Comments extends Widget
                 'initialLikeStates' => LikeSerializer::statesByRecordId(CommentSerializer::recordIds($initial)),
                 'canComment' => $canComment,
                 'formShellHtml' => $canComment ? CommentFormShell::widget(['content' => $this->content]) : null,
+                // Settings of the form's Vue-native upload field (`UploadField`), which
+                // replaced the shell's former server-rendered upload composition. The handler
+                // entries stay server-rendered: they are menu entries a module contributed,
+                // carrying legacy `data-action-click` attributes - see that component's
+                // docblock, "Legacy file handlers".
+                'uploadOptions' => $canComment ? [
+                    'max' => (int)Yii::$app->getModule('content')->maxAttachedFiles,
+                    'handlersHtml' => FileHandlerButtonDropdown::widget([
+                        'handlers' => FileHandlerCollection::getByType(
+                            [FileHandlerCollection::TYPE_IMPORT, FileHandlerCollection::TYPE_CREATE],
+                        ),
+                        'itemsOnly' => true,
+                    ]),
+                ] : null,
                 // Server-rendered icon HTML for CommentForm.vue's submit button, reproducing
                 // the legacy `Button::accent()->icon('send')` markup (see that component's own
                 // docblock) - rendered here rather than hardcoded client-side since the icon

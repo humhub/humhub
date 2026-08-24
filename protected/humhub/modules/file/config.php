@@ -1,5 +1,6 @@
 <?php
 
+use humhub\components\api\ApiRules;
 use humhub\modules\file\Module;
 use humhub\modules\content\widgets\WallEntryAddons;
 use humhub\commands\CronController;
@@ -15,6 +16,11 @@ return [
     'consoleControllerMap' => [
         'file' => 'humhub\modules\file\commands\FileController',
     ],
+    // HTTP API (see docs/develop/concept-api.md) — the endpoint the Vue upload field posts to.
+    'urlManagerRules' => ApiRules::v2([
+        ['pattern' => 'file', 'route' => 'file/api/file/create', 'verb' => 'POST'],
+        ['pattern' => 'file/<id:\d+>', 'route' => 'file/api/file/delete', 'verb' => 'DELETE'],
+    ]),
     'events' => [
         ['class' => WallEntryAddons::class, 'event' => WallEntryAddons::EVENT_INIT, 'callback' => [Events::class, 'onWallEntryAddonInit']],
         ['class' => CronController::class, 'event' => CronController::EVENT_ON_DAILY_RUN, 'callback' => [Events::class, 'onCronDailyRun']],

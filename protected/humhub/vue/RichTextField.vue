@@ -15,19 +15,14 @@
  * `docs/develop/ui-js-vuejs-forms.md`, "Legacy fields", for the full writeup this
  * docblock summarizes.
  *
- * ## Documented deviation: one field, whole shell (no separate `UploadField`)
+ * ## Scope: the richtext editor only
  *
- * Every `VueFormShell`-based shell shipped today (see `humhub\widgets\
- * VueFormShell`, and the comment module's `CommentFormShell`/`commentFormShell.php`
- * reference composition) bakes the richtext editor AND the file-upload widget into
- * ONE server-rendered HTML blob — splitting them into two independently-cloneable
- * fragments would mean restructuring `VueFormShell`/`CommentFormShell` themselves
- * (a PHP-side change), which is out of scope for this suite: the suite consumes the
- * EXISTING shell mechanism as-is, unchanged. So this component owns the ENTIRE
- * shell (editor + upload) as a single field, and a matching `UploadField` is
- * deferred rather than forced into an abstraction the underlying shell doesn't
- * actually support splitting today. `getFileGuids()` (below) is this field's own
- * proxy to the upload half.
+ * A shell used to bake the richtext editor AND the file-upload widget into one
+ * server-rendered HTML blob, which is why this field once owned both. Uploads
+ * now have a native counterpart (`UploadField.vue`, see
+ * `docs/develop/ui-js-vuejs-forms.md`), so a shell carries only what has none —
+ * the ProseMirror editor — and the two are separate fields of the same form
+ * (`CommentForm.vue` is the reference composition).
  *
  * ## No generic field wrapper markup
  *
@@ -51,7 +46,7 @@
  * the full widget-interop contract (the `__VUEFORM__` token, the widget-instance
  * APIs read off cached jQuery data, the unsaved-changes-guard mechanism, ...) this
  * component does not duplicate: `getValue()`, `setValue(markdown)`, `clear()`,
- * `resetAcknowledge()`, `getFileGuids()`, `focus()` (also this field's
+ * `resetAcknowledge()`, `focus()` (also this field's
  * `HumHubForm.focusFirstError()` entry point), plus `getShellElement()` — the
  * shell's own root DOM node, which `CommentForm.vue` needs directly to resolve its
  * Teleport target and its native-submit-fallback `<form>` listener (see its own
@@ -65,7 +60,7 @@
  * `.is-invalid`-carrying input for it to follow: the shell's own inner input
  * elements are legacy-rendered and never gain that class from this suite.
  *
- * @since 1.19
+ * @since 1.20
  */
 import fieldMixin from './form/fieldMixin.js';
 
@@ -107,9 +102,6 @@ export default {
         },
         resetAcknowledge() {
             this.$refs.wrapper.resetAcknowledge();
-        },
-        getFileGuids() {
-            return this.$refs.wrapper.getFileGuids();
         },
         focus() {
             this.$refs.wrapper.focus();

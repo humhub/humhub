@@ -1,0 +1,170 @@
+openapi: 3.0.0
+info:
+  description: |
+    Welcome to the HumHub like API reference, v2.
+
+    These endpoints are part of **HumHub core** (1.20+). The optional
+    [REST API module](https://github.com/humhub/rest) contributes the token authentication
+    methods they accept and owns the older `/api/v1` surface, which is documented with that
+    module. For the design of this stack see `docs/develop/concept-api.md`.
+
+    Conventions of this API generation, differing from `/api/v1`: camelCase field names,
+    ISO-8601 timestamps with offset, plain HTTP status codes instead of a
+    `{code, message}` envelope, and `{results, total, page, pageSize, pages}` for paginated
+    lists.
+
+    Every likeable record is addressed either by its platform-wide `recordId` (what shapes
+    carrying likes expose) or by `model` + `pk`.
+
+    Requests may authenticate with any token method the REST API module offers. HumHub's own
+    browser session is accepted too for these endpoints, which is what the platform's Vue UI
+    uses; state-changing session requests additionally require the CSRF token.
+  version: 2.0.0
+  title: HumHub - Like API (v2)
+  contact:
+    email: info@humhub.com
+  license:
+    name: AGPLv2
+    url: https://www.humhub.org/en/licences
+servers:
+  - url: /api/v2
+security:
+  - Bearer: []
+  - BasicAuth: []
+  - SessionCookie: []
+paths:
+  "/like/state":
+    get:
+      summary: Like state of a record
+      description: |
+        The caller-context like state. Readable by guests for content they can see, with
+        `liked` and `canLike` always `false`.
+      parameters:
+        - $ref: "common.yaml#/components/parameters/recordIdParam"
+        - $ref: "common.yaml#/components/parameters/modelParam"
+        - $ref: "common.yaml#/components/parameters/pkParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "common.yaml#/components/schemas/LikeState"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+  "/like/states":
+    get:
+      summary: Like states of many records
+      description: |
+        The caller's like state for up to 100 records in one request, keyed by record id —
+        what a client asks for after receiving a page of records whose payloads deliberately
+        carry no like state (see the `LikeState` schema).
+
+        Records the caller may not see, and ids that resolve to nothing, are **absent from
+        the map** rather than failing the request. Readable by guests, with `liked` and
+        `canLike` always `false`.
+      parameters:
+        - $ref: "common.yaml#/components/parameters/recordIdsParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: object
+                    description: Record id to like state
+                    additionalProperties:
+                      $ref: "common.yaml#/components/schemas/LikeState"
+                example:
+                  results:
+                    "14":
+                      total: 2
+                      liked: true
+                      canLike: true
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+  "/like":
+    post:
+      summary: Like a record
+      parameters:
+        - $ref: "common.yaml#/components/parameters/recordIdParam"
+        - $ref: "common.yaml#/components/parameters/modelParam"
+        - $ref: "common.yaml#/components/parameters/pkParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "common.yaml#/components/schemas/LikeState"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+    delete:
+      summary: Remove the caller's like
+      description: Idempotent — unliking something that was never liked is a success.
+      parameters:
+        - $ref: "common.yaml#/components/parameters/recordIdParam"
+        - $ref: "common.yaml#/components/parameters/modelParam"
+        - $ref: "common.yaml#/components/parameters/pkParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "common.yaml#/components/schemas/LikeState"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+  "/like/users":
+    get:
+      summary: Users who liked a record
+      description: Newest first. Readable by guests for content they can see.
+      parameters:
+        - $ref: "common.yaml#/components/parameters/recordIdParam"
+        - $ref: "common.yaml#/components/parameters/modelParam"
+        - $ref: "common.yaml#/components/parameters/pkParam"
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - $ref: "common.yaml#/components/parameters/pageSizeParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "common.yaml#/components/schemas/ListEnvelope"
+                  - type: object
+                    properties:
+                      results:
+                        type: array
+                        items:
+                          $ref: "common.yaml#/components/schemas/UserShort"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+components:
+  securitySchemes:
+    Bearer:
+      $ref: "common.yaml#/components/securitySchemes/Bearer"
+    BasicAuth:
+      $ref: "common.yaml#/components/securitySchemes/BasicAuth"
+    SessionCookie:
+      $ref: "common.yaml#/components/securitySchemes/SessionCookie"

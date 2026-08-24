@@ -59,7 +59,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
      * same content. Enforced model-side so every write path (web, REST API, console)
      * is guarded — previously only the JSON controller checked this.
      *
-     * @since 1.19
+     * @since 1.20
      */
     public function validateParentComment(string $attribute): void
     {

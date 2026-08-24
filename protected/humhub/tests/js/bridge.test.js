@@ -147,4 +147,63 @@ describe('humhub.vue bridge additions', () => {
             expect(received).toEqual(['first']); // unmount unsubscribed the handler
         });
     });
+
+    describe('status export', () => {
+        beforeEach(() => {
+            // Reset the module-scope handler AND queue through the public API alone:
+            // registering a sink drains whatever a previous test left queued, passing
+            // null then re-arms queueing with an empty queue.
+            vueModule.setStatusHandler(() => {});
+            vueModule.setStatusHandler(null);
+        });
+
+        it('queues messages triggered before a handler registers and drains them in order', () => {
+            vueModule.status('info', 'first');
+            vueModule.status('error', 'second', new Error('boom'), 0);
+
+            const handler = vi.fn();
+            vueModule.setStatusHandler(handler);
+
+            expect(handler).toHaveBeenCalledTimes(2);
+            expect(handler.mock.calls[0][0]).toMatchObject({ level: 'info', message: 'first' });
+            expect(handler.mock.calls[1][0]).toMatchObject({ level: 'error', message: 'second', closeAfter: 0 });
+            expect(handler.mock.calls[1][0].details).toBeInstanceOf(Error);
+        });
+
+        it('hands a message straight to a registered handler', () => {
+            const handler = vi.fn();
+            vueModule.setStatusHandler(handler);
+
+            vueModule.status('success', 'saved', undefined, 2000);
+
+            expect(handler).toHaveBeenCalledTimes(1);
+            expect(handler.mock.calls[0][0]).toEqual({
+                level: 'success',
+                message: 'saved',
+                details: undefined,
+                closeAfter: 2000,
+            });
+        });
+
+        it('queues again after the handler is removed, and does not replay to the next handler twice', () => {
+            const first = vi.fn();
+            vueModule.setStatusHandler(first);
+            vueModule.status('info', 'while mounted');
+            expect(first).toHaveBeenCalledTimes(1);
+
+            vueModule.setStatusHandler(null);
+            vueModule.status('warn', 'while unmounted');
+            expect(first).toHaveBeenCalledTimes(1);
+
+            const second = vi.fn();
+            vueModule.setStatusHandler(second);
+            expect(second).toHaveBeenCalledTimes(1);
+            expect(second.mock.calls[0][0]).toMatchObject({ level: 'warn', message: 'while unmounted' });
+
+            // The drained queue must be empty now - a third handler gets nothing replayed.
+            const third = vi.fn();
+            vueModule.setStatusHandler(third);
+            expect(third).not.toHaveBeenCalled();
+        });
+    });
 });

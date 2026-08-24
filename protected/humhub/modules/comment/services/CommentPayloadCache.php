@@ -54,7 +54,7 @@ use Yii;
  *
  * Set the comment module's `payloadCacheTtl` to `0` to disable caching entirely.
  *
- * @since 1.19
+ * @since 1.20
  */
 class CommentPayloadCache
 {

@@ -1,6 +1,6 @@
 # Vue.js Form Suite
 
-> Part of the [Vue.js integration](ui-js-vuejs.md) documentation. This chapter covers the native `HumHubForm` component suite: `HumHubForm` itself, the field components (`TextField`, `TextareaField`, `CheckboxField`, `SelectField`), `SubmitButton`, the Yii-parity markup/`name`/`id` convention, the error contract, and how heavy legacy widgets (rich text editor, file upload) embed as suite citizens via `RichTextField`. For motivation, goals, constraints and the overall architecture, see the [overview](ui-js-vuejs.md); for the legacy-interop mechanism `RichTextField` itself is built on, see [Legacy interop](ui-js-vuejs-interop.md).
+> Part of the [Vue.js integration](ui-js-vuejs.md) documentation. This chapter covers the native `HumHubForm` component suite: `HumHubForm` itself, the field components (`TextField`, `TextareaField`, `CheckboxField`, `SelectField`, `UploadField`), `SubmitButton`, the Yii-parity markup/`name`/`id` convention, the error contract, and how heavy legacy widgets (the rich text editor) embed as suite citizens via `RichTextField`. For motivation, goals, constraints and the overall architecture, see the [overview](ui-js-vuejs.md); for the legacy-interop mechanism `RichTextField` itself is built on, see [Legacy interop](ui-js-vuejs-interop.md).
 
 ## Why a form suite, not just `LegacyFormWrapper`
 
@@ -25,7 +25,8 @@ All components below are top-level in `protected/humhub/vue/` and therefore auto
 | `CheckboxField` | Checkbox | `attribute`*, `label`, `hint`, `required`, `disabled`, `modelValue` (Boolean) | `update:modelValue` |
 | `SelectField` | `<select>` dropdown | `attribute`*, `label`, `hint`, `required`, `disabled`, `modelValue`, `options` (`[{value, label}]`), `prompt` | `update:modelValue` |
 | `SubmitButton` | `type="submit"` button | `disabled`, `loader` (default `true`) | default slot = label/icon |
-| `RichTextField` | Legacy citizen: richtext editor + upload, see [Legacy fields](#legacy-fields) | `attribute`*, `shellHtml` | exposes `getValue()`, `setValue()`, `clear()`, `getFileGuids()`, `focus()` |
+| `UploadField` | File uploads, see [File uploads](#file-uploads) | `attribute`*, `modelValue` (file shapes), `max`, `accept`, `multiple`, `title`, `handlersHtml`, `triggerTarget` | `update:modelValue`, `busy`; exposes `addFiles()`, `openPicker()`, `clear()` |
+| `RichTextField` | Legacy citizen: the richtext editor shell, see [Legacy fields](#legacy-fields) | `attribute`*, `shellHtml` | exposes `getValue()`, `setValue()`, `clear()`, `focus()` |
 
 \* `attribute` is required on every field — it is both the Yii model attribute this field maps to and the key its server-side errors are read from.
 
@@ -118,11 +119,63 @@ Note `SubmitButton` carries no default class of its own (see its own docblock) �
 
 Because `HumHubForm` renders a real `<form @submit.prevent>`, pressing Enter inside a `TextField` (a real `<input>`) triggers native form submission the browser already knows how to do — which `HumHubForm` intercepts and turns into the same `submit` emission a `SubmitButton` click reaches via `@submit.prevent`. A module using only native fields therefore gets Enter-to-submit for free without wiring anything for it.
 
+## File uploads
+
+`UploadField` is the native counterpart of the legacy `file\widgets\Upload*` composition
+(`UploadButton` + `UploadProgress` + `FilePreview`, driven by `humhub.file.js`):
+
+```html
+<UploadField
+    ref="upload"
+    attribute="fileList"
+    v-model="files"
+    :max="10"
+    :handlers-html="handlersHtml"
+    :trigger-target="buttonRow"
+    @busy="uploadBusy = $event"
+/>
+```
+
+**The field owns the guid list, the form submits it.** Files are uploaded to
+`POST /api/v2/file` (see [HTTP API framework](concept-api.md)) as soon as they are added, and
+`modelValue` holds the API's own file shapes (`{id, guid, fileName, mimeType, size, mimeIcon,
+url, previewUrl}`). Nothing is attached server-side while the user edits — the surrounding form
+sends the guids with its own request (`fileList` for a comment). Two consequences worth knowing:
+
+- Removing an entry before submitting means the file is never attached; it stays behind
+  unattached and the file module's cron job cleans it up.
+- In an EDIT form the field starts empty and only newly added files are submitted, because
+  `attach()` on the model side never detaches — a record's existing attachments survive an
+  edit untouched.
+
+**Batch semantics.** One request carries the whole selection, and the response reports per
+file (`{results, errors}`), so one rejected file does not discard the accepted ones — the field
+renders each rejected file's messages and keeps the rest. A non-validation failure goes to the
+platform's error surface (the status bar) like everywhere else in the islands.
+
+**Placement.** Progress and the file list render where the field sits; the trigger button group
+can be Teleported elsewhere via `triggerTarget` — the comment form puts it in the same
+`.richtext-create-buttons` row as its submit button. Drop and paste work on the field's own
+root; a caller with a larger drop zone (the comment form: the whole comment box) forwards those
+events to `addFiles()`.
+
+**Legacy file handlers.** `FileHandlerCollection::TYPE_CREATE` handlers stay server-rendered:
+pass `FileHandlerButtonDropdown::widget(['handlers' => …, 'itemsOnly' => true])` as
+`handlersHtml` and the field renders those `<li>` entries in its own dropdown, where their
+`data-action-click` attributes keep being served by `humhub.action.js`'s document-level
+delegate. Core's own "upload with this `accept` type" entries (`file.uploadByType`) are handled
+natively by the field. A handler that produces an already-uploaded file hands it over with a
+DOM event instead of reaching into a widget instance:
+
+```js
+element.dispatchEvent(new CustomEvent('humhub:file:attach', { detail: { files: [fileShape] } }));
+```
+
 ## Legacy fields
 
-`RichTextField` is the suite's "legacy citizen": it wraps `LegacyFormWrapper` (see [Legacy interop](ui-js-vuejs-interop.md)) hosting a server-rendered rich-text-editor-plus-upload shell (`humhub\widgets\VueFormShell`), and participates in the same `HumHubForm` error contract as every native field — its `attribute`'s server-side messages render under the editor, exactly like a `TextField`'s render under its input.
+`RichTextField` is the suite's "legacy citizen": it wraps `LegacyFormWrapper` (see [Legacy interop](ui-js-vuejs-interop.md)) hosting a server-rendered rich-text-editor shell (`humhub\widgets\VueFormShell`), and participates in the same `HumHubForm` error contract as every native field — its `attribute`'s server-side messages render under the editor, exactly like a `TextField`'s render under its input.
 
-**Documented deviation: one field, whole shell, no separate `UploadField`.** Every `VueFormShell`-based shell shipped today bakes the rich-text editor AND the file-upload widget into ONE server-rendered HTML blob (see the comment module's `CommentFormShell`/`commentFormShell.php` reference composition) — splitting them into two independently-cloneable fragments would require restructuring `VueFormShell`/`CommentFormShell` themselves, out of scope for this suite (which consumes the existing shell mechanism as-is). `RichTextField` therefore owns the ENTIRE shell — including the upload half, via its own `getFileGuids()` — as a single field, and a matching `UploadField` is deferred rather than forced into a split the underlying shell mechanism doesn't actually support today. A future PHP-side change to `VueFormShell`/`CommentFormShell` that separates the two halves into independently-tokenized fragments would be the prerequisite for ever building one.
+A shell used to bake the editor AND the file-upload widget into one HTML blob, which is why this field once owned both (`getFileGuids()`). Uploads are native now (see [File uploads](#file-uploads)), so a shell carries only what has no native counterpart, and the two are separate fields of the same form — see the comment module's `CommentFormShell`/`commentFormShell.php` for the reference composition.
 
 `RichTextField` also renders NO generic field wrapper (`mb-3`/`field-<id>`, no `label`/`hint`) — the legacy shell's own server-rendered markup already carries its own established spacing and has no slot for an externally-imposed label; see the component's own docblock. `disabled`/busy do not reach the wrapped editor itself either (the legacy widgets it wraps expose no reactive disable hook) — `SubmitButton`'s own busy-disable remains the actual guard against a double submit while a request is in flight.
 
