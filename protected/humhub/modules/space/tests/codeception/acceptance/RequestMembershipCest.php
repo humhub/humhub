@@ -14,6 +14,19 @@ use space\AcceptanceTester;
 class RequestMembershipCest
 {
     /**
+     * The membership button is a Vue island since 1.20 (`space\widgets\MembershipButton`), so
+     * its mount element is the stable handle on it - there is no server-rendered anchor left to
+     * address.
+     */
+    private const JOIN_BUTTON = 'membership-button a';
+
+    /**
+     * Its request-membership dialog is a `UiModal` teleported into the body, told apart from
+     * the always-present (and closed) legacy `#globalModal` by the `show` class.
+     */
+    private const REQUEST_MODAL = '.modal.show';
+
+    /**
      * @param AcceptanceTester $I
      * @throws Exception
      */
@@ -23,14 +36,14 @@ class RequestMembershipCest
 
         $I->amUser1();
         $I->amOnSpace1();
-        $I->seeElement('[data-space-request-membership]');
-        $I->click('[data-space-request-membership]');
+        $I->waitForElementVisible(self::JOIN_BUTTON);
+        $I->click(self::JOIN_BUTTON);
 
-        $I->waitForText('Request Membership', 10, '#globalModal');
-        $I->fillField('#request-message', 'Hi, I want to join this space.');
-        $I->click('Send', '#globalModal');
+        $I->waitForText('Request Membership', 10, self::REQUEST_MODAL);
+        $I->fillField('#requestmembershipform-message', 'Hi, I want to join this space.');
+        $I->click('Send', self::REQUEST_MODAL);
         $I->waitForText('Your request was successfully submitted to the space administrators.');
-        $I->click('Close', '#globalModal');
+        $I->click('Close', self::REQUEST_MODAL);
 
         $I->waitForText('Pending');
 
@@ -59,14 +72,14 @@ class RequestMembershipCest
 
         $I->amUser1();
         $I->amOnSpace1();
-        $I->seeElement('[data-space-request-membership]');
-        $I->click('[data-space-request-membership]');
+        $I->waitForElementVisible(self::JOIN_BUTTON);
+        $I->click(self::JOIN_BUTTON);
 
-        $I->waitForText('Request Membership', 10, '#globalModal');
-        $I->fillField('#request-message', 'Hi, I want to join this space.');
-        $I->click('Send', '#globalModal');
+        $I->waitForText('Request Membership', 10, self::REQUEST_MODAL);
+        $I->fillField('#requestmembershipform-message', 'Hi, I want to join this space.');
+        $I->click('Send', self::REQUEST_MODAL);
         $I->waitForText('Your request was successfully submitted to the space administrators.');
-        $I->click('Close', '#globalModal');
+        $I->click('Close', self::REQUEST_MODAL);
 
         $I->waitForText('Pending');
 
@@ -92,7 +105,7 @@ class RequestMembershipCest
         $I->amUser1(true);
 
         $I->seeInNotifications('Admin Tester declined your membership request for the space Space 1', true);
-        $I->waitForElementVisible('[data-space-request-membership]');
+        $I->waitForElementVisible(self::JOIN_BUTTON);
     }
 
     /**
@@ -105,14 +118,14 @@ class RequestMembershipCest
 
         $I->amUser1();
         $I->amOnSpace1();
-        $I->seeElement('[data-space-request-membership]');
-        $I->click('[data-space-request-membership]');
+        $I->waitForElementVisible(self::JOIN_BUTTON);
+        $I->click(self::JOIN_BUTTON);
 
-        $I->waitForText('Request Membership', 10, '#globalModal');
-        $I->fillField('#request-message', 'Hi, I want to join this space.');
-        $I->click('Send', '#globalModal');
+        $I->waitForText('Request Membership', 10, self::REQUEST_MODAL);
+        $I->fillField('#requestmembershipform-message', 'Hi, I want to join this space.');
+        $I->click('Send', self::REQUEST_MODAL);
         $I->waitForText('Your request was successfully submitted to the space administrators.');
-        $I->click('Close', '#globalModal');
+        $I->click('Close', self::REQUEST_MODAL);
 
         $I->waitForText('Pending');
         $I->click('Pending');
@@ -120,7 +133,7 @@ class RequestMembershipCest
         $I->click('Confirm');
         $I->waitForText('Join'); // Back to dashboard
         $I->amOnSpace1();
-        $I->waitForText('Join', 10, '[data-space-request-membership]');
+        $I->waitForText('Join', 10, self::JOIN_BUTTON);
 
         $I->amAdmin(true);
         $I->dontSeeInNotifications('Peter Tester requests membership for the space Space 1');
