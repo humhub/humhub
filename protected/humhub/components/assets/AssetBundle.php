@@ -136,11 +136,17 @@ class AssetBundle extends BaseAssetBundle
             $this->defer = false;
         }
 
-        if ($this->jsProd !== null && $useProdAssets) {
+        // An empty file list means this bundle contributes nothing of its own anymore:
+        // that is how `yii asset` writes every bundle it compressed into a target
+        // (`sourcePath = null`, `js`/`css` emptied - see `humhub\commands\AssetController`),
+        // and the target carries those files from then on. Swapping the production variants
+        // back in there would register files the bundle can no longer publish, ending up as
+        // root-relative URLs that 404 on every request.
+        if ($this->jsProd !== null && $useProdAssets && $this->js !== []) {
             $this->js = $this->jsProd;
         }
 
-        if ($this->cssProd !== null && $useProdAssets) {
+        if ($this->cssProd !== null && $useProdAssets && $this->css !== []) {
             $this->css = $this->cssProd;
         }
 

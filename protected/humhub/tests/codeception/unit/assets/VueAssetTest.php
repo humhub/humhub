@@ -35,6 +35,27 @@ class VueAssetTest extends HumHubDbTestCase
         $this->assertContains(VueAsset::class, AppAsset::STATIC_DEPENDS);
     }
 
+    /**
+     * `yii asset` writes every bundle it compressed into a target as "no source path, no
+     * files" into `assets-prod.php` (see `humhub\commands\AssetController`) - the runtime
+     * lives in `js/humhub-app.js` from then on. The bundle must not put its production
+     * variant back on the page from there: with no source path there is nothing to publish
+     * it from, so it would be registered as `/vue.runtime.global.prod.js` and 404 on every
+     * single page request.
+     */
+    public function testCompressedBundleRegistersNoFilesOfItsOwn()
+    {
+        $bundle = Yii::createObject([
+            'class' => VueAsset::class,
+            'sourcePath' => null,
+            'js' => [],
+            'css' => [],
+            'depends' => [AppAsset::BUNDLE_NAME],
+        ]);
+
+        $this->assertSame([], $bundle->js);
+    }
+
     public function testCoreApiDependsOnTheVueRuntime()
     {
         $defaults = (new \ReflectionClass(CoreApiAsset::class))->getDefaultProperties();
