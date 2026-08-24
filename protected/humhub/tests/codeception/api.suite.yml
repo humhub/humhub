@@ -8,7 +8,10 @@ modules:
     enabled:
         - REST
         - Yii2
-        - tests\codeception\_support\DynamicFixtureHelper
+        # This suite's Cests read the fixture baseline (users, spaces, content) but do not
+        # load it themselves the way a `HumHubDbTestCase` does, so the helper is told to.
+        - tests\codeception\_support\DynamicFixtureHelper:
+            loadDefaultFixtures: true
     config:
         REST:
             url: 'http://localhost:8080/api/v2/'
