@@ -112,6 +112,16 @@ humhub.module('notification', function (module, require, $) {
         // Since the handler will be called before the bootstrap trigger, isOpen is true if the dropdown is shown
         this.isOpen = this.$dropdown.hasClass('show');
         if (this.isOpen) {
+            if (view.isLarge() && !this.$entryList.getNiceScroll().length) {
+                this.$entryList.niceScroll({
+                    cursorwidth: "7",
+                    cursorborder: "",
+                    cursorcolor: "#555",
+                    cursoropacitymax: "0.2",
+                    nativeparentscrolling: false,
+                    railpadding: {top: 0, right: 3, left: 0, bottom: 0}
+                });
+            }
             this.$entryList.empty().hide();
             this.loadEntries();
         }
@@ -317,15 +327,6 @@ humhub.module('notification', function (module, require, $) {
         initOverviewPage();
 
         if (!$pjax && view.isLarge()) {
-            $("#dropdown-notifications div.hh-list").niceScroll({
-                cursorwidth: "7",
-                cursorborder: "",
-                cursorcolor: "#555",
-                cursoropacitymax: "0.2",
-                nativeparentscrolling: false,
-                railpadding: {top: 0, right: 3, left: 0, bottom: 0}
-            });
-
             $("#dropdown-notifications div.hh-list").on('touchmove', function (evt) {
                 evt.preventDefault();
             });
