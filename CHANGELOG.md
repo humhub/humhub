@@ -1,8 +1,11 @@
 HumHub Changelog
 ================
 
-1.18.5 (Unreleased)
--------------------
+1.18.5 (August 19, 2026)
+------------------------
+
+> This release also fixes [security](https://github.com/humhub/humhub/security/advisories) issues.
+
 - Fix #8340: Defer module update `opcache_reset()` to the end of the request to avoid interrupting the update in worker runtimes (e.g. FrankenPHP)
 - Fix #8357: Cast app name to string (This fixes the issue of instances with names consisting of numbers not being able to be added to the mobile app)
 - Enh #8346: Force Select2 dropdowns to always open below the field instead of flipping above when there's not enough space
@@ -12,6 +15,14 @@ HumHub Changelog
 - Fix #8370: Fix notification dropdown pagination duplicating/skipping entries by switching to keyset pagination, fix a request race condition in `loadEntries()`, and load more entries automatically when the list doesn't overflow its container (so infinite scroll no longer gets stuck when the first page of short entries never becomes scrollable)
 - Fix #8374: Ensure adding group members is restricted to groups the current user manages
 - Fix #8373: Ensure the oEmbed consent prompt encodes the requested URL so embedded markup stays inert
+- Fix #8381: Limit request supplied membership and friendship button options to presentation values, so titles, urls and action attributes stay server generated, and encode the membership button markup in the membership request response so it cannot break out of the script context
+- Fix #8376: Ensure space member role changes are limited to assignable roles
+- Fix #8378: Ensure marketplace module metadata is rendered as encoded text in the administration views
+- Fix #8375: The My Spaces dropdown could open before its JS widget initialized, staying empty until reopened — now it loads immediately once ready
+- Fix #8386: Fix collapsing of the widget "Member of these Spaces"
+- Fix #8391: Harden pagination cursor validation in Comments and Notifications against loose-type comparisons
+- Fix #8392: Wait for the comment submit button to become clickable in the stream acceptance tests, which intermittently failed on CI
+- Fix #8395: Update composer package phpoffice/phpspreadsheet to fix a Gnumeric reader unbounded gzip expansion causes memory exhaustion
 
 1.18.4 (July 21, 2026)
 ----------------------
