@@ -6,7 +6,7 @@ HumHub Changelog
 - Fix #8401: Module version migration crash when module versions cannot be determined
 - Fix #8400: Button text horizontal centering and spacing in People heading (since 1.19.0-beta.2)
 - Fix #8404: Remove deprecated function `curl_close()`
-- Fix #8405: Select2 library is loaded twice by the browser
+- Fix #8410: Select2 library is loaded twice by the browser
 
 1.19.0-beta.2 (August 19, 2026)
 -------------------------------
