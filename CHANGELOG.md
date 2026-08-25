@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.18.6 (Unreleased)
+------------------------
+- Fix #8370: Fix notification dropdown pagination duplicating/skipping entries by switching to keyset pagination, fix a request race condition in `loadEntries()`, load more entries automatically when the list doesn't overflow its container (so infinite scroll no longer gets stuck when the first page of short entries never becomes scrollable), and init the notification list's niceScroll on dropdown open
+
 1.18.5 (August 19, 2026)
 ------------------------
 

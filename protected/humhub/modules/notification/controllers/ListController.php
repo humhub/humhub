@@ -40,8 +40,28 @@ class ListController extends Controller
      */
     public function actionIndex()
     {
-        $notifications = Notification::loadMore(Yii::$app->request->get('from', 0));
-        $lastEntryId = 0;
+        // Keyset ("seek") pagination: the dropdown list is ordered by
+        // aggregate columns (group_seen, group_created_at), not by
+        // notification.id or a row count, so the client sends back the
+        // sort-key tuple of the last loaded group rather than an offset or an
+        // id. This stays correct even if new notifications are inserted while
+        // the user is scrolling — unlike offset-based paging, where such an
+        // insert shifts every later page and produces duplicates. See
+        // Notification::loadMore() for details.
+        $cursor = null;
+        $cursorSeen = Yii::$app->request->get('cursorSeen');
+        $cursorCreatedAt = Yii::$app->request->get('cursorCreatedAt');
+        $cursorLastId = Yii::$app->request->get('cursorLastId');
+        if ($cursorSeen !== null && $cursorCreatedAt !== null && $cursorLastId !== null) {
+            $cursor = [
+                'seen' => (int) $cursorSeen,
+                'createdAt' => $cursorCreatedAt,
+                'lastId' => (int) $cursorLastId,
+            ];
+        }
+
+        $notifications = Notification::loadMore($cursor);
+        $nextCursor = null;
 
         $output = "";
         foreach ($notifications as $notification) {
@@ -53,7 +73,7 @@ class ListController extends Controller
                 }
 
                 $output .= $baseModel->render();
-                $lastEntryId = $notification->id;
+                $nextCursor = $notification->getPagingCursor();
                 $notification->update();
             } catch (IntegrityException $ie) {
                 $notification->delete();
@@ -65,9 +85,9 @@ class ListController extends Controller
 
         $this->asJson([
             'newNotifications' => Notification::findUnseen()->count(),
-            'lastEntryId' => $lastEntryId,
             'output' => $output,
             'counter' => count($notifications),
+            'cursor' => $nextCursor,
         ]);
     }
 

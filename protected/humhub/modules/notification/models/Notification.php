@@ -50,6 +50,21 @@ class Notification extends ActiveRecord
     public $group_user_count;
 
     /**
+     * @var int|null 0/1, whether all notifications of the group are seen; used as part of the keyset pagination cursor (see loadMore())
+     */
+    public $group_seen;
+
+    /**
+     * @var string|null datetime of the most recent notification in the group; used as part of the keyset pagination cursor (see loadMore())
+     */
+    public $group_created_at;
+
+    /**
+     * @var int|null deterministic representative id of the group (MAX(notification.id)); used as part of the keyset pagination cursor (see loadMore())
+     */
+    public $group_last_id;
+
+    /**
      * @inheritdoc
      */
     public function behaviors()
@@ -213,30 +228,68 @@ class Notification extends ActiveRecord
     }
 
     /**
-     * Loads a certain amount ($limit) of grouped notifications from a given id set by $from.
+     * Loads a certain amount ($limit) of grouped notifications, starting after
+     * the group identified by $cursor.
      *
-     * @param int $from notification id which was the last loaded entry.
+     * This is keyset ("seek") pagination rather than offset pagination:
+     * $cursor is the (group_seen, group_created_at, group_last_id) tuple of
+     * the last group loaded on the previous page (see getPagingCursor()), and
+     * the next page is defined as "the groups that sort after this tuple in
+     * the ORDER BY below", applied via HAVING (i.e. after GROUP BY).
+     *
+     * This is deliberately not offset-based (`OFFSET $n`) and not filtered by
+     * plain `notification.id`: the list is ordered by aggregate columns that
+     * have no fixed relation to id or row count, so both of those approaches
+     * cause entries to be skipped or repeated across pages — offset pagination
+     * additionally shifts and produces duplicates/gaps whenever a new
+     * notification is inserted while the user is scrolling, since every
+     * later page's "skip N groups" assumption becomes stale.
+     *
+     * @param array{seen: int, createdAt: string, lastId: int}|null $cursor cursor of the last loaded group, or null for the first page.
      * @param int $limit count of results.
      * @return Notification[]
      * @throws Throwable
      * @since 1.2
      */
-    public static function loadMore($from = 0, $limit = 6)
+    public static function loadMore($cursor = null, $limit = 6)
     {
         $query = Notification::findGrouped();
 
-        // Normalize $from: only a strictly positive integer counts as a valid cursor.
-        // Avoids relying on loose comparison (e.g. non-numeric strings, "0") to decide
-        // whether a cursor was actually given.
-        $from = is_numeric($from) ? (int) $from : 0;
-
-        if ($from > 0) {
-            $query->andWhere(['<', 'notification.id', $from]);
+        if ($cursor !== null) {
+            $query->andHaving(['or',
+                ['>', 'group_seen', $cursor['seen']],
+                ['and',
+                    ['=', 'group_seen', $cursor['seen']],
+                    ['<', 'group_created_at', $cursor['createdAt']],
+                ],
+                ['and',
+                    ['=', 'group_seen', $cursor['seen']],
+                    ['=', 'group_created_at', $cursor['createdAt']],
+                    ['<', 'group_last_id', $cursor['lastId']],
+                ],
+            ]);
         }
 
         $query->limit($limit);
 
         return $query->all();
+    }
+
+    /**
+     * Returns the keyset pagination cursor for this (grouped) notification,
+     * to be passed as $cursor to the next loadMore() call in order to
+     * continue after this entry. See loadMore() for details.
+     *
+     * @return array{seen: int, createdAt: string, lastId: int}
+     * @since 1.2
+     */
+    public function getPagingCursor()
+    {
+        return [
+            'seen' => (int) $this->group_seen,
+            'createdAt' => $this->group_created_at,
+            'lastId' => (int) $this->group_last_id,
+        ];
     }
 
     /**
@@ -255,10 +308,20 @@ class Notification extends ActiveRecord
         $query = self::find();
         $query->addSelect([
             'notification.*',
+            // Deterministic tiebreaker for ordering (see below). Note: this is
+            // intentionally aliased differently from "id" — `notification.*`
+            // already contains a column named "id", and MySQL rejects a
+            // derived table (e.g. the subquery built internally by count())
+            // that has two columns with the same name ("Duplicate column
+            // name 'id'").
+            new Expression('MAX(notification.id) as group_last_id'),
             new Expression('count(distinct(notification.originator_user_id)) as group_user_count'),
             new Expression('count(*) as group_count'),
             new Expression('max(notification.created_at) as group_created_at'),
-            new Expression('min(notification.seen) as group_seen'),
+            // COALESCE to 0 (unseen): notification.seen can be legacy NULL
+            // data, and NULL comparisons in the HAVING cursor condition in
+            // loadMore() would otherwise silently evaluate to unknown/false.
+            new Expression('COALESCE(min(notification.seen), 0) as group_seen'),
         ]);
 
         $query->andWhere(['notification.user_id' => $user->id]);
@@ -274,7 +337,14 @@ class Notification extends ActiveRecord
             'COALESCE(notification.group_key, notification.id)',
             'notification.class',
         ]);
-        $query->orderBy(['group_seen' => SORT_ASC, 'group_created_at' => SORT_DESC]);
+        // group_last_id is a deterministic tiebreaker: without it, groups with
+        // identical group_seen/group_created_at values (e.g. two groups
+        // created in the same second) can be returned in a different relative
+        // order between two otherwise identical requests — and since it's
+        // also the last component of the keyset cursor in loadMore(), a
+        // non-deterministic order here would make pagination itself
+        // non-deterministic (entries skipped or repeated across pages).
+        $query->orderBy(['group_seen' => SORT_ASC, 'group_created_at' => SORT_DESC, 'group_last_id' => SORT_DESC]);
 
         return $query;
     }
