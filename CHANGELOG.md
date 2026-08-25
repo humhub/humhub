@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.19.0-beta.3 (Unreleased)
 -------------------------------
+- Fix #8412: Applying a UI addition by its id did nothing when it was registered without a selector, and `additions.extend()` with `applyOnInit` threw instead of applying
 - Fix #8401: Module version migration crash when module versions cannot be determined
 - Fix #8400: Button text horizontal centering and spacing in People heading (since 1.19.0-beta.2)
 - Fix #8404: Remove deprecated function `curl_close()`
