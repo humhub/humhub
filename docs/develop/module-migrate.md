@@ -375,6 +375,29 @@ Each minor release line has its own file with the breaking changes, new APIs and
       convention. It existed for the membership and friendship buttons only, both of which
       are islands now; module-search found no external users of any of the three attributes.
       `content.container.follow`/`unfollow` are untouched.
+  - **The activity box is a Vue island** (`ActivityBox`,
+    `protected/humhub/modules/activity/vue/`, `ActivityVueAsset`), fed by the new endpoint
+    `GET /api/v2/activity` (`activity\controllers\api\ActivityController`, shape in
+    `activity\serializers\ActivitySerializer`). Unlike the buttons the island is the whole
+    panel, not just its list: `activity\widgets\ActivityBox` renders the mount point with the
+    first page inlined, the container it is scoped to and the rendered `PanelMenu` (whose
+    entries modules keep contributing server-side). What an activity class contributes is
+    unchanged — the payload carries its own `asWeb()` sentence, and the entry markup around it
+    is rendered client-side. `#panel-activities`, `#activity-box-content.activities`,
+    `div.activity-entry[data-activity-id]` and `.activity-box-entry` are unchanged, so theme
+    CSS still applies. Details:
+    - **Removed**: the client-side `activity` JS module (`humhub.activity.js`,
+      `activity.ActivityBox`) and `activity\assets\ActivityAsset` (with its entry in
+      `CoreBundleAsset::STATIC_DEPENDS`). The custom scrollbar it installed (`niceScroll`) is
+      gone with it; the box scrolls natively, as its CSS always said.
+    - **Removed**: `activity\controllers\ActivityBoxController` (the `/activity/activity-box/load`
+      route), `activity\widgets\ActivityBox::renderActivity()`,
+      `activity\services\RenderService::getWeb()` and the two view files
+      `activity/widgets/views/activity-box.php` and `activity/views/layouts/web.php`. The
+      controller's static `getQuery()` moved to `activity\services\ActivityWindowService::query()`,
+      which the API and the widget share. `RenderService`'s mail representations are untouched.
+      Module-search found no external users of any of it — a module rendering activities in mail
+      or dispatching them through `ActivityManager` is unaffected.
 - Added the **HTTP API framework** in `humhub\components\api\` and the first core endpoints
   under `/api/v2` — see `docs/develop/concept-api.md`. Purely additive for existing modules;
   the `humhub/rest` module and the 13 modules extending its `BaseController` keep working

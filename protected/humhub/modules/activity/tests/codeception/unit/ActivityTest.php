@@ -57,8 +57,11 @@ class ActivityTest extends HumHubDbTestCase
         $activity = ActivityManager::load($record);
         $this->assertNull($activity->contentContainer);
 
+        // The web output is the activity's own sentence now, rendered by the ActivityBox
+        // island around it - see ActivitySerializer.
+        $this->assertNotEmpty($activity->asWeb());
+
         $renderService = new RenderService($record);
-        $this->assertNotEmpty($renderService->getWeb());
         $this->assertNotEmpty($renderService->getMailText());
         $this->assertNotEmpty($renderService->getMailHtml());
     }

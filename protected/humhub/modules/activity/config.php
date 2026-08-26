@@ -1,6 +1,7 @@
 <?php
 
 use humhub\commands\CronController;
+use humhub\components\api\ApiRules;
 use humhub\models\RecordMap;
 use humhub\modules\activity\Events;
 use humhub\commands\IntegrityController;
@@ -17,6 +18,11 @@ return [
     'id' => 'activity',
     'class' => Module::class,
     'isCoreModule' => true,
+    // HTTP API (see docs/develop/concept-api.md) - the activities the caller may see,
+    // consumed by the ActivityBox island.
+    'urlManagerRules' => ApiRules::v2([
+        ['pattern' => 'activity', 'route' => 'activity/api/activity/index', 'verb' => ['GET', 'HEAD']],
+    ]),
     'events' => [
         [IntegrityController::class, IntegrityController::EVENT_ON_RUN, [Events::class, 'onIntegrityCheck']],
         [CronController::class, CronController::EVENT_ON_HOURLY_RUN, [Events::class, 'onCronHourlyRun']],

@@ -53,6 +53,12 @@ Done on that branch:
   `GET|POST|DELETE /api/v2/user/<id>/friendship`, built the same way. With it the option round
   trip is gone from the platform entirely: `content.container.relationship` and its
   `data-button-options` posting had no users left and were removed.
+- **Activities** — the "Latest activities" box is an island (`ActivityBox`) over
+  `GET /api/v2/activity`, and the first one that owns its whole panel: the widget renders only
+  the mount point, the first page and the server-rendered `PanelMenu`. Grouping stays in the
+  query; an entry reports how many activities it stands for and pages by an opaque cursor over
+  the grouping key, which the entry's own id cannot serve as. `humhub.activity.js` and its `niceScroll`
+  scrollbar are gone.
 
 ## Done: the islands run on the platform API
 

@@ -3,7 +3,6 @@
 namespace humhub\assets;
 
 use humhub\components\assets\AssetBundle;
-use humhub\modules\activity\assets\ActivityAsset;
 use humhub\modules\comment\assets\CommentAsset;
 use humhub\modules\content\assets\ContentContainerAsset;
 use humhub\modules\content\assets\ProseMirrorRichTextAsset;
@@ -66,7 +65,6 @@ class CoreBundleAsset extends AssetBundle
         FilterAsset::class,
         CommentAsset::class,
         StreamAsset::class,
-        ActivityAsset::class,
         SpaceChooserAsset::class,
     ];
 
