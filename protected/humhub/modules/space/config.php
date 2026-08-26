@@ -15,6 +15,10 @@ return [
     // The API rules come first: the space UrlRule below matches container prefixes greedily,
     // and an endpoint must never depend on losing that race (see docs/develop/concept-api.md).
     'urlManagerRules' => array_merge(ApiRules::v2([
+        // The general space list - before the membership rules, so the fixed path is not
+        // shadowed by a pattern.
+        ['pattern' => 'space/states', 'route' => 'space/api/space/states', 'verb' => ['GET', 'HEAD']],
+        ['pattern' => 'space', 'route' => 'space/api/space/index', 'verb' => ['GET', 'HEAD']],
         ['pattern' => 'space/<id:\d+>/membership', 'route' => 'space/api/membership/state', 'verb' => ['GET', 'HEAD']],
         ['pattern' => 'space/<id:\d+>/membership', 'route' => 'space/api/membership/affirm', 'verb' => 'POST'],
         ['pattern' => 'space/<id:\d+>/membership', 'route' => 'space/api/membership/remove', 'verb' => 'DELETE'],

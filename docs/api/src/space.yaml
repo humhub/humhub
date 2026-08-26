@@ -30,6 +30,131 @@ security:
   - BasicAuth: []
   - SessionCookie: []
 paths:
+  "/space":
+    get:
+      summary: The spaces the caller may see
+      description: |
+        The platform's space list: one page of the spaces the caller may see, searched and
+        scoped by the parameters below. Deliberately caller-NEUTRAL — the same space reads the
+        same for everyone, which is what lets a chooser, a picker and a directory share one
+        representation. What the caller IS to a space (member, follower, unseen items) is
+        `/space/states`.
+
+        A space the caller may not see never appears, whatever the parameters say.
+      parameters:
+        - name: q
+          in: query
+          required: false
+          description: Search over name, description and tags. Every keyword must match.
+          schema:
+            type: string
+        - name: scope
+          in: query
+          required: false
+          description: |
+            `all` (default), `member`, `following`, or `mine` for both. A scoped list is
+            ordered the way the platform orders a user's spaces: memberships first, in the
+            order the `spaceOrder` setting asks for, followed spaces after them.
+          schema:
+            type: string
+            enum: [all, member, following, mine]
+        - name: archived
+          in: query
+          required: false
+          description: "`1` to include archived spaces, which are left out by default"
+          schema:
+            type: integer
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: pageSize
+          in: query
+          required: false
+          description: Entries per page (default 25, maximum 100)
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/SpaceListEntry"
+                  total:
+                    type: integer
+                  page:
+                    type: integer
+                  pageSize:
+                    type: integer
+                  pages:
+                    type: integer
+              example:
+                results:
+                  - id: 3
+                    guid: 9a8b7c6d-5e4f-3210-9876-543210fedcba
+                    name: Product Team
+                    url: https://example.com/s/product-team/
+                    color: "#7a9299"
+                    imageUrl: null
+                    contentContainerId: 21
+                    description: Where the product happens
+                    tags: [product, roadmap]
+                    visibility: 2
+                    archived: false
+                    extensions: {}
+                total: 1
+                page: 1
+                pageSize: 25
+                pages: 1
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+  "/space/states":
+    get:
+      summary: What the caller is to the given spaces
+      description: |
+        Membership, following and unseen items for the spaces named — the ones a client
+        displays, never "every space of the caller": a user can be a member of a great many
+        while a client shows one page of them.
+
+        This is where the caller context of a space lives, which is why the list above carries
+        none of it. `newItems` counts what was posted since the membership's last visit and is
+        therefore `0` without a membership. A space the caller may not see is not answered.
+      parameters:
+        - name: "guids[]"
+          in: query
+          required: true
+          description: Guids of the spaces to answer for (at most 100)
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: object
+                    additionalProperties:
+                      $ref: "#/components/schemas/SpaceState"
+              example:
+                results:
+                  9a8b7c6d-5e4f-3210-9876-543210fedcba:
+                    isMember: true
+                    isFollowing: false
+                    newItems: 3
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
   "/space/{id}/membership":
     get:
       summary: The caller's membership in a space
@@ -134,6 +259,59 @@ components:
       schema:
         type: integer
   schemas:
+    SpaceListEntry:
+      type: object
+      description: One space, as every caller sees it
+      properties:
+        id:
+          type: integer
+        guid:
+          type: string
+        name:
+          type: string
+        url:
+          type: string
+        color:
+          type: string
+          nullable: true
+        imageUrl:
+          type: string
+          nullable: true
+          description: |
+            `null` when the space has no profile image of its own — which is what decides
+            whether a client renders an image or the coloured acronym tile.
+        contentContainerId:
+          type: integer
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        tags:
+          type: array
+          items:
+            type: string
+        visibility:
+          type: integer
+          nullable: true
+          description: "0 private, 1 registered users, 2 public"
+        archived:
+          type: boolean
+        extensions:
+          type: object
+          description: |
+            Namespaced data modules attached to this space, `{}` when none did — see
+            `docs/develop/ui-js-vuejs-extensions.md`.
+    SpaceState:
+      type: object
+      description: What the caller is to one space
+      properties:
+        isMember:
+          type: boolean
+        isFollowing:
+          type: boolean
+        newItems:
+          type: integer
+          description: Items posted since the membership's last visit, `0` without a membership
     MembershipState:
       type: object
       description: |
