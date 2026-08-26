@@ -302,7 +302,7 @@ abstract class Menu extends JsWidget
      * `humhub.ui.navigation.setActive()`, which moves the highlight or, for a page with no
      * active entry, clears it.
      *
-     * @since 1.20
+     * @since 1.19
      */
     public static function registerActiveState(): void
     {

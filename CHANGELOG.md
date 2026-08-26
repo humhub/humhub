@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.19.0-beta.3 (Unreleased)
 -------------------------------
+- Fix #8417: Top menu keeps the previous entry highlighted after a pjax navigation (since 1.19.0-beta.1)
 - Fix #8401: Module version migration crash when module versions cannot be determined
 - Fix #8400: Button text horizontal centering and spacing in People heading (since 1.19.0-beta.2)
 - Fix #8404: Remove deprecated function `curl_close()`
