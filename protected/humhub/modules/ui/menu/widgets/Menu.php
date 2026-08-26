@@ -14,7 +14,9 @@ use humhub\modules\ui\menu\MenuEntry;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\widgets\BaseStack;
 use humhub\widgets\JsWidget;
+use yii\helpers\Json;
 use yii\helpers\Url;
+use yii\web\View;
 
 /**
  * Base class for menus and navigations.
@@ -289,6 +291,38 @@ abstract class Menu extends JsWidget
         Event::on(static::class, static::EVENT_RUN, function ($event) use ($url): void {
             $event->sender->setInactive($url);
         });
+    }
+
+    /**
+     * Tells the client which entry is active for the current request.
+     *
+     * Needed for pjax navigations: the menu sits outside the pjax container and is not
+     * re-rendered by them, so without this it keeps the entry the previous page marked - the
+     * dashboard stays highlighted after moving into a space, for example. The counterpart is
+     * `humhub.ui.navigation.setActive()`, which moves the highlight or, for a page with no
+     * active entry, clears it.
+     *
+     * @since 1.20
+     */
+    public static function registerActiveState(): void
+    {
+        $menu = new static();
+
+        if (empty($menu->id)) {
+            return;
+        }
+
+        $activeEntry = $menu->getActiveEntry();
+        $active = $activeEntry instanceof MenuLink
+            ? ['id' => $activeEntry->getId(), 'url' => $activeEntry->getUrl()]
+            : null;
+
+        $menu->getView()->registerJs(
+            'humhub.modules.ui.navigation.setActive('
+            . Json::htmlEncode($menu->id) . ', ' . Json::htmlEncode($active) . ');',
+            View::POS_END,
+            'active-' . $menu->id,
+        );
     }
 
 }
