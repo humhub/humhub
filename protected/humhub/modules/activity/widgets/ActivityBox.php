@@ -3,11 +3,13 @@
 namespace humhub\modules\activity\widgets;
 
 use humhub\components\Widget;
+use humhub\helpers\Html;
 use humhub\modules\activity\assets\ActivityVueAsset;
 use humhub\modules\activity\services\ActivityWindowService;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\widgets\PanelMenu;
 use humhub\widgets\VueComponent;
+use Yii;
 
 /**
  * The "Latest activities" panel of the dashboard sidebar and of a container's profile.
@@ -21,8 +23,10 @@ use humhub\widgets\VueComponent;
  * someone scrolls: a shorter page would leave the island's load-more sentinel inside the
  * 400px-high box and have it fetch the rest immediately.
  *
- * The panel keeps its id and classes (`#panel-activities`, `#activity-box-content.activities`),
- * like the markup of an entry, because theme CSS addresses them.
+ * The mount point IS the panel (`#panel-activities.panel.panel-activities`), so the element
+ * exists before the island mounts - theme CSS, the product tour and tests address it - and the
+ * island renders its contents. `#activity-box-content.activities` and the markup of an entry
+ * are unchanged for the same reason.
  *
  * @since 1.1
  */
@@ -42,6 +46,22 @@ class ActivityBox extends Widget
         return VueComponent::widget([
             'name' => 'ActivityBox',
             'assetBundle' => ActivityVueAsset::class,
+            // The panel element is the mount point, so it exists in the server's HTML rather
+            // than only after the island mounts: theme CSS, the product tour (`.panel-activities`)
+            // and tests that assert the panel's presence address it directly.
+            'options' => [
+                'id' => 'panel-activities',
+                'class' => 'panel panel-default panel-activities',
+            ],
+            // Until the island mounts the panel would be an empty element - no size, and
+            // therefore not "visible" to anything asking (theme CSS, the product tour, a test
+            // asserting the panel is there). The heading is rendered ahead of it, from the very
+            // string the island renders a moment later.
+            'content' => Html::tag(
+                'div',
+                Yii::t('ActivityModule.base', '<strong>Latest</strong> activities'),
+                ['class' => 'panel-heading'],
+            ),
             'props' => [
                 'initial' => (new ActivityWindowService())->window(
                     $this->initLimit,

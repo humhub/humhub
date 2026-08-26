@@ -1,39 +1,39 @@
 <template>
-    <div id="panel-activities" class="panel panel-default panel-activities">
-        <!-- eslint-disable-next-line vue/no-v-html -- server-rendered PanelMenu, see docblock -->
-        <div v-if="panelMenuHtml" v-additions v-html="panelMenuHtml"></div>
+    <!-- eslint-disable-next-line vue/no-v-html -- server-rendered PanelMenu, see docblock -->
+    <div v-if="panelMenuHtml" v-additions v-html="panelMenuHtml"></div>
 
-        <!-- eslint-disable-next-line vue/no-v-html -- localized heading with markup, see docblock -->
-        <div class="panel-heading" v-html="headingLabel"></div>
+    <!-- eslint-disable-next-line vue/no-v-html -- localized heading with markup, see docblock -->
+    <div class="panel-heading" v-html="headingLabel"></div>
 
-        <div class="panel-body p-0 pb-1 collapse show">
-            <div id="activity-box-content" ref="list" class="hh-list activities" v-additions @scroll="onScroll">
-                <hr class="m-0">
+    <div class="panel-body p-0 pb-1 collapse show">
+        <div id="activity-box-content" ref="list" class="hh-list activities" v-additions @scroll="onScroll">
+            <hr class="m-0">
 
-                <p v-if="!entries.length && !loading" class="p-3 m-0">{{ emptyLabel }}</p>
+            <p v-if="!entries.length && !loading" class="p-3 m-0">{{ emptyLabel }}</p>
 
-                <ActivityEntry
-                    v-for="entry in entries"
-                    :key="entry.key"
-                    :activity="entry"
-                    :show-space="!containerGuid"
-                />
+            <ActivityEntry
+                v-for="entry in entries"
+                :key="entry.key"
+                :activity="entry"
+                :show-space="!containerGuid"
+            />
 
-                <div v-if="loading" class="text-center p-2">
-                    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                    <span class="visually-hidden" role="status">{{ loadingLabel }}</span>
-                </div>
-
-                <div v-if="hasMore" ref="sentinel" class="stream-end"></div>
+            <div v-if="loading" class="text-center p-2">
+                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                <span class="visually-hidden" role="status">{{ loadingLabel }}</span>
             </div>
+
+            <div v-if="hasMore" ref="sentinel" class="stream-end"></div>
         </div>
     </div>
 </template>
 
 <script>
 /**
- * The "Latest activities" box — the whole panel, not just its list, replacing
- * `activity\widgets\views\activity-box.php` and `humhub.activity.js`.
+ * The "Latest activities" box — the whole panel's contents, replacing
+ * `activity\widgets\views\activity-box.php` and `humhub.activity.js`. The panel element
+ * itself is the mount point the widget renders (`#panel-activities.panel.panel-activities`),
+ * so it is in the server's HTML before this component mounts.
  *
  * The widget rendering this island hands over the first page (so the first paint costs no
  * request), the container it is scoped to and the rendered `PanelMenu`; everything after that

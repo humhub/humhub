@@ -286,26 +286,22 @@
       }
     }
   };
-  const _hoisted_1 = {
-    id: "panel-activities",
-    class: "panel panel-default panel-activities"
-  };
+  const _hoisted_1 = ["innerHTML"];
   const _hoisted_2 = ["innerHTML"];
-  const _hoisted_3 = ["innerHTML"];
-  const _hoisted_4 = { class: "panel-body p-0 pb-1 collapse show" };
-  const _hoisted_5 = {
+  const _hoisted_3 = { class: "panel-body p-0 pb-1 collapse show" };
+  const _hoisted_4 = {
     key: 0,
     class: "p-3 m-0"
   };
-  const _hoisted_6 = {
+  const _hoisted_5 = {
     key: 1,
     class: "text-center p-2"
   };
-  const _hoisted_7 = {
+  const _hoisted_6 = {
     class: "visually-hidden",
     role: "status"
   };
-  const _hoisted_8 = {
+  const _hoisted_7 = {
     key: 2,
     ref: "sentinel",
     class: "stream-end"
@@ -313,90 +309,96 @@
   function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_ActivityEntry = vue.resolveComponent("ActivityEntry");
     const _directive_additions = vue.resolveDirective("additions");
-    return vue.openBlock(), vue.createElementBlock("div", _hoisted_1, [
-      vue.createCommentVNode(" eslint-disable-next-line vue/no-v-html -- server-rendered PanelMenu, see docblock "),
-      $props.panelMenuHtml ? vue.withDirectives((vue.openBlock(), vue.createElementBlock("div", {
-        key: 0,
-        innerHTML: $props.panelMenuHtml
-      }, null, 8, _hoisted_2)), [
-        [_directive_additions]
-      ]) : vue.createCommentVNode("v-if", true),
-      vue.createCommentVNode(" eslint-disable-next-line vue/no-v-html -- localized heading with markup, see docblock "),
-      vue.createElementVNode("div", {
-        class: "panel-heading",
-        innerHTML: $options.headingLabel
-      }, null, 8, _hoisted_3),
-      vue.createElementVNode("div", _hoisted_4, [
-        vue.withDirectives((vue.openBlock(), vue.createElementBlock(
-          "div",
-          {
-            id: "activity-box-content",
-            ref: "list",
-            class: "hh-list activities",
-            onScroll: _cache[0] || (_cache[0] = (...args) => $options.onScroll && $options.onScroll(...args))
-          },
-          [
-            _cache[2] || (_cache[2] = vue.createElementVNode(
-              "hr",
-              { class: "m-0" },
-              null,
-              -1
-              /* CACHED */
-            )),
-            !$data.entries.length && !$data.loading ? (vue.openBlock(), vue.createElementBlock(
-              "p",
-              _hoisted_5,
-              vue.toDisplayString($options.emptyLabel),
-              1
-              /* TEXT */
-            )) : vue.createCommentVNode("v-if", true),
-            (vue.openBlock(true), vue.createElementBlock(
-              vue.Fragment,
-              null,
-              vue.renderList($data.entries, (entry) => {
-                return vue.openBlock(), vue.createBlock(_component_ActivityEntry, {
-                  key: entry.key,
-                  activity: entry,
-                  "show-space": !$props.containerGuid
-                }, null, 8, ["activity", "show-space"]);
-              }),
-              128
-              /* KEYED_FRAGMENT */
-            )),
-            $data.loading ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_6, [
-              _cache[1] || (_cache[1] = vue.createElementVNode(
-                "span",
-                {
-                  class: "spinner-border spinner-border-sm",
-                  "aria-hidden": "true"
-                },
+    return vue.openBlock(), vue.createElementBlock(
+      vue.Fragment,
+      null,
+      [
+        vue.createCommentVNode(" eslint-disable-next-line vue/no-v-html -- server-rendered PanelMenu, see docblock "),
+        $props.panelMenuHtml ? vue.withDirectives((vue.openBlock(), vue.createElementBlock("div", {
+          key: 0,
+          innerHTML: $props.panelMenuHtml
+        }, null, 8, _hoisted_1)), [
+          [_directive_additions]
+        ]) : vue.createCommentVNode("v-if", true),
+        vue.createCommentVNode(" eslint-disable-next-line vue/no-v-html -- localized heading with markup, see docblock "),
+        vue.createElementVNode("div", {
+          class: "panel-heading",
+          innerHTML: $options.headingLabel
+        }, null, 8, _hoisted_2),
+        vue.createElementVNode("div", _hoisted_3, [
+          vue.withDirectives((vue.openBlock(), vue.createElementBlock(
+            "div",
+            {
+              id: "activity-box-content",
+              ref: "list",
+              class: "hh-list activities",
+              onScroll: _cache[0] || (_cache[0] = (...args) => $options.onScroll && $options.onScroll(...args))
+            },
+            [
+              _cache[2] || (_cache[2] = vue.createElementVNode(
+                "hr",
+                { class: "m-0" },
                 null,
                 -1
                 /* CACHED */
               )),
-              vue.createElementVNode(
-                "span",
-                _hoisted_7,
-                vue.toDisplayString($options.loadingLabel),
+              !$data.entries.length && !$data.loading ? (vue.openBlock(), vue.createElementBlock(
+                "p",
+                _hoisted_4,
+                vue.toDisplayString($options.emptyLabel),
                 1
                 /* TEXT */
-              )
-            ])) : vue.createCommentVNode("v-if", true),
-            $options.hasMore ? (vue.openBlock(), vue.createElementBlock(
-              "div",
-              _hoisted_8,
-              null,
-              512
-              /* NEED_PATCH */
-            )) : vue.createCommentVNode("v-if", true)
-          ],
-          32
-          /* NEED_HYDRATION */
-        )), [
-          [_directive_additions]
+              )) : vue.createCommentVNode("v-if", true),
+              (vue.openBlock(true), vue.createElementBlock(
+                vue.Fragment,
+                null,
+                vue.renderList($data.entries, (entry) => {
+                  return vue.openBlock(), vue.createBlock(_component_ActivityEntry, {
+                    key: entry.key,
+                    activity: entry,
+                    "show-space": !$props.containerGuid
+                  }, null, 8, ["activity", "show-space"]);
+                }),
+                128
+                /* KEYED_FRAGMENT */
+              )),
+              $data.loading ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_5, [
+                _cache[1] || (_cache[1] = vue.createElementVNode(
+                  "span",
+                  {
+                    class: "spinner-border spinner-border-sm",
+                    "aria-hidden": "true"
+                  },
+                  null,
+                  -1
+                  /* CACHED */
+                )),
+                vue.createElementVNode(
+                  "span",
+                  _hoisted_6,
+                  vue.toDisplayString($options.loadingLabel),
+                  1
+                  /* TEXT */
+                )
+              ])) : vue.createCommentVNode("v-if", true),
+              $options.hasMore ? (vue.openBlock(), vue.createElementBlock(
+                "div",
+                _hoisted_7,
+                null,
+                512
+                /* NEED_PATCH */
+              )) : vue.createCommentVNode("v-if", true)
+            ],
+            32
+            /* NEED_HYDRATION */
+          )), [
+            [_directive_additions]
+          ])
         ])
-      ])
-    ]);
+      ],
+      64
+      /* STABLE_FRAGMENT */
+    );
   }
   const C0 = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
   vue$1.register("ActivityBox", C0);

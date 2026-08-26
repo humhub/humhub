@@ -109,8 +109,10 @@ describe('ActivityBox', () => {
     it('renders the panel from the inlined first page without a request', () => {
         wrapper = mount(ActivityBox, { ...mountOptions(), props: boxProps() });
 
-        expect(wrapper.find('#panel-activities.panel.panel-activities').exists()).toBe(true);
+        // The panel element itself is the widget's mount point (see `ActivityBox::run()`),
+        // so the component renders its contents rather than the panel.
         expect(wrapper.find('.panel-menu').text()).toBe('menu');
+        expect(wrapper.find('.panel-heading').text()).toContain('activities');
         expect(wrapper.find('#activity-box-content.activities').exists()).toBe(true);
         expect(getCalls).toHaveLength(0);
 
