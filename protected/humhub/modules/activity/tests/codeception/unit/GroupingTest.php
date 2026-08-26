@@ -9,6 +9,7 @@ use humhub\modules\activity\models\Activity;
 use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\activity\tests\codeception\activities\TestActivity;
 use humhub\modules\activity\tests\codeception\activities\TestContentGroupActivity;
+use humhub\modules\activity\tests\codeception\activities\TestGroupedNamesActivity;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\interfaces\ContentProvider;
 use humhub\modules\content\models\Content;
@@ -89,6 +90,29 @@ class GroupingTest extends HumHubDbTestCase
         // And a user with several activities is one person, named once.
         $this->assertSame(array_values(array_unique($names)), $names);
         $this->assertCount(1, $others);
+    }
+
+    public function testAGroupOfOnePersonStillNamesThem()
+    {
+        $post = Post::findOne(['id' => 1]);
+
+        // Two activities of the same user: a group without anyone else in it.
+        $this->becomeUser('User2');
+        ActivityManager::dispatch(TestGroupedNamesActivity::class, $post);
+        ActivityManager::dispatch(TestGroupedNamesActivity::class, $post);
+
+        // Read it the way the activity list does - `group_count` comes from the grouped
+        // select, a plain record does not carry it.
+        $record = Activity::find()
+            ->enableGrouping()
+            ->andWhere(['activity.class' => TestGroupedNamesActivity::class])
+            ->one();
+        $entry = ActivityManager::load($record);
+
+        $this->assertGreaterThan(1, $entry->groupCount, 'the activities did group');
+        // A grouped message renders `{displayNames}` and nothing else, so the phrase must
+        // name the one person rather than come back empty ("joined the Space test.").
+        $this->assertStringContainsString($entry->user->displayName, $entry->asWeb());
     }
 
     public function testAddToGroup()
