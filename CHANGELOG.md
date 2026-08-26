@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.18.6 (Unreleased)
+------------------------
+- Fix #8409: Add :focus styles for Administration left navigation menu items
+
 1.18.5 (August 19, 2026)
 ------------------------
 
