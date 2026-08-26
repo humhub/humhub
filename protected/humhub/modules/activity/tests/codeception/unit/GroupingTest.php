@@ -9,6 +9,7 @@ use humhub\modules\activity\models\Activity;
 use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\activity\tests\codeception\activities\TestActivity;
 use humhub\modules\activity\tests\codeception\activities\TestContentGroupActivity;
+use humhub\modules\activity\tests\codeception\activities\TestGroupedNamesActivity;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\interfaces\ContentProvider;
 use humhub\modules\content\models\Content;
@@ -61,6 +62,57 @@ class GroupingTest extends HumHubDbTestCase
             1,
             Activity::find()->andWhere(['activity.grouping_key' => $a1->record->grouping_key])->count(),
         );
+    }
+
+    public function testGroupedUsersAreDistinctAndExcludeTheNamedAuthor()
+    {
+        $post = Post::findOne(['id' => 1]);
+
+        // Two users, two activities each: the entry's own author therefore has a second
+        // activity in the group besides the one representing it.
+        $this->becomeUser('User2');
+        ActivityManager::dispatch(TestContentGroupActivity::class, $post);
+        ActivityManager::dispatch(TestContentGroupActivity::class, $post);
+
+        $this->becomeUser('User3');
+        ActivityManager::dispatch(TestContentGroupActivity::class, $post);
+        $latest = ActivityManager::dispatch(TestContentGroupActivity::class, $post);
+        $latest->record->refresh();
+
+        $entry = ActivityManager::load($latest->record);
+        $others = $entry->getGroupingService()->getOtherGroupedUsers();
+        $names = array_map(static fn($user) => $user->displayName, $others);
+
+        // The sentence names the entry's own author first and the others after it. An author
+        // with a second activity in the group must not turn up among those others - that is
+        // what rendered as "Sara Schuster and Sara Schuster joined the space".
+        $this->assertNotContains($entry->user->displayName, $names);
+        // And a user with several activities is one person, named once.
+        $this->assertSame(array_values(array_unique($names)), $names);
+        $this->assertCount(1, $others);
+    }
+
+    public function testAGroupOfOnePersonStillNamesThem()
+    {
+        $post = Post::findOne(['id' => 1]);
+
+        // Two activities of the same user: a group without anyone else in it.
+        $this->becomeUser('User2');
+        ActivityManager::dispatch(TestGroupedNamesActivity::class, $post);
+        ActivityManager::dispatch(TestGroupedNamesActivity::class, $post);
+
+        // Read it the way the activity list does - `group_count` comes from the grouped
+        // select, a plain record does not carry it.
+        $record = Activity::find()
+            ->enableGrouping()
+            ->andWhere(['activity.class' => TestGroupedNamesActivity::class])
+            ->one();
+        $entry = ActivityManager::load($record);
+
+        $this->assertGreaterThan(1, $entry->groupCount, 'the activities did group');
+        // A grouped message renders `{displayNames}` and nothing else, so the phrase must
+        // name the one person rather than come back empty ("joined the Space test.").
+        $this->assertStringContainsString($entry->user->displayName, $entry->asWeb());
     }
 
     public function testAddToGroup()

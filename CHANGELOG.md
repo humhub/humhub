@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.19.0-beta.3 (Unreleased)
 -------------------------------
+- Fix #8414: A grouped activity named the same user twice when they had several activities in the group, and named nobody at all when the group's only other participant was the reader
 - Fix #8401: Module version migration crash when module versions cannot be determined
 - Fix #8400: Button text horizontal centering and spacing in People heading (since 1.19.0-beta.2)
 - Fix #8404: Remove deprecated function `curl_close()`
