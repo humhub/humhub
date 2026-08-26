@@ -398,6 +398,9 @@ Each minor release line has its own file with the breaking changes, new APIs and
       which the API and the widget share. `RenderService`'s mail representations are untouched.
       Module-search found no external users of any of it — a module rendering activities in mail
       or dispatching them through `ActivityManager` is unaffected.
+    - New: `activity\live\NewActivity`, sent by `ActivityManager::dispatch()` after the
+      grouping ran, for containers only (the live system routes by container and visibility).
+      It carries no grouping detail: a consumer reacts by reading the list again.
 - Added the **HTTP API framework** in `humhub\components\api\` and the first core endpoints
   under `/api/v2` — see `docs/develop/concept-api.md`. Purely additive for existing modules;
   the `humhub/rest` module and the 13 modules extending its `BaseController` keep working

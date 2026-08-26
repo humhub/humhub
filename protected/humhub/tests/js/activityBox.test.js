@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushPromises, mount } from '@vue/test-utils';
 import ActivityBox from '../../modules/activity/vue/ActivityBox.vue';
 import UserImage from '../../modules/user/vue/UserImage.vue';
@@ -47,6 +47,8 @@ const boxProps = (overrides = {}) => ({
     ...overrides,
 });
 
+const LIVE_EVENT = 'humhub:modules:activity:live:NewActivity';
+
 let wrapper;
 let getCalls;
 let observers;
@@ -78,6 +80,7 @@ const intersect = () => {
 };
 
 beforeEach(() => {
+    vi.useFakeTimers();
     getCalls = [];
     observers = [];
     globalThis.IntersectionObserver = IntersectionObserverStub;
@@ -90,10 +93,17 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+    vi.useRealTimers();
     wrapper?.unmount();
     wrapper = undefined;
     delete globalThis.IntersectionObserver;
 });
+
+const triggerLive = async (containerGuid = null) => {
+    globalThis.humhubStubs.event.trigger(LIVE_EVENT, [[{ data: { activityId: 99, containerGuid } }]]);
+    await vi.advanceTimersByTimeAsync(1000);
+    await flushPromises();
+};
 
 describe('ActivityBox', () => {
     it('renders the panel from the inlined first page without a request', () => {
@@ -185,5 +195,83 @@ describe('ActivityBox', () => {
         expect(wrapper.find('.stream-end').exists()).toBe(false);
         expect(observers.filter((observer) => observer.observed.length)).toHaveLength(0);
         expect(getCalls).toHaveLength(0);
+    });
+    it('updates an entry that grew in place, without moving it', async () => {
+        wrapper = mount(ActivityBox, {
+            ...mountOptions(),
+            props: boxProps({
+                initial: windowPayload([activity(), activity({ id: 9, key: 'k9' })]),
+            }),
+        });
+
+        // The same entry (same key), grown into a group and therefore represented by another
+        // activity - exactly what the server reports after a grouping.
+        getResponse = () => windowPayload([
+            activity({ id: 12, key: 'k7', message: '<strong>Jane</strong> and 2 others', groupCount: 3 }),
+        ], null);
+
+        await triggerLive();
+
+        expect(getCalls).toHaveLength(1);
+        const entries = wrapper.findAll('.activity-entry');
+        expect(entries).toHaveLength(2);
+        // Replaced where it stood - the second entry is untouched.
+        expect(entries[0].attributes('data-activity-id')).toBe('12');
+        expect(entries[0].html()).toContain('and 2 others');
+        expect(entries[1].attributes('data-activity-id')).toBe('9');
+    });
+
+    it('holds a new entry back while the list is scrolled down and inserts it at the top', async () => {
+        wrapper = mount(ActivityBox, { ...mountOptions(), props: boxProps() });
+        const list = wrapper.find('#activity-box-content').element;
+        Object.defineProperty(list, 'scrollTop', { value: 120, writable: true });
+
+        getResponse = () => windowPayload([activity({ id: 20, key: 'k20' }), activity()], null);
+        await triggerLive();
+
+        // Still the entry the reader is looking at.
+        expect(wrapper.findAll('.activity-entry')).toHaveLength(1);
+        expect(wrapper.find('.activity-entry').attributes('data-activity-id')).toBe('7');
+
+        list.scrollTop = 0;
+        await wrapper.find('#activity-box-content').trigger('scroll');
+        await flushPromises();
+
+        const entries = wrapper.findAll('.activity-entry');
+        expect(entries).toHaveLength(2);
+        expect(entries[0].attributes('data-activity-id')).toBe('20');
+        expect(entries[1].attributes('data-activity-id')).toBe('7');
+    });
+
+    it('inserts right away when the list is already at the top', async () => {
+        wrapper = mount(ActivityBox, { ...mountOptions(), props: boxProps() });
+
+        getResponse = () => windowPayload([activity({ id: 20, key: 'k20' }), activity()], null);
+        await triggerLive();
+
+        expect(wrapper.findAll('.activity-entry')).toHaveLength(2);
+        expect(wrapper.find('.activity-entry').attributes('data-activity-id')).toBe('20');
+    });
+
+    it('ignores live events of other containers when it is scoped to one', async () => {
+        wrapper = mount(ActivityBox, { ...mountOptions(), props: boxProps({ containerGuid: 's3' }) });
+
+        await triggerLive('another-container');
+        expect(getCalls).toHaveLength(0);
+
+        await triggerLive('s3');
+        expect(getCalls).toHaveLength(1);
+    });
+
+    it('asks once for a burst of live events', async () => {
+        wrapper = mount(ActivityBox, { ...mountOptions(), props: boxProps() });
+
+        globalThis.humhubStubs.event.trigger(LIVE_EVENT, [[{ data: { activityId: 1, containerGuid: null } }]]);
+        globalThis.humhubStubs.event.trigger(LIVE_EVENT, [[{ data: { activityId: 2, containerGuid: null } }]]);
+        globalThis.humhubStubs.event.trigger(LIVE_EVENT, [[{ data: { activityId: 3, containerGuid: null } }]]);
+        await vi.advanceTimersByTimeAsync(1000);
+        await flushPromises();
+
+        expect(getCalls).toHaveLength(1);
     });
 });

@@ -57,8 +57,11 @@ Done on that branch:
   `GET /api/v2/activity`, and the first one that owns its whole panel: the widget renders only
   the mount point, the first page and the server-rendered `PanelMenu`. Grouping stays in the
   query; an entry reports how many activities it stands for and pages by an opaque cursor over
-  the grouping key, which the entry's own id cannot serve as. `humhub.activity.js` and its `niceScroll`
-  scrollbar are gone.
+  the grouping key, which the entry's own id cannot serve as. It is also the first island with
+  live updates of its own (`activity\live\NewActivity`): a new activity has the box read its
+  head again, entries it already shows are refreshed where they stand, and genuinely new ones
+  wait until the list is scrolled to the top so nothing jumps under the reader. `humhub.activity.js`
+  and its `niceScroll` scrollbar are gone.
 
 ## Done: the islands run on the platform API
 

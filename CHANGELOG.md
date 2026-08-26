@@ -13,6 +13,7 @@ HumHub Changelog
 - Enh #8403: The space membership button is a Vue island on the new `/api/v2/space/<id>/membership` endpoints; its presentation is props instead of options posted back through the client
 - Enh #8403: The friendship button is a Vue island on the new `/api/v2/user/<id>/friendship` endpoints; with it the button re-render and the `content.container.relationship` client action are gone
 - Enh #8403: Added a `JavaScript Tests` CI workflow (vitest plus a rebuild check that fails on a stale committed Vue artifact) and `grunt build-vue --module=all` to rebuild every artifact at once
+- Enh #8403: The activity box is a Vue island on the new `/api/v2/activity` endpoint, including live updates; the legacy `humhub.activity.js` and its custom scrollbar are gone
 
 1.19.0-beta.3 (Unreleased)
 -------------------------------

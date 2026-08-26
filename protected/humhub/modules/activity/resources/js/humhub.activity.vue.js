@@ -110,6 +110,8 @@
     results: Array.isArray(response.results) ? response.results : [],
     nextCursor: response.nextCursor ?? null
   });
+  const LIVE_EVENT = "humhub:modules:activity:live:NewActivity";
+  const LIVE_DEBOUNCE_MS = 1e3;
   const _sfc_main = {
     components: { ActivityEntry },
     i18nCategories: ["ActivityModule.base", "base"],
@@ -128,7 +130,11 @@
         entries: Array.isArray(this.initial.results) ? [...this.initial.results] : [],
         cursor: this.initial.nextCursor ?? null,
         loading: false,
-        observer: null
+        observer: null,
+        // Head page waiting for the list to be scrolled to the top, `null` when there is
+        // nothing new to show.
+        pendingHead: null,
+        liveTimer: null
       };
     },
     computed: {
@@ -147,9 +153,12 @@
     },
     mounted() {
       this.armObserver();
+      vue$1.events.on(LIVE_EVENT, this.onLiveActivity);
     },
     beforeUnmount() {
       this.disconnectObserver();
+      vue$1.events.off(LIVE_EVENT, this.onLiveActivity);
+      this.clearLiveTimer();
     },
     methods: {
       /**
@@ -199,6 +208,81 @@
           this.loading = false;
           this.armObserver();
         });
+      },
+      /**
+       * A live event only tells us that something happened - what exactly is the server's
+       * answer, so a burst of events costs one debounced request, not one each.
+       */
+      onLiveActivity(event, liveEvents) {
+        const concerns = (liveEvents || []).some((liveEvent) => {
+          const guid = (liveEvent.data || {}).containerGuid || null;
+          return !this.containerGuid || guid === this.containerGuid;
+        });
+        if (!concerns) {
+          return;
+        }
+        this.clearLiveTimer();
+        this.liveTimer = setTimeout(this.refreshHead, LIVE_DEBOUNCE_MS);
+      },
+      clearLiveTimer() {
+        if (this.liveTimer) {
+          clearTimeout(this.liveTimer);
+          this.liveTimer = null;
+        }
+      },
+      /**
+       * Fetches the current head of the list and reconciles it: entries already listed are
+       * updated where they are, anything new waits for the list to be at the top.
+       */
+      refreshHead() {
+        this.liveTimer = null;
+        return fetchActivities({
+          limit: this.pageSize,
+          containerGuid: this.containerGuid || null
+        }).then(({ results }) => {
+          const listed = new Set(this.entries.map((entry) => entry.key));
+          this.entries = this.entries.map(
+            (entry) => results.find((fresh) => fresh.key === entry.key) || entry
+          );
+          if (results.some((fresh) => !listed.has(fresh.key))) {
+            this.pendingHead = results;
+            if (this.isAtTop()) {
+              this.flushPending();
+            }
+          }
+        }).catch((error) => {
+          vue$1.log.error(error, true);
+        });
+      },
+      onScroll() {
+        if (this.pendingHead && this.isAtTop()) {
+          this.flushPending();
+        }
+      },
+      isAtTop() {
+        return !this.$refs.list || this.$refs.list.scrollTop === 0;
+      },
+      /**
+       * Puts the waiting head page in front of the entries below it. Everything up to and
+       * including the last entry the page and the list have in common is REPLACED by the
+       * page: an activity that joined another group leaves an entry behind which no longer
+       * exists server-side, and dropping it needs a page of truth rather than a diff.
+       */
+      flushPending() {
+        const head = this.pendingHead;
+        this.pendingHead = null;
+        if (!head) {
+          return;
+        }
+        const keys = new Set(head.map((entry) => entry.key));
+        let lastCommon = -1;
+        this.entries.forEach((entry, index) => {
+          if (keys.has(entry.key)) {
+            lastCommon = index;
+          }
+        });
+        const tail = this.entries.slice(lastCommon + 1).filter((entry) => !keys.has(entry.key));
+        this.entries = [...head, ...tail];
       }
     }
   };
@@ -210,23 +294,18 @@
   const _hoisted_3 = ["innerHTML"];
   const _hoisted_4 = { class: "panel-body p-0 pb-1 collapse show" };
   const _hoisted_5 = {
-    id: "activity-box-content",
-    ref: "list",
-    class: "hh-list activities"
-  };
-  const _hoisted_6 = {
     key: 0,
     class: "p-3 m-0"
   };
-  const _hoisted_7 = {
+  const _hoisted_6 = {
     key: 1,
     class: "text-center p-2"
   };
-  const _hoisted_8 = {
+  const _hoisted_7 = {
     class: "visually-hidden",
     role: "status"
   };
-  const _hoisted_9 = {
+  const _hoisted_8 = {
     key: 2,
     ref: "sentinel",
     class: "stream-end"
@@ -248,61 +327,72 @@
         innerHTML: $options.headingLabel
       }, null, 8, _hoisted_3),
       vue.createElementVNode("div", _hoisted_4, [
-        vue.withDirectives((vue.openBlock(), vue.createElementBlock("div", _hoisted_5, [
-          _cache[1] || (_cache[1] = vue.createElementVNode(
-            "hr",
-            { class: "m-0" },
-            null,
-            -1
-            /* CACHED */
-          )),
-          !$data.entries.length && !$data.loading ? (vue.openBlock(), vue.createElementBlock(
-            "p",
-            _hoisted_6,
-            vue.toDisplayString($options.emptyLabel),
-            1
-            /* TEXT */
-          )) : vue.createCommentVNode("v-if", true),
-          (vue.openBlock(true), vue.createElementBlock(
-            vue.Fragment,
-            null,
-            vue.renderList($data.entries, (entry) => {
-              return vue.openBlock(), vue.createBlock(_component_ActivityEntry, {
-                key: entry.key,
-                activity: entry,
-                "show-space": !$props.containerGuid
-              }, null, 8, ["activity", "show-space"]);
-            }),
-            128
-            /* KEYED_FRAGMENT */
-          )),
-          $data.loading ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_7, [
-            _cache[0] || (_cache[0] = vue.createElementVNode(
-              "span",
-              {
-                class: "spinner-border spinner-border-sm",
-                "aria-hidden": "true"
-              },
+        vue.withDirectives((vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            id: "activity-box-content",
+            ref: "list",
+            class: "hh-list activities",
+            onScroll: _cache[0] || (_cache[0] = (...args) => $options.onScroll && $options.onScroll(...args))
+          },
+          [
+            _cache[2] || (_cache[2] = vue.createElementVNode(
+              "hr",
+              { class: "m-0" },
               null,
               -1
               /* CACHED */
             )),
-            vue.createElementVNode(
-              "span",
-              _hoisted_8,
-              vue.toDisplayString($options.loadingLabel),
+            !$data.entries.length && !$data.loading ? (vue.openBlock(), vue.createElementBlock(
+              "p",
+              _hoisted_5,
+              vue.toDisplayString($options.emptyLabel),
               1
               /* TEXT */
-            )
-          ])) : vue.createCommentVNode("v-if", true),
-          $options.hasMore ? (vue.openBlock(), vue.createElementBlock(
-            "div",
-            _hoisted_9,
-            null,
-            512
-            /* NEED_PATCH */
-          )) : vue.createCommentVNode("v-if", true)
-        ])), [
+            )) : vue.createCommentVNode("v-if", true),
+            (vue.openBlock(true), vue.createElementBlock(
+              vue.Fragment,
+              null,
+              vue.renderList($data.entries, (entry) => {
+                return vue.openBlock(), vue.createBlock(_component_ActivityEntry, {
+                  key: entry.key,
+                  activity: entry,
+                  "show-space": !$props.containerGuid
+                }, null, 8, ["activity", "show-space"]);
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            )),
+            $data.loading ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_6, [
+              _cache[1] || (_cache[1] = vue.createElementVNode(
+                "span",
+                {
+                  class: "spinner-border spinner-border-sm",
+                  "aria-hidden": "true"
+                },
+                null,
+                -1
+                /* CACHED */
+              )),
+              vue.createElementVNode(
+                "span",
+                _hoisted_7,
+                vue.toDisplayString($options.loadingLabel),
+                1
+                /* TEXT */
+              )
+            ])) : vue.createCommentVNode("v-if", true),
+            $options.hasMore ? (vue.openBlock(), vue.createElementBlock(
+              "div",
+              _hoisted_8,
+              null,
+              512
+              /* NEED_PATCH */
+            )) : vue.createCommentVNode("v-if", true)
+          ],
+          32
+          /* NEED_HYDRATION */
+        )), [
           [_directive_additions]
         ])
       ])

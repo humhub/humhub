@@ -7,7 +7,7 @@
         <div class="panel-heading" v-html="headingLabel"></div>
 
         <div class="panel-body p-0 pb-1 collapse show">
-            <div id="activity-box-content" ref="list" class="hh-list activities" v-additions>
+            <div id="activity-box-content" ref="list" class="hh-list activities" v-additions @scroll="onScroll">
                 <hr class="m-0">
 
                 <p v-if="!entries.length && !loading" class="p-3 m-0">{{ emptyLabel }}</p>
@@ -70,11 +70,35 @@
  * The cursor is whatever the previous page returned and is passed back untouched; an entry's
  * id is never a cursor (see `ActivityWindowService`).
  *
+ * ## Live updates
+ *
+ * A `NewActivity` live event says no more than "a container you follow has a new activity", so
+ * the box asks the API for the current head of its list (debounced, because activities arrive
+ * in bursts) and reconciles it by the entries' opaque `key`:
+ *
+ * - an entry the list already shows under the same key is REPLACED where it stands: same
+ *   position, fresh sentence and count. Nothing jumps under the reader.
+ * - an entry with a key the list does not know WAITS in `pendingHead` and is only inserted
+ *   while the list is scrolled to the top, which is the behaviour asked for: the box stays
+ *   still while it is being read and catches up the moment the reader returns to the top.
+ *
+ * An activity joining a group counts as the second case, not the first: the server re-keys a
+ * group to whichever activity formed it, so a grown entry arrives under a new key and belongs
+ * at the top. Its previous version is still listed, which is why flushing REPLACES the head
+ * rather than prepending: everything above the last entry the page and the list have in common
+ * is dropped in favour of the page, and only what lies below it is kept.
+ *
  * @since 1.20
  */
-import { i18n, log } from '@humhub/vue';
+import { events, i18n, log } from '@humhub/vue';
 import ActivityEntry from './components/ActivityEntry.vue';
 import { fetchActivities } from './components/activityApi.js';
+
+const LIVE_EVENT = 'humhub:modules:activity:live:NewActivity';
+
+// Activities arrive in bursts (one content change can dispatch several), and every one of them
+// would otherwise cost a request.
+const LIVE_DEBOUNCE_MS = 1000;
 
 export default {
     components: { ActivityEntry },
@@ -95,6 +119,10 @@ export default {
             cursor: this.initial.nextCursor ?? null,
             loading: false,
             observer: null,
+            // Head page waiting for the list to be scrolled to the top, `null` when there is
+            // nothing new to show.
+            pendingHead: null,
+            liveTimer: null,
         };
     },
     computed: {
@@ -113,9 +141,12 @@ export default {
     },
     mounted() {
         this.armObserver();
+        events.on(LIVE_EVENT, this.onLiveActivity);
     },
     beforeUnmount() {
         this.disconnectObserver();
+        events.off(LIVE_EVENT, this.onLiveActivity);
+        this.clearLiveTimer();
     },
     methods: {
         /**
@@ -172,6 +203,97 @@ export default {
                 this.loading = false;
                 this.armObserver();
             });
+        },
+        /**
+         * A live event only tells us that something happened - what exactly is the server's
+         * answer, so a burst of events costs one debounced request, not one each.
+         */
+        onLiveActivity(event, liveEvents) {
+            const concerns = (liveEvents || []).some((liveEvent) => {
+                const guid = (liveEvent.data || {}).containerGuid || null;
+
+                // A container-scoped box ignores everything happening elsewhere; the dashboard
+                // box takes what the live system routed to it.
+                return !this.containerGuid || guid === this.containerGuid;
+            });
+
+            if (!concerns) {
+                return;
+            }
+
+            this.clearLiveTimer();
+            this.liveTimer = setTimeout(this.refreshHead, LIVE_DEBOUNCE_MS);
+        },
+        clearLiveTimer() {
+            if (this.liveTimer) {
+                clearTimeout(this.liveTimer);
+                this.liveTimer = null;
+            }
+        },
+        /**
+         * Fetches the current head of the list and reconciles it: entries already listed are
+         * updated where they are, anything new waits for the list to be at the top.
+         */
+        refreshHead() {
+            this.liveTimer = null;
+
+            return fetchActivities({
+                limit: this.pageSize,
+                containerGuid: this.containerGuid || null,
+            }).then(({ results }) => {
+                const listed = new Set(this.entries.map((entry) => entry.key));
+
+                this.entries = this.entries.map(
+                    (entry) => results.find((fresh) => fresh.key === entry.key) || entry,
+                );
+
+                if (results.some((fresh) => !listed.has(fresh.key))) {
+                    this.pendingHead = results;
+
+                    if (this.isAtTop()) {
+                        this.flushPending();
+                    }
+                }
+            }).catch((error) => {
+                log.error(error, true);
+            });
+        },
+        onScroll() {
+            if (this.pendingHead && this.isAtTop()) {
+                this.flushPending();
+            }
+        },
+        isAtTop() {
+            return !this.$refs.list || this.$refs.list.scrollTop === 0;
+        },
+        /**
+         * Puts the waiting head page in front of the entries below it. Everything up to and
+         * including the last entry the page and the list have in common is REPLACED by the
+         * page: an activity that joined another group leaves an entry behind which no longer
+         * exists server-side, and dropping it needs a page of truth rather than a diff.
+         */
+        flushPending() {
+            const head = this.pendingHead;
+            this.pendingHead = null;
+
+            if (!head) {
+                return;
+            }
+
+            const keys = new Set(head.map((entry) => entry.key));
+            let lastCommon = -1;
+
+            this.entries.forEach((entry, index) => {
+                if (keys.has(entry.key)) {
+                    lastCommon = index;
+                }
+            });
+
+            const tail = this.entries
+                .slice(lastCommon + 1)
+                .filter((entry) => !keys.has(entry.key));
+
+            this.entries = [...head, ...tail];
         },
     },
 };
