@@ -53,6 +53,15 @@ Done on that branch:
   `GET|POST|DELETE /api/v2/user/<id>/friendship`, built the same way. With it the option round
   trip is gone from the platform entirely: `content.container.relationship` and its
   `data-button-options` posting had no users left and were removed.
+- **Spaces** — the space menu of the top navigation is an island (`SpaceChooser`, plus the
+  small `SpaceChooserToggle` inside the menu button, because the topbar styles that button with
+  child selectors). It reads the platform's new general space list, `GET /api/v2/space`, which
+  is caller-neutral on purpose so a picker or a directory can read the same shape; what the
+  caller is to a space — member, follower, unseen items — comes from `GET /api/v2/space/states`
+  for the spaces displayed, the way `like/states` batches like state. One search field now
+  covers both the caller's own spaces and every space they may see, so the second legacy route
+  is gone, and the list is paginated instead of loading every membership at once.
+
 - **Activities** — the "Latest activities" box is an island (`ActivityBox`) over
   `GET /api/v2/activity`, and the first one that owns its whole panel: the widget renders only
   the mount point, the first page and the server-rendered `PanelMenu`. Grouping stays in the

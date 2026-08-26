@@ -14,8 +14,9 @@ humhub.module('content.container', function (module, require, $) {
             if (response.success) {
                 additions.switchButtons(evt.$trigger, $('[data-content-container-id="' + containerId + '"].unfollowButton'));
                 if (response.space) {
-                    var followChooser = require('space.chooser').SpaceChooser.instance($('#space-menu-dropdown'));
-                    if (followChooser) { followChooser.appendItem(response.space); }
+                    // The space menu keeps itself in step - it listens for this (see
+                    // space/vue/SpaceChooser.vue).
+                    require('event').trigger('humhub:space:followed', [response.space]);
                 }
             }
         }).catch(function (e) {
@@ -29,8 +30,7 @@ humhub.module('content.container', function (module, require, $) {
             if (response.success) {
                 additions.switchButtons(evt.$trigger, $('[data-content-container-id="' + containerId + '"].followButton'));
                 if (response.space) {
-                    var unfollowChooser = require('space.chooser').SpaceChooser.instance($('#space-menu-dropdown'));
-                    if (unfollowChooser) { unfollowChooser.removeItem(response.space); }
+                    require('event').trigger('humhub:space:unfollowed', [response.space]);
                 }
             }
         }).catch(function (e) {

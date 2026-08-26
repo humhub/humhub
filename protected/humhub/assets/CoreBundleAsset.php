@@ -9,7 +9,6 @@ use humhub\modules\content\assets\ProseMirrorRichTextAsset;
 use humhub\modules\live\assets\LiveAsset;
 use humhub\modules\post\assets\PostAsset;
 use humhub\modules\space\assets\SpaceAsset;
-use humhub\modules\space\assets\SpaceChooserAsset;
 use humhub\modules\stream\assets\StreamAsset;
 use humhub\modules\topic\assets\TopicAsset;
 use humhub\modules\ui\filter\assets\FilterAsset;
@@ -65,7 +64,6 @@ class CoreBundleAsset extends AssetBundle
         FilterAsset::class,
         CommentAsset::class,
         StreamAsset::class,
-        SpaceChooserAsset::class,
     ];
 
     public $depends = self::STATIC_DEPENDS;

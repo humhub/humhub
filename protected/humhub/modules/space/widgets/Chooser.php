@@ -2,232 +2,152 @@
 
 namespace humhub\modules\space\widgets;
 
-use Exception;
 use humhub\components\Widget;
 use humhub\helpers\Html;
 use humhub\modules\content\components\ContentContainerController;
-use humhub\modules\space\assets\SpaceChooserAsset;
-use humhub\modules\space\models\Membership;
+use humhub\modules\space\assets\SpaceVueAsset;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\space\permissions\SpaceDirectoryAccess;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\components\PermissionManager;
-use humhub\modules\user\models\Follow;
-use Throwable;
+use humhub\widgets\VueComponent;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\Url;
 
 /**
- * Class Chooser
- * @package humhub\modules\space\widgets
+ * The space menu of the top navigation: the button showing the current space, and the dropdown
+ * with search and the visitor's spaces.
+ *
+ * Two Vue islands since 1.20 (see `docs/develop/ui-js-vuejs-components.md`), because the two
+ * parts sit in different places and the topbar addresses them with child selectors
+ * (`.nav > li.nav-item > a.nav-link`): `SpaceChooserToggle` mounts INSIDE the button anchor,
+ * `SpaceChooser` IS the dropdown menu. The `<li>`, the anchor and the ids theme CSS and the
+ * acceptance tests use (`#space-menu`, `#space-menu-dropdown`) stay exactly where they were.
+ *
+ * The list itself is not rendered here and not inlined into the page: it is loaded when the menu
+ * is first opened, which is what the removed `lazyLoad` property did — see `SpaceChooser.vue`.
+ *
+ * @package humhub.modules.space.widgets
  */
 class Chooser extends Widget
 {
     /**
-     * @var bool
-     * @since 1.10
+     * @var int spaces the menu asks for per page
      */
-    public $lazyLoad = true;
-
-    /**
-     * @var string
-     */
-    public $viewName = '@space/widgets/views/spaceChooser';
-
-    /**
-     * @return bool
-     */
-    public function beforeRun()
-    {
-        if (!$this->canRun()) {
-            return false;
-        }
-
-        $this->configure();
-        return parent::beforeRun();
-    }
+    public int $pageSize = 25;
 
     /**
      * @inheritdoc
-     * @throws Throwable
-     * @throws InvalidConfigException
      */
     public function run()
     {
-        return $this->render($this->viewName, $this->getViewParams());
-    }
-
-    /**
-     * @return bool
-     */
-    protected function canRun()
-    {
-        return !Yii::$app->user->isGuest;
-    }
-
-    /**
-     * Configure widget before run, used to register assets and js config
-     */
-    protected function configure()
-    {
-        SpaceChooserAsset::register($this->view);
-        $this->view->registerJsConfig('space.chooser', $this->getJsConfigParams());
-    }
-
-    /**
-     * @return array
-     * @throws Throwable
-     * @throws InvalidConfigException
-     */
-    protected function getViewParams()
-    {
-        return [
-            'currentSpace' => $this->getCurrentSpace(),
-            'canCreateSpace' => $this->canCreateSpace(),
-            'canAccessDirectory' => Yii::$app->user->can(SpaceDirectoryAccess::class),
-            'renderedItems' => $this->renderItems(),
-            'noSpaceHtml' => $this->getNoSpaceHtml(),
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    protected function getJsConfigParams()
-    {
-        return [
-            'lazyLoad' => $this->lazyLoad,
-            'remoteSearchUrl' => Url::to(['/space/browse/search-json']),
-            'lazySearchUrl' => Url::to(['/space/browse/search-lazy']),
-        ];
-    }
-
-    /**
-     * @return string
-     */
-    protected function getNoSpaceHtml()
-    {
-        $html = Icon::get('dot-circle-o') . '<br>' . Yii::t('SpaceModule.chooser', 'My spaces');
-        return Html::tag('div', $html, ['class' => 'no-space']);
-    }
-
-    /**
-     * @param string $output
-     * @return mixed|string
-     * @throws Throwable
-     */
-    protected function renderItems($output = '')
-    {
-        if ($this->lazyLoad) {
-            return $output;
+        if (Yii::$app->user->isGuest) {
+            return '';
         }
 
-        // render membership items
-        foreach ($this->getMemberships() as $membership) {
-            $result = SpaceChooserItem::widget([
-                'space' => $membership->space, 'updateCount' => $membership->countNewItems(), 'isMember' => true,
+        SpaceVueAsset::register($this->view);
+
+        return Html::tag(
+            'li',
+            $this->renderToggle() . $this->renderMenu(),
+            ['class' => 'nav-item dropdown'],
+        );
+    }
+
+    /**
+     * The button: the current space's image, or the "My spaces" placeholder. The island keeps
+     * it in step with pjax navigations; what is rendered here is what a visitor sees before it
+     * mounts, so the top menu never jumps.
+     */
+    private function renderToggle(): string
+    {
+        $currentSpace = $this->getCurrentSpace();
+        $imageHtml = $currentSpace === null
+            ? ''
+            : Image::widget([
+                'space' => $currentSpace,
+                'width' => 32,
+                'htmlOptions' => ['class' => 'current-space-image'],
             ]);
 
-            $output = $this->attachItem($output, $result);
-        }
+        $noSpaceIconHtml = Icon::get('dot-circle-o')->asString();
 
-        // render follow spaces
-        foreach ($this->getFollowSpaces() as $space) {
-            $result = SpaceChooserItem::widget(['space' => $space, 'isFollowing' => true]);
-            $output = $this->attachItem($output, $result);
-        }
-
-        return $output;
+        return Html::a(
+            VueComponent::widget([
+                'name' => 'SpaceChooserToggle',
+                'props' => [
+                    'initialImageHtml' => $imageHtml,
+                    'noSpaceIconHtml' => $noSpaceIconHtml,
+                ],
+                'content' => $imageHtml !== ''
+                    ? $imageHtml
+                    : Html::tag('div', $noSpaceIconHtml . '<br>' . Yii::t('SpaceModule.chooser', 'My spaces'), ['class' => 'no-space']),
+            ]),
+            '#',
+            [
+                'id' => 'space-menu',
+                'class' => 'nav-link dropdown-toggle',
+                'data-bs-toggle' => 'dropdown',
+            ],
+        );
     }
 
     /**
-     * If array passed to ouput, it will be added as ['output' => 'string']
-     * This is used for passing rendered items as json array to lazy load
-     * See getLazyLoadResult of the same class
-     *
-     * @param $output
-     * @param $result
-     * @return mixed|string
+     * The dropdown menu. The island is mounted on the menu element itself, so `.dropdown-menu`
+     * carries the display Bootstrap toggles and the element exists before Vue does.
      */
-    protected function attachItem($output, $result)
+    private function renderMenu(): string
     {
-        if (is_array($output)) {
-            $output[] = ['output' => $result];
-        } elseif (is_string($output)) {
-            $output .= $result;
-        }
-
-        return $output;
+        return VueComponent::widget([
+            'name' => 'SpaceChooser',
+            'options' => [
+                'id' => 'space-menu-dropdown',
+                'class' => 'dropdown-menu',
+            ],
+            'props' => [
+                'pageSize' => $this->pageSize,
+                'createSpaceUrl' => $this->canCreateSpace()
+                    ? Url::to(['/space/create/create'])
+                    : '',
+                'directoryUrl' => Yii::$app->user->can(SpaceDirectoryAccess::class)
+                    ? Url::to(['/space/spaces'])
+                    : '',
+                'directoryIconHtml' => Icon::get('directory')->asString(),
+                'resetIconHtml' => Icon::get('times-circle')->asString(),
+            ],
+        ]);
     }
 
     /**
-     * @return Space[]
-     * @throws Throwable
-     */
-    protected function getFollowSpaces()
-    {
-        if (!Yii::$app->user->isGuest) {
-            return Follow::getFollowedSpacesQuery(Yii::$app->user->getIdentity())->all();
-        }
-
-        return [];
-    }
-
-    /**
-     * @return Membership[]
-     * @throws Throwable
-     */
-    protected function getMemberships()
-    {
-        if (!Yii::$app->user->isGuest) {
-            return Membership::findByUser(Yii::$app->user->getIdentity())->all();
-        }
-
-        return [];
-    }
-
-    /**
-     * @return bool
      * @throws InvalidConfigException
      */
-    protected function canCreateSpace()
+    private function canCreateSpace(): bool
     {
         /** @var PermissionManager $manager */
         $manager = Yii::$app->user->permissionmanager;
+
         return $manager->can(new CreatePublicSpace()) || $manager->can(new CreatePrivateSpace());
     }
 
     /**
-     * @return Space | null
-     */
-    protected function getCurrentSpace()
-    {
-        if (!Yii::$app->controller instanceof ContentContainerController) {
-            return null;
-        }
-
-        if ((Yii::$app->controller->contentContainer ?? null) instanceof Space) {
-            return Yii::$app->controller->contentContainer;
-        }
-
-        return null;
-    }
-
-    /**
+     * The shape `space/browse/search-json` answers with — kept here because it is called from
+     * outside the chooser as well (the space picker's search route, and modules), even though
+     * the chooser island itself no longer renders items server-side.
+     *
      * @param Space $space
-     * @param bool $withChooserItem
-     * @param array $itemOptions
-     * @return array
-     * @throws Exception
+     * @param bool $withChooserItem whether to include the rendered {@see SpaceChooserItem}
      */
     public static function getSpaceResult($space, $withChooserItem = true, $itemOptions = [])
     {
         $spaceInfo = [
-            'guid' => $space->guid, 'title' => $space->name, 'tags' => Html::encode(implode(', ', $space->getTags())),
-            'image' => Image::widget(['space' => $space, 'width' => 24]), 'link' => $space->getUrl(),
+            'guid' => $space->guid,
+            'title' => $space->name,
+            'tags' => Html::encode(implode(', ', $space->getTags())),
+            'image' => Image::widget(['space' => $space, 'width' => 24]),
+            'link' => $space->getUrl(),
         ];
 
         if ($withChooserItem) {
@@ -238,13 +158,14 @@ class Chooser extends Widget
         return $spaceInfo;
     }
 
-    /**
-     * @return mixed|string
-     * @throws Throwable
-     */
-    public static function getLazyLoadResult()
+    private function getCurrentSpace(): ?Space
     {
-        $widget = new self(['lazyLoad' => false]);
-        return $widget->renderItems([]);
+        if (!Yii::$app->controller instanceof ContentContainerController) {
+            return null;
+        }
+
+        $container = Yii::$app->controller->contentContainer ?? null;
+
+        return $container instanceof Space ? $container : null;
     }
 }

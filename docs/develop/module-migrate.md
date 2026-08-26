@@ -401,6 +401,33 @@ Each minor release line has its own file with the breaking changes, new APIs and
     - New: `activity\live\NewActivity`, sent by `ActivityManager::dispatch()` after the
       grouping ran, for containers only (the live system routes by container and visibility).
       It carries no grouping detail: a consumer reacts by reading the list again.
+  - **The space menu is a Vue island** (`SpaceChooser` and the small `SpaceChooserToggle`,
+    `protected/humhub/modules/space/vue/`), fed by the new general space endpoints
+    `GET /api/v2/space` and `GET /api/v2/space/states`
+    (`space\controllers\api\SpaceController`, shapes in `space\serializers\SpaceSerializer`).
+    The `<li>`, the button anchor and the ids theme CSS uses (`#space-menu`,
+    `#space-menu-dropdown`, `#space-menu-spaces`, `#space-menu-search`) are unchanged, as is the
+    markup of an entry (`[data-space-chooser-item]`, `data-space-guid`, the four relation
+    attributes). What the menu shows is loaded when it is first opened, as before. Details:
+    - **Removed**: the client-side `space.chooser` JS module (`humhub.space.chooser.js`, with the
+      `niceScroll` scrollbar it installed) and `space\assets\SpaceChooserAsset` (with its entry
+      in `CoreBundleAsset::STATIC_DEPENDS`). A module overriding functions of that JS module —
+      `cuzy-app/classified-space` does — has to move to the island or ship its own.
+    - **Removed** from `space\widgets\Chooser`: `$lazyLoad`, `$viewName`, `renderItems()`,
+      `attachItem()`, `getLazyLoadResult()`, `getMemberships()`, `getFollowSpaces()`,
+      `getViewParams()`, `getJsConfigParams()`, `configure()`, `canRun()` and
+      `getNoSpaceHtml()`, together with the `widgets/views/spaceChooser.php` view. A theme
+      subclassing the widget to render its own menu — `humhub/enterprise-theme` does — no longer
+      has those hooks: the markup is the island's. Modules that need their own data on a space
+      can attach it through the API's `SerializeEvent` (`extensions`).
+    - **Removed**: `space\controllers\BrowseController::actionSearchLazy()` (the route
+      `/space/browse/search-lazy`), which existed only to render the menu's list. `search-json`
+      is untouched, including its `target=chooser` mode, and so are
+      `space\widgets\SpaceChooserItem` and `Chooser::getSpaceResult()` — the space picker and
+      modules (`humhub/sharebetween`, `cuzy-app/cloner`, `cuzy-app/group-advanced`) use them.
+    - Following or unfollowing a space now triggers `humhub:space:followed` /
+      `humhub:space:unfollowed` (`humhub.content.container.js`) instead of calling into the
+      space menu's widget. Anything that kept its own copy of the menu list can listen for them.
 - Added the **HTTP API framework** in `humhub\components\api\` and the first core endpoints
   under `/api/v2` — see `docs/develop/concept-api.md`. Purely additive for existing modules;
   the `humhub/rest` module and the 13 modules extending its `BaseController` keep working
