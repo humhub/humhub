@@ -6,6 +6,7 @@ HumHub Changelog
 - Fix #8401: Module version migration crash when module versions cannot be determined
 - Fix #8400: Button text horizontal centering and spacing in People heading (since 1.19.0-beta.2)
 - Fix #8404: Remove deprecated function `curl_close()`
+- Enh #8416: Auto-focus the newly loaded content after a pjax swap, so Tab no longer restarts at the top of the page
 
 1.19.0-beta.2 (August 19, 2026)
 -------------------------------
