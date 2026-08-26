@@ -34,9 +34,16 @@ final class GroupingService
             $this->_groupedUsers = User::find()->visible()
                 ->leftJoin('activity', 'user.id=activity.created_by')
                 ->andWhere(['activity.grouping_key' => $this->activity->record->grouping_key])
-                ->andWhere(['!=', 'activity.id', $this->activity->record->id])
+                // The activity's own author is named separately by the sentence
+                // (`BaseActivity::formatDisplayNames()`), so they are not one of the "others" -
+                // excluding only the activity RECORD would still list them again through any
+                // second activity of theirs in the same group.
+                ->andWhere(['!=', 'activity.created_by', $this->activity->user->id])
                 ->andWhere(['!=', 'activity.created_by', $currentUser->id ?? 0])
-                ->orderBy('activity.id DESC')
+                // One row per person, however many activities they contributed: the sentence
+                // counts people ("and 3 more"), not activities.
+                ->groupBy('user.id')
+                ->orderBy([new Expression('MAX(activity.id) DESC')])
                 ->limit(5)
                 ->all();
         }

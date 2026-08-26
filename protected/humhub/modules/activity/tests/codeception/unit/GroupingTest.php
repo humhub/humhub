@@ -63,6 +63,34 @@ class GroupingTest extends HumHubDbTestCase
         );
     }
 
+    public function testGroupedUsersAreDistinctAndExcludeTheNamedAuthor()
+    {
+        $post = Post::findOne(['id' => 1]);
+
+        // Two users, two activities each: the entry's own author therefore has a second
+        // activity in the group besides the one representing it.
+        $this->becomeUser('User2');
+        ActivityManager::dispatch(TestContentGroupActivity::class, $post);
+        ActivityManager::dispatch(TestContentGroupActivity::class, $post);
+
+        $this->becomeUser('User3');
+        ActivityManager::dispatch(TestContentGroupActivity::class, $post);
+        $latest = ActivityManager::dispatch(TestContentGroupActivity::class, $post);
+        $latest->record->refresh();
+
+        $entry = ActivityManager::load($latest->record);
+        $others = $entry->getGroupingService()->getOtherGroupedUsers();
+        $names = array_map(static fn($user) => $user->displayName, $others);
+
+        // The sentence names the entry's own author first and the others after it. An author
+        // with a second activity in the group must not turn up among those others - that is
+        // what rendered as "Sara Schuster and Sara Schuster joined the space".
+        $this->assertNotContains($entry->user->displayName, $names);
+        // And a user with several activities is one person, named once.
+        $this->assertSame(array_values(array_unique($names)), $names);
+        $this->assertCount(1, $others);
+    }
+
     public function testAddToGroup()
     {
         $this->becomeUser('User2');
