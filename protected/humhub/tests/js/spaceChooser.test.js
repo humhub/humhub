@@ -104,6 +104,24 @@ describe('SpaceChooser', () => {
         expect(getCalls).toHaveLength(0);
     });
 
+    it('loads at once when it is mounted into a menu that is already open', async () => {
+        // The button is server-rendered: a visitor can open the menu before this script is
+        // parsed, and `show.bs.dropdown` has fired by then.
+        const host = document.createElement('li');
+        host.className = 'nav-item dropdown';
+        const menu = document.createElement('div');
+        menu.className = 'dropdown-menu show';
+        host.appendChild(menu);
+        document.body.appendChild(host);
+
+        wrapper = mount(SpaceChooser, { ...mountOptions(), attachTo: menu });
+        await flushPromises();
+        await flushPromises();
+
+        expect(getCalls[0]).toContain('scope=mine');
+        expect(wrapper.find('[data-space-chooser-item]').exists()).toBe(true);
+    });
+
     it('loads the caller\'s own spaces and what they are to them when opened', async () => {
         wrapper = mountInDropdown();
         await openMenu();

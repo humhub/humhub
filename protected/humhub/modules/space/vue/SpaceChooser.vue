@@ -199,6 +199,13 @@ export default {
             this.dropdown.addEventListener('show.bs.dropdown', this.onShow);
         }
 
+        // The button is server-rendered and Bootstrap opens the menu without the island, so a
+        // visitor can have clicked before this script was parsed - `show.bs.dropdown` is gone
+        // by then. A menu that is already open at mount is therefore loaded right away.
+        if (this.menuElement() && this.menuElement().classList.contains('show')) {
+            this.onShow();
+        }
+
         events.on(LIVE_NEW_CONTENT, this.onNewContent);
         RELATION_EVENTS.forEach((name) => events.on(name, this.onRelationChanged));
     },
@@ -213,6 +220,13 @@ export default {
         clearTimeout(this.searchTimer);
     },
     methods: {
+        /**
+         * The dropdown menu itself, which is the element the island is mounted on (see
+         * `space\widgets\Chooser`): Bootstrap marks it `show` while it is open.
+         */
+        menuElement() {
+            return this.$refs.root ? this.$refs.root.closest('.dropdown-menu') : null;
+        },
         onShow() {
             if (!this.loaded) {
                 this.load(1);

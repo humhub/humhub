@@ -778,6 +778,9 @@
       if (this.dropdown) {
         this.dropdown.addEventListener("show.bs.dropdown", this.onShow);
       }
+      if (this.menuElement() && this.menuElement().classList.contains("show")) {
+        this.onShow();
+      }
       vue$1.events.on(LIVE_NEW_CONTENT, this.onNewContent);
       RELATION_EVENTS.forEach((name) => vue$1.events.on(name, this.onRelationChanged));
     },
@@ -791,6 +794,13 @@
       clearTimeout(this.searchTimer);
     },
     methods: {
+      /**
+       * The dropdown menu itself, which is the element the island is mounted on (see
+       * `space\widgets\Chooser`): Bootstrap marks it `show` while it is open.
+       */
+      menuElement() {
+        return this.$refs.root ? this.$refs.root.closest(".dropdown-menu") : null;
+      },
       onShow() {
         if (!this.loaded) {
           this.load(1);
