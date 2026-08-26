@@ -55,10 +55,12 @@ class CoreJsConfig extends Widget
                 'client' => [
                     'baseUrl' => Yii::$app->settings->get('baseUrl'),
                     // Base of the HTTP API the Vue islands consume (see humhub.vue.js's
-                    // apiUrl() and docs/develop/concept-api.md). Built from the configured
-                    // base URL because the API is pattern-routed and requires pretty URLs.
-                    // @since 1.20
-                    'apiUrl' => rtrim((string)Yii::$app->settings->get('baseUrl'), '/') . '/' . ApiRules::PREFIX_V2,
+                    // apiUrl() and docs/develop/concept-api.md). Relative to the host the page
+                    // is served from, not the configured base URL: a request to another host is
+                    // cross-origin, which the Content Security Policy (`default-src 'self'`)
+                    // blocks - and the two differ whenever the site is reached under a second
+                    // name, an IP, or through a proxy. @since 1.20
+                    'apiUrl' => rtrim(Url::base(), '/') . '/' . ApiRules::PREFIX_V2,
                     'reloadableScripts' => CacheHelper::getReloadableScriptUrls(),
                     'cspViolationReloadInterval' => Security::CSP_VIOLATION_RELOAD_INTERVAL,
                     'syncScriptOrigins' => $this->getAssetOrigins(),
