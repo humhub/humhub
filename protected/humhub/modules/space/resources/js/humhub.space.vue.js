@@ -795,7 +795,7 @@
         if (!this.loaded) {
           this.load(1);
         }
-        this.$nextTick(() => this.$refs.search && this.$refs.search.focus());
+        this.$nextTick(() => this.$refs.search && this.$refs.search.focus({ preventScroll: true }));
       },
       /**
        * Loads a page: the caller's own spaces while the field is empty, every space they may

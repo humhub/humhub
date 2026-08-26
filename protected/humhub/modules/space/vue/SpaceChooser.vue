@@ -218,8 +218,10 @@ export default {
                 this.load(1);
             }
 
-            // The field is where the keyboard lands, as in the legacy menu.
-            this.$nextTick(() => this.$refs.search && this.$refs.search.focus());
+            // The field is where the keyboard lands, as in the legacy menu. `preventScroll`,
+            // because focusing scrolls the field into view - and opening a menu should not
+            // move the page underneath it.
+            this.$nextTick(() => this.$refs.search && this.$refs.search.focus({ preventScroll: true }));
         },
         /**
          * Loads a page: the caller's own spaces while the field is empty, every space they may
