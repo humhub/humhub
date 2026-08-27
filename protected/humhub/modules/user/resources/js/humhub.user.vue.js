@@ -14,6 +14,11 @@
   };
   const _sfc_main$1 = {
     props: {
+      // Part of the serialized user shape (`UserSerializer::short()`) and deliberately
+      // unused: consumers spread that whole shape onto this component
+      // (`v-bind="comment.author"`), and an undeclared `id` falls through to the DOM as an
+      // `id` ATTRIBUTE — which puts the same element id on every avatar of a list.
+      id: { type: Number, default: null },
       guid: { type: String, required: true },
       displayName: { type: String, required: true },
       url: { type: String, required: true },

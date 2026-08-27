@@ -23,6 +23,23 @@ const author = (overrides = {}) => ({
 
 describe('UserImage', () => {
     describe('link (default true)', () => {
+        // The serialized user shape carries an `id`; undeclared it would land on the rendered
+        // element as an `id` ATTRIBUTE, giving every avatar in a list the same element id.
+        it('consumes the shape\'s id without emitting it as an element id', () => {
+            const wrapper = mount(UserImage, {
+                props: {
+                    id: 7,
+                    guid: 'u-7',
+                    displayName: 'Ada',
+                    url: '/u/ada',
+                    imageUrl: '/img/ada.png',
+                },
+            });
+
+            expect(wrapper.attributes('id')).toBeUndefined();
+            expect(wrapper.find('img').attributes('id')).toBeUndefined();
+        });
+
         it('renders an anchor to the profile url wrapping the image', () => {
             const wrapper = mount(UserImage, { props: author() });
 
