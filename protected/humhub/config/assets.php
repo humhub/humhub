@@ -64,7 +64,6 @@ return [
         AppAsset::BUNDLE_NAME => [
             'class' => AssetBundle::class,
             'defer' => false,
-            'defaultDepends' => false,
             'sourcePath' => '@humhub/resources',
             'basePath' => '@humhub/resources',
             'baseUrl' => '',
@@ -82,7 +81,6 @@ return [
             'class' => AssetBundle::class,
             'defer' => true,
             'jsPosition' => View::POS_HEAD,
-            'defaultDepends' => false,
             'sourcePath' => '@humhub/resources',
             'basePath' => '@humhub/resources',
             'baseUrl' => '',
