@@ -13,5 +13,5 @@ use humhub\modules\ui\menu\MenuEntry;
 /* @var $entries MenuEntry[] */
 ?>
 <?php foreach ($entries as $entry) : ?>
-    <?= $entry->render(['class' => 'btn btn-accent btn-sm pull-right ms-1']) ?>
+    <?= $entry->render(['class' => 'btn btn-accent btn-sm float-end ms-1']) ?>
 <?php endforeach ?>
