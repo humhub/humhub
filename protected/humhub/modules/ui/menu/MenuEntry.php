@@ -217,6 +217,28 @@ abstract class MenuEntry extends BaseObject
     }
 
     /**
+     * Describes this entry as a data descriptor, for a client that renders the menu itself
+     * instead of receiving it as markup.
+     *
+     * Recognized keys: `id`, `label`, `icon` (an {@see \humhub\modules\ui\icon\widgets\Icon}
+     * name without the `fa-` prefix), `sortOrder`, `url`, `htmlOptions`. The shape matches
+     * the entry descriptor of the Vue `DropdownMenu` component, so a described entry can be
+     * merged with entries a module registered client-side via `registerMenuEntry()`.
+     *
+     * Returning null means "this entry can only be rendered" — the caller then falls back to
+     * server-rendering it and shipping the markup (see
+     * {@see \humhub\modules\content\controllers\api\ControlsController}). The base
+     * implementation returns null, so an entry type is only describable once it says so.
+     *
+     * @return array|null
+     * @since 1.20
+     */
+    public function describe(): ?array
+    {
+        return null;
+    }
+
+    /**
      * @return string the class name of this entry can be used to identify the entry if no id is given
      * @since 1.7
      */

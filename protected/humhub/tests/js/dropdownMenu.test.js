@@ -1,11 +1,27 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { mount } from '@vue/test-utils';
+import { config, mount } from '@vue/test-utils';
 import DropdownMenu from '../../vue/DropdownMenu.vue';
 
 await import('../../resources/js/humhub/humhub.url.js');
 await import('../../resources/js/humhub/humhub.vue.js');
 
 const vueModule = globalThis.humhub.modules.vue;
+
+// `v-additions` is registered by the island runtime on the real app; the `html` escape-hatch
+// branch of an entry carries it, so the compiled render function resolves the directive for
+// every render of this component. Registered file-wide rather than per mount, since every
+// test here mounts DropdownMenu (see activityBox.test.js for the same stub).
+config.global.directives = {
+    ...config.global.directives,
+    additions: {
+        mounted(el) {
+            globalThis.humhubStubs.additions.applyTo(jQuery(el));
+        },
+        updated(el) {
+            globalThis.humhubStubs.additions.applyTo(jQuery(el));
+        },
+    },
+};
 
 describe('DropdownMenu', () => {
     it('renders the toggle/menu structure with the given aria-label', () => {
@@ -352,6 +368,188 @@ describe('DropdownMenu', () => {
             await Vue.nextTick();
 
             expect(wrapper.find('mark').exists()).toBe(true);
+        });
+    });
+
+    // The root element and the toggle's own content. Both defaults reproduce the platform's
+    // corner-controls menu exactly; a consumer that is NOT a corner-controls menu (a labelled
+    // dropdown button in a toolbar, an inline menu in a flex row) has to be able to opt out —
+    // `.nav-pills.preferences` is positioned `absolute` platform-wide (_nav.scss).
+    describe('root class and toggle content', () => {
+        it('defaults to the corner-controls markup', () => {
+            const wrapper = mount(DropdownMenu, {
+                props: { toggleAriaLabel: 'Toggle menu' },
+            });
+
+            expect(wrapper.element.classList.contains('nav')).toBe(true);
+            expect(wrapper.element.classList.contains('nav-pills')).toBe(true);
+            expect(wrapper.element.classList.contains('preferences')).toBe(true);
+            // No content of its own: the meatball icon is a CSS ::after on .preferences.
+            expect(wrapper.find('a[data-bs-toggle="dropdown"]').text()).toBe('');
+        });
+
+        it('replaces the root classes entirely when rootClass is given', () => {
+            const wrapper = mount(DropdownMenu, {
+                props: { toggleAriaLabel: 'Toggle menu', rootClass: 'nav nav-pills mb-0' },
+            });
+
+            expect(wrapper.element.className).toBe('nav nav-pills mb-0');
+            expect(wrapper.element.classList.contains('preferences')).toBe(false);
+        });
+
+        it('renders the toggle slot inside the toggle, so it can carry a label', () => {
+            const wrapper = mount(DropdownMenu, {
+                props: { toggleAriaLabel: 'Sort by' },
+                slots: { toggle: 'Name \u2191' },
+            });
+
+            expect(wrapper.find('a[data-bs-toggle="dropdown"]').text()).toBe('Name \u2191');
+        });
+    });
+
+    // Server-described entries — the shapes `MenuEntry::describe()` produces, consumed by the
+    // ContentControls island. See the component's own "Server-described entries" docblock.
+    describe('server-described entries', () => {
+        it('renders a url entry as a real link and lets the click through', async () => {
+            let clicked = false;
+            const wrapper = mount(DropdownMenu, {
+                props: {
+                    toggleAriaLabel: 'Toggle menu',
+                    menuId: 'test.dropdown.url',
+                    entries: [{ id: 'edit', label: 'Edit', url: '/wiki/edit?id=3' }],
+                },
+            });
+
+            const link = wrapper.find('.dropdown-item');
+            expect(link.attributes('href')).toBe('/wiki/edit?id=3');
+
+            link.element.addEventListener('click', (event) => {
+                clicked = !event.defaultPrevented;
+                event.preventDefault();
+            });
+            await link.trigger('click');
+
+            // A plain link must navigate; swallowing the click would break middle-click and
+            // "open in new tab" just as much as the navigation itself.
+            expect(clicked).toBe(true);
+        });
+
+        it('still swallows the click of an entry without a url', async () => {
+            let defaultPrevented = null;
+            const wrapper = mount(DropdownMenu, {
+                props: {
+                    toggleAriaLabel: 'Toggle menu',
+                    menuId: 'test.dropdown.nourl',
+                    entries: [{ id: 'edit', label: 'Edit' }],
+                },
+            });
+
+            const link = wrapper.find('.dropdown-item');
+            expect(link.attributes('href')).toBe('#');
+
+            link.element.addEventListener('click', (event) => {
+                defaultPrevented = event.defaultPrevented;
+            });
+            await link.trigger('click');
+
+            expect(defaultPrevented).toBe(true);
+        });
+
+        it('binds htmlOptions onto the anchor so legacy data-action handlers keep working', () => {
+            const wrapper = mount(DropdownMenu, {
+                props: {
+                    toggleAriaLabel: 'Toggle menu',
+                    menuId: 'test.dropdown.htmloptions',
+                    entries: [{
+                        id: 'share',
+                        label: 'Share',
+                        icon: 'share',
+                        htmlOptions: {
+                            'data-action-click': 'ui.modal.load',
+                            'data-action-url': '/share?id=3',
+                            'class': 'share-link',
+                        },
+                    }],
+                },
+            });
+
+            const link = wrapper.find('.dropdown-item');
+            expect(link.attributes('data-action-click')).toBe('ui.modal.load');
+            expect(link.attributes('data-action-url')).toBe('/share?id=3');
+            // The entry's own class is merged with the component's, not replaced by it.
+            expect(link.classes()).toContain('share-link');
+            expect(link.classes()).toContain('dropdown-item');
+        });
+
+        it('lets url win over an href smuggled in through htmlOptions', () => {
+            const wrapper = mount(DropdownMenu, {
+                props: {
+                    toggleAriaLabel: 'Toggle menu',
+                    menuId: 'test.dropdown.hrefclash',
+                    entries: [{ id: 'x', label: 'X', url: '/right', htmlOptions: { href: '/wrong' } }],
+                },
+            });
+
+            expect(wrapper.find('.dropdown-item').attributes('href')).toBe('/right');
+        });
+
+        it('renders an html entry as the whole li and runs the ui additions over it', () => {
+            let enhanced = 0;
+            globalThis.humhubStubs.additions.register('test-legacy-item', '.legacy-item', function () {
+                enhanced++;
+            });
+
+            const wrapper = mount(DropdownMenu, {
+                props: {
+                    toggleAriaLabel: 'Toggle menu',
+                    menuId: 'test.dropdown.html',
+                    entries: [{ id: 'legacy', html: '<a class="dropdown-item legacy-item">Legacy</a>' }],
+                },
+            });
+
+            const item = wrapper.find('.dropdown-menu > li');
+            // No wrapper element around the injected markup — the anchor is the li's own child,
+            // which is what Bootstrap's dropdown styling expects.
+            expect(item.element.children).toHaveLength(1);
+            expect(item.find('a.legacy-item').exists()).toBe(true);
+            // v-additions handed the injected markup to the legacy enhancer pipeline, which is
+            // the whole point of the escape hatch: the entry's own JS still initializes.
+            expect(enhanced).toBeGreaterThan(0);
+        });
+
+        it('renders a divider entry', () => {
+            const wrapper = mount(DropdownMenu, {
+                props: {
+                    toggleAriaLabel: 'Toggle menu',
+                    menuId: 'test.dropdown.divider',
+                    entries: [
+                        { id: 'a', label: 'A', sortOrder: 10 },
+                        { id: 'sep', divider: true, sortOrder: 20 },
+                        { id: 'b', label: 'B', sortOrder: 30 },
+                    ],
+                },
+            });
+
+            const items = wrapper.findAll('.dropdown-menu > li');
+            expect(items).toHaveLength(3);
+            expect(items[1].find('hr.dropdown-divider').exists()).toBe(true);
+        });
+
+        it('lets a registry entry override a server-described one by id', () => {
+            vueModule.registerMenuEntry('test.dropdown.serveroverride', { id: 'share', label: 'Native share' });
+
+            const wrapper = mount(DropdownMenu, {
+                props: {
+                    toggleAriaLabel: 'Toggle menu',
+                    menuId: 'test.dropdown.serveroverride',
+                    entries: [{ id: 'share', label: 'Server share', url: '/share' }],
+                },
+            });
+
+            const items = wrapper.findAll('.dropdown-item');
+            expect(items).toHaveLength(1);
+            expect(items[0].text()).toBe('Native share');
+            expect(items[0].attributes('href')).toBe('#');
         });
     });
 });

@@ -1,5 +1,5 @@
 <template>
-    <ul class="nav nav-pills preferences">
+    <ul :class="rootClass">
         <li class="nav-item dropdown">
             <a
                 ref="toggle"
@@ -10,7 +10,7 @@
                 aria-haspopup="true"
                 aria-expanded="false"
                 :aria-label="toggleAriaLabel"
-            ></a>
+            ><slot name="toggle"></slot></a>
 
             <ul class="dropdown-menu" :class="{ 'dropdown-menu-end': alignEnd }">
                 <slot />
@@ -20,21 +20,27 @@
                         <span role="status">{{ loadingLabel }}</span>
                     </span>
                 </li>
-                <li v-for="entry in resolvedEntries" :key="entry.id">
-                    <component :is="entry.component" v-if="entry.component" :context="context" />
-                    <a
-                        v-else-if="entry.icon"
-                        href="#"
-                        class="dropdown-item d-flex align-items-center gap-2"
-                        @click.prevent="onEntryClick(entry)"
-                    ><i :class="'fa fa-' + entry.icon" aria-hidden="true"></i>{{ resolveLabel(entry) }}</a>
-                    <a
-                        v-else
-                        href="#"
-                        class="dropdown-item"
-                        @click.prevent="onEntryClick(entry)"
-                    >{{ resolveLabel(entry) }}</a>
-                </li>
+                <template v-for="entry in resolvedEntries" :key="entry.id">
+                    <li v-if="entry.html" v-additions v-html="entry.html"></li>
+                    <li v-else>
+                        <component :is="entry.component" v-if="entry.component" :context="context" />
+                        <hr v-else-if="entry.divider" class="dropdown-divider" />
+                        <a
+                            v-else-if="entry.icon"
+                            v-bind="entry.htmlOptions"
+                            :href="entry.url || '#'"
+                            class="dropdown-item d-flex align-items-center gap-2"
+                            @click="onEntryClick(entry, $event)"
+                        ><i :class="'fa fa-' + entry.icon" aria-hidden="true"></i>{{ resolveLabel(entry) }}</a>
+                        <a
+                            v-else
+                            v-bind="entry.htmlOptions"
+                            :href="entry.url || '#'"
+                            class="dropdown-item"
+                            @click="onEntryClick(entry, $event)"
+                        >{{ resolveLabel(entry) }}</a>
+                    </li>
+                </template>
             </ul>
         </li>
     </ul>
@@ -59,6 +65,11 @@
  * comment island's own controls dropdown before this component existed.
  *
  * ## Slot contract
+ *
+ * The `toggle` slot is the toggle's own content. It is empty by default,
+ * because the corner-controls menu draws its meatball from CSS (see
+ * `rootClass` below) — a labelled trigger ("Sort by: Name ↑") supplies it
+ * here.
  *
  * Free-form items are supplied through the default slot — always rendered
  * first, ahead of any data-driven entries below. Consumers render one `<li>`
@@ -125,6 +136,30 @@
  * exact same `<a class="dropdown-item">{{ label }}</a>` markup as before
  * this mode existed, with no leftover Vue `v-if` comment node.
  *
+ * ## Server-described entries
+ *
+ * Three further fields exist for entries a SERVER produced rather than a
+ * `registerMenuEntry()` call — see `humhub\modules\ui\menu\MenuEntry::describe()`
+ * and the `ContentControls` island, which feeds this component the resolved
+ * `WallEntryControls` stack of a content record:
+ *
+ *  - `url` — renders a real `href` instead of `#`, and the click is NOT
+ *    swallowed, so ordinary link behaviour (middle-click, open in new tab)
+ *    works. An entry with an own `onClick` still takes precedence.
+ *  - `htmlOptions` — bound onto the anchor. This is what keeps a legacy
+ *    `data-action-click` entry working once a client renders the anchor:
+ *    the delegated document handler in `humhub.action.js` reads the
+ *    attribute off the DOM either way. `href` in here loses to `url`.
+ *  - `html` — the escape hatch: raw markup for an entry that cannot be
+ *    described at all, injected with `v-html` and run through the UI
+ *    additions (`v-additions`). It becomes the WHOLE `<li>`, so the server
+ *    ships inner markup. Deliberately a dead end — such an entry cannot be
+ *    labelled, conditioned or overridden by a client — and deprecated on
+ *    the server side.
+ *
+ * `divider` renders an `<hr class="dropdown-divider">`, the client-side
+ * counterpart of `humhub\modules\ui\menu\DropdownDivider`.
+ *
  * See docs/develop/ui-js-vuejs-extensions.md, "Menu entries", for the full
  * entry shape and worked examples.
  *
@@ -140,6 +175,17 @@
  *    toggle `<a>`'s classes entirely (not merged), so a caller needing an
  *    icon-only kebab toggle or a differently styled trigger doesn't fight
  *    the default.
+ *  - `rootClass` (default `'nav nav-pills preferences'`) — replaces the root
+ *    `<ul>`'s classes entirely. **Read this before reusing the default
+ *    outside a stream/comment-style entry.** `.nav-pills.preferences` is
+ *    not neutral styling: `_nav.scss` positions it `absolute; right: 10px;
+ *    top: 10px` PLATFORM-WIDE and paints the meatball icon as an `::after`
+ *    on its toggle — that pair is what makes the controls menu sit in an
+ *    entry's top-right corner (the comment and stream entries only retune
+ *    `right`/`top`, see `_comment.scss`/`_stream.scss`). A menu that is
+ *    part of normal document flow — a dropdown button in a toolbar, an
+ *    inline menu in a flex row — must drop `preferences` and bring its own
+ *    toggle content, or it will escape its container and render empty.
  *  - `menuId` (default `null`) — identifies this menu's entries in the
  *    `registerMenuEntry()`/`removeMenuEntry()` registry. Data-driven mode
  *    is entirely off (no registry lookup, nothing rendered beyond the slot)
@@ -160,6 +206,7 @@ export default {
         toggleAriaLabel: { type: String, required: true },
         alignEnd: { type: Boolean, default: true },
         toggleClass: { type: String, default: 'nav-link dropdown-toggle' },
+        rootClass: { type: String, default: 'nav nav-pills preferences' },
         menuId: { type: String, default: null },
         entries: { type: Array, default: () => [] },
         context: { type: Object, default: () => ({}) },
@@ -229,10 +276,20 @@ export default {
         resolveLabel(entry) {
             return typeof entry.label === 'function' ? entry.label(this.context) : entry.label;
         },
-        onEntryClick(entry) {
-            if (typeof entry.onClick === 'function') {
-                entry.onClick(this.context);
+        onEntryClick(entry, event) {
+            // A described entry may be a plain link (`url`) or carry a legacy
+            // `data-action-click` attribute that a delegated document handler picks up. Both
+            // need the click to run its course, so only an entry with an own `onClick`
+            // handler - the Vue-native case - swallows it.
+            if (typeof entry.onClick !== 'function') {
+                if (!entry.url) {
+                    event.preventDefault();
+                }
+                return;
             }
+
+            event.preventDefault();
+            entry.onClick(this.context);
         },
     },
 };

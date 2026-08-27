@@ -6,6 +6,35 @@ Each minor release line has its own file with the breaking changes, new APIs and
 
 ## Unreleased
 
+- Added a **describable menu entry** API (`humhub\modules\ui\menu\MenuEntry::describe()`,
+  the `humhub\modules\ui\menu\DescribableWidget` interface) plus the
+  `humhub\modules\content\vue\ContentControls` island and its
+  `GET /api/v2/content/<id>/controls` endpoint — the content context menu (`WallEntryControls`)
+  rendered by a client instead of the server. Purely additive: `WallEntryControls::EVENT_INIT`
+  is unchanged, and it is still the way to contribute an entry.
+  - `WallEntryControlLink` implements `DescribableWidget`, so every control link extending it
+    (`EditPageLink` in wiki, `ShareLink` in share-between-humhub, `ContentTopicButton` in core)
+    is described without any module change.
+  - **Deprecated**: contributing a menu entry whose widget cannot describe itself. Such an
+    entry is still rendered server-side and delivered as raw HTML, so nothing breaks today,
+    but it cannot be conditioned, overridden or removed by a client, and every delivery logs
+    a warning naming the widget class. A subclass of `WallEntryControlLink` that overrides
+    `renderLink()` is deliberately in this group unless it also overrides
+    `describeMenuEntry()` — describing it from the base class' properties would produce an
+    empty label or a dead `#` link. See `docs/develop/ui-js-vuejs-extensions.md`,
+    "Server-described entries and `ContentControls`".
+  - The Vue `DropdownMenu` entry descriptor grew `url`, `htmlOptions`, `divider` and `html`.
+    Existing entries are unaffected.
+  - `DropdownMenu` grew a `rootClass` prop and a `toggle` slot, both defaulting to the previous
+    markup. Needed because its root is hard-coded `.nav nav-pills preferences`, which
+    `_nav.scss` fills with the primary colour and positions absolutely — correct for a
+    content-controls menu, wrong for a labelled dropdown button.
+  - **Fixed**: `_list.scss` no longer colours `a.dropdown-item` inside an `.hh-list` row. Its
+    rule tied with `_nav.scss`'s menu-item colour (both 0,2,2) and won on import order, so a
+    dropdown rendered inside a list was painted with the list's text colour on the menu's own
+    background. Only affects anchors carrying `.dropdown-item`; ordinary row links are
+    unchanged.
+
 - Added the **Vue.js island layer** (`humhub.vue` client registry/mounter, `humhub\widgets\VueComponent`,
   `grunt build-vue` tooling) — see `docs/develop/ui-js-vuejs.md`. Purely additive; the existing
   `humhub.module` JS system is unaffected.

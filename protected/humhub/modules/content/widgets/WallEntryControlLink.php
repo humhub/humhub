@@ -5,6 +5,9 @@ namespace humhub\modules\content\widgets;
 use humhub\components\Widget;
 use humhub\helpers\Html;
 use humhub\modules\ui\icon\widgets\Icon;
+use humhub\modules\ui\menu\DescribableWidget;
+use humhub\modules\ui\menu\MenuLink;
+use ReflectionMethod;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -13,7 +16,7 @@ use yii\helpers\ArrayHelper;
  * @since 1.2
  * @author buddh4
  */
-class WallEntryControlLink extends Widget
+class WallEntryControlLink extends Widget implements DescribableWidget
 {
     /**
      * @var string link label
@@ -143,4 +146,44 @@ class WallEntryControlLink extends Widget
         return $this->action;
     }
 
+    /**
+     * @inheritdoc
+     *
+     * Describes the anchor {@see self::renderLink()} would have rendered: the label, the icon
+     * and the html options — including the `data-action-click`/`data-action-url` pair
+     * {@see self::init()} derived from `$action`/`$actionUrl`, which is what keeps a legacy
+     * action entry working when a client renders the anchor instead of the server.
+     *
+     * **Only when this class' own `renderLink()` is in effect.** A subclass that overrides it
+     * builds its markup from something other than these properties — `ContentTopicButton`
+     * derives label and url inside `renderLink()`, `EditPageLink` renders a real href — so
+     * describing it here would silently produce an entry with an empty label or a dead `#`
+     * link. Such a subclass is left to be rendered instead, unless it describes itself by
+     * overriding this method (as `ContentTopicButton` does).
+     *
+     * @since 1.20
+     */
+    public function describeMenuEntry(): ?array
+    {
+        if ($this->preventRender() || $this->rendersItsOwnLink()) {
+            return null;
+        }
+
+        return [
+            'label' => trim((string)$this->getLabel()),
+            'icon' => MenuLink::describeIcon($this->getIcon()),
+            'htmlOptions' => $this->options,
+        ];
+    }
+
+    /**
+     * Whether a subclass took over link rendering, in which case this class cannot know what
+     * the entry actually looks like.
+     *
+     * @since 1.20
+     */
+    protected function rendersItsOwnLink(): bool
+    {
+        return (new ReflectionMethod($this, 'renderLink'))->getDeclaringClass()->getName() !== self::class;
+    }
 }

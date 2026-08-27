@@ -60,6 +60,10 @@ registerMenuEntry('comment.controls', {
 | `condition` | `(context) => boolean` | no | Omit to always show. |
 | `onClick` | `(context) => void` | no | Ignored when `component` is set. |
 | `component` | `string` | unless `label` given | A name registered via `register()` — an escape hatch for fully custom rendering; the component receives a single `context` prop (not spread, unlike `ExtensionSlot`'s `v-bind`). When set, `label`/`icon`/`onClick` are ignored. |
+| `url` | `string` | no | Renders a real `href` instead of `#`, and the click is not swallowed, so middle-click and "open in new tab" work. An entry with its own `onClick` takes precedence. |
+| `htmlOptions` | `object` | no | Bound onto the anchor — how a legacy `data-action-click` entry keeps working once a client renders it. A `href` here loses to `url`. |
+| `divider` | `boolean` | no | Renders `<hr class="dropdown-divider">` instead of a link; the client-side counterpart of `DropdownDivider`. |
+| `html` | `string` | no | Raw markup that becomes the whole `<li>`, injected with `v-html` and run through the UI additions. The escape hatch for a server entry that cannot be described — see [Server-described entries](#server-described-entries-and-contentcontrols). Cannot be labelled, conditioned or overridden. |
 
 **Resolution** (recomputed reactively whenever anything registers/removes, so a currently-mounted menu updates without remounting):
 
@@ -82,6 +86,117 @@ registerMenuEntry('comment.controls', {
 | `delete` | `canDelete` | Deletes the comment; opens `CommentDeleteModal` — in its admin mode (reason + notify-the-author fields) when `canAdminDelete` is also set, as the plain confirm otherwise. One entry covers both, since `canAdminDelete` is only ever derived on top of `canDelete`. |
 
 The permalink item is **not** part of this menu — it carries legacy `data-action-click`/`data-content-permalink*` attributes for a delegated document click handler rather than a Vue click handler, which the entry descriptor shape has no room for; it stays a hand-rendered `<li>` in `CommentControls.vue`'s default slot, rendered ahead of the resolved `comment.controls` entries.
+
+### Server-described entries and `ContentControls`
+
+The two mechanisms above assume the extending module ships JavaScript. The platform's
+oldest and widest menu extension point does not: `WallEntryControls` — the `⋮` menu of a
+content record — has been extended for years by modules adding **widget** entries in a
+`WallEntryControls::EVENT_INIT` handler (`topic` in core, plus `reportcontent`,
+`share-between-humhub`, `polls`, and others outside it). Breaking every one of them the way
+the comment island's own controls menu did is defensible once; doing it again for every
+module that moves a content list into Vue is not.
+
+`humhub\modules\content\vue\ContentControls.vue` (`ContentVueAsset`) is the island form of
+that menu, and it merges **three** sources:
+
+1. **The host island's own entries** — passed as `entries`, in the shape above, with real
+   Vue click handlers. A file browser's Download/Rename/Move live here.
+2. **Server-described entries** — the resolved `WallEntryControls` stack of the record,
+   fetched from `GET /api/v2/content/<id>/controls` when the menu is opened.
+3. **The client registry** — `registerMenuEntry('content.controls', …)`, resolved last, so
+   it can override (same `id`) or remove entries from either of the other two.
+
+```html
+<!-- inside a module's own row component -->
+<ContentControls
+    :content-id="item.contentId"
+    view-context="browser"
+    :entries="ownEntries"
+    :context="{ item }"
+/>
+```
+
+**Describing a server entry.** `humhub\modules\ui\menu\MenuEntry::describe()` returns the
+descriptor for an entry, or `null` when the entry can only be rendered. `MenuLink` and
+`DropdownDivider` describe themselves; a `WidgetMenuEntry` delegates to its widget when that
+widget implements `humhub\modules\ui\menu\DescribableWidget`.
+
+`WallEntryControlLink` implements it, which covers the whole family of control links that
+extend it — `EditPageLink` (wiki), `ShareLink` (share-between-humhub), `ContentTopicButton`
+(topic) — **with no change in those modules at all**. The one restriction is load-bearing: the
+base implementation refuses to describe a subclass that overrides `renderLink()`, because
+such a subclass builds its label or url inside the render (as `ContentTopicButton` and
+`EditPageLink` both do) and describing it from the base class' properties would silently
+produce an empty label or a dead `#` link. A subclass in that position describes itself:
+
+```php
+class ContentTopicButton extends WallEntryControlLink
+{
+    public function renderLink()
+    {
+        return $this->buildLink();          // one definition …
+    }
+
+    public function describeMenuEntry(): ?array
+    {
+        $link = $this->buildLink();         // … used by both paths, so they cannot drift
+
+        return [
+            'id' => 'topics',
+            'label' => (string)$link->label,
+            'icon' => MenuLink::describeIcon($link->icon),
+            'htmlOptions' => $link->options,
+        ];
+    }
+}
+```
+
+The descriptor's `htmlOptions` are bound straight onto the client-rendered anchor, which is
+what keeps a legacy `data-action-click` entry working: the delegated document handler in
+`humhub.action.js` reads the attribute off the DOM whether the server or Vue put it there.
+
+**The HTML escape hatch.** An entry whose widget renders its own view and cannot be described
+(`polls`' `CloseButton`, say) is rendered server-side and shipped as `html`, which the island
+injects with `v-html` and runs the UI additions over. Nothing breaks and no module has to act
+immediately — but such an entry is a dead end: a client cannot label, condition, reorder
+beyond `sortOrder`, override or remove it. **The path is deprecated**; every delivery logs a
+warning naming the widget class. Implement `DescribableWidget` (or migrate to
+`registerMenuEntry()`) before it is removed.
+
+**Lazily, per menu.** Nothing is fetched until a menu is opened, because everything in that
+response depends on who is asking — `canEdit`, `canDelete`, which modules contribute what.
+That is the same reason `canEdit`/`canDelete` are not in a comment payload (see
+[HTTP API framework](concept-api.md), "Caller context is not part of a payload"): a list of
+50 rows costs zero requests until someone opens a menu. The response also carries a
+`capabilities` object (`canEdit`, `canDelete`, `canAdminDelete`, `canPin`, `canArchive`,
+`canMove`), which the host gates its own native entries on through their `condition`, instead
+of re-implementing the rules client-side.
+
+**`viewContext`** picks the server-side render-options profile the same place would have used
+when server-rendered (`stream`, `detail`, `modal`, …), so a menu inside a module's own UI is
+not offered stream-only actions.
+
+**`.nav-pills preferences` is a look, not neutral markup.** `DropdownMenu`'s default root
+carries it, and two core stylesheets act on it:
+
+- `_nav.scss` fills `.nav-pills .dropdown-menu` with `var(--bs-primary)` and no border — that
+  IS the platform's content-context-menu appearance, so keeping the default is right for a
+  context menu and wrong for anything else. A dropdown BUTTON in a toolbar must pass its own
+  `rootClass` (and then its own label through the `toggle` slot, since the meatball icon is an
+  `::after` on `.preferences`), or it renders as an empty primary-filled block.
+- `_nav.scss` also positions `.nav-pills.preferences` `absolute; right: 10px; top: 10px`,
+  which pins a stream or comment entry's menu to its corner. A menu in normal flow — a list
+  row — has to reset that, or it lands on top of whatever it should sit beside.
+
+**Inside a `.hh-list` row there was a third problem, now fixed in core.** `_list.scss`
+colours a row's anchors (`.hh-list > div a`) at specificity 0,2,2, exactly tying with
+`_nav.scss`'s `.nav-pills .dropdown-menu li a` — and `list` is imported after `nav`, so the
+list won on source order alone and a context menu inside a list got the LIST's text colour on
+the MENU's primary background. `_list.scss` now excludes `a:not(.dropdown-item)`: an anchor
+that is a dropdown item belongs to the menu, not the row.
+
+The files module's `resources/css/cfiles.css` is the worked example for the first two.
 
 ### Menu entries vs. extension slots
 

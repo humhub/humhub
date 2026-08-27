@@ -72,6 +72,18 @@ Done on that branch:
   wait until the list is scrolled to the top so nothing jumps under the reader. `humhub.activity.js`
   and its `niceScroll` scrollbar are gone.
 
+- **Content context menu** — `ContentControls` is the island form of `WallEntryControls`,
+  over `GET /api/v2/content/<id>/controls`, and the answer to the problem every module
+  migrating a content list into Vue hits: that menu is the platform's, not the module's.
+  It merges three sources — the host island's own Vue entries, the *server-resolved*
+  `WallEntryControls` stack, and `registerMenuEntry('content.controls', …)` — so a module
+  contributing through `EVENT_INIT` keeps working with no change at all, as long as its entry
+  can describe itself (`MenuEntry::describe()`, `DescribableWidget`). `WallEntryControlLink`
+  implements that for its whole subclass family. An entry that cannot be described is still
+  rendered server-side and shipped as raw HTML, deprecated and logged. Deliberately not the
+  cut the comment island's own controls menu made: repeating that break once per migrating
+  module is not defensible.
+
 ## Done: the islands run on the platform API
 
 The comment/like islands consume `/api/v2`, the HTTP API core itself ships — core

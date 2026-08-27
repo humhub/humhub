@@ -192,4 +192,49 @@ class MenuLink extends MenuEntry
         $this->getLink()->options($htmlOptions);
         return $this;
     }
+
+    /**
+     * @inheritdoc
+     *
+     * A link entry is data through and through — label, icon, url and html options are all
+     * it is — so it describes itself losslessly. The html options are the ones the rendered
+     * anchor would have carried, which is what keeps a legacy `data-action-click` entry
+     * working after a client rather than the server renders the anchor: the delegated
+     * document handler in `humhub.action.js` reads the attribute off the DOM either way.
+     *
+     * @since 1.20
+     */
+    public function describe(): ?array
+    {
+        return [
+            'id' => $this->getId(),
+            'label' => (string)$this->getLabel(),
+            'icon' => static::describeIcon($this->getIcon()),
+            'sortOrder' => $this->getSortOrder(),
+            'url' => $this->getUrl(),
+            'htmlOptions' => $this->getHtmlOptions(),
+        ];
+    }
+
+    /**
+     * Reduces an icon to the plain name a client needs (`pencil`), accepting the shapes an
+     * icon can arrive in: an {@see Icon} instance, a bare name, or a `fa-` prefixed name —
+     * {@see Icon::run()} strips that prefix at render time, which a described entry never
+     * reaches.
+     *
+     * @param Icon|string|null $icon
+     * @since 1.20
+     */
+    public static function describeIcon($icon): ?string
+    {
+        if ($icon instanceof Icon) {
+            $icon = $icon->name;
+        }
+
+        if (!is_string($icon) || $icon === '') {
+            return null;
+        }
+
+        return str_starts_with($icon, 'fa-') ? substr($icon, 3) : $icon;
+    }
 }

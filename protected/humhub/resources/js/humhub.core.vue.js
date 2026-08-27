@@ -194,6 +194,7 @@
       toggleAriaLabel: { type: String, required: true },
       alignEnd: { type: Boolean, default: true },
       toggleClass: { type: String, default: "nav-link dropdown-toggle" },
+      rootClass: { type: String, default: "nav nav-pills preferences" },
       menuId: { type: String, default: null },
       entries: { type: Array, default: () => [] },
       context: { type: Object, default: () => ({}) },
@@ -248,110 +249,148 @@
       resolveLabel(entry) {
         return typeof entry.label === "function" ? entry.label(this.context) : entry.label;
       },
-      onEntryClick(entry) {
-        if (typeof entry.onClick === "function") {
-          entry.onClick(this.context);
+      onEntryClick(entry, event) {
+        if (typeof entry.onClick !== "function") {
+          if (!entry.url) {
+            event.preventDefault();
+          }
+          return;
         }
+        event.preventDefault();
+        entry.onClick(this.context);
       }
     }
   };
-  const _hoisted_1$b = { class: "nav nav-pills preferences" };
-  const _hoisted_2$8 = { class: "nav-item dropdown" };
-  const _hoisted_3$6 = ["aria-label"];
-  const _hoisted_4$5 = { key: 0 };
-  const _hoisted_5$3 = { class: "dropdown-item disabled d-flex align-items-center gap-2" };
-  const _hoisted_6$3 = { role: "status" };
-  const _hoisted_7$1 = ["onClick"];
-  const _hoisted_8$1 = ["onClick"];
+  const _hoisted_1$b = { class: "nav-item dropdown" };
+  const _hoisted_2$8 = ["aria-label"];
+  const _hoisted_3$6 = { key: 0 };
+  const _hoisted_4$5 = { class: "dropdown-item disabled d-flex align-items-center gap-2" };
+  const _hoisted_5$3 = { role: "status" };
+  const _hoisted_6$3 = ["innerHTML"];
+  const _hoisted_7$1 = { key: 1 };
+  const _hoisted_8$1 = {
+    key: 1,
+    class: "dropdown-divider"
+  };
+  const _hoisted_9$1 = ["href", "onClick"];
+  const _hoisted_10$1 = ["href", "onClick"];
   function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
-    return vue.openBlock(), vue.createElementBlock("ul", _hoisted_1$b, [
-      vue.createElementVNode("li", _hoisted_2$8, [
-        vue.createElementVNode("a", {
-          ref: "toggle",
-          href: "#",
-          class: vue.normalizeClass($props.toggleClass),
-          "data-bs-toggle": "dropdown",
-          role: "button",
-          "aria-haspopup": "true",
-          "aria-expanded": "false",
-          "aria-label": $props.toggleAriaLabel
-        }, null, 10, _hoisted_3$6),
-        vue.createElementVNode(
-          "ul",
-          {
-            class: vue.normalizeClass(["dropdown-menu", { "dropdown-menu-end": $props.alignEnd }])
-          },
-          [
-            vue.renderSlot(_ctx.$slots, "default"),
-            $props.loading ? (vue.openBlock(), vue.createElementBlock("li", _hoisted_4$5, [
-              vue.createElementVNode("span", _hoisted_5$3, [
-                _cache[0] || (_cache[0] = vue.createElementVNode(
-                  "span",
-                  {
-                    class: "spinner-border spinner-border-sm",
-                    "aria-hidden": "true"
-                  },
-                  null,
-                  -1
-                  /* CACHED */
-                )),
-                vue.createElementVNode(
-                  "span",
-                  _hoisted_6$3,
-                  vue.toDisplayString($options.loadingLabel),
-                  1
-                  /* TEXT */
-                )
-              ])
-            ])) : vue.createCommentVNode("v-if", true),
-            (vue.openBlock(true), vue.createElementBlock(
-              vue.Fragment,
-              null,
-              vue.renderList($options.resolvedEntries, (entry) => {
-                return vue.openBlock(), vue.createElementBlock("li", {
-                  key: entry.id
-                }, [
-                  entry.component ? (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(entry.component), {
-                    key: 0,
-                    context: $props.context
-                  }, null, 8, ["context"])) : entry.icon ? (vue.openBlock(), vue.createElementBlock("a", {
-                    key: 1,
-                    href: "#",
-                    class: "dropdown-item d-flex align-items-center gap-2",
-                    onClick: vue.withModifiers(($event) => $options.onEntryClick(entry), ["prevent"])
-                  }, [
-                    vue.createElementVNode(
-                      "i",
-                      {
-                        class: vue.normalizeClass("fa fa-" + entry.icon),
-                        "aria-hidden": "true"
-                      },
-                      null,
-                      2
-                      /* CLASS */
-                    ),
-                    vue.createTextVNode(
-                      vue.toDisplayString($options.resolveLabel(entry)),
-                      1
-                      /* TEXT */
-                    )
-                  ], 8, _hoisted_7$1)) : (vue.openBlock(), vue.createElementBlock("a", {
-                    key: 2,
-                    href: "#",
-                    class: "dropdown-item",
-                    onClick: vue.withModifiers(($event) => $options.onEntryClick(entry), ["prevent"])
-                  }, vue.toDisplayString($options.resolveLabel(entry)), 9, _hoisted_8$1))
-                ]);
-              }),
-              128
-              /* KEYED_FRAGMENT */
-            ))
-          ],
-          2
-          /* CLASS */
-        )
-      ])
-    ]);
+    const _directive_additions = vue.resolveDirective("additions");
+    return vue.openBlock(), vue.createElementBlock(
+      "ul",
+      {
+        class: vue.normalizeClass($props.rootClass)
+      },
+      [
+        vue.createElementVNode("li", _hoisted_1$b, [
+          vue.createElementVNode("a", {
+            ref: "toggle",
+            href: "#",
+            class: vue.normalizeClass($props.toggleClass),
+            "data-bs-toggle": "dropdown",
+            role: "button",
+            "aria-haspopup": "true",
+            "aria-expanded": "false",
+            "aria-label": $props.toggleAriaLabel
+          }, [
+            vue.renderSlot(_ctx.$slots, "toggle")
+          ], 10, _hoisted_2$8),
+          vue.createElementVNode(
+            "ul",
+            {
+              class: vue.normalizeClass(["dropdown-menu", { "dropdown-menu-end": $props.alignEnd }])
+            },
+            [
+              vue.renderSlot(_ctx.$slots, "default"),
+              $props.loading ? (vue.openBlock(), vue.createElementBlock("li", _hoisted_3$6, [
+                vue.createElementVNode("span", _hoisted_4$5, [
+                  _cache[0] || (_cache[0] = vue.createElementVNode(
+                    "span",
+                    {
+                      class: "spinner-border spinner-border-sm",
+                      "aria-hidden": "true"
+                    },
+                    null,
+                    -1
+                    /* CACHED */
+                  )),
+                  vue.createElementVNode(
+                    "span",
+                    _hoisted_5$3,
+                    vue.toDisplayString($options.loadingLabel),
+                    1
+                    /* TEXT */
+                  )
+                ])
+              ])) : vue.createCommentVNode("v-if", true),
+              (vue.openBlock(true), vue.createElementBlock(
+                vue.Fragment,
+                null,
+                vue.renderList($options.resolvedEntries, (entry) => {
+                  return vue.openBlock(), vue.createElementBlock(
+                    vue.Fragment,
+                    {
+                      key: entry.id
+                    },
+                    [
+                      entry.html ? vue.withDirectives((vue.openBlock(), vue.createElementBlock("li", {
+                        key: 0,
+                        innerHTML: entry.html
+                      }, null, 8, _hoisted_6$3)), [
+                        [_directive_additions]
+                      ]) : (vue.openBlock(), vue.createElementBlock("li", _hoisted_7$1, [
+                        entry.component ? (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(entry.component), {
+                          key: 0,
+                          context: $props.context
+                        }, null, 8, ["context"])) : entry.divider ? (vue.openBlock(), vue.createElementBlock("hr", _hoisted_8$1)) : entry.icon ? (vue.openBlock(), vue.createElementBlock("a", vue.mergeProps({
+                          key: 2,
+                          ref_for: true
+                        }, entry.htmlOptions, {
+                          href: entry.url || "#",
+                          class: "dropdown-item d-flex align-items-center gap-2",
+                          onClick: ($event) => $options.onEntryClick(entry, $event)
+                        }), [
+                          vue.createElementVNode(
+                            "i",
+                            {
+                              class: vue.normalizeClass("fa fa-" + entry.icon),
+                              "aria-hidden": "true"
+                            },
+                            null,
+                            2
+                            /* CLASS */
+                          ),
+                          vue.createTextVNode(
+                            vue.toDisplayString($options.resolveLabel(entry)),
+                            1
+                            /* TEXT */
+                          )
+                        ], 16, _hoisted_9$1)) : (vue.openBlock(), vue.createElementBlock("a", vue.mergeProps({
+                          key: 3,
+                          ref_for: true
+                        }, entry.htmlOptions, {
+                          href: entry.url || "#",
+                          class: "dropdown-item",
+                          onClick: ($event) => $options.onEntryClick(entry, $event)
+                        }), vue.toDisplayString($options.resolveLabel(entry)), 17, _hoisted_10$1))
+                      ]))
+                    ],
+                    64
+                    /* STABLE_FRAGMENT */
+                  );
+                }),
+                128
+                /* KEYED_FRAGMENT */
+              ))
+            ],
+            2
+            /* CLASS */
+          )
+        ])
+      ],
+      2
+      /* CLASS */
+    );
   }
   const C1 = /* @__PURE__ */ _export_sfc(_sfc_main$c, [["render", _sfc_render$c]]);
   const _sfc_main$b = {
