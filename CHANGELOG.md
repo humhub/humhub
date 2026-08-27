@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.19.0-beta.3 (Unreleased)
 -------------------------------
+- Fix #8417: Top menu keeps the previous entry highlighted after a pjax navigation (since 1.19.0-beta.1)
 - Fix #8412: Applying a UI addition by its id did nothing when it was registered without a selector, and `additions.extend()` with `applyOnInit` threw instead of applying
 - Enh #8411: Removed the `AssetBundle::$defaultDepends` mechanism — a property-name typo kept it from ever running, and activating it makes the core bundle depend on itself, see `docs/develop/module-migrate.md`
 - Fix #8401: Module version migration crash when module versions cannot be determined
