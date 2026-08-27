@@ -43,11 +43,6 @@ class AppAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $defaultDepends = false;
-
-    /**
-     * @inheritdoc
-     */
     public $jsPosition = View::POS_HEAD;
 
     public const BUNDLE_NAME = 'app';

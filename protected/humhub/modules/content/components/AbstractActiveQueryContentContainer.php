@@ -57,11 +57,11 @@ abstract class AbstractActiveQueryContentContainer extends ActiveQuery
     /**
      * Performs a container text search
      *
-     * @param string $keywords
+     * @param string|array|null $keywords
      * @param array|null $fields if empty the fields will be used from the method getSearchableFields()
      * @return self
      */
-    public function search(string $keywords, ?array $fields = null): ActiveQuery
+    public function search(string|array|null $keywords, ?array $fields = null): ActiveQuery
     {
         if (empty($keywords)) {
             return $this;

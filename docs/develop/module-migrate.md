@@ -370,6 +370,17 @@ Each minor release line has its own file with the breaking changes, new APIs and
     call like `$menuLink->setIcon('user', true)` keeps "succeeding" but the icon is no longer
     right-aligned — audit every `->setIcon(...)` call that passes a second argument and call
     `->getLink()->right()` explicitly if right-alignment is still needed.
+- **Removed** `humhub\components\assets\AssetBundle::$defaultDepends` (unused by any known module).
+  It promised that a bundle implicitly depends on `CoreBundleAsset` without listing it in
+  `$depends`, but the code applying it read a misspelled property (`dependsDefault`) and has
+  therefore never run since it was added in 1.5 (#3941). It also cannot be repaired as written:
+  with the property name corrected, every bundle inside `CoreBundleAsset`'s own dependency tree
+  depends on it and Yii aborts the request with `A circular dependency is detected for bundle
+  'humhub\assets\CoreBundleAsset'`. A bundle needing the core bundle lists it in `$depends`
+  itself, which is what bundles have been doing all along. The `public $defaultDepends = false;`
+  opt-out in core bundles is gone with it; a module declaring the property keeps working (it
+  becomes an unused own property), but a bundle **configured** with `'defaultDepends' => ...`
+  now fails with `Setting unknown property`.
 
 ## Released versions
 
