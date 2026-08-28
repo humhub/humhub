@@ -11,6 +11,7 @@ HumHub Changelog
 - Fix #8404: Remove deprecated function `curl_close()`
 - Fix #8415: A user picker or space picker request without a `keyword` parameter crashes with a `TypeError`
 - Enh: Add a space between at the top of the card icons (in the card header)
+- Enh: Customize Bootstrap through its Sass variables in `variables.scss` instead of redeclaring the generated `--bs-*` CSS variables in the component SCSS files (buttons, badges, dropdowns, list groups, navs, popovers, progress bars, tables and tooltips)
 
 1.19.0-beta.2 (August 19, 2026)
 -------------------------------
