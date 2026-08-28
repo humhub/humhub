@@ -14,11 +14,6 @@ class CoreExtensionAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $defaultDepends = false;
-
-    /**
-     * @inheritdoc
-     */
     public $js = [
 
         'js/humhub/humhub.ui.form.elements.js',

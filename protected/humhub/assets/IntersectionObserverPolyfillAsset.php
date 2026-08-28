@@ -21,11 +21,6 @@ class IntersectionObserverPolyfillAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $defaultDepends = false;
-
-    /**
-     * @inheritdoc
-     */
     public $defer = false;
 
     /**

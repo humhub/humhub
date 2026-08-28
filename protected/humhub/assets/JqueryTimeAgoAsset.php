@@ -21,11 +21,6 @@ class JqueryTimeAgoAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $defaultDepends = false;
-
-    /**
-     * @inheritdoc
-     */
     public $defer = false;
 
     /**
