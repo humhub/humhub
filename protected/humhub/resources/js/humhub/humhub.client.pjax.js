@@ -3,6 +3,23 @@ humhub.module('client.pjax', function (module, require, $) {
 
     var PJAX_CONTAINER_SELECTOR = '#layout-content';
 
+    // Most layouts that use PJAX_CONTAINER_SELECTOR (space, profile,
+    // dashboard, notification, ...) already mark their real content area
+    // with this class, right next to .layout-nav-container /
+    // .layout-sidebar-container. manageFocus() checks for it before falling
+    // back to diffing the tree - see there for why.
+    var LAYOUT_CONTENT_SELECTOR = '.layout-content-container';
+
+    // Constants used by manageFocus()'s content-diffing helpers further
+    // below. Unlike those helpers, these are pulled up to module scope so
+    // they're not recreated on every pjax navigation - they don't depend on
+    // anything local to a single call, so there's nothing to gain from
+    // keeping them nested next to the functions that use them.
+    var NOISE_TAGS = ['SCRIPT', 'LINK', 'STYLE', 'META', 'NOSCRIPT'];
+    var AUTO_ID_TOKEN_PATTERN = /\bh\d+w\d+/g;
+    var DIFF_MAX_ELEMENTS = 8000;
+    var DIFF_MAX_DEPTH = 25;
+
     var init = function () {
         if (module.config.active) {
             $(document).pjax('a:not([data-pjax-prevent],[target],[data-bs-target],[data-bs-toggle],.exclude-from-pjax-client a)', PJAX_CONTAINER_SELECTOR, module.config.options);
@@ -34,13 +51,27 @@ humhub.module('client.pjax', function (module, require, $) {
                 return false;
             }
 
-            captureFocusSnapshot();
-
             event.trigger('humhub:modules:client:pjax:beforeSend', {
                 'originalEvent': evt,
                 'xhr': xhr,
                 'options': options
             });
+        });
+
+        // captureFocusSnapshot()/manageFocus() are hooked to beforeReplace/end
+        // rather than beforeSend/success so cached browser back/forward
+        // navigation is covered too: on a cache hit pjax restores the
+        // container straight from its history cache and only ever fires
+        // beforeReplace/end - beforeSend/success never happen (see the
+        // popstate handler in jquery.pjax.modified.js). Both events fire on
+        // the normal request path as well (right before/after the container
+        // is swapped), so this one pair covers both cases.
+        $(document).on("pjax:beforeReplace", function (evt, contents, options) {
+            captureFocusSnapshot();
+        });
+
+        $(document).on("pjax:end", function (evt, xhr, options) {
+            manageFocus();
         });
 
         $(document).on("pjax:success", function (evt, data, status, xhr, options) {
@@ -56,8 +87,6 @@ humhub.module('client.pjax', function (module, require, $) {
             $.ajaxSetup({
                 url: window.location.href
             });
-
-            manageFocus();
         });
 
         $.ajaxPrefilter('html', function (options, originalOptions, jqXHR) {
@@ -99,19 +128,31 @@ humhub.module('client.pjax', function (module, require, $) {
          * has nothing unchanged left to skip past - that's the landing point.
          */
         function findContentTarget(oldRoot, newRoot) {
+            // An element hidden via Bootstrap's .d-none, an unopened
+            // .collapse, the "hidden" attribute, or an inline display:none
+            // can never be a real focus target, and its presence/absence (or
+            // its markup changing while it stays hidden - e.g. an
+            // upload-progress indicator that only fills in once used) would
+            // otherwise misalign the old/new comparison. getComputedStyle()
+            // isn't used here: oldRoot and every node normalize() compares
+            // (below) are detached clones, and computed style resolution for
+            // a detached node isn't reliable across browsers.
+            var isHiddenElement = function (el) {
+                return el.classList.contains('d-none')
+                    || (el.classList.contains('collapse') && !el.classList.contains('show'))
+                    || el.hidden
+                    || el.style.display === 'none';
+            };
+
             var significantChildren = function (node) {
                 if (!node) {
                     return [];
                 }
                 // Yii injects these inline wherever assets get registered; their
                 // count and position vary per page and would break positional
-                // comparison. Hidden (.d-none) elements - e.g. a toast/template
-                // placeholder that isn't part of every page - are skipped too:
-                // they can never be a real focus target, and their presence or
-                // absence would otherwise misalign the old/new comparison.
-                var NOISE_TAGS = {SCRIPT: true, LINK: true, STYLE: true, META: true, NOSCRIPT: true};
+                // comparison.
                 return Array.prototype.filter.call(node.children, function (el) {
-                    return !NOISE_TAGS[el.tagName] && !el.classList.contains('d-none');
+                    return NOISE_TAGS.indexOf(el.tagName) === -1 && !isHiddenElement(el);
                 });
             };
 
@@ -124,22 +165,39 @@ humhub.module('client.pjax', function (module, require, $) {
                 // can reference it too - so we strip the bare token everywhere,
                 // not just from id="...". No trailing \b: Yii sometimes appends a
                 // suffix straight after the digits (id="h778195w33_progress").
-                var AUTO_ID_TOKEN_PATTERN = /\bh\d+w\d+/g;
+                // AUTO_ID_TOKEN_PATTERN is declared at module scope, above.
 
-                // A hidden (.d-none) descendant - e.g. an upload-progress
-                // indicator whose markup only appears once it's actually used -
-                // can differ between renders without the visible content having
-                // changed at all. It's dropped (on a clone, so the live DOM is
-                // untouched) before comparing, same as significantChildren()
-                // drops a hidden child from the comparison entirely.
+                // Hidden descendants are dropped (on a clone, so the live
+                // DOM is untouched) before comparing, same as
+                // significantChildren() drops a hidden child from the
+                // comparison entirely - see isHiddenElement() above for what
+                // counts as hidden.
                 var normalize = function (el) {
                     var clone = el.cloneNode(true);
-                    var hidden = clone.querySelectorAll('.d-none');
+
+                    var hidden = Array.prototype.filter.call(clone.querySelectorAll('*'), isHiddenElement);
                     for (var i = 0; i < hidden.length; i++) {
                         if (hidden[i].parentNode) {
                             hidden[i].parentNode.removeChild(hidden[i]);
                         }
                     }
+
+                    // Menu widgets (e.g. the space menu) add the "active"
+                    // class purely based on which link matches the current
+                    // URL - the menu itself hasn't changed. Without this, two
+                    // renders of the exact same space menu compare as
+                    // "changed" whenever navigation crosses from one section
+                    // to another (Home -> Wiki, ...), because a different
+                    // link is marked active each time - defeating the whole
+                    // point of skipping past an unchanged menu.
+                    var activeEls = clone.querySelectorAll('.active');
+                    for (var j = 0; j < activeEls.length; j++) {
+                        activeEls[j].classList.remove('active');
+                    }
+                    if (clone.classList) {
+                        clone.classList.remove('active');
+                    }
+
                     return clone.outerHTML.replace(AUTO_ID_TOKEN_PATTERN, '');
                 };
 
@@ -150,10 +208,8 @@ humhub.module('client.pjax', function (module, require, $) {
                 return node.querySelectorAll('*').length;
             };
 
-            // Safety limits against pathological pages.
-            var DIFF_MAX_ELEMENTS = 8000;
-            var DIFF_MAX_DEPTH = 25;
-
+            // DIFF_MAX_ELEMENTS/DIFF_MAX_DEPTH (safety limits against
+            // pathological pages) are declared at module scope, above.
             if (!newRoot || countElements(newRoot) > DIFF_MAX_ELEMENTS) {
                 return null;
             }
@@ -219,12 +275,27 @@ humhub.module('client.pjax', function (module, require, $) {
         }
 
         var activeElement = document.activeElement;
+
+        // The swap can happen while a modal is open in the background (e.g.
+        // triggered by humhub.modules.client.reload()) - #globalModal lives
+        // outside PJAX_CONTAINER_SELECTOR, so container.contains() below
+        // wouldn't see it and we'd steal focus right out of an open dialog.
+        if (activeElement && activeElement.closest('.modal.show')) {
+            return;
+        }
+
         if (activeElement && activeElement !== document.body && container.contains(activeElement)) {
             // The new content already manages focus itself, don't interfere.
             return;
         }
 
-        var target = findContentTarget(snapshot, container) || container;
+        // When present, LAYOUT_CONTENT_SELECTOR (declared at module scope,
+        // above) is a cheaper and more reliable signal than diffing the tree
+        // below, so it takes priority; findContentTarget() remains the
+        // fallback for content that doesn't follow this convention.
+        var target = container.querySelector(LAYOUT_CONTENT_SELECTOR)
+            || findContentTarget(snapshot, container)
+            || container;
 
         // The target is not part of the natural tab order (tabindex="-1"),
         // it's only used as a programmatic focus target.
