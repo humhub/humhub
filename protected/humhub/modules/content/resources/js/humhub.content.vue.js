@@ -76,6 +76,14 @@
       }
     },
     methods: {
+      /**
+       * Opens this menu, at the pointer when handed a mouse event — see
+       * `DropdownMenu.open()`. A host that raises the menu from its own `@contextmenu`
+       * handler needs this, since the toggle it would otherwise click lives in here.
+       */
+      open(event = null) {
+        this.$refs.menu.open(event);
+      },
       load() {
         if (this.loaded || this.loading) {
           return;
@@ -104,6 +112,7 @@
   function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_DropdownMenu = vue.resolveComponent("DropdownMenu");
     return vue.openBlock(), vue.createBlock(_component_DropdownMenu, {
+      ref: "menu",
       "toggle-aria-label": $options.resolvedToggleLabel,
       "toggle-class": $props.toggleClass,
       "root-class": $props.rootClass,

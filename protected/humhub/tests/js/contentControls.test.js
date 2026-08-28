@@ -226,4 +226,20 @@ describe('ContentControls', () => {
 
         vueModule.removeMenuEntry('content.controls', 'report');
     });
+
+    /**
+     * A host that raises this menu from its own row (a right-click) cannot reach the toggle
+     * itself, so `open()` has to be reachable from the outside — and has to land on the
+     * DropdownMenu inside, pointer position included.
+     */
+    it('forwards open() to the menu inside, so a host can raise it from a right-click', () => {
+        const wrapper = mount(ContentControls, { props: { contentId: 42 } });
+        const menu = wrapper.findComponent(DropdownMenu);
+        const spy = vi.spyOn(menu.vm, 'open').mockImplementation(() => {});
+        const event = { clientX: 30, clientY: 60 };
+
+        wrapper.vm.open(event);
+
+        expect(spy).toHaveBeenCalledWith(event);
+    });
 });

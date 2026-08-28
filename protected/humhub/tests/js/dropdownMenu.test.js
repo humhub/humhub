@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { config, mount } from '@vue/test-utils';
 import DropdownMenu from '../../vue/DropdownMenu.vue';
 
@@ -550,6 +550,173 @@ describe('DropdownMenu', () => {
             expect(items).toHaveLength(1);
             expect(items[0].text()).toBe('Native share');
             expect(items[0].attributes('href')).toBe('#');
+        });
+    });
+
+    /**
+     * `open()` is how a host raises this menu from outside its own toggle — a right-click on
+     * the row the menu belongs to. Bootstrap is stubbed here: what matters is the `reference`
+     * this component hands it, not Popper's arithmetic.
+     */
+    describe('open()', () => {
+        class DropdownStub {
+            static instances = new Map();
+
+            static getInstance(element) {
+                return DropdownStub.instances.get(element) || null;
+            }
+
+            constructor(element, config = {}) {
+                this.element = element;
+                this.config = config;
+                this.shows = 0;
+                this.hides = 0;
+                this.disposed = false;
+                DropdownStub.instances.set(element, this);
+            }
+
+            show() {
+                this.shows += 1;
+                this.element.dispatchEvent(new Event('show.bs.dropdown'));
+            }
+
+            hide() {
+                this.hides += 1;
+                this.element.dispatchEvent(new Event('hidden.bs.dropdown'));
+            }
+
+            dispose() {
+                this.disposed = true;
+                DropdownStub.instances.delete(this.element);
+            }
+        }
+
+        const mountMenu = () => mount(DropdownMenu, { props: { toggleAriaLabel: 'Toggle menu' } });
+        const instanceOf = (wrapper) => DropdownStub.getInstance(wrapper.find('a[data-bs-toggle="dropdown"]').element);
+
+        beforeEach(() => {
+            DropdownStub.instances = new Map();
+            globalThis.bootstrap = { Dropdown: DropdownStub };
+        });
+
+        afterEach(() => {
+            delete globalThis.bootstrap;
+        });
+
+        it('opens at the pointer when handed a mouse event', () => {
+            const wrapper = mountMenu();
+
+            wrapper.vm.open({ clientX: 120, clientY: 40 });
+
+            const dropdown = instanceOf(wrapper);
+            expect(dropdown.shows).toBe(1);
+            // Popper's virtual-element convention: a zero-size rect where the cursor is.
+            expect(dropdown.config.reference.getBoundingClientRect()).toEqual({
+                width: 0, height: 0, top: 40, right: 120, bottom: 40, left: 120, x: 120, y: 40,
+            });
+        });
+
+        it('opens under the toggle when handed no event', () => {
+            const wrapper = mountMenu();
+            const toggle = wrapper.find('a[data-bs-toggle="dropdown"]').element;
+            const toggleRect = { width: 20, height: 20, top: 5, right: 25, bottom: 25, left: 5, x: 5, y: 5 };
+            toggle.getBoundingClientRect = () => toggleRect;
+
+            wrapper.vm.open();
+
+            expect(instanceOf(wrapper).config.reference.getBoundingClientRect()).toBe(toggleRect);
+        });
+
+        it('forces a context-menu placement only while pointer-opened', () => {
+            const wrapper = mountMenu();
+
+            wrapper.vm.open({ clientX: 10, clientY: 10 });
+
+            const { popperConfig } = instanceOf(wrapper).config;
+            const defaults = { placement: 'bottom-end', modifiers: [] };
+            expect(popperConfig(undefined, defaults).placement).toBe('bottom-start');
+
+            // Closed again, the menu is back to whatever alignEnd asked for.
+            instanceOf(wrapper).hide();
+            expect(popperConfig(undefined, defaults)).toBe(defaults);
+        });
+
+        it('repositions an already-open menu instead of being ignored by Bootstrap', () => {
+            const wrapper = mountMenu();
+
+            wrapper.vm.open({ clientX: 10, clientY: 10 });
+            wrapper.vm.open({ clientX: 200, clientY: 90 });
+
+            const dropdown = instanceOf(wrapper);
+            expect(dropdown.hides).toBe(1);
+            expect(dropdown.shows).toBe(2);
+            expect(dropdown.config.reference.getBoundingClientRect().left).toBe(200);
+        });
+
+        it('goes back to the toggle once the menu is closed', () => {
+            const wrapper = mountMenu();
+            const toggle = wrapper.find('a[data-bs-toggle="dropdown"]').element;
+            toggle.getBoundingClientRect = () => ({ left: 5, top: 5 });
+
+            wrapper.vm.open({ clientX: 120, clientY: 40 });
+            instanceOf(wrapper).hide();
+
+            expect(instanceOf(wrapper).config.reference.getBoundingClientRect().left).toBe(5);
+        });
+
+        it('replaces an instance the data-api created, which cannot be re-pointed', () => {
+            const wrapper = mountMenu();
+            const toggle = wrapper.find('a[data-bs-toggle="dropdown"]').element;
+            const fromDataApi = new DropdownStub(toggle);
+
+            wrapper.vm.open({ clientX: 1, clientY: 2 });
+
+            expect(fromDataApi.disposed).toBe(true);
+            expect(instanceOf(wrapper)).not.toBe(fromDataApi);
+        });
+
+        it('reuses its own instance across opens', () => {
+            const wrapper = mountMenu();
+
+            wrapper.vm.open({ clientX: 1, clientY: 2 });
+            const first = instanceOf(wrapper);
+            instanceOf(wrapper).hide();
+            wrapper.vm.open({ clientX: 3, clientY: 4 });
+
+            expect(instanceOf(wrapper)).toBe(first);
+            expect(first.disposed).toBe(false);
+        });
+
+        it('disposes its instance on unmount, so Bootstrap does not keep the element alive', () => {
+            const wrapper = mountMenu();
+            wrapper.vm.open({ clientX: 1, clientY: 2 });
+            const dropdown = instanceOf(wrapper);
+
+            wrapper.unmount();
+
+            expect(dropdown.disposed).toBe(true);
+        });
+
+        it('emits open for the consumer to lazy-load on, exactly as a toggle click does', () => {
+            const wrapper = mountMenu();
+
+            wrapper.vm.open({ clientX: 1, clientY: 2 });
+
+            expect(wrapper.emitted('open')).toHaveLength(1);
+        });
+
+        it('falls back to clicking the toggle when Bootstrap is not around', () => {
+            delete globalThis.bootstrap;
+            const wrapper = mountMenu();
+            const toggle = wrapper.find('a[data-bs-toggle="dropdown"]').element;
+            let clicks = 0;
+            toggle.addEventListener('click', () => { clicks += 1; });
+
+            wrapper.vm.open({ clientX: 1, clientY: 2 });
+
+            // Without Bootstrap there is no menu state to inspect and no positioning to be
+            // had — the toggle's own click is all that is left, and it must still happen.
+            expect(clicks).toBe(1);
         });
     });
 });

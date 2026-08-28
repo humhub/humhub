@@ -1,5 +1,6 @@
 <template>
     <DropdownMenu
+        ref="menu"
         :toggle-aria-label="resolvedToggleLabel"
         :toggle-class="toggleClass"
         :root-class="rootClass"
@@ -124,6 +125,14 @@ export default {
         },
     },
     methods: {
+        /**
+         * Opens this menu, at the pointer when handed a mouse event — see
+         * `DropdownMenu.open()`. A host that raises the menu from its own `@contextmenu`
+         * handler needs this, since the toggle it would otherwise click lives in here.
+         */
+        open(event = null) {
+            this.$refs.menu.open(event);
+        },
         load() {
             if (this.loaded || this.loading) {
                 return;

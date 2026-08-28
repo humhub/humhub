@@ -160,6 +160,14 @@
  * `divider` renders an `<hr class="dropdown-divider">`, the client-side
  * counterpart of `humhub\modules\ui\menu\DropdownDivider`.
  *
+ * ## Opening it from the host
+ *
+ * `open(event)` is a public method for hosts that raise this menu from somewhere other than
+ * its own toggle — a right-click on the row the menu belongs to being the whole reason it
+ * exists. Handed a mouse event it opens AT the pointer, so a list of Vue-rendered rows gets
+ * the context menus the platform's legacy `$.fn.contextMenu` gave server-rendered ones. See
+ * the method's own docblock.
+ *
  * See docs/develop/ui-js-vuejs-extensions.md, "Menu entries", for the full
  * entry shape and worked examples.
  *
@@ -218,11 +226,23 @@ export default {
     // can load menu content on demand instead of up front - Bootstrap's own
     // `show.bs.dropdown` is the signal, since toggling is Bootstrap-owned (see the docblock).
     emits: ['open'],
+    created() {
+        // Deliberately not reactive state: nothing in the template depends on either, and a
+        // menu that repositions itself does not need to re-render to do it.
+        this.pointerPosition = null;
+        this.ownDropdown = null;
+        this.shown = false;
+    },
     mounted() {
         this.$refs.toggle.addEventListener('show.bs.dropdown', this.onShow);
+        this.$refs.toggle.addEventListener('hidden.bs.dropdown', this.onHidden);
     },
     beforeUnmount() {
         this.$refs.toggle.removeEventListener('show.bs.dropdown', this.onShow);
+        this.$refs.toggle.removeEventListener('hidden.bs.dropdown', this.onHidden);
+        // Bootstrap keeps its instances in a map keyed by element, so one whose element is
+        // removed without being disposed keeps both the entry and its Popper alive.
+        this.disposeOwnDropdown();
     },
     computed: {
         loadingLabel() {
@@ -270,8 +290,113 @@ export default {
         },
     },
     methods: {
+        /**
+         * Opens this menu — at the pointer when handed a mouse event, under the toggle
+         * otherwise.
+         *
+         * The pointer case is what a host's `@contextmenu` handler wants: a right-click
+         * anywhere on a row should raise that row's menu where the cursor is, which is what
+         * the platform's legacy `$.fn.contextMenu` did for server-rendered lists (see
+         * `humhub.ui.additions.js`). Hosts stay out of Bootstrap and out of positioning:
+         *
+         * ```html
+         * <div @contextmenu.prevent="$refs.menu.open($event)">
+         *     <DropdownMenu ref="menu" … />
+         * </div>
+         * ```
+         *
+         * Leave the argument off to open the menu as a click on the toggle would.
+         */
+        open(event = null) {
+            const dropdown = this.dropdown();
+
+            if (!dropdown) {
+                // No Bootstrap around (a test harness, a stripped build): the toggle still
+                // opens the menu, just not at the pointer.
+                this.$refs.toggle.click();
+                return;
+            }
+
+            // Bootstrap ignores show() on an already-open menu, so a second right-click
+            // somewhere else on the same row would otherwise leave the menu where it was.
+            if (this.shown) {
+                dropdown.hide();
+            }
+
+            // After hide(), whose `hidden` event resets it.
+            this.pointerPosition = event ? { x: event.clientX, y: event.clientY } : null;
+
+            dropdown.show();
+        },
+        /**
+         * This menu's Bootstrap dropdown, positioned against {@link referenceRect}.
+         *
+         * Owned here rather than left to Bootstrap's data-api, because only an instance we
+         * created can be given a `reference` — and that same instance goes on serving plain
+         * clicks on the toggle, which is why the reference falls back to the toggle's own box.
+         *
+         * @return {?object} null when Bootstrap is not available
+         */
+        dropdown() {
+            const Dropdown = typeof bootstrap === 'undefined' ? null : bootstrap.Dropdown;
+
+            if (!Dropdown) {
+                return null;
+            }
+
+            const toggle = this.$refs.toggle;
+            const current = Dropdown.getInstance(toggle);
+
+            if (current && current === this.ownDropdown) {
+                return current;
+            }
+
+            // A default instance the data-api created on an earlier plain click is bound to
+            // the toggle as its reference and cannot be re-pointed after the fact.
+            if (current) {
+                current.dispose();
+            }
+
+            this.ownDropdown = new Dropdown(toggle, {
+                reference: { getBoundingClientRect: this.referenceRect },
+                // A context menu opens down and to the right of the cursor, whatever
+                // `alignEnd` says about where the menu sits under its toggle.
+                popperConfig: (_unused, defaults) => (this.pointerPosition
+                    ? { ...defaults, placement: 'bottom-start' }
+                    : defaults),
+            });
+
+            return this.ownDropdown;
+        },
+        /**
+         * The box Popper positions the menu against: a zero-size rect at the pointer while a
+         * pointer-opened menu is up (Popper's virtual-element convention), and the toggle's
+         * own box the rest of the time.
+         */
+        referenceRect() {
+            if (!this.pointerPosition) {
+                return this.$refs.toggle.getBoundingClientRect();
+            }
+
+            const { x, y } = this.pointerPosition;
+
+            return { width: 0, height: 0, top: y, right: x, bottom: y, left: x, x, y };
+        },
+        disposeOwnDropdown() {
+            if (this.ownDropdown) {
+                this.ownDropdown.dispose();
+                this.ownDropdown = null;
+            }
+        },
         onShow() {
+            this.shown = true;
             this.$emit('open');
+        },
+        onHidden() {
+            this.shown = false;
+            // Back to the toggle for the next open, so a plain click on the ⋮ after a
+            // right-click does not reuse a stale cursor position.
+            this.pointerPosition = null;
         },
         resolveLabel(entry) {
             return typeof entry.label === 'function' ? entry.label(this.context) : entry.label;

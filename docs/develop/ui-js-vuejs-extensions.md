@@ -117,6 +117,26 @@ that menu, and it merges **three** sources:
 />
 ```
 
+**Right-click.** A row that owns a `ContentControls` can raise it where the cursor is, which
+is what the legacy `$.fn.contextMenu` did for server-rendered lists:
+
+```html
+<div class="row" @contextmenu="onContextMenu">
+    <ContentControls ref="controls" :content-id="item.contentId" … />
+</div>
+```
+
+```js
+onContextMenu(event) {
+    // Ctrl+right-click stays the browser's, as it always was.
+    if (event.ctrlKey || event.target.closest('.dropdown-menu')) {
+        return;
+    }
+    event.preventDefault();
+    this.$refs.controls.open(event);
+}
+```
+
 **Describing a server entry.** `humhub\modules\ui\menu\MenuEntry::describe()` returns the
 descriptor for an entry, or `null` when the entry can only be rendered. `MenuLink` and
 `DropdownDivider` describe themselves; a `WidgetMenuEntry` delegates to its widget when that

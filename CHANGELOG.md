@@ -15,6 +15,8 @@ HumHub Changelog
 - Enh #8403: Added a `JavaScript Tests` CI workflow (vitest plus a rebuild check that fails on a stale committed Vue artifact) and `grunt build-vue --module=all` to rebuild every artifact at once
 - Enh #8403: The activity box is a Vue island on the new `/api/v2/activity` endpoint, including live updates; the legacy `humhub.activity.js` and its custom scrollbar are gone
 - Enh #8403: The space menu is a Vue island on the new general `/api/v2/space` endpoints; its list is paginated and searched server-side, and the legacy `humhub.space.chooser.js` is gone
+- Enh #8403: Added the `ContentControls` island — a content record's context menu for a module's own Vue list, merging the resolved `WallEntryControls` stack (`GET /api/v2/content/<id>/controls`) with the host's own entries and the client registry; menu entries describe themselves through `humhub\modules\ui\menu\MenuEntry::describe()`/`DescribableWidget`, so a module contributing a control link keeps working unchanged
+- Enh #8403: `DropdownMenu` can be opened by its host with `open(event)`, at the pointer when handed a mouse event, which is what gives a Vue-rendered list the right-click context menus the legacy `$.fn.contextMenu` gave server-rendered ones
 
 1.19.0-beta.3 (Unreleased)
 -------------------------------
