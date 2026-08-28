@@ -218,6 +218,20 @@ that is a dropdown item belongs to the menu, not the row.
 
 The files module's `resources/css/cfiles.css` is the worked example for the first two.
 
+### The like link in your own list
+
+`<LikeButton>` (`LikeVueAsset`) is the platform's own like link, and a migrated list should
+render it rather than reimplement one. It takes a `recordId` — the platform-wide record id from
+`humhub\models\RecordMap`, NOT a content id — and, optionally, `likeCount`/`currentUserLiked`.
+Pass those two and the button renders complete without a request; leave them off and every row
+fetches its own state.
+
+Serialize them for the whole page rather than per row: `LikeSerializer::statesForRecords()`
+answers a page in two grouped queries, keyed by record id. The state is per caller, so it
+belongs in its own section of a listing payload, not inside rows that want to stay
+caller-neutral (see [HTTP API framework](concept-api.md)) — the files module's file browser is
+the worked example.
+
 ### Menu entries vs. extension slots
 
 Both let a module hook into a host component without forking its template, but they solve different problems:
