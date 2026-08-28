@@ -601,6 +601,20 @@
           this._fields.splice(index, 1);
         }
       },
+      /**
+       * Focuses this form's first focusable field — what a form opened in a dialog wants on
+       * the modal's `opened`, so the user can start typing without reaching for the mouse.
+       *
+       * Fields register on mount, so "first" is the first one in the template, which is the
+       * first one the user sees. A field without a `focus()` method is skipped rather than
+       * ending the search.
+       */
+      focusFirstField() {
+        const entry = this._fields.find((field) => typeof field.instance.focus === "function");
+        if (entry) {
+          entry.instance.focus();
+        }
+      },
       focusFirstError() {
         const entry = this._fields.find((field) => {
           const messages = this.errors[field.attribute];

@@ -115,6 +115,39 @@ describe('HumHubForm', () => {
         });
     });
 
+    describe('focusFirstField()', () => {
+        it('focuses the first field in template order — what a form in a dialog wants on open', () => {
+            const wrapper = mountForm({}, [
+                h(TextField, { attribute: 'title', modelValue: '' }),
+                h(TextField, { attribute: 'body', modelValue: '' }),
+            ], { attachTo: document.body });
+
+            wrapper.vm.focusFirstField();
+
+            const titleInput = wrapper.findAll('input').find((input) => input.attributes('name') === 'title');
+            expect(titleInput.element).toBe(document.activeElement);
+            wrapper.unmount();
+        });
+
+        it('skips a field that cannot take focus rather than giving up', () => {
+            const Unfocusable = { props: ['attribute'], inject: { humhubForm: { default: null } }, mounted() { this.humhubForm.registerField(this.attribute, this); }, render: () => null };
+            const wrapper = mountForm({}, [
+                h(Unfocusable, { attribute: 'first' }),
+                h(TextField, { attribute: 'title', modelValue: '' }),
+            ], { attachTo: document.body });
+
+            wrapper.vm.focusFirstField();
+
+            expect(wrapper.find('input').element).toBe(document.activeElement);
+            wrapper.unmount();
+        });
+
+        it('is a no-op on a form with no fields', () => {
+            const wrapper = mountForm({}, []);
+            expect(() => wrapper.vm.focusFirstField()).not.toThrow();
+        });
+    });
+
     describe('focusFirstError()', () => {
         it('focuses the first-REGISTERED erroring field, not the first key in the errors object', () => {
             // Focus only ever moves document.activeElement for an element actually

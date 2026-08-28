@@ -19,7 +19,7 @@ All components below are top-level in `protected/humhub/vue/` and therefore auto
 
 | Component | Purpose | Key props | Emits / exposes |
 |---|---|---|---|
-| `HumHubForm` | Form root: renders `<form>`, provides context | `modelName` (String), `busy` (Boolean) | emits `submit`; exposes `setErrors()`, `clearErrors()`, `focusFirstError()` |
+| `HumHubForm` | Form root: renders `<form>`, provides context | `modelName` (String), `busy` (Boolean) | emits `submit`; exposes `setErrors()`, `clearErrors()`, `focusFirstError()`, `focusFirstField()` |
 | `TextField` | Single-line input | `attribute`*, `label`, `hint`, `placeholder`, `required`, `disabled`, `modelValue`, `type` (`text`/`email`/`password`/`number`, default `text`) | `update:modelValue` |
 | `TextareaField` | Multi-line input | same as `TextField` + `rows` (default 4) | `update:modelValue` |
 | `CheckboxField` | Checkbox | `attribute`*, `label`, `hint`, `required`, `disabled`, `modelValue` (Boolean) | `update:modelValue` |
