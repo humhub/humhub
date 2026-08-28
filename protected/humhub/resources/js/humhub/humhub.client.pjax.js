@@ -60,17 +60,30 @@ humhub.module('client.pjax', function (module, require, $) {
 
         // captureFocusSnapshot()/manageFocus() are hooked to beforeReplace/end
         // rather than beforeSend/success so cached browser back/forward
-        // navigation is covered too: on a cache hit pjax restores the
+        // navigation is covered too (defensively - HumHub actually runs pjax
+        // with cache disabled via PjaxLayoutContent, so today this only ever
+        // matters if that's ever turned on): on a cache hit pjax restores the
         // container straight from its history cache and only ever fires
         // beforeReplace/end - beforeSend/success never happen (see the
         // popstate handler in jquery.pjax.modified.js). Both events fire on
         // the normal request path as well (right before/after the container
         // is swapped), so this one pair covers both cases.
+        //
+        // Both handlers bubble up from whichever pjax container fired them,
+        // not just ours - a module can nest its own Pjax::begin() (e.g. a
+        // GridView), and without this check its paging/sorting would run our
+        // focus logic against #layout-content instead of leaving it alone.
         $(document).on("pjax:beforeReplace", function (evt, contents, options) {
+            if (!options || options.container !== PJAX_CONTAINER_SELECTOR) {
+                return;
+            }
             captureFocusSnapshot();
         });
 
         $(document).on("pjax:end", function (evt, xhr, options) {
+            if (!options || options.container !== PJAX_CONTAINER_SELECTOR) {
+                return;
+            }
             manageFocus();
         });
 
@@ -108,8 +121,31 @@ humhub.module('client.pjax', function (module, require, $) {
     // findContentTarget() can tell changed content from a persisting menu.
     var beforeSnapshot = null;
 
+    // pjax:end also fires for a request that never replaced anything - pjax
+    // aborts the in-flight request itself on a new navigation or a
+    // popstate, and options.complete() (which fires pjax:end) runs on abort
+    // and error too, not just success. manageFocus() only has a real swap to
+    // react to when captureFocusSnapshot() actually ran for it first.
+    var swapPending = false;
+
     var captureFocusSnapshot = function () {
+        swapPending = true;
+
         var container = document.querySelector(PJAX_CONTAINER_SELECTOR);
+
+        // Skip the deep clone below - the expensive part of this whole
+        // mechanism - when manageFocus()'s fast path is going to win anyway.
+        // The current container already having LAYOUT_CONTENT_SELECTOR is a
+        // reasonable proxy for the swapped-in content having it too:
+        // navigation rarely crosses between a layout that marks its content
+        // area this way and one that doesn't. If it does, the only cost is
+        // manageFocus() falling back to a less precise target, same as when
+        // no snapshot is available at all (e.g. the very first navigation).
+        if (container && container.querySelector(LAYOUT_CONTENT_SELECTOR)) {
+            beforeSnapshot = null;
+            return;
+        }
+
         beforeSnapshot = container ? container.cloneNode(true) : null;
     };
 
@@ -266,6 +302,14 @@ humhub.module('client.pjax', function (module, require, $) {
             return currentNew;
         }
 
+        if (!swapPending) {
+            // pjax:end without a preceding beforeReplace for our container -
+            // nothing was actually swapped (aborted/errored request), so
+            // there's no new content to move focus into.
+            return;
+        }
+        swapPending = false;
+
         var container = document.querySelector(PJAX_CONTAINER_SELECTOR);
         var snapshot = beforeSnapshot;
         beforeSnapshot = null; // only ever needed for this one comparison
@@ -280,7 +324,10 @@ humhub.module('client.pjax', function (module, require, $) {
         // triggered by humhub.modules.client.reload()) - #globalModal lives
         // outside PJAX_CONTAINER_SELECTOR, so container.contains() below
         // wouldn't see it and we'd steal focus right out of an open dialog.
-        if (activeElement && activeElement.closest('.modal.show')) {
+        // Checked from the document rather than activeElement.closest(): if
+        // focus had already fallen to <body> while the modal was open,
+        // closest() on <body> would find nothing and miss it.
+        if (document.querySelector('.modal.show')) {
             return;
         }
 
