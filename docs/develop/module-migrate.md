@@ -6,6 +6,18 @@ Each minor release line has its own file with the breaking changes, new APIs and
 
 ## Unreleased
 
+- Only one Select2 build is served now. `kartik\select2\Select2Asset` is emptied through the
+  asset manager configuration and depends on `humhub\assets\Select2Asset` instead, so Krajee
+  widgets (`kartik\select2\Select2` and subclasses such as `humhub\modules\ui\form\widgets\IconPicker`)
+  no longer publish their own copy from the `select2/select2` package. Modules using such a widget
+  now get the core Select2 version (4.0) instead of the one that package resolves to (4.1) — check
+  for usages of Select2 4.1-only options, DOM or CSS classes.
+  **A module must never register a Select2 build of its own** — always depend on
+  `humhub\assets\Select2Asset`. A second build replaces `$.fn.select2.amd` while `$.fn.select2`
+  keeps running the first one, so the two disagree: the core dropdown addition resolves its
+  dropdown adapter from that registry and would be handed classes from the foreign version,
+  which breaks every `data-ui-select2` dropdown on the page. For the same reason, do not resolve
+  Select2 internals from `$.fn.select2.amd` in module JS.
 - Added `humhub\modules\content\models\Content::EVENT_BEFORE_HARD_DELETE` (`ContentEvent`),
   triggered from `Content::hardDeleteInternal()` right before a `Content` record is physically
   removed. Modules that store rows referencing `content_id` with a restrictive (non-cascading)
