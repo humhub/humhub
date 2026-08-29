@@ -20,11 +20,6 @@ class AnimateCssAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $defaultDepends = false;
-
-    /**
-     * @inheritdoc
-     */
     public $sourcePath = '@npm/animate.css';
 
     /**

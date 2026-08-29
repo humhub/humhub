@@ -23,11 +23,6 @@ class VueAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $defaultDepends = false;
-
-    /**
-     * @inheritdoc
-     */
     public $defer = false;
 
     /**

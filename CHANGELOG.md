@@ -21,8 +21,16 @@ HumHub Changelog
 
 1.19.0-beta.3 (Unreleased)
 -------------------------------
+- Fix #8417: Top menu keeps the previous entry highlighted after a pjax navigation (since 1.19.0-beta.1)
+- Fix #8412: Applying a UI addition by its id did nothing when it was registered without a selector, and `additions.extend()` with `applyOnInit` threw instead of applying
+- Enh #8411: Removed the `AssetBundle::$defaultDepends` mechanism — a property-name typo kept it from ever running, and activating it makes the core bundle depend on itself, see `docs/develop/module-migrate.md`
 - Fix #8401: Module version migration crash when module versions cannot be determined
 - Fix #8400: Button text horizontal centering and spacing in People heading (since 1.19.0-beta.2)
+- Fix #8404: Remove deprecated function `curl_close()`
+- Fix #8410: Select2 library is loaded twice by the browser
+- Fix #8415: A user picker or space picker request without a `keyword` parameter crashes with a `TypeError`
+- Enh #8419: Add a space between at the top of the card icons (in the card header)
+- Enh #8421: Customize Bootstrap through its Sass variables in `variables.scss` instead of redeclaring the generated `--bs-*` CSS variables in the component SCSS files (buttons, badges, dropdowns, list groups, navs, popovers, progress bars, tables and tooltips)
 
 1.19.0-beta.2 (August 19, 2026)
 -------------------------------

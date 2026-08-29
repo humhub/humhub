@@ -2,11 +2,8 @@
 
 namespace humhub\components\assets;
 
-use humhub\assets\CoreBundleAsset;
 use humhub\components\View;
 use Yii;
-use yii\helpers\ArrayHelper;
-use yii\web\Application;
 use yii\web\AssetBundle as BaseAssetBundle;
 
 /**
@@ -116,14 +113,6 @@ class AssetBundle extends BaseAssetBundle
     public $preload = [];
 
     /**
-     * @var array|false default dependencies not required to be mentioned in $depends. Normally only deactivated in some
-     * core assets.
-     */
-    public $defaultDepends = [
-        CoreBundleAsset::class,
-    ];
-
-    /**
      * @inheritDoc
      */
     public function init()
@@ -173,10 +162,6 @@ class AssetBundle extends BaseAssetBundle
             $this->publishOptions['forceCopy'] = true;
         } elseif (!isset($this->publishOptions['forceCopy'])) {
             $this->publishOptions['forceCopy'] = false;
-        }
-
-        if ((!(Yii::$app instanceof Application) || !Yii::$app->request->isAjax) && !empty($this->dependsDefault)) {
-            $this->depends[] = ArrayHelper::merge($this->depends, $this->defaultDepends);
         }
     }
 

@@ -6,6 +6,19 @@ Each minor release line has its own file with the breaking changes, new APIs and
 
 ## Unreleased
 
+- Only one Select2 build is served now. `kartik\select2\Select2Asset` is emptied through the
+  asset manager configuration and depends on `humhub\assets\Select2Asset` instead, so Krajee
+  widgets (`kartik\select2\Select2` and subclasses such as `humhub\modules\ui\form\widgets\IconPicker`)
+  no longer publish their own copy from the `select2/select2` package. Modules using such a widget
+  now get the core Select2 version (4.0) instead of the one that package resolves to (4.1) — check
+  for usages of Select2 4.1-only options, DOM or CSS classes.
+  **A module must never register a Select2 build of its own** — always depend on
+  `humhub\assets\Select2Asset`. A second build replaces `$.fn.select2.amd` while `$.fn.select2`
+  keeps running the first one, so the two disagree: the core dropdown addition resolves its
+  dropdown adapter from that registry and would be handed classes from the foreign version,
+  which breaks every `data-ui-select2` dropdown on the page. For the same reason, do not resolve
+  Select2 internals from `$.fn.select2.amd` in module JS.
+
 - Added a **describable menu entry** API (`humhub\modules\ui\menu\MenuEntry::describe()`,
   the `humhub\modules\ui\menu\DescribableWidget` interface) plus the
   `humhub\modules\content\vue\ContentControls` island and its
@@ -887,6 +900,17 @@ Each minor release line has its own file with the breaking changes, new APIs and
     call like `$menuLink->setIcon('user', true)` keeps "succeeding" but the icon is no longer
     right-aligned — audit every `->setIcon(...)` call that passes a second argument and call
     `->getLink()->right()` explicitly if right-alignment is still needed.
+- **Removed** `humhub\components\assets\AssetBundle::$defaultDepends` (unused by any known module).
+  It promised that a bundle implicitly depends on `CoreBundleAsset` without listing it in
+  `$depends`, but the code applying it read a misspelled property (`dependsDefault`) and has
+  therefore never run since it was added in 1.5 (#3941). It also cannot be repaired as written:
+  with the property name corrected, every bundle inside `CoreBundleAsset`'s own dependency tree
+  depends on it and Yii aborts the request with `A circular dependency is detected for bundle
+  'humhub\assets\CoreBundleAsset'`. A bundle needing the core bundle lists it in `$depends`
+  itself, which is what bundles have been doing all along. The `public $defaultDepends = false;`
+  opt-out in core bundles is gone with it; a module declaring the property keeps working (it
+  becomes an unused own property), but a bundle **configured** with `'defaultDepends' => ...`
+  now fails with `Setting unknown property`.
 
 ## Released versions
 

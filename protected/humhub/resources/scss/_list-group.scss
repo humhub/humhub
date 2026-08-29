@@ -3,13 +3,7 @@
 // --------------------------------------------------
 
 @if not $prev-list-group {
-    // Bootstrap overwrite
-    .list-group {
-        --bs-list-group-bg: var(--hh-background-color-main);
-        --bs-list-group-border-width: 0;
-        --bs-list-group-active-bg: var(--hh-background-color-secondary);
-        --bs-list-group-active-color: var(--hh-text-color-highlight);
-    }
+    // Bootstrap overwrite: see the list group Sass variables in variables.scss
 
     .list-group-item {
         padding: 6px 15px;

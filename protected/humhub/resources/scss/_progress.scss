@@ -3,12 +3,10 @@
 // --------------------------------------------------
 
 @if not $prev-progress {
+    // Bootstrap overwrite: see the progress Sass variables in variables.scss
+
     .progress {
-        height: 10px;
         margin-bottom: 15px;
-        box-shadow: none;
-        background: var(--hh-background-color-page);
-        border-radius: 10px;
     }
 
     .progress-bar-info {

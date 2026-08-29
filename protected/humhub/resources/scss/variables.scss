@@ -2,6 +2,12 @@
 // Sass variables
 // For CSS variables, see _root.scss
 // All variables must have the !default flag to allow child-themes to overwrite them
+//
+// Bootstrap defaults must be customized here, by overwriting the Sass variable
+// (see @humhub/protected/vendor/twbs/bootstrap/scss/_variables.scss), and not by
+// redeclaring the generated `--bs-*` CSS variable in a component file. Only
+// customizations that are scoped to a specific selector (e.g. `.navbar.topbar`)
+// belong in a component file as a `--bs-*` override.
 // --------------------------------------------------
 
 $isFluid: false;
@@ -179,11 +185,96 @@ $container-max-widths: (
 // Badges
 //
 
-$badge-font-size: 10px !default;
+$badge-font-size: 0.75rem !default;
 $badge-font-weight: normal !default;
 $badge-padding-y: 3px !default;
 $badge-padding-x: 5px !default;
 $badge-border-radius: 2px !default;
+
+
+//
+// Buttons
+// --------------------------------------------------
+
+$btn-padding-y: 0.5rem !default;
+$btn-padding-x: 1.1rem !default;
+$btn-padding-y-sm: 0.2rem !default;
+$btn-padding-x-sm: 0.5rem !default;
+$btn-padding-y-lg: 0.9rem !default;
+$btn-padding-x-lg: 1.75rem !default;
+$btn-font-size-lg: 1.1rem !default;
+$btn-font-weight: 600 !default;
+$btn-white-space: nowrap !default;
+$btn-transition: color 0.3s, background-color 0.3s, border-color 0.3s !default;
+$btn-border-radius: 3px !default;
+$btn-border-radius-sm: $btn-border-radius !default;
+$btn-border-radius-lg: $btn-border-radius !default;
+
+
+//
+// Dropdowns
+// --------------------------------------------------
+
+$dropdown-bg: var(--hh-background-color-main) !default;
+
+
+//
+// List groups
+// --------------------------------------------------
+
+$list-group-bg: var(--hh-background-color-main) !default;
+$list-group-border-width: 0 !default;
+$list-group-active-color: var(--hh-text-color-highlight) !default;
+$list-group-active-bg: var(--hh-background-color-secondary) !default;
+
+
+//
+// Navs
+// --------------------------------------------------
+
+$nav-link-hover-color: var(--bs-link-color) !default;
+$nav-tabs-link-active-bg: var(--hh-background-color-main) !default;
+
+
+//
+// Popovers
+// --------------------------------------------------
+
+$popover-border-width: 1px !default;
+$popover-border-color: rgba(0, 0, 0, 0.15) !default;
+$popover-border-radius: 4px !default;
+$popover-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175) !default;
+
+
+//
+// Progress bars
+// --------------------------------------------------
+
+$progress-height: 10px !default;
+$progress-bg: var(--hh-background-color-page) !default;
+$progress-border-radius: 10px !default;
+$progress-box-shadow: none !default;
+
+
+//
+// Tables
+// --------------------------------------------------
+
+$table-color: var(--bs-body-color) !default;
+$table-bg: var(--hh-background-color-main) !default;
+
+
+//
+// Tooltips
+// --------------------------------------------------
+
+$tooltip-max-width: 400px !default;
+// 12px. Bootstrap passes font sizes through RFS, which converts `px` to `rem`
+// assuming a 16px root font size, so font sizes must be expressed in `rem`
+// relatively to $font-size-root.
+$tooltip-font-size: divide(12px, $font-size-root) * 1rem !default;
+$tooltip-color: var(--hh-primary-contrast) !default;
+$tooltip-bg: var(--bs-primary) !default;
 
 
 //
