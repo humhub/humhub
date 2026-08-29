@@ -194,7 +194,7 @@ That is the same reason `canEdit`/`canDelete` are not in a comment payload (see
 of re-implementing the rules client-side.
 
 **`viewContext`** picks the server-side render-options profile the same place would have used
-when server-rendered (`stream`, `detail`, `modal`, …), so a menu inside a module's own UI is
+when server-rendered (`default`, `dashboard`, `search`, `detail`, `modal`), so a menu inside a module's own UI is
 not offered stream-only actions.
 
 **`.nav-pills preferences` is a look, not neutral markup.** `DropdownMenu`'s default root
