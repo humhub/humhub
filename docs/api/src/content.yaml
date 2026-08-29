@@ -1,0 +1,204 @@
+openapi: 3.0.0
+info:
+  description: |
+    Welcome to the HumHub content API reference, v2.
+
+    These endpoints are part of **HumHub core** (1.20+). The optional
+    [REST API module](https://github.com/humhub/rest) contributes the token authentication
+    methods they accept and owns the older `/api/v1` surface, which is documented with that
+    module. For the design of this stack see `docs/develop/concept-api.md`.
+
+    Conventions of this API generation, differing from `/api/v1`:
+
+    - Timestamps are ISO-8601 with offset, in UTC (`2026-08-22T08:00:00+00:00`).
+    - Field names are camelCase throughout.
+    - Errors are plain HTTP status codes with a JSON body; there is no `{code, message}`
+      success/failure envelope.
+
+    This document covers the **context menu of a content record** — the data behind the `⋮`
+    menu a stream entry or a module's own list shows. It is deliberately its own endpoint
+    rather than part of any content payload: everything it returns depends on **who is
+    asking**, so folding it into a record shape would make that shape uncacheable and
+    different for every reader. The same split the comment API makes with
+    `GET /comment/{id}/permissions`.
+
+    Requests may authenticate with any token method the REST API module offers. HumHub's own
+    browser session is accepted too for these endpoints, which is what the platform's Vue UI
+    uses; state-changing session requests additionally require the CSRF token.
+  version: 2.0.0
+  title: HumHub - Content API (v2)
+  contact:
+    email: info@humhub.com
+  license:
+    name: AGPLv2
+    url: https://www.humhub.org/en/licences
+servers:
+  - url: /api/v2
+security:
+  - Bearer: []
+  - BasicAuth: []
+  - SessionCookie: []
+paths:
+  "/content/{id}/controls":
+    get:
+      summary: The context menu of a content record
+      description: |
+        Resolves the record's `WallEntryControls` widget stack — every
+        `WallEntryControls::EVENT_INIT` handler included — and returns it as data instead of
+        markup, together with what the caller may do with the record.
+
+        This is what the `ContentControls` Vue island loads when its menu is opened, and it
+        is why a module that has contributed a control link for years keeps working in a
+        client-rendered menu without any change: entries that can describe themselves
+        (`humhub\modules\ui\menu\DescribableWidget`) arrive as descriptors, and only those
+        that cannot fall back to the deprecated `html` escape hatch.
+
+        Loaded lazily, on menu open — a list of 50 rows costs no request at all until
+        someone actually opens a menu.
+      parameters:
+        - $ref: "#/components/parameters/contentPathParam"
+        - $ref: "#/components/parameters/viewContextParam"
+        - $ref: "#/components/parameters/suppressParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  entries:
+                    type: array
+                    description: |
+                      The resolved menu entries, in the server's own order. A client merges
+                      these with its own entries and its client-side registry, which is what
+                      lets it override or remove any of them by `id`.
+                    items:
+                      $ref: "#/components/schemas/MenuEntryDescriptor"
+                  capabilities:
+                    $ref: "#/components/schemas/ControlsCapabilities"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+components:
+  parameters:
+    contentPathParam:
+      name: id
+      in: path
+      required: true
+      description: |
+        The **content id** — the primary key of the `content` record, not the primary key of
+        the owning model (a post, a file, an event).
+      schema:
+        type: integer
+    viewContextParam:
+      name: viewContext
+      in: query
+      required: false
+      description: |
+        Where the menu is being shown. Selects the render-options profile a server-rendered
+        menu would have used in the same place, so a menu inside a module's own UI is not
+        offered stream-only actions. Omit for the default profile.
+      schema:
+        type: string
+        enum:
+          - default
+          - dashboard
+          - search
+          - detail
+          - modal
+    suppressParam:
+      name: suppress
+      in: query
+      required: false
+      description: |
+        Comma-separated list of core entries the caller renders itself and does not want
+        from the server. A host with its own Edit action would otherwise receive a second,
+        server-rendered one next to it.
+
+        Unknown names are ignored.
+      schema:
+        type: string
+        example: edit,delete,move
+      examples:
+        fileBrowser:
+          summary: A file browser rendering its own Edit/Move/Delete
+          value: edit,move,delete
+  schemas:
+    MenuEntryDescriptor:
+      type: object
+      description: |
+        One resolved menu entry. Either a described entry (`label`, optionally `icon`/`url`/
+        `htmlOptions`), a divider, or the raw-HTML fallback — never a mix.
+      properties:
+        id:
+          type: string
+          description: |
+            Unique within this menu, and the handle a client overrides or removes the entry
+            by. An entry without an id of its own falls back to its widget class name; if
+            that collides (the same widget contributed twice), the server disambiguates it
+            with a `-2`, `-3`, … suffix.
+        label:
+          type: string
+          description: Localized entry text. Absent on a divider and on an `html` entry.
+        icon:
+          type: string
+          nullable: true
+          description: |
+            Icon name without the `fa-` prefix (`pencil`, `trash`, …), the platform's own
+            icon set.
+        sortOrder:
+          type: integer
+          description: Ascending; supplied by the wrapping menu entry when the widget omits it.
+        url:
+          type: string
+          nullable: true
+          description: |
+            When present the client renders a real `href` instead of `#`, so middle-click
+            and "open in new tab" work.
+        htmlOptions:
+          type: object
+          additionalProperties: true
+          description: |
+            Attributes bound onto the anchor — how an entry carrying a legacy
+            `data-action-click` handler keeps working once a client renders it.
+        divider:
+          type: boolean
+          description: When true this entry is a separator and carries no label or link.
+        html:
+          type: string
+          description: |
+            **Deprecated.** The rendered markup of an entry that cannot describe itself,
+            injected as the whole list item. It cannot be labelled, conditioned, overridden
+            or removed by a client, and every delivery logs a deprecation warning naming the
+            widget class. Implement `humhub\modules\ui\menu\DescribableWidget` instead; this
+            fallback will be removed.
+    ControlsCapabilities:
+      type: object
+      description: |
+        What the caller may do with this record — the values a client gates its **own** menu
+        entries on, so it does not have to re-implement the platform's rules.
+      properties:
+        canEdit:
+          type: boolean
+        canDelete:
+          type: boolean
+          description: Deleting is governed by edit permission, mirroring the platform's delete link.
+        canAdminDelete:
+          type: boolean
+          description: |
+            The caller may delete, and the record is somebody else's — which is what the
+            moderation dialog (reason, notify the author) keys on.
+        canPin:
+          type: boolean
+        canArchive:
+          type: boolean
+        canMove:
+          type: boolean
+          description: |
+            True only when moving is actually allowed; the underlying check answers either
+            true or a human-readable reason, and anything but a strict true is reported here
+            as false.
