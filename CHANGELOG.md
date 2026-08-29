@@ -11,6 +11,7 @@ HumHub Changelog
 - Fix #8404: Remove deprecated function `curl_close()`
 - Fix #8410: Select2 library is loaded twice by the browser
 - Fix #8415: A user picker or space picker request without a `keyword` parameter crashes with a `TypeError`
+- Enh #8416: Auto-focus the newly loaded content after a pjax swap, so Tab no longer restarts at the top of the page
 - Enh #8419: Add a space between at the top of the card icons (in the card header)
 - Enh #8421: Customize Bootstrap through its Sass variables in `variables.scss` instead of redeclaring the generated `--bs-*` CSS variables in the component SCSS files (buttons, badges, dropdowns, list groups, navs, popovers, progress bars, tables and tooltips)
 - Fix #8422: Replace removed `.sr-only` class with `.visually-hidden`
