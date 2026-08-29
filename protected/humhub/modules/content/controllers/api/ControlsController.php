@@ -14,6 +14,7 @@ use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use humhub\modules\content\widgets\WallEntryControls;
 use humhub\modules\ui\menu\MenuEntry;
+use humhub\modules\ui\menu\WidgetMenuEntry;
 use humhub\modules\ui\menu\widgets\Menu;
 use Throwable;
 use Yii;
@@ -180,7 +181,14 @@ class ControlsController extends BaseController
                 continue;
             }
 
-            $descriptor['id'] = $this->uniqueId((string)($descriptor['id'] ?? ''), $usedIds);
+            // An entry that brought no id of its own is named after its class, so the id is
+            // stable across installations and, crucially, across the described/raw-HTML
+            // divide: a widget converted to `DescribableWidget` later keeps the very id it
+            // had while it was still delivered as HTML, and nothing keyed on it breaks.
+            $descriptor['id'] = $this->uniqueId(
+                (string)($descriptor['id'] ?? '') ?: WidgetMenuEntry::describeIdFor($entry->getEntryClass()),
+                $usedIds,
+            );
             $entries[] = $descriptor;
         }
 
@@ -284,7 +292,7 @@ class ControlsController extends BaseController
      * Keeps entry ids unique within one menu.
      *
      * Ids are what a client overrides and removes entries by, so two entries may not share
-     * one. A widget entry with no id of its own falls back to its class name
+     * one. An entry with no id of its own is named after its class
      * ({@see \humhub\modules\ui\menu\WidgetMenuEntry::describeIdFor()}), which collides as
      * soon as the same widget is contributed twice — `share-between-humhub` adds one
      * `ShareLink` per configured site. Only the resolving side sees the whole menu, so it

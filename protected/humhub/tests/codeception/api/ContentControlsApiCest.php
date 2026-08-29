@@ -71,6 +71,40 @@ class ContentControlsApiCest
         Assert::assertSame(array_unique($ids), $ids, 'entry ids are unique within one menu');
     }
 
+    public function testEntryIdsAreNamedAfterTheirWidget(ApiTester $I)
+    {
+        $I->wantTo('see entries carry stable, class-derived ids');
+
+        $I->amLoggedInAs(1);
+        $I->sendGet('content/1/controls');
+        $I->seeResponseCodeIs(200);
+
+        $ids = array_column($this->entries($I), 'id');
+
+        // The id is the handle a client overrides and removes an entry by, so it must not
+        // depend on the entry's position: a module contributing a single entry through
+        // `WallEntryControls::EVENT_INIT` would otherwise renumber everything after it, and
+        // the same id would mean different entries on two installations.
+        foreach ($ids as $id) {
+            Assert::assertDoesNotMatchRegularExpression(
+                '/^entry(-\d+)?$/',
+                $id,
+                'entry ids are derived from the widget class, never from the position',
+            );
+        }
+
+        // Core entries, under the name their widget class gives them.
+        Assert::assertContains('edit-link', $ids);
+        Assert::assertContains('delete-link', $ids);
+        Assert::assertContains('perma-link', $ids);
+        Assert::assertContains('archive-link', $ids);
+
+        // `move-content-link` already describes itself while `archive-link` is still shipped
+        // as raw HTML - and both are named by the same rule. That is what makes converting a
+        // widget to `DescribableWidget` invisible to a client: the entry keeps its id.
+        Assert::assertContains('move-content-link', $ids);
+    }
+
     public function testSuppressDropsCoreEntries(ApiTester $I)
     {
         $I->wantTo('drop the core entries I render myself');

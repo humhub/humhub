@@ -138,9 +138,12 @@ components:
           type: string
           description: |
             Unique within this menu, and the handle a client overrides or removes the entry
-            by. An entry without an id of its own falls back to its widget class name; if
-            that collides (the same widget contributed twice), the server disambiguates it
-            with a `-2`, `-3`, … suffix.
+            by. An entry without an id of its own is named after its class, kebab-cased —
+            `EditLink` becomes `edit-link`. That name does not depend on the entry's position
+            in the menu, and it is the same whether the entry is described or still delivered
+            as raw `html`, so converting a widget later does not change it. If two entries
+            end up with the same name (the same widget contributed twice), the server
+            disambiguates with a `-2`, `-3`, … suffix.
         label:
           type: string
           description: Localized entry text. Absent on a divider and on an `html` entry.
