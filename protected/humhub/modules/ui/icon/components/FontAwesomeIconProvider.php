@@ -65,7 +65,7 @@ class FontAwesomeIconProvider implements IconProvider
             $options['role'] = 'img';
             Html::addTooltip($options, $icon->tooltip);
             $ariaLabel = $icon->ariaLabel ?? $icon->tooltip;
-            $ariaElement = Html::tag('span', $ariaLabel, ['class' => 'sr-only']);
+            $ariaElement = Html::tag('span', $ariaLabel, ['class' => 'visually-hidden']);
         }
 
         if ($icon->color) {

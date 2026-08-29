@@ -68,7 +68,7 @@ class FileHandlerButtonDropdown extends Widget
         }
 
         if ($this->isDropdown()) {
-            $output .= '<button type="button" class="btn ' . $this->cssButtonClass . ' btn-icon-only dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>';
+            $output .= '<button type="button" class="btn ' . $this->cssButtonClass . ' btn-icon-only dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="visually-hidden">Toggle Dropdown</span></button>';
 
             $cssClass = ($this->pullRight) ? 'dropdown-menu dropdown-menu-end' : 'dropdown-menu';
 

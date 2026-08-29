@@ -16,7 +16,7 @@ use humhub\modules\friendship\models\Friendship;
         <?= Html::a($options['acceptFriendRequest']['title'], '#', $options['acceptFriendRequest']['attrs']); ?>
         <button type="button" class="<?= $options['acceptFriendRequest']['togglerClass'] ?> dropdown-toggle"
                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="sr-only">Toggle Dropdown</span>
+            <span class="visually-hidden">Toggle Dropdown</span>
         </button>
         <ul class="dropdown-menu">
             <li>
