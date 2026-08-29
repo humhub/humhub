@@ -226,6 +226,35 @@ paths:
           $ref: "common.yaml#/components/responses/NotFound"
         "422":
           $ref: "common.yaml#/components/responses/ValidationFailed"
+    patch:
+      summary: Update a comment
+      description: |
+        Alias of `PUT`: the same route and the same action serve both verbs, so the request
+        body and every response are identical. A partial update is not implied — `message`
+        is required either way.
+      parameters:
+        - $ref: "#/components/parameters/commentPathParam"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommentWrite"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
     delete:
       summary: Delete a comment
       description: |
