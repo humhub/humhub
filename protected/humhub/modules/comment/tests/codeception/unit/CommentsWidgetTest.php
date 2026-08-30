@@ -176,6 +176,26 @@ class CommentsWidgetTest extends HumHubDbTestCase
     }
 
     /**
+     * A comment's attachments render through the file module's shared `<AttachedFiles>`
+     * component, so the widget hands over the same `excludeMediaFilesPreview` setting
+     * `file\widgets\ShowFiles` reads for a wall entry - an attachment the preview grid
+     * already shows is left out of the list below it.
+     */
+    public function testExcludeMediaFilesFollowsTheFileModuleSetting()
+    {
+        $this->becomeUser('User2');
+
+        $settings = Yii::$app->getModule('file')->settings;
+        $content = Post::findOne(['id' => 11])->content;
+
+        $settings->set('excludeMediaFilesPreview', '1');
+        $this->assertSame('true', $this->islandProps(Comments::widget(['content' => $content]))['exclude-media-files']);
+
+        $settings->set('excludeMediaFilesPreview', '0');
+        $this->assertSame('false', $this->islandProps(Comments::widget(['content' => $content]))['exclude-media-files']);
+    }
+
+    /**
      * @return string[] plain-text messages of the comments in a serialized window, in order
      */
     private function plainMessages(array $window): array

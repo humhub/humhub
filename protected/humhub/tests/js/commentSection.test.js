@@ -8,6 +8,7 @@ import LegacyFormWrapper from '../../vue/LegacyFormWrapper.vue';
 import DropdownMenu from '../../vue/DropdownMenu.vue';
 import ExtensionSlot from '../../vue/ExtensionSlot.vue';
 import UserImage from '../../modules/user/vue/UserImage.vue';
+import AttachedFiles from '../../modules/file/vue/AttachedFiles.vue';
 import HumHubForm from '../../vue/HumHubForm.vue';
 import RichTextField from '../../vue/RichTextField.vue';
 import UploadField from '../../vue/UploadField.vue';
@@ -39,12 +40,13 @@ const additionsDirective = {
 // directly (they now resolve through the global Vue component registry - see their own
 // docblocks) - @vue/test-utils' `global.components` stands in for that registry here, the
 // same way it already does for LikeButton below. UiModal/UserList are needed too - nested
-// two levels down, inside LikeButton's own (always-rendered) user-list modal.
+// two levels down, inside LikeButton's own (always-rendered) user-list modal; AttachedFiles
+// is the file module's shared attachment renderer CommentEntry resolves the same way.
 const mountOptions = () => ({
     global: {
         directives: { additions: additionsDirective },
         components: {
-            LikeButton, RichTextOutput, LegacyFormWrapper, DropdownMenu, ExtensionSlot, UserImage,
+            LikeButton, RichTextOutput, LegacyFormWrapper, DropdownMenu, ExtensionSlot, UserImage, AttachedFiles,
             HumHubForm, RichTextField, SubmitButton, UploadField, UiModal, UserList, TextareaField, CheckboxField,
         },
     },
@@ -816,6 +818,49 @@ describe('CommentSection', () => {
             });
 
             expect(wrapper.find('.likeLinkContainer').exists()).toBe(false);
+        });
+    });
+
+    describe('AttachedFiles nesting', () => {
+        const image = {
+            id: 7,
+            guid: 'img-guid',
+            mimeType: 'image/png',
+            size: 4096,
+            fileName: 'shot.png',
+            mimeIcon: 'mime-image',
+            url: '/file/file/download?guid=img-guid',
+            downloadUrl: '/file/file/download?download=1&guid=img-guid',
+            previewUrl: '/preview/img-guid.png',
+        };
+
+        const mountWith = (props = {}) => mount(CommentSection, {
+            ...mountOptions(),
+            props: {
+                contentId: 42,
+                initial: {
+                    results: [makeComment({ files: [image] })],
+                    prevCount: 0,
+                    nextCount: 0,
+                    total: 1,
+                    rootTotal: 1,
+                },
+                ...props,
+            },
+        });
+
+        it("renders an entry's attachments through the file module's shared component", () => {
+            const wrapper = mountWith();
+
+            expect(wrapper.find('.post-files-images img').attributes('src')).toBe('/preview/img-guid.png');
+            expect(wrapper.find('.post-files-images a').attributes('data-ui-gallery')).toBe('gallery-comment-1');
+        });
+
+        // The file module's `excludeMediaFilesPreview` setting reaches every entry through
+        // CommentSection's provide(), the same way the like states do — see the widget.
+        it('leaves media out of the list below the grid when the section says so', () => {
+            expect(mountWith().findAll('.post-file-list li')).toHaveLength(1);
+            expect(mountWith({ excludeMediaFiles: true }).find('.post-file-list').exists()).toBe(false);
         });
     });
 

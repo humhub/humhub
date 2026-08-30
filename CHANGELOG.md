@@ -19,6 +19,8 @@ HumHub Changelog
 - Enh #8403: `DropdownMenu` can be opened by its host with `open(event)`, at the pointer when handed a mouse event, which is what gives a Vue-rendered list the right-click context menus the legacy `$.fn.contextMenu` gave server-rendered ones
 - Enh #8403: Added `HumHubForm::focusFirstField()`, for a form opened in a dialog
 - Enh #8403: Documented the `/api/v2/content/<id>/controls` endpoint in `docs/api/` and covered it with API tests
+- Enh #8403: Attached files are a Vue island (`AttachedFiles`), shared by `ShowFiles` and the comment section; audio plays natively and jPlayer is gone
+- Fix #8403: The `excludeMediaFilesPreview` setting really excludes media files from the attachment list again
 
 1.19.0-beta.3 (Unreleased)
 -------------------------------

@@ -84,6 +84,14 @@ Done on that branch:
   cut the comment island's own controls menu made: repeating that break once per migrating
   module is not defensible.
 
+- **Attached files** — `AttachedFiles` renders a record's attachments (media grid plus file
+  list) and is shared by `file\widgets\ShowFiles` — reduced to the island's mount point —
+  and by the comment section, which had grown its own second implementation of the same
+  visual. With it the last user of jPlayer is gone: attached audio plays in native players,
+  and the playlist widget, its two asset bundles, the `media.Jplayer` JS module and both
+  composer dependencies were removed. It also un-broke the `excludeMediaFilesPreview`
+  setting, dead since the Bootstrap 5 migration.
+
 ## Done: the islands run on the platform API
 
 The comment/like islands consume `/api/v2`, the HTTP API core itself ships — core

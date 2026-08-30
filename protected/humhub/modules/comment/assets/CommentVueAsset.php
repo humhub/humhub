@@ -11,6 +11,7 @@ namespace humhub\modules\comment\assets;
 use humhub\assets\CoreApiAsset;
 use humhub\assets\CoreVueAsset;
 use humhub\components\assets\AssetBundle;
+use humhub\modules\file\assets\FileVueAsset;
 use humhub\modules\like\assets\LikeVueAsset;
 use humhub\modules\user\assets\UserVueAsset;
 
@@ -56,5 +57,9 @@ class CommentVueAsset extends AssetBundle
         // online-status label reads from) - UserVueAsset must register it before this
         // bundle's own script runs, same reasoning as CoreVueAsset/LikeVueAsset above.
         UserVueAsset::class,
+        // CommentEntry.vue references <AttachedFiles> by tag only - the attachment
+        // renderer lives in the file module (which owns the file shape it renders and
+        // uses it for `ShowFiles` itself), same reasoning as the bundles above.
+        FileVueAsset::class,
     ];
 }

@@ -470,6 +470,47 @@ Each minor release line has its own file with the breaking changes, new APIs and
     - Following or unfollowing a space now triggers `humhub:space:followed` /
       `humhub:space:unfollowed` (`humhub.content.container.js`) instead of calling into the
       space menu's widget. Anything that kept its own copy of the menu list can listen for them.
+  - **Attached files are a Vue island** (`AttachedFiles`, `protected/humhub/modules/file/vue/`,
+    `FileVueAsset`). `file\widgets\ShowFiles` keeps its class, `$object`, `$active` and
+    `$preview` and is now only the mount point: it serializes the record's stream files with
+    `file\serializers\FileSerializer` and hands them over as props. The six modules calling
+    `ShowFiles::widget(['object' => $record])` (`humhub/mail`, `cuzy-app/mail`,
+    `cuzy-app/events-manager`, `cuzy-app/post-to-wiki`, `cuzy-app/survey`,
+    `cuzy-app/survey-advanced`) need no change. `.hideOnEdit`, `.post-files`,
+    `.post-files-audio|-videos|-images`, `.col-media`, `.well.post-file-list`, `ul.files` and
+    `li.file-preview-item.mime.<mimeIcon>` are unchanged, so theme CSS still applies; the
+    comment island renders its attachments with the same component now, which is what the
+    change is really for — the two used to be separate implementations of the same visual.
+    Details:
+    - **Removed**: the view `file/widgets/views/showFiles.php`. A theme overriding it has to
+      move to the component (or render its own island); module-search found no override.
+    - **Removed**: `humhub\widgets\JPlayerPlaylistWidget` with its `jPlayerAudio.php` view,
+      `humhub\assets\JplayerAsset`, `humhub\assets\JplayerModuleAsset`, the `media.Jplayer` JS
+      module (with its entry in `CoreExtensionAsset`) and the `npm-asset/jplayer` +
+      `xj/yii2-jplayer-widget` composer dependencies. `ShowFiles` was the only user of any of
+      it (module-search: no external ones) — **attached audio now plays in native, individually
+      labelled `<audio controls>` players instead of a jPlayer playlist**, and the `.jp-*`
+      theme rules in `_file.scss`/`_comment.scss` are gone.
+    - **Fixed**: the `excludeMediaFilesPreview` setting of the file module ("Exclude media
+      files from stream attachment list", on by default for new installations) works again.
+      The `file.Preview` JsWidget only added a `hiddenFile` class to those entries, and no rule
+      for it has existed since the Bootstrap 5 migration, so media files stayed in the list
+      below the preview grid. They are now really left out.
+    - The `file.Preview` JsWidget itself is untouched and still renders the file list of the
+      upload/edit paths (`wallCreateContentFormFooter.php`, `post/edit.php`,
+      `file\widgets\Upload`, `file\widgets\ActiveFileUpload`), where it doubles as the live
+      preview of an in-progress upload.
+    - Smaller deviations: attachment sizes are formatted client-side rather than through
+      `Yii::$app->formatter->asShortSize()`, and the preview grid no longer carries a
+      `post-files-<uniqueId>` id (nothing referenced it).
+    - New in the API's file shape: **`downloadUrl`**, the same file with the response forcing a
+      download. Purely additive. The two hints `ShowFiles` resolves per file — `viewUrl` (the
+      file has a viewer beyond plain download) and `highlight` (a search hit) — are deliberately
+      **not** part of it: both are caller specific, and the comment payload is cached
+      caller-neutrally (see `docs/develop/concept-api.md`).
+    - New helpers: `file\libs\FileHelper::getViewUrl()` (extracted from `createLink()`, whose
+      output is unchanged) and `file\libs\FileHelper::isSearchHighlighted()` (moved from the
+      protected `FilePreview::isHighlighed()`, which is removed).
 - Added the **HTTP API framework** in `humhub\components\api\` and the first core endpoints
   under `/api/v2` — see `docs/develop/concept-api.md`. Purely additive for existing modules;
   the `humhub/rest` module and the 13 modules extending its `BaseController` keep working

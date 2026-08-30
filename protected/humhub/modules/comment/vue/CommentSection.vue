@@ -175,6 +175,11 @@ export default {
         anchorCommentId: { type: Number, default: null },
         // stream preview: section hidden until toggled via humhub:comment:toggle
         collapsed: { type: Boolean, default: false },
+        // The file module's `excludeMediaFilesPreview` setting, provided down to every
+        // entry's <AttachedFiles> so a comment's attachment list leaves out what the
+        // preview grid above it already shows - the same call `ShowFiles` makes for a
+        // wall entry.
+        excludeMediaFiles: { type: Boolean, default: false },
     },
     data() {
         // The raw window payload is mapped ONCE here — everything below this
@@ -227,6 +232,7 @@ export default {
             isKnownId: this.isKnownId,
             likeStates: this.likeStates,
             ensureLikeStates: this.ensureLikeStates,
+            excludeMediaFiles: this.excludeMediaFiles,
         };
     },
     computed: {

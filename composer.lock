@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0f2334d647702940424cca7c764be7f1",
+    "content-hash": "ca55b4e57bc4130947eb0495035d1055",
     "packages": [
         {
             "name": "altcha-org/altcha",
@@ -4661,21 +4661,6 @@
             "dist": {
                 "type": "tar",
                 "url": "https://registry.npmjs.org/isarray/-/isarray-2.0.1.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/jplayer",
-            "version": "2.9.2",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/jplayer/-/jplayer-2.9.2.tgz"
-            },
-            "require": {
-                "npm-asset/jquery": ">1.7.0"
             },
             "type": "npm-asset",
             "license": [
@@ -11708,46 +11693,6 @@
                 }
             ],
             "time": "2026-06-06T18:12:39+00:00"
-        },
-        {
-            "name": "xj/yii2-jplayer-widget",
-            "version": "2.7.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/xjflyttp/yii2-jplayer-widget.git",
-                "reference": "89f7fba20b0d868ed981a8130acf9e3c9bb28af9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/xjflyttp/yii2-jplayer-widget/zipball/89f7fba20b0d868ed981a8130acf9e3c9bb28af9",
-                "reference": "89f7fba20b0d868ed981a8130acf9e3c9bb28af9",
-                "shasum": ""
-            },
-            "require": {
-                "yiisoft/yii2": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "xj\\jplayer\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "xjflyttp",
-                    "email": "xjflyttp@gmail.com"
-                }
-            ],
-            "description": "yii2-jplayer-widget",
-            "support": {
-                "issues": "https://github.com/xjflyttp/yii2-jplayer-widget/issues",
-                "source": "https://github.com/xjflyttp/yii2-jplayer-widget/tree/master"
-            },
-            "time": "2015-07-01T04:15:08+00:00"
         },
         {
             "name": "yiisoft/yii2",

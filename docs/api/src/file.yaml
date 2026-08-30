@@ -103,6 +103,7 @@ paths:
                     fileName: diagram.png
                     mimeIcon: mime-image
                     url: https://example.com/file/file/download?guid=6e45b887-1cad-4209-a317-ffa5278c5a2f&hash_sha1=1a2b3c4d
+                    downloadUrl: https://example.com/file/file/download?download=1&guid=6e45b887-1cad-4209-a317-ffa5278c5a2f&hash_sha1=1a2b3c4d
                     previewUrl: https://example.com/file/file/download?variant=preview-image&guid=6e45b887-1cad-4209-a317-ffa5278c5a2f&hash_sha1=1a2b3c4d
                 errors:
                   - fileName: huge.zip

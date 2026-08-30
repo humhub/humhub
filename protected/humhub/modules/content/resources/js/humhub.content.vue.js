@@ -19,9 +19,9 @@
       contentId: { type: Number, required: true },
       /**
        * Where this menu is being shown, one of the server's `StreamEntryOptions`
-       * `VIEW_CONTEXT_*` values (`stream`, `detail`, `modal`, …). Selects the render-options
-       * profile the server would have used in the same place, so a menu inside a module's
-       * own UI is not offered stream-only actions.
+       * `VIEW_CONTEXT_*` values (`default`, `dashboard`, `search`, `detail`, `modal`).
+       * Selects the render-options profile the server would have used in the same
+       * place, so a menu inside a module's own UI is not offered stream-only actions.
        */
       viewContext: { type: String, default: null },
       /** The host island's own entries, in `DropdownMenu`'s entry shape. */

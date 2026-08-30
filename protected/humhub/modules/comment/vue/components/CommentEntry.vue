@@ -71,7 +71,12 @@
                         :message="comment.message"
                         :render-options="comment.messageRenderOptions"
                     />
-                    <CommentAttachments v-if="comment.files.length" :files="comment.files" :context-id="comment.id" />
+                    <AttachedFiles
+                        v-if="comment.files.length"
+                        :files="comment.files"
+                        :gallery-id="'gallery-comment-' + comment.id"
+                        :exclude-media="excludeMediaFiles"
+                    />
                 </template>
             </div>
 
@@ -289,7 +294,6 @@
  * also cause - see `childRemaining`'s own comment below.
  */
 import { getConfig, i18n, log } from '@humhub/vue';
-import CommentAttachments from './CommentAttachments.vue';
 import CommentControls from './CommentControls.vue';
 import CommentDeleteModal from './CommentDeleteModal.vue';
 import CommentForm from './CommentForm.vue';
@@ -304,7 +308,7 @@ import { deleteComment, fetchComment, fetchCommentPermissions, fetchWindow, isAd
 // not by import order here.
 export default {
     name: 'CommentEntry',
-    components: { CommentAttachments, CommentControls, CommentDeleteModal, CommentForm },
+    components: { CommentControls, CommentDeleteModal, CommentForm },
     inject: {
         commentRevisions: { default: () => ({}) },
         bumpCommentRevision: { default: () => () => {} },
@@ -320,6 +324,8 @@ export default {
         // that just entered the tree.
         likeStates: { default: () => ({}) },
         ensureLikeStates: { default: () => () => {} },
+        // See CommentSection's own prop of that name.
+        excludeMediaFiles: { default: false },
     },
     props: {
         comment: { type: Object, required: true },

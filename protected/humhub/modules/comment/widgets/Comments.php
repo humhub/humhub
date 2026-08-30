@@ -137,6 +137,11 @@ class Comments extends Widget
                 // Mirrors comments.php's `d-none` class, only lifted (inline `.show()`)
                 // when at least one comment is preloaded into the initial window.
                 'collapsed' => empty($initial['results']),
+                // Same call `file\widgets\ShowFiles` makes for a wall entry: an attachment
+                // the preview grid already shows is left out of the list below it. The
+                // setting is the file module's, the shape rendering it is the shared
+                // `<AttachedFiles>` component.
+                'excludeMediaFiles' => (bool)Yii::$app->getModule('file')->settings->get('excludeMediaFilesPreview'),
             ],
         ]);
     }

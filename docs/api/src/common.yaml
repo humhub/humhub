@@ -208,7 +208,12 @@ components:
             icon set, so a client does not have to map mime types itself.
         url:
           type: string
-          description: Absolute download URL
+          description: Absolute file URL
+        downloadUrl:
+          type: string
+          description: |
+            Absolute URL of the same file with the response forcing a download instead of
+            letting the browser display it inline.
         previewUrl:
           type: string
           nullable: true

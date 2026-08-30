@@ -50,6 +50,7 @@ class FileSerializer
      *     fileName: string,
      *     mimeIcon: string,
      *     url: string,
+     *     downloadUrl: string,
      *     previewUrl: string|null,
      * }
      */
@@ -69,6 +70,9 @@ class FileSerializer
             // itself.
             'mimeIcon' => MimeHelper::getMimeIconClassByExtension(FileHelper::getExtension($file->file_name)),
             'url' => $file->getUrl([], true),
+            // Same file, but with the response forcing a download instead of letting the
+            // browser display it inline - what a client renders behind a "download" action.
+            'downloadUrl' => $file->getUrl(['download' => true], true),
             // Converted preview variant for image files (the same converter the web UI uses
             // for attachment thumbnails); `null` for anything that has no image preview.
             'previewUrl' => $previewImage->applyFile($file) ? Url::to($previewImage->getUrl(), true) : null,
