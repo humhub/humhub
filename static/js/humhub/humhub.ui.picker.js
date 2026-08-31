@@ -154,6 +154,52 @@ humhub.module('ui.picker', function (module, require, $) {
                 Widget.instance($node).renderPlaceholder();
             });
 
+            // Make the "Remove all items" (x) clear-selection button keyboard accessible
+            //
+            // Select2's own allowClear decorator (select2/selection/allowClear.js)
+            // only ever binds a 'mousedown' handler to this button and never gives
+            // it a tabindex, so it's unreachable and unusable via keyboard. It also
+            // re-creates the <span> from scratch on every selection change (it's
+            // only rendered at all once something is selected), so rather than
+            // patching a template once we watch for it with a MutationObserver and
+            // patch each instance as it appears.
+            if (options.allowClear) {
+                var $rendered = select2.$selection.find('.select2-selection__rendered');
+
+                var enableClearKeyboardAccess = function () {
+                    $rendered.children('.select2-selection__clear').each(function () {
+                        var $clear = $(this);
+
+                        if ($clear.attr('tabindex')) {
+                            return;
+                        }
+
+                        $clear.attr({
+                            tabindex: 0,
+                            role: 'button',
+                            'aria-label': $clear.attr('title')
+                        });
+
+                        // It's positioned visually via position absolute right so moving
+                        // it within its parent doesn't change where it's drawn.
+                        // Move it to the list end, so keyboard focus order follows visual order.
+                        $rendered.append($clear);
+                    });
+                };
+
+                enableClearKeyboardAccess();
+                new MutationObserver(enableClearKeyboardAccess).observe($rendered[0], {childList: true});
+
+                // Re-dispatch Enter/Space as the mousedown Select2 itself listens for.
+                select2.$selection.on('keydown', '.select2-selection__clear', function (evt) {
+                    if (evt.key === 'Enter' || evt.key === ' ' || evt.keyCode === 13 || evt.keyCode === 32) {
+                        evt.preventDefault();
+                        evt.stopPropagation();
+                        $(this).trigger('mousedown');
+                    }
+                });
+            }
+
             // Patch for https://github.com/select2/select2/issues/4614#issuecomment-251277428 strange rendering behaviour
             select2.on('results:message', function (params) {
                 this.dropdown._resizeDropdown();
@@ -216,7 +262,7 @@ humhub.module('ui.picker', function (module, require, $) {
     Picker.template = {
         selectionWithImage: '{imageNodeSelected}<span class="picker-text with-image"></span>',
         selectionNoImage: '<span class="picker-text no-image"></span>',
-        selectionClear: ' <i class="fa fa-times-circle picker-close"></i>',
+        selectionClear: ' <i class="fa fa-times-circle picker-close" role="button" tabindex="0"></i>',
         result: '<a href="#" tabindex="-1" style="display:flex; align-items:start; margin-right:5px;">{imageNode} <span class="picker-content"><span class="picker-text"></span><span class="picker-subtext"></span></span></a>',
         resultDisabled: '<a href="#" title="{disabledText}" data-placement="right" tabindex="-1" style="display:flex; align-items:start; margin-right:5px;opacity: 0.4;cursor:not-allowed">{imageNode} <span class="picker-content"><span class="picker-text"></span><span class="picker-subtext"></span></span></a>',
         imageNode: '<img class="rounded" src="{image}" alt="" style="width:40px;height:40px;"  height="40" width="40">',
@@ -329,11 +375,27 @@ humhub.module('ui.picker', function (module, require, $) {
         var test = $result.find('.picker-text');
         $result.filter('.picker-text').text(item.text);
 
-        // Initialize item close button
+        // Initialize item close button.
+        //
+        // The icon is a plain <i>, given role="button" and tabindex="0" in the
+        // template above so it can receive keyboard focus. That alone doesn't make
+        // it activatable via keyboard (unlike a native <button>, an element with
+        // role="button" gets no automatic Enter/Space handling), so a keydown
+        // handler re-dispatches it as a click here, forwarding to Select2's own
+        // (visually hidden) remove control.
         var that = this;
-        $result.filter('.picker-close').on('click', function () {
-            $(this).siblings('.select2-selection__choice__remove').trigger('click');
-        });
+        $result.filter('.picker-close')
+            .attr('aria-label', module.text('remove') + (item.text ? ': ' + item.text : ''))
+            .on('click', function () {
+                $(this).siblings('.select2-selection__choice__remove').trigger('click');
+            })
+            .on('keydown', function (evt) {
+                if (evt.key === 'Enter' || evt.key === ' ' || evt.keyCode === 13 || evt.keyCode === 32) {
+                    evt.preventDefault();
+                    evt.stopPropagation();
+                    $(this).trigger('click');
+                }
+            });
 
         return $result;
     };

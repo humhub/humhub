@@ -233,6 +233,7 @@ class CoreJsConfig extends Widget
                         'error.loadingResult' => Yii::t('base', 'An unexpected error occurred while loading the search result.'),
                         'showMore' => Yii::t('base', 'Show more'),
                         'addOption' => Yii::t('base', 'Add:'),
+                        'remove' => Yii::t('base', 'Remove'),
                     ],
                 ],
                 'ui.loader' => [
