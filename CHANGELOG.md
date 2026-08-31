@@ -131,6 +131,11 @@ HumHub Changelog
 - Enh #8150: Topic sidebar widget
 - Fix #8312: Fix Integrity Checks on cleaning up orphaned content, like, comment, activity data
  
+1.18.6 (Unreleased)
+------------------------
+- Fix #8409: Add :focus styles for Administration left navigation menu items
+- Fix #8420: Fix hover flicker and keyboard focus on profile image upload buttons
+
 1.18.5 (August 19, 2026)
 ------------------------
 

@@ -18,7 +18,7 @@
 
     a.list-group-item {
 
-        &.active {
+        &.active, &:focus {
             @include listGroupItemActiveOrFocus();
         }
 
@@ -104,7 +104,7 @@
             }
 
             a.list-group-item {
-                &.active {
+                &.active, &:focus {
                     @include mobileListGroupItemActiveOrFocus();
                 }
 
