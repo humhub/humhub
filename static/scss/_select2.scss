@@ -229,6 +229,13 @@
             &:hover {
                 color: #333;
             }
+
+            // Made keyboard-focusable in humhub.ui.picker.js
+            &:focus-visible {
+                outline: 2px solid var(--bs-accent);
+                outline-offset: 1px;
+                border-radius: 2px;
+            }
         }
 
         /**
@@ -410,6 +417,13 @@
 
                 .picker-close {
                     cursor: pointer;
+
+                    // Make keyboard-focusable (role="button" tabindex="0") in humhub.ui.picker.js
+                    &:focus-visible {
+                        outline: 2px solid var(--hh-accent-contrast);
+                        outline-offset: 1px;
+                        border-radius: 2px;
+                    }
                 }
             }
 
