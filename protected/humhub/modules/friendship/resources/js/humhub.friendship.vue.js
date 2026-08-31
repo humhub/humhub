@@ -197,7 +197,7 @@
   };
   const _hoisted_1 = ["innerHTML"];
   const _hoisted_2 = ["innerHTML"];
-  const _hoisted_3 = { class: "sr-only" };
+  const _hoisted_3 = { class: "visually-hidden" };
   const _hoisted_4 = { class: "dropdown-menu" };
   const _hoisted_5 = ["innerHTML"];
   const _hoisted_6 = ["innerHTML"];

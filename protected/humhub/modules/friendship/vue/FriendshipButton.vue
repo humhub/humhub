@@ -19,7 +19,7 @@
             data-bs-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
-        ><span class="sr-only">{{ toggleDropdownLabel }}</span></button>
+        ><span class="visually-hidden">{{ toggleDropdownLabel }}</span></button>
         <ul class="dropdown-menu">
             <li>
                 <a

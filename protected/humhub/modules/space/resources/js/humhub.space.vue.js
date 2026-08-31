@@ -279,7 +279,7 @@
       }
     }
   };
-  const _hoisted_1$4 = { class: "sr-only" };
+  const _hoisted_1$4 = { class: "visually-hidden" };
   const _hoisted_2$4 = { class: "dropdown-menu" };
   const _hoisted_3$3 = ["innerHTML"];
   const _hoisted_4$2 = ["innerHTML"];
