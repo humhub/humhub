@@ -23,7 +23,7 @@ if ($membership === null) {
         <?= Html::a($options['acceptInvite']['title'], $options['acceptInvite']['url'], $options['acceptInvite']['attrs']); ?>
         <button type="button" class="<?= $options['acceptInvite']['togglerClass'] ?> dropdown-toggle"
                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="sr-only">Toggle Dropdown</span>
+            <span class="visually-hidden">Toggle Dropdown</span>
         </button>
         <ul class="dropdown-menu">
             <li><?= Html::a($options['declineInvite']['title'], $options['declineInvite']['url'], array_merge(['class' => 'dropdown-item'], $options['declineInvite']['attrs'])) ?></li>

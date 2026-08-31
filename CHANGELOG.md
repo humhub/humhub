@@ -1,6 +1,21 @@
 HumHub Changelog
 ================
 
+1.19.0-beta.3 (Unreleased)
+-------------------------------
+- Fix #8417: Top menu keeps the previous entry highlighted after a pjax navigation (since 1.19.0-beta.1)
+- Fix #8412: Applying a UI addition by its id did nothing when it was registered without a selector, and `additions.extend()` with `applyOnInit` threw instead of applying
+- Enh #8411: Removed the `AssetBundle::$defaultDepends` mechanism — a property-name typo kept it from ever running, and activating it makes the core bundle depend on itself, see `docs/develop/module-migrate.md`
+- Fix #8401: Module version migration crash when module versions cannot be determined
+- Fix #8400: Button text horizontal centering and spacing in People heading (since 1.19.0-beta.2)
+- Fix #8404: Remove deprecated function `curl_close()`
+- Fix #8410: Select2 library is loaded twice by the browser
+- Fix #8415: A user picker or space picker request without a `keyword` parameter crashes with a `TypeError`
+- Enh #8416: Auto-focus the newly loaded content after a pjax swap, so Tab no longer restarts at the top of the page
+- Enh #8419: Add a space between at the top of the card icons (in the card header)
+- Enh #8421: Customize Bootstrap through its Sass variables in `variables.scss` instead of redeclaring the generated `--bs-*` CSS variables in the component SCSS files (buttons, badges, dropdowns, list groups, navs, popovers, progress bars, tables and tooltips)
+- Fix #8422: Replace removed `.sr-only` class with `.visually-hidden`
+
 1.19.0-beta.2 (August 19, 2026)
 -------------------------------
 - Fix #8350: A configured but unreachable database presented the web installer — offering to re-setup an already installed instance during a transient outage — instead of an error; such requests now return a 503
@@ -34,6 +49,7 @@ HumHub Changelog
 - Fix #8371: Fix mixed param type nullable by default in `ForceExplicitNullableParamRector`
 - Fix #8383: Removed the unreachable `ContentContainerControllerAccess::RULE_CONTAINER_ACCESS` validator (`validateContainerAccess()`, `canAccessSpace()`, `getSpaceMembership()`, `canAccessUser()`) — the rule was never added to any access rule set, so it never ran; the space/profile visibility checks it duplicated are already enforced by the container controller behaviors
 - Fix #8388: Fix styles of the widget "Latest activities"
+- Enh #8396: Show a loading spinner on RichText content until the Markdown source has been rendered to HTML client side
 
 1.19.0-beta.1 (July 21, 2026)
 --------------------
@@ -115,6 +131,11 @@ HumHub Changelog
 - Enh #8150: Topic sidebar widget
 - Fix #8312: Fix Integrity Checks on cleaning up orphaned content, like, comment, activity data
  
+1.18.6 (Unreleased)
+------------------------
+- Fix #8409: Add :focus styles for Administration left navigation menu items
+- Fix #8420: Fix hover flicker and keyboard focus on profile image upload buttons
+
 1.18.5 (August 19, 2026)
 ------------------------
 

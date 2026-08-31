@@ -141,6 +141,24 @@
             position: absolute;
             right: 5px;
             bottom: 5px;
+            display: none;
+
+            // The upload control is a <span class="btn"> wrapping an invisible
+            // (opacity: 0) native <input type="file">. Tab moves focus to that
+            // input, not the span, so the browser's default focus ring is drawn
+            // on an invisible element. Mirror Bootstrap's .btn:focus-visible
+            // style onto the span whenever its input has focus.
+            .fileinput-button:focus-within {
+                outline: 0;
+                box-shadow: var(--bs-btn-box-shadow), var(--bs-btn-focus-box-shadow);
+            }
+        }
+
+        &:hover,
+        &:focus-within {
+            .image-upload-buttons {
+                display: block;
+            }
         }
 
         input[type="file"] {

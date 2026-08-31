@@ -7,7 +7,7 @@ return [
   '<strong>Profile</strong> menu' => '<strong>Profiel</strong> menu',
   '<strong>Profile</strong> photo' => '<strong>Profiel</strong> foto',
   '<strong>Profile</strong> stream' => '<strong>Profiel</strong> berichten',
-  '<strong>User profile</strong>' => '<strong>Gebruiker profeil</strong>',
+  '<strong>User profile</strong>' => '<strong>Gebruiker profiel</strong>',
   'Click on this button to update your profile and account settings. You can also add more information to your profile.' => 'Klik op deze knop om uw profiel en de accountinstellingen bij te werken. U kunt ook meer informatie toe te voegen aan uw profiel.',
   'Each profile has its own pin board. Your posts will also appear on the dashboards of those users who are following you.' => 'Elk profiel heeft zijn eigen prikbord. Uw berichten verschijnen ook op de prikborden van gebruikers die u volgt.',
   'Just like in the space, the user profile can be personalized with various modules.<br><br>You can see which modules are available for your profile by looking them in "Modules" in the account settings menu.' => 'Net als in een Ruimte kan het gebruikersprofiel worden gepersonaliseerd met verschillende modules.<br><br>U kunt zien welke modules beschikbaar zijn voor uw profiel door te kijken naar "Modules" in het menu Accountinstellingen.',
