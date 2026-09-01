@@ -6,6 +6,7 @@ HumHub Changelog
 - Fix #8409: Add :focus styles for Administration left navigation menu items
 - Fix #8420: Fix hover flicker and keyboard focus on profile image upload buttons
 - Fix #8407: Make Select2 picker choices keyboard-accessible: the "Remove all items" button and each item's own remove icon
+- Fix #8426: Add a visible keyboard focus indicator for the stream filter toggle and its checkbox/radio filter options
 - Fix #8430: Make the password show/hide icon focusable and operable via keyboard
 
 1.18.5 (August 19, 2026)

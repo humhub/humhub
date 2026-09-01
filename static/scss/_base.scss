@@ -153,6 +153,12 @@
             border-bottom: 0;
             border-left: 0.4em solid transparent;
         }
+
+        &:focus-visible {
+            outline: 0;
+            box-shadow: 0 0 0 2px var(--accent);
+            border-radius: 2px;
+        }
     }
 
     .table-responsive {
