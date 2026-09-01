@@ -7,46 +7,79 @@ humhub.module('ui.form.elements', function (module, require, $) {
             $match.each(function () {
                 var $input = $(this);
                 var $formGroup = $input.parent('.mb-3');
-                var invisibleTop = 0;
 
-                var timeout = $formGroup.closest('.animated').length ? 800 : 100;
+                if (!$formGroup.length) {
+                    return;
+                }
 
-                setTimeout(function() {
-                    /**
-                     * We can't calculate top if input is invisible,
-                     * Note, this may not work for more complex cases.
-                     */
-                    if(!$input.is(':visible')) {
-                        if($input.siblings('label').length) {
-                            invisibleTop = '23px';
-                        }
+                $formGroup.css('position', 'relative');
+
+                // Plain <div>, so it needs tabindex/role/keydown wiring to be
+                // reachable and operable via keyboard (Tab + Enter/Space).
+                var $pwShow = $('<div class="humhub-pw-show" tabindex="0" role="button" aria-pressed="false"><i class="fa fa-eye"></i></div>');
+
+                var setPasswordVisible = function (visible) {
+                    var $icon = $pwShow.find('i');
+                    $input.attr('type', visible ? 'input' : 'password');
+                    $icon.toggleClass('fa-eye-slash', visible).toggleClass('fa-eye', !visible);
+                    $pwShow.attr({
+                        'aria-pressed': visible ? 'true' : 'false',
+                        'aria-label': visible ? module.text('hidePassword') : module.text('showPassword')
+                    });
+                };
+
+                setPasswordVisible(false);
+
+                $pwShow.on('click', function () {
+                    setPasswordVisible($input.attr('type') === 'password');
+                }).on('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setPasswordVisible($input.attr('type') === 'password');
+                    }
+                }).css({
+                    'position' : 'absolute',
+                    'right' : '0',
+                    'padding': '4px 6px 3px',
+                    'font-size': '19px',
+                    'cursor': 'pointer'
+                });
+
+                // Insert right after the input so Tab reaches
+                // the input first, then the show/hide icon.
+                $input.after($pwShow.hide());
+
+                /**
+                 * The input can still be hidden here (e.g. this form is inside a
+                 * modal that's mid fade-in), so $input.position().top would be
+                 * wrong. Guessing a fixed delay before reading it raced with
+                 * whatever animation was showing the field, so the icon ended up
+                 * at a different, sometimes-wrong offset on every open. Instead,
+                 * poll until the input is actually visible and only then read its
+                 * real position.
+                 */
+                var attempts = 0;
+                var maxAttempts = 40; // ~2s at 50ms interval
+
+                var alignPwShow = function () {
+                    var visible = $input.is(':visible');
+
+                    // Stop once the input is visible (real position), or once
+                    // we've waited long enough and give up with a best-effort
+                    // guess instead (e.g. a field that's never actually shown),
+                    // so the icon isn't left hidden forever.
+                    if (visible || ++attempts >= maxAttempts) {
+                        $pwShow.css('top', visible
+                            ? $input.position().top
+                            : ($input.siblings('label').length ? '23px' : 0)
+                        ).fadeIn('fast');
+                        return;
                     }
 
-                    if($formGroup.length) {
-                        $formGroup.css('position', 'relative');
-                        var $pwShow = $('<div class="humhub-pw-show"><i class="fa fa-eye"></i></div>').on('click', function() {
-                            var $icon = $(this).find('i');
-                            if ($input.attr('type') ==='password') {
-                                $input.attr('type', 'input');
-                                $icon.addClass('fa-eye-slash').removeClass('fa-eye');
-                            } else {
-                                $input.attr('type', 'password');
-                                $icon.addClass('fa-eye').removeClass('fa-eye-slash');
-                            }
-                        }).css({
-                            'position' : 'absolute',
-                            'right' : '2px',
-                            'padding': '4px',
-                            'font-size': '19px',
-                            'cursor': 'pointer',
-                            'top': !$input.is(':visible') ? invisibleTop :  $input.position().top
-                        });
+                    setTimeout(alignPwShow, 50);
+                };
 
-                        $formGroup.prepend($pwShow.hide());
-                        $pwShow.fadeIn('fast');
-                    }
-                }, timeout);
-
+                alignPwShow();
             });
         });
 
