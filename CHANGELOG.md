@@ -15,6 +15,7 @@ HumHub Changelog
 - Enh #8419: Add a space between at the top of the card icons (in the card header)
 - Enh #8421: Customize Bootstrap through its Sass variables in `variables.scss` instead of redeclaring the generated `--bs-*` CSS variables in the component SCSS files (buttons, badges, dropdowns, list groups, navs, popovers, progress bars, tables and tooltips)
 - Fix #8422: Replace removed `.sr-only` class with `.visually-hidden`
+- Fix: `Badge::action()` and `Badge::withLink()` rendered the badge markup escaped inside the link, since the wrapping link encoded the label it is given in `Badge::run()` — which is the already rendered badge, not text
 
 1.19.0-beta.2 (August 19, 2026)
 -------------------------------
