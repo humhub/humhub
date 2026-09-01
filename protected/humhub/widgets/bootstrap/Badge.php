@@ -61,7 +61,9 @@ class Badge extends Widget
         $result = Html::tag('span', $text, $this->options);
 
         if ($this->link) {
-            $result = (string) $this->link->setLabel($result);
+            // The link wraps the rendered badge, so its label is always HTML.
+            // $this->encodeLabel only applies to the label inside the badge, above.
+            $result = (string) $this->link->encodeLabel(false)->setLabel($result);
         }
 
         return $result;
@@ -114,7 +116,7 @@ class Badge extends Widget
     }
 
     /**
-     * Adds a data-action-click handler to the button.
+     * Wraps the badge in a link with a data-action-click handler.
      * @param $handler
      * @param null $url
      * @param null $target
@@ -122,8 +124,8 @@ class Badge extends Widget
      */
     public function action($handler, $url = null, $target = null)
     {
-        $this->link = Link::withAction($this->label, $handler, $url, $target)
-            ->encodeLabel($this->encodeLabel);
+        // The label of the link is the rendered badge, set in run()
+        $this->link = Link::withAction(null, $handler, $url, $target);
         return $this;
     }
 
