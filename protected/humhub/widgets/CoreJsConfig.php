@@ -220,6 +220,12 @@ class CoreJsConfig extends Widget
                         'error.clipboard' => Yii::t('base', 'Text could not be copied to clipboard'),
                     ],
                 ],
+                'ui.form.elements' => [
+                    'text' => [
+                        'showPassword' => Yii::t('base', 'Show password'),
+                        'hidePassword' => Yii::t('base', 'Hide password'),
+                    ],
+                ],
                 'ui.status' => [
                     'showMore' => Yii::$app->user->isAdmin() || YII_DEBUG,
                     'text' => [
