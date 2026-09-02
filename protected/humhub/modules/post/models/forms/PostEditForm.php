@@ -54,6 +54,12 @@ class PostEditForm extends yii\base\Model
      */
     public function validate($attributeNames = null, $clearErrors = true)
     {
+        // Skip the Post model's own "message required" rule when the post has (or will have)
+        // file attachments, otherwise editing a message-less, file-only post always fails.
+        if ($this->hasAttachments()) {
+            $this->post->scenario = Post::SCENARIO_HAS_FILES;
+        }
+
         if (!$this->post->validate() || !parent::validate($attributeNames, $clearErrors)) {
             $this->post->addError('message', Yii::t('PostModule.base', 'Post could not be saved!'));
         }
@@ -63,11 +69,23 @@ class PostEditForm extends yii\base\Model
         }
 
         // Allow empty message only With attachments
-        if (!empty($this->fileList) || (!$this->post->isNewRecord && $this->post->fileManager->find()->count())) {
+        if ($this->hasAttachments()) {
             return true;
         }
 
         $this->post->addError('message', Yii::t('PostModule.base', 'The post must not be empty!'));
+    }
+
+    /**
+     * Checks if the post has file attachments, either newly uploaded ones pending attach
+     * or ones already attached to an existing post.
+     *
+     * @return bool
+     * @since 1.18.6
+     */
+    protected function hasAttachments(): bool
+    {
+        return !empty($this->fileList) || (!$this->post->isNewRecord && $this->post->fileManager->find()->count());
     }
 
     /**

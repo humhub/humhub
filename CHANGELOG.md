@@ -8,6 +8,7 @@ HumHub Changelog
 - Fix #8407: Make Select2 picker choices keyboard-accessible: the "Remove all items" button and each item's own remove icon
 - Fix #8426: Add a visible keyboard focus indicator for the stream filter toggle and its checkbox/radio filter options
 - Fix #8430: Make the password show/hide icon focusable and operable via keyboard
+- Fix #8439: Fix editing file-only Posts and clear `fileList[]` after posting so it isn't reused on the next post
 
 1.18.5 (August 19, 2026)
 ------------------------
