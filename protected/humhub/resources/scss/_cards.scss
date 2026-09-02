@@ -305,6 +305,15 @@
                     font-size: 16px;
                     font-weight: bold;
                     line-height: 24px;
+
+                    // Cards whose title itself is the link (eg. people directory) -
+                    // cards whose whole header/body is wrapped in a link instead
+                    // (eg. .card-space-link) style their own :focus-visible.
+                    a:focus-visible {
+                        outline: 0;
+                        box-shadow: 0 0 0 2px var(--accent);
+                        border-radius: 2px;
+                    }
                 }
 
                 .card-details {
