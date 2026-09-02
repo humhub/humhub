@@ -17,6 +17,7 @@ HumHub Changelog
 - Fix #8422: Replace removed `.sr-only` class with `.visually-hidden`
 - Fix #8434: `Badge::action()` and `Badge::withLink()` rendered the badge markup escaped inside the link, since the wrapping link encoded the label it is given in `Badge::run()` — which is the already rendered badge, not text
 - Enh #8425: Implement visible focus for elements in cards for keyboard accessibility
+- Fix #8423: Fix tab order of the reset filters button in the search area
 
 1.19.0-beta.2 (August 19, 2026)
 -------------------------------
