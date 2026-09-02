@@ -47,6 +47,9 @@ favicon.ico
 **/tests/codeception/_data/e/8/e882f005-efd5-4b8f-aadb-2726621b960a/preview-image
 **/tests/codeception/_support/_generated/**
 **/tests/codeception/_output/**
+# Runtime output of a test run (uploaded and published files of the test app)
+/protected/humhub/tests/uploads/
+/protected/humhub/tests/assets/
 /protected/humhub/themes/Test
 /protected/humhub/modules/file/tests/codeception/_data/file/e/8/e882f005-efd5-4b8f-aadb-2726621b960a/preview-image
 

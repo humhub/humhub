@@ -4,7 +4,7 @@ namespace activity\unit;
 
 use Codeception\Specify;
 use humhub\modules\activity\components\BaseActivity;
-use humhub\modules\activity\controllers\ActivityBoxController;
+use humhub\modules\activity\services\ActivityWindowService;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\activity\tests\codeception\activities\TestActivity;
@@ -118,7 +118,7 @@ class GroupingTest extends HumHubDbTestCase
         $post2->save();
 
         $this->becomeUser('User1');
-        $this->assertEquals(3, ActivityBoxController::getQuery($space->contentContainerRecord)->count());
+        $this->assertEquals(3, ActivityWindowService::query($space->contentContainerRecord)->count());
 
         $this->becomeUser('User2');
         $post3 = new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'C']);
@@ -127,7 +127,7 @@ class GroupingTest extends HumHubDbTestCase
         $post4->save();
 
         $this->becomeUser('User1');
-        $query = ActivityBoxController::getQuery($space->contentContainerRecord);
+        $query = ActivityWindowService::query($space->contentContainerRecord);
         $this->assertEquals(2, $query->count());
 
         $activity = ActivityManager::load($query->one());
@@ -243,13 +243,13 @@ class GroupingTest extends HumHubDbTestCase
         ($post4 = new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'C']))->save();
 
         $this->becomeUser('User1');
-        $this->assertEquals(1, ActivityBoxController::getQuery($space->contentContainerRecord)->count());
+        $this->assertEquals(1, ActivityWindowService::query($space->contentContainerRecord)->count());
 
         // Destroy Group
         $post1->move($space2, true);
 
         $this->becomeUser('User1');
-        $this->assertEquals(3, ActivityBoxController::getQuery($space->contentContainerRecord)->count());
+        $this->assertEquals(3, ActivityWindowService::query($space->contentContainerRecord)->count());
 
     }
 
@@ -271,28 +271,28 @@ class GroupingTest extends HumHubDbTestCase
         $postA->save();
 
         $this->becomeUser('User1');
-        $this->assertEquals(2, ActivityBoxController::getQuery($space->contentContainerRecord)->count());
+        $this->assertEquals(2, ActivityWindowService::query($space->contentContainerRecord)->count());
 
         $post1->content->visibility = Content::VISIBILITY_PRIVATE;
         $post1->content->save();
 
-        $this->assertEquals(3, ActivityBoxController::getQuery($space->contentContainerRecord)->count());
+        $this->assertEquals(3, ActivityWindowService::query($space->contentContainerRecord)->count());
 
         $post2->content->visibility = Content::VISIBILITY_PRIVATE;
         $post2->content->save();
 
-        $this->assertEquals(4, ActivityBoxController::getQuery($space->contentContainerRecord)->count());
+        $this->assertEquals(4, ActivityWindowService::query($space->contentContainerRecord)->count());
 
         $post3->content->visibility = Content::VISIBILITY_PRIVATE;
         $post3->content->save();
 
         // Now expect 2 groups
-        $this->assertEquals(2, ActivityBoxController::getQuery($space->contentContainerRecord)->count());
+        $this->assertEquals(2, ActivityWindowService::query($space->contentContainerRecord)->count());
     }
 
     private function getActivityForContent(ContentProvider $record, ?string $activityClass = null): ?BaseActivity
     {
-        $query = ActivityBoxController::getQuery($record->content->contentContainer)->andWhere(
+        $query = ActivityWindowService::query($record->content->contentContainer)->andWhere(
             ['content_id' => $record->content->id],
         );
 

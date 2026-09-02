@@ -1,0 +1,72 @@
+openapi: 3.0.0
+info:
+  description: |
+    Welcome to the HumHub account API reference, v2 — the authenticated user's own data.
+
+    These endpoints are part of **HumHub core** (1.20+). The optional
+    [REST API module](https://github.com/humhub/rest) contributes the token authentication
+    methods they accept and owns the older `/api/v1` surface, which is documented with that
+    module. For the design of this stack see `docs/develop/concept-api.md`.
+
+    Conventions of this API generation, differing from `/api/v1`: camelCase field names,
+    ISO-8601 timestamps with offset, and plain HTTP status codes instead of a
+    `{code, message}` envelope.
+
+    Requests may authenticate with any token method the REST API module offers. HumHub's own
+    browser session is accepted too for these endpoints, which is what the platform's Vue UI
+    uses.
+  version: 2.0.0
+  title: HumHub - Account API (v2)
+  contact:
+    email: info@humhub.com
+  license:
+    name: AGPLv2
+    url: https://www.humhub.org/en/licences
+servers:
+  - url: /api/v2
+security:
+  - Bearer: []
+  - BasicAuth: []
+  - SessionCookie: []
+paths:
+  "/account":
+    get:
+      summary: The authenticated user
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "common.yaml#/components/schemas/UserShort"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+  "/account/blocked-users":
+    get:
+      summary: Ids of the users the caller has blocked
+      description: |
+        Clients need this to reproduce the platform's blocked-author masking: payloads are
+        always unmasked, since masking is a display concern rather than an access boundary.
+        Empty when user blocking is disabled by an administrator.
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: integer
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+components:
+  securitySchemes:
+    Bearer:
+      $ref: "common.yaml#/components/securitySchemes/Bearer"
+    BasicAuth:
+      $ref: "common.yaml#/components/securitySchemes/BasicAuth"
+    SessionCookie:
+      $ref: "common.yaml#/components/securitySchemes/SessionCookie"

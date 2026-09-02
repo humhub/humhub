@@ -39,4 +39,21 @@ class DropdownDivider extends MenuEntry
             Html::tag('hr', '', $this->getHtmlOptions($extraHtmlOptions)),
         );
     }
+
+    /**
+     * @inheritdoc
+     *
+     * A divider carries no label, url or behaviour — only its position — so `divider` plus a
+     * sort order is the whole descriptor.
+     *
+     * @since 1.20
+     */
+    public function describe(): ?array
+    {
+        return [
+            'id' => $this->getId(),
+            'divider' => true,
+            'sortOrder' => $this->getSortOrder(),
+        ];
+    }
 }

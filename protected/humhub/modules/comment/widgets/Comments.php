@@ -3,20 +3,29 @@
 namespace humhub\modules\comment\widgets;
 
 use humhub\components\Widget;
+use humhub\modules\comment\assets\CommentVueAsset;
 use humhub\modules\comment\helpers\IdHelper;
 use humhub\modules\comment\models\Comment as CommentModel;
 use humhub\modules\comment\Module;
-use humhub\modules\comment\services\CommentListService;
+use humhub\modules\comment\serializers\CommentSerializer;
+use humhub\modules\comment\services\CommentPayloadCache;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
+use humhub\modules\file\handler\FileHandlerCollection;
+use humhub\modules\file\widgets\FileHandlerButtonDropdown;
+use humhub\modules\like\serializers\LikeSerializer;
+use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\VueComponent;
 use Yii;
 
 /**
- * This widget is used include the comments functionality to a wall entry.
- *
- * Normally it shows a excerpt of all comments, but provides the functionality
- * to show all comments.
+ * Renders the `<comment-section>` Vue island (see `comment/vue/CommentSection.vue`) for a
+ * content's comment thread - comments are no longer rendered as server HTML, only the
+ * initial data window ({@see CommentPayloadCache::window()}, exactly what the island's own
+ * API fetches return) and the reusable form shell (see {@see CommentFormShell}) travel
+ * with the page.
  *
  * @property-read int $limit
  * @property-read int $pageSize
@@ -30,6 +39,15 @@ class Comments extends Widget
 
     public ?CommentModel $parentComment = null;
 
+    /**
+     * @deprecated since 1.20, set {@see self::$content} (and {@see self::$parentComment} for
+     * nested rendering) instead. Kept for backward compatibility - some modules still call
+     * `Comments::widget(['object' => $x])` (the API before #7917 replaced polymorphic
+     * `object` relations with `content_id`/`parent_comment_id`).
+     * @var ContentActiveRecord|CommentModel|null
+     */
+    public $object = null;
+
     public ?StreamEntryOptions $renderOptions = null;
 
     public Module $module;
@@ -39,6 +57,14 @@ class Comments extends Widget
     public function init()
     {
         parent::init();
+
+        if ($this->object !== null && $this->content === null && $this->parentComment === null) {
+            if ($this->object instanceof CommentModel) {
+                $this->parentComment = $this->object;
+            } else {
+                $this->content = $this->object->content;
+            }
+        }
 
         if ($this->parentComment !== null) {
             $this->content = $this->parentComment->content;
@@ -53,22 +79,70 @@ class Comments extends Widget
             return '';
         }
 
-        $commentListService = new CommentListService($this->content, $this->parentComment);
+        $canComment = $this->module->canComment($this->content);
         $anchorCommentId = $this->getHighlightCommentId(true);
-        // Keep an anchored list focused around the anchor: a small window of previous
-        // comments instead of up to the full view mode limit without pagination
-        $limit = $anchorCommentId ? $this->module->commentsPreviewMax : $this->limit;
-        $comments = $commentListService->getLimited($limit, $anchorCommentId);
 
-        $this->view->registerJsVar('comments_collapsed', $this->limit == 0);
+        // Anchored windows (permalinks) stay focused around the anchor with a small
+        // window of previous comments; otherwise the view-mode-aware preview size
+        // (see getLimit()) is used - exactly what the legacy HTML rendering did.
+        //
+        // Serialized by the same code the island's own API calls go through
+        // (`CommentSerializer`), so embedding the first window here purely saves the
+        // island its initial request - shape and semantics are identical.
+        $initial = CommentPayloadCache::window(
+            $this->content,
+            $this->parentComment,
+            commentId: $anchorCommentId,
+            limit: $anchorCommentId ? $this->module->commentsPreviewMax : $this->getLimit(),
+        );
 
-        return $this->render('comments', [
-            'content' => $this->content,
-            'parentComment' => $this->parentComment,
-            'comments' => $comments,
-            'anchorCommentId' => $anchorCommentId,
-            'highlightCommentId' => $this->getHighlightCommentId(false),
-            'id' => IdHelper::getId($this->content, $this->parentComment),
+        return VueComponent::widget([
+            'name' => 'CommentSection',
+            'assetBundle' => CommentVueAsset::class,
+            'options' => [
+                'id' => 'comment_' . IdHelper::getId($this->content, $this->parentComment),
+            ],
+            'props' => [
+                'contentId' => $this->content->id,
+                'initial' => $initial,
+                // The like states of the embedded window, inlined rather than fetched: the
+                // window payload itself is caller-neutral (and therefore cacheable, see
+                // `docs/develop/concept-api.md`), but THIS page render is per user anyway, so
+                // handing them over here saves the island its first `like/states` request and
+                // renders the like links complete on first paint.
+                'initialLikeStates' => LikeSerializer::statesByRecordId(CommentSerializer::recordIds($initial)),
+                'canComment' => $canComment,
+                'formShellHtml' => $canComment ? CommentFormShell::widget(['content' => $this->content]) : null,
+                // Settings of the form's Vue-native upload field (`UploadField`), which
+                // replaced the shell's former server-rendered upload composition. The handler
+                // entries stay server-rendered: they are menu entries a module contributed,
+                // carrying legacy `data-action-click` attributes - see that component's
+                // docblock, "Legacy file handlers".
+                'uploadOptions' => $canComment ? [
+                    'max' => (int)Yii::$app->getModule('content')->maxAttachedFiles,
+                    'handlersHtml' => FileHandlerButtonDropdown::widget([
+                        'handlers' => FileHandlerCollection::getByType(
+                            [FileHandlerCollection::TYPE_IMPORT, FileHandlerCollection::TYPE_CREATE],
+                        ),
+                        'itemsOnly' => true,
+                    ]),
+                ] : null,
+                // Server-rendered icon HTML for CommentForm.vue's submit button, reproducing
+                // the legacy `Button::accent()->icon('send')` markup (see that component's own
+                // docblock) - rendered here rather than hardcoded client-side since the icon
+                // provider (FontAwesome by default) is pluggable/configurable.
+                'submitIconHtml' => $canComment ? Icon::get('send')->asString() : null,
+                'pageSize' => $this->getPageSize(),
+                'anchorCommentId' => $this->getHighlightCommentId(false),
+                // Mirrors comments.php's `d-none` class, only lifted (inline `.show()`)
+                // when at least one comment is preloaded into the initial window.
+                'collapsed' => empty($initial['results']),
+                // Same call `file\widgets\ShowFiles` makes for a wall entry: an attachment
+                // the preview grid already shows is left out of the list below it. The
+                // setting is the file module's, the shape rendering it is the shared
+                // `<AttachedFiles>` component.
+                'excludeMediaFiles' => (bool)Yii::$app->getModule('file')->settings->get('excludeMediaFilesPreview'),
+            ],
         ]);
     }
 

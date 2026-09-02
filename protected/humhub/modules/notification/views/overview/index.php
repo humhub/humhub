@@ -5,50 +5,34 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\helpers\Html;
-use humhub\modules\notification\models\forms\FilterForm;
-use humhub\widgets\bootstrap\Button;
-use humhub\modules\notification\widgets\NotificationFilterForm;
+use humhub\modules\notification\assets\NotificationVueAsset;
+use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\VueComponent;
+use yii\helpers\Url;
 
-/* @var string $overview */
-/* @var FilterForm $filterForm */
+/* @var array $initial the first page of notifications, see NotificationWindowService */
+/* @var array $categories [{id, title}] the categories that can be filtered by */
+
+// The page content is one island (NotificationOverview): the filter in the sidebar and the list
+// in the main panel are one piece of state, so they share an owner. It renders the panel/column
+// markup this view used to hold - see the component's own docblock.
 ?>
 <div class="container">
-    <div class="row">
-        <div class="col-lg-9 layout-content-container">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <?= Yii::t('NotificationModule.base', '<strong>Notification</strong> Overview') ?>
-                    <div class="float-end">
-                        <?= Button::light()
-                            ->icon('check')
-                            ->action('notification.markAsSeen', ['/notification/list/mark-as-seen'])
-                            ->id('notification_overview_markseen')
-                            ->style('display:none')
-                            ->sm()
-                            ->tooltip(Yii::t('NotificationModule.base', 'Mark all as seen')) ?>
-                        <?= Button::light()
-                            ->icon('cog')
-                            ->link(['/notification/user'])
-                            ->sm()
-                            ->tooltip(Yii::t('NotificationModule.base', 'Notification Settings')) ?>
-                    </div>
-                </div>
-                <div class="panel-body">
-                    <?= $overview ?>
-                </div>
-            </div>
-        </div>
-        <aside class="col-lg-3 layout-sidebar-container" aria-label="<?= Html::encode(Yii::t('base', 'Sidebar')) ?>">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <strong><?= Yii::t('NotificationModule.base', 'Filter') ?></strong>
-                    <hr style="margin-bottom:0">
-                </div>
-                <div class="panel-body">
-                    <?= NotificationFilterForm::widget(['filterForm' => $filterForm]) ?>
-                </div>
-            </div>
-        </aside>
-    </div>
+    <?= VueComponent::widget([
+        'name' => 'NotificationOverview',
+        'assetBundle' => NotificationVueAsset::class,
+        'props' => [
+            'initial' => $initial,
+            'categories' => $categories,
+            'pageSize' => humhub\modules\notification\services\NotificationWindowService::OVERVIEW_PAGE_SIZE,
+            'settingsUrl' => Url::to(['/notification/user']),
+            'icons' => [
+                'check' => Icon::get('check')->asString(),
+                'cog' => Icon::get('cog')->asString(),
+                'all' => Icon::get('bars')->asString(),
+                'unseen' => Icon::get('eye-slash')->asString(),
+                'seen' => Icon::get('eye')->asString(),
+            ],
+        ],
+    ]) ?>
 </div>

@@ -43,6 +43,7 @@ The systems modules plug into. Read the ones relevant to what your module does.
 - [Live updates](concept-live.md)
 - [Search](concept-search.md)
 - [Internationalization](concept-i18n.md)
+- [HTTP API framework](concept-api.md) — `/api/v2`, the auth model, endpoint and serializer ownership (the endpoint reference itself lives in [`docs/api/`](../api/), served at `/docs/api/`)
 
 ## UI & frontend
 
@@ -58,6 +59,13 @@ Widgets, menus, theming, and the HumHub JavaScript layer.
 - [JavaScript modals](ui-js-modals.md)
 - [JavaScript stream](ui-js-stream.md)
 - [JavaScript client](ui-js-client.md) — REST/AJAX wrapper
+- [Vue.js integration](ui-js-vuejs.md) — island components on server-rendered pages (concept draft)
+- [Vue.js components](ui-js-vuejs-components.md) — authoring and using components, registry, mounting
+- [Vue.js build tooling](ui-js-vuejs-build.md) — grunt build-vue, committed artifacts, vitest
+- [Vue.js extensions](ui-js-vuejs-extensions.md) — extension slots, serializer events, domain events
+- [Vue.js legacy interop](ui-js-vuejs-interop.md) — v-additions, RichTextOutput, LegacyFormWrapper, form shells
+- [Vue.js form suite](ui-js-vuejs-forms.md) — HumHubForm, native field components, SubmitButton, error contract
+- [Vue.js status & roadmap](ui-js-vuejs-roadmap.md) — current state, REST API convergence plan, backlog
 
 ## Accessibility (WCAG)
 

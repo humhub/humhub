@@ -38,12 +38,7 @@ $bundles = ArrayHelper::merge(
     CoreBundleAsset::STATIC_DEPENDS,
 );
 
-$publishOptions = [
-    'except' => [
-        'scss/',
-        '.gitignore',
-    ],
-];
+$publishOptions = AssetBundle::HUMHUB_RESOURCES_PUBLISH_OPTIONS;
 
 // `basePath` is the filesystem location Yii writes the compressed output to
 // and uses to compute relative URLs inside the bundled CSS. `baseUrl` would

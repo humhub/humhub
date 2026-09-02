@@ -1,6 +1,27 @@
 HumHub Changelog
 ================
 
+1.20.0 (Unreleased)
+-------------------
+- Enh #8403: Added the Vue.js island layer (`humhub.vue` runtime, core component set, form suite, extension APIs) with the like link and the comment section as the first islands
+- Enh #8403: Added the HTTP API framework in `humhub\components\api` and the first core endpoints under `/api/v2` (comment, like, account) — browser-session authentication is opt-in per controller, token methods come from the rest module, see `docs/develop/concept-api.md`
+- Enh #8403: Comment payloads are caller-neutral and cached server-side (`comment\services\CommentPayloadCache`); like state and edit/delete permissions have their own endpoints
+- Enh #8403: The status bar is a Vue island; `ui.status` keeps its API and forwards to it
+- Enh #8403: Added the native `UploadField` form-suite component and the `/api/v2/file` upload endpoints
+- Enh #8403: The notification dropdown and overview page are Vue islands on the new `/api/v2/notification` endpoints
+- Enh #8403: Core ships the `/api/v2` endpoint documentation in `docs/api/` (OpenAPI sources, committed rendered references and an index page served at `/docs/api/`)
+- Enh #8403: The space membership button is a Vue island on the new `/api/v2/space/<id>/membership` endpoints; its presentation is props instead of options posted back through the client
+- Enh #8403: The friendship button is a Vue island on the new `/api/v2/user/<id>/friendship` endpoints; with it the button re-render and the `content.container.relationship` client action are gone
+- Enh #8403: Added a `JavaScript Tests` CI workflow (vitest plus a rebuild check that fails on a stale committed Vue artifact) and `grunt build-vue --module=all` to rebuild every artifact at once
+- Enh #8403: The activity box is a Vue island on the new `/api/v2/activity` endpoint, including live updates; the legacy `humhub.activity.js` and its custom scrollbar are gone
+- Enh #8403: The space menu is a Vue island on the new general `/api/v2/space` endpoints; its list is paginated and searched server-side, and the legacy `humhub.space.chooser.js` is gone
+- Enh #8403: Added the `ContentControls` island — a content record's context menu for a module's own Vue list, merging the resolved `WallEntryControls` stack (`GET /api/v2/content/<id>/controls`) with the host's own entries and the client registry; menu entries describe themselves through `humhub\modules\ui\menu\MenuEntry::describe()`/`DescribableWidget`, so a module contributing a control link keeps working unchanged
+- Enh #8403: `DropdownMenu` can be opened by its host with `open(event)`, at the pointer when handed a mouse event, which is what gives a Vue-rendered list the right-click context menus the legacy `$.fn.contextMenu` gave server-rendered ones
+- Enh #8403: Added `HumHubForm::focusFirstField()`, for a form opened in a dialog
+- Enh #8403: Documented the `/api/v2/content/<id>/controls` endpoint in `docs/api/` and covered it with API tests
+- Enh #8403: Attached files are a Vue island (`AttachedFiles`), shared by `ShowFiles` and the comment section; audio plays natively and jPlayer is gone
+- Fix #8403: The `excludeMediaFilesPreview` setting really excludes media files from the attachment list again
+
 1.19.0-beta.3 (Unreleased)
 -------------------------------
 - Fix #8417: Top menu keeps the previous entry highlighted after a pjax navigation (since 1.19.0-beta.1)

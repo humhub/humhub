@@ -91,6 +91,26 @@ module.exports = function (grunt) {
                     let sep = cmdSep();
                     return `cd protected ${sep} php yii migrate/up --includeModuleMigrations=${includeModuleMigrations}`;
                 }
+            },
+            buildVue: {
+                command: function () {
+                    let moduleName = grunt.option('module') || grunt.option('m');
+                    if (!moduleName) {
+                        return 'echo "Usage: grunt build-vue --module=<id>" && exit 1';
+                    }
+                    let watch = grunt.option('watch') ? ' --watch' : '';
+                    let minify = grunt.option('minify') ? ' --minify' : '';
+                    return `node vue.build.mjs --module ${moduleName}${watch}${minify}`;
+                }
+            },
+            testJs: {
+                command: "npx vitest run"
+            },
+            buildApiDocs: {
+                command: function () {
+                    let document = grunt.option('document') || grunt.option('d') || '';
+                    return `bash docs/api/build.sh ${document}`.trim();
+                }
             }
 
         },
@@ -129,4 +149,21 @@ module.exports = function (grunt) {
     grunt.registerTask('migrate-create', ['shell:migrateCreate']);
     grunt.registerTask('test-server', ['shell:testServer']);
     grunt.registerTask('test', ['shell:testRun']);
+
+    /**
+     * Compiles a module's Vue single-file components into its committed artifact
+     *
+     * > grunt build-vue --module=like [--watch] [--minify]
+     * > grunt build-vue --module=all              # core + every module with Vue sources
+     */
+    grunt.registerTask('build-vue', ['shell:buildVue']);
+    grunt.registerTask('test-js', ['shell:testJs']);
+
+    /**
+     * Renders the HTTP API reference (docs/api/src/*.yaml) into the committed HTML pages
+     * an installation serves at /docs/api/
+     *
+     * > grunt build-api-docs [--document=comment]
+     */
+    grunt.registerTask('build-api-docs', ['shell:buildApiDocs']);
 };

@@ -33,6 +33,11 @@ class InviteCest
         $I->waitForText('Accept Invite', 10, '.controls-header');
         $I->dontSee('Admin Space 2 Post Private', '#wallStream');
         $I->click('Accept Invite', '.controls-header');
+        // Accepting is an API call of the `MembershipButton` island followed by the reload
+        // its `reloadOnJoin` prop asks for (the space header renders it that way), so the
+        // button is only gone once both have happened - the member state itself stays
+        // hidden in the header (`show-member-state="false"`).
+        $I->waitForElementNotVisible('.controls-header membership-button a', 10);
         $I->dontSee('Accept Invite');
 
         $I->amUser1(true);

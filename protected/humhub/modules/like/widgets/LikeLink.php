@@ -5,10 +5,11 @@ namespace humhub\modules\like\widgets;
 use humhub\models\RecordMap;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\like\assets\LikeVueAsset;
 use humhub\modules\like\services\LikeService;
+use humhub\widgets\VueComponent;
 use Yii;
 use yii\base\Widget;
-use yii\helpers\Url;
 
 class LikeLink extends Widget
 {
@@ -30,16 +31,14 @@ class LikeLink extends Widget
 
     public function run()
     {
-        return $this->render('likeLink', [
-            'likeCount' => $this->likeService->getCount(),
-            'currentUserLiked' => $this->likeService->hasLiked(),
-            'id' => 'like_' . RecordMap::getId($this->object),
-            'likeUrl' => Url::to(['/like/like/like', 'recordId' => RecordMap::getId($this->object)]),
-            'unlikeUrl' => Url::to(['/like/like/unlike', 'recordId' => RecordMap::getId($this->object)]),
-            'userListUrl' => Url::to(
-                ['/like/like/user-list', 'recordId' => RecordMap::getId($this->object)],
-            ),
-            'title' => $this->likeService->generateLikeTitleText(),
+        return VueComponent::widget([
+            'name' => 'LikeButton',
+            'assetBundle' => LikeVueAsset::class,
+            'props' => [
+                'recordId' => RecordMap::getId($this->object),
+                'likeCount' => $this->likeService->getCount(),
+                'currentUserLiked' => Yii::$app->user->isGuest ? false : $this->likeService->hasLiked(),
+            ],
         ]);
     }
 }

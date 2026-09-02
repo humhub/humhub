@@ -1,0 +1,421 @@
+<template>
+    <ul :class="rootClass">
+        <li class="nav-item dropdown">
+            <a
+                ref="toggle"
+                href="#"
+                :class="toggleClass"
+                data-bs-toggle="dropdown"
+                role="button"
+                aria-haspopup="true"
+                aria-expanded="false"
+                :aria-label="toggleAriaLabel"
+            ><slot name="toggle"></slot></a>
+
+            <ul class="dropdown-menu" :class="{ 'dropdown-menu-end': alignEnd }">
+                <slot />
+                <li v-if="loading">
+                    <span class="dropdown-item disabled d-flex align-items-center gap-2">
+                        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                        <span role="status">{{ loadingLabel }}</span>
+                    </span>
+                </li>
+                <template v-for="entry in resolvedEntries" :key="entry.id">
+                    <li v-if="entry.html" v-additions v-html="entry.html"></li>
+                    <li v-else>
+                        <component :is="entry.component" v-if="entry.component" :context="context" />
+                        <hr v-else-if="entry.divider" class="dropdown-divider" />
+                        <a
+                            v-else-if="entry.icon"
+                            v-bind="entry.htmlOptions"
+                            :href="entry.url || '#'"
+                            class="dropdown-item d-flex align-items-center gap-2"
+                            @click="onEntryClick(entry, $event)"
+                        ><i :class="'fa fa-' + entry.icon" aria-hidden="true"></i>{{ resolveLabel(entry) }}</a>
+                        <a
+                            v-else
+                            v-bind="entry.htmlOptions"
+                            :href="entry.url || '#'"
+                            class="dropdown-item"
+                            @click="onEntryClick(entry, $event)"
+                        >{{ resolveLabel(entry) }}</a>
+                    </li>
+                </template>
+            </ul>
+        </li>
+    </ul>
+</template>
+
+<script>
+/**
+ * Generic dropdown-toggle menu — the Vue analog of the `nav nav-pills
+ * preferences` / `.dropdown-toggle` + `.dropdown-menu` markup pattern PHP
+ * widgets render throughout the app (e.g. `humhub\widgets\PanelMenu`,
+ * `content\widgets\WallEntryControls`, the former
+ * `comment/widgets/views/commentControls.php`). Core infrastructure, not
+ * tied to any one module — any island's template can reach for
+ * `<DropdownMenu>` instead of hand-rolling this structure again.
+ *
+ * Toggling, closing (click-away/Escape) and keyboard navigation are all
+ * handled by Bootstrap's own dropdown JS via `data-bs-toggle="dropdown"` —
+ * nothing here is Vue-owned. That JS only cares about the DOM structure
+ * (a `.dropdown` ancestor containing the toggle and a sibling
+ * `.dropdown-menu`), not how it was rendered, so Vue-rendered markup works
+ * identically to server-rendered markup — proven in production by the
+ * comment island's own controls dropdown before this component existed.
+ *
+ * ## Slot contract
+ *
+ * The `toggle` slot is the toggle's own content. It is empty by default,
+ * because the corner-controls menu draws its meatball from CSS (see
+ * `rootClass` below) — a labelled trigger ("Sort by: Name ↑") supplies it
+ * here.
+ *
+ * Free-form items are supplied through the default slot — always rendered
+ * first, ahead of any data-driven entries below. Consumers render one `<li>`
+ * per item, each normally wrapping an `<a class="dropdown-item">` (or a
+ * `DropdownDivider`-style `<li><hr class="dropdown-divider"></li>`), giving
+ * callers full control over links, click handlers, icons and conditional
+ * (`v-if`) items:
+ *
+ * ```html
+ * <DropdownMenu :toggle-aria-label="label">
+ *     <li><a href="#" class="dropdown-item" @click.prevent="onEdit">Edit</a></li>
+ * </DropdownMenu>
+ * ```
+ *
+ * This is still the only option for an item that needs markup the entry
+ * descriptor shape below cannot express — e.g. `CommentControls.vue`'s
+ * permalink item, which carries legacy `data-action-click`/
+ * `data-content-permalink*` attributes picked up by a delegated document
+ * click handler (see `humhub.action.js`) rather than a Vue click handler.
+ *
+ * ## Data-driven mode (`menuId`/`entries`)
+ *
+ * The alternative to the slot above: an array of entry descriptors, the
+ * Vue analog of the server-side `humhub\modules\ui\menu\widgets\Menu` API
+ * (`addEntry()`/`removeEntry()`, entries with an `id` and a `sortOrder`).
+ * Pass `menuId` (identifies this menu to `registerMenuEntry()`/
+ * `removeMenuEntry()` — see `humhub.vue.js`) and `entries` (this
+ * component's own BUILT-IN entries, same descriptor shape a module's
+ * `registerMenuEntry()` call uses) to render a resolved, reactive list of
+ * entries after the slot content:
+ *
+ * ```html
+ * <DropdownMenu :toggle-aria-label="label" menu-id="comment.controls" :entries="entries" :context="{ comment }" />
+ * ```
+ *
+ * **Resolution pipeline** (a computed, so registering/removing an entry
+ * anywhere re-renders every currently-mounted menu for that `menuId`
+ * without a remount):
+ *
+ * 1. Start from `entries` (built-ins, in prop order) followed by any
+ *    registry entries for `menuId` that do not share an id with a built-in.
+ * 2. **Override**: a registry entry whose `id` matches a built-in's `id`
+ *    REPLACES that built-in, in the built-in's own position.
+ * 3. **Removal**: drop any entry (built-in or registry, already-overridden
+ *    or not) whose `id` was passed to `removeMenuEntry(menuId, id)` — a
+ *    removal is checked here, not baked into the registry itself, which is
+ *    what lets it suppress a built-in that was never registered at all.
+ * 4. Drop entries whose `condition(context)` returns falsy (entries with no
+ *    `condition` always pass).
+ * 5. Drop `component`-entries whose component is not (yet) registered —
+ *    same "stay optional, no Vue resolution warning" rule `ExtensionSlot`
+ *    applies to its own entries, checked via `isRegistered()`.
+ * 6. Sort by `sortOrder` ascending (default `1000`); entries sharing a
+ *    `sortOrder` keep their step-1 order — **built-ins before registry
+ *    entries**, each group in its own original order.
+ *
+ * Each resolved entry renders as `<li>`: a `component` entry renders that
+ * component with a single `context` prop (not spread — unlike
+ * `ExtensionSlot`'s `v-bind="context"`); otherwise an
+ * `<a class="dropdown-item">` calling `@click.prevent="onClick(context)"`,
+ * with a leading `<i class="fa fa-<icon>">` (plus a flex/gap class on the
+ * `<a>` for spacing) when `icon` is set — a separate template branch (not a
+ * nested `v-if` on the icon alone), so an entry without an icon renders the
+ * exact same `<a class="dropdown-item">{{ label }}</a>` markup as before
+ * this mode existed, with no leftover Vue `v-if` comment node.
+ *
+ * ## Server-described entries
+ *
+ * Three further fields exist for entries a SERVER produced rather than a
+ * `registerMenuEntry()` call — see `humhub\modules\ui\menu\MenuEntry::describe()`
+ * and the `ContentControls` island, which feeds this component the resolved
+ * `WallEntryControls` stack of a content record:
+ *
+ *  - `url` — renders a real `href` instead of `#`, and the click is NOT
+ *    swallowed, so ordinary link behaviour (middle-click, open in new tab)
+ *    works. An entry with an own `onClick` still takes precedence.
+ *  - `htmlOptions` — bound onto the anchor. This is what keeps a legacy
+ *    `data-action-click` entry working once a client renders the anchor:
+ *    the delegated document handler in `humhub.action.js` reads the
+ *    attribute off the DOM either way. `href` in here loses to `url`.
+ *  - `html` — the escape hatch: raw markup for an entry that cannot be
+ *    described at all, injected with `v-html` and run through the UI
+ *    additions (`v-additions`). It becomes the WHOLE `<li>`, so the server
+ *    ships inner markup. Deliberately a dead end — such an entry cannot be
+ *    labelled, conditioned or overridden by a client — and deprecated on
+ *    the server side.
+ *
+ * `divider` renders an `<hr class="dropdown-divider">`, the client-side
+ * counterpart of `humhub\modules\ui\menu\DropdownDivider`.
+ *
+ * ## Opening it from the host
+ *
+ * `open(event)` is a public method for hosts that raise this menu from somewhere other than
+ * its own toggle — a right-click on the row the menu belongs to being the whole reason it
+ * exists. Handed a mouse event it opens AT the pointer, so a list of Vue-rendered rows gets
+ * the context menus the platform's legacy `$.fn.contextMenu` gave server-rendered ones. See
+ * the method's own docblock.
+ *
+ * See docs/develop/ui-js-vuejs-extensions.md, "Menu entries", for the full
+ * entry shape and worked examples.
+ *
+ * ## Props
+ *  - `toggleAriaLabel` (required) — accessible name for the toggle button,
+ *    which otherwise carries no visible text (styling supplies the
+ *    caret/kebab icon).
+ *  - `alignEnd` (default `true`) — adds `dropdown-menu-end`, right-aligning
+ *    the menu under its toggle; the overwhelmingly common case for a
+ *    controls dropdown anchored at the end of a row. Set `false` to align
+ *    it to the start instead.
+ *  - `toggleClass` (default `'nav-link dropdown-toggle'`) — replaces the
+ *    toggle `<a>`'s classes entirely (not merged), so a caller needing an
+ *    icon-only kebab toggle or a differently styled trigger doesn't fight
+ *    the default.
+ *  - `rootClass` (default `'nav nav-pills preferences'`) — replaces the root
+ *    `<ul>`'s classes entirely. **Read this before reusing the default
+ *    outside a stream/comment-style entry.** `.nav-pills.preferences` is
+ *    not neutral styling: `_nav.scss` positions it `absolute; right: 10px;
+ *    top: 10px` PLATFORM-WIDE and paints the meatball icon as an `::after`
+ *    on its toggle — that pair is what makes the controls menu sit in an
+ *    entry's top-right corner (the comment and stream entries only retune
+ *    `right`/`top`, see `_comment.scss`/`_stream.scss`). A menu that is
+ *    part of normal document flow — a dropdown button in a toolbar, an
+ *    inline menu in a flex row — must drop `preferences` and bring its own
+ *    toggle content, or it will escape its container and render empty.
+ *  - `menuId` (default `null`) — identifies this menu's entries in the
+ *    `registerMenuEntry()`/`removeMenuEntry()` registry. Data-driven mode
+ *    is entirely off (no registry lookup, nothing rendered beyond the slot)
+ *    when this is not set, regardless of `entries`.
+ *  - `entries` (default `[]`) — this menu's own built-in entries, only
+ *    consulted when `menuId` is set. Same descriptor shape as
+ *    `registerMenuEntry()`'s second argument.
+ *  - `context` (default `{}`) — passed to every entry's `condition`/
+ *    `onClick`/`component`, and to every module-registered entry resolved
+ *    for `menuId`.
+ *
+ * @since 1.20
+ */
+import { getMenuEntries, i18n, isRegistered } from '@humhub/vue';
+
+export default {
+    props: {
+        toggleAriaLabel: { type: String, required: true },
+        alignEnd: { type: Boolean, default: true },
+        toggleClass: { type: String, default: 'nav-link dropdown-toggle' },
+        rootClass: { type: String, default: 'nav nav-pills preferences' },
+        menuId: { type: String, default: null },
+        entries: { type: Array, default: () => [] },
+        context: { type: Object, default: () => ({}) },
+        // Renders a disabled spinner item while the consumer is still resolving what belongs
+        // in this menu - see the `open` event below.
+        loading: { type: Boolean, default: false },
+    },
+    // `open` fires when the menu is actually opened (not on the closing click), so a consumer
+    // can load menu content on demand instead of up front - Bootstrap's own
+    // `show.bs.dropdown` is the signal, since toggling is Bootstrap-owned (see the docblock).
+    emits: ['open'],
+    created() {
+        // Deliberately not reactive state: nothing in the template depends on either, and a
+        // menu that repositions itself does not need to re-render to do it.
+        this.pointerPosition = null;
+        this.ownDropdown = null;
+        this.shown = false;
+    },
+    mounted() {
+        this.$refs.toggle.addEventListener('show.bs.dropdown', this.onShow);
+        this.$refs.toggle.addEventListener('hidden.bs.dropdown', this.onHidden);
+    },
+    beforeUnmount() {
+        this.$refs.toggle.removeEventListener('show.bs.dropdown', this.onShow);
+        this.$refs.toggle.removeEventListener('hidden.bs.dropdown', this.onHidden);
+        // Bootstrap keeps its instances in a map keyed by element, so one whose element is
+        // removed without being disposed keeps both the entry and its Popper alive.
+        this.disposeOwnDropdown();
+    },
+    computed: {
+        loadingLabel() {
+            return i18n.t('base', 'Loading...');
+        },
+        resolvedEntries() {
+            if (!this.menuId) {
+                return [];
+            }
+
+            const registry = getMenuEntries(this.menuId);
+            const registryById = new Map(registry.entries.map((entry) => [entry.id, entry]));
+
+            // Step 1 + 2: built-ins in prop order, overridden in place by a same-id registry
+            // entry, followed by the registry's own non-overriding entries in their own order.
+            const usedRegistryIds = new Set();
+            const merged = this.entries.map((entry) => {
+                const override = registryById.get(entry.id);
+                if (override) {
+                    usedRegistryIds.add(entry.id);
+                    return override;
+                }
+                return entry;
+            });
+            registry.entries.forEach((entry) => {
+                if (!usedRegistryIds.has(entry.id)) {
+                    merged.push(entry);
+                }
+            });
+
+            const removed = registry.removed;
+            const context = this.context;
+            const sortOrderOf = (entry) => (typeof entry.sortOrder === 'number' ? entry.sortOrder : 1000);
+
+            // Step 3-5, then a stable sort (step 6) keyed on the pre-sort array position so
+            // ties keep the step-1/2 order (built-ins first) rather than whatever order a
+            // given JS engine's Array#sort happens to leave equal-key entries in.
+            return merged
+                .filter((entry) => removed.indexOf(entry.id) === -1
+                    && (!entry.condition || entry.condition(context))
+                    && (!entry.component || isRegistered(entry.component)))
+                .map((entry, index) => ({ entry, index }))
+                .sort((a, b) => (sortOrderOf(a.entry) - sortOrderOf(b.entry)) || (a.index - b.index))
+                .map((wrapped) => wrapped.entry);
+        },
+    },
+    methods: {
+        /**
+         * Opens this menu — at the pointer when handed a mouse event, under the toggle
+         * otherwise.
+         *
+         * The pointer case is what a host's `@contextmenu` handler wants: a right-click
+         * anywhere on a row should raise that row's menu where the cursor is, which is what
+         * the platform's legacy `$.fn.contextMenu` did for server-rendered lists (see
+         * `humhub.ui.additions.js`). Hosts stay out of Bootstrap and out of positioning:
+         *
+         * ```html
+         * <div @contextmenu.prevent="$refs.menu.open($event)">
+         *     <DropdownMenu ref="menu" … />
+         * </div>
+         * ```
+         *
+         * Leave the argument off to open the menu as a click on the toggle would.
+         */
+        open(event = null) {
+            const dropdown = this.dropdown();
+
+            if (!dropdown) {
+                // No Bootstrap around (a test harness, a stripped build): the toggle still
+                // opens the menu, just not at the pointer.
+                this.$refs.toggle.click();
+                return;
+            }
+
+            // Bootstrap ignores show() on an already-open menu, so a second right-click
+            // somewhere else on the same row would otherwise leave the menu where it was.
+            if (this.shown) {
+                dropdown.hide();
+            }
+
+            // After hide(), whose `hidden` event resets it.
+            this.pointerPosition = event ? { x: event.clientX, y: event.clientY } : null;
+
+            dropdown.show();
+        },
+        /**
+         * This menu's Bootstrap dropdown, positioned against {@link referenceRect}.
+         *
+         * Owned here rather than left to Bootstrap's data-api, because only an instance we
+         * created can be given a `reference` — and that same instance goes on serving plain
+         * clicks on the toggle, which is why the reference falls back to the toggle's own box.
+         *
+         * @return {?object} null when Bootstrap is not available
+         */
+        dropdown() {
+            const Dropdown = typeof bootstrap === 'undefined' ? null : bootstrap.Dropdown;
+
+            if (!Dropdown) {
+                return null;
+            }
+
+            const toggle = this.$refs.toggle;
+            const current = Dropdown.getInstance(toggle);
+
+            if (current && current === this.ownDropdown) {
+                return current;
+            }
+
+            // A default instance the data-api created on an earlier plain click is bound to
+            // the toggle as its reference and cannot be re-pointed after the fact.
+            if (current) {
+                current.dispose();
+            }
+
+            this.ownDropdown = new Dropdown(toggle, {
+                reference: { getBoundingClientRect: this.referenceRect },
+                // A context menu opens down and to the right of the cursor, whatever
+                // `alignEnd` says about where the menu sits under its toggle.
+                popperConfig: (_unused, defaults) => (this.pointerPosition
+                    ? { ...defaults, placement: 'bottom-start' }
+                    : defaults),
+            });
+
+            return this.ownDropdown;
+        },
+        /**
+         * The box Popper positions the menu against: a zero-size rect at the pointer while a
+         * pointer-opened menu is up (Popper's virtual-element convention), and the toggle's
+         * own box the rest of the time.
+         */
+        referenceRect() {
+            if (!this.pointerPosition) {
+                return this.$refs.toggle.getBoundingClientRect();
+            }
+
+            const { x, y } = this.pointerPosition;
+
+            return { width: 0, height: 0, top: y, right: x, bottom: y, left: x, x, y };
+        },
+        disposeOwnDropdown() {
+            if (this.ownDropdown) {
+                this.ownDropdown.dispose();
+                this.ownDropdown = null;
+            }
+        },
+        onShow() {
+            this.shown = true;
+            this.$emit('open');
+        },
+        onHidden() {
+            this.shown = false;
+            // Back to the toggle for the next open, so a plain click on the ⋮ after a
+            // right-click does not reuse a stale cursor position.
+            this.pointerPosition = null;
+        },
+        resolveLabel(entry) {
+            return typeof entry.label === 'function' ? entry.label(this.context) : entry.label;
+        },
+        onEntryClick(entry, event) {
+            // A described entry may be a plain link (`url`) or carry a legacy
+            // `data-action-click` attribute that a delegated document handler picks up. Both
+            // need the click to run its course, so only an entry with an own `onClick`
+            // handler - the Vue-native case - swallows it.
+            if (typeof entry.onClick !== 'function') {
+                if (!entry.url) {
+                    event.preventDefault();
+                }
+                return;
+            }
+
+            event.preventDefault();
+            entry.onClick(this.context);
+        },
+    },
+};
+</script>

@@ -1,0 +1,1254 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { flushPromises, mount } from '@vue/test-utils';
+import CommentSection from '../../modules/comment/vue/CommentSection.vue';
+import CommentForm from '../../modules/comment/vue/components/CommentForm.vue';
+import LikeButton from '../../modules/like/vue/LikeButton.vue';
+import RichTextOutput from '../../vue/RichTextOutput.vue';
+import LegacyFormWrapper from '../../vue/LegacyFormWrapper.vue';
+import DropdownMenu from '../../vue/DropdownMenu.vue';
+import ExtensionSlot from '../../vue/ExtensionSlot.vue';
+import UserImage from '../../modules/user/vue/UserImage.vue';
+import AttachedFiles from '../../modules/file/vue/AttachedFiles.vue';
+import HumHubForm from '../../vue/HumHubForm.vue';
+import RichTextField from '../../vue/RichTextField.vue';
+import UploadField from '../../vue/UploadField.vue';
+import SubmitButton from '../../vue/SubmitButton.vue';
+import UiModal from '../../vue/UiModal.vue';
+import UserList from '../../modules/user/vue/UserList.vue';
+import TextareaField from '../../vue/TextareaField.vue';
+import CheckboxField from '../../vue/CheckboxField.vue';
+
+await import('../../resources/js/humhub/humhub.url.js');
+await import('../../resources/js/humhub/humhub.vue.js');
+
+const vueModule = globalThis.humhub.modules.vue;
+
+// v-additions is registered per Vue *app* by humhub.vue.js's island mounter,
+// not globally on the Vue runtime - mirrors coreInterop.test.js's stand-in
+// verbatim so spying on it observes exactly what production wiring calls.
+const additionsDirective = {
+    mounted(el) {
+        globalThis.humhubStubs.additions.applyTo(jQuery(el));
+    },
+    updated(el) {
+        globalThis.humhubStubs.additions.applyTo(jQuery(el));
+    },
+};
+
+// CommentEntry/CommentForm/CommentControls no longer import RichTextOutput/
+// LegacyFormWrapper/DropdownMenu/ExtensionSlot/HumHubForm/RichTextField/SubmitButton
+// directly (they now resolve through the global Vue component registry - see their own
+// docblocks) - @vue/test-utils' `global.components` stands in for that registry here, the
+// same way it already does for LikeButton below. UiModal/UserList are needed too - nested
+// two levels down, inside LikeButton's own (always-rendered) user-list modal; AttachedFiles
+// is the file module's shared attachment renderer CommentEntry resolves the same way.
+const mountOptions = () => ({
+    global: {
+        directives: { additions: additionsDirective },
+        components: {
+            LikeButton, RichTextOutput, LegacyFormWrapper, DropdownMenu, ExtensionSlot, UserImage, AttachedFiles,
+            HumHubForm, RichTextField, SubmitButton, UploadField, UiModal, UserList, TextareaField, CheckboxField,
+        },
+    },
+});
+
+// Synthetic __VUEFORM__ shell: a minimal stand-in for the real
+// comment/widgets/views/form.php contract (see LegacyFormWrapper's own
+// docblock and coreInterop.test.js) - only what CommentForm itself
+// touches (a <form> to attach the submit listener to, a `.humhub-ui-richtext`
+// node so LegacyFormWrapper.focus()/getValue() have something to look up).
+const buildShell = () => `
+    <div id="comment_create_form___VUEFORM__" class="comment_create content_create">
+        <form id="w___VUEFORM__" action="/comment/comment/post" method="post">
+            <div data-ui-widget="ui.richtext.prosemirror.RichTextEditor" class="humhub-ui-richtext" id="newCommentForm___VUEFORM__"></div>
+            <button type="submit" class="btn-comment-submit">Send</button>
+        </form>
+    </div>
+`;
+
+// API user shape (camelCase, see `user\serializers\UserSerializer::short()`) —
+// consumed as-is, no client-side mapping.
+const makeAuthor = (overrides = {}) => ({
+    id: 9,
+    guid: 'user-guid-1',
+    displayName: 'Alice',
+    url: '/user/alice',
+    imageUrl: '/uploads/alice.jpg',
+    contentContainerId: 5,
+    // null (no overlay) by default - the API's tri-state for the online-status
+    // feature being disabled or the caller looking at themself.
+    online: null,
+    ...overrides,
+});
+
+// RAW API comment shape (see `comment\serializers\CommentSerializer`) — exactly what
+// the endpoints return; the island only adds the derived fields via commentApi.js's
+// mapComment() (isEdited/blocked/canAdminDelete).
+const makeComment = (overrides = {}) => ({
+    id: 1,
+    message: 'Hello world',
+    messageRenderOptions: { 'ui-richtext': true, 'ui-widget': 'ui.richtext.prosemirror.RichText' },
+    contentId: 42,
+    parentCommentId: null,
+    recordId: 100,
+    createdBy: makeAuthor(),
+    createdAt: '2026-08-01T10:00:00+00:00',
+    updatedAt: '2026-08-01T10:00:00+00:00',
+    url: '/comment/perma?id=1',
+    files: [],
+    childCount: 0,
+    replies: { total: 0, items: [], hasMore: false },
+    extensions: {},
+    ...overrides,
+});
+
+// `rootTotal` defaults to whatever `total` ends up being (via `overrides`) rather than a
+// fixed 0 - every existing caller uses this for a no-replies scenario, where the two are
+// always equal (see CommentSerializer::window()'s docblock on
+// `total` vs. `rootTotal`) - unless `overrides` supplies its own `rootTotal` explicitly.
+const emptyWindow = (overrides = {}) => ({
+    results: [],
+    prevCount: 0,
+    nextCount: 0,
+    total: 0,
+    rootTotal: overrides.total ?? 0,
+    ...overrides,
+});
+
+/**
+ * Opens an entry's context menu the way Bootstrap does in production (`show.bs.dropdown`
+ * on the toggle, see DropdownMenu.vue) and settles the permissions request it triggers:
+ * `canEdit`/`canDelete` are not part of the comment payload — which is caller-neutral and
+ * therefore cacheable, see docs/develop/concept-api.md — but fetched when the menu opens.
+ * The stub delegates every other URL to whatever the test had installed.
+ */
+const openCommentMenu = async (wrapper, permissions = { canEdit: true, canDelete: true }, index = 0) => {
+    const inner = globalThis.humhubStubs.client.get;
+    globalThis.humhubStubs.client.get = vi.fn((url, ...rest) => (String(url).includes('/permissions')
+        ? Promise.resolve(permissions)
+        : inner(url, ...rest)));
+
+    wrapper.findAll('.dropdown-toggle')[index].element.dispatchEvent(new Event('show.bs.dropdown'));
+    await flushPromises();
+};
+
+describe('CommentSection', () => {
+    beforeEach(() => {
+        globalThis.humhub.modules.url.config.template = '/__route__';
+        globalThis.humhub.config.module('user').isGuest = false;
+        globalThis.humhub.config.module('user').loginUrl = '/user/auth/login';
+        // The adapter derives canAdminDelete/blocked from these (see commentApi.js).
+        globalThis.humhub.config.module('user').id = 9;
+        globalThis.humhub.config.module('user').blockedUserIds = [];
+        globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(emptyWindow()));
+        globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve({}));
+        globalThis.humhubStubs.logCalls.error.length = 0;
+        globalThis.humhubStubs.logCalls.warn.length = 0;
+    });
+
+    describe('hydration', () => {
+        it('renders from the initial payload without fetching', () => {
+            const initial = { results: [makeComment()], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 };
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                // Exactly what the PHP widget hands over: the (caller-neutral) window plus
+                // the caller's like states for it - so a first paint needs no request at all.
+                props: { contentId: 42, initial, initialLikeStates: { 100: { total: 0, liked: false, canLike: true } } },
+            });
+
+            expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalled();
+            expect(wrapper.find('.single-comment').exists()).toBe(true);
+            expect(wrapper.text()).toContain('Alice');
+        });
+
+        it('fetches the like states of an embedded window that arrives without them', async () => {
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({
+                results: { 100: { total: 4, liked: true, canLike: true } },
+            }));
+            const initial = { results: [makeComment()], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 };
+
+            const wrapper = mount(CommentSection, { ...mountOptions(), props: { contentId: 42, initial } });
+            await flushPromises();
+
+            // One batched request for the whole window, no per-comment calls.
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(1);
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/like/states?recordIds=100');
+            expect(wrapper.find('.likeCount').text()).toBe('(4)');
+        });
+
+        it('self-fetches the default window when initial is null', async () => {
+            const response = { results: [makeComment()], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 };
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(response));
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, pageSize: 10 },
+            });
+
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/comment/content/42/window');
+            await vi.waitFor(() => expect(wrapper.find('.single-comment').exists()).toBe(true));
+        });
+
+        it('settles into an empty rendered state and logs when the self-fetch fails', async () => {
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.reject(new Error('forbidden')));
+
+            const wrapper = mount(CommentSection, { ...mountOptions(), props: { contentId: 42 } });
+
+            await vi.waitFor(() => expect(wrapper.vm.loaded).toBe(true));
+            expect(globalThis.humhubStubs.logCalls.error.length).toBeGreaterThan(0);
+            expect(wrapper.find('.single-comment').exists()).toBe(false);
+        });
+    });
+
+    describe('class/id parity with the legacy markup', () => {
+        it('renders the section root with the legacy comment-container classes', () => {
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: emptyWindow() },
+            });
+
+            const root = wrapper.find('.comment-container');
+            expect(root.classes()).toEqual(expect.arrayContaining(['bg-light', 'p-2', 'mt-3', 'comment-container']));
+        });
+
+        it('gives the list container the IdHelper-format comments_area id and no guest-mode class for a member', () => {
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: emptyWindow() },
+            });
+
+            const list = wrapper.find('.comment');
+            expect(list.attributes('id')).toBe('comments_area_C42P');
+            expect(list.classes()).not.toContain('guest-mode');
+        });
+
+        it('adds guest-mode to the list container for a guest viewer', () => {
+            globalThis.humhub.config.module('user').isGuest = true;
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: emptyWindow() },
+            });
+
+            expect(wrapper.find('.comment').classes()).toContain('guest-mode');
+        });
+    });
+
+    describe('guest and permission handling', () => {
+        it('hides the form for guests even when canComment is true', () => {
+            globalThis.humhub.config.module('user').isGuest = true;
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: emptyWindow(), canComment: true, formShellHtml: buildShell() },
+            });
+
+            expect(wrapper.findComponent(CommentForm).exists()).toBe(false);
+        });
+
+        it('hides the form when canComment is false', () => {
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: emptyWindow(), canComment: false, formShellHtml: buildShell() },
+            });
+
+            expect(wrapper.findComponent(CommentForm).exists()).toBe(false);
+        });
+
+        it('renders the form for a logged-in user who can comment', () => {
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: emptyWindow(), canComment: true, formShellHtml: buildShell() },
+            });
+
+            expect(wrapper.findComponent(CommentForm).exists()).toBe(true);
+        });
+    });
+
+    describe('show more (root list)', () => {
+        it('loads and prepends previous comments with the right url, and updates the remaining count', async () => {
+            const initial = {
+                results: [makeComment({ id: 5 }), makeComment({ id: 6 })],
+                prevCount: 3,
+                nextCount: 0,
+                total: 5,
+                rootTotal: 5,
+            };
+            const response = {
+                results: [makeComment({ id: 3 }), makeComment({ id: 4 })],
+                prevCount: 1,
+                nextCount: 0,
+                total: 5,
+                rootTotal: 5,
+            };
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(response));
+
+            const wrapper = mount(CommentSection, { ...mountOptions(), props: { contentId: 42, initial, pageSize: 2 } });
+
+            await wrapper.find('.showMore a').trigger('click');
+
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith(
+                '/api/v2/comment/content/42/window?commentId=5&direction=previous&pageSize=2',
+            );
+
+            await vi.waitFor(() => {
+                const ids = wrapper.findAll('.single-comment').map((entry) => entry.attributes('id'));
+                expect(ids).toEqual(['comment_3', 'comment_4', 'comment_5', 'comment_6']);
+            });
+            // Real remaining count from the response replaces the initial one.
+            expect(wrapper.findAll('.showMore').length).toBe(1);
+        });
+
+        it('loads and appends next comments with the right url, and updates the remaining count', async () => {
+            const initial = {
+                results: [makeComment({ id: 5 }), makeComment({ id: 6 })],
+                prevCount: 0,
+                nextCount: 3,
+                total: 5,
+                rootTotal: 5,
+            };
+            // total/rootTotal: 3 (not 5) - the response confirms comment 7 is the LAST one
+            // that exists (nextCount: 0), so the true total is 3 (5,6,7), not the stale 5 the
+            // hydration payload guessed - see CommentList's own "Next-pagination gap fix"
+            // docblock section for why `remainingNext` is now derived from `rootTotal`,
+            // refreshed from this same response, rather than trusted directly off `nextCount`.
+            const response = { results: [makeComment({ id: 7 })], prevCount: 0, nextCount: 0, total: 3, rootTotal: 3 };
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(response));
+
+            const wrapper = mount(CommentSection, { ...mountOptions(), props: { contentId: 42, initial, pageSize: 2 } });
+
+            await wrapper.find('.showMore a').trigger('click');
+
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith(
+                '/api/v2/comment/content/42/window?commentId=6&direction=next&pageSize=2',
+            );
+
+            await vi.waitFor(() => {
+                const ids = wrapper.findAll('.single-comment').map((entry) => entry.attributes('id'));
+                expect(ids).toEqual(['comment_5', 'comment_6', 'comment_7']);
+            });
+            expect(wrapper.findAll('.showMore').length).toBe(0);
+        });
+
+        it('guards against concurrent show-more clicks while a request is in flight', async () => {
+            let resolveGet;
+            globalThis.humhubStubs.client.get = vi.fn(() => new Promise((resolve) => { resolveGet = resolve; }));
+            const initial = { results: [makeComment({ id: 5 })], prevCount: 2, nextCount: 0, total: 3, rootTotal: 3 };
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                // Like states inlined (as the widget does), so the only request this test can
+                // provoke is the show-more window fetch itself.
+                props: { contentId: 42, initial, initialLikeStates: { 100: { total: 0, liked: false, canLike: true } } },
+            });
+
+            await wrapper.find('.showMore a').trigger('click');
+            await wrapper.find('.showMore a').trigger('click');
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(1);
+
+            // total: 1 (not 3) - the response confirms nothing remains before item 5 in
+            // either direction (empty comments, prevCount 0), so the true total is just
+            // the one already-loaded item, not the stale 3 the hydration payload guessed -
+            // see CommentList's own "Next-pagination gap fix" docblock section for why
+            // `remainingNext` is now derived from `total`, refreshed from every response.
+            resolveGet({ results: [], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 });
+            await vi.waitFor(() => expect(wrapper.findAll('.showMore').length).toBe(0));
+        });
+
+        it('does not render a show-more link when the count is nonzero but no items are loaded yet', () => {
+            // Defensive edge case: render condition must match the click
+            // guard (`items.length === 0` no-ops the handler) so a stray
+            // prevCount/nextCount without a loaded window never renders a
+            // dead link.
+            const initial = { results: [], prevCount: 3, nextCount: 2, total: 5, rootTotal: 5 };
+
+            const wrapper = mount(CommentSection, { ...mountOptions(), props: { contentId: 42, initial } });
+
+            expect(wrapper.find('.showMore').exists()).toBe(false);
+        });
+    });
+
+    // Regression coverage for the phantom "Show next N comments" bug (N = the thread's
+    // reply count): the root list's own "show next" gate used to be derived from the badge
+    // `total` (ALL comments of the content INCLUDING replies - see
+    // CommentJsonService::serializeWindow()'s own docblock note), while `items`/`prevCount`
+    // only ever cover ROOT comments - so any thread with replies overcounted by exactly the
+    // reply count, rendering a permanently-dead link whose "next" fetch legitimately came
+    // back empty. Fixed by deriving it from `rootTotal` instead - see CommentList's own
+    // docblock, "Root-vs-all total".
+    describe('phantom "show next N replies" fix (rootTotal)', () => {
+        it('renders no show-next link for the owner-reported scenario (9 roots + 14 replies, one root loaded)', () => {
+            // Exact browser-verified data point: content with 23 comments = 9 roots + 14
+            // replies. The UI showed "Show previous 8 comments" AND a dead "Show next 14
+            // comments" - clicking the latter fetched an always-empty next page.
+            const initial = {
+                results: [makeComment({ id: 9 })],
+                prevCount: 8,
+                nextCount: 0,
+                total: 23,
+                rootTotal: 9,
+            };
+
+            const wrapper = mount(CommentSection, { ...mountOptions(), props: { contentId: 42, initial } });
+
+            // Only the "previous" link renders - no phantom "next" link (previously a
+            // dead "Show next 14 comments", N being the reply count).
+            expect(wrapper.findAll('.showMore').length).toBe(1);
+        });
+
+        it('refreshes rootTotal independently of the badge total on a real "show next" response', async () => {
+            // rootTotal (10) is a stale guess here, same as the existing "loads and appends
+            // next comments" test does for `total` above - the response corrects it down to
+            // the real count (3), completely independently of the badge `total` (which stays
+            // inflated by replies elsewhere in the thread and follows its own trajectory).
+            const initial = {
+                results: [makeComment({ id: 5 }), makeComment({ id: 6 })],
+                prevCount: 0,
+                nextCount: 3,
+                total: 19,
+                rootTotal: 5,
+            };
+            const response = {
+                results: [makeComment({ id: 7 })],
+                prevCount: 0,
+                nextCount: 0,
+                total: 17,
+                rootTotal: 3,
+            };
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(response));
+
+            const wrapper = mount(CommentSection, { ...mountOptions(), props: { contentId: 42, initial, pageSize: 2 } });
+
+            await wrapper.find('.showMore a').trigger('click');
+
+            await vi.waitFor(() => expect(wrapper.findAll('.single-comment').length).toBe(3));
+            expect(wrapper.vm.rootTotal).toBe(3);
+            expect(wrapper.vm.total).toBe(17);
+            expect(wrapper.find('.showMore').exists()).toBe(false);
+        });
+    });
+
+    describe('replies (one level)', () => {
+        // EXACT browser-verified scenario (the "Show next N comments" nested-reply bug):
+        // comment id 4 (contentId 2) has 4 replies (ids 13,14,15,16); the preview shows the
+        // NEWEST 2 (15,16 - see CommentListService::getSiblings()'s default LIST_DIR_PREV),
+        // and the old code rendered a "Show next 2 comments" link BELOW the replies whose
+        // click fetched `direction=next&commentId=16` - the server correctly returned an
+        // empty window (nothing is newer than 16), so the link stayed dead forever. See
+        // CommentEntry's own "Previous-direction pagination fix" docblock section for the
+        // root cause and fix this pins.
+        it('renders "Show previous N" ABOVE the replies, and loads older replies with direction=previous cursored from the oldest SHOWN reply', async () => {
+            const reply15 = makeComment({ id: 15, parentCommentId: 4, replies: null, message: 'reply 15' });
+            const reply16 = makeComment({ id: 16, parentCommentId: 4, replies: null, message: 'reply 16' });
+            const root = makeComment({
+                id: 4,
+                contentId: 2,
+                replies: { total: 4, items: [reply15, reply16], hasMore: true },
+            });
+            const reply13 = makeComment({ id: 13, parentCommentId: 4, replies: null, message: 'reply 13' });
+            const reply14 = makeComment({ id: 14, parentCommentId: 4, replies: null, message: 'reply 14' });
+            // total/rootTotal here are content-global (1 root + 4 replies / 1 root) and, per
+            // CommentEntry's own docblock, are deliberately never read by loadMoreReplies() -
+            // included purely for shape realism with the real endpoint.
+            const response = { results: [reply13, reply14], prevCount: 0, nextCount: 0, total: 5, rootTotal: 1 };
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(response));
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: {
+                    contentId: 2,
+                    initial: { results: [root], prevCount: 0, nextCount: 0, total: 5, rootTotal: 1 },
+                    pageSize: 10,
+                },
+            });
+
+            const nested = wrapper.find('.nested-comments-root');
+            expect(nested.find('.single-comment').exists()).toBe(true);
+            expect(nested.find('.showMore').exists()).toBe(true);
+            // Pinned here is the message KEY - "previous", not "next" - plus the remaining
+            // count the label interpolates (the i18n test stub substitutes ICU placeholders
+            // like the real humhub.i18n.t(), see support/setup.mjs).
+            expect(nested.find('.showMore a').text()).toBe('Show previous 2 comments');
+
+            // The link is the FIRST child of `.comment` - i.e. rendered ABOVE the replies
+            // (chronologically correct: older, hidden replies belong above the newest-first
+            // preview) - not after them the way the old next-direction UI had it.
+            const commentChildren = [...nested.find('.comment').element.children];
+            const showMoreIndex = commentChildren.findIndex((el) => el.classList.contains('showMore'));
+            const firstReplyIndex = commentChildren.findIndex((el) => el.id === 'comment_15');
+            expect(showMoreIndex).toBe(0);
+            expect(showMoreIndex).toBeLessThan(firstReplyIndex);
+
+            await nested.find('.showMore a').trigger('click');
+
+            // Both params asserted: direction=previous (not next), cursored from 15 - the
+            // oldest currently-SHOWN reply, not 16 (the newest).
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith(
+                '/api/v2/comment/parent/4/window?commentId=15&direction=previous&pageSize=10',
+            );
+
+            await vi.waitFor(() => {
+                const ids = wrapper.findAll('.nested-comments-root .single-comment').map((entry) => entry.attributes('id'));
+                // Prepended in correct chronological order: [13,14,15,16].
+                expect(ids).toEqual(['comment_13', 'comment_14', 'comment_15', 'comment_16']);
+            });
+            expect(wrapper.find('.nested-comments-root .showMore').exists()).toBe(false);
+        });
+
+        it('does not show a reply toggle on an already-nested reply', () => {
+            const root = makeComment({
+                id: 1,
+                replies: { total: 1, items: [makeComment({ id: 10, parentCommentId: 1, replies: null })], hasMore: false },
+            });
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { results: [root], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 }, canComment: true, formShellHtml: buildShell() },
+            });
+
+            const rootControls = wrapper.find('.single-comment').find('.wall-entry-controls');
+            expect(rootControls.text()).toContain('Reply');
+
+            const nestedControls = wrapper.find('.nested-comments-root .single-comment .wall-entry-controls');
+            expect(nestedControls.text()).not.toContain('Reply');
+        });
+
+        // Bug: the nested reply list rendered with no padding/background at all -
+        // CommentEntry.vue's nested block (`.nested-comments-root > .comment > ...`)
+        // dropped the `.bg-light.p-2.mt-3.comment-container` wrapper the legacy
+        // `Comments::widget()` template (`comments.php`) renders around the exact same
+        // content at EVERY nesting level, root included - CommentSection.vue already
+        // reproduces that same wrapper one level up (see its own "legacy comment-container
+        // classes" test above), just not this nested one.
+        describe('nested .comment-container wrapper (padding/background parity)', () => {
+            it('wraps an existing reply list in the legacy classes, visible (no d-none)', () => {
+                const root = makeComment({
+                    id: 1,
+                    replies: { total: 1, items: [makeComment({ id: 10, parentCommentId: 1, replies: null })], hasMore: false },
+                });
+
+                const wrapper = mount(CommentSection, {
+                    ...mountOptions(),
+                    props: { contentId: 42, initial: { results: [root], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
+                });
+
+                // .nested-comments-root > .comment-container > .comment > .single-comment
+                const nestedContainer = wrapper.find('.nested-comments-root > .comment-container');
+                expect(nestedContainer.exists()).toBe(true);
+                expect(nestedContainer.classes()).toEqual(expect.arrayContaining(['bg-light', 'p-2', 'mt-3', 'comment-container']));
+                expect(nestedContainer.classes()).not.toContain('d-none');
+                expect(nestedContainer.find('.comment .single-comment').exists()).toBe(true);
+            });
+
+            it('keeps the wrapper d-none (no padding/background) with no replies and the reply form closed, then reveals it once the reply form opens', async () => {
+                const root = makeComment({ id: 1, replies: { total: 0, items: [], hasMore: false } });
+
+                const wrapper = mount(CommentSection, {
+                    ...mountOptions(),
+                    props: {
+                        contentId: 42,
+                        initial: { results: [root], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
+                        canComment: true,
+                        formShellHtml: buildShell(),
+                    },
+                });
+
+                const nestedContainer = () => wrapper.find('.nested-comments-root > .comment-container');
+                expect(nestedContainer().classes()).toContain('d-none');
+
+                await wrapper.find('.single-comment .wall-entry-controls a').trigger('click'); // "Reply"
+
+                expect(nestedContainer().classes()).not.toContain('d-none');
+            });
+        });
+
+        // Bug: hovering a REPLY also revealed the PARENT comment's own `⋮` controls
+        // dropdown (browser-verified with Playwright against the compiled hover rule -
+        // jsdom can't evaluate `:hover`, hence the structural assertions below instead).
+        //
+        // Root cause: `:hover` matches every ANCESTOR of the hovered element, not just
+        // the element itself - a nested reply's `.single-comment` is a DESCENDANT of its
+        // parent's `.single-comment` (this is true of both the legacy DOM and this one -
+        // restoring the `.comment-container` wrapper above does NOT change that), so
+        // `.single-comment:hover > .nav-pills.preferences > .dropdown > .dropdown-toggle`
+        // (_comment.scss) matched for the PARENT too whenever a reply was hovered, since
+        // the parent's own `.nav-pills.preferences` (rendered by CommentControls, the
+        // FIRST child of `.single-comment` - see below) is just as much a direct child of
+        // a now-`:hover`-matching `.single-comment` as the reply's own is of its.
+        //
+        // Fix (_comment.scss): `&:hover:not(:has(.single-comment:hover)) > .nav-pills...`
+        // - the `:not(:has(...))` guard keeps only the INNERMOST hovered `.single-comment`
+        // "active" (replies never nest further, so one `:has()` check suffices). That CSS
+        // fix depends on `.nav-pills.preferences` being a DIRECT CHILD of `.single-comment`
+        // at every nesting level, which these assertions confirm structurally.
+        it('renders CommentControls\' .nav-pills.preferences as a direct child of .single-comment at both nesting levels (precondition for the hover-scoping CSS fix)', () => {
+            const root = makeComment({
+                id: 1,
+                replies: { total: 1, items: [makeComment({ id: 10, parentCommentId: 1, replies: null })], hasMore: false },
+            });
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { results: [root], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
+            });
+
+            const rootComment = wrapper.find('#comment_1');
+            expect(rootComment.element.querySelector(':scope > .nav-pills.preferences')).not.toBeNull();
+
+            const replyComment = wrapper.find('#comment_10');
+            expect(replyComment.element.querySelector(':scope > .nav-pills.preferences')).not.toBeNull();
+
+            // ... and the reply IS a descendant of the root's .single-comment box (via
+            // .flex-grow-1 > .nested-comments-root > .comment-container > .comment), which
+            // is exactly why hovering it also matches `.single-comment:hover` for the root.
+            expect(rootComment.element.contains(replyComment.element)).toBe(true);
+        });
+    });
+
+    describe('blocked authors (client-side masking)', () => {
+        // Masking is derived client-side from the viewer's own block list
+        // (CoreJsConfig user.blockedUserIds — see commentApi.js's `blocked`) — the
+        // REST payload always carries the full comment, and the reveal is a local
+        // display toggle with no request (same trust model as the legacy reveal,
+        // which also shipped the content on request).
+        it('masks a comment from a blocked author and reveals it in place without a request', async () => {
+            globalThis.humhub.config.module('user').blockedUserIds = [66];
+            const blocked = makeComment({ id: 9, createdBy: makeAuthor({ id: 66, displayName: 'Blocked Bob' }) });
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { results: [blocked], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
+            });
+
+            expect(wrapper.find('.comment-blocked-user').exists()).toBe(true);
+            expect(wrapper.find('.single-comment').exists()).toBe(false);
+            // The data is in the payload, but it must not RENDER while masked.
+            expect(wrapper.text()).not.toContain('Hello world');
+            expect(wrapper.text()).not.toContain('Blocked Bob');
+
+            globalThis.humhubStubs.client.get.mockClear();
+            await wrapper.find('.comment-blocked-user a').trigger('click');
+
+            expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalled();
+            await vi.waitFor(() => expect(wrapper.find('.single-comment').exists()).toBe(true));
+            expect(wrapper.find('.comment-blocked-user').exists()).toBe(false);
+            expect(wrapper.text()).toContain('Hello world');
+            expect(wrapper.text()).toContain('Blocked Bob');
+        });
+
+        it('does not mask authors outside the block list', () => {
+            globalThis.humhub.config.module('user').blockedUserIds = [12345];
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { results: [makeComment()], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
+            });
+
+            expect(wrapper.find('.comment-blocked-user').exists()).toBe(false);
+            expect(wrapper.find('.single-comment').exists()).toBe(true);
+        });
+    });
+
+    describe('permalink anchor', () => {
+        it('highlights the anchored comment', () => {
+            const comments = [makeComment({ id: 1 }), makeComment({ id: 2 })];
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { results: comments, prevCount: 0, nextCount: 0, total: 2, rootTotal: 2 }, anchorCommentId: 2 },
+            });
+
+            expect(wrapper.find('#comment_1').classes()).not.toContain('comment-current');
+            expect(wrapper.find('#comment_2').classes()).toContain('comment-current');
+        });
+    });
+
+    describe('toggle + count bridge', () => {
+        it('un-collapses and focuses the form on humhub:comment:toggle', async () => {
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: {
+                    contentId: 42,
+                    initial: emptyWindow(),
+                    canComment: true,
+                    formShellHtml: buildShell(),
+                    collapsed: true,
+                },
+            });
+
+            expect(wrapper.find('.comment-container').classes()).toContain('d-none');
+
+            const focusSpy = vi.spyOn(wrapper.findComponent(CommentForm).vm, 'focus');
+
+            wrapper.element.parentElement.dispatchEvent(new CustomEvent('humhub:comment:toggle'));
+            await wrapper.vm.$nextTick();
+            await wrapper.vm.$nextTick();
+
+            expect(wrapper.find('.comment-container').classes()).not.toContain('d-none');
+            expect(focusSpy).toHaveBeenCalledTimes(1);
+        });
+
+        it('fetches and renders the default window on expand when previewMax=0 shipped an empty-but-nonzero window', async () => {
+            const response = {
+                results: [makeComment({ id: 5 }), makeComment({ id: 6 })],
+                prevCount: 2,
+                nextCount: 0,
+                total: 4,
+                rootTotal: 4,
+            };
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(response));
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: emptyWindow({ total: 4 }), pageSize: 2, collapsed: true },
+            });
+
+            expect(wrapper.find('.single-comment').exists()).toBe(false);
+
+            wrapper.element.parentElement.dispatchEvent(new CustomEvent('humhub:comment:toggle'));
+
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/comment/content/42/window');
+
+            await vi.waitFor(() => {
+                const ids = wrapper.findAll('.single-comment').map((entry) => entry.attributes('id'));
+                expect(ids).toEqual(['comment_5', 'comment_6']);
+            });
+            expect(wrapper.vm.prevCount).toBe(2);
+        });
+
+        it('does not re-fetch on a second toggle while the expand fetch is still in flight', async () => {
+            let resolveGet;
+            globalThis.humhubStubs.client.get = vi.fn(() => new Promise((resolve) => { resolveGet = resolve; }));
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: emptyWindow({ total: 4 }), collapsed: true },
+            });
+
+            wrapper.element.parentElement.dispatchEvent(new CustomEvent('humhub:comment:toggle'));
+            wrapper.element.parentElement.dispatchEvent(new CustomEvent('humhub:comment:toggle'));
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(1);
+
+            resolveGet({ results: [makeComment({ id: 1 })], prevCount: 0, nextCount: 0, total: 4, rootTotal: 4 });
+            await vi.waitFor(() => expect(wrapper.find('.single-comment').exists()).toBe(true));
+        });
+
+        it('does not fetch on expand when the window is genuinely empty (total 0)', () => {
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: emptyWindow(), collapsed: true },
+            });
+
+            wrapper.element.parentElement.dispatchEvent(new CustomEvent('humhub:comment:toggle'));
+
+            expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalled();
+        });
+
+        it('stops listening for toggle after unmount', () => {
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: emptyWindow(), collapsed: true },
+            });
+            const mountEl = wrapper.element.parentElement;
+
+            wrapper.unmount();
+            expect(() => mountEl.dispatchEvent(new CustomEvent('humhub:comment:toggle'))).not.toThrow();
+        });
+
+        it('dispatches humhub:comment:countChanged on the mount element when total changes', async () => {
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(
+                { results: [], prevCount: 0, nextCount: 0, total: 5, rootTotal: 5 },
+            ));
+
+            const wrapper = mount(CommentSection, { ...mountOptions(), props: { contentId: 42 } });
+
+            const handler = vi.fn();
+            wrapper.element.parentElement.addEventListener('humhub:comment:countChanged', handler);
+
+            await vi.waitFor(() => expect(wrapper.vm.total).toBe(5));
+
+            expect(handler).toHaveBeenCalledTimes(1);
+            expect(handler.mock.calls[0][0].detail).toEqual({ contentId: 42, total: 5 });
+        });
+
+        it('does not dispatch countChanged for the initial hydration value', async () => {
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { results: [], prevCount: 0, nextCount: 0, total: 3, rootTotal: 3 } },
+            });
+
+            const handler = vi.fn();
+            wrapper.element.parentElement.addEventListener('humhub:comment:countChanged', handler);
+
+            await wrapper.vm.$nextTick();
+            expect(handler).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('LikeButton nesting', () => {
+        it('renders LikeButton inside an entry with its initial like props', () => {
+            const comment = makeComment();
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: {
+                    contentId: 42,
+                    initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
+                    // Like state travels beside the (cacheable) payload — see
+                    // docs/develop/concept-api.md and CommentSection's `initialLikeStates`.
+                    initialLikeStates: { 100: { total: 3, liked: true, canLike: true } },
+                },
+            });
+
+            expect(wrapper.find('a.unlike').exists()).toBe(true);
+            expect(wrapper.find('.likeCount').text()).toBe('(3)');
+        });
+
+        it('does not render a LikeButton when the caller cannot like', () => {
+            const comment = makeComment();
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: {
+                    contentId: 42,
+                    initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
+                    initialLikeStates: { 100: { total: 0, liked: false, canLike: false } },
+                },
+            });
+
+            expect(wrapper.find('.likeLinkContainer').exists()).toBe(false);
+        });
+    });
+
+    describe('AttachedFiles nesting', () => {
+        const image = {
+            id: 7,
+            guid: 'img-guid',
+            mimeType: 'image/png',
+            size: 4096,
+            fileName: 'shot.png',
+            mimeIcon: 'mime-image',
+            url: '/file/file/download?guid=img-guid',
+            downloadUrl: '/file/file/download?download=1&guid=img-guid',
+            previewUrl: '/preview/img-guid.png',
+        };
+
+        const mountWith = (props = {}) => mount(CommentSection, {
+            ...mountOptions(),
+            props: {
+                contentId: 42,
+                initial: {
+                    results: [makeComment({ files: [image] })],
+                    prevCount: 0,
+                    nextCount: 0,
+                    total: 1,
+                    rootTotal: 1,
+                },
+                ...props,
+            },
+        });
+
+        it("renders an entry's attachments through the file module's shared component", () => {
+            const wrapper = mountWith();
+
+            expect(wrapper.find('.post-files-images img').attributes('src')).toBe('/preview/img-guid.png');
+            expect(wrapper.find('.post-files-images a').attributes('data-ui-gallery')).toBe('gallery-comment-1');
+        });
+
+        // The file module's `excludeMediaFilesPreview` setting reaches every entry through
+        // CommentSection's provide(), the same way the like states do — see the widget.
+        it('leaves media out of the list below the grid when the section says so', () => {
+            expect(mountWith().findAll('.post-file-list li')).toHaveLength(1);
+            expect(mountWith({ excludeMediaFiles: true }).find('.post-file-list').exists()).toBe(false);
+        });
+    });
+
+    describe('edit/delete menu visibility', () => {
+        // Actual edit/delete/admin-delete/live-update mutation behavior is
+        // covered in commentMutations.test.js — this file stays focused on
+        // the read path per docs/superpowers/plans/2026-08-19-vuejs-comments.md.
+        it('hides edit/delete menu items when their flags are false', () => {
+            const comment = makeComment({ canEdit: false, canDelete: false });
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
+            });
+
+            const items = wrapper.findAll('.dropdown-item').map((item) => item.text());
+            expect(items).not.toContain('Edit');
+            expect(items).not.toContain('Delete');
+        });
+    });
+
+    // Items 2-7 below: visual-parity gaps found via live browser comparison against the
+    // legacy UI (see CommentEntry's own "Visual parity fixes" docblock section).
+    describe('entry links order (item 2)', () => {
+        it('renders Reply before Like, with a separator only when both are present', () => {
+            const comment = makeComment();
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: {
+                    contentId: 42,
+                    initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
+                    initialLikeStates: { 100: { total: 2, liked: false, canLike: true } },
+                    canComment: true,
+                },
+            });
+
+            const controls = wrapper.find('.wall-entry-controls').element;
+            const replyLink = [...controls.querySelectorAll('a')].find((a) => a.textContent.startsWith('Reply'));
+            const likeContainer = controls.querySelector('.likeLinkContainer');
+
+            expect(replyLink).toBeTruthy();
+            expect(likeContainer).toBeTruthy();
+            // CommentEntryLinks: CommentLink sortOrder 100 before LikeLink sortOrder 200.
+            // eslint-disable-next-line no-bitwise
+            expect(replyLink.compareDocumentPosition(likeContainer) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+            expect(controls.textContent).toContain(' · ');
+        });
+
+        it('renders Reply with no separator when the caller cannot like', () => {
+            const comment = makeComment();
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: {
+                    contentId: 42,
+                    initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
+                    initialLikeStates: { 100: { total: 0, liked: false, canLike: false } },
+                    canComment: true,
+                },
+            });
+
+            expect(wrapper.find('.wall-entry-controls').text()).not.toContain('·');
+        });
+    });
+
+    describe('avatar + author-link parity (item 3, popovers)', () => {
+        it('carries data-contentcontainer-id and a built alt phrase on the avatar, data-contentcontainer-id/data-guid on the author link', () => {
+            const comment = makeComment({
+                createdBy: makeAuthor({ contentContainerId: 7, guid: 'user-guid-7' }),
+            });
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
+            });
+
+            const img = wrapper.find('.comment-header-image img');
+            expect(img.attributes('data-contentcontainer-id')).toBe('7');
+            expect(img.attributes('alt')).toBe('Profile picture of Alice');
+
+            const authorLink = wrapper.find('.comment-heading a');
+            expect(authorLink.attributes('data-contentcontainer-id')).toBe('7');
+            expect(authorLink.attributes('data-guid')).toBe('user-guid-7');
+        });
+    });
+
+    describe('online-status overlay (item 4)', () => {
+        it('renders the online overlay for another online user', () => {
+            const comment = makeComment({ createdBy: makeAuthor({ online: true }) });
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
+            });
+
+            const overlay = wrapper.find('.comment-header-image .user-online-status');
+            expect(overlay.exists()).toBe(true);
+            expect(overlay.classes()).toContain('user-is-online');
+            expect(wrapper.find('.comment-header-image a').classes()).toEqual(
+                expect.arrayContaining(['has-online-status', 'img-size-small']),
+            );
+        });
+
+        it('renders the offline overlay variant', () => {
+            const comment = makeComment({ createdBy: makeAuthor({ online: false }) });
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
+            });
+
+            const overlay = wrapper.find('.comment-header-image .user-online-status');
+            expect(overlay.exists()).toBe(true);
+            expect(overlay.classes()).toContain('user-is-offline');
+        });
+
+        it('renders no overlay when the online status is null (disabled or own comment)', () => {
+            const comment = makeComment({ createdBy: makeAuthor({ online: null }) });
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
+            });
+
+            expect(wrapper.find('.comment-header-image .user-online-status').exists()).toBe(false);
+            expect(wrapper.find('.comment-header-image a').classes()).not.toContain('has-online-status');
+        });
+    });
+
+    describe('data-ui-markdown + flattened RichTextOutput wrapper (items 5 and 7)', () => {
+        it('renders .comment-message as the RichTextOutput root with data-ui-markdown and no intermediate div', () => {
+            const comment = makeComment({ message: 'Hello world', messageRenderOptions: { 'ui-richtext': true } });
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
+            });
+
+            const message = wrapper.find('.comment-message').element;
+            expect(message.hasAttribute('data-ui-markdown')).toBe(true);
+            expect(message.hasAttribute('data-ui-show-more')).toBe(true);
+            expect(message.getAttribute('data-read-more-text')).toBe('Read full comment...');
+
+            // Direct child, not nested one level deeper behind an extra RichTextOutput-owned div.
+            expect(message.children.length).toBe(1);
+            expect(message.children[0].hasAttribute('data-ui-richtext')).toBe(true);
+            expect(wrapper.find('.comment-message > div > [data-ui-richtext]').exists()).toBe(false);
+        });
+    });
+
+    describe('edited marker parity (item 6)', () => {
+        it('shows a tooltipped edited marker with the localized update time when updatedAt differs from createdAt', () => {
+            // isEdited is DERIVED client-side (updatedAt !== createdAt — see
+            // commentApi.js's mapComment()); the wire timestamps are ISO-8601.
+            const comment = makeComment({ updatedAt: '2026-08-10T12:30:00+00:00' });
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
+            });
+
+            const icon = wrapper.find('.comment-heading .fa-clock-o');
+            expect(icon.exists()).toBe(true);
+            expect(icon.classes()).toContain('tt');
+            expect(icon.attributes('title')).toBe(new Date('2026-08-10T12:30:00+00:00').toLocaleString());
+        });
+
+        it('renders no edited marker when the comment was never edited (updatedAt equals createdAt)', () => {
+            const comment = makeComment();
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
+            });
+
+            expect(wrapper.find('.comment-heading .fa-clock-o').exists()).toBe(false);
+        });
+    });
+
+    describe('extension slots', () => {
+        // Registers `probeDef` on the real humhub.vue registry (so ExtensionSlot's own
+        // isRegistered() filter — see its docblock — finds it) AND into this mount()'s
+        // isolated test app via global.components (so `<component :is="'Name'">` actually
+        // resolves inside it) — the same two-registration shape ExtensionSlot's production
+        // usage collapses into one, since a real island shares a single registry for both.
+        const mountWithProbe = (name, probeDef, mountProps) => {
+            const options = mountOptions();
+            options.global.components[name] = probeDef;
+            vueModule.register(name, probeDef);
+
+            return mount(CommentSection, { ...options, props: mountProps });
+        };
+
+        it('renders a probe component registered for comment.links, at the end of .wall-entry-controls', () => {
+            const comment = makeComment();
+            const probeDef = {
+                props: { comment: { type: Object, required: true } },
+                render() {
+                    return Vue.h('a', { class: 'probe-links-item', href: '#' }, 'Probe link #' + this.comment.id);
+                },
+            };
+            vueModule.registerSlotComponent('comment.links', 'ProbeCommentLinksItem');
+
+            const wrapper = mountWithProbe('ProbeCommentLinksItem', probeDef, {
+                contentId: 42,
+                initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
+            });
+
+            const controls = wrapper.find('.wall-entry-controls');
+            const probe = controls.find('.probe-links-item');
+            expect(probe.exists()).toBe(true);
+            expect(probe.text()).toBe('Probe link #' + comment.id);
+            // Last child of .wall-entry-controls, i.e. after the core Reply/Like links.
+            expect(controls.element.lastElementChild).toBe(probe.element);
+        });
+
+        it('exposes a comment\'s extensions data to a comment.links slot component via context.comment.extensions', () => {
+            const comment = makeComment({ extensions: { reportcontent: { reported: true } } });
+            const probeDef = {
+                props: { comment: { type: Object, required: true } },
+                render() {
+                    return Vue.h(
+                        'span',
+                        { class: 'probe-extensions-item' },
+                        this.comment.extensions.reportcontent.reported ? 'reported' : 'clean',
+                    );
+                },
+            };
+            vueModule.registerSlotComponent('comment.links', 'ProbeExtensionsLinksItem');
+
+            const wrapper = mountWithProbe('ProbeExtensionsLinksItem', probeDef, {
+                contentId: 42,
+                initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
+            });
+
+            expect(wrapper.find('.probe-extensions-item').text()).toBe('reported');
+        });
+    });
+
+    // `comment.controls` is a data-driven DropdownMenu menu (registerMenuEntry()/
+    // removeMenuEntry()), not an ExtensionSlot — see CommentControls.vue's own docblock and
+    // docs/develop/ui-js-vuejs-extensions.md, "Menu entries". It is also the same menuId
+    // CommentControls.vue's own built-in Edit/Delete entries are keyed under, so every test
+    // below shares that one production id.
+    describe('menu entries (comment.controls)', () => {
+        // resetMenuRegistry() is a TEST-ONLY seam (see its own docblock in humhub.vue.js) that
+        // wipes every registerMenuEntry()/removeMenuEntry() call — including the otherwise
+        // PERMANENT removals a test below makes (there is no "un-remove", see
+        // removeMenuEntry()'s own docblock) — so each test starts from a clean registry
+        // instead of depending on running order relative to the others in this block.
+        beforeEach(() => {
+            vueModule.resetMenuRegistry();
+        });
+
+        it('renders a registered component entry, passing the comment via context', () => {
+            const comment = makeComment();
+            const probeDef = {
+                props: { context: { type: Object, required: true } },
+                render() {
+                    return Vue.h('a', { class: 'dropdown-item probe-controls-item', href: '#' }, 'Probe #' + this.context.comment.id);
+                },
+            };
+            vueModule.register('ProbeCommentControlsComponent', probeDef);
+            vueModule.registerMenuEntry('comment.controls', { id: 'probeComponentEntry', component: 'ProbeCommentControlsComponent' });
+
+            const options = mountOptions();
+            options.global.components.ProbeCommentControlsComponent = probeDef;
+
+            const wrapper = mount(CommentSection, {
+                ...options,
+                props: { contentId: 42, initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
+            });
+
+            const probe = wrapper.find('.probe-controls-item');
+            expect(probe.exists()).toBe(true);
+            expect(probe.text()).toBe('Probe #' + comment.id);
+            // Rendered inside the same <DropdownMenu> as the core edit/delete items, after them
+            // (default sortOrder 1000 on both sides ties in registration/prop order — built-ins
+            // first, see DropdownMenu.vue's resolution pipeline docblock).
+            const items = wrapper.findAll('.dropdown-menu > li');
+            expect(items[items.length - 1].find('.probe-controls-item').exists()).toBe(true);
+        });
+
+        it('positions a registered entry among the built-in edit/delete items according to sortOrder', async () => {
+            const comment = makeComment();
+            vueModule.registerMenuEntry('comment.controls', {
+                id: 'probeSortOrderEntry',
+                label: 'Probe Sort Order',
+                sortOrder: 1, // ahead of edit/delete, which both default to sortOrder 1000
+            });
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
+            });
+            await openCommentMenu(wrapper);
+
+            const items = wrapper.findAll('.dropdown-menu > li').map((li) => li.text());
+            expect(items).toEqual(['Permalink', 'Probe Sort Order', 'Edit', 'Delete']);
+        });
+
+        it('removeMenuEntry(\'comment.controls\', \'edit\') hides the built-in Edit entry', async () => {
+            const comment = makeComment();
+            vueModule.removeMenuEntry('comment.controls', 'edit');
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
+            });
+            await openCommentMenu(wrapper);
+
+            const items = wrapper.findAll('.dropdown-item').map((item) => item.text());
+            expect(items).not.toContain('Edit');
+            // Delete (a different id) is unaffected by removing 'edit'.
+            expect(items).toContain('Delete');
+        });
+
+        it('shows a loader in the menu until the permissions arrive, then the entries', async () => {
+            let resolvePermissions;
+            const inner = globalThis.humhubStubs.client.get;
+            globalThis.humhubStubs.client.get = vi.fn((url, ...rest) => (String(url).includes('/permissions')
+                ? new Promise((resolve) => { resolvePermissions = resolve; })
+                : inner(url, ...rest)));
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { results: [makeComment()], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
+            });
+
+            // Closed: neither entries nor a loader, and no request yet.
+            expect(wrapper.findAll('.dropdown-item').map((item) => item.text())).toEqual(['Permalink']);
+
+            wrapper.find('.dropdown-toggle').element.dispatchEvent(new Event('show.bs.dropdown'));
+            await flushPromises();
+
+            expect(wrapper.find('.spinner-border').exists()).toBe(true);
+            expect(wrapper.findAll('.dropdown-item').map((item) => item.text())).not.toContain('Edit');
+
+            resolvePermissions({ canEdit: true, canDelete: false });
+            await flushPromises();
+
+            expect(wrapper.find('.spinner-border').exists()).toBe(false);
+            const items = wrapper.findAll('.dropdown-item').map((item) => item.text());
+            expect(items).toContain('Edit');
+            expect(items).not.toContain('Delete');
+        });
+
+        it('fetches the permissions only once, however often the menu is reopened', async () => {
+            const permissionCalls = vi.fn();
+            const inner = globalThis.humhubStubs.client.get;
+            globalThis.humhubStubs.client.get = vi.fn((url, ...rest) => {
+                if (String(url).includes('/permissions')) {
+                    permissionCalls(url);
+                    return Promise.resolve({ canEdit: true, canDelete: true });
+                }
+                return inner(url, ...rest);
+            });
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { results: [makeComment()], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
+            });
+
+            const openMenu = async () => {
+                wrapper.find('.dropdown-toggle').element.dispatchEvent(new Event('show.bs.dropdown'));
+                await flushPromises();
+            };
+
+            await openMenu();
+            await openMenu();
+            await openMenu();
+
+            expect(permissionCalls).toHaveBeenCalledTimes(1);
+        });
+
+        it('never asks for permissions as a guest', async () => {
+            globalThis.humhub.config.module('user').isGuest = true;
+
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { results: [makeComment()], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
+            });
+
+            wrapper.find('.dropdown-toggle').element.dispatchEvent(new Event('show.bs.dropdown'));
+            await flushPromises();
+
+            expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalledWith(expect.stringContaining('/permissions'));
+        });
+    });
+});

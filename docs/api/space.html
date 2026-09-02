@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf8" />
+  <title>HumHub - Space API (v2)</title>
+  <!-- needed for adaptive design -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+    }
+  </style>
+  <script src="redoc.standalone.js"></script><style data-styled="true" data-styled-version="6.4.2">.kktglN{width:calc(100% - 40%);padding:0 40px;}/*!sc*/
+@media print,screen and (max-width: 75rem){.kktglN{width:100%;padding:40px 40px;}}/*!sc*/
+data-styled.g5[id="sc-hKVpXn"]{content:"kktglN,"}/*!sc*/
+.jleRXN{padding:40px 0;}/*!sc*/
+.jleRXN:last-child{min-height:calc(100vh + 1px);}/*!sc*/
+.jleRXN>.jleRXN:last-child{min-height:initial;}/*!sc*/
+@media print,screen and (max-width: 75rem){.jleRXN{padding:0;}}/*!sc*/
+.grDwca{padding:40px 0;position:relative;}/*!sc*/
+.grDwca:last-child{min-height:calc(100vh + 1px);}/*!sc*/
+.grDwca>.grDwca:last-child{min-height:initial;}/*!sc*/
+@media print,screen and (max-width: 75rem){.grDwca{padding:0;}}/*!sc*/
+.grDwca:not(:last-of-type):after{position:absolute;bottom:0;width:100%;display:block;content:'';border-bottom:1px solid rgba(0, 0, 0, 0.2);}/*!sc*/
+data-styled.g6[id="sc-eCQgVK"]{content:"jleRXN,grDwca,"}/*!sc*/
+.fpMlmc{width:40%;color:#ffffff;background-color:#263238;padding:0 40px;}/*!sc*/
+@media print,screen and (max-width: 75rem){.fpMlmc{width:100%;padding:40px 40px;}}/*!sc*/
+data-styled.g7[id="sc-jSppWd"]{content:"fpMlmc,"}/*!sc*/
+.bdQQyo{background-color:#263238;}/*!sc*/
+data-styled.g8[id="sc-gKkgUA"]{content:"bdQQyo,"}/*!sc*/
+.lhRBUS{display:flex;width:100%;padding:0;}/*!sc*/
+@media print,screen and (max-width: 75rem){.lhRBUS{flex-direction:column;}}/*!sc*/
+data-styled.g9[id="sc-iCECmn"]{content:"lhRBUS,"}/*!sc*/
+.eRMVDe{font-family:Montserrat,sans-serif;font-weight:400;font-size:1.85714em;line-height:1.6em;color:#333333;}/*!sc*/
+data-styled.g10[id="sc-fuztkK"]{content:"eRMVDe,"}/*!sc*/
+.MOVBZ{font-family:Montserrat,sans-serif;font-weight:400;font-size:1.57143em;line-height:1.6em;color:#333333;margin:0 0 20px;}/*!sc*/
+data-styled.g11[id="sc-qdQOe"]{content:"MOVBZ,"}/*!sc*/
+.iamDfj{color:#ffffff;}/*!sc*/
+data-styled.g13[id="sc-kEbgWM"]{content:"iamDfj,"}/*!sc*/
+.kcvrhp{border-bottom:1px solid rgba(38, 50, 56, 0.3);margin:1em 0 1em 0;color:rgba(38, 50, 56, 0.5);font-weight:normal;text-transform:uppercase;font-size:0.929em;line-height:20px;}/*!sc*/
+data-styled.g14[id="sc-iqkkDd"]{content:"kcvrhp,"}/*!sc*/
+.jmoZom{cursor:pointer;margin-left:-20px;padding:0;line-height:1;width:20px;display:inline-block;outline:0;}/*!sc*/
+.jmoZom:before{content:'';width:15px;height:15px;background-size:contain;background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeD0iMCIgeT0iMCIgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MTIgNTEyIiB4bWw6c3BhY2U9InByZXNlcnZlIj48cGF0aCBmaWxsPSIjMDEwMTAxIiBkPSJNNDU5LjcgMjMzLjRsLTkwLjUgOTAuNWMtNTAgNTAtMTMxIDUwLTE4MSAwIC03LjktNy44LTE0LTE2LjctMTkuNC0yNS44bDQyLjEtNDIuMWMyLTIgNC41LTMuMiA2LjgtNC41IDIuOSA5LjkgOCAxOS4zIDE1LjggMjcuMiAyNSAyNSA2NS42IDI0LjkgOTAuNSAwbDkwLjUtOTAuNWMyNS0yNSAyNS02NS42IDAtOTAuNSAtMjQuOS0yNS02NS41LTI1LTkwLjUgMGwtMzIuMiAzMi4yYy0yNi4xLTEwLjItNTQuMi0xMi45LTgxLjYtOC45bDY4LjYtNjguNmM1MC01MCAxMzEtNTAgMTgxIDBDNTA5LjYgMTAyLjMgNTA5LjYgMTgzLjQgNDU5LjcgMjMzLjR6TTIyMC4zIDM4Mi4ybC0zMi4yIDMyLjJjLTI1IDI0LjktNjUuNiAyNC45LTkwLjUgMCAtMjUtMjUtMjUtNjUuNiAwLTkwLjVsOTAuNS05MC41YzI1LTI1IDY1LjUtMjUgOTAuNSAwIDcuOCA3LjggMTIuOSAxNy4yIDE1LjggMjcuMSAyLjQtMS40IDQuOC0yLjUgNi44LTQuNWw0Mi4xLTQyYy01LjQtOS4yLTExLjYtMTgtMTkuNC0yNS44IC01MC01MC0xMzEtNTAtMTgxIDBsLTkwLjUgOTAuNWMtNTAgNTAtNTAgMTMxIDAgMTgxIDUwIDUwIDEzMSA1MCAxODEgMGw2OC42LTY4LjZDMjc0LjYgMzk1LjEgMjQ2LjQgMzkyLjMgMjIwLjMgMzgyLjJ6Ii8+PC9zdmc+Cg==');opacity:0.5;visibility:hidden;display:inline-block;vertical-align:middle;}/*!sc*/
+h1:hover>.jmoZom::before,h2:hover>.jmoZom::before,.jmoZom:hover::before{visibility:visible;}/*!sc*/
+data-styled.g15[id="sc-crPgjm"]{content:"jmoZom,"}/*!sc*/
+.bEEWJa{height:1.3em;width:1.3em;min-width:1.3em;vertical-align:middle;transition:transform 0.2s ease-out;transform:rotateZ(-90deg);}/*!sc*/
+.gngmNp{height:1.5em;width:1.5em;min-width:1.5em;vertical-align:middle;float:left;transition:transform 0.2s ease-out;transform:rotateZ(-90deg);}/*!sc*/
+.gngmNp polygon{fill:#1d8127;}/*!sc*/
+.bQKUih{height:20px;width:20px;min-width:20px;vertical-align:middle;float:right;transition:transform 0.2s ease-out;transform:rotateZ(0);}/*!sc*/
+.bQKUih polygon{fill:white;}/*!sc*/
+.hJoFRR{height:1.5em;width:1.5em;min-width:1.5em;vertical-align:middle;float:left;transition:transform 0.2s ease-out;transform:rotateZ(-90deg);}/*!sc*/
+.hJoFRR polygon{fill:#d41f1c;}/*!sc*/
+data-styled.g16[id="sc-dYjPD"]{content:"bEEWJa,gngmNp,bQKUih,hJoFRR,"}/*!sc*/
+.jFNAwF{border-left:1px solid #7c7cbb;box-sizing:border-box;position:relative;padding:10px 10px 10px 0;}/*!sc*/
+@media screen and (max-width: 50rem){.jFNAwF{display:block;overflow:hidden;}}/*!sc*/
+tr:first-of-type>.jFNAwF,tr.last>.jFNAwF{border-left-width:0;background-position:top left;background-repeat:no-repeat;background-size:1px 100%;}/*!sc*/
+tr:first-of-type>.jFNAwF{background-image:linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 22px,
+      #7c7cbb 22px,
+      #7c7cbb 100%
+    );}/*!sc*/
+tr.last>.jFNAwF{background-image:linear-gradient(
+      to bottom,
+      #7c7cbb 0%,
+      #7c7cbb 22px,
+      transparent 22px,
+      transparent 100%
+    );}/*!sc*/
+tr.last+tr>.jFNAwF{border-left-color:transparent;}/*!sc*/
+tr.last:first-child>.jFNAwF{background:none;border-left-color:transparent;}/*!sc*/
+data-styled.g19[id="sc-hCcPtG"]{content:"jFNAwF,"}/*!sc*/
+.lcdEEX{vertical-align:top;line-height:20px;white-space:nowrap;font-size:13px;font-family:Courier,monospace;}/*!sc*/
+.lcdEEX.deprecated{text-decoration:line-through;color:#707070;}/*!sc*/
+data-styled.g21[id="sc-fFCZOx"]{content:"lcdEEX,"}/*!sc*/
+.gLpZiQ{border-bottom:1px solid #9fb4be;padding:10px 0;width:75%;box-sizing:border-box;}/*!sc*/
+tr.expanded .gLpZiQ{border-bottom:none;}/*!sc*/
+@media screen and (max-width: 50rem){.gLpZiQ{padding:0 20px;border-bottom:none;border-left:1px solid #7c7cbb;}tr.last>.gLpZiQ{border-left:none;}}/*!sc*/
+data-styled.g22[id="sc-bjLslk"]{content:"gLpZiQ,"}/*!sc*/
+.kkMuqc{color:#7c7cbb;font-family:Courier,monospace;margin-right:10px;}/*!sc*/
+.kkMuqc::before{content:'';display:inline-block;vertical-align:middle;width:10px;height:1px;background:#7c7cbb;}/*!sc*/
+.kkMuqc::after{content:'';display:inline-block;vertical-align:middle;width:1px;background:#7c7cbb;height:7px;}/*!sc*/
+data-styled.g23[id="sc-ieCSdj"]{content:"kkMuqc,"}/*!sc*/
+.bsjUmE{border-collapse:separate;border-radius:3px;font-size:14px;border-spacing:0;width:100%;}/*!sc*/
+.bsjUmE >tr{vertical-align:middle;}/*!sc*/
+@media screen and (max-width: 50rem){.bsjUmE{display:block;}.bsjUmE >tr,.bsjUmE >tbody>tr{display:block;}}/*!sc*/
+@media screen and (max-width: 50rem) and (-ms-high-contrast:none){.bsjUmE td{float:left;width:100%;}}/*!sc*/
+.bsjUmE .sc-dILkzW,.bsjUmE .sc-dILkzW .sc-dILkzW .sc-dILkzW,.bsjUmE .sc-dILkzW .sc-dILkzW .sc-dILkzW .sc-dILkzW .sc-dILkzW{margin:1em;margin-right:0;background:#fafafa;}/*!sc*/
+.bsjUmE .sc-dILkzW .sc-dILkzW,.bsjUmE .sc-dILkzW .sc-dILkzW .sc-dILkzW .sc-dILkzW,.bsjUmE .sc-dILkzW .sc-dILkzW .sc-dILkzW .sc-dILkzW .sc-dILkzW .sc-dILkzW{background:#ffffff;}/*!sc*/
+data-styled.g25[id="sc-hHopjF"]{content:"bsjUmE,"}/*!sc*/
+.kibfTX >ul{list-style:none;padding:0;margin:0;margin:0 -5px;}/*!sc*/
+.kibfTX >ul >li{padding:5px 10px;display:inline-block;background-color:#11171a;border-bottom:1px solid rgba(0, 0, 0, 0.5);cursor:pointer;text-align:center;outline:none;color:#ccc;margin:0 5px 5px 5px;border:1px solid #07090b;border-radius:5px;min-width:60px;font-size:0.9em;font-weight:bold;}/*!sc*/
+.kibfTX >ul >li.react-tabs__tab--selected{color:#333333;background:#ffffff;}/*!sc*/
+.kibfTX >ul >li.react-tabs__tab--selected:focus{outline:auto;}/*!sc*/
+.kibfTX >ul >li:only-child{flex:none;min-width:100px;}/*!sc*/
+.kibfTX >ul >li.tab-success{color:#1d8127;}/*!sc*/
+.kibfTX >ul >li.tab-redirect{color:#ffa500;}/*!sc*/
+.kibfTX >ul >li.tab-info{color:#87ceeb;}/*!sc*/
+.kibfTX >ul >li.tab-error{color:#d41f1c;}/*!sc*/
+.kibfTX >.react-tabs__tab-panel{background:#11171a;}/*!sc*/
+.kibfTX >.react-tabs__tab-panel>div,.kibfTX >.react-tabs__tab-panel>pre{padding:20px;margin:0;}/*!sc*/
+.kibfTX >.react-tabs__tab-panel>div>pre{padding:0;}/*!sc*/
+data-styled.g31[id="sc-cxxQMU"]{content:"kibfTX,"}/*!sc*/
+.fiNpIH code[class*='language-'],.fiNpIH pre[class*='language-']{text-shadow:0 -0.1em 0.2em black;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none;}/*!sc*/
+@media print{.fiNpIH code[class*='language-'],.fiNpIH pre[class*='language-']{text-shadow:none;}}/*!sc*/
+.fiNpIH pre[class*='language-']{padding:1em;margin:0.5em 0;overflow:auto;}/*!sc*/
+.fiNpIH .token.comment,.fiNpIH .token.prolog,.fiNpIH .token.doctype,.fiNpIH .token.cdata{color:hsl(30, 20%, 50%);}/*!sc*/
+.fiNpIH .token.punctuation{opacity:0.7;}/*!sc*/
+.fiNpIH .namespace{opacity:0.7;}/*!sc*/
+.fiNpIH .token.property,.fiNpIH .token.tag,.fiNpIH .token.number,.fiNpIH .token.constant,.fiNpIH .token.symbol{color:#4a8bb3;}/*!sc*/
+.fiNpIH .token.boolean{color:#e64441;}/*!sc*/
+.fiNpIH .token.selector,.fiNpIH .token.attr-name,.fiNpIH .token.string,.fiNpIH .token.char,.fiNpIH .token.builtin,.fiNpIH .token.inserted{color:#a0fbaa;}/*!sc*/
+.fiNpIH .token.selector+a,.fiNpIH .token.attr-name+a,.fiNpIH .token.string+a,.fiNpIH .token.char+a,.fiNpIH .token.builtin+a,.fiNpIH .token.inserted+a,.fiNpIH .token.selector+a:visited,.fiNpIH .token.attr-name+a:visited,.fiNpIH .token.string+a:visited,.fiNpIH .token.char+a:visited,.fiNpIH .token.builtin+a:visited,.fiNpIH .token.inserted+a:visited{color:#4ed2ba;text-decoration:underline;}/*!sc*/
+.fiNpIH .token.property.string{color:white;}/*!sc*/
+.fiNpIH .token.operator,.fiNpIH .token.entity,.fiNpIH .token.url,.fiNpIH .token.variable{color:hsl(40, 90%, 60%);}/*!sc*/
+.fiNpIH .token.atrule,.fiNpIH .token.attr-value,.fiNpIH .token.keyword{color:hsl(350, 40%, 70%);}/*!sc*/
+.fiNpIH .token.regex,.fiNpIH .token.important{color:#e90;}/*!sc*/
+.fiNpIH .token.important,.fiNpIH .token.bold{font-weight:bold;}/*!sc*/
+.fiNpIH .token.italic{font-style:italic;}/*!sc*/
+.fiNpIH .token.entity{cursor:help;}/*!sc*/
+.fiNpIH .token.deleted{color:red;}/*!sc*/
+data-styled.g33[id="sc-iJSMbW"]{content:"fiNpIH,"}/*!sc*/
+.dzKJV{opacity:0.7;transition:opacity 0.3s ease;text-align:right;}/*!sc*/
+.dzKJV:focus-within{opacity:1;}/*!sc*/
+.dzKJV >button{background-color:transparent;border:0;color:inherit;padding:2px 10px;font-family:Roboto,sans-serif;font-size:14px;line-height:1.5em;cursor:pointer;outline:0;}/*!sc*/
+.dzKJV >button :hover,.dzKJV >button :focus{background:rgba(255, 255, 255, 0.1);}/*!sc*/
+data-styled.g34[id="sc-giQkEn"]{content:"dzKJV,"}/*!sc*/
+.iOXjCz{position:relative;}/*!sc*/
+data-styled.g38[id="sc-kLEbxe"]{content:"iOXjCz,"}/*!sc*/
+.kxMqOs{margin-left:10px;text-transform:none;font-size:0.929em;color:black;}/*!sc*/
+data-styled.g42[id="sc-gXvOjn"]{content:"kxMqOs,"}/*!sc*/
+.ewCFMV{font-family:Roboto,sans-serif;font-weight:400;line-height:1.5em;}/*!sc*/
+.ewCFMV p:last-child{margin-bottom:0;}/*!sc*/
+.ewCFMV h1{font-family:Montserrat,sans-serif;font-weight:400;font-size:1.85714em;line-height:1.6em;color:#32329f;margin-top:0;}/*!sc*/
+.ewCFMV h2{font-family:Montserrat,sans-serif;font-weight:400;font-size:1.57143em;line-height:1.6em;color:#333333;}/*!sc*/
+.ewCFMV code{color:#e53935;background-color:rgba(38, 50, 56, 0.05);font-family:Courier,monospace;border-radius:2px;border:1px solid rgba(38, 50, 56, 0.1);padding:0 5px;font-size:13px;font-weight:400;word-break:break-word;}/*!sc*/
+.ewCFMV pre{font-family:Courier,monospace;white-space:pre;background-color:#11171a;color:white;padding:20px;overflow-x:auto;line-height:normal;border-radius:0;border:1px solid rgba(38, 50, 56, 0.1);}/*!sc*/
+.ewCFMV pre code{background-color:transparent;color:white;padding:0;}/*!sc*/
+.ewCFMV pre code:before,.ewCFMV pre code:after{content:none;}/*!sc*/
+.ewCFMV blockquote{margin:0;margin-bottom:1em;padding:0 15px;color:#777;border-left:4px solid #ddd;}/*!sc*/
+.ewCFMV img{max-width:100%;box-sizing:content-box;}/*!sc*/
+.ewCFMV ul,.ewCFMV ol{padding-left:2em;margin:0;margin-bottom:1em;}/*!sc*/
+.ewCFMV ul ul,.ewCFMV ol ul,.ewCFMV ul ol,.ewCFMV ol ol{margin-bottom:0;margin-top:0;}/*!sc*/
+.ewCFMV table{display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all;border-collapse:collapse;border-spacing:0;margin-top:1.5em;margin-bottom:1.5em;}/*!sc*/
+.ewCFMV table tr{background-color:#fff;border-top:1px solid #ccc;}/*!sc*/
+.ewCFMV table tr:nth-child(2n){background-color:#fafafa;}/*!sc*/
+.ewCFMV table th,.ewCFMV table td{padding:6px 13px;border:1px solid #ddd;}/*!sc*/
+.ewCFMV table th{text-align:left;font-weight:bold;}/*!sc*/
+.ewCFMV .share-link{cursor:pointer;margin-left:-20px;padding:0;line-height:1;width:20px;display:inline-block;outline:0;}/*!sc*/
+.ewCFMV .share-link:before{content:'';width:15px;height:15px;background-size:contain;background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeD0iMCIgeT0iMCIgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MTIgNTEyIiB4bWw6c3BhY2U9InByZXNlcnZlIj48cGF0aCBmaWxsPSIjMDEwMTAxIiBkPSJNNDU5LjcgMjMzLjRsLTkwLjUgOTAuNWMtNTAgNTAtMTMxIDUwLTE4MSAwIC03LjktNy44LTE0LTE2LjctMTkuNC0yNS44bDQyLjEtNDIuMWMyLTIgNC41LTMuMiA2LjgtNC41IDIuOSA5LjkgOCAxOS4zIDE1LjggMjcuMiAyNSAyNSA2NS42IDI0LjkgOTAuNSAwbDkwLjUtOTAuNWMyNS0yNSAyNS02NS42IDAtOTAuNSAtMjQuOS0yNS02NS41LTI1LTkwLjUgMGwtMzIuMiAzMi4yYy0yNi4xLTEwLjItNTQuMi0xMi45LTgxLjYtOC45bDY4LjYtNjguNmM1MC01MCAxMzEtNTAgMTgxIDBDNTA5LjYgMTAyLjMgNTA5LjYgMTgzLjQgNDU5LjcgMjMzLjR6TTIyMC4zIDM4Mi4ybC0zMi4yIDMyLjJjLTI1IDI0LjktNjUuNiAyNC45LTkwLjUgMCAtMjUtMjUtMjUtNjUuNiAwLTkwLjVsOTAuNS05MC41YzI1LTI1IDY1LjUtMjUgOTAuNSAwIDcuOCA3LjggMTIuOSAxNy4yIDE1LjggMjcuMSAyLjQtMS40IDQuOC0yLjUgNi44LTQuNWw0Mi4xLTQyYy01LjQtOS4yLTExLjYtMTgtMTkuNC0yNS44IC01MC01MC0xMzEtNTAtMTgxIDBsLTkwLjUgOTAuNWMtNTAgNTAtNTAgMTMxIDAgMTgxIDUwIDUwIDEzMSA1MCAxODEgMGw2OC42LTY4LjZDMjc0LjYgMzk1LjEgMjQ2LjQgMzkyLjMgMjIwLjMgMzgyLjJ6Ii8+PC9zdmc+Cg==');opacity:0.5;visibility:hidden;display:inline-block;vertical-align:middle;}/*!sc*/
+.ewCFMV h1:hover>.share-link::before,.ewCFMV h2:hover>.share-link::before,.ewCFMV .share-link:hover::before{visibility:visible;}/*!sc*/
+.ewCFMV a{text-decoration:auto;color:#32329f;}/*!sc*/
+.ewCFMV a:visited{color:#32329f;}/*!sc*/
+.ewCFMV a:hover{color:#6868cf;text-decoration:auto;}/*!sc*/
+.bAoMjv{font-family:Roboto,sans-serif;font-weight:400;line-height:1.5em;}/*!sc*/
+.bAoMjv p:last-child{margin-bottom:0;}/*!sc*/
+.bAoMjv p:first-child{margin-top:0;}/*!sc*/
+.bAoMjv p:last-child{margin-bottom:0;}/*!sc*/
+.bAoMjv h1{font-family:Montserrat,sans-serif;font-weight:400;font-size:1.85714em;line-height:1.6em;color:#32329f;margin-top:0;}/*!sc*/
+.bAoMjv h2{font-family:Montserrat,sans-serif;font-weight:400;font-size:1.57143em;line-height:1.6em;color:#333333;}/*!sc*/
+.bAoMjv code{color:#e53935;background-color:rgba(38, 50, 56, 0.05);font-family:Courier,monospace;border-radius:2px;border:1px solid rgba(38, 50, 56, 0.1);padding:0 5px;font-size:13px;font-weight:400;word-break:break-word;}/*!sc*/
+.bAoMjv pre{font-family:Courier,monospace;white-space:pre;background-color:#11171a;color:white;padding:20px;overflow-x:auto;line-height:normal;border-radius:0;border:1px solid rgba(38, 50, 56, 0.1);}/*!sc*/
+.bAoMjv pre code{background-color:transparent;color:white;padding:0;}/*!sc*/
+.bAoMjv pre code:before,.bAoMjv pre code:after{content:none;}/*!sc*/
+.bAoMjv blockquote{margin:0;margin-bottom:1em;padding:0 15px;color:#777;border-left:4px solid #ddd;}/*!sc*/
+.bAoMjv img{max-width:100%;box-sizing:content-box;}/*!sc*/
+.bAoMjv ul,.bAoMjv ol{padding-left:2em;margin:0;margin-bottom:1em;}/*!sc*/
+.bAoMjv ul ul,.bAoMjv ol ul,.bAoMjv ul ol,.bAoMjv ol ol{margin-bottom:0;margin-top:0;}/*!sc*/
+.bAoMjv table{display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all;border-collapse:collapse;border-spacing:0;margin-top:1.5em;margin-bottom:1.5em;}/*!sc*/
+.bAoMjv table tr{background-color:#fff;border-top:1px solid #ccc;}/*!sc*/
+.bAoMjv table tr:nth-child(2n){background-color:#fafafa;}/*!sc*/
+.bAoMjv table th,.bAoMjv table td{padding:6px 13px;border:1px solid #ddd;}/*!sc*/
+.bAoMjv table th{text-align:left;font-weight:bold;}/*!sc*/
+.bAoMjv .share-link{cursor:pointer;margin-left:-20px;padding:0;line-height:1;width:20px;display:inline-block;outline:0;}/*!sc*/
+.bAoMjv .share-link:before{content:'';width:15px;height:15px;background-size:contain;background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeD0iMCIgeT0iMCIgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MTIgNTEyIiB4bWw6c3BhY2U9InByZXNlcnZlIj48cGF0aCBmaWxsPSIjMDEwMTAxIiBkPSJNNDU5LjcgMjMzLjRsLTkwLjUgOTAuNWMtNTAgNTAtMTMxIDUwLTE4MSAwIC03LjktNy44LTE0LTE2LjctMTkuNC0yNS44bDQyLjEtNDIuMWMyLTIgNC41LTMuMiA2LjgtNC41IDIuOSA5LjkgOCAxOS4zIDE1LjggMjcuMiAyNSAyNSA2NS42IDI0LjkgOTAuNSAwbDkwLjUtOTAuNWMyNS0yNSAyNS02NS42IDAtOTAuNSAtMjQuOS0yNS02NS41LTI1LTkwLjUgMGwtMzIuMiAzMi4yYy0yNi4xLTEwLjItNTQuMi0xMi45LTgxLjYtOC45bDY4LjYtNjguNmM1MC01MCAxMzEtNTAgMTgxIDBDNTA5LjYgMTAyLjMgNTA5LjYgMTgzLjQgNDU5LjcgMjMzLjR6TTIyMC4zIDM4Mi4ybC0zMi4yIDMyLjJjLTI1IDI0LjktNjUuNiAyNC45LTkwLjUgMCAtMjUtMjUtMjUtNjUuNiAwLTkwLjVsOTAuNS05MC41YzI1LTI1IDY1LjUtMjUgOTAuNSAwIDcuOCA3LjggMTIuOSAxNy4yIDE1LjggMjcuMSAyLjQtMS40IDQuOC0yLjUgNi44LTQuNWw0Mi4xLTQyYy01LjQtOS4yLTExLjYtMTgtMTkuNC0yNS44IC01MC01MC0xMzEtNTAtMTgxIDBsLTkwLjUgOTAuNWMtNTAgNTAtNTAgMTMxIDAgMTgxIDUwIDUwIDEzMSA1MCAxODEgMGw2OC42LTY4LjZDMjc0LjYgMzk1LjEgMjQ2LjQgMzkyLjMgMjIwLjMgMzgyLjJ6Ii8+PC9zdmc+Cg==');opacity:0.5;visibility:hidden;display:inline-block;vertical-align:middle;}/*!sc*/
+.bAoMjv h1:hover>.share-link::before,.bAoMjv h2:hover>.share-link::before,.bAoMjv .share-link:hover::before{visibility:visible;}/*!sc*/
+.bAoMjv a{text-decoration:auto;color:#32329f;}/*!sc*/
+.bAoMjv a:visited{color:#32329f;}/*!sc*/
+.bAoMjv a:hover{color:#6868cf;text-decoration:auto;}/*!sc*/
+.dNfUH{font-family:Roboto,sans-serif;font-weight:400;line-height:1.5em;}/*!sc*/
+.dNfUH p:last-child{margin-bottom:0;}/*!sc*/
+.dNfUH p:first-child{margin-top:0;}/*!sc*/
+.dNfUH p:last-child{margin-bottom:0;}/*!sc*/
+.dNfUH p{display:inline-block;}/*!sc*/
+.dNfUH h1{font-family:Montserrat,sans-serif;font-weight:400;font-size:1.85714em;line-height:1.6em;color:#32329f;margin-top:0;}/*!sc*/
+.dNfUH h2{font-family:Montserrat,sans-serif;font-weight:400;font-size:1.57143em;line-height:1.6em;color:#333333;}/*!sc*/
+.dNfUH code{color:#e53935;background-color:rgba(38, 50, 56, 0.05);font-family:Courier,monospace;border-radius:2px;border:1px solid rgba(38, 50, 56, 0.1);padding:0 5px;font-size:13px;font-weight:400;word-break:break-word;}/*!sc*/
+.dNfUH pre{font-family:Courier,monospace;white-space:pre;background-color:#11171a;color:white;padding:20px;overflow-x:auto;line-height:normal;border-radius:0;border:1px solid rgba(38, 50, 56, 0.1);}/*!sc*/
+.dNfUH pre code{background-color:transparent;color:white;padding:0;}/*!sc*/
+.dNfUH pre code:before,.dNfUH pre code:after{content:none;}/*!sc*/
+.dNfUH blockquote{margin:0;margin-bottom:1em;padding:0 15px;color:#777;border-left:4px solid #ddd;}/*!sc*/
+.dNfUH img{max-width:100%;box-sizing:content-box;}/*!sc*/
+.dNfUH ul,.dNfUH ol{padding-left:2em;margin:0;margin-bottom:1em;}/*!sc*/
+.dNfUH ul ul,.dNfUH ol ul,.dNfUH ul ol,.dNfUH ol ol{margin-bottom:0;margin-top:0;}/*!sc*/
+.dNfUH table{display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all;border-collapse:collapse;border-spacing:0;margin-top:1.5em;margin-bottom:1.5em;}/*!sc*/
+.dNfUH table tr{background-color:#fff;border-top:1px solid #ccc;}/*!sc*/
+.dNfUH table tr:nth-child(2n){background-color:#fafafa;}/*!sc*/
+.dNfUH table th,.dNfUH table td{padding:6px 13px;border:1px solid #ddd;}/*!sc*/
+.dNfUH table th{text-align:left;font-weight:bold;}/*!sc*/
+.dNfUH .share-link{cursor:pointer;margin-left:-20px;padding:0;line-height:1;width:20px;display:inline-block;outline:0;}/*!sc*/
+.dNfUH .share-link:before{content:'';width:15px;height:15px;background-size:contain;background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeD0iMCIgeT0iMCIgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MTIgNTEyIiB4bWw6c3BhY2U9InByZXNlcnZlIj48cGF0aCBmaWxsPSIjMDEwMTAxIiBkPSJNNDU5LjcgMjMzLjRsLTkwLjUgOTAuNWMtNTAgNTAtMTMxIDUwLTE4MSAwIC03LjktNy44LTE0LTE2LjctMTkuNC0yNS44bDQyLjEtNDIuMWMyLTIgNC41LTMuMiA2LjgtNC41IDIuOSA5LjkgOCAxOS4zIDE1LjggMjcuMiAyNSAyNSA2NS42IDI0LjkgOTAuNSAwbDkwLjUtOTAuNWMyNS0yNSAyNS02NS42IDAtOTAuNSAtMjQuOS0yNS02NS41LTI1LTkwLjUgMGwtMzIuMiAzMi4yYy0yNi4xLTEwLjItNTQuMi0xMi45LTgxLjYtOC45bDY4LjYtNjguNmM1MC01MCAxMzEtNTAgMTgxIDBDNTA5LjYgMTAyLjMgNTA5LjYgMTgzLjQgNDU5LjcgMjMzLjR6TTIyMC4zIDM4Mi4ybC0zMi4yIDMyLjJjLTI1IDI0LjktNjUuNiAyNC45LTkwLjUgMCAtMjUtMjUtMjUtNjUuNiAwLTkwLjVsOTAuNS05MC41YzI1LTI1IDY1LjUtMjUgOTAuNSAwIDcuOCA3LjggMTIuOSAxNy4yIDE1LjggMjcuMSAyLjQtMS40IDQuOC0yLjUgNi44LTQuNWw0Mi4xLTQyYy01LjQtOS4yLTExLjYtMTgtMTkuNC0yNS44IC01MC01MC0xMzEtNTAtMTgxIDBsLTkwLjUgOTAuNWMtNTAgNTAtNTAgMTMxIDAgMTgxIDUwIDUwIDEzMSA1MCAxODEgMGw2OC42LTY4LjZDMjc0LjYgMzk1LjEgMjQ2LjQgMzkyLjMgMjIwLjMgMzgyLjJ6Ii8+PC9zdmc+Cg==');opacity:0.5;visibility:hidden;display:inline-block;vertical-align:middle;}/*!sc*/
+.dNfUH h1:hover>.share-link::before,.dNfUH h2:hover>.share-link::before,.dNfUH .share-link:hover::before{visibility:visible;}/*!sc*/
+.dNfUH a{text-decoration:auto;color:#32329f;}/*!sc*/
+.dNfUH a:visited{color:#32329f;}/*!sc*/
+.dNfUH a:hover{color:#6868cf;text-decoration:auto;}/*!sc*/
+data-styled.g43[id="sc-cBEgGa"]{content:"ewCFMV,bAoMjv,dNfUH,"}/*!sc*/
+.dDDioG{display:inline;}/*!sc*/
+data-styled.g44[id="sc-ciCrSJ"]{content:"dDDioG,"}/*!sc*/
+.feYhXE{position:relative;}/*!sc*/
+data-styled.g45[id="sc-jcgtOs"]{content:"feYhXE,"}/*!sc*/
+.hHzuQA:hover>.sc-giQkEn{opacity:1;}/*!sc*/
+data-styled.g50[id="sc-cTZdpT"]{content:"hHzuQA,"}/*!sc*/
+.jgTAJz{font-family:Courier,monospace;font-size:13px;white-space:pre;contain:content;overflow-x:auto;}/*!sc*/
+.jgTAJz .redoc-json code>.collapser{display:none;pointer-events:none;}/*!sc*/
+.jgTAJz .callback-function{color:gray;}/*!sc*/
+.jgTAJz .collapser:after{content:'-';cursor:pointer;}/*!sc*/
+.jgTAJz .collapsed>.collapser:after{content:'+';cursor:pointer;}/*!sc*/
+.jgTAJz .ellipsis:after{content:' … ';}/*!sc*/
+.jgTAJz .collapsible{margin-left:2em;}/*!sc*/
+.jgTAJz .hoverable{padding-top:1px;padding-bottom:1px;padding-left:2px;padding-right:2px;border-radius:2px;}/*!sc*/
+.jgTAJz .hovered{background-color:rgba(235, 238, 249, 1);}/*!sc*/
+.jgTAJz .collapser{background-color:transparent;border:0;color:#fff;font-family:Courier,monospace;font-size:13px;padding-right:6px;padding-left:6px;padding-top:0;padding-bottom:0;display:flex;align-items:center;justify-content:center;width:15px;height:15px;position:absolute;top:4px;left:-1.5em;cursor:default;user-select:none;-webkit-user-select:none;padding:2px;}/*!sc*/
+.jgTAJz .collapser:focus{outline-color:#fff;outline-style:dotted;outline-width:1px;}/*!sc*/
+.jgTAJz ul{list-style-type:none;padding:0px;margin:0px 0px 0px 26px;}/*!sc*/
+.jgTAJz li{position:relative;display:block;}/*!sc*/
+.jgTAJz .hoverable{display:inline-block;}/*!sc*/
+.jgTAJz .selected{outline-style:solid;outline-width:1px;outline-style:dotted;}/*!sc*/
+.jgTAJz .collapsed>.collapsible{display:none;}/*!sc*/
+.jgTAJz .ellipsis{display:none;}/*!sc*/
+.jgTAJz .collapsed>.ellipsis{display:inherit;}/*!sc*/
+data-styled.g51[id="sc-jNDflC"]{content:"jgTAJz,"}/*!sc*/
+.kgKexQ{padding:0.9em;background-color:rgba(38,50,56,0.4);margin:0 0 10px 0;display:block;font-family:Montserrat,sans-serif;font-size:0.929em;line-height:1.5em;}/*!sc*/
+data-styled.g52[id="sc-dPqFhK"]{content:"kgKexQ,"}/*!sc*/
+.BuCyN{font-family:Montserrat,sans-serif;font-size:12px;position:absolute;z-index:1;top:-11px;left:12px;font-weight:600;color:rgba(255,255,255,0.7);}/*!sc*/
+data-styled.g53[id="sc-bBzIOb"]{content:"BuCyN,"}/*!sc*/
+.bMFMGt{position:relative;}/*!sc*/
+data-styled.g54[id="sc-cNSlRw"]{content:"bMFMGt,"}/*!sc*/
+.jUCYlq{margin-top:15px;}/*!sc*/
+data-styled.g57[id="sc-hUheUT"]{content:"jUCYlq,"}/*!sc*/
+.jMRTsl{vertical-align:middle;font-size:13px;line-height:20px;}/*!sc*/
+data-styled.g59[id="sc-gSILEF"]{content:"jMRTsl,"}/*!sc*/
+.NncTE{color:rgba(102,102,102,0.9);}/*!sc*/
+data-styled.g60[id="sc-lbpDNm"]{content:"NncTE,"}/*!sc*/
+.kUjPnZ{color:#666;}/*!sc*/
+data-styled.g61[id="sc-iNyHtD"]{content:"kUjPnZ,"}/*!sc*/
+.dHYagA{color:#d41f1c;font-size:0.9em;font-weight:normal;margin-left:20px;line-height:1;}/*!sc*/
+data-styled.g63[id="sc-eIYgEQ"]{content:"dHYagA,"}/*!sc*/
+.OXDYs{border-radius:2px;word-break:break-word;background-color:rgba(51,51,51,0.05);color:rgba(51,51,51,0.9);padding:0 5px;border:1px solid rgba(51,51,51,0.1);font-family:Courier,monospace;}/*!sc*/
+.sc-lbFCLI+.sc-lbFCLI{margin-left:0;}/*!sc*/
+data-styled.g67[id="sc-lbFCLI"]{content:"OXDYs,"}/*!sc*/
+.hzxDQO:after{content:' and ';font-weight:normal;}/*!sc*/
+.hzxDQO:last-child:after{content:none;}/*!sc*/
+.hzxDQO a{text-decoration:auto;color:#32329f;}/*!sc*/
+.hzxDQO a:visited{color:#32329f;}/*!sc*/
+.hzxDQO a:hover{color:#6868cf;text-decoration:auto;}/*!sc*/
+data-styled.g82[id="sc-hPfayn"]{content:"hzxDQO,"}/*!sc*/
+.dVYuXz{white-space:nowrap;}/*!sc*/
+.dVYuXz:after{content:' or ';white-space:pre;}/*!sc*/
+.dVYuXz:last-child:after,.dVYuXz:only-child:after{content:none;}/*!sc*/
+.dVYuXz a{text-decoration:auto;color:#32329f;}/*!sc*/
+.dVYuXz a:visited{color:#32329f;}/*!sc*/
+.dVYuXz a:hover{color:#6868cf;text-decoration:auto;}/*!sc*/
+data-styled.g83[id="sc-dtnsVa"]{content:"dVYuXz,"}/*!sc*/
+.jdqJPb{flex:1 1 auto;cursor:pointer;}/*!sc*/
+data-styled.g84[id="sc-dalEhJ"]{content:"jdqJPb,"}/*!sc*/
+.cVAkzL{width:75%;text-overflow:ellipsis;border-radius:4px;overflow:hidden;}/*!sc*/
+@media screen and (max-width: 50rem){.cVAkzL{margin-top:10px;}}/*!sc*/
+data-styled.g85[id="sc-jTPGds"]{content:"cVAkzL,"}/*!sc*/
+.kEkHzF{display:inline-block;margin:0;}/*!sc*/
+data-styled.g86[id="sc-jQQpTv"]{content:"kEkHzF,"}/*!sc*/
+.kGZLat{width:100%;display:flex;margin:1em 0;flex-direction:row;}/*!sc*/
+@media screen and (max-width: 50rem){.kGZLat{flex-direction:column;}}/*!sc*/
+data-styled.g87[id="sc-fuYIqi"]{content:"kGZLat,"}/*!sc*/
+.cBgvIi{margin-top:0;margin-bottom:0.5em;}/*!sc*/
+data-styled.g93[id="sc-ctiVdb"]{content:"cBgvIi,"}/*!sc*/
+.ldPigm::before{content:'|';display:inline-block;opacity:0.5;width:15px;text-align:center;}/*!sc*/
+.ldPigm:last-child::after{display:none;}/*!sc*/
+data-styled.g95[id="sc-brKBMN"]{content:"ldPigm,"}/*!sc*/
+.iVyheB{overflow:hidden;}/*!sc*/
+data-styled.g96[id="sc-gILgRS"]{content:"iVyheB,"}/*!sc*/
+.juJQo{display:flex;flex-wrap:wrap;margin-left:-15px;}/*!sc*/
+data-styled.g97[id="sc-euUkyj"]{content:"juJQo,"}/*!sc*/
+.jjsIAS{width:9ex;display:inline-block;height:13px;line-height:13px;background-color:#333;border-radius:3px;background-repeat:no-repeat;background-position:6px 4px;font-size:7px;font-family:Verdana,sans-serif;color:white;text-transform:uppercase;text-align:center;font-weight:bold;vertical-align:middle;margin-right:6px;margin-top:2px;}/*!sc*/
+.jjsIAS.get{background-color:#2F8132;}/*!sc*/
+.jjsIAS.post{background-color:#186FAF;}/*!sc*/
+.jjsIAS.put{background-color:#95507c;}/*!sc*/
+.jjsIAS.options{background-color:#947014;}/*!sc*/
+.jjsIAS.patch{background-color:#bf581d;}/*!sc*/
+.jjsIAS.delete{background-color:#cc3333;}/*!sc*/
+.jjsIAS.basic{background-color:#707070;}/*!sc*/
+.jjsIAS.link{background-color:#07818F;}/*!sc*/
+.jjsIAS.head{background-color:#A23DAD;}/*!sc*/
+.jjsIAS.hook{background-color:#32329f;}/*!sc*/
+.jjsIAS.schema{background-color:#707070;}/*!sc*/
+data-styled.g101[id="sc-XpSrr"]{content:"jjsIAS,"}/*!sc*/
+.dqIuaF{margin:0;padding:0;}/*!sc*/
+.dqIuaF:first-child{padding-bottom:32px;}/*!sc*/
+.sc-ilnrqe .sc-ilnrqe{font-size:0.929em;}/*!sc*/
+data-styled.g102[id="sc-ilnrqe"]{content:"dqIuaF,"}/*!sc*/
+.cQETmj{list-style:none inside none;overflow:hidden;text-overflow:ellipsis;padding:0;}/*!sc*/
+data-styled.g103[id="sc-uMZhz"]{content:"cQETmj,"}/*!sc*/
+.cGOuox{cursor:pointer;color:#333333;margin:0;padding:12.5px 20px;display:flex;justify-content:space-between;font-family:Montserrat,sans-serif;background-color:#fafafa;}/*!sc*/
+.cGOuox:hover{color:#32329f;background-color:#ededed;}/*!sc*/
+.cGOuox .sc-dYjPD{height:1.5em;width:1.5em;}/*!sc*/
+.cGOuox .sc-dYjPD polygon{fill:#333333;}/*!sc*/
+data-styled.g104[id="sc-bitxrY"]{content:"cGOuox,"}/*!sc*/
+.ehBKwY{display:inline-block;vertical-align:middle;width:calc(100% - 38px);overflow:hidden;text-overflow:ellipsis;}/*!sc*/
+data-styled.g105[id="sc-eHoOIp"]{content:"ehBKwY,"}/*!sc*/
+.gtBLyN{font-size:0.8em;margin-top:10px;text-align:center;position:fixed;width:260px;bottom:0;background:#fafafa;}/*!sc*/
+.gtBLyN a,.gtBLyN a:visited,.gtBLyN a:hover{color:#333333!important;padding:5px 0;border-top:1px solid #e1e1e1;text-decoration:none;display:flex;align-items:center;justify-content:center;}/*!sc*/
+.gtBLyN img{width:15px;margin-right:5px;}/*!sc*/
+@media screen and (max-width: 50rem){.gtBLyN{width:100%;}}/*!sc*/
+data-styled.g106[id="sc-hAkAFK"]{content:"gtBLyN,"}/*!sc*/
+.fYxpnv{cursor:pointer;position:relative;margin-bottom:5px;}/*!sc*/
+data-styled.g112[id="sc-fXwuWv"]{content:"fYxpnv,"}/*!sc*/
+.dsIRaZ{font-family:Courier,monospace;margin-left:10px;flex:1;overflow-x:hidden;text-overflow:ellipsis;}/*!sc*/
+data-styled.g113[id="sc-FpjRO"]{content:"dsIRaZ,"}/*!sc*/
+.jzaJhV{outline:0;color:inherit;width:100%;text-align:left;cursor:pointer;padding:10px 30px 10px 20px;border-radius:4px 4px 0 0;background-color:#11171a;display:flex;white-space:nowrap;align-items:center;border:1px solid transparent;border-bottom:0;transition:border-color 0.25s ease;}/*!sc*/
+.jzaJhV ..sc-FpjRO{color:#ffffff;}/*!sc*/
+.jzaJhV:focus{box-shadow:inset 0 2px 2px rgba(0, 0, 0, 0.45),0 2px 0 rgba(128, 128, 128, 0.25);}/*!sc*/
+data-styled.g114[id="sc-jWMFtl"]{content:"jzaJhV,"}/*!sc*/
+.hlSrtW{font-size:0.929em;line-height:20px;background-color:#2F8132;color:#ffffff;padding:3px 10px;text-transform:uppercase;font-family:Montserrat,sans-serif;margin:0;}/*!sc*/
+.hOENFc{font-size:0.929em;line-height:20px;background-color:#186FAF;color:#ffffff;padding:3px 10px;text-transform:uppercase;font-family:Montserrat,sans-serif;margin:0;}/*!sc*/
+.iINwyG{font-size:0.929em;line-height:20px;background-color:#cc3333;color:#ffffff;padding:3px 10px;text-transform:uppercase;font-family:Montserrat,sans-serif;margin:0;}/*!sc*/
+data-styled.g115[id="sc-eEFuoE"]{content:"hlSrtW,hOENFc,iINwyG,"}/*!sc*/
+.tUxhh{position:absolute;width:100%;z-index:100;background:#fafafa;color:#263238;box-sizing:border-box;box-shadow:0 0 6px rgba(0, 0, 0, 0.33);overflow:hidden;border-bottom-left-radius:4px;border-bottom-right-radius:4px;transition:all 0.25s ease;visibility:hidden;transform:translateY(-50%) scaleY(0);}/*!sc*/
+data-styled.g116[id="sc-fmtEmb"]{content:"tUxhh,"}/*!sc*/
+.bAnPPh{padding:10px;}/*!sc*/
+data-styled.g117[id="sc-ljIcGq"]{content:"bAnPPh,"}/*!sc*/
+.PEJyb{padding:5px;border:1px solid #ccc;background:#fff;word-break:break-all;color:#32329f;}/*!sc*/
+.PEJyb >span{color:#333333;}/*!sc*/
+data-styled.g118[id="sc-jlJOIR"]{content:"PEJyb,"}/*!sc*/
+.jgUdLK{text-transform:lowercase;margin-left:0;line-height:1.5em;color:#666;font-size:0.9em;}/*!sc*/
+data-styled.g120[id="sc-htBWof"]{content:"jgUdLK,"}/*!sc*/
+.iSTZHA{display:block;border:0;width:100%;text-align:left;padding:10px;border-radius:2px;margin-bottom:4px;line-height:1.5em;cursor:pointer;color:#1d8127;background-color:rgba(29,129,39,0.07);}/*!sc*/
+.iSTZHA:focus{outline:auto #1d8127;}/*!sc*/
+.fRVDqI{display:block;border:0;width:100%;text-align:left;padding:10px;border-radius:2px;margin-bottom:4px;line-height:1.5em;cursor:pointer;color:#d41f1c;background-color:rgba(212,31,28,0.07);cursor:default;}/*!sc*/
+.fRVDqI:focus{outline:auto #d41f1c;}/*!sc*/
+.fRVDqI::before{content:"—";font-weight:bold;width:1.5em;text-align:center;display:inline-block;vertical-align:top;}/*!sc*/
+.fRVDqI:focus{outline:0;}/*!sc*/
+.cKkXxa{display:block;border:0;width:100%;text-align:left;padding:10px;border-radius:2px;margin-bottom:4px;line-height:1.5em;cursor:pointer;color:#d41f1c;background-color:rgba(212,31,28,0.07);}/*!sc*/
+.cKkXxa:focus{outline:auto #d41f1c;}/*!sc*/
+data-styled.g121[id="sc-cbuLjy"]{content:"iSTZHA,fRVDqI,cKkXxa,"}/*!sc*/
+.cqDULz{vertical-align:top;}/*!sc*/
+data-styled.g124[id="sc-fXmTIC"]{content:"cqDULz,"}/*!sc*/
+.hgNHCh{font-size:1.3em;padding:0.2em 0;margin:3em 0 1.1em;color:#333333;font-weight:normal;}/*!sc*/
+data-styled.g125[id="sc-fINhYD"]{content:"hgNHCh,"}/*!sc*/
+.ktZmcf{margin-bottom:30px;}/*!sc*/
+data-styled.g130[id="sc-iFUzrA"]{content:"ktZmcf,"}/*!sc*/
+.kjuNaM{user-select:none;width:20px;height:20px;align-self:center;display:flex;flex-direction:column;color:#32329f;}/*!sc*/
+data-styled.g131[id="sc-iruNHB"]{content:"kjuNaM,"}/*!sc*/
+.cczbHe{width:260px;background-color:#fafafa;overflow:hidden;display:flex;flex-direction:column;backface-visibility:hidden;height:100vh;position:sticky;position:-webkit-sticky;top:0;}/*!sc*/
+@media screen and (max-width: 50rem){.cczbHe{position:fixed;z-index:20;width:100%;background:#fafafa;display:none;}}/*!sc*/
+@media print{.cczbHe{display:none;}}/*!sc*/
+data-styled.g132[id="sc-eVYbGh"]{content:"cczbHe,"}/*!sc*/
+.ddPveE{outline:none;user-select:none;background-color:#f2f2f2;color:#32329f;display:none;cursor:pointer;position:fixed;right:20px;z-index:100;border-radius:50%;box-shadow:0 0 20px rgba(0, 0, 0, 0.3);bottom:44px;width:60px;height:60px;padding:0 20px;}/*!sc*/
+@media screen and (max-width: 50rem){.ddPveE{display:flex;}}/*!sc*/
+.ddPveE svg{color:#0065FB;}/*!sc*/
+@media print{.ddPveE{display:none;}}/*!sc*/
+data-styled.g133[id="sc-kTmAaw"]{content:"ddPveE,"}/*!sc*/
+.jetsmW{font-family:Roboto,sans-serif;font-size:14px;font-weight:400;line-height:1.5em;color:#333333;display:flex;position:relative;text-align:left;-webkit-font-smoothing:antialiased;font-smoothing:antialiased;text-rendering:optimizeSpeed!important;tap-highlight-color:rgba(0, 0, 0, 0);text-size-adjust:100%;}/*!sc*/
+.jetsmW *{box-sizing:border-box;-webkit-tap-highlight-color:rgba(255, 255, 255, 0);}/*!sc*/
+data-styled.g134[id="sc-dwkskT"]{content:"jetsmW,"}/*!sc*/
+.ldXCvc{z-index:1;position:relative;overflow:hidden;width:calc(100% - 260px);contain:layout;}/*!sc*/
+@media print,screen and (max-width: 50rem){.ldXCvc{width:100%;}}/*!sc*/
+data-styled.g135[id="sc-jtyQFi"]{content:"ldXCvc,"}/*!sc*/
+.bjzTxL{background:#263238;position:absolute;top:0;bottom:0;right:0;width:calc((100% - 260px) * 0.4);}/*!sc*/
+@media print,screen and (max-width: 75rem){.bjzTxL{display:none;}}/*!sc*/
+data-styled.g136[id="sc-ekVkVN"]{content:"bjzTxL,"}/*!sc*/
+.uMSfb{padding:5px 0;}/*!sc*/
+data-styled.g137[id="sc-kijJqc"]{content:"uMSfb,"}/*!sc*/
+.fTcICO{width:calc(100% - 40px);box-sizing:border-box;margin:0 20px;padding:5px 10px 5px 20px;border:0;border-bottom:1px solid #e1e1e1;font-family:Roboto,sans-serif;font-weight:bold;font-size:13px;color:#333333;background-color:transparent;outline:none;}/*!sc*/
+data-styled.g138[id="sc-cLhBAz"]{content:"fTcICO,"}/*!sc*/
+.kAmnlO{position:absolute;left:20px;height:1.8em;width:0.9em;}/*!sc*/
+.kAmnlO path{fill:#333333;}/*!sc*/
+data-styled.g139[id="sc-iIvZUO"]{content:"kAmnlO,"}/*!sc*/
+</style>
+  
+</head>
+
+<body>
+  
+      <div id="redoc"><div class="sc-dwkskT jetsmW redoc-wrap"><div class="sc-eVYbGh cczbHe menu-content" style="top:0px;height:calc(100vh - 0px)"><div role="search" class="sc-kijJqc uMSfb"><svg class="sc-iIvZUO kAmnlO search-icon" version="1.1" viewBox="0 0 1000 1000" x="0px" xmlns="http://www.w3.org/2000/svg" y="0px"><path d="M968.2,849.4L667.3,549c83.9-136.5,66.7-317.4-51.7-435.6C477.1-25,252.5-25,113.9,113.4c-138.5,138.3-138.5,362.6,0,501C219.2,730.1,413.2,743,547.6,666.5l301.9,301.4c43.6,43.6,76.9,14.9,104.2-12.4C981,928.3,1011.8,893,968.2,849.4z M524.5,522c-88.9,88.7-233,88.7-321.8,0c-88.9-88.7-88.9-232.6,0-321.3c88.9-88.7,233-88.7,321.8,0C613.4,289.4,613.4,433.3,524.5,522z"></path></svg><input placeholder="Search..." aria-label="Search" type="text" class="sc-cLhBAz fTcICO search-input" value=""/></div><div class="sc-kLEbxe iOXjCz scrollbar-container undefined"><ul role="menu" class="sc-ilnrqe dqIuaF"><li tabindex="0" depth="2" data-item-id="/paths/~1space/get" role="menuitem" aria-label="The spaces the caller may see" aria-expanded="false" class="sc-uMZhz cQETmj"><label class="sc-bitxrY cGOuox -depth2"><span type="get" class="sc-XpSrr jjsIAS operation-type get">get</span><span tabindex="0" width="calc(100% - 38px)" class="sc-eHoOIp ehBKwY">The spaces the caller may see</span></label></li><li tabindex="0" depth="2" data-item-id="/paths/~1space~1states/get" role="menuitem" aria-label="What the caller is to the given spaces" aria-expanded="false" class="sc-uMZhz cQETmj"><label class="sc-bitxrY cGOuox -depth2"><span type="get" class="sc-XpSrr jjsIAS operation-type get">get</span><span tabindex="0" width="calc(100% - 38px)" class="sc-eHoOIp ehBKwY">What the caller is to the given spaces</span></label></li><li tabindex="0" depth="2" data-item-id="/paths/~1space~1{id}~1membership/get" role="menuitem" aria-label="The caller&#x27;s membership in a space" aria-expanded="false" class="sc-uMZhz cQETmj"><label class="sc-bitxrY cGOuox -depth2"><span type="get" class="sc-XpSrr jjsIAS operation-type get">get</span><span tabindex="0" width="calc(100% - 38px)" class="sc-eHoOIp ehBKwY">The caller&#x27;s membership in a space</span></label></li><li tabindex="0" depth="2" data-item-id="/paths/~1space~1{id}~1membership/post" role="menuitem" aria-label="Join a space, apply for membership, or accept an invite" aria-expanded="false" class="sc-uMZhz cQETmj"><label class="sc-bitxrY cGOuox -depth2"><span type="post" class="sc-XpSrr jjsIAS operation-type post">post</span><span tabindex="0" width="calc(100% - 38px)" class="sc-eHoOIp ehBKwY">Join a space, apply for membership, or accept an invite</span></label></li><li tabindex="0" depth="2" data-item-id="/paths/~1space~1{id}~1membership/delete" role="menuitem" aria-label="Leave a space, withdraw an application, or decline an invite" aria-expanded="false" class="sc-uMZhz cQETmj"><label class="sc-bitxrY cGOuox -depth2"><span type="delete" class="sc-XpSrr jjsIAS operation-type delete">del</span><span tabindex="0" width="calc(100% - 38px)" class="sc-eHoOIp ehBKwY">Leave a space, withdraw an application, or decline an invite</span></label></li></ul><div class="sc-hAkAFK gtBLyN"><a target="_blank" rel="noopener noreferrer" href="https://redocly.com/redoc/">API docs by Redocly</a></div></div></div><div class="sc-kTmAaw ddPveE"><div class="sc-iruNHB kjuNaM"><svg class="" style="transform:translate(2px, -4px) rotate(180deg);transition:transform 0.2s ease" viewBox="0 0 926.23699 573.74994" version="1.1" x="0px" y="0px" width="15" height="15"><g transform="translate(904.92214,-879.1482)"><path d="
+          m -673.67664,1221.6502 -231.2455,-231.24803 55.6165,
+          -55.627 c 30.5891,-30.59485 56.1806,-55.627 56.8701,-55.627 0.6894,
+          0 79.8637,78.60862 175.9427,174.68583 l 174.6892,174.6858 174.6892,
+          -174.6858 c 96.079,-96.07721 175.253196,-174.68583 175.942696,
+          -174.68583 0.6895,0 26.281,25.03215 56.8701,
+          55.627 l 55.6165,55.627 -231.245496,231.24803 c -127.185,127.1864
+          -231.5279,231.248 -231.873,231.248 -0.3451,0 -104.688,
+          -104.0616 -231.873,-231.248 z
+        " fill="currentColor"></path></g></svg><svg class="" style="transform:translate(2px, 4px);transition:transform 0.2s ease" viewBox="0 0 926.23699 573.74994" version="1.1" x="0px" y="0px" width="15" height="15"><g transform="translate(904.92214,-879.1482)"><path d="
+          m -673.67664,1221.6502 -231.2455,-231.24803 55.6165,
+          -55.627 c 30.5891,-30.59485 56.1806,-55.627 56.8701,-55.627 0.6894,
+          0 79.8637,78.60862 175.9427,174.68583 l 174.6892,174.6858 174.6892,
+          -174.6858 c 96.079,-96.07721 175.253196,-174.68583 175.942696,
+          -174.68583 0.6895,0 26.281,25.03215 56.8701,
+          55.627 l 55.6165,55.627 -231.245496,231.24803 c -127.185,127.1864
+          -231.5279,231.248 -231.873,231.248 -0.3451,0 -104.688,
+          -104.0616 -231.873,-231.248 z
+        " fill="currentColor"></path></g></svg></div></div><div class="sc-jtyQFi ldXCvc api-content"><div class="sc-eCQgVK jleRXN"><div class="sc-iCECmn lhRBUS"><div class="sc-hKVpXn kktglN api-info"><h1 class="sc-fuztkK sc-ctiVdb eRMVDe cBgvIi">HumHub - Space API (v2)<!-- --> <span>(<!-- -->2.0.0<!-- -->)</span></h1><p>Download OpenAPI specification<!-- -->:</p><div class="sc-iJSMbW sc-cBEgGa fiNpIH ewCFMV"><div class="sc-gILgRS iVyheB"><div class="sc-euUkyj juJQo"><span class="sc-brKBMN ldPigm">E-mail<!-- -->:<!-- --> <a href="mailto:info@humhub.com">info@humhub.com</a></span> <!-- --> <span class="sc-brKBMN ldPigm">License:<!-- --> <a href="https://www.humhub.org/en/licences">AGPLv2</a></span> </div></div></div><div data-role="redoc-summary" html="" class="sc-iJSMbW sc-cBEgGa fiNpIH ewCFMV"></div><div data-role="redoc-description" html="&lt;p&gt;Welcome to the HumHub space API reference, v2.&lt;/p&gt;
+&lt;p&gt;These endpoints are part of &lt;strong&gt;HumHub core&lt;/strong&gt; (1.20+). The optional
+&lt;a href=&quot;https://github.com/humhub/rest&quot;&gt;REST API module&lt;/a&gt; contributes the token authentication
+methods they accept and owns the older &lt;code&gt;/api/v1&lt;/code&gt; surface, which is documented with that
+module. For the design of this stack see &lt;code&gt;docs/develop/concept-api.md&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Conventions of this API generation, differing from &lt;code&gt;/api/v1&lt;/code&gt;: camelCase field names,
+ISO-8601 timestamps with offset, plain HTTP status codes instead of a
+&lt;code&gt;{code, message}&lt;/code&gt; envelope, and &lt;code&gt;{results, total, page, pageSize, pages}&lt;/code&gt; for paginated
+lists.&lt;/p&gt;
+&lt;p&gt;Requests may authenticate with any token method the REST API module offers. HumHub&amp;#39;s own
+browser session is accepted too for these endpoints, which is what the platform&amp;#39;s Vue UI
+uses; state-changing session requests additionally require the CSRF token.&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa fiNpIH ewCFMV"><p>Welcome to the HumHub space API reference, v2.</p>
+<p>These endpoints are part of <strong>HumHub core</strong> (1.20+). The optional
+<a href="https://github.com/humhub/rest">REST API module</a> contributes the token authentication
+methods they accept and owns the older <code>/api/v1</code> surface, which is documented with that
+module. For the design of this stack see <code>docs/develop/concept-api.md</code>.</p>
+<p>Conventions of this API generation, differing from <code>/api/v1</code>: camelCase field names,
+ISO-8601 timestamps with offset, plain HTTP status codes instead of a
+<code>{code, message}</code> envelope, and <code>{results, total, page, pageSize, pages}</code> for paginated
+lists.</p>
+<p>Requests may authenticate with any token method the REST API module offers. HumHub&#39;s own
+browser session is accepted too for these endpoints, which is what the platform&#39;s Vue UI
+uses; state-changing session requests additionally require the CSRF token.</p>
+</div></div></div></div><div id="/paths/~1space/get" data-section-id="/paths/~1space/get" class="sc-eCQgVK grDwca"><div class="sc-iCECmn lhRBUS"><div class="sc-hKVpXn kktglN"><h2 class="sc-qdQOe MOVBZ"><a class="sc-crPgjm jmoZom" href="#/paths/~1space/get" aria-label="/paths/~1space/get"></a>The spaces the caller may see<!-- --> </h2><div class="sc-iFUzrA ktZmcf"><div html="&lt;p&gt;The platform&amp;#39;s space list: one page of the spaces the caller may see, searched and
+scoped by the parameters below. Deliberately caller-NEUTRAL — the same space reads the
+same for everyone, which is what lets a chooser, a picker and a directory share one
+representation. What the caller IS to a space (member, follower, unseen items) is
+&lt;code&gt;/space/states&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;A space the caller may not see never appears, whatever the parameters say.&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa fiNpIH ewCFMV"><p>The platform&#39;s space list: one page of the spaces the caller may see, searched and
+scoped by the parameters below. Deliberately caller-NEUTRAL — the same space reads the
+same for everyone, which is what lets a chooser, a picker and a directory share one
+representation. What the caller IS to a space (member, follower, unseen items) is
+<code>/space/states</code>.</p>
+<p>A space the caller may not see never appears, whatever the parameters say.</p>
+</div></div><div class="sc-fuYIqi kGZLat"><div class="sc-dalEhJ jdqJPb"><h5 class="sc-iqkkDd sc-jQQpTv kcvrhp kEkHzF">Authorizations:</h5><svg class="sc-dYjPD bEEWJa" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></div><div class="sc-jTPGds cVAkzL"><span class="sc-dtnsVa dVYuXz"><span class="sc-hPfayn hzxDQO"><i>Bearer</i></span></span><span class="sc-dtnsVa dVYuXz"><span class="sc-hPfayn hzxDQO"><i>BasicAuth</i></span></span><span class="sc-dtnsVa dVYuXz"><span class="sc-hPfayn hzxDQO"><i>SessionCookie</i></span></span></div></div><div><h5 class="sc-iqkkDd kcvrhp">query<!-- --> Parameters</h5><table class="sc-hHopjF bsjUmE"><tbody><tr class=""><td kind="field" title="q" class="sc-hCcPtG sc-fFCZOx jFNAwF lcdEEX"><span class="sc-ieCSdj kkMuqc"></span><span class="property-name">q</span></td><td class="sc-bjLslk gLpZiQ"><div><div><span class="sc-gSILEF sc-lbpDNm jMRTsl NncTE"></span><span class="sc-gSILEF sc-iNyHtD jMRTsl kUjPnZ">string</span></div> <div><div html="&lt;p&gt;Search over name, description and tags. Every keyword must match.&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa fiNpIH bAoMjv"><p>Search over name, description and tags. Every keyword must match.</p>
+</div></div></div></td></tr><tr class=""><td kind="field" title="scope" class="sc-hCcPtG sc-fFCZOx jFNAwF lcdEEX"><span class="sc-ieCSdj kkMuqc"></span><span class="property-name">scope</span></td><td class="sc-bjLslk gLpZiQ"><div><div><span class="sc-gSILEF sc-lbpDNm jMRTsl NncTE"></span><span class="sc-gSILEF sc-iNyHtD jMRTsl kUjPnZ">string</span></div><div><span class="sc-gSILEF jMRTsl"> <!-- -->Enum<!-- -->:</span> <span class="sc-gSILEF sc-lbFCLI jMRTsl OXDYs">&quot;all&quot;</span> <span class="sc-gSILEF sc-lbFCLI jMRTsl OXDYs">&quot;member&quot;</span> <span class="sc-gSILEF sc-lbFCLI jMRTsl OXDYs">&quot;following&quot;</span> <span class="sc-gSILEF sc-lbFCLI jMRTsl OXDYs">&quot;mine&quot;</span> </div> <div><div html="&lt;p&gt;&lt;code&gt;all&lt;/code&gt; (default), &lt;code&gt;member&lt;/code&gt;, &lt;code&gt;following&lt;/code&gt;, or &lt;code&gt;mine&lt;/code&gt; for both. A scoped list is
+ordered the way the platform orders a user&amp;#39;s spaces: memberships first, in the
+order the &lt;code&gt;spaceOrder&lt;/code&gt; setting asks for, followed spaces after them.&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa fiNpIH bAoMjv"><p><code>all</code> (default), <code>member</code>, <code>following</code>, or <code>mine</code> for both. A scoped list is
+ordered the way the platform orders a user&#39;s spaces: memberships first, in the
+order the <code>spaceOrder</code> setting asks for, followed spaces after them.</p>
+</div></div></div></td></tr><tr class=""><td kind="field" title="archived" class="sc-hCcPtG sc-fFCZOx jFNAwF lcdEEX"><span class="sc-ieCSdj kkMuqc"></span><span class="property-name">archived</span></td><td class="sc-bjLslk gLpZiQ"><div><div><span class="sc-gSILEF sc-lbpDNm jMRTsl NncTE"></span><span class="sc-gSILEF sc-iNyHtD jMRTsl kUjPnZ">integer</span></div> <div><div html="&lt;p&gt;&lt;code&gt;1&lt;/code&gt; to include archived spaces, which are left out by default&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa fiNpIH bAoMjv"><p><code>1</code> to include archived spaces, which are left out by default</p>
+</div></div></div></td></tr><tr class=""><td kind="field" title="page" class="sc-hCcPtG sc-fFCZOx jFNAwF lcdEEX"><span class="sc-ieCSdj kkMuqc"></span><span class="property-name">page</span></td><td class="sc-bjLslk gLpZiQ"><div><div><span class="sc-gSILEF sc-lbpDNm jMRTsl NncTE"></span><span class="sc-gSILEF sc-iNyHtD jMRTsl kUjPnZ">integer</span></div> <div><div html="" class="sc-iJSMbW sc-cBEgGa fiNpIH bAoMjv"></div></div></div></td></tr><tr class="last "><td kind="field" title="pageSize" class="sc-hCcPtG sc-fFCZOx jFNAwF lcdEEX"><span class="sc-ieCSdj kkMuqc"></span><span class="property-name">pageSize</span></td><td class="sc-bjLslk gLpZiQ"><div><div><span class="sc-gSILEF sc-lbpDNm jMRTsl NncTE"></span><span class="sc-gSILEF sc-iNyHtD jMRTsl kUjPnZ">integer</span></div> <div><div html="&lt;p&gt;Entries per page (default 25, maximum 100)&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa fiNpIH bAoMjv"><p>Entries per page (default 25, maximum 100)</p>
+</div></div></div></td></tr></tbody></table></div><div><h3 class="sc-fINhYD hgNHCh">Responses</h3><div><button class="sc-cbuLjy iSTZHA"><svg class="sc-dYjPD gngmNp" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-fXmTIC cqDULz">200<!-- --> </strong><div html="&lt;p&gt;Successful operation&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa sc-ciCrSJ fiNpIH dNfUH dDDioG"><p>Successful operation</p>
+</div></button></div><div><button class="sc-cbuLjy fRVDqI" disabled=""><strong class="sc-fXmTIC cqDULz">401<!-- --> </strong><div html="&lt;p&gt;Authentication required&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa sc-ciCrSJ fiNpIH dNfUH dDDioG"><p>Authentication required</p>
+</div></button></div></div></div><div class="sc-jSppWd sc-gKkgUA fpMlmc bdQQyo"><div class="sc-fXwuWv fYxpnv"><button class="sc-jWMFtl jzaJhV"><span type="get" class="sc-eEFuoE hlSrtW http-verb get">get</span><span class="sc-FpjRO dsIRaZ">/space</span><svg class="sc-dYjPD bQKUih" style="margin-right:-25px" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div aria-hidden="true" class="sc-fmtEmb tUxhh"><div class="sc-ljIcGq bAnPPh"><div html="" class="sc-iJSMbW sc-cBEgGa fiNpIH bAoMjv"></div><div tabindex="0" role="button"><div class="sc-jlJOIR PEJyb"><span>/api/v2</span>/space</div></div></div></div></div><div><h3 class="sc-kEbgWM iamDfj"> <!-- -->Response samples<!-- --> </h3><div class="sc-cxxQMU kibfTX" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="tab-success react-tabs__tab--selected" role="tab" id="tab_R_174q_0" aria-selected="true" aria-disabled="false" aria-controls="panel_R_174q_0" tabindex="0" data-rttab="true">200</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel_R_174q_0" aria-labelledby="tab_R_174q_0"><div><div class="sc-cNSlRw bMFMGt"><span class="sc-bBzIOb BuCyN">Content type</span><div class="sc-dPqFhK kgKexQ">application/json</div></div><div class="sc-hUheUT jUCYlq"><div class="sc-cTZdpT hHzuQA"><div class="sc-giQkEn dzKJV"><button><div class="sc-jcgtOs feYhXE">Copy</div></button><button> Expand all </button><button> Collapse all </button></div><div tabindex="0" class="sc-iJSMbW fiNpIH sc-jNDflC jgTAJz"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable "><span class="property token string">"results"</span>: <button class="collapser" aria-label="collapse"></button><span class="token punctuation">[</span><span class="ellipsis"></span><ul class="array collapsible"><li><div class="hoverable collapsed"><button class="collapser" aria-label="expand"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable collapsed"><span class="property token string">"id"</span>: <span class="token number">3</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"guid"</span>: <span class="token string">&quot;9a8b7c6d-5e4f-3210-9876-543210fedcba&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"name"</span>: <span class="token string">&quot;Product Team&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"url"</span>: <span class="token string">&quot;</span><a href="https://example.com/s/product-team/">https://example.com/s/product-team/</a><span class="token string">&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"color"</span>: <span class="token string">&quot;#7a9299&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"imageUrl"</span>: <span class="token keyword">null</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"contentContainerId"</span>: <span class="token number">21</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"description"</span>: <span class="token string">&quot;Where the product happens&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"tags"</span>: <button class="collapser" aria-label="expand"></button><span class="token punctuation">[</span><span class="ellipsis"></span><ul class="array collapsible"><li><div class="hoverable collapsed"><span class="token string">&quot;product&quot;</span>,</div></li><li><div class="hoverable collapsed"><span class="token string">&quot;roadmap&quot;</span></div></li></ul><span class="token punctuation">]</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"visibility"</span>: <span class="token number">2</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"archived"</span>: <span class="token boolean">false</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"extensions"</span>: <span class="token punctuation">{ }</span></div></li></ul><span class="token punctuation">}</span></div></li></ul><span class="token punctuation">]</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"total"</span>: <span class="token number">1</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"page"</span>: <span class="token number">1</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"pageSize"</span>: <span class="token number">25</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"pages"</span>: <span class="token number">1</span></div></li></ul><span class="token punctuation">}</span></code></div></div></div></div></div></div></div></div></div></div></div><div id="/paths/~1space~1states/get" data-section-id="/paths/~1space~1states/get" class="sc-eCQgVK grDwca"><div class="sc-iCECmn lhRBUS"><div class="sc-hKVpXn kktglN"><h2 class="sc-qdQOe MOVBZ"><a class="sc-crPgjm jmoZom" href="#/paths/~1space~1states/get" aria-label="/paths/~1space~1states/get"></a>What the caller is to the given spaces<!-- --> </h2><div class="sc-iFUzrA ktZmcf"><div html="&lt;p&gt;Membership, following and unseen items for the spaces named — the ones a client
+displays, never &amp;quot;every space of the caller&amp;quot;: a user can be a member of a great many
+while a client shows one page of them.&lt;/p&gt;
+&lt;p&gt;This is where the caller context of a space lives, which is why the list above carries
+none of it. &lt;code&gt;newItems&lt;/code&gt; counts what was posted since the membership&amp;#39;s last visit and is
+therefore &lt;code&gt;0&lt;/code&gt; without a membership. A space the caller may not see is not answered.&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa fiNpIH ewCFMV"><p>Membership, following and unseen items for the spaces named — the ones a client
+displays, never &quot;every space of the caller&quot;: a user can be a member of a great many
+while a client shows one page of them.</p>
+<p>This is where the caller context of a space lives, which is why the list above carries
+none of it. <code>newItems</code> counts what was posted since the membership&#39;s last visit and is
+therefore <code>0</code> without a membership. A space the caller may not see is not answered.</p>
+</div></div><div class="sc-fuYIqi kGZLat"><div class="sc-dalEhJ jdqJPb"><h5 class="sc-iqkkDd sc-jQQpTv kcvrhp kEkHzF">Authorizations:</h5><svg class="sc-dYjPD bEEWJa" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></div><div class="sc-jTPGds cVAkzL"><span class="sc-dtnsVa dVYuXz"><span class="sc-hPfayn hzxDQO"><i>Bearer</i></span></span><span class="sc-dtnsVa dVYuXz"><span class="sc-hPfayn hzxDQO"><i>BasicAuth</i></span></span><span class="sc-dtnsVa dVYuXz"><span class="sc-hPfayn hzxDQO"><i>SessionCookie</i></span></span></div></div><div><h5 class="sc-iqkkDd kcvrhp">query<!-- --> Parameters</h5><table class="sc-hHopjF bsjUmE"><tbody><tr class="last "><td kind="field" title="guids[]" class="sc-hCcPtG sc-fFCZOx jFNAwF lcdEEX"><span class="sc-ieCSdj kkMuqc"></span><span class="property-name">guids[]</span><div class="sc-gSILEF sc-eIYgEQ jMRTsl dHYagA">required</div></td><td class="sc-bjLslk gLpZiQ"><div><div><span class="sc-gSILEF sc-lbpDNm jMRTsl NncTE">Array of </span><span class="sc-gSILEF sc-iNyHtD jMRTsl kUjPnZ">strings</span></div> <div><div html="&lt;p&gt;Guids of the spaces to answer for (at most 100)&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa fiNpIH bAoMjv"><p>Guids of the spaces to answer for (at most 100)</p>
+</div></div></div></td></tr></tbody></table></div><div><h3 class="sc-fINhYD hgNHCh">Responses</h3><div><button class="sc-cbuLjy iSTZHA"><svg class="sc-dYjPD gngmNp" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-fXmTIC cqDULz">200<!-- --> </strong><div html="&lt;p&gt;Successful operation&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa sc-ciCrSJ fiNpIH dNfUH dDDioG"><p>Successful operation</p>
+</div></button></div><div><button class="sc-cbuLjy fRVDqI" disabled=""><strong class="sc-fXmTIC cqDULz">401<!-- --> </strong><div html="&lt;p&gt;Authentication required&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa sc-ciCrSJ fiNpIH dNfUH dDDioG"><p>Authentication required</p>
+</div></button></div></div></div><div class="sc-jSppWd sc-gKkgUA fpMlmc bdQQyo"><div class="sc-fXwuWv fYxpnv"><button class="sc-jWMFtl jzaJhV"><span type="get" class="sc-eEFuoE hlSrtW http-verb get">get</span><span class="sc-FpjRO dsIRaZ">/space/states</span><svg class="sc-dYjPD bQKUih" style="margin-right:-25px" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div aria-hidden="true" class="sc-fmtEmb tUxhh"><div class="sc-ljIcGq bAnPPh"><div html="" class="sc-iJSMbW sc-cBEgGa fiNpIH bAoMjv"></div><div tabindex="0" role="button"><div class="sc-jlJOIR PEJyb"><span>/api/v2</span>/space/states</div></div></div></div></div><div><h3 class="sc-kEbgWM iamDfj"> <!-- -->Response samples<!-- --> </h3><div class="sc-cxxQMU kibfTX" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="tab-success react-tabs__tab--selected" role="tab" id="tab_R_175a_0" aria-selected="true" aria-disabled="false" aria-controls="panel_R_175a_0" tabindex="0" data-rttab="true">200</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel_R_175a_0" aria-labelledby="tab_R_175a_0"><div><div class="sc-cNSlRw bMFMGt"><span class="sc-bBzIOb BuCyN">Content type</span><div class="sc-dPqFhK kgKexQ">application/json</div></div><div class="sc-hUheUT jUCYlq"><div class="sc-cTZdpT hHzuQA"><div class="sc-giQkEn dzKJV"><button><div class="sc-jcgtOs feYhXE">Copy</div></button><button> Expand all </button><button> Collapse all </button></div><div tabindex="0" class="sc-iJSMbW fiNpIH sc-jNDflC jgTAJz"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable "><span class="property token string">"results"</span>: <button class="collapser" aria-label="collapse"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable collapsed"><span class="property token string">"9a8b7c6d-5e4f-3210-9876-543210fedcba"</span>: <button class="collapser" aria-label="expand"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable collapsed"><span class="property token string">"isMember"</span>: <span class="token boolean">true</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"isFollowing"</span>: <span class="token boolean">false</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"newItems"</span>: <span class="token number">3</span></div></li></ul><span class="token punctuation">}</span></div></li></ul><span class="token punctuation">}</span></div></li></ul><span class="token punctuation">}</span></code></div></div></div></div></div></div></div></div></div></div></div><div id="/paths/~1space~1{id}~1membership/get" data-section-id="/paths/~1space~1{id}~1membership/get" class="sc-eCQgVK grDwca"><div class="sc-iCECmn lhRBUS"><div class="sc-hKVpXn kktglN"><h2 class="sc-qdQOe MOVBZ"><a class="sc-crPgjm jmoZom" href="#/paths/~1space~1{id}~1membership/get" aria-label="/paths/~1space~1{id}~1membership/get"></a>The caller&#x27;s membership in a space<!-- --> </h2><div class="sc-iFUzrA ktZmcf"><div html="&lt;p&gt;Answers what the caller&amp;#39;s relationship to this space is, and what they may do next
+(see the &lt;code&gt;MembershipState&lt;/code&gt; schema).&lt;/p&gt;
+&lt;p&gt;Reachable for a space the caller can see, is a member of, or was invited to — an
+invite to an otherwise invisible space has to be answerable.&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa fiNpIH ewCFMV"><p>Answers what the caller&#39;s relationship to this space is, and what they may do next
+(see the <code>MembershipState</code> schema).</p>
+<p>Reachable for a space the caller can see, is a member of, or was invited to — an
+invite to an otherwise invisible space has to be answerable.</p>
+</div></div><div class="sc-fuYIqi kGZLat"><div class="sc-dalEhJ jdqJPb"><h5 class="sc-iqkkDd sc-jQQpTv kcvrhp kEkHzF">Authorizations:</h5><svg class="sc-dYjPD bEEWJa" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></div><div class="sc-jTPGds cVAkzL"><span class="sc-dtnsVa dVYuXz"><span class="sc-hPfayn hzxDQO"><i>Bearer</i></span></span><span class="sc-dtnsVa dVYuXz"><span class="sc-hPfayn hzxDQO"><i>BasicAuth</i></span></span><span class="sc-dtnsVa dVYuXz"><span class="sc-hPfayn hzxDQO"><i>SessionCookie</i></span></span></div></div><div><h5 class="sc-iqkkDd kcvrhp">path<!-- --> Parameters</h5><table class="sc-hHopjF bsjUmE"><tbody><tr class="last "><td kind="field" title="id" class="sc-hCcPtG sc-fFCZOx jFNAwF lcdEEX"><span class="sc-ieCSdj kkMuqc"></span><span class="property-name">id</span><div class="sc-gSILEF sc-eIYgEQ jMRTsl dHYagA">required</div></td><td class="sc-bjLslk gLpZiQ"><div><div><span class="sc-gSILEF sc-lbpDNm jMRTsl NncTE"></span><span class="sc-gSILEF sc-iNyHtD jMRTsl kUjPnZ">integer</span></div> <div><div html="&lt;p&gt;Id of the space&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa fiNpIH bAoMjv"><p>Id of the space</p>
+</div></div></div></td></tr></tbody></table></div><div><h3 class="sc-fINhYD hgNHCh">Responses</h3><div><button class="sc-cbuLjy iSTZHA"><svg class="sc-dYjPD gngmNp" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-fXmTIC cqDULz">200<!-- --> </strong><div html="&lt;p&gt;Successful operation&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa sc-ciCrSJ fiNpIH dNfUH dDDioG"><p>Successful operation</p>
+</div></button></div><div><button class="sc-cbuLjy fRVDqI" disabled=""><strong class="sc-fXmTIC cqDULz">401<!-- --> </strong><div html="&lt;p&gt;Authentication required&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa sc-ciCrSJ fiNpIH dNfUH dDDioG"><p>Authentication required</p>
+</div></button></div><div><button class="sc-cbuLjy fRVDqI" disabled=""><strong class="sc-fXmTIC cqDULz">403<!-- --> </strong><div html="&lt;p&gt;The caller may not access this record&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa sc-ciCrSJ fiNpIH dNfUH dDDioG"><p>The caller may not access this record</p>
+</div></button></div><div><button class="sc-cbuLjy fRVDqI" disabled=""><strong class="sc-fXmTIC cqDULz">404<!-- --> </strong><div html="&lt;p&gt;No such record&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa sc-ciCrSJ fiNpIH dNfUH dDDioG"><p>No such record</p>
+</div></button></div></div></div><div class="sc-jSppWd sc-gKkgUA fpMlmc bdQQyo"><div class="sc-fXwuWv fYxpnv"><button class="sc-jWMFtl jzaJhV"><span type="get" class="sc-eEFuoE hlSrtW http-verb get">get</span><span class="sc-FpjRO dsIRaZ">/space/{id}/membership</span><svg class="sc-dYjPD bQKUih" style="margin-right:-25px" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div aria-hidden="true" class="sc-fmtEmb tUxhh"><div class="sc-ljIcGq bAnPPh"><div html="" class="sc-iJSMbW sc-cBEgGa fiNpIH bAoMjv"></div><div tabindex="0" role="button"><div class="sc-jlJOIR PEJyb"><span>/api/v2</span>/space/{id}/membership</div></div></div></div></div><div><h3 class="sc-kEbgWM iamDfj"> <!-- -->Response samples<!-- --> </h3><div class="sc-cxxQMU kibfTX" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="tab-success react-tabs__tab--selected" role="tab" id="tab_R_175q_0" aria-selected="true" aria-disabled="false" aria-controls="panel_R_175q_0" tabindex="0" data-rttab="true">200</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel_R_175q_0" aria-labelledby="tab_R_175q_0"><div><div class="sc-cNSlRw bMFMGt"><span class="sc-bBzIOb BuCyN">Content type</span><div class="sc-dPqFhK kgKexQ">application/json</div></div><div class="sc-hUheUT jUCYlq"><div class="sc-cTZdpT hHzuQA"><div class="sc-giQkEn dzKJV"><button><div class="sc-jcgtOs feYhXE">Copy</div></button></div><div tabindex="0" class="sc-iJSMbW fiNpIH sc-jNDflC jgTAJz"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable "><span class="property token string">"state"</span>: <span class="token string">&quot;none&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"canJoin"</span>: <span class="token boolean">true</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"needsApproval"</span>: <span class="token boolean">true</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"canLeave"</span>: <span class="token boolean">false</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"isOwner"</span>: <span class="token boolean">false</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"isFollowing"</span>: <span class="token boolean">false</span></div></li></ul><span class="token punctuation">}</span></code></div></div></div></div></div></div></div></div></div></div></div><div id="/paths/~1space~1{id}~1membership/post" data-section-id="/paths/~1space~1{id}~1membership/post" class="sc-eCQgVK grDwca"><div class="sc-iCECmn lhRBUS"><div class="sc-hKVpXn kktglN"><h2 class="sc-qdQOe MOVBZ"><a class="sc-crPgjm jmoZom" href="#/paths/~1space~1{id}~1membership/post" aria-label="/paths/~1space~1{id}~1membership/post"></a>Join a space, apply for membership, or accept an invite<!-- --> </h2><div class="sc-iFUzrA ktZmcf"><div html="&lt;p&gt;&lt;strong&gt;Affirms&lt;/strong&gt; membership. Which of the three it is follows from the current state and
+the space&amp;#39;s join policy, and is decided server-side rather than by the client:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;an open invite (&lt;code&gt;state: invited&lt;/code&gt;) is accepted — possible even where joining on
+one&amp;#39;s own is not,&lt;/li&gt;
+&lt;li&gt;a space that approves memberships (&lt;code&gt;needsApproval: true&lt;/code&gt;) receives an application
+with the &lt;code&gt;message&lt;/code&gt; the caller introduces themselves with,&lt;/li&gt;
+&lt;li&gt;any other joinable space is joined immediately.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Answers the new state, in the same shape &lt;code&gt;GET&lt;/code&gt; returns. &lt;code&gt;403&lt;/code&gt; when the space allows
+no self-join, when the caller is already a member or applicant, or when they are
+blocked.&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa fiNpIH ewCFMV"><p><strong>Affirms</strong> membership. Which of the three it is follows from the current state and
+the space&#39;s join policy, and is decided server-side rather than by the client:</p>
+<ul>
+<li>an open invite (<code>state: invited</code>) is accepted — possible even where joining on
+one&#39;s own is not,</li>
+<li>a space that approves memberships (<code>needsApproval: true</code>) receives an application
+with the <code>message</code> the caller introduces themselves with,</li>
+<li>any other joinable space is joined immediately.</li>
+</ul>
+<p>Answers the new state, in the same shape <code>GET</code> returns. <code>403</code> when the space allows
+no self-join, when the caller is already a member or applicant, or when they are
+blocked.</p>
+</div></div><div class="sc-fuYIqi kGZLat"><div class="sc-dalEhJ jdqJPb"><h5 class="sc-iqkkDd sc-jQQpTv kcvrhp kEkHzF">Authorizations:</h5><svg class="sc-dYjPD bEEWJa" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></div><div class="sc-jTPGds cVAkzL"><span class="sc-dtnsVa dVYuXz"><span class="sc-hPfayn hzxDQO"><i>Bearer</i></span></span><span class="sc-dtnsVa dVYuXz"><span class="sc-hPfayn hzxDQO"><i>BasicAuth</i></span></span><span class="sc-dtnsVa dVYuXz"><span class="sc-hPfayn hzxDQO"><i>SessionCookie</i></span></span></div></div><div><h5 class="sc-iqkkDd kcvrhp">path<!-- --> Parameters</h5><table class="sc-hHopjF bsjUmE"><tbody><tr class="last "><td kind="field" title="id" class="sc-hCcPtG sc-fFCZOx jFNAwF lcdEEX"><span class="sc-ieCSdj kkMuqc"></span><span class="property-name">id</span><div class="sc-gSILEF sc-eIYgEQ jMRTsl dHYagA">required</div></td><td class="sc-bjLslk gLpZiQ"><div><div><span class="sc-gSILEF sc-lbpDNm jMRTsl NncTE"></span><span class="sc-gSILEF sc-iNyHtD jMRTsl kUjPnZ">integer</span></div> <div><div html="&lt;p&gt;Id of the space&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa fiNpIH bAoMjv"><p>Id of the space</p>
+</div></div></div></td></tr></tbody></table></div><h5 class="sc-iqkkDd kcvrhp">Request Body schema: <span class="sc-gXvOjn kxMqOs">application/json</span><div class="sc-htBWof jgUdLK">optional</div></h5><div html="" class="sc-iJSMbW sc-cBEgGa fiNpIH ewCFMV"></div><table class="sc-hHopjF bsjUmE"><tbody><tr class="last "><td kind="field" title="message" class="sc-hCcPtG sc-fFCZOx jFNAwF lcdEEX"><span class="sc-ieCSdj kkMuqc"></span><span class="property-name">message</span></td><td class="sc-bjLslk gLpZiQ"><div><div><span class="sc-gSILEF sc-lbpDNm jMRTsl NncTE"></span><span class="sc-gSILEF sc-iNyHtD jMRTsl kUjPnZ">string</span></div> <div><div html="&lt;p&gt;How the caller introduces themselves. Required for a space that approves
+memberships (&lt;code&gt;needsApproval: true&lt;/code&gt;), ignored everywhere else.&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa fiNpIH bAoMjv"><p>How the caller introduces themselves. Required for a space that approves
+memberships (<code>needsApproval: true</code>), ignored everywhere else.</p>
+</div></div></div></td></tr></tbody></table><div><h3 class="sc-fINhYD hgNHCh">Responses</h3><div><button class="sc-cbuLjy iSTZHA"><svg class="sc-dYjPD gngmNp" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-fXmTIC cqDULz">200<!-- --> </strong><div html="&lt;p&gt;Successful operation&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa sc-ciCrSJ fiNpIH dNfUH dDDioG"><p>Successful operation</p>
+</div></button></div><div><button class="sc-cbuLjy fRVDqI" disabled=""><strong class="sc-fXmTIC cqDULz">401<!-- --> </strong><div html="&lt;p&gt;Authentication required&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa sc-ciCrSJ fiNpIH dNfUH dDDioG"><p>Authentication required</p>
+</div></button></div><div><button class="sc-cbuLjy fRVDqI" disabled=""><strong class="sc-fXmTIC cqDULz">403<!-- --> </strong><div html="&lt;p&gt;The caller may not access this record&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa sc-ciCrSJ fiNpIH dNfUH dDDioG"><p>The caller may not access this record</p>
+</div></button></div><div><button class="sc-cbuLjy fRVDqI" disabled=""><strong class="sc-fXmTIC cqDULz">404<!-- --> </strong><div html="&lt;p&gt;No such record&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa sc-ciCrSJ fiNpIH dNfUH dDDioG"><p>No such record</p>
+</div></button></div><div><button class="sc-cbuLjy cKkXxa"><svg class="sc-dYjPD hJoFRR" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-fXmTIC cqDULz">422<!-- --> </strong><div html="&lt;p&gt;Validation failed&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa sc-ciCrSJ fiNpIH dNfUH dDDioG"><p>Validation failed</p>
+</div></button></div></div></div><div class="sc-jSppWd sc-gKkgUA fpMlmc bdQQyo"><div class="sc-fXwuWv fYxpnv"><button class="sc-jWMFtl jzaJhV"><span type="post" class="sc-eEFuoE hOENFc http-verb post">post</span><span class="sc-FpjRO dsIRaZ">/space/{id}/membership</span><svg class="sc-dYjPD bQKUih" style="margin-right:-25px" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div aria-hidden="true" class="sc-fmtEmb tUxhh"><div class="sc-ljIcGq bAnPPh"><div html="" class="sc-iJSMbW sc-cBEgGa fiNpIH bAoMjv"></div><div tabindex="0" role="button"><div class="sc-jlJOIR PEJyb"><span>/api/v2</span>/space/{id}/membership</div></div></div></div></div><div><h3 class="sc-kEbgWM iamDfj"> <!-- -->Request samples<!-- --> </h3><div class="sc-cxxQMU kibfTX" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="react-tabs__tab react-tabs__tab--selected" role="tab" id="tab_R_156a_0" aria-selected="true" aria-disabled="false" aria-controls="panel_R_156a_0" tabindex="0" data-rttab="true">Payload</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel_R_156a_0" aria-labelledby="tab_R_156a_0"><div><div class="sc-cNSlRw bMFMGt"><span class="sc-bBzIOb BuCyN">Content type</span><div class="sc-dPqFhK kgKexQ">application/json</div></div><div class="sc-hUheUT jUCYlq"><div class="sc-cTZdpT hHzuQA"><div class="sc-giQkEn dzKJV"><button><div class="sc-jcgtOs feYhXE">Copy</div></button></div><div tabindex="0" class="sc-iJSMbW fiNpIH sc-jNDflC jgTAJz"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable "><span class="property token string">"message"</span>: <span class="token string">&quot;I would like to join because …&quot;</span></div></li></ul><span class="token punctuation">}</span></code></div></div></div></div></div></div></div></div><div><h3 class="sc-kEbgWM iamDfj"> <!-- -->Response samples<!-- --> </h3><div class="sc-cxxQMU kibfTX" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="tab-success react-tabs__tab--selected" role="tab" id="tab_R_176a_0" aria-selected="true" aria-disabled="false" aria-controls="panel_R_176a_0" tabindex="0" data-rttab="true">200</li><li class="tab-error" role="tab" id="tab_R_176a_1" aria-selected="false" aria-disabled="false" aria-controls="panel_R_176a_1" data-rttab="true">422</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel_R_176a_0" aria-labelledby="tab_R_176a_0"><div><div class="sc-cNSlRw bMFMGt"><span class="sc-bBzIOb BuCyN">Content type</span><div class="sc-dPqFhK kgKexQ">application/json</div></div><div class="sc-hUheUT jUCYlq"><div class="sc-cTZdpT hHzuQA"><div class="sc-giQkEn dzKJV"><button><div class="sc-jcgtOs feYhXE">Copy</div></button></div><div tabindex="0" class="sc-iJSMbW fiNpIH sc-jNDflC jgTAJz"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable "><span class="property token string">"state"</span>: <span class="token string">&quot;none&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"canJoin"</span>: <span class="token boolean">true</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"needsApproval"</span>: <span class="token boolean">true</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"canLeave"</span>: <span class="token boolean">false</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"isOwner"</span>: <span class="token boolean">false</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"isFollowing"</span>: <span class="token boolean">false</span></div></li></ul><span class="token punctuation">}</span></code></div></div></div></div></div></div><div class="react-tabs__tab-panel" role="tabpanel" id="panel_R_176a_1" aria-labelledby="tab_R_176a_1"></div></div></div></div></div></div><div id="/paths/~1space~1{id}~1membership/delete" data-section-id="/paths/~1space~1{id}~1membership/delete" class="sc-eCQgVK grDwca"><div class="sc-iCECmn lhRBUS"><div class="sc-hKVpXn kktglN"><h2 class="sc-qdQOe MOVBZ"><a class="sc-crPgjm jmoZom" href="#/paths/~1space~1{id}~1membership/delete" aria-label="/paths/~1space~1{id}~1membership/delete"></a>Leave a space, withdraw an application, or decline an invite<!-- --> </h2><div class="sc-iFUzrA ktZmcf"><div html="&lt;p&gt;&lt;strong&gt;Removes&lt;/strong&gt; the caller&amp;#39;s membership, whichever of the three states it is in.
+Answers the new state, like the other two verbs.&lt;/p&gt;
+&lt;p&gt;Removing a membership that does not exist is a success (the answer is simply the
+&lt;code&gt;none&lt;/code&gt; state). &lt;code&gt;403&lt;/code&gt; for the space owner, who cannot leave their own space, and for
+a space whose configuration does not let its members leave.&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa fiNpIH ewCFMV"><p><strong>Removes</strong> the caller&#39;s membership, whichever of the three states it is in.
+Answers the new state, like the other two verbs.</p>
+<p>Removing a membership that does not exist is a success (the answer is simply the
+<code>none</code> state). <code>403</code> for the space owner, who cannot leave their own space, and for
+a space whose configuration does not let its members leave.</p>
+</div></div><div class="sc-fuYIqi kGZLat"><div class="sc-dalEhJ jdqJPb"><h5 class="sc-iqkkDd sc-jQQpTv kcvrhp kEkHzF">Authorizations:</h5><svg class="sc-dYjPD bEEWJa" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></div><div class="sc-jTPGds cVAkzL"><span class="sc-dtnsVa dVYuXz"><span class="sc-hPfayn hzxDQO"><i>Bearer</i></span></span><span class="sc-dtnsVa dVYuXz"><span class="sc-hPfayn hzxDQO"><i>BasicAuth</i></span></span><span class="sc-dtnsVa dVYuXz"><span class="sc-hPfayn hzxDQO"><i>SessionCookie</i></span></span></div></div><div><h5 class="sc-iqkkDd kcvrhp">path<!-- --> Parameters</h5><table class="sc-hHopjF bsjUmE"><tbody><tr class="last "><td kind="field" title="id" class="sc-hCcPtG sc-fFCZOx jFNAwF lcdEEX"><span class="sc-ieCSdj kkMuqc"></span><span class="property-name">id</span><div class="sc-gSILEF sc-eIYgEQ jMRTsl dHYagA">required</div></td><td class="sc-bjLslk gLpZiQ"><div><div><span class="sc-gSILEF sc-lbpDNm jMRTsl NncTE"></span><span class="sc-gSILEF sc-iNyHtD jMRTsl kUjPnZ">integer</span></div> <div><div html="&lt;p&gt;Id of the space&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa fiNpIH bAoMjv"><p>Id of the space</p>
+</div></div></div></td></tr></tbody></table></div><div><h3 class="sc-fINhYD hgNHCh">Responses</h3><div><button class="sc-cbuLjy iSTZHA"><svg class="sc-dYjPD gngmNp" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-fXmTIC cqDULz">200<!-- --> </strong><div html="&lt;p&gt;Successful operation&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa sc-ciCrSJ fiNpIH dNfUH dDDioG"><p>Successful operation</p>
+</div></button></div><div><button class="sc-cbuLjy fRVDqI" disabled=""><strong class="sc-fXmTIC cqDULz">401<!-- --> </strong><div html="&lt;p&gt;Authentication required&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa sc-ciCrSJ fiNpIH dNfUH dDDioG"><p>Authentication required</p>
+</div></button></div><div><button class="sc-cbuLjy fRVDqI" disabled=""><strong class="sc-fXmTIC cqDULz">403<!-- --> </strong><div html="&lt;p&gt;The caller may not access this record&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa sc-ciCrSJ fiNpIH dNfUH dDDioG"><p>The caller may not access this record</p>
+</div></button></div><div><button class="sc-cbuLjy fRVDqI" disabled=""><strong class="sc-fXmTIC cqDULz">404<!-- --> </strong><div html="&lt;p&gt;No such record&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa sc-ciCrSJ fiNpIH dNfUH dDDioG"><p>No such record</p>
+</div></button></div></div></div><div class="sc-jSppWd sc-gKkgUA fpMlmc bdQQyo"><div class="sc-fXwuWv fYxpnv"><button class="sc-jWMFtl jzaJhV"><span type="delete" class="sc-eEFuoE iINwyG http-verb delete">delete</span><span class="sc-FpjRO dsIRaZ">/space/{id}/membership</span><svg class="sc-dYjPD bQKUih" style="margin-right:-25px" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div aria-hidden="true" class="sc-fmtEmb tUxhh"><div class="sc-ljIcGq bAnPPh"><div html="" class="sc-iJSMbW sc-cBEgGa fiNpIH bAoMjv"></div><div tabindex="0" role="button"><div class="sc-jlJOIR PEJyb"><span>/api/v2</span>/space/{id}/membership</div></div></div></div></div><div><h3 class="sc-kEbgWM iamDfj"> <!-- -->Response samples<!-- --> </h3><div class="sc-cxxQMU kibfTX" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="tab-success react-tabs__tab--selected" role="tab" id="tab_R_176q_0" aria-selected="true" aria-disabled="false" aria-controls="panel_R_176q_0" tabindex="0" data-rttab="true">200</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel_R_176q_0" aria-labelledby="tab_R_176q_0"><div><div class="sc-cNSlRw bMFMGt"><span class="sc-bBzIOb BuCyN">Content type</span><div class="sc-dPqFhK kgKexQ">application/json</div></div><div class="sc-hUheUT jUCYlq"><div class="sc-cTZdpT hHzuQA"><div class="sc-giQkEn dzKJV"><button><div class="sc-jcgtOs feYhXE">Copy</div></button></div><div tabindex="0" class="sc-iJSMbW fiNpIH sc-jNDflC jgTAJz"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable "><span class="property token string">"state"</span>: <span class="token string">&quot;none&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"canJoin"</span>: <span class="token boolean">true</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"needsApproval"</span>: <span class="token boolean">true</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"canLeave"</span>: <span class="token boolean">false</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"isOwner"</span>: <span class="token boolean">false</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"isFollowing"</span>: <span class="token boolean">false</span></div></li></ul><span class="token punctuation">}</span></code></div></div></div></div></div></div></div></div></div></div></div></div><div class="sc-ekVkVN bjzTxL"></div></div></div>
+      <script>
+      const __redoc_state = {"menu":{"activeItemIdx":-1},"spec":{"data":{"openapi":"3.0.0","info":{"description":"Welcome to the HumHub space API reference, v2.\n\nThese endpoints are part of **HumHub core** (1.20+). The optional\n[REST API module](https://github.com/humhub/rest) contributes the token authentication\nmethods they accept and owns the older `/api/v1` surface, which is documented with that\nmodule. For the design of this stack see `docs/develop/concept-api.md`.\n\nConventions of this API generation, differing from `/api/v1`: camelCase field names,\nISO-8601 timestamps with offset, plain HTTP status codes instead of a\n`{code, message}` envelope, and `{results, total, page, pageSize, pages}` for paginated\nlists.\n\nRequests may authenticate with any token method the REST API module offers. HumHub's own\nbrowser session is accepted too for these endpoints, which is what the platform's Vue UI\nuses; state-changing session requests additionally require the CSRF token.\n","version":"2.0.0","title":"HumHub - Space API (v2)","contact":{"email":"info@humhub.com"},"license":{"name":"AGPLv2","url":"https://www.humhub.org/en/licences"}},"servers":[{"url":"/api/v2"}],"security":[{"Bearer":[]},{"BasicAuth":[]},{"SessionCookie":[]}],"paths":{"/space":{"get":{"summary":"The spaces the caller may see","description":"The platform's space list: one page of the spaces the caller may see, searched and\nscoped by the parameters below. Deliberately caller-NEUTRAL — the same space reads the\nsame for everyone, which is what lets a chooser, a picker and a directory share one\nrepresentation. What the caller IS to a space (member, follower, unseen items) is\n`/space/states`.\n\nA space the caller may not see never appears, whatever the parameters say.\n","parameters":[{"name":"q","in":"query","required":false,"description":"Search over name, description and tags. Every keyword must match.","schema":{"type":"string"}},{"name":"scope","in":"query","required":false,"description":"`all` (default), `member`, `following`, or `mine` for both. A scoped list is\nordered the way the platform orders a user's spaces: memberships first, in the\norder the `spaceOrder` setting asks for, followed spaces after them.\n","schema":{"type":"string","enum":["all","member","following","mine"]}},{"name":"archived","in":"query","required":false,"description":"`1` to include archived spaces, which are left out by default","schema":{"type":"integer"}},{"name":"page","in":"query","required":false,"schema":{"type":"integer"}},{"name":"pageSize","in":"query","required":false,"description":"Entries per page (default 25, maximum 100)","schema":{"type":"integer"}}],"responses":{"200":{"description":"Successful operation","content":{"application/json":{"schema":{"type":"object","properties":{"results":{"type":"array","items":{"$ref":"#/components/schemas/SpaceListEntry"}},"total":{"type":"integer"},"page":{"type":"integer"},"pageSize":{"type":"integer"},"pages":{"type":"integer"}}},"example":{"results":[{"id":3,"guid":"9a8b7c6d-5e4f-3210-9876-543210fedcba","name":"Product Team","url":"https://example.com/s/product-team/","color":"#7a9299","imageUrl":null,"contentContainerId":21,"description":"Where the product happens","tags":["product","roadmap"],"visibility":2,"archived":false,"extensions":{}}],"total":1,"page":1,"pageSize":25,"pages":1}}}},"401":{"$ref":"#/components/responses/Unauthorized"}}}},"/space/states":{"get":{"summary":"What the caller is to the given spaces","description":"Membership, following and unseen items for the spaces named — the ones a client\ndisplays, never \"every space of the caller\": a user can be a member of a great many\nwhile a client shows one page of them.\n\nThis is where the caller context of a space lives, which is why the list above carries\nnone of it. `newItems` counts what was posted since the membership's last visit and is\ntherefore `0` without a membership. A space the caller may not see is not answered.\n","parameters":[{"name":"guids[]","in":"query","required":true,"description":"Guids of the spaces to answer for (at most 100)","schema":{"type":"array","items":{"type":"string"}}}],"responses":{"200":{"description":"Successful operation","content":{"application/json":{"schema":{"type":"object","properties":{"results":{"type":"object","additionalProperties":{"$ref":"#/components/schemas/SpaceState"}}}},"example":{"results":{"9a8b7c6d-5e4f-3210-9876-543210fedcba":{"isMember":true,"isFollowing":false,"newItems":3}}}}}},"401":{"$ref":"#/components/responses/Unauthorized"}}}},"/space/{id}/membership":{"get":{"summary":"The caller's membership in a space","description":"Answers what the caller's relationship to this space is, and what they may do next\n(see the `MembershipState` schema).\n\nReachable for a space the caller can see, is a member of, or was invited to — an\ninvite to an otherwise invisible space has to be answerable.\n","parameters":[{"$ref":"#/components/parameters/spaceIdParam"}],"responses":{"200":{"description":"Successful operation","content":{"application/json":{"schema":{"$ref":"#/components/schemas/MembershipState"}}}},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"404":{"$ref":"#/components/responses/NotFound"}}},"post":{"summary":"Join a space, apply for membership, or accept an invite","description":"**Affirms** membership. Which of the three it is follows from the current state and\nthe space's join policy, and is decided server-side rather than by the client:\n\n- an open invite (`state: invited`) is accepted — possible even where joining on\n  one's own is not,\n- a space that approves memberships (`needsApproval: true`) receives an application\n  with the `message` the caller introduces themselves with,\n- any other joinable space is joined immediately.\n\nAnswers the new state, in the same shape `GET` returns. `403` when the space allows\nno self-join, when the caller is already a member or applicant, or when they are\nblocked.\n","parameters":[{"$ref":"#/components/parameters/spaceIdParam"}],"requestBody":{"required":false,"content":{"application/json":{"schema":{"type":"object","properties":{"message":{"type":"string","description":"How the caller introduces themselves. Required for a space that approves\nmemberships (`needsApproval: true`), ignored everywhere else.\n"}},"example":{"message":"I would like to join because …"}}}}},"responses":{"200":{"description":"Successful operation","content":{"application/json":{"schema":{"$ref":"#/components/schemas/MembershipState"}}}},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"404":{"$ref":"#/components/responses/NotFound"},"422":{"$ref":"#/components/responses/ValidationFailed"}}},"delete":{"summary":"Leave a space, withdraw an application, or decline an invite","description":"**Removes** the caller's membership, whichever of the three states it is in.\nAnswers the new state, like the other two verbs.\n\nRemoving a membership that does not exist is a success (the answer is simply the\n`none` state). `403` for the space owner, who cannot leave their own space, and for\na space whose configuration does not let its members leave.\n","parameters":[{"$ref":"#/components/parameters/spaceIdParam"}],"responses":{"200":{"description":"Successful operation","content":{"application/json":{"schema":{"$ref":"#/components/schemas/MembershipState"}}}},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"$ref":"#/components/responses/Forbidden"},"404":{"$ref":"#/components/responses/NotFound"}}}}},"components":{"parameters":{"spaceIdParam":{"name":"id","in":"path","description":"Id of the space","required":true,"schema":{"type":"integer"}}},"schemas":{"SpaceListEntry":{"type":"object","description":"One space, as every caller sees it","properties":{"id":{"type":"integer"},"guid":{"type":"string"},"name":{"type":"string"},"url":{"type":"string"},"color":{"type":"string","nullable":true},"imageUrl":{"type":"string","nullable":true,"description":"`null` when the space has no profile image of its own — which is what decides\nwhether a client renders an image or the coloured acronym tile.\n"},"contentContainerId":{"type":"integer","nullable":true},"description":{"type":"string","nullable":true},"tags":{"type":"array","items":{"type":"string"}},"visibility":{"type":"integer","nullable":true,"description":"0 private, 1 registered users, 2 public"},"archived":{"type":"boolean"},"extensions":{"type":"object","description":"Namespaced data modules attached to this space, `{}` when none did — see\n`docs/develop/ui-js-vuejs-extensions.md`.\n"}}},"SpaceState":{"type":"object","description":"What the caller is to one space","properties":{"isMember":{"type":"boolean"},"isFollowing":{"type":"boolean"},"newItems":{"type":"integer","description":"Items posted since the membership's last visit, `0` without a membership"}}},"MembershipState":{"type":"object","description":"The caller's membership in a space — the answer to \"what is my relationship to this\nspace\", and therefore the one space shape that depends on who is asking (it is never\nembedded in a space payload, and never cached).\n\nIt carries the state AND what the caller may do next, because neither follows from\nthe other: whether a non-member may join depends on the space's join policy, its\nstatus and the caller's own permissions, and whether a member may leave depends on\nownership and the space configuration. A client deciding that itself would\nreimplement authorization.\n","properties":{"state":{"type":"string","enum":["none","invited","applicant","member"],"description":"`none` — no membership and no pending request ·\n`invited` — invited by someone, not accepted yet ·\n`applicant` — applied for membership, waiting for approval ·\n`member` — member of the space\n"},"canJoin":{"type":"boolean","description":"Whether joining (or applying) is possible at all"},"needsApproval":{"type":"boolean","description":"Whether a join request needs approval instead of taking effect immediately — the\ncase in which `POST` expects a `message`.\n"},"canLeave":{"type":"boolean","description":"Whether the current membership can be removed. Covers withdrawing an application\nand declining an invite; never true for the space owner.\n"},"isOwner":{"type":"boolean","description":"Whether the caller owns this space"},"isFollowing":{"type":"boolean","description":"Whether the caller follows this space. Not membership state, but the state of the\nsibling follow action the same UI offers: following is for non-members, so a\nmembership change flips it.\n"}},"example":{"state":"none","canJoin":true,"needsApproval":true,"canLeave":false,"isOwner":false,"isFollowing":false}}},"securitySchemes":{"Bearer":{"type":"http","scheme":"bearer","description":"Access token or JWT, as issued by the REST API module."},"BasicAuth":{"type":"http","scheme":"basic","description":"User credentials, restricted to the users the administrator enabled the API for.\n"},"SessionCookie":{"type":"apiKey","in":"cookie","name":"HUMHUB_SESSION","description":"The regular HumHub browser session, accepted by core's own endpoints (which is how\nthe platform's Vue UI calls them). State-changing requests additionally require the\nCSRF token, sent as the `X-CSRF-Token` header or the `_csrf` body parameter.\n"}},"responses":{"Unauthorized":{"description":"Authentication required"},"Forbidden":{"description":"The caller may not access this record"},"NotFound":{"description":"No such record"},"ValidationFailed":{"description":"Validation failed","content":{"application/json":{"schema":{"type":"object","properties":{"errors":{"type":"object","description":"Field name (camelCase) to list of messages","additionalProperties":{"type":"array","items":{"type":"string"}}}},"example":{"errors":{"message":["The comment must not be empty!"]}}}}}}}}}},"searchIndex":{"store":["/paths/~1space/get","/paths/~1space~1states/get","/paths/~1space~1{id}~1membership/get","/paths/~1space~1{id}~1membership/post","/paths/~1space~1{id}~1membership/delete"],"index":{"version":"2.3.9","fields":["title","description"],"fieldVectors":[["title/0",[0,0.404,1,0.084,2,0.326]],["description/0",[0,0.647,1,0.114,2,0.386,3,1.338,4,0.845,5,1.175,6,0.845,7,1.338,8,1.338,9,1.86,10,1.338,11,1.338,12,1.338,13,0.278,14,1.175,15,1.338,16,1.338,17,1.338,18,1.338,19,1.338,20,1.338,21,1.338,22,1.338,23,0.084,24,0.52,25,0.845,26,0.845,27,0.845,28,0.845,29,1.338,30,1.338]],["title/1",[0,0.404,1,0.084,31,1.57]],["description/1",[0,0.589,1,0.113,2,0.272,4,0.828,5,1.158,6,0.828,13,0.272,23,0.082,24,0.51,25,0.828,26,0.828,27,0.828,28,0.828,32,0.115,33,1.311,34,1.158,35,1.311,36,1.311,37,1.311,38,1.311,39,1.311,40,1.311,41,1.311,42,1.311,43,1.311,44,0.828,45,1.311,46,1.311,47,1.311,48,1.311,49,1.311,50,1.311,51,1.311,52,1.311,53,1.311,54,0.272]],["title/2",[0,0.404,32,0.099,55,0.61]],["description/2",[0,0.621,1,0.091,2,0.454,13,0.354,23,0.107,54,0.454,55,0.663,56,1.704,57,1.704,58,1.704,59,1.704,60,1.704,61,0.454,62,1.704,63,1.704,64,0.663]],["title/3",[0,0.303,32,0.074,61,0.245,65,0.745,66,1.179,67,0.745]],["description/3",[0,0.511,1,0.09,13,0.452,14,0.739,23,0.073,24,0.455,32,0.106,34,0.739,54,0.243,61,0.351,64,0.455,65,1.255,67,0.739,68,1.17,69,0.739,70,1.17,71,1.255,72,1.17,73,1.17,74,1.17,75,1.17,76,1.17,77,1.17,78,1.17,79,1.17,80,1.17,81,1.17,82,1.17,83,1.17,84,1.068,85,1.17,86,1.17,87,1.17,88,1.17,89,1.17,90,0.739,91,1.17,92,1.17,93,0.739,94,1.17,95,1.17,96,1.17,97,1.17]],["title/4",[0,0.303,61,0.245,84,0.745,98,0.745,99,1.179,100,1.179]],["description/4",[0,0.589,23,0.096,32,0.128,44,0.963,54,0.422,55,0.593,64,0.593,69,0.963,71,1.445,90,0.963,93,0.963,98,1.284,101,2.034,102,1.525,103,1.525,104,1.525,105,1.525,106,1.525,107,1.525,108,1.525,109,1.525,110,1.525]]],"invertedIndex":[["",{"_index":13,"title":{},"description":{"0":{},"1":{},"2":{},"3":{}}}],["0",{"_index":52,"title":{},"description":{"1":{}}}],["403",{"_index":93,"title":{},"description":{"3":{},"4":{}}}],["abov",{"_index":42,"title":{},"description":{"1":{}}}],["accept",{"_index":67,"title":{"3":{}},"description":{"3":{}}}],["affirm",{"_index":68,"title":{},"description":{"3":{}}}],["allow",{"_index":94,"title":{},"description":{"3":{}}}],["alreadi",{"_index":96,"title":{},"description":{"3":{}}}],["answer",{"_index":54,"title":{},"description":{"1":{},"2":{},"3":{},"4":{}}}],["appear",{"_index":29,"title":{},"description":{"0":{}}}],["appli",{"_index":66,"title":{"3":{}},"description":{}}],["applic",{"_index":84,"title":{"4":{}},"description":{"3":{}}}],["approv",{"_index":80,"title":{},"description":{"3":{}}}],["below",{"_index":10,"title":{},"description":{"0":{}}}],["block",{"_index":97,"title":{},"description":{"3":{}}}],["caller",{"_index":1,"title":{"0":{},"1":{}},"description":{"0":{},"1":{},"2":{},"3":{}}}],["caller'",{"_index":55,"title":{"2":{}},"description":{"2":{},"4":{}}}],["caller-neutr",{"_index":12,"title":{},"description":{"0":{}}}],["carri",{"_index":43,"title":{},"description":{"1":{}}}],["chooser",{"_index":18,"title":{},"description":{"0":{}}}],["client",{"_index":34,"title":{},"description":{"1":{},"3":{}}}],["configur",{"_index":110,"title":{},"description":{"4":{}}}],["context",{"_index":40,"title":{},"description":{"1":{}}}],["count",{"_index":46,"title":{},"description":{"1":{}}}],["current",{"_index":70,"title":{},"description":{"3":{}}}],["decid",{"_index":74,"title":{},"description":{"3":{}}}],["declin",{"_index":100,"title":{"4":{}},"description":{}}],["deliber",{"_index":11,"title":{},"description":{"0":{}}}],["directori",{"_index":20,"title":{},"description":{"0":{}}}],["display",{"_index":35,"title":{},"description":{"1":{}}}],["even",{"_index":78,"title":{},"description":{"3":{}}}],["everyon",{"_index":16,"title":{},"description":{"0":{}}}],["exist",{"_index":105,"title":{},"description":{"4":{}}}],["follow",{"_index":24,"title":{},"description":{"0":{},"1":{},"3":{}}}],["given",{"_index":31,"title":{"1":{}},"description":{}}],["great",{"_index":37,"title":{},"description":{"1":{}}}],["immedi",{"_index":89,"title":{},"description":{"3":{}}}],["introduc",{"_index":86,"title":{},"description":{"3":{}}}],["invis",{"_index":63,"title":{},"description":{"2":{}}}],["invit",{"_index":61,"title":{"3":{},"4":{}},"description":{"2":{},"3":{}}}],["item",{"_index":26,"title":{},"description":{"0":{},"1":{}}}],["join",{"_index":65,"title":{"3":{}},"description":{"3":{}}}],["joinabl",{"_index":88,"title":{},"description":{"3":{}}}],["last",{"_index":49,"title":{},"description":{"1":{}}}],["leav",{"_index":98,"title":{"4":{}},"description":{"4":{}}}],["let",{"_index":17,"title":{},"description":{"0":{}}}],["list",{"_index":4,"title":{},"description":{"0":{},"1":{}}}],["live",{"_index":41,"title":{},"description":{"1":{}}}],["mani",{"_index":38,"title":{},"description":{"1":{}}}],["member",{"_index":23,"title":{},"description":{"0":{},"1":{},"2":{},"3":{},"4":{}}}],["membership",{"_index":32,"title":{"2":{},"3":{}},"description":{"1":{},"3":{},"4":{}}}],["membership'",{"_index":48,"title":{},"description":{"1":{}}}],["membershipst",{"_index":58,"title":{},"description":{"2":{}}}],["messag",{"_index":85,"title":{},"description":{"3":{}}}],["name",{"_index":33,"title":{},"description":{"1":{}}}],["needsapprov",{"_index":81,"title":{},"description":{"3":{}}}],["never",{"_index":28,"title":{},"description":{"0":{},"1":{}}}],["new",{"_index":90,"title":{},"description":{"3":{},"4":{}}}],["newitem",{"_index":45,"title":{},"description":{"1":{}}}],["next",{"_index":57,"title":{},"description":{"2":{}}}],["none",{"_index":44,"title":{},"description":{"1":{},"4":{}}}],["on",{"_index":5,"title":{},"description":{"0":{},"1":{}}}],["one'",{"_index":79,"title":{},"description":{"3":{}}}],["open",{"_index":76,"title":{},"description":{"3":{}}}],["otherwis",{"_index":62,"title":{},"description":{"2":{}}}],["owner",{"_index":108,"title":{},"description":{"4":{}}}],["page",{"_index":6,"title":{},"description":{"0":{},"1":{}}}],["paramet",{"_index":9,"title":{},"description":{"0":{}}}],["picker",{"_index":19,"title":{},"description":{"0":{}}}],["platform'",{"_index":3,"title":{},"description":{"0":{}}}],["polici",{"_index":73,"title":{},"description":{"3":{}}}],["possibl",{"_index":77,"title":{},"description":{"3":{}}}],["post",{"_index":47,"title":{},"description":{"1":{}}}],["reachabl",{"_index":60,"title":{},"description":{"2":{}}}],["read",{"_index":15,"title":{},"description":{"0":{}}}],["receiv",{"_index":83,"title":{},"description":{"3":{}}}],["relationship",{"_index":56,"title":{},"description":{"2":{}}}],["remov",{"_index":101,"title":{},"description":{"4":{}}}],["represent",{"_index":22,"title":{},"description":{"0":{}}}],["return",{"_index":92,"title":{},"description":{"3":{}}}],["same",{"_index":14,"title":{},"description":{"0":{},"3":{}}}],["schema",{"_index":59,"title":{},"description":{"2":{}}}],["scope",{"_index":8,"title":{},"description":{"0":{}}}],["search",{"_index":7,"title":{},"description":{"0":{}}}],["see",{"_index":2,"title":{"0":{}},"description":{"0":{},"1":{},"2":{}}}],["self-join",{"_index":95,"title":{},"description":{"3":{}}}],["server-sid",{"_index":75,"title":{},"description":{"3":{}}}],["shape",{"_index":91,"title":{},"description":{"3":{}}}],["share",{"_index":21,"title":{},"description":{"0":{}}}],["show",{"_index":39,"title":{},"description":{"1":{}}}],["simpli",{"_index":107,"title":{},"description":{"4":{}}}],["space",{"_index":0,"title":{"0":{},"1":{},"2":{},"3":{},"4":{}},"description":{"0":{},"1":{},"2":{},"3":{},"4":{}}}],["space'",{"_index":72,"title":{},"description":{"3":{}}}],["space/st",{"_index":27,"title":{},"description":{"0":{},"1":{}}}],["space/{id}/membership",{"_index":64,"title":{},"description":{"2":{},"3":{},"4":{}}}],["state",{"_index":71,"title":{},"description":{"3":{},"4":{}}}],["success",{"_index":106,"title":{},"description":{"4":{}}}],["themselv",{"_index":87,"title":{},"description":{"3":{}}}],["therefor",{"_index":51,"title":{},"description":{"1":{}}}],["three",{"_index":69,"title":{},"description":{"3":{},"4":{}}}],["true",{"_index":82,"title":{},"description":{"3":{}}}],["two",{"_index":103,"title":{},"description":{"4":{}}}],["unseen",{"_index":25,"title":{},"description":{"0":{},"1":{}}}],["user",{"_index":36,"title":{},"description":{"1":{}}}],["verb",{"_index":104,"title":{},"description":{"4":{}}}],["visit",{"_index":50,"title":{},"description":{"1":{}}}],["whatev",{"_index":30,"title":{},"description":{"0":{}}}],["whichev",{"_index":102,"title":{},"description":{"4":{}}}],["whose",{"_index":109,"title":{},"description":{"4":{}}}],["withdraw",{"_index":99,"title":{"4":{}},"description":{}}],["without",{"_index":53,"title":{},"description":{"1":{}}}]],"pipeline":[]}},"options":{}};
+
+      var container = document.getElementById('redoc');
+      Redoc.hydrate(__redoc_state, container);
+
+      </script>
+</body>
+
+</html>

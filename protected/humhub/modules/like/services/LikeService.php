@@ -24,7 +24,6 @@ class LikeService
     private readonly ?User $user;
     private ?int $_count = null;
     private ?bool $_hasLiked = null;
-    private ?string $_titleText = null;
 
 
     public function __construct(ContentProvider $object, ?User $user = null)
@@ -36,6 +35,149 @@ class LikeService
         }
 
         $this->user = $user ?? Yii::$app->getUser()->identity ?? null;
+    }
+
+    /**
+     * Like counts of many records at once, in ONE query - `record id => count`, records
+     * without a single like absent.
+     *
+     * Takes the loaded records rather than bare ids because the like table addresses the two
+     * kinds of likeable record differently (see {@see self::addScopeQueryCondition()}): a
+     * content addon by its platform record id, a content record by its content id with no
+     * addon id at all. Feed the result into {@see self::preloadState()}.
+     *
+     * @param array<int, ContentProvider> $records record id => record
+     * @return array<int, int>
+     * @since 1.20
+     */
+    public static function countsForRecords(array $records): array
+    {
+        [$condition, $recordIdByKey] = static::buildBatchCondition($records);
+
+        if ($condition === null) {
+            return [];
+        }
+
+        $rows = Like::find()
+            ->select(['content_id', 'content_addon_record_id', 'total' => new Expression('COUNT(*)')])
+            ->where($condition)
+            ->groupBy(['content_id', 'content_addon_record_id'])
+            ->asArray()
+            ->all();
+
+        $counts = [];
+        foreach ($rows as $row) {
+            $recordId = static::resolveBatchRow($row, $recordIdByKey);
+            if ($recordId !== null) {
+                $counts[$recordId] = (int)$row['total'];
+            }
+        }
+
+        return $counts;
+    }
+
+    /**
+     * Which of the given records the user has liked, in ONE query.
+     *
+     * @param array<int, ContentProvider> $records record id => record
+     * @param User|null $user defaults to the current identity; a guest has liked nothing
+     * @return int[] the record ids the user has liked
+     * @since 1.20
+     */
+    public static function likedRecordIds(array $records, ?User $user = null): array
+    {
+        $user ??= Yii::$app->getUser()->identity ?? null;
+        [$condition, $recordIdByKey] = static::buildBatchCondition($records);
+
+        if ($condition === null || $user === null) {
+            return [];
+        }
+
+        $rows = Like::find()
+            ->select(['content_id', 'content_addon_record_id'])
+            ->where($condition)
+            ->andWhere(['created_by' => $user->id])
+            ->asArray()
+            ->all();
+
+        $recordIds = [];
+        foreach ($rows as $row) {
+            $recordId = static::resolveBatchRow($row, $recordIdByKey);
+            if ($recordId !== null) {
+                $recordIds[] = $recordId;
+            }
+        }
+
+        return $recordIds;
+    }
+
+    /**
+     * The `like` condition covering a mixed set of records, plus the lookup mapping a result
+     * row back to its record id.
+     *
+     * @param array<int, ContentProvider> $records record id => record
+     * @return array{0: array|null, 1: array<string, int>} condition (null for no records) and
+     *         `"<contentId>:<addonRecordId|>" => record id`
+     */
+    private static function buildBatchCondition(array $records): array
+    {
+        $addonRecordIds = [];
+        $contentIds = [];
+        $recordIdByKey = [];
+
+        foreach ($records as $recordId => $record) {
+            $contentId = (int)$record->content->id;
+
+            if ($record instanceof ContentAddonActiveRecord) {
+                $addonRecordIds[] = (int)$recordId;
+                $recordIdByKey[$contentId . ':' . (int)$recordId] = (int)$recordId;
+            } else {
+                $contentIds[] = $contentId;
+                $recordIdByKey[$contentId . ':'] = (int)$recordId;
+            }
+        }
+
+        $condition = ['or'];
+        if ($addonRecordIds !== []) {
+            $condition[] = ['content_addon_record_id' => $addonRecordIds];
+        }
+        if ($contentIds !== []) {
+            $condition[] = ['and', ['content_id' => $contentIds], ['content_addon_record_id' => null]];
+        }
+
+        return [count($condition) > 1 ? $condition : null, $recordIdByKey];
+    }
+
+    /**
+     * @param array $row a `like` row with `content_id` and `content_addon_record_id`
+     * @param array<string, int> $recordIdByKey see {@see self::buildBatchCondition()}
+     */
+    private static function resolveBatchRow(array $row, array $recordIdByKey): ?int
+    {
+        $addonRecordId = $row['content_addon_record_id'] === null ? '' : (int)$row['content_addon_record_id'];
+
+        return $recordIdByKey[(int)$row['content_id'] . ':' . $addonRecordId] ?? null;
+    }
+
+    /**
+     * Seeds the like count and the caller's own like state, so {@see self::getCount()} and
+     * {@see self::hasLiked()} answer without querying.
+     *
+     * For callers that already know both from a batched query over many records - see
+     * {@see self::countsForRecords()}/{@see self::likedRecordIds()}, which the platform's
+     * batched like-state endpoint uses to answer a whole comment window in two queries.
+     * Everything else about the state (above all {@see self::canLike()}, which touches no
+     * like row at all) then still comes from this one implementation instead of being
+     * rebuilt at the call site.
+     *
+     * @since 1.20
+     */
+    public function preloadState(int $count, bool $hasLiked): static
+    {
+        $this->_count = $count;
+        $this->_hasLiked = $hasLiked;
+
+        return $this;
     }
 
     public function canLike(): bool
@@ -149,40 +291,14 @@ class LikeService
         $query = User::find();
         $query->leftJoin('like', 'like.created_by=user.id');
         $this->addScopeQueryCondition($query);
-        $query->orderBy('like.created_at DESC');
+        // `like.id DESC` is a tiebreaker for likes sharing the same `created_at` (its
+        // datetime column only has one-second resolution) - without it, offset/limit
+        // pagination over ties has no stable order and can show the same liker twice
+        // or skip one across two pages (see the like module's user-list JSON endpoint,
+        // `LikeController::actionUserList()`).
+        $query->orderBy('like.created_at DESC, like.id DESC');
 
         return $query;
-    }
-
-    public function generateLikeTitleText(int $maxUser = 5): string
-    {
-        if ($this->_titleText === null) {
-            $otherUsers = $this->getUserQuery()->andWhere(['!=', 'like.created_by', $this->user->id ?? 0])
-                ->limit($maxUser)
-                ->all();
-
-            if (count($otherUsers) === 0) {
-                $this->_titleText = $this->hasLiked() ? Yii::t('LikeModule.base', 'You like this.') : '';
-            } elseif (count($otherUsers) === 1 && !$this->hasLiked()) {
-                $this->_titleText = $otherUsers[0]->displayName . Yii::t('LikeModule.base', ' likes this.');
-            } else {
-                $title = ($this->hasLiked()) ? Yii::t('LikeModule.base', 'You') . "\n" : '';
-                foreach ($otherUsers as $user) {
-                    $title .= $user->displayName . "\n";
-                }
-                $shownLikeCount = count($otherUsers) + ($this->hasLiked()) ? 1 : 0;
-                if ($this->getCount() > $shownLikeCount) {
-                    $title .= Yii::t(
-                        'LikeModule.base',
-                        'and {count} more like this.',
-                        ['{count}' => $this->getCount() - $shownLikeCount],
-                    );
-                }
-                $this->_titleText = $title;
-            }
-        }
-
-        return $this->_titleText;
     }
 
     public function addScopeQueryCondition(ActiveQuery $query): void
@@ -205,6 +321,5 @@ class LikeService
     {
         $this->_count = null;
         $this->_hasLiked = null;
-        $this->_titleText = null;
     }
 }

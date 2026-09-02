@@ -78,7 +78,7 @@ class MessageController extends \yii\console\controllers\MessageController
     protected function extractMessages($fileName, $translator, $ignoreCategories = [])
     {
         $extension = pathinfo($fileName, PATHINFO_EXTENSION);
-        if (in_array($extension, ['js', 'jsx'])) {
+        if (in_array($extension, ['js', 'jsx', 'vue'])) {
             return Yii::createObject(JsMessageExtractor::class)->extract($fileName, ['i18n.t'], $ignoreCategories);
         }
 

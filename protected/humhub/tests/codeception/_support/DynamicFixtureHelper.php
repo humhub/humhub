@@ -98,11 +98,22 @@ class DynamicFixtureHelper extends Module
     }
 
     /**
+     * @var array module configuration. A suite whose tests do not load fixtures themselves
+     * (the `api` suite: its Cests are not `HumHubDbTestCase`s) enables
+     * `loadDefaultFixtures` instead of relying on a `fixtures` key in the global config —
+     * without either, this helper loads nothing at all, which only *looks* like it works as
+     * long as a previous run left its rows behind (`_after()` does not unload).
+     */
+    protected array $config = [
+        'loadDefaultFixtures' => false,
+    ];
+
+    /**
      * @inheritdoc
      */
     public function fixtures()
     {
-        $result = [];
+        $result = !empty($this->config['loadDefaultFixtures']) ? $this->getDefaultFixtures() : [];
 
         $cfg = \Codeception\Configuration::config();
         if (isset($cfg['fixtures'])) {

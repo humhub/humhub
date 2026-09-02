@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf8" />
+  <title>HumHub - Notification API (v2)</title>
+  <!-- needed for adaptive design -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+    }
+  </style>
+  <script src="redoc.standalone.js"></script><style data-styled="true" data-styled-version="6.4.2">.kktglN{width:calc(100% - 40%);padding:0 40px;}/*!sc*/
+@media print,screen and (max-width: 75rem){.kktglN{width:100%;padding:40px 40px;}}/*!sc*/
+data-styled.g5[id="sc-hKVpXn"]{content:"kktglN,"}/*!sc*/
+.jleRXN{padding:40px 0;}/*!sc*/
+.jleRXN:last-child{min-height:calc(100vh + 1px);}/*!sc*/
+.jleRXN>.jleRXN:last-child{min-height:initial;}/*!sc*/
+@media print,screen and (max-width: 75rem){.jleRXN{padding:0;}}/*!sc*/
+.grDwca{padding:40px 0;position:relative;}/*!sc*/
+.grDwca:last-child{min-height:calc(100vh + 1px);}/*!sc*/
+.grDwca>.grDwca:last-child{min-height:initial;}/*!sc*/
+@media print,screen and (max-width: 75rem){.grDwca{padding:0;}}/*!sc*/
+.grDwca:not(:last-of-type):after{position:absolute;bottom:0;width:100%;display:block;content:'';border-bottom:1px solid rgba(0, 0, 0, 0.2);}/*!sc*/
+data-styled.g6[id="sc-eCQgVK"]{content:"jleRXN,grDwca,"}/*!sc*/
+.fpMlmc{width:40%;color:#ffffff;background-color:#263238;padding:0 40px;}/*!sc*/
+@media print,screen and (max-width: 75rem){.fpMlmc{width:100%;padding:40px 40px;}}/*!sc*/
+data-styled.g7[id="sc-jSppWd"]{content:"fpMlmc,"}/*!sc*/
+.bdQQyo{background-color:#263238;}/*!sc*/
+data-styled.g8[id="sc-gKkgUA"]{content:"bdQQyo,"}/*!sc*/
+.lhRBUS{display:flex;width:100%;padding:0;}/*!sc*/
+@media print,screen and (max-width: 75rem){.lhRBUS{flex-direction:column;}}/*!sc*/
+data-styled.g9[id="sc-iCECmn"]{content:"lhRBUS,"}/*!sc*/
+.eRMVDe{font-family:Montserrat,sans-serif;font-weight:400;font-size:1.85714em;line-height:1.6em;color:#333333;}/*!sc*/
+data-styled.g10[id="sc-fuztkK"]{content:"eRMVDe,"}/*!sc*/
+.MOVBZ{font-family:Montserrat,sans-serif;font-weight:400;font-size:1.57143em;line-height:1.6em;color:#333333;margin:0 0 20px;}/*!sc*/
+data-styled.g11[id="sc-qdQOe"]{content:"MOVBZ,"}/*!sc*/
+.iamDfj{color:#ffffff;}/*!sc*/
+data-styled.g13[id="sc-kEbgWM"]{content:"iamDfj,"}/*!sc*/
+.kcvrhp{border-bottom:1px solid rgba(38, 50, 56, 0.3);margin:1em 0 1em 0;color:rgba(38, 50, 56, 0.5);font-weight:normal;text-transform:uppercase;font-size:0.929em;line-height:20px;}/*!sc*/
+data-styled.g14[id="sc-iqkkDd"]{content:"kcvrhp,"}/*!sc*/
+.jmoZom{cursor:pointer;margin-left:-20px;padding:0;line-height:1;width:20px;display:inline-block;outline:0;}/*!sc*/
+.jmoZom:before{content:'';width:15px;height:15px;background-size:contain;background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeD0iMCIgeT0iMCIgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MTIgNTEyIiB4bWw6c3BhY2U9InByZXNlcnZlIj48cGF0aCBmaWxsPSIjMDEwMTAxIiBkPSJNNDU5LjcgMjMzLjRsLTkwLjUgOTAuNWMtNTAgNTAtMTMxIDUwLTE4MSAwIC03LjktNy44LTE0LTE2LjctMTkuNC0yNS44bDQyLjEtNDIuMWMyLTIgNC41LTMuMiA2LjgtNC41IDIuOSA5LjkgOCAxOS4zIDE1LjggMjcuMiAyNSAyNSA2NS42IDI0LjkgOTAuNSAwbDkwLjUtOTAuNWMyNS0yNSAyNS02NS42IDAtOTAuNSAtMjQuOS0yNS02NS41LTI1LTkwLjUgMGwtMzIuMiAzMi4yYy0yNi4xLTEwLjItNTQuMi0xMi45LTgxLjYtOC45bDY4LjYtNjguNmM1MC01MCAxMzEtNTAgMTgxIDBDNTA5LjYgMTAyLjMgNTA5LjYgMTgzLjQgNDU5LjcgMjMzLjR6TTIyMC4zIDM4Mi4ybC0zMi4yIDMyLjJjLTI1IDI0LjktNjUuNiAyNC45LTkwLjUgMCAtMjUtMjUtMjUtNjUuNiAwLTkwLjVsOTAuNS05MC41YzI1LTI1IDY1LjUtMjUgOTAuNSAwIDcuOCA3LjggMTIuOSAxNy4yIDE1LjggMjcuMSAyLjQtMS40IDQuOC0yLjUgNi44LTQuNWw0Mi4xLTQyYy01LjQtOS4yLTExLjYtMTgtMTkuNC0yNS44IC01MC01MC0xMzEtNTAtMTgxIDBsLTkwLjUgOTAuNWMtNTAgNTAtNTAgMTMxIDAgMTgxIDUwIDUwIDEzMSA1MCAxODEgMGw2OC42LTY4LjZDMjc0LjYgMzk1LjEgMjQ2LjQgMzkyLjMgMjIwLjMgMzgyLjJ6Ii8+PC9zdmc+Cg==');opacity:0.5;visibility:hidden;display:inline-block;vertical-align:middle;}/*!sc*/
+h1:hover>.jmoZom::before,h2:hover>.jmoZom::before,.jmoZom:hover::before{visibility:visible;}/*!sc*/
+data-styled.g15[id="sc-crPgjm"]{content:"jmoZom,"}/*!sc*/
+.bEEWJa{height:1.3em;width:1.3em;min-width:1.3em;vertical-align:middle;transition:transform 0.2s ease-out;transform:rotateZ(-90deg);}/*!sc*/
+.gngmNp{height:1.5em;width:1.5em;min-width:1.5em;vertical-align:middle;float:left;transition:transform 0.2s ease-out;transform:rotateZ(-90deg);}/*!sc*/
+.gngmNp polygon{fill:#1d8127;}/*!sc*/
+.bQKUih{height:20px;width:20px;min-width:20px;vertical-align:middle;float:right;transition:transform 0.2s ease-out;transform:rotateZ(0);}/*!sc*/
+.bQKUih polygon{fill:white;}/*!sc*/
+data-styled.g16[id="sc-dYjPD"]{content:"bEEWJa,gngmNp,bQKUih,"}/*!sc*/
+.jFNAwF{border-left:1px solid #7c7cbb;box-sizing:border-box;position:relative;padding:10px 10px 10px 0;}/*!sc*/
+@media screen and (max-width: 50rem){.jFNAwF{display:block;overflow:hidden;}}/*!sc*/
+tr:first-of-type>.jFNAwF,tr.last>.jFNAwF{border-left-width:0;background-position:top left;background-repeat:no-repeat;background-size:1px 100%;}/*!sc*/
+tr:first-of-type>.jFNAwF{background-image:linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 22px,
+      #7c7cbb 22px,
+      #7c7cbb 100%
+    );}/*!sc*/
+tr.last>.jFNAwF{background-image:linear-gradient(
+      to bottom,
+      #7c7cbb 0%,
+      #7c7cbb 22px,
+      transparent 22px,
+      transparent 100%
+    );}/*!sc*/
+tr.last+tr>.jFNAwF{border-left-color:transparent;}/*!sc*/
+tr.last:first-child>.jFNAwF{background:none;border-left-color:transparent;}/*!sc*/
+data-styled.g19[id="sc-hCcPtG"]{content:"jFNAwF,"}/*!sc*/
+.lcdEEX{vertical-align:top;line-height:20px;white-space:nowrap;font-size:13px;font-family:Courier,monospace;}/*!sc*/
+.lcdEEX.deprecated{text-decoration:line-through;color:#707070;}/*!sc*/
+data-styled.g21[id="sc-fFCZOx"]{content:"lcdEEX,"}/*!sc*/
+.gLpZiQ{border-bottom:1px solid #9fb4be;padding:10px 0;width:75%;box-sizing:border-box;}/*!sc*/
+tr.expanded .gLpZiQ{border-bottom:none;}/*!sc*/
+@media screen and (max-width: 50rem){.gLpZiQ{padding:0 20px;border-bottom:none;border-left:1px solid #7c7cbb;}tr.last>.gLpZiQ{border-left:none;}}/*!sc*/
+data-styled.g22[id="sc-bjLslk"]{content:"gLpZiQ,"}/*!sc*/
+.kkMuqc{color:#7c7cbb;font-family:Courier,monospace;margin-right:10px;}/*!sc*/
+.kkMuqc::before{content:'';display:inline-block;vertical-align:middle;width:10px;height:1px;background:#7c7cbb;}/*!sc*/
+.kkMuqc::after{content:'';display:inline-block;vertical-align:middle;width:1px;background:#7c7cbb;height:7px;}/*!sc*/
+data-styled.g23[id="sc-ieCSdj"]{content:"kkMuqc,"}/*!sc*/
+.bsjUmE{border-collapse:separate;border-radius:3px;font-size:14px;border-spacing:0;width:100%;}/*!sc*/
+.bsjUmE >tr{vertical-align:middle;}/*!sc*/
+@media screen and (max-width: 50rem){.bsjUmE{display:block;}.bsjUmE >tr,.bsjUmE >tbody>tr{display:block;}}/*!sc*/
+@media screen and (max-width: 50rem) and (-ms-high-contrast:none){.bsjUmE td{float:left;width:100%;}}/*!sc*/
+.bsjUmE .sc-dILkzW,.bsjUmE .sc-dILkzW .sc-dILkzW .sc-dILkzW,.bsjUmE .sc-dILkzW .sc-dILkzW .sc-dILkzW .sc-dILkzW .sc-dILkzW{margin:1em;margin-right:0;background:#fafafa;}/*!sc*/
+.bsjUmE .sc-dILkzW .sc-dILkzW,.bsjUmE .sc-dILkzW .sc-dILkzW .sc-dILkzW .sc-dILkzW,.bsjUmE .sc-dILkzW .sc-dILkzW .sc-dILkzW .sc-dILkzW .sc-dILkzW .sc-dILkzW{background:#ffffff;}/*!sc*/
+data-styled.g25[id="sc-hHopjF"]{content:"bsjUmE,"}/*!sc*/
+.kibfTX >ul{list-style:none;padding:0;margin:0;margin:0 -5px;}/*!sc*/
+.kibfTX >ul >li{padding:5px 10px;display:inline-block;background-color:#11171a;border-bottom:1px solid rgba(0, 0, 0, 0.5);cursor:pointer;text-align:center;outline:none;color:#ccc;margin:0 5px 5px 5px;border:1px solid #07090b;border-radius:5px;min-width:60px;font-size:0.9em;font-weight:bold;}/*!sc*/
+.kibfTX >ul >li.react-tabs__tab--selected{color:#333333;background:#ffffff;}/*!sc*/
+.kibfTX >ul >li.react-tabs__tab--selected:focus{outline:auto;}/*!sc*/
+.kibfTX >ul >li:only-child{flex:none;min-width:100px;}/*!sc*/
+.kibfTX >ul >li.tab-success{color:#1d8127;}/*!sc*/
+.kibfTX >ul >li.tab-redirect{color:#ffa500;}/*!sc*/
+.kibfTX >ul >li.tab-info{color:#87ceeb;}/*!sc*/
+.kibfTX >ul >li.tab-error{color:#d41f1c;}/*!sc*/
+.kibfTX >.react-tabs__tab-panel{background:#11171a;}/*!sc*/
+.kibfTX >.react-tabs__tab-panel>div,.kibfTX >.react-tabs__tab-panel>pre{padding:20px;margin:0;}/*!sc*/
+.kibfTX >.react-tabs__tab-panel>div>pre{padding:0;}/*!sc*/
+data-styled.g31[id="sc-cxxQMU"]{content:"kibfTX,"}/*!sc*/
+.fiNpIH code[class*='language-'],.fiNpIH pre[class*='language-']{text-shadow:0 -0.1em 0.2em black;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none;}/*!sc*/
+@media print{.fiNpIH code[class*='language-'],.fiNpIH pre[class*='language-']{text-shadow:none;}}/*!sc*/
+.fiNpIH pre[class*='language-']{padding:1em;margin:0.5em 0;overflow:auto;}/*!sc*/
+.fiNpIH .token.comment,.fiNpIH .token.prolog,.fiNpIH .token.doctype,.fiNpIH .token.cdata{color:hsl(30, 20%, 50%);}/*!sc*/
+.fiNpIH .token.punctuation{opacity:0.7;}/*!sc*/
+.fiNpIH .namespace{opacity:0.7;}/*!sc*/
+.fiNpIH .token.property,.fiNpIH .token.tag,.fiNpIH .token.number,.fiNpIH .token.constant,.fiNpIH .token.symbol{color:#4a8bb3;}/*!sc*/
+.fiNpIH .token.boolean{color:#e64441;}/*!sc*/
+.fiNpIH .token.selector,.fiNpIH .token.attr-name,.fiNpIH .token.string,.fiNpIH .token.char,.fiNpIH .token.builtin,.fiNpIH .token.inserted{color:#a0fbaa;}/*!sc*/
+.fiNpIH .token.selector+a,.fiNpIH .token.attr-name+a,.fiNpIH .token.string+a,.fiNpIH .token.char+a,.fiNpIH .token.builtin+a,.fiNpIH .token.inserted+a,.fiNpIH .token.selector+a:visited,.fiNpIH .token.attr-name+a:visited,.fiNpIH .token.string+a:visited,.fiNpIH .token.char+a:visited,.fiNpIH .token.builtin+a:visited,.fiNpIH .token.inserted+a:visited{color:#4ed2ba;text-decoration:underline;}/*!sc*/
+.fiNpIH .token.property.string{color:white;}/*!sc*/
+.fiNpIH .token.operator,.fiNpIH .token.entity,.fiNpIH .token.url,.fiNpIH .token.variable{color:hsl(40, 90%, 60%);}/*!sc*/
+.fiNpIH .token.atrule,.fiNpIH .token.attr-value,.fiNpIH .token.keyword{color:hsl(350, 40%, 70%);}/*!sc*/
+.fiNpIH .token.regex,.fiNpIH .token.important{color:#e90;}/*!sc*/
+.fiNpIH .token.important,.fiNpIH .token.bold{font-weight:bold;}/*!sc*/
+.fiNpIH .token.italic{font-style:italic;}/*!sc*/
+.fiNpIH .token.entity{cursor:help;}/*!sc*/
+.fiNpIH .token.deleted{color:red;}/*!sc*/
+data-styled.g33[id="sc-iJSMbW"]{content:"fiNpIH,"}/*!sc*/
+.dzKJV{opacity:0.7;transition:opacity 0.3s ease;text-align:right;}/*!sc*/
+.dzKJV:focus-within{opacity:1;}/*!sc*/
+.dzKJV >button{background-color:transparent;border:0;color:inherit;padding:2px 10px;font-family:Roboto,sans-serif;font-size:14px;line-height:1.5em;cursor:pointer;outline:0;}/*!sc*/
+.dzKJV >button :hover,.dzKJV >button :focus{background:rgba(255, 255, 255, 0.1);}/*!sc*/
+data-styled.g34[id="sc-giQkEn"]{content:"dzKJV,"}/*!sc*/
+.iOXjCz{position:relative;}/*!sc*/
+data-styled.g38[id="sc-kLEbxe"]{content:"iOXjCz,"}/*!sc*/
+.ewCFMV{font-family:Roboto,sans-serif;font-weight:400;line-height:1.5em;}/*!sc*/
+.ewCFMV p:last-child{margin-bottom:0;}/*!sc*/
+.ewCFMV h1{font-family:Montserrat,sans-serif;font-weight:400;font-size:1.85714em;line-height:1.6em;color:#32329f;margin-top:0;}/*!sc*/
+.ewCFMV h2{font-family:Montserrat,sans-serif;font-weight:400;font-size:1.57143em;line-height:1.6em;color:#333333;}/*!sc*/
+.ewCFMV code{color:#e53935;background-color:rgba(38, 50, 56, 0.05);font-family:Courier,monospace;border-radius:2px;border:1px solid rgba(38, 50, 56, 0.1);padding:0 5px;font-size:13px;font-weight:400;word-break:break-word;}/*!sc*/
+.ewCFMV pre{font-family:Courier,monospace;white-space:pre;background-color:#11171a;color:white;padding:20px;overflow-x:auto;line-height:normal;border-radius:0;border:1px solid rgba(38, 50, 56, 0.1);}/*!sc*/
+.ewCFMV pre code{background-color:transparent;color:white;padding:0;}/*!sc*/
+.ewCFMV pre code:before,.ewCFMV pre code:after{content:none;}/*!sc*/
+.ewCFMV blockquote{margin:0;margin-bottom:1em;padding:0 15px;color:#777;border-left:4px solid #ddd;}/*!sc*/
+.ewCFMV img{max-width:100%;box-sizing:content-box;}/*!sc*/
+.ewCFMV ul,.ewCFMV ol{padding-left:2em;margin:0;margin-bottom:1em;}/*!sc*/
+.ewCFMV ul ul,.ewCFMV ol ul,.ewCFMV ul ol,.ewCFMV ol ol{margin-bottom:0;margin-top:0;}/*!sc*/
+.ewCFMV table{display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all;border-collapse:collapse;border-spacing:0;margin-top:1.5em;margin-bottom:1.5em;}/*!sc*/
+.ewCFMV table tr{background-color:#fff;border-top:1px solid #ccc;}/*!sc*/
+.ewCFMV table tr:nth-child(2n){background-color:#fafafa;}/*!sc*/
+.ewCFMV table th,.ewCFMV table td{padding:6px 13px;border:1px solid #ddd;}/*!sc*/
+.ewCFMV table th{text-align:left;font-weight:bold;}/*!sc*/
+.ewCFMV .share-link{cursor:pointer;margin-left:-20px;padding:0;line-height:1;width:20px;display:inline-block;outline:0;}/*!sc*/
+.ewCFMV .share-link:before{content:'';width:15px;height:15px;background-size:contain;background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeD0iMCIgeT0iMCIgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MTIgNTEyIiB4bWw6c3BhY2U9InByZXNlcnZlIj48cGF0aCBmaWxsPSIjMDEwMTAxIiBkPSJNNDU5LjcgMjMzLjRsLTkwLjUgOTAuNWMtNTAgNTAtMTMxIDUwLTE4MSAwIC03LjktNy44LTE0LTE2LjctMTkuNC0yNS44bDQyLjEtNDIuMWMyLTIgNC41LTMuMiA2LjgtNC41IDIuOSA5LjkgOCAxOS4zIDE1LjggMjcuMiAyNSAyNSA2NS42IDI0LjkgOTAuNSAwbDkwLjUtOTAuNWMyNS0yNSAyNS02NS42IDAtOTAuNSAtMjQuOS0yNS02NS41LTI1LTkwLjUgMGwtMzIuMiAzMi4yYy0yNi4xLTEwLjItNTQuMi0xMi45LTgxLjYtOC45bDY4LjYtNjguNmM1MC01MCAxMzEtNTAgMTgxIDBDNTA5LjYgMTAyLjMgNTA5LjYgMTgzLjQgNDU5LjcgMjMzLjR6TTIyMC4zIDM4Mi4ybC0zMi4yIDMyLjJjLTI1IDI0LjktNjUuNiAyNC45LTkwLjUgMCAtMjUtMjUtMjUtNjUuNiAwLTkwLjVsOTAuNS05MC41YzI1LTI1IDY1LjUtMjUgOTAuNSAwIDcuOCA3LjggMTIuOSAxNy4yIDE1LjggMjcuMSAyLjQtMS40IDQuOC0yLjUgNi44LTQuNWw0Mi4xLTQyYy01LjQtOS4yLTExLjYtMTgtMTkuNC0yNS44IC01MC01MC0xMzEtNTAtMTgxIDBsLTkwLjUgOTAuNWMtNTAgNTAtNTAgMTMxIDAgMTgxIDUwIDUwIDEzMSA1MCAxODEgMGw2OC42LTY4LjZDMjc0LjYgMzk1LjEgMjQ2LjQgMzkyLjMgMjIwLjMgMzgyLjJ6Ii8+PC9zdmc+Cg==');opacity:0.5;visibility:hidden;display:inline-block;vertical-align:middle;}/*!sc*/
+.ewCFMV h1:hover>.share-link::before,.ewCFMV h2:hover>.share-link::before,.ewCFMV .share-link:hover::before{visibility:visible;}/*!sc*/
+.ewCFMV a{text-decoration:auto;color:#32329f;}/*!sc*/
+.ewCFMV a:visited{color:#32329f;}/*!sc*/
+.ewCFMV a:hover{color:#6868cf;text-decoration:auto;}/*!sc*/
+.bAoMjv{font-family:Roboto,sans-serif;font-weight:400;line-height:1.5em;}/*!sc*/
+.bAoMjv p:last-child{margin-bottom:0;}/*!sc*/
+.bAoMjv p:first-child{margin-top:0;}/*!sc*/
+.bAoMjv p:last-child{margin-bottom:0;}/*!sc*/
+.bAoMjv h1{font-family:Montserrat,sans-serif;font-weight:400;font-size:1.85714em;line-height:1.6em;color:#32329f;margin-top:0;}/*!sc*/
+.bAoMjv h2{font-family:Montserrat,sans-serif;font-weight:400;font-size:1.57143em;line-height:1.6em;color:#333333;}/*!sc*/
+.bAoMjv code{color:#e53935;background-color:rgba(38, 50, 56, 0.05);font-family:Courier,monospace;border-radius:2px;border:1px solid rgba(38, 50, 56, 0.1);padding:0 5px;font-size:13px;font-weight:400;word-break:break-word;}/*!sc*/
+.bAoMjv pre{font-family:Courier,monospace;white-space:pre;background-color:#11171a;color:white;padding:20px;overflow-x:auto;line-height:normal;border-radius:0;border:1px solid rgba(38, 50, 56, 0.1);}/*!sc*/
+.bAoMjv pre code{background-color:transparent;color:white;padding:0;}/*!sc*/
+.bAoMjv pre code:before,.bAoMjv pre code:after{content:none;}/*!sc*/
+.bAoMjv blockquote{margin:0;margin-bottom:1em;padding:0 15px;color:#777;border-left:4px solid #ddd;}/*!sc*/
+.bAoMjv img{max-width:100%;box-sizing:content-box;}/*!sc*/
+.bAoMjv ul,.bAoMjv ol{padding-left:2em;margin:0;margin-bottom:1em;}/*!sc*/
+.bAoMjv ul ul,.bAoMjv ol ul,.bAoMjv ul ol,.bAoMjv ol ol{margin-bottom:0;margin-top:0;}/*!sc*/
+.bAoMjv table{display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all;border-collapse:collapse;border-spacing:0;margin-top:1.5em;margin-bottom:1.5em;}/*!sc*/
+.bAoMjv table tr{background-color:#fff;border-top:1px solid #ccc;}/*!sc*/
+.bAoMjv table tr:nth-child(2n){background-color:#fafafa;}/*!sc*/
+.bAoMjv table th,.bAoMjv table td{padding:6px 13px;border:1px solid #ddd;}/*!sc*/
+.bAoMjv table th{text-align:left;font-weight:bold;}/*!sc*/
+.bAoMjv .share-link{cursor:pointer;margin-left:-20px;padding:0;line-height:1;width:20px;display:inline-block;outline:0;}/*!sc*/
+.bAoMjv .share-link:before{content:'';width:15px;height:15px;background-size:contain;background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeD0iMCIgeT0iMCIgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MTIgNTEyIiB4bWw6c3BhY2U9InByZXNlcnZlIj48cGF0aCBmaWxsPSIjMDEwMTAxIiBkPSJNNDU5LjcgMjMzLjRsLTkwLjUgOTAuNWMtNTAgNTAtMTMxIDUwLTE4MSAwIC03LjktNy44LTE0LTE2LjctMTkuNC0yNS44bDQyLjEtNDIuMWMyLTIgNC41LTMuMiA2LjgtNC41IDIuOSA5LjkgOCAxOS4zIDE1LjggMjcuMiAyNSAyNSA2NS42IDI0LjkgOTAuNSAwbDkwLjUtOTAuNWMyNS0yNSAyNS02NS42IDAtOTAuNSAtMjQuOS0yNS02NS41LTI1LTkwLjUgMGwtMzIuMiAzMi4yYy0yNi4xLTEwLjItNTQuMi0xMi45LTgxLjYtOC45bDY4LjYtNjguNmM1MC01MCAxMzEtNTAgMTgxIDBDNTA5LjYgMTAyLjMgNTA5LjYgMTgzLjQgNDU5LjcgMjMzLjR6TTIyMC4zIDM4Mi4ybC0zMi4yIDMyLjJjLTI1IDI0LjktNjUuNiAyNC45LTkwLjUgMCAtMjUtMjUtMjUtNjUuNiAwLTkwLjVsOTAuNS05MC41YzI1LTI1IDY1LjUtMjUgOTAuNSAwIDcuOCA3LjggMTIuOSAxNy4yIDE1LjggMjcuMSAyLjQtMS40IDQuOC0yLjUgNi44LTQuNWw0Mi4xLTQyYy01LjQtOS4yLTExLjYtMTgtMTkuNC0yNS44IC01MC01MC0xMzEtNTAtMTgxIDBsLTkwLjUgOTAuNWMtNTAgNTAtNTAgMTMxIDAgMTgxIDUwIDUwIDEzMSA1MCAxODEgMGw2OC42LTY4LjZDMjc0LjYgMzk1LjEgMjQ2LjQgMzkyLjMgMjIwLjMgMzgyLjJ6Ii8+PC9zdmc+Cg==');opacity:0.5;visibility:hidden;display:inline-block;vertical-align:middle;}/*!sc*/
+.bAoMjv h1:hover>.share-link::before,.bAoMjv h2:hover>.share-link::before,.bAoMjv .share-link:hover::before{visibility:visible;}/*!sc*/
+.bAoMjv a{text-decoration:auto;color:#32329f;}/*!sc*/
+.bAoMjv a:visited{color:#32329f;}/*!sc*/
+.bAoMjv a:hover{color:#6868cf;text-decoration:auto;}/*!sc*/
+.dNfUH{font-family:Roboto,sans-serif;font-weight:400;line-height:1.5em;}/*!sc*/
+.dNfUH p:last-child{margin-bottom:0;}/*!sc*/
+.dNfUH p:first-child{margin-top:0;}/*!sc*/
+.dNfUH p:last-child{margin-bottom:0;}/*!sc*/
+.dNfUH p{display:inline-block;}/*!sc*/
+.dNfUH h1{font-family:Montserrat,sans-serif;font-weight:400;font-size:1.85714em;line-height:1.6em;color:#32329f;margin-top:0;}/*!sc*/
+.dNfUH h2{font-family:Montserrat,sans-serif;font-weight:400;font-size:1.57143em;line-height:1.6em;color:#333333;}/*!sc*/
+.dNfUH code{color:#e53935;background-color:rgba(38, 50, 56, 0.05);font-family:Courier,monospace;border-radius:2px;border:1px solid rgba(38, 50, 56, 0.1);padding:0 5px;font-size:13px;font-weight:400;word-break:break-word;}/*!sc*/
+.dNfUH pre{font-family:Courier,monospace;white-space:pre;background-color:#11171a;color:white;padding:20px;overflow-x:auto;line-height:normal;border-radius:0;border:1px solid rgba(38, 50, 56, 0.1);}/*!sc*/
+.dNfUH pre code{background-color:transparent;color:white;padding:0;}/*!sc*/
+.dNfUH pre code:before,.dNfUH pre code:after{content:none;}/*!sc*/
+.dNfUH blockquote{margin:0;margin-bottom:1em;padding:0 15px;color:#777;border-left:4px solid #ddd;}/*!sc*/
+.dNfUH img{max-width:100%;box-sizing:content-box;}/*!sc*/
+.dNfUH ul,.dNfUH ol{padding-left:2em;margin:0;margin-bottom:1em;}/*!sc*/
+.dNfUH ul ul,.dNfUH ol ul,.dNfUH ul ol,.dNfUH ol ol{margin-bottom:0;margin-top:0;}/*!sc*/
+.dNfUH table{display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all;border-collapse:collapse;border-spacing:0;margin-top:1.5em;margin-bottom:1.5em;}/*!sc*/
+.dNfUH table tr{background-color:#fff;border-top:1px solid #ccc;}/*!sc*/
+.dNfUH table tr:nth-child(2n){background-color:#fafafa;}/*!sc*/
+.dNfUH table th,.dNfUH table td{padding:6px 13px;border:1px solid #ddd;}/*!sc*/
+.dNfUH table th{text-align:left;font-weight:bold;}/*!sc*/
+.dNfUH .share-link{cursor:pointer;margin-left:-20px;padding:0;line-height:1;width:20px;display:inline-block;outline:0;}/*!sc*/
+.dNfUH .share-link:before{content:'';width:15px;height:15px;background-size:contain;background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeD0iMCIgeT0iMCIgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MTIgNTEyIiB4bWw6c3BhY2U9InByZXNlcnZlIj48cGF0aCBmaWxsPSIjMDEwMTAxIiBkPSJNNDU5LjcgMjMzLjRsLTkwLjUgOTAuNWMtNTAgNTAtMTMxIDUwLTE4MSAwIC03LjktNy44LTE0LTE2LjctMTkuNC0yNS44bDQyLjEtNDIuMWMyLTIgNC41LTMuMiA2LjgtNC41IDIuOSA5LjkgOCAxOS4zIDE1LjggMjcuMiAyNSAyNSA2NS42IDI0LjkgOTAuNSAwbDkwLjUtOTAuNWMyNS0yNSAyNS02NS42IDAtOTAuNSAtMjQuOS0yNS02NS41LTI1LTkwLjUgMGwtMzIuMiAzMi4yYy0yNi4xLTEwLjItNTQuMi0xMi45LTgxLjYtOC45bDY4LjYtNjguNmM1MC01MCAxMzEtNTAgMTgxIDBDNTA5LjYgMTAyLjMgNTA5LjYgMTgzLjQgNDU5LjcgMjMzLjR6TTIyMC4zIDM4Mi4ybC0zMi4yIDMyLjJjLTI1IDI0LjktNjUuNiAyNC45LTkwLjUgMCAtMjUtMjUtMjUtNjUuNiAwLTkwLjVsOTAuNS05MC41YzI1LTI1IDY1LjUtMjUgOTAuNSAwIDcuOCA3LjggMTIuOSAxNy4yIDE1LjggMjcuMSAyLjQtMS40IDQuOC0yLjUgNi44LTQuNWw0Mi4xLTQyYy01LjQtOS4yLTExLjYtMTgtMTkuNC0yNS44IC01MC01MC0xMzEtNTAtMTgxIDBsLTkwLjUgOTAuNWMtNTAgNTAtNTAgMTMxIDAgMTgxIDUwIDUwIDEzMSA1MCAxODEgMGw2OC42LTY4LjZDMjc0LjYgMzk1LjEgMjQ2LjQgMzkyLjMgMjIwLjMgMzgyLjJ6Ii8+PC9zdmc+Cg==');opacity:0.5;visibility:hidden;display:inline-block;vertical-align:middle;}/*!sc*/
+.dNfUH h1:hover>.share-link::before,.dNfUH h2:hover>.share-link::before,.dNfUH .share-link:hover::before{visibility:visible;}/*!sc*/
+.dNfUH a{text-decoration:auto;color:#32329f;}/*!sc*/
+.dNfUH a:visited{color:#32329f;}/*!sc*/
+.dNfUH a:hover{color:#6868cf;text-decoration:auto;}/*!sc*/
+data-styled.g43[id="sc-cBEgGa"]{content:"ewCFMV,bAoMjv,dNfUH,"}/*!sc*/
+.dDDioG{display:inline;}/*!sc*/
+data-styled.g44[id="sc-ciCrSJ"]{content:"dDDioG,"}/*!sc*/
+.feYhXE{position:relative;}/*!sc*/
+data-styled.g45[id="sc-jcgtOs"]{content:"feYhXE,"}/*!sc*/
+.hHzuQA:hover>.sc-giQkEn{opacity:1;}/*!sc*/
+data-styled.g50[id="sc-cTZdpT"]{content:"hHzuQA,"}/*!sc*/
+.jgTAJz{font-family:Courier,monospace;font-size:13px;white-space:pre;contain:content;overflow-x:auto;}/*!sc*/
+.jgTAJz .redoc-json code>.collapser{display:none;pointer-events:none;}/*!sc*/
+.jgTAJz .callback-function{color:gray;}/*!sc*/
+.jgTAJz .collapser:after{content:'-';cursor:pointer;}/*!sc*/
+.jgTAJz .collapsed>.collapser:after{content:'+';cursor:pointer;}/*!sc*/
+.jgTAJz .ellipsis:after{content:' … ';}/*!sc*/
+.jgTAJz .collapsible{margin-left:2em;}/*!sc*/
+.jgTAJz .hoverable{padding-top:1px;padding-bottom:1px;padding-left:2px;padding-right:2px;border-radius:2px;}/*!sc*/
+.jgTAJz .hovered{background-color:rgba(235, 238, 249, 1);}/*!sc*/
+.jgTAJz .collapser{background-color:transparent;border:0;color:#fff;font-family:Courier,monospace;font-size:13px;padding-right:6px;padding-left:6px;padding-top:0;padding-bottom:0;display:flex;align-items:center;justify-content:center;width:15px;height:15px;position:absolute;top:4px;left:-1.5em;cursor:default;user-select:none;-webkit-user-select:none;padding:2px;}/*!sc*/
+.jgTAJz .collapser:focus{outline-color:#fff;outline-style:dotted;outline-width:1px;}/*!sc*/
+.jgTAJz ul{list-style-type:none;padding:0px;margin:0px 0px 0px 26px;}/*!sc*/
+.jgTAJz li{position:relative;display:block;}/*!sc*/
+.jgTAJz .hoverable{display:inline-block;}/*!sc*/
+.jgTAJz .selected{outline-style:solid;outline-width:1px;outline-style:dotted;}/*!sc*/
+.jgTAJz .collapsed>.collapsible{display:none;}/*!sc*/
+.jgTAJz .ellipsis{display:none;}/*!sc*/
+.jgTAJz .collapsed>.ellipsis{display:inherit;}/*!sc*/
+data-styled.g51[id="sc-jNDflC"]{content:"jgTAJz,"}/*!sc*/
+.kgKexQ{padding:0.9em;background-color:rgba(38,50,56,0.4);margin:0 0 10px 0;display:block;font-family:Montserrat,sans-serif;font-size:0.929em;line-height:1.5em;}/*!sc*/
+data-styled.g52[id="sc-dPqFhK"]{content:"kgKexQ,"}/*!sc*/
+.BuCyN{font-family:Montserrat,sans-serif;font-size:12px;position:absolute;z-index:1;top:-11px;left:12px;font-weight:600;color:rgba(255,255,255,0.7);}/*!sc*/
+data-styled.g53[id="sc-bBzIOb"]{content:"BuCyN,"}/*!sc*/
+.bMFMGt{position:relative;}/*!sc*/
+data-styled.g54[id="sc-cNSlRw"]{content:"bMFMGt,"}/*!sc*/
+.jUCYlq{margin-top:15px;}/*!sc*/
+data-styled.g57[id="sc-hUheUT"]{content:"jUCYlq,"}/*!sc*/
+.jMRTsl{vertical-align:middle;font-size:13px;line-height:20px;}/*!sc*/
+data-styled.g59[id="sc-gSILEF"]{content:"jMRTsl,"}/*!sc*/
+.NncTE{color:rgba(102,102,102,0.9);}/*!sc*/
+data-styled.g60[id="sc-lbpDNm"]{content:"NncTE,"}/*!sc*/
+.kUjPnZ{color:#666;}/*!sc*/
+data-styled.g61[id="sc-iNyHtD"]{content:"kUjPnZ,"}/*!sc*/
+.OXDYs{border-radius:2px;word-break:break-word;background-color:rgba(51,51,51,0.05);color:rgba(51,51,51,0.9);padding:0 5px;border:1px solid rgba(51,51,51,0.1);font-family:Courier,monospace;}/*!sc*/
+.sc-lbFCLI+.sc-lbFCLI{margin-left:0;}/*!sc*/
+data-styled.g67[id="sc-lbFCLI"]{content:"OXDYs,"}/*!sc*/
+.hzxDQO:after{content:' and ';font-weight:normal;}/*!sc*/
+.hzxDQO:last-child:after{content:none;}/*!sc*/
+.hzxDQO a{text-decoration:auto;color:#32329f;}/*!sc*/
+.hzxDQO a:visited{color:#32329f;}/*!sc*/
+.hzxDQO a:hover{color:#6868cf;text-decoration:auto;}/*!sc*/
+data-styled.g82[id="sc-hPfayn"]{content:"hzxDQO,"}/*!sc*/
+.dVYuXz{white-space:nowrap;}/*!sc*/
+.dVYuXz:after{content:' or ';white-space:pre;}/*!sc*/
+.dVYuXz:last-child:after,.dVYuXz:only-child:after{content:none;}/*!sc*/
+.dVYuXz a{text-decoration:auto;color:#32329f;}/*!sc*/
+.dVYuXz a:visited{color:#32329f;}/*!sc*/
+.dVYuXz a:hover{color:#6868cf;text-decoration:auto;}/*!sc*/
+data-styled.g83[id="sc-dtnsVa"]{content:"dVYuXz,"}/*!sc*/
+.jdqJPb{flex:1 1 auto;cursor:pointer;}/*!sc*/
+data-styled.g84[id="sc-dalEhJ"]{content:"jdqJPb,"}/*!sc*/
+.cVAkzL{width:75%;text-overflow:ellipsis;border-radius:4px;overflow:hidden;}/*!sc*/
+@media screen and (max-width: 50rem){.cVAkzL{margin-top:10px;}}/*!sc*/
+data-styled.g85[id="sc-jTPGds"]{content:"cVAkzL,"}/*!sc*/
+.kEkHzF{display:inline-block;margin:0;}/*!sc*/
+data-styled.g86[id="sc-jQQpTv"]{content:"kEkHzF,"}/*!sc*/
+.kGZLat{width:100%;display:flex;margin:1em 0;flex-direction:row;}/*!sc*/
+@media screen and (max-width: 50rem){.kGZLat{flex-direction:column;}}/*!sc*/
+data-styled.g87[id="sc-fuYIqi"]{content:"kGZLat,"}/*!sc*/
+.cBgvIi{margin-top:0;margin-bottom:0.5em;}/*!sc*/
+data-styled.g93[id="sc-ctiVdb"]{content:"cBgvIi,"}/*!sc*/
+.ldPigm::before{content:'|';display:inline-block;opacity:0.5;width:15px;text-align:center;}/*!sc*/
+.ldPigm:last-child::after{display:none;}/*!sc*/
+data-styled.g95[id="sc-brKBMN"]{content:"ldPigm,"}/*!sc*/
+.iVyheB{overflow:hidden;}/*!sc*/
+data-styled.g96[id="sc-gILgRS"]{content:"iVyheB,"}/*!sc*/
+.juJQo{display:flex;flex-wrap:wrap;margin-left:-15px;}/*!sc*/
+data-styled.g97[id="sc-euUkyj"]{content:"juJQo,"}/*!sc*/
+.jjsIAS{width:9ex;display:inline-block;height:13px;line-height:13px;background-color:#333;border-radius:3px;background-repeat:no-repeat;background-position:6px 4px;font-size:7px;font-family:Verdana,sans-serif;color:white;text-transform:uppercase;text-align:center;font-weight:bold;vertical-align:middle;margin-right:6px;margin-top:2px;}/*!sc*/
+.jjsIAS.get{background-color:#2F8132;}/*!sc*/
+.jjsIAS.post{background-color:#186FAF;}/*!sc*/
+.jjsIAS.put{background-color:#95507c;}/*!sc*/
+.jjsIAS.options{background-color:#947014;}/*!sc*/
+.jjsIAS.patch{background-color:#bf581d;}/*!sc*/
+.jjsIAS.delete{background-color:#cc3333;}/*!sc*/
+.jjsIAS.basic{background-color:#707070;}/*!sc*/
+.jjsIAS.link{background-color:#07818F;}/*!sc*/
+.jjsIAS.head{background-color:#A23DAD;}/*!sc*/
+.jjsIAS.hook{background-color:#32329f;}/*!sc*/
+.jjsIAS.schema{background-color:#707070;}/*!sc*/
+data-styled.g101[id="sc-XpSrr"]{content:"jjsIAS,"}/*!sc*/
+.dqIuaF{margin:0;padding:0;}/*!sc*/
+.dqIuaF:first-child{padding-bottom:32px;}/*!sc*/
+.sc-ilnrqe .sc-ilnrqe{font-size:0.929em;}/*!sc*/
+data-styled.g102[id="sc-ilnrqe"]{content:"dqIuaF,"}/*!sc*/
+.cQETmj{list-style:none inside none;overflow:hidden;text-overflow:ellipsis;padding:0;}/*!sc*/
+data-styled.g103[id="sc-uMZhz"]{content:"cQETmj,"}/*!sc*/
+.cGOuox{cursor:pointer;color:#333333;margin:0;padding:12.5px 20px;display:flex;justify-content:space-between;font-family:Montserrat,sans-serif;background-color:#fafafa;}/*!sc*/
+.cGOuox:hover{color:#32329f;background-color:#ededed;}/*!sc*/
+.cGOuox .sc-dYjPD{height:1.5em;width:1.5em;}/*!sc*/
+.cGOuox .sc-dYjPD polygon{fill:#333333;}/*!sc*/
+data-styled.g104[id="sc-bitxrY"]{content:"cGOuox,"}/*!sc*/
+.ehBKwY{display:inline-block;vertical-align:middle;width:calc(100% - 38px);overflow:hidden;text-overflow:ellipsis;}/*!sc*/
+data-styled.g105[id="sc-eHoOIp"]{content:"ehBKwY,"}/*!sc*/
+.gtBLyN{font-size:0.8em;margin-top:10px;text-align:center;position:fixed;width:260px;bottom:0;background:#fafafa;}/*!sc*/
+.gtBLyN a,.gtBLyN a:visited,.gtBLyN a:hover{color:#333333!important;padding:5px 0;border-top:1px solid #e1e1e1;text-decoration:none;display:flex;align-items:center;justify-content:center;}/*!sc*/
+.gtBLyN img{width:15px;margin-right:5px;}/*!sc*/
+@media screen and (max-width: 50rem){.gtBLyN{width:100%;}}/*!sc*/
+data-styled.g106[id="sc-hAkAFK"]{content:"gtBLyN,"}/*!sc*/
+.fYxpnv{cursor:pointer;position:relative;margin-bottom:5px;}/*!sc*/
+data-styled.g112[id="sc-fXwuWv"]{content:"fYxpnv,"}/*!sc*/
+.dsIRaZ{font-family:Courier,monospace;margin-left:10px;flex:1;overflow-x:hidden;text-overflow:ellipsis;}/*!sc*/
+data-styled.g113[id="sc-FpjRO"]{content:"dsIRaZ,"}/*!sc*/
+.jzaJhV{outline:0;color:inherit;width:100%;text-align:left;cursor:pointer;padding:10px 30px 10px 20px;border-radius:4px 4px 0 0;background-color:#11171a;display:flex;white-space:nowrap;align-items:center;border:1px solid transparent;border-bottom:0;transition:border-color 0.25s ease;}/*!sc*/
+.jzaJhV ..sc-FpjRO{color:#ffffff;}/*!sc*/
+.jzaJhV:focus{box-shadow:inset 0 2px 2px rgba(0, 0, 0, 0.45),0 2px 0 rgba(128, 128, 128, 0.25);}/*!sc*/
+data-styled.g114[id="sc-jWMFtl"]{content:"jzaJhV,"}/*!sc*/
+.hlSrtW{font-size:0.929em;line-height:20px;background-color:#2F8132;color:#ffffff;padding:3px 10px;text-transform:uppercase;font-family:Montserrat,sans-serif;margin:0;}/*!sc*/
+.hOENFc{font-size:0.929em;line-height:20px;background-color:#186FAF;color:#ffffff;padding:3px 10px;text-transform:uppercase;font-family:Montserrat,sans-serif;margin:0;}/*!sc*/
+data-styled.g115[id="sc-eEFuoE"]{content:"hlSrtW,hOENFc,"}/*!sc*/
+.tUxhh{position:absolute;width:100%;z-index:100;background:#fafafa;color:#263238;box-sizing:border-box;box-shadow:0 0 6px rgba(0, 0, 0, 0.33);overflow:hidden;border-bottom-left-radius:4px;border-bottom-right-radius:4px;transition:all 0.25s ease;visibility:hidden;transform:translateY(-50%) scaleY(0);}/*!sc*/
+data-styled.g116[id="sc-fmtEmb"]{content:"tUxhh,"}/*!sc*/
+.bAnPPh{padding:10px;}/*!sc*/
+data-styled.g117[id="sc-ljIcGq"]{content:"bAnPPh,"}/*!sc*/
+.PEJyb{padding:5px;border:1px solid #ccc;background:#fff;word-break:break-all;color:#32329f;}/*!sc*/
+.PEJyb >span{color:#333333;}/*!sc*/
+data-styled.g118[id="sc-jlJOIR"]{content:"PEJyb,"}/*!sc*/
+.iSTZHA{display:block;border:0;width:100%;text-align:left;padding:10px;border-radius:2px;margin-bottom:4px;line-height:1.5em;cursor:pointer;color:#1d8127;background-color:rgba(29,129,39,0.07);}/*!sc*/
+.iSTZHA:focus{outline:auto #1d8127;}/*!sc*/
+.fRVDqI{display:block;border:0;width:100%;text-align:left;padding:10px;border-radius:2px;margin-bottom:4px;line-height:1.5em;cursor:pointer;color:#d41f1c;background-color:rgba(212,31,28,0.07);cursor:default;}/*!sc*/
+.fRVDqI:focus{outline:auto #d41f1c;}/*!sc*/
+.fRVDqI::before{content:"—";font-weight:bold;width:1.5em;text-align:center;display:inline-block;vertical-align:top;}/*!sc*/
+.fRVDqI:focus{outline:0;}/*!sc*/
+data-styled.g121[id="sc-cbuLjy"]{content:"iSTZHA,fRVDqI,"}/*!sc*/
+.cqDULz{vertical-align:top;}/*!sc*/
+data-styled.g124[id="sc-fXmTIC"]{content:"cqDULz,"}/*!sc*/
+.hgNHCh{font-size:1.3em;padding:0.2em 0;margin:3em 0 1.1em;color:#333333;font-weight:normal;}/*!sc*/
+data-styled.g125[id="sc-fINhYD"]{content:"hgNHCh,"}/*!sc*/
+.ktZmcf{margin-bottom:30px;}/*!sc*/
+data-styled.g130[id="sc-iFUzrA"]{content:"ktZmcf,"}/*!sc*/
+.kjuNaM{user-select:none;width:20px;height:20px;align-self:center;display:flex;flex-direction:column;color:#32329f;}/*!sc*/
+data-styled.g131[id="sc-iruNHB"]{content:"kjuNaM,"}/*!sc*/
+.cczbHe{width:260px;background-color:#fafafa;overflow:hidden;display:flex;flex-direction:column;backface-visibility:hidden;height:100vh;position:sticky;position:-webkit-sticky;top:0;}/*!sc*/
+@media screen and (max-width: 50rem){.cczbHe{position:fixed;z-index:20;width:100%;background:#fafafa;display:none;}}/*!sc*/
+@media print{.cczbHe{display:none;}}/*!sc*/
+data-styled.g132[id="sc-eVYbGh"]{content:"cczbHe,"}/*!sc*/
+.ddPveE{outline:none;user-select:none;background-color:#f2f2f2;color:#32329f;display:none;cursor:pointer;position:fixed;right:20px;z-index:100;border-radius:50%;box-shadow:0 0 20px rgba(0, 0, 0, 0.3);bottom:44px;width:60px;height:60px;padding:0 20px;}/*!sc*/
+@media screen and (max-width: 50rem){.ddPveE{display:flex;}}/*!sc*/
+.ddPveE svg{color:#0065FB;}/*!sc*/
+@media print{.ddPveE{display:none;}}/*!sc*/
+data-styled.g133[id="sc-kTmAaw"]{content:"ddPveE,"}/*!sc*/
+.jetsmW{font-family:Roboto,sans-serif;font-size:14px;font-weight:400;line-height:1.5em;color:#333333;display:flex;position:relative;text-align:left;-webkit-font-smoothing:antialiased;font-smoothing:antialiased;text-rendering:optimizeSpeed!important;tap-highlight-color:rgba(0, 0, 0, 0);text-size-adjust:100%;}/*!sc*/
+.jetsmW *{box-sizing:border-box;-webkit-tap-highlight-color:rgba(255, 255, 255, 0);}/*!sc*/
+data-styled.g134[id="sc-dwkskT"]{content:"jetsmW,"}/*!sc*/
+.ldXCvc{z-index:1;position:relative;overflow:hidden;width:calc(100% - 260px);contain:layout;}/*!sc*/
+@media print,screen and (max-width: 50rem){.ldXCvc{width:100%;}}/*!sc*/
+data-styled.g135[id="sc-jtyQFi"]{content:"ldXCvc,"}/*!sc*/
+.bjzTxL{background:#263238;position:absolute;top:0;bottom:0;right:0;width:calc((100% - 260px) * 0.4);}/*!sc*/
+@media print,screen and (max-width: 75rem){.bjzTxL{display:none;}}/*!sc*/
+data-styled.g136[id="sc-ekVkVN"]{content:"bjzTxL,"}/*!sc*/
+.uMSfb{padding:5px 0;}/*!sc*/
+data-styled.g137[id="sc-kijJqc"]{content:"uMSfb,"}/*!sc*/
+.fTcICO{width:calc(100% - 40px);box-sizing:border-box;margin:0 20px;padding:5px 10px 5px 20px;border:0;border-bottom:1px solid #e1e1e1;font-family:Roboto,sans-serif;font-weight:bold;font-size:13px;color:#333333;background-color:transparent;outline:none;}/*!sc*/
+data-styled.g138[id="sc-cLhBAz"]{content:"fTcICO,"}/*!sc*/
+.kAmnlO{position:absolute;left:20px;height:1.8em;width:0.9em;}/*!sc*/
+.kAmnlO path{fill:#333333;}/*!sc*/
+data-styled.g139[id="sc-iIvZUO"]{content:"kAmnlO,"}/*!sc*/
+</style>
+  
+</head>
+
+<body>
+  
+      <div id="redoc"><div class="sc-dwkskT jetsmW redoc-wrap"><div class="sc-eVYbGh cczbHe menu-content" style="top:0px;height:calc(100vh - 0px)"><div role="search" class="sc-kijJqc uMSfb"><svg class="sc-iIvZUO kAmnlO search-icon" version="1.1" viewBox="0 0 1000 1000" x="0px" xmlns="http://www.w3.org/2000/svg" y="0px"><path d="M968.2,849.4L667.3,549c83.9-136.5,66.7-317.4-51.7-435.6C477.1-25,252.5-25,113.9,113.4c-138.5,138.3-138.5,362.6,0,501C219.2,730.1,413.2,743,547.6,666.5l301.9,301.4c43.6,43.6,76.9,14.9,104.2-12.4C981,928.3,1011.8,893,968.2,849.4z M524.5,522c-88.9,88.7-233,88.7-321.8,0c-88.9-88.7-88.9-232.6,0-321.3c88.9-88.7,233-88.7,321.8,0C613.4,289.4,613.4,433.3,524.5,522z"></path></svg><input placeholder="Search..." aria-label="Search" type="text" class="sc-cLhBAz fTcICO search-input" value=""/></div><div class="sc-kLEbxe iOXjCz scrollbar-container undefined"><ul role="menu" class="sc-ilnrqe dqIuaF"><li tabindex="0" depth="2" data-item-id="/paths/~1notification/get" role="menuitem" aria-label="The caller&#x27;s notifications" aria-expanded="false" class="sc-uMZhz cQETmj"><label class="sc-bitxrY cGOuox -depth2"><span type="get" class="sc-XpSrr jjsIAS operation-type get">get</span><span tabindex="0" width="calc(100% - 38px)" class="sc-eHoOIp ehBKwY">The caller&#x27;s notifications</span></label></li><li tabindex="0" depth="2" data-item-id="/paths/~1notification~1mark-as-seen/post" role="menuitem" aria-label="Mark all notifications as seen" aria-expanded="false" class="sc-uMZhz cQETmj"><label class="sc-bitxrY cGOuox -depth2"><span type="post" class="sc-XpSrr jjsIAS operation-type post">post</span><span tabindex="0" width="calc(100% - 38px)" class="sc-eHoOIp ehBKwY">Mark all notifications as seen</span></label></li></ul><div class="sc-hAkAFK gtBLyN"><a target="_blank" rel="noopener noreferrer" href="https://redocly.com/redoc/">API docs by Redocly</a></div></div></div><div class="sc-kTmAaw ddPveE"><div class="sc-iruNHB kjuNaM"><svg class="" style="transform:translate(2px, -4px) rotate(180deg);transition:transform 0.2s ease" viewBox="0 0 926.23699 573.74994" version="1.1" x="0px" y="0px" width="15" height="15"><g transform="translate(904.92214,-879.1482)"><path d="
+          m -673.67664,1221.6502 -231.2455,-231.24803 55.6165,
+          -55.627 c 30.5891,-30.59485 56.1806,-55.627 56.8701,-55.627 0.6894,
+          0 79.8637,78.60862 175.9427,174.68583 l 174.6892,174.6858 174.6892,
+          -174.6858 c 96.079,-96.07721 175.253196,-174.68583 175.942696,
+          -174.68583 0.6895,0 26.281,25.03215 56.8701,
+          55.627 l 55.6165,55.627 -231.245496,231.24803 c -127.185,127.1864
+          -231.5279,231.248 -231.873,231.248 -0.3451,0 -104.688,
+          -104.0616 -231.873,-231.248 z
+        " fill="currentColor"></path></g></svg><svg class="" style="transform:translate(2px, 4px);transition:transform 0.2s ease" viewBox="0 0 926.23699 573.74994" version="1.1" x="0px" y="0px" width="15" height="15"><g transform="translate(904.92214,-879.1482)"><path d="
+          m -673.67664,1221.6502 -231.2455,-231.24803 55.6165,
+          -55.627 c 30.5891,-30.59485 56.1806,-55.627 56.8701,-55.627 0.6894,
+          0 79.8637,78.60862 175.9427,174.68583 l 174.6892,174.6858 174.6892,
+          -174.6858 c 96.079,-96.07721 175.253196,-174.68583 175.942696,
+          -174.68583 0.6895,0 26.281,25.03215 56.8701,
+          55.627 l 55.6165,55.627 -231.245496,231.24803 c -127.185,127.1864
+          -231.5279,231.248 -231.873,231.248 -0.3451,0 -104.688,
+          -104.0616 -231.873,-231.248 z
+        " fill="currentColor"></path></g></svg></div></div><div class="sc-jtyQFi ldXCvc api-content"><div class="sc-eCQgVK jleRXN"><div class="sc-iCECmn lhRBUS"><div class="sc-hKVpXn kktglN api-info"><h1 class="sc-fuztkK sc-ctiVdb eRMVDe cBgvIi">HumHub - Notification API (v2)<!-- --> <span>(<!-- -->2.0.0<!-- -->)</span></h1><p>Download OpenAPI specification<!-- -->:</p><div class="sc-iJSMbW sc-cBEgGa fiNpIH ewCFMV"><div class="sc-gILgRS iVyheB"><div class="sc-euUkyj juJQo"><span class="sc-brKBMN ldPigm">E-mail<!-- -->:<!-- --> <a href="mailto:info@humhub.com">info@humhub.com</a></span> <!-- --> <span class="sc-brKBMN ldPigm">License:<!-- --> <a href="https://www.humhub.org/en/licences">AGPLv2</a></span> </div></div></div><div data-role="redoc-summary" html="" class="sc-iJSMbW sc-cBEgGa fiNpIH ewCFMV"></div><div data-role="redoc-description" html="&lt;p&gt;Welcome to the HumHub notification API reference, v2.&lt;/p&gt;
+&lt;p&gt;These endpoints are part of &lt;strong&gt;HumHub core&lt;/strong&gt; (1.20+). The optional
+&lt;a href=&quot;https://github.com/humhub/rest&quot;&gt;REST API module&lt;/a&gt; contributes the token authentication
+methods they accept and owns the older &lt;code&gt;/api/v1&lt;/code&gt; surface, which is documented with that
+module. For the design of this stack see &lt;code&gt;docs/develop/concept-api.md&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Conventions of this API generation, differing from &lt;code&gt;/api/v1&lt;/code&gt;: camelCase field names,
+ISO-8601 timestamps with offset, plain HTTP status codes instead of a
+&lt;code&gt;{code, message}&lt;/code&gt; envelope.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Always the caller&amp;#39;s own notifications.&lt;/strong&gt; There is no user parameter, and no action here
+is reachable for a guest. (The module&amp;#39;s &lt;code&gt;/api/v1&lt;/code&gt; notification endpoints, which let an
+admin token read another user&amp;#39;s notifications, are unaffected.)&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Cursor paging instead of page numbers.&lt;/strong&gt; The list is ordered unseen-first, newest-first,
+and it reorders while a user pages through it — notifications arrive, others are read. Page
+numbers would silently skip or repeat entries, so a page carries a &lt;code&gt;nextCursor&lt;/code&gt; to hand
+back, and &lt;code&gt;null&lt;/code&gt; once the list is exhausted. This is the one list of this API generation
+that does not use the &lt;code&gt;{results, total, page, pageSize, pages}&lt;/code&gt; envelope.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The sentence comes from the server.&lt;/strong&gt; A notification&amp;#39;s &lt;code&gt;html&lt;/code&gt; is the localized,
+module-defined phrase (&lt;em&gt;&amp;quot;Jane commented on Post &amp;#39;Release notes&amp;#39;&amp;quot;&lt;/em&gt;) — the one part a client
+cannot build. Everything around it (avatar, space badge, relative time, unread marker) is
+data in this payload, rendered by the client.&lt;/p&gt;
+&lt;p&gt;Requests may authenticate with any token method the REST API module offers. HumHub&amp;#39;s own
+browser session is accepted too for these endpoints, which is what the platform&amp;#39;s Vue UI
+uses; state-changing session requests additionally require the CSRF token.&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa fiNpIH ewCFMV"><p>Welcome to the HumHub notification API reference, v2.</p>
+<p>These endpoints are part of <strong>HumHub core</strong> (1.20+). The optional
+<a href="https://github.com/humhub/rest">REST API module</a> contributes the token authentication
+methods they accept and owns the older <code>/api/v1</code> surface, which is documented with that
+module. For the design of this stack see <code>docs/develop/concept-api.md</code>.</p>
+<p>Conventions of this API generation, differing from <code>/api/v1</code>: camelCase field names,
+ISO-8601 timestamps with offset, plain HTTP status codes instead of a
+<code>{code, message}</code> envelope.</p>
+<p><strong>Always the caller&#39;s own notifications.</strong> There is no user parameter, and no action here
+is reachable for a guest. (The module&#39;s <code>/api/v1</code> notification endpoints, which let an
+admin token read another user&#39;s notifications, are unaffected.)</p>
+<p><strong>Cursor paging instead of page numbers.</strong> The list is ordered unseen-first, newest-first,
+and it reorders while a user pages through it — notifications arrive, others are read. Page
+numbers would silently skip or repeat entries, so a page carries a <code>nextCursor</code> to hand
+back, and <code>null</code> once the list is exhausted. This is the one list of this API generation
+that does not use the <code>{results, total, page, pageSize, pages}</code> envelope.</p>
+<p><strong>The sentence comes from the server.</strong> A notification&#39;s <code>html</code> is the localized,
+module-defined phrase (<em>&quot;Jane commented on Post &#39;Release notes&#39;&quot;</em>) — the one part a client
+cannot build. Everything around it (avatar, space badge, relative time, unread marker) is
+data in this payload, rendered by the client.</p>
+<p>Requests may authenticate with any token method the REST API module offers. HumHub&#39;s own
+browser session is accepted too for these endpoints, which is what the platform&#39;s Vue UI
+uses; state-changing session requests additionally require the CSRF token.</p>
+</div></div></div></div><div id="/paths/~1notification/get" data-section-id="/paths/~1notification/get" class="sc-eCQgVK grDwca"><div class="sc-iCECmn lhRBUS"><div class="sc-hKVpXn kktglN"><h2 class="sc-qdQOe MOVBZ"><a class="sc-crPgjm jmoZom" href="#/paths/~1notification/get" aria-label="/paths/~1notification/get"></a>The caller&#x27;s notifications<!-- --> </h2><div class="sc-iFUzrA ktZmcf"><div html="&lt;p&gt;One page of the caller&amp;#39;s notifications, unseen first and newest first. Grouped
+notifications (several likes on the same post, say) count as one entry.&lt;/p&gt;
+&lt;p&gt;A notification whose source no longer exists — its content was deleted, its class left
+with an uninstalled module — is dropped from the list (and from the database) instead
+of failing the request, so a page may contain fewer entries than &lt;code&gt;limit&lt;/code&gt; even when
+&lt;code&gt;nextCursor&lt;/code&gt; is set.&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa fiNpIH ewCFMV"><p>One page of the caller&#39;s notifications, unseen first and newest first. Grouped
+notifications (several likes on the same post, say) count as one entry.</p>
+<p>A notification whose source no longer exists — its content was deleted, its class left
+with an uninstalled module — is dropped from the list (and from the database) instead
+of failing the request, so a page may contain fewer entries than <code>limit</code> even when
+<code>nextCursor</code> is set.</p>
+</div></div><div class="sc-fuYIqi kGZLat"><div class="sc-dalEhJ jdqJPb"><h5 class="sc-iqkkDd sc-jQQpTv kcvrhp kEkHzF">Authorizations:</h5><svg class="sc-dYjPD bEEWJa" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></div><div class="sc-jTPGds cVAkzL"><span class="sc-dtnsVa dVYuXz"><span class="sc-hPfayn hzxDQO"><i>Bearer</i></span></span><span class="sc-dtnsVa dVYuXz"><span class="sc-hPfayn hzxDQO"><i>BasicAuth</i></span></span><span class="sc-dtnsVa dVYuXz"><span class="sc-hPfayn hzxDQO"><i>SessionCookie</i></span></span></div></div><div><h5 class="sc-iqkkDd kcvrhp">query<!-- --> Parameters</h5><table class="sc-hHopjF bsjUmE"><tbody><tr class=""><td kind="field" title="cursor" class="sc-hCcPtG sc-fFCZOx jFNAwF lcdEEX"><span class="sc-ieCSdj kkMuqc"></span><span class="property-name">cursor</span></td><td class="sc-bjLslk gLpZiQ"><div><div><span class="sc-gSILEF sc-lbpDNm jMRTsl NncTE"></span><span class="sc-gSILEF sc-iNyHtD jMRTsl kUjPnZ">integer</span></div> <div><div html="&lt;p&gt;&lt;code&gt;nextCursor&lt;/code&gt; of the previous page. Omit for the first page.&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa fiNpIH bAoMjv"><p><code>nextCursor</code> of the previous page. Omit for the first page.</p>
+</div></div></div></td></tr><tr class=""><td kind="field" title="limit" class="sc-hCcPtG sc-fFCZOx jFNAwF lcdEEX"><span class="sc-ieCSdj kkMuqc"></span><span class="property-name">limit</span></td><td class="sc-bjLslk gLpZiQ"><div><div><span class="sc-gSILEF sc-lbpDNm jMRTsl NncTE"></span><span class="sc-gSILEF sc-iNyHtD jMRTsl kUjPnZ">integer</span></div> <div><div html="&lt;p&gt;Entries per page (default 6, maximum 50)&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa fiNpIH bAoMjv"><p>Entries per page (default 6, maximum 50)</p>
+</div></div></div></td></tr><tr class=""><td kind="field" title="categories[]" class="sc-hCcPtG sc-fFCZOx jFNAwF lcdEEX"><span class="sc-ieCSdj kkMuqc"></span><span class="property-name">categories[]</span></td><td class="sc-bjLslk gLpZiQ"><div><div><span class="sc-gSILEF sc-lbpDNm jMRTsl NncTE">Array of </span><span class="sc-gSILEF sc-iNyHtD jMRTsl kUjPnZ">strings</span></div> <div><div html="&lt;p&gt;Notification category ids to include (&lt;code&gt;comment&lt;/code&gt;, &lt;code&gt;followed&lt;/code&gt;, &lt;code&gt;mentioned&lt;/code&gt;, …, plus
+&lt;code&gt;others-no-category&lt;/code&gt; for notifications belonging to no category). Categories are
+contributed by modules; the notification settings page lists the ones an
+installation offers.&lt;/p&gt;
+&lt;p&gt;Omit the parameter for no category filter at all. Passing a value that matches no
+category — including a single empty entry — is a filter of its own and answers an
+empty list, which is what &amp;quot;no category selected&amp;quot; means in the UI.&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa fiNpIH bAoMjv"><p>Notification category ids to include (<code>comment</code>, <code>followed</code>, <code>mentioned</code>, …, plus
+<code>others-no-category</code> for notifications belonging to no category). Categories are
+contributed by modules; the notification settings page lists the ones an
+installation offers.</p>
+<p>Omit the parameter for no category filter at all. Passing a value that matches no
+category — including a single empty entry — is a filter of its own and answers an
+empty list, which is what &quot;no category selected&quot; means in the UI.</p>
+</div></div></div></td></tr><tr class="last "><td kind="field" title="seen" class="sc-hCcPtG sc-fFCZOx jFNAwF lcdEEX"><span class="sc-ieCSdj kkMuqc"></span><span class="property-name">seen</span></td><td class="sc-bjLslk gLpZiQ"><div><div><span class="sc-gSILEF sc-lbpDNm jMRTsl NncTE"></span><span class="sc-gSILEF sc-iNyHtD jMRTsl kUjPnZ">string</span></div><div><span class="sc-gSILEF jMRTsl"> <!-- -->Enum<!-- -->:</span> <span class="sc-gSILEF sc-lbFCLI jMRTsl OXDYs">&quot;seen&quot;</span> <span class="sc-gSILEF sc-lbFCLI jMRTsl OXDYs">&quot;unseen&quot;</span> </div> <div><div html="&lt;p&gt;Restrict to seen or unseen notifications&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa fiNpIH bAoMjv"><p>Restrict to seen or unseen notifications</p>
+</div></div></div></td></tr></tbody></table></div><div><h3 class="sc-fINhYD hgNHCh">Responses</h3><div><button class="sc-cbuLjy iSTZHA"><svg class="sc-dYjPD gngmNp" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-fXmTIC cqDULz">200<!-- --> </strong><div html="&lt;p&gt;Successful operation&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa sc-ciCrSJ fiNpIH dNfUH dDDioG"><p>Successful operation</p>
+</div></button></div><div><button class="sc-cbuLjy fRVDqI" disabled=""><strong class="sc-fXmTIC cqDULz">401<!-- --> </strong><div html="&lt;p&gt;Authentication required&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa sc-ciCrSJ fiNpIH dNfUH dDDioG"><p>Authentication required</p>
+</div></button></div></div></div><div class="sc-jSppWd sc-gKkgUA fpMlmc bdQQyo"><div class="sc-fXwuWv fYxpnv"><button class="sc-jWMFtl jzaJhV"><span type="get" class="sc-eEFuoE hlSrtW http-verb get">get</span><span class="sc-FpjRO dsIRaZ">/notification</span><svg class="sc-dYjPD bQKUih" style="margin-right:-25px" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div aria-hidden="true" class="sc-fmtEmb tUxhh"><div class="sc-ljIcGq bAnPPh"><div html="" class="sc-iJSMbW sc-cBEgGa fiNpIH bAoMjv"></div><div tabindex="0" role="button"><div class="sc-jlJOIR PEJyb"><span>/api/v2</span>/notification</div></div></div></div></div><div><h3 class="sc-kEbgWM iamDfj"> <!-- -->Response samples<!-- --> </h3><div class="sc-cxxQMU kibfTX" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="tab-success react-tabs__tab--selected" role="tab" id="tab_R_jiq_0" aria-selected="true" aria-disabled="false" aria-controls="panel_R_jiq_0" tabindex="0" data-rttab="true">200</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel_R_jiq_0" aria-labelledby="tab_R_jiq_0"><div><div class="sc-cNSlRw bMFMGt"><span class="sc-bBzIOb BuCyN">Content type</span><div class="sc-dPqFhK kgKexQ">application/json</div></div><div class="sc-hUheUT jUCYlq"><div class="sc-cTZdpT hHzuQA"><div class="sc-giQkEn dzKJV"><button><div class="sc-jcgtOs feYhXE">Copy</div></button><button> Expand all </button><button> Collapse all </button></div><div tabindex="0" class="sc-iJSMbW fiNpIH sc-jNDflC jgTAJz"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable "><span class="property token string">"results"</span>: <button class="collapser" aria-label="collapse"></button><span class="token punctuation">[</span><span class="ellipsis"></span><ul class="array collapsible"><li><div class="hoverable collapsed"><button class="collapser" aria-label="expand"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable collapsed"><span class="property token string">"id"</span>: <span class="token number">137</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"html"</span>: <span class="token string">&quot;&lt;strong&gt;Jane Doe&lt;/strong&gt; commented post \&quot;Release notes\&quot;.&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"url"</span>: <span class="token string">&quot;/notification/entry?id=137&amp;cId=42&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"isNew"</span>: <span class="token boolean">true</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"createdAt"</span>: <span class="token string">&quot;2026-08-20T10:12:00+00:00&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"groupKey"</span>: <span class="token string">&quot;humhub\\modules\\comment\\notifications\\NewComment:42&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"originator"</span>: <button class="collapser" aria-label="expand"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable collapsed"><span class="property token string">"id"</span>: <span class="token number">7</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"guid"</span>: <span class="token string">&quot;4f3e2d1c-0b9a-8765-4321-0fedcba98765&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"displayName"</span>: <span class="token string">&quot;Jane Doe&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"url"</span>: <span class="token string">&quot;</span><a href="https://example.com/u/jane/">https://example.com/u/jane/</a><span class="token string">&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"imageUrl"</span>: <span class="token string">&quot;</span><a href="https://example.com/uploads/profile_image/abc.jpg">https://example.com/uploads/profile_image/abc.jpg</a><span class="token string">&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"contentContainerId"</span>: <span class="token number">12</span></div></li></ul><span class="token punctuation">}</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"space"</span>: <button class="collapser" aria-label="expand"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable collapsed"><span class="property token string">"id"</span>: <span class="token number">3</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"guid"</span>: <span class="token string">&quot;9a8b7c6d-5e4f-3210-9876-543210fedcba&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"name"</span>: <span class="token string">&quot;Product Team&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"url"</span>: <span class="token string">&quot;</span><a href="https://example.com/s/product-team/">https://example.com/s/product-team/</a><span class="token string">&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"color"</span>: <span class="token string">&quot;#7a9299&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"imageUrl"</span>: <span class="token keyword">null</span><span class="token punctuation">,</span></div></li><li><div class="hoverable collapsed"><span class="property token string">"contentContainerId"</span>: <span class="token number">21</span></div></li></ul><span class="token punctuation">}</span></div></li></ul><span class="token punctuation">}</span></div></li></ul><span class="token punctuation">]</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"unseenCount"</span>: <span class="token number">4</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"nextCursor"</span>: <span class="token number">137</span></div></li></ul><span class="token punctuation">}</span></code></div></div></div></div></div></div></div></div></div></div></div><div id="/paths/~1notification~1mark-as-seen/post" data-section-id="/paths/~1notification~1mark-as-seen/post" class="sc-eCQgVK grDwca"><div class="sc-iCECmn lhRBUS"><div class="sc-hKVpXn kktglN"><h2 class="sc-qdQOe MOVBZ"><a class="sc-crPgjm jmoZom" href="#/paths/~1notification~1mark-as-seen/post" aria-label="/paths/~1notification~1mark-as-seen/post"></a>Mark all notifications as seen<!-- --> </h2><div class="sc-iFUzrA ktZmcf"><div html="&lt;p&gt;Marks every notification of the caller as seen. Always answers &lt;code&gt;unseenCount: 0&lt;/code&gt;.&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa fiNpIH ewCFMV"><p>Marks every notification of the caller as seen. Always answers <code>unseenCount: 0</code>.</p>
+</div></div><div class="sc-fuYIqi kGZLat"><div class="sc-dalEhJ jdqJPb"><h5 class="sc-iqkkDd sc-jQQpTv kcvrhp kEkHzF">Authorizations:</h5><svg class="sc-dYjPD bEEWJa" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></div><div class="sc-jTPGds cVAkzL"><span class="sc-dtnsVa dVYuXz"><span class="sc-hPfayn hzxDQO"><i>Bearer</i></span></span><span class="sc-dtnsVa dVYuXz"><span class="sc-hPfayn hzxDQO"><i>BasicAuth</i></span></span><span class="sc-dtnsVa dVYuXz"><span class="sc-hPfayn hzxDQO"><i>SessionCookie</i></span></span></div></div><div><h3 class="sc-fINhYD hgNHCh">Responses</h3><div><button class="sc-cbuLjy iSTZHA"><svg class="sc-dYjPD gngmNp" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-fXmTIC cqDULz">200<!-- --> </strong><div html="&lt;p&gt;Successful operation&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa sc-ciCrSJ fiNpIH dNfUH dDDioG"><p>Successful operation</p>
+</div></button></div><div><button class="sc-cbuLjy fRVDqI" disabled=""><strong class="sc-fXmTIC cqDULz">401<!-- --> </strong><div html="&lt;p&gt;Authentication required&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa sc-ciCrSJ fiNpIH dNfUH dDDioG"><p>Authentication required</p>
+</div></button></div><div><button class="sc-cbuLjy fRVDqI" disabled=""><strong class="sc-fXmTIC cqDULz">403<!-- --> </strong><div html="&lt;p&gt;A session-authenticated request without a valid CSRF token.&lt;/p&gt;
+" class="sc-iJSMbW sc-cBEgGa sc-ciCrSJ fiNpIH dNfUH dDDioG"><p>A session-authenticated request without a valid CSRF token.</p>
+</div></button></div></div></div><div class="sc-jSppWd sc-gKkgUA fpMlmc bdQQyo"><div class="sc-fXwuWv fYxpnv"><button class="sc-jWMFtl jzaJhV"><span type="post" class="sc-eEFuoE hOENFc http-verb post">post</span><span class="sc-FpjRO dsIRaZ">/notification/mark-as-seen</span><svg class="sc-dYjPD bQKUih" style="margin-right:-25px" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div aria-hidden="true" class="sc-fmtEmb tUxhh"><div class="sc-ljIcGq bAnPPh"><div html="" class="sc-iJSMbW sc-cBEgGa fiNpIH bAoMjv"></div><div tabindex="0" role="button"><div class="sc-jlJOIR PEJyb"><span>/api/v2</span>/notification/mark-as-seen</div></div></div></div></div><div><h3 class="sc-kEbgWM iamDfj"> <!-- -->Response samples<!-- --> </h3><div class="sc-cxxQMU kibfTX" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="tab-success react-tabs__tab--selected" role="tab" id="tab_R_jja_0" aria-selected="true" aria-disabled="false" aria-controls="panel_R_jja_0" tabindex="0" data-rttab="true">200</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel_R_jja_0" aria-labelledby="tab_R_jja_0"><div><div class="sc-cNSlRw bMFMGt"><span class="sc-bBzIOb BuCyN">Content type</span><div class="sc-dPqFhK kgKexQ">application/json</div></div><div class="sc-hUheUT jUCYlq"><div class="sc-cTZdpT hHzuQA"><div class="sc-giQkEn dzKJV"><button><div class="sc-jcgtOs feYhXE">Copy</div></button></div><div tabindex="0" class="sc-iJSMbW fiNpIH sc-jNDflC jgTAJz"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable "><span class="property token string">"unseenCount"</span>: <span class="token number">0</span></div></li></ul><span class="token punctuation">}</span></code></div></div></div></div></div></div></div></div></div></div></div></div><div class="sc-ekVkVN bjzTxL"></div></div></div>
+      <script>
+      const __redoc_state = {"menu":{"activeItemIdx":-1},"spec":{"data":{"openapi":"3.0.0","info":{"description":"Welcome to the HumHub notification API reference, v2.\n\nThese endpoints are part of **HumHub core** (1.20+). The optional\n[REST API module](https://github.com/humhub/rest) contributes the token authentication\nmethods they accept and owns the older `/api/v1` surface, which is documented with that\nmodule. For the design of this stack see `docs/develop/concept-api.md`.\n\nConventions of this API generation, differing from `/api/v1`: camelCase field names,\nISO-8601 timestamps with offset, plain HTTP status codes instead of a\n`{code, message}` envelope.\n\n**Always the caller's own notifications.** There is no user parameter, and no action here\nis reachable for a guest. (The module's `/api/v1` notification endpoints, which let an\nadmin token read another user's notifications, are unaffected.)\n\n**Cursor paging instead of page numbers.** The list is ordered unseen-first, newest-first,\nand it reorders while a user pages through it — notifications arrive, others are read. Page\nnumbers would silently skip or repeat entries, so a page carries a `nextCursor` to hand\nback, and `null` once the list is exhausted. This is the one list of this API generation\nthat does not use the `{results, total, page, pageSize, pages}` envelope.\n\n**The sentence comes from the server.** A notification's `html` is the localized,\nmodule-defined phrase (*\"Jane commented on Post 'Release notes'\"*) — the one part a client\ncannot build. Everything around it (avatar, space badge, relative time, unread marker) is\ndata in this payload, rendered by the client.\n\nRequests may authenticate with any token method the REST API module offers. HumHub's own\nbrowser session is accepted too for these endpoints, which is what the platform's Vue UI\nuses; state-changing session requests additionally require the CSRF token.\n","version":"2.0.0","title":"HumHub - Notification API (v2)","contact":{"email":"info@humhub.com"},"license":{"name":"AGPLv2","url":"https://www.humhub.org/en/licences"}},"servers":[{"url":"/api/v2"}],"security":[{"Bearer":[]},{"BasicAuth":[]},{"SessionCookie":[]}],"paths":{"/notification":{"get":{"summary":"The caller's notifications","description":"One page of the caller's notifications, unseen first and newest first. Grouped\nnotifications (several likes on the same post, say) count as one entry.\n\nA notification whose source no longer exists — its content was deleted, its class left\nwith an uninstalled module — is dropped from the list (and from the database) instead\nof failing the request, so a page may contain fewer entries than `limit` even when\n`nextCursor` is set.\n","parameters":[{"name":"cursor","in":"query","required":false,"description":"`nextCursor` of the previous page. Omit for the first page.\n","schema":{"type":"integer"}},{"name":"limit","in":"query","required":false,"description":"Entries per page (default 6, maximum 50)","schema":{"type":"integer"}},{"name":"categories[]","in":"query","required":false,"description":"Notification category ids to include (`comment`, `followed`, `mentioned`, …, plus\n`others-no-category` for notifications belonging to no category). Categories are\ncontributed by modules; the notification settings page lists the ones an\ninstallation offers.\n\nOmit the parameter for no category filter at all. Passing a value that matches no\ncategory — including a single empty entry — is a filter of its own and answers an\nempty list, which is what \"no category selected\" means in the UI.\n","schema":{"type":"array","items":{"type":"string"}}},{"name":"seen","in":"query","required":false,"description":"Restrict to seen or unseen notifications","schema":{"type":"string","enum":["seen","unseen"]}}],"responses":{"200":{"description":"Successful operation","content":{"application/json":{"schema":{"type":"object","properties":{"results":{"type":"array","items":{"$ref":"#/components/schemas/Notification"}},"unseenCount":{"type":"integer","description":"The caller's total number of unseen notifications — what a client shows\nas its badge, independent of the filters of this request.\n"},"nextCursor":{"type":"integer","nullable":true,"description":"Pass as `cursor` for the next page; `null` when there is nothing behind\nthis one.\n"}}},"example":{"results":[{"id":137,"html":"<strong>Jane Doe</strong> commented post \"Release notes\".","url":"/notification/entry?id=137&cId=42","isNew":true,"createdAt":"2026-08-20T10:12:00+00:00","groupKey":"humhub\\modules\\comment\\notifications\\NewComment:42","originator":{"id":7,"guid":"4f3e2d1c-0b9a-8765-4321-0fedcba98765","displayName":"Jane Doe","url":"https://example.com/u/jane/","imageUrl":"https://example.com/uploads/profile_image/abc.jpg","contentContainerId":12},"space":{"id":3,"guid":"9a8b7c6d-5e4f-3210-9876-543210fedcba","name":"Product Team","url":"https://example.com/s/product-team/","color":"#7a9299","imageUrl":null,"contentContainerId":21}}],"unseenCount":4,"nextCursor":137}}}},"401":{"$ref":"#/components/responses/Unauthorized"}}}},"/notification/mark-as-seen":{"post":{"summary":"Mark all notifications as seen","description":"Marks every notification of the caller as seen. Always answers `unseenCount: 0`.\n","responses":{"200":{"description":"Successful operation","content":{"application/json":{"schema":{"type":"object","properties":{"unseenCount":{"type":"integer"}}},"example":{"unseenCount":0}}}},"401":{"$ref":"#/components/responses/Unauthorized"},"403":{"description":"A session-authenticated request without a valid CSRF token.\n"}}}}},"components":{"securitySchemes":{"Bearer":{"type":"http","scheme":"bearer","description":"Access token or JWT, as issued by the REST API module."},"BasicAuth":{"type":"http","scheme":"basic","description":"User credentials, restricted to the users the administrator enabled the API for.\n"},"SessionCookie":{"type":"apiKey","in":"cookie","name":"HUMHUB_SESSION","description":"The regular HumHub browser session, accepted by core's own endpoints (which is how\nthe platform's Vue UI calls them). State-changing requests additionally require the\nCSRF token, sent as the `X-CSRF-Token` header or the `_csrf` body parameter.\n"}},"schemas":{"Notification":{"type":"object","description":"One notification of the caller","properties":{"id":{"type":"integer"},"html":{"type":"string","nullable":true,"description":"The notification's own localized sentence, as HTML (display names wrapped in\n`<strong>`, links into the content). Composed server-side from escaped values by\nthe notification class; a notification implementing no HTML representation falls\nback to its plain-text one.\n"},"url":{"type":"string","description":"Relative URL of the notification target — a redirect that also marks this\nnotification as seen.\n"},"isNew":{"type":"boolean","description":"Whether the caller has not seen this notification yet"},"createdAt":{"type":"string","description":"ISO-8601 timestamp with offset"},"groupKey":{"type":"string","nullable":true,"description":"`<notification class>:<group key>` for a grouped notification, `null` otherwise —\nthe same value the live event carries, so a client can match an arriving event\nagainst an entry it already shows.\n"},"originator":{"allOf":[{"$ref":"#/components/schemas/UserShort"}],"nullable":true,"description":"The user who caused the notification, when there is one"},"space":{"allOf":[{"$ref":"#/components/schemas/SpaceShort"}],"nullable":true,"description":"The space the notification happened in, when it happened in one"}}},"UserShort":{"type":"object","description":"The short user representation every other shape embeds. Deliberately caller-neutral:\nit carries neither the online status (volatile, and dependent on who is asking) nor\nthe localized alt text of the profile image, which is what lets the payloads embedding\nit be identical for every reader.\n","properties":{"id":{"type":"integer"},"guid":{"type":"string"},"displayName":{"type":"string"},"url":{"type":"string","description":"Absolute profile URL"},"imageUrl":{"type":"string","description":"Absolute profile image URL"},"contentContainerId":{"type":"integer","nullable":true}}},"SpaceShort":{"type":"object","description":"The short space representation another shape embeds when it names the space something\nhappened in.\n","properties":{"id":{"type":"integer"},"guid":{"type":"string"},"name":{"type":"string"},"url":{"type":"string","description":"Absolute space URL"},"color":{"type":"string","nullable":true,"description":"The space's own colour, used for its acronym tile"},"imageUrl":{"type":"string","nullable":true,"description":"Absolute profile image URL, `null` when the space has no image of its own — which\nis what tells a client to render the coloured acronym tile instead.\n"},"contentContainerId":{"type":"integer","nullable":true}}}},"responses":{"Unauthorized":{"description":"Authentication required"}}}}},"searchIndex":{"store":["/paths/~1notification/get","/paths/~1notification~1mark-as-seen/post"],"index":{"version":"2.3.9","fields":["title","description"],"fieldVectors":[["title/0",[0,0.199,1,0.313]],["description/0",[0,0.143,1,0.436,2,0.803,3,0.803,4,0.545,5,0.803,6,0.545,7,0.545,8,0.545,9,0.545,10,0.545,11,0.545,12,0.545,13,0.803,14,0.545,15,0.545,16,0.545,17,0.545,18,0.803,19,0.545,20,0.545,21,0.545,22,0.545,23,0.545,24,0.545,25,0.545,26,0.545,27,0.545,28,0.545,29,0.545,30,0.545,31,0.545,32,0.545,33,0.545,34,0.545,35,0.545,36,0.545]],["title/1",[1,0.266,37,0.169,38,0.169]],["description/1",[1,0.396,37,0.251,38,0.251,39,0.953,40,0.953,41,0.953,42,0.953,43,0.953,44,0.953]]],"invertedIndex":[["",{"_index":18,"title":{},"description":{"0":{}}}],["0",{"_index":43,"title":{},"description":{"1":{}}}],["alway",{"_index":40,"title":{},"description":{"1":{}}}],["answer",{"_index":41,"title":{},"description":{"1":{}}}],["caller",{"_index":39,"title":{},"description":{"1":{}}}],["caller'",{"_index":0,"title":{"0":{}},"description":{"0":{}}}],["class",{"_index":21,"title":{},"description":{"0":{}}}],["contain",{"_index":31,"title":{},"description":{"0":{}}}],["content",{"_index":19,"title":{},"description":{"0":{}}}],["count",{"_index":12,"title":{},"description":{"0":{}}}],["databas",{"_index":27,"title":{},"description":{"0":{}}}],["delet",{"_index":20,"title":{},"description":{"0":{}}}],["drop",{"_index":25,"title":{},"description":{"0":{}}}],["entri",{"_index":13,"title":{},"description":{"0":{}}}],["even",{"_index":34,"title":{},"description":{"0":{}}}],["exist",{"_index":17,"title":{},"description":{"0":{}}}],["fail",{"_index":29,"title":{},"description":{"0":{}}}],["fewer",{"_index":32,"title":{},"description":{"0":{}}}],["first",{"_index":5,"title":{},"description":{"0":{}}}],["group",{"_index":7,"title":{},"description":{"0":{}}}],["instead",{"_index":28,"title":{},"description":{"0":{}}}],["left",{"_index":22,"title":{},"description":{"0":{}}}],["like",{"_index":9,"title":{},"description":{"0":{}}}],["limit",{"_index":33,"title":{},"description":{"0":{}}}],["list",{"_index":26,"title":{},"description":{"0":{}}}],["longer",{"_index":16,"title":{},"description":{"0":{}}}],["mark",{"_index":37,"title":{"1":{}},"description":{"1":{}}}],["modul",{"_index":24,"title":{},"description":{"0":{}}}],["newest",{"_index":6,"title":{},"description":{"0":{}}}],["nextcursor",{"_index":35,"title":{},"description":{"0":{}}}],["notif",{"_index":1,"title":{"0":{},"1":{}},"description":{"0":{},"1":{}}}],["notification/mark-as-seen",{"_index":44,"title":{},"description":{"1":{}}}],["on",{"_index":2,"title":{},"description":{"0":{}}}],["page",{"_index":3,"title":{},"description":{"0":{}}}],["post",{"_index":11,"title":{},"description":{"0":{}}}],["request",{"_index":30,"title":{},"description":{"0":{}}}],["same",{"_index":10,"title":{},"description":{"0":{}}}],["seen",{"_index":38,"title":{"1":{}},"description":{"1":{}}}],["set",{"_index":36,"title":{},"description":{"0":{}}}],["sever",{"_index":8,"title":{},"description":{"0":{}}}],["sourc",{"_index":15,"title":{},"description":{"0":{}}}],["uninstal",{"_index":23,"title":{},"description":{"0":{}}}],["unseen",{"_index":4,"title":{},"description":{"0":{}}}],["unseencount",{"_index":42,"title":{},"description":{"1":{}}}],["whose",{"_index":14,"title":{},"description":{"0":{}}}]],"pipeline":[]}},"options":{}};
+
+      var container = document.getElementById('redoc');
+      Redoc.hydrate(__redoc_state, container);
+
+      </script>
+</body>
+
+</html>

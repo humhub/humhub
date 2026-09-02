@@ -67,6 +67,57 @@ class RecordMap extends ActiveRecord
     }
 
     /**
+     * Resolves many record ids at once - one query for the mapping plus one per involved
+     * model, instead of two per id the way repeated {@see self::getById()} calls would.
+     *
+     * Ids that do not exist, or whose record is not of the expected type, are absent from
+     * the result; a caller that needs to react to that compares the key sets. The optional
+     * `$with` argument is passed to the model query, so a caller that will touch relations
+     * of every record (typically `content`) can eager-load them here rather than paying a
+     * query per record afterwards.
+     *
+     * @template T
+     * @param int[] $recordIds
+     * @param class-string<T> $classType
+     * @param string[] $with relations to eager-load
+     * @return array<int, T> record id => record, in no particular order
+     * @since 1.20
+     */
+    public static function getByIds(array $recordIds, string $classType, array $with = []): array
+    {
+        $recordIds = array_values(array_unique(array_map('intval', $recordIds)));
+
+        if ($recordIds === []) {
+            return [];
+        }
+
+        // model => [pk => record id]
+        $pksByModel = [];
+        foreach (static::find()->where(['id' => $recordIds])->all() as $mapping) {
+            if (!DataTypeHelper::isClassType($mapping->model, $classType)) {
+                continue;
+            }
+            $pksByModel[$mapping->model][(int)$mapping->pk] = (int)$mapping->id;
+        }
+
+        $records = [];
+        foreach ($pksByModel as $model => $recordIdsByPk) {
+            /** @var ActiveRecord $model */
+            $query = $model::find()->where(['id' => array_keys($recordIdsByPk)]);
+
+            if ($with !== []) {
+                $query->with($with);
+            }
+
+            foreach ($query->all() as $record) {
+                $records[$recordIdsByPk[(int)$record->getPrimaryKey()]] = $record;
+            }
+        }
+
+        return $records;
+    }
+
+    /**
      * @template T
      * @param class-string<T> $classType
      * @return T
