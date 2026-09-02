@@ -87,29 +87,59 @@ humhub.module('stream.Stream', function (module, require, $) {
     };
 
     Stream.prototype.initScroll = function () {
-        if (window.IntersectionObserver && this.options.scrollSupport) {
-
-            var options = {root: this.$content[0], rootMargin: "50px"};
-            options = this.options.scrollOptions ? $.extend(options, this.options.scrollOptions) : options;
-            var $streamEnd = $('<div class="stream-end"></div>');
-            this.$content.append($streamEnd);
-
-            var that = this;
-            var observer = new IntersectionObserver(function (entries) {
-                if (that.preventScrollLoading()) {
-                    return;
-                }
-
-                if (entries.length && entries[0].isIntersecting) {
-                    that.load().finally(function () {
-                        that.state.scrollLock = false;
-                    });
-                }
-
-            }, options);
-
-            observer.observe($streamEnd[0]);
+        if (!window.IntersectionObserver || !this.options.scrollSupport) {
+            return;
         }
+
+        var options = {root: this.$content[0], rootMargin: "50px"};
+        options = this.options.scrollOptions ? $.extend(options, this.options.scrollOptions) : options;
+        var $streamEnd = $('<div class="stream-end"></div>');
+        this.$content.append($streamEnd);
+
+        // A stream can be re-initialized (filter change, reload), which empties the content and
+        // therefore detaches the previous stream end indicator.
+        if (this.scrollObserver) {
+            this.scrollObserver.disconnect();
+        }
+
+        var that = this;
+        this.scrollObserver = new IntersectionObserver(function (entries) {
+            if (that.preventScrollLoading()) {
+                return;
+            }
+
+            if (entries.length && entries[entries.length - 1].isIntersecting) {
+                that.load().finally(function () {
+                    that.state.scrollLock = false;
+                    that.continueScrollLoading($streamEnd[0]);
+                });
+            }
+
+        }, options);
+
+        this.scrollObserver.observe($streamEnd[0]);
+    };
+
+    /**
+     * An IntersectionObserver only reports *changes* of the intersection state. As long as the
+     * newly loaded entries do not push the stream end indicator out of the observed area - which
+     * is the normal case for compact streams whose entries are shorter than the root margin, or
+     * whenever the loaded entries do not fill the viewport - no further callback is triggered and
+     * the stream stalls until the user scrolls up and down again.
+     *
+     * Re-observing the indicator queues a fresh notification with its current intersection state
+     * and thereby keeps loading until the observed area is filled or the last entry was loaded.
+     *
+     * @param {Element} streamEnd the stream end indicator of the current stream content
+     * @since 1.19
+     */
+    Stream.prototype.continueScrollLoading = function (streamEnd) {
+        if (!this.scrollObserver || !streamEnd.isConnected || this.state.lastEntryLoaded) {
+            return;
+        }
+
+        this.scrollObserver.unobserve(streamEnd);
+        this.scrollObserver.observe(streamEnd);
     };
 
     Stream.prototype.preventScrollLoading = function () {
