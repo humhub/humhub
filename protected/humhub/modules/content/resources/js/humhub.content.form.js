@@ -140,7 +140,9 @@ humhub.module('content.form', function (module, require, $) {
     };
 
     CreateForm.prototype.resetFileUpload = function () {
-        var upload = Widget.instance($('#contentFormFiles_progress' + (this.isModal ? 'Modal' : '')));
+        // Must target the file.Upload widget itself ('#contentFormFiles'), not the progress
+        // bar widget - only Upload.reset() removes the stale hidden fileList[] inputs.
+        var upload = Widget.instance($('#contentFormFiles' + (this.isModal ? 'Modal' : '')));
         if (upload) {
             upload.reset();
         }
