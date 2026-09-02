@@ -83,7 +83,6 @@
             }
             @media (max-width: 548px) {
                 .form-search-action {
-                    order: initial;
                     &.form-search-action-toggle-more {
                         display: initial;
                     }
@@ -104,7 +103,6 @@
                 padding: 0;
                 font-size: 20px;
             }
-            order: 1;
             &.form-search-action-toggle-more {
                 display: none;
                 .btn:not(.collapsed) {
