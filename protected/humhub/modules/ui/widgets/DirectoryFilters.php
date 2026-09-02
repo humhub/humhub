@@ -64,7 +64,7 @@ abstract class DirectoryFilters extends Widget
 
     public function initActions(): void
     {
-        // Find min sort to put the actions after the first filter
+        // Find min sort to put the toggle-more action right after the first filter
         $minSortOrder = null;
         foreach ($this->filters as $data) {
             if (isset($data['sortOrder']) && ($minSortOrder === null || $minSortOrder > $data['sortOrder'])) {
@@ -90,6 +90,17 @@ abstract class DirectoryFilters extends Widget
         }
 
         if (isset($this->data['action-url']) || $this->isFiltered()) {
+            // The reset action is always displayed as the very last action (see the
+            // .form-search-action rules in _cards.scss), so it also has to be the
+            // last one in the DOM/tab order - otherwise keyboard navigation reaches
+            // it long before it is visually shown.
+            $maxSortOrder = null;
+            foreach ($this->filters as $data) {
+                if (isset($data['sortOrder']) && ($maxSortOrder === null || $maxSortOrder < $data['sortOrder'])) {
+                    $maxSortOrder = $data['sortOrder'];
+                }
+            }
+
             $this->addFilter('reset', [
                 'type' => 'info',
                 'wrapperClass' => 'form-search-action form-search-action-reset'
@@ -99,7 +110,7 @@ abstract class DirectoryFilters extends Widget
                     ->link([$this->pageUrl])
                     ->tooltip(Yii::t('UiModule.base', 'Reset filters'))
                     ->options(['aria-label' => Yii::t('UiModule.base', 'Reset filters')]),
-                'sortOrder' => ++$minSortOrder,
+                'sortOrder' => ($maxSortOrder ?? 0) + 1,
             ]);
         }
     }
