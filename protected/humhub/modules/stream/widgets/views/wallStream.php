@@ -10,6 +10,7 @@ use humhub\widgets\bootstrap\Button;
 /* @var $this View */
 /* @var $filterNav string */
 /* @var $contentContainer ContentContainerActiveRecord */
+/* @var $options array */
 
 StreamAsset::register($this);
 
@@ -41,7 +42,7 @@ StreamAsset::register($this);
 <div class="col-lg-12 text-center d-lg-none">
     <?= Button::primary(Yii::t('ContentModule.base', 'Load more'))
         ->id('btn-load-more')
-        ->action('loadMore', null, '#wallStream')
+        ->action('loadMore', null, '#' . $options['id'])
         ->lg() ?>
     <br/><br/>
 </div>
