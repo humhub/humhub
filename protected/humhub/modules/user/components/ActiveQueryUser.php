@@ -103,7 +103,10 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
     public function defaultOrder()
     {
         $this->joinWith('profile');
-        $this->addOrderBy(['profile.lastname' => SORT_ASC]);
+        $this->addOrderBy([
+            'profile.lastname' => SORT_ASC,
+            'user.id' => SORT_ASC,
+        ]);
 
         return $this;
     }
