@@ -45,7 +45,12 @@ class ModuleFilters extends DirectoryFilters
             'placeholder' => Yii::t('MarketplaceModule.base', 'Description, Name, Keywords...'),
             'type' => 'input',
             'wrapperClass' => 'flex-fill form-search-filter-keyword',
-            'afterInput' => Html::submitButton(Icon::get('search'), ['class' => 'form-button-search']),
+            'afterInput' => Html::submitButton(Icon::get('search'), [
+                'class' => 'form-button-search',
+                // Pressing Enter in the keyword field already submits the form, so this
+                // button doesn't need its own tab stop.
+                'tabindex' => '-1',
+            ]),
             'sortOrder' => 100,
         ]);
 

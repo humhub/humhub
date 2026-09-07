@@ -33,4 +33,9 @@ class UrlOembedMock extends UrlOembed
         return array_key_exists($url, static::$cache);
     }
 
+    public static function buildConfirmationContent(string $url): string
+    {
+        return static::confirmationContent($url);
+    }
+
 }

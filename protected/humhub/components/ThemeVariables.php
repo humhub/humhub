@@ -132,12 +132,32 @@ class ThemeVariables extends Component
      */
     protected function ensureLoaded(): void
     {
-        if (!$this->settingsLoaded) {
-            if (empty($this->module->settings->get($this->getSettingKey('primary')))) {
-                $this->storeVariables();
-            }
-            $this->settingsLoaded = true;
+        if ($this->settingsLoaded) {
+            return;
         }
+
+        if (empty($this->module->settings->get($this->getSettingKey('primary')))) {
+            // Serialize concurrent requests, all trying to store the variables
+            // of a not yet populated theme at the same time
+            $mutex = Yii::$app->mutex;
+            $lockName = $this->getSettingPrefix() . 'store';
+            $locked = $mutex->acquire($lockName, 10);
+
+            try {
+                // Re-check after waiting for the lock — a concurrent request may
+                // have stored the variables in the meantime
+                $this->module->settings->reload();
+                if (empty($this->module->settings->get($this->getSettingKey('primary')))) {
+                    $this->storeVariables();
+                }
+            } finally {
+                if ($locked) {
+                    $mutex->release($lockName);
+                }
+            }
+        }
+
+        $this->settingsLoaded = true;
     }
 
     /**

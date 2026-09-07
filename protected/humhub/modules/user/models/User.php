@@ -783,6 +783,10 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
             return false;
         }
 
+        if ($user->isCurrentUser() && !Yii::$app->user->impersonation->canAccessPrivateContent()) {
+            return false;
+        }
+
         // Self
         if ($user->is($this)) {
             return true;
@@ -845,28 +849,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
         return $this->isSystemAdmin()
             || (new PermissionManager(['subject' => $this]))->can([ManageUsers::class, ManageGroups::class])
             || $this->isGroupManager();
-    }
-
-    /**
-     * Determines if this user can impersonate the given user.
-     *
-     * @param self $user
-     * @return bool
-     * @since 1.10
-     */
-    public function canImpersonate(self $user): bool
-    {
-        /* @var AdminModule $adminModule */
-        $adminModule = Yii::$app->getModule('admin');
-        if (!$adminModule->allowUserImpersonate) {
-            return false;
-        }
-
-        if ($user->id == $this->id) {
-            return false;
-        }
-
-        return (new PermissionManager(['subject' => $this]))->can(ManageUsers::class);
     }
 
     /**
@@ -972,7 +954,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
      */
     public function mustChangePassword()
     {
-        return !Yii::$app->user->isImpersonated && (bool)$this->getSettings()->get('mustChangePassword');
+        return !Yii::$app->user->impersonation->isActive() && (bool)$this->getSettings()->get('mustChangePassword');
     }
 
     /**

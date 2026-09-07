@@ -74,7 +74,7 @@ class UserFilter extends User
      * Filter users by keyword
      *
      * @param ActiveQueryUser $query
-     * @param string|array $keyword
+     * @param string|array|null $keyword
      * @return ActiveQueryUser
      */
     public static function addKeywordFilter($query, $keyword)

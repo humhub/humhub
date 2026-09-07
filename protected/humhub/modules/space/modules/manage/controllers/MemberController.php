@@ -66,6 +66,14 @@ class MemberController extends Controller
                 throw new HttpException(404, 'Could not find membership!');
             }
 
+            // The owner role follows the space creator and is only changeable via change-owner.
+            if ($space->isSpaceOwner($membership->user_id)) {
+                throw new HttpException(403, 'The role of the space owner cannot be changed!');
+            }
+
+            // Restrict this endpoint to the role itself, see Membership::scenarios().
+            $membership->scenario = Membership::SCENARIO_EDIT_ROLE;
+
             if ($membership->load(Yii::$app->request->post()) && $membership->save()) {
 
                 ChangedRolesMembership::instance()

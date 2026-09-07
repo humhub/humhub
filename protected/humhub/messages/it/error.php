@@ -13,5 +13,6 @@ return [
     'You need admin permissions to access this section.' => 'Hai bisogno di permessi da amministratore per accedere a questa sezione.',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => 'Il tuo account non è stato ancora approvato, prova più tardi oppure contatta l\'amministratore.',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'Il tuo utente è disabilitato, esegui accesso con un account attivo o contatta l\'amministratore.',
+    'Access to private content is not allowed while impersonating a user.' => '',
     'The module {moduleId} is present in the HumHub configuration file even though this module is disabled. Please remove it from the configuration.' => '',
 ];

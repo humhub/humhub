@@ -188,7 +188,7 @@ class AssetManager extends \yii\web\AssetManager
 
             try {
                 $timestamp = $this->fs->lastModified($dstFile);
-            } catch (FilesystemException $e) {
+            } catch (FilesystemException) {
                 $timestamp = time();
             }
         }
@@ -303,6 +303,26 @@ class AssetManager extends \yii\web\AssetManager
         } catch (FilesystemException $e) {
             print $e->getMessage();
             die();
+        }
+    }
+
+    /**
+     * Modification time of a published file, the counterpart of `filemtime()` -
+     * published paths are relative to the assets mount, which may be remote (e.g. S3),
+     * so they cannot be passed to native filesystem functions.
+     *
+     * Doubles as an existence check: a missing file has no modification time, which
+     * saves a separate [[fileExists()]] round trip on remote mounts.
+     *
+     * @return int|null null if the file does not exist or has no modification time
+     * @since 1.19
+     */
+    public function fileLastModified(string $file): ?int
+    {
+        try {
+            return $this->fs->lastModified($this->normalizePath($file));
+        } catch (FilesystemException) {
+            return null;
         }
     }
 

@@ -14,4 +14,5 @@ return [
     'You need admin permissions to access this section.' => 'Za dostop do tega razdelka potrebujete skrbniška dovoljenja.',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => 'Vaš uporabniški račun še ni odobren, poskusite znova pozneje ali se obrnite na skrbnika omrežja.',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'Vaš uporabniški račun je neaktiven, prijavite se z aktivnim računom ali se obrnite na omrežnega skrbnika.',
+    'Access to private content is not allowed while impersonating a user.' => '',
 ];

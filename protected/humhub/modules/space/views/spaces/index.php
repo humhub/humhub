@@ -11,6 +11,7 @@ use humhub\helpers\ThemeHelper;
 use humhub\modules\space\components\SpaceDirectoryQuery;
 use humhub\modules\space\widgets\SpaceDirectoryCard;
 use humhub\modules\space\widgets\SpaceDirectoryFilters;
+use humhub\modules\space\widgets\SpaceDirectoryHeadingButtons;
 use yii\web\View;
 
 /* @var $this View */
@@ -22,6 +23,7 @@ CardsAsset::register($this);
 
     <div class="panel-heading">
         <?= Yii::t('SpaceModule.base', '<strong>Spaces</strong>'); ?>
+        <?= SpaceDirectoryHeadingButtons::widget() ?>
     </div>
 
     <div class="panel-body">

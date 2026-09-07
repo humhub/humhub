@@ -244,7 +244,7 @@ class LdapUserSourceTest extends HumHubDbTestCase
      */
     private function createUser(string $username, string $email, string $source, ?string $guid = null): User
     {
-        $guid = $guid ?? sprintf('00000000-0000-0000-0000-%012s', substr(md5($username . $source), 0, 12));
+        $guid ??= sprintf('00000000-0000-0000-0000-%012s', substr(md5($username . $source), 0, 12));
         $now = date('Y-m-d H:i:s');
 
         Yii::$app->db->createCommand()->insert('user', [

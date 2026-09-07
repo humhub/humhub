@@ -70,6 +70,21 @@ class FileManager extends Component
                 continue;
             }
 
+            // Standalone files are managed exclusively by the module/code that created
+            // them and must never be attachable through the generic fileList mechanism -
+            // this is not overridable via $steal.
+            if ($file->standalone) {
+                Yii::warning('Attempted to attach a standalone file: ' . $file->guid);
+                continue;
+            }
+
+            // A file may only be attached by its own creator by default, matching the
+            // ownership rule already enforced by File::canView() and ShareIntendController.
+            if (!$steal && $file->created_by != Yii::$app->user->id) {
+                Yii::warning('Attempted to attach file created by another user: ' . $file->guid);
+                continue;
+            }
+
             $attributes = [
                 'object_model' => PolymorphicRelation::getObjectModel($this->record),
                 'object_id' => $this->record->getPrimaryKey(),

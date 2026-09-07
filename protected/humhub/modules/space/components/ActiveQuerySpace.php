@@ -50,6 +50,10 @@ class ActiveQuerySpace extends AbstractActiveQueryContentContainer
         }
 
         if ($user !== null) {
+            if ($user->isCurrentUser() && !Yii::$app->user->impersonation->canAccessPrivateContent()) {
+                return $this->andWhere(['!=', 'space.visibility', Space::VISIBILITY_NONE]);
+            }
+
             if ($user->can(ManageSpaces::class)) {
                 return $this;
             }

@@ -21,7 +21,7 @@ use humhub\modules\marketplace\widgets\ModuleStatus;
     </div>
     <div class="card-body">
         <div class="card-title"><?= $module->marketplaceName() ?></div>
-        <div><?= $module->latestVersion ?></div>
+        <div><?= Html::encode($module->latestVersion) ?></div>
         <div><?= Html::encode($module->description) ?></div>
     </div>
     <?= ModuleActionButtons::widget(['module' => $module]) ?>

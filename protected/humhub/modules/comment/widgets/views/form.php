@@ -72,6 +72,7 @@ $placeholder = ($isNestedComment)
                 'primaryButton' => $uploadButton,
                 'handlers' => $fileHandlers,
                 'cssClass' => 'btn-group btn-group-sm',
+                'cssButtonClass' => 'btn-light',
                 'pullRight' => true,
             ]) ?>
             <?= Button::accent()
