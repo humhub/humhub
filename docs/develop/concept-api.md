@@ -64,7 +64,7 @@ and that is core's own endpoints.
 
 ```php
 // humhub\components\api\BaseController
-protected bool $enableSessionAuth = false;
+protected bool $allowSessionAuth = false;
 ```
 
 This default is the security-relevant part of the design, not a formality. Session
@@ -101,13 +101,14 @@ Further contracts, all explicit:
 - **Gate classification.** `humhub\components\gates\GateFilter` used to infer
   `RequestClass::Api` from `Yii::$app->user->enableSession === false`, which every API
   request pins — so a session-authenticated request would skip the gates that do not apply
-  to API requests (2FA, legal, onboarding). `SessionAuth` sets an explicit
-  `humhub\components\Request::$isSessionAuthenticated` flag instead, which `GateFilter`
-  consults: such requests are classified like browser requests and pass through the normal
-  gates. No re-running of the gate lookup, no workaround.
+  to API requests (2FA, legal, onboarding). `SessionAuth` marks the user component instead
+  (`humhub\modules\user\components\User::$sessionAuthenticated`), and `GateFilter` asks
+  `User::isSessionBased()` — `enableSession` or that mark: such requests are classified like
+  browser requests and pass through the normal gates. No re-running of the gate lookup, no
+  workaround, and the request component stays untouched.
 - **Impersonation.** `Impersonation::isActive()` short-circuited while `enableSession` was
   off, so the private-content restriction could not apply to a session-authenticated
-  impersonation. It consults the same request flag now, so impersonation restrictions apply
+  impersonation. It asks `User::isSessionBased()` too, so impersonation restrictions apply
   normally and such requests need not be rejected.
 
 ## Routing and registration
@@ -370,9 +371,9 @@ These must hold — each one exists because it was found missing:
    response ever mints a `_csrf` cookie (`SessionAuth`).
 4. Session-authenticated requests are subject to the same user gates as a browser request
    (2FA and friends), and are never classified as API requests
-   (`Request::$isSessionAuthenticated`, `GateFilter`).
+   (`User::isSessionBased()`, `GateFilter`).
 5. Session authentication is off unless a controller opts in
-   (`BaseController::$enableSessionAuth`).
+   (`BaseController::$allowSessionAuth`).
 6. Session-authenticated impersonation cannot see private content the web UI hides
    (`Impersonation::isActive()`).
 

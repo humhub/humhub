@@ -44,7 +44,7 @@ class CommentController extends BaseController
      * This is core UI's own endpoint, so it accepts the browser session (a module may add
      * token methods on top, see {@see BaseController::EVENT_COLLECT_AUTH_METHODS}).
      */
-    protected bool $enableSessionAuth = true;
+    protected bool $allowSessionAuth = true;
 
     /**
      * @inheritdoc

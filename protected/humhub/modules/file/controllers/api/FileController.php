@@ -60,7 +60,7 @@ class FileController extends BaseController
     /**
      * @inheritdoc
      */
-    protected bool $enableSessionAuth = true;
+    protected bool $allowSessionAuth = true;
 
     /**
      * @var string the request field name carrying the uploaded files

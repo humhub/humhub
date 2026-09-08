@@ -41,7 +41,7 @@ use yii\web\NotFoundHttpException;
  * ## Authentication
  *
  * Core ships session authentication ({@see SessionAuth}) only, and a controller must opt in
- * to it via {@see self::$enableSessionAuth}. Additional methods (token, JWT, HTTP Basic …)
+ * to it via {@see self::$allowSessionAuth}. Additional methods (token, JWT, HTTP Basic …)
  * are contributed by modules through {@see self::EVENT_COLLECT_AUTH_METHODS}, and they apply
  * to every API controller: an installation with such a module can call core endpoints with a
  * token, a core-only installation cannot.
@@ -98,11 +98,6 @@ abstract class BaseController extends Controller
     public $enableCsrfValidation = false;
 
     /**
-     * @inheritdoc
-     */
-    protected $doNotInterceptActionIds = ['*'];
-
-    /**
      * @var bool whether this controller accepts browser-session authentication. `false` by
      *      default on purpose — see the class docblock. Core endpoints serving the platform's
      *      own frontend set it to `true`.
@@ -111,7 +106,7 @@ abstract class BaseController extends Controller
      *           authorization: every logged-in user can then reach the endpoint, regardless
      *           of any API allowlist.
      */
-    protected bool $enableSessionAuth = false;
+    protected bool $allowSessionAuth = false;
 
     /**
      * @var string[] ids of actions guests may call without any authentication, mirroring
@@ -183,7 +178,7 @@ abstract class BaseController extends Controller
 
         $authMethods = $event->authMethods;
 
-        if ($this->enableSessionAuth) {
+        if ($this->allowSessionAuth) {
             $authMethods[] = ['class' => SessionAuth::class];
         }
 

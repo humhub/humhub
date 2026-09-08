@@ -24,9 +24,9 @@ class GateFilterRequestClassTest extends HumHubDbTestCase
     private function classify(bool $enableSession, array $headers, bool $sessionAuthenticated = false): RequestClass
     {
         Yii::$app->user->enableSession = $enableSession;
+        Yii::$app->user->sessionAuthenticated = $sessionAuthenticated;
 
         $request = new Request();
-        $request->isSessionAuthenticated = $sessionAuthenticated;
         foreach ($headers as $name => $value) {
             $request->headers->set($name, $value);
         }
@@ -70,9 +70,9 @@ class GateFilterRequestClassTest extends HumHubDbTestCase
      * component (so a token login can never write into the session), so `enableSession`
      * alone would classify it as API and skip every gate that does not apply to API
      * requests — letting a user who passed only the first factor reach every endpoint.
-     * The explicit request flag is what prevents that.
+     * The explicit flag on the user component is what prevents that.
      *
-     * @see \humhub\components\Request::$isSessionAuthenticated
+     * @see \humhub\modules\user\components\User::isSessionBased()
      * @see \humhub\components\api\SessionAuth
      */
     public function testSessionAuthenticatedApiRequestIsNotApi()

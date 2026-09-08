@@ -132,7 +132,7 @@ class ImpersonationTest extends HumHubDbTestCase
      * private-content restriction would silently not apply to the platform's own frontend
      * calling the API while impersonating.
      *
-     * @see \humhub\components\Request::$isSessionAuthenticated
+     * @see \humhub\modules\user\components\User::isSessionBased()
      * @see \humhub\components\api\SessionAuth
      */
     public function testIsActiveOnASessionAuthenticatedApiRequest()
@@ -148,7 +148,7 @@ class ImpersonationTest extends HumHubDbTestCase
         );
         $this->assertTrue(Yii::$app->user->impersonation->canAccessPrivateContent());
 
-        Yii::$app->request->isSessionAuthenticated = true;
+        Yii::$app->user->sessionAuthenticated = true;
         $this->assertTrue(
             Yii::$app->user->impersonation->isActive(),
             'A session-authenticated API request is the browser session and must be restricted',

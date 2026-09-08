@@ -9,7 +9,6 @@
 namespace humhub\components\gates;
 
 use humhub\components\InstallationState;
-use humhub\components\Request as HumHubRequest;
 use Yii;
 use yii\base\ActionFilter;
 use yii\helpers\Url;
@@ -115,19 +114,16 @@ class GateFilter extends ActionFilter
      * browser session (see [[\humhub\components\api\SessionAuth]]): those run with a
      * session-less user component so a token login cannot write into the session, so
      * `enableSession` alone would misclassify them as [[RequestClass::Api]] and let a user
-     * who only passed the first factor reach every endpoint. Hence the explicit flag —
-     * see [[\humhub\components\Request::$isSessionAuthenticated]].
+     * who only passed the first factor reach every endpoint. Hence
+     * [[\humhub\modules\user\components\User::isSessionBased()]] rather than the raw flag.
      */
     protected function getRequestClass(): RequestClass
     {
-        $request = Yii::$app->request;
-        // The flag lives on HumHub's own request component; tolerate a plain yii\web\Request
-        // (tests, embedding scenarios) rather than assuming the class.
-        $isSessionAuthenticated = $request instanceof HumHubRequest && $request->isSessionAuthenticated;
-
-        if (!Yii::$app->user->enableSession && !$isSessionAuthenticated) {
+        if (!Yii::$app->user->isSessionBased()) {
             return RequestClass::Api;
         }
+
+        $request = Yii::$app->request;
 
         if ($request->getIsAjax() || $request->getIsPjax()) {
             return RequestClass::Ajax;

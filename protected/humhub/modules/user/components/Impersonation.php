@@ -8,7 +8,6 @@
 
 namespace humhub\modules\user\components;
 
-use humhub\components\Request;
 use humhub\modules\admin\Module as AdminModule;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\user\models\User as UserModel;
@@ -88,27 +87,16 @@ class Impersonation extends Component
      * is session-less (`enableSession = false`, so a token login can never write into the
      * browser session) — otherwise the private-content restriction below would silently not
      * apply to the platform's own frontend calling the API while impersonating. See
-     * [[\humhub\components\Request::$isSessionAuthenticated]].
+     * [[User::isSessionBased()]].
      *
      * @return bool
      */
     public function isActive(): bool
     {
-        return ($this->user->enableSession || $this->isSessionAuthenticatedRequest())
+        return $this->user->isSessionBased()
             && !$this->user->getIsGuest()
             && Yii::$app->has('session')
             && Yii::$app->session->has(self::SESSION_KEY);
-    }
-
-    /**
-     * @see self::isActive() for why this matters; guarded for console applications, whose
-     * request component has no such flag.
-     */
-    private function isSessionAuthenticatedRequest(): bool
-    {
-        $request = Yii::$app->request ?? null;
-
-        return $request instanceof Request && $request->isSessionAuthenticated;
     }
 
     /**

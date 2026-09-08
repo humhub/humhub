@@ -528,15 +528,17 @@ Each minor release line has its own file with the breaking changes, new APIs and
     `BaseController::EVENT_COLLECT_AUTH_METHODS` (`AuthMethodsEvent`) — how the rest module
     ≥ 0.13 makes token authentication apply to core endpoints. Browser-session authentication
     ships in core (`humhub\components\api\SessionAuth`) and is opt-in **per controller**
-    (`BaseController::$enableSessionAuth`, default `false`), so a module's own token-oriented
+    (`BaseController::$allowSessionAuth`, default `false`), so a module's own token-oriented
     endpoints never become reachable from a browser session.
-  - Added `humhub\components\Request::$isSessionAuthenticated`, set by `SessionAuth`.
-    `humhub\components\gates\GateFilter` no longer infers `RequestClass::Api` from
-    `Yii::$app->user->enableSession` alone, and `humhub\modules\user\components\Impersonation::isActive()`
-    no longer short-circuits on it: a session-authenticated API request passes the normal user
-    gates (2FA, legal, onboarding) and keeps the impersonation restrictions. A module that
-    implements its own API-style authentication should set the flag when it authenticates
-    someone by their browser session.
+  - Added `humhub\modules\user\components\User::$sessionAuthenticated` (set by `SessionAuth`)
+    and `User::isSessionBased()`. `humhub\components\gates\GateFilter` no longer infers
+    `RequestClass::Api` from `Yii::$app->user->enableSession` alone, and
+    `humhub\modules\user\components\Impersonation::isActive()` no longer short-circuits on
+    it: a session-authenticated API request passes the normal user gates (2FA, legal,
+    onboarding) and keeps the impersonation restrictions. A module that implements its own
+    API-style authentication should set the flag when it authenticates someone by their
+    browser session; a module that needs to tell browser from machine clients should call
+    `isSessionBased()` instead of reading `enableSession`.
   - **The API payloads are caller-neutral**: nothing in a comment or user shape depends on who
     is asking, so one serialization serves every reader (and can be cached). Consequences for
     a module reading these shapes or attaching to them:

@@ -43,7 +43,7 @@ class ActivityController extends BaseController
     /**
      * @inheritdoc
      */
-    protected bool $enableSessionAuth = true;
+    protected bool $allowSessionAuth = true;
 
     /**
      * @inheritdoc

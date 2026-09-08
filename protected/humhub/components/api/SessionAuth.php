@@ -8,7 +8,7 @@
 
 namespace humhub\components\api;
 
-use humhub\components\Request as HumHubRequest;
+use humhub\modules\user\components\User as HumHubUser;
 use Yii;
 use yii\filters\auth\AuthMethod;
 use yii\web\ForbiddenHttpException;
@@ -19,7 +19,7 @@ use yii\web\User;
  * Authenticates API requests by the regular HumHub browser session — the method that lets
  * the platform's own frontend (the Vue islands) call the API without a token.
  *
- * Only controllers that opt in get it (see {@see BaseController::$enableSessionAuth}), and
+ * Only controllers that opt in get it (see {@see BaseController::$allowSessionAuth}), and
  * it is registered LAST in the chain, so every token method a module contributes takes
  * precedence: a request carrying a valid token authenticates as the token user even when a
  * session cookie is present ("token wins").
@@ -39,9 +39,8 @@ use yii\web\User;
  *   ("remember me") cookie alone does not authenticate an API request — core re-establishes
  *   the session on any regular page load before the frontend issues API calls.
  * - **Gates and impersonation** apply exactly as they do for a browser request, because this
- *   method marks the request via {@see HumHubRequest::$isSessionAuthenticated} — see
- *   {@see \humhub\components\gates\GateFilter::getRequestClass()} and
- *   {@see \humhub\modules\user\components\Impersonation::isActive()}. No special-casing here.
+ *   method marks the user component via {@see HumHubUser::$sessionAuthenticated} — see
+ *   {@see HumHubUser::isSessionBased()} and its callers. No special-casing here.
  *
  * @since 1.20
  */
@@ -73,10 +72,10 @@ class SessionAuth extends AuthMethod
         }
 
         // Everything that needs to tell "browser session" from "machine client" keys off
-        // this flag, because the user component stays session-less for writes (see
+        // this flag, because the component stays session-less for writes (see
         // getSessionIdentity()). Set only for a request that actually authenticates.
-        if ($request instanceof HumHubRequest) {
-            $request->isSessionAuthenticated = true;
+        if ($user instanceof HumHubUser) {
+            $user->sessionAuthenticated = true;
         }
 
         return $identity;

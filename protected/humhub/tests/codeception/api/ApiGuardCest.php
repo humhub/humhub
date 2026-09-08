@@ -9,7 +9,11 @@
 namespace humhub\tests\codeception\api;
 
 use ApiTester;
+use humhub\components\gates\GateInitEvent;
+use humhub\components\gates\GateManager;
+use humhub\components\gates\UserGate;
 use Yii;
+use yii\base\Event;
 
 /**
  * The guards of the API framework (see `humhub\components\api\BaseController` and
@@ -100,6 +104,65 @@ class ApiGuardCest
         $I->amLoggedInAs(1);
 
         $I->sendGet('comment/content/1/window');
+        $I->seeResponseCodeIs(200);
+    }
+
+    /**
+     * A session-authenticated API request IS the browser, so the user gates a browser request
+     * has to pass (2FA, must-change-password, …) apply to it as well — the classification
+     * behind that is `humhub\modules\user\components\User::isSessionBased()`, see
+     * `GateFilter::getRequestClass()`. The islands call through `humhub.client`, i.e. as XHR,
+     * so an intercepting gate answers the way it answers any AJAX request: 401 with its id
+     * and URL.
+     */
+    public function testSessionAuthenticatedRequestIsSubjectToUserGates(ApiTester $I)
+    {
+        $I->wantTo('see a user gate intercept a session-authenticated API request');
+        $I->amLoggedInAs(1);
+        $I->haveHttpHeader('X-Requested-With', 'XMLHttpRequest');
+
+        // An always-open gate with the defaults of `UserGate`: applies to browser requests
+        // (full page and AJAX), not to token/machine clients.
+        $gate = new class extends UserGate {
+            public function getId(): string
+            {
+                return 'api-guard-test';
+            }
+
+            public function getSortOrder(): int
+            {
+                return 1;
+            }
+
+            public function isOpen(): bool
+            {
+                return true;
+            }
+
+            public function getRoute(): array
+            {
+                return ['/user/auth/login'];
+            }
+
+            public function isCacheable(): bool
+            {
+                return false;
+            }
+        };
+        $register = static fn(GateInitEvent $event) => $event->manager->register($gate);
+        Event::on(GateManager::class, GateManager::EVENT_INIT_GATES, $register);
+
+        try {
+            $I->sendGet('account');
+            $I->seeResponseCodeIs(401);
+            $I->seeResponseContainsJson(['gate' => 'api-guard-test']);
+        } finally {
+            Event::off(GateManager::class, GateManager::EVENT_INIT_GATES, $register);
+            Yii::$app->gateManager->deregister('api-guard-test');
+        }
+
+        // Without the gate the same request goes through — the intercept was the gate's doing.
+        $I->sendGet('account');
         $I->seeResponseCodeIs(200);
     }
 
