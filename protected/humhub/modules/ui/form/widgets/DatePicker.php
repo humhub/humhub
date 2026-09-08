@@ -9,6 +9,7 @@
 namespace humhub\modules\ui\form\widgets;
 
 use humhub\helpers\Html;
+use IntlDateFormatter;
 use Yii;
 use yii\helpers\FormatConverter;
 use yii\helpers\Json;
@@ -113,8 +114,8 @@ class DatePicker extends BaseDatePicker
          * server uses ICU (via DbDateValidator / Yii Formatter::asDate()) to validate and
          * (re-)format the very same value, such a mismatch makes a date picked in the UI fail
          * server-side validation on save, and later makes the picker unable to re-parse the
-         * server-formatted value (falling back to today's date). Overriding monthNames /
-         * monthNamesShort with names generated from that same ICU locale keeps client and server
+         * server-formatted value (falling back to today's date). Overriding the month names the input
+         * format actually uses with names generated from that same ICU locale keeps client and server
          * in sync, whatever locale is used.
          *
          * Applied unconditionally (not only when a jQuery UI regional file is loaded below): some
@@ -126,7 +127,7 @@ class DatePicker extends BaseDatePicker
          * Today labels remaining in English for them, same trade-off already accepted for locales
          * whose regional file is simply missing (e.g. `cy`, `sw`).
          */
-        $this->clientOptions += $this->getIntlMonthNames($language);
+        $this->clientOptions += $this->getIntlMonthNames($language, $this->clientOptions['dateFormat']);
 
         if ($this->pickerLanguage !== 'en-US' && $this->pickerLanguage !== 'en') {
             $this->registerLanguageAsset();
@@ -176,43 +177,52 @@ class DatePicker extends BaseDatePicker
     }
 
     /**
-     * Generates `monthNames` / `monthNamesShort` arrays for the given locale using PHP's intl/ICU
-     * data, i.e. the very same data source used server-side to validate and format dates (see
-     * DbDateValidator and \Yii::$app->formatter->asDate()). This guarantees the jQuery UI datepicker
-     * always displays/accepts the same month abbreviations the server expects, even where a bundled
-     * jQuery UI locale file disagrees with ICU (e.g. "Sep" vs "Sept" for September in `en-GB`).
+     * Generates the jQuery UI `monthNames` / `monthNamesShort` options for the given locale from PHP's
+     * intl/ICU data, i.e. the very same data source used server-side to validate and format dates
+     * (see DbDateValidator and \Yii::$app->formatter->asDate()).
+     *
+     * Only the names the given jQuery UI date format actually uses to format/parse the input value are
+     * returned: `MM` (full month name, ICU `MMMM`) and/or `M` (abbreviated month name, ICU `MMM`).
+     * jQuery UI also displays `monthNames` in the calendar header and `monthNamesShort` in the month
+     * dropdown; there the bundled translations (standalone, capitalized forms) are kept unless the input
+     * format requires ICU's (grammatical) form anyway. Numeric formats therefore stay untouched.
      *
      * @param string $locale
+     * @param string $juiDateFormat jQuery UI date format, e.g. `d M yy`
      * @return array{monthNames?: string[], monthNamesShort?: string[]}
      */
-    private function getIntlMonthNames(string $locale): array
+    private function getIntlMonthNames(string $locale, string $juiDateFormat): array
     {
-        if (!class_exists(\IntlDateFormatter::class)) {
+        if (!extension_loaded('intl')) {
             return [];
         }
 
-        try {
-            $shortFormatter = new \IntlDateFormatter($locale, \IntlDateFormatter::NONE, \IntlDateFormatter::NONE);
-            $shortFormatter->setPattern('MMM');
+        // Ignore quoted literals, e.g. `d 'de' M 'de' yy` (pt)
+        $tokens = preg_replace("/'(?:[^']|'')*'/", '', $juiDateFormat);
 
-            $longFormatter = new \IntlDateFormatter($locale, \IntlDateFormatter::NONE, \IntlDateFormatter::NONE);
-            $longFormatter->setPattern('MMMM');
+        $patterns = [];
+        if (preg_match('/(?<!M)MM(?!M)/', $tokens)) {
+            $patterns['monthNames'] = 'MMMM';
+        }
+        if (preg_match('/(?<!M)M(?!M)/', $tokens)) {
+            $patterns['monthNamesShort'] = 'MMM';
+        }
 
-            $monthNames = [];
-            $monthNamesShort = [];
-            for ($month = 1; $month <= 12; $month++) {
-                $timestamp = mktime(0, 0, 0, $month, 1, 2000);
-                $monthNames[] = $longFormatter->format($timestamp);
-                $monthNamesShort[] = $shortFormatter->format($timestamp);
+        $result = [];
+        foreach ($patterns as $option => $icuPattern) {
+            try {
+                $formatter = new IntlDateFormatter($locale, IntlDateFormatter::NONE, IntlDateFormatter::NONE, 'UTC', IntlDateFormatter::GREGORIAN, $icuPattern);
+            } catch (\Throwable $e) {
+                Yii::warning("Could not generate DatePicker month names for locale '{$locale}': " . $e->getMessage(), 'ui');
+                return [];
             }
-        } catch (\Throwable $e) {
-            return [];
+
+            for ($month = 1; $month <= 12; $month++) {
+                $result[$option][] = $formatter->format(gmmktime(0, 0, 0, $month, 15, 2000));
+            }
         }
 
-        return [
-            'monthNames' => $monthNames,
-            'monthNamesShort' => $monthNamesShort,
-        ];
+        return $result;
     }
 
     /**
