@@ -14,9 +14,8 @@ use humhub\modules\file\assets\FileVueAsset;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
 use humhub\modules\file\serializers\FileSerializer;
-use humhub\widgets\VueComponent;
+use humhub\widgets\VueWidget;
 use Yii;
-use yii\base\Widget;
 
 /**
  * Shows the files attached to a record - the media grid (audio/video/image previews)
@@ -39,7 +38,7 @@ use yii\base\Widget;
  *
  * @since 0.5
  */
-class ShowFiles extends Widget
+class ShowFiles extends VueWidget
 {
     /**
      * @var ActiveRecord Object to show files from
@@ -56,39 +55,59 @@ class ShowFiles extends Widget
      */
     public $preview = true;
 
+    protected string $component = 'AttachedFiles';
+
+    protected ?string $assetBundle = FileVueAsset::class;
+
     /**
-     * Executes the widget.
+     * @var File[] the files to render, resolved in [[beforeRun()]]
      */
-    public function run()
+    private array $files = [];
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeRun()
     {
         if (!$this->active) {
-            return '';
+            return false;
         }
 
-        $files = $this->object->fileManager->findStreamFiles();
+        $this->files = $this->object->fileManager->findStreamFiles();
 
-        if ($files === []) {
-            return '';
+        if ($this->files === []) {
+            return false;
         }
 
-        return VueComponent::widget([
-            'name' => 'AttachedFiles',
-            'assetBundle' => FileVueAsset::class,
-            'options' => [
-                // hideOnEdit mandatory since 1.2 - the class sits on the mount tag itself
-                // because the stream's inline edit removes `.stream-entry-addons > .hideOnEdit`,
-                // a direct child selector (see humhub.stream.StreamEntry.js).
-                'class' => 'hideOnEdit',
-            ],
-            'props' => [
-                'files' => array_map($this->serializeFile(...), $files),
-                'galleryId' => 'gallery-' . $this->object->getUniqueId(),
-                'preview' => $this->preview,
-                'excludeMedia' => $this->preview
-                    && (bool)Yii::$app->getModule('file')->settings->get('excludeMediaFilesPreview'),
-                'fluid' => ThemeHelper::isFluid(),
-            ],
-        ]);
+        return parent::beforeRun();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getOptions(): array
+    {
+        return [
+            // hideOnEdit mandatory since 1.2 - the class sits on the mount tag itself
+            // because the stream's inline edit removes `.stream-entry-addons > .hideOnEdit`,
+            // a direct child selector (see humhub.stream.StreamEntry.js).
+            'class' => 'hideOnEdit',
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getProps(): array
+    {
+        return [
+            'files' => array_map($this->serializeFile(...), $this->files),
+            'galleryId' => 'gallery-' . $this->object->getUniqueId(),
+            'preview' => $this->preview,
+            'excludeMedia' => $this->preview
+                && (bool)Yii::$app->getModule('file')->settings->get('excludeMediaFilesPreview'),
+            'fluid' => ThemeHelper::isFluid(),
+        ];
     }
 
     private function serializeFile(File $file): array

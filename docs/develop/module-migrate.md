@@ -54,6 +54,15 @@ Each minor release line has its own file with the breaking changes, new APIs and
   - Also added the standalone core JS module `url` (`humhub.url.js`) — the client-side counterpart
     of `yii\helpers\Url::to()` for default-routed endpoints, usable from any `humhub.module()` via
     `require('url').to(route, params)`. Purely additive; `@humhub/vue`'s `url()` now delegates to it.
+  - Added `humhub\components\assets\VueAssetBundle`, the base class of a module's `*VueAsset`
+    bundle: it derives source path and artifact from `$moduleId` and always depends on
+    `humhub\assets\CoreVueAsset`, so a module lists only the `*VueAsset` bundles of the modules
+    whose components it nests. Added `humhub\widgets\VueWidget`, the base class of a PHP widget
+    rendering an island (`getProps()`/`getOptions()`/`getPlaceholder()` over `VueComponent`).
+    Both purely additive; see `docs/develop/ui-js-vuejs-components.md`.
+  - **Removed**: the `humhub\widgets\views\statusBar.php` view — `humhub\widgets\StatusBar` renders
+    the `StatusBar` island directly. A theme overriding that view overrides the widget or the Vue
+    component instead.
   - The publish excludes for `@humhub/resources` bundles (`scss/`, `.gitignore` — introduced
     with #8277) were never applied at runtime due to an alias comparison bug and are now
     active; `build/` is deliberately **not** excluded because the compiled `humhub-app.css`

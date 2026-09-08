@@ -7,13 +7,16 @@ use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\like\assets\LikeVueAsset;
 use humhub\modules\like\services\LikeService;
-use humhub\widgets\VueComponent;
+use humhub\widgets\VueWidget;
 use Yii;
-use yii\base\Widget;
 
-class LikeLink extends Widget
+class LikeLink extends VueWidget
 {
     public ContentActiveRecord|ContentAddonActiveRecord $object;
+
+    protected string $component = 'LikeButton';
+
+    protected ?string $assetBundle = LikeVueAsset::class;
 
     private LikeService $likeService;
 
@@ -29,16 +32,15 @@ class LikeLink extends Widget
         return parent::beforeRun();
     }
 
-    public function run()
+    /**
+     * @inheritdoc
+     */
+    protected function getProps(): array
     {
-        return VueComponent::widget([
-            'name' => 'LikeButton',
-            'assetBundle' => LikeVueAsset::class,
-            'props' => [
-                'recordId' => RecordMap::getId($this->object),
-                'likeCount' => $this->likeService->getCount(),
-                'currentUserLiked' => Yii::$app->user->isGuest ? false : $this->likeService->hasLiked(),
-            ],
-        ]);
+        return [
+            'recordId' => RecordMap::getId($this->object),
+            'likeCount' => $this->likeService->getCount(),
+            'currentUserLiked' => Yii::$app->user->isGuest ? false : $this->likeService->hasLiked(),
+        ];
     }
 }

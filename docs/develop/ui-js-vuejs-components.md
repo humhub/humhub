@@ -7,7 +7,7 @@
 ```
 protected/humhub/modules/like/
 ├── assets/
-│   └── LikeVueAsset.php              # AssetBundle → js/humhub.like.vue.js
+│   └── LikeVueAsset.php              # VueAssetBundle, moduleId 'like' → js/humhub.like.vue.js
 ├── vue/                              # sources — plain source code like views/, never published
 │   └── LikeButton.vue                # auto-registered under its filename
 └── resources/
@@ -79,7 +79,7 @@ Core's own component set above is one instance of a more general pattern: **any*
 
 - **Vue runtime:** Vue 3, runtime-only build, added like all frontend libraries via Composer/asset-packagist (`npm-asset/vue`). A `VueAsset` bundle serves `vue.runtime.global.js` in debug mode (warnings, Vue Devtools support) and `vue.runtime.global.prod.js` otherwise. It becomes part of the core bundle, so every module asset bundle (which implicitly depends on `CoreBundleAsset`) is guaranteed to load after it.
 - **`humhub.vue` core module:** a new `protected/humhub/resources/js/humhub/humhub.vue.js`, part of the core JS list like `humhub.i18n.js`. Exposes the registry, the mounter and the composables under `humhub.modules.vue`.
-- **Module components:** each module ships one committed artifact (`resources/js/humhub.<module>.vue.js`) registered through a normal `AssetBundle`. Yii's per-page asset registration is the lazy-loading mechanism — a module's Vue code only loads on pages that render one of its components. Nothing loads globally except the runtime and `humhub.vue`.
+- **Module components:** each module ships one committed artifact (`resources/js/humhub.<module>.vue.js`) through a `humhub\components\assets\VueAssetBundle` subclass that names its module (`$moduleId`) and lists the `*VueAsset` bundles of the modules whose components it nests by tag. The dependency on `CoreVueAsset` — and through it on `CoreApiAsset` and the runtime — is implied, and it is load-bearing: Yii emits bundles in registration order, and a widget in a view registers its bundle before the layout registers the core bundle, so without the edge the module script would run first. Yii's per-page asset registration is the lazy-loading mechanism — a module's Vue code only loads on pages that render one of its components. Nothing loads globally except the runtime, `humhub.vue` and the core component set.
 - **Later stage (optional):** on-demand loading via dynamic `import()` at first mount for heavy components. The registry API already anticipates this (a component may be registered as an async loader), but the first iteration relies on asset bundles only.
 
 ## Component registry
@@ -156,7 +156,7 @@ Two equivalent ways:
 
 **The mount point is an element of the page, not a hook to hang one on.** Give it the id and classes the server-rendered element had (`options`), so theme CSS, the product tour and tests keep addressing it — `notification\widgets\Overview` mounts `#notification_widget.btn-group`, `activity\widgets\ActivityBox` mounts `#panel-activities.panel`. Two consequences worth knowing: a custom element is `display: inline` by default, so a block-level island needs a class that says otherwise (an inline box paints its background only behind its line boxes — a panel would show the page through its own contents); and the element is EMPTY until the island mounts, so anything measuring it — a test asserting the panel is there, the tour positioning itself — sees nothing. Pass `content` for a placeholder that gives it substance in the meantime.
 
-**Migration mechanism:** existing PHP widgets keep their public API and simply render an island internally. `LikeLink::widget(['object' => $post])` continues to work in every theme and module — `LikeLink::run()` returns `VueComponent::widget([...])` directly, with no PHP view in between (the earlier `views/likeLink.php` was removed). Callers never notice the switch.
+**Migration mechanism:** existing PHP widgets keep their public API and simply render an island internally, by extending `humhub\widgets\VueWidget`: the subclass declares the component and its bundle, hands over what only the server knows via `getProps()`, gives the mount element its id and classes via `getOptions()` and a placeholder via `getPlaceholder()`; a `beforeRun()` returning `false` renders nothing, as with any widget. `LikeLink::widget(['object' => $post])` continues to work in every theme and module — there is no PHP view in between anymore (the earlier `views/likeLink.php` was removed), the widget IS the island's server side. Callers never notice the switch; `LikeLink`, `Comments`, `ShowFiles`, `MembershipButton`, `FriendshipButton`, `ActivityBox`, the notification `Overview` and the `StatusBar` are built this way.
 
 **Guest states.** Islands that need to know whether the current visitor is logged in do not receive a `guest` prop from the server — they read it client-side from the `user` `registerJsConfig` section (`isGuest`, `loginUrl`, both populated by `CoreJsConfig` from `Yii::$app->user->isGuest` / `Yii::$app->user->loginUrl`) via `getConfig('user')` from `@humhub/vue`. `LikeButton` is the reference example: guests get the like **count**, non-interactively, plus a link that opens the login modal (`data-bs-target="#globalModal"`, same delegated handler as the user-list link) instead of the like/unlike controls.
 

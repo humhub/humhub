@@ -8,12 +8,11 @@
 
 namespace humhub\modules\space\widgets;
 
-use humhub\components\Widget;
 use humhub\modules\space\assets\SpaceVueAsset;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\serializers\MembershipSerializer;
 use humhub\modules\ui\icon\widgets\Icon;
-use humhub\widgets\VueComponent;
+use humhub\widgets\VueWidget;
 use Yii;
 
 /**
@@ -46,7 +45,7 @@ use Yii;
  * @author luke
  * @since 0.11
  */
-class MembershipButton extends Widget
+class MembershipButton extends VueWidget
 {
     /**
      * @var string classes of the join / request / accept-invite button
@@ -108,34 +107,42 @@ class MembershipButton extends Widget
      */
     public ?bool $reloadOnJoin = null;
 
+    protected string $component = 'MembershipButton';
+
+    protected ?string $assetBundle = SpaceVueAsset::class;
+
     /**
      * @inheritdoc
      */
-    public function run()
+    public function beforeRun()
     {
         if (Yii::$app->user->isGuest || $this->space->isBlockedForUser()) {
-            return '';
+            return false;
         }
 
-        return VueComponent::widget([
-            'name' => 'MembershipButton',
-            'assetBundle' => SpaceVueAsset::class,
-            'props' => [
-                'spaceId' => $this->space->id,
-                'spaceName' => $this->space->getDisplayName(),
-                'spaceUrl' => $this->space->createUrl(),
-                'initial' => MembershipSerializer::state($this->space),
-                'buttonClass' => $this->buttonClass ?? self::DEFAULT_BUTTON_CLASS,
-                'pendingClass' => $this->pendingClass ?? self::DEFAULT_STATE_CLASS,
-                'memberClass' => $this->memberClass ?? self::DEFAULT_STATE_CLASS,
-                'togglerClass' => $this->togglerClass ?? self::DEFAULT_BUTTON_CLASS,
-                'groupClass' => $this->groupClass ?? 'btn-group',
-                'showMemberState' => (bool)$this->showMemberState,
-                'reloadOnJoin' => (bool)$this->reloadOnJoin,
-                'checkIconHtml' => Icon::get('check')->asString(),
-                'clockIconHtml' => Icon::get('clock-o')->asString(),
-                'userIconHtml' => Icon::get('user')->asString(),
-            ],
-        ]);
+        return parent::beforeRun();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getProps(): array
+    {
+        return [
+            'spaceId' => $this->space->id,
+            'spaceName' => $this->space->getDisplayName(),
+            'spaceUrl' => $this->space->createUrl(),
+            'initial' => MembershipSerializer::state($this->space),
+            'buttonClass' => $this->buttonClass ?? self::DEFAULT_BUTTON_CLASS,
+            'pendingClass' => $this->pendingClass ?? self::DEFAULT_STATE_CLASS,
+            'memberClass' => $this->memberClass ?? self::DEFAULT_STATE_CLASS,
+            'togglerClass' => $this->togglerClass ?? self::DEFAULT_BUTTON_CLASS,
+            'groupClass' => $this->groupClass ?? 'btn-group',
+            'showMemberState' => (bool)$this->showMemberState,
+            'reloadOnJoin' => (bool)$this->reloadOnJoin,
+            'checkIconHtml' => Icon::get('check')->asString(),
+            'clockIconHtml' => Icon::get('clock-o')->asString(),
+            'userIconHtml' => Icon::get('user')->asString(),
+        ];
     }
 }

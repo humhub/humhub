@@ -2,7 +2,7 @@
 
 namespace tests\codeception\unit\assets;
 
-use humhub\assets\CoreApiAsset;
+use humhub\assets\CoreVueAsset;
 use humhub\modules\user\assets\UserVueAsset;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
@@ -16,9 +16,8 @@ class UserVueAssetTest extends HumHubDbTestCase
         $this->assertFileExists($path . '/humhub.user.vue.js.map');
     }
 
-    public function testDependsOnCoreApi()
+    public function testDependsOnTheCoreVueBundle()
     {
-        $defaults = (new \ReflectionClass(UserVueAsset::class))->getDefaultProperties();
-        $this->assertContains(CoreApiAsset::class, $defaults['depends']);
+        $this->assertContains(CoreVueAsset::class, (new UserVueAsset())->depends);
     }
 }

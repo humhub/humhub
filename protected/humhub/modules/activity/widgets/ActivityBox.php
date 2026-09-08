@@ -2,13 +2,12 @@
 
 namespace humhub\modules\activity\widgets;
 
-use humhub\components\Widget;
 use humhub\helpers\Html;
 use humhub\modules\activity\assets\ActivityVueAsset;
 use humhub\modules\activity\services\ActivityWindowService;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\widgets\PanelMenu;
-use humhub\widgets\VueComponent;
+use humhub\widgets\VueWidget;
 use Yii;
 
 /**
@@ -30,7 +29,7 @@ use Yii;
  *
  * @since 1.1
  */
-class ActivityBox extends Widget
+class ActivityBox extends VueWidget
 {
     /**
      * @var string id of the element the panel menu collapses - see the `collapse` class in
@@ -41,41 +40,57 @@ class ActivityBox extends Widget
     public ?ContentContainerActiveRecord $contentContainer = null;
     public int $initLimit = ActivityWindowService::PAGE_SIZE;
 
-    public function run()
+    protected string $component = 'ActivityBox';
+
+    protected ?string $assetBundle = ActivityVueAsset::class;
+
+    /**
+     * @inheritdoc
+     *
+     * The panel element is the mount point, so it exists in the server's HTML rather than only
+     * after the island mounts: theme CSS, the product tour (`.panel-activities`) and tests that
+     * assert the panel's presence address it directly.
+     */
+    protected function getOptions(): array
     {
-        return VueComponent::widget([
-            'name' => 'ActivityBox',
-            'assetBundle' => ActivityVueAsset::class,
-            // The panel element is the mount point, so it exists in the server's HTML rather
-            // than only after the island mounts: theme CSS, the product tour (`.panel-activities`)
-            // and tests that assert the panel's presence address it directly.
-            'options' => [
-                'id' => 'panel-activities',
-                'class' => 'panel panel-default panel-activities',
-            ],
-            // Until the island mounts the panel would be an empty element - no size, and
-            // therefore not "visible" to anything asking (theme CSS, the product tour, a test
-            // asserting the panel is there). The heading is rendered ahead of it, from the very
-            // string the island renders a moment later.
-            'content' => Html::tag(
-                'div',
-                Yii::t('ActivityModule.base', '<strong>Latest</strong> activities'),
-                ['class' => 'panel-heading'],
+        return ['id' => 'panel-activities', 'class' => 'panel panel-default panel-activities'];
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * Until the island mounts the panel would be an empty element - no size, and therefore not
+     * "visible" to anything asking (theme CSS, the product tour, a test asserting the panel is
+     * there). The heading is rendered ahead of it, from the very string the island renders a
+     * moment later.
+     */
+    protected function getPlaceholder(): string
+    {
+        return Html::tag(
+            'div',
+            Yii::t('ActivityModule.base', '<strong>Latest</strong> activities'),
+            ['class' => 'panel-heading'],
+        );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getProps(): array
+    {
+        return [
+            'initial' => (new ActivityWindowService())->window(
+                $this->initLimit,
+                null,
+                $this->contentContainer?->contentContainerRecord,
             ),
-            'props' => [
-                'initial' => (new ActivityWindowService())->window(
-                    $this->initLimit,
-                    null,
-                    $this->contentContainer?->contentContainerRecord,
-                ),
-                'containerGuid' => $this->contentContainer?->guid ?? '',
-                'pageSize' => ActivityWindowService::PAGE_SIZE,
-                // `PanelMenu` derives its collapse id from the view context, which used to be
-                // this widget's own view and is now whatever view renders the island's mount
-                // point - so it is given explicitly. The id lands on the element the menu
-                // collapses and keys its remembered state in local storage.
-                'panelMenuHtml' => PanelMenu::widget(['collapseId' => self::COLLAPSE_ID]),
-            ],
-        ]);
+            'containerGuid' => $this->contentContainer?->guid ?? '',
+            'pageSize' => ActivityWindowService::PAGE_SIZE,
+            // `PanelMenu` derives its collapse id from the view context, which used to be
+            // this widget's own view and is now whatever view renders the island's mount
+            // point - so it is given explicitly. The id lands on the element the menu
+            // collapses and keys its remembered state in local storage.
+            'panelMenuHtml' => PanelMenu::widget(['collapseId' => self::COLLAPSE_ID]),
+        ];
     }
 }

@@ -8,45 +8,30 @@
 
 namespace humhub\modules\notification\assets;
 
-use humhub\assets\CoreApiAsset;
-use humhub\assets\CoreVueAsset;
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\VueAssetBundle;
 use humhub\modules\space\assets\SpaceVueAsset;
 use humhub\modules\user\assets\UserVueAsset;
 
 /**
- * Compiled Vue components of the notification module.
- *
- * Source: `vue/`, built via `grunt build-vue --module=notification`.
- * The artifact is committed — see docs/develop/ui-js-vuejs.md.
+ * Compiled Vue components of the notification module (`vue/`, built via
+ * `grunt build-vue --module=notification`).
  *
  * @since 1.20
  */
-class NotificationVueAsset extends AssetBundle
+class NotificationVueAsset extends VueAssetBundle
 {
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@notification/resources';
+    public string $moduleId = 'notification';
 
     /**
      * @inheritdoc
-     */
-    public $js = [
-        'js/humhub.notification.vue.js',
-    ];
-
-    /**
-     * @inheritdoc
+     *
+     * The components an entry nests by tag: `<UserImage>` for the originator, `<SpaceImage>` for the space badge.
      */
     public $depends = [
-        CoreApiAsset::class,
-        // The islands nest components from the core set (none by tag today, but the shared
-        // runtime lives there) and the two module-provided shared components an entry renders:
-        // `<UserImage>` for the originator and `<SpaceImage>` for the space badge. Both must be
-        // registered before this bundle's own script runs.
-        CoreVueAsset::class,
-        UserVueAsset::class,
         SpaceVueAsset::class,
+        UserVueAsset::class,
     ];
 }

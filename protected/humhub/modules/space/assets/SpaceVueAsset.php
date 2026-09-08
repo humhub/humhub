@@ -8,35 +8,18 @@
 
 namespace humhub\modules\space\assets;
 
-use humhub\assets\CoreApiAsset;
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\VueAssetBundle;
 
 /**
- * Compiled Vue components of the space module.
- *
- * Source: `vue/`, built via `grunt build-vue --module=space`.
- * The artifact is committed — see docs/develop/ui-js-vuejs.md.
+ * Compiled Vue components of the space module (`vue/`, built via
+ * `grunt build-vue --module=space`).
  *
  * @since 1.20
  */
-class SpaceVueAsset extends AssetBundle
+class SpaceVueAsset extends VueAssetBundle
 {
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@space/resources';
-
-    /**
-     * @inheritdoc
-     */
-    public $js = [
-        'js/humhub.space.vue.js',
-    ];
-
-    /**
-     * @inheritdoc
-     */
-    public $depends = [
-        CoreApiAsset::class,
-    ];
+    public string $moduleId = 'space';
 }

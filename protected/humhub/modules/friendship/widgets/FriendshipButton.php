@@ -12,9 +12,8 @@ use humhub\modules\friendship\assets\FriendshipVueAsset;
 use humhub\modules\friendship\serializers\FriendshipSerializer;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\models\User;
-use humhub\widgets\VueComponent;
+use humhub\widgets\VueWidget;
 use Yii;
-use yii\base\Widget;
 
 /**
  * The friendship button between the current and the given user.
@@ -37,7 +36,7 @@ use yii\base\Widget;
  *
  * @author luke
  */
-class FriendshipButton extends Widget
+class FriendshipButton extends VueWidget
 {
     /**
      * @var string classes of the "add friend" button
@@ -78,32 +77,40 @@ class FriendshipButton extends Widget
      */
     public ?string $groupClass = null;
 
+    protected string $component = 'FriendshipButton';
+
+    protected ?string $assetBundle = FriendshipVueAsset::class;
+
     /**
      * @inheritdoc
      */
-    public function run()
+    public function beforeRun()
     {
         if (!self::isVisibleForUser($this->user)) {
-            return '';
+            return false;
         }
 
-        return VueComponent::widget([
-            'name' => 'FriendshipButton',
-            'assetBundle' => FriendshipVueAsset::class,
-            'props' => [
-                'userId' => $this->user->id,
-                'userName' => $this->user->getDisplayName(),
-                'initial' => FriendshipSerializer::state($this->user),
-                'buttonClass' => $this->buttonClass ?? self::DEFAULT_BUTTON_CLASS,
-                'stateClass' => $this->stateClass ?? self::DEFAULT_STATE_CLASS,
-                'togglerClass' => $this->togglerClass ?? self::DEFAULT_STATE_CLASS,
-                'groupClass' => $this->groupClass ?? 'btn-group',
-                'checkIconHtml' => Icon::get('check')->asString(),
-                'plusIconHtml' => Icon::get('plus')->asString(),
-                'clockIconHtml' => Icon::get('clock-o')->asString(),
-                'timesIconHtml' => Icon::get('times')->asString(),
-            ],
-        ]);
+        return parent::beforeRun();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getProps(): array
+    {
+        return [
+            'userId' => $this->user->id,
+            'userName' => $this->user->getDisplayName(),
+            'initial' => FriendshipSerializer::state($this->user),
+            'buttonClass' => $this->buttonClass ?? self::DEFAULT_BUTTON_CLASS,
+            'stateClass' => $this->stateClass ?? self::DEFAULT_STATE_CLASS,
+            'togglerClass' => $this->togglerClass ?? self::DEFAULT_STATE_CLASS,
+            'groupClass' => $this->groupClass ?? 'btn-group',
+            'checkIconHtml' => Icon::get('check')->asString(),
+            'plusIconHtml' => Icon::get('plus')->asString(),
+            'clockIconHtml' => Icon::get('clock-o')->asString(),
+            'timesIconHtml' => Icon::get('times')->asString(),
+        ];
     }
 
     public static function isVisibleForUser(User $user): bool

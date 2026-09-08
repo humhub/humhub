@@ -8,44 +8,30 @@
 
 namespace humhub\modules\activity\assets;
 
-use humhub\assets\CoreApiAsset;
-use humhub\assets\CoreVueAsset;
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\VueAssetBundle;
 use humhub\modules\space\assets\SpaceVueAsset;
 use humhub\modules\user\assets\UserVueAsset;
 
 /**
- * Compiled Vue components of the activity module.
- *
- * Source: `vue/`, built via `grunt build-vue --module=activity`.
- * The artifact is committed — see docs/develop/ui-js-vuejs.md.
+ * Compiled Vue components of the activity module (`vue/`, built via
+ * `grunt build-vue --module=activity`).
  *
  * @since 1.20
  */
-class ActivityVueAsset extends AssetBundle
+class ActivityVueAsset extends VueAssetBundle
 {
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@activity/resources';
+    public string $moduleId = 'activity';
 
     /**
      * @inheritdoc
-     */
-    public $js = [
-        'js/humhub.activity.vue.js',
-    ];
-
-    /**
-     * @inheritdoc
+     *
+     * The components an entry nests by tag: `<UserImage>` for the author, `<SpaceImage>` for the space badge.
      */
     public $depends = [
-        CoreApiAsset::class,
-        // The island renders the two module-provided shared components an entry needs:
-        // `<UserImage>` for the author and `<SpaceImage>` for the space badge. Both must be
-        // registered before this bundle's own script runs.
-        CoreVueAsset::class,
-        UserVueAsset::class,
         SpaceVueAsset::class,
+        UserVueAsset::class,
     ];
 }

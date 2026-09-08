@@ -8,35 +8,18 @@
 
 namespace humhub\modules\friendship\assets;
 
-use humhub\assets\CoreApiAsset;
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\VueAssetBundle;
 
 /**
- * Compiled Vue components of the friendship module.
- *
- * Source: `vue/`, built via `grunt build-vue --module=friendship`.
- * The artifact is committed — see docs/develop/ui-js-vuejs.md.
+ * Compiled Vue components of the friendship module (`vue/`, built via
+ * `grunt build-vue --module=friendship`).
  *
  * @since 1.20
  */
-class FriendshipVueAsset extends AssetBundle
+class FriendshipVueAsset extends VueAssetBundle
 {
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@friendship/resources';
-
-    /**
-     * @inheritdoc
-     */
-    public $js = [
-        'js/humhub.friendship.vue.js',
-    ];
-
-    /**
-     * @inheritdoc
-     */
-    public $depends = [
-        CoreApiAsset::class,
-    ];
+    public string $moduleId = 'friendship';
 }

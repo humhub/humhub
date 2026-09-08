@@ -2,7 +2,6 @@
 
 namespace humhub\modules\comment\widgets;
 
-use humhub\components\Widget;
 use humhub\modules\comment\assets\CommentVueAsset;
 use humhub\modules\comment\helpers\IdHelper;
 use humhub\modules\comment\models\Comment as CommentModel;
@@ -17,7 +16,7 @@ use humhub\modules\file\handler\FileHandlerCollection;
 use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 use humhub\modules\like\serializers\LikeSerializer;
 use humhub\modules\ui\icon\widgets\Icon;
-use humhub\widgets\VueComponent;
+use humhub\widgets\VueWidget;
 use Yii;
 
 /**
@@ -30,7 +29,7 @@ use Yii;
  * @property-read int $limit
  * @property-read int $pageSize
  */
-class Comments extends Widget
+class Comments extends VueWidget
 {
     public const VIEW_MODE_COMPACT = 'compact';
     public const VIEW_MODE_FULL = 'full';
@@ -54,6 +53,10 @@ class Comments extends Widget
 
     public string $viewMode = self::VIEW_MODE_COMPACT;
 
+    protected string $component = 'CommentSection';
+
+    protected ?string $assetBundle = CommentVueAsset::class;
+
     public function init()
     {
         parent::init();
@@ -73,12 +76,31 @@ class Comments extends Widget
         $this->module = Yii::$app->getModule('comment');
     }
 
-    public function run()
+    /**
+     * @inheritdoc
+     */
+    public function beforeRun()
     {
         if (Yii::$app->user->isGuest && $this->module->guestHideComments) {
-            return '';
+            return false;
         }
 
+        return parent::beforeRun();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getOptions(): array
+    {
+        return ['id' => 'comment_' . IdHelper::getId($this->content, $this->parentComment)];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getProps(): array
+    {
         $canComment = $this->module->canComment($this->content);
         $anchorCommentId = $this->getHighlightCommentId(true);
 
@@ -96,54 +118,47 @@ class Comments extends Widget
             limit: $anchorCommentId ? $this->module->commentsPreviewMax : $this->getLimit(),
         );
 
-        return VueComponent::widget([
-            'name' => 'CommentSection',
-            'assetBundle' => CommentVueAsset::class,
-            'options' => [
-                'id' => 'comment_' . IdHelper::getId($this->content, $this->parentComment),
-            ],
-            'props' => [
-                'contentId' => $this->content->id,
-                'initial' => $initial,
-                // The like states of the embedded window, inlined rather than fetched: the
-                // window payload itself is caller-neutral (and therefore cacheable, see
-                // `docs/develop/concept-api.md`), but THIS page render is per user anyway, so
-                // handing them over here saves the island its first `like/states` request and
-                // renders the like links complete on first paint.
-                'initialLikeStates' => LikeSerializer::statesByRecordId(CommentSerializer::recordIds($initial)),
-                'canComment' => $canComment,
-                'formShellHtml' => $canComment ? CommentFormShell::widget(['content' => $this->content]) : null,
-                // Settings of the form's Vue-native upload field (`UploadField`), which
-                // replaced the shell's former server-rendered upload composition. The handler
-                // entries stay server-rendered: they are menu entries a module contributed,
-                // carrying legacy `data-action-click` attributes - see that component's
-                // docblock, "Legacy file handlers".
-                'uploadOptions' => $canComment ? [
-                    'max' => (int)Yii::$app->getModule('content')->maxAttachedFiles,
-                    'handlersHtml' => FileHandlerButtonDropdown::widget([
-                        'handlers' => FileHandlerCollection::getByType(
-                            [FileHandlerCollection::TYPE_IMPORT, FileHandlerCollection::TYPE_CREATE],
-                        ),
-                        'itemsOnly' => true,
-                    ]),
-                ] : null,
-                // Server-rendered icon HTML for CommentForm.vue's submit button, reproducing
-                // the legacy `Button::accent()->icon('send')` markup (see that component's own
-                // docblock) - rendered here rather than hardcoded client-side since the icon
-                // provider (FontAwesome by default) is pluggable/configurable.
-                'submitIconHtml' => $canComment ? Icon::get('send')->asString() : null,
-                'pageSize' => $this->getPageSize(),
-                'anchorCommentId' => $this->getHighlightCommentId(false),
-                // Mirrors comments.php's `d-none` class, only lifted (inline `.show()`)
-                // when at least one comment is preloaded into the initial window.
-                'collapsed' => empty($initial['results']),
-                // Same call `file\widgets\ShowFiles` makes for a wall entry: an attachment
-                // the preview grid already shows is left out of the list below it. The
-                // setting is the file module's, the shape rendering it is the shared
-                // `<AttachedFiles>` component.
-                'excludeMediaFiles' => (bool)Yii::$app->getModule('file')->settings->get('excludeMediaFilesPreview'),
-            ],
-        ]);
+        return [
+            'contentId' => $this->content->id,
+            'initial' => $initial,
+            // The like states of the embedded window, inlined rather than fetched: the
+            // window payload itself is caller-neutral (and therefore cacheable, see
+            // `docs/develop/concept-api.md`), but THIS page render is per user anyway, so
+            // handing them over here saves the island its first `like/states` request and
+            // renders the like links complete on first paint.
+            'initialLikeStates' => LikeSerializer::statesByRecordId(CommentSerializer::recordIds($initial)),
+            'canComment' => $canComment,
+            'formShellHtml' => $canComment ? CommentFormShell::widget(['content' => $this->content]) : null,
+            // Settings of the form's Vue-native upload field (`UploadField`), which
+            // replaced the shell's former server-rendered upload composition. The handler
+            // entries stay server-rendered: they are menu entries a module contributed,
+            // carrying legacy `data-action-click` attributes - see that component's
+            // docblock, "Legacy file handlers".
+            'uploadOptions' => $canComment ? [
+                'max' => (int)Yii::$app->getModule('content')->maxAttachedFiles,
+                'handlersHtml' => FileHandlerButtonDropdown::widget([
+                    'handlers' => FileHandlerCollection::getByType(
+                        [FileHandlerCollection::TYPE_IMPORT, FileHandlerCollection::TYPE_CREATE],
+                    ),
+                    'itemsOnly' => true,
+                ]),
+            ] : null,
+            // Server-rendered icon HTML for CommentForm.vue's submit button, reproducing
+            // the legacy `Button::accent()->icon('send')` markup (see that component's own
+            // docblock) - rendered here rather than hardcoded client-side since the icon
+            // provider (FontAwesome by default) is pluggable/configurable.
+            'submitIconHtml' => $canComment ? Icon::get('send')->asString() : null,
+            'pageSize' => $this->getPageSize(),
+            'anchorCommentId' => $this->getHighlightCommentId(false),
+            // Mirrors comments.php's `d-none` class, only lifted (inline `.show()`)
+            // when at least one comment is preloaded into the initial window.
+            'collapsed' => empty($initial['results']),
+            // Same call `file\widgets\ShowFiles` makes for a wall entry: an attachment
+            // the preview grid already shows is left out of the list below it. The
+            // setting is the file module's, the shape rendering it is the shared
+            // `<AttachedFiles>` component.
+            'excludeMediaFiles' => (bool)Yii::$app->getModule('file')->settings->get('excludeMediaFilesPreview'),
+        ];
     }
 
     private function isFullViewMode(): bool

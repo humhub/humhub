@@ -8,11 +8,10 @@
 
 namespace humhub\modules\notification\widgets;
 
-use humhub\components\Widget;
 use humhub\modules\notification\assets\NotificationVueAsset;
 use humhub\modules\notification\services\NotificationWindowService;
 use humhub\modules\ui\icon\widgets\Icon;
-use humhub\widgets\VueComponent;
+use humhub\widgets\VueWidget;
 use Yii;
 use yii\helpers\Url;
 
@@ -30,33 +29,45 @@ use yii\helpers\Url;
  * @author buddha
  * @since 1.1
  */
-class Overview extends Widget
+class Overview extends VueWidget
 {
+    protected string $component = 'NotificationMenu';
+
+    protected ?string $assetBundle = NotificationVueAsset::class;
+
     /**
      * @inheritdoc
      */
-    public function run()
+    public function beforeRun()
     {
         if (Yii::$app->user->isGuest) {
-            return '';
+            return false;
         }
 
-        return VueComponent::widget([
-            'name' => 'NotificationMenu',
-            'assetBundle' => NotificationVueAsset::class,
-            'options' => [
-                'id' => 'notification_widget',
-                'class' => 'btn-group',
-            ],
-            'props' => [
-                'initial' => (new NotificationWindowService())->window(NotificationWindowService::MENU_PAGE_SIZE),
-                'pageSize' => NotificationWindowService::MENU_PAGE_SIZE,
-                'overviewUrl' => Url::to(['/notification/overview']),
-                'settingsUrl' => Url::to(['/notification/user']),
-                'bellIconHtml' => Icon::get('bell')->asString(),
-                'checkIconHtml' => Icon::get('check')->asString(),
-                'cogIconHtml' => Icon::get('cog')->asString(),
-            ],
-        ]);
+        return parent::beforeRun();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getOptions(): array
+    {
+        return ['id' => 'notification_widget', 'class' => 'btn-group'];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getProps(): array
+    {
+        return [
+            'initial' => (new NotificationWindowService())->window(NotificationWindowService::MENU_PAGE_SIZE),
+            'pageSize' => NotificationWindowService::MENU_PAGE_SIZE,
+            'overviewUrl' => Url::to(['/notification/overview']),
+            'settingsUrl' => Url::to(['/notification/user']),
+            'bellIconHtml' => Icon::get('bell')->asString(),
+            'checkIconHtml' => Icon::get('check')->asString(),
+            'cogIconHtml' => Icon::get('cog')->asString(),
+        ];
     }
 }

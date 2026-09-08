@@ -8,40 +8,18 @@
 
 namespace humhub\modules\content\assets;
 
-use humhub\assets\CoreApiAsset;
-use humhub\assets\CoreVueAsset;
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\VueAssetBundle;
 
 /**
- * Compiled Vue components of the content module.
- *
- * Source: `vue/`, built via `grunt build-vue --module=content`.
- * The artifact is committed — see docs/develop/ui-js-vuejs.md.
+ * Compiled Vue components of the content module (`vue/`, built via
+ * `grunt build-vue --module=content`).
  *
  * @since 1.20
  */
-class ContentVueAsset extends AssetBundle
+class ContentVueAsset extends VueAssetBundle
 {
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@content/resources';
-
-    /**
-     * @inheritdoc
-     */
-    public $js = [
-        'js/humhub.content.vue.js',
-    ];
-
-    /**
-     * @inheritdoc
-     */
-    public $depends = [
-        CoreApiAsset::class,
-        // ContentControls.vue renders <DropdownMenu>, which lives in the core component set
-        // (protected/humhub/vue/) - CoreVueAsset must register it before this bundle's own
-        // script runs.
-        CoreVueAsset::class,
-    ];
+    public string $moduleId = 'content';
 }
