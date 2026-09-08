@@ -867,7 +867,7 @@ describe('CommentSection', () => {
     describe('edit/delete menu visibility', () => {
         // Actual edit/delete/admin-delete/live-update mutation behavior is
         // covered in commentMutations.test.js — this file stays focused on
-        // the read path per docs/superpowers/plans/2026-08-19-vuejs-comments.md.
+        // the read path.
         it('hides edit/delete menu items when their flags are false', () => {
             const comment = makeComment({ canEdit: false, canDelete: false });
 

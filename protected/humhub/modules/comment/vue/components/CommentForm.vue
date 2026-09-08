@@ -67,8 +67,7 @@
  * (`attribute="message"`) renders that attribute's messages itself once
  * `HumHubForm`'s error map updates — see its own docblock's "API" section.
  *
- * Error shapes (see docs/superpowers/plans/2026-08-19-vuejs-comments.md, "API
- * contract notes"): a rejected `client.post()` call resolves a
+ * Error shapes: a rejected `client.post()` call resolves a
  * `client.Response`-shaped object. Its constructor unconditionally merges a
  * JSON response body onto itself (`$.extend(this, this.response)`) BEFORE
  * `.setError()` runs its own (separately buggy, non-string-safe)
