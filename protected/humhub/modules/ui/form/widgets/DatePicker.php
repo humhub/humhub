@@ -97,6 +97,19 @@ class DatePicker extends BaseDatePicker
         if ($this->pickerLanguage !== 'en-US' && $this->pickerLanguage !== 'en') {
             $this->registerLanguageAsset();
 
+            /**
+             * HUMHUB PATCH: Some bundled jQuery UI locale files use month abbreviations that don't
+             * match the ones PHP's intl/ICU data returns for the very same locale (e.g. jQuery UI's
+             * `en-GB` file says "Sep" for September, while ICU/CLDR says "Sept" for en-GB). Since the
+             * server uses ICU (via DbDateValidator / Yii Formatter::asDate()) to validate and
+             * (re-)format the very same value, such a mismatch makes a date picked in the UI fail
+             * server-side validation on save, and later makes the picker unable to re-parse the
+             * server-formatted value (falling back to today's date). Overriding monthNames /
+             * monthNamesShort with names generated from that same ICU locale keeps client and server
+             * in sync, whatever locale is used.
+             */
+            $this->clientOptions += $this->getIntlMonthNames($language);
+
             $options = Json::htmlEncode($this->clientOptions);
             $this->pickerLanguage = Html::encode($this->pickerLanguage);
             $this->getView()->registerJs("jQuery('#{$containerID}').datepicker($.extend({}, $.datepicker.regional['{$this->pickerLanguage}'], $options));");
@@ -119,6 +132,46 @@ class DatePicker extends BaseDatePicker
         });');
 
         JuiAsset::register($this->getView());
+    }
+
+    /**
+     * Generates `monthNames` / `monthNamesShort` arrays for the given locale using PHP's intl/ICU
+     * data, i.e. the very same data source used server-side to validate and format dates (see
+     * DbDateValidator and \Yii::$app->formatter->asDate()). This guarantees the jQuery UI datepicker
+     * always displays/accepts the same month abbreviations the server expects, even where a bundled
+     * jQuery UI locale file disagrees with ICU (e.g. "Sep" vs "Sept" for September in `en-GB`).
+     *
+     * @param string $locale
+     * @return array{monthNames?: string[], monthNamesShort?: string[]}
+     */
+    private function getIntlMonthNames(string $locale): array
+    {
+        if (!class_exists(\IntlDateFormatter::class)) {
+            return [];
+        }
+
+        try {
+            $shortFormatter = new \IntlDateFormatter($locale, \IntlDateFormatter::NONE, \IntlDateFormatter::NONE);
+            $shortFormatter->setPattern('MMM');
+
+            $longFormatter = new \IntlDateFormatter($locale, \IntlDateFormatter::NONE, \IntlDateFormatter::NONE);
+            $longFormatter->setPattern('MMMM');
+
+            $monthNames = [];
+            $monthNamesShort = [];
+            for ($month = 1; $month <= 12; $month++) {
+                $timestamp = mktime(0, 0, 0, $month, 1, 2000);
+                $monthNames[] = $longFormatter->format($timestamp);
+                $monthNamesShort[] = $shortFormatter->format($timestamp);
+            }
+        } catch (\Throwable $e) {
+            return [];
+        }
+
+        return [
+            'monthNames' => $monthNames,
+            'monthNamesShort' => $monthNamesShort,
+        ];
     }
 
     private function registerLanguageAsset()

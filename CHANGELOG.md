@@ -9,6 +9,7 @@ HumHub Changelog
 - Fix #8426: Add a visible keyboard focus indicator for the stream filter toggle and its checkbox/radio filter options
 - Fix #8430: Make the password show/hide icon focusable and operable via keyboard
 - Fix #8439: Fix editing file-only Posts and clear `fileList[]` after posting so it isn't reused on the next post
+- Fix #8442: DatePicker month-name mismatch between jQuery UI translations and PHP intl/ICU for en-GB and 14 other locales
 
 1.18.5 (August 19, 2026)
 ------------------------
