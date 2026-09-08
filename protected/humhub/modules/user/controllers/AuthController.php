@@ -95,26 +95,51 @@ class AuthController extends Controller
     }
 
     /**
-     * Whether the public Sign-Up email form / Sign-Up entry-points should be
-     * rendered. False when self-registration is globally off, or when the admin
-     * disabled the form-based public sign-up via {@see Module::$showRegistrationForm}
-     * (e.g. SSO-only deployments where SAML/OIDC may auto-register but no
-     * public form is offered).
+     * Whether the form-based Sign-Up UI is enabled at all, independent of the
+     * broader {@see isSelfRegistrationEnabled()} gate. Reflects only
+     * {@see Module::$showRegistrationForm} (or its `?showRegistrationForm=1`
+     * escape hatch) — e.g. an SSO-only deployment that wants to hide the local
+     * form and only offer SAML/OIDC entry points.
      *
-     * The `showRegistrationForm` toggle is a UI nudge, not a security boundary —
-     * {@see Module::$showRegistrationForm}'s escape hatch (`?showRegistrationForm=1`,
-     * mirroring `?showLoginForm=1`) can reveal the form again for troubleshooting
-     * a misconfigured IdP. It never overrides {@see isSelfRegistrationEnabled()}:
-     * when self-registration is genuinely off (or in maintenance mode), this stays
-     * false regardless of the query param.
+     * Internal building block of {@see isRegistrationFormVisible()} — not
+     * exposed on its own since every caller needs to combine it with the
+     * `$hasValidInviteToken` context.
      *
      * @since 1.19
      */
-    public static function isSelfRegistrationFormVisible(): bool
+    public static function isRegistrationFormEnabled(): bool
     {
-        return self::isSelfRegistrationEnabled()
-            && (Yii::$app->getModule('user')->showRegistrationForm
-                || Yii::$app->request->get('showRegistrationForm', false));
+        return Yii::$app->getModule('user')->showRegistrationForm
+            || Yii::$app->request->get('showRegistrationForm', false);
+    }
+
+    /**
+     * Whether the registration form fields (username/e-mail/password) should
+     * be rendered.
+     *
+     * For a plain, unsolicited registration attempt (`$hasValidInviteToken =
+     * false`, the default) this requires both {@see isSelfRegistrationEnabled()}
+     * (the `auth.anonymousRegistration` setting is on) and
+     * {@see isRegistrationFormEnabled()} (the form-based UI isn't hidden in
+     * favor of SSO-only entry points).
+     *
+     * Pass `$hasValidInviteToken: true` when the request already carries an
+     * invite token/link independently validated by
+     * {@see \humhub\modules\user\services\InviteRegistrationService} or
+     * {@see \humhub\modules\user\services\LinkRegistrationService} — that
+     * validation is its own authorization for *this* registration, so it must
+     * not be blocked by the global `auth.anonymousRegistration` setting, which
+     * governs *public, unsolicited* self-registration only.
+     * {@see isRegistrationFormEnabled()} (the SSO-only escape hatch) still
+     * applies either way.
+     *
+     * @since 1.19
+     */
+    public static function isRegistrationFormVisible(bool $hasValidInviteToken = false): bool
+    {
+        return $hasValidInviteToken
+            ? self::isRegistrationFormEnabled()
+            : self::isRegistrationFormEnabled() && self::isSelfRegistrationEnabled();
     }
 
     /**
@@ -203,7 +228,7 @@ class AuthController extends Controller
         }
 
         $loginParams = [
-            'signUpAllowed' => self::isSelfRegistrationFormVisible(),
+            'signUpAllowed' => self::isRegistrationFormVisible(),
             'showLoginForm' => $this->module->showLoginForm || Yii::$app->request->get('showLoginForm', false),
         ];
 
@@ -310,7 +335,7 @@ class AuthController extends Controller
 
         $params = [
             'model' => $login,
-            'signUpAllowed' => self::isSelfRegistrationFormVisible(),
+            'signUpAllowed' => self::isRegistrationFormVisible(),
             'passwordRecoveryRoute' => $this->module->passwordRecoveryRoute,
         ];
 

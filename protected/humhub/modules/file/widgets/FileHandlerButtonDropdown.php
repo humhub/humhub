@@ -68,7 +68,7 @@ class FileHandlerButtonDropdown extends Widget
         }
 
         if ($this->isDropdown()) {
-            $output .= '<button type="button" class="btn ' . $this->cssButtonClass . ' btn-icon-only dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>';
+            $output .= '<button type="button" class="btn ' . $this->cssButtonClass . ' btn-icon-only dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="visually-hidden">Toggle Dropdown</span></button>';
 
             $cssClass = ($this->pullRight) ? 'dropdown-menu dropdown-menu-end' : 'dropdown-menu';
 
@@ -105,6 +105,13 @@ class FileHandlerButtonDropdown extends Widget
         if (isset($options['url'])) {
             $url = ArrayHelper::remove($options, 'url', '#');
             $options['href'] = $url;
+        } elseif (!isset($options['href'])) {
+            // The href makes the anchor keyboard focusable and part of the tab
+            // order (an <a> without href is skipped by Tab and cannot receive
+            // focus, e.g. via the dropdown's arrow-key navigation); the
+            // data-action-click handler already calls preventDefault(), so the
+            // fragment is never followed. See Link::withAction() for the same pattern.
+            $options['href'] = '#';
         }
 
         return Html::tag('a', $label, $options);

@@ -4,9 +4,24 @@ HumHub Changelog
 1.19.0-beta.3 (Unreleased)
 -------------------------------
 - Fix #8414: A grouped activity named the same user twice when they had several activities in the group, and named nobody at all when the group's only other participant was the reader
+- Fix #8417: Top menu keeps the previous entry highlighted after a pjax navigation (since 1.19.0-beta.1)
+- Fix #8412: Applying a UI addition by its id did nothing when it was registered without a selector, and `additions.extend()` with `applyOnInit` threw instead of applying
+- Enh #8411: Removed the `AssetBundle::$defaultDepends` mechanism — a property-name typo kept it from ever running, and activating it makes the core bundle depend on itself, see `docs/develop/module-migrate.md`
 - Fix #8401: Module version migration crash when module versions cannot be determined
 - Fix #8400: Button text horizontal centering and spacing in People heading (since 1.19.0-beta.2)
 - Fix #8404: Remove deprecated function `curl_close()`
+- Fix #8410: Select2 library is loaded twice by the browser
+- Fix #8415: A user picker or space picker request without a `keyword` parameter crashes with a `TypeError`
+- Enh #8416: Auto-focus the newly loaded content after a pjax swap, so Tab no longer restarts at the top of the page
+- Enh #8419: Add a space between at the top of the card icons (in the card header)
+- Enh #8421: Customize Bootstrap through its Sass variables in `variables.scss` instead of redeclaring the generated `--bs-*` CSS variables in the component SCSS files (buttons, badges, dropdowns, list groups, navs, popovers, progress bars, tables and tooltips)
+- Fix #8422: Replace removed `.sr-only` class with `.visually-hidden`
+- Fix #8434: `Badge::action()` and `Badge::withLink()` rendered the badge markup escaped inside the link, since the wrapping link encoded the label it is given in `Badge::run()` — which is the already rendered badge, not text
+- Enh #8425: Implement visible focus for elements in cards for keyboard accessibility
+- Fix #8269: File-handler dropdown menu items had no href, so they were skipped by Tab and could not be focused via keyboard or the dropdown's arrow-key navigation
+- Fix #8423: Fix tab order of the reset filters button in the search area
+- Fix #8438: Endless scrolling stalled whenever the loaded stream entries did not push the stream end indicator out of the observed area (compact streams, short entries, viewport not filled), because an `IntersectionObserver` only reports state *changes* — the stream now keeps loading until the observed area is filled
+- Fix #8438: The mobile "Load more" button of a stream was hardwired to the `#wallStream` id, so it failed with "Handler not found" in any stream rendered with a custom `id`
 
 1.19.0-beta.2 (August 19, 2026)
 -------------------------------
@@ -34,6 +49,7 @@ HumHub Changelog
 - Fix #8335: The mailer view theme pointed at `@humhub/themes/Humhub` (lowercase `h`), a dead path on case-sensitive filesystems since the directory is `HumHub` — it now uses the `Theme::CORE_THEME_NAME` constant like the main view theme
 - Fix #8335: An update that moves the theme out of the webroot (the 1.19 move of `static`/`themes` into `protected/humhub`, #8102) could leave an empty `themes/HumHub` skeleton behind while the stored active theme still pointed at it — every request then failed with a fatal SCSS build error ("Can't find stylesheet to import") and the fallback looped forever because the empty skeleton shadowed the real core theme by name; a theme directory without its `scss/variables.scss` is now ignored when resolving themes (so the stale path no longer loads and no longer shadows the core theme and affected installations self-heal), the theme CSS fallback only switches to and refreshes for a different, buildable core theme instead of risking an endless redirect loop, and a theme's `variables` import is skipped when the file is missing
 - Fix #8351: SSO buttons can overflow on login page
+- Fix #8358: On an instance with public self-registration disabled (`auth.anonymousRegistration = 0`) but invite-by-e-mail or invite-by-link enabled, opening a valid invitation link rendered the registration page without the actual form fields — `RegistrationController` gated `showRegistrationForm` on the same global setting as public sign-up; a validated invite token/link is now treated as its own authorization and no longer subject to it (`AuthController::isRegistrationFormVisible(bool $hasValidInviteToken = false)`)
 - Fix #8360: A config file still setting the removed `modules.content.adminCanViewAllContent`/`adminCanEditAllContent` options (replaced in 1.17 by `modules.admin.enableManageAllContentPermission`) crashed every request with an `UnknownPropertyException` instead of a graceful warning — these keys are now stripped from the loaded config like other legacy settings and flagged on the Administration → Information page
 - Enh #7551: Add a "Create Space" button in the space directory page
 - Fix #8364: The comment/reply "Attach Files" trigger is a non-focusable `<span>`; clicking it dropped focus without moving it anywhere, which instantly hid the upload/submit button row again since it is only shown via `:focus-within`/`:has()` (#8318) — before the click's own action could run, so opening the file picker either did nothing or made the row disappear while its dialog was open. The trigger now gets focus like the adjacent handler dropdown-toggle button via `tabindex`/`role="button"`, and is keyboard-operable via Enter/Space; the button row also stays visible once a file has been attached, not just once the message has text
@@ -123,6 +139,11 @@ HumHub Changelog
 - Enh #8150: Topic sidebar widget
 - Fix #8312: Fix Integrity Checks on cleaning up orphaned content, like, comment, activity data
  
+1.18.6 (Unreleased)
+------------------------
+- Fix #8409: Add :focus styles for Administration left navigation menu items
+- Fix #8420: Fix hover flicker and keyboard focus on profile image upload buttons
+
 1.18.5 (August 19, 2026)
 ------------------------
 

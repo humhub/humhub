@@ -36,8 +36,6 @@ class CoreBundleAsset extends AssetBundle
 
     public const BUNDLE_NAME = 'defer';
 
-    public $defaultDepends = false;
-
     public const STATIC_DEPENDS = [
         AppAsset::class,
         JqueryHighlightAsset::class,

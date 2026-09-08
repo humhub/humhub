@@ -17,6 +17,13 @@ humhub.module('ui.additions', function (module, require, $) {
     module.requiredI18nCategories = ['base'];
 
     /**
+     * Selector of a selector-less addition: the elements opting into it by name.
+     */
+    var additionSelector = function (id) {
+        return '[data-ui-addition="' + id + '"]';
+    };
+
+    /**
      * Registers an addition for a given jQuery selector. There can be registered
      * multiple additions for the same selector.
      *
@@ -40,7 +47,11 @@ humhub.module('ui.additions', function (module, require, $) {
 
         if (!_additions[id] || options.overwrite) {
             _additions[id] = {
-                'selector': selector,
+                // An addition registered without a selector is dispatched per element through
+                // the generic [data-ui-addition] addition and is deliberately kept out of
+                // _order, but it still needs its own selector so it can be applied by id -
+                // as apply()/applyTo() and the documentation promise.
+                'selector': hasSelector ? selector : additionSelector(id),
                 'handler': handler
             };
 
@@ -57,8 +68,7 @@ humhub.module('ui.additions', function (module, require, $) {
                 if(hasSelector) {
                     apply($('body'), id);
                 } else {
-
-                    apply($('body'), 'addition', '[data-ui-addition="'+id+'"]');
+                    apply($('body'), 'addition', additionSelector(id));
                 }
 
             }
@@ -349,7 +359,7 @@ humhub.module('ui.additions', function (module, require, $) {
             }
 
             if (options.applyOnInit) {
-                module.apply('body', id);
+                module.apply($('body'), id);
             }
 
         } else if (options.selector) {
