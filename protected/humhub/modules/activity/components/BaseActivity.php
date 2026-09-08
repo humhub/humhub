@@ -90,6 +90,13 @@ abstract class BaseActivity extends BaseObject
 
         $otherUsers = $this->getGroupingService()->getOtherGroupedUsers(Yii::$app->user?->getIdentity());
 
+        if (count($otherUsers) === 0) {
+            // A group of one person's own activities, or one whose only other participant is
+            // the reader themselves: the phrase is that person, and it must not come back
+            // empty - a grouped message renders `{displayNames}` and nothing else.
+            return $formatter($this->user->displayName);
+        }
+
         if (count($otherUsers) === 1) {
             return Yii::t(
                 'ActivityModule.base',

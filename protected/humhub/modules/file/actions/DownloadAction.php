@@ -12,6 +12,7 @@ use DateTimeImmutable;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use humhub\components\fs\LocalMountConfig;
+use humhub\components\fs\MountConfigInterface;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
 use humhub\modules\file\Module;
@@ -118,9 +119,18 @@ class DownloadAction extends Action
                 $options,
             );
         } elseif ($dataMountConfig->useTemporaryUrls()) {
+            // The object key ends in `file`, so the backend has to be told the real file name and
+            // mime type - otherwise the browser derives both from the redirect target's path.
             $url = Yii::$app->fs->getDataMount()->temporaryUrl(
                 $this->file->store->get($this->variant),
                 new DateTimeImmutable('+1 hour'),
+                [
+                    MountConfigInterface::CONFIG_CONTENT_DISPOSITION => FileHelper::getContentDispositionHeaderValue(
+                        $options['inline'] ? 'inline' : 'attachment',
+                        $fileName,
+                    ),
+                    MountConfigInterface::CONFIG_CONTENT_TYPE => $mimeType,
+                ],
             );
             Yii::$app->response->redirect($url);
         } else {

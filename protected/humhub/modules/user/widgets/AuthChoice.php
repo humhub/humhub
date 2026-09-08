@@ -102,7 +102,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
             }
 
             // Remove URL params
-            $parts = parse_url($url);
+            $parts = parse_url((string) $url);
             if (empty($parts['host'])) {
                 continue;
             }
@@ -145,9 +145,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
     {
         $params = $_GET;
         unset($params[$this->clientIdGetParamName]);
-        $baseAuthUrl = array_merge(['/user/auth/external'], $params);
-
-        return $baseAuthUrl;
+        return array_merge(['/user/auth/external'], $params);
     }
 
     /**
@@ -193,32 +191,11 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
 
         $this->view->registerCssFile(Yii::$app->assetManager->getPublishedUrl('@humhub/resources') . '/resources/user/authChoice.css');
 
-        $result = Html::beginTag('div', ['class' => 'authChoice row g-3']);
+        $result = Html::beginTag('div', ['class' => 'authChoice d-flex flex-wrap gap-3']);
 
         $clients = array_values($clients); // Reindex array keys
-        foreach ($clients as $i => $client) {
-            $isLastOddButton = ($i === $clientCount - 1) && ($clientCount % 2 === 1);
-            if ($isLastOddButton) {
-                $colClass = 'col-12';
-            } else {
-                // For pairs, check both current and next button
-                $currentIsLong = strlen($client->getTitle()) > $this->maxCharForShortButton;
-                $pairedIsLong = false;
-                if ($i % 2 === 0 && $i + 1 < $clientCount) {
-                    // This is the first button of a pair, check the next one
-                    $pairedIsLong = strlen($clients[$i + 1]->getTitle()) > $this->maxCharForShortButton;
-                } elseif ($i % 2 === 1) {
-                    // This is the second button of a pair, check the previous one
-                    $pairedIsLong = strlen($clients[$i - 1]->getTitle()) > $this->maxCharForShortButton;
-                }
-                // If either button in the pair is long, both get col-12
-                $colClass = ($currentIsLong || $pairedIsLong) ? 'col-12' : 'col-6';
-            }
-            $result .= Html::tag(
-                'div',
-                $this->clientLink($client),
-                ['class' => $colClass],
-            );
+        foreach ($clients as $client) {
+            $result .= $this->clientLink($client);
         }
 
         $result .= Html::endTag('div');
@@ -250,7 +227,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
             $style = Html::style($btnClasses . ' {' . $btnStyle . '}');
         }
 
-        Html::addCssClass($htmlOptions, ['w-100', 'btn', 'btn-light', 'btn-ac-' . $client->getName()]);
+        Html::addCssClass($htmlOptions, ['btn', 'btn-light', 'btn-ac-' . $client->getName()]);
         $htmlOptions['data-pjax-prevent'] = '';
 
         $icon = (isset($viewOptions['cssIcon'])) ? '<i class="' . $viewOptions['cssIcon'] . '" aria-hidden="true"></i>' : '';

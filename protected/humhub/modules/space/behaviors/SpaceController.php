@@ -72,6 +72,10 @@ class SpaceController extends Behavior
             throw new HttpException(401, Yii::t('SpaceModule.base', 'You need to login to view contents of this space!'));
         }
 
+        if ($this->space->visibility == Space::VISIBILITY_NONE && !Yii::$app->user->impersonation->canAccessPrivateContent()) {
+            throw new HttpException(404, Yii::t('SpaceModule.base', 'Space is invisible!'));
+        }
+
         if ($this->getMembership() === null && $this->space->visibility == Space::VISIBILITY_NONE && !Yii::$app->user->isAdmin()) {
             throw new HttpException(404, Yii::t('SpaceModule.base', 'Space is invisible!'));
         }

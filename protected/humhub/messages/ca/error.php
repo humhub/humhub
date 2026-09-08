@@ -14,4 +14,5 @@ return [
     'You need admin permissions to access this section.' => 'Necessiteu permisos d\'administrador per accedir a aquesta secció.',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => 'El vostre compte d\'usuari encara no s\'ha aprovat. Torneu-ho a provar més tard o poseu-vos en contacte amb un administrador de xarxa.',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'El vostre compte d\'usuari està inactiu; si us plau, inicieu sessió amb un compte actiu o poseu-vos en contacte amb un administrador de xarxa.',
+    'Access to private content is not allowed while impersonating a user.' => '',
 ];

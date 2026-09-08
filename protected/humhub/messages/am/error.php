@@ -10,6 +10,7 @@ return [
     'You need admin permissions to access this section.' => 'ይህን ተግባር ለመከወን የአስተዳዳሪነት ፈቃድ ማግኘት ይኖርብዎታል።',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => 'የተጠቃሚነት አካውንትዎ እስካሁን ማረጋገጫ አላገኘም። እባክዎ  ቆይተው ይሞክሩ። አሊያም የኔትዎርክ አስትዳዳሪውን ያግኙ።',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'የተጠቃሚነት አካውንትዎ አገልግሎት መስጠት አልጀመረም። አባክዎን የይለፍ ቃልዎን ተጠቅመው ይግቡ። አሊያም የኔትዎርክ አስተዳዳሪውን ያግኙ።',
+    'Access to private content is not allowed while impersonating a user.' => '',
     'Maintenance mode activated: You have been automatically logged out and will no longer have access the platform until the maintenance has been completed.' => '',
     'Maintenance mode is active. Only Administrators can access the platform.' => '',
     'The module {moduleId} is present in the HumHub configuration file even though this module is disabled. Please remove it from the configuration.' => '',

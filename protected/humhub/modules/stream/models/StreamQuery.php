@@ -450,6 +450,13 @@ class StreamQuery extends Model
 
         $this->_query->andWhere($this->stateFilterCondition);
 
+        if ($this->user !== null && $this->user->isCurrentUser() && !Yii::$app->user->impersonation->canAccessPrivateContent()) {
+            $this->_query->andWhere(['OR',
+                ['content.visibility' => Content::VISIBILITY_PUBLIC],
+                ['content.contentcontainer_id' => null],
+            ]);
+        }
+
         if (!empty($this->channel)) {
             $this->channel($this->channel);
         }

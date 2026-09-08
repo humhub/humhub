@@ -21,7 +21,7 @@ class LikeService
 {
     private readonly Content $content;
     private ?ContentAddonActiveRecord $contentAddon = null;
-    private ?User $user;
+    private readonly ?User $user;
     private ?int $_count = null;
     private ?bool $_hasLiked = null;
     private ?string $_titleText = null;

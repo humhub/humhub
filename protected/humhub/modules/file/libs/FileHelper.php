@@ -19,6 +19,7 @@ use humhub\modules\file\models\File;
 use humhub\modules\file\Module;
 use humhub\modules\file\widgets\FileDownload;
 use Yii;
+use yii\helpers\Inflector;
 use yii\helpers\Url;
 
 /**
@@ -69,6 +70,37 @@ class FileHelper extends \yii\helpers\FileHelper
         $fileParts = pathinfo($fileName);
 
         return $fileParts['extension'] ?? '';
+    }
+
+    /**
+     * Returns a `Content-Disposition` header value that is safe to use with both old and new
+     * browsers, built the same way [[\yii\web\Response::sendFile()]] builds it.
+     *
+     * Needed whenever a download is not served by the response itself and the header has to be
+     * handed to something else - e.g. [[\humhub\modules\file\actions\DownloadAction]] passing it
+     * into a temporary storage URL, where the object key carries no usable file name.
+     * [[\yii\web\Response::getDispositionHeaderValue()]] does the same but is protected.
+     *
+     * @param string $disposition `attachment` or `inline`
+     * @param string $fileName the file name presented to the browser
+     * @return string the header value
+     * @since 1.19
+     */
+    public static function getContentDispositionHeaderValue(string $disposition, string $fileName): string
+    {
+        $fallbackName = str_replace(
+            ['%', '/', '\\', '"', "\x7F"],
+            ['_', '_', '_', '\\"', '_'],
+            Inflector::transliterate($fileName, Inflector::TRANSLITERATE_LOOSE),
+        );
+        $utfName = rawurlencode(str_replace(['%', '/', '\\'], '', $fileName));
+
+        $header = "$disposition; filename=\"$fallbackName\"";
+        if ($utfName !== $fallbackName) {
+            $header .= "; filename*=utf-8''$utfName";
+        }
+
+        return $header;
     }
 
     /**

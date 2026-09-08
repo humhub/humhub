@@ -558,6 +558,16 @@ humhub.module('file', function (module, require, $) {
             upload.finish();
         });
 
+        // The upload trigger (e.g. "Attach Files") is a <span data-action-click>
+        // with tabindex, not a native <button> - so unlike a real button, the
+        // browser does not turn Enter/Space into a click on its own. Do that here.
+        $(document).on('keydown', '[data-action-click="file.upload"]', function (evt) {
+            if (evt.which === 13 /* Enter */ || evt.which === 32 /* Space */) {
+                evt.preventDefault();
+                $(this).trigger('click');
+            }
+        });
+
         // Bootstrap 3 drop-down menu auto dropup according to screen position
         // Must be removed when Humhub uses Bootstrap 4+
         var dropdownButtonSelector = '.richtext-create-buttons > .btn-group';

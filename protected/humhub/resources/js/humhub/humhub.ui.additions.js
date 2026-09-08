@@ -17,6 +17,13 @@ humhub.module('ui.additions', function (module, require, $) {
     module.requiredI18nCategories = ['base'];
 
     /**
+     * Selector of a selector-less addition: the elements opting into it by name.
+     */
+    var additionSelector = function (id) {
+        return '[data-ui-addition="' + id + '"]';
+    };
+
+    /**
      * Registers an addition for a given jQuery selector. There can be registered
      * multiple additions for the same selector.
      *
@@ -40,7 +47,11 @@ humhub.module('ui.additions', function (module, require, $) {
 
         if (!_additions[id] || options.overwrite) {
             _additions[id] = {
-                'selector': selector,
+                // An addition registered without a selector is dispatched per element through
+                // the generic [data-ui-addition] addition and is deliberately kept out of
+                // _order, but it still needs its own selector so it can be applied by id -
+                // as apply()/applyTo() and the documentation promise.
+                'selector': hasSelector ? selector : additionSelector(id),
                 'handler': handler
             };
 
@@ -57,8 +68,7 @@ humhub.module('ui.additions', function (module, require, $) {
                 if(hasSelector) {
                     apply($('body'), id);
                 } else {
-
-                    apply($('body'), 'addition', '[data-ui-addition="'+id+'"]');
+                    apply($('body'), 'addition', additionSelector(id));
                 }
 
             }
@@ -199,6 +209,80 @@ humhub.module('ui.additions', function (module, require, $) {
             $match.timeago();
         });
 
+        // Forces the Select2 dropdown to always open below the field, regardless of
+        // available viewport space (Select2's default auto up/down detection is disabled).
+        //
+        // Mirrors the exact decorator chain Select2's own Defaults.prototype.apply builds
+        // (select2/defaults, dropdownAdapter block) - Dropdown [+ Search when single-select]
+        // -> CloseOnSelect (HumHub doesn't override closeOnSelect, default true) -> AttachBody -
+        // just swapping in a variant of AttachBody whose _positionDropdown() hardcodes the
+        // "below" direction instead of computing it from available viewport space. All other
+        // positioning math (offsets, parent offset, left/top) is kept identical to Select2's
+        // original implementation so width/scroll/attach-to-body behaviour is unaffected.
+        var forceDropdownBelowAdapter = function ($element) {
+            var Utils = $.fn.select2.amd.require('select2/utils');
+            var Dropdown = $.fn.select2.amd.require('select2/dropdown');
+            var DropdownSearch = $.fn.select2.amd.require('select2/dropdown/search');
+            var CloseOnSelect = $.fn.select2.amd.require('select2/dropdown/closeOnSelect');
+            var AttachBody = $.fn.select2.amd.require('select2/dropdown/attachBody');
+
+            // AttachBody is a decorator mixin (expects a "decorated" super-constructor as its
+            // first argument), not a standalone class - it must be wired in via Utils.Decorate
+            // together with the base Dropdown/DropdownSearch/CloseOnSelect adapters, otherwise
+            // Select2 throws synchronously on init and .select2() never completes for the batch.
+            function CustomAttachBody(decorated, $el, options) {
+                AttachBody.call(this, decorated, $el, options);
+            }
+
+            Utils.Extend(CustomAttachBody, AttachBody);
+
+            CustomAttachBody.prototype._positionDropdown = function () {
+                var offset = this.$container.offset();
+                offset.bottom = offset.top + this.$container.outerHeight(false);
+
+                var container = { height: this.$container.outerHeight(false) };
+                container.top = offset.top;
+                container.bottom = offset.top + container.height;
+
+                var css = {
+                    left: offset.left,
+                    top: container.bottom
+                };
+
+                var $offsetParent = this.$dropdownParent;
+                if ($offsetParent.css('position') === 'static') {
+                    $offsetParent = $offsetParent.offsetParent();
+                }
+
+                var parentOffset = { top: 0, left: 0 };
+                if ($.contains(document.body, $offsetParent[0]) || $offsetParent[0].isConnected) {
+                    parentOffset = $offsetParent.offset();
+                }
+
+                css.top -= parentOffset.top;
+                css.left -= parentOffset.left;
+
+                this.$dropdown
+                    .removeClass('select2-dropdown--above select2-dropdown--below')
+                    .addClass('select2-dropdown--below');
+                this.$container
+                    .removeClass('select2-container--above select2-container--below')
+                    .addClass('select2-container--below');
+
+                this.$dropdownContainer.css(css);
+            };
+
+            var multiple = $element.prop('multiple');
+            var Adapter = multiple ? Dropdown : Utils.Decorate(Dropdown, DropdownSearch);
+
+            // minimumResultsForSearch isn't overridden by HumHub here (defaults to 0), so
+            // Select2 itself would skip the MinimumResultsForSearch decorator too - omitted.
+            Adapter = Utils.Decorate(Adapter, CloseOnSelect);
+            Adapter = Utils.Decorate(Adapter, CustomAttachBody);
+
+            return Adapter;
+        };
+
         module.register('select2', '[data-ui-select2]', function ($match) {
             const templateItem = function (item) {
                 const element = $(item.element);
@@ -221,6 +305,7 @@ humhub.module('ui.additions', function (module, require, $) {
                     templateSelection: templateItem,
                     dropdownAutoWidth: true,
                     scrollAfterSelect: true,
+                    dropdownAdapter: forceDropdownBelowAdapter($(this)),
                 });
             });
         });
@@ -274,7 +359,7 @@ humhub.module('ui.additions', function (module, require, $) {
             }
 
             if (options.applyOnInit) {
-                module.apply('body', id);
+                module.apply($('body'), id);
             }
 
         } else if (options.selector) {

@@ -43,11 +43,6 @@ class OpenSansAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $defaultDepends = false;
-
-    /**
-     * @inheritdoc
-     */
     public $jsPosition = View::POS_HEAD;
 
     /**

@@ -13,5 +13,6 @@ return [
     'You need admin permissions to access this section.' => '您需要管理者權限以便存取此區域。',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => '您的使用者帳戶目前尚未被核准，請稍候再嘗試，或者與系統管理員聯繫。',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => '您的使用者帳戶目前被停用，請改用其他已啟用的帳戶，或者與系統管理員聯繫。',
+    'Access to private content is not allowed while impersonating a user.' => '',
     'The module {moduleId} is present in the HumHub configuration file even though this module is disabled. Please remove it from the configuration.' => '',
 ];

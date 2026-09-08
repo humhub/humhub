@@ -10,6 +10,7 @@ return [
     'You need admin permissions to access this section.' => 'Cal tener permisos d\'administrador pa accedir a ista sección.',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => 'A tuya cuenta d\'usuario no ye aprobada encara, per favor preba unatra vegada mas tarde u contacta con l\'administrador d\'o ret.',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'A tuya cuenta d\'usuario ye inactiva, per favor inicia sesión con una cuenta activa u contacta con l\'administrador d\'o ret.',
+    'Access to private content is not allowed while impersonating a user.' => '',
     'Maintenance mode activated: You have been automatically logged out and will no longer have access the platform until the maintenance has been completed.' => '',
     'Maintenance mode is active. Only Administrators can access the platform.' => '',
     'The module {moduleId} is present in the HumHub configuration file even though this module is disabled. Please remove it from the configuration.' => '',

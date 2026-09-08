@@ -1,3 +1,7 @@
+.authChoice.d-flex > .btn {
+    flex: 1;
+}
+
 .or-container {
     text-align: center;
     margin: 0;

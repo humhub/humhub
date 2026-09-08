@@ -47,7 +47,7 @@ class UserActionColumn extends ActionColumn
 
             if ($model->status == User::STATUS_ENABLED) {
                 $actions[] = '---';
-                if (Yii::$app->user->canImpersonate($model)) {
+                if (Yii::$app->user->impersonation->canStart($model)) {
                     $actions[Yii::t('AdminModule.user', 'Impersonate')] = ['impersonate', 'linkOptions' => ['data-method' => 'post', 'data-confirm' => Yii::t('AdminModule.user', 'Are you really sure that you want to impersonate this user?')]];
                 }
                 $actions[Yii::t('AdminModule.user', 'View profile')] = ['view-profile'];

@@ -14,4 +14,5 @@ return [
     'You need admin permissions to access this section.' => 'Na prístup do tejto sekcie potrebujete oprávnenia správcu.',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => 'Váš používateľský účet ešte nebol schválený, skúste to znova neskôr alebo kontaktujte správcu siete.',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'Váš používateľský účet nie je aktívny, prihláste sa prosím pomocou aktívneho účtu alebo kontaktujte správcu siete.',
+    'Access to private content is not allowed while impersonating a user.' => '',
 ];

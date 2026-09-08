@@ -39,6 +39,8 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
 
     private ?int $state = null;
 
+    private ?\Throwable $databaseConnectionError = null;
+
     public function init()
     {
         if (!$this->isDatabaseConfigured()) {
@@ -79,6 +81,30 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
         return $this->getState() >= $state;
     }
 
+    /**
+     * Whether the database is configured but currently not reachable.
+     *
+     * When this is true the real installation state cannot be determined, so the
+     * caller must not fall back to a lower state that would present the installer
+     * (which would offer to set up an already installed instance during a
+     * transient database outage).
+     *
+     * @since 1.19
+     */
+    public function isDatabaseUnreachable(): bool
+    {
+        return $this->databaseConnectionError !== null;
+    }
+
+    /**
+     * @return \Throwable|null the exception raised while connecting to the configured database, if any
+     * @since 1.19
+     */
+    public function getDatabaseConnectionError(): ?\Throwable
+    {
+        return $this->databaseConnectionError;
+    }
+
     public function setInstalled(): void
     {
         $this->setState(self::STATE_INSTALLED);
@@ -99,10 +125,38 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
     {
         try {
             Yii::$app->db->open();
-        } catch (\Exception) {
+
+            return in_array('setting', Yii::$app->db->schema->getTableNames());
+        } catch (\Exception $e) {
+            // A server that responds but reports the configured database or
+            // credentials are not (yet) usable is a not-yet-installed / partially
+            // configured state (fresh or incomplete install) — keep redirecting
+            // to the installer. Only a genuinely unreachable or unavailable
+            // server is recorded as an outage, so the caller returns a 503.
+            if (!$this->isDatabaseSetupError($e)) {
+                $this->databaseConnectionError = $e;
+            }
+
             return false;
         }
+    }
 
-        return in_array('setting', Yii::$app->db->schema->getTableNames());
+    /**
+     * Whether a database error means the server is reachable but the configured
+     * database/credentials are not (yet) set up — as opposed to the server being
+     * unreachable or unavailable. Such errors indicate a fresh or incompletely
+     * configured install (e.g. a Docker install whose database was not created
+     * yet, or a DSN missing the database name), not an outage of an installed
+     * instance, so the installer must stay reachable.
+     */
+    private function isDatabaseSetupError(\Throwable $e): bool
+    {
+        // Native MySQL server-response codes (read from errorInfo, since getCode()
+        // may carry a SQLSTATE string for statement-level errors):
+        //   1049 unknown database        1046 no database selected (missing dbname)
+        //   1044 no access to database   1045 / 1698 access denied (authentication)
+        $code = (int)($e instanceof \yii\db\Exception ? ($e->errorInfo[1] ?? $e->getCode()) : $e->getCode());
+
+        return in_array($code, [1044, 1045, 1046, 1049, 1698], true);
     }
 }

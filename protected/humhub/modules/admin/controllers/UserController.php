@@ -405,7 +405,7 @@ class UserController extends Controller
 
         $this->checkUserAccess($user);
 
-        if (!Yii::$app->user->impersonate($user)) {
+        if (!Yii::$app->user->impersonation->start($user)) {
             throw new HttpException(403);
         }
 

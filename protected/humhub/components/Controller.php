@@ -13,6 +13,7 @@ use humhub\components\access\StrictAccess;
 use humhub\components\behaviors\AccessControl;
 use humhub\components\gates\GateFilter;
 use humhub\modules\user\services\IsOnlineService;
+use humhub\widgets\TopMenu;
 use Yii;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -304,5 +305,9 @@ class Controller extends \yii\web\Controller
     {
         $moduleId = (Yii::$app->controller->module) ? Yii::$app->controller->module->id : '';
         $this->view->registerJs('humhub.modules.ui.view.setState("' . $moduleId . '", "' . Yii::$app->controller->id . '", "' . Yii::$app->controller->action->id . '");', \yii\web\View::POS_BEGIN);
+
+        if (Yii::$app->request->isPjax) {
+            TopMenu::registerActiveState();
+        }
     }
 }

@@ -6,6 +6,18 @@ Each minor release line has its own file with the breaking changes, new APIs and
 
 ## Unreleased
 
+- Only one Select2 build is served now. `kartik\select2\Select2Asset` is emptied through the
+  asset manager configuration and depends on `humhub\assets\Select2Asset` instead, so Krajee
+  widgets (`kartik\select2\Select2` and subclasses such as `humhub\modules\ui\form\widgets\IconPicker`)
+  no longer publish their own copy from the `select2/select2` package. Modules using such a widget
+  now get the core Select2 version (4.0) instead of the one that package resolves to (4.1) — check
+  for usages of Select2 4.1-only options, DOM or CSS classes.
+  **A module must never register a Select2 build of its own** — always depend on
+  `humhub\assets\Select2Asset`. A second build replaces `$.fn.select2.amd` while `$.fn.select2`
+  keeps running the first one, so the two disagree: the core dropdown addition resolves its
+  dropdown adapter from that registry and would be handed classes from the foreign version,
+  which breaks every `data-ui-select2` dropdown on the page. For the same reason, do not resolve
+  Select2 internals from `$.fn.select2.amd` in module JS.
 - Added `humhub\modules\content\models\Content::EVENT_BEFORE_HARD_DELETE` (`ContentEvent`),
   triggered from `Content::hardDeleteInternal()` right before a `Content` record is physically
   removed. Modules that store rows referencing `content_id` with a restrictive (non-cascading)
@@ -287,6 +299,10 @@ Each minor release line has its own file with the breaking changes, new APIs and
 - Removed `@filestore` Alias
 - Removed `AssetManager::$preventDefer` option
 - Removed the webroot `static/` asset tree — core static resources moved to `protected/humhub/resources` and are published through the asset manager (#8102). Core themes moved from the webroot `themes/` directory to `protected/humhub/themes`; custom themes in `@webroot/themes` keep working, the `@themes` alias is unchanged.
+  - `Theme::getBasePath()` keeps pointing at the theme *source* directory — `@humhub/themes` for the core theme, `<module>/themes` for module provided themes, `@themes` (webroot) for custom themes. `views/` and `scss/` are built from there and are excluded from publishing, so anything served to the browser is only reachable below the new `Theme::getPublishedBasePath()`, the published counterpart of `getBasePath()` (alongside the existing `Theme::getPublishedResourcesPath()`).
+    - `getPublishedBasePath()` and `getPublishedResourcesPath()` return a path **relative to the assets mount**, to be used with `Yii::$app->assetManager` or `Yii::$app->fs->getAssetsMount()` — not with native filesystem functions such as `is_file()` or `file_get_contents()`, since the assets mount may be remote (e.g. S3). Use `AssetManager::fileExists()`, `fileWrite()` and the new `AssetManager::fileLastModified()` (the counterpart of `filemtime()`) instead. `getPublishedResourcesPath()` previously returned an absolute path or a relative one depending on whether the theme had already been published in the same request.
+    - `Theme::getPath()` is **not** overridden and still resolves against the theme source directory, per its Yii2 contract of returning an absolute local filesystem path — which published assets cannot satisfy on a remote mount. Use `getPublishedBasePath()` with the asset manager for published files, or `Theme::getUrl()` for a browser-facing URL.
+    - Theme resources are **not** inherited from parent themes: `publishResources()` publishes only the theme's own directory and `getBaseUrl()`/`getPublishedBasePath()` only ever point at it, so a child theme has to ship every resource it references (unlike `views/`, which do fall back through the theme tree).
   - Removed the aliases `@web-static` / `@webroot-static` and the `humhub\components\assets\WebStaticAssetBundle` class. Asset bundles configuring `basePath = '@webroot-static'` / `baseUrl = '@web-static'` must switch to publishing via `$sourcePath` instead (e.g. `'@humhub/resources'` like the core bundles, or the module's own `resources/` directory).
 - New Flysystem Filesystem Wrapper - Migrate all file access for assets and uploads to the Flysystem wrapper (`Yii::$app->fs->getDataMount()` or `Yii::$app->fs->getAssetsMount()`). Read more: https://flysystem.thephpleague.com/docs/usage/filesystem-api/
   - **`StorageManager::get()` (`$file->store->get()`) now returns a path relative to the data mount, no longer an absolute local filesystem path.** The same applies to `FileHistory::getFileStorePath()`. Any code treating the return value as a local path — `is_file()`, `file_exists()`, `file_get_contents()`, `filesize()`, `hash_file()`, `fopen()`, `Imagine::open()`, `Response::sendFile()`/`xSendFile()`, archive/scanner APIs — silently breaks (checks return `false`, reads fail) and must be migrated:
@@ -300,6 +316,83 @@ Each minor release line has its own file with the breaking changes, new APIs and
   and `EVENT_INIT_BANNER_IMAGE` (`humhub\modules\content\events\ContentContainerImageEvent`) to customize
   or replace a container's profile/banner `AssetImage`. Use these instead of overriding `$profileImageClass`,
   which only affects the deprecated `ProfileImage` path.
+- **Impersonation no longer grants access to private content.** Until now an admin impersonating a user saw
+  everything that user sees. Private content and private spaces are now hidden while impersonating, and each
+  impersonation is written to the log (category `user`). Both are configurable via the new
+  `humhub\modules\user\components\Impersonation` component (`Yii::$app->user->impersonation`):
+
+  ```php
+  'components' => [
+      'user' => [
+          'impersonation' => [
+              'allowPrivateContentAccess' => true, // pre-1.19 behavior
+              'log' => false,
+          ],
+      ],
+  ],
+  ```
+
+  - Core enforces the restriction in `Content::canView()`, `ActiveQueryContent::readable()`,
+    `StreamQuery::setupQuery()`, `Space::canAccessPrivateContent()`, `User::canAccessPrivateContent()`,
+    `ActiveQuerySpace::visible()`, the space controller behavior and both content search drivers — content
+    and spaces a module lists through those APIs are already covered. A module running **its own** visibility
+    SQL (a stream filter or search backend that does not go through `ActiveQueryContent`/`StreamQuery`) must
+    check `Yii::$app->user->impersonation->canAccessPrivateContent()` itself and restrict its query to
+    `Content::VISIBILITY_PUBLIC`.
+  - Added the `ControllerAccess::RULE_DENY_IMPERSONATED` access rule. A module whose controller exposes
+    private data that is not `Content`-based (private messages, private files, …) should add
+    `[ControllerAccess::RULE_DENY_IMPERSONATED]` to its `getAccessRules()` — the action is then denied
+    while the impersonation restriction applies. Menu entries and widgets pointing at such a controller
+    should be hidden by checking `Yii::$app->user->impersonation->canAccessPrivateContent()` in their
+    event handler. See the Messenger (`mail`) module, which applies both.
+  - The `humhub\modules\user\components\Impersonator` behavior of the user component was **removed**
+    (no known module usage): `Yii::$app->user->impersonate($user)` → `Yii::$app->user->impersonation->start($user)`,
+    `restoreImpersonator()` → `impersonation->stop()`, `isImpersonated` → `impersonation->isActive()`,
+    `getImpersonator()` → `impersonation->getImpersonator()`, `canImpersonate($user)` → `impersonation->canStart($user)`.
+    The model method `humhub\modules\user\models\User::canImpersonate()` was removed as well, its logic
+    now lives in `Impersonation::canStart()`.
+  - The impersonation state is bound to the session and fails closed: the impersonated identity never
+    receives an auto-login cookie, only the impersonator's user id is stored in the session (no serialized
+    record anymore), and ending an impersonation whose impersonator can no longer be resolved logs the
+    session out instead of silently continuing as the impersonated user.
+- Removed the unreachable `ContentContainerControllerAccess::RULE_CONTAINER_ACCESS`
+  (`'containerAccess'`) rule and its validator `validateContainerAccess()`, along with the
+  private helpers it alone used (`canAccessSpace()`, `getSpaceMembership()`, `canAccessUser()`,
+  the `$_membership` property). The rule was registered but never added to any
+  `getAccessRules()`/`getFixedRules()`, so it never ran — the space and profile visibility
+  checks it duplicated are already enforced unconditionally by `space\behaviors\SpaceController`
+  and `user\behaviors\ProfileController` on `EVENT_BEFORE_ACTION`. No known module referenced
+  the rule. A module that added `[ContentContainerControllerAccess::RULE_CONTAINER_ACCESS]` to
+  its own `getAccessRules()` must remove it; the behaviors already provide equivalent
+  enforcement.
+- Removed the `$right` parameter from `humhub\widgets\bootstrap\BootstrapVariationsTrait::icon()`
+  (used by `Button`, `Badge`, `Link` and `Alert`). The parameter was never read by the method —
+  right-aligning an icon already goes through the separate `->right()` method — so this only
+  changes the signature: `icon(string|Icon|null $icon, $options = [])`, `$options` is now the
+  **second** parameter instead of the third.
+  **Warning:** PHP silently ignores extra arguments, so a call like `->icon('user', true)` made
+  for the old `$right` flag does not fail — `true` is now passed as `$options` to `Icon::get()`,
+  which fatals with "Cannot use a scalar value as an array". Audit every `->icon(...)` call that
+  passes a second argument and drop it, or move a third-argument `$options` array into the second
+  position.
+  - `humhub\modules\ui\menu\MenuLink::setIcon()` also dropped its `$right` parameter for the same
+    reason (it only forwarded into `icon()`, and `right()` on the underlying `Button`/`Badge` is
+    the correct way to align an icon). `setIcon($icon, $right)` → `setIcon($icon)`.
+    **Warning:** PHP silently ignores the now-unused second argument instead of erroring, so a
+    call like `$menuLink->setIcon('user', true)` keeps "succeeding" but the icon is no longer
+    right-aligned — audit every `->setIcon(...)` call that passes a second argument and call
+    `->getLink()->right()` explicitly if right-alignment is still needed.
+- **Removed** `humhub\components\assets\AssetBundle::$defaultDepends` (unused by any known module).
+  It promised that a bundle implicitly depends on `CoreBundleAsset` without listing it in
+  `$depends`, but the code applying it read a misspelled property (`dependsDefault`) and has
+  therefore never run since it was added in 1.5 (#3941). It also cannot be repaired as written:
+  with the property name corrected, every bundle inside `CoreBundleAsset`'s own dependency tree
+  depends on it and Yii aborts the request with `A circular dependency is detected for bundle
+  'humhub\assets\CoreBundleAsset'`. A bundle needing the core bundle lists it in `$depends`
+  itself, which is what bundles have been doing all along. The `public $defaultDepends = false;`
+  opt-out in core bundles is gone with it; a module declaring the property keeps working (it
+  becomes an unused own property), but a bundle **configured** with `'defaultDepends' => ...`
+  now fails with `Setting unknown property`.
 
 ## Released versions
 

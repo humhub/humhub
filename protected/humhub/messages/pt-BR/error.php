@@ -14,4 +14,5 @@ return [
     'You need admin permissions to access this section.' => 'Você precisa ser administrador para acessar essa seção.',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => 'Sua conta não foi aprovada ainda, por favor tente novamente mais tarde ou contate um administrador.',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'Sua conta está inativa, por favor entre com uma conta ativa ou contate um administrador.',
+    'Access to private content is not allowed while impersonating a user.' => '',
 ];

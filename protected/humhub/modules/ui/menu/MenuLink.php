@@ -126,13 +126,12 @@ class MenuLink extends MenuEntry
 
     /**
      * @param $icon Icon|string the icon instance or icon name
-     * @param bool $right
      * @return static
      * @throws Exception
      */
-    public function setIcon($icon, $right = false)
+    public function setIcon($icon)
     {
-        $this->getLink()->icon($icon, $right);
+        $this->getLink()->icon($icon);
         return $this;
     }
 

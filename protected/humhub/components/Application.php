@@ -10,6 +10,7 @@ namespace humhub\components;
 
 use Exception;
 use humhub\interfaces\ApplicationInterface;
+use yii\web\HttpException;
 
 /**
  * Description of Application
@@ -55,6 +56,19 @@ class Application extends \yii\web\Application implements ApplicationInterface
             && $this->controller && $this->controller->id != 'error'
             && $this->controller->module != null && $this->controller->module->id != 'installer'
         ) {
+            // A configured but unreachable database must surface as a service
+            // error instead of silently presenting the installer, which would
+            // offer to re-setup an already installed instance during a transient
+            // database outage.
+            if ($this->installationState->isDatabaseUnreachable()) {
+                throw new HttpException(
+                    503,
+                    'The database is currently not reachable.',
+                    0,
+                    $this->installationState->getDatabaseConnectionError(),
+                );
+            }
+
             $this->controller->redirect(['/installer/index']);
 
             return false;

@@ -88,6 +88,7 @@ return [
     'Search' => '',
     'Security' => '',
     'Show At Registration' => '',
+    'Show all' => '',
     'Show all content' => '',
     'Sign in' => '',
     'Sign in / up' => '',

@@ -26,11 +26,6 @@ class PjaxAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $defaultDepends = false;
-
-    /**
-     * @inheritdoc
-     */
     public $defer = false;
 
     /**

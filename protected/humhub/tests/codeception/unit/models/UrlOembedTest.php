@@ -124,6 +124,16 @@ class UrlOembedTest extends HumHubDbTestCase
         $this->assertEquals(2, UrlOembedMock::getFetchLoadCount());
     }
 
+    public function testConfirmationContentEncodesUrl()
+    {
+        $url = 'https:youtube.com<script>alert(1)</script>';
+        $html = UrlOembedMock::buildConfirmationContent($url);
+
+        // The requested url is attacker controllable and must be rendered inert
+        $this->assertStringNotContainsString('<script>', $html);
+        $this->assertStringContainsString('&lt;script&gt;', $html);
+    }
+
     private function getOembedRecordCount()
     {
         return UrlOembedMock::find()->count();

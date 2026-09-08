@@ -34,11 +34,6 @@ class CoreApiAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $defaultDepends = false;
-
-    /**
-     * @inheritdoc
-     */
     public $js = [
         'js/humhub/humhub.core.js',
         'js/humhub/humhub.i18n.js', // Must be registered before all modules that require('i18n') at definition time

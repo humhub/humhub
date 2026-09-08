@@ -983,6 +983,11 @@ class SelfTest
             'modules' => [
                 'search' => new UnsetArrayValue(),
                 'directory' => new UnsetArrayValue(),
+                'content' => [
+                    // @since 1.17 - use `modules.admin.enableManageAllContentPermission` instead
+                    'adminCanViewAllContent' => new UnsetArrayValue(),
+                    'adminCanEditAllContent' => new UnsetArrayValue(),
+                ],
             ],
             'components' => [
                 'formatterApp' => new UnsetArrayValue(),
