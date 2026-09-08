@@ -8,7 +8,6 @@
 
 namespace humhub\modules\ui\form\widgets;
 
-use humhub\assets\DatePickerRussianLanguageAsset;
 use humhub\helpers\Html;
 use Yii;
 use yii\helpers\FormatConverter;
@@ -176,12 +175,6 @@ class DatePicker extends BaseDatePicker
 
     private function registerLanguageAsset()
     {
-
-        if ($this->pickerLanguage === 'ru') {
-            DatePickerRussianLanguageAsset::register($this->getView());
-            return;
-        }
-
         $assetBundle = DatePickerLanguageAsset::register($this->getView());
         if (str_starts_with((string) $this->pickerLanguage, 'en')) {
             $assetBundle->autoGenerate = false;
