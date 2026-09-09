@@ -44,7 +44,18 @@ class ManageController extends ContentContainerController
 
     public function beforeAction($action)
     {
-        if (!Topic::isAllowedToCreate($this->contentContainer) || ($this->contentContainer instanceof Space && !$this->contentContainer->can(ManageTopics::class))) {
+        if (!Topic::isAllowedToCreate($this->contentContainer)) {
+            throw new ForbiddenHttpException();
+        }
+
+        if ($this->contentContainer instanceof Space
+            && !$this->contentContainer->can(ManageTopics::class)) {
+            throw new ForbiddenHttpException();
+        }
+
+        if ($this->contentContainer instanceof User
+            && !$this->contentContainer->is(Yii::$app->user->getIdentity())
+            && !Yii::$app->user->getIdentity()?->canManageAllContent()) {
             throw new ForbiddenHttpException();
         }
 
