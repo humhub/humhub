@@ -10,6 +10,7 @@ HumHub Changelog
 - Fix #8430: Make the password show/hide icon focusable and operable via keyboard
 - Fix #8439: Fix editing file-only Posts and clear `fileList[]` after posting so it isn't reused on the next post
 - Fix #8442: DatePicker date-format mismatches (month names, digits, whitespace) between jQuery UI and PHP intl/ICU across 35+ locales
+- Fix #8445: Restrict direct space joins to free-join spaces, so "Invite and request" spaces require admin approval instead of instant membership
 - Fix #8446: Restrict Topic management (create/rename/delete) on user profiles to the profile owner or users with full content management permissions
 
 1.18.5 (August 19, 2026)
