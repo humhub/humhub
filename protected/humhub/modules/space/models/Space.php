@@ -338,9 +338,15 @@ class Space extends ContentContainerActiveRecord
 
 
     /**
-     * Indicates that this user can join this workspace
+     * Indicates whether this user is allowed to start joining this Space —
+     * either instantly or by submitting a membership application, depending
+     * on the join policy. A `true` result does NOT mean the user may be
+     * added as a member directly: for JOIN_POLICY_APPLICATION spaces, use
+     * requestMembership(), never addMember(). Use canJoinFree() to check
+     * whether immediate membership without admin approval is allowed.
      *
-     * @param $userId int|string|null User Id of User
+     * @param int|string|null $userId User ID
+     * @return bool
      */
     public function canJoin($userId = null): bool
     {
@@ -370,16 +376,21 @@ class Space extends ContentContainerActiveRecord
     }
 
     /**
-     * Indicates that this user can join this workspace w
-     * ithout permission
+     * Indicates whether this user can become a full member of this Space
+     * immediately, without requiring admin approval. Only true for
+     * JOIN_POLICY_FREE spaces, never for a pending application. Safe to use
+     * as a guard directly before calling addMember().
      *
-     * @param $userId User Id of User
+     * @param int|string|null $userId User ID
+     * @return bool
      */
-    public function canJoinFree($userId = '')
+    public function canJoinFree($userId = null): bool
     {
-        // Take current userid if none is given
-        if ($userId == '') {
-            $userId = Yii::$app->user->id;
+        // Take current userId if none is given
+        $userId ??= Yii::$app->user->id;
+
+        if (!$userId) {
+            return false;
         }
 
         // Checks if User is already member
@@ -387,13 +398,18 @@ class Space extends ContentContainerActiveRecord
             return false;
         }
 
-        if ($this->join_policy == self::JOIN_POLICY_FREE) {
-            return true;
+        if ($this->join_policy != self::JOIN_POLICY_FREE) {
+            return false;
         }
 
-        return false;
-    }
+        $user = Yii::$app->runtimeCache->getOrSet(User::class . '#' . $userId, fn() => User::findOne($userId));
 
+        if ($this->isBlockedForUser($user)) {
+            return false;
+        }
+
+        return true;
+    }
 
     /**
      * Archive this Space

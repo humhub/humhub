@@ -98,11 +98,8 @@ class MembershipController extends ContentContainerController
         $this->forcePostRequest();
         $space = $this->getSpace();
 
-        if (!$space->canJoin(Yii::$app->user->id)) {
-            throw new HttpException(
-                500,
-                Yii::t('SpaceModule.base', 'You are not allowed to join this space!'),
-            );
+        if (!$space->canJoinFree()) {
+            throw new ForbiddenHttpException(Yii::t('SpaceModule.base', 'You are not allowed to join this space!'));
         }
 
         $space->addMember(Yii::$app->user->id);
