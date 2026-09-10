@@ -1,11 +1,11 @@
 <?php
 
 use humhub\components\View;
+use humhub\helpers\Html;
 use humhub\modules\marketplace\models\Licence;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\bootstrap\Link;
 use humhub\widgets\form\ActiveForm;
-use yii\helpers\Url;
 
 /* @var $this View */
 /* @var $model Licence */
@@ -49,9 +49,12 @@ use yii\helpers\Url;
         <hr>
 
         <?php if ($model->type === Licence::LICENCE_TYPE_PRO): ?>
-            <a href="<?= Url::to(['/marketplace/licence/remove']); ?>" class="float-end mt-4">
-                <small><?= Yii::t('MarketplaceModule.base', 'Remove license key'); ?></small>
-            </a>
+            <?= Link::none(Html::tag('small', Html::encode(Yii::t('MarketplaceModule.base', 'Remove license key'))))
+                ->encodeLabel(false)
+                ->post(['/marketplace/licence/remove'])
+                ->confirm(null, Yii::t('MarketplaceModule.base', 'Are you sure you want to remove the license key?'))
+                ->right()
+                ->cssClass('mt-4') ?>
         <?php endif; ?>
 
         <?= Button::save(Yii::t('MarketplaceModule.base', 'Save and update'))->submit() ?>

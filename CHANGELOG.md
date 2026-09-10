@@ -22,6 +22,7 @@ HumHub Changelog
 - Fix #8423: Fix tab order of the reset filters button in the search area
 - Fix #8438: Endless scrolling stalled whenever the loaded stream entries did not push the stream end indicator out of the observed area (compact streams, short entries, viewport not filled), because an `IntersectionObserver` only reports state *changes* — the stream now keeps loading until the observed area is filled
 - Fix #8438: The mobile "Load more" button of a stream was hardwired to the `#wallStream` id, so it failed with "Handler not found" in any stream rendered with a custom `id`
+- Fix #8448: Destructive admin actions (remove all space members, delete profile category, reset invite link, remove licence) ran on GET via CSRF
 
 1.19.0-beta.2 (August 19, 2026)
 -------------------------------
