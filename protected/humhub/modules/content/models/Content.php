@@ -231,8 +231,19 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         $this->pinned ??= 0;
         $this->state ??= Content::STATE_PUBLISHED;
 
-        $this->visibility ??= self::VISIBILITY_PRIVATE;
-        // Force to private content for private space or if user has no permission to create public content
+        $this->visibility = (int)($this->visibility ?? self::VISIBILITY_PRIVATE);
+        // Force to private content for private space or if user has no permission to create public content.
+        //
+        // NOTE: the "no permission to create public content" branch only applies when the visibility is
+        // actually being *changed* to public ($insert, or an existing record whose `visibility` attribute
+        // was just switched to public - see isAttributeChanged() below). The permission being checked here
+        // is about *making* content public, not about keeping it public - matching actionToggleVisibility()/
+        // VisibilityLink. Without this guard, ANY save of an already-public record (e.g. a trivial unrelated
+        // field edit) by an editor who can manage/edit the content but lacks CreatePublicContent in this
+        // container (e.g. a system admin editing another user's content for moderation, or a space role that
+        // has "Manage entries" but not "Create public content") would silently flip the content back to
+        // private for everyone else - with no warning shown anywhere in the UI. Reported and discussed in
+        // https://github.com/humhub/humhub/issues/8443 - has been silently demoting content since 1.15.3.
         if ($this->container instanceof Space
             && $this->container->visibility !== Space::VISIBILITY_ALL
             && $this->visibility === self::VISIBILITY_PUBLIC
@@ -240,6 +251,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
                 $this->container->visibility === Space::VISIBILITY_NONE
                 || (
                     Yii::$app->user->identity // Allow creating public content from console
+                    && ($insert || $this->isAttributeChanged('visibility', false))
                     && !$this->container->can(CreatePublicContent::class)
                 )
             )
