@@ -148,6 +148,8 @@ class MembershipController extends ContentContainerController
 
     public function actionRevokeNotifications()
     {
+        $this->forcePostRequest();
+
         $space = $this->getSpace();
         Yii::$app->notification->setSpaceSetting(Yii::$app->user->getIdentity(), $space, false);
 
@@ -156,6 +158,8 @@ class MembershipController extends ContentContainerController
 
     public function actionReceiveNotifications()
     {
+        $this->forcePostRequest();
+
         $space = $this->getSpace();
         Yii::$app->notification->setSpaceSetting(Yii::$app->user->getIdentity(), $space, true);
 
