@@ -246,6 +246,8 @@ class MembershipController extends ContentContainerController
      */
     public function actionResetInviteLink()
     {
+        $this->forcePostRequest();
+
         $model = new InviteForm(['space' => $this->getSpace()]);
 
         if (!$model->space || !$model->space->isAdmin()) {

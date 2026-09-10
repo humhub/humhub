@@ -9,6 +9,7 @@
 namespace humhub\modules\user\controllers;
 
 use humhub\components\behaviors\AccessControl;
+use humhub\components\Controller;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\user\models\Invite;
@@ -18,7 +19,6 @@ use Throwable;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
-use yii\web\Controller;
 use yii\web\HttpException;
 
 /**
@@ -108,6 +108,8 @@ class InviteController extends Controller
      */
     public function actionResetInviteLink()
     {
+        $this->forcePostRequest();
+
         $model = new InviteForm();
 
         if ($target = Yii::$app->request->get('target')) {

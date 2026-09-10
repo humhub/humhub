@@ -218,6 +218,8 @@ class MemberController extends Controller
      */
     public function actionRemoveAll()
     {
+        $this->forcePostRequest();
+
         $space = $this->getSpace();
         Yii::$app->queue->push(new RemoveAllMembersFromSpaceJob([
             'spaceId' => $space->id,
