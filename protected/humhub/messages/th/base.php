@@ -51,6 +51,7 @@ return [
   'New profile image' => 'รูปโปรไฟล์ใหม่',
   'Next' => 'ถัดไป',
   'No error information given.' => 'ไม่มีข้อมูลข้อผิดพลาดให้',
+  'No icon provider registered for provider id {id}' => 'ไม่มีผู้ให้บริการไอคอนลงทะเบียนสำหรับ ID ผู้ให้บริการ {id}',
   'No results' => '',
   'No results found.' => '',
   'Oooops...' => 'อุปส์ . . .',

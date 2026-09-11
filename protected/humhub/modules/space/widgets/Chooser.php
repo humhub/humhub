@@ -12,7 +12,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\space\permissions\SpaceDirectoryAccess;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\models\Follow;
 use Throwable;

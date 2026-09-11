@@ -10,7 +10,7 @@ namespace humhub\modules\space\widgets;
 
 use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Widget;

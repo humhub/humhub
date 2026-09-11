@@ -51,6 +51,7 @@ return [
   'New profile image' => 'صورة شخصية جديدة',
   'Next' => 'التالي',
   'No error information given.' => 'لم يتم تقديم معلومات الخطأ.',
+  'No icon provider registered for provider id {id}' => 'لا مزود رموز مسجل لمعرف المزود {id}',
   'No results' => 'لا نتائج',
   'No results found.' => 'لم يتم العثور على نتائج.',
   'Oooops...' => 'أوووه...',

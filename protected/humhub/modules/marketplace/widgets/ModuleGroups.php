@@ -11,7 +11,7 @@ namespace humhub\modules\marketplace\widgets;
 use humhub\components\Widget;
 use humhub\modules\marketplace\Module;
 use humhub\modules\marketplace\services\MarketplaceService;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use humhub\widgets\bootstrap\Button;
 use Yii;
 use yii\helpers\ArrayHelper;

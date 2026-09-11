@@ -9,7 +9,7 @@
 namespace humhub\modules\ui\menu;
 
 use Exception;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use humhub\modules\ui\menu\widgets\Menu;
 use humhub\widgets\bootstrap\Button;
 

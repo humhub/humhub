@@ -10,7 +10,7 @@ namespace humhub\widgets;
 
 use humhub\modules\admin\libs\CacheHelper;
 use humhub\modules\file\validators\FileValidator;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\UserPicker;
 use Yii;

@@ -11,7 +11,7 @@ namespace humhub\modules\space\widgets;
 use humhub\components\Widget;
 use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\helpers\ArrayHelper;

@@ -4,7 +4,7 @@ namespace humhub\modules\content\widgets;
 
 use humhub\components\Widget;
 use humhub\helpers\Html;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use yii\helpers\ArrayHelper;
 
 /**

@@ -5,7 +5,7 @@ use humhub\helpers\Html;
 use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\tour\assets\TourAsset;
 use humhub\modules\tour\TourConfig;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use humhub\widgets\bootstrap\Link;
 use humhub\widgets\PanelMenu;
 use yii\helpers\Url;

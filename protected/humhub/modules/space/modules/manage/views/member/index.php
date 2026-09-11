@@ -5,7 +5,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\models\MembershipSearch;
 use humhub\modules\space\modules\manage\widgets\MemberHeaderControlsMenu;
 use humhub\modules\space\modules\manage\widgets\MemberMenu;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
 use humhub\widgets\bootstrap\Button;

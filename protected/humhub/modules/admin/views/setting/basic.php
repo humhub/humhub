@@ -3,7 +3,7 @@
 use humhub\helpers\Html;
 use humhub\libs\TimezoneHelper;
 use humhub\modules\admin\models\forms\BasicSettingsForm;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use humhub\widgets\bootstrap\Alert;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;

@@ -51,6 +51,7 @@ return [
   'New profile image' => 'Nova profilna slika',
   'Next' => 'Dalje',
   'No error information given.' => 'Nema podataka o pogrešci.',
+  'No icon provider registered for provider id {id}' => 'Nijedan pružatelj ikona nije registriran za ID davatelja usluge {id}',
   'No results' => 'Nema rezultata',
   'No results found.' => '',
   'Oooops...' => 'Ups...',

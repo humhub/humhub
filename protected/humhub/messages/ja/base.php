@@ -51,6 +51,7 @@ return [
   'New profile image' => '新しいプロフィール画像',
   'Next' => '次',
   'No error information given.' => 'エラー情報はありません。',
+  'No icon provider registered for provider id {id}' => 'プロバイダID {id} にアイコンプロバイダが登録されていません',
   'No results' => '結果なし',
   'No results found.' => '検索結果は見つかりませんでした',
   'Oooops...' => 'おっと・・・',

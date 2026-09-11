@@ -51,6 +51,7 @@ return [
   'New profile image' => 'Нова профилна картинка',
   'Next' => 'Следващ',
   'No error information given.' => 'Няма информация за грешката.',
+  'No icon provider registered for provider id {id}' => 'Няма провайдър на икони регистриран като идентификатор {id}',
   'No results' => '',
   'No results found.' => '',
   'Oooops...' => 'Опаля...',

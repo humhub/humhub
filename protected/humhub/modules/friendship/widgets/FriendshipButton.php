@@ -9,7 +9,7 @@
 namespace humhub\modules\friendship\widgets;
 
 use humhub\modules\friendship\models\Friendship;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\InvalidArgumentException;

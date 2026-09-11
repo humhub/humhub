@@ -1,6 +1,6 @@
 <?php
 
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use yii\helpers\Url;
 
 /* @var $this \humhub\components\View */

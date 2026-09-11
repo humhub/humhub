@@ -51,6 +51,7 @@ return [
   'New profile image' => 'Ảnh đại diện mới',
   'Next' => 'Tiếp theo',
   'No error information given.' => 'Không có thông tin lỗi nào được đưa ra',
+  'No icon provider registered for provider id {id}' => 'Không có nhà cung cấp biểu tượng nào được đăng ký cho mã ID {id} của nhà cung cấp',
   'No results' => '',
   'No results found.' => '',
   'Oooops...' => 'Ồ....',

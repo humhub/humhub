@@ -51,6 +51,7 @@ return [
   'New profile image' => 'Nieuwe profielfoto',
   'Next' => 'Volgende',
   'No error information given.' => 'Geen fout informatie beschikbaar.',
+  'No icon provider registered for provider id {id}' => 'Geen pictogramprovider geregistreerd voor provider-ID {id}',
   'No results' => 'Geen resultaten',
   'No results found.' => 'Geen resultaten gevonden.',
   'Oooops...' => 'Oeps...',

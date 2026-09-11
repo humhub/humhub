@@ -104,6 +104,7 @@ return [
     '{attribute} must be a string (UUID) or null; {type} given.' => '',
     '{attribute} must be an UUID or null. UUID has the format "{{XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX}}", where X = [a-fA-F0-9] and both curly brackets and delimiting dashes are optional.' => '',
   'Hm...' => '嗯...',
+  'No icon provider registered for provider id {id}' => '已註冊的圖標提供者 {id} 不存在',
   'Please check your internet connection and <a href="?">refresh</a> this page once you are online again!' => '請確認您的網路連接，在您恢復連接後請<a href="?">重新載入</a>此頁面。',
   'Unable to connect to {site}' => '無法連上 {site}',
 ];

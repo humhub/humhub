@@ -8,7 +8,7 @@
 
 namespace humhub\widgets\form;
 
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use Yii;
 use yii\helpers\Html;
 
