@@ -9,7 +9,7 @@
 namespace humhub\modules\space\widgets;
 
 use humhub\helpers\Html;
-use humhub\modules\ui\widgets\DirectoryFilters;
+use humhub\widgets\DirectoryFilters;
 use Yii;
 
 /**

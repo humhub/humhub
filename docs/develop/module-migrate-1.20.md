@@ -340,3 +340,27 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   and `meeting` — still carry their own reordering models and are unaffected. A module that does
   extend this class needs to bring its own copy; correcting the four defects above first is
   advisable.
+
+- **The remaining widgets of the `ui` module moved into the core namespace.**
+
+  | Before | After |
+  |---|---|
+  | `humhub\modules\ui\widgets\BaseImage` | `humhub\widgets\BaseImage` |
+  | `humhub\modules\ui\widgets\CropImage` | `humhub\widgets\CropImage` |
+  | `humhub\modules\ui\widgets\CounterSet` | `humhub\widgets\CounterSet` |
+  | `humhub\modules\ui\widgets\CounterSetItem` | `humhub\widgets\CounterSetItem` |
+  | `humhub\modules\ui\widgets\DirectoryFilters` | `humhub\widgets\DirectoryFilters` |
+
+  - **Nothing breaks in 1.20.** Every old name stays available as a deprecated subclass,
+    `DirectoryFilters` as a deprecated abstract one. **The shims are removed in 1.21.**
+
+  - The three views move with them, so a widget pointing `$template` or `render()` at them has to
+    follow: `@ui/widgets/views/counterSetHeader` and
+    `@humhub/modules/ui/widgets/views/directoryFilter[s]` become `@humhub/widgets/views/…`. No
+    theme in the ecosystem overrides these views.
+
+  - `DirectoryFilters` stays a top-level widget rather than moving next to the filter widgets of
+    `humhub\modules\ui\filter`. The two are unrelated implementations: `DirectoryFilters` extends
+    `humhub\components\Widget` directly and drives the directory pages (spaces, people, content
+    search, marketplace), while the `filter` widgets build the stream filter panel. The `filter`
+    part of the module is untouched for now.
