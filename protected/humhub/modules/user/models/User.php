@@ -890,6 +890,12 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
             return false;
         }
 
+        // A non System-Administrator can never impersonate a System Administrator - keep this
+        // in sync with UserController::checkUserAccess(), which enforces the same rule server-side.
+        if ($user->isSystemAdmin() && !$this->isSystemAdmin()) {
+            return false;
+        }
+
         return (new PermissionManager(['subject' => $this]))->can(ManageUsers::class);
     }
 
