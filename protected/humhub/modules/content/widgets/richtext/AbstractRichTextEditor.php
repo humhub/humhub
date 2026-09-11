@@ -3,7 +3,7 @@
 namespace humhub\modules\content\widgets\richtext;
 
 use humhub\helpers\Html;
-use humhub\modules\ui\form\widgets\JsInputWidget;
+use humhub\widgets\form\JsInputWidget;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 

@@ -6,7 +6,7 @@
  */
 
 use humhub\helpers\Html;
-use humhub\modules\ui\menu\MenuLink;
+use humhub\widgets\menu\MenuLink;
 
 /* @var $this \humhub\components\View */
 /* @var $entries MenuLink[] */

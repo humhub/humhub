@@ -45,6 +45,21 @@ class OembedExtension extends RichTextLinkExtension
     }
 
     /**
+     * Contributes the SAME server-fetched oembed previews {@see self::onBeforeOutput()} collected for this
+     * render (keyed by url) as the one extension that genuinely needs server participation - a client cannot
+     * fetch/render third-party oembed markup itself. {@see \humhub\modules\content\widgets\richtext\ProsemirrorRichText::getMarkdownAndRenderOptions()}
+     * ships this under the `oembeds` render-option key instead of {@see self::onAfterOutput()}'s HTML-string
+     * appending, so `RichTextOutput.vue` can rebuild the exact same hidden `.richtext-oembed-container`
+     * markup {@see self::buildOembedOutput()} renders today, client-side.
+     *
+     * @inheritdoc
+     */
+    public function getRenderOptions(): array
+    {
+        return $this->oembeds === [] ? [] : ['oembeds' => $this->oembeds];
+    }
+
+    /**
      * @return string html extension holding the actual oembed dom nodes which will be embedded into the rich text
      */
     private function buildOembedOutput(): string

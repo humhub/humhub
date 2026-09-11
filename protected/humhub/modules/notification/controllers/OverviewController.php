@@ -10,25 +10,24 @@ namespace humhub\modules\notification\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
-use humhub\modules\notification\components\BaseNotification;
+use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\notification\models\forms\FilterForm;
-use humhub\modules\notification\models\Notification;
-use humhub\modules\notification\widgets\OverviewWidget;
-use Throwable;
+use humhub\modules\notification\services\NotificationWindowService;
 use Yii;
-use yii\db\IntegrityException;
-use yii\db\StaleObjectException;
 
 /**
- * ListController
+ * The notification overview page.
  *
- * @package humhub.modules_core.notification.controllers
+ * A Vue island (`NotificationOverview`) since 1.19: this controller only renders its mount point
+ * and hands over what the server owns — the first page of notifications, the (module-defined,
+ * localized) categories that can be filtered by, and the rendered icon markup. Filtering and
+ * paging happen against the notification API from there
+ * ({@see \humhub\modules\notification\controllers\api\NotificationController}).
+ *
  * @since 0.5
  */
 class OverviewController extends Controller
 {
-    public const PAGINATION_PAGE_SIZE = 20;
-
     /**
      * @inheritdoc
      */
@@ -39,81 +38,33 @@ class OverviewController extends Controller
         ];
     }
 
-    /**
-     * @param bool $reload if the request is a reload request
-     * @return string
-     * @throws Throwable
-     * @throws StaleObjectException
-     */
-    public function actionIndex($reload = false)
+    public function actionIndex()
     {
-        $filterForm = $this->loadFilterForm($reload);
-
-        if ($filterForm->hasFilter()) {
-            $overview = OverviewWidget::widget([
-                'pagination' => $filterForm->getPagination(self::PAGINATION_PAGE_SIZE),
-                'notifications' => $this->prepareNotifications($filterForm->createQuery()->all()),
-            ]);
-        } else {
-            $overview = OverviewWidget::widget([
-                'notifications' => [],
-            ]);
-        }
-
-        return $reload
-            ? $this->renderAjaxPartial($overview)
-            : $this->render('index', [
-                'overview' => $overview,
-                'filterForm' => $filterForm,
-            ]);
+        return $this->render('index', [
+            'initial' => (new NotificationWindowService())->window(NotificationWindowService::OVERVIEW_PAGE_SIZE),
+            'categories' => $this->getCategories(),
+        ]);
     }
 
     /**
-     * Loads the filters from the request into the form
-     *
-     * @param bool $reload
-     * @return FilterForm
+     * The categories the filter offers, in the order and with the titles the server-rendered
+     * checkbox list used — including the catch-all for notifications without a category of
+     * their own.
      */
-    private function loadFilterForm(bool $reload = false): FilterForm
-    {
-        $filterForm = new FilterForm();
-
-        if ($reload) {
-            $filterForm->load(Yii::$app->request->post());
-        } else {
-            $filterForm->load(Yii::$app->request->get());
-        }
-
-        return $filterForm;
-    }
-
-    /**
-     * Validates given notifications and returns a list of notification models of all valid notifications.
-     *
-     * @param $notifications Notification[]
-     * @return array
-     * @throws Throwable
-     * @throws StaleObjectException
-     */
-    private function prepareNotifications($notifications)
+    private function getCategories(): array
     {
         $result = [];
-        foreach ($notifications as $notificationRecord) {
-            /* @var $notificationRecord Notification */
 
-            try {
-                $baseModel = $notificationRecord->getBaseModel();
-
-                if ($baseModel instanceof BaseNotification && $baseModel->validate()) {
-                    $result[] = $baseModel;
-                } else {
-                    throw new IntegrityException('Invalid base model (' . $notificationRecord->class . ') found for notification');
-                }
-            } catch (IntegrityException $ex) {
-                $notificationRecord->delete();
-                Yii::warning('Deleted inconsistent notification with id ' . $notificationRecord->id . '. ' . $ex->getMessage());
-            }
+        foreach (Yii::$app->notification->getNotificationCategories(Yii::$app->user->getIdentity()) as $category) {
+            /** @var NotificationCategory $category */
+            $result[] = ['id' => $category->id, 'title' => $category->getTitle()];
         }
+
+        $result[] = [
+            'id' => FilterForm::NO_CATEGORY_ID,
+            'title' => Yii::t('NotificationModule.base', 'Others'),
+        ];
+
         return $result;
     }
 }

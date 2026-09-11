@@ -1,0 +1,188 @@
+openapi: 3.0.0
+info:
+  description: |
+    Welcome to the HumHub activity API reference, v2.
+
+    These endpoints are part of **HumHub core** (1.20+). The optional
+    [REST API module](https://github.com/humhub/rest) contributes the token authentication
+    methods they accept and owns the older `/api/v1` surface, which is documented with that
+    module. For the design of this stack see `docs/develop/concept-api.md`.
+
+    Conventions of this API generation, differing from `/api/v1`: camelCase field names,
+    ISO-8601 timestamps with offset, plain HTTP status codes instead of a
+    `{code, message}` envelope.
+
+    **Always what the caller may see.** Without `containerGuid` the list spans every container
+    the caller subscribes to (the dashboard box), with it the one container named (the box on a
+    space or profile). Activities the caller may not see never appear, and the caller's own
+    activities are left out — the box has always shown what others did.
+
+    **Cursor paging instead of page numbers.** The list reorders as activities arrive and
+    groups form, which page numbers cannot express without skipping or repeating entries. A
+    page carries a `nextCursor` to hand back, `null` once the list is exhausted. The cursor is
+    opaque: pass it back untouched, never build one from an entry.
+
+    **Grouping is the server's.** Several activities of a kind on the same content count as one
+    entry, which reports how many it stands for in `groupCount` and says so in its sentence
+    ("Jane and 2 others"). An entry is identified by `key`, not by `id`; see the schema for why
+    neither is durable.
+
+    **The sentence comes from the server.** An activity's `message` is the localized,
+    module-defined phrase — the one part a client cannot build. Everything around it (avatar,
+    space badge, relative time, link) is data in this payload, rendered by the client.
+
+    Requests may authenticate with any token method the REST API module offers. HumHub's own
+    browser session is accepted too for these endpoints, which is what the platform's Vue UI
+    uses.
+  version: 2.0.0
+  title: HumHub - Activity API (v2)
+  contact:
+    email: info@humhub.com
+  license:
+    name: AGPLv2
+    url: https://www.humhub.org/en/licences
+servers:
+  - url: /api/v2
+security:
+  - Bearer: []
+  - BasicAuth: []
+  - SessionCookie: []
+paths:
+  "/activity":
+    get:
+      summary: The activities the caller may see
+      description: |
+        One page of activities, newest group first.
+
+        An activity whose class or records no longer resolve — its module was uninstalled, the
+        content it is about is gone — is skipped instead of failing the request, so a page may
+        contain fewer entries than `limit` even when `nextCursor` is set.
+      parameters:
+        - name: containerGuid
+          in: query
+          required: false
+          description: |
+            Guid of a space or user to scope the list to. Omit for every container the caller
+            subscribes to. A guid naming no container answers `404`; an existing container the
+            caller has no access to answers an empty list.
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          description: Entries per page (default 10, maximum 50)
+          schema:
+            type: integer
+        - name: cursor
+          in: query
+          required: false
+          description: |
+            `nextCursor` of the previous page. Omit for the first page. Opaque — a value that
+            cannot be read is ignored and answers the first page.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Activity"
+                  nextCursor:
+                    type: string
+                    nullable: true
+                    description: |
+                      Pass as `cursor` for the next page; `null` when there is nothing behind
+                      this one.
+              example:
+                results:
+                  - id: 482
+                    key: YTE6NDc5
+                    message: <strong>Jane Doe</strong> and 2 others joined the space.
+                    url: https://example.com/s/product-team/
+                    createdAt: "2026-08-20T10:12:00+00:00"
+                    groupCount: 3
+                    user:
+                      id: 7
+                      guid: 4f3e2d1c-0b9a-8765-4321-0fedcba98765
+                      displayName: Jane Doe
+                      url: https://example.com/u/jane/
+                      imageUrl: https://example.com/uploads/profile_image/abc.jpg
+                      contentContainerId: 12
+                    space:
+                      id: 3
+                      guid: 9a8b7c6d-5e4f-3210-9876-543210fedcba
+                      name: Product Team
+                      url: https://example.com/s/product-team/
+                      color: "#7a9299"
+                      imageUrl: null
+                      contentContainerId: 21
+                nextCursor: YTE6NDc5
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "404":
+          description: No container carries the given `containerGuid`
+components:
+  securitySchemes:
+    Bearer:
+      $ref: "common.yaml#/components/securitySchemes/Bearer"
+    BasicAuth:
+      $ref: "common.yaml#/components/securitySchemes/BasicAuth"
+    SessionCookie:
+      $ref: "common.yaml#/components/securitySchemes/SessionCookie"
+  schemas:
+    Activity:
+      type: object
+      description: One activity, or one group of them
+      properties:
+        id:
+          type: integer
+          description: |
+            The activity representing this entry — the newest of its group. It changes as the
+            group grows, so it identifies the entry only for as long as the list is unchanged;
+            use `key` to match entries between two reads.
+        key:
+          type: string
+          description: |
+            Opaque identity of the entry, used to reconcile a freshly read page against what a
+            client shows.
+
+            Not durable either: when an activity joins a group (or forms one), the server
+            re-keys that group to the activity that did it, so the entry reappears under a new
+            key — and, being keyed higher, at the top of the list. That is the grouping's own
+            behaviour; this payload only reports it.
+        message:
+          type: string
+          description: |
+            The activity's own localized sentence, as HTML (display names wrapped in
+            `<strong>`, links into the content). Composed server-side from escaped values by
+            the activity class; for a group it is the sentence naming the group.
+        url:
+          type: string
+          nullable: true
+          description: Where the entry links to — the content or its container
+        createdAt:
+          type: string
+          nullable: true
+          description: ISO-8601 timestamp with offset
+        groupCount:
+          type: integer
+          description: How many activities this entry stands for, `1` when it is not a group
+        user:
+          allOf:
+            - $ref: "common.yaml#/components/schemas/UserShort"
+          nullable: true
+          description: The user who caused the activity
+        space:
+          allOf:
+            - $ref: "common.yaml#/components/schemas/SpaceShort"
+          nullable: true
+          description: |
+            The space the activity happened in, `null` on a user profile. Travels with every
+            entry; whether it is shown is the client's decision — inside a space it is
+            redundant.

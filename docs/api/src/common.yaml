@@ -1,0 +1,220 @@
+openapi: 3.0.0
+info:
+  title: Common v2 API Components
+  description: |
+    Shared components of the v2 API — schemas every endpoint document embeds, the
+    paginated-list envelope, the record addressing, the error contract and the
+    authentication schemes. Not an endpoint document of its own.
+  version: 2.0.0
+paths: {}
+components:
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      description: Access token or JWT, as issued by the REST API module.
+    BasicAuth:
+      type: http
+      scheme: basic
+      description: |
+        User credentials, restricted to the users the administrator enabled the API for.
+    SessionCookie:
+      type: apiKey
+      in: cookie
+      name: HUMHUB_SESSION
+      description: |
+        The regular HumHub browser session, accepted by core's own endpoints (which is how
+        the platform's Vue UI calls them). State-changing requests additionally require the
+        CSRF token, sent as the `X-CSRF-Token` header or the `_csrf` body parameter.
+  parameters:
+    pageParam:
+      name: page
+      in: query
+      description: Page number, starting at 1
+      required: false
+      schema:
+        type: integer
+    pageSizeParam:
+      name: pageSize
+      in: query
+      description: Records per page (default 25, maximum 100)
+      required: false
+      schema:
+        type: integer
+    recordIdsParam:
+      name: recordIds
+      in: query
+      description: |
+        Comma-separated (or repeated `recordIds[]=`) list of platform-wide record ids, capped
+        at 100 per request.
+      required: false
+      schema:
+        type: string
+    recordIdParam:
+      name: recordId
+      in: query
+      description: |
+        Platform-wide record id — the addressing every shape that carries likes exposes as
+        `recordId`. Alternative to `model` + `pk`.
+      required: false
+      schema:
+        type: integer
+    modelParam:
+      name: model
+      in: query
+      description: Class name of the record, when addressing it by model and primary key
+      required: false
+      schema:
+        type: string
+    pkParam:
+      name: pk
+      in: query
+      description: Primary key of the record, when addressing it by model and primary key
+      required: false
+      schema:
+        type: integer
+  responses:
+    Unauthorized:
+      description: Authentication required
+    Forbidden:
+      description: The caller may not access this record
+    NotFound:
+      description: No such record
+    ValidationFailed:
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              errors:
+                type: object
+                description: Field name (camelCase) to list of messages
+                additionalProperties:
+                  type: array
+                  items:
+                    type: string
+            example:
+              errors:
+                message:
+                  - The comment must not be empty!
+  schemas:
+    ListEnvelope:
+      type: object
+      description: The envelope of every paginated list response
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+        total:
+          type: integer
+          description: Total number of records
+        page:
+          type: integer
+          description: Current page, starting at 1
+        pageSize:
+          type: integer
+        pages:
+          type: integer
+          description: Total number of pages
+    LikeState:
+      type: object
+      description: |
+        The caller-context like state of a record — returned by the like endpoints. NOT
+        embedded in other shapes: it is the one value that depends both on the record and on
+        who is asking, so keeping it separate is what lets those payloads be identical for
+        every reader (and therefore cacheable). Ask for a whole page of records at once with
+        `GET /like/states`.
+      properties:
+        total:
+          type: integer
+          description: Number of likes
+        liked:
+          type: boolean
+          description: Whether the authenticated caller has liked the record
+        canLike:
+          type: boolean
+          description: Whether the authenticated caller may like the record
+    UserShort:
+      type: object
+      description: |
+        The short user representation every other shape embeds. Deliberately caller-neutral:
+        it carries neither the online status (volatile, and dependent on who is asking) nor
+        the localized alt text of the profile image, which is what lets the payloads embedding
+        it be identical for every reader.
+      properties:
+        id:
+          type: integer
+        guid:
+          type: string
+        displayName:
+          type: string
+        url:
+          type: string
+          description: Absolute profile URL
+        imageUrl:
+          type: string
+          description: Absolute profile image URL
+        contentContainerId:
+          type: integer
+          nullable: true
+    SpaceShort:
+      type: object
+      description: |
+        The short space representation another shape embeds when it names the space something
+        happened in.
+      properties:
+        id:
+          type: integer
+        guid:
+          type: string
+        name:
+          type: string
+        url:
+          type: string
+          description: Absolute space URL
+        color:
+          type: string
+          nullable: true
+          description: The space's own colour, used for its acronym tile
+        imageUrl:
+          type: string
+          nullable: true
+          description: |
+            Absolute profile image URL, `null` when the space has no image of its own — which
+            is what tells a client to render the coloured acronym tile instead.
+        contentContainerId:
+          type: integer
+          nullable: true
+    File:
+      type: object
+      description: An attached file
+      properties:
+        id:
+          type: integer
+        guid:
+          type: string
+        mimeType:
+          type: string
+        size:
+          type: integer
+        fileName:
+          type: string
+        mimeIcon:
+          type: string
+          description: |
+            CSS class of the file-type icon (`mime-image`, `mime-pdf`, …) — the platform's own
+            icon set, so a client does not have to map mime types itself.
+        url:
+          type: string
+          description: Absolute file URL
+        downloadUrl:
+          type: string
+          description: |
+            Absolute URL of the same file with the response forcing a download instead of
+            letting the browser display it inline.
+        previewUrl:
+          type: string
+          nullable: true
+          description: Absolute preview image URL, when the file has one

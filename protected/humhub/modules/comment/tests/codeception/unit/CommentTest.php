@@ -217,4 +217,49 @@ class CommentTest extends HumHubDbTestCase
 
     }
 
+    public function testParentCommentValidation()
+    {
+        $this->becomeUser('User2');
+
+        ($root = new Comment([
+            'message' => 'Root',
+            'content_id' => 11,
+        ]))->save();
+
+        // Reply to a root comment is fine
+        $reply = new Comment([
+            'message' => 'Reply',
+            'content_id' => 11,
+            'parent_comment_id' => $root->id,
+        ]);
+        $this->assertTrue($reply->save());
+
+        // One nesting level only: a reply cannot be the parent of another comment
+        $nested = new Comment([
+            'message' => 'Nested',
+            'content_id' => 11,
+            'parent_comment_id' => $reply->id,
+        ]);
+        $this->assertFalse($nested->save());
+        $this->assertArrayHasKey('parent_comment_id', $nested->getErrors());
+
+        // The parent must belong to the same content
+        $foreignParent = new Comment([
+            'message' => 'Foreign parent',
+            'content_id' => 12,
+            'parent_comment_id' => $root->id,
+        ]);
+        $this->assertFalse($foreignParent->save());
+        $this->assertArrayHasKey('parent_comment_id', $foreignParent->getErrors());
+
+        // A dangling parent id is rejected too
+        $danglingParent = new Comment([
+            'message' => 'Dangling parent',
+            'content_id' => 11,
+            'parent_comment_id' => 99999,
+        ]);
+        $this->assertFalse($danglingParent->save());
+        $this->assertArrayHasKey('parent_comment_id', $danglingParent->getErrors());
+    }
+
 }

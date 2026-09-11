@@ -41,6 +41,18 @@ class HumHubHelper extends Module
         static::flushCache(__METHOD__);
     }
 
+    /**
+     * Returns a header of the last response. The functional suite has no step for this -
+     * `seeHttpHeader()` belongs to PhpBrowser/REST, which a framework suite does not use.
+     */
+    public function grabHttpHeader(string $name): ?string
+    {
+        /** @var \Codeception\Lib\InnerBrowser $browser */
+        $browser = $this->getModule('Yii2');
+
+        return $browser->client?->getInternalResponse()?->getHeader($name);
+    }
+
     public function fetchInviteToken($mail)
     {
         if ($mail instanceof Message) {

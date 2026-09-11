@@ -2,41 +2,15 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
- *
  */
 
 namespace humhub\modules\ui\filter\widgets;
 
-use humhub\components\Widget;
-use humhub\libs\Sort;
-
 /**
- * Renders a single stream filter panel which is part of a [[StreamFilterNavigation]].
- *
- * @since 1.3
- * @see FilterNavigation
+ * @deprecated since 1.20, use \humhub\widgets\filter\FilterPanel instead. Will be removed in 1.21.
  */
-class FilterPanel extends Widget
+class FilterPanel extends \humhub\widgets\filter\FilterPanel
 {
-    /**
-     * @var array stream filter block definitions
-     */
-    public $blocks = [];
-
-    public $view = 'filterPanel';
-
-    /**
-     * @inheritdoc
-     */
-    public function run()
-    {
-
-        if (empty($this->blocks)) {
-            return '';
-        }
-
-        return $this->render($this->view, ['blocks' => Sort::sort($this->blocks)]);
-    }
 }

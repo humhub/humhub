@@ -8,11 +8,9 @@
 
 namespace humhub\modules\friendship\controllers;
 
-use Exception;
 use humhub\components\Controller;
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\friendship\Module;
-use humhub\modules\friendship\widgets\FriendshipButton;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\web\HttpException;
@@ -86,27 +84,18 @@ class RequestController extends Controller
     }
 
     /**
-     * Get result for the friendship actions
+     * Result of the friendship actions: back where the request came from.
+     *
+     * Until 1.20 an AJAX request was answered with a re-rendered friendship button instead —
+     * the reason its presentation options had to travel to the client and back. The button is
+     * a Vue island now and updates itself from what the API answers, so nothing but the
+     * redirect is left (see `friendship\widgets\FriendshipButton`).
      *
      * @param User $user
-     * @return string|\yii\console\Response|Response
-     * @throws Exception
+     * @return Response
      */
     protected function getActionResult(User $user)
     {
-        if ($this->request->isAjax) {
-            $options = FriendshipButton::sanitizeRequestOptions($this->request->post('options', []));
-
-            // Show/Hide the "Follow"/"Unfollow" buttons depending on updated friendship state after AJAX action
-            $options['cancelFriendRequest']['attrs']['data-show-buttons'] = $user->isFollowedByUser() ? '.unfollowButton' : '.followButton';
-            $options['cancelFriendRequest']['attrs']['data-hide-buttons'] = $user->isFollowedByUser() ? '.followButton' : '.unfollowButton';
-
-            return FriendshipButton::widget([
-                'user' => $user,
-                'options' => $options,
-            ]);
-        }
-
         return $this->redirect($this->request->getReferrer());
     }
 

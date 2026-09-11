@@ -24,7 +24,6 @@ class CoreExtensionAsset extends AssetBundle
         'js/humhub/humhub.ui.picker.js',
         'js/humhub/humhub.ui.codemirror.js',
         'js/humhub/humhub.oembed.js',
-        'js/humhub/humhub.media.Jplayer.js',
         // Note this should stay at last for other click event listeners beeing able to prevent pjax handling (e.g gallery)
         'js/humhub/humhub.client.pjax.js',
     ];

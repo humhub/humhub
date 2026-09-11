@@ -1,6 +1,6 @@
 <?php
 
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use humhub\modules\user\models\ProfileFieldCategory;
 use humhub\widgets\bootstrap\Tabs;
 use yii\helpers\Url;

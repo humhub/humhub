@@ -2,47 +2,15 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\ui\menu\widgets;
 
 /**
- * Class DropdownMenu
- *
- * @since 1.4
- * @package humhub\modules\ui\menu\widgets
+ * @deprecated since 1.20, use \humhub\widgets\menu\DropdownMenu instead. Will be removed in 1.21.
  */
-abstract class DropdownMenu extends Menu
+abstract class DropdownMenu extends \humhub\widgets\menu\DropdownMenu
 {
-    /**
-     * @var ?string the label of the dropdown button
-     */
-    public ?string $label = null;
-    /**
-     * @var bool whether the label should be HTML-encoded.
-     */
-    public bool $encodeLabel = true;
-    /**
-     * @var ?string the icon of the dropdown button
-     */
-    public ?string $icon = null;
-
-    /**
-     * @inheritdoc
-     */
-    public $template = '@ui/menu/widgets/views/dropdown-menu.php';
-
-
-    /**
-     * @inheritdoc
-     */
-    public function getAttributes()
-    {
-        return [
-            'class' => 'btn-group dropdown',
-        ];
-    }
-
 }

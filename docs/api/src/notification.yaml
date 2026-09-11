@@ -1,0 +1,217 @@
+openapi: 3.0.0
+info:
+  description: |
+    Welcome to the HumHub notification API reference, v2.
+
+    These endpoints are part of **HumHub core** (1.20+). The optional
+    [REST API module](https://github.com/humhub/rest) contributes the token authentication
+    methods they accept and owns the older `/api/v1` surface, which is documented with that
+    module. For the design of this stack see `docs/develop/concept-api.md`.
+
+    Conventions of this API generation, differing from `/api/v1`: camelCase field names,
+    ISO-8601 timestamps with offset, plain HTTP status codes instead of a
+    `{code, message}` envelope.
+
+    **Always the caller's own notifications.** There is no user parameter, and no action here
+    is reachable for a guest. (The module's `/api/v1` notification endpoints, which let an
+    admin token read another user's notifications, are unaffected.)
+
+    **Cursor paging instead of page numbers.** The list is ordered unseen-first, newest-first,
+    and it reorders while a user pages through it — notifications arrive, others are read. Page
+    numbers would silently skip or repeat entries, so a page carries a `nextCursor` to hand
+    back, and `null` once the list is exhausted. This is the one list of this API generation
+    that does not use the `{results, total, page, pageSize, pages}` envelope.
+
+    **The sentence comes from the server.** A notification's `html` is the localized,
+    module-defined phrase (*"Jane commented on Post 'Release notes'"*) — the one part a client
+    cannot build. Everything around it (avatar, space badge, relative time, unread marker) is
+    data in this payload, rendered by the client.
+
+    Requests may authenticate with any token method the REST API module offers. HumHub's own
+    browser session is accepted too for these endpoints, which is what the platform's Vue UI
+    uses; state-changing session requests additionally require the CSRF token.
+  version: 2.0.0
+  title: HumHub - Notification API (v2)
+  contact:
+    email: info@humhub.com
+  license:
+    name: AGPLv2
+    url: https://www.humhub.org/en/licences
+servers:
+  - url: /api/v2
+security:
+  - Bearer: []
+  - BasicAuth: []
+  - SessionCookie: []
+paths:
+  "/notification":
+    get:
+      summary: The caller's notifications
+      description: |
+        One page of the caller's notifications, unseen first and newest first. Grouped
+        notifications (several likes on the same post, say) count as one entry.
+
+        A notification whose source no longer exists — its content was deleted, its class left
+        with an uninstalled module — is dropped from the list (and from the database) instead
+        of failing the request, so a page may contain fewer entries than `limit` even when
+        `nextCursor` is set.
+      parameters:
+        - name: cursor
+          in: query
+          required: false
+          description: |
+            `nextCursor` of the previous page. Omit for the first page.
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          required: false
+          description: Entries per page (default 6, maximum 50)
+          schema:
+            type: integer
+        - name: "categories[]"
+          in: query
+          required: false
+          description: |
+            Notification category ids to include (`comment`, `followed`, `mentioned`, …, plus
+            `others-no-category` for notifications belonging to no category). Categories are
+            contributed by modules; the notification settings page lists the ones an
+            installation offers.
+
+            Omit the parameter for no category filter at all. Passing a value that matches no
+            category — including a single empty entry — is a filter of its own and answers an
+            empty list, which is what "no category selected" means in the UI.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: seen
+          in: query
+          required: false
+          description: Restrict to seen or unseen notifications
+          schema:
+            type: string
+            enum: [seen, unseen]
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Notification"
+                  unseenCount:
+                    type: integer
+                    description: |
+                      The caller's total number of unseen notifications — what a client shows
+                      as its badge, independent of the filters of this request.
+                  nextCursor:
+                    type: integer
+                    nullable: true
+                    description: |
+                      Pass as `cursor` for the next page; `null` when there is nothing behind
+                      this one.
+              example:
+                results:
+                  - id: 137
+                    html: <strong>Jane Doe</strong> commented post "Release notes".
+                    url: /notification/entry?id=137&cId=42
+                    isNew: true
+                    createdAt: "2026-08-20T10:12:00+00:00"
+                    groupKey: humhub\modules\comment\notifications\NewComment:42
+                    originator:
+                      id: 7
+                      guid: 4f3e2d1c-0b9a-8765-4321-0fedcba98765
+                      displayName: Jane Doe
+                      url: https://example.com/u/jane/
+                      imageUrl: https://example.com/uploads/profile_image/abc.jpg
+                      contentContainerId: 12
+                    space:
+                      id: 3
+                      guid: 9a8b7c6d-5e4f-3210-9876-543210fedcba
+                      name: Product Team
+                      url: https://example.com/s/product-team/
+                      color: "#7a9299"
+                      imageUrl: null
+                      contentContainerId: 21
+                unseenCount: 4
+                nextCursor: 137
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+  "/notification/mark-as-seen":
+    post:
+      summary: Mark all notifications as seen
+      description: |
+        Marks every notification of the caller as seen. Always answers `unseenCount: 0`.
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  unseenCount:
+                    type: integer
+              example:
+                unseenCount: 0
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          description: |
+            A session-authenticated request without a valid CSRF token.
+components:
+  securitySchemes:
+    Bearer:
+      $ref: "common.yaml#/components/securitySchemes/Bearer"
+    BasicAuth:
+      $ref: "common.yaml#/components/securitySchemes/BasicAuth"
+    SessionCookie:
+      $ref: "common.yaml#/components/securitySchemes/SessionCookie"
+  schemas:
+    Notification:
+      type: object
+      description: One notification of the caller
+      properties:
+        id:
+          type: integer
+        html:
+          type: string
+          nullable: true
+          description: |
+            The notification's own localized sentence, as HTML (display names wrapped in
+            `<strong>`, links into the content). Composed server-side from escaped values by
+            the notification class; a notification implementing no HTML representation falls
+            back to its plain-text one.
+        url:
+          type: string
+          description: |
+            Relative URL of the notification target — a redirect that also marks this
+            notification as seen.
+        isNew:
+          type: boolean
+          description: Whether the caller has not seen this notification yet
+        createdAt:
+          type: string
+          description: ISO-8601 timestamp with offset
+        groupKey:
+          type: string
+          nullable: true
+          description: |
+            `<notification class>:<group key>` for a grouped notification, `null` otherwise —
+            the same value the live event carries, so a client can match an arriving event
+            against an entry it already shows.
+        originator:
+          allOf:
+            - $ref: "common.yaml#/components/schemas/UserShort"
+          nullable: true
+          description: The user who caused the notification, when there is one
+        space:
+          allOf:
+            - $ref: "common.yaml#/components/schemas/SpaceShort"
+          nullable: true
+          description: The space the notification happened in, when it happened in one

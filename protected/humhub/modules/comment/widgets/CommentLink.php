@@ -7,6 +7,7 @@ use humhub\modules\comment\helpers\IdHelper;
 use humhub\modules\comment\models\Comment as CommentModel;
 use humhub\modules\comment\Module;
 use humhub\modules\comment\services\CommentListService;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use Yii;
 
@@ -19,6 +20,14 @@ class CommentLink extends Widget
     public ?CommentModel $parentComment = null;
 
     /**
+     * @deprecated since 1.20, set {@see self::$content} instead. Kept for backward
+     * compatibility - some modules still call `CommentLink::widget(['object' => $x])` (the
+     * API before #7917 replaced polymorphic `object` relations with `content_id`).
+     * @var ContentActiveRecord|CommentModel|null
+     */
+    public $object = null;
+
+    /**
      * Mode
      *
      * inline: Show comments on the same page with CommentsWidget (default)
@@ -28,6 +37,19 @@ class CommentLink extends Widget
      */
     public $mode;
 
+    public function init()
+    {
+        parent::init();
+
+        if ($this->object !== null && !isset($this->content)) {
+            if ($this->object instanceof CommentModel) {
+                $this->parentComment = $this->object;
+                $this->content = $this->object->content;
+            } else {
+                $this->content = $this->object->content;
+            }
+        }
+    }
 
     public function run()
     {

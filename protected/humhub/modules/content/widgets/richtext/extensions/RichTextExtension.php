@@ -65,4 +65,26 @@ interface RichTextExtension
      * @return string
      */
     public function onAfterConvert(string $text, string $format, array $options = []): string;
+
+    /**
+     * Contributes per-record client-render options this extension's {@see self::onBeforeOutput()} computed
+     * that the client cannot derive from the processed markdown text alone (e.g.
+     * {@see \humhub\modules\content\widgets\richtext\extensions\oembed\OembedExtension}'s server-fetched
+     * oembed preview HTML, keyed by url) - see
+     * {@see \humhub\modules\content\widgets\richtext\ProsemirrorRichText::getMarkdownAndRenderOptions()}
+     * and `docs/develop/ui-js-vuejs-interop.md`, "RichTextOutput".
+     *
+     * Called once per render, immediately after every {@see self::onBeforeOutput()} call for that render has
+     * completed - the same timing/statefulness contract {@see self::onAfterOutput()} already relies on for
+     * extensions (like OembedExtension) that stash per-render state as an instance property between the two
+     * calls.
+     *
+     * The overwhelming majority of extensions return an empty array here: their entire contribution already
+     * lives IN the markdown text {@see self::onBeforeOutput()} returns and needs no separate client-side
+     * config to reproduce.
+     *
+     * @return array
+     * @since 1.20
+     */
+    public function getRenderOptions(): array;
 }

@@ -1,0 +1,248 @@
+<?php
+
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
+namespace humhub\widgets\menu;
+
+use humhub\helpers\Html;
+use yii\base\BaseObject;
+
+/**
+ * Class MenuEntry
+ *
+ * An abstract menu entry class. Subclasses need to extend the [[render()]] function.
+ *
+ * @since 1.4
+ * @see Menu
+ */
+abstract class MenuEntry extends BaseObject
+{
+    /**
+     * @var string menu entry identifier (optional)
+     */
+    protected $id;
+
+    /**
+     * @var int the sort order. a value between 0 and 10000
+     */
+    protected $sortOrder;
+
+    /**
+     * @var array additional html options for the link HTML tag
+     */
+    protected $htmlOptions = [];
+
+    /**
+     * @var bool|null
+     */
+    protected $isVisible = null;
+
+    /**
+     * @var bool mark this entry as active
+     */
+    protected $isActive = false;
+
+    /**
+     * Renders the entry html, this template function should respect [[htmlOptions]] array by calling [[getHtmlOptions()]] and passing
+     * the $extraHtmlOptions array as for example:
+     *
+     * ```php
+     *
+     * return Html::a($label, $url, $this->getHtmlOptions($extraHtmlOptions));
+     *
+     * ```
+     *
+     * @param array $extraHtmlOptions
+     * @return string the Html link
+     */
+    abstract protected function renderEntry($extraHtmlOptions = []);
+
+    /**
+     * Public accessible render function responsible for rendering this entry.
+     *
+     * @param array $extraHtmlOptions
+     * @return string
+     */
+    public function render($extraHtmlOptions = [])
+    {
+        if (!$this->isVisible()) {
+            return '';
+        }
+
+        return $this->renderEntry($extraHtmlOptions);
+    }
+
+    /**
+     * @return bool is active
+     */
+    public function getIsActive()
+    {
+        if (is_callable($this->isActive)) {
+            call_user_func($this->isActive);
+        }
+
+        if ($this->isActive) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param $state bool
+     * @return static
+     */
+    public function setIsActive($state)
+    {
+        $this->isActive = $state;
+        return $this;
+    }
+
+    /**
+     * @param $id string the id
+     * @return static
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return string the id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Compares this entry with the given entry
+     * @param MenuEntry $entry
+     * @return bool
+     */
+    public function compare(MenuEntry $entry)
+    {
+        return !empty($this->getId()) && $this->getId() === $entry->getId();
+    }
+
+    /**
+     * Returns the Html options for the menu entry link tag.
+     *
+     * @return array
+     */
+    public function getHtmlOptions($extraOptions = [])
+    {
+        $options = $this->htmlOptions;
+
+        if (isset($extraOptions['class'])) {
+            Html::addCssClass($options, $extraOptions['class']);
+        }
+
+        if (isset($extraOptions['style'])) {
+            Html::addCssStyle($options, $extraOptions['style']);
+        }
+
+        if ($this->isActive) {
+            Html::addCssClass($options, 'active');
+        }
+
+        if ($this->getId()) {
+            $options['data-menu-id'] = $this->id;
+        }
+
+        return array_merge($extraOptions, $options);
+    }
+
+    /**
+     * @param array $htmlOptions
+     * @return static
+     */
+    public function setHtmlOptions($htmlOptions)
+    {
+        $this->htmlOptions = $htmlOptions;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isVisible()
+    {
+        return !($this->isVisible === false);
+    }
+
+    /**
+     * @param bool $isVisible
+     * @return static
+     */
+    public function setIsVisible($isVisible)
+    {
+        $this->isVisible = $isVisible;
+        return $this;
+    }
+
+    /**
+     * Checks whether the visibility of the menu entry was explicitly set.
+     *
+     * @return bool
+     * @since 1.8
+     */
+    public function isVisibilitySet()
+    {
+        return ($this->isVisible !== null);
+    }
+
+    /**
+     * @return int
+     */
+    public function getSortOrder()
+    {
+        return $this->sortOrder;
+    }
+
+    /**
+     * @param int $sortOrder
+     * @return static
+     */
+    public function setSortOrder($sortOrder)
+    {
+        $this->sortOrder = $sortOrder;
+        return $this;
+    }
+
+    /**
+     * Describes this entry as a data descriptor, for a client that renders the menu itself
+     * instead of receiving it as markup.
+     *
+     * Recognized keys: `id`, `label`, `icon` (an {@see \humhub\widgets\Icon} name without
+     * the `fa-` prefix), `sortOrder`, `url`, `htmlOptions`. The shape matches the entry
+     * descriptor of the Vue `DropdownMenu` component, so a described entry can be merged with
+     * entries a module registered client-side via `registerMenuEntry()`.
+     *
+     * Returning null means "this entry can only be rendered" — the caller then falls back to
+     * server-rendering it and shipping the markup (see
+     * {@see \humhub\modules\content\controllers\api\ControlsController}). The base
+     * implementation returns null, so an entry type is only describable once it says so.
+     *
+     * @return array|null
+     * @since 1.20
+     */
+    public function describe(): ?array
+    {
+        return null;
+    }
+
+    /**
+     * @return string the class name of this entry can be used to identify the entry if no id is given
+     * @since 1.7
+     */
+    public function getEntryClass()
+    {
+        return static::class;
+    }
+}

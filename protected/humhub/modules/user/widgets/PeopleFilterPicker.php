@@ -2,7 +2,7 @@
 
 namespace humhub\modules\user\widgets;
 
-use humhub\modules\ui\form\widgets\BasePicker;
+use humhub\widgets\form\BasePicker;
 use humhub\modules\user\components\PeopleQuery;
 use humhub\modules\user\models\fieldtype\CheckboxList;
 use humhub\modules\user\models\Profile;
@@ -167,7 +167,7 @@ class PeopleFilterPicker extends BasePicker
     protected function getData()
     {
         $result = parent::getData();
-        $result['placeholder'] = Yii::t('UiModule.base', 'Select');
+        $result['placeholder'] = Yii::t('base', 'Select');
         $result['no-result'] = Yii::t('UserModule.chooser', 'No results found.');
         $result['maximum-selected'] = '';
 

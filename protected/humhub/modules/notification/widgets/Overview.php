@@ -8,58 +8,66 @@
 
 namespace humhub\modules\notification\widgets;
 
-use humhub\modules\notification\controllers\ListController;
-use humhub\widgets\JsWidget;
+use humhub\modules\notification\assets\NotificationVueAsset;
+use humhub\modules\notification\services\NotificationWindowService;
+use humhub\widgets\Icon;
+use humhub\widgets\VueWidget;
 use Yii;
 use yii\helpers\Url;
 
 /**
- * Notificaiton overview widget.
+ * The notification menu of the top navigation: bell, unread badge and dropdown.
+ *
+ * A Vue island (`NotificationMenu`, see `docs/develop/ui-js-vuejs-components.md`) since 1.19 —
+ * this widget renders its mount point and hands over what only the server knows: the first page
+ * of notifications (so the first paint costs no request), the two routes the menu links to, and
+ * the rendered icon markup (the icon provider is pluggable, so a client cannot build it).
+ *
+ * The element keeps its id and class (`#notification_widget.btn-group`), like the ids inside the
+ * island itself, because theme CSS and the product tour address them.
  *
  * @author buddha
  * @since 1.1
  */
-class Overview extends JsWidget
+class Overview extends VueWidget
 {
-    public $id = 'notification_widget';
+    protected string $component = 'NotificationMenu';
 
-    public $jsWidget = 'notification.NotificationDropDown';
+    protected ?string $assetBundle = NotificationVueAsset::class;
 
-    public function init()
+    /**
+     * @inheritdoc
+     */
+    public function beforeRun()
     {
-        $this->view->registerJsConfig('notification', [
-            'loadEntriesUrl' => Url::to(['/notification/list']),
-        ]);
+        if (Yii::$app->user->isGuest) {
+            return false;
+        }
 
-        parent::init();
+        return parent::beforeRun();
     }
 
     /**
      * @inheritdoc
      */
-    public function run()
+    protected function getOptions(): array
     {
-        if (Yii::$app->user->isGuest) {
-            return '';
-        }
-
-        return $this->render('overview', [
-            'options' => $this->getOptions(),
-        ]);
+        return ['id' => 'notification_widget', 'class' => 'btn-group'];
     }
 
-    public function getAttributes()
+    /**
+     * @inheritdoc
+     */
+    protected function getProps(): array
     {
         return [
-            'id' => 'notification_widget',
-            'class' => "btn-group",
-        ];
-    }
-
-    public function getData()
-    {
-        return [
-            'ui-init' => ListController::getUpdates(),
+            'initial' => (new NotificationWindowService())->window(NotificationWindowService::MENU_PAGE_SIZE),
+            'pageSize' => NotificationWindowService::MENU_PAGE_SIZE,
+            'overviewUrl' => Url::to(['/notification/overview']),
+            'settingsUrl' => Url::to(['/notification/user']),
+            'bellIconHtml' => Icon::get('bell')->asString(),
+            'checkIconHtml' => Icon::get('check')->asString(),
+            'cogIconHtml' => Icon::get('cog')->asString(),
         ];
     }
 }

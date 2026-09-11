@@ -3,6 +3,7 @@
 use humhub\commands\CronController;
 use humhub\commands\IntegrityController;
 use humhub\components\ActiveRecord;
+use humhub\components\api\ApiRules;
 use humhub\models\RecordMap;
 use humhub\modules\content\Events;
 use humhub\modules\content\models\Content;
@@ -16,6 +17,11 @@ return [
     'id' => 'content',
     'class' => Module::class,
     'isCoreModule' => true,
+    // HTTP API (see docs/develop/concept-api.md) — the content context menu as data, consumed
+    // by the ContentControls island.
+    'urlManagerRules' => ApiRules::v2([
+        ['pattern' => 'content/<id:\d+>/controls', 'route' => 'content/api/controls/index', 'verb' => ['GET', 'HEAD']],
+    ]),
     'events' => [
         ['class' => IntegrityController::class, 'event' => IntegrityController::EVENT_ON_RUN, 'callback' => [Events::class, 'onIntegrityCheck']],
         ['class' => WallEntryAddons::class, 'event' => WallEntryAddons::EVENT_INIT, 'callback' => [Events::class, 'onWallEntryAddonInit']],

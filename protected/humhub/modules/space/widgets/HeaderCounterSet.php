@@ -12,8 +12,8 @@ use humhub\modules\content\models\Content;
 use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\Module;
-use humhub\modules\ui\widgets\CounterSet;
-use humhub\modules\ui\widgets\CounterSetItem;
+use humhub\widgets\CounterSet;
+use humhub\widgets\CounterSetItem;
 use Yii;
 use yii\helpers\Url;
 

@@ -13,8 +13,8 @@ use humhub\modules\admin\models\UserApprovalSearch;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageUsers;
-use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\ui\menu\widgets\TabMenu;
+use humhub\widgets\menu\MenuLink;
+use humhub\widgets\menu\TabMenu;
 use humhub\widgets\bootstrap\Badge;
 use Yii;
 

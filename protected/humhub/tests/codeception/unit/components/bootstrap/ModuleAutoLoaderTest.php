@@ -38,9 +38,7 @@ class ModuleAutoLoaderTest extends Unit
         'humhub\modules\stream\Module' => 'stream',
         'humhub\modules\topic\Module' => 'topic',
         'humhub\modules\tour\Module' => 'tour',
-        'humhub\modules\ui\Module' => 'ui',
         'humhub\modules\user\Module' => 'user',
-        'humhub\modules\web\Module' => 'web',
     ];
 
     /**

@@ -8,11 +8,11 @@
 
 namespace humhub\helpers;
 
+use humhub\components\Response;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use humhub\modules\user\models\User;
-use humhub\modules\web\security\helpers\Security;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\helpers\ArrayHelper;
@@ -43,7 +43,7 @@ class Html extends \yii\bootstrap5\Html
      */
     public static function nonce()
     {
-        $nonce = Security::getNonce();
+        $nonce = static::getNonce();
         return $nonce ? 'nonce="' . $nonce . '"' : '';
     }
 
@@ -65,11 +65,23 @@ class Html extends \yii\bootstrap5\Html
      */
     public static function setNonce(&$options = [])
     {
-        $nonce = Security::getNonce();
+        $nonce = static::getNonce();
 
         if ($nonce) {
             $options['nonce'] = $nonce;
         }
+    }
+
+    /**
+     * @return string|null the CSP nonce of the current session, if the configured security
+     * headers use one. Always null outside a web request (console, mail rendering).
+     * @since 1.20
+     */
+    public static function getNonce(): ?string
+    {
+        $response = Yii::$app->has('response') ? Yii::$app->get('response') : null;
+
+        return $response instanceof Response ? $response->getNonce() : null;
     }
 
     /**

@@ -131,17 +131,11 @@ class ProsemirrorRichText extends AbstractRichText
      */
     public function run()
     {
-        $output = $this->text;
+        $output = $this->getMarkdown();
 
         // E.g. when initializing empty editor
         if (empty($output)) {
             return $output;
-        }
-
-        $this->trigger(self::EVENT_BEFORE_OUTPUT, new ParameterEvent(['output' => &$output]));
-
-        foreach (static::getExtensions() as $extension) {
-            $output = $extension->onBeforeOutput($this, $output);
         }
 
         // Wrap encoded output in root div
@@ -155,5 +149,94 @@ class ProsemirrorRichText extends AbstractRichText
         $this->trigger(self::EVENT_AFTER_OUTPUT, new ParameterEvent(['output' => &$output]));
 
         return trim($output);
+    }
+
+    /**
+     * The markdown text this richtext will render, after every extension's
+     * {@see \humhub\modules\content\widgets\richtext\extensions\RichTextExtension::onBeforeOutput()} hook
+     * has run (mention resolution, legacy-compat rewriting, ...) - i.e. exactly the text {@see self::run()}
+     * itself HTML-encodes and wraps in the root div, extracted into its own method so
+     * {@see self::getMarkdownAndRenderOptions()} (and any other caller needing the processed markdown
+     * without the HTML envelope - see `comment\serializers\CommentSerializer`) shares this SAME extension pipeline instead of
+     * re-implementing it, and can never drift from what {@see self::run()} itself renders.
+     *
+     * No return type declared (matching `$this->text`'s own undeclared, effectively nullable
+     * type) - `$this->text` can legitimately be `null` (e.g. an empty editor initialization
+     * via `AbstractRichTextEditor::editOutput()`), and this preserves `run()`'s original,
+     * pre-extraction behavior of returning it verbatim in that case rather than coercing to
+     * `''` and risking a behavior change for callers upstream of `run()`.
+     *
+     * @return string|null
+     * @since 1.20
+     */
+    public function getMarkdown()
+    {
+        $output = $this->text;
+
+        // E.g. when initializing empty editor
+        if (empty($output)) {
+            return $output;
+        }
+
+        $this->trigger(self::EVENT_BEFORE_OUTPUT, new ParameterEvent(['output' => &$output]));
+
+        foreach (static::getExtensions() as $extension) {
+            $output = $extension->onBeforeOutput($this, $output);
+        }
+
+        return $output;
+    }
+
+    /**
+     * The client-render counterpart of {@see self::run()}: instead of a pre-built HTML envelope string,
+     * returns the processed markdown text (see {@see self::getMarkdown()}) plus the render options a
+     * client-side `RichTextOutput.vue` needs to reproduce {@see self::run()}'s exact envelope div and any
+     * per-record extension contributions client-side - see `docs/develop/ui-js-vuejs-interop.md`,
+     * "RichTextOutput".
+     *
+     * `options` mirrors {@see self::getData()} (the SAME `data-*` attribute bucket {@see self::run()}'s own
+     * envelope div carries, via {@see \humhub\widgets\JsWidget::getOptions()}) plus the `ui-widget`/`ui-init`
+     * attributes {@see \humhub\widgets\JsWidget::setDefaultOptions()} adds (the only two of that method's
+     * data contributions {@see \humhub\modules\content\widgets\richtext\ProsemirrorRichText} ever populates -
+     * `widget-action-*`/`widget-fade-in`/`widget-reload-url` require `$events`/`$fadeIn`/`Reloadable` this
+     * richtext never uses), plus every extension's own {@see \humhub\modules\content\widgets\richtext\extensions\RichTextExtension::getRenderOptions()}
+     * contribution (empty for all but {@see \humhub\modules\content\widgets\richtext\extensions\oembed\OembedExtension}
+     * today). The envelope's own auto-generated widget `id` is deliberately NOT included - it is a
+     * per-render DOM-uniqueness counter with no semantic meaning client or theme CSS ever reads (the
+     * client's own `[data-ui-richtext]` selector, not an id, is what locates richtext content - see
+     * `humhub.ui.richtext.prosemirror.js`), so the client is free to mint its own.
+     *
+     * Two more things {@see \humhub\widgets\JsWidget::getOptions()} folds into `run()`'s envelope are
+     * ALSO deliberately excluded here, both caller/mode-driven rather than per-record extension data:
+     * a caller-supplied {@see \humhub\widgets\JsWidget::$options} array (arbitrary extra html
+     * attributes {@see \humhub\widgets\JsWidget::getOptions()} merges over the widget's own, via
+     * `ArrayHelper::merge()`) has no equivalent bucket here at all; and the `style="display:none"`
+     * {@see \humhub\widgets\JsWidget::getOptions()} adds whenever `$this->visible` is `false` (which
+     * {@see self::init()} sets whenever `$this->edit` is `true`) is likewise never added to `options`.
+     * Neither omission matters for the one real caller today (`comment\serializers\CommentSerializer`, which sets
+     * neither `$options` nor `$edit`), but a future caller relying on either would see a silent gap.
+     *
+     * @return array{markdown: string|null, options: array}
+     * @since 1.20
+     */
+    public function getMarkdownAndRenderOptions(): array
+    {
+        $markdown = $this->getMarkdown();
+
+        if (empty($markdown)) {
+            return ['markdown' => $markdown, 'options' => []];
+        }
+
+        $options = $this->getData();
+        $options['ui-widget'] = $this->jsWidget;
+        if (!empty($this->init)) {
+            $options['ui-init'] = $this->init;
+        }
+
+        foreach (static::getExtensions() as $extension) {
+            $options = array_merge($options, $extension->getRenderOptions());
+        }
+
+        return ['markdown' => $markdown, 'options' => $options];
     }
 }

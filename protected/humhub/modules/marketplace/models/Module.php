@@ -11,7 +11,7 @@ namespace humhub\modules\marketplace\models;
 use humhub\helpers\Html;
 use humhub\modules\marketplace\Module as MarketplaceModule;
 use humhub\modules\marketplace\services\FilterService;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use humhub\widgets\bootstrap\Link;
 use Yii;
 use yii\base\Model;

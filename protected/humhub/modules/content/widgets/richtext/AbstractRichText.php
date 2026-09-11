@@ -314,6 +314,42 @@ abstract class AbstractRichText extends JsWidget
     }
 
     /**
+     * The client-render counterpart of {@see self::output()}: instead of a pre-built HTML envelope string,
+     * returns the (processed) markdown text plus the render options a client-side `RichTextOutput.vue`
+     * needs to reproduce {@see self::output()}'s exact envelope div client-side - see
+     * `docs/develop/ui-js-vuejs-interop.md`, "RichTextOutput".
+     *
+     * This base implementation is a safe fallback for implementations without a per-record extension
+     * pipeline (just the base {@see self::getData()} config bucket, no per-record contributions); see
+     * {@see \humhub\modules\content\widgets\richtext\ProsemirrorRichText::getMarkdownAndRenderOptions()}
+     * for the richer, extension-aware override actual core richtext output goes through.
+     *
+     * @param $text string rich text content
+     * @param array $config rich text widget options
+     * @return array{markdown: string|null, options: array}
+     * @throws Exception
+     * @since 1.20
+     */
+    public static function outputMarkdownAndRenderOptions($text, $config = []): array
+    {
+        $config['text'] = $text;
+        $config['class'] = static::class;
+        $widget = Yii::createObject($config);
+
+        return $widget->getMarkdownAndRenderOptions();
+    }
+
+    /**
+     * @see self::outputMarkdownAndRenderOptions()
+     * @return array{markdown: string|null, options: array}
+     * @since 1.20
+     */
+    public function getMarkdownAndRenderOptions(): array
+    {
+        return ['markdown' => $this->text, 'options' => empty($this->text) ? [] : $this->getData()];
+    }
+
+    /**
      * Converts the richtext content to a given output format.
      *
      * The following formats are supported

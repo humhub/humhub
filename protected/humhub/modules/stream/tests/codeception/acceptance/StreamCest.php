@@ -270,9 +270,13 @@ class StreamCest
         $I->wait(1);
         $I->click('Comment', $postSelector);
         $I->waitForElementVisible($postSelector . ' .comment-container');
+        // The comment form is a Vue island now (comment\vue\CommentSection.vue) - it has no
+        // native submit button of its own (the shell only holds the editor/upload widgets,
+        // see CommentFormShell.php); submission goes through the island's own
+        // `.btn-comment-submit` button instead of the removed `[data-action-click=submit]`.
         $I->fillField($postSelector . ' .comment_create .humhub-ui-richtext', 'My Comment');
-        $I->waitForElementClickable($postSelector . ' .comment_create [data-action-click=submit]');
-        $I->click('[data-action-click=submit]', $postSelector . ' .comment_create');
+        $I->waitForElementClickable($postSelector . ' .btn-comment-submit');
+        $I->click($postSelector . ' .btn-comment-submit');
         $I->waitForText('My Comment', 10, $postSelector . ' .comment');
 
 
@@ -320,8 +324,11 @@ class StreamCest
         $I->click('Comment', $post4Selector);
         $I->wait(1);
         $I->fillField($post4Selector . ' [contenteditable]', 'My Comment!');
-        $I->waitForElementClickable($post4Selector . ' .richtext-create-buttons [data-action-click=submit]');
-        $I->click('[data-action-click=submit]', $post4Selector . ' .richtext-create-buttons');
+        // Submit button moved out of `.richtext-create-buttons` (there is no server-rendered
+        // one there anymore) onto the comment island's own `.btn-comment-submit` - see the
+        // comment above the equivalent fix earlier in this Cest.
+        $I->waitForElementClickable($post4Selector . ' .btn-comment-submit');
+        $I->click($post4Selector . ' .btn-comment-submit');
 
         $I->scrollTop();
 

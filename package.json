@@ -5,7 +5,13 @@
     "type": "git",
     "url": "git://github.com/humhub/humhub.git"
   },
+  "scripts": {
+    "build:vue": "node vue.build.mjs",
+    "test:js": "vitest run"
+  },
   "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.4",
+    "@vue/test-utils": "^2.4.6",
     "grunt": "^1.5.3",
     "grunt-contrib-clean": "^1.1.0",
     "grunt-contrib-concat": "^1.0.1",
@@ -13,6 +19,11 @@
     "grunt-contrib-cssmin": "^2.1.0",
     "grunt-contrib-less": "^2.0.0",
     "grunt-contrib-uglify": "^5.0",
-    "grunt-shell": "^2.1.0"
+    "grunt-shell": "^2.1.0",
+    "jquery": "~3.7.1",
+    "jsdom": "^26.1.0",
+    "vite": "^6.3.5",
+    "vitest": "^3.1.4",
+    "vue": "~3.5.13"
   }
 }

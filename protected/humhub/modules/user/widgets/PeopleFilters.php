@@ -10,7 +10,7 @@ namespace humhub\modules\user\widgets;
 
 use humhub\helpers\Html;
 use humhub\modules\admin\models\forms\PeopleSettingsForm;
-use humhub\modules\ui\widgets\DirectoryFilters;
+use humhub\widgets\DirectoryFilters;
 use humhub\modules\user\components\PeopleQuery;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\ProfileField;

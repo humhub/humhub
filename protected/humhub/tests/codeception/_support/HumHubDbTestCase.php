@@ -32,6 +32,7 @@ use humhub\modules\user\models\Group;
 use humhub\modules\user\models\User;
 use humhub\modules\user\tests\codeception\fixtures\GroupPermissionFixture;
 use humhub\modules\user\tests\codeception\fixtures\UserFullFixture;
+use humhub\services\DocumentRootService;
 use humhub\tests\codeception\fixtures\SettingFixture;
 use humhub\tests\codeception\fixtures\UrlOembedFixture;
 use PHPUnit\Framework\SkippedTestError;
@@ -69,8 +70,9 @@ class HumHubDbTestCase extends Unit
             return;
         }
 
-        $webRoot = dirname(__DIR__, 2) . '/../../..';
-        Yii::setAlias('@webroot', realpath($webRoot));
+        $rootPath = realpath(dirname(__DIR__, 2) . '/../../..');
+        Yii::setAlias('@root', $rootPath);
+        Yii::setAlias('@webroot', $rootPath . DIRECTORY_SEPARATOR . DocumentRootService::PUBLIC_DIR);
         static::initModules(__METHOD__);
         static::reloadSettings(__METHOD__);
         static::flushCache(__METHOD__);

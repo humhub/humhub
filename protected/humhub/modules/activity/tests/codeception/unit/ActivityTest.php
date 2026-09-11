@@ -3,12 +3,15 @@
 namespace humhub\modules\activity\tests\codeception\unit;
 
 use Codeception\Specify;
+use humhub\modules\activity\live\NewActivity;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\activity\services\RenderService;
 use humhub\modules\activity\tests\codeception\activities\TestActivity;
 use humhub\modules\comment\activities\NewCommentActivity;
 use humhub\modules\comment\models\Comment;
+use humhub\modules\live\components\LiveEvent;
+use humhub\modules\live\models\Live;
 use humhub\modules\post\models\Post;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
@@ -57,10 +60,51 @@ class ActivityTest extends HumHubDbTestCase
         $activity = ActivityManager::load($record);
         $this->assertNull($activity->contentContainer);
 
+        // The web output is the activity's own sentence now, rendered by the ActivityBox
+        // island around it - see ActivitySerializer.
+        $this->assertNotEmpty($activity->asWeb());
+
         $renderService = new RenderService($record);
-        $this->assertNotEmpty($renderService->getWeb());
         $this->assertNotEmpty($renderService->getMailText());
         $this->assertNotEmpty($renderService->getMailHtml());
+    }
+
+    public function testDispatchSendsALiveEvent()
+    {
+        $this->becomeUser('User2');
+        $post = Post::findOne(['id' => 1]);
+
+        $activity = ActivityManager::dispatch(TestActivity::class, $post);
+        $event = $this->latestLiveEvent();
+
+        $this->assertInstanceOf(NewActivity::class, $event, 'A new activity announces itself');
+        $this->assertEquals($activity->record->id, $event->activityId);
+        $this->assertEquals($post->content->contentcontainer_id, $event->contentContainerId);
+        $this->assertEquals($post->content->container->guid, $event->containerGuid);
+        // The audience of the activity is the audience of the content it is about.
+        $this->assertEquals($post->content->visibility, $event->visibility);
+    }
+
+    public function testDispatchWithoutContainerSendsNoLiveEvent()
+    {
+        $this->becomeUser('User2');
+
+        $post = new Post(['message' => 'Global content']);
+        $this->assertTrue($post->save());
+        $this->assertNull($post->content->contentcontainer_id);
+
+        Live::deleteAll();
+        ActivityManager::dispatch(TestActivity::class, $post);
+
+        // The live system routes by container - an activity without one has no audience.
+        $this->assertNull($this->latestLiveEvent());
+    }
+
+    private function latestLiveEvent(): ?LiveEvent
+    {
+        $record = Live::find()->orderBy(['id' => SORT_DESC])->one();
+
+        return $record === null ? null : LiveEvent::fromSerialized($record->serialized_data);
     }
 
     public function testDeleteRecord()

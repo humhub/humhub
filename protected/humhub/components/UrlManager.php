@@ -9,6 +9,7 @@
 namespace humhub\components;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\services\PwaService;
 
 /**
  * UrlManager
@@ -29,6 +30,9 @@ class UrlManager extends \yii\web\UrlManager
 
         $this->addRules([
             ['class' => WellKnownUrlRule::class],
+            PwaService::URL_MANIFEST => PwaService::ROUTE_MANIFEST,
+            PwaService::URL_SERVICE_WORKER => PwaService::ROUTE_SERVICE_WORKER,
+            PwaService::URL_OFFLINE => PwaService::ROUTE_OFFLINE,
         ]);
     }
 

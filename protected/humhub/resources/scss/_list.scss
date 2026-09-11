@@ -23,7 +23,13 @@
                 border-left: 3px solid var(--bs-accent);
             }
 
-            &, a {
+            // `a:not(.dropdown-item)`: an anchor that is a dropdown ITEM belongs to a menu
+            // that merely happens to be rendered inside a row, not to the row. Without the
+            // exclusion this rule ties with `_nav.scss`'s `.nav-pills .dropdown-menu li a`
+            // (both 0,2,2) and wins on source order alone — `list` is imported after `nav` —
+            // so a context menu inside a list gets the LIST's text colour on the MENU's
+            // primary background, and stops being readable.
+            &, a:not(.dropdown-item) {
                 color: var(--hh-text-color-main);
             }
 

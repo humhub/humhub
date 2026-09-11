@@ -50,6 +50,14 @@ class Notification extends ActiveRecord
     public $group_user_count;
 
     /**
+     * @var int the highest notification id of a group - the deterministic tiebreaker of the
+     *      grouped list's ordering, and therefore the cursor a client pages with
+     *      (see {@see self::findGrouped()})
+     * @since 1.20
+     */
+    public $group_max_id;
+
+    /**
      * @inheritdoc
      */
     public function behaviors()
@@ -247,6 +255,7 @@ class Notification extends ActiveRecord
             new Expression('count(*) as group_count'),
             new Expression('max(notification.created_at) as group_created_at'),
             new Expression('min(notification.seen) as group_seen'),
+            new Expression('max(notification.id) as group_max_id'),
         ]);
 
         $query->andWhere(['notification.user_id' => $user->id]);
@@ -262,7 +271,15 @@ class Notification extends ActiveRecord
             'COALESCE(notification.group_key, notification.id)',
             'notification.class',
         ]);
-        $query->orderBy(['group_seen' => SORT_ASC, 'group_created_at' => SORT_DESC]);
+        // `group_max_id` breaks ties deterministically: notifications created within the same
+        // second are otherwise ordered arbitrarily by the database, which makes cursor paging
+        // over this list return overlapping pages. It doubles as the cursor itself (see
+        // `notification\controllers\api\NotificationController`).
+        $query->orderBy([
+            'group_seen' => SORT_ASC,
+            'group_created_at' => SORT_DESC,
+            'group_max_id' => SORT_DESC,
+        ]);
 
         return $query;
     }

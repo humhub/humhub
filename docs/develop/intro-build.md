@@ -27,7 +27,7 @@ A git-based install does *not* ship pre-built production assets — you have to 
 - `protected/humhub/resources/css/humhub-app.css` and `humhub-bundle.css`
 - `protected/humhub/resources/build/<hash>/...` — external dependencies (FontAwesome, jQuery, Bootstrap, …)
 
-At runtime the whole `protected/humhub/resources` tree gets published into the assets mount (`webroot/assets/` by default).
+At runtime the whole `protected/humhub/resources` tree gets published into the assets mount (`public/assets/` by default).
 
 ### Grunt task (recommended)
 

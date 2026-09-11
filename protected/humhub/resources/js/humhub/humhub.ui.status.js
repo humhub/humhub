@@ -6,247 +6,160 @@ humhub.module('ui.status', function (module, require, $) {
     var log = require('log');
     var util = require('util');
     var object = util.object;
-    var string = util.string;
     var client = require('client');
 
-    module.initOnPjaxLoad = true;
-
-    module.template = {
-        info: '<i class="fa fa-info-circle info"></i><span>{msg}</span>',
-        success: '<i class="fa fa-check-circle success"></i><span>{msg}</span>',
-        warn: '<i class="fa fa-exclamation-triangle warning"></i><span>{msg}</span>',
-        error: '<i class="fa fa-exclamation-circle error"></i><span>{msg}</span>',
-        closeButton: '<a class="status-bar-close float-end" style="">×</a>',
-        showMoreButton: '<a class="showMore"><i class="fa fa-angle-up"></i></a>',
-        errorBlock: '<div class="status-bar-details d-none"><pre>{msg}</pre><div>'
-    };
-
-    var title;
-
-    var SELECTOR_ROOT = '#status-bar';
-    var SELECTOR_BODY = '.status-bar-body';
-    var SELECTOR_CONTENT = '.status-bar-content';
-
-    var AUTOCLOSE_INFO = 6000;
-    var AUTOCLOSE_SUCCESS = 2000;
-    var AUTOCLOSE_WARN = 10000;
+    /**
+     * The status bar itself is a Vue island (StatusBar.vue in the core component
+     * set, mounted by humhub\widgets\StatusBar). This module stays as the stable
+     * entry point every caller already uses - the exported success/info/warn/error
+     * functions, and the inline `humhub.modules.ui.status.<type>(...)` snippet
+     * humhub\components\View::endBody() registers for session flash messages - and
+     * only forwards to the island through the bridge, which queues messages that
+     * arrive before it has mounted (see `status()` in humhub.vue.js).
+     *
+     * What stays HERE rather than moving into the component: flattening the
+     * `details` argument. Its interesting shapes are legacy ones only this side
+     * can recognise (a `client.Response`, a jQuery-style `{error: Error}`
+     * envelope), so the island receives a plain string and needs no knowledge of
+     * them.
+     */
 
     /**
-     * @class StatusBar
+     * `stack` already starts with the error's own `toString()` in every engine
+     * HumHub supports, so the legacy concatenation of both repeated the message
+     * line - only prepend it where an engine leaves it out.
      */
-    var StatusBar = function () {
-        this.$ = $(SELECTOR_ROOT);
-    };
+    var formatError = function (error) {
+        var text = error.toString();
 
-    StatusBar.prototype.info = function (msg, closeAfter) {
-        closeAfter = closeAfter || AUTOCLOSE_INFO;
-        this._trigger(string.template(module.template.info, {msg: msg}), undefined, closeAfter);
-    };
-
-    StatusBar.prototype.success = function (msg, closeAfter) {
-        closeAfter = closeAfter || AUTOCLOSE_SUCCESS;
-        this._trigger(string.template(module.template.success, {msg: msg}), undefined, closeAfter);
-    };
-
-    StatusBar.prototype.warn = function (msg, error, closeAfter) {
-        closeAfter = closeAfter || AUTOCLOSE_WARN;
-        this._trigger(string.template(module.template.warn, {msg: msg}), error, closeAfter);
-    };
-
-    StatusBar.prototype.error = function (msg, error, closeAfter) {
-        this._trigger(string.template(module.template.error, {msg: msg}), error, closeAfter);
-    };
-
-    StatusBar.prototype._trigger = function (content, error, closeAfter) {
-        if (this.closeTimer) {
-            clearTimeout(this.closeTimer);
+        if (!error.stack) {
+            return text;
         }
 
-        var that = this;
-        this.hide(function () {
-            that.setContent(content, error).show(function () {
-                if (closeAfter > 0) {
-                    that.closeTimer = setTimeout(function () {
-                        that.hide();
-                    }, closeAfter);
-                }
-            });
-        });
+        return error.stack.indexOf(text) === 0 ? error.stack : text + '\n' + error.stack;
     };
 
-    StatusBar.prototype.setContent = function (content, error) {
-        var that = this;
-        var $content = this.$.find(SELECTOR_CONTENT).html(content);
-        var $closeButton = $(module.template.closeButton);
-
-        if (error && module.config['showMore']) {
-            this._addShowMore($content, error);
-        }
-
-        $closeButton.on('click', function () {
-            that.hide();
-        });
-
-        $content.prepend($closeButton);
-        return this;
-    };
-
-    StatusBar.prototype._addShowMore = function ($content, error) {
-        var proxy = $.proxy(this.toggle, this, error);
-        $(module.template.showMoreButton).on('click', proxy).appendTo($content);
-        this.$.find('.status-bar-content span').on('click', proxy).css('cursor', 'pointer');
-    };
-
-    StatusBar.prototype.toggle = function (error) {
-        var $content = this.$.find(SELECTOR_CONTENT);
-        var $showMore = this.$.find('.showMore');
-        var $details = $content.find('.status-bar-details');
-        if ($details.length) {
-            $details.stop().slideToggle('fast', function () {
-                $details.remove();
-            });
-
-            $showMore.find('i').attr('class', 'fa fa-angle-up');
-        } else {
-            $details = $(string.template(module.template.errorBlock, {msg: getErrorMessage(error)}));
-            $content.append($details);
-            $details.slideToggle('fast');
-            $showMore.find('i').attr('class', 'fa fa-angle-down');
-        }
-    };
-
-    var getErrorMessage = function (error) {
-        if (!error) {
-            return;
+    /**
+     * Turns the `details` argument of warn()/error() into the string the island
+     * renders in its trace block. Same cases as the former private
+     * getErrorMessage(), minus the HTML escaping: the island renders the result
+     * as text, not as markup.
+     */
+    var normalizeDetails = function (details) {
+        if (!details) {
+            return undefined;
         }
 
         try {
-            if (object.isString(error)) {
-                return error;
-            } else if (error instanceof Error) {
-                var result = error.toString();
-                if (error.stack) {
-                    result += error.stack;
-                }
-                return result;
-            } else {
-                if (error.error instanceof Error) {
-                    error.stack = (error.error.stack) ? error.error.stack : undefined;
-                    error.error = error.error.message;
-                } else if (error instanceof client.Response) {
-                    error = error.getLog();
-                }
-                try {
-                    // encode
-                    return $('<div/>').text(JSON.stringify(error, null, 4)).html();
-                } catch (e) {
-                    return error.toString();
-                }
+            if (object.isString(details)) {
+                return details;
             }
+
+            if (details instanceof Error) {
+                return formatError(details);
+            }
+
+            // `client.Response` is guarded rather than assumed: this module must never
+            // turn a status message into an exception just because the client module
+            // was not (fully) registered yet.
+            if (client.Response && details instanceof client.Response) {
+                details = details.getLog();
+            } else if (details.error instanceof Error) {
+                details = $.extend({}, details, {
+                    error: details.error.message,
+                    stack: details.error.stack,
+                });
+            }
+
+            return JSON.stringify(details, null, 4);
         } catch (e) {
             log.error(e);
+            return undefined;
         }
     };
 
-    StatusBar.prototype.show = function (callback) {
-        // Make the container transparent for beeing able to measure the body height
-        this.$.css('opacity', 0);
-        this.$.show();
+    var HTML_ENTITIES = {
+        '&amp;': '&',
+        '&lt;': '<',
+        '&gt;': '>',
+        '&quot;': '"',
+        '&#39;': '\'',
+        '&#039;': '\'',
+        '&apos;': '\'',
+        '&nbsp;': ' ',
+    };
 
-        // Prepare the body node for animation, we set auto height to get the real node height
-        var $body = this.$.find(SELECTOR_BODY).stop().css('height', 'auto');
-        var height = $body.innerHeight();
+    /**
+     * Legacy message argument handling: callers historically passed a string the
+     * jQuery bar injected with `.html()`, so some of them (module inline scripts,
+     * and this core's own View::endBody() before it switched to a JSON payload)
+     * hand over HTML-encoded text. The island renders text, so the entities
+     * `Html::encode()`/`htmlspecialchars(ENT_QUOTES)` produces are decoded here.
+     *
+     * Deliberately a fixed table rather than a DOM round-trip: it decodes exactly
+     * those entities, in a single pass (so `&amp;lt;` decodes to `&lt;`, not `<`),
+     * and cannot interpret markup. Tags a caller passes literally therefore show
+     * up as text now - see docs/develop/module-migrate.md.
+     */
+    var decodeEntities = function (message) {
+        if (!object.isString(message) || message.indexOf('&') === -1) {
+            return message;
+        }
 
-        // Hide element before animation
-        $body.css({'opacity': '0', 'bottom': -height});
-
-        // Show root container
-        this.$.css('opacity', 1);
-
-        $body.animate({bottom: '0', opacity: 1.0}, 500, function () {
-            if (callback) {
-                callback();
-            }
+        return message.replace(/&(?:amp|lt|gt|quot|#0?39|apos|nbsp);/g, function (entity) {
+            return HTML_ENTITIES[entity];
         });
     };
 
-    StatusBar.prototype.hide = function (callback) {
-        var that = this;
-        var $body = this.$.find(SELECTOR_BODY);
-        var height = $body.innerHeight();
-
-        $body.stop().animate({bottom: -height, opacity: 0}, 500, function () {
-            that.$.hide();
-            $body.css('bottom', '0');
-            if (callback) {
-                callback();
-            }
-        });
+    /**
+     * `vue` is resolved per call, not captured at definition time: CoreApiAsset
+     * happens to load humhub.vue.js first today, but a module-scope require() of a
+     * not-yet-registered module hands out an empty placeholder that never fills in
+     * (the same trap humhub.vue.js documents for its own `ui.modal` usage), and no
+     * asset order should be able to turn every status message into a silent no-op.
+     */
+    var send = function (level, message, details, closeAfter) {
+        require('vue').status(level, decodeEntities(message), normalizeDetails(details), closeAfter);
     };
 
     var init = function ($pjax) {
-        title = document.title;
-        if (!$pjax) {
-            module.statusBar = new StatusBar();
-
-            event.on('humhub:modules:log:setStatus', function (evt, msg, details, level) {
-                switch (level) {
-                    case log.TRACE_ERROR:
-                    case log.TRACE_FATAL:
-                        module.statusBar.error(msg, details);
-                        break;
-                    case log.TRACE_WARN:
-                        module.statusBar.warn(msg, details);
-                        break;
-                    case log.TRACE_SUCCESS:
-                        module.statusBar.success(msg);
-                        break;
-                    default:
-                        module.statusBar.info(msg);
-                        break;
-                }
-            });
-
-            // The initState can be used to append status messages before the module is initialized
-            if (module.initState) {
-                module.statusBar[module.initState[0]].apply(module.statusBar, module.initState[1]);
-                module.initState = null;
-            }
+        if ($pjax) {
+            return;
         }
+
+        event.on('humhub:modules:log:setStatus', function (evt, msg, details, level) {
+            switch (level) {
+                case log.TRACE_ERROR:
+                case log.TRACE_FATAL:
+                    send('error', msg, details);
+                    break;
+                case log.TRACE_WARN:
+                    send('warn', msg, details);
+                    break;
+                case log.TRACE_SUCCESS:
+                    send('success', msg);
+                    break;
+                default:
+                    send('info', msg);
+                    break;
+            }
+        });
     };
 
     module.export({
         init: init,
         sortOrder: 100,
-        StatusBar: StatusBar,
         success: function (msg, closeAfter) {
-            if (!module.statusBar) {
-                module.initState = ['success', [msg, closeAfter]];
-            } else {
-                module.statusBar.success(msg, closeAfter);
-            }
+            send('success', msg, undefined, closeAfter);
         },
         info: function (msg, closeAfter) {
-            if (!module.statusBar) {
-                module.initState = ['info', [msg, closeAfter]];
-            } else {
-                module.statusBar.info(msg, closeAfter);
-            }
+            send('info', msg, undefined, closeAfter);
         },
         warn: function (msg, error, closeAfter) {
-            if (!module.statusBar) {
-                module.initState = ['warn', [msg, error, closeAfter]];
-            } else {
-                module.statusBar.warn(msg, error, closeAfter);
-            }
+            send('warn', msg, error, closeAfter);
         },
         error: function (msg, error, closeAfter) {
-            if (!module.statusBar) {
-                module.initState = ['error', [msg, error, closeAfter]];
-            } else {
-                module.statusBar.error(msg, error, closeAfter);
-            }
-        }
-
+            send('error', msg, error, closeAfter);
+        },
     });
 });

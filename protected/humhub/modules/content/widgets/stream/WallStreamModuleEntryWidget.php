@@ -4,7 +4,7 @@ namespace humhub\modules\content\widgets\stream;
 
 use Exception;
 use humhub\helpers\Html;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 
 /**
  * Class WallStreamModuleEntryWidget

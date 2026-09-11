@@ -14,6 +14,11 @@ return [
     'class' => Module::class,
     'isCoreModule' => true,
     'urlManagerRules' => [
+        // HTTP API (see docs/develop/concept-api.md) — the caller's own account data.
+        ...\humhub\components\api\ApiRules::v2([
+            ['pattern' => 'account', 'route' => 'user/api/account/index', 'verb' => ['GET', 'HEAD']],
+            ['pattern' => 'account/blocked-users', 'route' => 'user/api/account/blocked-users', 'verb' => ['GET', 'HEAD']],
+        ]),
         ['class' => 'humhub\modules\user\components\UrlRule'],
         'people' => 'user/people',
         '<userContainer>/home' => 'user/profile/home',

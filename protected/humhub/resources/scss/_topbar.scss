@@ -311,6 +311,21 @@
             }
         }
 
+        // Unfolds instead of appearing: long enough to read as movement, short enough that
+        // nobody waits for it. An animation rather than a transition, because Bootstrap
+        // switches `display` at the same moment.
+        #space-menu-dropdown {
+            &.show {
+                animation: hh-dropdown-unroll 220ms ease-out;
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                &.show {
+                    animation: none;
+                }
+            }
+        }
+
         // Space dropdown menu
         #space-menu-dropdown,
         #search-menu-dropdown {
@@ -414,5 +429,21 @@
             margin: 0;
             font-weight: 400;
         }
+    }
+}
+
+// Rolls the menu down by uncovering it from the top instead of growing its box: the clip
+// travels over background, border and content alike, so no empty box is ever painted ahead
+// of the content - which is what animating the height (or a `0fr -> 1fr` grid row) does, as
+// the box and the content it makes room for do not resolve to the same size mid-animation.
+// The negative insets leave the drop shadow outside the clip; only the bottom edge, the one
+// that moves, is cut.
+@keyframes hh-dropdown-unroll {
+    from {
+        clip-path: inset(-30px -30px 100% -30px);
+    }
+
+    to {
+        clip-path: inset(-30px -30px -30px -30px);
     }
 }

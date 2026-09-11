@@ -25,10 +25,9 @@ use humhub\modules\space\widgets\MembershipButton;
                             [InviteButton::class, ['space' => $container], ['sortOrder' => 10]],
                             [MembershipButton::class, [
                                 'space' => $container,
-                                'options' => [
-                                    'becomeMember' => ['mode' => 'link'],
-                                    'acceptInvite' => ['mode' => 'link']
-                                ],
+                                // Becoming a member changes this whole page - menu, content,
+                                // what may be seen - so it is rendered again from scratch.
+                                'reloadOnJoin' => true,
                             ], ['sortOrder' => 20]],
                             [FollowButton::class, [
                                 'space' => $container,

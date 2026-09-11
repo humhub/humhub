@@ -184,4 +184,12 @@ class RichTextCompatibilityExtension extends Model implements RichTextExtension
     {
         return $text;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function getRenderOptions(): array
+    {
+        return [];
+    }
 }
