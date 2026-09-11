@@ -342,6 +342,10 @@ $config = [
         ],
         'enablePjax' => true,
         'dailyCronExecutionTime' => '18:00',
+        'pwa' => [
+            // Progressive Web App support: web app manifest members and the service worker
+            'enabled' => true,
+        ],
     ],
     'container' => [
         'definitions' => [

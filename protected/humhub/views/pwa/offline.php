@@ -16,7 +16,7 @@ use humhub\helpers\Html;
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= Yii::t('WebModule.pwa', 'Unable to connect to {site}', ['{site}' => Html::encode(Yii::$app->name)]); ?></title>
+    <title><?= Yii::t('base', 'Unable to connect to {site}', ['{site}' => Html::encode(Yii::$app->name)]); ?></title>
     <style type="text/css">
         body {
             background: <?= $this->theme->variable('primary') ?>;
@@ -47,9 +47,9 @@ use humhub\helpers\Html;
 <body>
 <div id="content">
     <span class="smilie">:-(</span>
-    <h1><?= Yii::t('WebModule.pwa', 'Hm...'); ?></h1>
-    <h2><?= Yii::t('WebModule.pwa', 'Unable to connect to {site}', ['{site}' => Html::encode(Yii::$app->name)]); ?></h2>
-    <p><?= Yii::t('WebModule.pwa', 'Please check your internet connection and <a href="?">refresh</a> this page once you are online again!'); ?></p>
+    <h1><?= Yii::t('base', 'Hm...'); ?></h1>
+    <h2><?= Yii::t('base', 'Unable to connect to {site}', ['{site}' => Html::encode(Yii::$app->name)]); ?></h2>
+    <p><?= Yii::t('base', 'Please check your internet connection and <a href="?">refresh</a> this page once you are online again!'); ?></p>
 </div>
 </body>
 </html>

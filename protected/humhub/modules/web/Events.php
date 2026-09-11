@@ -10,9 +10,7 @@ namespace humhub\modules\web;
 
 use humhub\components\InstallationState;
 use humhub\controllers\ErrorController;
-use humhub\modules\web\pwa\controllers\ManifestController;
-use humhub\modules\web\pwa\controllers\OfflineController;
-use humhub\modules\web\pwa\controllers\ServiceWorkerController;
+use humhub\controllers\PwaController;
 use humhub\modules\web\security\helpers\Security;
 use Yii;
 
@@ -41,9 +39,7 @@ class Events
             && Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)
             && ($controller = Yii::$app->controller)
             && !($controller instanceof ErrorController)
-            && !($controller instanceof OfflineController)
-            && !($controller instanceof ManifestController)
-            && !($controller instanceof ServiceWorkerController);
+            && !($controller instanceof PwaController);
     }
 
     public static function onAfterLogin($evt)

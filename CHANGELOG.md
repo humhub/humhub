@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.20.0 (Unreleased)
+-------------------
+- Enh: Moved the PWA part of the `web` module into the core namespace — the manifest, service worker and offline page are now served by `humhub\controllers\PwaController` and built by `humhub\services\PwaService` / `ServiceWorkerService`. The public URLs `/manifest.json`, `/sw.js` and `/offline.pwa.html` are unchanged, but modules extending the service worker must switch from `ServiceWorkerController::EVENT_INIT` to `ServiceWorkerService::EVENT_BUILD_SCRIPT`, and `web.enableServiceWorker` is replaced by the `pwa.enabled` application parameter; see the migration guide
+
 1.19.0-beta.3 (Unreleased)
 -------------------------------
 - Fix #8414: A grouped activity named the same user twice when they had several activities in the group, and named nobody at all when the group's only other participant was the reader

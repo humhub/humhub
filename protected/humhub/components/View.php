@@ -12,7 +12,7 @@ use humhub\assets\AppAsset;
 use humhub\assets\CoreBundleAsset;
 use humhub\components\assets\AssetBundle;
 use humhub\helpers\Html;
-use humhub\modules\web\pwa\widgets\LayoutHeader;
+use humhub\services\PwaService;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\CoreJsConfig;
 use humhub\widgets\LayoutAddons;
@@ -381,7 +381,7 @@ class View extends \yii\web\View
             );
 
             if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
-                LayoutHeader::registerHeadTags($this);
+                PwaService::registerHeadTags($this);
                 $this->meta->registerMetaTags();
             }
             parent::registerCsrfMetaTags();
