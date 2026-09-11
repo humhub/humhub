@@ -80,7 +80,7 @@ abstract class DirectoryFilters extends Widget
                 'info' => Button::light()
                     ->icon('filter')
                     ->options([
-                        'aria-label' => Yii::t('UiModule.base', 'Toggle filters'),
+                        'aria-label' => Yii::t('base', 'Toggle filters'),
                         'data-bs-toggle' => 'collapse',
                         'data-bs-target' => '.card-filter-' . $this->id,
                     ])
@@ -108,8 +108,8 @@ abstract class DirectoryFilters extends Widget
                 'info' => Button::danger()
                     ->icon('times')
                     ->link([$this->pageUrl])
-                    ->tooltip(Yii::t('UiModule.base', 'Reset filters'))
-                    ->options(['aria-label' => Yii::t('UiModule.base', 'Reset filters')]),
+                    ->tooltip(Yii::t('base', 'Reset filters'))
+                    ->options(['aria-label' => Yii::t('base', 'Reset filters')]),
                 'sortOrder' => ($maxSortOrder ?? 0) + 1,
             ]);
         }
@@ -191,7 +191,7 @@ abstract class DirectoryFilters extends Widget
                 if (isset($data['options'][''])) {
                     // Enable the reset feature if this filter has an empty value option
                     $inputOptions['data-allow-clear'] = 'true';
-                    $inputOptions['data-placeholder'] = Yii::t('UiModule.base', 'Select');
+                    $inputOptions['data-placeholder'] = Yii::t('base', 'Select');
                 }
                 $inputHtml = Html::dropDownList($filter, self::getValue($filter), $data['options'], $inputOptions);
                 break;

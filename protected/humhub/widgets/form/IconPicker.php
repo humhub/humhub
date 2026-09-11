@@ -39,7 +39,7 @@ class IconPicker extends Select2
      */
     public function init()
     {
-        $this->options['placeholder'] = Yii::t('UiModule.form', 'Select icon');
+        $this->options['placeholder'] = Yii::t('base', 'Select icon');
         $this->theme = Select2::THEME_BOOTSTRAP;
         $this->pluginOptions = [
             'escapeMarkup' => new JsExpression("function(m) { return m; }"),

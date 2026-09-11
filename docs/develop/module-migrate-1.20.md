@@ -407,3 +407,38 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     follows the core convention (`@humhub/resources`). The JavaScript module id `ui.filter` is
     unchanged, so `require('ui.filter')` keeps working, and a module that registers `FilterAsset`
     needs no change beyond the new class name.
+
+- **The `ui` module is gone.** Its seven folders moved into the core namespace over the changes
+  above; what is left of the module itself — `Module`, `Events`, `config.php`, `module.json`, the
+  message catalogues and the test suite — is removed with this change.
+
+  | Removed | Replacement |
+  |---|---|
+  | `humhub\modules\ui\Module` (module id `ui`) | - |
+  | `humhub\modules\ui\Events` | - |
+  | Alias `@ui` | `@humhub` |
+  | i18n category `UiModule.base` | `base` |
+  | i18n category `UiModule.form` | `base` |
+  | i18n category `UiModule.markdownEditor` | `base` |
+
+  - **The deprecated class names keep working.** `humhub\` is autoloaded from the `@humhub` alias,
+    not through a module registration, so the 42 deprecated subclasses under
+    `humhub\modules\ui\{filter,form,icon,menu,widgets}` still resolve with the module gone. They
+    are removed in 1.21, and the directory disappears with them.
+
+  - **Configuration under `modules.ui` is no longer accepted** and raises an unknown-property
+    error. The only setting that ever lived there was `iconAlias`, replaced by the `icon.alias`
+    application parameter in the icon change above.
+
+  - `Yii::getAlias('@ui/…')` now throws. No known module used it.
+
+  - The 39 strings of the three categories moved into `base` with their translations. Where a
+    string already existed in `base` the existing translation was kept; this affects one string,
+    `Collapse`, whose wording now follows the core catalogue in Arabic, French, Italian, Dutch,
+    Slovak and Swedish.
+
+  - The module's test suite moved into the core suite, so `grunt test --module=ui` no longer
+    exists. `ThemeHelperTest` and `TabbedFormTest` keep their names under
+    `humhub\tests\codeception\unit\{helpers,widgets}`; the module's `ThemeTest` became
+    `ThemePublishTest` because the core suite already has a `ThemeTest` covering path mapping, and
+    its single SCSS test joined the existing `ScssHelperTest`.
