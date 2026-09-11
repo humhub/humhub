@@ -17,7 +17,7 @@ $testConfig = [
             'enableSession' => false,
         ],
         'assetManager' => [
-            'basePath' => '@root/assets/',
+            'basePath' => '@webroot/assets/',
         ],
     ],
     'params' => [

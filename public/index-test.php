@@ -23,23 +23,25 @@ file_put_contents("php://stdout", sprintf("[%s] \e[34m%s:%d [---]: %s %s\033[0m\
 defined('YII_ENV') or define('YII_ENV', 'test');
 defined('YII_ENV_TEST') or define('YII_ENV_TEST', true);
 
+$rootPath = dirname(__DIR__);
 
-require(__DIR__ . '/protected/vendor/autoload.php');
-require(__DIR__ . '/protected/vendor/yiisoft/yii2/Yii.php');
 
-$dotenv = Dotenv\Dotenv::createMutable(__DIR__, '.env');
+require($rootPath . '/protected/vendor/autoload.php');
+require($rootPath . '/protected/vendor/yiisoft/yii2/Yii.php');
+
+$dotenv = Dotenv\Dotenv::createMutable($rootPath, '.env');
 $dotenv->safeLoad();
 
 $config = yii\helpers\ArrayHelper::merge(
     // add more configurations here
-    (is_readable(__DIR__ . '/protected/humhub/tests/codeception/config/dynamic.php')) ? require(__DIR__ . '/protected/humhub/tests/codeception/config/dynamic.php') : [],
-    require(__DIR__ . '/protected/humhub/tests/codeception/config/acceptance.php'),
+    (is_readable($rootPath . '/protected/humhub/tests/codeception/config/dynamic.php')) ? require($rootPath . '/protected/humhub/tests/codeception/config/dynamic.php') : [],
+    require($rootPath . '/protected/humhub/tests/codeception/config/acceptance.php'),
     humhub\helpers\EnvHelper::toConfig($_ENV, \humhub\components\Application::class),
 );
 
-require_once './protected/vendor/codeception/codeception/autoload.php';
+require_once $rootPath . '/protected/vendor/codeception/codeception/autoload.php';
 
-include './protected/humhub/tests/c3.php';
+include $rootPath . '/protected/humhub/tests/c3.php';
 
 class indexTextResponseCode
 {

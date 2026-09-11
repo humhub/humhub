@@ -2,25 +2,22 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2025 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2026 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
-use humhub\services\BootstrapService;
-
-$protectedPath = __DIR__ . '/protected';
-
 /**
- * @var $loader \Composer\Autoload\ClassLoader
+ * DEPRECATED entry script.
+ *
+ * HumHub serves from `public/`. Point the web server's document root at that directory and let it
+ * run `public/index.php`; everything beside it - `protected/`, `uploads/`, the Composer metadata,
+ * the `.env` file - then stops being reachable over the web.
+ *
+ * This script exists so installations keep working until their document root has been moved, and
+ * will be removed in a future version. It marks itself rather than letting HumHub infer the
+ * situation from paths, because managed hosting runs its own entry scripts and path layouts where
+ * such a guess would be wrong. Administration -> Information -> Prerequisites reports it.
  */
-$loader = require($protectedPath . '/vendor/autoload.php');
+$_ENV['HUMHUB_LEGACY_ENTRY_SCRIPT'] = __DIR__;
 
-// Load Environment
-$dotenv = Dotenv\Dotenv::createMutable(__DIR__, '.env');
-$dotenv->safeLoad();
-
-// Load Bootstrap Helper
-$loader->addClassMap(['humhub\\services\\BootstrapService' => $protectedPath . '/humhub/services/BootstrapService.php']);
-
-$bootstrap = new BootstrapService();
-$bootstrap->runWeb();
+require __DIR__ . '/public/index.php';
