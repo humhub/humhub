@@ -8,6 +8,7 @@
 
 namespace humhub\components;
 
+use humhub\services\PwaService;
 use Yii;
 
 /**
@@ -51,7 +52,11 @@ class Request extends \yii\web\Request
         if (
             defined('YII_ENV_TEST') && YII_ENV_TEST && $_SERVER['SCRIPT_FILENAME'] === 'index-test.php' && in_array(
                 $_SERVER['SCRIPT_NAME'],
-                ['/sw.js', '/offline.pwa.html', '/manifest.json'],
+                [
+                    '/' . PwaService::URL_SERVICE_WORKER,
+                    '/' . PwaService::URL_OFFLINE,
+                    '/' . PwaService::URL_MANIFEST,
+                ],
                 true,
             )
         ) {
