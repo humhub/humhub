@@ -52,5 +52,5 @@ To have your contribution accepted you must accept the HumHub CLA, signed once v
 
 ## Documentation
 
-- **Core changes** that affect modules go into the `Unreleased` section of [`module-migrate.md`](module-migrate.md).
+- **Core changes** that affect modules go into the migration guide of the release line the pull request targets — [`module-migrate-1.20.md`](module-migrate-1.20.md) for `next`, [`module-migrate-1.19.md`](module-migrate-1.19.md) for `develop`. [`module-migrate.md`](module-migrate.md) only links these files.
 - **Module features** should be reflected in the module's `README.md` and `docs/`.

@@ -23,6 +23,7 @@ HumHub Changelog
 - Fix #8438: Endless scrolling stalled whenever the loaded stream entries did not push the stream end indicator out of the observed area (compact streams, short entries, viewport not filled), because an `IntersectionObserver` only reports state *changes* — the stream now keeps loading until the observed area is filled
 - Fix #8438: The mobile "Load more" button of a stream was hardwired to the `#wallStream` id, so it failed with "Handler not found" in any stream rendered with a custom `id`
 - Fix #8448: Destructive admin actions (remove all space members, delete profile category, reset invite link, remove licence) ran on GET via CSRF
+- Enh #8452: `docs/develop/module-migrate.md` is now only an index — each release line keeps its breaking changes in its own `module-migrate-<version>.md`, so `develop` and `next` no longer collide in a shared `Unreleased` section
 
 1.19.0-beta.2 (August 19, 2026)
 -------------------------------
