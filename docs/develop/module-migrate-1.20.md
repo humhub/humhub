@@ -322,3 +322,21 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   - A menu that points `$template` at the shipped views directly has to follow the alias:
     `@ui/menu/widgets/views/dropdown-menu.php` becomes
     `@humhub/widgets/menu/views/dropdown-menu.php`.
+- **Removed the unused `ItemDrop` model** for drag-and-drop reordering.
+
+  | Removed | Replacement |
+  |---|---|
+  | `humhub\modules\ui\helpers\models\ItemDrop` | - |
+
+  It was added in 1.4 and never used by the core or by any known module, and as shipped it could
+  not have worked: `save()` calls `$this->moveItemIndex()`, a method the class does not define —
+  the resulting `Error` was caught by its own `catch (Throwable)`, logged, and reported as a
+  failed save. Two more leftovers point the same way: `run()` and `loadModel()` read `$this->id`
+  while the class declares `$modelId`, and `getSortOrder()` uses variable-variable syntax
+  (`$model->${$this->sortOrderField}`) where a property access was meant.
+
+  The class was extracted from the `wiki` and `infoscreen` modules, where the method is called
+  `moveItemIndex()`; the rename to `run()` never reached the caller. Both modules — and `tasks`
+  and `meeting` — still carry their own reordering models and are unaffected. A module that does
+  extend this class needs to bring its own copy; correcting the four defects above first is
+  advisable.
