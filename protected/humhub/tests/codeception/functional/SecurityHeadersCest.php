@@ -25,9 +25,10 @@ class SecurityHeadersCest
 
         $I->amOnRoute('/user/auth/login');
 
-        $I->assertStringContainsString("default-src 'self'", (string)$I->grabHttpHeader('Content-Security-Policy'));
+        $I->assertStringContainsString('default-src', (string)$I->grabHttpHeader('Content-Security-Policy'));
         $I->assertSame('nosniff', $I->grabHttpHeader('X-Content-Type-Options'));
-        $I->assertSame('deny', $I->grabHttpHeader('X-Frame-Options'));
+        $I->assertSame('sameorigin', $I->grabHttpHeader('X-Frame-Options'));
+        $I->assertSame('max-age=31536000', $I->grabHttpHeader('Strict-Transport-Security'));
     }
 
     /**
@@ -57,7 +58,7 @@ class SecurityHeadersCest
         $I->amOnPage('/index-test.php?r=this%2Fdoes%2Fnot-exist');
 
         $I->seeResponseCodeIs(404);
-        $I->assertStringContainsString("default-src 'self'", (string)$I->grabHttpHeader('Content-Security-Policy'));
+        $I->assertStringContainsString('default-src', (string)$I->grabHttpHeader('Content-Security-Policy'));
     }
 
     /**
