@@ -6,14 +6,17 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\tests\codeception\acceptance;
+namespace admin\acceptance;
 
-use AcceptanceTester;
+use admin\AcceptanceTester;
 use Yii;
 
 /**
  * Verifies in a real browser that the Content Security Policy is enforced: an inline script
- * without the nonce must not run, one carrying it must.
+ * without the nonce must not run, while the tracking code an admin configures does, because
+ * `TrackingWidget` renders it with the nonce of the current session.
+ *
+ * Lived in the `web` module until it was dissolved in 1.20.
  */
 class NonceCest
 {

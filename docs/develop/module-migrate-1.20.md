@@ -9,6 +9,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   | Removed | Replacement |
   |---|---|
   | `humhub\modules\web\Module` (module id `web`) | - |
+  | `humhub\modules\web\Events` | - |
   | `humhub\modules\web\security\helpers\Security` | `humhub\components\Response::getNonce()`, `humhub\helpers\Html::getNonce()` |
   | `humhub\modules\web\security\helpers\CSPBuilder` | - (the policy is configured as a plain header string) |
   | `humhub\modules\web\security\models\SecuritySettings` | `humhub\components\Response::$defaultHeaders` |
