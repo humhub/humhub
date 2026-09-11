@@ -12,7 +12,7 @@ namespace humhub\modules\content\widgets;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\ContentType;
-use humhub\modules\ui\form\widgets\MultiSelect;
+use humhub\widgets\form\MultiSelect;
 use Yii;
 
 class ContentTypePicker extends MultiSelect

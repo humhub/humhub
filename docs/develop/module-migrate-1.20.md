@@ -145,3 +145,39 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 
   - The `web` module itself still exists and continues to provide the security headers and CSP
     handling; only its PWA part moved.
+
+- **The form part of the `ui` module moved into the core namespace.** 1.19 had already moved
+  `ActiveForm`, `ActiveField`, `ContentHiddenCheckbox`, `ContentVisibilitySelect` and
+  `SortOrderField` out of `humhub\modules\ui\form\widgets` into `humhub\widgets\form`; the
+  remaining widgets follow them now, which also removes the last reason for core classes such as
+  `humhub\widgets\form\ActiveField` and `humhub\widgets\bootstrap\FormTabs` to reach back into a
+  module.
+
+  | Before | After |
+  |---|---|
+  | `humhub\modules\ui\form\widgets\BasePicker` | `humhub\widgets\form\BasePicker` |
+  | `humhub\modules\ui\form\widgets\JsInputWidget` | `humhub\widgets\form\JsInputWidget` |
+  | `humhub\modules\ui\form\widgets\MultiSelect` | `humhub\widgets\form\MultiSelect` |
+  | `humhub\modules\ui\form\widgets\DatePicker` | `humhub\widgets\form\DatePicker` |
+  | `humhub\modules\ui\form\widgets\TimePicker` | `humhub\widgets\form\TimePicker` |
+  | `humhub\modules\ui\form\widgets\DurationPicker` | `humhub\widgets\form\DurationPicker` |
+  | `humhub\modules\ui\form\widgets\IconPicker` | `humhub\widgets\form\IconPicker` |
+  | `humhub\modules\ui\form\widgets\CodeMirrorInputWidget` | `humhub\widgets\form\CodeMirrorInputWidget` |
+  | `humhub\modules\ui\form\assets\CodeMirrorAssetBundle` | `humhub\assets\CodeMirrorAssetBundle` |
+  | `humhub\modules\ui\form\interfaces\TabbedFormModel` | `humhub\interfaces\TabbedFormModel` |
+
+  - **Nothing breaks in 1.20.** Every old name stays available as a deprecated subclass (and, for
+    `TabbedFormModel`, a deprecated interface extending the new one), so existing modules keep
+    working. **The shims are removed in 1.21** — migrate during the 1.20 cycle.
+
+  - Note for `DatePicker`, `TimePicker` and `DurationPicker`: these were moved *into*
+    `humhub\modules\ui\form\widgets` from `humhub\widgets` in 1.19. A module that has not migrated
+    yet can go straight from `humhub\widgets\DatePicker` to `humhub\widgets\form\DatePicker`.
+
+  - The deprecated `CodeMirrorAssetBundle` is a subclass, so Yii registers it under its own name.
+    A page that registers both the old and the new bundle emits the CodeMirror script tags twice.
+    Register only one of them.
+
+  - **Removed** `humhub\modules\ui\form\validators\IconValidator` without replacement. It was
+    added in a single commit, never used by the core or any known module, and validated against
+    `Icon::$names` — three lines that are easier written inline than kept as public API.

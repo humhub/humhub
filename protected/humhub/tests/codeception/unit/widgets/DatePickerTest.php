@@ -9,7 +9,7 @@
 namespace humhub\tests\codeception\unit\widgets;
 
 use humhub\libs\DbDateValidator;
-use humhub\modules\ui\form\widgets\DatePicker;
+use humhub\widgets\form\DatePicker;
 use IntlDateFormatter;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;

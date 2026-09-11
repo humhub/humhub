@@ -3,7 +3,7 @@
 namespace humhub\modules\user\widgets;
 
 use humhub\modules\admin\models\forms\UserEditForm;
-use humhub\modules\ui\form\widgets\MultiSelect;
+use humhub\widgets\form\MultiSelect;
 use humhub\modules\user\models\forms\EditGroupForm;
 use humhub\modules\user\models\Group;
 use Yii;

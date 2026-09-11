@@ -37,7 +37,7 @@ use yii\bootstrap5\InputWidget;
  * The specified model can either be a ContentActiveRecord or directly a Content record.
  *
  * @since 1.6
- * @package humhub\modules\ui\form\widgets
+ * @package humhub\widgets\form
  */
 class ContentVisibilitySelect extends InputWidget
 {
