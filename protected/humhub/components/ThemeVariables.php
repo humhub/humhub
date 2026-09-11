@@ -9,7 +9,6 @@
 namespace humhub\components;
 
 use humhub\helpers\ThemeHelper;
-use humhub\modules\ui\Module;
 use RuntimeException;
 use ScssPhp\ScssPhp\Exception\SassException;
 use Yii;
@@ -20,7 +19,7 @@ use yii\base\Component;
  * The variables will be stored in the application SettingManager for fast access.
  *
  * @since 1.3
- * @package humhub\modules\ui\view\components
+ * @package humhub\components
  */
 class ThemeVariables extends Component
 {
@@ -32,7 +31,7 @@ class ThemeVariables extends Component
     public $theme;
 
     /**
-     * @var Module
+     * @var \yii\base\Application the application, which provides the settings this component reads and writes
      */
     public $module;
 

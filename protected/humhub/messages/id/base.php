@@ -103,4 +103,12 @@ return [
     '{nFormatted}B' => '',
     '{nFormatted}K' => '',
     '{nFormatted}M' => '',
+  'Insert Hyperlink' => 'Masukkan Hyperlink',
+  'Insert Image Hyperlink' => 'Masukkan Image Hyperlink',
+  'code text here' => 'code text disini',
+  'enter image description here' => 'masukkan deskripsi image disini',
+  'enter image title here' => 'masukkan judul image disini',
+  'enter link description here' => 'masukkan deskripsi link disini',
+  'list text here' => 'text list disini',
+  'quote here' => 'quote disini',
 ];
