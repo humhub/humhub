@@ -11,8 +11,8 @@ namespace humhub\modules\marketplace\widgets;
 use humhub\helpers\Html;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\marketplace\Module;
-use humhub\modules\ui\icon\widgets\Icon;
-use humhub\modules\ui\widgets\DirectoryFilters;
+use humhub\widgets\Icon;
+use humhub\widgets\DirectoryFilters;
 use humhub\widgets\bootstrap\Link;
 use Yii;
 use yii\helpers\Url;
@@ -45,7 +45,12 @@ class ModuleFilters extends DirectoryFilters
             'placeholder' => Yii::t('MarketplaceModule.base', 'Description, Name, Keywords...'),
             'type' => 'input',
             'wrapperClass' => 'flex-fill form-search-filter-keyword',
-            'afterInput' => Html::submitButton(Icon::get('search'), ['class' => 'form-button-search']),
+            'afterInput' => Html::submitButton(Icon::get('search'), [
+                'class' => 'form-button-search',
+                // Pressing Enter in the keyword field already submits the form, so this
+                // button doesn't need its own tab stop.
+                'tabindex' => '-1',
+            ]),
             'sortOrder' => 100,
         ]);
 

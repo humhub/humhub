@@ -10,7 +10,7 @@ namespace humhub\modules\friendship\widgets;
 
 use humhub\modules\friendship\assets\FriendshipVueAsset;
 use humhub\modules\friendship\serializers\FriendshipSerializer;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use humhub\modules\user\models\User;
 use humhub\widgets\VueWidget;
 use Yii;

@@ -7,7 +7,7 @@
  */
 
 use humhub\modules\space\widgets\SpaceDirectoryHeadingButtons;
-use humhub\modules\ui\menu\MenuEntry;
+use humhub\widgets\menu\MenuEntry;
 
 /* @var $menu SpaceDirectoryHeadingButtons */
 /* @var $entries MenuEntry[] */

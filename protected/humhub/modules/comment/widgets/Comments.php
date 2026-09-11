@@ -15,7 +15,7 @@ use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use humhub\modules\file\handler\FileHandlerCollection;
 use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 use humhub\modules\like\serializers\LikeSerializer;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use humhub\widgets\VueWidget;
 use Yii;
 

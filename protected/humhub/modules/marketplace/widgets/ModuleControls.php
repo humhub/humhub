@@ -9,8 +9,8 @@
 namespace humhub\modules\marketplace\widgets;
 
 use humhub\modules\marketplace\models\Module;
-use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\ui\menu\widgets\Menu;
+use humhub\widgets\menu\MenuLink;
+use humhub\widgets\menu\Menu;
 use Yii;
 
 /**

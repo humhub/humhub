@@ -11,17 +11,17 @@ namespace humhub\tests\codeception\unit\widgets;
 use humhub\modules\content\controllers\api\ControlsController;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use humhub\modules\content\widgets\WallEntryControlLink;
-use humhub\modules\ui\menu\DescribableWidget;
-use humhub\modules\ui\menu\DropdownDivider;
-use humhub\modules\ui\menu\MenuEntry;
-use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\ui\menu\WidgetMenuEntry;
+use humhub\widgets\menu\DescribableWidget;
+use humhub\widgets\menu\DropdownDivider;
+use humhub\widgets\menu\MenuEntry;
+use humhub\widgets\menu\MenuLink;
+use humhub\widgets\menu\WidgetMenuEntry;
 use tests\codeception\_support\HumHubDbTestCase;
 use yii\helpers\Html;
 
 /**
  * The `describe()` chain that lets a server-side menu feed a client-rendered one — see
- * `humhub\modules\ui\menu\DescribableWidget` and
+ * `humhub\widgets\menu\DescribableWidget` and
  * `humhub\modules\content\controllers\api\ControlsController`.
  */
 class MenuEntryDescribeTest extends HumHubDbTestCase

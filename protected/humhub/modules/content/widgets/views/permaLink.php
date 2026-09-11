@@ -1,6 +1,6 @@
 <?php
 
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 
 /* @var $this \humhub\components\View */
 /* @var $permaLink string */

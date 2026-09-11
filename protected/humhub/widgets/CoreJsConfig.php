@@ -11,10 +11,9 @@ namespace humhub\widgets;
 use humhub\components\api\ApiRules;
 use humhub\modules\admin\libs\CacheHelper;
 use humhub\modules\file\validators\FileValidator;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\UserPicker;
-use humhub\modules\web\security\helpers\Security;
 use Yii;
 use yii\base\Widget;
 use yii\helpers\Url;
@@ -62,7 +61,6 @@ class CoreJsConfig extends Widget
                     // name, an IP, or through a proxy. @since 1.20
                     'apiUrl' => rtrim(Url::base(), '/') . '/' . ApiRules::PREFIX_V2,
                     'reloadableScripts' => CacheHelper::getReloadableScriptUrls(),
-                    'cspViolationReloadInterval' => Security::CSP_VIOLATION_RELOAD_INTERVAL,
                     'syncScriptOrigins' => $this->getAssetOrigins(),
                 ],
                 'core' => [
@@ -124,29 +122,29 @@ class CoreJsConfig extends Widget
                 ],
                 'ui.markdown', [
                     'text' => [
-                        'Bold' => Yii::t('UiModule.markdownEditor', 'Bold'),
-                        'Italic' => Yii::t('UiModule.markdownEditor', 'Italic'),
-                        'Heading' => Yii::t('UiModule.markdownEditor', 'Heading'),
-                        'URL/Link' => Yii::t('UiModule.markdownEditor', 'URL/Link'),
-                        'Image/File' => Yii::t('UiModule.markdownEditor', 'Image/File'),
-                        'Image' => Yii::t('UiModule.markdownEditor', 'Image'),
-                        'List' => Yii::t('UiModule.markdownEditor', 'List'),
-                        'Preview' => Yii::t('UiModule.markdownEditor', 'Preview'),
-                        'strong text' => Yii::t('UiModule.markdownEditor', 'strong text'),
-                        'emphasized text' => Yii::t('UiModule.markdownEditor', 'emphasized text'),
-                        'heading text' => Yii::t('UiModule.markdownEditor', 'heading text'),
-                        'enter link description here' => Yii::t('UiModule.markdownEditor', 'enter link description here'),
-                        'Insert Hyperlink' => Yii::t('UiModule.markdownEditor', 'Insert Hyperlink'),
-                        'enter image description here' => Yii::t('UiModule.markdownEditor', 'enter image description here'),
-                        'Insert Image Hyperlink' => Yii::t('UiModule.markdownEditor', 'Insert Image Hyperlink'),
-                        'enter image title here' => Yii::t('UiModule.markdownEditor', 'enter image title here'),
-                        'list text here' => Yii::t('UiModule.markdownEditor', 'list text here'),
-                        'Quote' => Yii::t('UiModule.markdownEditor', 'Quote'),
-                        'quote here' => Yii::t('UiModule.markdownEditor', 'quote here'),
-                        'Code' => Yii::t('UiModule.markdownEditor', 'Code'),
-                        'code text here' => Yii::t('UiModule.markdownEditor', 'code text here'),
-                        'Unordered List' => Yii::t('UiModule.markdownEditor', 'Unordered List'),
-                        'Ordered List' => Yii::t('UiModule.markdownEditor', 'Ordered List'),
+                        'Bold' => Yii::t('base', 'Bold'),
+                        'Italic' => Yii::t('base', 'Italic'),
+                        'Heading' => Yii::t('base', 'Heading'),
+                        'URL/Link' => Yii::t('base', 'URL/Link'),
+                        'Image/File' => Yii::t('base', 'Image/File'),
+                        'Image' => Yii::t('base', 'Image'),
+                        'List' => Yii::t('base', 'List'),
+                        'Preview' => Yii::t('base', 'Preview'),
+                        'strong text' => Yii::t('base', 'strong text'),
+                        'emphasized text' => Yii::t('base', 'emphasized text'),
+                        'heading text' => Yii::t('base', 'heading text'),
+                        'enter link description here' => Yii::t('base', 'enter link description here'),
+                        'Insert Hyperlink' => Yii::t('base', 'Insert Hyperlink'),
+                        'enter image description here' => Yii::t('base', 'enter image description here'),
+                        'Insert Image Hyperlink' => Yii::t('base', 'Insert Image Hyperlink'),
+                        'enter image title here' => Yii::t('base', 'enter image title here'),
+                        'list text here' => Yii::t('base', 'list text here'),
+                        'Quote' => Yii::t('base', 'Quote'),
+                        'quote here' => Yii::t('base', 'quote here'),
+                        'Code' => Yii::t('base', 'Code'),
+                        'code text here' => Yii::t('base', 'code text here'),
+                        'Unordered List' => Yii::t('base', 'Unordered List'),
+                        'Ordered List' => Yii::t('base', 'Ordered List'),
                     ],
                 ],
                 'log' => [

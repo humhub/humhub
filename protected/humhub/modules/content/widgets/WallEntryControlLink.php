@@ -4,9 +4,9 @@ namespace humhub\modules\content\widgets;
 
 use humhub\components\Widget;
 use humhub\helpers\Html;
-use humhub\modules\ui\icon\widgets\Icon;
-use humhub\modules\ui\menu\DescribableWidget;
-use humhub\modules\ui\menu\MenuLink;
+use humhub\widgets\Icon;
+use humhub\widgets\menu\DescribableWidget;
+use humhub\widgets\menu\MenuLink;
 use ReflectionMethod;
 use yii\helpers\ArrayHelper;
 

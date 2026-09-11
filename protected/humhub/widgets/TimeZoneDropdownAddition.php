@@ -9,7 +9,7 @@
 namespace humhub\widgets;
 
 use humhub\libs\TimezoneHelper;
-use humhub\modules\ui\form\widgets\JsInputWidget;
+use humhub\widgets\form\JsInputWidget;
 use Yii;
 
 /**

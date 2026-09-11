@@ -5,7 +5,7 @@ use humhub\helpers\Html;
 
 /* @var $this \humhub\components\View */
 /* @var $menu \humhub\widgets\TopMenu */
-/* @var $entries \humhub\modules\ui\menu\MenuEntry[] */
+/* @var $entries \humhub\widgets\menu\MenuEntry[] */
 
 TopNavigationAsset::register($this);
 

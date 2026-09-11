@@ -2,58 +2,15 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\ui\menu;
 
-use humhub\helpers\Html;
-use humhub\modules\ui\menu\widgets\Menu;
-
 /**
- * Class DropdownDivider
- *
- * Used for rendering divider within a DropdownMenu.
- *
- * Usage:
- *
- * ```php
- * $dropdown->addEntry(new DropdownDivider(['sortOrder' => 100]);
- * ```
- *
- * @since 1.4
- * @see Menu
+ * @deprecated since 1.20, use \humhub\widgets\menu\DropdownDivider instead. Will be removed in 1.21.
  */
-class DropdownDivider extends MenuEntry
+class DropdownDivider extends \humhub\widgets\menu\DropdownDivider
 {
-    /**
-     * @inheritdoc
-     */
-    public function renderEntry($extraHtmlOptions = [])
-    {
-        Html::removeCssClass($extraHtmlOptions, 'dropdown-item');
-        Html::addCssClass($extraHtmlOptions, 'dropdown-divider');
-        return Html::tag(
-            'li',
-            Html::tag('hr', '', $this->getHtmlOptions($extraHtmlOptions)),
-        );
-    }
-
-    /**
-     * @inheritdoc
-     *
-     * A divider carries no label, url or behaviour — only its position — so `divider` plus a
-     * sort order is the whole descriptor.
-     *
-     * @since 1.20
-     */
-    public function describe(): ?array
-    {
-        return [
-            'id' => $this->getId(),
-            'divider' => true,
-            'sortOrder' => $this->getSortOrder(),
-        ];
-    }
 }

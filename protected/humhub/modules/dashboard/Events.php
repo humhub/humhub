@@ -9,7 +9,7 @@
 namespace humhub\modules\dashboard;
 
 use humhub\helpers\ControllerHelper;
-use humhub\modules\ui\menu\MenuLink;
+use humhub\widgets\menu\MenuLink;
 use humhub\widgets\TopMenu;
 use Yii;
 use yii\base\Event;

@@ -11,7 +11,7 @@ namespace humhub\modules\space\widgets;
 use humhub\modules\space\assets\SpaceVueAsset;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\serializers\MembershipSerializer;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use humhub\widgets\VueWidget;
 use Yii;
 

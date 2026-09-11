@@ -14,7 +14,7 @@ use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\marketplace\models\Module as ModelModule;
 use humhub\modules\marketplace\search\MarketplaceSearchProvider;
 use humhub\modules\marketplace\services\MarketplaceService;
-use humhub\modules\ui\menu\MenuLink;
+use humhub\widgets\menu\MenuLink;
 use humhub\modules\user\widgets\AccountTopMenu;
 use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\MetaSearchWidget;

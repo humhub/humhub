@@ -30,7 +30,8 @@ use yii\web\JqueryAsset;
  */
 
 // In the console environment, some path aliases may not exist. Please define these:
-Yii::setAlias('@webroot', __DIR__ . '/../../../');
+Yii::setAlias('@root', __DIR__ . '/../../../');
+Yii::setAlias('@webroot', '@root/' . \humhub\services\DocumentRootService::PUBLIC_DIR);
 Yii::setAlias('@web', '/');
 
 $bundles = ArrayHelper::merge(

@@ -1,5 +1,8 @@
-assets/*
-!assets/.gitignore
+public/assets/*
+!public/assets/.gitignore
+
+# Leftover publish cache of installations that predate the public/ document root
+/assets/
 
 themes/*
 !themes/.gitkeep
@@ -25,7 +28,10 @@ uploads/profile_image/*
 uploads/profile_image/banner/*
 !uploads/profile_image/banner/.gitignore
 
+# Shipped ready to use; any other .htaccess is a local addition
 .htaccess
+!/.htaccess
+!/public/.htaccess
 nbproject
 .idea/*
 .gitmodules
@@ -52,6 +58,9 @@ favicon.ico
 /protected/humhub/tests/assets/
 /protected/humhub/themes/Test
 /protected/humhub/modules/file/tests/codeception/_data/file/e/8/e882f005-efd5-4b8f-aadb-2726621b960a/preview-image
+# Published/generated media of a test run (e.g. the site icon variants of the PWA manifest)
+/protected/humhub/tests/assets/
+/protected/humhub/tests/uploads/
 
 # Built assets — regenerate with `grunt build-assets`
 /protected/humhub/resources/build/*

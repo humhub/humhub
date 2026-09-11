@@ -18,7 +18,7 @@ return [
                     'baseUrl' => '@web/assets/tests',
                 ],
                 'data' => [
-                    'path' => '@webroot/uploads/tests',
+                    'path' => '@root/uploads/tests',
                 ],
             ],
         ],
@@ -50,53 +50,6 @@ return [
         'user' => [
             'loginRememberMeDefault' => false,
             'enableRegistrationFormCaptcha' => false,
-        ],
-        'web' => [
-            'security' => [
-                "headers" => [
-                    "Strict-Transport-Security" => "max-age=31536000",
-                    "X-Content-Type-Options" => "nosniff",
-                    "X-Frame-Options" => "deny",
-                    "Referrer-Policy" => "no-referrer-when-downgrade",
-                    "X-Permitted-Cross-Domain-Policies" => "master-only",
-                    "My-Custom-Security-Header" => "test",
-                ],
-                "csp" => [
-                    "nonce" => true,
-                    "report-only" => false,
-                    "report" => false,
-                    "default-src" => [
-                        "self" => true,
-                    ],
-                    "img-src" => [
-                        "allow" => [
-                            "*",
-                        ],
-                    ],
-                    "font-src" => [
-                        "self" => true,
-                    ],
-                    "style-src" => [
-                        "self" => true,
-                        "unsafe-inline" => true,
-                    ],
-                    "object-src" => [
-                        'self' => true,
-                    ],
-                    "frame-src" => [
-                        "allow" => [
-                            "*",
-                        ],
-                    ],
-                    "script-src" => [
-                        "self" => true,
-                        "unsafe-inline" => true,
-                        "unsafe-eval" => false,
-                        "report-sample" => true,
-                    ],
-                    "upgrade-insecure-requests" => true,
-                ],
-            ],
         ],
     ],
 ];

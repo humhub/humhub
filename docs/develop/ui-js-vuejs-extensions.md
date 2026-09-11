@@ -26,7 +26,7 @@ registerSlotComponent('comment.links', 'ReactionLink', { sortOrder: 150 });
 
 ## Menu entries
 
-The array-of-entries counterpart to the free-form slot above, modeled on the server-side `humhub\modules\ui\menu\widgets\Menu` API module devs already know (`addEntry()`/`removeEntry()`, entries with an `id` and a `sortOrder`). `DropdownMenu` (see [Components: core component set](ui-js-vuejs-components.md#core-component-set)) grows a `menuId`/`entries` mode: a menu identifies itself with a `menuId`, contributes its own built-in items as `entries`, and other modules add, override or remove items by `id` through the registry — instead of forking the host's markup, the same relationship `ExtensionSlot` has to a slot, but for an *ordered, removable list of items* rather than a free-form fragment.
+The array-of-entries counterpart to the free-form slot above, modeled on the server-side `humhub\widgets\menu\Menu` API module devs already know (`addEntry()`/`removeEntry()`, entries with an `id` and a `sortOrder`). `DropdownMenu` (see [Components: core component set](ui-js-vuejs-components.md#core-component-set)) grows a `menuId`/`entries` mode: a menu identifies itself with a `menuId`, contributes its own built-in items as `entries`, and other modules add, override or remove items by `id` through the registry — instead of forking the host's markup, the same relationship `ExtensionSlot` has to a slot, but for an *ordered, removable list of items* rather than a free-form fragment.
 
 ```html
 <!-- inside CommentControls.vue -->
@@ -137,10 +137,10 @@ onContextMenu(event) {
 }
 ```
 
-**Describing a server entry.** `humhub\modules\ui\menu\MenuEntry::describe()` returns the
+**Describing a server entry.** `humhub\widgets\menu\MenuEntry::describe()` returns the
 descriptor for an entry, or `null` when the entry can only be rendered. `MenuLink` and
 `DropdownDivider` describe themselves; a `WidgetMenuEntry` delegates to its widget when that
-widget implements `humhub\modules\ui\menu\DescribableWidget`.
+widget implements `humhub\widgets\menu\DescribableWidget`.
 
 `WallEntryControlLink` implements it, which covers the whole family of control links that
 extend it — `EditPageLink` (wiki), `ShareLink` (share-between-humhub), `ContentTopicButton`

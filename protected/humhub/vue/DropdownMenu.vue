@@ -93,7 +93,7 @@
  * ## Data-driven mode (`menuId`/`entries`)
  *
  * The alternative to the slot above: an array of entry descriptors, the
- * Vue analog of the server-side `humhub\modules\ui\menu\widgets\Menu` API
+ * Vue analog of the server-side `humhub\widgets\menu\Menu` API
  * (`addEntry()`/`removeEntry()`, entries with an `id` and a `sortOrder`).
  * Pass `menuId` (identifies this menu to `registerMenuEntry()`/
  * `removeMenuEntry()` — see `humhub.vue.js`) and `entries` (this
@@ -139,7 +139,7 @@
  * ## Server-described entries
  *
  * Three further fields exist for entries a SERVER produced rather than a
- * `registerMenuEntry()` call — see `humhub\modules\ui\menu\MenuEntry::describe()`
+ * `registerMenuEntry()` call — see `humhub\widgets\menu\MenuEntry::describe()`
  * and the `ContentControls` island, which feeds this component the resolved
  * `WallEntryControls` stack of a content record:
  *
@@ -158,7 +158,7 @@
  *    the server side.
  *
  * `divider` renders an `<hr class="dropdown-divider">`, the client-side
- * counterpart of `humhub\modules\ui\menu\DropdownDivider`.
+ * counterpart of `humhub\widgets\menu\DropdownDivider`.
  *
  * ## Opening it from the host
  *

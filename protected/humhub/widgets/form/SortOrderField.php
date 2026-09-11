@@ -28,7 +28,7 @@ use yii\bootstrap5\InputWidget;
  * ```
  *
  * @since 1.6
- * @package humhub\modules\ui\form\widgets
+ * @package humhub\widgets\form
  */
 class SortOrderField extends InputWidget
 {
@@ -46,10 +46,10 @@ class SortOrderField extends InputWidget
         $attribute = $this->attribute;
 
         if (!$model->getAttributeLabel($attribute)) {
-            $this->field->label(Yii::t('UiModule.form', 'Sort Order'));
+            $this->field->label(Yii::t('base', 'Sort Order'));
         }
         if (!$model->getAttributeHint($attribute)) {
-            $this->field->hint(Yii::t('UiModule.form', 'Values between 0 and 10000, the existing elements usually use steps of 100.'));
+            $this->field->hint(Yii::t('base', 'Values between 0 and 10000, the existing elements usually use steps of 100.'));
         }
 
         if ($this->defaultValue !== null && !is_numeric($model->$attribute)) {

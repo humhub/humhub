@@ -3,6 +3,21 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Fix #8475: Every stream filter panel crashed with `Class "FilterBlock" not found` because the move of the filter widgets dropped the import from `filterPanel.php` — view files carry no namespace, so a short class name there is not resolved against the widget's namespace (since #8469)
+- Enh #8473: Moved the `TopicAsset` dependency from `FilterAsset` to `StreamAsset` — the filter JavaScript has no relationship to topics, whereas the stream filter navigation is what renders a topic picker; the scripts a page loads are unchanged
+- Enh #8471: Removed the `ui` module — after its seven folders moved into the core namespace, the module class, its config, its three i18n categories (folded into `base`) and its test suite are gone; the deprecated class names keep resolving until 1.21 because `humhub\` is autoloaded from the `@humhub` alias rather than through a module registration
+- Enh #8469: Moved the filter part of the `ui` module into the core namespace — `humhub\widgets\filter\*` for the widgets, `humhub\models\filter\*` for the two abstract models and `humhub\assets\FilterAsset` — and dropped three views nothing rendered; the old class names stay as deprecated shims until 1.21
+- Enh #8467: Moved the remaining widgets of the `ui` module into the core namespace as `humhub\widgets\{BaseImage, CropImage, CounterSet, CounterSetItem, DirectoryFilters}`, together with their three views; the old class names stay as deprecated shims until 1.21
+- Enh #8462: Removed the unused `ItemDrop` reordering model from the `ui` module — added in 1.4, never used by the core or any known module, and non-functional as shipped because `save()` calls a method the class does not define
+- Enh #8464: Moved the menu part of the `ui` module into the core namespace as `humhub\widgets\menu\*`, flattening the entry classes and the menu widgets into one namespace; the old class names stay as deprecated shims until 1.21, but theme view overrides under `views/ui/menu/` have to be moved because themed views are resolved by path and stop being applied silently
+- Enh #8463: Moved the icon part of the `ui` module into the core namespace — `humhub\widgets\Icon` and `humhub\components\icon\*` — and replaced the module's `iconAlias` map with the `icon.alias` application parameter, which was the last thing in the core needing the `ui` module class; the old class names stay as deprecated shims until 1.21
+- Fix #8459: The `uploads` directory was served by the web server when the document root was the installation directory. It now carries its own `.htaccess` refusing every request, like `protected` already did — nothing was ever delivered from there directly, public files such as profile images are published into the assets directory
+- Fix #8459: The shipped `.htaccess` failed to refuse dot directories such as `.git` on installations reached under a subdirectory — the rule was anchored to the start of the URL path, so `/humhub/.git/config` was served while `/.git/config` was refused. It now matches a dot segment anywhere in the path and applies without `mod_rewrite`
+- Enh #8459: Moved the web-accessible files into a `public/` directory, which becomes the document root - `protected/`, `uploads/`, `themes/`, the Composer metadata and the `.env` file are no longer served. `@webroot` now resolves to `public/` and the new `@root` alias names the installation root. Existing installations keep working: the `index.php` in the installation root is now a deprecated shim that delegates to `public/index.php` without redirecting, and both it and an installation root that is reachable over HTTP are reported under Administration -> Information -> Prerequisites and in the incomplete-setup warning on the admin dashboard. Both `.htaccess` files now ship ready to use instead of as `.htaccess.dist` templates, and the one in the installation root maps every request into `public/` so a document root that cannot be moved is protected as well - note that local edits to them are overwritten on update. After updating, the `assets/` directory in the installation root is a leftover publish cache and can be deleted; see the migration guide
+- Enh #8461: Moved the form widgets of the `ui` module into the core namespace — `humhub\widgets\form\*` for the eight widgets, `humhub\assets\CodeMirrorAssetBundle` and `humhub\interfaces\TabbedFormModel` — finishing the move 1.19 began; the old names stay as deprecated shims until 1.21, and the unused `IconValidator` was removed
+- Enh #8460: Removed the unused `ContainerImageSet` widget together with its asset bundle, JavaScript and CSS — it was added in 2019 and never rendered by the core or any known module; first step of taking the `ui` module apart
+- Enh #8457: Dissolved the `web` module — the security headers and the Content Security Policy are now applied by `humhub\components\Response` and configured as a flat header map on that component (`defaultHeaders`), replacing the `CSPBuilder`, the `SecuritySettings` model and the module itself. The policy now also reaches error pages and HTML rendered by AJAX actions, which were previously left without one, and is no longer sent with JSON or JavaScript responses where it had no effect; the automatic page reload on CSP violation was removed. The delivered policy itself is unchanged; see the migration guide
+- Enh: Moved the PWA part of the `web` module into the core namespace — the manifest, service worker and offline page are now served by `humhub\controllers\PwaController` and built by `humhub\services\PwaService` / `ServiceWorkerService`. The public URLs `/manifest.json`, `/sw.js` and `/offline.pwa.html` are unchanged, but modules extending the service worker must switch from `ServiceWorkerController::EVENT_INIT` to `ServiceWorkerService::EVENT_BUILD_SCRIPT`, and `web.enableServiceWorker` is replaced by the `pwa.enabled` application parameter; see the migration guide
 - Enh #8403: Added the Vue.js island layer (`humhub.vue` runtime, core component set, form suite, extension APIs) with the like link and the comment section as the first islands
 - Enh #8403: Added the HTTP API framework in `humhub\components\api` and the first core endpoints under `/api/v2` (comment, like, account) — browser-session authentication is opt-in per controller, token methods come from the rest module, see `docs/develop/concept-api.md`
 - Enh #8403: Comment payloads are caller-neutral and cached server-side (`comment\services\CommentPayloadCache`); like state and edit/delete permissions have their own endpoints
@@ -15,7 +30,7 @@ HumHub Changelog
 - Enh #8403: Added a `JavaScript Tests` CI workflow (vitest plus a rebuild check that fails on a stale committed Vue artifact) and `grunt build-vue --module=all` to rebuild every artifact at once
 - Enh #8403: The activity box is a Vue island on the new `/api/v2/activity` endpoint, including live updates; the legacy `humhub.activity.js` and its custom scrollbar are gone
 - Enh #8403: The space menu is a Vue island on the new general `/api/v2/space` endpoints; its list is paginated and searched server-side, and the legacy `humhub.space.chooser.js` is gone
-- Enh #8403: Added the `ContentControls` island — a content record's context menu for a module's own Vue list, merging the resolved `WallEntryControls` stack (`GET /api/v2/content/<id>/controls`) with the host's own entries and the client registry; menu entries describe themselves through `humhub\modules\ui\menu\MenuEntry::describe()`/`DescribableWidget`, so a module contributing a control link keeps working unchanged
+- Enh #8403: Added the `ContentControls` island — a content record's context menu for a module's own Vue list, merging the resolved `WallEntryControls` stack (`GET /api/v2/content/<id>/controls`) with the host's own entries and the client registry; menu entries describe themselves through `humhub\widgets\menu\MenuEntry::describe()`/`DescribableWidget`, so a module contributing a control link keeps working unchanged
 - Enh #8403: `DropdownMenu` can be opened by its host with `open(event)`, at the pointer when handed a mouse event, which is what gives a Vue-rendered list the right-click context menus the legacy `$.fn.contextMenu` gave server-rendered ones
 - Enh #8403: Added `HumHubForm::focusFirstField()`, for a form opened in a dialog
 - Enh #8403: Documented the `/api/v2/content/<id>/controls` endpoint in `docs/api/` and covered it with API tests
@@ -24,6 +39,7 @@ HumHub Changelog
 
 1.19.0-beta.3 (Unreleased)
 -------------------------------
+- Fix #8414: A grouped activity named the same user twice when they had several activities in the group, and named nobody at all when the group's only other participant was the reader
 - Fix #8417: Top menu keeps the previous entry highlighted after a pjax navigation (since 1.19.0-beta.1)
 - Fix #8412: Applying a UI addition by its id did nothing when it was registered without a selector, and `additions.extend()` with `applyOnInit` threw instead of applying
 - Enh #8411: Removed the `AssetBundle::$defaultDepends` mechanism — a property-name typo kept it from ever running, and activating it makes the core bundle depend on itself, see `docs/develop/module-migrate.md`
@@ -36,6 +52,15 @@ HumHub Changelog
 - Enh #8419: Add a space between at the top of the card icons (in the card header)
 - Enh #8421: Customize Bootstrap through its Sass variables in `variables.scss` instead of redeclaring the generated `--bs-*` CSS variables in the component SCSS files (buttons, badges, dropdowns, list groups, navs, popovers, progress bars, tables and tooltips)
 - Fix #8422: Replace removed `.sr-only` class with `.visually-hidden`
+- Fix #8434: `Badge::action()` and `Badge::withLink()` rendered the badge markup escaped inside the link, since the wrapping link encoded the label it is given in `Badge::run()` — which is the already rendered badge, not text
+- Enh #8425: Implement visible focus for elements in cards for keyboard accessibility
+- Fix #8269: File-handler dropdown menu items had no href, so they were skipped by Tab and could not be focused via keyboard or the dropdown's arrow-key navigation
+- Fix #8423: Fix tab order of the reset filters button in the search area
+- Fix #8438: Endless scrolling stalled whenever the loaded stream entries did not push the stream end indicator out of the observed area (compact streams, short entries, viewport not filled), because an `IntersectionObserver` only reports state *changes* — the stream now keeps loading until the observed area is filled
+- Fix #8438: The mobile "Load more" button of a stream was hardwired to the `#wallStream` id, so it failed with "Handler not found" in any stream rendered with a custom `id`
+- Fix #8448: Destructive admin actions (remove all space members, delete profile category, reset invite link, remove licence) ran on GET via CSRF
+- Enh #8452: `docs/develop/module-migrate.md` is now only an index — each release line keeps its breaking changes in its own `module-migrate-<version>.md`, so `develop` and `next` no longer collide in a shared `Unreleased` section
+- Enh #8454: The core functional test suite could not run a single test — `FixtureHelper::_afterSuite()` unloaded fixtures against the application the Yii2 module destroys after every test, aborting the whole run; the suite also lacked the `Asserts` module
 
 1.19.0-beta.2 (August 19, 2026)
 -------------------------------
@@ -63,6 +88,7 @@ HumHub Changelog
 - Fix #8335: The mailer view theme pointed at `@humhub/themes/Humhub` (lowercase `h`), a dead path on case-sensitive filesystems since the directory is `HumHub` — it now uses the `Theme::CORE_THEME_NAME` constant like the main view theme
 - Fix #8335: An update that moves the theme out of the webroot (the 1.19 move of `static`/`themes` into `protected/humhub`, #8102) could leave an empty `themes/HumHub` skeleton behind while the stored active theme still pointed at it — every request then failed with a fatal SCSS build error ("Can't find stylesheet to import") and the fallback looped forever because the empty skeleton shadowed the real core theme by name; a theme directory without its `scss/variables.scss` is now ignored when resolving themes (so the stale path no longer loads and no longer shadows the core theme and affected installations self-heal), the theme CSS fallback only switches to and refreshes for a different, buildable core theme instead of risking an endless redirect loop, and a theme's `variables` import is skipped when the file is missing
 - Fix #8351: SSO buttons can overflow on login page
+- Fix #8358: On an instance with public self-registration disabled (`auth.anonymousRegistration = 0`) but invite-by-e-mail or invite-by-link enabled, opening a valid invitation link rendered the registration page without the actual form fields — `RegistrationController` gated `showRegistrationForm` on the same global setting as public sign-up; a validated invite token/link is now treated as its own authorization and no longer subject to it (`AuthController::isRegistrationFormVisible(bool $hasValidInviteToken = false)`)
 - Fix #8360: A config file still setting the removed `modules.content.adminCanViewAllContent`/`adminCanEditAllContent` options (replaced in 1.17 by `modules.admin.enableManageAllContentPermission`) crashed every request with an `UnknownPropertyException` instead of a graceful warning — these keys are now stripped from the loaded config like other legacy settings and flagged on the Administration → Information page
 - Enh #7551: Add a "Create Space" button in the space directory page
 - Fix #8364: The comment/reply "Attach Files" trigger is a non-focusable `<span>`; clicking it dropped focus without moving it anywhere, which instantly hid the upload/submit button row again since it is only shown via `:focus-within`/`:has()` (#8318) — before the click's own action could run, so opening the file picker either did nothing or made the row disappear while its dialog was open. The trigger now gets focus like the adjacent handler dropdown-toggle button via `tabindex`/`role="button"`, and is keyboard-operable via Enter/Space; the button row also stays visible once a file has been attached, not just once the message has text
@@ -152,6 +178,20 @@ HumHub Changelog
 - Enh #8150: Topic sidebar widget
 - Fix #8312: Fix Integrity Checks on cleaning up orphaned content, like, comment, activity data
  
+1.18.6 (Unreleased)
+------------------------
+- Fix #8409: Add :focus styles for Administration left navigation menu items
+- Fix #8420: Fix hover flicker and keyboard focus on profile image upload buttons
+- Fix #8407: Make Select2 picker choices keyboard-accessible: the "Remove all items" button and each item's own remove icon
+- Fix #8426: Add a visible keyboard focus indicator for the stream filter toggle and its checkbox/radio filter options
+- Fix #8430: Make the password show/hide icon focusable and operable via keyboard
+- Fix #8439: Fix editing file-only Posts and clear `fileList[]` after posting so it isn't reused on the next post
+- Fix #8442: DatePicker date-format mismatches (month names, digits, whitespace) between jQuery UI and PHP intl/ICU across 35+ locales
+- Fix #8445: Restrict direct space joins to free-join spaces, so "Invite and request" spaces require admin approval instead of instant membership
+- Fix #8446: Restrict Topic management (create/rename/delete) on user profiles to the profile owner or users with full content management permissions
+- Fix #8443: Prevent silent demotion of public content to private when saved by an editor lacking CreatePublicContent permission
+- Fix #8451: Encode the redirect URL in the htmlRedirect view as a safe JS string so it can no longer break out of the inline <script> block
+
 1.18.5 (August 19, 2026)
 ------------------------
 

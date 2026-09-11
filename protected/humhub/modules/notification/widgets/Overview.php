@@ -10,7 +10,7 @@ namespace humhub\modules\notification\widgets;
 
 use humhub\modules\notification\assets\NotificationVueAsset;
 use humhub\modules\notification\services\NotificationWindowService;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use humhub\widgets\VueWidget;
 use Yii;
 use yii\helpers\Url;

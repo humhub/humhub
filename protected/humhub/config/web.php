@@ -82,6 +82,18 @@ $config = [
         ],
         'response' => [
             'class' => \humhub\components\Response::class,
+            // Sent with every response, unless the action set the header itself.
+            // `Content-Security-Policy` is the exception: only HTML documents get one.
+            // `{{ nonce }}` is replaced with the nonce of the current session and is what
+            // enables nonce support; `{{ reportUri }}` with the URL violations are reported to.
+            'defaultHeaders' => [
+                'Strict-Transport-Security' => 'max-age=31536000',
+                'X-Content-Type-Options' => 'nosniff',
+                'Referrer-Policy' => 'no-referrer-when-downgrade',
+                'X-Permitted-Cross-Domain-Policies' => 'master-only',
+                'X-Frame-Options' => 'sameorigin',
+                'Content-Security-Policy' => "default-src *; connect-src  *; font-src 'self' https://* http://* *; frame-src https://* http://* *; img-src https://* http://* * data:; object-src 'self'; script-src {{ nonce }} 'self' https://* http://* * 'unsafe-inline' 'report-sample'; style-src * https://* http://* * 'unsafe-inline'; block-all-mixed-content;",
+            ],
         ],
         'captcha' => [
             'class' => \humhub\components\captcha\AltchaCaptcha::class,
@@ -106,23 +118,6 @@ $config = [
             'cookieParams' => [
                 'httpOnly' => true,
                 'sameSite' => yii\web\Cookie::SAME_SITE_LAX,
-            ],
-        ],
-    ],
-    'modules' => [
-        'web' => [
-            'security' => [
-                "headers" => [
-                    "Strict-Transport-Security" => "max-age=31536000",
-                    "X-Content-Type-Options" => "nosniff",
-                    "Referrer-Policy" => "no-referrer-when-downgrade",
-                    "X-Permitted-Cross-Domain-Policies" => "master-only",
-                    "X-Frame-Options" => "sameorigin",
-                    "Content-Security-Policy" => "default-src *; connect-src  *; font-src 'self' https://* http://* *; frame-src https://* http://* *; img-src https://* http://* * data:; object-src 'self'; script-src {{ nonce }} 'self' https://* http://* * 'unsafe-inline' 'report-sample'; style-src * https://* http://* * 'unsafe-inline'; block-all-mixed-content;",
-                ],
-                'csp' => [
-                    'nonce' => true,
-                ],
             ],
         ],
     ],

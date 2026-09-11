@@ -30,6 +30,18 @@ use humhub\modules\admin\widgets\IncompleteSetupWarning;
                     <?= IncompleteSetupWarning::docBtn('https://docs.humhub.org/docs/admin/cron-jobs') ?>
                 </li>
             <?php endif; ?>
+            <?php if (in_array(IncompleteSetupWarning::PROBLEM_DOCUMENT_ROOT_EXPOSED, $problems)): ?>
+                <li>
+                    <?= Yii::t('AdminModule.base', 'The installation directory is reachable over the web, which exposes your configuration, uploads and installed modules. Point the document root of your web server to the "public" directory.') ?>
+                    <?= IncompleteSetupWarning::docBtn('https://docs.humhub.org/docs/admin/installation') ?>
+                </li>
+            <?php endif; ?>
+            <?php if (in_array(IncompleteSetupWarning::PROBLEM_LEGACY_ENTRY_SCRIPT, $problems)): ?>
+                <li>
+                    <?= Yii::t('AdminModule.base', 'This installation is still served through the deprecated entry script in the installation directory, which exposes your configuration, uploads and installed modules. Point the document root of your web server to the "public" directory. Support for the old entry script will be removed in a future version.') ?>
+                    <?= IncompleteSetupWarning::docBtn('https://docs.humhub.org/docs/admin/installation') ?>
+                </li>
+            <?php endif; ?>
             <?php if (in_array(IncompleteSetupWarning::PROBLEM_MOBILE_APP_PUSH_SERVICE, $problems)): ?>
                 <li>
                     <?= Yii::t('AdminModule.base', 'The mobile app push service is not available. Please install and configure the "Push Notifications" module.') ?>

@@ -4,7 +4,7 @@ use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\admin\assets\AdminAsset;
 use humhub\modules\admin\models\forms\DesignSettingsForm;
-use humhub\modules\ui\form\widgets\CodeMirrorInputWidget;
+use humhub\widgets\form\CodeMirrorInputWidget;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\mails\MailHeaderImage;

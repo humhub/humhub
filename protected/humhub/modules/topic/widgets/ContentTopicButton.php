@@ -12,7 +12,7 @@ namespace humhub\modules\topic\widgets;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\widgets\WallEntryControlLink;
 use humhub\modules\topic\models\Topic;
-use humhub\modules\ui\menu\MenuLink;
+use humhub\widgets\menu\MenuLink;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\bootstrap\Link;
 use Yii;

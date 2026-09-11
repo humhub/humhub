@@ -21,6 +21,14 @@
         background-color: var(--hh-background3);
         line-height: 1;
 
+        // Badges rendered as links (eg. Button::asBadge()->link(), tag lists on
+        // the people/space directory cards) - box-shadow follows the badge's own
+        // border-radius, so no need to redeclare it here.
+        &:is(a):focus-visible {
+            outline: 0;
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+
         &.text-bg-accent {
             color: var(--hh-accent-contrast) !important;
         }

@@ -6,7 +6,7 @@
  */
 
 use humhub\modules\notification\assets\NotificationVueAsset;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use humhub\widgets\VueComponent;
 use yii\helpers\Url;
 

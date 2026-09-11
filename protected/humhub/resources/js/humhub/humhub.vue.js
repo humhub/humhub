@@ -253,7 +253,7 @@ humhub.module('vue', function (module, require, $) {
     /**
      * Registers (or overrides) one entry of a data-driven menu — the array-of-entries
      * counterpart to `registerSlotComponent()`'s free-form slots, modeled on the server-side
-     * `humhub\modules\ui\menu\widgets\Menu` API (`addEntry()`/`removeEntry()`, entries with an
+     * `humhub\widgets\menu\Menu` API (`addEntry()`/`removeEntry()`, entries with an
      * `id` and a `sortOrder`) module devs already know. `DropdownMenu.vue`'s `menuId`/`entries`
      * props read this registry (see `getMenuEntries()` below) to resolve what a given menu
      * actually renders. See docs/develop/ui-js-vuejs-extensions.md, "Menu entries".
@@ -266,7 +266,7 @@ humhub.module('vue', function (module, require, $) {
      *    own) entry registers under that same id.
      *  - `label` (string, or `(context) => string`) — required unless `component` is given.
      *  - `icon` (string, optional) — an icon name in the same namespace
-     *    `humhub\modules\ui\icon\widgets\Icon::get()` uses (e.g. `'pencil'`), rendered as
+     *    `humhub\widgets\Icon::get()` uses (e.g. `'pencil'`), rendered as
      *    `<i class="fa fa-<icon>">` — the plain Font Awesome class the rest of the app's
      *    hand-authored (non-`Button`-widget) markup already uses for icons (see
      *    `CommentEntry.vue`'s edited-marker icon).

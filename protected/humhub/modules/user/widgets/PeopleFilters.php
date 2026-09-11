@@ -10,7 +10,7 @@ namespace humhub\modules\user\widgets;
 
 use humhub\helpers\Html;
 use humhub\modules\admin\models\forms\PeopleSettingsForm;
-use humhub\modules\ui\widgets\DirectoryFilters;
+use humhub\widgets\DirectoryFilters;
 use humhub\modules\user\components\PeopleQuery;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\ProfileField;
@@ -60,6 +60,9 @@ class PeopleFilters extends DirectoryFilters
             'afterInput' => Html::submitButton('<span class="fa fa-search" aria-hidden="true"></span>', [
                 'class' => 'form-button-search',
                 'aria-label' => Yii::t('UserModule.base', 'Search'),
+                // Pressing Enter in the keyword field already submits the form, so this
+                // button doesn't need its own tab stop.
+                'tabindex' => '-1',
             ]),
             'sortOrder' => 100,
         ]);

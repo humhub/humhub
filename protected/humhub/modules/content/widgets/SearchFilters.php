@@ -14,7 +14,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\SpacePickerField;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicPicker;
-use humhub\modules\ui\widgets\DirectoryFilters;
+use humhub\widgets\DirectoryFilters;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserPickerField;
 use Yii;
@@ -43,6 +43,9 @@ class SearchFilters extends DirectoryFilters
             'afterInput' => Html::submitButton('<span class="fa fa-search" aria-hidden="true"></span>', [
                 'class' => 'form-button-search',
                 'aria-label' => Yii::t('ContentModule.base', 'Search'),
+                // Pressing Enter in the keyword field already submits the form, so this
+                // button doesn't need its own tab stop.
+                'tabindex' => '-1',
             ]),
             'sortOrder' => 100,
         ]);

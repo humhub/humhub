@@ -10,6 +10,8 @@ namespace humhub\components;
 
 use Exception;
 use humhub\interfaces\ApplicationInterface;
+use humhub\services\DocumentRootService;
+use Yii;
 use yii\web\HttpException;
 
 /**
@@ -41,6 +43,33 @@ class Application extends \yii\web\Application implements ApplicationInterface
 
         parent::init();
         $this->trigger(self::EVENT_ON_INIT);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function bootstrap()
+    {
+        $this->setDocumentRootAliases();
+
+        // Deliberately skips yii\web\Application::bootstrap(), which pins `@webroot` and `@web` to
+        // the entry script's directory - with the deprecated entry script in the installation root
+        // that is the wrong directory. Setting the aliases afterwards would be too late: the
+        // bootstrap components run inside the call, and ThemeLoader resolves `@web` while it does.
+        \yii\base\Application::bootstrap();
+    }
+
+    /**
+     * Points `@webroot` and `@web` at the document root, wherever the entry script lives.
+     *
+     * @since 1.20
+     */
+    private function setDocumentRootAliases(): void
+    {
+        $documentRoot = DocumentRootService::instance();
+
+        Yii::setAlias('@webroot', $documentRoot->getPublicPath());
+        Yii::setAlias('@web', $documentRoot->getWebUrl($this->getRequest()->getBaseUrl()));
     }
 
     /**

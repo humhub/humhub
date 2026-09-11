@@ -21,7 +21,7 @@ return [
   'Send a notification to author' => 'Envoyer une notification à l’auteur·e',
   'Show' => 'Montrer',
   'Show next {count} comments' => 'Montrer le(s) {count} prochain(s) commentaire(s)',
-  'Show previous {count} comments' => 'Montrer le(s) {count} commentaire(s) suivant(s)',
+  'Show previous {count} comments' => 'Montrer le(s) {count} commentaire(s) précédent(s)',
   'The comment must not be empty!' => 'Le commentaire ne doit pas être vide !',
   'Whenever a new comment was written.' => 'Chaque fois qu\'un nouveau commentaire a été écrit.',
   'Write a new comment...' => 'Écrire un commentaire…',

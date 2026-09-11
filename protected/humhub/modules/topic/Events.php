@@ -18,7 +18,7 @@ use humhub\modules\topic\permissions\ManageTopics;
 use humhub\modules\topic\widgets\ContentTopicButton;
 use humhub\modules\topic\widgets\TopicPicker;
 use humhub\modules\topic\widgets\TopicSidebar;
-use humhub\modules\ui\menu\MenuLink;
+use humhub\widgets\menu\MenuLink;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\widgets\AccountMenu;
 use Yii;
