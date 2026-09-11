@@ -51,6 +51,7 @@ return [
   'New profile image' => 'Nova imagem de perfil',
   'Next' => 'Próximo',
   'No error information given.' => 'Nenhuma informação de erro fornecida.',
+  'No icon provider registered for provider id {id}' => 'Nenhum provedor de ícone registrado para o ID do provedor {id}',
   'No results' => 'Nenhum resultado',
   'No results found.' => 'Nenhum resultado encontrado.',
   'Oooops...' => 'Oooops...',

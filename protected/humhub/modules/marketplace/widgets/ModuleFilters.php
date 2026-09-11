@@ -11,7 +11,7 @@ namespace humhub\modules\marketplace\widgets;
 use humhub\helpers\Html;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\marketplace\Module;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use humhub\modules\ui\widgets\DirectoryFilters;
 use humhub\widgets\bootstrap\Link;
 use Yii;

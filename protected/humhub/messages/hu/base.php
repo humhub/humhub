@@ -52,6 +52,7 @@ return [
   'New profile image' => 'Új profilkép',
   'Next' => 'Következő',
   'No error information given.' => 'Nincs hibainformáció.',
+  'No icon provider registered for provider id {id}' => 'Nincs regisztrált ikonszolgáltató az azonosító szolgáltatóhoz: {id}',
   'No results' => 'Nincs eredmény',
   'No results found.' => 'Nincs találat.',
   'Oooops...' => 'Hoppá...',

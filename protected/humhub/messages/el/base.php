@@ -51,6 +51,7 @@ return [
   'New profile image' => 'Νέα εικόνα προφίλ',
   'Next' => 'Επόμενο',
   'No error information given.' => 'Δεν παρέχονται πληροφορίες σφάλματος.',
+  'No icon provider registered for provider id {id}' => 'Δεν υπάρχει εικονίδιο για τον προμηθευτή ταυτότητας {id}.',
   'No results' => '',
   'No results found.' => '',
   'Oooops...' => 'Ωπ!',

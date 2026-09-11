@@ -14,7 +14,7 @@ use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
 use humhub\modules\file\widgets\UploadProgress;
 use humhub\modules\topic\widgets\TopicPicker;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Button;

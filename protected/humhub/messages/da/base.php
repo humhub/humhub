@@ -51,6 +51,7 @@ return [
   'New profile image' => 'Nyt profilbillede',
   'Next' => 'Næste',
   'No error information given.' => 'Der gives ingen oplysninger om fejl.',
+  'No icon provider registered for provider id {id}' => 'No icon provider registered for provider id {id}',
   'No results' => 'Ingen resultater',
   'No results found.' => 'Ingen resultater fundet.',
   'Oooops...' => 'Hovsa...',

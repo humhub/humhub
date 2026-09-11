@@ -7,7 +7,7 @@
  */
 
 use humhub\modules\admin\models\forms\MobileSettingsForm;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\modal\ModalButton;

@@ -12,7 +12,7 @@ use humhub\interfaces\MetaSearchResultInterface;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\helpers\Url;

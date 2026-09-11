@@ -9,7 +9,7 @@
 
 namespace humhub\widgets\form;
 
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use kartik\select2\Select2;
 use Yii;
 use yii\web\JsExpression;

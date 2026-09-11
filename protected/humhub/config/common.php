@@ -346,6 +346,24 @@ $config = [
             // Progressive Web App support: web app manifest members and the service worker
             'enabled' => true,
         ],
+        'icon' => [
+            // Semantic icon names, mapped to the icon they are rendered as.
+            // Resolved by humhub\widgets\Icon; a name not listed here is used as given.
+            'alias' => [
+                'dropdownToggle' => 'angle-down',
+                'edit' => 'pencil',
+                'delete' => 'trash',
+                'dashboard' => 'tachometer',
+                'directory' => 'book',
+                'back' => 'arrow-left',
+                'add' => 'plus',
+                'invite' => 'paper-plane',
+                'remove' => 'times',
+                'controls' => 'cog',
+                'about' => 'info-circle',
+                'stream' => 'bars',
+            ],
+        ],
     ],
     'container' => [
         'definitions' => [

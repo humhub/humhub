@@ -1,7 +1,7 @@
 <?php
 
 use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 
 /* @var $this \humhub\components\View */
 /* @var $mode string */

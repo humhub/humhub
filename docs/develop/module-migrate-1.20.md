@@ -195,3 +195,44 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 
   A module that renders its own markup with those CSS classes has to ship the styles itself; a
   module that extends the widget has to bring its own copy.
+
+- **The icon part of the `ui` module moved into the core namespace.** `Icon` joins the other core
+  widgets, and the three provider classes behind it — which no module and no other core class ever
+  referenced — become components.
+
+  | Before | After |
+  |---|---|
+  | `humhub\modules\ui\icon\widgets\Icon` | `humhub\widgets\Icon` |
+  | `humhub\modules\ui\icon\components\IconFactory` | `humhub\components\icon\IconFactory` |
+  | `humhub\modules\ui\icon\components\IconProvider` | `humhub\components\icon\IconProvider` |
+  | `humhub\modules\ui\icon\components\FontAwesomeIconProvider` | `humhub\components\icon\FontAwesomeIconProvider` |
+  | i18n category `UiModule.icon` | `base` |
+
+  - **Nothing breaks in 1.20.** Every old name stays available as a deprecated subclass, and
+    `IconProvider` as a deprecated interface extending the new one. **The shims are removed in
+    1.21** — `Icon::get()` alone appears well over a hundred times across the module ecosystem, so
+    migrate during the 1.20 cycle. In most modules it is one `use` line per file.
+
+  - **The icon alias map moved out of the module into an application parameter.** It used to live
+    on the module as `iconAlias` and was read through `Module::getModuleInstance()->getIconAlias()`
+    — the last thing in the core that needed the `ui` module class at all:
+
+    ```php
+    // config/common.php - before
+    'modules' => ['ui' => ['iconAlias' => ['edit' => 'pen']]],
+
+    // config/common.php - after
+    'params' => ['icon' => ['alias' => ['edit' => 'pen']]],
+    ```
+
+    As an environment variable: `HUMHUB_CONFIG__PARAMS__ICON__ALIAS__EDIT=pen`. The defaults are
+    unchanged and shipped in `protected/humhub/config/common.php`; resolution is now
+    `humhub\widgets\Icon::resolveAlias()`, and a name the map does not cover is still used as
+    given.
+
+    **`humhub\modules\ui\Module::$iconAlias` and `getIconAlias()` are gone.** An installation that
+    configured `modules.ui.iconAlias` has to move the values, otherwise the setting is rejected as
+    an unknown module property.
+
+  - The one string of the `UiModule.icon` category — a log warning about an unregistered icon
+    provider — moved to `base` with its translations in the 27 languages that had one.

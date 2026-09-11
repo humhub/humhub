@@ -51,6 +51,7 @@ return [
   'New profile image' => 'Новое изображение профиля',
   'Next' => 'Следующий',
   'No error information given.' => 'Информация об ошибке не указана.',
+  'No icon provider registered for provider id {id}' => 'Нет значков/иконок для данного id {id}',
   'No results' => 'Нет результатов',
   'No results found.' => 'Результатов не найдено.',
   'Oooops...' => 'Ой...',

@@ -51,6 +51,7 @@ return [
   'New profile image' => 'Yeni profil resmi',
   'Next' => 'İleri',
   'No error information given.' => 'Hata bilgisi verilmedi.',
+  'No icon provider registered for provider id {id}' => '{id} sağlayıcı kimliği için kayıtlı simge sağlayıcısı yok',
   'No results' => '',
   'No results found.' => '',
   'Oooops...' => 'Hata!',

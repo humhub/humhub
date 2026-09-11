@@ -51,6 +51,7 @@ return [
   'New profile image' => 'Nauja profilio nuotrauka',
   'Next' => 'Kitas',
   'No error information given.' => 'Informacijos apie klaidas nepateikta.',
+  'No icon provider registered for provider id {id}' => 'Nėra užregistruoto piktogramos teikėjo, kuriam suteiktas teikėjo ID {id}',
   'No results' => '',
   'No results found.' => 'Rezultatų nerasta',
   'Oooops...' => 'Oi...',

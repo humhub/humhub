@@ -51,6 +51,7 @@ return [
   'New profile image' => 'Nový profilový obrázek',
   'Next' => 'Další',
   'No error information given.' => 'Nejsou uvedeny žádné informace o chybách.',
+  'No icon provider registered for provider id {id}' => 'Pro ID poskytovatele {id} není zaregistrován žádný poskytovatel ikony',
   'No results' => '',
   'No results found.' => 'Nebyly nalezeny žádné výsledky.',
   'Oooops...' => 'Jejda...',

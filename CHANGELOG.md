@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #8463: Moved the icon part of the `ui` module into the core namespace — `humhub\widgets\Icon` and `humhub\components\icon\*` — and replaced the module's `iconAlias` map with the `icon.alias` application parameter, which was the last thing in the core needing the `ui` module class; the old class names stay as deprecated shims until 1.21
 - Enh #8461: Moved the form widgets of the `ui` module into the core namespace — `humhub\widgets\form\*` for the eight widgets, `humhub\assets\CodeMirrorAssetBundle` and `humhub\interfaces\TabbedFormModel` — finishing the move 1.19 began; the old names stay as deprecated shims until 1.21, and the unused `IconValidator` was removed
 - Enh #8460: Removed the unused `ContainerImageSet` widget together with its asset bundle, JavaScript and CSS — it was added in 2019 and never rendered by the core or any known module; first step of taking the `ui` module apart
 - Enh #8457: Dissolved the `web` module — the security headers and the Content Security Policy are now applied by `humhub\components\Response` and configured as a flat header map on that component (`defaultHeaders`), replacing the `CSPBuilder`, the `SecuritySettings` model and the module itself. The policy now also reaches error pages and HTML rendered by AJAX actions, which were previously left without one, and is no longer sent with JSON or JavaScript responses where it had no effect; the automatic page reload on CSP violation was removed. The delivered policy itself is unchanged; see the migration guide

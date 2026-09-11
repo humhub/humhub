@@ -51,6 +51,7 @@ return [
   'New profile image' => 'Ny profilbild',
   'Next' => 'Nästa',
   'No error information given.' => 'Ingen felinformation gavs.',
+  'No icon provider registered for provider id {id}' => 'Ingen ikonleverantör registrerad för leverantörs ID {id}',
   'No results' => 'Inga resultat',
   'No results found.' => 'Inga resultat funna.',
   'Oooops...' => 'Hoppsan....',
