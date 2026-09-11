@@ -73,6 +73,7 @@ The license was successfully removed!
     'After installing the required module, all you have to do is activate it. After that you can instantly start using the module or function. Please note that some modules need to be configured before use.' => '',
     'All modules' => '',
     'Allow module versions in beta status' => '',
+    'Are you sure you want to remove the license key?' => '',
     'Available Updates' => '',
     'Buy unverified community module?' => '',
     'Categories' => '',

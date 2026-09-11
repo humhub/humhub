@@ -1,22 +1,13 @@
-<script <?= \humhub\helpers\Html::nonce() ?>>
+<?php
 
-    // If current URL == New Url (absolute || relative) then only Refresh
-    if (window.location.pathname + window.location.search + window.location.hash == '<?php echo $url; ?>' || '<?php echo $url; ?>' == window.location.href) {
+use humhub\helpers\Html;
+use yii\helpers\Json;
 
-            <?php
-            //echo "window.location.reload();\n"; // Drops warning on Posts
-            // Remove test.php#xy  (#xy) part
-            $temp = explode("#", (string) $url);
-            $url = $temp[0];
-            ?>
+/* @var $url string */
 
-        if (window.location.search == '') {
-            window.location.href = '<?php echo $url; ?>';
-        } else {
-            window.location.href = '<?php echo $url; ?>';
-        }
-
-    } else {
-        window.location.href = '<?php echo $url; ?>';
-    }
+// Remove test.php#xy (#xy) part, then encode for a JavaScript string-literal context
+// (Json::htmlEncode already includes the quotes and is safe to embed in <script>).
+?>
+<script <?= Html::nonce() ?>>
+    window.location.href = <?= Json::htmlEncode(explode('#', (string) $url)[0]) ?>;
 </script>

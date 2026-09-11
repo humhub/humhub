@@ -74,7 +74,7 @@ return [
   'Exclude media files from stream attachment list' => 'Mediabestanden niet opnemen in de lijst met berichtenbijlagen',
   'Firstname Lastname (e.g. John Doe)' => 'Voornaam Achternaam (bijvoorbeeld Jan Jansen)',
   'Fixed format (dd/mm/yyyy) - Example: {example}' => 'Vaste indeling (dd/mm/jjjj) - Bijvoorbeeld: {example}',
-  'Flush Caches' => 'Caches gewist',
+  'Flush Caches' => 'Caches wissen',
   'Friendship' => 'Vriendschap',
   'General' => 'Algemeen',
   'General Settings' => 'Algemene instellingen',

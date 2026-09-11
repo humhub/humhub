@@ -2,6 +2,11 @@
 
 See also [module-migrate-1.18-bs5.md](module-migrate-1.18-bs5.md)
 
+## Version 1.18.6
+
+### Removed
+- `humhub\assets\DatePickerRussianLanguageAsset` and `static/js/compat/date/i18n/datepicker-ru.js`: the jQuery UI DatePicker now derives the month names used by the input format from ICU for every locale ([see PR #8442](https://github.com/humhub/humhub/pull/8442))
+
 ## Version 1.18.5
 
 ### Changed

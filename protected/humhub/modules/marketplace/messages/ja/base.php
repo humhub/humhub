@@ -111,6 +111,7 @@ The license was successfully removed!
     'Would you like to jump straight to it?' => 'すぐにジャンプしますか？',
     'Your HumHub installation is up to date!' => 'HumHub のインストールは最新です。',
     'Add License' => '',
+    'Are you sure you want to remove the license key?' => '',
     'Buy unverified community module?' => '',
     'Community modules are developed by third parties and are <strong>not tested or maintained by the HumHub team</strong>.<br><br>They may not be compatible with your HumHub version, can cause <strong>instability or unexpected behavior</strong>, and may stop working after future updates. Their long-term maintenance is not guaranteed.<br><br>Only enable this option if you understand the risks and trust the source of the module you intend to install.' => '',
     'Continue to checkout' => '',

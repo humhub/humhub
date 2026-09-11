@@ -61,6 +61,7 @@ The license was successfully removed!
     'All modules' => '',
     'All {moduleId} module content will be deleted. Continue?' => '',
     'Allow module versions in beta status' => '',
+    'Are you sure you want to remove the license key?' => '',
     'Available Updates' => '',
     'Buy' => '',
     'Buy unverified community module?' => '',
