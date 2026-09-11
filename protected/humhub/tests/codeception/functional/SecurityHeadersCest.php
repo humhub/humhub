@@ -10,6 +10,7 @@ namespace humhub\tests\codeception\functional;
 
 use FunctionalTester;
 use humhub\components\Response;
+use humhub\controllers\CspReportController;
 use humhub\services\PwaService;
 
 /**
@@ -80,7 +81,7 @@ class SecurityHeadersCest
         $I->wantTo('ensure the violation report endpoint accepts a report');
 
         // A browser posts the report without a CSRF token; the endpoint has to accept that.
-        $I->sendAjaxPostRequest('/index-test.php?r=security%2Fcsp-report');
+        $I->sendAjaxPostRequest('/index-test.php?r=' . urlencode(trim(CspReportController::ROUTE, '/')));
 
         $I->seeResponseCodeIs(204);
     }
