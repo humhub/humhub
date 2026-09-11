@@ -9,8 +9,8 @@
 namespace humhub\modules\user\widgets;
 
 use humhub\helpers\ControllerHelper;
-use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\ui\menu\widgets\LeftNavigation;
+use humhub\widgets\menu\MenuLink;
+use humhub\widgets\menu\LeftNavigation;
 use humhub\modules\user\Module;
 use humhub\modules\user\models\User;
 use humhub\modules\user\permissions\ViewAboutPage;

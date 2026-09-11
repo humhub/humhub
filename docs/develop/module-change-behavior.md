@@ -6,7 +6,7 @@ The core fires hundreds of events; the canonical catalogue is [module-event-hand
 
 ## Extend an existing menu
 
-Menu and stack widgets derived from `humhub\modules\ui\menu\widgets\Menu` (formerly `BaseMenu`) and `humhub\widgets\BaseStack` can be intercepted via their `EVENT_INIT` event. See [sidebars and snippets → event handlers](ui-snippets.md#event-handlers) for examples and the canonical pattern.
+Menu and stack widgets derived from `humhub\widgets\menu\Menu` (formerly `BaseMenu`) and `humhub\widgets\BaseStack` can be intercepted via their `EVENT_INIT` event. See [sidebars and snippets → event handlers](ui-snippets.md#event-handlers) for examples and the canonical pattern.
 
 ## Replace a widget
 

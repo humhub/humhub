@@ -10,9 +10,9 @@ namespace humhub\modules\space\widgets;
 
 use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
-use humhub\modules\ui\menu\DropdownDivider;
-use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\ui\menu\widgets\DropdownMenu;
+use humhub\widgets\menu\DropdownDivider;
+use humhub\widgets\menu\MenuLink;
+use humhub\widgets\menu\DropdownMenu;
 use Yii;
 
 /**
@@ -46,7 +46,7 @@ class HeaderControlsMenu extends DropdownMenu
         }
 
         if ($this->template === '@humhub/widgets/views/dropdownNavigation') {
-            $this->template = '@ui/menu/widgets/views/dropdown-menu.php';
+            $this->template = '@humhub/widgets/menu/views/dropdown-menu.php';
         }
 
 

@@ -8,7 +8,7 @@
 
 namespace humhub\widgets;
 
-use humhub\modules\ui\menu\widgets\Menu;
+use humhub\widgets\menu\Menu;
 
 /**
  * FooterMenu displays a footer navigation for pages e.g. Imprint

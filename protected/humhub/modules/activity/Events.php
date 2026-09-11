@@ -12,7 +12,7 @@ use humhub\modules\admin\widgets\SettingsMenu;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
-use humhub\modules\ui\menu\MenuLink;
+use humhub\widgets\menu\MenuLink;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\AccountMenu;
 use Throwable;

@@ -280,3 +280,45 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 
   - The one string of the `UiModule.icon` category — a log warning about an unregistered icon
     provider — moved to `base` with its translations in the 27 languages that had one.
+
+- **The menu part of the `ui` module moved into the core namespace**, flattened into a single
+  namespace: the entry classes and the menu widgets that carry them now live side by side.
+
+  | Before | After |
+  |---|---|
+  | `humhub\modules\ui\menu\widgets\Menu` | `humhub\widgets\menu\Menu` |
+  | `humhub\modules\ui\menu\widgets\TabMenu` | `humhub\widgets\menu\TabMenu` |
+  | `humhub\modules\ui\menu\widgets\SubTabMenu` | `humhub\widgets\menu\SubTabMenu` |
+  | `humhub\modules\ui\menu\widgets\LeftNavigation` | `humhub\widgets\menu\LeftNavigation` |
+  | `humhub\modules\ui\menu\widgets\DropdownMenu` | `humhub\widgets\menu\DropdownMenu` |
+  | `humhub\modules\ui\menu\MenuEntry` | `humhub\widgets\menu\MenuEntry` |
+  | `humhub\modules\ui\menu\MenuLink` | `humhub\widgets\menu\MenuLink` |
+  | `humhub\modules\ui\menu\DropdownDivider` | `humhub\widgets\menu\DropdownDivider` |
+  | `humhub\modules\ui\menu\WidgetMenuEntry` | `humhub\widgets\menu\WidgetMenuEntry` |
+
+  - **Nothing breaks in 1.20.** Every old name stays available as a deprecated subclass. **The
+    shims are removed in 1.21** — migrate during the 1.20 cycle.
+
+  - **Event handlers are unaffected.** All five menu widgets are abstract and can never be an
+    event sender; handlers are always registered on a concrete menu such as
+    `humhub\modules\admin\widgets\AdminMenu`, whose name does not change. Where `config.php`
+    mentions `Menu` at all it is as a holder of `Menu::EVENT_INIT` or `Menu::EVENT_RUN`, and the
+    deprecated subclass inherits both constants, so those registrations keep working untouched.
+
+  - **Theme view overrides have to be moved, and this is the one change here that fails
+    silently.** Themed views are resolved by file path, not by class name, so a shim cannot cover
+    them: an override left at the old path is simply never applied again — no error, no log entry,
+    the core view is rendered instead.
+
+    | Before | After |
+    |---|---|
+    | `themes/<theme>/views/ui/menu/widgets/views/tab-menu.php` | `themes/<theme>/views/humhub/widgets/menu/views/tab-menu.php` |
+    | `themes/<theme>/views/ui/menu/widgets/views/sub-tab-menu.php` | `themes/<theme>/views/humhub/widgets/menu/views/sub-tab-menu.php` |
+    | `themes/<theme>/views/ui/menu/widgets/views/left-navigation.php` | `themes/<theme>/views/humhub/widgets/menu/views/left-navigation.php` |
+    | `themes/<theme>/views/ui/menu/widgets/views/dropdown-menu.php` | `themes/<theme>/views/humhub/widgets/menu/views/dropdown-menu.php` |
+
+    Check every theme you maintain for a `views/ui/menu/` directory.
+
+  - A menu that points `$template` at the shipped views directly has to follow the alias:
+    `@ui/menu/widgets/views/dropdown-menu.php` becomes
+    `@humhub/widgets/menu/views/dropdown-menu.php`.

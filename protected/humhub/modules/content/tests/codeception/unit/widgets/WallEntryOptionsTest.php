@@ -10,7 +10,7 @@ use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use humhub\modules\content\widgets\WallEntryControls;
 use humhub\modules\post\models\Post;
 use humhub\modules\post\widgets\WallEntry;
-use humhub\modules\ui\menu\WidgetMenuEntry;
+use humhub\widgets\menu\WidgetMenuEntry;
 use tests\codeception\_support\HumHubDbTestCase;
 
 class WallEntryOptionsTest extends HumHubDbTestCase

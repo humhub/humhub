@@ -11,7 +11,7 @@ namespace humhub\modules\comment\widgets;
 use humhub\helpers\Html;
 use humhub\modules\comment\models\Comment;
 use humhub\widgets\Icon;
-use humhub\modules\ui\menu\WidgetMenuEntry;
+use humhub\widgets\menu\WidgetMenuEntry;
 use Yii;
 use yii\helpers\Url;
 
