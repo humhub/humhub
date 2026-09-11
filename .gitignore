@@ -1,5 +1,8 @@
-assets/*
-!assets/.gitignore
+public/assets/*
+!public/assets/.gitignore
+
+# Leftover publish cache of installations that predate the public/ document root
+/assets/
 
 themes/*
 !themes/.gitkeep
@@ -25,7 +28,10 @@ uploads/profile_image/*
 uploads/profile_image/banner/*
 !uploads/profile_image/banner/.gitignore
 
+# Shipped ready to use; any other .htaccess is a local addition
 .htaccess
+!/.htaccess
+!/public/.htaccess
 nbproject
 .idea/*
 .gitmodules

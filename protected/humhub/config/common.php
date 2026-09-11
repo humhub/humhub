@@ -7,6 +7,7 @@
  */
 
 use humhub\components\i18n\PhpMessageSource;
+use humhub\services\DocumentRootService;
 
 // TODO: Remove this line, should be already handled by BootstrapService
 Yii::setAlias('@humhub', $_ENV['HUMHUB_ALIASES__HUMHUB'] ?? realpath(__DIR__ . '/../'));
@@ -49,6 +50,9 @@ $logTargetConfig = [
     ],
 ];
 
+// The installation root. Only `public/` below it is meant to be reachable over the web.
+$rootPath = realpath(__DIR__ . '/../../../');
+
 $config = [
     'name' => 'HumHub',
     'version' => '1.20.0-dev',
@@ -66,11 +70,12 @@ $config = [
     'runtimePath' => '@app/runtime',
     'sourceLanguage' => 'en',
     'aliases' => [
-        '@webroot' => realpath(__DIR__ . '/../../../'),
+        '@root' => $rootPath,
+        '@webroot' => $rootPath . DIRECTORY_SEPARATOR . DocumentRootService::PUBLIC_DIR,
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
         '@config' => '@app/config',
-        '@themes' => '@webroot/themes',
+        '@themes' => $rootPath . DIRECTORY_SEPARATOR . 'themes',
     ],
     'components' => [
         'moduleManager' => [
@@ -101,7 +106,9 @@ $config = [
                 ],
                 'data' => [
                     'class' => 'humhub\components\fs\LocalMountConfig',
-                    'path' => '@webroot/uploads',
+                    // Uploads are never served directly - they are published into the assets mount
+                    // on demand - so they stay out of the document root.
+                    'path' => '@root/uploads',
                 ],
             ],
         ],

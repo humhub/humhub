@@ -27,13 +27,31 @@ git clone https://github.com/humhub/humhub.git
 
 ### 3. Install Composer dependencies
 
-In the `web-root` (the cloned repo):
+In the installation root (the cloned repo):
 
 ```sh
 composer install
 ```
 
-### 4. Run the web installer
+### 4. Point the web server at `public/`
+
+The document root belongs on `public/`, not on the cloned repository. Everything beside it -
+`protected/`, `uploads/`, `themes/`, the Composer and npm metadata, your `.env` - is meant to stay
+out of reach of the web server. The entry script is `public/index.php`.
+
+Both `.htaccess` files ship ready to use; there is nothing to rename or configure, and a
+subdirectory installation needs no `RewriteBase`. Local edits are overwritten on update, so
+host-specific configuration belongs in the virtual host.
+
+Where the document root cannot be moved - most shared hosting - leave it on the installation
+directory: the `.htaccess` there maps every request into `public/`, so nothing beside it is
+reachable under any URL. That needs `mod_rewrite`.
+
+The `index.php` in the installation root still works so existing installations survive an update,
+but it is deprecated and reported under *Administration -> Information -> Prerequisites*. Do not
+build a new environment on it.
+
+### 5. Run the web installer
 
 The installer is at `http://localhost/humhub` (or wherever you pointed your web server). The [admin installation guide](https://docs.humhub.org/docs/admin/installation) covers file permissions and other server-side details.
 
