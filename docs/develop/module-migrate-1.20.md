@@ -442,3 +442,14 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `humhub\tests\codeception\unit\{helpers,widgets}`; the module's `ThemeTest` became
     `ThemePublishTest` because the core suite already has a `ThemeTest` covering path mapping, and
     its single SCSS test joined the existing `ScssHelperTest`.
+
+- **`humhub\assets\FilterAsset` no longer depends on `humhub\modules\topic\assets\TopicAsset`.**
+  The dependency moved to `humhub\modules\stream\assets\StreamAsset`, where it belongs:
+  `humhub.ui.filter.js` requires only `ui.widget` and `util` and has no relationship to topics,
+  while it is `WallStreamFilterNavigation` — in the stream module — that configures a
+  `PickerFilterInput` with `TopicPicker`.
+
+  Nothing changes about the scripts a page loads: `TopicAsset` is registered by the core bundle
+  directly, and the transitive dependency closure of `CoreBundleAsset` is identical before and
+  after. Only a module that registers `FilterAsset` on its own *and* renders a topic picker has
+  to register `TopicAsset` itself now.
