@@ -18,7 +18,7 @@ return [
                     'baseUrl' => '@web/assets/tests',
                 ],
                 'data' => [
-                    'path' => '@webroot/uploads/tests',
+                    'path' => '@root/uploads/tests',
                 ],
             ],
         ],

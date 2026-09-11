@@ -2,6 +2,50 @@
 
 Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 
+- **HumHub now serves from a `public/` directory.** The web server's document root belongs on
+  `<installation root>/public`; everything beside it - `protected/`, `uploads/`, `themes/`, the
+  Composer and npm metadata, the `.env` file - is meant to stay out of reach of the web server.
+  The entry script is `public/index.php`.
+
+  `@webroot` follows the document root, which is what Yii assigns it during bootstrap anyway, and
+  the new `@root` alias names the installation root:
+
+  | Before | After |
+  |---|---|
+  | `@webroot` (installation root) | `@root` |
+  | `@webroot/uploads` | `@root/uploads` |
+  | `@webroot/themes` | `@themes` (unchanged, now resolving outside the document root) |
+  | `@webroot/assets` | unchanged - it resolves into `public/assets` |
+
+  Both `.htaccess` files are now shipped ready to use instead of as `.htaccess.dist` templates -
+  there is no renaming step any more, and forgetting it can no longer leave the installation
+  directory exposed. The one in the installation directory maps every request into `public/`, so a
+  document root that cannot be moved is protected too. Local edits to either file are overwritten
+  on update; host-specific configuration belongs in the virtual host.
+
+  Audit every `@webroot` in your module. If it points at something the web server should serve,
+  it is still correct; if it points at anything else, it now names a directory below `public/`
+  that does not exist.
+
+  - **Themes are unaffected unless they opt out of publishing.** `Theme::$publishResources`
+    defaults to `true`, so theme resources are published into the assets mount and reachable as
+    before. A theme configured with `publishResources = false` falls back to `@web/themes/...`,
+    which no longer resolves to anything the web server serves.
+
+  - **The old entry script keeps working for now.** An `index.php` remains in the installation
+    root, marks itself deprecated through the `HUMHUB_LEGACY_ENTRY_SCRIPT` environment variable
+    and delegates to `public/index.php` without redirecting. While it is in use, `@web` is
+    prefixed with the path from the entry script to `public/`, so assets are loaded from
+    `/public/assets/...`. Both the deprecated entry script and an installation root that is
+    reachable over HTTP are reported under Administration -> Information -> Prerequisites and
+    in the incomplete-setup warning on the admin dashboard. The script will be removed in a
+    future version.
+
+    Legacy mode is never inferred from paths - managed hosting runs its own entry scripts and
+    path layouts, where such a guess would be wrong. Only the shipped script declares itself.
+    For layouts in which `public/` is not below the entry script, `HUMHUB_PUBLIC_URL` sets the
+    URL the document root is reachable under.
+
 - The `web` module is gone. Its PWA part moved in the change above; the security part - the
   headers and the Content Security Policy - is now applied by `humhub\components\Response`
   itself and configured on that component.
