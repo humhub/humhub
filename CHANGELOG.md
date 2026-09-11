@@ -144,6 +144,15 @@ HumHub Changelog
 ------------------------
 - Fix #8409: Add :focus styles for Administration left navigation menu items
 - Fix #8420: Fix hover flicker and keyboard focus on profile image upload buttons
+- Fix #8407: Make Select2 picker choices keyboard-accessible: the "Remove all items" button and each item's own remove icon
+- Fix #8426: Add a visible keyboard focus indicator for the stream filter toggle and its checkbox/radio filter options
+- Fix #8430: Make the password show/hide icon focusable and operable via keyboard
+- Fix #8439: Fix editing file-only Posts and clear `fileList[]` after posting so it isn't reused on the next post
+- Fix #8442: DatePicker date-format mismatches (month names, digits, whitespace) between jQuery UI and PHP intl/ICU across 35+ locales
+- Fix #8445: Restrict direct space joins to free-join spaces, so "Invite and request" spaces require admin approval instead of instant membership
+- Fix #8446: Restrict Topic management (create/rename/delete) on user profiles to the profile owner or users with full content management permissions
+- Fix #8443: Prevent silent demotion of public content to private when saved by an editor lacking CreatePublicContent permission
+- Fix #8451: Encode the redirect URL in the htmlRedirect view as a safe JS string so it can no longer break out of the inline <script> block
 
 1.18.5 (August 19, 2026)
 ------------------------
