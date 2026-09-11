@@ -7,7 +7,6 @@
  */
 
 use humhub\components\View;
-use humhub\modules\ui\filter\widgets\FilterBlock;
 
 /* @var $this View */
 /* @var $blocks [] */

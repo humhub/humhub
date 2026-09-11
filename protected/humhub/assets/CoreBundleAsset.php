@@ -15,7 +15,7 @@ use humhub\modules\space\assets\SpaceAsset;
 use humhub\modules\space\assets\SpaceChooserAsset;
 use humhub\modules\stream\assets\StreamAsset;
 use humhub\modules\topic\assets\TopicAsset;
-use humhub\modules\ui\filter\assets\FilterAsset;
+use humhub\assets\FilterAsset;
 use humhub\modules\user\assets\UserAsset;
 use humhub\modules\user\assets\UserPickerAsset;
 
