@@ -10,7 +10,7 @@
 namespace humhub\modules\content\widgets;
 
 use humhub\modules\content\models\ContentContainer;
-use humhub\modules\ui\form\widgets\BasePicker;
+use humhub\widgets\form\BasePicker;
 
 /**
  * Mutliselect input field for selecting Space guids or current user Profile

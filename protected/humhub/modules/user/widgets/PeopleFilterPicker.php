@@ -2,7 +2,7 @@
 
 namespace humhub\modules\user\widgets;
 
-use humhub\modules\ui\form\widgets\BasePicker;
+use humhub\widgets\form\BasePicker;
 use humhub\modules\user\components\PeopleQuery;
 use humhub\modules\user\models\fieldtype\CheckboxList;
 use humhub\modules\user\models\Profile;

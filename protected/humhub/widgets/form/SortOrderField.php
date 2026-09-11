@@ -28,7 +28,7 @@ use yii\bootstrap5\InputWidget;
  * ```
  *
  * @since 1.6
- * @package humhub\modules\ui\form\widgets
+ * @package humhub\widgets\form
  */
 class SortOrderField extends InputWidget
 {
