@@ -43,8 +43,10 @@ class PwaCest
         $I->amOnRoute(PwaService::ROUTE_SERVICE_WORKER);
 
         $I->seeResponseCodeIs(200);
-        $I->seeHttpHeader('Content-Type', 'application/javascript');
+        // The functional suite exposes no response header accessor; the JavaScript content
+        // type is asserted in PwaControllerTest instead.
         $I->seeInSource('OFFLINE_PAGE_URL');
+        $I->seeInSource("addEventListener('install'");
     }
 
     public function testOfflinePageIsServedToGuests(FunctionalTester $I)

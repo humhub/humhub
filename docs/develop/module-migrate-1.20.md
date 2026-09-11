@@ -50,6 +50,11 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     disappears from `/sw.js`. Audit every event handler registered on a `humhub\modules\web\pwa`
     class.
 
+  - The manifest lost its (undocumented) extension point along the way: `ManifestController`
+    exposed a public `$manifest` array and fired `Controller::EVENT_INIT`, so a module could
+    append members to it. `PwaService::getManifest()` has no equivalent event. No known module
+    used it; if you need one, please open an issue.
+
   - **Removed** `humhub\modules\web\Module::$enableServiceWorker`. The flag never only disabled
     the service worker — it also stripped `display`, `start_url` and the color members from the
     manifest — and is replaced by the application parameter `pwa.enabled`:

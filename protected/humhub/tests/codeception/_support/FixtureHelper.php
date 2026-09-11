@@ -7,6 +7,7 @@ use humhub\modules\live\tests\codeception\fixtures\LiveFixture;
 use humhub\modules\user\tests\codeception\fixtures\UserFullFixture;
 use yii\test\FixtureTrait;
 use yii\test\InitDbFixture;
+use Yii;
 
 /**
  * This helper is used to populate the database with needed fixtures before any tests are run.
@@ -48,6 +49,16 @@ class FixtureHelper extends Module
      */
     public function _afterSuite()
     {
+        // The Yii2 module destroys the application after every single test
+        // (Yii2::_after() -> Connector\Yii2::resetApplication()), so in a functional suite
+        // there is no application - and therefore no DB connection - left to unload against
+        // once the suite ends. Unloading is not lost: with `cleanup` the Yii2 module already
+        // unloads after each test, and _beforeSuite() unloads before it loads. Acceptance
+        // suites keep their application and still unload here.
+        if (Yii::$app === null) {
+            return;
+        }
+
         $this->unloadFixtures();
     }
 
