@@ -10,7 +10,6 @@
 namespace humhub\assets;
 
 use humhub\components\assets\AssetBundle;
-use humhub\modules\topic\assets\TopicAsset;
 
 class FilterAsset extends AssetBundle
 {
@@ -24,12 +23,5 @@ class FilterAsset extends AssetBundle
      */
     public $js = [
         'js/humhub/humhub.ui.filter.js',
-    ];
-
-    /**
-     * @inheritdoc
-     */
-    public $depends = [
-        TopicAsset::class,
     ];
 }

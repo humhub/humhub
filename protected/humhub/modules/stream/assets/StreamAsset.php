@@ -13,6 +13,7 @@ use humhub\components\assets\AssetBundle;
 use humhub\modules\content\assets\ContentAsset;
 use humhub\modules\content\assets\ContentContainerAsset;
 use humhub\assets\FilterAsset;
+use humhub\modules\topic\assets\TopicAsset;
 use humhub\modules\user\assets\UserAsset;
 
 /**
@@ -44,6 +45,7 @@ class StreamAsset extends AssetBundle
         ContentAsset::class,
         ContentContainerAsset::class,
         FilterAsset::class,
+        TopicAsset::class,
         UserAsset::class,
         CoreExtensionAsset::class,
     ];

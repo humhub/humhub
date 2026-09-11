@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #8473: Moved the `TopicAsset` dependency from `FilterAsset` to `StreamAsset` — the filter JavaScript has no relationship to topics, whereas the stream filter navigation is what renders a topic picker; the scripts a page loads are unchanged
 - Enh #8471: Removed the `ui` module — after its seven folders moved into the core namespace, the module class, its config, its three i18n categories (folded into `base`) and its test suite are gone; the deprecated class names keep resolving until 1.21 because `humhub\` is autoloaded from the `@humhub` alias rather than through a module registration
 - Enh #8469: Moved the filter part of the `ui` module into the core namespace — `humhub\widgets\filter\*` for the widgets, `humhub\models\filter\*` for the two abstract models and `humhub\assets\FilterAsset` — and dropped three views nothing rendered; the old class names stay as deprecated shims until 1.21
 - Enh #8467: Moved the remaining widgets of the `ui` module into the core namespace as `humhub\widgets\{BaseImage, CropImage, CounterSet, CounterSetItem, DirectoryFilters}`, together with their three views; the old class names stay as deprecated shims until 1.21
