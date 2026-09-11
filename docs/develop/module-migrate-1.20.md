@@ -364,3 +364,46 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `humhub\components\Widget` directly and drives the directory pages (spaces, people, content
     search, marketplace), while the `filter` widgets build the stream filter panel. The `filter`
     part of the module is untouched for now.
+
+- **The filter part of the `ui` module moved into the core namespace.** The widgets keep their
+  own namespace next to the form and menu widgets; the two abstract models join
+  `humhub\models`, and the asset joins the other core bundles.
+
+  | Before | After |
+  |---|---|
+  | `humhub\modules\ui\filter\widgets\FilterInput` | `humhub\widgets\filter\FilterInput` |
+  | `humhub\modules\ui\filter\widgets\FilterBlock` | `humhub\widgets\filter\FilterBlock` |
+  | `humhub\modules\ui\filter\widgets\FilterPanel` | `humhub\widgets\filter\FilterPanel` |
+  | `humhub\modules\ui\filter\widgets\FilterNavigation` | `humhub\widgets\filter\FilterNavigation` |
+  | `humhub\modules\ui\filter\widgets\CheckboxFilterInput` | `humhub\widgets\filter\CheckboxFilterInput` |
+  | `humhub\modules\ui\filter\widgets\CheckboxListFilterInput` | `humhub\widgets\filter\CheckboxListFilterInput` |
+  | `humhub\modules\ui\filter\widgets\RadioFilterInput` | `humhub\widgets\filter\RadioFilterInput` |
+  | `humhub\modules\ui\filter\widgets\DropdownFilterInput` | `humhub\widgets\filter\DropdownFilterInput` |
+  | `humhub\modules\ui\filter\widgets\TextFilterInput` | `humhub\widgets\filter\TextFilterInput` |
+  | `humhub\modules\ui\filter\widgets\DatePickerFilterInput` | `humhub\widgets\filter\DatePickerFilterInput` |
+  | `humhub\modules\ui\filter\widgets\PickerFilterInput` | `humhub\widgets\filter\PickerFilterInput` |
+  | `humhub\modules\ui\filter\models\Filter` | `humhub\models\filter\Filter` |
+  | `humhub\modules\ui\filter\models\QueryFilter` | `humhub\models\filter\QueryFilter` |
+  | `humhub\modules\ui\filter\assets\FilterAsset` | `humhub\assets\FilterAsset` |
+
+  - **Nothing breaks in 1.20.** Every old name stays available as a deprecated subclass. **The
+    shims are removed in 1.21** — migrate during the 1.20 cycle.
+
+  - The filter machinery landed in the core rather than in the `stream` module even though the
+    stream filter panel is its only consumer inside the core. It carries no knowledge of streams,
+    and two of its outside consumers are not streams at all: the `mail` inbox sidebar builds on
+    `QueryFilter`, and the task search page of `tasks` extends four of the input widgets. Filing
+    it under `stream` would have made those depend on the stream module.
+
+  - **Removed three views that nothing rendered:** `streamTopicPicker`, `topicFilterBlock` and
+    `contentTypeFilterBlock`. They were the only place where the filter code reached into the
+    `topic` and `content` modules, and no core class or known module referenced them — neither
+    literally nor through the `view` property of a filter widget.
+    `WallStreamFilterNavigation` builds its topic and content-type blocks from ordinary
+    `PickerFilterInput` instances. A module that set one of the three as its `view` has to bring
+    its own copy.
+
+  - `humhub.ui.filter.js` moved to `protected/humhub/resources/js/humhub/` and `FilterAsset`
+    follows the core convention (`@humhub/resources`). The JavaScript module id `ui.filter` is
+    unchanged, so `require('ui.filter')` keeps working, and a module that registers `FilterAsset`
+    needs no change beyond the new class name.

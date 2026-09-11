@@ -12,7 +12,7 @@ namespace humhub\modules\stream\models\filters;
 use humhub\modules\content\models\Content;
 use humhub\modules\stream\models\ContentContainerStreamQuery;
 use humhub\modules\stream\models\StreamQuery;
-use humhub\modules\ui\filter\models\QueryFilter;
+use humhub\models\filter\QueryFilter;
 use humhub\modules\user\models\User;
 
 abstract class StreamQueryFilter extends QueryFilter

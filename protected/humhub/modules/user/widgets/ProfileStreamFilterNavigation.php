@@ -3,7 +3,7 @@
 namespace humhub\modules\user\widgets;
 
 use humhub\modules\stream\widgets\WallStreamFilterNavigation;
-use humhub\modules\ui\filter\widgets\RadioFilterInput;
+use humhub\widgets\filter\RadioFilterInput;
 use humhub\modules\user\Module;
 use humhub\modules\user\stream\filters\IncludeAllContributionsFilter;
 use Yii;

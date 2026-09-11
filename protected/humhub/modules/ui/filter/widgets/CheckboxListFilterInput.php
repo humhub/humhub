@@ -2,43 +2,15 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
- *
  */
 
 namespace humhub\modules\ui\filter\widgets;
 
-class CheckboxListFilterInput extends CheckboxFilterInput
+/**
+ * @deprecated since 1.20, use \humhub\widgets\filter\CheckboxListFilterInput instead. Will be removed in 1.21.
+ */
+class CheckboxListFilterInput extends \humhub\widgets\filter\CheckboxListFilterInput
 {
-    /**
-     * @inheritdoc
-     */
-    public $view = 'checkboxInput';
-
-    /**
-     * @inheritdoc
-     */
-    public $type = 'checkbox';
-
-    /**
-     * @var string data-action-click handler of the input event
-     */
-    public $clickAction = 'toggleFilter';
-
-    /**
-     * @inheritdoc
-     */
-    public $multiple = true;
-
-    /**
-     * @inheritdoc
-     */
-    public function prepareOptions()
-    {
-        parent::prepareOptions();
-        $this->options['data-action-click'] = $this->clickAction;
-        $this->options['data-filter-value'] = $this->value;
-    }
-
 }

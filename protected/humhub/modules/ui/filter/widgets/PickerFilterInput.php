@@ -2,96 +2,15 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
- *
  */
 
 namespace humhub\modules\ui\filter\widgets;
 
-use humhub\components\ActiveRecord;
-use humhub\helpers\ArrayHelper;
-use humhub\widgets\form\BasePicker;
-use Yii;
-
-class PickerFilterInput extends FilterInput
+/**
+ * @deprecated since 1.20, use \humhub\widgets\filter\PickerFilterInput instead. Will be removed in 1.21.
+ */
+class PickerFilterInput extends \humhub\widgets\filter\PickerFilterInput
 {
-    /**
-     * @inheritdoc
-     */
-    public $view = 'pickerInput';
-
-    /**
-     * @inheritdoc
-     */
-    public $type = 'picker';
-
-    public $pickerOptions = [];
-
-    public $picker = BasePicker::class;
-
-    /**
-     * @var string data-action-click handler of the input event
-     */
-    public $changeAction = 'parent.inputChange';
-
-    /**
-     * @inheritdoc
-     */
-    protected function initFromRequest()
-    {
-        $filters = Yii::$app->request->get($this->category);
-        if (!is_array($filters) || empty($filters)) {
-            return;
-        }
-
-        if ($pickerItemClass = $this->getPickerItemClass()) {
-            $this->pickerOptions['selection'] = $pickerItemClass::find()
-                ->where(['IN', $this->getPicker()->itemKey, $filters])
-                ->all();
-        } elseif ($pickerItems = $this->getPickerItems()) {
-            $this->pickerOptions['selection'] = array_intersect($filters, array_keys($pickerItems));
-        }
-    }
-
-    protected function getPicker(): BasePicker
-    {
-        return new $this->picker();
-    }
-
-    /**
-     * @return ActiveRecord|string|null
-     */
-    protected function getPickerItemClass()
-    {
-        $picker = $this->getPicker();
-        return $picker->itemClass ?: null;
-    }
-
-    /**
-     * @return array|null
-     */
-    protected function getPickerItems()
-    {
-        $picker = $this->getPicker();
-        return (empty($picker->items) || !is_array($picker->items) ? null : $picker->items) ?: ArrayHelper::getValue($this->pickerOptions, 'items', []);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function prepareOptions()
-    {
-        parent::prepareOptions();
-
-        $this->options['data-action-change'] = $this->changeAction;
-        $this->pickerOptions['options'] = $this->options;
-
-    }
-
-    public function getWidgetOptions()
-    {
-
-        return ArrayHelper::merge(parent::getWidgetOptions(), ['pickerClass' => $this->picker, 'pickerOptions' => $this->pickerOptions]);
-    }
 }
