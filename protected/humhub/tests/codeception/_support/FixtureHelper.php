@@ -10,10 +10,10 @@ use yii\test\InitDbFixture;
 use Yii;
 
 /**
- * This helper is used to populate the database with needed fixtures before any tests are run.
- * In this example, the database is populated with the demo login user, which is used in acceptance
- * and functional tests.  All fixtures will be loaded before the suite is started and unloaded after it
- * completes.
+ * Populates the database with the fixtures a suite needs before its tests run, and unloads them
+ * afterwards.
+ *
+ * Enabled by the core functional suite only; every other suite uses {@see DynamicFixtureHelper}.
  */
 class FixtureHelper extends Module
 {
@@ -50,11 +50,11 @@ class FixtureHelper extends Module
     public function _afterSuite()
     {
         // The Yii2 module destroys the application after every single test
-        // (Yii2::_after() -> Connector\Yii2::resetApplication()), so in a functional suite
-        // there is no application - and therefore no DB connection - left to unload against
-        // once the suite ends. Unloading is not lost: with `cleanup` the Yii2 module already
-        // unloads after each test, and _beforeSuite() unloads before it loads. Acceptance
-        // suites keep their application and still unload here.
+        // (Yii2::_after() -> Connector\Yii2::resetApplication()), so by the time the suite ends
+        // there is no application - and therefore no DB connection - left to unload against.
+        // Nothing is lost: with `cleanup` the Yii2 module already unloads after each test, and
+        // _beforeSuite() unloads before it loads. The guard keeps this usable from a suite that
+        // does keep its application.
         if (Yii::$app === null) {
             return;
         }
