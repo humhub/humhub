@@ -181,3 +181,17 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   - **Removed** `humhub\modules\ui\form\validators\IconValidator` without replacement. It was
     added in a single commit, never used by the core or any known module, and validated against
     `Icon::$names` — three lines that are easier written inline than kept as public API.
+- **Removed the unused `ContainerImageSet` widget** and the asset bundle, JavaScript and CSS that
+  belonged to it. The widget was added in 2019 and never rendered anywhere — neither by the core
+  nor by any known module — so it is dropped rather than carried along as the `ui` module is taken
+  apart.
+
+  | Removed | Replacement |
+  |---|---|
+  | `humhub\modules\ui\content\widgets\ContainerImageSet` | - |
+  | `humhub\modules\ui\content\assets\UiImageSetAsset` | - |
+  | JS module `ui.imageset` | - |
+  | CSS classes `.ui-imageset-*` | - |
+
+  A module that renders its own markup with those CSS classes has to ship the styles itself; a
+  module that extends the widget has to bring its own copy.
