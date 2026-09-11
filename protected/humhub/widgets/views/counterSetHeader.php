@@ -7,7 +7,7 @@
 
 use humhub\components\View;
 use humhub\helpers\Html;
-use humhub\modules\ui\widgets\CounterSetItem;
+use humhub\widgets\CounterSetItem;
 
 /* @var $this View */
 /* @var $counters CounterSetItem[] */

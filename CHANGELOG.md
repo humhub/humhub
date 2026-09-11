@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #8467: Moved the remaining widgets of the `ui` module into the core namespace as `humhub\widgets\{BaseImage, CropImage, CounterSet, CounterSetItem, DirectoryFilters}`, together with their three views; the old class names stay as deprecated shims until 1.21
 - Enh #8462: Removed the unused `ItemDrop` reordering model from the `ui` module — added in 1.4, never used by the core or any known module, and non-functional as shipped because `save()` calls a method the class does not define
 - Enh #8464: Moved the menu part of the `ui` module into the core namespace as `humhub\widgets\menu\*`, flattening the entry classes and the menu widgets into one namespace; the old class names stay as deprecated shims until 1.21, but theme view overrides under `views/ui/menu/` have to be moved because themed views are resolved by path and stop being applied silently
 - Enh #8463: Moved the icon part of the `ui` module into the core namespace — `humhub\widgets\Icon` and `humhub\components\icon\*` — and replaced the module's `iconAlias` map with the `icon.alias` application parameter, which was the last thing in the core needing the `ui` module class; the old class names stay as deprecated shims until 1.21

@@ -1,0 +1,310 @@
+<?php
+
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2021 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
+namespace humhub\widgets;
+
+use humhub\components\Widget;
+use humhub\helpers\Html;
+use humhub\widgets\form\DatePicker;
+use humhub\widgets\bootstrap\Button;
+use ReflectionClass;
+use Yii;
+use yii\helpers\ArrayHelper;
+
+/**
+ * DirectoryFilters displays the filters on the directory people/spaces/modules pages
+ *
+ * @since 1.9
+ * @author Luke
+ */
+abstract class DirectoryFilters extends Widget
+{
+    /**
+     * @var array Filters
+     */
+    public $filters = [];
+
+    /**
+     * @var string Main page URL, used to reset and submit a form with filters
+     */
+    public $pageUrl;
+
+    /**
+     * @var bool True - if paganation is used for the filtered results
+     * @since 1.11
+     */
+    public $paginationUsed = true;
+
+    /**
+     * @var array|null Additional form data, can be used for JavaScript actions:
+     *      'action-url' - URL to submit the filters form by AJAX request
+     * @since 1.16
+     */
+    public ?array $data = null;
+
+    /**
+     * @inheritDoc
+     */
+    public function init()
+    {
+        $this->initDefaultFilters();
+
+        parent::init();
+
+        // Init actions only after all filters are added by the EVENT_INIT
+        $this->initActions();
+
+        ArrayHelper::multisort($this->filters, 'sortOrder');
+    }
+
+    public function initActions(): void
+    {
+        // Find min sort to put the toggle-more action right after the first filter
+        $minSortOrder = null;
+        foreach ($this->filters as $data) {
+            if (isset($data['sortOrder']) && ($minSortOrder === null || $minSortOrder > $data['sortOrder'])) {
+                $minSortOrder = $data['sortOrder'];
+            }
+        }
+
+        if (count($this->filters) > 1) {
+            // Display it only to hide more filters
+            $this->addFilter('toggle-more', [
+                'type' => 'info',
+                'wrapperClass' => 'form-search-action form-search-action-toggle-more',
+                'info' => Button::light()
+                    ->icon('filter')
+                    ->options([
+                        'aria-label' => Yii::t('UiModule.base', 'Toggle filters'),
+                        'data-bs-toggle' => 'collapse',
+                        'data-bs-target' => '.card-filter-' . $this->id,
+                    ])
+                    ->loader(false),
+                'sortOrder' => ++$minSortOrder,
+            ]);
+        }
+
+        if (isset($this->data['action-url']) || $this->isFiltered()) {
+            // The reset action is always displayed as the very last action (see the
+            // .form-search-action rules in _cards.scss), so it also has to be the
+            // last one in the DOM/tab order - otherwise keyboard navigation reaches
+            // it long before it is visually shown.
+            $maxSortOrder = null;
+            foreach ($this->filters as $data) {
+                if (isset($data['sortOrder']) && ($maxSortOrder === null || $maxSortOrder < $data['sortOrder'])) {
+                    $maxSortOrder = $data['sortOrder'];
+                }
+            }
+
+            $this->addFilter('reset', [
+                'type' => 'info',
+                'wrapperClass' => 'form-search-action form-search-action-reset'
+                    . ($this->isFiltered() ? '' : ' d-none'),
+                'info' => Button::danger()
+                    ->icon('times')
+                    ->link([$this->pageUrl])
+                    ->tooltip(Yii::t('UiModule.base', 'Reset filters'))
+                    ->options(['aria-label' => Yii::t('UiModule.base', 'Reset filters')]),
+                'sortOrder' => ($maxSortOrder ?? 0) + 1,
+            ]);
+        }
+    }
+
+    abstract protected function initDefaultFilters();
+
+    /**
+     * @inheritdoc
+     */
+    public function run()
+    {
+        return $this->render('@humhub/widgets/views/directoryFilters', [
+            'directoryFilters' => $this,
+            'options' => $this->getOptions(),
+        ]);
+    }
+
+    protected function getOptions(): array
+    {
+        $options = ['class' => 'form-search'];
+
+        if (is_array($this->data)) {
+            $options['data'] = $this->data;
+        }
+
+        return $options;
+    }
+
+    public function renderFilters(): string
+    {
+        $filtersHtml = '';
+        foreach ($this->filters as $filter => $data) {
+            $data = array_merge(self::getDefaultFilterData(), $data);
+            if ($filtersHtml !== '' && !str_contains((string) $data['wrapperClass'], 'form-search-action')) {
+                // Add styles for filters collapsing by Bootstrap (except of the first filter)
+                $data['wrapperClass'] .= ' collapse show card-filter-' . $this->id;
+            }
+            $data['inputId'] ??= $this->getInputId($filter);
+            $filterInput = $this->renderFilterInput($filter, $data);
+
+            if ($filterInput !== $data['beforeInput'] . $data['afterInput']) {
+                $filtersHtml .= $this->render('@humhub/widgets/views/directoryFilter', [
+                    'data' => $data,
+                    'filterInput' => $filterInput,
+                ]);
+            }
+        }
+        return $filtersHtml;
+    }
+
+    public static function getDefaultFilterData(): array
+    {
+        return [
+            'wrapperClass' => 'flex-fill',
+            'titleClass' => 'form-search-field-info',
+            'inputClass' => 'form-control',
+            'beforeInput' => '',
+            'afterInput' => '',
+        ];
+    }
+
+    public function renderFilterInput(string $filter, array $data): string
+    {
+        $inputOptions = [
+            'id' => $data['inputId'],
+            'class' => $data['inputClass'],
+        ];
+
+        if (isset($data['inputOptions'])) {
+            $inputOptions = array_merge($inputOptions, $data['inputOptions']);
+        }
+
+        switch ($data['type']) {
+            case 'dropdown':
+            case 'dropdownlist':
+                $inputOptions['data-action-change'] = 'cards.applyFilters';
+                $inputOptions['options'] = ['separator' => ['disabled' => '']];
+                if (isset($data['options'][''])) {
+                    // Enable the reset feature if this filter has an empty value option
+                    $inputOptions['data-allow-clear'] = 'true';
+                    $inputOptions['data-placeholder'] = Yii::t('UiModule.base', 'Select');
+                }
+                $inputHtml = Html::dropDownList($filter, self::getValue($filter), $data['options'], $inputOptions);
+                break;
+
+            case 'tags':
+                $inputHtml = '';
+                if (empty($data['tags'])) {
+                    break;
+                }
+
+                $activeTags = self::getValue($filter);
+                $filterOptions = empty($data['multiple']) ? [] : ['data-multiple' => 1];
+                $inputHtml .= Html::hiddenInput($filter, $activeTags, $filterOptions);
+                $activeTags = empty($activeTags) ? [] : explode(',', (string) $activeTags);
+
+                foreach ($data['tags'] as $tagKey => $tagLabel) {
+                    $isActiveTag = (empty($tagKey) && empty($activeTags))
+                        || in_array($tagKey, $activeTags);
+
+                    $inputHtml .= Button::primary($tagLabel)
+                        ->cssClass($isActiveTag ? 'active' : '')
+                        ->sm()
+                        ->outline()
+                        ->action('cards.selectTag')
+                        ->options([
+                            'data-filter' => $filter,
+                            'data-tag' => $tagKey,
+                        ]);
+                }
+                break;
+
+            case 'info':
+                $inputHtml = $data['info'];
+                break;
+
+            case 'widget':
+                $inputOptions['data-action-change'] = 'cards.applyFilters';
+                $options = ['name' => $filter, 'options' => $inputOptions];
+                if (isset($data['widgetOptions']) && is_array($data['widgetOptions'])) {
+                    $options = array_merge($options, $data['widgetOptions']);
+                }
+                $inputHtml = $data['widget']::widget($options);
+                break;
+
+            case 'date':
+                $format = $data['format'] ?? 'short';
+                $value = self::getValue($filter);
+                $inputHtml = DatePicker::widget([
+                    'name' => $filter,
+                    'value' => empty($value) ? '' : Yii::$app->formatter->asDate($value, $format),
+                    'dateFormat' => $format,
+                ]);
+                break;
+
+            case 'input':
+            case 'text':
+            default:
+                if (isset($data['placeholder'])) {
+                    $inputOptions['placeholder'] = $data['placeholder'];
+                }
+                $inputHtml = Html::textInput($filter, self::getValue($filter), $inputOptions);
+        }
+
+        return $data['beforeInput'] . $inputHtml . $data['afterInput'];
+    }
+
+    public function addFilter(string $filterKey, array $filterData)
+    {
+        $this->filters[$filterKey] = $filterData;
+    }
+
+    public function removeFilter(string $filterKey)
+    {
+        unset($this->filters[$filterKey]);
+    }
+
+    public static function getDefaultValue(string $filter): string
+    {
+        return '';
+    }
+
+    public static function getValue(string $filter)
+    {
+        $defaultValue = static::getDefaultValue($filter);
+
+        if (preg_match('/^(.+?)\[(.+?)\]$/', $filter, $arrayMatch)) {
+            $array = Yii::$app->request->get($arrayMatch[1]);
+            return $array[$arrayMatch[2]] ?? $defaultValue;
+        }
+
+        return Yii::$app->request->get($filter, $defaultValue);
+    }
+
+    public function isFiltered(): bool
+    {
+        foreach (Yii::$app->request->getQueryParams() as $key => $value) {
+            if (!in_array($key, ['page', '_pjax', '_']) && static::getValue($key) !== static::getDefaultValue($key)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Get filter input ID
+     *
+     * @param string $name
+     * @return string
+     */
+    protected function getInputId(string $name): string
+    {
+        $formName = (new ReflectionClass($this))->getShortName();
+        return preg_replace('/[^a-z\d\-]+/', '-', strtolower($formName . '-' . $name));
+    }
+}

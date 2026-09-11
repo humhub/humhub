@@ -14,7 +14,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\SpacePickerField;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicPicker;
-use humhub\modules\ui\widgets\DirectoryFilters;
+use humhub\widgets\DirectoryFilters;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserPickerField;
 use Yii;
