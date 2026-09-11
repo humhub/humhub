@@ -63,6 +63,7 @@ return [
     'Show less' => 'Показати менше',
     'Show more' => 'Показати більше',
     'Some files could not be uploaded:' => 'Деякі файли не завантажені:',
+  'Sort Order' => 'Сортувати за номером',
     'Stop impersonation' => 'Припиніть видавати себе за іншу особу',
     'Text could not be copied to clipboard' => 'Текст не може бути скопійований до буферу пам\'яті',
     'Text has been copied to clipboard' => 'Текст скопійован до буферу пам\'яті',

@@ -83,6 +83,7 @@ return [
   'Sidebar' => 'የጎን ገፅታ',
   'Skip to main content' => '',
   'Some files could not be uploaded:' => 'አንዳንድ ፋይሎች ሊጫኑ አልቻሉም፡',
+  'Sort Order' => 'ቅደም ተከተል ያስይዙ',
   'Stop impersonation' => '',
   'Switch network' => '',
   'Text could not be copied to clipboard' => 'ፅሁፉ ወደማስፈሪያ ሰሌዳው ላይ ሊገለበጥ አልቻለም',
