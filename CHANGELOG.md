@@ -14,7 +14,7 @@ HumHub Changelog
 - Fix #8446: Restrict Topic management (create/rename/delete) on user profiles to the profile owner or users with full content management permissions
 - Fix #8443: Prevent silent demotion of public content to private when saved by an editor lacking CreatePublicContent permission
 - Fix #8451: Encode the redirect URL in the htmlRedirect view as a safe JS string so it can no longer break out of the inline <script> block
-- Fix #8454: Block delegated admins from self-granting admin permissions and from editing/impersonating the System Administrator account
+- Fix #8456: Block delegated admins from self-granting admin permissions and from editing/impersonating the System Administrator account
 
 1.18.5 (August 19, 2026)
 ------------------------
