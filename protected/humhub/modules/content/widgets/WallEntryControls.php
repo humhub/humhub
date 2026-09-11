@@ -6,9 +6,9 @@ use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
-use humhub\modules\ui\menu\MenuEntry;
-use humhub\modules\ui\menu\WidgetMenuEntry;
-use humhub\modules\ui\menu\widgets\Menu;
+use humhub\widgets\menu\MenuEntry;
+use humhub\widgets\menu\WidgetMenuEntry;
+use humhub\widgets\menu\Menu;
 use yii\helpers\ArrayHelper;
 
 /**

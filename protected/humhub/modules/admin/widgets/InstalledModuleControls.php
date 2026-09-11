@@ -12,8 +12,8 @@ use humhub\components\Module;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\marketplace\Module as MarketplaceModule;
-use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\ui\menu\widgets\Menu;
+use humhub\widgets\menu\MenuLink;
+use humhub\widgets\menu\Menu;
 use Yii;
 
 /**

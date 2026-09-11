@@ -9,7 +9,7 @@
 namespace humhub\tests\codeception\unit\widgets;
 
 use humhub\components\Event;
-use humhub\modules\ui\menu\MenuLink;
+use humhub\widgets\menu\MenuLink;
 use humhub\widgets\TopMenu;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;

@@ -6,7 +6,7 @@
  */
 
 use humhub\helpers\Html;
-use humhub\modules\ui\menu\MenuEntry;
+use humhub\widgets\menu\MenuEntry;
 use humhub\widgets\bootstrap\Button;
 
 /* @var MenuEntry[] $entries */

@@ -15,7 +15,7 @@ use humhub\modules\content\widgets\VisibilityLink;
 use humhub\modules\content\widgets\WallEntryLinks;
 use humhub\modules\file\widgets\ShowFiles;
 use humhub\modules\topic\widgets\ContentTopicButton;
-use humhub\modules\ui\menu\MenuEntry;
+use humhub\widgets\menu\MenuEntry;
 use Yii;
 
 /**

@@ -1,13 +1,13 @@
 # Menus
 
-All menus and navigation widgets are derived from the widget class `humhub\modules\ui\menu\widgets\Menu`.
+All menus and navigation widgets are derived from the widget class `humhub\widgets\menu\Menu`.
 
 Additionally, there are following sub base classes with predefined templates available:
 
-- `humhub\modules\ui\menu\widgets\LeftNavigation`
-- `humhub\modules\ui\menu\widgets\TabMenu`
-- `humhub\modules\ui\menu\widgets\SubTabMenu`
-- `humhub\modules\ui\menu\widgets\DropDownMenu`
+- `humhub\widgets\menu\LeftNavigation`
+- `humhub\widgets\menu\TabMenu`
+- `humhub\widgets\menu\SubTabMenu`
+- `humhub\widgets\menu\DropdownMenu`
 
 Based on these base classes, following menu implementations are most frequently used:
 
@@ -18,10 +18,10 @@ Based on these base classes, following menu implementations are most frequently 
 | `humhub\modules\admin\widgets\AdminMenu`             | Administration section                            |
 | `humhub\modules\user\widgets\AccountTopMenu`         | Account dropdown                                  |
 
-Menu entries are represented by the class `humhub\modules\ui\menu\MenuEntry`. 
+Menu entries are represented by the class `humhub\widgets\menu\MenuEntry`. 
 Instances of this class can be added via the menu class.
 
-See the `humhub\modules\ui\menu\MenuEntry` class for a full list of properties and options.
+See the `humhub\widgets\menu\MenuEntry` class for a full list of properties and options.
 
 ## Events
 
@@ -48,8 +48,8 @@ Example of a callback:
 namespace humhub\modules\example;
 
 use humhub\modules\dashboard\widgets\ShareWidget;
-use humhub\modules\ui\widgets\Icon;
-use humhub\modules\ui\menu\MenuLink;
+use humhub\widgets\Icon;
+use humhub\widgets\menu\MenuLink;
 use humhub\widgets\TopMenu;
 
 use Yii;

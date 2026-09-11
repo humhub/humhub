@@ -9,8 +9,8 @@
 namespace humhub\modules\comment\widgets;
 
 use humhub\modules\comment\models\Comment;
-use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\ui\menu\widgets\Menu;
+use humhub\widgets\menu\MenuLink;
+use humhub\widgets\menu\Menu;
 use Yii;
 use yii\helpers\Url;
 
