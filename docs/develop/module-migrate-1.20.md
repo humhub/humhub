@@ -145,3 +145,18 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 
   - The `web` module itself still exists and continues to provide the security headers and CSP
     handling; only its PWA part moved.
+
+- **Removed the unused `ContainerImageSet` widget** and the asset bundle, JavaScript and CSS that
+  belonged to it. The widget was added in 2019 and never rendered anywhere — neither by the core
+  nor by any known module — so it is dropped rather than carried along as the `ui` module is taken
+  apart.
+
+  | Removed | Replacement |
+  |---|---|
+  | `humhub\modules\ui\content\widgets\ContainerImageSet` | - |
+  | `humhub\modules\ui\content\assets\UiImageSetAsset` | - |
+  | JS module `ui.imageset` | - |
+  | CSS classes `.ui-imageset-*` | - |
+
+  A module that renders its own markup with those CSS classes has to ship the styles itself; a
+  module that extends the widget has to bring its own copy.

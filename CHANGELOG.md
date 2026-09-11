@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #8460: Removed the unused `ContainerImageSet` widget together with its asset bundle, JavaScript and CSS — it was added in 2019 and never rendered by the core or any known module; first step of taking the `ui` module apart
 - Enh #8457: Dissolved the `web` module — the security headers and the Content Security Policy are now applied by `humhub\components\Response` and configured as a flat header map on that component (`defaultHeaders`), replacing the `CSPBuilder`, the `SecuritySettings` model and the module itself. The policy now also reaches error pages and HTML rendered by AJAX actions, which were previously left without one, and is no longer sent with JSON or JavaScript responses where it had no effect; the automatic page reload on CSP violation was removed. The delivered policy itself is unchanged; see the migration guide
 - Enh: Moved the PWA part of the `web` module into the core namespace — the manifest, service worker and offline page are now served by `humhub\controllers\PwaController` and built by `humhub\services\PwaService` / `ServiceWorkerService`. The public URLs `/manifest.json`, `/sw.js` and `/offline.pwa.html` are unchanged, but modules extending the service worker must switch from `ServiceWorkerController::EVENT_INIT` to `ServiceWorkerService::EVENT_BUILD_SCRIPT`, and `web.enableServiceWorker` is replaced by the `pwa.enabled` application parameter; see the migration guide
 
