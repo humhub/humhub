@@ -3,6 +3,8 @@
 use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\menu\DropdownMenu;
+use humhub\widgets\menu\MenuEntry;
 
 /* @var $this View */
 /* @var $menu DropdownMenu */

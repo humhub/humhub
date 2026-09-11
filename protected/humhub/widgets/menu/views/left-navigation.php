@@ -2,6 +2,8 @@
 
 use humhub\components\View;
 use humhub\helpers\Html;
+use humhub\widgets\menu\LeftNavigation;
+use humhub\widgets\menu\MenuEntry;
 
 /* @var $this View */
 /* @var $menu LeftNavigation */
