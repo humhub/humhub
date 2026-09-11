@@ -46,7 +46,9 @@ fetch(url, { headers: { 'X-CSRF-Token': csrf } });
 
 ### JavaScript nonces
 
-Since HumHub 1.15 the core enables JavaScript nonces by default (CSP-style). All inline `<script>` tags need the current request's nonce. The `Html` helper applies it automatically — prefer it over manually emitting `<script>` blocks.
+Since HumHub 1.15 the core enables JavaScript nonces by default (CSP-style). All inline `<script>` tags need the nonce of the current session — it is session-bound rather than per-request, so that scripts rendered into AJAX and PJAX responses satisfy the policy of the document already open in the browser. The `Html` helper applies it automatically — prefer it over manually emitting `<script>` blocks.
+
+The policy itself is configured in `defaultHeaders` on the `response` component; a header value containing `{{ nonce }}` is what enables nonce support.
 
 ### File uploads
 

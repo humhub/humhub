@@ -13,7 +13,6 @@ use humhub\modules\file\validators\FileValidator;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\UserPicker;
-use humhub\modules\web\security\helpers\Security;
 use Yii;
 use yii\base\Widget;
 use yii\helpers\Url;
@@ -47,7 +46,6 @@ class CoreJsConfig extends Widget
                 'client' => [
                     'baseUrl' => Yii::$app->settings->get('baseUrl'),
                     'reloadableScripts' => CacheHelper::getReloadableScriptUrls(),
-                    'cspViolationReloadInterval' => Security::CSP_VIOLATION_RELOAD_INTERVAL,
                     'syncScriptOrigins' => $this->getAssetOrigins(),
                 ],
                 'core' => [

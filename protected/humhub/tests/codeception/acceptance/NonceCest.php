@@ -6,18 +6,22 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace web\acceptance;
+namespace humhub\tests\codeception\acceptance;
 
-use Exception;
-use web\AcceptanceTester;
+use AcceptanceTester;
 use Yii;
 
+/**
+ * Verifies in a real browser that the Content Security Policy is enforced: an inline script
+ * without the nonce must not run, one carrying it must.
+ */
 class NonceCest
 {
-    /**
-     * @param AcceptanceTester $I
-     * @throws Exception
-     */
+    public function _after(AcceptanceTester $I)
+    {
+        Yii::$app->settings->set('trackingHtmlCode', null);
+    }
+
     public function testNoNonceScript(AcceptanceTester $I)
     {
         $I->amUser();
