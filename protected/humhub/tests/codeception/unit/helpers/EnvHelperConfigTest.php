@@ -1,11 +1,11 @@
 <?php
 
-namespace tests\codeception\unit\modules\web\env;
+namespace humhub\tests\codeception\unit\helpers;
 
 use humhub\helpers\EnvHelper;
 use tests\codeception\_support\HumHubDbTestCase;
 
-class ConfigTest extends HumHubDbTestCase
+class EnvHelperConfigTest extends HumHubDbTestCase
 {
     public function testDebugIgnored()
     {

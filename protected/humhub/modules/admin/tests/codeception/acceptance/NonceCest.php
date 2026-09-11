@@ -6,18 +6,25 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace web\acceptance;
+namespace admin\acceptance;
 
-use Exception;
-use web\AcceptanceTester;
+use admin\AcceptanceTester;
 use Yii;
 
+/**
+ * Verifies in a real browser that the Content Security Policy is enforced: an inline script
+ * without the nonce must not run, while the tracking code an admin configures does, because
+ * `TrackingWidget` renders it with the nonce of the current session.
+ *
+ * Lived in the `web` module until it was dissolved in 1.20.
+ */
 class NonceCest
 {
-    /**
-     * @param AcceptanceTester $I
-     * @throws Exception
-     */
+    public function _after(AcceptanceTester $I)
+    {
+        Yii::$app->settings->set('trackingHtmlCode', null);
+    }
+
     public function testNoNonceScript(AcceptanceTester $I)
     {
         $I->amUser();

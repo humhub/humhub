@@ -2,6 +2,79 @@
 
 Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 
+- The `web` module is gone. Its PWA part moved in the change above; the security part - the
+  headers and the Content Security Policy - is now applied by `humhub\components\Response`
+  itself and configured on that component.
+
+  | Removed | Replacement |
+  |---|---|
+  | `humhub\modules\web\Module` (module id `web`) | - |
+  | `humhub\modules\web\Events` | - |
+  | `humhub\modules\web\security\helpers\Security` | `humhub\components\Response::getNonce()`, `humhub\helpers\Html::getNonce()` |
+  | `humhub\modules\web\security\helpers\CSPBuilder` | - (the policy is configured as a plain header string) |
+  | `humhub\modules\web\security\models\SecuritySettings` | `humhub\components\Response::$defaultHeaders` |
+  | `humhub\modules\web\security\controllers\ReportController` | `humhub\controllers\CspReportController` |
+  | Route `web/security-report` | `csp-report/index` |
+  | `Security::CSP_VIOLATION_RELOAD_INTERVAL` | - |
+  | i18n category `WebModule.base` | - |
+
+  - **Configuration moved** from the module to the response component, as a flat map of header
+    name to value. The `csp` section with its per-directive arrays, the `csp-report-only`
+    section and the separate `nonce` switch are all gone:
+
+    ```php
+    // config/web.php - before
+    'modules' => [
+        'web' => [
+            'security' => [
+                'headers' => ['X-Frame-Options' => 'sameorigin', ...],
+                'csp' => ['nonce' => true],
+            ],
+        ],
+    ],
+
+    // config/web.php - after
+    'components' => [
+        'response' => [
+            'defaultHeaders' => [
+                'X-Frame-Options' => 'sameorigin',
+                'Content-Security-Policy' => "... script-src {{ nonce }} 'self' ...",
+            ],
+        ],
+    ],
+    ```
+
+    The map is not limited to security headers - any header can be configured there. Entries are
+    applied as **defaults**: a header an action set itself is left alone.
+
+    A header value may contain `{{ nonce }}`, replaced with the nonce of the current session,
+    and `{{ reportUri }}`, replaced with the URL of the report endpoint. **A header containing
+    `{{ nonce }}` is what turns nonce support on** - there is no separate switch any more, so
+    the two can no longer contradict each other. Reports are only logged when a header actually
+    points at the endpoint through `{{ reportUri }}`.
+
+    To send a policy in report-only mode, add `Content-Security-Policy-Report-Only` to the same
+    map; both header names are treated alike.
+
+  - **The policy now reaches every HTML response.** It used to be applied on
+    `Controller::EVENT_BEFORE_ACTION` for non-AJAX requests, with an `instanceof` exclusion list,
+    which left error pages without a policy - the error handler clears the response before
+    rendering one. Headers are applied in `Response::prepare()` instead, and whether a
+    `Content-Security-Policy` is sent is decided by the response `Content-Type`: HTML documents
+    get one, JSON and JavaScript responses do not. A module that renders HTML from an AJAX
+    action now gets a policy where it previously got none; inline scripts in it need a nonce,
+    which `humhub\helpers\Html` applies to every `<script>` tag it renders.
+
+  - **Removed the automatic page reload on CSP violation** (`CSP_VIOLATION_RELOAD_INTERVAL` and
+    the `securitypolicyviolation` listener in `humhub.client.js`). It reloaded the page - losing
+    unsaved input - on *any* `script-src` violation, not only on the obsolete nonce it was meant
+    to paper over. Its original trigger was fixed at the root in #7312. The nonce is no longer
+    reset on login either, so it stays valid for the lifetime of a session; this is what made
+    already-open tabs break after a re-login elsewhere.
+
+  - `humhub\helpers\Html::nonce()` and `Html::setNonce()` are unchanged. New:
+    `Html::getNonce()` returning the raw value, and `null` outside a web request.
+
 - The PWA part of the `web` module moved into the core namespace and was consolidated into a
   single controller and two services. The public URLs `/manifest.json`, `/sw.js` and
   `/offline.pwa.html` are unchanged — installed apps keep working — but every class and internal
