@@ -10,7 +10,7 @@
 namespace humhub\modules\ui\filter\widgets;
 
 use DateTime;
-use humhub\modules\ui\form\widgets\DatePicker;
+use humhub\widgets\form\DatePicker;
 use Yii;
 
 class DatePickerFilterInput extends FilterInput

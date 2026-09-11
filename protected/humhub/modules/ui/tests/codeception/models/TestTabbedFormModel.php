@@ -8,7 +8,7 @@
 
 namespace tests\codeception\models;
 
-use humhub\modules\ui\form\interfaces\TabbedFormModel;
+use humhub\interfaces\TabbedFormModel;
 use yii\base\Model;
 
 class TestTabbedFormModel extends Model implements TabbedFormModel

@@ -11,7 +11,7 @@ namespace humhub\modules\ui\filter\widgets;
 
 use humhub\components\ActiveRecord;
 use humhub\helpers\ArrayHelper;
-use humhub\modules\ui\form\widgets\BasePicker;
+use humhub\widgets\form\BasePicker;
 use Yii;
 
 class PickerFilterInput extends FilterInput
