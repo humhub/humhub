@@ -2,7 +2,7 @@
 
 namespace humhub\modules\user\widgets;
 
-use humhub\modules\stream\widgets\WallStreamFilterNavigation;
+use humhub\modules\content\widgets\stream\WallStreamFilterNavigation;
 use humhub\widgets\filter\RadioFilterInput;
 use humhub\modules\user\Module;
 use humhub\modules\user\stream\filters\IncludeAllContributionsFilter;
@@ -39,7 +39,7 @@ class ProfileStreamFilterNavigation extends WallStreamFilterNavigation
         }
 
         $this->addFilterBlock('scope', [
-            'title' => Yii::t('StreamModule.filter', 'Scope'),
+            'title' => Yii::t('ContentModule.filter', 'Scope'),
             'sortOrder' => 90,
         ], static::PANEL_COLUMN_2);
     }

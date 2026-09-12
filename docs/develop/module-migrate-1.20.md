@@ -275,8 +275,10 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     given.
 
     **`humhub\modules\ui\Module::$iconAlias` and `getIconAlias()` are gone.** An installation that
-    configured `modules.ui.iconAlias` has to move the values, otherwise the setting is rejected as
-    an unknown module property.
+    configured `modules.ui.iconAlias` has to move the values. Since the `ui` module itself was
+    removed further down this page, the old section is not rejected either - nothing reads the
+    configuration of a module id that no longer exists, so it is ignored silently and the defaults
+    apply again.
 
   - The one string of the `UiModule.icon` category — a log warning about an unregistered icon
     provider — moved to `base` with its translations in the 27 languages that had one.
@@ -444,12 +446,93 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     its single SCSS test joined the existing `ScssHelperTest`.
 
 - **`humhub\assets\FilterAsset` no longer depends on `humhub\modules\topic\assets\TopicAsset`.**
-  The dependency moved to `humhub\modules\stream\assets\StreamAsset`, where it belongs:
+  The dependency moved to `humhub\modules\content\assets\StreamAsset`, where it belongs:
   `humhub.ui.filter.js` requires only `ui.widget` and `util` and has no relationship to topics,
-  while it is `WallStreamFilterNavigation` — in the stream module — that configures a
+  while it is `WallStreamFilterNavigation` — in the content module — that configures a
   `PickerFilterInput` with `TopicPicker`.
 
   Nothing changes about the scripts a page loads: `TopicAsset` is registered by the core bundle
   directly, and the transitive dependency closure of `CoreBundleAsset` is identical before and
   after. Only a module that registers `FilterAsset` on its own *and* renders a topic picker has
   to register `TopicAsset` itself now.
+
+- **An event registered on a deprecated shim class is now redirected to its replacement.**
+  `Event::trigger()` walks the parents of the sender upwards. A deprecated shim is a *subclass*
+  of the class that replaced it, so a handler registered on the shim was never reached once the
+  core instantiated the new class — the registration failed silently: no error, no log entry, the
+  handler simply stopped running. This affected every `config.php` that named a class moved out of
+  the `ui` module in this cycle, and would have affected the stream classes below.
+
+  `ModuleManager` now maps such a class onto its parent before calling `Event::on()` and logs a
+  warning naming the module, so those registrations keep working while the shims exist. Only the
+  namespaces of dissolved modules are inspected, so no event class of an unrelated module is
+  autoloaded for it.
+
+  The redirect disappears with the shims in 1.21. Migrate the event configuration during the 1.20
+  cycle; the warning in the application log tells you which registrations are affected.
+
+- **The `stream` module is gone.** It had no controllers and no routes, and everything in it was
+  content-specific — the queries build on `ActiveQueryContent`, the filters filter content, and
+  the stream entry widgets already lived in the content module. The dependency even ran backwards:
+  `ActiveQueryContent` and `ContentSearchService` read `showDeactivatedUserContent` off the stream
+  module. It is dissolved into `content`.
+
+  | Before | After |
+  |---|---|
+  | `humhub\modules\stream\actions\*` | `humhub\modules\content\actions\*` |
+  | `humhub\modules\stream\models\*StreamQuery` | `humhub\modules\content\models\stream\*` |
+  | `humhub\modules\stream\models\filters\*` | `humhub\modules\content\models\stream\filters\*` |
+  | `humhub\modules\stream\widgets\StreamViewer` | `humhub\modules\content\widgets\stream\StreamViewer` |
+  | `humhub\modules\stream\widgets\WallStreamFilterNavigation` | `humhub\modules\content\widgets\stream\WallStreamFilterNavigation` |
+  | `humhub\modules\stream\helpers\StreamHelper` | `humhub\modules\content\helpers\StreamHelper` |
+  | `humhub\modules\stream\events\StreamResponseEvent` | `humhub\modules\content\events\StreamResponseEvent` |
+  | `humhub\modules\stream\assets\StreamAsset` | `humhub\modules\content\assets\StreamAsset` |
+  | `humhub\modules\stream\Module` (module id `stream`) | - |
+  | i18n category `StreamModule.base` | `ContentModule.base` |
+  | i18n category `StreamModule.filter` | `ContentModule.filter` |
+  | alias `@stream` | `@content` |
+
+  - **Every old class name stays available as a deprecated subclass. The shims are removed in
+    1.21** — migrate during the 1.20 cycle.
+
+  - **`Yii::$app->getModule('stream')` returns `null` and cannot be shimmed.** The four module
+    properties moved to the content module under the same names:
+
+    ```php
+    // before
+    Yii::$app->getModule('stream')->streamSuppressQueryIgnore[] = News::class;
+
+    // after
+    Yii::$app->getModule('content')->streamSuppressQueryIgnore[] = News::class;
+    ```
+
+    `streamExcludes`, `streamSuppressQueryIgnore`, `streamSuppressLimit` and
+    `showDeactivatedUserContent` are all configured on `content` now. An installation that sets
+    them in `protected/config/common.php` has to move them from the `stream` key to the `content`
+    key. A module cannot work around this with a proxy module: `$module->streamSuppressQueryIgnore[]`
+    is an indirect modification, which is lost through `__get()`.
+
+  - **The database setting moved and was renamed.** `stream.defaultSort` becomes
+    `content.defaultStreamSort` — the name the space module already uses for the same thing. A
+    migration in the content module carries the existing value over; per-space and space-module
+    defaults were never stored under `stream` and are untouched.
+
+  - **`@stream` no longer resolves.** A widget pointing `$view` at
+    `@stream/widgets/views/wallStreamFilterNavigation` has to use
+    `@content/widgets/stream/views/wallStreamFilterNavigation`. This one throws rather than failing
+    silently.
+
+  - **The deprecated `StreamAsset` is a subclass, so Yii registers it under its own name.** A page
+    that registers both the old and the new bundle emits the stream scripts twice. Register only
+    one of them.
+
+  - The JavaScript module ids (`stream`, `stream.Stream`, `stream.wall`, …) are unchanged; only
+    the files moved, to `@content/resources/js`.
+
+  - The two migrations moved into the content module, where they always belonged — both of them
+    alter the `content` table. The migration history records the class name, not the path, so
+    nothing runs again on an existing installation.
+
+  - The module's test suite moved into the content suite, so `grunt test --module=stream` no
+    longer exists. `StreamQueryTest` joins the content unit tests, `StreamCest` and `TopicCest`
+    the content acceptance tests.

@@ -11,7 +11,7 @@ namespace humhub\modules\dashboard\stream\filters;
 use Yii;
 use humhub\modules\content\models\Content;
 use humhub\modules\dashboard\Module;
-use humhub\modules\stream\models\filters\StreamQueryFilter;
+use humhub\modules\content\models\stream\filters\StreamQueryFilter;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 

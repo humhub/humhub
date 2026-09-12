@@ -2,6 +2,7 @@
 
 return [
     'Archived' => 'Diellaouet',
+    'Date "From" should be before "To"!' => '',
     'Delete' => 'Dilemel',
     'Edit' => 'Embann',
     'Public' => 'Foran',
@@ -74,6 +75,7 @@ return [
     'Select target Space/Profile.' => '',
     'Select type...' => '',
     'Share' => '',
+    'Show {i} more.' => '',
     'Specify who can see this content.' => '',
     'Submit' => '',
     'Tag' => '',
@@ -83,6 +85,7 @@ return [
     'The author of this content is not allowed to create this type of content within this space.' => '',
     'The content can\'t be moved to its current space.' => '',
     'The content cannot be published!' => '',
+    'The content could not be found.' => '',
     'The content has been archived.' => '',
     'The content has been successfully published.' => '',
     'The content has been unarchived.' => '',
@@ -108,6 +111,7 @@ return [
     'Visible to you and {displayName}' => '',
     'Visible to your friends' => '',
     'With attachments' => '',
+    'You are not allowed to view this content.' => '',
     'You cannot block the space owner!' => '',
     'You cannot block the user of the same container!' => '',
     'You cannot block yourself!' => '',

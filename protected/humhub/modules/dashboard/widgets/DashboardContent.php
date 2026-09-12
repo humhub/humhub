@@ -5,7 +5,7 @@ namespace humhub\modules\dashboard\widgets;
 use humhub\components\Widget;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\post\widgets\Form;
-use humhub\modules\stream\widgets\StreamViewer;
+use humhub\modules\content\widgets\stream\StreamViewer;
 use Yii;
 
 class DashboardContent extends Widget

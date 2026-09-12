@@ -4,7 +4,7 @@ namespace humhub\modules\content\widgets\stream;
 
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\helpers\ContentContainerHelper;
-use humhub\modules\stream\actions\Stream;
+use humhub\modules\content\actions\Stream;
 use humhub\widgets\JsWidget;
 use Yii;
 use yii\base\Exception;

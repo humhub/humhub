@@ -72,7 +72,7 @@ class ContentSearchService
             return false;
         }
 
-        if (!Yii::$app->getModule('stream')->showDeactivatedUserContent) {
+        if (!Yii::$app->getModule('content')->showDeactivatedUserContent) {
             $author = $this->content->createdBy;
             return $author && $author->status === User::STATUS_ENABLED;
         }

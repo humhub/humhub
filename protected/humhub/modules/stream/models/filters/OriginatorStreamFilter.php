@@ -2,54 +2,15 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
- *
  */
 
 namespace humhub\modules\stream\models\filters;
 
-use humhub\modules\stream\models\filters\StreamQueryFilter;
-use humhub\modules\user\models\User;
-
-class OriginatorStreamFilter extends StreamQueryFilter
+/**
+ * @deprecated since 1.20, use \humhub\modules\content\models\stream\filters\OriginatorStreamFilter instead. Will be removed in 1.21.
+ */
+class OriginatorStreamFilter extends \humhub\modules\content\models\stream\filters\OriginatorStreamFilter
 {
-    public $originators = [];
-
-    public function rules()
-    {
-        return [
-            [['originators'], 'safe'],
-        ];
-    }
-
-    public function init()
-    {
-        parent::init();
-        if ($this->streamQuery->originator) {
-            $this->originators = [$this->streamQuery->originator];
-        }
-    }
-
-    public function apply()
-    {
-
-        if (empty($this->originators)) {
-            return;
-        }
-
-        if ($this->originators instanceof User) {
-            $this->originators = [$this->originators->id];
-        } elseif (!is_array($this->originators)) {
-            $this->originators = [$this->originators];
-        }
-
-        $this->query->joinWith('contentContainer');
-
-        if (count($this->originators) === 1) {
-            $this->query->andWhere(["user.guid" => $this->originators[0]]);
-        } elseif (!empty($this->originators)) {
-            $this->query->andWhere(['IN', 'user.guid', $this->originators]);
-        }
-    }
 }

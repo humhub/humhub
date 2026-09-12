@@ -13,7 +13,7 @@ use humhub\helpers\ScssHelper;
 use humhub\helpers\ThemeHelper;
 use humhub\modules\file\validators\ImageSquareValidator;
 use humhub\modules\post\Module as PostModule;
-use humhub\modules\stream\actions\Stream;
+use humhub\modules\content\actions\Stream;
 use humhub\modules\user\models\ProfileField;
 use RuntimeException;
 use ScssPhp\ScssPhp\Compiler;
@@ -102,7 +102,7 @@ class DesignSettingsForm extends Model
         $this->displayNameSubFormat = $settingsManager->get('displayNameSubFormat');
         $this->spaceOrder = Yii::$app->getModule('space')->settings->get('spaceOrder');
         $this->dateInputDisplayFormat = Yii::$app->getModule('admin')->settings->get('defaultDateInputFormat');
-        $this->defaultStreamSort = Yii::$app->getModule('stream')->settings->get('defaultSort');
+        $this->defaultStreamSort = Yii::$app->getModule('content')->settings->get('defaultStreamSort');
         $this->postTitleMode = Yii::$app->getModule('post')->settings->get('titleMode', PostModule::TITLE_MODE_OFF);
 
         $this->themePrimaryColor = $settingsManager->get('themePrimaryColor', $themeVariables->get('primary'));
@@ -401,7 +401,7 @@ class DesignSettingsForm extends Model
         Yii::$app->getModule('space')->settings->set('spaceOrder', $this->spaceOrder);
         Yii::$app->getModule('admin')->settings->set('defaultDateInputFormat', $this->dateInputDisplayFormat);
 
-        Yii::$app->getModule('stream')->settings->set('defaultSort', $this->defaultStreamSort);
+        Yii::$app->getModule('content')->settings->set('defaultStreamSort', $this->defaultStreamSort);
         Yii::$app->getModule('post')->settings->set('titleMode', $this->postTitleMode);
 
         if ($this->logo instanceof UploadedFile) {
