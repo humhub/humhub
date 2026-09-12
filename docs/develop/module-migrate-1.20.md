@@ -522,6 +522,18 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `@content/widgets/stream/views/wallStreamFilterNavigation`. This one throws rather than failing
     silently.
 
+  - **Theme view overrides have to be moved, and this is the one change here that fails silently.**
+    Themed views are resolved by file path, so a shim cannot cover them: an override left at the old
+    path is simply never applied again — no error, no log entry, the core view is rendered instead.
+    Both views of the two moved widgets are affected:
+
+    | Before | After |
+    |---|---|
+    | `themes/<theme>/views/stream/widgets/views/wallStream.php` | `themes/<theme>/views/content/widgets/stream/views/wallStream.php` |
+    | `themes/<theme>/views/stream/widgets/views/wallStreamFilterNavigation.php` | `themes/<theme>/views/content/widgets/stream/views/wallStreamFilterNavigation.php` |
+
+    The stream entry views were already in the content module and do not move.
+
   - **The deprecated `StreamAsset` is a subclass, so Yii registers it under its own name.** A page
     that registers both the old and the new bundle emits the stream scripts twice. Register only
     one of them.

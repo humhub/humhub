@@ -212,6 +212,15 @@ The five options concerned are `streamExcludes`, `streamSuppressQueryIgnore`,
 behind, a content type you had excluded from the stream reappears, `showDeactivatedUserContent`
 returns to `true`, and the "Show more" grouping returns to two entries.
 
+**A custom theme that overrides a stream view has to follow, and this one fails silently.** Themed
+views are resolved by file path, so an override left at the old path is never applied again — no
+error, no log entry, the stock view is rendered instead. Two files are affected:
+
+| Before | After |
+|---|---|
+| `themes/<theme>/views/stream/widgets/views/wallStream.php` | `themes/<theme>/views/content/widgets/stream/views/wallStream.php` |
+| `themes/<theme>/views/stream/widgets/views/wallStreamFilterNavigation.php` | `themes/<theme>/views/content/widgets/stream/views/wallStreamFilterNavigation.php` |
+
 **The default stream sort order is migrated for you.** The value behind *Administration → Settings
 → Appearance → Default Stream Sort* was stored as a setting of the `stream` module and belongs to
 `content` now. The update moves it; there is nothing to do. The sort order configured per space, and
