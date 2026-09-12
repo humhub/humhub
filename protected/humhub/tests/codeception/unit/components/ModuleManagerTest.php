@@ -16,6 +16,8 @@ use humhub\components\ModuleManager;
 use humhub\exceptions\InvalidArgumentTypeException;
 use humhub\models\ModuleEnabled;
 use humhub\modules\admin\events\ModulesEvent;
+use humhub\modules\content\models\stream\StreamQuery;
+use humhub\modules\stream\models\StreamQuery as DeprecatedStreamQuery;
 use humhub\services\ModuleDiscoveryService;
 use humhub\services\ModuleService;
 use humhub\tests\codeception\unit\ModuleAutoLoaderTest;
@@ -55,6 +57,7 @@ class ModuleManagerTest extends HumHubDbTestCase
     private ?string $moduleClass = null;
     private ?string $moduleNS = null;
     private static array $aliases;
+    private static int $deprecatedEventHandlerCalls = 0;
     private static ModuleManager $originalModuleManager;
 
 
@@ -401,6 +404,50 @@ class ModuleManagerTest extends HumHubDbTestCase
             ],
             "class 'humhub\\tests\\codeception\\unit\\components\\ModuleManagerTest' does not have a method called 'someMethod",
         );
+    }
+
+    /**
+     * An event registered on a deprecated shim class has to end up on the class that replaced it.
+     * Event::trigger() walks the parents of the sender upwards, so a handler left on the shim -
+     * a child of the new class - would never be reached.
+     *
+     * @since 1.20
+     */
+    public function testEventOnDeprecatedShimClassIsRegisteredOnItsReplacement()
+    {
+        self::$deprecatedEventHandlerCalls = 0;
+
+        $this->moduleManager = new ModuleManagerMock();
+
+        [$basePath, $config] = $this->getModuleConfig(static::$testModuleRoot . '/module1');
+
+        $this->moduleManager->myEnabledModules()[] = $this->moduleId;
+
+        unset($config['namespace']);
+
+        $config['strict'] = true;
+        $config['events'] = [
+            [
+                'class' => DeprecatedStreamQuery::class,
+                'event' => StreamQuery::EVENT_BEFORE_FILTER,
+                'callback' => [self::class, 'onDeprecatedEvent'],
+            ],
+        ];
+
+        $this->moduleManager->register($basePath, $config);
+
+        try {
+            Event::trigger(StreamQuery::class, StreamQuery::EVENT_BEFORE_FILTER);
+
+            $this->assertSame(1, self::$deprecatedEventHandlerCalls);
+        } finally {
+            Event::off(StreamQuery::class, StreamQuery::EVENT_BEFORE_FILTER);
+        }
+    }
+
+    public static function onDeprecatedEvent(): void
+    {
+        self::$deprecatedEventHandlerCalls++;
     }
 
     /**

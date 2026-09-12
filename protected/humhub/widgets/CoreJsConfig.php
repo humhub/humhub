@@ -182,7 +182,7 @@ class CoreJsConfig extends Widget
                     'adminDeleteModalUrl' => Url::to(['/content/content/get-admin-delete-modal']),
                 ],
                 'stream' => [
-                    'defaultSort' => Yii::$app->getModule('stream')->settings->get('defaultSort', 'c'),
+                    'defaultSort' => Yii::$app->getModule('content')->settings->get('defaultStreamSort', 'c'),
                 ],
             ],
         );

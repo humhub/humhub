@@ -86,7 +86,7 @@ class ActiveQueryContent extends ActiveQuery
         $this->leftJoin('space', 'contentcontainer.pk=space.id AND contentcontainer.class=:spaceClass', [':spaceClass' => Space::class]);
         $this->leftJoin('user cuser', 'contentcontainer.pk=cuser.id AND contentcontainer.class=:userClass', [':userClass' => User::class]);
 
-        if (!Yii::$app->getModule('stream')->showDeactivatedUserContent) {
+        if (!Yii::$app->getModule('content')->showDeactivatedUserContent) {
             $this->andWhere(['user.status' => User::STATUS_ENABLED]);
         }
 

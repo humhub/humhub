@@ -8,10 +8,12 @@
 
 namespace humhub\modules\content;
 
+use humhub\modules\activity\models\Activity;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\search\driver\AbstractDriver;
 use humhub\modules\content\search\driver\MysqlDriver;
 use humhub\modules\content\search\SearchRequest;
+use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
@@ -93,6 +95,39 @@ class Module extends \humhub\components\Module
      * @since 1.18
      */
     public string $searchOrderBy = SearchRequest::ORDER_BY_SCORE;
+
+    /**
+     * @var array content classes to excludes from streams
+     * @since 1.20
+     */
+    public $streamExcludes = [];
+
+    /**
+     * @var array content classes which are not suppressed when in a row
+     * @since 1.20
+     */
+    public $streamSuppressQueryIgnore = [];
+
+    /**
+     * @var array default content classes which are not suppressed when in a row
+     * @since 1.20
+     */
+    public $defaultStreamSuppressQueryIgnore = [
+        Post::class,
+        Activity::class,
+    ];
+
+    /**
+     * @var int number of contents from which "Show more" appears in the stream
+     * @since 1.20
+     */
+    public $streamSuppressLimit = 2;
+
+    /**
+     * @var bool show contents of deactivated users in stream
+     * @since 1.20
+     */
+    public $showDeactivatedUserContent = true;
 
     /**
      * @inheritdoc

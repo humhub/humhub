@@ -10,7 +10,7 @@ namespace humhub\modules\user\widgets;
 
 use humhub\modules\post\models\Post;
 use Yii;
-use humhub\modules\stream\widgets\StreamViewer as BaseStreamViewer;
+use humhub\modules\content\widgets\stream\StreamViewer as BaseStreamViewer;
 use humhub\modules\user\models\User;
 use humhub\modules\post\permissions\CreatePost;
 

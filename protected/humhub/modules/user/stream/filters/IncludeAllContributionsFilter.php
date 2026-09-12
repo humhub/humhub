@@ -3,7 +3,7 @@
 namespace humhub\modules\user\stream\filters;
 
 use humhub\modules\space\models\Space;
-use humhub\modules\stream\models\filters\ContentContainerStreamFilter;
+use humhub\modules\content\models\stream\filters\ContentContainerStreamFilter;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
 use Yii;

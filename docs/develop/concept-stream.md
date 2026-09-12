@@ -236,7 +236,7 @@ we'll add an additional custom filter to only include content created by the cur
 
 ### StreamViewer
 
-The `humhub\modules\stream\widgets\StreamViewer` widget is used to render our custom stream. Note, the stream entries of
+The `humhub\modules\content\widgets\stream\StreamViewer` widget is used to render our custom stream. Note, the stream entries of
 a stream are loaded asynchronously and therefore will not directly be rendered by the StreamViewer widget itself. 
 The StreamViewer widget expects a `streamAction` property pointing to the controller action handling stream requests. 
 The optional `streamFilterNavigation` can be used to define a stream filter navigation widget class. 
@@ -280,7 +280,7 @@ class ContentInfoStreamFilterNavigation extends FilterNavigation
 ```
 
 In our example we render a very simple and static filter navigation, for more complex and extendable stream navigations, 
-you might want to work with separated filter blocks and panels, see `humhub\modules\stream\widgets\WallStreamFilterNavigation.`
+you might want to work with separated filter blocks and panels, see `humhub\modules\content\widgets\stream\WallStreamFilterNavigation.`
 In such cases we would register the filters within `initFilters` instead of directly rendering them in the view.
 
 **widgets\views\filterNavigation.php:**
@@ -303,7 +303,7 @@ In case you want to use another parameter you need to overwrite the `category` p
 
 ### Stream filter implementation
 
-Stream filters extend `humhub\modules\stream\models\filters\StreamQueryFilter` and can be used to add query conditions
+Stream filters extend `humhub\modules\content\models\stream\filters\StreamQueryFilter` and can be used to add query conditions
 to your stream query. In the following example we implement our `filter_my_content` filter.
 
 ```php
@@ -331,7 +331,7 @@ class OwnContentStreamFilter extends StreamQueryFilter
 
 ### Stream controller
 
-The `humhub\modules\stream\actions\Stream` is the base [controller action class](https://www.yiiframework.com/doc/guide/2.0/en/structure-controllers#standalone-actions)
+The `humhub\modules\content\actions\Stream` is the base [controller action class](https://www.yiiframework.com/doc/guide/2.0/en/structure-controllers#standalone-actions)
 for all streams responsible for handling stream results. The HumHub core provides the following default stream actions:
 
  - `ContentContainerStream`: Includes an optional content container filter and should be used for streams on container 
@@ -471,13 +471,13 @@ setting. The following example adds an `originator` filter to the wall stream:
 ```php
 return [
     [
-        'class' => \humhub\modules\stream\models\WallStreamQuery::class,
-        'event' =>  \humhub\modules\stream\models\WallStreamQuery::EVENT_BEFORE_FILTER,
+        'class' => \humhub\modules\content\models\stream\WallStreamQuery::class,
+        'event' =>  \humhub\modules\content\models\stream\WallStreamQuery::EVENT_BEFORE_FILTER,
         'callback' => ['\humhub\modules\demo\Events', 'onStreamFilterBeforeFilter'],
     ],
     [
-        'class' => \humhub\modules\stream\widgets\WallStreamFilterNavigation::class,
-        'event' =>  \humhub\modules\stream\widgets\WallStreamFilterNavigation::EVENT_BEFORE_RUN,
+        'class' => \humhub\modules\content\widgets\stream\WallStreamFilterNavigation::class,
+        'event' =>  \humhub\modules\content\widgets\stream\WallStreamFilterNavigation::EVENT_BEFORE_RUN,
         'callback' => ['\humhub\modules\demo\Events', 'onStreamFilterBeforeRun'],
     ]
 ]
