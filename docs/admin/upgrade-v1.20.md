@@ -15,6 +15,7 @@ Nothing here is about the database or the application update itself.
 │   └── assets/      ← published assets, must be writable
 ├── index.php        ← deprecated, still works
 ├── .htaccess        ← maps everything into public/
+├── config/          ← your configuration, moved up out of protected/
 ├── protected/       ┐
 ├── uploads/         ├ no longer meant to be reachable over the web
 ├── themes/          ┘
@@ -125,8 +126,11 @@ warning.
 | Document root — OK | The installation directory is not reachable over the web. |
 | Document root — error | It is reachable. Move the document root, or let the `.htaccess` map requests. |
 | Document root — warning | HumHub could not check, because the installation cannot reach itself over HTTP (split-horizon DNS, container networking). Verify by hand that the installation directory is not served. |
+| Configuration — OK | Nothing is left in the old configuration directory. |
+| Configuration — warning | `protected/config/` still holds configuration. It names the files; see the next section. |
 
-The same two findings appear in the incomplete-setup panel on the admin dashboard.
+The two document-root findings also appear in the incomplete-setup panel on the admin dashboard.
+The configuration one does not — it is a move you can take your time with.
 
 The document-root check asks the site over HTTP for a file that only exists in the installation
 directory. It only does so when the site is reached under a `/public` path segment — for a properly
@@ -171,11 +175,64 @@ more reason to move the document root instead.
 entry script in use *and* `public/` not below it. Set it in `.env` to the URL `public/` is reachable
 under. You almost certainly do not need it; Prerequisites tells you when you do.
 
+## The configuration directory moved
+
+Your local configuration now lives in `config/` in the installation directory, next to `.env`,
+instead of in `protected/config/`. Same files, one level up and out of `protected/`:
+
+```
+<installation directory>/config/
+├── common.example.php   ┐
+├── web.example.php      ├ shipped with the release, copy one to drop the `.example`
+├── console.example.php  ┘
+├── common.php           ┐
+├── web.php              ├ yours
+├── console.php          ┘
+├── dynamic.php          ← written by HumHub, moved for you
+├── messages/            ← translation overrides
+└── views/               ← view overrides
+```
+
+The three example files are new. They are commented-out starting points for the overrides most
+installations end up making — URL rewriting, view overrides, a reverse proxy, a separate console
+log. Copying one and removing the `.example` is all it takes.
+
+**Nothing breaks if you do nothing.** `protected/config/` is still read, and the new directory is
+merged on top of it, so you can move one file at a time. Support for the old location will be
+removed in a later release.
+
+**`dynamic.php` moves itself** during `php protected/yii migrate/up`. It is the file HumHub writes
+your database credentials into, so leaving it behind would mean the installer and future updates
+keep writing into a directory that is on its way out. If the move cannot happen — the new directory
+is not writable, or a `dynamic.php` is already there — the migration says so and leaves your file
+untouched.
+
+**Move the rest yourself:**
+
+```sh
+cd <installation directory>
+mv protected/config/common.php protected/config/web.php protected/config/console.php config/
+mv protected/config/messages protected/config/views config/
+```
+
+Skip what you do not have; a stock installation only ever had the three empty files, and
+Prerequisites tells you what is actually left.
+
+**`messages/` and `views/` have to move.** Unlike the configuration files these two are *not* read
+in the old location any more. Translation overrides and view overrides left in `protected/config/`
+stop being applied, without an error — the Prerequisites entry is the only sign. The `@config` alias
+you use to point at them from your configuration follows the new directory automatically.
+
+**Updating with git?** `protected/config/common.php`, `web.php` and `console.php` were part of the
+repository and are not any more, so the pull deletes them. If you edited one, git refuses to pull
+until you deal with it — copy it to `config/` first, then `git checkout -- protected/config` and
+pull again.
+
 ## Configuration changes
 
 Three core modules were dissolved in 1.20: `stream` into `content`, `web` onto the response
 component, and the last configurable part of `ui` into an application parameter. If you configured
-any of them in `protected/config/common.php` or `protected/config/web.php`, the options have moved.
+any of them in `config/common.php` or `config/web.php`, the options have moved.
 
 **A `modules` section for any of the three is ignored, without an error.** Nothing reads the
 configuration of a module id that no longer exists — there is no message in the log, nothing in
@@ -190,7 +247,7 @@ Move its options from the `stream` key to the `content` key; the option names th
 change:
 
 ```php
-// protected/config/common.php — before
+// config/common.php — before
 'modules' => [
     'stream' => [
         'showDeactivatedUserContent' => false,
@@ -235,7 +292,7 @@ arrays, the separate `csp-report-only` section and the `nonce` switch are gone �
 policy expressed that way has to be rewritten as a header string:
 
 ```php
-// protected/config/web.php — before
+// config/web.php — before
 'modules' => [
     'web' => [
         'security' => [
@@ -284,7 +341,7 @@ input — on any `script-src` violation. If your users saw sporadic reloads, tha
 parameter:
 
 ```php
-// protected/config/common.php — after
+// config/common.php — after
 'params' => ['pwa' => ['enabled' => false]],
 ```
 
@@ -295,7 +352,7 @@ parameter now. The defaults are unchanged and shipped in `protected/humhub/confi
 name the map does not cover is still used as given.
 
 ```php
-// protected/config/common.php — before
+// config/common.php — before
 'modules' => ['ui' => ['iconAlias' => ['edit' => 'pen']]],
 
 // after

@@ -46,6 +46,26 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     For layouts in which `public/` is not below the entry script, `HUMHUB_PUBLIC_URL` sets the
     URL the document root is reachable under.
 
+- **The local configuration directory moved to `<installation root>/config`**, beside the `.env`
+  file. `@config` resolves there instead of to `protected/config`, so anything addressed through
+  the alias - translation overrides under `@config/messages`, view overrides under `@config/views`,
+  a path a module builds from it - follows on its own. A module that spelled out `@app/config` or
+  `protected/config` does not, and has to be changed.
+
+  `protected/config/{common,web,console,dynamic}.php` are still loaded when they exist, with the
+  new directory merged on top, so installations keep working across the update. None of the local
+  configuration files is shipped any more - all four are optional, and the new directory holds only
+  `common.example.php`, `web.example.php` and `console.example.php`.
+
+  `params.dynamicConfigFile` names whichever `dynamic.php` is in effect and is an absolute path
+  now rather than an alias; `Yii::getAlias()` on it stays correct. A migration moves an existing
+  file into the new directory, and until it has been moved the old path stays in effect so that
+  nothing writes a second one.
+
+  The new `humhub\services\ConfigDirectoryService` answers where both directories are, what is left
+  in the old one and which dynamic configuration is in use. Administration -> Information ->
+  Prerequisites reports leftovers.
+
 - The `web` module is gone. Its PWA part moved in the change above; the security part - the
   headers and the Content Security Policy - is now applied by `humhub\components\Response`
   itself and configured on that component.
@@ -508,7 +528,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 
     `streamExcludes`, `streamSuppressQueryIgnore`, `streamSuppressLimit` and
     `showDeactivatedUserContent` are all configured on `content` now. An installation that sets
-    them in `protected/config/common.php` has to move them from the `stream` key to the `content`
+    them in `config/common.php` has to move them from the `stream` key to the `content`
     key. A module cannot work around this with a proxy module: `$module->streamSuppressQueryIgnore[]`
     is an indirect modification, which is lost through `__get()`.
 

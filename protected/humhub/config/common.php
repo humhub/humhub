@@ -7,6 +7,7 @@
  */
 
 use humhub\components\i18n\PhpMessageSource;
+use humhub\services\ConfigDirectoryService;
 use humhub\services\DocumentRootService;
 
 // TODO: Remove this line, should be already handled by BootstrapService
@@ -53,6 +54,9 @@ $logTargetConfig = [
 // The installation root. Only `public/` below it is meant to be reachable over the web.
 $rootPath = realpath(__DIR__ . '/../../../');
 
+// The aliases this file defines do not exist yet, so the service is built from the path directly.
+$configDirectory = new ConfigDirectoryService($rootPath);
+
 $config = [
     'name' => 'HumHub',
     'version' => '1.20.0-dev',
@@ -74,7 +78,7 @@ $config = [
         '@webroot' => $rootPath . DIRECTORY_SEPARATOR . DocumentRootService::PUBLIC_DIR,
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
-        '@config' => '@app/config',
+        '@config' => $configDirectory->getPath(),
         '@themes' => $rootPath . DIRECTORY_SEPARATOR . 'themes',
     ],
     'components' => [
@@ -249,7 +253,7 @@ $config = [
     'params' => [
         'installed' => false,
         'databaseDefaultStorageEngine' => 'InnoDB',
-        'dynamicConfigFile' => '@config/dynamic.php',
+        'dynamicConfigFile' => $configDirectory->getDynamicConfigFile(),
         'moduleAutoloadPaths' => ['@app/modules', '@humhub/modules'],
         'bsVersion' => 5, // Kartik Plugins
         'availableLanguages' => [
