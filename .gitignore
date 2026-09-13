@@ -14,8 +14,12 @@ protected/runtime/*
 
 node_modules
 
-protected/config/local/*
-!protected/config/local/.gitignore
+# Local configuration - only the examples are shipped
+/config/*
+!/config/*.example.php
+
+# Configuration directory of installations that predate 1.20, still read when present
+/protected/config/
 
 uploads/files/*
 !uploads/files/.gitignore

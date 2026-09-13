@@ -125,7 +125,7 @@ As of HumHub Version 1.2 [Pjax](http://pjax.herokuapp.com/) is enabled by defaul
 
 #### Disable Pjax
 
-You can disable Pjax by setting the following parameter in your `protected/config/common.php`
+You can disable Pjax by setting the following parameter in your `config/common.php`
 
 ```php
 return [

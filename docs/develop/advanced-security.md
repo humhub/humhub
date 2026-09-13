@@ -17,7 +17,7 @@ HUMHUB_CONFIG__PARAMS__INSTALLER__STATE=finished
 HUMHUB_CONFIG__COMPONENTS__ASSETMANAGER__BUNDLES_PROD=true
 ```
 
-Or via `protected/config/common.php` — see [admin → advanced configuration](https://docs.humhub.org/docs/admin/advanced-configuration).
+Or via `config/common.php` — see [admin → advanced configuration](https://docs.humhub.org/docs/admin/advanced-configuration).
 
 ## Module security
 
