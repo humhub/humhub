@@ -13,6 +13,7 @@ use yii\helpers\Url;
 /* @var $showDeleteButton bool */
 /* @var $group EditGroupForm */
 /* @var $canManage bool */
+/* @var $lockedDefaultSpaceGuids string[] */
 ?>
 
 <?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group]) ?>
@@ -30,6 +31,7 @@ use yii\helpers\Url;
         'maxSelection' => 1000,
         // Group managers should see spaces only where they are admins or owners
         'url' => $canManage ? null : Url::to(['/space/browse/search-json', 'user' => 'admin-owner']),
+        'lockedItems' => $lockedDefaultSpaceGuids,
     ]) ?>
     <?= $form->field($group, 'updateSpaceMemberships')->checkbox() ?>
     <?php $url = ($group->isNewRecord) ? null : Url::to(['/admin/group/admin-user-search', 'id' => $group->id]) ?>
