@@ -46,13 +46,12 @@ class MembershipController extends ContentContainerController
     protected function getAccessRules()
     {
         return [
-            ['permission' => [InviteUsers::class], 'actions' => ['invite']],
+            ['permission' => [InviteUsers::class], 'actions' => ['invite', 'search-invite']],
             [ContentContainerControllerAccess::RULE_LOGGED_IN_ONLY => ['revoke-membership']],
             [ContentContainerControllerAccess::RULE_USER_GROUP_ONLY => [Space::USERGROUP_MEMBER],
                 'actions' => [
                     'revoke-notifications',
                     'receive-notifications',
-                    'search-invite',
                     'switch-dashboard-display',
                 ],
             ],
