@@ -52,6 +52,19 @@ abstract class BasePicker extends JsInputWidget
     public $disabledItems;
 
     /**
+     * Item keys (values of $itemKey, e.g. guids) which are currently selected but which the
+     * current user is not allowed to remove from the selection. The picker will still display
+     * these as selected, but hides their remove ("x") control and refuses client side removal.
+     *
+     * Note: this is a UX convenience only - it does not replace server side authorization, the
+     * form/controller handling the submitted value still has to enforce this independently.
+     *
+     * @since 1.18.6
+     * @var array
+     */
+    public $lockedItems;
+
+    /**
      * Disables the picker field
      * @var bool
      */
@@ -427,6 +440,11 @@ abstract class BasePicker extends JsInputWidget
 
         if (!empty($this->disabledItems)) {
             $result['disabled-items'] = $this->disabledItems;
+        }
+
+        if (!empty($this->lockedItems)) {
+            $result['locked-items'] = $this->lockedItems;
+            $result['locked-text'] = Yii::t('UserModule.chooser', 'You are not allowed to remove this item.');
         }
 
         if ($this->maxSelection) {

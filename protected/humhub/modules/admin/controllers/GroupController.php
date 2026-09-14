@@ -139,10 +139,28 @@ class GroupController extends Controller
             }
         }
 
+        $canManage = Yii::$app->user->can(ManageGroups::class);
+
+        // Group managers (users without the global ManageGroups permission who can only manage
+        // this group because they are one of its managers) are allowed to remove default-space
+        // associations only for spaces they themselves administer/own - see
+        // EditGroupForm::updateDefaultSpaces(). Lock the pre-selected spaces they are not
+        // allowed to remove so the UI doesn't offer a removal control the backend would
+        // silently ignore for other spaces anyway.
+        $lockedDefaultSpaceGuids = [];
+        if (!$canManage) {
+            foreach ($group->defaultSpaces as $defaultSpace) {
+                if (!$defaultSpace->isAdmin(Yii::$app->user->id)) {
+                    $lockedDefaultSpaceGuids[] = $defaultSpace->guid;
+                }
+            }
+        }
+
         return $this->render('edit', [
             'group' => $group,
             'isCreateForm' => $group->isNewRecord,
-            'canManage' => Yii::$app->user->can(ManageGroups::class),
+            'canManage' => $canManage,
+            'lockedDefaultSpaceGuids' => $lockedDefaultSpaceGuids,
         ]);
     }
 
