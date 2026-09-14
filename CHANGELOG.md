@@ -16,6 +16,7 @@ HumHub Changelog
 - Fix #8451: Encode the redirect URL in the htmlRedirect view as a safe JS string so it can no longer break out of the inline <script> block
 - Fix #8458: Compare old-theme Accent/Success colors to their own defaults, not the new theme defaults, in the 1.19 migration
 - Fix #8486: Enforce InviteUsers permission on space membership search-invite to prevent member user enumeration
+- Fix #8482: Remove stray 'callback' array key from Space event config
 
 1.18.5 (August 19, 2026)
 ------------------------
