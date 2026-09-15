@@ -14,6 +14,7 @@ HumHub Changelog
 - Fix #8446: Restrict Topic management (create/rename/delete) on user profiles to the profile owner or users with full content management permissions
 - Fix #8443: Prevent silent demotion of public content to private when saved by an editor lacking CreatePublicContent permission
 - Fix #8451: Encode the redirect URL in the htmlRedirect view as a safe JS string so it can no longer break out of the inline <script> block
+- Fix #8456: Block delegated admins from self-granting admin permissions and from editing/impersonating the System Administrator account
 - Fix #8458: Compare old-theme Accent/Success colors to their own defaults, not the new theme defaults, in the 1.19 migration
 - Fix #8486: Enforce InviteUsers permission on space membership search-invite to prevent member user enumeration
 - Fix #8482: Remove stray 'callback' array key from Space event config
