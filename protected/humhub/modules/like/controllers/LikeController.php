@@ -15,6 +15,7 @@ use Yii;
 use humhub\modules\like\models\Like;
 use humhub\modules\user\widgets\UserListBox;
 use humhub\modules\content\components\ContentAddonController;
+use yii\db\IntegrityException;
 use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
 
@@ -73,7 +74,22 @@ class LikeController extends ContentAddonController
                 'object_model' => $this->contentModel,
                 'object_id' => $this->contentId,
             ]);
-            $like->save();
+
+            try {
+                $like->save();
+            } catch (IntegrityException $e) {
+                // Concurrent request may have already created this like (race on
+                // the unique-object-user index) - verify before ignoring, don't swallow other errors.
+                $record = Like::find()->where([
+                    'object_model' => $this->contentModel,
+                    'object_id' => $this->contentId,
+                    'created_by' => Yii::$app->user->id,
+                ]);
+
+                if (!$record->exists()) {
+                    throw $e;
+                }
+            }
         }
 
         return $this->actionShowLikes();

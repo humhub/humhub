@@ -17,6 +17,7 @@ HumHub Changelog
 - Fix #8458: Compare old-theme Accent/Success colors to their own defaults, not the new theme defaults, in the 1.19 migration
 - Fix #8486: Enforce InviteUsers permission on space membership search-invite to prevent member user enumeration
 - Fix #8482: Remove stray 'callback' array key from Space event config
+- Fix #8488: Add unique index on user_follow to stop race-condition follower-count inflation; catch duplicate-key errors in follow/like/friendship
 
 1.18.5 (August 19, 2026)
 ------------------------
