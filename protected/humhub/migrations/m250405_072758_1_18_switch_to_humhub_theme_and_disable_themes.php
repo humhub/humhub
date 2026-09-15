@@ -34,14 +34,15 @@ class m250405_072758_1_18_switch_to_humhub_theme_and_disable_themes extends Migr
         if ($this->currentThemeIsVariantOf('enterprise-white')) {
             $themeAfterMigration = 'enterprise-white';
             $primaryDefault = '#12a1b3';
-            $accentDefault = '#21A1B3';
+            // enterprise-white has no separate info color, it falls back to primary (see enterprise-white/scss/variables.scss)
+            $infoDefault = '#12a1b3';
         } elseif ($this->currentThemeIsVariantOf('enterprise')) {
             $themeAfterMigration = 'enterprise';
             $primaryDefault = '#2d3340';
-            $accentDefault = '#21A1B3';
+            $infoDefault = '#0582FF';
         } else {
             $primaryDefault = '#435f6f';
-            $accentDefault = '#21A1B3';
+            $infoDefault = '#0582FF';
         }
 
         // Copy Theme colors vars to the Settings manager
@@ -54,18 +55,20 @@ class m250405_072758_1_18_switch_to_humhub_theme_and_disable_themes extends Migr
             ($currentPrimary && strcasecmp((string) $currentPrimary, $primaryDefault) == 0) ? 1 : 0,
         );
 
+        // Note: pre-1.19 themes had no dedicated "accent" color, so we compare against
+        // the old theme's "info" default to detect customization, not the new accent default.
         $currentInfo = $themeVariables->get('info');
         $settingsManager->set('themeAccentColor', $currentInfo);
         $settingsManager->set(
             'useDefaultThemeAccentColor',
-            ($currentInfo && strcasecmp((string) $currentInfo, $accentDefault) == 0) ? 1 : 0,
+            ($currentInfo && strcasecmp((string) $currentInfo, $infoDefault) == 0) ? 1 : 0,
         );
 
         $currentSuccess = $themeVariables->get('success');
         $settingsManager->set('themeSuccessColor', $currentSuccess);
         $settingsManager->set(
             'useDefaultThemeSuccessColor',
-            ($currentSuccess && strcasecmp((string) $currentSuccess, '#97d271') == 0) ? 1 : 0,
+            ($currentSuccess && strcasecmp((string) $currentSuccess, '#52a11c') == 0) ? 1 : 0,
         );
 
         $currentDanger = $themeVariables->get('danger');
