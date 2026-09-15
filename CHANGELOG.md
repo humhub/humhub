@@ -19,6 +19,7 @@ HumHub Changelog
 - Fix #8486: Enforce InviteUsers permission on space membership search-invite to prevent member user enumeration
 - Fix #8482: Remove stray 'callback' array key from Space event config
 - Fix #8489: Add unique index on user_follow to stop race-condition follower-count inflation; catch duplicate-key errors in follow/like/friendship
+- Fix #8490: Prevent private Content changes and comments from being emailed to subscribers who can no longer view them
 
 1.18.5 (August 19, 2026)
 ------------------------
