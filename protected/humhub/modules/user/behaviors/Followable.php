@@ -16,6 +16,7 @@ use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Behavior;
 use yii\db\ActiveQuery;
+use yii\db\IntegrityException;
 
 /**
  * HFollowableBehavior adds following methods to HActiveRecords
@@ -81,7 +82,23 @@ class Followable extends Behavior
 
         $follow->send_notifications = $withNotifications;
 
-        return $follow->save();
+        try {
+            return $follow->save();
+        } catch (IntegrityException $e) {
+            // Concurrent request may have already created this follow (race on
+            // the unique index) - verify before treating as success, don't swallow other errors.
+            $record = Follow::find()->where([
+                'object_model' => $this->owner::class,
+                'object_id' => $this->owner->getPrimaryKey(),
+                'user_id' => $userId,
+            ]);
+
+            if (!$record->exists()) {
+                throw $e;
+            }
+
+            return true;
+        }
     }
 
     /**
