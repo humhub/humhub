@@ -9,6 +9,7 @@ use tests\codeception\_support\HumHubDbTestCase;
 use Codeception\Specify;
 use humhub\modules\post\models\Post;
 use humhub\modules\comment\models\Comment;
+use humhub\modules\space\models\Space;
 
 class CommentTest extends HumHubDbTestCase
 {
@@ -16,6 +17,11 @@ class CommentTest extends HumHubDbTestCase
 
     public function testCreateComment()
     {
+        // Post 11 is a private Post in Space 2 (id 2), followed by Admin (id 1).
+        // Admin needs to be a member of Space 2 to actually be allowed to view the
+        // private Post, otherwise the notification must not be sent to him.
+        Space::findOne(['id' => 2])->addMember(1, 1, true);
+
         $this->becomeUser('User2');
 
         $comment = new Comment([
@@ -27,7 +33,7 @@ class CommentTest extends HumHubDbTestCase
         $comment->save();
 
         $this->assertMailSent(1);
-        $this->assertEqualsLastEmailSubject('Sara Tester just commented your post "User 2 Space 2 Post Private" in space Space 2');
+        $this->assertEqualsLastEmailSubject('Sara Tester commented post "User 2 Space 2 Post Private" in space Space 2');
         $this->assertNotEmpty($comment->id);
         $this->assertNotEmpty($comment->content->getPolymorphicRelation()->getFollowersWithNotificationQuery());
 
