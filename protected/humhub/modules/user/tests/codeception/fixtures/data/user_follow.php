@@ -17,5 +17,5 @@ return [
     ['id' => '10', 'object_model' => 'humhub\modules\post\models\Post', 'object_id' => '8', 'user_id' => '1'],
     ['id' => '11', 'object_model' => 'humhub\modules\post\models\Post', 'object_id' => '9', 'user_id' => '3'],
     ['id' => '12', 'object_model' => 'humhub\modules\post\models\Post', 'object_id' => '10', 'user_id' => '1'],
-    ['id' => '13', 'object_model' => 'humhub\modules\post\models\Post', 'object_id' => '11', 'user_id' => '1'],
+    ['id' => '13', 'object_model' => 'humhub\modules\post\models\Post', 'object_id' => '11', 'user_id' => '2'],
 ];
