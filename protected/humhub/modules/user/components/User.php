@@ -140,6 +140,10 @@ class User extends \yii\web\User
 
     public function getCurrentAuthClient()
     {
+        if ($this->isGuest) {
+            return null;
+        }
+
         foreach ($this->getAuthClientUserService()->getClients() as $authClient) {
             if ($authClient->getId() == Yii::$app->session->get('currentAuthClientId')) {
                 return $authClient;
