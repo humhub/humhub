@@ -45,6 +45,7 @@ HumHub Changelog
 - Fix #8448: Destructive admin actions (remove all space members, delete profile category, reset invite link, remove licence) ran on GET via CSRF
 - Enh #8452: `docs/develop/module-migrate.md` is now only an index — each release line keeps its breaking changes in its own `module-migrate-<version>.md`, so `develop` and `next` no longer collide in a shared `Unreleased` section
 - Enh #8454: The core functional test suite could not run a single test — `FixtureHelper::_afterSuite()` unloaded fixtures against the application the Yii2 module destroys after every test, aborting the whole run; the suite also lacked the `Asserts` module
+- Fix #8484: The documented `php yii installer/...` console commands (`write-db-config`, `install-db`, `write-site-config`, `create-admin-account`, `set-base-url`, `auto`) all answered "Unknown command": the installer module config declared no `consoleControllerMap`, so its command controller was never registered
 
 1.19.0-beta.2 (August 19, 2026)
 -------------------------------
@@ -175,6 +176,12 @@ HumHub Changelog
 - Fix #8446: Restrict Topic management (create/rename/delete) on user profiles to the profile owner or users with full content management permissions
 - Fix #8443: Prevent silent demotion of public content to private when saved by an editor lacking CreatePublicContent permission
 - Fix #8451: Encode the redirect URL in the htmlRedirect view as a safe JS string so it can no longer break out of the inline <script> block
+- Fix #8456: Block delegated admins from self-granting admin permissions and from editing/impersonating the System Administrator account
+- Fix #8458: Compare old-theme Accent/Success colors to their own defaults, not the new theme defaults, in the 1.19 migration
+- Fix #8486: Enforce InviteUsers permission on space membership search-invite to prevent member user enumeration
+- Fix #8482: Remove stray 'callback' array key from Space event config
+- Fix #8489: Add unique index on user_follow to stop race-condition follower-count inflation; catch duplicate-key errors in follow/like/friendship
+- Fix #8490: Prevent private Content changes and comments from being emailed to subscribers who can no longer view them
 
 1.18.5 (August 19, 2026)
 ------------------------

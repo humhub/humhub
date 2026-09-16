@@ -144,4 +144,7 @@ X = [a-fA-F0-9]、波括弧と区切りダッシュは両方ともオプショ�
   '{nFormatted}B' => '{nFormatted}B',
   '{nFormatted}K' => '{nFormatted}K',
   '{nFormatted}M' => '{nFormatted}M',
+  'Hide password' => '',
+  'Remove' => '',
+  'Show password' => '',
 ];
