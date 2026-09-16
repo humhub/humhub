@@ -16,6 +16,7 @@ use humhub\modules\user\models\User;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
+use yii\db\IntegrityException;
 
 class LikeService
 {
@@ -89,7 +90,21 @@ class LikeService
                 $record->content_addon_record_id = new Expression('NULL');
             }
 
-            if ($record->save()) {
+            try {
+                $saved = $record->save();
+            } catch (IntegrityException $e) {
+                // Concurrent request may have already created this like (race on
+                // the unique index) - verify before ignoring, don't swallow other errors.
+                $this->reset();
+
+                if (!$this->hasLiked()) {
+                    throw $e;
+                }
+
+                return false;
+            }
+
+            if ($saved) {
                 $this->reset();
 
                 $author = $this->contentAddon->createdBy ?? $this->content->createdBy;
