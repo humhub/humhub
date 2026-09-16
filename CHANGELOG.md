@@ -20,6 +20,7 @@ HumHub Changelog
 - Fix #8482: Remove stray 'callback' array key from Space event config
 - Fix #8489: Add unique index on user_follow to stop race-condition follower-count inflation; catch duplicate-key errors in follow/like/friendship
 - Fix #8490: Prevent private Content changes and comments from being emailed to subscribers who can no longer view them
+- Fix #8493: A guest posting to the logout action (e.g. a stale tab resubmitting the logout form after the session already ended) triggered a `TypeError` in `getCurrentAuthClient()`
 
 1.18.5 (August 19, 2026)
 ------------------------
