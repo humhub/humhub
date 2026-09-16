@@ -26,6 +26,7 @@ HumHub Changelog
 - Enh #8452: `docs/develop/module-migrate.md` is now only an index — each release line keeps its breaking changes in its own `module-migrate-<version>.md`, so `develop` and `next` no longer collide in a shared `Unreleased` section
 - Enh #8454: The core functional test suite could not run a single test — `FixtureHelper::_afterSuite()` unloaded fixtures against the application the Yii2 module destroys after every test, aborting the whole run; the suite also lacked the `Asserts` module
 - Fix #8484: The documented `php yii installer/...` console commands (`write-db-config`, `install-db`, `write-site-config`, `create-admin-account`, `set-base-url`, `auto`) all answered "Unknown command": the installer module config declared no `consoleControllerMap`, so its command controller was never registered
+- Fix #8492: Concurrent requests could store a like on a content itself twice, inflating the like counter — the unique index on `like` cannot catch this, since such a like stores NULL in `content_addon_record_id` and MySQL/MariaDB treat NULLs in a unique index as distinct; likes on the same target are now serialized through the `mutex` component, re-checking after the lock
 
 1.19.0-beta.2 (August 19, 2026)
 -------------------------------

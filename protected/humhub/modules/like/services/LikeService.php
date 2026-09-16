@@ -20,6 +20,11 @@ use yii\db\IntegrityException;
 
 class LikeService
 {
+    /**
+     * @var int seconds to wait for the lock serializing concurrent likes
+     */
+    private const LOCK_TIMEOUT = 10;
+
     private readonly Content $content;
     private ?ContentAddonActiveRecord $contentAddon = null;
     private readonly ?User $user;
@@ -79,45 +84,86 @@ class LikeService
             return false;
         }
 
-        $like = $this->getCurrentLikeRecord();
+        // Serialize concurrent requests all liking the same target. The unique index
+        // on `like` cannot be relied on here: a like on the content itself stores NULL
+        // in content_addon_record_id, and MySQL/MariaDB treat NULLs in a unique index
+        // as distinct, so a duplicate row would pass unnoticed and inflate the counter.
+        $mutex = Yii::$app->mutex;
+        $lockName = $this->getLockName();
+        $locked = $mutex->acquire($lockName, self::LOCK_TIMEOUT);
 
-        if (!$like) {
-            $record = new Like();
-            $record->content_id = $this->content->id;
-            if ($this->contentAddon) {
-                $record->content_addon_record_id = RecordMap::getId($this->contentAddon);
-            } else {
-                $record->content_addon_record_id = new Expression('NULL');
-            }
-
-            try {
-                $saved = $record->save();
-            } catch (IntegrityException $e) {
-                // Concurrent request may have already created this like (race on
-                // the unique index) - verify before ignoring, don't swallow other errors.
-                $this->reset();
-
-                if (!$this->hasLiked()) {
-                    throw $e;
-                }
-
-                return false;
-            }
-
-            if ($saved) {
-                $this->reset();
-
-                $author = $this->contentAddon->createdBy ?? $this->content->createdBy;
-                NewLikeNotification::instance()->from($this->user)->about($record)->send($author);
-
-                ActivityManager::dispatch(LikedActivity::class, $record, $record->createdBy);
-
-                return true;
+        try {
+            $record = $this->createLikeRecord();
+        } finally {
+            if ($locked) {
+                $mutex->release($lockName);
             }
         }
 
+        if ($record === null) {
+            return false;
+        }
 
-        return false;
+        $this->reset();
+
+        $author = $this->contentAddon->createdBy ?? $this->content->createdBy;
+        NewLikeNotification::instance()->from($this->user)->about($record)->send($author);
+
+        ActivityManager::dispatch(LikedActivity::class, $record, $record->createdBy);
+
+        return true;
+    }
+
+    /**
+     * Creates the like record, unless the user already likes the target. Only to be
+     * called while holding the lock of [[like()]], since the check and the insert are
+     * not atomic on their own.
+     *
+     * @return Like|null the new record, or null if the target is already liked
+     */
+    private function createLikeRecord(): ?Like
+    {
+        // Re-check after waiting for the lock - a concurrent request may have
+        // created the like in the meantime
+        if ($this->getCurrentLikeRecord()) {
+            return null;
+        }
+
+        $record = new Like();
+        $record->content_id = $this->content->id;
+        if ($this->contentAddon) {
+            $record->content_addon_record_id = RecordMap::getId($this->contentAddon);
+        } else {
+            $record->content_addon_record_id = new Expression('NULL');
+        }
+
+        try {
+            return $record->save() ? $record : null;
+        } catch (IntegrityException $e) {
+            // Only reachable when the lock could not be acquired: for a like on a
+            // content addon the unique index still catches the duplicate. Verify
+            // before ignoring, don't swallow other errors.
+            $this->reset();
+
+            if (!$this->hasLiked()) {
+                throw $e;
+            }
+
+            return null;
+        }
+    }
+
+    /**
+     * @return string the lock name serializing concurrent likes on the same target
+     */
+    private function getLockName(): string
+    {
+        return sprintf(
+            'like.%d.%d.%d',
+            $this->content->id,
+            $this->contentAddon ? RecordMap::getId($this->contentAddon) : 0,
+            $this->user->id,
+        );
     }
 
     public function unlike(): bool
