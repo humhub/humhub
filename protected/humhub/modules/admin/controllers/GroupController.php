@@ -140,16 +140,18 @@ class GroupController extends Controller
         }
 
         $canManage = Yii::$app->user->can(ManageGroups::class);
+        $defaultSpaces = $group->getDefaultSpaces();
 
         // Group managers (users without the global ManageGroups permission who can only manage
         // this group because they are one of its managers) are allowed to remove default-space
         // associations only for spaces they themselves administer/own - see
         // EditGroupForm::updateDefaultSpaces(). Lock the pre-selected spaces they are not
         // allowed to remove so the UI doesn't offer a removal control the backend would
-        // silently ignore for other spaces anyway.
+        // silently ignore for other spaces anyway. SpacePickerField (BasePicker) itself takes
+        // care of rendering locked items first.
         $lockedDefaultSpaceGuids = [];
         if (!$canManage) {
-            foreach ($group->defaultSpaces as $defaultSpace) {
+            foreach ($defaultSpaces as $defaultSpace) {
                 if (!$defaultSpace->isAdmin(Yii::$app->user->id)) {
                     $lockedDefaultSpaceGuids[] = $defaultSpace->guid;
                 }
@@ -160,6 +162,7 @@ class GroupController extends Controller
             'group' => $group,
             'isCreateForm' => $group->isNewRecord,
             'canManage' => $canManage,
+            'defaultSpaces' => $defaultSpaces,
             'lockedDefaultSpaceGuids' => $lockedDefaultSpaceGuids,
         ]);
     }

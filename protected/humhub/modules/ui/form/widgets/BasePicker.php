@@ -55,6 +55,9 @@ abstract class BasePicker extends JsInputWidget
      * Item keys (values of $itemKey, e.g. guids) which are currently selected but which the
      * current user is not allowed to remove from the selection. The picker will still display
      * these as selected, but hides their remove ("x") control and refuses client side removal.
+     * Locked items are always rendered first, followed by the removable ones and then, once the
+     * user starts adding more, any newly picked items - a predictable fixed > editable > add
+     * layout, without callers having to sort their selection themselves.
      *
      * Note: this is a UX convenience only - it does not replace server side authorization, the
      * form/controller handling the submitted value still has to enforce this independently.
@@ -307,6 +310,10 @@ abstract class BasePicker extends JsInputWidget
             $this->selection = [];
         }
 
+        if (!empty($this->lockedItems)) {
+            $this->selection = $this->sortLockedItemsFirst($this->selection);
+        }
+
         $result = [];
         foreach ($this->selection as $item) {
             if (!$item) {
@@ -316,6 +323,33 @@ abstract class BasePicker extends JsInputWidget
             $result[$this->getItemKey($item)] = $this->buildItemOption($item);
         }
         return $result;
+    }
+
+    /**
+     * Sorts the given (already selected) $items so that locked items (see $lockedItems) come
+     * first, followed by the removable ones - a predictable "fixed items > editable items >
+     * add new item" layout for every picker that uses $lockedItems, rather than each usage
+     * site having to sort its selection itself. The initial render order of a multi select
+     * picker is fully determined by the order of the underlying <option> elements, so sorting
+     * here is sufficient - no client side reordering is needed.
+     *
+     * usort() is stable since PHP 8, so the relative order within the locked/removable groups
+     * themselves is preserved. Newly added items (picked via search) are unaffected, they are
+     * simply appended after the initial selection by the picker widget on the client.
+     *
+     * @param array $items
+     * @return array
+     */
+    protected function sortLockedItemsFirst(array $items): array
+    {
+        $lockedItems = $this->lockedItems;
+
+        usort($items, function ($a, $b) use ($lockedItems) {
+            return (int)!in_array($this->getItemKey($a), $lockedItems, true)
+                <=> (int)!in_array($this->getItemKey($b), $lockedItems, true);
+        });
+
+        return $items;
     }
 
     /**
