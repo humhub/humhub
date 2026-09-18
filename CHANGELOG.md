@@ -30,6 +30,7 @@ HumHub Changelog
 - Enh #8408: Highlight the stream "Show more" link on focus and move focus to newly loaded entries afterward
 - Fix #8495: The "Use SMTPS" and "Allow self-signed certificates" checkboxes of the mailing settings and of the installer's mail step ignored `isFixed()`, so on an instance that fixes `mailerUseSmtps` or `mailerAllowSelfSignedCerts` they stayed editable while every field around them was read-only, and a change silently did nothing because `SettingsManager::set()` discards writes to a fixed setting
 - Fix #8495: `ConfigTest::testFixedSettings()` asserted the nested `HUMHUB_FIXED_SETTINGS__BASE__MAILER__*` form, which still parses but yields `fixed-settings['base']['mailer'][…]` — not a setting name since the mailer settings were flattened in `m250226_125226_rename_mailer_vars`, so the test documented a form that configures nothing; it now asserts the working flat form, and the nested behaviour keeps its own test
+- Fix #8496: Retire the `themes/HumHub` directory the 1.19 move of the core theme (#8102) leaves behind in the webroot, and repair the theme setting when it still points at it
 
 1.19.0-beta.2 (August 19, 2026)
 -------------------------------
