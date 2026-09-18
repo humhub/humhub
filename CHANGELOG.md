@@ -27,6 +27,9 @@ HumHub Changelog
 - Enh #8454: The core functional test suite could not run a single test — `FixtureHelper::_afterSuite()` unloaded fixtures against the application the Yii2 module destroys after every test, aborting the whole run; the suite also lacked the `Asserts` module
 - Fix #8484: The documented `php yii installer/...` console commands (`write-db-config`, `install-db`, `write-site-config`, `create-admin-account`, `set-base-url`, `auto`) all answered "Unknown command": the installer module config declared no `consoleControllerMap`, so its command controller was never registered
 - Fix #8492: Concurrent requests could store a like on a content itself twice, inflating the like counter — the unique index on `like` cannot catch this, since such a like stores NULL in `content_addon_record_id` and MySQL/MariaDB treat NULLs in a unique index as distinct; likes on the same target are now serialized through the `mutex` component, re-checking after the lock
+- Enh #8408: Highlight the stream "Show more" link on focus and move focus to newly loaded entries afterward
+- Fix #8495: The "Use SMTPS" and "Allow self-signed certificates" checkboxes of the mailing settings and of the installer's mail step ignored `isFixed()`, so on an instance that fixes `mailerUseSmtps` or `mailerAllowSelfSignedCerts` they stayed editable while every field around them was read-only, and a change silently did nothing because `SettingsManager::set()` discards writes to a fixed setting
+- Fix #8495: `ConfigTest::testFixedSettings()` asserted the nested `HUMHUB_FIXED_SETTINGS__BASE__MAILER__*` form, which still parses but yields `fixed-settings['base']['mailer'][…]` — not a setting name since the mailer settings were flattened in `m250226_125226_rename_mailer_vars`, so the test documented a form that configures nothing; it now asserts the working flat form, and the nested behaviour keeps its own test
 
 1.19.0-beta.2 (August 19, 2026)
 -------------------------------
