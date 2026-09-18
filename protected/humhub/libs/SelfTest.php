@@ -14,6 +14,7 @@ use humhub\helpers\Html;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\ldap\helpers\LdapHelper;
 use humhub\modules\marketplace\Module;
+use humhub\services\ConfigDirectoryService;
 use humhub\services\DocumentRootProbeService;
 use humhub\services\DocumentRootService;
 use humhub\services\MailLinkService;
@@ -511,6 +512,7 @@ class SelfTest
         }
 
         $checks = self::getDocumentRootResults($checks);
+        $checks = self::getConfigDirectoryResults($checks);
 
         // Check Runtime Directory
         $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Runtime');
@@ -683,6 +685,50 @@ class SelfTest
                 'state' => 'OK',
             ];
         }
+
+        return $checks;
+    }
+
+    /**
+     * Reports configuration left in the directory below `protected/`, which 1.20 replaced with the
+     * one in the installation root.
+     *
+     * The old directory is still read, so this is a warning rather than an error, and it stays out
+     * of [[IncompleteSetupWarning]] on purpose: the transition gets a release to happen in before
+     * the dashboard asks for it in 1.21. Files HumHub itself shipped there, and the configuration
+     * files it shipped empty, are not reported - they say nothing about whether anything was moved.
+     *
+     * @param array $checks results collected so far
+     * @return array
+     * @since 1.20
+     */
+    private static function getConfigDirectoryResults(array $checks): array
+    {
+        $configDirectory = ConfigDirectoryService::instance();
+        $title = Yii::t('AdminModule.information', 'Configuration') . ' - ' . Yii::t('AdminModule.information', 'Directory');
+
+        $legacyEntries = $configDirectory->getLegacyEntries();
+
+        if ($legacyEntries === []) {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'OK',
+            ];
+
+            return $checks;
+        }
+
+        $checks[] = [
+            'title' => $title,
+            'state' => 'WARNING',
+            'hint' => Yii::t('AdminModule.information', 'The configuration directory moved to {filePath}. Move what is left in {legacyPath} there: {entries}. The old directory is still loaded, but translation overrides in {messagesDir} and view overrides in {viewsDir} are only looked up in the new location.', [
+                'filePath' => $configDirectory->getPath(),
+                'legacyPath' => $configDirectory->getLegacyPath(),
+                'entries' => implode(', ', $legacyEntries),
+                'messagesDir' => 'messages',
+                'viewsDir' => 'views',
+            ]),
+        ];
 
         return $checks;
     }

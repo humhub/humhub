@@ -11,7 +11,8 @@ use Yii;
 final class BootstrapService
 {
     private string $humhubPath = __DIR__ . '/..';
-    private string $configPath = __DIR__ . '/../../config';
+    private string $configPath = __DIR__ . '/../../../config';
+    private string $legacyConfigPath = __DIR__ . '/../../config';
     private string $vendorPath = __DIR__ . '/../../vendor';
 
     public function __construct(private readonly bool $debug = false)
@@ -21,11 +22,16 @@ final class BootstrapService
         }
     }
 
-    public function setPaths(?string $config = null, ?string $vendor = null, ?string $humhub = null): void
-    {
+    public function setPaths(
+        ?string $config = null,
+        ?string $vendor = null,
+        ?string $humhub = null,
+        ?string $legacyConfig = null,
+    ): void {
         $this->configPath = $config ?: $this->configPath;
         $this->vendorPath = $vendor ?: $this->vendorPath;
         $this->humhubPath = $humhub ?: $this->humhubPath;
+        $this->legacyConfigPath = $legacyConfig ?: $this->legacyConfigPath;
     }
 
     private function prepare()
@@ -51,22 +57,43 @@ final class BootstrapService
             require($this->humhubPath . '/config/' . $mode . '.php'),
         ];
 
+        // The configuration directory moved into the installation root in 1.20. The old one below
+        // `protected/` is still read so installations keep working across the update; the new one
+        // is merged last so a half-migrated installation can override what it has not moved yet.
         $commonConfig = [
-            require($this->configPath . '/common.php'),
-            require($this->configPath . '/' . $mode . '.php'),
+            $this->requireConfig($this->legacyConfigPath . '/common.php'),
+            $this->requireConfig($this->legacyConfigPath . '/' . $mode . '.php'),
+            $this->requireConfig($this->configPath . '/common.php'),
+            $this->requireConfig($this->configPath . '/' . $mode . '.php'),
         ];
 
-        $dynamicConfigFile = $this->configPath . '/dynamic.php';
-        $dynamicConfig = (is_readable($dynamicConfigFile)) ? require($dynamicConfigFile) : [];
+        $dynamicConfig = [
+            $this->requireConfig($this->legacyConfigPath . '/dynamic.php'),
+            $this->requireConfig($this->configPath . '/dynamic.php'),
+        ];
 
         return ConfigHelper::instance()
             ->setHumhub(...$humhubConfig)
-            ->setDynamic($dynamicConfig)
+            ->setDynamic(...$dynamicConfig)
             ->setCommon(...$commonConfig)
             ->setEnv(EnvHelper::toConfig($_ENV, $appClass))
             ->toArray();
     }
 
+    /**
+     * @return array the configuration in the given file - every local configuration file is
+     *               optional, and none of them is shipped
+     */
+    private function requireConfig(string $file): array
+    {
+        if (!is_readable($file)) {
+            return [];
+        }
+
+        $config = require($file);
+
+        return is_array($config) ? $config : [];
+    }
 
     public function runWeb(): void
     {
