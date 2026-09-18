@@ -16,11 +16,40 @@ class ConfigTest extends HumHubDbTestCase
         $this->assertEmpty(EnvHelper::toConfig($ENV));
     }
 
+    /**
+     * Each `__` starts a new level, so a setting name must be written with single underscores to reach
+     * `fixed-settings['base'][<setting>]`, which is where `SettingsManager::getFixed()` reads it.
+     */
     public function testFixedSettings()
     {
         $ENV = [
-            'HUMHUB_FIXED_SETTINGS__BASE__MAILER__DSN' => 'smtp://...',
-            'HUMHUB_FIXED_SETTINGS__BASE__MAILER__TRANSPORT_TYPE' => 'php',
+            'HUMHUB_FIXED_SETTINGS__BASE__MAILER_DSN' => 'smtp://...',
+            'HUMHUB_FIXED_SETTINGS__BASE__MAILER_TRANSPORT_TYPE' => 'php',
+            'HUMHUB_FIXED_SETTINGS__BASE__MAILER_SYSTEM_EMAIL_ADDRESS' => 'noreply@humhub.com',
+        ];
+
+        $config = [
+            'params' => [
+                'fixed-settings' => [
+                    'base' => [
+                        'mailerDsn' => 'smtp://...',
+                        'mailerTransportType' => 'php',
+                        'mailerSystemEmailAddress' => 'noreply@humhub.com',
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($config, EnvHelper::toConfig($ENV));
+    }
+
+    /**
+     * The mailer settings were flattened in 1.18 (`m250226_125226_rename_mailer_vars`): the nested form still
+     * parses, but it produces a key nothing reads, so fixing a setting that way silently has no effect.
+     */
+    public function testNestedFixedSettingsDoNotReachTheSettingName()
+    {
+        $ENV = [
             'HUMHUB_FIXED_SETTINGS__BASE__MAILER__SYSTEM_EMAIL_ADDRESS' => 'noreply@humhub.com',
         ];
 
@@ -29,8 +58,6 @@ class ConfigTest extends HumHubDbTestCase
                 'fixed-settings' => [
                     'base' => [
                         'mailer' => [
-                            'dsn' => 'smtp://...',
-                            'transportType' => 'php',
                             'systemEmailAddress' => 'noreply@humhub.com',
                         ],
                     ],
@@ -39,6 +66,10 @@ class ConfigTest extends HumHubDbTestCase
         ];
 
         $this->assertEquals($config, EnvHelper::toConfig($ENV));
+        $this->assertArrayNotHasKey(
+            'mailerSystemEmailAddress',
+            EnvHelper::toConfig($ENV)['params']['fixed-settings']['base'],
+        );
     }
 
     public function testArrayConfig()
