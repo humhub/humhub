@@ -101,6 +101,30 @@ class ConfigDirectoryServiceTest extends Unit
         );
     }
 
+    public function testAConfigurationDirectoryOutsideTheInstallationRootIsUsedAsGiven()
+    {
+        $service = new ConfigDirectoryService('/var/www/humhub', '/data/config/');
+
+        $this->assertSame('/data/config', $service->getPath());
+        $this->assertSame('/var/www/humhub/protected/config', $service->getLegacyPath());
+        $this->assertSame('/data/config/dynamic.php', $service->getDynamicConfigFile());
+    }
+
+    public function testTheDynamicConfigurationParameterIsNamedThroughTheAlias()
+    {
+        $this->assertSame('@config/dynamic.php', $this->service()->getDynamicConfigFileReference());
+    }
+
+    public function testTheDynamicConfigurationParameterNamesAnUnmovedFileAbsolutely()
+    {
+        $this->writeLegacy('dynamic.php', '<?php return ["components" => ["db" => []]];');
+
+        $this->assertSame(
+            $this->rootPath . '/protected/config/dynamic.php',
+            $this->service()->getDynamicConfigFileReference(),
+        );
+    }
+
     private function service(): ConfigDirectoryService
     {
         return new ConfigDirectoryService($this->rootPath);

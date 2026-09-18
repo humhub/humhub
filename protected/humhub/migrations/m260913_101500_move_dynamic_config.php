@@ -27,7 +27,9 @@ class m260913_101500_move_dynamic_config extends Migration
 
         $configDirectory = ConfigDirectoryService::instance();
 
-        $source = $configDirectory->getLegacyPath() . '/' . ConfigDirectoryService::DYNAMIC_CONFIG_FILE;
+        // The target follows `@config`, so an installation that keeps its configuration outside the
+        // installation root has the file moved to where it actually reads and writes it.
+        $source = $configDirectory->getLegacyDynamicConfigFile();
         $target = $configDirectory->getPath() . '/' . ConfigDirectoryService::DYNAMIC_CONFIG_FILE;
 
         if (!is_file($source)) {

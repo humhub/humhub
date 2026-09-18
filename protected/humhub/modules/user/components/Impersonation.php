@@ -26,7 +26,7 @@ use yii\base\Component;
  * receives an auto-login cookie, and ending an impersonation whose impersonator can no longer be
  * resolved logs the session out instead of silently continuing as the impersonated user.
  *
- * Configuration example (`protected/config/web.php`):
+ * Configuration example (`config/web.php`):
  *
  * ```php
  * 'components' => [
