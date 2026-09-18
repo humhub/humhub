@@ -21,9 +21,19 @@ class MutexMock extends Mutex
 
     public array $releasedLocks = [];
 
+    /**
+     * @var callable|null called while the lock is being acquired, to simulate
+     * what a concurrent request did before this one got the lock
+     */
+    public $onAcquire = null;
+
     protected function acquireLock($name, $timeout = 0)
     {
         $this->acquiredLocks[] = $name;
+
+        if ($this->onAcquire !== null) {
+            call_user_func($this->onAcquire, $name);
+        }
 
         return $this->available;
     }
