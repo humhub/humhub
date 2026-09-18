@@ -477,7 +477,13 @@
             padding: 5px;
             border-radius: 0 0 4px 4px;
             border: 1px solid var(--hh-background3);
-            font-size: 11px
+            font-size: 11px;
+
+            &:focus-visible {
+                outline: 0;
+                box-shadow: 0 0 0 2px var(--accent);
+                border-radius: 0 0 4px 4px;
+            }
         }
     }
 
