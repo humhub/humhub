@@ -163,10 +163,13 @@ HumHub Changelog
 - Fix #8451: Encode the redirect URL in the htmlRedirect view as a safe JS string so it can no longer break out of the inline <script> block
 - Fix #8456: Block delegated admins from self-granting admin permissions and from editing/impersonating the System Administrator account
 - Fix #8458: Compare old-theme Accent/Success colors to their own defaults, not the new theme defaults, in the 1.19 migration
+- Fix #8485: Prevent group managers from removing default-space associations for spaces they don't administer
 - Fix #8486: Enforce InviteUsers permission on space membership search-invite to prevent member user enumeration
 - Fix #8482: Remove stray 'callback' array key from Space event config
 - Fix #8489: Add unique index on user_follow to stop race-condition follower-count inflation; catch duplicate-key errors in follow/like/friendship
 - Fix #8490: Prevent private Content changes and comments from being emailed to subscribers who can no longer view them
+- Fix #8493: A guest posting to the logout action (e.g. a stale tab resubmitting the logout form after the session already ended) triggered a `TypeError` in `getCurrentAuthClient()`
+- Fix #8499: Encode the fieldset legend and class attribute rendered by the compat `HForm`
 
 1.18.5 (August 19, 2026)
 ------------------------
