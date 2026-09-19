@@ -310,16 +310,16 @@ abstract class BasePicker extends JsInputWidget
             $this->selection = [];
         }
 
+        // Note: sorting works on a local copy, $this->selection is a public property owned
+        // by the caller and must not be reordered or re-keyed behind its back.
+        $selection = array_filter($this->selection);
+
         if (!empty($this->lockedItems)) {
-            $this->selection = $this->sortLockedItemsFirst($this->selection);
+            $selection = $this->sortLockedItemsFirst($selection);
         }
 
         $result = [];
-        foreach ($this->selection as $item) {
-            if (!$item) {
-                continue;
-            }
-
+        foreach ($selection as $item) {
             $result[$this->getItemKey($item)] = $this->buildItemOption($item);
         }
         return $result;
@@ -342,14 +342,36 @@ abstract class BasePicker extends JsInputWidget
      */
     protected function sortLockedItemsFirst(array $items): array
     {
-        $lockedItems = $this->lockedItems;
-
-        usort($items, function ($a, $b) use ($lockedItems) {
-            return (int)!in_array($this->getItemKey($a), $lockedItems, true)
-                <=> (int)!in_array($this->getItemKey($b), $lockedItems, true);
+        usort($items, function ($a, $b) {
+            return (int)!$this->isLockedItem($a) <=> (int)!$this->isLockedItem($b);
         });
 
         return $items;
+    }
+
+    /**
+     * Checks whether the given item is locked, meaning the current user is not allowed to
+     * remove it from the selection again (see $lockedItems).
+     *
+     * Item keys are compared as strings: they end up as <option value> attributes on the
+     * client and are therefore strings there in any case, while $lockedItems is typically
+     * built from model attributes and may well contain integers (e.g. the default
+     * $itemKey = 'id').
+     *
+     * @param mixed $item
+     * @return bool
+     */
+    protected function isLockedItem($item): bool
+    {
+        return in_array((string)$this->getItemKey($item), $this->getLockedItemKeys(), true);
+    }
+
+    /**
+     * @return string[] $lockedItems normalized to strings, see isLockedItem()
+     */
+    protected function getLockedItemKeys(): array
+    {
+        return array_map('strval', (array)$this->lockedItems);
     }
 
     /**
@@ -477,7 +499,7 @@ abstract class BasePicker extends JsInputWidget
         }
 
         if (!empty($this->lockedItems)) {
-            $result['locked-items'] = $this->lockedItems;
+            $result['locked-items'] = $this->getLockedItemKeys();
             $result['locked-text'] = Yii::t('UserModule.chooser', 'You are not allowed to remove this item.');
         }
 

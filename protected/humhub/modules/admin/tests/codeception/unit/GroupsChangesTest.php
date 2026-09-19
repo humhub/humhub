@@ -7,8 +7,11 @@ use humhub\modules\admin\models\forms\UserEditForm;
 use humhub\modules\admin\notifications\ExcludeGroupNotification;
 use humhub\modules\admin\notifications\IncludeGroupNotification;
 use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\space\models\Space;
 use humhub\modules\user\models\forms\EditGroupForm;
 use humhub\modules\user\models\Group;
+use humhub\modules\user\models\GroupSpace;
+use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
@@ -134,5 +137,80 @@ class GroupsChangesTest extends HumHubDbTestCase
 
         $this->assertSentEmail(1);
         $this->assertEqualsLastEmailSubject($notify->getMailSubject());
+    }
+
+    /**
+     * Builds a group managed by User1 with the given default spaces, without going through
+     * EditGroupForm - the form is the code under test here, and creating the fixture through
+     * it would require switching users, which the shared test setup doesn't support: the
+     * permission manager stays bound to the identity it was first created for.
+     */
+    private function createManagedGroup(array $defaultSpaceIds = []): EditGroupForm
+    {
+        $group = new Group(['name' => 'DefaultSpaceGroup']);
+        $this->assertTrue($group->save());
+
+        $groupUser = new GroupUser([
+            'group_id' => $group->id,
+            'user_id' => 2, // User1
+            'is_group_manager' => true,
+        ]);
+        $this->assertTrue($groupUser->save());
+
+        foreach ($defaultSpaceIds as $spaceId) {
+            $groupSpace = new GroupSpace(['group_id' => $group->id, 'space_id' => $spaceId]);
+            $this->assertTrue($groupSpace->save());
+        }
+
+        $managedGroup = EditGroupForm::findOne(['id' => $group->id]);
+        $this->assertEquals(EditGroupForm::SCENARIO_MANAGER, $managedGroup->getScenario());
+
+        return $managedGroup;
+    }
+
+    public function testGroupManagerCanOnlyRemoveDefaultSpacesHeAdministers()
+    {
+        $this->becomeUser('User1');
+
+        // User1 is not a member of Space 1 at all, but admin of Space 2
+        $foreignSpace = Space::findOne(['id' => 1]);
+        $ownSpace = Space::findOne(['id' => 2]);
+
+        $managedGroup = $this->createManagedGroup([$foreignSpace->id, $ownSpace->id]);
+
+        $this->assertFalse($managedGroup->canManageDefaultSpace($foreignSpace));
+        $this->assertTrue($managedGroup->canManageDefaultSpace($ownSpace));
+        // A no longer existing space must stay removable so leftover rows can be cleaned up
+        $this->assertTrue($managedGroup->canManageDefaultSpace(null));
+
+        // Try to drop both default spaces
+        $managedGroup->defaultSpaceGuid = [];
+        $this->assertTrue($managedGroup->save());
+
+        // Only the space the manager administers himself may be removed
+        $remainingSpaceIds = GroupSpace::find()
+            ->select('space_id')
+            ->where(['group_id' => $managedGroup->id])
+            ->column();
+        $this->assertEquals([$foreignSpace->id], array_map('intval', $remainingSpaceIds));
+    }
+
+    public function testGroupManagerCanOnlyAddDefaultSpacesHeAdministers()
+    {
+        $this->becomeUser('User1');
+
+        $foreignSpace = Space::findOne(['id' => 1]);
+        $ownSpace = Space::findOne(['id' => 2]);
+
+        $managedGroup = $this->createManagedGroup();
+
+        $managedGroup->defaultSpaceGuid = [$foreignSpace->guid, $ownSpace->guid];
+        $this->assertTrue($managedGroup->save());
+
+        $addedSpaceIds = GroupSpace::find()
+            ->select('space_id')
+            ->where(['group_id' => $managedGroup->id])
+            ->column();
+        $this->assertEquals([$ownSpace->id], array_map('intval', $addedSpaceIds));
     }
 }
