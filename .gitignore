@@ -70,3 +70,6 @@ favicon.ico
 /protected/humhub/resources/js/humhub-app.js
 /protected/humhub/resources/js/humhub-bundle.js
 /protected/humhub/config/assets-prod.php
+
+# Local design specs and notes (not part of the distribution)
+/docs/superpowers/

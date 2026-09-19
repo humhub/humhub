@@ -150,11 +150,13 @@ class ThemeHelper
 
     /**
      * @param Theme $theme
+     * @param bool $includeCustomScss whether the variables of the Custom SCSS overwrite the ones of the theme files
      * @return array
-     * @throws SassException if syntax error in the custom SCSS
-     * @throws RuntimeException if the custom SCSS is malformed
+     * @throws SassException if syntax error in the custom SCSS, only when $includeCustomScss is true
+     * @throws RuntimeException if the custom SCSS is malformed, only when $includeCustomScss is true -
+     *                          reading without it is free of both, which is the point of the parameter
      */
-    public static function getAllVariables(Theme $theme): array
+    public static function getAllVariables(Theme $theme, bool $includeCustomScss = true): array
     {
         // Get variables from theme files
         $variables = ScssHelper::getVariables(Yii::getAlias('@humhub/resources/scss/variables.scss'));
@@ -165,12 +167,14 @@ class ThemeHelper
             );
         }
 
-        // Overwrite with custom variables from DesignSettingsForm
-        $settingsManager = Yii::$app->settings; // Don't use `new DesignSettingsForm()` as it would make an infinite loop
-        [$customVariables, $customMaps, $otherCustomScss] = ScssHelper::extractVariablesAndMaps(
-            $settingsManager->get('themeCustomScss'),
-        );
-        $variables = ArrayHelper::merge($variables, ScssHelper::parseVariables($customVariables));
+        if ($includeCustomScss) {
+            // Overwrite with custom variables from DesignSettingsForm
+            $settingsManager = Yii::$app->settings; // Don't use `new DesignSettingsForm()` as it would make an infinite loop
+            [$customVariables, $customMaps, $otherCustomScss] = ScssHelper::extractVariablesAndMaps(
+                $settingsManager->get('themeCustomScss'),
+            );
+            $variables = ArrayHelper::merge($variables, ScssHelper::parseVariables($customVariables));
+        }
 
         return ScssHelper::updateLinkedScssVariables($variables);
     }
