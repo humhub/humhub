@@ -48,6 +48,11 @@ HumHub Changelog
 - Enh #8452: `docs/develop/module-migrate.md` is now only an index — each release line keeps its breaking changes in its own `module-migrate-<version>.md`, so `develop` and `next` no longer collide in a shared `Unreleased` section
 - Enh #8454: The core functional test suite could not run a single test — `FixtureHelper::_afterSuite()` unloaded fixtures against the application the Yii2 module destroys after every test, aborting the whole run; the suite also lacked the `Asserts` module
 - Fix #8484: The documented `php yii installer/...` console commands (`write-db-config`, `install-db`, `write-site-config`, `create-admin-account`, `set-base-url`, `auto`) all answered "Unknown command": the installer module config declared no `consoleControllerMap`, so its command controller was never registered
+- Fix #8492: Concurrent requests could store a like on a content itself twice, inflating the like counter — the unique index on `like` cannot catch this, since such a like stores NULL in `content_addon_record_id` and MySQL/MariaDB treat NULLs in a unique index as distinct; likes on the same target are now serialized through the `mutex` component, re-checking after the lock
+- Enh #8408: Highlight the stream "Show more" link on focus and move focus to newly loaded entries afterward
+- Fix #8495: The "Use SMTPS" and "Allow self-signed certificates" checkboxes of the mailing settings and of the installer's mail step ignored `isFixed()`, so on an instance that fixes `mailerUseSmtps` or `mailerAllowSelfSignedCerts` they stayed editable while every field around them was read-only, and a change silently did nothing because `SettingsManager::set()` discards writes to a fixed setting
+- Fix #8495: `ConfigTest::testFixedSettings()` asserted the nested `HUMHUB_FIXED_SETTINGS__BASE__MAILER__*` form, which still parses but yields `fixed-settings['base']['mailer'][…]` — not a setting name since the mailer settings were flattened in `m250226_125226_rename_mailer_vars`, so the test documented a form that configures nothing; it now asserts the working flat form, and the nested behaviour keeps its own test
+- Fix #8496: Retire the `themes/HumHub` directory the 1.19 move of the core theme (#8102) leaves behind in the webroot, and repair the theme setting when it still points at it
 
 1.19.0-beta.2 (August 19, 2026)
 -------------------------------
@@ -180,10 +185,13 @@ HumHub Changelog
 - Fix #8451: Encode the redirect URL in the htmlRedirect view as a safe JS string so it can no longer break out of the inline <script> block
 - Fix #8456: Block delegated admins from self-granting admin permissions and from editing/impersonating the System Administrator account
 - Fix #8458: Compare old-theme Accent/Success colors to their own defaults, not the new theme defaults, in the 1.19 migration
+- Fix #8485: Prevent group managers from removing default-space associations for spaces they don't administer
 - Fix #8486: Enforce InviteUsers permission on space membership search-invite to prevent member user enumeration
 - Fix #8482: Remove stray 'callback' array key from Space event config
 - Fix #8489: Add unique index on user_follow to stop race-condition follower-count inflation; catch duplicate-key errors in follow/like/friendship
 - Fix #8490: Prevent private Content changes and comments from being emailed to subscribers who can no longer view them
+- Fix #8493: A guest posting to the logout action (e.g. a stale tab resubmitting the logout form after the session already ended) triggered a `TypeError` in `getCurrentAuthClient()`
+- Fix #8499: Encode the fieldset legend and class attribute rendered by the compat `HForm`
 
 1.18.5 (August 19, 2026)
 ------------------------
