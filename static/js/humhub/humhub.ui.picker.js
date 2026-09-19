@@ -40,7 +40,11 @@ humhub.module('ui.picker', function (module, require, $) {
             theme: "humhub",
             multiple: that.$.data('multiple'),
             tags: that.$.data('tags'),
-            allowClear: true,
+            // Select2 aborts a "remove all" as a whole as soon as a single unselect is
+            // prevented (allowClear.js: _handleClear restores the previous value and
+            // returns), so with locked items present the control could only ever be a
+            // silent no-op - don't offer it at all in that case.
+            allowClear: !(that.$.data('locked-items') || []).length,
             templateSelection: $.proxy(that.templateSelection, that),
             templateResult: $.proxy(that.templateResult, that),
             sorter: that.sortResults,
@@ -129,6 +133,8 @@ humhub.module('ui.picker', function (module, require, $) {
         return results;
     };
 
+    var _searchRemoveChoicePatched = false;
+
     /**
      * Initializes the select2 widget for the given $node with the given $options.
      *
@@ -139,15 +145,37 @@ humhub.module('ui.picker', function (module, require, $) {
     var _initSelect2 = function ($node, options) {
         // This is a patch for removing select items by backspace see: https://github.com/select2/select2/issues/3354
         $.fn.select2.amd.require(['select2/selection/search'], function (Search) {
-            var oldRemoveChoice = Search.prototype.searchRemoveChoice;
+            // The prototype is shared by every picker on the page, so it may only be wrapped
+            // once - wrapping it per init would stack one wrapper per initialised picker
+            // (growing further with every pjax page load) and each of them would close the
+            // $node captured at its own init rather than the picker actually being edited.
+            // this.$element is the select the Search instance belongs to.
+            if (!_searchRemoveChoicePatched) {
+                _searchRemoveChoicePatched = true;
 
-            Search.prototype.searchRemoveChoice = function () {
-                oldRemoveChoice.apply(this, arguments);
-                this.$search.val('');
-                $node.select2('close');
-            };
+                var oldRemoveChoice = Search.prototype.searchRemoveChoice;
+
+                Search.prototype.searchRemoveChoice = function () {
+                    oldRemoveChoice.apply(this, arguments);
+                    this.$search.val('');
+                    this.$element.select2('close');
+                };
+            }
 
             var select2 = $node.select2(options).data('select2');
+
+            // Refuse client side removal of locked items (e.g. via backspace in the
+            // search field, which bypasses the templateSelection close icon entirely).
+            // This mirrors the visual lock in templateSelection and is itself only a
+            // UX safeguard - the actual authorization has to happen server side.
+            if (options.lockedItems && object.isArray(options.lockedItems) && options.lockedItems.length) {
+                $node.on('select2:unselecting', function (evt) {
+                    var data = evt.params && evt.params.args && evt.params.args.data;
+                    if (data && Widget.instance($node).isLockedItem(data)) {
+                        evt.preventDefault();
+                    }
+                });
+            }
 
             // Get sure our placeholder is rendered when focus out
             select2.$container.on('focusout', function () {
@@ -263,6 +291,7 @@ humhub.module('ui.picker', function (module, require, $) {
         selectionWithImage: '{imageNodeSelected}<span class="picker-text with-image"></span>',
         selectionNoImage: '<span class="picker-text no-image"></span>',
         selectionClear: ' <i class="fa fa-times-circle picker-close" role="button" tabindex="0"></i>',
+        selectionLocked: ' <i class="fa fa-lock picker-locked"></i>',
         result: '<a href="#" tabindex="-1" style="display:flex; align-items:start; margin-right:5px;">{imageNode} <span class="picker-content"><span class="picker-text"></span><span class="picker-subtext"></span></span></a>',
         resultDisabled: '<a href="#" title="{disabledText}" data-placement="right" tabindex="-1" style="display:flex; align-items:start; margin-right:5px;opacity: 0.4;cursor:not-allowed">{imageNode} <span class="picker-content"><span class="picker-text"></span><span class="picker-subtext"></span></span></a>',
         imageNode: '<img class="rounded" src="{image}" alt="" style="width:40px;height:40px;"  height="40" width="40">',
@@ -364,9 +393,22 @@ humhub.module('ui.picker', function (module, require, $) {
     Picker.prototype.templateSelection = function (item, container) {
         this.prepareItem(item);
 
+        var locked = this.isLockedItem(item);
+
         var selectionTmpl = (item.image && !item.new) ? Picker.template.selectionWithImage : Picker.template.selectionNoImage;
 
-        if (this.$.data('clearable') || this.$.data('clearable') === undefined) {
+        if (locked) {
+            // Item may not be removed by the current user: show a lock indicator
+            // instead of the close icon and skip wiring up any removal handlers.
+            //
+            // Select2 sets the <li> title from `selection.title` (falling back to the item
+            // text) right after this template runs, so assigning it here is enough to
+            // explain the lock on hover - no extra tooltip handling needed. It also goes
+            // through .attr() rather than a template string, so the translated text can't
+            // break out of the attribute.
+            item.title = this.$.data('locked-text') || item.text;
+            selectionTmpl += Picker.template.selectionLocked;
+        } else if (this.$.data('clearable') || this.$.data('clearable') === undefined) {
             selectionTmpl += Picker.template.selectionClear;
         }
 
@@ -374,6 +416,10 @@ humhub.module('ui.picker', function (module, require, $) {
 
         var test = $result.find('.picker-text');
         $result.filter('.picker-text').text(item.text);
+
+        if (locked) {
+            return $result;
+        }
 
         // Initialize item close button.
         //
@@ -517,7 +563,7 @@ humhub.module('ui.picker', function (module, require, $) {
 
     Picker.prototype.remove = function (id) {
         var values = this.val();
-        if (this.isSelected(id)) {
+        if (this.isSelected(id) && !this.isLockedValue(id)) {
             values.splice(values.indexOf(id), 1);
             this.$.val(values).trigger('change');
         }
@@ -530,12 +576,18 @@ humhub.module('ui.picker', function (module, require, $) {
      * @returns {undefined}
      */
     Picker.prototype.deselect = function (id) {
+        if (this.isLockedValue(id)) {
+            return;
+        }
+
         this.getOption(id).remove();
         this.$.trigger('change');
     };
 
     Picker.prototype.clear = function (triggerChange) {
-        this.$.val(null);
+        var lockedValues = this.lockedValues();
+
+        this.$.val(lockedValues.length ? lockedValues : null);
 
         if (triggerChange !== false) {
             this.triggerChange();
@@ -562,7 +614,9 @@ humhub.module('ui.picker', function (module, require, $) {
     };
 
     Picker.prototype.reset = function () {
-        this.$.val('');
+        var lockedValues = this.lockedValues();
+
+        this.$.val(lockedValues.length ? lockedValues : '');
         this.$.trigger('change');
     };
 
@@ -606,6 +660,58 @@ humhub.module('ui.picker', function (module, require, $) {
 
     Picker.prototype.isDisabledItem = function (item) {
         return (this.options.disabledItems && object.isArray(this.options.disabledItems) && this.options.disabledItems.indexOf(item.id) >= 0);
+    };
+
+    /**
+     * Checks whether the given (currently selected) item is locked, meaning the current
+     * user is not allowed to remove it from the selection again. This is a client side UX
+     * safeguard only, the server has to enforce this independently.
+     *
+     * @param {type} item
+     * @returns {Boolean}
+     */
+    Picker.prototype.isLockedItem = function (item) {
+        return item ? this.isLockedValue(item.id) : false;
+    };
+
+    /**
+     * Checks whether the option with the given id (value) is locked, see isLockedItem().
+     *
+     * Ids are compared as strings: an option value read from the DOM is always a string,
+     * while lockedItems may well have been handed in as numbers (e.g. record ids).
+     *
+     * @param {type} id
+     * @returns {Boolean}
+     */
+    Picker.prototype.isLockedValue = function (id) {
+        var lockedItems = this.options.lockedItems;
+
+        if (!lockedItems || !object.isArray(lockedItems) || !lockedItems.length) {
+            return false;
+        }
+
+        return lockedItems.some(function (lockedId) {
+            return String(lockedId) === String(id);
+        });
+    };
+
+    /**
+     * Returns the currently selected values which are locked and therefore have to survive
+     * a clear/reset, see isLockedItem().
+     *
+     * @returns {Array}
+     */
+    Picker.prototype.lockedValues = function () {
+        var that = this;
+        var values = this.val();
+
+        if (!object.isArray(values)) {
+            values = (values === null || values === undefined || values === '') ? [] : [values];
+        }
+
+        return values.filter(function (id) {
+            return that.isLockedValue(id);
+        });
     };
 
     var init = function () {
