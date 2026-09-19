@@ -133,6 +133,8 @@ humhub.module('ui.picker', function (module, require, $) {
         return results;
     };
 
+    var _searchRemoveChoicePatched = false;
+
     /**
      * Initializes the select2 widget for the given $node with the given $options.
      *
@@ -143,13 +145,22 @@ humhub.module('ui.picker', function (module, require, $) {
     var _initSelect2 = function ($node, options) {
         // This is a patch for removing select items by backspace see: https://github.com/select2/select2/issues/3354
         $.fn.select2.amd.require(['select2/selection/search'], function (Search) {
-            var oldRemoveChoice = Search.prototype.searchRemoveChoice;
+            // The prototype is shared by every picker on the page, so it may only be wrapped
+            // once - wrapping it per init would stack one wrapper per initialised picker
+            // (growing further with every pjax page load) and each of them would close the
+            // $node captured at its own init rather than the picker actually being edited.
+            // this.$element is the select the Search instance belongs to.
+            if (!_searchRemoveChoicePatched) {
+                _searchRemoveChoicePatched = true;
 
-            Search.prototype.searchRemoveChoice = function () {
-                oldRemoveChoice.apply(this, arguments);
-                this.$search.val('');
-                $node.select2('close');
-            };
+                var oldRemoveChoice = Search.prototype.searchRemoveChoice;
+
+                Search.prototype.searchRemoveChoice = function () {
+                    oldRemoveChoice.apply(this, arguments);
+                    this.$search.val('');
+                    this.$element.select2('close');
+                };
+            }
 
             var select2 = $node.select2(options).data('select2');
 
