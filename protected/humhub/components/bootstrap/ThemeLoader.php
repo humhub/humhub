@@ -9,9 +9,8 @@
 namespace humhub\components\bootstrap;
 
 use humhub\components\console\Application as ConsoleApplication;
-use humhub\components\InstallationState;
 use humhub\components\Theme;
-use humhub\helpers\ThemeHelper;
+use humhub\services\ActiveThemeService;
 use Yii;
 use yii\base\BootstrapInterface;
 use yii\base\Theme as BaseTheme;
@@ -35,17 +34,12 @@ class ThemeLoader implements BootstrapInterface
             return;
         }
 
-        if ($app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
-            $themePath = $app->settings->get('theme');
-            if (!empty($themePath) && is_dir($themePath)) {
-                $theme = ThemeHelper::getThemeByPath($themePath);
+        $theme = ActiveThemeService::getTheme();
 
-                if ($theme !== null) {
-                    self::mergeConfiguredPathMap($app->view->theme, $theme);
-                    $app->view->theme = $theme;
-                    $app->mailer->view->theme = $theme;
-                }
-            }
+        if ($theme !== null) {
+            self::mergeConfiguredPathMap($app->view->theme, $theme);
+            $app->view->theme = $theme;
+            $app->mailer->view->theme = $theme;
         }
 
         if (

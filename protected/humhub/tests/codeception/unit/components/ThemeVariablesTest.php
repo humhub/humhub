@@ -9,17 +9,19 @@
 namespace humhub\tests\codeception\unit\components;
 
 use humhub\components\Theme;
-use humhub\models\Setting;
+use humhub\components\ThemeVariables;
+use humhub\services\ActiveThemeService;
 use ReflectionProperty;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
 use yii\helpers\FileHelper;
 
 /**
- * Tests the on-demand population of theme variables into the settings
- * manager, especially its behaviour under concurrent requests.
+ * The variables of the active theme are read from the single `theme.state` setting;
+ * any other theme is read from its SCSS files and never persisted, so that setting
+ * stays a single row.
  *
- * @see \humhub\components\ThemeVariables::ensureLoaded()
+ * @see ThemeVariables
  */
 class ThemeVariablesTest extends HumHubDbTestCase
 {
@@ -39,6 +41,9 @@ class ThemeVariablesTest extends HumHubDbTestCase
         file_put_contents($this->themeBase . '/scss/variables.scss', '$primary: #123456;');
 
         parent::_before();
+
+        Yii::$app->settings->set('theme', Theme::CORE_THEME_NAME);
+        ActiveThemeService::flush();
     }
 
     protected function _after()
@@ -47,86 +52,88 @@ class ThemeVariablesTest extends HumHubDbTestCase
             FileHelper::removeDirectory($this->themeBase);
         }
 
+        // The settings are restored by the fixtures, the memos of the service are not -
+        // they would otherwise carry a manipulated state into every following test file
+        ActiveThemeService::flush();
+
         parent::_after();
     }
 
     /**
-     * Builds a ThemeVariables instance for a temporary theme. Parent themes
-     * are forced to an empty list so neither the database nor the real
-     * `themes/` directory is consulted during the test.
+     * Builds a ThemeVariables instance for a temporary theme that is not the active one.
+     * Its variables come from the temporary `variables.scss` alone: the theme declares no
+     * `baseTheme`, so the tree {@see \humhub\helpers\ThemeHelper::getAllVariables()} walks
+     * is the theme itself.
      */
-    private function makeThemeVariables(): ThemeVariablesMock
+    private function makeNonActiveThemeVariables(): ThemeVariables
     {
-        $theme = new Theme(['name' => static::THEME_NAME, 'basePath' => $this->themeBase]);
-
-        $parents = new ReflectionProperty(Theme::class, 'parents');
-        $parents->setValue($theme, []);
-
-        return new ThemeVariablesMock(['theme' => $theme]);
-    }
-
-    public function testStoresVariablesWhenEmpty()
-    {
-        $variables = $this->makeThemeVariables();
-
-        $this->assertEquals('#123456', $variables->get('primary'));
-        $this->assertEquals(1, $variables->storeCount);
-        $this->assertRecordExists(Setting::tableName(), [
-            'name' => 'theme.var.' . static::THEME_NAME . '.primary',
-            'module_id' => 'base',
+        return new ThemeVariables([
+            'theme' => new Theme(['name' => static::THEME_NAME, 'basePath' => $this->themeBase]),
         ]);
-
-        // Further reads must not trigger another store
-        $variables->get('primary');
-        $this->assertEquals(1, $variables->storeCount);
     }
 
-    public function testStoreVariablesRunsUnderMutex()
+    public function testReadsTheActiveThemeFromTheState()
     {
-        $mutex = new MutexMock();
-        Yii::$app->set('mutex', $mutex);
+        // A value that cannot come from the SCSS files, so reading it proves the state
+        // is the source rather than a live read that happens to agree
+        $state = ActiveThemeService::getState();
+        $state['vars']['primary'] = '#feedee';
+        Yii::$app->settings->setSerialized(ActiveThemeService::SETTING_KEY, $state);
 
-        $variables = $this->makeThemeVariables();
-        $variables->get('primary');
+        // Drop the in-request memos so the manipulated row is read back. `resolved` has
+        // to go with `state`, otherwise the service short-circuits to null instead
+        (new ReflectionProperty(ActiveThemeService::class, 'state'))->setValue(null, null);
+        (new ReflectionProperty(ActiveThemeService::class, 'resolved'))->setValue(null, false);
 
-        $this->assertEquals(1, $variables->storeCount);
-        $this->assertCount(1, $mutex->acquiredLocks);
-        $this->assertStringContainsString(static::THEME_NAME, $mutex->acquiredLocks[0]);
-        $this->assertEquals($mutex->acquiredLocks, $mutex->releasedLocks);
+        $variables = new ThemeVariables(['theme' => ActiveThemeService::getTheme()]);
+
+        $this->assertSame('#feedee', $variables->get('primary'));
     }
 
-    public function testSkipsStoreWhenConcurrentlyPopulated()
+    public function testReadsANonActiveThemeLiveWithoutPersistingIt()
     {
-        // Make sure the settings manager runtime cache is initialized,
-        // so it is stale after the direct insert below
-        Yii::$app->settings->get('name');
+        // Materialize the state of the active theme first, so the comparison below sees
+        // the read of the non-active theme and not the one row the service legitimately
+        // writes for the active one
+        ActiveThemeService::getState();
+        $stateBefore = Yii::$app->settings->getSerialized(ActiveThemeService::SETTING_KEY);
 
-        // Simulate a concurrent request having stored the variables already —
-        // bypassing the settings manager and its runtime cache
-        Yii::$app->db->createCommand()->insert(Setting::tableName(), [
-            'module_id' => 'base',
-            'name' => 'theme.var.' . static::THEME_NAME . '.primary',
-            'value' => '#abcdef',
-        ])->execute();
+        $variables = $this->makeNonActiveThemeVariables();
 
-        $variables = $this->makeThemeVariables();
-
-        $this->assertEquals('#abcdef', $variables->get('primary'));
-        $this->assertEquals(0, $variables->storeCount);
+        $this->assertSame('#123456', $variables->get('primary'));
+        $this->assertSame(
+            $stateBefore,
+            Yii::$app->settings->getSerialized(ActiveThemeService::SETTING_KEY),
+        );
     }
 
-    public function testStoresVariablesWhenMutexUnavailable()
+    public function testReturnsTheDefaultForAnUnknownVariable()
     {
-        $mutex = new MutexMock(['available' => false]);
-        Yii::$app->set('mutex', $mutex);
+        $variables = $this->makeNonActiveThemeVariables();
 
-        $variables = $this->makeThemeVariables();
+        $this->assertSame('fallback', $variables->get('no-such-variable', 'fallback'));
+    }
 
-        // Even without the lock the variables must be stored — set() is
-        // race-safe — but a lock that was never acquired must not be released
-        $this->assertEquals('#123456', $variables->get('primary'));
-        $this->assertEquals(1, $variables->storeCount);
-        $this->assertCount(1, $mutex->acquiredLocks);
-        $this->assertCount(0, $mutex->releasedLocks);
+    /**
+     * The nine `theme<Color>Color` settings are their own rows and keep overriding the
+     * variables of the active theme at read time.
+     */
+    public function testCustomColorSettingOverridesTheThemeVariable()
+    {
+        Yii::$app->settings->set('themePrimaryColor', '#abcdef');
+
+        $variables = new ThemeVariables(['theme' => ActiveThemeService::getTheme()]);
+
+        $this->assertSame('#abcdef', $variables->get('primary'));
+    }
+
+    public function testFlushCacheDropsTheState()
+    {
+        $variables = new ThemeVariables(['theme' => Yii::$app->view->theme]);
+        ActiveThemeService::getState();
+
+        $variables->flushCache();
+
+        $this->assertNull(Yii::$app->settings->get(ActiveThemeService::SETTING_KEY));
     }
 }

@@ -94,7 +94,6 @@ class DesignSettingsForm extends Model
 
         $settingsManager = Yii::$app->settings;
         $themeVariables = Yii::$app->view->theme->variables;
-        $themeVariables->flushCache();
 
         $this->theme = Yii::$app->view->theme->name;
         $this->paginationSize = $settingsManager->get('paginationSize');

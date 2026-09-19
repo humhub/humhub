@@ -568,3 +568,43 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   - The module's test suite moved into the content suite, so `grunt test --module=stream` no
     longer exists. `StreamQueryTest` joins the content unit tests, `StreamCest` and `TopicCest`
     the content acceptance tests.
+
+- **The theming component stores its state in two settings instead of ~152.**
+
+  | Before | After |
+  |---|---|
+  | `theme` — absolute base path | `theme` — theme name, e.g. `HumHub` |
+  | `themeParents` — JSON array of absolute paths | gone, part of `theme.state` |
+  | `theme.var.<Theme>.<key>` — one row per variable | gone, part of `theme.state` |
+
+  A module reading the `theme` setting directly now gets a name; resolve it with
+  `ThemeHelper::getThemeByName()`. The new `humhub\services\ActiveThemeService` is the single
+  place that resolves the active theme — it keeps the resolved path, the parent chain and the
+  SCSS variables in the `theme.state` setting and validates them against the theme name, the
+  system revision, the custom SCSS and the modification time of every `scss/variables.scss` in
+  the theme tree. Call `ActiveThemeService::flush()` if your module replaces a theme's
+  `scss/variables.scss` without advancing its modification time — for example by unpacking an
+  archive with stored timestamps.
+
+  An installation that pins `theme` through fixed settings
+  (`HUMHUB_FIXED_SETTINGS__BASE__THEME`, or `params['fixed-settings']['base']['theme']`) to an
+  absolute path is not migrated, because `SettingsManager::set()` silently does nothing on a
+  fixed setting — such a value has to be changed to the theme name by hand.
+
+  Removed: `ThemeVariables::SETTING_PREFIX`, `ThemeVariables::$module`, and the protected
+  `ThemeVariables::ensureLoaded()`, `storeVariables()`, `getSettingKey()`, `getSettingPrefix()`,
+  together with `Theme::getActiveParents()`. `Theme::variable()`, `ThemeVariables::get()`,
+  `ThemeVariables::getCustom()` and `ThemeVariables::flushCache()` keep their signatures;
+  `flushCache()` now drops the active theme's whole state regardless of which theme the instance
+  wraps.
+
+  `ThemeHelper::getAllVariables()` takes a second parameter `bool $includeCustomScss = true`.
+
+  Two behavioural details that fail silently:
+
+  - `Theme::getParents()` returns an array **keyed by theme name** for the active theme as well.
+    It previously returned a numeric list in that one case and a name-keyed array otherwise; both
+    paths are consistent now. Code indexing the result numerically has to be adjusted.
+  - Theme variables were previously read back through the settings manager, which turned numeric
+    strings into integers. They now come back as the string the SCSS file contains. A comparison
+    with `===` against an integer has to be adjusted; `==` and casts are unaffected.

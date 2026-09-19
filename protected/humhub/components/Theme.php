@@ -10,6 +10,7 @@ namespace humhub\components;
 
 use humhub\assets\CoreBundleAsset;
 use humhub\helpers\ThemeHelper;
+use humhub\services\ActiveThemeService;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\Theme as BaseTheme;
@@ -189,13 +190,15 @@ class Theme extends BaseTheme
      */
     public function activate()
     {
-        Yii::$app->settings->set('theme', $this->getBasePath());
-        Yii::$app->settings->delete('themeParents');
+        Yii::$app->settings->set('theme', $this->name);
 
         // Publish resources to assets (the CSS will be automatically generated on layout rendering)
         $this->publishResources(true);
 
         $this->trigger(static::EVENT_AFTER_THEME_ACTIVATE, new Event());
+
+        // After the event, so the state is rebuilt against the refreshed system revision
+        ActiveThemeService::flush();
     }
 
     /**
@@ -407,7 +410,11 @@ class Theme extends BaseTheme
 
     /**
      * Returns the base/parent themes of this theme.
-     * The parent is specified in the LESS Variable file as variable "baseTheme".
+     * The parent is specified in the SCSS variable file as variable "baseTheme".
+     *
+     * For the active theme the chain comes from {@see ActiveThemeService}, which
+     * resolves it once and keeps it in the `theme.state` setting - a lookup would
+     * otherwise mean scanning every theme directory on every request.
      *
      * @return Theme[] the theme parents
      * @see ThemeVariables
@@ -418,54 +425,19 @@ class Theme extends BaseTheme
             return $this->parents;
         }
 
-        if ($this->isActive() && Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
-            $this->parents = static::getActiveParents();
+        // Matched by base path rather than by isActive(): fallbackToCoreTheme() activates
+        // the core theme without reassigning Yii::$app->view->theme, so a broken theme
+        // keeps reporting itself as active while the state already describes another one
+        $state = ActiveThemeService::getState();
+
+        if ($state !== null && $state['path'] === $this->getBasePath()) {
+            $this->parents = ActiveThemeService::getParents();
         }
 
         if ($this->parents === null) {
             $this->parents = ThemeHelper::getThemeTree($this, false);
-
-            if ($this->isActive()) {
-                // Store parent path of currently active theme as settings
-                // This avoids theme paths lookups
-                $parentPaths = [];
-                foreach ($this->parents as $theme) {
-                    $parentPaths[] = $theme->getBasePath();
-                }
-
-                if (Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
-                    Yii::$app->settings->setSerialized('themeParents', $parentPaths);
-                }
-            }
         }
 
         return $this->parents;
-    }
-
-    /**
-     * Returns the parent themes of the currently active theme.
-     * These parents are stored in the setting variable "themeParents" for faster lookup.
-     *
-     * @return Theme[]|null the themes or null
-     */
-    protected static function getActiveParents()
-    {
-        $parentPaths = Yii::$app->settings->getSerialized('themeParents');
-
-        if (!is_array($parentPaths)) {
-            return null;
-        }
-
-        $parents = [];
-        foreach ($parentPaths as $parentPath) {
-            $theme = ThemeHelper::getThemeByPath($parentPath);
-            if ($theme === null) {
-                Yii::$app->settings->delete('themeParents');
-                Yii::error('Could not load stored theme parent! - Deleted parent path.', 'ui');
-                return null;
-            }
-            $parents[] = $theme;
-        }
-        return $parents;
     }
 }
