@@ -14,4 +14,5 @@ return [
     'You reached the maximum number of allowed characters ({n}).' => 'Ви досягли максимально дозволеної кількості символів ({n}).',
     'Your search returned no matches.' => 'Ваш пошук не дав відповідей.',
     'Add user' => '',
+    'You are not allowed to remove this item.' => '',
 ];
