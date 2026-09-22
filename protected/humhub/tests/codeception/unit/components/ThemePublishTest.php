@@ -5,6 +5,7 @@ namespace humhub\tests\codeception\unit\components;
 use humhub\components\Theme;
 use humhub\helpers\ThemeHelper;
 use humhub\modules\file\libs\FileHelper;
+use humhub\services\ActiveThemeService;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
 
@@ -40,19 +41,24 @@ class ThemePublishTest extends HumHubDbTestCase
         }
 
         $previousTheme = Yii::$app->view->theme;
+        $previousThemeSetting = Yii::$app->settings->get('theme');
         $previousRequestUri = $_SERVER['REQUEST_URI'] ?? null;
 
         Yii::$app->view->theme = $theme;
-        Yii::$app->settings->set('theme', $theme->getBasePath());
+        Yii::$app->settings->set('theme', $theme->name);
         $_SERVER['REQUEST_URI'] = '/';
 
         try {
             $theme->register();
 
-            $this->assertSame($coreTheme->getBasePath(), Yii::$app->settings->get('theme'));
+            $this->assertSame($coreTheme->name, Yii::$app->settings->get('theme'));
             $this->assertFalse(Yii::$app->assetManager->fileExists(self::STRAY_CSS_FILE));
         } finally {
             Yii::$app->view->theme = $previousTheme;
+            // register() falls back to the core theme, which activates it: the theme
+            // setting, the state and the system revision all have to go back as well
+            Yii::$app->settings->set('theme', $previousThemeSetting);
+            ActiveThemeService::flush();
             if ($previousRequestUri === null) {
                 unset($_SERVER['REQUEST_URI']);
             } else {

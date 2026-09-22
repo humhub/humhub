@@ -1,6 +1,7 @@
 <?php
 
 use humhub\helpers\Html;
+use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\SpacePickerField;
 use humhub\modules\user\models\forms\EditGroupForm;
 use humhub\modules\user\widgets\GroupPicker;
@@ -13,6 +14,8 @@ use yii\helpers\Url;
 /* @var $showDeleteButton bool */
 /* @var $group EditGroupForm */
 /* @var $canManage bool */
+/* @var $defaultSpaces Space[] */
+/* @var $lockedDefaultSpaceGuids string[] */
 ?>
 
 <?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group]) ?>
@@ -26,10 +29,11 @@ use yii\helpers\Url;
     <?= $form->field($group, 'parent')->widget(GroupPicker::class, ['groupType' => $group::TYPE_SUBGROUP]) ?>
 
     <?= $form->field($group, 'defaultSpaceGuid')->widget(SpacePickerField::class, [
-        'selection' => $group->defaultSpaces,
+        'selection' => $defaultSpaces,
         'maxSelection' => 1000,
         // Group managers should see spaces only where they are admins or owners
         'url' => $canManage ? null : Url::to(['/space/browse/search-json', 'user' => 'admin-owner']),
+        'lockedItems' => $lockedDefaultSpaceGuids,
     ]) ?>
     <?= $form->field($group, 'updateSpaceMemberships')->checkbox() ?>
     <?php $url = ($group->isNewRecord) ? null : Url::to(['/admin/group/admin-user-search', 'id' => $group->id]) ?>

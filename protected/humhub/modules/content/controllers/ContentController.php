@@ -17,7 +17,7 @@ use humhub\modules\content\Module;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\widgets\AdminDeleteModal;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
-use humhub\modules\stream\actions\StreamEntryResponse;
+use humhub\modules\content\actions\StreamEntryResponse;
 use Throwable;
 use Yii;
 use yii\base\Exception;

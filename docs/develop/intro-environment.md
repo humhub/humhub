@@ -96,7 +96,7 @@ HUMHUB_CONFIG__BOOTSTRAP=['debug']
 HUMHUB_CONFIG__MODULES__DEBUG='{"class":"yii\\\\debug\\\\Module","allowedIPs":["127.0.0.1","::1"]}'
 ```
 
-Or in `protected/config/web.php`:
+Or in `config/web.php`:
 
 ```php
 return [

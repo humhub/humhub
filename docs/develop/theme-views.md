@@ -35,7 +35,7 @@ After saving a new override, flush the cache to make the theme component re-scan
 
 ## Overrides via configuration
 
-Since 1.19 view overrides can also be declared directly in `protected/config/common.php`, without creating a theme. This is convenient for small, one-off overrides — the override file can live anywhere on disk.
+Since 1.19 view overrides can also be declared directly in `config/common.php`, without creating a theme. This is convenient for small, one-off overrides — the override file can live anywhere on disk.
 
 ```php
 return [

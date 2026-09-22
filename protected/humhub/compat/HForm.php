@@ -197,23 +197,18 @@ class HForm extends \yii\base\Component
 
     public function renderForm($element)
     {
-        $class = "";
-        if (isset($element['class'])) {
-            $class = $element['class'];
+        $output = Html::beginTag('fieldset', ['class' => $element['class'] ?? '']);
+
+        if (isset($element['title'])) {
+            $output .= Html::tag('legend', Html::encode($element['title']));
         }
 
-        $output = "<fieldset class='" . $class . "'>";
-        if (isset($element['title'])) {
-            $output .= "<legend>" . $element['title'] . "</legend>";
-        } else {
-            #$output .= "Untitled Form";
-        }
         return $output;
     }
 
     public function renderFormEnd($element)
     {
-        return "</fieldset>";
+        return Html::endTag('fieldset');
     }
 
     public function renderButtons($buttons)

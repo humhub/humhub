@@ -5,7 +5,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\post\models\Post;
-use humhub\modules\stream\assets\StreamAsset;
+use humhub\modules\content\assets\StreamAsset;
 
 /* @var $this View */
 /* @var $post Post */

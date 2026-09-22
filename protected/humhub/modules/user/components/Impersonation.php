@@ -26,7 +26,7 @@ use yii\base\Component;
  * receives an auto-login cookie, and ending an impersonation whose impersonator can no longer be
  * resolved logs the session out instead of silently continuing as the impersonated user.
  *
- * Configuration example (`protected/config/web.php`):
+ * Configuration example (`config/web.php`):
  *
  * ```php
  * 'components' => [
@@ -130,7 +130,8 @@ class Impersonation extends Component
     /**
      * Determines if the current user is allowed to impersonate the given user:
      * impersonation must be enabled ([[AdminModule::$allowUserImpersonate]]), the given user must not
-     * be the current user, and the current user needs the `ManageUsers` permission.
+     * be the current user, a System Administrator can only be impersonated by another System
+     * Administrator, and the current user needs the `ManageUsers` permission.
      *
      * @param UserModel $user
      * @return bool
@@ -147,6 +148,9 @@ class Impersonation extends Component
 
         return $adminModule->allowUserImpersonate
             && $user->id != $identity->id
+            // A non System-Administrator can never impersonate a System Administrator - keep this
+            // in sync with UserController::checkUserAccess(), which enforces the same rule server-side.
+            && (!$user->isSystemAdmin() || $identity->isSystemAdmin())
             && (new PermissionManager(['subject' => $identity]))->can(ManageUsers::class);
     }
 

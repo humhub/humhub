@@ -17,7 +17,7 @@ use Codeception\Specify;
 use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\models\Content;
-use humhub\modules\stream\actions\ContentContainerStream;
+use humhub\modules\content\actions\ContentContainerStream;
 
 class ProfileContentPermissionTest extends HumHubDbTestCase
 {

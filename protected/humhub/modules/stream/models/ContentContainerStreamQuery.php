@@ -1,45 +1,16 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\stream\models;
 
-use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\stream\models\filters\ContentContainerStreamFilter;
-use humhub\modules\stream\models\filters\PinnedContentStreamFilter;
-use yii\base\InvalidConfigException;
-
 /**
- * This query class adds support for pinned container related streams.
- *
- * @package modules\stream\models
+ * @deprecated since 1.20, use \humhub\modules\content\models\stream\ContentContainerStreamQuery instead. Will be removed in 1.21.
  */
-class ContentContainerStreamQuery extends WallStreamQuery
+class ContentContainerStreamQuery extends \humhub\modules\content\models\stream\ContentContainerStreamQuery
 {
-    /**
-     * @var ContentContainerActiveRecord
-     */
-    public $container;
-
-    /**
-     * @var bool whether or not to sort by pinned content
-     */
-    public $pinnedContentSupport = true;
-
-    /**
-     * @inheritdoc
-     * @throws InvalidConfigException
-     */
-    protected function beforeApplyFilters()
-    {
-        $this->addFilterHandler(
-            new ContentContainerStreamFilter(['container' => $this->container]),
-            true,
-            true,
-        );
-
-        if ($this->pinnedContentSupport) {
-            $this->addFilterHandler(new PinnedContentStreamFilter(['container' => $this->container]));
-        }
-
-        parent::beforeApplyFilters();
-    }
 }

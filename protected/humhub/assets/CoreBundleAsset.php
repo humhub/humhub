@@ -9,7 +9,7 @@ use humhub\modules\content\assets\ProseMirrorRichTextAsset;
 use humhub\modules\live\assets\LiveAsset;
 use humhub\modules\post\assets\PostAsset;
 use humhub\modules\space\assets\SpaceAsset;
-use humhub\modules\stream\assets\StreamAsset;
+use humhub\modules\content\assets\StreamAsset;
 use humhub\modules\topic\assets\TopicAsset;
 use humhub\assets\FilterAsset;
 use humhub\modules\user\assets\UserAsset;

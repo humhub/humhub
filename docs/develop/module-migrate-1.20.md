@@ -46,6 +46,26 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     For layouts in which `public/` is not below the entry script, `HUMHUB_PUBLIC_URL` sets the
     URL the document root is reachable under.
 
+- **The local configuration directory moved to `<installation root>/config`**, beside the `.env`
+  file. `@config` resolves there instead of to `protected/config`, so anything addressed through
+  the alias - translation overrides under `@config/messages`, view overrides under `@config/views`,
+  a path a module builds from it - follows on its own. A module that spelled out `@app/config` or
+  `protected/config` does not, and has to be changed.
+
+  `protected/config/{common,web,console,dynamic}.php` are still loaded when they exist, with the
+  new directory merged on top, so installations keep working across the update. None of the local
+  configuration files is shipped any more - all four are optional, and the new directory holds only
+  `common.example.php`, `web.example.php` and `console.example.php`.
+
+  `params.dynamicConfigFile` names whichever `dynamic.php` is in effect and is an absolute path
+  now rather than an alias; `Yii::getAlias()` on it stays correct. A migration moves an existing
+  file into the new directory, and until it has been moved the old path stays in effect so that
+  nothing writes a second one.
+
+  The new `humhub\services\ConfigDirectoryService` answers where both directories are, what is left
+  in the old one and which dynamic configuration is in use. Administration -> Information ->
+  Prerequisites reports leftovers.
+
 - The `web` module is gone. Its PWA part moved in the change above; the security part - the
   headers and the Content Security Policy - is now applied by `humhub\components\Response`
   itself and configured on that component.
@@ -275,8 +295,10 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     given.
 
     **`humhub\modules\ui\Module::$iconAlias` and `getIconAlias()` are gone.** An installation that
-    configured `modules.ui.iconAlias` has to move the values, otherwise the setting is rejected as
-    an unknown module property.
+    configured `modules.ui.iconAlias` has to move the values. Since the `ui` module itself was
+    removed further down this page, the old section is not rejected either - nothing reads the
+    configuration of a module id that no longer exists, so it is ignored silently and the defaults
+    apply again.
 
   - The one string of the `UiModule.icon` category — a log warning about an unregistered icon
     provider — moved to `base` with its translations in the 27 languages that had one.
@@ -444,15 +466,148 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     its single SCSS test joined the existing `ScssHelperTest`.
 
 - **`humhub\assets\FilterAsset` no longer depends on `humhub\modules\topic\assets\TopicAsset`.**
-  The dependency moved to `humhub\modules\stream\assets\StreamAsset`, where it belongs:
+  The dependency moved to `humhub\modules\content\assets\StreamAsset`, where it belongs:
   `humhub.ui.filter.js` requires only `ui.widget` and `util` and has no relationship to topics,
-  while it is `WallStreamFilterNavigation` — in the stream module — that configures a
+  while it is `WallStreamFilterNavigation` — in the content module — that configures a
   `PickerFilterInput` with `TopicPicker`.
 
   Nothing changes about the scripts a page loads: `TopicAsset` is registered by the core bundle
   directly, and the transitive dependency closure of `CoreBundleAsset` is identical before and
   after. Only a module that registers `FilterAsset` on its own *and* renders a topic picker has
   to register `TopicAsset` itself now.
+
+- **An event registered on a deprecated shim class is now redirected to its replacement.**
+  `Event::trigger()` walks the parents of the sender upwards. A deprecated shim is a *subclass*
+  of the class that replaced it, so a handler registered on the shim was never reached once the
+  core instantiated the new class — the registration failed silently: no error, no log entry, the
+  handler simply stopped running. This affected every `config.php` that named a class moved out of
+  the `ui` module in this cycle, and would have affected the stream classes below.
+
+  `ModuleManager` now maps such a class onto its parent before calling `Event::on()` and logs a
+  warning naming the module, so those registrations keep working while the shims exist. Only the
+  namespaces of dissolved modules are inspected, so no event class of an unrelated module is
+  autoloaded for it.
+
+  The redirect disappears with the shims in 1.21. Migrate the event configuration during the 1.20
+  cycle; the warning in the application log tells you which registrations are affected.
+
+- **The `stream` module is gone.** It had no controllers and no routes, and everything in it was
+  content-specific — the queries build on `ActiveQueryContent`, the filters filter content, and
+  the stream entry widgets already lived in the content module. The dependency even ran backwards:
+  `ActiveQueryContent` and `ContentSearchService` read `showDeactivatedUserContent` off the stream
+  module. It is dissolved into `content`.
+
+  | Before | After |
+  |---|---|
+  | `humhub\modules\stream\actions\*` | `humhub\modules\content\actions\*` |
+  | `humhub\modules\stream\models\*StreamQuery` | `humhub\modules\content\models\stream\*` |
+  | `humhub\modules\stream\models\filters\*` | `humhub\modules\content\models\stream\filters\*` |
+  | `humhub\modules\stream\widgets\StreamViewer` | `humhub\modules\content\widgets\stream\StreamViewer` |
+  | `humhub\modules\stream\widgets\WallStreamFilterNavigation` | `humhub\modules\content\widgets\stream\WallStreamFilterNavigation` |
+  | `humhub\modules\stream\helpers\StreamHelper` | `humhub\modules\content\helpers\StreamHelper` |
+  | `humhub\modules\stream\events\StreamResponseEvent` | `humhub\modules\content\events\StreamResponseEvent` |
+  | `humhub\modules\stream\assets\StreamAsset` | `humhub\modules\content\assets\StreamAsset` |
+  | `humhub\modules\stream\Module` (module id `stream`) | - |
+  | i18n category `StreamModule.base` | `ContentModule.base` |
+  | i18n category `StreamModule.filter` | `ContentModule.filter` |
+  | alias `@stream` | `@content` |
+
+  - **Every old class name stays available as a deprecated subclass. The shims are removed in
+    1.21** — migrate during the 1.20 cycle.
+
+  - **`Yii::$app->getModule('stream')` returns `null` and cannot be shimmed.** The four module
+    properties moved to the content module under the same names:
+
+    ```php
+    // before
+    Yii::$app->getModule('stream')->streamSuppressQueryIgnore[] = News::class;
+
+    // after
+    Yii::$app->getModule('content')->streamSuppressQueryIgnore[] = News::class;
+    ```
+
+    `streamExcludes`, `streamSuppressQueryIgnore`, `streamSuppressLimit` and
+    `showDeactivatedUserContent` are all configured on `content` now. An installation that sets
+    them in `config/common.php` has to move them from the `stream` key to the `content`
+    key. A module cannot work around this with a proxy module: `$module->streamSuppressQueryIgnore[]`
+    is an indirect modification, which is lost through `__get()`.
+
+  - **The database setting moved and was renamed.** `stream.defaultSort` becomes
+    `content.defaultStreamSort` — the name the space module already uses for the same thing. A
+    migration in the content module carries the existing value over; per-space and space-module
+    defaults were never stored under `stream` and are untouched.
+
+  - **`@stream` no longer resolves.** A widget pointing `$view` at
+    `@stream/widgets/views/wallStreamFilterNavigation` has to use
+    `@content/widgets/stream/views/wallStreamFilterNavigation`. This one throws rather than failing
+    silently.
+
+  - **Theme view overrides have to be moved, and this is the one change here that fails silently.**
+    Themed views are resolved by file path, so a shim cannot cover them: an override left at the old
+    path is simply never applied again — no error, no log entry, the core view is rendered instead.
+    Both views of the two moved widgets are affected:
+
+    | Before | After |
+    |---|---|
+    | `themes/<theme>/views/stream/widgets/views/wallStream.php` | `themes/<theme>/views/content/widgets/stream/views/wallStream.php` |
+    | `themes/<theme>/views/stream/widgets/views/wallStreamFilterNavigation.php` | `themes/<theme>/views/content/widgets/stream/views/wallStreamFilterNavigation.php` |
+
+    The stream entry views were already in the content module and do not move.
+
+  - **The deprecated `StreamAsset` is a subclass, so Yii registers it under its own name.** A page
+    that registers both the old and the new bundle emits the stream scripts twice. Register only
+    one of them.
+
+  - The JavaScript module ids (`stream`, `stream.Stream`, `stream.wall`, …) are unchanged; only
+    the files moved, to `@content/resources/js`.
+
+  - The two migrations moved into the content module, where they always belonged — both of them
+    alter the `content` table. The migration history records the class name, not the path, so
+    nothing runs again on an existing installation.
+
+  - The module's test suite moved into the content suite, so `grunt test --module=stream` no
+    longer exists. `StreamQueryTest` joins the content unit tests, `StreamCest` and `TopicCest`
+    the content acceptance tests.
+
+- **The theming component stores its state in two settings instead of ~152.**
+
+  | Before | After |
+  |---|---|
+  | `theme` — absolute base path | `theme` — theme name, e.g. `HumHub` |
+  | `themeParents` — JSON array of absolute paths | gone, part of `theme.state` |
+  | `theme.var.<Theme>.<key>` — one row per variable | gone, part of `theme.state` |
+
+  A module reading the `theme` setting directly now gets a name; resolve it with
+  `ThemeHelper::getThemeByName()`. The new `humhub\services\ActiveThemeService` is the single
+  place that resolves the active theme — it keeps the resolved path, the parent chain and the
+  SCSS variables in the `theme.state` setting and validates them against the theme name, the
+  system revision, the custom SCSS and the modification time of every `scss/variables.scss` in
+  the theme tree. Call `ActiveThemeService::flush()` if your module replaces a theme's
+  `scss/variables.scss` without advancing its modification time — for example by unpacking an
+  archive with stored timestamps.
+
+  An installation that pins `theme` through fixed settings
+  (`HUMHUB_FIXED_SETTINGS__BASE__THEME`, or `params['fixed-settings']['base']['theme']`) to an
+  absolute path is not migrated, because `SettingsManager::set()` silently does nothing on a
+  fixed setting — such a value has to be changed to the theme name by hand.
+
+  Removed: `ThemeVariables::SETTING_PREFIX`, `ThemeVariables::$module`, and the protected
+  `ThemeVariables::ensureLoaded()`, `storeVariables()`, `getSettingKey()`, `getSettingPrefix()`,
+  together with `Theme::getActiveParents()`. `Theme::variable()`, `ThemeVariables::get()`,
+  `ThemeVariables::getCustom()` and `ThemeVariables::flushCache()` keep their signatures;
+  `flushCache()` now drops the active theme's whole state regardless of which theme the instance
+  wraps.
+
+  `ThemeHelper::getAllVariables()` takes a second parameter `bool $includeCustomScss = true`.
+
+  Two behavioural details that fail silently:
+
+  - `Theme::getParents()` returns an array **keyed by theme name** for the active theme as well.
+    It previously returned a numeric list in that one case and a name-keyed array otherwise; both
+    paths are consistent now. Code indexing the result numerically has to be adjusted.
+  - Theme variables were previously read back through the settings manager, which turned numeric
+    strings into integers. They now come back as the string the SCSS file contains. A comparison
+    with `===` against an integer has to be adjusted; `==` and casts are unaffected.
 
 - Added a **describable menu entry** API (`humhub\widgets\menu\MenuEntry::describe()`,
   the `humhub\widgets\menu\DescribableWidget` interface) plus the

@@ -273,7 +273,10 @@ abstract class BaseNotification extends SocialActivity
 
     /**
      * Checks if the source is blocked for the receiver $user.
-     * For example, if the $user is not a member of a private Space
+     * For example, if the $user is not a member of a private Space,
+     * or the related Content is no longer visible to the $user (e.g. the
+     * Content visibility was changed to private after the $user subscribed
+     * to notifications for it).
      *
      * @param User $user
      * @return bool
@@ -284,8 +287,13 @@ abstract class BaseNotification extends SocialActivity
         if ($this->isSpaceContent()) {
             /* @var Space $space */
             $space = $this->source->content->container;
-            return $space->visibility === Space::VISIBILITY_NONE
-                && !$space->isMember($user);
+            if ($space->visibility === Space::VISIBILITY_NONE && !$space->isMember($user)) {
+                return true;
+            }
+        }
+
+        if ($this->hasContent() && !$this->getContent()->canView($user)) {
+            return true;
         }
 
         return false;

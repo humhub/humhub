@@ -15,7 +15,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Chooser;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserListBox;
-use humhub\modules\stream\actions\ContentContainerStream;
+use humhub\modules\content\actions\ContentContainerStream;
 use humhub\modules\space\widgets\Menu;
 use Yii;
 use yii\base\InvalidConfigException;

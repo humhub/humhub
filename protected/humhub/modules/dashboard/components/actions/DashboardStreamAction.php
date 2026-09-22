@@ -10,7 +10,7 @@ namespace humhub\modules\dashboard\components\actions;
 
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\dashboard\stream\DashboardStreamQuery;
-use humhub\modules\stream\actions\ContentContainerStream;
+use humhub\modules\content\actions\ContentContainerStream;
 
 /**
  * DashboardStreamAction

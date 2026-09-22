@@ -14,8 +14,12 @@ protected/runtime/*
 
 node_modules
 
-protected/config/local/*
-!protected/config/local/.gitignore
+# Local configuration - only the examples are shipped
+/config/*
+!/config/*.example.php
+
+# Configuration directory of installations that predate 1.20, still read when present
+/protected/config/
 
 uploads/files/*
 !uploads/files/.gitignore
@@ -69,3 +73,6 @@ favicon.ico
 /protected/humhub/resources/js/humhub-app.js
 /protected/humhub/resources/js/humhub-bundle.js
 /protected/humhub/config/assets-prod.php
+
+# Local design specs and notes (not part of the distribution)
+/docs/superpowers/

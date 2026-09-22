@@ -1,8 +1,8 @@
 # Upgrading to HumHub 1.20 — notes for system administrators
 
 1.20 moves everything the web server should serve into a `public/` directory. This page covers what
-that means for your server configuration. Nothing here is about the database or the application
-update itself.
+that means for your server configuration, and the configuration changes that come with the release.
+Nothing here is about the database or the application update itself.
 
 ## What changed
 
@@ -15,6 +15,7 @@ update itself.
 │   └── assets/      ← published assets, must be writable
 ├── index.php        ← deprecated, still works
 ├── .htaccess        ← maps everything into public/
+├── config/          ← your configuration, moved up out of protected/
 ├── protected/       ┐
 ├── uploads/         ├ no longer meant to be reachable over the web
 ├── themes/          ┘
@@ -125,8 +126,11 @@ warning.
 | Document root — OK | The installation directory is not reachable over the web. |
 | Document root — error | It is reachable. Move the document root, or let the `.htaccess` map requests. |
 | Document root — warning | HumHub could not check, because the installation cannot reach itself over HTTP (split-horizon DNS, container networking). Verify by hand that the installation directory is not served. |
+| Configuration — OK | Nothing is left in the old configuration directory. |
+| Configuration — warning | `protected/config/` still holds configuration. It names the files; see the next section. |
 
-The same two findings appear in the incomplete-setup panel on the admin dashboard.
+The two document-root findings also appear in the incomplete-setup panel on the admin dashboard.
+The configuration one does not — it is a move you can take your time with.
 
 The document-root check asks the site over HTTP for a file that only exists in the installation
 directory. It only does so when the site is reached under a `/public` path segment — for a properly
@@ -170,6 +174,192 @@ more reason to move the document root instead.
 **`HUMHUB_PUBLIC_URL`** exists for layouts the automatic derivation cannot cover: the deprecated
 entry script in use *and* `public/` not below it. Set it in `.env` to the URL `public/` is reachable
 under. You almost certainly do not need it; Prerequisites tells you when you do.
+
+## The configuration directory moved
+
+Your local configuration now lives in `config/` in the installation directory, next to `.env`,
+instead of in `protected/config/`. Same files, one level up and out of `protected/`:
+
+```
+<installation directory>/config/
+├── common.example.php   ┐
+├── web.example.php      ├ shipped with the release, copy one to drop the `.example`
+├── console.example.php  ┘
+├── common.php           ┐
+├── web.php              ├ yours
+├── console.php          ┘
+├── dynamic.php          ← written by HumHub, moved for you
+├── messages/            ← translation overrides
+└── views/               ← view overrides
+```
+
+The three example files are new. They are commented-out starting points for the overrides most
+installations end up making — URL rewriting, view overrides, a reverse proxy, a separate console
+log. Copying one and removing the `.example` is all it takes.
+
+**Nothing breaks if you do nothing.** `protected/config/` is still read, and the new directory is
+merged on top of it, so you can move one file at a time. Support for the old location will be
+removed in a later release.
+
+**`dynamic.php` moves itself** during `php protected/yii migrate/up`. It is the file HumHub writes
+your database credentials into, so leaving it behind would mean the installer and future updates
+keep writing into a directory that is on its way out. If the move cannot happen — the new directory
+is not writable, or a `dynamic.php` is already there — the migration says so and leaves your file
+untouched.
+
+**Move the rest yourself:**
+
+```sh
+cd <installation directory>
+mv protected/config/common.php protected/config/web.php protected/config/console.php config/
+mv protected/config/messages protected/config/views config/
+```
+
+Skip what you do not have; a stock installation only ever had the three empty files, and
+Prerequisites tells you what is actually left.
+
+**`messages/` and `views/` have to move.** Unlike the configuration files these two are *not* read
+in the old location any more. Translation overrides and view overrides left in `protected/config/`
+stop being applied, without an error — the Prerequisites entry is the only sign. The `@config` alias
+you use to point at them from your configuration follows the new directory automatically.
+
+**Updating with git?** `protected/config/common.php`, `web.php` and `console.php` were part of the
+repository and are not any more, so the pull deletes them. If you edited one, git refuses to pull
+until you deal with it — copy it to `config/` first, then `git checkout -- protected/config` and
+pull again.
+
+## Configuration changes
+
+Three core modules were dissolved in 1.20: `stream` into `content`, `web` onto the response
+component, and the last configurable part of `ui` into an application parameter. If you configured
+any of them in `config/common.php` or `config/web.php`, the options have moved.
+
+**A `modules` section for any of the three is ignored, without an error.** Nothing reads the
+configuration of a module id that no longer exists — there is no message in the log, nothing in
+Prerequisites, and the site keeps running. It simply runs with the defaults again. This is the one
+kind of change on this page that gives you no feedback at all, so look at your configuration files
+even if the site seems fine after the update.
+
+### `stream` moved into `content`
+
+The stream module had no controllers and no routes, and everything in it was content specific.
+Move its options from the `stream` key to the `content` key; the option names themselves do not
+change:
+
+```php
+// config/common.php — before
+'modules' => [
+    'stream' => [
+        'showDeactivatedUserContent' => false,
+        'streamSuppressLimit' => 4,
+    ],
+],
+
+// after
+'modules' => [
+    'content' => [
+        'showDeactivatedUserContent' => false,
+        'streamSuppressLimit' => 4,
+    ],
+],
+```
+
+The five options concerned are `streamExcludes`, `streamSuppressQueryIgnore`,
+`defaultStreamSuppressQueryIgnore`, `streamSuppressLimit` and `showDeactivatedUserContent`. Left
+behind, a content type you had excluded from the stream reappears, `showDeactivatedUserContent`
+returns to `true`, and the "Show more" grouping returns to two entries.
+
+**A custom theme that overrides a stream view has to follow, and this one fails silently.** Themed
+views are resolved by file path, so an override left at the old path is never applied again — no
+error, no log entry, the stock view is rendered instead. Two files are affected:
+
+| Before | After |
+|---|---|
+| `themes/<theme>/views/stream/widgets/views/wallStream.php` | `themes/<theme>/views/content/widgets/stream/views/wallStream.php` |
+| `themes/<theme>/views/stream/widgets/views/wallStreamFilterNavigation.php` | `themes/<theme>/views/content/widgets/stream/views/wallStreamFilterNavigation.php` |
+
+**The default stream sort order is migrated for you.** The value behind *Administration → Settings
+→ Appearance → Default Stream Sort* was stored as a setting of the `stream` module and belongs to
+`content` now. The update moves it; there is nothing to do. The sort order configured per space, and
+its default under *Administration → Spaces → Settings*, were never stored under `stream` and are
+untouched.
+
+### `web` moved onto the response component
+
+The security headers and the Content Security Policy are applied by the response component now, and
+configured on it as a flat map of header name to value. The `csp` section with its per-directive
+arrays, the separate `csp-report-only` section and the `nonce` switch are gone — not renamed, so a
+policy expressed that way has to be rewritten as a header string:
+
+```php
+// config/web.php — before
+'modules' => [
+    'web' => [
+        'security' => [
+            'headers' => ['X-Frame-Options' => 'sameorigin'],
+            'csp' => ['nonce' => true],
+        ],
+    ],
+],
+
+// after
+'components' => [
+    'response' => [
+        'defaultHeaders' => [
+            'X-Frame-Options' => 'sameorigin',
+            'Content-Security-Policy' => "… script-src {{ nonce }} 'self' …",
+        ],
+    ],
+],
+```
+
+The shipped defaults are in `protected/humhub/config/web.php` and are merged per header name, so
+overriding one header leaves the others in place. Any header can be configured there, not only
+security related ones, and entries are applied as defaults — a header an action set itself is left
+alone.
+
+Two placeholders are available in a value: `{{ nonce }}` is replaced with the nonce of the current
+session, `{{ reportUri }}` with the URL of the report endpoint. **A header containing `{{ nonce }}`
+is what turns nonce support on**; there is no separate switch any more, so the two can no longer
+contradict each other. Violation reports are only logged when a header actually points at the
+endpoint through `{{ reportUri }}`. For report-only mode, add `Content-Security-Policy-Report-Only`
+to the same map — both header names are treated alike.
+
+**The report endpoint moved** from `web/security-report` to `csp-report/index`. If you allowlisted
+or monitored the old URL, update it.
+
+**The policy now reaches every HTML response.** It used to be skipped on AJAX requests and, because
+the error handler clears the response before rendering, on error pages. Whether a policy is sent is
+decided by the response content type now: HTML documents get one, JSON and JavaScript do not. If a
+module renders HTML from an AJAX action with an inline script, that script needs a nonce where it
+previously needed none — worth a look at the browser console after the update.
+
+**The automatic page reload on a CSP violation is gone.** It reloaded the page — losing unsaved
+input — on any `script-src` violation. If your users saw sporadic reloads, that is what it was.
+
+**Service worker support** is no longer `web.enableServiceWorker` but the `pwa.enabled` application
+parameter:
+
+```php
+// config/common.php — after
+'params' => ['pwa' => ['enabled' => false]],
+```
+
+### `ui`: the icon alias map became an application parameter
+
+The map of semantic icon names lived on the ui module as `iconAlias` and is an application
+parameter now. The defaults are unchanged and shipped in `protected/humhub/config/common.php`; a
+name the map does not cover is still used as given.
+
+```php
+// config/common.php — before
+'modules' => ['ui' => ['iconAlias' => ['edit' => 'pen']]],
+
+// after
+'params' => ['icon' => ['alias' => ['edit' => 'pen']]],
+```
+
+As an environment variable: `HUMHUB_CONFIG__PARAMS__ICON__ALIAS__EDIT=pen`.
 
 ## Modules
 

@@ -29,7 +29,7 @@ class Module extends \humhub\components\Module
 The `maxValue` can be overwritten by the following configuration:
 
 ```php
-// @humhub/protected/config/common.php
+// config/common.php
 return [
     'modules' => [
         'mymodule' => [

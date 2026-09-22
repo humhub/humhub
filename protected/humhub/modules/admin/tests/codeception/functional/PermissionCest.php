@@ -70,11 +70,12 @@ class PermissionCest
         $I->dontSee('Settings', '#admin-menu');
         $I->dontSee('Information', '#admin-menu');
 
+        // A ManageUsers-only holder must not be able to edit the System Administrator's
+        // account (e.g. take it over by changing its e-mail) - see checkUserAccess().
         $I->amOnRoute('/admin/user/edit', ['id' => 1]);
-        $I->expectTo('see edit user profile view');
-        $I->see('User administration');
-        $I->dontSee('Groups');
-        $I->dontSee('You are not permitted to access this section.');
+        $I->expectTo('be forbidden from editing the System Administrator account');
+        $I->seeResponseCodeIs(403);
+        $I->see('Forbidden');
 
         $I->amOnRoute('/admin/user-profile');
         $I->see('Add new field');
@@ -153,11 +154,12 @@ class PermissionCest
         $I->dontSee('Settings', '#admin-menu');
         $I->dontSee('Information', '#admin-menu');
 
+        // A ManageGroups-only holder must not be able to edit the System Administrator's
+        // account (e.g. take it over by changing its e-mail) - see checkUserAccess().
         $I->amOnRoute('/admin/user/edit', ['id' => 1]);
-        $I->expectTo('see edit user profile view');
-        $I->see('User administration');
-        $I->see('Groups');
-        $I->dontSee('You are not permitted to access this section.');
+        $I->expectTo('be forbidden from editing the System Administrator account');
+        $I->seeResponseCodeIs(403);
+        $I->see('Forbidden');
 
         $I->amOnRoute('/admin/group');
         $I->dontSee('You are not permitted to access this section.');

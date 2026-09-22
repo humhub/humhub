@@ -1,30 +1,16 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\stream\models;
 
-use humhub\modules\stream\models\filters\GlobalContentStreamFilter;
-use yii\base\InvalidConfigException;
-
 /**
- * This query class filters global content
- *
- * @package modules\stream\models
- * @since 1.16
+ * @deprecated since 1.20, use \humhub\modules\content\models\stream\GlobalContentStreamQuery instead. Will be removed in 1.21.
  */
-class GlobalContentStreamQuery extends WallStreamQuery
+class GlobalContentStreamQuery extends \humhub\modules\content\models\stream\GlobalContentStreamQuery
 {
-    /**
-     * @inheritdoc
-     * @throws InvalidConfigException
-     */
-    protected function beforeApplyFilters(): void
-    {
-        $this->addFilterHandler(
-            new GlobalContentStreamFilter(),
-            true,
-            true,
-        );
-
-        parent::beforeApplyFilters();
-    }
 }

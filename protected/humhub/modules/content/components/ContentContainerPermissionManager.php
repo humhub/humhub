@@ -52,6 +52,26 @@ class ContentContainerPermissionManager extends PermissionManager
 
     /**
      * @inheritdoc
+     *
+     * The generic "you can only grant a permission you hold yourself" rule from
+     * PermissionManager does not apply to per-container permission grids (e.g. a Space's
+     * "Permissions" tab, or a user's own profile visibility settings): access to this grid is
+     * already independently gated at the controller level by the container role required to
+     * reach it (e.g. Space::USERGROUP_ADMIN, or being the profile owner / a System Administrator
+     * for account settings) rather than by holding the individual permission being granted.
+     * Container permissions are also a structurally separate, non-admin permission set, so
+     * skipping the check here does not reopen the sitewide admin-permission escalation the base
+     * check guards against.
+     *
+     * @since 1.18.6
+     */
+    public function currentUserCanGrant(BasePermission $permission): bool
+    {
+        return true;
+    }
+
+    /**
+     * @inheritdoc
      */
     protected function createPermissionRecord()
     {

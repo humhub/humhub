@@ -76,6 +76,18 @@ class ModuleManager extends Component
     public const EVENT_AFTER_FILTER_MODULES = 'afterFilterModules';
 
     /**
+     * Namespaces of dissolved modules, under which every remaining class is a deprecated shim
+     * extending the class that replaced it.
+     *
+     * @see resolveDeprecatedEventClass()
+     * @since 1.20
+     */
+    private const DEPRECATED_SHIM_NAMESPACES = [
+        'humhub\\modules\\stream\\',
+        'humhub\\modules\\ui\\',
+    ];
+
+    /**
      * Create a backup on module folder deletion
      *
      * @var bool
@@ -338,10 +350,57 @@ class ModuleManager extends Component
             $eventData = $event['data'] ?? $event[3] ?? null;
             $eventAppend = filter_var($event['append'] ?? $event[4] ?? true, FILTER_VALIDATE_BOOLEAN);
 
-            Event::on($eventClass, $eventName, $eventHandler, $eventData, $eventAppend);
+            Event::on(
+                $this->resolveDeprecatedEventClass($eventClass, $config['id']),
+                $eventName,
+                $eventHandler,
+                $eventData,
+                $eventAppend,
+            );
         }
 
         $events = null;
+    }
+
+    /**
+     * Maps an event class that is nothing but a deprecated shim onto the class that replaced it.
+     *
+     * A shim extends its replacement, while [[Event::trigger()]] walks the parents of the sender
+     * upwards - so a handler registered on the shim is never reached once the core instantiates
+     * the new class. Without this the registration fails silently: no error, no log entry, the
+     * handler simply stops running.
+     *
+     * Only the namespaces of dissolved modules are considered, so no event class of a module that
+     * has nothing to do with them is autoloaded here.
+     *
+     * @since 1.20
+     */
+    private function resolveDeprecatedEventClass(string $eventClass, string $moduleId): string
+    {
+        $eventClass = ltrim($eventClass, '\\');
+
+        foreach (self::DEPRECATED_SHIM_NAMESPACES as $namespace) {
+            if (!str_starts_with($eventClass, $namespace)) {
+                continue;
+            }
+
+            $replacement = class_exists($eventClass) ? get_parent_class($eventClass) : false;
+
+            if ($replacement === false) {
+                break;
+            }
+
+            Yii::warning(sprintf(
+                'Module "%s" registers an event on the deprecated class %s. It is handled as %s for now; update the event configuration before the shim is removed.',
+                $moduleId,
+                $eventClass,
+                $replacement,
+            ), 'modules');
+
+            return $replacement;
+        }
+
+        return $eventClass;
     }
 
     /**

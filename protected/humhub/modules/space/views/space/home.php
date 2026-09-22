@@ -12,7 +12,7 @@ use humhub\modules\space\Module;
 use humhub\modules\space\modules\manage\widgets\PendingApprovals;
 use humhub\modules\space\widgets\Members;
 use humhub\modules\space\widgets\Sidebar;
-use humhub\modules\stream\widgets\StreamViewer;
+use humhub\modules\content\widgets\stream\StreamViewer;
 
 /* @var $space Space */
 /* @var $canCreateEntries bool */

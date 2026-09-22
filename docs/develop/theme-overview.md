@@ -13,7 +13,7 @@ A dedicated theme module makes sense when you need:
 
 If your change fits in the Appearance UI, stay there — themes are a heavier tool with an upgrade cost.
 
-> **Just want to override a single view?** Since 1.19 you can map individual view files in `protected/config/common.php` without authoring a theme — see [View and mail overrides → Overrides via configuration](theme-views.md#overrides-via-configuration).
+> **Just want to override a single view?** Since 1.19 you can map individual view files in `config/common.php` without authoring a theme — see [View and mail overrides → Overrides via configuration](theme-views.md#overrides-via-configuration).
 
 ## Lifecycle
 

@@ -31,5 +31,13 @@ class EnvironmentChecker
             print "Error: The runtime directory is not writable by the PHP process.";
             exit(1);
         }
+
+        // The installer writes the database credentials here. Without this the failure surfaces
+        // halfway through the wizard as an exception, and the directory it needs moved in 1.20.
+        $configPath = dirname(Yii::getAlias(Yii::$app->params['dynamicConfigFile']));
+        if (!is_dir($configPath) || !is_writable($configPath)) {
+            print "Error: The configuration directory " . $configPath . " is not writable by the PHP process.";
+            exit(1);
+        }
     }
 }

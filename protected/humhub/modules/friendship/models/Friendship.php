@@ -16,6 +16,7 @@ use humhub\modules\friendship\notifications\Request;
 use humhub\modules\friendship\notifications\RequestApproved;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
+use yii\db\IntegrityException;
 use yii\db\Query;
 
 /**
@@ -243,7 +244,25 @@ class Friendship extends ActiveRecord
         $friendship = new Friendship();
         $friendship->user_id = $user->id;
         $friendship->friend_user_id = $friend->id;
-        if ($friendship->save()) {
+
+        try {
+            $saved = $friendship->save();
+        } catch (IntegrityException $e) {
+            // Concurrent request may have already created this friendship (race on
+            // the unique index) - verify before treating as success, don't swallow other errors.
+            $record = static::find()->where([
+                'user_id' => $user->id,
+                'friend_user_id' => $friend->id,
+            ]);
+
+            if (!$record->exists()) {
+                throw $e;
+            }
+
+            $saved = true;
+        }
+
+        if ($saved) {
             $friend->follow($user, false);
             return true;
         }

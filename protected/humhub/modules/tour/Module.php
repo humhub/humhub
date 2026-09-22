@@ -25,7 +25,7 @@ class Module extends \humhub\components\Module
      * Example of a custom config file:
      * [
      *     '@tour/config/tour-interface.php', // default config
-     *     __DIR__ . '/custom-tour/tour-administration.php', // custom config in protected/config/custom-tour/tour-administration.php
+     *     '@config/custom-tour/tour-administration.php', // custom config in the config directory of the installation
      * ],
      *
      * @since 1.18

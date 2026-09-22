@@ -4,14 +4,14 @@ humhub.module('ui.showMore', function (module, require, $) {
 
     var DEFAULT_COLLAPSE_AT = 380;
 
-    module.requiredI18nCategories = ['UiModule.base'];
+    module.requiredI18nCategories = ['base'];
 
     var CollapseContent = function (node, options) {
         this.options = options || {};
         this.$ = node instanceof $ ? node : $(node);
         this.collapseAt = this.$.data('collapse-at') || DEFAULT_COLLAPSE_AT;
-        this.options.readMoreText = this.$.data('read-more-text') || i18n.t('UiModule.base', 'Read more');
-        this.options.readLessText = this.$.data('read-less-text') || i18n.t('UiModule.base', 'Collapse');
+        this.options.readMoreText = this.$.data('read-more-text') || i18n.t('base', 'Read more');
+        this.options.readLessText = this.$.data('read-less-text') || i18n.t('base', 'Collapse');
         this.init();
     };
 
