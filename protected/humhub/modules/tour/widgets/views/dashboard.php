@@ -29,7 +29,7 @@ $removeOptionHtml = Html::tag(
         ->action('tour.hidePanel')
         ->confirm(
             Icon::get('eye-slash') . ' ' . Yii::t('TourModule.base', ' Remove panel'),
-            Yii::t('TourModule.base', 'This action will remove the tour panel from your dashboard. You can reactivate it at<br>Account settings <i class="fa fa-caret-right"></i> Settings.'),
+            Yii::t('TourModule.base', 'This action will remove the tour panel from your dashboard. You can reactivate it at<br>Account settings {icon} Settings.', ['icon' => Icon::get('caret-right-filled')]),
             Yii::t('TourModule.base', 'Ok'),
             Yii::t('TourModule.base', 'Cancel'),
         )

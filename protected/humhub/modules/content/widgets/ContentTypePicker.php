@@ -9,6 +9,7 @@
 
 namespace humhub\modules\content\widgets;
 
+use humhub\components\icon\TablerIconProvider;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\ContentType;
@@ -30,7 +31,7 @@ class ContentTypePicker extends MultiSelect
     /**
      * @var string icon used for content types without own icon definition
      */
-    public $defaultIcon = 'fa-filter';
+    public $defaultIcon = 'filter';
 
     /**
      * @inheritdoc
@@ -56,9 +57,13 @@ class ContentTypePicker extends MultiSelect
 
             if ($type->typeClass === $itemKey) {
                 $icon = $type->getIcon();
-                return empty($icon) ? $this->defaultIcon : $icon;
+                // The picker JS renders a `ti-`/`fa-` prefixed value as icon class; content types of
+                // modules may still return Font Awesome names, so resolve here.
+                return 'ti-' . TablerIconProvider::resolveName(empty($icon) ? $this->defaultIcon : $icon);
             }
         }
+
+        return null;
     }
 
     /**

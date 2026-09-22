@@ -27,7 +27,7 @@ class MoveContentLink extends WallEntryControlLink
     /**
      * @inheritdocs
      */
-    public $icon = 'fa-arrows-h';
+    public $icon = 'arrows-horizontal';
 
     /**
      * @inheritdocs

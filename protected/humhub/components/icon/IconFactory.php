@@ -15,9 +15,9 @@ use yii\base\InvalidConfigException;
  * If an IconProvider does only a subset of all icon names the [[IconProvider::render]] function should return null. In
  * this case the IconFactory will fall back to an [[fallbackProvider]].
  *
- * By default the FontAwesomeIconProvider is set as default provider.
+ * By default the [[TablerIconProvider]] is the default and the fallback provider; the deprecated
+ * [[FontAwesomeIconProvider]] stays registered under the id `fa`.
  *
- * @see DevtoolsIconProvider
  * @since 1.4
  */
 class IconFactory extends Component
@@ -79,9 +79,10 @@ class IconFactory extends Component
      */
     public function init()
     {
-        $fontAwesomeIconProvider = new FontAwesomeIconProvider();
-        static::registerProvider($fontAwesomeIconProvider, true);
-        static::$fallbackProvider = $fontAwesomeIconProvider;
+        $tablerIconProvider = new TablerIconProvider();
+        static::registerProvider($tablerIconProvider, true);
+        static::$fallbackProvider = $tablerIconProvider;
+        static::registerProvider(new FontAwesomeIconProvider());
         $this->trigger(static::EVENT_AFTER_INIT);
     }
 

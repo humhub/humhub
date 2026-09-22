@@ -29,7 +29,7 @@ humhub.module('marketplace', function (module, require, $) {
         const card = evt.$trigger.closest('.card');
         const body = card.find('.card-body');
 
-        body.html('<div class="text-center"><span class="fa fa-check"></span></div>');
+        body.html('<div class="text-center"><span class="ti ti-check"></span></div>');
         const resultIcon = body.find('.fa').css({fontSize: 0, opacity: 0});
         resultIcon.animate({fontSize: '50px', opacity: 1}, 1000, function () {
             $(this).after('<div style="padding-top:20px">' + response.status + '</div>');

@@ -16,16 +16,23 @@ use yii\base\InvalidConfigException;
  * This class only holds the icon definition as icon name, size and color and will forward the
  * actual rendering to an IconProvider through an IconFactory.
  *
+ * Icon names are Tabler Icons names (https://tabler.io/icons), a filled variant is addressed as
+ * `<name>-filled`. Font Awesome 4 names, which HumHub used until 1.19, keep working through
+ * [[\humhub\components\icon\LegacyIconMap]].
+ *
  * It is possible to define own IconProvider, see [[IconFactory]]
  *
  * Usage:
  *
  * ```php
  * // Simple Icon
- * Icon::get('myIcon');
+ * Icon::get('pencil');
  *
  * // Icon with color definition
- * Icon::get('myIcon', ['color' => 'danger']);
+ * Icon::get('trash', ['color' => 'danger']);
+ *
+ * // Filled variant
+ * Icon::get('star-filled');
  *
  * // Use another icon lib
  * Icon::get('myIcon', ['lib' => 'myIconLib']);
@@ -51,7 +58,8 @@ class Icon extends Widget implements \Stringable
     public const SIZE_10x = '10x';
 
     /**
-     * @var array contains all available names which should be supported by the main icon provider
+     * @var array the Font Awesome 4 icon names
+     * @deprecated since 1.20, use [[getNames()]] for the names of the active icon provider. Will be removed in 1.21.
      */
     public static $names = [
         'adjust',
@@ -666,11 +674,13 @@ class Icon extends Widget implements \Stringable
 
     /**
      * @var bool used for icon list items
+     * @deprecated since 1.20, not rendered by the Tabler provider. Will be removed in 1.21.
      */
     public $listItem = false;
 
     /**
      * @var bool bordered icon
+     * @deprecated since 1.20, not rendered by the Tabler provider. Will be removed in 1.21.
      */
     public $border = false;
 
@@ -769,6 +779,7 @@ class Icon extends Widget implements \Stringable
      * @param $listDefinition
      * @return mixed
      * @throws InvalidConfigException
+     * @deprecated since 1.20, not supported by the Tabler provider. Will be removed in 1.21.
      */
     public static function renderList($listDefinition)
     {
@@ -781,12 +792,7 @@ class Icon extends Widget implements \Stringable
      */
     public function run()
     {
-        /**
-         * Catch for legacy icon usage
-         */
-        $this->name = (str_starts_with($this->name, 'fa-'))
-            ? substr($this->name, 3, strlen($this->name))
-            : $this->name;
+        $this->name = static::stripPrefix($this->name);
 
         if ($this->color) {
             switch ($this->color) {
@@ -823,6 +829,16 @@ class Icon extends Widget implements \Stringable
         $this->name = static::resolveAlias($this->name);
 
         return IconFactory::getInstance()->render($this);
+    }
+
+    /**
+     * Strips the `fa-` or `ti-` class prefix from an icon name given as CSS class, e.g. `fa-pencil`.
+     *
+     * @since 1.20
+     */
+    public static function stripPrefix(?string $name): ?string
+    {
+        return $name === null ? null : preg_replace('/^(fa|ti)-/', '', $name);
     }
 
     /**
@@ -893,6 +909,7 @@ class Icon extends Widget implements \Stringable
     /**
      * @param bool $active
      * @return $this
+     * @deprecated since 1.20, not rendered by the Tabler provider. Will be removed in 1.21.
      */
     public function listItem($active = true)
     {
@@ -931,6 +948,7 @@ class Icon extends Widget implements \Stringable
     /**
      * @param bool $active
      * @return $this
+     * @deprecated since 1.20, not rendered by the Tabler provider. Will be removed in 1.21.
      */
     public function border($active = true)
     {

@@ -15,6 +15,7 @@ use humhub\modules\space\widgets\SpacePickerField;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicPicker;
 use humhub\widgets\DirectoryFilters;
+use humhub\widgets\Icon;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserPickerField;
 use Yii;
@@ -40,7 +41,7 @@ class SearchFilters extends DirectoryFilters
             'type' => 'input',
             'inputOptions' => ['autocomplete' => 'search', 'data-highlight' => '.search-results'],
             'wrapperClass' => 'flex-fill form-search-filter-keyword',
-            'afterInput' => Html::submitButton('<span class="fa fa-search" aria-hidden="true"></span>', [
+            'afterInput' => Html::submitButton(Icon::get('search')->asString(), [
                 'class' => 'form-button-search',
                 'aria-label' => Yii::t('ContentModule.base', 'Search'),
                 // Pressing Enter in the keyword field already submits the form, so this

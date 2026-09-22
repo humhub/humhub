@@ -143,7 +143,7 @@ class FriendshipButton extends Widget
                 'togglerClass' => 'btn btn-accent active',
             ],
             'denyFriendRequest' => [
-                'title' => '<span class="fa fa-times"></span>&nbsp;&nbsp;' . Yii::t('FriendshipModule.base', 'Deny friend request'),
+                'title' => Icon::get('x') . '&nbsp;&nbsp;' . Yii::t('FriendshipModule.base', 'Deny friend request'),
                 'attrs' => [
                     'data-action-click' => 'content.container.relationship',
                     'data-action-url' => Url::to(['/friendship/request/delete', 'userId' => $this->user->id]),

@@ -19,12 +19,12 @@ humhub.module('ui.form.elements', function (module, require, $) {
 
                 // Plain <div>, so it needs tabindex/role/keydown wiring to be
                 // reachable and operable via keyboard (Tab + Enter/Space).
-                var $pwShow = $('<div class="humhub-pw-show" tabindex="0" role="button" aria-pressed="false"><i class="fa fa-eye"></i></div>');
+                var $pwShow = $('<div class="humhub-pw-show" tabindex="0" role="button" aria-pressed="false"><i class="ti ti-eye"></i></div>');
 
                 var setPasswordVisible = function (visible) {
                     var $icon = $pwShow.find('i');
                     $input.attr('type', visible ? 'input' : 'password');
-                    $icon.toggleClass('fa-eye-slash', visible).toggleClass('fa-eye', !visible);
+                    $icon.toggleClass('ti-eye-off', visible).toggleClass('ti-eye', !visible);
                     $pwShow.attr({
                         'aria-pressed': visible ? 'true' : 'false',
                         'aria-label': visible ? i18n.t('base', 'Hide password') : i18n.t('base', 'Show password')

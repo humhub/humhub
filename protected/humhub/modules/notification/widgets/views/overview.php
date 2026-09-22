@@ -3,6 +3,7 @@
 use humhub\helpers\Html;
 use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\Icon;
 use humhub\widgets\LoaderWidget;
 use yii\helpers\Url;
 
@@ -13,7 +14,7 @@ use yii\helpers\Url;
 <a href="#" id="icon-notifications" data-action-click='toggle'
    aria-label="<?= Yii::t('NotificationModule.base', 'Open the notification dropdown menu') ?>"
    data-bs-toggle="dropdown">
-    <i class="fa fa-bell"></i>
+    <?= Icon::get('bell') ?>
 </a>
 
 <?= Badge::danger()

@@ -43,14 +43,15 @@ Snippets follow the bootstrap panel structure. `PanelMenu` is the convention for
 
 ```php
 <?php
+use humhub\widgets\Icon;
 use humhub\widgets\PanelMenu;
 
-$extraMenus = '<li><a href="' . $url . '"><i class="fa fa-arrow-circle-right"></i> '
+$extraMenus = '<li><a href="' . $url . '">' . Icon::get('circle-arrow-right') . ' '
     . Yii::t('ExampleModule.base', 'Extra menu item') . '</a></li>';
 ?>
 <div class="panel example-snippet" id="example-snippet">
     <div class="panel-heading">
-        <i class="fa fa-home"></i> <?= Yii::t('ExampleModule.base', '<strong>Example</strong> snippet') ?>
+        <?= Icon::get('home') ?> <?= Yii::t('ExampleModule.base', '<strong>Example</strong> snippet') ?>
         <?= PanelMenu::widget(['id' => 'example-snippet', 'extraMenus' => $extraMenus]) ?>
     </div>
 

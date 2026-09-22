@@ -232,7 +232,12 @@ class Button extends \yii\bootstrap5\Button
             }
         }
 
-        $text = $this->icon . ($this->encodeLabel ? Html::encode($this->label) : $this->label);
+        // A space between icon and label, like Badge::run() already inserts: relying on the icon
+        // font's own glyph metrics for that gap broke when Font Awesome 4 was replaced by Tabler
+        // Icons, whose glyphs are cropped tightly to their own bounds instead of a fixed advance
+        // width, so some icon/label pairs ended up touching (e.g. the left navigation menus).
+        $text = $this->icon . ($this->icon !== null && $this->label !== null ? ' ' : '')
+            . ($this->encodeLabel ? Html::encode($this->label) : $this->label);
 
         if ($this->size) {
             Html::addCssClass($this->options, ['class' => 'btn-' . $this->size]);

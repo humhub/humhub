@@ -37,13 +37,15 @@ The handler receives the event object that the emitter created:
 // example/Events.php
 namespace johndoe\example;
 
+use humhub\widgets\Icon;
+
 class Events
 {
     public static function onTopMenuInit($event)
     {
         $event->sender->addItem([
             'label' => 'Example',
-            'icon' => '<i class="fa fa-tachometer"></i>',
+            'icon' => Icon::get('dashboard'),
             'url' => '#',
             'sortOrder' => 200,
         ]);

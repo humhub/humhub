@@ -5,6 +5,7 @@ namespace humhub\modules\content\widgets;
 use humhub\components\Widget;
 use humhub\helpers\Html;
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\widgets\Icon;
 use Yii;
 use yii\helpers\Url;
 
@@ -30,7 +31,7 @@ class PublishDraftLink extends Widget
         return Html::tag(
             'li',
             Html::a(
-                '<i class="fa fa-mail-reply-all"></i> '
+                Icon::get('arrow-back-up-double') . ' '
                 . Yii::t('ContentModule.base', 'Publish draft'),
                 '#',
                 ['data-action-click' => 'publishDraft', 'data-action-url' => $publishUrl],

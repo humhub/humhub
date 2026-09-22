@@ -136,7 +136,7 @@ class HeaderControlsMenu extends DropdownMenu
                 $this->addEntry(new MenuLink([
                     'label' => Yii::t('SpaceModule.manage', 'Show posts on dashboard'),
                     'url' => $this->space->createUrl('/space/membership/switch-dashboard-display', ['show' => 1]),
-                    'icon' => 'fa-eye',
+                    'icon' => 'eye',
                     'sortOrder' => 800,
                     'htmlOptions' => ['data-method' => 'POST',
                         'data-bs-toggle' => 'tooltip',

@@ -12,6 +12,6 @@ use yii\web\View;
 /* @var $user User */
 ?>
 
-<a href="#" class="fa fa-envelope-o"></a>
-<a href="#" class="fa fa-comment-o"></a>
-<a href="#" class="fa fa-mobile-phone"></a>
+<a href="#" class="ti ti-mail"></a>
+<a href="#" class="ti ti-message-circle"></a>
+<a href="#" class="ti ti-device-mobile"></a>

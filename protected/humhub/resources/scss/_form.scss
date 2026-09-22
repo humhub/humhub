@@ -79,8 +79,8 @@
         position: relative;
 
         &:before {
-            font: 14px FontAwesome;
-            content: "\f002";
+            font: 14px 'tabler-icons';
+            content: "\eb1c"; /* Tabler search */
             color: var(--hh-background-color-page);
             position: absolute;
             top: 10px;
@@ -221,8 +221,8 @@
             color: var(--hh-accent-contrast);
 
             &::after {
-                content: '\f00c'; /* FontAwesome checkmark */
-                font-family: 'FontAwesome'; /* FontAwesome Font */
+                content: '\ea5e'; /* Tabler check */
+                font-family: 'tabler-icons';
                 font-size: 12px;
                 position: absolute;
                 top: -1px;
@@ -293,7 +293,7 @@
                 background: var(--bs-light);
             }
 
-            .fa {
+            .ti {
                 margin-right: 5px;
 
                 &.radio-pill-active-icon {
@@ -405,14 +405,14 @@
     }
 
     .form-collapsible-fields-label {
-        .fa-plus {
+        .ti-plus {
             display: none;
         }
         &.collapsed {
-            .fa-minus {
+            .ti-minus {
                 display: none;
             }
-            .fa-plus {
+            .ti-plus {
                 display: initial;
             }
         }

@@ -1,6 +1,7 @@
 <?php
 /* @var $this \humhub\components\View */
 
+use humhub\widgets\Icon;
 use yii\helpers\Url;
 
 $archiveLink = Url::to(['/content/content/archive', 'id' => $id]);
@@ -13,14 +14,14 @@ $unarchiveLink = Url::to(['/content/content/unarchive', 'id' => $id]);
            class="dropdown-item "
            data-action-click="unarchive"
            data-action-url="<?= $unarchiveLink ?>">
-            <i class="fa fa-archive"></i> <?= Yii::t('ContentModule.base', 'Unarchive'); ?>
+            <?= Icon::get('archive') ?> <?= Yii::t('ContentModule.base', 'Unarchive'); ?>
         </a>
     <?php else: ?>
         <a href="#"
            class="dropdown-item "
            data-action-click="archive"
            data-action-url="<?= $archiveLink ?>">
-            <i class="fa fa-archive"></i> <?= Yii::t('ContentModule.base', 'Move to archive'); ?>
+            <?= Icon::get('archive') ?> <?= Yii::t('ContentModule.base', 'Move to archive'); ?>
         </a>
     <?php endif; ?>
 </li>
