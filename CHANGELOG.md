@@ -1,14 +1,18 @@
 HumHub Changelog
 ================
 
-1.18.6 (Unreleased)
-------------------------
+1.18.6 (September 22, 2026)
+---------------------------
+
+> This release also fixes [security](https://github.com/humhub/humhub/security/advisories) issues.
+
 - Fix #8409: Add :focus styles for Administration left navigation menu items
 - Fix #8420: Fix hover flicker and keyboard focus on profile image upload buttons
 - Fix #8407: Make Select2 picker choices keyboard-accessible: the "Remove all items" button and each item's own remove icon
 - Fix #8426: Add a visible keyboard focus indicator for the stream filter toggle and its checkbox/radio filter options
 - Fix #8430: Make the password show/hide icon focusable and operable via keyboard
 - Fix #8439: Fix editing file-only Posts and clear `fileList[]` after posting so it isn't reused on the next post
+- Enh #8440: Add the user ID as tie-breaker to the default user list sorting for stable ordering and pagination
 - Fix #8442: DatePicker date-format mismatches (month names, digits, whitespace) between jQuery UI and PHP intl/ICU across 35+ locales
 - Fix #8445: Restrict direct space joins to free-join spaces, so "Invite and request" spaces require admin approval instead of instant membership
 - Fix #8446: Restrict Topic management (create/rename/delete) on user profiles to the profile owner or users with full content management permissions
