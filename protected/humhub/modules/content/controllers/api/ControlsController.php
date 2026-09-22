@@ -261,7 +261,7 @@ class ControlsController extends BaseController
 
         Yii::warning(
             'Menu entry ' . $entry->getEntryClass() . ' cannot describe itself and was delivered '
-            . 'as raw HTML. Implement humhub\\modules\\ui\\menu\\DescribableWidget — the HTML '
+            . 'as raw HTML. Implement humhub\\widgets\\menu\\DescribableWidget — the HTML '
             . 'fallback is deprecated and will be removed.',
             'content',
         );
