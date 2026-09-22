@@ -75,6 +75,14 @@ class AdvancedSettings extends Model
     public $showTopicSidebar = false;
 
     /**
+     * Sort order (position) of the topic widget in the space stream sidebar.
+     *
+     * @var int
+     * @since 1.19
+     */
+    public $topicSidebarSortOrder;
+
+    /**
      * @var int
      */
     public $sortOrder;
@@ -85,8 +93,8 @@ class AdvancedSettings extends Model
     public function rules()
     {
         return [
-            [['sortOrder'], 'required'],
-            [['sortOrder'], 'integer'],
+            [['sortOrder', 'topicSidebarSortOrder'], 'required'],
+            [['sortOrder', 'topicSidebarSortOrder'], 'integer'],
             [['indexUrl', 'indexGuestUrl', 'defaultStreamSort'], 'string'],
             ['defaultStreamSort', 'in', 'range' => array_keys(SpaceSettingsForm::defaultStreamSortOptions())],
             [['hideMembers', 'hideActivities', 'hideAbout', 'hideFollowers', 'showTopicSidebar'], 'boolean'],
@@ -109,6 +117,7 @@ class AdvancedSettings extends Model
             'hideAbout' => Yii::t('SpaceModule.base', 'Hide About Page'),
             'hideFollowers' => Yii::t('SpaceModule.base', 'Hide Followers'),
             'showTopicSidebar' => Yii::t('SpaceModule.base', 'Show topic widget in Stream sidebar'),
+            'topicSidebarSortOrder' => Yii::t('SpaceModule.base', 'Topic widget sort order'),
         ];
     }
 
@@ -121,6 +130,7 @@ class AdvancedSettings extends Model
             'indexUrl' => Yii::t('SpaceModule.base', 'The default homepage for members of this Space'),
             'indexGuestUrl' => Yii::t('SpaceModule.base', 'The default homepage for non-members and guests visiting this Space'),
             'defaultStreamSort' => Yii::t('SpaceModule.base', 'Order of content in stream'),
+            'topicSidebarSortOrder' => Yii::t('SpaceModule.base', 'Lower values move the widget further up in the sidebar. The "Space members" widget uses 30 by default.'),
         ];
     }
 
@@ -142,6 +152,7 @@ class AdvancedSettings extends Model
         $this->hideActivities = $settings->get('hideActivities', $defaultSettings->defaultHideActivities);
         $this->hideFollowers = $settings->get('hideFollowers', $defaultSettings->defaultHideFollowers);
         $this->showTopicSidebar = $settings->get('showTopicSidebar', $defaultSettings->defaultShowTopicSidebar);
+        $this->topicSidebarSortOrder = $settings->get('topicSidebarSortOrder', $defaultSettings->defaultTopicSidebarSortOrder);
         $this->sortOrder = $this->space->sort_order;
     }
 
@@ -199,6 +210,7 @@ class AdvancedSettings extends Model
         $settings->set('hideActivities', (bool)$this->hideActivities);
         $settings->set('hideFollowers', (bool)$this->hideFollowers);
         $settings->set('showTopicSidebar', (bool)$this->showTopicSidebar);
+        $settings->set('topicSidebarSortOrder', (int)$this->topicSidebarSortOrder);
 
         return true;
     }

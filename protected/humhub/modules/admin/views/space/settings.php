@@ -5,6 +5,7 @@ use humhub\modules\admin\models\forms\SpaceSettingsForm;
 use humhub\modules\space\widgets\SpacePickerField;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
+use humhub\widgets\form\SortOrderField;
 
 /* @var $model SpaceSettingsForm */
 /* @var $joinPolicyOptions array */
@@ -50,6 +51,8 @@ AdminSpaceAsset::register($this);
 <?= $form->field($model, 'defaultHideFollowers')->checkbox() ?>
 
 <?= $form->field($model, 'defaultShowTopicSidebar')->checkbox() ?>
+
+<?= $form->field($model, 'defaultTopicSidebarSortOrder')->widget(SortOrderField::class) ?>
 
 <?= $form->field($model, 'allowSpaceTopics')->checkbox(['data' => ['action-change' => 'admin.space.restrictTopicCreation']]) ?>
 
