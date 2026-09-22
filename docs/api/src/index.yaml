@@ -1,0 +1,51 @@
+openapi: 3.0.0
+info:
+  title: HumHub HTTP API (v2)
+  version: 2.0.0
+  description: |
+    Endpoint reference for `/api/v2`, the HTTP API of **HumHub core** (1.20+). Endpoints are
+    grouped by the module that owns them; the sidebar lists every operation, and the search
+    covers all of them.
+
+    `/api/v2` is still being built out and does not cover every resource yet. Where an
+    endpoint is missing, the `/api/v1` surface of the
+    [REST API module](https://github.com/humhub/rest) can be used alongside it — see its
+    [manual](https://github.com/humhub/rest/blob/master/docs/MANUAL.md).
+
+    The REST API module also contributes the token authentication methods these endpoints
+    accept. HumHub's own browser session is accepted too, which is what the platform's Vue UI
+    uses; state-changing session requests additionally require the CSRF token
+    (`X-CSRF-Token` header or `_csrf` body parameter). For the design of this stack see
+    `docs/develop/concept-api.md`.
+
+    ## Conventions
+
+    Fixed for this API generation, and differing from `/api/v1`:
+
+    - Timestamps are ISO-8601 with offset, in UTC (`2026-08-22T08:00:00+00:00`).
+    - Field names are camelCase throughout — including the keys of validation errors, so a
+      client matches them against the field names it sent.
+    - Errors are plain HTTP status codes with a JSON body; there is no `{code, message}`
+      success/failure envelope. Validation failures answer `422` with
+      `{"errors": {"<field>": ["<message>"]}}`, a successful delete answers `204`.
+    - Paginated lists use `{results, total, page, pageSize, pages}`. Lists that reorder while
+      being read (activity, notification) page by cursor instead and carry a `nextCursor`.
+    - Payloads are **caller-neutral** wherever possible — identical for every reader who may
+      see the record, and therefore cacheable. What depends on the caller (permissions, like
+      state, membership) has endpoints of its own.
+  x-logo:
+    url: humhub-logo.png
+    altText: HumHub
+    href: https://www.humhub.com
+  contact:
+    email: info@humhub.com
+  license:
+    name: AGPLv2
+    url: https://www.humhub.org/en/licences
+servers:
+  - url: /api/v2
+security:
+  - Bearer: []
+  - BasicAuth: []
+  - SessionCookie: []
+paths: {}

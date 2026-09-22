@@ -1,0 +1,15 @@
+# Redoc options for `build.sh` (`@redocly/cli build-docs` reads this file from the working
+# directory).
+openapi:
+  # Sidebar entries are the paths (`GET /comment/{id}`) rather than the prose summaries -
+  # what a reader scanning an API for an endpoint is looking for.
+  sideNavStyle: path-only
+  pathInMiddlePanel: true
+  expandResponses: "200,201"
+  requiredPropsFirst: true
+  sortTagsAlphabetically: true
+  theme:
+    colors:
+      primary:
+        # The teal of the HumHub logo, for links, buttons and the active sidebar entry.
+        main: '#20a0b2'

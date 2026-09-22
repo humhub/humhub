@@ -1,24 +1,7 @@
 openapi: 3.0.0
 info:
-  description: |
-    Welcome to the HumHub like API reference, v2.
-
-    These endpoints are part of **HumHub core** (1.20+). The optional
-    [REST API module](https://github.com/humhub/rest) contributes the token authentication
-    methods they accept and owns the older `/api/v1` surface, which is documented with that
-    module. For the design of this stack see `docs/develop/concept-api.md`.
-
-    Conventions of this API generation, differing from `/api/v1`: camelCase field names,
-    ISO-8601 timestamps with offset, plain HTTP status codes instead of a
-    `{code, message}` envelope, and `{results, total, page, pageSize, pages}` for paginated
-    lists.
-
-    Every likeable record is addressed either by its platform-wide `recordId` (what shapes
-    carrying likes expose) or by `model` + `pk`.
-
-    Requests may authenticate with any token method the REST API module offers. HumHub's own
-    browser session is accepted too for these endpoints, which is what the platform's Vue UI
-    uses; state-changing session requests additionally require the CSRF token.
+  description: Joined into index.html by build.sh; this module's introduction is the
+    description of its tag below.
   version: 2.0.0
   title: HumHub - Like API (v2)
   contact:
@@ -32,9 +15,16 @@ security:
   - Bearer: []
   - BasicAuth: []
   - SessionCookie: []
+tags:
+  - name: Like
+    description: |
+      Every likeable record is addressed either by its platform-wide `recordId` (what shapes
+      carrying likes expose) or by `model` + `pk`.
 paths:
   "/like/state":
     get:
+      tags:
+        - Like
       summary: Like state of a record
       description: |
         The caller-context like state. Readable by guests for content they can see, with
@@ -58,6 +48,8 @@ paths:
           $ref: "common.yaml#/components/responses/NotFound"
   "/like/states":
     get:
+      tags:
+        - Like
       summary: Like states of many records
       description: |
         The caller's like state for up to 100 records in one request, keyed by record id —
@@ -92,6 +84,8 @@ paths:
           $ref: "common.yaml#/components/responses/Unauthorized"
   "/like":
     post:
+      tags:
+        - Like
       summary: Like a record
       parameters:
         - $ref: "common.yaml#/components/parameters/recordIdParam"
@@ -111,6 +105,8 @@ paths:
         "404":
           $ref: "common.yaml#/components/responses/NotFound"
     delete:
+      tags:
+        - Like
       summary: Remove the caller's like
       description: Idempotent — unliking something that was never liked is a success.
       parameters:
@@ -132,6 +128,8 @@ paths:
           $ref: "common.yaml#/components/responses/NotFound"
   "/like/users":
     get:
+      tags:
+        - Like
       summary: Users who liked a record
       description: Newest first. Readable by guests for content they can see.
       parameters:

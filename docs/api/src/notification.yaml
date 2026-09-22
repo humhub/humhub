@@ -1,35 +1,7 @@
 openapi: 3.0.0
 info:
-  description: |
-    Welcome to the HumHub notification API reference, v2.
-
-    These endpoints are part of **HumHub core** (1.20+). The optional
-    [REST API module](https://github.com/humhub/rest) contributes the token authentication
-    methods they accept and owns the older `/api/v1` surface, which is documented with that
-    module. For the design of this stack see `docs/develop/concept-api.md`.
-
-    Conventions of this API generation, differing from `/api/v1`: camelCase field names,
-    ISO-8601 timestamps with offset, plain HTTP status codes instead of a
-    `{code, message}` envelope.
-
-    **Always the caller's own notifications.** There is no user parameter, and no action here
-    is reachable for a guest. (The module's `/api/v1` notification endpoints, which let an
-    admin token read another user's notifications, are unaffected.)
-
-    **Cursor paging instead of page numbers.** The list is ordered unseen-first, newest-first,
-    and it reorders while a user pages through it — notifications arrive, others are read. Page
-    numbers would silently skip or repeat entries, so a page carries a `nextCursor` to hand
-    back, and `null` once the list is exhausted. This is the one list of this API generation
-    that does not use the `{results, total, page, pageSize, pages}` envelope.
-
-    **The sentence comes from the server.** A notification's `html` is the localized,
-    module-defined phrase (*"Jane commented on Post 'Release notes'"*) — the one part a client
-    cannot build. Everything around it (avatar, space badge, relative time, unread marker) is
-    data in this payload, rendered by the client.
-
-    Requests may authenticate with any token method the REST API module offers. HumHub's own
-    browser session is accepted too for these endpoints, which is what the platform's Vue UI
-    uses; state-changing session requests additionally require the CSRF token.
+  description: Joined into index.html by build.sh; this module's introduction is the
+    description of its tag below.
   version: 2.0.0
   title: HumHub - Notification API (v2)
   contact:
@@ -43,9 +15,28 @@ security:
   - Bearer: []
   - BasicAuth: []
   - SessionCookie: []
+tags:
+  - name: Notification
+    description: |
+      **Always the caller's own notifications.** There is no user parameter, and no action here
+      is reachable for a guest. (The module's `/api/v1` notification endpoints, which let an
+      admin token read another user's notifications, are unaffected.)
+
+      **Cursor paging instead of page numbers.** The list is ordered unseen-first, newest-first,
+      and it reorders while a user pages through it — notifications arrive, others are read. Page
+      numbers would silently skip or repeat entries, so a page carries a `nextCursor` to hand
+      back, and `null` once the list is exhausted. This is the one list of this API generation
+      that does not use the `{results, total, page, pageSize, pages}` envelope.
+
+      **The sentence comes from the server.** A notification's `html` is the localized,
+      module-defined phrase (*"Jane commented on Post 'Release notes'"*) — the one part a client
+      cannot build. Everything around it (avatar, space badge, relative time, unread marker) is
+      data in this payload, rendered by the client.
 paths:
   "/notification":
     get:
+      tags:
+        - Notification
       summary: The caller's notifications
       description: |
         One page of the caller's notifications, unseen first and newest first. Grouped
@@ -144,6 +135,8 @@ paths:
           $ref: "common.yaml#/components/responses/Unauthorized"
   "/notification/mark-as-seen":
     post:
+      tags:
+        - Notification
       summary: Mark all notifications as seen
       description: |
         Marks every notification of the caller as seen. Always answers `unseenCount: 0`.

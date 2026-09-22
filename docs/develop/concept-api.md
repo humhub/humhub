@@ -332,18 +332,23 @@ Core documents its own endpoints, in the same repository as the code they descri
 
 ```
 docs/api/
-├── index.php          # landing page, served at /docs/api/
-├── build.sh           # renders src/*.yaml next to the index
-├── src/*.yaml         # OpenAPI sources, `common.yaml` holding the shared components
-└── *.html             # rendered references (committed)
+├── index.html         # the rendered reference: every source joined into one page (committed)
+├── build.sh           # joins src/*.yaml and renders index.html
+├── redocly.yaml       # Redoc options
+└── src/*.yaml         # OpenAPI sources — `index.yaml` the introduction, `common.yaml` the shared components
 ```
 
-One document per module owning endpoints (`comment`, `like`, `account`, `file`,
-`notification`, `space`, `friendship`), plus `src/common.yaml` for the shared schemas, parameters, error responses
-and security schemes. The rendered pages are **committed**, so every installation ships its
-own API reference — reachable at `/docs/api/` — without a build step; `docs/api/build.sh`
-(or `grunt build-api-docs`) re-renders them after a source change, and the result belongs in
-the same commit.
+One source per module owning endpoints (`account`, `activity`, `comment`, `content`, `file`,
+`friendship`, `like`, `notification`, `space`), each tagging its operations with the module's
+name and introducing the module in that tag's description; `src/index.yaml` carries the general
+introduction and the conventions, `src/common.yaml` the shared schemas, parameters, error
+responses and security schemes. `build.sh` joins them into one document (`redocly join`) and
+renders it as `index.html` — one page with a sidebar across all modules. The rendered page is
+**committed**, so the reference opens straight from a checkout, no server needed, without a
+build step; `docs/api/build.sh` (or `grunt build-api-docs`) re-renders it after a source
+change, and the result belongs in the same commit. It is a repository document, not a served
+page: since the `public/` document root (#8459) the checkout's `docs/` directory is not
+web-accessible.
 
 A rendered page loads only from its own origin: webfonts are disabled, and the renderer's two
 Redocly CDN assets — the Redoc bundle itself and the "API docs by Redocly" badge the bundle

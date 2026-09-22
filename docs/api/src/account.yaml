@@ -1,20 +1,7 @@
 openapi: 3.0.0
 info:
-  description: |
-    Welcome to the HumHub account API reference, v2 — the authenticated user's own data.
-
-    These endpoints are part of **HumHub core** (1.20+). The optional
-    [REST API module](https://github.com/humhub/rest) contributes the token authentication
-    methods they accept and owns the older `/api/v1` surface, which is documented with that
-    module. For the design of this stack see `docs/develop/concept-api.md`.
-
-    Conventions of this API generation, differing from `/api/v1`: camelCase field names,
-    ISO-8601 timestamps with offset, and plain HTTP status codes instead of a
-    `{code, message}` envelope.
-
-    Requests may authenticate with any token method the REST API module offers. HumHub's own
-    browser session is accepted too for these endpoints, which is what the platform's Vue UI
-    uses.
+  description: Joined into index.html by build.sh; this module's introduction is the
+    description of its tag below.
   version: 2.0.0
   title: HumHub - Account API (v2)
   contact:
@@ -28,9 +15,16 @@ security:
   - Bearer: []
   - BasicAuth: []
   - SessionCookie: []
+tags:
+  - name: Account
+    description: |
+      The authenticated user's own data — always the caller. There is no user parameter, and
+      nothing here is reachable for a guest.
 paths:
   "/account":
     get:
+      tags:
+        - Account
       summary: The authenticated user
       responses:
         "200":
@@ -43,6 +37,8 @@ paths:
           $ref: "common.yaml#/components/responses/Unauthorized"
   "/account/blocked-users":
     get:
+      tags:
+        - Account
       summary: Ids of the users the caller has blocked
       description: |
         Clients need this to reproduce the platform's blocked-author masking: payloads are

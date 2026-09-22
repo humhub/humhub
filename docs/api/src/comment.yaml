@@ -1,28 +1,7 @@
 openapi: 3.0.0
 info:
-  description: |
-    Welcome to the HumHub comment API reference, v2.
-
-    These endpoints are part of **HumHub core** (1.20+). The optional
-    [REST API module](https://github.com/humhub/rest) contributes the token authentication
-    methods they accept and owns the older `/api/v1` surface, which is documented with that
-    module. For the design of this stack see `docs/develop/concept-api.md`.
-
-    Conventions of this API generation, differing from `/api/v1`:
-
-    - Timestamps are ISO-8601 with offset, in UTC (`2026-08-22T08:00:00+00:00`).
-    - Field names are camelCase throughout.
-    - Errors are plain HTTP status codes with a JSON body; there is no `{code, message}`
-      success/failure envelope. Validation failures answer `422` with
-      `{"errors": {"<field>": ["<message>"]}}`, a successful delete answers `204`.
-    - Comment lists are **cursor windows**, not offset pages (see the window endpoints).
-    - The comment shape is **caller-neutral**: identical for every reader who may see the
-      content. What depends on the caller has its own endpoints — `GET /comment/{id}/permissions`
-      for edit/delete, `GET /like/states` for like state.
-
-    Requests may authenticate with any token method the REST API module offers. HumHub's own
-    browser session is accepted too for these endpoints, which is what the platform's Vue UI
-    uses; state-changing session requests additionally require the CSRF token.
+  description: Joined into index.html by build.sh; this module's introduction is the
+    description of its tag below.
   version: 2.0.0
   title: HumHub - Comment API (v2)
   contact:
@@ -36,9 +15,19 @@ security:
   - Bearer: []
   - BasicAuth: []
   - SessionCookie: []
+tags:
+  - name: Comment
+    description: |
+      Comment lists are **cursor windows**, not offset pages (see the window endpoints).
+
+      The comment shape is **caller-neutral**: identical for every reader who may see the
+      content. What depends on the caller has its own endpoints — `GET /comment/{id}/permissions`
+      for edit/delete, `GET /like/states` for like state.
 paths:
   "/comment/content/{id}/window":
     get:
+      tags:
+        - Comment
       summary: Root-comment window of a content
       description: |
         A window of the content's root comments. Without any cursor the newest comments are
@@ -79,6 +68,8 @@ paths:
           $ref: "common.yaml#/components/responses/NotFound"
   "/comment/parent/{id}/window":
     get:
+      tags:
+        - Comment
       summary: Reply window of a comment thread
       description: |
         The same window semantics as the content window, for the replies of one root comment.
@@ -110,6 +101,8 @@ paths:
           $ref: "common.yaml#/components/responses/NotFound"
   "/comment":
     post:
+      tags:
+        - Comment
       summary: Create a comment
       description: |
         Creates a comment on the given content. Replies pass their parent through
@@ -150,6 +143,8 @@ paths:
           $ref: "common.yaml#/components/responses/ValidationFailed"
   "/comment/{id}/permissions":
     get:
+      tags:
+        - Comment
       summary: What the caller may do with a comment
       description: |
         Deliberately not part of the comment shape: these are the only caller-dependent
@@ -182,6 +177,8 @@ paths:
           $ref: "common.yaml#/components/responses/NotFound"
   "/comment/{id}":
     get:
+      tags:
+        - Comment
       summary: A single comment
       description: |
         A root comment carries a preview of its newest replies under `replies`; a reply has
@@ -202,6 +199,8 @@ paths:
         "404":
           $ref: "common.yaml#/components/responses/NotFound"
     put:
+      tags:
+        - Comment
       summary: Update a comment
       parameters:
         - $ref: "#/components/parameters/commentPathParam"
@@ -227,6 +226,8 @@ paths:
         "422":
           $ref: "common.yaml#/components/responses/ValidationFailed"
     patch:
+      tags:
+        - Comment
       summary: Update a comment
       description: |
         Alias of `PUT`: the same route and the same action serve both verbs, so the request
@@ -256,6 +257,8 @@ paths:
         "422":
           $ref: "common.yaml#/components/responses/ValidationFailed"
     delete:
+      tags:
+        - Comment
       summary: Delete a comment
       description: |
         Deletes the comment. The optional body parameters trigger the moderation flow: with

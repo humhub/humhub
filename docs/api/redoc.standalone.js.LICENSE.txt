@@ -7,7 +7,7 @@
 /*!
  * ReDoc - OpenAPI/Swagger-generated API Reference Documentation
  * -------------------------------------------------------------
- *   Version: "2.5.3"
+ *   Version: "2.5.4"
  *   Repo: https://github.com/Redocly/redoc
  */
 
@@ -25,7 +25,7 @@
  * Licensed under MIT
  */
 
-/*! @license DOMPurify 3.4.6 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/3.4.6/LICENSE */
+/*! @license DOMPurify 3.4.13 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/3.4.13/LICENSE */
 
 /*!***************************************************
 * mark.js v8.11.1

@@ -1,30 +1,7 @@
 openapi: 3.0.0
 info:
-  description: |
-    Welcome to the HumHub content API reference, v2.
-
-    These endpoints are part of **HumHub core** (1.20+). The optional
-    [REST API module](https://github.com/humhub/rest) contributes the token authentication
-    methods they accept and owns the older `/api/v1` surface, which is documented with that
-    module. For the design of this stack see `docs/develop/concept-api.md`.
-
-    Conventions of this API generation, differing from `/api/v1`:
-
-    - Timestamps are ISO-8601 with offset, in UTC (`2026-08-22T08:00:00+00:00`).
-    - Field names are camelCase throughout.
-    - Errors are plain HTTP status codes with a JSON body; there is no `{code, message}`
-      success/failure envelope.
-
-    This document covers the **context menu of a content record** — the data behind the `⋮`
-    menu a stream entry or a module's own list shows. It is deliberately its own endpoint
-    rather than part of any content payload: everything it returns depends on **who is
-    asking**, so folding it into a record shape would make that shape uncacheable and
-    different for every reader. The same split the comment API makes with
-    `GET /comment/{id}/permissions`.
-
-    Requests may authenticate with any token method the REST API module offers. HumHub's own
-    browser session is accepted too for these endpoints, which is what the platform's Vue UI
-    uses; state-changing session requests additionally require the CSRF token.
+  description: Joined into index.html by build.sh; this module's introduction is the
+    description of its tag below.
   version: 2.0.0
   title: HumHub - Content API (v2)
   contact:
@@ -38,9 +15,19 @@ security:
   - Bearer: []
   - BasicAuth: []
   - SessionCookie: []
+tags:
+  - name: Content
+    description: |
+      The **context menu of a content record** — the data behind the `⋮` menu a stream entry or a
+      module's own list shows. It is deliberately its own endpoint rather than part of any content
+      payload: everything it returns depends on **who is asking**, so folding it into a record
+      shape would make that shape uncacheable and different for every reader. The same split the
+      comment API makes with `GET /comment/{id}/permissions`.
 paths:
   "/content/{id}/controls":
     get:
+      tags:
+        - Content
       summary: The context menu of a content record
       description: |
         Resolves the record's `WallEntryControls` widget stack — every
@@ -50,7 +37,7 @@ paths:
         This is what the `ContentControls` Vue island loads when its menu is opened, and it
         is why a module that has contributed a control link for years keeps working in a
         client-rendered menu without any change: entries that can describe themselves
-        (`humhub\modules\ui\menu\DescribableWidget`) arrive as descriptors, and only those
+        (`humhub\widgets\menu\DescribableWidget`) arrive as descriptors, and only those
         that cannot fall back to the deprecated `html` escape hatch.
 
         Loaded lazily, on menu open — a list of 50 rows costs no request at all until
@@ -84,6 +71,13 @@ paths:
         "404":
           $ref: "common.yaml#/components/responses/NotFound"
 components:
+  securitySchemes:
+    Bearer:
+      $ref: "common.yaml#/components/securitySchemes/Bearer"
+    BasicAuth:
+      $ref: "common.yaml#/components/securitySchemes/BasicAuth"
+    SessionCookie:
+      $ref: "common.yaml#/components/securitySchemes/SessionCookie"
   parameters:
     contentPathParam:
       name: id
@@ -177,7 +171,7 @@ components:
             **Deprecated.** The rendered markup of an entry that cannot describe itself,
             injected as the whole list item. It cannot be labelled, conditioned, overridden
             or removed by a client, and every delivery logs a deprecation warning naming the
-            widget class. Implement `humhub\modules\ui\menu\DescribableWidget` instead; this
+            widget class. Implement `humhub\widgets\menu\DescribableWidget` instead; this
             fallback will be removed.
     ControlsCapabilities:
       type: object

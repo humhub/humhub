@@ -1,30 +1,7 @@
 openapi: 3.0.0
 info:
-  description: |
-    Welcome to the HumHub file API reference, v2.
-
-    These endpoints are part of **HumHub core** (1.20+). The optional
-    [REST API module](https://github.com/humhub/rest) contributes the token authentication
-    methods they accept and owns the older `/api/v1` surface, which is documented with that
-    module. For the design of this stack see `docs/develop/concept-api.md`.
-
-    Conventions of this API generation, differing from `/api/v1`: camelCase field names,
-    ISO-8601 timestamps with offset, plain HTTP status codes instead of a
-    `{code, message}` envelope.
-
-    **Uploading is a batch operation.** A single request carries any number of files, and the
-    response reports the outcome per file — one rejected file never discards the accepted
-    ones. That is the one documented deviation from the `422 {"errors": …}` validation
-    contract of this API generation: a rejected file is a batch item, not an invalid field.
-
-    **Files arrive unattached.** Nothing is bound to a record here: a client uploads, keeps
-    the returned `guid`s and submits them with the form that owns them (`fileList` for a
-    comment). Removing a file before saving is therefore purely client-side — the file stays
-    unattached and the platform's own cron job cleans it up.
-
-    Requests may authenticate with any token method the REST API module offers. HumHub's own
-    browser session is accepted too for these endpoints, which is what the platform's Vue UI
-    uses; state-changing session requests additionally require the CSRF token.
+  description: Joined into index.html by build.sh; this module's introduction is the
+    description of its tag below.
   version: 2.0.0
   title: HumHub - File API (v2)
   contact:
@@ -38,9 +15,23 @@ security:
   - Bearer: []
   - BasicAuth: []
   - SessionCookie: []
+tags:
+  - name: File
+    description: |
+      **Uploading is a batch operation.** A single request carries any number of files, and the
+      response reports the outcome per file — one rejected file never discards the accepted
+      ones. That is the one documented deviation from the `422 {"errors": …}` validation
+      contract of this API generation: a rejected file is a batch item, not an invalid field.
+
+      **Files arrive unattached.** Nothing is bound to a record here: a client uploads, keeps
+      the returned `guid`s and submits them with the form that owns them (`fileList` for a
+      comment). Removing a file before saving is therefore purely client-side — the file stays
+      unattached and the platform's own cron job cleans it up.
 paths:
   "/file":
     post:
+      tags:
+        - File
       summary: Upload files
       description: |
         Stores the uploaded files for the authenticated caller. Same model, validation and
@@ -130,6 +121,8 @@ paths:
                       - No file was uploaded.
   "/file/{id}":
     delete:
+      tags:
+        - File
       summary: Delete a file
       description: |
         Deletes a file the caller is allowed to delete: an unattached file only its uploader

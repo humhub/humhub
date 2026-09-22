@@ -107,10 +107,7 @@ module.exports = function (grunt) {
                 command: "npx vitest run"
             },
             buildApiDocs: {
-                command: function () {
-                    let document = grunt.option('document') || grunt.option('d') || '';
-                    return `bash docs/api/build.sh ${document}`.trim();
-                }
+                command: "bash docs/api/build.sh"
             }
 
         },
@@ -160,10 +157,10 @@ module.exports = function (grunt) {
     grunt.registerTask('test-js', ['shell:testJs']);
 
     /**
-     * Renders the HTTP API reference (docs/api/src/*.yaml) into the committed HTML pages
-     * an installation serves at /docs/api/
+     * Renders the HTTP API reference (docs/api/src/*.yaml) into the committed
+     * docs/api/index.html — the whole API on one page
      *
-     * > grunt build-api-docs [--document=comment]
+     * > grunt build-api-docs
      */
     grunt.registerTask('build-api-docs', ['shell:buildApiDocs']);
 };

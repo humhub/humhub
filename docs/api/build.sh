@@ -1,15 +1,16 @@
 #!/bin/bash
 
-# Renders the OpenAPI sources in src/ into this directory, one self-contained HTML page per
-# document. `src/common.yaml` holds shared components only and is skipped — every document
-# $refs it, nothing reads it on its own.
+# Renders the OpenAPI sources in src/ into index.html, the whole API on one self-contained
+# page: `redocly join` merges every source into one document (src/index.yaml first, supplying
+# the info block), rendered with a sidebar across all modules. `src/common.yaml` holds shared
+# components only — every document $refs it, nothing reads it on its own.
 #
-# The rendered pages are committed, so an installation ships its API reference (reachable at
-# /docs/api/) without a build step. Run this after changing a source and commit the result.
+# index.html is committed, so the reference opens straight from a checkout (no server needed)
+# without a build step. Run this after changing a source and commit the result.
 #
-# A rendered page loads only from its own origin: `--disableGoogleFont` keeps webfonts out,
-# and the two assets the renderer would have the page pull from Redocly's CDN are vendored
-# next to the pages and referenced relatively:
+# The page loads only from its own origin: `--disableGoogleFont` keeps webfonts out, the logo
+# is a local file, and the two assets the renderer would have the page pull from Redocly's
+# CDN are vendored next to it and referenced relatively:
 #
 #   redoc.standalone.js    the Redoc bundle itself — without it a page stays empty
 #   redoc-logo-mini.svg    the "API docs by Redocly" badge the bundle requests at runtime
@@ -36,6 +37,11 @@ BUNDLE="redoc.standalone.js"
 BUNDLE_HASH="$BUNDLE.sha384"
 LOGO="redoc-logo-mini.svg"
 LOGO_URL="https://cdn.redoc.ly/redoc/logo-mini.svg"
+
+# Pinned: the rendered pages are committed, so every run has to produce the same output. An
+# upcoming Redocly CLI release moves build-docs to Redoc 3 - bump deliberately, re-render
+# everything and commit the result in one go.
+REDOCLY_CLI="@redocly/cli@2.54.2"
 
 # `sha384-<base64>` of the pristine download — the shape the renderer writes into the CDN
 # script tag's integrity attribute, so the two can be compared directly.
@@ -99,23 +105,28 @@ localize() {
     mv "$page.tmp" "$page"
 }
 
-render() {
-    local source="$1"
-    local name
-    name="$(basename "$source" .yaml)"
+# Renders index.html: every source joined into one document (`redocly join`; src/index.yaml
+# goes first and supplies the info block), so one page carries the whole API with a sidebar
+# across all modules and a search over all of them. Each tag's description comes from the
+# source defining it; `--without-x-tag-groups` keeps the sidebar a flat list of modules
+# rather than one group per source file. The joined document is a build intermediate.
+render_index() {
+    local joined="src/.index.joined.yaml"
+    local sources
+    sources="$(find src -name '*.yaml' ! -name 'index.yaml' ! -name 'common.yaml' ! -name '.*' | sort)"
 
-    [ "$name" = "common" ] && return 0
-
-    echo "--------- $source ---------------------"
-    npx @redocly/cli build-docs "$source" -o "$name.html" --disableGoogleFont
-    localize "$name.html"
+    echo "--------- index.html (all documents) ---------"
+    # shellcheck disable=SC2086 # word splitting intended, no spaces in source names
+    npx "$REDOCLY_CLI" join src/index.yaml $sources -o "$joined" --without-x-tag-groups
+    # `join` carries info and servers over from the first file but drops the global `security`
+    # requirement, which would leave every operation without its "Authorizations" block and
+    # the page without an Authentication section. Re-attach the block from src/index.yaml.
+    if ! grep -q '^security:' "$joined"; then
+        awk '/^security:/ { p = 1 } p && /^[^ ]/ && !/^security:/ { p = 0 } p' src/index.yaml >> "$joined"
+    fi
+    npx "$REDOCLY_CLI" build-docs "$joined" -o index.html --disableGoogleFont
+    rm -f "$joined"
+    localize "index.html"
 }
 
-if [ -n "$1" ]; then
-    render "src/$1.yaml"
-    exit 0
-fi
-
-for source in src/*.yaml; do
-    render "$source"
-done
+render_index
