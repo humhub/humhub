@@ -9,7 +9,6 @@
 namespace humhub\tests\codeception\api;
 
 use ApiTester;
-use humhub\components\api\SerializeEvent;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\notifications\CommentDeleted;
 use humhub\modules\notification\models\Notification;
@@ -17,7 +16,6 @@ use humhub\modules\post\models\Post;
 use humhub\modules\user\models\User;
 use PHPUnit\Framework\Assert;
 use Yii;
-use yii\base\Event;
 
 /**
  * The comment API (`humhub\modules\comment\controllers\api\CommentController`).
@@ -125,9 +123,6 @@ class CommentApiCest
         Assert::assertStringStartsWith('http', $I->grabDataFromResponseByJsonPath('$.createdBy.imageUrl')[0]);
         Assert::assertStringStartsWith('http', $I->grabDataFromResponseByJsonPath('$.url')[0]);
         Assert::assertNotEmpty($I->grabDataFromResponseByJsonPath('$.recordId')[0]);
-
-        // `extensions` is an object on the wire, never a list
-        Assert::assertStringContainsString('"extensions":{}', $I->grabResponse());
 
         // Fields a client derives itself are absent by design
         foreach (['isEdited', 'blocked', 'canAdminDelete', 'attachmentsHtml', 'permalink'] as $absent) {
@@ -409,48 +404,5 @@ class CommentApiCest
 
         $I->sendGet('comment/' . $commentId);
         $I->seeResponseCodeIs(403);
-    }
-
-    /**
-     * The batch extension point modules use to attach their own data per comment — it must
-     * fire once per response, with the window's roots AND their reply previews in one batch.
-     */
-    public function testSerializeEventExtensions(ApiTester $I)
-    {
-        $I->wantTo('attach module extension data to serialized comments');
-        $I->amLoggedInAs(1);
-        $this->withCsrf($I);
-
-        $root = $this->createComment($I, 1, 'Root for extensions');
-        $reply = $this->createComment($I, 1, 'Reply for extensions', $root);
-
-        $firings = [];
-        $handler = function (SerializeEvent $event) use (&$firings) {
-            if ($event->type !== Comment::class) {
-                return;
-            }
-            $firings[] = array_map(fn(Comment $c) => $c->id, $event->records);
-            foreach ($event->records as $record) {
-                $event->addData($record->id, 'testmodule', ['mark' => 'c' . $record->id]);
-            }
-        };
-        Event::on(SerializeEvent::class, SerializeEvent::EVENT_SERIALIZE, $handler);
-
-        try {
-            $I->sendGet('comment/content/1/window');
-            $I->seeResponseCodeIs(200);
-
-            Assert::assertCount(1, $firings, 'One firing for the whole window');
-            Assert::assertContains($root, $firings[0]);
-            Assert::assertContains($reply, $firings[0], 'Reply previews are part of the same batch');
-
-            $I->seeResponseContainsJson(['results' => [[
-                'id' => $root,
-                'extensions' => ['testmodule' => ['mark' => 'c' . $root]],
-                'replies' => ['items' => [['id' => $reply, 'extensions' => ['testmodule' => ['mark' => 'c' . $reply]]]]],
-            ]]]);
-        } finally {
-            Event::off(SerializeEvent::class, SerializeEvent::EVENT_SERIALIZE, $handler);
-        }
     }
 }

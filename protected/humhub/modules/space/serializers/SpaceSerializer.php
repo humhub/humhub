@@ -8,7 +8,6 @@
 
 namespace humhub\modules\space\serializers;
 
-use humhub\components\api\SerializeEvent;
 use humhub\modules\space\models\Space;
 use yii\helpers\Url;
 
@@ -65,6 +64,15 @@ class SpaceSerializer
     }
 
     /**
+     * The `visibility` values of the API, by the stored constant.
+     */
+    public const VISIBILITIES = [
+        Space::VISIBILITY_NONE => 'private',
+        Space::VISIBILITY_REGISTERED_ONLY => 'registered',
+        Space::VISIBILITY_ALL => 'public',
+    ];
+
+    /**
      * The list representation: the short one plus what a list of spaces is browsed and
      * filtered by.
      *
@@ -80,49 +88,26 @@ class SpaceSerializer
      *     tags: string[],
      *     visibility: string|null,
      *     archived: bool,
-     *     extensions: array,
      * }
-     *
-     * @param array|null $extensionData the `namespace => data` map of this space, as
-     *        {@see SerializeEvent::collectFor()} returns it — pass it when the caller already
-     *        collected a whole batch, so the event fires once per response rather than per space
      */
-    /**
-     * The `visibility` values of the API, by the stored constant.
-     */
-    public const VISIBILITIES = [
-        Space::VISIBILITY_NONE => 'private',
-        Space::VISIBILITY_REGISTERED_ONLY => 'registered',
-        Space::VISIBILITY_ALL => 'public',
-    ];
-
-    public static function list(Space $space, ?array $extensionData = null): array
+    public static function list(Space $space): array
     {
-        $extensionData ??= SerializeEvent::collectFor(Space::class, [$space])[$space->id] ?? [];
-
         return array_merge(self::short($space), [
             'description' => $space->description === '' ? null : $space->description,
             'tags' => $space->getTags(),
             // A named value rather than the stored integer, like every other enum of the API.
             'visibility' => self::VISIBILITIES[(int)$space->visibility] ?? null,
             'archived' => $space->isArchived(),
-            // (object) so "nothing attached" serializes as `{}` rather than `[]`.
-            'extensions' => $extensionData === [] ? (object)[] : $extensionData,
         ]);
     }
 
     /**
-     * Serializes a whole page of spaces, firing the extension event once for all of them.
+     * Serializes a whole page of spaces.
      *
      * @param Space[] $spaces
      */
     public static function batch(array $spaces): array
     {
-        $extensionData = SerializeEvent::collectFor(Space::class, $spaces);
-
-        return array_map(
-            static fn(Space $space): array => self::list($space, $extensionData[$space->id] ?? []),
-            $spaces,
-        );
+        return array_map(static fn(Space $space): array => self::list($space), $spaces);
     }
 }

@@ -44,7 +44,7 @@ optional module, so:
 
 - `humhub\components\api\` — `BaseController` (request/response conventions, the
   authentication pipeline, the URL-space guard, pagination and validation-error helpers),
-  `SessionAuth`, `AuthMethodsEvent`, `SerializeEvent`, `ApiRules`, `Format`.
+  `SessionAuth`, `AuthMethodsEvent`, `ApiRules`, `Format`.
 - `humhub\modules\<module>\controllers\api\` — the endpoints themselves, next to the domain
   code they serve (e.g. `humhub\modules\comment\controllers\api\CommentController`).
 - `humhub\modules\<module>\serializers\` — the wire representation of that module's models,
@@ -211,9 +211,11 @@ relationship to this space", so its shape is never embedded in a space payload a
 cached — and it carries what the caller may do next (`canJoin`, `canLeave`) for the same
 reason `canEdit`/`canDelete` are not derived client-side.
 
-The same rule binds `SerializeEvent` handlers: `extensions` data must be caller-neutral.
-A module needing caller-specific state fetches it from its own endpoint, in its own Vue
-component or menu entry - it needs an endpoint for the action anyway. That is the same line
+Module data follows the same line: a payload carries no fields of other modules, its schema is
+its serializer's alone. A module that shows something of its own per record (a reaction count,
+a "reported" flag) serves it from its own endpoint, batched per window the way `like/states`
+is, in its own Vue component or menu entry - it needs an endpoint for the action anyway (see
+[Vue.js extensions](ui-js-vuejs-extensions.md), "Module data"). That is the same line
 already drawn for blocked-author masking, which is entirely client-side.
 
 For the page render this costs nothing: the comment widget embeds the window **and** inlines
@@ -242,8 +244,8 @@ what the comment widget and the API controller call.
   settle on the same value and resurrect what they just retired.
 - **Not invalidated**, and therefore only as fresh as the TTL (`comment` module's
   `payloadCacheTtl`, default one hour, `0` disables): the author display name and profile
-  image URL the payload embeds, data modules attach through `SerializeEvent`, and a file
-  detached from a comment without touching the comment itself.
+  image URL the payload embeds, and a file detached from a comment without touching the
+  comment itself.
 - **Authorization is not cached.** The cache is keyed by content, never by caller; every
   request still passes `Content::canView()` and the `guestHideComments` check before anything
   is read from it, so a hit can never widen access. This holds because
@@ -268,10 +270,11 @@ Each module serializes its own models. The comment module owns the comment repre
 the user module the user representation, and so on. A serializer is a plain class with
 static methods returning arrays; controllers do not define shapes themselves.
 
-The batch extension event lives in core as `humhub\components\api\SerializeEvent`: fired
-once per response for each batch of records of one type, so modules can attach namespaced
-data to individual records without N+1 queries (see
-[Vue.js extensions](ui-js-vuejs-extensions.md), "Serializer extension events").
+There is deliberately no hook through which a module injects data into another module's
+payload: such a field would have no schema the reference could describe, and nothing could
+keep a handler from attaching caller-specific data to a payload that is cached for everyone.
+A module's per-record data is served by the module's own endpoint (see
+[Vue.js extensions](ui-js-vuejs-extensions.md), "Module data").
 
 The module's v1 definitions are still their own implementation — reimplementing them over
 the core serializers (so there is exactly one serializer per model) is a follow-up, not

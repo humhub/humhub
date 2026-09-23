@@ -22,9 +22,9 @@ Done on that branch:
   `LegacyFormWrapper`, `DropdownMenu`, `ExtensionSlot`, `UiModal`, `StatusBar`, plus the
   form suite (`HumHubForm`, `TextField`/`TextareaField`/`CheckboxField`/`SelectField`,
   `UploadField`, `SubmitButton`, `RichTextField`).
-- **Extension APIs** — reactive extension slots, the menu-entry registry
-  (`registerMenuEntry`/`removeMenuEntry`), and the batch serializer event
-  (`humhub\components\api\SerializeEvent`).
+- **Extension APIs** — reactive extension slots and the menu-entry registry
+  (`registerMenuEntry`/`removeMenuEntry`); module data comes from the module's own
+  endpoint.
 - **Pilots** — LikeButton (incl. Vue user-list modal fed by a JSON endpoint) and
   the full comment section (client-rendered from JSON, live updates, editing,
   cursor-window pagination), plus `UserImage`/`UserList` as module-provided shared
@@ -106,8 +106,8 @@ the one remaining UI-only HTML action):
    `serializers\`. See [HTTP API framework](concept-api.md).
 2. **One documented contract**, in v2 conventions (ISO-8601 UTC timestamps,
    camelCase, plain HTTP status codes, `422 {"errors": …}`): window pagination
-   (`GET comment/content/<id>/window`, `prevCount`/`nextCount`/`rootTotal`), the
-   `extensions` namespace, `message` as processed markdown, structured `files`, like
+   (`GET comment/content/<id>/window`, `prevCount`/`nextCount`/`rootTotal`),
+   `message` as processed markdown, structured `files`, like
    state/toggle/users, and `account`/`account/blocked-users`. Caller-dependent values have
    their own endpoints (see the next section). The islands derive client-side what a client
    can derive (`isEdited`, admin-delete capability, blocked-author masking) and parse ISO
@@ -131,7 +131,7 @@ serves every reader (and can be cached):
 - **Server-side cache** — `comment\services\CommentPayloadCache` caches windows and single
   comments per content, retired instantly by a per-content token whenever a comment changes;
   the `payloadCacheTtl` module setting only bounds staleness of what the payload embeds
-  without owning (author name/avatar, module `extensions` data). Measured: serializing a
+  without owning (author name/avatar). Measured: serializing a
   19-comment detail window costs 77 SELECTs, a cache hit 0; the overview window (4 comments)
   21 vs 0. The caller-specific like states stay uncached but are flat at 5 SELECTs per
   window.

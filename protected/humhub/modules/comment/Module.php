@@ -51,7 +51,7 @@ class Module extends \humhub\components\Module
      *
      * Comment changes invalidate the affected content's entries immediately, so this only
      * bounds how long the payload may lag behind data it embeds without owning: an author's
-     * display name and profile image, and whatever modules attach through `SerializeEvent`.
+     * display name and profile image.
      */
     public int $payloadCacheTtl = 3600;
 

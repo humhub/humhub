@@ -387,11 +387,6 @@ components:
               type: array
               items:
                 $ref: "#/components/schemas/Comment"
-        extensions:
-          type: object
-          description: |
-            Namespaced data modules attached to this record (`{}` when nothing did), see the
-            core serialize event.
     CommentCreate:
       type: object
       properties:

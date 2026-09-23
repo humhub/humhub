@@ -103,7 +103,6 @@ paths:
                     tags: [product, roadmap]
                     visibility: public
                     archived: false
-                    extensions: {}
                 total: 1
                 page: 1
                 pageSize: 25
@@ -304,11 +303,6 @@ components:
             `public` — visible to guests too
         archived:
           type: boolean
-        extensions:
-          type: object
-          description: |
-            Namespaced data modules attached to this space, `{}` when none did — see
-            `docs/develop/ui-js-vuejs-extensions.md`.
     SpaceState:
       type: object
       description: What the caller is to one space

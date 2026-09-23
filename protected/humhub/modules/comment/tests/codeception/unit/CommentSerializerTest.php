@@ -8,13 +8,11 @@
 
 namespace tests\codeception\unit\modules\comment\components;
 
-use humhub\components\api\SerializeEvent;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\serializers\CommentSerializer;
 use humhub\modules\post\models\Post;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
-use yii\base\Event;
 
 /**
  * @see CommentSerializer
@@ -114,11 +112,8 @@ class CommentSerializerTest extends HumHubDbTestCase
 
         // The whole point of the caller-context split: one serialization, servable to
         // everyone who may read the content - author, another member and a guest alike.
-        // Compared as JSON, i.e. as the wire sees it: the payload carries a `stdClass`
-        // instance (`extensions`, so it serializes as `{}`), which a strict array comparison
-        // would call different for being different instances.
-        $this->assertSame(json_encode($asAuthor), json_encode($asOtherUser));
-        $this->assertSame(json_encode($asAuthor), json_encode($asGuest));
+        $this->assertSame($asAuthor, $asOtherUser);
+        $this->assertSame($asAuthor, $asGuest);
     }
 
     public function testReplyPreviewAndNesting()
@@ -190,50 +185,4 @@ class CommentSerializerTest extends HumHubDbTestCase
         $this->assertSame(1, $window['rootTotal'], 'rootTotal stays content-global');
     }
 
-    /**
-     * The batch event is what lets modules attach data without a query per comment — it must
-     * fire ONCE for a whole window, with the roots AND their loaded reply previews in the
-     * same flat batch.
-     */
-    public function testSerializeEventFiresOncePerWindowWithTheWholeBatch()
-    {
-        $this->becomeUser('User2');
-        $root = $this->createComment('Root');
-        $reply = $this->createComment('Reply', 11, $root->id);
-
-        $firings = [];
-        $handler = function (SerializeEvent $event) use (&$firings) {
-            $firings[] = array_map(fn(Comment $c) => $c->id, $event->records);
-            foreach ($event->records as $record) {
-                $event->addData($record->id, 'testmodule', ['mark' => 'c' . $record->id]);
-            }
-        };
-        Event::on(SerializeEvent::class, SerializeEvent::EVENT_SERIALIZE, $handler);
-
-        try {
-            $window = CommentSerializer::window($this->content());
-        } finally {
-            Event::off(SerializeEvent::class, SerializeEvent::EVENT_SERIALIZE, $handler);
-        }
-
-        $this->assertCount(1, $firings, 'One firing for the whole window, not one per comment');
-        $this->assertContains($root->id, $firings[0]);
-        $this->assertContains($reply->id, $firings[0], 'Reply previews belong to the same batch');
-
-        $serializedRoot = $window['results'][array_search($root->id, array_column($window['results'], 'id'))];
-        $this->assertSame(['mark' => 'c' . $root->id], $serializedRoot['extensions']['testmodule']);
-        $this->assertSame(
-            ['mark' => 'c' . $reply->id],
-            $serializedRoot['replies']['items'][0]['extensions']['testmodule'],
-        );
-    }
-
-    public function testExtensionsSerializeAsAnObjectWhenEmpty()
-    {
-        $this->becomeUser('User2');
-        $comment = $this->createComment('No extensions');
-
-        $data = CommentSerializer::comment($comment);
-        $this->assertStringContainsString('"extensions":{}', json_encode($data));
-    }
 }

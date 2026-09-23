@@ -63,9 +63,9 @@
  * `CommentControls::EVENT_INIT` PHP widget-stack menu before comments became an island (see
  * `docs/develop/module-migrate.md`, Unreleased, for that migration). `comment` is passed as
  * this menu's `context` (the full serialized comment, not the discrete props below) so a
- * registered entry's `condition`/`onClick`/`component` can read anything about the comment,
- * including its own namespaced `comment.extensions` entry - see
- * `humhub\components\api\SerializeEvent`.
+ * registered entry's `condition`/`onClick`/`component` can read anything about the comment.
+ * Data of its own a module serves from its own endpoint - see
+ * docs/develop/ui-js-vuejs-extensions.md, "Module data".
  *
  * Built-in entry ids (stable, public - a module targets these with `registerMenuEntry()` to
  * override, or `removeMenuEntry('comment.controls', id)` to remove):

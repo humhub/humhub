@@ -97,7 +97,6 @@ const makeComment = (overrides = {}) => ({
     files: [],
     childCount: 0,
     replies: { total: 0, items: [], hasMore: false },
-    extensions: {},
     ...overrides,
 });
 
@@ -1077,27 +1076,6 @@ describe('CommentSection', () => {
             expect(controls.element.lastElementChild).toBe(probe.element);
         });
 
-        it('exposes a comment\'s extensions data to a comment.links slot component via context.comment.extensions', () => {
-            const comment = makeComment({ extensions: { reportcontent: { reported: true } } });
-            const probeDef = {
-                props: { comment: { type: Object, required: true } },
-                render() {
-                    return Vue.h(
-                        'span',
-                        { class: 'probe-extensions-item' },
-                        this.comment.extensions.reportcontent.reported ? 'reported' : 'clean',
-                    );
-                },
-            };
-            vueModule.registerSlotComponent('comment.links', 'ProbeExtensionsLinksItem');
-
-            const wrapper = mountWithProbe('ProbeExtensionsLinksItem', probeDef, {
-                contentId: 42,
-                initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
-            });
-
-            expect(wrapper.find('.probe-extensions-item').text()).toBe('reported');
-        });
     });
 
     // `comment.controls` is a data-driven DropdownMenu menu (registerMenuEntry()/

@@ -123,7 +123,6 @@ const makeComment = (overrides = {}) => ({
     files: [],
     childCount: 0,
     replies: { total: 0, items: [], hasMore: false },
-    extensions: {},
     ...overrides,
 });
 

@@ -9,7 +9,6 @@
 namespace humhub\modules\comment\serializers;
 
 use humhub\components\api\Format;
-use humhub\components\api\SerializeEvent;
 use humhub\models\RecordMap;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\Module;
@@ -47,13 +46,9 @@ use Yii;
  *   from the API), so the same payload serves a masked and an unmasked view without a second
  *   request. Masking is a display concern, never an access control one.
  *
- * The same rule binds {@see SerializeEvent} handlers: data a module attaches to `extensions`
- * must be caller-neutral too, or the cached payload would be wrong for the next reader.
- * Caller-specific module state belongs in that module's own endpoint.
- *
- * {@see SerializeEvent} fires once per response batch (a window's roots plus their loaded
- * reply previews in one firing), so modules can attach namespaced `extensions` data without
- * running a query per comment.
+ * Module data is not part of this payload either: its schema is this serializer's alone. A
+ * module that shows something of its own per comment serves it from its own endpoint, batched
+ * per window like the like state (see `docs/develop/ui-js-vuejs-extensions.md`, "Module data").
  *
  * @since 1.20
  */
@@ -62,26 +57,11 @@ class CommentSerializer
     /**
      * Serializes one comment.
      *
-     * @param array<int, array<string, array>>|null $extensionData recordId => namespace => data
-     *        from {@see SerializeEvent::collectFor()} — pass it when the caller already
-     *        collected a batch; `null` fires the event for this comment (plus its reply
-     *        previews when it is a root comment).
      * @param Comment[]|null $replyPreview this root comment's already-fetched reply previews,
      *        so {@see self::replies()} does not query them again
      */
-    public static function comment(Comment $comment, ?array $extensionData = null, ?array $replyPreview = null): array
+    public static function comment(Comment $comment, ?array $replyPreview = null): array
     {
-        if ($comment->parent_comment_id === null) {
-            $replyPreview ??= static::replyPreviewItems($comment);
-        }
-
-        $extensionData ??= SerializeEvent::collectFor(
-            Comment::class,
-            array_merge([$comment], $replyPreview ?? []),
-        );
-
-        $extensions = $extensionData[$comment->id] ?? [];
-
         return [
             'id' => $comment->id,
             // Processed markdown (mentions resolved), which the client renders - see
@@ -98,10 +78,8 @@ class CommentSerializer
             'files' => FileSerializer::forRecord($comment),
             'childCount' => $comment->getChildCount(),
             'replies' => $comment->parent_comment_id === null
-                ? static::replies($comment, $extensionData, $replyPreview)
+                ? static::replies($comment, $replyPreview)
                 : null,
-            // (object) so "nothing attached" serializes as `{}` rather than `[]`.
-            'extensions' => $extensions === [] ? (object)[] : $extensions,
         ];
     }
 
@@ -177,24 +155,8 @@ class CommentSerializer
         $firstId = $comments[0]->id ?? null;
         $lastId = $comments[array_key_last($comments)]->id ?? null;
 
-        // Every root's reply previews are fetched up front and folded into the SAME batch as
-        // the roots, so the whole window fires SerializeEvent exactly once.
-        $previewByRoot = [];
-        $batch = $comments;
-        foreach ($comments as $comment) {
-            if ($comment->parent_comment_id === null) {
-                $previewByRoot[$comment->id] = static::replyPreviewItems($comment);
-                $batch = array_merge($batch, $previewByRoot[$comment->id]);
-            }
-        }
-
-        $extensionData = SerializeEvent::collectFor(Comment::class, $batch);
-
         return [
-            'results' => array_map(
-                fn(Comment $c) => static::comment($c, $extensionData, $previewByRoot[$c->id] ?? null),
-                $comments,
-            ),
+            'results' => array_map(fn(Comment $c) => static::comment($c), $comments),
             'total' => $listService->getCount(),
             'rootTotal' => $listService->getRootCount(),
             'prevCount' => $firstId !== null
@@ -209,17 +171,16 @@ class CommentSerializer
      * most one level, enforced by {@see Comment::validateParentComment()}, so a reply's own
      * `replies` is always `null`).
      *
-     * @param array<int, array<string, array>> $extensionData see {@see self::comment()}
      * @param Comment[]|null $items already-fetched previews, see {@see self::comment()}
      */
-    protected static function replies(Comment $comment, array $extensionData, ?array $items = null): array
+    protected static function replies(Comment $comment, ?array $items = null): array
     {
         $items ??= static::replyPreviewItems($comment);
         $total = $comment->getChildCount();
 
         return [
             'total' => $total,
-            'items' => array_map(fn(Comment $c) => static::comment($c, $extensionData), $items),
+            'items' => array_map(fn(Comment $c) => static::comment($c), $items),
             'hasMore' => $total > count($items),
         ];
     }

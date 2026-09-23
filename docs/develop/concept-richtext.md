@@ -157,8 +157,8 @@ payload: it collects the `oembed:` links of the message, loads their previews th
 mounts the same envelope and boots the same display widget as a server-rendered page. Details
 and caveats in [Vue.js legacy interop](ui-js-vuejs-interop.md#richtextoutput). Note that
 `onAfterOutput()`, `EVENT_AFTER_OUTPUT` and `EVENT_AFTER_RUN` do not fire on this path; a
-module that appends markup there has to attach its data through the API's `SerializeEvent`
-instead (see [Vue.js extensions](ui-js-vuejs-extensions.md)).
+module that appended markup there renders it client-side instead, through an extension slot
+or menu entry fed by its own endpoint (see [Vue.js extensions](ui-js-vuejs-extensions.md)).
 
 ### Conversion: mails, notifications, search
 

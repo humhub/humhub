@@ -907,11 +907,10 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     (hooking `EVENT_AFTER_OUTPUT`), `humhub/translator`'s translate button (hooking
     `EVENT_AFTER_RUN`), and comment-related forks in the private `cuzy-app` modules. A module
     that appended markup to richtext output this way must migrate to the Vue extension
-    mechanism instead: `humhub\components\api\SerializeEvent` to contribute payload data per
-    comment (surfaced as the serialized comment's `extensions` map), and
-    `registerSlotComponent`/`ExtensionSlot` (or a plain registered Vue component reading that
-    payload) to render UI from it — see `docs/develop/ui-js-vuejs-interop.md` and
-    `docs/develop/ui-js-vuejs-components.md`.
+    mechanism instead: `registerSlotComponent`/`ExtensionSlot` or `registerMenuEntry` to
+    render its UI per comment, fed by the module's own API endpoint where it needs data the
+    comment payload does not carry — see `docs/develop/ui-js-vuejs-extensions.md`, "Module
+    data", and `docs/develop/ui-js-vuejs-interop.md`.
   - **The comment/like islands consume the platform's HTTP API** (`/api/v2`, shipped by core —
     see the API framework entry below and `docs/develop/concept-api.md`) instead of
     core-internal JSON controllers. Consequences in core:
@@ -929,9 +928,10 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
       and `user\services\UserJsonService` (all unreleased artifacts of this cycle) — serialization
       lives in the owning module's serializer (`comment\serializers\CommentSerializer`,
       `user\serializers\UserSerializer`, `like\serializers\LikeSerializer`,
-      `file\serializers\FileSerializer`); the batch extension point is
-      `humhub\components\api\SerializeEvent` (same `addData()` accumulator API, plus a `type`
-      filter). Blocked-author masking moved fully client-side (the viewer's own block list
+      `file\serializers\FileSerializer`). The batch extension point has no successor: a
+      payload carries no fields of other modules, a module serves its per-record data from
+      its own endpoint (see `docs/develop/ui-js-vuejs-extensions.md`, "Module data").
+      Blocked-author masking moved fully client-side (the viewer's own block list
       ships via `CoreJsConfig` `user.blockedUserIds`, also readable at
       `GET /api/v2/account/blocked-users`).
     - Added `comment\services\CommentDeleteService` (delete + optional author notification —
@@ -1185,7 +1185,8 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
       `getNoSpaceHtml()`, together with the `widgets/views/spaceChooser.php` view. A theme
       subclassing the widget to render its own menu — `humhub/enterprise-theme` does — no longer
       has those hooks: the markup is the island's. Modules that need their own data on a space
-      can attach it through the API's `SerializeEvent` (`extensions`).
+      serve it from their own endpoint, keyed by space id (see
+      `docs/develop/ui-js-vuejs-extensions.md`, "Module data").
     - **Removed**: `space\controllers\BrowseController::actionSearchLazy()` (the route
       `/space/browse/search-lazy`), which existed only to render the menu's list. `search-json`
       is untouched, including its `target=chooser` mode, and so are
@@ -1242,8 +1243,8 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   - `humhub\components\api\BaseController` is the base class of a core API controller
     (`humhub\modules\<module>\controllers\api\`), `ApiRules::v2()` prefixes the rules a module
     declares in its `config.php` `urlManagerRules`, `Format` holds the v2 value conventions
-    (ISO-8601 UTC timestamps, camelCase attribute names) and `SerializeEvent` is the batch
-    serializer extension point. Serializers live in `humhub\modules\<module>\serializers\`.
+    (ISO-8601 UTC timestamps, camelCase attribute names). Serializers live in
+    `humhub\modules\<module>\serializers\`.
   - Core endpoints in this release: comment window/CRUD (`comment`), like state/toggle/users
     (`like`), the caller's account and block list (`user`), file upload/delete (`file`),
     the notification list (`notification`), the caller's space membership (`space`) and the
@@ -1272,9 +1273,9 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
       `GET /api/v2/comment/<id>/permissions` (fetched when an entry's context menu opens) and
       `GET /api/v2/like/states?recordIds=…` (one batched request per window, `{recordId:
       {total, liked, canLike}}`).
-    - Data attached via `humhub\components\api\SerializeEvent` must be **caller-neutral**
-      too — caller-specific module state belongs in that module's own endpoint, see
-      `docs/develop/ui-js-vuejs-extensions.md`.
+    - Payloads carry no module data: a module's per-record data comes from the module's own
+      endpoint, batched per window the way `like/states` is, see
+      `docs/develop/ui-js-vuejs-extensions.md`, "Module data".
     - Added `like\serializers\LikeSerializer::statesForRecords()`/`statesByRecordId()`,
       `like\services\LikeService::countsForRecords()`/`likedRecordIds()`/`preloadState()`
       and `humhub\models\RecordMap::getByIds()` — batched building blocks for the above,
@@ -1286,7 +1287,4 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
       widget and the API read. A comment create/edit/delete retires its content's entries
       immediately (`Comment::afterSave()`/`afterDelete()`); the new `comment` module property
       `payloadCacheTtl` (default `3600`, `0` disables) only bounds how long a payload may lag
-      behind data it embeds without owning — the author's display name and profile image, and
-      whatever a module attached through `SerializeEvent`. A module whose `SerializeEvent`
-      data can change independently of the comment should keep that in mind (or attach it
-      client-side instead).
+      behind data it embeds without owning — the author's display name and profile image.

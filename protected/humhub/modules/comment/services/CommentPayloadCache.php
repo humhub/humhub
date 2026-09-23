@@ -49,7 +49,6 @@ use Yii;
  * Deliberately NOT invalidated, and therefore only as fresh as the TTL:
  *
  * - the author's display name and profile image URL, which the payload embeds,
- * - data modules attach through `SerializeEvent`,
  * - a file detached from a comment without touching the comment itself.
  *
  * Set the comment module's `payloadCacheTtl` to `0` to disable caching entirely.

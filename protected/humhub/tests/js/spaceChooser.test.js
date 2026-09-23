@@ -35,7 +35,6 @@ const space = (overrides = {}) => ({
     tags: [],
     visibility: 2,
     archived: false,
-    extensions: {},
     ...overrides,
 });
 

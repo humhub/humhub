@@ -275,7 +275,6 @@
       isEdited: !!(createdAt && updatedAt && updatedAt.getTime() !== createdAt.getTime()),
       blocked: !!(author && blockedUserIds().indexOf(author.id) !== -1),
       files: comment.files || [],
-      extensions: comment.extensions || {},
       replies: comment.replies ? { ...comment.replies, items: comment.replies.items.map(mapComment) } : null
     };
   };
