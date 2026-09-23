@@ -44,7 +44,8 @@ class NotificationSerializerTest extends HumHubDbTestCase
         // without pretty URLs (`?r=notification%2Fentry`).
         $this->assertStringContainsString('notification/entry', urldecode($result['url']));
         $this->assertStringContainsString('id=' . $notification->record->id, urldecode($result['url']));
-        $this->assertStringNotContainsString('http', $result['url']);
+        // Absolute like every other URL of the API, so a token client can follow it too
+        $this->assertStringStartsWith('http', $result['url']);
         $this->assertTrue($result['isNew']);
         // ISO-8601 in UTC, per the v2 conventions.
         $this->assertMatchesRegularExpression('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+00:00$/', $result['createdAt']);
