@@ -234,6 +234,7 @@ class MenuLink extends MenuEntry
             return null;
         }
 
-        return str_starts_with($icon, 'fa-') ? substr($icon, 3) : $icon;
+        // A name given as CSS class loses its library prefix, like `Icon` itself accepts it.
+        return str_starts_with($icon, 'fa-') || str_starts_with($icon, 'ti-') ? substr($icon, 3) : $icon;
     }
 }

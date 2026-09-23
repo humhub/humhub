@@ -141,7 +141,7 @@ class MembershipButton extends VueWidget
             'showMemberState' => (bool)$this->showMemberState,
             'reloadOnJoin' => (bool)$this->reloadOnJoin,
             'checkIconHtml' => Icon::get('check')->asString(),
-            'clockIconHtml' => Icon::get('clock-o')->asString(),
+            'clockIconHtml' => Icon::get('clock')->asString(),
             'userIconHtml' => Icon::get('user')->asString(),
         ];
     }

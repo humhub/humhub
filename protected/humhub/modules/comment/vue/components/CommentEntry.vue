@@ -42,7 +42,7 @@
                     &middot;
                     <time class="tt time timeago" data-ui-addition="timeago" :datetime="createdAtIso" :title="absoluteTime">{{ absoluteTime }}</time>
                     <template v-if="comment.isEdited">
-                        &middot; <i class="tt fa fa-clock-o text-body-secondary" :title="updatedAtTitle" aria-hidden="true"></i>
+                        &middot; <i class="tt ti ti-clock text-body-secondary" :title="updatedAtTitle" aria-hidden="true"></i>
                     </template>
                 </small>
             </h4>

@@ -15,7 +15,7 @@
                     @keydown.enter.prevent="openPicker()"
                     @keydown.space.prevent="openPicker()"
                 >
-                    <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                    <i class="ti ti-cloud-upload" aria-hidden="true"></i>
                     <input
                         ref="input"
                         type="file"
@@ -66,7 +66,7 @@
                     :aria-label="removeLabel"
                     @click="removeFile(file)"
                     @keydown.enter.prevent="removeFile(file)"
-                ><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;</span></span>
+                ><i class="ti ti-trash" aria-hidden="true"></i>&nbsp;</span></span>
             </li>
         </ul>
 

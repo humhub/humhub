@@ -547,13 +547,14 @@
       badge() {
         if (this.relation === "following") {
           return {
-            icon: "fa-star",
+            // The solid star Font Awesome drew: Tabler's plain `star` is an outline.
+            icon: "ti ti-star-filled",
             title: vue$1.i18n.t("SpaceModule.chooser", "You are following this space")
           };
         }
         if (this.space.archived) {
           return {
-            icon: "fa-history",
+            icon: "ti ti-history",
             title: vue$1.i18n.t("SpaceModule.chooser", "This space is archived")
           };
         }

@@ -146,8 +146,8 @@ components:
           type: string
           nullable: true
           description: |
-            Icon name without the `fa-` prefix (`pencil`, `trash`, …), the platform's own
-            icon set.
+            Tabler icon name (`pencil`, `trash`, …, see https://tabler.io/icons) — the platform's
+            icon set, rendered as `<i class="ti ti-<name>">`.
         sortOrder:
           type: integer
           description: Ascending; supplied by the wrapping menu entry when the widget omits it.

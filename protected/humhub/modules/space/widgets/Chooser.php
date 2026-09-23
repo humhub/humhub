@@ -73,7 +73,7 @@ class Chooser extends Widget
                 'htmlOptions' => ['class' => 'current-space-image'],
             ]);
 
-        $noSpaceIconHtml = Icon::get('dot-circle-o')->asString();
+        $noSpaceIconHtml = Icon::get('circle-dot')->asString();
 
         return Html::a(
             VueComponent::widget([

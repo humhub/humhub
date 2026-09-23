@@ -1023,7 +1023,7 @@ describe('CommentSection', () => {
                 props: { contentId: 42, initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
 
-            const icon = wrapper.find('.comment-heading .fa-clock-o');
+            const icon = wrapper.find('.comment-heading .ti-clock');
             expect(icon.exists()).toBe(true);
             expect(icon.classes()).toContain('tt');
             expect(icon.attributes('title')).toBe(new Date('2026-08-10T12:30:00+00:00').toLocaleString());
@@ -1037,7 +1037,7 @@ describe('CommentSection', () => {
                 props: { contentId: 42, initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
             });
 
-            expect(wrapper.find('.comment-heading .fa-clock-o').exists()).toBe(false);
+            expect(wrapper.find('.comment-heading .ti-clock').exists()).toBe(false);
         });
     });
 

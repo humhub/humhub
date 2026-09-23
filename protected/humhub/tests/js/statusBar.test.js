@@ -68,10 +68,10 @@ describe('StatusBar', () => {
     });
 
     it.each([
-        ['info', 'fa fa-info-circle info'],
-        ['success', 'fa fa-check-circle success'],
-        ['warn', 'fa fa-exclamation-triangle warning'],
-        ['error', 'fa fa-exclamation-circle error'],
+        ['info', 'ti ti-info-circle info'],
+        ['success', 'ti ti-circle-check success'],
+        ['warn', 'ti ti-alert-triangle warning'],
+        ['error', 'ti ti-alert-circle error'],
     ])('renders the legacy icon markup for a %s message', async (level, iconClass) => {
         mountBar();
         vueModule.status(level, 'the message');
@@ -164,7 +164,7 @@ describe('StatusBar', () => {
 
         await vi.advanceTimersByTimeAsync(TRANSITION);
         expect(content().find('span').text()).toBe('second');
-        expect(content().find('i').attributes('class')).toBe('fa fa-check-circle success');
+        expect(content().find('i').attributes('class')).toBe('ti ti-circle-check success');
     });
 
     it('closes on a click on the close button', async () => {
@@ -191,11 +191,11 @@ describe('StatusBar', () => {
         const toggle = content().find('a.showMore');
         expect(toggle.exists()).toBe(true);
         expect(content().find('.status-bar-details').exists()).toBe(false);
-        expect(toggle.find('i').attributes('class')).toBe('fa fa-angle-up');
+        expect(toggle.find('i').attributes('class')).toBe('ti ti-chevron-up');
 
         await toggle.trigger('click');
         expect(content().find('.status-bar-details pre').text()).toBe('Request failed: 500');
-        expect(content().find('a.showMore i').attributes('class')).toBe('fa fa-angle-down');
+        expect(content().find('a.showMore i').attributes('class')).toBe('ti ti-chevron-down');
 
         await toggle.trigger('click');
         expect(content().find('.status-bar-details').exists()).toBe(false);

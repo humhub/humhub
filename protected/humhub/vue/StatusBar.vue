@@ -9,7 +9,7 @@
             <i :class="iconClass"></i>
             <span :class="{ 'status-bar-toggle': hasDetails }" @click="toggleDetails">{{ entry.message }}</span>
             <a v-if="hasDetails" class="showMore" @click="toggleDetails">
-                <i :class="detailsOpen ? 'fa fa-angle-down' : 'fa fa-angle-up'"></i>
+                <i :class="detailsOpen ? 'ti ti-chevron-down' : 'ti ti-chevron-up'"></i>
             </a>
             <div v-if="detailsOpen" class="status-bar-details">
                 <pre>{{ detailsText }}</pre>
@@ -94,11 +94,12 @@ const AUTOCLOSE = {
     error: 0,
 };
 
+// Tabler names, the same four `humhub.ui.status.js` rendered before it forwarded to this island.
 const ICONS = {
-    info: 'fa fa-info-circle info',
-    success: 'fa fa-check-circle success',
-    warn: 'fa fa-exclamation-triangle warning',
-    error: 'fa fa-exclamation-circle error',
+    info: 'ti ti-info-circle info',
+    success: 'ti ti-circle-check success',
+    warn: 'ti ti-alert-triangle warning',
+    error: 'ti ti-alert-circle error',
 };
 
 /**

@@ -976,7 +976,7 @@
                   /* CACHED */
                 )),
                 vue$1.createElementVNode("i", {
-                  class: "tt fa fa-clock-o text-body-secondary",
+                  class: "tt ti ti-clock text-body-secondary",
                   title: $options.updatedAtTitle,
                   "aria-hidden": "true"
                 }, null, 8, _hoisted_9)

@@ -55,7 +55,7 @@ registerMenuEntry('comment.controls', {
 |---|---|---|---|
 | `id` | `string` | yes | Unique per menu. Registering the same `(menuId, id)` again **replaces** the existing entry in place — the supported override mechanism (unlike `registerSlotComponent()`'s "first registration wins"). |
 | `label` | `string` \| `(context) => string` | unless `component` given | Static or context-derived text. |
-| `icon` | `string` | no | An `Icon::get()`-style icon name (e.g. `'pencil'`), rendered as `<i class="fa fa-<icon>">`. |
+| `icon` | `string` | no | A Tabler icon name (e.g. `'pencil'`, see https://tabler.io/icons), rendered as `<i class="ti ti-<icon>">`. |
 | `sortOrder` | `number` | no (default `1000`) | Ascending, like PHP menu entries. |
 | `condition` | `(context) => boolean` | no | Omit to always show. |
 | `onClick` | `(context) => void` | no | Ignored when `component` is set. |

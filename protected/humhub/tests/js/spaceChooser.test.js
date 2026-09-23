@@ -147,7 +147,7 @@ describe('SpaceChooser', () => {
 
         const item = wrapper.find('[data-space-chooser-item]');
         expect(item.attributes('data-space-following')).toBeDefined();
-        expect(item.find('.fa-star').exists()).toBe(true);
+        expect(item.find('.ti-star-filled').exists()).toBe(true);
         // No count without a membership - "new since your last visit" has no meaning then.
         expect(item.find('[data-message-count]').exists()).toBe(false);
     });

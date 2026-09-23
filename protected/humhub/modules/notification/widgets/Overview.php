@@ -67,7 +67,7 @@ class Overview extends VueWidget
             'settingsUrl' => Url::to(['/notification/user']),
             'bellIconHtml' => Icon::get('bell')->asString(),
             'checkIconHtml' => Icon::get('check')->asString(),
-            'cogIconHtml' => Icon::get('cog')->asString(),
+            'cogIconHtml' => Icon::get('settings')->asString(),
         ];
     }
 }

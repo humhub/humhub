@@ -161,7 +161,7 @@ describe('DropdownMenu', () => {
             expect(link.classes()).toEqual(['dropdown-item']);
         });
 
-        it('renders a leading <i class="fa fa-<icon>"> for an entry with an icon', () => {
+        it('renders a leading <i class="ti ti-<icon>"> for an entry with an icon', () => {
             const wrapper = mount(DropdownMenu, {
                 props: {
                     toggleAriaLabel: 'Toggle menu',
@@ -173,7 +173,7 @@ describe('DropdownMenu', () => {
             const link = wrapper.find('.dropdown-item');
             const icon = link.find('i');
             expect(icon.exists()).toBe(true);
-            expect(icon.classes()).toEqual(['fa', 'fa-pencil']);
+            expect(icon.classes()).toEqual(['ti', 'ti-pencil']);
             expect(icon.attributes('aria-hidden')).toBe('true');
             expect(link.text()).toBe('Edit');
         });

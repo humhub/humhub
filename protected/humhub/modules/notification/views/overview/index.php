@@ -28,9 +28,9 @@ use yii\helpers\Url;
             'settingsUrl' => Url::to(['/notification/user']),
             'icons' => [
                 'check' => Icon::get('check')->asString(),
-                'cog' => Icon::get('cog')->asString(),
-                'all' => Icon::get('bars')->asString(),
-                'unseen' => Icon::get('eye-slash')->asString(),
+                'cog' => Icon::get('settings')->asString(),
+                'all' => Icon::get('menu-2')->asString(),
+                'unseen' => Icon::get('eye-off')->asString(),
                 'seen' => Icon::get('eye')->asString(),
             ],
         ],

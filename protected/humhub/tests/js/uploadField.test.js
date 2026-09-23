@@ -79,7 +79,7 @@ describe('UploadField', () => {
 
         const trigger = wrapper.find('.fileinput-button');
         expect(trigger.exists()).toBe(true);
-        expect(trigger.find('i.fa.fa-cloud-upload').exists()).toBe(true);
+        expect(trigger.find('i.ti.ti-cloud-upload').exists()).toBe(true);
 
         const input = wrapper.find('input[type="file"]');
         expect(input.exists()).toBe(true);

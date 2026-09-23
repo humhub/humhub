@@ -108,8 +108,8 @@ class FriendshipButton extends VueWidget
             'groupClass' => $this->groupClass ?? 'btn-group',
             'checkIconHtml' => Icon::get('check')->asString(),
             'plusIconHtml' => Icon::get('plus')->asString(),
-            'clockIconHtml' => Icon::get('clock-o')->asString(),
-            'timesIconHtml' => Icon::get('times')->asString(),
+            'clockIconHtml' => Icon::get('clock')->asString(),
+            'timesIconHtml' => Icon::get('x')->asString(),
         ];
     }
 

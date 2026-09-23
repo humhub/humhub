@@ -443,7 +443,7 @@
                           vue.createElementVNode(
                             "i",
                             {
-                              class: vue.normalizeClass("fa fa-" + entry.icon),
+                              class: vue.normalizeClass("ti ti-" + entry.icon),
                               "aria-hidden": "true"
                             },
                             null,
@@ -1070,10 +1070,10 @@
     error: 0
   };
   const ICONS = {
-    info: "fa fa-info-circle info",
-    success: "fa fa-check-circle success",
-    warn: "fa fa-exclamation-triangle warning",
-    error: "fa fa-exclamation-circle error"
+    info: "ti ti-info-circle info",
+    success: "ti ti-circle-check success",
+    warn: "ti ti-alert-triangle warning",
+    error: "ti ti-alert-circle error"
   };
   const normalizeDetails = (details) => {
     if (details === void 0 || details === null || details === "") {
@@ -1236,7 +1236,7 @@
             vue.createElementVNode(
               "i",
               {
-                class: vue.normalizeClass($data.detailsOpen ? "fa fa-angle-down" : "fa fa-angle-up")
+                class: vue.normalizeClass($data.detailsOpen ? "ti ti-chevron-down" : "ti ti-chevron-up")
               },
               null,
               2
@@ -1942,7 +1942,7 @@
               _cache[9] || (_cache[9] = vue.createElementVNode(
                 "i",
                 {
-                  class: "fa fa-cloud-upload",
+                  class: "ti ti-cloud-upload",
                   "aria-hidden": "true"
                 },
                 null,
@@ -2022,7 +2022,7 @@
                     vue.createElementVNode(
                       "i",
                       {
-                        class: "fa fa-trash-o",
+                        class: "ti ti-trash",
                         "aria-hidden": "true"
                       },
                       null,

@@ -165,7 +165,7 @@ class CommentsWidgetTest extends HumHubDbTestCase
 
         $props = $this->islandProps(Comments::widget(['content' => Post::findOne(['id' => 11])->content]));
         $this->assertSame('true', $props['can-comment']);
-        $this->assertStringContainsString('fa-send', $props['submit-icon-html']);
+        $this->assertStringContainsString('ti-send', $props['submit-icon-html']);
 
         self::allowGuestAccess(true);
         $this->logout();
