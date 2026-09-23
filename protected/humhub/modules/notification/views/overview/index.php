@@ -10,7 +10,7 @@ use humhub\widgets\Icon;
 use humhub\widgets\VueComponent;
 use yii\helpers\Url;
 
-/* @var array $initial the first page of notifications, see NotificationWindowService */
+/* @var array $initial the first page of notifications, see NotificationListService */
 /* @var array $categories [{id, title}] the categories that can be filtered by */
 
 // The page content is one island (NotificationOverview): the filter in the sidebar and the list
@@ -24,7 +24,7 @@ use yii\helpers\Url;
         'props' => [
             'initial' => $initial,
             'categories' => $categories,
-            'pageSize' => humhub\modules\notification\services\NotificationWindowService::OVERVIEW_PAGE_SIZE,
+            'pageSize' => humhub\modules\notification\services\NotificationListService::OVERVIEW_PAGE_SIZE,
             'settingsUrl' => Url::to(['/notification/user']),
             'icons' => [
                 'check' => Icon::get('check')->asString(),

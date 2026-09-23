@@ -10,7 +10,7 @@ namespace humhub\modules\activity\serializers;
 
 use humhub\components\api\Format;
 use humhub\modules\activity\components\BaseActivity;
-use humhub\modules\activity\services\ActivityWindowService;
+use humhub\modules\activity\services\ActivityListService;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\serializers\SpaceSerializer;
 use humhub\modules\user\serializers\UserSerializer;
@@ -75,7 +75,7 @@ class ActivitySerializer
 
         return [
             'id' => (int)$activity->record->id,
-            'key' => ActivityWindowService::encodeCursor((int)$activity->record->grouping_key),
+            'key' => ActivityListService::encodeCursor((int)$activity->record->grouping_key),
             'message' => $activity->asWeb(),
             'url' => $activity->getUrl(),
             'createdAt' => Format::dateTime($activity->createdAt),

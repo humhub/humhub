@@ -1144,7 +1144,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
       route), `activity\widgets\ActivityBox::renderActivity()`,
       `activity\services\RenderService::getWeb()` and the two view files
       `activity/widgets/views/activity-box.php` and `activity/views/layouts/web.php`. The
-      controller's static `getQuery()` moved to `activity\services\ActivityWindowService::query()`,
+      controller's static `getQuery()` moved to `activity\services\ActivityListService::query()`,
       which the API and the widget share. `RenderService`'s mail representations are untouched.
       Module-search found no external users of any of it — a module rendering activities in mail
       or dispatching them through `ActivityManager` is unaffected.
@@ -1230,7 +1230,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     serializer extension point. Serializers live in `humhub\modules\<module>\serializers\`.
   - Core endpoints in this release: comment window/CRUD (`comment`), like state/toggle/users
     (`like`), the caller's account and block list (`user`), file upload/delete (`file`),
-    the notification window (`notification`), the caller's space membership (`space`) and the
+    the notification list (`notification`), the caller's space membership (`space`) and the
     caller's friendship with a user (`friendship`).
   - A module may contribute authentication methods to *every* API controller by handling
     `BaseController::EVENT_COLLECT_AUTH_METHODS` (`AuthMethodsEvent`) — how the rest module

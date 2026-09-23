@@ -9,7 +9,7 @@
 namespace humhub\modules\activity\controllers\api;
 
 use humhub\components\api\BaseController;
-use humhub\modules\activity\services\ActivityWindowService;
+use humhub\modules\activity\services\ActivityListService;
 use humhub\modules\content\models\ContentContainer;
 use Yii;
 use yii\filters\VerbFilter;
@@ -27,7 +27,7 @@ use yii\web\NotFoundHttpException;
  * — this endpoint adds no visibility rule of its own, and an activity in a container the caller
  * cannot see simply does not appear.
  *
- * The page itself is built by {@see ActivityWindowService}, which the widget inlining a first
+ * The page itself is built by {@see ActivityListService}, which the widget inlining a first
  * page into its island props uses as well, so an embedded page and a fetched one are the same
  * thing — see that class for the cursor.
  *
@@ -71,11 +71,11 @@ class ActivityController extends BaseController
         $request = Yii::$app->request;
 
         $limit = max(1, min(
-            (int)$request->get('limit', ActivityWindowService::PAGE_SIZE),
+            (int)$request->get('limit', ActivityListService::PAGE_SIZE),
             self::MAX_LIMIT,
         ));
 
-        return (new ActivityWindowService())->window(
+        return (new ActivityListService())->page(
             $limit,
             (string)$request->get('cursor', '') ?: null,
             $this->findContainer((int)$request->get('containerId', 0)),

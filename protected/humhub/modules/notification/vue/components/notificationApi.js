@@ -36,7 +36,7 @@ export const fetchNotifications = ({ cursor = null, limit = null, categories = n
         params.seen = seen;
     }
 
-    return client.get(apiUrl('notification', params)).then(normalizeWindow);
+    return client.get(apiUrl('notification', params)).then(normalizePage);
 };
 
 /** Marks every notification of the caller as seen. */
@@ -47,7 +47,7 @@ export const markAllAsSeen = () => client.post(apiUrl('notification/mark-as-seen
  * response object itself, so the fields are read off it directly (see `commentApi.js` for the
  * same pattern) — this only fills in what an empty/short response leaves out.
  */
-const normalizeWindow = (response) => ({
+const normalizePage = (response) => ({
     results: (response && response.results) || [],
     unseenCount: Number((response && response.unseenCount) || 0),
     nextCursor: (response && response.nextCursor) || null,

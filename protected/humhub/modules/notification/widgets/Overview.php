@@ -9,7 +9,7 @@
 namespace humhub\modules\notification\widgets;
 
 use humhub\modules\notification\assets\NotificationVueAsset;
-use humhub\modules\notification\services\NotificationWindowService;
+use humhub\modules\notification\services\NotificationListService;
 use humhub\widgets\Icon;
 use humhub\widgets\VueWidget;
 use Yii;
@@ -61,8 +61,8 @@ class Overview extends VueWidget
     protected function getProps(): array
     {
         return [
-            'initial' => (new NotificationWindowService())->window(NotificationWindowService::MENU_PAGE_SIZE),
-            'pageSize' => NotificationWindowService::MENU_PAGE_SIZE,
+            'initial' => (new NotificationListService())->page(NotificationListService::MENU_PAGE_SIZE),
+            'pageSize' => NotificationListService::MENU_PAGE_SIZE,
             'overviewUrl' => Url::to(['/notification/overview']),
             'settingsUrl' => Url::to(['/notification/user']),
             'bellIconHtml' => Icon::get('bell')->asString(),

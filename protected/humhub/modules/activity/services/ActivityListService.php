@@ -49,7 +49,7 @@ use Yii;
  *
  * @since 1.20
  */
-class ActivityWindowService
+class ActivityListService
 {
     /**
      * @var int entries per page — including the page the widget inlines, which is sized to
@@ -71,7 +71,7 @@ class ActivityWindowService
      *
      * @return array{results: array[], nextCursor: string|null}
      */
-    public function window(int $limit, ?string $cursor = null, ?ContentContainer $container = null): array
+    public function page(int $limit, ?string $cursor = null, ?ContentContainer $container = null): array
     {
         $query = self::query($container);
 

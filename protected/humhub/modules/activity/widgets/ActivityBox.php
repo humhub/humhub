@@ -4,7 +4,7 @@ namespace humhub\modules\activity\widgets;
 
 use humhub\helpers\Html;
 use humhub\modules\activity\assets\ActivityVueAsset;
-use humhub\modules\activity\services\ActivityWindowService;
+use humhub\modules\activity\services\ActivityListService;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\widgets\PanelMenu;
 use humhub\widgets\VueWidget;
@@ -38,7 +38,7 @@ class ActivityBox extends VueWidget
     public const COLLAPSE_ID = 'panel-activities-body';
 
     public ?ContentContainerActiveRecord $contentContainer = null;
-    public int $initLimit = ActivityWindowService::PAGE_SIZE;
+    public int $initLimit = ActivityListService::PAGE_SIZE;
 
     protected string $component = 'ActivityBox';
 
@@ -79,7 +79,7 @@ class ActivityBox extends VueWidget
     protected function getProps(): array
     {
         return [
-            'initial' => (new ActivityWindowService())->window(
+            'initial' => (new ActivityListService())->page(
                 $this->initLimit,
                 null,
                 $this->contentContainer?->contentContainerRecord,
@@ -88,7 +88,7 @@ class ActivityBox extends VueWidget
             // endpoint scopes by. The guid is what live events name the container by.
             'containerId' => (int)($this->contentContainer?->contentcontainer_id ?? 0),
             'containerGuid' => $this->contentContainer?->guid ?? '',
-            'pageSize' => ActivityWindowService::PAGE_SIZE,
+            'pageSize' => ActivityListService::PAGE_SIZE,
             // `PanelMenu` derives its collapse id from the view context, which used to be
             // this widget's own view and is now whatever view renders the island's mount
             // point - so it is given explicitly. The id lands on the element the menu

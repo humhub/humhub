@@ -104,10 +104,10 @@
     if (seen) {
       params.seen = seen;
     }
-    return vue$1.client.get(vue$1.apiUrl("notification", params)).then(normalizeWindow);
+    return vue$1.client.get(vue$1.apiUrl("notification", params)).then(normalizePage);
   };
   const markAllAsSeen = () => vue$1.client.post(vue$1.apiUrl("notification/mark-as-seen"));
-  const normalizeWindow = (response) => ({
+  const normalizePage = (response) => ({
     results: response && response.results || [],
     unseenCount: Number(response && response.unseenCount || 0),
     nextCursor: response && response.nextCursor || null

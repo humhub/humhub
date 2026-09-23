@@ -104,9 +104,9 @@
     if (containerId) {
       params.containerId = containerId;
     }
-    return vue$1.client.get(vue$1.apiUrl("activity", params)).then(normalizeWindow);
+    return vue$1.client.get(vue$1.apiUrl("activity", params)).then(normalizePage);
   };
-  const normalizeWindow = (response) => ({
+  const normalizePage = (response) => ({
     results: Array.isArray(response.results) ? response.results : [],
     nextCursor: response.nextCursor ?? null
   });
@@ -116,7 +116,7 @@
     components: { ActivityEntry },
     i18nCategories: ["ActivityModule.base", "base"],
     props: {
-      // First page as `ActivityWindowService::window()` returns it: {results, nextCursor}.
+      // First page as `ActivityListService::page()` returns it: {results, nextCursor}.
       initial: { type: Object, default: () => ({ results: [], nextCursor: null }) },
       // Content container id the box is scoped to, 0 on the dashboard - what the endpoint
       // scopes by.

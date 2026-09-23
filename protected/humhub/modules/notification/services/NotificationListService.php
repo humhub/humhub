@@ -38,7 +38,7 @@ use yii\db\IntegrityException;
  *
  * @since 1.20
  */
-class NotificationWindowService
+class NotificationListService
 {
     /**
      * @var int page size of the notification menu, the legacy dropdown's own
@@ -57,7 +57,7 @@ class NotificationWindowService
      *
      * @return array{results: array[], unseenCount: int, nextCursor: int|null}
      */
-    public function window(
+    public function page(
         int $limit,
         ?int $cursor = null,
         ?array $categories = null,

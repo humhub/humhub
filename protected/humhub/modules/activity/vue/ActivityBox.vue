@@ -68,7 +68,7 @@
  * the list until the next manual scroll.
  *
  * The cursor is whatever the previous page returned and is passed back untouched; an entry's
- * id is never a cursor (see `ActivityWindowService`).
+ * id is never a cursor (see `ActivityListService`).
  *
  * ## Live updates
  *
@@ -104,7 +104,7 @@ export default {
     components: { ActivityEntry },
     i18nCategories: ['ActivityModule.base', 'base'],
     props: {
-        // First page as `ActivityWindowService::window()` returns it: {results, nextCursor}.
+        // First page as `ActivityListService::page()` returns it: {results, nextCursor}.
         initial: { type: Object, default: () => ({ results: [], nextCursor: null }) },
         // Content container id the box is scoped to, 0 on the dashboard - what the endpoint
         // scopes by.

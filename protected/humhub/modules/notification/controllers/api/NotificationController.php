@@ -11,7 +11,7 @@ namespace humhub\modules\notification\controllers\api;
 use humhub\components\api\BaseController;
 use humhub\modules\notification\events\UnreadCountChangedEvent;
 use humhub\modules\notification\models\Notification;
-use humhub\modules\notification\services\NotificationWindowService;
+use humhub\modules\notification\services\NotificationListService;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
@@ -23,7 +23,7 @@ use yii\helpers\ArrayHelper;
  * Always the caller's own notifications — there is no user parameter, and no action here is
  * reachable for a guest.
  *
- * The page itself is built by {@see NotificationWindowService}, which the widgets inlining a
+ * The page itself is built by {@see NotificationListService}, which the widgets inlining a
  * first page into their island props use as well, so an embedded page and a fetched one are the
  * same thing — see that class for the cursor and the consistency handling.
  *
@@ -69,7 +69,7 @@ class NotificationController extends BaseController
         $request = Yii::$app->request;
 
         $limit = max(1, min(
-            (int)$request->get('limit', NotificationWindowService::MENU_PAGE_SIZE),
+            (int)$request->get('limit', NotificationListService::MENU_PAGE_SIZE),
             self::MAX_LIMIT,
         ));
 
@@ -78,7 +78,7 @@ class NotificationController extends BaseController
             ? array_values(array_filter($categories, 'is_string'))
             : null;
 
-        return (new NotificationWindowService())->window(
+        return (new NotificationListService())->page(
             $limit,
             (int)$request->get('cursor', 0) ?: null,
             $categories,

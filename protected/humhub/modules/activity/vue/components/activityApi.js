@@ -13,7 +13,7 @@ import { apiUrl, client } from '@humhub/vue';
  * One page of the activities the caller may see.
  *
  * `cursor` is the previous page's `nextCursor` and is opaque: it is passed back untouched and
- * never built from an entry (see `ActivityWindowService` for why an entry's id would be the
+ * never built from an entry (see `ActivityListService` for why an entry's id would be the
  * wrong cursor).
  *
  * @param {{cursor?: ?string, limit?: ?number, containerId?: ?number}} options
@@ -32,7 +32,7 @@ export const fetchActivities = ({ cursor = null, limit = null, containerId = nul
         params.containerId = containerId;
     }
 
-    return client.get(apiUrl('activity', params)).then(normalizeWindow);
+    return client.get(apiUrl('activity', params)).then(normalizePage);
 };
 
 /**
@@ -40,7 +40,7 @@ export const fetchActivities = ({ cursor = null, limit = null, containerId = nul
  * response object itself, so the fields are read off it directly (see `notificationApi.js` for
  * the same pattern) — this only fills in what an empty/short response leaves out.
  */
-const normalizeWindow = (response) => ({
+const normalizePage = (response) => ({
     results: Array.isArray(response.results) ? response.results : [],
     nextCursor: response.nextCursor ?? null,
 });

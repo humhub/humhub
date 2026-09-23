@@ -12,7 +12,7 @@ use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\notification\models\forms\FilterForm;
-use humhub\modules\notification\services\NotificationWindowService;
+use humhub\modules\notification\services\NotificationListService;
 use Yii;
 
 /**
@@ -41,7 +41,7 @@ class OverviewController extends Controller
     public function actionIndex()
     {
         return $this->render('index', [
-            'initial' => (new NotificationWindowService())->window(NotificationWindowService::OVERVIEW_PAGE_SIZE),
+            'initial' => (new NotificationListService())->page(NotificationListService::OVERVIEW_PAGE_SIZE),
             'categories' => $this->getCategories(),
         ]);
     }
