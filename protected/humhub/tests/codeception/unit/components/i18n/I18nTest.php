@@ -9,8 +9,10 @@
 
 namespace humhub\tests\codeception\unit;
 
+use humhub\modules\user\models\User;
 use Yii;
 use tests\codeception\_support\HumHubDbTestCase;
+use yii\log\Logger;
 
 class I18nTest extends HumHubDbTestCase
 {
@@ -45,5 +47,45 @@ class I18nTest extends HumHubDbTestCase
 
         $this->assertEquals('de', Yii::$app->formatter->locale);
         $this->assertEquals('de', Yii::$app->language);
+    }
+
+    public function testUnknownUserTimeZoneIsReplacedByDefaultTimeZoneAndStored()
+    {
+        static::logInitialize();
+        Yii::$app->settings->set('defaultTimeZone', 'Europe/Berlin');
+        $user = User::findOne(['username' => 'Admin']);
+        $user->updateAttributes(['time_zone' => 'Europe/Kiew']);
+
+        Yii::$app->i18n->setUserLocale($user);
+
+        $this->assertEquals('Europe/Berlin', Yii::$app->formatter->timeZone);
+        $this->assertEquals('Europe/Berlin', $user->getAttribute('time_zone'));
+        $this->assertEquals('Europe/Berlin', User::findOne($user->id)->getAttribute('time_zone'));
+        $this->assertLogRegexCount(1, '/Europe\/Kiew/', Logger::LEVEL_ERROR);
+    }
+
+    public function testUnknownUserAndDefaultTimeZoneFallBackToServerTimeZone()
+    {
+        Yii::$app->settings->set('defaultTimeZone', 'Europe/Kiew');
+        $user = User::findOne(['username' => 'Admin']);
+        $user->updateAttributes(['time_zone' => 'Europe/Kiew']);
+
+        Yii::$app->i18n->setUserLocale($user);
+
+        $this->assertEquals(Yii::$app->timeZone, Yii::$app->formatter->timeZone);
+        $this->assertEquals(Yii::$app->timeZone, User::findOne($user->id)->getAttribute('time_zone'));
+    }
+
+    public function testKnownUserTimeZoneIsKept()
+    {
+        static::logInitialize();
+        $user = User::findOne(['username' => 'Admin']);
+        $user->updateAttributes(['time_zone' => 'Europe/Berlin']);
+
+        Yii::$app->i18n->setUserLocale($user);
+
+        $this->assertEquals('Europe/Berlin', Yii::$app->formatter->timeZone);
+        $this->assertEquals('Europe/Berlin', User::findOne($user->id)->getAttribute('time_zone'));
+        $this->assertNotLogRegex('/time zone/i', Logger::LEVEL_ERROR);
     }
 }
