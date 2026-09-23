@@ -1,5 +1,5 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { mount } from '@vue/test-utils';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { flushPromises, mount } from '@vue/test-utils';
 import RichTextOutput from '../../vue/RichTextOutput.vue';
 import LegacyFormWrapper from '../../vue/LegacyFormWrapper.vue';
 
@@ -33,6 +33,30 @@ const mountWithAdditions = (component, props) => mount(component, {
 });
 
 describe('RichTextOutput', () => {
+    // Every mount goes through the platform's oembed loader (the `oembed` bridge in
+    // humhub.vue.js -> `humhubStubs.oembed.load`); a spy per test observes which urls a message
+    // requests and, via mockImplementation, controls when the previews arrive.
+    let load;
+
+    beforeEach(() => {
+        load = vi.spyOn(globalThis.humhubStubs.oembed, 'load');
+        globalThis.humhubStubs.logCalls.warn.length = 0;
+    });
+
+    afterEach(() => {
+        load.mockRestore();
+    });
+
+    // A promise the test settles by hand - the shape of a loader response still in flight.
+    const deferred = () => {
+        const result = {};
+        result.promise = new Promise((resolve, reject) => {
+            result.resolve = resolve;
+            result.reject = reject;
+        });
+        return result;
+    };
+
     it('renders nothing when message is null (e.g. a blocked comment)', () => {
         const wrapper = mountWithAdditions(RichTextOutput, { message: null });
 
@@ -45,67 +69,31 @@ describe('RichTextOutput', () => {
         expect(wrapper.find('div').exists()).toBe(false);
     });
 
-    describe('envelope construction (data-* attrs mirroring RichText::output())', () => {
-        it('renders the markdown text as a direct child div carrying the render-options as data-* attrs', () => {
-            const wrapper = mountWithAdditions(RichTextOutput, {
-                message: 'hello world',
-                renderOptions: {
-                    exclude: [],
-                    include: [],
-                    'plugin-options': [],
-                    edit: false,
-                    'ui-richtext': true,
-                    'ui-widget': 'ui.richtext.prosemirror.RichText',
-                    'ui-init': true,
-                },
-            });
+    describe('envelope (the element RichText::output() renders around a message)', () => {
+        it('renders the markdown text as a direct child div the richtext display widget boots on', () => {
+            const wrapper = mountWithAdditions(RichTextOutput, { message: 'hello world' });
 
             // Root is RichTextOutput's own element (receives attribute fallthrough from the
             // caller - class/data-ui-markdown/etc, see the "attribute fallthrough" describe
-            // block below); the envelope is a direct CHILD, not the root itself, matching
-            // today's DOM shape one level up (v-html'd envelope nested inside the caller's
-            // own class="comment-message" root) - see commentSection.test.js's own
+            // block below); the envelope is a direct CHILD, not the root itself, matching the
+            // server-rendered DOM shape one level up - see commentSection.test.js's own
             // "flattened RichTextOutput wrapper" regression test.
             expect(wrapper.element.children.length).toBe(1);
             const envelope = wrapper.element.children[0];
 
             expect(envelope.textContent).toBe('hello world');
-            expect(envelope.getAttribute('data-exclude')).toBe('[]');
-            expect(envelope.getAttribute('data-include')).toBe('[]');
-            expect(envelope.getAttribute('data-plugin-options')).toBe('[]');
             expect(envelope.getAttribute('data-ui-widget')).toBe('ui.richtext.prosemirror.RichText');
-            // Yii's own Html::renderTagAttributes() convention (boolean true -> valueless
-            // attribute, boolean false -> omitted entirely) - v-bind reproduces it natively.
-            expect(envelope.hasAttribute('data-ui-richtext')).toBe(true);
-            expect(envelope.getAttribute('data-ui-richtext')).toBe('');
             expect(envelope.hasAttribute('data-ui-init')).toBe(true);
-            expect(envelope.hasAttribute('data-edit')).toBe(false);
+            expect(envelope.hasAttribute('data-ui-richtext')).toBe(true);
+            // Nothing else: the preset is the widget's default, no per-message options exist.
+            expect(envelope.attributes.length).toBe(3);
         });
 
-        it('omits an absent preset entirely, matching getData()\'s own conditional inclusion', () => {
-            const wrapper = mountWithAdditions(RichTextOutput, {
-                message: 'hi',
-                renderOptions: { 'ui-richtext': true },
-            });
+        it('renders a message without oembed links at once, without asking the loader', () => {
+            const wrapper = mountWithAdditions(RichTextOutput, { message: 'plain [link](https://example.com)' });
 
-            expect(wrapper.element.children[0].hasAttribute('data-preset')).toBe(false);
-        });
-
-        it('renders a provided preset as a plain string attribute', () => {
-            const wrapper = mountWithAdditions(RichTextOutput, {
-                message: 'hi',
-                renderOptions: { 'ui-richtext': true, preset: 'myPreset' },
-            });
-
-            expect(wrapper.element.children[0].getAttribute('data-preset')).toBe('myPreset');
-        });
-
-        it('defaults to an empty render-options object when none is provided', () => {
-            const wrapper = mountWithAdditions(RichTextOutput, { message: 'hi' });
-
-            const envelope = wrapper.element.children[0];
-            expect(envelope.textContent).toBe('hi');
-            expect(envelope.attributes.length).toBe(0);
+            expect(load).not.toHaveBeenCalled();
+            expect(wrapper.element.children[0].textContent).toBe('plain [link](https://example.com)');
         });
     });
 
@@ -113,7 +101,6 @@ describe('RichTextOutput', () => {
         it('renders a literal <script> tag as inert escaped text, never as a real element', () => {
             const wrapper = mountWithAdditions(RichTextOutput, {
                 message: '<script>window.__pwned = true;</script>',
-                renderOptions: { 'ui-richtext': true },
             });
 
             expect(wrapper.find('script').exists()).toBe(false);
@@ -121,10 +108,9 @@ describe('RichTextOutput', () => {
             expect(wrapper.element.children[0].textContent).toBe('<script>window.__pwned = true;</script>');
         });
 
-        it('never uses v-html for the message itself (only trusted oembed fragments may)', () => {
+        it('never uses v-html for the message', () => {
             const wrapper = mountWithAdditions(RichTextOutput, {
                 message: '<img src=x onerror="window.__pwned = true">',
-                renderOptions: { 'ui-richtext': true },
             });
 
             expect(wrapper.find('img').exists()).toBe(false);
@@ -132,113 +118,128 @@ describe('RichTextOutput', () => {
         });
     });
 
-    describe('oembed previews (options.oembeds)', () => {
-        it('renders no oembed container when there are no oembeds', () => {
-            const wrapper = mountWithAdditions(RichTextOutput, {
-                message: 'hi',
-                renderOptions: { 'ui-richtext': true },
-            });
+    // The richtext display widget renders an `[url](oembed:url)` link as the preview
+    // `humhub.oembed.js` `get(url)` knows at render time, or as a plain link if it knows none -
+    // so the previews have to be loaded (and cached there) BEFORE the envelope mounts and
+    // v-additions boots the widget on it.
+    describe('oembed previews are loaded before the message renders', () => {
+        const video = 'https://www.youtube.com/watch?v=abc&t=30s';
+        const message = 'Look: [' + video + '](oembed:' + video + ')';
 
-            expect(wrapper.find('.richtext-oembed-container').exists()).toBe(false);
+        it('asks the loader for the oembed urls of the message, honoring the viewer\'s consent and without status warnings', async () => {
+            const pending = deferred();
+            load.mockReturnValue(pending.promise);
+
+            const wrapper = mountWithAdditions(RichTextOutput, { message });
+
+            expect(load).toHaveBeenCalledTimes(1);
+            expect(load).toHaveBeenCalledWith([video], { consent: true, silent: true });
+            // Nothing rendered yet - the widget would have rendered a plain link.
+            expect(wrapper.find('div').exists()).toBe(false);
+
+            pending.resolve({ [video]: '<div class="oembed_snippet"></div>' });
+            await flushPromises();
+
+            expect(wrapper.element.children.length).toBe(1);
+            expect(wrapper.element.children[0].textContent).toBe(message);
         });
 
-        it('rebuilds the hidden .richtext-oembed-container sibling from the oembeds map, keyed by url', () => {
-            const wrapper = mountWithAdditions(RichTextOutput, {
-                message: '[https://example.com/v](oembed:https://example.com/v)',
-                renderOptions: {
-                    'ui-richtext': true,
-                    oembeds: { 'https://example.com/v': '<iframe src="https://example.com/embed"></iframe>' },
-                },
-            });
+        it('boots ui.additions only once the previews are there', async () => {
+            const pending = deferred();
+            load.mockReturnValue(pending.promise);
+            const applyTo = vi.spyOn(globalThis.humhubStubs.additions, 'applyTo');
 
-            const container = wrapper.find('.richtext-oembed-container');
-            expect(container.exists()).toBe(true);
-            expect(container.attributes('style')).toContain('display: none');
+            const wrapper = mountWithAdditions(RichTextOutput, { message });
+            expect(applyTo).not.toHaveBeenCalled();
 
-            const fragment = container.find('[data-oembed="https://example.com/v"]');
-            expect(fragment.exists()).toBe(true);
-            // Trusted, server-fetched oembed markup - the one deliberate v-html use in this
-            // component (see its own docblock on the trust boundary).
-            expect(fragment.find('iframe').attributes('src')).toBe('https://example.com/embed');
+            pending.resolve({});
+            await flushPromises();
 
-            // Sibling of the envelope, both direct children of RichTextOutput's own root -
-            // matches today's DOM shape (both were part of the same server-rendered string).
-            expect(wrapper.element.children.length).toBe(2);
+            expect(applyTo).toHaveBeenCalledTimes(1);
+            expect(applyTo.mock.calls[0][0][0]).toBe(wrapper.element);
+
+            applyTo.mockRestore();
         });
 
-        it('renders one fragment per oembed url', () => {
-            const wrapper = mountWithAdditions(RichTextOutput, {
-                message: 'two links',
-                renderOptions: {
-                    'ui-richtext': true,
-                    oembeds: {
-                        'https://example.com/a': '<div>a</div>',
-                        'https://example.com/b': '<div>b</div>',
-                    },
-                },
-            });
+        it('requests every distinct url once, at most as many as a server-rendered richtext embeds', () => {
+            const links = [];
+            for (let i = 0; i < 12; i++) {
+                links.push('[v](oembed:https://example.com/v' + i + ')');
+            }
+            // The first url twice: deduplicated, not counted twice against the cap.
+            links.unshift('[v](oembed:https://example.com/v0)');
 
-            expect(wrapper.findAll('.richtext-oembed-container > [data-oembed]').length).toBe(2);
+            mountWithAdditions(RichTextOutput, { message: links.join(' ') });
+
+            const urls = load.mock.calls[0][0];
+            expect(urls.length).toBe(10);
+            expect(new Set(urls).size).toBe(10);
+            expect(urls[0]).toBe('https://example.com/v0');
+            expect(urls).not.toContain('https://example.com/v10');
         });
 
-        it('does not leak the oembeds map itself onto the envelope as a data-oembeds attribute', () => {
-            const wrapper = mountWithAdditions(RichTextOutput, {
-                message: 'hi',
-                renderOptions: { 'ui-richtext': true, oembeds: { 'https://example.com/v': '<div></div>' } },
+        it('ignores links of other richtext extensions', () => {
+            mountWithAdditions(RichTextOutput, {
+                message: '[Jane](mention:guid "http://x/u/jane") [file](file-guid:abc) [a](https://example.com)',
             });
 
-            expect(wrapper.element.children[0].hasAttribute('data-oembeds')).toBe(false);
+            expect(load).not.toHaveBeenCalled();
         });
 
-        // humhub.oembed.js's findSnippetByUrl() looks up this fragment via
-        // `[data-oembed="' + $.escapeSelector(util.string.escapeHtml(url, true)) + '"]` - the
-        // legacy server markup produced that exact escaped string in the DOM attribute (source
-        // double-encodes via Html::encode($url) + Html::tag()'s own attribute encoding, which a
-        // single HTML-parse round-trip collapses back down to one escape). Binding the RAW url
-        // here would silently break the lookup for any url containing one of & < > " '.
-        describe('data-oembed carries the HTML-escaped url, matching humhub.oembed.js\'s lookup', () => {
-            it('escapes an & in the url (e.g. a query string) before binding data-oembed', () => {
-                const rawUrl = 'https://youtube.com/watch?v=abc&t=30s';
-                const escapedUrl = 'https://youtube.com/watch?v=abc&amp;t=30s';
+        it('still renders the message (as plain links) when the loader fails, and logs it', async () => {
+            load.mockReturnValue(Promise.reject(new Error('offline')));
 
-                const wrapper = mountWithAdditions(RichTextOutput, {
-                    message: '[link](oembed:' + rawUrl + ')',
-                    renderOptions: {
-                        'ui-richtext': true,
-                        oembeds: { [rawUrl]: '<iframe src="https://youtube.com/embed/abc"></iframe>' },
-                    },
-                });
+            const wrapper = mountWithAdditions(RichTextOutput, { message });
+            await flushPromises();
 
-                const fragment = wrapper.find('.richtext-oembed-container > [data-oembed]');
-                expect(fragment.exists()).toBe(true);
-                expect(fragment.element.getAttribute('data-oembed')).toBe(escapedUrl);
-                expect(fragment.find('iframe').attributes('src')).toBe('https://youtube.com/embed/abc');
-            });
+            expect(wrapper.element.children[0].textContent).toBe(message);
+            expect(globalThis.humhubStubs.logCalls.warn).toHaveLength(1);
+            expect(globalThis.humhubStubs.logCalls.warn[0][0]).toContain('oembed');
+        });
 
-            it('escapes quotes and angle brackets in the url the same way', () => {
-                const rawUrl = 'https://example.com/a"b<c>d\'e';
-                const escapedUrl = 'https://example.com/a&quot;b&lt;c&gt;d&#39;e';
+        it('takes a changed message with new oembed links down until their previews are loaded', async () => {
+            const wrapper = mountWithAdditions(RichTextOutput, { message: 'before' });
+            expect(wrapper.element.children[0].textContent).toBe('before');
 
-                const wrapper = mountWithAdditions(RichTextOutput, {
-                    message: 'weird url',
-                    renderOptions: {
-                        'ui-richtext': true,
-                        oembeds: { [rawUrl]: '<div class="preview">p</div>' },
-                    },
-                });
+            const pending = deferred();
+            load.mockReturnValue(pending.promise);
+            await wrapper.setProps({ message });
 
-                const fragment = wrapper.find('.richtext-oembed-container > [data-oembed]');
-                expect(fragment.exists()).toBe(true);
-                expect(fragment.element.getAttribute('data-oembed')).toBe(escapedUrl);
-                expect(fragment.find('.preview').exists()).toBe(true);
-            });
+            expect(load).toHaveBeenCalledWith([video], { consent: true, silent: true });
+            expect(wrapper.find('div').exists()).toBe(false);
+
+            pending.resolve({});
+            await flushPromises();
+
+            expect(wrapper.element.children[0].textContent).toBe(message);
+        });
+
+        it('a load that finishes after the message changed again is stale and does not interfere', async () => {
+            const stale = deferred();
+            load.mockReturnValue(stale.promise);
+
+            const wrapper = mountWithAdditions(RichTextOutput, { message });
+            // Edited to a message without oembed links while the previews are still loading:
+            // renders at once.
+            await wrapper.setProps({ message: 'after' });
+            expect(wrapper.element.children[0].textContent).toBe('after');
+
+            const applyTo = vi.spyOn(globalThis.humhubStubs.additions, 'applyTo');
+            stale.resolve({});
+            await flushPromises();
+
+            // No re-render, no second widget boot caused by the stale load.
+            expect(wrapper.element.children[0].textContent).toBe('after');
+            expect(applyTo).not.toHaveBeenCalled();
+
+            applyTo.mockRestore();
         });
     });
 
     describe('attribute fallthrough (caller-owned layout/styling)', () => {
         it('lands class/data-ui-markdown/data-ui-show-more on the root, one level above the envelope', () => {
             const wrapper = mount(RichTextOutput, {
-                props: { message: 'hi', renderOptions: { 'ui-richtext': true } },
+                props: { message: 'hi' },
                 attrs: { class: 'comment-message', 'data-ui-markdown': '', 'data-ui-show-more': '', 'data-read-more-text': 'Read more...' },
                 global: { directives: { additions: additionsDirective } },
             });
@@ -254,10 +255,7 @@ describe('RichTextOutput', () => {
     it('applies ui.additions to the rendered envelope on mount', () => {
         const applyTo = vi.spyOn(globalThis.humhubStubs.additions, 'applyTo');
 
-        const wrapper = mountWithAdditions(RichTextOutput, {
-            message: 'hi',
-            renderOptions: { 'ui-richtext': true },
-        });
+        const wrapper = mountWithAdditions(RichTextOutput, { message: 'hi' });
 
         expect(applyTo).toHaveBeenCalledTimes(1);
         expect(applyTo.mock.calls[0][0][0]).toBe(wrapper.element);
@@ -276,10 +274,7 @@ describe('RichTextOutput', () => {
     });
 
     it('re-applies ui.additions after the message prop changes (updated hook)', async () => {
-        const wrapper = mountWithAdditions(RichTextOutput, {
-            message: 'before',
-            renderOptions: { 'ui-richtext': true },
-        });
+        const wrapper = mountWithAdditions(RichTextOutput, { message: 'before' });
 
         const applyTo = vi.spyOn(globalThis.humhubStubs.additions, 'applyTo');
         await wrapper.setProps({ message: 'after' });
@@ -290,18 +285,14 @@ describe('RichTextOutput', () => {
         applyTo.mockRestore();
     });
 
-    // The legacy richtext DISPLAY addition caches its booted widget instance in jQuery
-    // `.data()` on the envelope DOM node itself; widget init is a once-per-node guard, so an
-    // in-place text swap on the SAME node (Vue's default behavior for a same-position,
-    // same-tag child with no key) would leave that cache in place and the addition would never
-    // re-render the new markdown - the user would see raw markdown text. The `:key` on the
-    // envelope (see the component's own docblock) forces Vue to destroy the old node and mount
-    // a genuinely new one instead.
+    // The legacy richtext DISPLAY widget caches its instance in jQuery `.data()` on the
+    // envelope DOM node itself and initializes once per node, so an in-place text swap on the
+    // SAME node (Vue's default for a same-position, same-tag child with no key) would leave
+    // that cache in place and the widget would never re-render the new markdown - the user
+    // would see raw markdown text. The `:key` on the envelope (see the component's own
+    // docblock) forces Vue to destroy the old node and mount a genuinely new one instead.
     it('recreates the envelope element itself (not just its text) when the message changes', async () => {
-        const wrapper = mountWithAdditions(RichTextOutput, {
-            message: 'first markdown',
-            renderOptions: { 'ui-richtext': true },
-        });
+        const wrapper = mountWithAdditions(RichTextOutput, { message: 'first markdown' });
 
         const oldEnvelope = wrapper.element.children[0];
 
@@ -314,22 +305,6 @@ describe('RichTextOutput', () => {
         // reference to it.
         expect(oldEnvelope.parentNode).toBeNull();
         expect(newEnvelope.textContent).toBe('second markdown');
-    });
-
-    it('also recreates the envelope element when only renderOptions changes (message unchanged)', async () => {
-        const wrapper = mountWithAdditions(RichTextOutput, {
-            message: 'same markdown',
-            renderOptions: { 'ui-richtext': true, preset: 'a' },
-        });
-
-        const oldEnvelope = wrapper.element.children[0];
-
-        await wrapper.setProps({ renderOptions: { 'ui-richtext': true, preset: 'b' } });
-
-        const newEnvelope = wrapper.element.children[0];
-
-        expect(newEnvelope).not.toBe(oldEnvelope);
-        expect(newEnvelope.getAttribute('data-preset')).toBe('b');
     });
 });
 

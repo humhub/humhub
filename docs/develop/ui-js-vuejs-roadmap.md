@@ -107,7 +107,7 @@ the one remaining UI-only HTML action):
 2. **One documented contract**, in v2 conventions (ISO-8601 UTC timestamps,
    camelCase, plain HTTP status codes, `422 {"errors": …}`): window pagination
    (`GET comment/content/<id>/window`, `prevCount`/`nextCount`/`rootTotal`), the
-   `extensions` namespace, `message` + `messageRenderOptions`, structured `files`, like
+   `extensions` namespace, `message` as processed markdown, structured `files`, like
    state/toggle/users, and `account`/`account/blocked-users`. Caller-dependent values have
    their own endpoints (see the next section). The islands derive client-side what a client
    can derive (`isEdited`, admin-delete capability, blocked-author masking) and parse ISO
@@ -171,9 +171,11 @@ Everything parked or deferred lives here; the reasoning is in
 ### Islands & tooling
 
 - Rethink richtext rendering/extension architecture for the client-rendered
-  model (markdown-it plugin extension API, client-side oembed fetch, unified
-  render path for stream entries; currently `EVENT_AFTER_RUN`/`EVENT_AFTER_OUTPUT`
-  do not fire on the JSON path — see `module-migrate.md`).
+  model (markdown-it plugin extension API, unified render path for stream
+  entries; currently `EVENT_AFTER_RUN`/`EVENT_AFTER_OUTPUT` do not fire on the
+  JSON path — see `module-migrate.md`). Oembed previews are already fetched
+  client-side (`RichTextOutput`); a `GET /api/v2/oembed` counterpart of
+  `oembed/index` is the remaining piece.
 - Module migrations onto the new extension APIs: reportcontent, reaction
   (menu entries), legal, linkpreview, translator (richtext output events).
 - Core bug follow-ups discovered along the way (separate PRs): `AssetBundle`

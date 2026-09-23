@@ -124,7 +124,7 @@
     }
   };
   const _hoisted_1$c = { class: "form-check" };
-  const _hoisted_2$9 = ["id", "name", "disabled", "aria-required", "aria-invalid", "aria-describedby"];
+  const _hoisted_2$8 = ["id", "name", "disabled", "aria-required", "aria-invalid", "aria-describedby"];
   const _hoisted_3$7 = ["for"];
   const _hoisted_4$6 = ["id"];
   const _hoisted_5$4 = ["id"];
@@ -148,7 +148,7 @@
             "aria-invalid": _ctx.hasError ? "true" : null,
             "aria-describedby": _ctx.describedBy,
             "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $options.internalValue = $event)
-          }, null, 10, _hoisted_2$9), [
+          }, null, 10, _hoisted_2$8), [
             [vue.vModelCheckbox, $options.internalValue]
           ]),
           _ctx.label ? (vue.openBlock(), vue.createElementBlock("label", {
@@ -352,7 +352,7 @@
     }
   };
   const _hoisted_1$b = { class: "nav-item dropdown" };
-  const _hoisted_2$8 = ["aria-label"];
+  const _hoisted_2$7 = ["aria-label"];
   const _hoisted_3$6 = { key: 0 };
   const _hoisted_4$5 = { class: "dropdown-item disabled d-flex align-items-center gap-2" };
   const _hoisted_5$3 = { role: "status" };
@@ -384,7 +384,7 @@
             "aria-label": $props.toggleAriaLabel
           }, [
             vue.renderSlot(_ctx.$slots, "toggle")
-          ], 10, _hoisted_2$8),
+          ], 10, _hoisted_2$7),
           vue.createElementVNode(
             "ul",
             {
@@ -848,102 +848,70 @@
     );
   }
   const C5 = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$8]]);
-  const OEMBED_URL_ENTITY_MAP = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+  const ENVELOPE_ATTRS = {
+    "data-ui-richtext": "",
+    "data-ui-widget": "ui.richtext.prosemirror.RichText",
+    "data-ui-init": ""
+  };
+  const OEMBED_LINK = /\]\(oembed:([^)\s]+)/g;
+  const MAX_OEMBEDS = 10;
+  const oembedUrls = (message) => {
+    const urls = [];
+    for (const match of String(message || "").matchAll(OEMBED_LINK)) {
+      if (!urls.includes(match[1])) {
+        urls.push(match[1]);
+      }
+      if (urls.length === MAX_OEMBEDS) {
+        break;
+      }
+    }
+    return urls;
+  };
   const _sfc_main$7 = {
     props: {
-      message: { type: String, default: null },
-      renderOptions: { type: Object, default: () => ({}) }
+      message: { type: String, default: null }
     },
-    computed: {
-      envelopeAttrs() {
-        const attrs = {};
-        Object.entries(this.renderOptions || {}).forEach(([key, value]) => {
-          if (key === "oembeds" || value === false || value === null || value === void 0) {
-            return;
-          }
-          if (value === true) {
-            attrs["data-" + key] = "";
-            return;
-          }
-          attrs["data-" + key] = typeof value === "object" ? JSON.stringify(value) : value;
-        });
-        return attrs;
-      },
-      oembeds() {
-        return this.renderOptions && this.renderOptions.oembeds || {};
-      },
-      hasOembeds() {
-        return Object.keys(this.oembeds).length > 0;
-      },
-      /**
-       * Serialized `renderOptions`, reused as (part of) the `:key`s described in the class
-       * docblock's "`:key`-forced remount on content change" section above.
-       */
-      renderOptionsKey() {
-        return JSON.stringify(this.renderOptions || {});
-      },
-      /**
-       * @see the class docblock's "`:key`-forced remount on content change" section above.
-       * NUL-separated rather than plain concatenation: `message` is free-form user text, and
-       * a plain join could otherwise collide across the message/renderOptions boundary (two
-       * different (message, renderOptions) pairs producing the same joined string). A NUL
-       * byte cannot occur in `message` (always a JSON string round-tripped from the server).
-       */
-      envelopeKey() {
-        return this.message + "\0" + this.renderOptionsKey;
-      }
+    data() {
+      return {
+        ENVELOPE_ATTRS,
+        // False while the previews of the current message are being loaded.
+        ready: false
+      };
+    },
+    watch: {
+      message: { immediate: true, handler: "prepare" }
     },
     methods: {
-      /**
-       * Mirrors `util.string.escapeHtml(value, true)` in
-       * `protected/humhub/resources/js/humhub/humhub.util.js` byte-for-byte (its "simple"
-       * variant - second arg `true` - which escapes only `& < > " '`, leaving backtick/`=`/`/`
-       * alone). `humhub.oembed.js`'s `findSnippetByUrl()` locates this fragment by querying
-       * `[data-oembed="' + $.escapeSelector(util.string.escapeHtml(url, true)) + '"]` - so the
-       * `data-oembed` attribute rendered here MUST equal that exact escaped string, not the
-       * raw url, or the lookup silently fails for any url containing one of those five
-       * characters (a `&` in a query string being the common case) and the embed degrades to
-       * a plain link with no live preview/lazy-load behavior. Kept as a tiny local function -
-       * rather than reaching into `@humhub/vue`/`humhub.modules.util` - because it is a pure,
-       * dependency-free string transform and no sibling island component reaches into legacy
-       * modules directly either.
-       */
-      escapeOembedUrl(url) {
-        return String(url).replace(/[&<>"']/g, (char) => OEMBED_URL_ENTITY_MAP[char]);
+      prepare(message) {
+        const urls = oembedUrls(message);
+        if (!urls.length) {
+          this.ready = true;
+          return;
+        }
+        this.ready = false;
+        const done = () => {
+          if (this.message === message) {
+            this.ready = true;
+          }
+        };
+        vue$1.oembed.load(urls, { consent: true, silent: true }).then(done, (error) => {
+          vue$1.log.warn("RichTextOutput: could not load oembed previews, rendering plain links", error);
+          done();
+        });
       }
     }
   };
   const _hoisted_1$7 = { key: 0 };
-  const _hoisted_2$7 = ["data-oembed", "innerHTML"];
   function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
     const _directive_additions = vue.resolveDirective("additions");
-    return $props.message ? vue.withDirectives((vue.openBlock(), vue.createElementBlock("div", _hoisted_1$7, [
+    return $props.message && $data.ready ? vue.withDirectives((vue.openBlock(), vue.createElementBlock("div", _hoisted_1$7, [
       (vue.openBlock(), vue.createElementBlock(
         "div",
-        vue.mergeProps({ key: $options.envelopeKey }, $options.envelopeAttrs),
+        vue.mergeProps({ key: $props.message }, $data.ENVELOPE_ATTRS),
         vue.toDisplayString($props.message),
         17
         /* TEXT, FULL_PROPS */
-      )),
-      $options.hasOembeds ? (vue.openBlock(), vue.createElementBlock("div", {
-        key: $options.renderOptionsKey,
-        class: "richtext-oembed-container",
-        style: { "display": "none" }
-      }, [
-        (vue.openBlock(true), vue.createElementBlock(
-          vue.Fragment,
-          null,
-          vue.renderList($options.oembeds, (html, url) => {
-            return vue.openBlock(), vue.createElementBlock("div", {
-              key: url,
-              "data-oembed": $options.escapeOembedUrl(url),
-              innerHTML: html
-            }, null, 8, _hoisted_2$7);
-          }),
-          128
-          /* KEYED_FRAGMENT */
-        ))
-      ])) : vue.createCommentVNode("v-if", true)
+      ))
     ])), [
       [_directive_additions]
     ]) : vue.createCommentVNode("v-if", true);

@@ -93,12 +93,4 @@ abstract class RichTextContentExtension extends Model implements RichTextExtensi
     {
         return $output;
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function getRenderOptions(): array
-    {
-        return [];
-    }
 }

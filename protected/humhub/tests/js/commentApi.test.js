@@ -22,7 +22,6 @@ const wireAuthor = (overrides = {}) => ({
 const wireComment = (overrides = {}) => ({
     id: 1,
     message: 'Hello',
-    messageRenderOptions: { 'ui-richtext': true },
     contentId: 42,
     parentCommentId: null,
     recordId: 100,

@@ -30,14 +30,20 @@ class OembedController extends Controller
     /**
      * Fetches oembed content for the posted urls.
      *
+     * By default the media is always embedded: the editor previews a link the current user just
+     * pasted. A client rendering text somebody else wrote posts `consent=1` and receives, for a
+     * domain the user has not allowed, the same confirmation prompt a server-rendered richtext
+     * shows ({@see UrlOembed::isAllowedDomain()}) - see `humhub.oembed.js` `load()`.
+     *
      * @return \yii\web\Response
      */
     public function actionIndex()
     {
         $urls = Yii::$app->request->post('urls', []);
+        $forceAllowedDomain = empty(Yii::$app->request->post('consent'));
         $result = [];
         foreach ($urls as $url) {
-            $oembed = UrlOembed::getOEmbed($url, true);
+            $oembed = UrlOembed::getOEmbed($url, $forceAllowedDomain);
             if ($oembed) {
                 $result[$url] = $oembed;
             } elseif (UrlOembed::hasOEmbedSupport($url)) {

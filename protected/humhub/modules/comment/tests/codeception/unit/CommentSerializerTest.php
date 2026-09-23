@@ -114,9 +114,9 @@ class CommentSerializerTest extends HumHubDbTestCase
 
         // The whole point of the caller-context split: one serialization, servable to
         // everyone who may read the content - author, another member and a guest alike.
-        // Compared as JSON, i.e. as the wire sees it: the payload carries `stdClass`
-        // instances (`messageRenderOptions`, `extensions`, so they serialize as `{}`), which
-        // a strict array comparison would call different for being different instances.
+        // Compared as JSON, i.e. as the wire sees it: the payload carries a `stdClass`
+        // instance (`extensions`, so it serializes as `{}`), which a strict array comparison
+        // would call different for being different instances.
         $this->assertSame(json_encode($asAuthor), json_encode($asOtherUser));
         $this->assertSame(json_encode($asAuthor), json_encode($asGuest));
     }

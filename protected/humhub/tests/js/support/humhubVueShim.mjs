@@ -46,6 +46,10 @@ export const modal = {
     load: (...args) => vueModule().modal.load(...args),
 };
 
+export const oembed = {
+    load: (...args) => vueModule().oembed.load(...args),
+};
+
 export const events = {
     on: (...args) => vueModule().events.on(...args),
     off: (...args) => vueModule().events.off(...args),

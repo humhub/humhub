@@ -87,7 +87,6 @@ const makeAuthor = (overrides = {}) => ({
 const makeComment = (overrides = {}) => ({
     id: 1,
     message: 'Hello world',
-    messageRenderOptions: { 'ui-richtext': true, 'ui-widget': 'ui.richtext.prosemirror.RichText' },
     contentId: 42,
     parentCommentId: null,
     recordId: 100,
@@ -993,7 +992,7 @@ describe('CommentSection', () => {
 
     describe('data-ui-markdown + flattened RichTextOutput wrapper (items 5 and 7)', () => {
         it('renders .comment-message as the RichTextOutput root with data-ui-markdown and no intermediate div', () => {
-            const comment = makeComment({ message: 'Hello world', messageRenderOptions: { 'ui-richtext': true } });
+            const comment = makeComment({ message: 'Hello world' });
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),

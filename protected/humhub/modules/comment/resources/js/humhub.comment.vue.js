@@ -1028,9 +1028,8 @@
                 "data-ui-markdown": "",
                 "data-ui-show-more": "",
                 "data-read-more-text": $options.readMoreLabel,
-                message: $props.comment.message,
-                "render-options": $props.comment.messageRenderOptions
-              }, null, 8, ["data-read-more-text", "message", "render-options"]),
+                message: $props.comment.message
+              }, null, 8, ["data-read-more-text", "message"]),
               $props.comment.files.length ? (vue$1.openBlock(), vue$1.createBlock(_component_AttachedFiles, {
                 key: 0,
                 files: $props.comment.files,

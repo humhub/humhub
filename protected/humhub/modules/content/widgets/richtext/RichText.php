@@ -66,15 +66,15 @@ abstract class RichText extends AbstractRichText
     }
 
     /**
-     * @see AbstractRichText::outputMarkdownAndRenderOptions()
-     * @return array{markdown: string|null, options: array}
+     * @see AbstractRichText::outputMarkdown()
+     * @return string|null
      * @since 1.20
      */
-    public static function outputMarkdownAndRenderOptions($text, $config = []): array
+    public static function outputMarkdown($text, $config = [])
     {
         $config = ArrayHelper::merge(Yii::$app->params['richText'], $config);
 
-        return call_user_func($config['class'] . '::outputMarkdownAndRenderOptions', $text, $config);
+        return call_user_func($config['class'] . '::outputMarkdown', $text, $config);
     }
 
     /**

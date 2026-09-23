@@ -314,39 +314,36 @@ abstract class AbstractRichText extends JsWidget
     }
 
     /**
-     * The client-render counterpart of {@see self::output()}: instead of a pre-built HTML envelope string,
-     * returns the (processed) markdown text plus the render options a client-side `RichTextOutput.vue`
-     * needs to reproduce {@see self::output()}'s exact envelope div client-side - see
-     * `docs/develop/ui-js-vuejs-interop.md`, "RichTextOutput".
-     *
-     * This base implementation is a safe fallback for implementations without a per-record extension
-     * pipeline (just the base {@see self::getData()} config bucket, no per-record contributions); see
-     * {@see \humhub\modules\content\widgets\richtext\ProsemirrorRichText::getMarkdownAndRenderOptions()}
-     * for the richer, extension-aware override actual core richtext output goes through.
+     * The processed markdown of the given text, without the HTML envelope {@see self::output()} wraps
+     * it in - what an API payload ships so a client can render the text itself (see
+     * `docs/develop/ui-js-vuejs-interop.md`, "RichTextOutput").
      *
      * @param $text string rich text content
      * @param array $config rich text widget options
-     * @return array{markdown: string|null, options: array}
+     * @return string|null
      * @throws Exception
      * @since 1.20
      */
-    public static function outputMarkdownAndRenderOptions($text, $config = []): array
+    public static function outputMarkdown($text, $config = [])
     {
         $config['text'] = $text;
         $config['class'] = static::class;
-        $widget = Yii::createObject($config);
 
-        return $widget->getMarkdownAndRenderOptions();
+        return Yii::createObject($config)->getMarkdown();
     }
 
     /**
-     * @see self::outputMarkdownAndRenderOptions()
-     * @return array{markdown: string|null, options: array}
+     * The markdown text this richtext renders, run through the implementation's own processing
+     * (e.g. {@see \humhub\modules\content\widgets\richtext\ProsemirrorRichText::getMarkdown()}
+     * resolves mentions). This base implementation returns the text as it is.
+     *
+     * @see self::outputMarkdown()
+     * @return string|null
      * @since 1.20
      */
-    public function getMarkdownAndRenderOptions(): array
+    public function getMarkdown()
     {
-        return ['markdown' => $this->text, 'options' => empty($this->text) ? [] : $this->getData()];
+        return $this->text;
     }
 
     /**

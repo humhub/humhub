@@ -342,12 +342,10 @@ components:
           type: integer
         message:
           type: string
-          description: The raw markdown message, not rendered HTML
-        messageRenderOptions:
-          type: object
           description: |
-            Options a client needs to reproduce the platform's rich-text rendering of
-            `message` (mentions, oembed previews, …). `{}` when there is nothing to add.
+            The message in HumHub richtext markdown (see the *Rich text* convention), not
+            rendered HTML. Mentions carry the user's current name and URL; oembed links stay
+            `[url](oembed:url)`, a client fetches their previews itself.
         contentId:
           type: integer
         parentCommentId:

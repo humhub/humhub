@@ -113,7 +113,6 @@ const makeAuthor = (overrides = {}) => ({
 const makeComment = (overrides = {}) => ({
     id: 1,
     message: 'Hello world',
-    messageRenderOptions: { 'ui-richtext': true, 'ui-widget': 'ui.richtext.prosemirror.RichText' },
     contentId: 42,
     parentCommentId: null,
     recordId: 100,

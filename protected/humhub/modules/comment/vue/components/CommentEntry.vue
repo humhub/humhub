@@ -69,7 +69,6 @@
                         data-ui-show-more
                         :data-read-more-text="readMoreLabel"
                         :message="comment.message"
-                        :render-options="comment.messageRenderOptions"
                     />
                     <AttachedFiles
                         v-if="comment.files.length"

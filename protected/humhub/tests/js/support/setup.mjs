@@ -122,6 +122,13 @@ const modal = {
     },
 };
 
+// Mirrors the `oembed` module's load() (humhub.oembed.js): resolves preview html by url. Tests
+// of RichTextOutput spy on it to observe which urls are requested and to control when the
+// previews arrive.
+const oembed = {
+    load: () => Promise.resolve({}),
+};
+
 // Minimal `ui.view` stand-in: the bridge's pageTitle() reads the platform's per-page title
 // state from it (see humhub.vue.js).
 const view = {
@@ -166,6 +173,7 @@ const stubs = {
     },
     event,
     modal,
+    oembed,
     logCalls,
 };
 
@@ -193,6 +201,7 @@ globalThis.humhub = {
             'ui.additions': stubs.additions,
             'ui.modal': stubs.modal,
             'ui.view': stubs.view,
+            oembed: stubs.oembed,
             i18n: stubs.i18n,
             client: stubs.client,
             event: stubs.event,

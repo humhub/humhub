@@ -884,14 +884,19 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `LegacyFormWrapper.vue`'s upload lookup queries.
   - `CommentJsonService`'s serialized comment shape (introduced earlier in this same
     Unreleased cycle, never part of a stable release) replaced the `messageOutput` HTML
-    envelope string with raw markdown (`message`) plus an explicitly-typed
-    `messageRenderOptions` object — see `RichText::outputMarkdownAndRenderOptions()` and
-    `docs/develop/ui-js-vuejs-interop.md`, "RichTextOutput". `RichTextOutput.vue` now takes
-    `message`/`render-options` props instead of a single `output` HTML-string prop.
+    envelope string with the processed markdown (`message`, see `RichText::outputMarkdown()`
+    and `docs/develop/ui-js-vuejs-interop.md`, "RichTextOutput"). `RichTextOutput.vue` takes a
+    `message` prop instead of a single `output` HTML-string prop and fetches the message's
+    oembed previews client-side before rendering: `humhub.oembed.js` `load(urls, options)`
+    gained a `consent` option (posted as `consent=1`, which `OembedController::actionIndex()`
+    honors by returning the confirmation prompt for a domain the viewer has not allowed
+    instead of forcing the media as it does for the editor's paste preview) and a `silent`
+    option. `OembedExtension` fetches the previews of a server-rendered richtext in
+    `onAfterOutput()` now, so `ProsemirrorRichText::getMarkdown()` is free of per-user work.
   - **Breaking**: because that path never builds an HTML string to append anything to,
     `AbstractRichText::EVENT_AFTER_RUN` (inherited from `yii\base\Widget::EVENT_AFTER_RUN`) and
     `AbstractRichText::EVENT_AFTER_OUTPUT` never fire for a comment message serialized via
-    `RichText::outputMarkdownAndRenderOptions()`/`CommentJsonService` (they still fire normally
+    `RichText::outputMarkdown()`/`CommentJsonService` (they still fire normally
     for every other `RichText::output()`/`RichText::widget()` call elsewhere in core, and
     `AbstractRichText::EVENT_BEFORE_OUTPUT` still fires on this path too, since
     `getMarkdown()`'s `onBeforeOutput()` extension pipeline still runs — only the two AFTER
@@ -1276,16 +1281,3 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
       whatever a module attached through `SerializeEvent`. A module whose `SerializeEvent`
       data can change independently of the comment should keep that in mind (or attach it
       client-side instead).
-- **Breaking**: `humhub\modules\content\widgets\richtext\extensions\RichTextExtension` gained a
-  new interface method, `getRenderOptions(): array`, needed for
-  `ProsemirrorRichText::getMarkdownAndRenderOptions()` (the client-render counterpart of
-  `RichText::output()` backing the comment payload change above) to let an extension
-  contribute per-record data — e.g. `OembedExtension`'s server-fetched preview HTML — that a
-  client cannot derive from the processed markdown text alone. A custom `RichTextExtension`
-  implementation registered via `AbstractRichText::addExtension()` must add this method
-  (return `[]` if it has nothing to contribute — true for the overwhelming majority of
-  extensions, whose entire contribution already lives in the markdown text their
-  `onBeforeOutput()` returns). Module-search found zero external implementers of this
-  interface as of this writing; extending `RichTextContentExtension`/`RichTextLinkExtension`
-  (the base classes every core extension uses) already provides the new method as a no-op
-  default, so most custom extensions need no change at all.

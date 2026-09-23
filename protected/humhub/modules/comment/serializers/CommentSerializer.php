@@ -80,17 +80,13 @@ class CommentSerializer
             array_merge([$comment], $replyPreview ?? []),
         );
 
-        // Raw markdown plus the options a client needs to reproduce the platform's rich-text
-        // rendering (mentions, oembeds, …) — see RichText::outputMarkdownAndRenderOptions()
-        // and docs/develop/ui-js-vuejs-interop.md.
-        $rendered = RichText::outputMarkdownAndRenderOptions($comment->message, ['record' => $comment]);
         $extensions = $extensionData[$comment->id] ?? [];
 
         return [
             'id' => $comment->id,
-            'message' => $rendered['markdown'],
-            // (object) so an empty option set serializes as `{}` rather than `[]`.
-            'messageRenderOptions' => (object)$rendered['options'],
+            // Processed markdown (mentions resolved), which the client renders - see
+            // RichText::outputMarkdown() and docs/develop/ui-js-vuejs-interop.md.
+            'message' => RichText::outputMarkdown($comment->message, ['record' => $comment]),
             'contentId' => $comment->content_id,
             'parentCommentId' => $comment->parent_comment_id,
             // Platform-wide record id — the addressing the like endpoints accept.

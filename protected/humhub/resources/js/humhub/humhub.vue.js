@@ -689,6 +689,15 @@ humhub.module('vue', function (module, require, $) {
         },
     };
 
+    // The oembed module (humhub.oembed.js) is resolved lazily for the same reason: it is
+    // registered by a later bundle. Only `load()` is exposed - what `RichTextOutput.vue` needs
+    // to fetch the previews of a message before the richtext display widget renders it.
+    var oembed = {
+        load: function (urls, options) {
+            return require('oembed').load(urls, options);
+        },
+    };
+
     // Thin passthrough to the core `event` bus (a jQuery-backed pub/sub, see
     // humhub.core.js) so islands can subscribe to legacy events — e.g. live
     // update notifications — without importing jQuery directly. Components
@@ -826,6 +835,7 @@ humhub.module('vue', function (module, require, $) {
         },
         apiUrl: apiUrl,
         modal: modal,
+        oembed: oembed,
         events: events,
         status: status,
         setStatusHandler: setStatusHandler,
