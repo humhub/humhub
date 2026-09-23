@@ -147,6 +147,12 @@ from the route on its own (`yii\base\Module::createController()` turns
 `humhub\modules\comment\controllers\api\CommentController::actionWindowByContent()`, no
 `controllerMap` entry needed), so the internal route shape stays invisible to clients.
 
+Server-rendered markup that addresses an endpoint (a legacy `data-action-url`, see the
+"Cancel Membership" entry of `space\widgets\HeaderControlsMenu`) builds the URL with
+`ApiRules::url('space/3/membership')`, the PHP counterpart of `apiUrl()` in `humhub.vue.js` —
+never with `Url::to()` and the controller route, which a URL manager without pretty URLs
+renders as `index.php?r=…`, a form the prefix guard below refuses.
+
 The `rest` module keeps firing its own `restApiAddRules` event, because two third-party
 modules (`cuzy-app/cloner`, `cuzy-app/rest-crud`) subscribe to it by its **string name**
 precisely so they survive the module being absent.

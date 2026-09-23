@@ -57,6 +57,22 @@ humhub.module('space', function (module, require, $) {
         });
     };
 
+    /**
+     * `data-action-click="space.leave"`: ends the current user's membership through the same
+     * endpoint the membership button uses - `data-action-url` is `DELETE /api/v2/space/<id>/membership`
+     * (see `space\widgets\HeaderControlsMenu`). The confirmation is the action framework's
+     * (`data-action-confirm`). Afterwards the page is reloaded, since header, menu and the
+     * content the user may still see all depend on the membership.
+     */
+    var leave = function (evt) {
+        client.ajax(evt.url, {type: 'DELETE', method: 'DELETE'}).then(function () {
+            client.reload(true);
+        }).catch(function (err) {
+            module.log.error(err, true);
+            evt.finish();
+        });
+    };
+
     var changeVisibilityOption = function (event) {
         const form = event.$trigger.closest('form');
         const submitButton = form.find(':submit');
@@ -85,6 +101,7 @@ humhub.module('space', function (module, require, $) {
         guid: guid,
         archive: archive,
         unarchive: unarchive,
+        leave: leave,
         isSpacePage: isSpacePage,
         setSpace: setSpace,
         changeVisibilityOption: changeVisibilityOption,

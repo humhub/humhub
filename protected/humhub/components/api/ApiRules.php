@@ -8,6 +8,8 @@
 
 namespace humhub\components\api;
 
+use yii\helpers\Url;
+
 /**
  * Builds URL rules for the platform's HTTP API.
  *
@@ -68,6 +70,25 @@ class ApiRules
     public static function v2(array $rules): array
     {
         return static::prefix($rules, static::PREFIX_V2);
+    }
+
+    /**
+     * The URL of an API endpoint, for markup the server renders (a `data-action-url`, a link):
+     * the PHP counterpart of `apiUrl()` in `humhub.vue.js`, built the same way.
+     *
+     * The path is the endpoint's path below the version prefix, `space/3/membership` -
+     * NOT built through `Url::to()` with the controller route: a URL manager without pretty
+     * URLs would render `index.php?r=space/api/membership/remove`, which never passes
+     * {@see BaseController::beforeAction()}'s prefix guard. The result is relative to the host
+     * the page is served from (`Url::base()`), not the configured base URL, for the reason
+     * `CoreJsConfig` gives.
+     *
+     * @param string $path endpoint path below {@see self::PREFIX_V2}, empty for the prefix itself
+     * @return string
+     */
+    public static function url(string $path = ''): string
+    {
+        return rtrim(Url::base(), '/') . '/' . static::PREFIX_V2 . ltrim($path, '/');
     }
 
     /**

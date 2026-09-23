@@ -1094,10 +1094,15 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
       views, `RequestMembershipForm::$options`, and the `requestMembershipSend()` function
       of the `space` JS module. Zero external references to any of them (module-search).
       Theme overrides of those views no longer apply — override the Vue component instead.
-    - `MembershipController::getActionResult()` (the web `request-membership`,
-      `invite-accept` and `revoke-membership` actions, all kept) always redirects now; an
-      AJAX request used to be answered with the re-rendered button. That answer is what
-      made the presentation options travel through the client, which #8381 had to harden.
+    - **Removed**: the web actions `space/membership/request-membership`,
+      `space/membership/invite-accept` and `space/membership/revoke-membership` (with
+      `MembershipController::getActionResult()`), which the island's endpoint duplicates —
+      an endpoint is the one way to its transitions. Core had no callers left except the
+      "Cancel Membership" entry of `space\widgets\HeaderControlsMenu`, which now calls the
+      endpoint through the new `space.leave` client action (`data-action-click="space.leave"`
+      with the endpoint as `data-action-url`; it reloads the page afterwards). A module that
+      posts to one of these routes calls `POST`/`DELETE /api/v2/space/<id>/membership` instead;
+      module-search found none.
     - The sibling `FollowButton` (still a server-rendered widget) is toggled by the island
       itself, by `data-content-container-id` + `.followButton`/`.unfollowButton` — the
       server no longer sends `data-show-buttons`/`data-hide-buttons`.
@@ -1124,8 +1129,12 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
       set a default with `??=` without overriding the call site. The option array allowed a
       separate class per button, the properties give the three state buttons (pending,
       received request, friends) one look — which is what both core call sites always did.
-    - `RequestController::getActionResult()` (the web `request/add` and `request/delete`
-      actions, both kept) always redirects now.
+    - **Removed**: `friendship\controllers\RequestController` (the web `friendship/request/add`
+      and `friendship/request/delete` actions), which the island's endpoint duplicates. Its only
+      callers were the action links of the "manage friends" pages (`views/manage/*.php`), which
+      render the `FriendshipButton` island per row now. A module that posts to one of these
+      routes calls `POST`/`DELETE /api/v2/user/<id>/friendship` instead; module-search found
+      none.
     - **Removed**: the `relationship` action of the `content.container` JS module
       (`data-action-click="content.container.relationship"`) together with its
       `data-button-options` posting and the `data-show-buttons`/`data-hide-buttons`

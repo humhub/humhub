@@ -30,8 +30,8 @@ HumHub Changelog
 - Enh #8403: Added the native `UploadField` form-suite component and the `/api/v2/file` upload endpoints
 - Enh #8403: The notification dropdown and overview page are Vue islands on the new `/api/v2/notification` endpoints
 - Enh #8403: Core ships the `/api/v2` endpoint documentation in `docs/api/` (OpenAPI sources, and a committed single-page reference, `index.html`, that opens straight from the checkout)
-- Enh #8403: The space membership button is a Vue island on the new `/api/v2/space/<id>/membership` endpoints; its presentation is props instead of options posted back through the client
-- Enh #8403: The friendship button is a Vue island on the new `/api/v2/user/<id>/friendship` endpoints; with it the button re-render and the `content.container.relationship` client action are gone
+- Enh #8403: The space membership button is a Vue island on the new `/api/v2/space/<id>/membership` endpoints; its presentation is props instead of options posted back through the client, and the web actions `request-membership`, `invite-accept` and `revoke-membership` are removed in its favor
+- Enh #8403: The friendship button is a Vue island on the new `/api/v2/user/<id>/friendship` endpoints; with it the button re-render, the `content.container.relationship` client action and the web `friendship/request` actions are gone (the manage pages render the island per row)
 - Enh #8403: Added a `JavaScript Tests` CI workflow (vitest plus a rebuild check that fails on a stale committed Vue artifact) and `grunt build-vue --module=all` to rebuild every artifact at once
 - Enh #8403: The activity box is a Vue island on the new `/api/v2/activity` endpoint, including live updates; the legacy `humhub.activity.js` and its custom scrollbar are gone
 - Enh #8403: The space menu is a Vue island on the new general `/api/v2/space` endpoints; its list is paginated and searched server-side, and the legacy `humhub.space.chooser.js` is gone

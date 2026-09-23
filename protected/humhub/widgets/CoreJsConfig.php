@@ -59,7 +59,7 @@ class CoreJsConfig extends Widget
                     // cross-origin, which the Content Security Policy (`default-src 'self'`)
                     // blocks - and the two differ whenever the site is reached under a second
                     // name, an IP, or through a proxy. @since 1.20
-                    'apiUrl' => rtrim(Url::base(), '/') . '/' . ApiRules::PREFIX_V2,
+                    'apiUrl' => ApiRules::url(),
                     'reloadableScripts' => CacheHelper::getReloadableScriptUrls(),
                     'syncScriptOrigins' => $this->getAssetOrigins(),
                 ],

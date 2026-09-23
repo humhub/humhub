@@ -131,8 +131,8 @@ class MembershipController extends BaseController
 
     /**
      * Removes the caller's membership: leaving the space, withdrawing an application or
-     * declining an invite. Same guards as the web route
-     * (`space\controllers\MembershipController::actionRevokeMembership()`).
+     * declining an invite. The owner cannot leave, and neither can a member of a space that
+     * does not allow leaving ({@see Space::canLeave()}).
      */
     public function actionRemove($id)
     {

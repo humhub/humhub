@@ -10,6 +10,7 @@ namespace humhub\tests\codeception\unit\components\api;
 
 use humhub\components\api\ApiRules;
 use tests\codeception\_support\HumHubDbTestCase;
+use yii\helpers\Url;
 
 /**
  * @see ApiRules
@@ -50,5 +51,19 @@ class ApiRulesTest extends HumHubDbTestCase
     public function testEmptyRuleSetStaysEmpty()
     {
         $this->assertSame([], ApiRules::v2([]));
+    }
+
+    /**
+     * The URL an endpoint has for server-rendered markup: always the path form the URL rules
+     * parse, never `index.php?r=…` - the API controllers refuse anything else.
+     */
+    public function testBuildsEndpointUrlsBelowTheVersionPrefix()
+    {
+        $base = rtrim(Url::base(), '/');
+
+        $this->assertSame($base . '/api/v2/', ApiRules::url());
+        $this->assertSame($base . '/api/v2/space/3/membership', ApiRules::url('space/3/membership'));
+        $this->assertSame($base . '/api/v2/space/3/membership', ApiRules::url('/space/3/membership'));
+        $this->assertStringNotContainsString('?r=', ApiRules::url('space/3/membership'));
     }
 }
