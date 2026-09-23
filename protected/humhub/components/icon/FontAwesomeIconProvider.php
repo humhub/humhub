@@ -6,9 +6,10 @@ use humhub\helpers\Html;
 use humhub\widgets\Icon;
 
 /**
- * Class FontAwesomeIconFactory
- * @package humhub\components\icon
+ * Renders icons as Font Awesome 4 markup, `<i class="fa fa-<name>">`.
  *
+ * @deprecated since 1.20, Font Awesome is no longer shipped; the markup only keeps rendering through
+ * the compatibility layer `css/icon-legacy.css`. Use the default [[TablerIconProvider]]. Will be removed in 1.21.
  * @since 1.4
  */
 class FontAwesomeIconProvider implements IconProvider

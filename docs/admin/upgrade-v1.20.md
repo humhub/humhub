@@ -361,6 +361,19 @@ name the map does not cover is still used as given.
 
 As an environment variable: `HUMHUB_CONFIG__PARAMS__ICON__ALIAS__EDIT=pen`.
 
+### Icons: Tabler Icons replace Font Awesome
+
+The icon font is Tabler Icons now; Font Awesome 4 is no longer shipped. Nothing changes for
+installations that only use the shipped themes and modules — markup and icon names of older modules
+keep rendering through a compatibility layer until 1.22.
+
+Custom SCSS entered under *Administration → Settings → Appearance* and themes that style icons by
+their Font Awesome class have to be adjusted: icons rendered by HumHub carry the class `ti` (and
+`ti-<name>`) instead of `fa` (`fa-<name>`), so a rule such as `.panel-heading .fa { color: … }`
+stops applying and becomes `.panel-heading .ti { color: … }`. Font Awesome glyphs placed by
+`content: '\f0xx'` with `font-family: FontAwesome` need the Tabler codepoint and
+`font-family: tabler-icons`, see https://tabler.io/icons.
+
 ## Modules
 
 Module code that used the `@webroot` alias may need updating — it now resolves to `public/`, and the

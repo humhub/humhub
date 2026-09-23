@@ -103,14 +103,14 @@ humhub.module('ui.showMore', function (module, require, $) {
 
     CollapseContent.prototype.collapse = function () {
         this.$.css({'display': 'block', 'max-height': this.collapseAt + 'px'});
-        this.$collapseButton.html('<i class="fa fa-arrow-down"></i> ' + this.options.readMoreText);
+        this.$collapseButton.html('<i class="ti ti-arrow-down"></i> ' + this.options.readMoreText);
         this.$.data('state', 'collapsed');
         this.$gradient.show();
     };
 
     CollapseContent.prototype.expand = function () {
         this.$.css('max-height', '');
-        this.$collapseButton.html('<i class="fa fa-arrow-up"></i> ' + this.options.readLessText);
+        this.$collapseButton.html('<i class="ti ti-arrow-up"></i> ' + this.options.readLessText);
         this.$.data('state', 'expanded');
         this.$gradient.hide();
     };

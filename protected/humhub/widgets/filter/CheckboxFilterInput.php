@@ -29,9 +29,9 @@ class CheckboxFilterInput extends FilterInput
      */
     public $clickAction = 'toggleFilter';
 
-    public $iconActive = 'fa-check-square-o';
+    public $iconActive = 'ti-square-check';
 
-    public $iconInActive = 'fa-square-o';
+    public $iconInActive = 'ti-square';
 
     public $checked = false;
 

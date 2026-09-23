@@ -9,6 +9,7 @@ use humhub\modules\content\widgets\WallEntryControls;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\user\widgets\Image as UserImage;
+use humhub\widgets\Icon;
 use humhub\widgets\TimeAgo;
 use yii\helpers\Url;
 
@@ -57,7 +58,7 @@ use yii\helpers\Url;
                     <?= Html::containerLink($user); ?>
                     <?php if ($container && $showContentContainer): ?>
                         <span class="viaLink">
-                            <i class="fa fa-caret-right" aria-hidden="true"></i>
+                            <?= Icon::get('caret-right-filled') ?>
                             <?= Html::containerLink($container); ?>
                         </span>
                     <?php endif; ?>

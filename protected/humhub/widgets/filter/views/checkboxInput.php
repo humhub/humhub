@@ -19,5 +19,5 @@ use humhub\helpers\Html;
 ?>
 
 <?= Html::beginTag('a', $options) ?>
-<i class="fa  <?= ($checked) ? $iconActive : $iconInActive ?>"></i> <?= $title ?>
+<i class="ti <?= ($checked) ? $iconActive : $iconInActive ?>" aria-hidden="true"></i> <?= $title ?>
 <?= Html::endTag('a') ?>

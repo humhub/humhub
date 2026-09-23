@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ca55b4e57bc4130947eb0495035d1055",
+    "content-hash": "ca33e96e273991bb555a3faf991309c5",
     "packages": [
         {
             "name": "altcha-org/altcha",
@@ -4457,18 +4457,6 @@
             ]
         },
         {
-            "name": "npm-asset/font-awesome",
-            "version": "4.7.0",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/font-awesome/-/font-awesome-4.7.0.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "(OFL-1.1 AND MIT)"
-            ]
-        },
-        {
             "name": "npm-asset/fontsource--open-sans",
             "version": "5.3.0",
             "dist": {
@@ -4953,6 +4941,20 @@
             "license": [
                 "MIT"
             ]
+        },
+        {
+            "name": "npm-asset/tabler--icons-webfont",
+            "version": "3.46.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/@tabler/icons-webfont/-/icons-webfont-3.46.0.tgz"
+            },
+            "require": {
+                "npm-asset/svg-path-commander": ">=2.1.11,<3.0.0",
+                "npm-asset/svgtofont": ">=6.5.0,<7.0.0",
+                "npm-asset/tabler--icons": "3.46.0"
+            },
+            "type": "npm-asset"
         },
         {
             "name": "npm-asset/timeago",

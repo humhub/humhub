@@ -11,6 +11,7 @@ namespace humhub\modules\user\widgets;
 use humhub\helpers\Html;
 use humhub\modules\admin\models\forms\PeopleSettingsForm;
 use humhub\widgets\DirectoryFilters;
+use humhub\widgets\Icon;
 use humhub\modules\user\components\PeopleQuery;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\ProfileField;
@@ -57,7 +58,7 @@ class PeopleFilters extends DirectoryFilters
             'type' => 'text',
             'inputOptions' => ['autocomplete' => 'search'],
             'wrapperClass' => 'flex-fill form-search-filter-keyword',
-            'afterInput' => Html::submitButton('<span class="fa fa-search" aria-hidden="true"></span>', [
+            'afterInput' => Html::submitButton(Icon::get('search')->asString(), [
                 'class' => 'form-button-search',
                 'aria-label' => Yii::t('UserModule.base', 'Search'),
                 // Pressing Enter in the keyword field already submits the form, so this

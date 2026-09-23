@@ -87,7 +87,7 @@ class CoreJsConfig extends Widget
                     ],
                 ],
                 'topic' => [
-                    'icon' => '<i class="fa ' . Yii::$app->getModule('topic')->icon . '"></i>',
+                    'icon' => Icon::get(Yii::$app->getModule('topic')->icon)->asString(),
                 ],
                 'ui.richtext' => [
                     'emoji.url' => Yii::getAlias(Yii::$app->assetManager->getPublishedUrl('@humhub/resources') . '/img/emoji/'),

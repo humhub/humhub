@@ -4,10 +4,10 @@
 
 @if not $prev-link {
     a.link {
-        &:not(.link-icon-only) i.fa {
+        &:not(.link-icon-only) i.ti {
             margin-right: 0.4rem;
         }
-        &.link-topic i.fa {
+        &.link-topic i.ti {
             margin-right: 0.2rem;
         }
     }
