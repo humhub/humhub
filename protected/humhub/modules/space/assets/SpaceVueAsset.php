@@ -18,8 +18,4 @@ use humhub\components\assets\VueAssetBundle;
  */
 class SpaceVueAsset extends VueAssetBundle
 {
-    /**
-     * @inheritdoc
-     */
-    public string $moduleId = 'space';
 }

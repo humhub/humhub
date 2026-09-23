@@ -161,6 +161,28 @@ class ModuleManagerTest extends HumHubDbTestCase
         $this->moduleManager->getModule($this->moduleId);
     }
 
+    public function testGetModuleIdByClass()
+    {
+        $this->moduleManager->register(static::$testModuleRoot . '/module1');
+        $this->moduleManager->register(static::$testModuleRoot . '/module2');
+
+        // The module class itself, and any class below the module's namespace
+        $this->assertSame('module1', $this->moduleManager->getModuleIdByClass(Module1::class));
+        $this->assertSame('module2', $this->moduleManager->getModuleIdByClass(Module2::class));
+        $this->assertSame('module1', $this->moduleManager->getModuleIdByClass('Some\Name\Space\module1\widgets\Anything'));
+
+        // A prefix of a namespace is not that namespace
+        $this->assertNull($this->moduleManager->getModuleIdByClass('Some\Name\Space\module10\Module'));
+
+        // Classes outside every registered module
+        $this->assertNull($this->moduleManager->getModuleIdByClass(self::class));
+        $this->assertNull($this->moduleManager->getModuleIdByClass(\yii\web\Controller::class));
+
+        // Core modules declare no namespace; theirs is implied by the module class
+        $this->assertSame('space', Yii::$app->moduleManager->getModuleIdByClass(\humhub\modules\space\assets\SpaceVueAsset::class));
+        $this->assertSame('space', Yii::$app->moduleManager->getModuleIdByClass(\humhub\modules\space\modules\manage\Module::class));
+    }
+
     public function testRegisterNonExistingModulePath()
     {
         $basePath = static::$testModuleRoot . '/nonExistingModule';

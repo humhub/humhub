@@ -18,8 +18,4 @@ use humhub\components\assets\VueAssetBundle;
  */
 class ContentVueAsset extends VueAssetBundle
 {
-    /**
-     * @inheritdoc
-     */
-    public string $moduleId = 'content';
 }

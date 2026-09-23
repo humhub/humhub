@@ -25,11 +25,10 @@ use yii\base\InvalidConfigException;
 
 class VueAssetBundleTest extends HumHubDbTestCase
 {
-    public function testDerivesSourcePathAndArtifactFromTheModuleId()
+    public function testDerivesSourcePathAndArtifactFromTheModuleTheClassBelongsTo()
     {
-        $bundle = new class extends VueAssetBundle {
-            public string $moduleId = 'comment';
-        };
+        // Nothing is declared: the class lives in humhub\modules\comment\assets, that is enough.
+        $bundle = new CommentVueAsset();
 
         $this->assertSame(Yii::getAlias('@comment/resources'), $bundle->sourcePath);
         $this->assertSame(['js/humhub.comment.vue.js'], $bundle->js);
@@ -37,8 +36,8 @@ class VueAssetBundleTest extends HumHubDbTestCase
 
     public function testAlwaysDependsOnTheCoreVueBundleFirst()
     {
-        $bundle = new class extends VueAssetBundle {
-            public string $moduleId = 'comment';
+        // PHP names an anonymous class after its parent, so it still belongs to the comment module.
+        $bundle = new class extends CommentVueAsset {
             public $depends = [LikeVueAsset::class];
         };
 
@@ -47,43 +46,47 @@ class VueAssetBundleTest extends HumHubDbTestCase
 
     public function testDoesNotDuplicateAnExplicitCoreDependency()
     {
-        $bundle = new class extends VueAssetBundle {
-            public string $moduleId = 'comment';
+        $bundle = new class extends CommentVueAsset {
             public $depends = [LikeVueAsset::class, CoreVueAsset::class];
         };
 
         $this->assertSame([LikeVueAsset::class, CoreVueAsset::class], $bundle->depends);
     }
 
-    public function testRequiresAModuleId()
+    public function testRefusesABundleOutsideEveryModuleNamespace()
     {
         $this->expectException(InvalidConfigException::class);
+        $this->expectExceptionMessage('belongs to no registered module');
 
+        // Named `humhub\components\assets\VueAssetBundle@anonymous…` - core, not a module.
         new class extends VueAssetBundle {
         };
     }
 
     /**
-     * Every core module shipping Vue components is built on the base class, and its committed
-     * artifact (plus sourcemap) exists — see `grunt build-vue --module=all`.
+     * Every core module shipping Vue components is built on the base class, is attributed to its
+     * module without declaring it, and its committed artifact (plus sourcemap) exists — see
+     * `grunt build-vue --module=all`.
      */
     public function testEveryCoreModuleBundleShipsItsArtifact()
     {
         $bundles = [
-            ActivityVueAsset::class,
-            CommentVueAsset::class,
-            ContentVueAsset::class,
-            FileVueAsset::class,
-            FriendshipVueAsset::class,
-            LikeVueAsset::class,
-            NotificationVueAsset::class,
-            SpaceVueAsset::class,
-            UserVueAsset::class,
+            'activity' => ActivityVueAsset::class,
+            'comment' => CommentVueAsset::class,
+            'content' => ContentVueAsset::class,
+            'file' => FileVueAsset::class,
+            'friendship' => FriendshipVueAsset::class,
+            'like' => LikeVueAsset::class,
+            'notification' => NotificationVueAsset::class,
+            'space' => SpaceVueAsset::class,
+            'user' => UserVueAsset::class,
         ];
 
-        foreach ($bundles as $class) {
+        foreach ($bundles as $moduleId => $class) {
             $bundle = new $class();
             $this->assertInstanceOf(VueAssetBundle::class, $bundle, $class);
+            $this->assertSame(Yii::getAlias('@' . $moduleId . '/resources'), $bundle->sourcePath, $class);
+            $this->assertSame(['js/humhub.' . $moduleId . '.vue.js'], $bundle->js, $class);
             $this->assertContains(CoreVueAsset::class, $bundle->depends, $class);
 
             $artifact = $bundle->sourcePath . '/' . $bundle->js[0];

@@ -21,11 +21,6 @@ class LikeVueAsset extends VueAssetBundle
 {
     /**
      * @inheritdoc
-     */
-    public string $moduleId = 'like';
-
-    /**
-     * @inheritdoc
      *
      * The user-list modal of `LikeButton.vue` nests `<UserList>` by tag.
      */

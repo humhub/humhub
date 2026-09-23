@@ -9,6 +9,7 @@
 namespace humhub\components\assets;
 
 use humhub\assets\CoreVueAsset;
+use Yii;
 use yii\base\InvalidConfigException;
 
 /**
@@ -16,7 +17,11 @@ use yii\base\InvalidConfigException;
  * artifact `resources/js/humhub.<module>.vue.js` that `grunt build-vue --module=<module>`
  * writes (see docs/develop/ui-js-vuejs.md).
  *
- * A subclass names its module ([[$moduleId]]); source path and artifact file follow from it.
+ * The module a bundle belongs to follows from its class: the [[\humhub\components\ModuleManager]]
+ * knows every registered module's namespace ({@see \humhub\components\ModuleManager::getModuleIdByClass()}),
+ * so a subclass declares nothing - source path (`@<module>/resources`) and artifact file
+ * (`js/humhub.<module>.vue.js`) are derived. A bundle class therefore has to live inside its
+ * module's namespace, which is where every module keeps its asset bundles anyway.
  * The bundle always depends on [[CoreVueAsset]], and the dependency is load-bearing rather
  * than cosmetic: the artifact registers its components against the runtime that bundle
  * provides, and Yii emits bundles in registration order — a widget in a view registers its
@@ -34,24 +39,22 @@ use yii\base\InvalidConfigException;
 abstract class VueAssetBundle extends AssetBundle
 {
     /**
-     * @var string id of the module owning the artifact, e.g. `comment`: resolves the source
-     * path `@<moduleId>/resources` and the artifact `js/humhub.<moduleId>.vue.js`
-     */
-    public string $moduleId = '';
-
-    /**
      * @inheritdoc
      */
     public function init()
     {
-        if ($this->moduleId === '') {
-            throw new InvalidConfigException(static::class . ' must set $moduleId.');
+        $moduleId = Yii::$app->moduleManager->getModuleIdByClass(static::class);
+
+        if ($moduleId === null) {
+            throw new InvalidConfigException(
+                static::class . ' belongs to no registered module: a Vue asset bundle has to live in its module\'s namespace.',
+            );
         }
 
-        $this->sourcePath ??= '@' . $this->moduleId . '/resources';
+        $this->sourcePath ??= '@' . $moduleId . '/resources';
 
         if ($this->js === []) {
-            $this->js = ['js/humhub.' . $this->moduleId . '.vue.js'];
+            $this->js = ['js/humhub.' . $moduleId . '.vue.js'];
         }
 
         if (!in_array(CoreVueAsset::class, $this->depends, true)) {

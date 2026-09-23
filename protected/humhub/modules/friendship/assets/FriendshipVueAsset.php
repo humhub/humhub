@@ -18,8 +18,4 @@ use humhub\components\assets\VueAssetBundle;
  */
 class FriendshipVueAsset extends VueAssetBundle
 {
-    /**
-     * @inheritdoc
-     */
-    public string $moduleId = 'friendship';
 }

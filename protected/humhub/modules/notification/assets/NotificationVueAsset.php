@@ -22,11 +22,6 @@ class NotificationVueAsset extends VueAssetBundle
 {
     /**
      * @inheritdoc
-     */
-    public string $moduleId = 'notification';
-
-    /**
-     * @inheritdoc
      *
      * The components an entry nests by tag: `<UserImage>` for the originator, `<SpaceImage>` for the space badge.
      */

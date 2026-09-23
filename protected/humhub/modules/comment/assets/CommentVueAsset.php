@@ -23,11 +23,6 @@ class CommentVueAsset extends VueAssetBundle
 {
     /**
      * @inheritdoc
-     */
-    public string $moduleId = 'comment';
-
-    /**
-     * @inheritdoc
      *
      * The components `CommentEntry.vue` nests by tag: `<LikeButton>`, `<UserImage>` and `<AttachedFiles>`.
      */

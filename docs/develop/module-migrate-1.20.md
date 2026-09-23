@@ -754,9 +754,11 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     of `yii\helpers\Url::to()` for default-routed endpoints, usable from any `humhub.module()` via
     `require('url').to(route, params)`. Purely additive; `@humhub/vue`'s `url()` now delegates to it.
   - Added `humhub\components\assets\VueAssetBundle`, the base class of a module's `*VueAsset`
-    bundle: it derives source path and artifact from `$moduleId` and always depends on
-    `humhub\assets\CoreVueAsset`, so a module lists only the `*VueAsset` bundles of the modules
-    whose components it nests. Added `humhub\widgets\VueWidget`, the base class of a PHP widget
+    bundle: it derives source path and artifact from the module the class belongs to and always
+    depends on `humhub\assets\CoreVueAsset`, so a module lists only the `*VueAsset` bundles of
+    the modules whose components it nests. The module is found through the new
+    `ModuleManager::getModuleIdByClass()`, which answers the id of the registered module whose
+    namespace a class lives in — usable wherever a class has to be attributed to its module. Added `humhub\widgets\VueWidget`, the base class of a PHP widget
     rendering an island (`getProps()`/`getOptions()`/`getPlaceholder()` over `VueComponent`).
     Both purely additive; see `docs/develop/ui-js-vuejs-components.md`.
   - **Removed**: the `humhub\widgets\views\statusBar.php` view — `humhub\widgets\StatusBar` renders

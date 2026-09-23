@@ -7,7 +7,7 @@
 ```
 protected/humhub/modules/like/
 ├── assets/
-│   └── LikeVueAsset.php              # VueAssetBundle, moduleId 'like' → js/humhub.like.vue.js
+│   └── LikeVueAsset.php              # VueAssetBundle; its namespace names the module → js/humhub.like.vue.js
 ├── vue/                              # sources — plain source code like views/, never published
 │   └── LikeButton.vue                # auto-registered under its filename
 └── resources/
@@ -79,7 +79,7 @@ Core's own component set above is one instance of a more general pattern: **any*
 
 - **Vue runtime:** Vue 3, runtime-only build, added like all frontend libraries via Composer/asset-packagist (`npm-asset/vue`). A `VueAsset` bundle serves `vue.runtime.global.js` in debug mode (warnings, Vue Devtools support) and `vue.runtime.global.prod.js` otherwise. It becomes part of the core bundle, so every module asset bundle (which implicitly depends on `CoreBundleAsset`) is guaranteed to load after it.
 - **`humhub.vue` core module:** a new `protected/humhub/resources/js/humhub/humhub.vue.js`, part of the core JS list like `humhub.i18n.js`. Exposes the registry, the mounter and the composables under `humhub.modules.vue`.
-- **Module components:** each module ships one committed artifact (`resources/js/humhub.<module>.vue.js`) through a `humhub\components\assets\VueAssetBundle` subclass that names its module (`$moduleId`) and lists the `*VueAsset` bundles of the modules whose components it nests by tag. The dependency on `CoreVueAsset` — and through it on `CoreApiAsset` and the runtime — is implied, and it is load-bearing: Yii emits bundles in registration order, and a widget in a view registers its bundle before the layout registers the core bundle, so without the edge the module script would run first. Yii's per-page asset registration is the lazy-loading mechanism — a module's Vue code only loads on pages that render one of its components. Nothing loads globally except the runtime, `humhub.vue` and the core component set.
+- **Module components:** each module ships one committed artifact (`resources/js/humhub.<module>.vue.js`) through a `humhub\components\assets\VueAssetBundle` subclass that declares nothing but lists the `*VueAsset` bundles of the modules whose components it nests by tag. The dependency on `CoreVueAsset` — and through it on `CoreApiAsset` and the runtime — is implied, and it is load-bearing: Yii emits bundles in registration order, and a widget in a view registers its bundle before the layout registers the core bundle, so without the edge the module script would run first. Yii's per-page asset registration is the lazy-loading mechanism — a module's Vue code only loads on pages that render one of its components. Nothing loads globally except the runtime, `humhub.vue` and the core component set.
 - **Later stage (optional):** on-demand loading via dynamic `import()` at first mount for heavy components. The registry API already anticipates this (a component may be registered as an async loader), but the first iteration relies on asset bundles only.
 
 ## Component registry

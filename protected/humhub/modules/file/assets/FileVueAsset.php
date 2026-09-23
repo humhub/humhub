@@ -18,8 +18,4 @@ use humhub\components\assets\VueAssetBundle;
  */
 class FileVueAsset extends VueAssetBundle
 {
-    /**
-     * @inheritdoc
-     */
-    public string $moduleId = 'file';
 }

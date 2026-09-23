@@ -22,11 +22,6 @@ class ActivityVueAsset extends VueAssetBundle
 {
     /**
      * @inheritdoc
-     */
-    public string $moduleId = 'activity';
-
-    /**
-     * @inheritdoc
      *
      * The components an entry nests by tag: `<UserImage>` for the author, `<SpaceImage>` for the space badge.
      */

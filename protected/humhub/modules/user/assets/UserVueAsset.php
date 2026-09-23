@@ -18,8 +18,4 @@ use humhub\components\assets\VueAssetBundle;
  */
 class UserVueAsset extends VueAssetBundle
 {
-    /**
-     * @inheritdoc
-     */
-    public string $moduleId = 'user';
 }
