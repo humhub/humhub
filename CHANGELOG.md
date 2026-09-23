@@ -1,6 +1,11 @@
 HumHub Changelog
 ================
 
+1.18.7 (Unreleased)
+-------------------
+
+- Fix #8507: Prevent errors caused by outdated time zone identifiers (e.g. `Europe/Kiev`) which are unknown to systems without legacy tz data
+
 1.18.6 (September 22, 2026)
 ---------------------------
 

@@ -8,8 +8,11 @@
 
 namespace humhub\components\i18n;
 
+use DateTimeZone;
+use Exception;
 use humhub\components\InstallationState;
 use humhub\libs\I18NHelper;
+use humhub\libs\TimezoneHelper;
 use Yii;
 use yii\base\InvalidArgumentException;
 use humhub\models\forms\ChooseLanguage;
@@ -75,7 +78,18 @@ class I18N extends BaseI18N
             $this->setDefaultLocale();
         }
 
-        Yii::$app->formatter->timeZone = $user->time_zone;
+        $timeZone = $user->time_zone;
+        try {
+            new DateTimeZone($timeZone);
+        } catch (Exception) {
+            // e.g. `Europe/Kiev` on systems without legacy tz data: replace, store and log it once
+            $defaultTimeZone = Yii::$app->settings->get('defaultTimeZone');
+            $fallback = TimezoneHelper::isValid($defaultTimeZone) ? $defaultTimeZone : Yii::$app->timeZone;
+            $timeZone = TimezoneHelper::replaceUnknown($timeZone, $fallback);
+            $user->updateAttributes(['time_zone' => $timeZone]);
+        }
+
+        Yii::$app->formatter->timeZone = $timeZone;
         Yii::$app->formatter->defaultTimeZone = Yii::$app->timeZone;
     }
 

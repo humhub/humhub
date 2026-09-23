@@ -12,6 +12,7 @@ use humhub\helpers\EnvHelper;
 use humhub\interfaces\MailerInterface;
 use humhub\libs\SelfTest;
 use humhub\libs\TimezoneHelper;
+use yii\base\ErrorException;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\i18n\Formatter;
@@ -66,7 +67,14 @@ trait ApplicationTrait
     {
         if ($this->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
             if ($this->settings instanceof SettingsManager) {
-                $this->timeZone = $this->settings->get('serverTimeZone', $this->timeZone);
+                $serverTimeZone = $this->settings->get('serverTimeZone', $this->timeZone);
+                try {
+                    $this->timeZone = $serverTimeZone;
+                } catch (ErrorException) {
+                    // e.g. `Europe/Kiev` on systems without legacy tz data: replace, store and log it once
+                    $this->timeZone = TimezoneHelper::replaceUnknown($serverTimeZone, $this->timeZone);
+                    $this->settings->set('serverTimeZone', $this->timeZone);
+                }
                 if ($this->formatter instanceof Formatter) {
                     $this->formatter->defaultTimeZone = $this->timeZone;
                 }
