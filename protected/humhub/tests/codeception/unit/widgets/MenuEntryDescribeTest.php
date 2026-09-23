@@ -47,7 +47,7 @@ class MenuEntryDescribeTest extends HumHubDbTestCase
 
     public function testDescribeIconStripsTheFaPrefix()
     {
-        $this->assertSame('pencil', MenuLink::describeIcon('fa-pencil'));
+        $this->assertSame('pencil', MenuLink::describeIcon('ti-pencil'));
         $this->assertSame('pencil', MenuLink::describeIcon('pencil'));
         $this->assertNull(MenuLink::describeIcon(''));
         $this->assertNull(MenuLink::describeIcon(null));
@@ -72,7 +72,7 @@ class MenuEntryDescribeTest extends HumHubDbTestCase
             'widgetClass' => WallEntryControlLink::class,
             'widgetOptions' => [
                 'label' => 'Delete',
-                'icon' => 'fa-trash',
+                'icon' => 'ti-trash',
                 'action' => 'content.delete',
             ],
             'sortOrder' => 300,

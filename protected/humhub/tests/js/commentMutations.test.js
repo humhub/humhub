@@ -432,7 +432,7 @@ describe('Comment mutations + live updates', () => {
         // The legacy button was icon-only (Button::accent()->icon('send'), no visible
         // label) - see Comments.php's `submitIconHtml` prop and CommentForm.vue's own
         // "Submit button" docblock section for the exact evidence trail.
-        const ICON_HTML = '<i class="fa fa-send" aria-hidden="true"></i>';
+        const ICON_HTML = '<i class="ti ti-send" aria-hidden="true"></i>';
 
         it('renders the server-provided icon html, aria-label and btn-icon-only when submitIconHtml is given', () => {
             const wrapper = mount(CommentSection, {
@@ -450,7 +450,7 @@ describe('Comment mutations + live updates', () => {
             expect(button.exists()).toBe(true);
             expect(button.classes()).toContain('btn-icon-only');
             expect(button.attributes('aria-label')).toBe('Submit');
-            expect(button.find('.fa-send').exists()).toBe(true);
+            expect(button.find('.ti-send').exists()).toBe(true);
             expect(button.text()).toBe(''); // icon-only - no visible text label
         });
 
@@ -483,7 +483,7 @@ describe('Comment mutations + live updates', () => {
             await replyLink.trigger('click');
             await wrapper.vm.$nextTick();
 
-            expect(wrapper.find('.nested-comments-root .btn-comment-submit .fa-send').exists()).toBe(true);
+            expect(wrapper.find('.nested-comments-root .btn-comment-submit .ti-send').exists()).toBe(true);
         });
     });
 

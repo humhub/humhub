@@ -33,9 +33,9 @@ const menuProps = (overrides = {}) => ({
     initial: windowPayload(),
     overviewUrl: '/notification/overview',
     settingsUrl: '/notification/user',
-    bellIconHtml: '<i class="fa fa-bell"></i>',
-    checkIconHtml: '<i class="fa fa-check"></i>',
-    cogIconHtml: '<i class="fa fa-cog"></i>',
+    bellIconHtml: '<i class="ti ti-bell"></i>',
+    checkIconHtml: '<i class="ti ti-check"></i>',
+    cogIconHtml: '<i class="ti ti-settings"></i>',
     ...overrides,
 });
 
@@ -71,7 +71,7 @@ describe('NotificationMenu', () => {
         wrapper = mount(NotificationMenu, { ...mountOptions(), props: menuProps() });
 
         expect(wrapper.find('#icon-notifications').exists()).toBe(true);
-        expect(wrapper.find('#icon-notifications i.fa.fa-bell').exists()).toBe(true);
+        expect(wrapper.find('#icon-notifications i.ti.ti-bell').exists()).toBe(true);
         expect(wrapper.find('#badge-notifications').text()).toBe('2');
         expect(wrapper.find('#dropdown-notifications.dropdown-menu').exists()).toBe(true);
         expect(wrapper.find('.dropdown-footer a').attributes('href')).toBe('/notification/overview');
@@ -201,7 +201,7 @@ const overviewProps = (overrides = {}) => ({
         { id: 'followed', title: 'Following' },
         { id: 'comment', title: 'Comments' },
     ],
-    icons: { check: '<i class="fa fa-check"></i>', cog: '<i class="fa fa-cog"></i>' },
+    icons: { check: '<i class="ti ti-check"></i>', cog: '<i class="ti ti-settings"></i>' },
     settingsUrl: '/notification/user',
     ...overrides,
 });

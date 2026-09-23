@@ -242,7 +242,7 @@ describe('SpaceChooserToggle', () => {
         wrapper = mount(SpaceChooserToggle, {
             props: {
                 initialImageHtml: '<img class="current-space-image" src="/s3.jpg">',
-                noSpaceIconHtml: '<i class="fa fa-dot-circle-o"></i>',
+                noSpaceIconHtml: '<i class="ti ti-circle-dot"></i>',
             },
         });
 

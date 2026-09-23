@@ -213,13 +213,13 @@ describe('MembershipButton', () => {
             const wrapper = mountButton({
                 initial: state({ state: 'member', canJoin: false, canLeave: false, isOwner: true }),
                 showMemberState: true,
-                userIconHtml: '<i class="fa fa-user"></i>',
+                userIconHtml: '<i class="ti ti-user"></i>',
             });
 
             const link = wrapper.find('a');
             expect(link.attributes('href')).toBe('/s/product-team');
             expect(link.text()).toBe('Owner');
-            expect(link.find('i.fa-user').exists()).toBe(true);
+            expect(link.find('i.ti-user').exists()).toBe(true);
         });
     });
 

@@ -267,7 +267,7 @@ humhub.module('vue', function (module, require, $) {
      *  - `label` (string, or `(context) => string`) — required unless `component` is given.
      *  - `icon` (string, optional) — an icon name in the same namespace
      *    `humhub\widgets\Icon::get()` uses (e.g. `'pencil'`), rendered as
-     *    `<i class="fa fa-<icon>">` — the plain Font Awesome class the rest of the app's
+     *    `<i class="ti ti-<icon>">` — the plain Tabler class the rest of the app's
      *    hand-authored (non-`Button`-widget) markup already uses for icons (see
      *    `CommentEntry.vue`'s edited-marker icon).
      *  - `sortOrder` (number, default `1000`) — ascending, like PHP menu entries.

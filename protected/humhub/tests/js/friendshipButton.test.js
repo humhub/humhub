@@ -44,11 +44,11 @@ describe('FriendshipButton', () => {
     });
 
     it('renders the add button from the inlined state without fetching', () => {
-        const wrapper = mountButton({ initial: state(), plusIconHtml: '<i class="fa fa-plus"></i>' });
+        const wrapper = mountButton({ initial: state(), plusIconHtml: '<i class="ti ti-plus"></i>' });
 
         const button = wrapper.find('a');
         expect(button.text()).toBe('Friends');
-        expect(button.find('i.fa-plus').exists()).toBe(true);
+        expect(button.find('i.ti-plus').exists()).toBe(true);
         expect(button.classes()).toContain('btn-accent');
         expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalled();
     });
@@ -123,13 +123,13 @@ describe('FriendshipButton', () => {
         const received = () => state({ state: 'requestReceived' });
 
         it('renders the accept button with a deny entry', () => {
-            const wrapper = mountButton({ initial: received(), timesIconHtml: '<i class="fa fa-times"></i>' });
+            const wrapper = mountButton({ initial: received(), timesIconHtml: '<i class="ti ti-x"></i>' });
 
             expect(wrapper.find('.btn-group').exists()).toBe(true);
             expect(wrapper.find('.dropdown-toggle').exists()).toBe(true);
             expect(wrapper.find('.btn-group > a').text()).toBe('Accept Friend Request');
             expect(wrapper.find('.dropdown-menu a').text()).toBe('Deny friend request');
-            expect(wrapper.find('.dropdown-menu i.fa-times').exists()).toBe(true);
+            expect(wrapper.find('.dropdown-menu i.ti-x').exists()).toBe(true);
         });
 
         it('accepts through the same POST that sends a request', async () => {
@@ -159,10 +159,10 @@ describe('FriendshipButton', () => {
     it('ends a friendship after confirming', async () => {
         const wrapper = mountButton({
             initial: state({ state: 'friends', isFollowing: true }),
-            checkIconHtml: '<i class="fa fa-check"></i>',
+            checkIconHtml: '<i class="ti ti-check"></i>',
         });
 
-        expect(wrapper.find('i.fa-check').exists()).toBe(true);
+        expect(wrapper.find('i.ti-check').exists()).toBe(true);
         await wrapper.find('a').trigger('click');
         await flushPromises();
 
