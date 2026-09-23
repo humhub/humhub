@@ -84,8 +84,11 @@ class TopicSidebar extends Widget
             if ($this->isGlobal()) {
                 $query->addSelect(['usages_count' => new Expression('COUNT(content_tag_relation.id)')]);
             } else {
+                // Use an inner join here (instead of left join) so that topics without any
+                // content in this specific container (e.g. global topics only used elsewhere)
+                // are excluded instead of showing up with a usage count of zero.
                 $query->addSelect(['usages_count' => new Expression('COUNT(content.id)')])
-                    ->leftJoin('content', [
+                    ->innerJoin('content', [
                         'and',
                         'content.id = content_tag_relation.content_id',
                         ['content.contentcontainer_id' => $this->contentContainer->contentcontainer_id],

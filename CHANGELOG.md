@@ -1,8 +1,11 @@
 HumHub Changelog
 ================
 
-1.19.0-beta.3 (Unreleased)
--------------------------------
+1.19.0-beta.3 (September 22, 2026)
+----------------------------------
+
+> This release also fixes [security](https://github.com/humhub/humhub/security/advisories) issues.
+
 - Fix #8414: A grouped activity named the same user twice when they had several activities in the group, and named nobody at all when the group's only other participant was the reader
 - Fix #8417: Top menu keeps the previous entry highlighted after a pjax navigation (since 1.19.0-beta.1)
 - Fix #8412: Applying a UI addition by its id did nothing when it was registered without a selector, and `additions.extend()` with `applyOnInit` threw instead of applying
@@ -14,6 +17,7 @@ HumHub Changelog
 - Fix #8415: A user picker or space picker request without a `keyword` parameter crashes with a `TypeError`
 - Enh #8416: Auto-focus the newly loaded content after a pjax swap, so Tab no longer restarts at the top of the page
 - Enh #8419: Add a space between at the top of the card icons (in the card header)
+- Fix #8418: Replace the leftover Bootstrap 3 class `pull-right` with `float-end` in the admin basic settings and the space directory heading buttons
 - Enh #8421: Customize Bootstrap through its Sass variables in `variables.scss` instead of redeclaring the generated `--bs-*` CSS variables in the component SCSS files (buttons, badges, dropdowns, list groups, navs, popovers, progress bars, tables and tooltips)
 - Fix #8422: Replace removed `.sr-only` class with `.visually-hidden`
 - Fix #8434: `Badge::action()` and `Badge::withLink()` rendered the badge markup escaped inside the link, since the wrapping link encoded the label it is given in `Badge::run()` — which is the already rendered badge, not text
@@ -31,6 +35,7 @@ HumHub Changelog
 - Fix #8495: The "Use SMTPS" and "Allow self-signed certificates" checkboxes of the mailing settings and of the installer's mail step ignored `isFixed()`, so on an instance that fixes `mailerUseSmtps` or `mailerAllowSelfSignedCerts` they stayed editable while every field around them was read-only, and a change silently did nothing because `SettingsManager::set()` discards writes to a fixed setting
 - Fix #8495: `ConfigTest::testFixedSettings()` asserted the nested `HUMHUB_FIXED_SETTINGS__BASE__MAILER__*` form, which still parses but yields `fixed-settings['base']['mailer'][…]` — not a setting name since the mailer settings were flattened in `m250226_125226_rename_mailer_vars`, so the test documented a form that configures nothing; it now asserts the working flat form, and the nested behaviour keeps its own test
 - Fix #8496: Retire the `themes/HumHub` directory the 1.19 move of the core theme (#8102) leaves behind in the webroot, and repair the theme setting when it still points at it
+- Fix #8505: Topic sidebar widget showed topics unused in the Space, and its position is now configurable
 
 1.19.0-beta.2 (August 19, 2026)
 -------------------------------
@@ -156,6 +161,7 @@ HumHub Changelog
 - Fix #8426: Add a visible keyboard focus indicator for the stream filter toggle and its checkbox/radio filter options
 - Fix #8430: Make the password show/hide icon focusable and operable via keyboard
 - Fix #8439: Fix editing file-only Posts and clear `fileList[]` after posting so it isn't reused on the next post
+- Fix #8146: Unstable pagination in user and space member lists when several users share the same or an empty last name — the default user order now breaks ties on the user id
 - Fix #8442: DatePicker date-format mismatches (month names, digits, whitespace) between jQuery UI and PHP intl/ICU across 35+ locales
 - Fix #8445: Restrict direct space joins to free-join spaces, so "Invite and request" spaces require admin approval instead of instant membership
 - Fix #8446: Restrict Topic management (create/rename/delete) on user profiles to the profile owner or users with full content management permissions

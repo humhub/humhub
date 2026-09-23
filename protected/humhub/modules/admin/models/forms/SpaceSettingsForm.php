@@ -83,6 +83,11 @@ class SpaceSettingsForm extends Model
     public $defaultShowTopicSidebar = false;
 
     /**
+     * @var int
+     */
+    public $defaultTopicSidebarSortOrder = 25;
+
+    /**
      * @var bool
      */
     public $allowSpaceTopics = true;
@@ -98,7 +103,7 @@ class SpaceSettingsForm extends Model
     public function rules()
     {
         return [
-            [['defaultVisibility', 'defaultJoinPolicy', 'defaultContentVisibility'], 'integer'],
+            [['defaultVisibility', 'defaultJoinPolicy', 'defaultContentVisibility', 'defaultTopicSidebarSortOrder'], 'integer'],
             ['defaultSpaceGuid', 'checkSpaceGuid'],
             [['defaultIndexRoute', 'defaultIndexGuestRoute', 'defaultStreamSort'], 'string'],
             ['defaultStreamSort', 'in', 'range' => array_keys(self::defaultStreamSortOptions())],
@@ -124,6 +129,7 @@ class SpaceSettingsForm extends Model
             'defaultHideAbout' => Yii::t('AdminModule.space', 'Default "Hide About Page"'),
             'defaultHideFollowers' => Yii::t('AdminModule.space', 'Default "Hide Followers"'),
             'defaultShowTopicSidebar' => Yii::t('AdminModule.space', 'Default "Show topic widget in Stream sidebar"'),
+            'defaultTopicSidebarSortOrder' => Yii::t('AdminModule.space', 'Default "Topic widget sort order"'),
             'allowSpaceTopics' => Yii::t('AdminModule.space', 'Allow individual topics in Spaces'),
         ];
     }
@@ -167,6 +173,7 @@ class SpaceSettingsForm extends Model
         $this->defaultHideAbout = $this->settingsManager->get('defaultHideAbout', $module->hideAboutPage);
         $this->defaultHideFollowers = $this->settingsManager->get('defaultHideFollowers', $module->hideFollowers);
         $this->defaultShowTopicSidebar = $this->settingsManager->get('defaultShowTopicSidebar', $module->showTopicSidebar);
+        $this->defaultTopicSidebarSortOrder = (int)$this->settingsManager->get('defaultTopicSidebarSortOrder', $module->topicSidebarSortOrder);
         $this->allowSpaceTopics = $this->settingsManager->get('allowSpaceTopics', true);
     }
 
@@ -190,6 +197,7 @@ class SpaceSettingsForm extends Model
         $this->settingsManager->set('defaultHideAbout', $this->defaultHideAbout);
         $this->settingsManager->set('defaultHideFollowers', $this->defaultHideFollowers);
         $this->settingsManager->set('defaultShowTopicSidebar', $this->defaultShowTopicSidebar);
+        $this->settingsManager->set('defaultTopicSidebarSortOrder', (int)$this->defaultTopicSidebarSortOrder);
         $this->settingsManager->set('allowSpaceTopics', $this->allowSpaceTopics);
         $this->updateDefaultSpaces();
 
