@@ -59,6 +59,27 @@ info:
     - Payloads are **caller-neutral** wherever possible — identical for every reader who may
       see the record, and therefore cacheable. What depends on the caller (permissions, like
       state, membership) has endpoints of its own.
+
+    ## Rich text
+
+    A rich text field such as a comment's `message` is **HumHub richtext markdown**: CommonMark
+    with tables and strikethrough, plus a few additions the platform resolves itself (see
+    `docs/develop/concept-richtext.md`):
+
+    - `[Jane Doe](mention:<guid> "<url>")` mentions a user or space. The text is the display
+      name and the title the profile URL, both current at serialization time.
+    - `[report.pdf](file-guid:<guid> "<url>")`, or `![alt](file-guid:<guid> "<url>")` for an
+      image, refers to an attached file. The record's `files` array carries the same file
+      under that `guid`, with its URLs and thumbnails.
+    - `[<url>](oembed:<url>)` marks a link that renders as an embedded preview. The URL itself
+      is the fallback link. Whether a reader sees the preview depends on their oembed consent,
+      so the payload never contains it; a client fetches previews itself.
+    - `:smile:` style shortcodes stand for emoji.
+
+    Everything else is standard markdown. A client that displays the field needs a link hook
+    for these three URL schemes; a client that edits it sends the same format back. It is the
+    canonical, lossless representation — a converted form (plain markdown, HTML) would lose the
+    guid bindings and is not accepted on write.
   x-logo:
     url: humhub-logo.png
     altText: HumHub

@@ -40,6 +40,7 @@ The systems modules plug into. Read the ones relevant to what your module does.
 - [Notifications](concept-notifications.md)
 - [Activities](concept-activities.md)
 - [Files](concept-files.md) — uploads, attachments
+- [Rich text](concept-richtext.md) — the markdown format, editor, post-processing, output and conversion pipelines, PHP extensions and JavaScript plugins
 - [Live updates](concept-live.md)
 - [Search](concept-search.md)
 - [Internationalization](concept-i18n.md)
