@@ -35,5 +35,6 @@ return [
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'Содержит список сообществ с возможностью их просмотра, редактирования и удаления.',
     'Update Space memberships also for existing members.' => 'Обновление членств в сообществах также для существующих членов сообществ.',
     'Default "Show topic widget in Stream sidebar"' => '',
+    'Default "Topic widget sort order"' => '',
     'Default Content Sort Order' => '',
 ];

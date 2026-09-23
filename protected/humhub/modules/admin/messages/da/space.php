@@ -35,5 +35,6 @@ return [
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'Denne oversigt indeholder en liste over hvert rum med handlinger til at se, redigere og slette rum.',
     'Update Space memberships also for existing members.' => 'Opdatering af Rum-medlemskaber, også for eksisterende medlemmer.',
     'Default "Show topic widget in Stream sidebar"' => '',
+    'Default "Topic widget sort order"' => '',
     'Default Content Sort Order' => '',
 ];

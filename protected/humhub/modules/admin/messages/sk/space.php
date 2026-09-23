@@ -35,5 +35,6 @@ return [
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'Tento prehľad obsahuje zoznam každého priestoru s akciami na zobrazenie, úpravu a odstránenie priestorov.',
     'Update Space memberships also for existing members.' => 'Aktualizujte členstvo v Priestore aj pre existujúcich členov.',
     'Default "Show topic widget in Stream sidebar"' => '',
+    'Default "Topic widget sort order"' => '',
     'Default Content Sort Order' => '',
 ];
