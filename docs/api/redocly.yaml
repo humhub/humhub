@@ -19,3 +19,9 @@ openapi:
       primary:
         # The teal of the HumHub logo, for links, buttons and the active sidebar entry.
         main: '#20a0b2'
+    logo:
+      # The wordmark is 1024x268; at 150px it reads as a mark above the page rather than a
+      # banner filling the sidebar. The page's own name sits beneath it, added by the
+      # stylesheet in template.hbs - Redoc has no option for a logo caption.
+      maxWidth: 150px
+      gutter: 24px 16px 4px

@@ -5,7 +5,8 @@
 # redocly.yaml (strict: warnings fail the build), then `redocly join` merges every source into
 # one document (src/index.yaml first, supplying the info block), rendered with a sidebar
 # across all modules. `src/common.yaml` holds shared components only — every document $refs
-# it, nothing reads it on its own.
+# it, nothing reads it on its own. The page is rendered into template.hbs, the renderer's own
+# page plus the stylesheet that puts the reference's name beneath the sidebar logo.
 #
 # index.html is committed, so the reference opens straight from a checkout (no server needed)
 # without a build step. Run this after changing a source and commit the result.
@@ -142,7 +143,9 @@ render_index() {
     if ! grep -q '^security:' "$joined"; then
         awk '/^security:/ { p = 1 } p && /^[^ ]/ && !/^security:/ { p = 0 } p' src/index.yaml >> "$joined"
     fi
-    npx "$REDOCLY_CLI" build-docs "$joined" -o index.html --disableGoogleFont
+    # template.hbs is the renderer's default page with one stylesheet added (the sidebar
+    # logo's caption); the Redoc script tag `localize` rewrites still comes from `redocHead`.
+    npx "$REDOCLY_CLI" build-docs "$joined" -o index.html --disableGoogleFont --template template.hbs
     rm -f "$joined"
     localize "index.html"
 }

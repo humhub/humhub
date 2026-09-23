@@ -387,8 +387,9 @@ Core documents its own endpoints, in the same repository as the code they descri
 ```
 docs/api/
 ├── index.html         # the rendered reference: every source joined into one page (committed)
-├── build.sh           # joins src/*.yaml and renders index.html
-├── redocly.yaml       # Redoc options
+├── build.sh           # lints src/*.yaml, joins them and renders index.html
+├── redocly.yaml       # lint rule set and Redoc options (theme, logo size)
+├── template.hbs       # the renderer's page template, plus the sidebar logo's "API Reference" caption
 └── src/*.yaml         # OpenAPI 3.1 sources — `index.yaml` the introduction, `common.yaml` the shared components
 ```
 
