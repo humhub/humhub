@@ -593,9 +593,9 @@ export default {
             fetchWindow({
                 contentId: this.comment.contentId,
                 parentCommentId: this.comment.id,
-                commentId: cursor,
+                cursor,
                 direction: 'previous',
-                pageSize: this.pageSize,
+                limit: this.pageSize,
             }).then((response) => {
                 this.childItems = [...response.results, ...this.childItems];
                 this.ensureLikeStates(response.results);

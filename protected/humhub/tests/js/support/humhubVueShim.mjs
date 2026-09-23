@@ -24,6 +24,7 @@ export const setStatusHandler = (...args) => vueModule().setStatusHandler(...arg
 export const client = {
     post: (...args) => vueModule().client.post(...args),
     get: (...args) => vueModule().client.get(...args),
+    patch: (...args) => vueModule().client.patch(...args),
     put: (...args) => vueModule().client.put(...args),
     del: (...args) => vueModule().client.del(...args),
 };

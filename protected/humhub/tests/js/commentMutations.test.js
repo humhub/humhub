@@ -231,8 +231,8 @@ describe('Comment mutations + live updates', () => {
             await submitButton.trigger('click');
 
             expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith(
-                '/api/v2/comment?contentId=42',
-                { data: { message: 'hello', fileList: [] } },
+                '/api/v2/comment',
+                { data: { contentId: 42, message: 'hello', fileList: [] } },
             );
 
             // Busy guard: the button is disabled while the request is in
@@ -416,8 +416,8 @@ describe('Comment mutations + live updates', () => {
             $submit.trigger('click');
 
             await vi.waitFor(() => expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith(
-                '/api/v2/comment?contentId=42',
-                { data: { message: 'hello', fileList: [] } },
+                '/api/v2/comment',
+                { data: { contentId: 42, message: 'hello', fileList: [] } },
             ));
             // A real click on a type="submit" button would, if not cancelled,
             // ALSO fire a native 'submit' event that CommentForm listens for
@@ -566,8 +566,8 @@ describe('Comment mutations + live updates', () => {
             await replySubmit.trigger('click');
 
             expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith(
-                '/api/v2/comment?contentId=42&parentCommentId=1',
-                { data: { message: 'hello', fileList: [] } },
+                '/api/v2/comment',
+                { data: { contentId: 42, parentCommentId: 1, message: 'hello', fileList: [] } },
             );
 
             await vi.waitFor(() => expect(wrapper.find('.nested-comments-root .single-comment').exists()).toBe(true));
@@ -677,7 +677,7 @@ describe('Comment mutations + live updates', () => {
             // The cursor is still 15 - the pre-append oldest SHOWN reply - never the
             // own-appended one (20), which is now the array's tail.
             expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith(
-                '/api/v2/comment/parent/4/window?commentId=15&direction=previous&pageSize=10',
+                '/api/v2/comment/parent/4/window?cursor=15&direction=previous&limit=10',
             );
 
             await vi.waitFor(() => {
@@ -773,7 +773,7 @@ describe('Comment mutations + live updates', () => {
             // The cursor is the pre-append last loaded comment (6), never the
             // own-appended one (10) that is now items' tail.
             expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith(
-                '/api/v2/comment/content/42/window?commentId=6&direction=next&pageSize=5',
+                '/api/v2/comment/content/42/window?cursor=6&direction=next&limit=5',
             );
 
             await vi.waitFor(() => {
@@ -984,7 +984,7 @@ describe('Comment mutations + live updates', () => {
             expect(globalThis.humhubStubs.client.ajax).toHaveBeenCalledWith(
                 '/api/v2/comment/1',
                 expect.objectContaining({
-                    method: 'PUT',
+                    method: 'PATCH',
                     data: { message: 'raw **markdown**', fileList: [] },
                 }),
             );
@@ -1323,12 +1323,11 @@ describe('Comment mutations + live updates', () => {
 
             confirmButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
 
+            // The moderation fields travel in the query string - a DELETE carries no body
             await vi.waitFor(() => expect(globalThis.humhubStubs.client.ajax).toHaveBeenCalledWith(
-                '/api/v2/comment/1',
-                expect.objectContaining({
-                    method: 'DELETE',
-                    data: { notify: 1, message: 'Against the rules' },
-                }),
+                // (`+` or `%20` for the space, depending on the param serializer at hand)
+                expect.stringMatching(/^\/api\/v2\/comment\/1\?notify=1&message=Against(\+|%20)the(\+|%20)rules$/),
+                expect.objectContaining({ method: 'DELETE' }),
             ));
 
             await vi.waitFor(() => expect(wrapper.find('#comment_1').exists()).toBe(false));

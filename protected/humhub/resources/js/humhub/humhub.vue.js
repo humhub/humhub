@@ -754,10 +754,10 @@ humhub.module('vue', function (module, require, $) {
     // --- HTTP API helpers -------------------------------------------------
     // The islands are fed by the platform's HTTP API (/api/v2, see
     // docs/develop/concept-api.md) — these helpers cover what the route-based
-    // `url()`/`client` bridge can't: pattern URLs and PUT/DELETE verbs.
+    // `url()`/`client` bridge can't: pattern URLs and PATCH/DELETE verbs.
 
-    // apiUrl('comment/content/5/window', {pageSize: 4})
-    //   → '<baseUrl>/api/v2/comment/content/5/window?pageSize=4'
+    // apiUrl('comment/content/5/window', {limit: 4})
+    //   → '<baseUrl>/api/v2/comment/content/5/window?limit=4'
     // The base comes from CoreJsConfig (client.apiUrl); the root-relative
     // fallback keeps a stray early island functional on standard installs.
     var apiUrl = function (path, params) {
@@ -772,16 +772,23 @@ humhub.module('vue', function (module, require, $) {
         return result;
     };
 
-    // The verb set the API needs. put()/del() mirror the core client's
+    // The verb set the API needs. patch()/put()/del() mirror the core client's
     // own post() (same cfg contract, same Response resolution); the core
     // client module only ships get/post since the legacy routes never used
     // other verbs. Yii's CSRF ajaxPrefilter applies to every method, so
-    // session-authenticated PUT/DELETE carry the X-CSRF-Token header too.
+    // session-authenticated PATCH/PUT/DELETE carry the X-CSRF-Token header too.
+    // The core endpoints update with PATCH (partial); put() stays for a
+    // module endpoint that defines a full replacement.
     var restClient = {
         // apply() keeps the caller's arity intact (a plain passthrough would
         // append explicit `undefined` cfg/event arguments).
         get: function () { return client.get.apply(client, arguments); },
         post: function () { return client.post.apply(client, arguments); },
+        patch: function (url, cfg) {
+            cfg = cfg || {};
+            cfg.type = cfg.method = 'PATCH';
+            return client.ajax(url, cfg);
+        },
         put: function (url, cfg) {
             cfg = cfg || {};
             cfg.type = cfg.method = 'PUT';

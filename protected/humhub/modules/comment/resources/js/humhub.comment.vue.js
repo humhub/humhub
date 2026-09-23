@@ -306,11 +306,11 @@
     return [...new Set(ids)];
   };
   const createComment = ({ contentId, parentCommentId, message, fileList }) => {
-    const params = parentCommentId ? { contentId, parentCommentId } : { contentId };
-    return vue.client.post(vue.apiUrl("comment", params), { data: { message, fileList } }).then(mapComment);
+    const data = parentCommentId ? { contentId, parentCommentId, message, fileList } : { contentId, message, fileList };
+    return vue.client.post(vue.apiUrl("comment"), { data }).then(mapComment);
   };
-  const updateComment = (id, { message, fileList }) => vue.client.put(vue.apiUrl(`comment/${id}`), { data: { message, fileList } }).then(mapComment);
-  const deleteComment = (id, fields) => vue.client.del(vue.apiUrl(`comment/${id}`), fields ? { data: fields } : void 0);
+  const updateComment = (id, { message, fileList }) => vue.client.patch(vue.apiUrl(`comment/${id}`), { data: { message, fileList } }).then(mapComment);
+  const deleteComment = (id, fields) => vue.client.del(vue.apiUrl(`comment/${id}`, fields || void 0));
   const extractFieldErrors = (response) => {
     const errors = response && response.errors || null;
     if (!errors) {
@@ -827,9 +827,9 @@
         fetchWindow({
           contentId: this.comment.contentId,
           parentCommentId: this.comment.id,
-          commentId: cursor,
+          cursor,
           direction: "previous",
-          pageSize: this.pageSize
+          limit: this.pageSize
         }).then((response) => {
           this.childItems = [...response.results, ...this.childItems];
           this.ensureLikeStates(response.results);
@@ -1293,9 +1293,9 @@
         const cursor = this.items[0].id;
         fetchWindow({
           contentId: this.contentId,
-          commentId: cursor,
+          cursor,
           direction: "previous",
-          pageSize: this.pageSize
+          limit: this.pageSize
         }).then((response) => {
           this.items = [...response.results, ...this.items];
           this.ensureLikeStates(response.results);
@@ -1323,9 +1323,9 @@
         const cursor = this.lastCursorId;
         fetchWindow({
           contentId: this.contentId,
-          commentId: cursor,
+          cursor,
           direction: "next",
-          pageSize: this.pageSize
+          limit: this.pageSize
         }).then((response) => {
           const newComments = response.results.filter((comment) => !this.isKnownId(comment.id));
           newComments.forEach((comment) => this.registerKnownId(comment.id));

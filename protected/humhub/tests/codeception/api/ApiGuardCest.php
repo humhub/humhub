@@ -84,7 +84,7 @@ class ApiGuardCest
         $I->wantTo('see a session-authenticated write rejected without a CSRF token');
         $I->amLoggedInAs(1);
 
-        $I->sendPost('comment?contentId=1', ['message' => 'No CSRF']);
+        $I->sendPost('comment', ['contentId' => 1, 'message' => 'No CSRF']);
         $I->seeResponseCodeIs(403);
 
         // With the token it goes through — the same mechanism `humhub.client` uses in the
@@ -93,9 +93,28 @@ class ApiGuardCest
         $I->setCookie('_csrf', $rawToken);
         $I->haveHttpHeader('X-CSRF-Token', Yii::$app->security->maskToken($rawToken));
 
-        $I->sendPost('comment?contentId=1', ['message' => 'With CSRF']);
-        $I->seeResponseCodeIs(200);
+        $I->sendPost('comment', ['contentId' => 1, 'message' => 'With CSRF']);
+        $I->seeResponseCodeIs(201);
         $I->seeResponseContainsJson(['message' => 'With CSRF']);
+    }
+
+    public function testEverythingUnderTheApiPrefixAnswersJson(ApiTester $I)
+    {
+        $I->wantTo('get a JSON error body for whatever goes wrong under the API prefix');
+        $I->amLoggedInAs(1);
+
+        // No rule matches: Yii's routing throws before any API controller is involved, so the
+        // format has to be fixed before routing (see Application::handleRequest()).
+        $I->sendGet('does-not-exist');
+        $I->seeResponseCodeIs(404);
+        $I->seeResponseIsJson();
+        $I->seeResponseContainsJson(['status' => 404]);
+
+        // A verb no rule was registered for is the same case
+        $I->sendPost('comment/1');
+        $I->seeResponseCodeIs(404);
+        $I->seeResponseIsJson();
+        $I->seeResponseContainsJson(['status' => 404]);
     }
 
     public function testReadsNeedNoCsrfToken(ApiTester $I)

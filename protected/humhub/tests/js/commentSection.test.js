@@ -289,7 +289,7 @@ describe('CommentSection', () => {
             await wrapper.find('.showMore a').trigger('click');
 
             expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith(
-                '/api/v2/comment/content/42/window?commentId=5&direction=previous&pageSize=2',
+                '/api/v2/comment/content/42/window?cursor=5&direction=previous&limit=2',
             );
 
             await vi.waitFor(() => {
@@ -321,7 +321,7 @@ describe('CommentSection', () => {
             await wrapper.find('.showMore a').trigger('click');
 
             expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith(
-                '/api/v2/comment/content/42/window?commentId=6&direction=next&pageSize=2',
+                '/api/v2/comment/content/42/window?cursor=6&direction=next&limit=2',
             );
 
             await vi.waitFor(() => {
@@ -434,7 +434,7 @@ describe('CommentSection', () => {
         // comment id 4 (contentId 2) has 4 replies (ids 13,14,15,16); the preview shows the
         // NEWEST 2 (15,16 - see CommentListService::getSiblings()'s default LIST_DIR_PREV),
         // and the old code rendered a "Show next 2 comments" link BELOW the replies whose
-        // click fetched `direction=next&commentId=16` - the server correctly returned an
+        // click fetched `direction=next&cursor=16` - the server correctly returned an
         // empty window (nothing is newer than 16), so the link stayed dead forever. See
         // CommentEntry's own "Previous-direction pagination fix" docblock section for the
         // root cause and fix this pins.
@@ -485,7 +485,7 @@ describe('CommentSection', () => {
             // Both params asserted: direction=previous (not next), cursored from 15 - the
             // oldest currently-SHOWN reply, not 16 (the newest).
             expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith(
-                '/api/v2/comment/parent/4/window?commentId=15&direction=previous&pageSize=10',
+                '/api/v2/comment/parent/4/window?cursor=15&direction=previous&limit=10',
             );
 
             await vi.waitFor(() => {

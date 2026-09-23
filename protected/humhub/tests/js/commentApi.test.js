@@ -167,10 +167,10 @@ describe('commentApi', () => {
                 results: [wireComment()], prevCount: 1, nextCount: 2, total: 5, rootTotal: 4,
             }));
 
-            const window = await fetchWindow({ contentId: 42, pageSize: 3, direction: 'previous', commentId: 7 });
+            const window = await fetchWindow({ contentId: 42, limit: 3, direction: 'previous', cursor: 7 });
 
             expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith(
-                '/api/v2/comment/content/42/window?pageSize=3&direction=previous&commentId=7',
+                '/api/v2/comment/content/42/window?limit=3&direction=previous&cursor=7',
             );
             expect(window.results[0].author.displayName).toBe('Alice');
             expect(window.results[0].createdAt).toBeInstanceOf(Date);
@@ -180,9 +180,9 @@ describe('commentApi', () => {
         it('fetchWindow targets the parent window for replies', async () => {
             globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({ results: [] }));
 
-            await fetchWindow({ contentId: 42, parentCommentId: 4, pageSize: 3 });
+            await fetchWindow({ contentId: 42, parentCommentId: 4, limit: 3 });
 
-            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/comment/parent/4/window?pageSize=3');
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/comment/parent/4/window?limit=3');
         });
 
         it('fetchComment targets the single view', async () => {
@@ -194,39 +194,41 @@ describe('commentApi', () => {
             expect(comment.id).toBe(7);
         });
 
-        it('createComment POSTs with content/parent params and maps the response', async () => {
+        it('createComment POSTs everything in the body, the target included, and maps the response', async () => {
             await createComment({ contentId: 42, parentCommentId: 4, message: 'm', fileList: ['g'] });
 
             expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith(
-                '/api/v2/comment?contentId=42&parentCommentId=4',
-                { data: { message: 'm', fileList: ['g'] } },
+                '/api/v2/comment',
+                { data: { contentId: 42, parentCommentId: 4, message: 'm', fileList: ['g'] } },
             );
         });
 
-        it('updateComment PUTs through the verb bridge', async () => {
+        it('updateComment PATCHes through the verb bridge', async () => {
             globalThis.humhubStubs.client.ajax = vi.fn(() => Promise.resolve(wireComment({ id: 7, message: 'edited' })));
 
             const comment = await updateComment(7, { message: 'edited', fileList: [] });
 
             expect(globalThis.humhubStubs.client.ajax).toHaveBeenCalledWith(
                 '/api/v2/comment/7',
-                expect.objectContaining({ method: 'PUT', data: { message: 'edited', fileList: [] } }),
+                expect.objectContaining({ method: 'PATCH', data: { message: 'edited', fileList: [] } }),
             );
             expect(comment.message).toBe('edited');
         });
 
-        it('deleteComment DELETEs, with optional moderation fields', async () => {
+        it('deleteComment DELETEs, with optional moderation fields in the query string', async () => {
             await deleteComment(7);
             expect(globalThis.humhubStubs.client.ajax).toHaveBeenCalledWith(
                 '/api/v2/comment/7',
                 expect.objectContaining({ method: 'DELETE' }),
             );
 
+            // A DELETE carries no body, so the moderation parameters travel in the URL
             await deleteComment(7, { notify: '1', message: 'reason' });
             expect(globalThis.humhubStubs.client.ajax).toHaveBeenLastCalledWith(
-                '/api/v2/comment/7',
-                expect.objectContaining({ method: 'DELETE', data: { notify: '1', message: 'reason' } }),
+                '/api/v2/comment/7?notify=1&message=reason',
+                expect.objectContaining({ method: 'DELETE' }),
             );
+            expect(globalThis.humhubStubs.client.ajax.mock.lastCall[1].data).toBeUndefined();
         });
     });
 

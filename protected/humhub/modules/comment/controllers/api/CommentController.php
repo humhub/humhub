@@ -13,6 +13,7 @@ use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\Module;
 use humhub\modules\comment\serializers\CommentSerializer;
 use humhub\modules\comment\services\CommentDeleteService;
+use humhub\modules\comment\services\CommentListService;
 use humhub\modules\comment\services\CommentPayloadCache;
 use humhub\modules\content\models\Content;
 use Yii;
@@ -27,8 +28,14 @@ use yii\web\NotFoundHttpException;
  *
  * Reads come as cursor-paginated windows rather than offset pages: comment lists grow while
  * a client pages through them, so offsets would duplicate and skip rows, and each response
- * carries the exact remaining counts a "show previous/next N comments" UI needs. See
- * {@see CommentSerializer::window()} for the parameters and the count semantics.
+ * carries the exact remaining counts a "show previous/next N comments" UI needs. A window is
+ * addressed by `cursor` + `direction` (paging from a comment), by `focus` (the window around
+ * a permalinked comment) or by nothing (the newest comments), and sized by `limit` — see
+ * {@see self::window()}; {@see CommentSerializer::window()} has the count semantics.
+ *
+ * Writes follow the API's parameter rule: what a `POST` creates travels in the body
+ * (`contentId`, `parentCommentId`, `message`, `fileList`), what a `DELETE` is told travels in
+ * the query string (`notify`, `message`). The one update verb is `PATCH`, and it is partial.
  *
  * Guests may read windows and single comments of guest-visible content while guest access is
  * enabled platform-wide, subject to the comment module's `guestHideComments` setting.
@@ -65,7 +72,7 @@ class CommentController extends BaseController
                     'view' => ['GET', 'HEAD'],
                     'permissions' => ['GET', 'HEAD'],
                     'create' => ['POST'],
-                    'update' => ['PUT', 'PATCH'],
+                    'update' => ['PATCH'],
                     'delete' => ['DELETE'],
                 ],
             ],
@@ -133,13 +140,22 @@ class CommentController extends BaseController
     }
 
     /**
-     * Creates a comment from `message` and an optional `fileList` of uploaded file guids.
-     * Replies pass the parent through `parentCommentId`; the model enforces that comments
-     * nest at most one level.
+     * Creates a comment on the content named by `contentId`, from `message` and an optional
+     * `fileList` of uploaded file guids — all in the body. Replies pass the parent through
+     * `parentCommentId`; the model enforces that comments nest at most one level.
+     *
+     * Answers `201` with the created comment.
      */
     public function actionCreate()
     {
-        $content = $this->findContent((int)Yii::$app->request->get('contentId'));
+        $request = Yii::$app->request;
+        $contentId = (int)$request->getBodyParam('contentId');
+
+        if ($contentId <= 0) {
+            return $this->missingParameter('contentId');
+        }
+
+        $content = $this->findContent($contentId);
 
         if (!$this->getCommentModule()->canComment($content)) {
             throw new ForbiddenHttpException();
@@ -149,21 +165,24 @@ class CommentController extends BaseController
         $comment->content_id = $content->id;
         // Passed through raw so the model validates it (same content, root comment) instead
         // of silently creating a root comment for a bogus parent id.
-        $comment->parent_comment_id = (int)Yii::$app->request->get('parentCommentId') ?: null;
+        $comment->parent_comment_id = (int)$request->getBodyParam('parentCommentId') ?: null;
 
         // load() returns false for an empty body — save() must still run so the response
         // carries the `required` errors instead of an empty error map.
-        $comment->load(Yii::$app->request->post(), '');
+        $comment->load($request->getBodyParams(), '');
 
         if (!$comment->save()) {
             return $this->validationErrors($comment);
         }
 
+        Yii::$app->response->setStatusCode(201);
+
         return CommentSerializer::comment($comment);
     }
 
     /**
-     * Updates a comment's `message` / `fileList`.
+     * Updates a comment's `message` and/or `fileList` — partial: a field the body does not
+     * carry keeps its value.
      */
     public function actionUpdate($id)
     {
@@ -173,7 +192,7 @@ class CommentController extends BaseController
             throw new ForbiddenHttpException();
         }
 
-        $comment->load(Yii::$app->request->post(), '');
+        $comment->load(Yii::$app->request->getBodyParams(), '');
 
         if (!$comment->save()) {
             return $this->validationErrors($comment);
@@ -183,9 +202,10 @@ class CommentController extends BaseController
     }
 
     /**
-     * Deletes a comment. The optional `notify` / `message` body parameters trigger the
+     * Deletes a comment. The optional `notify` / `message` query parameters trigger the
      * moderation flow: the author receives a notification carrying a preview of the removed
-     * text and the given reason (see {@see CommentDeleteService}).
+     * text and the given reason (see {@see CommentDeleteService}). Query rather than body,
+     * because a `DELETE` body is dropped by enough clients and proxies not to build on.
      *
      * Answers `204 No Content` — there is nothing left to represent.
      */
@@ -199,8 +219,8 @@ class CommentController extends BaseController
 
         $request = Yii::$app->request;
         $deleted = (new CommentDeleteService($comment))->delete(
-            (bool)$request->getBodyParam('notify', false),
-            (string)$request->getBodyParam('message', ''),
+            (bool)$request->get('notify', false),
+            (string)$request->get('message', ''),
         );
 
         if (!$deleted) {
@@ -213,6 +233,17 @@ class CommentController extends BaseController
     }
 
     /**
+     * One window, from the request's `cursor`, `focus`, `direction` and `limit`:
+     *
+     * - `cursor` + `direction` (`previous`/`next`) page from a comment the client already
+     *   has;
+     * - `focus` alone centres the window on a comment (a permalink);
+     * - neither answers the newest comments.
+     *
+     * `limit` is the size of whichever window that is, clamped to the module's block load
+     * size — the serializer trusts its in-process callers (the comment widget embeds a larger
+     * initial window), so the clamp belongs here.
+     *
      * @throws ForbiddenHttpException
      * @throws NotFoundHttpException
      */
@@ -221,20 +252,19 @@ class CommentController extends BaseController
         $this->assertGuestCommentsAllowed();
 
         $request = Yii::$app->request;
-        $commentId = $request->get('commentId');
-        $pageSize = $request->get('pageSize');
+        $direction = $request->get('direction');
+        $isPaging = $direction === CommentListService::LIST_DIR_PREV || $direction === CommentListService::LIST_DIR_NEXT;
+        $anchor = $request->get($isPaging ? 'cursor' : 'focus');
         $limit = $request->get('limit');
-        $module = $this->getCommentModule();
+        $limit = $limit !== null ? max(1, min((int)$limit, $this->getCommentModule()->commentsBlockLoadSize)) : null;
 
         return CommentPayloadCache::window(
             $content,
             $parentComment,
-            $commentId !== null ? (int)$commentId : null,
-            $request->get('direction'),
-            $pageSize !== null ? (int)$pageSize : null,
-            // Client-supplied window sizes are clamped here (the serializer trusts its
-            // in-process callers, e.g. the comment widget embedding a larger initial window).
-            $limit !== null ? max(1, min((int)$limit, $module->commentsBlockLoadSize)) : null,
+            $anchor !== null ? (int)$anchor : null,
+            $isPaging ? $direction : null,
+            $limit,
+            $limit,
         );
     }
 

@@ -215,9 +215,9 @@ export default {
 
             fetchWindow({
                 contentId: this.contentId,
-                commentId: cursor,
+                cursor,
                 direction: 'previous',
-                pageSize: this.pageSize,
+                limit: this.pageSize,
             }).then((response) => {
                 this.items = [...response.results, ...this.items];
                 this.ensureLikeStates(response.results);
@@ -249,9 +249,9 @@ export default {
 
             fetchWindow({
                 contentId: this.contentId,
-                commentId: cursor,
+                cursor,
                 direction: 'next',
-                pageSize: this.pageSize,
+                limit: this.pageSize,
             }).then((response) => {
                 const newComments = response.results.filter((comment) => !this.isKnownId(comment.id));
                 newComments.forEach((comment) => this.registerKnownId(comment.id));

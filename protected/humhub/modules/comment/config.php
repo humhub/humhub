@@ -25,7 +25,7 @@ return [
         ['pattern' => 'comment', 'route' => 'comment/api/comment/create', 'verb' => 'POST'],
         ['pattern' => 'comment/<id:\d+>', 'route' => 'comment/api/comment/view', 'verb' => ['GET', 'HEAD']],
         ['pattern' => 'comment/<id:\d+>/permissions', 'route' => 'comment/api/comment/permissions', 'verb' => ['GET', 'HEAD']],
-        ['pattern' => 'comment/<id:\d+>', 'route' => 'comment/api/comment/update', 'verb' => ['PUT', 'PATCH']],
+        ['pattern' => 'comment/<id:\d+>', 'route' => 'comment/api/comment/update', 'verb' => 'PATCH'],
         ['pattern' => 'comment/<id:\d+>', 'route' => 'comment/api/comment/delete', 'verb' => 'DELETE'],
     ]),
     'events' => [

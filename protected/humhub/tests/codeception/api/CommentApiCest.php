@@ -47,9 +47,13 @@ class CommentApiCest
 
     private function createComment(ApiTester $I, int $contentId, string $message, ?int $parentCommentId = null): int
     {
-        $url = "comment?contentId=$contentId" . ($parentCommentId ? "&parentCommentId=$parentCommentId" : '');
-        $I->sendPost($url, ['message' => $message]);
-        $I->seeResponseCodeIs(200);
+        // Everything a POST creates travels in the body, the target content included.
+        $body = ['contentId' => $contentId, 'message' => $message];
+        if ($parentCommentId) {
+            $body['parentCommentId'] = $parentCommentId;
+        }
+        $I->sendPost('comment', $body);
+        $I->seeResponseCodeIs(201);
 
         return (int)$I->grabDataFromResponseByJsonPath('$.id')[0];
     }
@@ -159,13 +163,13 @@ class CommentApiCest
         // "Show previous" from root 3: both remaining older roots come back, because a single
         // comment beyond the page size is returned directly instead of being hidden behind
         // another "show previous" link ("keep one leftover").
-        $I->sendGet("comment/content/$contentId/window?commentId={$roots[3]}&direction=previous&pageSize=1");
+        $I->sendGet("comment/content/$contentId/window?cursor={$roots[3]}&direction=previous&limit=1");
         $I->seeResponseCodeIs(200);
         Assert::assertEquals([$roots[1], $roots[2]], $I->grabDataFromResponseByJsonPath('$.results[*].id'));
         $I->seeResponseContainsJson(['prevCount' => 0, 'nextCount' => 2]);
 
-        // A non-positive page size must not drop the LIMIT and return the whole thread
-        $I->sendGet("comment/content/$contentId/window?commentId={$roots[4]}&direction=previous&pageSize=0");
+        // A non-positive limit must not drop the LIMIT and return the whole thread
+        $I->sendGet("comment/content/$contentId/window?cursor={$roots[4]}&direction=previous&limit=0");
         $I->seeResponseCodeIs(200);
         Assert::assertEquals([$roots[3]], $I->grabDataFromResponseByJsonPath('$.results[*].id'));
 
@@ -173,6 +177,11 @@ class CommentApiCest
         $I->sendGet("comment/content/$contentId/window?limit=9999");
         $I->seeResponseCodeIs(200);
         Assert::assertLessThanOrEqual(10, count($I->grabDataFromResponseByJsonPath('$.results[*].id')));
+
+        // `focus` centres the window on a comment - a permalink - without a direction
+        $I->sendGet("comment/content/$contentId/window?focus={$roots[2]}&limit=1");
+        $I->seeResponseCodeIs(200);
+        Assert::assertContains($roots[2], array_map('intval', $I->grabDataFromResponseByJsonPath('$.results[*].id')));
 
         // Reply window of one thread — `total` is scoped to the thread, `rootTotal` stays
         // content-global
@@ -214,23 +223,28 @@ class CommentApiCest
         $I->amLoggedInAs(1);
         $this->withCsrf($I);
 
-        // An empty body still validates — the response must carry the field errors
-        $I->sendPost('comment?contentId=1', []);
+        // A body without a message still validates — the response must carry the field errors
+        $I->sendPost('comment', ['contentId' => 1]);
         $I->seeResponseCodeIs(422);
         $I->seeResponseContainsJson(['errors' => ['message' => ['The comment must not be empty!']]]);
+
+        // A missing target is a validation failure like any other missing field, not a 404
+        $I->sendPost('comment', ['message' => 'Nowhere']);
+        $I->seeResponseCodeIs(422);
+        $I->seeResponseJsonMatchesJsonPath('$.errors.contentId');
 
         $root = $this->createComment($I, 1, 'Root');
         $reply = $this->createComment($I, 1, 'Reply', $root);
 
         // Comments nest at most one level — enforced by the model, surfaced as a 422
-        $I->sendPost("comment?contentId=1&parentCommentId=$reply", ['message' => 'Nested']);
+        $I->sendPost('comment', ['contentId' => 1, 'parentCommentId' => $reply, 'message' => 'Nested']);
         $I->seeResponseCodeIs(422);
         // Error keys are camelCased attribute names, i.e. the field names the client sent
         $I->seeResponseContainsJson(['errors' => ['parentCommentId' => ['Comments can only be nested one level deep.']]]);
 
         // Update — stored datetimes have one-second resolution, so wait before editing
         sleep(1);
-        $I->sendPut("comment/$root", ['message' => 'Edited']);
+        $I->sendPatch("comment/$root", ['message' => 'Edited']);
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['id' => $root, 'message' => 'Edited']);
         Assert::assertNotSame(
@@ -239,10 +253,19 @@ class CommentApiCest
             'A client derives "edited" from these two timestamps',
         );
 
-        $I->sendPut("comment/$root", ['message' => '']);
+        // PATCH is partial: a body without `message` keeps the message
+        $I->sendPatch("comment/$root", ['fileList' => []]);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContainsJson(['id' => $root, 'message' => 'Edited']);
+
+        $I->sendPatch("comment/$root", ['message' => '']);
         $I->seeResponseCodeIs(422);
 
-        $I->sendPost('comment?contentId=99999', ['message' => 'No such content']);
+        // PUT is not an update verb of this API
+        $I->sendPut("comment/$root", ['message' => 'Replaced']);
+        $I->seeResponseCodeIs(404);
+
+        $I->sendPost('comment', ['contentId' => 99999, 'message' => 'No such content']);
         $I->seeResponseCodeIs(404);
     }
 
@@ -325,7 +348,8 @@ class CommentApiCest
 
         $I->amLoggedInAs(1);
         $this->withCsrf($I);
-        $I->sendDelete('comment/' . $commentId, ['notify' => 1, 'message' => 'Against the rules']);
+        // The moderation parameters travel in the query string - a DELETE carries no body
+        $I->sendDelete('comment/' . $commentId . '?notify=1&message=' . urlencode('Against the rules'));
         $I->seeResponseCodeIs(204);
 
         $I->seeRecord(Notification::class, ['class' => CommentDeleted::class, 'user_id' => 2]);
@@ -368,7 +392,7 @@ class CommentApiCest
         $I->seeResponseCodeIs(403);
 
         // Mutations are never guest-accessible
-        $I->sendPost('comment?contentId=10', ['message' => 'Guest comment']);
+        $I->sendPost('comment', ['contentId' => 10, 'message' => 'Guest comment']);
         $I->seeResponseCodeIs(401);
     }
 

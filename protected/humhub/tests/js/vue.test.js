@@ -395,7 +395,7 @@ describe('humhub.vue', () => {
             expect(vueModule.apiUrl('like/state', { recordId: 7 })).toBe('/api/v2/like/state?recordId=7');
         });
 
-        it('client.put()/client.del() delegate to the core client\'s ajax() with the verb set', async () => {
+        it('client.patch()/client.put()/client.del() delegate to the core client\'s ajax() with the verb set', async () => {
             const calls = [];
             const originalAjax = globalThis.humhubStubs.client.ajax;
             globalThis.humhubStubs.client.ajax = (url, cfg) => {
@@ -403,15 +403,17 @@ describe('humhub.vue', () => {
                 return Promise.resolve({});
             };
             try {
-                await vueModule.client.put('/api/v2/comment/1', { data: { message: 'x' } });
+                await vueModule.client.patch('/api/v2/comment/1', { data: { message: 'x' } });
+                await vueModule.client.put('/api/v2/comment/1', { data: { message: 'y' } });
                 await vueModule.client.del('/api/v2/comment/1');
             } finally {
                 globalThis.humhubStubs.client.ajax = originalAjax;
             }
 
             expect(calls[0][0]).toBe('/api/v2/comment/1');
-            expect(calls[0][1]).toMatchObject({ method: 'PUT', type: 'PUT', data: { message: 'x' } });
-            expect(calls[1][1]).toMatchObject({ method: 'DELETE', type: 'DELETE' });
+            expect(calls[0][1]).toMatchObject({ method: 'PATCH', type: 'PATCH', data: { message: 'x' } });
+            expect(calls[1][1]).toMatchObject({ method: 'PUT', type: 'PUT', data: { message: 'y' } });
+            expect(calls[2][1]).toMatchObject({ method: 'DELETE', type: 'DELETE' });
         });
     });
 });

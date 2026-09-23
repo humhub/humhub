@@ -70,8 +70,8 @@ export const mapWindow = (window) => ({
 
 /**
  * Fetches a comment window: the root window of a content, or — with `parentCommentId` — the
- * reply window of one thread. Remaining params (`commentId`, `direction`, `pageSize`,
- * `limit`) pass through to the endpoint.
+ * reply window of one thread. Remaining params pass through to the endpoint: `cursor` +
+ * `direction` page from a known comment, `focus` centres the window on one, `limit` sizes it.
  */
 export const fetchWindow = ({ contentId, parentCommentId, ...params }) => {
     const path = parentCommentId
@@ -115,20 +115,28 @@ export const collectRecordIds = (comments) => {
     return [...new Set(ids)];
 };
 
+/**
+ * Creates a comment. Everything a POST creates travels in the body — the target content and
+ * parent included — and the endpoint answers `201` with the created comment.
+ */
 export const createComment = ({ contentId, parentCommentId, message, fileList }) => {
-    const params = parentCommentId ? { contentId, parentCommentId } : { contentId };
-    return client.post(apiUrl('comment', params), { data: { message, fileList } }).then(mapComment);
+    const data = parentCommentId
+        ? { contentId, parentCommentId, message, fileList }
+        : { contentId, message, fileList };
+    return client.post(apiUrl('comment'), { data }).then(mapComment);
 };
 
+/** Partial update — a field left out of the body keeps its value. */
 export const updateComment = (id, { message, fileList }) =>
-    client.put(apiUrl(`comment/${id}`), { data: { message, fileList } }).then(mapComment);
+    client.patch(apiUrl(`comment/${id}`), { data: { message, fileList } }).then(mapComment);
 
 /**
- * Deletes a comment. `fields` may carry the moderation parameters (`notify`, `message`).
- * The endpoint answers `204 No Content`.
+ * Deletes a comment. `fields` may carry the moderation parameters (`notify`, `message`),
+ * which travel in the query string — a DELETE has no body. The endpoint answers
+ * `204 No Content`.
  */
 export const deleteComment = (id, fields) =>
-    client.del(apiUrl(`comment/${id}`), fields ? { data: fields } : undefined);
+    client.del(apiUrl(`comment/${id}`, fields || undefined));
 
 /**
  * Field errors of a validation failure, or null. The API answers
