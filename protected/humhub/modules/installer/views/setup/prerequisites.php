@@ -2,6 +2,7 @@
 
 use humhub\helpers\Html;
 use humhub\modules\admin\widgets\PrerequisitesList;
+use humhub\widgets\Icon;
 
 ?>
 <div class="panel panel-default animated fadeIn">
@@ -24,10 +25,10 @@ use humhub\modules\admin\widgets\PrerequisitesList;
 
         <hr>
 
-        <?php echo Html::a('<i class="fa fa-repeat"></i> ' . Yii::t('InstallerModule.base', 'Check again'), ['/installer/setup/prerequisites'], ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
+        <?php echo Html::a(Icon::get('rotate-clockwise') . ' ' . Yii::t('InstallerModule.base', 'Check again'), ['/installer/setup/prerequisites'], ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
         <?php if (!$hasError): ?>
-            <?php echo Html::a(Yii::t('InstallerModule.base', 'Next') . ' <i class="fa fa-arrow-circle-right"></i>', ['/installer/setup/database'], ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
+            <?php echo Html::a(Yii::t('InstallerModule.base', 'Next') . ' ' . Icon::get('circle-arrow-right'), ['/installer/setup/database'], ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
         <?php endif; ?>
 
     </div>

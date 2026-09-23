@@ -2,6 +2,115 @@
 
 Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 
+- **Font Awesome 4 replaced by Tabler Icons.** `humhub\widgets\Icon` renders
+  `<i class="ti ti-<name>">` through the new `humhub\components\icon\TablerIconProvider`, and Tabler
+  names (https://tabler.io/icons) are the canonical icon names from now on — `Icon::get('pencil')`,
+  `Icon::get('settings')`, `Icon::get('star-filled')` for a filled variant. `Icon::getNames()` returns
+  the names of the installed package. Font Awesome is no longer shipped.
+
+  - **Keeps working unchanged in 1.20 and 1.21:**
+    - Raw `<i class="fa fa-<name>">` markup in PHP, JavaScript and views — the compatibility
+      stylesheet `css/icon-legacy.css` (loaded by `humhub\assets\IconAsset`, part of `AppAsset`)
+      renders every Font Awesome 4 class with the matching Tabler glyph. The size and utility
+      classes `fa-fw`, `fa-xs` … `fa-10x`, `fa-spin`, `fa-pull-left/right` are covered as well;
+      `fa-stack`, `fa-ul`, `fa-li`, `fa-rotate-*`, `fa-flip-*` and `fa-border` are not.
+    - Font Awesome 4 names passed to `Icon::get()`, `->icon()` of the Bootstrap widgets, `'icon' =>`
+      of menu entries, `Module::ICON`, `getIcon()` of content types and stored in the database —
+      `humhub\components\icon\LegacyIconMap` translates them, `fa-` prefixes are stripped.
+    - `FontAwesomeAsset::register()` and `Icon::get('x', ['lib' => 'fa'])`.
+  - **Breaks immediately:**
+    - Theme SCSS and custom SCSS styling `.fa` on icons rendered by the core — they carry `ti` now,
+      style `.ti` instead. Raw markup of your own keeps its `fa` class.
+    - Acceptance tests and module JavaScript that select or toggle classes such as `.fa-bell` on
+      core-rendered markup, e.g. `AcceptanceTester::seeInNotifications()` now clicks `.ti-bell`.
+    - `Icon::getNames()` and the `IconPicker` return and store Tabler names; a validator comparing
+      a picker value against a Font Awesome list rejects every new value. A stored Font Awesome
+      name is preselected as its Tabler counterpart and saved as such on the next submit.
+    - A name both libraries know renders the Tabler icon, and Tabler draws it as outline where Font
+      Awesome drew it solid: `star`, `user`, `trash`, `bell`, `calendar`, `caret-*`, `file`,
+      `file-text`, `folder`, `folder-open`, `flag`, `heart`, `bookmark`, `circle`, `square`, `send`,
+      `star-half`. Write `star-filled` where the solid look matters. A few shared names mean
+      something else in Tabler: `share` is the share-nodes symbol (Font Awesome's forward arrow is
+      `arrow-forward-up`), `cut` a cutting line (`scissors`), `exchange` a currency exchange
+      (`arrows-exchange`), `repeat` a loop (`rotate-clockwise`), `globe` a globe on a stand (`world`),
+      `glass` a wine glass, `mars`/`venus` planets (`gender-male`/`gender-female`), `wheelchair` a
+      wheelchair (`disabled`), `apple` a fruit (`brand-apple`), `steam` steam (`brand-steam`),
+      `id-badge` a badge (`id-badge-2`), `exclamation-circle` an inverted alert (`alert-circle`),
+      `reorder` drag handles (`menu-2`), `mail-forward` a mail (`arrow-forward-up`). Raw
+      `fa fa-star` markup is unambiguous and keeps the solid glyph.
+    - Brand and vendor icons without a Tabler counterpart render nothing: `adn angellist buysellads
+      connectdevelop dashcube delicious digg empire forumbee ge gittip gratipay ioxhost joomla jsfiddle
+      leanpub linux maxcdn meanpath openid pagelines pied-piper pied-piper-alt qq ra rebel renren
+      sellsy shirtsinbulk simplybuilt skyatlas slideshare stack-exchange stumbleupon
+      stumbleupon-circle tencent-weibo viacoin vine yelp`.
+  - **Deprecated, removed in 1.21:** `humhub\assets\FontAwesomeAsset` (an empty shim depending on
+    `IconAsset`), `humhub\components\icon\FontAwesomeIconProvider` (still registered as `fa`),
+    `Icon::$names` (the Font Awesome list), `Icon::$listItem`, `Icon::$border`, `Icon::listItem()`,
+    `Icon::border()`, `Icon::renderList()`, `IconFactory::renderList()` and
+    `IconProvider::renderList()` — none of them rendered by the Tabler provider, none used by any
+    known module.
+  - **Removed in 1.22:** `css/icon-legacy.css` and `LegacyIconMap`. They stay one release line
+    longer than the shims because they carry third-party modules and data stored in databases.
+  - The most common renames — the complete table is `LegacyIconMap::MAP`:
+
+    | Font Awesome 4 | Tabler | | Font Awesome 4 | Tabler |
+    |---|---|---|---|---|
+    | `cog`, `cogs`, `gear` | `settings` | | `times`, `close`, `remove` | `x` |
+    | `pencil` | `pencil` | | `trash-o` | `trash` |
+    | `edit`, `pencil-square-o` | `edit` | | `check-circle-o` | `circle-check` |
+    | `times-circle-o` | `circle-x` | | `plus-circle` | `circle-plus` |
+    | `minus-circle` | `circle-minus` | | `info-circle` | `info-circle` |
+    | `exclamation-triangle` | `alert-triangle` | | `exclamation-circle` | `alert-circle` |
+    | `question-circle-o` | `help-circle` | | `globe` | `world` |
+    | `envelope-o` | `mail` | | `comment-o` | `message-circle` |
+    | `comments-o` | `messages` | | `bell-o` | `bell` |
+    | `bell-slash-o` | `bell-off` | | `eye-slash` | `eye-off` |
+    | `unlock`, `unlock-alt` | `lock-open` | | `user-o` | `user` |
+    | `group` | `users` | | `clock-o` | `clock` |
+    | `calendar-o` | `calendar` | | `tachometer`, `dashboard` | `dashboard` |
+    | `bars`, `navicon`, `reorder` | `menu-2` | | `ellipsis-h` / `ellipsis-v` | `dots` / `dots-vertical` |
+    | `angle-down` / `-up` / `-left` / `-right` | `chevron-down` / `-up` / `-left` / `-right` | | `angle-double-*` | `chevrons-*` |
+    | `caret-down` (solid) | `caret-down-filled` | | `arrow-circle-right` | `circle-arrow-right-filled` |
+    | `arrows-h` / `arrows-v` | `arrows-horizontal` / `arrows-vertical` | | `arrows-alt`, `expand` | `arrows-maximize` |
+    | `paper-plane`, `send` | `send-filled` | | `paper-plane-o`, `send-o` | `send` |
+    | `mail-reply`, `reply`, `undo` | `arrow-back-up` | | `mail-forward`, `share` | `arrow-forward-up` |
+    | `share-alt` | `share` | | `external-link` | `external-link` |
+    | `floppy-o`, `save` | `device-floppy` | | `print` | `printer` |
+    | `file-o` | `file` | | `file-text-o` | `file-text` |
+    | `file-pdf-o` | `file-type-pdf` | | `file-word-o` | `file-type-doc` |
+    | `file-excel-o` | `file-spreadsheet` | | `file-image-o`, `picture-o`, `image`, `photo` | `photo` |
+    | `file-archive-o`, `file-zip-o` | `file-zip` | | `folder-o` / `folder-open-o` | `folder` / `folder-open` |
+    | `cloud-upload` / `cloud-download` | `cloud-upload` / `cloud-download` | | `upload` / `download` | `upload` / `download` |
+    | `search` | `search` | | `search-plus` / `search-minus` | `zoom-in` / `zoom-out` |
+    | `filter` | `filter` | | `sliders` | `adjustments` |
+    | `sign-in` / `sign-out` | `login` / `logout` | | `user-plus` / `user-times` | `user-plus` / `user-x` |
+    | `map-marker` | `map-pin-filled` | | `thumb-tack` | `pin` |
+    | `mobile`, `mobile-phone` | `device-mobile` | | `desktop` / `laptop` / `tablet` | `device-desktop` / `device-laptop` / `device-tablet` |
+    | `bar-chart`, `bar-chart-o` | `chart-bar` | | `line-chart` / `pie-chart` / `area-chart` | `chart-line` / `chart-pie` / `chart-area` |
+    | `thumbs-up` / `thumbs-o-up` | `thumb-up-filled` / `thumb-up` | | `star` / `star-o` | `star-filled` / `star` |
+    | `heart` / `heart-o` | `heart-filled` / `heart` | | `circle-o`, `circle-thin` | `circle` |
+    | `dot-circle-o` | `circle-dot` | | `check-square-o` / `square-o` | `square-check` / `square` |
+    | `lightbulb-o` | `bulb` | | `wrench` | `tool` |
+    | `magic` | `wand` | | `flash`, `bolt` | `bolt` |
+    | `github`, `facebook`, `twitter`, `linkedin`, `google`, … | `brand-github`, `brand-facebook`, … | | `usd`, `eur`, `gbp`, … | `currency-dollar`, `currency-euro`, `currency-pound`, … |
+
+  - **Migrating a module** — this is what `/humhub:refactor-modules` does per repository:
+    1. Replace raw `<i class="fa fa-<name>">` in PHP with `Icon::get('<tabler name>')`, in
+       JavaScript templates with `ti ti-<tabler name>`, and class toggles such as
+       `toggleClass('fa-caret-down')` with the Tabler class — `ti-caret-down-filled` here, so the
+       look stays.
+    2. Replace Font Awesome names in every icon hand-over (`Icon::get()`, `->icon()`, `'icon' =>`,
+       `Module::ICON`, `getIcon()`, `$defaultIcon` properties) with Tabler names from the table.
+    3. Change `.fa` selectors in the module's SCSS, LESS and CSS to `.ti`, `.fa-<name>` to
+       `.ti-<tabler name>`, and `font-family: FontAwesome` glyphs to `tabler-icons` codepoints.
+    4. Adjust test selectors.
+    5. Replace an own icon list (custom-pages' `PageIconSelect`, devtools' `iconSelect.php`) with
+       `Icon::getNames()` or the `IconPicker`.
+    6. Tabler names do not exist on a 1.19 core, so the switch is a breaking change for the module:
+       `develop` branch, next minor version, `humhub.minVersion` `1.20`, CHANGELOG entry referencing
+       the core change. A module that wants to keep supporting 1.19 stays on Font Awesome names —
+       they render through the map until 1.22.
+
 - **HumHub now serves from a `public/` directory.** The web server's document root belongs on
   `<installation root>/public`; everything beside it - `protected/`, `uploads/`, `themes/`, the
   Composer and npm metadata, the `.env` file - is meant to stay out of reach of the web server.

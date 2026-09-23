@@ -68,7 +68,7 @@ class Events
         $entry->setId('dashboard');
         $entry->setLabel(Yii::t('DashboardModule.base', 'Dashboard'));
         $entry->setUrl(['/dashboard/dashboard']);
-        $entry->setIcon(new Icon(['name' => 'tachometer']));
+        $entry->setIcon(Icon::get('dashboard'));
         $entry->setSortOrder(100);
         $entry->setIsActive((Yii::$app->controller->module && Yii::$app->controller->module->id === 'dashboard'));
 

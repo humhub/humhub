@@ -1,6 +1,7 @@
 <?php
 
 use humhub\helpers\Html;
+use humhub\widgets\Icon;
 use yii\helpers\Url;
 
 ?>
@@ -15,7 +16,7 @@ use yii\helpers\Url;
         <br>
         <hr>
         <br>
-        <?php echo Html::a(Yii::t('InstallerModule.base', "Next") . ' <i class="fa fa-arrow-circle-right"></i>', Url::to(['go']), ['class' => 'btn btn-lg btn-primary', 'data-ui-loader' => '']); ?>
+        <?php echo Html::a(Yii::t('InstallerModule.base', "Next") . ' ' . Icon::get('circle-arrow-right'), Url::to(['go']), ['class' => 'btn btn-lg btn-primary', 'data-ui-loader' => '']); ?>
         <br>
         <br>
     </div>

@@ -93,8 +93,8 @@ humhub.module('ui.filter', function (module, require, $) {
     var CheckBoxInput = FilterInput.extend(function ($node, filter) {
         FilterInput.call(this, $node, filter);
         this.$icon = this.$.children('i');
-        this.activeClass = object.defaultValue(this.$.data('filter-icon-active'), 'fa-check-square-o');
-        this.inActiveClass = object.defaultValue(this.$.data('filter-icon-inactive'), 'fa-square-o');
+        this.activeClass = object.defaultValue(this.$.data('filter-icon-active'), 'ti-square-check');
+        this.inActiveClass = object.defaultValue(this.$.data('filter-icon-inactive'), 'ti-square');
     });
 
     CheckBoxInput.prototype.getValue = function () {
@@ -130,8 +130,8 @@ humhub.module('ui.filter', function (module, require, $) {
 
     var RadioInput = CheckBoxInput.extend(function ($node, filter) {
         CheckBoxInput.call(this, $node, filter);
-        this.activeClass = object.defaultValue(this.$.data('filter-icon-active'), 'fa-dot-circle-o');
-        this.inActiveClass = object.defaultValue(this.$.data('filter-icon-inactive'), 'fa-circle-o');
+        this.activeClass = object.defaultValue(this.$.data('filter-icon-active'), 'ti-circle-dot');
+        this.inActiveClass = object.defaultValue(this.$.data('filter-icon-inactive'), 'ti-circle');
     });
 
     RadioInput.prototype.toggle = function () {

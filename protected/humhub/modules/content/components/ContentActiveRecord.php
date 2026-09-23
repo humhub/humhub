@@ -253,15 +253,15 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     public function getBadges($labels = [], $includeContentName = true)
     {
         if ($this->content->isPinned()) {
-            $labels[] = Badge::danger(Yii::t('ContentModule.base', 'Pinned'))->icon('fa-map-pin')->sortOrder(100);
+            $labels[] = Badge::danger(Yii::t('ContentModule.base', 'Pinned'))->icon('map-pin')->sortOrder(100);
         }
 
         if ($this->content->isArchived()) {
-            $labels[] = Badge::warning(Yii::t('ContentModule.base', 'Archived'))->icon('fa-archive')->sortOrder(200);
+            $labels[] = Badge::warning(Yii::t('ContentModule.base', 'Archived'))->icon('archive')->sortOrder(200);
         }
 
         if ($this->content->isPublic()) {
-            $labels[] = Badge::info(Yii::t('ContentModule.base', 'Public'))->icon('fa-globe')->sortOrder(300);
+            $labels[] = Badge::info(Yii::t('ContentModule.base', 'Public'))->icon('world')->sortOrder(300);
         }
 
         if ($includeContentName) {

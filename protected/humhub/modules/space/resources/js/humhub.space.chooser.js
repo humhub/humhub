@@ -438,7 +438,7 @@ humhub.module('space.chooser', function (module, require, $) {
      */
     SpaceChooser.prototype.setNoSpace = function () {
         if (!this.$menu.find('.no-space').length) {
-            this._changeMenuButton('<div class="no-space"><i class="fa fa-dot-circle-o"></i><br>' + i18n.t('SpaceModule.chooser', 'My spaces') + '</div>');
+            this._changeMenuButton('<div class="no-space"><i class="ti ti-circle-dot"></i><br>' + i18n.t('SpaceModule.chooser', 'My spaces') + '</div>');
         }
     };
 

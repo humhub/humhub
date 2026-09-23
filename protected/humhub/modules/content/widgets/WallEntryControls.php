@@ -142,7 +142,7 @@ class WallEntryControls extends Menu
      * Returns the widget definition for the given $menuItem.
      * The $menuItem can either be given as single array:
      *
-     * ['label' => 'mylabel', icon => 'fa-myicon', 'data-action-click' => 'myaction', ...]
+     * ['label' => 'mylabel', icon => 'myicon', 'data-action-click' => 'myaction', ...]
      *
      *  or as widget type definition:
      *

@@ -12,12 +12,12 @@ humhub.module('ui.status', function (module, require, $) {
     module.initOnPjaxLoad = true;
 
     module.template = {
-        info: '<i class="fa fa-info-circle info"></i><span>{msg}</span>',
-        success: '<i class="fa fa-check-circle success"></i><span>{msg}</span>',
-        warn: '<i class="fa fa-exclamation-triangle warning"></i><span>{msg}</span>',
-        error: '<i class="fa fa-exclamation-circle error"></i><span>{msg}</span>',
+        info: '<i class="ti ti-info-circle info"></i><span>{msg}</span>',
+        success: '<i class="ti ti-circle-check success"></i><span>{msg}</span>',
+        warn: '<i class="ti ti-alert-triangle warning"></i><span>{msg}</span>',
+        error: '<i class="ti ti-alert-circle error"></i><span>{msg}</span>',
         closeButton: '<a class="status-bar-close float-end" style="">×</a>',
-        showMoreButton: '<a class="showMore"><i class="fa fa-angle-up"></i></a>',
+        showMoreButton: '<a class="showMore"><i class="ti ti-chevron-up"></i></a>',
         errorBlock: '<div class="status-bar-details d-none"><pre>{msg}</pre><div>'
     };
 
@@ -106,12 +106,12 @@ humhub.module('ui.status', function (module, require, $) {
                 $details.remove();
             });
 
-            $showMore.find('i').attr('class', 'fa fa-angle-up');
+            $showMore.find('i').attr('class', 'ti ti-chevron-up');
         } else {
             $details = $(string.template(module.template.errorBlock, {msg: getErrorMessage(error)}));
             $content.append($details);
             $details.slideToggle('fast');
-            $showMore.find('i').attr('class', 'fa fa-angle-down');
+            $showMore.find('i').attr('class', 'ti ti-chevron-down');
         }
     };
 

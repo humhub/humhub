@@ -6,6 +6,7 @@ use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\user\widgets\Image as UserImage;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
+use humhub\widgets\Icon;
 
 /* @var $model UserDeleteForm */
 ?>
@@ -26,7 +27,7 @@ use humhub\widgets\form\ActiveForm;
             </div>
         </div>
         <hr>
-        <p><i class="fa fa-exclamation-triangle" style="color:var(--danger)"></i>
+        <p><?= Icon::get('alert-triangle')->color('danger') ?>
             &nbsp;<?= Yii::t('AdminModule.user', 'All the personal data of this user will be irrevocably deleted.') ?>
         </p>
 

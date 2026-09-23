@@ -69,7 +69,7 @@ function getFileUploaderText(key) {
 
 function addToUploadList(uploaderId, guid, name, icon) {
     $('#fileUploaderList_' + uploaderId).fadeIn('slow');
-    $('#fileUploaderListUl_' + uploaderId).append('<li style="padding-left: 24px;" class="mime ' + icon + '">' + name + ' <span data-guid="' + guid + '" class="file_upload_remove_link"> <i class="fa fa-trash-o"></i></span></li>');
+    $('#fileUploaderListUl_' + uploaderId).append('<li style="padding-left: 24px;" class="mime ' + icon + '">' + name + ' <span data-guid="' + guid + '" class="file_upload_remove_link"> <i class="ti ti-trash"></i></span></li>');
 
     $(".file_upload_remove_link").off("click");
     $(".file_upload_remove_link").on("click", function () {
