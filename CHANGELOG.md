@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.19.0-beta.4 (Unreleased)
+----------------------------------
+- Fix #8508: Fixed mention notifications crediting the original author instead of the user who added the mention on edit
+
 1.19.0-beta.3 (September 22, 2026)
 ----------------------------------
 
