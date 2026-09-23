@@ -33,11 +33,31 @@ namespace humhub\components\api;
 class ApiRules
 {
     /**
+     * URL prefix of the whole API URL space, every generation included. Everything below it
+     * answers JSON, errors included - see {@see self::isApiPath()}.
+     */
+    public const PREFIX = 'api/';
+
+    /**
      * URL prefix of the current API version. Everything below it is served by
      * {@see BaseController} subclasses; nothing above it may reach them
      * (see {@see BaseController::beforeAction()}).
      */
     public const PREFIX_V2 = 'api/v2/';
+
+    /**
+     * Whether a request path lies in the API URL space.
+     *
+     * {@see \humhub\components\Application::handleRequest()} fixes the response format to JSON
+     * for such a path BEFORE routing, so that an unknown route, a request with a verb no rule
+     * was registered for, and an exception thrown before an API controller's own
+     * `beforeAction()` ran all render as Yii's JSON error body instead of the HTML error page.
+     * A module's `/api/v1` lies in the same space and gets the same treatment.
+     */
+    public static function isApiPath(string $pathInfo): bool
+    {
+        return str_starts_with($pathInfo, self::PREFIX);
+    }
 
     /**
      * Prefixes the given rules with {@see self::PREFIX_V2}.

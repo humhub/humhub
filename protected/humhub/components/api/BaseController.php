@@ -14,6 +14,7 @@ use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User as UserModel;
 use Yii;
 use yii\base\Event;
+use yii\base\Model;
 use yii\data\Pagination;
 use yii\db\ActiveQuery;
 use yii\filters\auth\CompositeAuth;
@@ -31,12 +32,20 @@ use yii\web\NotFoundHttpException;
  *
  * ## Conventions
  *
- * - Responses are JSON; request bodies are parsed as JSON.
+ * - Everything under `api/` is JSON, errors included — the response format is fixed before
+ *   routing by {@see \humhub\components\Application::handleRequest()}, this class only
+ *   repeats it. Request bodies are parsed as JSON.
  * - Errors are plain HTTP status codes with Yii's JSON error body — there is no
  *   `{code, message}` success/failure envelope. Validation failures are
- *   `422 {"errors": {attribute: [messages]}}`, see {@see self::validationErrors()}.
- * - Timestamps are ISO-8601 with offset, field names are camelCase (see the serializers of
- *   the individual modules).
+ *   `422 {"errors": {attribute: [messages]}}`, see {@see self::validationErrors()} and
+ *   {@see self::missingParameter()}; a created resource answers `201`, a state transition
+ *   `200`, a delete `204`.
+ * - What identifies or filters a read travels in the query string; what a `POST` creates or
+ *   a `PATCH` changes travels in the body, the target included; a `DELETE` takes its options
+ *   in the query string. `PATCH` is the one update verb and is partial.
+ * - Records are addressed by numeric id; timestamps are ISO-8601 with offset, field names
+ *   are camelCase and enums are named values (see the serializers of the individual modules
+ *   and `docs/develop/concept-api.md`).
  *
  * ## Authentication
  *
@@ -199,24 +208,42 @@ abstract class BaseController extends Controller
     }
 
     /**
-     * Answers a failed model validation with `422 {"errors": {attribute: [messages]}}`.
+     * Answers a failed validation with `422 {"errors": {attribute: [messages]}}`.
      *
-     * Keys are camelCased ({@see Format::attribute()}) so a client can match them against
-     * the field names it sent instead of against the column names of a table it never sees.
+     * Given a model, its errors are taken with camelCased keys ({@see Format::attribute()}) so
+     * a client can match them against the field names it sent instead of against the column
+     * names of a table it never sees. Given an array, it is the `field => messages` map as it
+     * should reach the wire - for a request that fails before any model is involved, such as a
+     * missing parameter.
      *
-     * @param \yii\base\Model $model
+     * @param Model|array<string, string[]> $errors
      * @return array
      */
-    protected function validationErrors($model): array
+    protected function validationErrors(Model|array $errors): array
     {
         Yii::$app->response->statusCode = 422;
 
-        $errors = [];
-        foreach ($model->getErrors() as $attribute => $messages) {
-            $errors[Format::attribute($attribute)] = $messages;
+        if ($errors instanceof Model) {
+            $model = $errors;
+            $errors = [];
+            foreach ($model->getErrors() as $attribute => $messages) {
+                $errors[Format::attribute($attribute)] = $messages;
+            }
         }
 
         return ['errors' => $errors];
+    }
+
+    /**
+     * The `422` answer for one missing request parameter, worded like Yii's own `required`
+     * validator so a client sees the same message for a field it left out as for one it sent
+     * empty.
+     */
+    protected function missingParameter(string $name): array
+    {
+        return $this->validationErrors([
+            $name => [Yii::t('yii', '{attribute} cannot be blank.', ['attribute' => $name])],
+        ]);
     }
 
     /**

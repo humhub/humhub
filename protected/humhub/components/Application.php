@@ -9,6 +9,7 @@
 namespace humhub\components;
 
 use Exception;
+use humhub\components\api\ApiRules;
 use humhub\interfaces\ApplicationInterface;
 use humhub\services\DocumentRootService;
 use Yii;
@@ -70,6 +71,27 @@ class Application extends \yii\web\Application implements ApplicationInterface
 
         Yii::setAlias('@webroot', $documentRoot->getPublicPath());
         Yii::setAlias('@web', $documentRoot->getWebUrl($this->getRequest()->getBaseUrl()));
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * Everything in the API URL space answers JSON, errors included. The format is fixed here,
+     * before routing: an unknown route, a request with a verb no rule was registered for, and
+     * an exception thrown before an API controller's own `beforeAction()` ran (which sets the
+     * format too) would otherwise render as the HTML error page -
+     * {@see \yii\web\ErrorHandler::renderException()} decides by the format the response has
+     * when the exception arrives.
+     *
+     * @since 1.20
+     */
+    public function handleRequest($request)
+    {
+        if (ApiRules::isApiPath($request->getPathInfo())) {
+            $this->getResponse()->format = \yii\web\Response::FORMAT_JSON;
+        }
+
+        return parent::handleRequest($request);
     }
 
     /**
