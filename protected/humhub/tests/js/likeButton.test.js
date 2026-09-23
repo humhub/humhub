@@ -115,7 +115,8 @@ describe('LikeButton', () => {
         await wrapper.find('a.like').trigger('click');
         await vi.waitFor(() => expect(wrapper.find('a.unlike').exists()).toBe(true));
 
-        expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith('/api/v2/like?recordId=7');
+        // The record travels in the body of the POST
+        expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith('/api/v2/like', { data: { recordId: 7 } });
         expect(wrapper.find('.likeCount').text()).toBe('(3)');
     });
 

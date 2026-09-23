@@ -40,15 +40,16 @@ export const fetchSpaces = ({ q = null, scope = null, page = null, pageSize = nu
  * Asked for the spaces a client displays, never for "every space I am a member of" (see the
  * endpoint's own docblock).
  *
- * @param {string[]} guids
- * @returns {Promise<Object<string, {isMember: boolean, isFollowing: boolean, newItems: number}>>}
+ * @param {number[]} ids
+ * @returns {Promise<Object<number, {isMember: boolean, isFollowing: boolean, newItems: number}>>}
+ *          keyed by space id
  */
-export const fetchStates = (guids) => {
-    if (!guids.length) {
+export const fetchStates = (ids) => {
+    if (!ids.length) {
         return Promise.resolve({});
     }
 
-    return client.get(apiUrl('space/states', { guids }))
+    return client.get(apiUrl('space/states', { ids }))
         .then((response) => response.results || {});
 };
 

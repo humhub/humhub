@@ -64,9 +64,9 @@ class NotificationSerializer
         return [
             'id' => (int)$record->id,
             'html' => $params['html'] ?: ($params['text'] ?? null),
-            // The `/notification/entry` redirect - the same target the legacy entry linked to,
-            // relative so a click stays in the current origin.
-            'url' => $params['relativeUrl'] ?? $params['url'],
+            // The `/notification/entry` redirect - the same target the legacy entry linked to.
+            // Absolute like every other URL of the API, so a token client can follow it too.
+            'url' => $params['url'],
             'isNew' => (bool)($params['isNew'] ?? false),
             'createdAt' => Format::dateTime($record->created_at),
             // Composite `<class>:<groupKey>`, byte-identical to what the live event carries as

@@ -146,7 +146,7 @@ describe('ActivityBox', () => {
         wrapper.unmount();
         wrapper = mount(ActivityBox, {
             ...mountOptions(),
-            props: boxProps({ containerGuid: 's3' }),
+            props: boxProps({ containerId: 3, containerGuid: 's3' }),
         });
 
         expect(wrapper.findComponent(SpaceImage).exists()).toBe(false);
@@ -167,7 +167,7 @@ describe('ActivityBox', () => {
     it('loads the next page when the sentinel comes into view', async () => {
         wrapper = mount(ActivityBox, {
             ...mountOptions(),
-            props: boxProps({ initial: windowPayload([activity()], 'YTE6NDI'), containerGuid: 's3' }),
+            props: boxProps({ initial: windowPayload([activity()], 'YTE6NDI'), containerId: 3, containerGuid: 's3' }),
         });
         await flushPromises();
 
@@ -183,7 +183,7 @@ describe('ActivityBox', () => {
         expect(getCalls[0]).toContain('/api/v2/activity');
         // The cursor travels back untouched, and the container scope travels with it.
         expect(getCalls[0]).toContain('cursor=YTE6NDI');
-        expect(getCalls[0]).toContain('containerGuid=s3');
+        expect(getCalls[0]).toContain('containerId=3');
 
         expect(wrapper.findAll('.activity-entry')).toHaveLength(2);
         // The answered page carried no cursor, so there is nothing left to observe.
@@ -256,7 +256,7 @@ describe('ActivityBox', () => {
     });
 
     it('ignores live events of other containers when it is scoped to one', async () => {
-        wrapper = mount(ActivityBox, { ...mountOptions(), props: boxProps({ containerGuid: 's3' }) });
+        wrapper = mount(ActivityBox, { ...mountOptions(), props: boxProps({ containerId: 3, containerGuid: 's3' }) });
 
         await triggerLive('another-container');
         expect(getCalls).toHaveLength(0);

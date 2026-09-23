@@ -15,7 +15,7 @@
                 v-for="entry in entries"
                 :key="entry.key"
                 :activity="entry"
-                :show-space="!containerGuid"
+                :show-space="!containerId"
             />
 
             <div v-if="loading" class="text-center p-2">
@@ -106,7 +106,11 @@ export default {
     props: {
         // First page as `ActivityWindowService::window()` returns it: {results, nextCursor}.
         initial: { type: Object, default: () => ({ results: [], nextCursor: null }) },
-        // Guid of the container the box is scoped to, empty on the dashboard.
+        // Content container id the box is scoped to, 0 on the dashboard - what the endpoint
+        // scopes by.
+        containerId: { type: Number, default: 0 },
+        // Guid of the same container, empty on the dashboard. Live events name a container by
+        // guid, so this is what an arriving event is matched against.
         containerGuid: { type: String, default: '' },
         // Entries requested per page after the first.
         pageSize: { type: Number, default: 10 },
@@ -193,7 +197,7 @@ export default {
             fetchActivities({
                 cursor: this.cursor,
                 limit: this.pageSize,
-                containerGuid: this.containerGuid || null,
+                containerId: this.containerId || null,
             }).then(({ results, nextCursor }) => {
                 this.entries.push(...results);
                 this.cursor = nextCursor;
@@ -239,7 +243,7 @@ export default {
 
             return fetchActivities({
                 limit: this.pageSize,
-                containerGuid: this.containerGuid || null,
+                containerId: this.containerId || null,
             }).then(({ results }) => {
                 const listed = new Set(this.entries.map((entry) => entry.key));
 

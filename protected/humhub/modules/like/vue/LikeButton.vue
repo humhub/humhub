@@ -127,9 +127,10 @@ export default {
             this.busy = true;
 
             // POST like / DELETE like — both return the {total, liked, canLike} state shape.
+            // The record travels in the body of the POST and in the query of the DELETE.
             const request = this.liked
                 ? client.del(apiUrl('like', { recordId: this.recordId }))
-                : client.post(apiUrl('like', { recordId: this.recordId }));
+                : client.post(apiUrl('like'), { data: { recordId: this.recordId } });
 
             request.then((response) => {
                 this.liked = response.liked;

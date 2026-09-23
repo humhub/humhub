@@ -160,17 +160,19 @@ class FriendshipApiCest
         Assert::assertSame(Friendship::STATE_NONE, $this->state(self::USER1, self::USER2));
     }
 
-    public function testCannotAffirmWhatIsAlreadyAffirmed(ApiTester $I)
+    public function testAffirmingWhatIsAlreadyAffirmedIsASuccess(ApiTester $I)
     {
-        $I->wantTo('be refused when affirming an existing friendship');
+        $I->wantTo('see a POST on an existing friendship answer the state instead of an error');
         $this->enableFriendship();
         $this->seedFriendship(self::USER1, self::USER2);
 
         $I->amLoggedInAs(self::USER1);
         $this->withCsrf($I);
 
+        // Idempotent like DELETE: nothing changes, the state is the answer
         $I->sendPost('user/' . self::USER2 . '/friendship');
-        $I->seeResponseCodeIs(403);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContainsJson(['state' => 'friends']);
         Assert::assertSame(Friendship::STATE_FRIENDS, $this->state(self::USER1, self::USER2));
     }
 
@@ -213,6 +215,9 @@ class FriendshipApiCest
 
         $I->sendGet('user/' . self::USER2 . '/friendship');
         $I->seeResponseCodeIs(404);
+        // Thrown by the controller itself, still a JSON body like every other API error
+        $I->seeResponseIsJson();
+        $I->seeResponseContainsJson(['status' => 404]);
     }
 
     public function testAStateChangingRequestNeedsACsrfToken(ApiTester $I)

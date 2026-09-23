@@ -93,7 +93,7 @@
           return;
         }
         this.busy = true;
-        const request = this.liked ? vue$1.client.del(vue$1.apiUrl("like", { recordId: this.recordId })) : vue$1.client.post(vue$1.apiUrl("like", { recordId: this.recordId }));
+        const request = this.liked ? vue$1.client.del(vue$1.apiUrl("like", { recordId: this.recordId })) : vue$1.client.post(vue$1.apiUrl("like"), { data: { recordId: this.recordId } });
         request.then((response) => {
           this.liked = response.liked;
           this.count = response.total;

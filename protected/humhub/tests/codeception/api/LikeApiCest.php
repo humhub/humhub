@@ -42,9 +42,9 @@ class LikeApiCest
         return RecordMap::getId(Post::findOne(['id' => $postId]));
     }
 
-    public function testStateAndAddressingModes(ApiTester $I)
+    public function testStateAndAddressing(ApiTester $I)
     {
-        $I->wantTo('read the like state, addressed both ways');
+        $I->wantTo('read the like state of a record addressed by its record id');
         $I->amLoggedInAs(1);
 
         $recordId = $this->recordId(1);
@@ -52,12 +52,10 @@ class LikeApiCest
         $I->sendGet("like/state?recordId=$recordId");
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['liked' => false, 'canLike' => true]);
-        $total = (int)$I->grabDataFromResponseByJsonPath('$.total')[0];
 
-        // `model` + `pk` addresses the same record
+        // Class names are not part of the contract: `model` + `pk` address nothing
         $I->sendGet('like/state?model=' . urlencode(Post::class) . '&pk=1');
-        $I->seeResponseCodeIs(200);
-        $I->seeResponseContainsJson(['total' => $total, 'liked' => false, 'canLike' => true]);
+        $I->seeResponseCodeIs(404);
 
         $I->sendGet('like/state?recordId=99999');
         $I->seeResponseCodeIs(404);
@@ -72,7 +70,7 @@ class LikeApiCest
         $visible = $this->recordId(10);   // public post in Space 2, User1 is a member
         $invisible = $this->recordId(1);  // Admin's private profile post
 
-        $I->sendPost("like?recordId=$visible");
+        $I->sendPost('like', ['recordId' => $visible]);
         $I->seeResponseCodeIs(200);
 
         $I->sendGet("like/states?recordIds=$visible,$invisible,999999");
@@ -125,12 +123,12 @@ class LikeApiCest
         $I->sendGet("like/state?recordId=$recordId");
         $before = (int)$I->grabDataFromResponseByJsonPath('$.total')[0];
 
-        $I->sendPost("like?recordId=$recordId");
+        $I->sendPost('like', ['recordId' => $recordId]);
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['total' => $before + 1, 'liked' => true, 'canLike' => true]);
 
         // Liking twice does not double-count
-        $I->sendPost("like?recordId=$recordId");
+        $I->sendPost('like', ['recordId' => $recordId]);
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['total' => $before + 1, 'liked' => true]);
 
@@ -160,7 +158,7 @@ class LikeApiCest
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['results' => [], 'total' => 0, 'page' => 1, 'pages' => 0]);
 
-        $I->sendPost("like?recordId=$recordId");
+        $I->sendPost('like', ['recordId' => $recordId]);
         $I->seeResponseCodeIs(200);
 
         $I->sendGet("like/users?recordId=$recordId");
@@ -192,7 +190,7 @@ class LikeApiCest
         $I->sendGet("like/state?recordId=$recordId");
         $I->seeResponseCodeIs(403);
 
-        $I->sendPost("like?recordId=$recordId");
+        $I->sendPost('like', ['recordId' => $recordId]);
         $I->seeResponseCodeIs(403);
     }
 
@@ -216,7 +214,7 @@ class LikeApiCest
         $I->seeResponseCodeIs(403);
 
         // Mutations are never guest-accessible
-        $I->sendPost("like?recordId=$recordId");
+        $I->sendPost('like', ['recordId' => $recordId]);
         $I->seeResponseCodeIs(401);
         $I->sendDelete("like?recordId=$recordId");
         $I->seeResponseCodeIs(401);

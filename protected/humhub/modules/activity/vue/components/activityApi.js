@@ -16,10 +16,10 @@ import { apiUrl, client } from '@humhub/vue';
  * never built from an entry (see `ActivityWindowService` for why an entry's id would be the
  * wrong cursor).
  *
- * @param {{cursor?: ?string, limit?: ?number, containerGuid?: ?string}} options
+ * @param {{cursor?: ?string, limit?: ?number, containerId?: ?number}} options
  * @returns {Promise<{results: Array, nextCursor: ?string}>}
  */
-export const fetchActivities = ({ cursor = null, limit = null, containerGuid = null } = {}) => {
+export const fetchActivities = ({ cursor = null, limit = null, containerId = null } = {}) => {
     const params = {};
 
     if (cursor) {
@@ -28,8 +28,8 @@ export const fetchActivities = ({ cursor = null, limit = null, containerGuid = n
     if (limit) {
         params.limit = limit;
     }
-    if (containerGuid) {
-        params.containerGuid = containerGuid;
+    if (containerId) {
+        params.containerId = containerId;
     }
 
     return client.get(apiUrl('activity', params)).then(normalizeWindow);

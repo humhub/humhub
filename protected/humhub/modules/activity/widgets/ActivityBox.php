@@ -84,6 +84,9 @@ class ActivityBox extends VueWidget
                 null,
                 $this->contentContainer?->contentContainerRecord,
             ),
+            // The content container id, as `SpaceShort`/`UserShort` carry it — what the
+            // endpoint scopes by. The guid is what live events name the container by.
+            'containerId' => (int)($this->contentContainer?->contentcontainer_id ?? 0),
             'containerGuid' => $this->contentContainer?->guid ?? '',
             'pageSize' => ActivityWindowService::PAGE_SIZE,
             // `PanelMenu` derives its collapse id from the view context, which used to be

@@ -677,11 +677,11 @@
     }
     return vue$1.client.get(vue$1.apiUrl("space", params)).then(normalizePage);
   };
-  const fetchStates = (guids) => {
-    if (!guids.length) {
+  const fetchStates = (ids) => {
+    if (!ids.length) {
       return Promise.resolve({});
     }
-    return vue$1.client.get(vue$1.apiUrl("space/states", { guids })).then((response) => response.results || {});
+    return vue$1.client.get(vue$1.apiUrl("space/states", { ids })).then((response) => response.results || {});
   };
   const normalizePage = (response) => ({
     results: Array.isArray(response.results) ? response.results : [],
@@ -840,11 +840,11 @@
        * in them. Asked for the spaces displayed, never for "all of mine".
        */
       loadStates(spaces) {
-        const guids = spaces.map((space) => space.guid);
-        if (!guids.length) {
+        const ids = spaces.map((space) => space.id);
+        if (!ids.length) {
           return Promise.resolve();
         }
-        return fetchStates(guids).then((states) => {
+        return fetchStates(ids).then((states) => {
           this.states = { ...this.states, ...states };
         });
       },
@@ -879,7 +879,7 @@
         }
       },
       relationOf(space) {
-        const state = this.states[space.guid];
+        const state = this.states[space.id];
         if (state && state.isMember) {
           return "member";
         }
@@ -889,7 +889,7 @@
         return space.archived ? "archived" : "none";
       },
       newItemsOf(space) {
-        const state = this.states[space.guid];
+        const state = this.states[space.id];
         return state ? state.newItems : 0;
       },
       /**
@@ -902,11 +902,12 @@
           if (data.uguid || data.silent || data.originator === this.currentUserGuid()) {
             return;
           }
-          const state = this.states[data.sguid];
+          const space = this.spaces.find((candidate) => candidate.guid === data.sguid);
+          const state = space ? this.states[space.id] : null;
           if (state && state.isMember) {
             this.states = {
               ...this.states,
-              [data.sguid]: { ...state, newItems: state.newItems + 1 }
+              [space.id]: { ...state, newItems: state.newItems + 1 }
             };
           }
         });
@@ -1067,7 +1068,7 @@
             null,
             vue.renderList($data.spaces, (space, index) => {
               return vue.openBlock(), vue.createBlock(_component_SpaceChooserItem, {
-                key: space.guid,
+                key: space.id,
                 space,
                 relation: $options.relationOf(space),
                 "new-items": $options.newItemsOf(space),

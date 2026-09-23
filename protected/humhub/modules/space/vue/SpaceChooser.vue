@@ -38,7 +38,7 @@
         <div id="space-menu-spaces" ref="list" class="hh-list" v-additions>
             <SpaceChooserItem
                 v-for="(space, index) in spaces"
-                :key="space.guid"
+                :key="space.id"
                 :space="space"
                 :relation="relationOf(space)"
                 :new-items="newItemsOf(space)"
@@ -276,13 +276,13 @@ export default {
          * in them. Asked for the spaces displayed, never for "all of mine".
          */
         loadStates(spaces) {
-            const guids = spaces.map((space) => space.guid);
+            const ids = spaces.map((space) => space.id);
 
-            if (!guids.length) {
+            if (!ids.length) {
                 return Promise.resolve();
             }
 
-            return fetchStates(guids).then((states) => {
+            return fetchStates(ids).then((states) => {
                 this.states = { ...this.states, ...states };
             });
         },
@@ -322,7 +322,7 @@ export default {
             }
         },
         relationOf(space) {
-            const state = this.states[space.guid];
+            const state = this.states[space.id];
 
             if (state && state.isMember) {
                 return 'member';
@@ -334,7 +334,7 @@ export default {
             return space.archived ? 'archived' : 'none';
         },
         newItemsOf(space) {
-            const state = this.states[space.guid];
+            const state = this.states[space.id];
 
             return state ? state.newItems : 0;
         },
@@ -350,12 +350,14 @@ export default {
                     return;
                 }
 
-                const state = this.states[data.sguid];
+                // The live event names the space by guid, the states are keyed by id.
+                const space = this.spaces.find((candidate) => candidate.guid === data.sguid);
+                const state = space ? this.states[space.id] : null;
 
                 if (state && state.isMember) {
                     this.states = {
                         ...this.states,
-                        [data.sguid]: { ...state, newItems: state.newItems + 1 },
+                        [space.id]: { ...state, newItems: state.newItems + 1 },
                     };
                 }
             });

@@ -73,17 +73,23 @@ class FriendshipController extends BaseController
     /**
      * @inheritdoc
      * @throws HttpException the friendship system can be switched off entirely, in which case
-     *         these endpoints do not exist — same answer the web controller gives.
+     *         these endpoints do not exist — same answer the web controller gives. Checked
+     *         after the parent has run the API guard and the authentication, so the answer
+     *         follows the same rules as every other API error.
      */
     public function beforeAction($action)
     {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+
         if (!$this->module->isFriendshipEnabled()) {
             throw new NotFoundHttpException(
                 Yii::t('FriendshipModule.base', 'Friendship system is not enabled!'),
             );
         }
 
-        return parent::beforeAction($action);
+        return true;
     }
 
     /**
@@ -97,6 +103,11 @@ class FriendshipController extends BaseController
     /**
      * Sends a friendship request, or accepts the one this user sent — whichever the current
      * state calls for.
+     *
+     * Idempotent like {@see self::actionRemove()}: affirming what is already affirmed (friends,
+     * or a request of the caller's still waiting for an answer) changes nothing and answers
+     * the state, so a client acting on a stale view ends up with the truth rather than an
+     * error.
      */
     public function actionAffirm($id)
     {
@@ -104,9 +115,9 @@ class FriendshipController extends BaseController
         $state = FriendshipSerializer::state($user)['state'];
 
         if ($state !== FriendshipSerializer::STATE_NONE && $state !== FriendshipSerializer::STATE_REQUEST_RECEIVED) {
-            // Already friends, or already waiting for an answer - nothing to affirm, and the
-            // state says so.
-            throw new ForbiddenHttpException();
+            // Already friends, or already waiting for an answer - nothing to affirm, the state
+            // says so.
+            return FriendshipSerializer::state($user);
         }
 
         // One call for both: a request where there is none, the accepting counterpart where

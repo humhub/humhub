@@ -74,7 +74,7 @@ const openMenu = async () => {
 beforeEach(() => {
     getCalls = [];
     listResponse = page();
-    statesResponse = { s3: { isMember: true, isFollowing: false, newItems: 2 } };
+    statesResponse = { 3: { isMember: true, isFollowing: false, newItems: 2 } };
 
     globalThis.humhubStubs.event._handlers.clear();
     globalThis.humhubStubs.client.get = (url) => {
@@ -130,7 +130,8 @@ describe('SpaceChooser', () => {
         expect(getCalls[0]).toContain('scope=mine');
         // The states are asked for exactly the spaces displayed.
         expect(getCalls[1]).toContain('/api/v2/space/states');
-        expect(getCalls[1]).toContain('s3');
+        // ... by id, the API's addressing
+        expect(decodeURIComponent(getCalls[1])).toContain('ids[]=3');
 
         const item = wrapper.find('[data-space-chooser-item]');
         expect(item.attributes('data-space-guid')).toBe('s3');
@@ -140,7 +141,7 @@ describe('SpaceChooser', () => {
     });
 
     it('marks a space the caller only follows', async () => {
-        statesResponse = { s3: { isMember: false, isFollowing: true, newItems: 0 } };
+        statesResponse = { 3: { isMember: false, isFollowing: true, newItems: 0 } };
         wrapper = mountInDropdown();
         await openMenu();
 

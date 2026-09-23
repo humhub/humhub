@@ -78,7 +78,7 @@ class SpaceSerializer
      *     contentContainerId: int|null,
      *     description: string|null,
      *     tags: string[],
-     *     visibility: int|null,
+     *     visibility: string|null,
      *     archived: bool,
      *     extensions: array,
      * }
@@ -87,6 +87,15 @@ class SpaceSerializer
      *        {@see SerializeEvent::collectFor()} returns it — pass it when the caller already
      *        collected a whole batch, so the event fires once per response rather than per space
      */
+    /**
+     * The `visibility` values of the API, by the stored constant.
+     */
+    public const VISIBILITIES = [
+        Space::VISIBILITY_NONE => 'private',
+        Space::VISIBILITY_REGISTERED_ONLY => 'registered',
+        Space::VISIBILITY_ALL => 'public',
+    ];
+
     public static function list(Space $space, ?array $extensionData = null): array
     {
         $extensionData ??= SerializeEvent::collectFor(Space::class, [$space])[$space->id] ?? [];
@@ -94,7 +103,8 @@ class SpaceSerializer
         return array_merge(self::short($space), [
             'description' => $space->description === '' ? null : $space->description,
             'tags' => $space->getTags(),
-            'visibility' => $space->visibility === null ? null : (int)$space->visibility,
+            // A named value rather than the stored integer, like every other enum of the API.
+            'visibility' => self::VISIBILITIES[(int)$space->visibility] ?? null,
             'archived' => $space->isArchived(),
             // (object) so "nothing attached" serializes as `{}` rather than `[]`.
             'extensions' => $extensionData === [] ? (object)[] : $extensionData,

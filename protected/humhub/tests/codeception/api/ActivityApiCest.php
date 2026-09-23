@@ -94,7 +94,7 @@ class ActivityApiCest
         $onProfile = $this->seedActivity(2, 3);
 
         $I->amLoggedInAs(1);
-        $I->sendGet('activity', ['containerGuid' => Space::findOne(['id' => 1])->guid]);
+        $I->sendGet('activity', ['containerId' => Space::findOne(['id' => 1])->contentcontainer_id]);
 
         $I->seeResponseCodeIs(200);
         $ids = array_map('intval', $I->grabDataFromResponseByJsonPath('$.results[*].id'));
@@ -106,7 +106,7 @@ class ActivityApiCest
     {
         $I->wantTo('learn that the container I asked for does not exist');
         $I->amLoggedInAs(1);
-        $I->sendGet('activity', ['containerGuid' => 'no-such-container']);
+        $I->sendGet('activity', ['containerId' => 999999]);
 
         $I->seeResponseCodeIs(404);
     }
@@ -121,7 +121,7 @@ class ActivityApiCest
         ];
 
         $I->amLoggedInAs(1);
-        $I->sendGet('activity', ['containerGuid' => Space::findOne(['id' => 1])->guid, 'limit' => 2]);
+        $I->sendGet('activity', ['containerId' => Space::findOne(['id' => 1])->contentcontainer_id, 'limit' => 2]);
 
         $I->seeResponseCodeIs(200);
         $firstPage = array_map('intval', $I->grabDataFromResponseByJsonPath('$.results[*].id'));
@@ -135,7 +135,7 @@ class ActivityApiCest
         Assert::assertFalse(ctype_digit($cursor), 'the cursor is not an id a client could guess');
 
         $I->sendGet('activity', [
-            'containerGuid' => Space::findOne(['id' => 1])->guid,
+            'containerId' => Space::findOne(['id' => 1])->contentcontainer_id,
             'limit' => 2,
             'cursor' => $cursor,
         ]);

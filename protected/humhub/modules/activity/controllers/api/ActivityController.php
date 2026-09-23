@@ -20,7 +20,7 @@ use yii\web\NotFoundHttpException;
  * The activity API (see `docs/develop/concept-api.md`), consumed by the `ActivityBox` island
  * (`activity/vue/`).
  *
- * Always the activities the caller may see: without `containerGuid` those of every container
+ * Always the activities the caller may see: without `containerId` those of every container
  * they subscribe to (the dashboard box), with it those of that one container (the box in a
  * space or on a profile). Which activities that is stays a decision of the query scopes
  * (`ActiveQueryActivity::defaultScopes()`/`contentContainer()`/`subscribedContentContainers()`)
@@ -63,8 +63,8 @@ class ActivityController extends BaseController
     /**
      * The activities the caller may see, newest group first.
      *
-     * Parameters: `containerGuid` (a space or user guid), `limit` and `cursor` (the previous
-     * page's `nextCursor`).
+     * Parameters: `containerId` (the `contentContainerId` a space or user shape carries),
+     * `limit` and `cursor` (the previous page's `nextCursor`).
      */
     public function actionIndex()
     {
@@ -78,27 +78,27 @@ class ActivityController extends BaseController
         return (new ActivityWindowService())->window(
             $limit,
             (string)$request->get('cursor', '') ?: null,
-            $this->findContainer((string)$request->get('containerGuid', '')),
+            $this->findContainer((int)$request->get('containerId', 0)),
         );
     }
 
     /**
      * The container to scope to, `null` for the dashboard view.
      *
-     * A guid naming no container is a 404 — a caller asking for a specific container should
+     * An id naming no container is a 404 — a caller asking for a specific container should
      * learn that it does not exist rather than receive the dashboard's activities. Whether the
      * caller may see anything IN it is left to the query scopes, so an existing container the
      * caller has no access to answers an empty list and reveals nothing.
      *
      * @throws NotFoundHttpException
      */
-    private function findContainer(string $guid): ?ContentContainer
+    private function findContainer(int $id): ?ContentContainer
     {
-        if ($guid === '') {
+        if ($id <= 0) {
             return null;
         }
 
-        $container = ContentContainer::findOne(['guid' => $guid]);
+        $container = ContentContainer::findOne(['id' => $id]);
 
         if ($container === null) {
             throw new NotFoundHttpException('Content container not found!');

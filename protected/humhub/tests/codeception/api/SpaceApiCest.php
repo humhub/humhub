@@ -76,7 +76,11 @@ class SpaceApiCest
         $I->seeResponseJsonMatchesJsonPath('$.results[0].url');
         $I->seeResponseJsonMatchesJsonPath('$.results[0].contentContainerId');
         $I->seeResponseJsonMatchesJsonPath('$.results[0].description');
-        $I->seeResponseJsonMatchesJsonPath('$.results[0].visibility');
+        // Enums are named values, not the stored integers
+        Assert::assertContains(
+            $I->grabDataFromResponseByJsonPath('$.results[0].visibility')[0],
+            ['private', 'registered', 'public'],
+        );
         $I->seeResponseJsonMatchesJsonPath('$.results[0].archived');
         // Caller context is not part of this shape - it is the same for everyone asking.
         $I->dontSeeResponseJsonMatchesJsonPath('$.results[0].isMember');
@@ -145,23 +149,23 @@ class SpaceApiCest
         Membership::updateAll(['last_visit' => '2010-01-01 00:00:00'], ['user_id' => 1, 'space_id' => 1]);
 
         $I->amLoggedInAs(1);
-        $I->sendGet('space/states', ['guids' => [$this->guid(1), $this->guid(2)]]);
+        $I->sendGet('space/states', ['ids' => [1, 2]]);
 
         $I->seeResponseCodeIs(200);
         $states = json_decode($I->grabResponse(), true)['results'];
 
-        Assert::assertTrue($states[$this->guid(1)]['isMember'], 'space 1 is one of mine');
+        Assert::assertTrue($states[1]['isMember'], 'space 1 is one of mine');
         Assert::assertGreaterThan(
             0,
-            $states[$this->guid(1)]['newItems'],
+            $states[1]['newItems'],
             'and it counts what was posted since my last visit',
         );
 
         // A space the caller has no relation to still answers - a client showing it should
         // learn "nothing of mine" rather than have to tell that from a missing key.
-        Assert::assertFalse($states[$this->guid(2)]['isMember']);
-        Assert::assertFalse($states[$this->guid(2)]['isFollowing']);
-        Assert::assertSame(0, $states[$this->guid(2)]['newItems']);
+        Assert::assertFalse($states[2]['isMember']);
+        Assert::assertFalse($states[2]['isFollowing']);
+        Assert::assertSame(0, $states[2]['newItems']);
     }
 
     public function testTellsFollowingApartFromMembership(ApiTester $I)
@@ -172,16 +176,16 @@ class SpaceApiCest
         Assert::assertTrue($follow->save());
 
         $I->amLoggedInAs(1);
-        $I->sendGet('space/states', ['guids' => [$this->guid(2)]]);
+        $I->sendGet('space/states', ['ids' => [2]]);
 
         $I->seeResponseCodeIs(200);
-        $state = json_decode($I->grabResponse(), true)['results'][$this->guid(2)];
+        $state = json_decode($I->grabResponse(), true)['results'][2];
 
         Assert::assertFalse($state['isMember'], 'user 1 is not a member of space 2');
         Assert::assertTrue($state['isFollowing'], 'but follows it');
     }
 
-    public function testAnswersAnEmptyMapWithoutGuids(ApiTester $I)
+    public function testAnswersAnEmptyMapWithoutIds(ApiTester $I)
     {
         $I->wantTo('ask for no counts at all');
         $I->amLoggedInAs(1);

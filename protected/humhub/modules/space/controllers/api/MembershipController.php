@@ -81,6 +81,11 @@ class MembershipController extends BaseController
      * Joins the space, applies for membership, or accepts a pending invite — whichever the
      * current state and the space's join policy call for.
      *
+     * Idempotent like {@see self::actionRemove()}: affirming a membership that is already
+     * affirmed (member, or applicant waiting for approval) changes nothing and answers the
+     * state, so a client acting on a stale view ends up with the truth rather than an error.
+     * `403` is reserved for what the caller may not do.
+     *
      * `message` is the application text of a space that approves memberships — required there
      * ({@see RequestMembershipForm}, the same model the web form validates against), ignored
      * where no approval takes place.
@@ -97,10 +102,8 @@ class MembershipController extends BaseController
         }
 
         if ($membership !== null) {
-            // Already a member or already applied - nothing to affirm, and the state says so.
-            throw new ForbiddenHttpException(
-                Yii::t('SpaceModule.base', 'Could not request membership!'),
-            );
+            // Already a member or already applied - nothing to affirm, the state says so.
+            return MembershipSerializer::state($space);
         }
 
         if (!$space->canJoin()) {

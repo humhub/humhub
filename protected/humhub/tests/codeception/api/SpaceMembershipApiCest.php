@@ -205,6 +205,23 @@ class SpaceMembershipApiCest
         Assert::assertNull($this->membership(self::SPACE_PRIVATE, 3));
     }
 
+    public function testAffirmingWhatIsAlreadyAffirmedIsASuccess(ApiTester $I)
+    {
+        $I->wantTo('see a POST on an existing membership answer the state instead of an error');
+        $I->amLoggedInAs(3);
+        $this->withCsrf($I);
+
+        $I->sendPost('space/' . self::SPACE_FREE . '/membership');
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContainsJson(['state' => 'member']);
+
+        // Idempotent like DELETE: nothing changes, the state is the answer
+        $I->sendPost('space/' . self::SPACE_FREE . '/membership');
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContainsJson(['state' => 'member']);
+        Assert::assertTrue($this->space(self::SPACE_FREE)->isMember(3));
+    }
+
     public function testCannotJoinASpaceThatDoesNotAllowIt(ApiTester $I)
     {
         $I->wantTo('be refused when the space allows no self-join');

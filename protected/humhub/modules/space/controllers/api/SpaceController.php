@@ -46,7 +46,7 @@ class SpaceController extends BaseController
      * @var int the most spaces one state request may name — a client asks for the page it
      * displays, not for every space a user is a member of
      */
-    public const MAX_STATE_GUIDS = 100;
+    public const MAX_STATE_IDS = 100;
 
     /**
      * @var string[] the scopes `scope` accepts
@@ -113,9 +113,9 @@ class SpaceController extends BaseController
      * What the caller is to the spaces they name: member, follower, and how much they have not
      * seen there yet.
      *
-     * Parameter: `guids[]` — the spaces a client currently displays. Deliberately not "every
+     * Parameter: `ids[]` — the spaces a client currently displays. Deliberately not "every
      * space of the caller": a user can be a member of a great many, while a client shows one
-     * page of them. Answers `{results: {<guid>: {isMember, isFollowing, newItems}}}`.
+     * page of them. Answers `{results: {<id>: {isMember, isFollowing, newItems}}}`.
      *
      * This is where the caller context of a space lives, which is why {@see SpaceSerializer::list()}
      * carries none of it — the same split `like/states` makes for the like state of a batch of
@@ -124,12 +124,12 @@ class SpaceController extends BaseController
      */
     public function actionStates()
     {
-        $guids = Yii::$app->request->get('guids');
-        $guids = is_array($guids)
-            ? array_slice(array_filter($guids, 'is_string'), 0, self::MAX_STATE_GUIDS)
+        $ids = Yii::$app->request->get('ids');
+        $ids = is_array($ids)
+            ? array_slice(array_values(array_filter(array_map('intval', $ids), fn(int $id) => $id > 0)), 0, self::MAX_STATE_IDS)
             : [];
 
-        if ($guids === []) {
+        if ($ids === []) {
             return ['results' => (object)[]];
         }
 
@@ -138,9 +138,9 @@ class SpaceController extends BaseController
         $rows = Space::find()
             ->visible()
             ->filterBlockedSpaces()
-            ->andWhere(['space.guid' => $guids])
+            ->andWhere(['space.id' => $ids])
             ->select([
-                'guid' => 'space.guid',
+                'id' => 'space.id',
                 'isMember' => 'MAX(CASE WHEN membership.id IS NULL THEN 0 ELSE 1 END)',
                 'isFollowing' => 'MAX(CASE WHEN follow.id IS NULL THEN 0 ELSE 1 END)',
                 'newItems' => 'COUNT(content.id)',
@@ -172,20 +172,21 @@ class SpaceController extends BaseController
                 . ' AND content.created_at > membership.last_visit',
                 [':stateChannel' => 'default'],
             )
-            ->groupBy('space.guid')
+            ->groupBy('space.id')
             ->asArray()
             ->all();
 
         $results = [];
         foreach ($rows as $row) {
-            $results[$row['guid']] = [
+            $results[(int)$row['id']] = [
                 'isMember' => (bool)$row['isMember'],
                 'isFollowing' => (bool)$row['isFollowing'],
                 'newItems' => (int)$row['newItems'],
             ];
         }
 
-        // (object) so an empty map serializes as `{}` rather than `[]`.
+        // (object) so an empty map serializes as `{}` rather than `[]`, and so the numeric
+        // ids stay object keys instead of turning into array indices.
         return ['results' => $results === [] ? (object)[] : (object)$results];
     }
 
