@@ -389,7 +389,7 @@ docs/api/
 ├── index.html         # the rendered reference: every source joined into one page (committed)
 ├── build.sh           # joins src/*.yaml and renders index.html
 ├── redocly.yaml       # Redoc options
-└── src/*.yaml         # OpenAPI sources — `index.yaml` the introduction, `common.yaml` the shared components
+└── src/*.yaml         # OpenAPI 3.1 sources — `index.yaml` the introduction, `common.yaml` the shared components
 ```
 
 One source per module owning endpoints (`account`, `activity`, `comment`, `content`, `file`,

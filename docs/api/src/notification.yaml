@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.1.0
 info:
   description: Joined into index.html by build.sh; this module's introduction is the
     description of its tag below.
@@ -102,8 +102,7 @@ paths:
                       The caller's total number of unseen notifications — what a client shows
                       as its badge, independent of the filters of this request.
                   nextCursor:
-                    type: integer
-                    nullable: true
+                    type: [integer, 'null']
                     description: |
                       Pass as `cursor` for the next page; `null` when there is nothing behind
                       this one.
@@ -174,8 +173,7 @@ components:
         id:
           type: integer
         html:
-          type: string
-          nullable: true
+          type: [string, 'null']
           description: |
             The notification's own localized sentence, as HTML (display names wrapped in
             `<strong>`, links into the content). Composed server-side from escaped values by
@@ -194,21 +192,18 @@ components:
           format: date-time
           description: ISO-8601 timestamp with offset
         groupKey:
-          type: string
-          nullable: true
+          type: [string, 'null']
           description: |
             `<notification class>:<group key>` for a grouped notification, `null` otherwise —
             the same value the live event carries, so a client can match an arriving event
             against an entry it already shows.
         originator:
-          type: object
-          allOf:
+          oneOf:
             - $ref: "common.yaml#/components/schemas/UserShort"
-          nullable: true
+            - type: 'null'
           description: The user who caused the notification, when there is one
         space:
-          type: object
-          allOf:
+          oneOf:
             - $ref: "common.yaml#/components/schemas/SpaceShort"
-          nullable: true
+            - type: 'null'
           description: The space the notification happened in, when it happened in one

@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.1.0
 info:
   description: Joined into index.html by build.sh; this module's introduction is the
     description of its tag below.
@@ -117,7 +117,8 @@ components:
         Unknown names are ignored.
       schema:
         type: string
-        example: edit,delete,move
+        examples:
+          - edit,delete,move
       examples:
         fileBrowser:
           summary: A file browser rendering its own Edit/Move/Delete
@@ -143,8 +144,7 @@ components:
           type: string
           description: Localized entry text. Absent on a divider and on an `html` entry.
         icon:
-          type: string
-          nullable: true
+          type: [string, 'null']
           description: |
             Tabler icon name (`pencil`, `trash`, …, see https://tabler.io/icons) — the platform's
             icon set, rendered as `<i class="ti ti-<name>">`.
@@ -152,8 +152,7 @@ components:
           type: integer
           description: Ascending; supplied by the wrapping menu entry when the widget omits it.
         url:
-          type: string
-          nullable: true
+          type: [string, 'null']
           description: |
             When present the client renders a real `href` instead of `#`, so middle-click
             and "open in new tab" work.

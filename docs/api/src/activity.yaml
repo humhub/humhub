@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.1.0
 info:
   description: Joined into index.html by build.sh; this module's introduction is the
     description of its tag below.
@@ -87,8 +87,7 @@ paths:
                     items:
                       $ref: "#/components/schemas/Activity"
                   nextCursor:
-                    type: string
-                    nullable: true
+                    type: [string, 'null']
                     description: |
                       Pass as `cursor` for the next page; `null` when there is nothing behind
                       this one.
@@ -156,28 +155,24 @@ components:
             `<strong>`, links into the content). Composed server-side from escaped values by
             the activity class; for a group it is the sentence naming the group.
         url:
-          type: string
-          nullable: true
+          type: [string, 'null']
           description: Where the entry links to — the content or its container
         createdAt:
-          type: string
+          type: [string, 'null']
           format: date-time
-          nullable: true
           description: ISO-8601 timestamp with offset
         groupCount:
           type: integer
           description: How many activities this entry stands for, `1` when it is not a group
         user:
-          type: object
-          allOf:
+          oneOf:
             - $ref: "common.yaml#/components/schemas/UserShort"
-          nullable: true
+            - type: 'null'
           description: The user who caused the activity
         space:
-          type: object
-          allOf:
+          oneOf:
             - $ref: "common.yaml#/components/schemas/SpaceShort"
-          nullable: true
+            - type: 'null'
           description: |
             The space the activity happened in, `null` on a user profile. Travels with every
             entry; whether it is shown is the client's decision — inside a space it is

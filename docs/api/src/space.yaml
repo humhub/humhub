@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.1.0
 info:
   description: Joined into index.html by build.sh; this module's introduction is the
     description of its tag below.
@@ -281,27 +281,22 @@ components:
         url:
           type: string
         color:
-          type: string
-          nullable: true
+          type: [string, 'null']
         imageUrl:
-          type: string
-          nullable: true
+          type: [string, 'null']
           description: |
             `null` when the space has no profile image of its own — which is what decides
             whether a client renders an image or the coloured acronym tile.
         contentContainerId:
-          type: integer
-          nullable: true
+          type: [integer, 'null']
         description:
-          type: string
-          nullable: true
+          type: [string, 'null']
         tags:
           type: array
           items:
             type: string
         visibility:
-          type: string
-          nullable: true
+          type: [string, 'null']
           enum: [private, registered, public]
           description: |
             `private` — visible to members only ·
@@ -368,13 +363,13 @@ components:
             Whether the caller follows this space. Not membership state, but the state of the
             sibling follow action the same UI offers: following is for non-members, so a
             membership change flips it.
-      example:
-        state: none
-        canJoin: true
-        needsApproval: true
-        canLeave: false
-        isOwner: false
-        isFollowing: false
+      examples:
+        - state: none
+          canJoin: true
+          needsApproval: true
+          canLeave: false
+          isOwner: false
+          isFollowing: false
   securitySchemes:
     Bearer:
       $ref: "common.yaml#/components/securitySchemes/Bearer"

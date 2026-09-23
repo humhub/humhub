@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.1.0
 info:
   description: Joined into index.html by build.sh; this module's introduction is the
     description of its tag below.
@@ -55,7 +55,7 @@ paths:
                   description: The files to upload, repeated for a batch
                   items:
                     type: string
-                    format: binary
+                    contentMediaType: application/octet-stream
       responses:
         "200":
           description: |
@@ -116,10 +116,10 @@ paths:
                       type: array
                       items:
                         type: string
-                example:
-                  errors:
-                    files:
-                      - No file was uploaded.
+                examples:
+                  - errors:
+                      files:
+                        - No file was uploaded.
   "/file/{id}":
     delete:
       tags:
