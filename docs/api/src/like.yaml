@@ -18,21 +18,21 @@ security:
 tags:
   - name: Like
     description: |
-      Every likeable record is addressed either by its platform-wide `recordId` (what shapes
-      carrying likes expose) or by `model` + `pk`.
+      Every likeable record is addressed by its platform-wide `recordId`, which every shape
+      carrying likes exposes — in the body of the `POST`, in the query string of `GET` and
+      `DELETE`.
 paths:
   "/like/state":
     get:
       tags:
         - Like
       summary: Like state of a record
+      operationId: getLikeState
       description: |
         The caller-context like state. Readable by guests for content they can see, with
         `liked` and `canLike` always `false`.
       parameters:
         - $ref: "common.yaml#/components/parameters/recordIdParam"
-        - $ref: "common.yaml#/components/parameters/modelParam"
-        - $ref: "common.yaml#/components/parameters/pkParam"
       responses:
         "200":
           description: Successful operation
@@ -51,6 +51,7 @@ paths:
       tags:
         - Like
       summary: Like states of many records
+      operationId: getLikeStates
       description: |
         The caller's like state for up to 100 records in one request, keyed by record id —
         what a client asks for after receiving a page of records whose payloads deliberately
@@ -87,10 +88,22 @@ paths:
       tags:
         - Like
       summary: Like a record
-      parameters:
-        - $ref: "common.yaml#/components/parameters/recordIdParam"
-        - $ref: "common.yaml#/components/parameters/modelParam"
-        - $ref: "common.yaml#/components/parameters/pkParam"
+      operationId: createLike
+      description: |
+        Idempotent — liking what the caller already likes is a success and answers the
+        unchanged state. `403` unless the caller may like the record.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                recordId:
+                  type: integer
+                  description: Platform-wide record id of the record to like
+              required:
+                - recordId
       responses:
         "200":
           description: Successful operation
@@ -108,11 +121,10 @@ paths:
       tags:
         - Like
       summary: Remove the caller's like
+      operationId: removeLike
       description: Idempotent — unliking something that was never liked is a success.
       parameters:
         - $ref: "common.yaml#/components/parameters/recordIdParam"
-        - $ref: "common.yaml#/components/parameters/modelParam"
-        - $ref: "common.yaml#/components/parameters/pkParam"
       responses:
         "200":
           description: Successful operation
@@ -131,11 +143,10 @@ paths:
       tags:
         - Like
       summary: Users who liked a record
+      operationId: listLikeUsers
       description: Newest first. Readable by guests for content they can see.
       parameters:
         - $ref: "common.yaml#/components/parameters/recordIdParam"
-        - $ref: "common.yaml#/components/parameters/modelParam"
-        - $ref: "common.yaml#/components/parameters/pkParam"
         - $ref: "common.yaml#/components/parameters/pageParam"
         - $ref: "common.yaml#/components/parameters/pageSizeParam"
       responses:

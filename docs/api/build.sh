@@ -1,9 +1,11 @@
 #!/bin/bash
 
-# Renders the OpenAPI sources in src/ into index.html, the whole API on one self-contained
-# page: `redocly join` merges every source into one document (src/index.yaml first, supplying
-# the info block), rendered with a sidebar across all modules. `src/common.yaml` holds shared
-# components only — every document $refs it, nothing reads it on its own.
+# Lints the OpenAPI sources in src/ and renders them into index.html, the whole API on one
+# self-contained page: `redocly lint` checks every endpoint document against the rule set in
+# redocly.yaml (strict: warnings fail the build), then `redocly join` merges every source into
+# one document (src/index.yaml first, supplying the info block), rendered with a sidebar
+# across all modules. `src/common.yaml` holds shared components only — every document $refs
+# it, nothing reads it on its own.
 #
 # index.html is committed, so the reference opens straight from a checkout (no server needed)
 # without a build step. Run this after changing a source and commit the result.
@@ -105,6 +107,22 @@ localize() {
     mv "$page.tmp" "$page"
 }
 
+# Lints every endpoint document before anything is rendered, so an invalid schema or an
+# operation without an `operationId` (what client generators key on) fails the build instead
+# of being rendered into a page that looks fine. The rule set comes from redocly.yaml
+# (`recommended-strict`: every warning is an error, the sources are kept clean, not merely
+# valid), and `set -e` turns a non-zero exit into a failed build. `src/common.yaml` is
+# components-only and is validated through the $refs of the documents embedding it; linted on
+# its own it would only report the `servers` and `paths` it has no use for.
+lint_sources() {
+    local sources
+    sources="$(find src -name '*.yaml' ! -name 'common.yaml' ! -name '.*' | sort)"
+
+    echo "--------- lint ---------"
+    # shellcheck disable=SC2086 # word splitting intended, no spaces in source names
+    npx "$REDOCLY_CLI" lint $sources
+}
+
 # Renders index.html: every source joined into one document (`redocly join`; src/index.yaml
 # goes first and supplies the info block), so one page carries the whole API with a sidebar
 # across all modules and a search over all of them. Each tag's description comes from the
@@ -129,4 +147,5 @@ render_index() {
     localize "index.html"
 }
 
+lint_sources
 render_index

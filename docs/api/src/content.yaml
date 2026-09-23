@@ -29,6 +29,7 @@ paths:
       tags:
         - Content
       summary: The context menu of a content record
+      operationId: getContentControls
       description: |
         Resolves the record's `WallEntryControls` widget stack — every
         `WallEntryControls::EVENT_INIT` handler included — and returns it as data instead of

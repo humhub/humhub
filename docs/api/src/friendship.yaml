@@ -26,6 +26,7 @@ paths:
       tags:
         - Friendship
       summary: The caller's friendship with a user
+      operationId: getFriendship
       description: |
         Answers what the caller's relationship to this user is (see the `FriendshipState`
         schema). `403` for the caller's own user — there is no friendship resource for
@@ -49,6 +50,7 @@ paths:
       tags:
         - Friendship
       summary: Send a friendship request, or accept a received one
+      operationId: affirmFriendship
       description: |
         **Affirms** the friendship. Which of the two it is follows from the current state, and
         is decided server-side rather than by the client:
@@ -59,8 +61,9 @@ paths:
         Sending or accepting also makes the caller follow this user, which is why the answer
         carries `isFollowing`.
 
-        Answers the new state, in the same shape `GET` returns. `403` when there is nothing to
-        affirm (already friends, or already waiting for an answer).
+        Answers the new state, in the same shape `GET` returns. Idempotent: affirming what is
+        already affirmed (friends, or a request of the caller's still waiting for an answer)
+        changes nothing and answers the state.
       parameters:
         - $ref: "#/components/parameters/userIdParam"
       responses:
@@ -80,6 +83,7 @@ paths:
       tags:
         - Friendship
       summary: Withdraw, deny or end a friendship
+      operationId: removeFriendship
       description: |
         **Removes** the friendship, whichever of the three states it is in: withdrawing a
         request the caller sent, denying one this user sent, or ending an existing friendship.

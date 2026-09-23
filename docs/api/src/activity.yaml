@@ -18,7 +18,7 @@ security:
 tags:
   - name: Activity
     description: |
-      **Always what the caller may see.** Without `containerGuid` the list spans every container
+      **Always what the caller may see.** Without `containerId` the list spans every container
       the caller subscribes to (the dashboard box), with it the one container named (the box on a
       space or profile). Activities the caller may not see never appear, and the caller's own
       activities are left out — the box has always shown what others did.
@@ -42,6 +42,7 @@ paths:
       tags:
         - Activity
       summary: The activities the caller may see
+      operationId: listActivities
       description: |
         One page of activities, newest group first.
 
@@ -49,15 +50,16 @@ paths:
         content it is about is gone — is skipped instead of failing the request, so a page may
         contain fewer entries than `limit` even when `nextCursor` is set.
       parameters:
-        - name: containerGuid
+        - name: containerId
           in: query
           required: false
           description: |
-            Guid of a space or user to scope the list to. Omit for every container the caller
-            subscribes to. A guid naming no container answers `404`; an existing container the
-            caller has no access to answers an empty list.
+            Content container id of a space or user to scope the list to — the
+            `contentContainerId` every space and user shape carries. Omit for every container
+            the caller subscribes to. An id naming no container answers `404`; an existing
+            container the caller has no access to answers an empty list.
           schema:
-            type: string
+            type: integer
         - name: limit
           in: query
           required: false
@@ -117,7 +119,7 @@ paths:
         "401":
           $ref: "common.yaml#/components/responses/Unauthorized"
         "404":
-          description: No container carries the given `containerGuid`
+          description: No container carries the given `containerId`
 components:
   securitySchemes:
     Bearer:
@@ -159,17 +161,20 @@ components:
           description: Where the entry links to — the content or its container
         createdAt:
           type: string
+          format: date-time
           nullable: true
           description: ISO-8601 timestamp with offset
         groupCount:
           type: integer
           description: How many activities this entry stands for, `1` when it is not a group
         user:
+          type: object
           allOf:
             - $ref: "common.yaml#/components/schemas/UserShort"
           nullable: true
           description: The user who caused the activity
         space:
+          type: object
           allOf:
             - $ref: "common.yaml#/components/schemas/SpaceShort"
           nullable: true

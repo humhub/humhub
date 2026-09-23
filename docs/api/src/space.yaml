@@ -26,12 +26,14 @@ paths:
       tags:
         - Space
       summary: The spaces the caller may see
+      operationId: listSpaces
       description: |
         The platform's space list: one page of the spaces the caller may see, searched and
-        scoped by the parameters below. Deliberately caller-NEUTRAL — the same space reads the
-        same for everyone, which is what lets a chooser, a picker and a directory share one
-        representation. What the caller IS to a space (member, follower, unseen items) is
-        `/space/states`.
+        scoped by the parameters below. The **shape** is caller-neutral — the same space reads
+        the same for everyone, which is what lets a chooser, a picker and a directory share one
+        representation. Which spaces the list holds does depend on the caller (`scope` narrows
+        it to their own, and visibility always applies); what the caller IS to a space (member,
+        follower, unseen items) is `/space/states`.
 
         A space the caller may not see never appears, whatever the parameters say.
       parameters:
@@ -99,7 +101,7 @@ paths:
                     contentContainerId: 21
                     description: Where the product happens
                     tags: [product, roadmap]
-                    visibility: 2
+                    visibility: public
                     archived: false
                     extensions: {}
                 total: 1
@@ -113,6 +115,7 @@ paths:
       tags:
         - Space
       summary: What the caller is to the given spaces
+      operationId: getSpaceStates
       description: |
         Membership, following and unseen items for the spaces named — the ones a client
         displays, never "every space of the caller": a user can be a member of a great many
@@ -122,14 +125,14 @@ paths:
         none of it. `newItems` counts what was posted since the membership's last visit and is
         therefore `0` without a membership. A space the caller may not see is not answered.
       parameters:
-        - name: "guids[]"
+        - name: "ids[]"
           in: query
           required: true
-          description: Guids of the spaces to answer for (at most 100)
+          description: Ids of the spaces to answer for; anything beyond the first 100 is ignored
           schema:
             type: array
             items:
-              type: string
+              type: integer
       responses:
         "200":
           description: Successful operation
@@ -140,11 +143,12 @@ paths:
                 properties:
                   results:
                     type: object
+                    description: Space id to state
                     additionalProperties:
                       $ref: "#/components/schemas/SpaceState"
               example:
                 results:
-                  9a8b7c6d-5e4f-3210-9876-543210fedcba:
+                  "3":
                     isMember: true
                     isFollowing: false
                     newItems: 3
@@ -155,6 +159,7 @@ paths:
       tags:
         - Space
       summary: The caller's membership in a space
+      operationId: getSpaceMembership
       description: |
         Answers what the caller's relationship to this space is, and what they may do next
         (see the `MembershipState` schema).
@@ -180,6 +185,7 @@ paths:
       tags:
         - Space
       summary: Join a space, apply for membership, or accept an invite
+      operationId: affirmSpaceMembership
       description: |
         **Affirms** membership. Which of the three it is follows from the current state and
         the space's join policy, and is decided server-side rather than by the client:
@@ -190,9 +196,10 @@ paths:
           with the `message` the caller introduces themselves with,
         - any other joinable space is joined immediately.
 
-        Answers the new state, in the same shape `GET` returns. `403` when the space allows
-        no self-join, when the caller is already a member or applicant, or when they are
-        blocked.
+        Answers the new state, in the same shape `GET` returns. Idempotent: affirming a
+        membership that is already affirmed (member, or applicant waiting for approval)
+        changes nothing and answers the state. `403` when the space allows no self-join or
+        when the caller is blocked.
       parameters:
         - $ref: "#/components/parameters/spaceIdParam"
       requestBody:
@@ -228,6 +235,7 @@ paths:
       tags:
         - Space
       summary: Leave a space, withdraw an application, or decline an invite
+      operationId: removeSpaceMembership
       description: |
         **Removes** the caller's membership, whichever of the three states it is in.
         Answers the new state, like the other two verbs.
@@ -292,9 +300,13 @@ components:
           items:
             type: string
         visibility:
-          type: integer
+          type: string
           nullable: true
-          description: "0 private, 1 registered users, 2 public"
+          enum: [private, registered, public]
+          description: |
+            `private` — visible to members only ·
+            `registered` — visible to every registered user ·
+            `public` — visible to guests too
         archived:
           type: boolean
         extensions:

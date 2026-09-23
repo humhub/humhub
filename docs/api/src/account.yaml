@@ -26,6 +26,7 @@ paths:
       tags:
         - Account
       summary: The authenticated user
+      operationId: getAccount
       responses:
         "200":
           description: Successful operation
@@ -40,6 +41,7 @@ paths:
       tags:
         - Account
       summary: Ids of the users the caller has blocked
+      operationId: listBlockedUsers
       description: |
         Clients need this to reproduce the platform's blocked-author masking: payloads are
         always unmasked, since masking is a display concern rather than an access boundary.

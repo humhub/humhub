@@ -33,6 +33,7 @@ paths:
       tags:
         - File
       summary: Upload files
+      operationId: uploadFiles
       description: |
         Stores the uploaded files for the authenticated caller. Same model, validation and
         image downscaling as the platform's own upload widget, so both paths produce identical
@@ -124,6 +125,7 @@ paths:
       tags:
         - File
       summary: Delete a file
+      operationId: deleteFile
       description: |
         Deletes a file the caller is allowed to delete: an unattached file only its uploader
         may remove, an attached one everybody who may edit the record it belongs to. Files a

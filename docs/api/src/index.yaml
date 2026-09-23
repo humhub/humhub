@@ -7,9 +7,19 @@ info:
     grouped by the module that owns them; the sidebar lists every operation, and the search
     covers all of them.
 
-    `/api/v2` is still being built out and does not cover every resource yet. Where an
-    endpoint is missing, the `/api/v1` surface of the
-    [REST API module](https://github.com/humhub/rest) can be used alongside it — see its
+    ## Status: internal use only
+
+    `/api/v2` exists to serve the platform's own user interface — every endpoint here has a
+    Vue island as its first consumer — and is documented so that the contract is explicit
+    rather than implied by the client code. It is **not yet a public, stable API**: while
+    the surface is being completed, an endpoint or a shape may still change between
+    releases without a deprecation period, and not every resource is covered.
+
+    The goal is a complete, stable API that third-party clients can build on. Once a
+    resource is declared stable, changes to it will be additive only — fields are neither
+    removed nor renamed, enums may grow (a client must tolerate unknown values), and
+    anything breaking goes into a new generation. Until then, integrations should keep using
+    the `/api/v1` surface of the [REST API module](https://github.com/humhub/rest) — see its
     [manual](https://github.com/humhub/rest/blob/master/docs/MANUAL.md).
 
     The REST API module also contributes the token authentication methods these endpoints
@@ -22,14 +32,30 @@ info:
 
     Fixed for this API generation, and differing from `/api/v1`:
 
+    - Everything under `/api/` answers JSON, errors included — an unknown route or a verb an
+      endpoint does not take gives a JSON `404` like any other error.
     - Timestamps are ISO-8601 with offset, in UTC (`2026-08-22T08:00:00+00:00`).
     - Field names are camelCase throughout — including the keys of validation errors, so a
-      client matches them against the field names it sent.
+      client matches them against the field names it sent. Enums are named values
+      (`state: member`, `visibility: public`), never stored integers.
+    - Records are addressed by numeric id: the record's own id in a path, the platform-wide
+      `recordId` for anything likeable, the `contentContainerId` of a space or user where a
+      container is meant (`containerId`). Guids appear in payloads for display, never as an
+      address. Class names never reach the wire.
+    - Where a parameter travels follows the verb: what identifies or filters a read goes in
+      the query string, what a `POST` creates or a `PATCH` changes goes in the JSON body (the
+      target included), and a `DELETE` takes its options in the query string. `PATCH` is the
+      one update verb and is partial — a field left out keeps its value.
     - Errors are plain HTTP status codes with a JSON body; there is no `{code, message}`
-      success/failure envelope. Validation failures answer `422` with
-      `{"errors": {"<field>": ["<message>"]}}`, a successful delete answers `204`.
-    - Paginated lists use `{results, total, page, pageSize, pages}`. Lists that reorder while
-      being read (activity, notification) page by cursor instead and carry a `nextCursor`.
+      success/failure envelope. Validation failures — a missing required parameter included —
+      answer `422` with `{"errors": {"<field>": ["<message>"]}}`. Creating a resource answers
+      `201`, a state transition `200` with the new state, a successful delete `204`.
+    - Affirming what is already affirmed and removing what is already gone both succeed and
+      answer the current state, so a client acting on a stale view ends up with the truth.
+    - Lists that hold still page by offset and use `{results, total, page, pageSize, pages}`.
+      Lists that reorder while being read (activity, notification) page by `cursor` + `limit`
+      and carry a `nextCursor`. Comment threads are windows paged in both directions
+      (`cursor` + `direction`, or `focus`, plus `limit`) that carry their remaining counts.
     - Payloads are **caller-neutral** wherever possible — identical for every reader who may
       see the record, and therefore cacheable. What depends on the caller (permissions, like
       state, membership) has endpoints of its own.
@@ -49,3 +75,13 @@ security:
   - BasicAuth: []
   - SessionCookie: []
 paths: {}
+# The schemes the global `security` block names, from the shared components like every
+# endpoint document declares them - `join` carries the block over from this file.
+components:
+  securitySchemes:
+    Bearer:
+      $ref: "common.yaml#/components/securitySchemes/Bearer"
+    BasicAuth:
+      $ref: "common.yaml#/components/securitySchemes/BasicAuth"
+    SessionCookie:
+      $ref: "common.yaml#/components/securitySchemes/SessionCookie"

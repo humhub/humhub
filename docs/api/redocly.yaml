@@ -1,5 +1,11 @@
-# Redoc options for `build.sh` (`@redocly/cli build-docs` reads this file from the working
-# directory).
+# Redocly configuration for `build.sh` (`@redocly/cli` reads this file from the working
+# directory): the lint rule set for the sources and the Redoc options for the rendered page.
+
+# Every problem is an error, warnings included - a source that renders fine but lacks an
+# `operationId` or declares `nullable` without a type must not pass the build.
+extends:
+  - recommended-strict
+
 openapi:
   # Sidebar entries are the paths (`GET /comment/{id}`) rather than the prose summaries -
   # what a reader scanning an API for an endpoint is looking for.

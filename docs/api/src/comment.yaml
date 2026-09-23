@@ -18,7 +18,9 @@ security:
 tags:
   - name: Comment
     description: |
-      Comment lists are **cursor windows**, not offset pages (see the window endpoints).
+      Comment lists are **cursor windows**, not offset pages (see the window endpoints): a
+      window is addressed by `cursor` + `direction`, by `focus`, or by nothing, and sized by
+      `limit`.
 
       The comment shape is **caller-neutral**: identical for every reader who may see the
       content. What depends on the caller has its own endpoints — `GET /comment/{id}/permissions`
@@ -29,10 +31,12 @@ paths:
       tags:
         - Comment
       summary: Root-comment window of a content
+      operationId: getContentCommentWindow
       description: |
-        A window of the content's root comments. Without any cursor the newest comments are
-        returned; `commentId` + `direction` pages from a comment ("show previous/next N
-        comments"), `commentId` alone focuses the window around a permalinked comment.
+        A window of the content's root comments. Without any parameter the newest comments are
+        returned; `cursor` + `direction` page from a comment the client already has ("show
+        previous/next N comments"), `focus` centres the window on a permalinked comment.
+        `limit` sizes whichever window that is.
 
         `total` counts all comments of the content **including replies** (what a comment
         badge shows), while `results`, `prevCount` and `nextCount` describe the root level
@@ -49,9 +53,9 @@ paths:
           required: true
           schema:
             type: integer
-        - $ref: "#/components/parameters/commentIdParam"
+        - $ref: "#/components/parameters/cursorParam"
         - $ref: "#/components/parameters/directionParam"
-        - $ref: "#/components/parameters/windowPageSizeParam"
+        - $ref: "#/components/parameters/focusParam"
         - $ref: "#/components/parameters/windowLimitParam"
       responses:
         "200":
@@ -71,6 +75,7 @@ paths:
       tags:
         - Comment
       summary: Reply window of a comment thread
+      operationId: getReplyCommentWindow
       description: |
         The same window semantics as the content window, for the replies of one root comment.
         `total`/`rootTotal` still describe the whole content, so a client can keep its badge
@@ -82,9 +87,9 @@ paths:
           required: true
           schema:
             type: integer
-        - $ref: "#/components/parameters/commentIdParam"
+        - $ref: "#/components/parameters/cursorParam"
         - $ref: "#/components/parameters/directionParam"
-        - $ref: "#/components/parameters/windowPageSizeParam"
+        - $ref: "#/components/parameters/focusParam"
         - $ref: "#/components/parameters/windowLimitParam"
       responses:
         "200":
@@ -104,31 +109,21 @@ paths:
       tags:
         - Comment
       summary: Create a comment
+      operationId: createComment
       description: |
-        Creates a comment on the given content. Replies pass their parent through
-        `parentCommentId`; comments nest at most one level, a deeper reply answers `422`.
-      parameters:
-        - name: contentId
-          in: query
-          description: The primary key of the content
-          required: true
-          schema:
-            type: integer
-        - name: parentCommentId
-          in: query
-          description: The primary key of the root comment this is a reply to
-          required: false
-          schema:
-            type: integer
+        Creates a comment on the content named by `contentId`. Replies pass their parent
+        through `parentCommentId`; comments nest at most one level, a deeper reply answers
+        `422`. Everything travels in the body — a missing `contentId` is a validation
+        failure like a missing `message`.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CommentWrite"
+              $ref: "#/components/schemas/CommentCreate"
       responses:
-        "200":
-          description: Successful operation
+        "201":
+          description: Created
           content:
             application/json:
               schema:
@@ -146,6 +141,7 @@ paths:
       tags:
         - Comment
       summary: What the caller may do with a comment
+      operationId: getCommentPermissions
       description: |
         Deliberately not part of the comment shape: these are the only caller-dependent
         values a comment needs, and only when its context menu is opened — keeping them out
@@ -180,6 +176,7 @@ paths:
       tags:
         - Comment
       summary: A single comment
+      operationId: getComment
       description: |
         A root comment carries a preview of its newest replies under `replies`; a reply has
         `replies: null`. Readable by guests under the same conditions as the windows.
@@ -198,41 +195,15 @@ paths:
           $ref: "common.yaml#/components/responses/Forbidden"
         "404":
           $ref: "common.yaml#/components/responses/NotFound"
-    put:
-      tags:
-        - Comment
-      summary: Update a comment
-      parameters:
-        - $ref: "#/components/parameters/commentPathParam"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CommentWrite"
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Comment"
-        "401":
-          $ref: "common.yaml#/components/responses/Unauthorized"
-        "403":
-          $ref: "common.yaml#/components/responses/Forbidden"
-        "404":
-          $ref: "common.yaml#/components/responses/NotFound"
-        "422":
-          $ref: "common.yaml#/components/responses/ValidationFailed"
     patch:
       tags:
         - Comment
       summary: Update a comment
+      operationId: updateComment
       description: |
-        Alias of `PUT`: the same route and the same action serve both verbs, so the request
-        body and every response are identical. A partial update is not implied — `message`
-        is required either way.
+        Partial update: a field the body does not carry keeps its value, so `fileList` can be
+        changed without resending `message` and vice versa. `message` is validated whenever
+        it is sent, and an empty one answers `422`.
       parameters:
         - $ref: "#/components/parameters/commentPathParam"
       requestBody:
@@ -240,7 +211,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CommentWrite"
+              $ref: "#/components/schemas/CommentUpdate"
       responses:
         "200":
           description: Successful operation
@@ -260,25 +231,27 @@ paths:
       tags:
         - Comment
       summary: Delete a comment
+      operationId: deleteComment
       description: |
-        Deletes the comment. The optional body parameters trigger the moderation flow: with
+        Deletes the comment. The optional query parameters trigger the moderation flow: with
         `notify`, the author receives a notification carrying a preview of the removed text
-        and the given `message` as the reason.
+        and the given `message` as the reason. Query rather than body — a `DELETE` carries
+        no body in this API.
       parameters:
         - $ref: "#/components/parameters/commentPathParam"
-      requestBody:
-        required: false
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                notify:
-                  type: boolean
-                  description: Notify the author about the removal
-                message:
-                  type: string
-                  description: Reason shown to the author
+        - name: notify
+          in: query
+          required: false
+          description: "`1` to notify the author about the removal"
+          schema:
+            type: integer
+            enum: [0, 1]
+        - name: message
+          in: query
+          required: false
+          description: Reason shown to the author
+          schema:
+            type: string
       responses:
         "204":
           description: Deleted, no content
@@ -304,29 +277,31 @@ components:
       required: true
       schema:
         type: integer
-    commentIdParam:
-      name: commentId
+    cursorParam:
+      name: cursor
       in: query
-      description: Cursor comment, or the anchor to focus the window around when no direction is given
+      description: |
+        Id of a comment the client already has, to page from in `direction`. Only read
+        together with `direction`.
       required: false
       schema:
         type: integer
     directionParam:
       name: direction
       in: query
-      description: Paging direction relative to `commentId`
+      description: Paging direction relative to `cursor`
       required: false
       schema:
         type: string
         enum:
           - previous
           - next
-    windowPageSizeParam:
-      name: pageSize
+    focusParam:
+      name: focus
       in: query
       description: |
-        Comments per page while paging with `direction`. Clamped to the comment module's
-        configured block load size.
+        Id of a comment to centre the window on — a permalink. Ignored while paging with
+        `cursor` + `direction`.
       required: false
       schema:
         type: integer
@@ -334,8 +309,8 @@ components:
       name: limit
       in: query
       description: |
-        Size of an initial (cursor-less) window. Clamped to the comment module's configured
-        block load size.
+        Size of the window, whichever way it is addressed. Clamped to the comment module's
+        configured block load size.
       required: false
       schema:
         type: integer
@@ -422,9 +397,15 @@ components:
           description: |
             Namespaced data modules attached to this record (`{}` when nothing did), see the
             core serialize event.
-    CommentWrite:
+    CommentCreate:
       type: object
       properties:
+        contentId:
+          type: integer
+          description: The primary key of the content to comment on
+        parentCommentId:
+          type: integer
+          description: The primary key of the root comment this is a reply to
         message:
           type: string
           description: Markdown message
@@ -434,4 +415,17 @@ components:
           items:
             type: string
       required:
+        - contentId
         - message
+    CommentUpdate:
+      type: object
+      description: Every field is optional; one that is left out keeps its value.
+      properties:
+        message:
+          type: string
+          description: Markdown message, must not be empty when sent
+        fileList:
+          type: array
+          description: Guids of the files to attach — replaces the current attachment list
+          items:
+            type: string

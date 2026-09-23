@@ -38,6 +38,7 @@ paths:
       tags:
         - Notification
       summary: The caller's notifications
+      operationId: listNotifications
       description: |
         One page of the caller's notifications, unseen first and newest first. Grouped
         notifications (several likes on the same post, say) count as one entry.
@@ -110,7 +111,7 @@ paths:
                 results:
                   - id: 137
                     html: <strong>Jane Doe</strong> commented post "Release notes".
-                    url: /notification/entry?id=137&cId=42
+                    url: https://example.com/notification/entry?id=137&cId=42
                     isNew: true
                     createdAt: "2026-08-20T10:12:00+00:00"
                     groupKey: humhub\modules\comment\notifications\NewComment:42
@@ -138,6 +139,7 @@ paths:
       tags:
         - Notification
       summary: Mark all notifications as seen
+      operationId: markNotificationsAsSeen
       description: |
         Marks every notification of the caller as seen. Always answers `unseenCount: 0`.
       responses:
@@ -155,8 +157,7 @@ paths:
         "401":
           $ref: "common.yaml#/components/responses/Unauthorized"
         "403":
-          description: |
-            A session-authenticated request without a valid CSRF token.
+          $ref: "common.yaml#/components/responses/Forbidden"
 components:
   securitySchemes:
     Bearer:
@@ -183,13 +184,14 @@ components:
         url:
           type: string
           description: |
-            Relative URL of the notification target — a redirect that also marks this
+            Absolute URL of the notification target — a redirect that also marks this
             notification as seen.
         isNew:
           type: boolean
           description: Whether the caller has not seen this notification yet
         createdAt:
           type: string
+          format: date-time
           description: ISO-8601 timestamp with offset
         groupKey:
           type: string
@@ -199,11 +201,13 @@ components:
             the same value the live event carries, so a client can match an arriving event
             against an entry it already shows.
         originator:
+          type: object
           allOf:
             - $ref: "common.yaml#/components/schemas/UserShort"
           nullable: true
           description: The user who caused the notification, when there is one
         space:
+          type: object
           allOf:
             - $ref: "common.yaml#/components/schemas/SpaceShort"
           nullable: true

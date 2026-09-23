@@ -38,6 +38,8 @@ HumHub Changelog
 - Enh #8403: `DropdownMenu` can be opened by its host with `open(event)`, at the pointer when handed a mouse event, which is what gives a Vue-rendered list the right-click context menus the legacy `$.fn.contextMenu` gave server-rendered ones
 - Enh #8403: Added `HumHubForm::focusFirstField()`, for a form opened in a dialog
 - Enh #8403: Documented the `/api/v2/content/<id>/controls` endpoint in `docs/api/` and covered it with API tests
+- Enh #8403: Fixed the `/api/v2` contract before its first release — everything under `/api/` answers JSON (errors included), what a `POST` creates travels in the body and what a `DELETE` is told in the query string, `PATCH` is the one (partial) update verb, `POST /comment` answers `201`, affirming a membership or friendship that already exists is a success, records are addressed by numeric id only (`space/states?ids[]`, `activity?containerId`, `recordId` without `model`/`pk`), comment windows take `cursor`/`focus`/`limit`, space visibility is a named enum and notification URLs are absolute
+- Enh #8403: The API reference declares `/api/v2` as internal use only until it is complete; its sources are linted strictly by `docs/api/build.sh`, every operation carries an `operationId`, error answers have a schema, and the `API Reference` workflow fails CI on a stale committed `docs/api/index.html`
 - Enh #8403: Attached files are a Vue island (`AttachedFiles`), shared by `ShowFiles` and the comment section; audio plays natively and jPlayer is gone
 - Fix #8403: The `excludeMediaFilesPreview` setting really excludes media files from the attachment list again
 

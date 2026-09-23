@@ -10,6 +10,20 @@ Core endpoints answer under `/api/v2`. The comment and like islands consume them
 [Vue.js roadmap](ui-js-vuejs-roadmap.md)); before 1.20 they consumed the module's `/api/v1`
 through browser-session authentication.
 
+## Status
+
+`/api/v2` is **internal use only** for now: it exists to serve the platform's own UI, and
+while the surface is being completed an endpoint or a shape may still change between releases
+without a deprecation period. The reference says so in its introduction, and it is why the
+contract is being tightened now ("Conventions of `/api/v2`" below) rather than after a first
+external client depends on it.
+
+The goal is a complete, stable API that third parties can build on. A resource declared
+stable changes additively only — no removed or renamed fields, enums that may grow and that
+clients must tolerate, breaking changes only in a new generation. What "declared stable" is
+tied to (a release, a per-resource marker in the reference) is decided when the first
+resource gets there; until then `/api/v1` remains the integration surface.
+
 ## Why
 
 The comment and like islands render entirely client-side and fetch their data from the
@@ -157,7 +171,9 @@ The load-bearing defence is the base controller, not the rules:
 - **Per-action verb constraints** (`VerbFilter`), so a mutating action is never reachable on
   a safe method regardless of what any rule says. Note that a verb mismatch on a
   verb-constrained *rule* produces a 404, not a 405: the rule simply does not match, and
-  the off-prefix guard takes the request from there.
+  the off-prefix guard takes the request from there. Either way the answer is a JSON error
+  body: `humhub\components\Application::handleRequest()` fixes the response format for
+  everything under `api/` before routing (see the conventions below).
 
 There is deliberately **no URL rule** as a second layer. A prepended
 `<module>/api/<anything>` → 404 rule looks attractive, but it cannot replace the
@@ -259,23 +275,61 @@ part of this step.
 
 The version expresses a **contract generation, not a code location**. The conventions this
 generation fixes are the ones collected in
-[humhub/rest#248](https://github.com/humhub/rest/issues/248):
+[humhub/rest#248](https://github.com/humhub/rest/issues/248), completed by what settled while
+the first endpoints were built:
 
+- **Everything under `api/` answers JSON**, errors included.
+  `humhub\components\Application::handleRequest()` fixes the response format before routing,
+  so an unknown route, a verb no rule was registered for and an exception a controller throws
+  before `BaseController::beforeAction()` ran all render as Yii's JSON error body — never the
+  HTML error page. `yii\web\ErrorHandler::renderException()` decides by the format the
+  response has when the exception arrives, which is why this cannot live in the controller.
 - **Timestamps** are ISO-8601 with offset, in UTC (`Format::dateTime()`), instead of
   DB-format strings without timezone.
 - **Field names** are camelCase throughout — including the keys of validation errors, which
   are the camelCased attribute names (`Format::attribute()`), so a client matches them
   against the field names it sent rather than against column names.
+- **Enums are named values** (`state: member`, `visibility: public`), never the stored
+  integers.
+- **Records are addressed by numeric id** — the record's own id in a path (`/space/<id>`,
+  `/comment/<id>`), the platform-wide `recordId` for anything likeable, the content container
+  id (`containerId`) where a space or user is meant as a container. Guids appear in payloads
+  for display and URLs, never as an address, and class names never reach the wire (`model` +
+  `pk` addressing is a v1 thing).
+- **Where a parameter travels follows the verb.** What identifies or filters a read goes in
+  the query string; what a `POST` creates and what a `PATCH` changes travels in the JSON
+  body, the target included (`POST /comment {contentId, message}`, `POST /like {recordId}`);
+  a `DELETE` carries its options in the query string (`DELETE /comment/<id>?notify=1`),
+  because a `DELETE` body is dropped by enough clients and proxies not to build on.
+- **`PATCH` is the one update verb**, and it is partial: a field the body does not carry
+  keeps its value. There is no `PUT` — the implementation (`Model::load()` + `save()`) has
+  always been partial, and one verb whose documentation matches beats two aliases.
 - **Errors** are plain HTTP status codes with Yii's JSON error body; there is no
-  `{code, message}` success/failure envelope. Validation failures are
-  `422 {"errors": {attribute: [messages]}}`, a successful delete is `204` with no body.
-- **List responses** use one envelope: `{results, total, page, pageSize, pages}`.
-
-One list does not use that envelope: `GET /api/v2/notification` answers
-`{results, unseenCount, nextCursor}`. The notification list is ordered unseen-first and reorders
-as notifications arrive and are read, so it pages by cursor (`group_max_id`, the aggregate the
-grouped list is ordered by) — page numbers would skip or repeat entries. `unseenCount` rides
-along because every consumer of the list needs it for its badge.
+  `{code, message}` success/failure envelope. Validation failures — a missing required
+  parameter included (`BaseController::missingParameter()`) — are
+  `422 {"errors": {attribute: [messages]}}`. `403` is reserved for what the caller may not
+  do, never for a state the caller is already in.
+- **Status codes of writes**: creating a resource answers `201` with the resource
+  (`POST /comment`), a state transition answers `200` with the new state (`POST /like`,
+  `POST /space/<id>/membership`), a successful delete `204` with no body. The file upload is
+  the one exception, see below.
+- **Affirming and removing are idempotent.** `POST` on a state that is already affirmed (a
+  member joining again, liking what is liked, re-sending a friendship request) and `DELETE`
+  on one that is already gone both succeed and answer the current state, so a client acting
+  on a stale view ends up with the truth rather than an error.
+- **Lists** come in three shapes, each chosen by how the list behaves while it is read:
+  - **offset pages** — `page`/`pageSize` in, `{results, total, page, pageSize, pages}` out
+    (`BaseController::handlePagination()`/`returnPagination()`) — for lists that hold still
+    (`like/users`, `space`);
+  - **cursor pages** — `cursor`/`limit` in, `{results, nextCursor}` out — for lists that
+    reorder while being read: `activity` (groups form and re-key) and `notification` (ordered
+    unseen-first, reorders as notifications arrive and are read; `unseenCount` rides along
+    because every consumer needs it for its badge). Page numbers would skip or repeat entries
+    there;
+  - **comment windows** — `cursor` + `direction`, or `focus`, plus `limit` in,
+    `{results, total, rootTotal, prevCount, nextCount}` out — because a thread is paged in
+    both directions from a comment the client already shows, and needs the exact remaining
+    counts a "show previous/next N comments" UI renders.
 
 One documented exception exists, and it is about a batch rather than a field: `POST /api/v2/file`
 (the endpoint the Vue upload field posts to) carries any number of files in one request and
@@ -350,6 +404,15 @@ change, and the result belongs in the same commit. It is a repository document, 
 page: since the `public/` document root (#8459) the checkout's `docs/` directory is not
 web-accessible.
 
+The build lints the sources first, with Redocly's `recommended-strict` rule set
+(`docs/api/redocly.yaml`): every warning is an error, so a schema that renders fine but is
+invalid — `nullable` without a type, say — or an operation without an `operationId` stops the
+build. Every operation carries an `operationId` in `verbResource` form (`getComment`,
+`listSpaces`, `affirmSpaceMembership`, `uploadFiles`), which is what client generators name
+their methods after. `.github/workflows/api-docs.yml` runs the same build on every change
+under `docs/api/` and fails when the committed page differs from the re-rendered one — the
+guarantee `js-test.yml` gives for the Vue build artifacts, for the reference.
+
 A rendered page loads only from its own origin: webfonts are disabled, and the renderer's two
 Redocly CDN assets — the Redoc bundle itself and the "API docs by Redocly" badge the bundle
 requests at runtime — are vendored next to the pages (`redoc.standalone.js` ~1 MB,
@@ -361,9 +424,8 @@ the renderer emits (recorded in `redoc.standalone.js.sha384`) before the one log
 is rewritten to the vendored SVG.
 
 The `rest` module documents its own `/api/v1` surface the same way, in its own repository.
-Two conventions of the v2 documents are worth knowing before reading them, because they
-deviate from the list/error contracts above: an upload is a batch and reports per file, and
-the notification list pages by cursor (see the sections above).
+The three list shapes and the per-file batch answer of the upload endpoint are explained in
+the conventions above; the documents assume them.
 
 ## Security invariants
 
@@ -381,6 +443,8 @@ These must hold — each one exists because it was found missing:
    (`BaseController::$allowSessionAuth`).
 6. Session-authenticated impersonation cannot see private content the web UI hides
    (`Impersonation::isActive()`).
+7. Everything under the API URL prefix answers JSON, errors included — an unknown route or a
+   wrong verb never renders the HTML error page (`Application::handleRequest()`).
 
 ## Open points
 

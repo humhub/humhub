@@ -21,11 +21,13 @@ components:
     SessionCookie:
       type: apiKey
       in: cookie
-      name: HUMHUB_SESSION
+      name: PHPSESSID
       description: |
         The regular HumHub browser session, accepted by core's own endpoints (which is how
-        the platform's Vue UI calls them). State-changing requests additionally require the
-        CSRF token, sent as the `X-CSRF-Token` header or the `_csrf` body parameter.
+        the platform's Vue UI calls them). `PHPSESSID` is PHP's default session cookie name;
+        an installation may configure another one on its `session` component. State-changing
+        requests additionally require the CSRF token, sent as the `X-CSRF-Token` header or the
+        `_csrf` body parameter.
   parameters:
     pageParam:
       name: page
@@ -55,31 +57,46 @@ components:
       in: query
       description: |
         Platform-wide record id — the addressing every shape that carries likes exposes as
-        `recordId`. Alternative to `model` + `pk`.
-      required: false
-      schema:
-        type: integer
-    modelParam:
-      name: model
-      in: query
-      description: Class name of the record, when addressing it by model and primary key
-      required: false
-      schema:
-        type: string
-    pkParam:
-      name: pk
-      in: query
-      description: Primary key of the record, when addressing it by model and primary key
-      required: false
+        `recordId`.
+      required: true
       schema:
         type: integer
   responses:
     Unauthorized:
       description: Authentication required
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorBody"
+          example:
+            name: Unauthorized
+            message: Your request was made with invalid credentials.
+            code: 0
+            status: 401
     Forbidden:
-      description: The caller may not access this record
+      description: |
+        The caller may not access this record — or, on a state-changing request authenticated
+        by the browser session, the CSRF token is missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorBody"
+          example:
+            name: Forbidden
+            message: ""
+            code: 0
+            status: 403
     NotFound:
       description: No such record
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorBody"
+          example:
+            name: Not Found
+            message: ""
+            code: 0
+            status: 404
     ValidationFailed:
       description: Validation failed
       content:
@@ -99,6 +116,31 @@ components:
                 message:
                   - The comment must not be empty!
   schemas:
+    ErrorBody:
+      type: object
+      description: |
+        The body of every error answer except `422` (see `ValidationFailed`): the framework's
+        plain error object, the same for an unknown route, a wrong verb, a missing permission
+        or an unknown record — there is no `{code, message}` success/failure envelope around
+        it. `message` may be empty or localized; a client keys on `status`.
+      properties:
+        name:
+          type: string
+          description: The HTTP status text, e.g. `Not Found`
+        message:
+          type: string
+          description: A human-readable explanation, when there is one
+        code:
+          type: integer
+          description: Application error code, `0` unless an endpoint documents otherwise
+        status:
+          type: integer
+          description: The HTTP status code, repeated in the body
+      required:
+        - name
+        - message
+        - code
+        - status
     ListEnvelope:
       type: object
       description: The envelope of every paginated list response
