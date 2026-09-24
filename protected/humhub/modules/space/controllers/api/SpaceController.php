@@ -113,7 +113,7 @@ class SpaceController extends BaseController
      * What the caller is to the spaces they name: member, follower, and how much they have not
      * seen there yet.
      *
-     * Parameter: `ids[]` — the spaces a client currently displays. Deliberately not "every
+     * Parameter: `ids` (repeated or comma-separated) — the spaces a client currently displays. Deliberately not "every
      * space of the caller": a user can be a member of a great many, while a client shows one
      * page of them. Answers `{results: {<id>: {isMember, isFollowing, newItems}}}`.
      *
@@ -124,10 +124,14 @@ class SpaceController extends BaseController
      */
     public function actionStates()
     {
-        $ids = Yii::$app->request->get('ids');
-        $ids = is_array($ids)
-            ? array_slice(array_values(array_filter(array_map('intval', $ids), fn(int $id) => $id > 0)), 0, self::MAX_STATE_IDS)
-            : [];
+        // Repeated (`ids[]=`) or comma-separated, like `like/states`' `recordIds`.
+        $ids = Yii::$app->request->get('ids', []);
+        $ids = is_array($ids) ? $ids : explode(',', (string)$ids);
+        $ids = array_slice(
+            array_values(array_unique(array_filter(array_map('intval', $ids), fn(int $id) => $id > 0))),
+            0,
+            self::MAX_STATE_IDS,
+        );
 
         if ($ids === []) {
             return ['results' => (object)[]];

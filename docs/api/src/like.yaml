@@ -18,11 +18,14 @@ security:
 tags:
   - name: Like
     description: |
-      Every likeable record is addressed by its platform-wide `recordId`, which every shape
-      carrying likes exposes — in the body of the `POST`, in the query string of `GET` and
-      `DELETE`.
+      A like is the caller's relationship to a record, addressed like a membership or a
+      friendship: `like/{recordId}`, where the path segment is the platform-wide `recordId`
+      every shape carrying likes exposes (likes have no id of their own). `GET` reads the
+      state, `POST` likes, `DELETE` unlikes, and all three answer the same state shape.
+      `like/{recordId}/users` lists who liked the record, `like/states` reads the states of a
+      whole window of records at once.
 paths:
-  "/like/state":
+  "/like/{recordId}":
     get:
       tags:
         - Like
@@ -32,7 +35,7 @@ paths:
         The caller-context like state. Readable by guests for content they can see, with
         `liked` and `canLike` always `false`.
       parameters:
-        - $ref: "common.yaml#/components/parameters/recordIdParam"
+        - $ref: "common.yaml#/components/parameters/recordIdPathParam"
       responses:
         "200":
           description: Successful operation
@@ -40,6 +43,81 @@ paths:
             application/json:
               schema:
                 $ref: "common.yaml#/components/schemas/LikeState"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+    post:
+      tags:
+        - Like
+      summary: Like a record
+      operationId: createLike
+      description: |
+        Idempotent — liking what the caller already likes is a success and answers the
+        unchanged state. `403` unless the caller may like the record. Takes no body.
+      parameters:
+        - $ref: "common.yaml#/components/parameters/recordIdPathParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "common.yaml#/components/schemas/LikeState"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+    delete:
+      tags:
+        - Like
+      summary: Remove the caller's like
+      operationId: removeLike
+      description: Idempotent — unliking something that was never liked is a success.
+      parameters:
+        - $ref: "common.yaml#/components/parameters/recordIdPathParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "common.yaml#/components/schemas/LikeState"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+  "/like/{recordId}/users":
+    get:
+      tags:
+        - Like
+      summary: Users who liked a record
+      operationId: listLikeUsers
+      description: Newest first. Readable by guests for content they can see.
+      parameters:
+        - $ref: "common.yaml#/components/parameters/recordIdPathParam"
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - $ref: "common.yaml#/components/parameters/pageSizeParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "common.yaml#/components/schemas/ListEnvelope"
+                  - type: object
+                    properties:
+                      results:
+                        type: array
+                        items:
+                          $ref: "common.yaml#/components/schemas/UserShort"
         "401":
           $ref: "common.yaml#/components/responses/Unauthorized"
         "403":
@@ -83,92 +161,6 @@ paths:
                         canLike: true
         "401":
           $ref: "common.yaml#/components/responses/Unauthorized"
-  "/like":
-    post:
-      tags:
-        - Like
-      summary: Like a record
-      operationId: createLike
-      description: |
-        Idempotent — liking what the caller already likes is a success and answers the
-        unchanged state. `403` unless the caller may like the record.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                recordId:
-                  type: integer
-                  description: Platform-wide record id of the record to like
-              required:
-                - recordId
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "common.yaml#/components/schemas/LikeState"
-        "401":
-          $ref: "common.yaml#/components/responses/Unauthorized"
-        "403":
-          $ref: "common.yaml#/components/responses/Forbidden"
-        "404":
-          $ref: "common.yaml#/components/responses/NotFound"
-    delete:
-      tags:
-        - Like
-      summary: Remove the caller's like
-      operationId: removeLike
-      description: Idempotent — unliking something that was never liked is a success.
-      parameters:
-        - $ref: "common.yaml#/components/parameters/recordIdParam"
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "common.yaml#/components/schemas/LikeState"
-        "401":
-          $ref: "common.yaml#/components/responses/Unauthorized"
-        "403":
-          $ref: "common.yaml#/components/responses/Forbidden"
-        "404":
-          $ref: "common.yaml#/components/responses/NotFound"
-  "/like/users":
-    get:
-      tags:
-        - Like
-      summary: Users who liked a record
-      operationId: listLikeUsers
-      description: Newest first. Readable by guests for content they can see.
-      parameters:
-        - $ref: "common.yaml#/components/parameters/recordIdParam"
-        - $ref: "common.yaml#/components/parameters/pageParam"
-        - $ref: "common.yaml#/components/parameters/pageSizeParam"
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "common.yaml#/components/schemas/ListEnvelope"
-                  - type: object
-                    properties:
-                      results:
-                        type: array
-                        items:
-                          $ref: "common.yaml#/components/schemas/UserShort"
-        "401":
-          $ref: "common.yaml#/components/responses/Unauthorized"
-        "403":
-          $ref: "common.yaml#/components/responses/Forbidden"
-        "404":
-          $ref: "common.yaml#/components/responses/NotFound"
 components:
   securitySchemes:
     Bearer:

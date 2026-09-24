@@ -284,7 +284,7 @@
     results: (window.results || []).map(mapComment)
   });
   const fetchWindow = ({ contentId, parentCommentId, ...params }) => {
-    const path = parentCommentId ? `comment/parent/${parentCommentId}/window` : `comment/content/${contentId}/window`;
+    const path = parentCommentId ? `comment/${parentCommentId}/replies` : `content/${contentId}/comments`;
     return vue.client.get(vue.apiUrl(path, params)).then(mapWindow);
   };
   const fetchComment = (id) => vue.client.get(vue.apiUrl(`comment/${id}`)).then(mapComment);

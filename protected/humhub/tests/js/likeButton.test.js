@@ -84,7 +84,7 @@ describe('LikeButton', () => {
 
         expect(wrapper.find('.likeLinkContainer').exists()).toBe(false);
         expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(1);
-        expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/like/state?recordId=7');
+        expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/like/7');
 
         resolveGet({ total: 5, liked: true, canLike: true });
         await vi.waitFor(() => expect(wrapper.find('.likeLinkContainer').exists()).toBe(true));
@@ -115,8 +115,8 @@ describe('LikeButton', () => {
         await wrapper.find('a.like').trigger('click');
         await vi.waitFor(() => expect(wrapper.find('a.unlike').exists()).toBe(true));
 
-        // The record travels in the body of the POST
-        expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith('/api/v2/like', { data: { recordId: 7 } });
+        // The record is addressed in the path; a like carries no body
+        expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith('/api/v2/like/7');
         expect(wrapper.find('.likeCount').text()).toBe('(3)');
     });
 
@@ -130,7 +130,7 @@ describe('LikeButton', () => {
         await vi.waitFor(() => expect(wrapper.find('a.like').exists()).toBe(true));
 
         expect(globalThis.humhubStubs.client.ajax).toHaveBeenCalledWith(
-            '/api/v2/like?recordId=7',
+            '/api/v2/like/7',
             expect.objectContaining({ method: 'DELETE' }),
         );
         expect(globalThis.humhubStubs.client.post).not.toHaveBeenCalled();
@@ -227,7 +227,7 @@ describe('LikeButton', () => {
     });
 
     describe('user-list modal', () => {
-        // The API's list envelope of GET /api/v2/like/users — rows are user shapes
+        // The API's list envelope of GET /api/v2/like/<id>/users — rows are user shapes
         // (see UserList.vue).
         const userListResponse = () => ({
             total: 1,
@@ -266,7 +266,7 @@ describe('LikeButton', () => {
             await wrapper.find('.likeCount').trigger('click');
             await flushPromises();
 
-            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/like/users?recordId=7&page=1');
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/like/7/users?page=1');
 
             const dialog = document.body.querySelector('.modal[role="dialog"]');
             expect(dialog).not.toBeNull();
@@ -345,7 +345,7 @@ describe('LikeButton', () => {
 
         expect(wrapper.find('.likeLinkContainer').exists()).toBe(false);
         expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(1);
-        expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/like/state?recordId=7');
+        expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/like/7');
 
         await vi.waitFor(() => expect(wrapper.find('.likeLinkContainer').exists()).toBe(true));
 
@@ -372,6 +372,6 @@ describe('LikeButton', () => {
         await vueModule.mountElement(fetchEl);
 
         expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(1);
-        expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/like/state?recordId=8');
+        expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/like/8');
     });
 });

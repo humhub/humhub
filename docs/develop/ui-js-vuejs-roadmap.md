@@ -106,7 +106,7 @@ the one remaining UI-only HTML action):
    `serializers\`. See [HTTP API framework](concept-api.md).
 2. **One documented contract**, in v2 conventions (ISO-8601 UTC timestamps,
    camelCase, plain HTTP status codes, `422 {"errors": …}`): window pagination
-   (`GET comment/content/<id>/window`, `prevCount`/`nextCount`/`rootTotal`),
+   (`GET content/<id>/comments`, `prevCount`/`nextCount`/`rootTotal`),
    `message` as processed markdown, structured `files`, like
    state/toggle/users, and `account`/`account/blocked-users`. Caller-dependent values have
    their own endpoints (see the next section). The islands derive client-side what a client

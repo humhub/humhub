@@ -184,7 +184,7 @@ describe('CommentSection', () => {
                 props: { contentId: 42, pageSize: 10 },
             });
 
-            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/comment/content/42/window');
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/content/42/comments');
             await vi.waitFor(() => expect(wrapper.find('.single-comment').exists()).toBe(true));
         });
 
@@ -287,7 +287,7 @@ describe('CommentSection', () => {
             await wrapper.find('.showMore a').trigger('click');
 
             expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith(
-                '/api/v2/comment/content/42/window?cursor=5&direction=previous&limit=2',
+                '/api/v2/content/42/comments?cursor=5&direction=previous&limit=2',
             );
 
             await vi.waitFor(() => {
@@ -319,7 +319,7 @@ describe('CommentSection', () => {
             await wrapper.find('.showMore a').trigger('click');
 
             expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith(
-                '/api/v2/comment/content/42/window?cursor=6&direction=next&limit=2',
+                '/api/v2/content/42/comments?cursor=6&direction=next&limit=2',
             );
 
             await vi.waitFor(() => {
@@ -483,7 +483,7 @@ describe('CommentSection', () => {
             // Both params asserted: direction=previous (not next), cursored from 15 - the
             // oldest currently-SHOWN reply, not 16 (the newest).
             expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith(
-                '/api/v2/comment/parent/4/window?cursor=15&direction=previous&limit=10',
+                '/api/v2/comment/4/replies?cursor=15&direction=previous&limit=10',
             );
 
             await vi.waitFor(() => {
@@ -706,7 +706,7 @@ describe('CommentSection', () => {
 
             wrapper.element.parentElement.dispatchEvent(new CustomEvent('humhub:comment:toggle'));
 
-            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/comment/content/42/window');
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/content/42/comments');
 
             await vi.waitFor(() => {
                 const ids = wrapper.findAll('.single-comment').map((entry) => entry.attributes('id'));

@@ -83,7 +83,7 @@ export default {
         userListUrl() {
             // The API's list endpoint answers `{results: [<user>], total, page, pages}` —
             // exactly what UserList consumes.
-            return apiUrl('like/users', { recordId: this.recordId });
+            return apiUrl(`like/${this.recordId}/users`);
         },
         // Same message key the legacy HTML user-list action used for the modal title
         // (`Yii::t('LikeModule.base', "<strong>Users</strong> who like this")`) - kept
@@ -108,7 +108,7 @@ export default {
     },
     methods: {
         load() {
-            client.get(apiUrl('like/state', { recordId: this.recordId })).then((response) => {
+            client.get(apiUrl(`like/${this.recordId}`)).then((response) => {
                 this.liked = response.liked;
                 this.count = response.total;
             }).catch((e) => {
@@ -126,11 +126,10 @@ export default {
             }
             this.busy = true;
 
-            // POST like / DELETE like — both return the {total, liked, canLike} state shape.
-            // The record travels in the body of the POST and in the query of the DELETE.
-            const request = this.liked
-                ? client.del(apiUrl('like', { recordId: this.recordId }))
-                : client.post(apiUrl('like'), { data: { recordId: this.recordId } });
+            // The caller's like of the record: POST likes, DELETE unlikes, both answer the
+            // {total, liked, canLike} state shape.
+            const endpoint = apiUrl(`like/${this.recordId}`);
+            const request = this.liked ? client.del(endpoint) : client.post(endpoint);
 
             request.then((response) => {
                 this.liked = response.liked;

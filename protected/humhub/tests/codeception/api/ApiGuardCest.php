@@ -39,7 +39,7 @@ class ApiGuardCest
         // API controllers live in module namespaces that Yii's fallback routing would reach
         // (`/comment/api/comment/...`) — outside the prefix, and therefore outside CSRF
         // handling, verb constraints and the auth pipeline.
-        $I->sendGet('http://localhost:8080/comment/api/comment/window-by-content?id=1');
+        $I->sendGet('http://localhost:8080/comment/api/comment/content-comments?id=1');
         $I->seeResponseCodeIs(404);
 
         $I->sendGet('http://localhost:8080/like/api/like/state?recordId=1');
@@ -64,18 +64,18 @@ class ApiGuardCest
         $I->amLoggedInAs(1);
 
         // A read route must not accept a write method …
-        $I->sendPost('comment/content/1/window');
+        $I->sendPost('content/1/comments');
         $I->seeResponseCodeIs(404);
 
         // … and a mutating route must not be reachable with a safe method.
         $I->sendGet('comment');
         $I->seeResponseCodeIs(404);
 
-        $I->sendGet('like');
+        $I->sendPost('like/1/users');
         $I->seeResponseCodeIs(404);
 
         // Nothing was executed: no comment was created by the GET above
-        $I->sendGet('comment/content/1/window');
+        $I->sendGet('content/1/comments');
         $I->seeResponseCodeIs(200);
     }
 
@@ -122,7 +122,7 @@ class ApiGuardCest
         $I->wantTo('read without a CSRF token');
         $I->amLoggedInAs(1);
 
-        $I->sendGet('comment/content/1/window');
+        $I->sendGet('content/1/comments');
         $I->seeResponseCodeIs(200);
     }
 
@@ -191,7 +191,7 @@ class ApiGuardCest
 
         Yii::$app->getModule('user')->settings->set('auth.allowGuestAccess', 0);
 
-        $I->sendGet('comment/content/1/window');
+        $I->sendGet('content/1/comments');
         $I->seeResponseCodeIs(401);
     }
 
@@ -200,13 +200,13 @@ class ApiGuardCest
         $I->wantTo('see plain HTTP status codes instead of an envelope');
         $I->amLoggedInAs(1);
 
-        $I->sendGet('comment/content/99999/window');
+        $I->sendGet('content/99999/comments');
         $I->seeResponseCodeIs(404);
 
         $I->sendGet('comment/99999');
         $I->seeResponseCodeIs(404);
 
-        $I->sendGet('like/state?recordId=99999');
+        $I->sendGet('like/99999');
         $I->seeResponseCodeIs(404);
 
         // Yii's JSON error body, not a `{code, message}` success/failure envelope

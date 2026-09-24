@@ -54,7 +54,7 @@
         return vue$1.i18n.t("LikeModule.base", "Unlike");
       },
       userListUrl() {
-        return vue$1.apiUrl("like/users", { recordId: this.recordId });
+        return vue$1.apiUrl(`like/${this.recordId}/users`);
       },
       // Same message key the legacy HTML user-list action used for the modal title
       // (`Yii::t('LikeModule.base', "<strong>Users</strong> who like this")`) - kept
@@ -79,7 +79,7 @@
     },
     methods: {
       load() {
-        vue$1.client.get(vue$1.apiUrl("like/state", { recordId: this.recordId })).then((response) => {
+        vue$1.client.get(vue$1.apiUrl(`like/${this.recordId}`)).then((response) => {
           this.liked = response.liked;
           this.count = response.total;
         }).catch((e) => {
@@ -93,7 +93,8 @@
           return;
         }
         this.busy = true;
-        const request = this.liked ? vue$1.client.del(vue$1.apiUrl("like", { recordId: this.recordId })) : vue$1.client.post(vue$1.apiUrl("like"), { data: { recordId: this.recordId } });
+        const endpoint = vue$1.apiUrl(`like/${this.recordId}`);
+        const request = this.liked ? vue$1.client.del(endpoint) : vue$1.client.post(endpoint);
         request.then((response) => {
           this.liked = response.liked;
           this.count = response.total;

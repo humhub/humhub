@@ -124,14 +124,14 @@ paths:
         none of it. `newItems` counts what was posted since the membership's last visit and is
         therefore `0` without a membership. A space the caller may not see is not answered.
       parameters:
-        - name: "ids[]"
+        - name: ids
           in: query
           required: true
-          description: Ids of the spaces to answer for; anything beyond the first 100 is ignored
+          description: |
+            Comma-separated (or repeated `ids[]=`) ids of the spaces to answer for; anything
+            beyond the first 100 is ignored.
           schema:
-            type: array
-            items:
-              type: integer
+            type: string
       responses:
         "200":
           description: Successful operation

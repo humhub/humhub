@@ -26,12 +26,12 @@ tags:
       content. What depends on the caller has its own endpoints — `GET /comment/{id}/permissions`
       for edit/delete, `GET /like/states` for like state.
 paths:
-  "/comment/content/{id}/window":
+  "/content/{id}/comments":
     get:
       tags:
         - Comment
-      summary: Root-comment window of a content
-      operationId: getContentCommentWindow
+      summary: Root comments of a content
+      operationId: listContentComments
       description: |
         A window of the content's root comments. Without any parameter the newest comments are
         returned; `cursor` + `direction` page from a comment the client already has ("show
@@ -70,14 +70,15 @@ paths:
           $ref: "common.yaml#/components/responses/Forbidden"
         "404":
           $ref: "common.yaml#/components/responses/NotFound"
-  "/comment/parent/{id}/window":
+  "/comment/{id}/replies":
     get:
       tags:
         - Comment
-      summary: Reply window of a comment thread
-      operationId: getReplyCommentWindow
+      summary: Replies of a comment
+      operationId: listCommentReplies
       description: |
-        The same window semantics as the content window, for the replies of one root comment.
+        The same window semantics as the content's root comments, for the replies of one
+        root comment.
         `total`/`rootTotal` still describe the whole content, so a client can keep its badge
         and its root list consistent while paging replies.
       parameters:

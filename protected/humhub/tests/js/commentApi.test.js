@@ -168,7 +168,7 @@ describe('commentApi', () => {
             const window = await fetchWindow({ contentId: 42, limit: 3, direction: 'previous', cursor: 7 });
 
             expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith(
-                '/api/v2/comment/content/42/window?limit=3&direction=previous&cursor=7',
+                '/api/v2/content/42/comments?limit=3&direction=previous&cursor=7',
             );
             expect(window.results[0].author.displayName).toBe('Alice');
             expect(window.results[0].createdAt).toBeInstanceOf(Date);
@@ -180,7 +180,7 @@ describe('commentApi', () => {
 
             await fetchWindow({ contentId: 42, parentCommentId: 4, limit: 3 });
 
-            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/comment/parent/4/window?limit=3');
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/comment/4/replies?limit=3');
         });
 
         it('fetchComment targets the single view', async () => {

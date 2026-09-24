@@ -136,15 +136,15 @@ version prefix:
 ```php
 // humhub/modules/comment/config.php
 'urlManagerRules' => ApiRules::v2([
-    ['pattern' => 'comment/content/<id:\d+>/window', 'route' => 'comment/api/comment/window-by-content', 'verb' => ['GET', 'HEAD']],
+    ['pattern' => 'content/<id:\d+>/comments', 'route' => 'comment/api/comment/content-comments', 'verb' => ['GET', 'HEAD']],
     // ...
 ]),
 ```
 
 Routes point at the module's own API controllers; Yii resolves controller subdirectories
 from the route on its own (`yii\base\Module::createController()` turns
-`comment/api/comment/window-by-content` into
-`humhub\modules\comment\controllers\api\CommentController::actionWindowByContent()`, no
+`comment/api/comment/content-comments` into
+`humhub\modules\comment\controllers\api\CommentController::actionContentComments()`, no
 `controllerMap` entry needed), so the internal route shape stays invisible to clients.
 
 Server-rendered markup that addresses an endpoint (a legacy `data-action-url`, see the
@@ -329,7 +329,7 @@ the first endpoints were built:
 - **Lists** come in three shapes, each chosen by how the list behaves while it is read:
   - **offset pages** — `page`/`pageSize` in, `{results, total, page, pageSize, pages}` out
     (`BaseController::handlePagination()`/`returnPagination()`) — for lists that hold still
-    (`like/users`, `space`);
+    (`like/<recordId>/users`, `space`);
   - **cursor pages** — `cursor`/`limit` in, `{results, nextCursor}` out — for lists that
     reorder while being read: `activity` (groups form and re-key) and `notification` (ordered
     unseen-first, reorders as notifications arrive and are read; `unseenCount` rides along

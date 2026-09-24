@@ -49,15 +49,15 @@ class LikeApiCest
 
         $recordId = $this->recordId(1);
 
-        $I->sendGet("like/state?recordId=$recordId");
+        $I->sendGet("like/$recordId");
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['liked' => false, 'canLike' => true]);
 
-        // Class names are not part of the contract: `model` + `pk` address nothing
-        $I->sendGet('like/state?model=' . urlencode(Post::class) . '&pk=1');
+        // Class names are not part of the contract: nothing addresses a record by `model` + `pk`
+        $I->sendGet('like?model=' . urlencode(Post::class) . '&pk=1');
         $I->seeResponseCodeIs(404);
 
-        $I->sendGet('like/state?recordId=99999');
+        $I->sendGet('like/99999');
         $I->seeResponseCodeIs(404);
     }
 
@@ -70,7 +70,7 @@ class LikeApiCest
         $visible = $this->recordId(10);   // public post in Space 2, User1 is a member
         $invisible = $this->recordId(1);  // Admin's private profile post
 
-        $I->sendPost('like', ['recordId' => $visible]);
+        $I->sendPost("like/$visible");
         $I->seeResponseCodeIs(200);
 
         $I->sendGet("like/states?recordIds=$visible,$invisible,999999");
@@ -89,7 +89,7 @@ class LikeApiCest
 
         // A record with no likes at all still reports a state (total 0), so a client never
         // has to distinguish "no state" from "no likes"
-        $I->sendDelete("like?recordId=$visible");
+        $I->sendDelete("like/$visible");
         $I->seeResponseCodeIs(200);
         $I->sendGet("like/states?recordIds=$visible");
         $I->seeResponseContainsJson(['results' => [$visible => ['total' => 0, 'liked' => false]]]);
@@ -120,24 +120,24 @@ class LikeApiCest
 
         $recordId = $this->recordId(1);
 
-        $I->sendGet("like/state?recordId=$recordId");
+        $I->sendGet("like/$recordId");
         $before = (int)$I->grabDataFromResponseByJsonPath('$.total')[0];
 
-        $I->sendPost('like', ['recordId' => $recordId]);
+        $I->sendPost("like/$recordId");
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['total' => $before + 1, 'liked' => true, 'canLike' => true]);
 
         // Liking twice does not double-count
-        $I->sendPost('like', ['recordId' => $recordId]);
+        $I->sendPost("like/$recordId");
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['total' => $before + 1, 'liked' => true]);
 
-        $I->sendDelete("like?recordId=$recordId");
+        $I->sendDelete("like/$recordId");
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['total' => $before, 'liked' => false]);
 
         // Unliking is idempotent — removing what was never liked is a success
-        $I->sendDelete("like?recordId=$recordId");
+        $I->sendDelete("like/$recordId");
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['total' => $before, 'liked' => false]);
     }
@@ -154,14 +154,14 @@ class LikeApiCest
         Assert::assertTrue($post->save());
         $recordId = RecordMap::getId($post);
 
-        $I->sendGet("like/users?recordId=$recordId");
+        $I->sendGet("like/$recordId/users");
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['results' => [], 'total' => 0, 'page' => 1, 'pages' => 0]);
 
-        $I->sendPost('like', ['recordId' => $recordId]);
+        $I->sendPost("like/$recordId");
         $I->seeResponseCodeIs(200);
 
-        $I->sendGet("like/users?recordId=$recordId");
+        $I->sendGet("like/$recordId/users");
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson([
             'total' => 1,
@@ -173,7 +173,7 @@ class LikeApiCest
         Assert::assertStringStartsWith('http', $I->grabDataFromResponseByJsonPath('$.results[0].imageUrl')[0]);
 
         // Oversized page sizes are clamped rather than passed through
-        $I->sendGet("like/users?recordId=$recordId&pageSize=9999");
+        $I->sendGet("like/$recordId/users?pageSize=9999");
         $I->seeResponseCodeIs(200);
         Assert::assertLessThanOrEqual(100, (int)$I->grabDataFromResponseByJsonPath('$.pageSize')[0]);
     }
@@ -187,10 +187,10 @@ class LikeApiCest
         // Content 1 is Admin's private profile post
         $recordId = $this->recordId(1);
 
-        $I->sendGet("like/state?recordId=$recordId");
+        $I->sendGet("like/$recordId");
         $I->seeResponseCodeIs(403);
 
-        $I->sendPost('like', ['recordId' => $recordId]);
+        $I->sendPost("like/$recordId");
         $I->seeResponseCodeIs(403);
     }
 
@@ -202,21 +202,21 @@ class LikeApiCest
         $recordId = $this->recordId(10);
 
         // Reading is allowed for guest-visible content; a guest can never like
-        $I->sendGet("like/state?recordId=$recordId");
+        $I->sendGet("like/$recordId");
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['liked' => false, 'canLike' => false]);
 
-        $I->sendGet("like/users?recordId=$recordId");
+        $I->sendGet("like/$recordId/users");
         $I->seeResponseCodeIs(200);
 
         // Content that is not guest-visible stays denied
-        $I->sendGet('like/state?recordId=' . $this->recordId(1));
+        $I->sendGet('like/' . $this->recordId(1));
         $I->seeResponseCodeIs(403);
 
         // Mutations are never guest-accessible
-        $I->sendPost('like', ['recordId' => $recordId]);
+        $I->sendPost("like/$recordId");
         $I->seeResponseCodeIs(401);
-        $I->sendDelete("like?recordId=$recordId");
+        $I->sendDelete("like/$recordId");
         $I->seeResponseCodeIs(401);
     }
 }

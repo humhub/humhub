@@ -204,4 +204,18 @@ class SpaceApiCest
         $I->sendGet('space/states');
         $I->seeResponseCodeIs(401);
     }
+
+    public function testStatesAcceptCommaSeparatedIds(ApiTester $I)
+    {
+        $I->wantTo('ask for space states with a comma-separated id list');
+        $I->amLoggedInAs(1);
+
+        $I->sendGet('space/states?ids=1,2');
+        $I->seeResponseCodeIs(200);
+        $states = json_decode($I->grabResponse(), true)['results'];
+        Assert::assertSame(['1', '2'], array_map('strval', array_keys($states)));
+
+        $I->sendGet('space/states', ['ids' => [1, 2]]);
+        Assert::assertSame($states, json_decode($I->grabResponse(), true)['results'], 'both spellings answer the same');
+    }
 }

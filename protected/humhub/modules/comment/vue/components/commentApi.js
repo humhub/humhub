@@ -74,8 +74,8 @@ export const mapWindow = (window) => ({
  */
 export const fetchWindow = ({ contentId, parentCommentId, ...params }) => {
     const path = parentCommentId
-        ? `comment/parent/${parentCommentId}/window`
-        : `comment/content/${contentId}/window`;
+        ? `comment/${parentCommentId}/replies`
+        : `content/${contentId}/comments`;
     return client.get(apiUrl(path, params)).then(mapWindow);
 };
 

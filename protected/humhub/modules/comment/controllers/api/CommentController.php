@@ -56,7 +56,7 @@ class CommentController extends BaseController
     /**
      * @inheritdoc
      */
-    protected array $guestAllowedActions = ['window-by-content', 'window-by-parent', 'view'];
+    protected array $guestAllowedActions = ['content-comments', 'replies', 'view'];
 
     /**
      * @inheritdoc
@@ -67,8 +67,8 @@ class CommentController extends BaseController
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
-                    'window-by-content' => ['GET', 'HEAD'],
-                    'window-by-parent' => ['GET', 'HEAD'],
+                    'content-comments' => ['GET', 'HEAD'],
+                    'replies' => ['GET', 'HEAD'],
                     'view' => ['GET', 'HEAD'],
                     'permissions' => ['GET', 'HEAD'],
                     'create' => ['POST'],
@@ -80,17 +80,17 @@ class CommentController extends BaseController
     }
 
     /**
-     * Root-comment window of a content.
+     * The root comments of a content, as a window (`GET content/<id>/comments`).
      */
-    public function actionWindowByContent($id)
+    public function actionContentComments($id)
     {
         return $this->window($this->findContent((int)$id), null);
     }
 
     /**
-     * Reply window of one comment thread.
+     * The replies of one comment, as a window (`GET comment/<id>/replies`).
      */
-    public function actionWindowByParent($id)
+    public function actionReplies($id)
     {
         $parentComment = Comment::findOne(['id' => (int)$id]);
 

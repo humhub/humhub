@@ -15,11 +15,14 @@ return [
     // HTTP API (see docs/develop/concept-api.md) — records are addressed by `recordId` or
     // `model`+`pk` in the query string, so the patterns carry no id segment.
     'urlManagerRules' => ApiRules::v2([
-        ['pattern' => 'like/state', 'route' => 'like/api/like/state', 'verb' => ['GET', 'HEAD']],
+        // The caller's like of one record: the record id in the path, two writing verbs - the
+        // same shape as space/<id>/membership and user/<id>/friendship.
+        ['pattern' => 'like/<recordId:\d+>', 'route' => 'like/api/like/state', 'verb' => ['GET', 'HEAD']],
+        ['pattern' => 'like/<recordId:\d+>', 'route' => 'like/api/like/create', 'verb' => 'POST'],
+        ['pattern' => 'like/<recordId:\d+>', 'route' => 'like/api/like/remove', 'verb' => 'DELETE'],
+        ['pattern' => 'like/<recordId:\d+>/users', 'route' => 'like/api/like/users', 'verb' => ['GET', 'HEAD']],
+        // The states of many records at once, for a window of them.
         ['pattern' => 'like/states', 'route' => 'like/api/like/states', 'verb' => ['GET', 'HEAD']],
-        ['pattern' => 'like/users', 'route' => 'like/api/like/users', 'verb' => ['GET', 'HEAD']],
-        ['pattern' => 'like', 'route' => 'like/api/like/create', 'verb' => 'POST'],
-        ['pattern' => 'like', 'route' => 'like/api/like/remove', 'verb' => 'DELETE'],
     ]),
     'events' => [
         ['class' => User::class, 'event' => User::EVENT_BEFORE_DELETE, 'callback' => ['humhub\modules\like\Events', 'onUserDelete']],

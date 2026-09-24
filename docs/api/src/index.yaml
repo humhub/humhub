@@ -39,7 +39,7 @@ info:
       client matches them against the field names it sent. Enums are named values
       (`state: member`, `visibility: public`), never stored integers.
     - Records are addressed by numeric id: the record's own id in a path, the platform-wide
-      `recordId` for anything likeable, the `contentContainerId` of a space or user where a
+      `recordId` for anything likeable (`like/<recordId>`), the `contentContainerId` of a space or user where a
       container is meant (`containerId`). Guids appear in payloads for display, never as an
       address. Class names never reach the wire.
     - Where a parameter travels follows the verb: what identifies or filters a read goes in

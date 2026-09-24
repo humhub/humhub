@@ -25,11 +25,13 @@ use yii\web\NotFoundHttpException;
  * The like API (see `docs/develop/concept-api.md`), consumed by the like Vue island and
  * available to any API client.
  *
- * A record is addressed by `recordId`, the platform-wide record id every serialized record
- * that can be liked carries — in the body of a `POST`, in the query string of a `GET` or
- * `DELETE`, following the API's parameter rule. Class names never reach the wire. All three
- * write/read actions answer the same state shape, so a client never has to derive one value
- * from another (see {@see LikeSerializer::state()}).
+ * A like is the caller's relationship to a record, so it is addressed like a membership or a
+ * friendship: the target in the path, `like/<recordId>`, with `GET` for the state, `POST` to
+ * like and `DELETE` to unlike. The path segment is the platform-wide record id every
+ * serialized record that can be liked carries - likes have no id of their own in the API,
+ * and class names never reach the wire. All three answer the same state shape, so a client
+ * never has to derive one value from another (see {@see LikeSerializer::state()});
+ * `like/<recordId>/users` lists who liked it, `like/states` reads a window of records at once.
  *
  * @since 1.20
  */
@@ -76,9 +78,9 @@ class LikeController extends BaseController
     /**
      * The caller's like state of a record.
      */
-    public function actionState()
+    public function actionState($recordId)
     {
-        return LikeSerializer::state(new LikeService($this->findRecord()));
+        return LikeSerializer::state(new LikeService($this->findRecord((int)$recordId)));
     }
 
     /**
@@ -115,9 +117,9 @@ class LikeController extends BaseController
     /**
      * Likes a record; 403 unless the caller may like it.
      */
-    public function actionCreate()
+    public function actionCreate($recordId)
     {
-        $likeService = new LikeService($this->findRecord());
+        $likeService = new LikeService($this->findRecord((int)$recordId));
 
         if (!$likeService->canLike()) {
             throw new ForbiddenHttpException();
@@ -132,9 +134,9 @@ class LikeController extends BaseController
      * Removes the caller's like of a record. Idempotent — unliking something that was never
      * liked is a success, not an error.
      */
-    public function actionRemove()
+    public function actionRemove($recordId)
     {
-        $likeService = new LikeService($this->findRecord());
+        $likeService = new LikeService($this->findRecord((int)$recordId));
         $likeService->unlike();
 
         return LikeSerializer::state($likeService);
@@ -143,9 +145,9 @@ class LikeController extends BaseController
     /**
      * The users who liked a record, newest first, as a paginated list of user shapes.
      */
-    public function actionUsers()
+    public function actionUsers($recordId)
     {
-        $likeService = new LikeService($this->findRecord());
+        $likeService = new LikeService($this->findRecord((int)$recordId));
 
         $query = $likeService->getUserQuery();
         $pagination = $this->handlePagination($query);
@@ -157,17 +159,13 @@ class LikeController extends BaseController
     }
 
     /**
-     * Resolves the addressed record from `recordId` — the body of a `POST`, the query string
-     * of anything else.
+     * Resolves the record addressed in the path.
      *
      * @throws NotFoundHttpException for an unknown record
      * @throws ForbiddenHttpException when the caller cannot see the record's content
      */
-    protected function findRecord(): ContentProvider
+    protected function findRecord(int $recordId): ContentProvider
     {
-        $request = Yii::$app->request;
-        $recordId = (int)($request->getIsPost() ? $request->getBodyParam('recordId') : $request->get('recordId'));
-
         $record = $recordId > 0 ? RecordMap::getById($recordId, ContentProvider::class) : null;
 
         if (!$record) {

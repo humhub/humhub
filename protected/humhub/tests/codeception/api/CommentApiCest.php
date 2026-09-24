@@ -145,7 +145,7 @@ class CommentApiCest
         $this->createComment($I, $contentId, 'Reply 1', $roots[2]);
 
         // Newest `commentsPreviewMax` (2) roots, oldest first inside the window
-        $I->sendGet("comment/content/$contentId/window");
+        $I->sendGet("content/$contentId/comments");
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson([
             'total' => 5,        // all comments including replies (the badge count)
@@ -158,34 +158,34 @@ class CommentApiCest
         // "Show previous" from root 3: both remaining older roots come back, because a single
         // comment beyond the page size is returned directly instead of being hidden behind
         // another "show previous" link ("keep one leftover").
-        $I->sendGet("comment/content/$contentId/window?cursor={$roots[3]}&direction=previous&limit=1");
+        $I->sendGet("content/$contentId/comments?cursor={$roots[3]}&direction=previous&limit=1");
         $I->seeResponseCodeIs(200);
         Assert::assertEquals([$roots[1], $roots[2]], $I->grabDataFromResponseByJsonPath('$.results[*].id'));
         $I->seeResponseContainsJson(['prevCount' => 0, 'nextCount' => 2]);
 
         // A non-positive limit must not drop the LIMIT and return the whole thread
-        $I->sendGet("comment/content/$contentId/window?cursor={$roots[4]}&direction=previous&limit=0");
+        $I->sendGet("content/$contentId/comments?cursor={$roots[4]}&direction=previous&limit=0");
         $I->seeResponseCodeIs(200);
         Assert::assertEquals([$roots[3]], $I->grabDataFromResponseByJsonPath('$.results[*].id'));
 
         // An oversized client limit is clamped instead of being passed through
-        $I->sendGet("comment/content/$contentId/window?limit=9999");
+        $I->sendGet("content/$contentId/comments?limit=9999");
         $I->seeResponseCodeIs(200);
         Assert::assertLessThanOrEqual(10, count($I->grabDataFromResponseByJsonPath('$.results[*].id')));
 
         // `focus` centres the window on a comment - a permalink - without a direction
-        $I->sendGet("comment/content/$contentId/window?focus={$roots[2]}&limit=1");
+        $I->sendGet("content/$contentId/comments?focus={$roots[2]}&limit=1");
         $I->seeResponseCodeIs(200);
         Assert::assertContains($roots[2], array_map('intval', $I->grabDataFromResponseByJsonPath('$.results[*].id')));
 
         // Reply window of one thread — `total` is scoped to the thread, `rootTotal` stays
         // content-global
-        $I->sendGet("comment/parent/{$roots[2]}/window");
+        $I->sendGet("comment/{$roots[2]}/replies");
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['total' => 1, 'rootTotal' => 4]);
         Assert::assertEquals(['Reply 1'], $I->grabDataFromResponseByJsonPath('$.results[*].message'));
 
-        $I->sendGet('comment/parent/99999/window');
+        $I->sendGet('comment/99999/replies');
         $I->seeResponseCodeIs(404);
     }
 
@@ -372,7 +372,7 @@ class CommentApiCest
         $commentId = $this->seedComment(10, 2, 'Public comment');
         Yii::$app->getModule('user')->settings->set('auth.allowGuestAccess', 1);
 
-        $I->sendGet('comment/content/10/window');
+        $I->sendGet('content/10/comments');
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['results' => [['message' => 'Public comment']]]);
 
@@ -383,7 +383,7 @@ class CommentApiCest
         $I->seeResponseContainsJson(['message' => 'Public comment']);
 
         // Content that is not guest-visible stays denied
-        $I->sendGet('comment/content/1/window');
+        $I->sendGet('content/1/comments');
         $I->seeResponseCodeIs(403);
 
         // Mutations are never guest-accessible
@@ -399,7 +399,7 @@ class CommentApiCest
         Yii::$app->getModule('user')->settings->set('auth.allowGuestAccess', 1);
         Yii::$app->getModule('comment')->guestHideComments = true;
 
-        $I->sendGet('comment/content/10/window');
+        $I->sendGet('content/10/comments');
         $I->seeResponseCodeIs(403);
 
         $I->sendGet('comment/' . $commentId);

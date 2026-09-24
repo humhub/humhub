@@ -675,7 +675,7 @@ describe('Comment mutations + live updates', () => {
             // The cursor is still 15 - the pre-append oldest SHOWN reply - never the
             // own-appended one (20), which is now the array's tail.
             expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith(
-                '/api/v2/comment/parent/4/window?cursor=15&direction=previous&limit=10',
+                '/api/v2/comment/4/replies?cursor=15&direction=previous&limit=10',
             );
 
             await vi.waitFor(() => {
@@ -771,7 +771,7 @@ describe('Comment mutations + live updates', () => {
             // The cursor is the pre-append last loaded comment (6), never the
             // own-appended one (10) that is now items' tail.
             expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith(
-                '/api/v2/comment/content/42/window?cursor=6&direction=next&limit=5',
+                '/api/v2/content/42/comments?cursor=6&direction=next&limit=5',
             );
 
             await vi.waitFor(() => {

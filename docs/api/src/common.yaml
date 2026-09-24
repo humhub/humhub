@@ -52,9 +52,9 @@ components:
       required: false
       schema:
         type: string
-    recordIdParam:
+    recordIdPathParam:
       name: recordId
-      in: query
+      in: path
       description: |
         Platform-wide record id — the addressing every shape that carries likes exposes as
         `recordId`.

@@ -20,8 +20,8 @@ return [
     // route itself. Registered prepended by the ModuleManager, so they win over the
     // generic fallback routing.
     'urlManagerRules' => ApiRules::v2([
-        ['pattern' => 'comment/content/<id:\d+>/window', 'route' => 'comment/api/comment/window-by-content', 'verb' => ['GET', 'HEAD']],
-        ['pattern' => 'comment/parent/<id:\d+>/window', 'route' => 'comment/api/comment/window-by-parent', 'verb' => ['GET', 'HEAD']],
+        ['pattern' => 'content/<id:\d+>/comments', 'route' => 'comment/api/comment/content-comments', 'verb' => ['GET', 'HEAD']],
+        ['pattern' => 'comment/<id:\d+>/replies', 'route' => 'comment/api/comment/replies', 'verb' => ['GET', 'HEAD']],
         ['pattern' => 'comment', 'route' => 'comment/api/comment/create', 'verb' => 'POST'],
         ['pattern' => 'comment/<id:\d+>', 'route' => 'comment/api/comment/view', 'verb' => ['GET', 'HEAD']],
         ['pattern' => 'comment/<id:\d+>/permissions', 'route' => 'comment/api/comment/permissions', 'verb' => ['GET', 'HEAD']],

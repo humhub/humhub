@@ -920,8 +920,9 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
       `perma`).
     - **Removed**: `like\controllers\LikeController` entirely, including the pre-1.19 routes
       `like/like/like`, `like/like/unlike` and the newer `like/like/info`/`like/like/user-list` —
-      use `POST /api/v2/like`, `DELETE /api/v2/like`, `GET /api/v2/like/state` and
-      `GET /api/v2/like/users` instead. The legacy `like.toggleLike` client had
+      use `GET|POST|DELETE /api/v2/like/<recordId>`,
+      `GET /api/v2/like/<recordId>/users` and `GET /api/v2/like/states` instead. The
+      legacy `like.toggleLike` client had
       already been removed earlier in this cycle (see above), so no core markup calls the
       removed routes anymore.
     - **Removed**: `comment\services\CommentJsonService`, `comment\components\SerializeCommentsEvent`

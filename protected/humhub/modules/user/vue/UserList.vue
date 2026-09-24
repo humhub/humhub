@@ -35,7 +35,7 @@ import { client, i18n, log } from '@humhub/vue';
  *   the API.
  *
  * Not tied to any single caller - the like module's user-list modal
- * (`LikeButton.vue`) is the reference consumer, feeding it the `like/users`
+ * (`LikeButton.vue`) is the reference consumer, feeding it the `like/<id>/users`
  * endpoint, but any module can point this at its own endpoint as long as the
  * response matches one of the two shapes.
  *

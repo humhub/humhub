@@ -70,7 +70,7 @@ describe('UserList', () => {
     });
 
     it('consumes the API list envelope', async () => {
-        // GET /api/v2/like/users shape: rows are user shapes; hasMore/nextPage derive
+        // GET /api/v2/like/<id>/users shape: rows are user shapes; hasMore/nextPage derive
         // from page/pages.
         globalThis.humhubStubs.client.get = vi.fn()
             .mockResolvedValueOnce({
