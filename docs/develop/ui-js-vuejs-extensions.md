@@ -258,9 +258,9 @@ A component reached through a slot, or a menu entry, commonly needs data the hos
 
 ```php
 // humhub/modules/reaction/config.php
-'urlManagerRules' => ApiRules::v2([
-    ['pattern' => 'reaction/states', 'route' => 'reaction/api/reaction/states', 'verb' => ['GET', 'HEAD']],
-]),
+'urlManagerRules' => [
+    ['pattern' => 'api/v2/reaction/states', 'route' => 'reaction/api/reaction/states', 'verb' => ['GET', 'HEAD']],
+],
 ```
 
 ```js

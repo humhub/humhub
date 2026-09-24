@@ -11,24 +11,25 @@ namespace humhub\components\api;
 use yii\helpers\Url;
 
 /**
- * Builds URL rules for the platform's HTTP API.
+ * The URL space of the platform's HTTP API.
  *
  * A module declares its API routes in its own `config.php`, next to the module they belong
- * to, through the existing `urlManagerRules` key — {@see \humhub\components\ModuleManager}
- * registers those rules PREPENDED, so they win over Yii's generic fallback routing:
+ * to, as ordinary rules under `urlManagerRules` with the version prefix written out -
+ * {@see \humhub\components\ModuleManager} registers those rules PREPENDED, so they win over
+ * Yii's generic fallback routing:
  *
  * ```php
  * // humhub/modules/comment/config.php
- * 'urlManagerRules' => ApiRules::v2([
- *     ['pattern' => 'comment/<id:\d+>', 'route' => 'comment/api/comment/view', 'verb' => ['GET', 'HEAD']],
- * ]),
+ * 'urlManagerRules' => [
+ *     ['pattern' => 'api/v2/comment/<id:\d+>', 'route' => 'comment/api/comment/view', 'verb' => ['GET', 'HEAD']],
+ * ],
  * ```
  *
- * The helper only prefixes the patterns with the version prefix, so `api/v2/` is written
- * once instead of in every rule. Routes point at the module's own API controllers
- * (`controllers/api/`); Yii resolves controller subdirectories from the route on its own
- * ({@see \yii\base\Module::createController()}), so no `controllerMap` entry is needed and
- * the internal route shape stays invisible to clients.
+ * A rule without the prefix cannot serve an API controller anyway: {@see BaseController}
+ * refuses every request whose path lies outside {@see self::PREFIX_V2}. Routes point at the
+ * module's own API controllers (`controllers/api/`); Yii resolves controller subdirectories
+ * from the route on its own ({@see \yii\base\Module::createController()}), so no
+ * `controllerMap` entry is needed and the internal route shape stays invisible to clients.
  *
  * @since 1.20
  */
@@ -59,17 +60,6 @@ class ApiRules
     public static function isApiPath(string $pathInfo): bool
     {
         return str_starts_with($pathInfo, self::PREFIX);
-    }
-
-    /**
-     * Prefixes the given rules with {@see self::PREFIX_V2}.
-     *
-     * @param array $rules rules in `['pattern' => ..., 'route' => ..., 'verb' => ...]` form
-     * @return array
-     */
-    public static function v2(array $rules): array
-    {
-        return static::prefix($rules, static::PREFIX_V2);
     }
 
     /**

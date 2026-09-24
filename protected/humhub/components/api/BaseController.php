@@ -26,7 +26,7 @@ use yii\web\NotFoundHttpException;
  *
  * API endpoints live next to the module they belong to
  * (`humhub\modules\<module>\controllers\api\`) and declare their routes in that module's
- * `config.php` via {@see ApiRules}. This class provides what all of them share: request and
+ * `config.php` (`urlManagerRules`, prefixed `api/v2/`, see {@see ApiRules}). This class provides what all of them share: request and
  * response conventions, the authentication pipeline, and the guards that keep an endpoint
  * from being reachable outside the API URL space.
  *

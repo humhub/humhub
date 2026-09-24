@@ -130,16 +130,20 @@ Further contracts, all explicit:
 Endpoints declare their rules in the `config.php` of the module they belong to.
 `humhub\components\ModuleManager` reads the `urlManagerRules` key from every module's
 `config.php` and registers it **prepended** (`addRules($rules, false)`), so module rules
-win over the generic fallback routing. `ApiRules::v2()` prefixes the patterns with the
-version prefix:
+win over the generic fallback routing. An API rule is an ordinary rule with the version
+prefix written out:
 
 ```php
 // humhub/modules/comment/config.php
-'urlManagerRules' => ApiRules::v2([
-    ['pattern' => 'content/<id:\d+>/comments', 'route' => 'comment/api/comment/content-comments', 'verb' => ['GET', 'HEAD']],
+'urlManagerRules' => [
+    ['pattern' => 'api/v2/content/<id:\d+>/comments', 'route' => 'comment/api/comment/content-comments', 'verb' => ['GET', 'HEAD']],
     // ...
-]),
+],
 ```
+
+A rule that forgets the prefix fails closed: `BaseController` refuses every request outside
+`api/v2/` (see below). Where a module also has rules that match greedily (the container
+`UrlRule`s of `space` and `user`), its API rules go first in the list.
 
 Routes point at the module's own API controllers; Yii resolves controller subdirectories
 from the route on its own (`yii\base\Module::createController()` turns

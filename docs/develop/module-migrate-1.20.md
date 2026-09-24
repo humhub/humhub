@@ -1269,8 +1269,8 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   the `humhub/rest` module and the 13 modules extending its `BaseController` keep working
   unchanged.
   - `humhub\components\api\BaseController` is the base class of a core API controller
-    (`humhub\modules\<module>\controllers\api\`), `ApiRules::v2()` prefixes the rules a module
-    declares in its `config.php` `urlManagerRules`, `Format` holds the v2 value conventions
+    (`humhub\modules\<module>\controllers\api\`), declared as ordinary `urlManagerRules` in the
+    module's `config.php` with the `api/v2/` prefix written out, `Format` holds the v2 value conventions
     (ISO-8601 UTC timestamps, camelCase attribute names). Serializers live in
     `humhub\modules\<module>\serializers\`.
   - Core endpoints in this release: comment window/CRUD (`comment`), like state/toggle/users
