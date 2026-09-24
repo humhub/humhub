@@ -11,7 +11,16 @@ return [
     'id' => 'space',
     'class' => Module::class,
     'isCoreModule' => true,
+    // The API rules come first: the space UrlRule below matches container prefixes greedily,
+    // and an endpoint must never depend on losing that race (see docs/develop/concept-api.md).
     'urlManagerRules' => [
+        // The general space list - before the membership rules, so the fixed path is not
+        // shadowed by a pattern.
+        ['pattern' => 'api/v2/space/states', 'route' => 'space/api/space/states', 'verb' => ['GET', 'HEAD']],
+        ['pattern' => 'api/v2/space', 'route' => 'space/api/space/index', 'verb' => ['GET', 'HEAD']],
+        ['pattern' => 'api/v2/space/<id:\d+>/membership', 'route' => 'space/api/membership/state', 'verb' => ['GET', 'HEAD']],
+        ['pattern' => 'api/v2/space/<id:\d+>/membership', 'route' => 'space/api/membership/affirm', 'verb' => 'POST'],
+        ['pattern' => 'api/v2/space/<id:\d+>/membership', 'route' => 'space/api/membership/remove', 'verb' => 'DELETE'],
         ['class' => 'humhub\modules\space\components\UrlRule'],
         'spaces' => 'space/spaces',
         '<spaceContainer>/home' => 'space/space/home',

@@ -43,9 +43,34 @@ class User extends \yii\web\User
      */
     public $mustChangePasswordRoute = '/user/must-change-password';
 
+    /**
+     * @var bool whether the identity of this request was established from the browser session
+     * while the component itself runs session-less. Set by the HTTP API's
+     * {@see \humhub\components\api\SessionAuth}, whose controllers pin `enableSession = false`
+     * so that a token login can never write into the session. See [[isSessionBased()]].
+     * @since 1.20
+     */
+    public bool $sessionAuthenticated = false;
+
     private ?AuthClientUserService $authClientUserService = null;
 
     private Impersonation|array $_impersonation = [];
+
+    /**
+     * Whether this request is backed by the browser session — either because the component
+     * runs with sessions enabled (every regular web request) or because a session-less API
+     * request was authenticated by the session ([[$sessionAuthenticated]]).
+     *
+     * This is what distinguishes a browser from a machine client (token, CalDAV, …):
+     * [[\humhub\components\gates\GateFilter]] classifies requests by it and
+     * [[Impersonation::isActive()]] decides by it whether an impersonation applies.
+     *
+     * @since 1.20
+     */
+    public function isSessionBased(): bool
+    {
+        return $this->enableSession || $this->sessionAuthenticated;
+    }
 
     public function isAdmin(): bool
     {

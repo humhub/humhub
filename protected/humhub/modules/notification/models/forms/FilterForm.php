@@ -15,7 +15,12 @@ use yii\db\Expression;
  */
 class FilterForm extends Model
 {
-    private const NO_CATEGORY_ID = 'others-no-category';
+    /**
+     * @var string category id of notifications that belong to no category of their own - part
+     *      of the filter contract, so the API/island can offer it like any other category.
+     * @since 1.20
+     */
+    public const NO_CATEGORY_ID = 'others-no-category';
 
     /**
      * @var array|string|null Contains the current module filters

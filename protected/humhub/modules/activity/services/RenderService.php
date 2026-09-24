@@ -15,17 +15,6 @@ class RenderService
         $this->activity = ActivityManager::load($record);
     }
 
-    public function getWeb(): string
-    {
-        return Yii::$app->getView()->renderFile(
-            '@activity/views/layouts/web.php',
-            array_merge(
-                $this->getViewParams(),
-                ['message' => $this->activity->asWeb()],
-            ),
-        );
-    }
-
     public function getMailText(): string
     {
         return Yii::$app->getView()->renderFile(

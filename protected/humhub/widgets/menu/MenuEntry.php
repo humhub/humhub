@@ -216,11 +216,52 @@ abstract class MenuEntry extends BaseObject
     }
 
     /**
+     * Describes this entry as a data descriptor, for a client that renders the menu itself
+     * instead of receiving it as markup.
+     *
+     * Recognized keys: `id`, `label`, `icon` (an {@see \humhub\widgets\Icon} name without
+     * the `fa-` prefix), `sortOrder`, `url`, `htmlOptions`. The shape matches the entry
+     * descriptor of the Vue `DropdownMenu` component, so a described entry can be merged with
+     * entries a module registered client-side via `registerMenuEntry()`.
+     *
+     * Returning null means "this entry can only be rendered" — the caller then falls back to
+     * server-rendering it and shipping the markup (see
+     * {@see \humhub\modules\content\controllers\api\ControlsController}). The base
+     * implementation returns null, so an entry type is only describable once it says so.
+     *
+     * @return array|null
+     * @since 1.20
+     */
+    public function describe(): ?array
+    {
+        return null;
+    }
+
+    /**
      * @return string the class name of this entry can be used to identify the entry if no id is given
      * @since 1.7
      */
     public function getEntryClass()
     {
         return static::class;
+    }
+
+    /**
+     * The fallback entry id for an entry that carries none of its own: its short class name
+     * in kebab case (`DeleteLink` → `delete-link`), the widget class for a
+     * {@see WidgetMenuEntry}.
+     *
+     * Stable across requests, which is what a client needs in order to override or remove the
+     * entry by id — but NOT unique when the same widget class is contributed more than once
+     * (`share-between-humhub` adds one `ShareLink` per configured site). Disambiguating those
+     * is the resolving caller's job, since only it sees the whole menu.
+     *
+     * @since 1.20
+     */
+    public static function describeIdFor(string $class): string
+    {
+        $shortName = substr((string)strrchr('\\' . $class, '\\'), 1);
+
+        return strtolower(preg_replace('/([a-z0-9])([A-Z])/', '$1-$2', $shortName));
     }
 }

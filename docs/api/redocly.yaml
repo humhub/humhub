@@ -1,0 +1,27 @@
+# Redocly configuration for `build.sh` (`@redocly/cli` reads this file from the working
+# directory): the lint rule set for the sources and the Redoc options for the rendered page.
+
+# Every problem is an error, warnings included - a source that renders fine but lacks an
+# `operationId` or declares `nullable` without a type must not pass the build.
+extends:
+  - recommended-strict
+
+openapi:
+  # Sidebar entries are the paths (`GET /comment/{id}`) rather than the prose summaries -
+  # what a reader scanning an API for an endpoint is looking for.
+  sideNavStyle: path-only
+  pathInMiddlePanel: true
+  expandResponses: "200,201"
+  requiredPropsFirst: true
+  sortTagsAlphabetically: true
+  theme:
+    colors:
+      primary:
+        # The teal of the HumHub logo, for links, buttons and the active sidebar entry.
+        main: '#20a0b2'
+    logo:
+      # The wordmark is 1024x268; at 150px it reads as a mark above the page rather than a
+      # banner filling the sidebar. The page's own name sits beneath it, added by the
+      # stylesheet in template.hbs - Redoc has no option for a logo caption.
+      maxWidth: 150px
+      gutter: 24px 16px 4px

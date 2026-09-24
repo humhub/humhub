@@ -65,6 +65,7 @@ class AppAsset extends AssetBundle
         PjaxAsset::class,
         JqueryTimeAgoAsset::class,
         IntlMessageFormatAsset::class,
+        VueAsset::class,
 
         /**
          * Style only assets

@@ -11,4 +11,9 @@ return [
     'events' => [
         ['class' => AccountMenu::class, 'event' => AccountMenu::EVENT_INIT, 'callback' => [Events::class, 'onAccountMenuInit']],
     ],
+    'urlManagerRules' => [
+        ['pattern' => 'api/v2/user/<id:\d+>/friendship', 'route' => 'friendship/api/friendship/state', 'verb' => ['GET', 'HEAD']],
+        ['pattern' => 'api/v2/user/<id:\d+>/friendship', 'route' => 'friendship/api/friendship/affirm', 'verb' => 'POST'],
+        ['pattern' => 'api/v2/user/<id:\d+>/friendship', 'route' => 'friendship/api/friendship/remove', 'verb' => 'DELETE'],
+    ],
 ];

@@ -8,6 +8,7 @@
 
 namespace humhub\widgets;
 
+use humhub\components\api\ApiRules;
 use humhub\modules\admin\libs\CacheHelper;
 use humhub\modules\file\validators\FileValidator;
 use humhub\widgets\Icon;
@@ -28,13 +29,20 @@ class CoreJsConfig extends Widget
     {
 
         if (!Yii::$app->user->isGuest) {
-            $userConfig = UserPicker::asJSON(Yii::$app->user->getIdentity());
+            $identity = Yii::$app->user->getIdentity();
+            $userConfig = UserPicker::asJSON($identity);
             $userConfig['isGuest'] = false;
-            $userConfig['email'] = Yii::$app->user->getIdentity()->email;
+            $userConfig['email'] = $identity->email;
+            $userConfig['id'] = $identity->id;
+            // The viewer's own block list — drives client-side blocked-author masking
+            // (e.g. the comment island; the API deliberately serves unmasked payloads, see
+            // docs/develop/concept-api.md). @since 1.20
+            $userConfig['blockedUserIds'] = array_map('intval', $identity->getBlockedUserIds());
         } else {
             $userConfig = ['isGuest' => true];
         }
         $userConfig['locale'] = Yii::$app->formatter->locale;
+        $userConfig['loginUrl'] = Url::to(Yii::$app->user->loginUrl);
 
         $this->getView()->registerJsConfig(
             [
@@ -45,6 +53,13 @@ class CoreJsConfig extends Widget
                 ],
                 'client' => [
                     'baseUrl' => Yii::$app->settings->get('baseUrl'),
+                    // Base of the HTTP API the Vue islands consume (see humhub.vue.js's
+                    // apiUrl() and docs/develop/concept-api.md). Relative to the host the page
+                    // is served from, not the configured base URL: a request to another host is
+                    // cross-origin, which the Content Security Policy (`default-src 'self'`)
+                    // blocks - and the two differ whenever the site is reached under a second
+                    // name, an IP, or through a proxy. @since 1.20
+                    'apiUrl' => ApiRules::url(),
                     'reloadableScripts' => CacheHelper::getReloadableScriptUrls(),
                     'syncScriptOrigins' => $this->getAssetOrigins(),
                 ],
@@ -183,6 +198,9 @@ class CoreJsConfig extends Widget
                 ],
                 'stream' => [
                     'defaultSort' => Yii::$app->getModule('content')->settings->get('defaultStreamSort', 'c'),
+                ],
+                'url' => [
+                    'template' => Url::to(['/__route__']),
                 ],
             ],
         );

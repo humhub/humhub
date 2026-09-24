@@ -40,14 +40,12 @@ class SpaceDirectoryActionButtons extends Widget
 
         $html .= MembershipButton::widget([
             'space' => $this->space,
-            'options' => [
-                'requestMembership' => ['attrs' => ['class' => 'btn btn-accent btn-sm']],
-                'becomeMember' => ['attrs' => ['class' => 'btn btn-accent btn-sm']],
-                'acceptInvite' => ['attrs' => ['class' => 'btn btn-accent btn-sm'], 'togglerClass' => 'btn btn-accent btn-sm'],
-                'cancelPendingMembership' => ['attrs' => ['class' => 'btn btn-sm btn-outline-accent']],
-                'cancelMembership' => ['visible' => true, 'attrs' => ['class' => 'btn btn-sm btn-outline-accent']],
-                'cannotCancelMembership' => ['visible' => true, 'attrs' => ['class' => 'btn btn-sm btn-outline-accent']],
-            ],
+            'buttonClass' => 'btn btn-accent btn-sm',
+            'togglerClass' => 'btn btn-accent btn-sm',
+            'pendingClass' => 'btn btn-sm btn-outline-accent',
+            'memberClass' => 'btn btn-sm btn-outline-accent',
+            // Unlike the space header, the directory has no controls menu to leave from.
+            'showMemberState' => true,
         ]);
 
         if (trim($html) === '') {

@@ -13,6 +13,12 @@ return [
     'id' => 'notification',
     'class' => Module::class,
     'isCoreModule' => true,
+    // HTTP API (see docs/develop/concept-api.md) - the caller's own notifications, consumed by
+    // the notification islands.
+    'urlManagerRules' => [
+        ['pattern' => 'api/v2/notification', 'route' => 'notification/api/notification/index', 'verb' => ['GET', 'HEAD']],
+        ['pattern' => 'api/v2/notification/mark-as-seen', 'route' => 'notification/api/notification/mark-as-seen', 'verb' => 'POST'],
+    ],
     'events' => [
         ['class' => User::class, 'event' => User::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onUserDelete']],
         ['class' => Space::class, 'event' => Space::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onSpaceDelete']],

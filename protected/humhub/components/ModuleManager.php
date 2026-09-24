@@ -103,6 +103,15 @@ class ModuleManager extends Component
     protected array $modules = [];
 
     /**
+     * Root namespace of every registered module, with a trailing backslash, mapped to the
+     * module id - what {@see getModuleIdByClass()} answers from. Filled by {@see register()}.
+     *
+     * @var array<string, string> namespace => moduleId
+     * @since 1.20
+     */
+    protected array $moduleNamespaces = [];
+
+    /**
      * List of all enabled module ids
      *
      * @var array
@@ -201,6 +210,13 @@ class ModuleManager extends Component
         }
 
         $this->modules[$config['id']] = $config['class'];
+
+        // The module's root namespace: declared by the config (external modules do, it is what
+        // registers their autoloading alias below), otherwise the namespace of the module class.
+        $namespace = isset($config['namespace'])
+            ? (string)$config['namespace']
+            : (string)substr($config['class'], 0, (int)strrpos($config['class'], '\\'));
+        $this->moduleNamespaces[trim($namespace, '\\') . '\\'] = $config['id'];
 
         if (isset($config['namespace'])) {
             Yii::setAlias('@' . str_replace('\\', '/', $config['namespace']), $basePath);
@@ -401,6 +417,40 @@ class ModuleManager extends Component
         }
 
         return $eventClass;
+    }
+
+    /**
+     * The id of the module a class belongs to, by the module namespaces registered here.
+     *
+     * A class belongs to the module whose root namespace is the longest prefix of its name -
+     * `humhub\modules\space\assets\SpaceVueAsset` to `space`, a class of a module's own
+     * sub-module to that module, an anonymous subclass (named after its parent by PHP) to
+     * the parent's module. Disabled modules are known too, since they are registered; a class
+     * outside every module namespace (core, framework, a test) answers `null`.
+     *
+     * Matching on the namespace registered for a module rather than on a naming convention is
+     * what makes this hold for external modules, whose ids and namespaces do not correspond
+     * (`advanced-ldap` is `humhub\modules\advancedLdap`, the auth modules live under
+     * `humhubContrib\auth\`). The trailing backslash keeps `humhub\modules\ai` from claiming
+     * `humhub\modules\aiAssistant`.
+     *
+     * @param string $class a fully qualified class name
+     * @return string|null the module id, `null` when no registered module owns the class
+     * @since 1.20
+     */
+    public function getModuleIdByClass(string $class): ?string
+    {
+        $moduleId = null;
+        $matched = 0;
+
+        foreach ($this->moduleNamespaces as $namespace => $id) {
+            if (strlen($namespace) > $matched && str_starts_with($class, $namespace)) {
+                $moduleId = $id;
+                $matched = strlen($namespace);
+            }
+        }
+
+        return $moduleId;
     }
 
     /**

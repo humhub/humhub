@@ -83,11 +83,17 @@ class Impersonation extends Component
      * This only relies on the session marker, so it stays `true` even when the impersonator
      * can no longer be resolved, see [[stop()]].
      *
+     * A session-authenticated API request counts as a session even though its user component
+     * is session-less (`enableSession = false`, so a token login can never write into the
+     * browser session) — otherwise the private-content restriction below would silently not
+     * apply to the platform's own frontend calling the API while impersonating. See
+     * [[User::isSessionBased()]].
+     *
      * @return bool
      */
     public function isActive(): bool
     {
-        return $this->user->enableSession
+        return $this->user->isSessionBased()
             && !$this->user->getIsGuest()
             && Yii::$app->has('session')
             && Yii::$app->session->has(self::SESSION_KEY);

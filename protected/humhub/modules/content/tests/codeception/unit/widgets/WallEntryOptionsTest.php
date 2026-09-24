@@ -2,6 +2,7 @@
 
 namespace humhub\modules\content\tests\codeception\unit\widgets;
 
+use humhub\helpers\Html;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\content\widgets\DeleteLink;
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
@@ -61,7 +62,7 @@ class WallEntryOptionsTest extends HumHubDbTestCase
     public function testDisableControlsSwitchVisibility()
     {
         $this->testDisableControlsItem(
-            'Change to "Public"',
+            Html::encode('Change to "Public"'),
             (new WallStreamEntryOptions())->disableControlsEntrySwitchVisibility(),
         );
     }
@@ -109,10 +110,17 @@ class WallEntryOptionsTest extends HumHubDbTestCase
         $this->assertWallEntryNotContains('stream-entry-addons', (new WallStreamEntryOptions())->disableAddons());
     }
 
+    /**
+     * The comment addon renders the `<comment-section>` Vue island (see
+     * `humhub\modules\comment\widgets\Comments`) - asserting on its mount element
+     * instead of the `comment-container` class the pre-island widget used to emit
+     * server-side (that class now lives in `CommentSection.vue`'s own template and
+     * only ever exists client-side).
+     */
     public function testDisableCommentAddonsMenu()
     {
-        $this->assertWallEntryContains('comment-container', new WallStreamEntryOptions());
-        $this->assertWallEntryNotContains('comment-container', (new WallStreamEntryOptions())->disableCommentAddon());
+        $this->assertWallEntryContains('<comment-section', new WallStreamEntryOptions());
+        $this->assertWallEntryNotContains('<comment-section', (new WallStreamEntryOptions())->disableCommentAddon());
     }
 
     public function testDisableWallEntryLinksAddonsMenu()
@@ -131,7 +139,7 @@ class WallEntryOptionsTest extends HumHubDbTestCase
         $this->assertWallEntryControlsContains('Move to archive', $options);
         $this->assertWallEntryControlsContains('Move', $options);
         $this->assertWallEntryControlsContains('Turn on notifications', $options);
-        $this->assertWallEntryControlsContains('Change to "Public"', $options);
+        $this->assertWallEntryControlsContains(Html::encode('Change to "Public"'), $options);
     }
 
     private function testDisableControlsItem($searchStr, $renderOptions)

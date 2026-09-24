@@ -46,8 +46,15 @@ humhub.module('ui.showMore', function (module, require, $) {
                 this.$gradient.children().css({background: 'linear-gradient(rgba(251,251,251,0), '+determineBackground(this.$)+')'});
             }
 
-            // Init collapse button
-            this.$collapseButton.add(this.$gradient).on('click', function (evt) {
+            // Init collapse button. Namespaced + unbound-before-bound so
+            // repeat application (e.g. a Vue island's v-additions running
+            // ui.additions.applyTo() again on `updated`, see humhub.vue.js)
+            // is idempotent instead of stacking another click handler on top
+            // of the still-attached previous one - the DOM insertion above
+            // is already guarded by `if (!this.$collapseButton.length)`, but
+            // this binding wasn't, so every re-apply on the SAME collapse
+            // button used to toggle collapsed/expanded twice per click.
+            this.$collapseButton.add(this.$gradient).off('click.humhubShowMore').on('click.humhubShowMore', function (evt) {
                 evt.preventDefault();
                 if (that.$.data('state') === 'collapsed') {
                     that.expand();

@@ -68,15 +68,11 @@
             background-color: var(--bs-body-bg);
         }
 
-        .jp-audio {
-            margin-bottom: 10px;
-        }
-
         .col-12 img { // One image
             height: 300px;
         }
 
-        // Medium (see protected/humhub/modules/file/widgets/views/showFiles.php template)
+        // Medium (see the column buckets of protected/humhub/modules/file/vue/AttachedFiles.vue)
         @include media-breakpoint-only(md) {
             img,
             .col-12 img {
@@ -88,7 +84,7 @@
             }
         }
 
-        // Large and over (see protected/humhub/modules/file/widgets/views/showFiles.php template)
+        // Large and over (see the column buckets of protected/humhub/modules/file/vue/AttachedFiles.vue)
         @include media-breakpoint-up(lg) {
             img,
             .col-12 img {
@@ -229,56 +225,5 @@
 
     .mime-audio {
         background-image: url("../img/mime/audio.png");
-    }
-
-    @include media-breakpoint-down(sm) {
-        .jp-current-time {
-            margin-left: 0 !important;
-        }
-
-        .jp-audio {
-            width: auto !important;
-            margin-left: 0 !important;
-        }
-
-        .jp-audio .jp-controls {
-            padding: 2px 12px 0 !important;
-        }
-
-        .jp-audio .jp-progress {
-            left: 3px !important;
-            top: 45px !important;
-            width: 200px !important;
-        }
-
-        .jp-audio .jp-volume-controls {
-            position: absolute !important;
-            top: 15px !important;
-            left: 170px !important;
-        }
-
-        .jp-audio .jp-time-holder {
-            left: 3px !important;
-            top: 60px !important;
-            width: 200px !important;
-        }
-
-        .jp-audio .jp-toggles {
-            left: 210px !important;
-            top: 45px !important;
-            width: auto !important;
-        }
-
-        .jp-playlist ul {
-            padding: 0 0 0 0 !important;
-        }
-    }
-
-    .jp-details, .jp-playlist {
-        border-top: 1px solid var(--bs-accent);
-    }
-
-    .jp-audio, .jp-audio-stream, .jp-video {
-        border: 1px solid var(--bs-accent);
     }
 }

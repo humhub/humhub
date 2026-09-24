@@ -9,16 +9,19 @@
 namespace humhub\modules\content\widgets;
 
 use humhub\modules\content\components\ContentActiveRecord;
-use yii\base\Widget;
+use humhub\widgets\menu\MenuLink;
+use Yii;
 use yii\helpers\Url;
 
 /**
- * Lock/Unlock comments link for Wall Entries.
+ * The "Lock comments" / "Unlock comments" entry of a content's context menu
+ * ({@see WallEntryControls}).
  *
- * @package humhub.modules_core.wall.widgets
+ * A menu entry, not a widget, since 1.20 - see {@see WallEntryControls::createEntry()}.
+ *
  * @since 1.10
  */
-class LockCommentsLink extends Widget
+class LockCommentsLink extends MenuLink
 {
     /**
      * @var ContentActiveRecord
@@ -28,18 +31,27 @@ class LockCommentsLink extends Widget
     /**
      * @inheritdoc
      */
-    public function run()
+    public function init()
     {
+        parent::init();
+
         $content = $this->contentRecord->content;
 
         if (!$content->canLockComments()) {
-            return '';
+            $this->setIsVisible(false);
+            return;
         }
 
-        return $this->render('lockCommentsLink', [
-            'content' => $content,
-            'lockCommentsLink' => Url::to(['/content/content/lock-comments', 'id' => $content->id]),
-            'unlockCommentsLink' => Url::to(['/content/content/unlock-comments', 'id' => $content->id]),
+        $locked = $content->isLockedComments();
+
+        $this->setLabel($locked
+            ? Yii::t('ContentModule.base', 'Unlock comments')
+            : Yii::t('ContentModule.base', 'Lock comments'));
+        $this->setIcon($locked ? 'message-circle' : 'message-circle-filled');
+        $this->setUrl('#');
+        $this->setHtmlOptions([
+            'data-action-click' => $locked ? 'unlockComments' : 'lockComments',
+            'data-action-url' => Url::to([$locked ? '/content/content/unlock-comments' : '/content/content/lock-comments', 'id' => $content->id]),
         ]);
     }
 }

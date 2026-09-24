@@ -3,6 +3,7 @@
 namespace humhub\components\assets;
 
 use humhub\components\View;
+use Yii;
 use yii\web\AssetBundle as BaseAssetBundle;
 
 /**
@@ -58,13 +59,13 @@ class AssetBundle extends BaseAssetBundle
      * sharing this sourcePath must publish with identical options — whichever bundle
      * publishes first defines the copied file set.
      *
-     * `build/` holds the pre-built production bundles, which are only published through
-     * the compressed asset configuration (see `config/assets.php`); `scss/` only
-     * contains sources. Neither is referenced at runtime outside a production build.
+     * `build/` is deliberately NOT excluded here: the compiled `css/humhub-app.css`
+     * references its contents at runtime via relative `url(../build/<hash>/...)`
+     * (e.g. FontAwesome, OpenSans), so it must always be published alongside
+     * the rest of the tree. `scss/` only contains sources, never referenced at runtime.
      */
     public const HUMHUB_RESOURCES_PUBLISH_OPTIONS = [
         'except' => [
-            'build/',
             'scss/',
             '.gitignore',
         ],
@@ -124,11 +125,17 @@ class AssetBundle extends BaseAssetBundle
             $this->defer = false;
         }
 
-        if ($this->jsProd !== null && $useProdAssets) {
+        // An empty file list means this bundle contributes nothing of its own anymore:
+        // that is how `yii asset` writes every bundle it compressed into a target
+        // (`sourcePath = null`, `js`/`css` emptied - see `humhub\commands\AssetController`),
+        // and the target carries those files from then on. Swapping the production variants
+        // back in there would register files the bundle can no longer publish, ending up as
+        // root-relative URLs that 404 on every request.
+        if ($this->jsProd !== null && $useProdAssets && $this->js !== []) {
             $this->js = $this->jsProd;
         }
 
-        if ($this->cssProd !== null && $useProdAssets) {
+        if ($this->cssProd !== null && $useProdAssets && $this->css !== []) {
             $this->css = $this->cssProd;
         }
 
@@ -141,7 +148,10 @@ class AssetBundle extends BaseAssetBundle
         $this->jsOptions['position'] = $this->getJsPosition();
 
         if (
-            $this->sourcePath === '@humhub/resources'
+            // `parent::init()` above already resolved `sourcePath` from its alias
+            // to an absolute path, so it must be compared against the resolved
+            // alias rather than the literal `@humhub/resources` string.
+            $this->sourcePath === rtrim(Yii::getAlias('@humhub/resources'), '/\\')
             && !isset($this->publishOptions['only'])
             && !isset($this->publishOptions['except'])
         ) {

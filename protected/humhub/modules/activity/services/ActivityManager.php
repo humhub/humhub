@@ -6,6 +6,7 @@ use humhub\components\Event;
 use humhub\helpers\DataTypeHelper;
 use humhub\models\RecordMap;
 use humhub\modules\activity\components\BaseActivity;
+use humhub\modules\activity\live\NewActivity;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -60,7 +61,34 @@ class ActivityManager extends Component
         $activity = static::load($model);
         (new GroupingService($activity))->afterInsert();
 
+        static::sendLiveEvent($model);
+
         return $activity;
+    }
+
+    /**
+     * Tells the containers's audience that there is a new activity, so a listening
+     * {@see \humhub\modules\activity\live\NewActivity} consumer (the ActivityBox island) can
+     * refresh. Sent AFTER the grouping ran, because until then it is not decided whether this
+     * activity starts an entry or joins one.
+     *
+     * Only for activities that belong to a container: the live system routes by container and
+     * visibility, and an activity without one has no audience to route to. Its visibility is
+     * the content's own where there is content, and private otherwise — a container-level
+     * activity ("joined the space") is for that container's members, never wider.
+     */
+    private static function sendLiveEvent(Activity $record): void
+    {
+        if ($record->contentcontainer_id === null) {
+            return;
+        }
+
+        Yii::$app->live->send(new NewActivity([
+            'activityId' => (int)$record->id,
+            'contentContainerId' => (int)$record->contentcontainer_id,
+            'containerGuid' => $record->contentContainer?->guid,
+            'visibility' => $record->content->visibility ?? Content::VISIBILITY_PRIVATE,
+        ]));
     }
 
     public static function load(Activity $record): BaseActivity

@@ -47,15 +47,18 @@ class SpaceChooserCest
             ['count' => 2],
         );
 
-        $I->waitForText($notMemberMessage, 10, '#space-menu-remote-search');
-        $I->see($minCharsMessage, '#space-menu-remote-search');
+        // One list since 1.20 (the chooser island): what the legacy menu split into its own
+        // list and a separate remote-search area now lives in `#space-menu-spaces`.
+        $I->waitForText($notMemberMessage, 10, '#space-menu-spaces');
 
         $I->click('#space-menu-search');
         $I->pressKey('#space-menu-search', 'z');
+        $I->waitForText($minCharsMessage, 10, '#space-menu-spaces');
+
         $I->pressKey('#space-menu-search', 'z');
 
         $noSpacesMessage = Yii::t('SpaceModule.chooser', 'No Spaces found.');
-        $I->waitForText($noSpacesMessage, 10, '#space-menu-remote-search');
+        $I->waitForText($noSpacesMessage, 10, '#space-menu-spaces');
 
         Yii::$app->language = $previousLanguage;
 

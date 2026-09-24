@@ -9,16 +9,36 @@
 namespace humhub\modules\file\widgets;
 
 use humhub\components\ActiveRecord;
-use humhub\modules\file\converter\PreviewImage;
+use humhub\helpers\ThemeHelper;
+use humhub\modules\file\assets\FileVueAsset;
+use humhub\modules\file\libs\FileHelper;
+use humhub\modules\file\models\File;
+use humhub\modules\file\serializers\FileSerializer;
+use humhub\widgets\VueWidget;
 use Yii;
-use yii\base\Widget;
 
 /**
- * This widget is used include the files functionality to a wall entry.
+ * Shows the files attached to a record - the media grid (audio/video/image previews)
+ * followed by the list of all attachments. Used as a wall entry addon for content, and
+ * directly by modules rendering a record's attachments elsewhere.
+ *
+ * Since 1.20 this widget only renders the mount point of the `<attached-files>` Vue
+ * island; the markup lives in `file/vue/AttachedFiles.vue`, which the comment island
+ * renders its attachments with as well.
+ *
+ * Beside the serialized {@see FileSerializer::file()} shape - which is exactly what the
+ * HTTP API ships - each file carries two presentation hints only a server-side caller
+ * can resolve, and which the API therefore does not carry:
+ *
+ *  - `viewUrl` ({@see FileHelper::getViewUrl()}) depends on the file handlers modules
+ *    contributed for this file, which may be permission dependent - it must not end up
+ *    in a caller-neutral, cacheable payload (see docs/develop/concept-api.md).
+ *  - `highlight` ({@see FileHelper::isSearchHighlighted()}) only means anything while
+ *    rendering a search result page.
  *
  * @since 0.5
  */
-class ShowFiles extends Widget
+class ShowFiles extends VueWidget
 {
     /**
      * @var ActiveRecord Object to show files from
@@ -35,23 +55,74 @@ class ShowFiles extends Widget
      */
     public $preview = true;
 
+    protected string $component = 'AttachedFiles';
+
+    protected ?string $assetBundle = FileVueAsset::class;
+
     /**
-     * Executes the widget.
+     * @var File[] the files to render, resolved in [[beforeRun()]]
      */
-    public function run()
+    private array $files = [];
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeRun()
     {
         if (!$this->active) {
-            return;
+            return false;
         }
 
-        $excludeMediaFilesPreview = ($this->preview) ? Yii::$app->getModule('file')->settings->get('excludeMediaFilesPreview') : false;
+        $this->files = $this->object->fileManager->findStreamFiles();
 
-        return $this->render('showFiles', [
-            'previewImage' => new PreviewImage(),
-            'files' => $this->object->fileManager->findStreamFiles(),
-            'object' => $this->object,
-            'excludeMediaFilesPreview' => $excludeMediaFilesPreview,
-            'showPreview' => $this->preview,
-        ]);
+        if ($this->files === []) {
+            return false;
+        }
+
+        return parent::beforeRun();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getOptions(): array
+    {
+        return [
+            // hideOnEdit mandatory since 1.2 - the class sits on the mount tag itself
+            // because the stream's inline edit removes `.stream-entry-addons > .hideOnEdit`,
+            // a direct child selector (see humhub.stream.StreamEntry.js).
+            'class' => 'hideOnEdit',
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getProps(): array
+    {
+        return [
+            'files' => array_map($this->serializeFile(...), $this->files),
+            'galleryId' => 'gallery-' . $this->object->getUniqueId(),
+            'preview' => $this->preview,
+            'excludeMedia' => $this->preview
+                && (bool)Yii::$app->getModule('file')->settings->get('excludeMediaFilesPreview'),
+            'fluid' => ThemeHelper::isFluid(),
+        ];
+    }
+
+    private function serializeFile(File $file): array
+    {
+        $data = FileSerializer::file($file);
+
+        $viewUrl = FileHelper::getViewUrl($file);
+        if ($viewUrl !== null) {
+            $data['viewUrl'] = $viewUrl;
+        }
+
+        if (FileHelper::isSearchHighlighted($file)) {
+            $data['highlight'] = true;
+        }
+
+        return $data;
     }
 }

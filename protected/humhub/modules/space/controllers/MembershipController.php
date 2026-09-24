@@ -8,25 +8,18 @@
 
 namespace humhub\modules\space\controllers;
 
-use Exception;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\content\components\ContentContainerControllerAccess;
 use humhub\modules\space\models\forms\InviteForm;
-use humhub\modules\space\models\forms\RequestMembershipForm;
-use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\Module;
 use humhub\modules\space\permissions\InviteUsers;
-use humhub\modules\space\widgets\MembershipButton;
 use humhub\modules\user\models\UserPicker;
 use humhub\modules\user\widgets\UserListBox;
 use humhub\widgets\modal\ModalClose;
-use Throwable;
 use Yii;
-use yii\base\InvalidConfigException;
 use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
-use yii\web\Response;
 
 /**
  * SpaceController is the main controller for spaces.
@@ -47,7 +40,6 @@ class MembershipController extends ContentContainerController
     {
         return [
             ['permission' => [InviteUsers::class], 'actions' => ['invite', 'search-invite']],
-            [ContentContainerControllerAccess::RULE_LOGGED_IN_ONLY => ['revoke-membership']],
             [ContentContainerControllerAccess::RULE_USER_GROUP_ONLY => [Space::USERGROUP_MEMBER],
                 'actions' => [
                     'revoke-notifications',
@@ -89,59 +81,6 @@ class MembershipController extends ContentContainerController
         ]);
     }
 
-    /**
-     * Requests Membership for this Space
-     */
-    public function actionRequestMembership()
-    {
-        $this->forcePostRequest();
-        $space = $this->getSpace();
-
-        if (!$space->canJoinFree()) {
-            throw new ForbiddenHttpException(Yii::t('SpaceModule.base', 'You are not allowed to join this space!'));
-        }
-
-        $space->addMember(Yii::$app->user->id);
-
-        return $this->getActionResult($space);
-    }
-
-    /**
-     * Requests Membership Form for this Space
-     * (If a message is required.)
-     *
-     */
-    public function actionRequestMembershipForm()
-    {
-        $space = $this->getSpace();
-
-        // Check if we have already some sort of membership
-        if (Yii::$app->user->isGuest || $space->getMembership(Yii::$app->user->id) != null) {
-            throw new HttpException(
-                500,
-                Yii::t('SpaceModule.base', 'Could not request membership!'),
-            );
-        }
-
-        $model = new RequestMembershipForm();
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $space->requestMembership(Yii::$app->user->id, $model->message);
-
-            return $this->renderAjax('requestMembershipSave', [
-                'spaceId' => $space->id,
-                'newMembershipButton' => MembershipButton::widget([
-                    'space' => $space,
-                    'options' => MembershipButton::sanitizeRequestOptions($model->options),
-                ]),
-            ]);
-        }
-
-        $model->options = $this->request->get('options');
-
-        return $this->renderAjax('requestMembership', ['model' => $model, 'space' => $space]);
-    }
-
     public function actionRevokeNotifications()
     {
         $this->forcePostRequest();
@@ -160,35 +99,6 @@ class MembershipController extends ContentContainerController
         Yii::$app->notification->setSpaceSetting(Yii::$app->user->getIdentity(), $space, true);
 
         return $this->redirect($space->getUrl());
-    }
-
-    /**
-     * Revokes Membership for this workspace
-     * @return Response
-     * @throws HttpException
-     * @throws Throwable
-     * @throws InvalidConfigException
-     */
-    public function actionRevokeMembership()
-    {
-        $this->forcePostRequest();
-        $space = $this->getSpace();
-
-        if ($space->isSpaceOwner()) {
-            throw new HttpException(
-                500,
-                Yii::t('SpaceModule.base', 'As owner you cannot revoke your membership!'),
-            );
-        } elseif (!$space->canLeave()) {
-            throw new HttpException(
-                500,
-                Yii::t('SpaceModule.base', 'Sorry, you are not allowed to leave this space!'),
-            );
-        }
-
-        $space->removeMember();
-
-        return $this->getActionResult($space);
     }
 
     /**
@@ -265,29 +175,6 @@ class MembershipController extends ContentContainerController
     }
 
     /**
-     * When a user clicks on the Accept Invite Link, this action is called.
-     * After this the user should be member of this workspace.
-     */
-    public function actionInviteAccept()
-    {
-        $this->forcePostRequest();
-        $space = $this->getSpace();
-
-        // Load Pending Membership
-        $membership = $space->getMembership();
-        if ($membership == null) {
-            throw new HttpException(404, Yii::t('SpaceModule.base', 'There is no pending invite!'));
-        }
-
-        // Check there are really an Invite
-        if ($membership->status == Membership::STATUS_INVITED) {
-            $space->addMember(Yii::$app->user->id);
-        }
-
-        return $this->getActionResult($space);
-    }
-
-    /**
      * Toggle space content display at dashboard
      *
      * @throws HttpException
@@ -317,34 +204,5 @@ class MembershipController extends ContentContainerController
             'query' => $this->getSpace()->getMemberListService()->getQuery(),
             'title' => Yii::t('SpaceModule.manage', "<strong>Members</strong>"),
         ]));
-    }
-
-    /**
-     * Get result for the membership actions
-     *
-     * @param Space $space
-     * @return string|\yii\console\Response|Response
-     * @throws Exception
-     */
-    protected function getActionResult(Space $space)
-    {
-        if ($this->request->isAjax && !Yii::$app->request->get('redirect', false)) {
-            $options = MembershipButton::sanitizeRequestOptions($this->request->post('options', []));
-
-            // Show/Hide the "Follow"/"Unfollow" buttons depending on updated membership state after AJAX action
-            if ($space->isMember()) {
-                $options['cancelMembership']['attrs']['data-hide-buttons'] = '.followButton, .unfollowButton';
-            } else {
-                $options['becomeMember']['attrs']['data-show-buttons'] = $space->isFollowedByUser() ? '.unfollowButton' : '.followButton';
-                $options['becomeMember']['attrs']['data-hide-buttons'] = $space->isFollowedByUser() ? '.followButton' : '.unfollowButton';
-            }
-
-            return MembershipButton::widget([
-                'space' => $space,
-                'options' => $options,
-            ]);
-        }
-
-        return $this->redirect($this->request->getReferrer());
     }
 }

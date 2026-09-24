@@ -18,6 +18,7 @@ use humhub\widgets\CoreJsConfig;
 use humhub\widgets\LayoutAddons;
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 
 /**
  * Class View
@@ -510,11 +511,14 @@ class View extends \yii\web\View
             if (Yii::$app->getSession()->hasFlash('view-status')) {
                 $viewStatus = Yii::$app->getSession()->getFlash('view-status');
                 $type = strtolower((string)key($viewStatus));
-                $value = Html::encode(array_values($viewStatus)[0]);
-                $value = str_replace('&quot;', '', $value);
-                $value = trim($value);
+                // The status bar renders the message as text (StatusBar.vue), so the
+                // message travels as a JSON string literal instead of being HTML-encoded
+                // and interpolated into one - the latter needed a `&quot;` strip to stay
+                // syntactically valid, which silently dropped every double quote from the
+                // message.
+                $value = trim((string)array_values($viewStatus)[0]);
                 $this->registerJs(
-                    'humhub.modules.ui.status.' . $type . '("' . $value . '")',
+                    'humhub.modules.ui.status.' . $type . '(' . Json::encode($value) . ')',
                     View::POS_END,
                     'viewStatusMessage',
                 );

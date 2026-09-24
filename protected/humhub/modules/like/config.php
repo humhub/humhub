@@ -11,6 +11,17 @@ return [
     'id' => 'like',
     'class' => humhub\modules\like\Module::class,
     'isCoreModule' => true,
+    // HTTP API (see docs/develop/concept-api.md).
+    'urlManagerRules' => [
+        // The caller's like of one record: the record id in the path, two writing verbs - the
+        // same shape as space/<id>/membership and user/<id>/friendship.
+        ['pattern' => 'api/v2/like/<recordId:\d+>', 'route' => 'like/api/like/state', 'verb' => ['GET', 'HEAD']],
+        ['pattern' => 'api/v2/like/<recordId:\d+>', 'route' => 'like/api/like/create', 'verb' => 'POST'],
+        ['pattern' => 'api/v2/like/<recordId:\d+>', 'route' => 'like/api/like/remove', 'verb' => 'DELETE'],
+        ['pattern' => 'api/v2/like/<recordId:\d+>/users', 'route' => 'like/api/like/users', 'verb' => ['GET', 'HEAD']],
+        // The states of many records at once, for a window of them.
+        ['pattern' => 'api/v2/like/states', 'route' => 'like/api/like/states', 'verb' => ['GET', 'HEAD']],
+    ],
     'events' => [
         ['class' => User::class, 'event' => User::EVENT_BEFORE_DELETE, 'callback' => ['humhub\modules\like\Events', 'onUserDelete']],
         ['class' => RecordMap::class, 'event' => RecordMap::EVENT_BEFORE_DELETE, 'callback' => ['humhub\modules\like\Events', 'onRecordMapDelete']],

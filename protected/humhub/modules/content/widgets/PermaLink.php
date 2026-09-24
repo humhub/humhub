@@ -9,19 +9,18 @@
 namespace humhub\modules\content\widgets;
 
 use humhub\modules\content\components\ContentActiveRecord;
-use yii\base\Widget;
+use humhub\widgets\menu\MenuLink;
+use Yii;
 use yii\helpers\Url;
 
 /**
- * PermaLink for Wall Entries
+ * The "Permalink" entry of a content's context menu ({@see WallEntryControls}).
  *
- * This widget will attached to the WallEntryControlsWidget and displays
- * the "Permalink" Link to the Content Objects.
+ * A menu entry, not a widget, since 1.20 - see {@see WallEntryControls::createEntry()}.
  *
- * @package humhub.modules_core.wall.widgets
  * @since 0.5
  */
-class PermaLink extends Widget
+class PermaLink extends MenuLink
 {
     /**
      * @var ContentActiveRecord
@@ -31,14 +30,16 @@ class PermaLink extends Widget
     /**
      * @inheritdoc
      */
-    public function run()
+    public function init()
     {
-        $permaLink = Url::to(['/content/perma', 'id' => $this->content->content->id], true);
+        parent::init();
 
-        return $this->render('permaLink', [
-            'permaLink' => $permaLink,
-            'id' => $this->content->content->id,
+        $this->setLabel(Yii::t('ContentModule.base', 'Permalink'));
+        $this->setIcon('link');
+        $this->setUrl('#');
+        $this->setHtmlOptions([
+            'data-action-click' => 'content.permalink',
+            'data-content-permalink' => Url::to(['/content/perma', 'id' => $this->content->content->id], true),
         ]);
     }
-
 }

@@ -314,6 +314,39 @@ abstract class AbstractRichText extends JsWidget
     }
 
     /**
+     * The processed markdown of the given text, without the HTML envelope {@see self::output()} wraps
+     * it in - what an API payload ships so a client can render the text itself (see
+     * `docs/develop/ui-js-vuejs-interop.md`, "RichTextOutput").
+     *
+     * @param $text string rich text content
+     * @param array $config rich text widget options
+     * @return string|null
+     * @throws Exception
+     * @since 1.20
+     */
+    public static function outputMarkdown($text, $config = [])
+    {
+        $config['text'] = $text;
+        $config['class'] = static::class;
+
+        return Yii::createObject($config)->getMarkdown();
+    }
+
+    /**
+     * The markdown text this richtext renders, run through the implementation's own processing
+     * (e.g. {@see \humhub\modules\content\widgets\richtext\ProsemirrorRichText::getMarkdown()}
+     * resolves mentions). This base implementation returns the text as it is.
+     *
+     * @see self::outputMarkdown()
+     * @return string|null
+     * @since 1.20
+     */
+    public function getMarkdown()
+    {
+        return $this->text;
+    }
+
+    /**
      * Converts the richtext content to a given output format.
      *
      * The following formats are supported

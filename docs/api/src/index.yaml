@@ -1,0 +1,108 @@
+openapi: 3.1.0
+info:
+  title: HumHub HTTP API (v2)
+  version: 2.0.0
+  description: |
+    Endpoint reference for `/api/v2`, the HTTP API of **HumHub core** (1.20+). Endpoints are
+    grouped by the module that owns them; the sidebar lists every operation, and the search
+    covers all of them.
+
+    ## Status: internal use only
+
+    `/api/v2` exists to serve the platform's own user interface — every endpoint here has a
+    Vue island as its first consumer — and is documented so that the contract is explicit
+    rather than implied by the client code. It is **not yet a public, stable API**: while
+    the surface is being completed, an endpoint or a shape may still change between
+    releases without a deprecation period, and not every resource is covered.
+
+    The goal is a complete, stable API that third-party clients can build on. Once a
+    resource is declared stable, changes to it will be additive only — fields are neither
+    removed nor renamed, enums may grow (a client must tolerate unknown values), and
+    anything breaking goes into a new generation. Until then, integrations should keep using
+    the `/api/v1` surface of the [REST API module](https://github.com/humhub/rest) — see its
+    [manual](https://github.com/humhub/rest/blob/master/docs/MANUAL.md).
+
+    The REST API module also contributes the token authentication methods these endpoints
+    accept. HumHub's own browser session is accepted too, which is what the platform's Vue UI
+    uses; state-changing session requests additionally require the CSRF token
+    (`X-CSRF-Token` header or `_csrf` body parameter). For the design of this stack see
+    `docs/develop/concept-api.md`.
+
+    ## Conventions
+
+    Fixed for this API generation, and differing from `/api/v1`:
+
+    - Everything under `/api/` answers JSON, errors included — an unknown route or a verb an
+      endpoint does not take gives a JSON `404` like any other error.
+    - Timestamps are ISO-8601 with offset, in UTC (`2026-08-22T08:00:00+00:00`).
+    - Field names are camelCase throughout — including the keys of validation errors, so a
+      client matches them against the field names it sent. Enums are named values
+      (`state: member`, `visibility: public`), never stored integers.
+    - Records are addressed by numeric id: the record's own id in a path, the platform-wide
+      `recordId` for anything likeable (`like/<recordId>`), the `contentContainerId` of a space or user where a
+      container is meant (`containerId`). Guids appear in payloads for display, never as an
+      address. Class names never reach the wire.
+    - Where a parameter travels follows the verb: what identifies or filters a read goes in
+      the query string, what a `POST` creates or a `PATCH` changes goes in the JSON body (the
+      target included), and a `DELETE` takes its options in the query string. `PATCH` is the
+      one update verb and is partial — a field left out keeps its value.
+    - Errors are plain HTTP status codes with a JSON body; there is no `{code, message}`
+      success/failure envelope. Validation failures — a missing required parameter included —
+      answer `422` with `{"errors": {"<field>": ["<message>"]}}`. Creating a resource answers
+      `201`, a state transition `200` with the new state, a successful delete `204`.
+    - Affirming what is already affirmed and removing what is already gone both succeed and
+      answer the current state, so a client acting on a stale view ends up with the truth.
+    - Lists that hold still page by offset and use `{results, total, page, pageSize, pages}`.
+      Lists that reorder while being read (activity, notification) page by `cursor` + `limit`
+      and carry a `nextCursor`. Comment threads are windows paged in both directions
+      (`cursor` + `direction`, or `focus`, plus `limit`) that carry their remaining counts.
+    - Payloads are **caller-neutral** wherever possible — identical for every reader who may
+      see the record, and therefore cacheable. What depends on the caller (permissions, like
+      state, membership) has endpoints of its own.
+
+    ## Rich text
+
+    A rich text field such as a comment's `message` is **HumHub richtext markdown**: CommonMark
+    with tables and strikethrough, plus a few additions the platform resolves itself (see
+    `docs/develop/concept-richtext.md`):
+
+    - `[Jane Doe](mention:<guid> "<url>")` mentions a user or space. The text is the display
+      name and the title the profile URL, both current at serialization time.
+    - `[report.pdf](file-guid:<guid> "<url>")`, or `![alt](file-guid:<guid> "<url>")` for an
+      image, refers to an attached file. The record's `files` array carries the same file
+      under that `guid`, with its URLs and thumbnails.
+    - `[<url>](oembed:<url>)` marks a link that renders as an embedded preview. The URL itself
+      is the fallback link. Whether a reader sees the preview depends on their oembed consent,
+      so the payload never contains it; a client fetches previews itself.
+    - `:smile:` style shortcodes stand for emoji.
+
+    Everything else is standard markdown. A client that displays the field needs a link hook
+    for these three URL schemes; a client that edits it sends the same format back. It is the
+    canonical, lossless representation — a converted form (plain markdown, HTML) would lose the
+    guid bindings and is not accepted on write.
+  x-logo:
+    url: humhub-logo.png
+    altText: HumHub
+    href: https://www.humhub.com
+  contact:
+    email: info@humhub.com
+  license:
+    name: AGPLv2
+    url: https://www.humhub.org/en/licences
+servers:
+  - url: /api/v2
+security:
+  - Bearer: []
+  - BasicAuth: []
+  - SessionCookie: []
+paths: {}
+# The schemes the global `security` block names, from the shared components like every
+# endpoint document declares them - `join` carries the block over from this file.
+components:
+  securitySchemes:
+    Bearer:
+      $ref: "common.yaml#/components/securitySchemes/Bearer"
+    BasicAuth:
+      $ref: "common.yaml#/components/securitySchemes/BasicAuth"
+    SessionCookie:
+      $ref: "common.yaml#/components/securitySchemes/SessionCookie"

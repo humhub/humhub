@@ -49,10 +49,23 @@ class FileHandlerButtonDropdown extends Widget
     public $pullRight = false;
 
     /**
+     * @var bool render only the `<li>` entries of the handlers, without the surrounding button
+     *      group, primary button and `<ul>`. For a client-side upload field that renders its
+     *      own trigger and dropdown but still offers the handlers a module contributed —
+     *      see `humhub\vue\UploadField.vue`.
+     * @since 1.20
+     */
+    public $itemsOnly = false;
+
+    /**
      * @inheritdoc
      */
     public function run()
     {
+        if ($this->itemsOnly) {
+            return $this->renderItems();
+        }
+
         if (!$this->primaryButton && !$this->isDropdown()) {
             return '';
         }
@@ -73,14 +86,26 @@ class FileHandlerButtonDropdown extends Widget
             $cssClass = ($this->pullRight) ? 'dropdown-menu dropdown-menu-end' : 'dropdown-menu';
 
             $output .= Html::beginTag('ul', ['class' => $cssClass]);
-            foreach ($this->handlers as $handler) {
-                $output .= Html::beginTag('li');
-                $output .= $this->renderLink($handler->getLinkAttributes(), true);
-                $output .= Html::endTag('li');
-            }
+            $output .= $this->renderItems();
             $output .= Html::endTag('ul');
         }
         $output .= Html::endTag('div');
+
+        return $output;
+    }
+
+    /**
+     * The handler entries as `<li>` list items, without any surrounding markup.
+     */
+    protected function renderItems(): string
+    {
+        $output = '';
+
+        foreach ($this->handlers as $handler) {
+            $output .= Html::beginTag('li');
+            $output .= $this->renderLink($handler->getLinkAttributes(), true);
+            $output .= Html::endTag('li');
+        }
 
         return $output;
     }

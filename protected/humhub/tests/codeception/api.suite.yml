@@ -1,6 +1,6 @@
 # Codeception Test Suite Configuration
 
-# suite for REST API tests.
+# suite for the core HTTP API (/api/v2, see docs/develop/concept-api.md).
 # RUN `build` COMMAND AFTER ADDING/REMOVING MODULES.
 
 actor: ApiTester
@@ -8,10 +8,13 @@ modules:
     enabled:
         - REST
         - Yii2
-        - tests\codeception\_support\DynamicFixtureHelper
+        # This suite's Cests read the fixture baseline (users, spaces, content) but do not
+        # load it themselves the way a `HumHubDbTestCase` does, so the helper is told to.
+        - tests\codeception\_support\DynamicFixtureHelper:
+            loadDefaultFixtures: true
     config:
         REST:
-            url: 'http://localhost:8080/api/v1/'
+            url: 'http://localhost:8080/api/v2/'
             depends: Yii2
             part: Json
         Yii2:

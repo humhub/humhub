@@ -15,6 +15,11 @@ return [
     'consoleControllerMap' => [
         'file' => 'humhub\modules\file\commands\FileController',
     ],
+    // HTTP API (see docs/develop/concept-api.md) — the endpoint the Vue upload field posts to.
+    'urlManagerRules' => [
+        ['pattern' => 'api/v2/file', 'route' => 'file/api/file/create', 'verb' => 'POST'],
+        ['pattern' => 'api/v2/file/<id:\d+>', 'route' => 'file/api/file/delete', 'verb' => 'DELETE'],
+    ],
     'events' => [
         ['class' => WallEntryAddons::class, 'event' => WallEntryAddons::EVENT_INIT, 'callback' => [Events::class, 'onWallEntryAddonInit']],
         ['class' => CronController::class, 'event' => CronController::EVENT_ON_DAILY_RUN, 'callback' => [Events::class, 'onCronDailyRun']],

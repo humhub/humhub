@@ -267,6 +267,11 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
     //
     .panel {
         @include text-break();
+        // Not redundant: a panel is not always a div. An island mounts into a custom element
+        // (`<activity-box class="panel">`), and a custom element is inline by default - an
+        // inline box paints its background only behind its line boxes, so the panel's own
+        // background would not cover its block contents.
+        display: block;
         border: none;
         background-color: var(--hh-background-color-main);
         box-shadow: 0 0 3px var(--hh-background3);

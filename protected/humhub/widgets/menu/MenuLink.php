@@ -191,4 +191,59 @@ class MenuLink extends MenuEntry
         $this->getLink()->options($htmlOptions);
         return $this;
     }
+
+    /**
+     * @inheritdoc
+     *
+     * A link entry is data through and through — label, icon, url and html options are all
+     * it is — so it describes itself losslessly. The html options are the ones the rendered
+     * anchor would have carried, which is what keeps a legacy `data-action-click` entry
+     * working after a client rather than the server renders the anchor: the delegated
+     * document handler in `humhub.action.js` reads the attribute off the DOM either way.
+     *
+     * @since 1.20
+     */
+    public function describe(): ?array
+    {
+        $htmlOptions = $this->getHtmlOptions();
+
+        // The link widget names its anchor with its own generated widget id (`h123w4`) unless
+        // given one - a per-request counter a client would render as a meaningless, possibly
+        // duplicate id. An id set deliberately differs from it and is kept.
+        if (isset($htmlOptions['id']) && $htmlOptions['id'] === $this->getLink()->getId()) {
+            unset($htmlOptions['id']);
+        }
+
+        return [
+            'id' => $this->getId(),
+            'label' => (string)$this->getLabel(),
+            'icon' => static::describeIcon($this->getIcon()),
+            'sortOrder' => $this->getSortOrder(),
+            'url' => $this->getUrl(),
+            'htmlOptions' => $htmlOptions,
+        ];
+    }
+
+    /**
+     * Reduces an icon to the plain name a client needs (`pencil`), accepting the shapes an
+     * icon can arrive in: an {@see Icon} instance, a bare name, or a `fa-` prefixed name —
+     * {@see Icon::run()} strips that prefix at render time, which a described entry never
+     * reaches.
+     *
+     * @param Icon|string|null $icon
+     * @since 1.20
+     */
+    public static function describeIcon($icon): ?string
+    {
+        if ($icon instanceof Icon) {
+            $icon = $icon->name;
+        }
+
+        if (!is_string($icon) || $icon === '') {
+            return null;
+        }
+
+        // A name given as CSS class loses its library prefix, like `Icon` itself accepts it.
+        return str_starts_with($icon, 'fa-') || str_starts_with($icon, 'ti-') ? substr($icon, 3) : $icon;
+    }
 }

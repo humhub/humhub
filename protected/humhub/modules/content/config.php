@@ -16,6 +16,11 @@ return [
     'id' => 'content',
     'class' => Module::class,
     'isCoreModule' => true,
+    // HTTP API (see docs/develop/concept-api.md) — the content context menu as data, consumed
+    // by the ContentControls island.
+    'urlManagerRules' => [
+        ['pattern' => 'api/v2/content/<id:\d+>/controls', 'route' => 'content/api/controls/index', 'verb' => ['GET', 'HEAD']],
+    ],
     'events' => [
         ['class' => IntegrityController::class, 'event' => IntegrityController::EVENT_ON_RUN, 'callback' => [Events::class, 'onIntegrityCheck']],
         ['class' => WallEntryAddons::class, 'event' => WallEntryAddons::EVENT_INIT, 'callback' => [Events::class, 'onWallEntryAddonInit']],

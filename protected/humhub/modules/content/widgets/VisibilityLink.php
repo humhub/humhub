@@ -11,16 +11,19 @@ namespace humhub\modules\content\widgets;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\user\helpers\AuthHelper;
-use yii\base\Widget;
+use humhub\widgets\menu\MenuLink;
+use Yii;
 use yii\helpers\Url;
 
 /**
- * Visibility link for Wall Entries can be used to switch form public to private and vice versa.
+ * The entry of a content's context menu ({@see WallEntryControls}) that switches the content
+ * between public and private.
  *
- * @package humhub.modules_core.wall.widgets
+ * A menu entry, not a widget, since 1.20 - see {@see WallEntryControls::createEntry()}.
+ *
  * @since 1.2
  */
-class VisibilityLink extends Widget
+class VisibilityLink extends MenuLink
 {
     /**
      * @var ContentActiveRecord
@@ -30,12 +33,37 @@ class VisibilityLink extends Widget
     /**
      * @inheritdoc
      */
-    public function run()
+    public function init()
+    {
+        parent::init();
+
+        $content = $this->contentRecord->content;
+
+        if (!$this->canToggle()) {
+            $this->setIsVisible(false);
+            return;
+        }
+
+        $private = $content->isPrivate();
+
+        $this->setLabel($private
+            ? Yii::t('ContentModule.base', 'Change to "Public"')
+            : Yii::t('ContentModule.base', 'Change to "Private"'));
+        $this->setIcon($private ? 'lock-open' : 'lock');
+        $this->setUrl('#');
+        $this->setHtmlOptions([
+            'class' => $private ? 'makePublicLink' : 'makePrivateLink',
+            'data-action-click' => 'toggleVisibility',
+            'data-action-url' => Url::to(['/content/content/toggle-visibility', 'id' => $content->id]),
+        ]);
+    }
+
+    private function canToggle(): bool
     {
         $content = $this->contentRecord->content;
 
         if (!$content->canEdit()) {
-            return '';
+            return false;
         }
 
         // Prevent Change to "Public" in private spaces
@@ -47,7 +75,7 @@ class VisibilityLink extends Widget
                 || !$content->container->permissionManager->can(new CreatePublicContent())
             )
         ) {
-            return '';
+            return false;
         }
 
         // Prevent Change to "Public" if content is global and Guest access is disabled
@@ -56,12 +84,9 @@ class VisibilityLink extends Widget
             && $content->isPrivate()
             && !AuthHelper::isGuestAccessEnabled()
         ) {
-            return '';
+            return false;
         }
 
-        return $this->render('visibilityLink', [
-            'content' => $content,
-            'toggleLink' => Url::to(['/content/content/toggle-visibility', 'id' => $content->id]),
-        ]);
+        return true;
     }
 }
