@@ -1,187 +1,48 @@
-# Vue.js Integration — Status & Roadmap
+# Vue.js Integration — Roadmap
 
-Short living document tracking where the Vue islands initiative stands and what is
-planned next. Detailed concepts live in the [chapter docs](ui-js-vuejs.md); this page
-is intentionally brief.
+Open work of the Vue islands initiative in core. What is implemented is described in the
+[chapter docs](ui-js-vuejs.md) and the [HTTP API framework](concept-api.md); this page lists
+only what is still to do, and is intentionally brief.
 
-## Status
+## API & performance
 
-The work happens on the long-running branch `enh/vuejs-integration`, open as draft
-[#8403](https://github.com/humhub/humhub/pull/8403) against `next` (the release after the
-upcoming one), with the `rest` module companion
-[humhub/rest#249](https://github.com/humhub/rest/pull/249), still a draft against the module's
-`develop`.
+- **Query batching** for the rest of the comment payload (`childCount`, files) on a cache
+  miss — would take a 19-comment window from 77 SELECTs to roughly ten.
+- **HTTP caching** on top of the server-side payload cache (ETag/Last-Modified, shared caches
+  for guest-visible content) — core has no infrastructure for it yet.
+- **Rate limiting** for the session-reachable endpoints: always-available API endpoints
+  multiply request volume from every logged-in browser. Decide before the API is declared
+  stable.
+- **Portable message formats**: a `messageFormat` parameter (`richtext`, `markdown`, `html`,
+  `plaintext`) for rich text fields, backed by `RichText::convert()`, the format part of the
+  payload cache key; writes keep accepting richtext only.
+- **Oembed endpoint**: `GET /api/v2/oembed` as the API counterpart of `oembed/index`, which
+  `RichTextOutput` loads previews from today.
 
-Done on that branch:
+## One way per transition
 
-- **Runtime & tooling** — `humhub.vue` island runtime (registry, mounter,
-  PJAX/modal lifecycle via MutationObserver), committed build artifacts via
-  `grunt build-vue` (`--module all` builds every one of them), vitest test
-  infrastructure, `.vue` message extraction, and a CI job running the suite plus an
-  artifact-freshness check.
-- **Core component set** (`protected/humhub/vue/`) — `RichTextOutput`,
-  `LegacyFormWrapper`, `DropdownMenu`, `ExtensionSlot`, `UiModal`, `StatusBar`, plus the
-  form suite (`HumHubForm`, `TextField`/`TextareaField`/`CheckboxField`/`SelectField`,
-  `UploadField`, `SubmitButton`, `RichTextField`).
-- **Extension APIs** — reactive extension slots and the menu-entry registry
-  (`registerMenuEntry`/`removeMenuEntry`); module data comes from the module's own
-  endpoint.
-- **Pilots** — LikeButton (incl. Vue user-list modal fed by a JSON endpoint) and
-  the full comment section (client-rendered from JSON, live updates, editing,
-  cursor-window pagination), plus `UserImage`/`UserList` as module-provided shared
-  components in the user module.
-- **Status bar** — the platform's user-feedback bar is an island (`StatusBar`), driven
-  through a bridge-level queue so the legacy `ui.status` API and the `POS_END` flash-message
-  snippet keep working untouched. First infrastructure island: no props, no consumers, and
-  every caller stays where it is.
-- **Native file uploads** — `UploadField` (form suite) on the new `POST /api/v2/file` /
-  `DELETE /api/v2/file/<id>` endpoints, so a form shell carries only the richtext editor;
-  contributed file handlers keep working as server-rendered dropdown entries.
-- **Notifications** — the top-menu dropdown and the overview page are islands
-  (`NotificationMenu`, `NotificationOverview`) over `GET /api/v2/notification` and
-  `POST /api/v2/notification/mark-as-seen`, sharing one `NotificationList`. Entries render
-  client-side around the server's own sentence (`BaseNotification::html()`); the badge, the
-  document title and live arrivals are Vue state, and the `mail` module keeps its two legacy
-  events. `humhub.notification.js` is gone. `SpaceImage` joined the space module as a shared
-  component for the space badge.
-- **Space membership** — the membership button is an island (`MembershipButton`) over
-  `GET|POST|DELETE /api/v2/space/<id>/membership`, including its request-membership dialog
-  (native `UiModal` + form suite). Presentation moved from a per-button option array to
-  props, which retires the option round trip through the client that #8381/#8382 had to
-  harden: the server re-rendered the button after every transition, so the button's own
-  presentation had to be posted back to it.
-- **Friendship** — the friendship button is an island (`FriendshipButton`) over
-  `GET|POST|DELETE /api/v2/user/<id>/friendship`, built the same way. With it the option round
-  trip is gone from the platform entirely: `content.container.relationship` and its
-  `data-button-options` posting had no users left and were removed.
-- **Spaces** — the space menu of the top navigation is an island (`SpaceChooser`, plus the
-  small `SpaceChooserToggle` inside the menu button, because the topbar styles that button with
-  child selectors). It reads the platform's new general space list, `GET /api/v2/space`, which
-  is caller-neutral on purpose so a picker or a directory can read the same shape; what the
-  caller is to a space — member, follower, unseen items — comes from `GET /api/v2/space/states`
-  for the spaces displayed, the way `like/states` batches like state. One search field now
-  covers both the caller's own spaces and every space they may see, so the second legacy route
-  is gone, and the list is paginated instead of loading every membership at once.
+Web routes an endpoint duplicates, still in place because other consumers depend on them:
 
-- **Activities** — the "Latest activities" box is an island (`ActivityBox`) over
-  `GET /api/v2/activity`, and the first one that owns its whole panel: the widget renders only
-  the mount point, the first page and the server-rendered `PanelMenu`. Grouping stays in the
-  query; an entry reports how many activities it stands for and pages by an opaque cursor over
-  the grouping key, which the entry's own id cannot serve as. It is also the first island with
-  live updates of its own (`activity\live\NewActivity`): a new activity has the box read its
-  head again, entries it already shows are refreshed where they stand, and genuinely new ones
-  wait until the list is scrolled to the top so nothing jumps under the reader. `humhub.activity.js`
-  and its `niceScroll` scrollbar are gone.
+- **File upload** — `file/file/upload` (`UploadAction`) next to `POST /api/v2/file`: the
+  jQuery upload widget, the mobile app (`fileUploadUrl`) and module actions extending
+  `UploadAction` still use it.
+- **Space picker search** — `space/browse/search-json` next to `GET /api/v2/space`: the
+  picker widgets expect its result shape. Moves together with the pickers becoming islands.
 
-- **Content context menu** — `ContentControls` is the island form of `WallEntryControls`,
-  over `GET /api/v2/content/<id>/controls`, and the answer to the problem every module
-  migrating a content list into Vue hits: that menu is the platform's, not the module's.
-  It merges three sources — the host island's own Vue entries, the *server-resolved*
-  `WallEntryControls` stack, and `registerMenuEntry('content.controls', …)` — so a module
-  contributing through `EVENT_INIT` keeps working with no change at all, as long as its entry
-  can describe itself (`MenuEntry::describe()`): core's control links are `MenuLink`s, and a
-  legacy `WallEntryControlLink` is converted (`toMenuLink()`). An entry that cannot be described is still
-  rendered server-side and shipped as raw HTML, deprecated and logged. Deliberately not the
-  cut the comment island's own controls menu made: repeating that break once per migrating
-  module is not defensible.
+## Islands & extension APIs
 
-- **Attached files** — `AttachedFiles` renders a record's attachments (media grid plus file
-  list) and is shared by `file\widgets\ShowFiles` — reduced to the island's mount point —
-  and by the comment section, which had grown its own second implementation of the same
-  visual. With it the last user of jPlayer is gone: attached audio plays in native players,
-  and the playlist widget, its two asset bundles, the `media.Jplayer` JS module and both
-  composer dependencies were removed. It also un-broke the `excludeMediaFilesPreview`
-  setting, dead since the Bootstrap 5 migration.
+- **Richtext for the client-rendered model**: a markdown-it plugin extension API and one
+  render path for stream entries; `EVENT_AFTER_RUN`/`EVENT_AFTER_OUTPUT` do not fire on the
+  JSON path (see [module-migrate-1.20.md](module-migrate-1.20.md)).
+- **Data-level menu API** for the content context menu, once stream entries are islands and
+  the server-side widget stack of `WallEntryControls` is no longer rendered. Removes the
+  deprecated HTML fallback of `GET /api/v2/content/<id>/controls`.
+- **Presence** as its own component, driven by live events (the live poll already refreshes
+  the caller's own status) — replaces the removed `online` field of the user shape.
+- **Dynamic imports** for heavy components, and a **component override** mechanism for themes
+  and modules (see [Extending islands](ui-js-vuejs-extensions.md#component-override)).
 
-## Done: the islands run on the platform API
+## Core bugs found along the way
 
-The comment/like islands consume `/api/v2`, the HTTP API core itself ships — core
-keeps no own JSON controllers for them anymore (the comment `show` popup mode is
-the one remaining UI-only HTML action):
-
-1. **API framework in core** (`humhub\components\api\`): base controller,
-   request/response conventions, URL-space guards and
-   browser-session authentication (opt-in per controller, CSRF-checked for
-   state-changing requests). Endpoints live next to the module that owns them
-   (`humhub\modules\<module>\controllers\api\`), wire shapes in that module's
-   `serializers\`. See [HTTP API framework](concept-api.md). The endpoint reference is
-   committed as `docs/api/index.html` (OpenAPI 3.1 sources in `docs/api/src/`), and the API
-   is declared **internal use only** until it is complete.
-2. **One documented contract**, in v2 conventions (ISO-8601 UTC timestamps,
-   camelCase, plain HTTP status codes, `422 {"errors": …}`): window pagination
-   (`GET content/<id>/comments`, `prevCount`/`nextCount`/`rootTotal`),
-   `message` as processed markdown, structured `files`, like
-   state/toggle/users, and `account`/`account/blocked-users`. An endpoint is the one way to its
-   transitions: the web actions the islands made redundant were removed. Caller-dependent values have
-   their own endpoints (see the next section). The islands derive client-side what a client
-   can derive (`isEdited`, admin-delete capability, blocked-author masking) and parse ISO
-   timestamps natively — the old adapter layer is gone.
-3. **The `rest` module** keeps `/api/v1` and contributes its token authentication
-   methods to the core endpoints (`EVENT_COLLECT_AUTH_METHODS`); in the companion PR its own
-   session authentication is removed, so `/api/v1` becomes token-only again. See the
-   module's `docs/api-stack.md` on that branch.
-## Done: cacheable comment payloads
-
-The comment payload carries nothing that depends on who is asking, so one serialization
-serves every reader (and can be cached):
-
-- **Like state** — `GET like/states?recordIds=…`, one batched request per loaded window
-  (the widget inlines the states of the embedded window, so the first paint needs none).
-  `hasLiked` went from one query per comment to one per window.
-- **`canEdit`/`canDelete`** — `GET comment/<id>/permissions`, loaded when an entry's context
-  menu opens, with a loader in the menu. Deliberately not re-implemented client-side.
-- **Presence** — `online` left the user shape; the online dot is gone from comment avatars
-  until it becomes its own live-driven component (see the backlog).
-- **Server-side cache** — `comment\services\CommentPayloadCache` caches windows and single
-  comments per content, retired instantly by a per-content token whenever a comment changes;
-  the `payloadCacheTtl` module setting only bounds staleness of what the payload embeds
-  without owning (author name/avatar). Measured: serializing a
-  19-comment detail window costs 77 SELECTs, a cache hit 0; the overview window (4 comments)
-  21 vs 0. The caller-specific like states stay uncached but are flat at 5 SELECTs per
-  window.
-
-See [HTTP API framework](concept-api.md), "Caller context is not part of a payload".
-
-## Backlog
-
-Everything parked or deferred lives here; the reasoning is in
-[HTTP API framework](concept-api.md) and, for the module side, in the `rest` module's
-`docs/api-stack.md`.
-
-### API & performance
-
-- Query batching for the rest of the payload (`childCount`, files) on a cache miss — would
-  take a 19-comment window from 77 SELECTs to roughly ten.
-- HTTP caching on top of the server-side cache (ETag/Last-Modified, shared caches for
-  guest-visible content) — core has no infrastructure for it yet.
-- Presence as its own component, driven by live events (the live poll already refreshes the
-  caller's own status) — replaces the removed `online` field, which the comment avatars and
-  the like user list both lost.
-- Rate limiting for the session-reachable endpoints: always-available API endpoints multiply
-  request volume from every logged-in browser. Decide before this leaves beta.
-- `/api/v1` over the core stack: the `rest` module's base controller becoming a subclass of
-  the core one, its definitions a compatibility layer over the core serializers.
-- Impersonate-token restriction: core 1.19 hides private content while impersonating, but
-  that state is session-bound, so an impersonate **token** (rest module) still bypasses it.
-  Parked by owner decision.
-
-### Release & housekeeping
-
-- `humhub.maxVersion` on the previous `rest` module line, so the marketplace stops offering a
-  version without the core API stack for 1.20+. (0.13 requires 1.20 for exactly that
-  reason; the released 0.12.x additionally crashes on impersonate-token auth on 1.19+,
-  core #8372.)
-
-### Islands & tooling
-
-- Rethink richtext rendering/extension architecture for the client-rendered
-  model (markdown-it plugin extension API, unified render path for stream
-  entries; currently `EVENT_AFTER_RUN`/`EVENT_AFTER_OUTPUT` do not fire on the
-  JSON path — see [module-migrate-1.20.md](module-migrate-1.20.md)). Oembed previews are already fetched
-  client-side (`RichTextOutput`); a `GET /api/v2/oembed` counterpart of
-  `oembed/index` is the remaining piece.
-- Module migrations onto the new extension APIs: reportcontent, reaction
-  (menu entries), legal, linkpreview, translator (richtext output events).
-- Core bug follow-ups discovered along the way (separate PRs): `AssetBundle`
-  `defaultDepends` typo, `additions.extend()` applyOnInit string bug,
-  selector-less timeago addition registration.
+Separate PRs: the `AssetBundle` `defaultDepends` typo, the `additions.extend()` `applyOnInit`
+string bug, the selector-less timeago addition registration.

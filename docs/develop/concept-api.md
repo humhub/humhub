@@ -6,9 +6,9 @@ optional [`humhub/rest`](https://github.com/humhub/rest) module keeps everything
 genuinely integration territory: token authentication, its admin UI, and the `/api/v1`
 surface.
 
-Core endpoints answer under `/api/v2`. The comment and like islands consume them (see the
-[Vue.js roadmap](ui-js-vuejs-roadmap.md)); before 1.20 they consumed the module's `/api/v1`
-through browser-session authentication.
+Core endpoints answer under `/api/v2`. The platform's Vue islands consume them (see
+[Vue.js integration](ui-js-vuejs.md)); before 1.20 the comment and like islands consumed the
+module's `/api/v1` through browser-session authentication.
 
 ## Status
 

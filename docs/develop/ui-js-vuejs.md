@@ -1,6 +1,6 @@
-# Vue.js Integration (Concept)
+# Vue.js Integration
 
-> **Status: implemented on the `enh/vuejs-integration` branch** (draft [#8403](https://github.com/humhub/humhub/pull/8403), targeting `next`): the Vue runtime, the `humhub.vue` registry/mounter, build tooling, the `VueComponent`/`VueWidget` PHP widgets, the core component set, extension slots and menu entries, the `HumHubForm` suite, and islands for the like link, the comment section, notifications, activities, the space chooser, membership and friendship buttons, attached files, the content context menu and the status bar — all fed by the platform's own HTTP API (`/api/v2`, see [HTTP API framework](concept-api.md)). What is done and what is next is tracked in [Status & roadmap](ui-js-vuejs-roadmap.md); dynamic imports and a component override mechanism are still design-level. This document defines the architecture for integrating Vue.js into HumHub as an island framework on top of the existing JavaScript layer ([overview](ui-js-overview.md)).
+> **Status: implemented since 1.20** ([#8403](https://github.com/humhub/humhub/pull/8403)): the Vue runtime, the `humhub.vue` registry/mounter, build tooling, the `VueComponent`/`VueWidget` PHP widgets, the core component set, extension slots and menu entries, the `HumHubForm` suite, and islands for the like link, the comment section, notifications, activities, the space chooser, membership and friendship buttons, attached files, the content context menu and the status bar — all fed by the platform's own HTTP API (`/api/v2`, see [HTTP API framework](concept-api.md)). Open work is listed in the [Roadmap](ui-js-vuejs-roadmap.md); dynamic imports and a component override mechanism are still design-level. This document defines the architecture for integrating Vue.js into HumHub as an island framework on top of the existing JavaScript layer ([overview](ui-js-overview.md)).
 
 ## Chapters
 
@@ -11,7 +11,7 @@ This document covers motivation, goals, constraints and the overall architecture
 - [Extending islands](ui-js-vuejs-extensions.md) — extension slots, menu entries, server-described menu entries, module data served by a module's own endpoint, domain events, and migrating a legacy widget-stack extension.
 - [Legacy interop](ui-js-vuejs-interop.md) — `v-additions`, `RichTextOutput`, `LegacyFormWrapper`, the form-shell pattern, and other patterns for bridging into pre-existing jQuery widgets.
 - [Form suite](ui-js-vuejs-forms.md) — `HumHubForm`, native field components, `SubmitButton`, the Yii-parity markup/naming convention, the error contract, and `RichTextField` as a legacy-citizen field.
-- [Status & roadmap](ui-js-vuejs-roadmap.md) — where the initiative stands, how the islands consume the platform API, and the backlog.
+- [Roadmap](ui-js-vuejs-roadmap.md) — the open work in core.
 
 ## Motivation
 
