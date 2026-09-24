@@ -86,7 +86,7 @@ return [
   'The current main HumHub database name is ' => 'De huidige naam van de HumHub-databank is',
   'The module(s) are no longer maintained and should be uninstalled.' => 'De module(s) worden niet langer onderhouden en moeten worden verwijderd.',
   'There is a new update available! (Latest version: %version%)' => 'Er is een nieuwe versie (%version%) beschikbaar!',
-  'This HumHub installation is up to date!' => 'Deze installatie is actueel!',
+  'This HumHub installation is up to date!' => 'De Humhub-software is bijgewerkt.',
   'Total {count} entries found.' => '{count} berichten gevonden.',
   'Trace' => 'Opsporen',
   'Update Database' => 'Databank vernieuwen',
