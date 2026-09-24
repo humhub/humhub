@@ -7,9 +7,10 @@ is intentionally brief.
 ## Status
 
 The work happens on the long-running branch `enh/vuejs-integration`, open as draft
-[#8403](https://github.com/humhub/humhub/pull/8403) with the `rest` module companion
-[humhub/rest#249](https://github.com/humhub/rest/pull/249). It stays independent of `develop`
-for now (deliberate decision: gather more real-world Vue experience before merging).
+[#8403](https://github.com/humhub/humhub/pull/8403) against `next` (the release after the
+upcoming one), with the `rest` module companion
+[humhub/rest#249](https://github.com/humhub/rest/pull/249), still a draft against the module's
+`develop`.
 
 Done on that branch:
 
@@ -99,23 +100,26 @@ keeps no own JSON controllers for them anymore (the comment `show` popup mode is
 the one remaining UI-only HTML action):
 
 1. **API framework in core** (`humhub\components\api\`): base controller,
-   request/response conventions, URL-space guards, the batch serialize event and
+   request/response conventions, URL-space guards and
    browser-session authentication (opt-in per controller, CSRF-checked for
    state-changing requests). Endpoints live next to the module that owns them
    (`humhub\modules\<module>\controllers\api\`), wire shapes in that module's
-   `serializers\`. See [HTTP API framework](concept-api.md).
+   `serializers\`. See [HTTP API framework](concept-api.md). The endpoint reference is
+   committed as `docs/api/index.html` (OpenAPI 3.1 sources in `docs/api/src/`), and the API
+   is declared **internal use only** until it is complete.
 2. **One documented contract**, in v2 conventions (ISO-8601 UTC timestamps,
    camelCase, plain HTTP status codes, `422 {"errors": …}`): window pagination
    (`GET content/<id>/comments`, `prevCount`/`nextCount`/`rootTotal`),
    `message` as processed markdown, structured `files`, like
-   state/toggle/users, and `account`/`account/blocked-users`. Caller-dependent values have
+   state/toggle/users, and `account`/`account/blocked-users`. An endpoint is the one way to its
+   transitions: the web actions the islands made redundant were removed. Caller-dependent values have
    their own endpoints (see the next section). The islands derive client-side what a client
    can derive (`isEdited`, admin-delete capability, blocked-author masking) and parse ISO
    timestamps natively — the old adapter layer is gone.
 3. **The `rest` module** keeps `/api/v1` and contributes its token authentication
-   methods to the core endpoints (`EVENT_COLLECT_AUTH_METHODS`); its own session
-   authentication was removed, so `/api/v1` is token-only again. See the module's
-   `docs/api-stack.md`.
+   methods to the core endpoints (`EVENT_COLLECT_AUTH_METHODS`); in the companion PR its own
+   session authentication is removed, so `/api/v1` becomes token-only again. See the
+   module's `docs/api-stack.md` on that branch.
 ## Done: cacheable comment payloads
 
 The comment payload carries nothing that depends on who is asking, so one serialization
@@ -173,7 +177,7 @@ Everything parked or deferred lives here; the reasoning is in
 - Rethink richtext rendering/extension architecture for the client-rendered
   model (markdown-it plugin extension API, unified render path for stream
   entries; currently `EVENT_AFTER_RUN`/`EVENT_AFTER_OUTPUT` do not fire on the
-  JSON path — see `module-migrate.md`). Oembed previews are already fetched
+  JSON path — see [module-migrate-1.20.md](module-migrate-1.20.md)). Oembed previews are already fetched
   client-side (`RichTextOutput`); a `GET /api/v2/oembed` counterpart of
   `oembed/index` is the remaining piece.
 - Module migrations onto the new extension APIs: reportcontent, reaction

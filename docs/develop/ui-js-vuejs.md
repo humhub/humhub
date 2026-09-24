@@ -1,6 +1,6 @@
 # Vue.js Integration (Concept)
 
-> **Status: concept — Phase 1 and 2 implemented** (Vue runtime, `humhub.vue` registry/mounter, build tooling, `VueComponent` widget, LikeButton pilot; comment section island with legacy-widget form interop and live updates; extension slots and menu entries, wired into the comment island's `comment.links` slot and `comment.controls` menu respectively; a native `HumHubForm` component suite — see [Form suite](ui-js-vuejs-forms.md) — with the comment section's own form migrated onto it as the reference consumer). Later phases (dynamic imports, CI enforcement) are still design-level. This document defines the target architecture for integrating Vue.js into HumHub as an island framework on top of the existing JavaScript layer ([overview](ui-js-overview.md)).
+> **Status: implemented on the `enh/vuejs-integration` branch** (draft [#8403](https://github.com/humhub/humhub/pull/8403), targeting `next`): the Vue runtime, the `humhub.vue` registry/mounter, build tooling, the `VueComponent`/`VueWidget` PHP widgets, the core component set, extension slots and menu entries, the `HumHubForm` suite, and islands for the like link, the comment section, notifications, activities, the space chooser, membership and friendship buttons, attached files, the content context menu and the status bar — all fed by the platform's own HTTP API (`/api/v2`, see [HTTP API framework](concept-api.md)). What is done and what is next is tracked in [Status & roadmap](ui-js-vuejs-roadmap.md); dynamic imports and a component override mechanism are still design-level. This document defines the architecture for integrating Vue.js into HumHub as an island framework on top of the existing JavaScript layer ([overview](ui-js-overview.md)).
 
 ## Chapters
 
@@ -8,7 +8,7 @@ This document covers motivation, goals, constraints and the overall architecture
 
 - [Components](ui-js-vuejs-components.md) — authoring and using components: module file layout, the core component set, the registry, mounting, the `VueComponent` PHP widget, and the composable bridge into existing platform services.
 - [Build tooling](ui-js-vuejs-build.md) — `grunt build-vue`/`watch`/`minify`, the committed-artifact contract, development mode, and the vitest test infrastructure.
-- [Extending islands](ui-js-vuejs-extensions.md) — extension slots, menu entries, the serializer extension event pattern, domain events, and migrating a legacy widget-stack extension.
+- [Extending islands](ui-js-vuejs-extensions.md) — extension slots, menu entries, server-described menu entries, module data served by a module's own endpoint, domain events, and migrating a legacy widget-stack extension.
 - [Legacy interop](ui-js-vuejs-interop.md) — `v-additions`, `RichTextOutput`, `LegacyFormWrapper`, the form-shell pattern, and other patterns for bridging into pre-existing jQuery widgets.
 - [Form suite](ui-js-vuejs-forms.md) — `HumHubForm`, native field components, `SubmitButton`, the Yii-parity markup/naming convention, the error contract, and `RichTextField` as a legacy-citizen field.
 - [Status & roadmap](ui-js-vuejs-roadmap.md) — where the initiative stands, how the islands consume the platform API, and the backlog.
@@ -73,7 +73,7 @@ Consequence: **compiled artifacts are committed** (see [Build tooling](ui-js-vue
 
 ## Pilots and migration path
 
-1. **`LikeButton`** — the minimal leaf. Proves registry, tag mounting, `useClient`, `useI18n`, and the PJAX lifecycle end to end, in a component small enough to review in one sitting.
+1. **`LikeButton`** — the minimal leaf. Proves registry, tag mounting, the `client`/`i18n` bridge, and the PJAX lifecycle end to end, in a component small enough to review in one sitting.
 2. **Comment section** — the flagship, implemented. `humhub\modules\comment\widgets\Comments`
    renders a `<comment-section>` island (`CommentVueAsset`, depending on `LikeVueAsset` so
    `<LikeButton>` nesting resolves) fed by the API's serialized comment window (`comment\serializers\CommentSerializer`) - no
@@ -93,4 +93,4 @@ Consequence: **compiled artifacts are committed** (see [Build tooling](ui-js-vue
    listens for) - islandizing it too is a possible future step, not required for the pattern
    to hold.
 
-After the pilots, the working rule is: **new interactive UI is built in Vue; existing server-rendered widgets are migrated opportunistically** — the PHP widget API stays, its internals become an island. Data flows keep using existing controllers (returning JSON), so backends rarely change.
+After the pilots, the working rule is: **new interactive UI is built in Vue; existing server-rendered widgets are migrated opportunistically** — the PHP widget API stays, its internals become an island. An island reads and writes through endpoints of the platform's HTTP API (`/api/v2`, next to the module that owns the data), and the widget inlines the first state the island needs so a page renders without an extra request.

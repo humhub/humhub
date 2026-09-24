@@ -75,7 +75,7 @@
  * One intentional difference: the message renders as TEXT (`{{ }}`), not HTML.
  * The server path was HTML-encoded anyway (and no longer needs
  * `View::endBody()`'s `&quot;`-stripping hack), and no core caller passes
- * markup — see `docs/develop/module-migrate.md`.
+ * markup — see `docs/develop/module-migrate-1.20.md`.
  *
  * ## Details normalisation
  *

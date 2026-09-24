@@ -61,7 +61,7 @@
  * `registerMenuEntry()`/`removeMenuEntry()` (see docs/develop/ui-js-vuejs-extensions.md,
  * "Menu entries"), the same way it could addEntry()/removeEntry() the equivalent legacy
  * `CommentControls::EVENT_INIT` PHP widget-stack menu before comments became an island (see
- * `docs/develop/module-migrate.md`, Unreleased, for that migration). `comment` is passed as
+ * `docs/develop/module-migrate-1.20.md` for that migration). `comment` is passed as
  * this menu's `context` (the full serialized comment, not the discrete props below) so a
  * registered entry's `condition`/`onClick`/`component` can read anything about the comment.
  * Data of its own a module serves from its own endpoint - see

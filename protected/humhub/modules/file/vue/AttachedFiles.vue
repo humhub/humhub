@@ -101,7 +101,7 @@
  * delegated document listener.
  *
  * Deliberate deviations from the markup it replaces, all documented in
- * `docs/develop/module-migrate.md`:
+ * `docs/develop/module-migrate-1.20.md`:
  *  - Audio renders as native, individually labelled `<audio controls>` players instead
  *    of the jPlayer playlist widget `showFiles.php` used (jPlayer is gone from the
  *    platform with it).

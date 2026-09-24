@@ -42,7 +42,7 @@ One deliberate deviation from `ActiveField`: a real `ActiveField`'s error part o
 
 ## The error contract
 
-A 422 response from a Yii `ActiveController`-style action is `{attribute: [message, ...]}` (`Model::getErrors()`, one message array per attribute). Call `setErrors()` on the `HumHubForm` ref with the raw response — it unwraps two extra envelope shapes defensively, so callers never need to know which one they got:
+A validation failure of the HTTP API answers `422 {"errors": {"<field>": [message, ...]}}`, one message array per camelCased field (see [HTTP API framework](concept-api.md)); a legacy controller may answer the bare `{attribute: [message, ...]}` of `Model::getErrors()`. Call `setErrors()` on the `HumHubForm` ref with the raw response — it accepts every shape below, so callers never need to know which one they got:
 
 ```js
 formRef.setErrors(response); // any of the three shapes below
