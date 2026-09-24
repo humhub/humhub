@@ -11,7 +11,6 @@ namespace humhub\tests\codeception\unit\widgets;
 use humhub\modules\content\controllers\api\ControlsController;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use humhub\modules\content\widgets\WallEntryControlLink;
-use humhub\widgets\menu\DescribableWidget;
 use humhub\widgets\menu\DropdownDivider;
 use humhub\widgets\menu\MenuEntry;
 use humhub\widgets\menu\MenuLink;
@@ -21,7 +20,7 @@ use yii\helpers\Html;
 
 /**
  * The `describe()` chain that lets a server-side menu feed a client-rendered one — see
- * `humhub\widgets\menu\DescribableWidget` and
+ * `humhub\widgets\menu\MenuEntry::describe()` and
  * `humhub\modules\content\controllers\api\ControlsController`.
  */
 class MenuEntryDescribeTest extends HumHubDbTestCase
@@ -66,60 +65,33 @@ class MenuEntryDescribeTest extends HumHubDbTestCase
         $this->assertNull((new UndescribableTestEntry())->describe());
     }
 
-    public function testControlLinkDescribesLabelIconAndLegacyActionOptions()
+    public function testLegacyControlLinkConvertsToAMenuLinkWithItsActionOptions()
     {
-        $entry = new WidgetMenuEntry([
-            'widgetClass' => WallEntryControlLink::class,
-            'widgetOptions' => [
-                'label' => 'Delete',
-                'icon' => 'ti-trash',
-                'action' => 'content.delete',
-            ],
-            'sortOrder' => 300,
-        ]);
+        $link = (new WallEntryControlLink([
+            'label' => 'Delete',
+            'icon' => 'ti-trash',
+            'action' => 'content.delete',
+        ]))->toMenuLink();
 
-        $descriptor = $entry->describe();
-
+        $descriptor = $link->describe();
         $this->assertSame('Delete', $descriptor['label']);
         $this->assertSame('trash', $descriptor['icon']);
-        $this->assertSame(300, $descriptor['sortOrder']);
         // The delegated document handler reads this off the DOM, so it has to survive into a
         // client-rendered anchor.
         $this->assertSame('content.delete', $descriptor['htmlOptions']['data-action-click']);
     }
 
-    public function testWidgetEntryFallsBackToAKebabCaseIdDerivedFromItsClass()
+    public function testTheIdFallbackIsTheKebabCasedClassName()
     {
-        $entry = new WidgetMenuEntry([
-            'widgetClass' => WallEntryControlLink::class,
-            'widgetOptions' => ['label' => 'Something'],
-        ]);
-
-        $this->assertSame('wall-entry-control-link', $entry->describe()['id']);
+        $this->assertSame('delete-link', MenuEntry::describeIdFor(\humhub\modules\content\widgets\DeleteLink::class));
         $this->assertSame('content-topic-button', WidgetMenuEntry::describeIdFor(
             'humhub\\modules\\topic\\widgets\\ContentTopicButton',
         ));
     }
 
-    public function testAnExplicitIdWinsOverTheClassFallback()
+    public function testAControlLinkThatPreventsItsOwnRenderIsNotConverted()
     {
-        $entry = new WidgetMenuEntry([
-            'id' => 'my-entry',
-            'widgetClass' => WallEntryControlLink::class,
-            'widgetOptions' => ['label' => 'Something'],
-        ]);
-
-        $this->assertSame('my-entry', $entry->describe()['id']);
-    }
-
-    public function testAControlLinkThatPreventsItsOwnRenderIsNotDescribed()
-    {
-        $entry = new WidgetMenuEntry([
-            'widgetClass' => PreventedTestControlLink::class,
-            'widgetOptions' => ['label' => 'Hidden'],
-        ]);
-
-        $this->assertNull($entry->describe());
+        $this->assertNull((new PreventedTestControlLink(['label' => 'Hidden']))->toMenuLink());
     }
 
     /**
@@ -127,33 +99,18 @@ class MenuEntryDescribeTest extends HumHubDbTestCase
      * from the base class' properties, so it must fall through to the HTML path instead of
      * yielding an entry with an empty label or a dead `#` link.
      */
-    public function testASubclassRenderingItsOwnLinkIsNotDescribed()
+    public function testASubclassRenderingItsOwnLinkIsNotConverted()
     {
-        $entry = new WidgetMenuEntry([
-            'widgetClass' => OwnLinkTestControlLink::class,
-            'widgetOptions' => ['label' => 'Ignored'],
-        ]);
-
-        $this->assertNull($entry->describe());
+        $this->assertNull((new OwnLinkTestControlLink(['label' => 'Ignored']))->toMenuLink());
     }
 
-    public function testASubclassMayDescribeItselfAnyway()
+    public function testAWidgetEntryDescribesNothingItself()
     {
         $entry = new WidgetMenuEntry([
-            'widgetClass' => SelfDescribingTestControlLink::class,
-            'widgetOptions' => [],
+            'widgetClass' => WallEntryControlLink::class,
+            'widgetOptions' => ['label' => 'Something'],
         ]);
-
-        $this->assertSame('Own label', $entry->describe()['label']);
-    }
-
-    public function testANonDescribableWidgetEntryIsNotDescribed()
-    {
-        $entry = new WidgetMenuEntry([
-            'widgetClass' => \humhub\modules\content\widgets\DeleteLink::class,
-            'widgetOptions' => [],
-        ]);
-
+        // Only the controls endpoint knows how to turn a legacy control link into data.
         $this->assertNull($entry->describe());
     }
 
@@ -207,18 +164,5 @@ class OwnLinkTestControlLink extends WallEntryControlLink
     protected function renderLink()
     {
         return Html::a('Built elsewhere', '/somewhere', $this->options);
-    }
-}
-
-class SelfDescribingTestControlLink extends WallEntryControlLink implements DescribableWidget
-{
-    protected function renderLink()
-    {
-        return Html::a('Own label', '/somewhere', $this->options);
-    }
-
-    public function describeMenuEntry(): ?array
-    {
-        return ['label' => 'Own label', 'url' => '/somewhere'];
     }
 }

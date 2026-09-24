@@ -78,8 +78,8 @@ Done on that branch:
   It merges three sources — the host island's own Vue entries, the *server-resolved*
   `WallEntryControls` stack, and `registerMenuEntry('content.controls', …)` — so a module
   contributing through `EVENT_INIT` keeps working with no change at all, as long as its entry
-  can describe itself (`MenuEntry::describe()`, `DescribableWidget`). `WallEntryControlLink`
-  implements that for its whole subclass family. An entry that cannot be described is still
+  can describe itself (`MenuEntry::describe()`): core's control links are `MenuLink`s, and a
+  legacy `WallEntryControlLink` is converted (`toMenuLink()`). An entry that cannot be described is still
   rendered server-side and shipped as raw HTML, deprecated and logged. Deliberately not the
   cut the comment island's own controls menu made: repeating that break once per migrating
   module is not defensible.

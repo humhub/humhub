@@ -1,15 +1,24 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\content\widgets;
 
-use humhub\components\Widget;
-use humhub\helpers\Html;
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\widgets\Icon;
+use humhub\widgets\menu\MenuLink;
 use Yii;
 use yii\helpers\Url;
 
-class PublishDraftLink extends Widget
+/**
+ * The "Publish draft" entry of a content's context menu ({@see WallEntryControls}).
+ *
+ * A menu entry, not a widget, since 1.20 - see {@see WallEntryControls::createEntry()}.
+ */
+class PublishDraftLink extends MenuLink
 {
     /**
      * @var ContentActiveRecord
@@ -19,24 +28,23 @@ class PublishDraftLink extends Widget
     /**
      * @inheritdoc
      */
-    public function run()
+    public function init()
     {
-        if (!$this->content->content->getStateService()->isDraft()
-            || !$this->content->content->canEdit()) {
-            return '';
+        parent::init();
+
+        $content = $this->content->content;
+
+        if (!$content->getStateService()->isDraft() || !$content->canEdit()) {
+            $this->setIsVisible(false);
+            return;
         }
 
-        $publishUrl = Url::to(['/content/content/publish-draft', 'id' => $this->content->content->id]);
-
-        return Html::tag(
-            'li',
-            Html::a(
-                Icon::get('arrow-back-up-double') . ' '
-                . Yii::t('ContentModule.base', 'Publish draft'),
-                '#',
-                ['data-action-click' => 'publishDraft', 'data-action-url' => $publishUrl],
-            ),
-        );
+        $this->setLabel(Yii::t('ContentModule.base', 'Publish draft'));
+        $this->setIcon('arrow-back-up-double');
+        $this->setUrl('#');
+        $this->setHtmlOptions([
+            'data-action-click' => 'publishDraft',
+            'data-action-url' => Url::to(['/content/content/publish-draft', 'id' => $content->id]),
+        ]);
     }
-
 }

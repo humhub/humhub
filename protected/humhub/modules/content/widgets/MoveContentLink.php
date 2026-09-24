@@ -9,15 +9,15 @@
 namespace humhub\modules\content\widgets;
 
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\widgets\menu\MenuLink;
 use Yii;
 
 /**
- * MoveContentLink used to move a wallentry to another space.
+ * The "Move content" entry of a content's context menu ({@see WallEntryControls}).
  *
- * @package humhub.modules_core.wall.widgets
- * @since 1.3
+ * A menu entry, not a widget, since 1.20 - see {@see WallEntryControls::createEntry()}.
  */
-class MoveContentLink extends WallEntryControlLink
+class MoveContentLink extends MenuLink
 {
     /**
      * @var ContentActiveRecord
@@ -25,41 +25,27 @@ class MoveContentLink extends WallEntryControlLink
     public $model;
 
     /**
-     * @inheritdocs
+     * @inheritdoc
      */
-    public $icon = 'arrows-horizontal';
-
-    /**
-     * @inheritdocs
-     */
-    public $action = 'ui.modal.load';
-
-    /**
-     * @inheritdocs
-     */
-    public function getLabel()
+    public function init()
     {
-        return Yii::t('ContentModule.base', 'Move content');
-    }
+        parent::init();
 
-    /**
-     * @inheritdocs
-     */
-    public function getActionUrl()
-    {
-        if (!$this->model->content->container) {
-            return null;
+        $content = $this->model->content;
+
+        // Shown when the user may move content within the container in general, not
+        // considering the other checks of moving this particular content.
+        if (!$content->container || !$content->checkMovePermission()) {
+            $this->setIsVisible(false);
+            return;
         }
 
-        return $this->model->content->container->createUrl('/content/move/move', ['id' => $this->model->content->id]);
-    }
-
-    /**
-     * @inheritdocs
-     */
-    public function preventRender()
-    {
-        // We show the move content link in case the user is generally allowed to move content within the container not considering other move content checks.
-        return !$this->model->content->container || !$this->model->content->checkMovePermission();
+        $this->setLabel(Yii::t('ContentModule.base', 'Move content'));
+        $this->setIcon('arrows-horizontal');
+        $this->setUrl('#');
+        $this->setHtmlOptions([
+            'data-action-click' => 'ui.modal.load',
+            'data-action-url' => $content->container->createUrl('/content/move/move', ['id' => $content->id]),
+        ]);
     }
 }

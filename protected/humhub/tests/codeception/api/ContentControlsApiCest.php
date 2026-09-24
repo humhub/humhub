@@ -99,10 +99,30 @@ class ContentControlsApiCest
         Assert::assertContains('perma-link', $ids);
         Assert::assertContains('archive-link', $ids);
 
-        // `move-content-link` already describes itself while `archive-link` is still shipped
-        // as raw HTML - and both are named by the same rule. That is what makes converting a
-        // widget to `DescribableWidget` invisible to a client: the entry keeps its id.
+        // Named by the same rule whether an entry describes itself or is shipped as HTML - what
+        // makes converting a widget to a menu link invisible to a client: the entry keeps its id.
         Assert::assertContains('move-content-link', $ids);
+    }
+
+    public function testCoreEntriesAreDescribedNotShippedAsHtml(ApiTester $I)
+    {
+        $I->wantTo('get every core entry as a descriptor, none as raw HTML');
+        $I->amLoggedInAs(1);
+        $I->sendGet('content/1/controls');
+        $I->seeResponseCodeIs(200);
+
+        $byId = array_column($this->entries($I), null, 'id');
+
+        foreach (['edit-link', 'delete-link', 'perma-link', 'archive-link', 'move-content-link'] as $id) {
+            Assert::assertArrayHasKey($id, $byId, $id);
+            Assert::assertArrayNotHasKey('html', $byId[$id], $id . ' is described, not rendered');
+            Assert::assertNotEmpty($byId[$id]['label'], $id);
+        }
+
+        // The legacy action attributes survive into the descriptor, so a client-rendered
+        // anchor runs the same handler.
+        Assert::assertSame('content.permalink', $byId['perma-link']['htmlOptions']['data-action-click']);
+        Assert::assertSame('delete', $byId['delete-link']['icon']);
     }
 
     public function testSuppressDropsCoreEntries(ApiTester $I)

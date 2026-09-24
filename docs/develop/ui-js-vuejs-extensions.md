@@ -1,6 +1,6 @@
 # Extending Vue.js Islands
 
-> Part of the [Vue.js integration](ui-js-vuejs.md) documentation. This chapter covers how a module extends another module's island from the outside: extension slots, menu entries, the serializer extension event pattern, domain events on the bus, and the (planned) component override mechanism. For motivation, goals, constraints and the overall architecture, see the [overview](ui-js-vuejs.md).
+> Part of the [Vue.js integration](ui-js-vuejs.md) documentation. This chapter covers how a module extends another module's island from the outside: extension slots, menu entries, module data served by a module's own endpoint, domain events on the bus, and the (planned) component override mechanism. For motivation, goals, constraints and the overall architecture, see the [overview](ui-js-vuejs.md).
 
 ## Extension slots
 
@@ -139,38 +139,49 @@ onContextMenu(event) {
 
 **Describing a server entry.** `humhub\widgets\menu\MenuEntry::describe()` returns the
 descriptor for an entry, or `null` when the entry can only be rendered. `MenuLink` and
-`DropdownDivider` describe themselves; a `WidgetMenuEntry` delegates to its widget when that
-widget implements `humhub\widgets\menu\DescribableWidget`.
-
-`WallEntryControlLink` implements it, which covers the whole family of control links that
-extend it — `EditPageLink` (wiki), `ShareLink` (share-between-humhub), `ContentTopicButton`
-(topic) — **with no change in those modules at all**. The one restriction is load-bearing: the
-base implementation refuses to describe a subclass that overrides `renderLink()`, because
-such a subclass builds its label or url inside the render (as `ContentTopicButton` and
-`EditPageLink` both do) and describing it from the base class' properties would silently
-produce an empty label or a dead `#` link. A subclass in that position describes itself:
+`DropdownDivider` describe themselves, and so does every core entry of the content menu: since
+1.20 `EditLink`, `DeleteLink`, `PermaLink`, `PinLink`, `ArchiveLink`, `VisibilityLink`,
+`LockCommentsLink`, `NotificationSwitchLink`, `PublishDraftLink`, `ScheduleLink`,
+`MoveContentLink` and `ContentTopicButton` are `MenuLink`s rather than widgets. A module's own
+entry should be one too:
 
 ```php
-class ContentTopicButton extends WallEntryControlLink
+class BookmarkLink extends MenuLink
 {
-    public function renderLink()
-    {
-        return $this->buildLink();          // one definition …
-    }
+    public $content;
 
-    public function describeMenuEntry(): ?array
+    public function init()
     {
-        $link = $this->buildLink();         // … used by both paths, so they cannot drift
+        parent::init();
 
-        return [
-            'id' => 'topics',
-            'label' => (string)$link->label,
-            'icon' => MenuLink::describeIcon($link->icon),
-            'htmlOptions' => $link->options,
-        ];
+        if (!BookmarkService::canBookmark($this->content)) {
+            $this->setIsVisible(false);
+            return;
+        }
+
+        $this->setLabel(Yii::t('BookmarkModule.base', 'Bookmark'));
+        $this->setIcon('bookmark');
+        $this->setUrl('#');
+        $this->setHtmlOptions([
+            'data-action-click' => 'bookmark.toggle',
+            'data-action-url' => Url::to(['/bookmark/toggle', 'id' => $this->content->content->id]),
+        ]);
     }
 }
 ```
+
+It is contributed exactly like before — `$event->sender->addWidget(BookmarkLink::class,
+['content' => $record], ['sortOrder' => 250])`, or as `[BookmarkLink::class, [...], [...]]` from
+a wall entry's `getControlsMenuEntries()`: `WallEntryControls` instantiates a `MenuEntry` class
+directly and wraps anything else in a `WidgetMenuEntry`.
+
+**Legacy control links.** A module still extending the deprecated `WallEntryControlLink` widget
+keeps a described entry with no change — `EditPageLink` (wiki), `ShareLink`
+(share-between-humhub), the calendar's links: the controls endpoint converts it through
+`WallEntryControlLink::toMenuLink()`. The one restriction is load-bearing: a subclass that
+overrides `renderLink()` builds its label or url inside the render, so converting it from the
+base class' properties would produce an empty label or a dead `#` link. Such a subclass is
+shipped as HTML (below) until it becomes a `MenuLink`.
 
 The descriptor's `htmlOptions` are bound straight onto the client-rendered anchor, which is
 what keeps a legacy `data-action-click` entry working: the delegated document handler in
@@ -181,7 +192,7 @@ what keeps a legacy `data-action-click` entry working: the delegated document ha
 injects with `v-html` and runs the UI additions over. Nothing breaks and no module has to act
 immediately — but such an entry is a dead end: a client cannot label, condition, reorder
 beyond `sortOrder`, override or remove it. **The path is deprecated**; every delivery logs a
-warning naming the widget class. Implement `DescribableWidget` (or migrate to
+warning naming the widget class. Make the entry a `MenuLink` (or migrate to
 `registerMenuEntry()`) before it is removed.
 
 **Lazily, per menu.** Nothing is fetched until a menu is opened, because everything in that

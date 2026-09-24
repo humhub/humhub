@@ -37,9 +37,9 @@ paths:
 
         This is what the `ContentControls` Vue island loads when its menu is opened, and it
         is why a module that has contributed a control link for years keeps working in a
-        client-rendered menu without any change: entries that can describe themselves
-        (`humhub\widgets\menu\DescribableWidget`) arrive as descriptors, and only those
-        that cannot fall back to the deprecated `html` escape hatch.
+        client-rendered menu without any change: menu links (core's own entries among them)
+        and legacy control-link widgets arrive as descriptors, and only other widgets fall
+        back to the deprecated `html` escape hatch.
 
         Loaded lazily, on menu open — a list of 50 rows costs no request at all until
         someone actually opens a menu.
@@ -171,7 +171,7 @@ components:
             **Deprecated.** The rendered markup of an entry that cannot describe itself,
             injected as the whole list item. It cannot be labelled, conditioned, overridden
             or removed by a client, and every delivery logs a deprecation warning naming the
-            widget class. Implement `humhub\widgets\menu\DescribableWidget` instead; this
+            widget class. Make the entry a `humhub\widgets\menu\MenuLink` instead; this
             fallback will be removed.
     ControlsCapabilities:
       type: object

@@ -5,7 +5,6 @@ namespace humhub\modules\content\widgets;
 use humhub\components\Widget;
 use humhub\helpers\Html;
 use humhub\widgets\Icon;
-use humhub\widgets\menu\DescribableWidget;
 use humhub\widgets\menu\MenuLink;
 use ReflectionMethod;
 use yii\helpers\ArrayHelper;
@@ -13,10 +12,16 @@ use yii\helpers\ArrayHelper;
 /**
  * Generic WallEntryControlLink.
  *
+ * A widget that renders one `<li><a>` of a content's context menu - from the time menus were
+ * widget stacks. The entries of the menu are menu entries now: extend
+ * {@see \humhub\widgets\menu\MenuLink} instead, as core's own control links
+ * ({@see DeleteLink}, {@see EditLink}, …) do. This class stays for modules extending it.
+ *
  * @since 1.2
+ * @deprecated since 1.20, extend {@see \humhub\widgets\menu\MenuLink} instead
  * @author buddh4
  */
-class WallEntryControlLink extends Widget implements DescribableWidget
+class WallEntryControlLink extends Widget
 {
     /**
      * @var string link label
@@ -147,33 +152,32 @@ class WallEntryControlLink extends Widget implements DescribableWidget
     }
 
     /**
-     * @inheritdoc
-     *
-     * Describes the anchor {@see self::renderLink()} would have rendered: the label, the icon
-     * and the html options — including the `data-action-click`/`data-action-url` pair
-     * {@see self::init()} derived from `$action`/`$actionUrl`, which is what keeps a legacy
-     * action entry working when a client renders the anchor instead of the server.
+     * The menu link this widget renders, for a client that renders the menu itself (see
+     * {@see \humhub\modules\content\controllers\api\ControlsController}): label, icon and
+     * html options, including the `data-action-click`/`data-action-url` pair {@see self::init()}
+     * derived from `$action`/`$actionUrl`, which keeps a legacy action entry working when a
+     * client renders the anchor instead of the server.
      *
      * **Only when this class' own `renderLink()` is in effect.** A subclass that overrides it
-     * builds its markup from something other than these properties — `ContentTopicButton`
-     * derives label and url inside `renderLink()`, `EditPageLink` renders a real href — so
-     * describing it here would silently produce an entry with an empty label or a dead `#`
-     * link. Such a subclass is left to be rendered instead, unless it describes itself by
-     * overriding this method (as `ContentTopicButton` does).
+     * builds its markup from something other than these properties (`EditPageLink` of the wiki
+     * renders a real href), so converting it here would produce an entry with an empty label
+     * or a dead `#` link. Such a subclass, and one that prevents its own rendering, answers
+     * null and is rendered instead.
      *
      * @since 1.20
      */
-    public function describeMenuEntry(): ?array
+    public function toMenuLink(): ?MenuLink
     {
         if ($this->preventRender() || $this->rendersItsOwnLink()) {
             return null;
         }
 
-        return [
+        return new MenuLink([
             'label' => trim((string)$this->getLabel()),
-            'icon' => MenuLink::describeIcon($this->getIcon()),
+            'icon' => $this->getIcon() ?: null,
+            'url' => '#',
             'htmlOptions' => $this->options,
-        ];
+        ]);
     }
 
     /**

@@ -245,4 +245,23 @@ abstract class MenuEntry extends BaseObject
     {
         return static::class;
     }
+
+    /**
+     * The fallback entry id for an entry that carries none of its own: its short class name
+     * in kebab case (`DeleteLink` → `delete-link`), the widget class for a
+     * {@see WidgetMenuEntry}.
+     *
+     * Stable across requests, which is what a client needs in order to override or remove the
+     * entry by id — but NOT unique when the same widget class is contributed more than once
+     * (`share-between-humhub` adds one `ShareLink` per configured site). Disambiguating those
+     * is the resolving caller's job, since only it sees the whole menu.
+     *
+     * @since 1.20
+     */
+    public static function describeIdFor(string $class): string
+    {
+        $shortName = substr((string)strrchr('\\' . $class, '\\'), 1);
+
+        return strtolower(preg_replace('/([a-z0-9])([A-Z])/', '$1-$2', $shortName));
+    }
 }

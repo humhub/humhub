@@ -31,9 +31,9 @@
  *    here. Gate them on `capabilities` via each entry's `condition`.
  * 2. **Server-described entries** — the resolved `WallEntryControls` stack of this record,
  *    fetched on menu open from `GET /api/v2/content/<id>/controls`. Every module that
- *    contributes a describable entry keeps working with NO change
- *    (`humhub\widgets\menu\DescribableWidget`); one that contributes markup only is
- *    shipped as raw `html` and deprecated.
+ *    contributes a menu link (`humhub\widgets\menu\MenuLink`) or a legacy
+ *    `WallEntryControlLink` keeps working with NO change; one that contributes other markup
+ *    is shipped as raw `html` and deprecated.
  * 3. **The client registry** — `registerMenuEntry('content.controls', …)`, for modules that
  *    have moved to the Vue side. These can override (same `id`) or remove entries from
  *    either of the other two sources, since `DropdownMenu` resolves the registry last.

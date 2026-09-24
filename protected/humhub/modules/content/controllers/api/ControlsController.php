@@ -12,8 +12,10 @@ use humhub\components\api\BaseController;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
+use humhub\modules\content\widgets\WallEntryControlLink;
 use humhub\modules\content\widgets\WallEntryControls;
 use humhub\widgets\menu\MenuEntry;
+use humhub\widgets\menu\MenuLink;
 use humhub\widgets\menu\WidgetMenuEntry;
 use humhub\widgets\menu\Menu;
 use Throwable;
@@ -36,9 +38,10 @@ use yii\web\NotFoundHttpException;
  *
  * Rather than break every contributing module the way the comment island's own controls
  * menu did (see `docs/develop/module-migrate.md`), this endpoint resolves the very same
- * widget stack — event handlers and all — and serializes the result. A module that
- * contributes a describable entry ({@see \humhub\widgets\menu\DescribableWidget}) needs
- * no change at all; one that contributes markup only gets that markup shipped as an `html`
+ * menu — event handlers and all — and serializes the result. An entry that is a menu link
+ * ({@see \humhub\widgets\menu\MenuLink}, as core's own control links are) describes itself,
+ * and so does a legacy {@see WallEntryControlLink} widget; a module contributing either needs
+ * no change at all. One that contributes other markup gets that markup shipped as an `html`
  * escape hatch, with a deprecation notice.
  *
  * ## Caller context
@@ -183,10 +186,10 @@ class ControlsController extends BaseController
 
             // An entry that brought no id of its own is named after its class, so the id is
             // stable across installations and, crucially, across the described/raw-HTML
-            // divide: a widget converted to `DescribableWidget` later keeps the very id it
-            // had while it was still delivered as HTML, and nothing keyed on it breaks.
+            // divide: a widget converted to a menu link later keeps the very id it had while
+            // it was still delivered as HTML, and nothing keyed on it breaks.
             $descriptor['id'] = $this->uniqueId(
-                (string)($descriptor['id'] ?? '') ?: WidgetMenuEntry::describeIdFor($entry->getEntryClass()),
+                (string)($descriptor['id'] ?? '') ?: MenuEntry::describeIdFor($entry->getEntryClass()),
                 $usedIds,
             );
             $entries[] = $descriptor;
@@ -247,7 +250,7 @@ class ControlsController extends BaseController
      */
     protected function describeEntry(MenuEntry $entry): ?array
     {
-        $descriptor = $entry->describe();
+        $descriptor = $entry->describe() ?? $this->describeLegacyControlLink($entry);
 
         if ($descriptor !== null) {
             return $descriptor;
@@ -261,7 +264,7 @@ class ControlsController extends BaseController
 
         Yii::warning(
             'Menu entry ' . $entry->getEntryClass() . ' cannot describe itself and was delivered '
-            . 'as raw HTML. Implement humhub\\widgets\\menu\\DescribableWidget — the HTML '
+            . 'as raw HTML. Make it a humhub\\widgets\\menu\\MenuLink — the HTML '
             . 'fallback is deprecated and will be removed.',
             'content',
         );
@@ -271,6 +274,43 @@ class ControlsController extends BaseController
             'sortOrder' => $entry->getSortOrder(),
             'html' => $this->unwrapListItem($html),
         ];
+    }
+
+    /**
+     * A widget entry wrapping a {@see WallEntryControlLink} - the widget modules extended before
+     * control links became menu entries - described as the {@see MenuLink} it renders
+     * ({@see WallEntryControlLink::toMenuLink()}), so such a module keeps a describable entry
+     * without changing anything. Null for every other entry, and for a link that cannot be
+     * converted (it renders its own markup, or prevents its rendering), which is then rendered.
+     */
+    protected function describeLegacyControlLink(MenuEntry $entry): ?array
+    {
+        if (!$entry instanceof WidgetMenuEntry || !is_string($entry->widgetClass)
+            || !is_a($entry->widgetClass, WallEntryControlLink::class, true)) {
+            return null;
+        }
+
+        try {
+            $widget = Yii::createObject(array_merge(
+                is_array($entry->widgetOptions) ? $entry->widgetOptions : [],
+                ['class' => $entry->widgetClass],
+            ));
+            $link = $widget->toMenuLink();
+        } catch (Throwable $e) {
+            Yii::error($e);
+            return null;
+        }
+
+        if ($link === null) {
+            return null;
+        }
+
+        $link->setSortOrder($entry->getSortOrder());
+        if ($entry->getId()) {
+            $link->setId($entry->getId());
+        }
+
+        return $link->describe();
     }
 
     /**
@@ -293,7 +333,7 @@ class ControlsController extends BaseController
      *
      * Ids are what a client overrides and removes entries by, so two entries may not share
      * one. An entry with no id of its own is named after its class
-     * ({@see \humhub\widgets\menu\WidgetMenuEntry::describeIdFor()}), which collides as
+     * ({@see \humhub\widgets\menu\MenuEntry::describeIdFor()}), which collides as
      * soon as the same widget is contributed twice — `share-between-humhub` adds one
      * `ShareLink` per configured site. Only the resolving side sees the whole menu, so it
      * disambiguates here.

@@ -9,6 +9,7 @@ use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
 use humhub\widgets\menu\MenuEntry;
 use humhub\widgets\menu\WidgetMenuEntry;
 use humhub\widgets\menu\Menu;
+use Yii;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -133,9 +134,32 @@ class WallEntryControls extends Menu
      */
     public function addWidget($className, $params = [], $options = [])
     {
-        $sortOrder = $options['sortOrder'] ?? PHP_INT_MAX;
-        $cfg = array_merge($options, ['widgetClass' => $className, 'widgetOptions' => $params, 'sortOrder' => $sortOrder]);
-        $this->addEntry(new WidgetMenuEntry($cfg));
+        $this->addEntry($this->createEntry($className, $params, $options));
+    }
+
+    /**
+     * The menu entry for a `[class, params, options]` definition.
+     *
+     * A {@see MenuEntry} class is instantiated with the params and options as its own
+     * configuration; that is what core's control links ({@see DeleteLink}, {@see EditLink}, …)
+     * are since 1.20, and what keeps the definitions modules pass around
+     * (`[EditLink::class, ['model' => …], ['sortOrder' => 100]]`) working. Any other class is
+     * a widget and wrapped in a {@see WidgetMenuEntry}.
+     *
+     * @param string $className
+     * @param array|null $params
+     * @param array $options entry options such as `sortOrder` or `id`
+     * @since 1.20
+     */
+    protected function createEntry($className, $params = [], $options = []): MenuEntry
+    {
+        $options['sortOrder'] ??= PHP_INT_MAX;
+
+        if (is_string($className) && is_subclass_of($className, MenuEntry::class)) {
+            return Yii::createObject(array_merge(['class' => $className], $params ?: [], $options));
+        }
+
+        return new WidgetMenuEntry(array_merge($options, ['widgetClass' => $className, 'widgetOptions' => $params]));
     }
 
     /**
@@ -167,10 +191,7 @@ class WallEntryControls extends Menu
             $options = $menuItem[2] ?? [];
         }
 
-        $sortOrder = $options['sortOrder'] ?? PHP_INT_MAX;
-        $cfg = array_merge($options, ['widgetClass' => $widgetClass, 'widgetOptions' => $widgetOptions, 'sortOrder' => $sortOrder]);
-
-        return new WidgetMenuEntry($cfg);
+        return $this->createEntry($widgetClass, $widgetOptions, $options);
     }
 
     /**

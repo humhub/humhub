@@ -718,22 +718,44 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     strings into integers. They now come back as the string the SCSS file contains. A comparison
     with `===` against an integer has to be adjusted; `==` and casts are unaffected.
 
-- Added a **describable menu entry** API (`humhub\widgets\menu\MenuEntry::describe()`,
-  the `humhub\widgets\menu\DescribableWidget` interface) plus the
+- Added a **describable menu entry** API (`humhub\widgets\menu\MenuEntry::describe()`) plus the
   `humhub\modules\content\vue\ContentControls` island and its
   `GET /api/v2/content/<id>/controls` endpoint — the content context menu (`WallEntryControls`)
   rendered by a client instead of the server. Purely additive: `WallEntryControls::EVENT_INIT`
   is unchanged, and it is still the way to contribute an entry.
-  - `WallEntryControlLink` implements `DescribableWidget`, so every control link extending it
-    (`EditPageLink` in wiki, `ShareLink` in share-between-humhub, `ContentTopicButton` in core)
-    is described without any module change.
+  - **The control links of the content menu are menu entries, not widgets.** `EditLink`,
+    `DeleteLink`, `PermaLink`, `PinLink`, `ArchiveLink`, `VisibilityLink`, `LockCommentsLink`,
+    `NotificationSwitchLink`, `PublishDraftLink`, `ScheduleLink`, `MoveContentLink`
+    (`humhub\modules\content\widgets`) and `ContentTopicButton` (topic) extend
+    `humhub\widgets\menu\MenuLink` now, and describe themselves. Class names and public
+    properties are unchanged, and so is how they are contributed: `WallEntryControls`
+    instantiates a `MenuEntry` class given as `[Class::class, [...], [...]]` or through
+    `addWidget()` directly, so the array definitions of `calendar`, `translation` and `tasks`
+    (which looks for `$entry[0] === PermaLink::class`) keep working, and hiding an entry by
+    class (`'prevent' => [PinLink::class]` in tasks and meeting,
+    `WallStreamEntryOptions::disableControlsEntry()`) as well.
+    - **Breaking**: they are no longer widgets, so `EditLink::widget([...])` and friends are
+      gone (module-search found no caller), and the views `content/widgets/views/editLink.php`,
+      `deleteLink.php`, `permaLink.php`, `pinLink.php`, `archiveLink.php`, `visibilityLink.php`,
+      `lockCommentsLink.php` and `notificationSwitchLink.php` are removed — a theme override of
+      one of them no longer applies. The rendered anchors keep their classes and
+      `data-action-*` attributes; labels are HTML-encoded now.
+    - **Deprecated**: `WallEntryControlLink`. Extend `MenuLink` instead. A subclass keeps
+      working and stays described through the new `WallEntryControlLink::toMenuLink()`, which
+      the controls endpoint uses.
+    - **Removed**: the `humhub\widgets\menu\DescribableWidget` interface and
+      `WidgetMenuEntry::describe()`, both introduced earlier in this cycle.
+      `WidgetMenuEntry::describeIdFor()` moved to `MenuEntry::describeIdFor()` (still
+      callable on `WidgetMenuEntry`).
+    - The content menu no longer wraps a `DropdownDivider` in a second `<li>`, and skips an
+      invisible entry instead of rendering an empty one.
   - **Deprecated**: contributing a menu entry whose widget cannot describe itself. Such an
     entry is still rendered server-side and delivered as raw HTML, so nothing breaks today,
     but it cannot be conditioned, overridden or removed by a client, and every delivery logs
     a warning naming the widget class. A subclass of `WallEntryControlLink` that overrides
-    `renderLink()` is deliberately in this group unless it also overrides
-    `describeMenuEntry()` — describing it from the base class' properties would produce an
-    empty label or a dead `#` link. See `docs/develop/ui-js-vuejs-extensions.md`,
+    `renderLink()` is deliberately in this group — converting it from the base class'
+    properties would produce an empty label or a dead `#` link; making it a `MenuLink` is the
+    way out. See `docs/develop/ui-js-vuejs-extensions.md`,
     "Server-described entries and `ContentControls`".
   - The Vue `DropdownMenu` entry descriptor grew `url`, `htmlOptions`, `divider` and `html`.
     Existing entries are unaffected.

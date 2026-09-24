@@ -205,13 +205,22 @@ class MenuLink extends MenuEntry
      */
     public function describe(): ?array
     {
+        $htmlOptions = $this->getHtmlOptions();
+
+        // The link widget names its anchor with its own generated widget id (`h123w4`) unless
+        // given one - a per-request counter a client would render as a meaningless, possibly
+        // duplicate id. An id set deliberately differs from it and is kept.
+        if (isset($htmlOptions['id']) && $htmlOptions['id'] === $this->getLink()->getId()) {
+            unset($htmlOptions['id']);
+        }
+
         return [
             'id' => $this->getId(),
             'label' => (string)$this->getLabel(),
             'icon' => static::describeIcon($this->getIcon()),
             'sortOrder' => $this->getSortOrder(),
             'url' => $this->getUrl(),
-            'htmlOptions' => $this->getHtmlOptions(),
+            'htmlOptions' => $htmlOptions,
         ];
     }
 

@@ -2,6 +2,7 @@
 
 namespace humhub\modules\content\tests\codeception\unit\widgets;
 
+use humhub\helpers\Html;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\content\widgets\DeleteLink;
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
@@ -61,7 +62,7 @@ class WallEntryOptionsTest extends HumHubDbTestCase
     public function testDisableControlsSwitchVisibility()
     {
         $this->testDisableControlsItem(
-            'Change to "Public"',
+            Html::encode('Change to "Public"'),
             (new WallStreamEntryOptions())->disableControlsEntrySwitchVisibility(),
         );
     }
@@ -138,7 +139,7 @@ class WallEntryOptionsTest extends HumHubDbTestCase
         $this->assertWallEntryControlsContains('Move to archive', $options);
         $this->assertWallEntryControlsContains('Move', $options);
         $this->assertWallEntryControlsContains('Turn on notifications', $options);
-        $this->assertWallEntryControlsContains('Change to "Public"', $options);
+        $this->assertWallEntryControlsContains(Html::encode('Change to "Public"'), $options);
     }
 
     private function testDisableControlsItem($searchStr, $renderOptions)
