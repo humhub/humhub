@@ -4,13 +4,15 @@
         class="status-bar-body"
         :class="{ 'status-bar-visible': visible }"
     >
-        <div class="status-bar-content">
-            <a class="status-bar-close float-end" @click="close">&times;</a>
-            <i :class="iconClass"></i>
-            <span :class="{ 'status-bar-toggle': hasDetails }" @click="toggleDetails">{{ entry.message }}</span>
-            <a v-if="hasDetails" class="showMore" @click="toggleDetails">
-                <i :class="detailsOpen ? 'ti ti-chevron-down' : 'ti ti-chevron-up'"></i>
-            </a>
+        <div class="status-bar-content" :class="toneClass" role="status" aria-live="polite">
+            <div class="status-bar-header">
+                <i :class="iconClass"></i>
+                <span :class="{ 'status-bar-toggle': hasDetails }" @click="toggleDetails">{{ entry.message }}</span>
+                <a v-if="hasDetails" class="showMore" @click="toggleDetails">
+                    <i :class="detailsOpen ? 'ti ti-chevron-down' : 'ti ti-chevron-up'"></i>
+                </a>
+                <a class="status-bar-close" @click="close">&times;</a>
+            </div>
             <div v-if="detailsOpen" class="status-bar-details">
                 <pre>{{ detailsText }}</pre>
             </div>
@@ -20,8 +22,8 @@
 
 <script>
 /**
- * The platform's user-feedback bar ("status bar") — the strip that slides in at
- * the bottom of the window for flash messages, AJAX errors and the like.
+ * The platform's user-feedback bar ("status bar") — the toast that rises at the
+ * bottom of the window for flash messages, AJAX errors and the like.
  *
  * It is an infrastructure island: nothing renders it with props, and no caller
  * ever imports it. It is mounted once per page by `humhub\widgets\StatusBar`
@@ -45,27 +47,30 @@
  * That is also why this component has no i18n: every string it shows was
  * produced by its caller.
  *
- * ## Parity with the jQuery bar it replaces
+ * ## Behaviour of the jQuery bar it replaces, look of a toast
  *
- * Deliberately a 1:1 replacement of `humhub.ui.status.js`'s `StatusBar` class
- * (owner decision — theme CSS targets these class names, and a toast stack can
- * be added inside this component later without touching a single caller):
+ * The behaviour is that of `humhub.ui.status.js`'s `StatusBar` class (owner
+ * decision — a toast stack can be added inside this component later without
+ * touching a single caller):
  *
- *  - one message at a time; a new one slides the current one out first, then
+ *  - one message at a time; a new one takes the current one out first, then
  *    appears (the legacy `hide(() => setContent().show())` chain).
- *  - the same markup: `.status-bar-body > .status-bar-content` with a
- *    `a.status-bar-close`, a level icon carrying the level class the SCSS
- *    colours (`info`/`success`/`warning`/`error`), the message in a `<span>`,
- *    and — for a message with details — an `a.showMore` chevron plus a
- *    `.status-bar-details > pre` block. Clicking the message text toggles the
- *    details too, as it did before.
  *  - the same auto-close timings (`AUTOCLOSE_*`), including the legacy quirk
  *    that a falsy `closeAfter` falls back to the level default rather than
  *    meaning "stay" — only `error` stays by default.
- *  - the same 500 ms slide. The animation itself moved from jQuery `animate()`
- *    to a CSS transition on `.status-bar-body` (see `_user-feedback.scss`);
- *    this component only toggles `status-bar-visible` and keeps the element
- *    around for the duration of the slide-out.
+ *  - a level icon carrying the level class (`info`/`success`/`warning`/`error`),
+ *    the message in a `<span>`, an `a.status-bar-close`, and — for a message
+ *    with details — an `a.showMore` chevron plus a `.status-bar-details > pre`
+ *    block. Clicking the message text toggles the details too, as it did before.
+ *
+ * The look is the platform's toast: `.status-bar-body` is the fixed layer along
+ * the bottom, `.status-bar-content` the card in its centre — translucent over
+ * the page, border and outline in the level's colour via the tone class
+ * `status-bar-<level>` — with the icon, message and controls in one
+ * `.status-bar-header` row and the details below it. The card rises in over
+ * 220 ms; the animation is a CSS transition (see `_user-feedback.scss`), this
+ * component only toggles `status-bar-visible` and keeps the element around for
+ * the duration of the exit.
  *
  * One intentional difference: the message renders as TEXT (`{{ }}`), not HTML.
  * The server path was HTML-encoded anyway (and no longer needs
@@ -83,8 +88,8 @@
 
 // Matches the transition duration in _user-feedback.scss. Kept in JS as well
 // because the component owns the swap/removal timing (an element must outlive
-// its slide-out) - the two values have to stay in sync.
-const TRANSITION_MS = 500;
+// its exit) - the two values have to stay in sync.
+const TRANSITION_MS = 220;
 
 // Legacy AUTOCLOSE_* values; 0 means "never auto-close" (error only).
 const AUTOCLOSE = {
@@ -100,6 +105,15 @@ const ICONS = {
     success: 'ti ti-circle-check success',
     warn: 'ti ti-alert-triangle warning',
     error: 'ti ti-alert-circle error',
+};
+
+// The card's tone class per level - what colours its border and outline (see
+// _user-feedback.scss). Same level names as the icon classes above.
+const TONES = {
+    info: 'status-bar-info',
+    success: 'status-bar-success',
+    warn: 'status-bar-warning',
+    error: 'status-bar-error',
 };
 
 /**
@@ -148,6 +162,9 @@ export default {
     computed: {
         iconClass() {
             return ICONS[this.entry.level] || ICONS.info;
+        },
+        toneClass() {
+            return TONES[this.entry.level] || TONES.info;
         },
         detailsText() {
             return this.entry ? this.entry.details : null;

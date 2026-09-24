@@ -1030,7 +1030,7 @@
     );
   }
   const C7 = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$6]]);
-  const TRANSITION_MS = 500;
+  const TRANSITION_MS = 220;
   const AUTOCLOSE = {
     info: 6e3,
     success: 2e3,
@@ -1042,6 +1042,12 @@
     success: "ti ti-circle-check success",
     warn: "ti ti-alert-triangle warning",
     error: "ti ti-alert-circle error"
+  };
+  const TONES = {
+    info: "status-bar-info",
+    success: "status-bar-success",
+    warn: "status-bar-warning",
+    error: "status-bar-error"
   };
   const normalizeDetails = (details) => {
     if (details === void 0 || details === null || details === "") {
@@ -1074,6 +1080,9 @@
     computed: {
       iconClass() {
         return ICONS[this.entry.level] || ICONS.info;
+      },
+      toneClass() {
+        return TONES[this.entry.level] || TONES.info;
       },
       detailsText() {
         return this.entry ? this.entry.details : null;
@@ -1159,9 +1168,9 @@
       }
     }
   };
-  const _hoisted_1$5 = { class: "status-bar-content" };
+  const _hoisted_1$5 = { class: "status-bar-header" };
   const _hoisted_2$5 = {
-    key: 1,
+    key: 0,
     class: "status-bar-details"
   };
   function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
@@ -1172,55 +1181,67 @@
         class: vue.normalizeClass(["status-bar-body", { "status-bar-visible": $data.visible }])
       },
       [
-        vue.createElementVNode("div", _hoisted_1$5, [
-          vue.createElementVNode("a", {
-            class: "status-bar-close float-end",
-            onClick: _cache[0] || (_cache[0] = (...args) => $options.close && $options.close(...args))
-          }, "×"),
-          vue.createElementVNode(
-            "i",
-            {
-              class: vue.normalizeClass($options.iconClass)
-            },
-            null,
-            2
-            /* CLASS */
-          ),
-          vue.createElementVNode(
-            "span",
-            {
-              class: vue.normalizeClass({ "status-bar-toggle": $options.hasDetails }),
-              onClick: _cache[1] || (_cache[1] = (...args) => $options.toggleDetails && $options.toggleDetails(...args))
-            },
-            vue.toDisplayString($data.entry.message),
-            3
-            /* TEXT, CLASS */
-          ),
-          $options.hasDetails ? (vue.openBlock(), vue.createElementBlock("a", {
-            key: 0,
-            class: "showMore",
-            onClick: _cache[2] || (_cache[2] = (...args) => $options.toggleDetails && $options.toggleDetails(...args))
-          }, [
-            vue.createElementVNode(
-              "i",
-              {
-                class: vue.normalizeClass($data.detailsOpen ? "ti ti-chevron-down" : "ti ti-chevron-up")
-              },
-              null,
-              2
-              /* CLASS */
-            )
-          ])) : vue.createCommentVNode("v-if", true),
-          $data.detailsOpen ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$5, [
-            vue.createElementVNode(
-              "pre",
-              null,
-              vue.toDisplayString($options.detailsText),
-              1
-              /* TEXT */
-            )
-          ])) : vue.createCommentVNode("v-if", true)
-        ])
+        vue.createElementVNode(
+          "div",
+          {
+            class: vue.normalizeClass(["status-bar-content", $options.toneClass]),
+            role: "status",
+            "aria-live": "polite"
+          },
+          [
+            vue.createElementVNode("div", _hoisted_1$5, [
+              vue.createElementVNode(
+                "i",
+                {
+                  class: vue.normalizeClass($options.iconClass)
+                },
+                null,
+                2
+                /* CLASS */
+              ),
+              vue.createElementVNode(
+                "span",
+                {
+                  class: vue.normalizeClass({ "status-bar-toggle": $options.hasDetails }),
+                  onClick: _cache[0] || (_cache[0] = (...args) => $options.toggleDetails && $options.toggleDetails(...args))
+                },
+                vue.toDisplayString($data.entry.message),
+                3
+                /* TEXT, CLASS */
+              ),
+              $options.hasDetails ? (vue.openBlock(), vue.createElementBlock("a", {
+                key: 0,
+                class: "showMore",
+                onClick: _cache[1] || (_cache[1] = (...args) => $options.toggleDetails && $options.toggleDetails(...args))
+              }, [
+                vue.createElementVNode(
+                  "i",
+                  {
+                    class: vue.normalizeClass($data.detailsOpen ? "ti ti-chevron-down" : "ti ti-chevron-up")
+                  },
+                  null,
+                  2
+                  /* CLASS */
+                )
+              ])) : vue.createCommentVNode("v-if", true),
+              vue.createElementVNode("a", {
+                class: "status-bar-close",
+                onClick: _cache[2] || (_cache[2] = (...args) => $options.close && $options.close(...args))
+              }, "×")
+            ]),
+            $data.detailsOpen ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$5, [
+              vue.createElementVNode(
+                "pre",
+                null,
+                vue.toDisplayString($options.detailsText),
+                1
+                /* TEXT */
+              )
+            ])) : vue.createCommentVNode("v-if", true)
+          ],
+          2
+          /* CLASS */
+        )
       ],
       2
       /* CLASS */

@@ -1045,9 +1045,14 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     - `humhub\components\View::endBody()` ships the flash message as a JSON string literal
       instead of HTML-encoding it into a JS string. Its former `&quot;` strip — needed to
       keep that literal valid — silently deleted every double quote from a flash message.
-    - `_user-feedback.scss` gained the slide transition (`.status-bar-body` hidden by
-      default, shown via `.status-bar-visible`) that jQuery used to animate, plus
-      `.status-bar-toggle` for the details-toggle cursor. A theme that replaces this block
+    - **The bar is a toast now.** `_user-feedback.scss` styles `.status-bar-body` as the
+      fixed layer along the bottom and `.status-bar-content` as a translucent card in its
+      centre, border and outline in the level's colour through a new tone class on the card
+      (`status-bar-info|success|warning|error`); icon, message, details chevron and close
+      link sit in a new `.status-bar-header` row, the details block below it. The full-width
+      dark strip is gone. The enter/exit animation is a 220 ms CSS transition (`.status-bar-body`
+      hidden by default, shown via `.status-bar-visible`) instead of jQuery's 500 ms slide,
+      plus `.status-bar-toggle` for the details-toggle cursor. A theme that replaces this block
       (`$prev-user-feedback: true`) keeps working — the bar element only exists while a
       message is shown — but its bar appears and disappears without the slide until it
       adopts those two rules.

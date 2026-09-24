@@ -9,9 +9,9 @@ await import('../../resources/js/humhub/humhub.vue.js');
 
 const vueModule = globalThis.humhub.modules.vue;
 
-// Mirrors the constants in StatusBar.vue - the slide duration the CSS transition
-// in _user-feedback.scss uses, and the legacy AUTOCLOSE_* values.
-const TRANSITION = 500;
+// Mirrors the constants in StatusBar.vue - the duration of the CSS transition in
+// _user-feedback.scss the card enters and exits with, and the legacy AUTOCLOSE_* values.
+const TRANSITION = 220;
 const AUTOCLOSE = { info: 6000, success: 2000, warn: 10000, error: 0 };
 
 let wrapper;
@@ -68,15 +68,16 @@ describe('StatusBar', () => {
     });
 
     it.each([
-        ['info', 'ti ti-info-circle info'],
-        ['success', 'ti ti-circle-check success'],
-        ['warn', 'ti ti-alert-triangle warning'],
-        ['error', 'ti ti-alert-circle error'],
-    ])('renders the legacy icon markup for a %s message', async (level, iconClass) => {
+        ['info', 'ti ti-info-circle info', 'status-bar-info'],
+        ['success', 'ti ti-circle-check success', 'status-bar-success'],
+        ['warn', 'ti ti-alert-triangle warning', 'status-bar-warning'],
+        ['error', 'ti ti-alert-circle error', 'status-bar-error'],
+    ])('renders the level icon and the card tone class for a %s message', async (level, iconClass, toneClass) => {
         mountBar();
         vueModule.status(level, 'the message');
         await vi.runOnlyPendingTimersAsync();
 
+        expect(content().classes()).toContain(toneClass);
         expect(content().find('i').attributes('class')).toBe(iconClass);
         expect(content().find('span').text()).toBe('the message');
         expect(content().find('a.status-bar-close').exists()).toBe(true);

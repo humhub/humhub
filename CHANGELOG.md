@@ -26,7 +26,7 @@ HumHub Changelog
 - Enh #8403: Added the Vue.js island layer (`humhub.vue` runtime, core component set, form suite, extension APIs) with the like link and the comment section as the first islands
 - Enh #8403: Added the HTTP API framework in `humhub\components\api` and the first core endpoints under `/api/v2` (comment, like, account) — browser-session authentication is opt-in per controller, token methods come from the rest module, see `docs/develop/concept-api.md`
 - Enh #8403: Comment payloads are caller-neutral and cached server-side (`comment\services\CommentPayloadCache`); like state and edit/delete permissions have their own endpoints
-- Enh #8403: The status bar is a Vue island; `ui.status` keeps its API and forwards to it
+- Enh #8403: The status bar is a Vue island styled as a toast at the bottom centre (translucent card, level-coloured outline); `ui.status` keeps its API and forwards to it
 - Enh #8403: Added the native `UploadField` form-suite component and the `/api/v2/file` upload endpoints
 - Enh #8403: The notification dropdown and overview page are Vue islands on the new `/api/v2/notification` endpoints
 - Enh #8403: Core ships the `/api/v2` endpoint documentation in `docs/api/` (OpenAPI sources, and a committed single-page reference, `index.html`, that opens straight from the checkout)
