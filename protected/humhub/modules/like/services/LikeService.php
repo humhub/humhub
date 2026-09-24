@@ -231,7 +231,7 @@ class LikeService
                 foreach ($otherUsers as $user) {
                     $title .= $user->displayName . "\n";
                 }
-                $shownLikeCount = count($otherUsers) + ($this->hasLiked()) ? 1 : 0;
+                $shownLikeCount = count($otherUsers) + ($this->hasLiked() ? 1 : 0);
                 if ($this->getCount() > $shownLikeCount) {
                     $title .= Yii::t(
                         'LikeModule.base',
