@@ -64,10 +64,10 @@ class ModuleActionButtons extends Widget
                 $html .= Button::primary($buyLabel)
                     ->action('marketplace.buy', $this->module->checkoutUrl)
                     ->confirm(
-                        Yii::t('MarketplaceModule.base', 'Buy unverified community module?'),
+                        Yii::t('MarketplaceModule.base', 'Buy non-curated module?'),
                         Yii::t(
                             'MarketplaceModule.base',
-                            'You are about to purchase <strong>{moduleName}</strong>, an unverified community module.<br><br>This module is provided by a third party and has not been reviewed or tested by the HumHub team. It may behave unexpectedly, conflict with other modules, or stop working with future HumHub releases.<br><br>Make sure you trust the source before continuing.',
+                            'You are about to purchase <strong>{moduleName}</strong>, a module that is not part of our curated selection.<br><br>It is provided by an independent partner or developer and has not been reviewed by the HumHub team for quality, security or compatibility. Support, updates and licensing are handled by the respective provider.<br><br>Make sure you trust the source before continuing.',
                             ['moduleName' => $this->module->name],
                         ),
                         Yii::t('MarketplaceModule.base', 'Continue to checkout'),
@@ -89,10 +89,10 @@ class ModuleActionButtons extends Widget
 
             if ($this->module->isCommunity) {
                 $installButton->confirm(
-                    Yii::t('MarketplaceModule.base', 'Install unverified community module?'),
+                    Yii::t('MarketplaceModule.base', 'Install non-curated module?'),
                     Yii::t(
                         'MarketplaceModule.base',
-                        'You are about to install <strong>{moduleName}</strong>, an unverified community module.<br><br>This module is provided by a third party and has not been reviewed or tested by the HumHub team. It may behave unexpectedly, conflict with other modules, or stop working with future HumHub releases.<br><br>Make sure you trust the source before continuing.',
+                        'You are about to install <strong>{moduleName}</strong>, a module that is not part of our curated selection.<br><br>It is provided by an independent partner or developer and has not been reviewed by the HumHub team for quality, security or compatibility. Support, updates and licensing are handled by the respective provider.<br><br>Make sure you trust the source before continuing.',
                         ['moduleName' => $this->module->name],
                     ),
                     Yii::t('MarketplaceModule.base', 'Install anyway'),

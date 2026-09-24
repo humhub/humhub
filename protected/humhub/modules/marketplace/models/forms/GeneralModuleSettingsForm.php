@@ -62,7 +62,7 @@ class GeneralModuleSettingsForm extends Model
     {
         return [
             'includeBetaUpdates' => Yii::t('MarketplaceModule.base', 'Allow module versions in beta status'),
-            'includeCommunityModules' => Yii::t('MarketplaceModule.base', 'Include community modules'),
+            'includeCommunityModules' => Yii::t('MarketplaceModule.base', 'Show non-curated modules'),
         ];
     }
 
