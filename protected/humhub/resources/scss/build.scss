@@ -136,6 +136,9 @@ $prev-page-toolbar: false !default;
 $prev-card-directory: false !default;
 @import "card-directory";
 
+$prev-item-browser: false !default;
+@import "item-browser";
+
 $prev-marketplace: false !default;
 @import "marketplace";
 
