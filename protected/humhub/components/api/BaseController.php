@@ -17,7 +17,6 @@ use yii\base\Event;
 use yii\base\Model;
 use yii\data\Pagination;
 use yii\db\ActiveQuery;
-use yii\filters\auth\CompositeAuth;
 use yii\web\JsonParser;
 use yii\web\NotFoundHttpException;
 
@@ -133,7 +132,7 @@ abstract class BaseController extends Controller
     {
         return [
             'authenticator' => [
-                'class' => CompositeAuth::class,
+                'class' => ApiAuth::class,
                 'optional' => AuthHelper::isGuestAccessEnabled() ? $this->guestAllowedActions : [],
                 'authMethods' => $this->getAuthMethods(),
             ],
@@ -178,7 +177,7 @@ abstract class BaseController extends Controller
      * The authentication methods of this request, in precedence order: everything modules
      * contribute first, session authentication last.
      *
-     * @return array method configurations for {@see CompositeAuth::$authMethods}
+     * @return array method configurations for {@see ApiAuth::$authMethods}
      */
     protected function getAuthMethods(): array
     {

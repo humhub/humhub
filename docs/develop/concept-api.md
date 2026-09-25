@@ -112,6 +112,12 @@ Further contracts, all explicit:
 - **Guest access.** The per-controller `$guestAllowedActions` list is honored only while
   guest access is enabled platform-wide, with each action still responsible for its own
   guest-safe authorization (`Content::canView()` and friends).
+- **No method, no access.** A controller that ends up without any authentication method -
+  it does not allow session authentication and no module contributes a token method - answers
+  every request with a 401, the guest-allowed actions aside. Yii's `CompositeAuth` would skip
+  authentication entirely in that case and run every action as a guest, so `BaseController`
+  uses `humhub\components\api\ApiAuth`, which fails closed and logs a warning naming the
+  controller.
 - **Gate classification.** `humhub\components\gates\GateFilter` used to infer
   `RequestClass::Api` from `Yii::$app->user->enableSession === false`, which every API
   request pins — so a session-authenticated request would skip the gates that do not apply
