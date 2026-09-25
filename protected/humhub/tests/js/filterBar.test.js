@@ -233,6 +233,34 @@ describe('FilterBar', () => {
         expect(emitted(wrapper)).toHaveLength(1);
     });
 
+    it('applies a text filter set by setFilter() at once, cancelling a pending debounce', async () => {
+        vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
+        const wrapper = mountBar();
+
+        // Typing starts a debounce ...
+        await wrapper.find('.c-search-field input[type="text"]').setValue('typ');
+        await flushPromises();
+        expect(emitted(wrapper)).toEqual([]);
+
+        // ... which setFilter() replaces by applying at once, without waiting.
+        expect(wrapper.vm.setFilter('q', 'Alpha')).toBe(true);
+        await flushPromises();
+        expect(emitted(wrapper)).toEqual([{ ...values(), q: 'Alpha' }]);
+        expect(wrapper.find('.c-search-field input[type="text"]').element.value).toBe('Alpha');
+
+        vi.advanceTimersByTime(TEXT_DEBOUNCE_MS);
+        await flushPromises();
+        expect(emitted(wrapper)).toHaveLength(1);
+
+        // Typing afterwards is debounced again.
+        await wrapper.find('.c-search-field input[type="text"]').setValue('Alphab');
+        await flushPromises();
+        expect(emitted(wrapper)).toHaveLength(1);
+        vi.advanceTimersByTime(TEXT_DEBOUNCE_MS);
+        await flushPromises();
+        expect(emitted(wrapper).at(-1)).toEqual({ ...values(), q: 'Alphab' });
+    });
+
     it('adopts a model changed from outside without emitting it back', async () => {
         vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
         const wrapper = mountBar();

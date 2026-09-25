@@ -27,7 +27,9 @@ Web routes an endpoint duplicates, still in place because other consumers depend
   jQuery upload widget, the mobile app (`fileUploadUrl`) and module actions extending
   `UploadAction` still use it.
 - **Space picker search** — `space/browse/search-json` next to `GET /api/v2/space`: the
-  picker widgets expect its result shape. Moves together with the pickers becoming islands.
+  picker widgets expect its result shape. Moves together with the pickers becoming islands,
+  which then search with `GET /api/v2/space?purpose=picker` (`ids`/`exclude` for the chosen
+  spaces).
 - **Module enabling** — `admin/module/enable|disable` next to
   `POST /api/v2/module/<id>/enable`: the module administration (`admin/module/list`,
   `InstalledModuleList`) is still server-rendered. Moves when it becomes an island;
@@ -48,10 +50,10 @@ Web routes an endpoint duplicates, still in place because other consumers depend
 
 ## Directory pages
 
-- **People and Spaces on the card directory kit** — `CardDirectory` with a `FilterSet`
-  each; Spaces can read `GET /api/v2/space`, People needs a list endpoint (profile-field
-  filters included, as `PeopleFilters` builds them). Then `humhub\widgets\DirectoryFilters`
-  and `humhub.cards.js` can be deprecated.
+- **People on the card directory kit** — `CardDirectory` with a `FilterSet`, as the spaces
+  directory has it; People needs a list endpoint (profile-field filters included, as
+  `PeopleFilters` builds them) and friendship/follow states through `itemStates`. Then
+  `humhub\widgets\DirectoryFilters` and `humhub.cards.js` can be deprecated.
 
 ## Core bugs found along the way
 

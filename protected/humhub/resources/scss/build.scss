@@ -139,6 +139,9 @@ $prev-card-directory: false !default;
 $prev-marketplace: false !default;
 @import "marketplace";
 
+$prev-space-directory: false !default;
+@import "space-directory";
+
 $prev-modules: false !default;
 @import "modules";
 

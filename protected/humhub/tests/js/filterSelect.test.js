@@ -46,6 +46,14 @@ describe('FilterSelect', () => {
         expect(button(mountSelect({ placeholder: '' })).text()).toBe('All');
     });
 
+    it('falls back to its label as placeholder without a placeholder or an empty option', () => {
+        const withoutEmpty = options.filter((option) => option.value !== '');
+        const wrapper = mountSelect({ placeholder: '', options: withoutEmpty });
+
+        expect(button(wrapper).text()).toBe('Status');
+        expect(wrapper.classes()).not.toContain('has-selection');
+    });
+
     it('opens on click, selects an option and closes, returning focus', async () => {
         const wrapper = mountSelect();
 

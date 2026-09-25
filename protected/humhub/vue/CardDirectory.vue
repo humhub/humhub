@@ -1,6 +1,6 @@
 <template>
     <div class="c-card-directory">
-        <PageToolbar :title="title" :title-tag="titleTag">
+        <PageToolbar :title="title" :title-tag="titleTag" :actions="actions">
             <template v-if="$slots.actions" #actions>
                 <slot name="actions" :meta="meta" :total="total"></slot>
             </template>
@@ -33,7 +33,8 @@
             @load-more="loadMore"
             @retry="retry"
         >
-            <template #card="{ item, index }"><slot name="card" :item="item" :index="index"></slot></template>
+            <template #card="{ item, index }"><slot name="card" :item="item" :index="index" :state="states[item[itemKey]]"></slot></template>
+            <template v-if="$slots.skeleton" #skeleton="{ index }"><slot name="skeleton" :index="index"></slot></template>
             <template v-if="$slots.empty" #empty><slot name="empty"></slot></template>
         </CardGrid>
     </div>
@@ -55,10 +56,23 @@ import { defaultValues, requestParams } from './filter/filterQuery.js';
  * always loaded after mounting — see "Initial data: embed or load" in
  * `docs/develop/ui-js-vuejs-components.md`.
  *
- * - Props: `url` (the endpoint), `filters` (the definitions), `title` (toolbar heading, rendered
- *   as `titleTag`, default `h1`), `pageSize`, `skeletonCount`, `cardClass` (extra class on every
+ * - Props: `url` (the endpoint; it may carry a query string of its own, e.g.
+ *   `/api/v2/space?purpose=directory`, which the filter and page parameters are appended to),
+ *   `filters` (the definitions), `title` (toolbar heading, rendered as `titleTag`, default
+ *   `h1`), `actions` (the toolbar's actions as data, see `PageToolbar`), `pageSize`, `skeletonCount`, `cardClass` (extra class on every
  *   grid cell, see `CardGrid`), `itemKey`, `metaKeys`, `syncUrl` and `idPrefix` (handed to the
- *   `FilterBar`, which owns the URL sync, the text debounce and the dropping of hidden filters).
+ *   `FilterBar`, which owns the URL sync, the text debounce and the dropping of hidden filters),
+ *   `itemStates` (see below).
+ * - Item states: `itemStates(ids)` — optional, a function answering a promise of an object that
+ *   maps an item's key to its state (e.g. the viewer's membership of every space shown) — is
+ *   called once per loaded page with the keys (`itemKey`) of that page's items, after the page
+ *   is rendered; nothing is requested for an empty page. The `card` slot gets the item's `state`:
+ *   `undefined` while the page's states are loading, `null` for an item missing from the answer
+ *   or when the request failed (the failure is logged). An answer for a page that is no longer
+ *   shown (a later page 1 replaced the list, e.g. `reload()` or a filter change, which refetch
+ *   the states with the list) is ignored. `replaceState(id, patch)` merges `patch` into one
+ *   item's state (shallow) after an action changed it; a patch made while the item's states are
+ *   still loading survives the answer (its fields win, the answer's others are applied).
  * - Every applied filter change (a `FilterBar` emit) starts at page 1.
  * - A response that is no longer the latest request's is ignored.
  * - `metaKeys` names envelope fields beyond the standard ones to keep (`meta`, handed to the
@@ -74,13 +88,16 @@ import { defaultValues, requestParams } from './filter/filterQuery.js';
  *   page 1.
  * - Instance API for the owning island (template ref): `reload()` (always page 1),
  *   `loadMore()`, `retry()`, `replaceItem(id, item)` after an action changed one record,
+ *   `replaceState(id, patch)` (see "Item states"),
  *   `setFilter(key, value)` to set one filter from outside the bar (e.g. a card's type pill;
- *   delegated to the `FilterBar`, applied like a change in it, returns `false` for an unknown
- *   key), `reloadFilterOptions()` after something outside the bar changed what a filter's remote
+ *   delegated to the `FilterBar`, applied like a change in it but at once — a text filter too,
+ *   without the debounce —, returns `false` for an unknown key), `reloadFilterOptions()` after something outside the bar changed what a filter's remote
  *   options (or their counts) should be.
  * - Slots: `actions` (`{ meta, total }`, right of the title), `notice` (`{ meta, total }`,
  *   between toolbar and grid), `filter-<key>` (`{ filter, value, update }`), `card`
- *   (`{ item, index }` — `index` within the loaded page, for the stagger), `empty`.
+ *   (`{ item, index, state }` — `index` within the loaded page, for the stagger; `state` see
+ *   "Item states"), `skeleton` (`{ index }`, the placeholder of one skeleton cell, handed to
+ *   `CardGrid`, default `CardSkeleton`), `empty`.
  * - Emits `loaded` (`{ total, meta, values }`) after every successful page — `values` are the
  *   filter values the page was loaded with (e.g. to highlight the search in the cards).
  *
@@ -101,6 +118,16 @@ export default {
         metaKeys: { type: Array, default: () => [] },
         syncUrl: { type: Boolean, default: true },
         idPrefix: { type: String, default: 'filter' },
+        /**
+         * The toolbar's actions as data, handed to `PageToolbar`.
+         * @since 1.20
+         */
+        actions: { type: Array, default: () => [] },
+        /**
+         * `(ids) => Promise<{ [id]: state }>`, called once per loaded page (see "Item states").
+         * @since 1.20
+         */
+        itemStates: { type: Function, default: null },
     },
     emits: ['loaded'],
     data() {
@@ -119,6 +146,8 @@ export default {
             error: null,
             failedPage: null,
             pageStarts: [0],
+            // The item states by item key (see "Item states"), reset with every page 1.
+            states: {},
         };
     },
     computed: {
@@ -128,6 +157,9 @@ export default {
     },
     created() {
         this.requestSeq = 0;
+        // Bumped whenever the shown list is replaced (or dropped), so the states answered for a
+        // page of the previous list are ignored.
+        this.listSeq = 0;
         this.started = false;
     },
     mounted() {
@@ -136,6 +168,7 @@ export default {
     },
     beforeUnmount() {
         this.requestSeq++;
+        this.listSeq++;
     },
     methods: {
         reload() {
@@ -155,6 +188,13 @@ export default {
             if (index !== -1) {
                 this.items.splice(index, 1, item);
             }
+        },
+        /**
+         * Merges `patch` into the state of the item keyed `id` (shallow).
+         * @since 1.20
+         */
+        replaceState(id, patch) {
+            this.states[id] = { ...(this.states[id] || {}), ...patch };
         },
         setFilter(key, value) {
             return this.$refs.filterBar ? this.$refs.filterBar.setFilter(key, value) : false;
@@ -193,6 +233,10 @@ export default {
                     return;
                 }
                 const results = response.results || [];
+                if (page === 1) {
+                    this.listSeq++;
+                    this.states = {};
+                }
                 this.pageStarts = page === 1 ? [0] : [...this.pageStarts, this.items.length];
                 this.items = page === 1 ? results : [...this.items, ...results];
                 this.page = response.page || page;
@@ -202,6 +246,7 @@ export default {
                 this.loading = false;
                 this.failedPage = null;
                 this.$emit('loaded', { total: this.total, meta: this.meta, values: { ...this.values } });
+                this.fetchStates(results.map((item) => item[this.itemKey]));
             }).catch((response) => {
                 if (seq !== this.requestSeq) {
                     return;
@@ -213,6 +258,8 @@ export default {
                     // change that just failed — they belong to a filter set that no longer
                     // applies, and CardGrid would otherwise keep showing them dimmed forever (its
                     // "is-loading" state only ever clears).
+                    this.listSeq++;
+                    this.states = {};
                     this.items = [];
                     this.pageStarts = [0];
                     this.page = 0;
@@ -225,6 +272,34 @@ export default {
                     : i18n.t('base', 'The list could not be loaded.');
                 log.error(response);
             });
+        },
+        fetchStates(ids) {
+            if (!this.itemStates || !ids.length) {
+                return;
+            }
+            const seq = this.listSeq;
+            const apply = (answer) => {
+                if (seq !== this.listSeq) {
+                    return;
+                }
+                const states = { ...this.states };
+                ids.forEach((id) => {
+                    const answered = answer && answer[id] !== undefined ? answer[id] : null;
+                    // States are reset with every page 1, so a state already set for an id of
+                    // this page is a `replaceState()` patch made while the request was pending:
+                    // it is applied on top of the answer rather than lost to it.
+                    states[id] = states[id] !== undefined ? { ...(answered || {}), ...states[id] } : answered;
+                });
+                this.states = states;
+            };
+            Promise.resolve()
+                .then(() => this.itemStates(ids))
+                .then(apply, (error) => {
+                    if (seq === this.listSeq) {
+                        log.error(error);
+                    }
+                    apply(null);
+                });
         },
     },
 };

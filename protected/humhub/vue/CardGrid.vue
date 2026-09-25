@@ -20,7 +20,7 @@
                         :class="cardClass"
                         :style="{ '--card-stagger-index': n - 1 }"
                     >
-                        <CardSkeleton />
+                        <slot name="skeleton" :index="n - 1"><CardSkeleton /></slot>
                     </div>
                 </template>
                 <div v-else-if="error" class="c-card-grid__message c-card-grid__message--error">
@@ -63,7 +63,10 @@ import CardSkeleton from './CardSkeleton.vue';
  * - `pageStarts`: the offsets in `items` at which each loaded page begins (`[0, 24, ...]`), so
  *   a further page staggers from 0 again instead of continuing the count.
  * - `empty` slot: replaces the "No results found!" text.
- * - States: skeletons (`CardSkeleton`) while the first page loads; while a later request loads
+ * - `skeleton` slot, `{ index }`: the placeholder of one skeleton cell (`index` from 0 to
+ *   `skeletonCount` - 1, which is also its `--card-stagger-index`) — a directory whose cards look
+ *   unlike the default `CardSkeleton` (image, two lines, action footer) passes its own.
+ * - States: skeletons (the `skeleton` slot, default `CardSkeleton`) while the first page loads; while a later request loads
  *   the cards stay and the grid is dimmed (`.is-loading`); an error without cards replaces the
  *   grid (`.c-card-grid__message--error`), an error while paging sits below it
  *   (`.c-card-grid__error`, hook class `cards-error`) — both with a retry.

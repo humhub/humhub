@@ -127,6 +127,8 @@ describe('SpaceChooser', () => {
 
         expect(getCalls[0]).toContain('/api/v2/space');
         expect(getCalls[0]).toContain('scope=mine');
+        // It says what the list is for, so modules can tell the chooser from the directory.
+        expect(getCalls[0]).toContain('purpose=chooser');
         // The states are asked for exactly the spaces displayed.
         expect(getCalls[1]).toContain('/api/v2/space/states');
         // ... by id, the API's addressing
@@ -172,6 +174,7 @@ describe('SpaceChooser', () => {
         expect(getCalls.some((url) => url.indexOf('q=pro') !== -1)).toBe(true);
         // A search reaches every space the caller may see, so it carries no scope.
         expect(getCalls.filter((url) => url.indexOf('q=pro') !== -1)[0]).not.toContain('scope=');
+        expect(getCalls.filter((url) => url.indexOf('q=pro') !== -1)[0]).toContain('purpose=chooser');
         vi.useRealTimers();
     });
 
@@ -219,12 +222,15 @@ describe('SpaceChooser', () => {
         expect(wrapper.find('[data-message-count]').text()).toBe('2');
     });
 
-    it('re-reads the list after the caller follows or unfollows a space', async () => {
+    it.each([
+        ['follows or unfollows a space', 'space:follow-changed', { spaceId: 7, isFollowing: true, followerCount: 1, canFollow: true }],
+        ['joins or leaves a space', 'space:membership-changed', { spaceId: 7, state: 'member' }],
+    ])('re-reads the list after the caller %s', async (_, name, payload) => {
         wrapper = mountInDropdown();
         await openMenu();
         getCalls.length = 0;
 
-        globalThis.humhubStubs.event.trigger('humhub:space:followed', [{ guid: 'other' }]);
+        globalThis.humhubStubs.event.trigger(name, [payload]);
         await flushPromises();
 
         // The menu is closed while this happens, so nothing is fetched yet...
@@ -233,6 +239,19 @@ describe('SpaceChooser', () => {
         await openMenu();
         // ...but the next open reads a fresh list rather than showing a stale one.
         expect(getCalls.some((url) => url.indexOf('scope=mine') !== -1)).toBe(true);
+    });
+
+    it('keeps its list on unrelated events', async () => {
+        wrapper = mountInDropdown();
+        await openMenu();
+        getCalls.length = 0;
+
+        globalThis.humhubStubs.event.trigger('humhub:space:followed', [{ guid: 'other' }]);
+        globalThis.humhubStubs.event.trigger('user:friendship-changed', [{ userId: 2 }]);
+        await flushPromises();
+
+        await openMenu();
+        expect(getCalls).toHaveLength(0);
     });
 });
 

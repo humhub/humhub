@@ -11,12 +11,14 @@ namespace humhub\modules\space\controllers\api;
 use humhub\components\api\BaseController;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
+use humhub\modules\space\components\SpaceListQuery;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
+use humhub\modules\space\Module;
+use humhub\modules\space\serializers\MembershipSerializer;
 use humhub\modules\space\serializers\SpaceSerializer;
 use humhub\modules\user\models\Follow;
 use Yii;
-use yii\db\Expression;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 
@@ -43,15 +45,10 @@ class SpaceController extends BaseController
     public const MAX_PAGE_SIZE = 100;
 
     /**
-     * @var int the most spaces one state request may name — a client asks for the page it
-     * displays, not for every space a user is a member of
+     * @var int the most spaces one state request, or the list's `ids`/`exclude`, may name — a
+     * client asks for the page it displays, not for every space a user is a member of
      */
     public const MAX_STATE_IDS = 100;
-
-    /**
-     * @var string[] the scopes `scope` accepts
-     */
-    public const SCOPES = ['all', 'member', 'following', 'mine'];
 
     /**
      * @inheritdoc
@@ -75,38 +72,129 @@ class SpaceController extends BaseController
     }
 
     /**
-     * The spaces the caller may see.
+     * The spaces the caller may see — the space search of the platform, built by
+     * {@see SpaceListQuery}; this action only maps and validates the parameters.
      *
-     * Parameters: `q` (search over name, description and tags), `scope`
-     * (`all`, `member`, `following`, `mine` — the caller's memberships and followed spaces),
-     * `archived` (`1` to include archived spaces, excluded by default) plus `page`/`pageSize`.
+     * Parameters: `q` (search over name, description and tags), `scope` (`all`, `member`,
+     * `following`, `mine` — memberships and followed spaces —, `none` — neither), `archived`
+     * (`1`: only archived spaces, excluded otherwise), `sort` (`default`, `name`, `newest`,
+     * `oldest`; without it a scope other than `all`/`none` orders the way the platform orders a
+     * user's spaces), `ids` / `exclude` (repeated or comma-separated space ids, at most 100 each), `purpose`
+     * (`directory`, `picker`, `chooser`; absent = neutral) plus `page`/`pageSize` (25 by default,
+     * at most 100).
      *
-     * A scoped list is ordered the way the platform orders a user's spaces: memberships first,
-     * in the order the `spaceOrder` setting asks for, followed spaces after them.
+     * An unknown value of one of these answers `422 {errors}`. Parameters the core does not know
+     * (a module's `category`, say) are not refused: they reach {@see SpaceListQuery::EVENT_INIT}
+     * with the others.
      */
     public function actionIndex()
     {
         $request = Yii::$app->request;
-        $user = Yii::$app->user->getIdentity();
+        $errors = [];
 
-        $query = Space::find()->visible($user)->filterBlockedSpaces($user);
+        $query = $request->get();
+        $params = [
+            'q' => is_string($query['q'] ?? null) ? trim($query['q']) : '',
+            'scope' => $this->enumParam('scope', SpaceListQuery::SCOPES, $errors) ?? SpaceListQuery::SCOPE_ALL,
+            'archived' => $this->archivedParam($errors),
+            'sort' => $this->enumParam('sort', SpaceListQuery::SORTS, $errors),
+            'ids' => $this->idsParam('ids', $errors),
+            'exclude' => $this->idsParam('exclude', $errors),
+            'purpose' => $this->enumParam('purpose', SpaceListQuery::PURPOSES, $errors),
+        ] + $query;
 
-        $scope = (string)$request->get('scope', 'all');
-        $scope = in_array($scope, self::SCOPES, true) ? $scope : 'all';
-        $this->applyScope($query, $scope);
-
-        if (!$request->get('archived')) {
-            $query->andWhere(['!=', 'space.status', Space::STATUS_ARCHIVED]);
+        if ($errors !== []) {
+            return $this->validationErrors($errors);
         }
 
-        $keywords = trim((string)$request->get('q', ''));
-        if ($keywords !== '') {
-            $query->search($keywords);
+        $spaces = (new SpaceListQuery(Yii::$app->user->getIdentity()))->build($params);
+
+        $pagination = $this->handlePagination($spaces, 25, self::MAX_PAGE_SIZE);
+
+        return $this->returnPagination($pagination, SpaceSerializer::batch($spaces->all()));
+    }
+
+    /**
+     * A single-valued parameter out of a fixed set; absent or empty = `null`. Anything else is
+     * collected into `$errors` under the parameter's name.
+     */
+    private function enumParam(string $name, array $allowed, array &$errors): ?string
+    {
+        $value = Yii::$app->request->get($name);
+
+        if ($value === null || $value === '') {
+            return null;
         }
 
-        $pagination = $this->handlePagination($query, 25, self::MAX_PAGE_SIZE);
+        if (!is_string($value) || !in_array($value, $allowed, true)) {
+            $errors[$name][] = Yii::t('SpaceModule.base', 'Unknown value "{value}".', ['value' => is_string($value) ? $value : '']);
 
-        return $this->returnPagination($pagination, SpaceSerializer::batch($query->all()));
+            return null;
+        }
+
+        return $value;
+    }
+
+    /**
+     * `archived`: `1` or `0`; absent or empty = `0`.
+     */
+    private function archivedParam(array &$errors): bool
+    {
+        $value = Yii::$app->request->get('archived');
+
+        if ($value === null || $value === '' || $value === '0') {
+            return false;
+        }
+
+        if ($value !== '1') {
+            $errors['archived'][] = Yii::t('yii', '{attribute} must be either "{true}" or "{false}".', [
+                'attribute' => 'archived',
+                'true' => '1',
+                'false' => '0',
+            ]);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Space ids, repeated (`ids[]=1&ids[]=2`) or comma-separated (`ids=1,2`), at most
+     * {@see self::MAX_STATE_IDS} of them. A value that is not a positive integer, or too many,
+     * is collected into `$errors` under the parameter's name.
+     *
+     * @return int[]
+     */
+    private function idsParam(string $name, array &$errors): array
+    {
+        $raw = Yii::$app->request->get($name, []);
+        $values = is_array($raw) ? $raw : explode(',', (string)$raw);
+
+        $ids = [];
+        foreach ($values as $value) {
+            $value = is_scalar($value) ? trim((string)$value) : '';
+            if ($value === '') {
+                continue;
+            }
+
+            $id = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+            if ($id === false) {
+                $errors[$name][] = Yii::t('yii', '{attribute} must be an integer.', ['attribute' => $name]);
+
+                return [];
+            }
+            $ids[] = $id;
+        }
+
+        $ids = array_values(array_unique($ids));
+        if (count($ids) > self::MAX_STATE_IDS) {
+            $errors[$name][] = Yii::t('SpaceModule.base', 'At most {count} spaces can be named.', ['count' => self::MAX_STATE_IDS]);
+
+            return [];
+        }
+
+        return $ids;
     }
 
     /**
@@ -115,7 +203,17 @@ class SpaceController extends BaseController
      *
      * Parameter: `ids` (repeated or comma-separated) — the spaces a client currently displays. Deliberately not "every
      * space of the caller": a user can be a member of a great many, while a client shows one
-     * page of them. Answers `{results: {<id>: {isMember, isFollowing, newItems}}}`.
+     * page of them. Answers `{results: {<id>: {...}}}` with per space:
+     *
+     * - `isMember`, `isFollowing`, `newItems`
+     * - `membership` — the shape `space/<id>/membership` answers ({@see MembershipSerializer::state()})
+     * - `canViewMembers`, `canViewFollowers` — whether the member / follower lists may be opened
+     * - `canFollow` — whether following can be started (not a member, following not disabled)
+     * - `memberCount`, `followerCount` — the list's counts ({@see SpaceSerializer::counts()}),
+     *   `null` where the space does not show them
+     *
+     * The page is answered with a fixed number of queries, not a number per space: the
+     * memberships, follows and counts of all named spaces are loaded at once.
      *
      * This is where the caller context of a space lives, which is why {@see SpaceSerializer::list()}
      * carries none of it — the same split `like/states` makes for the like state of a batch of
@@ -180,69 +278,37 @@ class SpaceController extends BaseController
             ->asArray()
             ->all();
 
+        $spaces = $rows === [] ? [] : Space::find()->where(['id' => array_column($rows, 'id')])->indexBy('id')->all();
+        $memberships = MembershipSerializer::states(array_values($spaces));
+        $counts = SpaceSerializer::counts(array_values($spaces));
+        /** @var Module $module */
+        $module = Yii::$app->getModule('space');
+
         $results = [];
         foreach ($rows as $row) {
-            $results[(int)$row['id']] = [
-                'isMember' => (bool)$row['isMember'],
+            $id = (int)$row['id'];
+            $isMember = (bool)$row['isMember'];
+            $membership = $memberships[$id];
+
+            $results[$id] = [
+                'isMember' => $isMember,
                 'isFollowing' => (bool)$row['isFollowing'],
                 'newItems' => (int)$row['newItems'],
+                'membership' => $membership,
+                // Mirrors Space::canViewMembers(): hidden members stay visible to the
+                // space's privileged members. A hidden count is the list's `null`.
+                'canViewMembers' => $counts[$id]['memberCount'] !== null
+                    || $spaces[$id]->getMembership()?->isPrivileged() === true,
+                'canViewFollowers' => $counts[$id]['followerCount'] !== null,
+                // FollowSerializer::canFollow(), from what this request loaded already.
+                'canFollow' => !$module->disableFollow && !$isMember,
+                'memberCount' => $counts[$id]['memberCount'],
+                'followerCount' => $counts[$id]['followerCount'],
             ];
         }
 
         // (object) so an empty map serializes as `{}` rather than `[]`, and so the numeric
         // ids stay object keys instead of turning into array indices.
         return ['results' => $results === [] ? (object)[] : (object)$results];
-    }
-
-    /**
-     * Narrows the query to the caller's own spaces and orders them the way the platform does.
-     *
-     * The membership is joined rather than tested with an EXISTS, because the same join carries
-     * what the ordering needs (`last_visit`, and whether there is a membership at all).
-     */
-    private function applyScope($query, string $scope): void
-    {
-        if ($scope === 'all') {
-            return;
-        }
-
-        $userId = Yii::$app->user->id;
-
-        $query->leftJoin(
-            ['scope_membership' => Membership::tableName()],
-            'scope_membership.space_id = space.id'
-            . ' AND scope_membership.user_id = :scopeUser'
-            . ' AND scope_membership.status = :scopeMemberStatus',
-            [':scopeUser' => $userId, ':scopeMemberStatus' => Membership::STATUS_MEMBER],
-        );
-
-        $isMember = ['not', ['scope_membership.id' => null]];
-        $isFollowing = [
-            'exists',
-            Follow::find()
-                ->where(['user_follow.user_id' => $userId, 'user_follow.object_model' => Space::class])
-                ->andWhere('user_follow.object_id = space.id'),
-        ];
-
-        $query->andWhere(match ($scope) {
-            'member' => $isMember,
-            'following' => $isFollowing,
-            default => ['or', $isMember, $isFollowing],
-        });
-
-        // Memberships first, then followed spaces - the order the space menu has always had.
-        $order = [new Expression('scope_membership.id IS NULL')];
-
-        // Mirrors Membership::findByUser(): the setting decides whether a user's spaces are
-        // ordered by their own sort order or by how recently they visited them.
-        if (Yii::$app->getModule('space')->settings->get('spaceOrder') == 0) {
-            $order['space.sort_order'] = SORT_ASC;
-            $order['space.name'] = SORT_ASC;
-        } else {
-            $order['scope_membership.last_visit'] = SORT_DESC;
-            $order['space.name'] = SORT_ASC;
-        }
-
-        $query->orderBy($order);
     }
 }

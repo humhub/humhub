@@ -8,20 +8,37 @@
 
 namespace humhub\modules\space\widgets;
 
-use humhub\helpers\Html;
+use humhub\modules\space\assets\SpaceVueAsset;
 use humhub\modules\space\models\Space;
+use humhub\modules\space\serializers\FollowSerializer;
 use humhub\widgets\Icon;
-use humhub\modules\user\models\User;
+use humhub\widgets\VueWidget;
 use Yii;
-use yii\base\Widget;
 
 /**
- * UserFollowButton
+ * The follow button of a space: "Follow" ↔ "Following" (reading "Unfollow" on hover/focus).
+ *
+ * Since 1.20 this widget renders the `FollowButton` Vue island (see its own docblock) with the
+ * current follow state inlined; following and unfollowing happen client side against
+ * `/api/v2/space/<id>/follow`, and the island keeps itself in sync with the space's
+ * `MembershipButton` through domain events rather than markup the server re-renders.
+ *
+ * ## Properties kept from earlier versions
+ *
+ * - `followOptions['class']` / `unfollowOptions['class']` become the classes of the "Follow"
+ *   and "Following" states. Every other option (`style`, `data-*`, ...) is ignored: the island
+ *   renders the button and talks to the API itself.
+ * - `followLabel` / `unfollowLabel` are ignored — the island renders its own labels, since the
+ *   "Following" state changes its label on hover/focus.
+ *
+ * Nothing is rendered for guests, for a space the user cannot see or is blocked from, and
+ * where there is nothing to offer (following disabled and not following). A member gets the
+ * (hidden) island, so following becomes available as soon as the membership ends.
  *
  * @author luke
  * @since 0.11
  */
-class FollowButton extends Widget
+class FollowButton extends VueWidget
 {
     /**
      * @var Space
@@ -29,113 +46,75 @@ class FollowButton extends Widget
     public $space;
 
     /**
-     * @var string label for follow button (optional)
+     * @var string|null ignored since 1.20, see the class docblock
      */
     public $followLabel = null;
 
     /**
-     * @var string label for unfollow button (optional)
+     * @var string|null ignored since 1.20, see the class docblock
      */
     public $unfollowLabel = null;
 
     /**
-     * @var string options for follow button
+     * @var array options of the "Follow" state; only `class` is used since 1.20
      */
-    public $followOptions = ['class' => 'btn btn-primary btn-sm'];
+    public $followOptions = ['class' => 'btn btn-secondary btn-sm'];
 
     /**
-     * @var array options for unfollow button
+     * @var array options of the "Following" state; only `class` is used since 1.20
      */
-    public $unfollowOptions = ['class' => 'btn btn-primary btn-sm active'];
+    public $unfollowOptions = ['class' => 'btn btn-secondary btn-sm active'];
+
+    protected string $component = 'FollowButton';
+
+    protected ?string $assetBundle = SpaceVueAsset::class;
+
+    /**
+     * @var array|null the follow state, as `space/<id>/follow` answers it
+     */
+    private ?array $state = null;
 
     /**
      * @inheritdoc
      */
-    public function init()
+    public function beforeRun()
     {
-        if ($this->followLabel === null) {
-            $this->followLabel = Yii::t('SpaceModule.base', 'Follow');
+        if (Yii::$app->user->isGuest
+            || $this->space->visibility == Space::VISIBILITY_NONE
+            || $this->space->isBlockedForUser()) {
+            return false;
         }
 
-        if ($this->unfollowLabel === null) {
-            $this->unfollowLabel = Icon::get('check') . Yii::t('SpaceModule.base', 'Following');
+        $state = $this->getState();
+        if (!$state['canFollow'] && !$state['isFollowing'] && !$this->space->isMember()) {
+            return false;
         }
 
-        if (!isset($this->followOptions['class'])) {
-            $this->followOptions['class'] = '';
-        }
-
-        if (!isset($this->unfollowOptions['class'])) {
-            $this->unfollowOptions['class'] = '';
-        }
-
-        if (!isset($this->followOptions['style'])) {
-            $this->followOptions['style'] = '';
-        }
-
-        if (!isset($this->unfollowOptions['style'])) {
-            $this->unfollowOptions['style'] = '';
-        }
+        return parent::beforeRun();
     }
 
     /**
      * @inheritdoc
      */
-    public function run()
+    protected function getProps(): array
     {
-        if (Yii::$app->user->isGuest || $this->space->visibility == Space::VISIBILITY_NONE) {
-            return;
-        }
-
-        // Add class for javascript handling
-        $this->followOptions['class'] .= ' followButton';
-        $this->unfollowOptions['class'] .= ' unfollowButton';
-
-        // Hide inactive button
-        if ($this->space->isMember()) {
-            $this->followOptions['class'] .= ' d-none';
-            $this->unfollowOptions['class'] .= ' d-none';
-        } elseif ($this->space->isFollowedByUser()) {
-            $this->followOptions['class'] .= ' d-none';
-        } else {
-            $this->unfollowOptions['class'] .= ' d-none';
-        }
-
-        // Add SpaceIds
-        $this->followOptions['data-content-container-id'] = $this->space->id;
-        $this->unfollowOptions['data-content-container-id'] = $this->space->id;
-
-        // Add JS Action
-        $this->followOptions['data-action-click'] = 'content.container.follow';
-        $this->unfollowOptions['data-action-click'] = 'content.container.unfollow';
-
-        // Add Action Url
-        $this->followOptions['data-action-url'] = $this->space->createUrl('/space/space/follow');
-        $this->unfollowOptions['data-action-url'] = $this->space->createUrl('/space/space/unfollow');
-
-        // Add Action Url
-        $this->followOptions['data-ui-loader'] = '';
-        $this->unfollowOptions['data-ui-loader'] = '';
-
-        // Confirm action "Unfollow"
-        $this->unfollowOptions['data-action-confirm'] = Yii::t('SpaceModule.base', 'Would you like to unfollow Space {spaceName}?', [
-            '{spaceName}' => '<strong>' . Html::encode($this->space->getDisplayName()) . '</strong>',
-        ]);
-
-        if ($this->space->isFollowedByUser()) {
-            $this->unfollowOptions['aria-pressed'] = 'true';
-            $this->followOptions['aria-pressed'] = 'false';
-        }
-
-        $module = Yii::$app->getModule('space');
-
-        // still enable unfollow if following was disabled afterwards.
-        if ($module->disableFollow) {
-            return Html::a($this->unfollowLabel, '#', $this->unfollowOptions);
-        }
-
-        return Html::a($this->unfollowLabel, '#', $this->unfollowOptions)
-            . Html::a($this->followLabel, '#', $this->followOptions);
+        return [
+            'spaceId' => $this->space->id,
+            'spaceName' => $this->space->getDisplayName(),
+            'initial' => $this->getState(),
+            'isMember' => $this->space->isMember(),
+            'followClass' => $this->followOptions['class'] ?? '',
+            'followingClass' => $this->unfollowOptions['class'] ?? '',
+            'checkIconHtml' => Icon::get('check')->asString(),
+        ];
     }
 
+    /**
+     * `{isFollowing, followerCount, canFollow}` — {@see FollowSerializer::state()}, the shape
+     * `space/<id>/follow` answers.
+     */
+    private function getState(): array
+    {
+        return $this->state ??= FollowSerializer::state($this->space);
+    }
 }

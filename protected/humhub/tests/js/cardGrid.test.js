@@ -50,6 +50,17 @@ describe('CardGrid', () => {
         expect(wrapper.find('.c-card-grid__cells').attributes('aria-busy')).toBe('true');
     });
 
+    it('renders the skeleton slot per skeleton cell with its index', () => {
+        const wrapper = mountGrid({ loading: true, skeletonCount: 3 }, {
+            skeleton: ({ index }) => h('span', { class: 'own-skeleton' }, String(index)),
+        });
+
+        expect(wrapper.findAll('.c-card-skeleton')).toHaveLength(0);
+        const cells = wrapper.findAll('.c-card-grid__cell--skeleton');
+        expect(cells).toHaveLength(3);
+        expect(cells.map((cell) => cell.find('.own-skeleton').text())).toEqual(['0', '1', '2']);
+    });
+
     it('keeps the cards and marks the grid while a filter change loads', () => {
         const wrapper = mountGrid({ loading: true, items: [{ id: 'a', name: 'A' }] });
 

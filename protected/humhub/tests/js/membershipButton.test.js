@@ -43,23 +43,13 @@ const clickSend = () => {
     buttons[buttons.length - 1].dispatchEvent(new MouseEvent('click', { bubbles: true }));
 };
 
-// The server-rendered FollowButton pair of a space, which the island toggles.
-const createFollowButtons = (spaceId) => {
-    const container = document.createElement('div');
-    const create = (className, hidden) => {
-        const element = document.createElement('a');
-        element.className = hidden ? `${className} d-none` : className;
-        element.setAttribute('data-content-container-id', String(spaceId));
-        container.appendChild(element);
+// Every `space:membership-changed` dispatched on the bridge's bus, as the payloads.
+const MEMBERSHIP_CHANGED = 'space:membership-changed';
+const listenMembership = () => {
+    const payloads = [];
+    globalThis.humhubStubs.event.on(MEMBERSHIP_CHANGED, (event, payload) => payloads.push(payload));
 
-        return element;
-    };
-
-    const unfollow = create('unfollowButton', true);
-    const follow = create('followButton', false);
-    document.body.appendChild(container);
-
-    return { follow, unfollow };
+    return payloads;
 };
 
 describe('MembershipButton', () => {
@@ -72,6 +62,7 @@ describe('MembershipButton', () => {
         globalThis.humhubStubs.client.ajax = vi.fn(dispatchAjax);
         globalThis.humhubStubs.modal.confirm = vi.fn(() => Promise.resolve(true));
         globalThis.humhubStubs.logCalls.error.length = 0;
+        globalThis.humhubStubs.event._handlers.clear();
     });
 
     it('renders the join button from the inlined state without fetching', () => {
@@ -283,21 +274,19 @@ describe('MembershipButton', () => {
         });
     });
 
-    describe('follow buttons', () => {
-        it('hides both once the user is a member', async () => {
-            const buttons = createFollowButtons(5);
+    describe('membership-changed event', () => {
+        it('is dispatched with the new state once the user joined', async () => {
+            const changes = listenMembership();
             const wrapper = mountButton({ initial: state() });
 
             await wrapper.find('a').trigger('click');
             await flushPromises();
 
-            expect(buttons.follow.classList.contains('d-none')).toBe(true);
-            expect(buttons.unfollow.classList.contains('d-none')).toBe(true);
+            expect(changes).toEqual([{ spaceId: 5, state: 'member' }]);
         });
 
-        it('shows the one that matches the follow state again after leaving', async () => {
-            const buttons = createFollowButtons(5);
-            del = vi.fn(() => Promise.resolve(state({ isFollowing: true })));
+        it('is dispatched once the user left', async () => {
+            const changes = listenMembership();
             const wrapper = mountButton({
                 initial: state({ state: 'member', canJoin: false, canLeave: true }),
                 showMemberState: true,
@@ -306,18 +295,33 @@ describe('MembershipButton', () => {
             await wrapper.find('a').trigger('click');
             await flushPromises();
 
-            expect(buttons.unfollow.classList.contains('d-none')).toBe(false);
-            expect(buttons.follow.classList.contains('d-none')).toBe(true);
+            expect(changes).toEqual([{ spaceId: 5, state: 'none' }]);
         });
 
-        it('leaves the buttons of another space alone', async () => {
-            const other = createFollowButtons(9);
-            const wrapper = mountButton({ initial: state() });
+        it('is not dispatched for a failed transition or the initial state', async () => {
+            const changes = listenMembership();
+            // Withdrawing the fetched application fails.
+            del = vi.fn(() => Promise.reject({ status: 500 }));
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(state({ state: 'applicant' })));
+            const wrapper = mountButton();
+            await flushPromises();
+
+            await wrapper.find('a').trigger('click');
+            await flushPromises();
+            expect(del).toHaveBeenCalled();
+            expect(changes).toEqual([]);
+        });
+
+        it('is dispatched before the page reloads after joining', async () => {
+            const changes = listenMembership();
+            const reloadPage = vi.fn(() => expect(changes).toHaveLength(1));
+            const wrapper = mountButton({ initial: state(), reloadOnJoin: true });
+            wrapper.vm.reloadPage = reloadPage;
 
             await wrapper.find('a').trigger('click');
             await flushPromises();
 
-            expect(other.follow.classList.contains('d-none')).toBe(false);
+            expect(reloadPage).toHaveBeenCalled();
         });
     });
 

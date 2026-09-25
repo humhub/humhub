@@ -105,10 +105,11 @@ import { fetchSpaces, fetchStates } from './components/spaceApi.js';
 
 const LIVE_NEW_CONTENT = 'humhub:modules:content:live:NewContent';
 
-// Everything that changes which spaces are the caller's own, or how they are marked.
+// Everything that changes which spaces are the caller's own, or how they are marked: the
+// domain events of the `FollowButton` and `MembershipButton` islands, and archiving.
 const RELATION_EVENTS = [
-    'humhub:space:followed',
-    'humhub:space:unfollowed',
+    'space:follow-changed',
+    'space:membership-changed',
     'humhub:space:archived',
     'humhub:space:unarchived',
 ];
@@ -249,6 +250,7 @@ export default {
             fetchSpaces({
                 q: keyword || null,
                 scope: keyword ? null : 'mine',
+                purpose: 'chooser',
                 page,
                 pageSize: this.pageSize,
             }).then((result) => {
@@ -363,7 +365,7 @@ export default {
             });
         },
         /**
-         * Following, unfollowing and archiving change what the list should show. Rather than
+         * Following, unfollowing, joining, leaving and archiving change what the list should show. Rather than
          * patching entries in place, the list is marked stale and re-read the next time the
          * menu opens — it is closed while any of this happens, and the server decides the
          * order anyway.
