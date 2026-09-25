@@ -26,7 +26,7 @@ use yii\web\NotFoundHttpException;
  * available to any API client.
  *
  * A like is the caller's relationship to a record, so it is addressed like a membership or a
- * friendship: the target in the path, `like/<recordId>`, with `GET` for the state, `POST` to
+ * friendship: the target in the path, `like/<recordId>`, with `GET` for the state, `PUT` to
  * like and `DELETE` to unlike. The path segment is the platform-wide record id every
  * serialized record that can be liked carries - likes have no id of their own in the API,
  * and class names never reach the wire. All three answer the same state shape, so a client
@@ -68,7 +68,7 @@ class LikeController extends BaseController
                     'state' => ['GET', 'HEAD'],
                     'states' => ['GET', 'HEAD'],
                     'users' => ['GET', 'HEAD'],
-                    'create' => ['POST'],
+                    'affirm' => ['PUT'],
                     'remove' => ['DELETE'],
                 ],
             ],
@@ -115,9 +115,11 @@ class LikeController extends BaseController
     }
 
     /**
-     * Likes a record; 403 unless the caller may like it.
+     * Likes a record; 403 unless the caller may like it. Idempotent like
+     * {@see self::actionRemove()} — liking a record the caller already likes changes nothing
+     * and answers the state.
      */
-    public function actionCreate($recordId)
+    public function actionAffirm($recordId)
     {
         $likeService = new LikeService($this->findRecord((int)$recordId));
 

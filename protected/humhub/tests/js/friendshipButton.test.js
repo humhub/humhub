@@ -5,6 +5,12 @@ import FriendshipButton from '../../modules/friendship/vue/FriendshipButton.vue'
 await import('../../resources/js/humhub/humhub.url.js');
 await import('../../resources/js/humhub/humhub.vue.js');
 
+// PUT (set) and DELETE (remove) both go through the vue bridge's put()/del() → client.ajax();
+// `put`/`del` answer each verb separately.
+let put;
+let del;
+const dispatchAjax = (url, cfg) => (cfg.method === 'PUT' ? put : del)(url, cfg);
+
 // FriendshipSerializer::state()
 const state = (overrides = {}) => ({ state: 'none', isFollowing: false, ...overrides });
 
@@ -36,9 +42,9 @@ describe('FriendshipButton', () => {
         document.body.replaceChildren();
         globalThis.humhub.modules.url.config.template = '/__route__';
         globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(state()));
-        globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve(state({ state: 'requestSent', isFollowing: true })));
-        // DELETE goes through the vue bridge's del() → client.ajax()
-        globalThis.humhubStubs.client.ajax = vi.fn(() => Promise.resolve(state()));
+        put = vi.fn(() => Promise.resolve(state({ state: 'requestSent', isFollowing: true })));
+        del = vi.fn(() => Promise.resolve(state()));
+        globalThis.humhubStubs.client.ajax = vi.fn(dispatchAjax);
         globalThis.humhubStubs.modal.confirm = vi.fn(() => Promise.resolve(true));
         globalThis.humhubStubs.logCalls.error.length = 0;
     });
@@ -72,7 +78,7 @@ describe('FriendshipButton', () => {
         const options = globalThis.humhubStubs.modal.confirm.mock.calls[0][0];
         expect(options.body).toContain('send a friendship request');
         expect(options.body).toContain('<strong>Sara Schuster</strong>');
-        expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith('/api/v2/user/7/friendship');
+        expect(put).toHaveBeenCalledWith('/api/v2/user/7/friendship', expect.objectContaining({ method: 'PUT' }));
         expect(wrapper.text()).toBe('Pending');
     });
 
@@ -83,14 +89,14 @@ describe('FriendshipButton', () => {
         await wrapper.find('a').trigger('click');
         await flushPromises();
 
-        expect(globalThis.humhubStubs.client.post).not.toHaveBeenCalled();
+        expect(put).not.toHaveBeenCalled();
         expect(wrapper.text()).toBe('Friends');
     });
 
     it('does not send a second request while one is in flight', async () => {
-        let resolvePost;
-        globalThis.humhubStubs.client.post = vi.fn(() => new Promise((resolve) => {
-            resolvePost = resolve;
+        let resolvePut;
+        put = vi.fn(() => new Promise((resolve) => {
+            resolvePut = resolve;
         }));
         const wrapper = mountButton({ initial: state() });
 
@@ -99,8 +105,8 @@ describe('FriendshipButton', () => {
         await wrapper.find('a').trigger('click');
         await flushPromises();
 
-        expect(globalThis.humhubStubs.client.post).toHaveBeenCalledTimes(1);
-        resolvePost(state({ state: 'requestSent' }));
+        expect(put).toHaveBeenCalledTimes(1);
+        resolvePut(state({ state: 'requestSent' }));
         await flushPromises();
     });
 
@@ -113,7 +119,7 @@ describe('FriendshipButton', () => {
 
         expect(globalThis.humhubStubs.modal.confirm.mock.calls[0][0].body)
             .toContain('withdraw your friendship request');
-        const [url, cfg] = globalThis.humhubStubs.client.ajax.mock.calls[0];
+        const [url, cfg] = del.mock.calls[0];
         expect(url).toBe('/api/v2/user/7/friendship');
         expect(cfg.method).toBe('DELETE');
         expect(wrapper.text()).toBe('Friends');
@@ -132,8 +138,8 @@ describe('FriendshipButton', () => {
             expect(wrapper.find('.dropdown-menu i.ti-x').exists()).toBe(true);
         });
 
-        it('accepts through the same POST that sends a request', async () => {
-            globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve(state({ state: 'friends', isFollowing: true })));
+        it('accepts through the same PUT that sends a request', async () => {
+            put = vi.fn(() => Promise.resolve(state({ state: 'friends', isFollowing: true })));
             const wrapper = mountButton({ initial: received() });
 
             await wrapper.find('.btn-group > a').trigger('click');
@@ -141,7 +147,7 @@ describe('FriendshipButton', () => {
 
             expect(globalThis.humhubStubs.modal.confirm.mock.calls[0][0].body)
                 .toContain('accept the friendship request');
-            expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith('/api/v2/user/7/friendship');
+            expect(put).toHaveBeenCalledWith('/api/v2/user/7/friendship', expect.objectContaining({ method: 'PUT' }));
             expect(wrapper.text()).toBe('Friends');
         });
 
@@ -151,7 +157,7 @@ describe('FriendshipButton', () => {
             await wrapper.find('.dropdown-menu a').trigger('click');
             await flushPromises();
 
-            expect(globalThis.humhubStubs.client.ajax).toHaveBeenCalled();
+            expect(del).toHaveBeenCalled();
             expect(wrapper.text()).toBe('Friends');
         });
     });
@@ -168,7 +174,7 @@ describe('FriendshipButton', () => {
 
         expect(globalThis.humhubStubs.modal.confirm.mock.calls[0][0].body)
             .toContain('end your friendship');
-        expect(globalThis.humhubStubs.client.ajax).toHaveBeenCalled();
+        expect(del).toHaveBeenCalled();
     });
 
     it('escapes the display name it puts into the dialog', async () => {
@@ -210,7 +216,7 @@ describe('FriendshipButton', () => {
     });
 
     it('logs a failed transition and keeps the current state', async () => {
-        globalThis.humhubStubs.client.post = vi.fn(() => Promise.reject({ status: 403 }));
+        put = vi.fn(() => Promise.reject({ status: 403 }));
         const wrapper = mountButton({ initial: state() });
 
         await wrapper.find('a').trigger('click');

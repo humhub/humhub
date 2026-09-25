@@ -1,0 +1,880 @@
+//
+// Marketplace island (protected/humhub/modules/marketplace/vue/): toolbar actions, core version
+// notice, module card with its pills, update states and search marks, the install and the
+// settings dialog — after the HumHub design system v2 marketplace. The toolbar comes from
+// `_page-toolbar.scss`, grid and skeletons from `_card-directory.scss`.
+// @since 1.20
+// --------------------------------------------------
+
+@if not $prev-marketplace {
+    // Pill tones: text, background and the stronger hover shade. Derived from the theme where a
+    // colour fits (pro = primary, official = accent, featured = danger, update = info); partner
+    // and community have no theme equivalent.
+    .c-module-card {
+        --mp-pro-fg: var(--bs-primary);
+        --mp-pro-bg: var(--bs-primary-bg-subtle);
+        --mp-pro-strong: var(--bs-primary-text-emphasis);
+        --mp-official-fg: color-mix(in srgb, var(--bs-accent), #000 30%);
+        --mp-official-bg: var(--bs-accent-bg-subtle);
+        --mp-official-strong: var(--bs-accent-text-emphasis);
+        --mp-featured-fg: color-mix(in srgb, var(--bs-danger), #000 25%);
+        --mp-featured-bg: var(--bs-danger-bg-subtle);
+        --mp-featured-strong: var(--bs-danger-text-emphasis);
+        --mp-update-fg: color-mix(in srgb, var(--bs-info), #000 30%);
+        --mp-update-bg: var(--bs-info-bg-subtle);
+        --mp-update-strong: var(--bs-info-text-emphasis);
+        --mp-partner-fg: #5e0099;
+        --mp-partner-bg: #efe6f5;
+        --mp-partner-strong: #400068;
+        --mp-community-fg: #687a00;
+        --mp-community-bg: #f1f3e6;
+        --mp-community-strong: #505f00;
+        --mp-neutral-fg: var(--hh-text-color-secondary);
+        --mp-neutral-bg: var(--bs-secondary-bg);
+        --mp-neutral-strong: var(--hh-text-color-highlight);
+        --mp-updating-from: color-mix(in srgb, var(--bs-accent), #000 30%);
+        --mp-updating-to: var(--bs-accent);
+    }
+
+    @if $enable-dark-mode {
+        @include color-mode(dark) {
+            .c-module-card {
+                --mp-pro-fg: var(--bs-primary-text-emphasis);
+                --mp-pro-strong: var(--hh-text-color-highlight);
+                --mp-official-fg: var(--bs-accent-text-emphasis);
+                --mp-official-strong: var(--hh-text-color-highlight);
+                --mp-featured-fg: var(--bs-danger-text-emphasis);
+                --mp-featured-strong: var(--hh-text-color-highlight);
+                --mp-update-fg: var(--bs-info-text-emphasis);
+                --mp-update-strong: var(--hh-text-color-highlight);
+                --mp-partner-fg: #c99be8;
+                --mp-partner-bg: #25103a;
+                --mp-partner-strong: #e4cdf4;
+                --mp-community-fg: #b6ca4c;
+                --mp-community-bg: #21260a;
+                --mp-community-strong: #d7e48e;
+                --mp-updating-from: var(--bs-accent-text-emphasis);
+            }
+        }
+    }
+
+    // Toolbar actions
+    .c-marketplace__update-all-slot {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        overflow: hidden;
+        transition: grid-template-columns 0.3s ease, margin-inline-start 0.3s ease, opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0s;
+
+        > .c-marketplace__update-all {
+            justify-self: start;
+        }
+
+        &.is-collapsed {
+            grid-template-columns: minmax(0, 0fr);
+            margin-inline-start: -8px;
+            opacity: 0;
+            transform: translateX(8px);
+            visibility: hidden;
+            transition: grid-template-columns 0.3s ease, margin-inline-start 0.3s ease, opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s;
+        }
+    }
+
+    .c-marketplace__update-all.is-running:disabled {
+        opacity: 1;
+    }
+
+    .c-marketplace__update-all.is-running .c-marketplace__spin,
+    .c-module-card__action.is-updating .c-module-card__spin {
+        animation: hh-marketplace-spin 1s linear infinite;
+    }
+
+    // Core version notice
+    .c-marketplace-notice {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 8px 8px 16px;
+        border: 1px solid var(--bs-warning-border-subtle);
+        border-radius: 8px;
+        background: var(--bs-warning-bg-subtle);
+        color: var(--bs-warning-text-emphasis);
+        font-size: 14px;
+        line-height: 22px;
+    }
+
+    .c-marketplace-notice__icon {
+        font-size: 20px;
+    }
+
+    .c-marketplace-notice__text {
+        flex: 1 1 200px;
+        font-weight: 600;
+    }
+
+    .c-marketplace-notice__action {
+        margin-left: auto;
+    }
+
+    // Module card
+    .c-module-card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding: 8px;
+        border-radius: 8px;
+        background: var(--hh-background-color-main);
+        box-shadow: var(--hh-surface-shadow);
+    }
+
+    .c-module-card__cover {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 8px;
+    }
+
+    .c-module-card__image {
+        display: block;
+        flex: 0 0 auto;
+        width: 80px;
+        height: 80px;
+        border-radius: 6px;
+        background: var(--bs-secondary-bg);
+        object-fit: cover;
+    }
+
+    .c-module-card__badges {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 4px;
+        min-width: 0;
+    }
+
+    .c-module-card__badge {
+        --mp-badge-fg: var(--mp-neutral-fg);
+        --mp-badge-bg: var(--mp-neutral-bg);
+        --mp-badge-strong: var(--mp-neutral-strong);
+
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin: 0;
+        padding: 3px 8px;
+        border: 1px solid var(--mp-badge-fg);
+        border-radius: 9999px;
+        background: var(--mp-badge-bg);
+        color: var(--mp-badge-fg);
+        font-family: inherit;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 18px;
+        text-transform: uppercase;
+        white-space: nowrap;
+        cursor: default;
+        transition: color 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+
+        > .ti {
+            font-size: 14px;
+        }
+    }
+
+    .c-module-card__badge--filter {
+        cursor: pointer;
+
+        &:hover {
+            border-color: var(--mp-badge-strong);
+            color: var(--mp-badge-strong);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--bs-accent);
+            outline-offset: 2px;
+        }
+    }
+
+    // Round featured star, 28x28 (like a small icon button), the same tone as the featured badge
+    .c-module-card__badge--star {
+        flex: 0 0 auto;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        padding: 4px;
+
+        > .ti {
+            font-size: 16px;
+            line-height: 1;
+        }
+    }
+
+    @each $tone, $token in (professional: pro, official: official, featured: featured, update: update, partner: partner, community: community) {
+        .c-module-card__badge--#{$tone} {
+            --mp-badge-fg: var(--mp-#{$token}-fg);
+            --mp-badge-bg: var(--mp-#{$token}-bg);
+            --mp-badge-strong: var(--mp-#{$token}-strong);
+        }
+    }
+
+    .c-module-card__badge--update {
+        text-transform: none;
+    }
+
+    .c-module-card__header {
+        display: flex;
+        flex-direction: column;
+        padding: 8px;
+    }
+
+    .c-module-card__title {
+        color: var(--hh-text-color-highlight);
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 28px;
+        text-decoration: none;
+        overflow-wrap: anywhere;
+        transition: color 0.3s ease;
+    }
+
+    a.c-module-card__title:hover,
+    a.c-module-card__title:focus {
+        color: var(--bs-accent);
+    }
+
+    .c-module-card__version {
+        margin: 0;
+        color: var(--hh-text-color-secondary);
+        font-size: 14px;
+        line-height: 22px;
+    }
+
+    .c-module-card__body {
+        display: flex;
+        flex: 1 0 auto;
+        flex-direction: column;
+        gap: 8px;
+        padding: 8px;
+    }
+
+    .c-module-card__text,
+    .c-module-card__message {
+        margin: 0;
+        font-size: 14px;
+        line-height: 22px;
+        overflow-wrap: anywhere;
+    }
+
+    .c-module-card__text {
+        color: var(--hh-text-color-default);
+    }
+
+    .c-module-card__footer {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px;
+    }
+
+    .c-module-card__action {
+        display: inline-flex;
+        flex: 1 1 auto;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-width: 0;
+        min-height: 38px;
+        border-radius: 6px;
+        font-weight: 600;
+
+        &.is-updating:disabled {
+            opacity: 1;
+        }
+    }
+
+    // Update states: a rotating border while updating, the remove animation, the fade-in
+    @property --mp-border-angle {
+        syntax: '<angle>';
+        inherits: false;
+        initial-value: 0deg;
+    }
+
+    .c-module-card.is-updating::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        padding: 2px;
+        border-radius: 8px;
+        background: conic-gradient(from var(--mp-border-angle, 0deg), transparent 0deg, transparent 28deg, var(--mp-updating-from) 92deg, var(--mp-updating-to) 176deg, transparent 248deg, transparent 360deg);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask-composite: exclude;
+        animation: hh-marketplace-border-spin 2.6s linear infinite;
+        pointer-events: none;
+    }
+
+    .c-module-card.is-removing {
+        animation: hh-marketplace-card-remove 360ms ease forwards;
+    }
+
+    .c-module-card.is-entering {
+        animation: hh-marketplace-card-enter 200ms ease both;
+    }
+
+    // Search matches in a card's name and description
+    .c-module-card__mark {
+        padding: 0;
+        border-radius: 2px;
+        background: rgba(var(--bs-accent-rgb), 0.32);
+        color: inherit;
+    }
+
+    // Dialogs (`InstallDialog`, `SettingsDialog`): 400px / 600px wide, 16px padding, title
+    // 16/600, 14px text, equal footer buttons
+    .c-mp-dialog {
+        --bs-modal-width: 400px;
+        --bs-modal-header-padding: 0 0 16px;
+        --bs-modal-padding: 0;
+        --bs-modal-footer-gap: 8px;
+        --mp-field-bg: var(--hh-background-color-secondary);
+        --mp-row-bg: var(--hh-background-color-secondary);
+        --mp-progress-fill: var(--bs-success);
+        --mp-progress-track: color-mix(in srgb, var(--bs-success) 22%, var(--bs-secondary-bg));
+
+        .modal-content {
+            padding: 16px;
+            border-radius: 8px;
+        }
+
+        // `.modal .modal-content .modal-header` centres the title
+        .modal-content .modal-header {
+            gap: 8px;
+            align-items: center;
+            text-align: start;
+        }
+
+        .modal-title {
+            flex: 1 1 auto;
+            min-width: 0;
+            font-size: 16px;
+            line-height: 24px;
+        }
+
+        .modal-header .btn-close {
+            margin: 0;
+        }
+
+        .modal-body {
+            padding: 0;
+            color: var(--hh-text-color-default);
+            font-size: 14px;
+            line-height: 22px;
+        }
+
+        .modal-footer {
+            flex-wrap: nowrap;
+            gap: 8px;
+            padding: 16px 0 0;
+
+            > * {
+                flex: 1 1 0;
+                margin: 0;
+            }
+        }
+    }
+
+    .c-mp-settings {
+        --bs-modal-width: 600px;
+    }
+
+    .c-mp-dialog__text {
+        margin: 0;
+
+        b {
+            color: var(--hh-text-color-highlight);
+            font-weight: 600;
+        }
+    }
+
+    .c-mp-dialog__label {
+        display: block;
+        margin-bottom: 4px;
+        color: var(--hh-text-color-highlight);
+        font-weight: 600;
+    }
+
+    .c-mp-dialog__error {
+        margin: 0;
+        color: var(--bs-danger-text-emphasis);
+    }
+
+    .c-mp-dialog__busy {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+
+        &:disabled {
+            cursor: progress;
+        }
+    }
+
+    .c-mp-spin {
+        display: inline-block;
+        animation: hh-marketplace-spin 0.9s linear infinite;
+    }
+
+    // Third-party / community note
+    .c-mp-notice {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 8px;
+        border-radius: 6px;
+        background: var(--bs-info-bg-subtle);
+        color: var(--bs-info-text-emphasis);
+
+        p {
+            margin: 0;
+        }
+    }
+
+    .c-mp-notice--warning {
+        background: var(--bs-warning-bg-subtle);
+        color: var(--bs-warning-text-emphasis);
+    }
+
+    .c-mp-notice__icon {
+        flex: 0 0 auto;
+        font-size: 20px;
+        line-height: 22px;
+    }
+
+    .c-mp-notice__text {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        min-width: 0;
+
+        .form-check {
+            margin: 0;
+        }
+    }
+
+    // Licence key field (with the spinner inside while the key is checked)
+    .c-licence-field {
+        position: relative;
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .c-licence-field__input {
+        min-height: 38px;
+        border-radius: 6px;
+        background-color: var(--mp-field-bg);
+        font-size: 14px;
+        font-variant-numeric: tabular-nums;
+
+        &:focus {
+            background-color: var(--hh-background-color-main);
+            border-color: var(--bs-accent);
+            box-shadow: 0 0 0 3px rgba(var(--bs-accent-rgb), 0.32);
+        }
+
+        &.is-valid {
+            border-color: var(--bs-success);
+            background-image: none;
+        }
+    }
+
+    .c-licence-field.is-checking .c-licence-field__input {
+        padding-right: 40px;
+        background-color: var(--hh-background-color-main);
+    }
+
+    .c-licence-field__icon {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        margin-top: -10px;
+        color: var(--hh-text-color-secondary);
+        font-size: 20px;
+        line-height: 20px;
+        pointer-events: none;
+    }
+
+    // Install dialog
+    .c-install-dialog__content {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .c-install-dialog__step {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        animation: hh-marketplace-step-in 0.2s ease;
+    }
+
+    .c-install-dialog__module {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .c-install-dialog__image {
+        flex: 0 0 auto;
+        border-radius: 6px;
+        object-fit: cover;
+    }
+
+    .c-install-dialog__module-text {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+    }
+
+    .c-install-dialog__name {
+        color: var(--hh-text-color-highlight);
+        font-weight: 600;
+        overflow-wrap: anywhere;
+    }
+
+    .c-install-dialog__version {
+        color: var(--hh-text-color-secondary);
+    }
+
+    .c-install-dialog__checkout {
+        --bs-btn-color: var(--hh-text-color-highlight);
+        --bs-btn-bg: transparent;
+        --bs-btn-border-color: transparent;
+        --bs-btn-hover-color: var(--hh-text-color-highlight);
+        --bs-btn-hover-bg: var(--bs-secondary-bg);
+        --bs-btn-hover-border-color: transparent;
+        --bs-btn-active-bg: var(--bs-secondary-bg);
+        --bs-btn-active-border-color: transparent;
+        --bs-btn-box-shadow: none;
+        --bs-btn-active-shadow: none;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        min-height: 38px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+
+        > .ti {
+            font-size: 18px;
+        }
+    }
+
+    .c-install-dialog__progress {
+        overflow: hidden;
+        height: 10px;
+        border-radius: 9999px;
+        background: var(--mp-progress-track);
+    }
+
+    .c-install-dialog__progress-bar {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border-radius: inherit;
+        background: var(--mp-progress-fill);
+        transform: scaleX(var(--mp-progress, 0));
+        transform-origin: left center;
+        transition: transform 0.3s ease;
+    }
+
+    // Settings dialog
+    .c-mp-settings__tabs {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 16px;
+    }
+
+    .c-mp-settings__tab {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        border: 0;
+        border-radius: 9999px;
+        background: transparent;
+        color: var(--hh-text-color-secondary);
+        font-size: 16px;
+        line-height: 24px;
+        white-space: nowrap;
+        transition: background-color 0.3s ease, color 0.3s ease;
+
+        > .ti {
+            font-size: 20px;
+        }
+
+        &:hover {
+            background: var(--bs-tertiary-bg);
+            color: var(--hh-text-color-highlight);
+        }
+
+        &.is-active {
+            background: var(--bs-secondary-bg);
+            color: var(--hh-text-color-highlight);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--bs-accent);
+            outline-offset: 2px;
+        }
+    }
+
+    .c-mp-settings__panel {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        animation: hh-marketplace-step-in 0.2s ease;
+    }
+
+    .c-mp-settings__key {
+        display: flex;
+        gap: 8px;
+    }
+
+    .c-mp-settings__loading,
+    .c-mp-settings__empty {
+        margin: 0;
+        padding: 16px 0;
+        color: var(--hh-text-color-secondary);
+        text-align: center;
+    }
+
+    .c-mp-settings__installation {
+        margin: 0;
+        color: var(--hh-text-color-secondary);
+        font-size: 12px;
+        line-height: 18px;
+        text-align: center;
+        overflow-wrap: anywhere;
+    }
+
+    .c-mp-settings__admin {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        align-self: flex-start;
+        color: var(--hh-text-color-highlight);
+        font-weight: 600;
+        text-decoration: none;
+
+        > .ti {
+            font-size: 18px;
+        }
+
+        &:hover,
+        &:focus {
+            color: var(--bs-accent);
+        }
+    }
+
+    .c-licence-list {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin: 0 -4px;
+        padding: 0;
+        list-style: none;
+    }
+
+    .c-licence-list__item {
+        display: grid;
+        grid-template-rows: 1fr;
+
+        &.is-entering {
+            animation: hh-marketplace-row-enter 0.3s ease both;
+        }
+    }
+
+    .c-licence-list__clip {
+        overflow: hidden;
+        min-height: 0;
+    }
+
+    .c-licence-list__row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px;
+        min-width: 0;
+    }
+
+    .c-licence-list__image {
+        flex: 0 0 auto;
+        width: 40px;
+        height: 40px;
+        border-radius: 6px;
+        object-fit: cover;
+    }
+
+    .c-licence-list__text {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .c-licence-list__name,
+    .c-licence-list__key {
+        margin: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .c-licence-list__name {
+        color: var(--hh-text-color-highlight);
+        font-weight: 600;
+    }
+
+    .c-licence-list__key {
+        color: var(--hh-text-color-secondary);
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 18px;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .c-licence-list__action {
+        flex: 0 0 auto;
+        width: 90px;
+        min-height: 38px;
+        border-radius: 6px;
+        font-weight: 600;
+    }
+
+    // Setting rows (a checkbox with its title and hint; the risk acknowledgement expands below)
+    .c-setting-row {
+        padding: 8px;
+        border: 1px dashed var(--bs-border-color);
+        border-radius: 6px;
+        background: var(--mp-row-bg);
+
+        .form-check {
+            margin: 0;
+        }
+    }
+
+    .c-setting-row__title {
+        color: var(--hh-text-color-highlight);
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .c-setting-row__hint {
+        margin-top: 0;
+        color: var(--hh-text-color-default);
+    }
+
+    .c-setting-row__more {
+        display: grid;
+        grid-column: 1 / -1;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 0.3s ease;
+    }
+
+    .c-setting-row.is-expanded .c-setting-row__more {
+        grid-template-rows: 1fr;
+    }
+
+    .c-setting-row__more-inner {
+        overflow: hidden;
+        min-height: 0;
+    }
+
+    .c-setting-row.is-expanded .c-setting-row__more-inner {
+        padding-top: 8px;
+    }
+
+    // Motion
+    @keyframes hh-marketplace-spin {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes hh-marketplace-border-spin {
+        to {
+            --mp-border-angle: 360deg;
+        }
+    }
+
+    @keyframes hh-marketplace-card-remove {
+        from {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateY(8px);
+        }
+    }
+
+    @keyframes hh-marketplace-step-in {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes hh-marketplace-row-enter {
+        from {
+            grid-template-rows: 0fr;
+            opacity: 0;
+            transform: translateY(-8px);
+        }
+        to {
+            grid-template-rows: 1fr;
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    @keyframes hh-marketplace-card-enter {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .c-marketplace__update-all.is-running .c-marketplace__spin,
+        .c-module-card__action.is-updating .c-module-card__spin,
+        .c-module-card.is-updating::before,
+        .c-module-card.is-removing,
+        .c-module-card.is-entering,
+        .c-mp-spin,
+        .c-install-dialog__step,
+        .c-mp-settings__panel,
+        .c-licence-list__item.is-entering {
+            animation: none !important;
+        }
+
+        .c-marketplace__update-all-slot,
+        .c-marketplace__update-all-slot.is-collapsed,
+        .c-module-card__badge,
+        .c-module-card__title,
+        .c-install-dialog__progress-bar,
+        .c-mp-settings__tab,
+        .c-setting-row__more {
+            transition: none !important;
+        }
+    }
+}

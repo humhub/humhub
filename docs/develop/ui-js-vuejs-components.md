@@ -47,6 +47,7 @@ Core ships its own components at `protected/humhub/vue/`, built via `grunt build
   | `show` | `Boolean`, `false` | `v-model:show` — fully controlled visibility, the component never closes itself |
   | `title` | `String`, `null` | rendered by the fallback header (ignored when the `header` slot is used) |
   | `size` | `'small'` \| `'normal'` \| `'large'`, `'normal'` | → `modal-sm` / no class / `modal-lg` |
+  | `dialogClass` | `String` \| `Array` \| `Object`, `null` | extra classes on `.modal-dialog` — a dialog's own width or styling scope (the marketplace's `c-mp-dialog`) |
   | `backdropClose` | `Boolean`, `true` | clicking the dimmed area outside the dialog requests a close |
   | `keyboard` | `Boolean`, `true` | Escape requests a close (listener only attached while open) |
 
@@ -62,9 +63,26 @@ Core ships its own components at `protected/humhub/vue/`, built via `grunt build
   </UiModal>
   ```
 
-  `LikeButton.vue`'s user-list modal (below) is the reference consumer. Stacking two modals (a second `UiModal`, or a legacy `#globalModal`) open at the same time is out of scope — see the component's own docblock.
+  A modal unmounted while open (its host island goes away, or a `v-if` removes it instead of flipping `show`) cleans up like a close: scroll lock and Escape listener are released and focus returns to what had it before opening — so a dialog component may be rendered with `v-if` only while it is needed, as the marketplace's dialogs are. `LikeButton.vue`'s user-list modal (below) is the reference consumer. Stacking two modals (a second `UiModal`, or a legacy `#globalModal`) open at the same time is out of scope — see the component's own docblock.
 
 - **`StatusBar`** (`<status-bar>`, `protected/humhub/vue/StatusBar.vue`) — the platform's user-feedback bar, and the first **infrastructure island**: nothing renders it with props and no other component nests it. `humhub\widgets\StatusBar` (a `LayoutAddons` widget, so it exists on every full page) mounts it once as `<status-bar id="status-bar">`, and every message reaches it through the bridge instead of through props — see [Legacy interop: status messages](ui-js-vuejs-interop.md#status-messages) for the queue that makes a message triggered before the island mounts work. It behaves like the jQuery bar it succeeds — one message at a time, the same level classes, the same auto-close timings, the same details toggle for error traces — and looks like the platform's toast: `.status-bar-body` is the fixed layer along the bottom, `.status-bar-content` the translucent card in its centre with border and outline in the level's colour (`status-bar-info|success|warning|error`), icon, message and controls in a `.status-bar-header` row. The 220 ms rise is a CSS transition in `_user-feedback.scss` — the component only toggles `status-bar-visible`.
+- **Page toolbar and card directory kit** — `PageToolbar`, `FilterBar`, `FilterSelect`, `CardDirectory`, `CardGrid`, `CardSkeleton`: the upper box of a page (title, actions, filter bar) and the card directory built on it (the marketplace today, people and spaces to follow), styled after the HumHub design system v2 (`resources/scss/_page-toolbar.scss`, `resources/scss/_card-directory.scss`). `protected/humhub/modules/marketplace/vue/MarketplaceBrowser.vue` is the reference consumer.
+  - **`PageToolbar`** (`<page-toolbar>`) — pure layout, loads nothing: the `c-page-toolbar` card, at most 1440px wide and centred, with a header row of the `title` prop (rendered as `titleTag`, default `h1`, and labelling the toolbar) and the `actions` slot right-aligned beside it (icon buttons: `.btn.c-icon-button`), then the default slot — typically a `FilterBar`. The header is only rendered with a title or actions. Any module page can head its own view with it, not only a card directory.
+  - **`FilterBar`** (`<filter-bar>`) — the filter bar for the filters of a `humhub\components\filter\FilterSet`, definitions handed over as the `filters` prop, of the types `text` (the search field), `select` (a **`FilterSelect`**: a single-select listbox whose placeholder is the "all" state, a clear button once a value is set, optionally loading further options from an `optionsUrl`), `tags` and `checkbox`; `filter-<key>` slots (`{ filter, value, update }`) replace one control. A "clear all" button slides in once a visible filter is set, and on narrow widths the bar collapses behind a filter toggle. Its `v-model` holds the **applied** values: it keeps what the controls show apart and emits `update:modelValue` only once a change applies — text filters debounced, all others at once — so the owner simply reloads on every emit. It starts from `modelValue` (missing keys at their defaults, so `{}` will do), overridden by the page URL, and emits those initial values while it is created. With `syncUrl` (default `true`) applied values are mirrored into the page URL (`history.replaceState`, defaults omitted, PJAX's own `history.state` kept current). A definition flagged `hidden` is context a link carries in (the marketplace's `id`), URL-synced and sent but never rendered, and dropped as soon as a visible filter changes. `idPrefix` prefixes the controls' ids. Instance API through a template ref: `setFilter(key, value)` (sets one filter from outside the bar, applied like a change in it, `false` for an unknown key) and `reloadOptions()` (re-runs every `optionsUrl` filter's load).
+  - **`CardDirectory`** (`<card-directory>`) — a card page: a `PageToolbar` (`title`, `titleTag`, the `actions` slot with `{ meta, total }`) holding a `FilterBar` (`filters`, `syncUrl`, `idPrefix`, the `filter-<key>` slots), an optional `notice` slot (`{ meta, total }`) between toolbar and grid, and a **`CardGrid`** (a CSS grid of cells at least 264px wide, cards popping in staggered, **`CardSkeleton`** placeholders while the first page loads), fed page by page from the `url` endpoint answering the offset-page envelope. Every applied filter change starts at page 1, a response that is no longer the latest request's is dropped, and further pages load when the grid's end scrolls into view (a "Show more" button remains for keyboard users). A failed first page replaces the grid with an error, a failed later page sits below the cards; both retry exactly the page that failed. Envelope fields beyond the standard ones are kept when named in `metaKeys` (the marketplace's `updateCount`). After every loaded page it emits `loaded` (`{ total, meta, values }` — `values` being the filter values the page was loaded with, which the marketplace uses to mark the search in its cards). The owning island passes its card through the `card` slot (`{ item, index }` — `index` within the loaded page, for the stagger) and an `empty` slot, and reaches `reload()`/`loadMore()`/`retry()`/`replaceItem(id, item)`/`setFilter(key, value)`/`reloadFilterOptions()` (both delegated to its `FilterBar`) through a template ref.
+
+  A page with a view of its own below the toolbar — a file list, say — composes the first two itself and loads on every `v-model` update; with `filterValues` starting as `{}`, the first update (the defaults, or what the URL carries) arrives while the bar is created:
+
+  ```html
+  <PageToolbar title="Files">
+      <template #actions>
+          <button type="button" class="btn btn-secondary c-icon-button" :aria-label="labels.settings" @click="openSettings"><i class="ti ti-settings" aria-hidden="true"></i></button>
+          <button type="button" class="btn btn-accent c-icon-button" :aria-label="labels.add" @click="add"><i class="ti ti-plus" aria-hidden="true"></i></button>
+      </template>
+      <FilterBar v-model="filterValues" :filters="filters" id-prefix="files-filter" @update:model-value="load" />
+  </PageToolbar>
+  <FileList :files="files" />
+  ```
 
 ## Module-provided shared components
 
@@ -134,6 +152,13 @@ Each match becomes its own `createApp()` instance sharing a common plugin set (r
 No leaked apps, no zombie state, no work for component authors.
 
 **i18n preloading:** a component may declare required message categories (`i18nCategories: ['LikeModule.base']`); the mounter preloads them through `humhub.i18n` before mounting, mirroring `requiredI18nCategories` of classic modules. **Only the TOP-LEVEL component actually being mounted as an island is ever consulted** — a component nested inside another one's template (e.g. `UserList` inside `LikeButton`'s modal) has its own `i18nCategories` read only if and when *it itself* is later mounted directly as an island; while nested, that declaration is inert. A top-level island must therefore declare every category its whole subtree needs, not just its own — `LikeButton.vue` declares `LikeModule.base` for itself plus `UserModule.base`/`base` for the nested `UserList`/`UiModal` it renders, the same way `CommentSection.vue` declares `UserModule.base` and `base` for the nested `UserImage` (its online-status label and alt phrase), alongside its own `CommentModule.base`/`ContentModule.base`.
+
+### Initial data: embed or load
+
+Two ways for an island to get its data, and the choice depends on the island, not on taste:
+
+- **Embed** it as props when a page carries many small islands whose data is local and cheap — like buttons, comment sections. A warm payload cache makes the first paint request-free, and dozens of islands do not turn into dozens of requests.
+- **Load** it after mounting, with skeleton placeholders, when the island is the page — directories (marketplace, people, spaces) and module views such as a task list or a calendar — and its data is expensive, remote or large. The page then stands at once, and nothing slow sits in the server render. `CardDirectory` always loads; a `VueWidget` of such a page renders only cheap, local props plus a placeholder of the same skeleton (see `humhub\modules\marketplace\widgets\MarketplaceBrowser`, which never contacts humhub.com while rendering).
 
 ## Using components from PHP
 

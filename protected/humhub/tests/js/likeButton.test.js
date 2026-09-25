@@ -8,6 +8,12 @@ import UserImage from '../../modules/user/vue/UserImage.vue';
 await import('../../resources/js/humhub/humhub.url.js');
 await import('../../resources/js/humhub/humhub.vue.js');
 
+// PUT (set) and DELETE (remove) both go through the vue bridge's put()/del() → client.ajax();
+// `put`/`del` answer each verb separately.
+let put;
+let del;
+const dispatchAjax = (url, cfg) => (cfg.method === 'PUT' ? put : del)(url, cfg);
+
 const vueModule = globalThis.humhub.modules.vue;
 
 // LikeButton's user-list modal references <UiModal>/<UserList> by tag only (resolved
@@ -42,9 +48,9 @@ describe('LikeButton', () => {
         globalThis.humhub.config.module('user').isGuest = false;
         globalThis.humhub.config.module('user').loginUrl = '/user/auth/login';
         globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({}));
-        globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve({ total: 3, liked: true, canLike: true }));
-        // DELETE like (unlike) goes through the vue bridge's del() → client.ajax()
-        globalThis.humhubStubs.client.ajax = vi.fn(() => Promise.resolve({ total: 1, liked: false, canLike: true }));
+        put = vi.fn(() => Promise.resolve({ total: 3, liked: true, canLike: true }));
+        del = vi.fn(() => Promise.resolve({ total: 1, liked: false, canLike: true }));
+        globalThis.humhubStubs.client.ajax = vi.fn(dispatchAjax);
         globalThis.humhubStubs.logCalls.error.length = 0;
     });
 
@@ -106,7 +112,7 @@ describe('LikeButton', () => {
         expect(wrapper.find('.likeCount').exists()).toBe(false);
     });
 
-    it('posts to the like url and switches state on click', async () => {
+    it('sends PUT to the like url and switches state on click', async () => {
         const wrapper = mount(LikeButton, {
             ...mountOptions(),
             props: { recordId: 7, likeCount: 2, currentUserLiked: false },
@@ -116,7 +122,7 @@ describe('LikeButton', () => {
         await vi.waitFor(() => expect(wrapper.find('a.unlike').exists()).toBe(true));
 
         // The record is addressed in the path; a like carries no body
-        expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith('/api/v2/like/7');
+        expect(put).toHaveBeenCalledWith('/api/v2/like/7', expect.objectContaining({ method: 'PUT' }));
         expect(wrapper.find('.likeCount').text()).toBe('(3)');
     });
 
@@ -129,17 +135,17 @@ describe('LikeButton', () => {
         await wrapper.find('a.unlike').trigger('click');
         await vi.waitFor(() => expect(wrapper.find('a.like').exists()).toBe(true));
 
-        expect(globalThis.humhubStubs.client.ajax).toHaveBeenCalledWith(
+        expect(del).toHaveBeenCalledWith(
             '/api/v2/like/7',
             expect.objectContaining({ method: 'DELETE' }),
         );
-        expect(globalThis.humhubStubs.client.post).not.toHaveBeenCalled();
+        expect(put).not.toHaveBeenCalled();
         expect(wrapper.find('.likeCount').text()).toBe('(1)');
     });
 
     it('ignores clicks while a request is in flight and releases the guard after settle', async () => {
-        let resolvePost;
-        globalThis.humhubStubs.client.post = vi.fn(() => new Promise((resolve) => { resolvePost = resolve; }));
+        let resolvePut;
+        put = vi.fn(() => new Promise((resolve) => { resolvePut = resolve; }));
 
         const wrapper = mount(LikeButton, {
             ...mountOptions(),
@@ -148,17 +154,17 @@ describe('LikeButton', () => {
 
         await wrapper.find('a.like').trigger('click');
         await wrapper.find('a.like').trigger('click');
-        expect(globalThis.humhubStubs.client.post).toHaveBeenCalledTimes(1);
+        expect(put).toHaveBeenCalledTimes(1);
 
-        resolvePost({ total: 3, liked: true, canLike: true });
+        resolvePut({ total: 3, liked: true, canLike: true });
         await vi.waitFor(() => expect(wrapper.find('a.unlike').exists()).toBe(true));
 
         await wrapper.find('a.unlike').trigger('click');
-        expect(globalThis.humhubStubs.client.ajax).toHaveBeenCalledTimes(1);
+        expect(del).toHaveBeenCalledTimes(1);
     });
 
     it('keeps its state and logs when the toggle request fails', async () => {
-        globalThis.humhubStubs.client.post = vi.fn(() => Promise.reject(new Error('network error')));
+        put = vi.fn(() => Promise.reject(new Error('network error')));
 
         const wrapper = mount(LikeButton, {
             ...mountOptions(),
@@ -317,7 +323,7 @@ describe('LikeButton', () => {
         expect(wrapper.find('a.like').exists()).toBe(false);
         expect(wrapper.find('a.unlike').exists()).toBe(false);
         expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalled();
-        expect(globalThis.humhubStubs.client.post).not.toHaveBeenCalled();
+        expect(put).not.toHaveBeenCalled();
         // Same whitespace-survives-condensing assertion as the member-state test above,
         // for the guest branch's own (separately templated) space + counter.
         expect(wrapper.text()).toMatch(/Like \(\d+\)/);
@@ -334,7 +340,7 @@ describe('LikeButton', () => {
         expect(wrapper.find('a[data-bs-target="#globalModal"]').exists()).toBe(true);
         expect(wrapper.find('.likeCount').exists()).toBe(false);
         expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalled();
-        expect(globalThis.humhubStubs.client.post).not.toHaveBeenCalled();
+        expect(put).not.toHaveBeenCalled();
     });
 
     it('fetches the count for guests when no initial state is provided', async () => {
@@ -351,7 +357,7 @@ describe('LikeButton', () => {
 
         expect(wrapper.find('a[data-bs-target="#globalModal"]').exists()).toBe(true);
         expect(wrapper.find('.likeCount').text()).toBe('(4)');
-        expect(globalThis.humhubStubs.client.post).not.toHaveBeenCalled();
+        expect(put).not.toHaveBeenCalled();
     });
 
     it('mounts through the registry, coercing "false"/"0" attributes as ready state and fetching for bare ones', async () => {

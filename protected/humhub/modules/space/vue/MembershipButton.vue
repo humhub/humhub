@@ -115,12 +115,12 @@
  *
  * | state       | rendered                                    | action                        |
  * |-------------|---------------------------------------------|-------------------------------|
- * | `none`      | "Join" (only when `canJoin`)                | POST, or the request modal    |
- * | `invited`   | "Accept Invite" + dropdown "Decline Invite" | POST / DELETE                 |
+ * | `none`      | "Join" (only when `canJoin`)                | PUT, or the request modal     |
+ * | `invited`   | "Accept Invite" + dropdown "Decline Invite" | PUT / DELETE                  |
  * | `applicant` | "Pending"                                   | DELETE (confirmed)            |
  * | `member`    | "Member"/"Owner", only if `showMemberState` | DELETE (confirmed) or nothing |
  *
- * A space that needs approval opens the request modal instead of posting directly — the same
+ * A space that needs approval opens the request modal instead of joining directly — the same
  * message the legacy `RequestMembershipForm` collected, validated by the same model on the
  * server (a 422 renders on the field, see `HumHubForm`).
  *
@@ -314,11 +314,11 @@ export default {
             }
         },
         /**
-         * POST: joins, applies or accepts the invite — which one follows from the state and
+         * PUT: joins, applies or accepts the invite — which one follows from the state and
          * the space's join policy, and the server decides it (see the API controller).
          */
         affirm(data) {
-            return this.mutate(() => client.post(this.endpoint, data ? { data } : undefined));
+            return this.mutate(() => client.put(this.endpoint, data ? { data } : undefined));
         },
         /**
          * DELETE: leaves, withdraws the application or declines the invite.

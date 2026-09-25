@@ -130,6 +130,15 @@ $prev-print: false !default;
 $prev-cards: false !default;
 @import "cards";
 
+$prev-page-toolbar: false !default;
+@import "page-toolbar";
+
+$prev-card-directory: false !default;
+@import "card-directory";
+
+$prev-marketplace: false !default;
+@import "marketplace";
+
 $prev-modules: false !default;
 @import "modules";
 

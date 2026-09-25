@@ -786,8 +786,8 @@ humhub.module('vue', function (module, require, $) {
     // client module only ships get/post since the legacy routes never used
     // other verbs. Yii's CSRF ajaxPrefilter applies to every method, so
     // session-authenticated PATCH/PUT/DELETE carry the X-CSRF-Token header too.
-    // The core endpoints update with PATCH (partial); put() stays for a
-    // module endpoint that defines a full replacement.
+    // The core endpoints update records with PATCH (partial) and set the
+    // caller's relationships (like, membership, friendship) with PUT.
     var restClient = {
         // apply() keeps the caller's arity intact (a plain passthrough would
         // append explicit `undefined` cfg/event arguments).

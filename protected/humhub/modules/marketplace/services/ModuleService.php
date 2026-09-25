@@ -15,6 +15,7 @@ use humhub\modules\marketplace\Module as MarketplaceModule;
 use Yii;
 use yii\web\NotFoundHttpException;
 use yii\web\ServerErrorHttpException;
+use yii\web\UnprocessableEntityHttpException;
 
 /**
  * @since 1.15
@@ -93,11 +94,13 @@ class ModuleService
 
         if (empty($moduleInfo['latestCompatibleVersion']['downloadUrl'])) {
             if (!empty($moduleInfo['isPaid'])) {
-                $error = Yii::t('MarketplaceModule.base', 'License not found or expired. Please contact the module publisher.');
-            } else {
-                $error = 'Could not determine module download url from HumHub API response.';
-                Yii::error($error, 'marketplace');
+                throw new UnprocessableEntityHttpException(
+                    Yii::t('MarketplaceModule.base', 'License not found or expired. Please contact the module publisher.'),
+                );
             }
+
+            $error = 'Could not determine module download url from HumHub API response.';
+            Yii::error($error, 'marketplace');
             throw new ServerErrorHttpException($error);
         }
 

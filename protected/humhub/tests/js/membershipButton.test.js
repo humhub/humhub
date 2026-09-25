@@ -8,6 +8,12 @@ import UiModal from '../../vue/UiModal.vue';
 await import('../../resources/js/humhub/humhub.url.js');
 await import('../../resources/js/humhub/humhub.vue.js');
 
+// PUT (set) and DELETE (remove) both go through the vue bridge's put()/del() → client.ajax();
+// `put`/`del` answer each verb separately.
+let put;
+let del;
+const dispatchAjax = (url, cfg) => (cfg.method === 'PUT' ? put : del)(url, cfg);
+
 // `<ui-modal>`/`<humhub-form>`/`<textarea-field>` are resolved through the global Vue
 // component registry in production (SpaceVueAsset depends on the core bundle, which always
 // carries CoreVueAsset); `global.components` stands in for that registry here, the same way
@@ -61,9 +67,9 @@ describe('MembershipButton', () => {
         document.body.replaceChildren();
         globalThis.humhub.modules.url.config.template = '/__route__';
         globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(state()));
-        globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve(state({ state: 'member', canJoin: false, canLeave: true })));
-        // DELETE goes through the vue bridge's del() → client.ajax()
-        globalThis.humhubStubs.client.ajax = vi.fn(() => Promise.resolve(state()));
+        put = vi.fn(() => Promise.resolve(state({ state: 'member', canJoin: false, canLeave: true })));
+        del = vi.fn(() => Promise.resolve(state()));
+        globalThis.humhubStubs.client.ajax = vi.fn(dispatchAjax);
         globalThis.humhubStubs.modal.confirm = vi.fn(() => Promise.resolve(true));
         globalThis.humhubStubs.logCalls.error.length = 0;
     });
@@ -99,22 +105,22 @@ describe('MembershipButton', () => {
         await wrapper.find('a').trigger('click');
         await flushPromises();
 
-        expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith('/api/v2/space/5/membership', undefined);
+        expect(put).toHaveBeenCalledWith('/api/v2/space/5/membership', expect.objectContaining({ method: 'PUT' }));
         expect(wrapper.text()).toContain('Member');
     });
 
     it('does not send a second request while one is in flight', async () => {
-        let resolvePost;
-        globalThis.humhubStubs.client.post = vi.fn(() => new Promise((resolve) => {
-            resolvePost = resolve;
+        let resolvePut;
+        put = vi.fn(() => new Promise((resolve) => {
+            resolvePut = resolve;
         }));
         const wrapper = mountButton({ initial: state() });
 
         await wrapper.find('a').trigger('click');
         await wrapper.find('a').trigger('click');
-        expect(globalThis.humhubStubs.client.post).toHaveBeenCalledTimes(1);
+        expect(put).toHaveBeenCalledTimes(1);
 
-        resolvePost(state({ state: 'member', canJoin: false }));
+        resolvePut(state({ state: 'member', canJoin: false }));
         await flushPromises();
     });
 
@@ -130,7 +136,7 @@ describe('MembershipButton', () => {
     });
 
     describe('invite', () => {
-        it('accepts an invite with the same POST that joins', async () => {
+        it('accepts an invite with the same PUT that joins', async () => {
             const wrapper = mountButton({ initial: state({ state: 'invited', canJoin: false }) });
 
             expect(wrapper.find('.btn-group').exists()).toBe(true);
@@ -139,7 +145,7 @@ describe('MembershipButton', () => {
             await wrapper.find('.btn-group > a').trigger('click');
             await flushPromises();
 
-            expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith('/api/v2/space/5/membership', undefined);
+            expect(put).toHaveBeenCalledWith('/api/v2/space/5/membership', expect.objectContaining({ method: 'PUT' }));
         });
 
         it('declines an invite through DELETE, without a confirmation', async () => {
@@ -148,7 +154,7 @@ describe('MembershipButton', () => {
             await wrapper.find('.dropdown-menu a').trigger('click');
             await flushPromises();
 
-            const [url, cfg] = globalThis.humhubStubs.client.ajax.mock.calls[0];
+            const [url, cfg] = del.mock.calls[0];
             expect(url).toBe('/api/v2/space/5/membership');
             expect(cfg.method).toBe('DELETE');
             expect(globalThis.humhubStubs.modal.confirm).not.toHaveBeenCalled();
@@ -167,7 +173,7 @@ describe('MembershipButton', () => {
             expect(options.body).toContain('withdraw your request');
             // The space name is interpolated as (escaped) markup, like the legacy dialog.
             expect(options.body).toContain('<strong>Product Team</strong>');
-            expect(globalThis.humhubStubs.client.ajax).toHaveBeenCalled();
+            expect(del).toHaveBeenCalled();
         });
 
         it('leaves a space after confirming, and sends nothing when the dialog is cancelled', async () => {
@@ -183,7 +189,7 @@ describe('MembershipButton', () => {
             const options = globalThis.humhubStubs.modal.confirm.mock.calls[0][0];
             expect(options.header).toContain('Leave');
             expect(options.confirmText).toBe('Leave');
-            expect(globalThis.humhubStubs.client.ajax).not.toHaveBeenCalled();
+            expect(del).not.toHaveBeenCalled();
             expect(wrapper.text()).toContain('Member');
         });
 
@@ -226,8 +232,8 @@ describe('MembershipButton', () => {
     describe('request membership', () => {
         const requestState = () => state({ needsApproval: true });
 
-        it('opens the modal instead of posting, and applies with the message', async () => {
-            globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve(state({
+        it('opens the modal instead of joining, and applies with the message', async () => {
+            put = vi.fn(() => Promise.resolve(state({
                 state: 'applicant',
                 canJoin: false,
                 needsApproval: true,
@@ -236,7 +242,7 @@ describe('MembershipButton', () => {
 
             await wrapper.find('a').trigger('click');
             await flushPromises();
-            expect(globalThis.humhubStubs.client.post).not.toHaveBeenCalled();
+            expect(put).not.toHaveBeenCalled();
             expect(dialog()).not.toBeNull();
             // The message field is focused for typing, like the legacy modal.
             expect(document.activeElement).toBe(dialog().querySelector('textarea'));
@@ -245,9 +251,9 @@ describe('MembershipButton', () => {
             clickSend();
             await flushPromises();
 
-            expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith(
+            expect(put).toHaveBeenCalledWith(
                 '/api/v2/space/5/membership',
-                { data: { message: 'Please let me in.' } },
+                expect.objectContaining({ method: 'PUT', data: { message: 'Please let me in.' } }),
             );
             // The acknowledgement replaces the form, and the button behind it is "Pending".
             expect(dialog().querySelector('.modal-body').textContent).toContain('successfully submitted');
@@ -258,7 +264,7 @@ describe('MembershipButton', () => {
         });
 
         it('renders a 422 on the message field and keeps the form open', async () => {
-            globalThis.humhubStubs.client.post = vi.fn(() => Promise.reject({
+            put = vi.fn(() => Promise.reject({
                 status: 422,
                 errors: { message: ['Your Message cannot be blank.'] },
             }));
@@ -291,7 +297,7 @@ describe('MembershipButton', () => {
 
         it('shows the one that matches the follow state again after leaving', async () => {
             const buttons = createFollowButtons(5);
-            globalThis.humhubStubs.client.ajax = vi.fn(() => Promise.resolve(state({ isFollowing: true })));
+            del = vi.fn(() => Promise.resolve(state({ isFollowing: true })));
             const wrapper = mountButton({
                 initial: state({ state: 'member', canJoin: false, canLeave: true }),
                 showMemberState: true,

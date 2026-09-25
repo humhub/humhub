@@ -13,7 +13,7 @@
             @mousedown="onBackdropMousedown"
             @click.self="onBackdropClick"
         >
-            <div class="modal-dialog" :class="sizeClass">
+            <div class="modal-dialog" :class="[sizeClass, dialogClass]">
                 <div class="modal-content">
                     <div class="modal-header">
                         <slot name="header" :title-id="titleId">
@@ -82,6 +82,8 @@ let uidSeq = 0;
  * component gets the plain, unsurprising mapping straight onto Bootstrap's own size
  * classes instead.
  *
+ * `dialogClass` adds classes to `.modal-dialog` (a dialog's own width or styling scope).
+ *
  * ## Backdrop / keyboard / focus / scroll-lock
  *
  * - `backdropClose` (default `true`): clicking the dimmed area outside `.modal-dialog`
@@ -129,6 +131,7 @@ export default {
             default: 'normal',
             validator: (value) => ['small', 'normal', 'large'].includes(value),
         },
+        dialogClass: { type: [String, Array, Object], default: null },
         backdropClose: { type: Boolean, default: true },
         keyboard: { type: Boolean, default: true },
     },
@@ -172,11 +175,16 @@ export default {
     },
     beforeUnmount() {
         // Safety net: a modal destroyed while still open (e.g. its host island itself
-        // unmounts) must not leak the scroll-lock class or the document-level ESC
-        // listener.
+        // unmounts, or a `v-if` removes it instead of flipping `show`) must not leak the
+        // scroll-lock class or the document-level ESC listener, and hands focus back like
+        // a normal close does.
         document.removeEventListener('keydown', this.onKeydown);
         if (this.show) {
             document.body.classList.remove('modal-open');
+            if (this.previouslyFocused && typeof this.previouslyFocused.focus === 'function') {
+                this.previouslyFocused.focus();
+            }
+            this.previouslyFocused = null;
         }
     },
     methods: {

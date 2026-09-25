@@ -28,6 +28,10 @@ Web routes an endpoint duplicates, still in place because other consumers depend
   `UploadAction` still use it.
 - **Space picker search** — `space/browse/search-json` next to `GET /api/v2/space`: the
   picker widgets expect its result shape. Moves together with the pickers becoming islands.
+- **Module enabling** — `admin/module/enable|disable` next to
+  `POST /api/v2/module/<id>/enable`: the module administration (`admin/module/list`,
+  `InstalledModuleList`) is still server-rendered. Moves when it becomes an island;
+  `POST …/disable` joins then.
 
 ## Islands & extension APIs
 
@@ -41,6 +45,13 @@ Web routes an endpoint duplicates, still in place because other consumers depend
   the caller's own status) — replaces the removed `online` field of the user shape.
 - **Dynamic imports** for heavy components, and a **component override** mechanism for themes
   and modules (see [Extending islands](ui-js-vuejs-extensions.md#component-override)).
+
+## Directory pages
+
+- **People and Spaces on the card directory kit** — `CardDirectory` with a `FilterSet`
+  each; Spaces can read `GET /api/v2/space`, People needs a list endpoint (profile-field
+  filters included, as `PeopleFilters` builds them). Then `humhub\widgets\DirectoryFilters`
+  and `humhub.cards.js` can be deprecated.
 
 ## Core bugs found along the way
 

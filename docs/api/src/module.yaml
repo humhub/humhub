@@ -1,0 +1,86 @@
+openapi: 3.1.0
+info:
+  description: Joined into index.html by build.sh; this module's introduction is the
+    description of its tag below.
+  version: 2.0.0
+  title: HumHub - Module API (v2)
+  contact:
+    email: info@humhub.com
+  license:
+    name: AGPLv2
+    url: https://www.humhub.org/en/licences
+servers:
+  - url: /api/v2
+security:
+  - Bearer: []
+  - BasicAuth: []
+  - SessionCookie: []
+tags:
+  - name: Module
+    description: |
+      Installed modules of the platform, for module administrators (`ManageModules`).
+      Installing and updating a module from the marketplace is the Marketplace API.
+paths:
+  "/module/{id}/enable":
+    post:
+      tags:
+        - Module
+      summary: Enable an installed module
+      operationId: enableModule
+      description: |
+        Enables the module platform-wide. Answers its new state, with the configuration page
+        a client may offer next.
+
+        An operation, hence a verb sub-path with `POST` (see the conventions). Safe to
+        repeat: enabling an enabled module changes nothing and answers its state. A
+        module whose deactivation or removal is still queued answers `422` until the queue
+        has processed it; a module that refuses to be enabled answers `500`.
+      parameters:
+        - name: id
+          in: path
+          description: Id of the installed module, e.g. `calendar`
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  isEnabled:
+                    type: boolean
+                    description: Always `true`
+                  configUrl:
+                    type: [string, 'null']
+                    description: The module's configuration page, when it has one
+              example:
+                id: calendar
+                isEnabled: true
+                configUrl: https://example.com/calendar/config
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+        "500":
+          description: The module could not be enabled
+          content:
+            application/json:
+              schema:
+                $ref: "common.yaml#/components/schemas/ErrorBody"
+components:
+  securitySchemes:
+    Bearer:
+      $ref: "common.yaml#/components/securitySchemes/Bearer"
+    BasicAuth:
+      $ref: "common.yaml#/components/securitySchemes/BasicAuth"
+    SessionCookie:
+      $ref: "common.yaml#/components/securitySchemes/SessionCookie"
