@@ -26,6 +26,16 @@ class Migration extends \yii\db\Migration
     public const LOG_CATEGORY = 'migration';
 
     /**
+     * Character set and collation used for all tables created by migrations on MySQL/MariaDB.
+     *
+     * The database default collation may differ (e.g. `utf8mb4_0900_ai_ci` on MySQL 8), which leads to
+     * "Illegal mix of collations" errors when string columns of different tables are compared or joined.
+     *
+     * @since 1.19
+     */
+    public const MYSQL_TABLE_OPTIONS = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
+
+    /**
      * @var string Main table of the current migration. MUST be overridden statically or initialized during
      *             static::__construct() or static::init()
      * @see static::safeAddForeignKeyToUserTable()
@@ -600,6 +610,52 @@ class Migration extends \yii\db\Migration
     public function insertSilent(string $table, $columns): void
     {
         $this->db->createCommand()->insert($table, $columns)->execute();
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * On MySQL/MariaDB the tables are created with the collation of the HumHub core tables by default,
+     * instead of the (possibly different) default collation of the database.
+     *
+     * @since 1.19
+     */
+    public function createTable($table, $columns, $options = null)
+    {
+        if ($options === null && $this->db->getDriverName() === 'mysql') {
+            $options = static::MYSQL_TABLE_OPTIONS;
+        }
+
+        parent::createTable($table, $columns, $options);
+    }
+
+    /**
+     * Converts an existing table to the collation of the HumHub core tables (MySQL/MariaDB only).
+     * Does nothing if the table already has this collation.
+     *
+     * @param string $table Table name without prefix braces
+     * @return bool Whether the table has been converted
+     * @since 1.19
+     */
+    protected function safeConvertTableCollation(string $table): bool
+    {
+        if ($this->db->getDriverName() !== 'mysql') {
+            return false;
+        }
+
+        $rawName = $this->db->schema->getRawTableName($table);
+        $collation = $this->db->createCommand(
+            'SELECT TABLE_COLLATION FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = :name',
+            [':name' => $rawName],
+        )->queryScalar();
+
+        if ($collation === false || $collation === null || $collation === 'utf8mb4_unicode_ci') {
+            return false;
+        }
+
+        $this->execute('ALTER TABLE ' . $this->db->quoteTableName($table) . ' CONVERT TO ' . static::MYSQL_TABLE_OPTIONS);
+
+        return true;
     }
 
     /**

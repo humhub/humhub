@@ -6,6 +6,7 @@ HumHub Changelog
 - Fix #8508: Fixed mention notifications crediting the original author instead of the user who added the mention on edit
 - Enh #8509: Marketplace wording "Community modules" replaced by "Non-curated modules", without a status badge on the module card
 - Fix #8511: The like title's "and {count} more like this." text appeared even when every liking user was already listed by name, and inflated the total like count
+- Fix #8513: Migration "record_map" failed with "Illegal mix of collations" on MySQL 8; new tables now use utf8mb4_unicode_ci
 
 1.19.0-beta.3 (September 22, 2026)
 ----------------------------------
