@@ -63,6 +63,7 @@ class ShowFilesTest extends HumHubDbTestCase
             'size',
             'fileName',
             'mimeIcon',
+            'icon',
             'url',
             'downloadUrl',
             'previewUrl',

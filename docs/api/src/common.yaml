@@ -250,6 +250,11 @@ components:
           description: |
             CSS class of the file-type icon (`mime-image`, `mime-pdf`, …) — the platform's own
             icon set, so a client does not have to map mime types itself.
+        icon:
+          type: string
+          description: |
+            Tabler icon name of the file type, without the `ti-` prefix (`file-type-pdf`,
+            `photo`, `file`, …) — for a client rendering `<i class="ti ti-<icon>">`.
         url:
           type: string
           description: Absolute file URL

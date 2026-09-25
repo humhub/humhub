@@ -1,0 +1,591 @@
+//
+// Item browser kit: the Vue components ViewSwitch, PathBar, TileGrid, SelectionMenu, DropZone
+// and ProgressFrame (protected/humhub/vue/), after the HumHub design system v2's file browser —
+// translated onto the theme variables and Tabler icons. Builds on the page toolbar kit
+// (`_page-toolbar.scss`: `.c-icon-button`) and the card directory's skeleton shimmer
+// (`_card-directory.scss`).
+// @since 1.20
+// --------------------------------------------------
+
+@if not $prev-item-browser {
+    // Tokens, declared on the kit's roots (not `:root`), so they resolve against the theme
+    // variables of the element's own colour mode.
+    .c-tile-grid,
+    .c-path-bar,
+    .c-drop-zone {
+        --hh-item-hover-bg: var(--bs-secondary-bg);
+        --hh-item-selected-bg: rgba(var(--bs-accent-rgb), 0.1);
+        --hh-item-accent: var(--bs-accent);
+        --hh-item-muted: var(--hh-text-color-secondary);
+        --hh-item-strong: var(--hh-text-color-highlight);
+        --hh-item-focus-ring: 0 0 0 3px rgba(var(--bs-accent-rgb), 0.32);
+        --hh-skeleton-base: var(--bs-secondary-bg);
+        --hh-skeleton-highlight: var(--bs-tertiary-bg);
+    }
+
+    // View switch
+    .c-view-switch {
+        display: inline-flex;
+        gap: 2px;
+    }
+
+    .c-view-switch__button.is-active {
+        --bs-btn-color: var(--hh-text-color-highlight);
+        --bs-btn-bg: var(--bs-secondary-bg);
+    }
+
+    // Path bar
+    .c-path-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px;
+    }
+
+    .c-path-bar__back {
+        display: none;
+    }
+
+    @media (max-width: 768px) {
+        .c-path-bar__back {
+            display: inline-flex;
+        }
+    }
+
+    .c-path-bar__path {
+        display: flex;
+        flex: 1 1 auto;
+        align-items: center;
+        min-width: 0;
+        min-height: 38px;
+        padding: 4px;
+        border-radius: 6px;
+        background: var(--bs-secondary-bg);
+    }
+
+    .c-path-bar__crumbs {
+        display: flex;
+        align-items: center;
+        min-width: 0;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        list-style: none;
+    }
+
+    .c-path-bar__crumb {
+        display: flex;
+        flex: 0 1 auto;
+        align-items: center;
+        min-width: 0;
+        border-radius: 6px;
+        transition: box-shadow 0.3s;
+
+        &:first-child {
+            flex-shrink: 0;
+        }
+
+        &.is-drop-target {
+            box-shadow: inset 0 0 0 1px var(--hh-item-accent);
+        }
+    }
+
+    .c-path-bar__root {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 6px;
+        color: var(--hh-item-muted);
+        font-size: 18px;
+        transition: background 0.3s, color 0.3s;
+
+        &:hover,
+        &.is-current {
+            color: var(--hh-item-strong);
+        }
+
+        &:hover {
+            background: rgba(var(--bs-emphasis-color-rgb), 0.08);
+        }
+    }
+
+    .c-path-bar__separator {
+        flex: 0 0 auto;
+        margin: 0 4px;
+        color: var(--hh-item-muted);
+        font-size: 12px;
+    }
+
+    .c-path-bar__link,
+    .c-path-bar__current {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .c-path-bar__link {
+        color: var(--hh-item-strong);
+        text-decoration: none;
+        transition: color 0.3s;
+
+        &:hover {
+            color: var(--hh-item-accent);
+        }
+    }
+
+    .c-path-bar__current {
+        color: var(--hh-item-muted);
+        font-weight: 600;
+    }
+
+    // Selection menu, sliding in beside the path
+    .c-selection-menu {
+        flex: 0 0 auto;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .c-selection-menu__toggle[aria-expanded="true"] {
+        --bs-btn-bg: var(--bs-secondary-bg);
+        --bs-btn-color: var(--hh-text-color-highlight);
+    }
+
+    .c-selection-menu-enter-active,
+    .c-selection-menu-leave-active {
+        transition: opacity 0.3s, transform 0.3s;
+    }
+
+    .c-selection-menu-enter-from,
+    .c-selection-menu-leave-to {
+        opacity: 0;
+        transform: translateX(8px);
+    }
+
+    // Tile grid
+    .c-tile-grid__stage {
+        display: grid;
+        grid-template: auto / minmax(0, 1fr);
+    }
+
+    .c-tile-grid__pane {
+        grid-area: 1 / 1;
+        min-width: 0;
+    }
+
+    .c-tile-grid__tiles {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(136px, 1fr));
+        gap: 8px;
+        margin: 0;
+        padding: 8px;
+        list-style: none;
+    }
+
+    .c-tile-grid__tile {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        min-width: 0;
+        padding: 8px;
+        border-radius: 6px;
+        text-align: center;
+        transition: background 0.3s, box-shadow 0.3s;
+
+        &:hover {
+            background: var(--hh-item-hover-bg);
+        }
+
+        &.is-selected {
+            background: var(--hh-item-selected-bg);
+        }
+
+        &.is-drop-target {
+            background: var(--hh-item-selected-bg);
+            box-shadow: inset 0 0 0 1px var(--hh-item-accent);
+        }
+
+        &.is-uploading .c-tile-grid__thumb {
+            opacity: 0.5;
+        }
+
+        &.is-uploading .c-tile-grid__name {
+            pointer-events: none;
+        }
+    }
+
+    .c-tile-grid__thumb {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100px;
+        margin-bottom: 4px;
+        transition: opacity 0.3s;
+    }
+
+    .c-tile-grid__name {
+        width: 100%;
+
+        > a,
+        > button {
+            width: 100%;
+            padding: 0;
+            border: 0;
+            background: none;
+            color: var(--hh-item-strong);
+            font: inherit;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            overflow-wrap: anywhere;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+            transition: color 0.3s;
+
+            // The whole tile is the click target
+            &::after {
+                content: '';
+                position: absolute;
+                inset: 0;
+                z-index: 1;
+                border-radius: inherit;
+            }
+
+            &:focus-visible {
+                outline: none;
+
+                &::after {
+                    box-shadow: var(--hh-item-focus-ring);
+                    border-radius: 6px;
+                }
+            }
+        }
+    }
+
+    .c-tile-grid__tile:hover .c-tile-grid__name > :is(a, button) {
+        color: var(--hh-item-accent);
+    }
+
+    .c-tile-grid__meta {
+        color: var(--hh-item-muted);
+        font-size: 12px;
+    }
+
+    .c-tile-grid__check {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        margin: 0;
+        border: 1.5px solid var(--hh-item-muted);
+        border-radius: 4px;
+        background: var(--hh-background-color-main);
+        color: var(--hh-accent-contrast);
+        cursor: pointer;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-4px);
+        transition: opacity 0.3s, transform 0.3s, visibility linear 0.3s;
+
+        &:has(.c-tile-grid__check-input:focus-visible) {
+            box-shadow: var(--hh-item-focus-ring);
+        }
+    }
+
+    .c-tile-grid__tile:hover .c-tile-grid__check,
+    .c-tile-grid__tile:focus-within .c-tile-grid__check,
+    .c-tile-grid__tile.is-selected .c-tile-grid__check,
+    .c-tile-grid.is-selecting .c-tile-grid__check {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        transition: opacity 0.3s, transform 0.3s, visibility linear;
+    }
+
+    // The native box stays invisible over the drawn one; the child combinator outweighs the
+    // global `input[type=checkbox]` rule (`_form.scss`), which would put it back in flow
+    .c-tile-grid__check > .c-tile-grid__check-input {
+        position: absolute;
+        inset: -1.5px;
+        width: calc(100% + 3px);
+        height: calc(100% + 3px);
+        margin: 0;
+        padding: 0;
+        border: 0;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    .c-tile-grid__check-mark {
+        font-size: 14px;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .c-tile-grid__tile.is-selected .c-tile-grid__check {
+        border-color: var(--hh-item-accent);
+        background: var(--hh-item-accent);
+
+        .c-tile-grid__check-mark {
+            opacity: 1;
+        }
+    }
+
+    .c-tile-grid__actions {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        z-index: 2;
+        display: none;
+    }
+
+    // Keyboard (and mouse) users reach the item menu too: it shows while the tile is hovered
+    // or holds focus — it follows the name link in DOM order, so the next Tab lands on it.
+    .c-tile-grid__tile:hover .c-tile-grid__actions,
+    .c-tile-grid__tile:focus-within .c-tile-grid__actions {
+        display: block;
+    }
+
+    @media (hover: none) {
+        .c-tile-grid__check {
+            top: 13px;
+            left: 13px;
+            opacity: 1;
+            visibility: visible;
+            transform: none;
+        }
+
+        .c-tile-grid__actions {
+            display: block;
+        }
+    }
+
+    .c-tile-grid__progress {
+        z-index: 2;
+    }
+
+    .c-tile-grid__empty {
+        margin: 0;
+        padding: 16px 8px;
+        color: var(--hh-item-muted);
+        text-align: center;
+    }
+
+    .c-tile-grid__more {
+        display: flex;
+        justify-content: center;
+        padding: 8px;
+    }
+
+    .c-tile-grid__skeleton {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        padding: 8px;
+    }
+
+    .c-tile-grid__skeleton-block {
+        position: relative;
+        display: block;
+        overflow: hidden;
+        border-radius: 4px;
+        background: var(--hh-skeleton-base);
+        opacity: 0.4;
+
+        // `hh-skeleton-shimmer` is the `@keyframes` `_card-directory.scss` declares inside its
+        // own `@if not $prev-card-directory` guard - a theme setting `$prev-card-directory: true`
+        // (providing its own card directory partial, skipping ours) loses this animation too, so
+        // the skeleton block still renders but without the shimmer sweep.
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            transform: translateX(-100%);
+            background: linear-gradient(90deg, transparent 0%, var(--hh-skeleton-highlight) 50%, transparent 100%);
+            animation: hh-skeleton-shimmer 1.2s ease-in-out infinite;
+        }
+    }
+
+    .c-tile-grid__skeleton-thumb {
+        width: 100px;
+        height: 84px;
+        margin-block: 8px;
+        border-radius: 6px;
+    }
+
+    .c-tile-grid__skeleton-name {
+        width: 80%;
+        height: 14px;
+    }
+
+    // New tiles fade in, removed ones out, the rest move. A leaving tile fades in its own cell
+    // (no `position: absolute` — out of flow, a grid item jumps to the grid's start corner), and
+    // the rest close the gap once it is gone.
+    .c-tile-grid-fade-enter-active,
+    .c-tile-grid-fade-leave-active {
+        transition: opacity 0.3s, background 0.3s;
+    }
+
+    .c-tile-grid-fade-leave-active {
+        pointer-events: none;
+    }
+
+    .c-tile-grid-fade-move {
+        transition: transform 0.3s, background 0.3s;
+    }
+
+    .c-tile-grid-fade-enter-from,
+    .c-tile-grid-fade-leave-to {
+        opacity: 0;
+    }
+
+    // A level slides in from the side it is on
+    .c-tile-grid-swap-forward-enter-active,
+    .c-tile-grid-swap-forward-leave-active,
+    .c-tile-grid-swap-back-enter-active,
+    .c-tile-grid-swap-back-leave-active {
+        transition: opacity 0.3s, transform 0.3s;
+    }
+
+    .c-tile-grid-swap-forward-leave-active,
+    .c-tile-grid-swap-back-leave-active {
+        pointer-events: none;
+    }
+
+    .c-tile-grid-swap-forward-enter-from,
+    .c-tile-grid-swap-back-leave-to {
+        opacity: 0;
+        transform: translateX(8px);
+    }
+
+    .c-tile-grid-swap-back-enter-from,
+    .c-tile-grid-swap-forward-leave-to {
+        opacity: 0;
+        transform: translateX(-8px);
+    }
+
+    // Progress frame: the outline of its (positioned) container, the stroke straddling a line
+    // 1px inside the edge
+    .c-progress-frame {
+        position: absolute;
+        top: 1px;
+        left: 1px;
+        width: calc(100% - 2px);
+        height: calc(100% - 2px);
+        overflow: visible;
+        pointer-events: none;
+    }
+
+    .c-progress-frame__track,
+    .c-progress-frame__bar {
+        fill: none;
+        stroke-width: 2px;
+    }
+
+    .c-progress-frame__track {
+        stroke: rgba(var(--bs-accent-rgb), 0.2);
+    }
+
+    .c-progress-frame__bar {
+        stroke: var(--bs-accent);
+        stroke-dasharray: 100;
+        transition: stroke-dashoffset 0.12s linear;
+    }
+
+    // Drop zone
+    .c-drop-zone {
+        position: relative;
+    }
+
+    .c-drop-zone__overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 4;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding: 16px;
+        border: 1px dashed var(--hh-item-accent);
+        border-radius: 6px;
+        background: rgba(var(--bs-accent-rgb), 0.06);
+        pointer-events: none;
+
+        &.is-refused {
+            border-color: var(--bs-border-color);
+            background: rgba(var(--bs-secondary-rgb), 0.16);
+        }
+    }
+
+    .c-drop-zone__label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        max-width: 100%;
+        padding: 8px 12px;
+        border-radius: 6px;
+        background: var(--hh-background-color-main);
+        color: var(--hh-item-accent);
+        font-weight: 600;
+
+        .is-refused & {
+            color: var(--hh-item-muted);
+        }
+    }
+
+    .c-drop-zone-fade-enter-active,
+    .c-drop-zone-fade-leave-active {
+        transition: opacity 0.3s;
+    }
+
+    .c-drop-zone-fade-enter-from,
+    .c-drop-zone-fade-leave-to {
+        opacity: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .c-tile-grid__tile,
+        .c-tile-grid__thumb,
+        .c-tile-grid__check,
+        .c-tile-grid__check-mark,
+        .c-tile-grid__name > a,
+        .c-tile-grid__name > button,
+        .c-path-bar__crumb,
+        .c-path-bar__root,
+        .c-path-bar__link,
+        .c-progress-frame__bar,
+        .c-tile-grid-fade-enter-active,
+        .c-tile-grid-fade-leave-active,
+        .c-tile-grid-fade-move,
+        .c-tile-grid-swap-forward-enter-active,
+        .c-tile-grid-swap-forward-leave-active,
+        .c-tile-grid-swap-back-enter-active,
+        .c-tile-grid-swap-back-leave-active,
+        .c-selection-menu-enter-active,
+        .c-selection-menu-leave-active,
+        .c-drop-zone-fade-enter-active,
+        .c-drop-zone-fade-leave-active {
+            transition: none !important;
+        }
+
+        .c-tile-grid__skeleton-block::after {
+            display: none;
+            animation: none;
+        }
+    }
+}

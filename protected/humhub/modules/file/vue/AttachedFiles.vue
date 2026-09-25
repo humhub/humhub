@@ -76,7 +76,7 @@
  * separate implementations of the same visual and had already drifted apart.
  *
  * Files are the API's file shape (`humhub\modules\file\serializers\FileSerializer::file()`
- * - `{id, guid, mimeType, size, fileName, mimeIcon, url, downloadUrl, previewUrl}`),
+ * - `{id, guid, mimeType, size, fileName, mimeIcon, icon, url, downloadUrl, previewUrl}`),
  * optionally refined by two **presentation hints** a server-side caller can add per file
  * (the HTTP API carries neither - see the class docblock of `ShowFiles`):
  *

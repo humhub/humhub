@@ -247,6 +247,16 @@ export default {
         // Bootstrap keeps its instances in a map keyed by element, so one whose element is
         // removed without being disposed keeps both the entry and its Popper alive.
         this.disposeOwnDropdown();
+        // A toggle that was only ever plain-clicked never went through open()/dropdown()
+        // above, so `ownDropdown` (just cleared by disposeOwnDropdown()) was never set —
+        // Bootstrap's own data-api handler lazily created and still holds its own instance
+        // for it instead, which has to be found and disposed here too. Checked after
+        // disposeOwnDropdown() rather than before, so a toggle that WAS opened through this
+        // component finds nothing left to dispose here (its instance, and only instance, is
+        // already gone) instead of disposing the same instance twice.
+        if (typeof bootstrap !== 'undefined' && this.$refs.toggle) {
+            bootstrap.Dropdown.getInstance(this.$refs.toggle)?.dispose();
+        }
     },
     computed: {
         loadingLabel() {
