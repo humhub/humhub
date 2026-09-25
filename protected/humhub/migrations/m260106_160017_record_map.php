@@ -1,6 +1,6 @@
 <?php
 
-use yii\db\Migration;
+use humhub\components\Migration;
 
 class m260106_160017_record_map extends Migration
 {
@@ -9,13 +9,13 @@ class m260106_160017_record_map extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('record_map', [
+        $this->safeCreateTable('record_map', [
             'id' => $this->primaryKey(),
             'model' => $this->string(150)->notNull(),
             'pk' => $this->integer()->notNull(),
         ]);
 
-        $this->createIndex('idx_record_map_model_pk', 'record_map', ['model', 'pk'], true);
+        $this->safeCreateIndex('idx_record_map_model_pk', 'record_map', ['model', 'pk'], true);
     }
 
     /**
