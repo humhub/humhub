@@ -697,6 +697,21 @@ describe('DropdownMenu', () => {
             expect(dropdown.disposed).toBe(true);
         });
 
+        it('disposes a data-api-created instance on unmount too, not only its own', () => {
+            // A toggle that is only ever plain-clicked never goes through open()/dropdown()
+            // above — Bootstrap's own data-api handler lazily creates and holds its own
+            // instance for it instead, exactly like the "replaces an instance the data-api
+            // created" test above simulates. `ownDropdown` stays null in that case, so this
+            // instance is never disposed unless beforeUnmount() looks for it separately.
+            const wrapper = mountMenu();
+            const toggle = wrapper.find('a[data-bs-toggle="dropdown"]').element;
+            const fromDataApi = new DropdownStub(toggle);
+
+            wrapper.unmount();
+
+            expect(fromDataApi.disposed).toBe(true);
+        });
+
         it('emits open for the consumer to lazy-load on, exactly as a toggle click does', () => {
             const wrapper = mountMenu();
 
