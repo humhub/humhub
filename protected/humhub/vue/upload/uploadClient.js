@@ -53,6 +53,6 @@ export function uploadFiles(files, onProgress) {
  *
  * @typedef {{
  *   id: number, guid: string, fileName: string, mimeType: string, size: number,
- *   mimeIcon: string, url: string, previewUrl: ?string
+ *   mimeIcon: string, icon: string, url: string, downloadUrl: string, previewUrl: ?string
  * }} UploadedFile
  */

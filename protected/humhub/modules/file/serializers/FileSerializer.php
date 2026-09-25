@@ -49,6 +49,7 @@ class FileSerializer
      *     size: int,
      *     fileName: string,
      *     mimeIcon: string,
+     *     icon: string,
      *     url: string,
      *     downloadUrl: string,
      *     previewUrl: string|null,
@@ -69,6 +70,10 @@ class FileSerializer
             // rendering a file list gets the platform's icon set without mapping mime types
             // itself.
             'mimeIcon' => MimeHelper::getMimeIconClassByExtension(FileHelper::getExtension($file->file_name)),
+            // The Tabler name of the file-type icon (`file-type-pdf`, `photo`, …) for a client
+            // rendering `<i class="ti ti-<icon>">` - `mimeIcon` stays for the platform's own
+            // `mime-*` stylesheet classes.
+            'icon' => MimeHelper::getIconNameByExtension(FileHelper::getExtension($file->file_name)),
             'url' => $file->getUrl([], true),
             // Same file, but with the response forcing a download instead of letting the
             // browser display it inline - what a client renders behind a "download" action.

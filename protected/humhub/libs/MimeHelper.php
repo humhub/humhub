@@ -101,4 +101,68 @@ class MimeHelper
 
         return self::$extensionToIconClass[$ext] ?? self::ICON_FILE;
     }
+
+    /**
+     * Tabler icon names by extension - a type with a glyph of its own gets it, otherwise the
+     * glyph of its family, otherwise `file` (see {@see self::getIconNameByExtension()}).
+     *
+     * @var array<string, string[]>
+     */
+    private static array $iconNameExtensions = [
+        'file-type-pdf' => ['pdf'],
+        'file-type-doc' => ['doc', 'docx', 'docm', 'odt', 'rtf', 'pages'],
+        'file-type-xls' => ['xls', 'xlsx', 'xlsb', 'xlsm', 'ods', 'numbers'],
+        'file-type-csv' => ['csv', 'tsv'],
+        'file-type-ppt' => ['ppt', 'pptx', 'pps', 'ppsx', 'odp', 'key'],
+        'file-type-txt' => ['txt', 'log'],
+        'file-type-svg' => ['svg'],
+        'file-type-jpg' => ['jpg', 'jpeg'],
+        'file-type-png' => ['png'],
+        'file-type-bmp' => ['bmp'],
+        'photo' => ['gif', 'webp', 'avif', 'tif', 'tiff', 'heic', 'ico'],
+        'file-music' => ['mp3', 'wav', 'ogg', 'oga', 'm4a', 'aac', 'flac', 'wma', 'aiff'],
+        'movie' => ['mp4', 'mov', 'avi', 'webm', 'mkv', 'm4v', 'wmv', 'mpeg'],
+        'file-zip' => ['zip', 'gzip', 'rar', '7z', 'tar', 'gz', 'tgz', 'bz2'],
+        'file-type-html' => ['html', 'htm'],
+        'file-type-css' => ['css', 'scss', 'less'],
+        'file-type-js' => ['js', 'mjs', 'cjs'],
+        'file-type-jsx' => ['jsx'],
+        'file-type-ts' => ['ts'],
+        'file-type-tsx' => ['tsx'],
+        'file-type-vue' => ['vue'],
+        'file-type-sql' => ['sql'],
+        'file-type-rs' => ['rs'],
+        'file-type-php' => ['php'],
+        'file-type-xml' => ['xml'],
+        'file-text' => ['md', 'markdown'],
+        'file-code' => ['py', 'c', 'h', 'cpp', 'cc', 'hpp', 'cs', 'json', 'yml', 'yaml'],
+        'file-settings' => ['ini', 'cfg', 'conf', 'env'],
+    ];
+
+    /**
+     * Returns the Tabler icon name (without the `ti-` prefix) of a file type, for a client
+     * that renders `<i class="ti ti-<name>">` itself - the counterpart of
+     * {@see self::getMimeIconClassByExtension()}, whose `mime-*` classes are the platform's
+     * own stylesheet sprites.
+     *
+     * @param string|File $ext the file extension or file object
+     * @return string e.g. `file-type-pdf`, `file` for an unknown extension
+     * @since 1.20
+     */
+    public static function getIconNameByExtension($ext): string
+    {
+        if ($ext instanceof File) {
+            $ext = FileHelper::getExtension($ext);
+        }
+
+        $ext = strtolower((string)$ext);
+
+        foreach (self::$iconNameExtensions as $name => $extensions) {
+            if (in_array($ext, $extensions, true)) {
+                return $name;
+            }
+        }
+
+        return 'file';
+    }
 }
