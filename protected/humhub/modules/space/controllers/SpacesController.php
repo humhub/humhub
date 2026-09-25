@@ -10,14 +10,11 @@ namespace humhub\modules\space\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
-use humhub\modules\space\components\SpaceDirectoryQuery;
 use humhub\modules\space\permissions\SpaceDirectoryAccess;
-use humhub\modules\space\widgets\SpaceDirectoryCard;
 use Yii;
-use yii\helpers\Url;
 
 /**
- * SpacesController displays users directory
+ * SpacesController displays the spaces directory (the `SpaceDirectory` island)
  *
  * @since 1.9
  */
@@ -45,33 +42,62 @@ class SpacesController extends Controller
      */
     public function actionIndex()
     {
-        $spaceDirectoryQuery = new SpaceDirectoryQuery();
+        $legacyParams = $this->translateLegacyParams(Yii::$app->request->getQueryParams());
+        if ($legacyParams !== null) {
+            return $this->redirect(array_merge(['/space/spaces'], $legacyParams), 301);
+        }
 
-        $urlParams = Yii::$app->request->getQueryParams();
-        unset($urlParams['page']);
-        array_unshift($urlParams, '/space/spaces/load-more');
-        $this->getView()->registerJsConfig('cards', [
-            'loadMoreUrl' => Url::to($urlParams),
-        ]);
-
-        return $this->render('index', [
-            'spaces' => $spaceDirectoryQuery,
-        ]);
+        return $this->render('index');
     }
 
     /**
-     * Action to load cards for next page by AJAX
+     * The directory's parameters before 1.20 in the ones of `GET /api/v2/space` it uses now:
+     * `keyword` → `q`, `connection=member|follow|none` → `scope=member|following|none`,
+     * `connection=archived` → `scope=archived` (the Status select's Archived option), `sort=newer|older` → `newest|oldest` (`sortOrder`,
+     * the old default, is the new one). Every other parameter is kept.
+     *
+     * @return array|null the translated parameters, `null` when none of the old ones is present
+     * @since 1.20
      */
-    public function actionLoadMore()
+    private function translateLegacyParams(array $params): ?array
     {
-        $spaceQuery = new SpaceDirectoryQuery();
+        $legacySorts = ['sortOrder' => null, 'newer' => 'newest', 'older' => 'oldest'];
+        $isLegacySort = is_string($params['sort'] ?? null) && array_key_exists($params['sort'], $legacySorts);
 
-        $spaceCards = '';
-        foreach ($spaceQuery->with('contentContainerRecord')->all() as $space) {
-            $spaceCards .= SpaceDirectoryCard::widget(['space' => $space]);
+        if (!array_key_exists('keyword', $params) && !array_key_exists('connection', $params) && !$isLegacySort) {
+            return null;
         }
 
-        return $spaceCards;
-    }
+        $keyword = $params['keyword'] ?? null;
+        $connection = $params['connection'] ?? null;
+        unset($params['keyword'], $params['connection']);
 
+        if (is_string($keyword) && trim($keyword) !== '') {
+            $params['q'] = $keyword;
+        }
+
+        $scope = match ($connection) {
+            'member' => 'member',
+            'follow' => 'following',
+            'none' => 'none',
+            default => null,
+        };
+        if ($scope !== null) {
+            $params['scope'] = $scope;
+        }
+        if ($connection === 'archived') {
+            $params['scope'] = 'archived';
+        }
+
+        if ($isLegacySort) {
+            $sort = $legacySorts[$params['sort']];
+            if ($sort === null) {
+                unset($params['sort']);
+            } else {
+                $params['sort'] = $sort;
+            }
+        }
+
+        return $params;
+    }
 }

@@ -88,7 +88,16 @@ export const requestParams = (filters, values) => {
     const params = {};
     for (const filter of filters) {
         const serialized = serializeValue(filter, values[filter.key]);
-        if (filter.type === 'checkbox' || serialized !== '') {
+        // A select option may carry its own request parameters (`params`) — e.g. a "Status"
+        // select whose "Archived" option means `archived=1` rather than a value of `scope`.
+        const option = filter.type === 'select' && serialized !== ''
+            ? (filter.options || []).find((candidate) => String(candidate.value) === serialized)
+            : null;
+        if (option && option.params && typeof option.params === 'object') {
+            for (const [name, value] of Object.entries(option.params)) {
+                params[name] = String(value);
+            }
+        } else if (filter.type === 'checkbox' || serialized !== '') {
             params[filter.key] = serialized;
         }
     }

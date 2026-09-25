@@ -1,65 +1,14 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2021 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
-use humhub\assets\CardsAsset;
-use humhub\helpers\Html;
-use humhub\helpers\ThemeHelper;
-use humhub\modules\space\components\SpaceDirectoryQuery;
-use humhub\modules\space\widgets\SpaceDirectoryCard;
-use humhub\modules\space\widgets\SpaceDirectoryFilters;
-use humhub\modules\space\widgets\SpaceDirectoryHeadingButtons;
-use yii\web\View;
+use humhub\components\View;
+use humhub\modules\space\widgets\SpaceDirectory;
 
 /* @var $this View */
-/* @var $spaces SpaceDirectoryQuery */
-
-CardsAsset::register($this);
 ?>
-<div class="panel panel-default">
-
-    <div class="panel-heading">
-        <?= Yii::t('SpaceModule.base', '<strong>Spaces</strong>'); ?>
-        <?= SpaceDirectoryHeadingButtons::widget() ?>
-    </div>
-
-    <div class="panel-body">
-        <?= SpaceDirectoryFilters::widget(); ?>
-    </div>
-
-</div>
-
-<div class="container<?= ThemeHelper::isFluid() ? '-fluid' : '' ?> gx-0 overflow-x-hidden">
-    <div class="row cards" aria-live="polite" aria-atomic="false">
-        <?php if (!$spaces->exists()): ?>
-            <div class="col-lg-12">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <p role="status" aria-live="polite" class="m-0">
-                            <strong><?= Yii::t('SpaceModule.base', 'No results found!') ?></strong><br>
-                            <?= Yii::t('SpaceModule.base', 'Try other keywords or remove filters.') ?>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        <?php endif; ?>
-
-        <?php foreach ($spaces->with('contentContainerRecord')->all() as $space) : ?>
-            <?= SpaceDirectoryCard::widget(['space' => $space]); ?>
-        <?php endforeach; ?>
-    </div>
-</div>
-
-<?php if (!$spaces->isLastPage()) : ?>
-    <?= Html::tag('div', '', [
-        'class' => 'cards-end',
-        'role' => 'status',
-        'aria-label' => Yii::t('SpaceModule.base', 'Loading more spaces'),
-        'aria-live' => 'polite',
-        'data-current-page' => $spaces->pagination->getPage() + 1,
-        'data-total-pages' => $spaces->pagination->getPageCount(),
-    ]) ?>
-<?php endif; ?>
+<?= SpaceDirectory::widget() ?>

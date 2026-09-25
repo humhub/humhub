@@ -20,7 +20,7 @@ register('ReactionLink', ReactionLink);
 registerSlotComponent('comment.links', 'ReactionLink', { sortOrder: 150 });
 ```
 
-`ExtensionSlot` renders every component registered for its name (via `registerSlotComponent(slotName, componentName, {sortOrder})`), passing `context` down as props to each. Entries render in `sortOrder` order (default `100`), then registration order for ties. Slot names follow the same `<module>.<region>` convention already used elsewhere: `comment.links`, appended after the core Reply/Like links in `.wall-entry-controls`.
+`ExtensionSlot` renders every component registered for its name (via `registerSlotComponent(slotName, componentName, {sortOrder})`), passing `context` down as props to each. Entries render in `sortOrder` order (default `100`), then registration order for ties. Slot names follow the same `<module>.<region>` convention already used elsewhere: `comment.links`, appended after the core Reply/Like links in `.wall-entry-controls`; `space.card-subtitle`, the line under the space name on a card of the spaces directory (`SpaceCard.vue`, context `{ space }` — e.g. a module's category of the space, from its own endpoint).
 
 **Registration order is unconstrained** — `registerSlotComponent()` does not require `componentName` to be registered yet, and `register()` does not require any slot referencing it to exist yet. Whichever half arrives second, `ExtensionSlot` picks it up reactively (no remount). A slot with nothing registered — or nothing *currently registered* — renders nothing: no placeholder, no warning; modules stay entirely optional.
 

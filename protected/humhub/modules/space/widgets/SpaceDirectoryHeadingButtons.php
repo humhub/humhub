@@ -44,6 +44,7 @@ class SpaceDirectoryHeadingButtons extends Menu
                 'sortOrder' => 100,
                 'icon' => 'plus',
                 'htmlOptions' => [
+                    'class' => 'btn-accent',
                     'data-action-click' => 'ui.modal.load',
                 ],
             ]));

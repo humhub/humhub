@@ -382,7 +382,7 @@ change and `DELETE` to delete (`204`) — a write is one of two things, and each
 
 - **A state of the caller towards something** — a relationship the caller can read back — is
   a resource noun under its target: `like/<recordId>`, `space/<id>/membership`,
-  `user/<id>/friendship`. `GET` reads it, **`PUT` sets it** and `DELETE` removes it; both
+  `space/<id>/follow`, `user/<id>/friendship`. `GET` reads it, **`PUT` sets it** and `DELETE` removes it; both
   writes answer the state in the shape `GET` returns. Which transition a `PUT` stands for
   (joining, applying or accepting an invite) follows from the current state and is decided by
   the server.
@@ -393,7 +393,7 @@ change and `DELETE` to delete (`204`) — a write is one of two things, and each
   installed) answers that state as well.
 
 Borderline cases are decided by one question: **can the caller read it back as a state?** If
-so, it is a resource; otherwise it is an operation. A like, a membership or a friendship is
+so, it is a resource; otherwise it is an operation. A like, a membership, a follow or a friendship is
 something the caller has; an installation or an enabling is something that happens.
 
 GitHub (`PUT /user/following/{user}`, `PUT …/pulls/{n}/merge`) and Stripe

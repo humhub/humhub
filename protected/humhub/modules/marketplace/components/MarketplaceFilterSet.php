@@ -32,7 +32,6 @@ class MarketplaceFilterSet extends FilterSet
         $this->addFilter('status', [
             'type' => 'select',
             'label' => Yii::t('MarketplaceModule.base', 'Status'),
-            'placeholder' => Yii::t('MarketplaceModule.base', 'Status (All)'),
             'options' => [
                 ['value' => 'installed', 'label' => Yii::t('MarketplaceModule.base', 'Installed')],
                 ['value' => 'notInstalled', 'label' => Yii::t('MarketplaceModule.base', 'Not Installed')],
@@ -44,7 +43,6 @@ class MarketplaceFilterSet extends FilterSet
         $this->addFilter('tag', [
             'type' => 'select',
             'label' => Yii::t('MarketplaceModule.base', 'Type'),
-            'placeholder' => Yii::t('MarketplaceModule.base', 'Type (All)'),
             'options' => [
                 ['value' => 'professional', 'label' => Yii::t('MarketplaceModule.base', 'Professional Edition')],
                 ['value' => 'official', 'label' => Yii::t('MarketplaceModule.base', 'Official')],
@@ -59,7 +57,6 @@ class MarketplaceFilterSet extends FilterSet
         $this->addFilter('useCase', [
             'type' => 'select',
             'label' => Yii::t('MarketplaceModule.base', 'Use Case'),
-            'placeholder' => Yii::t('MarketplaceModule.base', 'Use Case (All)'),
             'optionsUrl' => ApiRules::url('marketplace/use-case'),
             'sortOrder' => 400,
         ]);
@@ -67,7 +64,6 @@ class MarketplaceFilterSet extends FilterSet
         $this->addFilter('categoryId', [
             'type' => 'select',
             'label' => Yii::t('MarketplaceModule.base', 'Category'),
-            'placeholder' => Yii::t('MarketplaceModule.base', 'Category (All)'),
             'optionsUrl' => ApiRules::url('marketplace/category'),
             'sortOrder' => 500,
         ]);

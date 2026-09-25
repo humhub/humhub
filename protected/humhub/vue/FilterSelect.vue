@@ -71,10 +71,11 @@ let uid = 0;
  * - `v-model` (`modelValue`): the chosen option's `value`, `''` for none. A value that is not
  *   (yet) among the options — e.g. one read from the page URL before remote options arrived —
  *   is shown as is.
- * - Props: `options` (`[{ value, label }]`; an option with the empty value is not listed, its
- *   label serves as the placeholder when none is given), `placeholder`, `label` (accessible
- *   name, defaults to the placeholder), `disabled`, `loading` (disabled, with a spinner in
- *   place of the chevron), `id` (of the toggle button, for an external `<label for>`).
+ * - Props: `options` (`[{ value, label }]`; an option with the empty value is not listed),
+ *   `placeholder` (else the empty option's label, else `label` — the field's name in the
+ *   placeholder colour reads as "no choice"), `label` (accessible name, defaults to the
+ *   placeholder), `disabled`, `loading` (disabled, with a spinner in place of the chevron),
+ *   `id` (of the toggle button, for an external `<label for>`).
  * - Emits `update:modelValue` with the chosen value, or `''` when cleared.
  * - Keyboard and ARIA: the toggle is a button with `aria-haspopup="listbox"`/`aria-expanded`;
  *   Enter, Space, ArrowDown and ArrowUp open it and move focus into the listbox, where the arrow
@@ -121,7 +122,11 @@ export default {
                 return this.placeholder;
             }
             const empty = this.options.find((option) => String(option.value) === '');
-            return empty ? String(empty.label) : '';
+            if (empty) {
+                return String(empty.label);
+            }
+            // The field's name reads as "no choice" in the placeholder colour.
+            return this.label;
         },
         selected() {
             return this.choices.find((option) => option.value === this.modelValue) || null;

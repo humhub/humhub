@@ -13,11 +13,6 @@ humhub.module('content.container', function (module, require, $) {
         client.post(evt).then(function (response) {
             if (response.success) {
                 additions.switchButtons(evt.$trigger, $('[data-content-container-id="' + containerId + '"].unfollowButton'));
-                if (response.space) {
-                    // The space menu keeps itself in step - it listens for this (see
-                    // space/vue/SpaceChooser.vue).
-                    require('event').trigger('humhub:space:followed', [response.space]);
-                }
             }
         }).catch(function (e) {
             module.log.error(e, true);
@@ -29,9 +24,6 @@ humhub.module('content.container', function (module, require, $) {
         client.post(evt).then(function (response) {
             if (response.success) {
                 additions.switchButtons(evt.$trigger, $('[data-content-container-id="' + containerId + '"].followButton'));
-                if (response.space) {
-                    require('event').trigger('humhub:space:unfollowed', [response.space]);
-                }
             }
         }).catch(function (e) {
             module.log.error(e, true);

@@ -18,7 +18,8 @@ use yii\helpers\ArrayHelper;
  * files). The data-driven successor of the HTML-rendering {@see \humhub\widgets\DirectoryFilters}.
  *
  * A definition: `type` (`text`, `select`, `tags`, `checkbox`), `label`, and as needed
- * `placeholder`, `options` (`[{value, label}]`), `optionsUrl` (a select loads further options
+ * `placeholder`, `options` (`[{value, label, params?}]` — an option with `params` sends those
+ * request parameters instead of its value, e.g. a "Status" option meaning `archived=1`), `optionsUrl` (a select loads further options
  * from an endpoint answering `{results: [{id, name, count?}]}`), `multiple` (tags), `default`,
  * `hidden` (URL-synced and sent, never rendered — context a link carries in, dropped as soon as
  * the user changes a visible filter), `wide`, `sortOrder`. The key is the query parameter the

@@ -129,8 +129,8 @@ const same = (filters, a, b) => filters.every((filter) => JSON.stringify(a?.[fil
  *   the shown and applied values, without an emit.
  * - `text`: a search field with a search icon (`placeholder`, else `label`, as placeholder;
  *   `label` as accessible name).
- * - `select`: a `FilterSelect` — its `placeholder` is the "all" state, a static option with the
- *   empty value is not listed (its label is the placeholder fallback). With `optionsUrl` it
+ * - `select`: a `FilterSelect` — its placeholder is the "all" state: `placeholder`, else the
+ *   label of a static option with the empty value (which is not listed), else `label`. With `optionsUrl` it
  *   loads further options (`{results: [{id, name, count?}]}`) after the static `options` and
  *   stays disabled (spinner) until they are there; a failed load leaves it usable with the
  *   static options only.
@@ -147,7 +147,8 @@ const same = (filters, a, b) => filters.every((filter) => JSON.stringify(a?.[fil
  *   and a `ResizeObserver` closes the bar again once it no longer collapses.
  * - `idPrefix`: prefix of the controls' ids (`<idPrefix>-<key>`).
  * - Instance API (template ref): `setFilter(key, value)` sets one filter from outside the bar
- *   (applied like a change in the bar, returns `false` for an unknown key), `reloadOptions()`
+ *   (applied like a change in the bar but at once — also a text filter, whose pending debounce
+ *   it cancels, applying whatever else was typed with it; returns `false` for an unknown key), `reloadOptions()`
  *   re-runs every `optionsUrl` filter's load, for when something outside the bar changed what
  *   the options (or their counts) should be.
  *
@@ -213,6 +214,8 @@ export default {
     },
     created() {
         this.debounceTimer = null;
+        // Set by `setFilter()` until its change is applied: applied at once, never debounced.
+        this.applyNow = false;
         this.applied = { ...this.draft };
         if (!same(this.filters, this.applied, this.modelValue)) {
             this.$emit('update:modelValue', { ...this.applied });
@@ -236,6 +239,9 @@ export default {
             if (!this.filters.some((filter) => filter.key === key)) {
                 return false;
             }
+            // Set from outside the bar (e.g. a card's tag): nobody is typing, so the text
+            // debounce does not apply — see `onDraftChange()`.
+            this.applyNow = true;
             this.update(key, value);
             return true;
         },
@@ -279,6 +285,7 @@ export default {
 
             const changed = this.filters.filter((filter) => JSON.stringify(values[filter.key]) !== JSON.stringify(this.applied[filter.key]));
             if (!changed.length) {
+                this.applyNow = false;
                 return;
             }
 
@@ -291,9 +298,10 @@ export default {
                 }
             }
 
-            if (changed.every((filter) => filter.type === 'text')) {
+            if (!this.applyNow && changed.every((filter) => filter.type === 'text')) {
                 this.debounceTimer = setTimeout(() => this.apply(), TEXT_DEBOUNCE_MS);
             } else {
+                this.applyNow = false;
                 this.apply();
             }
         },

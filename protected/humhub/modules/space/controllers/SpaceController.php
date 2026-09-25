@@ -12,7 +12,6 @@ use humhub\modules\content\components\ContentContainerController;
 use humhub\components\behaviors\AccessControl;
 use humhub\modules\content\widgets\WallCreateContentMenu;
 use humhub\modules\space\models\Space;
-use humhub\modules\space\widgets\Chooser;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserListBox;
 use humhub\modules\content\actions\ContentContainerStream;
@@ -25,8 +24,8 @@ use yii\db\Expression;
 /**
  * SpaceController is the main controller for spaces.
  *
- * It show the space itself and handles all related tasks like following or
- * memberships.
+ * It shows the space itself. Following a space is `space/<id>/follow` of the HTTP API
+ * (`controllers\api\FollowController`) since 1.20.
  *
  * @property-read Space $contentContainer
  *
@@ -105,55 +104,6 @@ class SpaceController extends ContentContainerController
             'isMember' => $space->isMember(),
             'isSingleContentRequest' => !empty(Yii::$app->request->getQueryParam('contentId')),
         ]);
-    }
-
-    /**
-     * Follows a Space
-     */
-    public function actionFollow()
-    {
-        if (Yii::$app->getModule('space')->disableFollow) {
-            throw new HttpException(403, Yii::t('ContentModule.base', 'This action is disabled!'));
-        }
-
-        $this->forcePostRequest();
-        $space = $this->getSpace();
-
-        $success = false;
-
-        if (!$space->isMember()) {
-            // follow without notifications by default
-            $success = $space->follow(null, false);
-        }
-
-        if (Yii::$app->request->isAjax) {
-            return $this->asJson([
-                'success' => $success,
-                'space' => Chooser::getSpaceResult($space, true, ['isFollowing' => true]),
-            ]);
-        }
-
-        return $this->redirect($space->getUrl());
-    }
-
-    /**
-     * Unfollows a Space
-     */
-    public function actionUnfollow()
-    {
-        $this->forcePostRequest();
-        $space = $this->getSpace();
-
-        $success = $space->unfollow();
-
-        if (Yii::$app->request->isAjax) {
-            return $this->asJson([
-                'success' => $success,
-                'space' => $space->guid,
-            ]);
-        }
-
-        return $this->redirect($space->getUrl());
     }
 
     /**

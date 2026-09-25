@@ -334,4 +334,168 @@ describe('CardDirectory', () => {
         expect(params(globalThis.humhubStubs.client.get.mock.calls[1][0]).get('status')).toBe('installed');
         expect(window.location.search).toBe('?q=abc');
     });
+
+    it('appends its parameters to a url that already carries a query string', async () => {
+        window.history.replaceState(null, '', '/directory?q=abc');
+        mountDirectory({ url: '/api/v2/space?purpose=directory' });
+        await flushPromises();
+
+        const url = globalThis.humhubStubs.client.get.mock.calls[0][0];
+        expect(url.startsWith('/api/v2/space?purpose=directory&')).toBe(true);
+        const query = params(url);
+        expect(query.get('purpose')).toBe('directory');
+        expect(query.get('q')).toBe('abc');
+        expect(query.get('page')).toBe('1');
+    });
+
+    it('forwards the skeleton slot to the grid', () => {
+        globalThis.humhubStubs.client.get = vi.fn(() => new Promise(() => {}));
+        const wrapper = mount(CardDirectory, {
+            props: { url: '/api/v2/things', filters, skeletonCount: 2 },
+            slots: {
+                card: ({ item }) => h('span', { class: 'thing' }, item.name),
+                skeleton: ({ index }) => h('span', { class: 'own-skeleton' }, String(index)),
+            },
+        });
+
+        expect(wrapper.findAll('.own-skeleton').map((n) => n.text())).toEqual(['0', '1']);
+        expect(wrapper.find('.c-card-skeleton').exists()).toBe(false);
+    });
+
+    it('forwards the actions prop to its page toolbar', async () => {
+        const wrapper = mountDirectory({
+            title: 'Spaces',
+            actions: [{ id: 'create', icon: 'plus', label: 'Create', url: '/create' }],
+        });
+        await flushPromises();
+
+        const button = wrapper.find('.c-page-toolbar__actions a.c-icon-button');
+        expect(button.attributes('href')).toBe('/create');
+        expect(button.attributes('aria-label')).toBe('Create');
+    });
+});
+
+describe('CardDirectory item states', () => {
+    const mountWithStates = (itemStates, props = {}) => mount(CardDirectory, {
+        props: { url: '/api/v2/things', filters, itemStates, ...props },
+        slots: {
+            card: ({ item, state }) => h('span', { class: 'thing' }, `${item.name}:${state === undefined ? 'pending' : JSON.stringify(state)}`),
+        },
+    });
+    const texts = (wrapper) => wrapper.findAll('.thing').map((n) => n.text());
+
+    beforeEach(() => {
+        window.history.replaceState(null, '', '/directory');
+    });
+
+    it('loads the states of every page once, with its ids, and appends those of further pages', async () => {
+        globalThis.humhubStubs.client.get = vi.fn()
+            .mockReturnValueOnce(Promise.resolve(envelope([{ id: 1, name: 'One' }, { id: 2, name: 'Two' }], { total: 3, pages: 2 })))
+            .mockReturnValueOnce(Promise.resolve(envelope([{ id: 3, name: 'Three' }], { total: 3, page: 2, pages: 2 })));
+        const itemStates = vi.fn((ids) => Promise.resolve(Object.fromEntries(ids.map((id) => [id, { n: id }]))));
+        const wrapper = mountWithStates(itemStates);
+        await flushPromises();
+
+        expect(itemStates).toHaveBeenCalledTimes(1);
+        expect(itemStates).toHaveBeenCalledWith([1, 2]);
+        expect(texts(wrapper)).toEqual(['One:{"n":1}', 'Two:{"n":2}']);
+
+        await wrapper.find('.cards-more button').trigger('click');
+        await flushPromises();
+
+        expect(itemStates).toHaveBeenCalledTimes(2);
+        expect(itemStates).toHaveBeenLastCalledWith([3]);
+        expect(texts(wrapper)).toEqual(['One:{"n":1}', 'Two:{"n":2}', 'Three:{"n":3}']);
+    });
+
+    it('uses itemKey for the ids and gives an item missing from the answer state null', async () => {
+        globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(envelope([{ guid: 'a', name: 'A' }, { guid: 'b', name: 'B' }])));
+        const itemStates = vi.fn(() => Promise.resolve({ a: { x: 1 } }));
+        const wrapper = mountWithStates(itemStates, { itemKey: 'guid' });
+        await flushPromises();
+
+        expect(itemStates).toHaveBeenCalledWith(['a', 'b']);
+        expect(texts(wrapper)).toEqual(['A:{"x":1}', 'B:null']);
+    });
+
+    it('renders the cards before their states arrive', async () => {
+        const pending = deferred();
+        globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(envelope([{ id: 1, name: 'One' }])));
+        const wrapper = mountWithStates(() => pending.promise);
+        await flushPromises();
+
+        expect(texts(wrapper)).toEqual(['One:pending']);
+        pending.resolve({ 1: 'ok' });
+        await flushPromises();
+        expect(texts(wrapper)).toEqual(['One:"ok"']);
+    });
+
+    it('logs a failed request and renders its cards with state null', async () => {
+        const error = vi.spyOn(globalThis.humhub.modules.vue.log, 'error').mockImplementation(() => {});
+        globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(envelope([{ id: 1, name: 'One' }])));
+        const wrapper = mountWithStates(() => Promise.reject(new Error('Down')));
+        await flushPromises();
+
+        expect(texts(wrapper)).toEqual(['One:null']);
+        expect(error).toHaveBeenCalledWith(expect.objectContaining({ message: 'Down' }));
+        error.mockRestore();
+    });
+
+    it('ignores the states of a page that is no longer shown, and reload() refetches them', async () => {
+        const stale = deferred();
+        globalThis.humhubStubs.client.get = vi.fn()
+            .mockReturnValueOnce(Promise.resolve(envelope([{ id: 1, name: 'One' }])))
+            .mockReturnValueOnce(Promise.resolve(envelope([{ id: 1, name: 'One' }])));
+        const itemStates = vi.fn()
+            .mockReturnValueOnce(stale.promise)
+            .mockReturnValueOnce(Promise.resolve({ 1: 'fresh' }));
+        const wrapper = mountWithStates(itemStates);
+        await flushPromises();
+
+        wrapper.vm.reload();
+        await flushPromises();
+        expect(itemStates).toHaveBeenCalledTimes(2);
+        expect(texts(wrapper)).toEqual(['One:"fresh"']);
+
+        stale.resolve({ 1: 'stale' });
+        await flushPromises();
+        expect(texts(wrapper)).toEqual(['One:"fresh"']);
+    });
+
+    it('merges a patch into one state with replaceState()', async () => {
+        globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(envelope([{ id: 1, name: 'One' }, { id: 2, name: 'Two' }])));
+        const wrapper = mountWithStates(() => Promise.resolve({ 1: { a: 1, b: 2 }, 2: { a: 3 } }));
+        await flushPromises();
+
+        wrapper.vm.replaceState(1, { b: 5, c: 6 });
+        await flushPromises();
+
+        expect(texts(wrapper)).toEqual(['One:{"a":1,"b":5,"c":6}', 'Two:{"a":3}']);
+    });
+
+    it('keeps a replaceState() patch made while the states are pending over the answer', async () => {
+        const pending = deferred();
+        globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(envelope([{ id: 1, name: 'One' }, { id: 2, name: 'Two' }])));
+        const wrapper = mountWithStates(() => pending.promise);
+        await flushPromises();
+
+        wrapper.vm.replaceState(1, { b: 5 });
+        pending.resolve({ 1: { a: 1, b: 2 }, 2: { a: 3 } });
+        await flushPromises();
+
+        expect(texts(wrapper)).toEqual(['One:{"a":1,"b":5}', 'Two:{"a":3}']);
+    });
+
+    it('never calls itemStates for an empty page, and passes no state without it', async () => {
+        globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(envelope([])));
+        const itemStates = vi.fn(() => Promise.resolve({}));
+        mountWithStates(itemStates);
+        await flushPromises();
+        expect(itemStates).not.toHaveBeenCalled();
+
+        globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(envelope([{ id: 1, name: 'One' }])));
+        const wrapper = mountWithStates(undefined);
+        await flushPromises();
+        expect(texts(wrapper)).toEqual(['One:pending']);
+    });
 });

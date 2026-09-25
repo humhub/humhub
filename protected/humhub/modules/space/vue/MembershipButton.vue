@@ -148,21 +148,22 @@
  *
  * ## The follow button next door
  *
- * Following is offered to non-members only, so a membership change flips the sibling
- * `FollowButton` — which is still a server-rendered widget. The legacy button had the server
- * tell it what to do (`data-show-buttons`/`data-hide-buttons` on the re-rendered markup); the
- * island toggles the buttons of its own space itself, addressed exactly like
- * `humhub.content.container.js` addresses them (by `data-content-container-id` and the
- * `.followButton`/`.unfollowButton` classes).
+ * Following is offered to non-members only, so a membership change matters to the
+ * `FollowButton` of the same space. The island does not touch it: after every transition it
+ * dispatches `space:membership-changed` `{spaceId, state}` on the `events` bridge, and the
+ * follow button hides itself for a member and fetches its own state again once the viewer is
+ * no longer one (see `FollowButton.vue`).
  *
  * @since 1.20
  */
-import { apiUrl, client, i18n, log, modal } from '@humhub/vue';
+import { apiUrl, client, events, i18n, log, modal } from '@humhub/vue';
 
 const STATE_NONE = 'none';
 const STATE_INVITED = 'invited';
 const STATE_APPLICANT = 'applicant';
 const STATE_MEMBER = 'member';
+
+const MEMBERSHIP_CHANGED = 'space:membership-changed';
 
 export default {
     // `base` covers the modal's own Cancel/Close labels, `SpaceModule.base` everything else.
@@ -196,7 +197,6 @@ export default {
             needsApproval: this.initial ? !!this.initial.needsApproval : false,
             canLeave: this.initial ? !!this.initial.canLeave : false,
             isOwner: this.initial ? !!this.initial.isOwner : false,
-            isFollowing: this.initial ? !!this.initial.isFollowing : false,
             busy: false,
             showRequest: false,
             requestSent: false,
@@ -369,7 +369,7 @@ export default {
         },
         /**
          * Every transition answers the new state, so there is nothing to derive here: apply
-         * it, then align what depends on it.
+         * it, then tell whoever depends on it (the follow button, the page on joining).
          */
         mutate(request) {
             if (this.busy) {
@@ -382,6 +382,7 @@ export default {
             return request().then((response) => {
                 this.busy = false;
                 this.apply(response);
+                events.trigger(MEMBERSHIP_CHANGED, [{ spaceId: this.spaceId, state: this.state }]);
 
                 if (!wasMember && this.isMember && this.reloadOnJoin) {
                     // Deliberately no state juggling afterwards - the page is on its way out.
@@ -409,33 +410,6 @@ export default {
             this.needsApproval = !!state.needsApproval;
             this.canLeave = !!state.canLeave;
             this.isOwner = !!state.isOwner;
-            this.isFollowing = !!state.isFollowing;
-
-            this.syncFollowButtons();
-        },
-        /**
-         * The server-rendered follow/unfollow pair of this space: hidden for a member,
-         * otherwise exactly one of them is shown. Absent (guests, invisible spaces) means
-         * nothing to do.
-         */
-        syncFollowButtons() {
-            const selector = `[data-content-container-id="${this.spaceId}"]`;
-            const follow = document.querySelectorAll(`${selector}.followButton`);
-            const unfollow = document.querySelectorAll(`${selector}.unfollowButton`);
-
-            if (this.state === STATE_MEMBER) {
-                this.toggle(follow, false);
-                this.toggle(unfollow, false);
-                return;
-            }
-
-            this.toggle(follow, !this.isFollowing);
-            this.toggle(unfollow, this.isFollowing);
-        },
-        toggle(elements, visible) {
-            elements.forEach((element) => {
-                element.classList.toggle('d-none', !visible);
-            });
         },
         escape(value) {
             const element = document.createElement('div');

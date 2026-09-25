@@ -47,6 +47,21 @@ describe('filterQuery', () => {
         expect(requestParams(filters, values)).toEqual({ q: 'cal', status: 'update,installed', sort: 'name', mine: '0' });
     });
 
+    it('sends the parameters of a select option that carries its own instead of its value', () => {
+        const status = [{
+            key: 'scope',
+            type: 'select',
+            options: [
+                { value: 'member', label: 'Member' },
+                { value: 'archived', label: 'Archived', params: { archived: 1 } },
+            ],
+        }];
+
+        expect(requestParams(status, { scope: 'archived' })).toEqual({ archived: '1' });
+        expect(requestParams(status, { scope: 'member' })).toEqual({ scope: 'member' });
+        expect(requestParams(status, { scope: '' })).toEqual({});
+    });
+
     it('knows whether a value is the default', () => {
         expect(isDefault(filters[2], [])).toBe(true);
         expect(isDefault(filters[2], ['update'])).toBe(false);

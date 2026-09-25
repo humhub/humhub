@@ -1220,9 +1220,12 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
       is untouched, including its `target=chooser` mode, and so are
       `space\widgets\SpaceChooserItem` and `Chooser::getSpaceResult()` — the space picker and
       modules (`humhub/sharebetween`, `cuzy-app/cloner`, `cuzy-app/group-advanced`) use them.
-    - Following or unfollowing a space now triggers `humhub:space:followed` /
-      `humhub:space:unfollowed` (`humhub.content.container.js`) instead of calling into the
-      space menu's widget. Anything that kept its own copy of the menu list can listen for them.
+    - The menu re-reads its list when the caller's relationship to a space changes: on the
+      domain events `space:follow-changed` `{spaceId, isFollowing, followerCount, canFollow}`
+      (dispatched by the `FollowButton` island) and `space:membership-changed`
+      `{spaceId, state}` (dispatched by the `MembershipButton` island) of the `events` bridge,
+      and on `humhub:space:archived` / `humhub:space:unarchived`. Anything that keeps its own
+      copy of the menu list listens for the same events.
   - **Attached files are a Vue island** (`AttachedFiles`, `protected/humhub/modules/file/vue/`,
     `FileVueAsset`). `file\widgets\ShowFiles` keeps its class, `$object`, `$active` and
     `$preview` and is now only the mount point: it serializes the record's stream files with
@@ -1362,3 +1365,69 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `getAvailability()`, `findInstalledVersion()`, `isUpdateAvailable()`, `getUseCaseList()`
     (humhub.com's `useCases` field, listed with their module counts by the new use-case
     filter); `MarketplaceService::getPublicSettings()`/`updateSettings()`.
+
+- **Spaces directory rebuilt as a Vue island.** `/spaces` renders
+  `humhub\modules\space\widgets\SpaceDirectory` (`vue/SpaceDirectory.vue` on the core
+  `CardDirectory`) and reads everything from `GET /api/v2/space?purpose=directory`,
+  `GET /api/v2/space/states` and `GET|PUT|DELETE /api/v2/space/<id>/follow` (see
+  `docs/api/src/space.yaml`).
+  - **Removed:** the widgets `SpaceDirectoryCard`, `SpaceDirectoryActionButtons`,
+    `SpaceDirectoryIcons`, `SpaceDirectoryStatus`, `SpaceDirectoryTagList` and
+    `SpaceDirectoryFilters` of `humhub\modules\space\widgets` with the views
+    `spaceDirectoryCard.php`, `spaceDirectoryIcons.php` and `spaceDirectoryStatus.php`;
+    `humhub\modules\space\components\SpaceDirectoryQuery`; the route `space/spaces/load-more`
+    (the page no longer uses `humhub.cards.js`, which stays for the people directory); the web
+    actions `space/space/follow` and `space/space/unfollow` (`SpaceController::actionFollow()`/
+    `actionUnfollow()`) — follow through `PUT`/`DELETE /api/v2/space/<id>/follow` instead. A theme
+    overriding one of the removed views, or a module rendering one of the removed widgets, has to
+    move to the island.
+  - **Replaced:** a module restricting or extending the directory's list on
+    `SpaceDirectoryQuery::EVENT_INIT` registers on
+    `humhub\modules\space\components\SpaceListQuery::EVENT_INIT` instead. `SpaceListQuery` is
+    the space search behind `GET /api/v2/space` — the directory, the space chooser and pickers
+    all read it — and the event (`SpaceListQueryEvent`) carries the `query`
+    (`ActiveQuerySpace`, already filtered, visibility and blocked spaces applied), all request
+    `params` (including those the core does not know, e.g. a module's `category`), the `user`
+    and the `purpose` (`directory`, `picker`, `chooser` or `null`). A handler that only
+    concerns the directory checks `$event->purpose === SpaceListQuery::PURPOSE_DIRECTORY`; the
+    query no longer reads the request itself.
+  - **Replaced:** a module adding directory filters on `SpaceDirectoryFilters::EVENT_INIT` (or
+    touching them on `EVENT_BEFORE_RUN`) registers on
+    `humhub\modules\space\components\SpaceDirectoryFilterSet::EVENT_INIT` instead and adds a
+    definition (`addFilter('key', ['type' => 'text'|'select'|'tags'|'checkbox', 'label' => …])`,
+    see `humhub\components\filter\FilterSet`) instead of HTML. The key is the query parameter
+    the value travels in — on the page URL and to `GET /api/v2/space`, which passes it on to
+    `SpaceListQuery::EVENT_INIT` under the same name, where the module narrows the list.
+  - **Changed:** the directory's URL parameters follow the API: `q` instead of `keyword`,
+    `scope=member|following|none|archived` instead of `connection=member|follow|none|archived`, and `sort=name|newest|oldest` (the default order needs no
+    parameter) instead of `sort=name|newer|older|sortOrder`. Old links keep working —
+    `SpacesController::actionIndex()` redirects them (`301`) to the new parameters, other
+    parameters kept. The space's tag links (`widgets/views/spaceTags.php`) carry `q`.
+  - **Changed:** the meta search's space provider (`space\search\SpaceSearchProvider`) builds its
+    results with `SpaceListQuery` and `purpose=directory`, so restrictions a module applies to the
+    directory apply to it too, as they did through `SpaceDirectoryQuery`.
+  - **Changed:** `space\widgets\FollowButton` (space header) renders the `FollowButton` Vue
+    island (`vue/FollowButton.vue`) on `space/<id>/follow`; `$space` is unchanged. Of
+    `followOptions`/`unfollowOptions` only `class` is used (the classes of the "Follow" and
+    "Following" states; defaults now `btn btn-secondary btn-sm` and
+    `btn btn-secondary btn-sm active`), every other option is ignored, as are `followLabel` and
+    `unfollowLabel` — the island renders its own labels ("Following" reads "Unfollow" on
+    hover/focus). The rendered markup no longer has the `.followButton`/`.unfollowButton` links
+    with `data-action-click="content.container.follow|unfollow"`; the `MembershipButton` and the
+    follow button of a space keep each other in sync through the `space:membership-changed` and
+    `space:follow-changed` events of the `events` bridge. `content.container.follow|unfollow`
+    stays for the user profile's follow button.
+  - **Changed:** the entries of `space\widgets\SpaceDirectoryHeadingButtons` (still a `Menu`, still
+    extended on its `EVENT_INIT`) are no longer rendered by its view but handed to the island as
+    data (`humhub\widgets\menu\Menu::getEntriesData()`) and rendered by `PageToolbar` as icon
+    buttons: the entry's `icon`, its `label` as tooltip and accessible name. Only `MenuLink`
+    entries are shown. A `btn-secondary` (default), `btn-accent` or `btn-primary` class in the
+    entry's `htmlOptions` picks the button variant ("Create Space" is `btn-accent`), an entry
+    with `data-action-click="ui.modal.load"` (or `data-bs-target="#globalModal"`) opens its URL
+    in the global modal, other `htmlOptions` are passed on as link attributes.
+  - **New:** `space\components\SpaceListQuery`, `SpaceListQueryEvent`, `SpaceDirectoryFilterSet`;
+    `space\serializers\FollowSerializer`, `SpaceSerializer::counts()`,
+    `MembershipSerializer::states()`, `space\models\Membership::preloadForUser()`;
+    `humhub\widgets\menu\Menu::getEntriesData()`; the `SpaceCard` extension slot
+    `space.card-subtitle` (`registerSlotComponent`, receives the `space`), where a module shows
+    its own line under the space name (e.g. a category) from its own endpoint.

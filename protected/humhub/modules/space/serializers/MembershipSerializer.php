@@ -10,6 +10,7 @@ namespace humhub\modules\space\serializers;
 
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\Follow;
 use Yii;
 
 /**
@@ -59,7 +60,7 @@ class MembershipSerializer
      *     isFollowing: bool,
      * }
      */
-    public static function state(Space $space): array
+    public static function state(Space $space, ?bool $isFollowing = null): array
     {
         $membership = $space->getMembership();
         $isOwner = $space->isSpaceOwner();
@@ -78,8 +79,41 @@ class MembershipSerializer
             'isOwner' => $isOwner,
             // Not membership state, but the state of the sibling follow button the same UI
             // shows: following is only offered to non-members, so a membership change flips it.
-            'isFollowing' => !Yii::$app->user->isGuest && $space->isFollowedByUser(),
+            'isFollowing' => $isFollowing ?? (!Yii::$app->user->isGuest && $space->isFollowedByUser()),
         ];
+    }
+
+    /**
+     * {@see self::state()} of the current user for a batch of spaces, keyed by space id — the
+     * memberships and follows of the batch are loaded with one query each
+     * ({@see Membership::preloadForUser()}) instead of one per space.
+     *
+     * @param Space[] $spaces
+     * @return array<int, array> by space id
+     */
+    public static function states(array $spaces): array
+    {
+        if ($spaces === []) {
+            return [];
+        }
+
+        $ids = array_map(static fn(Space $space) => $space->id, $spaces);
+        $followed = [];
+
+        if (!Yii::$app->user->isGuest) {
+            Membership::preloadForUser($ids, Yii::$app->user->id);
+            $followed = array_flip(array_map('intval', Follow::find()
+                ->select('object_id')
+                ->where(['user_id' => Yii::$app->user->id, 'object_model' => Space::class, 'object_id' => $ids])
+                ->column()));
+        }
+
+        $states = [];
+        foreach ($spaces as $space) {
+            $states[$space->id] = self::state($space, isset($followed[$space->id]));
+        }
+
+        return $states;
     }
 
     private static function resolveState(?Membership $membership): string

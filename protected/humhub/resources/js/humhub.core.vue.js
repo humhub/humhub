@@ -121,7 +121,7 @@
     key: 1,
     class: "c-card-grid__message c-card-grid__message--error"
   };
-  const _hoisted_4$9 = {
+  const _hoisted_4$a = {
     role: "alert",
     class: "c-card-grid__message-text"
   };
@@ -194,7 +194,11 @@
                       style: vue.normalizeStyle({ "--card-stagger-index": n - 1 })
                     },
                     [
-                      vue.createVNode(_component_CardSkeleton)
+                      vue.renderSlot(_ctx.$slots, "skeleton", {
+                        index: n - 1
+                      }, () => [
+                        vue.createVNode(_component_CardSkeleton)
+                      ])
                     ],
                     6
                     /* CLASS, STYLE */
@@ -205,7 +209,7 @@
               )) : $props.error ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_3$b, [
                 vue.createElementVNode(
                   "p",
-                  _hoisted_4$9,
+                  _hoisted_4$a,
                   vue.toDisplayString($props.error),
                   1
                   /* TEXT */
@@ -335,7 +339,10 @@
           return this.placeholder;
         }
         const empty = this.options.find((option) => String(option.value) === "");
-        return empty ? String(empty.label) : "";
+        if (empty) {
+          return String(empty.label);
+        }
+        return this.label;
       },
       selected() {
         return this.choices.find((option) => option.value === this.modelValue) || null;
@@ -526,7 +533,7 @@
   const _hoisted_1$g = ["id", "aria-expanded", "aria-controls", "aria-label", "aria-busy", "disabled"];
   const _hoisted_2$c = { class: "c-select__value" };
   const _hoisted_3$a = ["aria-label"];
-  const _hoisted_4$8 = {
+  const _hoisted_4$9 = {
     key: 1,
     class: "ti ti-chevron-up c-select__chevron",
     "aria-hidden": "true"
@@ -574,7 +581,7 @@
           class: "spinner-border spinner-border-sm c-select__spinner",
           role: "status",
           "aria-label": $options.loadingLabel
-        }, null, 8, _hoisted_3$a)) : (vue.openBlock(), vue.createElementBlock("i", _hoisted_4$8)),
+        }, null, 8, _hoisted_3$a)) : (vue.openBlock(), vue.createElementBlock("i", _hoisted_4$9)),
         vue.createElementVNode("button", {
           type: "button",
           class: "c-select__clear",
@@ -691,7 +698,12 @@
     const params = {};
     for (const filter of filters) {
       const serialized = serializeValue(filter, values[filter.key]);
-      if (filter.type === "checkbox" || serialized !== "") {
+      const option = filter.type === "select" && serialized !== "" ? (filter.options || []).find((candidate) => String(candidate.value) === serialized) : null;
+      if (option && option.params && typeof option.params === "object") {
+        for (const [name, value] of Object.entries(option.params)) {
+          params[name] = String(value);
+        }
+      } else if (filter.type === "checkbox" || serialized !== "") {
         params[filter.key] = serialized;
       }
     }
@@ -762,6 +774,7 @@
     },
     created() {
       this.debounceTimer = null;
+      this.applyNow = false;
       this.applied = { ...this.draft };
       if (!same(this.filters, this.applied, this.modelValue)) {
         this.$emit("update:modelValue", { ...this.applied });
@@ -786,6 +799,7 @@
         if (!this.filters.some((filter) => filter.key === key)) {
           return false;
         }
+        this.applyNow = true;
         this.update(key, value);
         return true;
       },
@@ -824,6 +838,7 @@
         clearTimeout(this.debounceTimer);
         const changed = this.filters.filter((filter) => JSON.stringify(values[filter.key]) !== JSON.stringify(this.applied[filter.key]));
         if (!changed.length) {
+          this.applyNow = false;
           return;
         }
         if (changed.some((filter) => !filter.hidden)) {
@@ -833,9 +848,10 @@
             return;
           }
         }
-        if (changed.every((filter) => filter.type === "text")) {
+        if (!this.applyNow && changed.every((filter) => filter.type === "text")) {
           this.debounceTimer = setTimeout(() => this.apply(), TEXT_DEBOUNCE_MS);
         } else {
+          this.applyNow = false;
           this.apply();
         }
       },
@@ -969,7 +985,7 @@
   const _hoisted_1$f = { class: "c-filter-bar-container" };
   const _hoisted_2$b = ["id"];
   const _hoisted_3$9 = ["data-filter-bar-keep"];
-  const _hoisted_4$7 = {
+  const _hoisted_4$8 = {
     key: 0,
     class: "c-search-field"
   };
@@ -1019,7 +1035,7 @@
                     value: $data.draft[filter.key],
                     update: (value) => $options.update(filter.key, value)
                   }, () => [
-                    filter.type === "text" ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_4$7, [
+                    filter.type === "text" ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_4$8, [
                       _cache[3] || (_cache[3] = vue.createElementVNode(
                         "i",
                         {
@@ -1157,16 +1173,41 @@
   }
   const C6 = /* @__PURE__ */ _export_sfc(_sfc_main$g, [["render", _sfc_render$g]]);
   let uid = 0;
+  const VARIANTS = ["secondary", "accent", "primary"];
   const _sfc_main$f = {
     name: "PageToolbar",
     props: {
       title: { type: String, default: "" },
-      titleTag: { type: String, default: "h1" }
+      titleTag: { type: String, default: "h1" },
+      /**
+       * Header actions as data: `[{ id, icon, label, url, modal?, variant?, htmlOptions? }]`.
+       * @since 1.20
+       */
+      actions: { type: Array, default: () => [] }
     },
     data() {
       return {
         titleId: `page-toolbar-title-${++uid}`
       };
+    },
+    methods: {
+      /**
+       * The button variant of an action: `secondary` unless it names another known one.
+       * @since 1.20
+       */
+      variantOf(action) {
+        return VARIANTS.includes(action.variant) ? action.variant : "secondary";
+      },
+      /**
+       * Opens a `modal: true` action in the global modal; any other action is a plain link.
+       * @since 1.20
+       */
+      onAction(event, action) {
+        if (action.modal) {
+          event.preventDefault();
+          vue$1.modal.load(action.url);
+        }
+      }
     }
   };
   const _hoisted_1$e = ["aria-labelledby"];
@@ -1178,12 +1219,13 @@
     key: 1,
     class: "c-page-toolbar__actions"
   };
+  const _hoisted_4$7 = ["href", "aria-label", "title", "data-action-id", "onClick"];
   function _sfc_render$f(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("section", {
       class: "c-page-toolbar",
       "aria-labelledby": $props.title ? $data.titleId : null
     }, [
-      $props.title || _ctx.$slots.actions ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$a, [
+      $props.title || $props.actions.length || _ctx.$slots.actions ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$a, [
         $props.title ? (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent($props.titleTag), {
           key: 0,
           id: $data.titleId,
@@ -1199,7 +1241,36 @@
           _: 1
           /* STABLE */
         }, 8, ["id"])) : vue.createCommentVNode("v-if", true),
-        _ctx.$slots.actions ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_3$8, [
+        $props.actions.length || _ctx.$slots.actions ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_3$8, [
+          (vue.openBlock(true), vue.createElementBlock(
+            vue.Fragment,
+            null,
+            vue.renderList($props.actions, (action) => {
+              return vue.openBlock(), vue.createElementBlock("a", vue.mergeProps({
+                key: action.id
+              }, { ref_for: true }, action.htmlOptions || {}, {
+                class: ["btn", `btn-${$options.variantOf(action)}`, "c-icon-button"],
+                href: action.url,
+                "aria-label": action.label,
+                title: action.label,
+                "data-action-id": action.id,
+                onClick: ($event) => $options.onAction($event, action)
+              }), [
+                vue.createElementVNode(
+                  "i",
+                  {
+                    class: vue.normalizeClass(["ti", `ti-${action.icon}`]),
+                    "aria-hidden": "true"
+                  },
+                  null,
+                  2
+                  /* CLASS */
+                )
+              ], 16, _hoisted_4$7);
+            }),
+            128
+            /* KEYED_FRAGMENT */
+          )),
           vue.renderSlot(_ctx.$slots, "actions")
         ])) : vue.createCommentVNode("v-if", true)
       ])) : vue.createCommentVNode("v-if", true),
@@ -1221,7 +1292,17 @@
       itemKey: { type: String, default: "id" },
       metaKeys: { type: Array, default: () => [] },
       syncUrl: { type: Boolean, default: true },
-      idPrefix: { type: String, default: "filter" }
+      idPrefix: { type: String, default: "filter" },
+      /**
+       * The toolbar's actions as data, handed to `PageToolbar`.
+       * @since 1.20
+       */
+      actions: { type: Array, default: () => [] },
+      /**
+       * `(ids) => Promise<{ [id]: state }>`, called once per loaded page (see "Item states").
+       * @since 1.20
+       */
+      itemStates: { type: Function, default: null }
     },
     emits: ["loaded"],
     data() {
@@ -1239,7 +1320,9 @@
         loading: true,
         error: null,
         failedPage: null,
-        pageStarts: [0]
+        pageStarts: [0],
+        // The item states by item key (see "Item states"), reset with every page 1.
+        states: {}
       };
     },
     computed: {
@@ -1249,6 +1332,7 @@
     },
     created() {
       this.requestSeq = 0;
+      this.listSeq = 0;
       this.started = false;
     },
     mounted() {
@@ -1257,6 +1341,7 @@
     },
     beforeUnmount() {
       this.requestSeq++;
+      this.listSeq++;
     },
     methods: {
       reload() {
@@ -1276,6 +1361,13 @@
         if (index !== -1) {
           this.items.splice(index, 1, item);
         }
+      },
+      /**
+       * Merges `patch` into the state of the item keyed `id` (shallow).
+       * @since 1.20
+       */
+      replaceState(id, patch) {
+        this.states[id] = { ...this.states[id] || {}, ...patch };
       },
       setFilter(key, value) {
         return this.$refs.filterBar ? this.$refs.filterBar.setFilter(key, value) : false;
@@ -1311,6 +1403,10 @@
             return;
           }
           const results = response.results || [];
+          if (page === 1) {
+            this.listSeq++;
+            this.states = {};
+          }
           this.pageStarts = page === 1 ? [0] : [...this.pageStarts, this.items.length];
           this.items = page === 1 ? results : [...this.items, ...results];
           this.page = response.page || page;
@@ -1320,6 +1416,7 @@
           this.loading = false;
           this.failedPage = null;
           this.$emit("loaded", { total: this.total, meta: this.meta, values: { ...this.values } });
+          this.fetchStates(results.map((item) => item[this.itemKey]));
         }).catch((response) => {
           if (seq !== this.requestSeq) {
             return;
@@ -1327,6 +1424,8 @@
           this.loading = false;
           this.failedPage = page;
           if (page === 1) {
+            this.listSeq++;
+            this.states = {};
             this.items = [];
             this.pageStarts = [0];
             this.page = 0;
@@ -1336,6 +1435,29 @@
           }
           this.error = response && typeof response.message === "string" && response.message !== "" ? response.message : vue$1.i18n.t("base", "The list could not be loaded.");
           vue$1.log.error(response);
+        });
+      },
+      fetchStates(ids) {
+        if (!this.itemStates || !ids.length) {
+          return;
+        }
+        const seq = this.listSeq;
+        const apply = (answer) => {
+          if (seq !== this.listSeq) {
+            return;
+          }
+          const states = { ...this.states };
+          ids.forEach((id) => {
+            const answered = answer && answer[id] !== void 0 ? answer[id] : null;
+            states[id] = states[id] !== void 0 ? { ...answered || {}, ...states[id] } : answered;
+          });
+          this.states = states;
+        };
+        Promise.resolve().then(() => this.itemStates(ids)).then(apply, (error) => {
+          if (seq === this.listSeq) {
+            vue$1.log.error(error);
+          }
+          apply(null);
         });
       }
     }
@@ -1352,7 +1474,8 @@
     return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$d, [
       vue.createVNode(_component_PageToolbar, {
         title: $props.title,
-        "title-tag": $props.titleTag
+        "title-tag": $props.titleTag,
+        actions: $props.actions
       }, vue.createSlots({
         default: vue.withCtx(() => [
           $props.filters.length ? (vue.openBlock(), vue.createBlock(_component_FilterBar, {
@@ -1390,7 +1513,7 @@
           ]),
           key: "0"
         } : void 0
-      ]), 1032, ["title", "title-tag"]),
+      ]), 1032, ["title", "title-tag", "actions"]),
       _ctx.$slots.notice ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$9, [
         vue.renderSlot(_ctx.$slots, "notice", {
           meta: $data.meta,
@@ -1412,18 +1535,26 @@
         card: vue.withCtx(({ item, index }) => [
           vue.renderSlot(_ctx.$slots, "card", {
             item,
-            index
+            index,
+            state: $data.states[item[$props.itemKey]]
           })
         ]),
         _: 2
         /* DYNAMIC */
       }, [
+        _ctx.$slots.skeleton ? {
+          name: "skeleton",
+          fn: vue.withCtx(({ index }) => [
+            vue.renderSlot(_ctx.$slots, "skeleton", { index })
+          ]),
+          key: "0"
+        } : void 0,
         _ctx.$slots.empty ? {
           name: "empty",
           fn: vue.withCtx(() => [
             vue.renderSlot(_ctx.$slots, "empty")
           ]),
-          key: "0"
+          key: "1"
         } : void 0
       ]), 1032, ["items", "item-key", "loading", "error", "has-more", "skeleton-count", "card-class", "page-starts", "onLoadMore", "onRetry"])
     ]);
