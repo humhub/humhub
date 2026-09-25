@@ -8,8 +8,9 @@
 
 namespace humhub\modules\marketplace\widgets;
 
+use humhub\components\listing\ListContext;
 use humhub\modules\marketplace\assets\MarketplaceVueAsset;
-use humhub\modules\marketplace\components\MarketplaceFilterSet;
+use humhub\modules\marketplace\components\ModuleList;
 use humhub\modules\marketplace\services\MarketplaceService;
 use humhub\widgets\VueWidget;
 use Yii;
@@ -17,7 +18,8 @@ use yii\helpers\Url;
 
 /**
  * The marketplace page as a `<marketplace-browser>` island. Only local, cheap props are
- * rendered — nothing here contacts humhub.com; modules, categories and the version notice
+ * rendered — nothing here contacts humhub.com (the filter definitions are
+ * {@see ModuleList::definitions()}); modules, categories and the version notice
  * load after mounting (see "Initial data: embed or load" in
  * `docs/develop/ui-js-vuejs-components.md`). Until then the placeholder shows the page
  * toolbar and skeleton cards of the core `CardDirectory` the island renders, so the page
@@ -34,7 +36,7 @@ class MarketplaceBrowser extends VueWidget
     protected function getProps(): array
     {
         return [
-            'filters' => (new MarketplaceFilterSet())->toArray(),
+            'filters' => (new ModuleList())->definitions(ListContext::forCurrentUser()),
             'settings' => (new MarketplaceService())->getPublicSettings(),
             'urls' => [
                 'moduleAdministration' => Url::to(['/admin/module/list']),

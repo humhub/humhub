@@ -91,6 +91,82 @@ describe('CardDirectory', () => {
         expect(window.location.search).toBe('?status=installed');
     });
 
+    it('sends the fixed values with every request, but never writes them to the URL', async () => {
+        const wrapper = mountDirectory({ fixed: { spaceId: 5, status: 'archived' } });
+        await flushPromises();
+
+        const first = params(globalThis.humhubStubs.client.get.mock.calls[0][0]);
+        expect(first.get('spaceId')).toBe('5');
+        // A fixed key overrides - and hides - the filter of the same key.
+        expect(first.get('status')).toBe('archived');
+        expect(wrapper.find('[role="group"]').exists()).toBe(false);
+
+        await wrapper.vm.setFilter('q', 'cal');
+        await flushPromises();
+        expect(params(globalThis.humhubStubs.client.get.mock.calls[1][0]).get('spaceId')).toBe('5');
+        expect(window.location.search).toBe('?q=cal');
+    });
+
+    it('reloads page 1 once for a changed fixed value, with and without a filter bar', async () => {
+        const withBar = mountDirectory({ fixed: { spaceId: 5 } });
+        await flushPromises();
+        await withBar.setProps({ fixed: { spaceId: 6 } });
+        await flushPromises();
+        expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(2);
+        expect(params(globalThis.humhubStubs.client.get.mock.calls[1][0]).get('spaceId')).toBe('6');
+
+        globalThis.humhubStubs.client.get.mockClear();
+        const withoutBar = mountDirectory({ filters: [], fixed: { spaceId: 5 } });
+        await flushPromises();
+        await withoutBar.setProps({ fixed: { spaceId: 7 } });
+        await flushPromises();
+        expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(2);
+        expect(params(globalThis.humhubStubs.client.get.mock.calls[1][0]).get('spaceId')).toBe('7');
+    });
+
+    it('reloads page 1 once for a removed fixed key, with and without a filter bar', async () => {
+        const withBar = mountDirectory({ fixed: { spaceId: 5, status: 'archived' } });
+        await flushPromises();
+        await withBar.setProps({ fixed: { spaceId: 5 } });
+        await flushPromises();
+        expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(2);
+        let query = params(globalThis.humhubStubs.client.get.mock.calls[1][0]);
+        // The filter of the removed key is the bar's again, at its default.
+        expect(query.has('status')).toBe(false);
+        expect(withBar.find('[role="group"]').exists()).toBe(true);
+        expect(window.location.search).toBe('');
+
+        await withBar.setProps({ fixed: {} });
+        await flushPromises();
+        expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(3);
+        expect(params(globalThis.humhubStubs.client.get.mock.calls[2][0]).has('spaceId')).toBe(false);
+
+        globalThis.humhubStubs.client.get.mockClear();
+        const withoutBar = mountDirectory({ filters: [], fixed: { spaceId: 5 } });
+        await flushPromises();
+        await withoutBar.setProps({ fixed: {} });
+        await flushPromises();
+        expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(2);
+        query = params(globalThis.humhubStubs.client.get.mock.calls[1][0]);
+        expect(query.has('spaceId')).toBe(false);
+    });
+
+    it('does not reload for a new fixed object with the same content, with and without a filter bar', async () => {
+        const withBar = mountDirectory({ fixed: { spaceId: 5 } });
+        await flushPromises();
+        await withBar.setProps({ fixed: { spaceId: 5 } });
+        await withBar.setProps({ fixed: { spaceId: '5' } });
+        await flushPromises();
+        expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(1);
+
+        globalThis.humhubStubs.client.get.mockClear();
+        const withoutBar = mountDirectory({ filters: [], fixed: { spaceId: 5 } });
+        await flushPromises();
+        await withoutBar.setProps({ fixed: { spaceId: 5 } });
+        await flushPromises();
+        expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(1);
+    });
+
     it('never lets an older response overwrite a newer one', async () => {
         const first = deferred();
         const second = deferred();

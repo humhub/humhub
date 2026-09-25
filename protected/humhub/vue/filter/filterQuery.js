@@ -1,16 +1,19 @@
 /**
  * Pure helpers of the filter kit (`FilterBar.vue`, `CardDirectory.vue`): the default value of a
- * filter definition (see `humhub\components\filter\FilterSet`), and the translation
+ * filter definition (see `humhub\components\listing\FilterDefinition`), and the translation
  * between filter values, the page URL's query string and the endpoint's request parameters.
  *
  * Value types: `text`/`select` a string (`''` = no filter), `tags` a string, or with
- * `multiple` an array of strings, `checkbox` a boolean. On the wire, arrays are
- * comma-separated and booleans are `1`/`0`.
+ * `multiple` an array of strings, `checkbox` a boolean; a registered filter type (see
+ * `registerFilterType()`) a string, or with `multiple` an array of strings. On the wire,
+ * arrays are comma-separated and booleans are `1`/`0`.
  *
  * @since 1.20
  */
 
-const isMultiple = (filter) => filter.type === 'tags' && filter.multiple === true;
+const SINGLE_VALUE_TYPES = ['text', 'select', 'checkbox'];
+
+const isMultiple = (filter) => filter.multiple === true && !SINGLE_VALUE_TYPES.includes(filter.type);
 
 const toArray = (value) => (Array.isArray(value)
     ? value.map(String)
@@ -81,25 +84,38 @@ export const writeQuery = (filters, values, search) => {
 };
 
 /**
- * The endpoint parameters: every filter with a value — a default that is not "empty" (a `sort`
- * default, a checkbox) is sent too, so the endpoint never has to know the page's defaults.
+ * The value of a `fixed` entry (see `FilterBar`'s `fixed` prop) on the wire: arrays
+ * comma-separated, booleans `1`/`0`, anything else as a string.
  */
-export const requestParams = (filters, values) => {
+export const serializeFixed = (value) => {
+    if (typeof value === 'boolean') {
+        return value ? '1' : '0';
+    }
+    return Array.isArray(value) ? value.join(',') : String(value ?? '');
+};
+
+/**
+ * A comparable form of a whole `fixed` object: its entries as sent, in key order — equal for two
+ * objects that send the same values, whatever their identity or key order (an inline
+ * `:fixed="{…}"` is a new object with every render of its parent).
+ */
+export const fixedSignature = (fixed) => JSON.stringify(Object.keys(fixed || {}).sort().map((key) => [key, serializeFixed(fixed[key])]));
+
+/**
+ * The endpoint parameters: every filter with a value — a default that is not "empty" (a `sort`
+ * default, a checkbox) is sent too, so the endpoint never has to know the page's defaults —
+ * and every `fixed` value, which overrides a filter of the same key.
+ */
+export const requestParams = (filters, values, fixed = {}) => {
     const params = {};
     for (const filter of filters) {
         const serialized = serializeValue(filter, values[filter.key]);
-        // A select option may carry its own request parameters (`params`) — e.g. a "Status"
-        // select whose "Archived" option means `archived=1` rather than a value of `scope`.
-        const option = filter.type === 'select' && serialized !== ''
-            ? (filter.options || []).find((candidate) => String(candidate.value) === serialized)
-            : null;
-        if (option && option.params && typeof option.params === 'object') {
-            for (const [name, value] of Object.entries(option.params)) {
-                params[name] = String(value);
-            }
-        } else if (filter.type === 'checkbox' || serialized !== '') {
+        if (filter.type === 'checkbox' || serialized !== '') {
             params[filter.key] = serialized;
         }
+    }
+    for (const [key, value] of Object.entries(fixed || {})) {
+        params[key] = serializeFixed(value);
     }
     return params;
 };

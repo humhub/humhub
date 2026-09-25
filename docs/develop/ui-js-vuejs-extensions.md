@@ -1,6 +1,6 @@
 # Extending Vue.js Islands
 
-> Part of the [Vue.js integration](ui-js-vuejs.md) documentation. This chapter covers how a module extends another module's island from the outside: extension slots, menu entries, module data served by a module's own endpoint, domain events on the bus, and the (planned) component override mechanism. For motivation, goals, constraints and the overall architecture, see the [overview](ui-js-vuejs.md).
+> Part of the [Vue.js integration](ui-js-vuejs.md) documentation. This chapter covers how a module extends another module's island from the outside: extension slots, menu entries, filter types, module data served by a module's own endpoint, domain events on the bus, and the (planned) component override mechanism. For motivation, goals, constraints and the overall architecture, see the [overview](ui-js-vuejs.md).
 
 ## Extension slots
 
@@ -251,6 +251,23 @@ Both let a module hook into a host component without forking its template, but t
 - **Extension slots** (`ExtensionSlot`) — a *free-form UI fragment* with no inherent structure beyond "render here": a link in a row of links, a badge, a panel. There is no override/removal by id — only "is this component currently registered for this slot".
 
 `comment.controls` (a menu — Edit/Delete plus whatever a module injects) and `comment.links` (a slot — Reply/Like plus whatever a module appends) on the very same comment entry illustrate the split: the `⋮` menu is a list of discrete actions a module might want to reorder, replace or suppress; the inline links row is just "append your own link here".
+
+## Filter types
+
+A list's filters are rendered by `FilterBar` (see [Components: core component set](ui-js-vuejs-components.md#core-component-set)) by their `type`. The core types `text`, `select`, `tags` and `checkbox` are built in; a module that brings a filter of its own kind (a task status, a date range) registers the control for its type once, and every filter bar renders definitions of that type with it — the same relationship a PHP `FilterDefinition`'s `type` has to the page, without the page knowing the module.
+
+```js
+// the tasks module's vue/index.js
+import { register, registerFilterType } from '@humhub/vue';
+import TaskStatusFilter from './TaskStatusFilter.vue';
+
+register('TaskStatusFilter', TaskStatusFilter);
+registerFilterType('tasks.status', 'TaskStatusFilter');
+```
+
+The component gets the props `filter` (the definition, including `label`, `options`, `multiple` …), `modelValue` (the filter's value: a string, or with `multiple` an array of strings) and `inputId` (the id its focusable control should carry, `<idPrefix>-<key>`), and emits `update:modelValue` with the new value. Everything else stays the bar's: the debounce, the URL sync, "clear all", the panel (`placement: 'panel'`) and its active count. Type names of modules follow `<module>.<name>`; the core types cannot be registered, and the first registration of a type wins.
+
+**Registration order is unconstrained**, as for extension slots: neither the component nor a bar using the type need to exist yet, and a bar that is already mounted picks the type up reactively. A filter whose type is not registered is not rendered, but its value is still read from and written to the URL and sent — the list stays consistent while a module's artifact is missing. For a one-off control on a single page, the bar's `filter-<key>` slot is the simpler tool; it takes precedence over a registered type.
 
 ## Module data
 

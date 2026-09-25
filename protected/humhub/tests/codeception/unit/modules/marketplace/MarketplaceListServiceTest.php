@@ -16,6 +16,8 @@ use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
 
 /**
+ * The catalogue of the marketplace ({@see ModuleListTest} for the list built from it).
+ *
  * The catalogue below stands in for humhub.com (seeded into the cache the manager reads).
  * `friendship` and `like` are core modules, always installed in tests: `friendship` has an
  * update (99.0.0), `like` does not (0.0.1).
@@ -63,56 +65,6 @@ class MarketplaceListServiceTest extends HumHubDbTestCase
         return array_map(static fn(Module $module) => $module->id, $modules);
     }
 
-    public function testSortsUpdatesFirstThenNotInstalledThenInstalled(): void
-    {
-        $this->assertSame(
-            ['friendship', 'calendar-x', 'polls-x', 'pro-x', 'paid-x', 'bought-x', 'like'],
-            $this->ids($this->service()->find()),
-        );
-    }
-
-    public function testFiltersByStatus(): void
-    {
-        $this->assertSame(['friendship'], $this->ids($this->service()->find(['status' => ['update']])));
-        $this->assertSame(['like'], $this->ids($this->service()->find(['status' => ['installed']])));
-        $this->assertSame(['friendship', 'like'], $this->ids($this->service()->find(['status' => ['update', 'installed']])));
-    }
-
-    public function testFiltersByKeyword(): void
-    {
-        $this->assertSame(['calendar-x'], $this->ids($this->service()->find(['q' => 'events'])));
-    }
-
-    public function testFiltersByCategory(): void
-    {
-        $this->assertSame(['friendship', 'calendar-x'], $this->ids($this->service()->find(['categoryId' => 1])));
-        $this->assertSame(['pro-x', 'paid-x', 'bought-x', 'like'], $this->ids($this->service()->find(['categoryId' => -1])));
-    }
-
-    public function testFiltersByAnyOfTheTags(): void
-    {
-        $this->assertSame(['calendar-x'], $this->ids($this->service()->find(['tag' => ['featured']])));
-        $this->assertSame(['polls-x', 'bought-x'], $this->ids($this->service()->find(['tag' => ['partner', 'purchased']])));
-    }
-
-    public function testFiltersByTheCommunityTag(): void
-    {
-        Yii::$app->getModule('marketplace')->settings->set('includeCommunityModules', true);
-
-        $this->assertSame(['community-x'], $this->ids($this->service()->find(['tag' => ['community']])));
-    }
-
-    public function testFiltersByAnyOfTheUseCases(): void
-    {
-        $this->assertSame(['calendar-x', 'polls-x'], $this->ids($this->service()->find(['useCase' => ['intranet']])));
-        $this->assertSame(['calendar-x', 'pro-x'], $this->ids($this->service()->find(['useCase' => ['education']])));
-        $this->assertSame(['bought-x'], $this->ids($this->service()->find(['useCase' => ['higher-education']])));
-        $this->assertSame(
-            ['calendar-x', 'polls-x', 'pro-x'],
-            $this->ids($this->service()->find(['useCase' => ['intranet', 'education']])),
-        );
-    }
-
     public function testCountsUseCases(): void
     {
         $this->assertSame([
@@ -130,18 +82,12 @@ class MarketplaceListServiceTest extends HumHubDbTestCase
         $this->assertSame([], (new Module(['id' => 'y']))->getUseCaseList());
     }
 
-    public function testIdSelectsOneModuleRegardlessOfTheOtherFilters(): void
-    {
-        $this->assertSame(['like'], $this->ids($this->service()->find(['id' => 'like', 'status' => ['notInstalled']])));
-        $this->assertSame([], $this->ids($this->service()->find(['id' => 'unknown'])));
-    }
-
     public function testCommunityModulesOnlyWithTheSetting(): void
     {
-        $this->assertNotContains('community-x', $this->ids($this->service()->find()));
+        $this->assertNotContains('community-x', $this->ids($this->service()->all()));
 
         Yii::$app->getModule('marketplace')->settings->set('includeCommunityModules', true);
-        $this->assertContains('community-x', $this->ids($this->service()->find()));
+        $this->assertContains('community-x', $this->ids($this->service()->all()));
     }
 
     public function testCountsAvailableUpdates(): void
@@ -158,7 +104,7 @@ class MarketplaceListServiceTest extends HumHubDbTestCase
     public function testSerializesTheWireShape(): void
     {
         $modules = [];
-        foreach ($this->service()->find() as $module) {
+        foreach ($this->service()->all() as $module) {
             $modules[$module->id] = MarketplaceModuleSerializer::module($module);
         }
 

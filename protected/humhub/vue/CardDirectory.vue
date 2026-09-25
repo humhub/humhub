@@ -11,6 +11,7 @@
                 :filters="filters"
                 :sync-url="syncUrl"
                 :id-prefix="idPrefix"
+                :fixed="fixed"
                 @update:model-value="onFilterChange"
             >
                 <template v-for="name in filterSlotNames()" :key="name" #[name]="scope">
@@ -45,12 +46,12 @@ import { client, i18n, log } from '@humhub/vue';
 import CardGrid from './CardGrid.vue';
 import FilterBar from './FilterBar.vue';
 import PageToolbar from './PageToolbar.vue';
-import { defaultValues, requestParams } from './filter/filterQuery.js';
+import { defaultValues, fixedSignature, requestParams } from './filter/filterQuery.js';
 
 /**
  * A card directory page (`.c-card-directory`, at most 1440px wide): a `PageToolbar` — the
- * `title` and the `actions` slot — holding the `FilterBar` for the filters of a
- * `FilterSet`, an optional `notice` between the toolbar and the grid, and the card grid
+ * `title` and the `actions` slot — holding the `FilterBar` for the filter definitions of a
+ * list, an optional `notice` between the toolbar and the grid, and the card grid
  * (`CardGrid`), fed page by page from an endpoint answering the API's offset-page envelope
  * (`{results, total, page, pageSize, pages}`, see `docs/develop/concept-api.md`). The data is
  * always loaded after mounting — see "Initial data: embed or load" in
@@ -60,9 +61,12 @@ import { defaultValues, requestParams } from './filter/filterQuery.js';
  *   `/api/v2/space?purpose=directory`, which the filter and page parameters are appended to),
  *   `filters` (the definitions), `title` (toolbar heading, rendered as `titleTag`, default
  *   `h1`), `actions` (the toolbar's actions as data, see `PageToolbar`), `pageSize`, `skeletonCount`, `cardClass` (extra class on every
- *   grid cell, see `CardGrid`), `itemKey`, `metaKeys`, `syncUrl` and `idPrefix` (handed to the
+ *   grid cell, see `CardGrid`), `itemKey`, `metaKeys`, `syncUrl`, `idPrefix` and `fixed` (handed to the
  *   `FilterBar`, which owns the URL sync, the text debounce and the dropping of hidden filters),
  *   `itemStates` (see below).
+ * - `fixed` (`{ key: value }`) is sent with every request, overriding a filter of the same key,
+ *   but never rendered or written to the URL (see `FilterBar`); a changed `fixed` (by content,
+ *   not identity — also a removed key) starts at page 1.
  * - Item states: `itemStates(ids)` — optional, a function answering a promise of an object that
  *   maps an item's key to its state (e.g. the viewer's membership of every space shown) — is
  *   called once per loaded page with the keys (`itemKey`) of that page's items, after the page
@@ -128,6 +132,11 @@ export default {
          * @since 1.20
          */
         itemStates: { type: Function, default: null },
+        /**
+         * Values sent with every request, not rendered, not URL-synced (see `FilterBar`).
+         * @since 1.20
+         */
+        fixed: { type: Object, default: () => ({}) },
     },
     emits: ['loaded'],
     data() {
@@ -155,12 +164,30 @@ export default {
             return this.page < this.pages;
         },
     },
+    watch: {
+        fixed: {
+            deep: true,
+            handler(value) {
+                // Only a real change: an inline `:fixed="{…}"` is a new object with every render.
+                const signature = fixedSignature(value);
+                if (signature === this.fixedSignature) {
+                    return;
+                }
+                this.fixedSignature = signature;
+                // With a filter bar, its emit for the changed values reloads (`onFilterChange()`).
+                if (this.started && !this.$refs.filterBar) {
+                    this.fetch(1);
+                }
+            },
+        },
+    },
     created() {
         this.requestSeq = 0;
         // Bumped whenever the shown list is replaced (or dropped), so the states answered for a
         // page of the previous list are ignored.
         this.listSeq = 0;
         this.started = false;
+        this.fixedSignature = fixedSignature(this.fixed);
     },
     mounted() {
         this.started = true;
@@ -222,7 +249,7 @@ export default {
             this.error = null;
 
             const query = new URLSearchParams({
-                ...requestParams(this.filters, this.values),
+                ...requestParams(this.filters, this.values, this.fixed),
                 page: String(page),
                 pageSize: String(this.pageSize),
             }).toString();

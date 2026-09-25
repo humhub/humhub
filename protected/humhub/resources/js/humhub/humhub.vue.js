@@ -57,6 +57,13 @@ humhub.module('vue', function (module, require, $) {
     // id afterwards — see registerMenuEntry()'s and removeMenuEntry()'s own docblocks.
     var menuRemovals = Vue.reactive({});
 
+    // filter type -> component name (see registerFilterType()) — a genuine Vue.reactive()
+    // store, same reasoning as `slots` above (FilterBar.vue reads getFilterType() while
+    // rendering, and a type registered after the bar mounted must be picked up).
+    var filterTypes = Vue.reactive({});
+    // Rendered by FilterBar.vue itself, never through the registry.
+    var CORE_FILTER_TYPES = ['text', 'select', 'tags', 'checkbox'];
+
     // A reservation token (see mountElement) is a plain {} — only a real
     // mounted Vue app instance has an `unmount` function. Used everywhere an
     // `apps` entry needs to be treated as "not actually mounted yet".
@@ -422,6 +429,60 @@ humhub.module('vue', function (module, require, $) {
         Object.keys(menuRemovals).forEach(function (menuId) {
             delete menuRemovals[menuId];
         });
+    };
+
+    /**
+     * Registers `componentName` (by its registered NAME, like `registerSlotComponent()`) as the
+     * control of the filter type `type`: `FilterBar` renders every filter definition of that
+     * type with it. See docs/develop/ui-js-vuejs-extensions.md, "Filter types".
+     *
+     * - The component gets the props `filter` (the definition), `modelValue` (the filter's
+     *   current value) and `inputId` (the id its focusable control should carry), and emits
+     *   `update:modelValue` with the new value — the bar keeps debounce, URL sync, "clear all"
+     *   and the active count.
+     * - Type names of modules follow `<module>.<name>` (e.g. `tasks.status`); the core types
+     *   (`text`, `select`, `tags`, `checkbox`) are built into the bar and cannot be registered.
+     * - Registration order is unconstrained, as for slot components: neither the component
+     *   nor a bar using the type need to exist yet — the bar picks the type up reactively.
+     * - The first registration of a type wins: registering the same pair again is a debug-level
+     *   no-op (artifact scripts re-execute), another component for a taken type an error.
+     */
+    var registerFilterType = function (type, componentName) {
+        if (typeof type !== 'string' || !type) {
+            log.error('Invalid filter type "' + type + '" — must be a non-empty string');
+            return;
+        }
+
+        if (CORE_FILTER_TYPES.indexOf(type) !== -1) {
+            log.error('Filter type "' + type + '" is a core type of FilterBar and cannot be registered');
+            return;
+        }
+
+        if (!NAME_PATTERN.test(componentName) || toTagName(componentName).indexOf('-') === -1) {
+            log.error('Invalid Vue component name "' + componentName + '" for filter type "' + type + '" — PascalCase producing a dashed tag name required (see register())');
+            return;
+        }
+
+        if (filterTypes[type]) {
+            if (filterTypes[type] === componentName) {
+                log.debug('Component "' + componentName + '" is already registered for filter type "' + type + '" — skipping duplicate registration');
+            } else {
+                log.error('Filter type "' + type + '" is already registered to "' + filterTypes[type] + '" — "' + componentName + '" is ignored');
+            }
+            return;
+        }
+
+        filterTypes[type] = componentName;
+    };
+
+    /**
+     * The component name registered for the filter type `type` (see `registerFilterType()`),
+     * or `null`. Reactive like `getSlotComponents()`: a render that asked for a type not
+     * registered yet re-runs once it is. Whether the component itself is registered yet is
+     * `isRegistered()`'s business.
+     */
+    var getFilterType = function (type) {
+        return filterTypes[type] || null;
     };
 
     var componentFor = function (element) {
@@ -818,6 +879,8 @@ humhub.module('vue', function (module, require, $) {
         registerMenuEntry: registerMenuEntry,
         removeMenuEntry: removeMenuEntry,
         getMenuEntries: getMenuEntries,
+        registerFilterType: registerFilterType,
+        getFilterType: getFilterType,
         // TEST-ONLY — see its own docblock above. Exported so test files can reach it the
         // same way they reach every other registry function, not because it belongs to the
         // documented public API surface (docs/develop/ui-js-vuejs-extensions.md's "Menu

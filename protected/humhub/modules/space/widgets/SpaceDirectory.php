@@ -8,14 +8,15 @@
 
 namespace humhub\modules\space\widgets;
 
+use humhub\components\listing\ListContext;
 use humhub\modules\space\assets\SpaceVueAsset;
-use humhub\modules\space\components\SpaceDirectoryFilterSet;
+use humhub\modules\space\components\SpaceList;
 use humhub\widgets\Icon;
 use humhub\widgets\VueWidget;
 
 /**
  * The spaces directory (`/spaces`) as a `<space-directory>` island (`vue/SpaceDirectory.vue`).
- * Only cheap props are rendered — the filter definitions ({@see SpaceDirectoryFilterSet}),
+ * Only cheap props are rendered — the filter definitions ({@see SpaceList::definitions()}),
  * the toolbar actions ({@see SpaceDirectoryHeadingButtons} as data), the button classes and
  * the icon markup; the spaces and the viewer's states load after mounting (see "Initial data:
  * embed or load" in `docs/develop/ui-js-vuejs-components.md`). Until then the placeholder shows
@@ -56,7 +57,7 @@ class SpaceDirectory extends VueWidget
     protected function getProps(): array
     {
         return [
-            'filters' => (new SpaceDirectoryFilterSet())->toArray(),
+            'filters' => (new SpaceList())->definitions(ListContext::forCurrentUser(SpaceList::PURPOSE_DIRECTORY)),
             'actions' => $this->getActions(),
             'buttons' => $this->buttonClasses,
             'icons' => [

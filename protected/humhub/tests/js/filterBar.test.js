@@ -330,4 +330,267 @@ describe('FilterBar', () => {
         expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/cats');
         expect(wrapper.findAll('[role="option"]').map((o) => o.text())).toEqual(['Tools (5)']);
     });
+
+    describe('filter types', () => {
+        const vueModule = () => globalThis.humhub.modules.vue;
+
+        // A module's filter type control: a button cycling through `open` / `done`.
+        const StatusFilter = {
+            props: { filter: Object, modelValue: String, inputId: String },
+            emits: ['update:modelValue'],
+            render() {
+                return h('button', {
+                    id: this.inputId,
+                    type: 'button',
+                    class: 'status-filter',
+                    onClick: () => this.$emit('update:modelValue', this.modelValue === 'open' ? 'done' : 'open'),
+                }, `${this.filter.label}: ${this.modelValue || 'any'}`);
+            },
+        };
+        const typed = (type) => [filters[0], { key: 'state', type, label: 'State' }];
+        const mountTyped = (type, options = {}) => mount(FilterBar, {
+            props: { filters: typed(type), modelValue: { q: '', state: '' }, ...options.props },
+            slots: options.slots,
+            global: { components: { TestFilterBarStatus: StatusFilter } },
+        });
+
+        it('renders a registered type with its component, which gets the definition, value and id', async () => {
+            vueModule().register('TestFilterBarStatus', StatusFilter);
+            vueModule().registerFilterType('test.filterbar.status', 'TestFilterBarStatus');
+            window.history.replaceState(null, '', '/directory?state=open');
+            const wrapper = mountTyped('test.filterbar.status');
+
+            const control = wrapper.find('.c-filter-bar__item--test\\.filterbar\\.status .status-filter');
+            expect(control.text()).toBe('State: open');
+            expect(control.attributes('id')).toBe('filter-state');
+
+            await control.trigger('click');
+            await flushPromises();
+            expect(emitted(wrapper).at(-1)).toEqual({ q: '', state: 'done' });
+            expect(window.location.search).toBe('?state=done');
+            expect(wrapper.find('.status-filter').text()).toBe('State: done');
+        });
+
+        it('picks up a type registered after the bar mounted', async () => {
+            const wrapper = mountTyped('test.filterbar.late');
+            expect(wrapper.find('.status-filter').exists()).toBe(false);
+
+            vueModule().register('TestFilterBarStatus', StatusFilter);
+            vueModule().registerFilterType('test.filterbar.late', 'TestFilterBarStatus');
+            await wrapper.vm.$nextTick();
+
+            expect(wrapper.find('.status-filter').text()).toBe('State: any');
+        });
+
+        it('renders no cell for an unregistered type, but keeps its value in the URL and the model', async () => {
+            globalThis.humhubStubs.logCalls.debug.length = 0;
+            window.history.replaceState(null, '', '/directory?state=x');
+            const wrapper = mountTyped('test.filterbar.unknown');
+
+            expect(wrapper.findAll('.c-filter-bar__item')).toHaveLength(1);
+            expect(emitted(wrapper)).toEqual([{ q: '', state: 'x' }]);
+            expect(globalThis.humhubStubs.logCalls.debug.some((args) => String(args[0]).includes('test.filterbar.unknown'))).toBe(true);
+
+            await wrapper.find('.c-search-field input').setValue('a');
+            await wrapper.vm.setFilter('q', 'a');
+            await flushPromises();
+            expect(window.location.search).toBe('?state=x&q=a');
+        });
+
+        it('lets a filter-<key> slot take precedence over a registered type', () => {
+            vueModule().register('TestFilterBarStatus', StatusFilter);
+            vueModule().registerFilterType('test.filterbar.slotted', 'TestFilterBarStatus');
+            const wrapper = mountTyped('test.filterbar.slotted', {
+                slots: { 'filter-state': ({ value }) => h('em', `slot ${value}`) },
+            });
+
+            expect(wrapper.find('em').text()).toBe('slot');
+            expect(wrapper.find('.status-filter').exists()).toBe(false);
+        });
+    });
+
+    describe('panel', () => {
+        const panelFilters = [
+            { key: 'q', type: 'text', label: 'Search' },
+            { key: 'sort', type: 'tags', default: 'name', options: [{ value: 'name', label: 'Name' }, { value: 'new', label: 'Newest' }] },
+            { key: 'mine', type: 'checkbox', label: 'Mine', placement: 'panel' },
+            { key: 'status', type: 'tags', multiple: true, label: 'Status', placement: 'panel', options: [{ value: 'a', label: 'A' }, { value: 'b', label: 'B' }] },
+        ];
+        const panelValues = () => ({ q: '', sort: 'name', mine: false, status: [] });
+        const mountPanel = (modelValue = panelValues(), props = {}) => mount(FilterBar, {
+            props: { filters: panelFilters, modelValue, ...props },
+            attachTo: document.body,
+        });
+
+        it('renders the panel filters in a closed panel behind a "Filters" toggle', () => {
+            const wrapper = mountPanel();
+            const panel = wrapper.find('.c-filter-bar__panel');
+            const toggle = wrapper.find('.c-filter-bar__toggle');
+
+            expect(panel.findAll('.c-filter-bar__item').map((item) => item.classes()).map((c) => c[1])).toEqual(['c-filter-bar__item--checkbox', 'c-filter-bar__item--tags']);
+            expect(panel.attributes('role')).toBe('group');
+            expect(panel.attributes('aria-label')).toBe('Filters');
+            expect(wrapper.find('form').classes()).toContain('has-panel');
+            expect(wrapper.find('form').classes()).not.toContain('is-open');
+
+            expect(toggle.classes()).toContain('c-filter-bar__toggle--labeled');
+            expect(toggle.text()).toBe('Filters');
+            expect(toggle.attributes('aria-controls')).toBe(panel.attributes('id'));
+            expect(toggle.attributes('aria-expanded')).toBe('false');
+            expect(toggle.attributes('aria-label')).toBeUndefined();
+            // The toggle follows the search field, as without a panel.
+            expect(toggle.element.previousElementSibling.classList.contains('c-filter-bar__item--text')).toBe(true);
+            wrapper.unmount();
+        });
+
+        it('opens and closes the panel with the toggle, whatever the width', async () => {
+            const wrapper = mountPanel();
+            const toggle = wrapper.find('.c-filter-bar__toggle');
+            // No funnel breakpoint involved: the toggle is always usable with a panel.
+            toggle.element.style.display = 'none';
+
+            await toggle.trigger('click');
+            expect(wrapper.find('form').classes()).toContain('is-open');
+            expect(toggle.attributes('aria-expanded')).toBe('true');
+            expect(toggle.attributes('title')).toBe('Hide filters');
+
+            await toggle.trigger('click');
+            expect(wrapper.find('form').classes()).not.toContain('is-open');
+            wrapper.unmount();
+        });
+
+        it('counts the set panel filters on the toggle', async () => {
+            const wrapper = mountPanel();
+            expect(wrapper.find('.c-filter-bar__count').exists()).toBe(false);
+
+            await wrapper.find('.c-filter-bar__panel input[type="checkbox"]').setValue(true);
+            await wrapper.findAll('.c-filter-bar__panel [role="group"] button')[1].trigger('click');
+            // A row filter does not count.
+            await wrapper.find('.c-search-field input').setValue('x');
+
+            expect(wrapper.find('.c-filter-bar__count').text()).toBe('2');
+            expect(wrapper.find('.c-filter-bar__toggle .visually-hidden').text()).toBe('2 active');
+            wrapper.unmount();
+        });
+
+        it('opens on load when a panel filter is set, but not for a set row filter', () => {
+            window.history.replaceState(null, '', '/directory?mine=1');
+            const fromUrl = mountPanel();
+            expect(fromUrl.find('form').classes()).toContain('is-open');
+            fromUrl.unmount();
+
+            window.history.replaceState(null, '', '/directory');
+            expect(mountPanel({ ...panelValues(), status: ['a'] }).find('form').classes()).toContain('is-open');
+            expect(mountPanel({ ...panelValues(), q: 'x', sort: 'new' }).find('form').classes()).not.toContain('is-open');
+        });
+
+        it('clears the row and the panel filters with the clear X', async () => {
+            const wrapper = mountPanel({ ...panelValues(), q: 'x', sort: 'new', mine: true, status: ['a'] });
+
+            await wrapper.find('.c-filter-bar__clear').trigger('click');
+            await flushPromises();
+
+            expect(emitted(wrapper)).toEqual([panelValues()]);
+            expect(wrapper.find('.c-filter-bar__count').exists()).toBe(false);
+            wrapper.unmount();
+        });
+
+        it('closes on Escape inside the panel and returns the focus to the toggle', async () => {
+            const wrapper = mountPanel({ ...panelValues(), mine: true });
+            const checkbox = wrapper.find('.c-filter-bar__panel input[type="checkbox"]');
+            checkbox.element.focus();
+
+            await checkbox.trigger('keydown', { key: 'Escape' });
+
+            expect(wrapper.find('form').classes()).not.toContain('is-open');
+            expect(document.activeElement).toBe(wrapper.find('.c-filter-bar__toggle').element);
+            wrapper.unmount();
+        });
+
+        it('keeps the icon-only funnel toggle without a panel', () => {
+            const wrapper = mountBar();
+
+            expect(wrapper.find('.c-filter-bar__panel').exists()).toBe(false);
+            expect(wrapper.find('.c-filter-bar__toggle').classes()).not.toContain('c-filter-bar__toggle--labeled');
+            expect(wrapper.find('.c-filter-bar__toggle').attributes('aria-label')).toBe('Show filters');
+        });
+    });
+
+    describe('fixed values', () => {
+        it('emits fixed values with the others, but neither renders nor URL-syncs them', async () => {
+            window.history.replaceState(null, '', '/directory?categoryId=9&spaceId=3');
+            const wrapper = mountBar(values(), { props: { fixed: { categoryId: '4', spaceId: 5 } } });
+
+            // A definition whose key is fixed is not rendered, nor read from the URL.
+            expect(wrapper.find('#filter-categoryId').exists()).toBe(false);
+            expect(emitted(wrapper)).toEqual([{ ...values(), categoryId: '4', spaceId: 5 }]);
+            expect(wrapper.find('.c-filter-bar__clear').exists()).toBe(false);
+
+            await wrapper.findAll('[role="group"] button')[1].trigger('click');
+            await flushPromises();
+            expect(emitted(wrapper).at(-1)).toEqual({ ...values(), status: ['a'], categoryId: '4', spaceId: 5 });
+            // Foreign parameters are kept as they are; a fixed key is none of the bar's business.
+            expect(window.location.search).toBe('?categoryId=9&spaceId=3&status=a');
+
+            expect(wrapper.vm.setFilter('categoryId', '1')).toBe(false);
+        });
+
+        it('keeps fixed values when clearing all filters', async () => {
+            const wrapper = mountBar({ ...values(), q: 'x' }, { props: { fixed: { spaceId: 5 } } });
+
+            await wrapper.find('.c-filter-bar__clear').trigger('click');
+            await flushPromises();
+
+            expect(emitted(wrapper).at(-1)).toEqual({ ...values(), spaceId: 5 });
+        });
+
+        it('applies a changed fixed value at once', async () => {
+            vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
+            const wrapper = mountBar(values(), { props: { fixed: { spaceId: 5 } } });
+            const initial = emitted(wrapper).length;
+
+            await wrapper.setProps({ fixed: { spaceId: 6 } });
+            await flushPromises();
+
+            expect(emitted(wrapper)).toHaveLength(initial + 1);
+            expect(emitted(wrapper).at(-1).spaceId).toBe(6);
+            expect(window.location.search).toBe('');
+        });
+
+        it('resets a key removed from fixed to its filter default, or drops it when it is no filter', async () => {
+            window.history.replaceState(null, '', '/directory');
+            const wrapper = mountBar(values(), { props: { fixed: { categoryId: '4', spaceId: 5 } } });
+            const initial = emitted(wrapper).length;
+
+            await wrapper.setProps({ fixed: { spaceId: 5 } });
+            await flushPromises();
+            expect(emitted(wrapper)).toHaveLength(initial + 1);
+            expect(emitted(wrapper).at(-1)).toEqual({ ...values(), spaceId: 5 });
+            // The bar owns the filter now - rendered with its default, not the old fixed value.
+            expect(wrapper.find('#filter-categoryId').exists()).toBe(true);
+            expect(wrapper.find('.c-filter-bar__clear').exists()).toBe(false);
+            expect(window.location.search).toBe('');
+
+            await wrapper.setProps({ fixed: {} });
+            await flushPromises();
+            expect(emitted(wrapper)).toHaveLength(initial + 2);
+            expect(emitted(wrapper).at(-1)).toEqual(values());
+        });
+
+        it('ignores a new fixed object with the same content and keeps a pending search debounced', async () => {
+            vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
+            const wrapper = mountBar(values(), { props: { fixed: { spaceId: 5, status: ['a'] } } });
+            const initial = emitted(wrapper).length;
+
+            await wrapper.find('.c-search-field input').setValue('ca');
+            await wrapper.setProps({ fixed: { status: ['a'], spaceId: '5' } });
+            await flushPromises();
+            expect(emitted(wrapper)).toHaveLength(initial);
+
+            vi.advanceTimersByTime(TEXT_DEBOUNCE_MS);
+            expect(emitted(wrapper)).toHaveLength(initial + 1);
+            expect(emitted(wrapper).at(-1).q).toBe('ca');
+        });
+    });
 });
+

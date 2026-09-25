@@ -14,7 +14,7 @@ import { apiUrl, client } from '@humhub/vue';
  * One page of spaces.
  *
  * `purpose` says what the list is for (`directory`, `picker`, `chooser`) — modules may restrict
- * a list in one context and not in another (see `SpaceListQuery::EVENT_INIT`).
+ * a list in one context and not in another (see `SpaceList::EVENT_BUILD`).
  *
  * @param {{q?: ?string, scope?: ?string, purpose?: ?string, page?: ?number, pageSize?: ?number}} options
  * @returns {Promise<{results: Array, total: number, page: number, pageSize: number, pages: number}>}

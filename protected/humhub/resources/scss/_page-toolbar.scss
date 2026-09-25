@@ -147,6 +147,69 @@
         }
     }
 
+    // With a panel: a labelled "Filters" toggle, shown at every width
+    .c-filter-bar.has-panel {
+        transition: max-height 0.3s ease;
+
+        &.is-animating {
+            overflow: hidden;
+        }
+    }
+
+    .c-filter-bar__toggle--labeled {
+        display: inline-flex;
+        gap: 6px;
+        width: auto;
+        padding-inline: 10px;
+        font-size: 14px;
+        font-weight: 500;
+
+        > .ti {
+            font-size: 18px;
+        }
+    }
+
+    .c-filter-bar__count {
+        min-width: 20px;
+        padding: 1px 6px;
+        border-radius: 9999px;
+        background: var(--bs-accent);
+        color: var(--hh-accent-contrast);
+        font-size: 12px;
+        line-height: 18px;
+        text-align: center;
+    }
+
+    // The panel: a full row of its own below the row's filters, shown while the bar is open
+    // (and while it is collapsing, so the bar shrinks past it)
+    .c-filter-bar__panel {
+        display: none;
+        flex: 1 0 100%;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 8px;
+        padding-top: 8px;
+        border-top: 1px solid var(--bs-border-color);
+
+        > .c-filter-bar__item {
+            flex: 1 1 256px;
+        }
+
+        > .c-filter-bar__item--checkbox,
+        > .c-filter-bar__item--tags {
+            flex: 0 1 auto;
+        }
+
+        > .c-filter-bar__item--wide {
+            flex-basis: 100%;
+        }
+    }
+
+    .c-filter-bar.is-open > .c-filter-bar__panel,
+    .c-filter-bar.is-collapsing > .c-filter-bar__panel {
+        display: flex;
+    }
+
     .c-filter-bar__clear {
         --bs-btn-hover-color: var(--bs-danger);
         --bs-btn-hover-bg: var(--bs-danger-bg-subtle);
@@ -178,7 +241,10 @@
             transition: max-height 0.3s ease;
         }
 
+        // Open without an inline height too (a panel filter set on load opens the bar at once);
+        // while animating, the inline `max-height` wins.
         .c-filter-bar.is-open {
+            max-height: none;
             overflow: visible;
         }
 
@@ -193,6 +259,14 @@
         .c-filter-bar > :not([data-filter-bar-keep]):not([data-filter-bar-toggle]) {
             flex-basis: calc(100% - var(--c-filter-bar-reserve));
             min-width: 0;
+        }
+
+        .c-filter-bar > .c-filter-bar__panel {
+            flex-basis: 100%;
+
+            > .c-filter-bar__item {
+                flex-basis: 100%;
+            }
         }
     }
 

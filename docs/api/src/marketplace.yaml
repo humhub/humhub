@@ -42,6 +42,10 @@ paths:
 
         The envelope carries `updateCount`, the number of available updates **regardless of
         the filter**, for an "Update all" action.
+
+        An invalid value of one of the parameters below answers `422`, and so does a parameter
+        the list does not know (modules add their own filters to the list, which are then
+        accepted like the ones below).
       parameters:
         - name: q
           in: query

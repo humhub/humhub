@@ -9,8 +9,10 @@
 namespace humhub\tests\codeception\api;
 
 use ApiTester;
-use humhub\modules\space\components\SpaceListQuery;
-use humhub\modules\space\components\SpaceListQueryEvent;
+use humhub\components\listing\filters\EnumFilter;
+use humhub\components\listing\ListEvent;
+use humhub\components\listing\QueryListBuilder;
+use humhub\modules\space\components\SpaceList;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\Follow;
@@ -316,31 +318,94 @@ class SpaceApiCest
         }
     }
 
-    public function testPassesUnknownParametersAndThePurposeToTheEvent(ApiTester $I)
+    public function testIgnoresTransportParameters(ApiTester $I)
     {
-        $I->wantTo('let a module restrict the list by its own parameter and the purpose');
+        $I->wantTo('list spaces with the parameters of the transport, not of the list');
+        $I->amLoggedInAs(4);
+
+        // jQuery's cache-buster and the route parameter of an installation without pretty URLs.
+        $I->sendGet('space', ['_' => '1790000000000', 'r' => 'api/v2/space']);
+        $I->seeResponseCodeIs(200);
+    }
+
+    public function testRefusesUnknownParameters(ApiTester $I)
+    {
+        $I->wantTo('be told about a parameter the list does not know');
+        $I->amLoggedInAs(4);
+
+        $I->sendGet('space', ['category' => 'two', 'page' => 1, 'pageSize' => 10]);
+        $I->seeResponseCodeIs(422);
+        $I->seeResponseJsonMatchesJsonPath('$.errors.category');
+        $I->dontSeeResponseJsonMatchesJsonPath('$.errors.page');
+    }
+
+    public function testListsTheArchivedStatus(ApiTester $I)
+    {
+        $I->wantTo("list the archived spaces through the directory's status");
+        Space::updateAll(['status' => Space::STATUS_ARCHIVED], ['id' => 3]);
+
+        $I->amLoggedInAs(4);
+        $I->sendGet('space', ['scope' => 'archived']);
+        $I->seeResponseCodeIs(200);
+        Assert::assertSame([3], $this->ids($I));
+    }
+
+    public function testCombinesAScopeWithTheArchivedSpaces(ApiTester $I)
+    {
+        $I->wantTo('list the archived spaces of a scope, and be told about a contradiction');
+        Space::updateAll(['status' => Space::STATUS_ARCHIVED], ['id' => 3]);
+
+        // User2 is a member of spaces 1, 3 and 4.
+        $I->amLoggedInAs(3);
+        $I->sendGet('space', ['scope' => 'member', 'archived' => 1]);
+        $I->seeResponseCodeIs(200);
+        Assert::assertSame([3], $this->ids($I));
+
+        $I->sendGet('space', ['scope' => 'archived', 'archived' => 0]);
+        $I->seeResponseCodeIs(422);
+        $I->seeResponseJsonMatchesJsonPath('$.errors.archived');
+    }
+
+    public function testModulesAddAFilterAndRestrictByPurpose(ApiTester $I)
+    {
+        $I->wantTo('let a module add a filter and restrict the list by the purpose');
         $received = null;
-        $handler = function (SpaceListQueryEvent $event) use (&$received) {
-            $received = ['purpose' => $event->purpose, 'category' => $event->params['category'] ?? null];
-            if ($event->purpose === SpaceListQuery::PURPOSE_DIRECTORY && ($event->params['category'] ?? null) === 'two') {
-                $event->query->andWhere(['space.id' => 2]);
+        $init = static function (ListEvent $event) {
+            $event->list->addFilter(new EnumFilter(
+                'category',
+                values: ['two' => 'Two'],
+                apply: static fn(QueryListBuilder $list) => $list->query()->andWhere(['space.id' => [2, 4]]),
+            ));
+        };
+        $build = static function (ListEvent $event) use (&$received) {
+            $received = ['purpose' => $event->context->purpose, 'category' => $event->value('category')];
+            if ($event->context->purpose === SpaceList::PURPOSE_DIRECTORY) {
+                $event->builder->query()->andWhere(['!=', 'space.id', 4]);
             }
         };
-        Event::on(SpaceListQuery::class, SpaceListQuery::EVENT_INIT, $handler);
+        Event::on(SpaceList::class, SpaceList::EVENT_INIT, $init);
+        Event::on(SpaceList::class, SpaceList::EVENT_BUILD, $build);
 
         try {
             $I->amLoggedInAs(4);
             $I->sendGet('space', ['category' => 'two', 'purpose' => 'directory']);
             $I->seeResponseCodeIs(200);
             Assert::assertSame(['purpose' => 'directory', 'category' => 'two'], $received);
-            Assert::assertSame([2], $this->ids($I), 'the handler restricted the list');
+            Assert::assertSame([2], $this->ids($I), 'the filter and the restriction narrowed the list');
 
             $I->sendGet('space', ['category' => 'two']);
             $I->seeResponseCodeIs(200);
             Assert::assertNull($received['purpose'], 'absent purpose is neutral');
-            Assert::assertGreaterThan(1, count($this->ids($I)));
+            $ids = $this->ids($I);
+            sort($ids);
+            Assert::assertSame([2, 4], $ids);
+
+            $I->sendGet('space', ['category' => 'three']);
+            $I->seeResponseCodeIs(422);
+            $I->seeResponseJsonMatchesJsonPath('$.errors.category');
         } finally {
-            Event::off(SpaceListQuery::class, SpaceListQuery::EVENT_INIT, $handler);
+            Event::off(SpaceList::class, SpaceList::EVENT_INIT, $init);
+            Event::off(SpaceList::class, SpaceList::EVENT_BUILD, $build);
         }
     }
 

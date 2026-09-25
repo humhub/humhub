@@ -130,6 +130,18 @@ class MarketplaceApiCest
         $I->seeResponseJsonMatchesJsonPath('$.errors.status');
     }
 
+    public function testRejectsUnknownParameters(ApiTester $I)
+    {
+        $I->wantTo('get a validation error for a parameter the list does not know');
+        $I->amLoggedInAs(1);
+
+        $I->sendGet('marketplace/module', ['keyword' => 'events', 'pageSize' => 100]);
+
+        $I->seeResponseCodeIs(422);
+        $I->seeResponseJsonMatchesJsonPath('$.errors.keyword');
+        $I->dontSeeResponseJsonMatchesJsonPath('$.errors.pageSize');
+    }
+
     public function testRejectsANonIntegerCategoryId(ApiTester $I)
     {
         $I->wantTo('get a validation error for a categoryId that is not an integer');
