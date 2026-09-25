@@ -26,9 +26,10 @@ use yii\web\NotFoundHttpException;
  * ## One resource, two verbs
  *
  * Every transition the membership button offers is one of two things, so the endpoint has two
- * writing verbs instead of one action per button:
+ * writing verbs instead of one action per button — the membership is a state of the caller
+ * towards the space, so it is set with `PUT` and removed with `DELETE`:
  *
- * - `POST` **affirms** membership: joining a free space, applying to a space that approves
+ * - `PUT` **affirms** membership: joining a free space, applying to a space that approves
  *   (with an optional `message`), or accepting an invite. Which of the three it is follows from
  *   the current state and the space's join policy — the server decides, the client does not
  *   have to reimplement that rule.
@@ -62,7 +63,7 @@ class MembershipController extends BaseController
                 'class' => VerbFilter::class,
                 'actions' => [
                     'state' => ['GET', 'HEAD'],
-                    'affirm' => ['POST'],
+                    'affirm' => ['PUT'],
                     'remove' => ['DELETE'],
                 ],
             ],

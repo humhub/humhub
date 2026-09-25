@@ -9,9 +9,7 @@
 namespace humhub\modules\marketplace;
 
 use humhub\helpers\Html;
-use humhub\modules\admin\events\ModulesEvent;
 use humhub\modules\admin\permissions\ManageModules;
-use humhub\modules\marketplace\models\Module as ModelModule;
 use humhub\modules\marketplace\search\MarketplaceSearchProvider;
 use humhub\modules\marketplace\services\MarketplaceService;
 use humhub\widgets\menu\MenuLink;
@@ -45,23 +43,6 @@ class Events extends BaseObject
         Yii::$app->queue->push(new jobs\PeActiveCheckJob());
         Yii::$app->queue->push(new jobs\ModuleCleanupsJob());
         Yii::$app->queue->push(new jobs\RefreshPendingModuleUpdateCountJob());
-    }
-
-    public static function onMarketplaceAfterFilterModules(ModulesEvent $event)
-    {
-        if (!Module::isMarketplaceEnabled()) {
-            return;
-        }
-
-        if (!is_array($event->modules)) {
-            return;
-        }
-
-        foreach ($event->modules as $m => $module) {
-            if ($module instanceof ModelModule && !$module->getFilterService()->isFiltered()) {
-                unset($event->modules[$m]);
-            }
-        }
     }
 
     public static function onAccountTopMenuInit($event)

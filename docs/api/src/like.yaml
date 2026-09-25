@@ -21,7 +21,7 @@ tags:
       A like is the caller's relationship to a record, addressed like a membership or a
       friendship: `like/{recordId}`, where the path segment is the platform-wide `recordId`
       every shape carrying likes exposes (likes have no id of their own). `GET` reads the
-      state, `POST` likes, `DELETE` unlikes, and all three answer the same state shape.
+      state, `PUT` likes, `DELETE` unlikes, and all three answer the same state shape.
       `like/{recordId}/users` lists who liked the record, `like/states` reads the states of a
       whole window of records at once.
 paths:
@@ -49,13 +49,13 @@ paths:
           $ref: "common.yaml#/components/responses/Forbidden"
         "404":
           $ref: "common.yaml#/components/responses/NotFound"
-    post:
+    put:
       tags:
         - Like
       summary: Like a record
-      operationId: createLike
+      operationId: setLike
       description: |
-        Idempotent — liking what the caller already likes is a success and answers the
+        Sets the caller's like. Idempotent, as `PUT` is — liking what the caller already likes is a success and answers the
         unchanged state. `403` unless the caller may like the record. Takes no body.
       parameters:
         - $ref: "common.yaml#/components/parameters/recordIdPathParam"

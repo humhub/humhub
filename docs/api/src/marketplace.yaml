@@ -1,0 +1,640 @@
+openapi: 3.1.0
+info:
+  description: Joined into index.html by build.sh; this module's introduction is the
+    description of its tag below.
+  version: 2.0.0
+  title: HumHub - Marketplace API (v2)
+  contact:
+    email: info@humhub.com
+  license:
+    name: AGPLv2
+    url: https://www.humhub.org/en/licences
+servers:
+  - url: /api/v2
+security:
+  - Bearer: []
+  - BasicAuth: []
+  - SessionCookie: []
+tags:
+  - name: Marketplace
+    description: |
+      The modules of the HumHub marketplace as this installation sees them — for module
+      administrators (`ManageModules`), absent (`404`) while the marketplace is disabled. The
+      catalogue comes from humhub.com; while it cannot be reached the list and the categories
+      answer `503`.
+
+      Every shape here describes the installation, not the caller: two administrators asking
+      at the same time get the same answer. Enabling an installed module is not marketplace
+      business and lives in the Module API (`POST /module/{id}/enable`).
+paths:
+  "/marketplace/module":
+    get:
+      tags:
+        - Marketplace
+      summary: The modules the marketplace lists
+      operationId: listMarketplaceModules
+      description: |
+        One page of the marketplace: every installed module, plus the modules not installed
+        that have a version compatible with this installation. Filtered by the parameters
+        below (every given parameter must match, the values of one parameter match any), and
+        ordered by status — modules with an available update first, then the ones not
+        installed, then the installed ones — and within a status in catalogue order.
+
+        The envelope carries `updateCount`, the number of available updates **regardless of
+        the filter**, for an "Update all" action.
+      parameters:
+        - name: q
+          in: query
+          required: false
+          description: Search over name, description and the module's keywords.
+          schema:
+            type: string
+        - name: categoryId
+          in: query
+          required: false
+          description: |
+            Id of a category (see `GET /marketplace/category`), `-1` for the modules without a
+            category. Absent or empty for all; anything but an integer answers `422`.
+          schema:
+            type: integer
+        - name: status
+          in: query
+          required: false
+          description: |
+            Comma-separated (or repeated `status[]=`) list of `update` (installed, with an
+            update available), `notInstalled`, `installed` (installed, up to date). An unknown
+            value answers `422`.
+          schema:
+            type: string
+            examples:
+              - update,notInstalled
+        - name: tag
+          in: query
+          required: false
+          description: |
+            Comma-separated (or repeated `tag[]=`) list of `professional`, `official`,
+            `community`, `partner`, `featured`, `purchased`. An unknown value answers `422`.
+          schema:
+            type: string
+            examples:
+              - official
+        - name: useCase
+          in: query
+          required: false
+          description: |
+            Comma-separated (or repeated `useCase[]=`) list of use case ids (see
+            `GET /marketplace/use-case`), matching any of them. Any value made of lowercase
+            letters, digits, `_` and `-` is accepted — a value in another shape answers `422`.
+          schema:
+            type: string
+            examples:
+              - intranet
+        - name: id
+          in: query
+          required: false
+          description: |
+            Selects exactly that module — the list then holds it or nothing, and the other
+            filters are ignored. What a link to one module of the marketplace carries.
+          schema:
+            type: string
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - name: pageSize
+          in: query
+          required: false
+          description: Entries per page (default 24, maximum 100)
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "common.yaml#/components/schemas/ListEnvelope"
+                  - type: object
+                    properties:
+                      results:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/MarketplaceModule"
+                      updateCount:
+                        type: integer
+                        description: |
+                          Installed modules with an available update, independent of the
+                          filter.
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/MarketplaceDisabled"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+        "503":
+          $ref: "#/components/responses/CatalogueUnavailable"
+  "/marketplace/module/{id}/install":
+    post:
+      tags:
+        - Marketplace
+      summary: Install a module
+      operationId: installMarketplaceModule
+      description: |
+        Downloads and installs the module's latest compatible version; it is installed, not
+        enabled (`POST /module/{id}/enable` does that). Answers the module's new state.
+
+        An operation, hence a verb sub-path with `POST` (see the conventions). Safe to
+        repeat: installing an installed module changes nothing and answers its state.
+        A module that cannot be installed right away — one to be bought first, one reserved
+        to the Professional Edition, one without a compatible version (see `availability`) —
+        answers `422`.
+      parameters:
+        - $ref: "#/components/parameters/moduleIdParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MarketplaceModule"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/ModuleNotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/InstallationFailed"
+  "/marketplace/module/{id}/update":
+    post:
+      tags:
+        - Marketplace
+      summary: Update an installed module
+      operationId: updateMarketplaceModule
+      description: |
+        Updates the module to its latest compatible version (`latestCompatibleVersion`, beta
+        versions included when `includeBetaUpdates` is set). Answers the module's new state;
+        updating several modules is one request per module.
+
+        Safe to repeat: a module without an available update changes nothing and answers its
+        state. A module that is not installed answers `422`, and so does one whose download
+        humhub.com refuses (an expired licence, for instance).
+      parameters:
+        - $ref: "#/components/parameters/moduleIdParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MarketplaceModule"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/ModuleNotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+        "500":
+          $ref: "#/components/responses/InstallationFailed"
+  "/marketplace/category":
+    get:
+      tags:
+        - Marketplace
+      summary: The categories of the marketplace
+      operationId: listMarketplaceCategories
+      description: |
+        Every category with the number of listed modules in it — counted under the rule the
+        list uses, so a category's `count` is what `categoryId` filtering returns. Modules
+        without a category are the pseudo category `-1` ("Without category"), appended when
+        there are any. Not paged.
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/MarketplaceCategory"
+              example:
+                results:
+                  - id: 3
+                    name: Collaboration
+                    count: 12
+                  - id: -1
+                    name: Without category
+                    count: 2
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/MarketplaceDisabled"
+        "503":
+          $ref: "#/components/responses/CatalogueUnavailable"
+  "/marketplace/use-case":
+    get:
+      tags:
+        - Marketplace
+      summary: The use cases of the marketplace
+      operationId: listMarketplaceUseCases
+      description: |
+        Every use case present among the listed modules (humhub.com's free-form `useCases`
+        field), with the number of listed modules having it. `name` is a humanised label
+        (there is no translation source for it — `-`/`_` become spaces, first letter
+        capitalised). Sorted by name, not paged.
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/MarketplaceUseCase"
+              example:
+                results:
+                  - id: education
+                    name: Education
+                    count: 4
+                  - id: intranet
+                    name: Intranet
+                    count: 9
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/MarketplaceDisabled"
+        "503":
+          $ref: "#/components/responses/CatalogueUnavailable"
+  "/marketplace/core-version":
+    get:
+      tags:
+        - Marketplace
+      summary: The installed and the latest HumHub version
+      operationId: getMarketplaceCoreVersion
+      description: |
+        What a notice about a newer HumHub release needs. Always `200`: while humhub.com
+        cannot be reached `latest` is `null` and `updateAvailable` is `false`, which a client
+        takes as "no notice".
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  installed:
+                    type: string
+                    description: The version of this installation
+                  latest:
+                    oneOf:
+                      - type: string
+                      - type: 'null'
+                    description: The latest release, `null` while humhub.com cannot be reached
+                  updateAvailable:
+                    type: boolean
+                    description: Whether `latest` is newer than `installed`
+                  updateUrl:
+                    type: string
+                    description: |
+                      Where to update: the updater module when it is installed, the update
+                      guide of the documentation otherwise.
+              example:
+                installed: 1.20.0
+                latest: 1.20.1
+                updateAvailable: true
+                updateUrl: https://example.com/updater/update
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/MarketplaceDisabled"
+  "/marketplace/settings":
+    get:
+      tags:
+        - Marketplace
+      summary: The settings of the marketplace
+      operationId: getMarketplaceSettings
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MarketplaceSettings"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/MarketplaceDisabled"
+    patch:
+      tags:
+        - Marketplace
+      summary: Change the settings of the marketplace
+      operationId: updateMarketplaceSettings
+      description: |
+        Partial: a setting the body does not carry keeps its value. Answers all settings. A
+        value that is not a boolean answers `422`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MarketplaceSettings"
+            example:
+              includeCommunityModules: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MarketplaceSettings"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/MarketplaceDisabled"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/marketplace/licence-key":
+    post:
+      tags:
+        - Marketplace
+      summary: Register the licence key of a purchased module
+      operationId: registerMarketplaceLicenceKey
+      description: |
+        Registers the key with humhub.com. The purchased module then appears in the list with
+        `purchased: true` (`tag=purchased`) and can be installed; the list is re-read from
+        humhub.com right away. Answers humhub.com's confirmation.
+
+        A missing or invalid key answers `422`; humhub.com being unreachable answers `503`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                licenceKey:
+                  type: string
+              required:
+                - licenceKey
+            example:
+              licenceKey: 3f2c-…
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: humhub.com's localized confirmation
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/MarketplaceDisabled"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+        "503":
+          description: humhub.com cannot be reached
+          content:
+            application/json:
+              schema:
+                $ref: "common.yaml#/components/schemas/ErrorBody"
+components:
+  parameters:
+    moduleIdParam:
+      name: id
+      in: path
+      description: Id of the module, e.g. `calendar`
+      required: true
+      schema:
+        type: string
+  responses:
+    MarketplaceDisabled:
+      description: The marketplace is disabled
+      content:
+        application/json:
+          schema:
+            $ref: "common.yaml#/components/schemas/ErrorBody"
+          example:
+            name: Not Found
+            message: Marketplace is disabled.
+            code: 0
+            status: 404
+    ModuleNotFound:
+      description: |
+        The marketplace does not list such a module — or the marketplace is disabled, or its
+        catalogue cannot be fetched from humhub.com
+      content:
+        application/json:
+          schema:
+            $ref: "common.yaml#/components/schemas/ErrorBody"
+    InstallationFailed:
+      description: |
+        humhub.com gave no download URL for a free module, or the download or the installation
+        failed
+      content:
+        application/json:
+          schema:
+            $ref: "common.yaml#/components/schemas/ErrorBody"
+    CatalogueUnavailable:
+      description: humhub.com cannot be reached, there is no catalogue to answer from
+      content:
+        application/json:
+          schema:
+            $ref: "common.yaml#/components/schemas/ErrorBody"
+          example:
+            name: Service Unavailable
+            message: Could not connect to HumHub API!
+            code: 0
+            status: 503
+  schemas:
+    MarketplaceModule:
+      type: object
+      description: |
+        One module of the marketplace as this installation sees it — the catalogue entry of
+        humhub.com combined with the local state (installed version, enabled, licence). The
+        same for every administrator.
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        imageUrl:
+          type: string
+          description: Absolute URL of the module image, a placeholder image when it has none
+        marketplaceUrl:
+          type: [string, 'null']
+          description: The module's page on humhub.com
+        categories:
+          type: array
+          description: Ids of the categories the module is in
+          items:
+            type: integer
+        useCases:
+          type: array
+          description: |
+            Use case ids humhub.com lists for the module (see `GET /marketplace/use-case`)
+          items:
+            type: string
+        latestVersion:
+          type: [string, 'null']
+          description: The latest version, whether compatible with this installation or not
+        latestCompatibleVersion:
+          type: [string, 'null']
+          description: |
+            The latest version this installation can install, `null` when there is none
+            (`availability: incompatible`)
+        installedVersion:
+          type: [string, 'null']
+          description: The installed version, `null` when the module is not installed
+        isEnabled:
+          type: boolean
+        updateAvailable:
+          type: boolean
+          description: Whether `latestCompatibleVersion` is newer than `installedVersion`
+        configUrl:
+          type: [string, 'null']
+          description: The module's configuration page, when it is enabled and has one
+        checkoutUrl:
+          type: [string, 'null']
+          description: |
+            Where to buy the module, `null` for a free one. The checkout returns to
+            `/marketplace/browse?tag=purchased`.
+        price:
+          oneOf:
+            - $ref: "#/components/schemas/MarketplacePrice"
+            - type: 'null'
+          description: "`null` for a free module"
+        purchased:
+          type: boolean
+          description: Whether a licence key of this installation covers the module
+        featured:
+          type: boolean
+          description: Whether humhub.com features this module (drives the star shown next to its badge)
+        licenceKey:
+          type: [string, 'null']
+          description: The licence key of a purchased module
+        badge:
+          type: string
+          enum: [professional, official, partner, deprecated, community, none]
+          description: |
+            The one label a card shows, decided in this order: `professional` (a Professional
+            Edition feature) · `official` (by HumHub) · `partner` · `deprecated` · `community` ·
+            `none`. Featured is not part of this precedence, see `featured`. Clients must
+            tolerate values added later.
+        isThirdParty:
+          type: boolean
+          description: Not by HumHub — a client shows the third-party disclaimer before installing
+        isCommunity:
+          type: boolean
+          description: |
+            A community module. One that is not installed is listed only while
+            `includeCommunityModules` is set.
+        availability:
+          type: string
+          enum: [install, buy, professionalEdition, incompatible]
+          description: |
+            What installing the module takes: `install` — possible right away · `buy` — to
+            be purchased first (`checkoutUrl`) · `professionalEdition` — needs the
+            Professional Edition · `incompatible` — no version for this installation.
+            Clients must tolerate values added later.
+      examples:
+        - id: calendar
+          name: Calendar
+          description: Create one-time or recurring events, invite and manage attendees.
+          imageUrl: https://example.com/assets/calendar/module_image.png
+          marketplaceUrl: https://marketplace.humhub.com/module/calendar
+          categories: [3]
+          useCases: [intranet, education]
+          latestVersion: 1.9.0
+          latestCompatibleVersion: 1.9.0
+          installedVersion: 1.8.10
+          isEnabled: true
+          updateAvailable: true
+          configUrl: https://example.com/calendar/config
+          checkoutUrl: null
+          price: null
+          purchased: false
+          featured: false
+          licenceKey: null
+          badge: official
+          isThirdParty: false
+          isCommunity: false
+          availability: install
+    MarketplacePrice:
+      type: object
+      description: The price of a module that is not free
+      properties:
+        amount:
+          type: [number, 'null']
+          description: "`null` when the price is on request"
+        currency:
+          type: string
+          description: ISO 4217 currency code, `EUR` today
+        onRequest:
+          type: boolean
+          description: Whether the price is quoted on request instead of listed
+    MarketplaceCategory:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: "`-1` for the modules without a category"
+        name:
+          type: string
+        count:
+          type: integer
+          description: Number of listed modules in the category
+    MarketplaceUseCase:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          description: Humanised label, e.g. `higher-education` becomes `Higher education`
+        count:
+          type: integer
+          description: Number of listed modules having this use case
+    MarketplaceSettings:
+      type: object
+      properties:
+        includeBetaUpdates:
+          type: boolean
+          description: Offer beta versions as updates
+        includeCommunityModules:
+          type: boolean
+          description: List community modules that are not installed, too
+  securitySchemes:
+    Bearer:
+      $ref: "common.yaml#/components/securitySchemes/Bearer"
+    BasicAuth:
+      $ref: "common.yaml#/components/securitySchemes/BasicAuth"
+    SessionCookie:
+      $ref: "common.yaml#/components/securitySchemes/SessionCookie"

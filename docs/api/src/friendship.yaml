@@ -46,11 +46,11 @@ paths:
           $ref: "common.yaml#/components/responses/Forbidden"
         "404":
           $ref: "common.yaml#/components/responses/NotFound"
-    post:
+    put:
       tags:
         - Friendship
       summary: Send a friendship request, or accept a received one
-      operationId: affirmFriendship
+      operationId: setFriendship
       description: |
         **Affirms** the friendship. Which of the two it is follows from the current state, and
         is decided server-side rather than by the client:
@@ -61,8 +61,8 @@ paths:
         Sending or accepting also makes the caller follow this user, which is why the answer
         carries `isFollowing`.
 
-        Answers the new state, in the same shape `GET` returns. Idempotent: affirming what is
-        already affirmed (friends, or a request of the caller's still waiting for an answer)
+        Answers the new state, in the same shape `GET` returns. Idempotent, as `PUT` is:
+        affirming what is already affirmed (friends, or a request of the caller's still waiting for an answer)
         changes nothing and answers the state.
       parameters:
         - $ref: "#/components/parameters/userIdParam"

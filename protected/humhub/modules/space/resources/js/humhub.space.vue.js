@@ -162,11 +162,11 @@
         }
       },
       /**
-       * POST: joins, applies or accepts the invite — which one follows from the state and
+       * PUT: joins, applies or accepts the invite — which one follows from the state and
        * the space's join policy, and the server decides it (see the API controller).
        */
       affirm(data) {
-        return this.mutate(() => vue$1.client.post(this.endpoint, data ? { data } : void 0));
+        return this.mutate(() => vue$1.client.put(this.endpoint, data ? { data } : void 0));
       },
       /**
        * DELETE: leaves, withdraws the application or declines the invite.

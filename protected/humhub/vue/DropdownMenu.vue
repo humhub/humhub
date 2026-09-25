@@ -10,6 +10,7 @@
                 aria-haspopup="true"
                 aria-expanded="false"
                 :aria-label="toggleAriaLabel"
+                :title="toggleTitle"
             ><slot name="toggle"></slot></a>
 
             <ul class="dropdown-menu" :class="{ 'dropdown-menu-end': alignEnd }">
@@ -175,6 +176,8 @@
  *  - `toggleAriaLabel` (required) — accessible name for the toggle button,
  *    which otherwise carries no visible text (styling supplies the
  *    caret/kebab icon).
+ *  - `toggleTitle` (default `null`) — the toggle's `title` tooltip, for an icon-only toggle
+ *    whose accessible name alone shows nothing on hover.
  *  - `alignEnd` (default `true`) — adds `dropdown-menu-end`, right-aligning
  *    the menu under its toggle; the overwhelmingly common case for a
  *    controls dropdown anchored at the end of a row. Set `false` to align
@@ -212,6 +215,7 @@ import { getMenuEntries, i18n, isRegistered } from '@humhub/vue';
 export default {
     props: {
         toggleAriaLabel: { type: String, required: true },
+        toggleTitle: { type: String, default: null },
         alignEnd: { type: Boolean, default: true },
         toggleClass: { type: String, default: 'nav-link dropdown-toggle' },
         rootClass: { type: String, default: 'nav nav-pills preferences' },

@@ -180,11 +180,11 @@ paths:
           $ref: "common.yaml#/components/responses/Forbidden"
         "404":
           $ref: "common.yaml#/components/responses/NotFound"
-    post:
+    put:
       tags:
         - Space
       summary: Join a space, apply for membership, or accept an invite
-      operationId: affirmSpaceMembership
+      operationId: setSpaceMembership
       description: |
         **Affirms** membership. Which of the three it is follows from the current state and
         the space's join policy, and is decided server-side rather than by the client:
@@ -195,10 +195,10 @@ paths:
           with the `message` the caller introduces themselves with,
         - any other joinable space is joined immediately.
 
-        Answers the new state, in the same shape `GET` returns. Idempotent: affirming a
-        membership that is already affirmed (member, or applicant waiting for approval)
-        changes nothing and answers the state. `403` when the space allows no self-join or
-        when the caller is blocked.
+        Answers the new state, in the same shape `GET` returns. Idempotent, as `PUT` is:
+        affirming a membership that is already affirmed (member, or applicant waiting for
+        approval) changes nothing and answers the state. `403` when the space allows no
+        self-join or when the caller is blocked.
       parameters:
         - $ref: "#/components/parameters/spaceIdParam"
       requestBody:

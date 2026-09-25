@@ -61,8 +61,8 @@
  *
  * | state             | rendered                                          | action        |
  * |-------------------|---------------------------------------------------|---------------|
- * | `none`            | "＋ Friends"                                       | POST          |
- * | `requestReceived` | "Accept Friend Request" + dropdown "Deny …"       | POST / DELETE |
+ * | `none`            | "＋ Friends"                                       | PUT           |
+ * | `requestReceived` | "Accept Friend Request" + dropdown "Deny …"       | PUT / DELETE  |
  * | `requestSent`     | "Pending"                                          | DELETE        |
  * | `friends`         | "✓ Friends"                                        | DELETE        |
  *
@@ -227,11 +227,11 @@ export default {
             return modal.confirm({ body }).then((confirmed) => (confirmed ? action() : null));
         },
         /**
-         * POST: sends the request, or accepts the one this user sent — the server decides
+         * PUT: sends the request, or accepts the one this user sent — the server decides
          * which from the current state.
          */
         affirm() {
-            return this.mutate(() => client.post(this.endpoint));
+            return this.mutate(() => client.put(this.endpoint));
         },
         /**
          * DELETE: withdraws, denies or ends.

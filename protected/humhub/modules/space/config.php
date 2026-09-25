@@ -19,7 +19,7 @@ return [
         ['pattern' => 'api/v2/space/states', 'route' => 'space/api/space/states', 'verb' => ['GET', 'HEAD']],
         ['pattern' => 'api/v2/space', 'route' => 'space/api/space/index', 'verb' => ['GET', 'HEAD']],
         ['pattern' => 'api/v2/space/<id:\d+>/membership', 'route' => 'space/api/membership/state', 'verb' => ['GET', 'HEAD']],
-        ['pattern' => 'api/v2/space/<id:\d+>/membership', 'route' => 'space/api/membership/affirm', 'verb' => 'POST'],
+        ['pattern' => 'api/v2/space/<id:\d+>/membership', 'route' => 'space/api/membership/affirm', 'verb' => 'PUT'],
         ['pattern' => 'api/v2/space/<id:\d+>/membership', 'route' => 'space/api/membership/remove', 'verb' => 'DELETE'],
         ['class' => 'humhub\modules\space\components\UrlRule'],
         'spaces' => 'space/spaces',

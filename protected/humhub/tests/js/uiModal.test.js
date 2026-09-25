@@ -204,6 +204,37 @@ describe('UiModal', () => {
         trigger.remove();
     });
 
+    it('restores focus to the previously focused element when unmounted while open', async () => {
+        const trigger = document.createElement('button');
+        document.body.appendChild(trigger);
+        trigger.focus();
+
+        mountModal({ props: { show: true, title: 'T' } });
+        await flushPromises();
+        expect(document.activeElement).toBe(dialog());
+
+        wrapper.unmount();
+        wrapper = undefined;
+
+        expect(document.activeElement).toBe(trigger);
+        expect(document.body.classList.contains('modal-open')).toBe(false);
+
+        trigger.remove();
+    });
+
+    it('does not move focus when unmounted while closed', async () => {
+        const other = document.createElement('button');
+        document.body.appendChild(other);
+
+        mountModal({ props: { show: false, title: 'T' } });
+        other.focus();
+        wrapper.unmount();
+        wrapper = undefined;
+
+        expect(document.activeElement).toBe(other);
+        other.remove();
+    });
+
     it('wires aria-modal, role and aria-labelledby to the rendered title id', async () => {
         mountModal({ props: { show: true, title: 'Users who like this' } });
         await flushPromises();
@@ -243,6 +274,15 @@ describe('UiModal', () => {
         const dlgNormal = dialog().querySelector('.modal-dialog');
         expect(dlgNormal.classList.contains('modal-sm')).toBe(false);
         expect(dlgNormal.classList.contains('modal-lg')).toBe(false);
+    });
+
+    it('adds dialogClass to .modal-dialog, next to the size class', async () => {
+        mountModal({ props: { show: true, size: 'large', dialogClass: 'c-own-dialog' } });
+        await flushPromises();
+
+        const dlg = dialog().querySelector('.modal-dialog');
+        expect(dlg.classList.contains('c-own-dialog')).toBe(true);
+        expect(dlg.classList.contains('modal-lg')).toBe(true);
     });
 
     it('lets a custom header slot render its own title wired to the exposed titleId', async () => {

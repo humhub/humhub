@@ -310,30 +310,36 @@ the first endpoints were built:
   for display and URLs, never as an address, and class names never reach the wire (`model` +
   `pk` addressing is a v1 thing).
 - **Where a parameter travels follows the verb.** What identifies or filters a read goes in
-  the query string; what a `POST` creates and what a `PATCH` changes travels in the JSON
-  body, the target included (`POST /comment {contentId, message}`, `POST /like {recordId}`);
+  the query string; what a `POST` creates, what a `PATCH` changes and what a `PUT` sets
+  travels in the JSON body, the target included (`POST /comment {contentId, message}`,
+  `PUT /space/<id>/membership {message}`);
   a `DELETE` carries its options in the query string (`DELETE /comment/<id>?notify=1`),
   because a `DELETE` body is dropped by enough clients and proxies not to build on.
-- **`PATCH` is the one update verb**, and it is partial: a field the body does not carry
-  keeps its value. There is no `PUT` — the implementation (`Model::load()` + `save()`) has
-  always been partial, and one verb whose documentation matches beats two aliases.
+- **`PATCH` is the one update verb of a record**, and it is partial: a field the body does
+  not carry keeps its value. `PUT` never updates a record — the implementation
+  (`Model::load()` + `save()`) has always been partial, and one verb whose documentation
+  matches beats two aliases; `PUT` only sets a state of the caller (see "Relationships and
+  operations" below), so `PUT /comment/<id>` answers `404`.
 - **Errors** are plain HTTP status codes with Yii's JSON error body; there is no
   `{code, message}` success/failure envelope. Validation failures — a missing required
   parameter included (`BaseController::missingParameter()`) — are
   `422 {"errors": {attribute: [messages]}}`. `403` is reserved for what the caller may not
   do, never for a state the caller is already in.
 - **Status codes of writes**: creating a resource answers `201` with the resource
-  (`POST /comment`), a state transition answers `200` with the new state (`POST /like`,
-  `POST /space/<id>/membership`), a successful delete `204` with no body. The file upload is
+  (`POST /comment`), setting a state or triggering an operation answers `200` with the new
+  state (`PUT /like/<recordId>`, `PUT /space/<id>/membership`,
+  `POST /marketplace/module/<id>/install`), a successful delete `204` with no body. The file upload is
   the one exception, see below.
-- **Affirming and removing are idempotent.** `POST` on a state that is already affirmed (a
-  member joining again, liking what is liked, re-sending a friendship request) and `DELETE`
-  on one that is already gone both succeed and answer the current state, so a client acting
-  on a stale view ends up with the truth rather than an error.
+- **Setting and removing a state are idempotent**, as HTTP defines `PUT` and `DELETE`:
+  setting a state that is already set (a member joining again, liking what is liked,
+  re-sending a friendship request) and removing one that is already gone both succeed and
+  answer the current state, so a client acting on a stale view ends up with the truth rather
+  than an error.
 - **Lists** come in three shapes, each chosen by how the list behaves while it is read:
   - **offset pages** — `page`/`pageSize` in, `{results, total, page, pageSize, pages}` out
     (`BaseController::handlePagination()`/`returnPagination()`) — for lists that hold still
-    (`like/<recordId>/users`, `space`);
+    (`like/<recordId>/users`, `space`, `marketplace/module`, where `updateCount` rides along
+    for the "Update all" button);
   - **cursor pages** — `cursor`/`limit` in, `{results, nextCursor}` out — for lists that
     reorder while being read: `activity` (groups form and re-key) and `notification` (ordered
     unseen-first, reorders as notifications arrive and are read; `unseenCount` rides along
@@ -362,6 +368,32 @@ A concrete payoff: the islands' adapter layer
 server timezone and map snake_case user shapes. It now only adds what a client is *supposed*
 to derive — `isEdited` (`updatedAt !== createdAt`), the blocked-author flag from the
 viewer's own block list, and `canAdminDelete` (`canDelete` on someone else's comment).
+
+### Relationships and operations
+
+Beyond the CRUD of records — a collection takes `POST` to create (`201`), a record `PATCH` to
+change and `DELETE` to delete (`204`) — a write is one of two things, and each has its shape:
+
+- **A state of the caller towards something** — a relationship the caller can read back — is
+  a resource noun under its target: `like/<recordId>`, `space/<id>/membership`,
+  `user/<id>/friendship`. `GET` reads it, **`PUT` sets it** and `DELETE` removes it; both
+  writes answer the state in the shape `GET` returns. Which transition a `PUT` stands for
+  (joining, applying or accepting an invite) follows from the current state and is decided by
+  the server.
+- **An operation the caller triggers on the system** is a verb sub-path taking `POST`:
+  `marketplace/module/<id>/install`, `marketplace/module/<id>/update`, `module/<id>/enable`,
+  `notification/mark-as-seen`. It answers `200` with the new state of what it acted on (the
+  module, the `unseenCount`); an operation that has nothing left to do (installing what is
+  installed) answers that state as well.
+
+Borderline cases are decided by one question: **can the caller read it back as a state?** If
+so, it is a resource; otherwise it is an operation. A like, a membership or a friendship is
+something the caller has; an installation or an enabling is something that happens.
+
+GitHub (`PUT /user/following/{user}`, `PUT …/pulls/{n}/merge`) and Stripe
+(`POST /subscriptions/{id}/cancel`) draw the same line. Nouns for operations
+(`…/installation`, `…/activation`) only made paths clumsy, and a `POST` that affirms a
+relationship needed its idempotence documented, where `PUT` carries it by definition.
 
 ## Migration path
 
@@ -407,22 +439,22 @@ docs/api/
 ```
 
 One source per module owning endpoints (`account`, `activity`, `comment`, `content`, `file`,
-`friendship`, `like`, `notification`, `space`), each tagging its operations with the module's
-name and introducing the module in that tag's description; `src/index.yaml` carries the general
-introduction and the conventions, `src/common.yaml` the shared schemas, parameters, error
-responses and security schemes. `build.sh` joins them into one document (`redocly join`) and
-renders it as `index.html` — one page with a sidebar across all modules. The rendered page is
-**committed**, so the reference opens straight from a checkout, no server needed, without a
-build step; `docs/api/build.sh` (or `grunt build-api-docs`) re-renders it after a source
-change, and the result belongs in the same commit. It is a repository document, not a served
-page: since the `public/` document root (#8459) the checkout's `docs/` directory is not
-web-accessible.
+`friendship`, `like`, `marketplace`, `module`, `notification`, `space`), each tagging its
+operations with the module's name and introducing the module in that tag's description;
+`src/index.yaml` carries the general introduction and the conventions, `src/common.yaml` the
+shared schemas, parameters, error responses and security schemes. `build.sh` joins them into one
+document (`redocly join`) and renders it as `index.html` — one page with a sidebar across all
+modules. The rendered page is **committed**, so the reference opens straight from a checkout, no
+server needed, without a build step; `docs/api/build.sh` (or `grunt build-api-docs`) re-renders
+it after a source change, and the result belongs in the same commit. It is a repository
+document, not a served page: since the `public/` document root (#8459) the checkout's `docs/`
+directory is not web-accessible.
 
 The build lints the sources first, with Redocly's `recommended-strict` rule set
 (`docs/api/redocly.yaml`): every warning is an error, so a schema that renders fine but is
 invalid — `nullable` without a type, say — or an operation without an `operationId` stops the
 build. Every operation carries an `operationId` in `verbResource` form (`getComment`,
-`listSpaces`, `affirmSpaceMembership`, `uploadFiles`), which is what client generators name
+`listSpaces`, `setSpaceMembership`, `uploadFiles`), which is what client generators name
 their methods after. `.github/workflows/api-docs.yml` runs the same build on every change
 under `docs/api/` and fails when the committed page differs from the re-rendered one — the
 guarantee `js-test.yml` gives for the Vue build artifacts, for the reference.

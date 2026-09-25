@@ -96,7 +96,7 @@ class FriendshipApiCest
         $I->amLoggedInAs(self::USER1);
         $this->withCsrf($I);
 
-        $I->sendPost('user/' . self::USER2 . '/friendship');
+        $I->sendPut('user/' . self::USER2 . '/friendship');
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['state' => 'requestSent']);
         Assert::assertSame(Friendship::STATE_REQUEST_SENT, $this->state(self::USER1, self::USER2));
@@ -109,7 +109,7 @@ class FriendshipApiCest
 
     public function testAcceptsAReceivedRequest(ApiTester $I)
     {
-        $I->wantTo('accept a friendship request with the same POST that sends one');
+        $I->wantTo('accept a friendship request with the same PUT that sends one');
         $this->enableFriendship();
         $this->seedRequest(self::USER2, self::USER1);
 
@@ -119,7 +119,7 @@ class FriendshipApiCest
         $I->sendGet('user/' . self::USER2 . '/friendship');
         $I->seeResponseContainsJson(['state' => 'requestReceived']);
 
-        $I->sendPost('user/' . self::USER2 . '/friendship');
+        $I->sendPut('user/' . self::USER2 . '/friendship');
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['state' => 'friends']);
         Assert::assertSame(Friendship::STATE_FRIENDS, $this->state(self::USER1, self::USER2));
@@ -162,7 +162,7 @@ class FriendshipApiCest
 
     public function testAffirmingWhatIsAlreadyAffirmedIsASuccess(ApiTester $I)
     {
-        $I->wantTo('see a POST on an existing friendship answer the state instead of an error');
+        $I->wantTo('see a PUT on an existing friendship answer the state instead of an error');
         $this->enableFriendship();
         $this->seedFriendship(self::USER1, self::USER2);
 
@@ -170,7 +170,7 @@ class FriendshipApiCest
         $this->withCsrf($I);
 
         // Idempotent like DELETE: nothing changes, the state is the answer
-        $I->sendPost('user/' . self::USER2 . '/friendship');
+        $I->sendPut('user/' . self::USER2 . '/friendship');
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['state' => 'friends']);
         Assert::assertSame(Friendship::STATE_FRIENDS, $this->state(self::USER1, self::USER2));
@@ -226,7 +226,7 @@ class FriendshipApiCest
         $this->enableFriendship();
         $I->amLoggedInAs(self::USER1);
 
-        $I->sendPost('user/' . self::USER2 . '/friendship');
+        $I->sendPut('user/' . self::USER2 . '/friendship');
         $I->seeResponseCodeIs(403);
         Assert::assertSame(Friendship::STATE_NONE, $this->state(self::USER1, self::USER2));
     }
@@ -239,17 +239,21 @@ class FriendshipApiCest
         $I->sendGet('user/' . self::USER2 . '/friendship');
         $I->seeResponseCodeIs(401);
 
-        $I->sendPost('user/' . self::USER2 . '/friendship');
+        $I->sendPut('user/' . self::USER2 . '/friendship');
         $I->seeResponseCodeIs(401);
     }
 
     public function testWrongVerbsDoNotReachTheController(ApiTester $I)
     {
-        $I->wantTo('find no PUT route on the friendship endpoint');
+        $I->wantTo('find no POST route on the friendship endpoint - it is set with PUT');
         $this->enableFriendship();
         $I->amLoggedInAs(self::ADMIN);
 
-        $I->sendPut('user/' . self::USER2 . '/friendship');
+        $I->sendPost('user/' . self::USER2 . '/friendship');
+        $I->seeResponseCodeIs(404);
+        $I->seeResponseIsJson();
+
+        $I->sendPatch('user/' . self::USER2 . '/friendship');
         $I->seeResponseCodeIs(404);
     }
 

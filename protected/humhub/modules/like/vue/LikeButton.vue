@@ -115,7 +115,7 @@ export default {
                 log.error(e, true);
                 // Without this the island stays invisible forever (ready()
                 // never turns true) — fall back to a plain, un-liked state so
-                // the button still renders; a later toggle() just posts.
+                // the button still renders; a later toggle() just likes.
                 this.liked = false;
                 this.count = 0;
             });
@@ -126,10 +126,10 @@ export default {
             }
             this.busy = true;
 
-            // The caller's like of the record: POST likes, DELETE unlikes, both answer the
+            // The caller's like of the record: PUT likes, DELETE unlikes, both answer the
             // {total, liked, canLike} state shape.
             const endpoint = apiUrl(`like/${this.recordId}`);
-            const request = this.liked ? client.del(endpoint) : client.post(endpoint);
+            const request = this.liked ? client.del(endpoint) : client.put(endpoint);
 
             request.then((response) => {
                 this.liked = response.liked;

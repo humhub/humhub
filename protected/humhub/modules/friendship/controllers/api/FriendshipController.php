@@ -30,7 +30,7 @@ use yii\web\NotFoundHttpException;
  * button offers is either affirming or removing a relationship, so there are two writing verbs
  * instead of one action per button.
  *
- * - `POST` **affirms** it: sending a request, or accepting the one this user sent. Which of the
+ * - `PUT` **affirms** it: sending a request, or accepting the one this user sent. Which of the
  *   two it is follows from the current state — the server decides.
  * - `DELETE` **removes** it: withdrawing a sent request, denying a received one, or ending the
  *   friendship.
@@ -63,7 +63,7 @@ class FriendshipController extends BaseController
                 'class' => VerbFilter::class,
                 'actions' => [
                     'state' => ['GET', 'HEAD'],
-                    'affirm' => ['POST'],
+                    'affirm' => ['PUT'],
                     'remove' => ['DELETE'],
                 ],
             ],

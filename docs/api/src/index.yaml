@@ -43,15 +43,26 @@ info:
       container is meant (`containerId`). Guids appear in payloads for display, never as an
       address. Class names never reach the wire.
     - Where a parameter travels follows the verb: what identifies or filters a read goes in
-      the query string, what a `POST` creates or a `PATCH` changes goes in the JSON body (the
-      target included), and a `DELETE` takes its options in the query string. `PATCH` is the
-      one update verb and is partial — a field left out keeps its value.
+      the query string, what a `POST` creates, a `PATCH` changes or a `PUT` sets goes in the
+      JSON body (the target included), and a `DELETE` takes its options in the query string.
+      `PATCH` is the one update verb of a record and is partial — a field left out keeps its
+      value.
     - Errors are plain HTTP status codes with a JSON body; there is no `{code, message}`
       success/failure envelope. Validation failures — a missing required parameter included —
       answer `422` with `{"errors": {"<field>": ["<message>"]}}`. Creating a resource answers
       `201`, a state transition `200` with the new state, a successful delete `204`.
-    - Affirming what is already affirmed and removing what is already gone both succeed and
-      answer the current state, so a client acting on a stale view ends up with the truth.
+    - A **state of the caller towards something** — a relationship it can read back — is a
+      resource noun under its target (`like/<recordId>`, `space/<id>/membership`,
+      `user/<id>/friendship`): `GET` reads it, `PUT` sets it and `DELETE` removes it. Both
+      writes are idempotent, as HTTP defines them: setting what is already set and removing
+      what is already gone succeed and answer the current state, so a client acting on a
+      stale view ends up with the truth.
+    - An **operation the caller triggers** on the system is a verb sub-path taking `POST`
+      (`marketplace/module/<id>/install`, `module/<id>/enable`, `notification/mark-as-seen`).
+      Whether something is one or the other is decided by the question "can the caller read
+      it back as a state?" — if so, it is a resource.
+    - Records are created with `POST` on their collection, changed with `PATCH` and deleted
+      with `DELETE`.
     - Lists that hold still page by offset and use `{results, total, page, pageSize, pages}`.
       Lists that reorder while being read (activity, notification) page by `cursor` + `limit`
       and carry a `nextCursor`. Comment threads are windows paged in both directions

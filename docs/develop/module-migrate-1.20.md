@@ -942,7 +942,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
       `perma`).
     - **Removed**: `like\controllers\LikeController` entirely, including the pre-1.19 routes
       `like/like/like`, `like/like/unlike` and the newer `like/like/info`/`like/like/user-list` —
-      use `GET|POST|DELETE /api/v2/like/<recordId>`,
+      use `GET|PUT|DELETE /api/v2/like/<recordId>`,
       `GET /api/v2/like/<recordId>/users` and `GET /api/v2/like/states` instead. The
       legacy `like.toggleLike` client had
       already been removed earlier in this cycle (see above), so no core markup calls the
@@ -1080,9 +1080,9 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
       adopts those two rules.
   - **The space membership button is a Vue island** (`MembershipButton`,
     `protected/humhub/modules/space/vue/`, `SpaceVueAsset`), fed by the new endpoints
-    `GET|POST|DELETE /api/v2/space/<id>/membership`
+    `GET|PUT|DELETE /api/v2/space/<id>/membership`
     (`space\controllers\api\MembershipController`, shape in
-    `space\serializers\MembershipSerializer`). One `POST` covers joining, applying and
+    `space\serializers\MembershipSerializer`). One `PUT` covers joining, applying and
     accepting an invite, one `DELETE` covers leaving, withdrawing and declining — which
     one it is follows from the current state and the space's join policy, decided server
     side. Both answer the new state, and the island renders every state itself, including
@@ -1129,7 +1129,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
       "Cancel Membership" entry of `space\widgets\HeaderControlsMenu`, which now calls the
       endpoint through the new `space.leave` client action (`data-action-click="space.leave"`
       with the endpoint as `data-action-url`; it reloads the page afterwards). A module that
-      posts to one of these routes calls `POST`/`DELETE /api/v2/space/<id>/membership` instead;
+      posts to one of these routes calls `PUT`/`DELETE /api/v2/space/<id>/membership` instead;
       module-search found none.
     - The sibling `FollowButton` (still a server-rendered widget) is toggled by the island
       itself, by `data-content-container-id` + `.followButton`/`.unfollowButton` — the
@@ -1141,10 +1141,10 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
       `space\controllers\api\MembershipController`.
   - **The friendship button is a Vue island** (`FriendshipButton`,
     `protected/humhub/modules/friendship/vue/`, `FriendshipVueAsset`), fed by the new
-    endpoints `GET|POST|DELETE /api/v2/user/<id>/friendship`
+    endpoints `GET|PUT|DELETE /api/v2/user/<id>/friendship`
     (`friendship\controllers\api\FriendshipController`, shape in
     `friendship\serializers\FriendshipSerializer`) — the membership button's twin, built the
-    same way: one `POST` sends a request or accepts a received one, one `DELETE` withdraws,
+    same way: one `PUT` sends a request or accepts a received one, one `DELETE` withdraws,
     denies or ends, both answer the new state. The endpoints answer `404` while the friendship
     system is disabled, like the web controller. Details:
     - `friendship\widgets\FriendshipButton` keeps its class, `$user`, `EVENT_INIT` and
@@ -1161,7 +1161,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
       and `friendship/request/delete` actions), which the island's endpoint duplicates. Its only
       callers were the action links of the "manage friends" pages (`views/manage/*.php`), which
       render the `FriendshipButton` island per row now. A module that posts to one of these
-      routes calls `POST`/`DELETE /api/v2/user/<id>/friendship` instead; module-search found
+      routes calls `PUT`/`DELETE /api/v2/user/<id>/friendship` instead; module-search found
       none.
     - **Removed**: the `relationship` action of the `content.container` JS module
       (`data-action-click="content.container.relationship"`) together with its
@@ -1316,3 +1316,49 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
       immediately (`Comment::afterSave()`/`afterDelete()`); the new `comment` module property
       `payloadCacheTtl` (default `3600`, `0` disables) only bounds how long a payload may lag
       behind data it embeds without owning — the author's display name and profile image.
+
+- **Marketplace page rebuilt as a Vue island.** `/marketplace/browse` renders
+  `humhub\modules\marketplace\widgets\MarketplaceBrowser` and does everything through
+  `/api/v2/marketplace` and `POST /api/v2/module/<id>/enable` (see
+  `docs/api/src/marketplace.yaml` and `module.yaml`). The page itself no longer contacts
+  humhub.com; modules, categories and the version notice load after mounting.
+  - **Removed:** the widgets `ModuleFilters`, `ModuleGroups`, `ModuleCard`, `ModuleStatus`,
+    `ModuleControls`, `ModuleActionButtons`, `ModuleInstalledActionButtons`,
+    `ModuleUpdateActionButtons` and `Settings` of `humhub\modules\marketplace\widgets` with their
+    views; `services\FilterService`, `models\Module::getFilterService()`,
+    `models\forms\GeneralModuleSettingsForm`, `assets\Assets` and the `marketplace` JavaScript module (`humhub.marketplace.js`);
+    `OnlineModuleManager::getCategories()` (use `getCategoryList()`, which also counts the listed
+    modules per category and answers `null` while humhub.com cannot be reached);
+    `Events::onMarketplaceAfterFilterModules()`; the routes
+    `marketplace/browse/install|enable|module-settings|toggle-community|thirdparty-disclaimer`,
+    `marketplace/update/install` and `marketplace/purchase/list`.
+  - **Replaced:** a module adding marketplace filters on `ModuleFilters::EVENT_INIT` registers on
+    `humhub\modules\marketplace\components\MarketplaceFilterSet::EVENT_INIT` instead and adds a
+    definition (`addFilter('key', ['type' => 'text'|'select'|'tags'|'checkbox', 'label' => …])`,
+    see `humhub\components\filter\FilterSet`) instead of HTML. The key is the query
+    parameter the value travels in — on the page URL and to `GET /api/v2/marketplace/module`,
+    which ignores parameters it does not know; to act on it, a handler of
+    `ModuleManager::EVENT_AFTER_FILTER_MODULES` reads it from that request and narrows the list.
+  - **Changed:** the page's URL parameters follow the API: `q` instead of `keyword`, `tag`
+    instead of `tags`, plus `status`; `categoryId` and `id` keep their names. A link carrying
+    `keyword` (the meta search's "all results") keeps working — `BrowseController::actionIndex()`
+    redirects it to the same page with `q`, other parameters kept, an explicit `q` winning; a
+    link carrying `tags` is not translated and loses its tags. The marketplace no
+    longer filters `ModuleManager::filterModules()` results by the request's `categoryId`/`tags`
+    (the `EVENT_AFTER_FILTER_MODULES` handler is gone); the event itself still fires, with the
+    keyword search of the list. The groups (available updates, installed, not installed) are one
+    grid ordered by that status. `ModuleService::update()` throws an
+    `UnprocessableEntityHttpException` instead of a `ServerErrorHttpException` when humhub.com
+    refuses the download of a paid module (licence expired). The checkout of a paid module
+    returns to `/marketplace/browse?tag=purchased`.
+  - **Deprecated**: `models\Module::marketplaceLink()`, `marketplaceImage()`,
+    `marketplaceName()`. Unused now that the marketplace cards are rendered by the Vue island;
+    kept as public API.
+  - **New:** `humhub\components\filter\FilterSet` and the core Vue components
+    `PageToolbar`, `FilterBar`, `FilterSelect` (a page's upper box: title, actions, filter bar)
+    and `CardDirectory`, `CardGrid`, `CardSkeleton` for card directory pages (see
+    `docs/develop/ui-js-vuejs-components.md`); `marketplace\services\MarketplaceListService`
+    and `marketplace\serializers\MarketplaceModuleSerializer`; `models\Module::getBadge()`,
+    `getAvailability()`, `findInstalledVersion()`, `isUpdateAvailable()`, `getUseCaseList()`
+    (humhub.com's `useCases` field, listed with their module counts by the new use-case
+    filter); `MarketplaceService::getPublicSettings()`/`updateSettings()`.

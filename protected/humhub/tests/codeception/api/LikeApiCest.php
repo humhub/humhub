@@ -70,7 +70,7 @@ class LikeApiCest
         $visible = $this->recordId(10);   // public post in Space 2, User1 is a member
         $invisible = $this->recordId(1);  // Admin's private profile post
 
-        $I->sendPost("like/$visible");
+        $I->sendPut("like/$visible");
         $I->seeResponseCodeIs(200);
 
         $I->sendGet("like/states?recordIds=$visible,$invisible,999999");
@@ -123,12 +123,12 @@ class LikeApiCest
         $I->sendGet("like/$recordId");
         $before = (int)$I->grabDataFromResponseByJsonPath('$.total')[0];
 
-        $I->sendPost("like/$recordId");
+        $I->sendPut("like/$recordId");
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['total' => $before + 1, 'liked' => true, 'canLike' => true]);
 
         // Liking twice does not double-count
-        $I->sendPost("like/$recordId");
+        $I->sendPut("like/$recordId");
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['total' => $before + 1, 'liked' => true]);
 
@@ -140,6 +140,25 @@ class LikeApiCest
         $I->sendDelete("like/$recordId");
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['total' => $before, 'liked' => false]);
+    }
+
+    public function testPostDoesNotLike(ApiTester $I)
+    {
+        $I->wantTo('see a like set with PUT only - POST is not a verb of the relationship');
+        $I->amLoggedInAs(1);
+        $this->withCsrf($I);
+
+        $recordId = $this->recordId(1);
+
+        $I->sendGet("like/$recordId");
+        $before = $I->grabDataFromResponseByJsonPath('$')[0];
+
+        $I->sendPost("like/$recordId");
+        $I->seeResponseCodeIs(404);
+        $I->seeResponseIsJson();
+
+        $I->sendGet("like/$recordId");
+        $I->seeResponseContainsJson($before);
     }
 
     public function testUserList(ApiTester $I)
@@ -158,7 +177,7 @@ class LikeApiCest
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['results' => [], 'total' => 0, 'page' => 1, 'pages' => 0]);
 
-        $I->sendPost("like/$recordId");
+        $I->sendPut("like/$recordId");
         $I->seeResponseCodeIs(200);
 
         $I->sendGet("like/$recordId/users");
@@ -190,7 +209,7 @@ class LikeApiCest
         $I->sendGet("like/$recordId");
         $I->seeResponseCodeIs(403);
 
-        $I->sendPost("like/$recordId");
+        $I->sendPut("like/$recordId");
         $I->seeResponseCodeIs(403);
     }
 
@@ -214,7 +233,7 @@ class LikeApiCest
         $I->seeResponseCodeIs(403);
 
         // Mutations are never guest-accessible
-        $I->sendPost("like/$recordId");
+        $I->sendPut("like/$recordId");
         $I->seeResponseCodeIs(401);
         $I->sendDelete("like/$recordId");
         $I->seeResponseCodeIs(401);

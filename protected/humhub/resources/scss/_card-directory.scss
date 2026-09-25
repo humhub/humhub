@@ -1,0 +1,208 @@
+//
+// Card directory: the Vue components CardDirectory, CardGrid and CardSkeleton
+// (protected/humhub/vue/), after the HumHub design system v2 (card grid, skeleton card). The
+// toolbar and filter bar on top are the page toolbar kit (`_page-toolbar.scss`).
+// @since 1.20
+// --------------------------------------------------
+
+@if not $prev-card-directory {
+    // Tokens, declared on the kit's roots (not `:root`), so they resolve against the theme
+    // variables of the element's own colour mode.
+    .c-card-directory,
+    .c-card-grid,
+    .c-card-skeleton {
+        --hh-surface-shadow: 0 0 4px 1px rgba(150, 150, 150, 0.16);
+        --hh-skeleton-base: var(--bs-secondary-bg);
+        --hh-skeleton-highlight: var(--bs-tertiary-bg);
+    }
+
+    @if $enable-dark-mode {
+        @include color-mode(dark) {
+            .c-card-directory,
+            .c-card-grid,
+            .c-card-skeleton {
+                --hh-surface-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.48);
+            }
+        }
+    }
+
+    // Page layout: toolbar, notice and grid, capped at 1440px and centred
+    .c-card-directory {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        width: 100%;
+        max-width: 1440px;
+        margin-inline: auto;
+    }
+
+    // Card grid
+    .c-card-grid__cells {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(min(264px, 100%), 1fr));
+        gap: 16px;
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .c-card-grid.is-loading .c-card-grid__cells {
+        opacity: 0.5;
+    }
+
+    .c-card-grid__cell {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        animation: hh-pop-in 0.4s ease both;
+        animation-delay: calc(var(--card-stagger-index, 0) * 32ms);
+
+        > * {
+            flex: 1 1 auto;
+        }
+    }
+
+    .c-card-grid__message {
+        grid-column: 1 / -1;
+        padding: 32px 16px;
+        border-radius: 8px;
+        background: var(--hh-background-color-main);
+        box-shadow: var(--hh-surface-shadow);
+        color: var(--hh-text-color-default);
+        text-align: center;
+    }
+
+    .c-card-grid__message-text {
+        margin: 0 0 8px;
+    }
+
+    .c-card-grid__message--empty .c-card-grid__message-text {
+        margin: 0;
+    }
+
+    .c-card-grid__error,
+    .c-card-grid__more {
+        margin: 16px 0;
+        text-align: center;
+    }
+
+    // Skeleton card: the geometry of a directory card
+    .c-card-skeleton {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding: 8px;
+        border-radius: 8px;
+        background: var(--hh-background-color-main);
+        box-shadow: var(--hh-surface-shadow);
+    }
+
+    .c-card-skeleton__cover,
+    .c-card-skeleton__footer {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px;
+    }
+
+    .c-card-skeleton__header {
+        display: flex;
+        flex-direction: column;
+        padding: 8px;
+    }
+
+    .c-card-skeleton__body {
+        display: flex;
+        flex: 1 0 auto;
+        flex-direction: column;
+        gap: 10px;
+        padding: 13px 8px;
+    }
+
+    .c-card-skeleton__block {
+        position: relative;
+        display: block;
+        overflow: hidden;
+        border-radius: 4px;
+        background: var(--hh-skeleton-base);
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            transform: translateX(-100%);
+            background: linear-gradient(90deg, transparent 0%, var(--hh-skeleton-highlight) 50%, transparent 100%);
+            animation: hh-skeleton-shimmer 1.2s ease-in-out infinite;
+        }
+    }
+
+    .c-card-skeleton__image {
+        width: 80px;
+        height: 80px;
+        border-radius: 6px;
+    }
+
+    .c-card-skeleton__title {
+        width: 60%;
+        height: 20px;
+        margin: 4px 0;
+    }
+
+    .c-card-skeleton__version {
+        width: 30%;
+        height: 14px;
+        margin: 4px 0;
+    }
+
+    .c-card-skeleton__line {
+        width: 100%;
+        height: 12px;
+    }
+
+    .c-card-skeleton__line--short {
+        width: 72%;
+    }
+
+    .c-card-skeleton__action {
+        flex: 1 1 auto;
+        height: 38px;
+        border-radius: 6px;
+    }
+
+    .c-card-skeleton__icon {
+        flex: 0 0 38px;
+        height: 38px;
+        border-radius: 6px;
+    }
+
+    // Motion
+    @keyframes hh-pop-in {
+        0% {
+            opacity: 0;
+            transform: translateY(10px) scale(0.98);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    @keyframes hh-skeleton-shimmer {
+        100% {
+            transform: translateX(100%);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .c-card-grid__cell {
+            animation: none;
+        }
+
+        .c-card-skeleton__block::after {
+            display: none;
+            animation: none;
+        }
+
+        .c-card-grid__cells {
+            transition: none !important;
+        }
+    }
+}

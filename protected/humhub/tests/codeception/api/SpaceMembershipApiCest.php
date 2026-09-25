@@ -123,7 +123,7 @@ class SpaceMembershipApiCest
         $I->amLoggedInAs(3);
         $this->withCsrf($I);
 
-        $I->sendPost('space/' . self::SPACE_FREE . '/membership');
+        $I->sendPut('space/' . self::SPACE_FREE . '/membership');
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['state' => 'member', 'canJoin' => false, 'canLeave' => true]);
         Assert::assertTrue($this->space(self::SPACE_FREE)->isMember(3));
@@ -144,7 +144,7 @@ class SpaceMembershipApiCest
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['state' => 'none', 'canJoin' => true, 'needsApproval' => true]);
 
-        $I->sendPost('space/' . self::SPACE_APPROVAL . '/membership', ['message' => 'Please let me in.']);
+        $I->sendPut('space/' . self::SPACE_APPROVAL . '/membership', ['message' => 'Please let me in.']);
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['state' => 'applicant']);
 
@@ -165,7 +165,7 @@ class SpaceMembershipApiCest
         $I->amLoggedInAs(2);
         $this->withCsrf($I);
 
-        $I->sendPost('space/' . self::SPACE_APPROVAL . '/membership', ['message' => '  ']);
+        $I->sendPut('space/' . self::SPACE_APPROVAL . '/membership', ['message' => '  ']);
         $I->seeResponseCodeIs(422);
         $I->seeResponseJsonMatchesJsonPath('$.errors.message');
         Assert::assertNull($this->membership(self::SPACE_APPROVAL, 2));
@@ -173,7 +173,7 @@ class SpaceMembershipApiCest
 
     public function testAcceptsAnInvite(ApiTester $I)
     {
-        $I->wantTo('accept an invite through the same POST that joins');
+        $I->wantTo('accept an invite through the same PUT that joins');
         $this->seedInvite(self::SPACE_PRIVATE, 3);
 
         $I->amLoggedInAs(3);
@@ -185,7 +185,7 @@ class SpaceMembershipApiCest
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['state' => 'invited', 'canJoin' => false]);
 
-        $I->sendPost('space/' . self::SPACE_PRIVATE . '/membership');
+        $I->sendPut('space/' . self::SPACE_PRIVATE . '/membership');
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['state' => 'member']);
         Assert::assertTrue($this->space(self::SPACE_PRIVATE)->isMember(3));
@@ -207,16 +207,16 @@ class SpaceMembershipApiCest
 
     public function testAffirmingWhatIsAlreadyAffirmedIsASuccess(ApiTester $I)
     {
-        $I->wantTo('see a POST on an existing membership answer the state instead of an error');
+        $I->wantTo('see a PUT on an existing membership answer the state instead of an error');
         $I->amLoggedInAs(3);
         $this->withCsrf($I);
 
-        $I->sendPost('space/' . self::SPACE_FREE . '/membership');
+        $I->sendPut('space/' . self::SPACE_FREE . '/membership');
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['state' => 'member']);
 
         // Idempotent like DELETE: nothing changes, the state is the answer
-        $I->sendPost('space/' . self::SPACE_FREE . '/membership');
+        $I->sendPut('space/' . self::SPACE_FREE . '/membership');
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['state' => 'member']);
         Assert::assertTrue($this->space(self::SPACE_FREE)->isMember(3));
@@ -234,7 +234,7 @@ class SpaceMembershipApiCest
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['state' => 'none', 'canJoin' => false]);
 
-        $I->sendPost('space/' . self::SPACE_FREE . '/membership');
+        $I->sendPut('space/' . self::SPACE_FREE . '/membership');
         $I->seeResponseCodeIs(403);
         Assert::assertNull($this->membership(self::SPACE_FREE, 3));
     }
@@ -264,7 +264,7 @@ class SpaceMembershipApiCest
         $I->wantTo('be refused without a CSRF token');
         $I->amLoggedInAs(3);
 
-        $I->sendPost('space/' . self::SPACE_FREE . '/membership');
+        $I->sendPut('space/' . self::SPACE_FREE . '/membership');
         $I->seeResponseCodeIs(403);
         Assert::assertNull($this->membership(self::SPACE_FREE, 3));
     }
@@ -288,16 +288,20 @@ class SpaceMembershipApiCest
         $I->sendGet('space/' . self::SPACE_FREE . '/membership');
         $I->seeResponseCodeIs(401);
 
-        $I->sendPost('space/' . self::SPACE_FREE . '/membership');
+        $I->sendPut('space/' . self::SPACE_FREE . '/membership');
         $I->seeResponseCodeIs(401);
     }
 
     public function testWrongVerbsDoNotReachTheController(ApiTester $I)
     {
-        $I->wantTo('find no PUT route on the membership endpoint');
+        $I->wantTo('find no POST route on the membership endpoint - it is set with PUT');
         $I->amLoggedInAs(1);
 
-        $I->sendPut('space/' . self::SPACE_FREE . '/membership');
+        $I->sendPost('space/' . self::SPACE_FREE . '/membership');
+        $I->seeResponseCodeIs(404);
+        $I->seeResponseIsJson();
+
+        $I->sendPatch('space/' . self::SPACE_FREE . '/membership');
         $I->seeResponseCodeIs(404);
     }
 }

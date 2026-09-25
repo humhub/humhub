@@ -13,10 +13,10 @@ return [
     'isCoreModule' => true,
     // HTTP API (see docs/develop/concept-api.md).
     'urlManagerRules' => [
-        // The caller's like of one record: the record id in the path, two writing verbs - the
-        // same shape as space/<id>/membership and user/<id>/friendship.
+        // The caller's like of one record: the record id in the path, set with PUT and removed
+        // with DELETE - the same shape as space/<id>/membership and user/<id>/friendship.
         ['pattern' => 'api/v2/like/<recordId:\d+>', 'route' => 'like/api/like/state', 'verb' => ['GET', 'HEAD']],
-        ['pattern' => 'api/v2/like/<recordId:\d+>', 'route' => 'like/api/like/create', 'verb' => 'POST'],
+        ['pattern' => 'api/v2/like/<recordId:\d+>', 'route' => 'like/api/like/affirm', 'verb' => 'PUT'],
         ['pattern' => 'api/v2/like/<recordId:\d+>', 'route' => 'like/api/like/remove', 'verb' => 'DELETE'],
         ['pattern' => 'api/v2/like/<recordId:\d+>/users', 'route' => 'like/api/like/users', 'verb' => ['GET', 'HEAD']],
         // The states of many records at once, for a window of them.

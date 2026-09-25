@@ -140,11 +140,11 @@
         return vue$1.modal.confirm({ body }).then((confirmed) => confirmed ? action() : null);
       },
       /**
-       * POST: sends the request, or accepts the one this user sent — the server decides
+       * PUT: sends the request, or accepts the one this user sent — the server decides
        * which from the current state.
        */
       affirm() {
-        return this.mutate(() => vue$1.client.post(this.endpoint));
+        return this.mutate(() => vue$1.client.put(this.endpoint));
       },
       /**
        * DELETE: withdraws, denies or ends.
