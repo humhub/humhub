@@ -17,6 +17,8 @@ use yii\base\Event;
 use yii\base\Model;
 use yii\data\Pagination;
 use yii\db\ActiveQuery;
+use yii\filters\auth\CompositeAuth;
+use yii\filters\auth\QueryParamAuth;
 use yii\web\JsonParser;
 use yii\web\NotFoundHttpException;
 
@@ -191,6 +193,31 @@ abstract class BaseController extends Controller
         }
 
         return $authMethods;
+    }
+
+    /**
+     * The query parameters of the request that are meant for the endpoint — without those of
+     * the transport: the route parameter (installations without pretty URLs), jQuery's
+     * cache-buster `_` and the token parameter of a query-parameter authentication method. A list
+     * endpoint hands these to {@see \humhub\components\listing\FilterableList::build()}, which
+     * refuses parameters it does not know.
+     *
+     * @since 1.20
+     */
+    protected function listParams(): array
+    {
+        $transport = [Yii::$app->urlManager->routeParam, '_'];
+        // The methods the authenticator behavior was configured with (instances once it ran),
+        // each resolved like `CompositeAuth` does, so a subclass's own default `tokenParam` counts.
+        $authenticator = $this->getBehavior('authenticator');
+        foreach ($authenticator instanceof CompositeAuth ? $authenticator->authMethods : [] as $method) {
+            $class = is_array($method) ? ($method['__class'] ?? $method['class'] ?? null) : $method;
+            if ((is_string($class) || is_object($class)) && is_a($class, QueryParamAuth::class, true)) {
+                $transport[] = (is_object($method) ? $method : Yii::createObject($method))->tokenParam;
+            }
+        }
+
+        return array_diff_key(Yii::$app->request->get(), array_flip($transport));
     }
 
     /**

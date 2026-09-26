@@ -1336,12 +1336,14 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `marketplace/browse/install|enable|module-settings|toggle-community|thirdparty-disclaimer`,
     `marketplace/update/install` and `marketplace/purchase/list`.
   - **Replaced:** a module adding marketplace filters on `ModuleFilters::EVENT_INIT` registers on
-    `humhub\modules\marketplace\components\MarketplaceFilterSet::EVENT_INIT` instead and adds a
-    definition (`addFilter('key', ['type' => 'text'|'select'|'tags'|'checkbox', 'label' => …])`,
-    see `humhub\components\filter\FilterSet`) instead of HTML. The key is the query
-    parameter the value travels in — on the page URL and to `GET /api/v2/marketplace/module`,
-    which ignores parameters it does not know; to act on it, a handler of
-    `ModuleManager::EVENT_AFTER_FILTER_MODULES` reads it from that request and narrows the list.
+    `humhub\modules\marketplace\components\ModuleList::EVENT_INIT` instead and adds one filter
+    object (`$event->list->addFilter(new EnumFilter('key', values: […], apply: …, definition:
+    ['label' => …]))`, see `humhub\components\listing\FilterableList` and the ready filters in
+    `humhub\components\listing\filters`) instead of HTML. The filter is the parameter, its
+    validation, how it narrows the list (an `ArrayListBuilder` of the modules) and the page's
+    definition in one; the key is the query parameter the value travels in — on the page URL and
+    to `GET /api/v2/marketplace/module`, which refuses parameters no filter claims (`422`). A
+    plain restriction goes to `ModuleList::EVENT_BUILD`.
   - **Changed:** the page's URL parameters follow the API: `q` instead of `keyword`, `tag`
     instead of `tags`, plus `status`; `categoryId` and `id` keep their names. A link carrying
     `keyword` (the meta search's "all results") keeps working — `BrowseController::actionIndex()`
@@ -1357,7 +1359,10 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   - **Deprecated**: `models\Module::marketplaceLink()`, `marketplaceImage()`,
     `marketplaceName()`. Unused now that the marketplace cards are rendered by the Vue island;
     kept as public API.
-  - **New:** `humhub\components\filter\FilterSet` and the core Vue components
+  - **New:** the list model `humhub\components\listing` (`FilterableList`, `ListFilter`,
+    `ListContext`, `FilterDefinition`, the builders and the ready filters `SearchFilter`,
+    `EnumFilter`, `BoolFilter`, `IdsFilter`, see "Lists" in `docs/develop/concept-api.md`),
+    `marketplace\components\ModuleList`, and the core Vue components
     `PageToolbar`, `FilterBar`, `FilterSelect` (a page's upper box: title, actions, filter bar)
     and `CardDirectory`, `CardGrid`, `CardSkeleton` for card directory pages (see
     `docs/develop/ui-js-vuejs-components.md`); `marketplace\services\MarketplaceListService`
@@ -1381,30 +1386,31 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `actionUnfollow()`) — follow through `PUT`/`DELETE /api/v2/space/<id>/follow` instead. A theme
     overriding one of the removed views, or a module rendering one of the removed widgets, has to
     move to the island.
-  - **Replaced:** a module restricting or extending the directory's list on
-    `SpaceDirectoryQuery::EVENT_INIT` registers on
-    `humhub\modules\space\components\SpaceListQuery::EVENT_INIT` instead. `SpaceListQuery` is
-    the space search behind `GET /api/v2/space` — the directory, the space chooser and pickers
-    all read it — and the event (`SpaceListQueryEvent`) carries the `query`
-    (`ActiveQuerySpace`, already filtered, visibility and blocked spaces applied), all request
-    `params` (including those the core does not know, e.g. a module's `category`), the `user`
-    and the `purpose` (`directory`, `picker`, `chooser` or `null`). A handler that only
-    concerns the directory checks `$event->purpose === SpaceListQuery::PURPOSE_DIRECTORY`; the
-    query no longer reads the request itself.
+  - **Replaced:** a module restricting the directory's list on `SpaceDirectoryQuery::EVENT_INIT`
+    registers on `humhub\modules\space\components\SpaceList::EVENT_BUILD` instead. `SpaceList`
+    is the space search behind `GET /api/v2/space` — the directory, the space chooser, the meta
+    search and pickers all read it — and the event (`humhub\components\listing\ListEvent`)
+    carries the `builder` (a `QueryListBuilder` whose `query()` is the `ActiveQuerySpace`,
+    already filtered and ordered, visibility and blocked spaces applied), the `context` (`user`
+    and `purpose`: `directory`, `picker`, `chooser` or `null`) and the parsed `values` of the
+    filters (`$event->value('category')`). A handler that only concerns the directory checks
+    `$event->context->purpose === SpaceList::PURPOSE_DIRECTORY`; the list no longer reads the
+    request itself.
   - **Replaced:** a module adding directory filters on `SpaceDirectoryFilters::EVENT_INIT` (or
-    touching them on `EVENT_BEFORE_RUN`) registers on
-    `humhub\modules\space\components\SpaceDirectoryFilterSet::EVENT_INIT` instead and adds a
-    definition (`addFilter('key', ['type' => 'text'|'select'|'tags'|'checkbox', 'label' => …])`,
-    see `humhub\components\filter\FilterSet`) instead of HTML. The key is the query parameter
-    the value travels in — on the page URL and to `GET /api/v2/space`, which passes it on to
-    `SpaceListQuery::EVENT_INIT` under the same name, where the module narrows the list.
+    touching them on `EVENT_BEFORE_RUN`) registers on `SpaceList::EVENT_INIT` instead and adds
+    one filter object (`$event->list->addFilter(new EnumFilter('category', values: […], apply:
+    …, definition: ['label' => …, 'sortOrder' => 250]))`, see
+    `humhub\components\listing\FilterableList`) instead of HTML: its parameter, validation,
+    how it narrows the query and the directory's definition in one. The key is the query
+    parameter the value travels in — on the page URL and to `GET /api/v2/space`, which refuses
+    parameters no filter claims (`422`).
   - **Changed:** the directory's URL parameters follow the API: `q` instead of `keyword`,
     `scope=member|following|none|archived` instead of `connection=member|follow|none|archived`, and `sort=name|newest|oldest` (the default order needs no
     parameter) instead of `sort=name|newer|older|sortOrder`. Old links keep working —
     `SpacesController::actionIndex()` redirects them (`301`) to the new parameters, other
     parameters kept. The space's tag links (`widgets/views/spaceTags.php`) carry `q`.
   - **Changed:** the meta search's space provider (`space\search\SpaceSearchProvider`) builds its
-    results with `SpaceListQuery` and `purpose=directory`, so restrictions a module applies to the
+    results with `SpaceList` and `purpose=directory`, so restrictions a module applies to the
     directory apply to it too, as they did through `SpaceDirectoryQuery`.
   - **Changed:** `space\widgets\FollowButton` (space header) renders the `FollowButton` Vue
     island (`vue/FollowButton.vue`) on `space/<id>/follow`; `$space` is unchanged. Of
@@ -1425,7 +1431,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     entry's `htmlOptions` picks the button variant ("Create Space" is `btn-accent`), an entry
     with `data-action-click="ui.modal.load"` (or `data-bs-target="#globalModal"`) opens its URL
     in the global modal, other `htmlOptions` are passed on as link attributes.
-  - **New:** `space\components\SpaceListQuery`, `SpaceListQueryEvent`, `SpaceDirectoryFilterSet`;
+  - **New:** `space\components\SpaceList`;
     `space\serializers\FollowSerializer`, `SpaceSerializer::counts()`,
     `MembershipSerializer::states()`, `space\models\Membership::preloadForUser()`;
     `humhub\widgets\menu\Menu::getEntriesData()`; the `SpaceCard` extension slot

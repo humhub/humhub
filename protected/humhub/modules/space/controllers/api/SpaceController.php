@@ -9,9 +9,12 @@
 namespace humhub\modules\space\controllers\api;
 
 use humhub\components\api\BaseController;
+use humhub\components\listing\filters\IdsFilter;
+use humhub\components\listing\ListContext;
+use humhub\components\listing\ListValidationException;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
-use humhub\modules\space\components\SpaceListQuery;
+use humhub\modules\space\components\SpaceList;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\Module;
@@ -45,8 +48,9 @@ class SpaceController extends BaseController
     public const MAX_PAGE_SIZE = 100;
 
     /**
-     * @var int the most spaces one state request, or the list's `ids`/`exclude`, may name — a
-     * client asks for the page it displays, not for every space a user is a member of
+     * @var int the most spaces one state request may name — a client asks for the page it
+     * displays, not for every space a user is a member of (the list's `ids`/`exclude` have the
+     * same limit, {@see IdsFilter::MAX_IDS})
      */
     public const MAX_STATE_IDS = 100;
 
@@ -73,128 +77,31 @@ class SpaceController extends BaseController
 
     /**
      * The spaces the caller may see — the space search of the platform, built by
-     * {@see SpaceListQuery}; this action only maps and validates the parameters.
+     * {@see SpaceList}, which parses and validates the parameters; this action only pages.
      *
      * Parameters: `q` (search over name, description and tags), `scope` (`all`, `member`,
-     * `following`, `mine` — memberships and followed spaces —, `none` — neither), `archived`
-     * (`1`: only archived spaces, excluded otherwise), `sort` (`default`, `name`, `newest`,
-     * `oldest`; without it a scope other than `all`/`none` orders the way the platform orders a
-     * user's spaces), `ids` / `exclude` (repeated or comma-separated space ids, at most 100 each), `purpose`
-     * (`directory`, `picker`, `chooser`; absent = neutral) plus `page`/`pageSize` (25 by default,
-     * at most 100).
+     * `following`, `mine` — memberships and followed spaces —, `none` — neither —, `archived` —
+     * only archived spaces), `archived` (`1`: only archived spaces, excluded otherwise), `sort`
+     * (`default`, `name`, `newest`, `oldest`; without it a scope other than `all`/`none` orders
+     * the way the platform orders a user's spaces), `ids` / `exclude` (repeated or
+     * comma-separated space ids, at most 100 each), `purpose` (`directory`, `picker`, `chooser`;
+     * absent = neutral), the parameters of filters modules add ({@see SpaceList::EVENT_INIT}),
+     * plus `page`/`pageSize` (25 by default, at most 100).
      *
-     * An unknown value of one of these answers `422 {errors}`. Parameters the core does not know
-     * (a module's `category`, say) are not refused: they reach {@see SpaceListQuery::EVENT_INIT}
-     * with the others.
+     * An unknown value of one of these, and a parameter the list does not know, answers
+     * `422 {errors}`.
      */
     public function actionIndex()
     {
-        $request = Yii::$app->request;
-        $errors = [];
-
-        $query = $request->get();
-        $params = [
-            'q' => is_string($query['q'] ?? null) ? trim($query['q']) : '',
-            'scope' => $this->enumParam('scope', SpaceListQuery::SCOPES, $errors) ?? SpaceListQuery::SCOPE_ALL,
-            'archived' => $this->archivedParam($errors),
-            'sort' => $this->enumParam('sort', SpaceListQuery::SORTS, $errors),
-            'ids' => $this->idsParam('ids', $errors),
-            'exclude' => $this->idsParam('exclude', $errors),
-            'purpose' => $this->enumParam('purpose', SpaceListQuery::PURPOSES, $errors),
-        ] + $query;
-
-        if ($errors !== []) {
-            return $this->validationErrors($errors);
+        try {
+            $spaces = (new SpaceList())->build($this->listParams(), ListContext::forCurrentUser())->query();
+        } catch (ListValidationException $e) {
+            return $this->validationErrors($e->errors);
         }
-
-        $spaces = (new SpaceListQuery(Yii::$app->user->getIdentity()))->build($params);
 
         $pagination = $this->handlePagination($spaces, 25, self::MAX_PAGE_SIZE);
 
         return $this->returnPagination($pagination, SpaceSerializer::batch($spaces->all()));
-    }
-
-    /**
-     * A single-valued parameter out of a fixed set; absent or empty = `null`. Anything else is
-     * collected into `$errors` under the parameter's name.
-     */
-    private function enumParam(string $name, array $allowed, array &$errors): ?string
-    {
-        $value = Yii::$app->request->get($name);
-
-        if ($value === null || $value === '') {
-            return null;
-        }
-
-        if (!is_string($value) || !in_array($value, $allowed, true)) {
-            $errors[$name][] = Yii::t('SpaceModule.base', 'Unknown value "{value}".', ['value' => is_string($value) ? $value : '']);
-
-            return null;
-        }
-
-        return $value;
-    }
-
-    /**
-     * `archived`: `1` or `0`; absent or empty = `0`.
-     */
-    private function archivedParam(array &$errors): bool
-    {
-        $value = Yii::$app->request->get('archived');
-
-        if ($value === null || $value === '' || $value === '0') {
-            return false;
-        }
-
-        if ($value !== '1') {
-            $errors['archived'][] = Yii::t('yii', '{attribute} must be either "{true}" or "{false}".', [
-                'attribute' => 'archived',
-                'true' => '1',
-                'false' => '0',
-            ]);
-
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Space ids, repeated (`ids[]=1&ids[]=2`) or comma-separated (`ids=1,2`), at most
-     * {@see self::MAX_STATE_IDS} of them. A value that is not a positive integer, or too many,
-     * is collected into `$errors` under the parameter's name.
-     *
-     * @return int[]
-     */
-    private function idsParam(string $name, array &$errors): array
-    {
-        $raw = Yii::$app->request->get($name, []);
-        $values = is_array($raw) ? $raw : explode(',', (string)$raw);
-
-        $ids = [];
-        foreach ($values as $value) {
-            $value = is_scalar($value) ? trim((string)$value) : '';
-            if ($value === '') {
-                continue;
-            }
-
-            $id = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
-            if ($id === false) {
-                $errors[$name][] = Yii::t('yii', '{attribute} must be an integer.', ['attribute' => $name]);
-
-                return [];
-            }
-            $ids[] = $id;
-        }
-
-        $ids = array_values(array_unique($ids));
-        if (count($ids) > self::MAX_STATE_IDS) {
-            $errors[$name][] = Yii::t('SpaceModule.base', 'At most {count} spaces can be named.', ['count' => self::MAX_STATE_IDS]);
-
-            return [];
-        }
-
-        return $ids;
     }
 
     /**

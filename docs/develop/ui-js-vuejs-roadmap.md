@@ -50,8 +50,9 @@ Web routes an endpoint duplicates, still in place because other consumers depend
 
 ## Directory pages
 
-- **People on the card directory kit** — `CardDirectory` with a `FilterSet`, as the spaces
-  directory has it; People needs a list endpoint (profile-field filters included, as
+- **People on the card directory kit** — `CardDirectory` with the definitions of a `UserList`
+  (`humhub\components\listing\FilterableList`), as the spaces directory has them from
+  `SpaceList`; People needs a list endpoint (profile-field filters included, as
   `PeopleFilters` builds them) and friendship/follow states through `itemStates`. Then
   `humhub\widgets\DirectoryFilters` and `humhub.cards.js` can be deprecated.
 

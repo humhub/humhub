@@ -37,11 +37,13 @@ paths:
         `/space/states`.
 
         A space the caller may not see, or one that blocked them, never appears, whatever the
-        parameters say. Archived spaces are left out unless `archived=1` asks for only them.
+        parameters say. Archived spaces are left out unless `scope=archived` (or `archived=1`)
+        asks for only them.
 
-        An unknown value of one of the parameters below answers `422`. Parameters this
-        reference does not list are not refused: modules read them (a directory's `category`
-        filter, say) and narrow the list with them, as they may narrow it by `purpose`.
+        An unknown value of one of the parameters below answers `422`, and so does a parameter
+        the list does not know: modules add their own filters to the list (a directory's
+        `category`, say), which are then accepted like the ones below, and may narrow the list
+        by `purpose`.
       parameters:
         - name: q
           in: query
@@ -53,19 +55,23 @@ paths:
           in: query
           required: false
           description: |
-            `all` (default), `member`, `following`, `mine` for both, or `none` for the spaces
-            the caller is neither a member nor a follower of. Without `sort`, a list scoped to
+            `all` (default), `member`, `following`, `mine` for both, `none` for the spaces
+            the caller is neither a member nor a follower of, or `archived` for only the
+            archived spaces (the directory's "Archived" status, the same as `archived=1`).
+            Without `sort`, a list scoped to
             `member`, `following` or `mine` is ordered the way the platform orders a user's
             spaces: memberships first, in the order the `spaceOrder` setting asks for,
             followed spaces after them.
           schema:
             type: string
-            enum: [all, member, following, mine, none]
+            enum: [all, member, following, mine, none, archived]
         - name: archived
           in: query
           required: false
           description: |
-            `1` for only the archived spaces; `0` (default) leaves archived spaces out.
+            `1` for only the archived spaces — with a `scope`, its archived spaces
+            (`scope=member&archived=1`: the archived memberships); `0` (default) leaves
+            archived spaces out, which contradicts `scope=archived` and answers `422`.
           schema:
             type: integer
             enum: [0, 1]

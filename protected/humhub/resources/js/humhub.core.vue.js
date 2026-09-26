@@ -12,20 +12,20 @@
     }
     return target;
   };
-  const _sfc_main$p = {
+  const _sfc_main$q = {
     name: "CardSkeleton"
   };
-  const _hoisted_1$n = {
+  const _hoisted_1$o = {
     class: "c-card-skeleton",
     "aria-hidden": "true"
   };
-  function _sfc_render$p(_ctx, _cache, $props, $setup, $data, $options) {
-    return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$n, [..._cache[0] || (_cache[0] = [
+  function _sfc_render$q(_ctx, _cache, $props, $setup, $data, $options) {
+    return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$o, [..._cache[0] || (_cache[0] = [
       vue.createStaticVNode('<div class="c-card-skeleton__cover"><span class="c-card-skeleton__block c-card-skeleton__image"></span></div><div class="c-card-skeleton__header"><span class="c-card-skeleton__block c-card-skeleton__title"></span><span class="c-card-skeleton__block c-card-skeleton__version"></span></div><div class="c-card-skeleton__body"><span class="c-card-skeleton__block c-card-skeleton__line"></span><span class="c-card-skeleton__block c-card-skeleton__line c-card-skeleton__line--short"></span></div><div class="c-card-skeleton__footer"><span class="c-card-skeleton__block c-card-skeleton__action"></span><span class="c-card-skeleton__block c-card-skeleton__icon"></span></div>', 4)
     ])]);
   }
-  const C2 = /* @__PURE__ */ _export_sfc(_sfc_main$p, [["render", _sfc_render$p]]);
-  const _sfc_main$o = {
+  const C2 = /* @__PURE__ */ _export_sfc(_sfc_main$q, [["render", _sfc_render$q]]);
+  const _sfc_main$p = {
     name: "CardGrid",
     components: { CardSkeleton: C2 },
     props: {
@@ -115,29 +115,29 @@
       }
     }
   };
-  const _hoisted_1$m = ["aria-busy"];
-  const _hoisted_2$g = ["data-id"];
-  const _hoisted_3$d = {
+  const _hoisted_1$n = ["aria-busy"];
+  const _hoisted_2$h = ["data-id"];
+  const _hoisted_3$e = {
     key: 1,
     class: "c-card-grid__message c-card-grid__message--error"
   };
-  const _hoisted_4$c = {
+  const _hoisted_4$d = {
     role: "alert",
     class: "c-card-grid__message-text"
   };
-  const _hoisted_5$9 = {
+  const _hoisted_5$a = {
     key: 2,
     class: "c-card-grid__message c-card-grid__message--empty"
   };
-  const _hoisted_6$8 = {
+  const _hoisted_6$9 = {
     role: "status",
     class: "c-card-grid__message-text"
   };
-  const _hoisted_7$6 = {
+  const _hoisted_7$7 = {
     key: 0,
     class: "c-card-grid__error cards-error"
   };
-  const _hoisted_8$5 = {
+  const _hoisted_8$6 = {
     role: "alert",
     class: "c-card-grid__message-text"
   };
@@ -146,8 +146,8 @@
     ref: "sentinel",
     class: "c-card-grid__more cards-more"
   };
-  const _hoisted_10$4 = ["aria-label"];
-  function _sfc_render$o(_ctx, _cache, $props, $setup, $data, $options) {
+  const _hoisted_10$3 = ["aria-label"];
+  function _sfc_render$p(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_CardSkeleton = vue.resolveComponent("CardSkeleton");
     return vue.openBlock(), vue.createElementBlock(
       "div",
@@ -173,7 +173,7 @@
                   item,
                   index: $options.staggerIndex(index)
                 })
-              ], 14, _hoisted_2$g);
+              ], 14, _hoisted_2$h);
             }),
             128
             /* KEYED_FRAGMENT */
@@ -206,10 +206,10 @@
                 }),
                 128
                 /* KEYED_FRAGMENT */
-              )) : $props.error ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_3$d, [
+              )) : $props.error ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_3$e, [
                 vue.createElementVNode(
                   "p",
-                  _hoisted_4$c,
+                  _hoisted_4$d,
                   vue.toDisplayString($props.error),
                   1
                   /* TEXT */
@@ -225,8 +225,8 @@
                   1
                   /* TEXT */
                 )
-              ])) : (vue.openBlock(), vue.createElementBlock("div", _hoisted_5$9, [
-                vue.createElementVNode("p", _hoisted_6$8, [
+              ])) : (vue.openBlock(), vue.createElementBlock("div", _hoisted_5$a, [
+                vue.createElementVNode("p", _hoisted_6$9, [
                   vue.renderSlot(_ctx.$slots, "empty", {}, () => [
                     vue.createElementVNode(
                       "strong",
@@ -254,11 +254,11 @@
             64
             /* STABLE_FRAGMENT */
           )) : vue.createCommentVNode("v-if", true)
-        ], 8, _hoisted_1$m),
-        $props.error && $props.items.length ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_7$6, [
+        ], 8, _hoisted_1$n),
+        $props.error && $props.items.length ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_7$7, [
           vue.createElementVNode(
             "p",
-            _hoisted_8$5,
+            _hoisted_8$6,
             vue.toDisplayString($props.error),
             1
             /* TEXT */
@@ -283,7 +283,7 @@
               class: "spinner-border spinner-border-sm",
               role: "status",
               "aria-label": $options.loadingLabel
-            }, null, 8, _hoisted_10$4)) : (vue.openBlock(), vue.createElementBlock(
+            }, null, 8, _hoisted_10$3)) : (vue.openBlock(), vue.createElementBlock(
               "button",
               {
                 key: 1,
@@ -304,9 +304,9 @@
       /* CLASS */
     );
   }
-  const C1 = /* @__PURE__ */ _export_sfc(_sfc_main$o, [["render", _sfc_render$o]]);
+  const C1 = /* @__PURE__ */ _export_sfc(_sfc_main$p, [["render", _sfc_render$p]]);
   let uid$2 = 0;
-  const _sfc_main$n = {
+  const _sfc_main$o = {
     name: "FilterSelect",
     props: {
       modelValue: { type: String, default: "" },
@@ -530,23 +530,23 @@
       }
     }
   };
-  const _hoisted_1$l = ["id", "aria-expanded", "aria-controls", "aria-label", "aria-busy", "disabled"];
-  const _hoisted_2$f = { class: "c-select__value" };
-  const _hoisted_3$c = ["aria-label"];
-  const _hoisted_4$b = {
+  const _hoisted_1$m = ["id", "aria-expanded", "aria-controls", "aria-label", "aria-busy", "disabled"];
+  const _hoisted_2$g = { class: "c-select__value" };
+  const _hoisted_3$d = ["aria-label"];
+  const _hoisted_4$c = {
     key: 1,
     class: "ti ti-chevron-up c-select__chevron",
     "aria-hidden": "true"
   };
-  const _hoisted_5$8 = ["disabled", "aria-hidden", "aria-label", "title"];
-  const _hoisted_6$7 = ["id", "aria-label", "aria-activedescendant"];
-  const _hoisted_7$5 = ["id", "aria-selected", "onClick", "onMousemove"];
-  const _hoisted_8$4 = {
+  const _hoisted_5$9 = ["disabled", "aria-hidden", "aria-label", "title"];
+  const _hoisted_6$8 = ["id", "aria-label", "aria-activedescendant"];
+  const _hoisted_7$6 = ["id", "aria-selected", "onClick", "onMousemove"];
+  const _hoisted_8$5 = {
     key: 0,
     class: "c-select__feedback",
     role: "presentation"
   };
-  function _sfc_render$n(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$o(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock(
       "div",
       {
@@ -570,18 +570,18 @@
         }, [
           vue.createElementVNode(
             "span",
-            _hoisted_2$f,
+            _hoisted_2$g,
             vue.toDisplayString($options.displayLabel),
             1
             /* TEXT */
           )
-        ], 40, _hoisted_1$l),
+        ], 40, _hoisted_1$m),
         $props.loading ? (vue.openBlock(), vue.createElementBlock("span", {
           key: 0,
           class: "spinner-border spinner-border-sm c-select__spinner",
           role: "status",
           "aria-label": $options.loadingLabel
-        }, null, 8, _hoisted_3$c)) : (vue.openBlock(), vue.createElementBlock("i", _hoisted_4$b)),
+        }, null, 8, _hoisted_3$d)) : (vue.openBlock(), vue.createElementBlock("i", _hoisted_4$c)),
         vue.createElementVNode("button", {
           type: "button",
           class: "c-select__clear",
@@ -601,7 +601,7 @@
             -1
             /* CACHED */
           )
-        ])], 8, _hoisted_5$8),
+        ])], 8, _hoisted_5$9),
         vue.createElementVNode("ul", {
           id: $data.listboxId,
           ref: "listbox",
@@ -624,26 +624,159 @@
                 "aria-selected": option.value === $props.modelValue ? "true" : "false",
                 onClick: ($event) => $options.select(option),
                 onMousemove: ($event) => $data.activeIndex = index
-              }, vue.toDisplayString(option.label), 43, _hoisted_7$5);
+              }, vue.toDisplayString(option.label), 43, _hoisted_7$6);
             }),
             128
             /* KEYED_FRAGMENT */
           )),
           !$options.choices.length ? (vue.openBlock(), vue.createElementBlock(
             "li",
-            _hoisted_8$4,
+            _hoisted_8$5,
             vue.toDisplayString($options.emptyLabel),
             1
             /* TEXT */
           )) : vue.createCommentVNode("v-if", true)
-        ], 42, _hoisted_6$7)
+        ], 42, _hoisted_6$8)
       ],
       2
       /* CLASS */
     );
   }
-  const C8 = /* @__PURE__ */ _export_sfc(_sfc_main$n, [["render", _sfc_render$n]]);
-  const isMultiple = (filter) => filter.type === "tags" && filter.multiple === true;
+  const C8 = /* @__PURE__ */ _export_sfc(_sfc_main$o, [["render", _sfc_render$o]]);
+  const _sfc_main$n = {
+    name: "FilterControl",
+    components: { FilterSelect: C8 },
+    props: {
+      filter: { type: Object, required: true },
+      modelValue: { type: [String, Array, Boolean, Number], default: "" },
+      inputId: { type: String, required: true },
+      options: { type: Array, default: () => [] },
+      loading: { type: Boolean, default: false },
+      component: { type: String, default: null }
+    },
+    emits: ["update:modelValue"],
+    methods: {
+      isTagActive(value) {
+        if (this.filter.multiple === true) {
+          return value === "" ? this.modelValue.length === 0 : this.modelValue.includes(value);
+        }
+        return this.modelValue === value;
+      },
+      toggleTag(value) {
+        const current = this.modelValue;
+        if (this.filter.multiple !== true) {
+          this.$emit("update:modelValue", current === value ? "" : value);
+          return;
+        }
+        if (value === "") {
+          this.$emit("update:modelValue", []);
+          return;
+        }
+        this.$emit("update:modelValue", current.includes(value) ? current.filter((v) => v !== value) : [...current, value]);
+      }
+    }
+  };
+  const _hoisted_1$l = {
+    key: 0,
+    class: "c-search-field"
+  };
+  const _hoisted_2$f = ["id", "value", "placeholder", "aria-label"];
+  const _hoisted_3$c = ["aria-label"];
+  const _hoisted_4$b = {
+    key: 0,
+    class: "c-filter-tags__label",
+    "aria-hidden": "true"
+  };
+  const _hoisted_5$8 = ["aria-pressed", "onClick"];
+  const _hoisted_6$7 = {
+    key: 3,
+    class: "c-filter-check form-check"
+  };
+  const _hoisted_7$5 = ["id", "checked"];
+  const _hoisted_8$4 = ["for"];
+  function _sfc_render$n(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_FilterSelect = vue.resolveComponent("FilterSelect");
+    return $props.filter.type === "text" ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$l, [
+      _cache[4] || (_cache[4] = vue.createElementVNode(
+        "i",
+        {
+          class: "ti ti-search c-search-field__icon",
+          "aria-hidden": "true"
+        },
+        null,
+        -1
+        /* CACHED */
+      )),
+      vue.createElementVNode("input", {
+        id: $props.inputId,
+        type: "text",
+        class: "c-search-field__input",
+        autocomplete: "off",
+        value: $props.modelValue,
+        placeholder: $props.filter.placeholder || $props.filter.label || "",
+        "aria-label": $props.filter.label || $props.filter.placeholder || null,
+        onInput: _cache[0] || (_cache[0] = ($event) => _ctx.$emit("update:modelValue", $event.target.value))
+      }, null, 40, _hoisted_2$f)
+    ])) : $props.filter.type === "select" ? (vue.openBlock(), vue.createBlock(_component_FilterSelect, {
+      key: 1,
+      id: $props.inputId,
+      "model-value": String($props.modelValue ?? ""),
+      options: $props.options,
+      placeholder: $props.filter.placeholder || "",
+      label: $props.filter.label || "",
+      loading: $props.loading,
+      "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => _ctx.$emit("update:modelValue", $event))
+    }, null, 8, ["id", "model-value", "options", "placeholder", "label", "loading"])) : $props.filter.type === "tags" ? (vue.openBlock(), vue.createElementBlock("div", {
+      key: 2,
+      class: "c-filter-tags",
+      role: "group",
+      "aria-label": $props.filter.label
+    }, [
+      $props.filter.label ? (vue.openBlock(), vue.createElementBlock(
+        "span",
+        _hoisted_4$b,
+        vue.toDisplayString($props.filter.label),
+        1
+        /* TEXT */
+      )) : vue.createCommentVNode("v-if", true),
+      (vue.openBlock(true), vue.createElementBlock(
+        vue.Fragment,
+        null,
+        vue.renderList($props.options, (option) => {
+          return vue.openBlock(), vue.createElementBlock("button", {
+            key: option.value,
+            type: "button",
+            class: vue.normalizeClass(["c-filter-tags__tag", { active: $options.isTagActive(option.value) }]),
+            "aria-pressed": $options.isTagActive(option.value) ? "true" : "false",
+            onClick: ($event) => $options.toggleTag(option.value)
+          }, vue.toDisplayString(option.label), 11, _hoisted_5$8);
+        }),
+        128
+        /* KEYED_FRAGMENT */
+      ))
+    ], 8, _hoisted_3$c)) : $props.filter.type === "checkbox" ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_6$7, [
+      vue.createElementVNode("input", {
+        id: $props.inputId,
+        class: "form-check-input",
+        type: "checkbox",
+        checked: $props.modelValue,
+        onChange: _cache[2] || (_cache[2] = ($event) => _ctx.$emit("update:modelValue", $event.target.checked))
+      }, null, 40, _hoisted_7$5),
+      vue.createElementVNode("label", {
+        class: "form-check-label",
+        for: $props.inputId
+      }, vue.toDisplayString($props.filter.label), 9, _hoisted_8$4)
+    ])) : $props.component ? (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent($props.component), {
+      key: 4,
+      filter: $props.filter,
+      "model-value": $props.modelValue,
+      "input-id": $props.inputId,
+      "onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => _ctx.$emit("update:modelValue", $event))
+    }, null, 8, ["filter", "model-value", "input-id"])) : vue.createCommentVNode("v-if", true);
+  }
+  const FilterControl = /* @__PURE__ */ _export_sfc(_sfc_main$n, [["render", _sfc_render$n]]);
+  const SINGLE_VALUE_TYPES = ["text", "select", "checkbox"];
+  const isMultiple = (filter) => filter.multiple === true && !SINGLE_VALUE_TYPES.includes(filter.type);
   const toArray = (value) => Array.isArray(value) ? value.map(String) : String(value).split(",").filter((part) => part !== "");
   const defaultValue = (filter) => {
     if (filter.default !== void 0 && filter.default !== null) {
@@ -694,89 +827,161 @@
     const query = params.toString();
     return query === "" ? "" : `?${query}`;
   };
-  const requestParams = (filters, values) => {
+  const serializeFixed = (value) => {
+    if (typeof value === "boolean") {
+      return value ? "1" : "0";
+    }
+    return Array.isArray(value) ? value.join(",") : String(value ?? "");
+  };
+  const fixedSignature = (fixed) => JSON.stringify(Object.keys(fixed || {}).sort().map((key) => [key, serializeFixed(fixed[key])]));
+  const requestParams = (filters, values, fixed = {}) => {
     const params = {};
     for (const filter of filters) {
       const serialized = serializeValue(filter, values[filter.key]);
-      const option = filter.type === "select" && serialized !== "" ? (filter.options || []).find((candidate) => String(candidate.value) === serialized) : null;
-      if (option && option.params && typeof option.params === "object") {
-        for (const [name, value] of Object.entries(option.params)) {
-          params[name] = String(value);
-        }
-      } else if (filter.type === "checkbox" || serialized !== "") {
+      if (filter.type === "checkbox" || serialized !== "") {
         params[filter.key] = serialized;
       }
+    }
+    for (const [key, value] of Object.entries(fixed || {})) {
+      params[key] = serializeFixed(value);
     }
     return params;
   };
   const TEXT_DEBOUNCE_MS = 300;
   const ANIMATION_MS = 300;
+  const CORE_TYPES = ["text", "select", "tags", "checkbox"];
   let uid$1 = 0;
   const reducedMotion = () => typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const same = (filters, a, b) => filters.every((filter) => JSON.stringify(a == null ? void 0 : a[filter.key]) === JSON.stringify(b == null ? void 0 : b[filter.key]));
+  const same = (keys, a, b) => keys.every((key) => JSON.stringify(a == null ? void 0 : a[key]) === JSON.stringify(b == null ? void 0 : b[key]));
+  const keysOf = (filters, fixed) => [.../* @__PURE__ */ new Set([...filters.map((filter) => filter.key), ...Object.keys(fixed || {})])];
+  const isPanel = (filter) => filter.placement === "panel";
   const _sfc_main$m = {
     name: "FilterBar",
-    components: { FilterSelect: C8 },
+    components: { FilterControl },
     props: {
       filters: { type: Array, required: true },
       modelValue: { type: Object, default: () => ({}) },
       syncUrl: { type: Boolean, default: true },
-      idPrefix: { type: String, default: "filter" }
+      idPrefix: { type: String, default: "filter" },
+      /**
+       * Values set by the embedding page or component: sent, not rendered, not URL-synced.
+       * @since 1.20
+       */
+      fixed: { type: Object, default: () => ({}) }
     },
     emits: ["update:modelValue"],
     data() {
+      const own = this.filters.filter((filter) => !Object.hasOwn(this.fixed, filter.key));
       const base = { ...defaultValues(this.filters), ...this.modelValue };
-      const initial = this.syncUrl ? readValues(this.filters, window.location.search, base) : base;
+      const initial = { ...this.syncUrl ? readValues(own, window.location.search, base) : base, ...this.fixed };
       return {
         draft: initial,
         remoteOptions: {},
         loading: {},
-        open: false,
+        // A panel filter set on load opens the panel.
+        open: own.some((filter) => isPanel(filter) && !filter.hidden && !isDefault(filter, initial[filter.key])),
         collapsing: false,
+        animating: false,
         barId: `filter-bar-${++uid$1}`
       };
     },
     computed: {
+      // The filters the bar owns: every definition whose key is not fixed.
+      ownFilters() {
+        return this.filters.filter((filter) => !Object.hasOwn(this.fixed, filter.key));
+      },
       visibleFilters() {
-        return this.filters.filter((filter) => !filter.hidden);
+        return this.ownFilters.filter((filter) => !filter.hidden);
+      },
+      primaryFilters() {
+        return this.visibleFilters.filter((filter) => !isPanel(filter));
+      },
+      panelFilters() {
+        return this.visibleFilters.filter(isPanel);
+      },
+      hasPanel() {
+        return this.panelFilters.length > 0;
+      },
+      panelId() {
+        return `${this.barId}-panel`;
       },
       // The item that stays visible while the bar is collapsed: the first search field.
       keepIndex() {
-        return this.visibleFilters.findIndex((filter) => filter.type === "text");
+        return this.primaryFilters.findIndex((filter) => filter.type === "text");
       },
       collapsible() {
-        return this.visibleFilters.length > (this.keepIndex === -1 ? 0 : 1);
+        return this.hasPanel || this.primaryFilters.length > (this.keepIndex === -1 ? 0 : 1);
       },
-      // The funnel toggle follows the kept search field (or leads the bar without one).
-      toggleAfter() {
-        return Math.max(this.keepIndex, 0);
+      // The row: the primary filters and the toggle, which follows the kept search field (or
+      // leads the row without one).
+      rowEntries() {
+        const entries = this.primaryFilters.map((filter, index) => ({ key: `filter-${filter.key}`, filter, keep: index === this.keepIndex }));
+        if (this.collapsible) {
+          entries.splice(Math.max(this.keepIndex, 0) + 1, 0, { key: "toggle", filter: null });
+        }
+        return entries;
       },
       resettable() {
         return this.visibleFilters.some((filter) => !isDefault(filter, this.draft[filter.key]));
+      },
+      activePanelCount() {
+        return this.panelFilters.filter((filter) => !isDefault(filter, this.draft[filter.key])).length;
       },
       resetLabel() {
         return vue$1.i18n.t("base", "Clear all filters");
       },
       toggleLabel() {
         return this.open ? vue$1.i18n.t("base", "Hide filters") : vue$1.i18n.t("base", "Show filters");
+      },
+      panelLabel() {
+        return vue$1.i18n.t("base", "Filters");
+      },
+      activePanelCountLabel() {
+        return vue$1.i18n.t("base", "{count} active", { count: this.activePanelCount });
       }
     },
     watch: {
       draft: "onDraftChange",
       modelValue(value) {
-        if (!same(this.filters, value, this.applied)) {
+        if (!same(keysOf(this.filters, this.fixed), { ...value, ...this.fixed }, this.applied)) {
           clearTimeout(this.debounceTimer);
-          this.applied = { ...defaultValues(this.filters), ...value };
+          this.applied = { ...defaultValues(this.filters), ...value, ...this.fixed };
           this.draft = { ...this.applied };
           this.writeUrl();
+        }
+      },
+      fixed: {
+        deep: true,
+        handler(value) {
+          const signature = fixedSignature(value);
+          if (signature === this.fixedSignature) {
+            return;
+          }
+          const removed = Object.keys(this.appliedFixed).filter((key) => !Object.hasOwn(value, key));
+          this.fixedSignature = signature;
+          this.appliedFixed = { ...value };
+          const draft = { ...this.draft, ...value };
+          removed.forEach((key) => {
+            const filter = this.filters.find((candidate) => candidate.key === key);
+            if (filter) {
+              draft[key] = defaultValue(filter);
+            } else {
+              delete draft[key];
+            }
+          });
+          this.draft = draft;
+          this.apply();
         }
       }
     },
     created() {
       this.debounceTimer = null;
       this.applyNow = false;
+      this.reportedTypes = /* @__PURE__ */ new Set();
+      this.fixedSignature = fixedSignature(this.fixed);
+      this.appliedFixed = { ...this.fixed };
       this.applied = { ...this.draft };
-      if (!same(this.filters, this.applied, this.modelValue)) {
+      if (!same(keysOf(this.filters, this.fixed), this.applied, this.modelValue)) {
         this.$emit("update:modelValue", { ...this.applied });
       }
       this.reloadOptions();
@@ -796,7 +1001,7 @@
     },
     methods: {
       setFilter(key, value) {
-        if (!this.filters.some((filter) => filter.key === key)) {
+        if (!this.ownFilters.some((filter) => filter.key === key)) {
           return false;
         }
         this.applyNow = true;
@@ -804,13 +1009,37 @@
         return true;
       },
       reset() {
-        this.draft = defaultValues(this.filters);
+        this.applyNow = true;
+        this.draft = { ...defaultValues(this.filters), ...this.fixed };
       },
       reloadOptions() {
-        this.filters.filter((filter) => filter.optionsUrl).forEach((filter) => this.loadOptions(filter));
+        this.ownFilters.filter((filter) => filter.optionsUrl).forEach((filter) => this.loadOptions(filter));
       },
       inputId(filter) {
         return `${this.idPrefix}-${filter.key}`;
+      },
+      itemClass(filter) {
+        return ["c-filter-bar__item", `c-filter-bar__item--${filter.type}`, `form-search-filter-${filter.key}`, { "c-filter-bar__item--wide": filter.wide }];
+      },
+      // The component registered for a filter's type, once both halves of the registration
+      // are there (read from the reactive registry, so a late registration re-renders the bar).
+      customType(filter) {
+        if (CORE_TYPES.includes(filter.type)) {
+          return null;
+        }
+        const name = vue$1.getFilterType(filter.type);
+        return name && vue$1.isRegistered(name) ? name : null;
+      },
+      // `$slots` is not reactive, so this is called from the template, not a computed.
+      hasControl(filter) {
+        if (CORE_TYPES.includes(filter.type) || this.$slots[`filter-${filter.key}`] || this.customType(filter)) {
+          return true;
+        }
+        if (!this.reportedTypes.has(filter.type)) {
+          this.reportedTypes.add(filter.type);
+          vue$1.log.debug(`FilterBar: no component is registered for the filter type "${filter.type}" (filter "${filter.key}") — not rendered`);
+        }
+        return false;
       },
       loadOptions(filter) {
         this.loading[filter.key] = true;
@@ -836,19 +1065,20 @@
       },
       onDraftChange(values) {
         clearTimeout(this.debounceTimer);
-        const changed = this.filters.filter((filter) => JSON.stringify(values[filter.key]) !== JSON.stringify(this.applied[filter.key]));
+        const changed = keysOf(this.filters, this.fixed).filter((key) => JSON.stringify(values[key]) !== JSON.stringify(this.applied[key]));
         if (!changed.length) {
           this.applyNow = false;
           return;
         }
-        if (changed.some((filter) => !filter.hidden)) {
-          const stale = this.filters.filter((filter) => filter.hidden && !isDefault(filter, values[filter.key]));
+        const changedFilters = this.ownFilters.filter((filter) => changed.includes(filter.key));
+        if (changedFilters.some((filter) => !filter.hidden)) {
+          const stale = this.ownFilters.filter((filter) => filter.hidden && !isDefault(filter, values[filter.key]));
           if (stale.length) {
             this.draft = { ...values, ...Object.fromEntries(stale.map((filter) => [filter.key, defaultValue(filter)])) };
             return;
           }
         }
-        if (!this.applyNow && changed.every((filter) => filter.type === "text")) {
+        if (!this.applyNow && changedFilters.length === changed.length && changedFilters.every((filter) => filter.type === "text")) {
           this.debounceTimer = setTimeout(() => this.apply(), TEXT_DEBOUNCE_MS);
         } else {
           this.applyNow = false;
@@ -866,7 +1096,7 @@
           return;
         }
         const { pathname, search, hash } = window.location;
-        const path = pathname + writeQuery(this.filters, this.applied, search) + hash;
+        const path = pathname + writeQuery(this.ownFilters, this.applied, search) + hash;
         window.history.replaceState(this.nextHistoryState(path), "", path);
       },
       // PJAX (jquery.pjax.modified.js) keeps its own state object in `history.state`
@@ -882,32 +1112,17 @@
         }
         return { ...state, url: window.location.origin + path };
       },
-      isTagActive(filter, value) {
-        const current = this.draft[filter.key];
-        if (filter.multiple === true) {
-          return value === "" ? current.length === 0 : current.includes(value);
-        }
-        return current === value;
-      },
-      toggleTag(filter, value) {
-        const current = this.draft[filter.key];
-        if (filter.multiple !== true) {
-          this.update(filter.key, current === value ? "" : value);
-          return;
-        }
-        if (value === "") {
-          this.update(filter.key, []);
-          return;
-        }
-        this.update(filter.key, current.includes(value) ? current.filter((v) => v !== value) : [...current, value]);
-      },
       toggleElement() {
         const toggle = this.$refs.toggle;
         return Array.isArray(toggle) ? toggle[0] : toggle;
       },
       // CSS owns the breakpoint (a container query), so "does the bar collapse right now?" is
-      // answered by whether it shows the toggle, not by a width kept in step with the SCSS.
+      // answered by whether it shows the funnel toggle, not by a width kept in step with the
+      // SCSS. A bar with a panel always opens and closes (the "Filters" toggle is always shown).
       collapsesNow() {
+        if (this.hasPanel) {
+          return true;
+        }
         const toggle = this.toggleElement();
         return Boolean(toggle) && window.getComputedStyle(toggle).display !== "none";
       },
@@ -916,42 +1131,52 @@
           this.setOpen(!this.open);
         }
       },
+      onPanelEscape() {
+        var _a;
+        if (this.open) {
+          this.setOpen(false);
+          (_a = this.toggleElement()) == null ? void 0 : _a.focus();
+        }
+      },
       setOpen(open, animate = !reducedMotion()) {
+        var _a;
         const bar = this.$refs.bar;
         const from = bar.getBoundingClientRect().height;
         const clear = this.$refs.clear || null;
         const flipping = animate && clear && clear.getClientRects().length > 0;
         const clearFrom = flipping ? clear.getBoundingClientRect() : null;
+        const focused = document.activeElement;
         this.collapsing = false;
+        this.animating = false;
         this.open = open;
-        bar.classList.remove("is-collapsing");
+        bar.classList.remove("is-collapsing", "is-animating");
         bar.classList.toggle("is-open", open);
+        bar.style.maxHeight = "none";
+        const to = bar.getBoundingClientRect().height;
         const clearTo = flipping ? clear.getBoundingClientRect() : null;
+        if (!open && focused && bar.contains(focused) && focused.closest(".c-filter-bar__panel, .c-filter-bar__item:not([data-filter-bar-keep])")) {
+          (_a = this.toggleElement()) == null ? void 0 : _a.focus();
+        }
         clearTimeout(this.settleTimer);
         if (!animate) {
-          bar.style.maxHeight = "";
+          bar.style.maxHeight = open ? "none" : "";
           return;
         }
         this.collapsing = !open;
+        this.animating = true;
         bar.classList.toggle("is-collapsing", !open);
+        bar.classList.add("is-animating");
         if (flipping) {
           this.flipClear(clear, clearFrom, clearTo, open);
         }
-        const to = open ? bar.scrollHeight : this.collapsedHeight();
         bar.style.maxHeight = `${from}px`;
         void bar.offsetHeight;
         bar.style.maxHeight = `${to}px`;
         this.settleTimer = setTimeout(() => {
           bar.style.maxHeight = open ? "none" : "";
           this.collapsing = false;
+          this.animating = false;
         }, ANIMATION_MS);
-      },
-      collapsedHeight() {
-        const bar = this.$refs.bar;
-        const keeper = bar.querySelector("[data-filter-bar-keep], [data-filter-bar-toggle]");
-        const style = window.getComputedStyle(bar);
-        const padding = (parseFloat(style.paddingTop) || 0) + (parseFloat(style.paddingBottom) || 0);
-        return (keeper ? keeper.offsetHeight : 38) + padding;
       },
       // FLIP the clear X between the row it has when expanded (after the last filter) and the
       // one beside the toggle when collapsed, instead of letting it jump there.
@@ -972,7 +1197,8 @@
         }, ANIMATION_MS);
       },
       // A bar that stops collapsing (grown past the container breakpoint) drops its open state
-      // and any inline height, so it cannot be stranded half-open.
+      // and any inline height, so it cannot be stranded half-open. A bar with a panel keeps
+      // it: open means "the panel is shown" at every width.
       sync() {
         if (this.collapsesNow() || !this.open && !this.collapsing) {
           return;
@@ -985,143 +1211,74 @@
   const _hoisted_1$k = { class: "c-filter-bar-container" };
   const _hoisted_2$e = ["id"];
   const _hoisted_3$b = ["data-filter-bar-keep"];
-  const _hoisted_4$a = {
+  const _hoisted_4$a = ["aria-expanded", "aria-controls", "aria-label", "title"];
+  const _hoisted_5$7 = { class: "c-filter-bar__toggle-label" };
+  const _hoisted_6$6 = {
     key: 0,
-    class: "c-search-field"
-  };
-  const _hoisted_5$7 = ["id", "value", "placeholder", "aria-label", "onInput"];
-  const _hoisted_6$6 = ["aria-label"];
-  const _hoisted_7$4 = {
-    key: 0,
-    class: "c-filter-tags__label",
+    class: "c-filter-bar__count",
     "aria-hidden": "true"
   };
-  const _hoisted_8$3 = ["aria-pressed", "onClick"];
-  const _hoisted_9$3 = {
-    key: 3,
-    class: "c-filter-check form-check"
+  const _hoisted_7$4 = {
+    key: 1,
+    class: "visually-hidden"
   };
-  const _hoisted_10$3 = ["id", "checked", "onChange"];
-  const _hoisted_11$2 = ["for"];
-  const _hoisted_12$2 = ["aria-expanded", "aria-controls", "aria-label", "title"];
-  const _hoisted_13$2 = ["aria-label", "title"];
+  const _hoisted_8$3 = ["aria-label", "title"];
+  const _hoisted_9$3 = ["id", "aria-label"];
   function _sfc_render$m(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_FilterSelect = vue.resolveComponent("FilterSelect");
+    const _component_FilterControl = vue.resolveComponent("FilterControl");
     return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$k, [
       vue.createElementVNode("form", {
         id: $data.barId,
         ref: "bar",
-        class: vue.normalizeClass(["c-filter-bar", { "is-open": $data.open, "is-collapsing": $data.collapsing }]),
+        class: vue.normalizeClass(["c-filter-bar", { "is-open": $data.open, "is-collapsing": $data.collapsing, "is-animating": $data.animating, "has-panel": $options.hasPanel }]),
         role: "search",
-        onSubmit: _cache[2] || (_cache[2] = vue.withModifiers(() => {
+        onSubmit: _cache[3] || (_cache[3] = vue.withModifiers(() => {
         }, ["prevent"]))
       }, [
         (vue.openBlock(true), vue.createElementBlock(
           vue.Fragment,
           null,
-          vue.renderList($options.visibleFilters, (filter, index) => {
+          vue.renderList($options.rowEntries, (entry) => {
             return vue.openBlock(), vue.createElementBlock(
               vue.Fragment,
               {
-                key: filter.key
+                key: entry.key
               },
               [
-                vue.createElementVNode("div", {
-                  class: vue.normalizeClass(["c-filter-bar__item", `c-filter-bar__item--${filter.type}`, `form-search-filter-${filter.key}`, { "c-filter-bar__item--wide": filter.wide }]),
-                  "data-filter-bar-keep": index === $options.keepIndex ? "" : null
-                }, [
-                  vue.renderSlot(_ctx.$slots, `filter-${filter.key}`, {
-                    filter,
-                    value: $data.draft[filter.key],
-                    update: (value) => $options.update(filter.key, value)
-                  }, () => [
-                    filter.type === "text" ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_4$a, [
-                      _cache[3] || (_cache[3] = vue.createElementVNode(
-                        "i",
-                        {
-                          class: "ti ti-search c-search-field__icon",
-                          "aria-hidden": "true"
-                        },
-                        null,
-                        -1
-                        /* CACHED */
-                      )),
-                      vue.createElementVNode("input", {
-                        id: $options.inputId(filter),
-                        type: "text",
-                        class: "c-search-field__input",
-                        autocomplete: "off",
-                        value: $data.draft[filter.key],
-                        placeholder: filter.placeholder || filter.label || "",
-                        "aria-label": filter.label || filter.placeholder || null,
-                        onInput: ($event) => $options.update(filter.key, $event.target.value)
-                      }, null, 40, _hoisted_5$7)
-                    ])) : filter.type === "select" ? (vue.openBlock(), vue.createBlock(_component_FilterSelect, {
-                      key: 1,
-                      id: $options.inputId(filter),
-                      "model-value": String($data.draft[filter.key] ?? ""),
-                      options: $options.optionsOf(filter),
-                      placeholder: filter.placeholder || "",
-                      label: filter.label || "",
-                      loading: $options.isLoading(filter),
-                      "onUpdate:modelValue": ($event) => $options.update(filter.key, $event)
-                    }, null, 8, ["id", "model-value", "options", "placeholder", "label", "loading", "onUpdate:modelValue"])) : filter.type === "tags" ? (vue.openBlock(), vue.createElementBlock("div", {
-                      key: 2,
-                      class: "c-filter-tags",
-                      role: "group",
-                      "aria-label": filter.label
-                    }, [
-                      filter.label ? (vue.openBlock(), vue.createElementBlock(
-                        "span",
-                        _hoisted_7$4,
-                        vue.toDisplayString(filter.label),
-                        1
-                        /* TEXT */
-                      )) : vue.createCommentVNode("v-if", true),
-                      (vue.openBlock(true), vue.createElementBlock(
-                        vue.Fragment,
-                        null,
-                        vue.renderList($options.optionsOf(filter), (option) => {
-                          return vue.openBlock(), vue.createElementBlock("button", {
-                            key: option.value,
-                            type: "button",
-                            class: vue.normalizeClass(["c-filter-tags__tag", { active: $options.isTagActive(filter, option.value) }]),
-                            "aria-pressed": $options.isTagActive(filter, option.value) ? "true" : "false",
-                            onClick: ($event) => $options.toggleTag(filter, option.value)
-                          }, vue.toDisplayString(option.label), 11, _hoisted_8$3);
-                        }),
-                        128
-                        /* KEYED_FRAGMENT */
-                      ))
-                    ], 8, _hoisted_6$6)) : filter.type === "checkbox" ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_9$3, [
-                      vue.createElementVNode("input", {
-                        id: $options.inputId(filter),
-                        class: "form-check-input",
-                        type: "checkbox",
-                        checked: $data.draft[filter.key],
-                        onChange: ($event) => $options.update(filter.key, $event.target.checked)
-                      }, null, 40, _hoisted_10$3),
-                      vue.createElementVNode("label", {
-                        class: "form-check-label",
-                        for: $options.inputId(filter)
-                      }, vue.toDisplayString(filter.label), 9, _hoisted_11$2)
-                    ])) : vue.createCommentVNode("v-if", true)
-                  ])
-                ], 10, _hoisted_3$b),
-                $options.collapsible && index === $options.toggleAfter ? (vue.openBlock(), vue.createElementBlock("button", {
+                entry.filter && $options.hasControl(entry.filter) ? (vue.openBlock(), vue.createElementBlock("div", {
                   key: 0,
+                  class: vue.normalizeClass($options.itemClass(entry.filter)),
+                  "data-filter-bar-keep": entry.keep ? "" : null
+                }, [
+                  vue.renderSlot(_ctx.$slots, `filter-${entry.filter.key}`, {
+                    filter: entry.filter,
+                    value: $data.draft[entry.filter.key],
+                    update: (value) => $options.update(entry.filter.key, value)
+                  }, () => [
+                    vue.createVNode(_component_FilterControl, {
+                      filter: entry.filter,
+                      "model-value": $data.draft[entry.filter.key],
+                      "input-id": $options.inputId(entry.filter),
+                      options: $options.optionsOf(entry.filter),
+                      loading: $options.isLoading(entry.filter),
+                      component: $options.customType(entry.filter),
+                      "onUpdate:modelValue": ($event) => $options.update(entry.filter.key, $event)
+                    }, null, 8, ["filter", "model-value", "input-id", "options", "loading", "component", "onUpdate:modelValue"])
+                  ])
+                ], 10, _hoisted_3$b)) : !entry.filter ? (vue.openBlock(), vue.createElementBlock("button", {
+                  key: 1,
                   ref_for: true,
                   ref: "toggle",
                   type: "button",
-                  class: vue.normalizeClass(["btn c-icon-button c-icon-button--ghost c-filter-bar__toggle", { "is-active": $data.open }]),
+                  class: vue.normalizeClass(["btn c-icon-button c-icon-button--ghost c-filter-bar__toggle", { "is-active": $data.open, "c-filter-bar__toggle--labeled": $options.hasPanel }]),
                   "data-filter-bar-toggle": "",
                   "aria-expanded": $data.open ? "true" : "false",
-                  "aria-controls": $data.barId,
-                  "aria-label": $options.toggleLabel,
+                  "aria-controls": $options.hasPanel ? $options.panelId : $data.barId,
+                  "aria-label": $options.hasPanel ? null : $options.toggleLabel,
                   title: $options.toggleLabel,
                   onClick: _cache[0] || (_cache[0] = (...args) => $options.onToggle && $options.onToggle(...args))
-                }, [..._cache[4] || (_cache[4] = [
-                  vue.createElementVNode(
+                }, [
+                  _cache[4] || (_cache[4] = vue.createElementVNode(
                     "i",
                     {
                       class: "ti ti-filter",
@@ -1130,8 +1287,37 @@
                     null,
                     -1
                     /* CACHED */
-                  )
-                ])], 10, _hoisted_12$2)) : vue.createCommentVNode("v-if", true)
+                  )),
+                  $options.hasPanel ? (vue.openBlock(), vue.createElementBlock(
+                    vue.Fragment,
+                    { key: 0 },
+                    [
+                      vue.createElementVNode(
+                        "span",
+                        _hoisted_5$7,
+                        vue.toDisplayString($options.panelLabel),
+                        1
+                        /* TEXT */
+                      ),
+                      $options.activePanelCount ? (vue.openBlock(), vue.createElementBlock(
+                        "span",
+                        _hoisted_6$6,
+                        vue.toDisplayString($options.activePanelCount),
+                        1
+                        /* TEXT */
+                      )) : vue.createCommentVNode("v-if", true),
+                      $options.activePanelCount ? (vue.openBlock(), vue.createElementBlock(
+                        "span",
+                        _hoisted_7$4,
+                        vue.toDisplayString($options.activePanelCountLabel),
+                        1
+                        /* TEXT */
+                      )) : vue.createCommentVNode("v-if", true)
+                    ],
+                    64
+                    /* STABLE_FRAGMENT */
+                  )) : vue.createCommentVNode("v-if", true)
+                ], 10, _hoisted_4$a)) : vue.createCommentVNode("v-if", true)
               ],
               64
               /* STABLE_FRAGMENT */
@@ -1163,11 +1349,65 @@
                 -1
                 /* CACHED */
               )
-            ])], 8, _hoisted_13$2)) : vue.createCommentVNode("v-if", true)
+            ])], 8, _hoisted_8$3)) : vue.createCommentVNode("v-if", true)
           ]),
           _: 1
           /* STABLE */
-        })
+        }),
+        $options.hasPanel ? (vue.openBlock(), vue.createElementBlock("div", {
+          key: 0,
+          id: $options.panelId,
+          ref: "panel",
+          class: "c-filter-bar__panel",
+          role: "group",
+          "aria-label": $options.panelLabel,
+          onKeydown: _cache[2] || (_cache[2] = vue.withKeys((...args) => $options.onPanelEscape && $options.onPanelEscape(...args), ["esc"]))
+        }, [
+          (vue.openBlock(true), vue.createElementBlock(
+            vue.Fragment,
+            null,
+            vue.renderList($options.panelFilters, (filter) => {
+              return vue.openBlock(), vue.createElementBlock(
+                vue.Fragment,
+                {
+                  key: filter.key
+                },
+                [
+                  $options.hasControl(filter) ? (vue.openBlock(), vue.createElementBlock(
+                    "div",
+                    {
+                      key: 0,
+                      class: vue.normalizeClass($options.itemClass(filter))
+                    },
+                    [
+                      vue.renderSlot(_ctx.$slots, `filter-${filter.key}`, {
+                        filter,
+                        value: $data.draft[filter.key],
+                        update: (value) => $options.update(filter.key, value)
+                      }, () => [
+                        vue.createVNode(_component_FilterControl, {
+                          filter,
+                          "model-value": $data.draft[filter.key],
+                          "input-id": $options.inputId(filter),
+                          options: $options.optionsOf(filter),
+                          loading: $options.isLoading(filter),
+                          component: $options.customType(filter),
+                          "onUpdate:modelValue": ($event) => $options.update(filter.key, $event)
+                        }, null, 8, ["filter", "model-value", "input-id", "options", "loading", "component", "onUpdate:modelValue"])
+                      ])
+                    ],
+                    2
+                    /* CLASS */
+                  )) : vue.createCommentVNode("v-if", true)
+                ],
+                64
+                /* STABLE_FRAGMENT */
+              );
+            }),
+            128
+            /* KEYED_FRAGMENT */
+          ))
+        ], 40, _hoisted_9$3)) : vue.createCommentVNode("v-if", true)
       ], 42, _hoisted_2$e)
     ]);
   }
@@ -1302,7 +1542,12 @@
        * `(ids) => Promise<{ [id]: state }>`, called once per loaded page (see "Item states").
        * @since 1.20
        */
-      itemStates: { type: Function, default: null }
+      itemStates: { type: Function, default: null },
+      /**
+       * Values sent with every request, not rendered, not URL-synced (see `FilterBar`).
+       * @since 1.20
+       */
+      fixed: { type: Object, default: () => ({}) }
     },
     emits: ["loaded"],
     data() {
@@ -1330,10 +1575,26 @@
         return this.page < this.pages;
       }
     },
+    watch: {
+      fixed: {
+        deep: true,
+        handler(value) {
+          const signature = fixedSignature(value);
+          if (signature === this.fixedSignature) {
+            return;
+          }
+          this.fixedSignature = signature;
+          if (this.started && !this.$refs.filterBar) {
+            this.fetch(1);
+          }
+        }
+      }
+    },
     created() {
       this.requestSeq = 0;
       this.listSeq = 0;
       this.started = false;
+      this.fixedSignature = fixedSignature(this.fixed);
     },
     mounted() {
       this.started = true;
@@ -1393,7 +1654,7 @@
         this.loading = true;
         this.error = null;
         const query = new URLSearchParams({
-          ...requestParams(this.filters, this.values),
+          ...requestParams(this.filters, this.values, this.fixed),
           page: String(page),
           pageSize: String(this.pageSize)
         }).toString();
@@ -1485,6 +1746,7 @@
             filters: $props.filters,
             "sync-url": $props.syncUrl,
             "id-prefix": $props.idPrefix,
+            fixed: $props.fixed,
             "onUpdate:modelValue": $options.onFilterChange
           }, vue.createSlots({
             _: 2
@@ -1498,7 +1760,7 @@
                 ])
               };
             })
-          ]), 1032, ["model-value", "filters", "sync-url", "id-prefix", "onUpdate:modelValue"])) : vue.createCommentVNode("v-if", true)
+          ]), 1032, ["model-value", "filters", "sync-url", "id-prefix", "fixed", "onUpdate:modelValue"])) : vue.createCommentVNode("v-if", true)
         ]),
         _: 2
         /* DYNAMIC */

@@ -8,15 +8,15 @@
 
 namespace humhub\tests\codeception\unit\modules\space;
 
-use humhub\modules\space\components\SpaceListQuery;
-use humhub\modules\space\components\SpaceListQueryEvent;
+use humhub\components\listing\ListEvent;
+use humhub\modules\space\components\SpaceList;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\search\SpaceSearchProvider;
 use tests\codeception\_support\HumHubDbTestCase;
 use yii\base\Event;
 
 /**
- * The meta search's spaces: the directory's search ({@see SpaceListQuery}, `purpose=directory`).
+ * The meta search's spaces: the directory's search ({@see SpaceList}, `purpose=directory`).
  *
  * @since 1.20
  */
@@ -52,21 +52,21 @@ class SpaceSearchProviderTest extends HumHubDbTestCase
     {
         $this->becomeUser('Admin');
         $purposes = [];
-        $handler = function (SpaceListQueryEvent $event) use (&$purposes) {
-            $purposes[] = $event->purpose;
-            $event->query->andWhere('0 = 1');
+        $handler = function (ListEvent $event) use (&$purposes) {
+            $purposes[] = $event->context->purpose;
+            $event->builder->query()->andWhere('0 = 1');
         };
-        Event::on(SpaceListQuery::class, SpaceListQuery::EVENT_INIT, $handler);
+        Event::on(SpaceList::class, SpaceList::EVENT_BUILD, $handler);
 
         try {
             $provider = new SpaceSearchProvider();
             $provider->keyword = '';
             $result = $provider->getResults(5);
         } finally {
-            Event::off(SpaceListQuery::class, SpaceListQuery::EVENT_INIT, $handler);
+            Event::off(SpaceList::class, SpaceList::EVENT_BUILD, $handler);
         }
 
-        $this->assertSame([SpaceListQuery::PURPOSE_DIRECTORY], $purposes);
+        $this->assertSame([SpaceList::PURPOSE_DIRECTORY], $purposes);
         $this->assertSame(0, $result['totalCount']);
         $this->assertSame([], $result['results']);
     }

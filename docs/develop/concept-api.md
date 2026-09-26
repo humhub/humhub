@@ -401,6 +401,35 @@ GitHub (`PUT /user/following/{user}`, `PUT …/pulls/{n}/merge`) and Stripe
 (`…/installation`, `…/activation`) only made paths clumsy, and a `POST` that affirms a
 relationship needed its idempotence documented, where `PUT` carries it by definition.
 
+### Lists
+
+A list endpoint (`space`, `marketplace/module`, later `user`, tasks, files …) is built by a
+list class (`humhub\components\listing\FilterableList`: `SpaceList`, `ModuleList`) that owns
+its filters. A filter (`ListFilter`) knows its request parameters, how to parse and validate
+them, whether it is available in a context (`ListContext`: user, purpose, container), how it
+narrows the list and how the page presents it (`FilterDefinition`) — so the controller only
+calls `build()` and pages, and the page's `FilterBar` gets `definitions()` of the same filters
+as a prop. A module adds one filter on the list's `EVENT_INIT` and restricts on `EVENT_BUILD`.
+Ready filters cover the common kinds (`SearchFilter`, `EnumFilter`, `BoolFilter`, `IdsFilter`).
+
+| Topic | Convention |
+|---|---|
+| List | `GET /api/v2/<resource>` — filters, sort, paging as query parameters |
+| Envelope | `{results, total, page, pageSize, pages}`; `pageSize` default 25, max 100 |
+| Caller state | `GET /api/v2/<resource>/states?ids=` — batched, ≤ 100 |
+| Parameter names | camelCase = filter keys = URL parameters; nested only for open sets (`fields[<name>]`: a filter keyed `fields[age]` — `build()` turns the nested array PHP parses `fields[age]=x` into back into that key, one level deep; an unknown one is `422` under `fields[x]`, lists such as `ids[]=1&ids[]=2` stay lists) |
+| Lists of values | repeated or comma-separated (`ids=1,2`) |
+| Entity references | numeric ids (`spaceId`, `userId`); guids only where a caller has nothing else |
+| Dates | ISO 8601 dates `YYYY-MM-DD`, ranges as two parameters (`from`, `to`, inclusive) |
+| Sort | `sort=<key>` from the list's sort options, `order=asc\|desc` where a key allows both; `default` = the list's configured order |
+| Errors | `422 {errors: {<param>: [message]}}`; unknown parameters and set parameters of unavailable filters are `422` too (an empty value is absent, as for any filter) |
+| Purpose | `purpose=<name>` optional; defaults and presentation only, never a permission |
+
+A filter is dormant unless its parameter is sent. A context filter (members of this space,
+participants of this conversation) has no UI and authorizes itself while parsing: it checks
+that the caller may use the context its parameter names. Stale values in page URLs (a filter
+switched off since the link was made) are dropped by the page, not sent.
+
 ## Migration path
 
 **Third-party modules.** 13 module repositories extend

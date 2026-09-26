@@ -10,13 +10,11 @@ namespace humhub\modules\marketplace\services;
 
 use humhub\modules\marketplace\components\OnlineModuleManager;
 use humhub\modules\marketplace\models\Module;
-use Yii;
 
 /**
- * The module list of the marketplace: which modules it shows, filtered and in which order.
- *
- * The order is fixed: modules with an available update first, then the ones not installed yet,
- * then the installed ones — within each block the order humhub.com delivers.
+ * The catalogue of the marketplace: every module it lists, their status, use cases and
+ * available updates. The list the page shows — filtered and ordered — is
+ * {@see \humhub\modules\marketplace\components\ModuleList}.
  *
  * @since 1.20
  */
@@ -28,17 +26,9 @@ class MarketplaceListService
 
     public const STATUSES = [self::STATUS_UPDATE, self::STATUS_NOT_INSTALLED, self::STATUS_INSTALLED];
 
-    public const TAGS = ['professional', 'official', 'community', 'partner', 'featured', 'purchased'];
-
-    private const STATUS_ORDER = [
-        self::STATUS_UPDATE => 0,
-        self::STATUS_NOT_INSTALLED => 1,
-        self::STATUS_INSTALLED => 2,
-    ];
-
     /**
      * @var Module[]|null memoised result of {@see self::all()}, so a single request that
-     *      calls `isAvailable()`, `find()` and `updateCount()` in turn builds the Module
+     *      calls `isAvailable()`, `all()` and `updateCount()` in turn builds the Module
      *      objects only once
      */
     private ?array $modules = null;
@@ -77,48 +67,6 @@ class MarketplaceListService
         }
 
         return $this->modules = $modules;
-    }
-
-    /**
-     * @param array{q?: string, categoryId?: int|null, status?: string[], tag?: string[], useCase?: string[], id?: string} $params
-     *        `categoryId` `0`/`null` = all, `-1` = without category; `status`, `tag` and
-     *        `useCase` match any of their values; `id` selects that one module and ignores
-     *        everything else
-     * @return Module[] in list order
-     */
-    public function find(array $params = []): array
-    {
-        $modules = $this->all();
-
-        $id = (string)($params['id'] ?? '');
-        if ($id !== '') {
-            return isset($modules[$id]) ? [$modules[$id]] : [];
-        }
-
-        // Keyword search is the platform's (name, description, module keywords), and the
-        // ModuleManager::EVENT_AFTER_FILTER_MODULES it fires keeps other modules' say in it.
-        $modules = Yii::$app->moduleManager->filterModules($modules, ['keyword' => (string)($params['q'] ?? '')]);
-
-        $categoryId = isset($params['categoryId']) ? (int)$params['categoryId'] : 0;
-        $statuses = $params['status'] ?? [];
-        $tags = $params['tag'] ?? [];
-        $useCases = $params['useCase'] ?? [];
-
-        $matches = [];
-        foreach (array_values($modules) as $index => $module) {
-            $status = $this->status($module);
-            if (!$this->inCategory($module, $categoryId)
-                || ($statuses !== [] && !in_array($status, $statuses, true))
-                || ($tags !== [] && !$this->hasAnyTag($module, $tags))
-                || ($useCases !== [] && !$this->hasAnyUseCase($module, $useCases))) {
-                continue;
-            }
-            $matches[] = [self::STATUS_ORDER[$status], $index, $module];
-        }
-
-        usort($matches, static fn(array $a, array $b) => [$a[0], $a[1]] <=> [$b[0], $b[1]]);
-
-        return array_column($matches, 2);
     }
 
     /**
@@ -164,42 +112,6 @@ class MarketplaceListService
         }
 
         return $module->isUpdateAvailable() ? self::STATUS_UPDATE : self::STATUS_INSTALLED;
-    }
-
-    private function inCategory(Module $module, int $categoryId): bool
-    {
-        if ($categoryId === 0) {
-            return true;
-        }
-
-        $categories = is_array($module->categories) ? array_map('intval', $module->categories) : [];
-
-        return $categoryId === -1 ? $categories === [] : in_array($categoryId, $categories, true);
-    }
-
-    private function hasAnyTag(Module $module, array $tags): bool
-    {
-        foreach ($tags as $tag) {
-            $matches = match ($tag) {
-                'professional' => $module->isProFeature(),
-                'featured' => (bool)$module->featured,
-                'official' => !$module->isThirdParty,
-                'community' => (bool)$module->isCommunity,
-                'partner' => (bool)$module->isPartner,
-                'purchased' => (bool)$module->purchased,
-                default => false,
-            };
-            if ($matches) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private function hasAnyUseCase(Module $module, array $useCases): bool
-    {
-        return array_intersect($module->getUseCaseList(), $useCases) !== [];
     }
 
     /**

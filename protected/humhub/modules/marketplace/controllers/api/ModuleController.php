@@ -8,7 +8,10 @@
 
 namespace humhub\modules\marketplace\controllers\api;
 
+use humhub\components\listing\ListContext;
+use humhub\components\listing\ListValidationException;
 use humhub\modules\marketplace\components\api\MarketplaceApiController;
+use humhub\modules\marketplace\components\ModuleList;
 use humhub\modules\marketplace\models\Module;
 use humhub\modules\marketplace\serializers\MarketplaceModuleSerializer;
 use humhub\modules\marketplace\services\MarketplaceListService;
@@ -54,34 +57,26 @@ class ModuleController extends MarketplaceApiController
     }
 
     /**
-     * One page of the modules the marketplace lists, filtered by the query parameters. The
-     * envelope carries `updateCount` — the available updates regardless of the filter — for
-     * the "Update all" button, the way the notification list carries `unseenCount`.
+     * One page of the modules the marketplace lists, built by {@see ModuleList}, which parses
+     * and validates the query parameters (an invalid value or an unknown parameter answers
+     * `422 {errors}`). The envelope carries `updateCount` — the available updates regardless of
+     * the filter — for the "Update all" button, the way the notification list carries
+     * `unseenCount`.
      */
     public function actionIndex()
     {
         $request = Yii::$app->request;
-        $errors = [];
+        $service = new MarketplaceListService($this->getOnlineModuleManager());
 
-        $params = [
-            'q' => is_string($request->get('q')) ? $request->get('q') : '',
-            'categoryId' => $this->categoryIdParam($errors),
-            'status' => $this->listParam('status', MarketplaceListService::STATUSES, $errors),
-            'tag' => $this->listParam('tag', MarketplaceListService::TAGS, $errors),
-            'useCase' => $this->useCaseParam($errors),
-            'id' => is_string($request->get('id')) ? $request->get('id') : '',
-        ];
-
-        if ($errors !== []) {
-            return $this->validationErrors($errors);
+        try {
+            $modules = array_values((new ModuleList($service))->build($this->listParams(), ListContext::forCurrentUser())->items());
+        } catch (ListValidationException $e) {
+            return $this->validationErrors($e->errors);
         }
 
-        $service = new MarketplaceListService($this->getOnlineModuleManager());
         if (!$service->isAvailable()) {
             throw new HttpException(503, Yii::t('MarketplaceModule.base', 'Could not connect to HumHub API!'));
         }
-
-        $modules = $service->find($params);
 
         $pagination = new Pagination(['totalCount' => count($modules)]);
         $pagination->setPageSize(max(1, min((int)$request->get('pageSize', self::DEFAULT_PAGE_SIZE), self::MAX_PAGE_SIZE)));
@@ -104,81 +99,6 @@ class ModuleController extends MarketplaceApiController
         }
 
         return $this->returnPagination($pagination, $results) + ['updateCount' => $updateCount];
-    }
-
-    /**
-     * `categoryId` as the list expects it: absent or empty means "all", `-1` means "without
-     * category", anything else must be an integer — collected into `$errors` otherwise.
-     */
-    private function categoryIdParam(array &$errors): ?int
-    {
-        $raw = Yii::$app->request->get('categoryId');
-
-        if ($raw === null || $raw === '') {
-            return null;
-        }
-
-        $value = filter_var($raw, FILTER_VALIDATE_INT);
-        if ($value === false) {
-            $errors['categoryId'][] = Yii::t('yii', '{attribute} must be an integer.', ['attribute' => 'categoryId']);
-
-            return null;
-        }
-
-        return $value;
-    }
-
-    /**
-     * A list parameter, repeated (`status[]=a&status[]=b`) or comma-separated (`status=a,b`).
-     * Unknown values are collected into `$errors` under the parameter's name.
-     *
-     * @return string[]
-     */
-    private function listParam(string $name, array $allowed, array &$errors): array
-    {
-        $values = $this->splitListParam($name);
-
-        foreach ($values as $value) {
-            if (!in_array($value, $allowed, true)) {
-                $errors[$name][] = Yii::t('MarketplaceModule.base', 'Unknown value "{value}".', ['value' => $value]);
-            }
-        }
-
-        return $values;
-    }
-
-    /**
-     * Like {@see self::listParam()}, but humhub.com is free to add use cases without a core
-     * release, so any lowercase id is accepted instead of a fixed list of known values.
-     *
-     * @return string[]
-     */
-    private function useCaseParam(array &$errors): array
-    {
-        $values = $this->splitListParam('useCase');
-
-        foreach ($values as $value) {
-            if (!preg_match('/^[a-z0-9_-]+$/', $value)) {
-                $errors['useCase'][] = Yii::t('MarketplaceModule.base', 'Unknown value "{value}".', ['value' => $value]);
-            }
-        }
-
-        return $values;
-    }
-
-    /**
-     * @return string[] repeated (`name[]=a&name[]=b`) or comma-separated (`name=a,b`) values,
-     *         trimmed and with empty ones dropped
-     */
-    private function splitListParam(string $name): array
-    {
-        $raw = Yii::$app->request->get($name, []);
-        $values = is_array($raw) ? $raw : explode(',', (string)$raw);
-
-        return array_values(array_filter(
-            array_map(static fn($value) => is_scalar($value) ? trim((string)$value) : '', $values),
-            static fn(string $value) => $value !== '',
-        ));
     }
 
     /**

@@ -38,8 +38,8 @@ const MEMBERSHIP_CHANGED = 'space:membership-changed';
 /**
  * The spaces directory (`/spaces`), mounted by `space\widgets\SpaceDirectory`: the core
  * `CardDirectory` titled "Spaces", fed by `GET /api/v2/space?purpose=directory` (the platform's
- * space search, see `SpaceListQuery`), with the toolbar actions (`SpaceDirectoryHeadingButtons`
- * as data) and the filters (`SpaceDirectoryFilterSet`). The viewer's states of every loaded
+ * space search, see `SpaceList`), with the toolbar actions (`SpaceDirectoryHeadingButtons`
+ * as data) and the filter definitions of the `SpaceList`. The viewer's states of every loaded
  * page come from one `GET space/states` (`itemStates`) and feed each `SpaceCard`'s membership
  * and follow buttons.
  *

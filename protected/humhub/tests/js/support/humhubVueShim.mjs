@@ -12,6 +12,8 @@ export const getSlotComponents = (...args) => vueModule().getSlotComponents(...a
 export const registerMenuEntry = (...args) => vueModule().registerMenuEntry(...args);
 export const removeMenuEntry = (...args) => vueModule().removeMenuEntry(...args);
 export const getMenuEntries = (...args) => vueModule().getMenuEntries(...args);
+export const registerFilterType = (...args) => vueModule().registerFilterType(...args);
+export const getFilterType = (...args) => vueModule().getFilterType(...args);
 export const mountElement = (...args) => vueModule().mountElement(...args);
 export const getConfig = (...args) => vueModule().getConfig(...args);
 export const url = (...args) => vueModule().url(...args);
