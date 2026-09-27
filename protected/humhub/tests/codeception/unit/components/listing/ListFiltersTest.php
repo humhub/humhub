@@ -58,6 +58,16 @@ class ListFiltersTest extends HumHubDbTestCase
         $this->assertNull($filter->definition(new ListContext()), 'no definition without one');
     }
 
+    public function testSearchFilterMaxLength(): void
+    {
+        $filter = new SearchFilter(maxLength: 5);
+
+        $this->assertValue('abcde', $this->parse($filter, ' abcde  '), 'measured after trimming');
+        $this->assertValue('äöüßé', $this->parse($filter, 'äöüßé'), 'in characters, not bytes');
+        $this->assertSame(['q' => ['q should contain at most 5 characters.']], $this->parse($filter, 'abcdef')->errors);
+        $this->assertValue(str_repeat('x', 1000), $this->parse(new SearchFilter(), str_repeat('x', 1000)), 'no limit without one');
+    }
+
     public function testSearchFilterOverColumns(): void
     {
         $filter = new SearchFilter('name', columns: ['space.name', 'space.description']);
@@ -110,6 +120,14 @@ class ListFiltersTest extends HumHubDbTestCase
         $this->assertValue(['c', 'a'], $this->parse($filter, ['c', 'a']));
         $this->assertAbsent($this->parse($filter, ','));
         $this->assertSame(['status' => ['Unknown value "x".', 'Unknown value "y".']], $this->parse($filter, 'a,x,y')->errors);
+    }
+
+    public function testEnumFilterMultipleMax(): void
+    {
+        $filter = new EnumFilter('status', values: ['a' => 'A', 'b' => 'B', 'c' => 'C'], multiple: true, max: 2);
+
+        $this->assertValue(['a', 'b'], $this->parse($filter, 'a,b,a'), 'counted once each');
+        $this->assertSame(['status' => ['At most 2 values can be named.']], $this->parse($filter, ['a', 'b', 'c'])->errors);
     }
 
     public function testEnumFilterPattern(): void

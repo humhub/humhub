@@ -382,7 +382,7 @@ change and `DELETE` to delete (`204`) — a write is one of two things, and each
 
 - **A state of the caller towards something** — a relationship the caller can read back — is
   a resource noun under its target: `like/<recordId>`, `space/<id>/membership`,
-  `space/<id>/follow`, `user/<id>/friendship`. `GET` reads it, **`PUT` sets it** and `DELETE` removes it; both
+  `space/<id>/follow`, `user/<id>/follow`, `user/<id>/friendship`. `GET` reads it, **`PUT` sets it** and `DELETE` removes it; both
   writes answer the state in the shape `GET` returns. Which transition a `PUT` stands for
   (joining, applying or accepting an invite) follows from the current state and is decided by
   the server.
@@ -403,9 +403,9 @@ relationship needed its idempotence documented, where `PUT` carries it by defini
 
 ### Lists
 
-A list endpoint (`space`, `marketplace/module`, later `user`, tasks, files …) is built by a
-list class (`humhub\components\listing\FilterableList`: `SpaceList`, `ModuleList`) that owns
-its filters. A filter (`ListFilter`) knows its request parameters, how to parse and validate
+A list endpoint (`space`, `user`, `marketplace/module`, later tasks, files …) is built by a
+list class (`humhub\components\listing\FilterableList`: `SpaceList`, `UserList`,
+`ModuleList`) that owns its filters. A filter (`ListFilter`) knows its request parameters, how to parse and validate
 them, whether it is available in a context (`ListContext`: user, purpose, container), how it
 narrows the list and how the page presents it (`FilterDefinition`) — so the controller only
 calls `build()` and pages, and the page's `FilterBar` gets `definitions()` of the same filters
@@ -416,7 +416,9 @@ Ready filters cover the common kinds (`SearchFilter`, `EnumFilter`, `BoolFilter`
 |---|---|
 | List | `GET /api/v2/<resource>` — filters, sort, paging as query parameters |
 | Envelope | `{results, total, page, pageSize, pages}`; `pageSize` default 25, max 100 |
-| Caller state | `GET /api/v2/<resource>/states?ids=` — batched, ≤ 100 |
+| Caller state | `GET /api/v2/<resource>/states?ids=` — batched, ≤ 100; answers only records the list may show, with the list's permission |
+| Limits | free text bounded (`SearchFilter`'s `maxLength`: the user search's `q` ≤ 255 characters), multiple values bounded (`EnumFilter`'s `max`: ≤ 20 `tag`s; `IdsFilter`: ≤ 100 ids); beyond is `422` |
+| Suggestions | a picker's `optionsUrl` answers from the list built without a filter for the same context, so what `EVENT_BUILD` restricts is never suggested |
 | Parameter names | camelCase = filter keys = URL parameters; nested only for open sets (`fields[<name>]`: a filter keyed `fields[age]` — `build()` turns the nested array PHP parses `fields[age]=x` into back into that key, one level deep; an unknown one is `422` under `fields[x]`, lists such as `ids[]=1&ids[]=2` stay lists) |
 | Lists of values | repeated or comma-separated (`ids=1,2`) |
 | Entity references | numeric ids (`spaceId`, `userId`); guids only where a caller has nothing else |
@@ -474,7 +476,7 @@ docs/api/
 ```
 
 One source per module owning endpoints (`account`, `activity`, `comment`, `content`, `file`,
-`friendship`, `like`, `marketplace`, `module`, `notification`, `space`), each tagging its
+`friendship`, `like`, `marketplace`, `module`, `notification`, `space`, `user`), each tagging its
 operations with the module's name and introducing the module in that tag's description;
 `src/index.yaml` carries the general introduction and the conventions, `src/common.yaml` the
 shared schemas, parameters, error responses and security schemes. `build.sh` joins them into one

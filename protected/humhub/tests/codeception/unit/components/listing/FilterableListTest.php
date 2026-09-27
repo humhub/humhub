@@ -216,6 +216,7 @@ class FilterableListTest extends HumHubDbTestCase
             options: [['value' => 'a', 'label' => 'A']],
             optionsUrl: '/api/v2/x',
             multiple: false,
+            custom: true,
             default: 'a',
             hidden: false,
             wide: true,
@@ -224,7 +225,7 @@ class FilterableListTest extends HumHubDbTestCase
         );
 
         $this->assertSame(
-            ['key', 'type', 'label', 'placeholder', 'options', 'optionsUrl', 'multiple', 'default', 'hidden', 'wide', 'placement'],
+            ['key', 'type', 'label', 'placeholder', 'options', 'optionsUrl', 'multiple', 'custom', 'default', 'hidden', 'wide', 'placement'],
             array_keys($definition->withKey('status')->toArray()),
         );
         $this->assertSame(['key' => 'q', 'type' => 'text', 'placement' => 'primary'], (new FilterDefinition('text'))->withKey('q')->toArray());

@@ -1,5 +1,5 @@
 //
-// Page toolbar kit: the Vue components PageToolbar, FilterBar and FilterSelect
+// Page toolbar kit: the Vue components PageToolbar, FilterBar, FilterSelect and FilterPicker
 // (protected/humhub/vue/), after the HumHub design system v2 (page toolbar, icon button,
 // filter bar, search field, custom select). The card directory builds on it
 // (`_card-directory.scss`).
@@ -538,6 +538,154 @@
         line-height: 22px;
     }
 
+    // Searchable picker (FilterPicker): a `.c-select` whose button is a field holding the chips
+    // and the combobox input; drawer, options, chevron, clear X and spinner are the select's.
+    .c-picker__field {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 4px;
+        width: 100%;
+        min-width: 0;
+        min-height: 38px;
+        padding: 3px 40px 3px 8px;
+        border: 1px solid var(--hh-field-border);
+        border-radius: 6px;
+        background: var(--hh-field-bg);
+        cursor: text;
+        outline: 2px solid transparent;
+        transition: border-color 0.3s, background-color 0.3s, outline-color 0.3s;
+
+        &:hover {
+            border-color: var(--hh-field-border-hover);
+        }
+
+        &:focus-within {
+            border-color: var(--hh-field-border-hover);
+            background: var(--hh-field-bg-active);
+            outline-color: var(--hh-field-focus-ring);
+        }
+    }
+
+    .c-picker.is-open .c-picker__field {
+        border-color: var(--hh-field-border-hover);
+        background: var(--hh-field-bg-active);
+        outline-color: var(--hh-field-focus-ring);
+    }
+
+    .c-picker.has-selection .c-picker__field {
+        background: var(--hh-field-bg-active);
+    }
+
+    .c-picker.is-disabled .c-picker__field {
+        cursor: default;
+        opacity: 0.65;
+
+        &:hover {
+            border-color: var(--hh-field-border);
+        }
+    }
+
+    .c-picker__input {
+        flex: 1 1 80px;
+        min-width: 80px;
+        height: 30px;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: var(--hh-field-color);
+        font-family: inherit;
+        font-size: 14px;
+        line-height: 22px;
+        outline: none;
+        text-overflow: ellipsis;
+
+        &::placeholder {
+            color: var(--hh-field-placeholder);
+            opacity: 1;
+        }
+
+        &:disabled {
+            cursor: default;
+        }
+    }
+
+    // One line high whatever the chips wrap to: the chevron, the clear X and the spinner stay at
+    // the first line.
+    .c-picker .c-select__chevron,
+    .c-picker .c-select__clear {
+        top: 19px;
+    }
+
+    .c-picker .c-select__spinner {
+        top: calc(19px - 0.5rem);
+    }
+
+    .c-picker__chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+        max-width: 100%;
+        min-width: 0;
+        padding: 2px 2px 2px 8px;
+        border-radius: 9999px;
+        background: var(--bs-accent-bg-subtle);
+        color: var(--hh-text-color-highlight);
+        font-size: 12px;
+        line-height: 18px;
+    }
+
+    .c-picker__chip-label {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .c-picker__chip-remove {
+        display: inline-flex;
+        flex: 0 0 auto;
+        align-items: center;
+        justify-content: center;
+        width: 18px;
+        height: 18px;
+        padding: 0;
+        border: 0;
+        border-radius: 9999px;
+        background: transparent;
+        color: inherit;
+        font-size: 12px;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+
+        &:hover {
+            background: var(--bs-accent);
+            color: var(--hh-accent-contrast);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--bs-accent);
+            outline-offset: 1px;
+        }
+
+        &:disabled {
+            cursor: default;
+        }
+    }
+
+    .c-picker__option-label {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .c-picker__option-count {
+        flex: 0 0 auto;
+        color: var(--hh-field-placeholder);
+        font-size: 12px;
+        font-weight: 400;
+    }
+
     // Tags and checkbox filters
     .c-filter-tags {
         display: flex;
@@ -625,6 +773,8 @@
         .c-select__drawer,
         .c-select__drawer.is-open,
         .c-select__option,
+        .c-picker__field,
+        .c-picker__chip-remove,
         .c-filter-tags__tag {
             transition: none !important;
         }

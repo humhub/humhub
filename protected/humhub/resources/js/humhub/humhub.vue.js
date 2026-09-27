@@ -36,14 +36,18 @@ humhub.module('vue', function (module, require, $) {
     // "components registry itself is NOT reactive" docblock note for the full picture.
     var componentsGeneration = Vue.reactive({ count: 0 });
 
-    // slotName -> [{component, sortOrder}] in registration order (see registerSlotComponent()).
-    // A genuine Vue.reactive() store (not just a generation counter like the one above):
-    // ExtensionSlot.vue reads getSlotComponents() from inside a computed(), and this needs
-    // to re-evaluate not only when an existing slot gains/loses entries but also the very
-    // first time a brand new slot name is ever registered — plain-object property adds are
-    // exactly what Vue 3's reactive() proxy tracks (unlike Vue 2).
+    // slotName -> [{id, component, sortOrder, order}] in registration order (see
+    // registerSlotComponent()). A genuine Vue.reactive() store (not just a generation counter
+    // like the one above): ExtensionSlot.vue reads getSlotComponents() from inside a
+    // computed(), and this needs to re-evaluate not only when an existing slot gains/loses
+    // entries but also the very first time a brand new slot name is ever registered —
+    // plain-object property adds are exactly what Vue 3's reactive() proxy tracks (unlike Vue 2).
     var slots = Vue.reactive({});
     var slotRegistrationSeq = 0; // registration order tiebreaker, see getSlotComponents()
+    // slotName -> [entryId, ...] ids removed via removeSlotComponent() — separate from `slots`
+    // for the same reason `menuRemovals` below is separate from `menuEntries`: a removal must
+    // keep suppressing an entry registered under that id afterwards.
+    var slotRemovals = Vue.reactive({});
 
     // menuId -> [entry, ...] in registration order (see registerMenuEntry()) — a genuine
     // Vue.reactive() store, same reasoning as `slots` above (DropdownMenu.vue reads
@@ -194,10 +198,62 @@ humhub.module('vue', function (module, require, $) {
     };
 
     /**
+     * The array `store[key]` of one of the reactive registries above (`slots`, `menuEntries`,
+     * and their removal sets), created on first use.
+     *
+     * Not `store[key] || (store[key] = [])`: that assignment expression evaluates to the RAW
+     * array literal on its right-hand side, not the reactive proxy the store's own `get` trap
+     * hands back on a subsequent read — Vue only wraps a freshly-assigned plain array reactively
+     * the next time it is READ off the reactive object, not at assignment time. The first
+     * `.push()` for a brand new key would otherwise land on that raw array, invisible to any
+     * synchronous watcher/computed already tracking `store[key]`.
+     */
+    var registryList = function (store, key) {
+        if (!store[key]) {
+            store[key] = [];
+        }
+
+        return store[key];
+    };
+
+    /**
+     * Adds `entry` to `list`, or replaces the entry with the same `id` IN PLACE (not remove +
+     * push) — which keeps that id's position among entries sharing a sortOrder stable across
+     * an override instead of bumping it to the back. Shared by slot and menu entries.
+     */
+    var upsertById = function (list, entry) {
+        var existingIndex = list.findIndex(function (e) { return e.id === entry.id; });
+        if (existingIndex === -1) {
+            list.push(entry);
+        } else {
+            list.splice(existingIndex, 1, entry);
+        }
+
+        return existingIndex;
+    };
+
+    /**
+     * Records the removal of `id` under `key` in one of the removal sets (`slotRemovals`,
+     * `menuRemovals`). Shared by `removeSlotComponent()` and `removeMenuEntry()`.
+     */
+    var recordRemoval = function (store, key, id) {
+        var removed = registryList(store, key);
+        if (removed.indexOf(id) === -1) {
+            removed.push(id);
+        }
+    };
+
+    /**
      * Registers `componentName` (by its registered NAME, not the component object itself —
      * it does NOT need to be registered yet, see below) to render inside every
      * `<ExtensionSlot name="slotName">` for the given `slotName`.
      *
+     * - `options.id` (default: `componentName`) identifies the entry within the slot, as a
+     *   menu entry's `id` does (see `registerMenuEntry()`): registering the same
+     *   (slotName, id) pair again REPLACES the existing entry in place — its component and
+     *   sortOrder — which is how a module overrides another module's (or core's own) entry,
+     *   and why artifact scripts legitimately re-executing (see `register()` above) stay
+     *   harmless. `removeSlotComponent()` suppresses an entry by id.
      * - `options.sortOrder` (default 100) controls render order within the slot, lowest
      *   first; entries sharing a sortOrder render in registration order.
      * - The component does not need to be registered (via `register()`) at the time this
@@ -205,9 +261,6 @@ humhub.module('vue', function (module, require, $) {
      *   order relative to the component's own artifact. `ExtensionSlot` only renders entries
      *   whose component is currently registered (see `isRegistered()`/`getSlotComponents()`
      *   below and ExtensionSlot.vue), and picks up the rest reactively once they do register.
-     * - Registering the same (slotName, componentName) pair twice is a debug-level no-op,
-     *   keeping the first registration's sortOrder — the same "artifact scripts legitimately
-     *   re-execute" case documented on `register()` above applies here too.
      */
     var registerSlotComponent = function (slotName, componentName, options) {
         if (typeof slotName !== 'string' || !slotName) {
@@ -220,41 +273,88 @@ humhub.module('vue', function (module, require, $) {
             return;
         }
 
-        var entries = slots[slotName] || (slots[slotName] = []);
-        var alreadyRegistered = entries.some(function (entry) {
-            return entry.component === componentName;
-        });
-        if (alreadyRegistered) {
-            log.debug('Component "' + componentName + '" is already registered for extension slot "' + slotName + '" — skipping duplicate registration');
-            return;
+        var id = componentName;
+        if (options && options.id !== undefined) {
+            if (typeof options.id !== 'string' || !options.id) {
+                log.error('Invalid entry id "' + options.id + '" for extension slot "' + slotName + '" — must be a non-empty string');
+                return;
+            }
+            id = options.id;
         }
 
         if (!components[componentName]) {
             log.debug('Component "' + componentName + '" registered for extension slot "' + slotName + '" is not a registered Vue component (yet) — it will appear once it registers');
         }
 
-        var sortOrder = (options && typeof options.sortOrder === 'number') ? options.sortOrder : 100;
-        entries.push({ component: componentName, sortOrder: sortOrder, order: slotRegistrationSeq++ });
+        var entries = registryList(slots, slotName);
+        var existing = entries.find(function (entry) { return entry.id === id; });
+        upsertById(entries, {
+            id: id,
+            component: componentName,
+            sortOrder: (options && typeof options.sortOrder === 'number') ? options.sortOrder : 100,
+            // A replacement keeps the replaced entry's place among equal sortOrders.
+            order: existing ? existing.order : slotRegistrationSeq++,
+        });
     };
 
     /**
-     * Returns the entries registered for `slotName` (see `registerSlotComponent()`), sorted
-     * by sortOrder then registration order — `{component, sortOrder}` pairs, in render order.
-     * Called from ExtensionSlot.vue's computed, so a reactive effect (e.g. a mounted
-     * island's render) that calls this re-runs on every future `registerSlotComponent()`
-     * call for this slot, including the very first one for a slot name with none yet.
+     * Records that the entry `entryId` of slot `slotName` must not render — the counterpart
+     * to `removeMenuEntry()`, with the same semantics: it applies to an entry registered
+     * before or after the call (the core's own included, which register like any module's),
+     * reactively, and permanently — there is no "un-remove", so a module removing an id does
+     * not race load order against the module registering it. A toggleable presence belongs
+     * into the entry's component (render nothing) instead.
+     */
+    var removeSlotComponent = function (slotName, entryId) {
+        if (typeof slotName !== 'string' || !slotName) {
+            log.error('Invalid extension slot name "' + slotName + '" — must be a non-empty string');
+            return;
+        }
+
+        if (typeof entryId !== 'string' || !entryId) {
+            log.error('Invalid entry id to remove from extension slot "' + slotName + '" — must be a non-empty string');
+            return;
+        }
+
+        recordRemoval(slotRemovals, slotName, entryId);
+    };
+
+    /**
+     * Returns the entries registered for `slotName` (see `registerSlotComponent()`), without
+     * the removed ones (`removeSlotComponent()`), sorted by sortOrder then registration order —
+     * `{id, component, sortOrder}`, in render order. Called from ExtensionSlot.vue's computed,
+     * so a reactive effect (e.g. a mounted island's render) that calls this re-runs on every
+     * future registration or removal for this slot, including the very first one for a slot
+     * name with none yet.
      */
     var getSlotComponents = function (slotName) {
         var entries = slots[slotName] || [];
+        var removed = slotRemovals[slotName] || [];
 
         return entries
-            .slice()
+            .filter(function (entry) {
+                return removed.indexOf(entry.id) === -1;
+            })
             .sort(function (a, b) {
                 return a.sortOrder - b.sortOrder || a.order - b.order;
             })
             .map(function (entry) {
-                return { component: entry.component, sortOrder: entry.sortOrder };
+                return { id: entry.id, component: entry.component, sortOrder: entry.sortOrder };
             });
+    };
+
+    /**
+     * TEST-ONLY seam, the slot counterpart of `resetMenuRegistry()` (see there): wipes every
+     * `registerSlotComponent()`/`removeSlotComponent()` registration of every slot. Not part of
+     * the documented API — call only from a test's `beforeEach`/`afterEach`.
+     */
+    var resetSlotRegistry = function () {
+        Object.keys(slots).forEach(function (slotName) {
+            delete slots[slotName];
+        });
+        Object.keys(slotRemovals).forEach(function (slotName) {
+            delete slotRemovals[slotName];
+        });
     };
 
     /**
@@ -268,8 +368,8 @@ humhub.module('vue', function (module, require, $) {
      * `entry` shape:
      *  - `id` (required) — unique per `menuId`. Registering the same (menuId, id) pair again
      *    REPLACES the existing entry in place (same position, for sort-tie purposes) — this is
-     *    the supported override mechanism, unlike `registerSlotComponent()`'s "first
-     *    registration wins" rule. A module intentionally replacing another module's (or core's
+     *    the supported override mechanism, as for `registerSlotComponent()`'s `id`. A module
+     *    intentionally replacing another module's (or core's
      *    own) entry registers under that same id.
      *  - `label` (string, or `(context) => string`) — required unless `component` is given.
      *  - `icon` (string, optional) — an icon name in the same namespace
@@ -323,26 +423,7 @@ humhub.module('vue', function (module, require, $) {
             component: hasComponent ? entry.component : null,
         };
 
-        // Not `menuEntries[menuId] || (menuEntries[menuId] = [])`: that assignment
-        // expression evaluates to the RAW array literal on its right-hand side, not
-        // the reactive proxy `menuEntries`' own `get` trap would hand back on a
-        // subsequent read — Vue only wraps a freshly-assigned plain array reactively
-        // the next time it is READ off the reactive object, not at assignment time.
-        // The first `.push()` for a brand new `menuId` would otherwise land on that
-        // raw array, invisible to any synchronous watcher/computed already tracking
-        // `menuEntries[menuId]`.
-        if (!menuEntries[menuId]) {
-            menuEntries[menuId] = [];
-        }
-        var entries = menuEntries[menuId];
-        var existingIndex = entries.findIndex(function (e) { return e.id === entry.id; });
-        if (existingIndex === -1) {
-            entries.push(resolved);
-        } else {
-            // In-place replace (not remove + push) — keeps this id's position among entries
-            // sharing a sortOrder stable across an override, instead of bumping it to the back.
-            entries.splice(existingIndex, 1, resolved);
-        }
+        upsertById(registryList(menuEntries, menuId), resolved);
     };
 
     /**
@@ -369,15 +450,7 @@ humhub.module('vue', function (module, require, $) {
             return;
         }
 
-        // Same raw-array-escapes-the-proxy hazard as `registerMenuEntry()` above —
-        // see its own comment on the equivalent line.
-        if (!menuRemovals[menuId]) {
-            menuRemovals[menuId] = [];
-        }
-        var removed = menuRemovals[menuId];
-        if (removed.indexOf(entryId) === -1) {
-            removed.push(entryId);
-        }
+        recordRemoval(menuRemovals, menuId, entryId);
     };
 
     /**
@@ -875,6 +948,7 @@ humhub.module('vue', function (module, require, $) {
         register: register,
         isRegistered: isRegistered,
         registerSlotComponent: registerSlotComponent,
+        removeSlotComponent: removeSlotComponent,
         getSlotComponents: getSlotComponents,
         registerMenuEntry: registerMenuEntry,
         removeMenuEntry: removeMenuEntry,
@@ -886,6 +960,7 @@ humhub.module('vue', function (module, require, $) {
         // documented public API surface (docs/develop/ui-js-vuejs-extensions.md's "Menu
         // entries" section deliberately does not mention it).
         resetMenuRegistry: resetMenuRegistry,
+        resetSlotRegistry: resetSlotRegistry,
         mountElement: mountElement,
         unmountElement: unmountElement,
         getApp: getApp,

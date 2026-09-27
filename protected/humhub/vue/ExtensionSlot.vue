@@ -2,7 +2,7 @@
     <component
         v-for="entry in visibleEntries"
         :is="entry.component"
-        :key="entry.component"
+        :key="entry.id"
         v-bind="context"
     />
 </template>
@@ -21,15 +21,24 @@
  * ```js
  * // another module's own vue/index.js
  * import { registerSlotComponent } from '@humhub/vue';
- * registerSlotComponent('comment.links', 'MyReactionButton');
+ * registerSlotComponent('comment.links', 'MyReactionButton', { id: 'reaction', sortOrder: 150 });
+ * // removeSlotComponent('comment.links', 'reaction'); // suppresses an entry by id
  * ```
+ *
+ * ## Entries have ids
+ *
+ * Every entry of a slot has an `id` (by default its component name). Registering an id that
+ * is taken replaces that entry in place, and `removeSlotComponent()` suppresses one — the
+ * core's own entries included, which register into their slots like any module's (e.g. the
+ * card actions `user.card-actions`/`space.card-actions`). That is the `DropdownMenu` entry
+ * semantics, for a free-form fragment instead of a menu item.
  *
  * ## Naming convention
  *
  * Slot names follow `<module>.<region>` (e.g. `comment.links`) — the same "who owns this
  * extension point" convention PHP stack widget names already use. A named extension point
- * that is an array of orderable, removable items (e.g. `CommentControls`' `comment.controls`
- * menu) is a `DropdownMenu` `menuId` via `registerMenuEntry()`/`removeMenuEntry()` instead —
+ * that is a menu of items described as data (e.g. `CommentControls`' `comment.controls`)
+ * is a `DropdownMenu` `menuId` via `registerMenuEntry()`/`removeMenuEntry()` instead —
  * see docs/develop/ui-js-vuejs-extensions.md, "Menu entries vs. extension slots".
  *
  * ## Silent when empty

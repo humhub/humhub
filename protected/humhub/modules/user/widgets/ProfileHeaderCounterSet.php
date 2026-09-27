@@ -55,6 +55,9 @@ class ProfileHeaderCounterSet extends CounterSet
                 'linkOptions' => Yii::$app->user->isGuest ? [] : [
                     'data-action-click' => 'ui.modal.load',
                     'data-action-url' => Url::to(['/user/profile/follower-list', 'container' => $this->user]),
+                    // Kept current by humhub.user.js when a follow button of the page follows or
+                    // unfollows the user (`user:follow-changed`).
+                    'data-user-follower-count' => $this->user->id,
                 ],
             ]);
 

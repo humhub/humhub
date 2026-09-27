@@ -16,6 +16,8 @@ class DirectoryPage extends BasePage
     {
         if ($this->actor instanceof \AcceptanceTester) {
             $this->actor->waitForText('People', 30);
+            // The directory renders at once and loads its cards afterwards.
+            $this->actor->waitForElementVisible('.c-people-card', 30);
         }
     }
 

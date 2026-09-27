@@ -31,6 +31,11 @@ use yii\base\Event;
  */
 class SpaceListTest extends HumHubDbTestCase
 {
+    /**
+     * @inheritdoc
+     */
+    protected $fixtureConfig = ['default'];
+
     protected function setUp(): void
     {
         parent::setUp();

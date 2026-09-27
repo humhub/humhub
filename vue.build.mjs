@@ -16,8 +16,11 @@
  *     They are bundled only when imported by a top-level component and are
  *     never auto-registered.
  *   - Escape hatch: if `<module>/vue/index.js` exists, it is used verbatim
- *     as the entry (for custom registration logic) and the auto-registration
- *     scan above does not run at all.
+ *     as the entry (for custom registration logic) instead of the generated
+ *     one. The filename check still applies to the top-level `.vue` files:
+ *     such an entry registers them under their filenames as well
+ *     (`import.meta.glob('./*.vue')`), its own extra components live in
+ *     subdirectories.
  * The generated entry is a virtual module (never written to disk), so
  * sourcemaps stay free of machine-specific temp paths.
  *
@@ -154,34 +157,37 @@ async function buildModule(target) {
     let entryInput;
     let extraPlugins = [];
 
+    const topLevelVueFiles = topLevelVueFilesOf(vueDir);
+
+    // Also with a vue/index.js: its top-level files are what it registers under their
+    // filenames (`import.meta.glob('./*.vue')`, as the generated entry does), so they are held
+    // to the same rule — internal components live in subdirectories either way.
+    const invalid = topLevelVueFiles
+        .map((fileName) => ({ fileName, name: fileName.slice(0, -'.vue'.length) }))
+        .filter(({ name }) => !NAME_PATTERN.test(name) || !toTagName(name).includes('-'));
+
+    if (invalid.length > 0) {
+        console.error(`Invalid top-level Vue component file name(s) in ${vueDir}:`);
+        for (const { fileName, name } of invalid) {
+            console.error(`  - ${fileName} (registers as "${name}" -> <${toTagName(name)}>)`);
+        }
+        console.error(
+            'Every top-level .vue file in vue/ is registered under its filename (by the generated ' +
+            'entry, or by a vue/index.js through import.meta.glob), so the name must be ' +
+            `PascalCase (${NAME_PATTERN}) and its derived kebab-case tag must contain a dash ` +
+            '(e.g. LikeButton.vue -> "LikeButton" -> <like-button>). Move internal-only ' +
+            'components into a subdirectory of vue/.',
+        );
+        process.exit(1);
+    }
+
     if (existsSync(indexPath)) {
         entryInput = indexPath;
     } else {
-        const topLevelVueFiles = topLevelVueFilesOf(vueDir);
-
         if (topLevelVueFiles.length === 0) {
             console.error(
                 `Nothing to build for module "${moduleId}": no vue/index.js and no top-level ` +
                 `.vue file in ${vueDir}`,
-            );
-            process.exit(1);
-        }
-
-        const invalid = topLevelVueFiles
-            .map((fileName) => ({ fileName, name: fileName.slice(0, -'.vue'.length) }))
-            .filter(({ name }) => !NAME_PATTERN.test(name) || !toTagName(name).includes('-'));
-
-        if (invalid.length > 0) {
-            console.error(`Invalid top-level Vue component file name(s) in ${vueDir}:`);
-            for (const { fileName, name } of invalid) {
-                console.error(`  - ${fileName} (registers as "${name}" -> <${toTagName(name)}>)`);
-            }
-            console.error(
-                'Every top-level .vue file in vue/ is auto-registered under its filename, so the ' +
-                `name must be PascalCase (${NAME_PATTERN}) and its derived kebab-case tag must ` +
-                'contain a dash (e.g. LikeButton.vue -> "LikeButton" -> <like-button>). Move ' +
-                'internal-only components into a subdirectory of vue/, or add a vue/index.js to ' +
-                'opt out of auto-registration.',
             );
             process.exit(1);
         }

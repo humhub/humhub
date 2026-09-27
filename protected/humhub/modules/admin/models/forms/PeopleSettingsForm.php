@@ -11,7 +11,6 @@ namespace humhub\modules\admin\models\forms;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\ProfileFieldCategory;
-use humhub\modules\user\widgets\PeopleCard;
 use Yii;
 use yii\base\Model;
 
@@ -174,7 +173,7 @@ class PeopleSettingsForm extends Model
 
     public static function isDefaultGroupDefined(): bool
     {
-        $defaultSortingGroupId = PeopleCard::config('defaultSortingGroup');
+        $defaultSortingGroupId = Yii::$app->settings->get('people.defaultSortingGroup', '');
 
         return $defaultSortingGroupId && Group::find()
                 ->where(['id' => $defaultSortingGroupId])

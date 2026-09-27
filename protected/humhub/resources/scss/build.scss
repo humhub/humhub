@@ -142,8 +142,14 @@ $prev-item-browser: false !default;
 $prev-marketplace: false !default;
 @import "marketplace";
 
+$prev-entity-card: false !default;
+@import "entity-card";
+
 $prev-space-directory: false !default;
 @import "space-directory";
+
+$prev-people-directory: false !default;
+@import "people-directory";
 
 $prev-modules: false !default;
 @import "modules";

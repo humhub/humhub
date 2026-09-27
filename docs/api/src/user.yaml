@@ -1,0 +1,543 @@
+openapi: 3.1.0
+info:
+  description: Joined into index.html by build.sh; this module's introduction is the
+    description of its tag below.
+  version: 2.0.0
+  title: HumHub - User API (v2)
+  contact:
+    email: info@humhub.com
+  license:
+    name: AGPLv2
+    url: https://www.humhub.org/en/licences
+servers:
+  - url: /api/v2
+security:
+  - Bearer: []
+  - BasicAuth: []
+  - SessionCookie: []
+tags:
+  - name: User
+    description: |
+      The users the caller may see, the caller's relationship to them (follow, friendship), the
+      caller's follow of one user, and the values the People directory's profile field filters
+      offer. For logged-in callers only — there is no guest access. The caller's friendship
+      with a user is the friendship module's (`/user/{id}/friendship`).
+paths:
+  "/user":
+    get:
+      tags:
+        - User
+      summary: The users the caller may see
+      operationId: listUsers
+      description: |
+        The platform's user search: one page of the users the caller may see, searched,
+        scoped and ordered by the parameters below — the People directory reads it, user
+        pickers and mentioning can read the same shape. The **shape** is caller-neutral — the
+        same user reads the same for everyone. Which users the list holds does depend on the
+        caller (`scope` narrows it to their own connections, and availability always applies);
+        what the caller IS to a user (following, friendship) is `/user/states`.
+
+        A disabled or deleted user, one who blocked the caller, and a hidden one never appear,
+        whatever the parameters say — not even to an administrator.
+
+        An unknown value of one of the parameters below answers `422`, and so does a parameter
+        the list does not know: modules add their own filters to the list (a directory filter
+        of their own, say), which are then accepted like the ones below, and may narrow the list
+        by `purpose`.
+
+        Requires the permission to view the People directory (`403`), whatever the `purpose`;
+        user pickers and mentioning get a rule of their own once they read this list.
+      parameters:
+        - name: q
+          in: query
+          required: false
+          description: |
+            Search over username, the searchable profile fields and tags; at most 255
+            characters, else `422`.
+          schema:
+            type: string
+            maxLength: 255
+        - name: scope
+          in: query
+          required: false
+          description: |
+            `all` (default) ·
+            `following` — the users the caller follows ·
+            `followers` — the users following the caller ·
+            `friends` — mutual friendships ·
+            `pendingFriends` — friendship requests the caller sent that are not answered yet.
+            `following` and `followers` exist only while following is not disabled, `friends`
+            and `pendingFriends` only while the friendship system is enabled; otherwise they
+            answer `422`.
+          schema:
+            type: string
+            enum: [all, following, followers, friends, pendingFriends]
+        - name: groupId
+          in: query
+          required: false
+          description: |
+            Only members of this group and of its sub groups. The group must be one shown in
+            the People directory, else `422`.
+          schema:
+            type: integer
+        - name: tag
+          in: query
+          required: false
+          description: |
+            Only users having all of these user tags — comma-separated (or repeated `tag=`),
+            case-insensitive. At most 20 tags, each at most 100 characters and without a comma,
+            else `422`. `/user/tags` lists the tags of the users the caller may see.
+          schema:
+            type: string
+        - name: spaceId
+          in: query
+          required: false
+          description: |
+            Only members of this space. The caller must be allowed to see the space and its
+            members, else `422`.
+          schema:
+            type: integer
+        - name: fields
+          in: query
+          required: false
+          style: deepObject
+          explode: true
+          description: |
+            Profile field values by the fields' internal names (`fields[city]=Berlin`), each a
+            visible text, dropdown (or country) or checkbox list field an administrator marked
+            as directory filter — any other field answers `422` (under the key
+            `fields[<name>]`). A dropdown matches its option key, a checkbox
+            list any of its options (or the "Other:" value while that is allowed), any other
+            field a part of its text. Empty values are no restriction. `/user/field-values`
+            lists what a field offers.
+          schema:
+            type: object
+            additionalProperties:
+              type: string
+        - name: sort
+          in: query
+          required: false
+          description: |
+            `default` (also when absent) — the administrator's People directory order, with the
+            members of the prioritised group first where one is configured ·
+            `firstname` / `lastname` — by name ·
+            `lastlogin` — most recently logged in first.
+          schema:
+            type: string
+            enum: [default, firstname, lastname, lastlogin]
+        - name: ids
+          in: query
+          required: false
+          description: |
+            Only these users — comma-separated (or repeated `ids[]=`) positive ids, at most
+            100.
+          schema:
+            type: string
+        - name: exclude
+          in: query
+          required: false
+          description: |
+            Not these users — comma-separated (or repeated `exclude[]=`) positive ids, at most
+            100.
+          schema:
+            type: string
+        - name: purpose
+          in: query
+          required: false
+          description: |
+            What the list is for: `directory`, `picker` or `mentioning`; absent = neutral. The
+            core does not filter by it — modules may, to restrict a list in one context and
+            not in another (e.g. keep users out of the directory but not out of a picker).
+          schema:
+            type: string
+            enum: [directory, picker, mentioning]
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - $ref: "common.yaml#/components/parameters/pageSizeParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "common.yaml#/components/schemas/ListEnvelope"
+                  - type: object
+                    properties:
+                      results:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/UserListEntry"
+              example:
+                results:
+                  - id: 7
+                    guid: 1a2b3c4d-5e6f-7890-abcd-ef0123456789
+                    displayName: Jane Doe
+                    url: https://example.com/u/jane/
+                    imageUrl: https://example.com/uploads/profile_image/1a2b3c4d-5e6f-7890-abcd-ef0123456789.jpg
+                    contentContainerId: 14
+                    bannerUrl: null
+                    title: Product Manager
+                    details: [Berlin, Product]
+                    tags: [roadmap, ux]
+                    followerCount: 4
+                    friendCount: null
+                total: 1
+                page: 1
+                pageSize: 25
+                pages: 1
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/user/states":
+    get:
+      tags:
+        - User
+      summary: What the caller is to the given users
+      operationId: getUserStates
+      description: |
+        Following, friendship, the online status and what the caller may do for the users
+        named — the ones a client displays. One request answers a whole page, with a fixed
+        number of queries.
+
+        This is where the caller context of a user lives, which is why the list above carries
+        none of it — the states of the People directory's cards. A user the list never shows
+        is not answered: a disabled or deleted one, one who blocked the caller and a hidden one
+        (not even to an administrator). Requires the permission to view the People directory
+        (`403`), as the list does.
+      parameters:
+        - name: ids
+          in: query
+          required: true
+          description: |
+            Comma-separated (or repeated `ids[]=`) ids of the users to answer for; anything
+            beyond the first 100 is ignored.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: object
+                    description: User id to state
+                    additionalProperties:
+                      $ref: "#/components/schemas/UserState"
+              example:
+                results:
+                  "7":
+                    isSelf: false
+                    isFollowing: true
+                    canFollow: true
+                    friendship:
+                      state: requestSent
+                      isFollowing: true
+                    isOnline: false
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+  "/user/field-values":
+    get:
+      tags:
+        - User
+      summary: The values a profile field filter offers
+      operationId: listUserFieldValues
+      description: |
+        The options of the People directory's filter over one profile field — its
+        `optionsUrl`, searched with `q` as the picker's user types. `id` is what
+        `fields[<name>]` of the list takes, `name` the label, `count` (values users entered)
+        how many users entered it:
+
+        - a dropdown: its options,
+        - a checkbox list: its options, plus the "Other:" values users entered while "Other:"
+          is allowed,
+        - a country field: the countries users picked,
+        - any other field: the values users entered.
+
+        Values users entered are taken from the users the People directory lists the caller
+        (with the restrictions modules apply to it), the most frequent first, at most 20.
+        Requires the permission to view the People directory (`403`,
+        before the field is looked at).
+      parameters:
+        - name: field
+          in: query
+          required: true
+          description: |
+            The internal name of a profile field the list filters by (see `fields` of
+            `/user`); missing or any other field answers `422`.
+          schema:
+            type: string
+        - name: q
+          in: query
+          required: false
+          description: |
+            The text typed so far: only the values containing it (case-insensitive) — for an
+            option or a country its label, for what users entered the value itself. Absent or
+            blank: no search. At most 255 characters, else `422`.
+          schema:
+            type: string
+            maxLength: 255
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FilterValues"
+              example:
+                results:
+                  - id: Hamburg
+                    name: Hamburg
+                    count: 12
+                  - id: Berlin
+                    name: Berlin
+                    count: 7
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/user/tags":
+    get:
+      tags:
+        - User
+      summary: The user tags to filter by
+      operationId: listUserTags
+      description: |
+        The user tags of the users the People directory lists the caller (with the
+        restrictions modules apply to it) — the `optionsUrl` of the People
+        directory's tag picker, searched with `q` as its user types. `id` and `name` are the
+        tag (what `tag` of `/user` takes), `count` how many of these users have it. The most
+        frequent first, at most 20. Requires the permission to view the People directory.
+      parameters:
+        - name: q
+          in: query
+          required: false
+          description: |
+            The text typed so far: only the tags containing it (case-insensitive). Absent or
+            blank: no search. At most 255 characters, else `422`.
+          schema:
+            type: string
+            maxLength: 255
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FilterValues"
+              example:
+                results:
+                  - id: Marketing
+                    name: Marketing
+                    count: 14
+                  - id: Design
+                    name: Design
+                    count: 9
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/user/{id}/follow":
+    get:
+      tags:
+        - User
+      summary: Whether the caller follows a user
+      operationId: getUserFollow
+      description: |
+        The caller's follow relationship to the user, and whether following can be started
+        (see the `UserFollowState` schema). `403` for the caller's own user — there is no
+        follow relationship to oneself — and for a disabled or deleted user.
+      parameters:
+        - $ref: "#/components/parameters/userIdPathParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserFollowState"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+    put:
+      tags:
+        - User
+      summary: Follow a user
+      operationId: setUserFollow
+      description: |
+        Follows the user, with notifications. Answers the new state, in the same shape `GET`
+        returns. Idempotent: following a user already followed changes nothing and answers
+        the state.
+
+        `403` where following is not possible: while following is disabled, for the caller's
+        own user and for a disabled or deleted user.
+      parameters:
+        - $ref: "#/components/parameters/userIdPathParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserFollowState"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+    delete:
+      tags:
+        - User
+      summary: Stop following a user
+      operationId: removeUserFollow
+      description: |
+        Ends the caller's follow of the user and answers the new state. Unfollowing a user
+        who is not followed is a success, and ending a follow stays possible after following
+        was disabled. `403` for the caller's own user and for a disabled or deleted user.
+      parameters:
+        - $ref: "#/components/parameters/userIdPathParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserFollowState"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+components:
+  parameters:
+    userIdPathParam:
+      name: id
+      in: path
+      description: Id of the user
+      required: true
+      schema:
+        type: integer
+  schemas:
+    UserListEntry:
+      type: object
+      description: One user, as every caller sees them — the short user shape plus what a list is browsed by
+      allOf:
+        - $ref: "common.yaml#/components/schemas/UserShort"
+        - type: object
+          properties:
+            bannerUrl:
+              type: [string, 'null']
+              description: Absolute URL of the banner image, `null` when the user has none of their own
+            title:
+              type: [string, 'null']
+              description: |
+                The line under the name the platform shows everywhere (the profile's title,
+                unless an administrator configured another field), `null` when empty.
+            details:
+              type: array
+              items:
+                type: string
+              description: |
+                The up to three profile fields an administrator picked for the People card, as
+                plain text (at most 200 characters each); empty ones are left out.
+            tags:
+              type: array
+              items:
+                type: string
+            followerCount:
+              type: [integer, 'null']
+              description: |
+                Active, not hidden followers — the same number for every caller. `null` while
+                following is disabled.
+            friendCount:
+              type: [integer, 'null']
+              description: |
+                Active, not hidden friends — the same number for every caller. `null` while
+                the friendship system is off.
+    UserState:
+      type: object
+      description: What the caller is to one user
+      properties:
+        isSelf:
+          type: boolean
+          description: Whether this is the caller themselves
+        isFollowing:
+          type: boolean
+        canFollow:
+          type: boolean
+          description: Whether following can be started — following is not disabled and it is not the caller
+        friendship:
+          description: |
+            The shape `/user/{id}/friendship` answers; `null` while the friendship system is
+            off, and for the caller themselves.
+          oneOf:
+            - $ref: "friendship.yaml#/components/schemas/FriendshipState"
+            - type: 'null'
+        isOnline:
+          type: [boolean, 'null']
+          description: |
+            Whether the user is online (a request within the last minute), as their profile
+            image shows it. `null` where the online status is not shown: while the
+            administrator hides it, for a user who hides their own, and for the caller
+            themselves.
+    UserFollowState:
+      type: object
+      description: The caller's follow relationship to a user
+      properties:
+        isFollowing:
+          type: boolean
+        followerCount:
+          type: [integer, 'null']
+          description: As in the list (`UserListEntry`)
+        canFollow:
+          type: boolean
+          description: |
+            Whether following can be started: not the caller themselves, and following is not
+            disabled. Ending a follow is always possible.
+      examples:
+        - isFollowing: true
+          followerCount: 5
+          canFollow: true
+    FilterValues:
+      type: object
+      description: "The values a filter picker offers: `{results: [{id, name, count?}]}`"
+      required: [results]
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            required: [id, name]
+            properties:
+              id:
+                type: string
+                description: The value to filter by
+              name:
+                type: string
+                description: Its label
+              count:
+                type: integer
+                description: How many users have it — absent for the options of a dropdown or checkbox list
+  securitySchemes:
+    Bearer:
+      $ref: "common.yaml#/components/securitySchemes/Bearer"
+    BasicAuth:
+      $ref: "common.yaml#/components/securitySchemes/BasicAuth"
+    SessionCookie:
+      $ref: "common.yaml#/components/securitySchemes/SessionCookie"

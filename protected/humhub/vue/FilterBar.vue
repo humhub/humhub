@@ -22,6 +22,7 @@
                             :options="optionsOf(entry.filter)"
                             :loading="isLoading(entry.filter)"
                             :component="customType(entry.filter)"
+                            :reload-key="optionsVersion"
                             @update:model-value="update(entry.filter.key, $event)"
                         />
                     </slot>
@@ -79,6 +80,7 @@
                                 :options="optionsOf(filter)"
                                 :loading="isLoading(filter)"
                                 :component="customType(filter)"
+                                :reload-key="optionsVersion"
                                 @update:model-value="update(filter.key, $event)"
                             />
                         </slot>
@@ -93,13 +95,15 @@
 
 import { client, getFilterType, i18n, isRegistered, log } from '@humhub/vue';
 import FilterControl from './filter/FilterControl.vue';
-import { defaultValue, defaultValues, fixedSignature, isDefault, readValues, writeQuery } from './filter/filterQuery.js';
+import {
+    defaultValue, defaultValues, fixedSignature, isDefault, readValues, sanitizeValue, sanitizeValues, writeQuery,
+} from './filter/filterQuery.js';
 
 export const TEXT_DEBOUNCE_MS = 300;
 
 const ANIMATION_MS = 300;
 
-const CORE_TYPES = ['text', 'select', 'tags', 'checkbox'];
+const CORE_TYPES = ['text', 'select', 'picker', 'tags', 'checkbox'];
 
 let uid = 0;
 
@@ -112,6 +116,10 @@ const keysOf = (filters, fixed) => [...new Set([...filters.map((filter) => filte
 
 const isPanel = (filter) => filter.placement === 'panel';
 
+// A key as it may appear in an id or class: `fields[city]` (a bracket key, as the People
+// directory's profile field filters have) becomes `fields-city`.
+const keySlug = (filter) => String(filter.key).replace(/[^A-Za-z0-9_-]+/g, '-').replace(/^-+|-+$/g, '');
+
 /**
  * A filter bar (after the design system's `c-filter-bar`): renders a list's filter definitions
  * (`humhub\components\listing\FilterDefinition`) as a form of its own — nothing is submitted.
@@ -123,6 +131,10 @@ const isPanel = (filter) => filter.placement === 'panel';
  * - Initial values: `modelValue` (missing keys at their defaults), overridden by what the page
  *   URL carries (`syncUrl`). When they differ from `modelValue`, they are emitted at once, while
  *   the bar is created — an owner can therefore start from `{}` and load in `mounted()`.
+ * - A value a filter cannot offer (a `select`/`picker`/`tags` value that is none of the static `options`
+ *   of a filter without `optionsUrl`, e.g. from a stale link) is dropped wherever values enter
+ *   the bar: the page URL, `modelValue`, `setFilter()` (see `sanitizeValue()` of
+ *   `filter/filterQuery.js`).
  * - URL sync (`syncUrl`, default `true`): applied values are written back with
  *   `history.replaceState` (defaults omitted, other parameters kept, no history entries, so
  *   nothing competes with PJAX's `popstate`; PJAX's own `history.state.url` is kept current).
@@ -140,7 +152,12 @@ const isPanel = (filter) => filter.placement === 'panel';
  *   "all" state: `placeholder`, else the label of a static option with the empty value (which
  *   is not listed), else `label`. With `optionsUrl` it loads further options
  *   (`{results: [{id, name, count?}]}`) after the static `options` and stays disabled (spinner)
- *   until they are there; a failed load leaves it usable with the static options only. `tags`
+ *   until they are there; a failed load leaves it usable with the static options only. `picker`
+ *   a `FilterPicker`, a searchable combobox (`multiple`: chips, the value an array) whose
+ *   suggestions are the static `options` matched in the browser and those `optionsUrl` answers
+ *   — its first page when opened, `optionsUrl` + `q=<typed text>` while typing —, loaded by the
+ *   picker itself; with `custom` (single-choice) the typed text can be applied as the value too
+ *   (`allowCustom`). `tags`
  *   toggle buttons; with `multiple` the option with the empty value is "All" and clears them.
  *   `checkbox` a check box. Any other type is rendered by the component registered for it
  *   (`registerFilterType()`, see `FilterControl`); an unregistered type renders nothing (logged
@@ -162,12 +179,17 @@ const isPanel = (filter) => filter.placement === 'panel';
  *   the bar collapses, and a `ResizeObserver` closes the bar again once it no longer
  *   collapses); with a panel the "Filters" toggle, which opens the panel too. Either follows
  *   the search field.
- * - `idPrefix`: prefix of the controls' ids (`<idPrefix>-<key>`).
- * - Instance API (template ref): `setFilter(key, value)` sets one filter from outside the bar
- *   (applied like a change in the bar but at once — also a text filter, whose pending debounce
- *   it cancels, applying whatever else was typed with it; returns `false` for an unknown or
- *   fixed key), `reloadOptions()` re-runs every `optionsUrl` filter's load, for when something
- *   outside the bar changed what the options (or their counts) should be.
+ * - `idPrefix`: prefix of the controls' ids (`<idPrefix>-<key>`). A key may be a bracket key
+ *   (`fields[city]`): it travels as is (page URL, request), while the ids and the item's
+ *   `form-search-filter-<key>` class carry it as a slug (`fields-city`).
+ * - Instance API (template ref): `setFilter(key, value, { add })` sets one filter from outside
+ *   the bar (applied like a change in the bar but at once — also a text filter, whose pending
+ *   debounce it cancels, applying whatever else was typed with it; returns `false` for an
+ *   unknown or fixed key); with `add: true` the value (one or an array) is added to what a
+ *   multiple filter holds instead of replacing it (a card's tag narrowing a tag picker).
+ *   `reloadOptions()` re-runs every `optionsUrl` filter's load (a picker drops what it loaded
+ *   and loads again when used), for when something outside the bar changed what the options
+ *   (or their counts) should be.
  *
  * @since 1.20
  */
@@ -188,12 +210,14 @@ export default {
     emits: ['update:modelValue'],
     data() {
         const own = this.filters.filter((filter) => !Object.hasOwn(this.fixed, filter.key));
-        const base = { ...defaultValues(this.filters), ...this.modelValue };
+        const base = sanitizeValues(own, { ...defaultValues(this.filters), ...this.modelValue });
         const initial = { ...(this.syncUrl ? readValues(own, window.location.search, base) : base), ...this.fixed };
         return {
             draft: initial,
             remoteOptions: {},
             loading: {},
+            // Counted up by `reloadOptions()`: the pickers drop the suggestions they loaded.
+            optionsVersion: 0,
             // A panel filter set on load opens the panel.
             open: own.some((filter) => isPanel(filter) && !filter.hidden && !isDefault(filter, initial[filter.key])),
             collapsing: false,
@@ -261,9 +285,13 @@ export default {
         modelValue(value) {
             if (!same(keysOf(this.filters, this.fixed), { ...value, ...this.fixed }, this.applied)) {
                 clearTimeout(this.debounceTimer);
-                this.applied = { ...defaultValues(this.filters), ...value, ...this.fixed };
+                this.applied = { ...sanitizeValues(this.ownFilters, { ...defaultValues(this.filters), ...value }), ...this.fixed };
                 this.draft = { ...this.applied };
                 this.writeUrl();
+                if (!same(keysOf(this.filters, this.fixed), { ...value, ...this.fixed }, this.applied)) {
+                    // A value the bar cannot offer was dropped - the owner has to load without it.
+                    this.$emit('update:modelValue', { ...this.applied });
+                }
             }
         },
         fixed: {
@@ -321,14 +349,21 @@ export default {
         this.resizeObserver?.disconnect();
     },
     methods: {
-        setFilter(key, value) {
-            if (!this.ownFilters.some((filter) => filter.key === key)) {
+        setFilter(key, value, { add = false } = {}) {
+            const filter = this.ownFilters.find((candidate) => candidate.key === key);
+            if (!filter) {
                 return false;
+            }
+            if (add && Array.isArray(this.draft[key])) {
+                // Added to what a multiple filter holds, each value once.
+                const current = this.draft[key];
+                const added = (Array.isArray(value) ? value : [value]).map(String).filter((entry) => entry !== '' && !current.includes(entry));
+                value = [...current, ...added];
             }
             // Set from outside the bar (e.g. a card's tag): nobody is typing, so the text
             // debounce does not apply — see `onDraftChange()`.
             this.applyNow = true;
-            this.update(key, value);
+            this.update(key, sanitizeValue(filter, value));
             return true;
         },
         reset() {
@@ -337,13 +372,15 @@ export default {
             this.draft = { ...defaultValues(this.filters), ...this.fixed };
         },
         reloadOptions() {
-            this.ownFilters.filter((filter) => filter.optionsUrl).forEach((filter) => this.loadOptions(filter));
+            // A picker loads its suggestions itself, when opened and as typed.
+            this.ownFilters.filter((filter) => filter.optionsUrl && filter.type !== 'picker').forEach((filter) => this.loadOptions(filter));
+            this.optionsVersion++;
         },
         inputId(filter) {
-            return `${this.idPrefix}-${filter.key}`;
+            return `${this.idPrefix}-${keySlug(filter)}`;
         },
         itemClass(filter) {
-            return ['c-filter-bar__item', `c-filter-bar__item--${filter.type}`, `form-search-filter-${filter.key}`, { 'c-filter-bar__item--wide': filter.wide }];
+            return ['c-filter-bar__item', `c-filter-bar__item--${filter.type}`, `form-search-filter-${keySlug(filter)}`, { 'c-filter-bar__item--wide': filter.wide }];
         },
         // The component registered for a filter's type, once both halves of the registration
         // are there (read from the reactive registry, so a late registration re-renders the bar).

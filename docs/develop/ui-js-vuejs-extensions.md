@@ -17,12 +17,92 @@ import { register, registerSlotComponent } from '@humhub/vue';
 import ReactionLink from './ReactionLink.vue';
 
 register('ReactionLink', ReactionLink);
-registerSlotComponent('comment.links', 'ReactionLink', { sortOrder: 150 });
+registerSlotComponent('comment.links', 'ReactionLink', { id: 'reaction', sortOrder: 150 });
 ```
 
-`ExtensionSlot` renders every component registered for its name (via `registerSlotComponent(slotName, componentName, {sortOrder})`), passing `context` down as props to each. Entries render in `sortOrder` order (default `100`), then registration order for ties. Slot names follow the same `<module>.<region>` convention already used elsewhere: `comment.links`, appended after the core Reply/Like links in `.wall-entry-controls`; `space.card-subtitle`, the line under the space name on a card of the spaces directory (`SpaceCard.vue`, context `{ space }` — e.g. a module's category of the space, from its own endpoint).
+`ExtensionSlot` renders every component registered for its name (via `registerSlotComponent(slotName, componentName, {sortOrder, id})`), passing `context` down as props to each (spread with `v-bind`, so a component declares the keys it uses as props; one that does not use them all sets `inheritAttrs: false`, or the rest become attributes of its root element). Entries render in `sortOrder` order (default `100`), then registration order for ties. Slot names follow the same `<module>.<region>` convention already used elsewhere: `comment.links`, appended after the core Reply/Like links in `.wall-entry-controls`; `space.card-subtitle`, the line under the space name on a card of the spaces directory (`SpaceCard.vue`, context `{ space }` — e.g. a module's category of the space, from its own endpoint); `user.card-subtitle`, the line under the user's name on a card of the People directory (`PeopleCard.vue`, context `{ user }`, typically a `p.c-entity-card__subtitle`); `user.card-actions` and `space.card-actions`, the footers of the two cards (see [Card actions](#card-actions) below).
 
-**Registration order is unconstrained** — `registerSlotComponent()` does not require `componentName` to be registered yet, and `register()` does not require any slot referencing it to exist yet. Whichever half arrives second, `ExtensionSlot` picks it up reactively (no remount). A slot with nothing registered — or nothing *currently registered* — renders nothing: no placeholder, no warning; modules stay entirely optional.
+**Entries have ids.** `id` defaults to the component name and is unique per slot, with the semantics of a [menu entry](#menu-entries)'s id:
+
+- Registering a taken `(slotName, id)` again **replaces** that entry in place — its component and `sortOrder`; among entries sharing a `sortOrder` it keeps its position. That is how a module overrides another module's entry, the core's included, and why an artifact script executing again is harmless.
+- `removeSlotComponent(slotName, id)` drops an entry — registered before or after the call, by a module or by the core. **Removals are permanent** and win over later registrations of the same id, so a module removing an entry does not race load order against the module registering it; a toggleable presence belongs into the entry's component (render nothing) instead.
+
+```js
+import { registerSlotComponent, removeSlotComponent } from '@humhub/vue';
+
+registerSlotComponent('user.card-actions', 'MyFollowAction', { id: 'follow', sortOrder: 200 }); // replaces the core's
+removeSlotComponent('space.card-actions', 'follow');                                           // no follow button on space cards
+```
+
+**Registration order is unconstrained** — `registerSlotComponent()` does not require `componentName` to be registered yet, and `register()` does not require any slot referencing it to exist yet. Whichever half arrives second, `ExtensionSlot` picks it up reactively (no remount), as it does a replacement or a removal. A slot with nothing registered — or nothing *currently registered* — renders nothing: no placeholder, no warning; modules stay entirely optional.
+
+### Card actions
+
+The footers of the directory cards are extension slots, and the core's own buttons are entries of them, registered from the modules' `vue/index.js` like any module's — so a module can add an action, reorder, replace or remove any of them, the core's included. An action renders one `.c-entity-card__action` (a button, or a link styled as one), or nothing where it has nothing to offer. The slot only renders once the viewer's state of the card has loaded (a disabled placeholder stands in until then), never on one's own card, and not where there is no state (a user the viewer may not see).
+
+**`user.card-actions`** — `PeopleCard.vue`, the People directory:
+
+| id | sortOrder | component | shown while |
+|---|---|---|---|
+| `friendship` | 100 | `PeopleCardFriendshipAction` (friendship module) — the `FriendshipButton` | the friendship system is on (`friendshipEnabled`, `state.friendship`) |
+| `follow` | 200 | `PeopleCardFollowAction` — the `UserFollowButton` | following is enabled, or the viewer follows the user (so the follow can still be ended) |
+
+Context:
+
+| key | |
+|---|---|
+| `user` | the list item (`GET /api/v2/user`, `UserSerializer::list()`) |
+| `state` | the viewer's `user/states` entry of the user (`isSelf` always `false` here, `isFollowing`, `canFollow`, `friendship`, `isOnline`) |
+| `buttons` | the button classes of `user\widgets\PeopleDirectory::$buttonClasses` (`friendClass`, `friendStateClass`, `friendTogglerClass`, `friendGroupClass`, `followClass`, `followingClass`, `placeholderClass`) |
+| `icons` | rendered icon markup: `check`, `plus`, `clock`, `times` |
+| `followEnabled`, `friendshipEnabled` | whether the platform offers following and friendship |
+| `onFollowChange`, `onFriendshipChange` | the card's `follow-change`/`friendship-change` callbacks, with the `change` payload of the `UserFollowButton` (`{userId, isFollowing, followerCount, canFollow}`) and the `FriendshipButton` (`{userId, state, isFollowing}`): the directory merges them into the user's state and counts. An action declaring `emits: ['follow-change']` reaches `onFollowChange` by emitting. |
+
+```js
+// the mail module's vue/index.js
+import { register, registerSlotComponent } from '@humhub/vue';
+import MailCardAction from './MailCardAction.vue';
+
+register('MailCardAction', MailCardAction);
+registerSlotComponent('user.card-actions', 'MailCardAction', { id: 'mail', sortOrder: 300 });
+```
+
+```vue
+<!-- MailCardAction.vue -->
+<template>
+    <button type="button" class="btn btn-light c-entity-card__action" :title="label" :aria-label="label" @click="compose">
+        <i class="ti ti-mail" aria-hidden="true"></i>
+    </button>
+</template>
+
+<script>
+export default {
+    inheritAttrs: false,
+    props: { user: { type: Object, required: true } },
+    // …
+};
+</script>
+```
+
+**`space.card-actions`** — `SpaceCard.vue`, the spaces directory:
+
+| id | sortOrder | component | shown while |
+|---|---|---|---|
+| `membership` | 100 | `SpaceCardMembershipAction` — the `MembershipButton` | always (it renders what the membership state offers) |
+| `follow` | 200 | `SpaceCardFollowAction` — the space's `FollowButton` | it offers following (not for members) |
+
+Context:
+
+| key | |
+|---|---|
+| `space` | the list item (`GET /api/v2/space`, `SpaceSerializer::list()`) |
+| `state` | the viewer's `space/states` entry of the space (`membership`, `isMember`, `isFollowing`, `canFollow`, `followerCount`, …) |
+| `buttons` | the button classes of `space\widgets\SpaceDirectory` (`buttonClass`, `pendingClass`, `memberClass`, `togglerClass`, `groupClass`, `followClass`, `followingClass`, `placeholderClass`) |
+| `icons` | rendered icon markup: `check`, `clock`, `user` |
+| `followerCount` | the follower count the card shows (the state's, else the list item's; `null` where the space hides it) |
+| `onFollowChange` | the card's `follow-change` callback, with the `FollowButton`'s `change` payload (`{spaceId, isFollowing, followerCount, canFollow}`); a membership change reaches the directory as `space:membership-changed` instead |
+
+A module action that changes what the viewer is to the user or space dispatches a domain event of its own rather than a callback of the card (see [Domain events on the bus](#domain-events-on-the-bus)).
 
 ## Menu entries
 
@@ -53,7 +133,7 @@ registerMenuEntry('comment.controls', {
 
 | Field | Type | Required | Notes |
 |---|---|---|---|
-| `id` | `string` | yes | Unique per menu. Registering the same `(menuId, id)` again **replaces** the existing entry in place — the supported override mechanism (unlike `registerSlotComponent()`'s "first registration wins"). |
+| `id` | `string` | yes | Unique per menu. Registering the same `(menuId, id)` again **replaces** the existing entry in place — the supported override mechanism, as for an extension slot entry's `id`. |
 | `label` | `string` \| `(context) => string` | unless `component` given | Static or context-derived text. |
 | `icon` | `string` | no | A Tabler icon name (e.g. `'pencil'`, see https://tabler.io/icons), rendered as `<i class="ti ti-<icon>">`. |
 | `sortOrder` | `number` | no (default `1000`) | Ascending, like PHP menu entries. |
@@ -248,13 +328,13 @@ the worked example.
 Both let a module hook into a host component without forking its template, but they solve different problems:
 
 - **Menu entries** (`DropdownMenu`'s `menuId`/`entries`) — a *data-driven, orderable, removable list of items with a stable identity per item*: a dropdown/context menu, a toolbar. Reach for this when the extension point is "one more action alongside these other actions" — a module can inject, override, or remove a specific item by id.
-- **Extension slots** (`ExtensionSlot`) — a *free-form UI fragment* with no inherent structure beyond "render here": a link in a row of links, a badge, a panel. There is no override/removal by id — only "is this component currently registered for this slot".
+- **Extension slots** (`ExtensionSlot`) — a *free-form UI fragment* with no inherent structure beyond "render here": a link in a row of links, a badge, a panel, a card's buttons. Entries are components, identified by id like menu entries (override and removal work the same), but the host renders them as they are, without a descriptor it could label, condition or restyle.
 
-`comment.controls` (a menu — Edit/Delete plus whatever a module injects) and `comment.links` (a slot — Reply/Like plus whatever a module appends) on the very same comment entry illustrate the split: the `⋮` menu is a list of discrete actions a module might want to reorder, replace or suppress; the inline links row is just "append your own link here".
+`comment.controls` (a menu — Edit/Delete plus whatever a module injects) and `comment.links` (a slot — Reply/Like plus whatever a module appends) on the very same comment entry illustrate the split: the `⋮` menu is a list of discrete actions described as data; the inline links row renders components of their own.
 
 ## Filter types
 
-A list's filters are rendered by `FilterBar` (see [Components: core component set](ui-js-vuejs-components.md#core-component-set)) by their `type`. The core types `text`, `select`, `tags` and `checkbox` are built in; a module that brings a filter of its own kind (a task status, a date range) registers the control for its type once, and every filter bar renders definitions of that type with it — the same relationship a PHP `FilterDefinition`'s `type` has to the page, without the page knowing the module.
+A list's filters are rendered by `FilterBar` (see [Components: core component set](ui-js-vuejs-components.md#core-component-set)) by their `type`. The core types `text`, `select`, `picker`, `tags` and `checkbox` are built in; a module that brings a filter of its own kind (a task status, a date range) registers the control for its type once, and every filter bar renders definitions of that type with it — the same relationship a PHP `FilterDefinition`'s `type` has to the page, without the page knowing the module.
 
 ```js
 // the tasks module's vue/index.js

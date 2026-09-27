@@ -39,9 +39,9 @@ use humhub\helpers\Html;
             <div class="c-card-grid__cells" aria-busy="true">
                 <?php for ($i = 0; $i < 12; $i++) : ?>
                     <div class="c-card-grid__cell c-card-grid__cell--skeleton" style="--card-stagger-index: <?= $i ?>">
-                        <div class="c-card-skeleton c-space-card-skeleton" aria-hidden="true">
-                            <div class="c-space-card-skeleton__cover">
-                                <span class="c-card-skeleton__block c-space-card-skeleton__avatar"></span>
+                        <div class="c-card-skeleton c-entity-card-skeleton c-space-card-skeleton" aria-hidden="true">
+                            <div class="c-entity-card-skeleton__cover">
+                                <span class="c-card-skeleton__block c-entity-card-skeleton__avatar"></span>
                             </div>
                             <div class="c-card-skeleton__header">
                                 <span class="c-card-skeleton__block c-card-skeleton__title"></span>
@@ -51,10 +51,10 @@ use humhub\helpers\Html;
                                 <span class="c-card-skeleton__block c-card-skeleton__line"></span>
                                 <span class="c-card-skeleton__block c-card-skeleton__line c-card-skeleton__line--short"></span>
                             </div>
-                            <div class="c-space-card-skeleton__tags">
-                                <span class="c-card-skeleton__block c-space-card-skeleton__tag"></span>
-                                <span class="c-card-skeleton__block c-space-card-skeleton__tag"></span>
-                                <span class="c-card-skeleton__block c-space-card-skeleton__tag"></span>
+                            <div class="c-entity-card-skeleton__tags">
+                                <span class="c-card-skeleton__block c-entity-card-skeleton__tag"></span>
+                                <span class="c-card-skeleton__block c-entity-card-skeleton__tag"></span>
+                                <span class="c-card-skeleton__block c-entity-card-skeleton__tag"></span>
                             </div>
                             <div class="c-card-skeleton__footer">
                                 <span class="c-card-skeleton__block c-card-skeleton__action"></span>

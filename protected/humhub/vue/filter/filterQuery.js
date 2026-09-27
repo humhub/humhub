@@ -3,10 +3,11 @@
  * filter definition (see `humhub\components\listing\FilterDefinition`), and the translation
  * between filter values, the page URL's query string and the endpoint's request parameters.
  *
- * Value types: `text`/`select` a string (`''` = no filter), `tags` a string, or with
+ * Value types: `text`/`select` a string (`''` = no filter), `picker`/`tags` a string, or with
  * `multiple` an array of strings, `checkbox` a boolean; a registered filter type (see
  * `registerFilterType()`) a string, or with `multiple` an array of strings. On the wire,
- * arrays are comma-separated and booleans are `1`/`0`.
+ * arrays are comma-separated and booleans are `1`/`0`; the page URL may carry an array
+ * comma-separated or repeated (`tag=a&tag=b`).
  *
  * @since 1.20
  */
@@ -51,15 +52,50 @@ export const serializeValue = (filter, value) => {
 export const isDefault = (filter, value) => serializeValue(filter, value) === serializeValue(filter, defaultValue(filter));
 
 /**
- * The values the page URL carries: every filter present in the query string parsed, every other
- * one taken from `base` (default: the filters' defaults).
+ * The value without what the filter cannot offer: a `select`/`picker`/`tags` filter with static `options`
+ * and no `optionsUrl` (whose options are only known once loaded) knows every value it takes, so
+ * a value that is none of them — a stale link, an option that was switched off since — falls
+ * back to the default (`tags` with `multiple`: the unknown entries are dropped). The empty value
+ * always stays.
+ */
+export const sanitizeValue = (filter, value) => {
+    if (!['select', 'picker', 'tags'].includes(filter.type) || filter.optionsUrl || !Array.isArray(filter.options)) {
+        return value;
+    }
+    const known = new Set(filter.options.map((option) => String(option.value)));
+    if (isMultiple(filter)) {
+        return toArray(value ?? []).filter((entry) => known.has(entry));
+    }
+    const serialized = String(value ?? '');
+    return serialized === '' || known.has(serialized) ? value : defaultValue(filter);
+};
+
+/**
+ * {@see sanitizeValue()} for every filter of `values`; other keys are kept as they are.
+ */
+export const sanitizeValues = (filters, values) => {
+    const sanitized = { ...values };
+    for (const filter of filters) {
+        if (filter.key in sanitized) {
+            sanitized[filter.key] = sanitizeValue(filter, sanitized[filter.key]);
+        }
+    }
+    return sanitized;
+};
+
+/**
+ * The values the page URL carries: every filter present in the query string parsed (and
+ * sanitized, see {@see sanitizeValue()}), every other one taken from `base` (default: the
+ * filters' defaults).
  */
 export const readValues = (filters, search, base = defaultValues(filters)) => {
     const params = new URLSearchParams(search);
     const values = { ...base };
     for (const filter of filters) {
         if (params.has(filter.key)) {
-            values[filter.key] = parseValue(filter, params.get(filter.key));
+            // A multiple filter's values may be repeated (`tag=a&tag=b`) as well as comma-separated.
+            const raw = isMultiple(filter) ? params.getAll(filter.key).join(',') : params.get(filter.key);
+            values[filter.key] = sanitizeValue(filter, parseValue(filter, raw));
         }
     }
     return values;

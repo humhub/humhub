@@ -5,10 +5,14 @@ import HumHubForm from '../../vue/HumHubForm.vue';
 import TextareaField from '../../vue/TextareaField.vue';
 import CardDirectory from '../../vue/CardDirectory.vue';
 import ExtensionSlot from '../../vue/ExtensionSlot.vue';
+import SpaceCardFollowAction from '../../modules/space/vue/components/SpaceCardFollowAction.vue';
+import SpaceCardMembershipAction from '../../modules/space/vue/components/SpaceCardMembershipAction.vue';
 import UiModal from '../../vue/UiModal.vue';
 
 await import('../../resources/js/humhub/humhub.url.js');
 await import('../../resources/js/humhub/humhub.vue.js');
+// The entries of the `space.card-actions` slot, registered as in production.
+await import('../../modules/space/vue/index.js');
 
 const MEMBERSHIP_CHANGED = 'space:membership-changed';
 
@@ -89,7 +93,7 @@ describe('SpaceDirectory', () => {
     const mountIt = async () => {
         wrapper = mount(SpaceDirectory, {
             props: { filters, actions, buttons: { followClass: 'btn btn-secondary btn-sm' } },
-            global: { components: { CardDirectory, ExtensionSlot, UiModal, HumHubForm, TextareaField } },
+            global: { components: { CardDirectory, ExtensionSlot, UiModal, HumHubForm, TextareaField, SpaceCardFollowAction, SpaceCardMembershipAction } },
             attachTo: document.body,
         });
         await flushPromises();
@@ -117,11 +121,11 @@ describe('SpaceDirectory', () => {
         expect(stateCalls()).toHaveLength(1);
         expect(params(stateCalls()[0][0]).getAll('ids[]')).toEqual(['1', '2']);
 
-        expect(wrapper.findAll('.c-space-card__title').map((n) => n.text())).toEqual(['Space 1', 'Space 2']);
-        const first = wrapper.find('[data-id="1"] .c-space-card__footer');
+        expect(wrapper.findAll('.c-entity-card__title').map((n) => n.text())).toEqual(['Space 1', 'Space 2']);
+        const first = wrapper.find('[data-id="1"] .c-entity-card__footer');
         expect(first.text()).toContain('Join');
         expect(first.text()).toContain('Follow');
-        expect(wrapper.find('[data-id="2"] .c-space-card__footer').text()).toBe('Member');
+        expect(wrapper.find('[data-id="2"] .c-entity-card__footer').text()).toBe('Member');
     });
 
     it('shows the space skeletons while the first page loads', async () => {
@@ -142,17 +146,17 @@ describe('SpaceDirectory', () => {
         ));
         await mountIt();
 
-        expect(wrapper.findAll('.c-space-card__placeholder')).toHaveLength(2);
+        expect(wrapper.findAll('.c-entity-card__placeholder')).toHaveLength(2);
         pending.resolve({ results: states });
         await flushPromises();
-        expect(wrapper.findAll('.c-space-card__placeholder')).toHaveLength(0);
+        expect(wrapper.findAll('.c-entity-card__placeholder')).toHaveLength(0);
     });
 
     it('searches for a tag clicked on a card', async () => {
         await mountIt();
 
         // Set from outside the bar, the search applies at once (no text debounce).
-        await wrapper.find('[data-id="1"] .c-space-card__tag').trigger('click');
+        await wrapper.find('[data-id="1"] .c-entity-card__tag').trigger('click');
         await flushPromises();
 
         expect(params(listCalls().at(-1)[0]).get('q')).toBe('Alpha');
@@ -162,15 +166,15 @@ describe('SpaceDirectory', () => {
     it('updates the follower count after following', async () => {
         await mountIt();
 
-        const follow = wrapper.find('[data-id="1"] .c-space-card__footer button.c-space-card__action');
+        const follow = wrapper.find('[data-id="1"] .c-entity-card__footer button.c-entity-card__action');
         expect(follow.text()).toBe('Follow');
-        expect(wrapper.find('[data-id="1"] .c-space-card__stat--followers').text()).toBe('1');
+        expect(wrapper.find('[data-id="1"] .c-entity-card__stat--followers').text()).toBe('1');
 
         await follow.trigger('click');
         await flushPromises();
 
-        expect(wrapper.find('[data-id="1"] .c-space-card__stat--followers').text()).toBe('5');
-        expect(wrapper.find('[data-id="1"] .c-space-card__footer button.c-space-card__action').text()).toBe('Following');
+        expect(wrapper.find('[data-id="1"] .c-entity-card__stat--followers').text()).toBe('5');
+        expect(wrapper.find('[data-id="1"] .c-entity-card__footer button.c-entity-card__action').text()).toBe('Following');
     });
 
     it('refetches the state of a space whose membership changed', async () => {
@@ -181,8 +185,8 @@ describe('SpaceDirectory', () => {
         await flushPromises();
 
         expect(params(stateCalls().at(-1)[0]).getAll('ids[]')).toEqual(['1']);
-        expect(wrapper.find('[data-id="1"] .c-space-card__stat--members').text()).toBe('3');
-        expect(wrapper.find('[data-id="1"] .c-space-card__footer button.c-space-card__action').exists()).toBe(false);
+        expect(wrapper.find('[data-id="1"] .c-entity-card__stat--members').text()).toBe('3');
+        expect(wrapper.find('[data-id="1"] .c-entity-card__footer button.c-entity-card__action').exists()).toBe(false);
     });
 
     it('ignores membership changes of spaces it does not show', async () => {

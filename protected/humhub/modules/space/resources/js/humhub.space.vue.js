@@ -56,7 +56,7 @@
   const FOLLOW_CHANGED = "space:follow-changed";
   const MEMBERSHIP_CHANGED$2 = "space:membership-changed";
   const STATE_MEMBER$1 = "member";
-  const _sfc_main$8 = {
+  const _sfc_main$a = {
     i18nCategories: ["SpaceModule.base"],
     props: {
       spaceId: { type: Number, required: true },
@@ -82,7 +82,11 @@
         member: this.isMember,
         busy: false,
         hovered: false,
-        focused: false
+        focused: false,
+        // Set by a finished action: the pointer or focus that just clicked keeps reading
+        // "Following" until it leaves - browsers re-dispatch `mouseenter` after the label
+        // changes under a resting pointer, so resetting `hovered` alone is not enough.
+        settled: false
       };
     },
     computed: {
@@ -93,7 +97,7 @@
         if (!this.isFollowing) {
           return vue.i18n.t("SpaceModule.base", "Follow");
         }
-        return this.hovered || this.focused ? vue.i18n.t("SpaceModule.base", "Unfollow") : vue.i18n.t("SpaceModule.base", "Following");
+        return (this.hovered || this.focused) && !this.settled ? vue.i18n.t("SpaceModule.base", "Unfollow") : vue.i18n.t("SpaceModule.base", "Following");
       },
       payload() {
         return {
@@ -127,6 +131,14 @@
       vue.events.off(MEMBERSHIP_CHANGED$2, this.onMembershipChanged);
     },
     methods: {
+      onBlur() {
+        this.focused = false;
+        this.settled = false;
+      },
+      onMouseleave() {
+        this.hovered = false;
+        this.settled = false;
+      },
       load() {
         return fetchFollow(this.spaceId).then((state) => {
           this.apply(state);
@@ -159,6 +171,7 @@
           this.busy = false;
           this.hovered = false;
           this.focused = false;
+          this.settled = true;
           this.apply(state);
           this.dispatching = true;
           try {
@@ -211,7 +224,7 @@
     "aria-hidden": "true"
   };
   const _hoisted_3$5 = ["innerHTML"];
-  function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
     return $options.visible ? (vue$1.openBlock(), vue$1.createElementBlock("button", {
       key: 0,
       type: "button",
@@ -221,9 +234,9 @@
       "aria-busy": $data.busy ? "true" : null,
       onClick: _cache[0] || (_cache[0] = (...args) => $options.toggle && $options.toggle(...args)),
       onMouseenter: _cache[1] || (_cache[1] = ($event) => $data.hovered = true),
-      onMouseleave: _cache[2] || (_cache[2] = ($event) => $data.hovered = false),
+      onMouseleave: _cache[2] || (_cache[2] = (...args) => $options.onMouseleave && $options.onMouseleave(...args)),
       onFocus: _cache[3] || (_cache[3] = ($event) => $data.focused = true),
-      onBlur: _cache[4] || (_cache[4] = ($event) => $data.focused = false)
+      onBlur: _cache[4] || (_cache[4] = (...args) => $options.onBlur && $options.onBlur(...args))
     }, [
       $data.busy ? (vue$1.openBlock(), vue$1.createElementBlock("span", _hoisted_2$6)) : $data.isFollowing ? (vue$1.openBlock(), vue$1.createElementBlock("span", {
         key: 1,
@@ -236,13 +249,13 @@
       )
     ], 42, _hoisted_1$8)) : vue$1.createCommentVNode("v-if", true);
   }
-  const C0 = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$8]]);
+  const __vite_glob_0_0 = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["render", _sfc_render$a]]);
   const STATE_NONE = "none";
   const STATE_INVITED = "invited";
   const STATE_APPLICANT = "applicant";
   const STATE_MEMBER = "member";
   const MEMBERSHIP_CHANGED$1 = "space:membership-changed";
-  const _sfc_main$7 = {
+  const _sfc_main$9 = {
     // `base` covers the modal's own Cancel/Close labels, `SpaceModule.base` everything else.
     i18nCategories: ["SpaceModule.base", "base"],
     props: {
@@ -494,7 +507,7 @@
     class: "text-center"
   };
   const _hoisted_10$2 = ["disabled"];
-  function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_TextareaField = vue$1.resolveComponent("TextareaField");
     const _component_HumHubForm = vue$1.resolveComponent("HumHubForm");
     const _component_UiModal = vue$1.resolveComponent("UiModal");
@@ -728,9 +741,9 @@
       /* STABLE_FRAGMENT */
     );
   }
-  const C1 = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$7]]);
+  const __vite_glob_0_1 = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["render", _sfc_render$9]]);
   const DESCRIPTION_LENGTH = 60;
-  const _sfc_main$6 = {
+  const _sfc_main$8 = {
     props: {
       // Serialized space (SpaceSerializer::list()).
       space: { type: Object, required: true },
@@ -786,7 +799,7 @@
     key: 2,
     class: "space-tags d-none"
   };
-  function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_SpaceImage = vue$1.resolveComponent("SpaceImage");
     return vue$1.openBlock(), vue$1.createElementBlock("a", vue$1.mergeProps({
       href: $props.space.url,
@@ -863,7 +876,7 @@
       ])
     ], 16, _hoisted_1$6);
   }
-  const SpaceChooserItem = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$6]]);
+  const SpaceChooserItem = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$8]]);
   const LIVE_NEW_CONTENT = "humhub:modules:content:live:NewContent";
   const RELATION_EVENTS = [
     "space:follow-changed",
@@ -873,7 +886,7 @@
   ];
   const SEARCH_DEBOUNCE_MS = 300;
   const MIN_KEYWORD_LENGTH = 2;
-  const _sfc_main$5 = {
+  const _sfc_main$7 = {
     components: { SpaceChooserItem },
     i18nCategories: ["SpaceModule.chooser", "base"],
     props: {
@@ -1167,7 +1180,7 @@
     class: "dropdown-footer"
   };
   const _hoisted_13$1 = ["data-action-url"];
-  function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_SpaceChooserItem = vue$1.resolveComponent("SpaceChooserItem");
     const _directive_additions = vue$1.resolveDirective("additions");
     return vue$1.openBlock(), vue$1.createElementBlock(
@@ -1308,10 +1321,10 @@
       /* NEED_PATCH */
     );
   }
-  const C2 = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$5]]);
+  const __vite_glob_0_2 = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$7]]);
   const SPACE_CHANGED = "humhub:space:changed";
   const READY = "humhub:ready";
-  const _sfc_main$4 = {
+  const _sfc_main$6 = {
     i18nCategories: ["SpaceModule.chooser"],
     props: {
       // Rendered image of the space currently shown, empty outside a space.
@@ -1359,7 +1372,7 @@
     class: "no-space"
   };
   const _hoisted_3$1 = ["innerHTML"];
-  function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
     return vue$1.openBlock(), vue$1.createElementBlock(
       vue$1.Fragment,
       null,
@@ -1390,8 +1403,8 @@
       /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */
     );
   }
-  const C3 = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$4]]);
-  const _sfc_main$3 = {
+  const __vite_glob_0_3 = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$6]]);
+  const _sfc_main$5 = {
     props: {
       // Serialized space shape (SpaceSerializer::short()).
       id: { type: [Number, String], default: null },
@@ -1448,7 +1461,7 @@
   };
   const _hoisted_1$3 = ["data-contentcontainer-id"];
   const _hoisted_2$1 = ["src", "alt", "data-contentcontainer-id"];
-  function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
     return vue$1.openBlock(), vue$1.createBlock(vue$1.resolveDynamicComponent($props.link ? "a" : "span"), {
       href: $props.link ? $props.url : void 0
     }, {
@@ -1479,13 +1492,14 @@
       /* STABLE */
     }, 8, ["href"]);
   }
-  const C5 = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3]]);
+  const __vite_glob_0_5 = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$5]]);
   const MAX_TAGS = 5;
-  const _sfc_main$2 = {
+  const _sfc_main$4 = {
     name: "SpaceCard",
     i18nCategories: ["SpaceModule.base"],
-    // `ExtensionSlot` is a core component, resolved through the global registry (CoreVueAsset).
-    components: { FollowButton: C0, MembershipButton: C1, SpaceImage: C5 },
+    // `ExtensionSlot` is a core component (CoreVueAsset), the actions are registered into their
+    // slot by `vue/index.js` — all resolved through the global registry.
+    components: { SpaceImage: __vite_glob_0_5 },
     props: {
       space: { type: Object, required: true },
       state: { type: Object, default: void 0 },
@@ -1515,11 +1529,14 @@
       canOpenMembers() {
         return this.loaded && !!this.state.canViewMembers;
       },
-      followInitial() {
+      actionContext() {
         return {
-          isFollowing: !!this.state.isFollowing,
+          space: this.space,
+          state: this.state,
+          buttons: this.buttons,
+          icons: this.icons,
           followerCount: this.followerCount ?? null,
-          canFollow: !!this.state.canFollow
+          onFollowChange: (payload) => this.$emit("follow-change", payload)
         };
       },
       tags() {
@@ -1541,9 +1558,6 @@
       }
     },
     methods: {
-      actionClass(classes) {
-        return `${classes || ""} c-space-card__action`.trim();
-      },
       filterByLabel(tag) {
         return vue.i18n.t("SpaceModule.base", "Filter by {tag}", { tag });
       },
@@ -1557,7 +1571,7 @@
   };
   const _hoisted_1$2 = {
     key: 0,
-    class: "c-space-card__pill"
+    class: "c-entity-card__pill"
   };
   const _hoisted_2 = ["title", "aria-label"];
   const _hoisted_3 = ["title"];
@@ -1567,12 +1581,12 @@
   const _hoisted_7 = ["title"];
   const _hoisted_8 = { "aria-hidden": "true" };
   const _hoisted_9 = { class: "visually-hidden" };
-  const _hoisted_10 = { class: "c-space-card__header" };
+  const _hoisted_10 = { class: "c-entity-card__header" };
   const _hoisted_11 = ["href"];
-  const _hoisted_12 = { class: "c-space-card__body" };
+  const _hoisted_12 = { class: "c-entity-card__body" };
   const _hoisted_13 = {
     key: 0,
-    class: "c-space-card__text"
+    class: "c-entity-card__text"
   };
   const _hoisted_14 = {
     key: 1,
@@ -1580,33 +1594,31 @@
   };
   const _hoisted_15 = {
     key: 0,
-    class: "c-space-card__tags"
+    class: "c-entity-card__tags"
   };
   const _hoisted_16 = ["title", "aria-label", "onClick"];
   const _hoisted_17 = {
     key: 1,
-    class: "c-space-card__footer"
+    class: "c-entity-card__footer"
   };
-  function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_SpaceImage = vue$1.resolveComponent("SpaceImage");
     const _component_ExtensionSlot = vue$1.resolveComponent("ExtensionSlot");
-    const _component_MembershipButton = vue$1.resolveComponent("MembershipButton");
-    const _component_FollowButton = vue$1.resolveComponent("FollowButton");
     return vue$1.openBlock(), vue$1.createElementBlock(
       "article",
       {
-        class: vue$1.normalizeClass(["c-space-card", { "is-archived": $props.space.archived }])
+        class: vue$1.normalizeClass(["c-entity-card c-space-card", { "is-archived": $props.space.archived }])
       },
       [
         vue$1.createElementVNode(
           "div",
           {
-            class: "c-space-card__cover",
+            class: "c-entity-card__cover",
             style: vue$1.normalizeStyle($options.coverStyle)
           },
           [
             vue$1.createVNode(_component_SpaceImage, {
-              class: "c-space-card__avatar",
+              class: "c-entity-card__avatar",
               id: $props.space.id,
               name: $props.space.name,
               url: $props.space.url,
@@ -1626,12 +1638,12 @@
                   $options.canOpenFollowers ? (vue$1.openBlock(), vue$1.createElementBlock("button", {
                     key: 0,
                     type: "button",
-                    class: "c-space-card__stat c-space-card__stat--followers",
+                    class: "c-entity-card__stat c-entity-card__stat--followers",
                     title: $options.followersLabel,
                     "aria-label": $options.followersLabel,
                     onClick: _cache[0] || (_cache[0] = (...args) => $options.openFollowers && $options.openFollowers(...args))
                   }, [
-                    _cache[3] || (_cache[3] = vue$1.createElementVNode(
+                    _cache[2] || (_cache[2] = vue$1.createElementVNode(
                       "i",
                       {
                         class: "ti ti-user-check",
@@ -1650,10 +1662,10 @@
                     )
                   ], 8, _hoisted_2)) : (vue$1.openBlock(), vue$1.createElementBlock("span", {
                     key: 1,
-                    class: "c-space-card__stat c-space-card__stat--followers",
+                    class: "c-entity-card__stat c-entity-card__stat--followers",
                     title: $options.followersLabel
                   }, [
-                    _cache[4] || (_cache[4] = vue$1.createElementVNode(
+                    _cache[3] || (_cache[3] = vue$1.createElementVNode(
                       "i",
                       {
                         class: "ti ti-user-check",
@@ -1689,12 +1701,12 @@
                   $options.canOpenMembers ? (vue$1.openBlock(), vue$1.createElementBlock("button", {
                     key: 0,
                     type: "button",
-                    class: "c-space-card__stat c-space-card__stat--members",
+                    class: "c-entity-card__stat c-entity-card__stat--members",
                     title: $options.membersLabel,
                     "aria-label": $options.membersLabel,
                     onClick: _cache[1] || (_cache[1] = (...args) => $options.openMembers && $options.openMembers(...args))
                   }, [
-                    _cache[5] || (_cache[5] = vue$1.createElementVNode(
+                    _cache[4] || (_cache[4] = vue$1.createElementVNode(
                       "i",
                       {
                         class: "ti ti-users-group",
@@ -1713,10 +1725,10 @@
                     )
                   ], 8, _hoisted_6)) : (vue$1.openBlock(), vue$1.createElementBlock("span", {
                     key: 1,
-                    class: "c-space-card__stat c-space-card__stat--members",
+                    class: "c-entity-card__stat c-entity-card__stat--members",
                     title: $options.membersLabel
                   }, [
-                    _cache[6] || (_cache[6] = vue$1.createElementVNode(
+                    _cache[5] || (_cache[5] = vue$1.createElementVNode(
                       "i",
                       {
                         class: "ti ti-users-group",
@@ -1752,7 +1764,7 @@
         ),
         vue$1.createElementVNode("div", _hoisted_10, [
           vue$1.createElementVNode("a", {
-            class: "c-space-card__title",
+            class: "c-entity-card__title",
             href: $props.space.url
           }, vue$1.toDisplayString($props.space.name), 9, _hoisted_11),
           vue$1.createVNode(_component_ExtensionSlot, {
@@ -1769,7 +1781,7 @@
             /* TEXT */
           )) : vue$1.createCommentVNode("v-if", true),
           $props.space.archived ? (vue$1.openBlock(), vue$1.createElementBlock("p", _hoisted_14, [
-            _cache[7] || (_cache[7] = vue$1.createElementVNode(
+            _cache[6] || (_cache[6] = vue$1.createElementVNode(
               "i",
               {
                 class: "ti ti-archive",
@@ -1796,7 +1808,7 @@
               return vue$1.openBlock(), vue$1.createElementBlock("button", {
                 key: tag,
                 type: "button",
-                class: "c-space-card__tag",
+                class: "c-entity-card__tag",
                 title: $options.filterByLabel(tag),
                 "aria-label": $options.filterByLabel(tag),
                 onClick: ($event) => _ctx.$emit("filter-tag", tag)
@@ -1812,7 +1824,7 @@
             {
               key: 0,
               type: "button",
-              class: vue$1.normalizeClass(["c-space-card__action c-space-card__placeholder", $props.buttons.placeholderClass]),
+              class: vue$1.normalizeClass(["c-entity-card__action c-entity-card__placeholder", $props.buttons.placeholderClass]),
               disabled: "",
               "aria-hidden": "true",
               tabindex: "-1"
@@ -1820,62 +1832,33 @@
             " ",
             2
             /* CLASS */
-          )) : (vue$1.openBlock(), vue$1.createElementBlock(
-            vue$1.Fragment,
-            { key: 1 },
-            [
-              vue$1.createVNode(_component_MembershipButton, {
-                "space-id": $props.space.id,
-                "space-name": $props.space.name,
-                "space-url": $props.space.url,
-                initial: $props.state.membership || null,
-                "button-class": $options.actionClass($props.buttons.buttonClass),
-                "pending-class": $options.actionClass($props.buttons.pendingClass),
-                "member-class": $options.actionClass($props.buttons.memberClass),
-                "toggler-class": $props.buttons.togglerClass,
-                "group-class": $options.actionClass($props.buttons.groupClass),
-                "show-member-state": "",
-                "check-icon-html": $props.icons.check || "",
-                "clock-icon-html": $props.icons.clock || "",
-                "user-icon-html": $props.icons.user || ""
-              }, null, 8, ["space-id", "space-name", "space-url", "initial", "button-class", "pending-class", "member-class", "toggler-class", "group-class", "check-icon-html", "clock-icon-html", "user-icon-html"]),
-              vue$1.createVNode(_component_FollowButton, {
-                class: vue$1.normalizeClass("c-space-card__action"),
-                "space-id": $props.space.id,
-                "space-name": $props.space.name,
-                initial: $options.followInitial,
-                "is-member": !!$props.state.isMember,
-                "follow-class": $props.buttons.followClass,
-                "following-class": $props.buttons.followingClass,
-                "check-icon-html": $props.icons.check || "",
-                onChange: _cache[2] || (_cache[2] = ($event) => _ctx.$emit("follow-change", $event))
-              }, null, 8, ["space-id", "space-name", "initial", "is-member", "follow-class", "following-class", "check-icon-html"])
-            ],
-            64
-            /* STABLE_FRAGMENT */
-          ))
+          )) : (vue$1.openBlock(), vue$1.createBlock(_component_ExtensionSlot, {
+            key: 1,
+            name: "space.card-actions",
+            context: $options.actionContext
+          }, null, 8, ["context"]))
         ])) : vue$1.createCommentVNode("v-if", true)
       ],
       2
       /* CLASS */
     );
   }
-  const SpaceCard = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
-  const _sfc_main$1 = {
+  const SpaceCard = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$4]]);
+  const _sfc_main$3 = {
     name: "SpaceCardSkeleton"
   };
   const _hoisted_1$1 = {
-    class: "c-card-skeleton c-space-card-skeleton",
+    class: "c-card-skeleton c-entity-card-skeleton c-space-card-skeleton",
     "aria-hidden": "true"
   };
-  function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
     return vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_1$1, [..._cache[0] || (_cache[0] = [
-      vue$1.createStaticVNode('<div class="c-space-card-skeleton__cover"><span class="c-card-skeleton__block c-space-card-skeleton__avatar"></span></div><div class="c-card-skeleton__header"><span class="c-card-skeleton__block c-card-skeleton__title"></span></div><div class="c-card-skeleton__body"><span class="c-card-skeleton__block c-card-skeleton__line"></span><span class="c-card-skeleton__block c-card-skeleton__line"></span><span class="c-card-skeleton__block c-card-skeleton__line c-card-skeleton__line--short"></span></div><div class="c-space-card-skeleton__tags"><span class="c-card-skeleton__block c-space-card-skeleton__tag"></span><span class="c-card-skeleton__block c-space-card-skeleton__tag"></span><span class="c-card-skeleton__block c-space-card-skeleton__tag"></span></div><div class="c-card-skeleton__footer"><span class="c-card-skeleton__block c-card-skeleton__action"></span></div>', 5)
+      vue$1.createStaticVNode('<div class="c-entity-card-skeleton__cover"><span class="c-card-skeleton__block c-entity-card-skeleton__avatar"></span></div><div class="c-card-skeleton__header"><span class="c-card-skeleton__block c-card-skeleton__title"></span></div><div class="c-card-skeleton__body"><span class="c-card-skeleton__block c-card-skeleton__line"></span><span class="c-card-skeleton__block c-card-skeleton__line"></span><span class="c-card-skeleton__block c-card-skeleton__line c-card-skeleton__line--short"></span></div><div class="c-entity-card-skeleton__tags"><span class="c-card-skeleton__block c-entity-card-skeleton__tag"></span><span class="c-card-skeleton__block c-entity-card-skeleton__tag"></span><span class="c-card-skeleton__block c-entity-card-skeleton__tag"></span></div><div class="c-card-skeleton__footer"><span class="c-card-skeleton__block c-card-skeleton__action"></span></div>', 5)
     ])]);
   }
-  const SpaceCardSkeleton = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1]]);
+  const SpaceCardSkeleton = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3]]);
   const MEMBERSHIP_CHANGED = "space:membership-changed";
-  const _sfc_main = {
+  const _sfc_main$2 = {
     name: "SpaceDirectory",
     i18nCategories: ["SpaceModule.base", "base"],
     // `CardDirectory` is a core component, resolved through the global registry (CoreVueAsset).
@@ -1942,7 +1925,7 @@
     }
   };
   const _hoisted_1 = { class: "c-space-directory" };
-  function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_SpaceCard = vue$1.resolveComponent("SpaceCard");
     const _component_SpaceCardSkeleton = vue$1.resolveComponent("SpaceCardSkeleton");
     const _component_CardDirectory = vue$1.resolveComponent("CardDirectory");
@@ -1975,12 +1958,89 @@
       }, 8, ["url", "title", "filters", "actions", "item-states"])
     ]);
   }
-  const C4 = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
-  vue.register("FollowButton", C0);
-  vue.register("MembershipButton", C1);
-  vue.register("SpaceChooser", C2);
-  vue.register("SpaceChooserToggle", C3);
-  vue.register("SpaceDirectory", C4);
-  vue.register("SpaceImage", C5);
+  const __vite_glob_0_4 = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
+  const _sfc_main$1 = {
+    name: "SpaceCardFollowAction",
+    components: { FollowButton: __vite_glob_0_0 },
+    // The whole context is spread onto the component; what it does not use must not become
+    // attributes of the button.
+    inheritAttrs: false,
+    props: {
+      space: { type: Object, required: true },
+      state: { type: Object, required: true },
+      buttons: { type: Object, default: () => ({}) },
+      icons: { type: Object, default: () => ({}) },
+      followerCount: { type: Number, default: null }
+    },
+    emits: ["follow-change"],
+    computed: {
+      initial() {
+        return {
+          isFollowing: !!this.state.isFollowing,
+          followerCount: this.followerCount ?? null,
+          canFollow: !!this.state.canFollow
+        };
+      }
+    }
+  };
+  function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_FollowButton = vue$1.resolveComponent("FollowButton");
+    return vue$1.openBlock(), vue$1.createBlock(_component_FollowButton, {
+      class: "c-entity-card__action",
+      "space-id": $props.space.id,
+      "space-name": $props.space.name,
+      initial: $options.initial,
+      "is-member": !!$props.state.isMember,
+      "follow-class": $props.buttons.followClass,
+      "following-class": $props.buttons.followingClass,
+      "check-icon-html": $props.icons.check || "",
+      onChange: _cache[0] || (_cache[0] = ($event) => _ctx.$emit("follow-change", $event))
+    }, null, 8, ["space-id", "space-name", "initial", "is-member", "follow-class", "following-class", "check-icon-html"]);
+  }
+  const SpaceCardFollowAction = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1]]);
+  const _sfc_main = {
+    name: "SpaceCardMembershipAction",
+    components: { MembershipButton: __vite_glob_0_1 },
+    // The whole context is spread onto the component; what it does not use must not become
+    // attributes of the button.
+    inheritAttrs: false,
+    props: {
+      space: { type: Object, required: true },
+      state: { type: Object, required: true },
+      buttons: { type: Object, default: () => ({}) },
+      icons: { type: Object, default: () => ({}) }
+    },
+    methods: {
+      actionClass(classes) {
+        return `${classes || ""} c-entity-card__action`.trim();
+      }
+    }
+  };
+  function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_MembershipButton = vue$1.resolveComponent("MembershipButton");
+    return vue$1.openBlock(), vue$1.createBlock(_component_MembershipButton, {
+      "space-id": $props.space.id,
+      "space-name": $props.space.name,
+      "space-url": $props.space.url,
+      initial: $props.state.membership || null,
+      "button-class": $options.actionClass($props.buttons.buttonClass),
+      "pending-class": $options.actionClass($props.buttons.pendingClass),
+      "member-class": $options.actionClass($props.buttons.memberClass),
+      "toggler-class": $props.buttons.togglerClass,
+      "group-class": $options.actionClass($props.buttons.groupClass),
+      "show-member-state": "",
+      "check-icon-html": $props.icons.check || "",
+      "clock-icon-html": $props.icons.clock || "",
+      "user-icon-html": $props.icons.user || ""
+    }, null, 8, ["space-id", "space-name", "space-url", "initial", "button-class", "pending-class", "member-class", "toggler-class", "group-class", "check-icon-html", "clock-icon-html", "user-icon-html"]);
+  }
+  const SpaceCardMembershipAction = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
+  Object.entries(/* @__PURE__ */ Object.assign({ "./FollowButton.vue": __vite_glob_0_0, "./MembershipButton.vue": __vite_glob_0_1, "./SpaceChooser.vue": __vite_glob_0_2, "./SpaceChooserToggle.vue": __vite_glob_0_3, "./SpaceDirectory.vue": __vite_glob_0_4, "./SpaceImage.vue": __vite_glob_0_5 })).forEach(([path, component]) => {
+    vue.register(path.slice("./".length, -".vue".length), component);
+  });
+  vue.register("SpaceCardMembershipAction", SpaceCardMembershipAction);
+  vue.register("SpaceCardFollowAction", SpaceCardFollowAction);
+  vue.registerSlotComponent("space.card-actions", "SpaceCardMembershipAction", { id: "membership", sortOrder: 100 });
+  vue.registerSlotComponent("space.card-actions", "SpaceCardFollowAction", { id: "follow", sortOrder: 200 });
 })(humhub.modules.vue, Vue);
 //# sourceMappingURL=humhub.space.vue.js.map

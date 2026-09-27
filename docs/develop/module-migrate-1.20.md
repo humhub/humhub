@@ -1131,9 +1131,9 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
       with the endpoint as `data-action-url`; it reloads the page afterwards). A module that
       posts to one of these routes calls `PUT`/`DELETE /api/v2/space/<id>/membership` instead;
       module-search found none.
-    - The sibling `FollowButton` (still a server-rendered widget) is toggled by the island
-      itself, by `data-content-container-id` + `.followButton`/`.unfollowButton` — the
-      server no longer sends `data-show-buttons`/`data-hide-buttons`.
+    - The sibling `FollowButton` (an island too, see the spaces directory below) follows a
+      membership change through the `space:membership-changed` event of the `events` bridge —
+      the server no longer sends `data-show-buttons`/`data-hide-buttons`.
     - **A module restricting who may join a space must guard the API controller too.**
       Membership transitions no longer go only through
       `space\controllers\MembershipController`; a guard hooked onto its
@@ -1168,7 +1168,11 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
       `data-button-options` posting and the `data-show-buttons`/`data-hide-buttons`
       convention. It existed for the membership and friendship buttons only, both of which
       are islands now; module-search found no external users of any of the three attributes.
-      `content.container.follow`/`unfollow` are untouched.
+      `content.container.follow`/`unfollow` are removed too (see the People directory below).
+    - Sending or accepting a request makes the caller follow the user; the island dispatches
+      `user:friendship-changed` `{userId, state, isFollowing}` on the `events` bridge after
+      every transition, and the user's `UserFollowButton` (an island too, see the People
+      directory below) follows it.
   - **The activity box is a Vue island** (`ActivityBox`,
     `protected/humhub/modules/activity/vue/`, `ActivityVueAsset`), fed by the new endpoint
     `GET /api/v2/activity` (`activity\controllers\api\ActivityController`, shape in
@@ -1381,7 +1385,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `SpaceDirectoryFilters` of `humhub\modules\space\widgets` with the views
     `spaceDirectoryCard.php`, `spaceDirectoryIcons.php` and `spaceDirectoryStatus.php`;
     `humhub\modules\space\components\SpaceDirectoryQuery`; the route `space/spaces/load-more`
-    (the page no longer uses `humhub.cards.js`, which stays for the people directory); the web
+    (the page no longer uses `humhub.cards.js`, which stays for the content search); the web
     actions `space/space/follow` and `space/space/unfollow` (`SpaceController::actionFollow()`/
     `actionUnfollow()`) — follow through `PUT`/`DELETE /api/v2/space/<id>/follow` instead. A theme
     overriding one of the removed views, or a module rendering one of the removed widgets, has to
@@ -1422,7 +1426,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     with `data-action-click="content.container.follow|unfollow"`; the `MembershipButton` and the
     follow button of a space keep each other in sync through the `space:membership-changed` and
     `space:follow-changed` events of the `events` bridge. `content.container.follow|unfollow`
-    stays for the user profile's follow button.
+    is removed (see the People directory below).
   - **Changed:** the entries of `space\widgets\SpaceDirectoryHeadingButtons` (still a `Menu`, still
     extended on its `EVENT_INIT`) are no longer rendered by its view but handed to the island as
     data (`humhub\widgets\menu\Menu::getEntriesData()`) and rendered by `PageToolbar` as icon
@@ -1436,4 +1440,123 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `MembershipSerializer::states()`, `space\models\Membership::preloadForUser()`;
     `humhub\widgets\menu\Menu::getEntriesData()`; the `SpaceCard` extension slot
     `space.card-subtitle` (`registerSlotComponent`, receives the `space`), where a module shows
-    its own line under the space name (e.g. a category) from its own endpoint.
+    its own line under the space name (e.g. a category) from its own endpoint, and
+    `space.card-actions`, the card's footer: the core registers its `membership` (sortOrder
+    100) and `follow` (200) actions into it like a module would, so a module adds, replaces
+    or removes (`removeSlotComponent`) actions by id — see "Card actions" in
+    `docs/develop/ui-js-vuejs-extensions.md`.
+
+- **People directory rebuilt as a Vue island.** `/people` renders
+  `humhub\modules\user\widgets\PeopleDirectory` (`vue/PeopleDirectory.vue` on the core
+  `CardDirectory`) and reads everything from `GET /api/v2/user?purpose=directory`,
+  `GET /api/v2/user/states`, `GET /api/v2/user/field-values`, `GET /api/v2/user/tags` and
+  `GET|PUT|DELETE /api/v2/user/<id>/follow` (see `docs/api/src/user.yaml`). The user list, the
+  states, the field values and the tags require the permission to access People
+  (`PeopleAccess`), whatever the `purpose`.
+  - **Removed:** the route `user/people/load-more` (`PeopleController::actionLoadMore()`).
+    `views/people/index.php` renders only the island (the page no longer uses
+    `humhub.cards.js`), and the wrapper of `views/people/_layout.php` lost its `container-cards`
+    class (`container-people` stays). A theme overriding the view has to move to the island.
+  - **Removed:** `humhub\modules\user\components\PeopleQuery` (the list is
+    `humhub\modules\user\components\UserList`, see below) and the widgets `PeopleCard`,
+    `PeopleIcons`, `PeopleDetails`, `PeopleTagList`, `PeopleActionButtons`, `PeopleFilters` and
+    `PeopleFilterPicker` of `humhub\modules\user\widgets` with the views `peopleCard.php` and
+    `peopleIcons.php` — the directory is the `PeopleDirectory` island, its cards
+    `vue/components/PeopleCard.vue`, which a module extends through the slots
+    `user.card-subtitle` (a line under the user's name) and `user.card-actions` (the card's
+    footer) instead of the card widgets; the route `user/people/filter-people-json`
+    (`PeopleController::actionFilterPeopleJson()`, `PeopleFilterPicker`'s suggestions) — the
+    profile field filters search `GET /api/v2/user/field-values` instead. A theme overriding one
+    of the removed views, or a module rendering one of the removed widgets or building a page of
+    its own on `PeopleQuery` (`humhub/matchmaking` does), has to move to `UserList` and the
+    island.
+  - **Replaced:** a module restricting the directory's list through `PeopleQuery` registers on
+    `humhub\modules\user\components\UserList::EVENT_BUILD` instead. `UserList` is the user
+    search behind `GET /api/v2/user` — the directory and the meta search read it, user pickers
+    and mentioning can read it too — and the event (`humhub\components\listing\ListEvent`)
+    carries the `builder` (a `QueryListBuilder` whose `query()` is the `ActiveQueryUser`,
+    already filtered and ordered, availability, blocked and hidden users applied), the `context`
+    (`user` and `purpose`: `directory`, `picker`, `mentioning` or `null`) and the parsed `values`
+    of the filters (`$event->value('interest')`). A handler that only concerns the directory
+    checks `$event->context->purpose === UserList::PURPOSE_DIRECTORY`; the list no longer reads
+    the request itself. Such a restriction also holds for the directory's picker suggestions
+    (`user/tags`, `user/field-values`: taken from the list built for the directory without a
+    filter) and for whether it offers the tag picker at all.
+  - **Replaced:** a module adding directory filters on `PeopleFilters::EVENT_INIT` (or touching
+    them on `EVENT_BEFORE_RUN`) registers on `UserList::EVENT_INIT` instead and adds one filter
+    object (`$event->list->addFilter(new EnumFilter('interest', values: […], apply: …,
+    definition: ['label' => …, 'sortOrder' => 250]))`, see
+    `humhub\components\listing\FilterableList`) instead of HTML: its parameter, validation,
+    how it narrows the query and the directory's definition in one. The key is the query
+    parameter the value travels in — on the page URL and to `GET /api/v2/user`, which refuses
+    parameters no filter claims (`422`). The profile field filters keep their
+    `fields[<internal name>]` keys (one `user\components\listing\ProfileFieldFilter` per field);
+    a dropdown or checkbox list with a few items is a select over them, any other field (text,
+    country, a checkbox list with "Other:") a picker searching `GET /api/v2/user/field-values`
+    (`q`) as the user types, the most frequent values first — as `PeopleFilterPicker` searched
+    what users entered; the picker of a text field also applies the typed text itself
+    (`FilterDefinition::$custom`), which matches a part of the field as the old filter did. A
+    `tag` filter (repeated or comma-separated, at most 20, the users having all the tags) is
+    new, its picker fed by `GET /api/v2/user/tags`.
+    Filters are offered for visible text, dropdown (and country) and checkbox list fields only
+    (`UserList::FILTER_FIELD_INPUT_TYPES`); a field of another type marked as directory filter
+    is refused by the list like an unknown parameter.
+  - **Changed:** the directory's URL parameters follow the API: `q` instead of `keyword`, and
+    `scope=followers|following|friends|pendingFriends` instead of
+    `connection=followers|following|friends|pending_friends`; `groupId`, `fields[…]` and `sort`
+    are unchanged. Old links keep working — `PeopleController::actionIndex()` redirects them
+    (`301`) to the new parameters, other parameters kept.
+  - **Changed:** `user\widgets\UserFollowButton` (profile header) renders the
+    `UserFollowButton` Vue island (`vue/UserFollowButton.vue`) on `user/<id>/follow`; `$user`
+    is unchanged. Of `followOptions`/`unfollowOptions` only `class` is used (the classes of the
+    "Follow" and "Following" states, defaults unchanged), every other option is ignored, as are
+    `followLabel` and `unfollowLabel` — the island renders its own labels ("Following" reads
+    "Unfollow" on hover/focus). As before nothing is rendered for guests and on one's own
+    profile, and only "Following" while following is disabled. The rendered markup no longer
+    has the `.followButton`/`.unfollowButton` links with
+    `data-action-click="content.container.follow|unfollow"`: the follow buttons of a user and
+    their `FriendshipButton` keep each other in sync through the `user:follow-changed` and
+    `user:friendship-changed` events of the `events` bridge, which is also what a script that
+    toggled those links listens for. New: `$followIcon`, an icon of the "Follow" state. The
+    followers counter of the profile header (`user\widgets\ProfileHeaderCounterSet`) carries
+    `data-user-follower-count="<user id>"` on its link and follows `user:follow-changed` of
+    that user (`humhub.user.js`); a theme overriding `counterSetHeader.php` keeps the `.count`
+    element inside the link for it.
+  - **Changed:** the follow entry of the profile header's controls menu
+    (`user\widgets\HeaderControlsMenu`, shown while friendship is enabled) is the
+    `UserFollowButton` island (a `WidgetMenuEntry` with the id `follow`), following and
+    unfollowing through `user/<id>/follow` without a page reload, instead of a `MenuLink`
+    posting to `user/profile/follow|unfollow`. It is left out where there is nothing to offer
+    (following disabled and not following).
+  - **Removed:** the web actions `user/profile/follow` and `user/profile/unfollow`
+    (`ProfileController::actionFollow()`/`actionUnfollow()`). A module posting to them calls
+    `PUT`/`DELETE /api/v2/user/<id>/follow` instead, or renders `UserFollowButton`;
+    module-search found none.
+  - **Removed:** the `follow` and `unfollow` actions of the `content.container` JS module
+    (`data-action-click="content.container.follow|unfollow"`, switching between the
+    `.followButton`/`.unfollowButton` links). No core markup used them any more once the user
+    and space follow buttons became islands; module-search found no external users. A script
+    reacting to a follow listens to `user:follow-changed`/`space:follow-changed` instead.
+  - **Changed:** the entries of `user\widgets\PeopleHeadingButtons` (still a `Menu`, still
+    extended on its `EVENT_INIT`) are handed to the island as data
+    (`humhub\widgets\menu\Menu::getEntriesData()`) and rendered by `PageToolbar` as icon
+    buttons, as the spaces directory's `SpaceDirectoryHeadingButtons` are (see there). "Invite
+    new people" is `btn-accent` with the id `invite-people-button`.
+  - **Changed:** the meta search's people provider (`user\search\UserSearchProvider`) builds its
+    results with `UserList` and `purpose=directory`, so restrictions a module applies to the
+    directory apply to it too, as they did through `PeopleQuery`.
+  - **New:** `user\components\UserList` with the filters `user\components\listing\SpaceMembersFilter`
+    (`spaceId`) and `ProfileFieldFilter` (`fields[<internal name>]`); `user\serializers\FollowSerializer`, `UserSerializer::list()`,
+    `batch()`, `counts()`, `cardFields()`, `friendship\serializers\FriendshipSerializer::states()`;
+    `user\services\IsOnlineService::getStatuses()` (the online status of many users at once,
+    answered by `user/states` as `isOnline`); the `PeopleCard.vue` extension slots
+    `user.card-subtitle` (`registerSlotComponent`, receives the `user`), where a module shows
+    its own line under the user's name, and `user.card-actions`, the card's footer: the
+    friendship module registers its `friendship` action (sortOrder 100) and the user module its
+    `follow` action (200) into it like any module, so a module adds one (e.g. a "Send
+    message", `registerSlotComponent('user.card-actions', 'MailCardAction', {id: 'mail',
+    sortOrder: 300})`), replaces or removes (`removeSlotComponent`) actions by id — see "Card
+    actions" in `docs/develop/ui-js-vuejs-extensions.md`; the domain events
+    `user:follow-changed` `{userId, isFollowing, followerCount, canFollow}` (dispatched by the
+    `UserFollowButton` island) and `user:friendship-changed` `{userId, state, isFollowing}`
+    (dispatched by the `FriendshipButton` island) of the `events` bridge.
