@@ -8,11 +8,12 @@
 
 namespace humhub\modules\user\widgets;
 
-use humhub\helpers\Html;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\friendship\widgets\FriendshipButton;
+use humhub\modules\user\serializers\FollowSerializer;
 use humhub\widgets\menu\MenuLink;
 use humhub\widgets\menu\DropdownMenu;
+use humhub\widgets\menu\WidgetMenuEntry;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\helpers\Url;
@@ -94,6 +95,13 @@ class HeaderControlsMenu extends DropdownMenu
         }
     }
 
+    /**
+     * While the friendship system is on, the profile header shows the `FriendshipButton` and
+     * following moves into this menu: the entry is the `UserFollowButton` island (as a
+     * `dropdown-item`), which follows and unfollows through `/api/v2/user/<id>/follow`, updates
+     * itself and keeps the page's other follow and friendship buttons of the user in sync
+     * (`user:follow-changed`).
+     */
     protected function initFollowControl(): void
     {
         if (!FriendshipButton::isVisibleForUser($this->user)) {
@@ -104,28 +112,22 @@ class HeaderControlsMenu extends DropdownMenu
             return;
         }
 
-        if ($this->user->isFollowedByUser()) {
-            $this->addEntry(new MenuLink([
-                'label' => Yii::t('UserModule.base', 'Following'),
-                'url' => $this->user->createUrl('/user/profile/unfollow', ['redirect' => true]),
-                'icon' => 'check',
-                'htmlOptions' => [
-                    'data-method' => 'post',
-                    'data-action-confirm' => Yii::t('SpaceModule.base', 'Would you like to unfollow {userName}?', [
-                        '{userName}' => '<strong>' . Html::encode($this->user->getDisplayName()) . '</strong>',
-                    ]),
-                ],
-                'sortOrder' => 300,
-            ]));
-        } else {
-            $this->addEntry(new MenuLink([
-                'label' => Yii::t('UserModule.base', 'Follow'),
-                'url' => $this->user->createUrl('/user/profile/follow'),
-                'icon' => 'paper-plane',
-                'htmlOptions' => ['data-method' => 'post'],
-                'sortOrder' => 300,
-            ]));
+        // What the button offers: following, or ending a follow after following was disabled.
+        if (!FollowSerializer::canFollow($this->user) && !$this->user->isFollowedByUser()) {
+            return;
         }
+
+        $this->addEntry(new WidgetMenuEntry([
+            'id' => 'follow',
+            'widgetClass' => UserFollowButton::class,
+            'widgetOptions' => [
+                'user' => $this->user,
+                'followOptions' => ['class' => 'dropdown-item'],
+                'unfollowOptions' => ['class' => 'dropdown-item'],
+                'followIcon' => 'paper-plane',
+            ],
+            'sortOrder' => 300,
+        ]));
     }
 
     /**

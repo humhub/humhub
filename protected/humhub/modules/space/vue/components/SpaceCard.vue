@@ -1,8 +1,8 @@
 <template>
-    <article class="c-space-card" :class="{ 'is-archived': space.archived }">
-        <div class="c-space-card__cover" :style="coverStyle">
+    <article class="c-entity-card c-space-card" :class="{ 'is-archived': space.archived }">
+        <div class="c-entity-card__cover" :style="coverStyle">
             <SpaceImage
-                class="c-space-card__avatar"
+                class="c-entity-card__avatar"
                 :id="space.id"
                 :name="space.name"
                 :url="space.url"
@@ -14,19 +14,19 @@
                 aria-hidden="true"
                 tabindex="-1"
             />
-            <span v-if="showFollowers || showMembers" class="c-space-card__pill">
+            <span v-if="showFollowers || showMembers" class="c-entity-card__pill">
                 <template v-if="showFollowers">
                     <button
                         v-if="canOpenFollowers"
                         type="button"
-                        class="c-space-card__stat c-space-card__stat--followers"
+                        class="c-entity-card__stat c-entity-card__stat--followers"
                         :title="followersLabel"
                         :aria-label="followersLabel"
                         @click="openFollowers"
                     ><i class="ti ti-user-check" aria-hidden="true"></i><span>{{ followerCount }}</span></button>
                     <span
                         v-else
-                        class="c-space-card__stat c-space-card__stat--followers"
+                        class="c-entity-card__stat c-entity-card__stat--followers"
                         :title="followersLabel"
                     ><i class="ti ti-user-check" aria-hidden="true"></i><span aria-hidden="true">{{ followerCount }}</span><span class="visually-hidden">{{ followersLabel }}</span></span>
                 </template>
@@ -34,84 +34,53 @@
                     <button
                         v-if="canOpenMembers"
                         type="button"
-                        class="c-space-card__stat c-space-card__stat--members"
+                        class="c-entity-card__stat c-entity-card__stat--members"
                         :title="membersLabel"
                         :aria-label="membersLabel"
                         @click="openMembers"
                     ><i class="ti ti-users-group" aria-hidden="true"></i><span>{{ memberCount }}</span></button>
                     <span
                         v-else
-                        class="c-space-card__stat c-space-card__stat--members"
+                        class="c-entity-card__stat c-entity-card__stat--members"
                         :title="membersLabel"
                     ><i class="ti ti-users-group" aria-hidden="true"></i><span aria-hidden="true">{{ memberCount }}</span><span class="visually-hidden">{{ membersLabel }}</span></span>
                 </template>
             </span>
         </div>
 
-        <div class="c-space-card__header">
-            <a class="c-space-card__title" :href="space.url">{{ space.name }}</a>
+        <div class="c-entity-card__header">
+            <a class="c-entity-card__title" :href="space.url">{{ space.name }}</a>
             <ExtensionSlot name="space.card-subtitle" :context="{ space }" />
         </div>
 
-        <div class="c-space-card__body">
-            <p v-if="space.description" class="c-space-card__text">{{ space.description }}</p>
+        <div class="c-entity-card__body">
+            <p v-if="space.description" class="c-entity-card__text">{{ space.description }}</p>
             <p v-if="space.archived" class="c-space-card__archived">
                 <i class="ti ti-archive" aria-hidden="true"></i><span>{{ labels.archived }}</span>
             </p>
         </div>
 
-        <div v-if="tags.length" class="c-space-card__tags">
+        <div v-if="tags.length" class="c-entity-card__tags">
             <button
                 v-for="tag in tags"
                 :key="tag"
                 type="button"
-                class="c-space-card__tag"
+                class="c-entity-card__tag"
                 :title="filterByLabel(tag)"
                 :aria-label="filterByLabel(tag)"
                 @click="$emit('filter-tag', tag)"
             >{{ tag }}</button>
         </div>
 
-        <div v-if="state !== null" class="c-space-card__footer">
-            <template v-if="state === undefined">
-                <button type="button" class="c-space-card__action c-space-card__placeholder" :class="buttons.placeholderClass" disabled aria-hidden="true" tabindex="-1">&nbsp;</button>
-            </template>
-            <template v-else>
-                <MembershipButton
-                    :space-id="space.id"
-                    :space-name="space.name"
-                    :space-url="space.url"
-                    :initial="state.membership || null"
-                    :button-class="actionClass(buttons.buttonClass)"
-                    :pending-class="actionClass(buttons.pendingClass)"
-                    :member-class="actionClass(buttons.memberClass)"
-                    :toggler-class="buttons.togglerClass"
-                    :group-class="actionClass(buttons.groupClass)"
-                    show-member-state
-                    :check-icon-html="icons.check || ''"
-                    :clock-icon-html="icons.clock || ''"
-                    :user-icon-html="icons.user || ''"
-                />
-                <FollowButton
-                    :class="'c-space-card__action'"
-                    :space-id="space.id"
-                    :space-name="space.name"
-                    :initial="followInitial"
-                    :is-member="!!state.isMember"
-                    :follow-class="buttons.followClass"
-                    :following-class="buttons.followingClass"
-                    :check-icon-html="icons.check || ''"
-                    @change="$emit('follow-change', $event)"
-                />
-            </template>
+        <div v-if="state !== null" class="c-entity-card__footer">
+            <button v-if="state === undefined" type="button" class="c-entity-card__action c-entity-card__placeholder" :class="buttons.placeholderClass" disabled aria-hidden="true" tabindex="-1">&nbsp;</button>
+            <ExtensionSlot v-else name="space.card-actions" :context="actionContext" />
         </div>
     </article>
 </template>
 
 <script>
 import { i18n, modal, url } from '@humhub/vue';
-import FollowButton from '../FollowButton.vue';
-import MembershipButton from '../MembershipButton.vue';
 import SpaceImage from '../SpaceImage.vue';
 
 // As many tags as the server-rendered directory card showed.
@@ -125,13 +94,13 @@ const MAX_TAGS = 5;
  * (`space/space/follower-list`) or member list (`space/membership/members-list`, only with the
  * state's `canViewMembers`) in the global modal), the name linking to the space, the extension
  * slot `space.card-subtitle`, the description (clamped to three lines), an "Archived" note, the
- * tags (at most five; a click emits `filter-tag`), and the footer with the space's
- * `MembershipButton` and `FollowButton`.
+ * tags (at most five; a click emits `filter-tag`), and the footer: the extension slot
+ * `space.card-actions`.
  *
  * - `space`: an item of `GET /api/v2/space` (`SpaceSerializer::list()`).
  * - `state`: the viewer's `space/states` entry for it — `undefined` while the page's states load
  *   (a disabled placeholder button stands in for the footer), `null` when there is none (no
- *   footer), else the buttons are fed from it (`membership`, `isMember`, `isFollowing`,
+ *   footer), else the actions are fed from it (`membership`, `isMember`, `isFollowing`,
  *   `canFollow`, `followerCount`) without a request of their own. The counts of a loaded state
  *   win over the list item's (they follow the viewer's own follow/join).
  * - `buttons`: the button classes (`buttonClass`, `pendingClass`, `memberClass`,
@@ -140,16 +109,27 @@ const MAX_TAGS = 5;
  *   `clock`, `user`) — both from `space\widgets\SpaceDirectory`.
  * - Extension slot `space.card-subtitle` (`registerSlotComponent`): a registered component gets
  *   the `space` as prop and renders its own subtitle line (e.g. a category), typically a
- *   `p.c-space-card__subtitle`.
- * - Emits `filter-tag` (the tag), `follow-change` (the `FollowButton`'s `change` payload).
+ *   `p.c-entity-card__subtitle`.
+ * - Extension slot `space.card-actions`: the footer's actions, the core's own included —
+ *   `membership` (sortOrder 100, `SpaceCardMembershipAction`) and `follow` (200,
+ *   `SpaceCardFollowAction`) — so a module adds, replaces (its own component under a core id)
+ *   or removes (`removeSlotComponent('space.card-actions', 'follow')`) any of them. Each action
+ *   gets the context spread as props and renders a `.c-entity-card__action`, or nothing:
+ *   `{space, state, buttons, icons, followerCount, onFollowChange}` — `state` is always a
+ *   loaded entry, `followerCount` the count the card shows (the state's, else the item's), the
+ *   callback the card's `follow-change` (an action declaring and emitting `follow-change`
+ *   reaches it).
+ * - Emits `filter-tag` (the tag), `follow-change` (the `FollowButton`'s `change` payload, from
+ *   the `follow` action).
  *
  * @since 1.20
  */
 export default {
     name: 'SpaceCard',
     i18nCategories: ['SpaceModule.base'],
-    // `ExtensionSlot` is a core component, resolved through the global registry (CoreVueAsset).
-    components: { FollowButton, MembershipButton, SpaceImage },
+    // `ExtensionSlot` is a core component (CoreVueAsset), the actions are registered into their
+    // slot by `vue/index.js` — all resolved through the global registry.
+    components: { SpaceImage },
     props: {
         space: { type: Object, required: true },
         state: { type: Object, default: undefined },
@@ -180,11 +160,14 @@ export default {
         canOpenMembers() {
             return this.loaded && !!this.state.canViewMembers;
         },
-        followInitial() {
+        actionContext() {
             return {
-                isFollowing: !!this.state.isFollowing,
+                space: this.space,
+                state: this.state,
+                buttons: this.buttons,
+                icons: this.icons,
                 followerCount: this.followerCount ?? null,
-                canFollow: !!this.state.canFollow,
+                onFollowChange: (payload) => this.$emit('follow-change', payload),
             };
         },
         tags() {
@@ -211,9 +194,6 @@ export default {
         },
     },
     methods: {
-        actionClass(classes) {
-            return `${classes || ''} c-space-card__action`.trim();
-        },
         filterByLabel(tag) {
             return i18n.t('SpaceModule.base', 'Filter by {tag}', { tag });
         },

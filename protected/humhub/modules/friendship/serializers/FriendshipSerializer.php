@@ -9,6 +9,7 @@
 namespace humhub\modules\friendship\serializers;
 
 use humhub\modules\friendship\models\Friendship;
+use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\User;
 use Yii;
 
@@ -58,6 +59,62 @@ class FriendshipSerializer
             // shows: accepting a friendship follows the other user, so a change flips it.
             'isFollowing' => $user->isFollowedByUser(),
         ];
+    }
+
+    /**
+     * {@see self::state()} for a batch of users at once — one query for the friendship rows
+     * between the caller and all of them, one for the caller's follows — as the user states of
+     * a list page need it.
+     *
+     * @param User[] $users
+     * @param int[]|null $followedIds the ids among `$users` the caller follows, when the caller
+     *        loaded them already (the follow query is then skipped)
+     * @return array<int, array{state: string, isFollowing: bool}> by user id
+     */
+    public static function states(array $users, ?array $followedIds = null): array
+    {
+        if ($users === []) {
+            return [];
+        }
+
+        $ids = array_map(static fn(User $user) => $user->id, $users);
+        $me = Yii::$app->user->id;
+
+        $sent = [];
+        $received = [];
+        $rows = Friendship::find()
+            ->select(['user_id', 'friend_user_id'])
+            ->where(['or', ['user_id' => $me, 'friend_user_id' => $ids], ['user_id' => $ids, 'friend_user_id' => $me]])
+            ->asArray()
+            ->all();
+        foreach ($rows as $row) {
+            if ((int)$row['user_id'] === (int)$me) {
+                $sent[(int)$row['friend_user_id']] = true;
+            } else {
+                $received[(int)$row['user_id']] = true;
+            }
+        }
+
+        $following = array_flip(array_map('intval', $followedIds ?? Follow::find()
+            ->select('object_id')
+            ->where(['user_id' => $me, 'object_model' => User::class, 'object_id' => $ids])
+            ->column()));
+
+        $states = [];
+        foreach ($ids as $id) {
+            // The same precedence as Friendship::getStateForUser().
+            $states[$id] = [
+                'state' => match (true) {
+                    isset($sent[$id]) && isset($received[$id]) => self::STATE_FRIENDS,
+                    isset($sent[$id]) => self::STATE_REQUEST_SENT,
+                    isset($received[$id]) => self::STATE_REQUEST_RECEIVED,
+                    default => self::STATE_NONE,
+                },
+                'isFollowing' => isset($following[$id]),
+            ];
+        }
+
+        return $states;
     }
 
     private static function resolveState(User $user): string

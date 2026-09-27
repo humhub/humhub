@@ -93,10 +93,11 @@ import { defaultValues, fixedSignature, requestParams } from './filter/filterQue
  * - Instance API for the owning island (template ref): `reload()` (always page 1),
  *   `loadMore()`, `retry()`, `replaceItem(id, item)` after an action changed one record,
  *   `replaceState(id, patch)` (see "Item states"),
- *   `setFilter(key, value)` to set one filter from outside the bar (e.g. a card's type pill;
- *   delegated to the `FilterBar`, applied like a change in it but at once — a text filter too,
- *   without the debounce —, returns `false` for an unknown key), `reloadFilterOptions()` after something outside the bar changed what a filter's remote
- *   options (or their counts) should be.
+ *   `setFilter(key, value, { add })` to set one filter from outside the bar (e.g. a card's
+ *   type pill; delegated to the `FilterBar`, applied like a change in it but at once — a text
+ *   filter too, without the debounce —; `add: true` adds to a multiple filter; returns `false`
+ *   for an unknown key), `reloadFilterOptions()` after something outside the bar changed what a
+ *   filter's remote options (or their counts) should be.
  * - Slots: `actions` (`{ meta, total }`, right of the title), `notice` (`{ meta, total }`,
  *   between toolbar and grid), `filter-<key>` (`{ filter, value, update }`), `card`
  *   (`{ item, index, state }` — `index` within the loaded page, for the stagger; `state` see
@@ -223,8 +224,8 @@ export default {
         replaceState(id, patch) {
             this.states[id] = { ...(this.states[id] || {}), ...patch };
         },
-        setFilter(key, value) {
-            return this.$refs.filterBar ? this.$refs.filterBar.setFilter(key, value) : false;
+        setFilter(key, value, options = {}) {
+            return this.$refs.filterBar ? this.$refs.filterBar.setFilter(key, value, options) : false;
         },
         reloadFilterOptions() {
             this.$refs.filterBar?.reloadOptions();

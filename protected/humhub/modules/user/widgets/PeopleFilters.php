@@ -24,6 +24,9 @@ use yii\db\Expression;
  *
  * @since 1.9
  * @author Luke
+ * @deprecated since 1.20, will be removed in 1.21 — use UserList / the PeopleDirectory island
+ *   (`humhub\modules\user\widgets\PeopleDirectory`). Unused by the core since 1.20; kept for
+ *   modules building their own People-like page on it.
  */
 class PeopleFilters extends DirectoryFilters
 {

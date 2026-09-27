@@ -8,6 +8,7 @@ const vueModule = () => globalThis.humhub.modules.vue;
 export const register = (...args) => vueModule().register(...args);
 export const isRegistered = (...args) => vueModule().isRegistered(...args);
 export const registerSlotComponent = (...args) => vueModule().registerSlotComponent(...args);
+export const removeSlotComponent = (...args) => vueModule().removeSlotComponent(...args);
 export const getSlotComponents = (...args) => vueModule().getSlotComponents(...args);
 export const registerMenuEntry = (...args) => vueModule().registerMenuEntry(...args);
 export const removeMenuEntry = (...args) => vueModule().removeMenuEntry(...args);

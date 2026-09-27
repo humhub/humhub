@@ -25,7 +25,8 @@ class InviteCest
         $I->amUser();
         DirectoryMemberPage::openBy($I);
 
-        $I->click('Invite new people');
+        $I->waitForElementVisible('[data-action-id="invite-people-button"]');
+        $I->click('[data-action-id="invite-people-button"]');
         $I->waitForText('Invite new people', 10, '#globalModal');
 
         $I->amGoingTo('invite an already existing user email');

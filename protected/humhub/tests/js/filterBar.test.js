@@ -52,6 +52,21 @@ describe('FilterBar', () => {
         expect(wrapper.find('#files-filter-categoryId').exists()).toBe(true);
     });
 
+    it('takes a PHP-style array key as is for the URL, as a slug for ids and classes', async () => {
+        window.history.replaceState(null, '', '/directory?fields%5Bcity%5D=Berlin');
+        const arrayFilters = [{ key: 'fields[city]', type: 'select', label: 'City', options: [{ value: 'Berlin', label: 'Berlin' }, { value: 'Paris', label: 'Paris' }] }];
+        const wrapper = mount(FilterBar, { props: { filters: arrayFilters, idPrefix: 'people-filter' }, attachTo: document.body });
+
+        expect(emitted(wrapper)[0]).toEqual({ 'fields[city]': 'Berlin' });
+        expect(wrapper.find('#people-filter-fields-city').text()).toBe('Berlin');
+        expect(wrapper.find('.form-search-filter-fields-city').exists()).toBe(true);
+
+        expect(wrapper.vm.setFilter('fields[city]', 'Paris')).toBe(true);
+        await flushPromises();
+        expect(new URLSearchParams(window.location.search).get('fields[city]')).toBe('Paris');
+        wrapper.unmount();
+    });
+
     it('loads remote options and disables the select meanwhile', async () => {
         const wrapper = mountBar();
 
@@ -78,6 +93,26 @@ describe('FilterBar', () => {
 
         expect(emitted(wrapper)).toEqual([{ ...values(), q: 'abc', status: ['a', 'b'] }]);
         expect(wrapper.find('.c-search-field input').element.value).toBe('abc');
+    });
+
+    it('drops a URL value none of the static options offers, and emits without it', () => {
+        window.history.replaceState(null, '', '/directory?q=abc&status=a,gone');
+        const wrapper = mountBar();
+
+        expect(emitted(wrapper)).toEqual([{ ...values(), q: 'abc', status: ['a'] }]);
+    });
+
+    it('drops a model value none of the static options offers, and emits without it', async () => {
+        const wrapper = mountBar({ ...values(), status: ['gone'] });
+        expect(emitted(wrapper)).toEqual([values()]);
+
+        await wrapper.setProps({ modelValue: { ...values(), status: ['b', 'gone'] } });
+        expect(emitted(wrapper).at(-1)).toEqual({ ...values(), status: ['b'] });
+        expect(window.location.search).toBe('?status=b');
+
+        // A select that loads its options knows no stale value.
+        await wrapper.setProps({ modelValue: { ...values(), categoryId: '99' } });
+        expect(emitted(wrapper)).toHaveLength(2);
     });
 
     it('neither reads nor writes the page URL without syncUrl', async () => {
@@ -231,6 +266,10 @@ describe('FilterBar', () => {
         expect(wrapper.vm.setFilter('nope', 'x')).toBe(false);
         await flushPromises();
         expect(emitted(wrapper)).toHaveLength(1);
+
+        expect(wrapper.vm.setFilter('status', ['b', 'gone'])).toBe(true);
+        await flushPromises();
+        expect(emitted(wrapper).at(-1)).toEqual({ ...values(), status: ['b'] });
     });
 
     it('applies a text filter set by setFilter() at once, cancelling a pending debounce', async () => {
@@ -590,6 +629,110 @@ describe('FilterBar', () => {
             vi.advanceTimersByTime(TEXT_DEBOUNCE_MS);
             expect(emitted(wrapper)).toHaveLength(initial + 1);
             expect(emitted(wrapper).at(-1).q).toBe('ca');
+        });
+    });
+    describe('picker filters', () => {
+        const pickerFilters = [
+            { key: 'q', type: 'text', label: 'Search' },
+            { key: 'tag', type: 'picker', multiple: true, label: 'Tags', optionsUrl: '/api/v2/user/tags' },
+            { key: 'fields[city]', type: 'picker', label: 'City', optionsUrl: '/api/v2/user/field-values?field=city' },
+            { key: 'level', type: 'picker', label: 'Level', options: [{ value: 'a', label: 'A' }, { value: 'b', label: 'B' }] },
+        ];
+        const mountPickers = (modelValue = {}) => mount(FilterBar, {
+            props: { filters: pickerFilters, modelValue },
+            attachTo: document.body,
+        });
+
+        it('renders a combobox per picker, which loads its own suggestions only when used', async () => {
+            const wrapper = mountPickers();
+            await flushPromises();
+
+            expect(wrapper.findAll('input[role="combobox"]').map((input) => input.attributes('id'))).toEqual(['filter-tag', 'filter-fields-city', 'filter-level']);
+            expect(wrapper.find('.c-filter-bar__item--picker').exists()).toBe(true);
+            expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalled();
+
+            await wrapper.find('#filter-tag').trigger('focus');
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/user/tags');
+            wrapper.unmount();
+        });
+
+        it('reads multiple picker values repeated or comma-separated from the URL and writes them comma-separated', async () => {
+            window.history.replaceState(null, '', '/directory?tag=php&tag=go,rust&fields%5Bcity%5D=Berlin');
+            const wrapper = mountPickers();
+
+            expect(emitted(wrapper)[0]).toEqual({ q: '', tag: ['php', 'go', 'rust'], 'fields[city]': 'Berlin', level: '' });
+            expect(wrapper.findAll('.c-picker__chip-label').map((chip) => chip.text())).toEqual(['php', 'go', 'rust']);
+            expect(wrapper.find('#filter-fields-city').element.value).toBe('Berlin');
+
+            await wrapper.findAll('.c-picker__chip-remove')[0].trigger('click');
+            expect(emitted(wrapper).at(-1).tag).toEqual(['go', 'rust']);
+            expect(new URLSearchParams(window.location.search).get('tag')).toBe('go,rust');
+
+            await wrapper.find('.c-select__clear').trigger('click');
+            expect(emitted(wrapper).at(-1).tag).toEqual([]);
+            expect(new URLSearchParams(window.location.search).has('tag')).toBe(false);
+            wrapper.unmount();
+        });
+
+        it('drops a URL value a picker with static options only cannot offer', () => {
+            window.history.replaceState(null, '', '/directory?level=gone');
+            const wrapper = mountPickers();
+
+            expect(emitted(wrapper)).toEqual([{ q: '', tag: [], 'fields[city]': '', level: '' }]);
+            expect(wrapper.find('#filter-level').element.value).toBe('');
+            wrapper.unmount();
+        });
+
+        it('adds to a multiple filter through setFilter(key, value, { add: true })', async () => {
+            window.history.replaceState(null, '', '/directory?tag=php');
+            const wrapper = mountPickers();
+
+            expect(wrapper.vm.setFilter('tag', ['go'], { add: true })).toBe(true);
+            await flushPromises();
+            expect(emitted(wrapper).at(-1).tag).toEqual(['php', 'go']);
+
+            // Each value once.
+            wrapper.vm.setFilter('tag', 'php', { add: true });
+            await flushPromises();
+            expect(emitted(wrapper).at(-1).tag).toEqual(['php', 'go']);
+            expect(new URLSearchParams(window.location.search).get('tag')).toBe('php,go');
+
+            // Without `add` the value replaces what the filter holds.
+            wrapper.vm.setFilter('tag', ['rust']);
+            await flushPromises();
+            expect(emitted(wrapper).at(-1).tag).toEqual(['rust']);
+            wrapper.unmount();
+        });
+
+        it('applies the typed text of a custom picker with Enter', async () => {
+            const wrapper = mount(FilterBar, {
+                props: { filters: [{ key: 'fields[city]', type: 'picker', custom: true, label: 'City', optionsUrl: '/api/v2/user/field-values?field=city' }] },
+                attachTo: document.body,
+            });
+            const input = wrapper.find('#filter-fields-city');
+
+            input.element.value = 'Ham';
+            await input.trigger('input');
+            await input.trigger('keydown', { key: 'Enter' });
+
+            expect(emitted(wrapper).at(-1)).toEqual({ 'fields[city]': 'Ham' });
+            expect(new URLSearchParams(window.location.search).get('fields[city]')).toBe('Ham');
+            wrapper.unmount();
+        });
+
+        it('makes the pickers drop their suggestions on reloadOptions()', async () => {
+            const wrapper = mountPickers();
+            await wrapper.find('#filter-tag').trigger('focus');
+            await flushPromises();
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(1);
+
+            wrapper.vm.reloadOptions();
+            await flushPromises();
+            // Nothing loaded until the picker is used again.
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(1);
+            await wrapper.find('#filter-tag').trigger('focus');
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(2);
+            wrapper.unmount();
         });
     });
 });

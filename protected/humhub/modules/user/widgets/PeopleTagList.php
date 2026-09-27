@@ -17,6 +17,9 @@ use humhub\widgets\bootstrap\Button;
  *
  * @since 1.2
  * @author Luke
+ * @deprecated since 1.20, will be removed in 1.21 — use UserList / the PeopleDirectory island
+ *   (`humhub\modules\user\widgets\PeopleDirectory`). Unused by the core since 1.20; kept for
+ *   modules building their own People-like page on it.
  */
 class PeopleTagList extends Widget
 {
@@ -60,7 +63,7 @@ class PeopleTagList extends Widget
 
         foreach ($tags as $tag) {
             if (trim($tag) !== '') {
-                $html .= Button::asBadge($tag, 'light')->link(['/user/people', 'keyword' => trim($tag)]) . '&nbsp';
+                $html .= Button::asBadge($tag, 'light')->link(['/user/people', 'q' => trim($tag)]) . '&nbsp';
             }
         }
 

@@ -94,37 +94,6 @@ class ProfileController extends ContentContainerController
         return $this->render('about', ['user' => $this->contentContainer]);
     }
 
-    public function actionFollow()
-    {
-        if (Yii::$app->getModule('user')->disableFollow) {
-            throw new HttpException(403, Yii::t('ContentModule.base', 'This action is disabled!'));
-        }
-
-        $this->forcePostRequest();
-        $this->getUser()->follow(Yii::$app->user->getIdentity());
-
-        if (Yii::$app->request->isAjax) {
-            Yii::$app->response->format = 'json';
-            return ['success' => true];
-        }
-
-        return $this->redirect($this->getUser()->getUrl());
-    }
-
-    public function actionUnfollow()
-    {
-        $this->forcePostRequest();
-        $this->getUser()->unfollow();
-        $redirect = Yii::$app->request->get('redirect', false);
-
-        if (Yii::$app->request->isAjax && !$redirect) {
-            Yii::$app->response->format = 'json';
-            return ['success' => true];
-        }
-
-        return $this->redirect($this->getUser()->getUrl());
-    }
-
     public function actionFollowerList()
     {
         return $this->renderAjaxContent(UserListBox::widget([

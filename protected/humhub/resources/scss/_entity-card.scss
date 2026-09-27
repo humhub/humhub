@@ -1,0 +1,261 @@
+//
+// Entity card: the card of a space or a user in a card directory — after the HumHub design
+// system v2 space and people cards, which share their geometry and colours: the cover (banner,
+// else plain grey) with the avatar and the stat pill, the name and subtitle, a body of at least
+// three lines, tag chips and the footer's full-width buttons. The spaces directory
+// (`SpaceCard.vue`, `_space-directory.scss`) and the People directory (`PeopleCard.vue`,
+// `_people-directory.scss`) add only what is their own. Grid and skeleton blocks come from
+// `_card-directory.scss`.
+// @since 1.20
+// --------------------------------------------------
+
+@if not $prev-entity-card {
+    .c-entity-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding: 8px;
+        border-radius: 8px;
+        background: var(--hh-background-color-main);
+        box-shadow: var(--hh-surface-shadow);
+    }
+
+    // Cover: the banner, else a plain light grey (lighter than the 1.19 directories')
+    .c-entity-card__cover {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 8px;
+        min-height: 96px;
+        padding: 8px;
+        border-radius: 6px;
+        background-color: color-mix(in srgb, var(--hh-background3) 80%, var(--hh-background-color-main));
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .c-entity-card__avatar {
+        display: block;
+        flex: 0 0 auto;
+        line-height: 0;
+
+        // The border inside the 80px, so the cover is as high as the skeleton's.
+        .space-acronym,
+        img {
+            box-sizing: border-box;
+            border: 2px solid var(--hh-background-color-main);
+            object-fit: cover;
+        }
+    }
+
+    // Stat pill: counts such as followers, members or friends
+    .c-entity-card__pill {
+        display: inline-flex;
+        flex: 0 1 auto;
+        min-width: 0;
+        margin-left: auto;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 8px;
+        border: 1px solid var(--bs-border-color);
+        border-radius: 9999px;
+        background: var(--hh-background-color-main);
+        color: var(--hh-text-color-secondary);
+        font-size: 12px;
+        line-height: 18px;
+        white-space: nowrap;
+    }
+
+    .c-entity-card__stat {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        background: none;
+        color: inherit;
+        font: inherit;
+        line-height: inherit;
+        cursor: default;
+
+        > .ti {
+            font-size: 14px;
+        }
+    }
+
+    button.c-entity-card__stat {
+        cursor: pointer;
+        transition: color 0.3s ease;
+
+        &:hover,
+        &:focus-visible {
+            color: var(--hh-text-color-highlight);
+        }
+
+        &:focus-visible {
+            border-radius: 4px;
+            outline: 2px solid var(--bs-accent);
+            outline-offset: 2px;
+        }
+    }
+
+    // Header: the name, then subtitle lines (own ones and those of extension slots)
+    .c-entity-card__header {
+        display: flex;
+        flex-direction: column;
+        padding: 8px;
+    }
+
+    .c-entity-card__title {
+        color: var(--hh-text-color-highlight);
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 28px;
+        text-decoration: none;
+        overflow-wrap: anywhere;
+        transition: color 0.3s ease;
+
+        &:hover,
+        &:focus {
+            color: var(--bs-accent);
+        }
+    }
+
+    .c-entity-card__subtitle {
+        margin: 0;
+        color: var(--hh-text-color-secondary);
+        font-size: 14px;
+        line-height: 22px;
+    }
+
+    // Body: it keeps the room of three lines even when empty, so a card without text is not
+    // squeezed and the footers of a row line up.
+    .c-entity-card__body {
+        display: flex;
+        flex: 1 0 auto;
+        flex-direction: column;
+        gap: 8px;
+        min-height: calc(3 * 22px + 16px);
+        padding: 8px;
+    }
+
+    .c-entity-card__text {
+        display: -webkit-box;
+        margin: 0;
+        overflow: hidden;
+        color: var(--hh-text-color-default);
+        font-size: 14px;
+        line-height: 22px;
+        overflow-wrap: anywhere;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+    }
+
+    // Tags: chips filtering the directory by the tag
+    .c-entity-card__tags {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 4px;
+        padding: 8px;
+    }
+
+    .c-entity-card__tag {
+        display: inline-flex;
+        align-items: center;
+        margin: 0;
+        padding: 4px 8px;
+        border: 0;
+        border-radius: 9999px;
+        background: var(--bs-tertiary-bg);
+        color: var(--hh-text-color-secondary);
+        font-family: inherit;
+        font-size: 10px;
+        font-weight: 600;
+        line-height: 15px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease;
+
+        &:hover,
+        &:focus-visible {
+            background: var(--bs-secondary-bg);
+            color: var(--hh-text-color-highlight);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--bs-accent);
+            outline-offset: 2px;
+        }
+    }
+
+    // Footer: the card's buttons side by side
+    .c-entity-card__footer {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px;
+
+        &:empty {
+            display: none;
+        }
+    }
+
+    .c-entity-card__action {
+        display: inline-flex;
+        flex: 1 1 0;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        min-width: 0;
+        // The height of the skeleton's action bar (`.c-card-skeleton__action`), as the module card's.
+        min-height: 38px;
+
+        &.btn-group > .btn:first-child {
+            flex: 1 1 auto;
+        }
+    }
+
+    .c-entity-card__placeholder:disabled {
+        opacity: 0.5;
+    }
+
+    // Skeleton: the entity card's geometry (`SpaceCardSkeleton.vue`, `PeopleCardSkeleton.vue`)
+    .c-entity-card-skeleton__cover {
+        display: flex;
+        align-items: flex-end;
+        height: 96px;
+        padding: 8px;
+        border-radius: 6px;
+        background: var(--hh-skeleton-highlight);
+    }
+
+    .c-entity-card-skeleton__avatar {
+        width: 80px;
+        height: 80px;
+        border: 2px solid var(--hh-background-color-main);
+    }
+
+    .c-entity-card-skeleton__tags {
+        display: flex;
+        gap: 4px;
+        padding: 8px;
+    }
+
+    .c-entity-card-skeleton__tag {
+        width: 56px;
+        height: 23px;
+        border-radius: 9999px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .c-entity-card__title,
+        .c-entity-card__tag,
+        button.c-entity-card__stat {
+            transition: none !important;
+        }
+    }
+}

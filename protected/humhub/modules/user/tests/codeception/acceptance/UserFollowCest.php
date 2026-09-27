@@ -26,11 +26,11 @@ class UserFollowCest
 
         $I->amOnUser1Profile();
 
-        $I->see('Follow', '[data-content-container-id="2"].followButton');
+        $I->waitForText('Follow', 10, 'user-follow-button button');
 
-        $I->click('[data-content-container-id="2"].followButton');
+        $I->click('user-follow-button button');
 
-        $I->waitForElementVisible('[data-content-container-id="2"].unfollowButton');
+        $I->waitForText('Following', 10, 'user-follow-button button');
 
         $I->amOnDashboard();
 

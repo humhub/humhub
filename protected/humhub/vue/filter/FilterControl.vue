@@ -22,6 +22,19 @@
         :loading="loading"
         @update:model-value="$emit('update:modelValue', $event)"
     />
+    <FilterPicker
+        v-else-if="filter.type === 'picker'"
+        :id="inputId"
+        :model-value="filter.multiple === true ? (Array.isArray(modelValue) ? modelValue : []) : String(modelValue ?? '')"
+        :multiple="filter.multiple === true"
+        :allow-custom="filter.custom === true"
+        :options="options"
+        :options-url="filter.optionsUrl || null"
+        :placeholder="filter.placeholder || ''"
+        :label="filter.label || ''"
+        :reload-key="reloadKey"
+        @update:model-value="$emit('update:modelValue', $event)"
+    />
     <div v-else-if="filter.type === 'tags'" class="c-filter-tags" role="group" :aria-label="filter.label">
         <span v-if="filter.label" class="c-filter-tags__label" aria-hidden="true">{{ filter.label }}</span>
         <button
@@ -55,20 +68,23 @@
 </template>
 
 <script>
+import FilterPicker from '../FilterPicker.vue';
 import FilterSelect from '../FilterSelect.vue';
 
 /**
  * The control of one filter inside a `FilterBar` cell — internal to the bar, which owns the
  * values, the options (static ones followed by those loaded from `optionsUrl`) and their
- * loading state. Renders the core types itself (`text`, `select`, `tags`, `checkbox`) and any
- * other type through `component`, the name the bar resolved from the filter-type registry
- * (see `registerFilterType()` in humhub.vue.js); with neither it renders nothing.
+ * loading state — but for a `picker`, which loads its own suggestions from `optionsUrl` as the
+ * user types (`FilterPicker`). Renders the core types itself (`text`, `select`, `picker`,
+ * `tags`, `checkbox`) and any other type through `component`, the name the bar resolved from the
+ * filter-type registry (see `registerFilterType()` in humhub.vue.js); with neither it renders
+ * nothing.
  *
  * @since 1.20
  */
 export default {
     name: 'FilterControl',
-    components: { FilterSelect },
+    components: { FilterPicker, FilterSelect },
     props: {
         filter: { type: Object, required: true },
         modelValue: { type: [String, Array, Boolean, Number], default: '' },
@@ -76,6 +92,8 @@ export default {
         options: { type: Array, default: () => [] },
         loading: { type: Boolean, default: false },
         component: { type: String, default: null },
+        // Changed by the bar's `reloadOptions()`: a picker drops the suggestions it loaded.
+        reloadKey: { type: Number, default: 0 },
     },
     emits: ['update:modelValue'],
     methods: {

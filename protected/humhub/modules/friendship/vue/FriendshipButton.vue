@@ -80,24 +80,24 @@
  * Icons come as rendered markup because the icon provider is pluggable — a client cannot
  * build them.
  *
- * ## The follow button next door
+ * ## Domain events: the follow button next door
  *
  * Sending or accepting a request makes the viewer follow the other user
- * (`Friendship::add()`), so the sibling `UserFollowButton` — still a server-rendered widget —
- * has to flip. The island toggles it itself, by `data-content-container-id` +
- * `.followButton`/`.unfollowButton`, the same addressing `humhub.content.container.js` uses;
- * the server no longer sends `data-show-buttons`/`data-hide-buttons`. In the profile header
- * the follow control lives inside the controls menu (a link, not the button pair) whenever
- * friendship is enabled, so there is nothing to toggle there.
+ * (`Friendship::add()`), so the user's `UserFollowButton` (the user module's island) has to
+ * follow. After every successful transition the island dispatches
+ * `user:friendship-changed` `{userId, state, isFollowing}` on the `events` bridge — the follow
+ * button refetches its state when `isFollowing` differs from what it shows — and emits
+ * `change` with the same payload (a People card updates its friend count and state from it).
  *
  * @since 1.20
  */
-import { apiUrl, client, i18n, log, modal } from '@humhub/vue';
+import { apiUrl, client, events, i18n, log, modal } from '@humhub/vue';
 
 const STATE_NONE = 'none';
 const STATE_REQUEST_SENT = 'requestSent';
 const STATE_REQUEST_RECEIVED = 'requestReceived';
 const STATE_FRIENDS = 'friends';
+const FRIENDSHIP_CHANGED = 'user:friendship-changed';
 
 export default {
     i18nCategories: ['FriendshipModule.base', 'base'],
@@ -118,6 +118,7 @@ export default {
         clockIconHtml: { type: String, default: '' },
         timesIconHtml: { type: String, default: '' },
     },
+    emits: ['change'],
     data() {
         return {
             state: this.initial ? this.initial.state : null,
@@ -241,7 +242,7 @@ export default {
         },
         /**
          * Every transition answers the new state, so there is nothing to derive here: apply
-         * it, then align what depends on it.
+         * it, then tell what depends on it (see "Domain events").
          */
         mutate(request) {
             if (this.busy) {
@@ -253,6 +254,9 @@ export default {
             return request().then((response) => {
                 this.busy = false;
                 this.apply(response);
+                const payload = { userId: this.userId, state: this.state, isFollowing: this.isFollowing };
+                events.trigger(FRIENDSHIP_CHANGED, [payload]);
+                this.$emit('change', payload);
             }).catch((response) => {
                 this.busy = false;
                 log.error(response, true);
@@ -261,23 +265,6 @@ export default {
         apply(state) {
             this.state = state.state;
             this.isFollowing = !!state.isFollowing;
-
-            this.syncFollowButtons();
-        },
-        /**
-         * The server-rendered follow/unfollow pair of this user: exactly one of them is
-         * shown. Absent (profile header, guests) means nothing to do.
-         */
-        syncFollowButtons() {
-            const selector = `[data-content-container-id="${this.userId}"]`;
-
-            this.toggle(document.querySelectorAll(`${selector}.followButton`), !this.isFollowing);
-            this.toggle(document.querySelectorAll(`${selector}.unfollowButton`), this.isFollowing);
-        },
-        toggle(elements, visible) {
-            elements.forEach((element) => {
-                element.classList.toggle('d-none', !visible);
-            });
         },
         escape(value) {
             const element = document.createElement('div');

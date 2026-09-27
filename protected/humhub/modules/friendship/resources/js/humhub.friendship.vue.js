@@ -16,7 +16,8 @@
   const STATE_REQUEST_SENT = "requestSent";
   const STATE_REQUEST_RECEIVED = "requestReceived";
   const STATE_FRIENDS = "friends";
-  const _sfc_main = {
+  const FRIENDSHIP_CHANGED = "user:friendship-changed";
+  const _sfc_main$1 = {
     i18nCategories: ["FriendshipModule.base", "base"],
     props: {
       userId: { type: Number, required: true },
@@ -35,6 +36,7 @@
       clockIconHtml: { type: String, default: "" },
       timesIconHtml: { type: String, default: "" }
     },
+    emits: ["change"],
     data() {
       return {
         state: this.initial ? this.initial.state : null,
@@ -154,7 +156,7 @@
       },
       /**
        * Every transition answers the new state, so there is nothing to derive here: apply
-       * it, then align what depends on it.
+       * it, then tell what depends on it (see "Domain events").
        */
       mutate(request) {
         if (this.busy) {
@@ -164,6 +166,9 @@
         return request().then((response) => {
           this.busy = false;
           this.apply(response);
+          const payload = { userId: this.userId, state: this.state, isFollowing: this.isFollowing };
+          vue$1.events.trigger(FRIENDSHIP_CHANGED, [payload]);
+          this.$emit("change", payload);
         }).catch((response) => {
           this.busy = false;
           vue$1.log.error(response, true);
@@ -172,21 +177,6 @@
       apply(state) {
         this.state = state.state;
         this.isFollowing = !!state.isFollowing;
-        this.syncFollowButtons();
-      },
-      /**
-       * The server-rendered follow/unfollow pair of this user: exactly one of them is
-       * shown. Absent (profile header, guests) means nothing to do.
-       */
-      syncFollowButtons() {
-        const selector = `[data-content-container-id="${this.userId}"]`;
-        this.toggle(document.querySelectorAll(`${selector}.followButton`), !this.isFollowing);
-        this.toggle(document.querySelectorAll(`${selector}.unfollowButton`), this.isFollowing);
-      },
-      toggle(elements, visible) {
-        elements.forEach((element) => {
-          element.classList.toggle("d-none", !visible);
-        });
       },
       escape(value) {
         const element = document.createElement("div");
@@ -202,7 +192,7 @@
   const _hoisted_5 = ["innerHTML"];
   const _hoisted_6 = ["innerHTML"];
   const _hoisted_7 = ["innerHTML"];
-  function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
     return $options.isNone ? (vue.openBlock(), vue.createElementBlock(
       "a",
       {
@@ -324,7 +314,50 @@
       /* CLASS */
     )) : vue.createCommentVNode("v-if", true);
   }
-  const C0 = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
-  vue$1.register("FriendshipButton", C0);
+  const __vite_glob_0_0 = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1]]);
+  const _sfc_main = {
+    name: "PeopleCardFriendshipAction",
+    components: { FriendshipButton: __vite_glob_0_0 },
+    // The whole context is spread onto the component; what it does not use must not become
+    // attributes of the button.
+    inheritAttrs: false,
+    props: {
+      user: { type: Object, required: true },
+      state: { type: Object, required: true },
+      buttons: { type: Object, default: () => ({}) },
+      icons: { type: Object, default: () => ({}) },
+      friendshipEnabled: { type: Boolean, default: false }
+    },
+    emits: ["friendship-change"],
+    methods: {
+      actionClass(classes) {
+        return `${classes || ""} c-entity-card__action`.trim();
+      }
+    }
+  };
+  function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_FriendshipButton = vue.resolveComponent("FriendshipButton");
+    return $props.friendshipEnabled && $props.state.friendship ? (vue.openBlock(), vue.createBlock(_component_FriendshipButton, {
+      key: 0,
+      "user-id": $props.user.id,
+      "user-name": $props.user.displayName,
+      initial: $props.state.friendship,
+      "button-class": $options.actionClass($props.buttons.friendClass),
+      "state-class": $options.actionClass($props.buttons.friendStateClass),
+      "toggler-class": $props.buttons.friendTogglerClass,
+      "group-class": $options.actionClass($props.buttons.friendGroupClass),
+      "check-icon-html": $props.icons.check || "",
+      "plus-icon-html": $props.icons.plus || "",
+      "clock-icon-html": $props.icons.clock || "",
+      "times-icon-html": $props.icons.times || "",
+      onChange: _cache[0] || (_cache[0] = ($event) => _ctx.$emit("friendship-change", $event))
+    }, null, 8, ["user-id", "user-name", "initial", "button-class", "state-class", "toggler-class", "group-class", "check-icon-html", "plus-icon-html", "clock-icon-html", "times-icon-html"])) : vue.createCommentVNode("v-if", true);
+  }
+  const PeopleCardFriendshipAction = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
+  Object.entries(/* @__PURE__ */ Object.assign({ "./FriendshipButton.vue": __vite_glob_0_0 })).forEach(([path, component]) => {
+    vue$1.register(path.slice("./".length, -".vue".length), component);
+  });
+  vue$1.register("PeopleCardFriendshipAction", PeopleCardFriendshipAction);
+  vue$1.registerSlotComponent("user.card-actions", "PeopleCardFriendshipAction", { id: "friendship", sortOrder: 100 });
 })(humhub.modules.vue, Vue);
 //# sourceMappingURL=humhub.friendship.vue.js.map

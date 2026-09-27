@@ -16,6 +16,10 @@ use Yii;
 /**
  * PeopleHeadingButtons shows buttons on the heading of the people page
  *
+ * Since 1.20 the People directory renders its entries as toolbar actions
+ * ({@see \humhub\widgets\menu\Menu::getEntriesData()}, see {@see PeopleDirectory}); the
+ * template is only used where the menu is still rendered as a widget.
+ *
  * @since 1.11
  * @author Funkycram
  */
@@ -38,9 +42,13 @@ class PeopleHeadingButtons extends Menu
             $this->addEntry(new MenuLink([
                 'label' => Yii::t('UserModule.base', 'Invite new people'),
                 'url' => ['/user/invite'],
+                'id' => 'invite-people-button',
                 'sortOrder' => 100,
                 'icon' => 'invite',
-                'htmlOptions' => ['data-action-click' => 'ui.modal.load'],
+                'htmlOptions' => [
+                    'class' => 'btn-accent',
+                    'data-action-click' => 'ui.modal.load',
+                ],
             ]));
         }
 

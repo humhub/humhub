@@ -12,11 +12,13 @@ use Closure;
 use humhub\components\listing\FilterValue;
 use humhub\components\listing\ListBuilder;
 use humhub\components\listing\ListContext;
+use Yii;
 use yii\base\InvalidConfigException;
 
 /**
  * A value out of a set — a select, or with `multiple` a list of values (repeated,
- * `status[]=a&status[]=b`, or comma-separated, `status=a,b`) that the list matches any of.
+ * `status[]=a&status[]=b`, or comma-separated, `status=a,b`) that the list matches any of, at
+ * most `max` of them (without, any number).
  *
  * The set is either fixed (`values`, each with the label of its select option; a `null` label
  * is accepted but not offered, e.g. `all`) or open (`pattern`, a regular expression each value
@@ -58,6 +60,7 @@ class EnumFilter extends ConfigurableFilter
         protected readonly bool $multiple = false,
         protected readonly ?string $pattern = null,
         ?array $definition = null,
+        protected readonly ?int $max = null,
     ) {
         if ($values === [] && $pattern === null) {
             throw new InvalidConfigException('The filter "' . $key . '" needs values or a pattern.');
@@ -112,6 +115,10 @@ class EnumFilter extends ConfigurableFilter
 
         if ($messages !== []) {
             return FilterValue::invalid([$this->key => $messages]);
+        }
+
+        if ($this->max !== null && count($values) > $this->max) {
+            return $this->invalid(Yii::t('base', 'At most {count} values can be named.', ['count' => $this->max]));
         }
 
         return $values === [] ? FilterValue::absent() : FilterValue::of($values);

@@ -16,7 +16,8 @@ use Yii;
 
 /**
  * A free-text parameter — the list's search (`q`), or any other single string (the
- * marketplace's `id`). The value is trimmed; an empty one is absent.
+ * marketplace's `id`). The value is trimmed; an empty one is absent, one longer than `maxLength`
+ * characters (if given) is refused.
  *
  * Applied by the `apply` callback (`fn(ListBuilder $list, string $value, ListContext $context)`),
  * or, on a {@see QueryListBuilder}, as a `LIKE` over `columns`; with neither, the value is only
@@ -33,12 +34,15 @@ class SearchFilter extends ConfigurableFilter
     /**
      * @param string[] $columns searched with `LIKE` (any of them matching) when there is no
      *        `apply` callback
+     * @param int|null $maxLength the longest value (in characters, after trimming) the filter
+     *        takes; `null` = any
      */
     public function __construct(
         string $key = 'q',
         protected readonly array $columns = [],
         ?callable $apply = null,
         ?array $definition = null,
+        protected readonly ?int $maxLength = null,
     ) {
         parent::__construct($key, $apply, $definition);
     }
@@ -60,7 +64,23 @@ class SearchFilter extends ConfigurableFilter
 
         $value = trim($value);
 
+        if ($this->maxLength !== null && mb_strlen($value) > $this->maxLength) {
+            return $this->invalid(self::tooLong($this->key, $this->maxLength));
+        }
+
         return $value === '' ? FilterValue::absent() : FilterValue::of($value);
+    }
+
+    /**
+     * The message for a value longer than `$max` characters — also for a search an endpoint
+     * reads itself, such as a picker's `optionsUrl`.
+     */
+    public static function tooLong(string $key, int $max): string
+    {
+        return Yii::t('yii', '{attribute} should contain at most {max, number} {max, plural, one{character} other{characters}}.', [
+            'attribute' => $key,
+            'max' => $max,
+        ]);
     }
 
     /**

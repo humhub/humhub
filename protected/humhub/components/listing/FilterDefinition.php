@@ -14,12 +14,15 @@ use yii\base\InvalidConfigException;
  * How a filter is presented — what the Vue `FilterBar` renders, handed to a page as the
  * `filters` prop by {@see FilterableList::definitions()}.
  *
- * - `type`: the filter type of the kit's registry — `text` (a search field), `select`, `tags`,
- *   `checkbox`, or a type a module registers itself
+ * - `type`: the filter type of the kit's registry — `text` (a search field), `select`, `picker`
+ *   (a searchable select), `tags`, `checkbox`, or a type a module registers itself
  * - `label`, `placeholder`
  * - `options` (`[{value, label}]`) and/or `optionsUrl` (a select loads further options from an
- *   endpoint answering `{results: [{id, name, count?}]}`)
- * - `multiple` (tags), `default`, `wide`
+ *   endpoint answering `{results: [{id, name, count?}]}`; a picker loads the endpoint's first
+ *   page when opened and searches it with `q=<typed text>`)
+ * - `multiple` (picker, tags), `default`, `wide`
+ * - `custom` (a single-choice picker): the typed text itself can be applied as the value, not
+ *   only one of the suggestions — for a filter the server matches by a part of the text
  * - `hidden`: URL-synced and sent, never rendered — context a link carries in (the
  *   marketplace's `id`), dropped as soon as a visible filter changes
  * - `placement`: `primary` (the filter row, the default) or `panel` (behind "Show filters")
@@ -46,6 +49,7 @@ final class FilterDefinition
         public readonly ?array $options = null,
         public readonly ?string $optionsUrl = null,
         public readonly ?bool $multiple = null,
+        public readonly ?bool $custom = null,
         public readonly mixed $default = null,
         public readonly ?bool $hidden = null,
         public readonly ?bool $wide = null,
@@ -70,6 +74,7 @@ final class FilterDefinition
             $this->options,
             $this->optionsUrl,
             $this->multiple,
+            $this->custom,
             $this->default,
             $this->hidden,
             $this->wide,
@@ -81,7 +86,7 @@ final class FilterDefinition
 
     /**
      * The definition as the kit reads it: `{key, type, label?, placeholder?, options?,
-     * optionsUrl?, multiple?, default?, hidden?, wide?, placement}` in this order, without the
+     * optionsUrl?, multiple?, custom?, default?, hidden?, wide?, placement}` in this order, without the
      * keys that are `null`.
      */
     public function toArray(): array
@@ -94,6 +99,7 @@ final class FilterDefinition
             'options' => $this->options,
             'optionsUrl' => $this->optionsUrl,
             'multiple' => $this->multiple,
+            'custom' => $this->custom,
             'default' => $this->default,
             'hidden' => $this->hidden,
             'wide' => $this->wide,

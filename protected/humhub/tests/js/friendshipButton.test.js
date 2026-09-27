@@ -18,23 +18,14 @@ const mountButton = (props = {}) => mount(FriendshipButton, {
     props: { userId: 7, userName: 'Sara Schuster', ...props },
 });
 
-// The server-rendered UserFollowButton pair of a user, which the island toggles.
-const createFollowButtons = (userId) => {
-    const container = document.createElement('div');
-    const create = (className, hidden) => {
-        const element = document.createElement('a');
-        element.className = hidden ? `${className} d-none` : className;
-        element.setAttribute('data-content-container-id', String(userId));
-        container.appendChild(element);
+const FRIENDSHIP_CHANGED = 'user:friendship-changed';
 
-        return element;
-    };
+// Everything dispatched on the bridge's bus for `type`, as the payloads.
+const listen = (type) => {
+    const payloads = [];
+    globalThis.humhubStubs.event.on(type, (event, payload) => payloads.push(payload));
 
-    const unfollow = create('unfollowButton', true);
-    const follow = create('followButton', false);
-    document.body.appendChild(container);
-
-    return { follow, unfollow };
+    return payloads;
 };
 
 describe('FriendshipButton', () => {
@@ -47,6 +38,7 @@ describe('FriendshipButton', () => {
         globalThis.humhubStubs.client.ajax = vi.fn(dispatchAjax);
         globalThis.humhubStubs.modal.confirm = vi.fn(() => Promise.resolve(true));
         globalThis.humhubStubs.logCalls.error.length = 0;
+        globalThis.humhubStubs.event._handlers.clear();
     });
 
     it('renders the add button from the inlined state without fetching', () => {
@@ -191,27 +183,32 @@ describe('FriendshipButton', () => {
         expect(options.body).not.toContain('<img');
     });
 
-    describe('follow buttons', () => {
-        it('shows the unfollow button once the request made the viewer follow', async () => {
-            const buttons = createFollowButtons(7);
+    describe('domain events', () => {
+        it('dispatches and emits the new state after a transition', async () => {
+            const changes = listen(FRIENDSHIP_CHANGED);
             const wrapper = mountButton({ initial: state() });
 
             await wrapper.find('a').trigger('click');
             await flushPromises();
 
-            expect(buttons.unfollow.classList.contains('d-none')).toBe(false);
-            expect(buttons.follow.classList.contains('d-none')).toBe(true);
+            const payload = { userId: 7, state: 'requestSent', isFollowing: true };
+            expect(changes).toEqual([payload]);
+            expect(wrapper.emitted('change')).toEqual([[payload]]);
         });
 
-        it('leaves the buttons of another user alone', async () => {
-            const other = createFollowButtons(9);
-            const wrapper = mountButton({ initial: state() });
-
-            await wrapper.find('a').trigger('click');
+        it('dispatches nothing for the initial or a fetched state, nor for a failure', async () => {
+            const changes = listen(FRIENDSHIP_CHANGED);
+            mountButton({ initial: state() });
+            mountButton();
             await flushPromises();
 
-            expect(other.follow.classList.contains('d-none')).toBe(false);
-            expect(other.unfollow.classList.contains('d-none')).toBe(true);
+            put = vi.fn(() => Promise.reject({ status: 403 }));
+            const failing = mountButton({ initial: state() });
+            await failing.find('a').trigger('click');
+            await flushPromises();
+
+            expect(changes).toEqual([]);
+            expect(failing.emitted('change')).toBeUndefined();
         });
     });
 

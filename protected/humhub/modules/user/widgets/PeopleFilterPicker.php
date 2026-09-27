@@ -16,6 +16,12 @@ use yii\helpers\Url;
 
 /**
  * People Filter Picker
+ *
+ * @deprecated since 1.20, will be removed in 1.21 — use UserList / the PeopleDirectory island
+ *   (`humhub\modules\user\widgets\PeopleDirectory`). Unused by the core since 1.20; kept for
+ *   modules building their own People-like page on it.
+ *   Its default route, `user/people/filter-people-json`, is deprecated as well and removed
+ *   with it in 1.21.
  */
 class PeopleFilterPicker extends BasePicker
 {

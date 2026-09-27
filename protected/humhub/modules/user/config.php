@@ -17,6 +17,16 @@ return [
         // HTTP API (see docs/develop/concept-api.md) — the caller's own account data.
         ['pattern' => 'api/v2/account', 'route' => 'user/api/account/index', 'verb' => ['GET', 'HEAD']],
         ['pattern' => 'api/v2/account/blocked-users', 'route' => 'user/api/account/blocked-users', 'verb' => ['GET', 'HEAD']],
+        // The user list and what hangs off it. The named sub-resources come first, and the
+        // `<id:\d+>` patterns match digits only, so `user/states` is never read as a user id —
+        // nor are the friendship module's `user/<id>/friendship` rules shadowed.
+        ['pattern' => 'api/v2/user/states', 'route' => 'user/api/user/states', 'verb' => ['GET', 'HEAD']],
+        ['pattern' => 'api/v2/user/field-values', 'route' => 'user/api/user/field-values', 'verb' => ['GET', 'HEAD']],
+        ['pattern' => 'api/v2/user/tags', 'route' => 'user/api/user/tags', 'verb' => ['GET', 'HEAD']],
+        ['pattern' => 'api/v2/user', 'route' => 'user/api/user/index', 'verb' => ['GET', 'HEAD']],
+        ['pattern' => 'api/v2/user/<id:\d+>/follow', 'route' => 'user/api/follow/state', 'verb' => ['GET', 'HEAD']],
+        ['pattern' => 'api/v2/user/<id:\d+>/follow', 'route' => 'user/api/follow/follow', 'verb' => 'PUT'],
+        ['pattern' => 'api/v2/user/<id:\d+>/follow', 'route' => 'user/api/follow/unfollow', 'verb' => 'DELETE'],
         ['class' => 'humhub\modules\user\components\UrlRule'],
         'people' => 'user/people',
         '<userContainer>/home' => 'user/profile/home',

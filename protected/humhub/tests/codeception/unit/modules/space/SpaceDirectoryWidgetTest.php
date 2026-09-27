@@ -38,7 +38,7 @@ class SpaceDirectoryWidgetTest extends HumHubDbTestCase
         $this->assertStringContainsString('class="c-page-toolbar"', $html);
         $this->assertStringContainsString('<h1 id="space-directory-placeholder-title" class="c-page-toolbar__title">Spaces</h1>', $html);
         $this->assertStringContainsString('title="Create Space"', $html, 'the toolbar actions stand in the placeholder already');
-        $this->assertSame(12, substr_count($html, 'class="c-card-skeleton c-space-card-skeleton"'));
+        $this->assertSame(12, substr_count($html, 'class="c-card-skeleton c-entity-card-skeleton c-space-card-skeleton"'));
         $this->assertStringNotContainsString('card-panel', $html);
     }
 
