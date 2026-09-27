@@ -410,7 +410,16 @@ them, whether it is available in a context (`ListContext`: user, purpose, contai
 narrows the list and how the page presents it (`FilterDefinition`) — so the controller only
 calls `build()` and pages, and the page's `FilterBar` gets `definitions()` of the same filters
 as a prop. A module adds one filter on the list's `EVENT_INIT` and restricts on `EVENT_BUILD`.
-Ready filters cover the common kinds (`SearchFilter`, `EnumFilter`, `BoolFilter`, `IdsFilter`).
+Ready filters cover the common kinds (`SearchFilter`, `EnumFilter`, `BoolFilter`, `IdsFilter`),
+and `humhub\modules\user\components\listing\UserFilter` one person (an "Author", an
+"Assignee": `userId`, the id of a user the user search shows the caller as a picker — else
+`422` —, rendered as the `user` filter type; not available to guests). `GET /api/v2/user`
+requires the People permission, but for `purpose=picker`: that is for every logged-in user,
+who without the permission may send only the picker's parameters (`q`, `ids`, `exclude`,
+`spaceId`, paging; any other is `403`), and is answered with the short user shape. Without the
+permission a picker cannot use the directory's filters, sort or card data — filters modules
+add to `UserList` are refused (`403`) as well — and is narrowed: it needs a search, ids or a
+space (else `403`) and returns at most 20 per page (at most 20 `ids`, else `422`).
 
 | Topic | Convention |
 |---|---|

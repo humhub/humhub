@@ -49,6 +49,13 @@ describe('humhub.vue filter type registry', () => {
         expect(vueModule.getFilterType('test.registry.single')).toBeNull();
     });
 
+    it('refuses the picker type, a core type as well', () => {
+        vueModule.registerFilterType('picker', 'TestRegistryPickerFilter');
+
+        expect(globalThis.humhubStubs.logCalls.error).toHaveLength(1);
+        expect(vueModule.getFilterType('picker')).toBeNull();
+    });
+
     it('is reactive: a computed that asked for a type re-evaluates once it registers', () => {
         const type = Vue.computed(() => vueModule.getFilterType('test.registry.reactive'));
         expect(type.value).toBeNull();
