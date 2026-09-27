@@ -8,7 +8,7 @@
         :aria-busy="busy ? 'true' : null"
         @click="toggle"
         @mouseenter="hovered = true"
-        @mouseleave="hovered = false"
+        @mouseleave="onMouseleave"
         @focus="focused = true"
         @blur="onBlur"
     >
@@ -89,6 +89,10 @@ export default {
             busy: false,
             hovered: false,
             focused: false,
+            // Set by a finished action: the pointer or focus that just clicked keeps reading
+            // "Following" until it leaves - browsers re-dispatch `mouseenter` after the label
+            // changes under a resting pointer, so resetting `hovered` alone is not enough.
+            settled: false,
         };
     },
     computed: {
@@ -100,7 +104,7 @@ export default {
                 return i18n.t('UserModule.base', 'Follow');
             }
 
-            return this.hovered || this.focused
+            return (this.hovered || this.focused) && !this.settled
                 ? i18n.t('UserModule.base', 'Unfollow')
                 : i18n.t('UserModule.base', 'Following');
         },
@@ -177,6 +181,7 @@ export default {
                 this.busy = false;
                 // The pointer/focus that just followed would otherwise read "Unfollow" at once.
                 this.resetHover();
+                this.settled = true;
                 this.apply(state);
                 this.dispatching = true;
                 try {
@@ -195,6 +200,11 @@ export default {
         onBlur() {
             this.focused = false;
             this.hovered = false;
+            this.settled = false;
+        },
+        onMouseleave() {
+            this.hovered = false;
+            this.settled = false;
         },
         resetHover() {
             this.hovered = false;

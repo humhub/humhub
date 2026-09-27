@@ -8,9 +8,9 @@
         :aria-busy="busy ? 'true' : null"
         @click="toggle"
         @mouseenter="hovered = true"
-        @mouseleave="hovered = false"
+        @mouseleave="onMouseleave"
         @focus="focused = true"
-        @blur="focused = false"
+        @blur="onBlur"
     >
         <span v-if="busy" class="spinner-border spinner-border-sm" aria-hidden="true"></span>
         <span v-else-if="isFollowing" v-html="checkIconHtml"></span>{{ label }}
@@ -89,6 +89,10 @@ export default {
             busy: false,
             hovered: false,
             focused: false,
+            // Set by a finished action: the pointer or focus that just clicked keeps reading
+            // "Following" until it leaves - browsers re-dispatch `mouseenter` after the label
+            // changes under a resting pointer, so resetting `hovered` alone is not enough.
+            settled: false,
         };
     },
     computed: {
@@ -100,7 +104,7 @@ export default {
                 return i18n.t('SpaceModule.base', 'Follow');
             }
 
-            return this.hovered || this.focused
+            return (this.hovered || this.focused) && !this.settled
                 ? i18n.t('SpaceModule.base', 'Unfollow')
                 : i18n.t('SpaceModule.base', 'Following');
         },
@@ -138,6 +142,14 @@ export default {
         events.off(MEMBERSHIP_CHANGED, this.onMembershipChanged);
     },
     methods: {
+        onBlur() {
+            this.focused = false;
+            this.settled = false;
+        },
+        onMouseleave() {
+            this.hovered = false;
+            this.settled = false;
+        },
         load() {
             return fetchFollow(this.spaceId).then((state) => {
                 this.apply(state);
@@ -176,6 +188,7 @@ export default {
                 // The pointer/focus that just followed would otherwise read "Unfollow" at once.
                 this.hovered = false;
                 this.focused = false;
+                this.settled = true;
                 this.apply(state);
                 this.dispatching = true;
                 try {

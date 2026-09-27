@@ -475,7 +475,11 @@
         canFollow: this.initial ? !!this.initial.canFollow : false,
         busy: false,
         hovered: false,
-        focused: false
+        focused: false,
+        // Set by a finished action: the pointer or focus that just clicked keeps reading
+        // "Following" until it leaves - browsers re-dispatch `mouseenter` after the label
+        // changes under a resting pointer, so resetting `hovered` alone is not enough.
+        settled: false
       };
     },
     computed: {
@@ -486,7 +490,7 @@
         if (!this.isFollowing) {
           return vue$1.i18n.t("UserModule.base", "Follow");
         }
-        return this.hovered || this.focused ? vue$1.i18n.t("UserModule.base", "Unfollow") : vue$1.i18n.t("UserModule.base", "Following");
+        return (this.hovered || this.focused) && !this.settled ? vue$1.i18n.t("UserModule.base", "Unfollow") : vue$1.i18n.t("UserModule.base", "Following");
       },
       payload() {
         return {
@@ -549,6 +553,7 @@
         return request().then((state) => {
           this.busy = false;
           this.resetHover();
+          this.settled = true;
           this.apply(state);
           this.dispatching = true;
           try {
@@ -566,6 +571,11 @@
       onBlur() {
         this.focused = false;
         this.hovered = false;
+        this.settled = false;
+      },
+      onMouseleave() {
+        this.hovered = false;
+        this.settled = false;
       },
       resetHover() {
         this.hovered = false;
@@ -615,7 +625,7 @@
       "aria-busy": $data.busy ? "true" : null,
       onClick: _cache[0] || (_cache[0] = (...args) => $options.toggle && $options.toggle(...args)),
       onMouseenter: _cache[1] || (_cache[1] = ($event) => $data.hovered = true),
-      onMouseleave: _cache[2] || (_cache[2] = ($event) => $data.hovered = false),
+      onMouseleave: _cache[2] || (_cache[2] = (...args) => $options.onMouseleave && $options.onMouseleave(...args)),
       onFocus: _cache[3] || (_cache[3] = ($event) => $data.focused = true),
       onBlur: _cache[4] || (_cache[4] = (...args) => $options.onBlur && $options.onBlur(...args))
     }, [

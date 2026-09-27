@@ -22,6 +22,11 @@ use yii\base\Event;
  */
 class SpaceSearchProviderTest extends HumHubDbTestCase
 {
+    /**
+     * @inheritdoc
+     */
+    protected $fixtureConfig = ['default'];
+
     public function testFindsSpacesByKeywordWithTheirTotal(): void
     {
         $this->becomeUser('Admin');

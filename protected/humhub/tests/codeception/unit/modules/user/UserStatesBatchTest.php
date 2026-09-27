@@ -31,6 +31,11 @@ use Yii;
  */
 class UserStatesBatchTest extends HumHubDbTestCase
 {
+    /**
+     * @inheritdoc
+     */
+    protected $fixtureConfig = ['default'];
+
     protected function setUp(): void
     {
         parent::setUp();

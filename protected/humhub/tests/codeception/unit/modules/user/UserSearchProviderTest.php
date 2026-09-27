@@ -22,6 +22,11 @@ use yii\base\Event;
  */
 class UserSearchProviderTest extends HumHubDbTestCase
 {
+    /**
+     * @inheritdoc
+     */
+    protected $fixtureConfig = ['default'];
+
     public function testFindsUsersByKeywordWithTheirTotal(): void
     {
         $this->becomeUser('Admin');

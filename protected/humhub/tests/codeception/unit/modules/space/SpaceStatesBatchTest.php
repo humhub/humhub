@@ -23,6 +23,11 @@ use Yii;
 class SpaceStatesBatchTest extends HumHubDbTestCase
 {
     /**
+     * @inheritdoc
+     */
+    protected $fixtureConfig = ['default'];
+
+    /**
      * @return int the database queries `$call` ran
      */
     private function queries(callable $call): int

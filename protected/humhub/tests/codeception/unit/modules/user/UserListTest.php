@@ -45,6 +45,11 @@ use yii\base\Event;
  */
 class UserListTest extends HumHubDbTestCase
 {
+    /**
+     * @inheritdoc
+     */
+    protected $fixtureConfig = ['default'];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -178,6 +183,14 @@ class UserListTest extends HumHubDbTestCase
         $this->becomeUser('Admin');
         $this->assertNotContains(3, $this->ids([], 1), 'not even to an administrator');
         $this->assertSame([], $this->ids(['ids' => [3]], 1), 'ids never widen availability');
+    }
+
+    public function testAHiddenUserFindsThemselves()
+    {
+        User::updateAll(['visibility' => User::VISIBILITY_HIDDEN], ['id' => 3]);
+
+        $this->assertContains(3, $this->ids([], 3));
+        $this->assertNotContains(3, $this->ids([], 2));
     }
 
     public function testFiltersUsersWhoBlockedTheCaller()

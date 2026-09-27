@@ -19,6 +19,11 @@ use tests\codeception\_support\HumHubDbTestCase;
  */
 class SpaceDirectoryHeadingButtonsTest extends HumHubDbTestCase
 {
+    /**
+     * @inheritdoc
+     */
+    protected $fixtureConfig = ['default'];
+
     public function testCreateSpaceIsAModalAction()
     {
         $this->becomeUser('Admin');

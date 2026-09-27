@@ -165,7 +165,7 @@ class UserController extends BaseController
         /** @var User[] $users */
         $users = User::find()
             ->available()
-            ->andWhere(['!=', 'user.visibility', User::VISIBILITY_HIDDEN])
+            ->andWhere(UserList::notHidden(Yii::$app->user->getIdentity()))
             ->andWhere(['user.id' => $ids])
             ->orderBy(['user.id' => SORT_ASC])
             ->all();

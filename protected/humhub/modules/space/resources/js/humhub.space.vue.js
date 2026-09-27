@@ -82,7 +82,11 @@
         member: this.isMember,
         busy: false,
         hovered: false,
-        focused: false
+        focused: false,
+        // Set by a finished action: the pointer or focus that just clicked keeps reading
+        // "Following" until it leaves - browsers re-dispatch `mouseenter` after the label
+        // changes under a resting pointer, so resetting `hovered` alone is not enough.
+        settled: false
       };
     },
     computed: {
@@ -93,7 +97,7 @@
         if (!this.isFollowing) {
           return vue.i18n.t("SpaceModule.base", "Follow");
         }
-        return this.hovered || this.focused ? vue.i18n.t("SpaceModule.base", "Unfollow") : vue.i18n.t("SpaceModule.base", "Following");
+        return (this.hovered || this.focused) && !this.settled ? vue.i18n.t("SpaceModule.base", "Unfollow") : vue.i18n.t("SpaceModule.base", "Following");
       },
       payload() {
         return {
@@ -127,6 +131,14 @@
       vue.events.off(MEMBERSHIP_CHANGED$2, this.onMembershipChanged);
     },
     methods: {
+      onBlur() {
+        this.focused = false;
+        this.settled = false;
+      },
+      onMouseleave() {
+        this.hovered = false;
+        this.settled = false;
+      },
       load() {
         return fetchFollow(this.spaceId).then((state) => {
           this.apply(state);
@@ -159,6 +171,7 @@
           this.busy = false;
           this.hovered = false;
           this.focused = false;
+          this.settled = true;
           this.apply(state);
           this.dispatching = true;
           try {
@@ -221,9 +234,9 @@
       "aria-busy": $data.busy ? "true" : null,
       onClick: _cache[0] || (_cache[0] = (...args) => $options.toggle && $options.toggle(...args)),
       onMouseenter: _cache[1] || (_cache[1] = ($event) => $data.hovered = true),
-      onMouseleave: _cache[2] || (_cache[2] = ($event) => $data.hovered = false),
+      onMouseleave: _cache[2] || (_cache[2] = (...args) => $options.onMouseleave && $options.onMouseleave(...args)),
       onFocus: _cache[3] || (_cache[3] = ($event) => $data.focused = true),
-      onBlur: _cache[4] || (_cache[4] = ($event) => $data.focused = false)
+      onBlur: _cache[4] || (_cache[4] = (...args) => $options.onBlur && $options.onBlur(...args))
     }, [
       $data.busy ? (vue$1.openBlock(), vue$1.createElementBlock("span", _hoisted_2$6)) : $data.isFollowing ? (vue$1.openBlock(), vue$1.createElementBlock("span", {
         key: 1,

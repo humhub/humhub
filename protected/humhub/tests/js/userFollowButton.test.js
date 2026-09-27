@@ -133,6 +133,24 @@ describe('UserFollowButton', () => {
         expect(wrapper.emitted('change')[0][0].followerCount).toBeNull();
     });
 
+    it('keeps reading "Following" under the pointer that just followed, until it leaves', async () => {
+        const wrapper = mountButton({ initial: followState({ isFollowing: false }) });
+        const button = wrapper.find('button');
+
+        await button.trigger('mouseenter');
+        await button.trigger('focus');
+        await button.trigger('click');
+        await flushPromises();
+        // Browsers re-dispatch mouseenter after the label changed under a resting pointer.
+        await button.trigger('mouseenter');
+        expect(button.text()).toBe('Following');
+
+        await button.trigger('mouseleave');
+        await button.trigger('blur');
+        await button.trigger('mouseenter');
+        expect(button.text()).toBe('Unfollow');
+    });
+
     it('reads "Unfollow" while hovered or focused', async () => {
         const wrapper = mountButton({ initial: followState({ isFollowing: true }) });
         const button = wrapper.find('button');

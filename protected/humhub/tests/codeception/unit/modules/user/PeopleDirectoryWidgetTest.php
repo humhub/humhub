@@ -27,6 +27,11 @@ use yii\helpers\Json;
  */
 class PeopleDirectoryWidgetTest extends HumHubDbTestCase
 {
+    /**
+     * @inheritdoc
+     */
+    protected $fixtureConfig = ['default'];
+
     protected function setUp(): void
     {
         parent::setUp();

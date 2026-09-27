@@ -19,6 +19,11 @@ use yii\helpers\Json;
  */
 class SpaceDirectoryWidgetTest extends HumHubDbTestCase
 {
+    /**
+     * @inheritdoc
+     */
+    protected $fixtureConfig = ['default'];
+
     private function props(string $html): array
     {
         $this->assertMatchesRegularExpression('/\sprops="([^"]+)"/', $html, 'the complex props are JSON-encoded into a props attribute');
