@@ -12,7 +12,6 @@ use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\modules\user\components\UserList;
 use humhub\modules\user\permissions\PeopleAccess;
-use humhub\modules\user\widgets\PeopleFilterPicker;
 use Yii;
 
 /**
@@ -99,17 +98,5 @@ class PeopleController extends Controller
         }
 
         return $params;
-    }
-
-    /**
-     * Returns people list in JSON format filtered by keyword - the default route of the
-     * deprecated {@see PeopleFilterPicker}.
-     *
-     * @deprecated since 1.20, removed in 1.21 together with {@see PeopleFilterPicker}; the People
-     * directory's profile field filters load their options from `GET /api/v2/user/field-values`
-     */
-    public function actionFilterPeopleJson($field, $keyword = null)
-    {
-        return $this->asJson((new PeopleFilterPicker(['itemKey' => $field]))->getSuggestions($keyword));
     }
 }

@@ -1457,14 +1457,19 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `views/people/index.php` renders only the island (the page no longer uses
     `humhub.cards.js`), and the wrapper of `views/people/_layout.php` lost its `container-cards`
     class (`container-people` stays). A theme overriding the view has to move to the island.
-  - **Deprecated, removed in 1.21:** `humhub\modules\user\components\PeopleQuery` and the
-    widgets `PeopleCard`, `PeopleIcons`, `PeopleDetails`, `PeopleTagList`,
-    `PeopleActionButtons`, `PeopleFilters` and `PeopleFilterPicker` of
-    `humhub\modules\user\widgets`. The core no longer uses them, so handlers registered on
-    them no longer affect `/people`; they keep working for a module building a People-like
-    page of its own on them (`humhub/matchmaking` does). So is `PeopleFilterPicker`'s default
-    route `user/people/filter-people-json` (`PeopleController::actionFilterPeopleJson()`),
-    removed with it in 1.21.
+  - **Removed:** `humhub\modules\user\components\PeopleQuery` (the list is
+    `humhub\modules\user\components\UserList`, see below) and the widgets `PeopleCard`,
+    `PeopleIcons`, `PeopleDetails`, `PeopleTagList`, `PeopleActionButtons`, `PeopleFilters` and
+    `PeopleFilterPicker` of `humhub\modules\user\widgets` with the views `peopleCard.php` and
+    `peopleIcons.php` — the directory is the `PeopleDirectory` island, its cards
+    `vue/components/PeopleCard.vue`, which a module extends through the slots
+    `user.card-subtitle` (a line under the user's name) and `user.card-actions` (the card's
+    footer) instead of the card widgets; the route `user/people/filter-people-json`
+    (`PeopleController::actionFilterPeopleJson()`, `PeopleFilterPicker`'s suggestions) — the
+    profile field filters search `GET /api/v2/user/field-values` instead. A theme overriding one
+    of the removed views, or a module rendering one of the removed widgets or building a page of
+    its own on `PeopleQuery` (`humhub/matchmaking` does), has to move to `UserList` and the
+    island.
   - **Replaced:** a module restricting the directory's list through `PeopleQuery` registers on
     `humhub\modules\user\components\UserList::EVENT_BUILD` instead. `UserList` is the user
     search behind `GET /api/v2/user` — the directory and the meta search read it, user pickers
@@ -1544,7 +1549,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     (`spaceId`) and `ProfileFieldFilter` (`fields[<internal name>]`); `user\serializers\FollowSerializer`, `UserSerializer::list()`,
     `batch()`, `counts()`, `cardFields()`, `friendship\serializers\FriendshipSerializer::states()`;
     `user\services\IsOnlineService::getStatuses()` (the online status of many users at once,
-    answered by `user/states` as `isOnline`); the `PeopleCard` extension slots
+    answered by `user/states` as `isOnline`); the `PeopleCard.vue` extension slots
     `user.card-subtitle` (`registerSlotComponent`, receives the `user`), where a module shows
     its own line under the user's name, and `user.card-actions`, the card's footer: the
     friendship module registers its `friendship` action (sortOrder 100) and the user module its

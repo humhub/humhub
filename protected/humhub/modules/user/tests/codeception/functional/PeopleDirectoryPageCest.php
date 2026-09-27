@@ -9,9 +9,7 @@
 namespace user\functional;
 
 use humhub\modules\content\models\ContentContainer;
-use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
-use humhub\modules\user\widgets\PeopleTagList;
 use humhub\modules\user\widgets\UserTags;
 use PHPUnit\Framework\Assert;
 use user\FunctionalTester;
@@ -45,17 +43,13 @@ class PeopleDirectoryPageCest
         $I->seeResponseCodeIs(404);
     }
 
-    public function testTheDeprecatedFilterSuggestionsStillAnswer(FunctionalTester $I)
+    public function testTheFilterSuggestionsRouteIsGone(FunctionalTester $I)
     {
-        $I->wantTo('keep the default route of the deprecated PeopleFilterPicker working');
-        ProfileField::updateAll(['directory_filter' => 1], ['internal_name' => 'firstname']);
+        $I->wantTo('see that the profile field suggestions of the old filter pickers are gone');
         $I->amUser1();
 
         $I->amOnRoute('/user/people/filter-people-json', ['field' => 'firstname', 'keyword' => 'Sar']);
-        $I->seeResponseCodeIs(200);
-        $suggestions = json_decode($I->grabPageSource(), true);
-        Assert::assertIsArray($suggestions);
-        Assert::assertContains('Sara', array_column($suggestions, 'text'));
+        $I->seeResponseCodeIs(404);
     }
 
     public function testTagLinksUseTheSearchParameter(FunctionalTester $I)
@@ -66,9 +60,8 @@ class PeopleDirectoryPageCest
         ContentContainer::updateAll(['tags_cached' => 'php'], ['id' => $user->contentcontainer_id]);
         $user = User::findOne(['id' => 2]);
 
-        foreach ([UserTags::widget(['user' => $user]), PeopleTagList::widget(['user' => $user])] as $html) {
-            Assert::assertStringContainsString('q=php', $html);
-            Assert::assertStringNotContainsString('keyword=', $html);
-        }
+        $html = UserTags::widget(['user' => $user]);
+        Assert::assertStringContainsString('q=php', $html);
+        Assert::assertStringNotContainsString('keyword=', $html);
     }
 }

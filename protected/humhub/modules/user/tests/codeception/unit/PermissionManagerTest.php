@@ -8,6 +8,7 @@
 
 namespace tests\codeception\unit;
 
+use humhub\components\listing\ListContext;
 use humhub\libs\BasePermission;
 use humhub\modules\admin\models\UserApprovalSearch;
 use humhub\modules\admin\permissions\ManageGroups;
@@ -16,7 +17,7 @@ use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\admin\permissions\SeeAdminInformation;
 use humhub\modules\space\models\Space;
-use humhub\modules\user\components\PeopleQuery;
+use humhub\modules\user\components\UserList;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\GroupSpace;
 use humhub\modules\user\models\GroupUser;
@@ -123,9 +124,12 @@ class PermissionManagerTest extends HumHubDbTestCase
         $unapprovedSubGroupUser->save();
 
         // Make sure on "People" if the parent group is selected the users from the subgroup will be shown as well:
-        $peopleQuery = new PeopleQuery(['defaultFilters' => ['groupId' => $parentGroup->id]]);
-        $people = $peopleQuery->select('user.username')->column();
-        $this->assertEquals([$user->username, $unapprovedSubGroupUser->username], $people);
+        $people = (new UserList())
+            ->build(['groupId' => (string)$parentGroup->id], ListContext::forCurrentUser(UserList::PURPOSE_DIRECTORY))
+            ->query()
+            ->select('user.username')
+            ->column();
+        $this->assertEqualsCanonicalizing([$user->username, $unapprovedSubGroupUser->username], $people);
     }
 
     private function assertUserGroups($hasGroups = [], $hasNotGroups = []): void
