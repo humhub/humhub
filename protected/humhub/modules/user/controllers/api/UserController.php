@@ -30,8 +30,9 @@ use yii\web\ForbiddenHttpException;
  * The user list of the HTTP API (see `docs/develop/concept-api.md`).
  *
  * This is the general list of users, not one endpoint per consumer: the People directory reads
- * it, and user pickers and mentioning can read the same shape. What it answers is therefore
- * caller-NEUTRAL ({@see UserSerializer::list()}) — no "do I follow them", no friendship. A
+ * it, and user pickers and mentioning can read the same list. What it answers is therefore
+ * caller-NEUTRAL ({@see UserSerializer::list()}, for a picker the short shape) — no "do I follow
+ * them", no friendship. A
  * caller that needs to know which of the listed users are connected to it asks for them
  * (`scope`), and a caller that needs to know what they are to it asks {@see self::actionStates()}
  * — the split the space list makes.
@@ -55,6 +56,18 @@ class UserController extends BaseController
      * displays (the list's `ids`/`exclude` have the same limit, {@see IdsFilter::MAX_IDS})
      */
     public const MAX_STATE_IDS = 100;
+
+    /**
+     * @var string[] the parameters a user picker (`purpose=picker`) sends — all a caller without
+     * access to the People directory may send ({@see self::actionIndex()})
+     */
+    public const PICKER_PARAMS = ['purpose', 'q', 'ids', 'exclude', 'spaceId', 'page', 'pageSize'];
+
+    /**
+     * @var int the largest page, and the most `ids`, of a picker for a caller without access to
+     * the People directory — a picker shows a handful of suggestions, not a directory page
+     */
+    public const PICKER_MAX_PAGE_SIZE = 20;
 
     /**
      * @inheritdoc
@@ -99,23 +112,54 @@ class UserController extends BaseController
      * An unknown value of one of these, and a parameter the list does not know, answers
      * `422 {errors}`.
      *
-     * The list is the People directory and requires its permission ({@see PeopleAccess}) whatever
-     * the `purpose`. User pickers and mentioning get a rule of their own once they move to this
-     * endpoint.
+     * The list is the People directory and requires its permission ({@see PeopleAccess}) — also
+     * without a `purpose` and for `mentioning`, which does not apply the mentioning permission
+     * yet. A user picker (`purpose=picker`, e.g. the filter bar's `user` filter) is for every
+     * logged-in user: without access to the People directory only the picker's parameters
+     * ({@see self::PICKER_PARAMS}) are accepted, any other (`scope`, `groupId`, `tag`,
+     * `fields[…]`, `sort`, and the parameters of filters modules add) is refused with `403`: such
+     * a picker cannot use the directory's filters, sort or card data. It is narrowed as well: it
+     * needs a search (`q`), `ids` or a `spaceId` (else `403`), answers at most
+     * {@see self::PICKER_MAX_PAGE_SIZE} users per page and takes at most as many `ids` (else
+     * `422`); with access, the list's own limits apply.
+     * Which users it holds is the list's rule, as for the directory. A picker is answered with
+     * the short shape ({@see UserSerializer::short()}), what it renders.
      *
-     * @throws ForbiddenHttpException without access to the People directory
+     * @throws ForbiddenHttpException without access to the People directory, for a picker only
+     *         when a parameter beyond the picker's is sent
      */
     public function actionIndex()
     {
-        $this->requirePeopleAccess();
+        $params = $this->listParams();
+        $picker = ($params[UserList::PURPOSE_PARAM] ?? null) === UserList::PURPOSE_PICKER;
+
+        // A picker without access to the People directory: narrowed to what a picker needs.
+        $narrow = false;
+        if (!$picker) {
+            $this->requirePeopleAccess();
+        } elseif (!$this->canAccessPeople()) {
+            if (array_diff(array_keys($params), self::PICKER_PARAMS) !== [] || !$this->namesUsers($params)) {
+                throw new ForbiddenHttpException();
+            }
+            if (count($this->listValues($params['ids'] ?? null)) > self::PICKER_MAX_PAGE_SIZE) {
+                return $this->validationErrors(['ids' => [Yii::t('base', 'At most {count} ids can be named.', ['count' => self::PICKER_MAX_PAGE_SIZE])]]);
+            }
+            $narrow = true;
+        }
 
         try {
-            $users = (new UserList())->build($this->listParams(), ListContext::forCurrentUser())->query();
+            $users = (new UserList())->build($params, ListContext::forCurrentUser())->query();
         } catch (ListValidationException $e) {
             return $this->validationErrors($e->errors);
         }
 
-        $pagination = $this->handlePagination($users, 25, self::MAX_PAGE_SIZE);
+        $pagination = $narrow
+            ? $this->handlePagination($users, self::PICKER_MAX_PAGE_SIZE, self::PICKER_MAX_PAGE_SIZE)
+            : $this->handlePagination($users, 25, self::MAX_PAGE_SIZE);
+
+        if ($picker) {
+            return $this->returnPagination($pagination, array_map(UserSerializer::short(...), $users->all()));
+        }
 
         return $this->returnPagination($pagination, UserSerializer::batch($users->all()));
     }
@@ -292,8 +336,42 @@ class UserController extends BaseController
      */
     private function requirePeopleAccess(): void
     {
-        if (!Yii::$app->user->can(PeopleAccess::class)) {
+        if (!$this->canAccessPeople()) {
             throw new ForbiddenHttpException();
         }
+    }
+
+    private function canAccessPeople(): bool
+    {
+        return Yii::$app->user->can(PeopleAccess::class);
+    }
+
+    /**
+     * Whether a picker's parameters narrow the list to a search, named users or a space's
+     * members — without, a caller lacking access to the People directory would page through
+     * all of it.
+     */
+    private function namesUsers(array $params): bool
+    {
+        $q = $params['q'] ?? null;
+
+        return (is_string($q) && trim($q) !== '')
+            || $this->listValues($params['ids'] ?? null) !== []
+            || $this->listValues($params['spaceId'] ?? null) !== [];
+    }
+
+    /**
+     * The non-empty values of a parameter, repeated or comma-separated.
+     *
+     * @return string[]
+     */
+    private function listValues(mixed $value): array
+    {
+        $values = is_array($value) ? $value : explode(',', (string)($value ?? ''));
+
+        return array_values(array_filter(
+            array_map(static fn($item) => is_scalar($item) ? trim((string)$item) : '', $values),
+            static fn(string $item) => $item !== '',
+        ));
     }
 }

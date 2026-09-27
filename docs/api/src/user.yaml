@@ -45,8 +45,18 @@ paths:
         of their own, say), which are then accepted like the ones below, and may narrow the list
         by `purpose`.
 
-        Requires the permission to view the People directory (`403`), whatever the `purpose`;
-        user pickers and mentioning get a rule of their own once they read this list.
+        Requires the permission to view the People directory (`403`) — but for a user picker
+        (`purpose=picker`, e.g. the filter bar's person filter): that is open to every logged-in
+        user (a guest gets `401`, also with guest access enabled). A caller without the People
+        permission may send only the picker's parameters (`purpose`, `q`, `ids`, `exclude`,
+        `spaceId`, `page`, `pageSize`); any other (`scope`, `groupId`, `tag`, `fields[…]`,
+        `sort`, and the parameters of filters modules add) answers `403`: such a picker cannot
+        use the directory's filters, sort or card data. It is narrowed as well — it needs a
+        search, ids or a space (a non-empty `q`, `ids` or `spaceId`, else `403`), answers at
+        most 20 users per page (a larger `pageSize` is capped) and takes at most 20 `ids`
+        (else `422`); with the People permission the limits below apply. Which users the list
+        holds is the same rule for every purpose. A picker is answered with the short user shape (`UserShort`), every other
+        purpose with `UserListEntry`. `mentioning` still requires the People permission.
       parameters:
         - name: q
           in: query
@@ -148,6 +158,7 @@ paths:
             What the list is for: `directory`, `picker` or `mentioning`; absent = neutral. The
             core does not filter by it — modules may, to restrict a list in one context and
             not in another (e.g. keep users out of the directory but not out of a picker).
+            `picker` decides the access rule and the shape of the answer (see above).
           schema:
             type: string
             enum: [directory, picker, mentioning]
@@ -166,7 +177,9 @@ paths:
                       results:
                         type: array
                         items:
-                          $ref: "#/components/schemas/UserListEntry"
+                          oneOf:
+                            - $ref: "#/components/schemas/UserListEntry"
+                            - $ref: "common.yaml#/components/schemas/UserShort"
               example:
                 results:
                   - id: 7
