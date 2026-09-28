@@ -118,13 +118,13 @@ const ID_PATTERN = /^[1-9]\d*$/;
  *   none — how the bar reads it from the URL), `inputId` (the id of the focusable control).
  *   Emits `update:modelValue` with the chosen user's id as a string, `''` when removed.
  * - Without a value: a search field. A typed text (trimmed, not empty) is searched after
- *   `SEARCH_DEBOUNCE_MS` in `GET /api/v2/user?purpose=picker&q=<text>&pageSize=8` — the users the
+ *   `SEARCH_DEBOUNCE_MS` in `GET /api/v2/user/picker?q=<text>&pageSize=8` — the users the
  *   caller may see, the ones the server accepts as the value; only the answer to the latest text
  *   is shown, its first suggestion active. The suggestions are avatar and name.
  * - With a value: a chip (avatar, name, a remove X, which empties the value and returns the
  *   focus to the search field), a `group` named after the filter's `label`, so the filter's
  *   name stays with the choice. A value the control has not seen among its suggestions (from
- *   the page URL) is resolved once with `GET /api/v2/user?purpose=picker&ids=<id>` — the field
+ *   the page URL) is resolved once with `GET /api/v2/user/picker?ids=<id>` — the field
  *   is disabled with a spinner meanwhile —; a value naming nobody the caller may see is emptied,
  *   one that is no user id at all (a positive integer) at once, without a request.
  * - Keyboard: ArrowDown/ArrowUp open the listbox and, like Home/End, move the active suggestion
@@ -264,7 +264,7 @@ export default {
         resolve(value) {
             const seq = this.resolveSeq;
             this.resolving = true;
-            client.get(apiUrl('user', { purpose: 'picker', ids: value })).then((response) => {
+            client.get(apiUrl('user/picker', { ids: value })).then((response) => {
                 if (seq !== this.resolveSeq) {
                     return;
                 }
@@ -311,7 +311,7 @@ export default {
             this.searchTimer = setTimeout(() => this.load(term, seq), SEARCH_DEBOUNCE_MS);
         },
         load(term, seq) {
-            client.get(apiUrl('user', { purpose: 'picker', q: term, pageSize: MAX_SUGGESTIONS })).then((response) => {
+            client.get(apiUrl('user/picker', { q: term, pageSize: MAX_SUGGESTIONS })).then((response) => {
                 if (seq !== this.searchSeq) {
                     return;
                 }

@@ -20,8 +20,8 @@ use Yii;
 /**
  * One person (default parameter `userId`) — a list's "Author", "Assignee" or "Created by": the
  * value is the id of a user the caller may see, presented as the `user` filter type of the
- * `FilterBar` (a user search with suggestions from `GET /api/v2/user?purpose=picker`, the
- * user module's `UserFilterControl`).
+ * `FilterBar` (a user search with suggestions from `GET /api/v2/user/picker`, the user
+ * module's `UserFilterControl`).
  *
  * ```php
  * new UserFilter('authorId', column: 'content.created_by', definition: ['label' => Yii::t('TasksModule.base', 'Author'), 'sortOrder' => 200]);
@@ -127,9 +127,10 @@ class UserFilter extends ConfigurableFilter
      * itself, so the rules of the suggestions (availability, hidden users, the restrictions of
      * modules for the purpose) are the rules of the value, never a copy of them.
      *
-     * The context is the one the control's suggestions are searched in (`GET /api/v2/user?purpose=picker`
-     * knows the caller only): the caller and the picker purpose, without the host list's purpose
-     * and container — a module restricting those must not refuse a user the control offered.
+     * The context is the one the control's suggestions are searched in (`GET /api/v2/user/picker`,
+     * `ListContext::forCurrentUser(UserList::PURPOSE_PICKER)`): the caller and the picker
+     * purpose, without the host list's purpose and container — a module restricting those must
+     * not refuse a user the control offered.
      */
     private function isListed(int $id, ListContext $context): bool
     {

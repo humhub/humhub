@@ -349,7 +349,7 @@ The component gets the props `filter` (the definition, including `label`, `optio
 
 **Registration order is unconstrained**, as for extension slots: neither the component nor a bar using the type need to exist yet, and a bar that is already mounted picks the type up reactively. A filter whose type is not registered is not rendered, but its value is still read from and written to the URL and sent — the list stays consistent while a module's artifact is missing. For a one-off control on a single page, the bar's `filter-<key>` slot is the simpler tool; it takes precedence over a registered type.
 
-The user module registers the type `user` itself — a core module's type, hence without a prefix: `UserFilterControl`, the control of the ready PHP filter `humhub\modules\user\components\listing\UserFilter` (one person: an author, an assignee). A page using it loads the user module's bundle (`UserVueAsset` in its asset bundle's `$depends`); see [Components](ui-js-vuejs-components.md#core-component-set).
+The user module registers the type `user` itself — a core module's type, hence without a prefix: `UserFilterControl`, the control of the ready PHP filter `humhub\modules\user\components\listing\UserFilter` (one person: an author, an assignee), searching `GET /api/v2/user/picker`. A page using it loads the user module's bundle (`UserVueAsset` in its asset bundle's `$depends`); see [Components](ui-js-vuejs-components.md#core-component-set).
 
 ## Module data
 

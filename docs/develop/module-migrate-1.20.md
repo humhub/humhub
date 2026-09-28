@@ -1452,8 +1452,8 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   `GET /api/v2/user/states`, `GET /api/v2/user/field-values`, `GET /api/v2/user/tags` and
   `GET|PUT|DELETE /api/v2/user/<id>/follow` (see `docs/api/src/user.yaml`). The user list, the
   states, the field values and the tags require the permission to access People
-  (`PeopleAccess`) — the list for every `purpose` but `picker` (see "A person filter for
-  lists" below).
+  (`PeopleAccess`), whatever the `purpose`; a user picker reads `GET /api/v2/user/picker` (see
+  "A person filter for lists" below).
   - **Removed:** the route `user/people/load-more` (`PeopleController::actionLoadMore()`).
     `views/people/index.php` renders only the island (the page no longer uses
     `humhub.cards.js`), and the wrapper of `views/people/_layout.php` lost its `container-cards`
@@ -1565,17 +1565,17 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 - **A person filter for lists.** New: `user\components\listing\UserFilter`, a ready filter
   (`new UserFilter('authorId', column: 'content.created_by', definition: ['label' => …])`;
   parameter `userId` by default, an `apply` callback instead of `column`): the id of a user the
-  user search (`UserList`, `purpose=picker`) shows the caller, anything else `422` "User not
+  user search (`UserList`, purpose `picker`) shows the caller, anything else `422` "User not
   found.". Its definition is the new `FilterBar` type `user`, rendered by the user module's
-  `UserFilterControl` (search with avatars over `GET /api/v2/user?purpose=picker`, the chosen
+  `UserFilterControl` (search with avatars over the new `GET /api/v2/user/picker`, the chosen
   user a chip) — a page using it adds `user\assets\UserVueAsset` to its asset bundle's
-  `$depends`. The filter is not available to guests. `GET /api/v2/user?purpose=picker` is for
-  every logged-in user, also without `PeopleAccess`: such a caller may send only the picker's
-  parameters (`purpose`, `q`, `ids`, `exclude`, `spaceId`, `page`, `pageSize`,
-  `UserController::PICKER_PARAMS`), any other is `403` — also the parameter of a filter a
-  module adds to `UserList` —, so such a picker cannot use the directory's filters, sort or
-  card data; it is narrowed as well: it needs a search, ids or a space (`q`, `ids` or
-  `spaceId`, else `403`) and returns at most 20 per page (at most 20 `ids`, else `422`); which
-  users it holds is `UserList`'s rule as for the directory, and a picker is answered with the short user shape
-  (`UserSerializer::short()`). The directory, no `purpose` and `mentioning` still require
-  `PeopleAccess`. Additive, nothing to migrate.
+  `$depends`. The filter is not available to guests. `GET /api/v2/user/picker`
+  (`UserController::actionPicker()`) is for every logged-in user, also without `PeopleAccess`:
+  the user list for the picker purpose (the restrictions modules add on `UserList::EVENT_BUILD`
+  for `UserList::PURPOSE_PICKER` apply), taking exactly `q`, `ids`, `exclude`, `spaceId`,
+  `page`, `pageSize` (`UserController::PICKER_PARAMS`; any other — the directory's filters,
+  `sort`, a module's filter, `purpose` — is `422` "Unknown parameter."), requiring a non-empty
+  `q`, `ids` or `spaceId` (else `422` under `q`), at most 20 per page and 20 `ids`
+  (`PICKER_PAGE_SIZE`), answered with the short user shape (`UserSerializer::short()`).
+  `GET /api/v2/user` keeps requiring `PeopleAccess` for every purpose. Additive, nothing to
+  migrate.

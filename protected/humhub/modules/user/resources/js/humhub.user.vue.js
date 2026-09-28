@@ -575,7 +575,7 @@
       resolve(value) {
         const seq = this.resolveSeq;
         this.resolving = true;
-        vue$1.client.get(vue$1.apiUrl("user", { purpose: "picker", ids: value })).then((response) => {
+        vue$1.client.get(vue$1.apiUrl("user/picker", { ids: value })).then((response) => {
           if (seq !== this.resolveSeq) {
             return;
           }
@@ -621,7 +621,7 @@
         this.searchTimer = setTimeout(() => this.load(term, seq), SEARCH_DEBOUNCE_MS);
       },
       load(term, seq) {
-        vue$1.client.get(vue$1.apiUrl("user", { purpose: "picker", q: term, pageSize: MAX_SUGGESTIONS })).then((response) => {
+        vue$1.client.get(vue$1.apiUrl("user/picker", { q: term, pageSize: MAX_SUGGESTIONS })).then((response) => {
           if (seq !== this.searchSeq) {
             return;
           }

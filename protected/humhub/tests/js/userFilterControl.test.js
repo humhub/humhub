@@ -110,8 +110,8 @@ describe('UserFilterControl', () => {
 
         expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(1);
         const url = globalThis.humhubStubs.client.get.mock.calls[0][0];
-        expect(new URL(url, 'http://localhost').pathname).toBe('/api/v2/user');
-        expect(params(url)).toEqual({ purpose: 'picker', q: 'tester', pageSize: '8' });
+        expect(new URL(url, 'http://localhost').pathname).toBe('/api/v2/user/picker');
+        expect(params(url)).toEqual({ q: 'tester', pageSize: '8' });
         expect(input(wrapper).attributes('aria-expanded')).toBe('true');
         expect(optionTexts(wrapper)).toEqual(['Peter Tester', 'Sara Tester']);
         const avatar = wrapper.find('[role="option"] img');
@@ -196,7 +196,8 @@ describe('UserFilterControl', () => {
         const wrapper = mountControl({ modelValue: '8' });
 
         expect(pending).toHaveLength(1);
-        expect(params(pending[0].url)).toEqual({ purpose: 'picker', ids: '8' });
+        expect(new URL(pending[0].url, 'http://localhost').pathname).toBe('/api/v2/user/picker');
+        expect(params(pending[0].url)).toEqual({ ids: '8' });
         expect(wrapper.classes()).toContain('is-loading');
         expect(input(wrapper).attributes('disabled')).toBeDefined();
         expect(input(wrapper).attributes('aria-busy')).toBe('true');
