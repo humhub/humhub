@@ -19,7 +19,7 @@ return [
   'Don\'t have an account?' => 'Nog geen account?',
   'Due to security reasons you are required to change your password in order to access the platform.' => 'Om de veiligheid van uw gegevens te garanderen, moet u uw wachtwoord wijzigen.',
   'Email or Username' => 'E-mailadres of gebruikersnaam',
-  'Enter your email address and click Send. We will email you a sign-up link to create your account.' => 'Voer uw e-mailadres in en klik op Verzenden. We sturen u een e-mail met een link om uw account aan te maken.',
+  'Enter your email address and click Send. We will email you a sign-up link to create your account.' => 'Vul je e-mailadres in. We sturen je een link om je registratie af te ronden.',
   'Forgot password?' => 'Wachtwoord vergeten?',
   'Go to login page' => 'Ga naar de aanmeld pagina',
   'Group' => 'Groep',
