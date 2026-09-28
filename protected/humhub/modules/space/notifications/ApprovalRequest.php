@@ -109,21 +109,18 @@ class ApprovalRequest extends BaseNotification
     /**
      * @inheritdoc
      */
-    public function serialize(): array
+    public function __serialize(): array
     {
-        return ['source' => $this->source, 'originator' => $this->originator, 'message' => $this->message];
+        return array_merge(parent::__serialize(), ['message' => $this->message]);
     }
 
     /**
      * @inheritdoc
      */
-    public function unserialize($serialized)
+    public function __unserialize($unserializedArr)
     {
-        $this->init();
-        $unserializedArr = unserialize($serialized);
-        $this->from($unserializedArr['originator']);
-        $this->about($unserializedArr['source']);
-        $this->withMessage($unserializedArr['message']);
+        parent::__unserialize($unserializedArr);
+        $this->withMessage($unserializedArr['message'] ?? null);
     }
 
 }
