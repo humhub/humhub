@@ -32,7 +32,8 @@ use yii\base\Event;
 
 /**
  * The user list (`humhub\modules\user\controllers\api\UserController`) — the user search of the
- * platform, read by the People directory and requiring access to it.
+ * platform, read by the People directory and requiring access to it — and its picker
+ * (`user/picker`), which does not.
  *
  * Fixture ground truth used here: the enabled users are 1 (`Admin`), 2 (`User1`, Peter), 3
  * (`User2`, Sara), 4 (`User3`, Andreas) and 8 (`AdminNotMember`); 5 is disabled, 6 and 7 are
@@ -458,12 +459,139 @@ class UserApiCest
 
         try {
             $I->amLoggedInAs(2);
-            foreach ([['purpose' => 'directory'], ['purpose' => 'picker'], [], ['scope' => 'nothing']] as $params) {
+            foreach ([['purpose' => 'directory'], ['purpose' => 'picker'], ['purpose' => 'mentioning'], [], ['scope' => 'nothing']] as $params) {
                 $I->sendGet('user', $params);
                 $I->seeResponseCodeIs(403);
             }
         } finally {
             $this->denyPeopleAccess(2, false);
+        }
+    }
+
+    public function testThePickerNeedsNoPeopleAccess(ApiTester $I)
+    {
+        $I->wantTo('search users for a picker without access to People');
+        $this->denyPeopleAccess(2);
+
+        try {
+            $I->amLoggedInAs(2);
+
+            $I->sendGet('user/picker', ['q' => 'Tester']);
+            $I->seeResponseCodeIs(200);
+            Assert::assertSame([1, 2, 3, 4], $this->sortedIds($I), 'the users the list shows, searched');
+
+            $I->sendGet('user/picker', ['ids' => '3']);
+            $I->seeResponseCodeIs(200);
+            Assert::assertSame([3], $this->ids($I));
+
+            $I->sendGet('user/picker', ['ids' => '5']);
+            $I->seeResponseCodeIs(200);
+            Assert::assertSame([], $this->ids($I), 'a disabled user stays out');
+
+            $I->sendGet('user/picker', ['spaceId' => '2', 'exclude' => '1', 'page' => 1, 'pageSize' => 5]);
+            $I->seeResponseCodeIs(200);
+            Assert::assertSame([2], $this->ids($I), 'every parameter of the picker');
+        } finally {
+            $this->denyPeopleAccess(2, false);
+        }
+    }
+
+    public function testThePickerTakesOnlyItsOwnParameters(ApiTester $I)
+    {
+        $I->wantTo('be told about a parameter the picker does not take, the filters of the directory and the purpose included');
+        $I->amLoggedInAs(4);
+
+        foreach (['groupId' => '3', 'tag' => 'x', 'scope' => 'all', 'sort' => 'firstname', 'purpose' => 'picker'] as $param => $value) {
+            $I->sendGet('user/picker', ['q' => 'a', $param => $value]);
+            $I->seeResponseCodeIs(422);
+            Assert::assertSame(['Unknown parameter.'], $I->grabDataFromResponseByJsonPath('$.errors.' . $param)[0], $param);
+        }
+
+        $I->sendGet('user/picker', ['q' => 'a', 'fields' => ['gender' => 'male']]);
+        $I->seeResponseCodeIs(422);
+        Assert::assertSame(['fields[gender]' => ['Unknown parameter.']], $I->grabDataFromResponseByJsonPath('$.errors')[0]);
+    }
+
+    public function testThePickerNeedsASearchIdsOrASpace(ApiTester $I)
+    {
+        $I->wantTo('be told that a picker needs a search, ids or a space');
+        $I->amLoggedInAs(4);
+
+        foreach ([[], ['q' => ''], ['q' => '  '], ['ids' => ''], ['exclude' => '1'], ['page' => 1, 'pageSize' => 5]] as $params) {
+            $I->sendGet('user/picker', $params);
+            $I->seeResponseCodeIs(422);
+            $I->seeResponseJsonMatchesJsonPath('$.errors.q');
+        }
+    }
+
+    public function testThePickerAnswersAtMost20(ApiTester $I)
+    {
+        $I->wantTo('get at most 20 users per page and name at most 20 from the picker, with access to People too');
+        $I->amLoggedInAs(4);
+
+        $I->sendGet('user/picker', ['q' => 'Tester', 'pageSize' => 100]);
+        $I->seeResponseCodeIs(200);
+        Assert::assertSame(20, $I->grabDataFromResponseByJsonPath('$.pageSize')[0], 'at most 20 per page');
+
+        $I->sendGet('user/picker', ['q' => 'Tester']);
+        Assert::assertSame(20, $I->grabDataFromResponseByJsonPath('$.pageSize')[0], '20 by default');
+
+        $I->sendGet('user/picker', ['ids' => implode(',', range(1, 20))]);
+        $I->seeResponseCodeIs(200);
+
+        $I->sendGet('user/picker', ['ids' => implode(',', range(1, 21))]);
+        $I->seeResponseCodeIs(422);
+        $I->seeResponseJsonMatchesJsonPath('$.errors.ids');
+
+        $I->sendGet('user/picker', ['ids' => range(1, 21)]);
+        $I->seeResponseCodeIs(422); // repeated as well
+    }
+
+    public function testThePickerIsForLoggedInUsers(ApiTester $I)
+    {
+        $I->wantTo('see the picker stay closed to guests, also with guest access');
+        Yii::$app->getModule('user')->settings->set('auth.allowGuestAccess', 1);
+
+        try {
+            $I->sendGet('user/picker', ['q' => 'Tester']);
+            $I->seeResponseCodeIs(401);
+        } finally {
+            Yii::$app->getModule('user')->settings->set('auth.allowGuestAccess', 0);
+        }
+    }
+
+    public function testThePickerAnswersTheShortShape(ApiTester $I)
+    {
+        $I->wantTo('get the short user shape from the picker');
+        $I->amLoggedInAs(4);
+
+        $I->sendGet('user/picker', ['ids' => '3']);
+        $I->seeResponseCodeIs(200);
+        $result = $I->grabDataFromResponseByJsonPath('$.results[0]')[0];
+        Assert::assertSame(['id', 'guid', 'displayName', 'url', 'imageUrl', 'contentContainerId'], array_keys($result));
+        Assert::assertSame(3, $result['id']);
+
+        $I->sendGet('user', ['purpose' => 'picker', 'ids' => '3']);
+        Assert::assertArrayHasKey('followerCount', $I->grabDataFromResponseByJsonPath('$.results[0]')[0], 'the list keeps its shape, whatever the purpose');
+    }
+
+    public function testThePickerIsTheListForThePickerPurpose(ApiTester $I)
+    {
+        $I->wantTo('see a module restricting the picker purpose restrict the picker');
+        $build = static function (ListEvent $event) {
+            if ($event->context->purpose === UserList::PURPOSE_PICKER) {
+                $event->builder->query()->andWhere(['!=', 'user.id', 3]);
+            }
+        };
+        Event::on(UserList::class, UserList::EVENT_BUILD, $build);
+
+        try {
+            $I->amLoggedInAs(4);
+            $I->sendGet('user/picker', ['q' => 'Tester']);
+            $I->seeResponseCodeIs(200);
+            Assert::assertSame([1, 2, 4], $this->sortedIds($I));
+        } finally {
+            Event::off(UserList::class, UserList::EVENT_BUILD, $build);
         }
     }
 
@@ -525,7 +653,7 @@ class UserApiCest
     public function testRequiresAuthentication(ApiTester $I)
     {
         $I->wantTo('be rejected without a session');
-        foreach (['user', 'user/states', 'user/field-values?field=gender', 'user/tags'] as $url) {
+        foreach (['user', 'user/states', 'user/field-values?field=gender', 'user/tags', 'user/picker?q=a'] as $url) {
             $I->sendGet($url);
             $I->seeResponseCodeIs(401);
         }

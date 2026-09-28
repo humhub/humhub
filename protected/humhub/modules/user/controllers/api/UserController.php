@@ -30,7 +30,8 @@ use yii\web\ForbiddenHttpException;
  * The user list of the HTTP API (see `docs/develop/concept-api.md`).
  *
  * This is the general list of users, not one endpoint per consumer: the People directory reads
- * it, and user pickers and mentioning can read the same shape. What it answers is therefore
+ * it, a user picker reads the same list for its purpose through {@see self::actionPicker()}
+ * (in the short shape), and mentioning can read it too. What it answers is therefore
  * caller-NEUTRAL ({@see UserSerializer::list()}) — no "do I follow them", no friendship. A
  * caller that needs to know which of the listed users are connected to it asks for them
  * (`scope`), and a caller that needs to know what they are to it asks {@see self::actionStates()}
@@ -57,6 +58,17 @@ class UserController extends BaseController
     public const MAX_STATE_IDS = 100;
 
     /**
+     * @var string[] the parameters of {@see self::actionPicker()}
+     */
+    public const PICKER_PARAMS = ['q', 'ids', 'exclude', 'spaceId', 'page', 'pageSize'];
+
+    /**
+     * @var int the page size of {@see self::actionPicker()}, its largest page and the most `ids`
+     * it takes — a picker shows a handful of suggestions, not a directory page
+     */
+    public const PICKER_PAGE_SIZE = 20;
+
+    /**
      * @inheritdoc
      */
     protected bool $allowSessionAuth = true;
@@ -74,6 +86,7 @@ class UserController extends BaseController
                     'states' => ['GET', 'HEAD'],
                     'field-values' => ['GET', 'HEAD'],
                     'tags' => ['GET', 'HEAD'],
+                    'picker' => ['GET', 'HEAD'],
                 ],
             ],
         ]);
@@ -100,8 +113,9 @@ class UserController extends BaseController
      * `422 {errors}`.
      *
      * The list is the People directory and requires its permission ({@see PeopleAccess}) whatever
-     * the `purpose`. User pickers and mentioning get a rule of their own once they move to this
-     * endpoint.
+     * the `purpose` — a purpose selects defaults and presentation, never a permission. A user
+     * picker has an endpoint of its own ({@see self::actionPicker()}); mentioning gets one when
+     * it moves to the API.
      *
      * @throws ForbiddenHttpException without access to the People directory
      */
@@ -118,6 +132,64 @@ class UserController extends BaseController
         $pagination = $this->handlePagination($users, 25, self::MAX_PAGE_SIZE);
 
         return $this->returnPagination($pagination, UserSerializer::batch($users->all()));
+    }
+
+    /**
+     * The users a user picker suggests (e.g. the filter bar's `user` filter,
+     * {@see \humhub\modules\user\components\listing\UserFilter}) — the user list for the
+     * picker purpose ({@see UserList::PURPOSE_PICKER}: availability, hidden users and the
+     * restrictions modules add for the purpose apply), for every logged-in user, without access
+     * to the People directory.
+     *
+     * Parameters, exactly: `q`, `ids`, `exclude`, `spaceId` (as for {@see self::actionIndex()})
+     * and `page`/`pageSize` — so a picker reaches none of the directory's filters (`scope`,
+     * `groupId`, `tag`, `fields[…]`, the filters of modules), its order or its card data. Any
+     * other parameter, `purpose` included, answers `422` "Unknown parameter." as the list does.
+     *
+     * A picker suggests from a search, ids or a space: a non-empty `q`, `ids` or `spaceId` is
+     * required (else `422` under `q`). At most {@see self::PICKER_PAGE_SIZE} users per page (the
+     * default; a larger `pageSize` is capped) and as many `ids` (else `422`). Answered with the
+     * short shape ({@see UserSerializer::short()}), what a picker renders.
+     */
+    public function actionPicker()
+    {
+        $params = $this->listParams();
+        $errors = [];
+
+        foreach ($params as $param => $value) {
+            // A bracket key (`fields[age]`) is refused under its full key, as the list does.
+            $keys = is_array($value) && $value !== [] && !array_is_list($value)
+                ? array_map(static fn($key) => $param . '[' . $key . ']', array_keys($value))
+                : [(string)$param];
+            foreach ($keys as $key) {
+                if (!in_array($key, self::PICKER_PARAMS, true)) {
+                    $errors[$key][] = Yii::t('base', 'Unknown parameter.');
+                }
+            }
+        }
+
+        $q = $params['q'] ?? null;
+        if (!(is_string($q) && trim($q) !== '') && self::listValues($params['ids'] ?? null) === [] && self::listValues($params['spaceId'] ?? null) === []) {
+            $errors['q'][] = Yii::t('UserModule.base', 'Enter a search, or name users or a space.');
+        }
+
+        if (count(self::listValues($params['ids'] ?? null)) > self::PICKER_PAGE_SIZE) {
+            $errors['ids'][] = Yii::t('base', 'At most {count} ids can be named.', ['count' => self::PICKER_PAGE_SIZE]);
+        }
+
+        if ($errors !== []) {
+            return $this->validationErrors($errors);
+        }
+
+        try {
+            $users = (new UserList())->build($params, ListContext::forCurrentUser(UserList::PURPOSE_PICKER))->query();
+        } catch (ListValidationException $e) {
+            return $this->validationErrors($e->errors);
+        }
+
+        $pagination = $this->handlePagination($users, self::PICKER_PAGE_SIZE, self::PICKER_PAGE_SIZE);
+
+        return $this->returnPagination($pagination, array_map(UserSerializer::short(...), $users->all()));
     }
 
     /**
@@ -290,6 +362,21 @@ class UserController extends BaseController
     /**
      * @throws ForbiddenHttpException
      */
+    /**
+     * The non-empty values of a parameter, repeated or comma-separated.
+     *
+     * @return string[]
+     */
+    private static function listValues(mixed $value): array
+    {
+        $values = is_array($value) ? $value : explode(',', (string)($value ?? ''));
+
+        return array_values(array_filter(
+            array_map(static fn($item) => is_scalar($item) ? trim((string)$item) : '', $values),
+            static fn(string $item) => $item !== '',
+        ));
+    }
+
     private function requirePeopleAccess(): void
     {
         if (!Yii::$app->user->can(PeopleAccess::class)) {

@@ -66,7 +66,7 @@ humhub.module('vue', function (module, require, $) {
     // rendering, and a type registered after the bar mounted must be picked up).
     var filterTypes = Vue.reactive({});
     // Rendered by FilterBar.vue itself, never through the registry.
-    var CORE_FILTER_TYPES = ['text', 'select', 'tags', 'checkbox'];
+    var CORE_FILTER_TYPES = ['text', 'select', 'picker', 'tags', 'checkbox'];
 
     // A reservation token (see mountElement) is a plain {} — only a real
     // mounted Vue app instance has an `unmount` function. Used everywhere an
@@ -514,7 +514,7 @@ humhub.module('vue', function (module, require, $) {
      *   `update:modelValue` with the new value — the bar keeps debounce, URL sync, "clear all"
      *   and the active count.
      * - Type names of modules follow `<module>.<name>` (e.g. `tasks.status`); the core types
-     *   (`text`, `select`, `tags`, `checkbox`) are built into the bar and cannot be registered.
+     *   (`text`, `select`, `picker`, `tags`, `checkbox`) are built into the bar and cannot be registered.
      * - Registration order is unconstrained, as for slot components: neither the component
      *   nor a bar using the type need to exist yet — the bar picks the type up reactively.
      * - The first registration of a type wins: registering the same pair again is a debug-level

@@ -23,6 +23,7 @@ return [
         ['pattern' => 'api/v2/user/states', 'route' => 'user/api/user/states', 'verb' => ['GET', 'HEAD']],
         ['pattern' => 'api/v2/user/field-values', 'route' => 'user/api/user/field-values', 'verb' => ['GET', 'HEAD']],
         ['pattern' => 'api/v2/user/tags', 'route' => 'user/api/user/tags', 'verb' => ['GET', 'HEAD']],
+        ['pattern' => 'api/v2/user/picker', 'route' => 'user/api/user/picker', 'verb' => ['GET', 'HEAD']],
         ['pattern' => 'api/v2/user', 'route' => 'user/api/user/index', 'verb' => ['GET', 'HEAD']],
         ['pattern' => 'api/v2/user/<id:\d+>/follow', 'route' => 'user/api/follow/state', 'verb' => ['GET', 'HEAD']],
         ['pattern' => 'api/v2/user/<id:\d+>/follow', 'route' => 'user/api/follow/follow', 'verb' => 'PUT'],

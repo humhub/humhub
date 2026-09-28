@@ -45,8 +45,9 @@ paths:
         of their own, say), which are then accepted like the ones below, and may narrow the list
         by `purpose`.
 
-        Requires the permission to view the People directory (`403`), whatever the `purpose`;
-        user pickers and mentioning get a rule of their own once they read this list.
+        Requires the permission to view the People directory (`403`), whatever the `purpose` —
+        a purpose selects defaults and presentation, never a permission. A user picker has an
+        endpoint of its own, `/user/picker`; mentioning gets one when it reads this list.
       parameters:
         - name: q
           in: query
@@ -346,6 +347,98 @@ paths:
           $ref: "common.yaml#/components/responses/Unauthorized"
         "403":
           $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/user/picker":
+    get:
+      tags:
+        - User
+      summary: The users a user picker suggests
+      operationId: listPickerUsers
+      description: |
+        The suggestions of a user picker (e.g. the filter bar's person filter): the list of
+        `/user` for the `picker` purpose — the same availability, and the restrictions modules
+        apply to pickers —, for every logged-in caller, without the permission to view the People
+        directory. For logged-in callers only: a guest gets `401`, also with guest access
+        enabled.
+
+        A picker reaches none of the directory's filters, its order or its card data: the
+        parameters are exactly the ones below, any other (`scope`, `groupId`, `tag`,
+        `fields[…]`, `sort`, the filters modules add to the list, and `purpose`) answers `422`
+        "Unknown parameter." under its key. It suggests from a search, ids or a space: a
+        non-empty `q`, `ids` or `spaceId` is required, else `422` under `q`. At most 20 users per
+        page (the default; a larger `pageSize` is capped) and at most 20 `ids` (else `422`),
+        answered in the short shape.
+      parameters:
+        - name: q
+          in: query
+          required: false
+          description: |
+            Search over username, the searchable profile fields and tags, as for `/user`; at most
+            255 characters, else `422`.
+          schema:
+            type: string
+            maxLength: 255
+        - name: ids
+          in: query
+          required: false
+          description: |
+            Only these users — comma-separated (or repeated `ids[]=`) positive ids, at most 20
+            (e.g. to show the label of a chosen user).
+          schema:
+            type: string
+        - name: exclude
+          in: query
+          required: false
+          description: |
+            Not these users — comma-separated (or repeated `exclude[]=`) positive ids, at most
+            100.
+          schema:
+            type: string
+        - name: spaceId
+          in: query
+          required: false
+          description: |
+            Only members of this space. The caller must be allowed to see the space and its
+            members, else `422`.
+          schema:
+            type: integer
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - name: pageSize
+          in: query
+          required: false
+          description: Records per page (default 20, maximum 20)
+          schema:
+            type: integer
+            maximum: 20
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "common.yaml#/components/schemas/ListEnvelope"
+                  - type: object
+                    properties:
+                      results:
+                        type: array
+                        items:
+                          $ref: "common.yaml#/components/schemas/UserShort"
+              example:
+                results:
+                  - id: 7
+                    guid: 1a2b3c4d-5e6f-7890-abcd-ef0123456789
+                    displayName: Jane Doe
+                    url: https://example.com/u/jane/
+                    imageUrl: https://example.com/uploads/profile_image/1a2b3c4d-5e6f-7890-abcd-ef0123456789.jpg
+                    contentContainerId: 14
+                total: 1
+                page: 1
+                pageSize: 20
+                pages: 1
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
         "422":
           $ref: "common.yaml#/components/responses/ValidationFailed"
   "/user/{id}/follow":

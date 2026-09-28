@@ -28,8 +28,8 @@ Web routes an endpoint duplicates, still in place because other consumers depend
   `UploadAction` still use it.
 - **Space picker search** — `space/browse/search-json` next to `GET /api/v2/space`: the
   picker widgets expect its result shape. Moves together with the pickers becoming islands,
-  which then search with `GET /api/v2/space?purpose=picker` (`ids`/`exclude` for the chosen
-  spaces).
+  which then search with an endpoint of their own, `GET /api/v2/space/picker`, after the user
+  picker's (`ids`/`exclude` for the chosen spaces; see "Lists" in `concept-api.md`).
 - **Module enabling** — `admin/module/enable|disable` next to
   `POST /api/v2/module/<id>/enable`: the module administration (`admin/module/list`,
   `InstalledModuleList`) is still server-rendered. Moves when it becomes an island;

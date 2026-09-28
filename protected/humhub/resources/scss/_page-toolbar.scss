@@ -686,6 +686,48 @@
         font-weight: 400;
     }
 
+    // Person filter (the user module's UserFilterControl, the `user` filter type): a `.c-picker`
+    // led by a person icon, without a chevron, the chosen user a chip with the avatar; the
+    // suggestions carry avatars too.
+    .c-user-filter .c-picker__field {
+        padding-right: 12px;
+    }
+
+    .c-user-filter.is-loading .c-picker__field {
+        padding-right: 40px;
+    }
+
+    .c-user-filter__icon {
+        flex: 0 0 auto;
+        margin: 0 2px;
+        color: var(--hh-field-placeholder);
+        font-size: 18px;
+        transition: color 0.3s;
+    }
+
+    .c-user-filter .c-picker__field:focus-within .c-user-filter__icon {
+        color: var(--hh-field-color);
+    }
+
+    .c-user-filter__avatar {
+        display: inline-flex;
+        flex: 0 0 auto;
+
+        img {
+            display: block;
+        }
+    }
+
+    .c-user-filter__chip {
+        gap: 6px;
+        padding-left: 2px;
+    }
+
+    .c-user-filter__name {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
     // Tags and checkbox filters
     .c-filter-tags {
         display: flex;

@@ -410,7 +410,20 @@ them, whether it is available in a context (`ListContext`: user, purpose, contai
 narrows the list and how the page presents it (`FilterDefinition`) — so the controller only
 calls `build()` and pages, and the page's `FilterBar` gets `definitions()` of the same filters
 as a prop. A module adds one filter on the list's `EVENT_INIT` and restricts on `EVENT_BUILD`.
-Ready filters cover the common kinds (`SearchFilter`, `EnumFilter`, `BoolFilter`, `IdsFilter`).
+Ready filters cover the common kinds (`SearchFilter`, `EnumFilter`, `BoolFilter`, `IdsFilter`),
+and `humhub\modules\user\components\listing\UserFilter` one person (an "Author", an
+"Assignee": `userId`, the id of a user the user search shows the caller as a picker — else
+`422` —, rendered as the `user` filter type; not available to guests), whose suggestions come
+from the user picker endpoint `GET /api/v2/user/picker`.
+
+A purpose never changes the permission, the parameters, the limits or the shape of a list
+endpoint. Where a consumer needs another rule — a user picker for every logged-in user, without
+the People permission `GET /api/v2/user` requires — it gets an endpoint of its own beside the
+list, `GET /api/v2/<resource>/picker`: the list built for the picker purpose (so the
+restrictions modules add for it apply), with a fixed set of parameters (`q`, `ids`, `exclude`,
+`spaceId`, paging; any other, `purpose` included, is `422` "Unknown parameter."), a required
+narrowing (a non-empty `q`, `ids` or `spaceId`, else `422` under `q`), at most 20 per page and
+20 `ids`, and the short shape. It is the pattern for future pickers.
 
 | Topic | Convention |
 |---|---|
@@ -425,7 +438,8 @@ Ready filters cover the common kinds (`SearchFilter`, `EnumFilter`, `BoolFilter`
 | Dates | ISO 8601 dates `YYYY-MM-DD`, ranges as two parameters (`from`, `to`, inclusive) |
 | Sort | `sort=<key>` from the list's sort options, `order=asc\|desc` where a key allows both; `default` = the list's configured order |
 | Errors | `422 {errors: {<param>: [message]}}`; unknown parameters and set parameters of unavailable filters are `422` too (an empty value is absent, as for any filter) |
-| Purpose | `purpose=<name>` optional; defaults and presentation only, never a permission |
+| Purpose | `purpose=<name>` optional; defaults and presentation only, never a permission, parameters, limits or shape |
+| Picker | `GET /api/v2/<resource>/picker` — its own endpoint where a picker needs another rule than the list (`user/picker`) |
 
 A filter is dormant unless its parameter is sent. A context filter (members of this space,
 participants of this conversation) has no UI and authorizes itself while parsing: it checks
