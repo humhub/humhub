@@ -5,7 +5,7 @@ HumHub Changelog
 -------------------
 
 - Fix #8507: Prevent errors caused by outdated time zone identifiers (e.g. `Europe/Kiev`) which are unknown to systems without legacy tz data
-- Fix: Restore the membership request message in approval request emails (lost since 1.11) and HTML-encode it
+- Fix #8529: Allow membership requests only for "Invite and request" spaces and non-blocked users; Restore and HTML-encode the request message in approval emails (lost since 1.11)
 
 1.18.6 (September 22, 2026)
 ---------------------------

@@ -123,6 +123,10 @@ class MembershipController extends ContentContainerController
             );
         }
 
+        if ($space->join_policy != Space::JOIN_POLICY_APPLICATION || !$space->canJoin()) {
+            throw new ForbiddenHttpException(Yii::t('SpaceModule.base', 'You are not allowed to join this space!'));
+        }
+
         $model = new RequestMembershipForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
