@@ -686,18 +686,20 @@
         font-weight: 400;
     }
 
-    // Person filter (the user module's UserFilterControl, the `user` filter type): a `.c-picker`
-    // led by a person icon, without a chevron, the chosen user a chip with the avatar; the
-    // suggestions carry avatars too.
-    .c-user-filter .c-picker__field {
+    // Record filters (`PickerFilterControl`: the user module's UserFilterControl, the `user`
+    // filter type, `.c-user-filter`; the space module's SpaceFilterControl, the `space` type,
+    // `.c-space-filter`; the topic module's TopicFilterControl, `.c-topic-filter`): a `.c-picker`
+    // led by an icon (a person, spaces, a topic), without a chevron, a chosen record a chip with
+    // its image; the suggestions carry images too.
+    .c-picker-filter .c-picker__field {
         padding-right: 12px;
     }
 
-    .c-user-filter.is-loading .c-picker__field {
+    .c-picker-filter.is-loading .c-picker__field {
         padding-right: 40px;
     }
 
-    .c-user-filter__icon {
+    .c-picker-filter__icon {
         flex: 0 0 auto;
         margin: 0 2px;
         color: var(--hh-field-placeholder);
@@ -705,11 +707,11 @@
         transition: color 0.3s;
     }
 
-    .c-user-filter .c-picker__field:focus-within .c-user-filter__icon {
+    .c-picker-filter .c-picker__field:focus-within .c-picker-filter__icon {
         color: var(--hh-field-color);
     }
 
-    .c-user-filter__avatar {
+    .c-picker-filter__avatar {
         display: inline-flex;
         flex: 0 0 auto;
 
@@ -718,14 +720,40 @@
         }
     }
 
-    .c-user-filter__chip {
+    .c-picker-filter__chip {
         gap: 6px;
         padding-left: 2px;
     }
 
-    .c-user-filter__name {
+    .c-picker-filter__name {
         flex: 1 1 auto;
         min-width: 0;
+    }
+
+    // The topic module's TopicFilterControl (the `topic` type): a colour dot for an image — the
+    // topic's colour inline, a neutral one without —, a topic of another container than the
+    // filter's followed by that container's name.
+    .c-topic-filter__dot {
+        display: block;
+        width: 10px;
+        height: 10px;
+        margin: 0 4px;
+        border-radius: 50%;
+        background-color: var(--hh-text-color-soft2);
+    }
+
+    .c-topic-filter__chip {
+        padding-left: 4px;
+    }
+
+    .c-topic-filter__container {
+        flex: 0 1 auto;
+        min-width: 0;
+        overflow: hidden;
+        color: var(--hh-text-color-soft);
+        font-size: 12px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     // Tags and checkbox filters

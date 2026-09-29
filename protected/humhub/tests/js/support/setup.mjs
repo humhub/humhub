@@ -5,10 +5,17 @@
  */
 import jQuery from 'jquery';
 import * as Vue from 'vue';
+import { config } from '@vue/test-utils';
+import PickerFilterControl from '../../../vue/PickerFilterControl.vue';
 
 globalThis.Vue = Vue;
 globalThis.jQuery = jQuery;
 globalThis.$ = jQuery;
+
+// The core components that module components render by name (resolved through the global registry
+// in production, where CoreVueAsset registers them) - `global.components` stands in for that
+// registry in every test, so a module's component mounts on its own as it does on a page.
+config.global.components = { ...config.global.components, PickerFilterControl };
 
 const logCalls = { error: [], warn: [], info: [], debug: [] };
 const makeLog = () => ({
