@@ -4,6 +4,8 @@ namespace humhub\modules\admin\models\forms;
 
 use humhub\helpers\Html;
 use humhub\modules\content\widgets\richtext\converter\RichTextToEmailHtmlConverter;
+use humhub\modules\content\widgets\richtext\extensions\file\FileExtension;
+use humhub\modules\file\models\File;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use Throwable;
@@ -148,6 +150,26 @@ class ApproveUserForm extends Model
     }
 
     /**
+     * @inheritdoc
+     */
+    public function load($data, $formName = null)
+    {
+        $message = $this->message;
+
+        if (!parent::load($data, $formName)) {
+            return false;
+        }
+
+        // Files of the mail templates are already published on saving the settings,
+        // so only a message edited before sending may contain new files
+        if ($this->message !== $message) {
+            static::publishMessageFiles($this->message);
+        }
+
+        return true;
+    }
+
+    /**
      * Sends a message to the user requesting an account
      * @return bool
      */
@@ -278,6 +300,44 @@ class ApproveUserForm extends Model
         $mail->setTo($this->user->email);
         $mail->setSubject($this->subject);
         return $mail->send();
+    }
+
+    /**
+     * Makes images embedded into a message (e.g. pasted into the editor) viewable from email clients.
+     *
+     * Such uploads are not attached to any record, so only their creator may view them and the daily
+     * cron deletes them. A download token doesn't help either: the recipient may be not approved yet
+     * or even deleted on decline. So the files of the current user are marked as public and standalone.
+     *
+     * @param string|null $message rich text
+     * @since 1.18.7
+     */
+    public static function publishMessageFiles(?string $message): void
+    {
+        if (empty($message) || Yii::$app->user->isGuest) {
+            return;
+        }
+
+        $guids = [];
+        foreach (FileExtension::scanLinkExtension($message, 'file-guid') as $match) {
+            if ($match->getExtensionId()) {
+                $guids[] = $match->getExtensionId();
+            }
+        }
+
+        if ($guids === []) {
+            return;
+        }
+
+        $files = File::find()
+            ->where(['guid' => array_unique($guids), 'created_by' => Yii::$app->user->id])
+            ->andWhere(['OR', ['object_model' => null], ['object_model' => '']])
+            ->andWhere(['OR', ['public' => 0], ['standalone' => 0]]);
+
+        foreach ($files->all() as $file) {
+            /* @var File $file */
+            $file->updateAttributes(['public' => 1, 'standalone' => 1]);
+        }
     }
 
     /**
