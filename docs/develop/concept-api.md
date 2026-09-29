@@ -414,7 +414,24 @@ Ready filters cover the common kinds (`SearchFilter`, `EnumFilter`, `BoolFilter`
 and `humhub\modules\user\components\listing\UserFilter` one person (an "Author", an
 "Assignee": `userId`, the id of a user the user search shows the caller as a picker — else
 `422` —, rendered as the `user` filter type; not available to guests), whose suggestions come
-from the user picker endpoint `GET /api/v2/user/picker`.
+from the user picker endpoint `GET /api/v2/user/picker`. Its space counterpart,
+`humhub\modules\space\components\listing\SpaceFilter`, takes one or more space ids (`spaceId`,
+repeated or comma-separated) a space search shows the caller as a picker — else `422` —,
+rendered as the `space` filter type by the space module's own `SpaceFilterControl`; not
+available to guests either. Its suggestions come straight from `GET /api/v2/space?purpose=picker`
+— no picker endpoint of its own, since that list already requires no permission beyond
+visibility — and this filter validates against that very same `purpose=picker` context, so a
+module restricting one restricts the other. A registered filter type's control may need a
+setting of its own, distinct from `options` (the core select/picker/tags choice list) — the
+space filter control's `scope`, say. Such a setting travels in the definition's `props`, read by
+the control verbatim. For content lists, `humhub\modules\topic\components\listing\TopicFilter`
+takes up to 20 topic ids (`topicId`, repeated or comma-separated) the topic list shows the caller
+— else `422` "Topic not found." —, bound to a container (its topics and the global ones, handed
+to the control as `props.containerId`): its `containerId`, else the list context's container,
+else none (every visible topic); and matches content with any of them. It is
+the `topic` filter type, rendered by the topic module's `TopicFilterControl` with suggestions from
+`GET /api/v2/topic/picker`; not available to guests, and a page using it lists `TopicVueAsset` in
+its asset bundle's `$depends`.
 
 A purpose never changes the permission, the parameters, the limits or the shape of a list
 endpoint. Where a consumer needs another rule — a user picker for every logged-in user, without
@@ -423,7 +440,14 @@ list, `GET /api/v2/<resource>/picker`: the list built for the picker purpose (so
 restrictions modules add for it apply), with a fixed set of parameters (`q`, `ids`, `exclude`,
 `spaceId`, paging; any other, `purpose` included, is `422` "Unknown parameter."), a required
 narrowing (a non-empty `q`, `ids` or `spaceId`, else `422` under `q`), at most 20 per page and
-20 `ids`, and the short shape. It is the pattern for future pickers.
+20 `ids`, and the short shape. It is the pattern for future pickers. `GET /api/v2/topic/picker`
+follows it: the topics the caller may see (the global ones, those of the spaces the space list
+shows them as a picker and those of their own profile) by name, taking exactly `q`, `ids`,
+`containerId` and paging, requiring a non-empty `q`, `ids` or `containerId` (else `422` under
+`q`; a container the caller may not read is `422` "Container not found."), at most 20 per page
+and 20 `ids`, answered with the short topic shape `{id, name, color, container}` (`container`
+`{id, guid, name}`, `null` for a global topic). Both pickers check these rules with
+`humhub\components\api\BaseController::pickerErrors()`.
 
 | Topic | Convention |
 |---|---|
@@ -439,7 +463,7 @@ narrowing (a non-empty `q`, `ids` or `spaceId`, else `422` under `q`), at most 2
 | Sort | `sort=<key>` from the list's sort options, `order=asc\|desc` where a key allows both; `default` = the list's configured order |
 | Errors | `422 {errors: {<param>: [message]}}`; unknown parameters and set parameters of unavailable filters are `422` too (an empty value is absent, as for any filter) |
 | Purpose | `purpose=<name>` optional; defaults and presentation only, never a permission, parameters, limits or shape |
-| Picker | `GET /api/v2/<resource>/picker` — its own endpoint where a picker needs another rule than the list (`user/picker`) |
+| Picker | `GET /api/v2/<resource>/picker` — its own endpoint where a picker needs another rule than the list (`user/picker`, `topic/picker`) |
 
 A filter is dormant unless its parameter is sent. A context filter (members of this space,
 participants of this conversation) has no UI and authorizes itself while parsing: it checks

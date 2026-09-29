@@ -231,6 +231,29 @@ class FilterableListTest extends HumHubDbTestCase
         $this->assertSame(['key' => 'q', 'type' => 'text', 'placement' => 'primary'], (new FilterDefinition('text'))->withKey('q')->toArray());
     }
 
+    public function testDefinitionProps(): void
+    {
+        // A registered filter type's own control settings - distinct from `options`, the core
+        // select/picker/tags choice list - passed through to the client verbatim.
+        $definition = new FilterDefinition('space', props: ['scope' => 'member']);
+
+        $this->assertSame(['scope' => 'member'], $definition->props);
+        $this->assertSame(['scope' => 'member'], $definition->toArray()['props'], 'emitted verbatim');
+        $this->assertSame(['scope' => 'member'], $definition->withKey('spaceId')->props, 'kept by withKey()');
+
+        $this->assertSame([], (new FilterDefinition('text'))->props, 'empty by default');
+        $this->assertArrayNotHasKey('props', (new FilterDefinition('text'))->toArray(), 'omitted when empty');
+    }
+
+    public function testRefusesAnUnknownDefinitionProperty(): void
+    {
+        // No catch-all: a typo'd property (`lable`, `sortorder`) fails loudly rather than being
+        // silently dropped, for every ConfigurableFilter passing its `definition` array through.
+        // Regression guard: keeps a `...$extra`-style catch-all from being reintroduced.
+        $this->expectException(\Error::class);
+        new FilterDefinition('text', scope: 'member');
+    }
+
     public function testRefusesAnInvalidDefinition(): void
     {
         $this->expectException(InvalidConfigException::class);

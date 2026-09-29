@@ -3,9 +3,10 @@
  *
  * Registers every top-level component under its filename, as the generated entry does, plus
  * the core's own entries of the space card's `space.card-actions` slot — registered like any
- * module's, so a module can reorder, replace or remove them by id (see `SpaceCard`).
+ * module's, so a module can reorder, replace or remove them by id (see `SpaceCard`) — and the
+ * `space` filter type of `FilterBar` (`SpaceFilterControl`, the control of a `SpaceFilter`).
  */
-import { register, registerSlotComponent } from '@humhub/vue';
+import { register, registerFilterType, registerSlotComponent } from '@humhub/vue';
 import SpaceCardFollowAction from './components/SpaceCardFollowAction.vue';
 import SpaceCardMembershipAction from './components/SpaceCardMembershipAction.vue';
 
@@ -17,3 +18,5 @@ register('SpaceCardMembershipAction', SpaceCardMembershipAction);
 register('SpaceCardFollowAction', SpaceCardFollowAction);
 registerSlotComponent('space.card-actions', 'SpaceCardMembershipAction', { id: 'membership', sortOrder: 100 });
 registerSlotComponent('space.card-actions', 'SpaceCardFollowAction', { id: 'follow', sortOrder: 200 });
+
+registerFilterType('space', 'SpaceFilterControl');

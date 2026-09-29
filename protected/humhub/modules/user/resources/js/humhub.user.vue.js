@@ -58,8 +58,8 @@
       }
     }
   };
-  const _hoisted_1$6 = ["src", "alt", "data-contentcontainer-id", "data-guid"];
-  const _hoisted_2$4 = ["aria-label", "title"];
+  const _hoisted_1$5 = ["src", "alt", "data-contentcontainer-id", "data-guid"];
+  const _hoisted_2$3 = ["aria-label", "title"];
   function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent($props.link ? "a" : "span"), {
       href: $props.link ? $props.url : void 0,
@@ -73,13 +73,13 @@
           alt: $options.resolvedAlt,
           "data-contentcontainer-id": $props.contentContainerId,
           "data-guid": $props.guid
-        }, null, 12, _hoisted_1$6),
+        }, null, 12, _hoisted_1$5),
         $options.hasOnlineIndicator ? (vue.openBlock(), vue.createElementBlock("span", {
           key: 0,
           class: vue.normalizeClass(["tt user-online-status", $props.online ? "user-is-online" : "user-is-offline"]),
           "aria-label": $options.onlineLabel,
           title: $options.onlineLabel
-        }, null, 10, _hoisted_2$4)) : vue.createCommentVNode("v-if", true)
+        }, null, 10, _hoisted_2$3)) : vue.createCommentVNode("v-if", true)
       ]),
       _: 1
       /* STABLE */
@@ -165,33 +165,33 @@
       }
     }
   };
-  const _hoisted_1$5 = { class: "c-entity-card c-people-card" };
-  const _hoisted_2$3 = {
+  const _hoisted_1$4 = { class: "c-entity-card c-people-card" };
+  const _hoisted_2$2 = {
     key: 0,
     class: "c-entity-card__pill"
   };
-  const _hoisted_3$3 = ["title", "aria-label"];
-  const _hoisted_4$3 = { class: "c-entity-card__header" };
-  const _hoisted_5$2 = ["href"];
-  const _hoisted_6$2 = {
+  const _hoisted_3$2 = ["title", "aria-label"];
+  const _hoisted_4$2 = { class: "c-entity-card__header" };
+  const _hoisted_5$1 = ["href"];
+  const _hoisted_6$1 = {
     key: 0,
     class: "c-entity-card__subtitle"
   };
-  const _hoisted_7$2 = { class: "c-entity-card__body" };
-  const _hoisted_8$2 = ["title"];
-  const _hoisted_9$2 = {
+  const _hoisted_7$1 = { class: "c-entity-card__body" };
+  const _hoisted_8$1 = ["title"];
+  const _hoisted_9$1 = {
     key: 0,
     class: "c-entity-card__tags"
   };
-  const _hoisted_10$1 = ["title", "aria-label", "onClick"];
-  const _hoisted_11$1 = {
+  const _hoisted_10 = ["title", "aria-label", "onClick"];
+  const _hoisted_11 = {
     key: 1,
     class: "c-entity-card__footer"
   };
   function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_UserImage = vue.resolveComponent("UserImage");
     const _component_ExtensionSlot = vue.resolveComponent("ExtensionSlot");
-    return vue.openBlock(), vue.createElementBlock("article", _hoisted_1$5, [
+    return vue.openBlock(), vue.createElementBlock("article", _hoisted_1$4, [
       vue.createElementVNode(
         "div",
         {
@@ -212,7 +212,7 @@
             "aria-hidden": "true",
             tabindex: "-1"
           }, null, 8, ["guid", "display-name", "url", "image-url", "content-container-id", "online"]),
-          $options.stat ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_2$3, [
+          $options.stat ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_2$2, [
             vue.createElementVNode("button", {
               type: "button",
               class: vue.normalizeClass(["c-entity-card__stat", `c-entity-card__stat--${$options.stat.kind}`]),
@@ -237,20 +237,20 @@
                 1
                 /* TEXT */
               )
-            ], 10, _hoisted_3$3)
+            ], 10, _hoisted_3$2)
           ])) : vue.createCommentVNode("v-if", true)
         ],
         4
         /* STYLE */
       ),
-      vue.createElementVNode("div", _hoisted_4$3, [
+      vue.createElementVNode("div", _hoisted_4$2, [
         vue.createElementVNode("a", {
           class: "c-entity-card__title",
           href: $props.user.url
-        }, vue.toDisplayString($props.user.displayName), 9, _hoisted_5$2),
+        }, vue.toDisplayString($props.user.displayName), 9, _hoisted_5$1),
         $props.user.title ? (vue.openBlock(), vue.createElementBlock(
           "p",
-          _hoisted_6$2,
+          _hoisted_6$1,
           vue.toDisplayString($props.user.title),
           1
           /* TEXT */
@@ -260,7 +260,7 @@
           context: { user: $props.user }
         }, null, 8, ["context"])
       ]),
-      vue.createElementVNode("div", _hoisted_7$2, [
+      vue.createElementVNode("div", _hoisted_7$1, [
         (vue.openBlock(true), vue.createElementBlock(
           vue.Fragment,
           null,
@@ -269,13 +269,13 @@
               key: index,
               class: "c-people-card__detail",
               title: detail
-            }, vue.toDisplayString(detail), 9, _hoisted_8$2);
+            }, vue.toDisplayString(detail), 9, _hoisted_8$1);
           }),
           128
           /* KEYED_FRAGMENT */
         ))
       ]),
-      $options.tags.length ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_9$2, [
+      $options.tags.length ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_9$1, [
         (vue.openBlock(true), vue.createElementBlock(
           vue.Fragment,
           null,
@@ -287,13 +287,13 @@
               title: $options.filterByLabel(tag),
               "aria-label": $options.filterByLabel(tag),
               onClick: ($event) => _ctx.$emit("filter-tag", tag)
-            }, vue.toDisplayString(tag), 9, _hoisted_10$1);
+            }, vue.toDisplayString(tag), 9, _hoisted_10);
           }),
           128
           /* KEYED_FRAGMENT */
         ))
       ])) : vue.createCommentVNode("v-if", true),
-      $options.showFooter ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_11$1, [
+      $options.showFooter ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_11, [
         $props.state === void 0 ? (vue.openBlock(), vue.createElementBlock(
           "button",
           {
@@ -319,12 +319,12 @@
   const _sfc_main$5 = {
     name: "PeopleCardSkeleton"
   };
-  const _hoisted_1$4 = {
+  const _hoisted_1$3 = {
     class: "c-card-skeleton c-entity-card-skeleton c-people-card-skeleton",
     "aria-hidden": "true"
   };
   function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
-    return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$4, [..._cache[0] || (_cache[0] = [
+    return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$3, [..._cache[0] || (_cache[0] = [
       vue.createStaticVNode('<div class="c-entity-card-skeleton__cover"><span class="c-card-skeleton__block c-entity-card-skeleton__avatar"></span></div><div class="c-card-skeleton__header"><span class="c-card-skeleton__block c-card-skeleton__title"></span><span class="c-card-skeleton__block c-card-skeleton__version"></span></div><div class="c-card-skeleton__body"><span class="c-card-skeleton__block c-card-skeleton__line"></span><span class="c-card-skeleton__block c-card-skeleton__line c-card-skeleton__line--short"></span></div><div class="c-entity-card-skeleton__tags"><span class="c-card-skeleton__block c-entity-card-skeleton__tag"></span><span class="c-card-skeleton__block c-entity-card-skeleton__tag"></span><span class="c-card-skeleton__block c-entity-card-skeleton__tag"></span></div><div class="c-card-skeleton__footer"><span class="c-card-skeleton__block c-card-skeleton__action"></span></div>', 5)
     ])]);
   }
@@ -410,12 +410,12 @@
       }
     }
   };
-  const _hoisted_1$3 = { class: "c-people-directory" };
+  const _hoisted_1$2 = { class: "c-people-directory" };
   function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_PeopleCard = vue.resolveComponent("PeopleCard");
     const _component_PeopleCardSkeleton = vue.resolveComponent("PeopleCardSkeleton");
     const _component_CardDirectory = vue.resolveComponent("CardDirectory");
-    return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$3, [
+    return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$2, [
       vue.createVNode(_component_CardDirectory, {
         ref: "directory",
         url: $options.listUrl,
@@ -448,13 +448,9 @@
     ]);
   }
   const __vite_glob_0_0 = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$4]]);
-  const SEARCH_DEBOUNCE_MS = 300;
-  const MAX_SUGGESTIONS = 8;
-  let uid = 0;
-  const idOf = (value) => value === null || value === void 0 ? "" : String(value);
-  const ID_PATTERN = /^[1-9]\d*$/;
   const _sfc_main$3 = {
     name: "UserFilterControl",
+    // `PickerFilterControl` is a core component, resolved through the global registry.
     components: { UserImage: __vite_glob_0_3 },
     props: {
       filter: { type: Object, required: true },
@@ -462,82 +458,16 @@
       inputId: { type: String, default: null }
     },
     emits: ["update:modelValue"],
-    data() {
-      return {
-        query: "",
-        open: false,
-        activeIndex: -1,
-        results: [],
-        // The text the shown results answer (`null`: none yet).
-        resultsTerm: null,
-        searching: false,
-        resolving: false,
-        // The chosen user, once known (from a suggestion or resolved by id).
-        user: null,
-        listboxId: `user-filter-${++uid}-listbox`
-      };
-    },
-    computed: {
-      value() {
-        return idOf(this.modelValue);
-      },
-      hasValue() {
-        return this.value !== "";
-      },
-      term() {
-        return this.query.trim();
-      },
-      placeholder() {
-        return this.filter.placeholder || this.filter.label || "";
-      },
-      accessibleName() {
-        return this.filter.label || this.filter.placeholder || null;
-      },
-      chipLabel() {
-        return this.user ? this.user.displayName : this.value;
-      },
-      activeDescendant() {
-        return this.open && this.activeIndex >= 0 && this.activeIndex < this.results.length ? this.optionId(this.activeIndex) : null;
-      },
-      feedback() {
-        if (this.results.length) {
-          return null;
-        }
-        return this.searching ? vue$1.i18n.t("base", "Loading...") : vue$1.i18n.t("base", "No results found!");
-      },
-      removeLabel() {
-        return vue$1.i18n.t("base", "Remove {label}", { label: this.chipLabel });
-      }
-    },
-    watch: {
-      value: {
-        handler(value) {
-          this.show(value);
-          if (this.pendingFocus) {
-            this.pendingFocus = false;
-            this.$nextTick(() => {
-              var _a;
-              return (_a = this.$refs.input || this.$refs.remove) == null ? void 0 : _a.focus();
-            });
-          }
-        }
-      }
-    },
-    created() {
-      this.searchSeq = 0;
-      this.resolveSeq = 0;
-      this.searchTimer = null;
-      this.pendingFocus = false;
-      this.known = /* @__PURE__ */ new Map();
-      this.show(this.value);
-    },
-    beforeUnmount() {
-      clearTimeout(this.searchTimer);
-      this.unbindOutside();
-    },
     methods: {
-      optionId(index) {
-        return `${this.listboxId}-${index}`;
+      search(q, pageSize) {
+        return vue$1.client.get(vue$1.apiUrl("user/picker", { q, pageSize })).then((response) => response.results || []);
+      },
+      // One id at most (the control takes a single user): within any page size.
+      resolve(ids) {
+        return vue$1.client.get(vue$1.apiUrl("user/picker", { ids: ids.join(",") })).then((response) => response.results || []);
+      },
+      itemLabel(user) {
+        return user.displayName;
       },
       // What `UserImage` takes of a list item — the item carries more (`title`, `tags` …),
       // which would otherwise fall through to the DOM as attributes.
@@ -549,410 +479,50 @@
           imageUrl: user.imageUrl,
           contentContainerId: user.contentContainerId ?? null
         };
-      },
-      // The user a (new) value names: known, resolved, or none.
-      show(value) {
-        this.resolveSeq++;
-        this.resolving = false;
-        if (value === "") {
-          this.user = null;
-          return;
-        }
-        if (this.user && idOf(this.user.id) === value) {
-          return;
-        }
-        if (this.known.has(value)) {
-          this.user = this.known.get(value);
-          return;
-        }
-        this.user = null;
-        if (!ID_PATTERN.test(value)) {
-          this.$emit("update:modelValue", "");
-          return;
-        }
-        this.resolve(value);
-      },
-      resolve(value) {
-        const seq = this.resolveSeq;
-        this.resolving = true;
-        vue$1.client.get(vue$1.apiUrl("user/picker", { ids: value })).then((response) => {
-          if (seq !== this.resolveSeq) {
-            return;
-          }
-          const user = (response.results || []).find((entry) => idOf(entry.id) === value);
-          if (user) {
-            this.known.set(value, user);
-            this.user = user;
-          } else {
-            this.$emit("update:modelValue", "");
-          }
-        }).catch((response) => {
-          if (seq === this.resolveSeq) {
-            vue$1.log.error(response);
-          }
-        }).finally(() => {
-          if (seq === this.resolveSeq) {
-            this.resolving = false;
-          }
-        });
-      },
-      onFieldClick() {
-        var _a;
-        if (!this.hasValue && !this.resolving) {
-          (_a = this.$refs.input) == null ? void 0 : _a.focus();
-        }
-      },
-      onInput(event) {
-        this.query = event.target.value;
-        this.search();
-      },
-      search() {
-        clearTimeout(this.searchTimer);
-        const seq = ++this.searchSeq;
-        const term = this.term;
-        if (term === "") {
-          this.searching = false;
-          this.results = [];
-          this.resultsTerm = null;
-          this.close();
-          return;
-        }
-        this.searching = true;
-        this.searchTimer = setTimeout(() => this.load(term, seq), SEARCH_DEBOUNCE_MS);
-      },
-      load(term, seq) {
-        vue$1.client.get(vue$1.apiUrl("user/picker", { q: term, pageSize: MAX_SUGGESTIONS })).then((response) => {
-          if (seq !== this.searchSeq) {
-            return;
-          }
-          this.results = response.results || [];
-          this.resultsTerm = term;
-          this.results.forEach((user) => this.known.set(idOf(user.id), user));
-          this.activeIndex = this.results.length ? 0 : -1;
-        }).catch((response) => {
-          if (seq !== this.searchSeq) {
-            return;
-          }
-          vue$1.log.error(response);
-          this.results = [];
-          this.resultsTerm = term;
-          this.activeIndex = -1;
-        }).finally(() => {
-          if (seq === this.searchSeq) {
-            this.searching = false;
-            this.openList();
-          }
-        });
-      },
-      openList() {
-        if (this.open || this.term === "") {
-          return;
-        }
-        this.open = true;
-        this.activeIndex = this.results.length ? 0 : -1;
-        this.bindOutside();
-      },
-      close() {
-        if (!this.open) {
-          return;
-        }
-        this.open = false;
-        this.activeIndex = -1;
-        this.unbindOutside();
-      },
-      choose(user) {
-        clearTimeout(this.searchTimer);
-        this.searchSeq++;
-        this.searching = false;
-        this.known.set(idOf(user.id), user);
-        this.user = user;
-        this.query = "";
-        this.results = [];
-        this.resultsTerm = null;
-        this.close();
-        this.pendingFocus = idOf(user.id) !== this.value;
-        this.$emit("update:modelValue", idOf(user.id));
-      },
-      remove() {
-        this.pendingFocus = true;
-        this.$emit("update:modelValue", "");
-      },
-      moveTo(index) {
-        if (!this.results.length) {
-          return;
-        }
-        this.activeIndex = Math.max(0, Math.min(index, this.results.length - 1));
-        this.$nextTick(() => this.scrollActiveIntoView());
-      },
-      onKeydown(event) {
-        const last = this.results.length - 1;
-        switch (event.key) {
-          case "ArrowDown":
-          case "ArrowUp":
-            event.preventDefault();
-            if (!this.open) {
-              this.openList();
-              if (event.key === "ArrowUp") {
-                this.moveTo(last);
-              }
-            } else {
-              this.moveTo(this.activeIndex + (event.key === "ArrowDown" ? 1 : -1));
-            }
-            break;
-          case "Home":
-          case "End":
-            if (this.open && this.results.length) {
-              event.preventDefault();
-              this.moveTo(event.key === "Home" ? 0 : last);
-            }
-            break;
-          case "Enter":
-            if (this.open) {
-              event.preventDefault();
-              const active = this.results[this.activeIndex];
-              if (active) {
-                this.choose(active);
-              }
-            }
-            break;
-          case "Escape":
-            if (this.open || this.query !== "") {
-              event.preventDefault();
-              event.stopPropagation();
-              if (this.open) {
-                this.close();
-              } else {
-                this.query = "";
-                this.search();
-              }
-            }
-            break;
-          case "Tab":
-            this.close();
-            break;
-        }
-      },
-      scrollActiveIntoView() {
-        var _a;
-        const node = this.activeIndex >= 0 ? (_a = this.$refs.listbox) == null ? void 0 : _a.children[this.activeIndex] : null;
-        if (node && typeof node.scrollIntoView === "function") {
-          node.scrollIntoView({ block: "nearest" });
-        }
-      },
-      bindOutside() {
-        if (this.outsideHandler) {
-          return;
-        }
-        this.outsideHandler = (event) => {
-          if (this.$refs.root && !this.$refs.root.contains(event.target)) {
-            this.close();
-          }
-        };
-        document.addEventListener("pointerdown", this.outsideHandler, true);
-        document.addEventListener("focusin", this.outsideHandler, true);
-      },
-      unbindOutside() {
-        if (!this.outsideHandler) {
-          return;
-        }
-        document.removeEventListener("pointerdown", this.outsideHandler, true);
-        document.removeEventListener("focusin", this.outsideHandler, true);
-        this.outsideHandler = null;
       }
     }
   };
-  const _hoisted_1$2 = ["aria-label"];
-  const _hoisted_2$2 = {
-    class: "c-user-filter__avatar",
-    "aria-hidden": "true"
-  };
-  const _hoisted_3$2 = { class: "c-picker__chip-label" };
-  const _hoisted_4$2 = ["id", "aria-label", "title"];
-  const _hoisted_5$1 = ["id", "aria-expanded", "aria-controls", "aria-activedescendant", "aria-label", "aria-busy", "placeholder", "value", "disabled"];
-  const _hoisted_6$1 = {
-    key: 0,
-    class: "spinner-border spinner-border-sm c-select__spinner",
-    "aria-hidden": "true"
-  };
-  const _hoisted_7$1 = ["id", "aria-label", "aria-busy"];
-  const _hoisted_8$1 = ["id", "aria-selected", "onClick", "onMousemove"];
-  const _hoisted_9$1 = {
-    class: "c-user-filter__avatar",
-    "aria-hidden": "true"
-  };
-  const _hoisted_10 = { class: "c-user-filter__name" };
-  const _hoisted_11 = {
-    key: 0,
-    class: "c-select__feedback",
-    role: "presentation"
-  };
-  const _hoisted_12 = {
-    class: "visually-hidden",
-    role: "status"
-  };
   function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_UserImage = vue.resolveComponent("UserImage");
-    return vue.openBlock(), vue.createElementBlock(
-      "div",
-      {
-        ref: "root",
-        class: vue.normalizeClass(["c-select c-picker c-user-filter", { "is-open": $data.open, "has-selection": $options.hasValue, "is-disabled": $data.resolving, "is-loading": $data.resolving }])
-      },
-      [
-        vue.createElementVNode("div", {
-          class: "c-picker__field",
-          onClick: _cache[3] || (_cache[3] = (...args) => $options.onFieldClick && $options.onFieldClick(...args))
-        }, [
-          $options.hasValue && !$data.resolving ? (vue.openBlock(), vue.createElementBlock("span", {
-            key: 0,
-            class: "c-picker__chip c-user-filter__chip",
-            role: "group",
-            "aria-label": $options.accessibleName
-          }, [
-            vue.createElementVNode("span", _hoisted_2$2, [
-              $data.user ? (vue.openBlock(), vue.createBlock(
-                _component_UserImage,
-                vue.mergeProps({ key: 0 }, $options.imageProps($data.user), {
-                  size: 18,
-                  link: false
-                }),
-                null,
-                16
-                /* FULL_PROPS */
-              )) : vue.createCommentVNode("v-if", true)
-            ]),
-            vue.createElementVNode(
-              "span",
-              _hoisted_3$2,
-              vue.toDisplayString($options.chipLabel),
-              1
-              /* TEXT */
-            ),
-            vue.createElementVNode("button", {
-              id: $props.inputId,
-              ref: "remove",
-              type: "button",
-              class: "c-picker__chip-remove",
-              "aria-label": $options.removeLabel,
-              title: $options.removeLabel,
-              onClick: _cache[0] || (_cache[0] = vue.withModifiers((...args) => $options.remove && $options.remove(...args), ["stop"]))
-            }, [..._cache[5] || (_cache[5] = [
-              vue.createElementVNode(
-                "i",
-                {
-                  class: "ti ti-x",
-                  "aria-hidden": "true"
-                },
-                null,
-                -1
-                /* CACHED */
-              )
-            ])], 8, _hoisted_4$2)
-          ], 8, _hoisted_1$2)) : (vue.openBlock(), vue.createElementBlock(
-            vue.Fragment,
-            { key: 1 },
-            [
-              _cache[6] || (_cache[6] = vue.createElementVNode(
-                "i",
-                {
-                  class: "ti ti-user c-user-filter__icon",
-                  "aria-hidden": "true"
-                },
-                null,
-                -1
-                /* CACHED */
-              )),
-              vue.createElementVNode("input", {
-                id: $props.inputId,
-                ref: "input",
-                type: "text",
-                class: "c-picker__input",
-                role: "combobox",
-                autocomplete: "off",
-                "aria-autocomplete": "list",
-                "aria-expanded": $data.open ? "true" : "false",
-                "aria-controls": $data.listboxId,
-                "aria-activedescendant": $options.activeDescendant,
-                "aria-label": $options.accessibleName,
-                "aria-busy": $data.resolving || $data.searching ? "true" : null,
-                placeholder: $options.placeholder,
-                value: $data.query,
-                disabled: $data.resolving,
-                onInput: _cache[1] || (_cache[1] = (...args) => $options.onInput && $options.onInput(...args)),
-                onKeydown: _cache[2] || (_cache[2] = (...args) => $options.onKeydown && $options.onKeydown(...args))
-              }, null, 40, _hoisted_5$1)
-            ],
-            64
-            /* STABLE_FRAGMENT */
-          ))
-        ]),
-        $data.resolving ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_6$1)) : vue.createCommentVNode("v-if", true),
-        vue.createElementVNode("ul", {
-          id: $data.listboxId,
-          ref: "listbox",
-          class: vue.normalizeClass(["c-select__drawer", { "is-open": $data.open }]),
-          role: "listbox",
-          "aria-label": $options.accessibleName,
-          "aria-busy": $data.searching ? "true" : null
-        }, [
-          (vue.openBlock(true), vue.createElementBlock(
-            vue.Fragment,
-            null,
-            vue.renderList($data.results, (result, index) => {
-              return vue.openBlock(), vue.createElementBlock("li", {
-                id: $options.optionId(index),
-                key: result.id,
-                class: vue.normalizeClass(["c-select__option c-user-filter__option", { "is-active": index === $data.activeIndex }]),
-                role: "option",
-                "aria-selected": index === $data.activeIndex ? "true" : "false",
-                onPointerdown: _cache[4] || (_cache[4] = vue.withModifiers(() => {
-                }, ["prevent"])),
-                onClick: ($event) => $options.choose(result),
-                onMousemove: ($event) => $data.activeIndex = index
-              }, [
-                vue.createElementVNode("span", _hoisted_9$1, [
-                  vue.createVNode(
-                    _component_UserImage,
-                    vue.mergeProps({ ref_for: true }, $options.imageProps(result), {
-                      size: 24,
-                      link: false
-                    }),
-                    null,
-                    16
-                    /* FULL_PROPS */
-                  )
-                ]),
-                vue.createElementVNode(
-                  "span",
-                  _hoisted_10,
-                  vue.toDisplayString(result.displayName),
-                  1
-                  /* TEXT */
-                )
-              ], 42, _hoisted_8$1);
-            }),
-            128
-            /* KEYED_FRAGMENT */
-          )),
-          $options.feedback ? (vue.openBlock(), vue.createElementBlock(
-            "li",
-            _hoisted_11,
-            vue.toDisplayString($options.feedback),
-            1
-            /* TEXT */
-          )) : vue.createCommentVNode("v-if", true)
-        ], 10, _hoisted_7$1),
-        vue.createElementVNode(
-          "span",
-          _hoisted_12,
-          vue.toDisplayString($data.open ? $options.feedback || "" : ""),
-          1
-          /* TEXT */
+    const _component_PickerFilterControl = vue.resolveComponent("PickerFilterControl");
+    return vue.openBlock(), vue.createBlock(_component_PickerFilterControl, {
+      filter: $props.filter,
+      "model-value": $props.modelValue,
+      "input-id": $props.inputId,
+      search: $options.search,
+      resolve: $options.resolve,
+      "item-label": $options.itemLabel,
+      icon: "ti-user",
+      block: "c-user-filter",
+      "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => _ctx.$emit("update:modelValue", $event))
+    }, {
+      option: vue.withCtx(({ item }) => [
+        vue.createVNode(
+          _component_UserImage,
+          vue.mergeProps($options.imageProps(item), {
+            size: 24,
+            link: false
+          }),
+          null,
+          16
+          /* FULL_PROPS */
         )
-      ],
-      2
-      /* CLASS */
-    );
+      ]),
+      chip: vue.withCtx(({ item }) => [
+        vue.createVNode(
+          _component_UserImage,
+          vue.mergeProps($options.imageProps(item), {
+            size: 18,
+            link: false
+          }),
+          null,
+          16
+          /* FULL_PROPS */
+        )
+      ]),
+      _: 1
+      /* STABLE */
+    }, 8, ["filter", "model-value", "input-id", "search", "resolve", "item-label"]);
   }
   const __vite_glob_0_1 = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3]]);
   const FOLLOW_CHANGED = "user:follow-changed";
