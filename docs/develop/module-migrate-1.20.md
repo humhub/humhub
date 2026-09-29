@@ -1579,3 +1579,26 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   (`PICKER_PAGE_SIZE`), answered with the short user shape (`UserSerializer::short()`).
   `GET /api/v2/user` keeps requiring `PeopleAccess` for every purpose. Additive, nothing to
   migrate.
+
+- **Space and topic filters for lists.** New: `space\components\listing\SpaceFilter`
+  (`new SpaceFilter('spaceId', column: 'contentcontainer.pk', definition: ['props' => ['scope' => 'member']])`;
+  one or several ids of spaces the space list shows the caller as a picker, anything else `422`
+  "Space not found."), the `FilterBar` type `space` rendered by the space module's
+  `SpaceFilterControl` over `GET /api/v2/space?purpose=picker` — a page using it adds
+  `space\assets\SpaceVueAsset` to its `$depends`. And `topic\components\listing\TopicFilter`
+  (`new TopicFilter('topicId', containerId: $space->contentcontainer_id)`; up to 20 ids of topics
+  the caller may see — with a container (`containerId`, else the list context's) only its
+  topics and the global ones —, anything else
+  `422` "Topic not found."; content with any of them matches), the type `topic` rendered by
+  the topic module's `TopicFilterControl` — the topic module's first Vue bundle, a page using it
+  adds `topic\assets\TopicVueAsset` to its `$depends`. Neither is available to guests. The
+  topic suggestions come from the new `GET /api/v2/topic/picker`
+  (`topic\controllers\api\TopicController::actionPicker()`, built on the new
+  `topic\components\TopicList`): exactly `q`, `ids`, `containerId`, `page`, `pageSize`, a
+  non-empty `q`, `ids` or `containerId` required (else `422` under `q`), at most 20 per page and
+  20 `ids`, answered with the short topic shape (`TopicSerializer::short()`: `id`, `name`,
+  `color`, `container`). `FilterDefinition` gained `props`, a registered type's control
+  settings passed verbatim as `filter.props` (the space filter's `scope`, the topic filter's
+  `containerId`). All three person, space and topic controls are built on the new core
+  `PickerFilterControl`, the base for a module's own filter type over record ids (see
+  `docs/develop/ui-js-vuejs-components.md`). Additive, nothing to migrate.
