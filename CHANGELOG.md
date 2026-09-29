@@ -5,6 +5,7 @@ HumHub Changelog
 -------------------
 
 - Fix #8507: Prevent errors caused by outdated time zone identifiers (e.g. `Europe/Kiev`) which are unknown to systems without legacy tz data
+- Fix #8028: "Mark as seen" on the notification overview affects only the currently filtered notifications
 
 1.18.6 (September 22, 2026)
 ---------------------------
