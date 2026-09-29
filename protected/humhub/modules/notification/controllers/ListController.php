@@ -11,6 +11,7 @@ namespace humhub\modules\notification\controllers;
 use Exception;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
+use humhub\modules\notification\models\forms\FilterForm;
 use humhub\modules\notification\models\Notification;
 use Throwable;
 use Yii;
@@ -72,18 +73,20 @@ class ListController extends Controller
     }
 
     /**
-     * Marks all notifications as seen
+     * Marks notifications as seen (only the filtered ones when filter params are posted)
      * @throws HttpException
      */
     public function actionMarkAsSeen()
     {
         $this->forcePostRequest();
 
-        $count = Notification::updateAll(['seen' => 1], ['user_id' => Yii::$app->user->id]);
+        $filterForm = new FilterForm();
+        $filterForm->load(Yii::$app->request->post());
 
         return $this->asJson([
             'success' => true,
-            'count' => $count,
+            'count' => $filterForm->markAsSeen(),
+            'unseenCount' => Notification::findUnseen()->count(),
         ]);
     }
 
