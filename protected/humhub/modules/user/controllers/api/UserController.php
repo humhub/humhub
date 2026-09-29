@@ -154,28 +154,13 @@ class UserController extends BaseController
     public function actionPicker()
     {
         $params = $this->listParams();
-        $errors = [];
-
-        foreach ($params as $param => $value) {
-            // A bracket key (`fields[age]`) is refused under its full key, as the list does.
-            $keys = is_array($value) && $value !== [] && !array_is_list($value)
-                ? array_map(static fn($key) => $param . '[' . $key . ']', array_keys($value))
-                : [(string)$param];
-            foreach ($keys as $key) {
-                if (!in_array($key, self::PICKER_PARAMS, true)) {
-                    $errors[$key][] = Yii::t('base', 'Unknown parameter.');
-                }
-            }
-        }
-
-        $q = $params['q'] ?? null;
-        if (!(is_string($q) && trim($q) !== '') && self::listValues($params['ids'] ?? null) === [] && self::listValues($params['spaceId'] ?? null) === []) {
-            $errors['q'][] = Yii::t('UserModule.base', 'Enter a search, or name users or a space.');
-        }
-
-        if (count(self::listValues($params['ids'] ?? null)) > self::PICKER_PAGE_SIZE) {
-            $errors['ids'][] = Yii::t('base', 'At most {count} ids can be named.', ['count' => self::PICKER_PAGE_SIZE]);
-        }
+        $errors = $this->pickerErrors(
+            $params,
+            self::PICKER_PARAMS,
+            ['q', 'ids', 'spaceId'],
+            Yii::t('UserModule.base', 'Enter a search, or name users or a space.'),
+            self::PICKER_PAGE_SIZE,
+        );
 
         if ($errors !== []) {
             return $this->validationErrors($errors);
@@ -362,21 +347,6 @@ class UserController extends BaseController
     /**
      * @throws ForbiddenHttpException
      */
-    /**
-     * The non-empty values of a parameter, repeated or comma-separated.
-     *
-     * @return string[]
-     */
-    private static function listValues(mixed $value): array
-    {
-        $values = is_array($value) ? $value : explode(',', (string)($value ?? ''));
-
-        return array_values(array_filter(
-            array_map(static fn($item) => is_scalar($item) ? trim((string)$item) : '', $values),
-            static fn(string $item) => $item !== '',
-        ));
-    }
-
     private function requirePeopleAccess(): void
     {
         if (!Yii::$app->user->can(PeopleAccess::class)) {

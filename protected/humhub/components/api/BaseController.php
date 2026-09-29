@@ -221,6 +221,76 @@ abstract class BaseController extends Controller
     }
 
     /**
+     * The request errors of a picker endpoint (`GET /api/v2/<resource>/picker`, see
+     * `docs/develop/concept-api.md` "Lists"), before its list is built — the rules every picker
+     * shares, in one place:
+     *
+     * - a parameter not in `$allowed` is "Unknown parameter." (a bracket key, `fields[age]`,
+     *   under its full key, as the list refuses it) — so a picker reaches none of its list's
+     *   other filters, `purpose` included, which the list itself would accept;
+     * - one of `$narrowing` must be non-empty — `q` as a text (not only whitespace), every other
+     *   one as a list of values ({@see self::listValues()}) — else `$narrowingMessage` under `q`:
+     *   a picker suggests from a search, ids or a context, never the whole list;
+     * - `ids` names at most `$maxIds` values, the picker's page size.
+     *
+     * @param array<string, mixed> $params the endpoint's parameters ({@see self::listParams()})
+     * @param string[] $allowed every parameter the picker takes, paging included
+     * @param string[] $narrowing the parameters of which one is required
+     * @return array<string, string[]> the messages by parameter, empty when the request is fine
+     * @since 1.20
+     */
+    protected function pickerErrors(array $params, array $allowed, array $narrowing, string $narrowingMessage, int $maxIds): array
+    {
+        $errors = [];
+
+        foreach ($params as $param => $value) {
+            // A bracket key (`fields[age]`) is refused under its full key, as the list does.
+            $keys = is_array($value) && $value !== [] && !array_is_list($value)
+                ? array_map(static fn($key) => $param . '[' . $key . ']', array_keys($value))
+                : [(string)$param];
+            foreach ($keys as $key) {
+                if (!in_array($key, $allowed, true)) {
+                    $errors[$key][] = Yii::t('base', 'Unknown parameter.');
+                }
+            }
+        }
+
+        $narrowed = false;
+        foreach ($narrowing as $param) {
+            $value = $params[$param] ?? null;
+            if ($param === 'q' ? is_string($value) && trim($value) !== '' : self::listValues($value) !== []) {
+                $narrowed = true;
+                break;
+            }
+        }
+        if (!$narrowed) {
+            $errors['q'][] = $narrowingMessage;
+        }
+
+        if (count(self::listValues($params['ids'] ?? null)) > $maxIds) {
+            $errors['ids'][] = Yii::t('base', 'At most {count} ids can be named.', ['count' => $maxIds]);
+        }
+
+        return $errors;
+    }
+
+    /**
+     * The non-empty values of a parameter, repeated or comma-separated.
+     *
+     * @return string[]
+     * @since 1.20
+     */
+    protected static function listValues(mixed $value): array
+    {
+        $values = is_array($value) ? $value : explode(',', (string)($value ?? ''));
+
+        return array_values(array_filter(
+            array_map(static fn($item) => is_scalar($item) ? trim((string)$item) : '', $values),
+            static fn(string $item) => $item !== '',
+        ));
+    }
+
+    /**
      * Configuration of the request's user component. A module providing token authentication
      * overrides the identity/user class it needs (e.g. to resolve access tokens) via
      * {@see EVENT_COLLECT_AUTH_METHODS}'s own controller base class.
