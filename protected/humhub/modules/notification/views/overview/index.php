@@ -23,7 +23,7 @@ use humhub\modules\notification\widgets\NotificationFilterForm;
                             ->icon('check')
                             ->action('notification.markAsSeen', ['/notification/list/mark-as-seen'])
                             ->id('notification_overview_markseen')
-                            ->style('display:none')
+                            ->cssClass('d-none')
                             ->sm()
                             ->tooltip(Yii::t('NotificationModule.base', 'Mark all as seen')) ?>
                         <?= Button::light()
