@@ -5,6 +5,7 @@ HumHub Changelog
 -------------------
 
 - Fix #8507: Prevent errors caused by outdated time zone identifiers (e.g. `Europe/Kiev`) which are unknown to systems without legacy tz data
+- Fix #7954: Fix wrong date and author of comments in mention and like notification emails
 
 1.18.6 (September 22, 2026)
 ---------------------------
