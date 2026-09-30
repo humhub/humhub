@@ -26,16 +26,6 @@ class Migration extends \yii\db\Migration
     public const LOG_CATEGORY = 'migration';
 
     /**
-     * Character set and collation used for all tables created by migrations on MySQL/MariaDB.
-     *
-     * The database default collation may differ (e.g. `utf8mb4_0900_ai_ci` on MySQL 8), which leads to
-     * "Illegal mix of collations" errors when string columns of different tables are compared or joined.
-     *
-     * @since 1.19
-     */
-    public const MYSQL_TABLE_OPTIONS = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
-
-    /**
      * @var string Main table of the current migration. MUST be overridden statically or initialized during
      *             static::__construct() or static::init()
      * @see static::safeAddForeignKeyToUserTable()
@@ -615,45 +605,91 @@ class Migration extends \yii\db\Migration
     /**
      * @inheritdoc
      *
-     * On MySQL/MariaDB the tables are created with the collation of the HumHub core tables by default,
-     * instead of the (possibly different) default collation of the database.
+     * On MySQL/MariaDB, new tables are created with the same collation as the existing `user` table, instead of
+     * the (possibly different) default collation of the database. This avoids "Illegal mix of collations" errors
+     * when string columns of different tables are later compared or joined.
+     *
+     * On a fresh installation, where the `user` table does not exist yet, the database's own default collation
+     * is used, same as before.
      *
      * @since 1.19
      */
     public function createTable($table, $columns, $options = null)
     {
         if ($options === null && $this->db->getDriverName() === 'mysql') {
-            $options = static::MYSQL_TABLE_OPTIONS;
+            $referenceCollation = $this->getReferenceCollation();
+            if ($referenceCollation !== null) {
+                $options = 'CHARACTER SET utf8mb4 COLLATE ' . $referenceCollation;
+            }
         }
 
         parent::createTable($table, $columns, $options);
     }
 
     /**
-     * Converts an existing table to the collation of the HumHub core tables (MySQL/MariaDB only).
-     * Does nothing if the table already has this collation.
+     * Returns the collation of the `user` table (MySQL/MariaDB only), used as the reference collation by
+     * {@see static::createTable()} and {@see static::safeConvertTableCollation()}. Returns `null` on a fresh
+     * installation, where the `user` table does not exist yet.
      *
-     * @param string $table Table name without prefix braces
-     * @return bool Whether the table has been converted
+     * @return string|null
      * @since 1.19
      */
-    protected function safeConvertTableCollation(string $table): bool
+    protected function getReferenceCollation(): ?string
     {
-        if ($this->db->getDriverName() !== 'mysql') {
-            return false;
-        }
+        return Yii::$app->runtimeCache->getOrSet(__METHOD__, function () {
+            return $this->getTableCollation('user');
+        });
+    }
 
+    /**
+     * Returns the collation of a table (MySQL/MariaDB only), or `null` if the table does not exist.
+     *
+     * @param string $table Table name without prefix braces
+     * @return string|null
+     * @since 1.19
+     */
+    protected function getTableCollation(string $table): ?string
+    {
         $rawName = $this->db->schema->getRawTableName($table);
         $collation = $this->db->createCommand(
             'SELECT TABLE_COLLATION FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = :name',
             [':name' => $rawName],
         )->queryScalar();
 
-        if ($collation === false || $collation === null || $collation === 'utf8mb4_unicode_ci') {
+        return $collation === false ? null : $collation;
+    }
+
+    /**
+     * Converts an existing table to the collation of a reference table (MySQL/MariaDB only), so subsequent
+     * joins between the two tables don't fail with "Illegal mix of collations".
+     *
+     * Does nothing if either table cannot be found, or if $table already has the reference collation.
+     *
+     * @param string $table Table to convert, without prefix braces
+     * @param string $referenceTable Table whose collation to match, without prefix braces
+     * @return bool Whether the table has been converted
+     * @since 1.19
+     */
+    protected function safeConvertTableCollation(string $table, string $referenceTable): bool
+    {
+        if ($this->db->getDriverName() !== 'mysql') {
             return false;
         }
 
-        $this->execute('ALTER TABLE ' . $this->db->quoteTableName($table) . ' CONVERT TO ' . static::MYSQL_TABLE_OPTIONS);
+        $targetCollation = $this->getTableCollation($referenceTable);
+        if ($targetCollation === null) {
+            return false;
+        }
+
+        $currentCollation = $this->getTableCollation($table);
+        if ($currentCollation === null || $currentCollation === $targetCollation) {
+            return false;
+        }
+
+        $this->execute(
+            'ALTER TABLE ' . $this->db->quoteTableName($table)
+            . ' CONVERT TO CHARACTER SET utf8mb4 COLLATE ' . $targetCollation,
+        );
 
         return true;
     }
