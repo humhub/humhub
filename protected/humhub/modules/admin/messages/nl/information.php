@@ -100,7 +100,7 @@ return [
   'Web Application and Cron uses the same PHP version' => 'Webapplicatie en Cron gebruiken dezelfde PHP-versie',
   'Web Application and Cron uses the same user' => 'Webapplicatie en Cron gebruiken dezelfde gebruiker',
   'Web Application user: `{webUser}`, Cron user: `{cronUser}`' => 'Webtoepassingsgebruiker: `{webUser}`, Cron-gebruiker: `{cronUser}`',
-  'Your database is <b>up-to-date</b>.' => 'Uw database is <b>actueel</b>.',
+  'Your database is <b>up-to-date</b>.' => 'Uw database is <b>bijgewerkt</b>.',
   '{imageExtension} Support' => '{imageExtension} Ondersteuning',
   '{phpExtension} Extension' => '{phpExtension} Extensie',
   '{phpExtension} Support' => '{phpExtension} Ondersteuning',

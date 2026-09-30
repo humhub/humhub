@@ -7,6 +7,7 @@ HumHub Changelog
 - Enh #8509: Marketplace wording "Community modules" replaced by "Non-curated modules", without a status badge on the module card
 - Fix #8511: The like title's "and {count} more like this." text appeared even when every liking user was already listed by name, and inflated the total like count
 - Fix #8513: Migration "record_map" failed with "Illegal mix of collations" on MySQL 8; new tables now match the existing collation
+- Enh #8535: Email is carried over between Sign In, Sign Up and Password recovery forms
 
 1.19.0-beta.3 (September 22, 2026)
 ----------------------------------
@@ -43,6 +44,7 @@ HumHub Changelog
 - Fix #8495: `ConfigTest::testFixedSettings()` asserted the nested `HUMHUB_FIXED_SETTINGS__BASE__MAILER__*` form, which still parses but yields `fixed-settings['base']['mailer'][…]` — not a setting name since the mailer settings were flattened in `m250226_125226_rename_mailer_vars`, so the test documented a form that configures nothing; it now asserts the working flat form, and the nested behaviour keeps its own test
 - Fix #8496: Retire the `themes/HumHub` directory the 1.19 move of the core theme (#8102) leaves behind in the webroot, and repair the theme setting when it still points at it
 - Fix #8505: Topic sidebar widget showed topics unused in the Space, and its position is now configurable
+- Fix #8536: LDAP `pageSize` set to `0` failed with "Failed to create paged result control value" instead of disabling pagination
 
 1.19.0-beta.2 (August 19, 2026)
 -------------------------------
