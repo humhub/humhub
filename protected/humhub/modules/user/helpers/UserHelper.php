@@ -20,7 +20,7 @@ final class UserHelper
         }
 
         if ($idOrUser === null && $onNullCurrentUser) {
-            return (Yii::$app->user->isGuest) ? null : Yii::$app->getUser()->getIdentity();
+            return Yii::$app->user->getIdentity();
         }
 
         if (is_int($idOrUser) || ctype_digit((string) $idOrUser)) {
