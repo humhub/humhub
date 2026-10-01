@@ -10,6 +10,7 @@ HumHub Changelog
 - Fix #7777: Fix images visibility in system email templates to users
 - Fix #8028: "Mark as seen" on the notification overview affects only the currently filtered notifications
 - Fix #8537: Fix `UserHelper::getUserByParam()` error in console (`Yii::$app->getUser()` is not available there)
+- Fix #8538: `Followable` looked up follow records by the owner class instead of `getObjectModel()`, causing duplicate entry errors on subclasses (e.g. form models), and cached a stale record for the whole request
 
 1.18.6 (September 22, 2026)
 ---------------------------
