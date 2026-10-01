@@ -6,6 +6,7 @@ use humhub\modules\ldap\connection\LdapConnectionConfig;
 use humhub\modules\ldap\helpers\LdapHelper;
 use humhub\modules\ldap\Module;
 use LdapRecord\Connection;
+use LdapRecord\Query\Builder;
 use Yii;
 
 /**
@@ -65,7 +66,7 @@ class LdapService
             ->select('dn')
             ->rawFilter($this->config->userFilter);
 
-        return count($query->paginate($this->getPageSize()));
+        return count($this->fetchAll($query));
     }
 
     public function getUserDn(string $usernameOrEmail): ?string
@@ -96,7 +97,7 @@ class LdapService
             ->select($this->getQueriedAttributes());
 
         $entries = [];
-        foreach ($query->paginate($this->getPageSize()) as $entity) {
+        foreach ($this->fetchAll($query) as $entity) {
             $dn = strtolower((string)$entity['dn']);
             foreach ($this->config->ignoredDNs as $ignoredDN) {
                 if (!empty($ignoredDN) && str_starts_with($dn, strtolower($ignoredDN))) {
@@ -129,7 +130,7 @@ class LdapService
             ->select('dn')
             ->rawFilter($searchQuery);
 
-        foreach ($query->paginate($this->getPageSize()) as $entity) {
+        foreach ($this->fetchAll($query) as $entity) {
             $results[] = strtolower((string) $entity['dn']);
         }
 
@@ -143,6 +144,16 @@ class LdapService
         $extra = $this->config->queriedAttributes ?? $module->queriedAttributes;
 
         return array_merge(['*', 'dn'], $extra);
+    }
+
+    /**
+     * Runs the query paginated, or as a single plain search when the page size is 0.
+     */
+    private function fetchAll(Builder $query): array
+    {
+        $pageSize = $this->getPageSize();
+
+        return $pageSize > 0 ? $query->paginate($pageSize) : $query->get();
     }
 
     private function getPageSize(): int
