@@ -61,7 +61,8 @@ use yii\db\Query;
  * Availability ({@see ActiveQueryUser::available()}: enabled, visible to the user, not blocked
  * by them) always applies, and hidden users ({@see User::VISIBILITY_HIDDEN}) are never listed —
  * not even to an administrator, who may otherwise see them —, except to themselves: they are the
- * list's base, not filters, so no filter can bring back a user the list must not show.
+ * list's base, not filters, so no filter can bring back a user the list must not show. The
+ * directory ({@see self::PURPOSE_DIRECTORY}) never lists the context's user.
  *
  * A module adds one filter on {@see self::EVENT_INIT} (its parameter, validation, restriction
  * and the directory's definition) and restricts the list on {@see self::EVENT_BUILD}:
@@ -324,6 +325,11 @@ class UserList extends FilterableList
         // What a list page renders of every user, loaded with the page rather than per user.
         $query->with(['profile', 'contentContainerRecord']);
         $query->available($context->user)->andWhere(self::notHidden($context->user));
+
+        if ($context->purpose === self::PURPOSE_DIRECTORY && $context->user !== null) {
+            // The directory is about the others.
+            $query->andWhere(['!=', 'user.id', $context->user->id]);
+        }
 
         return new QueryListBuilder($query);
     }

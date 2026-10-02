@@ -193,6 +193,15 @@ class UserListTest extends HumHubDbTestCase
         $this->assertNotContains(3, $this->ids([], 2));
     }
 
+    public function testTheDirectoryLeavesOutTheCurrentUser()
+    {
+        $this->becomeUser('User3');
+
+        $this->assertSame([1, 2, 3, 8], $this->sorted($this->ids(['purpose' => 'directory'])));
+        $this->assertContains(4, $this->ids(['purpose' => 'picker']), 'only the directory');
+        $this->assertContains(4, $this->ids(), 'absent purpose is neutral');
+    }
+
     public function testFiltersUsersWhoBlockedTheCaller()
     {
         $this->becomeUser('User3');
@@ -842,7 +851,7 @@ class UserListTest extends HumHubDbTestCase
         Yii::$app->settings->set('people.defaultSorting', UserList::SORT_FIRSTNAME);
         $field = self::filterField('city', Text::class);
         Profile::updateAll(['city' => 'Hamburg'], ['user_id' => [2, 3]]);
-        Profile::updateAll(['city' => 'Berlin'], ['user_id' => 4]);
+        Profile::updateAll(['city' => 'Berlin'], ['user_id' => 1]);
 
         try {
             $this->assertSame(['Hamburg', 'Berlin'], array_column((new UserList())->filterValues($field, new ListContext($this->user(4), UserList::PURPOSE_DIRECTORY)), 'id'));
