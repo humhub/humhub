@@ -15,6 +15,10 @@
         gap: var(--hh-btn-gap);
         justify-content: center;
 
+        // Keep the height of a regular button for buttons without text (e.g. an empty `.dropdown-toggle`
+        // showing only the caret), which are otherwise collapsed by `display: inline-flex`.
+        min-height: calc(var(--bs-btn-font-size) * var(--bs-btn-line-height) + 2 * var(--bs-btn-padding-y) + 2 * var(--bs-btn-border-width));
+
         &.input {
             outline: none;
         }
