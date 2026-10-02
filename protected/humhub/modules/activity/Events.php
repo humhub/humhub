@@ -109,7 +109,7 @@ class Events extends BaseObject
 
             // Check Activity class exists
             if (!class_exists($a->class) && $integrityController->showFix('Deleting activity id ' . $a->id . ' class not exists! (' . $a->class . ')')) {
-                $a->hardDelete();
+                $a->delete();
             }
         }
     }
