@@ -146,4 +146,28 @@ describe('PathBar', () => {
             expect(rootTargeted.findAll('.c-path-bar__crumb')[0].classes()).toContain('is-drop-target');
         });
     });
+
+    describe('focusCurrent()', () => {
+        it('makes the current level focusable from script, not by Tab', () => {
+            expect(bar().find('.c-path-bar__current').attributes('tabindex')).toBe('-1');
+        });
+
+        it('moves the focus to the current level', () => {
+            const wrapper = bar();
+
+            wrapper.vm.focusCurrent();
+
+            expect(document.activeElement).toBe(wrapper.find('.c-path-bar__current').element);
+            wrapper.unmount();
+        });
+
+        it('moves the focus to the root link at the top level', () => {
+            const wrapper = bar({ path: [] });
+
+            wrapper.vm.focusCurrent();
+
+            expect(document.activeElement).toBe(wrapper.find('a.c-path-bar__root').element);
+            wrapper.unmount();
+        });
+    });
 });
