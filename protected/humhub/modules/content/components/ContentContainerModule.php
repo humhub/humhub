@@ -40,6 +40,9 @@ class ContentContainerModule extends Module
             $moduleState->delete();
         }
 
+        // Also in containers the loop above skipped, e.g. with a stale state
+        ContentContainerPermission::deleteAll(['module_id' => $this->id]);
+
         return parent::disable();
     }
 
