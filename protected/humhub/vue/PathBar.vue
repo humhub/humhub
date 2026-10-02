@@ -13,6 +13,7 @@
             <ol class="c-path-bar__crumbs">
                 <li class="c-path-bar__crumb" :class="targetClass(null)" v-on="path.length ? dropHandlers(null) : {}">
                     <a
+                        ref="root"
                         :href="rootUrl"
                         class="c-path-bar__root"
                         :class="{ 'is-current': !path.length }"
@@ -37,7 +38,14 @@
                         :title="crumb.title"
                         @click="follow(crumb.id, $event)"
                     >{{ crumb.title }}</a>
-                    <span v-else class="c-path-bar__current" :title="crumb.title" aria-current="page">{{ crumb.title }}</span>
+                    <span
+                        v-else
+                        ref="current"
+                        class="c-path-bar__current"
+                        tabindex="-1"
+                        :title="crumb.title"
+                        aria-current="page"
+                    >{{ crumb.title }}</span>
                 </li>
             </ol>
         </nav>
@@ -71,6 +79,9 @@ const plainClick = (event) => !(event.button > 0 || event.metaKey || event.ctrlK
  *   its own drop target on drop too. `dropTargetId` highlights one (`null` = the root, `undefined`
  *   = none) — unlike `TileGrid`'s `dropTargetKey`, whose `null` means no target; an owner
  *   tracking drop targets across both keeps two separate values, not one shared `null`.
+ * - `focusCurrent()` moves the focus to the current level (the root link at the top level) —
+ *   for an owner whose focused control goes away, e.g. a `SelectionMenu` after "Clear
+ *   selection" or a delete; the current level is focusable from script only (`tabindex="-1"`).
  * - Styling: `.c-path-bar` in `resources/scss/_item-browser.scss`; the back button shows at
  *   768px and below.
  *
@@ -102,6 +113,11 @@ export default {
         },
     },
     methods: {
+        focusCurrent() {
+            const target = this.path.length ? this.$refs.current : this.$refs.root;
+            // A ref inside `v-for` is an array
+            (Array.isArray(target) ? target[0] : target)?.focus();
+        },
         follow(id, event) {
             if (!plainClick(event)) {
                 return;

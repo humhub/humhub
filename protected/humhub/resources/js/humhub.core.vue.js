@@ -3385,6 +3385,11 @@
       }
     },
     methods: {
+      focusCurrent() {
+        var _a;
+        const target = this.path.length ? this.$refs.current : this.$refs.root;
+        (_a = Array.isArray(target) ? target[0] : target) == null ? void 0 : _a.focus();
+      },
       follow(id, event) {
         if (!plainClick(event)) {
           return;
@@ -3460,6 +3465,7 @@
             }, vue.toHandlers($props.path.length ? $options.dropHandlers(null) : {}, true)),
             [
               vue.createElementVNode("a", {
+                ref: "root",
                 href: $props.rootUrl,
                 class: vue.normalizeClass(["c-path-bar__root", { "is-current": !$props.path.length }]),
                 "aria-label": $props.rootLabel,
@@ -3511,7 +3517,10 @@
                     onClick: ($event) => $options.follow(crumb.id, $event)
                   }, vue.toDisplayString(crumb.title), 9, _hoisted_6$5)) : (vue.openBlock(), vue.createElementBlock("span", {
                     key: 1,
+                    ref_for: true,
+                    ref: "current",
                     class: "c-path-bar__current",
+                    tabindex: "-1",
                     title: crumb.title,
                     "aria-current": "page"
                   }, vue.toDisplayString(crumb.title), 9, _hoisted_7$3))

@@ -19,6 +19,7 @@
         --hh-item-muted: var(--hh-text-color-secondary);
         --hh-item-strong: var(--hh-text-color-highlight);
         --hh-item-focus-ring: 0 0 0 3px rgba(var(--bs-accent-rgb), 0.32);
+        --hh-item-focus-ring-inset: inset 0 0 0 2px rgba(var(--bs-accent-rgb), 0.5);
         --hh-skeleton-base: var(--bs-secondary-bg);
         --hh-skeleton-highlight: var(--bs-tertiary-bg);
     }
@@ -113,14 +114,17 @@
 
     .c-path-bar__separator {
         flex: 0 0 auto;
-        margin: 0 4px;
+        margin: 0;
         color: var(--hh-item-muted);
         font-size: 12px;
     }
 
+    // The separator's former margin is the crumbs' padding now, room for their focus ring
     .c-path-bar__link,
     .c-path-bar__current {
         min-width: 0;
+        padding: 2px 4px;
+        border-radius: 4px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -139,6 +143,18 @@
     .c-path-bar__current {
         color: var(--hh-item-muted);
         font-weight: 600;
+    }
+
+    // `_base.scss` drops the browser's outline on `:focus-visible`; the crumbs clip anything
+    // drawn outside them, so the ring is inset. `:focus-visible` rather than `:focus`: after a
+    // `focusCurrent()` that follows a click, the browser leaves it out, as for a clicked link.
+    .c-path-bar__root,
+    .c-path-bar__link,
+    .c-path-bar__current {
+        &:focus-visible {
+            outline: none;
+            box-shadow: var(--hh-item-focus-ring-inset);
+        }
     }
 
     // Selection menu, sliding in beside the path
@@ -218,6 +234,12 @@
         &.is-uploading .c-tile-grid__name {
             pointer-events: none;
         }
+
+        // A tile's open menu (Bootstrap's `.show`) reaches over the tiles after it, whose
+        // checkbox, actions and progress frame share its layer (z-index 2): lift the whole tile
+        &:has(.dropdown-menu.show) {
+            z-index: 3;
+        }
     }
 
     .c-tile-grid__thumb {
@@ -276,7 +298,10 @@
         color: var(--hh-item-accent);
     }
 
+    // As wide as the tile (a flex item of the centred column is only as wide as its content),
+    // so a long line is held to the tile and can be cut there
     .c-tile-grid__meta {
+        width: 100%;
         color: var(--hh-item-muted);
         font-size: 12px;
     }
@@ -356,8 +381,10 @@
 
     // Keyboard (and mouse) users reach the item menu too: it shows while the tile is hovered
     // or holds focus — it follows the name link in DOM order, so the next Tab lands on it.
+    // ...and stays while its menu is open, even once the pointer or the focus has moved on
     .c-tile-grid__tile:hover .c-tile-grid__actions,
-    .c-tile-grid__tile:focus-within .c-tile-grid__actions {
+    .c-tile-grid__tile:focus-within .c-tile-grid__actions,
+    .c-tile-grid__actions:has(.dropdown-menu.show) {
         display: block;
     }
 
