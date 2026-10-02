@@ -309,7 +309,17 @@ class ContentContainerModuleManager extends Component
     /**
      * Returns a query for \humhub\modules\content\models\ContentContainer where the given module is enabled.
      *
-     * @param string $id the module mid
+     * "Enabled" is what the container's module manager reports ({@see getEnabled()}):
+     *
+     * - The module must support the container's class ({@see ContentContainerModule::hasContentContainerType()})
+     *   and must not be "not available" by default for that class.
+     * - A state stored for the container wins: enabled and always enabled count, disabled does not.
+     * - Without a stored state, the module's default state for the container's class decides.
+     *
+     * Unlike {@see getEnabled()}, it does not check whether the module itself is enabled, so it can
+     * be used while the module is being disabled ({@see ContentContainerModule::disable()}).
+     *
+     * @param string $id the module id
      * @return ActiveQuery the list of content container
      */
     public static function getContentContainerQueryByModule($id)
@@ -317,22 +327,34 @@ class ContentContainerModuleManager extends Component
         $query = ContentContainer::find();
 
         $query->leftJoin('contentcontainer_module', 'contentcontainer_module.contentcontainer_id=contentcontainer.id AND contentcontainer_module.module_id=:moduleId', [':moduleId' => $id]);
-        $query->andWhere(['contentcontainer_module.module_state' => ContentContainerModuleState::STATE_ENABLED]);
-        $query->orWhere(['contentcontainer_module.module_state' => ContentContainerModuleState::STATE_FORCE_ENABLED]);
 
-        $moduleSettings = Yii::$app->getModule($id)->settings;
+        $module = Yii::$app->getModule($id);
+        $enabledStates = [ContentContainerModuleState::STATE_ENABLED, ContentContainerModuleState::STATE_FORCE_ENABLED];
 
-        // Add default enabled modules
-        $contentContainerClasses = [User::class, Space::class];
-        foreach ($contentContainerClasses as $class) {
-            $reflect = new ReflectionClass($class);
-            $defaultState = (int)$moduleSettings->get('moduleManager.defaultState.' . $reflect->getShortName());
-            if ($defaultState === ContentContainerModuleState::STATE_ENABLED || $defaultState === ContentContainerModuleState::STATE_FORCE_ENABLED) {
-                $query->orWhere(['contentcontainer.class' => $class]);
+        $conditions = ['or'];
+        foreach ([User::class, Space::class] as $class) {
+            if (!$module instanceof ContentContainerModule || !$module->hasContentContainerType($class)) {
+                continue;
             }
+
+            $defaultState = self::getDefaultState($class, $id);
+            if ($defaultState === ContentContainerModuleState::STATE_NOT_AVAILABLE) {
+                continue;
+            }
+
+            $stateCondition = ['contentcontainer_module.module_state' => $enabledStates];
+            if (in_array($defaultState, $enabledStates, true)) {
+                $stateCondition = ['or', $stateCondition, ['contentcontainer_module.module_state' => null]];
+            }
+
+            $conditions[] = ['and', ['contentcontainer.class' => $class], $stateCondition];
         }
 
-        return $query;
+        if (count($conditions) === 1) {
+            return $query->andWhere('0=1');
+        }
+
+        return $query->andWhere($conditions);
     }
 
     /**
