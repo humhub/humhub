@@ -58,7 +58,7 @@ class FollowTest extends HumHubDbTestCase
         $this->becomeUser('User1');
 
         // Subclass storing its records under the parent class (like a form model extending a content record)
-        $userClass = new class() extends User {
+        $userClass = new class extends User {
             public static function getObjectModel(): string
             {
                 return User::class;
