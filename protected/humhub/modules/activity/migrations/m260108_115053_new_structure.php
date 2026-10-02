@@ -30,6 +30,11 @@ class m260108_115053_new_structure extends Migration
             $this->updateSilent('activity', ['class' => $newClass], ['class' => $oldClass]);
         }
 
+        // record_map may have been created with a different collation than `activity` (e.g. the database
+        // default); this is also idempotent, so it doesn't matter whether the `like` migration already
+        // converted the table.
+        $this->safeConvertTableCollation('record_map', 'activity');
+
         $this->safeAddColumn('activity', 'contentcontainer_id', $this->integer()->null()->after('class'));
         $this->safeAddColumn('activity', 'content_id', $this->integer()->null()->after('contentcontainer_id'));
         $this->safeAddColumn('activity', 'content_addon_record_id', $this->integer()->null()->after('content_id'));
