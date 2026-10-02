@@ -68,6 +68,13 @@ describe('CardGrid', () => {
         expect(wrapper.classes()).toContain('is-loading');
     });
 
+    it('does not dim the cards while a further page loads', () => {
+        const wrapper = mountGrid({ loading: true, loadingMore: true, hasMore: true, items: [{ id: 'a', name: 'A' }] });
+
+        expect(wrapper.classes()).not.toContain('is-loading');
+        expect(wrapper.find('.cards-more .spinner-border').exists()).toBe(true);
+    });
+
     it('renders the empty state, overridable by slot', () => {
         expect(mountGrid().find('.c-card-grid__message--empty').text()).toContain('No results found!');
         expect(mountGrid({}, { empty: () => 'Nothing here' }).find('.c-card-grid__message--empty').text()).toBe('Nothing here');

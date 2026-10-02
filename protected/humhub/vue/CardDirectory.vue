@@ -26,6 +26,7 @@
             :items="items"
             :item-key="itemKey"
             :loading="loading"
+            :loading-more="loadingMore"
             :error="error"
             :has-more="hasMore"
             :skeleton-count="skeletonCount"
@@ -153,6 +154,8 @@ export default {
             // The first page is requested in `mounted()`; loading from the first render on shows the
             // skeletons at once.
             loading: true,
+            // The running request is a further page, appended to the shown cards.
+            loadingMore: false,
             error: null,
             failedPage: null,
             pageStarts: [0],
@@ -247,6 +250,7 @@ export default {
         fetch(page) {
             const seq = ++this.requestSeq;
             this.loading = true;
+            this.loadingMore = page > 1;
             this.error = null;
 
             const query = new URLSearchParams({

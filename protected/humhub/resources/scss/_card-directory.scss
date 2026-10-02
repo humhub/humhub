@@ -44,8 +44,11 @@
         transition: opacity 0.2s ease-in-out;
     }
 
+    // Dimmed only once a reload takes a moment (the delay applies when dimming, not when the
+    // cards come back), so a fast answer does not flash the grid.
     .c-card-grid.is-loading .c-card-grid__cells {
         opacity: 0.5;
+        transition-delay: 0.15s;
     }
 
     .c-card-grid__cell {

@@ -199,6 +199,30 @@ describe('CardDirectory', () => {
         expect(wrapper.find('.cards-more').exists()).toBe(false);
     });
 
+    it('dims the grid while page 1 reloads, but not while a further page loads', async () => {
+        const more = deferred();
+        const reload = deferred();
+        globalThis.humhubStubs.client.get = vi.fn()
+            .mockReturnValueOnce(Promise.resolve(envelope([{ id: 1, name: 'One' }], { total: 2, pages: 2 })))
+            .mockReturnValueOnce(more.promise)
+            .mockReturnValueOnce(reload.promise);
+        const wrapper = mountDirectory();
+        await flushPromises();
+        const grid = () => wrapper.find('.c-card-grid');
+
+        await wrapper.find('.cards-more button').trigger('click');
+        expect(grid().classes()).not.toContain('is-loading');
+        more.resolve(envelope([{ id: 2, name: 'Two' }], { total: 2, page: 2, pages: 2 }));
+        await flushPromises();
+
+        wrapper.vm.reload();
+        await wrapper.vm.$nextTick();
+        expect(grid().classes()).toContain('is-loading');
+        reload.resolve(envelope([{ id: 1, name: 'One' }]));
+        await flushPromises();
+        expect(grid().classes()).not.toContain('is-loading');
+    });
+
     it('shows an error and retries', async () => {
         globalThis.humhubStubs.client.get = vi.fn()
             .mockReturnValueOnce(Promise.reject({ status: 503, message: 'Down' }))

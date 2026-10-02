@@ -1,5 +1,5 @@
 <template>
-    <div class="c-card-grid" :class="{ 'is-loading': loading && items.length > 0 }">
+    <div class="c-card-grid" :class="{ 'is-loading': loading && !loadingMore && items.length > 0 }">
         <div class="c-card-grid__cells" :aria-busy="loading ? 'true' : 'false'">
             <div
                 v-for="(item, index) in items"
@@ -67,7 +67,8 @@ import CardSkeleton from './CardSkeleton.vue';
  *   `skeletonCount` - 1, which is also its `--card-stagger-index`) — a directory whose cards look
  *   unlike the default `CardSkeleton` (image, two lines, action footer) passes its own.
  * - States: skeletons (the `skeleton` slot, default `CardSkeleton`) while the first page loads; while a later request loads
- *   the cards stay and the grid is dimmed (`.is-loading`); an error without cards replaces the
+ *   the cards stay and the grid is dimmed (`.is-loading`) — not while `loadingMore` (a further
+ *   page is appended, the cards stay valid; the spinner below the grid shows it); an error without cards replaces the
  *   grid (`.c-card-grid__message--error`), an error while paging sits below it
  *   (`.c-card-grid__error`, hook class `cards-error`) — both with a retry.
  * - Paging: a "Show more" button (`.c-card-grid__more`, hook class `cards-more`) while
@@ -88,6 +89,8 @@ export default {
         items: { type: Array, required: true },
         itemKey: { type: String, default: 'id' },
         loading: { type: Boolean, default: false },
+        // The running request appends a further page (no dimming, see "States").
+        loadingMore: { type: Boolean, default: false },
         error: { type: String, default: null },
         hasMore: { type: Boolean, default: false },
         skeletonCount: { type: Number, default: 12 },

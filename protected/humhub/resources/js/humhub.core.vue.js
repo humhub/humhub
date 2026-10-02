@@ -32,6 +32,8 @@
       items: { type: Array, required: true },
       itemKey: { type: String, default: "id" },
       loading: { type: Boolean, default: false },
+      // The running request appends a further page (no dimming, see "States").
+      loadingMore: { type: Boolean, default: false },
       error: { type: String, default: null },
       hasMore: { type: Boolean, default: false },
       skeletonCount: { type: Number, default: 12 },
@@ -152,7 +154,7 @@
     return vue.openBlock(), vue.createElementBlock(
       "div",
       {
-        class: vue.normalizeClass(["c-card-grid", { "is-loading": $props.loading && $props.items.length > 0 }])
+        class: vue.normalizeClass(["c-card-grid", { "is-loading": $props.loading && !$props.loadingMore && $props.items.length > 0 }])
       },
       [
         vue.createElementVNode("div", {
@@ -2215,6 +2217,8 @@
         // The first page is requested in `mounted()`; loading from the first render on shows the
         // skeletons at once.
         loading: true,
+        // The running request is a further page, appended to the shown cards.
+        loadingMore: false,
         error: null,
         failedPage: null,
         pageStarts: [0],
@@ -2304,6 +2308,7 @@
       fetch(page) {
         const seq = ++this.requestSeq;
         this.loading = true;
+        this.loadingMore = page > 1;
         this.error = null;
         const query = new URLSearchParams({
           ...requestParams(this.filters, this.values, this.fixed),
@@ -2438,6 +2443,7 @@
         items: $data.items,
         "item-key": $props.itemKey,
         loading: $data.loading,
+        "loading-more": $data.loadingMore,
         error: $data.error,
         "has-more": $options.hasMore,
         "skeleton-count": $props.skeletonCount,
@@ -2470,7 +2476,7 @@
           ]),
           key: "1"
         } : void 0
-      ]), 1032, ["items", "item-key", "loading", "error", "has-more", "skeleton-count", "card-class", "page-starts", "onLoadMore", "onRetry"])
+      ]), 1032, ["items", "item-key", "loading", "loading-more", "error", "has-more", "skeleton-count", "card-class", "page-starts", "onLoadMore", "onRetry"])
     ]);
   }
   const C0 = /* @__PURE__ */ _export_sfc(_sfc_main$l, [["render", _sfc_render$l]]);
