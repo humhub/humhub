@@ -38,7 +38,7 @@ removeSlotComponent('space.card-actions', 'follow');                            
 
 ### Card actions
 
-The footers of the directory cards are extension slots, and the core's own buttons are entries of them, registered from the modules' `vue/index.js` like any module's — so a module can add an action, reorder, replace or remove any of them, the core's included. An action renders one `.c-entity-card__action` (a button, or a link styled as one), or nothing where it has nothing to offer. The slot only renders once the viewer's state of the card has loaded (a disabled placeholder stands in until then), never on one's own card, and not where there is no state (a user the viewer may not see).
+The footers of the directory cards are extension slots, and the core's own buttons are entries of them, registered from the modules' `vue/index.js` like any module's — so a module can add an action, reorder, replace or remove any of them, the core's included. An action renders one `.c-entity-card__action` (a button, or a link styled as one), or nothing where it has nothing to offer; labelled actions share the footer's width, an icon-only one adds `.c-entity-card__action--icon` and stays square. The slot only renders once the viewer's state of the card has loaded (a disabled placeholder stands in until then), never on one's own card, and not where there is no state (a user the viewer may not see).
 
 **`user.card-actions`** — `PeopleCard.vue`, the People directory:
 
@@ -70,7 +70,7 @@ registerSlotComponent('user.card-actions', 'MailCardAction', { id: 'mail', sortO
 ```vue
 <!-- MailCardAction.vue -->
 <template>
-    <button type="button" class="btn btn-light c-entity-card__action" :title="label" :aria-label="label" @click="compose">
+    <button type="button" class="btn btn-light c-entity-card__action c-entity-card__action--icon" :title="label" :aria-label="label" @click="compose">
         <i class="ti ti-mail" aria-hidden="true"></i>
     </button>
 </template>

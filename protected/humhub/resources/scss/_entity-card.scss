@@ -217,6 +217,14 @@
         &.btn-group > .btn:first-child {
             flex: 1 1 auto;
         }
+
+        // An action with an icon only (a module's "Send message", say): square, at the bar's
+        // height, leaving the width to the labelled actions beside it.
+        &--icon {
+            flex: 0 0 auto;
+            width: 38px;
+            padding-inline: 0;
+        }
     }
 
     .c-entity-card__placeholder:disabled {
