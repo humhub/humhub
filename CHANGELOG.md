@@ -10,7 +10,7 @@ HumHub Changelog
 - Fix #8514: Files and directories created on local filesystem mounts (`uploads/`, `assets/`) were only accessible by their owner, e.g. flushing the cache failed on directories created from the CLI; they now use the Yii2 modes 0775/0664 (private: 0770/0660) (since 1.19.0-beta.1)
 - Enh #8535: Email is carried over between Sign In, Sign Up and Password recovery forms
 - Fix #8539: `Followable` looked up follow records by the owner class instead of `getObjectModel()`, causing duplicate entry errors on subclasses (e.g. form models); include the object model in the follow record cache key
-- Fix #8544: Buttons without text, e.g. an empty `.dropdown-toggle` showing only a caret, collapsed in height (since 1.19.0-beta.2)
+- Fix #8544: Buttons with only an icon or a caret (e.g. an empty `.dropdown-toggle`) were shorter than buttons with a text (since 1.19.0-beta.2)
 
 1.19.0-beta.3 (September 22, 2026)
 ----------------------------------

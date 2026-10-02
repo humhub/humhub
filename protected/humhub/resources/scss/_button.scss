@@ -15,9 +15,17 @@
         gap: var(--hh-btn-gap);
         justify-content: center;
 
-        // Keep the height of a regular button for buttons without text (e.g. an empty `.dropdown-toggle`
+        // Keep the height of a regular button for buttons without any content (e.g. an empty `.dropdown-toggle`
         // showing only the caret), which are otherwise collapsed by `display: inline-flex`.
-        min-height: calc(var(--bs-btn-font-size) * var(--bs-btn-line-height) + 2 * var(--bs-btn-padding-y) + 2 * var(--bs-btn-border-width));
+        &:empty {
+            min-height: calc(var(--bs-btn-font-size) * var(--bs-btn-line-height) + 2 * var(--bs-btn-padding-y) + 2 * var(--bs-btn-border-width));
+        }
+
+        // Icons (`line-height: 1`) must keep the line height of the button, as in the former `inline-block` layout,
+        // otherwise buttons with only an icon get shorter than buttons with a text.
+        > .fa {
+            line-height: inherit;
+        }
 
         &.input {
             outline: none;
