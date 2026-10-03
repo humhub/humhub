@@ -11,6 +11,7 @@ HumHub Changelog
 - Enh #8535: Email is carried over between Sign In, Sign Up and Password recovery forms
 - Fix #8539: `Followable` looked up follow records by the owner class instead of `getObjectModel()`, causing duplicate entry errors on subclasses (e.g. form models); include the object model in the follow record cache key
 - Fix #8544: Buttons with only an icon or a caret (e.g. an empty `.dropdown-toggle`) were shorter than buttons with a text (since 1.19.0-beta.2)
+- Fix #8551: Remove dead `admin/setting/notification` action, which failed with a missing view
 
 1.19.0-beta.3 (September 22, 2026)
 ----------------------------------
