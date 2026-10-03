@@ -588,7 +588,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
             if (AuthHelper::isGuestAccessEnabled()) {
                 // Set user profile default visibility
                 $defaultUserProfileVisibility = Yii::$app->getModule('user')->settings->get('auth.defaultUserProfileVisibility');
-                if (array_key_exists($defaultUserProfileVisibility, User::getVisibilityOptions())) {
+                if ($defaultUserProfileVisibility !== null && array_key_exists($defaultUserProfileVisibility, User::getVisibilityOptions())) {
                     $this->visibility = $defaultUserProfileVisibility;
                 }
             }
