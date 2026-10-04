@@ -2,6 +2,12 @@
 
 > Part of the [Vue.js integration](ui-js-vuejs.md) documentation. This chapter covers authoring and using components: where a module's Vue sources live, the components core ships, the registry, mounting islands into server-rendered pages, the `VueComponent` PHP widget, and the composables bridging into existing platform services. For motivation, goals, constraints and the overall architecture, see the [overview](ui-js-vuejs.md).
 
+## Overview
+
+![The core Vue page components as UI sketches: a PageToolbar with its FilterBar and filter controls, a CardDirectory composed of PageToolbar, FilterBar and CardGrid, the item browser parts (DropZone, PathBar, SelectionMenu, TileGrid, ProgressFrame, DropdownMenu), a UiModal with a HumHubForm, and an ExtensionSlot and the StatusBar](images/vue-page-components.svg)
+
+Each panel is one composition of core components drawn as a UI sketch; a tag names the component that renders a region, its colour the component's family. A filled tag marks a panel's main component, an outlined one a part shown again inside a larger composition. The diagram is a hand-maintained SVG in `docs/develop/images/` — update it when a component is added, renamed or moved.
+
 ## Module file layout
 
 ```
