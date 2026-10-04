@@ -6,7 +6,7 @@
 
 This document covers motivation, goals, constraints and the overall architecture — the conceptual anchor for the rest of the design, which is split into focused chapters:
 
-- [Components](ui-js-vuejs-components.md) — authoring and using components: module file layout, the core component set, the registry, mounting, the `VueComponent` PHP widget, and the composable bridge into existing platform services.
+- [Components](ui-js-vuejs-components.md) — authoring and using components: an [overview diagram](ui-js-vuejs-components.md#overview) of the component kit, module file layout, the core component set, the registry, mounting, the `VueComponent` PHP widget, and the composable bridge into existing platform services.
 - [Build tooling](ui-js-vuejs-build.md) — `grunt build-vue`/`watch`/`minify`, the committed-artifact contract, development mode, and the vitest test infrastructure.
 - [Extending islands](ui-js-vuejs-extensions.md) — extension slots, menu entries, server-described menu entries, module data served by a module's own endpoint, domain events, and migrating a legacy widget-stack extension.
 - [Legacy interop](ui-js-vuejs-interop.md) — `v-additions`, `RichTextOutput`, `LegacyFormWrapper`, the form-shell pattern, and other patterns for bridging into pre-existing jQuery widgets.
