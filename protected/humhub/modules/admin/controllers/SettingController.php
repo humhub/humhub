@@ -27,7 +27,6 @@ use humhub\modules\admin\models\forms\StatisticSettingsForm;
 use humhub\modules\admin\models\Log;
 use humhub\modules\admin\notifications\NewVersionAvailable;
 use humhub\modules\admin\permissions\ManageSettings;
-use humhub\modules\notification\models\forms\NotificationSettings;
 use humhub\modules\topic\models\forms\TopicSettingsForm;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\user\models\User;
@@ -168,21 +167,6 @@ class SettingController extends Controller
         }
 
         return $this->render('statistic', [
-            'model' => $form,
-        ]);
-    }
-
-    /**
-     * Notification Mailing Settings
-     */
-    public function actionNotification()
-    {
-        $form = new NotificationSettings();
-        if ($form->load(Yii::$app->request->post()) && $form->save()) {
-            $this->view->saved();
-        }
-
-        return $this->render('notification', [
             'model' => $form,
         ]);
     }
