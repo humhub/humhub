@@ -55,6 +55,12 @@ class ZendLucenceDriver extends AbstractDriver
 
     public function update(Content $content): void
     {
+        $model = $content->getModel();
+        if ($model === null) {
+            // The content class no longer exists (e.g. the module was removed), nothing to index
+            return;
+        }
+
         $document = new Document();
 
         $unStoredFields = ['comments', 'files'];
@@ -66,7 +72,7 @@ class ZendLucenceDriver extends AbstractDriver
             }
         }
 
-        foreach ($content->getModel()->getSearchAttributes() as $attributeName => $attributeValue) {
+        foreach ($model->getSearchAttributes() as $attributeName => $attributeValue) {
             $document->addField(Field::unStored($attributeName, RichTextToPlainTextConverter::process($attributeValue)));
         }
 
