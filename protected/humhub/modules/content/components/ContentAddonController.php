@@ -135,7 +135,8 @@ class ContentAddonController extends Controller
             throw new HttpException(500, 'Could not find content addon record!');
         }
 
-        if ($target->object_model !== PolymorphicRelation::getObjectModel($this->parentContent) && $target->object_id !== $this->parentContent->getPrimaryKey()) {
+        if ($target->object_model !== PolymorphicRelation::getObjectModel($this->parentContent)
+            || (int)$target->object_id !== (int)$this->parentContent->getPrimaryKey()) {
             throw new HttpException(500, 'Content addon not belongs to given content record!');
         }
 

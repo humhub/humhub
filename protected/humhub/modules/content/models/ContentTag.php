@@ -143,11 +143,11 @@ class ContentTag extends ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'module_id'], 'required'],
+            [['name', '!module_id'], 'required'],
             [['name'], 'trim'],
-            [['name', 'module_id', 'type'], 'string', 'max' => '100'],
+            [['name', '!module_id', '!type'], 'string', 'max' => '100'],
             ['color', 'string', 'max' => '7'],
-            [['parent_id', 'sort_order'], 'integer'],
+            [['!parent_id', 'sort_order'], 'integer'],
             [['name'], 'validateUnique'],
         ];
     }
