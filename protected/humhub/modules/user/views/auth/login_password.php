@@ -28,6 +28,14 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Sign In');
         </div>
         <div class="panel-body pt-0">
             <?php $form = ActiveForm::begin(['id' => 'account-login-form', 'enableClientValidation' => false]) ?>
+                <?= Html::textInput('username', $model->username, [
+                    // Associate password with the Step-1 username by browser password managers
+                    'autocomplete' => 'username',
+                    'readonly' => true,
+                    'tabindex' => -1,
+                    'aria-hidden' => 'true',
+                    'class' => 'visually-hidden',
+                ]) ?>
                 <p class="mb-2"><?= $model->getAttributeLabel('password') ?></p>
                 <?= $form->field($model, 'password')->passwordInput([
                     'id' => 'login_password',

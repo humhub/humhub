@@ -14,6 +14,7 @@ HumHub Changelog
 - Fix #8549: `integrity/run` crashed on activities with a missing class (`Activity::hardDelete()` does not exist since 1.19)
 - Fix #8551: Remove dead `admin/setting/notification` action, which failed with a missing view
 - Fix #8552: PHP 8.5 deprecation on registration when guest access is enabled and no default profile visibility is set
+- Fix #8554: Allow password managers to save username and password pair on the two-step login
 
 1.19.0-beta.3 (September 22, 2026)
 ----------------------------------
