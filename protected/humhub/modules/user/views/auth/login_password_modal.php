@@ -1,5 +1,6 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\user\models\forms\LoginPassword;
 use humhub\widgets\bootstrap\Link;
 use humhub\widgets\form\ActiveForm;
@@ -18,6 +19,14 @@ use humhub\widgets\modal\ModalButton;
 ]) ?>
 
     <?php $form = ActiveForm::begin(['id' => 'account-login-form-modal', 'enableClientValidation' => false]) ?>
+        <?= Html::textInput('username', $model->username, [
+            // Associate password with the Step-1 username by browser password managers
+            'autocomplete' => 'username',
+            'readonly' => true,
+            'tabindex' => -1,
+            'aria-hidden' => 'true',
+            'class' => 'visually-hidden',
+        ]) ?>
         <p class="mb-2"><?= $model->getAttributeLabel('password') ?></p>
         <?= $form->field($model, 'password')->passwordInput([
             'id' => 'login_password',
