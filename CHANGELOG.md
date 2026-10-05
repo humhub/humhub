@@ -11,6 +11,9 @@ HumHub Changelog
 - Enh #8535: Email is carried over between Sign In, Sign Up and Password recovery forms
 - Fix #8539: `Followable` looked up follow records by the owner class instead of `getObjectModel()`, causing duplicate entry errors on subclasses (e.g. form models); include the object model in the follow record cache key
 - Fix #8544: Buttons with only an icon or a caret (e.g. an empty `.dropdown-toggle`) were shorter than buttons with a text (since 1.19.0-beta.2)
+- Fix #8549: `integrity/run` crashed on activities with a missing class (`Activity::hardDelete()` does not exist since 1.19)
+- Fix #8551: Remove dead `admin/setting/notification` action, which failed with a missing view
+- Fix #8552: PHP 8.5 deprecation on registration when guest access is enabled and no default profile visibility is set
 
 1.19.0-beta.3 (September 22, 2026)
 ----------------------------------
@@ -169,6 +172,14 @@ HumHub Changelog
 -------------------
 
 - Fix #8507: Prevent errors caused by outdated time zone identifiers (e.g. `Europe/Kiev`) which are unknown to systems without legacy tz data
+- Fix #8529: Allow membership requests only for "Invite and request" spaces and non-blocked users; Restore and HTML-encode the request message in approval emails (lost since 1.11)
+- Fix #7954: Fix wrong date and author of comments in mention and like notification emails
+- Fix #7777: Fix images visibility in system email templates to users
+- Fix #8028: "Mark as seen" on the notification overview affects only the currently filtered notifications
+- Fix #8537: Fix `UserHelper::getUserByParam()` error in console (`Yii::$app->getUser()` is not available there)
+- Fix #8538: `Followable` looked up follow records by the owner class instead of `getObjectModel()`, causing duplicate entry errors on subclasses (e.g. form models), and cached a stale record for the whole request
+- Fix #8550: `content-search/rebuild` crashed on content whose model class no longer exists (e.g. removed module)
+- Fix #8556: Refined content tag and content addon validation
 
 1.18.6 (September 22, 2026)
 ---------------------------

@@ -13,10 +13,12 @@
 
 /* @var $record Notification */
 
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\notification\models\Notification;
 use humhub\widgets\mails\MailButtonList;
 
+$likedRecord = $viewable->source->getContentOwnerObject();
 ?>
 
 <?php $this->beginContent('@notification/views/layouts/mail.php') ?>
@@ -26,8 +28,10 @@ use humhub\widgets\mails\MailButtonList;
                 <?=
                 humhub\widgets\mails\MailContentEntry::widget([
                     'receiver' => $record->user,
-                    'content' => $viewable->source->getContentOwnerObject(),
-                    'date' => $date,
+                    'content' => $likedRecord,
+                    'date' => $likedRecord instanceof ContentActiveRecord
+                        ? $likedRecord->content->created_at
+                        : $likedRecord->created_at,
                     'space' => $space
                 ])
                 ?>
