@@ -75,7 +75,40 @@ class InformationController extends Controller
             'latestVersion' => $latestVersion,
             'isNewVersionAvailable' => $isNewVersionAvailable,
             'isUpToDate' => $isUpToDate,
+            'dockerImage' => $this->getDockerImageInfo(),
         ]);
+    }
+
+    /**
+     * Returns the Docker image build information provided by the official HumHub Docker image
+     * via the environment variables `HUMHUB_CONFIG__PARAMS__DOCKER__*`.
+     *
+     * @return array label => value, empty when not running in the Docker image
+     * @since 1.19
+     */
+    private function getDockerImageInfo(): array
+    {
+        $params = Yii::$app->params['docker'] ?? null;
+        if (!is_array($params)) {
+            return [];
+        }
+
+        $labels = [
+            'imageTag' => Yii::t('AdminModule.information', 'Image tag'),
+            'imagePlatform' => Yii::t('AdminModule.information', 'Image platform'),
+            'imageCreated' => Yii::t('AdminModule.information', 'Image build time'),
+            'imageRevision' => Yii::t('AdminModule.information', 'Docker repository commit'),
+            'coreRevision' => Yii::t('AdminModule.information', 'HumHub core commit'),
+        ];
+
+        $info = [];
+        foreach ($labels as $key => $label) {
+            if (isset($params[$key]) && is_scalar($params[$key]) && (string) $params[$key] !== '') {
+                $info[$label] = (string) $params[$key];
+            }
+        }
+
+        return $info;
     }
 
     public function actionPrerequisites()
