@@ -16,7 +16,7 @@ HumHub Changelog
 - Fix #8552: PHP 8.5 deprecation on registration when guest access is enabled and no default profile visibility is set
 - Fix #8554: Allow password managers to save username and password pair on the two-step login
 - Enh #8559: Show Docker image build information (tag, platform, build time, commits) on the About page
-- Enh #XXXX: Add an index on `live.created_at` to speed up the live polling query
+- Enh #8562: Add an index on `live.created_at` to speed up the live polling query
 
 1.19.0-beta.3 (September 22, 2026)
 ----------------------------------
