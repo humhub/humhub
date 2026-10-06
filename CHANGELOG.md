@@ -15,6 +15,7 @@ HumHub Changelog
 - Fix #8551: Remove dead `admin/setting/notification` action, which failed with a missing view
 - Fix #8552: PHP 8.5 deprecation on registration when guest access is enabled and no default profile visibility is set
 - Fix #8554: Allow password managers to save username and password pair on the two-step login
+- Fix #8560: Unified the license statement to `AGPL-3.0-only` (license file, `LICENSE`, `package.json`)
 - Enh #8559: Show Docker image build information (tag, platform, build time, commits) on the About page
 - Enh #8562: Add an index on `live.created_at` to speed up the live polling query
 

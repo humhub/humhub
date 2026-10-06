@@ -1,6 +1,6 @@
 {
   "name": "humhub",
-  "license": "AGPL-3.0",
+  "license": "AGPL-3.0-only",
   "repository": {
     "type": "git",
     "url": "git://github.com/humhub/humhub.git"
