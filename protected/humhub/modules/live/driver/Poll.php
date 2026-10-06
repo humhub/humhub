@@ -58,7 +58,6 @@ class Poll extends BaseDriver
         $model->created_at = time();
         $model->visibility = $liveEvent->visibility;
         $model->contentcontainer_id = $liveEvent->contentContainerId;
-        $model->created_at = time();
         return $model->save();
     }
 
