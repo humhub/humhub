@@ -10,12 +10,13 @@ namespace humhub\modules\notification\controllers;
 
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\permissions\ManageSettings;
-use humhub\modules\admin\permissions\ManageUsers;
-use humhub\modules\notification\models\forms\NotificationSettings;
-use Yii;
 
 /**
- * AdminController is for system administrators to set activity e-mail defaults.
+ * AdminController is for system administrators to set the notification defaults.
+ *
+ * The page is the `NotificationSettings` island in the global scope
+ * ({@see \humhub\modules\notification\widgets\SettingsPage}), which saves and resets through
+ * `/api/v2/notification/settings`.
  *
  * @since 1.2
  * @author Luke
@@ -29,7 +30,6 @@ class AdminController extends Controller
     {
         return [
             ['permissions' => ManageSettings::class],
-            ['permissions' => [ManageUsers::class], 'actions' => ['reset-all-users']],
         ];
     }
 
@@ -37,24 +37,6 @@ class AdminController extends Controller
     {
         $this->subLayout = '@admin/views/layouts/setting';
 
-        $form = new NotificationSettings();
-        if ($form->load(Yii::$app->request->post()) && $form->save()) {
-            $this->view->saved();
-        }
-
-        return $this->render('defaults', ['model' => $form]);
-    }
-
-    /**
-     * Resets the overwritten settings of all users to the system defaults
-     */
-    public function actionResetAllUsers()
-    {
-        $this->forcePostRequest();
-        $model = new NotificationSettings();
-        $model->resetAllUserSettings();
-
-        $this->view->saved();
-        $this->redirect(['defaults']);
+        return $this->render('defaults');
     }
 }

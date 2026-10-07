@@ -9,88 +9,92 @@
 namespace humhub\modules\notification\targets;
 
 use humhub\components\InstallationState;
-use humhub\helpers\Html;
-use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
 /**
+ * Sends notifications by e-mail: one mail per {@see DeliveryBatch}, rendered by
+ * `@notification/views/mails/notification` and its plaintext twin.
  *
- * @author buddha
+ * The `summary` mode (the activity summary mail carries the notifications instead) is not offered
+ * until the summary mail has a notification block; a stored `summary` value falls back to the
+ * global default or `adaptive`, see {@see \humhub\modules\notification\services\NotificationSettingsService::getMode()}.
+ *
+ * @since 1.2, rewritten in 1.20
  */
 class MailTarget extends BaseTarget
 {
     /**
      * @inheritdoc
      */
-    public $id = 'email';
-
-    /**
-     * Enable this target by default.
-     * @var bool
-     */
-    public $defaultSetting = true;
-
-    /**
-     * @var array Notification mail layout.
-     */
-    public $view = [
-        'html' => '@notification/views/mails/wrapper',
-        'text' => '@notification/views/mails/plaintext/wrapper',
-    ];
+    public string $id = 'email';
 
     /**
      * @inheritdoc
      */
-    public function getTitle()
+    public array $modes = [self::MODE_ADAPTIVE, self::MODE_OFF];
+
+    /**
+     * @inheritdoc
+     */
+    public bool $skipWhenOnline = true;
+
+    /**
+     * @inheritdoc
+     */
+    public function getTitle(): string
     {
         return Yii::t('NotificationModule.targets', 'E-Mail');
     }
 
     /**
+     * Composes the mail in the recipient's language; a recipient without an e-mail address gets nothing.
+     *
      * @inheritdoc
      */
-    public function handle(BaseNotification $notification, User $recipient)
+    public function deliver(DeliveryBatch $batch): void
     {
-        Yii::$app->i18n->setUserLocale($recipient);
-
-        Yii::$app->view->params['showUnsubscribe'] = true;
-        Yii::$app->view->params['unsubscribeUrl'] = Url::to(['/notification/user'], true);
-
-        // Note: the renderer is configured in common.php by default its an instance of MailTarget
-        $renderer = $this->getRenderer();
-
-        $viewParams = ArrayHelper::merge([
-            'headline' => '',
-            'notification' => $notification,
-            'space' => $notification->getSpace(),
-            'content' => $renderer->render($notification),
-            'content_plaintext' => $renderer->renderText($notification),
-        ], $notification->getViewParams());
-
-        $mail = Yii::$app->mailer->compose($this->view, $viewParams)
-            ->setTo($recipient->email)
-            ->setSubject(str_replace("\n", " ", trim(Html::decode($notification->getMailSubject()))));
-        if ($replyTo = Yii::$app->settings->get('mailerSystemEmailReplyTo')) {
-            $mail->setReplyTo($replyTo);
+        $user = $batch->recipient;
+        if (empty($user->email)) {
+            return;
         }
 
-        if ($notification->beforeMailSend($mail)) {
-            $mail->send();
+        Yii::$app->i18n->setUserLocale($user);
+        try {
+            Yii::$app->view->params['showUnsubscribe'] = true;
+            Yii::$app->view->params['unsubscribeUrl'] = Url::to(['/notification/user'], true);
+
+            $mail = Yii::$app->mailer->compose(
+                [
+                    'html' => '@notification/views/mails/notification',
+                    'text' => '@notification/views/mails/plaintext/notification',
+                ],
+                ['batch' => $batch],
+            )
+                ->setTo($user->email)
+                ->setSubject($batch->getSubject());
+
+            if ($replyTo = Yii::$app->settings->get('mailerSystemEmailReplyTo')) {
+                $mail->setReplyTo($replyTo);
+            }
+
+            if (!$mail->send()) {
+                Yii::warning('Notification mail to ' . $user->email . ' (' . $batch->getSubject() . ') was not sent', 'notification');
+            }
+        } finally {
+            unset(Yii::$app->view->params['showUnsubscribe'], Yii::$app->view->params['unsubscribeUrl']);
+            Yii::$app->i18n->autosetLocale();
         }
-
-
-        Yii::$app->i18n->autosetLocale();
     }
 
     /**
+     * No mails before the installation is finished, e.g. for the example content.
+     *
      * @inheritdoc
      */
-    public function isActive(?User $user = null)
+    public function isActive(?User $user = null): bool
     {
-        // Do not send mail notifications for example content during installlation.
-        return parent::isActive() && Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED);
+        return parent::isActive($user) && Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED);
     }
 }

@@ -9,13 +9,14 @@
 namespace humhub\modules\space\modules\manage\controllers;
 
 use humhub\modules\content\components\ContentContainerControllerAccess;
+use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\space\modules\manage\jobs\RemoveAllMembersFromSpaceJob;
 use Yii;
 use yii\web\HttpException;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\components\Controller;
 use humhub\modules\space\modules\manage\models\MembershipSearch;
-use humhub\modules\space\notifications\ChangedRolesMembership;
+use humhub\modules\space\notifications\SpaceRolesChangedNotification;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\modules\manage\models\ChangeOwnerForm;
@@ -76,10 +77,13 @@ class MemberController extends Controller
 
             if ($membership->load(Yii::$app->request->post()) && $membership->save()) {
 
-                ChangedRolesMembership::instance()
-                    ->about($membership)
-                    ->from(Yii::$app->user->identity)
-                    ->send($membership->user);
+                NotificationManager::dispatch(
+                    SpaceRolesChangedNotification::class,
+                    $membership->user,
+                    $membership,
+                    Yii::$app->user->identity,
+                    ['dedupe' => false, 'payload' => ['groupId' => $membership->group_id]],
+                );
 
                 return Yii::$app->request->post();
             }

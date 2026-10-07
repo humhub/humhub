@@ -46,13 +46,14 @@
  *
  * Markup parity with that layout, because both the dropdown and the overview page style their
  * entries through it: the `d-flex`/`new` anchor with `data-notification-id`/
- * `data-notification-group` (the ids a client dedupes live events against), the
+ * `data-notification-group` (the id and the opaque group key a client dedupes live events
+ * against), the
  * originator avatar with the space badge overlaid, the sentence, the relative timestamp and the
  * unread badge.
  *
  * ## `v-html` for the sentence
  *
- * `notification.html` is `BaseNotification::html()` — server-rendered, module-defined,
+ * `notification.html` is `BaseNotification::asWeb()` — server-rendered, module-defined,
  * localized markup (`<strong>`-wrapped display names, links into the content). It is the one
  * field of the payload that IS html, and rendering it as text would show markup to the user.
  * Trust boundary: it is composed server-side from `Html::encode()`d values by the notification

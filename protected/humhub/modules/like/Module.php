@@ -8,6 +8,7 @@
 
 namespace humhub\modules\like;
 
+use humhub\modules\like\notifications\NewLikeNotification;
 use Yii;
 
 /**
@@ -67,7 +68,7 @@ class Module extends \humhub\components\Module
         }
 
         return [
-            'humhub\modules\like\notifications\NewLike',
+            NewLikeNotification::class,
         ];
     }
 }

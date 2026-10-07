@@ -8,129 +8,50 @@
 
 namespace humhub\modules\notification;
 
-use Exception;
-use humhub\components\ActiveRecord;
-use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Event;
-use humhub\modules\user\models\User;
-use humhub\modules\space\models\Space;
-use Yii;
+use humhub\models\RecordMap;
 use humhub\modules\notification\models\Notification;
+use Yii;
 use yii\base\BaseObject;
+use yii\db\ActiveRecord;
 use yii\helpers\Console;
 
 /**
  * Events provides callbacks for all defined module events.
+ *
+ * There are no delete handlers: notifications of a deleted user, content, container or
+ * originator go with the foreign key cascades of the `notification` table, those of any other
+ * source record with its {@see \humhub\models\RecordMap} row.
  *
  * @author luke
  */
 class Events extends BaseObject
 {
     /**
-     * On User delete, also delete all posts
-     *
-     * @param Event $event
-     */
-    public static function onUserDelete($event)
-    {
-        /** @var User $user */
-        $user = $event->sender;
-
-        foreach (Notification::findAll(['user_id' => $user->id]) as $notification) {
-            $notification->delete();
-        }
-
-        foreach (Notification::findAll(['originator_user_id' => $user->id]) as $notification) {
-            $notification->delete();
-        }
-
-        foreach (Notification::findAll(['source_class' => User::class, 'source_pk' => $user->id]) as $notification) {
-            $notification->delete();
-        }
-
-        return true;
-    }
-
-    /**
-     * On workspace deletion make sure to delete all posts
-     *
-     * @param type $event
-     */
-    public static function onSpaceDelete($event)
-    {
-
-        foreach (Notification::findAll(['space_id' => $event->sender->id]) as $notification) {
-            $notification->delete();
-        }
-    }
-
-    /**
      * Callback to validate module database records.
+     *
+     * The references of a notification are kept by foreign keys; only the class and a source record
+     * whose class became unavailable (e.g. of an uninstalled module) can go stale.
      *
      * @param Event $event
      */
     public static function onIntegrityCheck($event)
     {
-
         $integrityChecker = $event->sender;
         $integrityChecker->showTestHeadline("Notification Module (" . Notification::find()->count() . " entries)");
 
-        foreach (Notification::find()->joinWith(['user'])->each() as $notification) {
+        foreach (Notification::find()->each() as $notification) {
             /** @var Notification $notification */
-
-            // Check if Space still exists
-            if (!empty($notification->space_id)) {
-                $space = Space::findOne(['id' => $notification->space_id]);
-                if ($space === null) {
-                    if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " workspace seems to no longer exist!")) {
-                        $notification->delete();
-                        continue;
-                    }
-                }
-            }
-
-            // Check if source object exists when defined
-            try {
-                if ($notification->source_class != "" && $notification->getSourceObject() == null) {
-                    if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " source class set but seems to no longer exist!")) {
-                        $notification->delete();
-                        continue;
-                    }
-                }
-            } catch (Exception) {
-                // Handles errors for getSourceObject() calls
-                if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " source class set but seems to no longer exist!")) {
-                    $notification->delete();
-                    continue;
-                }
-            }
-
-            // Check if target user exists
-            if ($notification->user == null) {
-                if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " target user seems to no longer exist!")) {
-                    $notification->delete();
-                    continue;
-                }
-            }
-
-            // Check if target user exists
             if (!class_exists($notification->class)) {
                 if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " without valid class!")) {
                     $notification->delete();
-                    continue;
                 }
+                continue;
             }
 
-            // Check if module id is set
-            if ($notification->module == "") {
-                if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " without valid module!")) {
-                    $notification->delete();
-                    continue;
-                }
-            }
-
-            if (!empty($notification->originator_user_id) && $notification->originator === null) {
-                if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " without valid originator!")) {
+            if ($notification->source_record_id !== null
+                && RecordMap::getById((int)$notification->source_record_id, ActiveRecord::class, false) === null) {
+                if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " whose source record no longer exists!")) {
                     $notification->delete();
                 }
             }
@@ -171,19 +92,8 @@ class Events extends BaseObject
     private static function deleteNotifications(bool $seen, int $months): int
     {
         return Notification::deleteAll(['AND',
-            ['seen' => (int)$seen],
+            $seen ? ['IS NOT', 'seen_at', null] : ['seen_at' => null],
             ['<', 'created_at', date('Y-m-d', mktime(0, 0, 0, date('m') - $months))],
-        ]);
-    }
-
-    public static function onActiveRecordDelete($event)
-    {
-        /* @var ActiveRecord $record */
-        $record = $event->sender;
-
-        models\Notification::deleteAll([
-            'source_class' => PolymorphicRelation::getObjectModel($record),
-            'source_pk' => $record->getPrimaryKey(),
         ]);
     }
 

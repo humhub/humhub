@@ -1,92 +1,62 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2026 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\notification\models;
 
 use humhub\components\ActiveRecord;
-use humhub\components\behaviors\PolymorphicRelation;
-use humhub\components\Module;
 use humhub\modules\content\models\Content;
-use humhub\modules\notification\components\BaseNotification;
+use humhub\modules\content\models\ContentContainer;
+use humhub\modules\notification\components\ActiveQueryNotification;
+use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\user\models\User;
 use Throwable;
 use Yii;
-use yii\base\Exception;
 use yii\db\ActiveQuery;
-use yii\db\Expression;
-use yii\db\IntegrityException;
-use yii\db\Query;
+use yii\helpers\Json;
 
 /**
  * This is the model class for table "notification".
  *
  * @property int $id
  * @property string $class
- * @property int $user_id
- * @property int $seen
- * @property string $source_class
- * @property int $source_pk
- * @property int $space_id
- * @property int $emailed
- * @property string module
+ * @property int $user_id the recipient
+ * @property int|null $originator_id the user who caused the notification
+ * @property int|null $content_id set when the source is a content or a content addon (e.g. a comment)
+ * @property int|null $contentcontainer_id the content's container, or the container itself when it is the source
+ * @property int|null $source_record_id {@see \humhub\models\RecordMap} id of any other source record
+ * @property int|null $grouping_key id of the group head; equals `id` while ungrouped
+ * @property int $priority see {@see \humhub\modules\notification\components\NotificationPriority}
+ * @property int $listed 1 if the notification appears in the web list
+ * @property string|array|null $payload JSON; an array is encoded on save, so after `save()` the attribute holds the JSON string
+ * @property string|null $seen_at
  * @property string $created_at
- * @property int $originator_user_id
- * @property int $send_web_notifications
- * @property string $payload
- * @property User|null $originator
- * @property User $user
  *
- * @mixin PolymorphicRelation
+ * @property-read User $user
+ * @property-read User|null $originator
+ * @property-read Content|null $content
+ * @property-read ContentContainer|null $contentContainer
  */
 class Notification extends ActiveRecord
 {
     /**
-     * @var int number of found grouped notifications
+     * @var int|null size of the group this row represents, set by {@see ActiveQueryNotification::grouped()}
      */
-    public $group_count;
+    public ?int $group_count = null;
 
     /**
-     * @var int number of involved users of grouped notifications
+     * @var int|null newest id of the group, set by {@see ActiveQueryNotification::grouped()}
      */
-    public $group_user_count;
+    public ?int $group_max_id = null;
 
     /**
-     * @var int the highest notification id of a group - the deterministic tiebreaker of the
-     *      grouped list's ordering, and therefore the cursor a client pages with
-     *      (see {@see self::findGrouped()})
-     * @since 1.20
+     * @var int|null 1 when any member of the group is unseen, set by {@see ActiveQueryNotification::grouped()}
      */
-    public $group_max_id;
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            [
-                'class' => PolymorphicRelation::class,
-                'classAttribute' => 'source_class',
-                'pkAttribute' => 'source_pk',
-                'strict' => true,
-                'mustBeInstanceOf' => [
-                    \yii\db\ActiveRecord::class,
-                ],
-            ],
-        ];
-    }
-
-    public function init()
-    {
-        parent::init();
-        if ($this->seen === null) {
-            $this->seen = 0;
-        }
-
-        // Disable web notification by default, they will be enabled within the web target if allowed by the user.
-        if ($this->send_web_notifications === null) {
-            $this->send_web_notifications = 0;
-        }
-    }
+    public ?int $group_unseen = null;
 
     /**
      * @inheritdoc
@@ -103,200 +73,88 @@ class Notification extends ActiveRecord
     {
         return [
             [['class', 'user_id'], 'required'],
-            [
-                ['user_id', 'seen', 'source_pk', 'space_id', 'emailed', 'originator_user_id'],
-                'integer',
-            ],
-            [['class', 'source_class'], 'string', 'max' => 100],
-            [['payload'], 'safe'],
+            [['user_id', 'originator_id', 'content_id', 'contentcontainer_id', 'source_record_id', 'grouping_key', 'priority', 'listed'], 'integer'],
+            [['class'], 'string', 'max' => 255],
+            [['payload', 'seen_at'], 'safe'],
         ];
     }
 
     /**
-     * Returns the business model of this notification
-     *
-     * @param array $params
-     * @return BaseNotification
-     * @throws IntegrityException
+     * @inheritdoc
      */
-    public function getBaseModel($params = [])
+    public function beforeSave($insert)
     {
-        if (class_exists($this->class)) {
-            try {
-                $params['source'] = $this->getPolymorphicRelation();
-            } catch (IntegrityException) {
-                $params['source'] = null;
-            }
-            $params['originator'] = $this->originator;
-            $params['groupCount'] = $this->group_user_count;
-            if ($this->group_count > 1) {
-                // Make sure we're loaded the latest notification record
-                $params['record'] = self::find()
-                    ->orderBy(['seen' => SORT_ASC, 'created_at' => SORT_DESC])
-                    ->andWhere(['class' => $this->class, 'user_id' => $this->user_id, 'group_key' => $this->group_key])
-                    ->one();
-                $params['originator'] = $params['record']->originator;
-            } else {
-                $params['record'] = $this;
-            }
-
-            $object = new $this->class();
-            Yii::configure($object, $params);
-            return $object;
+        if (is_array($this->payload)) {
+            $this->payload = Json::encode($this->payload);
         }
-        return null;
+
+        return parent::beforeSave($insert);
     }
 
     /**
-     * @return ActiveQuery the receiver of this notification
+     * @inheritdoc
      */
-    public function getUser()
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($insert && $this->grouping_key === null) {
+            $this->updateAttributes(['grouping_key' => $this->id]);
+        }
+
+        parent::afterSave($insert, $changedAttributes);
+    }
+
+    /**
+     * Keeps the grouping consistent: see {@see \humhub\modules\notification\services\GroupingService::beforeDelete()}.
+     *
+     * @inheritdoc
+     * @since 1.20
+     */
+    public function beforeDelete()
+    {
+        if (!parent::beforeDelete()) {
+            return false;
+        }
+
+        // The source may already be gone (integrity cleanup, cascading deletes); a notification
+        // that cannot be loaded any more must still be deletable.
+        try {
+            $notification = NotificationManager::fromRecord($this);
+        } catch (Throwable $e) {
+            Yii::warning('Could not load notification #' . $this->id . ' for grouping before delete: ' . $e->getMessage(), 'notification');
+            return true;
+        }
+
+        $notification->getGroupingService()->beforeDelete();
+
+        return true;
+    }
+
+    public function getUser(): ActiveQuery
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
-    /**
-     * @return ActiveQuery the originator user relations
-     */
-    public function getOriginator()
+    public function getOriginator(): ActiveQuery
     {
-        return $this->hasOne(User::class, ['id' => 'originator_user_id']);
+        return $this->hasOne(User::class, ['id' => 'originator_id']);
+    }
+
+    public function getContent(): ActiveQuery
+    {
+        return $this->hasOne(Content::class, ['id' => 'content_id']);
+    }
+
+    public function getContentContainer(): ActiveQuery
+    {
+        return $this->hasOne(ContentContainer::class, ['id' => 'contentcontainer_id']);
     }
 
     /**
-     * Returns polymorphic relation linked with this notification
-     *
-     * @return ActiveRecord
+     * @inheritdoc
+     * @return ActiveQueryNotification
      */
-    public function getSourceObject()
+    public static function find(): ActiveQueryNotification
     {
-        $sourceClass = $this->source_class;
-        if (class_exists($sourceClass) && $sourceClass != "") {
-            return $sourceClass::findOne(['id' => $this->source_pk]);
-        }
-        return null;
-    }
-
-    /**
-     * Returns all available notifications of a module identified by its modulename.
-     *
-     * @return array with format [moduleId => notifications[]]
-     * @throws Exception
-     */
-    public static function getModuleNotifications()
-    {
-        $result = [];
-        foreach (Yii::$app->moduleManager->getModules(['includeCoreModules' => true]) as $module) {
-            if ($module instanceof Module) {
-                $notifications = $module->getNotifications();
-                if (count($notifications) > 0) {
-                    $result[$module->getName()] = $notifications;
-                }
-            }
-        }
-        return $result;
-    }
-
-    /**
-     * Returns a distinct list of notification classes already in the database.
-     */
-    public static function getNotificationClasses()
-    {
-        return (new Query())
-            ->select(['class'])
-            ->from(self::tableName())
-            ->distinct()->all();
-    }
-
-    /**
-     * Loads a certain amount ($limit) of grouped notifications from a given id set by $from.
-     *
-     * @param int $from notification id which was the last loaded entry.
-     * @param int $limit count of results.
-     * @return Notification[]
-     * @throws Throwable
-     * @since 1.2
-     */
-    public static function loadMore($from = 0, $limit = 6)
-    {
-        $query = Notification::findGrouped();
-
-        // Normalize $from: only a strictly positive integer counts as a valid cursor.
-        // Avoids relying on loose comparison (e.g. non-numeric strings, "0") to decide
-        // whether a cursor was actually given.
-        $from = is_numeric($from) ? (int) $from : 0;
-
-        if ($from > 0) {
-            $query->andWhere(['<', 'notification.id', $from]);
-        }
-
-        $query->limit($limit);
-
-        return $query->all();
-    }
-
-    /**
-     * Finds grouped notifications if $sendWebNotifications is set to 1 we filter only notifications
-     * with send_web_notifications setting to 1.
-     *
-     * @param User|null $user
-     * @param int $sendWebNotifications
-     * @return ActiveQuery
-     * @throws Throwable
-     */
-    public static function findGrouped(?User $user = null, $sendWebNotifications = 1)
-    {
-        $user = $user ?: Yii::$app->user->getIdentity();
-
-        $query = self::find();
-        $query->addSelect([
-            'notification.*',
-            new Expression('count(distinct(notification.originator_user_id)) as group_user_count'),
-            new Expression('count(*) as group_count'),
-            new Expression('max(notification.created_at) as group_created_at'),
-            new Expression('min(notification.seen) as group_seen'),
-            new Expression('max(notification.id) as group_max_id'),
-        ]);
-
-        $query->andWhere(['notification.user_id' => $user->id]);
-
-        // Exclude all not published contents
-        $query->leftJoin('content', 'content.object_model = notification.source_class AND content.object_id = notification.source_pk')
-            ->andWhere(['OR',
-                ['content.state' => Content::STATE_PUBLISHED],
-                ['IS', 'content.id', new Expression('NULL')]]);
-
-        $query->andWhere(['notification.send_web_notifications' => $sendWebNotifications]);
-        $query->addGroupBy([
-            'COALESCE(notification.group_key, notification.id)',
-            'notification.class',
-        ]);
-        // `group_max_id` breaks ties deterministically: notifications created within the same
-        // second are otherwise ordered arbitrarily by the database, which makes cursor paging
-        // over this list return overlapping pages. It doubles as the cursor itself (see
-        // `notification\controllers\api\NotificationController`).
-        $query->orderBy([
-            'group_seen' => SORT_ASC,
-            'group_created_at' => SORT_DESC,
-            'group_max_id' => SORT_DESC,
-        ]);
-
-        return $query;
-    }
-
-    /**
-     * Finds all grouped unseen notifications for the given user or the current loggedIn user
-     * if no User instance is provided.
-     *
-     * @param User $user
-     * @return ActiveQuery
-     * @throws Throwable
-     * @since 1.2
-     */
-    public static function findUnseen(?User $user = null)
-    {
-        return Notification::findGrouped($user)
-            ->andWhere(['notification.seen' => 0])
-            ->orWhere(['IS', 'notification.seen', new Expression('NULL')]);
+        return new ActiveQueryNotification(static::class);
     }
 }

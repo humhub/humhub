@@ -13,11 +13,12 @@ use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\activity\services\ActivityManager;
+use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\activities\FollowActivity;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\events\FollowEvent;
-use humhub\modules\user\notifications\Followed;
+use humhub\modules\user\notifications\FollowedNotification;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
@@ -98,10 +99,7 @@ class Follow extends ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         if ($insert && $this->send_notifications && $this->object_model == User::class) {
-            Followed::instance()
-                ->from($this->user)
-                ->about($this)
-                ->send($this->getTarget());
+            NotificationManager::dispatch(FollowedNotification::class, $this->getTarget(), $this, $this->user);
 
             ActivityManager::dispatch(FollowActivity::class, $this->getTarget(), $this->user);
         }
@@ -123,9 +121,7 @@ class Follow extends ActiveRecord
             if ($this->object_model === User::class) {
                 $target = $this->getTarget();
 
-                $notification = new Followed();
-                $notification->originator = $this->user;
-                $notification->delete($target);
+                NotificationManager::delete(FollowedNotification::class, $this, $target, $this->user);
 
                 // The FollowActivity is stored against the followed user's content
                 // container (see ActivityManager::dispatch); the activity table no

@@ -67,22 +67,14 @@ class AccountCest
         $I->waitForText('Notification Settings');
 
         $I->expectTo('see the notification settings form');
-        $I->see('Following');
-        $I->see('Mentionings');
-        $I->jsClick('[name="NotificationSettings[settings][notification.followed_web]"]');
-        $I->jsClick('[name="NotificationSettings[settings][notification.comments_web]"]');
-
-        //$I->wait(20);
+        $I->waitForText('Directly addressed to you');
+        $I->see('Reactions on my content');
+        $I->jsClick('[name="NotificationSettings[email.group.social]"]');
+        $I->jsClick('[name="NotificationSettings[email.group.content]"]');
 
         $I->scrollToBottom();
-        $I->click('Save', '.panel-body');
+        $I->click('Save', '#notification-settings');
 
         $I->seeSuccess('Saved');
-
-        // Todo proper checkbox tests...
-        /*$I->amOnPage('index-test.php?r=notification%2Fuser');
-        $I->waitForText('Notification Settings');
-        $I->seeInField('[name="NotificationSettings[settings][notification.followed_web]"]', 0);
-        $I->seeInField('[name="NotificationSettings[settings][notification.comments_web]"]', 0);*/
     }
 }

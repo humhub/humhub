@@ -9,67 +9,67 @@
 namespace humhub\modules\notification\targets;
 
 use humhub\modules\user\models\User;
-use humhub\modules\notification\components\BaseNotification;
 use Yii;
 use yii\di\NotInstantiableException;
 
 /**
- * Mobile Target
+ * Mobile push notifications, sent by a {@see MobileTargetProvider} a module (e.g. fcm-push)
+ * registers in the DI container. Without a provider the target is not active.
  *
- * @since 1.2
- * @author buddha
+ * @since 1.2, rewritten in 1.20
  */
 class MobileTarget extends BaseTarget
 {
     /**
      * @inheritdoc
      */
-    public $id = 'mobile';
+    public string $id = 'mobile';
 
     /**
-     * @var MobileTargetProvider
+     * @inheritdoc
      */
-    public $provider;
+    public array $modes = [self::MODE_ADAPTIVE, self::MODE_OFF];
 
+    /**
+     * @var MobileTargetProvider|null the push provider; from the DI container unless configured
+     */
+    public ?MobileTargetProvider $provider = null;
+
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         parent::init();
 
         try {
-            $this->provider = Yii::$container->get(MobileTargetProvider::class);
+            $this->provider ??= Yii::$container->get(MobileTargetProvider::class);
         } catch (NotInstantiableException) {
-            // No provider given
-        }
-    }
-
-    /**
-     * Used to forward a BaseNotification object to a BaseTarget.
-     * The notification target should handle the notification by pushing a Job to
-     * a Queue or directly handling the notification.
-     *
-     * @param BaseNotification $notification
-     */
-    public function handle(BaseNotification $notification, User $user)
-    {
-        if ($this->provider) {
-            $this->provider->handle($notification, $user);
+            // No provider installed
         }
     }
 
     /**
      * @inheritdoc
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return Yii::t('NotificationModule.targets', 'Mobile');
     }
 
-    public function isActive(?User $user = null)
+    /**
+     * @inheritdoc
+     */
+    public function deliver(DeliveryBatch $batch): void
     {
-        if (!parent::isActive() || !$this->provider) {
-            return false;
-        }
+        $this->provider?->deliver($batch);
+    }
 
-        return $this->provider->isActive($user);
+    /**
+     * @inheritdoc
+     */
+    public function isActive(?User $user = null): bool
+    {
+        return parent::isActive($user) && $this->provider !== null && $this->provider->isActive($user);
     }
 }

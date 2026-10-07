@@ -2,585 +2,429 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2026 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\notification\components;
 
-use humhub\components\behaviors\PolymorphicRelation;
-use humhub\components\SocialActivity;
 use humhub\helpers\Html;
-use humhub\modules\content\components\ContentActiveRecord;
+use humhub\models\RecordMap;
 use humhub\modules\content\components\ContentAddonActiveRecord;
-use humhub\modules\notification\events\UnreadCountChangedEvent;
-use humhub\modules\notification\jobs\SendBulkNotification;
-use humhub\modules\notification\jobs\SendNotification;
+use humhub\modules\content\helpers\ContentHelper;
+use humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\content\models\Content;
+use humhub\modules\content\models\ContentContainer;
 use humhub\modules\notification\models\Notification;
-use humhub\modules\notification\targets\BaseTarget;
-use humhub\modules\notification\targets\WebTarget;
+use humhub\modules\notification\services\GroupingService;
 use humhub\modules\space\models\Space;
-use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\base\InvalidConfigException;
-use yii\db\Expression;
-use yii\helpers\ArrayHelper;
+use yii\base\BaseObject;
+use yii\base\InvalidArgumentException;
+use yii\db\ActiveRecord;
+use yii\db\IntegrityException;
 use yii\helpers\Json;
 use yii\helpers\Url;
-use yii\mail\MessageInterface;
 
 /**
- * A BaseNotification class describes the behaviour and the type of a Notification.
- * A BaseNotification is created and can be sent to one or multiple users over different targets.
+ * A notification bound to its {@see Notification} record.
  *
- * The BaseNotification can should be created like this:
+ * Instances are not created directly but by {@see NotificationManager::load()}, which reads the
+ * record (or, for a group, its newest member) and resolves its references: the recipient, the
+ * originator, the content, the content container and any other source record through the
+ * {@see RecordMap}. All of them are exposed as readonly properties.
  *
- * MyNotification::instance()->from($originator)->about($source)->sendBulk($activeQueryUser);
+ * A notification renders one sentence through {@see getMessage()}, which receives the message
+ * parameters of the channel it is rendered for:
  *
- * This will send Notifications to different notification targets by using a queue.
+ * - `displayName` - the originator, or `''` without one
+ * - `displayNames` - the originator and the other members of a group (`''` below two members)
+ * - `groupCount` - the size of the group, `1` when not grouped
+ * - `namedCount` - how many people `displayNames` names: `0` when it is empty, `1` when a group
+ *   collapses to one person (e.g. one originator's notifications), `2` for "A and B" as well as
+ *   "A, B and 2 more"
+ * - `content`, `contentTitle` - only when the notification is about a content; `[Deleted]` when
+ *   the content's record is gone
  *
- * @property Notification $record
- * @author luke
+ * {@see asWeb()} and {@see asMailHtml()} pass HTML-encoded names wrapped in `<strong>`,
+ * {@see asMailText()} the plain names and {@see asPush()} the plain text without any markup.
+ *
+ * Subclasses declare their {@see group()}, which settles the default {@see priority()}, and
+ * whether they are {@see listed()} in the web list.
+ *
+ * @since 1.20
  */
-abstract class BaseNotification extends SocialActivity
+abstract class BaseNotification extends BaseObject
 {
-    /**
-     * @var bool automatically mark notification as seen after click on it
-     */
-    public $markAsSeenOnClick = true;
+    public readonly Notification $record;
+    public readonly User $recipient;
+    public readonly ?User $originator;
+    public readonly ?Content $content;
+    public readonly ?ContentContainer $contentContainer;
+    public readonly ?ActiveRecord $sourceRecord;
+    public readonly array $payload;
+    public readonly int $groupCount;
 
     /**
-     * @var int number of combined notifications
+     * @var int minimum members of a group
      */
-    public $groupCount = 0;
+    public int $groupingThreshold = 2;
 
     /**
-     * @since 1.2.3
-     * @see NotificationManager
-     * @var bool do not send this notification also to the originator
+     * @var int length of the time bucket the members of a group are created in
      */
-    public $suppressSendToOriginator = true;
+    public int $groupingTimeBucketSeconds = 900;
 
     /**
-     * @var string the group key
+     * @var int max length of the content preview in the web list
      */
-    protected $_groupKey = null;
+    public int $webContentLength = 60;
 
     /**
-     * @var NotificationCategory cached category instance
+     * @var int max length of the content preview in mails
      */
-    protected $_category = null;
+    public int $mailContentLength = 300;
+
+    private ?GroupingService $_groupingService = null;
 
     /**
-     * @inheritdoc
+     * @throws IntegrityException when the source record is gone
      */
-    public $recordClass = Notification::class;
-
-    /**
-     * Additional user data available for the notification
-     *
-     * @var array|null
-     * @since 1.11
-     */
-    public $payload = null;
-
-    /**
-     * Priority flag, if set to true, this Notification type will be marked as high priority.
-     * This can be used by a given BaseTarget while handling a Notification.
-     *
-     * A MobileTargetProvider for example could use this flag for Android devices to wake up the device out of doze mode.
-     *
-     * @var bool if set to true marks this notification type as high priority.
-     * @since 1.2.3
-     */
-    public $priority = false;
-
-    /**
-     * Returns the notification category instance. If no category class is set (default) the default notification settings
-     * can't be overwritten.
-     *
-     * The category instance is cached, once created.
-     *
-     * If the Notification configuration should be configurable subclasses have to overwrite this method.
-     *
-     * @return NotificationCategory
-     */
-    public function getCategory()
+    public function __construct(Notification $record, $config = [])
     {
-        if (!$this->_category) {
-            $this->_category = $this->category();
-        }
+        $this->record = $record;
+        $this->recipient = $record->user;
+        $this->originator = $record->originator;
+        $this->content = $record->content;
+        $this->contentContainer = $record->contentContainer;
+        $this->sourceRecord = self::resolveSourceRecord($record);
+        $this->payload = self::decodePayload($record);
+        $this->groupCount = $record->group_count ?? 1;
 
-        return $this->_category;
+        // last, so that init() of a subclass can read the record-bound properties
+        parent::__construct($config);
     }
 
     /**
-     * Returns a new NotificationCategory instance.
-     *
-     * This function should be overwritten by subclasses to append this BaseNotification
-     * to the returned category. If no category instance is returned, the BaseNotification behavriour (targets) will not be
-     * configurable.
-     *
-     * @return NotificationCategory
+     * @throws IntegrityException when `source_record_id` is set but the record is gone or its class unavailable
      */
-    protected function category()
+    private static function resolveSourceRecord(Notification $record): ?ActiveRecord
+    {
+        if ($record->source_record_id === null) {
+            return null;
+        }
+
+        $source = RecordMap::getById((int)$record->source_record_id, ActiveRecord::class);
+        if ($source === null) {
+            throw new IntegrityException(
+                'Source record of notification #' . $record->id . ' no longer exists or its class is unavailable',
+            );
+        }
+
+        return $source;
+    }
+
+    private static function decodePayload(Notification $record): array
+    {
+        $payload = $record->payload;
+        if (is_array($payload)) {
+            return $payload;
+        }
+        if ($payload === null || $payload === '') {
+            return [];
+        }
+
+        try {
+            $decoded = Json::decode((string)$payload);
+        } catch (InvalidArgumentException $e) {
+            Yii::warning('Invalid payload of notification #' . $record->id . ': ' . $e->getMessage(), 'notification');
+            return [];
+        }
+
+        return is_array($decoded) ? $decoded : [];
+    }
+
+    /**
+     * The group the user switches this notification on or off with.
+     */
+    abstract public static function group(): NotificationGroup;
+
+    /**
+     * The sentence of the notification, built from the message parameters of a channel.
+     */
+    abstract protected function getMessage(array $params): string;
+
+    public static function priority(): NotificationPriority
+    {
+        return static::group()->priority;
+    }
+
+    /**
+     * Whether the notification appears in the web list.
+     */
+    public static function listed(): bool
+    {
+        return true;
+    }
+
+    final public function asWeb(): string
+    {
+        return $this->getMessage($this->getMessageParamsWeb());
+    }
+
+    final public function asMailHtml(): string
+    {
+        return $this->getMessage($this->getMessageParamsMailHtml());
+    }
+
+    final public function asMailText(): string
+    {
+        return $this->getMessage($this->getMessageParamsMailText());
+    }
+
+    /**
+     * The plain text sentence with the short content preview of the web list.
+     */
+    final public function asPush(): string
+    {
+        return $this->getMessage($this->getMessageParamsPlain($this->webContentLength));
+    }
+
+    /**
+     * The plain text sentence with the short content preview of the web list.
+     */
+    public function getMailSubject(): string
+    {
+        return $this->getMessage($this->getMessageParamsPlain($this->webContentLength));
+    }
+
+    /**
+     * The target of the notification: a content addon (e.g. a comment), the content, or the container.
+     */
+    public function getUrl(bool $scheme = false): ?string
+    {
+        if ($this->sourceRecord instanceof ContentAddonActiveRecord) {
+            return $this->sourceRecord->getUrl($scheme);
+        }
+
+        if ($this->content !== null) {
+            return $this->content->getUrl($scheme);
+        }
+
+        return $this->contentContainer?->polymorphicRelation?->getUrl($scheme);
+    }
+
+    /**
+     * The absolute `notification/entry` URL, which marks the group seen and redirects to {@see getUrl()}.
+     */
+    final public function getEntryUrl(): string
+    {
+        return Url::to(['/notification/entry', 'id' => $this->record->id], true);
+    }
+
+    /**
+     * @return array<array{label: string, url: string}>
+     */
+    public function getMailActions(): array
+    {
+        return [
+            ['label' => Yii::t('NotificationModule.base', 'View online'), 'url' => $this->getEntryUrl()],
+        ];
+    }
+
+    /**
+     * Additional plain text shown under the sentence in the mail, e.g. a message the originator
+     * wrote; encoded by the view. `null` for none.
+     *
+     * @since 1.20
+     */
+    public function getMailBody(): ?string
     {
         return null;
     }
 
     /**
-     * Checks if notification is still valid before sending
-     *
-     * @return bool
-     *
-     * @since 1.15
+     * The content record whose preview a mail shows, if any.
      */
-    public function isValid()
+    public function getMailContentRecord(): ?ContentOwner
+    {
+        return $this->getContentOwner();
+    }
+
+    /**
+     * The record the sentence is about: the content's record by default. A subclass whose sentence
+     * is about another record (a mention in a comment, a liked comment) overrides it to return
+     * e.g. {@see $sourceRecord} when that is a {@see ContentOwner}.
+     */
+    protected function getContentOwner(): ?ContentOwner
+    {
+        $record = $this->content?->getPolymorphicRelation();
+
+        return $record instanceof ContentOwner ? $record : null;
+    }
+
+    /**
+     * The space the notification is about: by default its container, if that is a space. A
+     * notification without a container (e.g. about a space membership) overrides it to name the
+     * space, which also files it under that space in a mail of several notifications.
+     *
+     * @since 1.20
+     */
+    public function getSpace(): ?Space
+    {
+        $container = $this->contentContainer?->polymorphicRelation;
+
+        return $container instanceof Space ? $container : null;
+    }
+
+    /**
+     * Whether the given user may receive this notification.
+     */
+    public function canReceive(User $user): bool
     {
         return true;
     }
 
     /**
-     * @inheritdoc
+     * The query of the notifications this one is grouped with; `null` for an ungrouped notification.
      */
-    public function getViewParams($params = [])
+    public function getGroupingQuery(): ?ActiveQueryNotification
     {
-        if ($this->hasContent() && $this->getContent()->updated_at instanceof Expression) {
-            $this->getContent()->refresh();
-            $date = $this->getContent()->updated_at;
-        } elseif ($this->hasContent()) {
-            $date = $this->getContent()->updated_at;
-        } else {
-            $date = null;
+        return null;
+    }
+
+    public function getGroupingService(): GroupingService
+    {
+        return $this->_groupingService ??= new GroupingService($this);
+    }
+
+    /**
+     * The message parameters of the plain-text channels (mail text, mail subject, push): all
+     * values are plain text, nothing is HTML-encoded. The base of every channel's parameters -
+     * a subclass adds its own parameters here.
+     *
+     * @param int $maxLength max length of the content preview
+     */
+    protected function getMessageParamsPlain(int $maxLength): array
+    {
+        [$displayNames, $namedCount] = $this->resolveDisplayNames(fn(string $name): string => $name);
+
+        return array_merge([
+            'displayName' => $this->originator?->displayName ?? '',
+            'displayNames' => $displayNames,
+            'namedCount' => $namedCount,
+            'groupCount' => $this->groupCount,
+        ], $this->getContentParams($maxLength, fn(string $info): string => $info, true));
+    }
+
+    /**
+     * The plain-text parameters with the long content preview of mails.
+     */
+    protected function getMessageParamsMailText(): array
+    {
+        return $this->getMessageParamsPlain($this->mailContentLength);
+    }
+
+    protected function getMessageParamsWeb(): array
+    {
+        $encodeStrong = fn(string $name): string => Html::strong(Html::encode($name));
+
+        return array_merge($this->getMessageParamsPlain($this->webContentLength), [
+            'displayName' => $this->originator ? $encodeStrong($this->originator->displayName) : '',
+            'displayNames' => $this->formatDisplayNames($encodeStrong),
+        ], $this->getContentParams($this->webContentLength, fn(string $info): string => $info));
+    }
+
+    protected function getMessageParamsMailHtml(): array
+    {
+        return array_merge(
+            $this->getMessageParamsWeb(),
+            $this->getContentParams($this->mailContentLength, fn(string $info): string => Html::strong($info)),
+        );
+    }
+
+    /**
+     * `content` and `contentTitle` of {@see getContentOwner()}; `[Deleted]` for both when the
+     * notification is about a content whose record is gone; `[]` when it is about no content.
+     *
+     * @param bool $plain whether to decode the HTML entities of the (encoded) content info
+     */
+    protected function getContentParams(int $maxLength, callable $contentFormatter, bool $plain = false): array
+    {
+        $owner = $this->getContentOwner();
+        if ($owner === null) {
+            if ($this->record->content_id === null) {
+                return [];
+            }
+
+            $deleted = Yii::t('NotificationModule.base', '[Deleted]');
+
+            return ['content' => $deleted, 'contentTitle' => $deleted];
         }
 
-        if (!empty($this->record->payload)) {
-            $this->payload = Json::decode($this->record->payload);
-        }
-
-        if ($this->hasContent()) {
-            $url = Url::to(['/notification/entry', 'id' => $this->record->id, 'cId' => $this->getContent()->id], true);
-            $relativeUrl = Url::to(['/notification/entry', 'id' => $this->record->id, 'cId' => $this->getContent()->id], false);
-        } else {
-            $url = Url::to(['/notification/entry', 'id' => $this->record->id], true);
-            $relativeUrl = Url::to(['/notification/entry', 'id' => $this->record->id], false);
-        }
-
-        $result = [
-            'url' => $url,
-            'relativeUrl' => $relativeUrl,
-            'date' => $date,
-            'isNew' => !$this->record->seen,
+        $params = [
+            'content' => $contentFormatter(ContentHelper::getContentInfo($owner, true, $maxLength)),
+            'contentTitle' => ContentHelper::getContentInfo($owner, false, $maxLength),
         ];
 
-        return ArrayHelper::merge(parent::getViewParams($result), $params);
+        return $plain
+            ? array_map(fn(string $info): string => html_entity_decode($info, ENT_QUOTES | ENT_HTML5), $params)
+            : $params;
     }
 
     /**
-     * Sends this notification to a set of users.
+     * The originator and the other members of a group, e.g. "Anna, Ben and 2 more"; `''` below two
+     * members. Without an originator, the others only.
+     */
+    protected function formatDisplayNames(callable $formatter): string
+    {
+        return $this->resolveDisplayNames($formatter)[0];
+    }
+
+    /**
+     * {@see formatDisplayNames()} and the number of people it names (0, 1 or 2).
      *
-     * Note: For compatibility reasons this method also allows to pass an array of user objects.
-     * This support will removed in future versions.
-     *
-     * @param ActiveQueryUser|array|User[] $query the user query
-     * @throws InvalidConfigException
+     * @return array{0: string, 1: int}
      */
-    public function sendBulk($query)
+    private function resolveDisplayNames(callable $formatter): array
     {
-        if (empty($this->moduleId)) {
-            throw new InvalidConfigException('No moduleId given for "' . static::class . '"');
+        if ($this->groupCount < 2) {
+            return ['', 0];
         }
 
-        if (!$query instanceof ActiveQueryUser) {
-            /** @var array $query */
-            Yii::debug('BaseNotification::sendBulk - pass ActiveQueryUser instead of array!', 'notification');
-
-            // Migrate given array to ActiveQueryUser
-            $query = User::find()->where(['IN', 'user.id', array_map(function ($user) {
-                if ($user instanceof User) {
-                    return $user->id;
-                }
-                // User id
-                return $user;
-            }, $query)]);
-        }
-
-        Yii::$app->queue->push(new SendBulkNotification(['notification' => $this, 'query' => $query]));
-    }
-
-    /**
-     * Sends this notification to all notification targets of the given User.
-     * This function will not send notifications to the originator itself.
-     *
-     * @param User $user
-     * @throws InvalidConfigException
-     */
-    public function send(User $user)
-    {
-        if (empty($this->moduleId)) {
-            throw new InvalidConfigException('No moduleId given for "' . static::class . '"');
-        }
-
-        if ($this->suppressSendToOriginator && $this->isOriginator($user)) {
-            return;
-        }
-
-        if ($this->isBlockedFromUser($user)) {
-            return;
-        }
-
-        if ($this->isBlockedForUser($user)) {
-            return;
-        }
-
-        Yii::$app->queue->push(new SendNotification(['notification' => $this, 'recipientId' => $user->id]));
-    }
-
-    /**
-     * Returns a non html encoded mail subject which will be used in the notification e-mail
-     *
-     * @return string the subject
-     * @see \humhub\modules\notification\targets\MailTarget
-     */
-    public function getMailSubject()
-    {
-        return 'New notification';
-    }
-
-    /**
-     * Checks if the given $user is the originator of this notification.
-     *
-     * @param User $user
-     * @return bool
-     */
-    public function isOriginator(User $user)
-    {
-        return $this->originator && $this->originator->id === $user->id;
-    }
-
-    /**
-     * Checks if the originator blocked the given $user in order to avoid receive any notifications from the $user.
-     *
-     * @param User $user
-     * @return bool
-     * @since 1.10
-     */
-    public function isBlockedFromUser(User $user): bool
-    {
-        return $this->originator && $user->isBlockedForUser($this->originator);
-    }
-
-    /**
-     * Checks if the source is blocked for the receiver $user.
-     * For example, if the $user is not a member of a private Space,
-     * or the related Content is no longer visible to the $user (e.g. the
-     * Content visibility was changed to private after the $user subscribed
-     * to notifications for it).
-     *
-     * @param User $user
-     * @return bool
-     * @since 1.11.2
-     */
-    public function isBlockedForUser(User $user): bool
-    {
-        if ($this->isSpaceContent()) {
-            /* @var Space $space */
-            $space = $this->source->content->container;
-            if ($space->visibility === Space::VISIBILITY_NONE && !$space->isMember($user)) {
-                return true;
-            }
-        }
-
-        if ($this->hasContent() && !$this->getContent()->canView($user)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Check if the source is a Content from a Space
-     *
-     * @return bool
-     * @since 1.11.2
-     */
-    private function isSpaceContent(): bool
-    {
-        return ($this->source instanceof ContentActiveRecord
-                || $this->source instanceof ContentAddonActiveRecord)
-            && $this->source->content->container instanceof Space;
-    }
-
-    /**
-     * Creates the Notification instance of the current BaseNotification type for the
-     * given $user.
-     *
-     * @param User $user
-     * @return bool
-     */
-    public function saveRecord(User $user)
-    {
-        if (!$this->validate()) {
-            return false;
-        }
-
-        $notification = new Notification([
-            'user_id' => $user->id,
-            'class' => static::class,
-            'module' => $this->moduleId,
-            'group_key' => $this->getGroupKey(),
-        ]);
-
-        if ($this->source) {
-            $notification->setPolymorphicRelation($this->source);
-            $notification->space_id = $this->getSpaceId();
-        }
-
-        if ($this->originator) {
-            $notification->originator_user_id = $this->originator->id;
-        }
-
-        if ($this->payload) {
-            $notification->payload = Json::encode($this->payload);
-        }
-
-        if (!$notification->save()) {
-            Yii::error(
-                'Could not save Notification Record for'
-                . static::class . ' '
-                . print_r($notification->getErrors(), true),
-            );
-            return false;
-        }
-
-        $this->record = $notification;
-
-        return true;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function about($source)
-    {
-        if (!$source) {
-            return $this;
-        }
-        parent::about($source);
-        $this->record->space_id = $this->getSpaceId();
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function from($originator)
-    {
-        if (!$originator) {
-            return $this;
-        }
-        $this->originator = $originator;
-        $this->record->originator_user_id = $originator->id;
-
-        return $this;
-    }
-
-    /**
-     * Set additional data
-     *
-     * @param $payload
-     * @return $this
-     * @since 1.11
-     */
-    public function payload($payload)
-    {
-        if (!$payload) {
-            return $this;
-        }
-        $this->payload = $payload;
-        $this->record->payload = $payload;
-
-        return $this;
-    }
-
-    /**
-     * Deletes this notification
-     */
-    public function delete(?User $user = null)
-    {
-        $condition = [];
-
-        $condition['class'] = static::class;
-
-        if ($user !== null) {
-            $condition['user_id'] = $user->id;
-        }
-
+        $grouping = $this->getGroupingService();
+        $names = [];
+        $total = $grouping->countOtherGroupedUsers();
         if ($this->originator !== null) {
-            $condition['originator_user_id'] = $this->originator->id;
+            $names[] = $formatter($this->originator->displayName);
+            $total++;
+        }
+        foreach ($grouping->getOtherGroupedUsers() as $user) {
+            $names[] = $formatter($user->displayName);
         }
 
-        if ($this->source !== null) {
-            $condition['source_pk'] = $this->source->getPrimaryKey();
-            $condition['source_class'] = PolymorphicRelation::getObjectModel($this->source);
+        if ($names === []) {
+            return ['', 0];
         }
 
-        Notification::deleteAll($condition);
-    }
-
-    /**
-     * Marks notification as seen
-     */
-    public function markAsSeen()
-    {
-        if ($this->record->group_key != '') {
-            // Ensure to update all grouped notifications
-            Notification::updateAll([
-                'seen' => 1,
-            ], [
-                'class' => $this->record->class,
-                'user_id' => $this->record->user_id,
-                'group_key' => $this->record->group_key,
-            ]);
-        } else {
-            $this->record->seen = 1;
-            $this->record->save();
+        if (count($names) === 1 || $total < 2) {
+            // A group of one originator's notifications (or one whose other originators are not
+            // visible): the phrase is that person, as a grouped message renders `{displayNames}` only.
+            return [$names[0], 1];
         }
 
-        // Automatically mark similar notifications (same source) as seen
-        $similarNotifications = Notification::find()
-            ->where(['source_class' => $this->record->source_class, 'source_pk' => $this->record->source_pk, 'user_id' => $this->record->user_id])
-            ->andWhere(['!=', 'seen', '1']);
-        foreach ($similarNotifications->all() as $notification) {
-            /* @var $notification Notification */
-            $notification->getBaseModel()->markAsSeen();
+        if ($total === 2) {
+            return [Yii::t('NotificationModule.base', '{displayName1} and {displayName2}', [
+                'displayName1' => $names[0],
+                'displayName2' => $names[1],
+            ]), 2];
         }
 
-        if ($this->record->user) {
-            UnreadCountChangedEvent::triggerChanged($this->record->user);
-        }
-    }
-
-    /**
-     * Returns a key for grouping notifications.
-     * If null is returned (default) the notification grouping for this BaseNotification type disabled.
-     *
-     * The returned key could for example be a combination of classname related content id.
-     *
-     * @return string the group key
-     */
-    public function getGroupKey()
-    {
-        return null;
-    }
-
-    /**
-     * Renders the Notificaiton for the given notification target.
-     * Subclasses are able to use custom renderer for different targets by overwriting this function.
-     *
-     * @param BaseTarget $target
-     * @return string render result
-     */
-    public function render(?BaseTarget $target = null)
-    {
-        if (!$target) {
-            $target = Yii::$app->notification->getTarget(WebTarget::class);
-        }
-
-        return $target->getRenderer()->render($this);
-    }
-
-    /**
-     * Returns the combined display names of a grouped notification.
-     *
-     * Examples:
-     *      User A and User B
-     *      User A and 5 others
-     *
-     * @param bool $html if true the result will be encoded and may contain html
-     * @return string the display names
-     */
-    public function getGroupUserDisplayNames($html = true)
-    {
-        if ($this->groupCount > 2) {
-            [$user] = $this->getGroupLastUsers(1);
-            $displayName = $html ? Html::tag('strong', Html::encode($user->displayName)) : $user->displayName;
-            return Yii::t('NotificationModule.base', '{displayName} and {number} others', [
-                'displayName' => $displayName,
-                'number' => $this->groupCount - 1,
-            ]);
-        }
-
-        $users = $this->getGroupLastUsers(2);
-        $usersCount = count($users);
-
-        if ($usersCount === 0) {
-            return '[Deleted user]';
-        }
-
-        $displayName1 = $html ? Html::tag('strong', Html::encode($users[0]->displayName)) : $users[0]->displayName;
-        if ($usersCount === 1) {
-            return $displayName1;
-        }
-
-        $displayName2 = $html ? Html::tag('strong', Html::encode($users[1]->displayName)) : $users[1]->displayName;
-
-        return Yii::t('NotificationModule.base', '{displayName} and {displayName2}', [
-            'displayName' => $displayName1,
-            'displayName2' => $displayName2,
-        ]);
-    }
-
-    /**
-     * Returns the last users of a grouped notification
-     *
-     * @param int $limit users to return
-     * @return User[] the number of user
-     */
-    public function getGroupLastUsers($limit = 2)
-    {
-        $users = [];
-
-        $query = Notification::find()
-            ->where([
-                'notification.user_id' => $this->record->user_id,
-                'notification.class' => $this->record->class,
-                'notification.group_key' => $this->record->group_key,
-            ])
-            ->joinWith(['originator', 'originator.profile'])
-            ->orderBy(['notification.created_at' => SORT_DESC])
-            ->groupBy(['notification.originator_user_id'])
-            ->andWhere(['IS NOT', 'user.id', new Expression('NULL')])
-            ->limit($limit);
-
-        foreach ($query->all() as $notification) {
-            $users[] = $notification->originator;
-        }
-
-        return $users;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function asArray(User $user)
-    {
-        $result = parent::asArray($user);
-        $result['mailSubject'] = Html::decode($this->getMailSubject());
-        return $result;
-    }
-
-    /**
-     * This method is invoked right before a mail will be send for this notificatoin
-     *
-     * @param MessageInterface $message
-     * @return bool when true the mail will be send
-     * @see \humhub\modules\notification\targets\MailTarget
-     */
-    public function beforeMailSend(MessageInterface $message)
-    {
-        return true;
+        return [Yii::t('NotificationModule.base', '{displayName1}, {displayName2} and {count} more', [
+            'displayName1' => $names[0],
+            'displayName2' => $names[1],
+            'count' => $total - 2,
+        ]), 2];
     }
 }

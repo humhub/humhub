@@ -37,8 +37,8 @@ The systems modules plug into. Read the ones relevant to what your module does.
 - [Events](concept-events.md) — registering and firing events
 - [Module settings](concept-settings.md) — per-module and per-container settings
 - [Permissions](concept-permissions.md) — permission model, guest access
-- [Notifications](concept-notifications.md)
-- [Activities](concept-activities.md)
+- [Notifications](concept-notifications.md) — notification classes, groups and priorities, dispatching, grouping, the delivery layer, channels
+- [Activities](concept-activities.md) — activity classes and their sentences, dispatching, grouping, the summary mail settings
 - [Files](concept-files.md) — uploads, attachments
 - [Rich text](concept-richtext.md) — the markdown format, editor, post-processing, output and conversion pipelines, PHP extensions and JavaScript plugins
 - [Live updates](concept-live.md)

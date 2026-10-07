@@ -7,6 +7,7 @@ use humhub\modules\admin\models\forms\UserEditForm;
 use humhub\modules\admin\notifications\ExcludeGroupNotification;
 use humhub\modules\admin\notifications\IncludeGroupNotification;
 use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\forms\EditGroupForm;
 use humhub\modules\user\models\Group;
@@ -111,32 +112,22 @@ class GroupsChangesTest extends HumHubDbTestCase
 
     public function testAddUserToGroupNotify()
     {
-        /** @var Group $group */
         $group = Group::findOne(['id' => 1]);
 
-        $notify = IncludeGroupNotification::instance();
-
-        $notify
-            ->about($group)
-            ->from(User::findOne(['id' => 1]))
-            ->send(User::findOne(['id' => 2]));
+        NotificationManager::dispatch(IncludeGroupNotification::class, User::findOne(['id' => 2]), $group, User::findOne(['id' => 1]));
 
         $this->assertSentEmail(1);
-        $this->assertEqualsLastEmailSubject($notify->getMailSubject());
+        $this->assertEqualsLastEmailSubject(User::findOne(['id' => 1])->displayName . ' added you to group ' . $group->name);
     }
 
     public function testRemoveUserToGroupNotify()
     {
         $group = Group::findOne(['id' => 1]);
-        $notify = ExcludeGroupNotification::instance();
 
-        $notify
-            ->about($group)
-            ->from(User::findOne(['id' => 1]))
-            ->send(User::findOne(['id' => 2]));
+        NotificationManager::dispatch(ExcludeGroupNotification::class, User::findOne(['id' => 2]), $group, User::findOne(['id' => 1]));
 
         $this->assertSentEmail(1);
-        $this->assertEqualsLastEmailSubject($notify->getMailSubject());
+        $this->assertEqualsLastEmailSubject(User::findOne(['id' => 1])->displayName . ' removed you from group ' . $group->name);
     }
 
     /**

@@ -28,13 +28,15 @@ use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\interfaces\ContentProvider;
 use humhub\modules\content\interfaces\SoftDeletable;
 use humhub\modules\content\live\NewContent;
-use humhub\modules\content\notifications\ContentCreated as NotificationsContentCreated;
+use humhub\modules\content\notifications\ContentCreatedNotification;
 use humhub\modules\content\permissions\CreatePrivateContent;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\content\services\ContentStateService;
+use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\notification\models\Notification;
+use humhub\modules\notification\services\NotificationSpaceService;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\helpers\AuthHelper;
@@ -391,18 +393,22 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         /** @var ContentProvider $contentSource */
         $contentSource = $this->getPolymorphicRelation();
 
-        $userQuery = Yii::$app->notification->getFollowers($this);
-        if (count($this->notifyUsersOfNewContent) != 0) {
-            // Add manually notified users
-            $userQuery->union(
+        // The explicitly notified users first: a follower among them keeps the explicit wording,
+        // the followers' dispatch skips them as duplicates.
+        if (!empty($this->notifyUsersOfNewContent)) {
+            NotificationManager::dispatch(
+                ContentCreatedNotification::class,
                 User::find()->active()->where(['IN', 'user.id', array_map(fn(User $user) => $user->id, $this->notifyUsersOfNewContent)]),
+                $contentSource,
+                $this->createdBy,
+                ['payload' => ['explicit' => true]],
             );
         }
 
-        NotificationsContentCreated::instance()
-            ->from($this->createdBy)
-            ->about($contentSource)
-            ->sendBulk($userQuery);
+        $followers = (new NotificationSpaceService())->getFollowers($this);
+        if ($followers !== null) {
+            NotificationManager::dispatch(ContentCreatedNotification::class, $followers, $contentSource, $this->createdBy);
+        }
 
         ActivityManager::dispatch(ContentCreatedActivity::class, $contentSource, $this->createdBy);
     }
@@ -453,10 +459,8 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      */
     public function softDeleteInternal(): bool
     {
-        Notification::deleteAll([
-            'source_class' => PolymorphicRelation::getObjectModel($this),
-            'source_pk' => $this->getPrimaryKey(),
-        ]);
+        // The notifications about the content and its addons (e.g. comments): a deleted content cannot be opened
+        Notification::deleteAll(['content_id' => $this->id]);
 
         return $this->getStateService()->delete();
     }

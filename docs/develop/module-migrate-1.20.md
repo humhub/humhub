@@ -1007,8 +1007,8 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `protected/humhub/modules/notification/vue/`, `NotificationVueAsset`), fed by the new
     endpoints `GET /api/v2/notification` and `POST /api/v2/notification/mark-as-seen`
     (`notification\controllers\api\NotificationController`, shapes in
-    `notification\serializers\NotificationSerializer`). What a notification class
-    contributes is unchanged — the payload carries its own `html()` sentence, and the
+    `notification\serializers\NotificationSerializer`). A notification class contributes
+    only its sentence (`asWeb()`, see "The notification system was rebuilt" below); the
     entry markup around it is rendered client-side. Details:
     - **Removed**: the client-side `notification` JS module (`humhub.notification.js`,
       `notification.NotificationDropDown`, `notification.OverviewWidget`,
@@ -1019,7 +1019,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
       `/notification/list` and `/notification/list/mark-as-seen`),
       `notification\widgets\OverviewWidget` (+ its view),
       `notification\widgets\NotificationFilterForm` (+ its view),
-      `notification\models\Notification::loadMore()` and the
+      and the
       `widgets/views/overview.php` dropdown view. Zero external references to any of
       them; the API endpoints above replace the two routes.
     - `notification\widgets\Overview` (the top-menu widget) now renders the island and
@@ -1035,16 +1035,8 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
       `humhub.modules.mail.notification.getNewMessageCount()`. `humhub/mail` and its forks
       need no change. New: `humhub:notification:setCount` pushes a count INTO the island —
       that is how `UpdateNotificationCount` (the pjax layout addon) keeps the badge current.
-    - `Notification::findGrouped()` gained a `max(notification.id) as group_max_id`
-      aggregate and orders by it as the final tiebreaker, so cursor paging cannot return
-      overlapping pages (notifications created within the same second were previously
-      ordered arbitrarily). Existing callers only see a deterministic order.
     - **Deliberate UI change**: the overview page pages with a "show more" button instead
       of numbered pages (`LinkPager`), for the same reason the endpoint pages by cursor.
-    - The web-target renderer (`notification\renderer\WebRenderer`,
-      `@notification/views/default.php`, `layouts/web.php`) is untouched and still
-      renders a notification server-side for anyone calling it — the platform itself no
-      longer does.
     - Added `space\serializers\SpaceSerializer` and `SpaceImage` (`<space-image>`,
       `SpaceVueAsset`) as the space module's first Vue component, used for the space badge
       of an entry. The Vue bridge gained `pageTitle()`, the platform's own per-page title
@@ -1602,3 +1594,267 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   `containerId`). All three person, space and topic controls are built on the new core
   `PickerFilterControl`, the base for a module's own filter type over record ids (see
   `docs/develop/ui-js-vuejs-components.md`). Additive, nothing to migrate.
+
+- **The notification system was rebuilt.** A notification class is now bound to its
+  `Notification` record and renders one sentence through `getMessage(array $params)` for the web
+  list, the mail and push — no view files, no `html()`/`text()`. It is created through
+  `NotificationManager::dispatch()`, a queued job per call that filters the recipients and writes
+  one row each, instead of the `instance()->from()->about()->send()` builder. Grouping happens
+  when a notification is written (`getGroupingQuery()`), not when the list is read. Notification
+  categories are replaced by **groups**: four core groups and one per module that wants its own,
+  named by the class in one line (`group()`). Users choose one **mode** per channel and switch
+  the groups on or off. The `notification` table references the originator, the content, the
+  container and any other source record by foreign keys (`originator_id`, `content_id`,
+  `contentcontainer_id`, `source_record_id` → `record_map`) instead of the polymorphic
+  `source_class`/`source_pk`, so notifications are deleted with what they are about. The full
+  API is in [Notifications](concept-notifications.md).
+
+  - **Upgrade note:** the migration `m261006_100000_new_structure` is irreversible and deletes
+    notifications whose source no longer exists or whose source class is unavailable (e.g. of
+    an uninstalled module) — take a database backup before upgrading. Stored rows of the renamed
+    core classes are renamed by it; rows of module classes keep their class name.
+    `m261006_100100_settings` converts the settings (see below).
+  - **Breaks immediately:** every notification class of a module — it extends a
+    `BaseNotification` with abstract `group()` and `getMessage()`, typed hooks and none of the
+    builder methods; every call of the builder (`X::instance()`, `->send()`, `->sendBulk()`,
+    `->delete()`); every `NotificationCategory` subclass; a module target or push provider
+    (`BaseTarget`, `MobileTargetProvider`); and every module class, view or test that reads the
+    dropped columns. There is no compatibility layer: a module with notifications needs a new
+    release for 1.20.
+  - **Keeps working:** `NotificationManager::getTarget()` with a class name (deprecated, logs a
+    warning — use the id); the space methods of `NotificationManager` (deprecated forwarders, see
+    below); `NotificationManager::IS_TOUCHED_SETTINGS` (deprecated, use
+    `NotificationSpaceService::IS_TOUCHED_SETTINGS`); the `targets` of an installation's
+    `config/common.php` keyed by class name (merged into the entry of the target's id) — a
+    `renderer` or `defaultSetting` set there is dropped with a deprecation warning, as the
+    properties are gone; `HumHubHelperTrait::assertHasNotification()`,
+    `assertHasNoNotification()` and `assertEqualsNotificationCount()` with their signatures.
+
+  - **Renamed core notification classes** (old → new; stored rows are renamed by the migration):
+
+    | Old | New |
+    |---|---|
+    | `admin\notifications\NewVersionAvailable` | `admin\notifications\NewVersionAvailableNotification` |
+    | `comment\notifications\NewComment` | `comment\notifications\NewCommentNotification` |
+    | `comment\notifications\CommentDeleted` | `comment\notifications\CommentDeletedNotification` |
+    | `content\notifications\ContentCreated` | `content\notifications\ContentCreatedNotification` |
+    | `content\notifications\ContentDeleted` | `content\notifications\ContentDeletedNotification` |
+    | `friendship\notifications\Request` | `friendship\notifications\FriendshipRequestNotification` |
+    | `friendship\notifications\RequestApproved` | `friendship\notifications\FriendshipApprovedNotification` |
+    | `friendship\notifications\RequestDeclined` | `friendship\notifications\FriendshipDeclinedNotification` |
+    | `like\notifications\NewLike` | `like\notifications\NewLikeNotification` |
+    | `space\notifications\Invite` | `space\notifications\SpaceInviteNotification` |
+    | `space\notifications\InviteAccepted` | `space\notifications\SpaceInviteAcceptedNotification` |
+    | `space\notifications\InviteDeclined` | `space\notifications\SpaceInviteDeclinedNotification` |
+    | `space\notifications\InviteRevoked` | `space\notifications\SpaceInviteRevokedNotification` |
+    | `space\notifications\ApprovalRequest` | `space\notifications\SpaceApprovalRequestNotification` |
+    | `space\notifications\ApprovalRequestAccepted` | `space\notifications\SpaceApprovalAcceptedNotification` |
+    | `space\notifications\ApprovalRequestDeclined` | `space\notifications\SpaceApprovalDeclinedNotification` |
+    | `space\notifications\ChangedRolesMembership` | `space\notifications\SpaceRolesChangedNotification` |
+    | `space\notifications\SpaceCreated` | `space\notifications\SpaceCreatedNotification` |
+    | `user\notifications\Followed` | `user\notifications\FollowedNotification` |
+    | `user\notifications\Mentioned` | `user\notifications\MentionedNotification` |
+
+    All under `humhub\modules\`. `admin\notifications\IncludeGroupNotification`,
+    `ExcludeGroupNotification` and `space\notifications\UserAddedNotification` keep their names.
+    The table is `m261006_100000_new_structure::RENAMED_CLASSES`.
+
+  - **A notification class, before and after:**
+
+    ```php
+    // 1.19
+    class SomethingHappened extends BaseNotification
+    {
+        public $moduleId = 'example';
+        public $viewName = 'somethingHappened';   // notifications/views/somethingHappened.php
+
+        protected function category()
+        {
+            return new ExampleNotificationCategory();
+        }
+
+        public function getGroupKey()
+        {
+            return $this->source::class . '-' . $this->source->id;
+        }
+
+        public function html()
+        {
+            return Yii::t('ExampleModule.notifications', '{displayName} did something cool.', [
+                'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
+            ]);
+        }
+    }
+    ```
+
+    ```php
+    // 1.20
+    final class SomethingHappenedNotification extends BaseNotification
+    {
+        public static function group(): NotificationGroup
+        {
+            return NotificationGroup::social();
+        }
+
+        protected function getMessage(array $params): string
+        {
+            return Yii::t('ExampleModule.notifications', '{displayName} did something cool.', $params);
+        }
+
+        public function getGroupingQuery(): ?ActiveQueryNotification
+        {
+            return Notification::find()
+                ->andWhere(['notification.class' => self::class])
+                ->andWhere(['notification.content_id' => $this->content->id]);
+        }
+    }
+    ```
+
+    Delete the view files under `notifications/views/` (also `mails/` and `mails/plaintext/`) and
+    the category class. The `Notification` suffix is the convention, not a requirement; a
+    module that renames a class adds a migration calling `$this->renameClass($old, $new)` for
+    the stored rows.
+
+  - **A send site, before and after:**
+
+    ```php
+    // 1.19
+    SomethingHappened::instance()->from($user)->about($post)->payload(['count' => 3])->sendBulk($users);
+    SomethingHappened::instance()->about($post)->delete($user);
+    ```
+
+    ```php
+    // 1.20
+    NotificationManager::dispatch(SomethingHappenedNotification::class, $users, $post, $user, [
+        'payload' => ['count' => 3],
+    ]);
+    NotificationManager::delete(SomethingHappenedNotification::class, $post, $user);
+    ```
+
+    `$recipients` is a `User`, an id, an array of users or ids, or a self-contained
+    `ActiveQueryUser` (it is serialized into the queue). The source must be saved. Dispatch from
+    `afterSave()` of the source, once per state transition: a recipient who already has a
+    notification of the class, source and originator is skipped (`'dedupe' => false` for events
+    that legitimately repeat).
+
+  - **The old hooks and their replacements:**
+
+    | 1.19 | 1.20 |
+    |---|---|
+    | `html()`, `text()`, `$viewName` + view files, `getViewParams()` | `getMessage(array $params)` with the parameters `displayName`, `displayNames`, `namedCount`, `groupCount`, `content`, `contentTitle`; own parameters by overriding `getMessageParamsPlain()`/`getMessageParamsWeb()`/`getMessageParamsMailHtml()` |
+    | `category()`, `getCategory()`, `NotificationCategory` | static `group(): NotificationGroup` — `direct()`, `social()`, `content()`, `admin()`, `NotificationGroup::ofModule(self::class)` or `new NotificationGroup(...)` |
+    | `$priority` | static `priority(): NotificationPriority` (defaults to the group's) or the dispatch option `priority` |
+    | `getGroupKey()` | `getGroupingQuery(): ?ActiveQueryNotification` |
+    | `isBlockedForUser()` override, `send()` override as a filter | `canReceive(User $user): bool` |
+    | `$suppressSendToOriginator = false` | dispatch option `['notifyOriginator' => true]` |
+    | `payload($data)`, `$payload` | dispatch option `['payload' => $data]`; read `$this->payload` (readonly array) |
+    | `instance()->from($u)->about($s)->send($r)` / `sendBulk($q)` | `NotificationManager::dispatch($class, $recipients, $source, $originator, $options)` |
+    | `delete($user)` | `NotificationManager::delete($class, $source, $user, $originator)` |
+    | `markAsSeen()` | `NotificationManager::markSeen($class, $source, $user)`, `markRecordSeen($record)`, `markAllSeen($user)` |
+    | `$source`, `getContent()`, `hasContent()`, `getContentContainer()`, `getSpaceId()` | readonly `$content`, `$contentContainer`, `$sourceRecord`; `getSpace()` stays |
+    | `$record`, `$originator`, `$groupCount` | the same names, readonly and typed; `$recipient` is new |
+    | `getContentInfo()`, `getContentPreview()`, `getContentName()` | the parameters `content`/`contentTitle`, or `ContentHelper::getContentInfo()` |
+    | `getGroupUserDisplayNames()`, `getGroupLastUsers()` | the parameter `displayNames`, `getGroupingService()->getOtherGroupedUsers()` |
+    | `beforeMailSend()`, `getMailSubject()` | `getMailSubject(): string`, `getMailBody(): ?string`, `getMailActions(): array`, `getMailContentRecord(): ?ContentOwner` |
+    | `getUrl()` | `getUrl(bool $scheme = false): ?string` |
+    | `$markAsSeenOnClick = false` | none: opening a notification always marks its group seen; take it back with `NotificationManager::delete()` when the request is answered |
+    | `$requireSource`, `$requireOriginator`, `validate()` | none: a notification without source or originator is simply dispatched without one |
+    | `Yii::$app->notification->getTarget(MailTarget::class)->isCategoryEnabled($category, $user)` | `Yii::$app->notification->getTarget('email')->isEnabled(SomethingHappenedNotification::class, $user)` |
+    | `Module::getNotifications()` override listing the classes of `notifications/` | not needed: every class there extending `BaseNotification` is found; keep an override only to leave classes out |
+
+    The overridable methods are typed now; an override with an old untyped signature
+    (`getUrl()`, `getMailSubject()`, `getSpace()`) is a fatal error.
+
+  - **Removed:**
+
+    | Removed | Replacement |
+    |---|---|
+    | `humhub\components\SocialActivity` | `BaseNotification` extends `yii\base\BaseObject`; activities have their own base classes since #7933 |
+    | `humhub\components\rendering\Renderer`, `ViewPathRenderer`, `DefaultViewPathRenderer`, `LayoutRenderer`, `MailRenderer`, `MailLayoutRenderer`, `Viewable` | none; `getMessage()`. `MailContentEntry` no longer renders a `Viewable` |
+    | `BaseNotification::instance()`, `from()`, `about()`, `send()`, `sendBulk()`, `payload()`, `saveRecord()`, `delete()`, `markAsSeen()`, `html()`, `text()`, `json()`, `asArray()`, `render()`, `getViewName()`, `getViewParams()`, `getGroupKey()`, `getCategory()`, `category()`, `isValid()`, `isOriginator()`, `isBlockedForUser()`, `isBlockedFromUser()`, `beforeMailSend()` | see the table above; the serialized shape is `NotificationSerializer` |
+    | `BaseNotification::$viewName`, `$moduleId`, `$recordClass`, `$markAsSeenOnClick`, `$suppressSendToOriginator`, `$requireSource`, `$requireOriginator`, `$priority`, `$source` | see the table above |
+    | `notification\components\NotificationCategory` and `admin\notifications\AdminNotificationCategory`, `comment\notifications\CommentNotificationCategory`, `content\notifications\ContentCreatedNotificationCategory`, `friendship\notifications\FriendshipNotificationCategory`, `like\notifications\LikeNotificationCategory`, `space\notifications\SpaceCreatedNotificationCategory`, `space\notifications\SpaceMemberNotificationCategory`, `user\notifications\FollowedNotificationCategory`, `user\notifications\MentionedNotificationCategory` | `NotificationGroup`; a category's `isVisible()` has no counterpart except the core `admin` group, `getFixedSettings()` none except the non-switchable `direct` group |
+    | `BaseTarget::handle()`, `send()`, `sendBulk()`, `acknowledge()`, `isAcknowledged()`, `getRenderer()`, `getSettingKey()`, `isEditable()`, `isCategoryEnabled()`, static `getId()`; `$renderer`, `$defaultSetting`, `$acknowledgeFlag`, `$title` | `deliver(DeliveryBatch $batch)`, `isEnabled(string $notificationClass, ?User $user)`, `getMode(?User $user)`, `$id`, `getTitle()` |
+    | `MobileTargetProvider::handle(BaseNotification $notification, User $user)` | `deliver(DeliveryBatch $batch)` — one push per batch: `getPushBody()`, `getUrl()`, `getCollapseKey()`, `isHighPriority()`, `getUnreadCount()` |
+    | `NotificationManager::send()`, `sendBulk()`, `getNotificationCategories()` | `dispatch()`, `getGroups(?User $user)` |
+    | `notification\models\Notification::findGrouped()`, `findUnseen()`, `loadMore()`, `getBaseModel()`, `getSourceObject()`, `getModuleNotifications()`, `getNotificationClasses()` | `Notification::find()->forUser($user)->listed()->unseen()->grouped()`, `NotificationManager::load($record)`, `NotificationListService`, `NotificationManager::getNotifications()` |
+    | the columns `source_class`, `source_pk`, `space_id`, `module`, `emailed`, `seen`, `send_web_notifications`, `group_key`, `originator_user_id` | `content_id`, `contentcontainer_id`, `source_record_id`, `seen_at`, `listed`, `grouping_key`, `originator_id`; new: `priority` |
+    | `notification\models\forms\FilterForm`, `notification\models\forms\NotificationSettings`, `notification\widgets\NotificationSettingsForm` (+ view) | `NotificationSettingsService`, the `NotificationSettings` island (`notification\widgets\SettingsPage`), `GET`/`PATCH /api/v2/notification/settings` |
+    | `notification\jobs\SendNotification`, `SendBulkNotification` | `notification\jobs\DispatchJob` (internal) |
+    | `notification\renderer\WebRenderer`, `MailRenderer`; the views `views/default.php`, `views/layouts/{web,mail,mail_plaintext}.php`, `views/mails/{default,wrapper}.php` and their plain-text twins | `asWeb()`/`asMailHtml()`/`asMailText()`/`asPush()`; the mail views `@notification/views/mails/notification` and `mails/plaintext/notification` |
+
+  - **Changed signatures and return values:**
+    - `NotificationManager::getTarget(string $id)` takes the target id (`web`, `email`, `mobile`).
+    - `NotificationManager::getNotifications()` returns class names, no instances; a handler of
+      `EVENT_SEARCH_MODULE_NOTIFICATIONS` adds class names to `$event->result`.
+    - `BaseTarget::isEnabled()` takes the class name, not a notification object.
+    - The space-related methods of `NotificationManager` moved to
+      `notification\services\NotificationSpaceService` — `isFollowingSpace()`, `getFollowers()`,
+      `getContainerFollowers()`, `getDefaultNotificationSpaces()`, `getSpaces()`,
+      `isTouchedSettings()`, `getNonNotificationSpaces()`, `setSpaces()`, `resetSpaces()`,
+      `setSpaceSetting()`, `hasSpace()`. The old methods forward to it and are deprecated.
+    - `BaseNotification` is constructed from its record (`NotificationManager::load()`); `new X()`
+      fails.
+
+  - **Channels (targets).** `BaseTarget` declares `public string $id`, `public bool $active` and
+    `public array $modes` (new; the first is the default). A module target that redeclares one of
+    them untyped (`public $id = 'chat';`) is a fatal error; redeclare with the type. Targets are
+    configured by id in `components.notification.targets` (`'web'`, `'email'`, `'mobile'`); an
+    entry keyed by class name is merged into the entry of the id the class declares. The
+    properties `$delays`, `$delayWindow`, `$lowPriorityDelay` and `$skipWhenOnline` are reserved
+    for the delivery layer of the next update and have no effect yet: today every channel
+    delivers each notification at once as a `DeliveryBatch` of one.
+
+  - **Settings.** The keys `notification.<category>_<target>` (e.g. `notification.like_email`)
+    are converted to `<target>.mode` (`adaptive`, `off`; the mail mode `summary` comes with the
+    delivery layer) and
+    `<target>.group.<group>` (`1`/`0`) in the global and every user's settings: a channel whose
+    every core category was off becomes `off`, a group whose every category was off is switched
+    off, and a value is stored only where it differs from the default. Categories of modules are
+    not converted, `web` switches are dropped (the web list is always on), and all old keys are
+    deleted. Read them through `NotificationSettingsService` or `BaseTarget::isEnabled()` /
+    `getMode()`.
+
+  - **Tests.** `HumHubHelperTrait::assertHasNotification()`, `assertHasNoNotification()` and
+    `assertEqualsNotificationCount()` keep their signatures. The source argument is the record
+    the notification is about, matched like `NotificationManager::delete()` matches it: a content
+    or content record by its content, a container by its container, a content addon or any other
+    record by its record map id. For a like notification that is the liked post or comment, no
+    longer the `Like`. Fixtures writing `notification` rows with the dropped columns have to be
+    rewritten.
+
+  - **`Migration::renameClass()`** also renames `record_map.model`, so notifications (and
+    anything else) referring to a renamed record class through the record map keep resolving. A
+    collision with an existing `(model, pk)` of the new class aborts the migration. It renames
+    `notification.source_class` only while that column exists.
+
+  - **Behaviour changes users notice:**
+    - Mail and push follow the channel settings per group. The *Directly addressed to you* group
+      — mentions, friendship requests and answers, space invitations and requests, group
+      membership changes, content or comments an administrator deleted — cannot be switched off;
+      only the whole channel can.
+    - New followers are a low-priority, grouped notification ("Anna, Bob and 2 more are now
+      following you").
+    - Notifications about content or comments an administrator deleted now reach mail and push.
+    - Soft-deleting content removes every notification about it, including those about its
+      comments and likes; un-liking removes the like notification.
+    - Opening a notification marks its whole group seen; invitations and requests no longer stay
+      unseen until they are answered. They are still removed once answered.
+    - The notification list is ordered newest group first, no longer unseen first.
+    - The e-mail mode *Summary only* (notifications in the activity summary mail instead of
+      separate mails) is not offered yet; it comes with the delivery layer.
+
+  - **Migrating a module** — what `/humhub:refactor-modules` does per repository:
+    1. Base the work on `develop` (create it from `master` if missing) and open the PR against it.
+    2. Port every class in `notifications/`: `group()` instead of the category, `getMessage()`
+       instead of `html()` and the views, `getGroupingQuery()` instead of `getGroupKey()`,
+       `canReceive()` instead of a `send()`/`isBlockedForUser()` override; add the
+       `Notification` suffix if it is missing. Delete the views and the category classes.
+    3. Replace every `instance()…send()`/`sendBulk()` with `NotificationManager::dispatch()` and
+       every `delete()` with `NotificationManager::delete()`.
+    4. Add a migration renaming stored rows of renamed classes (`$this->renameClass()`).
+    5. Update targets and push providers (`deliver(DeliveryBatch)`, typed properties) and calls
+       of `getTarget()`, `isCategoryEnabled()` and the space methods.
+    6. Update tests: the source argument of the notification assertions.
+    7. Open a new `<next minor> (Unreleased)` section in `docs/CHANGELOG.md`, set the same version
+       in `module.json` and `humhub.minVersion` to `1.20`.

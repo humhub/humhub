@@ -24,15 +24,15 @@
                 <label class="form-check-label" for="notification-filter-all">{{ allLabel }}</label>
             </div>
 
-            <div v-for="category in categories" :key="category.id" class="form-check">
+            <div v-for="filter in filters" :key="filter.id" class="form-check">
                 <input
-                    :id="'notification-filter-' + category.id"
+                    :id="'notification-filter-' + filter.id"
                     class="form-check-input"
                     type="checkbox"
-                    :checked="selected.includes(category.id)"
-                    @change="toggleCategory(category.id, $event.target.checked)"
+                    :checked="selected.includes(filter.id)"
+                    @change="toggleGroup(filter.id, $event.target.checked)"
                 >
-                <label class="form-check-label" :for="'notification-filter-' + category.id">{{ category.title }}</label>
+                <label class="form-check-label" :for="'notification-filter-' + filter.id">{{ filter.title }}</label>
             </div>
         </div>
     </div>
@@ -40,21 +40,20 @@
 
 <script>
 /**
- * The notification overview's filter sidebar: the seen state and the notification categories a
- * module contributed.
+ * The notification overview's filter sidebar: the seen state and the notification groups
+ * (`direct`, `social`, `content`, `admin` and the groups modules add).
  *
- * Emits `change` with `{categories, seen}` on every interaction; the island turns that into a
- * request (see `NotificationOverview.vue`). Categories arrive as a prop — they are
- * module-defined and localized, so the server hands over the list it would have rendered
- * checkboxes for.
+ * Emits `change` with `{groups, seen}` on every interaction; the island turns that into a
+ * request (see `NotificationOverview.vue`). The groups arrive as the `filters` prop — they are
+ * module-defined and localized, so the server hands over the list to render checkboxes for.
  *
  * ## Deliberate deviations from the server-rendered filter
  *
  * - The seen state is a button group instead of `radioList(['template' => 'pills'])` — the same
  *   three options with the same icons, but without reproducing that ActiveField template.
- * - The "All" checkbox works both ways (checking it selects every category, unchecking it
- *   clears them) and reflects "every category selected", which is what the legacy JS did with
- *   its own click handlers in `humhub.notification.js`.
+ * - The "All" checkbox works both ways (checking it selects every group, unchecking it clears
+ *   them) and reflects "every group selected", which is what the legacy JS did with its own
+ *   click handlers in `humhub.notification.js`.
  *
  * @since 1.20
  */
@@ -62,9 +61,9 @@ import { i18n } from '@humhub/vue';
 
 export default {
     props: {
-        // [{id, title}] - the categories the server offers (localized).
-        categories: { type: Array, default: () => [] },
-        // Currently selected category ids.
+        // [{id, title}] - the notification groups the server offers (localized).
+        filters: { type: Array, default: () => [] },
+        // Currently selected group ids.
         selected: { type: Array, default: () => [] },
         // '' (all), 'unseen' or 'seen'.
         seen: { type: String, default: '' },
@@ -87,7 +86,7 @@ export default {
             return i18n.t('NotificationModule.base', 'All');
         },
         allSelected() {
-            return this.categories.length > 0 && this.selected.length === this.categories.length;
+            return this.filters.length > 0 && this.selected.length === this.filters.length;
         },
     },
     methods: {
@@ -95,18 +94,18 @@ export default {
             this.emitChange({ seen: value });
         },
         toggleAll(checked) {
-            this.emitChange({ categories: checked ? this.categories.map((category) => category.id) : [] });
+            this.emitChange({ groups: checked ? this.filters.map((filter) => filter.id) : [] });
         },
-        toggleCategory(id, checked) {
-            const categories = checked
+        toggleGroup(id, checked) {
+            const groups = checked
                 ? [...this.selected, id]
                 : this.selected.filter((candidate) => candidate !== id);
 
-            this.emitChange({ categories });
+            this.emitChange({ groups });
         },
         emitChange(changed) {
             this.$emit('change', {
-                categories: changed.categories !== undefined ? changed.categories : [...this.selected],
+                groups: changed.groups !== undefined ? changed.groups : [...this.selected],
                 seen: changed.seen !== undefined ? changed.seen : this.seen,
             });
         },

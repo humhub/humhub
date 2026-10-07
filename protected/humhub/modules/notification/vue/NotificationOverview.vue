@@ -29,7 +29,7 @@
                         id="notification_overview_list"
                         :initial="initial"
                         :page-size="pageSize"
-                        :categories="requestCategories"
+                        :groups="requestGroups"
                         :seen="seen || null"
                         :show-more-button="true"
                         :empty-text="emptyLabel"
@@ -46,8 +46,8 @@
                 </div>
                 <div class="panel-body">
                     <NotificationFilter
-                        :categories="categories"
-                        :selected="selectedCategories"
+                        :filters="filters"
+                        :selected="selectedGroups"
                         :seen="seen"
                         :icons="icons"
                         @change="onFilterChange"
@@ -79,7 +79,7 @@
 import { events, i18n, log } from '@humhub/vue';
 import NotificationFilter from './components/NotificationFilter.vue';
 import NotificationList from './components/NotificationList.vue';
-import { markAllAsSeen } from './components/notificationApi.js';
+import { markAsSeen as markNotificationsAsSeen } from './components/notificationApi.js';
 
 // The count channel the notification menu owns (see `NotificationMenu.vue`): both islands live
 // on this page, so marking everything as seen here has to reach the badge up there - and the
@@ -92,8 +92,8 @@ export default {
     props: {
         // First page, inlined by the controller: {results, unseenCount, nextCursor}.
         initial: { type: Object, default: null },
-        // [{id, title}] of every category the caller can filter by (localized).
-        categories: { type: Array, default: () => [] },
+        // [{id, title}] of every notification group the caller can filter by (localized).
+        filters: { type: Array, default: () => [] },
         // Server-rendered icon markup: {check, cog, all, unseen, seen}.
         icons: { type: Object, default: () => ({}) },
         settingsUrl: { type: String, required: true },
@@ -102,16 +102,16 @@ export default {
     data() {
         return {
             // Everything selected initially, like the server-rendered filter's own default.
-            selectedCategories: this.categories.map((category) => category.id),
+            selectedGroups: this.filters.map((filter) => filter.id),
             seen: '',
             unseenCount: this.initial ? Number(this.initial.unseenCount || 0) : 0,
         };
     },
     computed: {
-        // No filter at all while every category is selected: it would only narrow the list to
+        // No filter at all while every group is selected: it would only narrow the list to
         // classes the modules currently register (see the endpoint's own docblock).
-        requestCategories() {
-            return this.selectedCategories.length === this.categories.length ? null : this.selectedCategories;
+        requestGroups() {
+            return this.selectedGroups.length === this.filters.length ? null : this.selectedGroups;
         },
         headingLabel() {
             return i18n.t('NotificationModule.base', '<strong>Notification</strong> Overview');
@@ -146,8 +146,8 @@ export default {
                 this.$refs.list.reload();
             }
         },
-        onFilterChange({ categories, seen }) {
-            this.selectedCategories = categories;
+        onFilterChange({ groups, seen }) {
+            this.selectedGroups = groups;
             this.seen = seen;
             // The props reach the list through the same reactive update, so the refetch has to
             // wait for it - otherwise it would send the previous filter.
@@ -157,7 +157,7 @@ export default {
             this.unseenCount = Number(response.unseenCount) || 0;
         },
         markAsSeen() {
-            return markAllAsSeen().then(() => {
+            return markNotificationsAsSeen().then(() => {
                 this.unseenCount = 0;
                 // Tells the notification menu's badge and the document title, which are owned
                 // by the other island on this page.

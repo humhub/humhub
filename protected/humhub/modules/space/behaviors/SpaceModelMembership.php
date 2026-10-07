@@ -10,18 +10,19 @@ namespace humhub\modules\space\behaviors;
 
 use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\admin\permissions\ManageSpaces;
+use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\space\activities\MemberAddedActivity;
 use humhub\modules\space\activities\MemberRemovedActivity;
 use humhub\modules\space\MemberEvent;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
-use humhub\modules\space\notifications\ApprovalRequest;
-use humhub\modules\space\notifications\ApprovalRequestAccepted;
-use humhub\modules\space\notifications\ApprovalRequestDeclined;
-use humhub\modules\space\notifications\Invite as InviteNotification;
-use humhub\modules\space\notifications\InviteAccepted;
-use humhub\modules\space\notifications\InviteDeclined;
-use humhub\modules\space\notifications\InviteRevoked;
+use humhub\modules\space\notifications\SpaceApprovalAcceptedNotification;
+use humhub\modules\space\notifications\SpaceApprovalDeclinedNotification;
+use humhub\modules\space\notifications\SpaceApprovalRequestNotification;
+use humhub\modules\space\notifications\SpaceInviteAcceptedNotification;
+use humhub\modules\space\notifications\SpaceInviteDeclinedNotification;
+use humhub\modules\space\notifications\SpaceInviteNotification;
+use humhub\modules\space\notifications\SpaceInviteRevokedNotification;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\User;
@@ -290,8 +291,12 @@ class SpaceModelMembership extends Behavior
 
         $membership->save();
 
-        ApprovalRequest::instance()->from($user)->about($this->owner)->withMessage($message)->sendBulk(
+        NotificationManager::dispatch(
+            SpaceApprovalRequestNotification::class,
             $this->getAdminsQuery(),
+            $this->owner,
+            $user,
+            $message !== null && $message !== '' ? ['payload' => ['message' => (string)$message]] : [],
         );
     }
 
@@ -336,15 +341,17 @@ class SpaceModelMembership extends Behavior
             switch ($membership->status) {
                 case Membership::STATUS_APPLICANT:
                     // If user is an applicant of this space add user and return.
-                    $this->addMember($userId);
+                    $this->addMember($userId, originator: User::findOne(['id' => $originatorId]));
                     // no break
                 case Membership::STATUS_MEMBER:
                     // If user is already a member just ignore the invitation.
                     return;
                 case Membership::STATUS_INVITED:
                     // If user is already invited, remove old invite notification and retrigger
-                    $oldNotification = new InviteNotification(['source' => $this->owner]);
-                    $oldNotification->delete(User::findOne(['id' => $userId]));
+                    $invitedUser = User::findOne(['id' => $userId]);
+                    if ($invitedUser !== null) {
+                        NotificationManager::delete(SpaceInviteNotification::class, $this->owner, $invitedUser);
+                    }
                     break;
             }
         } else {
@@ -376,12 +383,12 @@ class SpaceModelMembership extends Behavior
      */
     protected function sendInviteNotification($userId, $originatorId)
     {
-        $notification = new InviteNotification([
-            'source' => $this->owner,
-            'originator' => User::findOne(['id' => $originatorId]),
-        ]);
-
-        $notification->send(User::findOne(['id' => $userId]));
+        NotificationManager::dispatch(
+            SpaceInviteNotification::class,
+            (int)$userId,
+            $this->owner,
+            User::findOne(['id' => $originatorId]),
+        );
     }
 
     /**
@@ -395,6 +402,7 @@ class SpaceModelMembership extends Behavior
      * @param bool $silent add member without any notifications
      * @param bool $showAtDashboard add member without any notifications
      * @param string $groupId
+     * @param User|null $originator the user who approves a membership request; the current user when not given
      * @return bool
      * @throws Throwable
      * @throws InvalidConfigException
@@ -405,6 +413,7 @@ class SpaceModelMembership extends Behavior
         bool $silent = false,
         string $groupId = Space::USERGROUP_MEMBER,
         bool $showAtDashboard = true,
+        ?User $originator = null,
     ): bool {
         $user = User::findOne(['id' => $userId]);
         if (!$user) {
@@ -429,9 +438,9 @@ class SpaceModelMembership extends Behavior
             if ($userInvite !== null
                 && !empty($userInvite->user_originator_id)
                 && $userInvite->source == Invite::SOURCE_INVITE && !$silent) {
-                $originator = User::findOne(['id' => $userInvite->user_originator_id]);
-                if ($originator !== null) {
-                    InviteAccepted::instance()->from($user)->about($this->owner)->send($originator);
+                $inviter = User::findOne(['id' => $userInvite->user_originator_id]);
+                if ($inviter !== null) {
+                    NotificationManager::dispatch(SpaceInviteAcceptedNotification::class, $inviter, $this->owner, $user, ['dedupe' => false]);
                 }
             }
         } else {
@@ -440,16 +449,24 @@ class SpaceModelMembership extends Behavior
                 return true;
             }
 
-            // User requested membership
-            if ($membership->status == Membership::STATUS_APPLICANT && !$silent) {
-                ApprovalRequestAccepted::instance()
-                    ->from(Yii::$app->user->getIdentity())->about($this->owner)->send($user);
+            // User requested membership - without an approver (e.g. in a queue job) nobody to name
+            $approver = $originator ?? Yii::$app->user->getIdentity();
+            if ($membership->status == Membership::STATUS_APPLICANT && !$silent && $approver !== null) {
+                NotificationManager::dispatch(
+                    SpaceApprovalAcceptedNotification::class,
+                    $user,
+                    $this->owner,
+                    $approver,
+                    ['dedupe' => false],
+                );
             }
 
             // User was invited
             if ($membership->status == Membership::STATUS_INVITED && !$silent) {
-                InviteAccepted::instance()->from($user)->about($this->owner)
-                    ->send(User::findOne(['id' => $membership->originator_user_id]));
+                $inviter = User::findOne(['id' => $membership->originator_user_id]);
+                if ($inviter !== null) {
+                    NotificationManager::dispatch(SpaceInviteAcceptedNotification::class, $inviter, $this->owner, $user, ['dedupe' => false]);
+                }
             }
 
             // Update Membership
@@ -475,10 +492,10 @@ class SpaceModelMembership extends Behavior
         $this->owner->unfollow($userId);
 
         // Delete invite notification for this user
-        InviteNotification::instance()->about($this->owner)->delete($user);
+        NotificationManager::delete(SpaceInviteNotification::class, $this->owner, $user);
 
         // Delete pending approval request notifications for this user
-        ApprovalRequest::instance()->from($user)->about($this->owner)->delete();
+        NotificationManager::delete(SpaceApprovalRequestNotification::class, $this->owner, null, $user);
 
         return true;
     }
@@ -535,8 +552,8 @@ class SpaceModelMembership extends Behavior
         Membership::unsetCache($this->owner->id, $user->id);
 
         // Get rid of old notifications
-        ApprovalRequest::instance()->from($user)->about($this->owner)->delete();
-        InviteNotification::instance()->about($this->owner)->delete($user);
+        NotificationManager::delete(SpaceApprovalRequestNotification::class, $this->owner, null, $user);
+        NotificationManager::delete(SpaceInviteNotification::class, $this->owner, $user);
 
         switch ($membership->status) {
             case Membership::STATUS_MEMBER:
@@ -576,11 +593,15 @@ class SpaceModelMembership extends Behavior
     private function handleCancelInvitationEvent(Membership $membership, User $user)
     {
         if ($membership->originator && $membership->isCurrentUser()) {
-            InviteDeclined::instance()->from(Yii::$app->user->identity)->about($this->owner)->send(
+            NotificationManager::dispatch(
+                SpaceInviteDeclinedNotification::class,
                 $membership->originator,
+                $this->owner,
+                Yii::$app->user->identity,
+                ['dedupe' => false],
             );
         } elseif (Yii::$app->user->identity) {
-            InviteRevoked::instance()->from(Yii::$app->user->identity)->about($this->owner)->send($user);
+            NotificationManager::dispatch(SpaceInviteRevokedNotification::class, $user, $this->owner, Yii::$app->user->identity, ['dedupe' => false]);
         }
     }
 
@@ -596,7 +617,7 @@ class SpaceModelMembership extends Behavior
     {
         // Only send a declined notification if the user did not cancel the request himself.
         if (Yii::$app->user->identity && !$membership->isCurrentUser()) {
-            ApprovalRequestDeclined::instance()->from(Yii::$app->user->identity)->about($this->owner)->send($user);
+            NotificationManager::dispatch(SpaceApprovalDeclinedNotification::class, $user, $this->owner, Yii::$app->user->identity, ['dedupe' => false]);
         }
     }
 

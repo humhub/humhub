@@ -347,8 +347,8 @@ the first endpoints were built:
     (`like/<recordId>/users`, `space`, `marketplace/module`, where `updateCount` rides along
     for the "Update all" button);
   - **cursor pages** — `cursor`/`limit` in, `{results, nextCursor}` out — for lists that
-    reorder while being read: `activity` (groups form and re-key) and `notification` (ordered
-    unseen-first, reorders as notifications arrive and are read; `unseenCount` rides along
+    reorder while being read: `activity` (groups form and re-key) and `notification` (newest
+    group first, reorders as notifications arrive and join groups; `unseenCount` rides along
     because every consumer needs it for its badge). Page numbers would skip or repeat entries
     there;
   - **comment windows** — `cursor` + `direction`, or `focus`, plus `limit` in,

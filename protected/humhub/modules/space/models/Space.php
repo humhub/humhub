@@ -15,13 +15,14 @@ use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\content\models\Content;
+use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\space\activities\SpaceCreatedActivity;
 use humhub\modules\space\behaviors\SpaceController;
 use humhub\modules\space\behaviors\SpaceModelMembership;
 use humhub\modules\space\components\ActiveQuerySpace;
 use humhub\modules\space\components\UrlValidator;
 use humhub\modules\space\Module;
-use humhub\modules\space\notifications\SpaceCreated;
+use humhub\modules\space\notifications\SpaceCreatedNotification;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\space\services\MemberListService;
@@ -268,7 +269,12 @@ class Space extends ContentContainerActiveRecord
 
             // If the space creator is not allowed to manage spaces, notify space managers
             if (!(new PermissionManager(['subject' => $user]))->can(ManageSpaces::class)) {
-                SpaceCreated::instance()->from($user)->about($this)->sendBulk(PermissionManager::findUsersByPermission(new ManageSpaces()));
+                NotificationManager::dispatch(
+                    SpaceCreatedNotification::class,
+                    PermissionManager::findUsersByPermission(new ManageSpaces()),
+                    $this,
+                    $user,
+                );
             }
         }
 

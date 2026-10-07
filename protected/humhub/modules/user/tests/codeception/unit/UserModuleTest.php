@@ -4,6 +4,8 @@ namespace tests\codeception\unit\models;
 
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
+use humhub\modules\user\notifications\FollowedNotification;
+use humhub\modules\user\notifications\MentionedNotification;
 use humhub\modules\user\permissions\PeopleAccess;
 use humhub\modules\user\permissions\ViewAboutPage;
 use tests\codeception\_support\HumHubDbTestCase;
@@ -19,9 +21,9 @@ class UserModuleTest extends HumHubDbTestCase
 
         $this->assertEquals('User', $module->getName());
 
-        $this->assertEquals([
-            'humhub\modules\user\notifications\Followed',
-            'humhub\modules\user\notifications\Mentioned',
+        $this->assertEqualsCanonicalizing([
+            FollowedNotification::class,
+            MentionedNotification::class,
         ], $module->getNotifications());
 
         $this->assertEquals([

@@ -5,12 +5,13 @@ namespace humhub\modules\comment\models;
 use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\comment\activities\NewCommentActivity as NewCommentActivity;
 use humhub\modules\comment\live\NewComment as NewCommentLive;
-use humhub\modules\comment\notifications\NewComment as NewCommentNotification;
+use humhub\modules\comment\notifications\NewCommentNotification;
 use humhub\modules\comment\services\CommentPayloadCache;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\content\widgets\richtext\RichText;
+use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
@@ -117,7 +118,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
                 ]);
             }
 
-            NewCommentNotification::instance()->from($this->createdBy)->about($this)->sendBulk($followerQuery);
+            NotificationManager::dispatch(NewCommentNotification::class, $followerQuery, $this, $this->createdBy);
             ActivityManager::dispatch(NewCommentActivity::class, $this, $this->createdBy);
 
             if ($this->content->container) {

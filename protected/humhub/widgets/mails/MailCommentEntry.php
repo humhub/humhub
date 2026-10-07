@@ -8,7 +8,6 @@
 
 namespace humhub\widgets\mails;
 
-use humhub\components\rendering\Viewable;
 use humhub\modules\content\interfaces\ContentOwner;
 
 /**
@@ -30,7 +29,7 @@ class MailCommentEntry extends \yii\base\Widget
     public $receiver;
 
     /**
-     * @var string|Viewable|ContentOwner content to render
+     * @var string|ContentOwner content to render
      */
     public $comment;
 

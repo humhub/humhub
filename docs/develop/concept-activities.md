@@ -1,52 +1,118 @@
 # Activities
 
-Activities record noteworthy things that happened in a content container — "X created a post", "Y joined the space", "Z liked a comment". Each activity is rendered into a stream entry and may also appear in the daily summary email.
+Activities record noteworthy things that happened in a content container — "Anna created a
+post", "Bob joined the space", "Clara likes a comment". They appear in the activity box of the
+dashboard, the space and the profile, and in the activity summary mail. An activity is bound to
+its container and addressed to nobody in particular: whoever may see the container (and the
+content) sees it. Compare with [notifications](concept-notifications.md), which are written for
+specific recipients.
 
-The two related concepts:
+## The activity class
 
-- **Activity** — bound to a `ContentContainer`, not targeted at a specific user. Anyone with access to the container sees it. Compare with [notifications](concept-notifications.md), which target a specific user.
-- **Originator** — the user the activity is *about* (e.g. the comment author).
-- **Source** — an optional `Content` or `ContentAddon` the activity describes. When a source is set, the activity inherits its `visibility` and other content properties.
-
-## Implementing an activity
-
-Place activity classes under your module's `activities/` directory.
-
-### 1. The activity class
+Place it under your module's `activities/` directory; every class there extending
+`BaseActivity` is picked up (`Module::getActivityClasses()`). An activity about a content
+extends `BaseContentActivity`, one about the container itself `BaseActivity`:
 
 ```php
 namespace johndoe\example\activities;
 
-use humhub\modules\activity\components\BaseActivity;
+use humhub\modules\activity\components\BaseContentActivity;
+use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
+use johndoe\example\models\Task;
+use Yii;
 
-class SomethingHappened extends BaseActivity
+/**
+ * @extends BaseContentActivity<Task>
+ */
+final class TaskCreatedActivity extends BaseContentActivity implements ConfigurableActivityInterface
 {
-    public $viewName = 'somethingHappened';   // view file (without .php)
-    public $moduleId = 'example';             // required
+    protected string $contentActiveRecordClass = Task::class;
+
+    public static function getTitle(): string
+    {
+        return Yii::t('ExampleModule.base', 'Tasks');
+    }
+
+    public static function getDescription(): string
+    {
+        return Yii::t('ExampleModule.base', 'Whenever a new task was created.');
+    }
+
+    protected function getMessage(array $params): string
+    {
+        return Yii::t('ExampleModule.base', '{displayName} created the task {contentTitle}.', $params);
+    }
 }
 ```
 
-### 2. The view file
+There are no view files. The same `getMessage()` renders the entry in the activity box
+(`asWeb()`), the HTML summary mail (`asMailHtml()`) and its plain-text version (`asMailText()`);
+only `$params` differs — on the web and in the HTML mail the names are bold and encoded, in plain
+text they are not:
 
-By default the view sits at `activities/views/<viewName>.php`. It receives `$originator`, the source record, and a few helpers:
+| Parameter | Meaning |
+|---|---|
+| `displayName` | the user who caused the activity |
+| `displayNames` | the users of a grouped activity: "Anna, Bob and 2 more" (empty when ungrouped) |
+| `groupCount` | how many activities the entry stands for (1 when ungrouped) |
+| `content` | type and preview of the content: *post "Release notes"* (`BaseContentActivity` only) |
+| `contentTitle` | the preview alone (`BaseContentActivity` only) |
+
+Add parameters of your own by overriding `getMessageParamsWeb()`, `getMessageParamsMailHtml()`
+and `getMessageParamsMailText()` with `array_merge(parent::…(), [...])`, as
+`NewCommentActivity` does for the comment text. The object is constructed from its `Activity`
+record and exposes `$record`, `$user`, `$contentContainer`, `$createdAt` and `$groupCount`;
+`BaseContentActivity` adds `$content`, `$contentActiveRecord` (checked against
+`$contentActiveRecordClass`) and `$contentAddon` (e.g. the comment). `getUrl()` links the entry:
+the content addon, else the content, else the container.
+
+## Dispatching
 
 ```php
-use yii\helpers\Html;
+use humhub\modules\activity\services\ActivityManager;
 
-echo Yii::t('ExampleModule.activity', '{user} did something cool.', [
-    '{user}' => '<strong>' . Html::encode($originator->displayName) . '</strong>',
-]);
+ActivityManager::dispatch(TaskCreatedActivity::class, $task, $user);
 ```
 
-For a different mail rendering, ship a `activities/views/mail/<viewName>.php` with the same view name — `BaseActivity` picks it up automatically when generating the summary mail.
+The target is a content record, a content addon (a comment, a like — stored with its content)
+or a container (`Space`, `User`). The user defaults to the logged-in one. `dispatch()` writes
+the record, groups it and sends the live event `activity\live\NewActivity`, from which the
+`ActivityBox` island refreshes; it returns the activity, or `null` when a handler of
+`ActivityManager::EVENT_BEFORE_DISPATCH` set `$event->isValid = false`. The usual place is
+`afterSave()` of the record, once per state transition.
 
-### 3. Firing the activity
+Visibility and lifetime follow the content: an activity is shown only to who may see its
+content, moves with it (`ActivityManager::afterContentChange()`), and is deleted with the
+content, the container or the user.
+
+## Grouping
+
+Five people liking the same comment, ten files uploaded at once: return the query that finds
+the siblings of a new activity, and the box shows one entry.
 
 ```php
-SomethingHappened::instance()
-    ->from($user)        // originator
-    ->about($this)       // source (Content or ContentAddon)
-    ->create();
+public function getGroupingQuery(): ?ActiveQueryActivity
+{
+    return Activity::find()
+        ->andWhere(['activity.class' => self::class])
+        ->andWhere(['activity.contentcontainer_id' => $this->contentContainer->id]);
+}
 ```
 
-`create()` persists the activity, dispatches stream entries, and queues mail delivery if applicable. Activities are typically fired from the `afterSave()` hook of the source record — once per state transition, never on every save.
+The core narrows it to a time bucket of `$groupingTimeBucketSeconds` (900) and groups when at
+least `$groupingThreshold` (2) activities match — both properties of the class. Grouping happens
+when the activity is written. Branch on `$groupCount` in `getMessage()` for the grouped sentence
+and use `displayNames`.
+
+## Summary mail settings
+
+An activity implementing `ConfigurableActivityInterface` — static `getTitle()` and
+`getDescription()` — appears as a checkbox under *E-Mail Summaries*, in the account settings and
+in the administrator's defaults, so users can leave it out of their summary mail. Without the
+interface it is always included.
+
+## API
+
+`GET /api/v2/activity` (`containerId`, `cursor`, `limit`) returns the activities the caller may
+see, newest entry first, one entry per group; the shape is in
+`activity\serializers\ActivitySerializer`.

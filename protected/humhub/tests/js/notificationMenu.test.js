@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushPromises, mount } from '@vue/test-utils';
 import NotificationMenu from '../../modules/notification/vue/NotificationMenu.vue';
 import NotificationOverview from '../../modules/notification/vue/NotificationOverview.vue';
+import { markAsSeen } from '../../modules/notification/vue/components/notificationApi.js';
 import UserImage from '../../modules/user/vue/UserImage.vue';
 import SpaceImage from '../../modules/space/vue/SpaceImage.vue';
 
@@ -10,13 +11,19 @@ await import('../../resources/js/humhub/humhub.vue.js');
 
 const mountOptions = () => ({ global: { components: { UserImage, SpaceImage } } });
 
+// The opaque group key the server sends (`NotificationListService::encodeCursor()`) - the
+// value the live event carries as `notificationGroup`.
+const groupKeyOf = (groupingKey) => btoa(`n1:${groupingKey}`).replace(/=+$/, '');
+
 const notification = (overrides = {}) => ({
     id: 5,
     html: '<strong>Jane</strong> commented',
     url: '/notification/entry?id=5',
     isNew: true,
     createdAt: '2026-08-20T10:00:00+00:00',
-    groupKey: null,
+    groupKey: groupKeyOf(overrides.id ?? 5),
+    count: 1,
+    priority: 'normal',
     originator: null,
     space: null,
     ...overrides,
@@ -42,18 +49,21 @@ const menuProps = (overrides = {}) => ({
 let wrapper;
 let getCalls;
 let postCalls;
+let postConfigs;
 
 beforeEach(() => {
     getCalls = [];
     postCalls = [];
+    postConfigs = [];
     globalThis.humhubStubs.event._handlers.clear();
     globalThis.humhubStubs.client.get = (url) => {
         getCalls.push(url);
         // Everything read after a mark-as-seen is seen, like the server would answer.
         return Promise.resolve(windowPayload(undefined, postCalls.length ? { unseenCount: 0 } : {}));
     };
-    globalThis.humhubStubs.client.post = (url) => {
+    globalThis.humhubStubs.client.post = (url, cfg) => {
         postCalls.push(url);
+        postConfigs.push(cfg);
         return Promise.resolve({ unseenCount: 0 });
     };
     document.title = 'Dashboard - HumHub';
@@ -101,20 +111,64 @@ describe('NotificationMenu', () => {
         expect(getCalls[0]).toContain('/api/v2/notification');
     });
 
-    it('counts a live notification that is not listed yet, and ignores one that is', async () => {
-        wrapper = mount(NotificationMenu, { ...mountOptions(), props: menuProps() });
+    it('refreshes after a live notification that is not listed yet, and ignores one that is', async () => {
+        vi.useFakeTimers();
+        try {
+            globalThis.humhubStubs.client.get = (url) => {
+                getCalls.push(url);
+                return Promise.resolve(windowPayload(undefined, { unseenCount: 3 }));
+            };
+            wrapper = mount(NotificationMenu, { ...mountOptions(), props: menuProps() });
 
-        globalThis.humhubStubs.event.trigger('humhub:modules:notification:live:NewNotification', [
-            [{ data: { notificationId: 5, notificationGroup: null } }],
-        ]);
-        await flushPromises();
-        expect(wrapper.find('#badge-notifications').text()).toBe('2');
+            // listed by id, and by group key
+            globalThis.humhubStubs.event.trigger('humhub:modules:notification:live:NewNotification', [
+                [
+                    { data: { notificationId: 5, notificationGroup: null } },
+                    { data: { notificationId: 80, notificationGroup: groupKeyOf(5) } },
+                ],
+            ]);
+            await vi.advanceTimersByTimeAsync(1000);
+            expect(getCalls).toHaveLength(0);
+            expect(wrapper.find('#badge-notifications').text()).toBe('2');
 
-        globalThis.humhubStubs.event.trigger('humhub:modules:notification:live:NewNotification', [
-            [{ data: { notificationId: 77, notificationGroup: null } }],
-        ]);
-        await flushPromises();
-        expect(wrapper.find('#badge-notifications').text()).toBe('3');
+            globalThis.humhubStubs.event.trigger('humhub:modules:notification:live:NewNotification', [
+                [{ data: { notificationId: 77, notificationGroup: groupKeyOf(77) } }],
+            ]);
+            await vi.advanceTimersByTimeAsync(1000);
+            await flushPromises();
+            expect(getCalls).toHaveLength(1);
+            expect(wrapper.find('#badge-notifications').text()).toBe('3');
+        } finally {
+            vi.useRealTimers();
+        }
+    });
+
+    it('debounces a burst of live notifications into one request and takes the server count', async () => {
+        vi.useFakeTimers();
+        try {
+            globalThis.humhubStubs.client.get = (url) => {
+                getCalls.push(url);
+                return Promise.resolve(windowPayload(undefined, { unseenCount: 4 }));
+            };
+            wrapper = mount(NotificationMenu, { ...mountOptions(), props: menuProps() });
+
+            for (const id of [91, 92, 93]) {
+                globalThis.humhubStubs.event.trigger('humhub:modules:notification:live:NewNotification', [
+                    [{ data: { notificationId: id, notificationGroup: groupKeyOf(id) } }],
+                ]);
+                await vi.advanceTimersByTimeAsync(100);
+            }
+            expect(getCalls).toHaveLength(0);
+
+            await vi.advanceTimersByTimeAsync(500);
+            await flushPromises();
+
+            expect(getCalls).toHaveLength(1);
+            // the server's count, not 2 + 3 events
+            expect(wrapper.find('#badge-notifications').text()).toBe('4');
+        } finally {
+            vi.useRealTimers();
+        }
     });
 
     it('refreshes the list instead of only counting while the dropdown is open', async () => {
@@ -136,9 +190,7 @@ describe('NotificationMenu', () => {
         globalThis.humhubStubs.event.on('humhub:notification:updateCount', handler);
 
         wrapper = mount(NotificationMenu, { ...mountOptions(), props: menuProps() });
-        globalThis.humhubStubs.event.trigger('humhub:modules:notification:live:NewNotification', [
-            [{ data: { notificationId: 91, notificationGroup: null } }],
-        ]);
+        globalThis.humhubStubs.event.trigger('humhub:notification:setCount', [3]);
         await flushPromises();
 
         expect(handler).toHaveBeenCalledTimes(1);
@@ -197,9 +249,9 @@ describe('NotificationMenu', () => {
 
 const overviewProps = (overrides = {}) => ({
     initial: windowPayload(),
-    categories: [
-        { id: 'followed', title: 'Following' },
-        { id: 'comment', title: 'Comments' },
+    filters: [
+        { id: 'social', title: 'Reactions on my content' },
+        { id: 'content', title: 'New content in my spaces' },
     ],
     icons: { check: '<i class="ti ti-check"></i>', cog: '<i class="ti ti-settings"></i>' },
     settingsUrl: '/notification/user',
@@ -212,11 +264,11 @@ describe('NotificationOverview', () => {
 
         expect(wrapper.find('#notification_overview_list').exists()).toBe(true);
         expect(wrapper.find('#notification_overview_markseen').exists()).toBe(true);
-        expect(wrapper.findAll('.form-check')).toHaveLength(3); // "all" + two categories
+        expect(wrapper.findAll('.form-check')).toHaveLength(3); // "all" + two groups
         expect(getCalls).toHaveLength(0);
     });
 
-    it('sends no category filter while every category is selected', async () => {
+    it('sends no group filter while every group is selected', async () => {
         wrapper = mount(NotificationOverview, { ...mountOptions(), props: overviewProps() });
 
         await wrapper.findAll('.btn-group button')[1].trigger('click'); // "unseen"
@@ -224,19 +276,19 @@ describe('NotificationOverview', () => {
 
         expect(getCalls).toHaveLength(1);
         expect(getCalls[0]).toContain('seen=unseen');
-        expect(getCalls[0]).not.toContain('categories');
+        expect(getCalls[0]).not.toContain('groups');
     });
 
-    it('sends the selected categories once the selection is narrowed', async () => {
+    it('sends the selected groups once the selection is narrowed', async () => {
         wrapper = mount(NotificationOverview, { ...mountOptions(), props: overviewProps() });
 
-        // Uncheck the second category.
+        // Uncheck the second group.
         const checkboxes = wrapper.findAll('.form-check input');
         await checkboxes[2].setValue(false);
         await flushPromises();
 
-        expect(decodeURIComponent(getCalls[0])).toContain('categories[]=followed');
-        expect(decodeURIComponent(getCalls[0])).not.toContain('categories[]=comment');
+        expect(decodeURIComponent(getCalls[0])).toContain('groups[]=social');
+        expect(decodeURIComponent(getCalls[0])).not.toContain('groups[]=content');
     });
 
     it('clears and restores the whole selection through the all checkbox', async () => {
@@ -248,7 +300,7 @@ describe('NotificationOverview', () => {
         await all.setValue(false);
         await flushPromises();
         // Nothing selected is a filter of its own (an empty list), not "no filter".
-        expect(getCalls[0]).toContain('categories');
+        expect(getCalls[0]).toContain('groups');
         expect(wrapper.findAll('.form-check input')[1].element.checked).toBe(false);
 
         await wrapper.findAll('.form-check input')[0].setValue(true);
@@ -281,5 +333,23 @@ describe('NotificationOverview', () => {
         // The list is refetched; what its unread markers look like afterwards is the server's
         // answer, which this test's stub keeps unchanged on purpose.
         expect(getCalls).toHaveLength(1);
+    });
+});
+
+describe('notificationApi.markAsSeen', () => {
+    it('marks everything without ids and the given entries with ids', async () => {
+        expect(await markAsSeen()).toEqual({ unseenCount: 0 });
+        expect(postConfigs[0]).toBeUndefined();
+
+        await markAsSeen([5, 7]);
+        expect(postCalls[1]).toContain('/api/v2/notification/mark-as-seen');
+        expect(postConfigs[1]).toEqual({ data: { ids: [5, 7] } });
+    });
+});
+
+describe('notificationApi.markAsSeen with an empty list', () => {
+    it('sends nothing - an empty list is not "everything"', async () => {
+        expect(await markAsSeen([])).toBeNull();
+        expect(postCalls).toHaveLength(0);
     });
 });

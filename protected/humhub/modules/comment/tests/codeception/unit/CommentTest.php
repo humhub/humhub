@@ -4,10 +4,12 @@ namespace tests\codeception\unit\modules\comment\components;
 
 use humhub\models\RecordMap;
 use humhub\modules\activity\models\Activity;
-use humhub\modules\comment\notifications\NewComment;
+use humhub\modules\comment\notifications\NewCommentNotification;
 use humhub\modules\comment\services\CommentListService;
+use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\user\models\User;
+use humhub\modules\user\notifications\MentionedNotification;
 use tests\codeception\_support\HumHubDbTestCase;
 use Codeception\Specify;
 use humhub\modules\post\models\Post;
@@ -40,7 +42,7 @@ class CommentTest extends HumHubDbTestCase
         $this->assertNotEmpty($comment->content->getPolymorphicRelation()->getFollowersWithNotificationQuery());
 
         $this->assertNotNull(Activity::findOne(['content_addon_record_id' => RecordMap::getId($comment)]));
-        $this->assertNotNull(Notification::findOne(['source_class' => Comment::class, 'source_pk' => $comment->id]));
+        $this->assertHasNotification(NewCommentNotification::class, $comment, 3, 1);
     }
 
     public function testDeleteUser()
@@ -90,7 +92,7 @@ class CommentTest extends HumHubDbTestCase
         ]);
         $comment->save();
 
-        $html = NewComment::instance()->from(User::findOne(['id' => 3]))->about($comment)->html();
+        $html = $this->buildNotification($comment)->asWeb();
 
         $this->assertStringNotContainsString('[Deleted]', $html);
         $this->assertStringEndsWith('commented post.', $html);
@@ -106,13 +108,79 @@ class CommentTest extends HumHubDbTestCase
         ]);
         $comment->save();
 
+        $notification = $this->buildNotification($comment);
+
         // Simulate an orphaned content record by removing the underlying post without cleanup
         Post::deleteAll(['id' => 11]);
-        $comment = Comment::findOne(['id' => $comment->id]);
+        $notification->record->refresh();
+        $notification = NotificationManager::fromRecord($notification->record);
 
-        $html = NewComment::instance()->from(User::findOne(['id' => 3]))->about($comment)->html();
+        $html = $notification->asWeb();
 
         $this->assertStringContainsString('[Deleted]', $html);
+    }
+
+    public function testCommentNotificationIsSkippedForAMentionedUser()
+    {
+        // post 2: public post of Admin, who follows it
+        $this->becomeUser('User2');
+        $comment = new Comment(['message' => 'User2 comment!', 'content_id' => Post::findOne(['id' => 2])->content->id]);
+        $this->assertTrue($comment->save());
+        $this->assertHasNotification(NewCommentNotification::class, $comment, 3, 1);
+
+        // Admin is mentioned in the comment: the mention notification covers it
+        $mention = new Comment([
+            'message' => 'Hi [Admin](mention:01e50e0d-82cd-41fc-8b0c-552392f5839c "Admin")',
+            'content_id' => Post::findOne(['id' => 2])->content->id,
+        ]);
+        $this->assertTrue($mention->save());
+
+        $this->assertHasNotification(MentionedNotification::class, $mention, 3, 1);
+        $this->assertHasNoNotification(NewCommentNotification::class, $mention, null, 1);
+    }
+
+    public function testCommentsOnOneContentGroup()
+    {
+        // post 2: public post of Admin, who follows it
+        $contentId = Post::findOne(['id' => 2])->content->id;
+
+        $this->becomeUser('User2');
+        $first = new Comment(['message' => 'First', 'content_id' => $contentId]);
+        $this->assertTrue($first->save());
+        $second = new Comment(['message' => 'Second', 'content_id' => $contentId]);
+        $this->assertTrue($second->save());
+
+        $row = Notification::find()->forUser(1)->grouped()->andWhere(['notification.class' => NewCommentNotification::class])->one();
+        $notification = NotificationManager::load($row);
+        $this->assertSame(2, $notification->groupCount);
+        // the mail previews the comment, the sentence names the commented post
+        $this->assertSame($second->id, $notification->getMailContentRecord()->id);
+        $this->assertStringContainsString(Post::findOne(['id' => 2])->message, $notification->asWeb());
+        $this->assertStringContainsString('just commented your', $notification->getMailSubject());
+        $this->assertSame($second->getUrl(), $notification->getUrl());
+    }
+
+    public function testSubjectForANonOwnerOutsideOfASpace()
+    {
+        // post 2: Admin's post on their profile; User1 is not its author
+        $this->becomeUser('User2');
+        $comment = new Comment(['message' => 'User2 comment!', 'content_id' => Post::findOne(['id' => 2])->content->id]);
+        $this->assertTrue($comment->save());
+
+        $record = new Notification([
+            'class' => NewCommentNotification::class,
+            'user_id' => 2,
+            'originator_id' => 3,
+            'content_id' => $comment->content->id,
+            'contentcontainer_id' => $comment->content->contentcontainer_id,
+            'source_record_id' => RecordMap::getId($comment),
+        ]);
+        $this->assertTrue($record->save());
+
+        $this->assertSame(
+            User::findOne(['id' => 3])->displayName . ' commented post "' . Post::findOne(['id' => 2])->message . '"',
+            NotificationManager::fromRecord($record)->getMailSubject(),
+        );
     }
 
     public function testGetCommentLimited()
@@ -268,4 +336,21 @@ class CommentTest extends HumHubDbTestCase
         $this->assertArrayHasKey('parent_comment_id', $danglingParent->getErrors());
     }
 
+    /**
+     * The new comment notification of Admin about the given comment of User2.
+     */
+    private function buildNotification(Comment $comment): NewCommentNotification
+    {
+        $record = new Notification([
+            'class' => NewCommentNotification::class,
+            'user_id' => 1,
+            'originator_id' => 3,
+            'content_id' => $comment->content->id,
+            'contentcontainer_id' => $comment->content->contentcontainer_id,
+            'source_record_id' => RecordMap::getId($comment),
+        ]);
+        $this->assertTrue($record->save());
+
+        return NotificationManager::fromRecord($record);
+    }
 }

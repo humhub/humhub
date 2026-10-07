@@ -9,7 +9,7 @@
 namespace humhub\modules\notification\controllers\api;
 
 use humhub\components\api\BaseController;
-use humhub\modules\notification\events\UnreadCountChangedEvent;
+use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\notification\services\NotificationListService;
 use Yii;
@@ -58,11 +58,12 @@ class NotificationController extends BaseController
     }
 
     /**
-     * The caller's notifications, unseen first, newest first.
+     * The caller's notifications, newest entry first, one entry per group.
      *
-     * Parameters: `cursor`, `limit`, `categories[]` (notification category ids) and `seen`
-     * (`seen`/`unseen`). Without `categories` nothing is filtered by category; with an entry
-     * matching no category the list is empty, which is what "no category selected" means.
+     * Parameters: `cursor` (the previous page's `nextCursor`), `limit`, `groups[]` (notification
+     * group ids, e.g. `direct`, `social`) and `seen` (`seen`/`unseen`). Without `groups` nothing
+     * is filtered by group; with ids matching no group the list is empty, which is what "no group
+     * selected" means.
      */
     public function actionIndex()
     {
@@ -73,30 +74,47 @@ class NotificationController extends BaseController
             self::MAX_LIMIT,
         ));
 
-        $categories = $request->get('categories');
-        $categories = is_array($categories)
-            ? array_values(array_filter($categories, 'is_string'))
-            : null;
+        $groups = $request->get('groups');
+        $cursor = $request->get('cursor');
+
+        $seen = $request->get('seen', '');
+        if (!is_string($seen) || ($seen !== '' && !in_array($seen, ['seen', 'unseen'], true))) {
+            return $this->validationErrors([
+                'seen' => [Yii::t('yii', '{attribute} is invalid.', ['attribute' => 'seen'])],
+            ]);
+        }
 
         return (new NotificationListService())->page(
             $limit,
-            (int)$request->get('cursor', 0) ?: null,
-            $categories,
-            (string)$request->get('seen', '') ?: null,
+            is_string($cursor) && $cursor !== '' ? $cursor : null,
+            $groups === null ? null : self::listValues($groups),
+            $seen ?: null,
         );
     }
 
     /**
-     * Marks every notification of the caller as seen.
+     * Marks notifications of the caller as seen: with `ids[]` the entries (groups) of those
+     * notifications - ids of other users' notifications are ignored -, without every one.
      */
     public function actionMarkAsSeen()
     {
-        $count = Notification::updateAll(['seen' => 1], ['user_id' => Yii::$app->user->id]);
+        $user = Yii::$app->user->getIdentity();
+        $ids = Yii::$app->request->post('ids');
 
-        if ($count > 0) {
-            UnreadCountChangedEvent::triggerChanged(Yii::$app->user->getIdentity());
+        if ($ids === null) {
+            NotificationManager::markAllSeen($user);
+        } else {
+            $ids = array_map('intval', self::listValues($ids));
+            $records = $ids === [] ? [] : Notification::find()
+                ->forUser($user)
+                ->andWhere(['notification.id' => $ids])
+                ->all();
+
+            foreach ($records as $record) {
+                NotificationManager::markRecordSeen($record);
+            }
         }
 
-        return ['unseenCount' => 0];
+        return ['unseenCount' => NotificationListService::unseenCount($user)];
     }
 }

@@ -8,56 +8,56 @@
 
 namespace humhub\modules\notification\targets;
 
-use Yii;
-use yii\base\Exception;
-use humhub\modules\user\models\User;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\notification\live\NewNotification;
+use humhub\modules\user\models\User;
+use Yii;
 
 /**
- * Web Target
+ * The web list of notifications - always on.
  *
- * @since 1.2
- * @author buddha
+ * The list is written by the dispatch job ({@see \humhub\modules\notification\jobs\DispatchJob}),
+ * which stores every notification and sends the live event for those
+ * {@see BaseNotification::listed()}. This target delivers nothing; it exists as the id behind
+ * `listed()` and for the settings page.
+ *
+ * @since 1.2, rewritten in 1.20
  */
 class WebTarget extends BaseTarget
 {
     /**
      * @inheritdoc
      */
-    public $id = 'web';
+    public string $id = 'web';
 
     /**
      * @inheritdoc
      */
-    public $defaultSetting = true;
+    public array $modes = [self::MODE_ADAPTIVE];
 
     /**
-     * Handles Webnotifications by setting the send_web_notifications flag and sending an live event.
+     * @inheritdoc
      */
-    public function handle(BaseNotification $notification, User $user)
+    public function getTitle(): string
     {
-        if (!$notification->record) {
-            throw new Exception('Notification record not found for BaseNotification "' . $notification::class . '"');
-        }
-
-        $notification->record->send_web_notifications = true;
-        $notification->record->save();
-
-        Yii::$app->live->send(new NewNotification([
-            'notificationId' => $notification->record->id,
-            'notificationGroup' => ($notification->getGroupKey()) ? ($notification::class . ':' . $notification->getGroupKey()) : null,
-            'contentContainerId' => $user->contentcontainer_id,
-            'ts' => time(),
-            'text' => $notification->text(),
-        ]));
+        return Yii::t('NotificationModule.targets', 'Web');
     }
 
     /**
+     * Nothing to do: the web list is written by the dispatch job.
+     *
      * @inheritdoc
      */
-    public function getTitle()
+    public function deliver(DeliveryBatch $batch): void
     {
-        return Yii::t('NotificationModule.targets', 'Web');
+    }
+
+    /**
+     * Whether the class appears in the web list - there are no settings for this channel.
+     *
+     * @inheritdoc
+     */
+    public function isEnabled(string $notificationClass, ?User $user = null): bool
+    {
+        return $this->isActive($user) && $notificationClass::listed();
     }
 }

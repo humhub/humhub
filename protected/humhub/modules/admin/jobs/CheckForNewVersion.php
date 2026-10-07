@@ -10,7 +10,8 @@ namespace humhub\modules\admin\jobs;
 
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\admin\Module;
-use humhub\modules\admin\notifications\NewVersionAvailable;
+use humhub\modules\admin\notifications\NewVersionAvailableNotification;
+use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\queue\ActiveJob;
 use humhub\modules\user\models\Group;
 use Yii;
@@ -46,18 +47,16 @@ class CheckForNewVersion extends ActiveJob
             $adminsNotified = !($latestNotifiedVersion == "" || version_compare($latestVersion, $latestNotifiedVersion, ">"));
             $newVersionAvailable = (version_compare($latestVersion, Yii::$app->version, ">"));
 
-            $updateNotification = new NewVersionAvailable();
-
-            // Cleanup existing notifications
+            // Cleanup existing notifications - only administrators receive them, so all rows of the class
             if (!$newVersionAvailable || ($newVersionAvailable && !$adminsNotified)) {
-                foreach ($adminUserQuery->all() as $admin) {
-                    $updateNotification->delete($admin);
-                }
+                NotificationManager::delete(NewVersionAvailableNotification::class);
             }
 
             // Create new notification
             if ($newVersionAvailable && !$adminsNotified) {
-                $updateNotification->sendBulk($adminUserQuery);
+                NotificationManager::dispatch(NewVersionAvailableNotification::class, $adminUserQuery, options: [
+                    'payload' => ['version' => $latestVersion],
+                ]);
                 $adminModule->settings->set('lastVersionNotify', $latestVersion);
             }
         }
