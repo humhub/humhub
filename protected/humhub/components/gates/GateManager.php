@@ -138,6 +138,34 @@ class GateManager extends Component
     }
 
     /**
+     * Whether any gate is currently open for the current user, regardless of the requested
+     * route or request class.
+     *
+     * Unlike [[findOpenGate()]], which returns null on a gate's own page because the user is
+     * legitimately inside that gate's flow, this answers "is the user still inside a
+     * mandatory flow?". Modules use it to hold back optional UI such as onboarding hints or
+     * banners until the user has passed every gate. Cacheable gates covered by a valid
+     * all-closed snapshot are not evaluated; non-cacheable gates always are.
+     *
+     * @since 1.19
+     */
+    public function hasOpenGate(): bool
+    {
+        $snapshotValid = $this->isAllClosedSnapshotValid();
+
+        foreach ($this->getGates() as $gate) {
+            if ($gate->isCacheable() && $snapshotValid) {
+                continue;
+            }
+            if ($gate->isOpen()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Bumps the global gate state version so that all sessions discard their all-closed
      * snapshot and re-evaluate the gates once. Call this whenever state changes that
      * could (re)open a gate for already-running sessions, e.g. after publishing updated

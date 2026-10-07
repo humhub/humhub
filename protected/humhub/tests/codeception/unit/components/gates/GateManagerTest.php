@@ -209,6 +209,40 @@ class GateManagerTest extends HumHubDbTestCase
         $this->assertEquals(2, $gate->isOpenCalls, 'identity switch must discard the all-closed snapshot');
     }
 
+    public function testHasOpenGateIgnoresRoutesAndRequestClass()
+    {
+        $manager = $this->createManager(
+            new FakeGate(['id' => 'a', 'sortOrder' => 100, 'open' => false]),
+            new FakeGate([
+                'id' => 'b',
+                'sortOrder' => 200,
+                'open' => true,
+                'route' => ['/b/check'],
+                'applies' => [RequestClass::FullPage],
+            ]),
+        );
+
+        // The gate's own page and a non-matching request class pass findOpenGate(),
+        // but the user is still inside the flow
+        $this->assertNull($manager->findOpenGate(RequestClass::FullPage, 'b/check'));
+        $this->assertNull($manager->findOpenGate(RequestClass::Ajax, 'dashboard'));
+        $this->assertTrue($manager->hasOpenGate());
+
+        $manager = $this->createManager(new FakeGate(['id' => 'a', 'open' => false]));
+        $this->assertFalse($manager->hasOpenGate());
+    }
+
+    public function testHasOpenGateUsesAllClosedSnapshot()
+    {
+        $gate = new FakeGate(['id' => 'b', 'open' => false, 'cacheable' => true]);
+        $manager = $this->createManager($gate);
+
+        $manager->findOpenGate(RequestClass::FullPage, 'dashboard'); // writes the snapshot
+        $this->assertFalse($manager->hasOpenGate());
+
+        $this->assertEquals(1, $gate->isOpenCalls, 'closed cacheable gate must be covered by the snapshot');
+    }
+
     public function testBaseClassDefaults()
     {
         $gate = new class extends UserGate {
