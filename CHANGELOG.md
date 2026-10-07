@@ -18,6 +18,7 @@ HumHub Changelog
 - Fix #8560: Unified the license statement to `AGPL-3.0-only` (license file, `LICENSE`, `package.json`)
 - Enh #8559: Show Docker image build information (tag, platform, build time, commits) on the About page
 - Enh #8562: Add an index on `live.created_at` to speed up the live polling query
+- Enh #8564: Modules can declare controller routes that deliver no user content but that every page depends on to render (e.g. a generated stylesheet) as gate infrastructure routes via `GateManager::registerInfrastructureRoute()`, so that no user gate intercepts them (see `docs/develop/user-gates.md`)
 
 1.19.0-beta.3 (September 22, 2026)
 ----------------------------------
