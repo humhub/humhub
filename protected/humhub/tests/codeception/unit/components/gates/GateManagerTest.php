@@ -239,4 +239,29 @@ class GateManagerTest extends HumHubDbTestCase
         $this->assertFalse($gate->appliesTo(RequestClass::Api));
         $this->assertTrue($gate->isCacheable());
     }
+
+    public function testInfrastructureRoutesAreNeverIntercepted()
+    {
+        Event::on(GateManager::class, GateManager::EVENT_INIT_GATES, function (GateInitEvent $event): void {
+            $event->manager->registerInfrastructureRoute('mymodule/css');
+        });
+
+        $manager = $this->createManager(
+            new FakeGate(['id' => 'a', 'sortOrder' => 100, 'open' => true]),
+        );
+
+        // Core default, collected routes and their sub-routes are infrastructure...
+        $this->assertTrue($manager->isInfrastructureRoute('i18n/translations'));
+        $this->assertTrue($manager->isInfrastructureRoute('mymodule/css'));
+        $this->assertTrue($manager->isInfrastructureRoute('mymodule/css/index'));
+        $this->assertTrue($manager->isInfrastructureRoute('/mymodule/css/'));
+        // ...but a route merely sharing the prefix as substring is not
+        $this->assertFalse($manager->isInfrastructureRoute('mymodule/cssother'));
+        $this->assertFalse($manager->isInfrastructureRoute('dashboard'));
+
+        // An open gate does not intercept an infrastructure route, whatever the request class
+        $this->assertNull($manager->findOpenGate(RequestClass::FullPage, 'mymodule/css/index'));
+        $this->assertNull($manager->findOpenGate(RequestClass::Ajax, 'i18n/translations'));
+        $this->assertEquals('a', $manager->findOpenGate(RequestClass::FullPage, 'dashboard')?->getId());
+    }
 }
