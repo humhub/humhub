@@ -19,6 +19,7 @@ HumHub Changelog
 - Enh #8559: Show Docker image build information (tag, platform, build time, commits) on the About page
 - Enh #8562: Add an index on `live.created_at` to speed up the live polling query
 - Enh #8564: Modules can declare controller routes that deliver no user content but that every page depends on to render (e.g. a generated stylesheet) as gate infrastructure routes via `GateManager::registerInfrastructureRoute()`, so that no user gate intercepts them (see `docs/develop/user-gates.md`)
+- Enh #8567: Remove nowrap on stream header elements (prevents from the document to become wider that the viewport)
 
 1.19.0-beta.3 (September 22, 2026)
 ----------------------------------
