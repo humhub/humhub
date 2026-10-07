@@ -103,6 +103,12 @@ return [
     '{imageExtension} Support' => '{imageExtension} Understøttelse',
     '{phpExtension} Extension' => '{phpExtension} Udvidelse',
     '{phpExtension} Support' => '{phpExtension} Understøttelse',
+    'Docker Image' => '',
+    'Docker repository commit' => '',
+    'HumHub core commit' => '',
+    'Image build time' => '',
+    'Image platform' => '',
+    'Image tag' => '',
     'Install {phpExtension} Extension for Mercure push live driver' => '',
     'Uploads - File' => '',
 ];
