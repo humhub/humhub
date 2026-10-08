@@ -39,6 +39,12 @@ use yii\web\AssetBundle;
 class Module extends \yii\base\Module
 {
     /**
+     * Runtime cache key of the [[getIsEnabled()]] results (module id => bool)
+     * @since 1.18.7
+     */
+    public const CACHE_KEY_IS_ENABLED = 'humhub.module.isEnabled';
+
+    /**
      * @var array|null the loaded module.json info file
      */
     private ?array $_moduleInfo = null;
@@ -214,10 +220,21 @@ class Module extends \yii\base\Module
      */
     public function getIsEnabled(): bool
     {
-        return
-            Yii::$app->hasModule($this->id)
-            && !QueueHelper::isQueued(new DisableModuleJob(['moduleId' => $this->id]))
-            && !QueueHelper::isQueued(new RemoveModuleJob(['moduleId' => $this->id]));
+        if (!Yii::$app->hasModule($this->id)) {
+            return false;
+        }
+
+        // Cache the queue checks per request, they are invalidated by ModuleManager::flushCache() and QueueHelper::markAsQueued()
+        // Note: runtimeCache has no serializer, so cache dependencies (e.g. TagDependency) are not supported there
+        $states = Yii::$app->runtimeCache->get(static::CACHE_KEY_IS_ENABLED) ?: [];
+
+        if (!isset($states[$this->id])) {
+            $states[$this->id] = !QueueHelper::isQueued(new DisableModuleJob(['moduleId' => $this->id]))
+                && !QueueHelper::isQueued(new RemoveModuleJob(['moduleId' => $this->id]));
+            Yii::$app->runtimeCache->set(static::CACHE_KEY_IS_ENABLED, $states);
+        }
+
+        return $states[$this->id];
     }
 
     /**
