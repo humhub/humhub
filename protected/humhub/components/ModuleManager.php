@@ -557,6 +557,7 @@ class ModuleManager extends Component
     public function flushCache()
     {
         Yii::$app->cache->delete(ModuleAutoLoader::CACHE_ID);
+        Yii::$app->runtimeCache->delete(Module::CACHE_KEY_IS_ENABLED);
     }
 
     /**
