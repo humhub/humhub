@@ -33,4 +33,18 @@ class LoginStepGuardCest
         $I->seeElement('input[name="Login[username]"]');
         $I->dontSeeElement('input[name="Login[password]"]');
     }
+
+    public function testPasswordStepShowsUsername(FunctionalTester $I)
+    {
+        $I->wantTo('ensure Step 2 shows the Step-1 username as a read-only field for password managers');
+
+        $I->amOnRoute('/user/auth/login');
+        $I->fillField('Login[username]', 'User1');
+        $I->click('#continue-button');
+
+        $I->see('Sign In as');
+        $I->seeElement('input#login_username[name="Login[username]"][autocomplete="username"][readonly]');
+        $I->seeInField('#login_username', 'User1');
+        $I->seeElement('input[name="Login[password]"]');
+    }
 }
