@@ -22,7 +22,7 @@ use humhub\widgets\form\ActiveForm;
     <?= $form->field($model, 'currentPassword')->passwordInput(['maxlength' => 45, 'autocomplete' => 'new-password']) ?>
 <?php endif ?>
 
-<?= $form->field($model, 'newEmail')->textInput(['maxlength' => 150, 'type' => 'email', 'autocomplete' => 'email']) ?>
+<?= $form->field($model, 'newEmail')->textInput(['maxlength' => 150, 'autocomplete' => 'email']) ?>
 
 <?= Button::save()->submit() ?>
 
