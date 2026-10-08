@@ -27,7 +27,7 @@ class ChangeEmailCest
         $I->fillField('#accountchangeemail-currentpassword', '');
 
         $I->scrollToBottom();
-        $I->click('save');
+        $I->click('Save');
         $I->wait(1);
         $I->expectTo('see an error');
         $I->see('Current password cannot be blank.');
@@ -37,7 +37,7 @@ class ChangeEmailCest
         $I->fillField('#accountchangeemail-currentpassword', 'user^humhub@PASS%worD!');
 
         $I->scrollToBottom();
-        $I->click('save');
+        $I->click('Save');
         $I->wait(1);
         $I->expectTo('see an error');
         $I->see('New E-Mail address is not a valid email address.');
@@ -47,7 +47,7 @@ class ChangeEmailCest
         $I->fillField('#accountchangeemail-currentpassword', 'user^humhub@PASS%worD!');
 
         $I->scrollToBottom();
-        $I->click('save');
+        $I->click('Save');
         $I->wait(1);
         $I->expectTo('see no errors after saving');
         $I->dontSee('Current password cannot be blank.');

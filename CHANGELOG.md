@@ -13,6 +13,7 @@ HumHub Changelog
 - Fix #8538: `Followable` looked up follow records by the owner class instead of `getObjectModel()`, causing duplicate entry errors on subclasses (e.g. form models), and cached a stale record for the whole request
 - Fix #8550: `content-search/rebuild` crashed on content whose model class no longer exists (e.g. removed module)
 - Fix #8556: Refined content tag and content addon validation
+- Fix #8568: Prevent browser password managers from autofilling the username into "New E-Mail"/"New username" fields
 
 1.18.6 (September 22, 2026)
 ---------------------------
