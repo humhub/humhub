@@ -389,3 +389,11 @@ Breaking changes, new APIs and deprecations of the 1.19 release cycle.
   opt-out in core bundles is gone with it; a module declaring the property keeps working (it
   becomes an unused own property), but a bundle **configured** with `'defaultDepends' => ...`
   now fails with `Setting unknown property`.
+- **Removed** the leftover HTML5 desktop notification scripts `js/desktop-notify-min.js` and
+  `js/desktop-notify-config.js` from `humhub\assets\AppAsset`, together with the `window.notify`
+  global they defined. Desktop notifications were removed in 1.17 (#7269) and nothing in core used
+  the library anymore, but the config script still called `Notification.requestPermission()` on
+  every page load for every user without granted permission — without a user gesture, which
+  browsers ignore or punish (Chrome's quiet UI / automatic block) and browser security extensions
+  flag as excessive notification requests. A module that still relied on `window.notify` must ship
+  the library itself; permission requests must only be made from a user gesture.

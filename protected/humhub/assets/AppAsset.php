@@ -98,14 +98,6 @@ class AppAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $js = [
-        'js/desktop-notify-min.js',
-        'js/desktop-notify-config.js',
-    ];
-
-    /**
-     * @inheritdoc
-     */
     public static function register($view)
     {
         $instance = parent::register($view);
