@@ -60,4 +60,5 @@ return [
     'Your password is incorrect!' => 'Dein Passwort ist nicht korrekt!',
     'Your session expired. Please try signing in again.' => 'Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.',
     'a new user {displayName} needs approval.' => 'Neuer Benutzer {displayName} benötigt eine Freischaltung.',
+    'Sign In as {username}' => '',
 ];

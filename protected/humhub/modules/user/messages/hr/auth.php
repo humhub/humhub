@@ -58,6 +58,7 @@ return [
     'Please wait' => '',
     'Select' => '',
     'Sign In' => '',
+    'Sign In as {username}' => '',
     'Sign Up' => '',
     'Your session expired. Please try signing in again.' => '',
 ];
