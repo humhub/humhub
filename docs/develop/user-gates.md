@@ -211,6 +211,24 @@ The result is a strictly ordered funnel — password → 2FA → terms → wizar
 2FA gate may intercept the terms page, never vice versa. Cycles are impossible and no module
 needs to know any other module's routes.
 
+## Holding back optional UI until all gates are closed
+
+A module that wants to show something optional only after the user has completed every
+mandatory flow — an onboarding hint, a "turn on notifications" banner, a tour — asks the
+manager whether any gate is still open:
+
+```php
+if (!Yii::$app->gateManager->hasOpenGate()) {
+    $layoutAddons->addWidget(EnableNotificationsBanner::class);
+}
+```
+
+`findOpenGate()` is the wrong tool for this: it returns `null` on a gate's own page (the user
+is legitimately inside that flow), which is exactly where such UI must not appear.
+`hasOpenGate()` ignores route and request class and only reports whether the user is still
+inside a funnel. It honours the all-closed snapshot described below, so in the steady state
+it costs nothing.
+
 ## Caching
 
 Gate evaluation is designed so that the steady state — all gates closed — costs nothing.
